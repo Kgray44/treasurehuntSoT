@@ -27,7 +27,7 @@ last_reviewed: 2026-08-09
 | Comparison policy      | `tideglass.policy.v1`                                   |
 | Digest                 | SHA-256 over canonical UTF-8 JSON                       |
 | Sounding Line decision | subsystem `RELEASE_GO`; mainline candidate pending      |
-| Feature Catalog        | UPDATED as branch-complete `FT-B002` at `35b1418`       |
+| Feature Catalog        | UPDATED as branch-complete `FT-B009` at `35b1418`       |
 
 ## Delivered capability
 

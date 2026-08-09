@@ -29,6 +29,10 @@ also passed. See the [OAuth validation and completion record](Validation/Voyagew
 
 [Project Tideglass](Projects/Project_Tideglass/README.md) owns deterministic semantic comparison of exact immutable Chronicle editions. Phase 1 is a read-only internal foundation with a safe diagnostic seam and no ordinary user-facing comparison route.
 
+## Project Deepwater
+
+[Project Deepwater](Programs/Deepwater/README.md) governs product capability-realization and systems-audit truth. Phase 1, Sound the Depths, establishes the deterministic capability ledger, schema, ownership map, initial findings, Feature Catalog reconciliation, Phase 2 trace queue, and validation control plane without changing product behavior or schema. Its classifications and maturity rungs are evidence-bound: source existence, local or synthetic validation, staging access, external-provider proof, deployment, and owner acceptance remain distinct.
+
 ## Engineering-record template
 
 Include title, program, phase, record type, status, authority, date, base, scope, decisions, evidence, limitations, supersession, and related records. Do not rewrite historic PDFs solely to fit this template.

@@ -1260,7 +1260,7 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 
 # Completed Branch Features Not Yet Available on Main
 
-## FT-B002 - Tideglass Semantic Edition Comparison Foundation
+## FT-B009 - Tideglass Semantic Edition Comparison Foundation
 
 **Status:** BRANCH COMPLETE NOT MERGED
 **Program or subsystem:** Project Tideglass Phase 1

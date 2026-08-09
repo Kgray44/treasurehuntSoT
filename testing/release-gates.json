@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "status": "stage-10-focused-family-gates",
+  "status": "phase-1-deepwater-control-plane",
   "gates": [
     {
       "id": "local-change",
-      "requiredSuites": ["static.core", "unit.homeport", "unit.sounding-line", "unit.tideglass"],
+      "requiredSuites": ["static.core", "unit.deepwater", "unit.homeport", "unit.sounding-line", "unit.tideglass"],
       "conditionalSuites": [
         "unit.auth",
         "unit.one-voyage",
@@ -57,6 +57,7 @@
         "unit.animation",
         "unit.true-north",
         "unit.feature-catalog",
+        "unit.deepwater",
         "unit.homeport",
         "unit.sounding-line",
         "unit.platform-foundation",
@@ -115,6 +116,7 @@
         "unit.animation",
         "unit.true-north",
         "unit.feature-catalog",
+        "unit.deepwater",
         "unit.homeport",
         "unit.sounding-line",
         "unit.platform-foundation",
@@ -165,6 +167,7 @@
         "unit.animation",
         "unit.true-north",
         "unit.feature-catalog",
+        "unit.deepwater",
         "unit.sounding-line",
         "unit.platform-foundation",
         "component.auth",

@@ -1,0 +1,724 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "Project Deepwater",
+  "phase": "Phase 1 - Sound the Depths",
+  "auditDate": "2026-08-09",
+  "auditedSourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d",
+  "baseSourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d",
+  "branch": "codex/project-deepwater-phase1-sound-the-depths",
+  "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase1",
+  "phaseState": "PHASE_1_CANDIDATE_VALIDATED",
+  "validationState": "LOCAL_RELEASE_GO_PENDING_FINAL_SOURCE_BINDING",
+  "reconciliationState": "BASELINE_FETCHED_PENDING_FINAL_FETCH",
+  "mainlineState": "NOT_INTEGRATED",
+  "finalReconciledMainSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d",
+  "sources": {
+    "featureCatalog": "Development_Docs/Features/catalog",
+    "routeInventory": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json",
+    "screenCatalog": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json",
+    "journeyCatalog": "Development_Docs/Projects/Project_Homeport/Homeport_Journey_Catalog.json",
+    "ownerDecision": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_Decision_Record.md",
+    "soundingLinePolicy": "testing/policy-manifest.json",
+    "soundingLineSuites": "testing/suites.json",
+    "soundingLineContracts": "testing/contracts.json"
+  },
+  "closedVocabularies": {
+    "rungs": [
+      "DOMAIN",
+      "SERVICE",
+      "API",
+      "PROJECTION",
+      "UI",
+      "DISCOVERABLE",
+      "STATE_COMPLETE",
+      "ACCESSIBLE",
+      "JOURNEY_PROVEN",
+      "OWNER_ACCEPTED"
+    ],
+    "classifications": [
+      "FULLY_REALIZED",
+      "PARTIALLY_REALIZED",
+      "BACKEND_ONLY",
+      "FRONTEND_ONLY",
+      "HIDDEN",
+      "INTERNAL_BY_DESIGN",
+      "SECURITY_RESTRICTED",
+      "MISSING",
+      "BROKEN",
+      "DEPRECATED"
+    ],
+    "secondaryFlags": [
+      "UNVERIFIED",
+      "STALE_EVIDENCE",
+      "OWNERSHIP_AMBIGUOUS",
+      "LEGACY_DEPENDENT",
+      "EXTERNAL_PROVIDER_PENDING",
+      "VISUALLY_INCOMPLETE",
+      "JOURNEY_UNPROVEN",
+      "DOCUMENTATION_MISMATCH"
+    ],
+    "dispositions": [
+      "USER_FACING",
+      "MACHINE_CONSUMER",
+      "INTERNAL",
+      "SECURITY_RESTRICTED",
+      "COMPATIBILITY",
+      "DEPRECATED"
+    ],
+    "confidence": ["HIGH", "MEDIUM", "LOW"],
+    "traceStatus": ["VERIFIED", "PARTIAL", "ABSENT", "NOT_APPLICABLE", "UNKNOWN"],
+    "findingStatus": ["OPEN", "ASSIGNED", "IN_PROGRESS", "MAINLINE_CANDIDATE", "CLOSED", "DEBT_ACCEPTED"],
+    "severity": ["CRITICAL", "HIGH", "MEDIUM", "LOW"]
+  },
+  "catalogPolicies": {
+    "FT-001": {
+      "capabilityId": "DW-CAP-UNIFIED-CHRONICLE-PLATFORM",
+      "ownerProject": "Platform",
+      "contributingProjects": ["One Voyage", "Wayfarer", "Shipwright"]
+    },
+    "FT-002": {
+      "capabilityId": "DW-CAP-ACCOUNT-SESSION-ROLE-SYSTEM",
+      "ownerProject": "Wayfarer",
+      "contributingProjects": ["Security"]
+    },
+    "FT-003": {
+      "capabilityId": "DW-CAP-ROLE-GATEWAY-WORKSPACE-ROUTING",
+      "ownerProject": "True North",
+      "contributingProjects": ["Wayfarer", "Lanternwake"]
+    },
+    "FT-004": {
+      "capabilityId": "DW-CAP-CHRONICLE-PASSPORT-PUBLIC-PROFILE",
+      "ownerProject": "Wayfarer",
+      "contributingProjects": ["Homeport"]
+    },
+    "FT-005": {
+      "capabilityId": "DW-CAP-INVITATION-CREW-LIFECYCLE",
+      "ownerProject": "One Voyage",
+      "contributingProjects": ["Wayfarer", "Helm"]
+    },
+    "FT-006": {
+      "capabilityId": "DW-CAP-PLAYER-LIBRARY-VOYAGE-LIFECYCLE",
+      "ownerProject": "One Voyage",
+      "contributingProjects": ["Wakebook"]
+    },
+    "FT-007": {
+      "capabilityId": "DW-CAP-CAPTAIN-VOYAGE-OPERATIONS",
+      "ownerProject": "Helm",
+      "contributingProjects": ["One Voyage"]
+    },
+    "FT-008": {
+      "capabilityId": "DW-CAP-CREATOR-STUDIO",
+      "ownerProject": "Shipwright",
+      "contributingProjects": ["Drydock", "One Voyage"]
+    },
+    "FT-009": {
+      "capabilityId": "DW-CAP-STORY-BLOCK-SYSTEM",
+      "ownerProject": "Drydock",
+      "contributingProjects": ["Shipwright"]
+    },
+    "FT-010": {
+      "capabilityId": "DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS",
+      "ownerProject": "One Voyage",
+      "contributingProjects": ["Drydock", "Tideglass"]
+    },
+    "FT-011": {
+      "capabilityId": "DW-CAP-ASSET-LIBRARY-MEDIA-PIPELINE",
+      "ownerProject": "Shipwright",
+      "contributingProjects": ["Sealed Hold"]
+    },
+    "FT-012": {
+      "capabilityId": "DW-CAP-WAYPOINT-REFERENCE-LIBRARY",
+      "ownerProject": "Drydock",
+      "contributingProjects": ["Landfall", "Shipwright"]
+    },
+    "FT-013": {
+      "capabilityId": "DW-CAP-CHRONICLE-ARTIFACT-DEFINITIONS",
+      "ownerProject": "Drydock",
+      "contributingProjects": ["Shipwright", "One Voyage"]
+    },
+    "FT-014": {
+      "capabilityId": "DW-CAP-AUTHORITATIVE-PROGRESSION",
+      "ownerProject": "One Voyage",
+      "contributingProjects": []
+    },
+    "FT-015": {
+      "capabilityId": "DW-CAP-PLAYER-JOURNAL",
+      "ownerProject": "Wakebook",
+      "contributingProjects": ["One Voyage", "Lanternwake"]
+    },
+    "FT-016": {
+      "capabilityId": "DW-CAP-VOYAGE-CHART",
+      "ownerProject": "Landfall",
+      "contributingProjects": ["One Voyage"]
+    },
+    "FT-017": {
+      "capabilityId": "DW-CAP-ARTIFACT-REVEAL",
+      "ownerProject": "One Voyage",
+      "contributingProjects": ["Wayfarer", "Lanternwake"]
+    },
+    "FT-018": {
+      "capabilityId": "DW-CAP-SIDE-QUEST-LEDGER",
+      "ownerProject": "One Voyage",
+      "contributingProjects": ["Wakebook"]
+    },
+    "FT-019": {
+      "capabilityId": "DW-CAP-SHIPS-LOG",
+      "ownerProject": "Wakebook",
+      "contributingProjects": ["One Voyage", "Helm"]
+    },
+    "FT-020": {
+      "capabilityId": "DW-CAP-FINALE-CHAMBER",
+      "ownerProject": "One Voyage",
+      "contributingProjects": ["Lanternwake", "Helm"]
+    },
+    "FT-021": {
+      "capabilityId": "DW-CAP-REALTIME-PRESENCE-REPLAY",
+      "ownerProject": "One Voyage",
+      "contributingProjects": ["Wayfarer"]
+    },
+    "FT-022": { "capabilityId": "DW-CAP-CINEMATIC-RUNTIME", "ownerProject": "Lanternwake", "contributingProjects": [] },
+    "FT-023": {
+      "capabilityId": "DW-CAP-VERIFICATION-PROVIDER-FRAMEWORK",
+      "ownerProject": "One Voyage",
+      "contributingProjects": ["Watchglass", "Helm"],
+      "secondaryFlags": ["UNVERIFIED", "JOURNEY_UNPROVEN", "EXTERNAL_PROVIDER_PENDING"]
+    },
+    "FT-024": {
+      "capabilityId": "DW-CAP-PRIVATE-CHRONICLE-PROTECTION",
+      "ownerProject": "Sealed Hold",
+      "contributingProjects": ["Admiralty", "Breakwater"],
+      "secondaryFlags": ["UNVERIFIED", "JOURNEY_UNPROVEN", "EXTERNAL_PROVIDER_PENDING"]
+    },
+    "FT-025": {
+      "capabilityId": "DW-CAP-COMMUNITY-EXCHANGE",
+      "ownerProject": "Harborlight",
+      "contributingProjects": ["Sealed Hold", "Admiralty"]
+    },
+    "FT-026": {
+      "capabilityId": "DW-CAP-UNIVERSAL-LANGUAGE-DESIGN-SYSTEM",
+      "ownerProject": "Universal Language",
+      "contributingProjects": ["True North"]
+    },
+    "FT-027": {
+      "capabilityId": "DW-CAP-SECURITY-PRIVACY-PLATFORM",
+      "ownerProject": "Security",
+      "contributingProjects": ["Wayfarer", "Sealed Hold"],
+      "expectedTerminalRung": "PROJECTION",
+      "expectedDisposition": "SECURITY_RESTRICTED",
+      "currentHighestRung": "API",
+      "classification": "SECURITY_RESTRICTED",
+      "audience": ["ACCOUNT_OWNER", "SECURITY_OPERATOR", "SYSTEM"],
+      "privacyClass": "RESTRICTED_SECURITY_METADATA",
+      "privilegeRequirements": ["POLICY_AUTHORIZATION"],
+      "rationale": "Security capabilities require audience-specific safe projection and must not become broad raw-data exposure."
+    },
+    "FT-028": {
+      "capabilityId": "DW-CAP-DEVELOPMENT-OPERATIONAL-TOOLING",
+      "ownerProject": "Breakwater",
+      "contributingProjects": ["Sounding Line"],
+      "expectedTerminalRung": "SERVICE",
+      "expectedDisposition": "MACHINE_CONSUMER",
+      "currentHighestRung": "SERVICE",
+      "classification": "INTERNAL_BY_DESIGN",
+      "audience": ["DEVELOPER", "OPERATOR"],
+      "privacyClass": "INTERNAL_METADATA",
+      "privilegeRequirements": ["REPOSITORY_ACCESS"],
+      "rationale": "Development and operational commands are intentionally developer/operator-facing rather than ordinary product UI."
+    },
+    "FT-029": {
+      "capabilityId": "DW-CAP-ROLE-AWARE-NAVIGATION-SHELL",
+      "ownerProject": "True North",
+      "contributingProjects": ["Homeport"]
+    },
+    "FT-030": {
+      "capabilityId": "DW-CAP-PERSONAL-CHRONICLE-HISTORY",
+      "ownerProject": "Wayfarer",
+      "contributingProjects": ["Wakebook"]
+    },
+    "FT-031": {
+      "capabilityId": "DW-CAP-ARTIFACT-CABINET-ACHIEVEMENTS",
+      "ownerProject": "Wayfarer",
+      "contributingProjects": ["One Voyage"]
+    },
+    "FT-032": {
+      "capabilityId": "DW-CAP-DOCUMENTATION-GOVERNANCE-CATALOG",
+      "ownerProject": "Ledgerlight",
+      "contributingProjects": [],
+      "expectedTerminalRung": "SERVICE",
+      "expectedDisposition": "MACHINE_CONSUMER",
+      "currentHighestRung": "SERVICE",
+      "classification": "INTERNAL_BY_DESIGN",
+      "audience": ["DEVELOPER", "DOC_MAINTAINER"],
+      "privacyClass": "PUBLIC_ENGINEERING_METADATA",
+      "privilegeRequirements": ["REPOSITORY_ACCESS"],
+      "rationale": "Documentation governance is intentionally repository-facing and is realized through deterministic validation and generated indexes."
+    },
+    "FT-033": {
+      "capabilityId": "DW-CAP-GOVERNED-VERIFICATION-CONTROL-PLANE",
+      "ownerProject": "Sounding Line",
+      "contributingProjects": [],
+      "expectedTerminalRung": "SERVICE",
+      "expectedDisposition": "MACHINE_CONSUMER",
+      "currentHighestRung": "SERVICE",
+      "classification": "INTERNAL_BY_DESIGN",
+      "audience": ["DEVELOPER", "CI", "RELEASE_OPERATOR"],
+      "privacyClass": "INTERNAL_EVIDENCE_METADATA",
+      "privilegeRequirements": ["REPOSITORY_OR_CI_ACCESS"],
+      "rationale": "Sounding Line is a governed verification authority for developers, CI, and release operators rather than an ordinary user feature."
+    },
+    "FT-B001": {
+      "capabilityId": "DW-CAP-UNIFIED-IDENTITY-SESSION-AUTHORITY",
+      "ownerProject": "Wayfarer",
+      "contributingProjects": ["Homeport", "Security"]
+    },
+    "FT-B002": {
+      "capabilityId": "DW-CAP-GLOBAL-SHELL-WAYFINDING",
+      "ownerProject": "True North",
+      "contributingProjects": ["Homeport"]
+    },
+    "FT-B003": {
+      "capabilityId": "DW-CAP-PERSONAL-HARBOR",
+      "ownerProject": "Wayfarer",
+      "contributingProjects": ["Homeport", "Wakebook"]
+    },
+    "FT-B004": {
+      "capabilityId": "DW-CAP-COMMUNITY-HARBOR-DISCOVERY",
+      "ownerProject": "Harborlight",
+      "contributingProjects": ["Homeport"]
+    },
+    "FT-B005": {
+      "capabilityId": "DW-CAP-ROUTE-REACHABILITY-GRAPH",
+      "ownerProject": "True North",
+      "contributingProjects": ["Homeport"]
+    },
+    "FT-B006": {
+      "capabilityId": "DW-CAP-COMPLETE-PRODUCT-SURFACES-STATES",
+      "ownerProject": "Homeport",
+      "contributingProjects": ["Universal Language", "Lanternwake"]
+    },
+    "FT-B007": {
+      "capabilityId": "DW-CAP-INTEGRATED-WHOLE-PRODUCT-VOYAGE",
+      "ownerProject": "Homeport",
+      "contributingProjects": ["Wayfarer", "One Voyage", "Harborlight", "Shipwright"],
+      "expectedTerminalRung": "OWNER_ACCEPTED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "classification": "PARTIALLY_REALIZED",
+      "secondaryFlags": ["UNVERIFIED", "JOURNEY_UNPROVEN"],
+      "rationale": "Current accepted source retains exact-source automation but the governing owner decision remains pending."
+    },
+    "FT-B008": {
+      "capabilityId": "DW-CAP-GOOGLE-GITHUB-AUTHENTICATION",
+      "ownerProject": "Wayfarer",
+      "contributingProjects": ["Security", "Homeport"],
+      "expectedTerminalRung": "OWNER_ACCEPTED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "classification": "PARTIALLY_REALIZED",
+      "secondaryFlags": ["UNVERIFIED", "EXTERNAL_PROVIDER_PENDING"],
+      "rationale": "Protected-staging real-provider acceptance is bounded evidence; production provider configuration and production deployment remain separately governed."
+    },
+    "FT-B009": {
+      "capabilityId": "DW-CAP-TIDEGLASS-SEMANTIC-EDITION-COMPARISON",
+      "ownerProject": "Tideglass",
+      "contributingProjects": ["Drydock", "One Voyage"],
+      "expectedTerminalRung": "SERVICE",
+      "expectedDisposition": "MACHINE_CONSUMER",
+      "currentHighestRung": "SERVICE",
+      "classification": "INTERNAL_BY_DESIGN",
+      "secondaryFlags": ["UNVERIFIED"],
+      "audience": ["CREATOR_SERVICE", "DEVELOPER"],
+      "privacyClass": "INTERNAL_ENGINEERING_METADATA",
+      "privilegeRequirements": ["REPOSITORY_OR_SERVICE_ACCESS"],
+      "rationale": "Tideglass Phase 1 is a read-only internal comparison foundation with bounded branch evidence; it does not claim an ordinary user route, deployment, or owner acceptance."
+    }
+  },
+  "uncatalogedCapabilities": [
+    {
+      "capabilityId": "DW-CAP-ACCOUNT-EMAIL-CHANGE",
+      "name": "Change the canonical account email",
+      "meaning": "An account owner can request and confirm a canonical email change through a verified lifecycle.",
+      "ownerProject": "Wayfarer",
+      "contributingProjects": ["Homeport"],
+      "audience": ["ACCOUNT_OWNER"],
+      "privacyClass": "PRIVATE_OWNER",
+      "privilegeRequirements": ["AUTHENTICATED_ACCOUNT", "CSRF", "VERIFICATION_CODE"],
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "expectedDisposition": "USER_FACING",
+      "currentHighestRung": "UI",
+      "classification": "PARTIALLY_REALIZED",
+      "secondaryFlags": ["UNVERIFIED", "JOURNEY_UNPROVEN"],
+      "confidence": "HIGH",
+      "requiredSurfaces": ["/account/email-change"],
+      "sourceReferences": [
+        "src/app/account/email-change/page.tsx",
+        "src/app/api/account/email/change/request/route.ts",
+        "src/app/api/account/email/change/confirm/route.ts"
+      ],
+      "requiredStates": ["IDLE", "PENDING", "VERIFICATION_REQUIRED", "SUCCESS", "FAILURE", "EXPIRED"],
+      "representedStates": ["IDLE", "PENDING", "SUCCESS", "FAILURE"]
+    },
+    {
+      "capabilityId": "DW-CAP-ACCOUNT-DATA-EXPORT",
+      "name": "Export governed account data",
+      "meaning": "An account owner can request and retrieve a privacy-governed export of personal account data.",
+      "ownerProject": "Wayfarer",
+      "contributingProjects": ["Homeport"],
+      "audience": ["ACCOUNT_OWNER"],
+      "privacyClass": "PRIVATE_OWNER",
+      "privilegeRequirements": ["AUTHENTICATED_ACCOUNT", "CSRF", "REAUTHENTICATION_WHERE_REQUIRED"],
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "expectedDisposition": "USER_FACING",
+      "currentHighestRung": "UI",
+      "classification": "PARTIALLY_REALIZED",
+      "secondaryFlags": ["UNVERIFIED", "JOURNEY_UNPROVEN"],
+      "confidence": "HIGH",
+      "requiredSurfaces": ["/account/data"],
+      "sourceReferences": [
+        "src/app/account/data/page.tsx",
+        "src/wayfarer/account-lifecycle.ts",
+        "Development_Docs/Projects/Project_Homeport/Project_Homeport_Account_Data_Export_Contract.md"
+      ],
+      "requiredStates": ["IDLE", "PENDING", "READY", "FAILED", "EXPIRED"],
+      "representedStates": ["IDLE", "PENDING", "READY", "FAILED"]
+    },
+    {
+      "capabilityId": "DW-CAP-ACCOUNT-LIFECYCLE-DEACTIVATION",
+      "name": "Deactivate, delete, cancel, or reactivate an account",
+      "meaning": "An account owner can govern deactivation and deletion lifecycle transitions with recovery windows.",
+      "ownerProject": "Wayfarer",
+      "contributingProjects": ["Homeport"],
+      "audience": ["ACCOUNT_OWNER"],
+      "privacyClass": "PRIVATE_OWNER",
+      "privilegeRequirements": ["AUTHENTICATED_ACCOUNT", "CSRF", "REAUTHENTICATION"],
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "expectedDisposition": "USER_FACING",
+      "currentHighestRung": "API",
+      "classification": "PARTIALLY_REALIZED",
+      "secondaryFlags": ["UNVERIFIED", "JOURNEY_UNPROVEN"],
+      "confidence": "HIGH",
+      "requiredSurfaces": ["/account/data"],
+      "sourceReferences": [
+        "src/wayfarer/account-lifecycle.ts",
+        "src/app/api/auth/account/reactivate/route.ts",
+        "src/app/api/auth/account/cancel-deletion/route.ts",
+        "Development_Docs/Projects/Project_Homeport/Project_Homeport_Account_Deactivation_and_Deletion_Contract.md"
+      ],
+      "requiredStates": ["ACTIVE", "DEACTIVATED", "DELETION_PENDING", "CANCELLED", "REACTIVATED"],
+      "representedStates": ["ACTIVE", "DEACTIVATED", "DELETION_PENDING", "CANCELLED", "REACTIVATED"]
+    },
+    {
+      "capabilityId": "DW-CAP-TRANSACTIONAL-EMAIL-DELIVERY",
+      "name": "Deliver and observe transactional account email",
+      "meaning": "The platform sends verification and recovery messages and retains safe delivery lifecycle metadata.",
+      "ownerProject": "Wayfarer",
+      "contributingProjects": ["Breakwater", "Admiralty"],
+      "audience": ["SYSTEM", "SUPPORT_OPERATOR"],
+      "privacyClass": "RESTRICTED_DELIVERY_METADATA",
+      "privilegeRequirements": ["SYSTEM_AUTHORITY", "PRIVILEGED_SUPPORT"],
+      "expectedTerminalRung": "PROJECTION",
+      "expectedDisposition": "SECURITY_RESTRICTED",
+      "currentHighestRung": "SERVICE",
+      "classification": "BACKEND_ONLY",
+      "secondaryFlags": ["UNVERIFIED", "EXTERNAL_PROVIDER_PENDING"],
+      "confidence": "HIGH",
+      "requiredSurfaces": ["SAFE_ADMIRALTY_DELIVERY_HEALTH"],
+      "sourceReferences": ["src/wayfarer/transactional-email.ts", "prisma/schema.sqlite.prisma"],
+      "requiredStates": ["QUEUED", "ACCEPTED", "DELIVERED", "BOUNCED", "FAILED"],
+      "representedStates": ["QUEUED", "ACCEPTED", "DELIVERED", "BOUNCED", "FAILED"]
+    },
+    {
+      "capabilityId": "DW-CAP-PRIVATE-PROVIDER-HEALTH",
+      "name": "Observe private-content provider health",
+      "meaning": "Privileged operators can observe sanitized storage, scanner, and key-provider health without exposing credentials.",
+      "ownerProject": "Sealed Hold",
+      "contributingProjects": ["Admiralty", "Breakwater"],
+      "audience": ["SECURITY_OPERATOR", "SYSTEM"],
+      "privacyClass": "RESTRICTED_OPERATIONAL_METADATA",
+      "privilegeRequirements": ["PRIVILEGED_OPERATOR"],
+      "expectedTerminalRung": "PROJECTION",
+      "expectedDisposition": "SECURITY_RESTRICTED",
+      "currentHighestRung": "SERVICE",
+      "classification": "BACKEND_ONLY",
+      "secondaryFlags": ["UNVERIFIED", "EXTERNAL_PROVIDER_PENDING"],
+      "confidence": "HIGH",
+      "requiredSurfaces": ["SAFE_ADMIRALTY_PROVIDER_HEALTH"],
+      "sourceReferences": [
+        "src/private-content/providers.ts",
+        "src/private-content/key-provider.ts",
+        "prisma/schema.sqlite.prisma",
+        "scripts/private-content/cli.ts"
+      ],
+      "requiredStates": ["CONFIGURED", "UNCONFIGURED", "HEALTHY", "DEGRADED", "UNAVAILABLE", "STALE"],
+      "representedStates": ["CONFIGURED", "UNCONFIGURED", "HEALTHY", "DEGRADED", "UNAVAILABLE"]
+    },
+    {
+      "capabilityId": "DW-CAP-PRIVATE-BACKUP-RESTORE",
+      "name": "Back up and rehearse restore of private-content records",
+      "meaning": "Privileged operations can create, verify, and rehearse recovery without exposing private content.",
+      "ownerProject": "Sealed Hold",
+      "contributingProjects": ["Breakwater"],
+      "audience": ["SECURITY_OPERATOR", "SYSTEM"],
+      "privacyClass": "RESTRICTED_OPERATIONAL_METADATA",
+      "privilegeRequirements": ["PRIVILEGED_OPERATOR", "OWNED_STORAGE_ROOT"],
+      "expectedTerminalRung": "SERVICE",
+      "expectedDisposition": "INTERNAL",
+      "currentHighestRung": "SERVICE",
+      "classification": "INTERNAL_BY_DESIGN",
+      "secondaryFlags": ["UNVERIFIED"],
+      "confidence": "HIGH",
+      "rationale": "Backup payloads are intentionally internal; only sanitized health and receipts may be projected.",
+      "requiredSurfaces": ["CLI"],
+      "sourceReferences": [
+        "src/private-content/backup-service.ts",
+        "scripts/private-content/rehearse-backup.ts",
+        "scripts/private-content/rehearse-restore.ts"
+      ],
+      "requiredStates": ["PENDING", "RUNNING", "VERIFIED", "FAILED"],
+      "representedStates": ["PENDING", "RUNNING", "VERIFIED", "FAILED"]
+    },
+    {
+      "capabilityId": "DW-CAP-PRIVATE-REPAIR-OPERATIONS",
+      "name": "Plan and execute private-content repair",
+      "meaning": "Privileged operations can reconcile and repair protected records through explicit, auditable plans.",
+      "ownerProject": "Sealed Hold",
+      "contributingProjects": ["Admiralty"],
+      "audience": ["SECURITY_OPERATOR", "SYSTEM"],
+      "privacyClass": "RESTRICTED_OPERATIONAL_METADATA",
+      "privilegeRequirements": ["PRIVILEGED_OPERATOR"],
+      "expectedTerminalRung": "SERVICE",
+      "expectedDisposition": "SECURITY_RESTRICTED",
+      "currentHighestRung": "SERVICE",
+      "classification": "SECURITY_RESTRICTED",
+      "secondaryFlags": ["UNVERIFIED"],
+      "confidence": "HIGH",
+      "rationale": "Repair changes protected state and remains privileged; normal evidence exposes only sanitized plan and receipt metadata.",
+      "requiredSurfaces": ["PRIVILEGED_CLI"],
+      "sourceReferences": ["src/private-content/repair-service.ts", "prisma/schema.sqlite.prisma"],
+      "requiredStates": ["PLANNED", "APPROVED", "RUNNING", "COMPLETED", "FAILED"],
+      "representedStates": ["PLANNED", "RUNNING", "COMPLETED", "FAILED"]
+    },
+    {
+      "capabilityId": "DW-CAP-COMMUNITY-WORKER-SCHEDULER",
+      "name": "Run durable community jobs and schedules",
+      "meaning": "The community subsystem claims, retries, and completes durable outbox and scheduled work.",
+      "ownerProject": "Harborlight",
+      "contributingProjects": ["Breakwater"],
+      "audience": ["SYSTEM", "OPERATOR"],
+      "privacyClass": "INTERNAL_OPERATIONAL_METADATA",
+      "privilegeRequirements": ["WORKER_AUTHORITY"],
+      "expectedTerminalRung": "SERVICE",
+      "expectedDisposition": "INTERNAL",
+      "currentHighestRung": "SERVICE",
+      "classification": "INTERNAL_BY_DESIGN",
+      "secondaryFlags": ["UNVERIFIED"],
+      "confidence": "HIGH",
+      "rationale": "Worker execution is intentionally internal; safe operational health is represented separately.",
+      "requiredSurfaces": ["WORKER"],
+      "sourceReferences": [
+        "src/community/worker.ts",
+        "src/community/scheduler.ts",
+        "src/community/outbox.ts",
+        "scripts/community/worker.ts"
+      ],
+      "requiredStates": ["QUEUED", "CLAIMED", "RUNNING", "RETRYING", "COMPLETED", "FAILED"],
+      "representedStates": ["QUEUED", "CLAIMED", "RUNNING", "RETRYING", "COMPLETED", "FAILED"]
+    },
+    {
+      "capabilityId": "DW-CAP-COMMUNITY-OPERATIONS-HEALTH",
+      "name": "Observe community operations health",
+      "meaning": "Privileged operators can inspect sanitized worker, schedule, provider, and reconciliation health.",
+      "ownerProject": "Harborlight",
+      "contributingProjects": ["Admiralty", "Breakwater"],
+      "audience": ["OPERATOR", "SUPPORT_OPERATOR"],
+      "privacyClass": "RESTRICTED_OPERATIONAL_METADATA",
+      "privilegeRequirements": ["PRIVILEGED_OPERATOR"],
+      "expectedTerminalRung": "PROJECTION",
+      "expectedDisposition": "SECURITY_RESTRICTED",
+      "currentHighestRung": "SERVICE",
+      "classification": "BACKEND_ONLY",
+      "secondaryFlags": ["UNVERIFIED", "EXTERNAL_PROVIDER_PENDING"],
+      "confidence": "HIGH",
+      "requiredSurfaces": ["SAFE_ADMIRALTY_COMMUNITY_HEALTH"],
+      "sourceReferences": [
+        "scripts/community/ops-status.ts",
+        "scripts/community/providers-check.ts",
+        "scripts/community/reconcile.ts"
+      ],
+      "requiredStates": ["HEALTHY", "DEGRADED", "UNAVAILABLE", "STALE", "RECONCILING"],
+      "representedStates": ["HEALTHY", "DEGRADED", "UNAVAILABLE", "RECONCILING"]
+    },
+    {
+      "capabilityId": "DW-CAP-COMMUNITY-BACKUP-RESTORE",
+      "name": "Back up and verify restoration of community operations",
+      "meaning": "Privileged operations can create logical backups and verify restoration of community data.",
+      "ownerProject": "Harborlight",
+      "contributingProjects": ["Breakwater"],
+      "audience": ["OPERATOR", "SYSTEM"],
+      "privacyClass": "RESTRICTED_OPERATIONAL_METADATA",
+      "privilegeRequirements": ["PRIVILEGED_OPERATOR", "OWNED_STORAGE_ROOT"],
+      "expectedTerminalRung": "SERVICE",
+      "expectedDisposition": "INTERNAL",
+      "currentHighestRung": "SERVICE",
+      "classification": "INTERNAL_BY_DESIGN",
+      "secondaryFlags": ["UNVERIFIED"],
+      "confidence": "HIGH",
+      "rationale": "Backup payloads are intentionally internal; ordinary product exposure would be unsafe.",
+      "requiredSurfaces": ["CLI"],
+      "sourceReferences": ["scripts/community/backup.ts", "scripts/community/restore-verify.ts"],
+      "requiredStates": ["PENDING", "RUNNING", "VERIFIED", "FAILED"],
+      "representedStates": ["PENDING", "RUNNING", "VERIFIED", "FAILED"]
+    },
+    {
+      "capabilityId": "DW-CAP-COMPATIBILITY-OBSERVATION",
+      "name": "Observe bounded legacy compatibility",
+      "meaning": "The platform records whether retained legacy adapters continue delegating to canonical authorities.",
+      "ownerProject": "Platform",
+      "contributingProjects": ["One Voyage", "Wayfarer"],
+      "audience": ["DEVELOPER", "OPERATOR"],
+      "privacyClass": "INTERNAL_METADATA",
+      "privilegeRequirements": ["REPOSITORY_OR_OPERATOR_ACCESS"],
+      "expectedTerminalRung": "SERVICE",
+      "expectedDisposition": "COMPATIBILITY",
+      "currentHighestRung": "SERVICE",
+      "classification": "DEPRECATED",
+      "secondaryFlags": ["LEGACY_DEPENDENT", "UNVERIFIED"],
+      "confidence": "HIGH",
+      "rationale": "The capability is retained only to observe bounded compatibility during canonical cutover.",
+      "requiredSurfaces": ["INTERNAL_OBSERVATION"],
+      "sourceReferences": ["src/compatibility/compatibility-observation.ts", "prisma/schema.sqlite.prisma"],
+      "requiredStates": ["OBSERVED", "MATCHED", "DIVERGED", "RETIRED"],
+      "representedStates": ["OBSERVED", "MATCHED", "DIVERGED"]
+    },
+    {
+      "capabilityId": "DW-CAP-PUBLIC-ORIGIN-TRUST-BOUNDARY",
+      "name": "Resolve and enforce trusted public application origins",
+      "meaning": "Authentication redirects use a configured public origin and reject internal or untrusted host-derived destinations.",
+      "ownerProject": "Security",
+      "contributingProjects": ["Wayfarer", "Breakwater"],
+      "audience": ["SYSTEM", "SECURITY_OPERATOR"],
+      "privacyClass": "SECURITY_CONFIGURATION",
+      "privilegeRequirements": ["DEPLOYMENT_CONFIGURATION"],
+      "expectedTerminalRung": "SERVICE",
+      "expectedDisposition": "INTERNAL",
+      "currentHighestRung": "SERVICE",
+      "classification": "INTERNAL_BY_DESIGN",
+      "secondaryFlags": ["UNVERIFIED", "EXTERNAL_PROVIDER_PENDING"],
+      "confidence": "HIGH",
+      "rationale": "The trust decision is internal security policy; ordinary users observe only safe redirects.",
+      "requiredSurfaces": ["AUTH_REDIRECT_BOUNDARY"],
+      "sourceReferences": ["src/homeport/public-app-origin.ts", "src/homeport/public-app-origin.test.ts"],
+      "requiredStates": ["CONFIGURED", "MISSING", "TRUSTED", "REJECTED_INTERNAL", "REJECTED_UNTRUSTED"],
+      "representedStates": ["CONFIGURED", "MISSING", "TRUSTED", "REJECTED_INTERNAL", "REJECTED_UNTRUSTED"]
+    }
+  ],
+  "explicitFindings": [
+    {
+      "findingId": "DW-FIND-HOMEPORT-OWNER-DECISION-PENDING",
+      "capabilityId": "DW-CAP-INTEGRATED-WHOLE-PRODUCT-VOYAGE",
+      "gapFamilies": ["DW-CAP"],
+      "severity": "HIGH",
+      "confidence": "HIGH",
+      "expectedBehavior": "The major whole-product capability reaches its OWNER_ACCEPTED terminal rung only after the owner completes the governed Round 3 re-review.",
+      "currentBehavior": "Accepted main contains the automated and correction control plane, while the authoritative owner record remains PENDING_OWNER_DECISION.",
+      "firstLossPoint": "OWNER_ACCEPTANCE",
+      "canonicalOwner": "Homeport",
+      "contributingOwners": ["Wayfarer", "One Voyage", "Harborlight", "Shipwright"],
+      "assignedProjectPhase": "Project Homeport Phase 7 owner re-review",
+      "mainlineDependency": "Owner decision on the current governed running experience",
+      "closureEvidence": "Owner decision record updated by the owner to an allowed accepted outcome and bound to the reviewed running source.",
+      "status": "ASSIGNED",
+      "evidence": ["Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_Decision_Record.md"]
+    },
+    {
+      "findingId": "DW-FIND-VERIFICATION-PROVIDER-REALIZATION-GAP",
+      "capabilityId": "DW-CAP-VERIFICATION-PROVIDER-FRAMEWORK",
+      "gapFamilies": ["DW-CAP", "DW-UI"],
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "expectedBehavior": "The governed verification boundary has an appropriate real evidence-capture or recognition provider when product scope requires it.",
+      "currentBehavior": "The catalog explicitly records that real camera capture and recognition are not implemented; current proof uses the framework and simulator boundary.",
+      "firstLossPoint": "EXTERNAL_PROVIDER",
+      "canonicalOwner": "One Voyage",
+      "contributingOwners": ["Watchglass", "Helm"],
+      "assignedProjectPhase": "Watchglass or future owner-coordinated provider phase",
+      "mainlineDependency": "Accepted provider contract and owner phase",
+      "closureEvidence": "Source-bound provider, privacy, authorization, failure-state, and natural-journey evidence on accepted main.",
+      "status": "OPEN",
+      "evidence": ["Development_Docs/Features/catalog/one-voyage.json", "src/server/progression.ts"]
+    },
+    {
+      "findingId": "DW-FIND-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION",
+      "capabilityId": "DW-CAP-TRANSACTIONAL-EMAIL-DELIVERY",
+      "gapFamilies": ["DW-PROJ", "DW-UI"],
+      "severity": "MEDIUM",
+      "confidence": "MEDIUM",
+      "expectedBehavior": "Privileged operators receive a safe delivery-health projection without message secrets or unnecessary recipient data.",
+      "currentBehavior": "Delivery services and lifecycle records exist, but Phase 1 found no governed Admiralty health surface in accepted main.",
+      "firstLossPoint": "PROJECTION",
+      "canonicalOwner": "Wayfarer",
+      "contributingOwners": ["Admiralty", "Breakwater"],
+      "assignedProjectPhase": "Admiralty",
+      "mainlineDependency": "Wayfarer safe projection contract",
+      "closureEvidence": "Privileged projection and negative privacy proof plus operator journey evidence.",
+      "status": "ASSIGNED",
+      "evidence": ["src/wayfarer/transactional-email.ts", "prisma/schema.sqlite.prisma"]
+    },
+    {
+      "findingId": "DW-FIND-PRIVATE-PROVIDER-HEALTH-PROJECTION",
+      "capabilityId": "DW-CAP-PRIVATE-PROVIDER-HEALTH",
+      "gapFamilies": ["DW-PROJ", "DW-UI"],
+      "severity": "MEDIUM",
+      "confidence": "MEDIUM",
+      "expectedBehavior": "Privileged operators receive safe provider, scanner, key, and storage health without credential exposure.",
+      "currentBehavior": "Provider health models and CLI checks exist, but Phase 1 found no governed Admiralty projection in accepted main.",
+      "firstLossPoint": "PROJECTION",
+      "canonicalOwner": "Sealed Hold",
+      "contributingOwners": ["Admiralty", "Breakwater"],
+      "assignedProjectPhase": "Admiralty",
+      "mainlineDependency": "Sealed Hold safe provider-health contract",
+      "closureEvidence": "Privileged projection, redaction proof, unavailable/degraded states, and operator journey evidence.",
+      "status": "ASSIGNED",
+      "evidence": ["src/private-content/providers.ts", "scripts/private-content/cli.ts", "prisma/schema.sqlite.prisma"]
+    },
+    {
+      "findingId": "DW-FIND-COMMUNITY-OPERATIONS-HEALTH-PROJECTION",
+      "capabilityId": "DW-CAP-COMMUNITY-OPERATIONS-HEALTH",
+      "gapFamilies": ["DW-PROJ", "DW-UI"],
+      "severity": "MEDIUM",
+      "confidence": "MEDIUM",
+      "expectedBehavior": "Privileged operators receive a safe projection of community worker, scheduler, provider, and reconciliation health.",
+      "currentBehavior": "CLI operational commands exist, but Phase 1 found no governed Admiralty health surface in accepted main.",
+      "firstLossPoint": "PROJECTION",
+      "canonicalOwner": "Harborlight",
+      "contributingOwners": ["Admiralty", "Breakwater"],
+      "assignedProjectPhase": "Admiralty",
+      "mainlineDependency": "Harborlight operational projection contract",
+      "closureEvidence": "Privileged projection, failure-state coverage, privacy proof, and operator journey evidence.",
+      "status": "ASSIGNED",
+      "evidence": [
+        "scripts/community/ops-status.ts",
+        "scripts/community/providers-check.ts",
+        "scripts/community/reconcile.ts"
+      ]
+    }
+  ],
+  "privacy": {
+    "forbiddenPatterns": [
+      "-----BEGIN (?:RSA |OPENSSH )?PRIVATE KEY-----",
+      "(?i)(?:password|sessionToken|oauthSecret|clientSecret|invitationSecret)\\s*[:=]\\s*[\"']?[A-Za-z0-9+/_=-]{8,}",
+      "(?i)(?:cookie|authorization)\\s*[:=]\\s*(?:bearer\\s+)?[A-Za-z0-9+/_=-]{12,}"
+    ],
+    "allowedEvidenceKinds": [
+      "SOURCE_PATH",
+      "FEATURE_CATALOG",
+      "ROUTE_INVENTORY",
+      "SCREEN_CATALOG",
+      "JOURNEY_CATALOG",
+      "TEST",
+      "COMPLETION_RECORD",
+      "COMMIT",
+      "BRANCH",
+      "OWNER_DECISION",
+      "GOVERNING_DOCUMENT"
+    ]
+  }
+}

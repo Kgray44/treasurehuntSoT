@@ -25,7 +25,7 @@ last_reviewed: 2026-08-09
 - Additive Tideglass source, safe diagnostic CLI, and synthetic tests.
 - Sounding Line owner, suite, four contracts, path/contract impact mapping, gates, and generated case registry.
 - Phase 1 design, test, validation, integration, and completion records plus navigation.
-- Branch-complete Feature Catalog entry `FT-B002`, bound to implementation commit `35b1418`.
+- Branch-complete Feature Catalog entry `FT-B009`, bound to implementation commit `35b1418`.
 
 ## Explicitly unchanged
 

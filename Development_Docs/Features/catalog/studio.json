@@ -134,7 +134,7 @@
     "catalogVersion": 1
   },
   {
-    "id": "FT-B002",
+    "id": "FT-B009",
     "title": "Tideglass Semantic Edition Comparison Foundation",
     "summary": "A read-only authority compares exact immutable Chronicle editions through deterministic semantic normalization, stable identity matching, domain comparators, redacted Change Sets, and source-bound receipts.",
     "status": "BRANCH_COMPLETE_NOT_MERGED",

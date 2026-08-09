@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "phase-5-homeport-route-source-classification",
+  "status": "phase-1-deepwater-control-plane",
   "owners": [
     {
       "id": "platform-foundation",
@@ -91,6 +91,13 @@
       "sourcePaths": ["src/chronicle/**"],
       "testPaths": ["src/chronicle/**/*.test.*"],
       "contractIds": ["drydock-progression"]
+    },
+    {
+      "id": "project-deepwater",
+      "project": "project-deepwater",
+      "sourcePaths": ["Development_Docs/Programs/Deepwater/**", "scripts/deepwater/**"],
+      "testPaths": ["tests/deepwater/**/*.test.*"],
+      "contractIds": ["deepwater.capability-realization-integrity"]
     },
     {
       "id": "project-homeport",

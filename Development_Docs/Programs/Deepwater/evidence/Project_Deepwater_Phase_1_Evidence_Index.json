@@ -1,0 +1,3080 @@
+{
+  "evidence": [
+    {
+      "evidenceId": "DW-EV-ACCOUNT-DATA-EXPORT-001",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/app/account/data/page.tsx",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-DATA-EXPORT-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/wayfarer/account-lifecycle.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-DATA-EXPORT-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Account_Data_Export_Contract.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-EMAIL-CHANGE-001",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/app/account/email-change/page.tsx",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-EMAIL-CHANGE-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/app/api/account/email/change/request/route.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-EMAIL-CHANGE-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/app/api/account/email/change/confirm/route.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-LIFECYCLE-DEACTIVATION-001",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/wayfarer/account-lifecycle.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-LIFECYCLE-DEACTIVATION-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/app/api/auth/account/reactivate/route.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-LIFECYCLE-DEACTIVATION-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/app/api/auth/account/cancel-deletion/route.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-LIFECYCLE-DEACTIVATION-004",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Account_Deactivation_and_Deletion_Contract.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-SESSION-ROLE-SYSTEM-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/platform.json#FT-002",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-SESSION-ROLE-SYSTEM-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/platform/auth.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-SESSION-ROLE-SYSTEM-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/platform/policy.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-SESSION-ROLE-SYSTEM-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-SESSION-ROLE-SYSTEM-005",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-verify-email",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-SESSION-ROLE-SYSTEM-006",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-forgot-password",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-SESSION-ROLE-SYSTEM-007",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-SESSION-ROLE-SYSTEM-008",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-forgot-password",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ACCOUNT-SESSION-ROLE-SYSTEM-009",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-verify-email",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ARTIFACT-CABINET-ACHIEVEMENTS-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/wayfarer.json#FT-031",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ARTIFACT-CABINET-ACHIEVEMENTS-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/wayfarer/artifacts.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ARTIFACT-CABINET-ACHIEVEMENTS-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "prisma/migrations/20260725120000_wayfarer_phase4_artifacts_achievements/migration.sql",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ARTIFACT-CABINET-ACHIEVEMENTS-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport-artifacts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ARTIFACT-CABINET-ACHIEVEMENTS-005",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport-artifacts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ARTIFACT-REVEAL-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/player.json#FT-017",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ARTIFACT-REVEAL-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/chronicle/progression.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ARTIFACT-REVEAL-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/domain/story.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ASSET-LIBRARY-MEDIA-PIPELINE-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/studio.json#FT-011",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ASSET-LIBRARY-MEDIA-PIPELINE-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/chronicle/assets.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ASSET-LIBRARY-MEDIA-PIPELINE-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/private-content/media-validation.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-AUTHORITATIVE-PROGRESSION-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/studio.json#FT-014",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-AUTHORITATIVE-PROGRESSION-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/chronicle/progression.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-AUTHORITATIVE-PROGRESSION-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/server/progression.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-AUTHORITATIVE-PROGRESSION-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-AUTHORITATIVE-PROGRESSION-005",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-captain",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CAPTAIN-VOYAGE-OPERATIONS-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/captain.json#FT-007",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CAPTAIN-VOYAGE-OPERATIONS-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/server/admin-command.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CAPTAIN-VOYAGE-OPERATIONS-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/domain/admin.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CAPTAIN-VOYAGE-OPERATIONS-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CAPTAIN-VOYAGE-OPERATIONS-005",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-captain",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CHRONICLE-ARTIFACT-DEFINITIONS-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/studio.json#FT-013",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CHRONICLE-ARTIFACT-DEFINITIONS-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/domain/story.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CHRONICLE-ARTIFACT-DEFINITIONS-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/chronicle/publishing.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CHRONICLE-PASSPORT-PUBLIC-PROFILE-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/wayfarer.json#FT-004",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CHRONICLE-PASSPORT-PUBLIC-PROFILE-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/wayfarer/profile.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CHRONICLE-PASSPORT-PUBLIC-PROFILE-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/wayfarer/providers.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CHRONICLE-PASSPORT-PUBLIC-PROFILE-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CHRONICLE-PASSPORT-PUBLIC-PROFILE-005",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-profile-handle",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CHRONICLE-PASSPORT-PUBLIC-PROFILE-006",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CHRONICLE-PASSPORT-PUBLIC-PROFILE-007",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-profile-handle",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CINEMATIC-RUNTIME-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/lanternwake.json#FT-022",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CINEMATIC-RUNTIME-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/animation",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CINEMATIC-RUNTIME-003",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Completion_Receipt.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CINEMATIC-RUNTIME-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CINEMATIC-RUNTIME-005",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CINEMATIC-RUNTIME-006",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-dev-animations",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CINEMATIC-RUNTIME-007",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-captain",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CINEMATIC-RUNTIME-008",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-dev-animations",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CINEMATIC-RUNTIME-009",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-player",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-BACKUP-RESTORE-001",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/community/backup.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-BACKUP-RESTORE-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/community/restore-verify.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-EXCHANGE-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/harborlight.json#FT-025",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-EXCHANGE-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/community/exchange-service.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-EXCHANGE-003",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-EXCHANGE-004",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-EXCHANGE-005",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-EXCHANGE-006",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-tales",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-EXCHANGE-007",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-tales",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/homeport.json#FT-B004",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-002",
+      "freshness": "BOUNDED",
+      "kind": "COMMIT",
+      "reference": "06394221844c36921d95b1a199d72f18c88645ad",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-003",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_Validation_Record.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-004",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "tests/e2e/homeport-phase4.spec.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-005",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-006",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community-featured",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-007",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community-chronicles",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-008",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community-artifacts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-009",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community-templates",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-010",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community-maps",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-011",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community-audio",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-012",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community-creators",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-013",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community-collections",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-014",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community-guides",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-015",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community-voyage-logs",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-016",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-community",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-017",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-community-artifacts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-018",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-community-audio",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-019",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-community-chronicles",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-020",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-community-collections",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-021",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-community-creators",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-022",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-community-featured",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-023",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-community-guides",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-024",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-community-maps",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-025",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-community-templates",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-HARBOR-DISCOVERY-026",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-community-voyage-logs",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-OPERATIONS-HEALTH-001",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/community/ops-status.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-OPERATIONS-HEALTH-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/community/providers-check.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-OPERATIONS-HEALTH-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/community/reconcile.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-WORKER-SCHEDULER-001",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/community/worker.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-WORKER-SCHEDULER-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/community/scheduler.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-WORKER-SCHEDULER-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/community/outbox.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMMUNITY-WORKER-SCHEDULER-004",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/community/worker.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPATIBILITY-OBSERVATION-001",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/compatibility/compatibility-observation.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPATIBILITY-OBSERVATION-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "prisma/schema.sqlite.prisma",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/homeport.json#FT-B006",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-002",
+      "freshness": "BOUNDED",
+      "kind": "COMMIT",
+      "reference": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-003",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_6_Validation_Record.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-004",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_6_Screen_Acceptance_Registry.json",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-005",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "tests/e2e/homeport-phase6.spec.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-006",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-root",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-007",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-sign-in",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-008",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-009",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-010",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-011",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-012",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-profile",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-013",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-014",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-015",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player-playthroughs-playthroughid",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-016",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain-sessions-sessionid",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-017",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio-tales-taleid",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-018",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-root",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-019",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-020",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-profile",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-021",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-captain-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-022",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-captain-sessions-sessionid",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-023",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-community",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-024",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-025",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-player-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-026",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-player-playthroughs-playthroughid",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-027",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-sign-in",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-028",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-studio-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-COMPLETE-PRODUCT-SURFACES-STATES-029",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-studio-tales-taleid",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CREATOR-STUDIO-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/studio.json#FT-008",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CREATOR-STUDIO-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/chronicle/studio-service.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CREATOR-STUDIO-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/chronicle/api.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CREATOR-STUDIO-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-CREATOR-STUDIO-005",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-studio",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-DEVELOPMENT-OPERATIONAL-TOOLING-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/platform.json#FT-028",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-DEVELOPMENT-OPERATIONAL-TOOLING-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/test-all.ps1",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-DEVELOPMENT-OPERATIONAL-TOOLING-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/prepare-validation-isolation.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-DOCUMENTATION-GOVERNANCE-CATALOG-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/platform.json#FT-032",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-DOCUMENTATION-GOVERNANCE-CATALOG-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/validate-documentation.mjs",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-DOCUMENTATION-GOVERNANCE-CATALOG-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/features/build-feature-catalog.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-FINALE-CHAMBER-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/player.json#FT-020",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-FINALE-CHAMBER-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/chronicle/progression.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-FINALE-CHAMBER-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/animation/scenes/story.scene.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/homeport.json#FT-B002",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-002",
+      "freshness": "BOUNDED",
+      "kind": "COMMIT",
+      "reference": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-003",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_2_Validation_Record.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-004",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "tests/e2e/homeport-phase2.spec.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-005",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-root",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-006",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-tales",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-007",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-008",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-009",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-010",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-011",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-012",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-root",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-013",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-captain-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-014",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-community",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-015",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-016",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-player-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-017",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-studio-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GLOBAL-SHELL-WAYFINDING-018",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-tales",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOOGLE-GITHUB-AUTHENTICATION-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/wayfarer.json#FT-B008",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOOGLE-GITHUB-AUTHENTICATION-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/wayfarer/oauth.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOOGLE-GITHUB-AUTHENTICATION-003",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "src/wayfarer/oauth.exchange.test.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOOGLE-GITHUB-AUTHENTICATION-004",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "src/app/api/auth/providers/[provider]/callback/route.test.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOOGLE-GITHUB-AUTHENTICATION-005",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "src/homeport/public-app-origin.test.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOOGLE-GITHUB-AUTHENTICATION-006",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "tests/oauth/voyagewright-oauth.spec.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOOGLE-GITHUB-AUTHENTICATION-007",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOOGLE-GITHUB-AUTHENTICATION-008",
+      "freshness": "BOUNDED",
+      "kind": "COMMIT",
+      "reference": "b4fa3b4b3f50e3f22f82adace3b287b9cadace8a",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOOGLE-GITHUB-AUTHENTICATION-009",
+      "freshness": "BOUNDED",
+      "kind": "COMMIT",
+      "reference": "7675a9e3c02cb1bad18812c65010e9310d9b977c",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOOGLE-GITHUB-AUTHENTICATION-010",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-register",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOOGLE-GITHUB-AUTHENTICATION-011",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-sign-in",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOOGLE-GITHUB-AUTHENTICATION-012",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-linked-identities",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOOGLE-GITHUB-AUTHENTICATION-013",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-linked-identities",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOOGLE-GITHUB-AUTHENTICATION-014",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-register",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOOGLE-GITHUB-AUTHENTICATION-015",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-sign-in",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOVERNED-VERIFICATION-CONTROL-PLANE-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/sounding-line.json#FT-033",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOVERNED-VERIFICATION-CONTROL-PLANE-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/sounding-line/runtime.mjs",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOVERNED-VERIFICATION-CONTROL-PLANE-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/sounding-line/adapters.mjs",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOVERNED-VERIFICATION-CONTROL-PLANE-004",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/sounding-line/phase3.mjs",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOVERNED-VERIFICATION-CONTROL-PLANE-005",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/sounding-line/phase4.mjs",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-GOVERNED-VERIFICATION-CONTROL-PLANE-006",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Final_Program_Closeout_Receipt.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-IMMUTABLE-PUBLISHING-EDITIONS-FORKS-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/studio.json#FT-010",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-IMMUTABLE-PUBLISHING-EDITIONS-FORKS-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/chronicle/publishing.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-IMMUTABLE-PUBLISHING-EDITIONS-FORKS-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/chronicle/validation.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/homeport.json#FT-B007",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-002",
+      "freshness": "BOUNDED",
+      "kind": "COMMIT",
+      "reference": "e1829c3cffa87e561d15342da2e6e9b073fd7165",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-003",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Validation_Record.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-004",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Integrated_Journey_Registry.json",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-005",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "tests/e2e/homeport-phase7.spec.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-006",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_1_Validation_Record.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-007",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-008",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_2_Validation_Record.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-009",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-010",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Validation_Record.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-011",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-012",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Validation_Record.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-013",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "tests/e2e/homeport-phase7-owner-correction-round3-patch-a.spec.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-014",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "Experience_Images/manifest.json",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-015",
+      "freshness": "BOUNDED",
+      "kind": "COMMIT",
+      "reference": "320c25c3e49be58b36be43254be75548b32655a6",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-016",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-root",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-017",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-register",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-018",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-sign-in",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-019",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-020",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-roles",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-021",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-personal-information",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-022",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-linked-identities",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-023",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-data",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-024",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-email-change",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-025",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-preferences",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-026",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-security",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-027",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-sessions",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-028",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-029",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport-history",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-030",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport-memories",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-031",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport-artifacts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-032",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport-saved",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-033",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-034",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community-slug",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-035",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-chronicles-taleslug",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-036",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-verify-email",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-037",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-038",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-039",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-040",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-root",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-041",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-042",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-data",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-043",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-email-change",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-044",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-linked-identities",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-045",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-personal-information",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-046",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-preferences",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-047",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-roles",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-048",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-security",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-049",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-sessions",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-050",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-captain-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-051",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-chronicles-taleslug",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-052",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-community",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-053",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-community-slug",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-054",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-055",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport-artifacts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-056",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport-history",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-057",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport-memories",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-058",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport-saved",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-059",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-player-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-060",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-register",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-061",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-sign-in",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-062",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-studio-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INTEGRATED-WHOLE-PRODUCT-VOYAGE-063",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-verify-email",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INVITATION-CREW-LIFECYCLE-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/player.json#FT-005",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INVITATION-CREW-LIFECYCLE-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/platform/invitations.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INVITATION-CREW-LIFECYCLE-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/platform/audit.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INVITATION-CREW-LIFECYCLE-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-INVITATION-CREW-LIFECYCLE-005",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-player",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-CHRONICLE-HISTORY-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/wayfarer.json#FT-030",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-CHRONICLE-HISTORY-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/wayfarer/chronicle-history.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-CHRONICLE-HISTORY-003",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-CHRONICLE-HISTORY-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport-history",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-CHRONICLE-HISTORY-005",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport-history",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/homeport.json#FT-B003",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-002",
+      "freshness": "BOUNDED",
+      "kind": "COMMIT",
+      "reference": "761adb7a693feabacc4e7d54d28d443ceda8a273",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-003",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_3_Validation_Record.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-004",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "tests/e2e/homeport-phase3.spec.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-005",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-006",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-profile",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-007",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-preferences",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-008",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-privacy",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-009",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-linked-identities",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-010",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-security",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-011",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-sessions",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-012",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-data",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-013",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-014",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport-history",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-015",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport-memories",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-016",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport-artifacts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-017",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport-saved",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-018",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-profile-handle",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-019",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-020",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-data",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-021",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-linked-identities",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-022",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-preferences",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-023",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-privacy",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-024",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-profile",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-025",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-security",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-026",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-sessions",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-027",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-028",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport-artifacts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-029",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport-history",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-030",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport-memories",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-031",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport-saved",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PERSONAL-HARBOR-032",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-profile-handle",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLAYER-JOURNAL-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/player.json#FT-015",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLAYER-JOURNAL-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/chronicle/journal-page-model.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLAYER-JOURNAL-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/chronicle/journal-contract.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLAYER-LIBRARY-VOYAGE-LIFECYCLE-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/player.json#FT-006",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLAYER-LIBRARY-VOYAGE-LIFECYCLE-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/platform/libraries.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLAYER-LIBRARY-VOYAGE-LIFECYCLE-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/platform/state.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLAYER-LIBRARY-VOYAGE-LIFECYCLE-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLAYER-LIBRARY-VOYAGE-LIFECYCLE-005",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-player",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PRIVATE-BACKUP-RESTORE-001",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/private-content/backup-service.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PRIVATE-BACKUP-RESTORE-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/private-content/rehearse-backup.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PRIVATE-BACKUP-RESTORE-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/private-content/rehearse-restore.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PRIVATE-CHRONICLE-PROTECTION-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/sealed-hold.json#FT-024",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PRIVATE-CHRONICLE-PROTECTION-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/private-content/package.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PRIVATE-CHRONICLE-PROTECTION-003",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PRIVATE-CHRONICLE-PROTECTION-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio-private-content",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PRIVATE-CHRONICLE-PROTECTION-005",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-studio-private-content",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PRIVATE-PROVIDER-HEALTH-001",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/private-content/providers.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PRIVATE-PROVIDER-HEALTH-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/private-content/key-provider.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PRIVATE-PROVIDER-HEALTH-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "prisma/schema.sqlite.prisma",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PRIVATE-PROVIDER-HEALTH-004",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/private-content/cli.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PRIVATE-REPAIR-OPERATIONS-001",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/private-content/repair-service.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PRIVATE-REPAIR-OPERATIONS-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "prisma/schema.sqlite.prisma",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PUBLIC-ORIGIN-TRUST-BOUNDARY-001",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/homeport/public-app-origin.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PUBLIC-ORIGIN-TRUST-BOUNDARY-002",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "src/homeport/public-app-origin.test.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-REALTIME-PRESENCE-REPLAY-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/player.json#FT-021",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-REALTIME-PRESENCE-REPLAY-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/platform/player-event-stream.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-REALTIME-PRESENCE-REPLAY-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/domain/replay.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-REALTIME-PRESENCE-REPLAY-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-REALTIME-PRESENCE-REPLAY-005",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-player",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-AWARE-NAVIGATION-SHELL-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/security-operations.json#FT-029",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-AWARE-NAVIGATION-SHELL-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/components/shell/ProductShell.tsx",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-AWARE-NAVIGATION-SHELL-003",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Project_True_North_Completion_Receipt.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-AWARE-NAVIGATION-SHELL-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-root",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-AWARE-NAVIGATION-SHELL-005",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-AWARE-NAVIGATION-SHELL-006",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-AWARE-NAVIGATION-SHELL-007",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-AWARE-NAVIGATION-SHELL-008",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-root",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-AWARE-NAVIGATION-SHELL-009",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-captain",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-AWARE-NAVIGATION-SHELL-010",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-player",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-AWARE-NAVIGATION-SHELL-011",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-studio",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-GATEWAY-WORKSPACE-ROUTING-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/platform.json#FT-003",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-GATEWAY-WORKSPACE-ROUTING-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/app/page.tsx",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-GATEWAY-WORKSPACE-ROUTING-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/components/landing/HarborLanding.tsx",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-GATEWAY-WORKSPACE-ROUTING-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-root",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-GATEWAY-WORKSPACE-ROUTING-005",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-GATEWAY-WORKSPACE-ROUTING-006",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-GATEWAY-WORKSPACE-ROUTING-007",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-GATEWAY-WORKSPACE-ROUTING-008",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-root",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-GATEWAY-WORKSPACE-ROUTING-009",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-captain",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-GATEWAY-WORKSPACE-ROUTING-010",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-player",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROLE-GATEWAY-WORKSPACE-ROUTING-011",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-studio",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/homeport.json#FT-B005",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-002",
+      "freshness": "BOUNDED",
+      "kind": "COMMIT",
+      "reference": "b9f1552b78857c36a45f25eb5fdfb7a7e09f102a",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-003",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_5_Validation_Record.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-004",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_5_Route_Reachability_Graph.json",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-005",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-root",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-006",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-tales",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-007",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-008",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-009",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-010",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-011",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-012",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-013",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-play-taleslug-session-sessionid",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-014",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-route-join-token",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-015",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-tale-campaignslug",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-016",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-root",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-017",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-018",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-captain-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-019",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-community",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-020",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-021",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-play-taleslug-session-sessionid",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-022",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-player-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-023",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-studio-library",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-024",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-tale-campaignslug",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-ROUTE-REACHABILITY-GRAPH-025",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-tales",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-SECURITY-PRIVACY-PLATFORM-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/platform.json#FT-027",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-SECURITY-PRIVACY-PLATFORM-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/lib/security.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-SECURITY-PRIVACY-PLATFORM-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "scripts/private-content/scan.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-SECURITY-PRIVACY-PLATFORM-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-security",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-SECURITY-PRIVACY-PLATFORM-005",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-security",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-SHIPS-LOG-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/player.json#FT-019",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-SHIPS-LOG-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/domain/ships-log.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-SHIPS-LOG-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/platform/player-event-stream.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-SIDE-QUEST-LEDGER-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/player.json#FT-018",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-SIDE-QUEST-LEDGER-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/domain/story.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-SIDE-QUEST-LEDGER-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/chronicle/progression.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-STORY-BLOCK-SYSTEM-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/studio.json#FT-009",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-STORY-BLOCK-SYSTEM-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/chronicle/block-registry.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-STORY-BLOCK-SYSTEM-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/chronicle/types.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/studio.json#FT-B009",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/tideglass/service.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-003",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "tests/tideglass",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-004",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-TRANSACTIONAL-EMAIL-DELIVERY-001",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/wayfarer/transactional-email.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-TRANSACTIONAL-EMAIL-DELIVERY-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "prisma/schema.sqlite.prisma",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-CHRONICLE-PLATFORM-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/platform.json#FT-001",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-CHRONICLE-PLATFORM-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "prisma/schema.sqlite.prisma",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-CHRONICLE-PLATFORM-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/compatibility/compatibility-observation.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-CHRONICLE-PLATFORM-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-root",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-CHRONICLE-PLATFORM-005",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-CHRONICLE-PLATFORM-006",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-CHRONICLE-PLATFORM-007",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-CHRONICLE-PLATFORM-008",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-root",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-CHRONICLE-PLATFORM-009",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-captain",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-CHRONICLE-PLATFORM-010",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-player",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-CHRONICLE-PLATFORM-011",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-studio",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-IDENTITY-SESSION-AUTHORITY-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/homeport.json#FT-B001",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-IDENTITY-SESSION-AUTHORITY-002",
+      "freshness": "BOUNDED",
+      "kind": "COMMIT",
+      "reference": "43c0fdc701de1425e651acb06924051fbd3a4a34",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-IDENTITY-SESSION-AUTHORITY-003",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_1_Validation_Record.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-IDENTITY-SESSION-AUTHORITY-004",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_1_Compatibility_Cutover_Ledger.csv",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-IDENTITY-SESSION-AUTHORITY-005",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-sign-in",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-IDENTITY-SESSION-AUTHORITY-006",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-register",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-IDENTITY-SESSION-AUTHORITY-007",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-route-api-auth-context",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-IDENTITY-SESSION-AUTHORITY-008",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player-sign-in",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-IDENTITY-SESSION-AUTHORITY-009",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain-sign-in",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-IDENTITY-SESSION-AUTHORITY-010",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio-sign-in",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-IDENTITY-SESSION-AUTHORITY-011",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-IDENTITY-SESSION-AUTHORITY-012",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-captain-sign-in",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-IDENTITY-SESSION-AUTHORITY-013",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-IDENTITY-SESSION-AUTHORITY-014",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-player-sign-in",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-IDENTITY-SESSION-AUTHORITY-015",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-register",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-IDENTITY-SESSION-AUTHORITY-016",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-sign-in",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIFIED-IDENTITY-SESSION-AUTHORITY-017",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-studio-sign-in",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIVERSAL-LANGUAGE-DESIGN-SYSTEM-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/security-operations.json#FT-026",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIVERSAL-LANGUAGE-DESIGN-SYSTEM-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/language/canonical-terms.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIVERSAL-LANGUAGE-DESIGN-SYSTEM-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/components/shell/ProductShell.tsx",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIVERSAL-LANGUAGE-DESIGN-SYSTEM-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-root",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIVERSAL-LANGUAGE-DESIGN-SYSTEM-005",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIVERSAL-LANGUAGE-DESIGN-SYSTEM-006",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIVERSAL-LANGUAGE-DESIGN-SYSTEM-007",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIVERSAL-LANGUAGE-DESIGN-SYSTEM-008",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-root",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIVERSAL-LANGUAGE-DESIGN-SYSTEM-009",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-captain",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIVERSAL-LANGUAGE-DESIGN-SYSTEM-010",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-player",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-UNIVERSAL-LANGUAGE-DESIGN-SYSTEM-011",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-studio",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-VERIFICATION-PROVIDER-FRAMEWORK-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/one-voyage.json#FT-023",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-VERIFICATION-PROVIDER-FRAMEWORK-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/server/progression.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-VERIFICATION-PROVIDER-FRAMEWORK-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/domain/story.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-VERIFICATION-PROVIDER-FRAMEWORK-004",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-VERIFICATION-PROVIDER-FRAMEWORK-005",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-captain",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-VOYAGE-CHART-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/player.json#FT-016",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-VOYAGE-CHART-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/domain/story.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-VOYAGE-CHART-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/chronicle/api.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-WAYPOINT-REFERENCE-LIBRARY-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/studio.json#FT-012",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-WAYPOINT-REFERENCE-LIBRARY-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/domain/story.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-WAYPOINT-REFERENCE-LIBRARY-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/chronicle/publishing.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    }
+  ],
+  "privacyBoundary": "Sanitized repository paths and governed IDs only; no private content, credentials, tokens, cookies, or personal data.",
+  "schemaVersion": "1.0.0",
+  "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+}

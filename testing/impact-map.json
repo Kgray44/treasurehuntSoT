@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "status": "phase-7-owner-correction-round-3-impact-map",
+  "status": "phase-1-deepwater-control-plane",
   "pathMappings": [
     {
       "path": "Development_Docs/Governance/**",
@@ -26,6 +26,21 @@
       "path": "Development_Docs/Features/FEATURE_CATALOG.md",
       "suiteIds": ["unit.feature-catalog", "static.core"],
       "contractIds": []
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/**",
+      "suiteIds": ["unit.deepwater", "static.core"],
+      "contractIds": ["deepwater.capability-realization-integrity"]
+    },
+    {
+      "path": "scripts/deepwater/**",
+      "suiteIds": ["unit.deepwater", "static.core"],
+      "contractIds": ["deepwater.capability-realization-integrity"]
+    },
+    {
+      "path": "tests/deepwater/**",
+      "suiteIds": ["unit.deepwater", "static.core"],
+      "contractIds": ["deepwater.capability-realization-integrity"]
     },
     { "path": "Development_Docs/document-index.json", "suiteIds": ["static.core"], "contractIds": [] },
     {
@@ -76,8 +91,9 @@
     },
     {
       "path": "package.json",
-      "suiteIds": ["unit.homeport", "unit.sounding-line", "unit.tideglass", "static.core"],
+      "suiteIds": ["unit.deepwater", "unit.homeport", "unit.sounding-line", "unit.tideglass", "static.core"],
       "contractIds": [
+        "deepwater.capability-realization-integrity",
         "tideglass-exact-edition-pair",
         "tideglass-safe-projection",
         "homeport.route-inventory.complete",
