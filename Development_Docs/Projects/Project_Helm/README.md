@@ -17,17 +17,18 @@ or the larger Helm command experience.
 
 ## Authority
 
-- Supplied Project Helm governing document, version 1.0, SHA-256
+- [Project Helm governing document](../Project%20Helm/Project_Helm_Captain_Operations_and_Participating_Captain_System_Governing_Document_v1.0.pdf),
+  version 1.0, SHA-256
   `93ae665c95cf117e6d1c1d4c1d4d14245b0c41da6f9ea343977549683982972d`.
-- Supplied Voyagewright Continuous Development and Mainline Integration
-  Standard, version 1.0, SHA-256
+- [Voyagewright Continuous Development and Mainline Integration Standard](../../Governing/Voyagewright_Continuous_Development_and_Mainline_Integration_Standard_v1.0.pdf),
+  version 1.0, SHA-256
   `10ba64e3599179814a95d5ee873e3be070a0618fff058506b451dc9666d874a7`.
 - [Voyagewright Global Product Governance Standard](../../Governance/Voyagewright_Global_Product_Governance_Standard.md).
 - [Project Homeport governing document](../Project_Homeport/Project_Homeport_Governing_Document.md).
 - [Sounding Line release validation policy](../../Testing/Release_Validation_Policy.md).
 
-The supplied PDFs remain source authorities outside this worktree. They are
-not copied into this project folder or treated as implementation evidence.
+The tracked PDFs are byte-identical to the supplied authorities reviewed for
+this phase. They remain governing sources, not implementation evidence.
 
 ## Phase 1 records
 

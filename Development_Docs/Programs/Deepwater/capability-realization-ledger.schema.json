@@ -1,0 +1,317 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voyagewright.local/schemas/deepwater/capability-realization-ledger.schema.json",
+  "title": "Project Deepwater Capability Realization Ledger",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "project", "phase", "auditedSourceSha", "auditDate", "generation", "capabilities"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "project": { "const": "Project Deepwater" },
+    "phase": { "enum": ["Phase 1 - Sound the Depths", "Phase 2 - Trace the Current"] },
+    "auditedSourceSha": { "$ref": "#/$defs/sha" },
+    "auditDate": { "type": "string", "format": "date" },
+    "generation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["deterministic", "catalogEntries", "uncatalogedCapabilities", "sourceInputs"],
+      "properties": {
+        "deterministic": { "const": true },
+        "catalogEntries": { "type": "integer", "minimum": 0 },
+        "uncatalogedCapabilities": { "type": "integer", "minimum": 0 },
+        "sourceInputs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/capability" }
+    }
+  },
+  "$defs": {
+    "sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "capabilityId": { "type": "string", "pattern": "^DW-CAP-[A-Z0-9]+(?:-[A-Z0-9]+)*$" },
+    "rung": {
+      "enum": [
+        "DOMAIN",
+        "SERVICE",
+        "API",
+        "PROJECTION",
+        "UI",
+        "DISCOVERABLE",
+        "STATE_COMPLETE",
+        "ACCESSIBLE",
+        "JOURNEY_PROVEN",
+        "OWNER_ACCEPTED"
+      ]
+    },
+    "classification": {
+      "enum": [
+        "FULLY_REALIZED",
+        "PARTIALLY_REALIZED",
+        "BACKEND_ONLY",
+        "FRONTEND_ONLY",
+        "HIDDEN",
+        "INTERNAL_BY_DESIGN",
+        "SECURITY_RESTRICTED",
+        "MISSING",
+        "BROKEN",
+        "DEPRECATED"
+      ]
+    },
+    "secondaryFlag": {
+      "enum": [
+        "UNVERIFIED",
+        "STALE_EVIDENCE",
+        "OWNERSHIP_AMBIGUOUS",
+        "LEGACY_DEPENDENT",
+        "EXTERNAL_PROVIDER_PENDING",
+        "VISUALLY_INCOMPLETE",
+        "JOURNEY_UNPROVEN",
+        "DOCUMENTATION_MISMATCH"
+      ]
+    },
+    "disposition": {
+      "enum": ["USER_FACING", "MACHINE_CONSUMER", "INTERNAL", "SECURITY_RESTRICTED", "COMPATIBILITY", "DEPRECATED"]
+    },
+    "confidence": { "enum": ["HIGH", "MEDIUM", "LOW"] },
+    "traceStatus": { "enum": ["VERIFIED", "PARTIAL", "ABSENT", "NOT_APPLICABLE", "UNKNOWN"] },
+    "traceLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "references"],
+      "properties": {
+        "status": { "$ref": "#/$defs/traceStatus" },
+        "references": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      }
+    },
+    "catalogMapping": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": [
+        "featureCatalogId",
+        "mapping",
+        "declaredProgram",
+        "declaredStatus",
+        "declaredSurfaces",
+        "declaredSubfeatures",
+        "declaredLimitations"
+      ],
+      "properties": {
+        "featureCatalogId": { "type": "string", "pattern": "^FT-(?:[0-9]{3}|B[0-9]{3})$" },
+        "mapping": { "enum": ["PARENT", "SUB_CAPABILITY"] },
+        "declaredProgram": { "type": ["string", "null"] },
+        "declaredStatus": { "enum": ["MAINLINE", "BRANCH_COMPLETE_NOT_MERGED", "COMPATIBILITY"] },
+        "declaredSurfaces": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "declaredSubfeatures": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "declaredLimitations": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      }
+    },
+    "owner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["project", "contract", "contributingProjects"],
+      "properties": {
+        "project": { "type": "string", "minLength": 1 },
+        "contract": { "type": "string", "minLength": 1 },
+        "contributingProjects": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      }
+    },
+    "audience": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["roles", "privacyClass", "privilegeRequirements"],
+      "properties": {
+        "roles": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "privacyClass": { "type": "string", "minLength": 1 },
+        "privilegeRequirements": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      }
+    },
+    "expectedRealization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["terminalRung", "disposition", "requiredSurfaces", "rationale"],
+      "properties": {
+        "terminalRung": { "$ref": "#/$defs/rung" },
+        "disposition": { "$ref": "#/$defs/disposition" },
+        "requiredSurfaces": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    },
+    "currentRealization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["highestRung", "classification", "secondaryFlags", "confidence"],
+      "properties": {
+        "highestRung": { "$ref": "#/$defs/rung" },
+        "classification": { "$ref": "#/$defs/classification" },
+        "secondaryFlags": { "type": "array", "items": { "$ref": "#/$defs/secondaryFlag" }, "uniqueItems": true },
+        "confidence": { "$ref": "#/$defs/confidence" }
+      }
+    },
+    "trace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "domain",
+        "service",
+        "transport",
+        "authorization",
+        "projection",
+        "client",
+        "ui",
+        "navigation",
+        "accessibility",
+        "journey",
+        "suspectedFirstLossPoint"
+      ],
+      "properties": {
+        "domain": { "$ref": "#/$defs/traceLayer" },
+        "service": { "$ref": "#/$defs/traceLayer" },
+        "transport": { "$ref": "#/$defs/traceLayer" },
+        "authorization": { "$ref": "#/$defs/traceLayer" },
+        "projection": { "$ref": "#/$defs/traceLayer" },
+        "client": { "$ref": "#/$defs/traceLayer" },
+        "ui": { "$ref": "#/$defs/traceLayer" },
+        "navigation": { "$ref": "#/$defs/traceLayer" },
+        "accessibility": { "$ref": "#/$defs/traceLayer" },
+        "journey": { "$ref": "#/$defs/traceLayer" },
+        "suspectedFirstLossPoint": { "type": ["string", "null"] }
+      }
+    },
+    "states": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "represented", "missing"],
+      "properties": {
+        "required": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "represented": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "missing": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["discoverability", "visualMaturity", "accessibility", "responsive", "recovery"],
+      "properties": {
+        "discoverability": { "$ref": "#/$defs/traceStatus" },
+        "visualMaturity": { "$ref": "#/$defs/traceStatus" },
+        "accessibility": { "$ref": "#/$defs/traceStatus" },
+        "responsive": { "$ref": "#/$defs/traceStatus" },
+        "recovery": { "$ref": "#/$defs/traceStatus" }
+      }
+    },
+    "evidenceReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidenceId", "kind", "reference", "sourceSha", "freshness"],
+      "properties": {
+        "evidenceId": { "type": "string", "pattern": "^DW-EV-[A-Z0-9]+(?:-[A-Z0-9]+)*$" },
+        "kind": {
+          "enum": [
+            "SOURCE_PATH",
+            "FEATURE_CATALOG",
+            "ROUTE_INVENTORY",
+            "SCREEN_CATALOG",
+            "JOURNEY_CATALOG",
+            "TEST",
+            "COMPLETION_RECORD",
+            "COMMIT",
+            "BRANCH",
+            "OWNER_DECISION",
+            "GOVERNING_DOCUMENT"
+          ]
+        },
+        "reference": { "type": "string", "minLength": 1 },
+        "sourceSha": { "$ref": "#/$defs/sha" },
+        "freshness": { "enum": ["CURRENT", "BOUNDED", "STALE"] }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceSha", "references", "testIds", "screenshotIds", "journeyIds", "ownerAcceptance"],
+      "properties": {
+        "sourceSha": { "$ref": "#/$defs/sha" },
+        "references": { "type": "array", "items": { "$ref": "#/$defs/evidenceReference" } },
+        "testIds": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "screenshotIds": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "journeyIds": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "ownerAcceptance": {
+          "enum": [
+            "NOT_REQUIRED",
+            "UNKNOWN",
+            "PENDING_OWNER_DECISION",
+            "OWNER_ACCEPTED",
+            "OWNER_ACCEPTED_WITH_EXPLICIT_LIMITATIONS",
+            "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
+            "OWNER_WALKTHROUGH_BLOCKED"
+          ]
+        }
+      }
+    },
+    "gaps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["findingIds", "highestSeverity", "impact", "assignedOwner", "targetPhase"],
+      "properties": {
+        "findingIds": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^DW-FIND-[A-Z0-9]+(?:-[A-Z0-9]+)*$" },
+          "uniqueItems": true
+        },
+        "highestSeverity": { "type": ["string", "null"], "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", null] },
+        "impact": { "type": ["string", "null"] },
+        "assignedOwner": { "type": ["string", "null"] },
+        "targetPhase": { "type": ["string", "null"] }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["firstSeen", "lastAudited", "closedAt", "regressionState"],
+      "properties": {
+        "firstSeen": { "type": "string", "format": "date" },
+        "lastAudited": { "type": "string", "format": "date" },
+        "closedAt": { "type": ["string", "null"], "format": "date" },
+        "regressionState": { "enum": ["NOT_APPLICABLE", "NOT_OBSERVED", "SUSPECTED", "CONFIRMED"] }
+      }
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capabilityId",
+        "catalogMapping",
+        "name",
+        "meaning",
+        "owner",
+        "audience",
+        "expectedRealization",
+        "currentRealization",
+        "trace",
+        "states",
+        "quality",
+        "evidence",
+        "gaps",
+        "lifecycle"
+      ],
+      "properties": {
+        "capabilityId": { "$ref": "#/$defs/capabilityId" },
+        "catalogMapping": { "$ref": "#/$defs/catalogMapping" },
+        "name": { "type": "string", "minLength": 1 },
+        "meaning": { "type": "string", "minLength": 1 },
+        "owner": { "$ref": "#/$defs/owner" },
+        "audience": { "$ref": "#/$defs/audience" },
+        "expectedRealization": { "$ref": "#/$defs/expectedRealization" },
+        "currentRealization": { "$ref": "#/$defs/currentRealization" },
+        "trace": { "$ref": "#/$defs/trace" },
+        "states": { "$ref": "#/$defs/states" },
+        "quality": { "$ref": "#/$defs/quality" },
+        "evidence": { "$ref": "#/$defs/evidence" },
+        "gaps": { "$ref": "#/$defs/gaps" },
+        "lifecycle": { "$ref": "#/$defs/lifecycle" }
+      }
+    }
+  }
+}

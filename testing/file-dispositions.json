@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "status": "stage-10-complete-owned-family-dispositions",
+  "status": "phase-2-deepwater-control-plane",
   "defaultDisposition": "REGISTERED_SUITE_CHILD",
   "rules": [
     {
@@ -89,6 +89,24 @@
       "suiteId": "unit.sounding-line",
       "role": "REGISTERED_SUITE_CHILD",
       "owner": "platform-foundation",
+      "tier": 1,
+      "parallelSafety": "READ_ONLY_PARALLEL",
+      "adapter": "node"
+    },
+    {
+      "match": "scripts/deepwater/**",
+      "suiteId": "unit.deepwater",
+      "role": "REGISTERED_ADAPTER",
+      "owner": "project-deepwater",
+      "tier": 1,
+      "parallelSafety": "READ_ONLY_PARALLEL",
+      "adapter": "node"
+    },
+    {
+      "match": "tests/deepwater/**",
+      "suiteId": "unit.deepwater",
+      "role": "REGISTERED_SUITE_CHILD",
+      "owner": "project-deepwater",
       "tier": 1,
       "parallelSafety": "READ_ONLY_PARALLEL",
       "adapter": "node"

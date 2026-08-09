@@ -17,7 +17,7 @@ is a pre-integration record and does not claim mainline acceptance.
 | Field                  | Value                                                                |
 | ---------------------- | -------------------------------------------------------------------- |
 | Original base SHA      | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                           |
-| Current `origin/main`  | `5b266251bd5a42efe90988e45daf55bca8e566f1`                           |
+| Current `origin/main`  | `28a3139e9d43b234778bbbcd4bde2133ece4d8a2`                           |
 | Branch                 | `codex/project-helm-phase1-take-the-helm`                            |
 | Owned worktree         | `C:\Users\kkids\Documents\treasurehuntSoT-helm-phase1-take-the-helm` |
 | Candidate commit       | Pending governed commit                                              |
@@ -36,6 +36,9 @@ is a pre-integration record and does not claim mainline acceptance.
 | `273fb52` | Integration commit                              | Protected merge of Deepwater finalization through pull request 16.                                                                                                                                                   |
 | `b1d4d8f` | Direct governing-document and generated overlap | Adds the 2026 project-wave governing PDFs, including Helm and the continuous-development standard, and refreshes documentation generators, the index, and generated Feature Catalog. No Helm product source changed. |
 | `5b26625` | Integration commit                              | Protected merge of the governance bootstrap through pull request 18.                                                                                                                                                 |
+| `458a1d3` | Direct shared-governance overlap                | Adds Deepwater Phase 2 trace control-plane records and extends the shared Sounding Line registry and policy metadata. No Helm product source changed.                                                                |
+| `6cfd8e4` | Adjacent generated-document overlap             | Records Deepwater Phase 2 candidate validation and refreshes generated Feature Catalog and documentation outputs. No Helm product source changed.                                                                    |
+| `28a3139` | Integration commit                              | Protected merge of Deepwater Phase 2 through pull request 19.                                                                                                                                                        |
 
 The governance bootstrap introduces the supplied Project Helm and continuous
 development PDFs as tracked governing authorities. Their Git blob identities
@@ -43,14 +46,14 @@ match the authorities reviewed for this phase.
 
 ## Overlap classification
 
-| Area                                             | Classification                   | Reconciliation rule                                                                                                                                                                                       |
-| ------------------------------------------------ | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Helm product source and tests                    | None                             | Retain Helm implementation and focused functional findings.                                                                                                                                               |
-| Sounding Line registry generator and policy JSON | Direct shared-governance overlap | Merge semantically. Preserve both `unit.deepwater` and the dedicated Helm unit, component, browser, contract, owner, impact, and gate entries. Regenerate the active registry from the reconciled source. |
-| `package.json`                                   | Direct shared-governance overlap | Preserve Deepwater commands and the existing repository scripts; Helm adds no package command.                                                                                                            |
-| Documentation validation and index generator     | Adjacent                         | Accept current-main generator behavior, then regenerate the documentation index and migration matrix with Helm records present.                                                                           |
-| Feature Catalog and documentation index outputs  | Generated overlap                | Preserve machine-readable fragment ownership, run the generators, and never choose either generated side manually.                                                                                        |
-| Prisma schemas and migrations                    | None                             | No schema merge, migration, backfill, or database rewrite.                                                                                                                                                |
+| Area                                             | Classification                   | Reconciliation rule                                                                                                                                                                                                   |
+| ------------------------------------------------ | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Helm product source and tests                    | None                             | Retain Helm implementation and focused functional findings.                                                                                                                                                           |
+| Sounding Line registry generator and policy JSON | Direct shared-governance overlap | Merged semantically. Preserved Deepwater Phase 1 and 2 ownership plus the dedicated Helm unit, component, browser, contract, owner, impact, and gate entries; regenerated the active registry from reconciled source. |
+| `package.json`                                   | Direct shared-governance overlap | Preserve Deepwater commands and the existing repository scripts; Helm adds no package command.                                                                                                                        |
+| Documentation validation and index generator     | Adjacent                         | Accept current-main generator behavior, then regenerate the documentation index and migration matrix with Helm records present.                                                                                       |
+| Feature Catalog and documentation index outputs  | Generated overlap                | Preserve machine-readable fragment ownership, run the generators, and never choose either generated side manually.                                                                                                    |
+| Prisma schemas and migrations                    | None                             | No schema merge, migration, backfill, or database rewrite.                                                                                                                                                            |
 
 ## Evidence invalidation and retention
 

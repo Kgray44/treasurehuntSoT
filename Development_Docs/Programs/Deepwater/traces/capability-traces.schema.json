@@ -1,0 +1,249 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voyagewright.local/schemas/deepwater/capability-traces.schema.json",
+  "title": "Project Deepwater Phase 2 Capability Traces",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "project",
+    "phase",
+    "sourceSha",
+    "seedQueueCount",
+    "queueItemCount",
+    "traceCount",
+    "traces"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "project": { "const": "Project Deepwater" },
+    "phase": { "const": "Phase 2 - Trace the Current" },
+    "sourceSha": { "$ref": "#/$defs/sha" },
+    "seedQueueCount": { "const": 44 },
+    "queueItemCount": { "const": 44 },
+    "traceCount": { "type": "integer", "minimum": 1 },
+    "traces": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/trace" }
+    }
+  },
+  "$defs": {
+    "sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "capabilityId": { "type": "string", "pattern": "^DW-CAP-[A-Z0-9]+(?:-[A-Z0-9]+)*$" },
+    "findingId": { "type": "string", "pattern": "^DW-FIND-[A-Z0-9]+(?:-[A-Z0-9]+)*$" },
+    "status": { "enum": ["VERIFIED", "PARTIAL", "ABSENT", "NOT_APPLICABLE", "UNKNOWN"] },
+    "freshness": { "enum": ["CURRENT", "BOUNDED", "STALE"] },
+    "rung": {
+      "enum": [
+        "DOMAIN",
+        "SERVICE",
+        "API",
+        "PROJECTION",
+        "UI",
+        "DISCOVERABLE",
+        "STATE_COMPLETE",
+        "ACCESSIBLE",
+        "JOURNEY_PROVEN",
+        "OWNER_ACCEPTED"
+      ]
+    },
+    "classification": {
+      "enum": [
+        "FULLY_REALIZED",
+        "PARTIALLY_REALIZED",
+        "BACKEND_ONLY",
+        "FRONTEND_ONLY",
+        "HIDDEN",
+        "INTERNAL_BY_DESIGN",
+        "SECURITY_RESTRICTED",
+        "MISSING",
+        "BROKEN",
+        "DEPRECATED"
+      ]
+    },
+    "uncertainty": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": [
+        "reason",
+        "evidenceAttempted",
+        "whyUnresolved",
+        "externalEvidenceRequired",
+        "limitationOrFindingId",
+        "responsibleOwner"
+      ],
+      "properties": {
+        "reason": { "type": "string", "minLength": 1 },
+        "evidenceAttempted": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "whyUnresolved": { "type": "string", "minLength": 1 },
+        "externalEvidenceRequired": { "type": "boolean" },
+        "limitationOrFindingId": { "type": "string", "minLength": 1 },
+        "responsibleOwner": { "type": "string", "minLength": 1 }
+      }
+    },
+    "layer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "applicability",
+        "status",
+        "references",
+        "symbols",
+        "callDirection",
+        "inputContract",
+        "outputContract",
+        "authorizationRequirement",
+        "projectionBoundary",
+        "stateBehavior",
+        "evidenceKinds",
+        "sourceSha",
+        "freshness",
+        "conclusion",
+        "linkedFindingIds",
+        "uncertainty"
+      ],
+      "properties": {
+        "applicability": { "type": "string", "minLength": 1 },
+        "status": { "$ref": "#/$defs/status" },
+        "references": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "symbols": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "callDirection": { "type": "string", "minLength": 1 },
+        "inputContract": { "type": "string", "minLength": 1 },
+        "outputContract": { "type": "string", "minLength": 1 },
+        "authorizationRequirement": { "type": "string", "minLength": 1 },
+        "projectionBoundary": { "type": "string", "minLength": 1 },
+        "stateBehavior": { "type": "string", "minLength": 1 },
+        "evidenceKinds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "sourceSha": { "$ref": "#/$defs/sha" },
+        "freshness": { "$ref": "#/$defs/freshness" },
+        "conclusion": { "type": "string", "minLength": 1 },
+        "linkedFindingIds": { "type": "array", "items": { "$ref": "#/$defs/findingId" }, "uniqueItems": true },
+        "uncertainty": { "$ref": "#/$defs/uncertainty" }
+      }
+    },
+    "trace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "traceId",
+        "queueIds",
+        "queueDisposition",
+        "queueDispositionReason",
+        "identity",
+        "ownership",
+        "audience",
+        "expectedRealization",
+        "architectureProfile",
+        "layers",
+        "stateModel",
+        "quality",
+        "evidence",
+        "analysis"
+      ],
+      "properties": {
+        "traceId": { "type": "string", "pattern": "^DW-TRACE-[A-Z0-9]+(?:-[A-Z0-9]+)*$" },
+        "queueIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^DW-P2-[A-Z0-9]+(?:-[A-Z0-9]+)*$" },
+          "uniqueItems": true
+        },
+        "queueDisposition": { "enum": ["COMPLETED", "SUPERSEDED", "EXTERNALLY_DEFERRED"] },
+        "queueDispositionReason": { "type": "string", "minLength": 1 },
+        "identity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["capabilityId", "name", "catalogMapping", "sourceSha"],
+          "properties": {
+            "capabilityId": { "$ref": "#/$defs/capabilityId" },
+            "name": { "type": "string", "minLength": 1 },
+            "catalogMapping": { "type": ["object", "null"] },
+            "sourceSha": { "$ref": "#/$defs/sha" }
+          }
+        },
+        "ownership": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["canonicalOwner", "contributingOwners", "ownerContract"],
+          "properties": {
+            "canonicalOwner": { "type": "string", "minLength": 1 },
+            "contributingOwners": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 },
+              "uniqueItems": true
+            },
+            "ownerContract": { "type": "string", "minLength": 1 }
+          }
+        },
+        "audience": { "type": "object" },
+        "expectedRealization": { "type": "object" },
+        "architectureProfile": { "type": "string", "minLength": 1 },
+        "layers": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "domain",
+            "service",
+            "transport",
+            "authorization",
+            "projection",
+            "client",
+            "ui",
+            "navigation",
+            "state",
+            "accessibility",
+            "journey"
+          ],
+          "properties": {
+            "domain": { "$ref": "#/$defs/layer" },
+            "service": { "$ref": "#/$defs/layer" },
+            "transport": { "$ref": "#/$defs/layer" },
+            "authorization": { "$ref": "#/$defs/layer" },
+            "projection": { "$ref": "#/$defs/layer" },
+            "client": { "$ref": "#/$defs/layer" },
+            "ui": { "$ref": "#/$defs/layer" },
+            "navigation": { "$ref": "#/$defs/layer" },
+            "state": { "$ref": "#/$defs/layer" },
+            "accessibility": { "$ref": "#/$defs/layer" },
+            "journey": { "$ref": "#/$defs/layer" }
+          }
+        },
+        "stateModel": { "type": "object" },
+        "quality": { "type": "object" },
+        "evidence": { "type": "object" },
+        "analysis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "currentHighestRung",
+            "classification",
+            "secondaryFlags",
+            "firstLossPoint",
+            "rootCause",
+            "findingIds",
+            "remediationPacketIds"
+          ],
+          "properties": {
+            "currentHighestRung": { "$ref": "#/$defs/rung" },
+            "classification": { "$ref": "#/$defs/classification" },
+            "secondaryFlags": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+            "firstLossPoint": { "type": ["string", "null"] },
+            "rootCause": { "type": "string", "minLength": 1 },
+            "findingIds": { "type": "array", "items": { "$ref": "#/$defs/findingId" }, "uniqueItems": true },
+            "remediationPacketIds": {
+              "type": "array",
+              "items": { "type": "string", "pattern": "^DW-REMED-[A-Z0-9]+(?:-[A-Z0-9]+)*$" },
+              "uniqueItems": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

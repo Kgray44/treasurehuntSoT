@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "status": "phase-7-owner-correction-round-3-impact-map",
+  "status": "phase-2-deepwater-control-plane",
   "pathMappings": [
     {
       "path": "Development_Docs/Projects/Project_Helm/**",
@@ -114,6 +114,21 @@
       "suiteIds": ["unit.feature-catalog", "static.core"],
       "contractIds": []
     },
+    {
+      "path": "Development_Docs/Programs/Deepwater/**",
+      "suiteIds": ["unit.deepwater", "static.core"],
+      "contractIds": ["deepwater.capability-realization-integrity"]
+    },
+    {
+      "path": "scripts/deepwater/**",
+      "suiteIds": ["unit.deepwater", "static.core"],
+      "contractIds": ["deepwater.capability-realization-integrity"]
+    },
+    {
+      "path": "tests/deepwater/**",
+      "suiteIds": ["unit.deepwater", "static.core"],
+      "contractIds": ["deepwater.capability-realization-integrity"]
+    },
     { "path": "Development_Docs/document-index.json", "suiteIds": ["static.core"], "contractIds": [] },
     {
       "path": "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
@@ -123,8 +138,9 @@
     { "path": "scripts/generate-document-index.mjs", "suiteIds": ["static.core"], "contractIds": [] },
     {
       "path": "package.json",
-      "suiteIds": ["unit.homeport", "unit.sounding-line", "static.core"],
+      "suiteIds": ["unit.deepwater", "unit.homeport", "unit.sounding-line", "static.core"],
       "contractIds": [
+        "deepwater.capability-realization-integrity",
         "homeport.route-inventory.complete",
         "homeport.personal-harbor.ia",
         "homeport.personal-harbor.section-registry",

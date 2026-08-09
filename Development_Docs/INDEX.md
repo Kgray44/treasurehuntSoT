@@ -1,6 +1,8 @@
 # Engineering-record index
 
 - `Governing/`: accepted policies and foundational specifications.
+- `Governance/`: current repository-wide governance standards and their source records.
+- `Projects/`: current project governing documents and project-specific records.
 - `Architecture_Decisions/`: durable technical decisions.
 - `Projects/`: governed project and phase records, including design, validation,
   integration, and completion evidence.
