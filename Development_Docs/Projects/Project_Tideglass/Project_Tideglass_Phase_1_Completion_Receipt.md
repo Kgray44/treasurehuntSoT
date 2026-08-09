@@ -14,7 +14,7 @@ last_reviewed: 2026-08-09
 | Phase                  | Phase 1: Set the Glass                                                                                                          |
 | Branch                 | `codex/project-tideglass-phase1-set-the-glass`                                                                                  |
 | Original base          | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                                      |
-| Reconciled main        | `5b266251bd5a42efe90988e45daf55bca8e566f1`                                                                                      |
+| Reconciled main        | `762258e31d7509aac8a7a46e7828ae0e92b84a84`                                                                                      |
 | Implementation commits | `35b1418931bcef3babe12e981571207314bc6120`, `1366095b3ae637675c5dd9a97406bff0439fadf9`                                          |
 | Candidate branch tip   | recorded by the protected publication procedure                                                                                 |
 | Integrated main SHA    | not integrated                                                                                                                  |
@@ -35,7 +35,7 @@ last_reviewed: 2026-08-09
 | No fuzzy rename        | PASS diagnostic: equal prose under new IDs remains remove/add                                                                   |
 | Graph result           | PASS diagnostic: stable rewire, add/remove direction, endings, and branching                                                    |
 | Read-only invariance   | PASS diagnostic: editions, Voyage, Wayfarer, and Harborlight fingerprints unchanged                                             |
-| Sounding Line decision | corrected exact-candidate rerun pending                                                                                         |
+| Sounding Line decision | pre-reconciliation `7db576d0` `RELEASE_GO`; exact reconciled rerun pending                                                      |
 | Post-merge decision    | pending protected integration                                                                                                   |
 | Remote parity          | pending protected integration                                                                                                   |
 | Feature Catalog        | UPDATED and validated as branch-complete `FT-B009` at `1366095b3ae637675c5dd9a97406bff0439fadf9`                                |

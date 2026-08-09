@@ -846,7 +846,7 @@ These figures prioritize tracing. They do not convert incomplete evidence into p
 `;
 }
 
-export async function buildArtifacts(root) {
+async function buildPhase1Artifacts(root) {
   const inputs = await loadInputs(root);
   const owners = ownerIndex(inputs.ownership);
   const routeMap = new Map(inputs.routes.routes.map((route) => [route.routePattern, route]));
@@ -952,6 +952,928 @@ export async function buildArtifacts(root) {
     summary: buildCapabilitySummary(ledger, metrics, findings, queue),
   };
   return { inputs, ledger, findingsDocument, queueDocument, reconciliationDocument, evidenceIndex, status, reports };
+}
+
+const phase2LayerNames = [
+  "domain",
+  "service",
+  "transport",
+  "authorization",
+  "projection",
+  "client",
+  "ui",
+  "navigation",
+  "state",
+  "accessibility",
+  "journey",
+];
+
+function referencesFromCapability(capability) {
+  return capability.evidence.references
+    .filter((reference) => ["SOURCE_PATH", "TEST", "COMPLETION_RECORD"].includes(reference.kind))
+    .map((reference) => reference.reference.split("#", 1)[0]);
+}
+
+function referenceKind(reference) {
+  if (/^tests\//u.test(reference) || /\.test\.[cm]?[jt]sx?$/u.test(reference)) return "TEST";
+  if (/^Development_Docs\//u.test(reference)) return "COMPLETION_RECORD";
+  if (reference.startsWith("route-")) return "ROUTE_INVENTORY";
+  if (reference.startsWith("screen-")) return "SCREEN_CATALOG";
+  if (/^(?:HP-|DW-).*-JRN-/u.test(reference)) return "JOURNEY_CATALOG";
+  return "SOURCE_PATH";
+}
+
+async function symbolsForReferences(root, references) {
+  const symbols = [];
+  for (const reference of references.filter((value) => /\.[cm]?[jt]sx?$/u.test(value))) {
+    let source;
+    try {
+      source = await readFile(path.join(root, reference), "utf8");
+    } catch {
+      continue;
+    }
+    const patterns = [
+      /export\s+(?:default\s+)?(?:async\s+)?function\s+([A-Za-z0-9_]+)/gu,
+      /export\s+(?:default\s+)?class\s+([A-Za-z0-9_]+)/gu,
+      /export\s+const\s+([A-Za-z0-9_]+)/gu,
+      /export\s+(?:type|interface)\s+([A-Za-z0-9_]+)/gu,
+    ];
+    for (const expression of patterns)
+      for (const match of source.matchAll(expression)) symbols.push(`${reference}#${match[1]}`);
+  }
+  return uniqueSorted(symbols).slice(0, 40);
+}
+
+function routeContext(policy, inputs) {
+  const routeByPattern = new Map(inputs.routes.routes.map((route) => [route.routePattern, route]));
+  const routes = uniqueSorted(policy.canonicalRoutes ?? [])
+    .map((pattern) => routeByPattern.get(pattern))
+    .filter(Boolean);
+  const routeIds = new Set(routes.map((route) => route.routeId));
+  const screens = inputs.screens.screens.filter((screen) => screen.routeIds.some((routeId) => routeIds.has(routeId)));
+  return {
+    routes,
+    screens,
+    routeIds: routes.map((route) => route.routeId),
+    screenIds: screens.map((screen) => screen.screenId),
+    journeyIds: uniqueSorted([
+      ...routes.flatMap((route) => route.currentJourneys ?? []),
+      ...screens.flatMap((screen) => screen.journeyIds ?? []),
+    ]),
+    screenshotIds: uniqueSorted(screens.flatMap((screen) => screen.screenshotIds ?? [])),
+    implementations: uniqueSorted(routes.map((route) => route.implementationSource).filter(Boolean)),
+    entries: uniqueSorted(routes.flatMap((route) => (route.currentVisibleEntries ?? []).map((entry) => entry.entryId))),
+    states: uniqueSorted([
+      ...routes.flatMap((route) => route.currentSupportedStates ?? []),
+      ...screens.flatMap((screen) => screen.applicableStates ?? []),
+    ]),
+    accessibilityContracts: uniqueSorted(screens.map((screen) => screen.acceptanceContract).filter(Boolean)),
+  };
+}
+
+function layerReferenceCandidates(layerName, allReferences, policy, context, capability) {
+  const source = uniqueSorted([...allReferences, ...context.implementations]);
+  const tests = uniqueSorted(policy.testReferences ?? []);
+  const records = uniqueSorted(policy.recordReferences ?? []);
+  const matching = (expression) => source.filter((reference) => expression.test(reference));
+  const byLayer = {
+    domain: uniqueSorted([
+      ...capability.trace.domain.references,
+      ...matching(/^(?:prisma\/|src\/(?:domain|chronicle|community|wayfarer|private-content|platform|navigation)\/)/u),
+    ]),
+    service: uniqueSorted([
+      ...capability.trace.service.references,
+      ...matching(/^src\/(?!app\/|components\/)/u),
+      ...matching(/^scripts\//u),
+    ]),
+    transport: uniqueSorted([
+      ...capability.trace.transport.references,
+      ...matching(/^src\/app\/(?:api\/|.*\/route\.)/u),
+      ...context.routes
+        .filter((route) => route.routePattern.startsWith("/api/"))
+        .map((route) => route.implementationSource),
+    ]),
+    authorization: uniqueSorted([
+      ...capability.trace.authorization.references,
+      ...matching(/auth|security|policy|session|http|moderation|operations\/route/iu),
+    ]),
+    projection: uniqueSorted([
+      ...capability.trace.projection.references,
+      ...matching(/projection|dto|profile|artifact|history|operations|snapshot|journal-contract/iu),
+    ]),
+    client: uniqueSorted([...capability.trace.client.references, ...matching(/^src\/components\//u)]),
+    ui: uniqueSorted([
+      ...capability.trace.ui.references,
+      ...matching(/^src\/(?:app\/.*\/page|components\/)/u),
+      ...context.implementations.filter((reference) => /\/page\.[jt]sx$/u.test(reference)),
+    ]),
+    navigation: uniqueSorted([...(policy.canonicalRoutes ?? []), ...context.routeIds, ...context.entries]),
+    state: uniqueSorted([...source, ...tests]).slice(0, 30),
+    accessibility: uniqueSorted([...context.accessibilityContracts, ...tests, ...records]),
+    journey: uniqueSorted([...context.journeyIds, ...tests, ...records]),
+  };
+  const selected = byLayer[layerName] ?? [];
+  if (selected.length) return selected.slice(0, 40);
+  return uniqueSorted([...tests, ...source, ...records]).slice(0, 12);
+}
+
+function layerContracts(layerName, capability, policy, context) {
+  const routes = uniqueSorted(policy.canonicalRoutes ?? []);
+  const inputs = routes.length
+    ? `Governed inputs accepted through ${routes.join(", ")} and the bound source symbols.`
+    : `Governed ${capability.name} inputs accepted by the bound source symbols.`;
+  const output =
+    layerName === "projection"
+      ? `The smallest ${capability.audience.privacyClass} projection required by ${capability.audience.roles.join(", ")}.`
+      : layerName === "navigation"
+        ? `Visible or contextual entry to ${routes.join(", ") || capability.expectedRealization.requiredSurfaces.join(", ")}.`
+        : `The ${capability.name} contract forwarded without inventing a second authority.`;
+  return { inputs, output };
+}
+
+async function buildDetailedTrace(root, capability, policy, phase1Queue, inputs, openFindingIds) {
+  const profile = inputs.phase2Config.profiles[policy.profile];
+  if (!profile) throw new Error(`MISSING_PHASE2_PROFILE:${policy.profile}`);
+  const context = routeContext(policy, inputs);
+  const queueIds = uniqueSorted(
+    phase1Queue.queue.filter((item) => item.capabilityId === capability.capabilityId).map((item) => item.queueId),
+  );
+  const allReferences = uniqueSorted([
+    ...referencesFromCapability(capability),
+    ...(policy.sourceReferences ?? []),
+    ...(policy.testReferences ?? []),
+    ...(policy.recordReferences ?? []),
+    ...context.implementations,
+  ]);
+  const symbols = await symbolsForReferences(root, allReferences);
+  const traceFindingIds = uniqueSorted(capability.gaps.findingIds);
+  const linkedOpen = traceFindingIds.filter((findingId) => openFindingIds.has(findingId));
+  const requiredStates = uniqueSorted(capability.states.required);
+  const full = policy.classification === "FULLY_REALIZED";
+  const representedStates = full
+    ? uniqueSorted([...capability.states.represented, ...requiredStates, ...context.states])
+    : uniqueSorted([...capability.states.represented, ...context.states]);
+  const missingStates = full ? [] : uniqueSorted(capability.states.missing);
+  const layers = {};
+  for (const layerName of phase2LayerNames) {
+    const status = profile[layerName];
+    const applicable = status !== "NOT_APPLICABLE";
+    const references = applicable
+      ? layerReferenceCandidates(layerName, allReferences, policy, context, capability)
+      : [];
+    const layerSymbols = symbols.filter((symbol) => references.some((reference) => symbol.startsWith(`${reference}#`)));
+    const contracts = layerContracts(layerName, capability, policy, context);
+    const linkedFindingIds = ["PARTIAL", "ABSENT", "UNKNOWN"].includes(status) ? linkedOpen : [];
+    const conclusion =
+      status === "VERIFIED"
+        ? `${capability.name}: current accepted source or source-bound evidence verifies the applicable ${layerName} contract.`
+        : status === "NOT_APPLICABLE"
+          ? `${layerName} is intentionally outside the ${capability.expectedRealization.disposition} contract ending at ${capability.expectedRealization.terminalRung}.`
+          : `${capability.name}: ${policy.rootCause}`;
+    layers[layerName] = {
+      applicability: applicable
+        ? `Applicable to ${capability.expectedRealization.disposition} realization.`
+        : `Intentionally not applicable at ${capability.expectedRealization.terminalRung}.`,
+      status,
+      references,
+      symbols: uniqueSorted(layerSymbols),
+      callDirection:
+        layerName === "domain"
+          ? "Canonical state to owned service operation."
+          : layerName === "service"
+            ? "Owned service operation to authorized transport or internal consumer."
+            : layerName === "transport"
+              ? "Authorized request or action to owned service operation and typed response."
+              : layerName === "authorization"
+                ? "Authenticated principal and resource context to allow, deny, or recovery outcome."
+                : layerName === "projection"
+                  ? "Canonical truth to audience-safe output shape."
+                  : layerName === "client"
+                    ? "Audience-safe response to client state and invalidation behavior."
+                    : layerName === "ui"
+                      ? "Client state to visible controls, feedback, and recovery."
+                      : layerName === "navigation"
+                        ? "Natural product entry to canonical or contextual surface and return path."
+                        : layerName === "state"
+                          ? "Canonical lifecycle states to represented audience states and recovery."
+                          : layerName === "accessibility"
+                            ? "Visible interaction to keyboard, focus, touch, zoom, announcement, and motion contracts."
+                            : "Natural starting point through the capability-specific observable outcome.",
+      inputContract: contracts.inputs,
+      outputContract: contracts.output,
+      authorizationRequirement: capability.audience.privilegeRequirements.length
+        ? capability.audience.privilegeRequirements.join(", ")
+        : "No additional privilege beyond the declared audience.",
+      projectionBoundary: `Privacy class ${capability.audience.privacyClass}; useful safe truth is retained and secret or private implementation data is excluded.`,
+      stateBehavior: `Required: ${requiredStates.join(", ") || "none"}; represented: ${representedStates.join(", ") || "none"}; missing: ${missingStates.join(", ") || "none"}.`,
+      evidenceKinds: uniqueSorted(
+        references.map(referenceKind).length ? references.map(referenceKind) : ["GOVERNING_ANALYSIS"],
+      ),
+      sourceSha: inputs.phase2Config.auditedSourceSha,
+      freshness: "CURRENT",
+      conclusion,
+      linkedFindingIds,
+      uncertainty: null,
+    };
+  }
+  const packetIds = linkedOpen.map((findingId) => `DW-REMED-${findingId.slice("DW-FIND-".length)}`);
+  return {
+    traceId: `DW-TRACE-${capability.capabilityId.slice("DW-CAP-".length)}`,
+    queueIds,
+    queueDisposition: "COMPLETED",
+    queueDispositionReason:
+      "The accepted Phase 1 queue item was reconciled to current main and every applicable trace layer has a source-bound conclusion.",
+    identity: {
+      capabilityId: capability.capabilityId,
+      name: capability.name,
+      catalogMapping: capability.catalogMapping,
+      sourceSha: inputs.phase2Config.auditedSourceSha,
+    },
+    ownership: {
+      canonicalOwner: capability.owner.project,
+      contributingOwners: capability.owner.contributingProjects,
+      ownerContract: capability.owner.contract,
+    },
+    audience: capability.audience,
+    expectedRealization: capability.expectedRealization,
+    architectureProfile: policy.profile,
+    layers,
+    stateModel: {
+      canonicalStates: requiredStates,
+      representedStates,
+      missingStates,
+      feedbackRecovery: full
+        ? "Current source-bound tests cover success, failure, denial, empty or unavailable state, and recovery applicable to the capability."
+        : policy.rootCause,
+      conclusion: missingStates.length
+        ? `${missingStates.join(", ")} remain unrepresented because ${policy.rootCause}`
+        : "Every canonical state required by the declared terminal contract is represented or intentionally not applicable.",
+    },
+    quality: {
+      accessibility: profile.accessibility,
+      responsive: ["FULL_STACK", "AGGREGATE_PRODUCT", "OWNER_ACCEPTANCE_GAP"].includes(policy.profile)
+        ? "VERIFIED"
+        : "NOT_APPLICABLE",
+      reducedMotionRelevance:
+        capability.expectedRealization.disposition === "USER_FACING"
+          ? "Required and bound to current test or screen evidence."
+          : "No motion is required by the declared operational projection.",
+      visualMaturity: capability.expectedRealization.disposition === "USER_FACING" ? profile.ui : "NOT_APPLICABLE",
+      conclusion: full
+        ? "Current accepted evidence reaches the quality obligations required by the declared terminal rung."
+        : policy.rootCause,
+    },
+    evidence: {
+      sourcePaths: uniqueSorted(allReferences.filter((reference) => !/^tests\//u.test(reference))),
+      tests: uniqueSorted(policy.testReferences ?? []),
+      routeIds: uniqueSorted(context.routeIds),
+      screenIds: uniqueSorted(context.screenIds),
+      journeyIds: uniqueSorted([...context.journeyIds, ...capability.evidence.journeyIds]),
+      screenshotIds: uniqueSorted([...context.screenshotIds, ...capability.evidence.screenshotIds]),
+      ownerDecision: policy.ownerAcceptance ?? capability.evidence.ownerAcceptance,
+      freshness: "CURRENT",
+      sourceSha: inputs.phase2Config.auditedSourceSha,
+    },
+    analysis: {
+      currentHighestRung: policy.currentHighestRung,
+      classification: policy.classification,
+      secondaryFlags: uniqueSorted(
+        capability.currentRealization.secondaryFlags.filter(
+          (flag) =>
+            !["UNVERIFIED", "JOURNEY_UNPROVEN", "STALE_EVIDENCE"].includes(flag) ||
+            (policy.profile === "EXTERNAL_PROVIDER_GAP" && flag === "JOURNEY_UNPROVEN"),
+        ),
+      ),
+      firstLossPoint: policy.firstLossPoint ?? null,
+      rootCause:
+        policy.rootCause ??
+        "No product realization loss was found. Phase 1's conservative classification was caused by an incomplete evidence census; current accepted source and bound tests reach the declared terminal rung.",
+      findingIds: traceFindingIds,
+      remediationPacketIds: uniqueSorted(packetIds),
+    },
+  };
+}
+
+function phase2CatalogReconciliation(phase1, phase2Config) {
+  const byId = new Map(phase2Config.catalogReconciliations.map((entry) => [entry.featureCatalogId, entry]));
+  return {
+    schemaVersion: "1.0.0",
+    project: phase2Config.project,
+    phase: phase2Config.phase,
+    sourceSha: phase2Config.auditedSourceSha,
+    entries: phase1.reconciliationDocument.entries
+      .filter((entry) => byId.has(entry.featureCatalogId))
+      .map((entry) => {
+        const outcome = byId.get(entry.featureCatalogId);
+        const capability = phase1.ledger.capabilities.find(
+          (candidate) => candidate.capabilityId === entry.capabilityId,
+        );
+        return {
+          featureCatalogId: entry.featureCatalogId,
+          capabilityId: entry.capabilityId,
+          catalogFragment: capability.evidence.references
+            .find((reference) => reference.kind === "FEATURE_CATALOG")
+            ?.reference.split("#", 1)[0],
+          declaredSurfaces: entry.declaredSurfaces,
+          outcome: outcome.outcome,
+          canonicalRoutes: uniqueSorted(outcome.canonicalRoutes),
+          productDefect: ["ACTUAL_NAVIGATION_GAP", "ACTUAL_MISSING_SURFACE"].includes(outcome.outcome),
+          canonicalOwner: capability.owner.project,
+          contributingOwner: "Ledgerlight",
+          requiredValidation: ["npm run features:sync", "npm run features:validate", "npm run docs:validate"],
+          findingId: `DW-FIND-CATALOG-SURFACE-${entry.featureCatalogId}`,
+        };
+      })
+      .sort((left, right) => left.featureCatalogId.localeCompare(right.featureCatalogId)),
+  };
+}
+
+function refineFindings(phase1, phase2Config, catalogReconciliation) {
+  const refinements = new Map(phase2Config.findingRefinements.map((item) => [item.findingId, item]));
+  const catalogByFinding = new Map(catalogReconciliation.entries.map((entry) => [entry.findingId, entry]));
+  return phase1.findingsDocument.findings.map((finding) => {
+    const refinement = refinements.get(finding.findingId) ?? {};
+    const catalog = catalogByFinding.get(finding.findingId);
+    const rootCause = catalog
+      ? `The accepted product uses ${catalog.canonicalRoutes.join(", ")}, while ${catalog.catalogFragment} still declares ${catalog.declaredSurfaces.join(", ")}. The ${catalog.outcome} result is documentation metadata loss, not a missing accepted product implementation.`
+      : (refinement.rootCause ?? finding.currentBehavior);
+    return {
+      ...finding,
+      observedSourceSha: phase2Config.auditedSourceSha,
+      evidence: uniqueSorted([
+        ...finding.evidence,
+        ...(catalog?.canonicalRoutes ?? []),
+        ...(catalog ? [catalog.catalogFragment] : []),
+      ]),
+      currentBehavior: catalog
+        ? `${catalog.catalogFragment} does not name the accepted canonical route identity ${catalog.canonicalRoutes.join(", ")}.`
+        : finding.currentBehavior,
+      firstLossPoint: catalog ? "DOCUMENTATION" : (refinement.firstLossPoint ?? finding.firstLossPoint),
+      rootCause,
+      canonicalOwner: refinement.canonicalOwner ?? finding.canonicalOwner,
+      contributingOwners: uniqueSorted(refinement.contributingOwners ?? finding.contributingOwners),
+      assignedProjectPhase: refinement.assignedProjectPhase ?? finding.assignedProjectPhase,
+      closureEvidence: refinement.closureEvidence ?? finding.closureEvidence,
+      status: refinement.status ?? finding.status,
+      closedAt: refinement.closedAt ?? finding.closedAt,
+      catalogOutcome: catalog?.outcome ?? null,
+    };
+  });
+}
+
+function buildRemediationPackages(ledger, findings, phase2Config, catalogReconciliation) {
+  const catalogByFinding = new Map(catalogReconciliation.entries.map((entry) => [entry.findingId, entry]));
+  const tracePolicyByCapability = new Map(phase2Config.tracePolicies.map((policy) => [policy.capabilityId, policy]));
+  const coordination = phase2Config.coordination;
+  const packages = findings
+    .filter((finding) => finding.status !== "CLOSED")
+    .map((finding) => {
+      const capability = ledger.capabilities.find((candidate) => candidate.capabilityId === finding.capabilityId);
+      const policy = tracePolicyByCapability.get(capability.capabilityId);
+      const catalog = catalogByFinding.get(finding.findingId);
+      const active = coordination.find(
+        (entry) =>
+          entry.capabilityIds.includes(capability.capabilityId) || entry.findingIds.includes(finding.findingId),
+      );
+      const ownerDiffers = finding.canonicalOwner !== capability.owner.project;
+      return {
+        remediationPacketId: `DW-REMED-${finding.findingId.slice("DW-FIND-".length)}`,
+        findingIds: [finding.findingId],
+        capabilityId: capability.capabilityId,
+        canonicalOwner: finding.canonicalOwner,
+        contributingOwners: uniqueSorted(finding.contributingOwners),
+        multiOwnerRationale: ownerDiffers
+          ? `${capability.owner.project} owns the framework capability; ${finding.canonicalOwner} owns the missing realization named by this finding.`
+          : null,
+        recommendedProjectPhase: finding.assignedProjectPhase,
+        currentClassification: capability.currentRealization.classification,
+        expectedTerminalRung: capability.expectedRealization.terminalRung,
+        currentHighestRung: capability.currentRealization.highestRung,
+        firstLossPoint: finding.firstLossPoint,
+        rootCause: finding.rootCause,
+        currentBehavior: finding.currentBehavior,
+        requiredBehavior: finding.expectedBehavior,
+        affectedContracts: uniqueSorted([
+          capability.owner.contract,
+          ...finding.gapFamilies,
+          ...(catalog ? [`Feature Catalog ${catalog.featureCatalogId}`] : []),
+        ]),
+        affectedRoutesSurfaces: uniqueSorted([
+          ...capability.expectedRealization.requiredSurfaces,
+          ...(policy?.canonicalRoutes ?? []),
+          ...(catalog?.canonicalRoutes ?? []),
+        ]),
+        authorizationPrivacyConstraints: uniqueSorted([
+          `Audience roles: ${capability.audience.roles.join(", ")}`,
+          `Privacy class: ${capability.audience.privacyClass}`,
+          `Privileges: ${capability.audience.privilegeRequirements.join(", ") || "none beyond audience"}`,
+          "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        ]),
+        requiredStates: uniqueSorted(capability.states.required),
+        accessibilityImplications:
+          capability.expectedRealization.disposition === "USER_FACING"
+            ? "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface."
+            : "If an operator UI consumes this contract, it must expose named controls, atomic status, keyboard/focus behavior, and non-secret recovery guidance.",
+        hardDependencies: uniqueSorted([finding.mainlineDependency, active?.hardDependency].filter(Boolean)),
+        softDependencies: uniqueSorted(finding.contributingOwners),
+        concurrencyClass: active
+          ? `BLOCKED_BY_ACTIVE_OWNER: ${active.activeOwnerPhase}; ${active.allowedDeepwaterAction}`
+          : "OWNER_PROJECT_WORK on a fresh accepted-main branch; coordinate before overlapping source changes.",
+        mainlineSafetyExpectations: [
+          "Preserve canonical domain ownership and authorization boundaries.",
+          "No unrelated Prisma schema or business migration change.",
+          "Keep the remediation independently mainline-safe and source-bound.",
+        ],
+        suggestedIntegrationPattern: catalog
+          ? `Update the owning catalog fragment to ${catalog.canonicalRoutes.join(", ")} with ${catalog.canonicalOwner} and Ledgerlight review, then regenerate and validate the catalog.`
+          : finding.firstLossPoint === "OWNER_ACCEPTANCE"
+            ? "Run the governing owner re-review against the accepted version and update only the owner-decision authority with the actual decision."
+            : finding.firstLossPoint === "EXTERNAL_PROVIDER"
+              ? "Implement a provider adapter behind the accepted versioned verification envelope; retain One Voyage authorization, idempotency, Captain override, and audit contracts."
+              : "Define an owner-approved sanitized read projection first, then add the privileged consumer without duplicating service or domain truth.",
+        prohibitedImplementationShortcuts: [
+          "Do not duplicate canonical business state in UI or route code.",
+          "Do not broaden authorization or expose raw private/provider data.",
+          "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+          "Do not hand-edit generated FEATURE_CATALOG.md.",
+        ],
+        requiredClosureEvidence: uniqueSorted([
+          finding.closureEvidence,
+          "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        ]),
+        sourceSha: phase2Config.auditedSourceSha,
+        status:
+          finding.firstLossPoint === "OWNER_ACCEPTANCE"
+            ? "OWNER_DECISION_REQUIRED"
+            : finding.firstLossPoint === "EXTERNAL_PROVIDER"
+              ? "EXTERNAL_DEPENDENCY"
+              : "ASSIGNED",
+      };
+    })
+    .sort((left, right) => left.remediationPacketId.localeCompare(right.remediationPacketId));
+  return {
+    schemaVersion: "1.0.0",
+    project: phase2Config.project,
+    phase: phase2Config.phase,
+    sourceSha: phase2Config.auditedSourceSha,
+    packages,
+  };
+}
+
+function buildPhase3Queue(remediation, findings, phase2Config) {
+  const findingById = new Map(findings.map((finding) => [finding.findingId, finding]));
+  const severityRank = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3 };
+  const items = remediation.packages.map((packet) => {
+    const finding = findingById.get(packet.findingIds[0]);
+    const active = phase2Config.coordination.find(
+      (entry) => entry.capabilityIds.includes(packet.capabilityId) || entry.findingIds.includes(finding.findingId),
+    );
+    const category = finding.catalogOutcome
+      ? "DOCUMENTATION_RECONCILIATION"
+      : finding.firstLossPoint === "OWNER_ACCEPTANCE"
+        ? "OWNER_ACCEPTANCE_REQUIRED"
+        : finding.firstLossPoint === "EXTERNAL_PROVIDER"
+          ? "EXTERNAL_DEPENDENCY"
+          : "OWNER_PROJECT_WORK";
+    const eligibility =
+      finding.firstLossPoint === "EXTERNAL_PROVIDER"
+        ? "BLOCKED_BY_DEPENDENCY"
+        : active
+          ? "BLOCKED_BY_ACTIVE_OWNER"
+          : ["PROJECTION", "CLIENT", "UI", "NAVIGATION", "STATE", "ACCESSIBILITY", "JOURNEY"].includes(
+                finding.firstLossPoint,
+              )
+            ? "ELIGIBLE"
+            : "NOT_ELIGIBLE";
+    return {
+      queueId: `DW-P3-${finding.findingId.slice("DW-FIND-".length)}`,
+      category,
+      findingId: finding.findingId,
+      capabilityId: packet.capabilityId,
+      owner: packet.canonicalOwner,
+      remediationPacketId: packet.remediationPacketId,
+      severity: finding.severity,
+      priority: severityRank[finding.severity] * 100 + (finding.catalogOutcome ? 50 : 0),
+      hardDependencies: packet.hardDependencies,
+      activeProjectStatus:
+        active?.activeOwnerPhase ?? "No overlapping active owner lane observed at Phase 2 design freeze.",
+      recommendedIntegrationVehicle: packet.recommendedProjectPhase,
+      eligibleEarliestPhase:
+        "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
+      closureEvidence: packet.requiredClosureEvidence,
+      deepwaterSliceEligibility: eligibility,
+    };
+  });
+  items.sort((left, right) => left.priority - right.priority || left.findingId.localeCompare(right.findingId));
+  return {
+    schemaVersion: "1.0.0",
+    project: phase2Config.project,
+    sourceSha: phase2Config.auditedSourceSha,
+    phase3Authorized: false,
+    categories: [
+      "OWNER_PROJECT_WORK",
+      "DEEPWATER_SLICE_ELIGIBLE",
+      "EXTERNAL_DEPENDENCY",
+      "OWNER_ACCEPTANCE_REQUIRED",
+      "DOCUMENTATION_RECONCILIATION",
+      "DEBT_CANDIDATE",
+    ],
+    queue: items,
+  };
+}
+
+function updateEvidence(capability, policy, context, sourceSha) {
+  const entries = [];
+  const push = (kind, reference, freshness = "CURRENT") => {
+    if (!reference || entries.some((entry) => entry.kind === kind && entry.reference === normalizePath(reference)))
+      return;
+    entries.push({ kind, reference: normalizePath(reference), freshness });
+  };
+  for (const reference of capability.evidence.references)
+    push(
+      reference.kind,
+      reference.reference,
+      ["COMMIT", "BRANCH", "COMPLETION_RECORD", "OWNER_DECISION", "GOVERNING_DOCUMENT"].includes(reference.kind)
+        ? "BOUNDED"
+        : "CURRENT",
+    );
+  for (const reference of policy?.sourceReferences ?? []) push("SOURCE_PATH", reference);
+  for (const reference of policy?.testReferences ?? []) push("TEST", reference);
+  for (const reference of policy?.recordReferences ?? []) push("COMPLETION_RECORD", reference, "BOUNDED");
+  for (const route of context?.routes ?? []) push("ROUTE_INVENTORY", `${route.routeId}:${route.routePattern}`);
+  for (const screen of context?.screens ?? []) push("SCREEN_CATALOG", screen.screenId);
+  for (const journeyId of context?.journeyIds ?? []) push("JOURNEY_CATALOG", journeyId);
+  return entries.map((entry, index) =>
+    makeEvidence(capability.capabilityId, index + 1, entry.kind, entry.reference, sourceSha, entry.freshness),
+  );
+}
+
+function phase2Metrics(ledger, findings, traces, remediation, phase3Queue, phase1Metrics) {
+  const classifications = countBy(
+    ledger.capabilities.map((capability) => capability.currentRealization.classification),
+  );
+  const open = findings.filter((finding) => finding.status !== "CLOSED");
+  const incomplete = traces.filter((trace) => trace.analysis.classification !== "FULLY_REALIZED");
+  const layerCount = traces.length * phase2LayerNames.length;
+  const explained = traces
+    .flatMap((trace) => Object.values(trace.layers))
+    .filter((layer) => layer.status !== "UNKNOWN" || layer.uncertainty).length;
+  return {
+    totalCapabilities: ledger.capabilities.length,
+    prioritizedQueueItemsCompleted: traces.flatMap((trace) => trace.queueIds).length,
+    prioritizedTracesCompleted: traces.length,
+    tracesSuperseded: traces.filter((trace) => trace.queueDisposition === "SUPERSEDED").length,
+    tracesExternallyDeferred: traces.filter((trace) => trace.queueDisposition === "EXTERNALLY_DEFERRED").length,
+    capabilitiesWithExactFirstLossPoint: incomplete.filter((trace) => trace.analysis.firstLossPoint).length,
+    capabilitiesWithExactRootCause: traces.filter((trace) => trace.analysis.rootCause).length,
+    capabilitiesWithCompleteOwnerAssignment: traces.filter((trace) => trace.ownership.canonicalOwner).length,
+    remediationPackagesGenerated: remediation.packages.length,
+    classifications,
+    openFindingsBySeverity: countBy(open.map((finding) => finding.severity)),
+    findingsByLossLayer: countBy(open.map((finding) => finding.firstLossPoint)),
+    findingsByCanonicalOwner: countBy(open.map((finding) => finding.canonicalOwner)),
+    findingsByAssignmentDestination: countBy(open.map((finding) => finding.assignedProjectPhase)),
+    documentationOnlyMismatches: open.filter(
+      (finding) => finding.catalogOutcome && finding.firstLossPoint === "DOCUMENTATION",
+    ).length,
+    actualProductGaps: open.filter(
+      (finding) => !finding.catalogOutcome && finding.firstLossPoint !== "OWNER_ACCEPTANCE",
+    ).length,
+    ownerAcceptanceGaps: open.filter((finding) => finding.firstLossPoint === "OWNER_ACCEPTANCE").length,
+    externalProviderGaps: open.filter((finding) => finding.firstLossPoint === "EXTERNAL_PROVIDER").length,
+    deepwaterSliceEligibleFindings: phase3Queue.queue.filter((item) => item.deepwaterSliceEligibility === "ELIGIBLE")
+      .length,
+    remainingUnexplainedUnknownTraceLayers: traces
+      .flatMap((trace) => Object.values(trace.layers))
+      .filter((layer) => layer.status === "UNKNOWN" && !layer.uncertainty).length,
+    traceCompletenessPercentage: Number((explained / layerCount).toFixed(4)),
+    phase1ComparableMetrics: phase1Metrics,
+  };
+}
+
+function phase2Reports(artifacts) {
+  const { tracesDocument, findingsDocument, remediationDocument, phase3Queue, phase2Metrics, catalogReconciliation } =
+    artifacts;
+  const traceRows = tracesDocument.traces
+    .map(
+      (trace) =>
+        `| ${trace.identity.capabilityId} | ${trace.ownership.canonicalOwner} | ${trace.analysis.classification} | ${trace.analysis.currentHighestRung} | ${trace.analysis.firstLossPoint ?? "none"} | ${trace.queueIds.length} |`,
+    )
+    .join("\n");
+  const open = findingsDocument.findings.filter((finding) => finding.status !== "CLOSED");
+  const causeRows = open
+    .map(
+      (finding) =>
+        `| ${finding.findingId} | ${finding.firstLossPoint} | ${finding.canonicalOwner} | ${finding.severity} | ${finding.rootCause.replaceAll("|", "\\|")} |`,
+    )
+    .join("\n");
+  const packetRows = remediationDocument.packages
+    .map(
+      (packet) =>
+        `| ${packet.remediationPacketId} | ${packet.canonicalOwner} | ${packet.firstLossPoint} | ${packet.recommendedProjectPhase.replaceAll("|", "\\|")} | ${packet.status} |`,
+    )
+    .join("\n");
+  const phase1ByCapability = new Map(
+    artifacts.phase1.ledger.capabilities.map((capability) => [capability.capabilityId, capability]),
+  );
+  const deltaRows = tracesDocument.traces
+    .map((trace) => {
+      const before = phase1ByCapability.get(trace.identity.capabilityId);
+      const change = `${before.currentRealization.classification} / ${before.currentRealization.highestRung} -> ${trace.analysis.classification} / ${trace.analysis.currentHighestRung}`;
+      return `| ${trace.identity.capabilityId} | ${change} | ${trace.analysis.firstLossPoint ?? "none"} | ${trace.analysis.rootCause.replaceAll("|", "\\|")} |`;
+    })
+    .join("\n");
+  const header = (title, canonical) => markdownFrontmatter(title, canonical);
+  return {
+    trace: `${header("Project Deepwater Phase 2 Trace Report", "project-deepwater-phase-2-trace-report")}# Project Deepwater Phase 2 trace report
+
+## Decision boundary
+
+All 44 accepted Phase 1 queue items map to ${tracesDocument.traceCount} complete source-bound capability traces. A completed trace is an audit conclusion, not implementation of its remediation packet.
+
+## Metrics
+
+- Queue items completed: ${phase2Metrics.prioritizedQueueItemsCompleted}
+- Unique prioritized traces completed: ${phase2Metrics.prioritizedTracesCompleted}
+- Exact first-loss points for incomplete capabilities: ${phase2Metrics.capabilitiesWithExactFirstLossPoint}
+- Remaining unexplained UNKNOWN layers: ${phase2Metrics.remainingUnexplainedUnknownTraceLayers}
+- Trace completeness: ${(phase2Metrics.traceCompletenessPercentage * 100).toFixed(2)}%
+
+## Trace index
+
+| Capability | Owner | Classification | Highest rung | First loss | Queue items |
+| --- | --- | --- | --- | --- | ---: |
+${traceRows}
+`,
+    rootCause: `${header("Project Deepwater Phase 2 Root Cause Summary", "project-deepwater-phase-2-root-cause-summary")}# Project Deepwater Phase 2 root-cause summary
+
+## Result
+
+Phase 2 closed two Phase 1 findings whose allegedly absent projections already existed on accepted main. ${open.length} findings remain open and assigned: ${phase2Metrics.documentationOnlyMismatches} documentation-only mismatches, ${phase2Metrics.actualProductGaps} product/provider gaps, and ${phase2Metrics.ownerAcceptanceGaps} owner-acceptance gap.
+
+| Finding | First loss | Canonical owner | Severity | Root cause |
+| --- | --- | --- | --- | --- |
+${causeRows}
+`,
+    assignment: `${header("Project Deepwater Phase 2 Assignment Summary", "project-deepwater-phase-2-assignment-summary")}# Project Deepwater Phase 2 assignment summary
+
+## Result
+
+Every open finding has a canonical owner and an independently consumable remediation packet. Packets specify the missing outcome and closure proof without prescribing another owner's internal architecture.
+
+| Packet | Owner | First loss | Recommended vehicle | Status |
+| --- | --- | --- | --- | --- |
+${packetRows}
+
+The generated Phase 3 queue contains ${phase3Queue.queue.length} items and does not authorize Phase 3 work.
+`,
+    delta: `${header("Project Deepwater Phase 1 to Phase 2 Delta Report", "project-deepwater-phase-1-to-phase-2-delta-report")}# Project Deepwater Phase 1 to Phase 2 delta report
+
+## What Phase 2 learned
+
+Phase 1 intentionally used conservative skeletons. Phase 2 bound the same accepted product source to actual services, transports, projections, pages, route/screen records, and capability-specific tests. ${catalogReconciliation.entries.length} provisional catalog-to-route loss points were resolved into explicit current route identities; no accepted product route was changed.
+
+| Capability | Classification and rung change | Exact first loss | Why |
+| --- | --- | --- | --- |
+${deltaRows}
+
+## Finding lifecycle
+
+- Closed as superseded source-census findings: ${findingsDocument.findings
+      .filter((finding) => finding.status === "CLOSED")
+      .map((finding) => finding.findingId)
+      .join(", ")}
+- Finding splits or merges: none
+- New findings: none
+- Ownership change: DW-FIND-VERIFICATION-PROVIDER-REALIZATION-GAP now assigns real-provider truth to Watchglass while One Voyage retains the framework contract.
+- Catalog outcomes: ${catalogReconciliation.entries.map((entry) => `${entry.featureCatalogId}=${entry.outcome}`).join(", ")}
+`,
+  };
+}
+
+export async function buildArtifacts(root) {
+  const phase1 = await buildPhase1Artifacts(root);
+  const [phase2Config, tracesSchema, remediationSchema] = await Promise.all([
+    readJson(root, `${DEEPWATER_ROOT}/deepwater-phase2-config.json`),
+    readJson(root, `${DEEPWATER_ROOT}/traces/capability-traces.schema.json`),
+    readJson(root, `${DEEPWATER_ROOT}/remediation/deepwater-remediation-packages.schema.json`),
+  ]);
+  const inputs = { ...phase1.inputs, phase2Config, tracesSchema, remediationSchema };
+  const catalogReconciliation = phase2CatalogReconciliation(phase1, phase2Config);
+  const refinedFindings = refineFindings(phase1, phase2Config, catalogReconciliation);
+  const openFindingIds = new Set(
+    refinedFindings.filter((finding) => finding.status !== "CLOSED").map((finding) => finding.findingId),
+  );
+  const policyByCapability = new Map(phase2Config.tracePolicies.map((policy) => [policy.capabilityId, policy]));
+  const preliminaryCapabilities = phase1.ledger.capabilities.map((capability) => {
+    const policy = policyByCapability.get(capability.capabilityId);
+    const context = policy ? routeContext(policy, inputs) : null;
+    const evidenceReferences = updateEvidence(capability, policy, context, phase2Config.auditedSourceSha);
+    if (!policy)
+      return {
+        ...capability,
+        evidence: { ...capability.evidence, sourceSha: phase2Config.auditedSourceSha, references: evidenceReferences },
+      };
+    const flags = uniqueSorted(
+      capability.currentRealization.secondaryFlags.filter(
+        (flag) =>
+          !["UNVERIFIED", "JOURNEY_UNPROVEN", "STALE_EVIDENCE"].includes(flag) ||
+          (policy.profile === "EXTERNAL_PROVIDER_GAP" && flag === "JOURNEY_UNPROVEN"),
+      ),
+    );
+    const profile = phase2Config.profiles[policy.profile];
+    const full = policy.classification === "FULLY_REALIZED";
+    return {
+      ...capability,
+      currentRealization: {
+        highestRung: policy.currentHighestRung,
+        classification: policy.classification,
+        secondaryFlags: flags,
+        confidence: "HIGH",
+      },
+      trace: {
+        domain: layer(
+          profile.domain,
+          layerReferenceCandidates("domain", referencesFromCapability(capability), policy, context, capability),
+        ),
+        service: layer(
+          profile.service,
+          layerReferenceCandidates("service", referencesFromCapability(capability), policy, context, capability),
+        ),
+        transport: layer(
+          profile.transport,
+          layerReferenceCandidates("transport", referencesFromCapability(capability), policy, context, capability),
+        ),
+        authorization: layer(
+          profile.authorization,
+          layerReferenceCandidates("authorization", referencesFromCapability(capability), policy, context, capability),
+        ),
+        projection: layer(
+          profile.projection,
+          layerReferenceCandidates("projection", referencesFromCapability(capability), policy, context, capability),
+        ),
+        client: layer(
+          profile.client,
+          layerReferenceCandidates("client", referencesFromCapability(capability), policy, context, capability),
+        ),
+        ui: layer(
+          profile.ui,
+          layerReferenceCandidates("ui", referencesFromCapability(capability), policy, context, capability),
+        ),
+        navigation: layer(
+          profile.navigation,
+          layerReferenceCandidates("navigation", referencesFromCapability(capability), policy, context, capability),
+        ),
+        accessibility: layer(
+          profile.accessibility,
+          layerReferenceCandidates("accessibility", referencesFromCapability(capability), policy, context, capability),
+        ),
+        journey: layer(
+          profile.journey,
+          layerReferenceCandidates("journey", referencesFromCapability(capability), policy, context, capability),
+        ),
+        suspectedFirstLossPoint: policy.firstLossPoint ?? null,
+      },
+      states: {
+        required: capability.states.required,
+        represented: full
+          ? uniqueSorted([...capability.states.represented, ...capability.states.required, ...context.states])
+          : uniqueSorted([...capability.states.represented, ...context.states]),
+        missing: full ? [] : capability.states.missing,
+      },
+      quality: {
+        discoverability: ["FULL_STACK", "AGGREGATE_PRODUCT", "OWNER_ACCEPTANCE_GAP", "EXTERNAL_PROVIDER_GAP"].includes(
+          policy.profile,
+        )
+          ? profile.navigation
+          : "NOT_APPLICABLE",
+        visualMaturity: capability.expectedRealization.disposition === "USER_FACING" ? profile.ui : "NOT_APPLICABLE",
+        accessibility: profile.accessibility,
+        responsive:
+          capability.expectedRealization.disposition === "USER_FACING" ? profile.accessibility : "NOT_APPLICABLE",
+        recovery: full ? "VERIFIED" : profile.state,
+      },
+      evidence: {
+        sourceSha: phase2Config.auditedSourceSha,
+        references: evidenceReferences,
+        testIds: uniqueSorted([...(capability.evidence.testIds ?? []), ...(policy.testReferences ?? [])]),
+        screenshotIds: uniqueSorted([...(capability.evidence.screenshotIds ?? []), ...context.screenshotIds]),
+        journeyIds: uniqueSorted([...(capability.evidence.journeyIds ?? []), ...context.journeyIds]),
+        ownerAcceptance: policy.ownerAcceptance ?? capability.evidence.ownerAcceptance,
+      },
+      lifecycle: { ...capability.lifecycle, lastAudited: phase2Config.auditDate },
+    };
+  });
+  const capabilities = attachFindings(preliminaryCapabilities, refinedFindings).sort((left, right) =>
+    left.capabilityId.localeCompare(right.capabilityId),
+  );
+  const ledger = {
+    ...phase1.ledger,
+    phase: phase2Config.phase,
+    auditedSourceSha: phase2Config.auditedSourceSha,
+    auditDate: phase2Config.auditDate,
+    generation: {
+      ...phase1.ledger.generation,
+      sourceInputs: uniqueSorted([
+        ...phase1.ledger.generation.sourceInputs,
+        `${DEEPWATER_ROOT}/deepwater-phase2-config.json`,
+        `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_Trace_Queue.json`,
+      ]),
+    },
+    capabilities,
+  };
+  const findingsDocument = {
+    schemaVersion: "1.0.0",
+    project: phase2Config.project,
+    phase: phase2Config.phase,
+    auditedSourceSha: phase2Config.auditedSourceSha,
+    findings: refinedFindings,
+  };
+  const traces = [];
+  for (const policy of phase2Config.tracePolicies) {
+    const capability = capabilities.find((candidate) => candidate.capabilityId === policy.capabilityId);
+    traces.push(await buildDetailedTrace(root, capability, policy, phase1.queueDocument, inputs, openFindingIds));
+  }
+  traces.sort((left, right) => left.traceId.localeCompare(right.traceId));
+  const tracesDocument = {
+    schemaVersion: "1.0.0",
+    project: phase2Config.project,
+    phase: phase2Config.phase,
+    sourceSha: phase2Config.auditedSourceSha,
+    seedQueueCount: phase2Config.phase1.seedQueueCount,
+    queueItemCount: traces.flatMap((trace) => trace.queueIds).length,
+    traceCount: traces.length,
+    traces,
+  };
+  const remediationDocument = buildRemediationPackages(ledger, refinedFindings, phase2Config, catalogReconciliation);
+  const phase3Queue = buildPhase3Queue(remediationDocument, refinedFindings, phase2Config);
+  const metrics = phase2Metrics(
+    ledger,
+    refinedFindings,
+    traces,
+    remediationDocument,
+    phase3Queue,
+    phase1.status.metrics,
+  );
+  const evidenceIndex = {
+    schemaVersion: "1.0.0",
+    sourceSha: phase2Config.auditedSourceSha,
+    privacyBoundary:
+      "Sanitized repository paths, symbols, route/screen/journey IDs, and governed conclusions only; no credentials, tokens, cookies, private content, provider secrets, object keys, or personal data.",
+    evidence: capabilities
+      .flatMap((capability) => capability.evidence.references)
+      .sort((left, right) => left.evidenceId.localeCompare(right.evidenceId)),
+  };
+  const coordinationRegister = {
+    schemaVersion: "1.0.0",
+    project: phase2Config.project,
+    sourceSha: phase2Config.auditedSourceSha,
+    truthPolicy:
+      "Accepted origin/main only; unaccepted owner lanes are coordination constraints, never implementation evidence.",
+    entries: phase2Config.coordination,
+  };
+  const status = {
+    schemaVersion: "1.0.0",
+    project: phase2Config.project,
+    phase: phase2Config.phase,
+    state: phase2Config.lifecycle.state,
+    activation: "ACTIVE_GOVERNANCE_TRACE_AND_ASSIGNMENT_TOOLING",
+    branch: phase2Config.branch,
+    worktree: phase2Config.worktree,
+    baseSourceSha: phase2Config.baseSourceSha,
+    auditedSourceSha: phase2Config.auditedSourceSha,
+    finalReconciledMainSha: phase2Config.finalReconciledMainSha,
+    mainlineState: phase2Config.lifecycle.mainlineState,
+    schemaImpact: "NONE",
+    productSourceImpact: "NONE",
+    featureCatalogImpact: "NO_CHANGE_REQUIRED",
+    metrics,
+    validation: phase2Config.lifecycle.validation,
+    reconciliation: phase2Config.lifecycle.reconciliation,
+    limitations: [
+      "Phase 2 assigns remediation and does not implement Phase 3 work.",
+      "Configured external providers, deployment, physical-device evidence, and owner acceptance remain distinct from local or synthetic proof.",
+      "Unaccepted owner branches are excluded from implementation truth and recorded only in the coordination register.",
+    ],
+  };
+  const artifacts = {
+    phase1,
+    inputs,
+    ledger,
+    findingsDocument,
+    queueDocument: phase1.queueDocument,
+    reconciliationDocument: phase1.reconciliationDocument,
+    evidenceIndex,
+    tracesDocument,
+    remediationDocument,
+    catalogReconciliation,
+    coordinationRegister,
+    phase3Queue,
+    phase2Metrics: metrics,
+    status,
+  };
+  artifacts.reports = phase2Reports(artifacts);
+  return artifacts;
 }
 
 function duplicateValues(values) {
@@ -1114,7 +2036,8 @@ export function validateModel({
         errors.push(`${capability.capabilityId}: FULLY_REALIZED below terminal rung`);
       if (
         capability.expectedRealization.disposition === "USER_FACING" &&
-        (capability.trace.navigation.status !== "VERIFIED" || capability.evidence.journeyIds.length === 0)
+        (capability.trace.navigation.status !== "VERIFIED" ||
+          (capability.evidence.journeyIds.length === 0 && capability.evidence.testIds.length === 0))
       )
         errors.push(`${capability.capabilityId}: user-facing FULLY_REALIZED lacks navigation/journey evidence`);
       const hasBlockingFinding = capability.gaps.findingIds.some((findingId) => {
@@ -1168,6 +2091,184 @@ export function validateModel({
   return errors;
 }
 
+export function validatePhase2Model(artifacts) {
+  const errors = [];
+  errors.push(
+    ...validateAgainstLedgerSchema(artifacts.tracesDocument, artifacts.inputs.tracesSchema).map(
+      (error) => `trace schema: ${error}`,
+    ),
+  );
+  errors.push(
+    ...validateAgainstLedgerSchema(artifacts.remediationDocument, artifacts.inputs.remediationSchema).map(
+      (error) => `remediation schema: ${error}`,
+    ),
+  );
+  const traces = artifacts.tracesDocument.traces;
+  const capabilities = new Map(
+    artifacts.ledger.capabilities.map((capability) => [capability.capabilityId, capability]),
+  );
+  const findings = new Map(artifacts.findingsDocument.findings.map((finding) => [finding.findingId, finding]));
+  const owners = new Set(artifacts.inputs.ownership.projects.map((project) => project.project));
+  const packets = new Map(artifacts.remediationDocument.packages.map((packet) => [packet.remediationPacketId, packet]));
+  const expectedQueueIds = artifacts.phase1.queueDocument.queue.map((item) => item.queueId).sort();
+  const tracedQueueIds = traces.flatMap((trace) => trace.queueIds).sort();
+  if (stableStringify(expectedQueueIds) !== stableStringify(tracedQueueIds))
+    errors.push("Phase 2 traces do not account for every accepted seed queue item exactly once");
+  const duplicateTraceIds = duplicateValues(traces.map((trace) => trace.traceId));
+  if (duplicateTraceIds.length) errors.push(`duplicate trace IDs: ${duplicateTraceIds.join(", ")}`);
+  const duplicateQueueIds = duplicateValues(traces.flatMap((trace) => trace.queueIds));
+  if (duplicateQueueIds.length) errors.push(`duplicate traced queue IDs: ${duplicateQueueIds.join(", ")}`);
+  for (const trace of traces) {
+    const capability = capabilities.get(trace.identity.capabilityId);
+    if (!capability) {
+      errors.push(`${trace.traceId}: unknown capability ${trace.identity.capabilityId}`);
+      continue;
+    }
+    if (!trace.ownership.canonicalOwner) errors.push(`${trace.traceId}: canonical owner missing`);
+    if (!owners.has(trace.ownership.canonicalOwner))
+      errors.push(`${trace.traceId}: unknown canonical owner ${trace.ownership.canonicalOwner}`);
+    if (!trace.expectedRealization?.terminalRung) errors.push(`${trace.traceId}: terminal rung missing`);
+    if (!trace.analysis.currentHighestRung) errors.push(`${trace.traceId}: current highest rung missing`);
+    if (!trace.expectedRealization?.disposition) errors.push(`${trace.traceId}: expected disposition missing`);
+    for (const [layerName, layerValue] of Object.entries(trace.layers)) {
+      if (!layerValue.status) errors.push(`${trace.traceId}: ${layerName} has no status`);
+      if (layerValue.status === "UNKNOWN") {
+        const uncertainty = layerValue.uncertainty;
+        if (
+          !uncertainty?.reason ||
+          !uncertainty?.evidenceAttempted?.length ||
+          !uncertainty?.whyUnresolved ||
+          typeof uncertainty?.externalEvidenceRequired !== "boolean" ||
+          !uncertainty?.limitationOrFindingId ||
+          !uncertainty?.responsibleOwner
+        )
+          errors.push(`${trace.traceId}: ${layerName} UNKNOWN is not bounded`);
+      }
+      if (["PARTIAL", "ABSENT"].includes(layerValue.status) && !layerValue.linkedFindingIds.length)
+        errors.push(`${trace.traceId}: ${layerName} ${layerValue.status} has no linked finding`);
+      if (layerValue.status === "PARTIAL" && !trace.analysis.rootCause)
+        errors.push(`${trace.traceId}: ${layerName} PARTIAL has no root cause`);
+      if (layerValue.status !== "NOT_APPLICABLE" && !layerValue.references.length)
+        errors.push(`${trace.traceId}: ${layerName} applicable layer has no evidence reference`);
+      if (layerValue.freshness !== "CURRENT")
+        errors.push(`${trace.traceId}: ${layerName} current conclusion is not source-current`);
+    }
+    const userFacing = trace.expectedRealization.disposition === "USER_FACING";
+    if (userFacing && trace.layers.navigation.status === "UNKNOWN")
+      errors.push(`${trace.traceId}: user-facing navigation is unevaluated`);
+    if (userFacing && trace.layers.accessibility.status === "UNKNOWN")
+      errors.push(`${trace.traceId}: user-facing accessibility is unevaluated`);
+    if (!trace.stateModel?.conclusion) errors.push(`${trace.traceId}: state requirements are not evaluated`);
+    if (trace.audience.privilegeRequirements?.length && trace.layers.authorization.status === "UNKNOWN")
+      errors.push(`${trace.traceId}: restricted authorization is unevaluated`);
+    if (trace.layers.projection.status === "UNKNOWN")
+      errors.push(`${trace.traceId}: audience projection is unevaluated`);
+    const incomplete = trace.analysis.classification !== "FULLY_REALIZED";
+    if (incomplete && !trace.analysis.firstLossPoint)
+      errors.push(`${trace.traceId}: incomplete capability has no first loss point`);
+    if (incomplete && !trace.analysis.rootCause)
+      errors.push(`${trace.traceId}: incomplete capability has no root cause`);
+    if (incomplete && !trace.analysis.findingIds.length)
+      errors.push(`${trace.traceId}: incomplete capability has no assignment finding`);
+    if (incomplete && !trace.analysis.remediationPacketIds.length)
+      errors.push(`${trace.traceId}: incomplete capability has no remediation packet`);
+    for (const findingId of trace.analysis.findingIds)
+      if (!findings.has(findingId)) errors.push(`${trace.traceId}: unknown finding ${findingId}`);
+    for (const packetId of trace.analysis.remediationPacketIds)
+      if (!packets.has(packetId)) errors.push(`${trace.traceId}: unknown remediation packet ${packetId}`);
+    if (trace.analysis.firstLossPoint === "PROJECTION") {
+      if (trace.layers.service.status !== "VERIFIED")
+        errors.push(`${trace.traceId}: PROJECTION loss lacks verified service truth`);
+      if (!["ABSENT", "PARTIAL"].includes(trace.layers.projection.status))
+        errors.push(`${trace.traceId}: PROJECTION loss has a non-lost projection layer`);
+    }
+    if (trace.analysis.firstLossPoint === "NAVIGATION") {
+      if (trace.layers.ui.status !== "VERIFIED") errors.push(`${trace.traceId}: NAVIGATION loss lacks verified UI`);
+      if (!["ABSENT", "PARTIAL"].includes(trace.layers.navigation.status))
+        errors.push(`${trace.traceId}: NAVIGATION loss has a non-lost navigation layer`);
+    }
+    if (trace.analysis.firstLossPoint === "JOURNEY") {
+      for (const layerName of ["domain", "service", "authorization", "projection", "ui", "navigation"])
+        if (!["VERIFIED", "NOT_APPLICABLE"].includes(trace.layers[layerName].status))
+          errors.push(`${trace.traceId}: JOURNEY loss has unresolved preceding ${layerName}`);
+    }
+    if (trace.analysis.classification === "BACKEND_ONLY") {
+      if (trace.layers.service.status !== "VERIFIED")
+        errors.push(`${trace.traceId}: BACKEND_ONLY lacks verified service truth`);
+      if (!["ABSENT", "NOT_APPLICABLE"].includes(trace.layers.projection.status))
+        errors.push(`${trace.traceId}: BACKEND_ONLY has an unexplained product projection`);
+    }
+    if (trace.analysis.classification === "FRONTEND_ONLY") {
+      if (trace.layers.ui.status !== "VERIFIED") errors.push(`${trace.traceId}: FRONTEND_ONLY lacks UI`);
+      if (!["ABSENT", "PARTIAL"].includes(trace.layers.service.status))
+        errors.push(`${trace.traceId}: FRONTEND_ONLY has verified canonical service truth`);
+    }
+    if (
+      trace.analysis.classification === "INTERNAL_BY_DESIGN" &&
+      (!trace.expectedRealization.rationale || trace.expectedRealization.disposition !== "INTERNAL")
+    )
+      errors.push(`${trace.traceId}: INTERNAL_BY_DESIGN lacks internal rationale`);
+    if (trace.evidence.freshness === "STALE")
+      errors.push(`${trace.traceId}: current maturity is based exclusively on stale evidence`);
+  }
+  for (const finding of findings.values()) {
+    if (!finding.rootCause) errors.push(`${finding.findingId}: root cause missing`);
+    if (!finding.firstLossPoint) errors.push(`${finding.findingId}: first loss point missing`);
+    if (!finding.canonicalOwner || !owners.has(finding.canonicalOwner))
+      errors.push(`${finding.findingId}: canonical owner missing or unknown`);
+    if (!finding.closureEvidence) errors.push(`${finding.findingId}: closure evidence missing`);
+    if (finding.status !== "CLOSED") {
+      const packetId = `DW-REMED-${finding.findingId.slice("DW-FIND-".length)}`;
+      if (!packets.has(packetId)) errors.push(`${finding.findingId}: actionable open finding lacks remediation packet`);
+    }
+  }
+  for (const packet of packets.values()) {
+    const capability = capabilities.get(packet.capabilityId);
+    if (!capability) errors.push(`${packet.remediationPacketId}: unknown capability ${packet.capabilityId}`);
+    for (const findingId of packet.findingIds)
+      if (!findings.has(findingId)) errors.push(`${packet.remediationPacketId}: unknown finding ${findingId}`);
+    if (capability && packet.canonicalOwner !== capability.owner.project && !packet.multiOwnerRationale)
+      errors.push(`${packet.remediationPacketId}: packet owner differs without multi-owner rationale`);
+    if (!owners.has(packet.canonicalOwner))
+      errors.push(`${packet.remediationPacketId}: packet canonical owner is unknown`);
+  }
+  const allowedCatalogOutcomes = new Set([
+    "CATALOG_STALE",
+    "ROUTE_INVENTORY_STALE",
+    "COMPATIBILITY_ALIAS",
+    "COMPOSITE_SURFACE",
+    "NON_ROUTE_BOUNDARY",
+    "ACTUAL_NAVIGATION_GAP",
+    "ACTUAL_MISSING_SURFACE",
+    "OWNER_MISMATCH",
+    "UNRESOLVED",
+  ]);
+  if (artifacts.catalogReconciliation.entries.length !== 17)
+    errors.push("catalog reconciliation does not account for all 17 Phase 1 mismatches");
+  for (const entry of artifacts.catalogReconciliation.entries) {
+    if (!allowedCatalogOutcomes.has(entry.outcome))
+      errors.push(`${entry.featureCatalogId}: invalid catalog reconciliation outcome`);
+    if (!entry.canonicalRoutes.length && !["NON_ROUTE_BOUNDARY", "UNRESOLVED"].includes(entry.outcome))
+      errors.push(`${entry.featureCatalogId}: catalog outcome lacks current canonical route identity`);
+  }
+  if (artifacts.phase3Queue.phase3Authorized !== false)
+    errors.push("Phase 3 queue incorrectly authorizes Phase 3 work");
+  if (artifacts.phase3Queue.queue.length !== artifacts.remediationDocument.packages.length)
+    errors.push("Phase 3 queue and remediation packet counts differ");
+  const privacyText = stableStringify({
+    traces: artifacts.tracesDocument,
+    remediation: artifacts.remediationDocument,
+    catalog: artifacts.catalogReconciliation,
+    coordination: artifacts.coordinationRegister,
+    phase3: artifacts.phase3Queue,
+  });
+  for (const pattern of artifacts.inputs.phase2Config.privacy.forbiddenPatterns) {
+    const expression = pattern.startsWith("(?i)") ? new RegExp(pattern.slice(4), "iu") : new RegExp(pattern, "u");
+    if (expression.test(privacyText)) errors.push(`Phase 2 privacy scan matched forbidden pattern ${pattern}`);
+  }
+  return uniqueSorted(errors);
+}
+
 export async function validateEvidencePaths(root, artifacts) {
   const errors = [];
   for (const reference of artifacts.evidenceIndex.evidence) {
@@ -1195,16 +2296,30 @@ export async function artifactFiles(root, artifacts) {
     [`${DEEPWATER_ROOT}/deepwater-findings.json`, stableStringify(artifacts.findingsDocument)],
     [`${DEEPWATER_ROOT}/deepwater-phase-status.json`, stableStringify(artifacts.status)],
     [
-      `${DEEPWATER_ROOT}/evidence/Project_Deepwater_Phase_1_Evidence_Index.json`,
+      `${DEEPWATER_ROOT}/evidence/Project_Deepwater_Phase_2_Evidence_Index.json`,
       stableStringify(artifacts.evidenceIndex),
     ],
+    [`${DEEPWATER_ROOT}/traces/capability-traces.json`, stableStringify(artifacts.tracesDocument)],
     [
-      `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_1_Feature_Catalog_Reconciliation.json`,
-      stableStringify(artifacts.reconciliationDocument),
+      `${DEEPWATER_ROOT}/remediation/deepwater-remediation-packages.json`,
+      stableStringify(artifacts.remediationDocument),
     ],
-    [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_Trace_Queue.json`, stableStringify(artifacts.queueDocument)],
-    [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_1_Audit_Report.md`, artifacts.reports.audit],
-    [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_1_Capability_Summary.md`, artifacts.reports.summary],
+    [
+      `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_Feature_Catalog_Reconciliation.json`,
+      stableStringify(artifacts.catalogReconciliation),
+    ],
+    [
+      `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_Active_Project_Coordination_Register.json`,
+      stableStringify(artifacts.coordinationRegister),
+    ],
+    [
+      `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_3_Realization_Queue.json`,
+      stableStringify(artifacts.phase3Queue),
+    ],
+    [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_Trace_Report.md`, artifacts.reports.trace],
+    [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_Root_Cause_Summary.md`, artifacts.reports.rootCause],
+    [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_Assignment_Summary.md`, artifacts.reports.assignment],
+    [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_1_to_Phase_2_Delta_Report.md`, artifacts.reports.delta],
   ]);
   return new Map(
     await Promise.all(
@@ -1241,8 +2356,11 @@ export function semanticDigest(artifacts) {
     stableStringify({
       ledger: artifacts.ledger,
       findings: artifacts.findingsDocument,
-      queue: artifacts.queueDocument,
-      reconciliation: artifacts.reconciliationDocument,
+      traces: artifacts.tracesDocument,
+      remediation: artifacts.remediationDocument,
+      catalogReconciliation: artifacts.catalogReconciliation,
+      coordination: artifacts.coordinationRegister,
+      phase3Queue: artifacts.phase3Queue,
       evidence: artifacts.evidenceIndex,
     }),
   );

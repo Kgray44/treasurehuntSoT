@@ -1,0 +1,776 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "Project Deepwater",
+  "phase": "Phase 2 - Trace the Current",
+  "auditDate": "2026-08-09",
+  "baseSourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+  "auditedSourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+  "finalReconciledMainSha": "28a3139e9d43b234778bbbcd4bde2133ece4d8a2",
+  "branch": "codex/project-deepwater-phase2-trace-the-current",
+  "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase2",
+  "lifecycle": {
+    "state": "MAINLINE_ACCEPTED",
+    "mainlineState": "ACCEPTED",
+    "validation": "SOURCE_BOUND_RELEASE_GO_HOSTED_MAINLINE_PASSED",
+    "reconciliation": "IMPLEMENTATION_ACCEPTED_PR_19"
+  },
+  "phase1": {
+    "auditedSourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d",
+    "acceptedImplementationSha": "a57fe264",
+    "acceptedMainBaseSha": "273fb5255ad222812530422e902db04c0ddd1961",
+    "seedQueueCount": 44
+  },
+  "profiles": {
+    "FULL_STACK": {
+      "domain": "VERIFIED",
+      "service": "VERIFIED",
+      "transport": "VERIFIED",
+      "authorization": "VERIFIED",
+      "projection": "VERIFIED",
+      "client": "VERIFIED",
+      "ui": "VERIFIED",
+      "navigation": "VERIFIED",
+      "state": "VERIFIED",
+      "accessibility": "VERIFIED",
+      "journey": "VERIFIED"
+    },
+    "AGGREGATE_PRODUCT": {
+      "domain": "NOT_APPLICABLE",
+      "service": "NOT_APPLICABLE",
+      "transport": "NOT_APPLICABLE",
+      "authorization": "VERIFIED",
+      "projection": "VERIFIED",
+      "client": "VERIFIED",
+      "ui": "VERIFIED",
+      "navigation": "VERIFIED",
+      "state": "VERIFIED",
+      "accessibility": "VERIFIED",
+      "journey": "VERIFIED"
+    },
+    "OPERATIONAL_PROJECTION": {
+      "domain": "VERIFIED",
+      "service": "VERIFIED",
+      "transport": "VERIFIED",
+      "authorization": "VERIFIED",
+      "projection": "VERIFIED",
+      "client": "NOT_APPLICABLE",
+      "ui": "NOT_APPLICABLE",
+      "navigation": "NOT_APPLICABLE",
+      "state": "VERIFIED",
+      "accessibility": "NOT_APPLICABLE",
+      "journey": "NOT_APPLICABLE"
+    },
+    "PROJECTION_GAP": {
+      "domain": "VERIFIED",
+      "service": "VERIFIED",
+      "transport": "NOT_APPLICABLE",
+      "authorization": "VERIFIED",
+      "projection": "ABSENT",
+      "client": "NOT_APPLICABLE",
+      "ui": "NOT_APPLICABLE",
+      "navigation": "NOT_APPLICABLE",
+      "state": "VERIFIED",
+      "accessibility": "NOT_APPLICABLE",
+      "journey": "NOT_APPLICABLE"
+    },
+    "EXTERNAL_PROVIDER_GAP": {
+      "domain": "VERIFIED",
+      "service": "PARTIAL",
+      "transport": "VERIFIED",
+      "authorization": "VERIFIED",
+      "projection": "VERIFIED",
+      "client": "VERIFIED",
+      "ui": "VERIFIED",
+      "navigation": "VERIFIED",
+      "state": "PARTIAL",
+      "accessibility": "VERIFIED",
+      "journey": "PARTIAL"
+    },
+    "OWNER_ACCEPTANCE_GAP": {
+      "domain": "NOT_APPLICABLE",
+      "service": "NOT_APPLICABLE",
+      "transport": "NOT_APPLICABLE",
+      "authorization": "VERIFIED",
+      "projection": "VERIFIED",
+      "client": "VERIFIED",
+      "ui": "VERIFIED",
+      "navigation": "VERIFIED",
+      "state": "VERIFIED",
+      "accessibility": "VERIFIED",
+      "journey": "VERIFIED"
+    }
+  },
+  "tracePolicies": [
+    {
+      "capabilityId": "DW-CAP-INTEGRATED-WHOLE-PRODUCT-VOYAGE",
+      "profile": "OWNER_ACCEPTANCE_GAP",
+      "classification": "PARTIALLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "firstLossPoint": "OWNER_ACCEPTANCE",
+      "rootCause": "Accepted Homeport source, route, screen, state, accessibility, and natural-journey evidence reaches JOURNEY_PROVEN, but the governing owner decision remains PENDING_OWNER_DECISION after Correction Round 3 and Patch A. Automated release evidence cannot create OWNER_ACCEPTED authority.",
+      "testReferences": [
+        "tests/e2e/homeport-phase7.spec.ts",
+        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts",
+        "tests/e2e/homeport-phase7-owner-correction-round3-patch-a.spec.ts"
+      ],
+      "recordReferences": [
+        "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_Decision_Record.md",
+        "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Validation_Record.md"
+      ],
+      "ownerAcceptance": "PENDING_OWNER_DECISION"
+    },
+    {
+      "capabilityId": "DW-CAP-COMMUNITY-OPERATIONS-HEALTH",
+      "profile": "OPERATIONAL_PROJECTION",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "PROJECTION",
+      "firstLossPoint": null,
+      "rootCause": "Phase 1 omitted the accepted source consumer. collectCommunityProviderHealth returns a sanitized provider-state projection and the moderator-capability-gated /community/moderation page renders that projection without raw endpoints, identities, keys, or errors. The declared PROJECTION terminal rung is met.",
+      "canonicalRoutes": ["/community/moderation"],
+      "sourceReferences": ["src/community/operations.ts", "src/app/community/moderation/page.tsx"],
+      "testReferences": ["tests/e2e/homeport-phase4.spec.ts"],
+      "ownerAcceptance": "NOT_REQUIRED"
+    },
+    {
+      "capabilityId": "DW-CAP-PRIVATE-PROVIDER-HEALTH",
+      "profile": "OPERATIONAL_PROJECTION",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "PROJECTION",
+      "firstLossPoint": null,
+      "rootCause": "Phase 1 omitted the accepted privileged transport. collectPrivateProviderHealth is projected through an Administrator-only, no-store operations route that hashes retained operational identifiers and never returns credentials, object keys, or key material. The declared PROJECTION terminal rung is met even though production providers remain explicitly unconfigured.",
+      "canonicalRoutes": ["/api/studio/private-content/operations"],
+      "sourceReferences": [
+        "src/private-content/providers.ts",
+        "src/app/api/studio/private-content/operations/route.ts"
+      ],
+      "testReferences": [
+        "src/app/api/studio/private-content/operations/route.test.ts",
+        "tests/private-content/phase3-operations.test.ts"
+      ],
+      "ownerAcceptance": "NOT_REQUIRED"
+    },
+    {
+      "capabilityId": "DW-CAP-TRANSACTIONAL-EMAIL-DELIVERY",
+      "profile": "PROJECTION_GAP",
+      "classification": "BACKEND_ONLY",
+      "currentHighestRung": "SERVICE",
+      "firstLossPoint": "PROJECTION",
+      "rootCause": "Wayfarer persists delivery lifecycle states and exposes transactionalEmailProviderStatus only inside the service module. No authenticated, sanitized support/operator DTO or route consumes provider availability, missing-configuration categories, receipt state, bounce, complaint, or staleness. The first intended privileged audience boundary is therefore absent at PROJECTION.",
+      "sourceReferences": ["src/wayfarer/transactional-email.ts"],
+      "testReferences": ["src/wayfarer/transactional-email.test.ts"],
+      "ownerAcceptance": "NOT_REQUIRED"
+    },
+    {
+      "capabilityId": "DW-CAP-VERIFICATION-PROVIDER-FRAMEWORK",
+      "profile": "EXTERNAL_PROVIDER_GAP",
+      "classification": "PARTIALLY_REALIZED",
+      "currentHighestRung": "UI",
+      "firstLossPoint": "EXTERNAL_PROVIDER",
+      "rootCause": "The versioned helper submission contract, pairing authorization, idempotent progression service, Captain controls, Player pending state, and development simulator exist. Chronicle validation and progression deliberately reject visionLocation, visionObject, and externalWebhook as future providers, and no live provider adapter produces the governed envelope. The framework exists, but a real provider journey cannot begin.",
+      "canonicalRoutes": [
+        "/api/helper/verification",
+        "/captain/sessions/[sessionId]",
+        "/api/captain/sessions/[sessionId]/simulate"
+      ],
+      "sourceReferences": [
+        "src/chronicle/progression.ts",
+        "src/chronicle/validation.ts",
+        "src/app/api/helper/verification/route.ts",
+        "src/app/api/captain/sessions/[sessionId]/simulate/route.ts",
+        "src/components/captain/CaptainSessionControl.tsx",
+        "src/components/player/journal/ChronicleJournalSession.tsx"
+      ],
+      "testReferences": ["tests/e2e/chronicle-studio.spec.ts"],
+      "ownerAcceptance": "NOT_REQUIRED"
+    },
+    {
+      "capabilityId": "DW-CAP-STORY-BLOCK-SYSTEM",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/studio/tales/[taleId]"],
+      "testReferences": ["tests/e2e/chronicle-studio.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/studio/tales/[taleId]/versions"],
+      "testReferences": ["tests/e2e/chronicle-platform.spec.ts", "tests/e2e/chronicle-studio.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-ASSET-LIBRARY-MEDIA-PIPELINE",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/studio/tales/[taleId]/assets"],
+      "testReferences": ["tests/e2e/chronicle-studio.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-WAYPOINT-REFERENCE-LIBRARY",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/studio/tales/[taleId]/locations"],
+      "testReferences": ["tests/e2e/chronicle-studio.spec.ts", "tests/e2e/homeport-phase5.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-CHRONICLE-ARTIFACT-DEFINITIONS",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/studio/tales/[taleId]/artifacts"],
+      "testReferences": ["tests/e2e/chronicle-studio.spec.ts", "tests/e2e/homeport-phase5.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-PLAYER-JOURNAL",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/player/playthroughs/[playthroughId]/journal"],
+      "sourceReferences": [
+        "src/components/player/journal/ChronicleJournalSession.tsx",
+        "src/app/player/playthroughs/[playthroughId]/journal/page.tsx"
+      ],
+      "testReferences": [
+        "tests/e2e/chronicle-platform.spec.ts",
+        "tests/e2e/lanternwake-journal.spec.ts",
+        "tests/e2e/phase3-accessibility-viewports.spec.ts"
+      ]
+    },
+    {
+      "capabilityId": "DW-CAP-VOYAGE-CHART",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/player/playthroughs/[playthroughId]/journal"],
+      "sourceReferences": ["src/components/player/workspace/VoyageChart.tsx"],
+      "testReferences": [
+        "tests/e2e/phase3-player-event-matrix.spec.ts",
+        "tests/e2e/phase3-accessibility-viewports.spec.ts"
+      ]
+    },
+    {
+      "capabilityId": "DW-CAP-ARTIFACT-REVEAL",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/player/playthroughs/[playthroughId]/journal"],
+      "sourceReferences": ["src/components/player/workspace/ArtifactInspection.tsx"],
+      "testReferences": ["tests/e2e/chronicle-studio.spec.ts", "tests/e2e/phase3-accessibility-viewports.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-SIDE-QUEST-LEDGER",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/player/playthroughs/[playthroughId]/journal"],
+      "sourceReferences": ["src/components/player/workspace/SideQuestLedger.tsx"],
+      "testReferences": [
+        "tests/e2e/phase3-player-event-matrix.spec.ts",
+        "tests/e2e/phase3-accessibility-viewports.spec.ts"
+      ]
+    },
+    {
+      "capabilityId": "DW-CAP-SHIPS-LOG",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/player/playthroughs/[playthroughId]/journal"],
+      "sourceReferences": ["src/components/player/workspace/ShipsLog.tsx"],
+      "testReferences": [
+        "tests/e2e/phase3-player-event-matrix.spec.ts",
+        "tests/e2e/phase3-accessibility-viewports.spec.ts"
+      ]
+    },
+    {
+      "capabilityId": "DW-CAP-FINALE-CHAMBER",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/player/playthroughs/[playthroughId]/journal"],
+      "sourceReferences": ["src/components/player/workspace/FinaleChamber.tsx"],
+      "testReferences": [
+        "tests/e2e/phase3-player-event-matrix.spec.ts",
+        "tests/e2e/phase3-accessibility-viewports.spec.ts"
+      ]
+    },
+    {
+      "capabilityId": "DW-CAP-INVITATION-CREW-LIFECYCLE",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/join/[token]", "/player/invitation", "/player/library"],
+      "testReferences": ["tests/e2e/chronicle-platform.spec.ts", "tests/e2e/acceptance.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-CAPTAIN-VOYAGE-OPERATIONS",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": [
+        "/captain/library",
+        "/captain/sessions/[sessionId]",
+        "/captain/voyages/[playthroughId]/player-preview"
+      ],
+      "testReferences": ["tests/e2e/command-center.spec.ts", "tests/e2e/chronicle-platform.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-AUTHORITATIVE-PROGRESSION",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/api/play/sessions/[sessionId]", "/captain/sessions/[sessionId]"],
+      "testReferences": ["tests/e2e/chronicle-platform.spec.ts", "tests/e2e/command-center.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-REALTIME-PRESENCE-REPLAY",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": [
+        "/api/player/[campaignSlug]/events",
+        "/api/player/[campaignSlug]/presence",
+        "/player/playthroughs/[playthroughId]/journal"
+      ],
+      "testReferences": ["tests/e2e/chronicle-platform.spec.ts", "tests/e2e/phase3-accessibility-viewports.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-COMMUNITY-EXCHANGE",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/studio/exchange", "/community"],
+      "testReferences": ["tests/e2e/harborlight-phase2.spec.ts", "tests/e2e/homeport-phase4.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-ACCOUNT-DATA-EXPORT",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/account/data"],
+      "sourceReferences": [
+        "src/components/homeport/AccountSurfaces.tsx",
+        "src/app/api/account/data/export/route.ts",
+        "src/wayfarer/account-lifecycle.ts"
+      ],
+      "testReferences": [
+        "src/wayfarer/account-lifecycle.test.ts",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts"
+      ]
+    },
+    {
+      "capabilityId": "DW-CAP-ACCOUNT-EMAIL-CHANGE",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/account/email-change"],
+      "sourceReferences": ["src/wayfarer/accounts.ts", "src/components/wayfarer/AccountFlow.tsx"],
+      "testReferences": [
+        "src/wayfarer/accounts.security.test.ts",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts"
+      ]
+    },
+    {
+      "capabilityId": "DW-CAP-ACCOUNT-LIFECYCLE-DEACTIVATION",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/account/data", "/account/reactivate", "/account/cancel-deletion"],
+      "sourceReferences": ["src/wayfarer/account-lifecycle.ts", "src/components/homeport/AccountSurfaces.tsx"],
+      "testReferences": [
+        "src/wayfarer/account-lifecycle.test.ts",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts"
+      ]
+    },
+    {
+      "capabilityId": "DW-CAP-ACCOUNT-SESSION-ROLE-SYSTEM",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/account", "/account/roles", "/account/security", "/account/sessions"],
+      "testReferences": [
+        "tests/e2e/homeport-phase1.spec.ts",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts"
+      ]
+    },
+    {
+      "capabilityId": "DW-CAP-ARTIFACT-CABINET-ACHIEVEMENTS",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/passport/artifacts", "/passport/artifacts/[artifactId]"],
+      "testReferences": ["tests/e2e/wayfarer-phase4.spec.ts", "tests/e2e/homeport-phase3.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-CHRONICLE-PASSPORT-PUBLIC-PROFILE",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/passport", "/profile/[handle]"],
+      "testReferences": ["tests/e2e/homeport-phase3.spec.ts", "tests/e2e/wayfarer-phase3.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-CINEMATIC-RUNTIME",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/player/playthroughs/[playthroughId]/journal", "/dev/animations"],
+      "testReferences": ["tests/e2e/lanternwake-journal.spec.ts", "tests/e2e/phase3-accessibility-viewports.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-COMMUNITY-HARBOR-DISCOVERY",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/community"],
+      "testReferences": ["tests/e2e/homeport-phase4.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-COMPLETE-PRODUCT-SURFACES-STATES",
+      "profile": "AGGREGATE_PRODUCT",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": [
+        "/",
+        "/account",
+        "/captain/library",
+        "/community",
+        "/passport",
+        "/player/library",
+        "/studio/library"
+      ],
+      "testReferences": ["tests/e2e/homeport-phase6.spec.ts", "tests/e2e/homeport-phase7.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-CREATOR-STUDIO",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/studio/library", "/studio/tales/[taleId]"],
+      "testReferences": ["tests/e2e/chronicle-studio.spec.ts", "tests/e2e/homeport-phase2.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-GLOBAL-SHELL-WAYFINDING",
+      "profile": "AGGREGATE_PRODUCT",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": [
+        "/",
+        "/captain/library",
+        "/community",
+        "/passport",
+        "/player/library",
+        "/studio/library",
+        "/tales"
+      ],
+      "sourceReferences": ["src/components/shell/ProductShell.tsx"],
+      "testReferences": ["tests/e2e/homeport-phase2.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-GOOGLE-GITHUB-AUTHENTICATION",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "OWNER_ACCEPTED",
+      "canonicalRoutes": ["/register", "/sign-in", "/account/linked-identities"],
+      "testReferences": ["tests/oauth/voyagewright-oauth.spec.ts"],
+      "recordReferences": ["Development_Docs/Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md"],
+      "ownerAcceptance": "OWNER_ACCEPTED_WITH_EXPLICIT_LIMITATIONS"
+    },
+    {
+      "capabilityId": "DW-CAP-PERSONAL-CHRONICLE-HISTORY",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/passport/history", "/passport/history/[recordId]"],
+      "testReferences": ["tests/e2e/wayfarer-phase3.spec.ts", "tests/e2e/homeport-phase3.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-PERSONAL-HARBOR",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/account", "/passport", "/profile/[handle]"],
+      "testReferences": ["tests/e2e/homeport-phase3.spec.ts", "tests/e2e/homeport-phase7.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-PLAYER-LIBRARY-VOYAGE-LIFECYCLE",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/player/library", "/player/playthroughs/[playthroughId]"],
+      "testReferences": ["tests/e2e/chronicle-platform.spec.ts", "tests/e2e/homeport-phase2.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-PRIVATE-CHRONICLE-PROTECTION",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/studio/private-content"],
+      "testReferences": ["tests/e2e/sealed-hold-phase4.spec.ts", "tests/private-content/security.test.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-ROLE-AWARE-NAVIGATION-SHELL",
+      "profile": "AGGREGATE_PRODUCT",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/", "/captain/library", "/player/library", "/studio/library"],
+      "sourceReferences": ["src/components/shell/ProductShell.tsx", "src/navigation/registry.ts"],
+      "testReferences": ["tests/e2e/homeport-phase2.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-ROLE-GATEWAY-WORKSPACE-ROUTING",
+      "profile": "AGGREGATE_PRODUCT",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/", "/captain/library", "/player/library", "/studio/library"],
+      "sourceReferences": ["src/app/page.tsx", "src/components/landing/HarborLanding.tsx"],
+      "testReferences": ["tests/e2e/homeport-phase2.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-ROUTE-REACHABILITY-GRAPH",
+      "profile": "AGGREGATE_PRODUCT",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": [
+        "/",
+        "/account",
+        "/captain/library",
+        "/community",
+        "/passport",
+        "/player/library",
+        "/studio/library",
+        "/tales"
+      ],
+      "testReferences": ["tests/e2e/homeport-phase5.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-UNIFIED-CHRONICLE-PLATFORM",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/captain/library", "/player/library", "/studio/library"],
+      "testReferences": ["tests/e2e/chronicle-platform.spec.ts", "tests/e2e/acceptance.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-UNIFIED-IDENTITY-SESSION-AUTHORITY",
+      "profile": "FULL_STACK",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/api/auth/context", "/register", "/sign-in", "/passport"],
+      "testReferences": ["tests/e2e/homeport-phase1.spec.ts", "tests/oauth/voyagewright-oauth.spec.ts"]
+    },
+    {
+      "capabilityId": "DW-CAP-UNIVERSAL-LANGUAGE-DESIGN-SYSTEM",
+      "profile": "AGGREGATE_PRODUCT",
+      "classification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "canonicalRoutes": ["/", "/captain/library", "/player/library", "/studio/library"],
+      "sourceReferences": ["src/language/canonical-terms.ts", "src/components/shell/ProductShell.tsx"],
+      "testReferences": ["tests/e2e/voyagewright-language.spec.ts", "tests/e2e/homeport-phase2.spec.ts"]
+    }
+  ],
+  "catalogReconciliations": [
+    {
+      "featureCatalogId": "FT-005",
+      "outcome": "COMPOSITE_SURFACE",
+      "canonicalRoutes": ["/join/[token]", "/player/invitation", "/player/library"]
+    },
+    {
+      "featureCatalogId": "FT-007",
+      "outcome": "COMPOSITE_SURFACE",
+      "canonicalRoutes": [
+        "/captain/library",
+        "/captain/sessions/[sessionId]",
+        "/captain/voyages/[playthroughId]/player-preview"
+      ]
+    },
+    { "featureCatalogId": "FT-009", "outcome": "CATALOG_STALE", "canonicalRoutes": ["/studio/tales/[taleId]"] },
+    {
+      "featureCatalogId": "FT-010",
+      "outcome": "CATALOG_STALE",
+      "canonicalRoutes": ["/studio/tales/[taleId]/versions"]
+    },
+    { "featureCatalogId": "FT-011", "outcome": "CATALOG_STALE", "canonicalRoutes": ["/studio/tales/[taleId]/assets"] },
+    {
+      "featureCatalogId": "FT-012",
+      "outcome": "CATALOG_STALE",
+      "canonicalRoutes": ["/studio/tales/[taleId]/locations"]
+    },
+    {
+      "featureCatalogId": "FT-013",
+      "outcome": "CATALOG_STALE",
+      "canonicalRoutes": ["/studio/tales/[taleId]/artifacts"]
+    },
+    {
+      "featureCatalogId": "FT-014",
+      "outcome": "COMPOSITE_SURFACE",
+      "canonicalRoutes": ["/api/play/sessions/[sessionId]", "/captain/sessions/[sessionId]"]
+    },
+    {
+      "featureCatalogId": "FT-015",
+      "outcome": "CATALOG_STALE",
+      "canonicalRoutes": ["/player/playthroughs/[playthroughId]/journal"]
+    },
+    {
+      "featureCatalogId": "FT-016",
+      "outcome": "COMPOSITE_SURFACE",
+      "canonicalRoutes": ["/player/playthroughs/[playthroughId]/journal"]
+    },
+    {
+      "featureCatalogId": "FT-017",
+      "outcome": "COMPOSITE_SURFACE",
+      "canonicalRoutes": ["/player/playthroughs/[playthroughId]/journal"]
+    },
+    {
+      "featureCatalogId": "FT-018",
+      "outcome": "COMPOSITE_SURFACE",
+      "canonicalRoutes": ["/player/playthroughs/[playthroughId]/journal"]
+    },
+    {
+      "featureCatalogId": "FT-019",
+      "outcome": "COMPOSITE_SURFACE",
+      "canonicalRoutes": ["/player/playthroughs/[playthroughId]/journal"]
+    },
+    {
+      "featureCatalogId": "FT-020",
+      "outcome": "COMPOSITE_SURFACE",
+      "canonicalRoutes": ["/player/playthroughs/[playthroughId]/journal"]
+    },
+    {
+      "featureCatalogId": "FT-021",
+      "outcome": "COMPOSITE_SURFACE",
+      "canonicalRoutes": [
+        "/api/player/[campaignSlug]/events",
+        "/api/player/[campaignSlug]/presence",
+        "/player/playthroughs/[playthroughId]/journal"
+      ]
+    },
+    {
+      "featureCatalogId": "FT-023",
+      "outcome": "CATALOG_STALE",
+      "canonicalRoutes": ["/api/helper/verification", "/captain/sessions/[sessionId]"]
+    },
+    { "featureCatalogId": "FT-025", "outcome": "CATALOG_STALE", "canonicalRoutes": ["/studio/exchange", "/community"] }
+  ],
+  "findingRefinements": [
+    {
+      "findingId": "DW-FIND-HOMEPORT-OWNER-DECISION-PENDING",
+      "firstLossPoint": "OWNER_ACCEPTANCE",
+      "rootCause": "Current accepted source and Patch A validation reach JOURNEY_PROVEN, but Project_Homeport_Phase_7_Owner_Decision_Record.md remains PENDING_OWNER_DECISION. Only the owner can advance the governing decision.",
+      "status": "ASSIGNED",
+      "canonicalOwner": "Homeport",
+      "assignedProjectPhase": "Project Homeport Phase 7 owner re-review"
+    },
+    {
+      "findingId": "DW-FIND-COMMUNITY-OPERATIONS-HEALTH-PROJECTION",
+      "firstLossPoint": "PROJECTION",
+      "rootCause": "Superseded Phase 1 source census: accepted main already contains the sanitized collectCommunityProviderHealth projection and a moderator-capability-gated consumer at /community/moderation.",
+      "status": "CLOSED",
+      "canonicalOwner": "Harborlight",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "src/community/operations.ts#collectCommunityProviderHealth; src/app/community/moderation/page.tsx; route-page-community-moderation"
+    },
+    {
+      "findingId": "DW-FIND-PRIVATE-PROVIDER-HEALTH-PROJECTION",
+      "firstLossPoint": "PROJECTION",
+      "rootCause": "Superseded Phase 1 source census: accepted main already contains an Administrator-only no-store API projection backed by collectPrivateProviderHealth with hashed operational identifiers and no secret material.",
+      "status": "CLOSED",
+      "canonicalOwner": "Sealed Hold",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "src/private-content/providers.ts#collectPrivateProviderHealth; src/app/api/studio/private-content/operations/route.ts; src/app/api/studio/private-content/operations/route.test.ts"
+    },
+    {
+      "findingId": "DW-FIND-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION",
+      "firstLossPoint": "PROJECTION",
+      "rootCause": "Delivery and provider truth is retained inside Wayfarer, but no authenticated sanitized support/operator DTO or route exposes provider availability, receipt lifecycle, safe failure category, or staleness.",
+      "status": "ASSIGNED",
+      "canonicalOwner": "Wayfarer",
+      "assignedProjectPhase": "Wayfarer projection plus Admiralty consumer coordination"
+    },
+    {
+      "findingId": "DW-FIND-VERIFICATION-PROVIDER-REALIZATION-GAP",
+      "firstLossPoint": "EXTERNAL_PROVIDER",
+      "rootCause": "The provider-neutral verification envelope and authorized helper transport exist, while current Chronicle validation deliberately rejects visionLocation, visionObject, and externalWebhook and no accepted live adapter emits the envelope.",
+      "status": "ASSIGNED",
+      "canonicalOwner": "Watchglass",
+      "contributingOwners": ["One Voyage", "Helm"],
+      "assignedProjectPhase": "Watchglass real-provider realization coordinated with One Voyage"
+    }
+  ],
+  "coordination": [
+    {
+      "coordinationId": "DW-COORD-ADMIRALTY-OPERATIONS",
+      "capabilityIds": [
+        "DW-CAP-COMMUNITY-OPERATIONS-HEALTH",
+        "DW-CAP-PRIVATE-PROVIDER-HEALTH",
+        "DW-CAP-TRANSACTIONAL-EMAIL-DELIVERY"
+      ],
+      "findingIds": [
+        "DW-FIND-COMMUNITY-OPERATIONS-HEALTH-PROJECTION",
+        "DW-FIND-PRIVATE-PROVIDER-HEALTH-PROJECTION",
+        "DW-FIND-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION"
+      ],
+      "canonicalOwners": ["Harborlight", "Sealed Hold", "Wayfarer"],
+      "activeOwnerPhase": "Project Admiralty Phase 1 unaccepted lane",
+      "conflictSurface": "privileged operational projections and administration UI",
+      "allowedDeepwaterAction": "Trace accepted main, close disproven gaps, and assign remaining projection work; do not edit Admiralty UI or consume its unaccepted source.",
+      "hardDependency": "Accepted owner projection contract before any future Admiralty consumer lands",
+      "recommendedVehicle": "Owner-project projection followed by coordinated Admiralty consumption"
+    },
+    {
+      "coordinationId": "DW-COORD-SHIPWRIGHT-STUDIO",
+      "capabilityIds": ["DW-CAP-CREATOR-STUDIO", "DW-CAP-ASSET-LIBRARY-MEDIA-PIPELINE"],
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-011"],
+      "canonicalOwners": ["Shipwright"],
+      "activeOwnerPhase": "Project Shipwright Phase 1 unaccepted lane",
+      "conflictSurface": "Creator Studio interaction and catalog metadata",
+      "allowedDeepwaterAction": "Trace accepted Studio and assign catalog reconciliation; do not edit active Shipwright UX.",
+      "hardDependency": "Refresh trace if Shipwright reaches accepted main before Phase 2 candidate validation",
+      "recommendedVehicle": "Shipwright plus Ledgerlight catalog reconciliation"
+    },
+    {
+      "coordinationId": "DW-COORD-HELM-CAPTAIN",
+      "capabilityIds": ["DW-CAP-CAPTAIN-VOYAGE-OPERATIONS"],
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-007"],
+      "canonicalOwners": ["Helm"],
+      "activeOwnerPhase": "Project Helm active unaccepted lane",
+      "conflictSurface": "Captain runtime presentation and membership semantics",
+      "allowedDeepwaterAction": "Trace accepted Captain source and assign documentation work; do not redefine Captain semantics or edit the active lane.",
+      "hardDependency": "Helm owner approval for future catalog correction",
+      "recommendedVehicle": "Helm plus Ledgerlight catalog reconciliation"
+    },
+    {
+      "coordinationId": "DW-COORD-WAKEBOOK-JOURNAL",
+      "capabilityIds": ["DW-CAP-PLAYER-JOURNAL", "DW-CAP-SHIPS-LOG"],
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-015", "DW-FIND-CATALOG-SURFACE-FT-019"],
+      "canonicalOwners": ["Wakebook"],
+      "activeOwnerPhase": "Project Wakebook active unaccepted lane",
+      "conflictSurface": "historical Journal presentation and catalog route names",
+      "allowedDeepwaterAction": "Bind accepted canonical Journal evidence and assign documentation reconciliation; do not consume unaccepted Wakebook changes.",
+      "hardDependency": "Refresh if Wakebook reaches accepted main",
+      "recommendedVehicle": "Wakebook plus Ledgerlight catalog reconciliation"
+    },
+    {
+      "coordinationId": "DW-COORD-TIDEGLASS-EDITIONS",
+      "capabilityIds": ["DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS"],
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-010"],
+      "canonicalOwners": ["One Voyage"],
+      "activeOwnerPhase": "Project Tideglass unaccepted lane",
+      "conflictSurface": "edition comparison adjacent to immutable version truth",
+      "allowedDeepwaterAction": "Trace accepted One Voyage publishing truth and assign catalog metadata only; do not consume Tideglass comparison semantics before acceptance.",
+      "hardDependency": "One Voyage remains canonical for immutable publishing; Tideglass owns comparison semantics",
+      "recommendedVehicle": "One Voyage and Ledgerlight with Tideglass review"
+    }
+  ],
+  "privacy": {
+    "forbiddenPatterns": [
+      "(?i)password\\s*[=:]\\s*[^*<{]",
+      "(?i)cookie\\s*[=:]\\s*[^*<{]",
+      "(?i)authorization\\s*:\\s*bearer\\s+[a-z0-9._-]+",
+      "(?i)(client_secret|api_key|access_token|refresh_token)\\s*[=:]\\s*[^*<{]",
+      "(?i)wrappedKey\\s*[=:]\\s*[A-Za-z0-9+/=]{16,}"
+    ]
+  }
+}

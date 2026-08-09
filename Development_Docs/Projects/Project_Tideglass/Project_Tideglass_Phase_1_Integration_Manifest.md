@@ -15,7 +15,7 @@ last_reviewed: 2026-08-09
 | Branch                 | `codex/project-tideglass-phase1-set-the-glass`                                         |
 | Original base          | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                             |
 | Original upstream      | `origin/main`                                                                          |
-| Reconciled main        | `5b266251bd5a42efe90988e45daf55bca8e566f1`                                             |
+| Reconciled main        | `762258e31d7509aac8a7a46e7828ae0e92b84a84`                                             |
 | Implementation commits | `35b1418931bcef3babe12e981571207314bc6120`, `1366095b3ae637675c5dd9a97406bff0439fadf9` |
 | Candidate branch tip   | recorded by the protected publication procedure                                        |
 | Integrated main        | not integrated                                                                         |
@@ -40,7 +40,9 @@ last_reviewed: 2026-08-09
 
 Immediately before final acceptance, fetch and compare the original base with current `origin/main`. Inspect changes affecting One Voyage published editions, Story Blocks, Drydock, Wakebook, Harborlight, shared schemas, authorization, and testing policy. Classify each overlap and rerun only invalidated evidence. Do not start Phase 2 or stack it on this candidate.
 
-The branch first merged accepted Deepwater mainline history through `273fb5255ad222812530422e902db04c0ddd1961`. The 2026-08-09 pre-candidate fetch then found current `origin/main` at `5b266251bd5a42efe90988e45daf55bca8e566f1`; that interval added only governing PDFs and documentation-index governance for the 2026 project wave. It did not overlap Tideglass source, schemas, migrations, publication, authorization, or runtime behavior. Documentation validation was invalidated and must rerun. A completion audit independently identified deterministic-identity, matching, unsupported-data, and redaction defects in Tideglass itself; those were corrected under `1366095b3ae637675c5dd9a97406bff0439fadf9` with focused 49/49 diagnostic coverage. All earlier Sounding Line candidate decisions are therefore historical and must be replaced for the exact corrected candidate.
+The branch first merged accepted Deepwater Phase 1 through `273fb5255ad222812530422e902db04c0ddd1961`, then the project-governance wave through `5b266251bd5a42efe90988e45daf55bca8e566f1`. A completion audit independently identified deterministic-identity, matching, unsupported-data, and redaction defects in Tideglass; those were corrected under `1366095b3ae637675c5dd9a97406bff0439fadf9`, formatted under `7db576d00d89b65edb9a1a0225df130fff8fcbe5`, and received exact local mainline `RELEASE_GO`.
+
+The mandatory post-gate fetch then found accepted Deepwater Phase 2 at `762258e31d7509aac8a7a46e7828ae0e92b84a84`. That interval changed Deepwater records/tooling plus shared Sounding Line policy, registry, documentation indexes, and the generated Feature Catalog. It did not overlap Tideglass product source, schemas, migrations, publication, authorization, or runtime behavior. The accepted Deepwater state was preserved; shared generated artifacts were rebuilt from the merged inputs. Because the base changed after the earlier gate, its `RELEASE_GO` is historical and the exact reconciled candidate requires a new source-bound decision.
 
 ## Available integration path
 
