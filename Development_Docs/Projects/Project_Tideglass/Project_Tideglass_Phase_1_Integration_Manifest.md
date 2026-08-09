@@ -15,7 +15,7 @@ last_reviewed: 2026-08-09
 | Branch                | `codex/project-tideglass-phase1-set-the-glass`  |
 | Original base         | `f1c2f22dd935322c1a71eb80c51592f243dc196d`      |
 | Original upstream     | `origin/main`                                   |
-| Reconciled main       | pending final fetch                             |
+| Reconciled main       | `f1c2f22dd935322c1a71eb80c51592f243dc196d`      |
 | Implementation commit | `35b1418`                                       |
 | Candidate branch tip  | recorded by the protected publication procedure |
 | Integrated main       | not integrated                                  |
@@ -39,6 +39,8 @@ last_reviewed: 2026-08-09
 ## Reconciliation protocol
 
 Immediately before final acceptance, fetch and compare the original base with current `origin/main`. Inspect changes affecting One Voyage published editions, Story Blocks, Drydock, Wakebook, Harborlight, shared schemas, authorization, and testing policy. Classify each overlap and rerun only invalidated evidence. Do not start Phase 2 or stack it on this candidate.
+
+The final pre-candidate fetch on 2026-08-09 found `origin/main` still exact at `f1c2f22dd935322c1a71eb80c51592f243dc196d`, identical to the original base. There were no intervening commits or changed paths to reconcile, so no evidence was invalidated.
 
 ## Available integration path
 

@@ -14,7 +14,7 @@ last_reviewed: 2026-08-09
 | Phase                  | Phase 1: Set the Glass                                  |
 | Branch                 | `codex/project-tideglass-phase1-set-the-glass`          |
 | Original base          | `f1c2f22dd935322c1a71eb80c51592f243dc196d`              |
-| Reconciled main        | pending final reconciliation                            |
+| Reconciled main        | `f1c2f22dd935322c1a71eb80c51592f243dc196d`              |
 | Implementation commit  | `35b1418`                                               |
 | Candidate branch tip   | recorded by the protected publication procedure         |
 | Integrated main SHA    | not integrated                                          |
