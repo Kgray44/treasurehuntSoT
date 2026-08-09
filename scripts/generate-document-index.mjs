@@ -43,7 +43,9 @@ const records = files.map((file) => ({
   record_type: classify(file),
   status: file.includes("/Archive/")
     ? "archived"
-    : file.includes("/Projects/Project_Homeport/") || isCurrentGovernance(file)
+    : file.includes("/Projects/Project_Homeport/") ||
+        file.includes("/Projects/Project Drydock/") ||
+        isCurrentGovernance(file)
       ? "current"
       : "preserved",
   canonical_for: null,

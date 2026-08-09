@@ -6,6 +6,7 @@ import { getStudioTale } from "@/chronicle/studio-service";
 import type { PublishedTaleSnapshot } from "@/chronicle/types";
 import { validateTaleDraft } from "@/chronicle/validation";
 import { logger } from "@/lib/logger";
+import { parseDrydockBlock, runtimeCompatibilityProjection } from "@/drydock/contracts/parser";
 
 export class PublishValidationError extends Error {
   constructor(public readonly validation: Awaited<ReturnType<typeof validateTaleDraft>>) {
@@ -48,25 +49,34 @@ export function snapshotFromStudio(studio: Awaited<ReturnType<typeof getStudioTa
           .find((block) => block.blockType === "chapterComplete" || block.blockType === "taleComplete")?.id ??
         chapter.blocks.at(-1)?.id ??
         null,
-      blocks: chapter.blocks.map((block, blockIndex) => ({
-        id: block.id,
-        chapterId: chapter.id,
-        blockType: block.blockType,
-        title: block.title,
-        internalLabel: block.internalLabel,
-        configuration: block.configuration,
-        presentation: block.presentation,
-        completion: block.completion,
-        creatorNotes: null,
-        isEnabled: block.isEnabled,
-        schemaVersion: block.schemaVersion,
-        orderIndex: blockIndex,
-        nextBlockId: block.connections[0]?.targetBlockId ?? null,
-        connections: block.connections.map((connection, connectionIndex) => ({
-          ...connection,
-          orderIndex: connectionIndex,
-        })),
-      })),
+      blocks: chapter.blocks.map((block, blockIndex) => {
+        const parsed = parseDrydockBlock({
+          ...block,
+          connections: block.connections,
+          nextBlockId: block.connections[0]?.targetBlockId ?? null,
+        });
+        if (!parsed.success) throw new Error(`Passage ${block.id} does not satisfy its Drydock publishing contract.`);
+        const canonical = runtimeCompatibilityProjection(parsed.block);
+        return {
+          id: block.id,
+          chapterId: chapter.id,
+          blockType: block.blockType,
+          title: block.title,
+          internalLabel: block.internalLabel,
+          configuration: canonical.configuration,
+          presentation: canonical.presentation,
+          completion: canonical.completion,
+          creatorNotes: null,
+          isEnabled: block.isEnabled,
+          schemaVersion: canonical.schemaVersion,
+          orderIndex: blockIndex,
+          nextBlockId: canonical.nextBlockId,
+          connections: canonical.connections.map((connection, connectionIndex) => ({
+            ...connection,
+            orderIndex: connectionIndex,
+          })),
+        };
+      }),
     })),
     assets: studio.assets.map((asset) => ({
       id: asset.id,
