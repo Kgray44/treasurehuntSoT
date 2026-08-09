@@ -326,7 +326,7 @@ test("Wakebook Phase 1 is private, bounded, historically stable, and normally re
     "Remembrance",
   ])
     await expect(page.getByRole("heading", { name: heading })).toBeVisible();
-  await expect(page.getByText("A shared Voyage artifact is never presented as personally owned")).toBeVisible();
+  await expect(page.getByText(/A shared Voyage artifact is never presented as personally owned/u)).toBeVisible();
   expect(
     (await new AxeBuilder({ page }).analyze()).violations.filter((item) =>
       ["serious", "critical"].includes(item.impact ?? ""),
