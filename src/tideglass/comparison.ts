@@ -359,9 +359,7 @@ function compareGraph(
 function uniqueUnsupported(items: readonly SemanticUnsupportedSection[]): SemanticUnsupportedSection[] {
   const map = new Map<string, SemanticUnsupportedSection>();
   for (const item of items) map.set(`${item.section}:${item.code}:${item.sourceSchemaVersion ?? ""}`, item);
-  return [...map.values()].sort((a, b) =>
-    compareCanonicalStrings(`${a.section}:${a.code}`, `${b.section}:${b.code}`),
-  );
+  return [...map.values()].sort((a, b) => compareCanonicalStrings(`${a.section}:${a.code}`, `${b.section}:${b.code}`));
 }
 
 function orderChanges(changes: ChronicleChangeRecord[], structuralOrder: ReadonlyMap<string, number>) {

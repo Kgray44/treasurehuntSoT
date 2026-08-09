@@ -139,9 +139,9 @@ describe("Tideglass matching and domain comparators", () => {
   it("orders stable identities without locale-dependent collation", () => {
     const entities = ["ä", "z", "a"].map<SemanticEntity>((id) => ({ id, entityType: "BLOCK", facts: [] }));
     const outcomes = matchEntities(entities, []);
-    expect(
-      outcomes.map((outcome) => (outcome.kind === "UNMATCHED_SOURCE" ? outcome.source.id : outcome.kind)),
-    ).toEqual(["a", "z", "ä"]);
+    expect(outcomes.map((outcome) => (outcome.kind === "UNMATCHED_SOURCE" ? outcome.source.id : outcome.kind))).toEqual(
+      ["a", "z", "ä"],
+    );
   });
 
   it("F09 classifies a new choice branch", () => {
