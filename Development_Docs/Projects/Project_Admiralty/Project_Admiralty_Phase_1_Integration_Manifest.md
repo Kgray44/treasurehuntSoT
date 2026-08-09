@@ -10,19 +10,20 @@ last_reviewed: 2026-08-09
 
 ## Source identity
 
-| Item                      | Value                                                       |
-| ------------------------- | ----------------------------------------------------------- |
-| Starting `origin/main`    | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                  |
-| Implementation checkpoint | `648d1068ee3007c303ac76ae3a3c68e137f73a0e`                  |
-| Reconciled `origin/main`  | `0ded9be4af04feb1785fd9e56abbacdd39f54b3d`                  |
-| Exact tested app source   | `49c2f59d6d75791edbdba84f22f5ec1595d2d129`                  |
-| Owner-observed source     | `750b904cfec013f0b6adec3d930caf5eeae9ec0b`                  |
-| Current-main merge anchor | `d91b8ffa97ee57d5acb5b07a0f50cbe1b56555f7`                  |
-| Integrated main source    | `fe5e18eb6312c2571616a8faf2dfe1c8583cbd9f`                  |
-| Worktree                  | `C:\Users\kkids\Documents\treasurehuntSoT-admiralty-phase1` |
-| Branch                    | `codex/project-admiralty-phase1-raise-the-colors`           |
-| Owner decision            | `ACCEPTED` on `2026-08-09`                                  |
-| Publication               | Accepted canonical main; local/remote parity `0/0`          |
+| Item                       | Value                                                       |
+| -------------------------- | ----------------------------------------------------------- |
+| Starting `origin/main`     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                  |
+| Implementation checkpoint  | `648d1068ee3007c303ac76ae3a3c68e137f73a0e`                  |
+| Reconciled `origin/main`   | `0ded9be4af04feb1785fd9e56abbacdd39f54b3d`                  |
+| Exact tested app source    | `49c2f59d6d75791edbdba84f22f5ec1595d2d129`                  |
+| Owner-observed source      | `750b904cfec013f0b6adec3d930caf5eeae9ec0b`                  |
+| Current-main merge anchor  | `d91b8ffa97ee57d5acb5b07a0f50cbe1b56555f7`                  |
+| Integrated main source     | `fe5e18eb6312c2571616a8faf2dfe1c8583cbd9f`                  |
+| Completion metadata source | `755589fef757604c1c743bbb572ae32217dfc12e`                  |
+| Worktree                   | `C:\Users\kkids\Documents\treasurehuntSoT-admiralty-phase1` |
+| Branch                     | `codex/project-admiralty-phase1-raise-the-colors`           |
+| Owner decision             | `ACCEPTED` on `2026-08-09`                                  |
+| Publication                | Accepted canonical main; local/remote parity `0/0`          |
 
 The non-destructive current-main merges retain Project Deepwater's accepted
 control plane through Phase 3, the current project-governance wave, governing
