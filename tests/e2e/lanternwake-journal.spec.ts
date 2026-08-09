@@ -1,12 +1,5 @@
-import {
-  expect,
-  request as playwrightRequest,
-  test,
-  type APIRequestContext,
-  type APIResponse,
-  type BrowserContext,
-  type Page,
-} from "@playwright/test";
+import { expect, type APIResponse, type BrowserContext, type Page } from "@playwright/test";
+import { phase3Test as test } from "./fixtures/lanternwake-phase3";
 import {
   PAGE_FLIP_DEVELOPMENT_FAILPOINT_GLOBAL,
   PAGE_TURN_LIFECYCLE_BROWSER_EVENT,
@@ -58,36 +51,6 @@ async function expectValidationIsolation(response: APIResponse) {
     `Refusing database mutation because ${response.url()} returned ${response.status()}: ${body}`,
   ).toBe(200);
   expect(JSON.parse(body)).toEqual({ validationDatabase: true, nonceMatch: true });
-}
-
-async function createCaptainRequestContext(baseURL: string) {
-  const bootstrap = await playwrightRequest.newContext({ baseURL });
-  try {
-    const loginBody = await expectOk(
-      await bootstrap.post("/api/gm/login", {
-        data: {
-          username: process.env.GM_USERNAME ?? "kato",
-          password: process.env.GM_PASSWORD ?? "development-captain-only",
-        },
-      }),
-    );
-    const { csrfToken } = JSON.parse(loginBody) as { csrfToken: string };
-    const storageState = await bootstrap.storageState();
-    expect(
-      storageState.cookies.some((cookie) => cookie.name === "wayfarer_account" && Boolean(cookie.value)),
-      "Captain login must issue the canonical account session before privileged requests continue.",
-    ).toBe(true);
-    return {
-      context: await playwrightRequest.newContext({
-        baseURL,
-        storageState,
-        extraHTTPHeaders: { "x-csrf-token": csrfToken },
-      }),
-      csrfToken,
-    };
-  } finally {
-    await bootstrap.dispose();
-  }
 }
 
 async function openInvitationWhenReady(page: Page, invitationLink: string) {
@@ -540,18 +503,15 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     "The unique voyage fixture mutates the isolated validation database once in Chromium; WebKit is explicitly skipped.",
   );
 
-  test.beforeAll(async ({ browser, browserName, baseURL }) => {
+  test.beforeAll(async ({ browser, browserName, baseURL, phase3Captain }) => {
     if (browserName !== "chromium") return;
     expect(baseURL, "Playwright must provide its isolated base URL.").toBeTruthy();
-    let captainContext: APIRequestContext | null = null;
     const playerContext = await browser.newContext({ baseURL });
     const playerPage = await playerContext.newPage();
 
     try {
-      const captainSession = await createCaptainRequestContext(baseURL!);
-      captainContext = captainSession.context;
-      const captain = captainSession.context;
-      const { csrfToken } = captainSession;
+      const captain = phase3Captain.context;
+      const { csrfToken } = phase3Captain;
       await expectValidationIsolation(await captain.get("/api/dev/validation/database-identity"));
       const libraryBody = await expectOk(await captain.get("/api/captain/library"));
       const library = JSON.parse(libraryBody) as CaptainLibrary;
@@ -603,7 +563,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
       expect(playerCookies.some((cookie) => cookie.name === "wayfarer_account")).toBe(true);
       expect(playerCookies.some((cookie) => cookie.name === "chronicle_player")).toBe(false);
     } finally {
-      await Promise.all([playerContext.close(), captainContext?.dispose()]);
+      await playerContext.close();
     }
   });
 
@@ -892,7 +852,10 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     });
   }
 
-  test("completed archive auto-opens quietly, remains read-only, and preserves replay", async ({ page }) => {
+  test("completed archive auto-opens quietly, remains read-only, and preserves replay", async ({
+    page,
+    phase3Captain,
+  }) => {
     const sessionPath = journalPath.replace("/player/playthroughs/", "/api/play/sessions/").replace("/journal", "");
     const sessionUrl = new URL(sessionPath, journalUrl).href;
     const readState = async () => {
@@ -922,21 +885,16 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     );
 
     const playthroughId = journalPath.split("/").at(-2)!;
-    const captainSession = await createCaptainRequestContext(new URL(journalUrl).origin);
-    try {
-      await expectOk(
-        await captainSession.context.post(`/api/captain/sessions/${playthroughId}`, {
-          headers: { "x-csrf-token": captainSession.csrfToken },
-          data: {
-            action: "approve",
-            reason: "Lanternwake completed archive profile",
-            idempotencyKey: `phase3-archive-approval-${crypto.randomUUID()}`,
-          },
-        }),
-      );
-    } finally {
-      await captainSession.context.dispose();
-    }
+    await expectOk(
+      await phase3Captain.context.post(`/api/captain/sessions/${playthroughId}`, {
+        headers: { "x-csrf-token": phase3Captain.csrfToken },
+        data: {
+          action: "approve",
+          reason: "Lanternwake completed archive profile",
+          idempotencyKey: `phase3-archive-approval-${crypto.randomUUID()}`,
+        },
+      }),
+    );
     for (const label of ["chapter-complete", "travel", "confirmation", "tale-complete"]) {
       await expectOk(
         await page.request.post(sessionUrl, {
