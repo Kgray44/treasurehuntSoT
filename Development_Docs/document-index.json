@@ -627,6 +627,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Deepwater/deepwater-phase3-config.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Deepwater/evidence/Project_Deepwater_Phase_1_Evidence_Index.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -634,6 +640,12 @@
     },
     {
       "path": "Development_Docs/Programs/Deepwater/evidence/Project_Deepwater_Phase_2_Evidence_Index.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/evidence/Project_Deepwater_Phase_3_Evidence_Index.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -675,7 +687,37 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Deepwater/phase-records/Project_Deepwater_Phase_3_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/phase-records/Project_Deepwater_Phase_3_Integration_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/phase-records/Project_Deepwater_Phase_3_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Deepwater/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/remediation/deepwater-phase3-slices.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/remediation/deepwater-phase3-slices.schema.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -741,6 +783,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_2_to_Phase_3_Delta_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_2_Trace_Queue.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -759,6 +807,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_3_Remediation_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_3_Utilization_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_4_Proof_Queue.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Deepwater/traces/capability-traces.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -766,6 +832,18 @@
     },
     {
       "path": "Development_Docs/Programs/Deepwater/traces/capability-traces.schema.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/utilization/deepwater-capability-utilization.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/utilization/deepwater-capability-utilization.schema.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
