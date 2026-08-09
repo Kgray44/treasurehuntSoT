@@ -21,7 +21,9 @@ invitation acceptance, a multi-voyage library, live waiting/runtime state,
 exact-version archives, personal history, and artifact custody projections.
 Captains can create version-pinned crew voyages, deliver individually hashed
 link/QR/code/PIN invitations, manage invitation lifecycle, preview the
-Player-safe surface, and launch accepted crews. Creator Studio retains
+Player-safe surface, and launch accepted crews. They may also explicitly join a
+Voyage as one ordinary Player on the same account; that membership stays
+independent from their Voyage-scoped Captain authority. Creator Studio retains
 immutable publishing and structured version comparison, restore-to-draft, and
 fork provenance.
 

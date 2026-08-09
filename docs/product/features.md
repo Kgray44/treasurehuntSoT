@@ -3,7 +3,7 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-08-08
+last_reviewed: 2026-08-09
 ---
 
 # Features and subfeatures
@@ -94,7 +94,17 @@ evidence, and an owned final walkthrough runtime. Owner Decision is
 
 ## Captain and Voyage operations
 
-**Audience:** Captains. **Availability:** available on main. Captain Library, Voyage creation, invitation management, session views, player preview, and live control foundations are available. [Guide](../user/captain-guide.md).
+**Audience:** Captains. **Availability:** current Captain foundations are
+available on main; Project Helm Phase 1 is branch-complete and not yet merged.
+Captain Library, Voyage creation, invitation management, session views, player
+preview, and live control foundations are available. The Helm candidate adds an
+explicit Captain-only or Captain + Player choice when a Voyage is created.
+Captain + Player uses the same account and one ordinary crew membership, keeps
+Captain authority separate, and opens the ordinary Player view without
+widening its story projection. Participation may be ended without removing
+Captain authority. Current acceptance is isolated and local; it is not mainline
+integration, deployment, or live-Voyage proof.
+[Guide](../user/captain-guide.md).
 
 ## Creator Studio and publishing
 

@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-08-08
+last_reviewed: 2026-08-09
 ---
 
 # Changelog
@@ -11,6 +11,15 @@ last_reviewed: 2026-08-08
 ## Unreleased
 
 ### Changed
+
+- Added Project Helm Phase 1 participating-Captain operation. Voyage creation
+  now defaults to Captain-only and offers an explicit Captain + Player mode
+  backed by exactly one ordinary same-account Player membership. Captain
+  authority and membership remain independently authorized and audited; Player
+  projection, history, artifacts, removal, and perspective switching follow the
+  existing Player contracts. No schema migration or second session system was
+  introduced. The acceptance boundary is governed isolated local evidence and
+  mainline source integration, not deployment or live-Voyage proof.
 
 - Anchored every Voyagewright-owned OAuth success and failure redirect to the
   exact configured `HOMEPORT_PUBLIC_APP_ORIGIN` rather than the internal request

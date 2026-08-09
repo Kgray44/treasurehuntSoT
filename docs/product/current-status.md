@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-08-08
+last_reviewed: 2026-08-09
 ---
 
 # Current status
@@ -16,6 +16,15 @@ Player/Captain/Creator flows, Studio editing and publishing, invitations,
 libraries, journals, profile and Passport surfaces, protected content, and
 animation presentation. Homeport reached main through protected PR #9; this is
 source integration, not deployment or owner acceptance.
+
+**Project Helm Phase 1 branch candidate:** Captain participation is explicit at
+Voyage creation. Captain-only remains the default; Captain + Player attaches
+exactly one ordinary Player membership to the same canonical account while
+keeping Voyage-scoped Captain authority independent. Player access, history,
+artifacts, and removal follow ordinary membership and event-time rules, and the
+Player view remains a Player-safe projection. Current evidence is isolated and
+local; mainline integration, deployment, live-Voyage behavior, and owner
+acceptance are not yet claimed.
 
 **Available on main and accepted on protected staging, not production deployed:**
 Google and GitHub application OAuth adds

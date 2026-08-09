@@ -2,6 +2,8 @@
 
 - `Governing/`: accepted policies and foundational specifications.
 - `Architecture_Decisions/`: durable technical decisions.
+- `Projects/`: governed project and phase records, including design, validation,
+  integration, and completion evidence.
 - `Programs/`: project records grouped by program.
 - `Validation/`: test plans, ledgers, audits, and validation evidence.
 - `Migrations/`: migration, rollback, and compatibility records.

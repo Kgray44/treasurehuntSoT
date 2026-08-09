@@ -3,7 +3,7 @@ title: Engineering records
 audience: engineering
 status: current
 canonical_for: engineering-records-index
-last_reviewed: 2026-08-08
+last_reviewed: 2026-08-09
 ---
 
 # Engineering records
@@ -24,6 +24,15 @@ protected PR #12. The owner accepted successful real Google and GitHub sign-in
 and sign-up through the protected staging experience with no internal-origin
 redirect. Automated protocol, security, lifecycle, and redirect-boundary proof
 also passed. See the [OAuth validation and completion record](Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md).
+
+## Project Helm
+
+[Project Helm](Projects/Project_Helm/README.md) governs Captain operations.
+Phase 1, **Take the Helm**, adds explicit Captain-only and Captain + Player
+participation while preserving one canonical account, ordinary Player
+membership, Voyage-scoped Captain authority, and Player-safe projection
+boundaries. Its repository records distinguish candidate validation from
+integrated-main acceptance and stop before Phase 2 operational intelligence.
 
 ## Engineering-record template
 
