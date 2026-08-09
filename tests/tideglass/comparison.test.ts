@@ -126,6 +126,24 @@ describe("Tideglass matching and domain comparators", () => {
     ]);
   });
 
+  it("does not let an explicit replacement consume a target with an exact stable-ID source", () => {
+    const replaced: SemanticEntity = { id: "a", entityType: "BLOCK", facts: [] };
+    const exactSource: SemanticEntity = { id: "b", entityType: "BLOCK", facts: [] };
+    const exactTarget: SemanticEntity = { id: "b", entityType: "BLOCK", facts: [] };
+    const outcomes = matchEntities([replaced, exactSource], [exactTarget], { a: "b" });
+    expect(outcomes.some((outcome) => outcome.kind === "EXPLICIT_REPLACEMENT")).toBe(false);
+    expect(outcomes).toContainEqual({ kind: "UNMATCHED_SOURCE", source: replaced });
+    expect(outcomes).toContainEqual({ kind: "EXACT_STABLE_ID", source: exactSource, target: exactTarget });
+  });
+
+  it("orders stable identities without locale-dependent collation", () => {
+    const entities = ["ä", "z", "a"].map<SemanticEntity>((id) => ({ id, entityType: "BLOCK", facts: [] }));
+    const outcomes = matchEntities(entities, []);
+    expect(
+      outcomes.map((outcome) => (outcome.kind === "UNMATCHED_SOURCE" ? outcome.source.id : outcome.kind)),
+    ).toEqual(["a", "z", "ä"]);
+  });
+
   it("F09 classifies a new choice branch", () => {
     const source = baseSnapshot();
     const target = clone(source);

@@ -4,6 +4,7 @@ import {
   canonicalJson,
   changeCategories,
   changeKinds,
+  compareCanonicalStrings,
   comparisonIdentity,
   emptyCategoryCounts,
   semanticDigest,
@@ -48,8 +49,9 @@ export function matchEntities(
   const targetMap = new Map(target.filter((entity) => !ambiguous.has(entity.id)).map((entity) => [entity.id, entity]));
   const outcomes: MatchOutcome[] = [...ambiguous].sort().map((identity) => ({ kind: "AMBIGUOUS", identity }));
   const consumedTargets = new Set<string>();
+  const exactTargetIds = new Set([...sourceMap.keys()].filter((identity) => targetMap.has(identity)));
 
-  for (const sourceEntity of [...sourceMap.values()].sort((a, b) => a.id.localeCompare(b.id))) {
+  for (const sourceEntity of [...sourceMap.values()].sort((a, b) => compareCanonicalStrings(a.id, b.id))) {
     const exact = targetMap.get(sourceEntity.id);
     if (exact) {
       consumedTargets.add(exact.id);
@@ -58,14 +60,14 @@ export function matchEntities(
     }
     const replacementId = replacements[sourceEntity.id];
     const replacement = replacementId ? targetMap.get(replacementId) : undefined;
-    if (replacement && !consumedTargets.has(replacement.id)) {
+    if (replacement && !exactTargetIds.has(replacement.id) && !consumedTargets.has(replacement.id)) {
       consumedTargets.add(replacement.id);
       outcomes.push({ kind: "EXPLICIT_REPLACEMENT", source: sourceEntity, target: replacement });
       continue;
     }
     outcomes.push({ kind: "UNMATCHED_SOURCE", source: sourceEntity });
   }
-  for (const targetEntity of [...targetMap.values()].sort((a, b) => a.id.localeCompare(b.id)))
+  for (const targetEntity of [...targetMap.values()].sort((a, b) => compareCanonicalStrings(a.id, b.id)))
     if (!consumedTargets.has(targetEntity.id)) outcomes.push({ kind: "UNMATCHED_TARGET", target: targetEntity });
   return outcomes;
 }
@@ -357,7 +359,9 @@ function compareGraph(
 function uniqueUnsupported(items: readonly SemanticUnsupportedSection[]): SemanticUnsupportedSection[] {
   const map = new Map<string, SemanticUnsupportedSection>();
   for (const item of items) map.set(`${item.section}:${item.code}:${item.sourceSchemaVersion ?? ""}`, item);
-  return [...map.values()].sort((a, b) => `${a.section}:${a.code}`.localeCompare(`${b.section}:${b.code}`));
+  return [...map.values()].sort((a, b) =>
+    compareCanonicalStrings(`${a.section}:${a.code}`, `${b.section}:${b.code}`),
+  );
 }
 
 function orderChanges(changes: ChronicleChangeRecord[], structuralOrder: ReadonlyMap<string, number>) {
@@ -370,12 +374,18 @@ function orderChanges(changes: ChronicleChangeRecord[], structuralOrder: Readonl
       (structuralOrder.get(aEntity) ?? Number.MAX_SAFE_INTEGER) -
         (structuralOrder.get(bEntity) ?? Number.MAX_SAFE_INTEGER) ||
       (categoryOrder.get(a.category) ?? 999) - (categoryOrder.get(b.category) ?? 999) ||
-      a.entityType.localeCompare(b.entityType) ||
-      aEntity.localeCompare(bEntity) ||
+      compareCanonicalStrings(a.entityType, b.entityType) ||
+      compareCanonicalStrings(aEntity, bEntity) ||
       (kindOrder.get(a.kind) ?? 999) - (kindOrder.get(b.kind) ?? 999) ||
-      a.evidence.semanticPath.localeCompare(b.evidence.semanticPath)
+      compareCanonicalStrings(a.evidence.semanticPath, b.evidence.semanticPath)
     );
   });
+}
+
+function hasUnavailableChronicleSemantics(snapshot: ChronicleSemanticSnapshot): boolean {
+  return snapshot.unsupportedSections.some(
+    (section) => section.section === "chronicle-semantics" && section.code === "SCHEMA_UNSUPPORTED",
+  );
 }
 
 export function compareSemanticSnapshots(
@@ -384,35 +394,38 @@ export function compareSemanticSnapshots(
   replacements: ExplicitReplacementMap = {},
 ): TideglassChangeSet {
   const pair: EditionPair = { chronicleId: source.edition.chronicleId, source: source.edition, target: target.edition };
-  const comparisonId = comparisonIdentity(source.edition.editionChecksum, target.edition.editionChecksum);
-  const changes: ChronicleChangeRecord[] = [
-    ...compareFacts(pair, comparisonId, "CHRONICLE", pair.chronicleId, source.metadata, target.metadata, "metadata"),
-    ...compareFacts(
-      pair,
-      comparisonId,
-      "CHRONICLE",
-      pair.chronicleId,
-      source.requirements,
-      target.requirements,
-      "requirements",
-    ),
-  ];
+  const comparisonId = comparisonIdentity(pair);
+  const changes: ChronicleChangeRecord[] = [];
   const unsupported: SemanticUnsupportedSection[] = [...source.unsupportedSections, ...target.unsupportedSections];
-  const sections: Array<[string, readonly SemanticEntity[], readonly SemanticEntity[]]> = [
-    ["chapters", source.structure.chapters, target.structure.chapters],
-    ["blocks", source.structure.blocks, target.structure.blocks],
-    ["artifacts", source.artifacts, target.artifacts],
-    ["locations", source.world.locations, target.world.locations],
-    ["media", source.media, target.media],
-  ];
-  for (const [name, before, after] of sections) {
-    const result = compareEntitySection(pair, comparisonId, name, before, after, replacements);
-    changes.push(...result.changes);
-    unsupported.push(...result.unsupported);
+  if (!hasUnavailableChronicleSemantics(source) && !hasUnavailableChronicleSemantics(target)) {
+    changes.push(
+      ...compareFacts(pair, comparisonId, "CHRONICLE", pair.chronicleId, source.metadata, target.metadata, "metadata"),
+      ...compareFacts(
+        pair,
+        comparisonId,
+        "CHRONICLE",
+        pair.chronicleId,
+        source.requirements,
+        target.requirements,
+        "requirements",
+      ),
+    );
+    const sections: Array<[string, readonly SemanticEntity[], readonly SemanticEntity[]]> = [
+      ["chapters", source.structure.chapters, target.structure.chapters],
+      ["blocks", source.structure.blocks, target.structure.blocks],
+      ["artifacts", source.artifacts, target.artifacts],
+      ["locations", source.world.locations, target.world.locations],
+      ["media", source.media, target.media],
+    ];
+    for (const [name, before, after] of sections) {
+      const result = compareEntitySection(pair, comparisonId, name, before, after, replacements);
+      changes.push(...result.changes);
+      unsupported.push(...result.unsupported);
+    }
+    const graph = compareGraph(pair, comparisonId, source.structure.graph.edges, target.structure.graph.edges);
+    changes.push(...graph.changes);
+    unsupported.push(...graph.unsupported);
   }
-  const graph = compareGraph(pair, comparisonId, source.structure.graph.edges, target.structure.graph.edges);
-  changes.push(...graph.changes);
-  unsupported.push(...graph.unsupported);
 
   const order = new Map<string, number>();
   [
@@ -495,8 +508,7 @@ export function diagnosticProjection(result: TideglassComparisonResult): Tidegla
 export type TideglassPublicSafeFoundationProjection = {
   comparisonId: string;
   status: TideglassChangeSet["status"];
-  changeCount: number;
-  categoryCounts: TideglassChangeSet["categoryCounts"];
+  safeChangeCount: number;
   previewSafe: Array<{ category: ChronicleChangeCategory; kind: ChronicleChangeKind; count: number }>;
   hasWithheldChanges: boolean;
 };
@@ -519,9 +531,10 @@ export function publicSafeFoundationProjection(
   return {
     comparisonId: result.changeSet.comparisonId,
     status: result.changeSet.status,
-    changeCount: result.changeSet.changes.length,
-    categoryCounts: result.changeSet.categoryCounts,
-    previewSafe: [...safe.values()].sort((a, b) => `${a.category}:${a.kind}`.localeCompare(`${b.category}:${b.kind}`)),
+    safeChangeCount: [...safe.values()].reduce((total, item) => total + item.count, 0),
+    previewSafe: [...safe.values()].sort((a, b) =>
+      compareCanonicalStrings(`${a.category}:${a.kind}`, `${b.category}:${b.kind}`),
+    ),
     hasWithheldChanges,
   };
 }

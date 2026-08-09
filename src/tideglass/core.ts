@@ -275,10 +275,24 @@ export function semanticDigest(value: unknown): string {
   return sha256(canonicalJson(value));
 }
 
-export function comparisonIdentity(sourceChecksum: string, targetChecksum: string): string {
+/**
+ * Canonical string ordering must not depend on the host locale or ICU build.
+ * JavaScript relational comparison is defined over UTF-16 code units and is
+ * therefore byte-stable for the same input strings on every supported host.
+ */
+export function compareCanonicalStrings(left: string, right: string): number {
+  return left < right ? -1 : left > right ? 1 : 0;
+}
+
+export function comparisonIdentity(pair: EditionPair): string {
   return semanticDigest({
-    sourceEditionChecksum: sourceChecksum,
-    targetEditionChecksum: targetChecksum,
+    chronicleId: pair.chronicleId,
+    sourceEditionId: pair.source.editionId,
+    sourceEditionChecksum: pair.source.editionChecksum,
+    sourceSchemaVersion: pair.source.sourceSchemaVersion,
+    targetEditionId: pair.target.editionId,
+    targetEditionChecksum: pair.target.editionChecksum,
+    targetSchemaVersion: pair.target.sourceSchemaVersion,
     semanticSchemaVersion: TIDEGLASS_SEMANTIC_SCHEMA_VERSION,
     comparisonPolicyVersion: TIDEGLASS_COMPARISON_POLICY_VERSION,
   });

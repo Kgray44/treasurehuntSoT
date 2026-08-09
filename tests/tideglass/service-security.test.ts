@@ -145,7 +145,8 @@ describe("Tideglass service authorization, integrity, and projection boundaries"
     );
     if (!result.ok) throw new Error(result.code);
     const diagnostic = JSON.stringify(diagnosticProjection(result.value));
-    const publicSafe = JSON.stringify(publicSafeFoundationProjection(result.value));
+    const publicSafeProjection = publicSafeFoundationProjection(result.value);
+    const publicSafe = JSON.stringify(publicSafeProjection);
     for (const sentinel of [
       "STORAGE_KEY_SENTINEL",
       "SECRET_ANSWER_SENTINEL",
@@ -158,6 +159,10 @@ describe("Tideglass service authorization, integrity, and projection boundaries"
     }
     expect(publicSafe).not.toContain("block-secret-answer");
     expect(publicSafe).not.toContain("semanticPath");
+    expect(publicSafeProjection.safeChangeCount).toBe(0);
+    expect(publicSafeProjection.hasWithheldChanges).toBe(true);
+    expect(publicSafeProjection).not.toHaveProperty("changeCount");
+    expect(publicSafeProjection).not.toHaveProperty("categoryCounts");
   });
 
   it("reports unsupported schemas honestly as a partial safe-anchor comparison", async () => {

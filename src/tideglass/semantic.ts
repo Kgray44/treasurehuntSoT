@@ -4,6 +4,7 @@ import {
   TIDEGLASS_LIMITS,
   TIDEGLASS_SEMANTIC_SCHEMA_VERSION,
   canonicalJson,
+  compareCanonicalStrings,
   failure,
   type ChangeSignificance,
   type ChronicleChangeCategory,
@@ -145,7 +146,9 @@ function fact(
 }
 
 function definedFacts(values: Array<SemanticFact | null | undefined>): SemanticFact[] {
-  return values.filter((item): item is SemanticFact => Boolean(item)).sort((a, b) => a.path.localeCompare(b.path));
+  return values
+    .filter((item): item is SemanticFact => Boolean(item))
+    .sort((a, b) => compareCanonicalStrings(a.path, b.path));
 }
 
 const presentationKeys = new Set([
@@ -304,7 +307,9 @@ function blockFacts(block: z.infer<typeof blockSchema>, unsupported: SemanticUns
   if (block.internalLabel)
     facts.push(fact("internalLabel", block.internalLabel, "PRESENTATION_METADATA", "MINOR", "CREATOR_ONLY"));
   for (const key of [...allowed].sort()) {
-    const value = block.configuration[key] ?? definition.defaultConfiguration[key];
+    const value = Object.prototype.hasOwnProperty.call(block.configuration, key)
+      ? block.configuration[key]
+      : definition.defaultConfiguration[key];
     if (value === undefined) continue;
     const detail = classification(block.blockType, key, value);
     facts.push(
@@ -317,11 +322,11 @@ function blockFacts(block: z.infer<typeof blockSchema>, unsupported: SemanticUns
       ),
     );
   }
-  for (const [key, value] of Object.entries(block.presentation).sort(([a], [b]) => a.localeCompare(b))) {
+  for (const [key, value] of Object.entries(block.presentation).sort(([a], [b]) => compareCanonicalStrings(a, b))) {
     const detail = classification(block.blockType, key, value);
     facts.push(fact(`presentation.${key}`, value, detail.category, detail.significance, detail.spoiler));
   }
-  for (const [key, value] of Object.entries(block.completion).sort(([a], [b]) => a.localeCompare(b))) {
+  for (const [key, value] of Object.entries(block.completion).sort(([a], [b]) => compareCanonicalStrings(a, b))) {
     const detail = classification(block.blockType, key, value);
     facts.push(fact(`completion.${key}`, value, "COMPLETION", detail.significance, "CAPTAIN_ONLY"));
   }
@@ -359,6 +364,14 @@ function countAndLimit(snapshot: SnapshotV1): boolean {
     snapshot.artifacts.length <= TIDEGLASS_LIMITS.artifacts &&
     snapshot.locations.length <= TIDEGLASS_LIMITS.locations
   );
+}
+
+function stableEntityIdentity(record: Record<string, unknown>): string | null {
+  for (const key of ["id", "legacyKey"] as const) {
+    const value = record[key];
+    if (typeof value === "string" && value.length > 0) return value;
+  }
+  return null;
 }
 
 function canonicalizeV1(
@@ -484,7 +497,7 @@ function canonicalizeV1(
             processingState: variant.processingState,
             ...(variant.checksum ? { checksum: variant.checksum } : {}),
           }))
-          .sort((a, b) => `${a.role}:${a.id}`.localeCompare(`${b.role}:${b.id}`)),
+          .sort((a, b) => compareCanonicalStrings(`${a.role}:${a.id}`, `${b.role}:${b.id}`)),
         "MEDIA",
         "MEANINGFUL",
         "PREVIEW_SAFE",
@@ -492,69 +505,81 @@ function canonicalizeV1(
     ]),
   }));
 
-  const artifacts: SemanticEntity[] = raw.artifacts.map((artifact, index) => ({
-    id: String(artifact.id ?? artifact.legacyKey ?? `invalid-artifact-${index}`),
-    entityType: "ARTIFACT",
-    order: typeof artifact.sortOrder === "number" ? artifact.sortOrder : index,
-    semanticType: typeof artifact.inventoryCategory === "string" ? artifact.inventoryCategory : undefined,
-    facts: entityFacts(
-      artifact,
-      [
-        "name",
-        "shortDescription",
-        "loreDescription",
-        "ordinaryGameObjectLabel",
-        "artworkAssetId",
-        "revealVideoAssetId",
-        "modelAssetId",
-        "inventoryCategory",
-        "collectionGroup",
-        "safeName",
-        "silhouetteLabel",
-        "assemblyPosition",
-        "connectedArtifactKey",
-        "sourceChapterOrdinal",
-        "persistentAfterUnlock",
-      ],
-      "ARTIFACT",
-    ),
-  }));
-  const locations: SemanticEntity[] = raw.locations.map((location, index) => ({
-    id: String(location.id ?? location.legacyKey ?? `invalid-location-${index}`),
-    entityType: "LOCATION",
-    order: typeof location.orderIndex === "number" ? location.orderIndex : index,
-    semanticType: typeof location.locationType === "string" ? location.locationType : undefined,
-    facts: entityFacts(
-      location,
-      [
-        "name",
-        "slug",
-        "region",
-        "generalDescription",
-        "playerFacingDescription",
-        "mapAssetId",
-        "displayAssetId",
-        "referenceCollectionId",
-        "locationType",
-        "safeLabel",
-        "exactness",
-        "mapX",
-        "mapY",
-        "mobileMapX",
-        "mobileMapY",
-        "verificationProfile",
-      ],
-      "LOCATION_AND_MAP",
-    ),
-  }));
+  const artifacts: SemanticEntity[] = raw.artifacts.flatMap((artifact, index) => {
+    const id = stableEntityIdentity(artifact);
+    if (!id) return [];
+    return [
+      {
+        id,
+        entityType: "ARTIFACT" as const,
+        order: typeof artifact.sortOrder === "number" ? artifact.sortOrder : index,
+        semanticType: typeof artifact.inventoryCategory === "string" ? artifact.inventoryCategory : undefined,
+        facts: entityFacts(
+          artifact,
+          [
+            "name",
+            "shortDescription",
+            "loreDescription",
+            "ordinaryGameObjectLabel",
+            "artworkAssetId",
+            "revealVideoAssetId",
+            "modelAssetId",
+            "inventoryCategory",
+            "collectionGroup",
+            "safeName",
+            "silhouetteLabel",
+            "assemblyPosition",
+            "connectedArtifactKey",
+            "sourceChapterOrdinal",
+            "persistentAfterUnlock",
+          ],
+          "ARTIFACT",
+        ),
+      },
+    ];
+  });
+  const locations: SemanticEntity[] = raw.locations.flatMap((location, index) => {
+    const id = stableEntityIdentity(location);
+    if (!id) return [];
+    return [
+      {
+        id,
+        entityType: "LOCATION" as const,
+        order: typeof location.orderIndex === "number" ? location.orderIndex : index,
+        semanticType: typeof location.locationType === "string" ? location.locationType : undefined,
+        facts: entityFacts(
+          location,
+          [
+            "name",
+            "slug",
+            "region",
+            "generalDescription",
+            "playerFacingDescription",
+            "mapAssetId",
+            "displayAssetId",
+            "referenceCollectionId",
+            "locationType",
+            "safeLabel",
+            "exactness",
+            "mapX",
+            "mapY",
+            "mobileMapX",
+            "mobileMapY",
+            "verificationProfile",
+          ],
+          "LOCATION_AND_MAP",
+        ),
+      },
+    ];
+  });
 
-  if (raw.artifacts.some((artifact) => typeof artifact.id !== "string" && typeof artifact.legacyKey !== "string"))
+  if (raw.artifacts.some((artifact) => !stableEntityIdentity(artifact)))
     unsupportedSections.push({
       section: "artifacts",
       code: "INVALID_SECTION",
       detail: "Artifact identity is unavailable.",
     });
-  if (raw.locations.some((location) => typeof location.id !== "string" && typeof location.legacyKey !== "string"))
+  if (raw.locations.some((location) => !stableEntityIdentity(location)))
     unsupportedSections.push({
       section: "locations",
       code: "INVALID_SECTION",
@@ -575,7 +600,7 @@ function canonicalizeV1(
       accessibility: [],
       requirements,
       unsupportedSections: unsupportedSections.sort((a, b) =>
-        `${a.section}:${a.code}`.localeCompare(`${b.section}:${b.code}`),
+        compareCanonicalStrings(`${a.section}:${a.code}`, `${b.section}:${b.code}`),
       ),
       normalizationAdapters: [adapter],
     },

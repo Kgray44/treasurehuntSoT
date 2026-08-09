@@ -128,6 +128,46 @@ describe("Tideglass contracts and canonicalization", () => {
     expect(result.changes.some((change) => change.evidence.semanticPath === "metadata.title")).toBe(true);
   });
 
+  it("does not infer removals or additions when either Chronicle semantic schema is wholly unavailable", () => {
+    const unsupported = { schemaVersion: 99, unknowable: "PRIVATE_UNKNOWN_SENTINEL" };
+    const result = compareSemanticSnapshots(
+      semantic(baseSnapshot(), "edition-current", "checksum-current", 1),
+      semantic(unsupported, "edition-unknown", "checksum-unknown", 99),
+    );
+    expect(result.status).toBe("PARTIAL");
+    expect(result.changes).toEqual([]);
+    expect(result.unsupportedSections).toContainEqual(
+      expect.objectContaining({ section: "chronicle-semantics", code: "SCHEMA_UNSUPPORTED" }),
+    );
+    expect(JSON.stringify(result)).not.toContain("PRIVATE_UNKNOWN_SENTINEL");
+  });
+
+  it("reports missing artifact and location identity without inventing index-based matches", () => {
+    const source = baseSnapshot();
+    source.artifacts = [{ name: "Identity unavailable", persistentAfterUnlock: true }];
+    source.locations = [{ name: "Identity unavailable", region: "Synthetic" }];
+    const target = clone(source);
+    target.artifacts[0].name = "Changed but still unidentified";
+    target.locations[0].name = "Changed but still unidentified";
+    const result = compareSemanticSnapshots(semantic(source, "edition-a"), semantic(target, "edition-b"));
+    expect(result.status).toBe("PARTIAL");
+    expect(result.unsupportedSections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ section: "artifacts", code: "INVALID_SECTION" }),
+        expect.objectContaining({ section: "locations", code: "INVALID_SECTION" }),
+      ]),
+    );
+    expect(result.changes.some((change) => ["ARTIFACT", "LOCATION"].includes(change.entityType))).toBe(false);
+  });
+
+  it("preserves an explicit null configuration value instead of replacing it with a default", () => {
+    const snapshot = baseSnapshot();
+    (snapshot.chapters[0].blocks[0].configuration as Record<string, unknown>).heading = null;
+    const normalized = semantic(snapshot, "edition-null");
+    const heading = normalized.structure.blocks[0].facts.find((item) => item.path === "configuration.heading");
+    expect(heading?.value).toBeNull();
+  });
+
   it("rejects malformed current snapshots with a bounded contract failure", () => {
     const result = canonicalizePublishedSnapshot(
       '{"schemaVersion":1,"chapters":"invalid"}',
@@ -144,6 +184,19 @@ describe("Tideglass contracts and canonicalization", () => {
     );
     expect(result.semanticSchemaVersion).toBe(TIDEGLASS_SEMANTIC_SCHEMA_VERSION);
     expect(result.comparisonPolicyVersion).toBe(TIDEGLASS_COMPARISON_POLICY_VERSION);
+  });
+
+  it("binds comparison identity to the exact Chronicle and edition anchors, not checksums alone", () => {
+    const snapshot = baseSnapshot();
+    const first = compareSemanticSnapshots(
+      semantic(snapshot, "edition-source", "shared-source-checksum"),
+      semantic(snapshot, "edition-target-a", "shared-target-checksum"),
+    );
+    const second = compareSemanticSnapshots(
+      semantic(snapshot, "edition-source", "shared-source-checksum"),
+      semantic(snapshot, "edition-target-b", "shared-target-checksum"),
+    );
+    expect(second.comparisonId).not.toBe(first.comparisonId);
   });
 
   it("F26 keeps canonical output byte-stable under shuffled property and set-like input order", () => {
