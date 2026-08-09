@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `cf08ed0954e0bfd8279229604d3bec5c1beea4ae`
+Audited source commit: `9937af957c1c92c9767b4255705a17f3e189904b`
 
 ## Status vocabulary
 
@@ -136,7 +136,7 @@ Captains assemble exact-edition crews through individualized invitations with au
 
 ### Primary surfaces
 
-`/join`, `/player`
+`/join/[token]`, `/player/invitation`, `/player/library`
 
 ### Evidence
 
@@ -396,7 +396,7 @@ A Player-safe Journal represents active and historical Chronicles with physical 
 
 ### Primary surfaces
 
-`/player/voyages/[id]`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -422,7 +422,7 @@ The Player chart presents safe geography, progression, revealed routes, and curr
 
 ### Primary surfaces
 
-`/player/voyages/[id]/chart`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -448,7 +448,7 @@ Awarded artifacts have authoritative reveal, inspection, collection, and fallbac
 
 ### Primary surfaces
 
-`/player/voyages/[id]/treasure`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -474,7 +474,7 @@ Optional Chronicle branches retain independent discovery, progression, reward, a
 
 ### Primary surfaces
 
-`/player/voyages/[id]/ledger`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -500,7 +500,7 @@ A readable, filterable, Player-safe event history records the Voyage's ordered n
 
 ### Primary surfaces
 
-`/player/voyages/[id]/log`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -526,7 +526,7 @@ The finale has explicit protected release states and replay behavior that never 
 
 ### Primary surfaces
 
-`/player/voyages/[id]/finale`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -552,7 +552,7 @@ Authenticated event delivery separates durable server replay from observed and a
 
 ### Primary surfaces
 
-`/api/player/events`, `/player`
+`/api/player/[campaignSlug]/events`, `/api/player/[campaignSlug]/presence`, `/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -1306,4 +1306,4 @@ A read-only authority compares exact immutable Chronicle editions through determ
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `cf08ed0954e0bfd8279229604d3bec5c1beea4ae`
+Generation source commit: `9937af957c1c92c9767b4255705a17f3e189904b`
