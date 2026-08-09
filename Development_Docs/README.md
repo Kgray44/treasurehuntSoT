@@ -29,6 +29,10 @@ also passed. See the [OAuth validation and completion record](Validation/Voyagew
 
 [Project Deepwater](Programs/Deepwater/README.md) governs product capability-realization and systems-audit truth. Phase 1, Sound the Depths, establishes the deterministic capability ledger, schema, ownership map, initial findings, Feature Catalog reconciliation, Phase 2 trace queue, and validation control plane without changing product behavior or schema. Its classifications and maturity rungs are evidence-bound: source existence, local or synthetic validation, staging access, external-provider proof, deployment, and owner acceptance remain distinct.
 
+## Project Wakebook
+
+Project Wakebook governs the private Living Journey Archive over accepted Wayfarer history. Phase 1, Open the Wake, is currently under implementation from the frozen [design record](Project_Wakebook_Phase_1_Design_Record.md), [current-history audit](Project_Wakebook_Phase_1_Current_History_Audit.md), [test plan](Project_Wakebook_Phase_1_Test_Plan.md), [mainline-safety record](Project_Wakebook_Phase_1_Mainline_Safety_Record.md), and [integration manifest](Project_Wakebook_Phase_1_Integration_Manifest.md). These records authorize no schema change, no duplicate history authority, no Phase 2 behavior, and no owner-acceptance claim.
+
 ## Engineering-record template
 
 Include title, program, phase, record type, status, authority, date, base, scope, decisions, evidence, limitations, supersession, and related records. Do not rewrite historic PDFs solely to fit this template.
