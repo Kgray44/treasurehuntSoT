@@ -1,0 +1,194 @@
+{
+  "classification": "SYNTHETIC_NO_PRIVATE_CONTENT",
+  "fixtures": [
+    {
+      "authoredChecksum": "e6dda5cedbe3e283cf06500d1bb8979155d5df6d696848883a87f7701ca2e7c9",
+      "blockType": "narrative",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.narrative.v1-to-v2",
+      "fixtureId": "drydock-fixture-narrative-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "d374162b22cbbdca3b43894e047e0425b04d1370b6c2653daa7a824468df08c0",
+      "blockType": "captainsNote",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.captainsNote.v1-to-v2",
+      "fixtureId": "drydock-fixture-captainsNote-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "e66bc2a204c14516975bed4e87d8b214e81ab17749931e98b3e1952bf7b89235",
+      "blockType": "riddle",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.riddle.v1-to-v2",
+      "fixtureId": "drydock-fixture-riddle-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "d1add600167017bf0d78cba727a6c325205d4c20ed57f5ac081f6f2a862dff38",
+      "blockType": "information",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.information.v1-to-v2",
+      "fixtureId": "drydock-fixture-information-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "4bee07d747f66e495d537f33a118d91460eba84ffe4f7e187d6fdcd0b296df0e",
+      "blockType": "travelDirection",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.travelDirection.v1-to-v2",
+      "fixtureId": "drydock-fixture-travelDirection-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "1e9347a8babb11e5180cf72df7de92f95050148e7590aaf5f684c041f4f8cd60",
+      "blockType": "location",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.location.v1-to-v2",
+      "fixtureId": "drydock-fixture-location-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "370c69195c18403c1d242bd653373e732919102eb3e0eb00e6e8d5e705d36b71",
+      "blockType": "arrivalCheck",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.arrivalCheck.v1-to-v2",
+      "fixtureId": "drydock-fixture-arrivalCheck-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "f12cf132e35875829b394ace858e637e5ad08d72a8e815dd6d399239e602eb1e",
+      "blockType": "image",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.image.v1-to-v2",
+      "fixtureId": "drydock-fixture-image-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "e598f22746862dcd8821a011a7d9f7a4133d1541b186fe12deddc542a681c79a",
+      "blockType": "imageTransformation",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.imageTransformation.v1-to-v2",
+      "fixtureId": "drydock-fixture-imageTransformation-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "fc642af47525f2169a370979fea5dbcfa2f96fd6b7fab230a0e10b4b3d411525",
+      "blockType": "cinematic",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.cinematic.v1-to-v2",
+      "fixtureId": "drydock-fixture-cinematic-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "e1032d60962050179cee2753342ee7984f131e5dfefb8cee3e07643e9bf44b07",
+      "blockType": "audio",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.audio.v1-to-v2",
+      "fixtureId": "drydock-fixture-audio-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "f10c1ac10a1386f361d4cc7ef20994b3e983b69982997a720478f8a225b2cdc2",
+      "blockType": "artifactReveal",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.artifactReveal.v1-to-v2",
+      "fixtureId": "drydock-fixture-artifactReveal-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "bbf6f2550443a3d9cd8b47ad0f53063d6be0687dad8d93692ba60b904edda997",
+      "blockType": "hiddenMessageReveal",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.hiddenMessageReveal.v1-to-v2",
+      "fixtureId": "drydock-fixture-hiddenMessageReveal-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "954a91a158dc2228ad9b07ea94af9295360bca1bf6d1a63ff142ee6f12bbba84",
+      "blockType": "collectionUpdate",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.collectionUpdate.v1-to-v2",
+      "fixtureId": "drydock-fixture-collectionUpdate-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "201f290119065a979a62975ceb6581a0b3248d894dc429bcf5d3a432129cd73d",
+      "blockType": "confirmation",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.confirmation.v1-to-v2",
+      "fixtureId": "drydock-fixture-confirmation-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "bb321a6541a1a52bf91eb35d4c6de54de12f0f749a6094c8c22fdbcc692c15c9",
+      "blockType": "choice",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.choice.v1-to-v2",
+      "fixtureId": "drydock-fixture-choice-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "cf9fe0f97f8d32ff9b201dbcd253f8c6d4c149751735f604f02d5dba80be2e91",
+      "blockType": "textAnswer",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.textAnswer.v1-to-v2",
+      "fixtureId": "drydock-fixture-textAnswer-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "f3b10e486e0360826882b5310d82646bf311a3e3c205601e50510c62fb1083b3",
+      "blockType": "captainApproval",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.captainApproval.v1-to-v2",
+      "fixtureId": "drydock-fixture-captainApproval-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "0e7049eda8fe97aa59b2109a0ecec71304535d7cbc1a15409a9a37d9c6fe7f2f",
+      "blockType": "wait",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.wait.v1-to-v2",
+      "fixtureId": "drydock-fixture-wait-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "cd4a9e20dc218d4b486b81187c1e9df1666a4ec6d192fa0853c1c2c25a1bf4d8",
+      "blockType": "condition",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.condition.v1-to-v2",
+      "fixtureId": "drydock-fixture-condition-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "564a9fba15065d79abf3a94f1e66ba6ac7e559fcab4d2d736e8eee64a495a02d",
+      "blockType": "setVariable",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.setVariable.v1-to-v2",
+      "fixtureId": "drydock-fixture-setVariable-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "c8df55af1a8a49513a59882be237e630b945cbe103a56d11878f07b4bda02983",
+      "blockType": "chapterComplete",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.chapterComplete.v1-to-v2",
+      "fixtureId": "drydock-fixture-chapterComplete-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "0524bf7eaec2132c51334454ddc35b1e6716b5a5636919c9e2d92070113d75bf",
+      "blockType": "taleComplete",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.taleComplete.v1-to-v2",
+      "fixtureId": "drydock-fixture-taleComplete-v1",
+      "sourceSchemaVersion": 1
+    }
+  ],
+  "fixtureSetId": "drydock-current-authoring-v1",
+  "frozenAt": "2026-08-09",
+  "immutablePublishedSnapshotsRewritten": false,
+  "schemaVersion": 1,
+  "sourcePath": "tests/fixtures/drydock/current-authoring-v1.json"
+}

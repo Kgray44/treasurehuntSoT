@@ -31,6 +31,13 @@
       "critical": true
     },
     {
+      "id": "drydock-authoring-contracts",
+      "name": "Drydock typed Story Block authoring and compatibility contracts",
+      "authority": "drydock",
+      "owners": ["drydock", "one-voyage"],
+      "critical": true
+    },
+    {
       "id": "wayfarer-history-projection",
       "name": "Wayfarer history projection",
       "authority": "wayfarer",

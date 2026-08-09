@@ -88,9 +88,14 @@
     {
       "id": "drydock",
       "project": "drydock",
-      "sourcePaths": ["src/chronicle/**"],
-      "testPaths": ["src/chronicle/**/*.test.*"],
-      "contractIds": ["drydock-progression"]
+      "sourcePaths": [
+        "src/drydock/**",
+        "src/chronicle/**",
+        "scripts/drydock/**",
+        "Development_Docs/Projects/Project Drydock/**"
+      ],
+      "testPaths": ["src/drydock/**/*.test.*", "src/chronicle/**/*.test.*"],
+      "contractIds": ["drydock-authoring-contracts", "drydock-progression"]
     },
     {
       "id": "project-deepwater",

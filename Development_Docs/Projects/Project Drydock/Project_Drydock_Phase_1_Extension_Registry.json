@@ -1,0 +1,11 @@
+{
+  "extensions": [
+    {
+      "activation": "PRESERVE_INACTIVE",
+      "namespace": "voyagewright.compatibility",
+      "owner": "Project Drydock",
+      "version": 1
+    }
+  ],
+  "schemaVersion": 1
+}

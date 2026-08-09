@@ -40,6 +40,7 @@ function isHelmFile(file) {
 
 function ownerFor(file) {
   if (isHelmFile(file)) return "project-helm";
+  if (file.includes("drydock")) return "drydock";
   if (file.includes("admiralty")) return "project-admiralty";
   if (file.includes("tideglass")) return "tideglass";
   if (file.includes("deepwater")) return "project-deepwater";
@@ -55,6 +56,7 @@ function ownerFor(file) {
 
 function unitFamily(file) {
   if (isHelmFile(file)) return "unit.helm";
+  if (file.startsWith("src/drydock/") || file.startsWith("scripts/drydock/")) return "unit.drydock";
   if (file.startsWith("src/admiralty/") || file.startsWith("scripts/admiralty/")) return "unit.admiralty";
   if (file.startsWith("src/tideglass/") || file.startsWith("scripts/tideglass/") || file.startsWith("tests/tideglass/"))
     return "unit.tideglass";
@@ -131,6 +133,7 @@ function browserFamily(project, file, title) {
 function contractFor(file, family) {
   if (isHelmFile(file) || family === "unit.helm" || family === "component.helm" || family === "browser.helm")
     return helmContracts;
+  if (file.includes("drydock") || family === "unit.drydock") return ["drydock-authoring-contracts"];
   if (file.includes("admiralty") || family.includes("admiralty")) return admiraltyContracts;
   if (file.includes("tideglass") || family === "unit.tideglass")
     return [
@@ -154,7 +157,7 @@ function contractFor(file, family) {
 
 function metadata(file, family, browser = null) {
   const privateOrCommunity =
-    /admiralty|deepwater|homeport|private-content|community|wayfarer|passport|invitation|session/u.test(file);
+    /admiralty|drydock|deepwater|homeport|private-content|community|wayfarer|passport|invitation|session/u.test(file);
   const high = privateOrCommunity || Boolean(browser);
   const ui = Boolean(browser) || file.endsWith(".tsx");
   return {

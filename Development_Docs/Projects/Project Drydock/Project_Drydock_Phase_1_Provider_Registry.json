@@ -1,0 +1,103 @@
+{
+  "providers": [
+    {
+      "captainOverride": "SUPPORTED",
+      "faultModes": [],
+      "id": "captainManual",
+      "outcomes": ["approved", "rejected"],
+      "owner": "Project One Voyage",
+      "privacyClass": "PUBLIC_STATE",
+      "requiresFallback": false,
+      "retryPolicy": "CAPTAIN_CONTROLLED",
+      "runtimeCapability": "captain.manual-completion",
+      "simulatorCapability": "NOT_IMPLEMENTED_PHASE_1",
+      "state": "AVAILABLE",
+      "version": 1
+    },
+    {
+      "captainOverride": "NOT_APPLICABLE",
+      "faultModes": [],
+      "id": "playerConfirmation",
+      "outcomes": ["confirmed"],
+      "owner": "Project One Voyage",
+      "privacyClass": "PUBLIC_STATE",
+      "requiresFallback": false,
+      "retryPolicy": "NONE",
+      "runtimeCapability": "player.confirmation",
+      "simulatorCapability": "NOT_IMPLEMENTED_PHASE_1",
+      "state": "AVAILABLE",
+      "version": 1
+    },
+    {
+      "captainOverride": "SUPPORTED",
+      "faultModes": [],
+      "id": "textAnswer",
+      "outcomes": ["match", "notMatch"],
+      "owner": "Project One Voyage",
+      "privacyClass": "PRIVATE_EVIDENCE",
+      "requiresFallback": false,
+      "retryPolicy": "CREATOR_DECLARED",
+      "runtimeCapability": "answer.server-validation",
+      "simulatorCapability": "NOT_IMPLEMENTED_PHASE_1",
+      "state": "AVAILABLE",
+      "version": 1
+    },
+    {
+      "captainOverride": "SUPPORTED",
+      "faultModes": [],
+      "id": "timer",
+      "outcomes": ["elapsed", "captainSkipped"],
+      "owner": "Project One Voyage",
+      "privacyClass": "PUBLIC_STATE",
+      "requiresFallback": false,
+      "retryPolicy": "NONE",
+      "runtimeCapability": "timer.elapsed",
+      "simulatorCapability": "NOT_IMPLEMENTED_PHASE_1",
+      "state": "AVAILABLE",
+      "version": 1
+    },
+    {
+      "captainOverride": "REQUIRED",
+      "faultModes": ["providerUnavailable", "permissionDenied", "uncertain"],
+      "id": "visionLocation",
+      "outcomes": ["match", "notMatch", "uncertain"],
+      "owner": "Project Landfall",
+      "privacyClass": "PRIVATE_EVIDENCE",
+      "requiresFallback": true,
+      "retryPolicy": "CREATOR_DECLARED",
+      "runtimeCapability": "landfall.location-observation",
+      "simulatorCapability": "NOT_IMPLEMENTED_PHASE_1",
+      "state": "NOT_CONFIGURED",
+      "version": 1
+    },
+    {
+      "captainOverride": "REQUIRED",
+      "faultModes": ["providerUnavailable", "permissionDenied", "uncertain"],
+      "id": "visionObject",
+      "outcomes": ["match", "notMatch", "uncertain"],
+      "owner": "Project Watchglass",
+      "privacyClass": "PRIVATE_EVIDENCE",
+      "requiresFallback": true,
+      "retryPolicy": "CREATOR_DECLARED",
+      "runtimeCapability": "watchglass.object-observation",
+      "simulatorCapability": "NOT_IMPLEMENTED_PHASE_1",
+      "state": "NOT_CONFIGURED",
+      "version": 1
+    },
+    {
+      "captainOverride": "REQUIRED",
+      "faultModes": ["providerUnavailable", "timeout", "invalidEvidence"],
+      "id": "externalWebhook",
+      "outcomes": ["match", "notMatch", "uncertain"],
+      "owner": "External provider adapter",
+      "privacyClass": "PRIVATE_EVIDENCE",
+      "requiresFallback": true,
+      "retryPolicy": "CREATOR_DECLARED",
+      "runtimeCapability": "provider.external-observation",
+      "simulatorCapability": "NOT_IMPLEMENTED_PHASE_1",
+      "state": "NOT_CONFIGURED",
+      "version": 1
+    }
+  ],
+  "schemaVersion": 1
+}
