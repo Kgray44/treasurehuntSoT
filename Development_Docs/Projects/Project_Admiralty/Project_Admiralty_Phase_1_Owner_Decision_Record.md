@@ -56,3 +56,9 @@ Current `origin/main` at reconciliation was
 and the accepted Admiralty work. Sounding Line and canonical-mainline parity
 remain required before the state can advance from owner-accepted mainline
 candidate to accepted mainline.
+
+After that record was written, `origin/main` advanced again to
+`cf08ed0954e0bfd8279229604d3bec5c1beea4ae` with accepted Project Deepwater
+Phase 3 control-plane work. Reconciliation merge
+`56afa3c253b7bf54f2ef37e7a87256de145eb0e3` preserves it and keeps Admiralty as
+an owner-accepted branch-only coordination input until canonical integration.

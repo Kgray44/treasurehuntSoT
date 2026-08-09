@@ -14,22 +14,24 @@ last_reviewed: 2026-08-09
 | ------------------------- | --------------------------------------------------------------------------- |
 | Starting `origin/main`    | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                  |
 | Implementation checkpoint | `648d1068ee3007c303ac76ae3a3c68e137f73a0e`                                  |
-| Reconciled `origin/main`  | `40d822cd936c9abbfce064fd7799e6a2f8c9785e`                                  |
+| Reconciled `origin/main`  | `cf08ed0954e0bfd8279229604d3bec5c1beea4ae`                                  |
 | Exact tested app source   | `49c2f59d6d75791edbdba84f22f5ec1595d2d129`                                  |
 | Owner-observed source     | `750b904cfec013f0b6adec3d930caf5eeae9ec0b`                                  |
-| Current-main merge anchor | `0ba4df35e7bf6a9597ca8d52ff9063e320554a24`                                  |
+| Current-main merge anchor | `56afa3c253b7bf54f2ef37e7a87256de145eb0e3`                                  |
 | Worktree                  | `C:\Users\kkids\Documents\treasurehuntSoT-admiralty-phase1`                 |
 | Branch                    | `codex/project-admiralty-phase1-raise-the-colors`                           |
 | Owner decision            | `ACCEPTED` on `2026-08-09`                                                  |
 | Publication               | Owner-accepted mainline candidate; canonical integration and parity pending |
 
 The non-destructive current-main merges retain Project Deepwater's accepted
-control plane, the current project-governance wave, governing PDFs, and accepted
-Project Tideglass Phase 1 source. Shared ownership, contract, suite, impact,
-generated test-registry, documentation, and Feature Catalog artifacts combine
-both projects. The parallel Feature Catalog ID collision was reconciled by
-preserving Tideglass `FT-B009` and assigning Admiralty `FT-B010`. No canonical
-checkout or database was used for implementation or validation.
+control plane through Phase 3, the current project-governance wave, governing
+PDFs, and accepted Project Tideglass Phase 1 source. Shared ownership, contract,
+suite, impact, generated test-registry, documentation, and Feature Catalog
+artifacts combine both projects. The parallel Feature Catalog ID collision was
+reconciled by preserving Tideglass `FT-B009` and assigning Admiralty `FT-B010`.
+Deepwater Phase 3 retains branch-only Admiralty as coordination input rather
+than accepted mainline implementation truth. No canonical checkout or database
+was used for implementation or validation.
 
 ## Source families
 

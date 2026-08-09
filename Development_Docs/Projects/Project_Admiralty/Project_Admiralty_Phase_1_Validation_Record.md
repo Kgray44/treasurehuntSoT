@@ -13,13 +13,13 @@ last_reviewed: 2026-08-09
 **OWNER_ACCEPTED_RECONCILED_MAINLINE_CANDIDATE.** The exact tested application
 source is `49c2f59d6d75791edbdba84f22f5ec1595d2d129`; the owner completed the
 walkthrough against `750b904cfec013f0b6adec3d930caf5eeae9ec0b` and recorded
-`ACCEPTED` on `2026-08-09`. Reconciliation merge
-`0ba4df35e7bf6a9597ca8d52ff9063e320554a24` contains current `origin/main` at
-`40d822cd936c9abbfce064fd7799e6a2f8c9785e`. The intervening Tideglass work
-overlaps shared catalog, Deepwater, Sounding Line, documentation, and test
-registries but does not change Admiralty application or schema code. Its
-source-bound effect must be decided by the new Sounding Line run before
-integration.
+`ACCEPTED` on `2026-08-09`. Final reconciliation merge
+`56afa3c253b7bf54f2ef37e7a87256de145eb0e3` contains current `origin/main` at
+`cf08ed0954e0bfd8279229604d3bec5c1beea4ae`. The intervening Tideglass and
+Deepwater Phase 3 work overlaps shared catalog, Deepwater, Sounding Line,
+documentation, and test registries but does not change Admiralty application or
+schema code. Its source-bound effect must be decided by the new Sounding Line
+run before integration.
 
 ## Focused and compatibility evidence
 
@@ -80,7 +80,7 @@ tooling were accepted as later-phase scope, not defects.
 | Deepwater audit and validation      | Reconciled owner-acceptance rung; exact candidate validation is pending                                                                                      | Cross-program capability truth                                              |
 | Sounding Line subsystem authority   | `RELEASE_GO`: 5/5 suites, plan `31bcc47fd7a0d1a6e7cd59b7a4014edffe27cbe2ebec06f790d256476eb5deb8`, all cleanup `CLEAN`                                       | Admiralty unit/component/browser plus shared static/Homeport authority      |
 | Sounding Line mainline authority    | `RELEASE_GO`: 32/32 suites and 1,246 selected registered cases, plan `fa4691c5f60b84c40fa85b9b26e26efddc4034008d71054f30b5c36aaa777a6b`, all cleanup `CLEAN` | Authoritative repository-local decision; not deployment or owner acceptance |
-| Git reconciliation                  | Merge `0ba4df35` contains current `origin/main` `40d822cd`; exact tested Admiralty application source is unchanged                                           | No push or canonical mainline integration yet                               |
+| Git reconciliation                  | Merge `56afa3c` contains current `origin/main` `cf08ed09`; exact tested Admiralty application source is unchanged                                            | No push or canonical mainline integration yet                               |
 
 The first mainline attempt failed before suite execution because the owned
 worktree intentionally lacked the ignored `prisma/dev.db` baseline required by
