@@ -146,7 +146,7 @@ export async function validate(root = process.cwd()) {
     }
     for (const target of linkTargets(text)) {
       if (/^(https?:|mailto:|#)/i.test(target)) continue;
-      const local = target.split("#")[0];
+      const local = decodeURIComponent(target.split("#")[0]);
       if (!local) continue;
       if (!(await exists(path.resolve(path.dirname(file), local))))
         failures.push(`broken link in ${relative}: ${target}`);
@@ -164,7 +164,7 @@ export async function validate(root = process.cwd()) {
       if (pattern.test(text)) failures.push(`restricted automation language in ${relative}: ${pattern}`);
     for (const target of linkTargets(text)) {
       if (/^(https?:|mailto:|#)/i.test(target)) continue;
-      const local = target.split("#")[0];
+      const local = decodeURIComponent(target.split("#")[0]);
       if (local && !(await exists(path.resolve(root, local)))) failures.push(`broken link in ${relative}: ${target}`);
     }
   }
@@ -213,7 +213,7 @@ export async function validate(root = process.cwd()) {
     const text = await fs.readFile(file, "utf8");
     for (const target of linkTargets(text)) {
       if (/^(https?:|mailto:|#)/i.test(target)) continue;
-      const local = target.split("#")[0];
+      const local = decodeURIComponent(target.split("#")[0]);
       if (!local) continue;
       const next = toPosix(path.relative(path.join(root, "docs"), path.resolve(path.dirname(file), local)));
       if (byRelative.has(next) && !reached.has(next)) {

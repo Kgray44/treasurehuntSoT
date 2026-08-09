@@ -543,6 +543,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Voyagewright_Continuous_Development_and_Mainline_Integration_Standard_v1.0.pdf",
+      "record_type": "governing-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Voyagewright_Language_Design_Foundation.md",
       "record_type": "governing-record",
       "status": "preserved",
@@ -2466,6 +2472,48 @@
       "path": "Development_Docs/Project_Wayfarer_Phase_4_Implementation_Record.md",
       "record_type": "archive-index",
       "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Admiralty/Project_Admiralty_Platform_Administration_and_Operations_Governing_Document_v1.2.pdf",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Deepwater/Project_Deepwater_Product_Capability_Realization_and_Systems_Audit_Program_Governing_Document.pdf",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Governing_Document.pdf",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Helm/Project_Helm_Captain_Operations_and_Participating_Captain_System_Governing_Document_v1.0.pdf",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Creator_Studio_Authoring_Experience_Governing_Document.pdf",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Wakebook/Project_Wakebook_Governing_Document.pdf",
+      "record_type": "program-record",
+      "status": "current",
       "canonical_for": null
     },
     {
