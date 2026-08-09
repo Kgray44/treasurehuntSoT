@@ -20825,6 +20825,157 @@
     },
     {
       "audience": {
+        "privacyClass": "INTERNAL_ENGINEERING_METADATA",
+        "privilegeRequirements": ["REPOSITORY_OR_SERVICE_ACCESS"],
+        "roles": ["CREATOR_SERVICE", "DEVELOPER"]
+      },
+      "capabilityId": "DW-CAP-TIDEGLASS-SEMANTIC-EDITION-COMPARISON",
+      "catalogMapping": {
+        "declaredLimitations": [
+          "Ordinary user comparison routes and polished What Changed interaction are outside Phase 1.",
+          "Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them."
+        ],
+        "declaredProgram": "Project Tideglass Phase 1",
+        "declaredStatus": "BRANCH_COMPLETE_NOT_MERGED",
+        "declaredSubfeatures": [
+          "Deterministic Change Sets and receipts",
+          "Exact edition and checksum binding",
+          "Read-only cross-domain invariance",
+          "Server-authorized redacted projections",
+          "Stable identity and graph comparison",
+          "Versioned semantic normalization"
+        ],
+        "declaredSurfaces": ["npm run tideglass:compare", "src/tideglass"],
+        "featureCatalogId": "FT-B009",
+        "mapping": "PARENT"
+      },
+      "currentRealization": {
+        "classification": "INTERNAL_BY_DESIGN",
+        "confidence": "MEDIUM",
+        "highestRung": "SERVICE",
+        "secondaryFlags": ["UNVERIFIED"]
+      },
+      "evidence": {
+        "journeyIds": [],
+        "ownerAcceptance": "NOT_REQUIRED",
+        "references": [
+          {
+            "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-001",
+            "freshness": "CURRENT",
+            "kind": "FEATURE_CATALOG",
+            "reference": "Development_Docs/Features/catalog/studio.json#FT-B009",
+            "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+          },
+          {
+            "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-002",
+            "freshness": "CURRENT",
+            "kind": "SOURCE_PATH",
+            "reference": "src/tideglass/service.ts",
+            "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+          },
+          {
+            "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-003",
+            "freshness": "CURRENT",
+            "kind": "TEST",
+            "reference": "tests/tideglass",
+            "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+          },
+          {
+            "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-004",
+            "freshness": "CURRENT",
+            "kind": "COMPLETION_RECORD",
+            "reference": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md",
+            "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+          }
+        ],
+        "screenshotIds": [],
+        "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d",
+        "testIds": ["tests/tideglass"]
+      },
+      "expectedRealization": {
+        "disposition": "MACHINE_CONSUMER",
+        "rationale": "Tideglass Phase 1 is a read-only internal comparison foundation with bounded branch evidence; it does not claim an ordinary user route, deployment, or owner acceptance.",
+        "requiredSurfaces": ["npm run tideglass:compare", "src/tideglass"],
+        "terminalRung": "SERVICE"
+      },
+      "gaps": {
+        "assignedOwner": null,
+        "findingIds": [],
+        "highestSeverity": null,
+        "impact": null,
+        "targetPhase": null
+      },
+      "lifecycle": {
+        "closedAt": null,
+        "firstSeen": "2026-08-09",
+        "lastAudited": "2026-08-09",
+        "regressionState": "NOT_OBSERVED"
+      },
+      "meaning": "A read-only authority compares exact immutable Chronicle editions through deterministic semantic normalization, stable identity matching, domain comparators, redacted Change Sets, and source-bound receipts.",
+      "name": "Tideglass Semantic Edition Comparison Foundation",
+      "owner": {
+        "contract": "Edition-difference and comparison semantics",
+        "contributingProjects": ["Drydock", "One Voyage"],
+        "project": "Tideglass"
+      },
+      "quality": {
+        "accessibility": "NOT_APPLICABLE",
+        "discoverability": "NOT_APPLICABLE",
+        "recovery": "NOT_APPLICABLE",
+        "responsive": "NOT_APPLICABLE",
+        "visualMaturity": "NOT_APPLICABLE"
+      },
+      "states": {
+        "missing": ["FAILURE", "SUCCESS"],
+        "represented": [],
+        "required": ["FAILURE", "SUCCESS"]
+      },
+      "trace": {
+        "accessibility": {
+          "references": [],
+          "status": "NOT_APPLICABLE"
+        },
+        "authorization": {
+          "references": [],
+          "status": "NOT_APPLICABLE"
+        },
+        "client": {
+          "references": [],
+          "status": "NOT_APPLICABLE"
+        },
+        "domain": {
+          "references": [],
+          "status": "UNKNOWN"
+        },
+        "journey": {
+          "references": [],
+          "status": "NOT_APPLICABLE"
+        },
+        "navigation": {
+          "references": [],
+          "status": "NOT_APPLICABLE"
+        },
+        "projection": {
+          "references": [],
+          "status": "UNKNOWN"
+        },
+        "service": {
+          "references": ["src/tideglass/service.ts"],
+          "status": "PARTIAL"
+        },
+        "suspectedFirstLossPoint": null,
+        "transport": {
+          "references": [],
+          "status": "NOT_APPLICABLE"
+        },
+        "ui": {
+          "references": [],
+          "status": "NOT_APPLICABLE"
+        }
+      }
+    },
+    {
+      "audience": {
         "privacyClass": "RESTRICTED_DELIVERY_METADATA",
         "privilegeRequirements": ["PRIVILEGED_SUPPORT", "SYSTEM_AUTHORITY"],
         "roles": ["SUPPORT_OPERATOR", "SYSTEM"]
@@ -23852,7 +24003,7 @@
     }
   ],
   "generation": {
-    "catalogEntries": 41,
+    "catalogEntries": 42,
     "deterministic": true,
     "sourceInputs": [
       "Development_Docs/Features/catalog",

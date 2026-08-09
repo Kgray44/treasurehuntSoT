@@ -1,5 +1,5 @@
 {
-  "catalogEntryCount": 41,
+  "catalogEntryCount": 42,
   "entries": [
     {
       "capabilityId": "DW-CAP-UNIFIED-CHRONICLE-PLATFORM",
@@ -503,9 +503,19 @@
       "mismatchFindingIds": [],
       "observedClassification": "PARTIALLY_REALIZED",
       "observedHighestRung": "JOURNEY_PROVEN"
+    },
+    {
+      "capabilityId": "DW-CAP-TIDEGLASS-SEMANTIC-EDITION-COMPARISON",
+      "declaredStatus": "BRANCH_COMPLETE_NOT_MERGED",
+      "declaredSurfaces": ["npm run tideglass:compare", "src/tideglass"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-B009",
+      "mismatchFindingIds": [],
+      "observedClassification": "INTERNAL_BY_DESIGN",
+      "observedHighestRung": "SERVICE"
     }
   ],
-  "mappedEntryCount": 41,
+  "mappedEntryCount": 42,
   "schemaVersion": "1.0.0",
   "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
 }

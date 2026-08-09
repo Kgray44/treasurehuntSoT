@@ -132,5 +132,36 @@
       { "kind": "path", "value": "src/server/progression.ts" }
     ],
     "catalogVersion": 1
+  },
+  {
+    "id": "FT-B009",
+    "title": "Tideglass Semantic Edition Comparison Foundation",
+    "summary": "A read-only authority compares exact immutable Chronicle editions through deterministic semantic normalization, stable identity matching, domain comparators, redacted Change Sets, and source-bound receipts.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "program": "Project Tideglass Phase 1",
+    "surfaces": ["npm run tideglass:compare", "src/tideglass"],
+    "subfeatures": [
+      "Exact edition and checksum binding",
+      "Versioned semantic normalization",
+      "Stable identity and graph comparison",
+      "Deterministic Change Sets and receipts",
+      "Server-authorized redacted projections",
+      "Read-only cross-domain invariance"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/tideglass/service.ts" },
+      { "kind": "test", "value": "tests/tideglass" },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md"
+      }
+    ],
+    "branch": "codex/project-tideglass-phase1-set-the-glass",
+    "commit": "1366095b3ae637675c5dd9a97406bff0439fadf9",
+    "limitations": [
+      "Ordinary user comparison routes and polished What Changed interaction are outside Phase 1.",
+      "Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them."
+    ],
+    "catalogVersion": 1
   }
 ]
