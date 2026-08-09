@@ -90,6 +90,13 @@ function writeCsv(name, headers, records) {
 }
 
 function sourceOwner(source) {
+  if (
+    source.pathPattern === "/admin" ||
+    source.pathPattern.startsWith("/api/admin") ||
+    source.pathPattern === "/account/support-access" ||
+    source.pathPattern.startsWith("/api/account/support")
+  )
+    return "project-admiralty";
   if (/^\/api\/(?:account|passport)/u.test(source.pathPattern)) return "project-homeport";
   if (source.pathPattern === "/api/auth/context" || source.pathPattern.startsWith("/api/auth/providers"))
     return "wayfarer";
@@ -99,6 +106,13 @@ function sourceOwner(source) {
 }
 
 function sourceProductArea(source) {
+  if (
+    source.pathPattern === "/admin" ||
+    source.pathPattern.startsWith("/api/admin") ||
+    source.pathPattern === "/account/support-access" ||
+    source.pathPattern.startsWith("/api/account/support")
+  )
+    return "Admiralty";
   if (/^\/api\/(?:account|passport)/u.test(source.pathPattern)) return "Personal Harbor";
   if (source.pathPattern === "/api/auth/context" || source.pathPattern.startsWith("/api/auth/providers"))
     return "Identity and session";
@@ -120,16 +134,17 @@ const sourceByFile = new Map(sources.map((source) => [source.sourceFile, source]
 for (const source of [...pages, ...handlers]) {
   let route = existingBySource.get(source.sourceFile);
   if (!route) {
-    if (source.kind !== "route") throw new Error(`PHASE5_PAGE_INVENTORY_MISSING:${source.sourceFile}`);
+    if (source.kind === "page" && !knownPagePatterns.includes(source.pathPattern))
+      throw new Error(`PHASE5_PAGE_INVENTORY_MISSING:${source.sourceFile}`);
     route = {
       routeId: routeIdForSource(source),
       routePattern: source.pathPattern,
       implementationSource: source.sourceFile,
-      kind: "route",
-      classification: "API_OR_SERVICE",
+      kind: source.kind,
+      classification: source.kind === "route" ? "API_OR_SERVICE" : classificationForPath(source.pathPattern),
       ownerProject: sourceOwner(source),
       productArea: sourceProductArea(source),
-      shellMode: "N/A",
+      shellMode: source.pathPattern === "/admin" ? "TOKENIZED" : source.kind === "route" ? "N/A" : "WORKSPACE_STANDARD",
       logicalParent: null,
       currentVisibleEntries: [],
       currentDesktopPath: [],
@@ -141,15 +156,16 @@ for (const source of [...pages, ...handlers]) {
       dynamicSourceRouteOrContentSource: null,
       compatibilityAliases: [],
       redirects: [],
-      currentSupportedStates: ["SERVICE_RESPONSE"],
+      currentSupportedStates: source.kind === "route" ? ["SERVICE_RESPONSE"] : ["CURRENT_DEFAULT"],
       currentJourneys: [],
       currentVisualEvidenceIds: [],
-      currentMaturity: "INTERNAL_ONLY",
+      currentMaturity: source.kind === "route" ? "INTERNAL_ONLY" : "CURRENT_GOVERNED",
       directUrlRequired: true,
       orphanedOrdinaryRoute: false,
       targetDisposition: "PHASE_5_SOURCE_PARITY",
       status: "PHASE_5_SOURCE_RECONCILED",
-      notes: "Added additively by the source-driven Phase 5 route census.",
+      notes:
+        "Added additively by the source-driven Phase 5 route census under an explicit current policy classification.",
     };
     routeInventory.routes.push(route);
     existingBySource.set(source.sourceFile, route);

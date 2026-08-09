@@ -9774,8 +9774,8 @@
     "implementationSourceSha": "IMPLEMENTATION_SOURCE_PENDING",
     "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
     "updatedAt": "2026-08-03T18:00:00.000Z",
-    "routeNodeCount": 90,
-    "routeEdgeCount": 169,
+    "routeNodeCount": 92,
+    "routeEdgeCount": 172,
     "unexplainedOrdinaryOrphans": 0,
     "noSchemaChange": true,
     "phase6NotStarted": true
@@ -9786,7 +9786,12 @@
     "architectureFreezeSha": "07544240bc592b0798625824265fd48c5419f87a",
     "fixtureVersion": "homeport-phase6-v1",
     "evidenceCount": 126,
-    "limitations": ["Not merged", "Not deployed", "No owner acceptance", "Phase 7 integrated proof remains"]
+    "limitations": [
+      "Not merged",
+      "Not deployed",
+      "No owner acceptance",
+      "Phase 7 integrated proof remains"
+    ]
   },
   "phase6Run": {
     "schemaVersion": "1.0.0",
@@ -13228,7 +13233,23 @@
     "ownerDecision": "PENDING_OWNER_DECISION",
     "runReceipt": {
       "terminalStatus": "HOMEPORT_PHASE7_JOURNEYS_PASSED",
-      "journeys": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O"],
+      "journeys": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O"
+      ],
       "logSha256": "82ce6925f79a1f55c7d81c2c0e7f7f498917a2e3c4dfc97caed9af541611e5ea",
       "location": "TERMINAL_RECEIPT_RECONSTRUCTED_ONLY_AFTER_ALL_16_SOURCE_BOUND_REPORTS_VALIDATED"
     },
@@ -13569,7 +13590,12 @@
     "evidenceCount": 16,
     "ownerDecision": "PENDING_OWNER_DECISION",
     "branch": "codex/project-homeport-product-reality-recovery",
-    "limitations": ["Not merged", "Not deployed", "No owner acceptance", "Local synthetic evidence only"]
+    "limitations": [
+      "Not merged",
+      "Not deployed",
+      "No owner acceptance",
+      "Local synthetic evidence only"
+    ]
   },
   "phase7OwnerCorrectionRound1": {
     "state": "CORRECTION_VALIDATED_PENDING_OWNER_REREVIEW",

@@ -15,8 +15,19 @@ const homeportContracts = JSON.parse(await fs.readFile(path.join(root, "testing"
 const hash = (text) => createHash("sha256").update(text).digest("hex").slice(0, 20);
 const execFileAsync = promisify(execFile);
 const normal = (value) => value.replaceAll("\\", "/");
+const admiraltyContracts = [
+  "admiralty.phase1.identity",
+  "admiralty.phase1.authorization",
+  "admiralty.phase1.assurance",
+  "admiralty.phase1.support-access",
+  "admiralty.phase1.audit",
+  "admiralty.phase1.registry",
+  "admiralty.phase1.migration",
+  "admiralty.phase1.responsive-consent",
+];
 
 function ownerFor(file) {
+  if (file.includes("admiralty")) return "project-admiralty";
   if (file.includes("homeport")) return "project-homeport";
   if (file.includes("private-content")) return "sealed-hold";
   if (file.includes("community")) return "harborlight";
@@ -28,6 +39,7 @@ function ownerFor(file) {
 }
 
 function unitFamily(file) {
+  if (file.startsWith("src/admiralty/") || file.startsWith("scripts/admiralty/")) return "unit.admiralty";
   if (file.startsWith("src/homeport/") || file.startsWith("scripts/homeport/") || file.startsWith("tests/homeport/"))
     return "unit.homeport";
   if (file.startsWith("scripts/sounding-line/") || file.startsWith("tests/sounding-line/")) return "unit.sounding-line";
@@ -46,6 +58,7 @@ function unitFamily(file) {
 }
 
 function componentFamily(file) {
+  if (file.includes("admiralty") || file === "src/app/admin/page.test.tsx") return "component.admiralty";
   if (file.includes("components/homeport")) return "component.homeport";
   if (file.includes("components/animation")) return "component.animation";
   if (file.includes("components/community")) return "component.community";
@@ -64,6 +77,7 @@ function componentFamily(file) {
 
 function browserFamily(project, file, title) {
   const value = `${file} ${title}`.toLowerCase();
+  if (value.includes("admiralty") || project.includes("admiralty")) return "browser.admiralty";
   // Only the dedicated project is the fast, dependency-free access sentinel.
   // Chromium/WebKit copies remain primary browser.auth cases and must not
   // inherit a fixture-free ownership contract they do not satisfy.
@@ -94,6 +108,7 @@ function browserFamily(project, file, title) {
 }
 
 function contractFor(file, family) {
+  if (file.includes("admiralty") || family.includes("admiralty")) return admiraltyContracts;
   if (file.includes("homeport") || family === "unit.homeport") return homeportContracts;
   if (file.includes("private-content")) return ["sealed-hold-private-delivery", "public-privacy-projection"];
   if (file.includes("community")) return ["community-public-projection"];
@@ -107,7 +122,9 @@ function contractFor(file, family) {
 }
 
 function metadata(file, family, browser = null) {
-  const privateOrCommunity = /homeport|private-content|community|wayfarer|passport|invitation|session/u.test(file);
+  const privateOrCommunity = /admiralty|homeport|private-content|community|wayfarer|passport|invitation|session/u.test(
+    file,
+  );
   const high = privateOrCommunity || Boolean(browser);
   const ui = Boolean(browser) || file.endsWith(".tsx");
   return {

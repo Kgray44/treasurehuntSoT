@@ -127,6 +127,11 @@ export const adapters = Object.freeze({
     resources: ["sqlite-clone", "prisma-sqlite-client"],
     mode: "CERTIFIED",
   },
+  "admiralty-phase1-browser": {
+    command: [node, "scripts/admiralty/run-phase1-journeys.mjs"],
+    resources: ["application-port", "sqlite-clone", "browser-chromium", "trace-root", "production-build-directory"],
+    mode: "CERTIFIED",
+  },
 });
 
 export function resolveAdapter(id, argumentsList = []) {

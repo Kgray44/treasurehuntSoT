@@ -2,10 +2,18 @@
   "schemaVersion": "1.0.0",
   "phase": "PROJECT_HOMEPORT_PHASE_6",
   "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+  "catalogReconciliationSourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
   "architectureFreezeSha": "07544240bc592b0798625824265fd48c5419f87a",
   "fixtureVersion": "homeport-phase6-v1",
   "generatedAt": "2026-08-04T07:00:00.000Z",
-  "criticalityVocabulary": ["CRITICAL", "HIGH", "STANDARD", "CONTEXTUAL", "DEVELOPMENT_ONLY", "NOT_APPLICABLE"],
+  "criticalityVocabulary": [
+    "CRITICAL",
+    "HIGH",
+    "STANDARD",
+    "CONTEXTUAL",
+    "DEVELOPMENT_ONLY",
+    "NOT_APPLICABLE"
+  ],
   "maturityVocabulary": [
     "VISUALLY_COMPLETE",
     "COMPLETE_WITH_TRUTHFUL_EXTERNAL_LIMITATION",
@@ -14,26 +22,30 @@
     "BLOCKED_WITH_GOVERNED_REASON"
   ],
   "census": {
-    "pageRoutes": 90,
-    "sourceFiles": 283,
-    "routeHandlers": 186,
+    "pageRoutes": 92,
+    "sourceFiles": 299,
+    "routeHandlers": 200,
     "loadingBoundaries": 1,
     "errorBoundaries": 1,
-    "humanScreens": 97,
+    "humanScreens": 99,
     "omittedPages": 0
   },
   "summary": {
     "CRITICAL": 12,
     "HIGH": 14,
-    "STANDARD": 43,
+    "STANDARD": 45,
     "CONTEXTUAL": 27,
     "DEVELOPMENT_ONLY": 1
   },
   "screens": [
     {
       "screenId": "screen-page-root",
-      "routeIds": ["route-page-root"],
-      "sourceFiles": ["src/app/page.tsx"],
+      "routeIds": [
+        "route-page-root"
+      ],
+      "sourceFiles": [
+        "src/app/page.tsx"
+      ],
       "productArea": "Gateway and public shell",
       "specialistOwner": "platform-foundation",
       "integrationOwner": "project-homeport",
@@ -41,7 +53,9 @@
       "criticality": "CRITICAL",
       "primaryUserGoal": "Use current Gateway and public shell surface at /",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -57,7 +71,11 @@
         "loading-skeletons",
         "error-summaries"
       ],
-      "applicableStates": ["READY_POPULATED", "INITIAL_LOADING", "RECOVERABLE_ERROR"],
+      "applicableStates": [
+        "READY_POPULATED",
+        "INITIAL_LOADING",
+        "RECOVERABLE_ERROR"
+      ],
       "responsiveViewports": [
         "LARGE_DESKTOP",
         "STANDARD_DESKTOP",
@@ -149,8 +167,12 @@
     },
     {
       "screenId": "screen-page-account",
-      "routeIds": ["route-page-account"],
-      "sourceFiles": ["src/app/account/page.tsx"],
+      "routeIds": [
+        "route-page-account"
+      ],
+      "sourceFiles": [
+        "src/app/account/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -158,7 +180,9 @@
       "criticality": "CRITICAL",
       "primaryUserGoal": "Use Overview in the unified Personal Harbor",
       "primaryHeading": "Overview",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "PersonalHarborOverviewDto",
       "componentFamilies": [
@@ -287,8 +311,12 @@
     },
     {
       "screenId": "screen-page-account-accessibility",
-      "routeIds": ["route-page-account-accessibility"],
-      "sourceFiles": ["src/app/account/accessibility/page.tsx"],
+      "routeIds": [
+        "route-page-account-accessibility"
+      ],
+      "sourceFiles": [
+        "src/app/account/accessibility/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -296,7 +324,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use Accessibility in the unified Personal Harbor",
       "primaryHeading": "Accessibility",
-      "primaryActions": ["SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"],
+      "primaryActions": [
+        "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"
+      ],
       "secondaryActions": [],
       "dataProjection": "PreferenceDto",
       "componentFamilies": [
@@ -336,7 +366,10 @@
         "MUTATION_FAILURE",
         "STALE_CONFLICT"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -409,8 +442,12 @@
     },
     {
       "screenId": "screen-page-account-cancel-deletion",
-      "routeIds": ["route-page-account-cancel-deletion"],
-      "sourceFiles": ["src/app/account/cancel-deletion/page.tsx"],
+      "routeIds": [
+        "route-page-account-cancel-deletion"
+      ],
+      "sourceFiles": [
+        "src/app/account/cancel-deletion/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -418,7 +455,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Personal Harbor surface at /account/cancel-deletion",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -458,7 +497,10 @@
         "TOKEN_CONSUMED",
         "TOKEN_REVOKED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -531,8 +573,12 @@
     },
     {
       "screenId": "screen-page-account-claim",
-      "routeIds": ["route-page-account-claim"],
-      "sourceFiles": ["src/app/account/claim/page.tsx"],
+      "routeIds": [
+        "route-page-account-claim"
+      ],
+      "sourceFiles": [
+        "src/app/account/claim/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -540,7 +586,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Personal Harbor surface at /account/claim",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -580,7 +628,10 @@
         "TOKEN_CONSUMED",
         "TOKEN_REVOKED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -653,8 +704,12 @@
     },
     {
       "screenId": "screen-page-account-data",
-      "routeIds": ["route-page-account-data"],
-      "sourceFiles": ["src/app/account/data/page.tsx"],
+      "routeIds": [
+        "route-page-account-data"
+      ],
+      "sourceFiles": [
+        "src/app/account/data/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -662,7 +717,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use Data & Account in the unified Personal Harbor",
       "primaryHeading": "Data & Account",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "AccountDataAvailabilityDto",
       "componentFamilies": [
@@ -701,7 +758,10 @@
         "MUTATION_SUCCESS",
         "MUTATION_FAILURE"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -774,8 +834,12 @@
     },
     {
       "screenId": "screen-page-account-email-change",
-      "routeIds": ["route-page-account-email-change"],
-      "sourceFiles": ["src/app/account/email-change/page.tsx"],
+      "routeIds": [
+        "route-page-account-email-change"
+      ],
+      "sourceFiles": [
+        "src/app/account/email-change/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -783,7 +847,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Personal Harbor surface at /account/email-change",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -823,7 +889,10 @@
         "TOKEN_CONSUMED",
         "TOKEN_REVOKED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -896,8 +965,12 @@
     },
     {
       "screenId": "screen-page-account-linked-identities",
-      "routeIds": ["route-page-account-linked-identities"],
-      "sourceFiles": ["src/app/account/linked-identities/page.tsx"],
+      "routeIds": [
+        "route-page-account-linked-identities"
+      ],
+      "sourceFiles": [
+        "src/app/account/linked-identities/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -905,7 +978,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use Linked Identities in the unified Personal Harbor",
       "primaryHeading": "Linked Identities",
-      "primaryActions": ["SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"],
+      "primaryActions": [
+        "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"
+      ],
       "secondaryActions": [],
       "dataProjection": "LinkedIdentityDto",
       "componentFamilies": [
@@ -944,7 +1019,10 @@
         "MUTATION_SUCCESS",
         "MUTATION_FAILURE"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -1017,8 +1095,12 @@
     },
     {
       "screenId": "screen-page-account-merge",
-      "routeIds": ["route-page-account-merge"],
-      "sourceFiles": ["src/app/account/merge/page.tsx"],
+      "routeIds": [
+        "route-page-account-merge"
+      ],
+      "sourceFiles": [
+        "src/app/account/merge/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -1026,7 +1108,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Personal Harbor surface at /account/merge",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -1066,7 +1150,10 @@
         "TOKEN_CONSUMED",
         "TOKEN_REVOKED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -1139,8 +1226,12 @@
     },
     {
       "screenId": "screen-page-account-notifications",
-      "routeIds": ["route-page-account-notifications"],
-      "sourceFiles": ["src/app/account/notifications/page.tsx"],
+      "routeIds": [
+        "route-page-account-notifications"
+      ],
+      "sourceFiles": [
+        "src/app/account/notifications/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -1148,7 +1239,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use Notifications in the unified Personal Harbor",
       "primaryHeading": "Notifications",
-      "primaryActions": ["SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"],
+      "primaryActions": [
+        "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"
+      ],
       "secondaryActions": [],
       "dataProjection": "PreferenceDto",
       "componentFamilies": [
@@ -1188,7 +1281,10 @@
         "MUTATION_FAILURE",
         "STALE_CONFLICT"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -1261,8 +1357,12 @@
     },
     {
       "screenId": "screen-page-account-personal-information",
-      "routeIds": ["route-page-account-personal-information"],
-      "sourceFiles": ["src/app/account/personal-information/page.tsx"],
+      "routeIds": [
+        "route-page-account-personal-information"
+      ],
+      "sourceFiles": [
+        "src/app/account/personal-information/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -1270,7 +1370,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use Personal Information in the unified Personal Harbor",
       "primaryHeading": "Personal Information",
-      "primaryActions": ["SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"],
+      "primaryActions": [
+        "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"
+      ],
       "secondaryActions": [],
       "dataProjection": "PersonalInformationDto",
       "componentFamilies": [
@@ -1309,7 +1411,10 @@
         "MUTATION_SUCCESS",
         "MUTATION_FAILURE"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -1382,8 +1487,12 @@
     },
     {
       "screenId": "screen-page-account-preferences",
-      "routeIds": ["route-page-account-preferences"],
-      "sourceFiles": ["src/app/account/preferences/page.tsx"],
+      "routeIds": [
+        "route-page-account-preferences"
+      ],
+      "sourceFiles": [
+        "src/app/account/preferences/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -1391,7 +1500,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use Preferences in the unified Personal Harbor",
       "primaryHeading": "Preferences",
-      "primaryActions": ["SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"],
+      "primaryActions": [
+        "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"
+      ],
       "secondaryActions": [],
       "dataProjection": "PreferenceDto",
       "componentFamilies": [
@@ -1431,7 +1542,10 @@
         "MUTATION_FAILURE",
         "STALE_CONFLICT"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -1504,8 +1618,12 @@
     },
     {
       "screenId": "screen-page-account-privacy",
-      "routeIds": ["route-page-account-privacy"],
-      "sourceFiles": ["src/app/account/privacy/page.tsx"],
+      "routeIds": [
+        "route-page-account-privacy"
+      ],
+      "sourceFiles": [
+        "src/app/account/privacy/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -1513,7 +1631,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use Privacy & Safety in the unified Personal Harbor",
       "primaryHeading": "Privacy & Safety",
-      "primaryActions": ["SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"],
+      "primaryActions": [
+        "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"
+      ],
       "secondaryActions": [],
       "dataProjection": "OwnerPrivacyDto",
       "componentFamilies": [
@@ -1553,7 +1673,10 @@
         "MUTATION_FAILURE",
         "STALE_CONFLICT"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -1626,8 +1749,12 @@
     },
     {
       "screenId": "screen-page-account-profile",
-      "routeIds": ["route-page-account-profile"],
-      "sourceFiles": ["src/app/account/profile/page.tsx"],
+      "routeIds": [
+        "route-page-account-profile"
+      ],
+      "sourceFiles": [
+        "src/app/account/profile/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -1635,7 +1762,9 @@
       "criticality": "CRITICAL",
       "primaryUserGoal": "Use Public Profile in the unified Personal Harbor",
       "primaryHeading": "Public Profile",
-      "primaryActions": ["SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"],
+      "primaryActions": [
+        "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"
+      ],
       "secondaryActions": [],
       "dataProjection": "OwnerProfileDto",
       "componentFamilies": [
@@ -1765,8 +1894,12 @@
     },
     {
       "screenId": "screen-page-account-profile-view",
-      "routeIds": ["route-page-account-profile-view"],
-      "sourceFiles": ["src/app/account/profile/view/page.tsx"],
+      "routeIds": [
+        "route-page-account-profile-view"
+      ],
+      "sourceFiles": [
+        "src/app/account/profile/view/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -1774,7 +1907,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Personal Harbor surface at /account/profile/view",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -1814,7 +1949,10 @@
         "MUTATION_FAILURE",
         "STALE_CONFLICT"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -1887,8 +2025,12 @@
     },
     {
       "screenId": "screen-page-account-reactivate",
-      "routeIds": ["route-page-account-reactivate"],
-      "sourceFiles": ["src/app/account/reactivate/page.tsx"],
+      "routeIds": [
+        "route-page-account-reactivate"
+      ],
+      "sourceFiles": [
+        "src/app/account/reactivate/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -1896,7 +2038,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Personal Harbor surface at /account/reactivate",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -1936,7 +2080,10 @@
         "TOKEN_CONSUMED",
         "TOKEN_REVOKED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -2009,8 +2156,12 @@
     },
     {
       "screenId": "screen-page-account-roles",
-      "routeIds": ["route-page-account-roles"],
-      "sourceFiles": ["src/app/account/roles/page.tsx"],
+      "routeIds": [
+        "route-page-account-roles"
+      ],
+      "sourceFiles": [
+        "src/app/account/roles/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -2018,7 +2169,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Personal Harbor surface at /account/roles",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -2057,7 +2210,10 @@
         "MUTATION_SUCCESS",
         "MUTATION_FAILURE"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -2130,8 +2286,12 @@
     },
     {
       "screenId": "screen-page-account-security",
-      "routeIds": ["route-page-account-security"],
-      "sourceFiles": ["src/app/account/security/page.tsx"],
+      "routeIds": [
+        "route-page-account-security"
+      ],
+      "sourceFiles": [
+        "src/app/account/security/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -2139,7 +2299,9 @@
       "criticality": "HIGH",
       "primaryUserGoal": "Use Security in the unified Personal Harbor",
       "primaryHeading": "Security",
-      "primaryActions": ["SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"],
+      "primaryActions": [
+        "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"
+      ],
       "secondaryActions": [],
       "dataProjection": "AccountSecurityDto",
       "componentFamilies": [
@@ -2198,7 +2360,10 @@
       "emptyStateAction": "NOT_DECLARED_IN_ROUTE_SOURCE",
       "errorRecovery": "RETRY_OR_STABLE_PARENT",
       "permissionRecovery": "AVAILABLE_WORKSPACE_OR_HOME",
-      "evidenceIds": ["HP-P6-EV-033-account-security-standard-desktop", "HP-P6-EV-034-account-security-modern-mobile"],
+      "evidenceIds": [
+        "HP-P6-EV-033-account-security-standard-desktop",
+        "HP-P6-EV-034-account-security-modern-mobile"
+      ],
       "visualReviewStatus": "ACCEPTED",
       "accessibilityStatus": "AUTOMATED_AND_SEMANTIC_ACCEPTED",
       "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
@@ -2260,8 +2425,12 @@
     },
     {
       "screenId": "screen-page-account-sessions",
-      "routeIds": ["route-page-account-sessions"],
-      "sourceFiles": ["src/app/account/sessions/page.tsx"],
+      "routeIds": [
+        "route-page-account-sessions"
+      ],
+      "sourceFiles": [
+        "src/app/account/sessions/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -2269,7 +2438,9 @@
       "criticality": "HIGH",
       "primaryUserGoal": "Use Sessions & Devices in the unified Personal Harbor",
       "primaryHeading": "Sessions & Devices",
-      "primaryActions": ["SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"],
+      "primaryActions": [
+        "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"
+      ],
       "secondaryActions": [],
       "dataProjection": "SessionListDto",
       "componentFamilies": [
@@ -2328,7 +2499,10 @@
       "emptyStateAction": "NOT_DECLARED_IN_ROUTE_SOURCE",
       "errorRecovery": "RETRY_OR_STABLE_PARENT",
       "permissionRecovery": "AVAILABLE_WORKSPACE_OR_HOME",
-      "evidenceIds": ["HP-P6-EV-035-account-sessions-standard-desktop", "HP-P6-EV-036-account-sessions-modern-mobile"],
+      "evidenceIds": [
+        "HP-P6-EV-035-account-sessions-standard-desktop",
+        "HP-P6-EV-036-account-sessions-modern-mobile"
+      ],
       "visualReviewStatus": "ACCEPTED",
       "accessibilityStatus": "AUTOMATED_AND_SEMANTIC_ACCEPTED",
       "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
@@ -2389,9 +2563,261 @@
       ]
     },
     {
+      "screenId": "screen-page-account-support-access",
+      "routeIds": [
+        "route-page-account-support-access"
+      ],
+      "sourceFiles": [
+        "src/app/account/support-access/page.tsx"
+      ],
+      "productArea": "Platform service",
+      "specialistOwner": "one-voyage",
+      "integrationOwner": "project-homeport",
+      "shellMode": "WORKSPACE_STANDARD",
+      "criticality": "STANDARD",
+      "primaryUserGoal": "Complete the governed Platform service task at /account/support-access",
+      "primaryHeading": "ROUTE_COMPONENT_OWNED_H1",
+      "primaryActions": [
+        "ROUTE_SPECIFIC_PRIMARY_ACTION"
+      ],
+      "secondaryActions": [],
+      "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
+      "componentFamilies": [
+        "product-shell",
+        "global-headers",
+        "account-control",
+        "account-menus",
+        "workspace-switchers",
+        "breadcrumbs",
+        "disclosures",
+        "state-panels",
+        "status-regions",
+        "loading-skeletons",
+        "error-summaries",
+        "dependency-unavailable",
+        "mutation-status",
+        "section-navigation",
+        "profile-heroes",
+        "settings-panels",
+        "form-groups",
+        "field-descriptions",
+        "dialogs",
+        "confirmations"
+      ],
+      "applicableStates": [
+        "READY_POPULATED",
+        "INITIAL_LOADING",
+        "RECOVERABLE_ERROR",
+        "AUTH_REQUIRED",
+        "SESSION_EXPIRED",
+        "SESSION_REVOKED_OR_INVALID",
+        "ACCOUNT_RESTRICTED",
+        "DEPENDENCY_UNAVAILABLE",
+        "OFFLINE_OR_DEGRADED",
+        "MUTATION_PENDING",
+        "MUTATION_SUCCESS",
+        "MUTATION_FAILURE"
+      ],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
+      "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
+      "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
+      "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
+      "motionOwner": "ProductShell plus route specialist",
+      "reducedMotionContract": "Stable readable state without decorative travel or success delay.",
+      "mediaFallbackContract": "Missing or failed media uses a named fallback and preserves surrounding function.",
+      "overflowContract": "No accidental horizontal document overflow; deliberate regions are labeled and operable.",
+      "emptyStateAction": "N/A_SERVICE_ROUTE",
+      "errorRecovery": "RETRY_OR_STABLE_PARENT",
+      "permissionRecovery": "AVAILABLE_WORKSPACE_OR_HOME",
+      "evidenceIds": [],
+      "visualReviewStatus": "PENDING",
+      "accessibilityStatus": "CONTRACT_ONLY",
+      "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+      "fixtureVersion": "homeport-phase6-v1",
+      "currentMaturity": "VISUALLY_COMPLETE",
+      "finalMaturity": "VISUALLY_COMPLETE",
+      "limitations": [],
+      "testContractIds": [
+        "homeport.route.inventory-complete",
+        "homeport.route.source-parity",
+        "homeport.route.classification-exclusive",
+        "homeport.route.reachability-graph",
+        "homeport.route.user-navigable-entry",
+        "homeport.route.dynamic-source",
+        "homeport.route.dynamic-invalid-id",
+        "homeport.route.dynamic-private-denial",
+        "homeport.route.tokenized-safe",
+        "homeport.route.tokenized-not-navigation",
+        "homeport.route.compatibility-disposition",
+        "homeport.route.compatibility-no-competing-ui",
+        "homeport.route.redirect-no-loop",
+        "homeport.route.redirect-target-valid",
+        "homeport.route.redirect-query-safe",
+        "homeport.route.parent-complete",
+        "homeport.route.parent-cycle-free",
+        "homeport.route.no-dead-end",
+        "homeport.route.empty-onward",
+        "homeport.route.error-recovery",
+        "homeport.route.permission-recovery",
+        "homeport.route.desktop-mobile-parity",
+        "homeport.route.no-pointer-only-entry",
+        "homeport.route.keyboard-reachability",
+        "homeport.route.compact-exit",
+        "homeport.route.immersive-exit",
+        "homeport.route.deep-link-after-natural",
+        "homeport.route.no-direct-url-only",
+        "homeport.route.placeholder-target-rejected",
+        "homeport.route.deprecated-disposition",
+        "homeport.route.development-exclusion",
+        "homeport.route.active-label-consistency",
+        "homeport.route.graph-idempotency",
+        "homeport.route.inventory-drift",
+        "homeport.route.browser-receipt-complete",
+        "homeport.route.source-bound-evidence",
+        "homeport.route.phase1-regression",
+        "homeport.route.phase2-regression",
+        "homeport.route.phase3-regression",
+        "homeport.route.phase4-regression",
+        "homeport.surface.catalog-complete",
+        "homeport.surface.source-parity",
+        "homeport.surface.visual-maturity",
+        "homeport.state.applicability",
+        "homeport.responsive.desktop",
+        "homeport.responsive.mobile",
+        "homeport.accessibility.semantic",
+        "homeport.motion.reduced-motion",
+        "homeport.media.fallback"
+      ]
+    },
+    {
+      "screenId": "screen-page-admin",
+      "routeIds": [
+        "route-page-admin"
+      ],
+      "sourceFiles": [
+        "src/app/admin/page.tsx"
+      ],
+      "productArea": "Admiralty",
+      "specialistOwner": "project-admiralty",
+      "integrationOwner": "project-homeport",
+      "shellMode": "TOKENIZED",
+      "criticality": "STANDARD",
+      "primaryUserGoal": "Complete the governed Admiralty task at /admin",
+      "primaryHeading": "ROUTE_COMPONENT_OWNED_H1",
+      "primaryActions": [
+        "ROUTE_SPECIFIC_PRIMARY_ACTION"
+      ],
+      "secondaryActions": [],
+      "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
+      "componentFamilies": [
+        "product-shell",
+        "global-headers",
+        "account-control",
+        "account-menus",
+        "workspace-switchers",
+        "breadcrumbs",
+        "disclosures",
+        "state-panels",
+        "status-regions",
+        "loading-skeletons",
+        "error-summaries",
+        "permission-panels"
+      ],
+      "applicableStates": [
+        "READY_POPULATED",
+        "INITIAL_LOADING",
+        "RECOVERABLE_ERROR",
+        "AUTH_REQUIRED",
+        "SESSION_EXPIRED",
+        "SESSION_REVOKED_OR_INVALID",
+        "ACCOUNT_RESTRICTED",
+        "PERMISSION_RESTRICTED"
+      ],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
+      "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
+      "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
+      "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
+      "motionOwner": "ProductShell plus route specialist",
+      "reducedMotionContract": "Stable readable state without decorative travel or success delay.",
+      "mediaFallbackContract": "Missing or failed media uses a named fallback and preserves surrounding function.",
+      "overflowContract": "No accidental horizontal document overflow; deliberate regions are labeled and operable.",
+      "emptyStateAction": "N/A_SERVICE_ROUTE",
+      "errorRecovery": "RETRY_OR_STABLE_PARENT",
+      "permissionRecovery": "AVAILABLE_WORKSPACE_OR_HOME",
+      "evidenceIds": [],
+      "visualReviewStatus": "PENDING",
+      "accessibilityStatus": "CONTRACT_ONLY",
+      "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+      "fixtureVersion": "homeport-phase6-v1",
+      "currentMaturity": "VISUALLY_COMPLETE",
+      "finalMaturity": "VISUALLY_COMPLETE",
+      "limitations": [],
+      "testContractIds": [
+        "homeport.route.inventory-complete",
+        "homeport.route.source-parity",
+        "homeport.route.classification-exclusive",
+        "homeport.route.reachability-graph",
+        "homeport.route.user-navigable-entry",
+        "homeport.route.dynamic-source",
+        "homeport.route.dynamic-invalid-id",
+        "homeport.route.dynamic-private-denial",
+        "homeport.route.tokenized-safe",
+        "homeport.route.tokenized-not-navigation",
+        "homeport.route.compatibility-disposition",
+        "homeport.route.compatibility-no-competing-ui",
+        "homeport.route.redirect-no-loop",
+        "homeport.route.redirect-target-valid",
+        "homeport.route.redirect-query-safe",
+        "homeport.route.parent-complete",
+        "homeport.route.parent-cycle-free",
+        "homeport.route.no-dead-end",
+        "homeport.route.empty-onward",
+        "homeport.route.error-recovery",
+        "homeport.route.permission-recovery",
+        "homeport.route.desktop-mobile-parity",
+        "homeport.route.no-pointer-only-entry",
+        "homeport.route.keyboard-reachability",
+        "homeport.route.compact-exit",
+        "homeport.route.immersive-exit",
+        "homeport.route.deep-link-after-natural",
+        "homeport.route.no-direct-url-only",
+        "homeport.route.placeholder-target-rejected",
+        "homeport.route.deprecated-disposition",
+        "homeport.route.development-exclusion",
+        "homeport.route.active-label-consistency",
+        "homeport.route.graph-idempotency",
+        "homeport.route.inventory-drift",
+        "homeport.route.browser-receipt-complete",
+        "homeport.route.source-bound-evidence",
+        "homeport.route.phase1-regression",
+        "homeport.route.phase2-regression",
+        "homeport.route.phase3-regression",
+        "homeport.route.phase4-regression",
+        "homeport.surface.catalog-complete",
+        "homeport.surface.source-parity",
+        "homeport.surface.visual-maturity",
+        "homeport.state.applicability",
+        "homeport.responsive.desktop",
+        "homeport.responsive.mobile",
+        "homeport.accessibility.semantic",
+        "homeport.motion.reduced-motion",
+        "homeport.media.fallback"
+      ]
+    },
+    {
       "screenId": "screen-page-captain",
-      "routeIds": ["route-page-captain"],
-      "sourceFiles": ["src/app/captain/page.tsx"],
+      "routeIds": [
+        "route-page-captain"
+      ],
+      "sourceFiles": [
+        "src/app/captain/page.tsx"
+      ],
       "productArea": "Captain",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -2399,7 +2825,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Captain surface at /captain",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -2438,7 +2866,10 @@
         "MUTATION_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -2511,8 +2942,12 @@
     },
     {
       "screenId": "screen-page-captain-invitations",
-      "routeIds": ["route-page-captain-invitations"],
-      "sourceFiles": ["src/app/captain/invitations/page.tsx"],
+      "routeIds": [
+        "route-page-captain-invitations"
+      ],
+      "sourceFiles": [
+        "src/app/captain/invitations/page.tsx"
+      ],
       "productArea": "Captain",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -2520,7 +2955,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Captain surface at /captain/invitations",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -2559,7 +2996,10 @@
         "MUTATION_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -2632,8 +3072,12 @@
     },
     {
       "screenId": "screen-page-captain-library",
-      "routeIds": ["route-page-captain-library"],
-      "sourceFiles": ["src/app/captain/library/page.tsx"],
+      "routeIds": [
+        "route-page-captain-library"
+      ],
+      "sourceFiles": [
+        "src/app/captain/library/page.tsx"
+      ],
       "productArea": "Captain",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -2641,7 +3085,9 @@
       "criticality": "CRITICAL",
       "primaryUserGoal": "Use current Captain surface at /captain/library",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -2779,8 +3225,12 @@
     },
     {
       "screenId": "screen-page-captain-sessions-sessionid",
-      "routeIds": ["route-page-captain-sessions-sessionid"],
-      "sourceFiles": ["src/app/captain/sessions/[sessionId]/page.tsx"],
+      "routeIds": [
+        "route-page-captain-sessions-sessionid"
+      ],
+      "sourceFiles": [
+        "src/app/captain/sessions/[sessionId]/page.tsx"
+      ],
       "productArea": "Captain",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -2788,7 +3238,9 @@
       "criticality": "CRITICAL",
       "primaryUserGoal": "Use current Captain surface at /captain/sessions/:sessionId",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -2922,8 +3374,12 @@
     },
     {
       "screenId": "screen-page-captain-sign-in",
-      "routeIds": ["route-page-captain-sign-in"],
-      "sourceFiles": ["src/app/captain/sign-in/page.tsx"],
+      "routeIds": [
+        "route-page-captain-sign-in"
+      ],
+      "sourceFiles": [
+        "src/app/captain/sign-in/page.tsx"
+      ],
       "productArea": "Captain",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -2931,7 +3387,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Captain surface at /captain/sign-in",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -2964,7 +3422,10 @@
         "MUTATION_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -3037,8 +3498,12 @@
     },
     {
       "screenId": "screen-page-captain-tales-taleid",
-      "routeIds": ["route-page-captain-tales-taleid"],
-      "sourceFiles": ["src/app/captain/tales/[taleId]/page.tsx"],
+      "routeIds": [
+        "route-page-captain-tales-taleid"
+      ],
+      "sourceFiles": [
+        "src/app/captain/tales/[taleId]/page.tsx"
+      ],
       "productArea": "Captain",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -3046,7 +3511,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Captain surface at /captain/tales/:taleId",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -3089,7 +3556,10 @@
         "MUTATION_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -3162,8 +3632,12 @@
     },
     {
       "screenId": "screen-page-captain-voyages-playthroughid-player-preview",
-      "routeIds": ["route-page-captain-voyages-playthroughid-player-preview"],
-      "sourceFiles": ["src/app/captain/voyages/[playthroughId]/player-preview/page.tsx"],
+      "routeIds": [
+        "route-page-captain-voyages-playthroughid-player-preview"
+      ],
+      "sourceFiles": [
+        "src/app/captain/voyages/[playthroughId]/player-preview/page.tsx"
+      ],
       "productArea": "Captain",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -3171,7 +3645,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Captain surface at /captain/voyages/:playthroughId/player-preview",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -3215,7 +3691,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -3288,8 +3767,12 @@
     },
     {
       "screenId": "screen-page-chronicles-taleslug",
-      "routeIds": ["route-page-chronicles-taleslug"],
-      "sourceFiles": ["src/app/chronicles/[taleSlug]/page.tsx"],
+      "routeIds": [
+        "route-page-chronicles-taleslug"
+      ],
+      "sourceFiles": [
+        "src/app/chronicles/[taleSlug]/page.tsx"
+      ],
       "productArea": "Gateway and public shell",
       "specialistOwner": "platform-foundation",
       "integrationOwner": "project-homeport",
@@ -3297,7 +3780,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Gateway and public shell surface at /chronicles/:taleSlug",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -3313,8 +3798,15 @@
         "loading-skeletons",
         "error-summaries"
       ],
-      "applicableStates": ["READY_POPULATED", "INITIAL_LOADING", "RECOVERABLE_ERROR"],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "applicableStates": [
+        "READY_POPULATED",
+        "INITIAL_LOADING",
+        "RECOVERABLE_ERROR"
+      ],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -3387,8 +3879,12 @@
     },
     {
       "screenId": "screen-page-community",
-      "routeIds": ["route-page-community"],
-      "sourceFiles": ["src/app/community/page.tsx"],
+      "routeIds": [
+        "route-page-community"
+      ],
+      "sourceFiles": [
+        "src/app/community/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -3396,7 +3892,9 @@
       "criticality": "CRITICAL",
       "primaryUserGoal": "Use current Community Harbor surface at /community",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -3534,8 +4032,12 @@
     },
     {
       "screenId": "screen-page-community-slug",
-      "routeIds": ["route-page-community-slug"],
-      "sourceFiles": ["src/app/community/[slug]/page.tsx"],
+      "routeIds": [
+        "route-page-community-slug"
+      ],
+      "sourceFiles": [
+        "src/app/community/[slug]/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -3543,7 +4045,9 @@
       "criticality": "HIGH",
       "primaryUserGoal": "Use current Community Harbor surface at /community/:slug",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -3610,7 +4114,10 @@
       "emptyStateAction": "NOT_DECLARED_IN_ROUTE_SOURCE",
       "errorRecovery": "RETRY_OR_STABLE_PARENT",
       "permissionRecovery": "AVAILABLE_WORKSPACE_OR_HOME",
-      "evidenceIds": ["HP-P6-EV-047-community-slug-standard-desktop", "HP-P6-EV-048-community-slug-modern-mobile"],
+      "evidenceIds": [
+        "HP-P6-EV-047-community-slug-standard-desktop",
+        "HP-P6-EV-048-community-slug-modern-mobile"
+      ],
       "visualReviewStatus": "ACCEPTED",
       "accessibilityStatus": "AUTOMATED_AND_SEMANTIC_ACCEPTED",
       "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
@@ -3672,8 +4179,12 @@
     },
     {
       "screenId": "screen-page-community-artifacts",
-      "routeIds": ["route-page-community-artifacts"],
-      "sourceFiles": ["src/app/community/artifacts/page.tsx"],
+      "routeIds": [
+        "route-page-community-artifacts"
+      ],
+      "sourceFiles": [
+        "src/app/community/artifacts/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -3681,7 +4192,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/artifacts",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -3728,7 +4241,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -3801,8 +4317,12 @@
     },
     {
       "screenId": "screen-page-community-audio",
-      "routeIds": ["route-page-community-audio"],
-      "sourceFiles": ["src/app/community/audio/page.tsx"],
+      "routeIds": [
+        "route-page-community-audio"
+      ],
+      "sourceFiles": [
+        "src/app/community/audio/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -3810,7 +4330,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/audio",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -3857,7 +4379,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -3930,8 +4455,12 @@
     },
     {
       "screenId": "screen-page-community-chronicles",
-      "routeIds": ["route-page-community-chronicles"],
-      "sourceFiles": ["src/app/community/chronicles/page.tsx"],
+      "routeIds": [
+        "route-page-community-chronicles"
+      ],
+      "sourceFiles": [
+        "src/app/community/chronicles/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -3939,7 +4468,9 @@
       "criticality": "HIGH",
       "primaryUserGoal": "Use current Community Harbor surface at /community/chronicles",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -4071,8 +4602,12 @@
     },
     {
       "screenId": "screen-page-community-collections",
-      "routeIds": ["route-page-community-collections"],
-      "sourceFiles": ["src/app/community/collections/page.tsx"],
+      "routeIds": [
+        "route-page-community-collections"
+      ],
+      "sourceFiles": [
+        "src/app/community/collections/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -4080,7 +4615,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/collections",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -4127,7 +4664,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -4200,8 +4740,12 @@
     },
     {
       "screenId": "screen-page-community-collections-slug",
-      "routeIds": ["route-page-community-collections-slug"],
-      "sourceFiles": ["src/app/community/collections/[slug]/page.tsx"],
+      "routeIds": [
+        "route-page-community-collections-slug"
+      ],
+      "sourceFiles": [
+        "src/app/community/collections/[slug]/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -4209,7 +4753,9 @@
       "criticality": "HIGH",
       "primaryUserGoal": "Use current Community Harbor surface at /community/collections/:slug",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -4341,8 +4887,12 @@
     },
     {
       "screenId": "screen-page-community-creators",
-      "routeIds": ["route-page-community-creators"],
-      "sourceFiles": ["src/app/community/creators/page.tsx"],
+      "routeIds": [
+        "route-page-community-creators"
+      ],
+      "sourceFiles": [
+        "src/app/community/creators/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -4350,7 +4900,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/creators",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -4397,7 +4949,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -4470,8 +5025,12 @@
     },
     {
       "screenId": "screen-page-community-creators-handle",
-      "routeIds": ["route-page-community-creators-handle"],
-      "sourceFiles": ["src/app/community/creators/[handle]/page.tsx"],
+      "routeIds": [
+        "route-page-community-creators-handle"
+      ],
+      "sourceFiles": [
+        "src/app/community/creators/[handle]/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -4479,7 +5038,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/creators/:handle",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -4526,7 +5087,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -4599,8 +5163,12 @@
     },
     {
       "screenId": "screen-page-community-featured",
-      "routeIds": ["route-page-community-featured"],
-      "sourceFiles": ["src/app/community/featured/page.tsx"],
+      "routeIds": [
+        "route-page-community-featured"
+      ],
+      "sourceFiles": [
+        "src/app/community/featured/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -4608,7 +5176,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/featured",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -4655,7 +5225,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -4728,8 +5301,12 @@
     },
     {
       "screenId": "screen-page-community-guides",
-      "routeIds": ["route-page-community-guides"],
-      "sourceFiles": ["src/app/community/guides/page.tsx"],
+      "routeIds": [
+        "route-page-community-guides"
+      ],
+      "sourceFiles": [
+        "src/app/community/guides/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -4737,7 +5314,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/guides",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -4784,7 +5363,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -4857,8 +5439,12 @@
     },
     {
       "screenId": "screen-page-community-guides-slug",
-      "routeIds": ["route-page-community-guides-slug"],
-      "sourceFiles": ["src/app/community/guides/[slug]/page.tsx"],
+      "routeIds": [
+        "route-page-community-guides-slug"
+      ],
+      "sourceFiles": [
+        "src/app/community/guides/[slug]/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -4866,7 +5452,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/guides/:slug",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -4913,7 +5501,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -4986,8 +5577,12 @@
     },
     {
       "screenId": "screen-page-community-maps",
-      "routeIds": ["route-page-community-maps"],
-      "sourceFiles": ["src/app/community/maps/page.tsx"],
+      "routeIds": [
+        "route-page-community-maps"
+      ],
+      "sourceFiles": [
+        "src/app/community/maps/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -4995,7 +5590,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/maps",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -5042,7 +5639,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -5115,8 +5715,12 @@
     },
     {
       "screenId": "screen-page-community-moderation",
-      "routeIds": ["route-page-community-moderation"],
-      "sourceFiles": ["src/app/community/moderation/page.tsx"],
+      "routeIds": [
+        "route-page-community-moderation"
+      ],
+      "sourceFiles": [
+        "src/app/community/moderation/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -5124,7 +5728,9 @@
       "criticality": "HIGH",
       "primaryUserGoal": "Use current Community Harbor surface at /community/moderation",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -5207,7 +5813,9 @@
       "fixtureVersion": "homeport-phase6-v1",
       "currentMaturity": "COMPLETE_WITH_TRUTHFUL_EXTERNAL_LIMITATION",
       "finalMaturity": "COMPLETE_WITH_TRUTHFUL_EXTERNAL_LIMITATION",
-      "limitations": ["Live moderation providers and real evidence are intentionally excluded from synthetic proof."],
+      "limitations": [
+        "Live moderation providers and real evidence are intentionally excluded from synthetic proof."
+      ],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -5262,8 +5870,12 @@
     },
     {
       "screenId": "screen-page-community-moderation-id",
-      "routeIds": ["route-page-community-moderation-id"],
-      "sourceFiles": ["src/app/community/moderation/[id]/page.tsx"],
+      "routeIds": [
+        "route-page-community-moderation-id"
+      ],
+      "sourceFiles": [
+        "src/app/community/moderation/[id]/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -5271,7 +5883,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/moderation/:id",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -5324,7 +5938,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -5335,14 +5952,18 @@
       "emptyStateAction": "NOT_DECLARED_IN_ROUTE_SOURCE",
       "errorRecovery": "RETRY_OR_STABLE_PARENT",
       "permissionRecovery": "AVAILABLE_WORKSPACE_OR_HOME",
-      "evidenceIds": ["HP-P6-EV-120-community-moderation-id-restricted"],
+      "evidenceIds": [
+        "HP-P6-EV-120-community-moderation-id-restricted"
+      ],
       "visualReviewStatus": "ACCEPTED",
       "accessibilityStatus": "AUTOMATED_AND_SEMANTIC_ACCEPTED",
       "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
       "fixtureVersion": "homeport-phase6-v1",
       "currentMaturity": "COMPLETE_WITH_TRUTHFUL_EXTERNAL_LIMITATION",
       "finalMaturity": "COMPLETE_WITH_TRUTHFUL_EXTERNAL_LIMITATION",
-      "limitations": ["Live moderation providers and real evidence are intentionally excluded from synthetic proof."],
+      "limitations": [
+        "Live moderation providers and real evidence are intentionally excluded from synthetic proof."
+      ],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -5397,8 +6018,12 @@
     },
     {
       "screenId": "screen-page-community-templates",
-      "routeIds": ["route-page-community-templates"],
-      "sourceFiles": ["src/app/community/templates/page.tsx"],
+      "routeIds": [
+        "route-page-community-templates"
+      ],
+      "sourceFiles": [
+        "src/app/community/templates/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -5406,7 +6031,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/templates",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -5453,7 +6080,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -5526,8 +6156,12 @@
     },
     {
       "screenId": "screen-page-community-voyage-logs",
-      "routeIds": ["route-page-community-voyage-logs"],
-      "sourceFiles": ["src/app/community/voyage-logs/page.tsx"],
+      "routeIds": [
+        "route-page-community-voyage-logs"
+      ],
+      "sourceFiles": [
+        "src/app/community/voyage-logs/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -5535,7 +6169,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/voyage-logs",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -5582,7 +6218,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -5655,8 +6294,12 @@
     },
     {
       "screenId": "screen-page-community-voyage-logs-slug",
-      "routeIds": ["route-page-community-voyage-logs-slug"],
-      "sourceFiles": ["src/app/community/voyage-logs/[slug]/page.tsx"],
+      "routeIds": [
+        "route-page-community-voyage-logs-slug"
+      ],
+      "sourceFiles": [
+        "src/app/community/voyage-logs/[slug]/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -5664,7 +6307,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/voyage-logs/:slug",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -5711,7 +6356,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -5784,8 +6432,12 @@
     },
     {
       "screenId": "screen-page-community-voyage-logs-consent",
-      "routeIds": ["route-page-community-voyage-logs-consent"],
-      "sourceFiles": ["src/app/community/voyage-logs/consent/page.tsx"],
+      "routeIds": [
+        "route-page-community-voyage-logs-consent"
+      ],
+      "sourceFiles": [
+        "src/app/community/voyage-logs/consent/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -5793,7 +6445,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/voyage-logs/consent",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -5846,7 +6500,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -5919,8 +6576,12 @@
     },
     {
       "screenId": "screen-page-community-voyage-logs-media",
-      "routeIds": ["route-page-community-voyage-logs-media"],
-      "sourceFiles": ["src/app/community/voyage-logs/media/page.tsx"],
+      "routeIds": [
+        "route-page-community-voyage-logs-media"
+      ],
+      "sourceFiles": [
+        "src/app/community/voyage-logs/media/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -5928,7 +6589,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Community Harbor surface at /community/voyage-logs/media",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -5971,7 +6634,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -6044,8 +6710,12 @@
     },
     {
       "screenId": "screen-page-community-voyage-logs-owner",
-      "routeIds": ["route-page-community-voyage-logs-owner"],
-      "sourceFiles": ["src/app/community/voyage-logs/owner/page.tsx"],
+      "routeIds": [
+        "route-page-community-voyage-logs-owner"
+      ],
+      "sourceFiles": [
+        "src/app/community/voyage-logs/owner/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -6053,7 +6723,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/voyage-logs/owner",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -6106,7 +6778,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -6179,8 +6854,12 @@
     },
     {
       "screenId": "screen-page-community-voyage-logs-owner-id",
-      "routeIds": ["route-page-community-voyage-logs-owner-id"],
-      "sourceFiles": ["src/app/community/voyage-logs/owner/[id]/page.tsx"],
+      "routeIds": [
+        "route-page-community-voyage-logs-owner-id"
+      ],
+      "sourceFiles": [
+        "src/app/community/voyage-logs/owner/[id]/page.tsx"
+      ],
       "productArea": "Community Harbor",
       "specialistOwner": "harborlight",
       "integrationOwner": "project-homeport",
@@ -6188,7 +6867,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/voyage-logs/owner/:id",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -6241,7 +6922,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -6314,8 +6998,12 @@
     },
     {
       "screenId": "screen-page-dev-animations",
-      "routeIds": ["route-page-dev-animations"],
-      "sourceFiles": ["src/app/dev/animations/page.tsx"],
+      "routeIds": [
+        "route-page-dev-animations"
+      ],
+      "sourceFiles": [
+        "src/app/dev/animations/page.tsx"
+      ],
       "productArea": "Development diagnostics",
       "specialistOwner": "lanternwake",
       "integrationOwner": "project-homeport",
@@ -6323,7 +7011,9 @@
       "criticality": "DEVELOPMENT_ONLY",
       "primaryUserGoal": "Use current Development diagnostics surface at /dev/animations",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -6339,8 +7029,15 @@
         "loading-skeletons",
         "error-summaries"
       ],
-      "applicableStates": ["READY_POPULATED", "INITIAL_LOADING", "RECOVERABLE_ERROR"],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "applicableStates": [
+        "READY_POPULATED",
+        "INITIAL_LOADING",
+        "RECOVERABLE_ERROR"
+      ],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -6358,7 +7055,9 @@
       "fixtureVersion": "homeport-phase6-v1",
       "currentMaturity": "DEVELOPMENT_ONLY",
       "finalMaturity": "DEVELOPMENT_ONLY",
-      "limitations": ["Development-only and excluded from ordinary navigation."],
+      "limitations": [
+        "Development-only and excluded from ordinary navigation."
+      ],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -6413,8 +7112,12 @@
     },
     {
       "screenId": "screen-page-forgot-password",
-      "routeIds": ["route-page-forgot-password"],
-      "sourceFiles": ["src/app/forgot-password/page.tsx"],
+      "routeIds": [
+        "route-page-forgot-password"
+      ],
+      "sourceFiles": [
+        "src/app/forgot-password/page.tsx"
+      ],
       "productArea": "Account lifecycle",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -6422,7 +7125,9 @@
       "criticality": "HIGH",
       "primaryUserGoal": "Use current Account lifecycle surface at /forgot-password",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -6471,7 +7176,10 @@
       "emptyStateAction": "NOT_DECLARED_IN_ROUTE_SOURCE",
       "errorRecovery": "RETRY_OR_STABLE_PARENT",
       "permissionRecovery": "AVAILABLE_WORKSPACE_OR_HOME",
-      "evidenceIds": ["HP-P6-EV-027-forgot-password-standard-desktop", "HP-P6-EV-028-forgot-password-modern-mobile"],
+      "evidenceIds": [
+        "HP-P6-EV-027-forgot-password-standard-desktop",
+        "HP-P6-EV-028-forgot-password-modern-mobile"
+      ],
       "visualReviewStatus": "ACCEPTED",
       "accessibilityStatus": "AUTOMATED_AND_SEMANTIC_ACCEPTED",
       "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
@@ -6533,8 +7241,12 @@
     },
     {
       "screenId": "screen-page-passport",
-      "routeIds": ["route-page-passport"],
-      "sourceFiles": ["src/app/passport/page.tsx"],
+      "routeIds": [
+        "route-page-passport"
+      ],
+      "sourceFiles": [
+        "src/app/passport/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -6542,7 +7254,9 @@
       "criticality": "CRITICAL",
       "primaryUserGoal": "Use Passport Home in the unified Personal Harbor",
       "primaryHeading": "Passport Home",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "PassportOverviewDto",
       "componentFamilies": [
@@ -6673,8 +7387,12 @@
     },
     {
       "screenId": "screen-page-passport-artifacts",
-      "routeIds": ["route-page-passport-artifacts"],
-      "sourceFiles": ["src/app/passport/artifacts/page.tsx"],
+      "routeIds": [
+        "route-page-passport-artifacts"
+      ],
+      "sourceFiles": [
+        "src/app/passport/artifacts/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -6682,7 +7400,9 @@
       "criticality": "HIGH",
       "primaryUserGoal": "Use Artifact Cabinet in the unified Personal Harbor",
       "primaryHeading": "Artifact Cabinet",
-      "primaryActions": ["SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"],
+      "primaryActions": [
+        "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"
+      ],
       "secondaryActions": [],
       "dataProjection": "ArtifactCabinetDto",
       "componentFamilies": [
@@ -6812,8 +7532,12 @@
     },
     {
       "screenId": "screen-page-passport-artifacts-artifactId",
-      "routeIds": ["route-page-passport-artifacts-artifactId"],
-      "sourceFiles": ["src/app/passport/artifacts/[artifactId]/page.tsx"],
+      "routeIds": [
+        "route-page-passport-artifacts-artifactId"
+      ],
+      "sourceFiles": [
+        "src/app/passport/artifacts/[artifactId]/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -6821,7 +7545,9 @@
       "criticality": "HIGH",
       "primaryUserGoal": "Use Artifact Detail in the unified Personal Harbor",
       "primaryHeading": "Artifact Detail",
-      "primaryActions": ["SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"],
+      "primaryActions": [
+        "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"
+      ],
       "secondaryActions": [],
       "dataProjection": "ArtifactDetailDto",
       "componentFamilies": [
@@ -6951,8 +7677,12 @@
     },
     {
       "screenId": "screen-page-passport-history",
-      "routeIds": ["route-page-passport-history"],
-      "sourceFiles": ["src/app/passport/history/page.tsx"],
+      "routeIds": [
+        "route-page-passport-history"
+      ],
+      "sourceFiles": [
+        "src/app/passport/history/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -6960,7 +7690,9 @@
       "criticality": "HIGH",
       "primaryUserGoal": "Use History & Memories in the unified Personal Harbor",
       "primaryHeading": "History & Memories",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "ChronicleHistoryListDto",
       "componentFamilies": [
@@ -7025,7 +7757,10 @@
       "emptyStateAction": "NOT_DECLARED_IN_ROUTE_SOURCE",
       "errorRecovery": "RETRY_OR_STABLE_PARENT",
       "permissionRecovery": "AVAILABLE_WORKSPACE_OR_HOME",
-      "evidenceIds": ["HP-P6-EV-037-passport-history-standard-desktop", "HP-P6-EV-038-passport-history-modern-mobile"],
+      "evidenceIds": [
+        "HP-P6-EV-037-passport-history-standard-desktop",
+        "HP-P6-EV-038-passport-history-modern-mobile"
+      ],
       "visualReviewStatus": "ACCEPTED",
       "accessibilityStatus": "AUTOMATED_AND_SEMANTIC_ACCEPTED",
       "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
@@ -7087,8 +7822,12 @@
     },
     {
       "screenId": "screen-page-passport-history-recordId",
-      "routeIds": ["route-page-passport-history-recordId"],
-      "sourceFiles": ["src/app/passport/history/[recordId]/page.tsx"],
+      "routeIds": [
+        "route-page-passport-history-recordId"
+      ],
+      "sourceFiles": [
+        "src/app/passport/history/[recordId]/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -7096,7 +7835,9 @@
       "criticality": "HIGH",
       "primaryUserGoal": "Use Voyage Record in the unified Personal Harbor",
       "primaryHeading": "Voyage Record",
-      "primaryActions": ["SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"],
+      "primaryActions": [
+        "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"
+      ],
       "secondaryActions": [],
       "dataProjection": "ChronicleHistoryDetailDto",
       "componentFamilies": [
@@ -7226,8 +7967,12 @@
     },
     {
       "screenId": "screen-page-passport-memories",
-      "routeIds": ["route-page-passport-memories"],
-      "sourceFiles": ["src/app/passport/memories/page.tsx"],
+      "routeIds": [
+        "route-page-passport-memories"
+      ],
+      "sourceFiles": [
+        "src/app/passport/memories/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -7235,7 +7980,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use Memories in the unified Personal Harbor",
       "primaryHeading": "Memories",
-      "primaryActions": ["SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"],
+      "primaryActions": [
+        "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"
+      ],
       "secondaryActions": [],
       "dataProjection": "MemoryListDto",
       "componentFamilies": [
@@ -7280,7 +8027,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -7353,8 +8103,12 @@
     },
     {
       "screenId": "screen-page-passport-saved",
-      "routeIds": ["route-page-passport-saved"],
-      "sourceFiles": ["src/app/passport/saved/page.tsx"],
+      "routeIds": [
+        "route-page-passport-saved"
+      ],
+      "sourceFiles": [
+        "src/app/passport/saved/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -7362,7 +8116,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use Saved Content in the unified Personal Harbor",
       "primaryHeading": "Saved Content",
-      "primaryActions": ["SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"],
+      "primaryActions": [
+        "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE"
+      ],
       "secondaryActions": [],
       "dataProjection": "SavedContentDto",
       "componentFamilies": [
@@ -7407,7 +8163,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -7480,8 +8239,12 @@
     },
     {
       "screenId": "screen-page-play-taleslug",
-      "routeIds": ["route-page-play-taleslug"],
-      "sourceFiles": ["src/app/play/[taleSlug]/page.tsx"],
+      "routeIds": [
+        "route-page-play-taleslug"
+      ],
+      "sourceFiles": [
+        "src/app/play/[taleSlug]/page.tsx"
+      ],
       "productArea": "Voyage runtime",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -7489,7 +8252,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Voyage runtime surface at /play/:taleSlug",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -7505,8 +8270,16 @@
         "loading-skeletons",
         "error-summaries"
       ],
-      "applicableStates": ["READY_POPULATED", "INITIAL_LOADING", "RECOVERABLE_ERROR", "PARTIAL_MEDIA_FAILURE"],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "applicableStates": [
+        "READY_POPULATED",
+        "INITIAL_LOADING",
+        "RECOVERABLE_ERROR",
+        "PARTIAL_MEDIA_FAILURE"
+      ],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -7579,8 +8352,12 @@
     },
     {
       "screenId": "screen-page-play-taleslug-history",
-      "routeIds": ["route-page-play-taleslug-history"],
-      "sourceFiles": ["src/app/play/[taleSlug]/history/page.tsx"],
+      "routeIds": [
+        "route-page-play-taleslug-history"
+      ],
+      "sourceFiles": [
+        "src/app/play/[taleSlug]/history/page.tsx"
+      ],
       "productArea": "Voyage runtime",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -7588,7 +8365,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Voyage runtime surface at /play/:taleSlug/history",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -7614,7 +8393,10 @@
         "NO_RESULTS",
         "PARTIAL_MEDIA_FAILURE"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -7687,8 +8469,12 @@
     },
     {
       "screenId": "screen-page-play-taleslug-session-sessionid",
-      "routeIds": ["route-page-play-taleslug-session-sessionid"],
-      "sourceFiles": ["src/app/play/[taleSlug]/session/[sessionId]/page.tsx"],
+      "routeIds": [
+        "route-page-play-taleslug-session-sessionid"
+      ],
+      "sourceFiles": [
+        "src/app/play/[taleSlug]/session/[sessionId]/page.tsx"
+      ],
       "productArea": "Voyage runtime",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -7696,7 +8482,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Voyage runtime surface at /play/:taleSlug/session/:sessionId",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -7713,8 +8501,16 @@
         "error-summaries",
         "contextual-exits"
       ],
-      "applicableStates": ["READY_POPULATED", "INITIAL_LOADING", "RECOVERABLE_ERROR", "PARTIAL_MEDIA_FAILURE"],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "applicableStates": [
+        "READY_POPULATED",
+        "INITIAL_LOADING",
+        "RECOVERABLE_ERROR",
+        "PARTIAL_MEDIA_FAILURE"
+      ],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -7787,8 +8583,12 @@
     },
     {
       "screenId": "screen-page-player",
-      "routeIds": ["route-page-player"],
-      "sourceFiles": ["src/app/player/page.tsx"],
+      "routeIds": [
+        "route-page-player"
+      ],
+      "sourceFiles": [
+        "src/app/player/page.tsx"
+      ],
       "productArea": "Player",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -7796,7 +8596,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Player surface at /player",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -7830,7 +8632,10 @@
         "OFFLINE_OR_DEGRADED",
         "PARTIAL_MEDIA_FAILURE"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -7903,8 +8708,12 @@
     },
     {
       "screenId": "screen-page-player-invitation",
-      "routeIds": ["route-page-player-invitation"],
-      "sourceFiles": ["src/app/player/invitation/page.tsx"],
+      "routeIds": [
+        "route-page-player-invitation"
+      ],
+      "sourceFiles": [
+        "src/app/player/invitation/page.tsx"
+      ],
       "productArea": "Player",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -7912,7 +8721,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Player surface at /player/invitation",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -7955,7 +8766,10 @@
         "TOKEN_CONSUMED",
         "TOKEN_REVOKED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -8032,8 +8846,12 @@
     },
     {
       "screenId": "screen-page-player-library",
-      "routeIds": ["route-page-player-library"],
-      "sourceFiles": ["src/app/player/library/page.tsx"],
+      "routeIds": [
+        "route-page-player-library"
+      ],
+      "sourceFiles": [
+        "src/app/player/library/page.tsx"
+      ],
       "productArea": "Player",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -8041,7 +8859,9 @@
       "criticality": "CRITICAL",
       "primaryUserGoal": "Use current Player surface at /player/library",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -8173,8 +8993,12 @@
     },
     {
       "screenId": "screen-page-player-playthroughs-playthroughid",
-      "routeIds": ["route-page-player-playthroughs-playthroughid"],
-      "sourceFiles": ["src/app/player/playthroughs/[playthroughId]/page.tsx"],
+      "routeIds": [
+        "route-page-player-playthroughs-playthroughid"
+      ],
+      "sourceFiles": [
+        "src/app/player/playthroughs/[playthroughId]/page.tsx"
+      ],
       "productArea": "Player",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -8182,7 +9006,9 @@
       "criticality": "CRITICAL",
       "primaryUserGoal": "Use current Player surface at /player/playthroughs/:playthroughId",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -8311,8 +9137,12 @@
     },
     {
       "screenId": "screen-page-player-playthroughs-playthroughid-archive",
-      "routeIds": ["route-page-player-playthroughs-playthroughid-archive"],
-      "sourceFiles": ["src/app/player/playthroughs/[playthroughId]/archive/page.tsx"],
+      "routeIds": [
+        "route-page-player-playthroughs-playthroughid-archive"
+      ],
+      "sourceFiles": [
+        "src/app/player/playthroughs/[playthroughId]/archive/page.tsx"
+      ],
       "productArea": "Player",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -8320,7 +9150,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Player surface at /player/playthroughs/:playthroughId/archive",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -8355,7 +9187,10 @@
         "OFFLINE_OR_DEGRADED",
         "PARTIAL_MEDIA_FAILURE"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -8428,8 +9263,12 @@
     },
     {
       "screenId": "screen-page-player-playthroughs-playthroughid-journal",
-      "routeIds": ["route-page-player-playthroughs-playthroughid-journal"],
-      "sourceFiles": ["src/app/player/playthroughs/[playthroughId]/journal/page.tsx"],
+      "routeIds": [
+        "route-page-player-playthroughs-playthroughid-journal"
+      ],
+      "sourceFiles": [
+        "src/app/player/playthroughs/[playthroughId]/journal/page.tsx"
+      ],
       "productArea": "Player",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -8437,7 +9276,9 @@
       "criticality": "HIGH",
       "primaryUserGoal": "Use current Player surface at /player/playthroughs/:playthroughId/journal",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -8561,8 +9402,12 @@
     },
     {
       "screenId": "screen-page-player-sign-in",
-      "routeIds": ["route-page-player-sign-in"],
-      "sourceFiles": ["src/app/player/sign-in/page.tsx"],
+      "routeIds": [
+        "route-page-player-sign-in"
+      ],
+      "sourceFiles": [
+        "src/app/player/sign-in/page.tsx"
+      ],
       "productArea": "Player",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -8570,7 +9415,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Player surface at /player/sign-in",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -8592,8 +9439,16 @@
         "confirmations",
         "media-fallback"
       ],
-      "applicableStates": ["READY_POPULATED", "DEPENDENCY_UNAVAILABLE", "OFFLINE_OR_DEGRADED", "PARTIAL_MEDIA_FAILURE"],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "applicableStates": [
+        "READY_POPULATED",
+        "DEPENDENCY_UNAVAILABLE",
+        "OFFLINE_OR_DEGRADED",
+        "PARTIAL_MEDIA_FAILURE"
+      ],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -8666,8 +9521,12 @@
     },
     {
       "screenId": "screen-page-profile-handle",
-      "routeIds": ["route-page-profile-handle"],
-      "sourceFiles": ["src/app/profile/[handle]/page.tsx"],
+      "routeIds": [
+        "route-page-profile-handle"
+      ],
+      "sourceFiles": [
+        "src/app/profile/[handle]/page.tsx"
+      ],
       "productArea": "Personal Harbor",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -8675,7 +9534,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "View the allowlisted public Profile projection",
       "primaryHeading": "Public Profile display name",
-      "primaryActions": ["Explore Chronicles"],
+      "primaryActions": [
+        "Explore Chronicles"
+      ],
       "secondaryActions": [],
       "dataProjection": "PublicProfileDto",
       "componentFamilies": [
@@ -8691,8 +9552,16 @@
         "loading-skeletons",
         "error-summaries"
       ],
-      "applicableStates": ["READY_POPULATED", "INITIAL_LOADING", "RECOVERABLE_ERROR", "STALE_CONFLICT"],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "applicableStates": [
+        "READY_POPULATED",
+        "INITIAL_LOADING",
+        "RECOVERABLE_ERROR",
+        "STALE_CONFLICT"
+      ],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -8765,8 +9634,12 @@
     },
     {
       "screenId": "screen-page-quartermaster",
-      "routeIds": ["route-page-quartermaster"],
-      "sourceFiles": ["src/app/quartermaster/page.tsx"],
+      "routeIds": [
+        "route-page-quartermaster"
+      ],
+      "sourceFiles": [
+        "src/app/quartermaster/page.tsx"
+      ],
       "productArea": "Captain",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -8774,7 +9647,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Captain surface at /quartermaster",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -8798,7 +9673,10 @@
         "ACCOUNT_RESTRICTED",
         "PERMISSION_RESTRICTED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -8871,8 +9749,12 @@
     },
     {
       "screenId": "screen-page-quartermaster-workspace",
-      "routeIds": ["route-page-quartermaster-workspace"],
-      "sourceFiles": ["src/app/quartermaster/[workspace]/page.tsx"],
+      "routeIds": [
+        "route-page-quartermaster-workspace"
+      ],
+      "sourceFiles": [
+        "src/app/quartermaster/[workspace]/page.tsx"
+      ],
       "productArea": "Captain",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -8880,7 +9762,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Captain surface at /quartermaster/:workspace",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -8904,7 +9788,10 @@
         "ACCOUNT_RESTRICTED",
         "PERMISSION_RESTRICTED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -8977,8 +9864,12 @@
     },
     {
       "screenId": "screen-page-register",
-      "routeIds": ["route-page-register"],
-      "sourceFiles": ["src/app/register/page.tsx"],
+      "routeIds": [
+        "route-page-register"
+      ],
+      "sourceFiles": [
+        "src/app/register/page.tsx"
+      ],
       "productArea": "Account lifecycle",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -8986,7 +9877,9 @@
       "criticality": "HIGH",
       "primaryUserGoal": "Use current Account lifecycle surface at /register",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -9035,7 +9928,10 @@
       "emptyStateAction": "NOT_DECLARED_IN_ROUTE_SOURCE",
       "errorRecovery": "RETRY_OR_STABLE_PARENT",
       "permissionRecovery": "AVAILABLE_WORKSPACE_OR_HOME",
-      "evidenceIds": ["HP-P6-EV-025-register-standard-desktop", "HP-P6-EV-026-register-modern-mobile"],
+      "evidenceIds": [
+        "HP-P6-EV-025-register-standard-desktop",
+        "HP-P6-EV-026-register-modern-mobile"
+      ],
       "visualReviewStatus": "ACCEPTED",
       "accessibilityStatus": "AUTOMATED_AND_SEMANTIC_ACCEPTED",
       "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
@@ -9097,8 +9993,12 @@
     },
     {
       "screenId": "screen-page-reset-password",
-      "routeIds": ["route-page-reset-password"],
-      "sourceFiles": ["src/app/reset-password/page.tsx"],
+      "routeIds": [
+        "route-page-reset-password"
+      ],
+      "sourceFiles": [
+        "src/app/reset-password/page.tsx"
+      ],
       "productArea": "Account lifecycle",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -9106,7 +10006,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Account lifecycle surface at /reset-password",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -9140,7 +10042,10 @@
         "TOKEN_CONSUMED",
         "TOKEN_REVOKED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -9219,8 +10124,12 @@
     },
     {
       "screenId": "screen-page-sign-in",
-      "routeIds": ["route-page-sign-in"],
-      "sourceFiles": ["src/app/sign-in/page.tsx"],
+      "routeIds": [
+        "route-page-sign-in"
+      ],
+      "sourceFiles": [
+        "src/app/sign-in/page.tsx"
+      ],
       "productArea": "Account lifecycle",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -9228,7 +10137,9 @@
       "criticality": "CRITICAL",
       "primaryUserGoal": "Use current Account lifecycle surface at /sign-in",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -9248,7 +10159,11 @@
         "dialogs",
         "confirmations"
       ],
-      "applicableStates": ["READY_POPULATED", "INITIAL_LOADING", "RECOVERABLE_ERROR"],
+      "applicableStates": [
+        "READY_POPULATED",
+        "INITIAL_LOADING",
+        "RECOVERABLE_ERROR"
+      ],
       "responsiveViewports": [
         "LARGE_DESKTOP",
         "STANDARD_DESKTOP",
@@ -9339,8 +10254,12 @@
     },
     {
       "screenId": "screen-page-studio",
-      "routeIds": ["route-page-studio"],
-      "sourceFiles": ["src/app/studio/page.tsx"],
+      "routeIds": [
+        "route-page-studio"
+      ],
+      "sourceFiles": [
+        "src/app/studio/page.tsx"
+      ],
       "productArea": "Creator Studio",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -9348,7 +10267,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Creator Studio surface at /studio",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -9389,7 +10310,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -9462,8 +10386,12 @@
     },
     {
       "screenId": "screen-page-studio-exchange",
-      "routeIds": ["route-page-studio-exchange"],
-      "sourceFiles": ["src/app/studio/exchange/page.tsx"],
+      "routeIds": [
+        "route-page-studio-exchange"
+      ],
+      "sourceFiles": [
+        "src/app/studio/exchange/page.tsx"
+      ],
       "productArea": "Creator Studio",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -9471,7 +10399,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/exchange",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -9516,7 +10446,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -9589,8 +10522,12 @@
     },
     {
       "screenId": "screen-page-studio-library",
-      "routeIds": ["route-page-studio-library"],
-      "sourceFiles": ["src/app/studio/library/page.tsx"],
+      "routeIds": [
+        "route-page-studio-library"
+      ],
+      "sourceFiles": [
+        "src/app/studio/library/page.tsx"
+      ],
       "productArea": "Creator Studio",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -9598,7 +10535,9 @@
       "criticality": "CRITICAL",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/library",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -9737,8 +10676,12 @@
     },
     {
       "screenId": "screen-page-studio-private-content",
-      "routeIds": ["route-page-studio-private-content"],
-      "sourceFiles": ["src/app/studio/private-content/page.tsx"],
+      "routeIds": [
+        "route-page-studio-private-content"
+      ],
+      "sourceFiles": [
+        "src/app/studio/private-content/page.tsx"
+      ],
       "productArea": "Creator Studio",
       "specialistOwner": "sealed-hold",
       "integrationOwner": "project-homeport",
@@ -9746,7 +10689,9 @@
       "criticality": "HIGH",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/private-content",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -9878,8 +10823,12 @@
     },
     {
       "screenId": "screen-page-studio-private-content-operations",
-      "routeIds": ["route-page-studio-private-content-operations"],
-      "sourceFiles": ["src/app/studio/private-content/operations/page.tsx"],
+      "routeIds": [
+        "route-page-studio-private-content-operations"
+      ],
+      "sourceFiles": [
+        "src/app/studio/private-content/operations/page.tsx"
+      ],
       "productArea": "Creator Studio",
       "specialistOwner": "sealed-hold",
       "integrationOwner": "project-homeport",
@@ -9887,7 +10836,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/private-content/operations",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -9932,7 +10883,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -10007,8 +10961,12 @@
     },
     {
       "screenId": "screen-page-studio-sign-in",
-      "routeIds": ["route-page-studio-sign-in"],
-      "sourceFiles": ["src/app/studio/sign-in/page.tsx"],
+      "routeIds": [
+        "route-page-studio-sign-in"
+      ],
+      "sourceFiles": [
+        "src/app/studio/sign-in/page.tsx"
+      ],
       "productArea": "Creator Studio",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -10016,7 +10974,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/sign-in",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -10051,7 +11011,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -10124,8 +11087,12 @@
     },
     {
       "screenId": "screen-page-studio-tales-taleid",
-      "routeIds": ["route-page-studio-tales-taleid"],
-      "sourceFiles": ["src/app/studio/tales/[taleId]/page.tsx"],
+      "routeIds": [
+        "route-page-studio-tales-taleid"
+      ],
+      "sourceFiles": [
+        "src/app/studio/tales/[taleId]/page.tsx"
+      ],
       "productArea": "Creator Studio",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -10133,7 +11100,9 @@
       "criticality": "CRITICAL",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/tales/:taleId",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -10268,8 +11237,12 @@
     },
     {
       "screenId": "screen-page-studio-tales-taleid-artifacts",
-      "routeIds": ["route-page-studio-tales-taleid-artifacts"],
-      "sourceFiles": ["src/app/studio/tales/[taleId]/artifacts/page.tsx"],
+      "routeIds": [
+        "route-page-studio-tales-taleid-artifacts"
+      ],
+      "sourceFiles": [
+        "src/app/studio/tales/[taleId]/artifacts/page.tsx"
+      ],
       "productArea": "Creator Studio",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -10277,7 +11250,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/tales/:taleId/artifacts",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -10326,7 +11301,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -10399,8 +11377,12 @@
     },
     {
       "screenId": "screen-page-studio-tales-taleid-assets",
-      "routeIds": ["route-page-studio-tales-taleid-assets"],
-      "sourceFiles": ["src/app/studio/tales/[taleId]/assets/page.tsx"],
+      "routeIds": [
+        "route-page-studio-tales-taleid-assets"
+      ],
+      "sourceFiles": [
+        "src/app/studio/tales/[taleId]/assets/page.tsx"
+      ],
       "productArea": "Creator Studio",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -10408,7 +11390,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/tales/:taleId/assets",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -10453,7 +11437,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -10526,8 +11513,12 @@
     },
     {
       "screenId": "screen-page-studio-tales-taleid-locations",
-      "routeIds": ["route-page-studio-tales-taleid-locations"],
-      "sourceFiles": ["src/app/studio/tales/[taleId]/locations/page.tsx"],
+      "routeIds": [
+        "route-page-studio-tales-taleid-locations"
+      ],
+      "sourceFiles": [
+        "src/app/studio/tales/[taleId]/locations/page.tsx"
+      ],
       "productArea": "Creator Studio",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -10535,7 +11526,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/tales/:taleId/locations",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -10580,7 +11573,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -10653,8 +11649,12 @@
     },
     {
       "screenId": "screen-page-studio-tales-taleid-settings",
-      "routeIds": ["route-page-studio-tales-taleid-settings"],
-      "sourceFiles": ["src/app/studio/tales/[taleId]/settings/page.tsx"],
+      "routeIds": [
+        "route-page-studio-tales-taleid-settings"
+      ],
+      "sourceFiles": [
+        "src/app/studio/tales/[taleId]/settings/page.tsx"
+      ],
       "productArea": "Creator Studio",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -10662,7 +11662,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/tales/:taleId/settings",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -10707,7 +11709,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -10780,8 +11785,12 @@
     },
     {
       "screenId": "screen-page-studio-tales-taleid-versions",
-      "routeIds": ["route-page-studio-tales-taleid-versions"],
-      "sourceFiles": ["src/app/studio/tales/[taleId]/versions/page.tsx"],
+      "routeIds": [
+        "route-page-studio-tales-taleid-versions"
+      ],
+      "sourceFiles": [
+        "src/app/studio/tales/[taleId]/versions/page.tsx"
+      ],
       "productArea": "Creator Studio",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -10789,7 +11798,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/tales/:taleId/versions",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -10834,7 +11845,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -10907,8 +11921,12 @@
     },
     {
       "screenId": "screen-page-studio-tales-new",
-      "routeIds": ["route-page-studio-tales-new"],
-      "sourceFiles": ["src/app/studio/tales/new/page.tsx"],
+      "routeIds": [
+        "route-page-studio-tales-new"
+      ],
+      "sourceFiles": [
+        "src/app/studio/tales/new/page.tsx"
+      ],
       "productArea": "Creator Studio",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -10916,7 +11934,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/tales/new",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -10961,7 +11981,10 @@
         "PARTIAL_MEDIA_FAILURE",
         "ARCHIVED_OR_REMOVED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -11034,8 +12057,12 @@
     },
     {
       "screenId": "screen-page-tale-campaignslug",
-      "routeIds": ["route-page-tale-campaignslug"],
-      "sourceFiles": ["src/app/tale/[campaignSlug]/page.tsx"],
+      "routeIds": [
+        "route-page-tale-campaignslug"
+      ],
+      "sourceFiles": [
+        "src/app/tale/[campaignSlug]/page.tsx"
+      ],
       "productArea": "Voyage runtime",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -11043,7 +12070,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Voyage runtime surface at /tale/:campaignSlug",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -11057,8 +12086,13 @@
         "state-panels",
         "status-regions"
       ],
-      "applicableStates": ["READY_POPULATED"],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "applicableStates": [
+        "READY_POPULATED"
+      ],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -11131,8 +12165,12 @@
     },
     {
       "screenId": "screen-page-tales",
-      "routeIds": ["route-page-tales"],
-      "sourceFiles": ["src/app/tales/page.tsx"],
+      "routeIds": [
+        "route-page-tales"
+      ],
+      "sourceFiles": [
+        "src/app/tales/page.tsx"
+      ],
       "productArea": "Voyage runtime",
       "specialistOwner": "one-voyage",
       "integrationOwner": "project-homeport",
@@ -11140,7 +12178,9 @@
       "criticality": "STANDARD",
       "primaryUserGoal": "Use current Voyage runtime surface at /tales",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -11158,8 +12198,17 @@
         "no-result-states",
         "error-summaries"
       ],
-      "applicableStates": ["READY_POPULATED", "INITIAL_LOADING", "RECOVERABLE_ERROR", "READY_EMPTY", "NO_RESULTS"],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "applicableStates": [
+        "READY_POPULATED",
+        "INITIAL_LOADING",
+        "RECOVERABLE_ERROR",
+        "READY_EMPTY",
+        "NO_RESULTS"
+      ],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -11232,8 +12281,12 @@
     },
     {
       "screenId": "screen-page-verify-email",
-      "routeIds": ["route-page-verify-email"],
-      "sourceFiles": ["src/app/verify-email/page.tsx"],
+      "routeIds": [
+        "route-page-verify-email"
+      ],
+      "sourceFiles": [
+        "src/app/verify-email/page.tsx"
+      ],
       "productArea": "Account lifecycle",
       "specialistOwner": "wayfarer",
       "integrationOwner": "project-homeport",
@@ -11241,7 +12294,9 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Use current Account lifecycle surface at /verify-email",
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
-      "primaryActions": ["ROUTE_SPECIFIC"],
+      "primaryActions": [
+        "ROUTE_SPECIFIC"
+      ],
       "secondaryActions": [],
       "dataProjection": "SERVER_OR_CLIENT_COMPONENT_PROJECTION",
       "componentFamilies": [
@@ -11275,7 +12330,10 @@
         "TOKEN_CONSUMED",
         "TOKEN_REVOKED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE"
+      ],
       "keyboardContract": "Semantic DOM order, visible focus, Enter and Space activation, no pointer-only action.",
       "touchContract": "All ordinary actions are touch-operable with governed target size and no hover dependency.",
       "focusContract": "Route entry focuses destination heading; disclosure and dialog closure restore a safe control.",
@@ -11286,7 +12344,10 @@
       "emptyStateAction": "NOT_DECLARED_IN_ROUTE_SOURCE",
       "errorRecovery": "RETRY_OR_STABLE_PARENT",
       "permissionRecovery": "AVAILABLE_WORKSPACE_OR_HOME",
-      "evidenceIds": ["HP-P6-EV-031-verify-email-standard-desktop", "HP-P6-EV-032-verify-email-modern-mobile"],
+      "evidenceIds": [
+        "HP-P6-EV-031-verify-email-standard-desktop",
+        "HP-P6-EV-032-verify-email-modern-mobile"
+      ],
       "visualReviewStatus": "ACCEPTED",
       "accessibilityStatus": "AUTOMATED_AND_SEMANTIC_ACCEPTED",
       "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
@@ -11349,7 +12410,10 @@
     {
       "screenId": "screen-state-loading",
       "routeIds": [],
-      "sourceFiles": ["src/components/ui/AsyncState.tsx", "src/components/auth/AccessDecisionState.tsx"],
+      "sourceFiles": [
+        "src/components/ui/AsyncState.tsx",
+        "src/components/auth/AccessDecisionState.tsx"
+      ],
       "productArea": "Cross-product state",
       "specialistOwner": "project-homeport",
       "integrationOwner": "project-homeport",
@@ -11357,10 +12421,14 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Loading state",
       "primaryHeading": "Loading state",
-      "primaryActions": ["RECOVERY_WHERE_IMPLEMENTED"],
+      "primaryActions": [
+        "RECOVERY_WHERE_IMPLEMENTED"
+      ],
       "secondaryActions": [],
       "dataProjection": "TYPED_CROSS_PRODUCT_STATE",
-      "componentFamilies": ["state-panels"],
+      "componentFamilies": [
+        "state-panels"
+      ],
       "applicableStates": [
         "INITIAL_LOADING",
         "READY_EMPTY",
@@ -11369,7 +12437,11 @@
         "DEPENDENCY_UNAVAILABLE",
         "PERMISSION_RESTRICTED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE", "EFFECTIVE_200_PERCENT"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE",
+        "EFFECTIVE_200_PERCENT"
+      ],
       "keyboardContract": "Recovery and onward actions remain keyboard-operable.",
       "touchContract": "Recovery and onward actions remain touch-operable.",
       "focusContract": "State heading receives context; recovery preserves or moves focus deliberately.",
@@ -11397,7 +12469,10 @@
     {
       "screenId": "screen-state-empty",
       "routeIds": [],
-      "sourceFiles": ["src/components/ui/AsyncState.tsx", "src/components/auth/AccessDecisionState.tsx"],
+      "sourceFiles": [
+        "src/components/ui/AsyncState.tsx",
+        "src/components/auth/AccessDecisionState.tsx"
+      ],
       "productArea": "Cross-product state",
       "specialistOwner": "project-homeport",
       "integrationOwner": "project-homeport",
@@ -11405,10 +12480,14 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Empty state",
       "primaryHeading": "Empty state",
-      "primaryActions": ["RECOVERY_WHERE_IMPLEMENTED"],
+      "primaryActions": [
+        "RECOVERY_WHERE_IMPLEMENTED"
+      ],
       "secondaryActions": [],
       "dataProjection": "TYPED_CROSS_PRODUCT_STATE",
-      "componentFamilies": ["state-panels"],
+      "componentFamilies": [
+        "state-panels"
+      ],
       "applicableStates": [
         "INITIAL_LOADING",
         "READY_EMPTY",
@@ -11417,7 +12496,11 @@
         "DEPENDENCY_UNAVAILABLE",
         "PERMISSION_RESTRICTED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE", "EFFECTIVE_200_PERCENT"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE",
+        "EFFECTIVE_200_PERCENT"
+      ],
       "keyboardContract": "Recovery and onward actions remain keyboard-operable.",
       "touchContract": "Recovery and onward actions remain touch-operable.",
       "focusContract": "State heading receives context; recovery preserves or moves focus deliberately.",
@@ -11445,7 +12528,10 @@
     {
       "screenId": "screen-state-no-results",
       "routeIds": [],
-      "sourceFiles": ["src/components/ui/AsyncState.tsx", "src/components/auth/AccessDecisionState.tsx"],
+      "sourceFiles": [
+        "src/components/ui/AsyncState.tsx",
+        "src/components/auth/AccessDecisionState.tsx"
+      ],
       "productArea": "Cross-product state",
       "specialistOwner": "project-homeport",
       "integrationOwner": "project-homeport",
@@ -11453,10 +12539,14 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "No-results state",
       "primaryHeading": "No-results state",
-      "primaryActions": ["RECOVERY_WHERE_IMPLEMENTED"],
+      "primaryActions": [
+        "RECOVERY_WHERE_IMPLEMENTED"
+      ],
       "secondaryActions": [],
       "dataProjection": "TYPED_CROSS_PRODUCT_STATE",
-      "componentFamilies": ["state-panels"],
+      "componentFamilies": [
+        "state-panels"
+      ],
       "applicableStates": [
         "INITIAL_LOADING",
         "READY_EMPTY",
@@ -11465,7 +12555,11 @@
         "DEPENDENCY_UNAVAILABLE",
         "PERMISSION_RESTRICTED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE", "EFFECTIVE_200_PERCENT"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE",
+        "EFFECTIVE_200_PERCENT"
+      ],
       "keyboardContract": "Recovery and onward actions remain keyboard-operable.",
       "touchContract": "Recovery and onward actions remain touch-operable.",
       "focusContract": "State heading receives context; recovery preserves or moves focus deliberately.",
@@ -11493,7 +12587,10 @@
     {
       "screenId": "screen-state-recoverable-error",
       "routeIds": [],
-      "sourceFiles": ["src/components/ui/AsyncState.tsx", "src/components/auth/AccessDecisionState.tsx"],
+      "sourceFiles": [
+        "src/components/ui/AsyncState.tsx",
+        "src/components/auth/AccessDecisionState.tsx"
+      ],
       "productArea": "Cross-product state",
       "specialistOwner": "project-homeport",
       "integrationOwner": "project-homeport",
@@ -11501,10 +12598,14 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Recoverable error state",
       "primaryHeading": "Recoverable error state",
-      "primaryActions": ["RECOVERY_WHERE_IMPLEMENTED"],
+      "primaryActions": [
+        "RECOVERY_WHERE_IMPLEMENTED"
+      ],
       "secondaryActions": [],
       "dataProjection": "TYPED_CROSS_PRODUCT_STATE",
-      "componentFamilies": ["state-panels"],
+      "componentFamilies": [
+        "state-panels"
+      ],
       "applicableStates": [
         "INITIAL_LOADING",
         "READY_EMPTY",
@@ -11513,7 +12614,11 @@
         "DEPENDENCY_UNAVAILABLE",
         "PERMISSION_RESTRICTED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE", "EFFECTIVE_200_PERCENT"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE",
+        "EFFECTIVE_200_PERCENT"
+      ],
       "keyboardContract": "Recovery and onward actions remain keyboard-operable.",
       "touchContract": "Recovery and onward actions remain touch-operable.",
       "focusContract": "State heading receives context; recovery preserves or moves focus deliberately.",
@@ -11541,7 +12646,10 @@
     {
       "screenId": "screen-state-dependency-unavailable",
       "routeIds": [],
-      "sourceFiles": ["src/components/ui/AsyncState.tsx", "src/components/auth/AccessDecisionState.tsx"],
+      "sourceFiles": [
+        "src/components/ui/AsyncState.tsx",
+        "src/components/auth/AccessDecisionState.tsx"
+      ],
       "productArea": "Cross-product state",
       "specialistOwner": "project-homeport",
       "integrationOwner": "project-homeport",
@@ -11549,10 +12657,14 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Dependency unavailable state",
       "primaryHeading": "Dependency unavailable state",
-      "primaryActions": ["RECOVERY_WHERE_IMPLEMENTED"],
+      "primaryActions": [
+        "RECOVERY_WHERE_IMPLEMENTED"
+      ],
       "secondaryActions": [],
       "dataProjection": "TYPED_CROSS_PRODUCT_STATE",
-      "componentFamilies": ["state-panels"],
+      "componentFamilies": [
+        "state-panels"
+      ],
       "applicableStates": [
         "INITIAL_LOADING",
         "READY_EMPTY",
@@ -11561,7 +12673,11 @@
         "DEPENDENCY_UNAVAILABLE",
         "PERMISSION_RESTRICTED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE", "EFFECTIVE_200_PERCENT"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE",
+        "EFFECTIVE_200_PERCENT"
+      ],
       "keyboardContract": "Recovery and onward actions remain keyboard-operable.",
       "touchContract": "Recovery and onward actions remain touch-operable.",
       "focusContract": "State heading receives context; recovery preserves or moves focus deliberately.",
@@ -11589,7 +12705,10 @@
     {
       "screenId": "screen-state-session-expired",
       "routeIds": [],
-      "sourceFiles": ["src/components/ui/AsyncState.tsx", "src/components/auth/AccessDecisionState.tsx"],
+      "sourceFiles": [
+        "src/components/ui/AsyncState.tsx",
+        "src/components/auth/AccessDecisionState.tsx"
+      ],
       "productArea": "Cross-product state",
       "specialistOwner": "project-homeport",
       "integrationOwner": "project-homeport",
@@ -11597,10 +12716,14 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Session-expired state",
       "primaryHeading": "Session-expired state",
-      "primaryActions": ["RECOVERY_WHERE_IMPLEMENTED"],
+      "primaryActions": [
+        "RECOVERY_WHERE_IMPLEMENTED"
+      ],
       "secondaryActions": [],
       "dataProjection": "TYPED_CROSS_PRODUCT_STATE",
-      "componentFamilies": ["state-panels"],
+      "componentFamilies": [
+        "state-panels"
+      ],
       "applicableStates": [
         "INITIAL_LOADING",
         "READY_EMPTY",
@@ -11609,7 +12732,11 @@
         "DEPENDENCY_UNAVAILABLE",
         "PERMISSION_RESTRICTED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE", "EFFECTIVE_200_PERCENT"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE",
+        "EFFECTIVE_200_PERCENT"
+      ],
       "keyboardContract": "Recovery and onward actions remain keyboard-operable.",
       "touchContract": "Recovery and onward actions remain touch-operable.",
       "focusContract": "State heading receives context; recovery preserves or moves focus deliberately.",
@@ -11637,7 +12764,10 @@
     {
       "screenId": "screen-state-permission-restricted",
       "routeIds": [],
-      "sourceFiles": ["src/components/ui/AsyncState.tsx", "src/components/auth/AccessDecisionState.tsx"],
+      "sourceFiles": [
+        "src/components/ui/AsyncState.tsx",
+        "src/components/auth/AccessDecisionState.tsx"
+      ],
       "productArea": "Cross-product state",
       "specialistOwner": "project-homeport",
       "integrationOwner": "project-homeport",
@@ -11645,10 +12775,14 @@
       "criticality": "CONTEXTUAL",
       "primaryUserGoal": "Permission-restricted state",
       "primaryHeading": "Permission-restricted state",
-      "primaryActions": ["RECOVERY_WHERE_IMPLEMENTED"],
+      "primaryActions": [
+        "RECOVERY_WHERE_IMPLEMENTED"
+      ],
       "secondaryActions": [],
       "dataProjection": "TYPED_CROSS_PRODUCT_STATE",
-      "componentFamilies": ["state-panels"],
+      "componentFamilies": [
+        "state-panels"
+      ],
       "applicableStates": [
         "INITIAL_LOADING",
         "READY_EMPTY",
@@ -11657,7 +12791,11 @@
         "DEPENDENCY_UNAVAILABLE",
         "PERMISSION_RESTRICTED"
       ],
-      "responsiveViewports": ["STANDARD_DESKTOP", "MODERN_MOBILE", "EFFECTIVE_200_PERCENT"],
+      "responsiveViewports": [
+        "STANDARD_DESKTOP",
+        "MODERN_MOBILE",
+        "EFFECTIVE_200_PERCENT"
+      ],
       "keyboardContract": "Recovery and onward actions remain keyboard-operable.",
       "touchContract": "Recovery and onward actions remain touch-operable.",
       "focusContract": "State heading receives context; recovery preserves or moves focus deliberately.",

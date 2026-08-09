@@ -5,6 +5,7 @@ export const routeClassifications = [
   "AUTH_COMPATIBILITY_ALIAS",
   "REDIRECT_ALIAS",
   "INTERNAL_DIAGNOSTIC",
+  "PRIVILEGED_DIRECT_ENTRY",
   "DEVELOPMENT_ONLY",
   "API_OR_SERVICE",
   "STATIC_ASSET",
@@ -22,7 +23,7 @@ export const shellModes = [
   "DEVELOPMENT",
 ];
 
-export const capabilityIds = ["PLAYER", "CAPTAIN", "CREATOR", "MODERATOR", "ADMINISTRATOR"];
+export const capabilityIds = ["PLAYER", "CAPTAIN", "CREATOR", "MODERATOR", "ADMINISTRATOR", "PLATFORM_OBSERVE"];
 
 export const knownPagePatterns = [
   "/",
@@ -44,6 +45,8 @@ export const knownPagePatterns = [
   "/account/roles",
   "/account/security",
   "/account/sessions",
+  "/account/support-access",
+  "/admin",
   "/captain",
   "/captain/invitations",
   "/captain/library",
@@ -175,6 +178,7 @@ const redirectRoutes = new Set([
 ]);
 
 const internalRoutes = new Set(["/studio/private-content/operations"]);
+const privilegedDirectRoutes = new Set(["/admin"]);
 const developmentRoutes = new Set(["/dev/animations"]);
 
 export function classificationForPath(pathPattern) {
@@ -184,6 +188,7 @@ export function classificationForPath(pathPattern) {
   if (authCompatibilityRoutes.has(pathPattern)) return "AUTH_COMPATIBILITY_ALIAS";
   if (redirectRoutes.has(pathPattern)) return "REDIRECT_ALIAS";
   if (internalRoutes.has(pathPattern)) return "INTERNAL_DIAGNOSTIC";
+  if (privilegedDirectRoutes.has(pathPattern)) return "PRIVILEGED_DIRECT_ENTRY";
   if (developmentRoutes.has(pathPattern)) return "DEVELOPMENT_ONLY";
   return "USER_NAVIGABLE";
 }
@@ -197,6 +202,7 @@ const parentOverrides = {
   "/account/merge": "/sign-in",
   "/account/profile/view": "/account/profile",
   "/account/reactivate": "/sign-in",
+  "/admin": "/",
   "/captain": "/",
   "/captain/invitations": "/captain/library",
   "/captain/library": "/",
@@ -274,6 +280,7 @@ function defaultParent(pathPattern) {
 
 function authenticationFor(pathPattern, classification) {
   if (classification === "TOKENIZED_DEEP_LINK") return "BOUNDED_TOKEN_OR_CODE";
+  if (classification === "PRIVILEGED_DIRECT_ENTRY") return "AUTHENTICATED_CAPABILITY_REQUIRED";
   if (pathPattern === "/community/moderation" || pathPattern === "/community/moderation/[id]")
     return "AUTHENTICATED_CAPABILITY_REQUIRED";
   if (pathPattern.startsWith("/community/voyage-logs/owner") || pathPattern.endsWith("/consent"))
@@ -290,6 +297,7 @@ function authenticationFor(pathPattern, classification) {
 }
 
 function capabilitiesFor(pathPattern) {
+  if (pathPattern === "/admin") return ["PLATFORM_OBSERVE"];
   if (pathPattern === "/community/moderation" || pathPattern === "/community/moderation/[id]") return ["MODERATOR"];
   if (pathPattern === "/studio/private-content/operations") return ["ADMINISTRATOR"];
   if (pathPattern.startsWith("/community/voyage-logs/owner") || pathPattern.endsWith("/consent")) return ["PLAYER"];
@@ -301,6 +309,7 @@ function capabilitiesFor(pathPattern) {
 }
 
 function navigationOwnerFor(pathPattern) {
+  if (pathPattern === "/admin") return "PRIVILEGED_DIRECT_ENTRY";
   if (pathPattern === "/") return "GLOBAL";
   if (pathPattern.startsWith("/account") || pathPattern.startsWith("/passport")) return "PERSONAL_HARBOR_SECTION";
   if (pathPattern.startsWith("/community")) return "COMMUNITY_DISTRICT_OR_CONTEXT";
@@ -389,7 +398,9 @@ export function nodePolicy(pathPattern, base = {}) {
                 ? "INTENTIONALLY_DEVELOPMENT_ONLY"
                 : classification === "INTERNAL_DIAGNOSTIC"
                   ? "OWNER_ONLY_DIAGNOSTIC"
-                  : "DEPRECATED_WITH_DISPOSITION",
+                  : classification === "PRIVILEGED_DIRECT_ENTRY"
+                    ? "INTENTIONALLY_PRIVILEGED_DIRECT_ENTRY"
+                    : "DEPRECATED_WITH_DISPOSITION",
   };
 }
 
@@ -874,6 +885,18 @@ export const entryBindings = [
     "Sessions & Devices",
     "src/navigation/registry.ts",
     "account-sessions",
+    "AUTHENTICATED",
+    [],
+  ],
+  [
+    "edge-account-support-access",
+    "ACCOUNT_NAV",
+    "/",
+    "/account/support-access",
+    "account-support-access",
+    "Support Access",
+    "src/navigation/registry.ts",
+    "account-support-access",
     "AUTHENTICATED",
     [],
   ],

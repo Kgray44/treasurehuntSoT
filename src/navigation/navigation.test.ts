@@ -237,6 +237,7 @@ describe("Homeport Phase 2 navigation authority", () => {
       ["account-artifacts", "/passport/artifacts"],
       ["account-security-sessions", "/account/security"],
       ["account-sessions", "/account/sessions"],
+      ["account-support-access", "/account/support-access"],
     ]);
   });
 

@@ -16,6 +16,7 @@ const eslintConfig = defineConfig([
     "playwright-report/**",
     "artifacts/**",
     ".sealed-build*/**",
+    ".admiralty-phase1-build/**",
     "next-env.d.ts",
   ]),
 ]);
