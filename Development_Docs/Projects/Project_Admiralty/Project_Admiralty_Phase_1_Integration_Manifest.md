@@ -14,19 +14,21 @@ last_reviewed: 2026-08-09
 | ------------------------- | --------------------------------------------------------------------------------------- |
 | Starting `origin/main`    | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                              |
 | Implementation checkpoint | `648d1068ee3007c303ac76ae3a3c68e137f73a0e`                                              |
-| Reconciled `origin/main`  | `5b266251bd5a42efe90988e45daf55bca8e566f1`                                              |
+| Reconciled `origin/main`  | `28a3139e9d43b234778bbbcd4bde2133ece4d8a2`                                              |
 | Exact tested app source   | `49c2f59d6d75791edbdba84f22f5ec1595d2d129`                                              |
-| Current-main merge anchor | `5dde8e179dffb9e4db23b0759953e7117447ef53`                                              |
+| Current-main merge anchor | `03371d4aa92042c79ee8adf7e055ff70a5720d3f`                                              |
 | Worktree                  | `C:\Users\kkids\Documents\treasurehuntSoT-admiralty-phase1`                             |
 | Branch                    | `codex/project-admiralty-phase1-raise-the-colors`                                       |
 | Publication               | Local named branch only; owner walkthrough precedes publication or mainline integration |
 
 The non-destructive current-main merges retain Project Deepwater's accepted
-Phase 1 control plane plus the current project-governance wave and governing
-PDFs. They combine the current ownership, contract, suite, impact, generated
-test-registry, documentation, and Feature Catalog artifacts with Admiralty's
-additions. No canonical checkout or database was used for implementation or
-validation.
+Phase 1 and Phase 2 control plane plus the current project-governance wave and
+governing PDFs. They combine the current ownership, contract, suite, impact,
+generated test-registry, documentation, and Feature Catalog artifacts with
+Admiralty's additions. Deepwater Phase 2 continues to treat unaccepted
+Admiralty capability work as coordination evidence rather than accepted
+implementation truth. No canonical checkout or database was used for
+implementation or validation.
 
 ## Source families
 
