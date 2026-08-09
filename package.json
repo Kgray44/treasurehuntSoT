@@ -50,6 +50,7 @@
     "test:governance": "node --test tests/sounding-line/phase3.test.mjs",
     "test:certification": "node scripts/sounding-line/cli.mjs certification report",
     "test:compatibility": "node scripts/sounding-line/cli.mjs compatibility compare build.production",
+    "tideglass:compare": "tsx scripts/tideglass/compare.ts",
     "language:validate": "tsx scripts/validate-user-facing-language.ts",
     "test:e2e": "playwright test",
     "test:oauth": "playwright test --config=playwright.oauth.config.ts",

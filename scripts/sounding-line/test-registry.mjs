@@ -28,6 +28,7 @@ const admiraltyContracts = [
 
 function ownerFor(file) {
   if (file.includes("admiralty")) return "project-admiralty";
+  if (file.includes("tideglass")) return "tideglass";
   if (file.includes("deepwater")) return "project-deepwater";
   if (file.includes("homeport")) return "project-homeport";
   if (file.includes("private-content")) return "sealed-hold";
@@ -41,6 +42,8 @@ function ownerFor(file) {
 
 function unitFamily(file) {
   if (file.startsWith("src/admiralty/") || file.startsWith("scripts/admiralty/")) return "unit.admiralty";
+  if (file.startsWith("src/tideglass/") || file.startsWith("scripts/tideglass/") || file.startsWith("tests/tideglass/"))
+    return "unit.tideglass";
   if (file.startsWith("scripts/deepwater/") || file.startsWith("tests/deepwater/")) return "unit.deepwater";
   if (file.startsWith("src/homeport/") || file.startsWith("scripts/homeport/") || file.startsWith("tests/homeport/"))
     return "unit.homeport";
@@ -111,6 +114,13 @@ function browserFamily(project, file, title) {
 
 function contractFor(file, family) {
   if (file.includes("admiralty") || family.includes("admiralty")) return admiraltyContracts;
+  if (file.includes("tideglass") || family === "unit.tideglass")
+    return [
+      "tideglass-exact-edition-pair",
+      "tideglass-semantic-determinism",
+      "tideglass-safe-projection",
+      "tideglass-read-only-invariance",
+    ];
   if (file.includes("deepwater") || family === "unit.deepwater") return ["deepwater.capability-realization-integrity"];
   if (file.includes("homeport") || family === "unit.homeport") return homeportContracts;
   if (file.includes("private-content")) return ["sealed-hold-private-delivery", "public-privacy-projection"];

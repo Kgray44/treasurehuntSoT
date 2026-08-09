@@ -7529,7 +7529,7 @@
       "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-001",
       "freshness": "CURRENT",
       "kind": "FEATURE_CATALOG",
-      "reference": "Development_Docs/Features/catalog/admiralty.json#FT-B009",
+      "reference": "Development_Docs/Features/catalog/admiralty.json#FT-B010",
       "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
     },
     {
@@ -10092,6 +10092,34 @@
       "freshness": "CURRENT",
       "kind": "SCREEN_CATALOG",
       "reference": "screen-page-studio-tales-taleid",
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+    },
+    {
+      "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/studio.json#FT-B009",
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+    },
+    {
+      "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/tideglass/service.ts",
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+    },
+    {
+      "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-003",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "tests/tideglass",
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+    },
+    {
+      "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-004",
+      "freshness": "BOUNDED",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md",
       "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
     },
     {

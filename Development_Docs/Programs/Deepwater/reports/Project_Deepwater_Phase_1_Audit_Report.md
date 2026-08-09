@@ -16,22 +16,23 @@ Phase 1 establishes the governed inventory foundation. It does not claim complet
 
 | Measure                                     | Count |
 | ------------------------------------------- | ----: |
-| Meaningful capabilities                     |    54 |
-| Feature Catalog mapped                      |    42 |
+| Meaningful capabilities                     |    55 |
+| Feature Catalog mapped                      |    43 |
 | Uncataloged meaningful                      |    12 |
 | Ownership ambiguous                         |     0 |
 | Initial findings                            |    23 |
-| Phase 2 queue                               |    45 |
+| Phase 2 queue                               |    44 |
 | Catalog entries with route-surface mismatch |    18 |
 
-The seed catalog contains 42 accepted entries. The uncataloged survey adds account lifecycle, transactional email, private-provider operations, backup/restore, repair, community operations, bounded compatibility observation, and public-origin trust capabilities that have named consumers or operational purpose.
+The reconciled catalog contains 43 entries. The uncataloged survey adds account lifecycle, transactional email, private-provider operations, backup/restore, repair, community operations, bounded compatibility observation, and public-origin trust capabilities that have named consumers or operational purpose.
 
 ## Realization observations
 
 - BACKEND_ONLY: 3
 - DEPRECATED: 1
-- INTERNAL_BY_DESIGN: 7
-- PARTIALLY_REALIZED: 41
+- FULLY_REALIZED: 1
+- INTERNAL_BY_DESIGN: 8
+- PARTIALLY_REALIZED: 40
 - SECURITY_RESTRICTED: 2
 
 The classifications are deliberately conservative. A catalog status, source path, route, or historic completion receipt is not sufficient to reach `FULLY_REALIZED`. Current Homeport route, screen, and journey records are consumed as bounded evidence, while capability-specific state, accessibility, journey, external-provider, deployment, and owner boundaries remain explicit.

@@ -317,14 +317,28 @@
       "rationale": "Protected-staging real-provider acceptance is bounded evidence; production provider configuration and production deployment remain separately governed."
     },
     "FT-B009": {
+      "capabilityId": "DW-CAP-TIDEGLASS-SEMANTIC-EDITION-COMPARISON",
+      "ownerProject": "Tideglass",
+      "contributingProjects": ["Drydock", "One Voyage"],
+      "expectedTerminalRung": "SERVICE",
+      "expectedDisposition": "MACHINE_CONSUMER",
+      "currentHighestRung": "SERVICE",
+      "classification": "INTERNAL_BY_DESIGN",
+      "secondaryFlags": ["UNVERIFIED"],
+      "audience": ["CREATOR_SERVICE", "DEVELOPER"],
+      "privacyClass": "INTERNAL_ENGINEERING_METADATA",
+      "privilegeRequirements": ["REPOSITORY_OR_SERVICE_ACCESS"],
+      "rationale": "Tideglass Phase 1 is a read-only internal comparison foundation with bounded branch evidence; it does not claim an ordinary user route, deployment, or owner acceptance."
+    },
+    "FT-B010": {
       "capabilityId": "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
       "ownerProject": "Admiralty",
       "contributingProjects": ["Wayfarer", "Security", "Homeport", "One Voyage"],
       "expectedTerminalRung": "OWNER_ACCEPTED",
-      "currentHighestRung": "JOURNEY_PROVEN",
-      "classification": "PARTIALLY_REALIZED",
-      "secondaryFlags": ["UNVERIFIED"],
-      "rationale": "Exact-current-main local and synthetic automation proves the Phase 1 journeys, but the governing owner walkthrough remains pending and no deployment or production MySQL execution is claimed."
+      "currentHighestRung": "OWNER_ACCEPTED",
+      "classification": "FULLY_REALIZED",
+      "secondaryFlags": [],
+      "rationale": "The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09, including its deliberately bounded administration and consent surfaces. Production MySQL execution, deployment, and later Admiralty phases remain separately governed non-claims."
     }
   },
   "uncatalogedCapabilities": [

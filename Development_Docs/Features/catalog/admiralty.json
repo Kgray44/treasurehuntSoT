@@ -1,6 +1,6 @@
 [
   {
-    "id": "FT-B009",
+    "id": "FT-B010",
     "title": "Governed Platform Administration and Consented Support Access",
     "summary": "Canonical account roles, recent privileged assurance, scoped user consent, sanitized audit evidence, and a limited administration shell establish least-privileged platform operations without creating a second identity authority.",
     "status": "BRANCH_COMPLETE_NOT_MERGED",

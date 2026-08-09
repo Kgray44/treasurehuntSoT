@@ -19,9 +19,9 @@
     "classifications": {
       "BACKEND_ONLY": 1,
       "DEPRECATED": 1,
-      "FULLY_REALIZED": 40,
-      "INTERNAL_BY_DESIGN": 7,
-      "PARTIALLY_REALIZED": 3,
+      "FULLY_REALIZED": 41,
+      "INTERNAL_BY_DESIGN": 8,
+      "PARTIALLY_REALIZED": 2,
       "SECURITY_RESTRICTED": 2
     },
     "deepwaterSliceEligibleFindings": 0,
@@ -80,6 +80,7 @@
         "Security": 2,
         "Shipwright": 2,
         "Sounding Line": 1,
+        "Tideglass": 1,
         "True North": 4,
         "Universal Language": 1,
         "Wakebook": 2,
@@ -89,16 +90,17 @@
         "JOURNEY_PROVEN": 38,
         "OWNER_ACCEPTED": 3,
         "PROJECTION": 4,
-        "SERVICE": 9
+        "SERVICE": 10
       },
       "classifications": {
         "BACKEND_ONLY": 3,
         "DEPRECATED": 1,
-        "INTERNAL_BY_DESIGN": 7,
-        "PARTIALLY_REALIZED": 41,
+        "FULLY_REALIZED": 1,
+        "INTERNAL_BY_DESIGN": 8,
+        "PARTIALLY_REALIZED": 40,
         "SECURITY_RESTRICTED": 2
       },
-      "featureCatalogMappedCount": 42,
+      "featureCatalogMappedCount": 43,
       "openFindingsBySeverity": {
         "HIGH": 1,
         "LOW": 7,
@@ -107,7 +109,7 @@
       "ownershipAmbiguousCount": 0,
       "ratios": {
         "featureCatalogMappingCoverage": 1,
-        "initialRealizationCoverage": 0.1667,
+        "initialRealizationCoverage": 0.2,
         "naturalJourneyEvidenceCoverage": 0.561,
         "ownerMappedCoverage": 1
       },
@@ -118,7 +120,7 @@
         "LEGACY_DEPENDENT": 1,
         "UNVERIFIED": 54
       },
-      "totalMeaningfulCapabilities": 54,
+      "totalMeaningfulCapabilities": 55,
       "uncatalogedMeaningfulCapabilityCount": 12,
       "userFacingLackingAccessibilityEvidence": 41,
       "userFacingLackingDiscoverabilityEvidence": 41,
@@ -129,7 +131,7 @@
     "prioritizedTracesCompleted": 43,
     "remainingUnexplainedUnknownTraceLayers": 0,
     "remediationPackagesGenerated": 20,
-    "totalCapabilities": 54,
+    "totalCapabilities": 55,
     "traceCompletenessPercentage": 1,
     "tracesExternallyDeferred": 0,
     "tracesSuperseded": 0
