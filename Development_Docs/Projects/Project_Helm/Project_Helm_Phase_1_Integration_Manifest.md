@@ -17,10 +17,10 @@ is a pre-integration record and does not claim mainline acceptance.
 | Field                  | Value                                                                |
 | ---------------------- | -------------------------------------------------------------------- |
 | Original base SHA      | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                           |
-| Current `origin/main`  | `40d822cd936c9abbfce064fd7799e6a2f8c9785e`                           |
+| Current `origin/main`  | `cf08ed0954e0bfd8279229604d3bec5c1beea4ae`                           |
 | Branch                 | `codex/project-helm-phase1-take-the-helm`                            |
 | Owned worktree         | `C:\Users\kkids\Documents\treasurehuntSoT-helm-phase1-take-the-helm` |
-| Candidate commit       | `fed088f91cc5cabc0d2a65dd2f9d8c3f7628ca55` reconciled checkpoint     |
+| Candidate commit       | `1492878d4a91e3f3a467d500a7d22bfc0ae14c46` reconciled checkpoint     |
 | Protected integration  | Pending                                                              |
 | Final reconciled main  | Pending                                                              |
 | Current mainline state | `RECONCILED_VALIDATION_IN_PROGRESS`                                  |
@@ -47,6 +47,9 @@ is a pre-integration record and does not claim mainline acceptance.
 | `1068da6`, `762258e`            | Adjacent Deepwater closure                      | Finalizes and accepts Deepwater Phase 2 integration records and generated documentation. No Helm product source changed.                                                                                             |
 | `83ef66f`                       | Integration reconciliation                      | Reconciles the Tideglass candidate with accepted Deepwater closure.                                                                                                                                                  |
 | `40d822c`                       | Integration commit                              | Protected merge of Project Tideglass Phase 1 into main.                                                                                                                                                              |
+| `b608ba2`                       | Adjacent product control plane                  | Adds Deepwater Phase 3 utilization evidence, reports, schemas, queueing, CLI support, and control-plane tests. No Helm product source changed.                                                                       |
+| `3710cc4`                       | Adjacent reconciliation                         | Reconciles Deepwater Phase 3 records with accepted Tideglass main and refreshes generated documentation. No Helm product source changed.                                                                             |
+| `cf08ed0`                       | Integration commit                              | Protected merge of Deepwater Phase 3 through pull request 21.                                                                                                                                                        |
 
 The governance bootstrap introduces the supplied Project Helm and continuous
 development PDFs as tracked governing authorities. Their Git blob identities
