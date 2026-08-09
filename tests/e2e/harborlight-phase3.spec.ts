@@ -48,7 +48,7 @@ test.describe.serial("Harborlight Phase 3 persisted browser acceptance", () => {
     await page.getByRole("searchbox", { name: "Search public Community Harbor" }).focus();
     await expect(page.getByRole("searchbox", { name: "Search public Community Harbor" })).toBeFocused();
     await page.getByRole("button", { name: "Clear search and filters" }).press("Enter");
-    await expect(page).toHaveURL(/\/community\?sort=FEATURED$/u);
+    await expect(page).toHaveURL(/\/community$/u);
     await page.goBack();
     await expect(page).toHaveURL(/q=/u);
 
