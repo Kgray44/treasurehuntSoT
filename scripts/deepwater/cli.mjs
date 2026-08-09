@@ -9,6 +9,7 @@ import {
   validateEvidencePaths,
   validateModel,
   validatePhase2Model,
+  validatePhase3Model,
   writeArtifacts,
 } from "./lib.mjs";
 
@@ -28,6 +29,9 @@ if (command === "audit") {
       phase2QueueItems: artifacts.tracesDocument.queueItemCount,
       remediationPackets: artifacts.remediationDocument.packages.length,
       phase3QueueItems: artifacts.phase3Queue.queue.length,
+      utilizationReviews: artifacts.utilizationDocument.reviewedCapabilityCount,
+      utilizationStatusCounts: artifacts.utilizationDocument.statusCounts,
+      registeredSlices: artifacts.slicesDocument.slices.length,
       semanticDigest: semanticDigest(artifacts),
     })}\n`,
   );
@@ -36,16 +40,17 @@ if (command === "audit") {
   process.stdout.write(
     `${JSON.stringify({
       decision: "DEEPWATER_REPORTS_GENERATED",
-      traceReport: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_2_Trace_Report.md",
-      rootCauseSummary: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_2_Root_Cause_Summary.md",
-      assignmentSummary: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_2_Assignment_Summary.md",
+      utilizationReport: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_3_Utilization_Report.md",
+      remediationReport: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_3_Remediation_Report.md",
+      deltaReport: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_2_to_Phase_3_Delta_Report.md",
       phase3Queue: artifacts.phase3Queue.queue.length,
     })}\n`,
   );
 } else if (command === "validate") {
   const errors = [
     ...validateModel(artifacts),
-    ...validatePhase2Model(artifacts),
+    ...validatePhase2Model(artifacts.phase2),
+    ...validatePhase3Model(artifacts),
     ...(await validateEvidencePaths(root, artifacts)),
     ...(await compareArtifacts(root, artifacts)),
   ];
@@ -63,6 +68,9 @@ if (command === "audit") {
         findings: artifacts.findingsDocument.findings.length,
         remediationPackets: artifacts.remediationDocument.packages.length,
         phase3QueueItems: artifacts.phase3Queue.queue.length,
+        utilizationReviews: artifacts.utilizationDocument.reviewedCapabilityCount,
+        utilizationStatusCounts: artifacts.utilizationDocument.statusCounts,
+        registeredSlices: artifacts.slicesDocument.slices.length,
         semanticDigest: semanticDigest(artifacts),
       })}\n`,
     );

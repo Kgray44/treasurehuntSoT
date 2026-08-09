@@ -2,14 +2,350 @@
   "categories": [
     "OWNER_PROJECT_WORK",
     "DEEPWATER_SLICE_ELIGIBLE",
+    "DOCUMENTATION_RECONCILIATION",
     "EXTERNAL_DEPENDENCY",
     "OWNER_ACCEPTANCE_REQUIRED",
-    "DOCUMENTATION_RECONCILIATION",
-    "DEBT_CANDIDATE"
+    "EXPLICIT_DEBT_CANDIDATE",
+    "ALREADY_CLOSED_BY_MAIN"
   ],
-  "phase3Authorized": false,
+  "phase": "Phase 3 - Raise the Capability",
+  "phase3Authorized": true,
   "project": "Project Deepwater",
   "queue": [
+    {
+      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-PLAYER; implementation must use its fresh-main worktree.",
+      "capabilityId": "DW-CAP-INVITATION-CREW-LIFECYCLE",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "deepwaterSliceEligibility": "ELIGIBLE",
+      "findingId": "DW-FIND-CATALOG-SURFACE-FT-005",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "owner": "One Voyage",
+      "queueId": "DW-P3-CATALOG-SURFACE-FT-005",
+      "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
+      "severity": "LOW",
+      "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
+      "status": "ASSIGNED"
+    },
+    {
+      "activeProjectStatus": "The owning fragment is touched by an unaccepted Helm, Shipwright, or Tideglass lane and is excluded from Deepwater slices.",
+      "capabilityId": "DW-CAP-CAPTAIN-VOYAGE-OPERATIONS",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "deepwaterSliceEligibility": "BLOCKED_BY_ACTIVE_OWNER",
+      "findingId": "DW-FIND-CATALOG-SURFACE-FT-007",
+      "hardDependencies": [
+        "Current owner-approved route identity",
+        "Helm owner approval for future catalog correction"
+      ],
+      "owner": "Helm",
+      "queueId": "DW-P3-CATALOG-SURFACE-FT-007",
+      "recommendedIntegrationVehicle": "Helm and Ledgerlight catalog reconciliation",
+      "severity": "LOW",
+      "sliceId": null,
+      "status": "ASSIGNED"
+    },
+    {
+      "activeProjectStatus": "The owning fragment is touched by an unaccepted Helm, Shipwright, or Tideglass lane and is excluded from Deepwater slices.",
+      "capabilityId": "DW-CAP-STORY-BLOCK-SYSTEM",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "deepwaterSliceEligibility": "BLOCKED_BY_ACTIVE_OWNER",
+      "findingId": "DW-FIND-CATALOG-SURFACE-FT-009",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "owner": "Drydock",
+      "queueId": "DW-P3-CATALOG-SURFACE-FT-009",
+      "recommendedIntegrationVehicle": "Drydock and Ledgerlight catalog reconciliation",
+      "severity": "MEDIUM",
+      "sliceId": null,
+      "status": "ASSIGNED"
+    },
+    {
+      "activeProjectStatus": "The owning fragment is touched by an unaccepted Helm, Shipwright, or Tideglass lane and is excluded from Deepwater slices.",
+      "capabilityId": "DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "deepwaterSliceEligibility": "BLOCKED_BY_ACTIVE_OWNER",
+      "findingId": "DW-FIND-CATALOG-SURFACE-FT-010",
+      "hardDependencies": [
+        "Current owner-approved route identity",
+        "One Voyage remains canonical for immutable publishing; Tideglass owns comparison semantics"
+      ],
+      "owner": "One Voyage",
+      "queueId": "DW-P3-CATALOG-SURFACE-FT-010",
+      "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
+      "severity": "MEDIUM",
+      "sliceId": null,
+      "status": "ASSIGNED"
+    },
+    {
+      "activeProjectStatus": "The owning fragment is touched by an unaccepted Helm, Shipwright, or Tideglass lane and is excluded from Deepwater slices.",
+      "capabilityId": "DW-CAP-ASSET-LIBRARY-MEDIA-PIPELINE",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "deepwaterSliceEligibility": "BLOCKED_BY_ACTIVE_OWNER",
+      "findingId": "DW-FIND-CATALOG-SURFACE-FT-011",
+      "hardDependencies": [
+        "Current owner-approved route identity",
+        "Refresh trace if Shipwright reaches accepted main before Phase 2 candidate validation"
+      ],
+      "owner": "Shipwright",
+      "queueId": "DW-P3-CATALOG-SURFACE-FT-011",
+      "recommendedIntegrationVehicle": "Shipwright and Ledgerlight catalog reconciliation",
+      "severity": "MEDIUM",
+      "sliceId": null,
+      "status": "ASSIGNED"
+    },
+    {
+      "activeProjectStatus": "The owning fragment is touched by an unaccepted Helm, Shipwright, or Tideglass lane and is excluded from Deepwater slices.",
+      "capabilityId": "DW-CAP-WAYPOINT-REFERENCE-LIBRARY",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "deepwaterSliceEligibility": "BLOCKED_BY_ACTIVE_OWNER",
+      "findingId": "DW-FIND-CATALOG-SURFACE-FT-012",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "owner": "Drydock",
+      "queueId": "DW-P3-CATALOG-SURFACE-FT-012",
+      "recommendedIntegrationVehicle": "Drydock and Ledgerlight catalog reconciliation",
+      "severity": "MEDIUM",
+      "sliceId": null,
+      "status": "ASSIGNED"
+    },
+    {
+      "activeProjectStatus": "The owning fragment is touched by an unaccepted Helm, Shipwright, or Tideglass lane and is excluded from Deepwater slices.",
+      "capabilityId": "DW-CAP-CHRONICLE-ARTIFACT-DEFINITIONS",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "deepwaterSliceEligibility": "BLOCKED_BY_ACTIVE_OWNER",
+      "findingId": "DW-FIND-CATALOG-SURFACE-FT-013",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "owner": "Drydock",
+      "queueId": "DW-P3-CATALOG-SURFACE-FT-013",
+      "recommendedIntegrationVehicle": "Drydock and Ledgerlight catalog reconciliation",
+      "severity": "MEDIUM",
+      "sliceId": null,
+      "status": "ASSIGNED"
+    },
+    {
+      "activeProjectStatus": "The owning fragment is touched by an unaccepted Helm, Shipwright, or Tideglass lane and is excluded from Deepwater slices.",
+      "capabilityId": "DW-CAP-AUTHORITATIVE-PROGRESSION",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "deepwaterSliceEligibility": "BLOCKED_BY_ACTIVE_OWNER",
+      "findingId": "DW-FIND-CATALOG-SURFACE-FT-014",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "owner": "One Voyage",
+      "queueId": "DW-P3-CATALOG-SURFACE-FT-014",
+      "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
+      "severity": "LOW",
+      "sliceId": null,
+      "status": "ASSIGNED"
+    },
+    {
+      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-PLAYER; implementation must use its fresh-main worktree.",
+      "capabilityId": "DW-CAP-PLAYER-JOURNAL",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "deepwaterSliceEligibility": "ELIGIBLE",
+      "findingId": "DW-FIND-CATALOG-SURFACE-FT-015",
+      "hardDependencies": ["Current owner-approved route identity", "Refresh if Wakebook reaches accepted main"],
+      "owner": "Wakebook",
+      "queueId": "DW-P3-CATALOG-SURFACE-FT-015",
+      "recommendedIntegrationVehicle": "Wakebook and Ledgerlight catalog reconciliation",
+      "severity": "MEDIUM",
+      "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
+      "status": "ASSIGNED"
+    },
+    {
+      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-PLAYER; implementation must use its fresh-main worktree.",
+      "capabilityId": "DW-CAP-VOYAGE-CHART",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "deepwaterSliceEligibility": "ELIGIBLE",
+      "findingId": "DW-FIND-CATALOG-SURFACE-FT-016",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "owner": "Landfall",
+      "queueId": "DW-P3-CATALOG-SURFACE-FT-016",
+      "recommendedIntegrationVehicle": "Landfall and Ledgerlight catalog reconciliation",
+      "severity": "MEDIUM",
+      "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
+      "status": "ASSIGNED"
+    },
+    {
+      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-PLAYER; implementation must use its fresh-main worktree.",
+      "capabilityId": "DW-CAP-ARTIFACT-REVEAL",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "deepwaterSliceEligibility": "ELIGIBLE",
+      "findingId": "DW-FIND-CATALOG-SURFACE-FT-017",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "owner": "One Voyage",
+      "queueId": "DW-P3-CATALOG-SURFACE-FT-017",
+      "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
+      "severity": "MEDIUM",
+      "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
+      "status": "ASSIGNED"
+    },
+    {
+      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-PLAYER; implementation must use its fresh-main worktree.",
+      "capabilityId": "DW-CAP-SIDE-QUEST-LEDGER",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "deepwaterSliceEligibility": "ELIGIBLE",
+      "findingId": "DW-FIND-CATALOG-SURFACE-FT-018",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "owner": "One Voyage",
+      "queueId": "DW-P3-CATALOG-SURFACE-FT-018",
+      "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
+      "severity": "MEDIUM",
+      "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
+      "status": "ASSIGNED"
+    },
+    {
+      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-PLAYER; implementation must use its fresh-main worktree.",
+      "capabilityId": "DW-CAP-SHIPS-LOG",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "deepwaterSliceEligibility": "ELIGIBLE",
+      "findingId": "DW-FIND-CATALOG-SURFACE-FT-019",
+      "hardDependencies": ["Current owner-approved route identity", "Refresh if Wakebook reaches accepted main"],
+      "owner": "Wakebook",
+      "queueId": "DW-P3-CATALOG-SURFACE-FT-019",
+      "recommendedIntegrationVehicle": "Wakebook and Ledgerlight catalog reconciliation",
+      "severity": "MEDIUM",
+      "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
+      "status": "ASSIGNED"
+    },
+    {
+      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-PLAYER; implementation must use its fresh-main worktree.",
+      "capabilityId": "DW-CAP-FINALE-CHAMBER",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "deepwaterSliceEligibility": "ELIGIBLE",
+      "findingId": "DW-FIND-CATALOG-SURFACE-FT-020",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "owner": "One Voyage",
+      "queueId": "DW-P3-CATALOG-SURFACE-FT-020",
+      "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
+      "severity": "MEDIUM",
+      "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
+      "status": "ASSIGNED"
+    },
+    {
+      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-PLAYER; implementation must use its fresh-main worktree.",
+      "capabilityId": "DW-CAP-REALTIME-PRESENCE-REPLAY",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "deepwaterSliceEligibility": "ELIGIBLE",
+      "findingId": "DW-FIND-CATALOG-SURFACE-FT-021",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "owner": "One Voyage",
+      "queueId": "DW-P3-CATALOG-SURFACE-FT-021",
+      "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
+      "severity": "LOW",
+      "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
+      "status": "ASSIGNED"
+    },
+    {
+      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-ONE-VOYAGE; implementation must use its fresh-main worktree.",
+      "capabilityId": "DW-CAP-VERIFICATION-PROVIDER-FRAMEWORK",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "deepwaterSliceEligibility": "ELIGIBLE",
+      "findingId": "DW-FIND-CATALOG-SURFACE-FT-023",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "owner": "One Voyage",
+      "queueId": "DW-P3-CATALOG-SURFACE-FT-023",
+      "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
+      "severity": "LOW",
+      "sliceId": "DW-P3-SLICE-CATALOG-ONE-VOYAGE",
+      "status": "ASSIGNED"
+    },
+    {
+      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-HARBORLIGHT; implementation must use its fresh-main worktree.",
+      "capabilityId": "DW-CAP-COMMUNITY-EXCHANGE",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "deepwaterSliceEligibility": "ELIGIBLE",
+      "findingId": "DW-FIND-CATALOG-SURFACE-FT-025",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "owner": "Harborlight",
+      "queueId": "DW-P3-CATALOG-SURFACE-FT-025",
+      "recommendedIntegrationVehicle": "Harborlight and Ledgerlight catalog reconciliation",
+      "severity": "LOW",
+      "sliceId": "DW-P3-SLICE-CATALOG-HARBORLIGHT",
+      "status": "ASSIGNED"
+    },
+    {
+      "activeProjectStatus": "The Tideglass foundation is accepted; Studio consumer migration remains Tideglass and Shipwright owner work, and Deepwater does not compete with the active Shipwright lane.",
+      "capabilityId": "DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS",
+      "category": "OWNER_PROJECT_WORK",
+      "closureEvidence": [
+        "Accepted-main Tideglass semantic engine and safe projection replace the storage-oriented comparison consumer; focused semantic, privacy, and Studio integration tests pass; Sounding Line accepts the owner slice."
+      ],
+      "deepwaterSliceEligibility": "BLOCKED_BY_ACTIVE_OWNER",
+      "findingId": "DW-FIND-EDITION-COMPARISON-SEMANTIC-UNDERUTILIZATION",
+      "hardDependencies": [
+        "Accepted Tideglass semantic comparison authority plus owner-coordinated Studio consumer migration"
+      ],
+      "owner": "Tideglass",
+      "queueId": "DW-P3-EDITION-COMPARISON-SEMANTIC-UNDERUTILIZATION",
+      "recommendedIntegrationVehicle": "Tideglass and Shipwright owner-coordinated follow-on; no later phase is started by Deepwater",
+      "severity": "MEDIUM",
+      "sliceId": null,
+      "status": "ASSIGNED"
+    },
     {
       "activeProjectStatus": "No overlapping active owner lane observed at Phase 2 design freeze.",
       "capabilityId": "DW-CAP-INTEGRATED-WHOLE-PRODUCT-VOYAGE",
@@ -19,15 +355,14 @@
         "Owner decision record updated by the owner to an allowed accepted outcome and bound to the reviewed running source."
       ],
       "deepwaterSliceEligibility": "NOT_ELIGIBLE",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
       "findingId": "DW-FIND-HOMEPORT-OWNER-DECISION-PENDING",
       "hardDependencies": ["Owner decision on the current governed running experience"],
       "owner": "Homeport",
-      "priority": 100,
       "queueId": "DW-P3-HOMEPORT-OWNER-DECISION-PENDING",
       "recommendedIntegrationVehicle": "Project Homeport Phase 7 owner re-review",
-      "remediationPacketId": "DW-REMED-HOMEPORT-OWNER-DECISION-PENDING",
-      "severity": "HIGH"
+      "severity": "HIGH",
+      "sliceId": null,
+      "status": "ASSIGNED"
     },
     {
       "activeProjectStatus": "Project Admiralty Phase 1 unaccepted lane",
@@ -38,18 +373,17 @@
         "Privileged projection and negative privacy proof plus operator journey evidence."
       ],
       "deepwaterSliceEligibility": "BLOCKED_BY_ACTIVE_OWNER",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
       "findingId": "DW-FIND-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION",
       "hardDependencies": [
         "Accepted owner projection contract before any future Admiralty consumer lands",
         "Wayfarer safe projection contract"
       ],
       "owner": "Wayfarer",
-      "priority": 200,
       "queueId": "DW-P3-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION",
       "recommendedIntegrationVehicle": "Wayfarer projection plus Admiralty consumer coordination",
-      "remediationPacketId": "DW-REMED-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION",
-      "severity": "MEDIUM"
+      "severity": "MEDIUM",
+      "sliceId": null,
+      "status": "ASSIGNED"
     },
     {
       "activeProjectStatus": "No overlapping active owner lane observed at Phase 2 design freeze.",
@@ -60,349 +394,16 @@
         "Source-bound provider, privacy, authorization, failure-state, and natural-journey evidence on accepted main."
       ],
       "deepwaterSliceEligibility": "BLOCKED_BY_DEPENDENCY",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
       "findingId": "DW-FIND-VERIFICATION-PROVIDER-REALIZATION-GAP",
       "hardDependencies": ["Accepted provider contract and owner phase"],
       "owner": "Watchglass",
-      "priority": 200,
       "queueId": "DW-P3-VERIFICATION-PROVIDER-REALIZATION-GAP",
       "recommendedIntegrationVehicle": "Watchglass real-provider realization coordinated with One Voyage",
-      "remediationPacketId": "DW-REMED-VERIFICATION-PROVIDER-REALIZATION-GAP",
-      "severity": "MEDIUM"
-    },
-    {
-      "activeProjectStatus": "No overlapping active owner lane observed at Phase 2 design freeze.",
-      "capabilityId": "DW-CAP-STORY-BLOCK-SYSTEM",
-      "category": "DOCUMENTATION_RECONCILIATION",
-      "closureEvidence": [
-        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "deepwaterSliceEligibility": "NOT_ELIGIBLE",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-009",
-      "hardDependencies": ["Current owner-approved route identity"],
-      "owner": "Drydock",
-      "priority": 250,
-      "queueId": "DW-P3-CATALOG-SURFACE-FT-009",
-      "recommendedIntegrationVehicle": "Drydock and Ledgerlight catalog reconciliation",
-      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-009",
-      "severity": "MEDIUM"
-    },
-    {
-      "activeProjectStatus": "Project Tideglass unaccepted lane",
-      "capabilityId": "DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS",
-      "category": "DOCUMENTATION_RECONCILIATION",
-      "closureEvidence": [
-        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "deepwaterSliceEligibility": "BLOCKED_BY_ACTIVE_OWNER",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-010",
-      "hardDependencies": [
-        "Current owner-approved route identity",
-        "One Voyage remains canonical for immutable publishing; Tideglass owns comparison semantics"
-      ],
-      "owner": "One Voyage",
-      "priority": 250,
-      "queueId": "DW-P3-CATALOG-SURFACE-FT-010",
-      "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
-      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-010",
-      "severity": "MEDIUM"
-    },
-    {
-      "activeProjectStatus": "Project Shipwright Phase 1 unaccepted lane",
-      "capabilityId": "DW-CAP-ASSET-LIBRARY-MEDIA-PIPELINE",
-      "category": "DOCUMENTATION_RECONCILIATION",
-      "closureEvidence": [
-        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "deepwaterSliceEligibility": "BLOCKED_BY_ACTIVE_OWNER",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-011",
-      "hardDependencies": [
-        "Current owner-approved route identity",
-        "Refresh trace if Shipwright reaches accepted main before Phase 2 candidate validation"
-      ],
-      "owner": "Shipwright",
-      "priority": 250,
-      "queueId": "DW-P3-CATALOG-SURFACE-FT-011",
-      "recommendedIntegrationVehicle": "Shipwright and Ledgerlight catalog reconciliation",
-      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-011",
-      "severity": "MEDIUM"
-    },
-    {
-      "activeProjectStatus": "No overlapping active owner lane observed at Phase 2 design freeze.",
-      "capabilityId": "DW-CAP-WAYPOINT-REFERENCE-LIBRARY",
-      "category": "DOCUMENTATION_RECONCILIATION",
-      "closureEvidence": [
-        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "deepwaterSliceEligibility": "NOT_ELIGIBLE",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-012",
-      "hardDependencies": ["Current owner-approved route identity"],
-      "owner": "Drydock",
-      "priority": 250,
-      "queueId": "DW-P3-CATALOG-SURFACE-FT-012",
-      "recommendedIntegrationVehicle": "Drydock and Ledgerlight catalog reconciliation",
-      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-012",
-      "severity": "MEDIUM"
-    },
-    {
-      "activeProjectStatus": "No overlapping active owner lane observed at Phase 2 design freeze.",
-      "capabilityId": "DW-CAP-CHRONICLE-ARTIFACT-DEFINITIONS",
-      "category": "DOCUMENTATION_RECONCILIATION",
-      "closureEvidence": [
-        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "deepwaterSliceEligibility": "NOT_ELIGIBLE",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-013",
-      "hardDependencies": ["Current owner-approved route identity"],
-      "owner": "Drydock",
-      "priority": 250,
-      "queueId": "DW-P3-CATALOG-SURFACE-FT-013",
-      "recommendedIntegrationVehicle": "Drydock and Ledgerlight catalog reconciliation",
-      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-013",
-      "severity": "MEDIUM"
-    },
-    {
-      "activeProjectStatus": "Project Wakebook active unaccepted lane",
-      "capabilityId": "DW-CAP-PLAYER-JOURNAL",
-      "category": "DOCUMENTATION_RECONCILIATION",
-      "closureEvidence": [
-        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "deepwaterSliceEligibility": "BLOCKED_BY_ACTIVE_OWNER",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-015",
-      "hardDependencies": ["Current owner-approved route identity", "Refresh if Wakebook reaches accepted main"],
-      "owner": "Wakebook",
-      "priority": 250,
-      "queueId": "DW-P3-CATALOG-SURFACE-FT-015",
-      "recommendedIntegrationVehicle": "Wakebook and Ledgerlight catalog reconciliation",
-      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-015",
-      "severity": "MEDIUM"
-    },
-    {
-      "activeProjectStatus": "No overlapping active owner lane observed at Phase 2 design freeze.",
-      "capabilityId": "DW-CAP-VOYAGE-CHART",
-      "category": "DOCUMENTATION_RECONCILIATION",
-      "closureEvidence": [
-        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "deepwaterSliceEligibility": "NOT_ELIGIBLE",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-016",
-      "hardDependencies": ["Current owner-approved route identity"],
-      "owner": "Landfall",
-      "priority": 250,
-      "queueId": "DW-P3-CATALOG-SURFACE-FT-016",
-      "recommendedIntegrationVehicle": "Landfall and Ledgerlight catalog reconciliation",
-      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-016",
-      "severity": "MEDIUM"
-    },
-    {
-      "activeProjectStatus": "No overlapping active owner lane observed at Phase 2 design freeze.",
-      "capabilityId": "DW-CAP-ARTIFACT-REVEAL",
-      "category": "DOCUMENTATION_RECONCILIATION",
-      "closureEvidence": [
-        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "deepwaterSliceEligibility": "NOT_ELIGIBLE",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-017",
-      "hardDependencies": ["Current owner-approved route identity"],
-      "owner": "One Voyage",
-      "priority": 250,
-      "queueId": "DW-P3-CATALOG-SURFACE-FT-017",
-      "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
-      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-017",
-      "severity": "MEDIUM"
-    },
-    {
-      "activeProjectStatus": "No overlapping active owner lane observed at Phase 2 design freeze.",
-      "capabilityId": "DW-CAP-SIDE-QUEST-LEDGER",
-      "category": "DOCUMENTATION_RECONCILIATION",
-      "closureEvidence": [
-        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "deepwaterSliceEligibility": "NOT_ELIGIBLE",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-018",
-      "hardDependencies": ["Current owner-approved route identity"],
-      "owner": "One Voyage",
-      "priority": 250,
-      "queueId": "DW-P3-CATALOG-SURFACE-FT-018",
-      "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
-      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-018",
-      "severity": "MEDIUM"
-    },
-    {
-      "activeProjectStatus": "Project Wakebook active unaccepted lane",
-      "capabilityId": "DW-CAP-SHIPS-LOG",
-      "category": "DOCUMENTATION_RECONCILIATION",
-      "closureEvidence": [
-        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "deepwaterSliceEligibility": "BLOCKED_BY_ACTIVE_OWNER",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-019",
-      "hardDependencies": ["Current owner-approved route identity", "Refresh if Wakebook reaches accepted main"],
-      "owner": "Wakebook",
-      "priority": 250,
-      "queueId": "DW-P3-CATALOG-SURFACE-FT-019",
-      "recommendedIntegrationVehicle": "Wakebook and Ledgerlight catalog reconciliation",
-      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-019",
-      "severity": "MEDIUM"
-    },
-    {
-      "activeProjectStatus": "No overlapping active owner lane observed at Phase 2 design freeze.",
-      "capabilityId": "DW-CAP-FINALE-CHAMBER",
-      "category": "DOCUMENTATION_RECONCILIATION",
-      "closureEvidence": [
-        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "deepwaterSliceEligibility": "NOT_ELIGIBLE",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-020",
-      "hardDependencies": ["Current owner-approved route identity"],
-      "owner": "One Voyage",
-      "priority": 250,
-      "queueId": "DW-P3-CATALOG-SURFACE-FT-020",
-      "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
-      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-020",
-      "severity": "MEDIUM"
-    },
-    {
-      "activeProjectStatus": "No overlapping active owner lane observed at Phase 2 design freeze.",
-      "capabilityId": "DW-CAP-INVITATION-CREW-LIFECYCLE",
-      "category": "DOCUMENTATION_RECONCILIATION",
-      "closureEvidence": [
-        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "deepwaterSliceEligibility": "NOT_ELIGIBLE",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-005",
-      "hardDependencies": ["Current owner-approved route identity"],
-      "owner": "One Voyage",
-      "priority": 350,
-      "queueId": "DW-P3-CATALOG-SURFACE-FT-005",
-      "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
-      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-005",
-      "severity": "LOW"
-    },
-    {
-      "activeProjectStatus": "Project Helm active unaccepted lane",
-      "capabilityId": "DW-CAP-CAPTAIN-VOYAGE-OPERATIONS",
-      "category": "DOCUMENTATION_RECONCILIATION",
-      "closureEvidence": [
-        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "deepwaterSliceEligibility": "BLOCKED_BY_ACTIVE_OWNER",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-007",
-      "hardDependencies": [
-        "Current owner-approved route identity",
-        "Helm owner approval for future catalog correction"
-      ],
-      "owner": "Helm",
-      "priority": 350,
-      "queueId": "DW-P3-CATALOG-SURFACE-FT-007",
-      "recommendedIntegrationVehicle": "Helm and Ledgerlight catalog reconciliation",
-      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-007",
-      "severity": "LOW"
-    },
-    {
-      "activeProjectStatus": "No overlapping active owner lane observed at Phase 2 design freeze.",
-      "capabilityId": "DW-CAP-AUTHORITATIVE-PROGRESSION",
-      "category": "DOCUMENTATION_RECONCILIATION",
-      "closureEvidence": [
-        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "deepwaterSliceEligibility": "NOT_ELIGIBLE",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-014",
-      "hardDependencies": ["Current owner-approved route identity"],
-      "owner": "One Voyage",
-      "priority": 350,
-      "queueId": "DW-P3-CATALOG-SURFACE-FT-014",
-      "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
-      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-014",
-      "severity": "LOW"
-    },
-    {
-      "activeProjectStatus": "No overlapping active owner lane observed at Phase 2 design freeze.",
-      "capabilityId": "DW-CAP-REALTIME-PRESENCE-REPLAY",
-      "category": "DOCUMENTATION_RECONCILIATION",
-      "closureEvidence": [
-        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "deepwaterSliceEligibility": "NOT_ELIGIBLE",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-021",
-      "hardDependencies": ["Current owner-approved route identity"],
-      "owner": "One Voyage",
-      "priority": 350,
-      "queueId": "DW-P3-CATALOG-SURFACE-FT-021",
-      "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
-      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-021",
-      "severity": "LOW"
-    },
-    {
-      "activeProjectStatus": "No overlapping active owner lane observed at Phase 2 design freeze.",
-      "capabilityId": "DW-CAP-VERIFICATION-PROVIDER-FRAMEWORK",
-      "category": "DOCUMENTATION_RECONCILIATION",
-      "closureEvidence": [
-        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "deepwaterSliceEligibility": "NOT_ELIGIBLE",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-023",
-      "hardDependencies": ["Current owner-approved route identity"],
-      "owner": "One Voyage",
-      "priority": 350,
-      "queueId": "DW-P3-CATALOG-SURFACE-FT-023",
-      "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
-      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-023",
-      "severity": "LOW"
-    },
-    {
-      "activeProjectStatus": "No overlapping active owner lane observed at Phase 2 design freeze.",
-      "capabilityId": "DW-CAP-COMMUNITY-EXCHANGE",
-      "category": "DOCUMENTATION_RECONCILIATION",
-      "closureEvidence": [
-        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "deepwaterSliceEligibility": "NOT_ELIGIBLE",
-      "eligibleEarliestPhase": "After Project Deepwater Phase 2 is accepted on main and the owner creates a fresh accepted-main lane.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-025",
-      "hardDependencies": ["Current owner-approved route identity"],
-      "owner": "Harborlight",
-      "priority": 350,
-      "queueId": "DW-P3-CATALOG-SURFACE-FT-025",
-      "recommendedIntegrationVehicle": "Harborlight and Ledgerlight catalog reconciliation",
-      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-025",
-      "severity": "LOW"
+      "severity": "MEDIUM",
+      "sliceId": null,
+      "status": "ASSIGNED"
     }
   ],
   "schemaVersion": "1.0.0",
-  "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+  "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
 }
