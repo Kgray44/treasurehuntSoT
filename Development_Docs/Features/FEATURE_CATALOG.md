@@ -202,24 +202,32 @@ Creator Studio supports protected Chronicle authoring, graph editing, previews, 
 **Status:** MAINLINE
 **Program or subsystem:** Studio
 
-A stable registry defines reusable story blocks, validation, metadata, and safe unknown-type behavior.
+Strict versioned contracts define all twenty-three Story Block types with canonical parsing and serialization, typed variables and bounded expressions, deterministic content migration, stable issues, and compatibility-safe validation.
 
 ### Important subfeatures
 
-- Narrative and direction blocks
-- Media and reveal blocks
-- Interaction blocks
-- Logic and completion blocks
-- Safe diagnostic fallback
+- Strict configuration, presentation, and completion contracts
+- Canonical parsing and deterministic serialization
+- Typed variable scopes, operations, usage indexing, and safe rename propagation
+- Typed deterministic expression AST, checking, and bounded evaluation
+- Versioned migration registry with frozen historical compatibility fixtures
+- Stable issues and incremental validation with current Studio and runtime compatibility
 
 ### Primary surfaces
 
 `/studio/chronicles/[id]`
 
+### Meaningful limitations
+
+- Whole-Chronicle static analysis, repair and waiver workflows, and simulation remain outside Phase 1.
+- Provider contracts without configured owner adapters remain explicitly unavailable.
+
 ### Evidence
 
-- path: `src/chronicle/block-registry.ts`
-- path: `src/chronicle/types.ts`
+- path: `src/drydock/index.ts`
+- path: `src/drydock/contracts/registry.ts`
+- test: `src/drydock`
+- completion-record: `Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_1_Completion_Receipt.md`
 
 ---
 
