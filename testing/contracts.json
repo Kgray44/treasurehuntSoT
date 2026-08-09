@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "phase-7-owner-correction-round-3-pending-owner-rereview",
+  "status": "phase-1-deepwater-control-plane",
   "contracts": [
     {
       "id": "invitation-acceptance",
@@ -70,6 +70,13 @@
       "name": "Authentication and authorization",
       "authority": "platform-foundation",
       "owners": ["platform-foundation"],
+      "critical": true
+    },
+    {
+      "id": "deepwater.capability-realization-integrity",
+      "name": "Deepwater capability realization ledger integrity",
+      "authority": "project-deepwater",
+      "owners": ["project-deepwater", "platform-foundation"],
       "critical": true
     },
     {

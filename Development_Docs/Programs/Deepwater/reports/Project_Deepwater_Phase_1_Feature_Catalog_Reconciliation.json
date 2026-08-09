@@ -1,0 +1,511 @@
+{
+  "catalogEntryCount": 41,
+  "entries": [
+    {
+      "capabilityId": "DW-CAP-UNIFIED-CHRONICLE-PLATFORM",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/", "/captain", "/player", "/studio"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-001",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "DISCOVERABLE"
+    },
+    {
+      "capabilityId": "DW-CAP-ACCOUNT-SESSION-ROLE-SYSTEM",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/account", "/forgot-password", "/verify-email"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-002",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "DISCOVERABLE"
+    },
+    {
+      "capabilityId": "DW-CAP-ROLE-GATEWAY-WORKSPACE-ROUTING",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/", "/captain", "/player", "/studio"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-003",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "DISCOVERABLE"
+    },
+    {
+      "capabilityId": "DW-CAP-CHRONICLE-PASSPORT-PUBLIC-PROFILE",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/passport", "/profile/[handle]"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-004",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "DISCOVERABLE"
+    },
+    {
+      "capabilityId": "DW-CAP-INVITATION-CREW-LIFECYCLE",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/join", "/player"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-005",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-005"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "UI"
+    },
+    {
+      "capabilityId": "DW-CAP-PLAYER-LIBRARY-VOYAGE-LIFECYCLE",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/player"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-006",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "UI"
+    },
+    {
+      "capabilityId": "DW-CAP-CAPTAIN-VOYAGE-OPERATIONS",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/captain", "/captain/voyages/[id]"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-007",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-007"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "UI"
+    },
+    {
+      "capabilityId": "DW-CAP-CREATOR-STUDIO",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/studio"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-008",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "UI"
+    },
+    {
+      "capabilityId": "DW-CAP-STORY-BLOCK-SYSTEM",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/studio/chronicles/[id]"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-009",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-009"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "SERVICE"
+    },
+    {
+      "capabilityId": "DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/studio/chronicles/[id]/versions"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-010",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-010"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "SERVICE"
+    },
+    {
+      "capabilityId": "DW-CAP-ASSET-LIBRARY-MEDIA-PIPELINE",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/studio/assets"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-011",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-011"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "SERVICE"
+    },
+    {
+      "capabilityId": "DW-CAP-WAYPOINT-REFERENCE-LIBRARY",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/studio/waypoints"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-012",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-012"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "SERVICE"
+    },
+    {
+      "capabilityId": "DW-CAP-CHRONICLE-ARTIFACT-DEFINITIONS",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/studio/artifacts"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-013",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-013"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "SERVICE"
+    },
+    {
+      "capabilityId": "DW-CAP-AUTHORITATIVE-PROGRESSION",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/api/voyages", "/captain"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-014",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-014"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "UI"
+    },
+    {
+      "capabilityId": "DW-CAP-PLAYER-JOURNAL",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/player/voyages/[id]"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-015",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-015"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "SERVICE"
+    },
+    {
+      "capabilityId": "DW-CAP-VOYAGE-CHART",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/player/voyages/[id]/chart"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-016",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-016"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "SERVICE"
+    },
+    {
+      "capabilityId": "DW-CAP-ARTIFACT-REVEAL",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/player/voyages/[id]/treasure"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-017",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-017"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "SERVICE"
+    },
+    {
+      "capabilityId": "DW-CAP-SIDE-QUEST-LEDGER",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/player/voyages/[id]/ledger"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-018",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-018"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "SERVICE"
+    },
+    {
+      "capabilityId": "DW-CAP-SHIPS-LOG",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/player/voyages/[id]/log"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-019",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-019"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "SERVICE"
+    },
+    {
+      "capabilityId": "DW-CAP-FINALE-CHAMBER",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/player/voyages/[id]/finale"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-020",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-020"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "SERVICE"
+    },
+    {
+      "capabilityId": "DW-CAP-REALTIME-PRESENCE-REPLAY",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/api/player/events", "/player"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-021",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-021"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "UI"
+    },
+    {
+      "capabilityId": "DW-CAP-CINEMATIC-RUNTIME",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/captain", "/dev/animations", "/player"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-022",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "UI"
+    },
+    {
+      "capabilityId": "DW-CAP-VERIFICATION-PROVIDER-FRAMEWORK",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/api/verification", "/captain"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-023",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-023"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "UI"
+    },
+    {
+      "capabilityId": "DW-CAP-PRIVATE-CHRONICLE-PROTECTION",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/studio/private-content", "CLI"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-024",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "DISCOVERABLE"
+    },
+    {
+      "capabilityId": "DW-CAP-COMMUNITY-EXCHANGE",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/studio/community", "/tales"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-025",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-025"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "DISCOVERABLE"
+    },
+    {
+      "capabilityId": "DW-CAP-UNIVERSAL-LANGUAGE-DESIGN-SYSTEM",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/", "/captain", "/player", "/studio"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-026",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "DISCOVERABLE"
+    },
+    {
+      "capabilityId": "DW-CAP-SECURITY-PRIVACY-PLATFORM",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/account/security", "/api"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-027",
+      "mismatchFindingIds": [],
+      "observedClassification": "SECURITY_RESTRICTED",
+      "observedHighestRung": "API"
+    },
+    {
+      "capabilityId": "DW-CAP-DEVELOPMENT-OPERATIONAL-TOOLING",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["npm scripts", "scripts/test-all.ps1"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-028",
+      "mismatchFindingIds": [],
+      "observedClassification": "INTERNAL_BY_DESIGN",
+      "observedHighestRung": "SERVICE"
+    },
+    {
+      "capabilityId": "DW-CAP-ROLE-AWARE-NAVIGATION-SHELL",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/", "/captain", "/player", "/studio"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-029",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "DISCOVERABLE"
+    },
+    {
+      "capabilityId": "DW-CAP-PERSONAL-CHRONICLE-HISTORY",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/passport/history"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-030",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "DISCOVERABLE"
+    },
+    {
+      "capabilityId": "DW-CAP-ARTIFACT-CABINET-ACHIEVEMENTS",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/passport/artifacts"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-031",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "DISCOVERABLE"
+    },
+    {
+      "capabilityId": "DW-CAP-DOCUMENTATION-GOVERNANCE-CATALOG",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["Development_Docs", "docs", "npm run docs:validate", "npm run features:validate"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-032",
+      "mismatchFindingIds": [],
+      "observedClassification": "INTERNAL_BY_DESIGN",
+      "observedHighestRung": "SERVICE"
+    },
+    {
+      "capabilityId": "DW-CAP-GOVERNED-VERIFICATION-CONTROL-PLANE",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["npm run test:policy", "scripts/sounding-line", "scripts/test-all.ps1"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-033",
+      "mismatchFindingIds": [],
+      "observedClassification": "INTERNAL_BY_DESIGN",
+      "observedHighestRung": "SERVICE"
+    },
+    {
+      "capabilityId": "DW-CAP-UNIFIED-IDENTITY-SESSION-AUTHORITY",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": [
+        "/api/auth/context",
+        "/captain/sign-in",
+        "/passport",
+        "/player/sign-in",
+        "/register",
+        "/sign-in",
+        "/studio/sign-in"
+      ],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-B001",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "DISCOVERABLE"
+    },
+    {
+      "capabilityId": "DW-CAP-GLOBAL-SHELL-WAYFINDING",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": [
+        "/",
+        "/captain/library",
+        "/community",
+        "/passport",
+        "/player/library",
+        "/studio/library",
+        "/tales"
+      ],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-B002",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "DISCOVERABLE"
+    },
+    {
+      "capabilityId": "DW-CAP-PERSONAL-HARBOR",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": [
+        "/account",
+        "/account/data",
+        "/account/linked-identities",
+        "/account/preferences",
+        "/account/privacy",
+        "/account/profile",
+        "/account/security",
+        "/account/sessions",
+        "/passport",
+        "/passport/artifacts",
+        "/passport/history",
+        "/passport/memories",
+        "/passport/saved",
+        "/profile/[handle]"
+      ],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-B003",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "DISCOVERABLE"
+    },
+    {
+      "capabilityId": "DW-CAP-COMMUNITY-HARBOR-DISCOVERY",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": [
+        "/community",
+        "/community/artifacts",
+        "/community/audio",
+        "/community/chronicles",
+        "/community/collections",
+        "/community/creators",
+        "/community/featured",
+        "/community/guides",
+        "/community/maps",
+        "/community/templates",
+        "/community/voyage-logs"
+      ],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-B004",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "DISCOVERABLE"
+    },
+    {
+      "capabilityId": "DW-CAP-ROUTE-REACHABILITY-GRAPH",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": [
+        "/",
+        "/account",
+        "/captain/library",
+        "/community",
+        "/join/[token]",
+        "/passport",
+        "/play/[taleSlug]/session/[sessionId]",
+        "/player/library",
+        "/studio/library",
+        "/tale/[campaignSlug]",
+        "/tales"
+      ],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-B005",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "DISCOVERABLE"
+    },
+    {
+      "capabilityId": "DW-CAP-COMPLETE-PRODUCT-SURFACES-STATES",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": [
+        "/",
+        "/account",
+        "/account/profile",
+        "/captain/library",
+        "/captain/sessions/[sessionId]",
+        "/community",
+        "/passport",
+        "/player/library",
+        "/player/playthroughs/[playthroughId]",
+        "/sign-in",
+        "/studio/library",
+        "/studio/tales/[taleId]"
+      ],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-B006",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "DISCOVERABLE"
+    },
+    {
+      "capabilityId": "DW-CAP-INTEGRATED-WHOLE-PRODUCT-VOYAGE",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": [
+        "/",
+        "/account",
+        "/account/data",
+        "/account/email-change",
+        "/account/linked-identities",
+        "/account/personal-information",
+        "/account/preferences",
+        "/account/roles",
+        "/account/security",
+        "/account/sessions",
+        "/captain/library",
+        "/chronicles/[taleSlug]",
+        "/community",
+        "/community/[slug]",
+        "/passport",
+        "/passport/artifacts",
+        "/passport/history",
+        "/passport/memories",
+        "/passport/saved",
+        "/player/library",
+        "/register",
+        "/sign-in",
+        "/studio/library",
+        "/verify-email"
+      ],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-B007",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "JOURNEY_PROVEN"
+    },
+    {
+      "capabilityId": "DW-CAP-GOOGLE-GITHUB-AUTHENTICATION",
+      "declaredStatus": "MAINLINE",
+      "declaredSurfaces": ["/account/linked-identities", "/register", "/sign-in"],
+      "documentationMismatch": false,
+      "featureCatalogId": "FT-B008",
+      "mismatchFindingIds": [],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "JOURNEY_PROVEN"
+    }
+  ],
+  "mappedEntryCount": 41,
+  "schemaVersion": "1.0.0",
+  "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+}

@@ -1,0 +1,84 @@
+{
+  "activation": "ACTIVE_GOVERNANCE_AUDIT_TOOLING",
+  "auditedSourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d",
+  "baseSourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d",
+  "branch": "codex/project-deepwater-phase1-sound-the-depths",
+  "featureCatalogImpact": "NO_CHANGE_REQUIRED",
+  "finalReconciledMainSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d",
+  "limitations": [
+    "Initial traces are Phase 1 skeletons, not complete Phase 2 traces.",
+    "Homeport evidence retains its local, synthetic, staging, provider, deployment, and owner-decision boundaries.",
+    "Phase 2 must begin from accepted main only after Phase 1 convergence."
+  ],
+  "mainlineState": "NOT_INTEGRATED",
+  "metrics": {
+    "capabilitiesByCanonicalOwner": {
+      "Breakwater": 1,
+      "Drydock": 3,
+      "Harborlight": 5,
+      "Helm": 1,
+      "Homeport": 2,
+      "Landfall": 1,
+      "Lanternwake": 1,
+      "Ledgerlight": 1,
+      "One Voyage": 9,
+      "Platform": 2,
+      "Sealed Hold": 4,
+      "Security": 2,
+      "Shipwright": 2,
+      "Sounding Line": 1,
+      "True North": 4,
+      "Universal Language": 1,
+      "Wakebook": 2,
+      "Wayfarer": 11
+    },
+    "capabilitiesByExpectedTerminalRung": {
+      "JOURNEY_PROVEN": 38,
+      "OWNER_ACCEPTED": 2,
+      "PROJECTION": 4,
+      "SERVICE": 9
+    },
+    "classifications": {
+      "BACKEND_ONLY": 3,
+      "DEPRECATED": 1,
+      "INTERNAL_BY_DESIGN": 7,
+      "PARTIALLY_REALIZED": 40,
+      "SECURITY_RESTRICTED": 2
+    },
+    "featureCatalogMappedCount": 41,
+    "openFindingsBySeverity": {
+      "HIGH": 1,
+      "LOW": 6,
+      "MEDIUM": 15
+    },
+    "ownershipAmbiguousCount": 0,
+    "ratios": {
+      "featureCatalogMappingCoverage": 1,
+      "initialRealizationCoverage": 0.1698,
+      "naturalJourneyEvidenceCoverage": 0.575,
+      "ownerMappedCoverage": 1
+    },
+    "secondaryFlags": {
+      "DOCUMENTATION_MISMATCH": 17,
+      "EXTERNAL_PROVIDER_PENDING": 7,
+      "JOURNEY_UNPROVEN": 40,
+      "LEGACY_DEPENDENT": 1,
+      "UNVERIFIED": 53
+    },
+    "totalMeaningfulCapabilities": 53,
+    "uncatalogedMeaningfulCapabilityCount": 12,
+    "userFacingLackingAccessibilityEvidence": 40,
+    "userFacingLackingDiscoverabilityEvidence": 40,
+    "userFacingLackingJourneyEvidence": 17,
+    "userFacingLackingStateCompletenessEvidence": 31
+  },
+  "phase": "Phase 1 - Sound the Depths",
+  "productSourceImpact": "NONE",
+  "project": "Project Deepwater",
+  "reconciliation": "BASELINE_FETCHED_PENDING_FINAL_FETCH",
+  "schemaImpact": "NONE",
+  "schemaVersion": "1.0.0",
+  "state": "PHASE_1_CANDIDATE_VALIDATED",
+  "validation": "LOCAL_RELEASE_GO_PENDING_FINAL_SOURCE_BINDING",
+  "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase1"
+}
