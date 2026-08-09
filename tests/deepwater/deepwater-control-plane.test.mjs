@@ -209,7 +209,7 @@ test("every accepted Feature Catalog entry maps exactly once", () => {
   assert.equal(mapped.length, acceptedCatalog.length);
   assert.equal(new Set(mapped).size, acceptedCatalog.length);
   assert.ok(
-    !mapped.includes("FT-B010"),
+    !mapped.includes("FT-B011"),
     "branch-only Wakebook catalog truth must not rewrite accepted Deepwater evidence",
   );
 });
@@ -244,7 +244,23 @@ test("catalog maturity and observed realization mismatch remains visible", () =>
 test("Phase 2 accounts for every seed queue item exactly once", () => {
   assert.equal(baseline.tracesDocument.queueItemCount, 44);
   assert.equal(baseline.tracesDocument.traceCount, 43);
+  assert.ok(
+    !baseline.remediationDocument.packages.some(
+      (packet) => packet.capabilityId === "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+    ),
+  );
   assert.deepEqual(phase2Errors(phase2Model()), []);
+});
+
+test("Phase 2 rejects an accepted queue item omitted from trace policy", () => {
+  const candidate = phase2Model();
+  const omittedCapabilityId = candidate.phase1.queueDocument.queue.find((item) =>
+    candidate.inputs.phase2Config.tracePolicies.some((policy) => policy.capabilityId === item.capabilityId),
+  ).capabilityId;
+  candidate.inputs.phase2Config.tracePolicies = candidate.inputs.phase2Config.tracePolicies.filter(
+    (policy) => policy.capabilityId !== omittedCapabilityId,
+  );
+  includesError(phase2Errors(candidate), "trace policy omits accepted seed queue item");
 });
 
 test("Phase 2 rejects an unexplained UNKNOWN layer", () => {
@@ -371,10 +387,20 @@ test("Phase 2 semantic output is deterministic", async () => {
   assert.equal(stableStringify(baseline.phase3Queue), stableStringify(second.phase3Queue));
 });
 
-test("Phase 3 reviews all 54 current accepted capabilities and accepts the generated utilization model", () => {
+test("Phase 3 reviews all 55 current accepted capabilities and accepts the generated utilization model", () => {
   assert.equal(baseline.inputs.phase3Config.phase2AcceptedCapabilityCount, 53);
-  assert.equal(baseline.inputs.phase3Config.expectedCurrentCapabilityCount, 54);
-  assert.equal(baseline.utilizationDocument.reviewedCapabilityCount, 54);
+  assert.equal(baseline.inputs.phase3Config.expectedCurrentCapabilityCount, 55);
+  assert.equal(baseline.utilizationDocument.reviewedCapabilityCount, 55);
+  assert.ok(
+    baseline.phase2.ledger.capabilities.some(
+      (capability) => capability.capabilityId === "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+    ),
+  );
+  assert.ok(
+    baseline.ledger.capabilities.some(
+      (capability) => capability.capabilityId === "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+    ),
+  );
   assert.deepEqual(phase3Errors(phase3Model()), []);
 });
 

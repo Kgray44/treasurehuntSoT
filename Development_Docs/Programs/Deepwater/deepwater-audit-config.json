@@ -331,6 +331,20 @@
       "rationale": "Tideglass Phase 1 is a read-only internal comparison foundation with bounded branch evidence; it does not claim an ordinary user route, deployment, or owner acceptance."
     },
     "FT-B010": {
+      "capabilityId": "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+      "ownerProject": "Admiralty",
+      "contributingProjects": ["Wayfarer", "Security", "Homeport", "One Voyage"],
+      "expectedTerminalRung": "OWNER_ACCEPTED",
+      "expectedDisposition": "SECURITY_RESTRICTED",
+      "currentHighestRung": "OWNER_ACCEPTED",
+      "classification": "FULLY_REALIZED",
+      "secondaryFlags": [],
+      "audience": ["ACCOUNT_OWNER", "ADMINISTRATOR", "SUPPORT_OPERATOR"],
+      "privacyClass": "CONSENTED_RESTRICTED_DIAGNOSTIC_METADATA",
+      "privilegeRequirements": ["CAPABILITY_AUTHORIZATION", "RECENT_ASSURANCE", "ACTIVE_SUPPORT_GRANT"],
+      "rationale": "The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09, including its deliberately bounded administration and consent surfaces. Production MySQL execution, deployment, and later Admiralty phases remain separately governed non-claims."
+    },
+    "FT-B011": {
       "capabilityId": "DW-CAP-PRIVATE-LIVING-JOURNEY-ARCHIVE",
       "ownerProject": "Wakebook",
       "contributingProjects": ["Wayfarer", "One Voyage", "Homeport"],

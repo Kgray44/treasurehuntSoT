@@ -16,6 +16,7 @@
 
 # next.js
 /.next/
+/.admiralty-phase1-build/
 /.sealed-build/
 /out/
 

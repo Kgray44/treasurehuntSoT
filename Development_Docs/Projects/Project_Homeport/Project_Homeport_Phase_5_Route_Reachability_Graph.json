@@ -233,6 +233,7 @@
         "route-page-account-roles",
         "route-page-account-security",
         "route-page-account-sessions",
+        "route-page-account-support-access",
         "route-page-captain-sign-in",
         "route-page-chronicles-taleslug",
         "route-page-community",
@@ -339,6 +340,11 @@
           "targetRouteId": "route-page-account-sessions",
           "routeIds": ["route-page-root", "route-page-account-sessions"],
           "edgeIds": ["edge-account-sessions"]
+        },
+        {
+          "targetRouteId": "route-page-account-support-access",
+          "routeIds": ["route-page-root", "route-page-account-support-access"],
+          "edgeIds": ["edge-account-support-access"]
         },
         {
           "targetRouteId": "route-page-captain-sign-in",
@@ -621,6 +627,7 @@
         "route-page-account-roles",
         "route-page-account-security",
         "route-page-account-sessions",
+        "route-page-account-support-access",
         "route-page-captain-library",
         "route-page-captain-sessions-sessionid",
         "route-page-captain-sign-in",
@@ -725,6 +732,11 @@
           "targetRouteId": "route-page-account-sessions",
           "routeIds": ["route-page-root", "route-page-account-sessions"],
           "edgeIds": ["edge-account-sessions"]
+        },
+        {
+          "targetRouteId": "route-page-account-support-access",
+          "routeIds": ["route-page-root", "route-page-account-support-access"],
+          "edgeIds": ["edge-account-support-access"]
         },
         {
           "targetRouteId": "route-page-captain-library",
@@ -976,6 +988,7 @@
         "route-page-account-roles",
         "route-page-account-security",
         "route-page-account-sessions",
+        "route-page-account-support-access",
         "route-page-captain-sign-in",
         "route-page-chronicles-taleslug",
         "route-page-community",
@@ -1086,6 +1099,11 @@
           "targetRouteId": "route-page-account-sessions",
           "routeIds": ["route-page-root", "route-page-account-sessions"],
           "edgeIds": ["edge-account-sessions"]
+        },
+        {
+          "targetRouteId": "route-page-account-support-access",
+          "routeIds": ["route-page-root", "route-page-account-support-access"],
+          "edgeIds": ["edge-account-support-access"]
         },
         {
           "targetRouteId": "route-page-captain-sign-in",
@@ -1388,6 +1406,7 @@
         "route-page-account-roles",
         "route-page-account-security",
         "route-page-account-sessions",
+        "route-page-account-support-access",
         "route-page-captain-library",
         "route-page-captain-sessions-sessionid",
         "route-page-captain-sign-in",
@@ -1508,6 +1527,11 @@
           "targetRouteId": "route-page-account-sessions",
           "routeIds": ["route-page-root", "route-page-account-sessions"],
           "edgeIds": ["edge-account-sessions"]
+        },
+        {
+          "targetRouteId": "route-page-account-support-access",
+          "routeIds": ["route-page-root", "route-page-account-support-access"],
+          "edgeIds": ["edge-account-support-access"]
         },
         {
           "targetRouteId": "route-page-captain-library",
@@ -1889,6 +1913,7 @@
         "route-page-account-roles",
         "route-page-account-security",
         "route-page-account-sessions",
+        "route-page-account-support-access",
         "route-page-captain-sign-in",
         "route-page-chronicles-taleslug",
         "route-page-community",
@@ -1997,6 +2022,11 @@
           "targetRouteId": "route-page-account-sessions",
           "routeIds": ["route-page-root", "route-page-account-sessions"],
           "edgeIds": ["edge-account-sessions"]
+        },
+        {
+          "targetRouteId": "route-page-account-support-access",
+          "routeIds": ["route-page-root", "route-page-account-support-access"],
+          "edgeIds": ["edge-account-support-access"]
         },
         {
           "targetRouteId": "route-page-captain-sign-in",
@@ -2468,14 +2498,14 @@
       ]
     }
   ],
-  "nodeRegistryDigest": "ab2848503c5d770a9c810d4ecfcc7bde7539cfd76d5438a500739c35895b9f49",
-  "edgeRegistryDigest": "c0df3ad7fa8c3cfd12a85d8879b09b422c2e4cd62ba3d0b74442b3d77078ba79",
+  "nodeRegistryDigest": "f4aa3a8f7f0eb40a5765333488d0d7ed63464adb02620a1d553747e501f516c2",
+  "edgeRegistryDigest": "076a6c3b9f36568b836ebb33b72abe1e9a26d9c86e6036308f26f481fd025519",
   "summary": {
-    "discoveredPageSources": 90,
-    "discoveredServiceSources": 186,
-    "nodeCount": 90,
-    "edgeCount": 169,
-    "ordinaryRouteCount": 43,
+    "discoveredPageSources": 92,
+    "discoveredServiceSources": 200,
+    "nodeCount": 92,
+    "edgeCount": 172,
+    "ordinaryRouteCount": 44,
     "contextualRouteCount": 25,
     "tokenizedRouteCount": 8,
     "compatibilityRouteCount": 12,

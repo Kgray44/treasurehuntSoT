@@ -2997,6 +2997,62 @@
       "authority": "project-homeport",
       "owners": ["project-homeport"],
       "critical": true
+    },
+    {
+      "id": "admiralty.phase1.identity",
+      "name": "Canonical identity and session authority",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase1.authorization",
+      "name": "Server-side role and capability authorization",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase1.assurance",
+      "name": "Recent privileged assurance and expiry",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase1.support-access",
+      "name": "User-approved scoped Support Access",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase1.audit",
+      "name": "Sanitized canonical administrative audit",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase1.registry",
+      "name": "Living capability-floor registry",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase1.migration",
+      "name": "Additive dual-database migration parity",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase1.responsive-consent",
+      "name": "Accessible responsive support consent",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
     }
   ]
 }

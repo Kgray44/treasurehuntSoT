@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0.0",
+  "defaultGrantMinutes": 30,
+  "maximumGrantMinutes": 30,
+  "scopes": [
+    {
+      "id": "ACCOUNT_STATE",
+      "label": "Account state",
+      "description": "Status, restriction timestamps, and lifecycle state without credentials.",
+      "privateContentAllowed": false
+    },
+    {
+      "id": "AUTH_EVENTS",
+      "label": "Authentication events",
+      "description": "Bounded security-event type, outcome metadata, and time without tokens or credential material.",
+      "privateContentAllowed": false
+    },
+    {
+      "id": "CHRONICLE_HISTORY_METADATA",
+      "label": "Chronicle history metadata",
+      "description": "History record identifiers, lifecycle state, edition checksum, and dates without prose, reflections, Memories, or media.",
+      "privateContentAllowed": false
+    },
+    {
+      "id": "COMMUNITY_ACTIVITY",
+      "label": "Community activity",
+      "description": "Profile moderation state and aggregate listing, report, and Voyage Log counts without private content.",
+      "privateContentAllowed": false
+    },
+    {
+      "id": "SESSION_DIAGNOSTICS",
+      "label": "Session diagnostics",
+      "description": "Session type and bounded timing/state diagnostics without cookies, CSRF values, or token hashes.",
+      "privateContentAllowed": false
+    },
+    {
+      "id": "PROFILE_DIAGNOSTICS",
+      "label": "Profile diagnostics",
+      "description": "Profile state and non-content completeness signals without private biography or private media.",
+      "privateContentAllowed": false
+    }
+  ],
+  "prohibited": [
+    "PASSWORDS",
+    "RAW_PASSWORD_HASHES",
+    "RAW_SESSION_TOKENS",
+    "CSRF_TOKENS",
+    "OAUTH_PROVIDER_TOKENS",
+    "PROVIDER_SECRET_KEYS",
+    "ENCRYPTION_MASTER_KEYS",
+    "PRIVATE_PACKAGE_KEYS",
+    "PRIVATE_CHRONICLE_PROSE",
+    "PRIVATE_CHRONICLE_MEDIA"
+  ]
+}

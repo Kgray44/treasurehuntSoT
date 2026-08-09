@@ -36,7 +36,7 @@ Shipwright's Workshop is a governed Guide-category view, not a second content
 store. Moderation and owner/consent routes remain capability or workflow
 surfaces, not ordinary public districts.
 
-Project Homeport Phase 5 classifies all 85 page routes as ordinary static,
+Project Homeport Phase 5 classifies all 92 page routes as ordinary static,
 contextual dynamic, tokenized, compatibility, or development-only surfaces.
 The branch publishes parent/return metadata, genuine dynamic source controls,
 safe token states, compatibility targets, and equivalent desktop/mobile entry
@@ -44,10 +44,20 @@ edges. Ordinary navigation never exposes token values or treats a private
 detail ID as discoverable. This graph is on main; it is not deployment or owner
 acceptance.
 
-Phase 6 re-censused the same current source at 85 page routes and 174 API/route
+Phase 6 re-censused the current source at 92 page routes and 200 API/route
 handlers, with no omitted page source. It adds screen/state/responsive evidence
 without changing route ownership or creating a second navigation authority.
 The result is exact-source validation retained on main, not deployment proof.
+
+Project Admiralty Phase 1 adds `/admin` as a privileged direct-entry route. It
+is deliberately absent from ordinary navigation and returns a non-revealing
+not-found result for unauthorized sessions before administrative projection.
+Every administrative API independently enforces current canonical session,
+role/capability, assurance, target, and scope policy. The ordinary
+`/account/support-access` route exists so affected account owners can review,
+approve, deny, and revoke requests; it exposes no administrator projection.
+These routes are ready for owner walkthrough on the named branch and are not on
+main or deployed.
 
 Mainline Google and GitHub OAuth adds public provider discovery and start routes
 plus the exact callbacks

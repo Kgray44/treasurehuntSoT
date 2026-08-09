@@ -2397,6 +2397,81 @@
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-7-owner-correction-round-3-source-bound",
       "adapter": "playwright-family"
+    },
+    {
+      "id": "unit.admiralty",
+      "name": "Admiralty Phase 1 unit and policy cases",
+      "tier": 1,
+      "owner": "project-admiralty",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 60000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": [],
+      "contracts": [
+        "admiralty.phase1.identity",
+        "admiralty.phase1.authorization",
+        "admiralty.phase1.assurance",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit",
+        "admiralty.phase1.registry",
+        "admiralty.phase1.migration",
+        "admiralty.phase1.responsive-consent"
+      ],
+      "affectedPaths": ["src/admiralty/**", "scripts/admiralty/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "phase-1-accepted-mainline",
+      "adapter": "vitest-family"
+    },
+    {
+      "id": "component.admiralty",
+      "name": "Admiralty Phase 1 component cases",
+      "tier": 2,
+      "owner": "project-admiralty",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 60000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.admiralty"],
+      "contracts": [
+        "admiralty.phase1.authorization",
+        "admiralty.phase1.assurance",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.responsive-consent"
+      ],
+      "affectedPaths": ["src/components/admiralty/**", "src/app/admin/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "phase-1-accepted-mainline",
+      "adapter": "vitest-family"
+    },
+    {
+      "id": "browser.admiralty",
+      "name": "Admiralty Phase 1 isolated browser journeys",
+      "tier": 4,
+      "owner": "project-admiralty",
+      "command": "npm run admiralty:journeys",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 240000,
+      "hardBudgetMs": 600000,
+      "parallelSafe": false,
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root", "production-build-directory"],
+      "dependencies": ["unit.admiralty", "component.admiralty"],
+      "contracts": [
+        "admiralty.phase1.identity",
+        "admiralty.phase1.authorization",
+        "admiralty.phase1.assurance",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit",
+        "admiralty.phase1.responsive-consent"
+      ],
+      "affectedPaths": ["tests/e2e/admiralty-phase1.spec.ts", "playwright.admiralty-phase1.config.ts"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "phase-1-accepted-mainline",
+      "adapter": "admiralty-phase1-browser"
     }
   ]
 }

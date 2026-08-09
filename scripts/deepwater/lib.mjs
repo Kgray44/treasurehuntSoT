@@ -1326,7 +1326,7 @@ function buildRemediationPackages(ledger, findings, phase2Config, catalogReconci
   const tracePolicyByCapability = new Map(phase2Config.tracePolicies.map((policy) => [policy.capabilityId, policy]));
   const coordination = phase2Config.coordination;
   const packages = findings
-    .filter((finding) => finding.status !== "CLOSED")
+    .filter((finding) => finding.status !== "CLOSED" && tracePolicyByCapability.has(finding.capabilityId))
     .map((finding) => {
       const capability = ledger.capabilities.find((candidate) => candidate.capabilityId === finding.capabilityId);
       const policy = tracePolicyByCapability.get(capability.capabilityId);
@@ -1560,7 +1560,10 @@ function phase2Reports(artifacts) {
         `| ${trace.identity.capabilityId} | ${trace.ownership.canonicalOwner} | ${trace.analysis.classification} | ${trace.analysis.currentHighestRung} | ${trace.analysis.firstLossPoint ?? "none"} | ${trace.queueIds.length} |`,
     )
     .join("\n");
-  const open = findingsDocument.findings.filter((finding) => finding.status !== "CLOSED");
+  const remediationFindingIds = new Set(remediationDocument.packages.flatMap((packet) => packet.findingIds));
+  const open = findingsDocument.findings.filter(
+    (finding) => finding.status !== "CLOSED" && remediationFindingIds.has(finding.findingId),
+  );
   const causeRows = open
     .map(
       (finding) =>
@@ -2036,9 +2039,21 @@ async function buildPhase3Artifacts(root, phase2) {
     readJson(root, `${DEEPWATER_ROOT}/utilization/deepwater-capability-utilization.schema.json`),
     readJson(root, `${DEEPWATER_ROOT}/remediation/deepwater-phase3-slices.schema.json`),
   ]);
+  const acceptedMainCapabilityAdditions = new Set(
+    phase3Config.currentMainCapabilityAdditions.map((entry) => entry.capabilityId),
+  );
+  const acceptedPhase3Capabilities = phase2.ledger.capabilities.filter(
+    (capability) =>
+      capability.catalogMapping?.declaredStatus !== "BRANCH_COMPLETE_NOT_MERGED" ||
+      acceptedMainCapabilityAdditions.has(capability.capabilityId),
+  );
+  const acceptedPhase3CatalogIds = new Set(
+    acceptedPhase3Capabilities.map((capability) => capability.catalogMapping?.featureCatalogId).filter(Boolean),
+  );
+  const acceptedPhase3Catalog = phase2.inputs.catalog.filter((entry) => acceptedPhase3CatalogIds.has(entry.id));
   const findings = phase3Findings(phase2.findingsDocument.findings, phase3Config);
   const capabilities = attachFindings(
-    phase2.ledger.capabilities.map((capability) => ({
+    acceptedPhase3Capabilities.map((capability) => ({
       ...capability,
       evidence: { ...capability.evidence, sourceSha: phase3Config.auditedSourceSha },
       lifecycle: { ...capability.lifecycle, lastAudited: phase3Config.auditDate },
@@ -2098,6 +2113,14 @@ async function buildPhase3Artifacts(root, phase2) {
     auditedSourceSha: phase3Config.auditedSourceSha,
     findings,
   };
+  const reconciliationDocument = {
+    ...phase2.reconciliationDocument,
+    catalogEntryCount: acceptedPhase3Catalog.length,
+    mappedEntryCount: acceptedPhase3Catalog.length,
+    entries: phase2.reconciliationDocument.entries.filter((entry) =>
+      acceptedPhase3CatalogIds.has(entry.featureCatalogId),
+    ),
+  };
   const evidence = uniqueSorted([
     ...utilizationCapabilities.flatMap((capability) => capability.evidence),
     ...phase3Config.newFindings.flatMap((finding) => finding.evidence),
@@ -2154,9 +2177,10 @@ async function buildPhase3Artifacts(root, phase2) {
   const artifacts = {
     ...phase2,
     phase2,
-    inputs: { ...phase2.inputs, phase3Config, utilizationSchema, slicesSchema },
+    inputs: { ...phase2.inputs, catalog: acceptedPhase3Catalog, phase3Config, utilizationSchema, slicesSchema },
     ledger,
     findingsDocument,
+    reconciliationDocument,
     evidenceIndex,
     utilizationDocument,
     slicesDocument,
@@ -2180,10 +2204,11 @@ async function generatePhase2Artifacts(root) {
   const inputs = { ...phase1.inputs, phase2Config, tracesSchema, remediationSchema };
   const catalogReconciliation = phase2CatalogReconciliation(phase1, phase2Config);
   const refinedFindings = refineFindings(phase1, phase2Config, catalogReconciliation);
-  const openFindingIds = new Set(
-    refinedFindings.filter((finding) => finding.status !== "CLOSED").map((finding) => finding.findingId),
-  );
   const policyByCapability = new Map(phase2Config.tracePolicies.map((policy) => [policy.capabilityId, policy]));
+  const acceptedPhase2Findings = refinedFindings.filter((finding) => policyByCapability.has(finding.capabilityId));
+  const openFindingIds = new Set(
+    acceptedPhase2Findings.filter((finding) => finding.status !== "CLOSED").map((finding) => finding.findingId),
+  );
   const preliminaryCapabilities = phase1.ledger.capabilities.map((capability) => {
     const policy = policyByCapability.get(capability.capabilityId);
     const context = policy ? routeContext(policy, inputs) : null;
@@ -2328,7 +2353,7 @@ async function generatePhase2Artifacts(root) {
   const phase3Queue = buildPhase3Queue(remediationDocument, refinedFindings, phase2Config);
   const metrics = phase2Metrics(
     ledger,
-    refinedFindings,
+    acceptedPhase2Findings,
     traces,
     remediationDocument,
     phase3Queue,
@@ -2697,7 +2722,23 @@ export function validatePhase2Model(artifacts) {
   const findings = new Map(artifacts.findingsDocument.findings.map((finding) => [finding.findingId, finding]));
   const owners = new Set(artifacts.inputs.ownership.projects.map((project) => project.project));
   const packets = new Map(artifacts.remediationDocument.packages.map((packet) => [packet.remediationPacketId, packet]));
-  const expectedQueueIds = artifacts.phase1.queueDocument.queue.map((item) => item.queueId).sort();
+  const tracePolicyCapabilityIds = new Set(
+    artifacts.inputs.phase2Config.tracePolicies.map((policy) => policy.capabilityId),
+  );
+  const expectedQueueItems = artifacts.phase1.queueDocument.queue.filter((item) =>
+    tracePolicyCapabilityIds.has(item.capabilityId),
+  );
+  const deferredQueueItems = artifacts.phase1.queueDocument.queue.filter(
+    (item) => !tracePolicyCapabilityIds.has(item.capabilityId),
+  );
+  for (const item of deferredQueueItems) {
+    const capability = capabilities.get(item.capabilityId);
+    if (capability?.catalogMapping?.declaredStatus !== "BRANCH_COMPLETE_NOT_MERGED")
+      errors.push(`Phase 2 trace policy omits accepted seed queue item ${item.queueId}`);
+  }
+  if (expectedQueueItems.length !== artifacts.inputs.phase2Config.phase1.seedQueueCount)
+    errors.push("Phase 2 accepted seed queue count does not match the trace-policy scope");
+  const expectedQueueIds = expectedQueueItems.map((item) => item.queueId).sort();
   const tracedQueueIds = traces.flatMap((trace) => trace.queueIds).sort();
   if (stableStringify(expectedQueueIds) !== stableStringify(tracedQueueIds))
     errors.push("Phase 2 traces do not account for every accepted seed queue item exactly once");
@@ -2804,7 +2845,7 @@ export function validatePhase2Model(artifacts) {
     if (!finding.canonicalOwner || !owners.has(finding.canonicalOwner))
       errors.push(`${finding.findingId}: canonical owner missing or unknown`);
     if (!finding.closureEvidence) errors.push(`${finding.findingId}: closure evidence missing`);
-    if (finding.status !== "CLOSED") {
+    if (finding.status !== "CLOSED" && tracePolicyCapabilityIds.has(finding.capabilityId)) {
       const packetId = `DW-REMED-${finding.findingId.slice("DW-FIND-".length)}`;
       if (!packets.has(packetId)) errors.push(`${finding.findingId}: actionable open finding lacks remediation packet`);
     }

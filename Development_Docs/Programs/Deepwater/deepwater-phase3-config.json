@@ -6,13 +6,19 @@
   "baseOriginMainSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
   "auditedSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
   "phase2AcceptedCapabilityCount": 53,
-  "expectedCurrentCapabilityCount": 54,
+  "expectedCurrentCapabilityCount": 55,
   "currentMainCapabilityAdditions": [
     {
       "capabilityId": "DW-CAP-TIDEGLASS-SEMANTIC-EDITION-COMPARISON",
       "canonicalOwner": "Tideglass",
       "acceptedMainSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
       "basis": "Project Tideglass Phase 1 reached accepted main after Phase 3 activation and before coordination publication."
+    },
+    {
+      "capabilityId": "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+      "canonicalOwner": "Admiralty",
+      "acceptedMainSha": "fe5e18eb6312c2571616a8faf2dfe1c8583cbd9f",
+      "basis": "Project Admiralty Phase 1 reached owner-accepted canonical main after Phase 3 activation and before final Admiralty record publication."
     }
   ],
   "branch": "codex/project-deepwater-phase3-raise-the-capability",

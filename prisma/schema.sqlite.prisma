@@ -123,6 +123,13 @@ model UserAccount {
   lifecycleRequests        AccountLifecycleRequest[]
   profileMedia             ProfileMedia[]
   transactionalDeliveries  TransactionalEmailDelivery[]
+  privilegedAssurances     PrivilegedAssurance[]   @relation("PrivilegedAssuranceAccount")
+  supportRequestsInitiated SupportAccessRequest[]  @relation("SupportRequestOperator")
+  supportRequestsTargeted  SupportAccessRequest[]  @relation("SupportRequestTarget")
+  supportRequestsDecided   SupportAccessRequest[]  @relation("SupportRequestDecision")
+  supportGrantsOperated    SupportAccessGrant[]    @relation("SupportGrantOperator")
+  supportGrantsTargeted    SupportAccessGrant[]    @relation("SupportGrantTarget")
+  supportGrantsRevoked     SupportAccessGrant[]    @relation("SupportGrantRevoker")
 
   @@index([status, lastSeenAt])
 }
@@ -184,6 +191,7 @@ model AccountSession {
   revokedAt   DateTime?
   createdAt   DateTime    @default(now())
   account     UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  privilegedAssurances PrivilegedAssurance[]
 
   @@index([accountId, expiresAt])
 }
@@ -246,6 +254,70 @@ model SecurityEvent {
   account       UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
 
   @@index([accountId, createdAt])
+}
+
+model PrivilegedAssurance {
+  id               String         @id @default(cuid())
+  accountId        String
+  accountSessionId String
+  assuranceLevel   String         @default("ADMIN_REAUTHENTICATED")
+  method           String
+  issuedAt         DateTime       @default(now())
+  expiresAt        DateTime
+  revokedAt        DateTime?
+  correlationId    String
+  account          UserAccount    @relation("PrivilegedAssuranceAccount", fields: [accountId], references: [id], onDelete: Cascade)
+  accountSession   AccountSession @relation(fields: [accountSessionId], references: [id], onDelete: Cascade)
+
+  @@index([accountId, accountSessionId, expiresAt, revokedAt])
+  @@index([correlationId])
+}
+
+model SupportAccessRequest {
+  id                          String              @id @default(cuid())
+  requestingAdminAccountId   String
+  targetAccountId            String
+  purpose                     String
+  requestedScopes             String
+  status                      String              @default("REQUESTED")
+  requestedAt                 DateTime            @default(now())
+  expiresAt                   DateTime
+  decisionAt                  DateTime?
+  decisionByTargetAccountId   String?
+  cancelledAt                 DateTime?
+  correlationId               String              @unique
+  createdAt                   DateTime            @default(now())
+  updatedAt                   DateTime            @updatedAt
+  requestingAdmin             UserAccount         @relation("SupportRequestOperator", fields: [requestingAdminAccountId], references: [id], onDelete: Restrict)
+  targetAccount               UserAccount         @relation("SupportRequestTarget", fields: [targetAccountId], references: [id], onDelete: Restrict)
+  decisionByTargetAccount     UserAccount?        @relation("SupportRequestDecision", fields: [decisionByTargetAccountId], references: [id], onDelete: SetNull)
+  grant                       SupportAccessGrant?
+
+  @@index([targetAccountId, status, expiresAt])
+  @@index([requestingAdminAccountId, status, expiresAt])
+}
+
+model SupportAccessGrant {
+  id                String               @id @default(cuid())
+  requestId         String               @unique
+  operatorAccountId String
+  targetAccountId   String
+  grantedScopes     String
+  status            String               @default("ACTIVE")
+  issuedAt          DateTime             @default(now())
+  expiresAt         DateTime
+  revokedAt         DateTime?
+  revokedByAccountId String?
+  revocationReason  String?
+  correlationId     String
+  request           SupportAccessRequest @relation(fields: [requestId], references: [id], onDelete: Restrict)
+  operator          UserAccount          @relation("SupportGrantOperator", fields: [operatorAccountId], references: [id], onDelete: Restrict)
+  targetAccount     UserAccount          @relation("SupportGrantTarget", fields: [targetAccountId], references: [id], onDelete: Restrict)
+  revokedBy         UserAccount?         @relation("SupportGrantRevoker", fields: [revokedByAccountId], references: [id], onDelete: SetNull)
+
+  @@index([operatorAccountId, status, expiresAt])
+  @@index([targetAccountId, status, expiresAt])
+  @@index([correlationId])
 }
 
 model WayfarerMigrationRecord {

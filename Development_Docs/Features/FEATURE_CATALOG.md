@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `28a3139e9d43b234778bbbcd4bde2133ece4d8a2`
+Audited source commit: `bbf5e0d991006227ed4097a95b9c89997354798e`
 
 ## Status vocabulary
 
@@ -605,7 +605,7 @@ A narrow versioned verification boundary accepts trusted evidence without giving
 
 ### Primary surfaces
 
-`/api/verification`, `/captain`
+`/api/helper/verification`, `/captain/sessions/[sessionId]`
 
 ### Meaningful limitations
 
@@ -1291,9 +1291,52 @@ A read-only authority compares exact immutable Chronicle editions through determ
 
 ---
 
+## FT-B010 - Governed Platform Administration and Consented Support Access
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Admiralty
+
+Canonical account roles, recent privileged assurance, scoped user consent, sanitized audit evidence, and a limited administration shell establish least-privileged platform operations without creating a second identity authority.
+
+### Important subfeatures
+
+- Server-side role and capability resolution
+- Explicit dry-run-first administrator bootstrap
+- Session-bound recent privileged assurance
+- User-approved target, operator, scope, and time-bounded Support Access
+- Sanitized canonical administrative audit evidence
+- Living 92-entry capability-floor registry
+- Non-revealing unauthorized admin route behavior
+- Additive SQLite and MySQL migration parity
+- Task-owned synthetic browser and owner-walkthrough runtimes
+
+### Primary surfaces
+
+`/admin`, `/account/support-access`
+
+### Meaningful limitations
+
+- The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09
+- Owner-accepted Phase 1 implementation is integrated on canonical main with verified remote parity
+- Production MySQL execution, live-provider behavior, and physical assistive-technology validation remain external
+- Phase 2 and all later operational command-center capabilities remain dormant
+- Owner acceptance does not imply deployment or acceptance of later Admiralty phases
+
+### Evidence
+
+- commit: `49c2f59d6d75791edbdba84f22f5ec1595d2d129`
+- path: `src/admiralty/authorization.ts`
+- path: `src/admiralty/support-access.ts`
+- path: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json`
+- test: `tests/e2e/admiralty-phase1.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md`
+- completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md`
+
+---
+
 # Completed Branch Features Not Yet Available on Main
 
-## FT-B010 - Private Living Journey Archive
+## FT-B011 - Private Living Journey Archive
 
 **Status:** BRANCH COMPLETE NOT MERGED
 **Program or subsystem:** Project Wakebook Phase 1
@@ -1346,4 +1389,4 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `28a3139e9d43b234778bbbcd4bde2133ece4d8a2`
+Generation source commit: `bbf5e0d991006227ed4097a95b9c89997354798e`
