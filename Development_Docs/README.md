@@ -27,7 +27,7 @@ also passed. See the [OAuth validation and completion record](Validation/Voyagew
 
 ## Project Deepwater
 
-[Project Deepwater](Programs/Deepwater/README.md) governs product capability-realization and systems-audit truth. Phase 1, Sound the Depths, establishes the deterministic capability ledger, schema, ownership map, initial findings, Feature Catalog reconciliation, Phase 2 trace queue, and validation control plane without changing product behavior or schema. Its classifications and maturity rungs are evidence-bound: source existence, local or synthetic validation, staging access, external-provider proof, deployment, and owner acceptance remain distinct.
+[Project Deepwater](Programs/Deepwater/README.md) governs product capability-realization and systems-audit truth. Phase 1, Sound the Depths, establishes the deterministic capability ledger, schema, ownership map, initial findings, Feature Catalog reconciliation, Phase 2 trace queue, and validation control plane. Phase 2, Trace the Current, converts that queue into complete source-bound traces, exact root causes, canonical assignments, remediation packets, and a Phase 3 realization queue without changing product behavior, schema, or data. Its classifications and maturity rungs are evidence-bound: source existence, local or synthetic validation, staging access, external-provider proof, deployment, and owner acceptance remain distinct.
 
 ## Current project-governance wave
 
