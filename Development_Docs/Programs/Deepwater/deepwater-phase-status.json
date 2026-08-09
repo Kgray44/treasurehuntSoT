@@ -4,7 +4,7 @@
   "baseSourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
   "branch": "codex/project-deepwater-phase2-trace-the-current",
   "featureCatalogImpact": "NO_CHANGE_REQUIRED",
-  "finalReconciledMainSha": "273fb5255ad222812530422e902db04c0ddd1961",
+  "finalReconciledMainSha": "5b266251bd5a42efe90988e45daf55bca8e566f1",
   "limitations": [
     "Phase 2 assigns remediation and does not implement Phase 3 work.",
     "Configured external providers, deployment, physical-device evidence, and owner acceptance remain distinct from local or synthetic proof.",
@@ -136,10 +136,10 @@
   "phase": "Phase 2 - Trace the Current",
   "productSourceImpact": "NONE",
   "project": "Project Deepwater",
-  "reconciliation": "BASELINE_RECONCILED_PENDING_FINAL_FETCH",
+  "reconciliation": "FINAL_FETCH_RECONCILED_GOVERNANCE_ONLY",
   "schemaImpact": "NONE",
   "schemaVersion": "1.0.0",
-  "state": "IMPLEMENTED_PENDING_VALIDATION",
-  "validation": "PENDING",
+  "state": "CANDIDATE_VALIDATED",
+  "validation": "SOURCE_BOUND_RELEASE_GO",
   "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase2"
 }
