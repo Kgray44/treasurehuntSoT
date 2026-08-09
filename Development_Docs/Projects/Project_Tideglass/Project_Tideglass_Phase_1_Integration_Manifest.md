@@ -20,6 +20,7 @@ last_reviewed: 2026-08-09
 | Candidate branch tip   | `83ef66ff70a3bbeb85b90f6a99aeb8cfb0da8bf9`                                             |
 | Protected integration  | pull request #17                                                                       |
 | Integrated main        | `40d822cd936c9abbfce064fd7799e6a2f8c9785e`                                             |
+| Finalization base      | `cf08ed0954e0bfd8279229604d3bec5c1beea4ae`                                             |
 
 ## Owned change surface
 
@@ -49,4 +50,6 @@ The mandatory post-gate fetch then found accepted Deepwater Phase 2 at `762258e3
 
 Pull request #17 integrated candidate `83ef66ff70a3bbeb85b90f6a99aeb8cfb0da8bf9` as the second parent of merge `40d822cd936c9abbfce064fd7799e6a2f8c9785e`. All 32 hosted check runs and the governed hosted Mainline Decision passed. The hosted workflow wrapper nevertheless reported `failure` with no failed or non-success check run or job; that wrapper anomaly is recorded without converting it into either a failed governed decision or a green wrapper claim.
 
-The actual integrated SHA then received local mainline `RELEASE_GO` across 30 source-bound receipts. All receipts passed with cleanup `CLEAN`; no mandatory suite was missing, duplicated, unknown, or invalid. Remote `origin/main` matched the integrated SHA exactly when the post-merge record closed. No Tideglass Phase 2 work is included or authorized.
+The actual integrated SHA then received local mainline `RELEASE_GO` across 30 source-bound receipts. All receipts passed with cleanup `CLEAN`; no mandatory suite was missing, duplicated, unknown, or invalid. Remote `origin/main` matched the integrated SHA exactly when the implementation post-merge record closed.
+
+Before publishing the final records, accepted main advanced through Deepwater Phase 3 merge `cf08ed0954e0bfd8279229604d3bec5c1beea4ae`. The interval changed Deepwater control-plane source and shared generated documentation/catalog artifacts, but no Tideglass product source, schema, migration, comparison contract, authorization path, or runtime behavior. The finalization branch merged that accepted main, preserved both projects' source records, and regenerated the shared outputs. No Tideglass Phase 2 work is included or authorized.

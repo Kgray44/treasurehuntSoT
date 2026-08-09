@@ -19,6 +19,7 @@ last_reviewed: 2026-08-09
 | Candidate branch tip   | `83ef66ff70a3bbeb85b90f6a99aeb8cfb0da8bf9`                                                                                      |
 | Protected integration  | pull request #17                                                                                                                |
 | Integrated main SHA    | `40d822cd936c9abbfce064fd7799e6a2f8c9785e`                                                                                      |
+| Finalization base      | `cf08ed0954e0bfd8279229604d3bec5c1beea4ae`                                                                                      |
 | Implementation status  | MAINLINE; corrected read-only foundation integrated                                                                             |
 | Mainline Safety        | ACCEPTED; source-bound candidate and integrated-main decisions both `RELEASE_GO`                                                |
 | Prisma impact          | NONE                                                                                                                            |
@@ -38,7 +39,7 @@ last_reviewed: 2026-08-09
 | Read-only invariance   | PASS diagnostic: editions, Voyage, Wayfarer, and Harborlight fingerprints unchanged                                             |
 | Sounding Line decision | candidate `83ef66ff` `RELEASE_GO`; hosted protected decision and all 32 check runs passed                                       |
 | Post-merge decision    | integrated `40d822cd` `RELEASE_GO`; 30/30 receipts passed and cleanup `CLEAN`                                                   |
-| Remote parity          | PASS; `origin/main` exactly `40d822cd`, with candidate `83ef66ff` as the merge's second parent                                  |
+| Remote parity          | PASS for implementation closure at `40d822cd`; final records reconciled accepted main through `cf08ed09`                        |
 | Feature Catalog        | UPDATED and validated as MAINLINE `FT-B009`                                                                                     |
 
 ## Delivered capability
