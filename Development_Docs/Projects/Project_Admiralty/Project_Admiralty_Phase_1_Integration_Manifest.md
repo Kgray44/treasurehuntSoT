@@ -14,10 +14,10 @@ last_reviewed: 2026-08-09
 | ------------------------- | --------------------------------------------------------------------------- |
 | Starting `origin/main`    | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                  |
 | Implementation checkpoint | `648d1068ee3007c303ac76ae3a3c68e137f73a0e`                                  |
-| Reconciled `origin/main`  | `cf08ed0954e0bfd8279229604d3bec5c1beea4ae`                                  |
+| Reconciled `origin/main`  | `9937af957c1c92c9767b4255705a17f3e189904b`                                  |
 | Exact tested app source   | `49c2f59d6d75791edbdba84f22f5ec1595d2d129`                                  |
 | Owner-observed source     | `750b904cfec013f0b6adec3d930caf5eeae9ec0b`                                  |
-| Current-main merge anchor | `56afa3c253b7bf54f2ef37e7a87256de145eb0e3`                                  |
+| Current-main merge anchor | `2ac2bdf8221c1aa4f6f0c5edc263951261c438ff`                                  |
 | Worktree                  | `C:\Users\kkids\Documents\treasurehuntSoT-admiralty-phase1`                 |
 | Branch                    | `codex/project-admiralty-phase1-raise-the-colors`                           |
 | Owner decision            | `ACCEPTED` on `2026-08-09`                                                  |

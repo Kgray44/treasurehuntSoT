@@ -19,8 +19,8 @@ Phase 1 has passed its governed owner-acceptance boundary on branch
 is `648d1068ee3007c303ac76ae3a3c68e137f73a0e`; the exact tested application
 source is `49c2f59d6d75791edbdba84f22f5ec1595d2d129`; the owner-observed source is
 `750b904cfec013f0b6adec3d930caf5eeae9ec0b`; and final reconciliation merge
-`56afa3c253b7bf54f2ef37e7a87256de145eb0e3` contains current `origin/main` at
-`cf08ed0954e0bfd8279229604d3bec5c1beea4ae`.
+`2ac2bdf8221c1aa4f6f0c5edc263951261c438ff` contains current `origin/main` at
+`9937af957c1c92c9767b4255705a17f3e189904b`.
 
 ## Completed Phase 1 capability
 

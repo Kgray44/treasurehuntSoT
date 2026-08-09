@@ -62,3 +62,8 @@ After that record was written, `origin/main` advanced again to
 Phase 3 control-plane work. Reconciliation merge
 `56afa3c253b7bf54f2ef37e7a87256de145eb0e3` preserves it and keeps Admiralty as
 an owner-accepted branch-only coordination input until canonical integration.
+
+The final pre-gate fetch then found accepted Player Feature Catalog route
+reconciliation at `9937af957c1c92c9767b4255705a17f3e189904b`. Merge
+`2ac2bdf8221c1aa4f6f0c5edc263951261c438ff` preserves that documentation-only
+interval without changing Admiralty product or schema source.
