@@ -2337,7 +2337,7 @@
       ],
       "affectedPaths": ["src/admiralty/**", "scripts/admiralty/**"],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "phase-1-owner-accepted-mainline-candidate",
+      "currentImplementationState": "phase-1-accepted-mainline",
       "adapter": "vitest-family"
     },
     {
@@ -2360,7 +2360,7 @@
       ],
       "affectedPaths": ["src/components/admiralty/**", "src/app/admin/**"],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "phase-1-owner-accepted-mainline-candidate",
+      "currentImplementationState": "phase-1-accepted-mainline",
       "adapter": "vitest-family"
     },
     {
@@ -2385,7 +2385,7 @@
       ],
       "affectedPaths": ["tests/e2e/admiralty-phase1.spec.ts", "playwright.admiralty-phase1.config.ts"],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "phase-1-owner-accepted-mainline-candidate",
+      "currentImplementationState": "phase-1-accepted-mainline",
       "adapter": "admiralty-phase1-browser"
     }
   ]

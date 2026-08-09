@@ -179,7 +179,7 @@ function suite(id, name, tier, adapter, contracts, affectedPaths, parallelSafe, 
     contracts,
     affectedPaths,
     releaseGates: ["local-change", "subsystem", "mainline", "release-candidate"],
-    currentImplementationState: "phase-1-owner-accepted-mainline-candidate",
+    currentImplementationState: "phase-1-accepted-mainline",
     adapter,
   };
 }

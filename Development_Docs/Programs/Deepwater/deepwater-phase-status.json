@@ -25,17 +25,17 @@
   ],
   "mainlineState": "NOT_YET_ACCEPTED",
   "metrics": {
-    "backendOperationsReviewed": 340,
+    "backendOperationsReviewed": 349,
     "capabilityRealization": {
       "BACKEND_ONLY": 1,
       "DEPRECATED": 1,
-      "FULLY_REALIZED": 40,
+      "FULLY_REALIZED": 41,
       "INTERNAL_BY_DESIGN": 8,
       "PARTIALLY_REALIZED": 2,
       "SECURITY_RESTRICTED": 2
     },
     "capabilityUtilization": {
-      "FULLY_UTILIZED": 40,
+      "FULLY_UTILIZED": 41,
       "INTENTIONALLY_PARTIAL": 2,
       "INTERNAL_ONLY": 8,
       "NOT_APPLICABLE": 1,

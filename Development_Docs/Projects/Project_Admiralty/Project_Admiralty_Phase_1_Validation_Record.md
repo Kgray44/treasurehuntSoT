@@ -10,28 +10,28 @@ last_reviewed: 2026-08-09
 
 ## Current decision
 
-**OWNER_ACCEPTED_RECONCILED_MAINLINE_CANDIDATE.** The exact tested application
-source is `49c2f59d6d75791edbdba84f22f5ec1595d2d129`; the owner completed the
-walkthrough against `750b904cfec013f0b6adec3d930caf5eeae9ec0b` and recorded
-`ACCEPTED` on `2026-08-09`. Final reconciliation merge
-`2ac2bdf8221c1aa4f6f0c5edc263951261c438ff` contains current `origin/main` at
-`9937af957c1c92c9767b4255705a17f3e189904b`. The intervening Tideglass and
-Deepwater Phase 3 work overlaps shared catalog, Deepwater, Sounding Line,
-documentation, and test registries but does not change Admiralty application or
-schema code. Its source-bound effect must be decided by the new Sounding Line
-run before integration.
+**ACCEPTED_MAINLINE.** The exact tested application source is
+`49c2f59d6d75791edbdba84f22f5ec1595d2d129`; the owner completed the walkthrough
+against `750b904cfec013f0b6adec3d930caf5eeae9ec0b` and recorded `ACCEPTED` on
+`2026-08-09`. Final reconciled implementation source
+`fe5e18eb6312c2571616a8faf2dfe1c8583cbd9f` contains accepted `origin/main`
+`0ded9be4af04feb1785fd9e56abbacdd39f54b3d`, received exact-source Sounding Line
+`RELEASE_GO`, reached canonical main, and proved local/remote parity `0/0`.
+Intervening Tideglass, Deepwater Phase 3, and Feature Catalog work changed
+shared catalog, Deepwater, Sounding Line, documentation, and test registries but
+did not change Admiralty application or schema code.
 
 ## Focused and compatibility evidence
 
-| Lane                                | Result                                                                                                                                          | Truth boundary                                          |
-| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| Admiralty unit/component/navigation | 9 files, 56 tests passed                                                                                                                        | Local focused diagnostic proof                          |
-| Admiralty policy validator          | Passed: 92 capability-floor entries, 8 roles, 6 support scopes, 0 Admin navigation entries                                                      | Registry/source boundary proof                          |
-| Migration rehearsal                 | Fresh database and prior-head upgrade passed; sentinel row retained                                                                             | Task-owned SQLite proof, not production MySQL execution |
-| TypeScript                          | Passed                                                                                                                                          | Local static proof                                      |
-| Homeport Phase 5                    | Passed: 92 pages, 200 service sources, no unexplained ordinary orphans                                                                          | Shared route-reachability compatibility                 |
-| Homeport Phase 6                    | Passed: 99 screens, 92 pages, 1,125 state pairs, 208 responsive and 26 accessibility cases                                                      | Shared screen/state compatibility                       |
-| Deepwater                           | Reconciled to 55 capabilities and all 43 catalog entries; Admiralty is `FT-B010` and owner-accepted while still branch-only pending integration | Deterministic cross-program audit compatibility         |
+| Lane                                | Result                                                                                                                | Truth boundary                                          |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| Admiralty unit/component/navigation | 9 files, 56 tests passed                                                                                              | Local focused diagnostic proof                          |
+| Admiralty policy validator          | Passed: 92 capability-floor entries, 8 roles, 6 support scopes, 0 Admin navigation entries                            | Registry/source boundary proof                          |
+| Migration rehearsal                 | Fresh database and prior-head upgrade passed; sentinel row retained                                                   | Task-owned SQLite proof, not production MySQL execution |
+| TypeScript                          | Passed                                                                                                                | Local static proof                                      |
+| Homeport Phase 5                    | Passed: 92 pages, 200 service sources, no unexplained ordinary orphans                                                | Shared route-reachability compatibility                 |
+| Homeport Phase 6                    | Passed: 99 screens, 92 pages, 1,125 state pairs, 208 responsive and 26 accessibility cases                            | Shared screen/state compatibility                       |
+| Deepwater                           | Reconciled to 55 accepted-main capabilities and all 43 catalog entries; Admiralty is owner-accepted `FT-B010` on main | Deterministic cross-program audit compatibility         |
 
 ## Production-browser evidence
 
@@ -72,15 +72,16 @@ tooling were accepted as later-phase scope, not defects.
 
 ## Governed gate receipts
 
-| Gate                                | Result                                                                                                                                                       | Boundary                                                                    |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
-| Production build                    | Passed for the exact tested source                                                                                                                           | Local production build only                                                 |
-| Documentation index and validation  | Passed after current-document and engineering-evidence reconciliation                                                                                        | Repository documentation governance                                         |
-| Feature Catalog sync and validation | Reconciliation assigned Admiralty `FT-B010` as `BRANCH_COMPLETE_NOT_MERGED`; exact candidate validation is pending                                           | Owner-accepted branch availability only                                     |
-| Deepwater audit and validation      | Reconciled owner-acceptance rung; exact candidate validation is pending                                                                                      | Cross-program capability truth                                              |
-| Sounding Line subsystem authority   | `RELEASE_GO`: 5/5 suites, plan `31bcc47fd7a0d1a6e7cd59b7a4014edffe27cbe2ebec06f790d256476eb5deb8`, all cleanup `CLEAN`                                       | Admiralty unit/component/browser plus shared static/Homeport authority      |
-| Sounding Line mainline authority    | `RELEASE_GO`: 32/32 suites and 1,246 selected registered cases, plan `fa4691c5f60b84c40fa85b9b26e26efddc4034008d71054f30b5c36aaa777a6b`, all cleanup `CLEAN` | Authoritative repository-local decision; not deployment or owner acceptance |
-| Git reconciliation                  | Merge `2ac2bdf8` contains current `origin/main` `9937af95`; exact tested Admiralty application source is unchanged                                           | No push or canonical mainline integration yet                               |
+| Gate                                | Result                                                                                                                                                                                                                                                    | Boundary                                                                    |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Production build                    | Passed for the exact tested source                                                                                                                                                                                                                        | Local production build only                                                 |
+| Documentation index and validation  | Passed after current-document and engineering-evidence reconciliation                                                                                                                                                                                     | Repository documentation governance                                         |
+| Feature Catalog sync and validation | Admiralty `FT-B010` promoted to `MAINLINE`; generated 43-entry catalog sync and validation pass                                                                                                                                                           | Owner-accepted mainline availability                                        |
+| Deepwater audit and validation      | Reconciled 55 accepted-main capabilities, including owner-accepted Admiralty, with deterministic validation                                                                                                                                               | Cross-program capability truth                                              |
+| Sounding Line subsystem authority   | `RELEASE_GO`: 5/5 suites, plan `31bcc47fd7a0d1a6e7cd59b7a4014edffe27cbe2ebec06f790d256476eb5deb8`, all cleanup `CLEAN`                                                                                                                                    | Admiralty unit/component/browser plus shared static/Homeport authority      |
+| Sounding Line mainline authority    | `RELEASE_GO`: 32/32 suites and 1,246 selected registered cases, plan `fa4691c5f60b84c40fa85b9b26e26efddc4034008d71054f30b5c36aaa777a6b`, all cleanup `CLEAN`                                                                                              | Authoritative repository-local decision; not deployment or owner acceptance |
+| Final preintegration authority      | `RELEASE_GO`: source `fe5e18eb`, 33/33 suites, 1,308 selected registered cases, plan `7d04f6e3258518dea4e549811599e19c30808d3511d0f8f0758652f481f5c77d`, evidence `5ef75c4e7eaaf6a3c8df03c09529ee8b62609eb0c79ead94cb043c627380d405`, all cleanup `CLEAN` | Exact reconciled implementation source; not deployment                      |
+| Git integration                     | Published `fe5e18eb` to canonical main after containing `0ded9be4`; fetch verified `HEAD...origin/main = 0/0`                                                                                                                                             | Accepted source integration and remote parity                               |
 
 The first mainline attempt failed before suite execution because the owned
 worktree intentionally lacked the ignored `prisma/dev.db` baseline required by
@@ -94,11 +95,21 @@ the shared validation lease. No lock or process was stolen. The final run
 acquired the lease through an exclusive availability probe and passed all 32
 receipts.
 
-After Deepwater Phase 2 reached `origin/main`, its accepted trace policy still
-correctly excluded the unaccepted Admiralty capability. The reconciled
-validator now permits only explicitly `BRANCH_COMPLETE_NOT_MERGED` queue items
-to remain outside that accepted trace scope, rejects an omitted mainline item,
-and does not create a Phase 2 remediation packet from Admiralty branch work.
+After owner acceptance, three source-bound 33-suite gates exercised the
+concurrent-main reconciliation rule. Source `8e81b3ba` passed 33/33 receipts and
+1,295 selected cases before accepted Tideglass main invalidated its catalog and
+test-inventory evidence. Source `9407c71d` then passed 33/33 and 1,308 selected
+cases before accepted One Voyage catalog reconciliation invalidated its source
+identity. Final source `fe5e18eb` incorporated that interval, passed the 33/33
+gate shown above, and was the source published to canonical main. No concurrent
+authority was interrupted; the shared lock and port handoffs were coordinated
+with Tideglass, Wakebook, Shipwright, and Deepwater.
+
+Before integration, Deepwater correctly treated Admiralty as branch-only
+coordination input. After `fe5e18eb` reached main, Phase 3 includes its platform
+administration and consented Support Access capability in the accepted-main
+denominator. The historical Phase 2 trace remains unchanged; this status
+promotion does not start a new Deepwater or Admiralty phase.
 
 ## Canonical-state safety
 
@@ -111,7 +122,7 @@ no bootstrap commit was run against canonical or deployed data.
 ## Retained limits
 
 - owner walkthrough is complete and the owner decision is `ACCEPTED`;
-- the reconciled candidate is not yet on canonical main or deployed;
+- the accepted Phase 1 source is on canonical main but is not deployed;
 - production MySQL migration/application behavior is not established by local
   SQLite rehearsal or schema parity;
 - live providers, physical devices, and physical assistive technology remain
