@@ -12,7 +12,7 @@ last_reviewed: 2026-08-09
 
 **VALIDATION IN PROGRESS.** The Phase 1 implementation, focused service and
 contract proof, visible product inspection, copied-database browser diagnostic,
-and semantic reconciliation through `origin/main` commit `fe5e18e` are complete
+and semantic reconciliation through `origin/main` commit `d1344e8` are complete
 on the owned Helm branch. The governed exact-source Helm browser receipt,
 authoritative mainline Sounding Line gate, protected integration, integrated-SHA
 proof, and remote parity remain required. This record does not claim mainline
@@ -25,9 +25,9 @@ acceptance.
 | Helm service, API, component, artifact, history, Homeport, and invitation regression | 13 files, 68 tests passed                                                 | Local diagnostic proof on a task-owned SQLite database                                                                                                                                                                                                            |
 | Superseded Sounding Line contract gate                                               | `RELEASE_GO`; `unit.helm` 26/26; `component.helm` 3/3; static gate passed | Exact-source governed proof on commit `98b135a086a5d2e6283965561644f3f620f2fff4`; cleanup was `CLEAN`. The later `40d822c` mainline advance makes it retained diagnostic history, not current acceptance evidence.                                                |
 | Helm browser diagnostic                                                              | 2/2 passed in 1.2 minutes                                                 | Task-owned port 3101 and copied SQLite database on commit `3f4ba7f8f61f69642f2878eaf0991712bfc0d6be`; the 58.3-second authority/membership journey and 10.1-second responsive/accessibility matrix both passed. This is not yet the governed shared-lane receipt. |
-| Governed `browser.helm` receipt                                                      | 2/2 passed; `CLEAN`; 167,120 ms                                           | Exact-source governed mainline-plan suite proof on commit `a67616f710f20f4f142c84706978cb90a15dc10a`; registered, discovered, executed, and passed counts were all 2 with zero failed or skipped. The later `fe5e18e` mainline advance requires a final rerun.    |
+| Governed `browser.helm` receipt                                                      | 2/2 passed; `CLEAN`; 167,120 ms                                           | Exact-source governed mainline-plan suite proof on commit `a67616f710f20f4f142c84706978cb90a15dc10a`; registered, discovered, executed, and passed counts were all 2 with zero failed or skipped. The later `d1344e8` mainline advance requires a final rerun.    |
 | Focused browser repair                                                               | ESLint, Prettier, and TypeScript passed                                   | The matrix uses one canonical session for desktop/tablet/phone/zoom, a fresh reduced-motion context, native keyboard focus/selection assertions, touch targets, horizontal overflow, and desktop/phone Axe checks.                                                |
-| Reconciled policy and TypeScript                                                     | Passed                                                                    | Commit `c92bce2272a5ad6c34923c2eaefbee6fc22de37a`; generated registry and shared policy include Helm plus accepted Tideglass, Deepwater, One Voyage catalog, and Admiralty implementation changes.                                                                |
+| Reconciled policy and TypeScript                                                     | Passed                                                                    | Commit `8fe15dad810cc28419118567262933e414965297`; generated registry and shared policy include Helm plus accepted Tideglass, Deepwater, One Voyage catalog, and final Admiralty closure changes.                                                                 |
 | Schema                                                                               | **NONE**                                                                  | Helm's owned diff against current main changes neither Prisma provider nor any migration                                                                                                                                                                          |
 
 The reconciled contract receipt recorded plan digest
@@ -37,7 +37,7 @@ and evidence digest
 The current policy validator reports 432 contracts, 7 gates, 14 owners, 55
 suites, 1,806 registered cases across 50 families, two pre-existing validation
 debt entries, zero policy errors, and policy digest
-`7ea58a71a6f60fd005625d703e5acfe2892738ee49e582c9c2bd3a74625d16b2`.
+`92a2eab9fd2c8f348ba2ecc90ec77b629284dfd57850ea1f8afd2bb5d482a8de`.
 The older contract result remains governed historical evidence, but it is not
 the current browser receipt, final mainline gate, or integrated-SHA proof.
 

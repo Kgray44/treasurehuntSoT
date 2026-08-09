@@ -17,10 +17,10 @@ is a pre-integration record and does not claim mainline acceptance.
 | Field                  | Value                                                                |
 | ---------------------- | -------------------------------------------------------------------- |
 | Original base SHA      | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                           |
-| Current `origin/main`  | `fe5e18eb6312c2571616a8faf2dfe1c8583cbd9f`                           |
+| Current `origin/main`  | `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`                           |
 | Branch                 | `codex/project-helm-phase1-take-the-helm`                            |
 | Owned worktree         | `C:\Users\kkids\Documents\treasurehuntSoT-helm-phase1-take-the-helm` |
-| Candidate commit       | `c92bce2272a5ad6c34923c2eaefbee6fc22de37a` reconciled checkpoint     |
+| Candidate commit       | `8fe15dad810cc28419118567262933e414965297` reconciled checkpoint     |
 | Protected integration  | Pending                                                              |
 | Final reconciled main  | Pending                                                              |
 | Current mainline state | `RECONCILED_VALIDATION_IN_PROGRESS`                                  |
@@ -58,6 +58,8 @@ is a pre-integration record and does not claim mainline acceptance.
 | `0ded9be`                                  | Integration commit                              | Protected merge of the One Voyage catalog correction through pull request 25.                                                                                                                                        |
 | `648d106`                                  | Adjacent product, security, and schema work     | Adds Admiralty Phase 1 role/capability authority, assurance, Support Access, audit, admin surfaces, and additive migrations. No Helm-owned product behavior changed.                                                 |
 | `663886a` through `fe5e18e`                | Adjacent reconciliation and integration         | Reconciles Admiralty with accepted concurrent work, records owner acceptance and automated gates, refreshes shared governance outputs, and publishes the accepted implementation to canonical main.                  |
+| `755589f`                                  | Adjacent accepted-mainline records              | Promotes Admiralty, Deepwater, and shared governance metadata after exact-source 33/33 `RELEASE_GO` with clean cleanup. No Helm-owned product behavior changed.                                                      |
+| `d1344e8`                                  | Adjacent record-only closure                    | Records Admiralty's mainline authority receipt and catalog anchor after a 6/6 local-change `RELEASE_GO` with clean cleanup.                                                                                          |
 
 The governance bootstrap introduces the supplied Project Helm and continuous
 development PDFs as tracked governing authorities. Their Git blob identities
