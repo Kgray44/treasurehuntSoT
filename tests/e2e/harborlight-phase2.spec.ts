@@ -26,7 +26,15 @@ test("Harborlight Studio access and Exchange package installation are isolated a
   const gm = await db.gameMasterUser.create({
     data: { username, passwordHash: await bcrypt.hash(password, 10), role: "CAPTAIN_CREATOR" },
   });
-  const account = await db.userAccount.create({ data: { status: "ACTIVE", legacyGameMasterId: gm.id } });
+  const activatedAt = new Date();
+  const account = await db.userAccount.create({
+    data: {
+      status: "ACTIVE",
+      claimedAt: activatedAt,
+      ordinaryWorkspaceEntryAt: activatedAt,
+      legacyGameMasterId: gm.id,
+    },
+  });
   await db.playerProfile.create({
     data: {
       accountId: account.id,

@@ -129330,9 +129330,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-fd809d279ddcbba964bb",
+      "id": "sl-test-48960c5f61bc50c2920f",
       "title": "H2: hash-attested synthetic 2D artifact publication persists its immutable package",
-      "line": 247,
+      "line": 255,
       "file": "tests/e2e/harborlight-phase2.spec.ts",
       "project": "harborlight-phase2",
       "suiteId": "browser.artifacts",
@@ -129371,9 +129371,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-ee8e7b239bf0917fd4aa",
+      "id": "sl-test-8755612287a29d1d049e",
       "title": "H3: hash-attested GLB publication accepts only the exact embedded fixture and preserves fallback metadata",
-      "line": 473,
+      "line": 481,
       "file": "tests/e2e/harborlight-phase2.spec.ts",
       "project": "harborlight-phase2",
       "suiteId": "browser.community",

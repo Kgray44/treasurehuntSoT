@@ -931,14 +931,14 @@ export const phase3Test = baseTest.extend<Phase3TestFixtures, Phase3WorkerFixtur
         });
         const body = (await response.json().catch(() => null)) as { csrfToken?: string; error?: string } | null;
         const storageState = await bootstrap.storageState();
-        const sessionCookie = storageState.cookies.find((cookie) => cookie.name === "forever_gm");
+        const sessionCookie = storageState.cookies.find((cookie) => cookie.name === "wayfarer_account");
         if (sessionCookie?.value) {
           sessionHash = createHash("sha256").update(sessionCookie.value).digest("hex");
         }
         expect(response.status(), `CAPTAIN login failed: ${JSON.stringify(body)}`).toBe(200);
         expect(body?.csrfToken).toMatch(/\S/u);
         csrfToken = body!.csrfToken!;
-        expect(sessionCookie?.value, "CAPTAIN login must return its exact session cookie.").toMatch(/\S/u);
+        expect(sessionCookie?.value, "CAPTAIN login must return its canonical account session cookie.").toMatch(/\S/u);
         context = await playwrightRequest.newContext({
           baseURL: phase3BaseURL,
           storageState,
