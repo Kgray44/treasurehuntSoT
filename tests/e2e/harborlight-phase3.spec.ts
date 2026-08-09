@@ -256,7 +256,15 @@ async function createActor(browser: Browser, handle: string): Promise<SignedInAc
   });
   const account = await db.userAccount.create({ data: { status: "ACTIVE", legacyGameMasterId: gm.id } });
   await db.playerProfile.create({
-    data: { accountId: account.id, displayName: handle, status: "ACTIVE", claimedAt: new Date() },
+    data: {
+      accountId: account.id,
+      displayName: handle,
+      handle,
+      normalizedHandle: handle,
+      defaultVisibility: "PUBLIC",
+      status: "ACTIVE",
+      claimedAt: new Date(),
+    },
   });
   const profile = await db.communityProfile.create({
     data: { accountId: account.id, handle, normalizedHandle: handle, displayName: handle, visibility: "COMMUNITY" },
