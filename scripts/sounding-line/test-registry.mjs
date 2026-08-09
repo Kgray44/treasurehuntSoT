@@ -17,6 +17,7 @@ const execFileAsync = promisify(execFile);
 const normal = (value) => value.replaceAll("\\", "/");
 
 function ownerFor(file) {
+  if (file.includes("drydock")) return "drydock";
   if (file.includes("deepwater")) return "project-deepwater";
   if (file.includes("homeport")) return "project-homeport";
   if (file.includes("private-content")) return "sealed-hold";
@@ -29,6 +30,7 @@ function ownerFor(file) {
 }
 
 function unitFamily(file) {
+  if (file.startsWith("src/drydock/") || file.startsWith("scripts/drydock/")) return "unit.drydock";
   if (file.startsWith("scripts/deepwater/") || file.startsWith("tests/deepwater/")) return "unit.deepwater";
   if (file.startsWith("src/homeport/") || file.startsWith("scripts/homeport/") || file.startsWith("tests/homeport/"))
     return "unit.homeport";
@@ -96,6 +98,7 @@ function browserFamily(project, file, title) {
 }
 
 function contractFor(file, family) {
+  if (file.includes("drydock") || family === "unit.drydock") return ["drydock-authoring-contracts"];
   if (file.includes("deepwater") || family === "unit.deepwater") return ["deepwater.capability-realization-integrity"];
   if (file.includes("homeport") || family === "unit.homeport") return homeportContracts;
   if (file.includes("private-content")) return ["sealed-hold-private-delivery", "public-privacy-projection"];
@@ -110,9 +113,8 @@ function contractFor(file, family) {
 }
 
 function metadata(file, family, browser = null) {
-  const privateOrCommunity = /deepwater|homeport|private-content|community|wayfarer|passport|invitation|session/u.test(
-    file,
-  );
+  const privateOrCommunity =
+    /drydock|deepwater|homeport|private-content|community|wayfarer|passport|invitation|session/u.test(file);
   const high = privateOrCommunity || Boolean(browser);
   const ui = Boolean(browser) || file.endsWith(".tsx");
   return {

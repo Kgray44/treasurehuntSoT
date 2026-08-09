@@ -98,7 +98,7 @@ The Phase 1 dependency index maps blocks and fields to direct variable, expressi
 
 ## Existing integration and compatibility adapters
 
-The schema-level portion of `validateTaleDraft` delegates to Drydock and maps Drydock issues back to the accepted `ValidationIssue` shape. Existing unknown-block, answer, asset, provider, broken-connection, choice/condition target, reachability, completion-path, and unused-asset behavior remains. Studio registry metadata continues to drive the current UI. Publishing and import paths parse through the same contract layer without changing One Voyage runtime semantics.
+The schema-level portion of `validateTaleDraft` delegates to Drydock and maps Drydock issues back to the accepted `ValidationIssue` shape. Existing unknown-block, answer, asset, provider, broken-connection, choice/condition target, reachability, completion-path, and unused-asset behavior remains. Studio registry metadata continues to drive the current UI. Publishing parses through the same contract layer without changing One Voyage runtime semantics; import compatibility remains at the existing Studio transport and registry boundary in Phase 1.
 
 Compatibility adapters remain for version-1 generic configuration, configuration-owned completion mode, configuration-owned choice/condition targets, and `nextBlockId`. They are explicit and test-bound, not parallel authorities.
 

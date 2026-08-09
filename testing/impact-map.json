@@ -42,6 +42,26 @@
       "suiteIds": ["unit.deepwater", "static.core"],
       "contractIds": ["deepwater.capability-realization-integrity"]
     },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/**",
+      "suiteIds": ["unit.drydock", "static.core"],
+      "contractIds": ["drydock-authoring-contracts"]
+    },
+    {
+      "path": "src/drydock/**",
+      "suiteIds": ["unit.drydock", "static.core"],
+      "contractIds": ["drydock-authoring-contracts"]
+    },
+    {
+      "path": "scripts/drydock/**",
+      "suiteIds": ["unit.drydock", "static.core"],
+      "contractIds": ["drydock-authoring-contracts"]
+    },
+    {
+      "path": "tests/fixtures/drydock/**",
+      "suiteIds": ["unit.drydock", "static.core"],
+      "contractIds": ["drydock-authoring-contracts"]
+    },
     { "path": "Development_Docs/document-index.json", "suiteIds": ["static.core"], "contractIds": [] },
     {
       "path": "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
@@ -51,7 +71,7 @@
     { "path": "scripts/generate-document-index.mjs", "suiteIds": ["static.core"], "contractIds": [] },
     {
       "path": "package.json",
-      "suiteIds": ["unit.deepwater", "unit.homeport", "unit.sounding-line", "static.core"],
+      "suiteIds": ["unit.drydock", "unit.deepwater", "unit.homeport", "unit.sounding-line", "static.core"],
       "contractIds": [
         "deepwater.capability-realization-integrity",
         "homeport.route-inventory.complete",
@@ -528,8 +548,8 @@
     },
     {
       "path": "src/chronicle/**",
-      "suiteIds": ["unit.one-voyage", "component.player-shell", "browser.invitations"],
-      "contractIds": ["invitation-acceptance"]
+      "suiteIds": ["unit.drydock", "unit.one-voyage", "component.player-shell", "browser.invitations"],
+      "contractIds": ["drydock-authoring-contracts", "drydock-progression", "invitation-acceptance"]
     },
     {
       "path": "src/navigation/**",

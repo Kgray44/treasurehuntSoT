@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { getBlockDefinition } from "@/chronicle/block-registry";
 import { getStudioTale, slugSchema } from "@/chronicle/studio-service";
 import type { DraftValidationResult, ValidationIssue } from "@/chronicle/types";
+import { drydockDraftInputFromStudio, validateDrydockDraftContracts } from "@/drydock/incremental";
 
 const futureProviders = new Set(["visionLocation", "visionObject", "externalWebhook"]);
 
@@ -39,6 +40,15 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
   const outgoing = new Map<string, string[]>();
   const referencedAssetIds = new Set<string>();
   let taleCompleteCount = 0;
+  const drydock = validateDrydockDraftContracts(drydockDraftInputFromStudio(studio.draft));
+  const drydockIssuesByBlock = new Map<string, typeof drydock.issues>();
+  for (const issue of drydock.issues) {
+    if (!issue.location.blockId) continue;
+    drydockIssuesByBlock.set(issue.location.blockId, [
+      ...(drydockIssuesByBlock.get(issue.location.blockId) ?? []),
+      issue,
+    ]);
+  }
 
   for (const chapter of studio.draft.chapters) {
     if (!chapter.blocks.length) {
@@ -62,16 +72,15 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
         });
         continue;
       }
-      const parsed = definition.validationSchema.safeParse(block.configuration);
-      if (!parsed.success) {
-        for (const issue of parsed.error.issues)
-          error({
-            code: "BLOCK_FIELD",
-            message: `${block.title}: ${issue.message}`,
-            chapterId: chapter.id,
-            blockId: block.id,
-            field: issue.path.join("."),
-          });
+      for (const issue of drydockIssuesByBlock.get(block.id) ?? []) {
+        const add = issue.severity === "ERROR" ? error : warn;
+        add({
+          code: issue.code,
+          message: `${block.title}: ${issue.message}`,
+          chapterId: chapter.id,
+          blockId: block.id,
+          field: issue.location.fieldPath,
+        });
       }
       if (block.blockType === "taleComplete") taleCompleteCount += 1;
       const provider = String(block.configuration.verificationProvider ?? block.configuration.completionMode ?? "");

@@ -75,6 +75,29 @@
       "adapter": "vitest-family"
     },
     {
+      "id": "unit.drydock",
+      "name": "Drydock typed authoring contract units",
+      "tier": 1,
+      "owner": "drydock",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 30000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": [],
+      "contracts": ["drydock-authoring-contracts", "drydock-progression"],
+      "affectedPaths": [
+        "src/drydock/**",
+        "scripts/drydock/**",
+        "tests/fixtures/drydock/**",
+        "Development_Docs/Projects/Project Drydock/**"
+      ],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-family",
+      "adapter": "vitest-family"
+    },
+    {
       "id": "unit.wayfarer",
       "name": "Wayfarer identity and history units",
       "tier": 1,
