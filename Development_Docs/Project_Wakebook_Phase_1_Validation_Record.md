@@ -10,7 +10,7 @@ last_reviewed: 2026-08-09
 
 ## Decision
 
-**Current classification: VALIDATION IN PROGRESS.** The Wakebook unit and component families pass through Sounding Line. The isolated browser family, exact-source broader gates, final accepted-main reconciliation, and owner runtime handoff must complete before this record may classify the branch `READY_FOR_OWNER_WALKTHROUGH`. This record does not establish owner acceptance, deployment, or mainline integration.
+**Current classification: FINAL SOURCE-BOUND VALIDATION PENDING.** The Wakebook unit, component, browser, accessibility, retained-runtime, privacy, and large-archive evidence is complete at the stated boundaries below. The branch has been semantically reconciled through accepted `origin/main` `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`. The final exact-source Sounding Line authorities, completion-record update, branch push/parity proof, and final retained-runtime restart must complete before this record may classify the branch `READY_FOR_OWNER_WALKTHROUGH`. This record does not establish owner acceptance, deployment, or mainline integration.
 
 ## Source identity
 
@@ -18,8 +18,8 @@ last_reviewed: 2026-08-09
 | ------------------------------- | ------------------------------------------------------------------------ |
 | Branch                          | `codex/project-wakebook-phase1-open-the-wake`                            |
 | Owned worktree                  | `C:\Users\kkids\Documents\treasurehuntSoT-wakebook-phase1-open-the-wake` |
-| Reconciled accepted-main base   | `273fb5255ad222812530422e902db04c0ddd1961`                               |
-| Archive implementation anchor   | `629f5c7a981b80494f7703b6410b573a661e0f39`                               |
+| Reconciled accepted-main base   | `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`                               |
+| Archive implementation anchor   | `ab47dc33a29b2cdd80a97da7fd1af4a9e897b2cc`                               |
 | Final validation SHA            | Pending final evidence commit                                            |
 | Database schema change          | None                                                                     |
 | Canonical mutable database used | No                                                                       |
@@ -43,20 +43,26 @@ Sounding Line owns the authoritative definitions for:
 
 ## Evidence ledger
 
-| Evidence                                 | Environment and fixture                                                  | Result                 | Truth boundary                         |
-| ---------------------------------------- | ------------------------------------------------------------------------ | ---------------------- | -------------------------------------- |
-| Focused TypeScript                       | Owned worktree; generated SQLite Prisma client                           | PASS                   | Compile-time only                      |
-| Focused ESLint and Prettier              | Wakebook source, API, components, pages, tests, styles, control plane    | PASS                   | Static only                            |
-| `unit.wakebook`                          | Sounding Line Vitest adapter; repository deterministic fixtures          | PASS, 11/11            | Unit/API contract evidence             |
-| `component.wakebook`                     | Sounding Line Vitest adapter; JSDOM                                      | PASS, 3/3              | Component contract evidence            |
-| `browser.wakebook`                       | Task-owned SQLite clone, leased loopback port, isolated Chromium context | Pending                | Required synthetic browser evidence    |
-| Large archive                            | 1,005 synthetic owner records across 2025/2026 plus separate invitation  | Pending browser family | Required bounded pagination/year proof |
-| Owner and cover privacy negatives        | Separate synthetic owner and foreign account                             | Pending browser family | Required private-boundary proof        |
-| Historical stability                     | Mutated current Chronicle and crew profile after archive creation        | Pending browser family | Required snapshot proof                |
-| Responsive/accessibility                 | 1440x1000, 430x932, 390x844; Axe serious/critical policy                 | Pending browser family | Synthetic browser only                 |
-| Sounding Line subsystem/mainline/release | Exact final source and generated registry                                | Pending                | Required release authority             |
+| Evidence                             | Environment and fixture                                                  | Result                  | Truth boundary                         |
+| ------------------------------------ | ------------------------------------------------------------------------ | ----------------------- | -------------------------------------- |
+| Focused TypeScript                   | Owned worktree; generated SQLite Prisma client                           | PASS                    | Compile-time only                      |
+| Focused ESLint and Prettier          | Wakebook source, API, components, pages, tests, styles, control plane    | PASS                    | Static only                            |
+| `unit.wakebook`                      | Sounding Line Vitest adapter; repository deterministic fixtures          | PASS, 11/11             | Unit/API contract evidence             |
+| `component.wakebook`                 | Sounding Line Vitest adapter; JSDOM                                      | PASS, 3/3               | Component contract evidence            |
+| `browser.wakebook`                   | Task-owned SQLite clone, leased loopback port, isolated Chromium context | PASS / CLEAN            | Source `c3d68307`; synthetic browser   |
+| Large archive                        | 1,005 synthetic owner records across 2025/2026 plus separate invitation  | PASS                    | Bounded pagination/year proof          |
+| Owner and cover privacy negatives    | Separate synthetic owner and foreign account                             | PASS                    | Neutral foreign/missing boundary       |
+| Historical stability                 | Mutated current Chronicle and crew profile after archive creation        | PASS                    | Stored snapshot proof                  |
+| Responsive/accessibility             | 1440x1000, 430x932, 390x844; Axe serious/critical policy                 | PASS / CLEAN, 148/148   | Local synthetic browser diagnostic     |
+| Retained owner-runtime visual review | Loopback `3717`; task-owned database; desktop in-app browser             | PASS                    | Manual synthetic product-reality proof |
+| Sounding Line mainline authority     | Generated registry at source `5012d285`                                  | RELEASE_GO, 32/32 CLEAN | Superseded by later reconciliations    |
+| Final Sounding Line authorities      | Exact final reconciled source and generated registry                     | Pending                 | Required release authority             |
 
-The first `browser.wakebook` diagnostic attempt did not execute product code because another governed validation process owned the global validation-runtime lock. The runner reported cleanup `CLEAN`; no process was stopped and no lock was removed. That environmental collision is not a product failure and is not counted as passing evidence.
+The first `browser.wakebook` diagnostic attempt and a later focused Community attempt did not execute product code because another governed validation process owned the global validation-runtime lock. Both runners reported cleanup `CLEAN`; no process was stopped and no lock was removed. Those environmental collisions are not product failures and are not counted as passing evidence.
+
+The retained task-owned runtime was inspected through ordinary product navigation. A synthetic owner reached Chronicle Passport and History from `/`, searched the 1,005-record archive, opened **The Lantern Below**, inspected every Phase 1 detail section, and followed the personal Artifact Cabinet provenance link. A foreign synthetic account received the neutral `Voyage record not found` boundary for the same record ID. A first-use synthetic account received the intentional zero-Voyage orientation with Chronicle discovery, invitation, and Passport actions. Desktop geometry showed no horizontal overflow. Automated governed browser evidence remains the responsive/mobile, effective-zoom, keyboard, reduced-motion, and accessibility authority.
+
+During that inspection, the retained owner initially lacked Homeport's canonical ordinary-workspace entry timestamp even though the synthetic account was active, claimed, and assigned the Player role. The task-owned database was repaired without touching canonical or immutable fixture data, and `scripts/homeport/seed-phase7-fixture.mjs` now seeds that accepted authorization fact for active Phase 7 identities and inherited active walkthrough accounts. A fresh isolated fixture preparation completed with the Player, Creator-only, and first-use accounts all holding the expected timestamp.
 
 ## Privacy and source-safety assertions
 
@@ -77,8 +83,8 @@ Phase 1 exposes no disabled Timeline, People, Statistics, map, Tideglass, sharin
 
 ## Remaining gates
 
-1. Complete the isolated `browser.wakebook` family after the existing global runtime lease clears.
-2. Inspect screenshots in the exact task-owned browser evidence root and record any correction.
-3. Run the Sounding Line subsystem, mainline, and release-candidate authorities on the final reconciled SHA.
-4. Confirm documentation, Feature Catalog, route/screen/journey catalogs, source/remote parity, and runtime ownership.
+1. Re-fetch `origin/main` after the active governed validation lane releases and reconcile any newly accepted source semantically.
+2. Run the focused impacted browser evidence and the Sounding Line subsystem, mainline, and release-candidate authorities on the final reconciled SHA.
+3. Confirm documentation, Feature Catalog, route/screen/journey catalogs, source/remote parity, and runtime ownership.
+4. Restart the retained walkthrough runtime on the exact completion source and verify its PID, port, database, source SHA, and health.
 5. Change the decision only if every mandatory receipt passes with cleanup `CLEAN`.

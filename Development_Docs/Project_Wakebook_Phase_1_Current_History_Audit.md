@@ -87,3 +87,7 @@ Sounding Line currently owns the critical `wayfarer-history-projection` contract
 ## Audit conclusion
 
 Accepted history is substantially complete and historically stable. Phase 1 is a schema-free service/query and product-experience realization. The correct implementation is a bounded Wakebook summary/detail layer over Wayfarer records, not a data migration or projector rewrite.
+
+## Final accepted-main revalidation
+
+The audit conclusion was rechecked after semantic reconciliation through accepted `origin/main` `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`. Later Deepwater, Tideglass, Admiralty, Feature Catalog, Homeport catalog, Sounding Line, and documentation work did not add a competing history projector or change the canonical One Voyage, Wayfarer, AccountSession, Artifact Cabinet, or remembrance authorities above. Wakebook remains a bounded owner-private projection and presentation layer with no schema change.

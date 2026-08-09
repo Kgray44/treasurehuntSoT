@@ -1372,7 +1372,7 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 - path: `src/components/wakebook/WakebookVoyageDetail.tsx`
 - test: `tests/e2e/wakebook-phase1.spec.ts`
 - completion-record: `Development_Docs/Project_Wakebook_Phase_1_Validation_Record.md`
-- commit: `629f5c7a981b80494f7703b6410b573a661e0f39`
+- commit: `ab47dc33a29b2cdd80a97da7fd1af4a9e897b2cc`
 
 ---
 

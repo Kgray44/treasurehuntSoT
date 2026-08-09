@@ -15,7 +15,7 @@ last_reviewed: 2026-08-09
 | Project / phase   | Project Wakebook / Phase 1 `Open the Wake`                                                                               |
 | Owner             | Wakebook for archive projection and presentation; Wayfarer remains history authority                                     |
 | Branch / worktree | `codex/project-wakebook-phase1-open-the-wake` / `C:\Users\kkids\Documents\treasurehuntSoT-wakebook-phase1-open-the-wake` |
-| Reconciled base   | `273fb5255ad222812530422e902db04c0ddd1961`                                                                               |
+| Reconciled base   | `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`                                                                               |
 | Dependency class  | Accepted-main contracts only                                                                                             |
 | Schema impact     | None; no migration reservation                                                                                           |
 | Shared seams      | Passport routes/navigation/styles, Feature Catalog, Homeport catalogs, Sounding Line control plane                       |
@@ -47,4 +47,4 @@ The Wakebook vertical slice can be reverted without deleting or rewriting a hist
 
 ## Permanent-stop decision
 
-**PASS BY DESIGN; runtime evidence pending.** The frozen slice is independently useful with no required future control or placeholder. Final classification depends on implementation, Sounding Line evidence, and owner walkthrough, not this design assertion alone.
+**PASS WITH TASK-OWNED RUNTIME EVIDENCE; FINAL EXACT-SOURCE AUTHORITY PENDING.** The frozen slice is independently useful with no required future control or placeholder. The one/many/empty archive, detail, artifact provenance, neutral foreign-record boundary, and ordinary navigation were inspected on the retained synthetic runtime. Final readiness still depends on exact-source Sounding Line evidence, branch publication/parity, and the separate owner walkthrough; this design/runtime result alone is not owner acceptance.
