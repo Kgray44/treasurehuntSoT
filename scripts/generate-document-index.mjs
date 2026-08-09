@@ -33,12 +33,17 @@ function classify(relativePath) {
 
 const files = (await walk(recordsRoot)).map((absolute) => toPosix(path.relative(root, absolute))).sort();
 const indexPath = "Development_Docs/document-index.json";
+const isCurrentGovernance = (file) =>
+  file.includes("/Governance/") ||
+  file ===
+    "Development_Docs/Governing/Voyagewright_Continuous_Development_and_Mainline_Integration_Standard_v1.0.pdf" ||
+  (/\/Projects\/Project [^/]+\//.test(file) && /Governing_Document[^/]*\.pdf$/i.test(file));
 const records = files.map((file) => ({
   path: file,
   record_type: classify(file),
   status: file.includes("/Archive/")
     ? "archived"
-    : file.includes("/Projects/Project_Homeport/") || file.includes("/Governance/")
+    : file.includes("/Projects/Project_Homeport/") || isCurrentGovernance(file)
       ? "current"
       : "preserved",
   canonical_for: null,
