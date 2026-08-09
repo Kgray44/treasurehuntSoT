@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `0ded9be4af04feb1785fd9e56abbacdd39f54b3d`
+Audited source commit: `755589fef757604c1c743bbb572ae32217dfc12e`
 
 ## Status vocabulary
 
@@ -1291,11 +1291,9 @@ A read-only authority compares exact immutable Chronicle editions through determ
 
 ---
 
-# Completed Branch Features Not Yet Available on Main
-
 ## FT-B010 - Governed Platform Administration and Consented Support Access
 
-**Status:** BRANCH COMPLETE NOT MERGED
+**Status:** MAINLINE
 **Program or subsystem:** Project Admiralty
 
 Canonical account roles, recent privileged assurance, scoped user consent, sanitized audit evidence, and a limited administration shell establish least-privileged platform operations without creating a second identity authority.
@@ -1319,7 +1317,7 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 ### Meaningful limitations
 
 - The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09
-- Owner-accepted mainline candidate; canonical integration and remote parity remain pending
+- Owner-accepted Phase 1 implementation is integrated on canonical main with verified remote parity
 - Production MySQL execution, live-provider behavior, and physical assistive-technology validation remain external
 - Phase 2 and all later operational command-center capabilities remain dormant
 - Owner acceptance does not imply deployment or acceptance of later Admiralty phases
@@ -1336,6 +1334,8 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 ---
 
+# Completed Branch Features Not Yet Available on Main
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
@@ -1349,4 +1349,4 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `0ded9be4af04feb1785fd9e56abbacdd39f54b3d`
+Generation source commit: `755589fef757604c1c743bbb572ae32217dfc12e`

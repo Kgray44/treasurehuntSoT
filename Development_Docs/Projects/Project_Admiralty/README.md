@@ -45,6 +45,7 @@ mutation is independently authorized on the server.
 - `Project_Admiralty_Phase_1_Support_Scope_Registry.json`
 - `Project_Admiralty_Phase_1_Capability_Registry.json`
 
-The Phase 1 owner decision is `ACCEPTED`; canonical mainline integration and
-parity remain the active closure gate. Phase 1 does not authorize or begin the
-Phase 2 operational command center.
+The Phase 1 owner decision is `ACCEPTED`; the accepted source is integrated on
+canonical main with verified local/remote parity. This is not a deployment,
+production MySQL proof, or authorization to begin the Phase 2 operational
+command center.
