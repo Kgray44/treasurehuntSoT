@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`
+Audited source commit: `468530645e983412e5f4c1aaa103915be77c9c07`
 
 ## Status vocabulary
 
@@ -228,24 +228,32 @@ Creator Studio supports protected Chronicle authoring, graph editing, previews, 
 **Status:** MAINLINE
 **Program or subsystem:** Studio
 
-A stable registry defines reusable story blocks, validation, metadata, and safe unknown-type behavior.
+Strict versioned contracts define all twenty-three Story Block types with canonical parsing and serialization, typed variables and bounded expressions, deterministic content migration, stable issues, and compatibility-safe validation.
 
 ### Important subfeatures
 
-- Narrative and direction blocks
-- Media and reveal blocks
-- Interaction blocks
-- Logic and completion blocks
-- Safe diagnostic fallback
+- Strict configuration, presentation, and completion contracts
+- Canonical parsing and deterministic serialization
+- Typed variable scopes, operations, usage indexing, and safe rename propagation
+- Typed deterministic expression AST, checking, and bounded evaluation
+- Versioned migration registry with frozen historical compatibility fixtures
+- Stable issues and incremental validation with current Studio and runtime compatibility
 
 ### Primary surfaces
 
 `/studio/chronicles/[id]`
 
+### Meaningful limitations
+
+- Whole-Chronicle static analysis, repair and waiver workflows, and simulation remain outside Phase 1.
+- Provider contracts without configured owner adapters remain explicitly unavailable.
+
 ### Evidence
 
-- path: `src/chronicle/block-registry.ts`
-- path: `src/chronicle/types.ts`
+- path: `src/drydock/index.ts`
+- path: `src/drydock/contracts/registry.ts`
+- test: `src/drydock`
+- completion-record: `Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_1_Completion_Receipt.md`
 
 ---
 
@@ -1349,4 +1357,4 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`
+Generation source commit: `468530645e983412e5f4c1aaa103915be77c9c07`
