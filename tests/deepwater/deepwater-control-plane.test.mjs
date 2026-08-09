@@ -228,8 +228,8 @@ test("catalog maturity and observed realization mismatch remains visible", () =>
 });
 
 test("Phase 2 accounts for every seed queue item exactly once", () => {
-  assert.equal(baseline.tracesDocument.queueItemCount, 44);
-  assert.equal(baseline.tracesDocument.traceCount, 43);
+  assert.equal(baseline.tracesDocument.queueItemCount, 45);
+  assert.equal(baseline.tracesDocument.traceCount, 44);
   assert.deepEqual(phase2Errors(phase2Model()), []);
 });
 
