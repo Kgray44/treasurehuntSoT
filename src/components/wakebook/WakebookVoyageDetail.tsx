@@ -486,8 +486,10 @@ function Definition({
   return (
     <div>
       <dt>{term}</dt>
-      <dd className={code ? "wakebook-code" : undefined}>{value}</dd>
-      {note ? <small>{note}</small> : null}
+      <dd className={code ? "wakebook-code" : undefined}>
+        {value}
+        {note ? <small>{note}</small> : null}
+      </dd>
     </div>
   );
 }
