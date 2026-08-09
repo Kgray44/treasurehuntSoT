@@ -16,6 +16,14 @@ navigation shell; Wayfarer owns personal history, consent, artifacts, and
 achievements; Harborlight owns community exchange and Phase 3 social/discovery
 projections. Publishing creates immutable versions for stable play.
 
+`src/admiralty` owns platform-administration capability resolution,
+session-bound privileged assurance, scoped Support Access, safe administrative
+projections, and administrative audit composition. It consumes canonical
+identity, session, credential, role, Chronicle, Community, and private-content
+authorities without replacing them. `/admin` is a privileged direct-entry
+surface; `/account/support-access` remains an ordinary account-owner consent
+surface.
+
 Tideglass reads two exact immutable published editions through a server-authorized repository port, verifies their stored-byte checksums, normalizes supported snapshot schemas into one comparison-only semantic model, and emits deterministic redacted Change Sets and receipts. It has no business persistence and does not mutate publication, Voyage, personal-history, or Community state. Phase 1 exposes only a trusted local diagnostic seam; route and user-interface activation belong to later governed phases.
 
 Private-content workflows retain separate authorization, scanning, storage,

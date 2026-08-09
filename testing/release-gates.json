@@ -44,7 +44,10 @@
         "browser.accessibility",
         "browser.responsive",
         "browser.animation-lifecycle",
-        "browser.cross-project"
+        "browser.cross-project",
+        "unit.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
       ]
     },
     {
@@ -81,7 +84,14 @@
     },
     {
       "id": "subsystem",
-      "requiredSuites": ["static.core", "unit.homeport", "unit.tideglass"],
+      "requiredSuites": [
+        "static.core",
+        "unit.homeport",
+        "unit.tideglass",
+        "unit.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ],
       "conditionalSuites": [
         "unit.helm",
         "component.helm",
@@ -125,7 +135,10 @@
         "browser.accessibility",
         "browser.responsive",
         "browser.animation-lifecycle",
-        "browser.cross-project"
+        "browser.cross-project",
+        "unit.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
       ]
     },
     {
@@ -175,7 +188,10 @@
         "browser.access-sentinel",
         "browser.helm",
         "retirement.matrix-proof",
-        "build.production"
+        "build.production",
+        "unit.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
       ],
       "conditionalSuites": [
         "migration.mysql",
@@ -243,7 +259,10 @@
         "browser.animation-lifecycle",
         "browser.cross-project",
         "retirement.matrix-proof",
-        "build.production"
+        "build.production",
+        "unit.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
       ],
       "conditionalSuites": ["migration.mysql"]
     },

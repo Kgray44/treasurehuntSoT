@@ -3,7 +3,7 @@ title: Security architecture
 audience: security
 status: current
 canonical_for: security-architecture
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-09
 ---
 
 # Security architecture
@@ -11,6 +11,22 @@ last_reviewed: 2026-08-05
 Security boundaries include authenticated role access, resource ownership, invitation and session policy, immutable publishing, public projections, input validation, audit-oriented domain records, and protected private-content operations. Authorization is enforced in services and routes; UI visibility alone is not a security control.
 
 Private-content handling separates access, storage, scanning, derivatives, grants, withdrawal, and recovery. Logs and test fixtures must not contain private material or secrets. See [public reporting](../../SECURITY.md) and [private-content operations](../administrator/private-content.md).
+
+## Admiralty privileged operations
+
+Project Admiralty Phase 1 resolves administrator and operator capabilities from
+current canonical account role assignments on every privileged request. The
+limited `/admin` shell is not an authorization boundary. Unauthorized access is
+denied before projection, sensitive mutations and support reads require recent
+password reauthentication bound to the same live account session, and role or
+session revocation invalidates that assurance immediately.
+
+Support Access is target-, operator-, scope-, and time-bound. It requires an
+explicit user decision and can be revoked immediately. Safe projections and
+recursive audit sanitization exclude credentials, tokens, provider secrets,
+encryption keys, private Chronicle prose, and private media. Critical state
+changes and their canonical audit event share a transaction. See the
+[Support Access guide](../user/support-access.md) and [administrator bootstrap](../administrator/admiralty-bootstrap.md).
 
 ## Phase 7 correction Round 3 status
 

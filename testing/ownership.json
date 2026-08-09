@@ -322,6 +322,31 @@
       "sourcePaths": [],
       "testPaths": [],
       "contractIds": ["completion-provider"]
+    },
+    {
+      "id": "project-admiralty",
+      "project": "project-admiralty",
+      "sourcePaths": [
+        "src/admiralty/**",
+        "src/components/admiralty/**",
+        "src/app/admin/**",
+        "src/app/api/admin/**",
+        "src/app/api/account/support/**",
+        "scripts/admiralty/**",
+        "prisma/migrations/20260809120000_admiralty_phase1_foundation/**",
+        "prisma/mysql-migrations/0052_admiralty_phase1_foundation/**"
+      ],
+      "testPaths": ["src/admiralty/**/*.test.*", "src/app/admin/**/*.test.*", "tests/e2e/admiralty-phase1.spec.ts"],
+      "contractIds": [
+        "admiralty.phase1.identity",
+        "admiralty.phase1.authorization",
+        "admiralty.phase1.assurance",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit",
+        "admiralty.phase1.registry",
+        "admiralty.phase1.migration",
+        "admiralty.phase1.responsive-consent"
+      ]
     }
   ]
 }

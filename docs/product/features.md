@@ -77,6 +77,20 @@ accessibility, and reduced-motion evidence. The evidence is local and synthetic;
 Phase 7 integrated journeys, deployment, owner acceptance, and product
 acceptance are not claimed.
 
+## Platform administration and consented support
+
+**Audience:** Administrators, support operators, security operators, and account
+owners. **Availability:** owner accepted on the reconciled Project Admiralty
+Phase 1 mainline-candidate branch; not yet on canonical main. Phase 1 adds server-resolved roles and
+capabilities, explicit administrator bootstrap, short-lived session-bound
+privileged assurance, a deliberately limited `/admin` shell, canonical
+sanitized audit evidence, a living capability registry, and user-approved
+scoped Support Access. The admin shell is absent from ordinary navigation;
+affected account owners can review, deny, approve, and revoke support requests
+through [Support Access](../user/support-access.md). The owner accepted the full
+Phase 1 walkthrough on 2026-08-09. Canonical integration, deployment,
+production MySQL, and Phase 2 remain separate.
+
 ## Integrated whole-product voyage and owner walkthrough
 
 **Audience:** Product owner, Players, Captains, Creators, and account owners.

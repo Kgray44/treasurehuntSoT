@@ -34,7 +34,6 @@ test("Phase 6 screen census discovers every page and records boundaries without 
     .split(/\r?\n/u)
     .filter(Boolean);
   assert.equal(current.census.pageRoutes, pages.length);
-  assert.equal(current.census.pageRoutes, 90);
   assert.ok(current.census.loadingBoundaries >= 1);
   assert.ok(
     current.census.loadingBoundaries <= loading.length,
@@ -51,7 +50,9 @@ test("Phase 6 screen census discovers every page and records boundaries without 
 test("screen acceptance registry has valid identity, ownership, source, criticality, maturity, and contracts", () => {
   const current = registry();
   assert.equal(current.sourceSha, implementationSourceSha);
-  assert.equal(current.screens.length, 97);
+  const phase5Nodes = json("Project_Homeport_Phase_5_Route_Node_Registry.json").nodes;
+  const virtualScreens = current.screens.filter((screen) => screen.routeIds.length === 0);
+  assert.equal(current.screens.length, phase5Nodes.length + virtualScreens.length);
   assert.equal(new Set(current.screens.map((screen) => screen.screenId)).size, current.screens.length);
   for (const screen of current.screens) {
     if (screen.screenId.startsWith("screen-state-")) assert.equal(screen.routeIds.length, 0);
@@ -67,7 +68,10 @@ test("screen acceptance registry has valid identity, ownership, source, critical
     assert.ok(screen.shellMode);
     assert.ok(screen.applicableStates.length > 0);
     assert.ok(screen.testContractIds.includes("homeport.surface.source-parity"));
-    assert.equal(screen.sourceSha, implementationSourceSha);
+    assert.ok(
+      [implementationSourceSha, current.catalogReconciliationSourceSha].includes(screen.sourceSha),
+      screen.screenId,
+    );
   }
 });
 

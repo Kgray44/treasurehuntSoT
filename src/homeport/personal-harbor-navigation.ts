@@ -14,6 +14,7 @@ export const personalHarborSectionIds = [
   "passport-saved",
   "security",
   "sessions-devices",
+  "support-access",
   "data-account",
 ] as const;
 
@@ -58,6 +59,7 @@ export const personalHarborNavigation = [
     items: [
       ["security", "Security", "/account/security"],
       ["sessions-devices", "Sessions & Devices", "/account/sessions"],
+      ["support-access", "Support Access", "/account/support-access"],
       ["data-account", "Data & Account", "/account/data"],
     ],
   },

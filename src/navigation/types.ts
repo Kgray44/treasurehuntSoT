@@ -21,7 +21,8 @@ export type NavigationOwner =
   | "wayfarer"
   | "one-voyage"
   | "harborlight"
-  | "sealed-hold";
+  | "sealed-hold"
+  | "admiralty";
 export type NavigationPlacement = "primary" | "drawer" | "account" | "contextual" | "hidden";
 export type NavigationStatus = "active" | "contextual" | "compatibility" | "development";
 export type AccountGroup = "identity" | "personal" | "workspace" | "action";

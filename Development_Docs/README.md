@@ -42,6 +42,18 @@ membership, Voyage-scoped Captain authority, and Player-safe projection
 boundaries. Its repository records distinguish candidate validation from
 integrated-main acceptance and stop before Phase 2 operational intelligence.
 
+## Project Admiralty
+
+[Project Admiralty](Projects/Project_Admiralty/README.md) governs canonical
+platform-administration and operations authority. Phase 1, Raise the Colors,
+establishes role/capability policy, explicit administrator bootstrap,
+session-bound recent assurance, user-approved scoped Support Access, sanitized
+canonical audit evidence, an independently authorized limited admin shell, dual
+additive migrations, and a living capability-floor registry. The owner accepted
+the full Phase 1 walkthrough on 2026-08-09. The reconciled branch is a mainline
+candidate; canonical integration, deployment, production MySQL proof, and all
+later Admiralty phases remain separate, and Phase 2 remains dormant.
+
 ## Current project-governance wave
 
 The following owner-authored governing documents are current repository authority. The [Continuous Development and Mainline Integration Standard](Governing/Voyagewright_Continuous_Development_and_Mainline_Integration_Standard_v1.0.pdf) governs their concurrent implementation and protected-mainline reconciliation.

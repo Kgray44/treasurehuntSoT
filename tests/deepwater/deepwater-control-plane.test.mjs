@@ -239,7 +239,23 @@ test("catalog maturity and observed realization mismatch remains visible", () =>
 test("Phase 2 accounts for every seed queue item exactly once", () => {
   assert.equal(baseline.tracesDocument.queueItemCount, 44);
   assert.equal(baseline.tracesDocument.traceCount, 43);
+  assert.ok(
+    !baseline.remediationDocument.packages.some(
+      (packet) => packet.capabilityId === "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+    ),
+  );
   assert.deepEqual(phase2Errors(phase2Model()), []);
+});
+
+test("Phase 2 rejects an accepted queue item omitted from trace policy", () => {
+  const candidate = phase2Model();
+  const omittedCapabilityId = candidate.phase1.queueDocument.queue.find((item) =>
+    candidate.inputs.phase2Config.tracePolicies.some((policy) => policy.capabilityId === item.capabilityId),
+  ).capabilityId;
+  candidate.inputs.phase2Config.tracePolicies = candidate.inputs.phase2Config.tracePolicies.filter(
+    (policy) => policy.capabilityId !== omittedCapabilityId,
+  );
+  includesError(phase2Errors(candidate), "trace policy omits accepted seed queue item");
 });
 
 test("Phase 2 rejects an unexplained UNKNOWN layer", () => {
@@ -370,6 +386,16 @@ test("Phase 3 reviews all 54 current accepted capabilities and accepts the gener
   assert.equal(baseline.inputs.phase3Config.phase2AcceptedCapabilityCount, 53);
   assert.equal(baseline.inputs.phase3Config.expectedCurrentCapabilityCount, 54);
   assert.equal(baseline.utilizationDocument.reviewedCapabilityCount, 54);
+  assert.ok(
+    baseline.phase2.ledger.capabilities.some(
+      (capability) => capability.capabilityId === "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+    ),
+  );
+  assert.ok(
+    !baseline.ledger.capabilities.some(
+      (capability) => capability.capabilityId === "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+    ),
+  );
   assert.deepEqual(phase3Errors(phase3Model()), []);
 });
 
