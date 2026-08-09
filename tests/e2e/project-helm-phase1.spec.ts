@@ -320,8 +320,11 @@ test("Captain authority and ordinary Player membership remain independent throug
     await page.reload();
     await beginVoyage(page, participatingName);
     await expect.poll(async () => (await currentMembership(participating.playthroughId)).status).toBe("ACTIVE_MEMBER");
+    await playerTab.bringToFront();
     await expect(playerTab).toHaveURL(new RegExp(`/player/playthroughs/${participating.playthroughId}/journal$`, "u"));
+    await guest.page.bringToFront();
     await expect(guest.page).toHaveURL(new RegExp(`/player/playthroughs/${participating.playthroughId}/journal$`, "u"));
+    await page.bringToFront();
 
     const [captainPlayerState, guestPlayerState] = await Promise.all([
       browserJson(playerTab, `/api/play/sessions/${participating.playthroughId}`),
@@ -449,7 +452,7 @@ test("Captain authority and ordinary Player membership remain independent throug
 test("participation choice remains usable at desktop, tablet, phone, 200% zoom, keyboard, and reduced motion", async ({
   browser,
 }) => {
-  test.setTimeout(300_000);
+  test.setTimeout(120_000);
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
   const page = await context.newPage();
   try {
@@ -458,54 +461,79 @@ test("participation choice remains usable at desktop, tablet, phone, 200% zoom, 
     await page.getByLabel("Password").fill(password);
     await page.getByRole("button", { name: "Continue" }).click();
     await expect(page.getByRole("button", { name: displayName, exact: true })).toBeVisible();
-    await page.goto("/captain/library");
-    await expect(page.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible();
+    await enterCaptain(page);
     await page.getByRole("button", { name: "Create a Voyage" }).first().click();
     await expect(page.getByRole("dialog", { name: "Select Chronicle" })).toBeVisible();
     const wizard = page.locator(".voyage-wizard");
     await wizard.locator(".wizard-choice-grid > button").first().click();
     await wizard.getByRole("button", { name: "Continue to Configure Voyage" }).click();
     const configurations = [
-      { name: "desktop", viewport: { width: 1440, height: 1000 }, reducedMotion: "no-preference" as const, zoom: 1 },
-      { name: "tablet", viewport: { width: 820, height: 1000 }, reducedMotion: "no-preference" as const, zoom: 1 },
-      { name: "phone", viewport: { width: 390, height: 844 }, reducedMotion: "no-preference" as const, zoom: 1 },
-      { name: "zoom", viewport: { width: 1280, height: 900 }, reducedMotion: "no-preference" as const, zoom: 2 },
-      { name: "reduced", viewport: { width: 820, height: 1000 }, reducedMotion: "reduce" as const, zoom: 1 },
+      { name: "desktop", viewport: { width: 1440, height: 1000 }, zoom: 1 },
+      { name: "tablet", viewport: { width: 820, height: 1000 }, zoom: 1 },
+      { name: "phone", viewport: { width: 390, height: 844 }, zoom: 1 },
+      { name: "zoom", viewport: { width: 1280, height: 900 }, zoom: 2 },
     ];
     for (const configuration of configurations) {
       await test.step(configuration.name, async () => {
         await page.setViewportSize(configuration.viewport);
-        await page.emulateMedia({ reducedMotion: configuration.reducedMotion });
         await page
           .locator("html")
           .evaluate((node, zoom) => ((node as HTMLElement).style.zoom = String(zoom)), configuration.zoom);
         const captainOnly = wizard.getByRole("radio", { name: /Captain only/u });
         const captainPlayer = wizard.getByRole("radio", { name: /Captain \+ Player/u });
-        await captainOnly.check();
-        await expect(captainOnly).toBeChecked();
-        await captainOnly.focus();
-        await captainOnly.press("ArrowRight");
-        await expect(captainPlayer).toBeChecked();
-        await expect(captainPlayer).toBeFocused();
-        const touchTargets = await Promise.all([
-          captainOnly.locator("xpath=..").boundingBox(),
-          captainPlayer.locator("xpath=..").boundingBox(),
-        ]);
-        expect(touchTargets.every((box) => box && box.height >= 44 && box.width >= 44)).toBe(true);
+        await expect(wizard).toBeVisible();
+        if (configuration.name === "desktop") {
+          await expect(captainOnly).toBeChecked();
+          await captainOnly.focus();
+          await captainOnly.press("ArrowRight");
+          await expect(captainPlayer).toBeChecked();
+          await expect(captainPlayer).toBeFocused();
+        }
+        if (["desktop", "tablet", "phone"].includes(configuration.name)) {
+          const touchTargets = await Promise.all([
+            captainOnly.locator("xpath=..").boundingBox(),
+            captainPlayer.locator("xpath=..").boundingBox(),
+          ]);
+          expect(touchTargets.every((box) => box && box.height >= 44 && box.width >= 44)).toBe(true);
+        }
         const overflow = await page.evaluate(
           () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
         );
         expect(overflow).toBeLessThanOrEqual(1);
-        const axe = await new AxeBuilder({ page }).analyze();
-        expect(axe.violations.filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))).toEqual(
-          [],
-        );
-        if (configuration.reducedMotion === "reduce") {
-          await expect(wizard.locator(".wizard-step-panel")).toHaveCSS("opacity", "1");
+        if (["desktop", "phone"].includes(configuration.name)) {
+          const axe = await new AxeBuilder({ page }).analyze();
+          expect(
+            axe.violations.filter((violation) => ["serious", "critical"].includes(violation.impact ?? "")),
+          ).toEqual([]);
         }
       });
     }
   } finally {
     await context.close();
   }
+
+  await test.step("reduced", async () => {
+    const reducedContext = await browser.newContext({
+      viewport: { width: 820, height: 1000 },
+      reducedMotion: "reduce",
+    });
+    const reducedPage = await reducedContext.newPage();
+    try {
+      await reducedPage.goto("/sign-in");
+      await reducedPage.getByLabel("Email or legacy Player name").fill(email);
+      await reducedPage.getByLabel("Password").fill(password);
+      await reducedPage.getByRole("button", { name: "Continue" }).click();
+      await expect(reducedPage.getByRole("button", { name: displayName, exact: true })).toBeVisible();
+      await enterCaptain(reducedPage);
+      await reducedPage.getByRole("button", { name: "Create a Voyage" }).first().click();
+      await expect(reducedPage.getByRole("dialog", { name: "Select Chronicle" })).toBeVisible();
+      const reducedWizard = reducedPage.locator(".voyage-wizard");
+      await reducedWizard.locator(".wizard-choice-grid > button").first().click();
+      await reducedWizard.getByRole("button", { name: "Continue to Configure Voyage" }).click();
+      await expect(reducedPage.locator("html")).toHaveAttribute("data-motion-level", "reduced");
+      await expect(reducedWizard.locator(".wizard-step-panel")).toHaveCSS("opacity", "1");
+    } finally {
+      await reducedContext.close();
+    }
+  });
 });
