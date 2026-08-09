@@ -15,7 +15,7 @@ last_reviewed: 2026-08-09
 | Project / phase   | Project Wakebook / Phase 1 `Open the Wake`                                                                               |
 | Owner             | Wakebook for archive projection and presentation; Wayfarer remains history authority                                     |
 | Branch / worktree | `codex/project-wakebook-phase1-open-the-wake` / `C:\Users\kkids\Documents\treasurehuntSoT-wakebook-phase1-open-the-wake` |
-| Reconciled base   | `f07fbb693e32f6b1069870fae9da668ed3392d4b`                                                                               |
+| Reconciled base   | `9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1`                                                                               |
 | Dependency class  | Accepted-main contracts only                                                                                             |
 | Schema impact     | None; no migration reservation                                                                                           |
 | Shared seams      | Passport routes/navigation/styles, Feature Catalog, Homeport catalogs, Sounding Line control plane                       |

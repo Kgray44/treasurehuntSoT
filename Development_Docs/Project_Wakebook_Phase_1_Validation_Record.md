@@ -10,7 +10,7 @@ last_reviewed: 2026-08-09
 
 ## Decision
 
-**Current classification: FINAL SOURCE-BOUND VALIDATION PENDING.** The Wakebook unit, component, browser, accessibility, retained-runtime, privacy, and large-archive evidence is complete at the stated boundaries below. The branch has been semantically reconciled through accepted `origin/main` `f07fbb693e32f6b1069870fae9da668ed3392d4b`. The final exact-source Sounding Line authorities, completion-record update, branch push/parity proof, and final retained-runtime restart must complete before this record may classify the branch `READY_FOR_OWNER_WALKTHROUGH`. This record does not establish owner acceptance, deployment, or mainline integration.
+**Current classification: FINAL SOURCE-BOUND VALIDATION PENDING.** The Wakebook unit, component, browser, accessibility, retained-runtime, privacy, and large-archive evidence is complete at the stated boundaries below. The branch has been semantically reconciled through accepted `origin/main` `9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1`. The final exact-source Sounding Line authorities, completion-record update, branch push/parity proof, and final retained-runtime restart must complete before this record may classify the branch `READY_FOR_OWNER_WALKTHROUGH`. This record does not establish owner acceptance, deployment, or mainline integration.
 
 ## Source identity
 
@@ -18,7 +18,7 @@ last_reviewed: 2026-08-09
 | ------------------------------- | ------------------------------------------------------------------------ |
 | Branch                          | `codex/project-wakebook-phase1-open-the-wake`                            |
 | Owned worktree                  | `C:\Users\kkids\Documents\treasurehuntSoT-wakebook-phase1-open-the-wake` |
-| Reconciled accepted-main base   | `f07fbb693e32f6b1069870fae9da668ed3392d4b`                               |
+| Reconciled accepted-main base   | `9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1`                               |
 | Archive implementation anchor   | `ab47dc33a29b2cdd80a97da7fd1af4a9e897b2cc`                               |
 | Final validation SHA            | Pending final evidence commit                                            |
 | Database schema change          | None                                                                     |
