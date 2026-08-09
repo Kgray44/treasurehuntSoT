@@ -15,6 +15,7 @@ async function register(browser: import("@playwright/test").Browser, label: stri
       displayName: `Synthetic ${label}`,
       email: `${unique}-${label.toLowerCase()}@example.test`,
       password: "A synthetic test password 42!",
+      confirmPassword: "A synthetic test password 42!",
     },
   });
   expect(response.status(), await response.text()).toBe(201);
