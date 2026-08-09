@@ -1654,7 +1654,547 @@ ${deltaRows}
   };
 }
 
-export async function buildArtifacts(root) {
+function operationSlug(value) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/gu, "-")
+    .replace(/^-|-$/gu, "")
+    .slice(0, 96)
+    .replace(/-$/u, "");
+}
+
+function phase3UtilizationStatus(capability, policy) {
+  if (policy?.status) return policy.status;
+  if (capability.currentRealization.classification === "INTERNAL_BY_DESIGN") return "INTERNAL_ONLY";
+  if (capability.currentRealization.classification === "SECURITY_RESTRICTED") return "INTENTIONALLY_PARTIAL";
+  if (capability.currentRealization.classification === "DEPRECATED") return "NOT_APPLICABLE";
+  if (
+    ["PARTIALLY_REALIZED", "BACKEND_ONLY", "FRONTEND_ONLY", "HIDDEN", "MISSING", "BROKEN"].includes(
+      capability.currentRealization.classification,
+    )
+  )
+    return "PARTIALLY_UTILIZED";
+  return "FULLY_UTILIZED";
+}
+
+function capabilitySourceReferences(capability) {
+  const evidencePaths = capability.evidence.references
+    .filter((entry) => ["SOURCE_PATH", "TEST", "COMPLETION_RECORD"].includes(entry.kind))
+    .map((entry) => normalizePath(entry.reference.split("#", 1)[0]));
+  const tracePaths = Object.values(capability.trace)
+    .flatMap((entry) => (entry && typeof entry === "object" && Array.isArray(entry.references) ? entry.references : []))
+    .map(normalizePath)
+    .filter((reference) => /^(?:src|scripts|tests|prisma|Development_Docs)\//u.test(reference));
+  return uniqueSorted([...evidencePaths, ...tracePaths])
+    .sort((left, right) => {
+      const rank = (reference) =>
+        /^(?:prisma\/|scripts\/|src\/(?!components\/|app\/.*\/page))/u.test(reference)
+          ? 0
+          : /^(?:src|tests)\//u.test(reference)
+            ? 1
+            : 2;
+      return rank(left) - rank(right) || left.localeCompare(right);
+    })
+    .slice(0, 12);
+}
+
+function capabilityConsumerReferences(capability) {
+  const productReferences = [
+    ...capability.trace.ui.references,
+    ...capability.trace.client.references,
+    ...capability.trace.transport.references,
+    ...(capability.evidence.testIds ?? []),
+    ...(capability.evidence.journeyIds ?? []).map((id) => `journey:${id}`),
+  ];
+  const machineReferences = [
+    ...capability.trace.service.references,
+    ...capability.trace.transport.references,
+    ...(capability.evidence.testIds ?? []),
+  ];
+  const preferred = ["INTERNAL", "MACHINE_CONSUMER", "SECURITY_RESTRICTED", "COMPATIBILITY", "DEPRECATED"].includes(
+    capability.expectedRealization.disposition,
+  )
+    ? machineReferences
+    : productReferences;
+  return uniqueSorted(preferred.map(normalizePath)).slice(0, 12);
+}
+
+function utilizationMetadata(capability, policy) {
+  const searchable = stableStringify({
+    name: capability.name,
+    meaning: capability.meaning,
+    subfeatures: capability.catalogMapping?.declaredSubfeatures ?? [],
+  }).toLowerCase();
+  const values = policy?.metadata?.length
+    ? [...policy.metadata]
+    : ["authorization and audience scope", "authoritative lifecycle state"];
+  if (/version|checksum|provenance|history|lineage|receipt/u.test(searchable))
+    values.push("source, version, and provenance identity");
+  if (/retry|recovery|failure|error|restore|resume|cancel/u.test(searchable))
+    values.push("failure and recovery classification");
+  values.push(...(policy?.blockedMetadata ?? []));
+  return uniqueSorted(values);
+}
+
+function utilizationDisposition(capability, status, findingIds, policy) {
+  if (policy?.phase3Disposition) return policy.phase3Disposition;
+  if (findingIds.includes("DW-FIND-HOMEPORT-OWNER-DECISION-PENDING")) return "OWNER_ACCEPTANCE_REQUIRED";
+  if (findingIds.includes("DW-FIND-EDITION-COMPARISON-SEMANTIC-UNDERUTILIZATION")) return "OWNER_PROJECT_WORK";
+  if (findingIds.some((id) => id.startsWith("DW-FIND-CATALOG-SURFACE-"))) return "DOCUMENTATION_RECONCILIATION";
+  if (["INTERNAL_ONLY", "NOT_APPLICABLE", "INTENTIONALLY_PARTIAL"].includes(status)) return "INTERNAL_OR_DEPRECATED";
+  return "SATURATED";
+}
+
+function buildCapabilityUtilization(capability, policy, findingIds) {
+  const status = phase3UtilizationStatus(capability, policy);
+  const operationNames = uniqueSorted([
+    ...(policy?.operations ?? capability.catalogMapping?.declaredSubfeatures ?? []),
+    ...(policy?.intentionallyUnconsumed ?? []),
+  ]);
+  if (!operationNames.length) operationNames.push(capability.name);
+  const sourceReferences = capabilitySourceReferences(capability);
+  const consumerReferences = capabilityConsumerReferences(capability);
+  const blocked = policy?.blockedOperations ?? {};
+  const intentional = new Set(policy?.intentionallyUnconsumed ?? []);
+  const expectedOperations = operationNames.map((name) => {
+    const blockedFinding = blocked[name] ?? null;
+    const disposition = blockedFinding
+      ? "FINDING_BLOCKED"
+      : intentional.has(name)
+        ? "INTENTIONALLY_UNCONSUMED"
+        : "CONSUMED";
+    return {
+      operationId: operationSlug(name),
+      name,
+      disposition,
+      sourceReferences,
+      consumerReferences: disposition === "CONSUMED" ? consumerReferences : [],
+      rationale:
+        disposition === "INTENTIONALLY_UNCONSUMED"
+          ? policy.rationale
+          : disposition === "FINDING_BLOCKED"
+            ? `Open finding ${blockedFinding} owns the missing consumer or governed semantic replacement.`
+            : null,
+      findingId: blockedFinding,
+    };
+  });
+  const metadata = utilizationMetadata(capability, policy);
+  const blockedMetadata = new Set(policy?.blockedMetadata ?? []);
+  const consumedMetadata = metadata.filter((value) => !blockedMetadata.has(value));
+  const consumers = uniqueSorted([
+    ...capability.audience.roles.map((role) => `audience:${role}`),
+    ...capability.expectedRealization.requiredSurfaces.map((surface) => `surface:${surface}`),
+    ...consumerReferences.map((reference) => `consumer:${reference}`),
+  ]);
+  const relatedOpen = findingIds.filter((findingId) => Object.values(blocked).includes(findingId));
+  return {
+    capabilityId: capability.capabilityId,
+    name: capability.name,
+    canonicalOwner: capability.owner.project,
+    realizationClassification: capability.currentRealization.classification,
+    status,
+    expectedOperations,
+    consumedOperations: expectedOperations
+      .filter((operation) => operation.disposition === "CONSUMED")
+      .map((operation) => operation.operationId),
+    intentionallyUnconsumedOperations: expectedOperations
+      .filter((operation) => operation.disposition === "INTENTIONALLY_UNCONSUMED")
+      .map((operation) => operation.operationId),
+    expectedSafeMetadata: metadata,
+    consumedSafeMetadata: consumedMetadata,
+    findingBlockedMetadata: metadata.filter((value) => blockedMetadata.has(value)),
+    intentionallyOmittedMetadata: uniqueSorted(policy?.omittedMetadata ?? []),
+    expectedStates: uniqueSorted(capability.states.required),
+    consumedOrRepresentedStates: uniqueSorted([...capability.states.represented, ...capability.states.required]),
+    intentionallyOmittedStates: [],
+    utilizationConsumers: consumers.length ? consumers : ["consumer:governed-owner-service"],
+    canonicalConsumption: relatedOpen.length === 0,
+    phase3Disposition: utilizationDisposition(capability, status, findingIds, policy),
+    rationale:
+      policy?.rationale ??
+      (status === "FULLY_UTILIZED"
+        ? "Every governed operation or capability dimension appropriate to the audience has a source-bound consumer, and required states and safe decision metadata are represented."
+        : status === "INTERNAL_ONLY"
+          ? "The capability is consumed by a named machine, developer, or operator workflow and is intentionally absent from ordinary product navigation."
+          : status === "NOT_APPLICABLE"
+            ? "The capability is deprecated or compatibility-only and is not expected to gain an ordinary active consumer."
+            : "Open governed findings identify the exact operations or metadata that remain underutilized."),
+    evidence: uniqueSorted([
+      ...sourceReferences,
+      ...consumerReferences,
+      ...relatedOpen.map((findingId) => `finding:${findingId}`),
+    ]),
+  };
+}
+
+function phase3Findings(phase2Findings, config) {
+  const transitions = config.findingTransitions ?? {};
+  const carried = phase2Findings.map((finding) => {
+    const transition = transitions[finding.findingId];
+    return transition ? { ...finding, ...transition, observedSourceSha: config.auditedSourceSha } : finding;
+  });
+  const additions = config.newFindings.map((finding) => ({
+    catalogOutcome: null,
+    debt: null,
+    closedAt: null,
+    observedSourceSha: config.auditedSourceSha,
+    ...finding,
+  }));
+  return [...carried, ...additions].sort((left, right) => left.findingId.localeCompare(right.findingId));
+}
+
+function phase3QueueFor(findings, phase2Queue, config) {
+  const prior = new Map(phase2Queue.queue.map((item) => [item.findingId, item]));
+  const sliceByFinding = new Map();
+  for (const finding of findings) {
+    const featureId = finding.findingId.match(/FT-[0-9]{3}/u)?.[0];
+    if (featureId && config.catalogSlices[featureId])
+      sliceByFinding.set(finding.findingId, config.catalogSlices[featureId]);
+  }
+  const queue = findings
+    .filter((finding) => finding.status !== "CLOSED" || finding.findingId.startsWith("DW-FIND-CATALOG-SURFACE-"))
+    .map((finding) => {
+      const previous = prior.get(finding.findingId);
+      const sliceId = sliceByFinding.get(finding.findingId) ?? null;
+      const closed = finding.status === "CLOSED";
+      let category = previous?.category ?? "OWNER_PROJECT_WORK";
+      let eligibility = previous?.deepwaterSliceEligibility ?? "NOT_ELIGIBLE";
+      let activeProjectStatus = previous?.activeProjectStatus ?? "Owner project coordination required.";
+      if (closed) {
+        category = "ALREADY_CLOSED_BY_MAIN";
+        eligibility = "RETIRED";
+        activeProjectStatus = "Closure is present on current accepted main.";
+      } else if (sliceId) {
+        category = "DOCUMENTATION_RECONCILIATION";
+        eligibility = "ELIGIBLE";
+        activeProjectStatus = `Registered as ${sliceId}; implementation must use its fresh-main worktree.`;
+      } else if (finding.findingId === "DW-FIND-EDITION-COMPARISON-SEMANTIC-UNDERUTILIZATION") {
+        category = "OWNER_PROJECT_WORK";
+        eligibility = "BLOCKED_BY_ACTIVE_OWNER";
+        activeProjectStatus =
+          "The Tideglass foundation is accepted; Studio consumer migration remains Tideglass and Shipwright owner work, and Deepwater does not compete with the active Shipwright lane.";
+      } else if (finding.findingId.startsWith("DW-FIND-CATALOG-SURFACE-")) {
+        category = "DOCUMENTATION_RECONCILIATION";
+        eligibility = "BLOCKED_BY_ACTIVE_OWNER";
+        activeProjectStatus =
+          "The owning fragment is touched by an unaccepted Helm, Shipwright, or Tideglass lane and is excluded from Deepwater slices.";
+      }
+      return {
+        queueId: previous?.queueId ?? `DW-P3-${finding.findingId.slice("DW-FIND-".length)}`,
+        findingId: finding.findingId,
+        capabilityId: finding.capabilityId,
+        category,
+        severity: finding.severity,
+        owner: finding.canonicalOwner,
+        status: finding.status,
+        sliceId,
+        deepwaterSliceEligibility: eligibility,
+        activeProjectStatus,
+        hardDependencies: previous?.hardDependencies ?? [finding.mainlineDependency],
+        recommendedIntegrationVehicle: previous?.recommendedIntegrationVehicle ?? finding.assignedProjectPhase,
+        closureEvidence: previous?.closureEvidence ?? [finding.closureEvidence],
+      };
+    })
+    .sort((left, right) => left.queueId.localeCompare(right.queueId));
+  return {
+    schemaVersion: "1.0.0",
+    project: config.project,
+    phase: config.phase,
+    sourceSha: config.auditedSourceSha,
+    phase3Authorized: true,
+    categories: [
+      "OWNER_PROJECT_WORK",
+      "DEEPWATER_SLICE_ELIGIBLE",
+      "DOCUMENTATION_RECONCILIATION",
+      "EXTERNAL_DEPENDENCY",
+      "OWNER_ACCEPTANCE_REQUIRED",
+      "EXPLICIT_DEBT_CANDIDATE",
+      "ALREADY_CLOSED_BY_MAIN",
+    ],
+    queue,
+  };
+}
+
+function phase3Metrics(artifacts) {
+  const utilization = artifacts.utilizationDocument.capabilities;
+  const findings = artifacts.findingsDocument.findings;
+  const phase3Discovered = new Set(artifacts.inputs.phase3Config.newFindings.map((finding) => finding.findingId));
+  const phase3Transitions = artifacts.inputs.phase3Config.findingTransitions ?? {};
+  const catalog = findings.filter((finding) => finding.findingId.startsWith("DW-FIND-CATALOG-SURFACE-"));
+  const operations = utilization.flatMap((capability) => capability.expectedOperations);
+  const blockedMetadata = utilization.reduce(
+    (count, capability) => count + capability.findingBlockedMetadata.length,
+    0,
+  );
+  return {
+    capabilityRealization: countBy(
+      artifacts.ledger.capabilities.map((capability) => capability.currentRealization.classification),
+    ),
+    capabilityUtilization: countBy(utilization.map((capability) => capability.status)),
+    backendOperationsReviewed: operations.length,
+    unconsumedMeaningfulOperationsRemaining: operations.filter(
+      (operation) => operation.disposition === "FINDING_BLOCKED",
+    ).length,
+    unconsumedSafeMetadataRemaining: blockedMetadata,
+    unconsumedRecoveryCapabilitiesRemaining: operations.filter(
+      (operation) =>
+        operation.disposition === "FINDING_BLOCKED" && /retry|recover|resume|restore|requeue/u.test(operation.name),
+    ).length,
+    findings: {
+      startingOpen: artifacts.phase2.findingsDocument.findings.filter((finding) => finding.status !== "CLOSED").length,
+      phase3Discovered: phase3Discovered.size,
+      closed: Object.values(phase3Transitions).filter((transition) => transition.status === "CLOSED").length,
+      debtAccepted: findings.filter((finding) => finding.status === "DEBT_ACCEPTED").length,
+      external: artifacts.phase3Queue.queue.filter((item) => item.category === "EXTERNAL_DEPENDENCY").length,
+      ownerAcceptance: artifacts.phase3Queue.queue.filter((item) => item.category === "OWNER_ACCEPTANCE_REQUIRED")
+        .length,
+      remainingHigh: findings.filter((finding) => finding.status !== "CLOSED" && finding.severity === "HIGH").length,
+      remainingCritical: findings.filter((finding) => finding.status !== "CLOSED" && finding.severity === "CRITICAL")
+        .length,
+    },
+    documentation: {
+      starting: 17,
+      closed: catalog.filter((finding) => finding.status === "CLOSED").length,
+      remaining: catalog.filter((finding) => finding.status !== "CLOSED").length,
+    },
+    slices: countBy(artifacts.slicesDocument.slices.map((slice) => slice.status)),
+  };
+}
+
+function phase3Reports(artifacts) {
+  const utilizationRows = artifacts.utilizationDocument.capabilities
+    .map(
+      (capability) =>
+        `| ${capability.capabilityId} | ${capability.canonicalOwner} | ${capability.realizationClassification} | ${capability.status} | ${capability.expectedOperations.length} | ${capability.phase3Disposition} |`,
+    )
+    .join("\n");
+  const queueRows = artifacts.phase3Queue.queue
+    .map(
+      (item) =>
+        `| ${item.findingId} | ${item.owner} | ${item.category} | ${item.status} | ${item.sliceId ?? "owner/external"} |`,
+    )
+    .join("\n");
+  const sliceRows = artifacts.slicesDocument.slices
+    .map(
+      (slice) =>
+        `| ${slice.sliceId} | ${slice.canonicalOwner} | ${slice.concurrencyClass} | ${slice.status} | ${slice.branch} |`,
+    )
+    .join("\n");
+  const newFindingIds = artifacts.inputs.phase3Config.newFindings.map((finding) => finding.findingId).join(", ");
+  const closedFindings = artifacts.findingsDocument.findings
+    .filter((finding) => finding.status === "CLOSED" && finding.closedAt === artifacts.inputs.phase3Config.auditDate)
+    .map((finding) => finding.findingId);
+  const header = (title, canonical) => markdownFrontmatter(title, canonical);
+  return {
+    utilization: `${header("Project Deepwater Phase 3 Utilization Report", "project-deepwater-phase-3-utilization-report")}# Project Deepwater Phase 3 utilization report
+
+## Decision boundary
+
+All ${artifacts.utilizationDocument.reviewedCapabilityCount} governed capabilities received an operation, safe-metadata, state, recovery, and consumer saturation review against accepted source \`${artifacts.utilizationDocument.sourceSha}\`. Realization and utilization remain separate dimensions.
+
+## Result
+
+- Backend operations or governed capability dimensions reviewed: ${artifacts.metrics.backendOperationsReviewed}
+- Meaningful operations still finding-blocked: ${artifacts.metrics.unconsumedMeaningfulOperationsRemaining}
+- Safe metadata families still finding-blocked: ${artifacts.metrics.unconsumedSafeMetadataRemaining}
+- Phase 3-discovered findings: ${artifacts.metrics.findings.phase3Discovered}
+
+| Capability | Owner | Realization | Utilization | Operations | Disposition |
+| --- | --- | --- | --- | ---: | --- |
+${utilizationRows}
+`,
+    remediation: `${header("Project Deepwater Phase 3 Remediation Report", "project-deepwater-phase-3-remediation-report")}# Project Deepwater Phase 3 remediation report
+
+## Queue
+
+The queue preserves every Phase 2 finding and adds the source-bound semantic-edition-comparison finding. Owner, external-provider, owner-acceptance, and active-fragment boundaries remain explicit.
+
+| Finding | Owner | Category | Status | Slice or boundary |
+| --- | --- | --- | --- | --- |
+${queueRows}
+
+## Registered slices
+
+| Slice | Owner | Class | Status | Branch |
+| --- | --- | --- | --- | --- |
+${sliceRows}
+`,
+    delta: `${header("Project Deepwater Phase 2 to Phase 3 Delta Report", "project-deepwater-phase-2-to-phase-3-delta-report")}# Project Deepwater Phase 2 to Phase 3 delta report
+
+## Explainable changes
+
+- Phase 2 realization history is retained unchanged in the trace and remediation artifacts.
+- Phase 3 adds utilization status for all ${artifacts.utilizationDocument.reviewedCapabilityCount} current accepted capabilities. The Phase 2 baseline remains ${artifacts.inputs.phase3Config.phase2AcceptedCapabilityCount}; accepted-main Tideglass completion added ${artifacts.inputs.phase3Config.currentMainCapabilityAdditions.map((entry) => entry.capabilityId).join(", ")} before coordination publication.
+- New utilization finding: ${newFindingIds}.
+- Findings closed by accepted Phase 3 slices: ${closedFindings.length ? closedFindings.join(", ") : "none yet"}.
+- Product behavior changed by the coordination branch: none.
+- External provider and Homeport owner-decision truth remain explicit and unclaimed.
+`,
+  };
+}
+
+async function buildPhase3Artifacts(root, phase2) {
+  const [phase3Config, utilizationSchema, slicesSchema] = await Promise.all([
+    readJson(root, `${DEEPWATER_ROOT}/deepwater-phase3-config.json`),
+    readJson(root, `${DEEPWATER_ROOT}/utilization/deepwater-capability-utilization.schema.json`),
+    readJson(root, `${DEEPWATER_ROOT}/remediation/deepwater-phase3-slices.schema.json`),
+  ]);
+  const acceptedMainCapabilityAdditions = new Set(
+    phase3Config.currentMainCapabilityAdditions.map((entry) => entry.capabilityId),
+  );
+  const acceptedPhase3Capabilities = phase2.ledger.capabilities.filter(
+    (capability) =>
+      capability.catalogMapping?.declaredStatus !== "BRANCH_COMPLETE_NOT_MERGED" ||
+      acceptedMainCapabilityAdditions.has(capability.capabilityId),
+  );
+  const acceptedPhase3CatalogIds = new Set(
+    acceptedPhase3Capabilities.map((capability) => capability.catalogMapping?.featureCatalogId).filter(Boolean),
+  );
+  const acceptedPhase3Catalog = phase2.inputs.catalog.filter((entry) => acceptedPhase3CatalogIds.has(entry.id));
+  const findings = phase3Findings(phase2.findingsDocument.findings, phase3Config);
+  const capabilities = attachFindings(
+    acceptedPhase3Capabilities.map((capability) => ({
+      ...capability,
+      evidence: { ...capability.evidence, sourceSha: phase3Config.auditedSourceSha },
+      lifecycle: { ...capability.lifecycle, lastAudited: phase3Config.auditDate },
+    })),
+    findings,
+  ).sort((left, right) => left.capabilityId.localeCompare(right.capabilityId));
+  const utilizationCapabilities = capabilities.map((capability) =>
+    buildCapabilityUtilization(
+      capability,
+      phase3Config.manualCapabilityPolicies[capability.capabilityId],
+      capability.gaps.findingIds,
+    ),
+  );
+  const utilizationDocument = {
+    schemaVersion: "1.0.0",
+    project: phase3Config.project,
+    phase: phase3Config.phase,
+    sourceSha: phase3Config.auditedSourceSha,
+    reviewedCapabilityCount: utilizationCapabilities.length,
+    statusCounts: Object.fromEntries(
+      ["FULLY_UTILIZED", "PARTIALLY_UTILIZED", "INTENTIONALLY_PARTIAL", "INTERNAL_ONLY", "NOT_APPLICABLE"].map(
+        (status) => [status, utilizationCapabilities.filter((capability) => capability.status === status).length],
+      ),
+    ),
+    capabilities: utilizationCapabilities,
+  };
+  const slicesDocument = {
+    schemaVersion: "1.0.0",
+    project: phase3Config.project,
+    phase: phase3Config.phase,
+    sourceSha: phase3Config.auditedSourceSha,
+    mainlineSafetyContract:
+      "Each remediation slice is independently complete and mainline-safe. No slice assumes a future slice will make current behavior coherent.",
+    slices: phase3Config.slices,
+  };
+  const phase3Queue = phase3QueueFor(findings, phase2.phase3Queue, phase3Config);
+  const ledger = {
+    ...phase2.ledger,
+    phase: phase3Config.phase,
+    auditedSourceSha: phase3Config.auditedSourceSha,
+    auditDate: phase3Config.auditDate,
+    generation: {
+      ...phase2.ledger.generation,
+      sourceInputs: uniqueSorted([
+        ...phase2.ledger.generation.sourceInputs,
+        `${DEEPWATER_ROOT}/deepwater-phase3-config.json`,
+        `${DEEPWATER_ROOT}/utilization/deepwater-capability-utilization.schema.json`,
+        `${DEEPWATER_ROOT}/remediation/deepwater-phase3-slices.schema.json`,
+      ]),
+    },
+    capabilities,
+  };
+  const findingsDocument = {
+    schemaVersion: "1.0.0",
+    project: phase3Config.project,
+    phase: phase3Config.phase,
+    auditedSourceSha: phase3Config.auditedSourceSha,
+    findings,
+  };
+  const reconciliationDocument = {
+    ...phase2.reconciliationDocument,
+    catalogEntryCount: acceptedPhase3Catalog.length,
+    mappedEntryCount: acceptedPhase3Catalog.length,
+    entries: phase2.reconciliationDocument.entries.filter((entry) =>
+      acceptedPhase3CatalogIds.has(entry.featureCatalogId),
+    ),
+  };
+  const evidence = uniqueSorted([
+    ...utilizationCapabilities.flatMap((capability) => capability.evidence),
+    ...phase3Config.newFindings.flatMap((finding) => finding.evidence),
+    ...phase3Config.slices.flatMap((slice) => [...slice.ownedPaths, ...slice.verificationPlan]),
+  ]).map((reference, index) => ({
+    evidenceId: `DW-P3-EV-${String(index + 1).padStart(4, "0")}`,
+    reference,
+    sourceSha: phase3Config.auditedSourceSha,
+  }));
+  const evidenceIndex = {
+    schemaVersion: "1.0.0",
+    project: phase3Config.project,
+    phase: phase3Config.phase,
+    sourceSha: phase3Config.auditedSourceSha,
+    privacyBoundary:
+      "Repository paths, route/journey identifiers, safe capability conclusions, and slice receipts only; no credentials, tokens, cookies, private content, provider secrets, recipient addresses, message bodies, or object keys.",
+    evidence,
+  };
+  const phase4ProofQueue = {
+    schemaVersion: "1.0.0",
+    project: phase3Config.project,
+    phase: "Phase 4 - Break the Surface",
+    phase4Authorized: false,
+    sourceSha: phase3Config.auditedSourceSha,
+    queue: [],
+    rationale:
+      "No accepted Phase 3 slice currently changes UI, navigation, state behavior, feedback, accessibility, responsiveness, or a natural journey. Owner-project remediation adds entries only after it is accepted on main.",
+  };
+  const status = {
+    schemaVersion: "1.0.0",
+    project: phase3Config.project,
+    phase: phase3Config.phase,
+    state: phase3Config.lifecycle.state,
+    activation: "ACTIVE_OWNER_COORDINATED_REALIZATION_AND_UTILIZATION_CLOSURE",
+    branch: phase3Config.branch,
+    worktree: phase3Config.worktree,
+    baseSourceSha: phase3Config.baseOriginMainSha,
+    auditedSourceSha: phase3Config.auditedSourceSha,
+    finalReconciledMainSha: null,
+    mainlineState: phase3Config.lifecycle.mainlineState,
+    schemaImpact: "NONE",
+    productSourceImpact: "NONE_ON_COORDINATION_BRANCH",
+    featureCatalogImpact: "PENDING_REGISTERED_SLICES",
+    validation: phase3Config.lifecycle.validation,
+    reconciliation: phase3Config.lifecycle.reconciliation,
+    authorityGaps: phase3Config.authorityGaps,
+    limitations: [
+      "Unaccepted owner branches are coordination constraints, not implementation truth.",
+      "Watchglass real-provider proof remains external and is not simulated as completion.",
+      "Homeport PRODUCT_ACCEPTED remains an owner-only decision.",
+      "Phase 4 is not authorized.",
+    ],
+  };
+  const artifacts = {
+    ...phase2,
+    phase2,
+    inputs: { ...phase2.inputs, catalog: acceptedPhase3Catalog, phase3Config, utilizationSchema, slicesSchema },
+    ledger,
+    findingsDocument,
+    reconciliationDocument,
+    evidenceIndex,
+    utilizationDocument,
+    slicesDocument,
+    phase3Queue,
+    phase4ProofQueue,
+    status,
+  };
+  artifacts.metrics = phase3Metrics(artifacts);
+  artifacts.status.metrics = artifacts.metrics;
+  artifacts.phase3Reports = phase3Reports(artifacts);
+  return artifacts;
+}
+
+async function generatePhase2Artifacts(root) {
   const phase1 = await buildPhase1Artifacts(root);
   const [phase2Config, tracesSchema, remediationSchema] = await Promise.all([
     readJson(root, `${DEEPWATER_ROOT}/deepwater-phase2-config.json`),
@@ -1880,6 +2420,71 @@ export async function buildArtifacts(root) {
   return artifacts;
 }
 
+async function loadAcceptedPhase2Artifacts(root) {
+  const [
+    baseInputs,
+    phase2Config,
+    tracesSchema,
+    remediationSchema,
+    phase3Config,
+    ledger,
+    currentFindings,
+    queueDocument,
+    reconciliationDocument,
+    evidenceIndex,
+    tracesDocument,
+    remediationDocument,
+    catalogReconciliation,
+    coordinationRegister,
+    status,
+  ] = await Promise.all([
+    loadInputs(root),
+    readJson(root, `${DEEPWATER_ROOT}/deepwater-phase2-config.json`),
+    readJson(root, `${DEEPWATER_ROOT}/traces/capability-traces.schema.json`),
+    readJson(root, `${DEEPWATER_ROOT}/remediation/deepwater-remediation-packages.schema.json`),
+    readJson(root, `${DEEPWATER_ROOT}/deepwater-phase3-config.json`),
+    readJson(root, `${DEEPWATER_ROOT}/capability-realization-ledger.json`),
+    readJson(root, `${DEEPWATER_ROOT}/deepwater-findings.json`),
+    readJson(root, `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_Trace_Queue.json`),
+    readJson(root, `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_1_Feature_Catalog_Reconciliation.json`),
+    readJson(root, `${DEEPWATER_ROOT}/evidence/Project_Deepwater_Phase_2_Evidence_Index.json`),
+    readJson(root, `${DEEPWATER_ROOT}/traces/capability-traces.json`),
+    readJson(root, `${DEEPWATER_ROOT}/remediation/deepwater-remediation-packages.json`),
+    readJson(root, `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_Feature_Catalog_Reconciliation.json`),
+    readJson(root, `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_Active_Project_Coordination_Register.json`),
+    readJson(root, `${DEEPWATER_ROOT}/deepwater-phase-status.json`),
+  ]);
+  const phase3FindingIds = new Set(phase3Config.newFindings.map((finding) => finding.findingId));
+  const findingsDocument = {
+    ...currentFindings,
+    phase: phase2Config.phase,
+    auditedSourceSha: phase2Config.auditedSourceSha,
+    findings: currentFindings.findings.filter((finding) => !phase3FindingIds.has(finding.findingId)),
+  };
+  const inputs = { ...baseInputs, phase2Config, tracesSchema, remediationSchema };
+  const phase3Queue = buildPhase3Queue(remediationDocument, findingsDocument.findings, phase2Config);
+  return {
+    phase1: { ledger, queueDocument, reconciliationDocument, status: { metrics: {} } },
+    inputs,
+    ledger,
+    findingsDocument,
+    queueDocument,
+    reconciliationDocument,
+    evidenceIndex,
+    tracesDocument,
+    remediationDocument,
+    catalogReconciliation,
+    coordinationRegister,
+    phase3Queue,
+    phase2Metrics: status.metrics ?? {},
+    status,
+  };
+}
+
+export async function buildArtifacts(root) {
+  return buildPhase3Artifacts(root, await loadAcceptedPhase2Artifacts(root));
+}
+
 function duplicateValues(values) {
   const seen = new Set();
   const duplicates = new Set();
@@ -2079,7 +2684,7 @@ export function validateModel({
     if (!capabilityIdSet.has(capabilityId)) errors.push(`Phase 2 queue references unknown capability ${capabilityId}`);
   if (reconciliationDocument.mappedEntryCount !== catalogIds.size)
     errors.push("Feature Catalog reconciliation does not cover every entry");
-  if (evidenceIndex.evidence.some((entry) => !/^DW-EV-/u.test(entry.evidenceId)))
+  if (evidenceIndex.evidence.some((entry) => !/^DW-(?:P3-)?EV-/u.test(entry.evidenceId)))
     errors.push("evidence index contains invalid evidence ID");
   const privacyText = stableStringify({
     ledger,
@@ -2289,9 +2894,184 @@ export function validatePhase2Model(artifacts) {
   return uniqueSorted(errors);
 }
 
+export function validatePhase3Model(artifacts) {
+  const errors = [];
+  errors.push(
+    ...validateAgainstLedgerSchema(artifacts.utilizationDocument, artifacts.inputs.utilizationSchema).map(
+      (error) => `utilization schema: ${error}`,
+    ),
+  );
+  errors.push(
+    ...validateAgainstLedgerSchema(artifacts.slicesDocument, artifacts.inputs.slicesSchema).map(
+      (error) => `slice schema: ${error}`,
+    ),
+  );
+  const ledgerById = new Map(artifacts.ledger.capabilities.map((capability) => [capability.capabilityId, capability]));
+  const findingsById = new Map(artifacts.findingsDocument.findings.map((finding) => [finding.findingId, finding]));
+  const utilization = artifacts.utilizationDocument.capabilities;
+  const expectedCapabilityCount = artifacts.inputs.phase3Config.expectedCurrentCapabilityCount;
+  if (
+    utilization.length !== expectedCapabilityCount ||
+    artifacts.utilizationDocument.reviewedCapabilityCount !== expectedCapabilityCount ||
+    artifacts.ledger.capabilities.length !== expectedCapabilityCount
+  )
+    errors.push(`Phase 3 utilization does not review all ${expectedCapabilityCount} governed capabilities`);
+  const duplicateCapabilityIds = duplicateValues(utilization.map((capability) => capability.capabilityId));
+  if (duplicateCapabilityIds.length)
+    errors.push(`duplicate utilization capability IDs: ${duplicateCapabilityIds.join(", ")}`);
+  if (
+    stableStringify([...ledgerById.keys()].sort()) !==
+    stableStringify(utilization.map((capability) => capability.capabilityId).sort())
+  )
+    errors.push("utilization capability set does not exactly match the realization ledger");
+  const countedStatuses = countBy(utilization.map((capability) => capability.status));
+  for (const status of [
+    "FULLY_UTILIZED",
+    "PARTIALLY_UTILIZED",
+    "INTENTIONALLY_PARTIAL",
+    "INTERNAL_ONLY",
+    "NOT_APPLICABLE",
+  ])
+    if ((countedStatuses[status] ?? 0) !== artifacts.utilizationDocument.statusCounts[status])
+      errors.push(`utilization status count is stale for ${status}`);
+  for (const capability of utilization) {
+    const ledgerCapability = ledgerById.get(capability.capabilityId);
+    if (!ledgerCapability) continue;
+    const operationIds = capability.expectedOperations.map((operation) => operation.operationId);
+    const duplicateOperationIds = duplicateValues(operationIds);
+    if (duplicateOperationIds.length)
+      errors.push(`${capability.capabilityId}: duplicate operation IDs ${duplicateOperationIds.join(", ")}`);
+    const consumed = new Set(capability.consumedOperations);
+    const intentional = new Set(capability.intentionallyUnconsumedOperations);
+    for (const operation of capability.expectedOperations) {
+      if (!operation.sourceReferences.length)
+        errors.push(
+          `${capability.capabilityId}/${operation.operationId}: expected utilization operation has no source`,
+        );
+      if (operation.disposition === "CONSUMED") {
+        if (!consumed.has(operation.operationId))
+          errors.push(`${capability.capabilityId}/${operation.operationId}: expected utilization operation is missing`);
+        if (!operation.consumerReferences.length)
+          errors.push(`${capability.capabilityId}/${operation.operationId}: orphan backend operation has no consumer`);
+        if (
+          /create|update|delete|mutat|change|archive|restore|repair|send|deliver|publish|launch|revoke|reactivate/u.test(
+            operation.name.toLowerCase(),
+          ) &&
+          !operation.sourceReferences.some((reference) =>
+            /^(?:prisma\/|scripts\/|src\/(?!components\/|app\/.*\/page))/u.test(reference),
+          )
+        )
+          errors.push(
+            `${capability.capabilityId}/${operation.operationId}: UI claims an operation absent from backend authority`,
+          );
+      }
+      if (operation.disposition === "INTENTIONALLY_UNCONSUMED") {
+        if (!intentional.has(operation.operationId))
+          errors.push(
+            `${capability.capabilityId}/${operation.operationId}: intentional operation disposition is missing`,
+          );
+        if (!operation.rationale)
+          errors.push(
+            `${capability.capabilityId}/${operation.operationId}: intentionally unused operation lacks rationale`,
+          );
+      }
+      if (operation.disposition === "FINDING_BLOCKED") {
+        const finding = findingsById.get(operation.findingId);
+        if (!finding || finding.status === "CLOSED")
+          errors.push(`${capability.capabilityId}/${operation.operationId}: blocked operation lacks an open finding`);
+      }
+    }
+    for (const operationId of [...consumed, ...intentional])
+      if (!operationIds.includes(operationId))
+        errors.push(`${capability.capabilityId}: operation disposition references unknown operation ${operationId}`);
+    const metadataDisposition = new Set([
+      ...capability.consumedSafeMetadata,
+      ...capability.findingBlockedMetadata,
+      ...capability.intentionallyOmittedMetadata,
+    ]);
+    for (const metadata of capability.expectedSafeMetadata)
+      if (!metadataDisposition.has(metadata))
+        errors.push(`${capability.capabilityId}: unused safe DTO field marked required: ${metadata}`);
+    const stateDisposition = new Set([
+      ...capability.consumedOrRepresentedStates,
+      ...capability.intentionallyOmittedStates,
+    ]);
+    for (const state of capability.expectedStates)
+      if (!stateDisposition.has(state))
+        errors.push(`${capability.capabilityId}: missing recovery or lifecycle state ${state}`);
+    for (const state of capability.expectedStates)
+      if (!ledgerCapability.states.required.includes(state))
+        errors.push(`${capability.capabilityId}: UI-only state is absent from backend/source contract: ${state}`);
+    const blockedOperations = capability.expectedOperations.filter(
+      (operation) => operation.disposition === "FINDING_BLOCKED",
+    );
+    if (
+      capability.status === "FULLY_UTILIZED" &&
+      (blockedOperations.length || capability.findingBlockedMetadata.length)
+    )
+      errors.push(`${capability.capabilityId}: FULLY_UTILIZED has a utilization-blocking finding`);
+    if (capability.realizationClassification === "BACKEND_ONLY" && !capability.phase3Disposition)
+      errors.push(`${capability.capabilityId}: BACKEND_ONLY capability has no explicit Phase 3 disposition`);
+    if (["INTENTIONALLY_PARTIAL", "INTERNAL_ONLY"].includes(capability.status) && !capability.rationale)
+      errors.push(`${capability.capabilityId}: ${capability.status} lacks rationale`);
+    if (
+      ["INTERNAL", "MACHINE_CONSUMER"].includes(ledgerCapability.expectedRealization.disposition) &&
+      capability.status !== "NOT_APPLICABLE" &&
+      capability.utilizationConsumers.length === 0
+    )
+      errors.push(`${capability.capabilityId}: machine capability has no worker or dormant declaration`);
+    if (!capability.canonicalConsumption && !blockedOperations.length)
+      errors.push(`${capability.capabilityId}: duplicate client business logic lacks a governed finding`);
+    if (
+      ledgerCapability.currentRealization.classification === "SECURITY_RESTRICTED" &&
+      capability.status === "FULLY_UTILIZED" &&
+      capability.utilizationConsumers.some((consumer) => consumer === "audience:VISITOR")
+    )
+      errors.push(`${capability.capabilityId}: security-restricted capability is broadly exposed to claim utilization`);
+  }
+  const nonClosedFindingIds = artifacts.findingsDocument.findings
+    .filter((finding) => finding.status !== "CLOSED")
+    .map((finding) => finding.findingId)
+    .sort();
+  const queuedNonClosedIds = artifacts.phase3Queue.queue
+    .filter((item) => item.status !== "CLOSED")
+    .map((item) => item.findingId)
+    .sort();
+  if (stableStringify(nonClosedFindingIds) !== stableStringify(queuedNonClosedIds))
+    errors.push("Phase 3 queue does not account for every open finding exactly once");
+  if (artifacts.phase3Queue.phase3Authorized !== true)
+    errors.push("Phase 3 queue does not record explicit Phase 3 authorization");
+  const allowedCategories = new Set(artifacts.phase3Queue.categories);
+  for (const item of artifacts.phase3Queue.queue)
+    if (!allowedCategories.has(item.category)) errors.push(`${item.queueId}: queue category is not governed`);
+  for (const slice of artifacts.slicesDocument.slices) {
+    if (slice.status === "MAINLINE_ACCEPTED" && !slice.acceptedMainSha)
+      errors.push(`${slice.sliceId}: MAINLINE_ACCEPTED slice lacks accepted-main SHA`);
+    if (slice.status !== "MAINLINE_ACCEPTED" && slice.acceptedMainSha)
+      errors.push(`${slice.sliceId}: non-accepted slice claims accepted-main SHA`);
+    if (
+      slice.ownedPaths.some((owned) =>
+        slice.excludedPaths.some((excluded) => owned === excluded || owned.startsWith(`${excluded}/`)),
+      )
+    )
+      errors.push(`${slice.sliceId}: owned path overlaps excluded scope`);
+  }
+  const privacyText = stableStringify({
+    utilization: artifacts.utilizationDocument,
+    slices: artifacts.slicesDocument,
+    queue: artifacts.phase3Queue,
+    evidence: artifacts.evidenceIndex,
+  });
+  for (const pattern of artifacts.inputs.phase3Config.privacy.forbiddenPatterns) {
+    const expression = pattern.startsWith("(?i)") ? new RegExp(pattern.slice(4), "iu") : new RegExp(pattern, "u");
+    if (expression.test(privacyText)) errors.push(`Phase 3 privacy scan matched forbidden pattern ${pattern}`);
+  }
+  return uniqueSorted(errors);
+}
+
 export async function validateEvidencePaths(root, artifacts) {
   const errors = [];
-  for (const reference of artifacts.evidenceIndex.evidence) {
+  for (const reference of artifacts.phase2.evidenceIndex.evidence) {
     if (!["SOURCE_PATH", "TEST", "COMPLETION_RECORD"].includes(reference.kind)) continue;
     const rawPath = reference.reference.split("#", 1)[0];
     if (!rawPath || /^[0-9a-f]{40}$/u.test(rawPath)) continue;
@@ -2299,6 +3079,21 @@ export async function validateEvidencePaths(root, artifacts) {
       await access(path.join(root, rawPath));
     } catch {
       errors.push(`missing evidence path: ${rawPath}`);
+    }
+  }
+  const utilizationReferences = artifacts.utilizationDocument.capabilities.flatMap((capability) =>
+    capability.expectedOperations.flatMap((operation) => [
+      ...operation.sourceReferences,
+      ...operation.consumerReferences,
+    ]),
+  );
+  for (const reference of uniqueSorted(utilizationReferences)) {
+    const rawPath = reference.split("#", 1)[0];
+    if (!/^(?:src|scripts|tests|prisma|Development_Docs)\//u.test(rawPath)) continue;
+    try {
+      await access(path.join(root, rawPath));
+    } catch {
+      errors.push(`missing Phase 3 utilization evidence path: ${rawPath}`);
     }
   }
   return uniqueSorted(errors);
@@ -2312,34 +3107,28 @@ async function formatArtifact(root, relative, content) {
 
 export async function artifactFiles(root, artifacts) {
   const rawFiles = new Map([
-    [`${DEEPWATER_ROOT}/capability-realization-ledger.json`, stableStringify(artifacts.ledger)],
     [`${DEEPWATER_ROOT}/deepwater-findings.json`, stableStringify(artifacts.findingsDocument)],
     [`${DEEPWATER_ROOT}/deepwater-phase-status.json`, stableStringify(artifacts.status)],
     [
-      `${DEEPWATER_ROOT}/evidence/Project_Deepwater_Phase_2_Evidence_Index.json`,
+      `${DEEPWATER_ROOT}/evidence/Project_Deepwater_Phase_3_Evidence_Index.json`,
       stableStringify(artifacts.evidenceIndex),
     ],
-    [`${DEEPWATER_ROOT}/traces/capability-traces.json`, stableStringify(artifacts.tracesDocument)],
     [
-      `${DEEPWATER_ROOT}/remediation/deepwater-remediation-packages.json`,
-      stableStringify(artifacts.remediationDocument),
+      `${DEEPWATER_ROOT}/utilization/deepwater-capability-utilization.json`,
+      stableStringify(artifacts.utilizationDocument),
     ],
+    [`${DEEPWATER_ROOT}/remediation/deepwater-phase3-slices.json`, stableStringify(artifacts.slicesDocument)],
     [
-      `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_Feature_Catalog_Reconciliation.json`,
-      stableStringify(artifacts.catalogReconciliation),
-    ],
-    [
-      `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_Active_Project_Coordination_Register.json`,
-      stableStringify(artifacts.coordinationRegister),
+      `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_4_Proof_Queue.json`,
+      stableStringify(artifacts.phase4ProofQueue),
     ],
     [
       `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_3_Realization_Queue.json`,
       stableStringify(artifacts.phase3Queue),
     ],
-    [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_Trace_Report.md`, artifacts.reports.trace],
-    [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_Root_Cause_Summary.md`, artifacts.reports.rootCause],
-    [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_Assignment_Summary.md`, artifacts.reports.assignment],
-    [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_1_to_Phase_2_Delta_Report.md`, artifacts.reports.delta],
+    [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_3_Utilization_Report.md`, artifacts.phase3Reports.utilization],
+    [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_3_Remediation_Report.md`, artifacts.phase3Reports.remediation],
+    [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_to_Phase_3_Delta_Report.md`, artifacts.phase3Reports.delta],
   ]);
   return new Map(
     await Promise.all(
@@ -2382,6 +3171,9 @@ export function semanticDigest(artifacts) {
       coordination: artifacts.coordinationRegister,
       phase3Queue: artifacts.phase3Queue,
       evidence: artifacts.evidenceIndex,
+      utilization: artifacts.utilizationDocument,
+      slices: artifacts.slicesDocument,
+      phase4ProofQueue: artifacts.phase4ProofQueue,
     }),
   );
 }
