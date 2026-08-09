@@ -104758,9 +104758,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-281f36514f59dba4b681",
+      "id": "sl-test-cd001ee0cbaa6a2ada16",
       "title": "Project Lanternwake Journal browser lifecycle › an active Journal opening releases listeners and requests within the browser unmount budget",
-      "line": 613,
+      "line": 617,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -104799,9 +104799,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-2d3b692dfc46315a8007",
+      "id": "sl-test-306d95df82ecd1ad0062",
       "title": "Project Lanternwake Journal browser lifecycle › mode change and skip both reconcile the Journal to a readable final pose",
-      "line": 628,
+      "line": 632,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -104840,9 +104840,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-0e7883e597d3e210ec9e",
+      "id": "sl-test-3dcaaaefdd0ecc4a7f82",
       "title": "Project Lanternwake Journal browser lifecycle › browser reduced motion reaches deterministic JOURNAL_READY with the static readable book",
-      "line": 654,
+      "line": 658,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -104881,9 +104881,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-45a5780d26f2a22a22fb",
+      "id": "sl-test-8701b99cc8b49ab4d4bb",
       "title": "Project Lanternwake Journal browser lifecycle › repeated returning-opening replays do not accumulate observable listeners, sources, or requests",
-      "line": 685,
+      "line": 689,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -104922,9 +104922,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-7c4056642ead16b3ebd8",
+      "id": "sl-test-17ac05245015acc8009e",
       "title": "Project Lanternwake Journal browser lifecycle › manual full and abbreviated opening profiles preserve controls and restore their focus",
-      "line": 726,
+      "line": 730,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -104963,9 +104963,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-9d1c9706daacd06dbebf",
+      "id": "sl-test-1896bc78bd91eea98c00",
       "title": "Project Lanternwake Journal browser lifecycle › PageFlip control and keyboard turns retain exact visible-primary authority and focus",
-      "line": 748,
+      "line": 752,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -105004,9 +105004,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-7a4719bf6f43bbc2bbed",
+      "id": "sl-test-7c8066cc06fcb6a12016",
       "title": "Project Lanternwake Journal browser lifecycle › missing opening actor and infinite CSS timing converge to a readable final pose",
-      "line": 806,
+      "line": 810,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -105045,9 +105045,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-572735a8a55402ed0c8a",
+      "id": "sl-test-ecbc0cdb457c6c7f8b23",
       "title": "Project Lanternwake Journal browser lifecycle › a PageFlip readiness interruption exposes the static current page without stale clones",
-      "line": 833,
+      "line": 837,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -105086,9 +105086,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-227872335bcb21bfbbff",
+      "id": "sl-test-41cca81feaf1bc225cda",
       "title": "Project Lanternwake Journal browser lifecycle › PageFlip dynamic-import failure reports failed lifecycle and preserves a readable static page",
-      "line": 851,
+      "line": 855,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -105127,9 +105127,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-7dcf0c04436ce88bfe87",
+      "id": "sl-test-76fe357f373e23abfff6",
       "title": "Project Lanternwake Journal browser lifecycle › PageFlip runtime-init failure reports failed lifecycle and preserves a readable static page",
-      "line": 851,
+      "line": 855,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -105168,9 +105168,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-f87c553242125122d27e",
+      "id": "sl-test-8a0b658e933642d5d65c",
       "title": "Project Lanternwake Journal browser lifecycle › PageFlip readiness-probe failure reports failed lifecycle and preserves a readable static page",
-      "line": 851,
+      "line": 855,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -105209,9 +105209,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-48850ee1ef27cf7f6a9f",
+      "id": "sl-test-6bb211f5cff543685197",
       "title": "Project Lanternwake Journal browser lifecycle › completed archive auto-opens quietly, remains read-only, and preserves replay",
-      "line": 891,
+      "line": 895,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -148708,9 +148708,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-d275f3731fa034d4f0e9",
+      "id": "sl-test-249faaf28c8e9a4a958d",
       "title": "Project Lanternwake Journal browser lifecycle › an active Journal opening releases listeners and requests within the browser unmount budget",
-      "line": 613,
+      "line": 617,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.animation-lifecycle",
@@ -148749,9 +148749,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-62467ee8d986b4d71be6",
+      "id": "sl-test-c0894847f9b6a6af2509",
       "title": "Project Lanternwake Journal browser lifecycle › mode change and skip both reconcile the Journal to a readable final pose",
-      "line": 628,
+      "line": 632,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.animation-lifecycle",
@@ -148790,9 +148790,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-afec93c1fd600afd7adf",
+      "id": "sl-test-9411ac6f7d30b88559a4",
       "title": "Project Lanternwake Journal browser lifecycle › browser reduced motion reaches deterministic JOURNAL_READY with the static readable book",
-      "line": 654,
+      "line": 658,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.animation-lifecycle",
@@ -148831,9 +148831,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-311106efa8c15040ff83",
+      "id": "sl-test-00f12acd6189ab794582",
       "title": "Project Lanternwake Journal browser lifecycle › repeated returning-opening replays do not accumulate observable listeners, sources, or requests",
-      "line": 685,
+      "line": 689,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.animation-lifecycle",
@@ -148872,9 +148872,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-9b1d32ef59f8d0cda9ad",
+      "id": "sl-test-ea4ab134aa09fb4cca89",
       "title": "Project Lanternwake Journal browser lifecycle › manual full and abbreviated opening profiles preserve controls and restore their focus",
-      "line": 726,
+      "line": 730,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.animation-lifecycle",
@@ -148913,9 +148913,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-180653199132416c786e",
+      "id": "sl-test-9cbba608ee1aab6b9bf8",
       "title": "Project Lanternwake Journal browser lifecycle › PageFlip control and keyboard turns retain exact visible-primary authority and focus",
-      "line": 748,
+      "line": 752,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -148954,9 +148954,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-22785c29c5df3c506978",
+      "id": "sl-test-45f5462ab2f921a8bca0",
       "title": "Project Lanternwake Journal browser lifecycle › missing opening actor and infinite CSS timing converge to a readable final pose",
-      "line": 806,
+      "line": 810,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.animation-lifecycle",
@@ -148995,9 +148995,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-9ac9b540c92878eb779a",
+      "id": "sl-test-911b505b81b1e727f4b7",
       "title": "Project Lanternwake Journal browser lifecycle › a PageFlip readiness interruption exposes the static current page without stale clones",
-      "line": 833,
+      "line": 837,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.animation-lifecycle",
@@ -149036,9 +149036,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-62812e6078f51f346dcc",
+      "id": "sl-test-9becc150df1f254a1633",
       "title": "Project Lanternwake Journal browser lifecycle › PageFlip dynamic-import failure reports failed lifecycle and preserves a readable static page",
-      "line": 851,
+      "line": 855,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.animation-lifecycle",
@@ -149077,9 +149077,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-b0a1e1cdc0d1229c7325",
+      "id": "sl-test-3700ad06402f8e27d9b8",
       "title": "Project Lanternwake Journal browser lifecycle › PageFlip runtime-init failure reports failed lifecycle and preserves a readable static page",
-      "line": 851,
+      "line": 855,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.animation-lifecycle",
@@ -149118,9 +149118,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-484419033a4249192c12",
+      "id": "sl-test-c543f3b93a12caad8a63",
       "title": "Project Lanternwake Journal browser lifecycle › PageFlip readiness-probe failure reports failed lifecycle and preserves a readable static page",
-      "line": 851,
+      "line": 855,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.animation-lifecycle",
@@ -149159,9 +149159,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-2f187812dc60248c6f28",
+      "id": "sl-test-60548f06bdb879406619",
       "title": "Project Lanternwake Journal browser lifecycle › completed archive auto-opens quietly, remains read-only, and preserves replay",
-      "line": 891,
+      "line": 895,
       "file": "tests/e2e/lanternwake-journal.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.animation-lifecycle",

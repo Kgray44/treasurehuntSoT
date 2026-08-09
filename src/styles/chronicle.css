@@ -1069,6 +1069,10 @@ html[data-voyage-theme="light"]
 .chronicle-session-header p {
   margin: 0.3rem 0 0;
 }
+.chronicle-session-header > div:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
 .journal-session-tools {
   display: flex;
   align-items: center;

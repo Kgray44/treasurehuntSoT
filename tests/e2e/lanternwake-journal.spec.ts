@@ -78,7 +78,11 @@ async function createCaptainRequestContext(baseURL: string) {
       "Captain login must issue the canonical account session before privileged requests continue.",
     ).toBe(true);
     return {
-      context: await playwrightRequest.newContext({ baseURL, storageState }),
+      context: await playwrightRequest.newContext({
+        baseURL,
+        storageState,
+        extraHTTPHeaders: { "x-csrf-token": csrfToken },
+      }),
       csrfToken,
     };
   } finally {
