@@ -157,7 +157,7 @@
       }
     ],
     "branch": "codex/project-tideglass-phase1-set-the-glass",
-    "commit": "35b1418",
+    "commit": "1366095b3ae637675c5dd9a97406bff0439fadf9",
     "limitations": [
       "Ordinary user comparison routes and polished What Changed interaction are outside Phase 1.",
       "Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them."

@@ -8,30 +8,41 @@ last_reviewed: 2026-08-09
 
 # Project Tideglass Phase 1 completion receipt
 
-| Field                  | Recorded value                                          |
-| ---------------------- | ------------------------------------------------------- |
-| Project                | Project Tideglass                                       |
-| Phase                  | Phase 1: Set the Glass                                  |
-| Branch                 | `codex/project-tideglass-phase1-set-the-glass`          |
-| Original base          | `f1c2f22dd935322c1a71eb80c51592f243dc196d`              |
-| Reconciled main        | `f1c2f22dd935322c1a71eb80c51592f243dc196d`              |
-| Implementation commit  | `35b1418`                                               |
-| Candidate branch tip   | recorded by the protected publication procedure         |
-| Integrated main SHA    | not integrated                                          |
-| Implementation status  | implemented; subsystem `RELEASE_GO`; candidate pending  |
-| Mainline Safety        | implementation conforms; source-bound candidate pending |
-| Prisma impact          | NONE                                                    |
-| SQLite migration       | NONE                                                    |
-| MySQL migration        | NONE                                                    |
-| Semantic schema        | `tideglass.semantic.v1`                                 |
-| Comparison policy      | `tideglass.policy.v1`                                   |
-| Digest                 | SHA-256 over canonical UTF-8 JSON                       |
-| Sounding Line decision | subsystem `RELEASE_GO`; mainline candidate pending      |
-| Feature Catalog        | UPDATED as branch-complete `FT-B009` at `35b1418`       |
+| Field                  | Recorded value                                                                                                                  |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Project                | Project Tideglass                                                                                                               |
+| Phase                  | Phase 1: Set the Glass                                                                                                          |
+| Branch                 | `codex/project-tideglass-phase1-set-the-glass`                                                                                  |
+| Original base          | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                                      |
+| Reconciled main        | `5b266251bd5a42efe90988e45daf55bca8e566f1`                                                                                      |
+| Implementation commits | `35b1418931bcef3babe12e981571207314bc6120`, `1366095b3ae637675c5dd9a97406bff0439fadf9`                                          |
+| Candidate branch tip   | recorded by the protected publication procedure                                                                                 |
+| Integrated main SHA    | not integrated                                                                                                                  |
+| Implementation status  | corrected; focused 49/49 pass; exact candidate pending                                                                          |
+| Mainline Safety        | implementation conforms; corrected candidate pending                                                                            |
+| Prisma impact          | NONE                                                                                                                            |
+| SQLite migration       | NONE                                                                                                                            |
+| MySQL migration        | NONE                                                                                                                            |
+| Semantic schema        | `tideglass.semantic.v1`                                                                                                         |
+| Comparison policy      | `tideglass.policy.v1`                                                                                                           |
+| Digest                 | SHA-256 over canonical UTF-8 JSON                                                                                               |
+| Governed fixtures      | 27 frozen scenarios (`F01`-`F27`); 49 total test cases                                                                          |
+| Test suite ID          | `unit.tideglass`                                                                                                                |
+| Contract IDs           | `tideglass-exact-edition-pair`; `tideglass-semantic-determinism`; `tideglass-safe-projection`; `tideglass-read-only-invariance` |
+| Determinism result     | PASS diagnostic: 100 repeats byte-stable; locale-independent ordering                                                           |
+| Cross-Chronicle denial | PASS diagnostic: exact IDs from different Chronicles fail closed                                                                |
+| Unauthorized denial    | PASS diagnostic: source-only, target-only, and both-side denial without enumeration                                             |
+| No fuzzy rename        | PASS diagnostic: equal prose under new IDs remains remove/add                                                                   |
+| Graph result           | PASS diagnostic: stable rewire, add/remove direction, endings, and branching                                                    |
+| Read-only invariance   | PASS diagnostic: editions, Voyage, Wayfarer, and Harborlight fingerprints unchanged                                             |
+| Sounding Line decision | corrected exact-candidate rerun pending                                                                                         |
+| Post-merge decision    | pending protected integration                                                                                                   |
+| Remote parity          | pending protected integration                                                                                                   |
+| Feature Catalog        | UPDATED and validated as branch-complete `FT-B009` at `1366095b3ae637675c5dd9a97406bff0439fadf9`                                |
 
 ## Delivered capability
 
-Phase 1 delivers exact immutable edition-pair resolution, stored-byte checksum verification, current-schema and narrow historical normalization, deterministic semantic snapshots, stable-ID/explicit-replacement matching, domain comparators, graph rewiring intelligence, atomic redacted Change Records, deterministic comparison identity and Change Set digest, a machine-readable receipt, safe projections, a trusted local diagnostic CLI, a frozen synthetic corpus, and governed Sounding Line ownership.
+Phase 1 delivers exact immutable edition-pair resolution, stored-byte checksum verification, current-schema and narrow historical normalization, deterministic semantic snapshots, stable-ID/explicit-replacement matching with exact-ID precedence, domain comparators, graph rewiring intelligence, atomic redacted Change Records, exact-anchor comparison identity and deterministic Change Set digest, a machine-readable receipt, safe projections that do not disclose withheld totals/categories, a trusted local diagnostic CLI, a frozen synthetic corpus, and governed Sounding Line ownership.
 
 ## Mainline-safety statement
 

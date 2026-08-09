@@ -48,9 +48,9 @@ The suite is registered as `unit.tideglass`, owner `tideglass`, risk `HIGH`, mut
 
 ## Contract and security coverage
 
-Additional cases prove strict request and snapshot parsing, explicit semantic/policy versions, exact stored-byte checksum verification, independent source/target authorization, missing-ID non-enumeration, redacted retained editions, malformed IDs, client-supplied `mode=creator` denial, oversized input rejection, invalid schema safety, cancellation, and safe failure messages.
+Additional cases prove strict request and snapshot parsing, explicit semantic/policy versions, exact stored-byte checksum verification, independent source/target authorization, missing-ID non-enumeration, redacted retained editions, malformed IDs, client-supplied `mode=creator` denial, oversized input rejection, invalid schema safety, cancellation, and safe failure messages. Regression cases also bind comparison identity to exact Chronicle/edition/schema anchors, prove locale-independent ordering, reserve exact stable-ID targets ahead of replacements, preserve explicit nulls, exclude unidentified artifacts/locations, and suppress false add/remove records when an entire Chronicle semantic schema is unsupported.
 
-Projection tests place sentinel values in storage keys, accepted answers, Creator notes, Captain instructions, and raw coordinates. Neither diagnostic nor public-safe output may contain them. The public-safe foundation must also omit entity IDs and semantic paths.
+Projection tests place sentinel values in storage keys, accepted answers, Creator notes, Captain instructions, and raw coordinates. Neither diagnostic nor public-safe output may contain them. The public-safe foundation must also omit entity IDs, semantic paths, total change count, and full category counts; it may expose only preview-safe aggregates plus a boolean that withheld changes exist.
 
 ## Determinism and invariance
 
