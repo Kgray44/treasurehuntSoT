@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `28a3139e9d43b234778bbbcd4bde2133ece4d8a2`
+Audited source commit: `40d822cd936c9abbfce064fd7799e6a2f8c9785e`
 
 ## Status vocabulary
 
@@ -1313,4 +1313,4 @@ A read-only authority compares exact immutable Chronicle editions through determ
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `28a3139e9d43b234778bbbcd4bde2133ece4d8a2`
+Generation source commit: `40d822cd936c9abbfce064fd7799e6a2f8c9785e`
