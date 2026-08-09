@@ -15,7 +15,7 @@ Audited product source: `f1c2f22dd935322c1a71eb80c51592f243dc196d`. Generated de
 | Ratio                    |   Value |
 | ------------------------ | ------: |
 | Feature Catalog mapping  | 100.00% |
-| Initial realization      |  16.98% |
+| Initial realization      |  18.52% |
 | Natural-journey evidence |  57.50% |
 | Owner mapped             | 100.00% |
 
@@ -37,6 +37,7 @@ Audited product source: `f1c2f22dd935322c1a71eb80c51592f243dc196d`. Generated de
 | Security           |            2 |
 | Shipwright         |            2 |
 | Sounding Line      |            1 |
+| Tideglass          |            1 |
 | True North         |            4 |
 | Universal Language |            1 |
 | Wakebook           |            2 |
@@ -49,7 +50,7 @@ Audited product source: `f1c2f22dd935322c1a71eb80c51592f243dc196d`. Generated de
 | JOURNEY_PROVEN |           38 |
 | OWNER_ACCEPTED |            2 |
 | PROJECTION     |            4 |
-| SERVICE        |            9 |
+| SERVICE        |           10 |
 
 ## Evidence gaps
 

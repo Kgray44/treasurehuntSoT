@@ -94,6 +94,34 @@
       "critical": true
     },
     {
+      "id": "tideglass-exact-edition-pair",
+      "name": "Tideglass exact immutable Chronicle edition pair",
+      "authority": "tideglass",
+      "owners": ["tideglass", "one-voyage"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-semantic-determinism",
+      "name": "Tideglass semantic normalization and deterministic Change Set",
+      "authority": "tideglass",
+      "owners": ["tideglass", "one-voyage"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-safe-projection",
+      "name": "Tideglass authorized and redacted comparison projections",
+      "authority": "tideglass",
+      "owners": ["tideglass", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-read-only-invariance",
+      "name": "Tideglass read-only publishing, Voyage, history, and release invariance",
+      "authority": "tideglass",
+      "owners": ["tideglass", "one-voyage", "wayfarer", "harborlight"],
+      "critical": true
+    },
+    {
       "id": "public-privacy-projection",
       "name": "Public privacy projection",
       "authority": "wayfarer",

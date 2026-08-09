@@ -98,6 +98,29 @@
       "adapter": "vitest-family"
     },
     {
+      "id": "unit.tideglass",
+      "name": "Tideglass semantic Chronicle edition comparison contracts",
+      "tier": 1,
+      "owner": "tideglass",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 60000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.one-voyage"],
+      "contracts": [
+        "tideglass-exact-edition-pair",
+        "tideglass-semantic-determinism",
+        "tideglass-safe-projection",
+        "tideglass-read-only-invariance"
+      ],
+      "affectedPaths": ["src/tideglass/**", "scripts/tideglass/**", "tests/tideglass/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-family",
+      "adapter": "vitest-family"
+    },
+    {
       "id": "unit.wayfarer",
       "name": "Wayfarer identity and history units",
       "tier": 1,

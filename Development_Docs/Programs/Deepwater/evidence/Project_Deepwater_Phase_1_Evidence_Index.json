@@ -2682,6 +2682,34 @@
       "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
     },
     {
+      "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/studio.json#FT-B009",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-002",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/tideglass/service.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-003",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "tests/tideglass",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-004",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
       "evidenceId": "DW-EV-TRANSACTIONAL-EMAIL-DELIVERY-001",
       "freshness": "CURRENT",
       "kind": "SOURCE_PATH",

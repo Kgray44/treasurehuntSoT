@@ -1260,6 +1260,39 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-B009 - Tideglass Semantic Edition Comparison Foundation
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Tideglass Phase 1
+
+A read-only authority compares exact immutable Chronicle editions through deterministic semantic normalization, stable identity matching, domain comparators, redacted Change Sets, and source-bound receipts.
+
+### Important subfeatures
+
+- Exact edition and checksum binding
+- Versioned semantic normalization
+- Stable identity and graph comparison
+- Deterministic Change Sets and receipts
+- Server-authorized redacted projections
+- Read-only cross-domain invariance
+
+### Primary surfaces
+
+`npm run tideglass:compare`, `src/tideglass`
+
+### Meaningful limitations
+
+- Ordinary user comparison routes and polished What Changed interaction are outside Phase 1.
+- Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.
+
+### Evidence
+
+- path: `src/tideglass/service.ts`
+- test: `tests/tideglass`
+- completion-record: `Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
