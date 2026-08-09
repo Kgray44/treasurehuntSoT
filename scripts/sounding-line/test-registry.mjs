@@ -17,6 +17,7 @@ const execFileAsync = promisify(execFile);
 const normal = (value) => value.replaceAll("\\", "/");
 
 function ownerFor(file) {
+  if (file.includes("tideglass")) return "tideglass";
   if (file.includes("homeport")) return "project-homeport";
   if (file.includes("private-content")) return "sealed-hold";
   if (file.includes("community")) return "harborlight";
@@ -28,6 +29,8 @@ function ownerFor(file) {
 }
 
 function unitFamily(file) {
+  if (file.startsWith("src/tideglass/") || file.startsWith("scripts/tideglass/") || file.startsWith("tests/tideglass/"))
+    return "unit.tideglass";
   if (file.startsWith("src/homeport/") || file.startsWith("scripts/homeport/") || file.startsWith("tests/homeport/"))
     return "unit.homeport";
   if (file.startsWith("scripts/sounding-line/") || file.startsWith("tests/sounding-line/")) return "unit.sounding-line";
@@ -94,6 +97,13 @@ function browserFamily(project, file, title) {
 }
 
 function contractFor(file, family) {
+  if (file.includes("tideglass") || family === "unit.tideglass")
+    return [
+      "tideglass-exact-edition-pair",
+      "tideglass-semantic-determinism",
+      "tideglass-safe-projection",
+      "tideglass-read-only-invariance",
+    ];
   if (file.includes("homeport") || family === "unit.homeport") return homeportContracts;
   if (file.includes("private-content")) return ["sealed-hold-private-delivery", "public-privacy-projection"];
   if (file.includes("community")) return ["community-public-projection"];

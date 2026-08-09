@@ -3,7 +3,7 @@ title: Engineering records
 audience: engineering
 status: current
 canonical_for: engineering-records-index
-last_reviewed: 2026-08-08
+last_reviewed: 2026-08-09
 ---
 
 # Engineering records
@@ -24,6 +24,10 @@ protected PR #12. The owner accepted successful real Google and GitHub sign-in
 and sign-up through the protected staging experience with no internal-origin
 redirect. Automated protocol, security, lifecycle, and redirect-boundary proof
 also passed. See the [OAuth validation and completion record](Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md).
+
+## Project Tideglass
+
+[Project Tideglass](Projects/Project_Tideglass/README.md) owns deterministic semantic comparison of exact immutable Chronicle editions. Phase 1 is a read-only internal foundation with a safe diagnostic seam and no ordinary user-facing comparison route.
 
 ## Engineering-record template
 

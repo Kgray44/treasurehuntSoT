@@ -35,9 +35,51 @@
     },
     { "path": "scripts/generate-document-index.mjs", "suiteIds": ["static.core"], "contractIds": [] },
     {
-      "path": "package.json",
-      "suiteIds": ["unit.homeport", "unit.sounding-line", "static.core"],
+      "path": "src/tideglass/**",
+      "suiteIds": ["unit.tideglass", "static.core"],
       "contractIds": [
+        "tideglass-exact-edition-pair",
+        "tideglass-semantic-determinism",
+        "tideglass-safe-projection",
+        "tideglass-read-only-invariance"
+      ]
+    },
+    {
+      "path": "scripts/tideglass/**",
+      "suiteIds": ["unit.tideglass", "static.core"],
+      "contractIds": ["tideglass-exact-edition-pair", "tideglass-safe-projection"]
+    },
+    {
+      "path": "tests/tideglass/**",
+      "suiteIds": ["unit.tideglass"],
+      "contractIds": [
+        "tideglass-exact-edition-pair",
+        "tideglass-semantic-determinism",
+        "tideglass-safe-projection",
+        "tideglass-read-only-invariance"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Tideglass/**",
+      "suiteIds": ["unit.tideglass", "static.core"],
+      "contractIds": [
+        "tideglass-exact-edition-pair",
+        "tideglass-semantic-determinism",
+        "tideglass-safe-projection",
+        "tideglass-read-only-invariance"
+      ]
+    },
+    {
+      "path": "vitest.config.ts",
+      "suiteIds": ["unit.tideglass", "unit.sounding-line", "static.core"],
+      "contractIds": ["tideglass-semantic-determinism"]
+    },
+    {
+      "path": "package.json",
+      "suiteIds": ["unit.homeport", "unit.sounding-line", "unit.tideglass", "static.core"],
+      "contractIds": [
+        "tideglass-exact-edition-pair",
+        "tideglass-safe-projection",
         "homeport.route-inventory.complete",
         "homeport.personal-harbor.ia",
         "homeport.personal-harbor.section-registry",
@@ -512,8 +554,13 @@
     },
     {
       "path": "src/chronicle/**",
-      "suiteIds": ["unit.one-voyage", "component.player-shell", "browser.invitations"],
-      "contractIds": ["invitation-acceptance"]
+      "suiteIds": ["unit.one-voyage", "unit.tideglass", "component.player-shell", "browser.invitations"],
+      "contractIds": [
+        "invitation-acceptance",
+        "tideglass-exact-edition-pair",
+        "tideglass-semantic-determinism",
+        "tideglass-read-only-invariance"
+      ]
     },
     {
       "path": "src/navigation/**",
@@ -3957,6 +4004,13 @@
       "suiteIds": ["unit.journal", "component.journal", "browser.player-journal", "browser.accessibility"]
     },
     { "contractId": "migration-parity", "suiteIds": ["database.sqlite", "migration.mysql", "build.production"] },
+    { "contractId": "tideglass-exact-edition-pair", "suiteIds": ["unit.tideglass", "unit.one-voyage"] },
+    { "contractId": "tideglass-semantic-determinism", "suiteIds": ["unit.tideglass"] },
+    { "contractId": "tideglass-safe-projection", "suiteIds": ["unit.tideglass", "unit.wayfarer"] },
+    {
+      "contractId": "tideglass-read-only-invariance",
+      "suiteIds": ["unit.tideglass", "unit.one-voyage", "unit.wayfarer", "unit.community"]
+    },
     {
       "contractId": "sealed-hold-private-delivery",
       "suiteIds": ["unit.private-content", "component.private-operations", "browser.private-operations"]
