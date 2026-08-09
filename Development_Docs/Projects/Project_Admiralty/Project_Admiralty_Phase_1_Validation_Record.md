@@ -12,12 +12,12 @@ last_reviewed: 2026-08-09
 
 **AUTOMATED_PHASE_1_READY_FOR_OWNER_WALKTHROUGH.** The exact tested application
 source is `49c2f59d6d75791edbdba84f22f5ec1595d2d129`. Reconciliation merge
-`03371d4aa92042c79ee8adf7e055ff70a5720d3f` contains current `origin/main` at
-`28a3139e9d43b234778bbbcd4bde2133ece4d8a2`; the later mainline material adds
-Deepwater Phase 2 audit, governance, and test-authority behavior but does not
-change Admiralty application or schema code. Automated local and synthetic
-evidence cannot self-accept the new administrator and account-owner consent
-surfaces. Owner decision remains `PENDING_OWNER_DECISION`.
+`5eada921c2a2b1169f9c7ddbc89b682e7cf207b4` contains current `origin/main` at
+`762258e31d7509aac8a7a46e7828ae0e92b84a84`; the later mainline material accepts
+Deepwater Phase 2 integration and its documentation/configuration state but
+does not change Admiralty application or schema code. Automated local and
+synthetic evidence cannot self-accept the new administrator and account-owner
+consent surfaces. Owner decision remains `PENDING_OWNER_DECISION`.
 
 ## Focused and compatibility evidence
 

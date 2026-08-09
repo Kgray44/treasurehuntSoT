@@ -18,7 +18,7 @@ Phase 1 reaches its governed automated completion boundary on branch
 `codex/project-admiralty-phase1-raise-the-colors`. The implementation checkpoint
 is `648d1068ee3007c303ac76ae3a3c68e137f73a0e`; the exact tested application
 source is `49c2f59d6d75791edbdba84f22f5ec1595d2d129`; and the current-main
-reconciliation anchor is `03371d4aa92042c79ee8adf7e055ff70a5720d3f`.
+reconciliation anchor is `5eada921c2a2b1169f9c7ddbc89b682e7cf207b4`.
 
 ## Completed Phase 1 capability
 
