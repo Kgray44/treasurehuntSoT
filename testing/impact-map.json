@@ -4045,6 +4045,107 @@
         "homeport.owner-correction.round3.artifact-idempotency",
         "homeport.owner-correction.round3.postmark-webhooks"
       ]
+    },
+    {
+      "path": "src/admiralty/**",
+      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"],
+      "contractIds": [
+        "admiralty.phase1.identity",
+        "admiralty.phase1.authorization",
+        "admiralty.phase1.assurance",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit",
+        "admiralty.phase1.registry",
+        "admiralty.phase1.migration",
+        "admiralty.phase1.responsive-consent"
+      ]
+    },
+    {
+      "path": "src/components/admiralty/**",
+      "suiteIds": ["component.admiralty", "browser.admiralty"],
+      "contractIds": [
+        "admiralty.phase1.authorization",
+        "admiralty.phase1.assurance",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.responsive-consent"
+      ]
+    },
+    {
+      "path": "src/app/admin/**",
+      "suiteIds": ["component.admiralty", "browser.admiralty"],
+      "contractIds": [
+        "admiralty.phase1.identity",
+        "admiralty.phase1.authorization",
+        "admiralty.phase1.assurance",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit",
+        "admiralty.phase1.responsive-consent"
+      ]
+    },
+    {
+      "path": "src/app/api/admin/**",
+      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"],
+      "contractIds": [
+        "admiralty.phase1.identity",
+        "admiralty.phase1.authorization",
+        "admiralty.phase1.assurance",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit",
+        "admiralty.phase1.responsive-consent"
+      ]
+    },
+    {
+      "path": "src/app/api/account/support/**",
+      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"],
+      "contractIds": ["admiralty.phase1.support-access", "admiralty.phase1.audit"]
+    },
+    {
+      "path": "scripts/admiralty/**",
+      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"],
+      "contractIds": [
+        "admiralty.phase1.identity",
+        "admiralty.phase1.authorization",
+        "admiralty.phase1.assurance",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit",
+        "admiralty.phase1.registry",
+        "admiralty.phase1.migration",
+        "admiralty.phase1.responsive-consent"
+      ]
+    },
+    {
+      "path": "tests/e2e/admiralty-phase1.spec.ts",
+      "suiteIds": ["browser.admiralty"],
+      "contractIds": [
+        "admiralty.phase1.identity",
+        "admiralty.phase1.authorization",
+        "admiralty.phase1.assurance",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit",
+        "admiralty.phase1.responsive-consent"
+      ]
+    },
+    {
+      "path": "playwright.admiralty-phase1.config.ts",
+      "suiteIds": ["browser.admiralty"],
+      "contractIds": [
+        "admiralty.phase1.identity",
+        "admiralty.phase1.authorization",
+        "admiralty.phase1.assurance",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit",
+        "admiralty.phase1.responsive-consent"
+      ]
+    },
+    {
+      "path": "prisma/migrations/20260809120000_admiralty_phase1_foundation/**",
+      "suiteIds": ["unit.admiralty"],
+      "contractIds": ["admiralty.phase1.migration"]
+    },
+    {
+      "path": "prisma/mysql-migrations/0052_admiralty_phase1_foundation/**",
+      "suiteIds": ["unit.admiralty"],
+      "contractIds": ["admiralty.phase1.migration"]
     }
   ],
   "contractMappings": [
@@ -5633,6 +5734,38 @@
     {
       "contractId": "homeport.owner-correction.round3.postmark-webhooks",
       "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "admiralty.phase1.identity",
+      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase1.authorization",
+      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase1.assurance",
+      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase1.support-access",
+      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase1.audit",
+      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase1.registry",
+      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase1.migration",
+      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase1.responsive-consent",
+      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
     }
   ],
   "impactClasses": [

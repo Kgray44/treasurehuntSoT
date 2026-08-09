@@ -1,0 +1,442 @@
+.admiralty {
+  --admiralty-ink: #e9f2ed;
+  --admiralty-muted: #a9c0b6;
+  --admiralty-deep: #071615;
+  --admiralty-panel: rgb(12 37 35 / 92%);
+  --admiralty-line: rgb(199 169 101 / 42%);
+  --admiralty-brass: #d5b36d;
+  width: min(100% - 2rem, 92rem);
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 3rem) 0 4rem;
+  color: var(--admiralty-ink);
+}
+
+.admiralty::before {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  background:
+    radial-gradient(circle at 16% 4%, rgb(42 120 104 / 22%), transparent 36rem),
+    linear-gradient(145deg, #061211, #0b2624 52%, #071716);
+  content: "";
+}
+
+.admiralty__masthead,
+.admiralty-panel__heading,
+.support-access__heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.admiralty__masthead {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--admiralty-line);
+  border-radius: 1.5rem;
+  padding: clamp(1.4rem, 4vw, 3.5rem);
+  background:
+    linear-gradient(100deg, rgb(5 20 19 / 96%), rgb(15 58 52 / 88%)),
+    repeating-linear-gradient(115deg, transparent 0 32px, rgb(213 179 109 / 5%) 33px 34px);
+  box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 30%);
+}
+
+.admiralty__masthead::after {
+  position: absolute;
+  right: -5rem;
+  bottom: -7rem;
+  width: 18rem;
+  height: 18rem;
+  border: 1px solid rgb(213 179 109 / 22%);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2.5rem rgb(213 179 109 / 3%);
+  content: "";
+}
+
+.admiralty__masthead h1 {
+  margin: 0.2rem 0 0.7rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.3rem, 7vw, 5.8rem);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+}
+
+.admiralty__masthead p,
+.admiralty-card p,
+.admiralty-panel p {
+  color: var(--admiralty-muted);
+}
+
+.admiralty__eyebrow,
+.admiralty-card__kicker {
+  margin: 0;
+  color: var(--admiralty-brass) !important;
+  font-size: 0.76rem;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.admiralty__exit {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.admiralty button,
+.admiralty__exit a,
+.support-access button {
+  min-height: 2.75rem;
+  border: 1px solid var(--admiralty-line);
+  border-radius: 999px;
+  padding: 0.7rem 1rem;
+  color: var(--admiralty-ink);
+  background: rgb(8 27 25 / 82%);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admiralty button:hover,
+.admiralty__exit a:hover,
+.support-access button:hover {
+  border-color: var(--admiralty-brass);
+  background: rgb(28 76 68 / 80%);
+}
+
+.admiralty button:focus-visible,
+.admiralty__exit a:focus-visible,
+.support-access button:focus-visible,
+.admiralty input:focus-visible,
+.admiralty textarea:focus-visible {
+  outline: 3px solid var(--admiralty-brass);
+  outline-offset: 3px;
+}
+
+.admiralty button:disabled,
+.support-access button:disabled {
+  cursor: progress;
+  opacity: 0.58;
+}
+
+.admiralty__notice {
+  margin: 1rem 0;
+  border-left: 4px solid var(--admiralty-brass);
+  padding: 0.85rem 1rem;
+  color: var(--admiralty-ink) !important;
+  background: rgb(20 52 47 / 92%);
+}
+
+.admiralty__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.admiralty-card,
+.admiralty-panel {
+  border: 1px solid var(--admiralty-line);
+  border-radius: 1.25rem;
+  background: var(--admiralty-panel);
+  box-shadow: 0 1rem 2.5rem rgb(0 0 0 / 16%);
+}
+
+.admiralty-card {
+  min-width: 0;
+  padding: clamp(1.1rem, 3vw, 1.8rem);
+}
+
+.admiralty-card--identity {
+  background: linear-gradient(145deg, rgb(19 66 58 / 96%), rgb(9 31 29 / 96%));
+}
+
+.admiralty-card h2,
+.admiralty-panel h2 {
+  margin: 0.35rem 0 0.8rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 500;
+}
+
+.admiralty-card dl,
+.admiralty-panel dl {
+  display: grid;
+  gap: 0.6rem;
+  margin: 1rem 0;
+}
+
+.admiralty-card dl div,
+.admiralty-panel dl div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid rgb(255 255 255 / 9%);
+  padding-bottom: 0.45rem;
+}
+
+.admiralty-card dt,
+.admiralty-panel dt {
+  color: var(--admiralty-muted);
+}
+
+.admiralty-card dd,
+.admiralty-panel dd {
+  margin: 0;
+  text-align: right;
+}
+
+.admiralty__mono {
+  overflow-wrap: anywhere;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.82rem;
+}
+
+.admiralty__capabilities {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.35rem 1rem;
+  padding-left: 1.2rem;
+  font:
+    0.78rem ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+}
+
+.admiralty__truth,
+.admiralty__exclusions {
+  border-left: 3px solid var(--admiralty-brass);
+  padding-left: 0.8rem;
+}
+
+.admiralty-form,
+.admiralty-support-form {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.admiralty-form label,
+.admiralty-support-form label,
+.admiralty-support-form legend {
+  color: var(--admiralty-muted);
+  font-weight: 700;
+}
+
+.admiralty input,
+.admiralty textarea {
+  width: 100%;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 0.75rem;
+  padding: 0.8rem;
+  color: var(--admiralty-ink);
+  background: rgb(2 14 13 / 70%);
+  font: inherit;
+}
+
+.admiralty textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.admiralty-panel {
+  margin-top: 1rem;
+  padding: clamp(1.1rem, 3vw, 2rem);
+}
+
+.admiralty-support-form {
+  grid-template-columns: minmax(14rem, 0.7fr) minmax(18rem, 1.3fr);
+  align-items: start;
+  border-block: 1px solid rgb(255 255 255 / 9%);
+  padding-block: 1.2rem;
+}
+
+.admiralty-support-form fieldset {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  grid-column: 1 / -1;
+  border: 0;
+  padding: 0;
+}
+
+.admiralty-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 0.75rem;
+  padding: 0.7rem;
+}
+
+.admiralty-check input {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.admiralty-request-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.admiralty-request-list article,
+.admiralty-audit li {
+  min-width: 0;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 0.85rem;
+  padding: 1rem;
+  background: rgb(3 18 17 / 45%);
+}
+
+.admiralty-request-list article > div:first-child,
+.admiralty-audit li > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.admiralty-scope-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.admiralty-button--danger,
+.support-access__deny {
+  border-color: rgb(222 120 111 / 65%) !important;
+  color: #ffd8d2 !important;
+}
+
+.admiralty-result {
+  margin-top: 1rem;
+}
+
+.admiralty-projection {
+  overflow: auto;
+  max-height: 32rem;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 0.8rem;
+  padding: 1rem;
+  color: #d8e9e1;
+  background: #020c0b;
+  font-size: 0.82rem;
+}
+
+.admiralty-projection dl {
+  margin: 0;
+}
+
+.admiralty-projection dd > dl,
+.admiralty-projection dd > ol {
+  width: 100%;
+  margin-top: 0.45rem;
+  text-align: left;
+}
+
+.admiralty-audit {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admiralty-audit p,
+.admiralty-audit small {
+  overflow-wrap: anywhere;
+}
+
+.support-access {
+  display: grid;
+  gap: 1rem;
+}
+
+.support-access__explanation {
+  border-left: 5px solid var(--harbor-brass);
+}
+
+.support-access__list {
+  display: grid;
+  gap: 1rem;
+}
+
+.support-access__request h2,
+.support-access__request h3 {
+  margin-block: 0.25rem 0.7rem;
+}
+
+.support-access__heading strong {
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  color: var(--harbor-green);
+  background: var(--harbor-brass);
+}
+
+.support-access__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.support-access button {
+  color: var(--harbor-paper);
+  background: var(--harbor-green);
+}
+
+.support-access__active {
+  margin-top: 1rem;
+  border-left: 4px solid var(--harbor-brass);
+  padding-left: 1rem;
+}
+
+@media (max-width: 54rem) {
+  .admiralty__masthead,
+  .admiralty-panel__heading,
+  .support-access__heading {
+    flex-direction: column;
+  }
+
+  .admiralty__grid,
+  .admiralty-request-list,
+  .admiralty-audit,
+  .admiralty-support-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 34rem) {
+  .admiralty {
+    width: min(100% - 1rem, 92rem);
+  }
+
+  .admiralty-support-form fieldset,
+  .admiralty__capabilities {
+    grid-template-columns: 1fr;
+  }
+
+  .admiralty__exit,
+  .admiralty__exit a,
+  .admiralty__exit button,
+  .support-access__actions,
+  .support-access__actions button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admiralty *,
+  .support-access * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

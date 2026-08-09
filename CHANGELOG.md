@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-08-08
+last_reviewed: 2026-08-09
 ---
 
 # Changelog
@@ -11,6 +11,16 @@ last_reviewed: 2026-08-08
 ## Unreleased
 
 ### Changed
+
+- Recorded the owner's `ACCEPTED` decision for the complete Project Admiralty
+  Phase 1 walkthrough and reconciled its named branch with current main:
+  canonical role/capability authorization, explicit
+  administrator bootstrap, session-bound privileged assurance, a limited
+  non-navigable `/admin` shell, user-consented scoped Support Access, sanitized
+  canonical audit evidence, dual-provider additive migrations, a 92-entry
+  capability floor, and an isolated owner runtime. Canonical integration and
+  parity are pending; this is not deployed or production-MySQL validated, and
+  Phase 2 was not started.
 
 - Anchored every Voyagewright-owned OAuth success and failure redirect to the
   exact configured `HOMEPORT_PUBLIC_APP_ORIGIN` rather than the internal request
@@ -69,6 +79,14 @@ last_reviewed: 2026-08-08
 - Reconciled current-main documentation, Ledgerlight records, and the generated Feature Catalog after the Phase 3-4, Wayfarer, Sealed Hold, Harborlight, and True North convergence.
 
 ### Validation
+
+- Added focused Admiralty policy/service/component coverage, fresh and upgrade
+  migration rehearsal, and exact-source production-browser journeys for
+  unauthorized concealment, assurance expiry/renewal, support approval, denial,
+  revocation, role/session invalidation, desktop/mobile/keyboard/reduced-motion/
+  effective-200-percent behavior, and serious/critical accessibility scanning.
+  The fixture and evidence are local, synthetic, task-owned, and not owner
+  acceptance.
 
 - Added a dual-host Chromium regression for hydration, account bootstrap,
   pointer interaction, keyboard focus/typing, navigation, settled overlays,

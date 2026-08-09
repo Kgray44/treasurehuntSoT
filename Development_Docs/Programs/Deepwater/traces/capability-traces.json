@@ -8479,6 +8479,8 @@
             "edge-return-account-roles",
             "edge-return-account-security",
             "edge-return-account-sessions",
+            "edge-return-account-support-access",
+            "edge-return-admin",
             "edge-return-captain-library",
             "edge-return-captain-sessions-sessionid",
             "edge-return-captain-tales-taleid",
@@ -8487,9 +8489,7 @@
             "edge-return-community",
             "edge-return-community-artifacts",
             "edge-return-community-audio",
-            "edge-return-community-chronicles",
-            "edge-return-community-collections",
-            "edge-return-community-collections-slug"
+            "edge-return-community-chronicles"
           ],
           "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
           "stateBehavior": "Required: EMPTY, ERROR, LOADING, READY, RECOVERY, UNAUTHORIZED; represented: AUTH_OR_PERMISSION_GUARD, CURRENT_DEFAULT, DEFAULT, DEPENDENCY_UNAVAILABLE, EMPTY, EMPTY_WHERE_IMPLEMENTED, ERROR, ERROR_OR_PERMISSION_WHERE_IMPLEMENTED, INITIAL_LOADING, LOADING, LOADING_WHERE_IMPLEMENTED, MUTATION_FAILURE, MUTATION_PENDING, MUTATION_SUCCESS, NO_RESULTS_WHERE_SEARCHABLE, PARTIAL_MEDIA_FAILURE, READY, READY_CLEAN, READY_DIRTY, RECOVERY, RESET_PENDING, SOURCE_COMPONENT_STATES, STALE_CONFLICT, UNAUTHORIZED, VALIDATION_ERROR; missing: none.",
@@ -10392,6 +10392,8 @@
             "edge-return-account-roles",
             "edge-return-account-security",
             "edge-return-account-sessions",
+            "edge-return-account-support-access",
+            "edge-return-admin",
             "edge-return-captain-library",
             "edge-return-captain-sessions-sessionid",
             "edge-return-captain-tales-taleid",
@@ -10400,9 +10402,7 @@
             "edge-return-community",
             "edge-return-community-artifacts",
             "edge-return-community-audio",
-            "edge-return-community-chronicles",
-            "edge-return-community-collections",
-            "edge-return-community-collections-slug"
+            "edge-return-community-chronicles"
           ],
           "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
           "stateBehavior": "Required: EMPTY, ERROR, LOADING, READY, RECOVERY, UNAUTHORIZED; represented: AUTH_OR_PERMISSION_GUARD, CURRENT_DEFAULT, DEFAULT, DEPENDENCY_UNAVAILABLE, EMPTY, EMPTY_WHERE_IMPLEMENTED, ERROR, ERROR_OR_PERMISSION_WHERE_IMPLEMENTED, INITIAL_LOADING, LOADING, LOADING_WHERE_IMPLEMENTED, NO_RESULTS_WHERE_SEARCHABLE, PARTIAL_MEDIA_FAILURE, READY, READY_CLEAN, RECOVERY, SOURCE_COMPONENT_STATES, UNAUTHORIZED; missing: none.",
@@ -16785,6 +16785,8 @@
             "edge-return-account-roles",
             "edge-return-account-security",
             "edge-return-account-sessions",
+            "edge-return-account-support-access",
+            "edge-return-admin",
             "edge-return-captain-library",
             "edge-return-captain-sessions-sessionid",
             "edge-return-captain-tales-taleid",
@@ -16799,9 +16801,7 @@
             "edge-return-community-creators",
             "edge-return-community-creators-handle",
             "edge-return-community-featured",
-            "edge-return-community-guides",
-            "edge-return-community-guides-slug",
-            "edge-return-community-maps"
+            "edge-return-community-guides"
           ],
           "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
           "stateBehavior": "Required: EMPTY, ERROR, LOADING, READY, RECOVERY, UNAUTHORIZED; represented: AUTH_OR_PERMISSION_GUARD, CURRENT_DEFAULT, DEFAULT, EMPTY, EMPTY_WHERE_IMPLEMENTED, ERROR, ERROR_OR_PERMISSION_WHERE_IMPLEMENTED, LOADING, LOADING_WHERE_IMPLEMENTED, READY, RECOVERY, SOURCE_COMPONENT_STATES, UNAUTHORIZED; missing: none.",
@@ -17334,6 +17334,8 @@
             "edge-return-account-roles",
             "edge-return-account-security",
             "edge-return-account-sessions",
+            "edge-return-account-support-access",
+            "edge-return-admin",
             "edge-return-captain-library",
             "edge-return-captain-sessions-sessionid",
             "edge-return-captain-tales-taleid",
@@ -17348,9 +17350,7 @@
             "edge-return-community-creators",
             "edge-return-community-creators-handle",
             "edge-return-community-featured",
-            "edge-return-community-guides",
-            "edge-return-community-guides-slug",
-            "edge-return-community-maps"
+            "edge-return-community-guides"
           ],
           "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
           "stateBehavior": "Required: EMPTY, ERROR, LOADING, READY, RECOVERY, UNAUTHORIZED; represented: AUTH_OR_PERMISSION_GUARD, CURRENT_DEFAULT, DEFAULT, EMPTY, EMPTY_WHERE_IMPLEMENTED, ERROR, ERROR_OR_PERMISSION_WHERE_IMPLEMENTED, LOADING, LOADING_WHERE_IMPLEMENTED, READY, RECOVERY, SOURCE_COMPONENT_STATES, UNAUTHORIZED; missing: none.",
@@ -18130,15 +18130,15 @@
             "edge-return-account-roles",
             "edge-return-account-security",
             "edge-return-account-sessions",
+            "edge-return-account-support-access",
+            "edge-return-admin",
             "edge-return-captain-library",
             "edge-return-captain-sessions-sessionid",
             "edge-return-captain-tales-taleid",
             "edge-return-captain-voyages-playthroughid-player-preview",
             "edge-return-chronicles-taleslug",
             "edge-return-community",
-            "edge-return-community-artifacts",
-            "edge-return-community-audio",
-            "edge-return-community-chronicles"
+            "edge-return-community-artifacts"
           ],
           "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
           "stateBehavior": "Required: EMPTY, ERROR, LOADING, READY, RECOVERY, UNAUTHORIZED; represented: AUTH_OR_PERMISSION_GUARD, CURRENT_DEFAULT, DEFAULT, DEPENDENCY_UNAVAILABLE, EMPTY, EMPTY_WHERE_IMPLEMENTED, ERROR, ERROR_OR_PERMISSION_WHERE_IMPLEMENTED, INITIAL_LOADING, LOADING, LOADING_WHERE_IMPLEMENTED, NO_RESULTS_WHERE_SEARCHABLE, PARTIAL_MEDIA_FAILURE, READY, READY_CLEAN, RECOVERY, SERVICE_RESPONSE, SOURCE_COMPONENT_STATES, UNAUTHORIZED; missing: none.",
@@ -21739,6 +21739,8 @@
             "edge-return-account-roles",
             "edge-return-account-security",
             "edge-return-account-sessions",
+            "edge-return-account-support-access",
+            "edge-return-admin",
             "edge-return-captain-library",
             "edge-return-captain-sessions-sessionid",
             "edge-return-captain-tales-taleid",
@@ -21753,9 +21755,7 @@
             "edge-return-community-creators",
             "edge-return-community-creators-handle",
             "edge-return-community-featured",
-            "edge-return-community-guides",
-            "edge-return-community-guides-slug",
-            "edge-return-community-maps"
+            "edge-return-community-guides"
           ],
           "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
           "stateBehavior": "Required: EMPTY, ERROR, LOADING, READY, RECOVERY, UNAUTHORIZED; represented: AUTH_OR_PERMISSION_GUARD, CURRENT_DEFAULT, DEFAULT, EMPTY, EMPTY_WHERE_IMPLEMENTED, ERROR, ERROR_OR_PERMISSION_WHERE_IMPLEMENTED, LOADING, LOADING_WHERE_IMPLEMENTED, READY, RECOVERY, SOURCE_COMPONENT_STATES, UNAUTHORIZED; missing: none.",

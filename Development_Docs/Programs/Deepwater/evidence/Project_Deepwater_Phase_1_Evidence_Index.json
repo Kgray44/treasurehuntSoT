@@ -2052,6 +2052,83 @@
       "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
     },
     {
+      "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-001",
+      "freshness": "CURRENT",
+      "kind": "FEATURE_CATALOG",
+      "reference": "Development_Docs/Features/catalog/admiralty.json#FT-B010",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-002",
+      "freshness": "BOUNDED",
+      "kind": "COMMIT",
+      "reference": "49c2f59d6d75791edbdba84f22f5ec1595d2d129",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-003",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/admiralty/authorization.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-004",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "src/admiralty/support-access.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-005",
+      "freshness": "CURRENT",
+      "kind": "SOURCE_PATH",
+      "reference": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-006",
+      "freshness": "CURRENT",
+      "kind": "TEST",
+      "reference": "tests/e2e/admiralty-phase1.spec.ts",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-007",
+      "freshness": "CURRENT",
+      "kind": "COMPLETION_RECORD",
+      "reference": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-008",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-admin",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-009",
+      "freshness": "BOUNDED",
+      "kind": "ROUTE_INVENTORY",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-support-access",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-010",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-support-access",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
+      "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-011",
+      "freshness": "BOUNDED",
+      "kind": "SCREEN_CATALOG",
+      "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-admin",
+      "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+    },
+    {
       "evidenceId": "DW-EV-PLAYER-JOURNAL-001",
       "freshness": "CURRENT",
       "kind": "FEATURE_CATALOG",

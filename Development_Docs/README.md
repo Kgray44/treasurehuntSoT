@@ -33,6 +33,18 @@ also passed. See the [OAuth validation and completion record](Validation/Voyagew
 
 [Project Deepwater](Programs/Deepwater/README.md) governs product capability-realization and systems-audit truth. Phase 1, Sound the Depths, establishes the deterministic capability ledger, schema, ownership map, initial findings, Feature Catalog reconciliation, Phase 2 trace queue, and validation control plane. Phase 2, Trace the Current, converts that queue into complete source-bound traces, exact root causes, canonical assignments, remediation packets, and a Phase 3 realization queue without changing product behavior, schema, or data. Its classifications and maturity rungs are evidence-bound: source existence, local or synthetic validation, staging access, external-provider proof, deployment, and owner acceptance remain distinct.
 
+## Project Admiralty
+
+[Project Admiralty](Projects/Project_Admiralty/README.md) governs canonical
+platform-administration and operations authority. Phase 1, Raise the Colors,
+establishes role/capability policy, explicit administrator bootstrap,
+session-bound recent assurance, user-approved scoped Support Access, sanitized
+canonical audit evidence, an independently authorized limited admin shell, dual
+additive migrations, and a living capability-floor registry. The owner accepted
+the full Phase 1 walkthrough on 2026-08-09. The reconciled branch is a mainline
+candidate; canonical integration, deployment, production MySQL proof, and all
+later Admiralty phases remain separate, and Phase 2 remains dormant.
+
 ## Current project-governance wave
 
 The following owner-authored governing documents are current repository authority. The [Continuous Development and Mainline Integration Standard](Governing/Voyagewright_Continuous_Development_and_Mainline_Integration_Standard_v1.0.pdf) governs their concurrent implementation and protected-mainline reconciliation.

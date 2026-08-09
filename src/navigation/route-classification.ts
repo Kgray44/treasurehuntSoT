@@ -12,6 +12,15 @@ export const routeShellDefinitions: readonly RouteShellDefinition[] = [
     activeFamily: "global-home",
   },
   {
+    id: "admiralty",
+    pattern: "/admin",
+    workspace: "public",
+    shellMode: "TOKENIZED",
+    owner: "admiralty",
+    reason: "Deliberately hidden administrative entry; server authorization remains mandatory.",
+    exitTarget: "/",
+  },
+  {
     id: "token-account-claim",
     pattern: "/account/claim",
     workspace: "account",

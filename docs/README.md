@@ -3,7 +3,7 @@ title: Documentation hub
 audience: user
 status: current
 canonical_for: documentation-navigation
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-09
 ---
 
 # Chronicles documentation
@@ -12,7 +12,7 @@ last_reviewed: 2026-08-05
 
 [Getting started](user/getting-started.md), [Player guide](user/player-guide.md),
 [Profile](user/profile.md), [Chronicle Passport](user/chronicle-passport.md),
-[account security](user/account-security.md),
+[account security](user/account-security.md), [Support Access](user/support-access.md),
 [accessibility](user/accessibility.md), [privacy](user/privacy.md), and
 [troubleshooting](user/troubleshooting.md).
 
@@ -22,7 +22,7 @@ last_reviewed: 2026-08-05
 
 ## Hosting Chronicles
 
-[Installation](administrator/installation.md), [configuration](administrator/configuration.md), [OAuth providers](administrator/oauth-configuration.md), [self-hosting](administrator/self-hosting.md), [deployment](administrator/deployment.md), [backup and recovery](administrator/backup-and-recovery.md), [private content](administrator/private-content.md), and [upgrading](administrator/upgrading.md).
+[Installation](administrator/installation.md), [configuration](administrator/configuration.md), [Admiralty bootstrap](administrator/admiralty-bootstrap.md), [OAuth providers](administrator/oauth-configuration.md), [self-hosting](administrator/self-hosting.md), [deployment](administrator/deployment.md), [backup and recovery](administrator/backup-and-recovery.md), [private content](administrator/private-content.md), and [upgrading](administrator/upgrading.md).
 
 ## Developing Chronicles
 

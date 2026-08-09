@@ -1,0 +1,49 @@
+[
+  {
+    "id": "FT-B010",
+    "title": "Governed Platform Administration and Consented Support Access",
+    "summary": "Canonical account roles, recent privileged assurance, scoped user consent, sanitized audit evidence, and a limited administration shell establish least-privileged platform operations without creating a second identity authority.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "program": "Project Admiralty",
+    "surfaces": ["/admin", "/account/support-access"],
+    "subfeatures": [
+      "Server-side role and capability resolution",
+      "Explicit dry-run-first administrator bootstrap",
+      "Session-bound recent privileged assurance",
+      "User-approved target, operator, scope, and time-bounded Support Access",
+      "Sanitized canonical administrative audit evidence",
+      "Living 92-entry capability-floor registry",
+      "Non-revealing unauthorized admin route behavior",
+      "Additive SQLite and MySQL migration parity",
+      "Task-owned synthetic browser and owner-walkthrough runtimes"
+    ],
+    "evidence": [
+      { "kind": "commit", "value": "49c2f59d6d75791edbdba84f22f5ec1595d2d129" },
+      { "kind": "path", "value": "src/admiralty/authorization.ts" },
+      { "kind": "path", "value": "src/admiralty/support-access.ts" },
+      {
+        "kind": "path",
+        "value": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json"
+      },
+      { "kind": "test", "value": "tests/e2e/admiralty-phase1.spec.ts" },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md"
+      },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md"
+      }
+    ],
+    "limitations": [
+      "The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09",
+      "Owner-accepted mainline candidate; canonical integration and remote parity remain pending",
+      "Production MySQL execution, live-provider behavior, and physical assistive-technology validation remain external",
+      "Phase 2 and all later operational command-center capabilities remain dormant",
+      "Owner acceptance does not imply deployment or acceptance of later Admiralty phases"
+    ],
+    "branch": "codex/project-admiralty-phase1-raise-the-colors",
+    "commit": "49c2f59d6d75791edbdba84f22f5ec1595d2d129",
+    "catalogVersion": 1
+  }
+]

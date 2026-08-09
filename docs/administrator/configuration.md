@@ -3,7 +3,7 @@ title: Configuration
 audience: administrator
 status: current
 canonical_for: administrator-configuration
-last_reviewed: 2026-08-07
+last_reviewed: 2026-08-09
 ---
 
 # Configuration
@@ -25,6 +25,12 @@ Google and GitHub application OAuth require separate server-only credentials
 and exact callbacks. Follow the [OAuth configuration guide](oauth-configuration.md);
 never place client secrets in `.env.example`, a `NEXT_PUBLIC_` variable, or a
 committed environment file.
+
+Project Admiralty administrators are existing canonical accounts. Use the
+[Admiralty bootstrap guide](admiralty-bootstrap.md) to rehearse and explicitly
+commit role reconciliation after backup and migration review. Do not create a
+second administrator account system, treat an environment variable as runtime
+authorization, or expose a bootstrap HTTP endpoint.
 
 ## Phase 7 correction Round 3 status
 

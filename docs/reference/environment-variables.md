@@ -3,7 +3,7 @@ title: Environment variables
 audience: reference
 status: current
 canonical_for: environment-variables
-last_reviewed: 2026-08-07
+last_reviewed: 2026-08-09
 ---
 
 # Environment variables
@@ -38,6 +38,15 @@ Google and GitHub OAuth use only server-side variables:
 the callback registered with its provider. `VOYAGEWRIGHT_OAUTH_TEST_MODE=1`
 enables the deterministic provider simulator only outside production. See the
 [OAuth configuration guide](../administrator/oauth-configuration.md).
+
+Admiralty bootstrap accepts server-only `ADMIRALTY_BOOTSTRAP_ACCOUNT_IDS` and
+`ADMIRALTY_BOOTSTRAP_EMAILS` as explicit selectors for existing canonical
+accounts. They do not grant runtime authority by their presence; only the
+reviewed reconciliation command can write the canonical administrator role and
+audit event. `ADMIRALTY_PHASE1_TASK_ROOT` and the optional
+`ADMIRALTY_PHASE1_WALKTHROUGH_PORT` configure only the isolated synthetic
+validation/walkthrough runtime. Never point that task root at a repository or
+canonical database. See [Admiralty bootstrap](../administrator/admiralty-bootstrap.md).
 
 ## Phase 7 correction Round 2 status
 

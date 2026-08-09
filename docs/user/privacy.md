@@ -3,7 +3,7 @@ title: Privacy and private material
 audience: user
 status: current
 canonical_for: privacy-guide
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-09
 ---
 
 # Privacy and private material
@@ -32,6 +32,13 @@ object-key presentation, and unsafe media failure from ordinary screens. Public
 screens continue to use allowlisted projections, while restriction and
 dependency states remain explicit without revealing private facts. Committed
 evidence contains reserved synthetic content only.
+
+Project Admiralty Phase 1 Support Access requires your explicit approval for
+one operator, one account, exact safe scopes, and a grant of no more than 30
+minutes. You can deny or revoke it from **Account > Support Access**. The system
+does not define scopes for passwords, credential hashes, session/provider
+tokens, provider secrets, encryption keys, private Chronicle prose, or private
+media. Sensitive reads create sanitized audit evidence. See [Support Access](support-access.md).
 
 ## Phase 7 correction Round 1 status
 
