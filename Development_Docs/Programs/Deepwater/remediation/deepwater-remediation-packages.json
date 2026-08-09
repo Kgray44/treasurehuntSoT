@@ -1,0 +1,1105 @@
+{
+  "packages": [
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "Chronicle runtime truth, Tale Session events, membership, progression, and canonical grants",
+        "DW-DOC",
+        "DW-NAV",
+        "Feature Catalog FT-005"
+      ],
+      "affectedRoutesSurfaces": ["/join", "/join/[token]", "/player", "/player/invitation", "/player/library"],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: PLAYER",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-INVITATION-CREW-LIFECYCLE",
+      "concurrencyClass": "OWNER_PROJECT_WORK on a fresh accepted-main branch; coordinate before overlapping source changes.",
+      "contributingOwners": ["Ledgerlight"],
+      "currentBehavior": "Development_Docs/Features/catalog/player.json does not name the accepted canonical route identity /join/[token], /player/invitation, /player/library.",
+      "currentClassification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-005"],
+      "firstLossPoint": "DOCUMENTATION",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "One Voyage and Ledgerlight catalog reconciliation",
+      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-005",
+      "requiredBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The accepted product uses /join/[token], /player/invitation, /player/library, while Development_Docs/Features/catalog/player.json still declares /join, /player. The COMPOSITE_SURFACE result is documentation metadata loss, not a missing accepted product implementation.",
+      "softDependencies": ["Ledgerlight"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Update the owning catalog fragment to /join/[token], /player/invitation, /player/library with One Voyage and Ledgerlight review, then regenerate and validate the catalog."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "Captain operations and participating-Captain runtime presentation",
+        "DW-DOC",
+        "DW-NAV",
+        "Feature Catalog FT-007"
+      ],
+      "affectedRoutesSurfaces": [
+        "/captain",
+        "/captain/library",
+        "/captain/sessions/[sessionId]",
+        "/captain/voyages/[id]",
+        "/captain/voyages/[playthroughId]/player-preview"
+      ],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: CAPTAIN",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "Helm",
+      "capabilityId": "DW-CAP-CAPTAIN-VOYAGE-OPERATIONS",
+      "concurrencyClass": "BLOCKED_BY_ACTIVE_OWNER: Project Helm active unaccepted lane; Trace accepted Captain source and assign documentation work; do not redefine Captain semantics or edit the active lane.",
+      "contributingOwners": ["Ledgerlight"],
+      "currentBehavior": "Development_Docs/Features/catalog/captain.json does not name the accepted canonical route identity /captain/library, /captain/sessions/[sessionId], /captain/voyages/[playthroughId]/player-preview.",
+      "currentClassification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-007"],
+      "firstLossPoint": "DOCUMENTATION",
+      "hardDependencies": [
+        "Current owner-approved route identity",
+        "Helm owner approval for future catalog correction"
+      ],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "Helm and Ledgerlight catalog reconciliation",
+      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-007",
+      "requiredBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The accepted product uses /captain/library, /captain/sessions/[sessionId], /captain/voyages/[playthroughId]/player-preview, while Development_Docs/Features/catalog/captain.json still declares /captain, /captain/voyages/[id]. The COMPOSITE_SURFACE result is documentation metadata loss, not a missing accepted product implementation.",
+      "softDependencies": ["Ledgerlight"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Update the owning catalog fragment to /captain/library, /captain/sessions/[sessionId], /captain/voyages/[playthroughId]/player-preview with Helm and Ledgerlight review, then regenerate and validate the catalog."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "Authoring validation, simulation, and authored-contract truth",
+        "DW-DOC",
+        "DW-NAV",
+        "Feature Catalog FT-009"
+      ],
+      "affectedRoutesSurfaces": ["/studio/chronicles/[id]", "/studio/tales/[taleId]"],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: CREATOR",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "Drydock",
+      "capabilityId": "DW-CAP-STORY-BLOCK-SYSTEM",
+      "concurrencyClass": "OWNER_PROJECT_WORK on a fresh accepted-main branch; coordinate before overlapping source changes.",
+      "contributingOwners": ["Ledgerlight"],
+      "currentBehavior": "Development_Docs/Features/catalog/studio.json does not name the accepted canonical route identity /studio/tales/[taleId].",
+      "currentClassification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-009"],
+      "firstLossPoint": "DOCUMENTATION",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "Drydock and Ledgerlight catalog reconciliation",
+      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-009",
+      "requiredBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The accepted product uses /studio/tales/[taleId], while Development_Docs/Features/catalog/studio.json still declares /studio/chronicles/[id]. The CATALOG_STALE result is documentation metadata loss, not a missing accepted product implementation.",
+      "softDependencies": ["Ledgerlight"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Update the owning catalog fragment to /studio/tales/[taleId] with Drydock and Ledgerlight review, then regenerate and validate the catalog."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "Chronicle runtime truth, Tale Session events, membership, progression, and canonical grants",
+        "DW-DOC",
+        "DW-NAV",
+        "Feature Catalog FT-010"
+      ],
+      "affectedRoutesSurfaces": ["/studio/chronicles/[id]/versions", "/studio/tales/[taleId]/versions"],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: CREATOR",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS",
+      "concurrencyClass": "BLOCKED_BY_ACTIVE_OWNER: Project Tideglass unaccepted lane; Trace accepted One Voyage publishing truth and assign catalog metadata only; do not consume Tideglass comparison semantics before acceptance.",
+      "contributingOwners": ["Ledgerlight"],
+      "currentBehavior": "Development_Docs/Features/catalog/studio.json does not name the accepted canonical route identity /studio/tales/[taleId]/versions.",
+      "currentClassification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-010"],
+      "firstLossPoint": "DOCUMENTATION",
+      "hardDependencies": [
+        "Current owner-approved route identity",
+        "One Voyage remains canonical for immutable publishing; Tideglass owns comparison semantics"
+      ],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "One Voyage and Ledgerlight catalog reconciliation",
+      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-010",
+      "requiredBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The accepted product uses /studio/tales/[taleId]/versions, while Development_Docs/Features/catalog/studio.json still declares /studio/chronicles/[id]/versions. The CATALOG_STALE result is documentation metadata loss, not a missing accepted product implementation.",
+      "softDependencies": ["Ledgerlight"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Update the owning catalog fragment to /studio/tales/[taleId]/versions with One Voyage and Ledgerlight review, then regenerate and validate the catalog."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "Creator Studio interaction and product experience",
+        "DW-DOC",
+        "DW-NAV",
+        "Feature Catalog FT-011"
+      ],
+      "affectedRoutesSurfaces": ["/studio/assets", "/studio/tales/[taleId]/assets"],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: CREATOR",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "Shipwright",
+      "capabilityId": "DW-CAP-ASSET-LIBRARY-MEDIA-PIPELINE",
+      "concurrencyClass": "BLOCKED_BY_ACTIVE_OWNER: Project Shipwright Phase 1 unaccepted lane; Trace accepted Studio and assign catalog reconciliation; do not edit active Shipwright UX.",
+      "contributingOwners": ["Ledgerlight"],
+      "currentBehavior": "Development_Docs/Features/catalog/studio.json does not name the accepted canonical route identity /studio/tales/[taleId]/assets.",
+      "currentClassification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-011"],
+      "firstLossPoint": "DOCUMENTATION",
+      "hardDependencies": [
+        "Current owner-approved route identity",
+        "Refresh trace if Shipwright reaches accepted main before Phase 2 candidate validation"
+      ],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "Shipwright and Ledgerlight catalog reconciliation",
+      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-011",
+      "requiredBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The accepted product uses /studio/tales/[taleId]/assets, while Development_Docs/Features/catalog/studio.json still declares /studio/assets. The CATALOG_STALE result is documentation metadata loss, not a missing accepted product implementation.",
+      "softDependencies": ["Ledgerlight"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Update the owning catalog fragment to /studio/tales/[taleId]/assets with Shipwright and Ledgerlight review, then regenerate and validate the catalog."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "Authoring validation, simulation, and authored-contract truth",
+        "DW-DOC",
+        "DW-NAV",
+        "Feature Catalog FT-012"
+      ],
+      "affectedRoutesSurfaces": ["/studio/tales/[taleId]/locations", "/studio/waypoints"],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: CREATOR",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "Drydock",
+      "capabilityId": "DW-CAP-WAYPOINT-REFERENCE-LIBRARY",
+      "concurrencyClass": "OWNER_PROJECT_WORK on a fresh accepted-main branch; coordinate before overlapping source changes.",
+      "contributingOwners": ["Ledgerlight"],
+      "currentBehavior": "Development_Docs/Features/catalog/studio.json does not name the accepted canonical route identity /studio/tales/[taleId]/locations.",
+      "currentClassification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-012"],
+      "firstLossPoint": "DOCUMENTATION",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "Drydock and Ledgerlight catalog reconciliation",
+      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-012",
+      "requiredBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The accepted product uses /studio/tales/[taleId]/locations, while Development_Docs/Features/catalog/studio.json still declares /studio/waypoints. The CATALOG_STALE result is documentation metadata loss, not a missing accepted product implementation.",
+      "softDependencies": ["Ledgerlight"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Update the owning catalog fragment to /studio/tales/[taleId]/locations with Drydock and Ledgerlight review, then regenerate and validate the catalog."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "Authoring validation, simulation, and authored-contract truth",
+        "DW-DOC",
+        "DW-NAV",
+        "Feature Catalog FT-013"
+      ],
+      "affectedRoutesSurfaces": ["/studio/artifacts", "/studio/tales/[taleId]/artifacts"],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: CREATOR",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "Drydock",
+      "capabilityId": "DW-CAP-CHRONICLE-ARTIFACT-DEFINITIONS",
+      "concurrencyClass": "OWNER_PROJECT_WORK on a fresh accepted-main branch; coordinate before overlapping source changes.",
+      "contributingOwners": ["Ledgerlight"],
+      "currentBehavior": "Development_Docs/Features/catalog/studio.json does not name the accepted canonical route identity /studio/tales/[taleId]/artifacts.",
+      "currentClassification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-013"],
+      "firstLossPoint": "DOCUMENTATION",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "Drydock and Ledgerlight catalog reconciliation",
+      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-013",
+      "requiredBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The accepted product uses /studio/tales/[taleId]/artifacts, while Development_Docs/Features/catalog/studio.json still declares /studio/artifacts. The CATALOG_STALE result is documentation metadata loss, not a missing accepted product implementation.",
+      "softDependencies": ["Ledgerlight"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Update the owning catalog fragment to /studio/tales/[taleId]/artifacts with Drydock and Ledgerlight review, then regenerate and validate the catalog."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "Chronicle runtime truth, Tale Session events, membership, progression, and canonical grants",
+        "DW-DOC",
+        "DW-NAV",
+        "Feature Catalog FT-014"
+      ],
+      "affectedRoutesSurfaces": [
+        "/api/play/sessions/[sessionId]",
+        "/api/voyages",
+        "/captain",
+        "/captain/sessions/[sessionId]"
+      ],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: CAPTAIN",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-AUTHORITATIVE-PROGRESSION",
+      "concurrencyClass": "OWNER_PROJECT_WORK on a fresh accepted-main branch; coordinate before overlapping source changes.",
+      "contributingOwners": ["Ledgerlight"],
+      "currentBehavior": "Development_Docs/Features/catalog/studio.json does not name the accepted canonical route identity /api/play/sessions/[sessionId], /captain/sessions/[sessionId].",
+      "currentClassification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-014"],
+      "firstLossPoint": "DOCUMENTATION",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "One Voyage and Ledgerlight catalog reconciliation",
+      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-014",
+      "requiredBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The accepted product uses /api/play/sessions/[sessionId], /captain/sessions/[sessionId], while Development_Docs/Features/catalog/studio.json still declares /api/voyages, /captain. The COMPOSITE_SURFACE result is documentation metadata loss, not a missing accepted product implementation.",
+      "softDependencies": ["Ledgerlight"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Update the owning catalog fragment to /api/play/sessions/[sessionId], /captain/sessions/[sessionId] with One Voyage and Ledgerlight review, then regenerate and validate the catalog."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "DW-DOC",
+        "DW-NAV",
+        "Feature Catalog FT-015",
+        "Journey archive, historical presentation, Journal, and personal-history experience"
+      ],
+      "affectedRoutesSurfaces": ["/player/playthroughs/[playthroughId]/journal", "/player/voyages/[id]"],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: PLAYER",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "Wakebook",
+      "capabilityId": "DW-CAP-PLAYER-JOURNAL",
+      "concurrencyClass": "BLOCKED_BY_ACTIVE_OWNER: Project Wakebook active unaccepted lane; Bind accepted canonical Journal evidence and assign documentation reconciliation; do not consume unaccepted Wakebook changes.",
+      "contributingOwners": ["Ledgerlight"],
+      "currentBehavior": "Development_Docs/Features/catalog/player.json does not name the accepted canonical route identity /player/playthroughs/[playthroughId]/journal.",
+      "currentClassification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-015"],
+      "firstLossPoint": "DOCUMENTATION",
+      "hardDependencies": ["Current owner-approved route identity", "Refresh if Wakebook reaches accepted main"],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "Wakebook and Ledgerlight catalog reconciliation",
+      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-015",
+      "requiredBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The accepted product uses /player/playthroughs/[playthroughId]/journal, while Development_Docs/Features/catalog/player.json still declares /player/voyages/[id]. The CATALOG_STALE result is documentation metadata loss, not a missing accepted product implementation.",
+      "softDependencies": ["Ledgerlight"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Update the owning catalog fragment to /player/playthroughs/[playthroughId]/journal with Wakebook and Ledgerlight review, then regenerate and validate the catalog."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": ["DW-DOC", "DW-NAV", "Feature Catalog FT-016", "Geospatial and location truth"],
+      "affectedRoutesSurfaces": ["/player/playthroughs/[playthroughId]/journal", "/player/voyages/[id]/chart"],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: PLAYER",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "Landfall",
+      "capabilityId": "DW-CAP-VOYAGE-CHART",
+      "concurrencyClass": "OWNER_PROJECT_WORK on a fresh accepted-main branch; coordinate before overlapping source changes.",
+      "contributingOwners": ["Ledgerlight"],
+      "currentBehavior": "Development_Docs/Features/catalog/player.json does not name the accepted canonical route identity /player/playthroughs/[playthroughId]/journal.",
+      "currentClassification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-016"],
+      "firstLossPoint": "DOCUMENTATION",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "Landfall and Ledgerlight catalog reconciliation",
+      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-016",
+      "requiredBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The accepted product uses /player/playthroughs/[playthroughId]/journal, while Development_Docs/Features/catalog/player.json still declares /player/voyages/[id]/chart. The COMPOSITE_SURFACE result is documentation metadata loss, not a missing accepted product implementation.",
+      "softDependencies": ["Ledgerlight"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Update the owning catalog fragment to /player/playthroughs/[playthroughId]/journal with Landfall and Ledgerlight review, then regenerate and validate the catalog."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "Chronicle runtime truth, Tale Session events, membership, progression, and canonical grants",
+        "DW-DOC",
+        "DW-NAV",
+        "Feature Catalog FT-017"
+      ],
+      "affectedRoutesSurfaces": ["/player/playthroughs/[playthroughId]/journal", "/player/voyages/[id]/treasure"],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: PLAYER",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-ARTIFACT-REVEAL",
+      "concurrencyClass": "OWNER_PROJECT_WORK on a fresh accepted-main branch; coordinate before overlapping source changes.",
+      "contributingOwners": ["Ledgerlight"],
+      "currentBehavior": "Development_Docs/Features/catalog/player.json does not name the accepted canonical route identity /player/playthroughs/[playthroughId]/journal.",
+      "currentClassification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-017"],
+      "firstLossPoint": "DOCUMENTATION",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "One Voyage and Ledgerlight catalog reconciliation",
+      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-017",
+      "requiredBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The accepted product uses /player/playthroughs/[playthroughId]/journal, while Development_Docs/Features/catalog/player.json still declares /player/voyages/[id]/treasure. The COMPOSITE_SURFACE result is documentation metadata loss, not a missing accepted product implementation.",
+      "softDependencies": ["Ledgerlight"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Update the owning catalog fragment to /player/playthroughs/[playthroughId]/journal with One Voyage and Ledgerlight review, then regenerate and validate the catalog."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "Chronicle runtime truth, Tale Session events, membership, progression, and canonical grants",
+        "DW-DOC",
+        "DW-NAV",
+        "Feature Catalog FT-018"
+      ],
+      "affectedRoutesSurfaces": ["/player/playthroughs/[playthroughId]/journal", "/player/voyages/[id]/ledger"],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: PLAYER",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-SIDE-QUEST-LEDGER",
+      "concurrencyClass": "OWNER_PROJECT_WORK on a fresh accepted-main branch; coordinate before overlapping source changes.",
+      "contributingOwners": ["Ledgerlight"],
+      "currentBehavior": "Development_Docs/Features/catalog/player.json does not name the accepted canonical route identity /player/playthroughs/[playthroughId]/journal.",
+      "currentClassification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-018"],
+      "firstLossPoint": "DOCUMENTATION",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "One Voyage and Ledgerlight catalog reconciliation",
+      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-018",
+      "requiredBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The accepted product uses /player/playthroughs/[playthroughId]/journal, while Development_Docs/Features/catalog/player.json still declares /player/voyages/[id]/ledger. The COMPOSITE_SURFACE result is documentation metadata loss, not a missing accepted product implementation.",
+      "softDependencies": ["Ledgerlight"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Update the owning catalog fragment to /player/playthroughs/[playthroughId]/journal with One Voyage and Ledgerlight review, then regenerate and validate the catalog."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "DW-DOC",
+        "DW-NAV",
+        "Feature Catalog FT-019",
+        "Journey archive, historical presentation, Journal, and personal-history experience"
+      ],
+      "affectedRoutesSurfaces": ["/player/playthroughs/[playthroughId]/journal", "/player/voyages/[id]/log"],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: PLAYER",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "Wakebook",
+      "capabilityId": "DW-CAP-SHIPS-LOG",
+      "concurrencyClass": "BLOCKED_BY_ACTIVE_OWNER: Project Wakebook active unaccepted lane; Bind accepted canonical Journal evidence and assign documentation reconciliation; do not consume unaccepted Wakebook changes.",
+      "contributingOwners": ["Ledgerlight"],
+      "currentBehavior": "Development_Docs/Features/catalog/player.json does not name the accepted canonical route identity /player/playthroughs/[playthroughId]/journal.",
+      "currentClassification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-019"],
+      "firstLossPoint": "DOCUMENTATION",
+      "hardDependencies": ["Current owner-approved route identity", "Refresh if Wakebook reaches accepted main"],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "Wakebook and Ledgerlight catalog reconciliation",
+      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-019",
+      "requiredBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The accepted product uses /player/playthroughs/[playthroughId]/journal, while Development_Docs/Features/catalog/player.json still declares /player/voyages/[id]/log. The COMPOSITE_SURFACE result is documentation metadata loss, not a missing accepted product implementation.",
+      "softDependencies": ["Ledgerlight"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Update the owning catalog fragment to /player/playthroughs/[playthroughId]/journal with Wakebook and Ledgerlight review, then regenerate and validate the catalog."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "Chronicle runtime truth, Tale Session events, membership, progression, and canonical grants",
+        "DW-DOC",
+        "DW-NAV",
+        "Feature Catalog FT-020"
+      ],
+      "affectedRoutesSurfaces": ["/player/playthroughs/[playthroughId]/journal", "/player/voyages/[id]/finale"],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: PLAYER",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-FINALE-CHAMBER",
+      "concurrencyClass": "OWNER_PROJECT_WORK on a fresh accepted-main branch; coordinate before overlapping source changes.",
+      "contributingOwners": ["Ledgerlight"],
+      "currentBehavior": "Development_Docs/Features/catalog/player.json does not name the accepted canonical route identity /player/playthroughs/[playthroughId]/journal.",
+      "currentClassification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-020"],
+      "firstLossPoint": "DOCUMENTATION",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "One Voyage and Ledgerlight catalog reconciliation",
+      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-020",
+      "requiredBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The accepted product uses /player/playthroughs/[playthroughId]/journal, while Development_Docs/Features/catalog/player.json still declares /player/voyages/[id]/finale. The COMPOSITE_SURFACE result is documentation metadata loss, not a missing accepted product implementation.",
+      "softDependencies": ["Ledgerlight"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Update the owning catalog fragment to /player/playthroughs/[playthroughId]/journal with One Voyage and Ledgerlight review, then regenerate and validate the catalog."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "Chronicle runtime truth, Tale Session events, membership, progression, and canonical grants",
+        "DW-DOC",
+        "DW-NAV",
+        "Feature Catalog FT-021"
+      ],
+      "affectedRoutesSurfaces": [
+        "/api/player/[campaignSlug]/events",
+        "/api/player/[campaignSlug]/presence",
+        "/api/player/events",
+        "/player",
+        "/player/playthroughs/[playthroughId]/journal"
+      ],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: PLAYER",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-REALTIME-PRESENCE-REPLAY",
+      "concurrencyClass": "OWNER_PROJECT_WORK on a fresh accepted-main branch; coordinate before overlapping source changes.",
+      "contributingOwners": ["Ledgerlight"],
+      "currentBehavior": "Development_Docs/Features/catalog/player.json does not name the accepted canonical route identity /api/player/[campaignSlug]/events, /api/player/[campaignSlug]/presence, /player/playthroughs/[playthroughId]/journal.",
+      "currentClassification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-021"],
+      "firstLossPoint": "DOCUMENTATION",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "One Voyage and Ledgerlight catalog reconciliation",
+      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-021",
+      "requiredBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The accepted product uses /api/player/[campaignSlug]/events, /api/player/[campaignSlug]/presence, /player/playthroughs/[playthroughId]/journal, while Development_Docs/Features/catalog/player.json still declares /api/player/events, /player. The COMPOSITE_SURFACE result is documentation metadata loss, not a missing accepted product implementation.",
+      "softDependencies": ["Ledgerlight"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Update the owning catalog fragment to /api/player/[campaignSlug]/events, /api/player/[campaignSlug]/presence, /player/playthroughs/[playthroughId]/journal with One Voyage and Ledgerlight review, then regenerate and validate the catalog."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "Chronicle runtime truth, Tale Session events, membership, progression, and canonical grants",
+        "DW-DOC",
+        "DW-NAV",
+        "Feature Catalog FT-023"
+      ],
+      "affectedRoutesSurfaces": [
+        "/api/captain/sessions/[sessionId]/simulate",
+        "/api/helper/verification",
+        "/api/verification",
+        "/captain",
+        "/captain/sessions/[sessionId]"
+      ],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: CAPTAIN",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-VERIFICATION-PROVIDER-FRAMEWORK",
+      "concurrencyClass": "OWNER_PROJECT_WORK on a fresh accepted-main branch; coordinate before overlapping source changes.",
+      "contributingOwners": ["Ledgerlight"],
+      "currentBehavior": "Development_Docs/Features/catalog/one-voyage.json does not name the accepted canonical route identity /api/helper/verification, /captain/sessions/[sessionId].",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "currentHighestRung": "UI",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-023"],
+      "firstLossPoint": "DOCUMENTATION",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "One Voyage and Ledgerlight catalog reconciliation",
+      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-023",
+      "requiredBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The accepted product uses /api/helper/verification, /captain/sessions/[sessionId], while Development_Docs/Features/catalog/one-voyage.json still declares /api/verification, /captain. The CATALOG_STALE result is documentation metadata loss, not a missing accepted product implementation.",
+      "softDependencies": ["Ledgerlight"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Update the owning catalog fragment to /api/helper/verification, /captain/sessions/[sessionId] with One Voyage and Ledgerlight review, then regenerate and validate the catalog."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "Community exchange, publishing, discovery, social, moderation-domain, and community operations truth",
+        "DW-DOC",
+        "DW-NAV",
+        "Feature Catalog FT-025"
+      ],
+      "affectedRoutesSurfaces": ["/community", "/studio/community", "/studio/exchange", "/tales"],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: CREATOR, VISITOR",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "Harborlight",
+      "capabilityId": "DW-CAP-COMMUNITY-EXCHANGE",
+      "concurrencyClass": "OWNER_PROJECT_WORK on a fresh accepted-main branch; coordinate before overlapping source changes.",
+      "contributingOwners": ["Ledgerlight"],
+      "currentBehavior": "Development_Docs/Features/catalog/harborlight.json does not name the accepted canonical route identity /community, /studio/exchange.",
+      "currentClassification": "FULLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-025"],
+      "firstLossPoint": "DOCUMENTATION",
+      "hardDependencies": ["Current owner-approved route identity"],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "Harborlight and Ledgerlight catalog reconciliation",
+      "remediationPacketId": "DW-REMED-CATALOG-SURFACE-FT-025",
+      "requiredBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The accepted product uses /community, /studio/exchange, while Development_Docs/Features/catalog/harborlight.json still declares /studio/community, /tales. The CATALOG_STALE result is documentation metadata loss, not a missing accepted product implementation.",
+      "softDependencies": ["Ledgerlight"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Update the owning catalog fragment to /community, /studio/exchange with Harborlight and Ledgerlight review, then regenerate and validate the catalog."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "DW-CAP",
+        "Product coherence, route and screen governance, natural journeys, and owner-walkthrough control plane"
+      ],
+      "affectedRoutesSurfaces": [
+        "/",
+        "/account",
+        "/account/data",
+        "/account/email-change",
+        "/account/linked-identities",
+        "/account/personal-information",
+        "/account/preferences",
+        "/account/roles",
+        "/account/security",
+        "/account/sessions",
+        "/captain/library",
+        "/chronicles/[taleSlug]",
+        "/community",
+        "/community/[slug]",
+        "/passport",
+        "/passport/artifacts",
+        "/passport/history",
+        "/passport/memories",
+        "/passport/saved",
+        "/player/library",
+        "/register",
+        "/sign-in",
+        "/studio/library",
+        "/verify-email"
+      ],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: ACCOUNT_OWNER, CAPTAIN, CREATOR, PLAYER, VISITOR",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "Homeport",
+      "capabilityId": "DW-CAP-INTEGRATED-WHOLE-PRODUCT-VOYAGE",
+      "concurrencyClass": "OWNER_PROJECT_WORK on a fresh accepted-main branch; coordinate before overlapping source changes.",
+      "contributingOwners": ["Harborlight", "One Voyage", "Shipwright", "Wayfarer"],
+      "currentBehavior": "Accepted main contains the automated and correction control plane, while the authoritative owner record remains PENDING_OWNER_DECISION.",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "expectedTerminalRung": "OWNER_ACCEPTED",
+      "findingIds": ["DW-FIND-HOMEPORT-OWNER-DECISION-PENDING"],
+      "firstLossPoint": "OWNER_ACCEPTANCE",
+      "hardDependencies": ["Owner decision on the current governed running experience"],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "Project Homeport Phase 7 owner re-review",
+      "remediationPacketId": "DW-REMED-HOMEPORT-OWNER-DECISION-PENDING",
+      "requiredBehavior": "The major whole-product capability reaches its OWNER_ACCEPTED terminal rung only after the owner completes the governed Round 3 re-review.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Owner decision record updated by the owner to an allowed accepted outcome and bound to the reviewed running source."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "Current accepted source and Patch A validation reach JOURNEY_PROVEN, but Project_Homeport_Phase_7_Owner_Decision_Record.md remains PENDING_OWNER_DECISION. Only the owner can advance the governing decision.",
+      "softDependencies": ["Harborlight", "One Voyage", "Shipwright", "Wayfarer"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "OWNER_DECISION_REQUIRED",
+      "suggestedIntegrationPattern": "Run the governing owner re-review against the accepted version and update only the owner-decision authority with the actual decision."
+    },
+    {
+      "accessibilityImplications": "If an operator UI consumes this contract, it must expose named controls, atomic status, keyboard/focus behavior, and non-secret recovery guidance.",
+      "affectedContracts": [
+        "Account identity, sessions, personal profile, privacy, Chronicle history, and personal artifacts",
+        "DW-PROJ",
+        "DW-UI"
+      ],
+      "affectedRoutesSurfaces": ["SAFE_ADMIRALTY_DELIVERY_HEALTH"],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: SUPPORT_OPERATOR, SYSTEM",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: RESTRICTED_DELIVERY_METADATA",
+        "Privileges: PRIVILEGED_SUPPORT, SYSTEM_AUTHORITY"
+      ],
+      "canonicalOwner": "Wayfarer",
+      "capabilityId": "DW-CAP-TRANSACTIONAL-EMAIL-DELIVERY",
+      "concurrencyClass": "BLOCKED_BY_ACTIVE_OWNER: Project Admiralty Phase 1 unaccepted lane; Trace accepted main, close disproven gaps, and assign remaining projection work; do not edit Admiralty UI or consume its unaccepted source.",
+      "contributingOwners": ["Admiralty", "Breakwater"],
+      "currentBehavior": "Delivery services and lifecycle records exist, but Phase 1 found no governed Admiralty health surface in accepted main.",
+      "currentClassification": "BACKEND_ONLY",
+      "currentHighestRung": "SERVICE",
+      "expectedTerminalRung": "PROJECTION",
+      "findingIds": ["DW-FIND-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION"],
+      "firstLossPoint": "PROJECTION",
+      "hardDependencies": [
+        "Accepted owner projection contract before any future Admiralty consumer lands",
+        "Wayfarer safe projection contract"
+      ],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": null,
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "Wayfarer projection plus Admiralty consumer coordination",
+      "remediationPacketId": "DW-REMED-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION",
+      "requiredBehavior": "Privileged operators receive a safe delivery-health projection without message secrets or unnecessary recipient data.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Privileged projection and negative privacy proof plus operator journey evidence."
+      ],
+      "requiredStates": ["ACCEPTED", "BOUNCED", "DELIVERED", "FAILED", "QUEUED"],
+      "rootCause": "Delivery and provider truth is retained inside Wayfarer, but no authenticated sanitized support/operator DTO or route exposes provider availability, receipt lifecycle, safe failure category, or staleness.",
+      "softDependencies": ["Admiralty", "Breakwater"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "ASSIGNED",
+      "suggestedIntegrationPattern": "Define an owner-approved sanitized read projection first, then add the privileged consumer without duplicating service or domain truth."
+    },
+    {
+      "accessibilityImplications": "Any changed user-facing control or state requires keyboard, focus, touch, zoom, announcement, non-color, and reduced-motion evidence applicable to the surface.",
+      "affectedContracts": [
+        "Chronicle runtime truth, Tale Session events, membership, progression, and canonical grants",
+        "DW-CAP",
+        "DW-UI"
+      ],
+      "affectedRoutesSurfaces": [
+        "/api/captain/sessions/[sessionId]/simulate",
+        "/api/helper/verification",
+        "/api/verification",
+        "/captain",
+        "/captain/sessions/[sessionId]"
+      ],
+      "authorizationPrivacyConstraints": [
+        "Audience roles: CAPTAIN",
+        "Do not expose credentials, tokens, private content, raw object identifiers, or provider secrets.",
+        "Privacy class: PUBLIC_OR_ACCOUNT_GOVERNED",
+        "Privileges: ROUTE_POLICY"
+      ],
+      "canonicalOwner": "Watchglass",
+      "capabilityId": "DW-CAP-VERIFICATION-PROVIDER-FRAMEWORK",
+      "concurrencyClass": "OWNER_PROJECT_WORK on a fresh accepted-main branch; coordinate before overlapping source changes.",
+      "contributingOwners": ["Helm", "One Voyage"],
+      "currentBehavior": "The catalog explicitly records that real camera capture and recognition are not implemented; current proof uses the framework and simulator boundary.",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "currentHighestRung": "UI",
+      "expectedTerminalRung": "JOURNEY_PROVEN",
+      "findingIds": ["DW-FIND-VERIFICATION-PROVIDER-REALIZATION-GAP"],
+      "firstLossPoint": "EXTERNAL_PROVIDER",
+      "hardDependencies": ["Accepted provider contract and owner phase"],
+      "mainlineSafetyExpectations": [
+        "Preserve canonical domain ownership and authorization boundaries.",
+        "No unrelated Prisma schema or business migration change.",
+        "Keep the remediation independently mainline-safe and source-bound."
+      ],
+      "multiOwnerRationale": "One Voyage owns the framework capability; Watchglass owns the missing realization named by this finding.",
+      "prohibitedImplementationShortcuts": [
+        "Do not duplicate canonical business state in UI or route code.",
+        "Do not broaden authorization or expose raw private/provider data.",
+        "Do not treat synthetic, local, staging, or automated evidence as owner acceptance or live-provider proof.",
+        "Do not hand-edit generated FEATURE_CATALOG.md."
+      ],
+      "recommendedProjectPhase": "Watchglass real-provider realization coordinated with One Voyage",
+      "remediationPacketId": "DW-REMED-VERIFICATION-PROVIDER-REALIZATION-GAP",
+      "requiredBehavior": "The governed verification boundary has an appropriate real evidence-capture or recognition provider when product scope requires it.",
+      "requiredClosureEvidence": [
+        "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
+        "Source-bound provider, privacy, authorization, failure-state, and natural-journey evidence on accepted main."
+      ],
+      "requiredStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "rootCause": "The provider-neutral verification envelope and authorized helper transport exist, while current Chronicle validation deliberately rejects visionLocation, visionObject, and externalWebhook and no accepted live adapter emits the envelope.",
+      "softDependencies": ["Helm", "One Voyage"],
+      "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+      "status": "EXTERNAL_DEPENDENCY",
+      "suggestedIntegrationPattern": "Implement a provider adapter behind the accepted versioned verification envelope; retain One Voyage authorization, idempotency, Captain override, and audit contracts."
+    }
+  ],
+  "phase": "Phase 2 - Trace the Current",
+  "project": "Project Deepwater",
+  "schemaVersion": "1.0.0",
+  "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+}
