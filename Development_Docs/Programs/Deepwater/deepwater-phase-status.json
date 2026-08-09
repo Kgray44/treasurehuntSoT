@@ -1,85 +1,146 @@
 {
-  "activation": "ACTIVE_GOVERNANCE_AUDIT_TOOLING",
-  "auditedSourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d",
-  "baseSourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d",
-  "branch": "codex/project-deepwater-phase1-sound-the-depths",
+  "activation": "ACTIVE_GOVERNANCE_TRACE_AND_ASSIGNMENT_TOOLING",
+  "auditedSourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+  "baseSourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+  "branch": "codex/project-deepwater-phase2-trace-the-current",
   "featureCatalogImpact": "NO_CHANGE_REQUIRED",
-  "finalReconciledMainSha": "d3b04e54fbf537869fe3969d6ae19e8b23942986",
+  "finalReconciledMainSha": "5b266251bd5a42efe90988e45daf55bca8e566f1",
   "limitations": [
-    "Initial traces are Phase 1 skeletons, not complete Phase 2 traces.",
-    "Homeport evidence retains its local, synthetic, staging, provider, deployment, and owner-decision boundaries.",
-    "Phase 2 must begin from accepted main only after Phase 1 convergence."
+    "Phase 2 assigns remediation and does not implement Phase 3 work.",
+    "Configured external providers, deployment, physical-device evidence, and owner acceptance remain distinct from local or synthetic proof.",
+    "Unaccepted owner branches are excluded from implementation truth and recorded only in the coordination register."
   ],
-  "mainlineState": "ACCEPTED",
+  "mainlineState": "NOT_INTEGRATED",
   "metrics": {
-    "capabilitiesByCanonicalOwner": {
-      "Admiralty": 1,
-      "Breakwater": 1,
-      "Drydock": 3,
-      "Harborlight": 5,
-      "Helm": 1,
-      "Homeport": 2,
-      "Landfall": 1,
-      "Lanternwake": 1,
-      "Ledgerlight": 1,
-      "One Voyage": 9,
-      "Platform": 2,
-      "Sealed Hold": 4,
-      "Security": 2,
-      "Shipwright": 2,
-      "Sounding Line": 1,
-      "True North": 4,
-      "Universal Language": 1,
-      "Wakebook": 2,
-      "Wayfarer": 11
-    },
-    "capabilitiesByExpectedTerminalRung": {
-      "JOURNEY_PROVEN": 38,
-      "OWNER_ACCEPTED": 3,
-      "PROJECTION": 4,
-      "SERVICE": 9
-    },
+    "actualProductGaps": 2,
+    "capabilitiesWithCompleteOwnerAssignment": 43,
+    "capabilitiesWithExactFirstLossPoint": 3,
+    "capabilitiesWithExactRootCause": 43,
     "classifications": {
-      "BACKEND_ONLY": 3,
+      "BACKEND_ONLY": 1,
       "DEPRECATED": 1,
+      "FULLY_REALIZED": 40,
       "INTERNAL_BY_DESIGN": 7,
-      "PARTIALLY_REALIZED": 41,
+      "PARTIALLY_REALIZED": 3,
       "SECURITY_RESTRICTED": 2
     },
-    "featureCatalogMappedCount": 42,
+    "deepwaterSliceEligibleFindings": 0,
+    "documentationOnlyMismatches": 17,
+    "externalProviderGaps": 1,
+    "findingsByAssignmentDestination": {
+      "Drydock and Ledgerlight catalog reconciliation": 3,
+      "Harborlight and Ledgerlight catalog reconciliation": 1,
+      "Helm and Ledgerlight catalog reconciliation": 1,
+      "Landfall and Ledgerlight catalog reconciliation": 1,
+      "One Voyage and Ledgerlight catalog reconciliation": 8,
+      "Project Homeport Phase 7 owner re-review": 1,
+      "Shipwright and Ledgerlight catalog reconciliation": 1,
+      "Wakebook and Ledgerlight catalog reconciliation": 2,
+      "Watchglass real-provider realization coordinated with One Voyage": 1,
+      "Wayfarer projection plus Admiralty consumer coordination": 1
+    },
+    "findingsByCanonicalOwner": {
+      "Drydock": 3,
+      "Harborlight": 1,
+      "Helm": 1,
+      "Homeport": 1,
+      "Landfall": 1,
+      "One Voyage": 8,
+      "Shipwright": 1,
+      "Wakebook": 2,
+      "Watchglass": 1,
+      "Wayfarer": 1
+    },
+    "findingsByLossLayer": {
+      "DOCUMENTATION": 17,
+      "EXTERNAL_PROVIDER": 1,
+      "OWNER_ACCEPTANCE": 1,
+      "PROJECTION": 1
+    },
     "openFindingsBySeverity": {
       "HIGH": 1,
-      "LOW": 7,
-      "MEDIUM": 15
+      "LOW": 6,
+      "MEDIUM": 13
     },
-    "ownershipAmbiguousCount": 0,
-    "ratios": {
-      "featureCatalogMappingCoverage": 1,
-      "initialRealizationCoverage": 0.1667,
-      "naturalJourneyEvidenceCoverage": 0.561,
-      "ownerMappedCoverage": 1
+    "ownerAcceptanceGaps": 1,
+    "phase1ComparableMetrics": {
+      "capabilitiesByCanonicalOwner": {
+        "Admiralty": 1,
+        "Breakwater": 1,
+        "Drydock": 3,
+        "Harborlight": 5,
+        "Helm": 1,
+        "Homeport": 2,
+        "Landfall": 1,
+        "Lanternwake": 1,
+        "Ledgerlight": 1,
+        "One Voyage": 9,
+        "Platform": 2,
+        "Sealed Hold": 4,
+        "Security": 2,
+        "Shipwright": 2,
+        "Sounding Line": 1,
+        "True North": 4,
+        "Universal Language": 1,
+        "Wakebook": 2,
+        "Wayfarer": 11
+      },
+      "capabilitiesByExpectedTerminalRung": {
+        "JOURNEY_PROVEN": 38,
+        "OWNER_ACCEPTED": 3,
+        "PROJECTION": 4,
+        "SERVICE": 9
+      },
+      "classifications": {
+        "BACKEND_ONLY": 3,
+        "DEPRECATED": 1,
+        "INTERNAL_BY_DESIGN": 7,
+        "PARTIALLY_REALIZED": 41,
+        "SECURITY_RESTRICTED": 2
+      },
+      "featureCatalogMappedCount": 42,
+      "openFindingsBySeverity": {
+        "HIGH": 1,
+        "LOW": 7,
+        "MEDIUM": 15
+      },
+      "ownershipAmbiguousCount": 0,
+      "ratios": {
+        "featureCatalogMappingCoverage": 1,
+        "initialRealizationCoverage": 0.1667,
+        "naturalJourneyEvidenceCoverage": 0.561,
+        "ownerMappedCoverage": 1
+      },
+      "secondaryFlags": {
+        "DOCUMENTATION_MISMATCH": 18,
+        "EXTERNAL_PROVIDER_PENDING": 7,
+        "JOURNEY_UNPROVEN": 40,
+        "LEGACY_DEPENDENT": 1,
+        "UNVERIFIED": 54
+      },
+      "totalMeaningfulCapabilities": 54,
+      "uncatalogedMeaningfulCapabilityCount": 12,
+      "userFacingLackingAccessibilityEvidence": 41,
+      "userFacingLackingDiscoverabilityEvidence": 41,
+      "userFacingLackingJourneyEvidence": 18,
+      "userFacingLackingStateCompletenessEvidence": 32
     },
-    "secondaryFlags": {
-      "DOCUMENTATION_MISMATCH": 18,
-      "EXTERNAL_PROVIDER_PENDING": 7,
-      "JOURNEY_UNPROVEN": 40,
-      "LEGACY_DEPENDENT": 1,
-      "UNVERIFIED": 54
-    },
-    "totalMeaningfulCapabilities": 54,
-    "uncatalogedMeaningfulCapabilityCount": 12,
-    "userFacingLackingAccessibilityEvidence": 41,
-    "userFacingLackingDiscoverabilityEvidence": 41,
-    "userFacingLackingJourneyEvidence": 18,
-    "userFacingLackingStateCompletenessEvidence": 32
+    "prioritizedQueueItemsCompleted": 44,
+    "prioritizedTracesCompleted": 43,
+    "remainingUnexplainedUnknownTraceLayers": 0,
+    "remediationPackagesGenerated": 20,
+    "totalCapabilities": 54,
+    "traceCompletenessPercentage": 1,
+    "tracesExternallyDeferred": 0,
+    "tracesSuperseded": 0
   },
-  "phase": "Phase 1 - Sound the Depths",
+  "phase": "Phase 2 - Trace the Current",
   "productSourceImpact": "NONE",
   "project": "Project Deepwater",
-  "reconciliation": "RECONCILED_WITH_ACCEPTED_ORIGIN_MAIN",
+  "reconciliation": "FINAL_FETCH_RECONCILED_GOVERNANCE_ONLY",
   "schemaImpact": "NONE",
   "schemaVersion": "1.0.0",
-  "state": "PHASE_1_MAINLINE_ACCEPTED",
-  "validation": "SOURCE_BOUND_RELEASE_GO_AND_HOSTED_MAINLINE_DECISION",
-  "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase1"
+  "state": "CANDIDATE_VALIDATED",
+  "validation": "SOURCE_BOUND_RELEASE_GO",
+  "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase2"
 }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "status": "phase-1-admiralty-platform-administration",
+  "status": "phase-2-deepwater-control-plane",
   "suites": [
     {
       "id": "browser.access-sentinel",
@@ -202,7 +202,7 @@
     },
     {
       "id": "unit.deepwater",
-      "name": "Deepwater capability realization control-plane units",
+      "name": "Deepwater trace and remediation control-plane units",
       "tier": 1,
       "owner": "project-deepwater",
       "command": "registry-selected Node test files",
@@ -799,7 +799,7 @@
     },
     {
       "id": "unit.homeport",
-      "name": "Project Homeport Phase 6 surface and state contracts",
+      "name": "Project Homeport owner correction Round 3 unit, API, and service contracts",
       "tier": 1,
       "owner": "project-homeport",
       "command": "registry-selected Node test files",
@@ -1291,7 +1291,7 @@
         "src/app/api/webhooks/postmark/**"
       ],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "phase-6-homeport-product-surface-contract-family",
+      "currentImplementationState": "phase-7-owner-correction-round-3-source-bound",
       "adapter": "vitest-family"
     },
     {
@@ -1314,7 +1314,7 @@
     },
     {
       "id": "component.homeport",
-      "name": "Project Homeport Phase 6 component and interaction contracts",
+      "name": "Project Homeport owner correction Round 3 interaction contracts",
       "tier": 2,
       "owner": "project-homeport",
       "command": "registry-selected Vitest files",
@@ -1797,12 +1797,12 @@
         "src/app/api/webhooks/postmark/**"
       ],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "phase-6-homeport-product-surface-contract-family",
+      "currentImplementationState": "phase-7-owner-correction-round-3-source-bound",
       "adapter": "vitest-family"
     },
     {
       "id": "browser.homeport",
-      "name": "Project Homeport Phase 6 visual and behavioral journeys",
+      "name": "Project Homeport owner correction Round 3 governed browser evidence",
       "tier": 4,
       "owner": "project-homeport",
       "command": "registry-selected Playwright cases",
@@ -2287,7 +2287,7 @@
         "src/app/api/webhooks/postmark/**"
       ],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "phase-6-homeport-product-surface-contract-family",
+      "currentImplementationState": "phase-7-owner-correction-round-3-source-bound",
       "adapter": "playwright-family"
     },
     {

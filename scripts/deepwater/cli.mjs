@@ -8,6 +8,7 @@ import {
   semanticDigest,
   validateEvidencePaths,
   validateModel,
+  validatePhase2Model,
   writeArtifacts,
 } from "./lib.mjs";
 
@@ -23,7 +24,10 @@ if (command === "audit") {
       sourceSha: artifacts.ledger.auditedSourceSha,
       capabilities: artifacts.ledger.capabilities.length,
       findings: artifacts.findingsDocument.findings.length,
-      phase2Queue: artifacts.queueDocument.queue.length,
+      prioritizedTraces: artifacts.tracesDocument.traceCount,
+      phase2QueueItems: artifacts.tracesDocument.queueItemCount,
+      remediationPackets: artifacts.remediationDocument.packages.length,
+      phase3QueueItems: artifacts.phase3Queue.queue.length,
       semanticDigest: semanticDigest(artifacts),
     })}\n`,
   );
@@ -32,14 +36,16 @@ if (command === "audit") {
   process.stdout.write(
     `${JSON.stringify({
       decision: "DEEPWATER_REPORTS_GENERATED",
-      auditReport: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_1_Audit_Report.md",
-      capabilitySummary: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_1_Capability_Summary.md",
-      phase2Queue: artifacts.queueDocument.queue.length,
+      traceReport: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_2_Trace_Report.md",
+      rootCauseSummary: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_2_Root_Cause_Summary.md",
+      assignmentSummary: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_2_Assignment_Summary.md",
+      phase3Queue: artifacts.phase3Queue.queue.length,
     })}\n`,
   );
 } else if (command === "validate") {
   const errors = [
     ...validateModel(artifacts),
+    ...validatePhase2Model(artifacts),
     ...(await validateEvidencePaths(root, artifacts)),
     ...(await compareArtifacts(root, artifacts)),
   ];
@@ -52,10 +58,11 @@ if (command === "audit") {
         decision: "DEEPWATER_VALIDATION_PASSED",
         sourceSha: artifacts.ledger.auditedSourceSha,
         capabilities: artifacts.ledger.capabilities.length,
-        catalogMapped: artifacts.status.metrics.featureCatalogMappedCount,
-        uncataloged: artifacts.status.metrics.uncatalogedMeaningfulCapabilityCount,
+        prioritizedTraces: artifacts.tracesDocument.traceCount,
+        phase2QueueItems: artifacts.tracesDocument.queueItemCount,
         findings: artifacts.findingsDocument.findings.length,
-        phase2Queue: artifacts.queueDocument.queue.length,
+        remediationPackets: artifacts.remediationDocument.packages.length,
+        phase3QueueItems: artifacts.phase3Queue.queue.length,
         semanticDigest: semanticDigest(artifacts),
       })}\n`,
     );
