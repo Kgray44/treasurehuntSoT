@@ -171,6 +171,19 @@ export async function readPublicVoyageLogs(slug?: string): Promise<readonly Publ
   return readSharedVoyageLogs(slug, "COMMUNITY");
 }
 
+/**
+ * Resolves only the anonymous metadata projection for discoverable or exact-link records.
+ * Private and crew-only records deliberately remain indistinguishable from missing records.
+ */
+export async function readAnonymousVoyageLogMetadata(
+  slug: string,
+): Promise<Readonly<{ log: PublicVoyageLog; visibility: "COMMUNITY" | "UNLISTED" }> | null> {
+  const record = await db.communityVoyageLog.findUnique({ where: { slug }, select: { visibility: true } });
+  if (record?.visibility !== "COMMUNITY" && record?.visibility !== "UNLISTED") return null;
+  const log = (await readSharedVoyageLogs(slug, record.visibility))[0];
+  return log ? { log, visibility: record.visibility } : null;
+}
+
 /** Exact-link unlisted access and crew access share the same consent/restriction projection as Community. */
 export async function readVoyageLogForViewer(slug: string, accountId?: string | null): Promise<PublicVoyageLog | null> {
   const record = await db.communityVoyageLog.findUnique({

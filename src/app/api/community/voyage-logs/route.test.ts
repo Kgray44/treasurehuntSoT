@@ -16,6 +16,7 @@ vi.mock("@/platform/auth", () => ({ requireCanonicalAccountIdentity: vi.fn().moc
 
 import { GET as detail } from "@/app/api/community/voyage-logs/[slug]/route";
 import { GET as list } from "@/app/api/community/voyage-logs/route";
+import { readAnonymousVoyageLogMetadata } from "@/community/voyage-log-public";
 
 const now = new Date("2026-07-25T12:00:00.000Z");
 
@@ -138,6 +139,37 @@ describe("public Voyage Log reads", () => {
     });
     expect(response.status).toBe(404);
     expect(await response.json()).toMatchObject({ code: "COMMUNITY_VOYAGE_LOG_NOT_FOUND" });
+  });
+
+  it("builds unlisted metadata from the same consent-filtered anonymous projection", async () => {
+    dependencies.db.communityVoyageLog.findUnique.mockResolvedValue({ visibility: "UNLISTED" });
+    dependencies.db.communityVoyageLog.findMany.mockResolvedValue([
+      {
+        id: "unlisted",
+        slug: "exact-link-voyage",
+        title: "Exact-link Voyage",
+        safeSummary: "A consented preview-safe account.",
+        spoilerLevel: "PREVIEW_SAFE",
+      },
+    ]);
+    dependencies.db.communityVoyageLogShareRestriction.findMany.mockResolvedValue([]);
+    dependencies.db.communityVoyageLogParticipant.findMany.mockResolvedValue([]);
+    dependencies.db.communityVoyageLogParticipantConsent.findMany.mockResolvedValue([]);
+    dependencies.db.communityVoyageLogMedia.findMany.mockResolvedValue([]);
+
+    await expect(readAnonymousVoyageLogMetadata("exact-link-voyage")).resolves.toEqual({
+      visibility: "UNLISTED",
+      log: {
+        slug: "exact-link-voyage",
+        title: "Exact-link Voyage",
+        safeSummary: "A consented preview-safe account.",
+        spoilerLevel: "PREVIEW_SAFE",
+        verifiedCompletion: true,
+      },
+    });
+
+    dependencies.db.communityVoyageLog.findUnique.mockResolvedValue({ visibility: "PRIVATE" });
+    await expect(readAnonymousVoyageLogMetadata("private-voyage")).resolves.toBeNull();
   });
 
   it("rejects unsupported list query parameters", async () => {
