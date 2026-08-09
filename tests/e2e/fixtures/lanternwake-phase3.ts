@@ -21,6 +21,7 @@ import {
   LEGACY_COMPANION_MIGRATION_VERSION,
   migrateLegacyCompanion,
 } from "../../../src/chronicle/legacy-companion-migration";
+import { workspaceCapabilityOverview } from "../../../src/homeport/workspace-capabilities";
 import { db } from "../../../src/lib/db";
 import { createAccountSession, ensureGuestAccountForProfile } from "../../../src/wayfarer/accounts";
 
@@ -844,6 +845,47 @@ export function readPreseededPhase3BaseFixture(): Phase3CaseFixture {
 
 type Phase3Captain = Readonly<{ context: APIRequestContext; csrfToken: string }>;
 
+async function preparePhase3CaptainWorkspace(username: string) {
+  const captain = await db.gameMasterUser.findUnique({
+    where: { username },
+    select: {
+      canonicalAccount: {
+        select: { id: true, claimedAt: true, ordinaryWorkspaceEntryAt: true },
+      },
+    },
+  });
+  expect(captain?.canonicalAccount, "The Phase 3 Captain requires its canonical account projection.").toBeTruthy();
+  const account = captain!.canonicalAccount!;
+  const activatedAt = new Date();
+  await db.$transaction([
+    db.userAccount.update({
+      where: { id: account.id },
+      data: {
+        status: "ACTIVE",
+        claimedAt: account.claimedAt ?? activatedAt,
+        ordinaryWorkspaceEntryAt: account.ordinaryWorkspaceEntryAt ?? activatedAt,
+      },
+    }),
+    db.accountEmail.upsert({
+      where: { accountId_isPrimary: { accountId: account.id, isPrimary: true } },
+      update: { verificationState: "VERIFIED", verifiedAt: activatedAt },
+      create: {
+        accountId: account.id,
+        normalizedEmail: `phase3-captain-${account.id}@validation.invalid`,
+        displayEmail: `phase3-captain-${account.id}@validation.invalid`,
+        isPrimary: true,
+        verificationState: "VERIFIED",
+        verifiedAt: activatedAt,
+      },
+    }),
+  ]);
+  const overview = await workspaceCapabilityOverview(account.id);
+  expect(
+    overview.workspaces.find((workspace) => workspace.id === "CAPTAIN")?.state,
+    "The Phase 3 Captain requires an active canonical Captain workspace.",
+  ).toBe("ACTIVE");
+}
+
 async function releasePhase3CaptainSession(
   context: APIRequestContext | null,
   csrfToken: string | null,
@@ -923,10 +965,12 @@ export const phase3Test = baseTest.extend<Phase3TestFixtures, Phase3WorkerFixtur
           }),
           "CAPTAIN login requires the same nonce-marked isolated database.",
         ).toBe(1);
+        const captainUsername = process.env.GM_USERNAME ?? "kato";
+        await preparePhase3CaptainWorkspace(captainUsername);
         const response = await bootstrap.post("/api/gm/login", {
           data: {
-            username: process.env.GM_USERNAME,
-            password: process.env.GM_PASSWORD,
+            username: captainUsername,
+            password: process.env.GM_PASSWORD ?? "development-captain-only",
           },
         });
         const body = (await response.json().catch(() => null)) as { csrfToken?: string; error?: string } | null;
@@ -946,6 +990,8 @@ export const phase3Test = baseTest.extend<Phase3TestFixtures, Phase3WorkerFixtur
         });
         const capability = await context.get("/api/gm/status");
         expect(capability.status(), "Phase 3 fixture requires an authenticated CAPTAIN capability.").toBe(200);
+        const library = await context.get("/api/captain/library");
+        expect(library.status(), "Phase 3 fixture requires its canonical Captain workspace.").toBe(200);
         await provide({ context, csrfToken });
       } catch (error) {
         primaryFailure = error;
