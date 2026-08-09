@@ -477,6 +477,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Features/catalog/wakebook.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Features/catalog/wayfarer.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -2367,7 +2373,19 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Project_Wakebook_Phase_1_Owner_Walkthrough.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Project_Wakebook_Phase_1_Test_Plan.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Wakebook_Phase_1_Validation_Record.md",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

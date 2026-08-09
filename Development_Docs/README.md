@@ -31,7 +31,7 @@ also passed. See the [OAuth validation and completion record](Validation/Voyagew
 
 ## Project Wakebook
 
-Project Wakebook governs the private Living Journey Archive over accepted Wayfarer history. Phase 1, Open the Wake, is currently under implementation from the frozen [design record](Project_Wakebook_Phase_1_Design_Record.md), [current-history audit](Project_Wakebook_Phase_1_Current_History_Audit.md), [test plan](Project_Wakebook_Phase_1_Test_Plan.md), [mainline-safety record](Project_Wakebook_Phase_1_Mainline_Safety_Record.md), and [integration manifest](Project_Wakebook_Phase_1_Integration_Manifest.md). These records authorize no schema change, no duplicate history authority, no Phase 2 behavior, and no owner-acceptance claim.
+Project Wakebook governs the private Living Journey Archive over accepted Wayfarer history. Phase 1, Open the Wake, is branch-complete and preparing its separate owner walkthrough from the frozen [design record](Project_Wakebook_Phase_1_Design_Record.md), [current-history audit](Project_Wakebook_Phase_1_Current_History_Audit.md), [test plan](Project_Wakebook_Phase_1_Test_Plan.md), [mainline-safety record](Project_Wakebook_Phase_1_Mainline_Safety_Record.md), [integration manifest](Project_Wakebook_Phase_1_Integration_Manifest.md), [validation record](Project_Wakebook_Phase_1_Validation_Record.md), and [owner walkthrough](Project_Wakebook_Phase_1_Owner_Walkthrough.md). These records authorize no schema change, duplicate history authority, Phase 2 behavior, main merge, deployment claim, or owner-acceptance claim.
 
 ## Engineering-record template
 

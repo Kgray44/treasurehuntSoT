@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "phase-1-deepwater-control-plane",
+  "status": "phase-1-wakebook-control-plane",
   "owners": [
     {
       "id": "platform-foundation",
@@ -86,6 +86,39 @@
       "sourcePaths": ["Development_Docs/Programs/Deepwater/**", "scripts/deepwater/**"],
       "testPaths": ["tests/deepwater/**/*.test.*"],
       "contractIds": ["deepwater.capability-realization-integrity"]
+    },
+    {
+      "id": "project-wakebook",
+      "project": "project-wakebook",
+      "sourcePaths": [
+        "Development_Docs/Projects/Project Wakebook/**",
+        "Development_Docs/Project_Wakebook_Phase_1_*.md",
+        "src/wakebook/**",
+        "src/components/wakebook/**",
+        "src/app/api/passport/voyages/**",
+        "src/app/passport/history/**",
+        "src/styles/personal-harbor.css"
+      ],
+      "testPaths": [
+        "src/wakebook/**/*.test.*",
+        "src/components/wakebook/**/*.test.*",
+        "src/app/api/passport/voyages/**/*.test.*",
+        "tests/e2e/wakebook-phase1.spec.ts"
+      ],
+      "contractIds": [
+        "wakebook.history.version-pinning",
+        "wakebook.history.owner-privacy",
+        "wakebook.history.historical-stability",
+        "wakebook.timing.quality",
+        "wakebook.artifact-context",
+        "wakebook.navigation.reachability",
+        "wakebook.archive.pagination",
+        "wakebook.archive.year-grouping",
+        "wakebook.archive.filters",
+        "wakebook.archive.invitation-separation",
+        "wakebook.archive.partial-history",
+        "wakebook.archive.summary-redaction"
+      ]
     },
     {
       "id": "project-homeport",

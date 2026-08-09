@@ -1,0 +1,37 @@
+[
+  {
+    "id": "FT-B009",
+    "title": "Private Living Journey Archive",
+    "summary": "Project Wakebook turns version-pinned Wayfarer records into a polished, owner-private visual archive with truthful chronology, safe historical context, bounded discovery, and a complete Voyage Detail baseline.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "program": "Project Wakebook Phase 1",
+    "surfaces": ["/passport/history", "/passport/history/[recordId]"],
+    "subfeatures": [
+      "Chronological visual shelf with accurate full-year summaries",
+      "Owner-scoped title and historical-crew search, filters, sorting, and opaque cursor pagination",
+      "Human lifecycle, outcome, role, and timing-quality presentation without raw source values",
+      "Exact played-edition identity and historically stable title, cover, crew, chapter, and timing snapshots",
+      "Separate invitation history that never contributes to played-Voyage statistics",
+      "Distinct shared Voyage artifact context and personal Artifact Cabinet provenance",
+      "Private Reflection, Memory, Keepsake, consent, Cabinet, and eligible review handoffs",
+      "First-use, one-Voyage, many-Voyage, filtered-empty, unavailable, supplementary-history, loading, and failure states",
+      "Ordinary Chronicle Passport navigation with responsive and accessible desktop and mobile layouts"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/wakebook/archive-query.ts" },
+      { "kind": "path", "value": "src/components/wakebook/WakebookArchive.tsx" },
+      { "kind": "path", "value": "src/components/wakebook/WakebookVoyageDetail.tsx" },
+      { "kind": "test", "value": "tests/e2e/wakebook-phase1.spec.ts" },
+      { "kind": "completion-record", "value": "Development_Docs/Project_Wakebook_Phase_1_Validation_Record.md" },
+      { "kind": "commit", "value": "629f5c7a981b80494f7703b6410b573a661e0f39" }
+    ],
+    "limitations": [
+      "Available only on codex/project-wakebook-phase1-open-the-wake until protected mainline integration",
+      "Owner walkthrough and owner acceptance remain separate from automated readiness",
+      "Timeline, People, Statistics, geographic recap, public sharing, competitive metrics, and Tideglass semantics are outside Phase 1"
+    ],
+    "branch": "codex/project-wakebook-phase1-open-the-wake",
+    "commit": "629f5c7a981b80494f7703b6410b573a661e0f39",
+    "catalogVersion": 1
+  }
+]

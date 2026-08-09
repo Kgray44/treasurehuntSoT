@@ -12,11 +12,15 @@ const ignored = new Set(["node_modules", ".git", ".next", "coverage", "artifacts
 const homeportContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
   .contracts.map((contract) => contract.id)
   .filter((contractId) => contractId.startsWith("homeport."));
+const wakebookContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
+  .contracts.map((contract) => contract.id)
+  .filter((contractId) => contractId.startsWith("wakebook."));
 const hash = (text) => createHash("sha256").update(text).digest("hex").slice(0, 20);
 const execFileAsync = promisify(execFile);
 const normal = (value) => value.replaceAll("\\", "/");
 
 function ownerFor(file) {
+  if (file.includes("wakebook") || file.includes("api/passport/voyages")) return "project-wakebook";
   if (file.includes("deepwater")) return "project-deepwater";
   if (file.includes("homeport")) return "project-homeport";
   if (file.includes("private-content")) return "sealed-hold";
@@ -29,6 +33,7 @@ function ownerFor(file) {
 }
 
 function unitFamily(file) {
+  if (file.startsWith("src/wakebook/") || file.includes("api/passport/voyages")) return "unit.wakebook";
   if (file.startsWith("scripts/deepwater/") || file.startsWith("tests/deepwater/")) return "unit.deepwater";
   if (file.startsWith("src/homeport/") || file.startsWith("scripts/homeport/") || file.startsWith("tests/homeport/"))
     return "unit.homeport";
@@ -48,6 +53,7 @@ function unitFamily(file) {
 }
 
 function componentFamily(file) {
+  if (file.includes("components/wakebook")) return "component.wakebook";
   if (file.includes("components/homeport")) return "component.homeport";
   if (file.includes("components/animation")) return "component.animation";
   if (file.includes("components/community")) return "component.community";
@@ -71,6 +77,7 @@ function browserFamily(project, file, title) {
   // inherit a fixture-free ownership contract they do not satisfy.
   if (file.endsWith("access-gates.spec.ts") && project === "sounding-line-access-sentinel")
     return "browser.access-sentinel";
+  if (value.includes("wakebook")) return "browser.wakebook";
   if (value.includes("homeport") || project.includes("homeport")) return "browser.homeport";
   if (file.endsWith("chronicle-platform.spec.ts") || file.endsWith("acceptance.spec.ts"))
     return "browser.player-library";
@@ -96,6 +103,7 @@ function browserFamily(project, file, title) {
 }
 
 function contractFor(file, family) {
+  if (file.includes("wakebook") || family.includes("wakebook")) return wakebookContracts;
   if (file.includes("deepwater") || family === "unit.deepwater") return ["deepwater.capability-realization-integrity"];
   if (file.includes("homeport") || family === "unit.homeport") return homeportContracts;
   if (file.includes("private-content")) return ["sealed-hold-private-delivery", "public-privacy-projection"];
@@ -110,9 +118,8 @@ function contractFor(file, family) {
 }
 
 function metadata(file, family, browser = null) {
-  const privateOrCommunity = /deepwater|homeport|private-content|community|wayfarer|passport|invitation|session/u.test(
-    file,
-  );
+  const privateOrCommunity =
+    /deepwater|wakebook|homeport|private-content|community|wayfarer|passport|invitation|session/u.test(file);
   const high = privateOrCommunity || Boolean(browser);
   const ui = Boolean(browser) || file.endsWith(".tsx");
   return {

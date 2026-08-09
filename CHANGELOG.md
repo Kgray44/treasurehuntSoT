@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-08-08
+last_reviewed: 2026-08-09
 ---
 
 # Changelog
@@ -11,6 +11,15 @@ last_reviewed: 2026-08-08
 ## Unreleased
 
 ### Changed
+
+- Completed Project Wakebook Phase 1, Open the Wake, on its named branch. The
+  Chronicle Passport now has a private visual Journey Archive with truthful
+  chronology, full-year summaries, bounded search/filter/sort/pagination,
+  exact played-edition identity, safe historical crew/timing/outcome context,
+  separate invitation history, artifact-provenance boundaries, a polished
+  Voyage Detail, and existing private remembrance handoffs. This is
+  owner-walkthrough readiness, not mainline availability, deployment, or owner
+  acceptance.
 
 - Anchored every Voyagewright-owned OAuth success and failure redirect to the
   exact configured `HOMEPORT_PUBLIC_APP_ORIGIN` rather than the internal request
@@ -69,6 +78,12 @@ last_reviewed: 2026-08-08
 - Reconciled current-main documentation, Ledgerlight records, and the generated Feature Catalog after the Phase 3-4, Wayfarer, Sealed Hold, Harborlight, and True North convergence.
 
 ### Validation
+
+- Registered 12 Wakebook contracts and isolated unit, component, and browser
+  families in Sounding Line, including a synthetic 1,005-record archive,
+  owner/privacy negatives, historical stability, summary redaction, ordinary
+  desktop/mobile navigation, responsive overflow, and serious/critical
+  accessibility checks.
 
 - Added a dual-host Chromium regression for hydration, account bootstrap,
   pointer interaction, keyboard focus/typing, navigation, settled overlays,

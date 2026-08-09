@@ -17,6 +17,7 @@ const homeportPhase1Spec = /homeport-phase1\.spec\.ts/u;
 const homeportPhase2Spec = /homeport-phase2\.spec\.ts/u;
 const homeportPhase4Spec = /homeport-phase4\.spec\.ts/u;
 const homeportPhase7WalkthroughSpecs = /homeport-phase7.*\.spec\.ts/u;
+const wakebookPhase1Spec = /wakebook-phase1\.spec\.ts/u;
 const phase3MutationSpecs =
   /phase3-(?:player-event-matrix|player-motion|replay-resilience|lifecycle(?:-extended)?|performance)\.spec\.ts/u;
 const phase3MutationSpecGuard = [
@@ -81,6 +82,7 @@ export default defineConfig({
         homeportPhase2Spec,
         homeportPhase4Spec,
         homeportPhase7WalkthroughSpecs,
+        wakebookPhase1Spec,
       ],
       use: { ...devices["Desktop Chrome"] },
     },
@@ -128,6 +130,11 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
     {
+      name: "wakebook-phase1",
+      testMatch: wakebookPhase1Spec,
+      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1000 } },
+    },
+    {
       // Harborlight owns its own isolated browser journey. It must not depend
       // on the Phase 3 fixture setup, whose Captain/session data is unrelated
       // to Exchange publication and installation evidence.
@@ -164,6 +171,7 @@ export default defineConfig({
         homeportPhase2Spec,
         homeportPhase4Spec,
         homeportPhase7WalkthroughSpecs,
+        wakebookPhase1Spec,
       ],
       use: { ...devices["iPhone 14"] },
     },
