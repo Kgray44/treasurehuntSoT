@@ -1,0 +1,99 @@
+{
+  "mainlineSafetyContract": "Each remediation slice is independently complete and mainline-safe. No slice assumes a future slice will make current behavior coherent.",
+  "phase": "Phase 3 - Raise the Capability",
+  "project": "Project Deepwater",
+  "schemaVersion": "1.0.0",
+  "slices": [
+    {
+      "acceptedMainSha": null,
+      "baseSourceSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
+      "branch": "codex/deepwater-phase3-catalog-player",
+      "canonicalOwner": "Ledgerlight",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Generated Feature Catalog matches the corrected fragment",
+        "Deepwater catalog mismatch validators close only the eight linked findings",
+        "Slice commit is accepted on protected main"
+      ],
+      "concurrencyClass": "B",
+      "contributingOwners": ["One Voyage", "Wayfarer", "Wakebook", "Landfall"],
+      "excludedPaths": ["src", "prisma", "Development_Docs/Features/FEATURE_CATALOG.md"],
+      "hardDependencies": ["Current accepted Homeport route inventory"],
+      "mainlineSafetyContract": "The fragment-only correction records existing accepted route truth; cancelling every later Deepwater slice leaves product behavior unchanged and documentation more accurate.",
+      "ownedPaths": ["Development_Docs/Features/catalog/player.json"],
+      "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
+      "status": "REGISTERED",
+      "title": "Reconcile Player Feature Catalog route identities",
+      "verificationPlan": [
+        "npm run features:sync",
+        "npm run features:validate",
+        "npm run docs:index",
+        "npm run docs:validate",
+        "Sounding Line local-change",
+        "Phase 3 coordination reconciliation after accepted-main merge"
+      ],
+      "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-p3-catalog-player"
+    },
+    {
+      "acceptedMainSha": null,
+      "baseSourceSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
+      "branch": "codex/deepwater-phase3-catalog-one-voyage",
+      "canonicalOwner": "One Voyage",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Generated Feature Catalog matches the corrected fragment",
+        "Internal API boundaries are not mislabeled as ordinary user routes",
+        "Slice commit is accepted on protected main"
+      ],
+      "concurrencyClass": "B",
+      "contributingOwners": ["Ledgerlight"],
+      "excludedPaths": ["src", "prisma", "Development_Docs/Features/FEATURE_CATALOG.md"],
+      "hardDependencies": ["Current accepted Homeport route inventory", "One Voyage provider-framework authority"],
+      "mainlineSafetyContract": "The fragment-only correction records existing accepted helper and Captain route truth without enabling a provider or changing runtime behavior.",
+      "ownedPaths": ["Development_Docs/Features/catalog/one-voyage.json"],
+      "sliceId": "DW-P3-SLICE-CATALOG-ONE-VOYAGE",
+      "status": "REGISTERED",
+      "title": "Reconcile One Voyage Feature Catalog route identities",
+      "verificationPlan": [
+        "npm run features:sync",
+        "npm run features:validate",
+        "npm run docs:index",
+        "npm run docs:validate",
+        "Sounding Line local-change",
+        "Phase 3 coordination reconciliation after accepted-main merge"
+      ],
+      "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-p3-catalog-one-voyage"
+    },
+    {
+      "acceptedMainSha": null,
+      "baseSourceSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
+      "branch": "codex/deepwater-phase3-catalog-harborlight",
+      "canonicalOwner": "Harborlight",
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "closureEvidence": [
+        "Generated Feature Catalog matches the corrected fragment",
+        "Community and Studio surfaces remain intentionally composite",
+        "Slice commit is accepted on protected main"
+      ],
+      "concurrencyClass": "B",
+      "contributingOwners": ["Ledgerlight"],
+      "excludedPaths": ["src", "prisma", "Development_Docs/Features/FEATURE_CATALOG.md"],
+      "hardDependencies": ["Current accepted Homeport route inventory", "Harborlight listing and release authority"],
+      "mainlineSafetyContract": "The fragment-only correction records existing Community and Studio exchange routes; product behavior and Harborlight ownership remain unchanged if later work is cancelled.",
+      "ownedPaths": ["Development_Docs/Features/catalog/harborlight.json"],
+      "sliceId": "DW-P3-SLICE-CATALOG-HARBORLIGHT",
+      "status": "REGISTERED",
+      "title": "Reconcile Harborlight Feature Catalog route identities",
+      "verificationPlan": [
+        "npm run features:sync",
+        "npm run features:validate",
+        "npm run docs:index",
+        "npm run docs:validate",
+        "Sounding Line local-change",
+        "Phase 3 coordination reconciliation after accepted-main merge"
+      ],
+      "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-p3-catalog-harborlight"
+    }
+  ],
+  "sourceSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84"
+}
