@@ -28,7 +28,10 @@ async function register(browser: import("@playwright/test").Browser, label: stri
   if (!profile.accountId) throw new Error(`Synthetic ${label} account was not linked.`);
   const verifiedAt = new Date();
   await db.$transaction([
-    db.userAccount.update({ where: { id: profile.accountId }, data: { status: "ACTIVE" } }),
+    db.userAccount.update({
+      where: { id: profile.accountId },
+      data: { status: "ACTIVE", claimedAt: verifiedAt, ordinaryWorkspaceEntryAt: verifiedAt },
+    }),
     db.accountEmail.updateMany({
       where: { accountId: profile.accountId, isPrimary: true },
       data: { verificationState: "VERIFIED", verifiedAt },

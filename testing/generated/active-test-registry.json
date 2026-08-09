@@ -128555,9 +128555,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-24a7eb9abcccb346488c",
+      "id": "sl-test-143afd77726f60967f27",
       "title": "Wakebook Phase 1 is private, bounded, historically stable, and normally reachable",
-      "line": 262,
+      "line": 265,
       "file": "tests/e2e/wakebook-phase1.spec.ts",
       "project": "wakebook-phase1",
       "suiteId": "browser.wakebook",
