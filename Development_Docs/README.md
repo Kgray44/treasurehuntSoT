@@ -41,6 +41,10 @@ The following owner-authored governing documents are current repository authorit
 - [Project Tideglass](Projects/Project%20Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf)
 - [Project Wakebook](Projects/Project%20Wakebook/Project_Wakebook_Governing_Document.pdf)
 
+## Project Drydock
+
+[Project Drydock engineering records](Projects/Project%20Drydock/README.md) govern the typed Chronicle authoring-contract, compatibility, validation, and later simulation program. Phase 1 is limited to strict current Passage contracts, variables, expressions, schema evolution, historical fixtures, stable issues, and incremental contract validation; whole-Chronicle analysis and simulation remain later phases.
+
 ## Engineering-record template
 
 Include title, program, phase, record type, status, authority, date, base, scope, decisions, evidence, limitations, supersession, and related records. Do not rewrite historic PDFs solely to fit this template.
