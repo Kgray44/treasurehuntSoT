@@ -1111,9 +1111,11 @@ html[data-voyage-theme="light"]
   position: relative;
   z-index: 2;
   display: flex;
+  min-width: 0;
   min-height: 0;
   flex: 1;
   flex-direction: column;
+  overflow-wrap: anywhere;
 }
 .chronicle-journal-shell[data-live-event="revealed"] .chronicle-leaf .journal-block {
   animation: journal-live-ink 900ms ease both;

@@ -40,7 +40,7 @@ test.describe.serial("Harborlight Phase 3 persisted browser acceptance", () => {
   test("public discovery, Guides, metadata, keyboard operation, mobile layout, and reduced motion remain safe", async () => {
     const page = fixture.owner.page;
     await page.goto(`/community?q=${encodeURIComponent(fixture.listing.title)}`);
-    await expect(page.getByRole("heading", { name: "Find a public chart" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Search the Harbor" })).toBeVisible();
     await expect(page.getByRole("link", { name: fixture.listing.title })).toBeVisible();
     await expect(page.getByText("Hidden unlisted listing")).toHaveCount(0);
 

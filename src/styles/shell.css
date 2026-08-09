@@ -8,6 +8,7 @@
   --shell-header-height: 4.75rem;
   --shell-footer-height: 4.5rem;
   min-height: 100svh;
+  overflow-x: clip;
   color: var(--shell-ink);
   background: var(--background-primary);
 }
