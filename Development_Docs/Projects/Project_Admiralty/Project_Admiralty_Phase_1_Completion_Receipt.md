@@ -10,17 +10,19 @@ last_reviewed: 2026-08-09
 
 ## Disposition
 
-`PROJECT ADMIRALTY PHASE 1 — OWNER ACCEPTED MAINLINE CANDIDATE`
+`PROJECT ADMIRALTY PHASE 1 — ACCEPTED MAINLINE`
 
 Owner decision: `ACCEPTED` on `2026-08-09`.
 
-Phase 1 has passed its governed owner-acceptance boundary on branch
-`codex/project-admiralty-phase1-raise-the-colors`. The implementation checkpoint
-is `648d1068ee3007c303ac76ae3a3c68e137f73a0e`; the exact tested application
-source is `49c2f59d6d75791edbdba84f22f5ec1595d2d129`; the owner-observed source is
-`750b904cfec013f0b6adec3d930caf5eeae9ec0b`; and final reconciliation merge
-`2ac2bdf8221c1aa4f6f0c5edc263951261c438ff` contains current `origin/main` at
-`9937af957c1c92c9767b4255705a17f3e189904b`.
+Phase 1 has passed its governed owner-acceptance and canonical-mainline
+boundaries. The implementation checkpoint is
+`648d1068ee3007c303ac76ae3a3c68e137f73a0e`; the exact tested application source
+is `49c2f59d6d75791edbdba84f22f5ec1595d2d129`; the owner-observed source is
+`750b904cfec013f0b6adec3d930caf5eeae9ec0b`; and the final reconciled
+implementation publication source is
+`fe5e18eb6312c2571616a8faf2dfe1c8583cbd9f`. That source contains accepted
+`origin/main` `0ded9be4af04feb1785fd9e56abbacdd39f54b3d`, reached canonical main, and
+proved local/remote parity `0/0`.
 
 ## Completed Phase 1 capability
 
@@ -45,15 +47,15 @@ source is `49c2f59d6d75791edbdba84f22f5ec1595d2d129`; the owner-observed source 
 The completed governed walkthrough is documented at
 `Development_Docs/Projects/Project_Admiralty/walkthrough/phase1/README.md`, and
 the owner's decision is recorded in
-`Project_Admiralty_Phase_1_Owner_Decision_Record.md`. The isolated runtime is
-stopped; its task-owned evidence remains outside source control only until the
-governed integration and cleanup sequence finishes.
+`Project_Admiralty_Phase_1_Owner_Decision_Record.md`. The isolated runtime was
+stopped, and its task-owned runtime, private handoff, database, and raw browser
+artifacts are removed during the governed cleanup sequence after their
+non-secret source, build, decision, and checksum identities are recorded.
 
 ## Non-claims and phase boundary
 
-Owner acceptance is established. This receipt does not yet claim canonical
-mainline integration or local/remote parity, and it does not claim deployment,
+Owner acceptance, canonical mainline integration, and local/remote parity are
+established for Phase 1 source. This receipt does not claim deployment,
 production MySQL proof, live-provider proof, physical-device proof, or physical
 assistive-technology proof. It does not authorize Phase 2. The named branch and
-owned worktree are retained only for governed integration, exact-source proof,
-and cleanup.
+owned worktree exist only through final record validation and cleanup.

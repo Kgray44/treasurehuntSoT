@@ -8596,6 +8596,276 @@
     },
     {
       "canonicalConsumption": true,
+      "canonicalOwner": "Admiralty",
+      "capabilityId": "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+      "consumedOperations": [
+        "additive-sqlite-and-mysql-migration-parity",
+        "explicit-dry-run-first-administrator-bootstrap",
+        "living-92-entry-capability-floor-registry",
+        "non-revealing-unauthorized-admin-route-behavior",
+        "sanitized-canonical-administrative-audit-evidence",
+        "server-side-role-and-capability-resolution",
+        "session-bound-recent-privileged-assurance",
+        "task-owned-synthetic-browser-and-owner-walkthrough-runtimes",
+        "user-approved-target-operator-scope-and-time-bounded-support-access"
+      ],
+      "consumedOrRepresentedStates": [
+        "ACCOUNT_RESTRICTED",
+        "AUTH_REQUIRED",
+        "CURRENT_DEFAULT",
+        "DEPENDENCY_UNAVAILABLE",
+        "EMPTY",
+        "ERROR",
+        "INITIAL_LOADING",
+        "LOADING",
+        "MUTATION_FAILURE",
+        "MUTATION_PENDING",
+        "MUTATION_SUCCESS",
+        "OFFLINE_OR_DEGRADED",
+        "PERMISSION_RESTRICTED",
+        "READY",
+        "READY_POPULATED",
+        "RECOVERABLE_ERROR",
+        "RECOVERY",
+        "SESSION_EXPIRED",
+        "SESSION_REVOKED_OR_INVALID",
+        "UNAUTHORIZED"
+      ],
+      "consumedSafeMetadata": ["authoritative lifecycle state", "authorization and audience scope"],
+      "evidence": [
+        "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json",
+        "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md",
+        "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md",
+        "src/admiralty/authorization.ts",
+        "src/admiralty/support-access.ts",
+        "src/app/account/support-access/page.tsx",
+        "src/app/admin/page.tsx",
+        "tests/e2e/admiralty-phase1.spec.ts"
+      ],
+      "expectedOperations": [
+        {
+          "consumerReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "tests/e2e/admiralty-phase1.spec.ts"
+          ],
+          "disposition": "CONSUMED",
+          "findingId": null,
+          "name": "Additive SQLite and MySQL migration parity",
+          "operationId": "additive-sqlite-and-mysql-migration-parity",
+          "rationale": null,
+          "sourceReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "src/app/account/support-access/page.tsx",
+            "src/app/admin/page.tsx",
+            "tests/e2e/admiralty-phase1.spec.ts",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md"
+          ]
+        },
+        {
+          "consumerReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "tests/e2e/admiralty-phase1.spec.ts"
+          ],
+          "disposition": "CONSUMED",
+          "findingId": null,
+          "name": "Explicit dry-run-first administrator bootstrap",
+          "operationId": "explicit-dry-run-first-administrator-bootstrap",
+          "rationale": null,
+          "sourceReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "src/app/account/support-access/page.tsx",
+            "src/app/admin/page.tsx",
+            "tests/e2e/admiralty-phase1.spec.ts",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md"
+          ]
+        },
+        {
+          "consumerReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "tests/e2e/admiralty-phase1.spec.ts"
+          ],
+          "disposition": "CONSUMED",
+          "findingId": null,
+          "name": "Living 92-entry capability-floor registry",
+          "operationId": "living-92-entry-capability-floor-registry",
+          "rationale": null,
+          "sourceReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "src/app/account/support-access/page.tsx",
+            "src/app/admin/page.tsx",
+            "tests/e2e/admiralty-phase1.spec.ts",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md"
+          ]
+        },
+        {
+          "consumerReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "tests/e2e/admiralty-phase1.spec.ts"
+          ],
+          "disposition": "CONSUMED",
+          "findingId": null,
+          "name": "Non-revealing unauthorized admin route behavior",
+          "operationId": "non-revealing-unauthorized-admin-route-behavior",
+          "rationale": null,
+          "sourceReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "src/app/account/support-access/page.tsx",
+            "src/app/admin/page.tsx",
+            "tests/e2e/admiralty-phase1.spec.ts",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md"
+          ]
+        },
+        {
+          "consumerReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "tests/e2e/admiralty-phase1.spec.ts"
+          ],
+          "disposition": "CONSUMED",
+          "findingId": null,
+          "name": "Sanitized canonical administrative audit evidence",
+          "operationId": "sanitized-canonical-administrative-audit-evidence",
+          "rationale": null,
+          "sourceReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "src/app/account/support-access/page.tsx",
+            "src/app/admin/page.tsx",
+            "tests/e2e/admiralty-phase1.spec.ts",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md"
+          ]
+        },
+        {
+          "consumerReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "tests/e2e/admiralty-phase1.spec.ts"
+          ],
+          "disposition": "CONSUMED",
+          "findingId": null,
+          "name": "Server-side role and capability resolution",
+          "operationId": "server-side-role-and-capability-resolution",
+          "rationale": null,
+          "sourceReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "src/app/account/support-access/page.tsx",
+            "src/app/admin/page.tsx",
+            "tests/e2e/admiralty-phase1.spec.ts",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md"
+          ]
+        },
+        {
+          "consumerReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "tests/e2e/admiralty-phase1.spec.ts"
+          ],
+          "disposition": "CONSUMED",
+          "findingId": null,
+          "name": "Session-bound recent privileged assurance",
+          "operationId": "session-bound-recent-privileged-assurance",
+          "rationale": null,
+          "sourceReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "src/app/account/support-access/page.tsx",
+            "src/app/admin/page.tsx",
+            "tests/e2e/admiralty-phase1.spec.ts",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md"
+          ]
+        },
+        {
+          "consumerReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "tests/e2e/admiralty-phase1.spec.ts"
+          ],
+          "disposition": "CONSUMED",
+          "findingId": null,
+          "name": "Task-owned synthetic browser and owner-walkthrough runtimes",
+          "operationId": "task-owned-synthetic-browser-and-owner-walkthrough-runtimes",
+          "rationale": null,
+          "sourceReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "src/app/account/support-access/page.tsx",
+            "src/app/admin/page.tsx",
+            "tests/e2e/admiralty-phase1.spec.ts",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md"
+          ]
+        },
+        {
+          "consumerReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "tests/e2e/admiralty-phase1.spec.ts"
+          ],
+          "disposition": "CONSUMED",
+          "findingId": null,
+          "name": "User-approved target, operator, scope, and time-bounded Support Access",
+          "operationId": "user-approved-target-operator-scope-and-time-bounded-support-access",
+          "rationale": null,
+          "sourceReferences": [
+            "src/admiralty/authorization.ts",
+            "src/admiralty/support-access.ts",
+            "src/app/account/support-access/page.tsx",
+            "src/app/admin/page.tsx",
+            "tests/e2e/admiralty-phase1.spec.ts",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md"
+          ]
+        }
+      ],
+      "expectedSafeMetadata": ["authoritative lifecycle state", "authorization and audience scope"],
+      "expectedStates": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"],
+      "findingBlockedMetadata": [],
+      "intentionallyOmittedMetadata": [],
+      "intentionallyOmittedStates": [],
+      "intentionallyUnconsumedOperations": [],
+      "name": "Governed Platform Administration and Consented Support Access",
+      "phase3Disposition": "SATURATED",
+      "rationale": "Every governed operation or capability dimension appropriate to the audience has a source-bound consumer, and required states and safe decision metadata are represented.",
+      "realizationClassification": "FULLY_REALIZED",
+      "status": "FULLY_UTILIZED",
+      "utilizationConsumers": [
+        "audience:ACCOUNT_OWNER",
+        "audience:ADMINISTRATOR",
+        "audience:SUPPORT_OPERATOR",
+        "consumer:src/admiralty/authorization.ts",
+        "consumer:src/admiralty/support-access.ts",
+        "consumer:tests/e2e/admiralty-phase1.spec.ts",
+        "surface:/account/support-access",
+        "surface:/admin"
+      ]
+    },
+    {
+      "canonicalConsumption": true,
       "canonicalOwner": "Wakebook",
       "capabilityId": "DW-CAP-PLAYER-JOURNAL",
       "consumedOperations": [
@@ -13141,11 +13411,11 @@
   ],
   "phase": "Phase 3 - Raise the Capability",
   "project": "Project Deepwater",
-  "reviewedCapabilityCount": 54,
+  "reviewedCapabilityCount": 55,
   "schemaVersion": "1.0.0",
   "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
   "statusCounts": {
-    "FULLY_UTILIZED": 40,
+    "FULLY_UTILIZED": 41,
     "INTENTIONALLY_PARTIAL": 2,
     "INTERNAL_ONLY": 8,
     "NOT_APPLICABLE": 1,

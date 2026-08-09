@@ -67,3 +67,12 @@ The final pre-gate fetch then found accepted Player Feature Catalog route
 reconciliation at `9937af957c1c92c9767b4255705a17f3e189904b`. Merge
 `2ac2bdf8221c1aa4f6f0c5edc263951261c438ff` preserves that documentation-only
 interval without changing Admiralty product or schema source.
+
+Accepted Tideglass and One Voyage catalog intervals subsequently advanced
+canonical main to `0ded9be4af04feb1785fd9e56abbacdd39f54b3d`. Final
+reconciliation and generated-catalog source
+`fe5e18eb6312c2571616a8faf2dfe1c8583cbd9f` received exact-source Sounding Line
+`RELEASE_GO`, was published directly to canonical main under the owner's
+authorization, and proved local/remote parity `0/0`. The owner decision is
+therefore recorded as accepted mainline Phase 1. Phase 2 remains unauthorized
+and unstarted.

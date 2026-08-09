@@ -47,7 +47,7 @@ multi-tab/mobile behavior, and a safe final owner-walkthrough runtime package.
 It is ready for owner walkthrough. Owner Decision remains
 `PENDING_OWNER_DECISION`.
 
-**Owner accepted on a reconciled mainline-candidate branch:**
+**Available on main and owner accepted:**
 Project Admiralty Phase 1 provides canonical role/capability authorization,
 explicit administrator bootstrap, recent privileged assurance, a limited
 non-navigable `/admin` shell, user-consented scoped Support Access, sanitized
@@ -55,7 +55,7 @@ administrative audit evidence, and a 92-entry capability-floor registry. The
 exact-current-main local implementation, additive SQLite/MySQL migration
 rehearsals, focused tests, production build, and isolated browser journeys pass.
 The owner decision is `ACCEPTED`; exact reconciled Sounding Line proof,
-canonical integration, and parity remain pending. No deployment, production
+canonical integration, and remote parity pass. No deployment, production
 database execution, or Phase 2 capability is claimed.
 
 **Development-only or compatibility-only:** development showcases, legacy routes, and package-exchange integrations are not a promise of a generally hosted service.

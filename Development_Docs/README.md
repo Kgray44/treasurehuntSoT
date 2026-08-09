@@ -50,9 +50,9 @@ establishes role/capability policy, explicit administrator bootstrap,
 session-bound recent assurance, user-approved scoped Support Access, sanitized
 canonical audit evidence, an independently authorized limited admin shell, dual
 additive migrations, and a living capability-floor registry. The owner accepted
-the full Phase 1 walkthrough on 2026-08-09. The reconciled branch is a mainline
-candidate; canonical integration, deployment, production MySQL proof, and all
-later Admiralty phases remain separate, and Phase 2 remains dormant.
+the full Phase 1 walkthrough on 2026-08-09, and the accepted source is integrated
+on canonical main with verified parity. Deployment, production MySQL proof, and
+all later Admiralty phases remain separate, and Phase 2 remains dormant.
 
 ## Current project-governance wave
 
