@@ -28,6 +28,19 @@ encryption keys, private Chronicle prose, and private media. Critical state
 changes and their canonical audit event share a transaction. See the
 [Support Access guide](../user/support-access.md) and [administrator bootstrap](../administrator/admiralty-bootstrap.md).
 
+## Tideglass comparison and annotation boundaries
+
+Project Tideglass Phase 2 derives its maximum projection audience on the
+server. Current APIs require the canonical account session, active Creator
+workspace, and Chronicle ownership or scoped Creator collaboration; an
+administrator label alone does not grant annotation authority. Source and
+target editions are independently authorized and checksum-bound. Annotation
+mutations additionally require CSRF, centralized per-account/Chronicle rate
+limits, strict bounded plain-text input, exact Change-ID lineage, immutable
+revision ownership, and sanitized audit metadata. Public counts are computed
+only from visible records, and no API returns raw published snapshots, answers,
+Creator/Captain notes, storage paths, sessions, credentials, or hidden IDs.
+
 ## Phase 7 correction Round 3 status
 
 Correction Round 3 uses one canonical AccountSession for ordinary Player,

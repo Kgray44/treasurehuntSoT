@@ -76,7 +76,7 @@
     },
     {
       "id": "unit.tideglass",
-      "name": "Tideglass semantic Chronicle edition comparison contracts",
+      "name": "Tideglass semantic comparison and Phase 2 intelligence contracts",
       "tier": 1,
       "owner": "tideglass",
       "command": "registry-selected Vitest files",
@@ -90,11 +90,25 @@
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",
         "tideglass-safe-projection",
-        "tideglass-read-only-invariance"
+        "tideglass-read-only-invariance",
+        "tideglass-change-classification",
+        "tideglass-compatibility-deltas",
+        "tideglass-deterministic-summary",
+        "tideglass-creator-annotations",
+        "tideglass-rebuildable-cache",
+        "tideglass-api-security",
+        "tideglass-migration-parity"
       ],
-      "affectedPaths": ["src/tideglass/**", "scripts/tideglass/**", "tests/tideglass/**"],
+      "affectedPaths": [
+        "src/tideglass/**",
+        "src/app/api/chronicles/**",
+        "scripts/tideglass/**",
+        "tests/tideglass/**",
+        "prisma/migrations/20260809130000_tideglass_phase2_creator_annotations/**",
+        "prisma/mysql-migrations/0053_tideglass_phase2_creator_annotations/**"
+      ],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "owned-family",
+      "currentImplementationState": "phase-2-candidate",
       "adapter": "vitest-family"
     },
     {

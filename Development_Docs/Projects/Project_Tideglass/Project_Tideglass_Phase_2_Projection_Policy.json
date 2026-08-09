@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectionPolicyVersion": "tideglass.projection.v1",
+  "summaryPolicyVersion": "tideglass.summary.v1",
+  "annotationSchemaVersion": "tideglass.annotation.v1",
+  "disclosureStates": ["VISIBLE", "DISCLOSABLE", "WITHHELD"],
+  "audiences": {
+    "PUBLIC_PREVIEW": {
+      "PREVIEW_SAFE": "VISIBLE",
+      "STORY_SPOILER": "WITHHELD",
+      "ENDING_SPOILER": "WITHHELD",
+      "CREATOR_ONLY": "WITHHELD",
+      "CAPTAIN_ONLY": "WITHHELD",
+      "PRIVATE_OR_REDACTED": "WITHHELD"
+    },
+    "PLAYER_SAFE": {
+      "PREVIEW_SAFE": "VISIBLE",
+      "STORY_SPOILER": "DISCLOSABLE",
+      "ENDING_SPOILER": "DISCLOSABLE",
+      "CREATOR_ONLY": "WITHHELD",
+      "CAPTAIN_ONLY": "WITHHELD",
+      "PRIVATE_OR_REDACTED": "WITHHELD"
+    },
+    "CREATOR_FULL": {
+      "PREVIEW_SAFE": "VISIBLE",
+      "STORY_SPOILER": "VISIBLE",
+      "ENDING_SPOILER": "VISIBLE",
+      "CREATOR_ONLY": "VISIBLE",
+      "CAPTAIN_ONLY": "VISIBLE",
+      "PRIVATE_OR_REDACTED": "VISIBLE"
+    }
+  },
+  "publicCountPolicy": "VISIBLE_ONLY_NO_WITHHELD_TOTAL",
+  "clientAudienceRule": "SERVER_DERIVED_MAXIMUM_CLIENT_MAY_ONLY_DOWNGRADE"
+}

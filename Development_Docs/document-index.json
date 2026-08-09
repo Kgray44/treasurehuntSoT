@@ -5097,6 +5097,60 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Active_Phase_Registration.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Change_Code_Registry.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Completion_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Migration_Reservation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Projection_Policy.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Tideglass/README.md",
       "record_type": "program-record",
       "status": "preserved",

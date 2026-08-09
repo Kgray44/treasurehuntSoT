@@ -24,7 +24,7 @@ authorities without replacing them. `/admin` is a privileged direct-entry
 surface; `/account/support-access` remains an ordinary account-owner consent
 surface.
 
-Tideglass reads two exact immutable published editions through a server-authorized repository port, verifies their stored-byte checksums, normalizes supported snapshot schemas into one comparison-only semantic model, and emits deterministic redacted Change Sets and receipts. It has no business persistence and does not mutate publication, Voyage, personal-history, or Community state. Phase 1 exposes only a trusted local diagnostic seam; route and user-interface activation belong to later governed phases.
+Tideglass reads two exact immutable published editions through a server-authorized repository port, verifies their stored-byte checksums, normalizes supported snapshot schemas into one comparison-only semantic model, and emits deterministic redacted Change Sets and receipts. Phase 2 layers versioned classification, significance, compatibility, summaries, audience projections, and a bounded digest-validating cache over that unchanged Phase 1 truth. Its only business persistence is the immutable `TideglassCreatorAnnotation` revision chain plus existing platform audit evidence. Finished Creator-scoped APIs expose typed projections; no raw snapshot, ordinary comparison page, played-history qualification, or live-Voyage mutation exists.
 
 Private-content workflows retain separate authorization, scanning, storage,
 recovery, protected-media, grant, derivative, and withdrawal concerns. Local

@@ -69,13 +69,29 @@
     {
       "id": "tideglass",
       "project": "project-tideglass",
-      "sourcePaths": ["src/tideglass/**", "scripts/tideglass/**", "Development_Docs/Projects/Project_Tideglass/**"],
+      "sourcePaths": [
+        "src/tideglass/**",
+        "src/app/api/chronicles/**",
+        "scripts/tideglass/**",
+        "prisma/schema.sqlite.prisma",
+        "prisma/schema.prisma",
+        "prisma/migrations/20260809130000_tideglass_phase2_creator_annotations/**",
+        "prisma/mysql-migrations/0053_tideglass_phase2_creator_annotations/**",
+        "Development_Docs/Projects/Project_Tideglass/**"
+      ],
       "testPaths": ["tests/tideglass/**/*.test.*"],
       "contractIds": [
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",
         "tideglass-safe-projection",
-        "tideglass-read-only-invariance"
+        "tideglass-read-only-invariance",
+        "tideglass-change-classification",
+        "tideglass-compatibility-deltas",
+        "tideglass-deterministic-summary",
+        "tideglass-creator-annotations",
+        "tideglass-rebuildable-cache",
+        "tideglass-api-security",
+        "tideglass-migration-parity"
       ]
     },
     {

@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `755589fef757604c1c743bbb572ae32217dfc12e`
+Audited source commit: `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`
 
 ## Status vocabulary
 
@@ -1258,12 +1258,12 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 
 ---
 
-## FT-B009 - Tideglass Semantic Edition Comparison Foundation
+## FT-B009 - Tideglass Chronicle Edition Intelligence
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Tideglass Phase 1
+**Program or subsystem:** Project Tideglass Phase 1 with Phase 2 candidate
 
-A read-only authority compares exact immutable Chronicle editions through deterministic semantic normalization, stable identity matching, domain comparators, redacted Change Sets, and source-bound receipts.
+The accepted server-side foundation compares exact immutable Chronicle editions; the Phase 2 candidate classifies and summarizes evidence deterministically, projects spoiler-safe audience views, and preserves append-only Creator context without changing published or live Voyage truth.
 
 ### Important subfeatures
 
@@ -1271,23 +1271,33 @@ A read-only authority compares exact immutable Chronicle editions through determ
 - Versioned semantic normalization
 - Stable identity and graph comparison
 - Deterministic Change Sets and receipts
-- Server-authorized redacted projections
+- Stable change codes and explainable significance
+- Evidence-linked compatibility deltas
+- Deterministic concise and detailed summaries
+- Public, Player-safe, and Creator-full projections
+- Append-only Creator annotation revisions
+- Digest-validated rebuildable comparison cache
+- Authorized bounded comparison and annotation APIs
 - Read-only cross-domain invariance
 
 ### Primary surfaces
 
-`npm run tideglass:compare`, `src/tideglass`
+`npm run tideglass:compare`, `src/tideglass`, `/api/chronicles/:chronicleId/comparison`
 
 ### Meaningful limitations
 
-- Ordinary user comparison routes and polished What Changed interaction are outside Phase 1.
+- The Phase 2 extension remains a candidate until protected mainline acceptance.
+- Ordinary user comparison routes, played-history qualification, and polished What Changed interaction remain outside Phase 2.
 - Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.
 
 ### Evidence
 
 - path: `src/tideglass/service.ts`
+- path: `src/tideglass/intelligence.ts`
+- path: `src/tideglass/annotations.ts`
 - test: `tests/tideglass`
 - completion-record: `Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md`
+- completion-record: `Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Completion_Receipt.md`
 
 ---
 
@@ -1349,4 +1359,4 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `755589fef757604c1c743bbb572ae32217dfc12e`
+Generation source commit: `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`

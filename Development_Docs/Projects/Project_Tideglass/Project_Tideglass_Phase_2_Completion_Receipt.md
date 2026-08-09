@@ -1,0 +1,41 @@
+---
+title: Project Tideglass Phase 2 Completion Receipt
+audience: product-engineering
+status: current
+canonical_for: project-tideglass-phase-2-completion
+last_reviewed: 2026-08-09
+---
+
+# Project Tideglass Phase 2 completion receipt
+
+Status: `FOCUSED_VALIDATED_AWAITING_RECONCILIATION`.
+
+The Phase 2 implementation currently provides stable change codes, explainable significance, compatibility deltas, `PUBLIC_PREVIEW`/`PLAYER_SAFE`/`CREATOR_FULL` projections, structured disclosure states, deterministic summaries, append-only Creator annotation revisions, contradiction/omission warnings, a bounded digest-validating cache, and safe server APIs. It preserves the Phase 1 semantic/comparison policy versions and adds no Phase 3 route or history-aware product experience.
+
+This is not yet an accepted-mainline completion claim. Candidate Sounding Line, hosted checks, integration, actual-integrated-SHA proof, and local/remote parity remain to be recorded. No deployment, production/provider execution, private-content execution, or owner walkthrough is claimed. Phase 3 remains unauthorized.
+
+| Receipt field                      | Current evidence                                                                                                                                                                       |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Project / phase                    | Project Tideglass / Phase 2: Read the Wake                                                                                                                                             |
+| Original base SHA                  | `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`                                                                                                                                             |
+| Latest reconciled main SHA         | Pending coordinated final reconciliation                                                                                                                                               |
+| Candidate / merged / postmerge SHA | Pending exact-commit and protected-mainline workflow                                                                                                                                   |
+| Semantic / comparison policy       | `tideglass.semantic.v1` / `tideglass.policy.v1` unchanged                                                                                                                              |
+| Projection / summary policy        | `tideglass.projection.v1` / `tideglass.summary.v1`                                                                                                                                     |
+| Annotation schema                  | `tideglass.annotation.v1`                                                                                                                                                              |
+| SQLite / MySQL migration           | `20260809130000_tideglass_phase2_creator_annotations` / `0053_tideglass_phase2_creator_annotations`                                                                                    |
+| Annotation model                   | `TideglassCreatorAnnotation`                                                                                                                                                           |
+| Change codes / summary templates   | 94 unique resolvable codes / 17 deterministic template keys                                                                                                                            |
+| Projection audiences               | 3 (`PUBLIC_PREVIEW`, `PLAYER_SAFE`, `CREATOR_FULL`)                                                                                                                                    |
+| Focused tests                      | 89 Tideglass tests across 9 files                                                                                                                                                      |
+| Sounding Line suites               | `unit.tideglass`, `unit.one-voyage`, `unit.homeport`, `unit.admiralty`, `component.admiralty`, `browser.admiralty`, `static.core`                                                      |
+| Local subsystem decision           | `RELEASE_GO`; 7/7 clean receipts; plan `bce3f3ea96ea22fa8dc4bbb0e2925ca99a0b9ba588b496617dd3385fa07380e4`; evidence `500b37b15981d438cd376b49c0f90e62eaabf5774f75d82ca145809a1149e0fc` |
+| Candidate / hosted / postmerge     | Pending                                                                                                                                                                                |
+| Migration rehearsal                | SQLite PASS; zero backfill; annotation plus audit only; MySQL execution unavailable locally                                                                                            |
+| Privacy / security                 | Focused PASS; no raw snapshots, hidden counts/IDs, Creator-note leakage, mass assignment, IDOR, foreign-Creator/admin-label bypass                                                     |
+| Cache isolation                    | PASS; exact immutable keys, bounded eviction, digest rebuild, no personal/history context                                                                                              |
+| Read-only business invariance      | PASS on synthetic publication, Chronicle, Voyage, history, and Community state                                                                                                         |
+| Feature Catalog                    | Candidate fragment updated and generated; final mainline provenance pending                                                                                                            |
+| Known limitations                  | No local MySQL 8 provider execution; no deployment or real-account browser proof                                                                                                       |
+| Explicit Phase 3 deferrals         | No ordinary What Changed route, navigation, played-history/Wakebook, edition chooser, Captain/Community/Studio UI                                                                      |
+| Remote parity / cleanup            | Remote parity pending; local Sounding Line cleanup `CLEAN`                                                                                                                             |

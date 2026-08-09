@@ -20,3 +20,13 @@ do not rewrite or delete existing rows. Rehearse with
 `npm run admiralty:migrations` against task-owned databases, then back up and
 verify the authorized target before applying either production-provider path.
 Local SQLite rehearsal does not prove production MySQL execution.
+
+Project Tideglass Phase 2 reserves the next additive pair:
+`20260809130000_tideglass_phase2_creator_annotations` for SQLite and
+`0053_tideglass_phase2_creator_annotations` for MySQL. They add only the
+append-only `TideglassCreatorAnnotation` revision model and its relations,
+constraints, and indexes. They do not backfill guessed notes or persist
+comparison caches, projections, raw snapshots, Player history, or live Voyage
+state. Run `npm run tideglass:migrations:sqlite` for the task-owned SQLite
+upgrade rehearsal. Production MySQL still requires a separately configured
+disposable rehearsal before application to an authorized target.
