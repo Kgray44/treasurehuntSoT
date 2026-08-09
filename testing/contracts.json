@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "phase-1-wakebook-control-plane",
+  "status": "integrated-deepwater-phase-2-wakebook-phase-1-control-plane",
   "contracts": [
     {
       "id": "invitation-acceptance",
@@ -158,7 +158,7 @@
     },
     {
       "id": "deepwater.capability-realization-integrity",
-      "name": "Deepwater capability realization ledger integrity",
+      "name": "Deepwater capability realization trace and remediation integrity",
       "authority": "project-deepwater",
       "owners": ["project-deepwater", "platform-foundation"],
       "critical": true

@@ -8,7 +8,7 @@
   "properties": {
     "schemaVersion": { "const": "1.0.0" },
     "project": { "const": "Project Deepwater" },
-    "phase": { "const": "Phase 1 - Sound the Depths" },
+    "phase": { "enum": ["Phase 1 - Sound the Depths", "Phase 2 - Trace the Current"] },
     "auditedSourceSha": { "$ref": "#/$defs/sha" },
     "auditDate": { "type": "string", "format": "date" },
     "generation": {

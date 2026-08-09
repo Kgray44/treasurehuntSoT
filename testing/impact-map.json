@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "status": "phase-1-wakebook-control-plane",
+  "status": "integrated-deepwater-phase-2-wakebook-phase-1-control-plane",
   "pathMappings": [
     {
       "path": "Development_Docs/Projects/Project Wakebook/**",

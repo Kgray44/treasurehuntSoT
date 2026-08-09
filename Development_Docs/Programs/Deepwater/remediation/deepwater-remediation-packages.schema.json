@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voyagewright.local/schemas/deepwater/remediation-packages.schema.json",
+  "title": "Project Deepwater Phase 2 Remediation Packages",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "project", "phase", "sourceSha", "packages"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "project": { "const": "Project Deepwater" },
+    "phase": { "const": "Phase 2 - Trace the Current" },
+    "sourceSha": { "$ref": "#/$defs/sha" },
+    "packages": { "type": "array", "items": { "$ref": "#/$defs/package" } }
+  },
+  "$defs": {
+    "sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "remediationPacketId",
+        "findingIds",
+        "capabilityId",
+        "canonicalOwner",
+        "contributingOwners",
+        "multiOwnerRationale",
+        "recommendedProjectPhase",
+        "currentClassification",
+        "expectedTerminalRung",
+        "currentHighestRung",
+        "firstLossPoint",
+        "rootCause",
+        "currentBehavior",
+        "requiredBehavior",
+        "affectedContracts",
+        "affectedRoutesSurfaces",
+        "authorizationPrivacyConstraints",
+        "requiredStates",
+        "accessibilityImplications",
+        "hardDependencies",
+        "softDependencies",
+        "concurrencyClass",
+        "mainlineSafetyExpectations",
+        "suggestedIntegrationPattern",
+        "prohibitedImplementationShortcuts",
+        "requiredClosureEvidence",
+        "sourceSha",
+        "status"
+      ],
+      "properties": {
+        "remediationPacketId": { "type": "string", "pattern": "^DW-REMED-[A-Z0-9]+(?:-[A-Z0-9]+)*$" },
+        "findingIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^DW-FIND-[A-Z0-9]+(?:-[A-Z0-9]+)*$" },
+          "uniqueItems": true
+        },
+        "capabilityId": { "type": "string", "pattern": "^DW-CAP-[A-Z0-9]+(?:-[A-Z0-9]+)*$" },
+        "canonicalOwner": { "type": "string", "minLength": 1 },
+        "contributingOwners": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "multiOwnerRationale": { "type": ["string", "null"] },
+        "recommendedProjectPhase": { "type": "string", "minLength": 1 },
+        "currentClassification": { "type": "string", "minLength": 1 },
+        "expectedTerminalRung": { "type": "string", "minLength": 1 },
+        "currentHighestRung": { "type": "string", "minLength": 1 },
+        "firstLossPoint": { "type": "string", "minLength": 1 },
+        "rootCause": { "type": "string", "minLength": 1 },
+        "currentBehavior": { "type": "string", "minLength": 1 },
+        "requiredBehavior": { "type": "string", "minLength": 1 },
+        "affectedContracts": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "affectedRoutesSurfaces": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "authorizationPrivacyConstraints": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "requiredStates": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "accessibilityImplications": { "type": "string", "minLength": 1 },
+        "hardDependencies": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "softDependencies": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "concurrencyClass": { "type": "string", "minLength": 1 },
+        "mainlineSafetyExpectations": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "suggestedIntegrationPattern": { "type": "string", "minLength": 1 },
+        "prohibitedImplementationShortcuts": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "requiredClosureEvidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "sourceSha": { "$ref": "#/$defs/sha" },
+        "status": { "enum": ["ASSIGNED", "OWNER_DECISION_REQUIRED", "EXTERNAL_DEPENDENCY", "DEBT_CANDIDATE"] }
+      }
+    }
+  }
+}
