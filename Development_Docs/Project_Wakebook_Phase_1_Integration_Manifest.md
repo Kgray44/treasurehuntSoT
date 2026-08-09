@@ -10,17 +10,17 @@ last_reviewed: 2026-08-09
 
 ## Current integration state
 
-| Item                    | State                                                                                                                                                         |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                                                                    |
-| Current reconciled base | `468530645e983412e5f4c1aaa103915be77c9c07`                                                                                                                    |
-| Current merge anchor    | `74e2459ba5fca28fe64b86582b912f47f366f32a`                                                                                                                    |
-| Incoming accepted work  | Deepwater through Phase 3, Tideglass Phase 1, Admiralty Phase 1 closure, Drydock Phase 1, Feature Catalog, Homeport catalogs, and Sounding Line control plane |
-| Semantic reconciliation | Combined shared catalogs/control-plane truth; Wakebook moved to `FT-B011`; accepted application/schema behavior preserved                                     |
-| Implementation anchor   | `ab47dc33a29b2cdd80a97da7fd1af4a9e897b2cc`                                                                                                                    |
-| Sounding Line evidence  | Focused/browser evidence complete; final exact-source broader authorities pending                                                                             |
-| Owner walkthrough       | Package and retained synthetic runtime prepared; owner decision pending                                                                                       |
-| Main merge              | Forbidden in this task                                                                                                                                        |
+| Item                    | State                                                                                                                                                                     |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                                                                                |
+| Current reconciled base | `f07fbb693e32f6b1069870fae9da668ed3392d4b`                                                                                                                                |
+| Current merge anchor    | `c5baf0ed7691355c2d1eceb497fa9ff2038d58fe`                                                                                                                                |
+| Incoming accepted work  | Deepwater through Phase 3, Tideglass Phase 1, Admiralty Phase 1, Drydock Phase 1 and closure records, Feature Catalog, Homeport catalogs, and Sounding Line control plane |
+| Semantic reconciliation | Combined shared catalogs/control-plane truth; Wakebook moved to `FT-B011`; accepted application/schema behavior preserved                                                 |
+| Implementation anchor   | `ab47dc33a29b2cdd80a97da7fd1af4a9e897b2cc`                                                                                                                                |
+| Sounding Line evidence  | Focused/browser evidence complete; final exact-source broader authorities pending                                                                                         |
+| Owner walkthrough       | Package and retained synthetic runtime prepared; owner decision pending                                                                                                   |
+| Main merge              | Forbidden in this task                                                                                                                                                    |
 
 ## Owned implementation paths
 
@@ -32,7 +32,9 @@ Wayfarer materialization/mutation ownership, One Voyage runtime rows, Artifact C
 
 Before each shared-file edit and final validation, compare current `origin/main`. Preserve accepted Deepwater, Tideglass, and Admiralty additions in Feature Catalog, Homeport catalogs, and Sounding Line files. Stage only enumerated Wakebook paths. Do not merge, rebase, copy, or modify concurrent Phase 1 worktrees.
 
-The reconciled control plane contains 44 Feature Catalog entries, 55 Deepwater capabilities, and the combined Tideglass `FT-B009`, Admiralty `FT-B010`, and branch-only Wakebook `FT-B011` identities. Homeport's accepted inventory contains 295 routes: 92 pages and 203 service sources. The Sounding Line registry contains 1,820 registered cases across 51 families, including accepted Drydock ownership and contracts. These generated counts must be rechecked if `origin/main` advances again.
+The reconciled control plane contains 44 Feature Catalog entries, 55 Deepwater capabilities, and the combined Tideglass `FT-B009`, Admiralty `FT-B010`, and branch-only Wakebook `FT-B011` identities. Homeport's accepted inventory contains 295 routes: 92 pages and 203 service sources. The Sounding Line registry contains 1,821 registered cases across 51 families, including accepted Drydock ownership and contracts plus the Community metadata regression. These generated counts must be rechecked if `origin/main` advances again.
+
+The accepted interval `468530645e983412e5f4c1aaa103915be77c9c07..f07fbb693e32f6b1069870fae9da668ed3392d4b` contains only Drydock's Phase 1 acceptance record and protected closure merge. It changes Drydock records, the Studio Feature Catalog fragment, the generated Feature Catalog, and Ledgerlight inventory. It changes no Wakebook source, test, Prisma, runtime, or Sounding Line policy ownership. Merge `c5baf0e` preserved that accepted truth and all Wakebook-owned implementation; the generated catalog, documentation inventory, and test registry were then regenerated from their authoritative inputs.
 
 ## Final convergence requirements
 
