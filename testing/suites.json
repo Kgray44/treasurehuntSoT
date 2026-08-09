@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "status": "phase-5-homeport-route-reachability-owned-families",
+  "status": "phase-1-admiralty-platform-administration",
   "suites": [
     {
       "id": "browser.access-sentinel",
@@ -197,6 +197,24 @@
       "contracts": ["authentication-authorization"],
       "affectedPaths": ["scripts/features/**", "Development_Docs/Features/**"],
       "releaseGates": ["local-change", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-family",
+      "adapter": "vitest-family"
+    },
+    {
+      "id": "unit.deepwater",
+      "name": "Deepwater capability realization control-plane units",
+      "tier": 1,
+      "owner": "project-deepwater",
+      "command": "registry-selected Node test files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 30000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": [],
+      "contracts": ["deepwater.capability-realization-integrity"],
+      "affectedPaths": ["Development_Docs/Programs/Deepwater/**", "scripts/deepwater/**", "tests/deepwater/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "vitest-family"
     },

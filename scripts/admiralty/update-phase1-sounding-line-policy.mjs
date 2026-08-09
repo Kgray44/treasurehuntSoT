@@ -41,6 +41,7 @@ const browserContracts = [
 ];
 
 const contracts = await json("contracts.json");
+contracts.status = "phase-1-admiralty-platform-administration";
 for (const id of contractIds)
   upsert(contracts.contracts, {
     id,
@@ -52,6 +53,7 @@ for (const id of contractIds)
 await save("contracts.json", contracts);
 
 const ownership = await json("ownership.json");
+ownership.status = "phase-1-admiralty-platform-administration";
 upsert(ownership.owners, {
   id: "project-admiralty",
   project: "project-admiralty",
@@ -71,6 +73,7 @@ upsert(ownership.owners, {
 await save("ownership.json", ownership);
 
 const suites = await json("suites.json");
+suites.status = "phase-1-admiralty-platform-administration";
 upsert(
   suites.suites,
   suite(
@@ -115,6 +118,7 @@ upsert(
 await save("suites.json", suites);
 
 const impact = await json("impact-map.json");
+impact.status = "phase-1-admiralty-platform-administration";
 const allSuites = ["unit.admiralty", "component.admiralty", "browser.admiralty"];
 for (const mapping of [
   { path: "src/admiralty/**", suiteIds: allSuites, contractIds },

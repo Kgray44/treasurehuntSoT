@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d",
+  "projects": [
+    {
+      "project": "Admiralty",
+      "contract": "Privileged administration, support, moderation, and operational control surfaces",
+      "aliases": ["Administration", "Admin", "Support"]
+    },
+    {
+      "project": "Breakwater",
+      "contract": "Deployment, infrastructure, release consumption, and platform operations",
+      "aliases": ["Operations", "Infrastructure"]
+    },
+    {
+      "project": "Deepwater",
+      "contract": "Capability audit methodology, ledger, findings, realization evidence, and eligible later cross-layer slices",
+      "aliases": []
+    },
+    {
+      "project": "Drydock",
+      "contract": "Authoring validation, simulation, and authored-contract truth",
+      "aliases": ["Authoring Validation"]
+    },
+    {
+      "project": "Harborlight",
+      "contract": "Community exchange, publishing, discovery, social, moderation-domain, and community operations truth",
+      "aliases": ["Harborlight Phases 1 through 4", "Community"]
+    },
+    {
+      "project": "Helm",
+      "contract": "Captain operations and participating-Captain runtime presentation",
+      "aliases": ["Captain"]
+    },
+    {
+      "project": "Homeport",
+      "contract": "Product coherence, route and screen governance, natural journeys, and owner-walkthrough control plane",
+      "aliases": [
+        "Project Homeport Phase 1",
+        "Project Homeport Phase 2",
+        "Project Homeport Phase 3",
+        "Project Homeport Phase 4",
+        "Project Homeport Phase 5",
+        "Project Homeport Phase 6",
+        "Project Homeport Phase 7"
+      ]
+    },
+    { "project": "Landfall", "contract": "Geospatial and location truth", "aliases": ["Geospatial"] },
+    { "project": "Lanternwake", "contract": "Cinematic animation and presentation runtime truth", "aliases": [] },
+    {
+      "project": "Ledgerlight",
+      "contract": "Documentation governance, classification, indexing, and Feature Catalog maintenance policy",
+      "aliases": []
+    },
+    {
+      "project": "One Voyage",
+      "contract": "Chronicle runtime truth, Tale Session events, membership, progression, and canonical grants",
+      "aliases": ["Player", "Studio and One Voyage", "One Voyage Phases"]
+    },
+    {
+      "project": "Platform",
+      "contract": "Shared Chronicle platform contracts and cross-workspace platform primitives",
+      "aliases": ["Platform Foundation"]
+    },
+    {
+      "project": "Security",
+      "contract": "Cross-platform security, authorization, safe projection, and transport protection contracts",
+      "aliases": ["Platform Security"]
+    },
+    {
+      "project": "Sealed Hold",
+      "contract": "Private-content security, protected media, provider, scanner, key, and storage truth",
+      "aliases": ["Sealed Hold Phases 1 through 4"]
+    },
+    {
+      "project": "Shipwright",
+      "contract": "Creator Studio interaction and product experience",
+      "aliases": ["Studio", "Creator Studio"]
+    },
+    {
+      "project": "Sounding Line",
+      "contract": "Verification planning, evidence validity, execution, and release decisions",
+      "aliases": ["Sounding Line Phases 1-4"]
+    },
+    {
+      "project": "Tideglass",
+      "contract": "Edition-difference and comparison semantics",
+      "aliases": ["Edition Comparison"]
+    },
+    {
+      "project": "True North",
+      "contract": "Role-aware global, workspace, account, and contextual navigation truth",
+      "aliases": []
+    },
+    {
+      "project": "Universal Language",
+      "contract": "Canonical terminology, user-facing language, and shared product design-system language",
+      "aliases": []
+    },
+    {
+      "project": "Wakebook",
+      "contract": "Journey archive, historical presentation, Journal, and personal-history experience",
+      "aliases": ["History Presentation"]
+    },
+    {
+      "project": "Watchglass",
+      "contract": "Recognition and external verification-provider truth",
+      "aliases": ["Recognition"]
+    },
+    {
+      "project": "Wayfarer",
+      "contract": "Account identity, sessions, personal profile, privacy, Chronicle history, and personal artifacts",
+      "aliases": ["Wayfarer Phase 3", "Wayfarer Phase 4", "Voyagewright OAuth"]
+    }
+  ]
+}

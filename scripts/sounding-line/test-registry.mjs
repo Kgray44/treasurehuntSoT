@@ -28,6 +28,7 @@ const admiraltyContracts = [
 
 function ownerFor(file) {
   if (file.includes("admiralty")) return "project-admiralty";
+  if (file.includes("deepwater")) return "project-deepwater";
   if (file.includes("homeport")) return "project-homeport";
   if (file.includes("private-content")) return "sealed-hold";
   if (file.includes("community")) return "harborlight";
@@ -40,6 +41,7 @@ function ownerFor(file) {
 
 function unitFamily(file) {
   if (file.startsWith("src/admiralty/") || file.startsWith("scripts/admiralty/")) return "unit.admiralty";
+  if (file.startsWith("scripts/deepwater/") || file.startsWith("tests/deepwater/")) return "unit.deepwater";
   if (file.startsWith("src/homeport/") || file.startsWith("scripts/homeport/") || file.startsWith("tests/homeport/"))
     return "unit.homeport";
   if (file.startsWith("scripts/sounding-line/") || file.startsWith("tests/sounding-line/")) return "unit.sounding-line";
@@ -109,6 +111,7 @@ function browserFamily(project, file, title) {
 
 function contractFor(file, family) {
   if (file.includes("admiralty") || family.includes("admiralty")) return admiraltyContracts;
+  if (file.includes("deepwater") || family === "unit.deepwater") return ["deepwater.capability-realization-integrity"];
   if (file.includes("homeport") || family === "unit.homeport") return homeportContracts;
   if (file.includes("private-content")) return ["sealed-hold-private-delivery", "public-privacy-projection"];
   if (file.includes("community")) return ["community-public-projection"];
@@ -122,9 +125,8 @@ function contractFor(file, family) {
 }
 
 function metadata(file, family, browser = null) {
-  const privateOrCommunity = /admiralty|homeport|private-content|community|wayfarer|passport|invitation|session/u.test(
-    file,
-  );
+  const privateOrCommunity =
+    /admiralty|deepwater|homeport|private-content|community|wayfarer|passport|invitation|session/u.test(file);
   const high = privateOrCommunity || Boolean(browser);
   const ui = Boolean(browser) || file.endsWith(".tsx");
   return {

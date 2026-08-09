@@ -7,12 +7,8 @@
     {
       "familyId": "product-shell",
       "owner": "true-north",
-      "sourceComponents": [
-        "src/components/shell/ProductShell.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/shell/ProductShell.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
@@ -33,9 +29,7 @@
         "Creator Studio"
       ],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-001-root-standard-desktop",
         "HP-P6-EV-002-root-modern-mobile",
@@ -168,12 +162,8 @@
     {
       "familyId": "global-headers",
       "owner": "true-north",
-      "sourceComponents": [
-        "src/components/shell/ProductShell.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/shell/ProductShell.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
@@ -194,9 +184,7 @@
         "Creator Studio"
       ],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-001-root-standard-desktop",
         "HP-P6-EV-002-root-modern-mobile",
@@ -329,12 +317,8 @@
     {
       "familyId": "account-control",
       "owner": "wayfarer",
-      "sourceComponents": [
-        "src/components/shell/ProductShell.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/shell/ProductShell.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
@@ -355,9 +339,7 @@
         "Creator Studio"
       ],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-001-root-standard-desktop",
         "HP-P6-EV-002-root-modern-mobile",
@@ -490,12 +472,8 @@
     {
       "familyId": "account-menus",
       "owner": "wayfarer",
-      "sourceComponents": [
-        "src/components/shell/ProductShell.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/shell/ProductShell.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
@@ -516,9 +494,7 @@
         "Creator Studio"
       ],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-001-root-standard-desktop",
         "HP-P6-EV-002-root-modern-mobile",
@@ -651,12 +627,8 @@
     {
       "familyId": "workspace-switchers",
       "owner": "true-north",
-      "sourceComponents": [
-        "src/components/shell/ProductShell.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/shell/ProductShell.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
@@ -677,9 +649,7 @@
         "Creator Studio"
       ],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-001-root-standard-desktop",
         "HP-P6-EV-002-root-modern-mobile",
@@ -812,26 +782,17 @@
     {
       "familyId": "section-navigation",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/homeport/PersonalHarborLayout.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/homeport/PersonalHarborLayout.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Personal Harbor",
-        "Platform service"
-      ],
+      "productAreaConsumers": ["Personal Harbor", "Platform service"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-011-account-standard-desktop",
         "HP-P6-EV-012-account-modern-mobile",
@@ -871,25 +832,17 @@
     {
       "familyId": "district-navigation",
       "owner": "harborlight",
-      "sourceComponents": [
-        "src/components/community/CommunityDistrictNavigator.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/community/CommunityDistrictNavigator.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Community Harbor"
-      ],
+      "productAreaConsumers": ["Community Harbor"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-017-community-standard-desktop",
         "HP-P6-EV-018-community-modern-mobile",
@@ -913,12 +866,8 @@
     {
       "familyId": "breadcrumbs",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/shell/ProductShell.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/shell/ProductShell.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
@@ -939,9 +888,7 @@
         "Creator Studio"
       ],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-001-root-standard-desktop",
         "HP-P6-EV-002-root-modern-mobile",
@@ -1074,27 +1021,17 @@
     {
       "familyId": "contextual-exits",
       "owner": "one-voyage",
-      "sourceComponents": [
-        "src/components/shell/ProductShell.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/shell/ProductShell.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Captain",
-        "Voyage runtime",
-        "Player"
-      ],
+      "productAreaConsumers": ["Captain", "Voyage runtime", "Player"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-021-captain-sessions-sessionid-standard-desktop",
         "HP-P6-EV-022-captain-sessions-sessionid-modern-mobile",
@@ -1117,26 +1054,17 @@
     {
       "familyId": "profile-heroes",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/homeport/AccountSurfaces.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/homeport/AccountSurfaces.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Personal Harbor",
-        "Platform service"
-      ],
+      "productAreaConsumers": ["Personal Harbor", "Platform service"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-011-account-standard-desktop",
         "HP-P6-EV-012-account-modern-mobile",
@@ -1161,26 +1089,17 @@
     {
       "familyId": "settings-panels",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/homeport/AccountSurfaces.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/homeport/AccountSurfaces.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Personal Harbor",
-        "Platform service"
-      ],
+      "productAreaConsumers": ["Personal Harbor", "Platform service"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-011-account-standard-desktop",
         "HP-P6-EV-012-account-modern-mobile",
@@ -1205,28 +1124,17 @@
     {
       "familyId": "form-groups",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/homeport/AccountSurfaces.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/homeport/AccountSurfaces.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Personal Harbor",
-        "Platform service",
-        "Account lifecycle",
-        "Creator Studio"
-      ],
+      "productAreaConsumers": ["Personal Harbor", "Platform service", "Account lifecycle", "Creator Studio"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-011-account-standard-desktop",
         "HP-P6-EV-012-account-modern-mobile",
@@ -1285,28 +1193,17 @@
     {
       "familyId": "field-descriptions",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/homeport/AccountSurfaces.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/homeport/AccountSurfaces.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Personal Harbor",
-        "Platform service",
-        "Account lifecycle",
-        "Creator Studio"
-      ],
+      "productAreaConsumers": ["Personal Harbor", "Platform service", "Account lifecycle", "Creator Studio"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-011-account-standard-desktop",
         "HP-P6-EV-012-account-modern-mobile",
@@ -1365,12 +1262,8 @@
     {
       "familyId": "error-summaries",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/ui/AsyncState.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/ui/AsyncState.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
@@ -1391,9 +1284,7 @@
         "Creator Studio"
       ],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-001-root-standard-desktop",
         "HP-P6-EV-002-root-modern-mobile",
@@ -1526,12 +1417,8 @@
     {
       "familyId": "status-regions",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/ui/AsyncState.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/ui/AsyncState.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
@@ -1552,9 +1439,7 @@
         "Creator Studio"
       ],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-001-root-standard-desktop",
         "HP-P6-EV-002-root-modern-mobile",
@@ -1687,25 +1572,17 @@
     {
       "familyId": "content-shelves",
       "owner": "harborlight",
-      "sourceComponents": [
-        "src/components/community/CommunityDiscoveryBrowser.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/community/CommunityDiscoveryBrowser.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Community Harbor"
-      ],
+      "productAreaConsumers": ["Community Harbor"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-017-community-standard-desktop",
         "HP-P6-EV-018-community-modern-mobile",
@@ -1729,25 +1606,17 @@
     {
       "familyId": "community-cards",
       "owner": "harborlight",
-      "sourceComponents": [
-        "src/components/community/CommunityCardGrid.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/community/CommunityCardGrid.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Community Harbor"
-      ],
+      "productAreaConsumers": ["Community Harbor"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-017-community-standard-desktop",
         "HP-P6-EV-018-community-modern-mobile",
@@ -1771,26 +1640,17 @@
     {
       "familyId": "voyage-cards",
       "owner": "one-voyage",
-      "sourceComponents": [
-        "src/components/platform/PlayerLibrary.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/platform/PlayerLibrary.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Captain",
-        "Player"
-      ],
+      "productAreaConsumers": ["Captain", "Player"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-007-captain-library-standard-desktop",
         "HP-P6-EV-008-captain-library-modern-mobile",
@@ -1831,25 +1691,17 @@
     {
       "familyId": "history-cards",
       "owner": "wayfarer",
-      "sourceComponents": [
-        "src/components/homeport/PassportSurfaces.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/homeport/PassportSurfaces.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Personal Harbor"
-      ],
+      "productAreaConsumers": ["Personal Harbor"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-015-passport-standard-desktop",
         "HP-P6-EV-016-passport-modern-mobile",
@@ -1871,25 +1723,17 @@
     {
       "familyId": "artifact-cards",
       "owner": "wayfarer",
-      "sourceComponents": [
-        "src/components/homeport/PassportSurfaces.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/homeport/PassportSurfaces.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Personal Harbor"
-      ],
+      "productAreaConsumers": ["Personal Harbor"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-015-passport-standard-desktop",
         "HP-P6-EV-016-passport-modern-mobile",
@@ -1911,25 +1755,17 @@
     {
       "familyId": "creator-cards",
       "owner": "harborlight",
-      "sourceComponents": [
-        "src/components/community/CommunityCardGrid.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/community/CommunityCardGrid.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Community Harbor"
-      ],
+      "productAreaConsumers": ["Community Harbor"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-017-community-standard-desktop",
         "HP-P6-EV-018-community-modern-mobile",
@@ -1953,25 +1789,17 @@
     {
       "familyId": "collection-cards",
       "owner": "harborlight",
-      "sourceComponents": [
-        "src/components/community/CommunityCardGrid.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/community/CommunityCardGrid.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Community Harbor"
-      ],
+      "productAreaConsumers": ["Community Harbor"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-017-community-standard-desktop",
         "HP-P6-EV-018-community-modern-mobile",
@@ -1995,25 +1823,17 @@
     {
       "familyId": "filter-bars",
       "owner": "harborlight",
-      "sourceComponents": [
-        "src/components/community/CommunityDiscoveryBrowser.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/community/CommunityDiscoveryBrowser.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Community Harbor"
-      ],
+      "productAreaConsumers": ["Community Harbor"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-017-community-standard-desktop",
         "HP-P6-EV-018-community-modern-mobile",
@@ -2037,25 +1857,17 @@
     {
       "familyId": "filter-drawers",
       "owner": "harborlight",
-      "sourceComponents": [
-        "src/components/community/CommunityDiscoveryBrowser.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/community/CommunityDiscoveryBrowser.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Community Harbor"
-      ],
+      "productAreaConsumers": ["Community Harbor"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-017-community-standard-desktop",
         "HP-P6-EV-018-community-modern-mobile",
@@ -2079,25 +1891,17 @@
     {
       "familyId": "search-controls",
       "owner": "harborlight",
-      "sourceComponents": [
-        "src/components/community/CommunityDiscoveryBrowser.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/community/CommunityDiscoveryBrowser.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Community Harbor"
-      ],
+      "productAreaConsumers": ["Community Harbor"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-017-community-standard-desktop",
         "HP-P6-EV-018-community-modern-mobile",
@@ -2121,27 +1925,17 @@
     {
       "familyId": "badges",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/ui/AsyncState.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/ui/AsyncState.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Captain",
-        "Community Harbor",
-        "Player"
-      ],
+      "productAreaConsumers": ["Captain", "Community Harbor", "Player"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-007-captain-library-standard-desktop",
         "HP-P6-EV-008-captain-library-modern-mobile",
@@ -2199,27 +1993,17 @@
     {
       "familyId": "metadata",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/ui/AsyncState.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/ui/AsyncState.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Captain",
-        "Community Harbor",
-        "Player"
-      ],
+      "productAreaConsumers": ["Captain", "Community Harbor", "Player"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-007-captain-library-standard-desktop",
         "HP-P6-EV-008-captain-library-modern-mobile",
@@ -2277,26 +2061,17 @@
     {
       "familyId": "tabs",
       "owner": "one-voyage",
-      "sourceComponents": [
-        "src/components/platform/CaptainLibrary.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/platform/CaptainLibrary.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Captain",
-        "Creator Studio"
-      ],
+      "productAreaConsumers": ["Captain", "Creator Studio"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-007-captain-library-standard-desktop",
         "HP-P6-EV-008-captain-library-modern-mobile",
@@ -2334,12 +2109,8 @@
     {
       "familyId": "disclosures",
       "owner": "true-north",
-      "sourceComponents": [
-        "src/components/shell/ProductShell.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/shell/ProductShell.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
@@ -2360,9 +2131,7 @@
         "Creator Studio"
       ],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-001-root-standard-desktop",
         "HP-P6-EV-002-root-modern-mobile",
@@ -2495,12 +2264,8 @@
     {
       "familyId": "empty-states",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/ui/AsyncState.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/ui/AsyncState.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
@@ -2516,9 +2281,7 @@
         "Creator Studio"
       ],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-007-captain-library-standard-desktop",
         "HP-P6-EV-008-captain-library-modern-mobile",
@@ -2572,12 +2335,8 @@
     {
       "familyId": "no-result-states",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/ui/AsyncState.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/ui/AsyncState.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
@@ -2593,9 +2352,7 @@
         "Creator Studio"
       ],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-007-captain-library-standard-desktop",
         "HP-P6-EV-008-captain-library-modern-mobile",
@@ -2649,12 +2406,8 @@
     {
       "familyId": "loading-skeletons",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/ui/AsyncState.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/ui/AsyncState.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
@@ -2675,9 +2428,7 @@
         "Creator Studio"
       ],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-001-root-standard-desktop",
         "HP-P6-EV-002-root-modern-mobile",
@@ -2810,12 +2561,8 @@
     {
       "familyId": "dependency-unavailable",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/ui/AsyncState.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/ui/AsyncState.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
@@ -2831,9 +2578,7 @@
         "Creator Studio"
       ],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-011-account-standard-desktop",
         "HP-P6-EV-012-account-modern-mobile",
@@ -2940,29 +2685,17 @@
     {
       "familyId": "permission-panels",
       "owner": "wayfarer",
-      "sourceComponents": [
-        "src/components/auth/AccessDecisionState.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/auth/AccessDecisionState.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Admiralty",
-        "Captain",
-        "Community Harbor",
-        "Player",
-        "Creator Studio"
-      ],
+      "productAreaConsumers": ["Admiralty", "Captain", "Community Harbor", "Player", "Creator Studio"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-007-captain-library-standard-desktop",
         "HP-P6-EV-008-captain-library-modern-mobile",
@@ -3022,12 +2755,8 @@
     {
       "familyId": "dialogs",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/ui/ActionDialog.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/ui/ActionDialog.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
@@ -3043,9 +2772,7 @@
         "Creator Studio"
       ],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-011-account-standard-desktop",
         "HP-P6-EV-012-account-modern-mobile",
@@ -3138,12 +2865,8 @@
     {
       "familyId": "confirmations",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/ui/ActionDialog.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/ui/ActionDialog.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
@@ -3159,9 +2882,7 @@
         "Creator Studio"
       ],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-011-account-standard-desktop",
         "HP-P6-EV-012-account-modern-mobile",
@@ -3254,12 +2975,8 @@
     {
       "familyId": "mutation-status",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/ui/AsyncState.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/ui/AsyncState.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
@@ -3276,9 +2993,7 @@
         "Creator Studio"
       ],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-011-account-standard-desktop",
         "HP-P6-EV-012-account-modern-mobile",
@@ -3380,25 +3095,17 @@
     {
       "familyId": "pagination-cursors",
       "owner": "harborlight",
-      "sourceComponents": [
-        "src/components/community/CommunityDiscoveryBrowser.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/community/CommunityDiscoveryBrowser.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Community Harbor"
-      ],
+      "productAreaConsumers": ["Community Harbor"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-017-community-standard-desktop",
         "HP-P6-EV-018-community-modern-mobile",
@@ -3422,28 +3129,17 @@
     {
       "familyId": "media-fallback",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/ui/ResilientImage.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/ui/ResilientImage.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Community Harbor",
-        "Personal Harbor",
-        "Player",
-        "Creator Studio"
-      ],
+      "productAreaConsumers": ["Community Harbor", "Personal Harbor", "Player", "Creator Studio"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-017-community-standard-desktop",
         "HP-P6-EV-018-community-modern-mobile",
@@ -3517,28 +3213,17 @@
     {
       "familyId": "archived-removed-panels",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/ui/AsyncState.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/ui/AsyncState.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Captain",
-        "Community Harbor",
-        "Personal Harbor",
-        "Creator Studio"
-      ],
+      "productAreaConsumers": ["Captain", "Community Harbor", "Personal Harbor", "Creator Studio"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-007-captain-library-standard-desktop",
         "HP-P6-EV-008-captain-library-modern-mobile",
@@ -3608,27 +3293,17 @@
     {
       "familyId": "tokenized-state-panels",
       "owner": "wayfarer",
-      "sourceComponents": [
-        "src/components/auth/AccessDecisionState.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/auth/AccessDecisionState.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Personal Harbor",
-        "Player",
-        "Account lifecycle"
-      ],
+      "productAreaConsumers": ["Personal Harbor", "Player", "Account lifecycle"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-055-player-invitation-standard-desktop",
         "HP-P6-EV-056-player-invitation-modern-mobile",
@@ -3645,25 +3320,17 @@
     {
       "familyId": "passport-cards",
       "owner": "wayfarer",
-      "sourceComponents": [
-        "src/components/homeport/PassportSurfaces.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/homeport/PassportSurfaces.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Personal Harbor"
-      ],
+      "productAreaConsumers": ["Personal Harbor"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-015-passport-standard-desktop",
         "HP-P6-EV-016-passport-modern-mobile",
@@ -3685,25 +3352,17 @@
     {
       "familyId": "record-details",
       "owner": "wayfarer",
-      "sourceComponents": [
-        "src/components/homeport/PassportSurfaces.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/homeport/PassportSurfaces.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Personal Harbor"
-      ],
+      "productAreaConsumers": ["Personal Harbor"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-015-passport-standard-desktop",
         "HP-P6-EV-016-passport-modern-mobile",
@@ -3725,25 +3384,17 @@
     {
       "familyId": "captain-controls",
       "owner": "one-voyage",
-      "sourceComponents": [
-        "src/components/captain/CaptainSessionControl.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/captain/CaptainSessionControl.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Captain"
-      ],
+      "productAreaConsumers": ["Captain"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-007-captain-library-standard-desktop",
         "HP-P6-EV-008-captain-library-modern-mobile",
@@ -3765,25 +3416,17 @@
     {
       "familyId": "studio-workbench",
       "owner": "one-voyage",
-      "sourceComponents": [
-        "src/components/studio/TaleEditor.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/studio/TaleEditor.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Creator Studio"
-      ],
+      "productAreaConsumers": ["Creator Studio"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-009-studio-library-standard-desktop",
         "HP-P6-EV-010-studio-library-modern-mobile",
@@ -3806,25 +3449,17 @@
     {
       "familyId": "chronicle-journal",
       "owner": "lanternwake",
-      "sourceComponents": [
-        "src/components/player/journal/ChronicleJournalSession.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/player/journal/ChronicleJournalSession.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": [
-        "Player"
-      ],
+      "productAreaConsumers": ["Player"],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-055-player-invitation-standard-desktop",
         "HP-P6-EV-056-player-invitation-modern-mobile",
@@ -3850,12 +3485,8 @@
     {
       "familyId": "state-panels",
       "owner": "project-homeport",
-      "sourceComponents": [
-        "src/components/ui/AsyncState.tsx"
-      ],
-      "visualTokens": [
-        "src/styles/tokens.css"
-      ],
+      "sourceComponents": ["src/components/ui/AsyncState.tsx"],
+      "visualTokens": ["src/styles/tokens.css"],
       "semanticContract": "Named landmarks, headings, controls, and state-specific explanation.",
       "stateContract": "Loading, empty, no-results, unavailable, permission, mutation, and media states remain distinct.",
       "responsiveContract": "Function and meaning persist from large desktop through narrow mobile and effective zoom.",
@@ -3877,9 +3508,7 @@
         "Cross-product state"
       ],
       "deprecatedDuplicates": [],
-      "tests": [
-        "homeport.surface.component-family-consistency"
-      ],
+      "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
         "HP-P6-EV-001-root-standard-desktop",
         "HP-P6-EV-002-root-modern-mobile",
