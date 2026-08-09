@@ -17,10 +17,10 @@ is a pre-integration record and does not claim mainline acceptance.
 | Field                  | Value                                                                |
 | ---------------------- | -------------------------------------------------------------------- |
 | Original base SHA      | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                           |
-| Current `origin/main`  | `468530645e983412e5f4c1aaa103915be77c9c07`                           |
+| Current `origin/main`  | `9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1`                           |
 | Branch                 | `codex/project-helm-phase1-take-the-helm`                            |
 | Owned worktree         | `C:\Users\kkids\Documents\treasurehuntSoT-helm-phase1-take-the-helm` |
-| Candidate commit       | `3795a15d5ae2552785b6ecbf0e33b149b462ffb3` reconciled checkpoint     |
+| Candidate commit       | `510cee5253043e0746c5cad209c4ac8ab9098f93` reconciliation merge      |
 | Protected integration  | Pending                                                              |
 | Final reconciled main  | Pending                                                              |
 | Current mainline state | `RECONCILED_VALIDATION_IN_PROGRESS`                                  |
@@ -61,6 +61,8 @@ is a pre-integration record and does not claim mainline acceptance.
 | `755589f`                                  | Adjacent accepted-mainline records              | Promotes Admiralty, Deepwater, and shared governance metadata after exact-source 33/33 `RELEASE_GO` with clean cleanup. No Helm-owned product behavior changed.                                                               |
 | `d1344e8`                                  | Adjacent record-only closure                    | Records Admiralty's mainline authority receipt and catalog anchor after a 6/6 local-change `RELEASE_GO` with clean cleanup.                                                                                                   |
 | `0d318f7` through `4685306`                | Adjacent product and shared-governance work     | Adds Drydock Phase 1 typed authoring contracts, Chronicle integration, tests, records, and Sounding Line ownership, then publishes the accepted implementation to canonical main. Helm participation source did not conflict. |
+| `673489f`, `f07fbb6`                       | Adjacent record-only closure and integration    | Records Drydock Phase 1 accepted-mainline evidence, promotes its catalog status, and integrates the closure records. No Helm-owned source changed.                                                                            |
+| `38dd98e`, `9de0029`                       | Adjacent Feature Catalog correction             | Corrects Harborlight's canonical route surfaces in its machine-readable fragment and integrates the one-file change through pull request 26. No Helm-owned product or governance source changed.                              |
 
 The governance bootstrap introduces the supplied Project Helm and continuous
 development PDFs as tracked governing authorities. Their Git blob identities
@@ -68,15 +70,15 @@ match the authorities reviewed for this phase.
 
 ## Overlap classification
 
-| Area                                             | Classification                   | Reconciliation rule                                                                                                                                                                                                   |
-| ------------------------------------------------ | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Helm product source and tests                    | None                             | Retain Helm implementation and focused functional findings.                                                                                                                                                           |
-| Chronicle authoring and progression source       | Adjacent shared product          | Accept Drydock's canonical authoring contracts and Chronicle integration unchanged, then rerun Helm creation, artifact, history, and browser coverage against the combined source.                                    |
-| Sounding Line registry generator and policy JSON | Direct shared-governance overlap | Merged semantically. Preserved Deepwater and Tideglass ownership plus the dedicated Helm unit, component, browser, contract, owner, impact, and gate entries; regenerated the active registry from reconciled source. |
-| `package.json`                                   | Direct shared-governance overlap | Preserve Deepwater and Tideglass commands and the existing repository scripts; Helm adds no package command.                                                                                                          |
-| Documentation validation and index generator     | Adjacent                         | Accept current-main generator behavior, then regenerate the documentation index and migration matrix with Helm records present.                                                                                       |
-| Feature Catalog and documentation index outputs  | Generated overlap                | Preserve machine-readable fragment ownership, run the generators, and never choose either generated side manually.                                                                                                    |
-| Prisma schemas and migrations                    | Adjacent upstream change         | Accept Admiralty's additive dual-provider migrations unchanged. Helm adds no schema, migration, backfill, or database rewrite.                                                                                        |
+| Area                                             | Classification                   | Reconciliation rule                                                                                                                                                                                                |
+| ------------------------------------------------ | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Helm product source and tests                    | None                             | Retain Helm implementation and focused functional findings.                                                                                                                                                        |
+| Chronicle authoring and progression source       | Adjacent shared product          | Accept Drydock's canonical authoring contracts and Chronicle integration unchanged, then rerun Helm creation, artifact, history, and browser coverage against the combined source.                                 |
+| Sounding Line registry generator and policy JSON | Direct shared-governance overlap | Merged semantically. Preserved all accepted owners and suites plus the dedicated Helm unit, component, browser, contract, owner, impact, and gate entries; regenerated the active registry from reconciled source. |
+| `package.json`                                   | Direct shared-governance overlap | Preserve all accepted repository commands and scripts; Helm adds no package command.                                                                                                                               |
+| Documentation validation and index generator     | Adjacent                         | Accept current-main generator behavior, then regenerate the documentation index and migration matrix with Helm records present.                                                                                    |
+| Feature Catalog and documentation index outputs  | Generated overlap                | Preserve machine-readable fragment ownership, run the generators, and never choose either generated side manually.                                                                                                 |
+| Prisma schemas and migrations                    | Adjacent upstream change         | Accept Admiralty's additive dual-provider migrations unchanged. Helm adds no schema, migration, backfill, or database rewrite.                                                                                     |
 
 ## Evidence invalidation and retention
 
