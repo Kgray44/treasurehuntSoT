@@ -1,5 +1,5 @@
 {
-  "auditedSourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+  "auditedSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
   "findings": [
     {
       "assignedProjectPhase": "One Voyage and Ledgerlight catalog reconciliation",
@@ -496,6 +496,33 @@
       "status": "CLOSED"
     },
     {
+      "assignedProjectPhase": "Tideglass and Shipwright owner-coordinated follow-on; no later phase is started by Deepwater",
+      "canonicalOwner": "Tideglass",
+      "capabilityId": "DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS",
+      "catalogOutcome": null,
+      "closedAt": null,
+      "closureEvidence": "Accepted-main Tideglass semantic engine and safe projection replace the storage-oriented comparison consumer; focused semantic, privacy, and Studio integration tests pass; Sounding Line accepts the owner slice.",
+      "confidence": "HIGH",
+      "contributingOwners": ["One Voyage", "Shipwright", "Wayfarer"],
+      "currentBehavior": "Creator Studio provides Compare to current, but its result is a storage-oriented structured diff rather than governed semantic edition intelligence.",
+      "debt": null,
+      "evidence": [
+        "src/chronicle/studio-service.ts",
+        "src/components/studio/TaleEditor.tsx",
+        "src/app/api/studio/tales/[taleId]/versions/compare/route.ts",
+        "Development_Docs/Projects/Project Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf"
+      ],
+      "expectedBehavior": "All edition-comparison consumers use the deterministic Tideglass semantic comparison authority, preserve exact edition identities and checksums, and receive the audience-safe projection appropriate to the requesting role.",
+      "findingId": "DW-FIND-EDITION-COMPARISON-SEMANTIC-UNDERUTILIZATION",
+      "firstLossPoint": "PROJECTION",
+      "gapFamilies": ["DW-SVC", "DW-PROJ", "DW-UI"],
+      "mainlineDependency": "Accepted Tideglass semantic comparison authority plus owner-coordinated Studio consumer migration",
+      "observedSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
+      "rootCause": "The accepted comparePublishedVersions path compares serialized snapshot fields and the Studio consumer renders internal paths and before/after serialized values. It does not consume a schema-normalized semantic Change Set or audience-safe Tideglass projection.",
+      "severity": "MEDIUM",
+      "status": "ASSIGNED"
+    },
+    {
       "assignedProjectPhase": "Project Homeport Phase 7 owner re-review",
       "canonicalOwner": "Homeport",
       "capabilityId": "DW-CAP-INTEGRATED-WHOLE-PRODUCT-VOYAGE",
@@ -584,7 +611,7 @@
       "status": "ASSIGNED"
     }
   ],
-  "phase": "Phase 2 - Trace the Current",
+  "phase": "Phase 3 - Raise the Capability",
   "project": "Project Deepwater",
   "schemaVersion": "1.0.0"
 }

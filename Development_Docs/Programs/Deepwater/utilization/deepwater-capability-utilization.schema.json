@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Deepwater Phase 3 capability utilization",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "project",
+    "phase",
+    "sourceSha",
+    "reviewedCapabilityCount",
+    "statusCounts",
+    "capabilities"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "project": { "const": "Project Deepwater" },
+    "phase": { "const": "Phase 3 - Raise the Capability" },
+    "sourceSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "reviewedCapabilityCount": { "type": "integer", "minimum": 1 },
+    "statusCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["FULLY_UTILIZED", "PARTIALLY_UTILIZED", "INTENTIONALLY_PARTIAL", "INTERNAL_ONLY", "NOT_APPLICABLE"],
+      "properties": {
+        "FULLY_UTILIZED": { "type": "integer", "minimum": 0 },
+        "PARTIALLY_UTILIZED": { "type": "integer", "minimum": 0 },
+        "INTENTIONALLY_PARTIAL": { "type": "integer", "minimum": 0 },
+        "INTERNAL_ONLY": { "type": "integer", "minimum": 0 },
+        "NOT_APPLICABLE": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/capability" }
+    }
+  },
+  "$defs": {
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operationId",
+        "name",
+        "disposition",
+        "sourceReferences",
+        "consumerReferences",
+        "rationale",
+        "findingId"
+      ],
+      "properties": {
+        "operationId": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "name": { "type": "string", "minLength": 1 },
+        "disposition": { "enum": ["CONSUMED", "INTENTIONALLY_UNCONSUMED", "FINDING_BLOCKED"] },
+        "sourceReferences": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "consumerReferences": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "rationale": { "type": ["string", "null"] },
+        "findingId": { "type": ["string", "null"], "pattern": "^DW-FIND-[A-Z0-9]+(?:-[A-Z0-9]+)*$" }
+      }
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capabilityId",
+        "name",
+        "canonicalOwner",
+        "realizationClassification",
+        "status",
+        "expectedOperations",
+        "consumedOperations",
+        "intentionallyUnconsumedOperations",
+        "expectedSafeMetadata",
+        "consumedSafeMetadata",
+        "findingBlockedMetadata",
+        "intentionallyOmittedMetadata",
+        "expectedStates",
+        "consumedOrRepresentedStates",
+        "intentionallyOmittedStates",
+        "utilizationConsumers",
+        "canonicalConsumption",
+        "phase3Disposition",
+        "rationale",
+        "evidence"
+      ],
+      "properties": {
+        "capabilityId": { "type": "string", "pattern": "^DW-CAP-[A-Z0-9]+(?:-[A-Z0-9]+)*$" },
+        "name": { "type": "string", "minLength": 1 },
+        "canonicalOwner": { "type": "string", "minLength": 1 },
+        "realizationClassification": { "type": "string", "minLength": 1 },
+        "status": {
+          "enum": ["FULLY_UTILIZED", "PARTIALLY_UTILIZED", "INTENTIONALLY_PARTIAL", "INTERNAL_ONLY", "NOT_APPLICABLE"]
+        },
+        "expectedOperations": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/operation" }
+        },
+        "consumedOperations": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "intentionallyUnconsumedOperations": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "expectedSafeMetadata": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+        "consumedSafeMetadata": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "findingBlockedMetadata": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "intentionallyOmittedMetadata": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "expectedStates": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "consumedOrRepresentedStates": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "intentionallyOmittedStates": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "utilizationConsumers": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+        "canonicalConsumption": { "type": "boolean" },
+        "phase3Disposition": {
+          "enum": [
+            "SATURATED",
+            "OWNER_PROJECT_WORK",
+            "DEEPWATER_SLICE_ELIGIBLE",
+            "DOCUMENTATION_RECONCILIATION",
+            "EXTERNAL_DEPENDENCY",
+            "OWNER_ACCEPTANCE_REQUIRED",
+            "EXPLICIT_DEBT_CANDIDATE",
+            "ALREADY_CLOSED_BY_MAIN",
+            "INTERNAL_OR_DEPRECATED"
+          ]
+        },
+        "rationale": { "type": "string", "minLength": 1 },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,343 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "Project Deepwater",
+  "phase": "Phase 3 - Raise the Capability",
+  "auditDate": "2026-08-09",
+  "baseOriginMainSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
+  "auditedSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
+  "phase2AcceptedCapabilityCount": 53,
+  "expectedCurrentCapabilityCount": 54,
+  "currentMainCapabilityAdditions": [
+    {
+      "capabilityId": "DW-CAP-TIDEGLASS-SEMANTIC-EDITION-COMPARISON",
+      "canonicalOwner": "Tideglass",
+      "acceptedMainSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
+      "basis": "Project Tideglass Phase 1 reached accepted main after Phase 3 activation and before coordination publication."
+    }
+  ],
+  "branch": "codex/project-deepwater-phase3-raise-the-capability",
+  "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase3",
+  "lifecycle": {
+    "state": "ACTIVE",
+    "mainlineState": "NOT_YET_ACCEPTED",
+    "validation": "PENDING",
+    "reconciliation": "CURRENT_MAIN_REVALIDATED"
+  },
+  "authorityGaps": [
+    {
+      "owner": "Landfall",
+      "status": "STANDALONE_GOVERNING_DOCUMENT_NOT_PRESENT",
+      "basis": "Current accepted source, the Global Product Governance Standard, Feature Catalog, Homeport records, and accepted Landfall references remain the bounded authority."
+    },
+    {
+      "owner": "Watchglass",
+      "status": "STANDALONE_GOVERNING_DOCUMENT_NOT_PRESENT",
+      "basis": "Current accepted source, the Global Product Governance Standard, One Voyage verification contracts, and accepted Watchglass references remain the bounded authority."
+    }
+  ],
+  "manualCapabilityPolicies": {
+    "DW-CAP-ACCOUNT-DATA-EXPORT": {
+      "operations": [
+        "request versioned account export",
+        "download authorized export",
+        "represent pending, ready, expired, and failure states"
+      ]
+    },
+    "DW-CAP-ACCOUNT-EMAIL-CHANGE": {
+      "operations": [
+        "request email change",
+        "confirm bounded email-change token",
+        "notify the prior address",
+        "represent conflict, expiry, and delivery failure"
+      ]
+    },
+    "DW-CAP-ACCOUNT-LIFECYCLE-DEACTIVATION": {
+      "operations": [
+        "deactivate account",
+        "reactivate account",
+        "schedule deletion",
+        "cancel deletion",
+        "process due deletion"
+      ]
+    },
+    "DW-CAP-COMMUNITY-BACKUP-RESTORE": {
+      "operations": ["create logical backup", "verify backup manifest", "rehearse isolated restore"],
+      "status": "INTERNAL_ONLY",
+      "rationale": "Backup and restore are bounded operator workflows; public exposure would weaken operational safety."
+    },
+    "DW-CAP-COMMUNITY-OPERATIONS-HEALTH": {
+      "operations": [
+        "collect provider health",
+        "represent configured, unavailable, degraded, and stale states",
+        "project secret-safe operator evidence"
+      ]
+    },
+    "DW-CAP-COMMUNITY-WORKER-SCHEDULER": {
+      "operations": [
+        "enqueue durable work",
+        "claim and heartbeat leases",
+        "retry with bounded backoff",
+        "surface terminal or dead-letter state",
+        "recover expired leases"
+      ],
+      "status": "INTERNAL_ONLY",
+      "rationale": "The durable worker and scheduler are machine consumers; ordinary users must not invoke queue or lease primitives."
+    },
+    "DW-CAP-COMPATIBILITY-OBSERVATION": {
+      "operations": [
+        "record bounded compatibility use",
+        "summarize privacy-safe observation",
+        "evaluate retirement gate"
+      ],
+      "status": "NOT_APPLICABLE",
+      "rationale": "The retained observer is deprecated compatibility evidence and must not regain an ordinary active consumer."
+    },
+    "DW-CAP-DEVELOPMENT-OPERATIONAL-TOOLING": {
+      "status": "INTERNAL_ONLY",
+      "rationale": "Development and validation operations are intentionally consumed by developers and CI rather than exposed as product actions."
+    },
+    "DW-CAP-DOCUMENTATION-GOVERNANCE-CATALOG": {
+      "status": "INTERNAL_ONLY",
+      "rationale": "Ledgerlight validators and generators are repository automation consumers, not product UI."
+    },
+    "DW-CAP-GOVERNED-VERIFICATION-CONTROL-PLANE": {
+      "status": "INTERNAL_ONLY",
+      "rationale": "Sounding Line is a verification control plane consumed by CI and authorized local runners."
+    },
+    "DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS": {
+      "status": "PARTIALLY_UTILIZED",
+      "blockedOperations": {
+        "Edition comparison": "DW-FIND-EDITION-COMPARISON-SEMANTIC-UNDERUTILIZATION"
+      },
+      "blockedMetadata": [
+        "semantic change category",
+        "explainable significance",
+        "audience-safe before and after evidence"
+      ],
+      "rationale": "Immutable publishing, checksums, forks, and version history are consumed. The current comparison consumer still presents storage-oriented paths and serialized values instead of the governed Tideglass semantic projection."
+    },
+    "DW-CAP-INTEGRATED-WHOLE-PRODUCT-VOYAGE": {
+      "status": "FULLY_UTILIZED",
+      "rationale": "All locally implemented Homeport journeys consume their accepted contracts; the remaining owner decision is an acceptance rung, not an unused operation."
+    },
+    "DW-CAP-PRIVATE-BACKUP-RESTORE": {
+      "operations": [
+        "create private-content backup manifest",
+        "verify protected restore inputs",
+        "rehearse isolated restore"
+      ],
+      "status": "INTERNAL_ONLY",
+      "rationale": "Private-content backup and restore remain bounded operator workflows with no public consumer."
+    },
+    "DW-CAP-PRIVATE-PROVIDER-HEALTH": {
+      "operations": [
+        "collect private provider health",
+        "represent unavailable, degraded, and stale states",
+        "project redacted operational identifiers"
+      ]
+    },
+    "DW-CAP-PRIVATE-REPAIR-OPERATIONS": {
+      "operations": ["plan bounded repair", "execute authorized repair", "verify repair receipt"],
+      "status": "INTENTIONALLY_PARTIAL",
+      "rationale": "Repair execution is security restricted and intentionally available only to approved operators with audit evidence; no generic public or account-owner repair surface is allowed.",
+      "intentionallyUnconsumed": ["unrestricted direct repair"]
+    },
+    "DW-CAP-PUBLIC-ORIGIN-TRUST-BOUNDARY": {
+      "operations": [
+        "validate configured public origin",
+        "construct trusted public callback URL",
+        "reject request-derived external origins"
+      ],
+      "status": "INTERNAL_ONLY",
+      "rationale": "The trust boundary is consumed by server-side redirect and message construction code and has no safe user-invoked operation."
+    },
+    "DW-CAP-SECURITY-PRIVACY-PLATFORM": {
+      "status": "INTENTIONALLY_PARTIAL",
+      "rationale": "Security primitives are consumed through owning services and allowlisted projections; raw rate-limit, credential, scanner, and concurrency internals are intentionally withheld from ordinary users.",
+      "intentionallyUnconsumed": ["public raw security diagnostics", "client-side credential inspection"]
+    },
+    "DW-CAP-TRANSACTIONAL-EMAIL-DELIVERY": {
+      "operations": [
+        "deliver account email through the selected provider",
+        "persist secret-safe delivery receipt",
+        "observe provider availability",
+        "observe delivery, bounce, complaint, failure, and staleness"
+      ],
+      "status": "PARTIALLY_UTILIZED",
+      "blockedOperations": {
+        "observe provider availability": "DW-FIND-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION",
+        "observe delivery, bounce, complaint, failure, and staleness": "DW-FIND-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION"
+      },
+      "metadata": [
+        "provider availability",
+        "configuration classification",
+        "delivery lifecycle state",
+        "safe failure category",
+        "last lifecycle transition"
+      ],
+      "blockedMetadata": [
+        "provider availability",
+        "configuration classification",
+        "delivery lifecycle state",
+        "safe failure category",
+        "last lifecycle transition"
+      ],
+      "omittedMetadata": [
+        "recipient address",
+        "message body",
+        "verification code",
+        "action token",
+        "provider credential"
+      ],
+      "phase3Disposition": "OWNER_PROJECT_WORK",
+      "rationale": "Delivery is consumed by account flows, but safe health and receipt lifecycle truth has no authenticated operator projection on accepted main."
+    },
+    "DW-CAP-VERIFICATION-PROVIDER-FRAMEWORK": {
+      "status": "PARTIALLY_UTILIZED",
+      "blockedOperations": {
+        "Versioned evidence envelope": "DW-FIND-VERIFICATION-PROVIDER-REALIZATION-GAP"
+      },
+      "blockedMetadata": ["real-provider availability", "provider evidence provenance"],
+      "phase3Disposition": "EXTERNAL_DEPENDENCY",
+      "rationale": "The simulator, request lifecycle, Captain override, and recovery are consumed; no accepted real provider emits the evidence envelope."
+    }
+  },
+  "newFindings": [
+    {
+      "findingId": "DW-FIND-EDITION-COMPARISON-SEMANTIC-UNDERUTILIZATION",
+      "capabilityId": "DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS",
+      "severity": "MEDIUM",
+      "status": "ASSIGNED",
+      "confidence": "HIGH",
+      "gapFamilies": ["DW-SVC", "DW-PROJ", "DW-UI"],
+      "firstLossPoint": "PROJECTION",
+      "rootCause": "The accepted comparePublishedVersions path compares serialized snapshot fields and the Studio consumer renders internal paths and before/after serialized values. It does not consume a schema-normalized semantic Change Set or audience-safe Tideglass projection.",
+      "currentBehavior": "Creator Studio provides Compare to current, but its result is a storage-oriented structured diff rather than governed semantic edition intelligence.",
+      "expectedBehavior": "All edition-comparison consumers use the deterministic Tideglass semantic comparison authority, preserve exact edition identities and checksums, and receive the audience-safe projection appropriate to the requesting role.",
+      "canonicalOwner": "Tideglass",
+      "contributingOwners": ["One Voyage", "Shipwright", "Wayfarer"],
+      "assignedProjectPhase": "Tideglass and Shipwright owner-coordinated follow-on; no later phase is started by Deepwater",
+      "mainlineDependency": "Accepted Tideglass semantic comparison authority plus owner-coordinated Studio consumer migration",
+      "closureEvidence": "Accepted-main Tideglass semantic engine and safe projection replace the storage-oriented comparison consumer; focused semantic, privacy, and Studio integration tests pass; Sounding Line accepts the owner slice.",
+      "evidence": [
+        "src/chronicle/studio-service.ts",
+        "src/components/studio/TaleEditor.tsx",
+        "src/app/api/studio/tales/[taleId]/versions/compare/route.ts",
+        "Development_Docs/Projects/Project Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf"
+      ]
+    }
+  ],
+  "findingTransitions": {},
+  "catalogSlices": {
+    "FT-005": "DW-P3-SLICE-CATALOG-PLAYER",
+    "FT-015": "DW-P3-SLICE-CATALOG-PLAYER",
+    "FT-016": "DW-P3-SLICE-CATALOG-PLAYER",
+    "FT-017": "DW-P3-SLICE-CATALOG-PLAYER",
+    "FT-018": "DW-P3-SLICE-CATALOG-PLAYER",
+    "FT-019": "DW-P3-SLICE-CATALOG-PLAYER",
+    "FT-020": "DW-P3-SLICE-CATALOG-PLAYER",
+    "FT-021": "DW-P3-SLICE-CATALOG-PLAYER",
+    "FT-023": "DW-P3-SLICE-CATALOG-ONE-VOYAGE",
+    "FT-025": "DW-P3-SLICE-CATALOG-HARBORLIGHT"
+  },
+  "slices": [
+    {
+      "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
+      "title": "Reconcile Player Feature Catalog route identities",
+      "canonicalOwner": "Ledgerlight",
+      "contributingOwners": ["One Voyage", "Wayfarer", "Wakebook", "Landfall"],
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "concurrencyClass": "B",
+      "status": "REGISTERED",
+      "baseSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
+      "branch": "codex/deepwater-phase3-catalog-player",
+      "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-p3-catalog-player",
+      "ownedPaths": ["Development_Docs/Features/catalog/player.json"],
+      "excludedPaths": ["src", "prisma", "Development_Docs/Features/FEATURE_CATALOG.md"],
+      "hardDependencies": ["Current accepted Homeport route inventory"],
+      "mainlineSafetyContract": "The fragment-only correction records existing accepted route truth; cancelling every later Deepwater slice leaves product behavior unchanged and documentation more accurate.",
+      "verificationPlan": [
+        "npm run features:sync",
+        "npm run features:validate",
+        "npm run docs:index",
+        "npm run docs:validate",
+        "Sounding Line local-change",
+        "Phase 3 coordination reconciliation after accepted-main merge"
+      ],
+      "closureEvidence": [
+        "Generated Feature Catalog matches the corrected fragment",
+        "Deepwater catalog mismatch validators close only the eight linked findings",
+        "Slice commit is accepted on protected main"
+      ],
+      "acceptedMainSha": null
+    },
+    {
+      "sliceId": "DW-P3-SLICE-CATALOG-ONE-VOYAGE",
+      "title": "Reconcile One Voyage Feature Catalog route identities",
+      "canonicalOwner": "One Voyage",
+      "contributingOwners": ["Ledgerlight"],
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "concurrencyClass": "B",
+      "status": "REGISTERED",
+      "baseSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
+      "branch": "codex/deepwater-phase3-catalog-one-voyage",
+      "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-p3-catalog-one-voyage",
+      "ownedPaths": ["Development_Docs/Features/catalog/one-voyage.json"],
+      "excludedPaths": ["src", "prisma", "Development_Docs/Features/FEATURE_CATALOG.md"],
+      "hardDependencies": ["Current accepted Homeport route inventory", "One Voyage provider-framework authority"],
+      "mainlineSafetyContract": "The fragment-only correction records existing accepted helper and Captain route truth without enabling a provider or changing runtime behavior.",
+      "verificationPlan": [
+        "npm run features:sync",
+        "npm run features:validate",
+        "npm run docs:index",
+        "npm run docs:validate",
+        "Sounding Line local-change",
+        "Phase 3 coordination reconciliation after accepted-main merge"
+      ],
+      "closureEvidence": [
+        "Generated Feature Catalog matches the corrected fragment",
+        "Internal API boundaries are not mislabeled as ordinary user routes",
+        "Slice commit is accepted on protected main"
+      ],
+      "acceptedMainSha": null
+    },
+    {
+      "sliceId": "DW-P3-SLICE-CATALOG-HARBORLIGHT",
+      "title": "Reconcile Harborlight Feature Catalog route identities",
+      "canonicalOwner": "Harborlight",
+      "contributingOwners": ["Ledgerlight"],
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "concurrencyClass": "B",
+      "status": "REGISTERED",
+      "baseSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
+      "branch": "codex/deepwater-phase3-catalog-harborlight",
+      "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-p3-catalog-harborlight",
+      "ownedPaths": ["Development_Docs/Features/catalog/harborlight.json"],
+      "excludedPaths": ["src", "prisma", "Development_Docs/Features/FEATURE_CATALOG.md"],
+      "hardDependencies": ["Current accepted Homeport route inventory", "Harborlight listing and release authority"],
+      "mainlineSafetyContract": "The fragment-only correction records existing Community and Studio exchange routes; product behavior and Harborlight ownership remain unchanged if later work is cancelled.",
+      "verificationPlan": [
+        "npm run features:sync",
+        "npm run features:validate",
+        "npm run docs:index",
+        "npm run docs:validate",
+        "Sounding Line local-change",
+        "Phase 3 coordination reconciliation after accepted-main merge"
+      ],
+      "closureEvidence": [
+        "Generated Feature Catalog matches the corrected fragment",
+        "Community and Studio surfaces remain intentionally composite",
+        "Slice commit is accepted on protected main"
+      ],
+      "acceptedMainSha": null
+    }
+  ],
+  "privacy": {
+    "forbiddenPatterns": [
+      "(?i)password\\s*[=:]\\s*[^<\\s]",
+      "(?i)api[_-]?key\\s*[=:]\\s*[^<\\s]",
+      "(?i)cookie\\s*[=:]\\s*[^<\\s]",
+      "(?i)bearer\\s+[a-z0-9._-]+"
+    ]
+  }
+}
