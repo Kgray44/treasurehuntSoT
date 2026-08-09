@@ -8,7 +8,7 @@ last_reviewed: 2026-08-09
 
 # Project Tideglass engineering records
 
-Project Tideglass establishes deterministic semantic intelligence over exact immutable Chronicle editions. Phase 1, Set the Glass, is a read-only internal foundation with no ordinary user-facing comparison route.
+Project Tideglass establishes deterministic semantic intelligence over exact immutable Chronicle editions. Phase 1, Set the Glass, is integrated on main as a read-only internal foundation with source-bound post-merge `RELEASE_GO`; it adds no ordinary user-facing comparison route.
 
 ## Phase 1 records
 
