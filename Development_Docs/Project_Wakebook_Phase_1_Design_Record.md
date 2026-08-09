@@ -12,17 +12,17 @@ last_reviewed: 2026-08-09
 
 Project Wakebook Phase 1, **Open the Wake**, creates a complete private Journey Archive over accepted Wayfarer history. It does not create another history store, progression authority, authentication system, artifact authority, semantic-diff engine, or public-sharing path.
 
-| Boundary | Frozen value |
-| --- | --- |
-| Worktree | `C:\Users\kkids\Documents\treasurehuntSoT-wakebook-phase1-open-the-wake` |
-| Branch | `codex/project-wakebook-phase1-open-the-wake` |
-| Initial accepted base | `f1c2f22dd935322c1a71eb80c51592f243dc196d` |
-| Reconciled accepted base before implementation | `273fb5255ad222812530422e902db04c0ddd1961` |
-| Dependency class | Class A: accepted Wayfarer/Homeport/Sounding Line contracts only |
-| Schema impact | None |
-| SQLite/MySQL reservation | None |
-| Activation | Existing authenticated Chronicle Passport destination; no dormant partial mode |
-| Rollback | Revert Wakebook routes, services, components, styles, tests, and records; retain Wayfarer data unchanged |
+| Boundary                                       | Frozen value                                                                                             |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Worktree                                       | `C:\Users\kkids\Documents\treasurehuntSoT-wakebook-phase1-open-the-wake`                                 |
+| Branch                                         | `codex/project-wakebook-phase1-open-the-wake`                                                            |
+| Initial accepted base                          | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                               |
+| Reconciled accepted base before implementation | `273fb5255ad222812530422e902db04c0ddd1961`                                                               |
+| Dependency class                               | Class A: accepted Wayfarer/Homeport/Sounding Line contracts only                                         |
+| Schema impact                                  | None                                                                                                     |
+| SQLite/MySQL reservation                       | None                                                                                                     |
+| Activation                                     | Existing authenticated Chronicle Passport destination; no dormant partial mode                           |
+| Rollback                                       | Revert Wakebook routes, services, components, styles, tests, and records; retain Wayfarer data unchanged |
 
 The supplied Project Wakebook governing PDF, Global Product Governance Standard, Continuous Development and Mainline Integration Standard, Homeport recovery governance, Sounding Line governance, the pasted Phase 1 execution brief, and accepted Wayfarer/One Voyage/adjacent-project records were read before this freeze. The supplied PDFs remain external input authorities until separately accepted into the repository; current fetched `origin/main` remains implementation truth.
 
@@ -167,4 +167,3 @@ No visible Phase 1 page depends on a `coming soon` control. Archive Home, one-Vo
 Deepwater Phase 1 advanced `origin/main` by five commits while Wakebook was blocked. The Wakebook branch fast-forwarded to `273fb52`; incoming changes were confined to Deepwater documentation/tooling plus shared Feature Catalog and Sounding Line control-plane files. No Wakebook-relevant runtime source changed. Shared control-plane edits will be made against the reconciled files and rechecked immediately before final evidence.
 
 No concurrent Phase 1 branch had tracked divergence in Wakebook-owned runtime paths at architecture freeze. Wakebook will not consume unaccepted Tideglass, Helm, Admiralty, Shipwright, or other branch work.
-

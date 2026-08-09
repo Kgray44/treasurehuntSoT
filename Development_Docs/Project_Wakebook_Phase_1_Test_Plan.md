@@ -14,20 +14,20 @@ Sounding Line is the verification authority. Focused Vitest, Playwright, typeche
 
 ## Contract registrations
 
-| Contract | Meaning | Minimum Phase 1 evidence |
-| --- | --- | --- |
-| `wakebook.history.version-pinning` | Played version ID/checksum and historical snapshots remain stable | unit + service + historical fixture |
-| `wakebook.history.owner-privacy` | Foreign accounts cannot infer private records or covers | service/API + browser negative |
-| `wakebook.history.historical-stability` | Current profile/Chronicle edits do not rewrite history | service + fixture |
-| `wakebook.timing.quality` | Exact/estimated/unavailable/not-applicable presentation is truthful | unit + fixture matrix + component |
-| `wakebook.artifact-context` | Shared Voyage artifact evidence is not personal ownership | cross-project service + component |
-| `wakebook.navigation.reachability` | Archive and detail are normally reachable on desktop/mobile | browser journey |
-| `wakebook.archive.pagination` | Opaque cursors are stable, bounded, validated, and gap/duplicate safe | unit + service + large fixture |
-| `wakebook.archive.year-grouping` | Group/date precedence and full displayed-year totals are accurate | unit + service |
-| `wakebook.archive.filters` | Owner-scoped search/filter combinations are deterministic and bounded | unit + API + component |
-| `wakebook.archive.invitation-separation` | Invitation-only records stay separate from played statistics | service + component |
-| `wakebook.archive.partial-history` | Projection/summary failure preserves safe accepted history | service + component |
-| `wakebook.archive.summary-redaction` | Card DTO excludes private bodies, payloads, keys, and raw relations | service/API contract |
+| Contract                                 | Meaning                                                               | Minimum Phase 1 evidence            |
+| ---------------------------------------- | --------------------------------------------------------------------- | ----------------------------------- |
+| `wakebook.history.version-pinning`       | Played version ID/checksum and historical snapshots remain stable     | unit + service + historical fixture |
+| `wakebook.history.owner-privacy`         | Foreign accounts cannot infer private records or covers               | service/API + browser negative      |
+| `wakebook.history.historical-stability`  | Current profile/Chronicle edits do not rewrite history                | service + fixture                   |
+| `wakebook.timing.quality`                | Exact/estimated/unavailable/not-applicable presentation is truthful   | unit + fixture matrix + component   |
+| `wakebook.artifact-context`              | Shared Voyage artifact evidence is not personal ownership             | cross-project service + component   |
+| `wakebook.navigation.reachability`       | Archive and detail are normally reachable on desktop/mobile           | browser journey                     |
+| `wakebook.archive.pagination`            | Opaque cursors are stable, bounded, validated, and gap/duplicate safe | unit + service + large fixture      |
+| `wakebook.archive.year-grouping`         | Group/date precedence and full displayed-year totals are accurate     | unit + service                      |
+| `wakebook.archive.filters`               | Owner-scoped search/filter combinations are deterministic and bounded | unit + API + component              |
+| `wakebook.archive.invitation-separation` | Invitation-only records stay separate from played statistics          | service + component                 |
+| `wakebook.archive.partial-history`       | Projection/summary failure preserves safe accepted history            | service + component                 |
+| `wakebook.archive.summary-redaction`     | Card DTO excludes private bodies, payloads, keys, and raw relations   | service/API contract                |
 
 ## Unit and contract matrix
 
@@ -91,4 +91,3 @@ Revalidate and use the current scripts selected by Sounding Line, including `npm
 ## Acceptance boundary
 
 Automated acceptance may classify the implementation `READY_FOR_OWNER_WALKTHROUGH` only after all mandatory contracts and broader selected gates pass against the reconciled source. Only the owner may promote it to product accepted; this task does not merge main or start Wakebook Phase 2.
-
