@@ -17,10 +17,10 @@ is a pre-integration record and does not claim mainline acceptance.
 | Field                  | Value                                                                |
 | ---------------------- | -------------------------------------------------------------------- |
 | Original base SHA      | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                           |
-| Current `origin/main`  | `bbf5e0d991006227ed4097a95b9c89997354798e`                           |
+| Current `origin/main`  | `0ded9be4af04feb1785fd9e56abbacdd39f54b3d`                           |
 | Branch                 | `codex/project-helm-phase1-take-the-helm`                            |
 | Owned worktree         | `C:\Users\kkids\Documents\treasurehuntSoT-helm-phase1-take-the-helm` |
-| Candidate commit       | `7e227ebf62a632032441e95ffc203c79e0c9f520` reconciled checkpoint     |
+| Candidate commit       | `7c296cf0b2e12e78a6c41244ba8f06b15759474d` reconciled checkpoint     |
 | Protected integration  | Pending                                                              |
 | Final reconciled main  | Pending                                                              |
 | Current mainline state | `RECONCILED_VALIDATION_IN_PROGRESS`                                  |
@@ -54,6 +54,8 @@ is a pre-integration record and does not claim mainline acceptance.
 | `5f991bd`                                  | Adjacent finalization records                   | Records Tideglass Phase 1 mainline acceptance and promotes its catalog entry through its governed finalization path.                                                                                                 |
 | `65a70d8`, `09c1ad3`, `8c267de`, `47a1855` | Integration reconciliation                      | Reconciles Tideglass final records with accepted Deepwater Phase 3 and the Player catalog correction. Helm retains its separate Captain fragment and product source.                                                 |
 | `bbf5e0d`                                  | Integration commit                              | Protected merge of Tideglass Phase 1 finalization through pull request 23.                                                                                                                                           |
+| `d65ac87`                                  | Adjacent catalog correction                     | Reconciles One Voyage route surfaces in its machine-readable Feature Catalog fragment. No Helm product source changed.                                                                                               |
+| `0ded9be`                                  | Integration commit                              | Protected merge of the One Voyage catalog correction through pull request 25.                                                                                                                                        |
 
 The governance bootstrap introduces the supplied Project Helm and continuous
 development PDFs as tracked governing authorities. Their Git blob identities
