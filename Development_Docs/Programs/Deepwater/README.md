@@ -14,6 +14,7 @@ Project Deepwater is Voyagewright's capability-realization and systems-audit pro
 
 - [Design record](phase-records/Project_Deepwater_Phase_2_Design_Record.md)
 - [Validation record](phase-records/Project_Deepwater_Phase_2_Validation_Record.md)
+- [Integration record](phase-records/Project_Deepwater_Phase_2_Integration_Record.md)
 - `deepwater-phase2-config.json`
 - `traces/capability-traces.json`
 - `traces/capability-traces.schema.json`
@@ -28,7 +29,7 @@ Project Deepwater is Voyagewright's capability-realization and systems-audit pro
 - `reports/Project_Deepwater_Phase_2_Active_Project_Coordination_Register.json`
 - `reports/Project_Deepwater_Phase_3_Realization_Queue.json`
 
-The Phase 2 integration record is added only when protected-mainline convergence completes. The Phase 3 queue is planning input only; Phase 3 remediation is not authorized or active in this worktree.
+The Phase 2 implementation is accepted on main through protected PR #19. The Phase 3 queue is planning input only; Phase 3 remediation is not authorized or active in this worktree.
 
 ## Current Phase 1 records
 
