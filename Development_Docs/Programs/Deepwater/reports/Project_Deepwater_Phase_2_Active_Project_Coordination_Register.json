@@ -1,0 +1,71 @@
+{
+  "entries": [
+    {
+      "activeOwnerPhase": "Project Admiralty Phase 1 unaccepted lane",
+      "allowedDeepwaterAction": "Trace accepted main, close disproven gaps, and assign remaining projection work; do not edit Admiralty UI or consume its unaccepted source.",
+      "canonicalOwners": ["Harborlight", "Sealed Hold", "Wayfarer"],
+      "capabilityIds": [
+        "DW-CAP-COMMUNITY-OPERATIONS-HEALTH",
+        "DW-CAP-PRIVATE-PROVIDER-HEALTH",
+        "DW-CAP-TRANSACTIONAL-EMAIL-DELIVERY"
+      ],
+      "conflictSurface": "privileged operational projections and administration UI",
+      "coordinationId": "DW-COORD-ADMIRALTY-OPERATIONS",
+      "findingIds": [
+        "DW-FIND-COMMUNITY-OPERATIONS-HEALTH-PROJECTION",
+        "DW-FIND-PRIVATE-PROVIDER-HEALTH-PROJECTION",
+        "DW-FIND-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION"
+      ],
+      "hardDependency": "Accepted owner projection contract before any future Admiralty consumer lands",
+      "recommendedVehicle": "Owner-project projection followed by coordinated Admiralty consumption"
+    },
+    {
+      "activeOwnerPhase": "Project Shipwright Phase 1 unaccepted lane",
+      "allowedDeepwaterAction": "Trace accepted Studio and assign catalog reconciliation; do not edit active Shipwright UX.",
+      "canonicalOwners": ["Shipwright"],
+      "capabilityIds": ["DW-CAP-CREATOR-STUDIO", "DW-CAP-ASSET-LIBRARY-MEDIA-PIPELINE"],
+      "conflictSurface": "Creator Studio interaction and catalog metadata",
+      "coordinationId": "DW-COORD-SHIPWRIGHT-STUDIO",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-011"],
+      "hardDependency": "Refresh trace if Shipwright reaches accepted main before Phase 2 candidate validation",
+      "recommendedVehicle": "Shipwright plus Ledgerlight catalog reconciliation"
+    },
+    {
+      "activeOwnerPhase": "Project Helm active unaccepted lane",
+      "allowedDeepwaterAction": "Trace accepted Captain source and assign documentation work; do not redefine Captain semantics or edit the active lane.",
+      "canonicalOwners": ["Helm"],
+      "capabilityIds": ["DW-CAP-CAPTAIN-VOYAGE-OPERATIONS"],
+      "conflictSurface": "Captain runtime presentation and membership semantics",
+      "coordinationId": "DW-COORD-HELM-CAPTAIN",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-007"],
+      "hardDependency": "Helm owner approval for future catalog correction",
+      "recommendedVehicle": "Helm plus Ledgerlight catalog reconciliation"
+    },
+    {
+      "activeOwnerPhase": "Project Wakebook active unaccepted lane",
+      "allowedDeepwaterAction": "Bind accepted canonical Journal evidence and assign documentation reconciliation; do not consume unaccepted Wakebook changes.",
+      "canonicalOwners": ["Wakebook"],
+      "capabilityIds": ["DW-CAP-PLAYER-JOURNAL", "DW-CAP-SHIPS-LOG"],
+      "conflictSurface": "historical Journal presentation and catalog route names",
+      "coordinationId": "DW-COORD-WAKEBOOK-JOURNAL",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-015", "DW-FIND-CATALOG-SURFACE-FT-019"],
+      "hardDependency": "Refresh if Wakebook reaches accepted main",
+      "recommendedVehicle": "Wakebook plus Ledgerlight catalog reconciliation"
+    },
+    {
+      "activeOwnerPhase": "Project Tideglass unaccepted lane",
+      "allowedDeepwaterAction": "Trace accepted One Voyage publishing truth and assign catalog metadata only; do not consume Tideglass comparison semantics before acceptance.",
+      "canonicalOwners": ["One Voyage"],
+      "capabilityIds": ["DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS"],
+      "conflictSurface": "edition comparison adjacent to immutable version truth",
+      "coordinationId": "DW-COORD-TIDEGLASS-EDITIONS",
+      "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-010"],
+      "hardDependency": "One Voyage remains canonical for immutable publishing; Tideglass owns comparison semantics",
+      "recommendedVehicle": "One Voyage and Ledgerlight with Tideglass review"
+    }
+  ],
+  "project": "Project Deepwater",
+  "schemaVersion": "1.0.0",
+  "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+  "truthPolicy": "Accepted origin/main only; unaccepted owner lanes are coordination constraints, never implementation evidence."
+}
