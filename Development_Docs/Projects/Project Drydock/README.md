@@ -10,6 +10,8 @@ last_reviewed: 2026-08-09
 
 [Project Drydock](Project_Drydock_Governing_Document.pdf) governs the Chronicle authoring-contract, validation, compatibility, and later simulation program. Phase 1, Set the Blocks, is limited to typed authoring contracts, variables, expressions, schema evolution, compatibility fixtures, stable issues, and incremental contract validation. It does not implement whole-Chronicle analysis or simulation.
 
+Phase 1 status: **MAINLINE ACCEPTED** through protected PR #22 at mainline merge `468530645e983412e5f4c1aaa103915be77c9c07`. Phase 2 has not started.
+
 ## Phase 1 records
 
 - [Design record](Project_Drydock_Phase_1_Set_the_Blocks_Design_Record.md)

@@ -31,3 +31,7 @@ last_reviewed: 2026-08-09
 Prisma models changed: **0**. Prisma migrations: **0**. Backfills or mass draft rewrites: **0**. Existing immutable published snapshots are unchanged. Rollback is an ordinary code/documentation reversal; no database recovery is required.
 
 Phase 2 analysis, issue workspace, repairs/waivers, Phase 3 simulation, and Phase 4 program closure are absent.
+
+## Accepted integration
+
+Protected PR #22 integrated candidate `2f86938858b91207b6e58245baa9496bdc839b12` as mainline merge `468530645e983412e5f4c1aaa103915be77c9c07`. Exact-head Sounding Line returned `RELEASE_GO` with 34 / 34 selected receipts passed and clean; evidence digest `0abd730bbd588744175e419ab717d94b9d4c39ede6271f1cad9be4681ac3d47a`. The integrated commit has the approved base and candidate as its two parents, and its tree matches a clean recomputation of that merge exactly.
