@@ -5,7 +5,7 @@
     "summary": "Captains assemble exact-edition crews through individualized invitations with auditable, revocable lifecycle transitions.",
     "status": "MAINLINE",
     "program": "Player",
-    "surfaces": ["/join", "/player"],
+    "surfaces": ["/join/[token]", "/player/invitation", "/player/library"],
     "subfeatures": [
       "Per-Player invitation credentials",
       "Hash-only credential storage",
@@ -45,7 +45,7 @@
     "summary": "A Player-safe Journal represents active and historical Chronicles with physical and accessible reading modes.",
     "status": "MAINLINE",
     "program": "Player",
-    "surfaces": ["/player/voyages/[id]"],
+    "surfaces": ["/player/playthroughs/[playthroughId]/journal"],
     "subfeatures": [
       "Secret-filtered page model",
       "Stable page identity",
@@ -65,7 +65,7 @@
     "summary": "The Player chart presents safe geography, progression, revealed routes, and current objectives.",
     "status": "MAINLINE",
     "program": "Player",
-    "surfaces": ["/player/voyages/[id]/chart"],
+    "surfaces": ["/player/playthroughs/[playthroughId]/journal"],
     "subfeatures": [
       "Authored locations",
       "Reveal state",
@@ -85,7 +85,7 @@
     "summary": "Awarded artifacts have authoritative reveal, inspection, collection, and fallback presentation states.",
     "status": "MAINLINE",
     "program": "Player",
-    "surfaces": ["/player/voyages/[id]/treasure"],
+    "surfaces": ["/player/playthroughs/[playthroughId]/journal"],
     "subfeatures": [
       "Unknown through awarded states",
       "Collection grants",
@@ -105,7 +105,7 @@
     "summary": "Optional Chronicle branches retain independent discovery, progression, reward, and completion behavior.",
     "status": "MAINLINE",
     "program": "Player",
-    "surfaces": ["/player/voyages/[id]/ledger"],
+    "surfaces": ["/player/playthroughs/[playthroughId]/journal"],
     "subfeatures": [
       "Optional objectives",
       "Waypoint and artifact links",
@@ -125,7 +125,7 @@
     "summary": "A readable, filterable, Player-safe event history records the Voyage's ordered narrative and operational moments.",
     "status": "MAINLINE",
     "program": "Player",
-    "surfaces": ["/player/voyages/[id]/log"],
+    "surfaces": ["/player/playthroughs/[playthroughId]/journal"],
     "subfeatures": [
       "Ordered event history",
       "Captain annotations",
@@ -145,7 +145,7 @@
     "summary": "The finale has explicit protected release states and replay behavior that never repeats authoritative mutation.",
     "status": "MAINLINE",
     "program": "Player",
-    "surfaces": ["/player/voyages/[id]/finale"],
+    "surfaces": ["/player/playthroughs/[playthroughId]/journal"],
     "subfeatures": [
       "Sealed and unlocked states",
       "Requirement progress",
@@ -165,7 +165,11 @@
     "summary": "Authenticated event delivery separates durable server replay from observed and acknowledged Player presentation.",
     "status": "MAINLINE",
     "program": "Player",
-    "surfaces": ["/api/player/events", "/player"],
+    "surfaces": [
+      "/api/player/[campaignSlug]/events",
+      "/api/player/[campaignSlug]/presence",
+      "/player/playthroughs/[playthroughId]/journal"
+    ],
     "subfeatures": [
       "Authenticated SSE",
       "Durable replay",
