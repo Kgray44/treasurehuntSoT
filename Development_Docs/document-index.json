@@ -2757,6 +2757,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_2_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_2_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project Drydock/README.md",
       "record_type": "program-record",
       "status": "current",
