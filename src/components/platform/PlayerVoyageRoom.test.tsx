@@ -249,6 +249,30 @@ describe("PlayerVoyageRoom", () => {
     await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1/journal"));
   });
 
+  it("reconciles immediately when a waiting room regains focus after launch", async () => {
+    const handoff = vi.fn();
+    const active = {
+      ...voyage,
+      status: "ACTIVE",
+      state: "IN_PROGRESS",
+      canEnter: true,
+      runtimeHref: "/player/playthroughs/voyage-1/journal",
+    };
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, body()))
+      .mockResolvedValueOnce(response(200, body(active)));
+    vi.stubGlobal("EventSource", FakeEventSource);
+    vi.stubGlobal("fetch", fetchMock);
+    renderRoom(handoff);
+    await screen.findByRole("heading", { name: "The Moonlit Key" });
+
+    window.dispatchEvent(new Event("focus"));
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1/journal"));
+  });
+
   it("makes revocation terminal and removes reconnect controls", async () => {
     vi.stubGlobal("EventSource", FakeEventSource);
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, body())));
