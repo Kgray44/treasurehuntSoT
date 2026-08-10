@@ -91,7 +91,7 @@
     {
       "scenario": "unsupported provider",
       "expectedIssueCodes": ["DRYDOCK_PROVIDER_UNREGISTERED"],
-      "state": "PENDING"
+      "state": "EXECUTED"
     },
     {
       "scenario": "performance warning",

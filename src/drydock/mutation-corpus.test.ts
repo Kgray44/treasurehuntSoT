@@ -160,6 +160,13 @@ const cases: readonly MutationCase[] = [
     },
   },
   {
+    id: "provider-unregistered",
+    expectedIssueCodes: ["DRYDOCK_PROVIDER_UNREGISTERED"],
+    mutate: (draft) => {
+      draft.chapters[0].blocks[0].completion = { mode: "syntheticUnknownProvider" };
+    },
+  },
+  {
     id: "provider-accessible-fallback-missing",
     expectedIssueCodes: ["DRYDOCK_ACCESS_PROVIDER_FALLBACK"],
     mutate: (draft) => {
