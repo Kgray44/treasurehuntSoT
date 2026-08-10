@@ -16,9 +16,11 @@ Phase 1 reorganizes the Creator Studio authoring interaction without changing Ch
 | --- | --- | --- |
 | Status header | Extracted `StudioStatusHeader` with explicit undo/redo, save state, preview, validation, publish, command, and More actions. | Publish state is rendered only from the existing authoritative response. |
 | Command architecture | Added searchable `StudioCommandPalette` with stable IDs for existing actions and existing registry insertion. `Ctrl/Cmd+K`, Escape, backdrop close, initial focus, and focus restoration are supported. | Commands call existing handlers and canonical APIs; no client authorization, validation, or block semantics were added. |
-| Selection/focus | Added a presentation-only selected-ID set, keyboard-reachable block cards, additive Ctrl/Cmd selection, inspector focus return, and contextual selection shelf. | Selection is not persisted and does not define graph or Story Block relationships. |
-| Canvas view foundation | Added bounded 80-120% view zoom, vertical pan, and fit/reset controls. | View state is local; Chronicle order remains the existing ordered chapter/block truth. |
+| Selection/focus | Added a presentation-only selected-ID set, keyboard-reachable block cards, additive Ctrl/Cmd and range Shift selection, inspector focus return, and contextual selection shelf. | Selection is not persisted and does not define graph or Story Block relationships. |
+| Canvas view foundation | Added bounded 80-120% view zoom, vertical pan, fit/reset controls, and whole-Passage pointer drag reordering. | View state is local; Chronicle order remains the existing ordered chapter/block truth. |
 | Non-drag parity | Retained the existing move buttons and keyboard dnd-kit behavior; the contextual shelf can move a multi-selection to the following existing chapter. | It only moves existing blocks through the current draft mutation/save path. |
+| Passage animation | Added ten Shipwright presentation presets for opening, leaving, and active Passage states, persisted through existing journal presentation fields and honored by the Studio preview and published journal. | No Story Block schema or new persisted field was introduced; invalid/unknown values resolve to the existing safe presentation default. |
+| Validation presentation | Added explicit saved / verifying / validation status, human-readable blocking versus attention groups, move/resize/reopen behavior, and issue-to-Passage/field navigation. | Drydock remains the sole source of validation issues and error-versus-warning severity. |
 | Module boundaries | Added `studio-types`, `StudioStatusHeader`, `StudioCommandPalette`, `StudioSelectionToolbar`, and `StudioCanvasViewControls`. | No domain, persistence, validation, variable, expression, or schema module was introduced. |
 
 ## Files changed
@@ -26,16 +28,19 @@ Phase 1 reorganizes the Creator Studio authoring interaction without changing Ch
 - `src/components/studio/TaleEditor.tsx` remains the compatibility coordinator; it now wires extracted presentation modules and local view/selection state.
 - `src/components/studio/studio-types.ts` centralizes Studio DTO/UI-shape types without redefining Chronicle contracts.
 - `src/components/studio/StudioStatusHeader.tsx` owns status and command presentation.
+- `src/components/studio/StudioValidationPanel.tsx` owns movable, resizable validation presentation and issue navigation.
 - `src/components/studio/StudioCommandPalette.tsx` owns the accessible command dialog.
 - `src/components/studio/StudioSelectionToolbar.tsx` owns contextual selection actions.
 - `src/components/studio/StudioCanvasViewControls.tsx` owns local view controls.
-- `src/styles/studio.css` adds responsive command, selection, and canvas-control styling.
-- `src/components/studio/TaleEditor.test.tsx` adds command-palette and canvas-view coverage.
+- `src/animation/presentation/story-motion.ts` defines the finite Shipwright preset vocabulary consumed by existing presentation fields.
+- `src/styles/studio.css` adds responsive command, selection, validation, and canvas-control styling.
+- `src/styles/chronicle.css` renders the finite presentation presets in previews and published journal leaves.
+- `src/components/studio/TaleEditor.test.tsx` adds whole-card selection, animation-control, severity, and validation-reopen coverage.
 
 ## Explicit non-changes
 
 - No Prisma schema, migration, generated-client, or data correction change.
-- No new Story Block type, field, schema version, variable, expression, validation rule, simulator rule, runtime progression rule, or publish contract.
+- No new Story Block type, field, schema version, variable, expression, validation rule, simulator rule, runtime progression rule, or publish contract. The animation controls map only to pre-existing journal presentation fields.
 - No change to protected-media authorization, Creator authorization, CSRF, autosave versioning, conflict behavior, immutable publication, version comparison, or Lanternwake ownership.
 - No provider-secret, environment, deployment, or production-state change.
 

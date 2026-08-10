@@ -75,6 +75,18 @@ function editorData() {
               isEnabled: true,
               schemaVersion: 1,
             },
+            {
+              id: "block-2",
+              blockType: "narrative",
+              title: "Second Scene",
+              internalLabel: null,
+              configuration: { body: "The crew chooses a bearing." },
+              presentation: {},
+              completion: {},
+              creatorNotes: null,
+              isEnabled: true,
+              schemaVersion: 1,
+            },
           ],
         },
       ],
@@ -154,6 +166,27 @@ describe("Voyagewright Studio editor motion and authority", () => {
     await waitFor(() => expect(card).toHaveFocus());
   });
 
+  it("supports whole-card drag wiring, additive Passage selection, and the persisted animation controls", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, editorData())));
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    const first = screen.getByText("Opening Scene").closest<HTMLElement>("article")!;
+    const second = screen.getByText("Second Scene").closest<HTMLElement>("article")!;
+    expect(first).toHaveAttribute("role", "button");
+    expect(first).toHaveAttribute("aria-roledescription", "sortable");
+    fireEvent.click(first);
+    fireEvent.click(second, { ctrlKey: true });
+    expect(screen.getByText("2 Passages selected")).toBeVisible();
+
+    fireEvent.click(first);
+    expect(await screen.findByText("Passage animation")).toBeVisible();
+    expect(screen.getByLabelText("Opening animation")).toBeVisible();
+    expect(screen.getByLabelText("Leaving animation")).toBeVisible();
+    expect(screen.getByLabelText("While this Passage is active")).toBeVisible();
+    expect(screen.getAllByRole("option", { name: /Tidal wake/ })).toHaveLength(3);
+  });
+
   it("highlights and focuses the exact block named by authoritative validation", async () => {
     vi.stubGlobal(
       "fetch",
@@ -172,12 +205,18 @@ describe("Voyagewright Studio editor motion and authority", () => {
     await screen.findByRole("heading", { name: "A Test Chronicle" });
 
     fireEvent.click(screen.getByRole("button", { name: "Validate Chronicle" }));
-    const issue = await screen.findByRole("button", { name: "Opening Scene needs a destination." });
+    const issue = (await screen.findByText("Opening Scene needs a destination.")).closest<HTMLButtonElement>("button")!;
     fireEvent.click(issue);
     const card = screen.getByText("Opening Scene").closest<HTMLElement>("article")!;
 
     expect(card).toHaveAttribute("data-validation-error", "true");
     await waitFor(() => expect(card).toHaveFocus());
+
+    fireEvent.click(screen.getByRole("button", { name: "Close validation results" }));
+    await waitFor(() => expect(screen.queryByLabelText("Chronicle validation results")).not.toBeInTheDocument());
+    fireEvent.click(screen.getByRole("button", { name: /Validation/ }));
+    await waitFor(() => expect(screen.getByLabelText("Chronicle validation results")).toBeVisible());
+    expect(screen.getByText("Blocks publishing")).toBeVisible();
   });
 
   it("does not remove a block until the draft save succeeds and reconciles an authoritative undo", async () => {

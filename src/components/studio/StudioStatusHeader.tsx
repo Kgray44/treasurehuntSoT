@@ -13,6 +13,9 @@ export function StudioStatusHeader({
   canRedo,
   saveState,
   saveVisualState,
+  validationState,
+  validationLabel,
+  validationDetail,
   publishState,
   publishedVersion,
   moreOpen,
@@ -24,6 +27,7 @@ export function StudioStatusHeader({
   onRedo,
   onPreview,
   onValidate,
+  onOpenValidation,
   onPublish,
   onOpenCommands,
   onToggleMore,
@@ -37,6 +41,9 @@ export function StudioStatusHeader({
   canRedo: boolean;
   saveState: string;
   saveVisualState: string;
+  validationState: "ready" | "blocking" | "attention" | "stale" | "checking";
+  validationLabel: string;
+  validationDetail: string;
   publishState: PublishState;
   publishedVersion: string | null;
   moreOpen: boolean;
@@ -48,6 +55,7 @@ export function StudioStatusHeader({
   onRedo: () => void;
   onPreview: () => void;
   onValidate: () => void;
+  onOpenValidation: () => void;
   onPublish: () => void;
   onOpenCommands: () => void;
   onToggleMore: () => void;
@@ -74,24 +82,37 @@ export function StudioStatusHeader({
           ↷ Redo
         </button>
       </div>
-      <p
-        className={`save-state ${saveState.includes("failed") || saveState.includes("Conflict") ? "error" : ""}`}
-        data-save-state={saveVisualState}
-        role="status"
-        aria-live="polite"
-      >
-        <AnimatePresence initial={false} mode="wait">
-          <motion.span
-            key={saveState}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: stateDuration }}
-          >
-            {saveState}
-          </motion.span>
-        </AnimatePresence>
-      </p>
+      <div className="studio-status-cluster" aria-label="Chronicle status">
+        <p
+          className={`save-state ${saveState.includes("failed") || saveState.includes("Conflict") ? "error" : ""}`}
+          data-save-state={saveVisualState}
+          role="status"
+          aria-live="polite"
+        >
+          <span className="studio-status-label">Save</span>
+          <AnimatePresence initial={false} mode="wait">
+            <motion.span
+              key={saveState}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: stateDuration }}
+            >
+              {saveState}
+            </motion.span>
+          </AnimatePresence>
+        </p>
+        <button
+          type="button"
+          className="validation-status"
+          data-validation-state={validationState}
+          onClick={onOpenValidation}
+          title={validationDetail}
+        >
+          <span>Validation</span>
+          <strong>{validationLabel}</strong>
+        </button>
+      </div>
       <AnimatePresence initial={false}>
         {publishState === "published" && publishedVersion ? (
           <motion.span

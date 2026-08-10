@@ -14,11 +14,13 @@ This record reports focused, task-owned evidence only. It is not a Sounding Line
 
 | Check | Result | Evidence / limitation |
 | --- | --- | --- |
-| Studio component suite | PASS | `src/components/studio/TaleEditor.test.tsx`: 10 tests passed with local dependency cache, single-fork setting, Vitest 4.1.10. |
+| Focused Studio/shell/journal/motion suite | PASS | 27 tests passed: `TaleEditor`, `ProductShell`, `PhysicalJournalBook`, and the finite Shipwright motion vocabulary, using Vitest 4.1.10 and the local completed dependency cache. |
 | Existing Studio behavior | PASS within focused suite | Existing More disclosure, dnd/motion ownership, inspector focus, validation focus, failed-save deletion, publication state, autosave/publish, and upload tests passed. |
+| Whole-card movement, selection, and animation controls | PASS | Focused coverage proves sortable card wiring, additive selection, and all three persisted animation controls with the finite preset list. |
+| Validation presentation | PASS | Focused coverage proves a blocking issue opens the affected Passage, closes, and can be reopened from the persistent top status. |
 | Command palette | PASS | Tests cover available canonical actions, absence of invented block action, modal search focus, Escape close, focus restoration, and Ctrl+K opening. |
 | Canvas view foundation | PASS | Test covers the keyboard-reachable zoom control and local 100% to 110% state without changing an existing Passage. |
-| Source-specific TypeScript scan | No Shipwright diagnostic observed | Full repository TypeScript execution is not a green gate: inherited generated-client/dependency diagnostics remain outside the changed Studio files. No matching diagnostic was emitted for Shipwright files in the focused scan. |
+| TypeScript | INHERITED ENVIRONMENT BLOCKER | `tsc --noEmit` reaches only two existing unrelated unresolved optional provider imports: `src/wayfarer/transactional-email.ts` cannot resolve `postmark` and `resend`. No diagnostic names a changed Shipwright file. This is not treated as a pass or as a Shipwright defect. |
 | Full registered suite/finalizer | NOT RUN | Requires the current Sounding Line registered workflow and its authoritative final receipt; do not infer it from this focused run. |
 | Browser/responsive/accessibility matrix | NOT RUN | Must be executed from a suitable local runtime against the owner walkthrough matrix before any release claim. |
 

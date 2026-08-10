@@ -31,6 +31,7 @@ import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
 import type { SceneHostHandle } from "@/animation/hosts/scene-host-types";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
+import { readStayStoryMotion, storyMotionPresets } from "@/animation/presentation/story-motion";
 import { PublishedBlockView } from "@/components/tales/PublishedBlockView";
 import { useActionDialog } from "@/components/ui/ActionDialog";
 import { ResilientImage } from "@/components/ui/ResilientImage";
@@ -38,6 +39,7 @@ import { StudioCommandPalette, type StudioCommand } from "@/components/studio/St
 import { StudioCanvasViewControls } from "@/components/studio/StudioCanvasViewControls";
 import { StudioSelectionToolbar } from "@/components/studio/StudioSelectionToolbar";
 import { StudioStatusHeader } from "@/components/studio/StudioStatusHeader";
+import { StudioValidationPanel } from "@/components/studio/StudioValidationPanel";
 import type {
   Asset,
   Block,
@@ -53,7 +55,7 @@ import type {
   VersionComparison,
 } from "@/components/studio/studio-types";
 import { studioCopy } from "@/language/studio-copy";
-import type { InspectorField, JsonObject } from "@/chronicle/types";
+import type { DraftValidationResult, InspectorField, JsonObject, ValidationIssue } from "@/chronicle/types";
 
 const clone = <T,>(value: T): T => structuredClone(value);
 
@@ -114,11 +116,9 @@ export function TaleEditor({
   const [dirty, setDirty] = useState(false);
   const [saveState, setSaveState] = useState("Loading Chronicle...");
   const [error, setError] = useState("");
-  const [validation, setValidation] = useState<{
-    valid: boolean;
-    errors: Array<{ message: string; blockId?: string }>;
-    warnings: Array<{ message: string; blockId?: string }>;
-  } | null>(null);
+  const [validation, setValidation] = useState<DraftValidationResult | null>(null);
+  const [validationPanelOpen, setValidationPanelOpen] = useState(false);
+  const [validationFocusField, setValidationFocusField] = useState<string | null>(null);
   const [assetDrawer, setAssetDrawer] = useState(false);
   const [assetSearch, setAssetSearch] = useState("");
   const [assetMedia, setAssetMedia] = useState("ALL");
@@ -161,6 +161,7 @@ export function TaleEditor({
   const commandReturnFocus = useRef<HTMLElement | null>(null);
   const inspectorFocusRequested = useRef(false);
   const inspectorTitle = useRef<HTMLInputElement | null>(null);
+  const selectionAnchorId = useRef<string | null>(null);
   const dndSensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
@@ -191,6 +192,18 @@ export function TaleEditor({
     const frame = requestAnimationFrame(() => inspectorTitle.current?.focus({ preventScroll: true }));
     return () => cancelAnimationFrame(frame);
   }, [selectedId]);
+
+  useEffect(() => {
+    if (!selectedId || !validationFocusField) return;
+    const frame = requestAnimationFrame(() => {
+      const target = document.querySelector<HTMLElement>(
+        `[data-inspector-field="${validationFocusField}"] input, [data-inspector-field="${validationFocusField}"] select, [data-inspector-field="${validationFocusField}"] textarea`,
+      );
+      target?.focus({ preventScroll: true });
+      setValidationFocusField(null);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [selectedId, validationFocusField]);
 
   useEffect(() => {
     if (!insertedId) return;
@@ -291,6 +304,7 @@ export function TaleEditor({
     setDirty(true);
     setSaveState("Unsaved changes");
     setValidation(null);
+    setValidationPanelOpen(false);
   }
   function undo() {
     if (!draft || !past.length) return;
@@ -404,6 +418,26 @@ export function TaleEditor({
       : saveState.includes("Saving") || saveState.includes("Unsaved") || saveState.includes("pending")
         ? "pending"
         : "saved";
+  const validationStatus =
+    saveState === "Validating..."
+      ? { state: "checking" as const, label: "Checking", detail: "The authoritative Chronicle validation is running." }
+      : dirty
+        ? { state: "stale" as const, label: "Refresh needed", detail: "This draft changed after its last validation." }
+        : validation?.errors.length
+          ? {
+              state: "blocking" as const,
+              label: `${validation.errors.length} blocking`,
+              detail: "Blocking findings must be resolved before publishing.",
+            }
+          : validation?.warnings.length
+            ? {
+                state: "attention" as const,
+                label: `${validation.warnings.length} to review`,
+                detail: "These findings do not block publication, but still need review.",
+              }
+            : validation?.valid
+              ? { state: "ready" as const, label: "Ready", detail: "The current draft passed its latest validation." }
+              : { state: "stale" as const, label: "Not checked", detail: "Run validation before publishing this Chronicle." };
   const activeDragLabel = activeDragId?.startsWith("library:")
     ? data?.registry.find((item) => item.type === activeDragId.slice("library:".length))?.displayName
     : draft?.chapters.flatMap((chapter) => chapter.blocks).find((block) => block.id === activeDragId)?.title;
@@ -564,8 +598,21 @@ export function TaleEditor({
     inspectorFocusRequested.current = true;
     setSelectedId(id);
     setSelectedIds([id]);
+    selectionAnchorId.current = id;
   }
-  function selectBlock(id: string, origin: HTMLElement, additive = false) {
+  function selectBlock(id: string, origin: HTMLElement, additive = false, range = false) {
+    if (range && draft && selectionAnchorId.current) {
+      const blocks = draft.chapters.flatMap((chapter) => chapter.blocks);
+      const start = blocks.findIndex((block) => block.id === selectionAnchorId.current);
+      const end = blocks.findIndex((block) => block.id === id);
+      if (start >= 0 && end >= 0) {
+        inspectorReturnFocus.current = origin;
+        inspectorFocusRequested.current = false;
+        setSelectedId(id);
+        setSelectedIds(blocks.slice(Math.min(start, end), Math.max(start, end) + 1).map((block) => block.id));
+        return;
+      }
+    }
     if (!additive) {
       openInspector(id, origin);
       return;
@@ -574,6 +621,7 @@ export function TaleEditor({
     inspectorFocusRequested.current = false;
     setSelectedId(id);
     setSelectedIds((items) => (items.includes(id) ? items.filter((item) => item !== id) : [...items, id]));
+    selectionAnchorId.current = id;
   }
   function closeInspector() {
     setSelectedId(null);
@@ -610,6 +658,13 @@ export function TaleEditor({
       destination?.scrollIntoView({ block: "center" });
       destination?.focus({ preventScroll: true });
     });
+  }
+
+  function focusValidationIssue(issue: ValidationIssue, origin: HTMLElement) {
+    setValidationPanelOpen(true);
+    if (!issue.blockId) return;
+    setValidationFocusField(issue.field ?? null);
+    focusBlock(issue.blockId, origin);
   }
   function moveBlock(blockId: string, chapterIndex: number, blockIndex: number) {
     change((next) => {
@@ -763,6 +818,7 @@ export function TaleEditor({
       return;
     }
     setValidation(body);
+    setValidationPanelOpen(true);
     setSaveState(body.valid ? "Draft validation passed" : "Draft validation failed");
   }
   async function publish() {
@@ -1257,6 +1313,9 @@ export function TaleEditor({
           canRedo={Boolean(future.length)}
           saveState={saveState}
           saveVisualState={saveVisualState}
+          validationState={validationStatus.state}
+          validationLabel={validationStatus.label}
+          validationDetail={validationStatus.detail}
           publishState={publishState}
           publishedVersion={publishedVersion}
           moreOpen={moreOpen}
@@ -1268,6 +1327,7 @@ export function TaleEditor({
           onRedo={redo}
           onPreview={() => void preview()}
           onValidate={() => void validate()}
+          onOpenValidation={() => validation && setValidationPanelOpen(true)}
           onPublish={() => void publish()}
           onOpenCommands={openCommandPalette}
           onToggleMore={() => setMoreOpen((open) => !open)}
@@ -1314,31 +1374,21 @@ export function TaleEditor({
               <button onClick={() => void restoreDeletedBlock()}>Undo deletion</button>
             </motion.div>
           )}
-          {validation && (
-            <motion.aside
-              className={`validation-panel ${validation.valid ? "valid" : "invalid"}`}
+        </AnimatePresence>
+        <AnimatePresence initial={false}>
+          {validation && validationPanelOpen ? (
+            <motion.div
               initial={{ opacity: 0, x: mode === "reduced" ? 0 : stateMotion.distancePx }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0 }}
             >
-              <header>
-                <strong>
-                  {validation.valid
-                    ? "Chronicle is ready to publish"
-                    : `${validation.errors.length} blocking issue${validation.errors.length === 1 ? "" : "s"}`}
-                </strong>
-                <button onClick={() => setValidation(null)}>Close</button>
-              </header>
-              {[...validation.errors, ...validation.warnings].map((issue, index) => (
-                <button
-                  key={`${issue.message}-${index}`}
-                  onClick={(event) => issue.blockId && focusBlock(issue.blockId, event.currentTarget)}
-                >
-                  {issue.message}
-                </button>
-              ))}
-            </motion.aside>
-          )}
+              <StudioValidationPanel
+                result={validation}
+                onClose={() => setValidationPanelOpen(false)}
+                onFocusIssue={focusValidationIssue}
+              />
+            </motion.div>
+          ) : null}
         </AnimatePresence>
         <StudioSelectionToolbar
           selectedTitle={selected?.block.title ?? null}
@@ -1549,6 +1599,8 @@ export function TaleEditor({
                               {(attributes, listeners) => (
                                 <>
                                   <article
+                                    {...attributes}
+                                    {...listeners}
                                     className={`timeline-block ${selectedIds.includes(block.id) ? "selected" : ""}`}
                                     data-block-id={block.id}
                                     data-selection-count={selectedIds.length}
@@ -1559,23 +1611,43 @@ export function TaleEditor({
                                     }
                                     tabIndex={0}
                                     onClick={(event) =>
-                                      selectBlock(block.id, event.currentTarget, event.metaKey || event.ctrlKey)
+                                      selectBlock(
+                                        block.id,
+                                        event.currentTarget,
+                                        event.metaKey || event.ctrlKey,
+                                        event.shiftKey,
+                                      )
                                     }
                                     onKeyDown={(event) => {
-                                      if (event.key !== "Enter" && event.key !== " ") return;
-                                      event.preventDefault();
-                                      selectBlock(block.id, event.currentTarget, event.metaKey || event.ctrlKey);
+                                      if (event.key === "Enter") {
+                                        event.preventDefault();
+                                        selectBlock(
+                                          block.id,
+                                          event.currentTarget,
+                                          event.metaKey || event.ctrlKey,
+                                          event.shiftKey,
+                                        );
+                                        return;
+                                      }
+                                      listeners.onKeyDown?.(event);
                                     }}
                                   >
                                     <button
-                                      className="drag-handle"
-                                      {...attributes}
-                                      {...listeners}
-                                      onClick={(event) => event.stopPropagation()}
-                                      aria-label={`Move ${block.title}. Press Space to pick up, arrow keys to move, and Space to drop.`}
+                                      className="timeline-selection-toggle"
+                                      type="button"
+                                      aria-label={`${selectedIds.includes(block.id) ? "Deselect" : "Select"} ${block.title}`}
+                                      aria-pressed={selectedIds.includes(block.id)}
+                                      onPointerDown={(event) => event.stopPropagation()}
+                                      onClick={(event) => {
+                                        event.stopPropagation();
+                                        selectBlock(block.id, event.currentTarget, true);
+                                      }}
                                     >
-                                      ⠿
+                                      {selectedIds.includes(block.id) ? "✓" : "+"}
                                     </button>
+                                    <span className="drag-handle" aria-hidden="true">
+                                      ⠿
+                                    </span>
                                     <span className="block-icon" aria-hidden="true">
                                       {definition?.icon ?? "?"}
                                     </span>
@@ -1774,6 +1846,66 @@ export function TaleEditor({
                               })
                             }
                           />
+                        </label>
+                      </fieldset>
+                      <fieldset className="journal-presentation-fields shipwright-motion-fields">
+                        <legend>Passage animation</legend>
+                        <p>
+                          These settings are saved with this Passage and play in the published journal. Reduced-motion
+                          preferences always take priority for the Crew.
+                        </p>
+                        <label data-inspector-field="transitionIn">
+                          <span>Opening animation</span>
+                          <select
+                            value={String(selected.block.presentation.transitionIn ?? "fade")}
+                            onChange={(event) =>
+                              updateSelected((block) => {
+                                block.presentation.transitionIn = event.target.value;
+                              })
+                            }
+                          >
+                            {storyMotionPresets.map((preset) => (
+                              <option key={preset.id} value={preset.id}>
+                                {preset.label} — {preset.description}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <label data-inspector-field="transitionOut">
+                          <span>Leaving animation</span>
+                          <select
+                            value={String(selected.block.presentation.transitionOut ?? "minimize")}
+                            onChange={(event) =>
+                              updateSelected((block) => {
+                                block.presentation.transitionOut = event.target.value;
+                              })
+                            }
+                          >
+                            {storyMotionPresets.map((preset) => (
+                              <option key={preset.id} value={preset.id}>
+                                {preset.label} — {preset.description}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <label data-inspector-field="backgroundScene">
+                          <span>While this Passage is active</span>
+                          <select
+                            value={readStayStoryMotion(selected.block.presentation.backgroundScene) ?? ""}
+                            onChange={(event) =>
+                              updateSelected((block) => {
+                                if (event.target.value) block.presentation.backgroundScene = `shipwright-stay:${event.target.value}`;
+                                else delete block.presentation.backgroundScene;
+                              })
+                            }
+                          >
+                            <option value="">Keep the journal's natural resting state</option>
+                            {storyMotionPresets.map((preset) => (
+                              <option key={preset.id} value={preset.id}>
+                                {preset.label} — {preset.description}
+                              </option>
+                            ))}
+                          </select>
                         </label>
                       </fieldset>
                       <label>
@@ -2569,6 +2701,7 @@ function Field({
   artifacts: LibraryRecord[];
   onChange: (value: unknown) => void;
 }) {
+  const fieldTarget = { "data-inspector-field": field.key };
   const label = (
     <span>
       {field.label}
@@ -2577,7 +2710,7 @@ function Field({
   );
   if (field.kind === "textarea")
     return (
-      <label>
+      <label {...fieldTarget}>
         {label}
         <textarea rows={5} value={String(value ?? "")} onChange={(event) => onChange(event.target.value)} />
         {field.help && <small>{field.help}</small>}
@@ -2585,14 +2718,14 @@ function Field({
     );
   if (field.kind === "boolean")
     return (
-      <label className="check-field">
+      <label className="check-field" {...fieldTarget}>
         <input type="checkbox" checked={Boolean(value)} onChange={(event) => onChange(event.target.checked)} />
         {label}
       </label>
     );
   if (field.kind === "number")
     return (
-      <label>
+      <label {...fieldTarget}>
         {label}
         <input
           type="number"
@@ -2603,7 +2736,7 @@ function Field({
     );
   if (field.kind === "select")
     return (
-      <label>
+      <label {...fieldTarget}>
         {label}
         <select value={String(value ?? "")} onChange={(event) => onChange(event.target.value)}>
           {field.options?.map((option) => (
@@ -2617,6 +2750,7 @@ function Field({
   if (field.kind === "asset")
     return (
       <label
+        {...fieldTarget}
         className="asset-field-drop"
         onDragOver={(event) => {
           if (event.dataTransfer.types.includes("application/x-chronicle-asset")) event.preventDefault();
@@ -2657,7 +2791,7 @@ function Field({
     const records = field.kind === "location" ? locations : artifacts;
     const recordLabel = field.kind === "location" ? "Waypoint" : "Artifact";
     return (
-      <label>
+      <label {...fieldTarget}>
         {label}
         <select value={String(value ?? "")} onChange={(event) => onChange(event.target.value || null)}>
           <option value="">Choose {recordLabel}</option>
@@ -2683,13 +2817,13 @@ function Field({
     return <ChoiceListField label={label} value={value} onChange={onChange} />;
   if (field.kind === "json")
     return (
-      <fieldset className="structured-list-field" disabled>
+      <fieldset className="structured-list-field" disabled {...fieldTarget}>
         <legend>{label}</legend>
         <p>This advanced field needs a governed structured editor before it can be changed here.</p>
       </fieldset>
     );
   return (
-    <label>
+    <label {...fieldTarget}>
       {label}
       <input value={String(value ?? "")} onChange={(event) => onChange(event.target.value)} />
       {field.help && <small>{field.help}</small>}
