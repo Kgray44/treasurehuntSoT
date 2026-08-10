@@ -22,6 +22,9 @@ const conditionTemplate = authoringFixture.blocks.find(
 const setVariableTemplate = authoringFixture.blocks.find(
   (block) => block.blockType === "setVariable",
 ) as DrydockAuthoredBlockInput;
+const arrivalCheckTemplate = authoringFixture.blocks.find(
+  (block) => block.blockType === "arrivalCheck",
+) as DrydockAuthoredBlockInput;
 const legacyVariableId = (name: string) =>
   `var-${createHash("sha256")
     .update(`legacy-variable:${name.normalize("NFKC")}`)
@@ -148,6 +151,18 @@ const cases: readonly MutationCase[] = [
         provider: { id: "visionLocation", version: 1, options: { providerInstanceId: "synthetic-provider" } },
         fallbackMode: "captainManual",
       };
+    },
+  },
+  {
+    id: "provider-accessible-fallback-missing",
+    expectedIssueCodes: ["DRYDOCK_ACCESS_PROVIDER_FALLBACK"],
+    mutate: (draft) => {
+      const arrival = structuredClone(arrivalCheckTemplate);
+      arrival.id = "synthetic-opening";
+      arrival.connections = [{ targetBlockId: "synthetic-finish", connectionType: "DEFAULT", orderIndex: 0 }];
+      arrival.nextBlockId = "synthetic-finish";
+      arrival.completion = { mode: "captainManual" };
+      (draft.chapters[0].blocks as DrydockAuthoredBlockInput[])[0] = arrival;
     },
   },
   {

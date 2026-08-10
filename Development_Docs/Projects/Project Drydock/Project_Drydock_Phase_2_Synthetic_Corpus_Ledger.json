@@ -15,7 +15,7 @@
     {
       "scenario": "invalid cross-chapter edge",
       "expectedIssueCodes": ["DRYDOCK_GRAPH_CROSS_CHAPTER_TRANSITION_INVALID"],
-      "state": "EXECUTED"
+      "state": "PENDING"
     },
     { "scenario": "duplicate edge", "expectedIssueCodes": ["DRYDOCK_GRAPH_DUPLICATE_EDGE"], "state": "EXECUTED" },
     { "scenario": "missing target", "expectedIssueCodes": ["DRYDOCK_REFERENCE_TARGET_MISSING"], "state": "EXECUTED" },
@@ -56,7 +56,7 @@
     {
       "scenario": "read-before-init and unreachable writer",
       "expectedIssueCodes": ["DRYDOCK_VARIABLE_NOT_DEFINITELY_INITIALIZED"],
-      "state": "PENDING"
+      "state": "EXECUTED"
     },
     {
       "scenario": "write never read",
