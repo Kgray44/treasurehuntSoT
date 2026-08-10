@@ -363,16 +363,21 @@ describe("Voyagewright Studio editor motion and authority", () => {
     fireEvent.click(commands);
     const palette = await screen.findByRole("dialog", { name: "Find an action" });
     await waitFor(() => expect(within(palette).getByRole("searchbox", { name: "Search Studio commands" })).toHaveFocus());
-    expect(within(palette).getByRole("button", { name: /Validate Chronicle/i })).toBeInTheDocument();
-    expect(within(palette).getByRole("button", { name: /Insert Narrative/i })).toBeInTheDocument();
-    expect(within(palette).queryByRole("button", { name: /new Story Block/i })).not.toBeInTheDocument();
+      expect(within(palette).getByRole("button", { name: /Validate Chronicle/i })).toBeInTheDocument();
+      expect(within(palette).getByRole("button", { name: /Insert Narrative/i })).toBeInTheDocument();
+      expect(within(palette).queryByRole("button", { name: /new Story Block/i })).not.toBeInTheDocument();
 
-    fireEvent.keyDown(palette, { key: "Escape" });
-    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Find an action" })).not.toBeInTheDocument());
-    await waitFor(() => expect(commands).toHaveFocus());
+      fireEvent.change(within(palette).getByRole("searchbox", { name: "Search Studio commands" }), {
+        target: { value: "Validate" },
+      });
 
-    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
-    expect(await screen.findByRole("dialog", { name: "Find an action" })).toBeInTheDocument();
+      fireEvent.keyDown(palette, { key: "Escape" });
+      await waitFor(() => expect(screen.queryByRole("dialog", { name: "Find an action" })).not.toBeInTheDocument());
+      await waitFor(() => expect(commands).toHaveFocus());
+
+      fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+      const reopenedPalette = await screen.findByRole("dialog", { name: "Find an action" });
+      expect(within(reopenedPalette).getByRole("searchbox", { name: "Search Studio commands" })).toHaveValue("");
   });
 
   it("keeps canvas view controls presentation-only and keyboard reachable", async () => {

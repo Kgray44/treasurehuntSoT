@@ -1899,7 +1899,7 @@ export function TaleEditor({
                               })
                             }
                           >
-                            <option value="">Keep the journal's natural resting state</option>
+                            <option value="">Keep the journal&apos;s natural resting state</option>
                             {storyMotionPresets.map((preset) => (
                               <option key={preset.id} value={preset.id}>
                                 {preset.label} — {preset.description}
