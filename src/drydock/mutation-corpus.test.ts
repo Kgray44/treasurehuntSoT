@@ -243,6 +243,21 @@ const cases: readonly MutationCase[] = [
     },
   },
   {
+    id: "performance-block-threshold",
+    expectedIssueCodes: ["DRYDOCK_PERFORMANCE_BLOCK_COUNT_HIGH"],
+    mutate: (draft) => {
+      const blocks = draft.chapters[0].blocks as DrydockAuthoredBlockInput[];
+      const source = structuredClone(blocks[0]);
+      for (let index = 0; index < 255; index += 1) {
+        const block = structuredClone(source);
+        block.id = `synthetic-performance-${index}`;
+        block.connections = [{ targetBlockId: "synthetic-finish", connectionType: "DEFAULT", orderIndex: 0 }];
+        block.nextBlockId = "synthetic-finish";
+        blocks.push(block);
+      }
+    },
+  },
+  {
     id: "asset-snapshot-unavailable",
     expectedIssueCodes: ["DRYDOCK_ASSET_PROOF_INCOMPLETE"],
     mutate: (draft) => {
