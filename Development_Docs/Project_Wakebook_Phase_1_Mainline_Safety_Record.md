@@ -3,7 +3,7 @@ title: Project Wakebook Phase 1 Mainline Safety Record
 audience: product-engineering
 status: current
 canonical_for: project-wakebook-phase-1-mainline-safety-record
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-10
 ---
 
 # Project Wakebook Phase 1 mainline safety record
@@ -15,7 +15,7 @@ last_reviewed: 2026-08-09
 | Project / phase   | Project Wakebook / Phase 1 `Open the Wake`                                                                               |
 | Owner             | Wakebook for archive projection and presentation; Wayfarer remains history authority                                     |
 | Branch / worktree | `codex/project-wakebook-phase1-open-the-wake` / `C:\Users\kkids\Documents\treasurehuntSoT-wakebook-phase1-open-the-wake` |
-| Reconciled base   | `9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1`                                                                               |
+| Reconciled base   | `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`                                                                               |
 | Dependency class  | Accepted-main contracts only                                                                                             |
 | Schema impact     | None; no migration reservation                                                                                           |
 | Shared seams      | Passport routes/navigation/styles, Feature Catalog, Homeport catalogs, Sounding Line control plane                       |

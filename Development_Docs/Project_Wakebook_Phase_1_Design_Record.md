@@ -3,7 +3,7 @@ title: Project Wakebook Phase 1 Design Record
 audience: product-engineering
 status: current
 canonical_for: project-wakebook-phase-1-design-record
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-10
 ---
 
 # Project Wakebook Phase 1 design record
@@ -168,4 +168,4 @@ Deepwater Phase 1 advanced `origin/main` by five commits while Wakebook was bloc
 
 No concurrent Phase 1 branch had tracked divergence in Wakebook-owned runtime paths at architecture freeze. Wakebook will not consume unaccepted Tideglass, Helm, Admiralty, Shipwright, or other branch work.
 
-Before final evidence, Wakebook semantically reconciled the later accepted-main sequence through `9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1`. That sequence adds accepted Deepwater Phase 2/3 and its Harborlight route correction, Tideglass Phase 1, Admiralty Phase 1, Drydock Phase 1 and its closure records, Feature Catalog, Homeport catalog, Sounding Line, and documentation truth. Shared conflicts were resolved by preserving Tideglass as `FT-B009`, Admiralty as `FT-B010`, and assigning branch-only Wakebook `FT-B011`; combining all project ownership, suite, contract, impact, and gate entries; adding accepted Drydock registry generation without displacing Wakebook generation; and retaining both Admiralty and Wakebook Homeport route/screen/journey additions. The final Drydock closure and Deepwater/Harborlight intervals were record-only and merged conflict-free. No incoming commit replaced Wakebook's archive service, UI, API routes, or schema-free design.
+Before final evidence, Wakebook semantically reconciled the later accepted-main sequence through `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`. That sequence adds accepted Deepwater Phase 2/3 and closure, Harborlight corrections, Tideglass Phases 1-2, Helm Phase 1, Admiralty Phase 1, Drydock Phase 1 and closure records, Feature Catalog, Homeport catalog, Sounding Line, and documentation truth. Shared conflicts were resolved by preserving Tideglass as `FT-B009`, Admiralty as `FT-B010`, branch-only Wakebook as `FT-B011`, and Helm's accepted expansion of Captain `FT-007`; combining all project ownership, suite, contract, impact, and gate entries; and regenerating the generated Feature Catalog and active-test registry from authoritative inputs. The accepted Helm Captain-participation seam remains distinct from Wakebook's owner-private historical participation projection. No incoming commit replaced Wakebook's archive service, UI, API routes, or schema-free design.

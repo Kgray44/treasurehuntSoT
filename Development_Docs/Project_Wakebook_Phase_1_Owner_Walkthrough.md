@@ -3,7 +3,7 @@ title: Project Wakebook Phase 1 Owner Walkthrough
 audience: product-owner
 status: current
 canonical_for: project-wakebook-phase-1-owner-walkthrough
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-10
 ---
 
 # Project Wakebook Phase 1 owner walkthrough

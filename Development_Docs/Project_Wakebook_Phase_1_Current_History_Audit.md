@@ -3,7 +3,7 @@ title: Project Wakebook Phase 1 Current History Audit
 audience: product-engineering
 status: current
 canonical_for: project-wakebook-phase-1-current-history-audit
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-10
 ---
 
 # Project Wakebook Phase 1 current history audit
@@ -90,4 +90,4 @@ Accepted history is substantially complete and historically stable. Phase 1 is a
 
 ## Final accepted-main revalidation
 
-The audit conclusion was rechecked after semantic reconciliation through accepted `origin/main` `9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1`. Later Deepwater and its Harborlight route correction, Tideglass, Admiralty, Drydock and Drydock closure, Feature Catalog, Homeport catalog, Sounding Line, and documentation work did not add a competing history projector or change the canonical One Voyage, Wayfarer, AccountSession, Artifact Cabinet, or remembrance authorities above. Drydock strengthens the accepted Story Block authoring/runtime contract without becoming history authority. Wakebook remains a bounded owner-private projection and presentation layer with no schema change.
+The audit conclusion was rechecked after semantic reconciliation through accepted `origin/main` `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`. Later Deepwater and Harborlight corrections, Tideglass Phases 1-2, Helm Phase 1, Admiralty, Drydock and Drydock closure, Feature Catalog, Homeport catalog, Sounding Line, and documentation work did not add a competing history projector or change the canonical One Voyage, Wayfarer, AccountSession, Artifact Cabinet, or remembrance authorities above. Helm adds current participating-Captain behavior without becoming history authority; Tideglass adds semantic edition comparison without replacing version-pinned historical identity; Drydock strengthens Story Block authoring/runtime contracts without becoming history authority. Wakebook remains a bounded owner-private projection and presentation layer with no schema change.

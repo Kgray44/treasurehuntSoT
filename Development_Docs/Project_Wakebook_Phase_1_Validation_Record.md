@@ -3,14 +3,14 @@ title: Project Wakebook Phase 1 Validation Record
 audience: product-engineering
 status: current
 canonical_for: project-wakebook-phase-1-validation-record
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-10
 ---
 
 # Project Wakebook Phase 1 validation record
 
 ## Decision
 
-**Current classification: FINAL SOURCE-BOUND VALIDATION PENDING.** The Wakebook unit, component, browser, accessibility, retained-runtime, privacy, and large-archive evidence is complete at the stated boundaries below. The branch has been semantically reconciled through accepted `origin/main` `9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1`. The final exact-source Sounding Line authorities, completion-record update, branch push/parity proof, and final retained-runtime restart must complete before this record may classify the branch `READY_FOR_OWNER_WALKTHROUGH`. This record does not establish owner acceptance, deployment, or mainline integration.
+**Current classification: FINAL SOURCE-BOUND VALIDATION PENDING.** The Wakebook unit, component, browser, accessibility, retained-runtime, privacy, and large-archive evidence is complete at the stated boundaries below. The branch has been semantically reconciled through accepted `origin/main` `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`. The final exact-source Sounding Line authorities, completion-record update, branch push/parity proof, and final retained-runtime restart must complete before this record may classify the branch `READY_FOR_OWNER_WALKTHROUGH`. This record does not establish owner acceptance, deployment, or mainline integration.
 
 ## Source identity
 
@@ -18,7 +18,7 @@ last_reviewed: 2026-08-09
 | ------------------------------- | ------------------------------------------------------------------------ |
 | Branch                          | `codex/project-wakebook-phase1-open-the-wake`                            |
 | Owned worktree                  | `C:\Users\kkids\Documents\treasurehuntSoT-wakebook-phase1-open-the-wake` |
-| Reconciled accepted-main base   | `9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1`                               |
+| Reconciled accepted-main base   | `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`                               |
 | Archive implementation anchor   | `ab47dc33a29b2cdd80a97da7fd1af4a9e897b2cc`                               |
 | Final validation SHA            | Pending final evidence commit                                            |
 | Database schema change          | None                                                                     |
@@ -57,6 +57,7 @@ Sounding Line owns the authoritative definitions for:
 | Responsive/accessibility             | Dual-engine responsive, keyboard, motion, focus, and Axe policy          | PASS / CLEAN, 148/148   | Source `e057cf9e`; synthetic diagnostic |
 | Retained owner-runtime visual review | Loopback `3717`; task-owned database; desktop in-app browser             | PASS                    | Manual synthetic product-reality proof  |
 | Sounding Line mainline authority     | Generated registry at source `5012d285`                                  | RELEASE_GO, 32/32 CLEAN | Superseded by later reconciliations     |
+| Sounding Line subsystem diagnostic   | Generated registry at source `e5b4c5da`                                  | RELEASE_GO, 12/12 CLEAN | Superseded by accepted-main advances    |
 | Final Sounding Line authorities      | Exact final reconciled source and generated registry                     | Pending                 | Required release authority              |
 
 The first `browser.wakebook` diagnostic attempt and a later focused Community attempt did not execute product code because another governed validation process owned the global validation-runtime lock. Both runners reported cleanup `CLEAN`; no process was stopped and no lock was removed. Those environmental collisions are not product failures and are not counted as passing evidence. Later Community diagnostics exposed and repaired three accepted-main drifts without weakening product policy: duplicated visible shelf/result titles were scoped to the actual results landmark, clearing the default sort was matched to the canonical `/community` URL, and consented unlisted Voyage Log metadata was restored through an anonymous safe projection that emits `noindex, nofollow, noarchive`. The Phase 3 synthetic actor fixture was also brought forward to the canonical public-Profile contract. The exact `browser.community` rerun then passed 10/10 with cleanup `CLEAN`.
