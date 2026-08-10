@@ -1629,7 +1629,7 @@ export function TaleEditor({
                                         );
                                         return;
                                       }
-                                      listeners.onKeyDown?.(event);
+                                      listeners?.onKeyDown?.(event);
                                     }}
                                   >
                                     <button
