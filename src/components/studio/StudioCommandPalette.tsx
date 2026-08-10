@@ -33,17 +33,19 @@ export function StudioCommandPalette({
   }, [commands, query]);
 
   useEffect(() => {
-    if (!open) {
-      setQuery("");
-      return;
-    }
+    if (!open) return;
     const frame = requestAnimationFrame(() => input.current?.focus());
     return () => cancelAnimationFrame(frame);
   }, [open]);
 
+  const close = () => {
+    setQuery("");
+    onClose();
+  };
+
   if (!open) return null;
   return (
-    <div className="studio-command-palette-backdrop" role="presentation" onMouseDown={onClose}>
+    <div className="studio-command-palette-backdrop" role="presentation" onMouseDown={close}>
       <section
         className="studio-command-palette"
         role="dialog"
@@ -51,7 +53,7 @@ export function StudioCommandPalette({
         aria-labelledby="studio-command-palette-title"
         onMouseDown={(event) => event.stopPropagation()}
         onKeyDown={(event) => {
-          if (event.key === "Escape") onClose();
+          if (event.key === "Escape") close();
         }}
       >
         <header>
@@ -59,7 +61,7 @@ export function StudioCommandPalette({
             <p className="eyebrow">Studio commands</p>
             <h2 id="studio-command-palette-title">Find an action</h2>
           </div>
-          <button type="button" onClick={onClose} aria-label="Close command palette">
+          <button type="button" onClick={close} aria-label="Close command palette">
             Close
           </button>
         </header>
@@ -79,7 +81,7 @@ export function StudioCommandPalette({
                 key={command.id}
                 disabled={command.disabled}
                 onClick={() => {
-                  onClose();
+                  close();
                   command.run();
                 }}
               >
