@@ -46,7 +46,11 @@
     },
     { "scenario": "valid branching Chronicle", "expectedIssueCodes": [], "state": "EXECUTED" },
     { "scenario": "multiple endings", "expectedIssueCodes": [], "state": "EXECUTED" },
-    { "scenario": "valid interactive loop", "expectedIssueCodes": [], "state": "PENDING" },
+    {
+      "scenario": "valid interactive loop",
+      "expectedIssueCodes": ["DRYDOCK_PROVIDER_REQUEST_REPEATS_IN_LOOP"],
+      "state": "EXECUTED"
+    },
     { "scenario": "bounded retry loop", "expectedIssueCodes": [], "state": "PENDING" },
     {
       "scenario": "impossible branch and constant conditions",

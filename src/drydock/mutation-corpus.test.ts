@@ -436,6 +436,24 @@ const validCases: readonly MutationCase[] = [
       blocks.push(terminal);
     },
   },
+  {
+    id: "interactive-choice-loop-with-terminal-exit",
+    expectedIssueCodes: ["DRYDOCK_PROVIDER_REQUEST_REPEATS_IN_LOOP"],
+    mutate: (draft) => {
+      const choice = structuredClone(choiceTemplate);
+      choice.id = "synthetic-opening";
+      choice.configuration.choices = [
+        { id: "retry", label: "Try again", targetBlockId: choice.id },
+        { id: "continue", label: "Continue", targetBlockId: "synthetic-finish" },
+      ];
+      choice.connections = [
+        { targetBlockId: choice.id, connectionType: "CHOICE", orderIndex: 0 },
+        { targetBlockId: "synthetic-finish", connectionType: "CHOICE", orderIndex: 1 },
+      ];
+      choice.nextBlockId = choice.id;
+      (draft.chapters[0].blocks as DrydockAuthoredBlockInput[])[0] = choice;
+    },
+  },
 ];
 
 describe("Drydock Phase 2 synthetic invalid Chronicle mutation corpus", () => {
@@ -451,7 +469,10 @@ describe("Drydock Phase 2 synthetic invalid Chronicle mutation corpus", () => {
       mutation.mutate(draft);
       const result = validateDrydockDraftContracts({ ...draft, analysisMode: "FULL" });
       expect(result.valid).toBe(true);
-      expect(result.issues).toEqual([]);
+      expect(result.issues.map((issue) => issue.code)).toEqual(
+        expect.arrayContaining([...mutation.expectedIssueCodes]),
+      );
+      if (!mutation.expectedIssueCodes.length) expect(result.issues).toEqual([]);
     });
 
   for (const mutation of cases)
