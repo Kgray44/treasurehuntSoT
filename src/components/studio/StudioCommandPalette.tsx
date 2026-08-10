@@ -22,6 +22,10 @@ export function StudioCommandPalette({
 }) {
   const input = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
+  const close = () => {
+    setQuery("");
+    onClose();
+  };
   const visibleCommands = useMemo(() => {
     const normalized = query.trim().toLocaleLowerCase();
     if (!normalized) return commands;
