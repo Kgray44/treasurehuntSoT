@@ -2351,6 +2351,88 @@
       "adapter": "playwright-family"
     },
     {
+      "id": "unit.helm",
+      "name": "Project Helm authority, membership, projection, history, and artifact contracts",
+      "tier": 1,
+      "owner": "project-helm",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 90000,
+      "hardBudgetMs": 240000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": [],
+      "contracts": [
+        "helm.authority-membership.independent",
+        "helm.creation.default-captain-only",
+        "helm.participation.lifecycle",
+        "helm.player-projection.firewall",
+        "helm.history.membership-derived",
+        "helm.artifacts.event-time-membership",
+        "helm.security.resource-authorization"
+      ],
+      "affectedPaths": [
+        "src/helm/**",
+        "src/platform/invitations.helm.test.ts",
+        "src/app/api/captain/playthroughs/**",
+        "src/app/api/play/sessions/**/route.helm.test.ts",
+        "src/wayfarer/chronicle-history.helm.test.ts",
+        "src/chronicle/artifact-grant.helm.test.ts"
+      ],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "phase-1-source-bound",
+      "adapter": "vitest-family"
+    },
+    {
+      "id": "component.helm",
+      "name": "Project Helm Captain participation components",
+      "tier": 2,
+      "owner": "project-helm",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 60000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.helm"],
+      "contracts": [
+        "helm.creation.default-captain-only",
+        "helm.participation.lifecycle",
+        "helm.accessibility.responsive"
+      ],
+      "affectedPaths": ["src/components/platform/CaptainLibrary.tsx", "src/styles/platform.css"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "phase-1-source-bound",
+      "adapter": "vitest-family"
+    },
+    {
+      "id": "browser.helm",
+      "name": "Project Helm isolated canonical-account acceptance",
+      "tier": 4,
+      "owner": "project-helm",
+      "command": "registry-selected Playwright cases",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 600000,
+      "hardBudgetMs": 900000,
+      "parallelSafe": false,
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+      "dependencies": ["unit.helm", "component.helm"],
+      "contracts": [
+        "helm.authority-membership.independent",
+        "helm.creation.default-captain-only",
+        "helm.participation.lifecycle",
+        "helm.player-projection.firewall",
+        "helm.history.membership-derived",
+        "helm.artifacts.event-time-membership",
+        "helm.security.resource-authorization",
+        "helm.accessibility.responsive"
+      ],
+      "affectedPaths": ["tests/e2e/project-helm-phase1.spec.ts", "playwright.config.ts"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "phase-1-source-bound",
+      "adapter": "playwright-family"
+    },
+    {
       "id": "unit.admiralty",
       "name": "Admiralty Phase 1 unit and policy cases",
       "tier": 1,

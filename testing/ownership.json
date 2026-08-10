@@ -302,6 +302,42 @@
       ]
     },
     {
+      "id": "project-helm",
+      "project": "project-helm",
+      "sourcePaths": [
+        "Development_Docs/Projects/Project_Helm/**",
+        "src/helm/**",
+        "src/platform/invitations.ts",
+        "src/platform/libraries.ts",
+        "src/components/platform/CaptainLibrary.tsx",
+        "src/homeport/**",
+        "src/wayfarer/chronicle-history.ts",
+        "src/chronicle/artifact-grant.ts",
+        "src/app/api/captain/playthroughs/**",
+        "src/app/api/play/sessions/**"
+      ],
+      "testPaths": [
+        "src/helm/**/*.test.*",
+        "src/platform/invitations.helm.test.ts",
+        "src/components/platform/CaptainLibrary.helm.test.tsx",
+        "src/app/api/captain/playthroughs/**/route.test.ts",
+        "src/app/api/play/sessions/**/route.helm.test.ts",
+        "src/wayfarer/chronicle-history.helm.test.ts",
+        "src/chronicle/artifact-grant.helm.test.ts",
+        "tests/e2e/project-helm-phase1.spec.ts"
+      ],
+      "contractIds": [
+        "helm.authority-membership.independent",
+        "helm.creation.default-captain-only",
+        "helm.participation.lifecycle",
+        "helm.player-projection.firewall",
+        "helm.history.membership-derived",
+        "helm.artifacts.event-time-membership",
+        "helm.security.resource-authorization",
+        "helm.accessibility.responsive"
+      ]
+    },
+    {
       "id": "landfall",
       "project": "landfall",
       "sourcePaths": [],

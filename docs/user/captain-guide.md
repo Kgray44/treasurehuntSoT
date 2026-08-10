@@ -3,7 +3,7 @@ title: Captain guide
 audience: captain
 status: current
 canonical_for: captain-guide
-last_reviewed: 2026-08-07
+last_reviewed: 2026-08-09
 ---
 
 # Captain guide
@@ -11,6 +11,15 @@ last_reviewed: 2026-08-07
 Use the Captain Library to select a Chronicle, prepare a Voyage, and manage its invitations. The Captain session views support monitoring and player preview where enabled. Start only when participants are expected to have access, and use the session controls rather than sharing a private route directly.
 
 Expected result: invited Players can see the Voyage in their library and the Captain can open the relevant session view. If a participant is blocked, re-check their invitation and account role; do not expose Chronicle material to diagnose access.
+
+When creating a Voyage, choose **Captain only** to operate without a personal
+Player record, or **Captain + Player** to join the Crew with the same account.
+Captain + Player creates one ordinary Player membership; it does not create a
+self-invitation, a second identity, or broader Player access. Use **Open Player
+View** for the ordinary Player perspective and **Open Captain's Console** for
+Captain controls. Ending Player participation removes Player access while the
+Captain assignment remains active. Existing and omitted choices remain
+Captain-only.
 
 Creator authoring is separate: see the [Creator guide](creator-guide.md). Operational safety is in [private-content guidance](../administrator/private-content.md).
 

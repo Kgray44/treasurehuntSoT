@@ -33,6 +33,15 @@ also passed. See the [OAuth validation and completion record](Validation/Voyagew
 
 [Project Deepwater](Programs/Deepwater/README.md) governs product capability-realization and systems-audit truth. Phase 1, Sound the Depths, establishes the deterministic capability ledger, schema, ownership map, initial findings, Feature Catalog reconciliation, Phase 2 trace queue, and validation control plane. Phase 2, Trace the Current, converts that queue into complete source-bound traces, exact root causes, canonical assignments, remediation packets, and a Phase 3 realization queue without changing product behavior, schema, or data. Its classifications and maturity rungs are evidence-bound: source existence, local or synthetic validation, staging access, external-provider proof, deployment, and owner acceptance remain distinct.
 
+## Project Helm
+
+[Project Helm](Projects/Project_Helm/README.md) governs Captain operations.
+Phase 1, **Take the Helm**, adds explicit Captain-only and Captain + Player
+participation while preserving one canonical account, ordinary Player
+membership, Voyage-scoped Captain authority, and Player-safe projection
+boundaries. Its repository records distinguish candidate validation from
+integrated-main acceptance and stop before Phase 2 operational intelligence.
+
 ## Project Admiralty
 
 [Project Admiralty](Projects/Project_Admiralty/README.md) governs canonical

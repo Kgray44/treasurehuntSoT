@@ -2,20 +2,29 @@
   {
     "id": "FT-007",
     "title": "Captain Voyage Operations",
-    "summary": "Captains create, launch, operate, recover, and reconcile live Voyages through authoritative commands.",
-    "status": "MAINLINE",
+    "summary": "Captains create, launch, operate, recover, and reconcile live Voyages through authoritative commands, with an explicit option to join the same Voyage as an ordinary Player.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "branch": "codex/project-helm-phase1-take-the-helm",
+    "commit": "9c1163bd1467f77ee33f0b063f3f3bdddd81609d",
     "program": "Captain",
-    "surfaces": ["/captain", "/captain/voyages/[id]"],
+    "surfaces": ["/captain", "/captain/library", "/captain/voyages/[id]", "/player/playthroughs/[id]"],
     "subfeatures": [
       "Voyage creation wizard",
       "Crew readiness",
       "Command idempotency",
       "Pause and resume",
-      "Operational audit trail"
+      "Operational audit trail",
+      "Independent Captain authority and Player membership",
+      "Captain-only and Captain plus Player participation modes",
+      "Player-safe perspective switching",
+      "Membership-bounded personal history and artifact eligibility"
     ],
     "evidence": [
       { "kind": "path", "value": "src/server/admin-command.ts" },
-      { "kind": "path", "value": "src/domain/admin.ts" }
+      { "kind": "path", "value": "src/domain/admin.ts" },
+      { "kind": "path", "value": "src/helm/captain-participation.ts" },
+      { "kind": "path", "value": "src/components/platform/CaptainLibrary.tsx" },
+      { "kind": "path", "value": "src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts" }
     ],
     "catalogVersion": 1
   }

@@ -1333,6 +1333,22 @@ dl dd {
   border-color: rgba(201, 169, 95, 0.7);
 }
 
+.captain-participation-summary {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.9rem 0;
+  border: 1px solid rgba(201, 169, 95, 0.25);
+  border-radius: 12px;
+  padding: 0.8rem;
+  background: rgba(15, 49, 50, 0.48);
+}
+
+.captain-participation-summary > span,
+.captain-participation-summary > small {
+  color: #b8c9c4;
+  line-height: 1.45;
+}
+
 .needs-attention-mark {
   display: flex;
   align-items: center;
@@ -1635,6 +1651,64 @@ dl dd {
 .wizard-form .check-field input {
   width: auto;
 }
+
+.captain-participation-picker {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  min-width: 0;
+  border: 1px solid rgba(201, 169, 95, 0.28);
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.captain-participation-picker legend {
+  color: var(--brass-100);
+  font-family: Georgia, serif;
+  font-size: 1.05rem;
+  padding: 0 0.4rem;
+}
+
+.captain-participation-picker > label {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.7rem;
+  align-items: start;
+  min-width: 0;
+  border: 1px solid rgba(201, 169, 95, 0.22);
+  border-radius: 12px;
+  padding: 0.85rem;
+  background: rgba(4, 20, 22, 0.72);
+  cursor: pointer;
+}
+
+.captain-participation-picker > label.selected,
+.captain-participation-picker > label:focus-within {
+  border-color: var(--brass-100);
+  box-shadow: 0 0 0 2px rgba(201, 169, 95, 0.16);
+}
+
+.captain-participation-picker input {
+  width: auto;
+  margin-top: 0.22rem;
+}
+
+.captain-participation-picker label > span {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.captain-participation-picker small {
+  color: #adbfba;
+  line-height: 1.4;
+}
+
+.captain-participation-picker > p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #efc08a;
+}
 .crew-builder fieldset {
   display: grid;
   grid-column: 1 / -1;
@@ -1840,6 +1914,7 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
   .delivery-options,
   .wizard-form,
   .crew-builder fieldset,
+  .captain-participation-picker,
   .invitation-secrets article,
   .player-card-grid.list .player-tale-card {
     grid-template-columns: 1fr;

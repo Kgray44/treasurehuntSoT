@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3`
+Audited source commit: `fca58389a5e6be7bcf1db55e252b7427eb32b2aa`
 
 ## Status vocabulary
 
@@ -168,32 +168,6 @@ Players can discover, resume, archive, and reconcile exact-edition Voyage experi
 
 - path: `src/platform/libraries.ts`
 - path: `src/platform/state.ts`
-
----
-
-## FT-007 - Captain Voyage Operations
-
-**Status:** MAINLINE
-**Program or subsystem:** Captain
-
-Captains create, launch, operate, recover, and reconcile live Voyages through authoritative commands.
-
-### Important subfeatures
-
-- Voyage creation wizard
-- Crew readiness
-- Command idempotency
-- Pause and resume
-- Operational audit trail
-
-### Primary surfaces
-
-`/captain`, `/captain/voyages/[id]`
-
-### Evidence
-
-- path: `src/server/admin-command.ts`
-- path: `src/domain/admin.ts`
 
 ---
 
@@ -1354,6 +1328,39 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-007 - Captain Voyage Operations
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Captain
+
+Captains create, launch, operate, recover, and reconcile live Voyages through authoritative commands, with an explicit option to join the same Voyage as an ordinary Player.
+
+### Important subfeatures
+
+- Voyage creation wizard
+- Crew readiness
+- Command idempotency
+- Pause and resume
+- Operational audit trail
+- Independent Captain authority and Player membership
+- Captain-only and Captain plus Player participation modes
+- Player-safe perspective switching
+- Membership-bounded personal history and artifact eligibility
+
+### Primary surfaces
+
+`/captain`, `/captain/library`, `/captain/voyages/[id]`, `/player/playthroughs/[id]`
+
+### Evidence
+
+- path: `src/server/admin-command.ts`
+- path: `src/domain/admin.ts`
+- path: `src/helm/captain-participation.ts`
+- path: `src/components/platform/CaptainLibrary.tsx`
+- path: `src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
@@ -1367,4 +1374,4 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3`
+Generation source commit: `fca58389a5e6be7bcf1db55e252b7427eb32b2aa`

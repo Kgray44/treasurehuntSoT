@@ -13,6 +13,9 @@
         "unit.tideglass"
       ],
       "conditionalSuites": [
+        "unit.helm",
+        "component.helm",
+        "browser.helm",
         "unit.auth",
         "unit.one-voyage",
         "unit.wayfarer",
@@ -55,6 +58,38 @@
       ]
     },
     {
+      "id": "contract",
+      "requiredSuites": ["static.core", "unit.helm", "component.helm"],
+      "conditionalSuites": [
+        "unit.helm",
+        "component.helm",
+        "unit.auth",
+        "unit.one-voyage",
+        "unit.wayfarer",
+        "unit.community",
+        "unit.private-content",
+        "unit.journal",
+        "unit.animation",
+        "unit.true-north",
+        "unit.feature-catalog",
+        "unit.homeport",
+        "unit.sounding-line",
+        "unit.platform-foundation",
+        "component.auth",
+        "component.player-shell",
+        "component.journal",
+        "component.artifacts",
+        "component.captain",
+        "component.studio",
+        "component.community",
+        "component.private-operations",
+        "component.animation",
+        "component.passport",
+        "component.navigation",
+        "database.sqlite"
+      ]
+    },
+    {
       "id": "subsystem",
       "requiredSuites": [
         "static.core",
@@ -66,6 +101,9 @@
         "browser.admiralty"
       ],
       "conditionalSuites": [
+        "unit.helm",
+        "component.helm",
+        "browser.helm",
         "unit.auth",
         "unit.one-voyage",
         "unit.wayfarer",
@@ -127,6 +165,7 @@
       "id": "mainline",
       "requiredSuites": [
         "static.core",
+        "unit.helm",
         "unit.auth",
         "unit.one-voyage",
         "unit.drydock",
@@ -153,8 +192,10 @@
         "component.animation",
         "component.passport",
         "component.navigation",
+        "component.helm",
         "database.sqlite",
         "browser.access-sentinel",
+        "browser.helm",
         "retirement.matrix-proof",
         "build.production",
         "unit.admiralty",
@@ -182,6 +223,7 @@
       "id": "release-candidate",
       "requiredSuites": [
         "static.core",
+        "unit.helm",
         "unit.auth",
         "unit.one-voyage",
         "unit.drydock",
@@ -207,8 +249,10 @@
         "component.animation",
         "component.passport",
         "component.navigation",
+        "component.helm",
         "database.sqlite",
         "browser.access-sentinel",
+        "browser.helm",
         "browser.auth",
         "browser.invitations",
         "browser.player-library",
