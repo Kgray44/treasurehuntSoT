@@ -2,13 +2,13 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const prisma = vi.hoisted(() => ({
   drydockValidationRun: { findFirst: vi.fn() },
-  drydockRuleWaiver: { findMany: vi.fn(), create: vi.fn() },
+  drydockRuleWaiver: { findMany: vi.fn(), create: vi.fn(), updateMany: vi.fn() },
 }));
 vi.mock("@/lib/db", () => ({ db: prisma }));
 
 import { createDrydockIssue } from "@/drydock/issues";
 import { createDrydockValidationReport } from "@/drydock/reports";
-import { createDrydockWaiverFromRun, listDrydockWaivers } from "@/drydock/waiver-store";
+import { createDrydockWaiverFromRun, listDrydockWaivers, revokeDrydockWaiver } from "@/drydock/waiver-store";
 
 describe("Drydock durable waiver store", () => {
   beforeEach(() => vi.clearAllMocks());
@@ -80,6 +80,18 @@ describe("Drydock durable waiver store", () => {
     ).resolves.toEqual(expect.objectContaining({ issueId: issue.id, sourceRevision: 6 }));
     expect(prisma.drydockValidationRun.findFirst).toHaveBeenCalledWith(
       expect.objectContaining({ where: { runId: report.runId, draft: { is: { taleId: "tale-a" } } } }),
+    );
+  });
+
+  it("revokes only an active waiver within the requested Chronicle", async () => {
+    prisma.drydockRuleWaiver.updateMany.mockResolvedValue({ count: 1 });
+    await expect(
+      revokeDrydockWaiver({ taleId: "tale-a", waiverId: "waiver-a", revokedAt: new Date("2026-08-10T00:00:00.000Z") }),
+    ).resolves.toBe(true);
+    expect(prisma.drydockRuleWaiver.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: "waiver-a", draft: { is: { taleId: "tale-a" } }, revokedAt: null },
+      }),
     );
   });
 });

@@ -107,3 +107,16 @@ export async function createDrydockWaiverFromRun(input: {
   });
   return receiptProjection(created);
 }
+
+/** Revocation is additive and scoped to the owning Chronicle; waivers are never deleted. */
+export async function revokeDrydockWaiver(input: {
+  taleId: string;
+  waiverId: string;
+  revokedAt?: Date;
+}): Promise<boolean> {
+  const result = await db.drydockRuleWaiver.updateMany({
+    where: { id: input.waiverId, draft: { is: { taleId: input.taleId } }, revokedAt: null },
+    data: { revokedAt: input.revokedAt ?? new Date() },
+  });
+  return result.count === 1;
+}

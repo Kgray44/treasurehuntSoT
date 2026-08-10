@@ -39451,7 +39451,7 @@
     {
       "id": "sl-test-ad24aba65ef31b6b8669",
       "title": "opens the owner-projected static graph outline and preserves Passage navigation",
-      "line": 189,
+      "line": 199,
       "file": "src/components/studio/TaleEditor.test.tsx",
       "suiteId": "component.studio",
       "owner": "platform-foundation",
@@ -39491,7 +39491,7 @@
     {
       "id": "sl-test-b2ad9ba3748c4be05878",
       "title": "does not remove a block until the draft save succeeds and reconciles an authoritative undo",
-      "line": 211,
+      "line": 249,
       "file": "src/components/studio/TaleEditor.test.tsx",
       "suiteId": "component.studio",
       "owner": "platform-foundation",
@@ -39531,7 +39531,7 @@
     {
       "id": "sl-test-1b12f371b22663e42c09",
       "title": "shows the publish seal only after the immutable version response succeeds",
-      "line": 238,
+      "line": 276,
       "file": "src/components/studio/TaleEditor.test.tsx",
       "suiteId": "component.studio",
       "owner": "platform-foundation",
@@ -39571,7 +39571,7 @@
     {
       "id": "sl-test-1818d5c58c2a9524fef3",
       "title": "keeps a successfully published version confirmed when its presentation director interrupts afterward",
-      "line": 261,
+      "line": 299,
       "file": "src/components/studio/TaleEditor.test.tsx",
       "suiteId": "component.studio",
       "owner": "platform-foundation",
@@ -39611,7 +39611,7 @@
     {
       "id": "sl-test-92e58a1062a9ebaef47a",
       "title": "waits for an in-flight autosave before publishing the immutable version",
-      "line": 286,
+      "line": 324,
       "file": "src/components/studio/TaleEditor.test.tsx",
       "suiteId": "component.studio",
       "owner": "platform-foundation",
@@ -39651,7 +39651,7 @@
     {
       "id": "sl-test-1bf9b4ac124dc6cdd6e8",
       "title": "tracks each upload independently and preserves successful files when a sibling fails",
-      "line": 320,
+      "line": 358,
       "file": "src/components/studio/TaleEditor.test.tsx",
       "suiteId": "component.studio",
       "owner": "platform-foundation",
@@ -47196,7 +47196,7 @@
     {
       "id": "sl-test-518fe0370a416278f465",
       "title": "projects canonical graph facts without exposing authored prose or predicates",
-      "line": 13,
+      "line": 14,
       "file": "src/drydock/graph-survey.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -47236,7 +47236,7 @@
     {
       "id": "sl-test-c4db684cbe90458202dc",
       "title": "proves the complete synthetic Chronicle has one canonical reachable terminal flow",
-      "line": 9,
+      "line": 13,
       "file": "src/drydock/graph.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -47276,7 +47276,7 @@
     {
       "id": "sl-test-561ef750bd909c13f1c4",
       "title": "reports an unreachable Passage and a reachable branch with no terminal path",
-      "line": 20,
+      "line": 25,
       "file": "src/drydock/graph.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -47316,7 +47316,7 @@
     {
       "id": "sl-test-d20e46a5f70d870181a2",
       "title": "reports a closed strongly connected component as an automatic-loop risk",
-      "line": 28,
+      "line": 33,
       "file": "src/drydock/graph.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -47356,7 +47356,7 @@
     {
       "id": "sl-test-9393d8d440b2c7908005",
       "title": "does not pretend a free-form legacy edge condition is statically proven",
-      "line": 36,
+      "line": 41,
       "file": "src/drydock/graph.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -47676,7 +47676,7 @@
     {
       "id": "sl-test-f85b411ff1b2a5ee3a86",
       "title": "warns about high fan-out and variable catalog growth before hard limits",
-      "line": 11,
+      "line": 28,
       "file": "src/drydock/performance.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -47716,7 +47716,7 @@
     {
       "id": "sl-test-6a245ec7efd3c72cc345",
       "title": "applies only canonical target mirrors and supplies a reversible inverse",
-      "line": 7,
+      "line": 24,
       "file": "src/drydock/repairs.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -47756,7 +47756,7 @@
     {
       "id": "sl-test-54e9a529f3b9fff0d5bf",
       "title": "rejects a stale repair preview",
-      "line": 15,
+      "line": 38,
       "file": "src/drydock/repairs.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -47836,7 +47836,7 @@
     {
       "id": "sl-test-36d8809c008f3a63fce3",
       "title": "loads a creator-safe report only through the requested Chronicle relation",
-      "line": 27,
+      "line": 42,
       "file": "src/drydock/report-store.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -47876,7 +47876,7 @@
     {
       "id": "sl-test-19381dddd03dd423760f",
       "title": "binds a deterministic report to immutable source and stable issues",
-      "line": 7,
+      "line": 22,
       "file": "src/drydock/reports.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -47916,7 +47916,7 @@
     {
       "id": "sl-test-563be6f5c3d6db2adbdd",
       "title": "diffs by stable issue identity and redacts support detail",
-      "line": 19,
+      "line": 42,
       "file": "src/drydock/reports.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -47956,7 +47956,7 @@
     {
       "id": "sl-test-fb2478f0fdbcc8d2240a",
       "title": "classifies one unambiguous semantic rule move without comparing messages",
-      "line": 26,
+      "line": 57,
       "file": "src/drydock/reports.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -47996,7 +47996,7 @@
     {
       "id": "sl-test-b8bffc1c7f88c2ce808f",
       "title": "keeps bounded analysis explicitly incomplete instead of treating it as a clean receipt",
-      "line": 36,
+      "line": 75,
       "file": "src/drydock/reports.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -48036,7 +48036,7 @@
     {
       "id": "sl-test-11668f4896e823e74754",
       "title": "allows publication only from a complete error-free exact-source receipt",
-      "line": 48,
+      "line": 87,
       "file": "src/drydock/reports.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -48156,7 +48156,7 @@
     {
       "id": "sl-test-60bf5febd8b663d752ea",
       "title": "rejects a collection grant inside a repeatable cycle",
-      "line": 18,
+      "line": 24,
       "file": "src/drydock/side-effects.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -48196,7 +48196,7 @@
     {
       "id": "sl-test-97470535c4e37edabf2c",
       "title": "surfaces duplicate authored artifact and completion outcome risk for review",
-      "line": 30,
+      "line": 40,
       "file": "src/drydock/side-effects.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -48236,7 +48236,7 @@
     {
       "id": "sl-test-62e8b8308b6b277c2b17",
       "title": "requires a write on every predecessor path before a read",
-      "line": 11,
+      "line": 28,
       "file": "src/drydock/state.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -48276,7 +48276,7 @@
     {
       "id": "sl-test-e6f7e246c110e5ef396f",
       "title": "accepts a declared default as definite initialization at the entry",
-      "line": 17,
+      "line": 59,
       "file": "src/drydock/state.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -48316,7 +48316,7 @@
     {
       "id": "sl-test-537e9fa0698fb615cf37",
       "title": "reports state declared or written without any consumer",
-      "line": 23,
+      "line": 76,
       "file": "src/drydock/state.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -48356,7 +48356,7 @@
     {
       "id": "sl-test-b48cf304588545528b41",
       "title": "only classifies a condition constant when no writer can alter its default",
-      "line": 30,
+      "line": 100,
       "file": "src/drydock/state.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -48436,7 +48436,7 @@
     {
       "id": "sl-test-fcf3e7b3c3a586998e74",
       "title": "reports incomplete proof instead of approving without asset metadata",
-      "line": 12,
+      "line": 31,
       "file": "src/drydock/static-rules.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -48476,7 +48476,7 @@
     {
       "id": "sl-test-2630784ea50f6e2a1a09",
       "title": "respects an explicit decorative image and requires a non-motion equivalent for visual meaning",
-      "line": 15,
+      "line": 36,
       "file": "src/drydock/static-rules.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -48796,7 +48796,47 @@
     {
       "id": "sl-test-9a765dedec48b92f0806",
       "title": "creates an administrator waiver only for a reviewable receipt issue",
-      "line": 22,
+      "line": 41,
+      "file": "src/drydock/waiver-store.test.ts",
+      "suiteId": "unit.drydock",
+      "owner": "drydock",
+      "tier": 1,
+      "risk": "HIGH",
+      "contracts": ["drydock-authoring-contracts"],
+      "sourcePaths": ["src/drydock/waiver-store.test.ts"],
+      "consumerPaths": [],
+      "dependencies": [],
+      "fixtureFamily": "repository-fixtures",
+      "fixture": "repository-owned deterministic fixtures",
+      "databaseOwnership": "no browser database ownership",
+      "browserOwnership": "not applicable",
+      "portOwnership": "not applicable",
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "parallelSafety": "READ_ONLY_PARALLEL",
+      "browserRequirements": ["NOT_APPLICABLE"],
+      "deviceRequirements": ["NOT_APPLICABLE"],
+      "viewportRequirements": ["NOT_APPLICABLE"],
+      "motionRequirements": ["NOT_APPLICABLE"],
+      "networkRequirements": ["NOT_APPLICABLE"],
+      "positiveCases": ["declared-source-case"],
+      "negativeCases": ["declared-negative-contract"],
+      "accessibilityRelevance": "NOT_APPLICABLE",
+      "privacyRelevance": "RELEVANT",
+      "securityRelevance": "RELEVANT",
+      "dataMutationClass": "READ_ONLY",
+      "expectedDurationMs": 30000,
+      "hardBudgetMs": 180000,
+      "retryPolicy": "NONE",
+      "releaseRelevance": "authoritative registered contract evidence",
+      "gates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "supersessionPolicy": "ACTIVE",
+      "historicalAliases": [],
+      "currentStatus": "ACTIVE"
+    },
+    {
+      "id": "sl-test-ff084b7a4c778f208c4a",
+      "title": "revokes only an active waiver within the requested Chronicle",
+      "line": 86,
       "file": "src/drydock/waiver-store.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -48836,7 +48876,7 @@
     {
       "id": "sl-test-59476d09d8b39afe92cc",
       "title": "permits only a current reviewable warning",
-      "line": 8,
+      "line": 23,
       "file": "src/drydock/waivers.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -48876,7 +48916,7 @@
     {
       "id": "sl-test-62b9233fa38ca4986f29",
       "title": "rejects stale source and non-waivable errors",
-      "line": 9,
+      "line": 25,
       "file": "src/drydock/waivers.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
