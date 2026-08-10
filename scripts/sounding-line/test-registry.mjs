@@ -154,7 +154,7 @@ function browserFamily(project, file, title) {
 
 function contractFor(file, family) {
   if (isHelmFile(file) || family === "unit.helm" || family === "component.helm" || family === "browser.helm")
-    return isHelmPresenceFile(file) ? helmContracts : helmBaseContracts;
+    return isHelmPresenceFile(file) ? helmPresenceContracts : helmBaseContracts;
   if (file.includes("drydock") || family === "unit.drydock") return ["drydock-authoring-contracts"];
   if (file.includes("admiralty") || family.includes("admiralty")) return admiraltyContracts;
   if (file.includes("tideglass") || family === "unit.tideglass") return tideglassContractsFor(file);

@@ -73,11 +73,14 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
   }, [voyageId]);
   useEffect(() => {
     if (!authenticated) return;
-    void load();
+    const initial = window.setTimeout(() => void load(), 0);
     const timer = window.setInterval(() => {
       if (!document.hidden) void load();
     }, 5_000);
-    return () => window.clearInterval(timer);
+    return () => {
+      window.clearTimeout(initial);
+      window.clearInterval(timer);
+    };
   }, [authenticated, load]);
   if (!authenticated) return null;
   if (!projection)
