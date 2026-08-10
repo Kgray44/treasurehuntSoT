@@ -518,7 +518,9 @@ export async function listCaptainLibrary(captainId: string | null, captainAccoun
   return {
     groups: {
       needsAttention: cards.filter((card) => card.attention.length > 0),
-      activeVoyages: cards.filter((card) => ["ACTIVE", "PAUSED"].includes(card.status) && !card.attention.length),
+      // Attention is an additional operating signal, not a reason to remove a
+      // launched Voyage from the established Phase 1 Active Voyages view.
+      activeVoyages: cards.filter((card) => ["ACTIVE", "PAUSED"].includes(card.status)),
       // A pre-launch readiness notice may need Captain attention, but it does
       // not erase the established Phase 1 launch shortcut. The same safe card
       // can therefore appear in both operational groups.
