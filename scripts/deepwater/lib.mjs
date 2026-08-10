@@ -1985,7 +1985,7 @@ function phase3Reports(artifacts) {
     .join("\n");
   const newFindingIds = artifacts.inputs.phase3Config.newFindings.map((finding) => finding.findingId).join(", ");
   const closedFindings = artifacts.findingsDocument.findings
-    .filter((finding) => finding.status === "CLOSED" && finding.closedAt === artifacts.inputs.phase3Config.auditDate)
+    .filter((finding) => artifacts.inputs.phase3Config.findingTransitions?.[finding.findingId]?.status === "CLOSED")
     .map((finding) => finding.findingId);
   const phase3Config = artifacts.inputs.phase3Config;
   const validationEvidence = phase3Config.validationEvidence ?? {};
@@ -2047,7 +2047,7 @@ ${sliceRows}
 - Phase 2 realization history is retained unchanged in the trace and remediation artifacts.
 - Phase 3 adds utilization status for all ${artifacts.utilizationDocument.reviewedCapabilityCount} current accepted capabilities. The Phase 2 baseline remains ${artifacts.inputs.phase3Config.phase2AcceptedCapabilityCount}; accepted-main additions are ${artifacts.inputs.phase3Config.currentMainCapabilityAdditions.map((entry) => entry.capabilityId).join(", ")}.
 - New utilization finding: ${newFindingIds}.
-- Findings closed by accepted Phase 3 slices: ${closedFindings.length ? closedFindings.join(", ") : "none yet"}.
+- Findings closed by accepted Phase 3 evidence: ${closedFindings.length ? closedFindings.join(", ") : "none yet"}.
 - Product behavior changed by the coordination branch: none.
 - External provider and Homeport owner-decision truth remain explicit and unclaimed.
 `,

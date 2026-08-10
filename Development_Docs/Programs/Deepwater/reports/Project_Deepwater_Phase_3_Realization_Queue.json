@@ -31,14 +31,14 @@
       "status": "CLOSED"
     },
     {
-      "activeProjectStatus": "The owning fragment is touched by an unaccepted Helm, Shipwright, or Tideglass lane and is excluded from Deepwater slices.",
+      "activeProjectStatus": "Closure is present on current accepted main.",
       "capabilityId": "DW-CAP-CAPTAIN-VOYAGE-OPERATIONS",
-      "category": "DOCUMENTATION_RECONCILIATION",
+      "category": "ALREADY_CLOSED_BY_MAIN",
       "closureEvidence": [
         "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
         "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
       ],
-      "deepwaterSliceEligibility": "BLOCKED_BY_ACTIVE_OWNER",
+      "deepwaterSliceEligibility": "RETIRED",
       "findingId": "DW-FIND-CATALOG-SURFACE-FT-007",
       "hardDependencies": [
         "Current owner-approved route identity",
@@ -49,7 +49,7 @@
       "recommendedIntegrationVehicle": "Helm and Ledgerlight catalog reconciliation",
       "severity": "LOW",
       "sliceId": null,
-      "status": "ASSIGNED"
+      "status": "CLOSED"
     },
     {
       "activeProjectStatus": "The owning fragment is touched by an unaccepted Helm, Shipwright, or Tideglass lane and is excluded from Deepwater slices.",
@@ -405,5 +405,5 @@
     }
   ],
   "schemaVersion": "1.0.0",
-  "sourceSha": "9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1"
+  "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
 }

@@ -15,7 +15,7 @@ The queue preserves every Phase 2 finding and adds the source-bound semantic-edi
 | Finding                                              | Owner       | Category                     | Status   | Slice or boundary               |
 | ---------------------------------------------------- | ----------- | ---------------------------- | -------- | ------------------------------- |
 | DW-FIND-CATALOG-SURFACE-FT-005                       | One Voyage  | ALREADY_CLOSED_BY_MAIN       | CLOSED   | DW-P3-SLICE-CATALOG-PLAYER      |
-| DW-FIND-CATALOG-SURFACE-FT-007                       | Helm        | DOCUMENTATION_RECONCILIATION | ASSIGNED | owner/external                  |
+| DW-FIND-CATALOG-SURFACE-FT-007                       | Helm        | ALREADY_CLOSED_BY_MAIN       | CLOSED   | owner/external                  |
 | DW-FIND-CATALOG-SURFACE-FT-009                       | Drydock     | DOCUMENTATION_RECONCILIATION | ASSIGNED | owner/external                  |
 | DW-FIND-CATALOG-SURFACE-FT-010                       | One Voyage  | DOCUMENTATION_RECONCILIATION | ASSIGNED | owner/external                  |
 | DW-FIND-CATALOG-SURFACE-FT-011                       | Shipwright  | DOCUMENTATION_RECONCILIATION | ASSIGNED | owner/external                  |

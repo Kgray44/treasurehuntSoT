@@ -1,6 +1,6 @@
 {
   "activation": "ACTIVE_OWNER_COORDINATED_REALIZATION_AND_UTILIZATION_CLOSURE",
-  "auditedSourceSha": "9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1",
+  "auditedSourceSha": "3e235e85b974183f3b0888814a15697596f73730",
   "authorityGaps": [
     {
       "basis": "Current accepted source, the Global Product Governance Standard, Feature Catalog, Homeport records, and accepted Landfall references remain the bounded authority.",
@@ -42,12 +42,12 @@
       "PARTIALLY_UTILIZED": 3
     },
     "documentation": {
-      "closed": 10,
-      "remaining": 7,
+      "closed": 11,
+      "remaining": 6,
       "starting": 17
     },
     "findings": {
-      "closed": 10,
+      "closed": 11,
       "debtAccepted": 0,
       "external": 1,
       "ownerAcceptance": 1,

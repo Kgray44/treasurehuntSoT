@@ -2,9 +2,9 @@
   "schemaVersion": "1.0.0",
   "project": "Project Deepwater",
   "phase": "Phase 3 - Raise the Capability",
-  "auditDate": "2026-08-09",
+  "auditDate": "2026-08-10",
   "baseOriginMainSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
-  "auditedSourceSha": "9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1",
+  "auditedSourceSha": "3e235e85b974183f3b0888814a15697596f73730",
   "phase3ControlPlaneAcceptedMainSha": "cf08ed0954e0bfd8279229604d3bec5c1beea4ae",
   "finalReconciledMainSha": null,
   "finalPhase3Commit": null,
@@ -249,6 +249,16 @@
       "status": "CLOSED",
       "closedAt": "2026-08-09",
       "closureEvidence": "Accepted Player fragment names /join/[token], /player/invitation, and /player/library; PR #24 merged as 9937af957c1c92c9767b4255705a17f3e189904b after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-007": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-10",
+      "closureEvidence": "Accepted Helm fragment promotes FT-007 to MAINLINE and names /captain, /captain/library, /captain/sessions/[sessionId], /captain/voyages/[playthroughId]/player-preview, and /player/playthroughs/[playthroughId]; PR #32 merged validated head 7e2a4fc886c1e2bc62061c5c0dc69c1e08870f44 as 3e235e85b974183f3b0888814a15697596f73730 after 40/40 protected checks, hosted Sounding Line RELEASE_GO with 37/37 PASSED and CLEAN, and exact-main 7/7 PASSED and CLEAN."
     },
     "DW-FIND-CATALOG-SURFACE-FT-015": {
       "from": {

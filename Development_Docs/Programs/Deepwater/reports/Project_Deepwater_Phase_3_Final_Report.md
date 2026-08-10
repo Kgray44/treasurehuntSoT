@@ -11,7 +11,7 @@ last_reviewed: 2026-08-09
 ## PHASE 3: RAISE THE CAPABILITY
 
 - Base origin/main: `762258e31d7509aac8a7a46e7828ae0e92b84a84`
-- Final reconciled origin/main: `9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1`
+- Final reconciled origin/main: `3e235e85b974183f3b0888814a15697596f73730`
 - Coordination branch: `codex/project-deepwater-phase3-mainline-reconciliation`
 - Final Phase 3 commit: PENDING_PROTECTED_INTEGRATION
 - Mainline state: CANDIDATE_PENDING_PROTECTED_INTEGRATION
@@ -47,13 +47,13 @@ last_reviewed: 2026-08-09
 
 - Starting open: 20
 - Phase 3 discovered: 1
-- Closed by Phase 3: 10
+- Closed by Phase 3: 11
 - Debt accepted: 0
 - External: 1
 - Owner acceptance: 1
 - Remaining high: 1
 - Remaining critical: 0
-- Documentation reconciliation: 17 starting, 10 closed, 7 remaining.
+- Documentation reconciliation: 17 starting, 11 closed, 6 remaining.
 
 ## Remediation slices
 
@@ -73,7 +73,7 @@ last_reviewed: 2026-08-09
 - Product changes: none on the coordination branch. The three accepted slices correct Feature Catalog route identity only.
 - External dependencies: Watchglass real-provider availability and evidence remain externally pending; simulator proof is not provider proof.
 - Owner acceptance: Homeport remains `PENDING_OWNER_DECISION`; automation does not emit `OWNER_ACCEPTED`.
-- Semantic digest: `46bdede911e6a42d3e139d8faa155bd599b4f049c0276b33025ec2aaee1c593c`
+- Semantic digest: `2515dadada04c62facee098f84f75279bd47c487701eca7304588014db233ab1`
 
 ## Sounding Line
 

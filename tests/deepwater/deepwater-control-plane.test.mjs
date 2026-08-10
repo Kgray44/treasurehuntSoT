@@ -417,17 +417,25 @@ test("Phase 3 reviews all 55 current accepted capabilities and accepts the gener
   assert.deepEqual(phase3Errors(phase3Model()), []);
 });
 
-test("Phase 3 reconciliation closes only accepted documentation slices and preserves governed boundaries", () => {
+test("Phase 3 reconciliation closes only accepted documentation evidence and preserves governed boundaries", () => {
   assert.equal(baseline.metrics.documentation.starting, 17);
-  assert.equal(baseline.metrics.documentation.closed, 10);
-  assert.equal(baseline.metrics.documentation.remaining, 7);
-  assert.equal(baseline.metrics.findings.closed, 10);
+  assert.equal(baseline.metrics.documentation.closed, 11);
+  assert.equal(baseline.metrics.documentation.remaining, 6);
+  assert.equal(baseline.metrics.findings.closed, 11);
   assert.equal(baseline.metrics.findings.external, 1);
   assert.equal(baseline.metrics.findings.ownerAcceptance, 1);
   assert.equal(baseline.metrics.findings.remainingHigh, 1);
   assert.equal(baseline.metrics.findings.remainingCritical, 0);
   assert.ok(baseline.slicesDocument.slices.every((slice) => slice.status === "MAINLINE_ACCEPTED"));
   assert.ok(baseline.slicesDocument.slices.every((slice) => /^[0-9a-f]{40}$/u.test(slice.acceptedMainSha)));
+  const helmFinding = baseline.findingsDocument.findings.find(
+    (finding) => finding.findingId === "DW-FIND-CATALOG-SURFACE-FT-007",
+  );
+  assert.equal(helmFinding?.status, "CLOSED");
+  assert.equal(helmFinding?.observedSourceSha, "3e235e85b974183f3b0888814a15697596f73730");
+  assert.match(helmFinding?.closureEvidence ?? "", /PR #32.*3e235e85/u);
+  assert.match(baseline.phase3Reports.delta, /DW-FIND-CATALOG-SURFACE-FT-005/u);
+  assert.match(baseline.phase3Reports.delta, /DW-FIND-CATALOG-SURFACE-FT-007/u);
   for (const findingId of [
     "DW-FIND-EDITION-COMPARISON-SEMANTIC-UNDERUTILIZATION",
     "DW-FIND-HOMEPORT-OWNER-DECISION-PENDING",
