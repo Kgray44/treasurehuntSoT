@@ -572,10 +572,10 @@ test("authenticated membership heartbeats are independently visible in the Capta
         return projection.body.crew.map((member) => `${member.presence.state}:${member.synchronization.state}`).sort();
       })
       .toEqual([
-        "CONNECTED:SYNCHRONIZED",
-        "CONNECTED:SYNCHRONIZED",
-        "CONNECTED:SYNCHRONIZED",
-        "CONNECTED:SYNCHRONIZED",
+        "CONNECTED_SYNCED:SYNCHRONIZED",
+        "CONNECTED_SYNCED:SYNCHRONIZED",
+        "CONNECTED_SYNCED:SYNCHRONIZED",
+        "CONNECTED_SYNCED:SYNCHRONIZED",
       ]);
 
     const projection = await browserJson<Record<string, unknown>>(
