@@ -129,6 +129,62 @@ describe("CaptainLibrary motion and authority", () => {
     expect(await screen.findByText(/now available to ready Crew/)).toBeInTheDocument();
   });
 
+  it("supersedes an in-flight poll so a confirmed launch reaches the active Voyage group", async () => {
+    const poll = deferred<Response>();
+    let pollTick: (() => void) | undefined;
+    const nativeSetInterval = window.setInterval.bind(window);
+    vi.spyOn(window, "setInterval").mockImplementation(((
+      handler: TimerHandler,
+      timeout?: number,
+      ...args: unknown[]
+    ) => {
+      if (timeout === 5000) {
+        pollTick = handler as () => void;
+        return 1;
+      }
+      return nativeSetInterval(handler, timeout, ...args);
+    }) as typeof window.setInterval);
+    const activeVoyage = {
+      ...readyVoyage,
+      status: "ACTIVE",
+      players: [{ ...readyVoyage.players[0]!, status: "ACTIVE_MEMBER" }],
+    };
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, library()))
+      .mockReturnValueOnce(poll.promise)
+      .mockResolvedValueOnce(response(200, { accepted: true }))
+      .mockResolvedValueOnce(
+        response(
+          200,
+          library({
+            groups: {
+              needsAttention: [],
+              activeVoyages: [activeVoyage],
+              readyToLaunch: [],
+              completedPlaythroughs: [],
+            },
+          }),
+        ),
+      );
+    vi.stubGlobal("fetch", fetchMock);
+    render(<CaptainLibrary />);
+    await screen.findByRole("heading", { name: "Captain's Console" });
+
+    pollTick?.();
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+    fireEvent.click(screen.getByRole("button", { name: "Begin Voyage" }));
+    fireEvent.click(
+      within(screen.getByRole("dialog", { name: /Begin .*Lanternwake/u })).getByRole("button", {
+        name: "Begin Voyage",
+      }),
+    );
+
+    const activeGroup = (await screen.findByRole("heading", { name: "Active Voyages" })).closest("section")!;
+    await waitFor(() => expect(within(activeGroup).getByRole("heading", { name: "Lanternwake" })).toBeInTheDocument());
+    expect(fetchMock).toHaveBeenCalledTimes(4);
+  });
+
   it("settles a replaced row before revealing server-created replacement credentials", async () => {
     const replacement = deferred<Response>();
     vi.stubGlobal(

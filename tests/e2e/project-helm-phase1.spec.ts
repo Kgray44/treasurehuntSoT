@@ -178,8 +178,13 @@ async function beginVoyage(page: Page, voyageName: string) {
   const card = voyageCard(page, voyageName, "Ready to Launch");
   await card.getByRole("button", { name: "Begin Voyage" }).click();
   const dialog = page.getByRole("dialog");
+  const responsePromise = page.waitForResponse(
+    (response) =>
+      /\/api\/captain\/playthroughs\/[^/]+\/launch$/u.test(response.url()) && response.request().method() === "POST",
+  );
   await dialog.getByRole("button", { name: "Begin Voyage" }).click();
-  await expect(page.getByText(new RegExp(`${escapeRegex(voyageName)}.*now available`, "u"))).toBeVisible();
+  expect((await responsePromise).status()).toBe(200);
+  await expect(voyageCard(page, voyageName, "Active Voyages")).toBeVisible();
 }
 
 async function browserJson<T>(
@@ -229,10 +234,6 @@ function forbiddenProjectionKey(value: unknown): boolean {
       /^(?:captain(?:instruction|answer|secret|control|annotation)s?|acceptedanswers?|unreleasedhints?|future(?:branch|chroniclecontent)|rawverification(?:evidence|media)|privateassets?|revealstate|audit(?:event|data)s?|command(?:availability|control)s?|provider(?:secret|token|state)s?|security(?:event|data)s?|accountemail|sessiontokens?|ipaddress|devicefingerprint|creatordraft(?:information)?|private(?:memory|reflection|note)s?|unsharedanswertext)$/iu;
     return forbidden.test(normalizedKey) || forbiddenProjectionKey(child);
   });
-}
-
-function escapeRegex(value: string) {
-  return value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
 }
 
 async function currentMembership(playthroughId: string) {

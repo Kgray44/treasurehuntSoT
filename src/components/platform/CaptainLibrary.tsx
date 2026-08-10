@@ -168,8 +168,12 @@ export function CaptainLibrary() {
   const [launchState, setLaunchState] =
     useState<Readonly<{ id: string; phase: "confirming" | "launching" | "launched" } | null>>(null);
 
-  const load = useCallback(async () => {
-    if (activeLoad.current) return;
+  const load = useCallback(async (supersedeActive = false) => {
+    if (activeLoad.current) {
+      if (!supersedeActive) return;
+      activeLoad.current.abort("superseded-by-authoritative-action");
+      activeLoad.current = null;
+    }
     const controller = new AbortController();
     activeLoad.current = controller;
     try {
@@ -325,7 +329,7 @@ export function CaptainLibrary() {
       );
       setWizardDirection(1);
       setStep(6);
-      await load();
+      await load(true);
     } catch {
       setError(
         "The Voyage could not be created. Check the Voyage list before trying again to avoid duplicate invitations.",
@@ -374,7 +378,7 @@ export function CaptainLibrary() {
             ? "You now participate as an ordinary Player and retain separate Captain authority."
             : "Player participation ended. Your Captain authority remains active.",
         );
-      await load();
+      await load(true);
     } catch {
       setError("Player participation could not be changed. Refresh the Voyage and try again.");
     } finally {
@@ -415,7 +419,7 @@ export function CaptainLibrary() {
         setLaunchState({ id: voyage.id, phase: "launched" });
         setNotice(`“${voyage.voyageName}” is now available to ready Crew.`);
       }
-      await load();
+      await load(true);
     } catch {
       setError("The Voyage could not begin. Check its current status before trying again.");
       setLaunchState(null);
@@ -480,7 +484,7 @@ export function CaptainLibrary() {
               : `The invitation for ${invitation.recipientName} was revoked.`,
         );
       }
-      await load();
+      await load(true);
     } catch {
       setError("The invitation could not be changed. Check its current status, then try again.");
       setInvitationTransitions((current) => {
