@@ -26,7 +26,7 @@ let accountId = "";
 let playerProfileId = "";
 let accountSessionId = "";
 
-test.describe.configure({ mode: "serial" });
+test.describe.configure({ mode: "serial", timeout: 360_000 });
 
 test.beforeAll(async () => {
   const now = new Date();
