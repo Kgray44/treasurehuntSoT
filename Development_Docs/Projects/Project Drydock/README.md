@@ -35,6 +35,8 @@ Phase 1 status: **MAINLINE ACCEPTED** through protected PR #22 at mainline merge
 - [Active Phase Registration](Project_Drydock_Phase_2_Active_Phase_Registration.json)
 - [Rule Catalog](Project_Drydock_Phase_2_Rule_Catalog.json) — active implementation subset; not a completion claim.
 - [Design Record](Project_Drydock_Phase_2_Design_Record.md)
+- [Test Plan](Project_Drydock_Phase_2_Test_Plan.md)
+- [Validation Record](Project_Drydock_Phase_2_Validation_Record.md)
 - [Mainline Safety Contract](Project_Drydock_Phase_2_Mainline_Safety_Contract.md)
 - [Migration Reservation](Project_Drydock_Phase_2_Migration_Reservation.json)
 - [Synthetic Corpus Ledger](Project_Drydock_Phase_2_Synthetic_Corpus_Ledger.json) — active coverage ledger; not a completion claim.
