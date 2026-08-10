@@ -397,6 +397,134 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   background: var(--brass-100);
   font-weight: 850;
 }
+
+.editor-primary-actions kbd {
+  margin-left: 0.35rem;
+  border: 1px solid rgb(201 169 95 / 35%);
+  border-radius: 4px;
+  padding: 0.08rem 0.28rem;
+  color: inherit;
+  font: inherit;
+  font-size: 0.68rem;
+}
+
+.studio-selection-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1500px;
+  margin: 0.75rem auto;
+  border: 1px solid rgb(83 170 167 / 42%);
+  border-radius: 12px;
+  padding: 0.7rem 0.85rem;
+  background: rgb(12 45 47 / 88%);
+}
+
+.studio-selection-toolbar p {
+  margin: 0 0 0.15rem;
+}
+
+.studio-selection-toolbar > div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.studio-command-palette-backdrop {
+  position: fixed;
+  z-index: 70;
+  inset: 0;
+  display: grid;
+  place-items: start center;
+  overflow: auto;
+  padding: min(12vh, 7rem) 1rem 2rem;
+  background: rgb(1 10 12 / 72%);
+}
+
+.studio-command-palette {
+  width: min(100%, 680px);
+  border: 1px solid rgb(201 169 95 / 52%);
+  border-radius: 16px;
+  padding: 1rem;
+  color: var(--text-primary);
+  background: #092326;
+  box-shadow: 0 24px 70px rgb(0 0 0 / 48%);
+}
+
+.studio-command-palette > header,
+.studio-command-palette > header > div,
+.studio-command-list button,
+.studio-command-list button > span {
+  display: flex;
+}
+
+.studio-command-palette > header {
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.studio-command-palette h2,
+.studio-command-palette p {
+  margin-top: 0;
+}
+
+.studio-command-palette > input {
+  width: 100%;
+  margin: 1rem 0 0.6rem;
+  border: 1px solid rgb(201 169 95 / 38%);
+  border-radius: 9px;
+  padding: 0.8rem;
+  color: inherit;
+  background: rgb(0 0 0 / 20%);
+}
+
+.studio-command-list {
+  display: grid;
+  max-height: min(52vh, 460px);
+  overflow: auto;
+  gap: 0.3rem;
+}
+
+.studio-command-list button {
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 0.75rem;
+  color: inherit;
+  background: transparent;
+  text-align: left;
+}
+
+.studio-command-list button:hover:not(:disabled),
+.studio-command-list button:focus-visible {
+  border-color: rgb(201 169 95 / 48%);
+  background: rgb(201 169 95 / 10%);
+}
+
+.studio-command-list button > span {
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.studio-command-list small,
+.studio-command-empty {
+  color: #b3c7c1;
+}
+
+.studio-command-list kbd {
+  border: 1px solid rgb(201 169 95 / 30%);
+  border-radius: 4px;
+  padding: 0.16rem 0.35rem;
+  white-space: nowrap;
+  color: #f5ead0;
+  font: inherit;
+  font-size: 0.7rem;
+}
 .save-state {
   display: inline-grid;
   min-width: 12.5rem;
@@ -724,7 +852,23 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
 }
 .story-canvas > header {
   display: flex;
+  align-items: start;
   justify-content: space-between;
+  gap: 0.75rem;
+}
+.studio-canvas-actions,
+.studio-canvas-view-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: end;
+  gap: 0.35rem;
+}
+.studio-canvas-view-controls output {
+  min-width: 3.5rem;
+  color: var(--brass-100);
+  font-size: 0.76rem;
+  text-align: center;
 }
 .chapter-timeline {
   margin: 1rem 0 1.6rem;
@@ -1511,6 +1655,20 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   .editor-primary-actions {
     flex-wrap: wrap;
   }
+  .studio-selection-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .studio-selection-toolbar > div:last-child {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .studio-command-palette-backdrop {
+    padding: 1rem 0.6rem;
+  }
+  .studio-command-palette > header {
+    align-items: start;
+  }
   .editor-section-nav {
     top: 0;
     width: 100%;
@@ -1523,6 +1681,14 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
     grid-template-columns: 34px 34px minmax(0, 1fr);
     max-width: 100%;
     min-width: 0;
+  }
+  .story-canvas > header,
+  .studio-canvas-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .studio-canvas-view-controls {
+    justify-content: start;
   }
   .block-move {
     grid-column: 3;

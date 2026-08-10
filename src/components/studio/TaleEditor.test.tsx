@@ -313,4 +313,37 @@ describe("Voyagewright Studio editor motion and authority", () => {
       expect(within(progress).getByText("notes.exe").closest("li")).toHaveAttribute("data-upload-state", "failed");
     });
   });
+
+  it("opens the command palette from the keyboard and exposes only current canonical actions", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, editorData())));
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    const commands = screen.getByRole("button", { name: "Open Studio command palette" });
+    commands.focus();
+    fireEvent.click(commands);
+    const palette = await screen.findByRole("dialog", { name: "Find an action" });
+    await waitFor(() => expect(within(palette).getByRole("searchbox", { name: "Search Studio commands" })).toHaveFocus());
+    expect(within(palette).getByRole("button", { name: /Validate Chronicle/i })).toBeInTheDocument();
+    expect(within(palette).getByRole("button", { name: /Insert Narrative/i })).toBeInTheDocument();
+    expect(within(palette).queryByRole("button", { name: /new Story Block/i })).not.toBeInTheDocument();
+
+    fireEvent.keyDown(palette, { key: "Escape" });
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Find an action" })).not.toBeInTheDocument());
+    await waitFor(() => expect(commands).toHaveFocus());
+
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+    expect(await screen.findByRole("dialog", { name: "Find an action" })).toBeInTheDocument();
+  });
+
+  it("keeps canvas view controls presentation-only and keyboard reachable", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, editorData())));
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    expect(screen.getByRole("status", { name: "Canvas zoom 100 percent" })).toHaveTextContent("100%");
+    fireEvent.click(screen.getByRole("button", { name: "Zoom in" }));
+    expect(screen.getByRole("status", { name: "Canvas zoom 110 percent" })).toHaveTextContent("110%");
+    expect(screen.getByText("Opening Scene")).toBeInTheDocument();
+  });
 });
