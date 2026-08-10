@@ -10,15 +10,23 @@ last_reviewed: 2026-08-10
 
 ## Disposition
 
-`PENDING_EXACT_SOURCE_SOUNDING_LINE_COMPLETION`.
+`LOCALLY_COMPLETE_EXTERNAL_SOUNDING_LINE_AND_OWNER_PENDING`.
 
 The read-only Chartroom implementation is reconciled with accepted
 `origin/main` at `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`. Reconciled static,
 focused, documentation, Feature Catalog, Deepwater, production-build, and
-isolated production-browser evidence is complete. Exact-source Sounding Line
-authority and retained walkthrough runtime preparation are still being
-completed. This receipt must not be interpreted as owner acceptance or mainline
-availability.
+isolated production-browser evidence is complete. The retained owner walkthrough
+runtime is prepared from source `93b979de1279439eb4c67b087eeab4608f8d0548` with
+synthetic reserved data only and its decision remains `PENDING_OWNER_DECISION`.
+
+The exact-source Sounding Line mainline decision is not yet acceptable: its
+finalizer recorded invalid, unexecuted `browser.access-sentinel` and
+`browser.helm` receipts because another validation run owns the shared runtime
+lock. The direct Feature Catalog recheck passed 9/9 tests; it does not replace
+the authoritative finalizer. After that independently owned lock is released,
+rerun the governed exact-source authority, then obtain the separate owner
+walkthrough decision. This receipt must not be interpreted as owner acceptance
+or mainline availability.
 
 ## Acceptance boundary
 

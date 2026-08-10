@@ -10,7 +10,7 @@ last_reviewed: 2026-08-10
 
 ## Current decision
 
-`IN_PROGRESS_PENDING_EXACT_SOURCE_SOUNDING_LINE_AUTHORITY`. The owned branch
+`LOCALLY_COMPLETE_EXTERNAL_SOUNDING_LINE_AND_OWNER_PENDING`. The owned branch
 has been reconciled through accepted `origin/main`
 `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3` by merge
 `4e7a3299bac3f60f14bb52858cabb4c8763fe983`. The previous branch evidence is
@@ -40,10 +40,21 @@ decision remains the release authority.
 
 ## Pending governed gates
 
-The final exact-source Sounding Line subsystem and mainline decisions, plus the
-repeatable owner-walkthrough runtime preparation, remain pending. Canonical-main
-integration remains prohibited until those gates pass and the owner explicitly
-accepts the walkthrough.
+The owner walkthrough runtime was prepared on `2026-08-10` from
+`93b979de1279439eb4c67b087eeab4608f8d0548`, using only the task-owned
+synthetic database. Its build ID is `sxxixbZUApY_HbaKTtzNS` and its owner
+decision is `PENDING_OWNER_DECISION`.
+
+The full Sounding Line mainline run reached its finalizer but did not receive a
+release decision. `browser.access-sentinel` and `browser.helm` were refused
+before execution because another validation run owns the shared runtime lock;
+the lock was neither removed nor taken over. The finalizer also marked the
+Feature Catalog receipt invalid, while the direct `features:test` recheck passed
+9/9 tests. None of that evidence substitutes for the required exact-source
+Sounding Line rerun after the independently owned lock is released.
+
+Canonical-main integration remains prohibited until that authority passes and
+the owner explicitly accepts the walkthrough.
 
 ## Known truthful limits
 
