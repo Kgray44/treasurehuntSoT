@@ -488,7 +488,7 @@ export function TaleEditor({
       ...((data?.registry ?? []).slice(0, 8).map((item) => ({
         id: `studio.insert.${item.type}`,
         label: `Insert ${item.displayName}`,
-        description: "Insert an existing canonical Story Block type into the first chapter.",
+        description: "Insert an existing canonical Passage type into the first chapter.",
         disabled: !draft?.chapters.length,
         run: () => addBlock(item.type, 0),
       })) as StudioCommand[]),
