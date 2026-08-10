@@ -23,7 +23,7 @@ describe("Feature Catalog", () => {
   it("loads the audited catalog with stable ordering", () => {
     const { entries } = loadFeatureCatalog();
     expect(entries).toHaveLength(44);
-    expect(entries.find((item) => item.id === "FT-B009")?.program).toBe("Project Tideglass Phase 1");
+    expect(entries.find((item) => item.id === "FT-B009")?.program).toBe("Project Tideglass Phases 1-2");
     expect(entries.find((item) => item.id === "FT-B010")?.program).toBe("Project Admiralty");
     expect(entries.find((item) => item.id === "FT-B011")?.program).toBe("Project Wakebook Phase 1");
     expect(sortedEntries(entries).map((item) => item.id)).toEqual(
@@ -31,7 +31,6 @@ describe("Feature Catalog", () => {
         a.localeCompare(b, undefined, { numeric: true }),
       ),
     );
-    expect(entries.find((item) => item.id === "FT-B009")?.program).toBe("Project Tideglass Phases 1-2");
   });
 
   it("rejects duplicate and empty subfeatures", () => {
