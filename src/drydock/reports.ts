@@ -42,7 +42,8 @@ export type CreateDrydockValidationReportInput = {
 };
 
 const sha256 = (value: unknown) => createHash("sha256").update(canonicalJson(value)).digest("hex");
-const count = (issues: readonly DrydockIssue[], predicate: (issue: DrydockIssue) => boolean) => issues.filter(predicate).length;
+const count = (issues: readonly DrydockIssue[], predicate: (issue: DrydockIssue) => boolean) =>
+  issues.filter(predicate).length;
 
 /**
  * Creates an immutable, source-bound static-validation receipt.  The report deliberately
@@ -54,7 +55,9 @@ export function createDrydockValidationReport(input: CreateDrydockValidationRepo
   const issues = [...input.issues].sort((left, right) => left.id.localeCompare(right.id, "en"));
   const completedAt = input.completedAt ?? input.generatedAt ?? new Date().toISOString();
   const startedAt = input.startedAt ?? completedAt;
-  const limitsEncountered = [...new Set(input.analysisLimits ?? [])].sort((left, right) => left.localeCompare(right, "en"));
+  const limitsEncountered = [...new Set(input.analysisLimits ?? [])].sort((left, right) =>
+    left.localeCompare(right, "en"),
+  );
   const completeness = input.proofCompleteness ?? (limitsEncountered.length ? "INCOMPLETE_PROOF" : "COMPLETE");
   const summary = {
     total: issues.length,
@@ -69,7 +72,11 @@ export function createDrydockValidationReport(input: CreateDrydockValidationRepo
     ...(input.sourceRevision !== undefined ? { sourceRevision: input.sourceRevision } : {}),
     schemaRegistryVersion: 2 as const,
     ruleCatalogVersion: 1 as const,
-    status: summary.errors ? "INVALID" as const : completeness === "INCOMPLETE_PROOF" ? "INCOMPLETE_PROOF" as const : "VALID" as const,
+    status: summary.errors
+      ? ("INVALID" as const)
+      : completeness === "INCOMPLETE_PROOF"
+        ? ("INCOMPLETE_PROOF" as const)
+        : ("VALID" as const),
     startedAt,
     completedAt,
     generatedAt: completedAt,
@@ -80,8 +87,15 @@ export function createDrydockValidationReport(input: CreateDrydockValidationRepo
       migrationRequired: count(issues, (issue) => issue.compatibilityStatus === "MIGRATION_REQUIRED"),
       unsupported: count(issues, (issue) => issue.compatibilityStatus === "UNSUPPORTED"),
     },
-    providerStaticSummary: { unproven: count(issues, (issue) => issue.category === "PROVIDER" || issue.category === "PROVIDER_CONTRACT") },
-    accessibilityStaticSummary: { issueCount: count(issues, (issue) => issue.category === "ACCESSIBILITY" || issue.category === "ACCESSIBILITY_CONTRACT") },
+    providerStaticSummary: {
+      unproven: count(issues, (issue) => issue.category === "PROVIDER" || issue.category === "PROVIDER_CONTRACT"),
+    },
+    accessibilityStaticSummary: {
+      issueCount: count(
+        issues,
+        (issue) => issue.category === "ACCESSIBILITY" || issue.category === "ACCESSIBILITY_CONTRACT",
+      ),
+    },
     privacyStaticSummary: { issueCount: count(issues, (issue) => issue.category === "PRIVACY") },
     performanceStaticSummary: { issueCount: count(issues, (issue) => issue.category === "PERFORMANCE") },
     issues,
@@ -92,7 +106,8 @@ export function createDrydockValidationReport(input: CreateDrydockValidationRepo
   return { ...signed, digest: sha256(signed) };
 }
 
-const semanticKey = (issue: DrydockIssue) => canonicalJson({ code: issue.code, category: issue.category, location: issue.location });
+const semanticKey = (issue: DrydockIssue) =>
+  canonicalJson({ code: issue.code, category: issue.category, location: issue.location });
 const familyKey = (issue: DrydockIssue) => canonicalJson({ code: issue.code, category: issue.category });
 
 export function diffDrydockReports(previous: DrydockValidationReport, next: DrydockValidationReport) {
@@ -105,11 +120,15 @@ export function diffDrydockReports(previous: DrydockValidationReport, next: Dryd
   const added = next.issues.filter((issue) => !oldIds.has(issue.id));
   const missingByFamily = new Map<string, DrydockIssue[]>();
   const addedByFamily = new Map<string, DrydockIssue[]>();
-  for (const issue of missing) missingByFamily.set(familyKey(issue), [...(missingByFamily.get(familyKey(issue)) ?? []), issue]);
-  for (const issue of added) addedByFamily.set(familyKey(issue), [...(addedByFamily.get(familyKey(issue)) ?? []), issue]);
+  for (const issue of missing)
+    missingByFamily.set(familyKey(issue), [...(missingByFamily.get(familyKey(issue)) ?? []), issue]);
+  for (const issue of added)
+    addedByFamily.set(familyKey(issue), [...(addedByFamily.get(familyKey(issue)) ?? []), issue]);
   const locationChanged = [...missingByFamily.entries()].flatMap(([key, before]) => {
     const after = addedByFamily.get(key) ?? [];
-    return before.length === 1 && after.length === 1 && canonicalJson(before[0].location) !== canonicalJson(after[0].location)
+    return before.length === 1 &&
+      after.length === 1 &&
+      canonicalJson(before[0].location) !== canonicalJson(after[0].location)
       ? [{ before: before[0], after: after[0] }]
       : [];
   });
@@ -159,8 +178,19 @@ export function supportReportProjection(report: DrydockValidationReport) {
     proof: report.proof,
     summary: report.summary,
     compatibilitySummary: report.compatibilitySummary,
-    issueCounts: Object.fromEntries(report.issues.reduce((counts, issue) => counts.set(issue.code, (counts.get(issue.code) ?? 0) + 1), new Map<string, number>())),
-    issues: report.issues.map((issue) => ({ id: issue.id, code: issue.code, category: issue.category, severity: issue.severity, ruleVersion: issue.ruleVersion })),
+    issueCounts: Object.fromEntries(
+      report.issues.reduce(
+        (counts, issue) => counts.set(issue.code, (counts.get(issue.code) ?? 0) + 1),
+        new Map<string, number>(),
+      ),
+    ),
+    issues: report.issues.map((issue) => ({
+      id: issue.id,
+      code: issue.code,
+      category: issue.category,
+      severity: issue.severity,
+      ruleVersion: issue.ruleVersion,
+    })),
   };
 }
 

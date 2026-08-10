@@ -72,22 +72,18 @@ export function createDrydockVariableExplorer(input: {
           ...(declaration.defaultValue !== undefined ? { defaultValue: declaration.defaultValue } : {}),
           privacy: declaration.privacy,
           allowedOperations: declaration.allowedOperations,
-          readers: usages
-            .filter(readable)
-            .map((usage) => ({
-              blockId: usage.blockId,
-              fieldPath: usage.fieldPath,
-              kind: usage.kind,
-              reachable: reachability(usage),
-            })),
-          writers: usages
-            .filter(writable)
-            .map((usage) => ({
-              blockId: usage.blockId,
-              fieldPath: usage.fieldPath,
-              operation: usage.operation,
-              reachable: reachability(usage),
-            })),
+          readers: usages.filter(readable).map((usage) => ({
+            blockId: usage.blockId,
+            fieldPath: usage.fieldPath,
+            kind: usage.kind,
+            reachable: reachability(usage),
+          })),
+          writers: usages.filter(writable).map((usage) => ({
+            blockId: usage.blockId,
+            fieldPath: usage.fieldPath,
+            operation: usage.operation,
+            reachable: reachability(usage),
+          })),
           unreachableReferences: usages
             .filter((usage) => usage.blockId && !input.graphAnalysis.reachableBlockIds.has(usage.blockId))
             .map((usage) => ({ blockId: usage.blockId!, fieldPath: usage.fieldPath })),
