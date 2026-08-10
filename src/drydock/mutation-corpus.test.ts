@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import fixture from "../../tests/fixtures/drydock/phase2-synthetic-chronicle.json";
+import authoringFixture from "../../tests/fixtures/drydock/current-authoring-v1.json";
 import type { DrydockAuthoredBlockInput } from "@/drydock/contracts/model";
 import { validateDrydockDraftContracts, type DrydockDraftContractInput } from "@/drydock/incremental";
 
@@ -10,6 +11,16 @@ type MutationCase = {
 };
 
 const baseDraft = (): DrydockDraftContractInput => structuredClone(fixture) as DrydockDraftContractInput;
+const imageTemplate = authoringFixture.blocks.find((block) => block.blockType === "image") as DrydockAuthoredBlockInput;
+
+function appendSyntheticImage(draft: DrydockDraftContractInput) {
+  const image = structuredClone(imageTemplate);
+  image.id = "synthetic-image";
+  image.connections = [{ targetBlockId: "synthetic-finish", connectionType: "DEFAULT", orderIndex: 0 }];
+  image.nextBlockId = "synthetic-finish";
+  (draft.chapters[0].blocks as DrydockAuthoredBlockInput[]).push(image);
+  return image;
+}
 
 /**
  * Synthetic-only mutations prove that the whole-Chronicle alarms activate.
@@ -82,6 +93,52 @@ const cases: readonly MutationCase[] = [
         provider: { id: "visionLocation", version: 1, options: { providerInstanceId: "synthetic-provider" } },
         fallbackMode: "captainManual",
       };
+    },
+  },
+  {
+    id: "asset-snapshot-unavailable",
+    expectedIssueCodes: ["DRYDOCK_ASSET_PROOF_INCOMPLETE"],
+    mutate: (draft) => {
+      delete draft.assets;
+    },
+  },
+  {
+    id: "missing-image-asset",
+    expectedIssueCodes: ["DRYDOCK_ASSET_REFERENCE_MISSING"],
+    mutate: (draft) => {
+      appendSyntheticImage(draft);
+      draft.assets = [];
+    },
+  },
+  {
+    id: "wrong-private-unready-image-asset",
+    expectedIssueCodes: ["DRYDOCK_ASSET_MEDIA_TYPE", "DRYDOCK_ASSET_PRIVACY", "DRYDOCK_ASSET_NOT_READY"],
+    mutate: (draft) => {
+      const image = appendSyntheticImage(draft);
+      draft.assets = [
+        {
+          id: String(image.configuration.assetId),
+          mediaType: "AUDIO",
+          roles: ["CAPTAIN_ONLY_REFERENCE"],
+          variants: [{ processingState: "PROCESSING" }],
+        },
+      ];
+    },
+  },
+  {
+    id: "missing-image-text-alternative",
+    expectedIssueCodes: ["DRYDOCK_CONFIGURATION_SCHEMA_INVALID"],
+    mutate: (draft) => {
+      const image = appendSyntheticImage(draft);
+      image.configuration.altText = "";
+      draft.assets = [
+        {
+          id: String(image.configuration.assetId),
+          mediaType: "IMAGE",
+          roles: [],
+          variants: [{ processingState: "READY" }],
+        },
+      ];
     },
   },
 ];
