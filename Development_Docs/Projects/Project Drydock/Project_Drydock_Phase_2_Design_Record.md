@@ -29,4 +29,4 @@ The existing Creator-authorized Studio validation route runs `FULL` Drydock anal
 
 ## Deliberate limits
 
-This is an active implementation record, not a completion receipt. Remaining static rule families, repair UI, graph-canvas integration, the full synthetic corpus, broader Sounding Line registration, final reconciliation, and protected acceptance remain unfinished. Phase 3 simulation, scenario execution, virtual time, and runtime mutation remain **NOT STARTED**.
+This is an active implementation record, not a completion receipt. The executable rule catalog now covers every current static issue code, including typed-expression diagnostics, with versioned metadata and generated JSON. Repair UI, graph-canvas integration, the full synthetic corpus, broader Sounding Line registration, final reconciliation, and protected acceptance remain unfinished. Phase 3 simulation, scenario execution, virtual time, and runtime mutation remain **NOT STARTED**.
