@@ -76,12 +76,12 @@
     {
       "scenario": "repeated completion outcome risk",
       "expectedIssueCodes": ["DRYDOCK_COMPLETION_OUTCOME_DUPLICATE_RISK"],
-      "state": "PENDING"
+      "state": "EXECUTED"
     },
     {
       "scenario": "captions and transcript",
       "expectedIssueCodes": ["DRYDOCK_ACCESS_VIDEO_CAPTIONS", "DRYDOCK_ACCESS_AUDIO_TRANSCRIPT"],
-      "state": "PENDING"
+      "state": "EXECUTED"
     },
     {
       "scenario": "provider fallback",

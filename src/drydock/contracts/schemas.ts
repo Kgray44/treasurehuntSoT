@@ -223,7 +223,9 @@ export const drydockConfigurationSchemas = {
   cinematic: withExtensions({
     videoAssetId: id,
     posterAssetId: id,
-    captionsAssetId: id,
+    // An intentionally blank caption reference remains invalid in full analysis,
+    // but reaches the stable accessibility rule instead of a generic schema error.
+    captionsAssetId: z.union([z.literal(""), id]),
     autoplay: z.boolean(),
     skippable: z.boolean(),
     minimumWatchDuration: finite(0, 86400),
@@ -232,7 +234,9 @@ export const drydockConfigurationSchemas = {
   audio: withExtensions({
     audioAssetId: id,
     title: optionalText(240),
-    transcript: requiredText(20000),
+    // Empty transcript content is a semantic accessibility violation; malformed
+    // non-string input remains a contract failure.
+    transcript: z.string().max(20000),
     playbackMode: z.enum(["controls", "autoplay", "background"]),
     loop: z.boolean(),
     volume: finite(0, 1),

@@ -31,6 +31,13 @@ const artifactRevealTemplate = authoringFixture.blocks.find(
 const collectionUpdateTemplate = authoringFixture.blocks.find(
   (block) => block.blockType === "collectionUpdate",
 ) as DrydockAuthoredBlockInput;
+const cinematicTemplate = authoringFixture.blocks.find(
+  (block) => block.blockType === "cinematic",
+) as DrydockAuthoredBlockInput;
+const audioTemplate = authoringFixture.blocks.find((block) => block.blockType === "audio") as DrydockAuthoredBlockInput;
+const chapterCompleteTemplate = authoringFixture.blocks.find(
+  (block) => block.blockType === "chapterComplete",
+) as DrydockAuthoredBlockInput;
 const legacyVariableId = (name: string) =>
   `var-${createHash("sha256")
     .update(`legacy-variable:${name.normalize("NFKC")}`)
@@ -310,6 +317,52 @@ const cases: readonly MutationCase[] = [
       blocks[0].connections = [{ targetBlockId: grant.id, connectionType: "DEFAULT", orderIndex: 0 }];
       blocks[0].nextBlockId = grant.id;
       blocks.splice(1, 0, grant);
+    },
+  },
+  {
+    id: "duplicate-completion-outcome",
+    expectedIssueCodes: ["DRYDOCK_COMPLETION_OUTCOME_DUPLICATE_RISK"],
+    mutate: (draft) => {
+      const chapterComplete = structuredClone(chapterCompleteTemplate);
+      chapterComplete.id = "synthetic-chapter-complete";
+      chapterComplete.configuration.outcomeId = "synthetic-shared-outcome";
+      chapterComplete.connections = [{ targetBlockId: "synthetic-finish", connectionType: "DEFAULT", orderIndex: 0 }];
+      chapterComplete.nextBlockId = "synthetic-finish";
+      const blocks = draft.chapters[0].blocks as DrydockAuthoredBlockInput[];
+      blocks[0].connections = [{ targetBlockId: chapterComplete.id, connectionType: "DEFAULT", orderIndex: 0 }];
+      blocks[0].nextBlockId = chapterComplete.id;
+      blocks[1].configuration.outcomeId = "synthetic-shared-outcome";
+      blocks.splice(1, 0, chapterComplete);
+    },
+  },
+  {
+    id: "missing-cinematic-captions",
+    expectedIssueCodes: ["DRYDOCK_ACCESS_VIDEO_CAPTIONS"],
+    mutate: (draft) => {
+      const cinematic = structuredClone(cinematicTemplate);
+      cinematic.id = "synthetic-cinematic";
+      cinematic.configuration.captionsAssetId = "";
+      cinematic.connections = [{ targetBlockId: "synthetic-finish", connectionType: "DEFAULT", orderIndex: 0 }];
+      cinematic.nextBlockId = "synthetic-finish";
+      const blocks = draft.chapters[0].blocks as DrydockAuthoredBlockInput[];
+      blocks[0].connections = [{ targetBlockId: cinematic.id, connectionType: "DEFAULT", orderIndex: 0 }];
+      blocks[0].nextBlockId = cinematic.id;
+      blocks.splice(1, 0, cinematic);
+    },
+  },
+  {
+    id: "missing-audio-transcript",
+    expectedIssueCodes: ["DRYDOCK_ACCESS_AUDIO_TRANSCRIPT"],
+    mutate: (draft) => {
+      const audio = structuredClone(audioTemplate);
+      audio.id = "synthetic-audio";
+      audio.configuration.transcript = "";
+      audio.connections = [{ targetBlockId: "synthetic-finish", connectionType: "DEFAULT", orderIndex: 0 }];
+      audio.nextBlockId = "synthetic-finish";
+      const blocks = draft.chapters[0].blocks as DrydockAuthoredBlockInput[];
+      blocks[0].connections = [{ targetBlockId: audio.id, connectionType: "DEFAULT", orderIndex: 0 }];
+      blocks[0].nextBlockId = audio.id;
+      blocks.splice(1, 0, audio);
     },
   },
   {
