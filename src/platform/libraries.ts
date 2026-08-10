@@ -519,9 +519,10 @@ export async function listCaptainLibrary(captainId: string | null, captainAccoun
     groups: {
       needsAttention: cards.filter((card) => card.attention.length > 0),
       activeVoyages: cards.filter((card) => ["ACTIVE", "PAUSED"].includes(card.status) && !card.attention.length),
-      readyToLaunch: cards.filter(
-        (card) => ["INVITING", "READY", "SCHEDULED"].includes(card.status) && !card.attention.length,
-      ),
+      // A pre-launch readiness notice may need Captain attention, but it does
+      // not erase the established Phase 1 launch shortcut. The same safe card
+      // can therefore appear in both operational groups.
+      readyToLaunch: cards.filter((card) => ["INVITING", "READY", "SCHEDULED"].includes(card.status)),
       completedPlaythroughs: cards.filter((card) => card.status === "COMPLETED"),
     },
     invitations: sessions.flatMap((session) =>
