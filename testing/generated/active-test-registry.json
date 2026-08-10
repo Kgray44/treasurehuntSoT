@@ -47676,7 +47676,7 @@
     {
       "id": "sl-test-0f735dac6eaf99f2962f",
       "title": "keeps the base synthetic Chronicle valid under full static analysis",
-      "line": 90,
+      "line": 147,
       "file": "src/drydock/mutation-corpus.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -47716,7 +47716,7 @@
     {
       "id": "sl-test-f66316572be314f9c123",
       "title": "`raises its declared alarms for ${mutation.id}`",
-      "line": 97,
+      "line": 154,
       "file": "src/drydock/mutation-corpus.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
