@@ -208,7 +208,8 @@ async function acceptGuestInvitation(browser: Browser, link: string) {
     (candidate) => candidate.url().endsWith("/api/invitations/accept") && candidate.request().method() === "POST",
   );
   await accept.click({ noWaitAfter: true });
-  expect((await response).status()).toBe(200);
+  const acceptedResponse = await response;
+  expect(acceptedResponse.status(), await acceptedResponse.text()).toBe(200);
   await expect(page).toHaveURL(/\/player\/playthroughs\//u);
   return { context, page };
 }
