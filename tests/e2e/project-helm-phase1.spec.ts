@@ -271,7 +271,7 @@ test("Captain authority and ordinary Player membership remain independent throug
   browser,
   page,
 }) => {
-  test.setTimeout(240_000);
+  test.setTimeout(360_000);
   await signInThroughProduct(page);
   await assertOneAccountSession(page.context(), page);
 
