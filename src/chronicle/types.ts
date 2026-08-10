@@ -23,6 +23,8 @@ export type StudioBlockInput = {
   creatorNotes?: string | null;
   isEnabled?: boolean;
   schemaVersion?: number;
+  /** Canonical BlockConnection mirrors this legacy pointer; Drydock validates disagreement. */
+  nextBlockId?: string | null;
 };
 
 export type StudioChapterInput = {

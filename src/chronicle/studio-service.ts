@@ -239,6 +239,7 @@ export async function getStudioTale(taleId: string) {
           creatorNotes: block.creatorNotes,
           isEnabled: block.isEnabled,
           schemaVersion: block.schemaVersion,
+          nextBlockId: block.nextBlockId,
           connections: block.outgoing.map((connection) => ({
             targetBlockId: connection.targetBlockId,
             connectionType: connection.connectionType,
