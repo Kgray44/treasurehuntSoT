@@ -290,12 +290,46 @@ const cases: readonly MutationCase[] = [
   },
 ];
 
+const validCases: readonly MutationCase[] = [
+  {
+    id: "branching-multiple-endings",
+    expectedIssueCodes: [],
+    mutate: (draft) => {
+      const terminal = structuredClone(draft.chapters[0].blocks[1]);
+      terminal.id = "synthetic-alternate-finish";
+      const choice = structuredClone(choiceTemplate);
+      choice.id = "synthetic-opening";
+      choice.configuration.choices = [
+        { id: "ending-a", label: "First ending", targetBlockId: "synthetic-finish" },
+        { id: "ending-b", label: "Second ending", targetBlockId: terminal.id },
+      ];
+      choice.connections = [
+        { targetBlockId: "synthetic-finish", connectionType: "CHOICE", orderIndex: 0 },
+        { targetBlockId: terminal.id, connectionType: "CHOICE", orderIndex: 1 },
+      ];
+      choice.nextBlockId = "synthetic-finish";
+      const blocks = draft.chapters[0].blocks as DrydockAuthoredBlockInput[];
+      blocks[0] = choice;
+      blocks.push(terminal);
+    },
+  },
+];
+
 describe("Drydock Phase 2 synthetic invalid Chronicle mutation corpus", () => {
   it("keeps the base synthetic Chronicle valid under full static analysis", () => {
     const result = validateDrydockDraftContracts({ ...baseDraft(), analysisMode: "FULL" });
     expect(result.valid).toBe(true);
     expect(result.issues).toEqual([]);
   });
+
+  for (const mutation of validCases)
+    it(`keeps ${mutation.id} valid under full static analysis`, () => {
+      const draft = baseDraft();
+      mutation.mutate(draft);
+      const result = validateDrydockDraftContracts({ ...draft, analysisMode: "FULL" });
+      expect(result.valid).toBe(true);
+      expect(result.issues).toEqual([]);
+    });
 
   for (const mutation of cases)
     it(`raises its declared alarms for ${mutation.id}`, () => {

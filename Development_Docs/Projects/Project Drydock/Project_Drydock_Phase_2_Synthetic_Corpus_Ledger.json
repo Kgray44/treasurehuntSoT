@@ -44,8 +44,8 @@
       "expectedIssueCodes": ["DRYDOCK_CONFIGURATION_SCHEMA_INVALID"],
       "state": "EXECUTED"
     },
-    { "scenario": "valid branching Chronicle", "expectedIssueCodes": [], "state": "PENDING" },
-    { "scenario": "multiple endings", "expectedIssueCodes": [], "state": "PENDING" },
+    { "scenario": "valid branching Chronicle", "expectedIssueCodes": [], "state": "EXECUTED" },
+    { "scenario": "multiple endings", "expectedIssueCodes": [], "state": "EXECUTED" },
     { "scenario": "valid interactive loop", "expectedIssueCodes": [], "state": "PENDING" },
     { "scenario": "bounded retry loop", "expectedIssueCodes": [], "state": "PENDING" },
     {
