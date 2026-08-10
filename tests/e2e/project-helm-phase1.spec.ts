@@ -152,7 +152,7 @@ function voyageCard(
 
 async function createVoyage(
   page: Page,
-  input: { voyageName: string; crewName: string; participation: "CAPTAIN_ONLY" | "CAPTAIN_AND_PLAYER" },
+  input: { voyageName: string; crewName: string | string[]; participation: "CAPTAIN_ONLY" | "CAPTAIN_AND_PLAYER" },
 ) {
   await page.getByRole("button", { name: "Create a Voyage" }).first().click();
   await expect(page.getByRole("dialog", { name: "Select Chronicle" })).toBeVisible();
@@ -165,7 +165,11 @@ async function createVoyage(
   if (input.participation === "CAPTAIN_AND_PLAYER") await captainPlayer.check();
   await wizard.getByLabel("Voyage name").fill(input.voyageName);
   await wizard.getByRole("button", { name: "Continue to Add Crew" }).click();
-  await wizard.getByLabel("Crew member name").fill(input.crewName);
+  const crewNames = Array.isArray(input.crewName) ? input.crewName : [input.crewName];
+  for (const [index, crewName] of crewNames.entries()) {
+    if (index > 0) await wizard.getByRole("button", { name: "Add another Crew member" }).click();
+    await wizard.getByLabel("Crew member name").nth(index).fill(crewName);
+  }
   await wizard.getByRole("button", { name: "Continue to Invitation access" }).click();
   await wizard.getByRole("button", { name: "Continue to Delivery" }).click();
   await wizard.getByRole("button", { name: "Continue to Review" }).click();
@@ -183,7 +187,7 @@ async function createVoyage(
   const created = (await response.json()) as CreatedVoyage;
   expect(created.participation.participationMode).toBe(input.participation);
   expect(created.participation.hasPlayerMembership).toBe(input.participation === "CAPTAIN_AND_PLAYER");
-  await expect(wizard.getByRole("heading", { name: input.crewName })).toBeVisible();
+  await expect(wizard.getByRole("heading", { name: crewNames[0]! })).toBeVisible();
   await wizard.getByRole("button", { name: "Done" }).click();
   await expect(voyageCard(page, input.voyageName, "Ready to Launch")).toBeVisible();
   return created;
@@ -501,66 +505,63 @@ test("authenticated membership heartbeats are independently visible in the Capta
   const voyageName = `Helm presence ${suffix}`;
   const created = await createVoyage(page, {
     voyageName,
-    crewName: `Helm Presence Crew ${suffix}`,
+    crewName: [`Helm Presence Crew A ${suffix}`, `Helm Presence Crew B ${suffix}`, `Helm Presence Crew C ${suffix}`],
     participation: "CAPTAIN_AND_PLAYER",
   });
   const captainPlayer = await page.context().newPage();
-  const guest = await acceptGuestInvitation(browser, created.invitations[0]!.link);
+  expect(created.invitations).toHaveLength(3);
+  const guests = await Promise.all(
+    created.invitations.map((invitation) => acceptGuestInvitation(browser, invitation.link)),
+  );
   try {
     await page.reload();
     await beginVoyage(page, voyageName);
     await captainPlayer.goto(`/player/playthroughs/${created.playthroughId}/journal`);
     await expect(captainPlayer.getByRole("main")).toBeVisible({ timeout: 30_000 });
-    await expect(guest.page).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}/journal$`, "u"), {
-      timeout: 30_000,
-    });
+    await Promise.all(
+      guests.map((guest) =>
+        expect(guest.page).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}/journal$`, "u"), {
+          timeout: 30_000,
+        }),
+      ),
+    );
 
-    const [captainDetails, guestDetails, captainState, guestState] = await Promise.all([
-      browserJson<{ playthrough: { membershipId: string }; csrfToken: string }>(
-        captainPlayer,
-        `/api/player/playthroughs/${created.playthroughId}`,
+    const playerPages = [captainPlayer, ...guests.map((guest) => guest.page)];
+    const playerDetails = await Promise.all(
+      playerPages.map((playerPage) =>
+        browserJson<{ playthrough: { membershipId: string }; csrfToken: string }>(
+          playerPage,
+          `/api/player/playthroughs/${created.playthroughId}`,
+        ),
       ),
-      browserJson<{ playthrough: { membershipId: string }; csrfToken: string }>(
-        guest.page,
-        `/api/player/playthroughs/${created.playthroughId}`,
+    );
+    const playerStates = await Promise.all(
+      playerPages.map((playerPage) =>
+        browserJson<{ session: { currentSequence: number } }>(
+          playerPage,
+          `/api/play/sessions/${created.playthroughId}`,
+        ),
       ),
-      browserJson<{ session: { currentSequence: number } }>(
-        captainPlayer,
-        `/api/play/sessions/${created.playthroughId}`,
-      ),
-      browserJson<{ session: { currentSequence: number } }>(guest.page, `/api/play/sessions/${created.playthroughId}`),
-    ]);
-    expect(captainDetails.status).toBe(200);
-    expect(guestDetails.status).toBe(200);
-    expect(captainState.status).toBe(200);
-    expect(guestState.status).toBe(200);
+    );
+    for (const details of playerDetails) expect(details.status).toBe(200);
+    for (const state of playerStates) expect(state.status).toBe(200);
 
-    const deviceA = randomUUID();
-    const deviceB = randomUUID();
-    const [captainHeartbeat, guestHeartbeat] = await Promise.all([
-      browserJson(captainPlayer, `/api/player/playthroughs/${created.playthroughId}/presence`, {
-        method: "POST",
-        csrf: captainDetails.body.csrfToken,
-        body: {
-          membershipId: captainDetails.body.playthrough.membershipId,
-          deviceInstanceId: deviceA,
-          acknowledgedSequence: captainState.body.session.currentSequence,
-          safeActivity: "JOURNAL",
-        },
-      }),
-      browserJson(guest.page, `/api/player/playthroughs/${created.playthroughId}/presence`, {
-        method: "POST",
-        csrf: guestDetails.body.csrfToken,
-        body: {
-          membershipId: guestDetails.body.playthrough.membershipId,
-          deviceInstanceId: deviceB,
-          acknowledgedSequence: guestState.body.session.currentSequence,
-          safeActivity: "JOURNAL",
-        },
-      }),
-    ]);
-    expect(captainHeartbeat.status).toBe(200);
-    expect(guestHeartbeat.status).toBe(200);
+    const deviceIds = playerPages.map(() => randomUUID());
+    const heartbeats = await Promise.all(
+      playerPages.map((playerPage, index) =>
+        browserJson(playerPage, `/api/player/playthroughs/${created.playthroughId}/presence`, {
+          method: "POST",
+          csrf: playerDetails[index]!.body.csrfToken,
+          body: {
+            membershipId: playerDetails[index]!.body.playthrough.membershipId,
+            deviceInstanceId: deviceIds[index]!,
+            acknowledgedSequence: playerStates[index]!.body.session.currentSequence,
+            safeActivity: "JOURNAL",
+          },
+        }),
+      ),
+    );
+    for (const heartbeat of heartbeats) expect(heartbeat.status).toBe(200);
 
     await expect
       .poll(async () => {
@@ -570,17 +571,21 @@ test("authenticated membership heartbeats are independently visible in the Capta
         expect(projection.status).toBe(200);
         return projection.body.crew.map((member) => `${member.presence.state}:${member.synchronization.state}`).sort();
       })
-      .toEqual(["CONNECTED:SYNCHRONIZED", "CONNECTED:SYNCHRONIZED"]);
+      .toEqual([
+        "CONNECTED:SYNCHRONIZED",
+        "CONNECTED:SYNCHRONIZED",
+        "CONNECTED:SYNCHRONIZED",
+        "CONNECTED:SYNCHRONIZED",
+      ]);
 
     const projection = await browserJson<Record<string, unknown>>(
       page,
       `/api/captain/voyages/${created.playthroughId}`,
     );
     expect(forbiddenProjectionKey(projection.body)).toBe(false);
-    expect(JSON.stringify(projection.body)).not.toContain(deviceA);
-    expect(JSON.stringify(projection.body)).not.toContain(deviceB);
+    for (const deviceId of deviceIds) expect(JSON.stringify(projection.body)).not.toContain(deviceId);
   } finally {
-    await guest.context.close();
+    await Promise.all(guests.map((guest) => guest.context.close()));
     await captainPlayer.close();
   }
 });
