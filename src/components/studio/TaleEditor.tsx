@@ -345,6 +345,7 @@ export function TaleEditor({
     () => (selectedRuleCode ? getDrydockRuleDefinition(selectedRuleCode) : undefined),
     [selectedRuleCode],
   );
+  const graphNodesById = useMemo(() => new Map(graphSurvey?.nodes.map((node) => [node.id, node]) ?? []), [graphSurvey]);
   const dndSensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
@@ -1827,6 +1828,19 @@ export function TaleEditor({
                         {!chapter.blocks.length && <div className="empty-chapter">Drop the first Passage here.</div>}
                         {chapter.blocks.map((block, blockIndex) => {
                           const definition = data.registry.find((item) => item.type === block.blockType);
+                          const graphNode = graphNodesById.get(block.id);
+                          const graphState = graphNode
+                            ? [
+                                graphNode.isEntry ? "ENTRY" : "",
+                                graphNode.isTerminal ? "TERMINAL" : "",
+                                !graphNode.isReachable ? "UNREACHABLE" : "",
+                                !graphNode.canReachTerminal ? "NO_TERMINAL_PATH" : "",
+                                graphNode.stronglyConnectedComponent !== null ? "CYCLE" : "",
+                                ...graphNode.annotations.map((annotation) => annotation.code),
+                              ]
+                                .filter(Boolean)
+                                .join(" ")
+                            : undefined;
                           return (
                             <SortableStoryBlock key={block.id} id={block.id}>
                               {(attributes, listeners) => (
@@ -1839,6 +1853,7 @@ export function TaleEditor({
                                         ? "true"
                                         : undefined
                                     }
+                                    data-drydock-graph-state={graphState}
                                     tabIndex={-1}
                                     onClick={(event) => openInspector(block.id, event.currentTarget)}
                                   >
@@ -1867,6 +1882,20 @@ export function TaleEditor({
                                             "",
                                         ).slice(0, 130)}
                                       </p>
+                                      {graphNode && (
+                                        <span className="drydock-graph-annotation" aria-label="Static graph analysis">
+                                          {graphNode.isEntry ? "Entry. " : ""}
+                                          {graphNode.isTerminal ? "Terminal. " : ""}
+                                          {!graphNode.isReachable ? "Unreachable. " : ""}
+                                          {!graphNode.canReachTerminal ? "No terminal path. " : ""}
+                                          {graphNode.stronglyConnectedComponent !== null
+                                            ? `Cycle group ${graphNode.stronglyConnectedComponent}. `
+                                            : ""}
+                                          {graphNode.annotations.length
+                                            ? `Rules: ${graphNode.annotations.map((annotation) => annotation.code).join(", ")}.`
+                                            : ""}
+                                        </span>
+                                      )}
                                     </div>
                                     <div className="block-move">
                                       <button

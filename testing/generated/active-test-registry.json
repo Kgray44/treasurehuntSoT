@@ -39491,7 +39491,7 @@
     {
       "id": "sl-test-b2ad9ba3748c4be05878",
       "title": "does not remove a block until the draft save succeeds and reconciles an authoritative undo",
-      "line": 249,
+      "line": 254,
       "file": "src/components/studio/TaleEditor.test.tsx",
       "suiteId": "component.studio",
       "owner": "platform-foundation",
@@ -39531,7 +39531,7 @@
     {
       "id": "sl-test-1b12f371b22663e42c09",
       "title": "shows the publish seal only after the immutable version response succeeds",
-      "line": 276,
+      "line": 281,
       "file": "src/components/studio/TaleEditor.test.tsx",
       "suiteId": "component.studio",
       "owner": "platform-foundation",
@@ -39571,7 +39571,7 @@
     {
       "id": "sl-test-1818d5c58c2a9524fef3",
       "title": "keeps a successfully published version confirmed when its presentation director interrupts afterward",
-      "line": 299,
+      "line": 304,
       "file": "src/components/studio/TaleEditor.test.tsx",
       "suiteId": "component.studio",
       "owner": "platform-foundation",
@@ -39611,7 +39611,7 @@
     {
       "id": "sl-test-92e58a1062a9ebaef47a",
       "title": "waits for an in-flight autosave before publishing the immutable version",
-      "line": 324,
+      "line": 329,
       "file": "src/components/studio/TaleEditor.test.tsx",
       "suiteId": "component.studio",
       "owner": "platform-foundation",
@@ -39651,7 +39651,7 @@
     {
       "id": "sl-test-1bf9b4ac124dc6cdd6e8",
       "title": "tracks each upload independently and preserves successful files when a sibling fails",
-      "line": 358,
+      "line": 363,
       "file": "src/components/studio/TaleEditor.test.tsx",
       "suiteId": "component.studio",
       "owner": "platform-foundation",

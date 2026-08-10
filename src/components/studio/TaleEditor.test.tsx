@@ -242,6 +242,11 @@ describe("Voyagewright Studio editor motion and authority", () => {
     await screen.findByRole("button", { name: /Opening Scene needs a destination/ });
     fireEvent.click(screen.getByRole("button", { name: "Open static graph outline" }));
     expect(await screen.findByRole("region", { name: "Static graph outline" })).toHaveTextContent("No terminal path.");
+    expect(screen.getByText("Opening Scene").closest("article")).toHaveAttribute(
+      "data-drydock-graph-state",
+      expect.stringContaining("DRYDOCK_GRAPH_NO_TERMINAL_PATH"),
+    );
+    expect(screen.getByLabelText("Static graph analysis")).toHaveTextContent("No terminal path.");
     fireEvent.click(screen.getByRole("button", { name: "narrative (block-1)" }));
     await waitFor(() => expect(screen.getByText("Opening Scene").closest("article")).toHaveFocus());
   });
