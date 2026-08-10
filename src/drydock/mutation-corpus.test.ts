@@ -181,6 +181,36 @@ const cases: readonly MutationCase[] = [
     },
   },
   {
+    id: "always-false-condition",
+    expectedIssueCodes: ["DRYDOCK_CONDITION_ALWAYS_FALSE"],
+    mutate: (draft) => {
+      const condition = structuredClone(conditionTemplate);
+      condition.id = "synthetic-opening";
+      condition.configuration.variable = "synthetic-flag";
+      condition.configuration.value = true;
+      condition.configuration.successTargetBlockId = "synthetic-finish";
+      condition.configuration.failureTargetBlockId = "synthetic-finish";
+      condition.connections = [
+        { targetBlockId: "synthetic-finish", connectionType: "SUCCESS", orderIndex: 0 },
+        { targetBlockId: "synthetic-finish", connectionType: "FAILURE", orderIndex: 1 },
+      ];
+      condition.nextBlockId = "synthetic-finish";
+      (draft.chapters[0].blocks as DrydockAuthoredBlockInput[])[0] = condition;
+      draft.variables = [
+        {
+          schemaVersion: 1,
+          id: legacyVariableId("synthetic-flag"),
+          name: "Synthetic flag",
+          type: { kind: "BOOLEAN" },
+          scope: "SESSION",
+          defaultValue: false,
+          allowedOperations: ["assign", "toggle"],
+          privacy: "PLAYER_SAFE",
+        },
+      ];
+    },
+  },
+  {
     id: "write-never-read",
     expectedIssueCodes: ["DRYDOCK_VARIABLE_WRITE_NEVER_READ"],
     mutate: (draft) => {
