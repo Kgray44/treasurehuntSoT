@@ -75,6 +75,18 @@ function editorData() {
               isEnabled: true,
               schemaVersion: 1,
             },
+            {
+              id: "block-2",
+              blockType: "narrative",
+              title: "Second Scene",
+              internalLabel: null,
+              configuration: { body: "The crew chooses a bearing." },
+              presentation: {},
+              completion: {},
+              creatorNotes: null,
+              isEnabled: true,
+              schemaVersion: 1,
+            },
           ],
         },
       ],
@@ -154,6 +166,27 @@ describe("Voyagewright Studio editor motion and authority", () => {
     await waitFor(() => expect(card).toHaveFocus());
   });
 
+  it("supports whole-card drag wiring, additive Passage selection, and the persisted animation controls", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, editorData())));
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    const first = screen.getByText("Opening Scene").closest<HTMLElement>("article")!;
+    const second = screen.getByText("Second Scene").closest<HTMLElement>("article")!;
+    expect(first).toHaveAttribute("role", "button");
+    expect(first).toHaveAttribute("aria-roledescription", "sortable");
+    fireEvent.click(first);
+    fireEvent.click(second, { ctrlKey: true });
+    expect(screen.getByText("2 Passages selected")).toBeVisible();
+
+    fireEvent.click(first);
+    expect(await screen.findByText("Passage animation")).toBeVisible();
+    expect(screen.getByLabelText("Opening animation")).toBeVisible();
+    expect(screen.getByLabelText("Leaving animation")).toBeVisible();
+    expect(screen.getByLabelText("While this Passage is active")).toBeVisible();
+    expect(screen.getAllByRole("option", { name: /Tidal wake/ })).toHaveLength(3);
+  });
+
   it("highlights and focuses the exact block named by authoritative validation", async () => {
     vi.stubGlobal(
       "fetch",
@@ -194,6 +227,12 @@ describe("Voyagewright Studio editor motion and authority", () => {
     expect(await screen.findByText(/A reachable Passage cannot statically reach a terminal/)).toBeInTheDocument();
     expect(screen.getByText(/Waiver: not permitted/)).toBeInTheDocument();
     await waitFor(() => expect(card).toHaveFocus());
+
+    fireEvent.click(screen.getByRole("button", { name: "Close validation results" }));
+    await waitFor(() => expect(screen.queryByLabelText("Chronicle validation results")).not.toBeInTheDocument());
+    fireEvent.click(screen.getByRole("button", { name: /Validation/ }));
+    await waitFor(() => expect(screen.getByLabelText("Chronicle validation results")).toBeVisible());
+    expect(screen.getByText("Blocks publishing")).toBeVisible();
   });
 
   it("applies a revision-guarded safe repair through the ordinary Studio undo history", async () => {
@@ -433,5 +472,40 @@ describe("Voyagewright Studio editor motion and authority", () => {
       expect(within(progress).getByText("harbor.png").closest("li")).toHaveAttribute("data-upload-state", "ready");
       expect(within(progress).getByText("notes.exe").closest("li")).toHaveAttribute("data-upload-state", "failed");
     });
+  });
+
+  it("opens the command palette from the keyboard and exposes only current canonical actions", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, editorData())));
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    const commands = screen.getByRole("button", { name: "Open Studio command palette" });
+    commands.focus();
+    fireEvent.click(commands);
+    const palette = await screen.findByRole("dialog", { name: "Find an action" });
+    await waitFor(() =>
+      expect(within(palette).getByRole("searchbox", { name: "Search Studio commands" })).toHaveFocus(),
+    );
+    expect(within(palette).getByRole("button", { name: /Validate Chronicle/i })).toBeInTheDocument();
+    expect(within(palette).getByRole("button", { name: /Insert Narrative/i })).toBeInTheDocument();
+    expect(within(palette).queryByRole("button", { name: /new Story Block/i })).not.toBeInTheDocument();
+
+    fireEvent.keyDown(palette, { key: "Escape" });
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Find an action" })).not.toBeInTheDocument());
+    await waitFor(() => expect(commands).toHaveFocus());
+
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+    expect(await screen.findByRole("dialog", { name: "Find an action" })).toBeInTheDocument();
+  });
+
+  it("keeps canvas view controls presentation-only and keyboard reachable", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, editorData())));
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    expect(screen.getByRole("status", { name: "Canvas zoom 100 percent" })).toHaveTextContent("100%");
+    fireEvent.click(screen.getByRole("button", { name: "Zoom in" }));
+    expect(screen.getByRole("status", { name: "Canvas zoom 110 percent" })).toHaveTextContent("110%");
+    expect(screen.getByText("Opening Scene")).toBeInTheDocument();
   });
 });

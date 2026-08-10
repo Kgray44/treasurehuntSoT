@@ -82,6 +82,19 @@ describe("ProductShell", () => {
     expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
+  it("raises the account-menu shell layer while account navigation is open", () => {
+    navigation.pathname = "/studio/library";
+    render(
+      <ProductShell>
+        <main>Studio workbench</main>
+      </ProductShell>,
+    );
+    const header = document.querySelector(".product-shell-header")!;
+    expect(header).not.toHaveAttribute("data-account-menu-open");
+    fireEvent.click(screen.getByRole("button", { name: "Account" }));
+    expect(header).toHaveAttribute("data-account-menu-open", "true");
+  });
+
   it("homeport.owner-correction.round3.patch-a.unverified-session keeps ordinary shell access with nonblocking actions", async () => {
     setAuthenticated();
     currentUser.state.emailVerification = { status: "unverified" };

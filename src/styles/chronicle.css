@@ -462,6 +462,44 @@ html[data-voyage-theme="light"]
   width: 100%;
   animation: runtime-arrive 600ms ease both;
 }
+
+/* Shipwright stores Passage motion in the existing published presentation contract. */
+.story-motion-enter-fade { animation: story-fade-in 520ms ease both; }
+.story-motion-enter-slide { animation: story-chart-slide-in 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.story-motion-enter-expand { animation: story-expand-in 600ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.story-motion-enter-minimize { animation: story-minimize-in 500ms ease-out both; }
+.story-motion-enter-glide { animation: story-glide-in 720ms cubic-bezier(0.2, 0.7, 0.25, 1) both; }
+.story-motion-enter-ink-bloom { animation: story-ink-bloom 850ms ease-out both; }
+.story-motion-enter-lantern-swell { animation: story-lantern-swell 780ms ease-out both; }
+.story-motion-enter-compass-spin { animation: story-compass-spin 720ms cubic-bezier(0.18, 0.8, 0.25, 1) both; }
+.story-motion-enter-tidal-wake { animation: story-tidal-wake 820ms ease-out both; }
+.story-motion-enter-starlight-fall { animation: story-starlight-fall 760ms ease-out both; }
+
+.story-motion-stay-ink-bloom { box-shadow: inset 0 0 4rem rgb(40 24 70 / 12%); }
+.story-motion-stay-lantern-swell { box-shadow: inset 0 0 4rem rgb(224 176 66 / 22%); }
+.story-motion-stay-compass-spin::after { content: "✦"; position: absolute; right: 1.1rem; bottom: 0.8rem; color: rgb(151 105 36 / 48%); animation: story-compass-rest 5s linear infinite; }
+.story-motion-stay-tidal-wake { background-image: linear-gradient(transparent 84%, rgb(42 125 140 / 16%)); }
+.story-motion-stay-starlight-fall { background-image: radial-gradient(circle at 82% 12%, rgb(255 243 188 / 46%) 0 1px, transparent 2px); }
+
+.open-page-stage[data-story-exit="fade"] { --story-turn-exit: 0.45; }
+.open-page-stage[data-story-exit="slide"] { --story-turn-exit: 0.6; }
+.open-page-stage[data-story-exit="expand"] { --story-turn-exit: 0.8; }
+.open-page-stage[data-story-exit="minimize"] { --story-turn-exit: 0.35; }
+.open-page-stage[data-story-exit="glide"] { --story-turn-exit: 0.55; }
+.open-page-stage[data-story-exit="ink-bloom"], .open-page-stage[data-story-exit="lantern-swell"], .open-page-stage[data-story-exit="compass-spin"], .open-page-stage[data-story-exit="tidal-wake"], .open-page-stage[data-story-exit="starlight-fall"] { --story-turn-exit: 0.7; }
+.open-page-stage[data-story-exit] .page-flip-book[data-flip-state="flipping"] { filter: saturate(calc(0.74 + var(--story-turn-exit, 0.5) * 0.35)); }
+
+@keyframes story-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes story-chart-slide-in { from { opacity: 0; transform: translateX(2.2rem); } to { opacity: 1; transform: translateX(0); } }
+@keyframes story-expand-in { from { opacity: 0; transform: scale(0.88); } to { opacity: 1; transform: scale(1); } }
+@keyframes story-minimize-in { from { opacity: 0; transform: scale(0.74); } to { opacity: 1; transform: scale(1); } }
+@keyframes story-glide-in { from { opacity: 0; transform: translate3d(-1.5rem, 0.7rem, 0); } to { opacity: 1; transform: translate3d(0, 0, 0); } }
+@keyframes story-ink-bloom { from { opacity: 0; filter: blur(9px) contrast(1.3); transform: scale(1.035); } to { opacity: 1; filter: none; transform: none; } }
+@keyframes story-lantern-swell { from { opacity: 0; filter: brightness(1.9) sepia(0.4); transform: scale(0.92); } to { opacity: 1; filter: none; transform: none; } }
+@keyframes story-compass-spin { from { opacity: 0; transform: rotate(-7deg) scale(0.9); } to { opacity: 1; transform: rotate(0) scale(1); } }
+@keyframes story-tidal-wake { from { opacity: 0; transform: translateY(1.2rem) skewY(-2deg); } to { opacity: 1; transform: none; } }
+@keyframes story-starlight-fall { from { opacity: 0; clip-path: inset(0 0 100% 0); } to { opacity: 1; clip-path: inset(0); } }
+@keyframes story-compass-rest { to { transform: rotate(1turn); } }
 .prose-block,
 .captains-note,
 .direction-block,
@@ -1114,6 +1152,11 @@ html[data-voyage-theme="light"]
   min-height: 0;
   flex: 1;
   flex-direction: column;
+}
+
+.voyage-shell[data-motion-mode="reduced"] :is(.story-motion-enter-fade, .story-motion-enter-slide, .story-motion-enter-expand, .story-motion-enter-minimize, .story-motion-enter-glide, .story-motion-enter-ink-bloom, .story-motion-enter-lantern-swell, .story-motion-enter-compass-spin, .story-motion-enter-tidal-wake, .story-motion-enter-starlight-fall),
+html[data-motion-level="reduced"] :is(.story-motion-enter-fade, .story-motion-enter-slide, .story-motion-enter-expand, .story-motion-enter-minimize, .story-motion-enter-glide, .story-motion-enter-ink-bloom, .story-motion-enter-lantern-swell, .story-motion-enter-compass-spin, .story-motion-enter-tidal-wake, .story-motion-enter-starlight-fall) {
+  animation: none;
 }
 .chronicle-journal-shell[data-live-event="revealed"] .chronicle-leaf .journal-block {
   animation: journal-live-ink 900ms ease both;

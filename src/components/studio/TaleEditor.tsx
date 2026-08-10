@@ -31,149 +31,33 @@ import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
 import type { SceneHostHandle } from "@/animation/hosts/scene-host-types";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
+import { readStayStoryMotion, storyMotionPresets } from "@/animation/presentation/story-motion";
 import { PublishedBlockView } from "@/components/tales/PublishedBlockView";
 import { useActionDialog } from "@/components/ui/ActionDialog";
 import { ResilientImage } from "@/components/ui/ResilientImage";
+import { StudioCommandPalette, type StudioCommand } from "@/components/studio/StudioCommandPalette";
+import { StudioCanvasViewControls } from "@/components/studio/StudioCanvasViewControls";
+import { StudioSelectionToolbar } from "@/components/studio/StudioSelectionToolbar";
+import { StudioStatusHeader } from "@/components/studio/StudioStatusHeader";
+import { StudioValidationPanel } from "@/components/studio/StudioValidationPanel";
+import type {
+  Asset,
+  Block,
+  Chapter,
+  DeletedBlock,
+  DraftState,
+  EditorData,
+  LibraryRecord,
+  RegistryItem,
+  Tale,
+  UploadEntry,
+  Version,
+  VersionComparison,
+} from "@/components/studio/studio-types";
 import { studioCopy } from "@/language/studio-copy";
-import type { InspectorField, JsonObject } from "@/chronicle/types";
+import type { DraftValidationResult, InspectorField, JsonObject, ValidationIssue } from "@/chronicle/types";
 import { getDrydockRuleDefinition } from "@/drydock/rules";
 
-type Block = {
-  id: string;
-  blockType: string;
-  title: string;
-  internalLabel?: string | null;
-  configuration: JsonObject;
-  presentation: JsonObject;
-  completion: JsonObject;
-  creatorNotes?: string | null;
-  isEnabled: boolean;
-  schemaVersion: number;
-  /** Legacy mirror only; canonical BlockConnection remains the edge authority. */
-  nextBlockId?: string | null;
-  connections?: Array<{
-    targetBlockId: string;
-    connectionType: string;
-    label?: string | null;
-    conditionExpression?: string | null;
-    orderIndex?: number;
-  }>;
-};
-type Chapter = {
-  id: string;
-  title: string;
-  subtitle?: string | null;
-  description?: string | null;
-  coverAssetId?: string | null;
-  estimatedDuration?: number | null;
-  isOptional: boolean;
-  metadata: JsonObject;
-  blocks: Block[];
-};
-type Tale = {
-  id: string;
-  slug: string;
-  title: string;
-  subtitle: string | null;
-  shortDescription: string | null;
-  longDescription: string | null;
-  coverAssetId: string | null;
-  theme: string;
-  visibility: string;
-  playerCountMin: number;
-  playerCountMax: number;
-  estimatedDuration: number | null;
-  contentWarnings: string | null;
-  latestPublishedVersionId: string | null;
-};
-type RegistryItem = {
-  type: string;
-  displayName: string;
-  category: string;
-  icon: string;
-  description: string;
-  defaultTitle: string;
-  defaultConfiguration: JsonObject;
-  defaultPresentation?: JsonObject;
-  defaultCompletion?: JsonObject;
-  fields: InspectorField[];
-  schemaVersion: number;
-};
-type Asset = {
-  id: string;
-  displayName: string;
-  description: string | null;
-  mediaType: string;
-  mimeType: string;
-  width: number | null;
-  height: number | null;
-  tags: string[];
-  roles: string[];
-  collectionItems: Array<{ collectionId: string }>;
-  createdAt: string;
-  updatedAt: string;
-  variants: Array<{ role: string; url: string; processingState: string }>;
-};
-type LibraryRecord = {
-  id: string;
-  name: string;
-  region?: string | null;
-  playerFacingDescription?: string | null;
-  captainNotes?: string | null;
-  shortDescription?: string | null;
-  loreDescription?: string | null;
-  ordinaryGameObjectLabel?: string | null;
-  collectionType?: string;
-  description?: string | null;
-  referenceCollectionId?: string | null;
-  mapAssetId?: string | null;
-  displayAssetId?: string | null;
-  artworkAssetId?: string | null;
-  revealVideoAssetId?: string | null;
-  modelAssetId?: string | null;
-};
-type Version = {
-  id: string;
-  versionLabel: string;
-  publishedAt: string;
-  publishedBy: string;
-  releaseNotes: string | null;
-  isCurrent: boolean;
-  activeSessions: number;
-};
-type VersionComparison = {
-  left: { label: string };
-  right: { label: string };
-  summary: Record<string, number>;
-  changes: Array<{ type: string; path: string; before?: string; after?: string }>;
-  compatibilityWarnings: string[];
-};
-type EditorData = {
-  csrfToken: string;
-  tale: Tale;
-  draft: {
-    id: string;
-    autosaveVersion: number;
-    validationState: string;
-    validationSummary: JsonObject;
-    savedAt: string;
-    chapters: Chapter[];
-  };
-  assets: Asset[];
-  collections: LibraryRecord[];
-  locations: LibraryRecord[];
-  artifacts: LibraryRecord[];
-  versions: Version[];
-  registry: RegistryItem[];
-};
-type DraftState = { tale: Tale; chapters: Chapter[] };
-type UploadEntry = {
-  id: string;
-  name: string;
-  state: "queued" | "uploading" | "ready" | "failed";
-  detail?: string;
-};
-type DeletedBlock = { chapterId: string; index: number; block: Block };
 type DrydockGraphSurvey = {
   proofCompleteness: string;
   nodes: Array<{
@@ -268,30 +152,15 @@ export function TaleEditor({
   const [data, setData] = useState<EditorData | null>(null);
   const [draft, setDraft] = useState<DraftState | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [past, setPast] = useState<DraftState[]>([]);
   const [future, setFuture] = useState<DraftState[]>([]);
   const [dirty, setDirty] = useState(false);
   const [saveState, setSaveState] = useState("Loading Chronicle...");
   const [error, setError] = useState("");
-  const [validation, setValidation] = useState<{
-    valid: boolean;
-    errors: Array<{
-      code: string;
-      message: string;
-      category?: string;
-      remediation?: string;
-      blockId?: string;
-      field?: string;
-    }>;
-    warnings: Array<{
-      code: string;
-      message: string;
-      category?: string;
-      remediation?: string;
-      blockId?: string;
-      field?: string;
-    }>;
-  } | null>(null);
+  const [validation, setValidation] = useState<DraftValidationResult | null>(null);
+  const [validationPanelOpen, setValidationPanelOpen] = useState(false);
+  const [validationFocusField, setValidationFocusField] = useState<string | null>(null);
   const [issueSearch, setIssueSearch] = useState("");
   const [issueCategory, setIssueCategory] = useState("ALL");
   const [issueSeverity, setIssueSeverity] = useState<"ALL" | "error" | "warning">("ALL");
@@ -328,14 +197,18 @@ export function TaleEditor({
   const [uploadEntries, setUploadEntries] = useState<UploadEntry[]>([]);
   const [placedAssetId, setPlacedAssetId] = useState<string | null>(null);
   const [moreOpen, setMoreOpen] = useState(false);
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [canvasZoom, setCanvasZoom] = useState(1);
   const [autosaveKick, setAutosaveKick] = useState(0);
   const saving = useRef<Promise<boolean> | null>(null);
   const draftRevision = useRef(0);
   const autosaveVersionRef = useRef<number | null>(null);
   const publicationStatusHold = useRef(false);
   const root = useRef<HTMLElement>(null);
+  const canvas = useRef<HTMLElement>(null);
   const publishHost = useRef<SceneHostHandle | null>(null);
   const inspectorReturnFocus = useRef<HTMLElement | null>(null);
+  const commandReturnFocus = useRef<HTMLElement | null>(null);
   const inspectorFocusRequested = useRef(false);
   const inspectorTitle = useRef<HTMLInputElement | null>(null);
   const validationIssues = useMemo(() => {
@@ -360,11 +233,20 @@ export function TaleEditor({
       ].sort(),
     [validation],
   );
+  const filteredValidation = useMemo<DraftValidationResult | null>(() => {
+    if (!validation) return null;
+    return {
+      ...validation,
+      errors: validation.errors.filter((issue) => validationIssues.includes(issue)),
+      warnings: validation.warnings.filter((issue) => validationIssues.includes(issue)),
+    };
+  }, [validation, validationIssues]);
   const selectedRule = useMemo(
     () => (selectedRuleCode ? getDrydockRuleDefinition(selectedRuleCode) : undefined),
     [selectedRuleCode],
   );
   const graphNodesById = useMemo(() => new Map(graphSurvey?.nodes.map((node) => [node.id, node]) ?? []), [graphSurvey]);
+  const selectionAnchorId = useRef<string | null>(null);
   const dndSensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
@@ -395,6 +277,18 @@ export function TaleEditor({
     const frame = requestAnimationFrame(() => inspectorTitle.current?.focus({ preventScroll: true }));
     return () => cancelAnimationFrame(frame);
   }, [selectedId]);
+
+  useEffect(() => {
+    if (!selectedId || !validationFocusField) return;
+    const frame = requestAnimationFrame(() => {
+      const target = document.querySelector<HTMLElement>(
+        `[data-inspector-field="${validationFocusField}"] input, [data-inspector-field="${validationFocusField}"] select, [data-inspector-field="${validationFocusField}"] textarea`,
+      );
+      target?.focus({ preventScroll: true });
+      setValidationFocusField(null);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [selectedId, validationFocusField]);
 
   useEffect(() => {
     if (!insertedId) return;
@@ -495,6 +389,7 @@ export function TaleEditor({
     setDirty(true);
     setSaveState("Unsaved changes");
     setValidation(null);
+    setValidationPanelOpen(false);
   }
   function undo() {
     if (!draft || !past.length) return;
@@ -517,6 +412,16 @@ export function TaleEditor({
     setSaveState("Redo pending save");
   }
 
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (!(event.metaKey || event.ctrlKey) || event.key.toLocaleLowerCase() !== "k") return;
+      event.preventDefault();
+      openCommandPalette();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
   const selected = useMemo(
     () =>
       draft?.chapters
@@ -525,12 +430,103 @@ export function TaleEditor({
     [draft, selectedId],
   );
   const selectedDefinition = data?.registry.find((item) => item.type === selected?.block.blockType);
+  const studioCommands = useMemo<StudioCommand[]>(
+    () => [
+      {
+        id: "studio.undo",
+        label: "Undo last edit",
+        shortcut: "Ctrl Z",
+        disabled: !past.length,
+        run: undo,
+      },
+      {
+        id: "studio.redo",
+        label: "Redo last edit",
+        shortcut: "Ctrl Shift Z",
+        disabled: !future.length,
+        run: redo,
+      },
+      {
+        id: "studio.preview-chronicle",
+        label: "Preview Chronicle",
+        description: "Open the current draft preview without changing runtime truth.",
+        run: () => void preview(),
+      },
+      {
+        id: "studio.preview-passage",
+        label: "Preview selected Passage",
+        disabled: !selected,
+        run: () => setPreviewBlock(true),
+      },
+      {
+        id: "studio.validate",
+        label: "Validate Chronicle",
+        description: "Request the authoritative Chronicle validation result.",
+        run: () => void validate(),
+      },
+      {
+        id: "studio.publish",
+        label: "Publish Chronicle",
+        description: "Open the canonical immutable publication flow.",
+        disabled: publishState === "publishing",
+        run: () => void publish(),
+      },
+      {
+        id: "studio.focus-library",
+        label: "Focus Passage library",
+        run: () => document.getElementById("studio-library")?.focus(),
+      },
+      {
+        id: "studio.focus-canvas",
+        label: "Focus Chronicle canvas",
+        run: () => document.getElementById("studio-canvas")?.focus(),
+      },
+      {
+        id: "studio.focus-inspector",
+        label: "Open selected Passage inspector",
+        disabled: !selected,
+        run: () => selected && openInspector(selected.block.id),
+      },
+      ...((data?.registry ?? []).slice(0, 8).map((item) => ({
+        id: `studio.insert.${item.type}`,
+        label: `Insert ${item.displayName}`,
+        description: "Insert an existing canonical Story Block type into the first chapter.",
+        disabled: !draft?.chapters.length,
+        run: () => addBlock(item.type, 0),
+      })) as StudioCommand[]),
+    ],
+    [data?.registry, draft?.chapters.length, future.length, past.length, publishState, selected],
+  );
   const saveVisualState =
     saveState.includes("failed") || saveState.includes("Conflict")
       ? "failed"
       : saveState.includes("Saving") || saveState.includes("Unsaved") || saveState.includes("pending")
         ? "pending"
         : "saved";
+  const validationStatus =
+    saveState === "Validating..."
+      ? { state: "checking" as const, label: "Checking", detail: "The authoritative Chronicle validation is running." }
+      : dirty
+        ? { state: "stale" as const, label: "Refresh needed", detail: "This draft changed after its last validation." }
+        : validation?.errors.length
+          ? {
+              state: "blocking" as const,
+              label: `${validation.errors.length} blocking`,
+              detail: "Blocking findings must be resolved before publishing.",
+            }
+          : validation?.warnings.length
+            ? {
+                state: "attention" as const,
+                label: `${validation.warnings.length} to review`,
+                detail: "These findings do not block publication, but still need review.",
+              }
+            : validation?.valid
+              ? { state: "ready" as const, label: "Ready", detail: "The current draft passed its latest validation." }
+              : {
+                  state: "stale" as const,
+                  label: "Not checked",
+                  detail: "Run validation before publishing this Chronicle.",
+                };
   const activeDragLabel = activeDragId?.startsWith("library:")
     ? data?.registry.find((item) => item.type === activeDragId.slice("library:".length))?.displayName
     : draft?.chapters.flatMap((chapter) => chapter.blocks).find((block) => block.id === activeDragId)?.title;
@@ -683,17 +679,61 @@ export function TaleEditor({
       });
     });
     setSelectedId(id);
+    setSelectedIds([id]);
     setInsertedId(id);
   }
   function openInspector(id: string, origin?: HTMLElement | null) {
     if (origin) inspectorReturnFocus.current = origin;
     inspectorFocusRequested.current = true;
     setSelectedId(id);
+    setSelectedIds([id]);
+    selectionAnchorId.current = id;
+  }
+  function selectBlock(id: string, origin: HTMLElement, additive = false, range = false) {
+    if (range && draft && selectionAnchorId.current) {
+      const blocks = draft.chapters.flatMap((chapter) => chapter.blocks);
+      const start = blocks.findIndex((block) => block.id === selectionAnchorId.current);
+      const end = blocks.findIndex((block) => block.id === id);
+      if (start >= 0 && end >= 0) {
+        inspectorReturnFocus.current = origin;
+        inspectorFocusRequested.current = false;
+        setSelectedId(id);
+        setSelectedIds(blocks.slice(Math.min(start, end), Math.max(start, end) + 1).map((block) => block.id));
+        return;
+      }
+    }
+    if (!additive) {
+      openInspector(id, origin);
+      return;
+    }
+    inspectorReturnFocus.current = origin;
+    inspectorFocusRequested.current = false;
+    setSelectedId(id);
+    setSelectedIds((items) => (items.includes(id) ? items.filter((item) => item !== id) : [...items, id]));
+    selectionAnchorId.current = id;
   }
   function closeInspector() {
     setSelectedId(null);
+    setSelectedIds([]);
     const frame = requestAnimationFrame(() => inspectorReturnFocus.current?.focus({ preventScroll: true }));
     return () => cancelAnimationFrame(frame);
+  }
+  function openCommandPalette() {
+    const activeElement = document.activeElement;
+    commandReturnFocus.current = activeElement instanceof HTMLElement ? activeElement : null;
+    setCommandPaletteOpen(true);
+  }
+  function closeCommandPalette() {
+    setCommandPaletteOpen(false);
+    const frame = requestAnimationFrame(() => commandReturnFocus.current?.focus({ preventScroll: true }));
+    return () => cancelAnimationFrame(frame);
+  }
+  function panCanvas(direction: "up" | "down") {
+    canvas.current?.scrollBy({ top: direction === "up" ? -280 : 280, behavior: "smooth" });
+  }
+  function fitCanvas() {
+    setCanvasZoom(1);
+    canvas.current?.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }
   function focusBlock(id: string, origin?: HTMLElement | null) {
     if (origin) inspectorReturnFocus.current = origin;
@@ -701,11 +741,21 @@ export function TaleEditor({
     const chapter = draft?.chapters.find((item) => item.blocks.some((block) => block.id === id));
     if (chapter) setCollapsedChapters((items) => items.filter((chapterId) => chapterId !== chapter.id));
     setSelectedId(id);
+    setSelectedIds([id]);
     requestAnimationFrame(() => {
       const destination = document.querySelector<HTMLElement>(`[data-block-id="${id}"]`);
       destination?.scrollIntoView({ block: "center" });
       destination?.focus({ preventScroll: true });
     });
+  }
+
+  function focusValidationIssue(issue: ValidationIssue, origin: HTMLElement) {
+    setValidationPanelOpen(true);
+    setSelectedRuleCode(issue.code);
+    setSelectedRepairBlockId(issue.code === "DRYDOCK_LEGACY_NEXT_TARGET_CONFLICT" ? (issue.blockId ?? null) : null);
+    if (!issue.blockId) return;
+    setValidationFocusField(issue.field ?? null);
+    focusBlock(issue.blockId, origin);
   }
   function moveBlock(blockId: string, chapterIndex: number, blockIndex: number) {
     change((next) => {
@@ -720,6 +770,26 @@ export function TaleEditor({
           0,
           found,
         );
+    });
+  }
+  function moveSelectionToNextChapter() {
+    if (!draft || selectedIds.length < 2) return;
+    const selectedSet = new Set(selectedIds);
+    const sourceIndex = Math.max(
+      ...draft.chapters.map((chapter, index) =>
+        chapter.blocks.some((block) => selectedSet.has(block.id)) ? index : -1,
+      ),
+    );
+    const destinationIndex = Math.min(sourceIndex + 1, draft.chapters.length - 1);
+    if (sourceIndex < 0 || destinationIndex === sourceIndex) return;
+    change((next) => {
+      const selectedBlocks = next.chapters.flatMap((chapter) =>
+        chapter.blocks.filter((block) => selectedSet.has(block.id)),
+      );
+      next.chapters.forEach((chapter) => {
+        chapter.blocks = chapter.blocks.filter((block) => !selectedSet.has(block.id));
+      });
+      next.chapters[destinationIndex].blocks.push(...selectedBlocks);
     });
   }
   function drop(event: React.DragEvent, chapterIndex: number, blockIndex: number) {
@@ -844,6 +914,7 @@ export function TaleEditor({
     }
     setSelectedRepairBlockId(null);
     setValidation(body);
+    setValidationPanelOpen(true);
     setSaveState(body.valid ? "Draft validation passed" : "Draft validation failed");
   }
   async function previewAndApplySafeRepair(blockId: string) {
@@ -1401,115 +1472,41 @@ export function TaleEditor({
         >
           <PublishHostBridge onReady={(host) => (publishHost.current = host)} />
         </SceneHost>
-        <motion.header
-          className="editor-topbar"
-          layoutId={`studio-editor-shell-${taleId}`}
-          transition={{ duration: layoutMotion.durationSeconds, ease: platformMotionEasing("layout") }}
-        >
-          <div>
-            <Link href="/studio/library">← Studio</Link>
-            <span className="draft-mark">Draft</span>
-            <h1>{draft.tale.title}</h1>
-          </div>
-          <div className="editor-history">
-            <button disabled={!past.length} onClick={undo} aria-label="Undo last edit">
-              ↶ Undo
-            </button>
-            <button disabled={!future.length} onClick={redo} aria-label="Redo edit">
-              ↷ Redo
-            </button>
-          </div>
-          <p
-            className={`save-state ${saveState.includes("failed") || saveState.includes("Conflict") ? "error" : ""}`}
-            data-save-state={saveVisualState}
-            role="status"
-            aria-live="polite"
-          >
-            <AnimatePresence initial={false} mode="wait">
-              <motion.span
-                key={saveState}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: stateMotion.durationSeconds }}
-              >
-                {saveState}
-              </motion.span>
-            </AnimatePresence>
-          </p>
-          <AnimatePresence initial={false}>
-            {publishState === "published" && publishedVersion && (
-              <motion.span
-                key={publishedVersion}
-                className="publish-authority-seal"
-                data-authority-state="confirmed"
-                role="status"
-                initial={mode === "reduced" ? false : { opacity: 0, scale: 1.2, rotate: -8 }}
-                animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: resolvePlatformMotionToken("ceremony", mode).durationSeconds }}
-              >
-                <span aria-hidden="true">◆</span> Version {publishedVersion} published
-              </motion.span>
-            )}
-          </AnimatePresence>
-          <div className="editor-primary-actions">
-            <button disabled={!selected} onClick={() => setPreviewBlock(true)}>
-              Preview Passage
-            </button>
-            <button onClick={() => void preview()}>{studioCopy.previewVoyage.value}</button>
-            <button disabled={!selected} onClick={() => void preview(selected?.block.id)}>
-              Preview from here
-            </button>
-            <button onClick={() => void validate()}>{studioCopy.validateChronicle.value}</button>
-            <button
-              className="publish-button"
-              data-authority-state={publishState}
-              disabled={publishState === "publishing"}
-              aria-busy={publishState === "publishing"}
-              onClick={() => void publish()}
-            >
-              {publishState === "publishing" ? "Publishing..." : studioCopy.publishChronicle.value}
-            </button>
-            <div className="editor-more">
-              <button
-                type="button"
-                className="editor-more-trigger"
-                aria-expanded={moreOpen}
-                aria-controls="studio-more-actions"
-                onClick={() => setMoreOpen((open) => !open)}
-                onKeyDown={(event) => {
-                  if (event.key === "Escape") setMoreOpen(false);
-                }}
-              >
-                More
-              </button>
-              {moreOpen ? (
-                <div id="studio-more-actions">
-                  <Link href={`/studio/tales/${taleId}/settings`}>Chronicle settings</Link>
-                  <Link href={`/studio/tales/${taleId}/versions`}>{studioCopy.versionHistory.value}</Link>
-                  <button
-                    onClick={() => {
-                      setMoreOpen(false);
-                      void taleAction("duplicate");
-                    }}
-                  >
-                    {studioCopy.duplicateChronicle.value}
-                  </button>
-                  <button
-                    className="danger"
-                    onClick={() => {
-                      setMoreOpen(false);
-                      void taleAction("archive");
-                    }}
-                  >
-                    {studioCopy.archiveChronicle.value}
-                  </button>
-                </div>
-              ) : null}
-            </div>
-          </div>
-        </motion.header>
+        <StudioStatusHeader
+          taleId={taleId}
+          title={draft.tale.title}
+          canUndo={Boolean(past.length)}
+          canRedo={Boolean(future.length)}
+          saveState={saveState}
+          saveVisualState={saveVisualState}
+          validationState={validationStatus.state}
+          validationLabel={validationStatus.label}
+          validationDetail={validationStatus.detail}
+          publishState={publishState}
+          publishedVersion={publishedVersion}
+          moreOpen={moreOpen}
+          reducedMotion={mode === "reduced"}
+          layoutDuration={layoutMotion.durationSeconds}
+          stateDuration={stateMotion.durationSeconds}
+          ceremonyDuration={resolvePlatformMotionToken("ceremony", mode).durationSeconds}
+          onUndo={undo}
+          onRedo={redo}
+          onPreview={() => void preview()}
+          onValidate={() => void validate()}
+          onOpenValidation={() => validation && setValidationPanelOpen(true)}
+          onPublish={() => void publish()}
+          onOpenCommands={openCommandPalette}
+          onToggleMore={() => setMoreOpen((open) => !open)}
+          onCloseMore={() => setMoreOpen(false)}
+          onDuplicate={() => {
+            setMoreOpen(false);
+            void taleAction("duplicate");
+          }}
+          onArchive={() => {
+            setMoreOpen(false);
+            void taleAction("archive");
+          }}
+        />
         <nav className="editor-section-nav" aria-label="Chronicle authoring sections">
           {nav.map((item) => (
             <Link
@@ -1543,186 +1540,151 @@ export function TaleEditor({
               <button onClick={() => void restoreDeletedBlock()}>Undo deletion</button>
             </motion.div>
           )}
-          {validation && (
-            <motion.aside
-              className={`validation-panel ${validation.valid ? "valid" : "invalid"}`}
+        </AnimatePresence>
+        <AnimatePresence initial={false}>
+          {validation && validationPanelOpen ? (
+            <motion.div
               initial={{ opacity: 0, x: mode === "reduced" ? 0 : stateMotion.distancePx }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0 }}
             >
-              <header>
-                <strong>
-                  {validation.valid
-                    ? "Chronicle is ready to publish"
-                    : `${validation.errors.length} blocking issue${validation.errors.length === 1 ? "" : "s"}`}
-                </strong>
-                <button onClick={() => setValidation(null)}>Close</button>
-              </header>
-              <div className="validation-filters" aria-label="Issue filters">
-                <input
-                  value={issueSearch}
-                  onChange={(event) => setIssueSearch(event.target.value)}
-                  placeholder="Search rule code or message"
-                  aria-label="Search validation issues"
-                />
-                <select
-                  value={issueSeverity}
-                  onChange={(event) => setIssueSeverity(event.target.value as "ALL" | "error" | "warning")}
-                  aria-label="Filter validation severity"
-                >
-                  <option value="ALL">All severities</option>
-                  <option value="error">Blocking</option>
-                  <option value="warning">Warnings</option>
-                </select>
-                <select
-                  value={issueCategory}
-                  onChange={(event) => setIssueCategory(event.target.value)}
-                  aria-label="Filter validation category"
-                >
-                  <option value="ALL">All categories</option>
-                  {validationCategories.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="validation-survey-actions">
-                <button onClick={() => void loadGraphSurvey()} disabled={surveyLoading === "graph"}>
-                  {surveyLoading === "graph" ? "Loading graph survey..." : "Open static graph outline"}
-                </button>
-                <button onClick={() => void loadVariableExplorer()} disabled={surveyLoading === "variables"}>
-                  {surveyLoading === "variables" ? "Loading variables..." : "Open variable explorer"}
-                </button>
-              </div>
-              {validationIssues.map((issue, index) => (
-                <button
-                  key={`${issue.code}:${issue.blockId ?? "chronicle"}:${index}`}
-                  onClick={(event) => {
-                    setSelectedRuleCode(issue.code);
-                    setSelectedRepairBlockId(
-                      issue.code === "DRYDOCK_LEGACY_NEXT_TARGET_CONFLICT" ? (issue.blockId ?? null) : null,
-                    );
-                    if (issue.blockId) focusBlock(issue.blockId, event.currentTarget);
-                  }}
-                  data-drydock-rule-code={issue.code}
-                  title={`Drydock rule ${issue.code}${issue.field ? ` at ${issue.field}` : ""}`}
-                >
-                  <strong>{issue.code}</strong> {issue.message}
-                  {issue.category ? ` (${issue.category})` : ""}
-                  {issue.remediation ? <span> {issue.remediation}</span> : null}
-                </button>
-              ))}
-              {selectedRule && (
-                <section className="validation-rule-detail" aria-live="polite">
-                  <strong>
-                    {selectedRule.code}: {selectedRule.title}
-                  </strong>
-                  <p>{selectedRule.summary}</p>
-                  <p>{selectedRule.technicalExplanation}</p>
-                  <p>
-                    Category: {selectedRule.category}. Severity: {selectedRule.defaultSeverity}. Repair:{" "}
-                    {selectedRule.repairClassification}.
-                  </p>
-                  <p>
-                    Waiver: {selectedRule.waiverPolicy === "NEVER" ? "not permitted" : "requires governed review"}.
-                    Compatibility: {selectedRule.compatibilityPolicy}.
-                  </p>
-                  {selectedRuleCode === "DRYDOCK_LEGACY_NEXT_TARGET_CONFLICT" && selectedRepairBlockId ? (
-                    <button onClick={() => void previewAndApplySafeRepair(selectedRepairBlockId)}>
-                      Preview safe repair
-                    </button>
-                  ) : null}
-                </section>
-              )}
-              {graphSurvey && (
-                <section className="validation-graph-outline" aria-label="Static graph outline">
-                  <strong>Static graph outline</strong>
-                  <p>Proof: {graphSurvey.proofCompleteness}. Select a Passage to navigate to it.</p>
-                  <ol>
-                    {graphSurvey.nodes.map((node) => (
-                      <li key={node.id}>
-                        <button onClick={(event) => focusBlock(node.id, event.currentTarget)}>
-                          {node.blockType} ({node.id})
-                        </button>
-                        <span>
-                          {node.isEntry ? " Entry." : ""}
-                          {node.isTerminal ? " Terminal." : ""}
-                          {!node.isReachable ? " Unreachable." : ""}
-                          {!node.canReachTerminal ? " No terminal path." : ""}
-                          {node.stronglyConnectedComponent !== null
-                            ? ` Cycle group ${node.stronglyConnectedComponent}.`
-                            : ""}
-                          {node.annotations.length
-                            ? ` Rules: ${node.annotations.map((annotation) => annotation.code).join(", ")}.`
-                            : ""}
-                        </span>
-                      </li>
+              <StudioValidationPanel
+                result={filteredValidation ?? validation}
+                onClose={() => setValidationPanelOpen(false)}
+                onFocusIssue={focusValidationIssue}
+              >
+                <div className="validation-filters" aria-label="Issue filters">
+                  <input
+                    value={issueSearch}
+                    onChange={(event) => setIssueSearch(event.target.value)}
+                    placeholder="Search rule code or message"
+                    aria-label="Search validation issues"
+                  />
+                  <select
+                    value={issueSeverity}
+                    onChange={(event) => setIssueSeverity(event.target.value as "ALL" | "error" | "warning")}
+                    aria-label="Filter validation severity"
+                  >
+                    <option value="ALL">All severities</option>
+                    <option value="error">Blocking</option>
+                    <option value="warning">Warnings</option>
+                  </select>
+                  <select
+                    value={issueCategory}
+                    onChange={(event) => setIssueCategory(event.target.value)}
+                    aria-label="Filter validation category"
+                  >
+                    <option value="ALL">All categories</option>
+                    {validationCategories.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
                     ))}
-                  </ol>
-                </section>
-              )}
-              {variableExplorer && (
-                <section className="validation-variable-explorer" aria-label="Variable explorer">
-                  <strong>Variable explorer</strong>
-                  <ul>
-                    {variableExplorer.variables.map((variable) => (
-                      <li key={variable.id}>
-                        <strong>{variable.name}</strong> ({variable.id}): {variable.type.kind}, {variable.scope},{" "}
-                        {variable.privacy}. {variable.unusedState}. Initialization proof:{" "}
-                        {variable.initialization.proofStatus}.
-                        {variable.defaultValue !== undefined
-                          ? ` Default: ${JSON.stringify(variable.defaultValue)}.`
-                          : " No declared default."}
-                        {variable.readers.length ? (
+                  </select>
+                </div>
+                <div className="validation-survey-actions">
+                  <button onClick={() => void loadGraphSurvey()} disabled={surveyLoading === "graph"}>
+                    {surveyLoading === "graph" ? "Loading graph survey..." : "Open static graph outline"}
+                  </button>
+                  <button onClick={() => void loadVariableExplorer()} disabled={surveyLoading === "variables"}>
+                    {surveyLoading === "variables" ? "Loading variables..." : "Open variable explorer"}
+                  </button>
+                </div>
+                {selectedRule && (
+                  <section className="validation-rule-detail" aria-live="polite">
+                    <strong>
+                      {selectedRule.code}: {selectedRule.title}
+                    </strong>
+                    <p>{selectedRule.summary}</p>
+                    <p>{selectedRule.technicalExplanation}</p>
+                    <p>
+                      Category: {selectedRule.category}. Severity: {selectedRule.defaultSeverity}. Repair:{" "}
+                      {selectedRule.repairClassification}.
+                    </p>
+                    <p>
+                      Waiver: {selectedRule.waiverPolicy === "NEVER" ? "not permitted" : "requires governed review"}.
+                      Compatibility: {selectedRule.compatibilityPolicy}.
+                    </p>
+                    {selectedRuleCode === "DRYDOCK_LEGACY_NEXT_TARGET_CONFLICT" && selectedRepairBlockId ? (
+                      <button onClick={() => void previewAndApplySafeRepair(selectedRepairBlockId)}>
+                        Preview safe repair
+                      </button>
+                    ) : null}
+                  </section>
+                )}
+                {graphSurvey && (
+                  <section className="validation-graph-outline" aria-label="Static graph outline">
+                    <strong>Static graph outline</strong>
+                    <p>Proof: {graphSurvey.proofCompleteness}. Select a Passage to navigate to it.</p>
+                    <ol>
+                      {graphSurvey.nodes.map((node) => (
+                        <li key={node.id}>
+                          <button onClick={(event) => focusBlock(node.id, event.currentTarget)}>
+                            {node.blockType} ({node.id})
+                          </button>
                           <span>
-                            {" "}
-                            Readers:{" "}
-                            {variable.readers.map((reader, index) =>
-                              reader.blockId ? (
-                                <button
-                                  key={`${reader.blockId}:${reader.fieldPath}:${index}`}
-                                  onClick={(event) => focusBlock(reader.blockId!, event.currentTarget)}
-                                >
-                                  {reader.blockId}
-                                </button>
-                              ) : (
-                                reader.fieldPath
-                              ),
-                            )}
-                            .
+                            {node.isEntry ? " Entry." : ""}
+                            {node.isTerminal ? " Terminal." : ""}
+                            {!node.isReachable ? " Unreachable." : ""}
+                            {!node.canReachTerminal ? " No terminal path." : ""}
+                            {node.stronglyConnectedComponent !== null
+                              ? ` Cycle group ${node.stronglyConnectedComponent}.`
+                              : ""}
+                            {node.annotations.length
+                              ? ` Rules: ${node.annotations.map((annotation) => annotation.code).join(", ")}.`
+                              : ""}
                           </span>
-                        ) : null}
-                        {variable.writers.length ? (
-                          <span>
-                            {" "}
-                            Writers:{" "}
-                            {variable.writers.map((writer, index) =>
-                              writer.blockId ? (
-                                <button
-                                  key={`${writer.blockId}:${writer.fieldPath}:${index}`}
-                                  onClick={(event) => focusBlock(writer.blockId!, event.currentTarget)}
-                                >
-                                  {writer.blockId}
-                                </button>
-                              ) : (
-                                writer.fieldPath
-                              ),
-                            )}
-                            .
-                          </span>
-                        ) : null}
-                        {variable.relatedIssueCodes.length ? (
-                          <span> Rules: {variable.relatedIssueCodes.join(", ")}.</span>
-                        ) : null}
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              )}
-            </motion.aside>
-          )}
+                        </li>
+                      ))}
+                    </ol>
+                  </section>
+                )}
+                {variableExplorer && (
+                  <section className="validation-variable-explorer" aria-label="Variable explorer">
+                    <strong>Variable explorer</strong>
+                    <ul>
+                      {variableExplorer.variables.map((variable) => (
+                        <li key={variable.id}>
+                          <strong>{variable.name}</strong> ({variable.id}): {variable.type.kind}, {variable.scope},{" "}
+                          {variable.privacy}. {variable.unusedState}. Initialization proof:{" "}
+                          {variable.initialization.proofStatus}.
+                          {variable.defaultValue !== undefined
+                            ? ` Default: ${JSON.stringify(variable.defaultValue)}.`
+                            : " No declared default."}
+                          {variable.readers.length ? (
+                            <span>
+                              {" "}
+                              Readers: {variable.readers.map((reader) => reader.blockId ?? reader.fieldPath).join(", ")}
+                              .
+                            </span>
+                          ) : null}
+                          {variable.writers.length ? (
+                            <span>
+                              {" "}
+                              Writers: {variable.writers.map((writer) => writer.blockId ?? writer.fieldPath).join(", ")}
+                              .
+                            </span>
+                          ) : null}
+                          {variable.relatedIssueCodes.length ? (
+                            <span> Rules: {variable.relatedIssueCodes.join(", ")}.</span>
+                          ) : null}
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+              </StudioValidationPanel>
+            </motion.div>
+          ) : null}
         </AnimatePresence>
+        <StudioSelectionToolbar
+          selectedTitle={selected?.block.title ?? null}
+          selectionCount={selectedIds.length}
+          onPreview={() => setPreviewBlock(true)}
+          onPreviewFromHere={() => selected && void preview(selected.block.id)}
+          onCloseInspector={closeInspector}
+          onMoveSelection={moveSelectionToNextChapter}
+        />
         {initialSection === "story" && (
           <DndContext
             sensors={dndSensors}
@@ -1735,7 +1697,7 @@ export function TaleEditor({
               {dragAnnouncement}
             </p>
             <div className="editor-workbench">
-              <aside className="block-library">
+              <aside id="studio-library" className="block-library" tabIndex={-1}>
                 <div>
                   <p className="eyebrow">Passage library</p>
                   <h2>Passages</h2>
@@ -1808,7 +1770,14 @@ export function TaleEditor({
                   </ol>
                 )}
               </aside>
-              <section className="story-canvas" aria-label="Chronicle timeline">
+              <section
+                ref={canvas}
+                id="studio-canvas"
+                className="story-canvas"
+                aria-label="Chronicle timeline"
+                tabIndex={-1}
+                style={{ zoom: canvasZoom }}
+              >
                 <header>
                   <div>
                     <p className="eyebrow">Chronicle flow</p>
@@ -1816,25 +1785,33 @@ export function TaleEditor({
                       {draft.chapters.length} chapter{draft.chapters.length === 1 ? "" : "s"}
                     </h2>
                   </div>
-                  <button
-                    onClick={() =>
-                      change((next) =>
-                        next.chapters.push({
-                          id: crypto.randomUUID(),
-                          title: `Chapter ${next.chapters.length + 1}`,
-                          subtitle: "",
-                          description: "",
-                          coverAssetId: null,
-                          estimatedDuration: null,
-                          isOptional: false,
-                          metadata: {},
-                          blocks: [],
-                        }),
-                      )
-                    }
-                  >
-                    + {studioCopy.addChapter.value}
-                  </button>
+                  <div className="studio-canvas-actions">
+                    <StudioCanvasViewControls
+                      zoom={canvasZoom}
+                      onZoomChange={setCanvasZoom}
+                      onFit={fitCanvas}
+                      onPan={panCanvas}
+                    />
+                    <button
+                      onClick={() =>
+                        change((next) =>
+                          next.chapters.push({
+                            id: crypto.randomUUID(),
+                            title: `Chapter ${next.chapters.length + 1}`,
+                            subtitle: "",
+                            description: "",
+                            coverAssetId: null,
+                            estimatedDuration: null,
+                            isOptional: false,
+                            metadata: {},
+                            blocks: [],
+                          }),
+                        )
+                      }
+                    >
+                      + {studioCopy.addChapter.value}
+                    </button>
+                  </div>
                 </header>
                 {draft.chapters.map((chapter, chapterIndex) => (
                   <motion.article
@@ -1922,26 +1899,56 @@ export function TaleEditor({
                               {(attributes, listeners) => (
                                 <>
                                   <article
-                                    className={`timeline-block ${selectedId === block.id ? "selected" : ""}`}
+                                    {...attributes}
+                                    {...listeners}
+                                    className={`timeline-block ${selectedIds.includes(block.id) ? "selected" : ""}`}
                                     data-block-id={block.id}
+                                    data-selection-count={selectedIds.length}
                                     data-validation-error={
                                       validation?.errors.some((issue) => issue.blockId === block.id)
                                         ? "true"
                                         : undefined
                                     }
                                     data-drydock-graph-state={graphState}
-                                    tabIndex={-1}
-                                    onClick={(event) => openInspector(block.id, event.currentTarget)}
+                                    tabIndex={0}
+                                    onClick={(event) =>
+                                      selectBlock(
+                                        block.id,
+                                        event.currentTarget,
+                                        event.metaKey || event.ctrlKey,
+                                        event.shiftKey,
+                                      )
+                                    }
+                                    onKeyDown={(event) => {
+                                      if (event.key === "Enter") {
+                                        event.preventDefault();
+                                        selectBlock(
+                                          block.id,
+                                          event.currentTarget,
+                                          event.metaKey || event.ctrlKey,
+                                          event.shiftKey,
+                                        );
+                                        return;
+                                      }
+                                      listeners?.onKeyDown?.(event);
+                                    }}
                                   >
                                     <button
-                                      className="drag-handle"
-                                      {...attributes}
-                                      {...listeners}
-                                      onClick={(event) => event.stopPropagation()}
-                                      aria-label={`Move ${block.title}. Press Space to pick up, arrow keys to move, and Space to drop.`}
+                                      className="timeline-selection-toggle"
+                                      type="button"
+                                      aria-label={`${selectedIds.includes(block.id) ? "Deselect" : "Select"} ${block.title}`}
+                                      aria-pressed={selectedIds.includes(block.id)}
+                                      onPointerDown={(event) => event.stopPropagation()}
+                                      onClick={(event) => {
+                                        event.stopPropagation();
+                                        selectBlock(block.id, event.currentTarget, true);
+                                      }}
                                     >
-                                      ⠿
+                                      {selectedIds.includes(block.id) ? "✓" : "+"}
                                     </button>
+                                    <span className="drag-handle" aria-hidden="true">
+                                      ⠿
+                                    </span>
                                     <span className="block-icon" aria-hidden="true">
                                       {definition?.icon ?? "?"}
                                     </span>
@@ -2154,6 +2161,67 @@ export function TaleEditor({
                               })
                             }
                           />
+                        </label>
+                      </fieldset>
+                      <fieldset className="journal-presentation-fields shipwright-motion-fields">
+                        <legend>Passage animation</legend>
+                        <p>
+                          These settings are saved with this Passage and play in the published journal. Reduced-motion
+                          preferences always take priority for the Crew.
+                        </p>
+                        <label data-inspector-field="transitionIn">
+                          <span>Opening animation</span>
+                          <select
+                            value={String(selected.block.presentation.transitionIn ?? "fade")}
+                            onChange={(event) =>
+                              updateSelected((block) => {
+                                block.presentation.transitionIn = event.target.value;
+                              })
+                            }
+                          >
+                            {storyMotionPresets.map((preset) => (
+                              <option key={preset.id} value={preset.id}>
+                                {preset.label} — {preset.description}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <label data-inspector-field="transitionOut">
+                          <span>Leaving animation</span>
+                          <select
+                            value={String(selected.block.presentation.transitionOut ?? "minimize")}
+                            onChange={(event) =>
+                              updateSelected((block) => {
+                                block.presentation.transitionOut = event.target.value;
+                              })
+                            }
+                          >
+                            {storyMotionPresets.map((preset) => (
+                              <option key={preset.id} value={preset.id}>
+                                {preset.label} — {preset.description}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <label data-inspector-field="backgroundScene">
+                          <span>While this Passage is active</span>
+                          <select
+                            value={readStayStoryMotion(selected.block.presentation.backgroundScene) ?? ""}
+                            onChange={(event) =>
+                              updateSelected((block) => {
+                                if (event.target.value)
+                                  block.presentation.backgroundScene = `shipwright-stay:${event.target.value}`;
+                                else delete block.presentation.backgroundScene;
+                              })
+                            }
+                          >
+                            <option value="">Keep the journal's natural resting state</option>
+                            {storyMotionPresets.map((preset) => (
+                              <option key={preset.id} value={preset.id}>
+                                {preset.label} — {preset.description}
+                              </option>
+                            ))}
+                          </select>
                         </label>
                       </fieldset>
                       <label>
@@ -2848,6 +2916,7 @@ export function TaleEditor({
             </div>
           </aside>
         )}
+        <StudioCommandPalette open={commandPaletteOpen} commands={studioCommands} onClose={closeCommandPalette} />
       </motion.main>
       {dialog}
     </>
@@ -2944,6 +3013,7 @@ function Field({
   artifacts: LibraryRecord[];
   onChange: (value: unknown) => void;
 }) {
+  const fieldTarget = { "data-inspector-field": field.key };
   const label = (
     <span>
       {field.label}
@@ -2952,7 +3022,7 @@ function Field({
   );
   if (field.kind === "textarea")
     return (
-      <label>
+      <label {...fieldTarget}>
         {label}
         <textarea rows={5} value={String(value ?? "")} onChange={(event) => onChange(event.target.value)} />
         {field.help && <small>{field.help}</small>}
@@ -2960,14 +3030,14 @@ function Field({
     );
   if (field.kind === "boolean")
     return (
-      <label className="check-field">
+      <label className="check-field" {...fieldTarget}>
         <input type="checkbox" checked={Boolean(value)} onChange={(event) => onChange(event.target.checked)} />
         {label}
       </label>
     );
   if (field.kind === "number")
     return (
-      <label>
+      <label {...fieldTarget}>
         {label}
         <input
           type="number"
@@ -2978,7 +3048,7 @@ function Field({
     );
   if (field.kind === "select")
     return (
-      <label>
+      <label {...fieldTarget}>
         {label}
         <select value={String(value ?? "")} onChange={(event) => onChange(event.target.value)}>
           {field.options?.map((option) => (
@@ -2992,6 +3062,7 @@ function Field({
   if (field.kind === "asset")
     return (
       <label
+        {...fieldTarget}
         className="asset-field-drop"
         onDragOver={(event) => {
           if (event.dataTransfer.types.includes("application/x-chronicle-asset")) event.preventDefault();
@@ -3032,7 +3103,7 @@ function Field({
     const records = field.kind === "location" ? locations : artifacts;
     const recordLabel = field.kind === "location" ? "Waypoint" : "Artifact";
     return (
-      <label>
+      <label {...fieldTarget}>
         {label}
         <select value={String(value ?? "")} onChange={(event) => onChange(event.target.value || null)}>
           <option value="">Choose {recordLabel}</option>
@@ -3058,13 +3129,13 @@ function Field({
     return <ChoiceListField label={label} value={value} onChange={onChange} />;
   if (field.kind === "json")
     return (
-      <fieldset className="structured-list-field" disabled>
+      <fieldset className="structured-list-field" disabled {...fieldTarget}>
         <legend>{label}</legend>
         <p>This advanced field needs a governed structured editor before it can be changed here.</p>
       </fieldset>
     );
   return (
-    <label>
+    <label {...fieldTarget}>
       {label}
       <input value={String(value ?? "")} onChange={(event) => onChange(event.target.value)} />
       {field.help && <small>{field.help}</small>}

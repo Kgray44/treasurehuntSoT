@@ -317,7 +317,7 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   z-index: 50;
   top: 0;
   display: grid;
-  grid-template-columns: minmax(250px, 1fr) auto auto auto;
+  grid-template-columns: minmax(250px, 1fr) auto minmax(14rem, auto) auto;
   align-items: center;
   gap: 1rem;
   min-height: 76px;
@@ -397,17 +397,183 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   background: var(--brass-100);
   font-weight: 850;
 }
+
+.editor-primary-actions kbd {
+  margin-left: 0.35rem;
+  border: 1px solid rgb(201 169 95 / 35%);
+  border-radius: 4px;
+  padding: 0.08rem 0.28rem;
+  color: inherit;
+  font: inherit;
+  font-size: 0.68rem;
+}
+
+.studio-selection-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1500px;
+  margin: 0.75rem auto;
+  border: 1px solid rgb(83 170 167 / 42%);
+  border-radius: 12px;
+  padding: 0.7rem 0.85rem;
+  background: rgb(12 45 47 / 88%);
+}
+
+.studio-selection-toolbar p {
+  margin: 0 0 0.15rem;
+}
+
+.studio-selection-toolbar > div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.studio-command-palette-backdrop {
+  position: fixed;
+  z-index: 70;
+  inset: 0;
+  display: grid;
+  place-items: start center;
+  overflow: auto;
+  padding: min(12vh, 7rem) 1rem 2rem;
+  background: rgb(1 10 12 / 72%);
+}
+
+.studio-command-palette {
+  width: min(100%, 680px);
+  border: 1px solid rgb(201 169 95 / 52%);
+  border-radius: 16px;
+  padding: 1rem;
+  color: var(--text-primary);
+  background: #092326;
+  box-shadow: 0 24px 70px rgb(0 0 0 / 48%);
+}
+
+.studio-command-palette > header,
+.studio-command-palette > header > div,
+.studio-command-list button,
+.studio-command-list button > span {
+  display: flex;
+}
+
+.studio-command-palette > header {
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.studio-command-palette h2,
+.studio-command-palette p {
+  margin-top: 0;
+}
+
+.studio-command-palette > input {
+  width: 100%;
+  margin: 1rem 0 0.6rem;
+  border: 1px solid rgb(201 169 95 / 38%);
+  border-radius: 9px;
+  padding: 0.8rem;
+  color: inherit;
+  background: rgb(0 0 0 / 20%);
+}
+
+.studio-command-list {
+  display: grid;
+  max-height: min(52vh, 460px);
+  overflow: auto;
+  gap: 0.3rem;
+}
+
+.studio-command-list button {
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 0.75rem;
+  color: inherit;
+  background: transparent;
+  text-align: left;
+}
+
+.studio-command-list button:hover:not(:disabled),
+.studio-command-list button:focus-visible {
+  border-color: rgb(201 169 95 / 48%);
+  background: rgb(201 169 95 / 10%);
+}
+
+.studio-command-list button > span {
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.studio-command-list small,
+.studio-command-empty {
+  color: #b3c7c1;
+}
+
+.studio-command-list kbd {
+  border: 1px solid rgb(201 169 95 / 30%);
+  border-radius: 4px;
+  padding: 0.16rem 0.35rem;
+  white-space: nowrap;
+  color: #f5ead0;
+  font: inherit;
+  font-size: 0.7rem;
+}
 .save-state {
-  display: inline-grid;
-  min-width: 12.5rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  min-width: 11rem;
+  gap: 0.42rem;
   margin: 0;
   color: #9fb5af;
   font-size: 0.78rem;
   white-space: nowrap;
 }
 .save-state > span {
-  grid-area: 1 / 1;
+  min-width: 0;
 }
+.studio-status-cluster {
+  display: grid;
+  gap: 0.28rem;
+  border-left: 1px solid rgb(201 169 95 / 24%);
+  padding-left: 0.8rem;
+}
+.studio-status-label {
+  color: #d7bc78;
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.validation-status {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 0.45rem;
+  min-width: 12rem;
+  border: 1px solid rgb(201 169 95 / 42%);
+  background: rgb(201 169 95 / 9%);
+  color: #f6ead2;
+  text-align: left;
+}
+.validation-status > span {
+  color: #d7bc78;
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.validation-status strong { font-size: 0.72rem; }
+.validation-status[data-validation-state="ready"] { border-color: rgb(105 192 155 / 75%); background: rgb(73 150 112 / 15%); }
+.validation-status[data-validation-state="blocking"] { border-color: rgb(226 130 120 / 90%); background: rgb(184 67 56 / 16%); }
+.validation-status[data-validation-state="attention"] { border-color: rgb(222 177 83 / 88%); background: rgb(196 140 38 / 14%); }
+.validation-status[data-validation-state="checking"] { border-color: rgb(105 174 192 / 85%); background: rgb(69 125 160 / 15%); }
 .save-state[data-save-state="pending"]::before,
 .save-state[data-save-state="saved"]::before,
 .save-state[data-save-state="failed"]::before {
@@ -555,8 +721,11 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   top: 132px;
   right: 1rem;
   width: min(430px, calc(100vw - 2rem));
+  min-width: min(320px, calc(100vw - 2rem));
+  min-height: 220px;
   max-height: 70vh;
   overflow: auto;
+  resize: both;
   border: 1px solid rgba(201, 169, 95, 0.4);
   border-radius: 15px;
   padding: 0.8rem;
@@ -568,6 +737,31 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   justify-content: space-between;
   margin-bottom: 0.5rem;
 }
+.validation-panel__drag-region { cursor: grab; user-select: none; }
+.validation-panel__drag-region:active { cursor: grabbing; }
+.validation-panel__hint { margin: 0.2rem 0; color: #a8c1bb; font-size: 0.72rem; }
+.validation-panel__success { color: #a9dfc3; }
+.validation-group { margin-top: 0.85rem; border-top: 1px solid rgb(201 169 95 / 20%); padding-top: 0.65rem; }
+.validation-group h3, .validation-group > p { margin: 0.2rem 0; }
+.validation-group > p { color: #aac0ba; font-size: 0.78rem; }
+.validation-group.blocking h3 { color: #ffb2a9; }
+.validation-group.warning h3 { color: #f1ce83; }
+.validation-issue {
+  display: grid;
+  width: 100%;
+  gap: 0.28rem;
+  margin-top: 0.55rem;
+  border: 1px solid rgb(201 169 95 / 24%);
+  border-radius: 9px;
+  padding: 0.65rem;
+  color: inherit;
+  background: rgb(0 0 0 / 15%);
+  text-align: left;
+}
+.validation-issue:hover, .validation-issue:focus-visible { border-color: var(--brass-100); background: rgb(201 169 95 / 12%); }
+.validation-issue > span { color: #d9bc76; font-size: 0.67rem; font-weight: 850; letter-spacing: 0.06em; text-transform: uppercase; }
+.validation-issue > small { color: #9fc0b7; }
+.validation-issue > em { color: #819b94; font-size: 0.66rem; font-style: normal; }
 .validation-panel > button {
   display: block;
   width: 100%;
@@ -724,7 +918,23 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
 }
 .story-canvas > header {
   display: flex;
+  align-items: start;
   justify-content: space-between;
+  gap: 0.75rem;
+}
+.studio-canvas-actions,
+.studio-canvas-view-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: end;
+  gap: 0.35rem;
+}
+.studio-canvas-view-controls output {
+  min-width: 3.5rem;
+  color: var(--brass-100);
+  font-size: 0.76rem;
+  text-align: center;
 }
 .chapter-timeline {
   margin: 1rem 0 1.6rem;
@@ -763,7 +973,7 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
 }
 .timeline-block {
   display: grid;
-  grid-template-columns: 38px 40px 1fr auto;
+  grid-template-columns: 30px 38px 40px 1fr auto;
   align-items: center;
   gap: 0.65rem;
   border: 1px solid rgba(201, 169, 95, 0.22);
@@ -794,7 +1004,19 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
 .drag-handle {
   padding: 0.35rem;
   cursor: grab;
+  pointer-events: none;
 }
+.timeline-selection-toggle {
+  width: 1.65rem;
+  height: 1.65rem;
+  border: 1px solid rgb(201 169 95 / 50%);
+  border-radius: 50%;
+  padding: 0;
+  color: #e5cf9b;
+  background: rgb(0 0 0 / 15%);
+  font-weight: 850;
+}
+.timeline-selection-toggle[aria-pressed="true"] { color: #142222; background: var(--brass-100); }
 .block-icon {
   display: grid;
   width: 36px;
@@ -896,6 +1118,8 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   content: "↓";
   color: rgba(201, 169, 95, 0.45);
 }
+.shipwright-motion-fields { border-color: rgb(120 184 181 / 38%); background: rgb(27 79 80 / 14%); }
+.shipwright-motion-fields > p { margin-top: 0; color: #a8c4bd; font-size: 0.76rem; line-height: 1.45; }
 .empty-chapter {
   border: 1px dashed rgba(201, 169, 95, 0.3);
   border-radius: 10px;
@@ -1464,6 +1688,10 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   .editor-topbar .save-state {
     grid-row: 2;
   }
+  .editor-topbar .studio-status-cluster {
+    grid-row: 2;
+    grid-column: 1;
+  }
   .editor-primary-actions {
     grid-row: 2;
     grid-column: 2;
@@ -1524,6 +1752,20 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   .editor-primary-actions {
     flex-wrap: wrap;
   }
+  .studio-selection-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .studio-selection-toolbar > div:last-child {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .studio-command-palette-backdrop {
+    padding: 1rem 0.6rem;
+  }
+  .studio-command-palette > header {
+    align-items: start;
+  }
   .editor-section-nav {
     top: 0;
     width: 100%;
@@ -1533,12 +1775,20 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
     flex: 0 0 auto;
   }
   .timeline-block {
-    grid-template-columns: 34px 34px minmax(0, 1fr);
+    grid-template-columns: 30px 34px 34px minmax(0, 1fr);
     max-width: 100%;
     min-width: 0;
   }
+  .story-canvas > header,
+  .studio-canvas-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .studio-canvas-view-controls {
+    justify-content: start;
+  }
   .block-move {
-    grid-column: 3;
+    grid-column: 4;
     min-width: 0;
     flex-wrap: wrap;
   }
