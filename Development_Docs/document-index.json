@@ -2745,6 +2745,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_2_Reconciliation_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_2_Rule_Catalog.json",
       "record_type": "program-record",
       "status": "current",
@@ -2784,6 +2790,36 @@
       "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Creator_Studio_Authoring_Experience_Governing_Document.pdf",
       "record_type": "program-record",
       "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_1_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_1_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_1_Mainline_Safety_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_1_Owner_Walkthrough.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_1_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
       "canonical_for": null
     },
     {
