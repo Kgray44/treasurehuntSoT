@@ -446,8 +446,13 @@ test("Phase 3 reconciliation closes only accepted documentation evidence and pre
       baseline.findingsDocument.findings.find((finding) => finding.findingId === findingId)?.status,
       "CLOSED",
     );
-  assert.equal(baseline.status.mainlineState, "CANDIDATE_PENDING_PROTECTED_INTEGRATION");
-  assert.equal(baseline.status.finalReconciledMainSha, null);
+  assert.equal(baseline.status.mainlineState, "MAINLINE_ACCEPTED");
+  assert.equal(baseline.status.finalReconciledMainSha, "ca135585a62f445cd4331df1a7dd21203bd50219");
+  assert.equal(baseline.inputs.phase3Config.validationEvidence.finalCandidate.decision, "RELEASE_GO");
+  assert.equal(baseline.inputs.phase3Config.validationEvidence.finalCandidate.receiptCount, 37);
+  assert.equal(baseline.inputs.phase3Config.validationEvidence.hostedMainline.successfulCheckCount, 40);
+  assert.equal(baseline.inputs.phase3Config.validationEvidence.acceptedMainProof.receiptCount, 7);
+  assert.match(baseline.phase3Reports.final, /Remaining blocker: NONE/u);
 });
 
 test("Phase 3 rejects an orphan backend operation", () => {

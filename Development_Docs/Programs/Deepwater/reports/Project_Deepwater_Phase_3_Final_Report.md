@@ -3,7 +3,7 @@ title: Project Deepwater Phase 3 Final Report
 audience: product-engineering
 status: current
 canonical_for: project-deepwater-phase-3-final-report
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-10
 ---
 
 # PROJECT DEEPWATER
@@ -11,10 +11,10 @@ last_reviewed: 2026-08-09
 ## PHASE 3: RAISE THE CAPABILITY
 
 - Base origin/main: `762258e31d7509aac8a7a46e7828ae0e92b84a84`
-- Final reconciled origin/main: `3e235e85b974183f3b0888814a15697596f73730`
+- Final reconciled origin/main: `ca135585a62f445cd4331df1a7dd21203bd50219`
 - Coordination branch: `codex/project-deepwater-phase3-mainline-reconciliation`
-- Final Phase 3 commit: PENDING_PROTECTED_INTEGRATION
-- Mainline state: CANDIDATE_PENDING_PROTECTED_INTEGRATION
+- Final Phase 3 commit: `ca135585a62f445cd4331df1a7dd21203bd50219`
+- Mainline state: MAINLINE_ACCEPTED
 
 ## Capability realization
 
@@ -80,10 +80,10 @@ last_reviewed: 2026-08-09
 - Utilization policy: 55/55 capabilities reviewed.
 - Deepwater tests: 55/55 governed control-plane cases registered.
 - Slice decisions: all three registered slices are accepted-main `RELEASE_GO` evidence.
-- Final Phase 3 decision: PENDING
-- Hosted mainline decision: PENDING
-- Accepted-main proof: PENDING
+- Final Phase 3 decision: RELEASE_GO; digest `6001f5ddfc8be443d28a92210ba61aae761e2cc4ad61fc7549fcf4117cc989c3`
+- Hosted mainline decision: RELEASE_GO; digest `6e433bcc37bf2ea7b1d2e301a052138611360f19426e98868bec1517d185ee35`
+- Accepted-main proof: RELEASE_GO; digest `58924a2d7b8811040ad6e3e91d64ae74bd54a8164395fcd2359082db32831a65`
 
 - Mainline Safety Contract: SATISFIED
 - Phase 4 authorized: false
-- Remaining blocker: Protected integration and actual-main accepted-source proof remain pending.
+- Remaining blocker: NONE
