@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "1.0.0",
+  "registryVersion": "tideglass.change-codes.v1",
+  "kindSuffixes": {
+    "ADDED": "ADD",
+    "REMOVED": "REMOVE",
+    "MODIFIED": "MODIFY",
+    "MOVED": "MOVE",
+    "REWIRED": "REWIRE",
+    "REPLACED": "REPLACE"
+  },
+  "categories": [
+    {
+      "category": "STORY_CONTENT",
+      "prefix": "TG-STORY",
+      "defaultSignificance": "MEANINGFUL",
+      "defaultSpoiler": "STORY_SPOILER",
+      "compatibilityRelevant": false,
+      "summaryTemplateFamily": "story"
+    },
+    {
+      "category": "STRUCTURE",
+      "prefix": "TG-STRUCT",
+      "defaultSignificance": "MAJOR",
+      "defaultSpoiler": "STORY_SPOILER",
+      "compatibilityRelevant": false,
+      "summaryTemplateFamily": "structure"
+    },
+    {
+      "category": "BRANCHING_AND_CHOICES",
+      "prefix": "TG-BRANCH",
+      "defaultSignificance": "MAJOR",
+      "defaultSpoiler": "STORY_SPOILER",
+      "compatibilityRelevant": false,
+      "summaryTemplateFamily": "branches"
+    },
+    {
+      "category": "ENDING",
+      "prefix": "TG-ENDING",
+      "defaultSignificance": "MAJOR",
+      "defaultSpoiler": "ENDING_SPOILER",
+      "compatibilityRelevant": false,
+      "summaryTemplateFamily": "endings"
+    },
+    {
+      "category": "COMPLETION",
+      "prefix": "TG-COMPLETION",
+      "defaultSignificance": "MAJOR",
+      "defaultSpoiler": "CAPTAIN_ONLY",
+      "compatibilityRelevant": true,
+      "summaryTemplateFamily": "completion"
+    },
+    {
+      "category": "SIDE_QUEST",
+      "prefix": "TG-SIDEQUEST",
+      "defaultSignificance": "MEANINGFUL",
+      "defaultSpoiler": "STORY_SPOILER",
+      "compatibilityRelevant": false,
+      "summaryTemplateFamily": "side-quests"
+    },
+    {
+      "category": "ARTIFACT",
+      "prefix": "TG-ARTIFACT",
+      "defaultSignificance": "MEANINGFUL",
+      "defaultSpoiler": "STORY_SPOILER",
+      "compatibilityRelevant": false,
+      "summaryTemplateFamily": "artifacts"
+    },
+    {
+      "category": "LOCATION_AND_MAP",
+      "prefix": "TG-LOCATION",
+      "defaultSignificance": "MAJOR",
+      "defaultSpoiler": "STORY_SPOILER",
+      "compatibilityRelevant": true,
+      "summaryTemplateFamily": "locations"
+    },
+    {
+      "category": "MEDIA",
+      "prefix": "TG-MEDIA",
+      "defaultSignificance": "MEANINGFUL",
+      "defaultSpoiler": "PREVIEW_SAFE",
+      "compatibilityRelevant": true,
+      "summaryTemplateFamily": "media"
+    },
+    {
+      "category": "ACCESSIBILITY",
+      "prefix": "TG-A11Y",
+      "defaultSignificance": "MEANINGFUL",
+      "defaultSpoiler": "PREVIEW_SAFE",
+      "compatibilityRelevant": true,
+      "summaryTemplateFamily": "accessibility"
+    },
+    {
+      "category": "SETUP_REQUIREMENTS",
+      "prefix": "TG-SETUP",
+      "defaultSignificance": "MAJOR",
+      "defaultSpoiler": "PREVIEW_SAFE",
+      "compatibilityRelevant": true,
+      "summaryTemplateFamily": "requirements"
+    },
+    {
+      "category": "COMPATIBILITY",
+      "prefix": "TG-COMPAT",
+      "defaultSignificance": "MAJOR",
+      "defaultSpoiler": "PREVIEW_SAFE",
+      "compatibilityRelevant": true,
+      "summaryTemplateFamily": "compatibility"
+    },
+    {
+      "category": "SAFETY_AND_WARNINGS",
+      "prefix": "TG-SAFETY",
+      "defaultSignificance": "MAJOR",
+      "defaultSpoiler": "PREVIEW_SAFE",
+      "compatibilityRelevant": true,
+      "summaryTemplateFamily": "safety"
+    },
+    {
+      "category": "PRESENTATION_METADATA",
+      "prefix": "TG-PRESENTATION",
+      "defaultSignificance": "PRESENTATION_ONLY",
+      "defaultSpoiler": "PREVIEW_SAFE",
+      "compatibilityRelevant": false,
+      "summaryTemplateFamily": "presentation"
+    }
+  ],
+  "specializations": [
+    {
+      "match": "requirements.minimumPlatformVersion",
+      "code": "TG-COMPAT-PLATFORM",
+      "compatibilityDimension": "PLATFORM"
+    },
+    {
+      "match": "requirements.providerRequirements",
+      "code": "TG-COMPAT-PROVIDER",
+      "compatibilityDimension": "PROVIDER"
+    },
+    { "match": "requirements.captainRequired", "code": "TG-SETUP-CAPTAIN", "compatibilityDimension": "CAPTAIN" },
+    { "match": "requirements.playerCount", "code": "TG-SETUP-CREW", "compatibilityDimension": "CREW" },
+    {
+      "match": ".configuration.physicalPropRequired",
+      "code": "TG-SETUP-PHYSICAL",
+      "compatibilityDimension": "PHYSICAL_REQUIREMENT"
+    },
+    { "match": ".configuration.provider", "code": "TG-COMPAT-PROVIDER", "compatibilityDimension": "PROVIDER" },
+    { "match": ".provider", "code": "TG-COMPAT-PROVIDER", "compatibilityDimension": "PROVIDER" },
+    { "match": ".caption", "code": "TG-A11Y-CAPTION", "compatibilityDimension": "ACCESSIBILITY" },
+    { "match": ".transcript", "code": "TG-A11Y-TRANSCRIPT", "compatibilityDimension": "ACCESSIBILITY" },
+    { "match": ".staticAssetId", "code": "TG-MEDIA-FALLBACK", "compatibilityDimension": "ACCESSIBILITY" },
+    { "match": ".reducedMotionAssetId", "code": "TG-A11Y-REDUCED-MOTION", "compatibilityDimension": "ACCESSIBILITY" },
+    { "match": ".mimeType", "code": "TG-MEDIA-FORMAT", "compatibilityDimension": "ASSET_FORMAT" }
+  ]
+}

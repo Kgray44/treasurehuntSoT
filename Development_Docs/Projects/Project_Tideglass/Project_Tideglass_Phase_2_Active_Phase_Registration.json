@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "Project Tideglass",
+  "phase": "2",
+  "phaseName": "Read the Wake",
+  "status": "RECONCILED_AWAITING_EXACT_CANDIDATE",
+  "baseSha": "d1344e8ce613cdb3e3adc1fc13803b6356f1c0db",
+  "latestReconciledMainSha": "9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1",
+  "phase1CandidateSha": "83ef66ff70a3bbeb85b90f6a99aeb8cfb0da8bf9",
+  "phase1IntegratedMainSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
+  "branch": "codex/project-tideglass-phase2-read-the-wake",
+  "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-tideglass-phase2-read-the-wake",
+  "concurrencyClass": ["B"],
+  "schemaImpact": "ADDITIVE",
+  "ordinaryNavigationImpact": "NONE",
+  "integrationRule": "Independent mainline-safe phase; no Phase 3 stack",
+  "sqliteMigration": "20260809130000_tideglass_phase2_creator_annotations",
+  "mysqlMigration": "0053_tideglass_phase2_creator_annotations",
+  "phase3Authorized": false,
+  "registeredAt": "2026-08-09"
+}
