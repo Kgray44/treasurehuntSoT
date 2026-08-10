@@ -275,8 +275,8 @@ function Copy-ForeverDependencySeed {
     # its in-tree junctions with runtime-local targets.
     & robocopy $seedModules $runtimeModules /E /XJ /COPY:DAT /DCOPY:DAT /R:1 /W:1 /MT:32 | Out-Null
     if ($LASTEXITCODE -gt 7) { throw "Unable to copy Sounding Line dependency seed (robocopy exit $LASTEXITCODE)." }
-    $seedPrefix = $seedModules.TrimEnd('\\', '/') + [System.IO.Path]::DirectorySeparatorChar
-    $runtimePrefix = $runtimeModules.TrimEnd('\\', '/') + [System.IO.Path]::DirectorySeparatorChar
+    $seedPrefix = $seedModules.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+    $runtimePrefix = $runtimeModules.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
     $sourceJunctions = @(& cmd.exe /d /c "dir /a:l /s /b `"$seedModules`"")
     if ($LASTEXITCODE -ne 0) { throw "Unable to enumerate Sounding Line dependency junctions (cmd exit $LASTEXITCODE)." }
     foreach ($sourceJunctionPath in $sourceJunctions) {
@@ -294,8 +294,8 @@ function Copy-ForeverDependencySeed {
         if (-not $resolvedSourceTarget.StartsWith($seedPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
             throw "Sounding Line dependency junction target escaped the seed root."
         }
-        $relativeJunction = $resolvedSourceJunction.Substring($seedModules.Length).TrimStart('\\', '/')
-        $relativeTarget = $resolvedSourceTarget.Substring($seedModules.Length).TrimStart('\\', '/')
+        $relativeJunction = $resolvedSourceJunction.Substring($seedModules.Length).TrimStart('\', '/')
+        $relativeTarget = $resolvedSourceTarget.Substring($seedModules.Length).TrimStart('\', '/')
         if ([string]::IsNullOrWhiteSpace($relativeJunction) -or [string]::IsNullOrWhiteSpace($relativeTarget)) {
             throw "Sounding Line dependency junction mapping is empty."
         }
