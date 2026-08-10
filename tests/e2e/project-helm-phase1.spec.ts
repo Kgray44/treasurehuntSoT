@@ -73,8 +73,13 @@ async function signInThroughProduct(page: Page) {
   else await page.goto("/sign-in");
   await page.getByLabel("Email or legacy Player name").fill(email);
   await page.getByLabel("Password").fill(password);
-  await page.getByRole("button", { name: "Continue" }).click();
-  await expect(page.getByRole("button", { name: displayName, exact: true })).toBeVisible();
+  const signInResponse = page.waitForResponse(
+    (response) => response.url().endsWith("/api/auth/sign-in") && response.request().method() === "POST",
+  );
+  await page.getByRole("button", { name: "Continue" }).click({ noWaitAfter: true });
+  expect((await signInResponse).status()).toBe(200);
+  await expect(page).toHaveURL(/\/passport$/u, { timeout: 30_000 });
+  await expect(page.getByRole("button", { name: displayName, exact: true })).toBeVisible({ timeout: 30_000 });
   const context = await browserJson<{
     user: { accountId: string };
     session: { id: string };
