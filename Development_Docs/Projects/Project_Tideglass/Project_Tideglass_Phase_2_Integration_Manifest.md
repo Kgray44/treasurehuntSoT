@@ -8,7 +8,7 @@ last_reviewed: 2026-08-09
 
 # Project Tideglass Phase 2 integration manifest
 
-Status: reconciled candidate preparation. No integration claim is made until an exact candidate SHA receives Sounding Line `RELEASE_GO`, protected hosted checks pass, and the actual integrated main SHA is validated.
+Status: accepted mainline implementation. Exact candidate SHA `311e84b9edeff6b58dafc473d21e58dacbc4091b`, protected pull request #29, and integrated main SHA `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3` each crossed their governed boundary.
 
 ## Intended additive scope
 
@@ -33,4 +33,12 @@ Application rollback removes API/service consumers and leaves immutable annotati
 
 ## Publication record
 
-Candidate SHA, pull request, hosted Mainline Decision, integration SHA, post-merge receipt set, and parity will be added only after they exist.
+| Boundary              | Accepted evidence                                                                                                                                                                  |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Exact candidate       | `311e84b9edeff6b58dafc473d21e58dacbc4091b`; local mainline `RELEASE_GO`; 34/34 passed and `CLEAN`; evidence `c67e5f8d1ff86ce46a200b99b21e1d72c007a5fc50630e57c2f47697d6c83ab1`     |
+| Protected integration | Pull request #29; all 37 hosted checks `SUCCESS`, including `Sounding Line / Mainline Decision`                                                                                    |
+| Integrated main       | `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3`; parents `9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1` and `311e84b9edeff6b58dafc473d21e58dacbc4091b`                                      |
+| Exact post-merge      | Integrated SHA local mainline `RELEASE_GO`; 34/34 passed and `CLEAN`; evidence `29417f6e194a33a0ba8562c5abb49ac093f1ab04e6045ad24fdea52f817a568a`                                  |
+| Parity and cleanup    | `origin/main` matched `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3` at implementation closure; 0/0 parity; authority exited, validation lock released, ports 3100/3101/3102/3200 free |
+
+The accepted candidate does not replace Studio's storage-oriented `comparePublishedVersions` consumer. `src/chronicle/studio-service.ts`, `src/app/api/studio/tales/[taleId]/versions/compare/route.ts`, and `src/components/studio/TaleEditor.tsx` remain on the raw path/before/after contract; `tests/e2e/chronicle-platform.spec.ts` checks only version identity. `DW-FIND-EDITION-COMPARISON-SEMANTIC-UNDERUTILIZATION` therefore remains open for a separately governed Tideglass/Shipwright consumer migration.

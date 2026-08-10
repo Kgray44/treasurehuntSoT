@@ -1269,9 +1269,9 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 ## FT-B009 - Tideglass Chronicle Edition Intelligence
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Tideglass Phase 1 with Phase 2 candidate
+**Program or subsystem:** Project Tideglass Phases 1-2
 
-The accepted server-side foundation compares exact immutable Chronicle editions; the Phase 2 candidate classifies and summarizes evidence deterministically, projects spoiler-safe audience views, and preserves append-only Creator context without changing published or live Voyage truth.
+The accepted server-side foundation compares exact immutable Chronicle editions, classifies and summarizes evidence deterministically, projects spoiler-safe audience views, and preserves append-only Creator context without changing published or live Voyage truth.
 
 ### Important subfeatures
 
@@ -1294,7 +1294,7 @@ The accepted server-side foundation compares exact immutable Chronicle editions;
 
 ### Meaningful limitations
 
-- The Phase 2 extension remains a candidate until protected mainline acceptance.
+- The accepted Phase 2 extension remains server-side and does not create a polished comparison experience.
 - Ordinary user comparison routes, played-history qualification, and polished What Changed interaction remain outside Phase 2.
 - Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.
 
