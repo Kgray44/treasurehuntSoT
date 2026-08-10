@@ -269,7 +269,10 @@ function Copy-ForeverDependencySeed {
     # Copy the already installed, lockfile-matched dependency tree rather than
     # repeating npm ci. A physical copy retains Next's runtime-local .next
     # behavior and Prisma's generated-client isolation.
-    & robocopy $seedModules $runtimeModules /E /COPY:DAT /DCOPY:DAT /R:1 /W:1 | Out-Null
+    # Keep a physical, runtime-local dependency tree, but parallelize the copy so
+    # browser suites spend their governed budget exercising the product rather
+    # than serially materializing an already lockfile-verified seed.
+    & robocopy $seedModules $runtimeModules /E /COPY:DAT /DCOPY:DAT /R:1 /W:1 /MT:8 | Out-Null
     if ($LASTEXITCODE -gt 7) { throw "Unable to copy Sounding Line dependency seed (robocopy exit $LASTEXITCODE)." }
     if (-not (Test-Path -LiteralPath (Join-Path $runtimeModules "next\package.json") -PathType Leaf)) {
         throw "Sounding Line dependency seed copy is incomplete."
