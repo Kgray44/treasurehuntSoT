@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "fixtureSetId": "drydock-phase2-synthetic-chronicle-v1",
   "classification": "SYNTHETIC_NO_PRIVATE_CONTENT",
+  "expectedIssueCodes": [],
   "assets": [],
   "chapters": [
     {
