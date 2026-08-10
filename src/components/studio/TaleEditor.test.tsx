@@ -163,7 +163,15 @@ describe("Voyagewright Studio editor motion and authority", () => {
         .mockResolvedValueOnce(
           response(200, {
             valid: false,
-            errors: [{ code: "DRYDOCK_GRAPH_NO_TERMINAL_PATH", message: "Opening Scene needs a destination.", category: "GRAPH", remediation: "Connect the Passage to a terminal.", blockId: "block-1" }],
+            errors: [
+              {
+                code: "DRYDOCK_GRAPH_NO_TERMINAL_PATH",
+                message: "Opening Scene needs a destination.",
+                category: "GRAPH",
+                remediation: "Connect the Passage to a terminal.",
+                blockId: "block-1",
+              },
+            ],
             warnings: [],
           }),
         ),
@@ -175,7 +183,9 @@ describe("Voyagewright Studio editor motion and authority", () => {
     const issue = await screen.findByRole("button", { name: /Opening Scene needs a destination\./ });
     expect(issue).toHaveAttribute("data-drydock-rule-code", "DRYDOCK_GRAPH_NO_TERMINAL_PATH");
     expect(screen.getByRole("combobox", { name: "Filter validation category" })).toHaveValue("ALL");
-    fireEvent.change(screen.getByRole("combobox", { name: "Filter validation category" }), { target: { value: "GRAPH" } });
+    fireEvent.change(screen.getByRole("combobox", { name: "Filter validation category" }), {
+      target: { value: "GRAPH" },
+    });
     expect(issue).toHaveTextContent("Connect the Passage to a terminal.");
     fireEvent.click(issue);
     const card = screen.getByText("Opening Scene").closest<HTMLElement>("article")!;
@@ -192,10 +202,38 @@ describe("Voyagewright Studio editor motion and authority", () => {
       vi
         .fn()
         .mockResolvedValueOnce(response(200, editorData()))
-        .mockResolvedValueOnce(response(200, { valid: false, errors: [{ code: "DRYDOCK_GRAPH_NO_TERMINAL_PATH", message: "Opening Scene needs a destination.", blockId: "block-1" }], warnings: [] }))
-        .mockResolvedValueOnce(response(200, {
-          survey: { proofCompleteness: "COMPLETE", nodes: [{ id: "block-1", blockType: "narrative", isEntry: true, isTerminal: false, isReachable: true, canReachTerminal: false, stronglyConnectedComponent: null, annotations: [{ code: "DRYDOCK_GRAPH_NO_TERMINAL_PATH", severity: "ERROR" }] }] },
-        })),
+        .mockResolvedValueOnce(
+          response(200, {
+            valid: false,
+            errors: [
+              {
+                code: "DRYDOCK_GRAPH_NO_TERMINAL_PATH",
+                message: "Opening Scene needs a destination.",
+                blockId: "block-1",
+              },
+            ],
+            warnings: [],
+          }),
+        )
+        .mockResolvedValueOnce(
+          response(200, {
+            survey: {
+              proofCompleteness: "COMPLETE",
+              nodes: [
+                {
+                  id: "block-1",
+                  blockType: "narrative",
+                  isEntry: true,
+                  isTerminal: false,
+                  isReachable: true,
+                  canReachTerminal: false,
+                  stronglyConnectedComponent: null,
+                  annotations: [{ code: "DRYDOCK_GRAPH_NO_TERMINAL_PATH", severity: "ERROR" }],
+                },
+              ],
+            },
+          }),
+        ),
     );
     render(<TaleEditor taleId="tale-1" authenticated />);
     await screen.findByRole("heading", { name: "A Test Chronicle" });

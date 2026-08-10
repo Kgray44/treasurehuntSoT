@@ -302,12 +302,34 @@ export function validateDrydockDraftContracts(draft: DrydockDraftContractInput, 
   const usageIndex = createVariableUsageIndex(usages);
   const dependencyIndex = createDependencyIndex(parsedBlocks, usageIndex.usages);
   const graphAnalysis = analyzeDrydockGraph(parsedBlocks);
-  const stateAnalysis = analyzeDrydockDefiniteInitialization({ graph: graphAnalysis.graph, declarations: variables.declarations, usages: usageIndex.usages });
-  const conditionIssues = analyzeDrydockConditionFeasibility({ blocks: parsedBlocks, declarations: variables.declarations, usages: usageIndex.usages });
+  const stateAnalysis = analyzeDrydockDefiniteInitialization({
+    graph: graphAnalysis.graph,
+    declarations: variables.declarations,
+    usages: usageIndex.usages,
+  });
+  const conditionIssues = analyzeDrydockConditionFeasibility({
+    blocks: parsedBlocks,
+    declarations: variables.declarations,
+    usages: usageIndex.usages,
+  });
   const sideEffectIssues = analyzeDrydockSideEffects({ blocks: parsedBlocks, graphAnalysis });
-  const performanceIssues = analyzeDrydockPerformance({ blocks: parsedBlocks, graphAnalysis, declarations: variables.declarations });
+  const performanceIssues = analyzeDrydockPerformance({
+    blocks: parsedBlocks,
+    graphAnalysis,
+    declarations: variables.declarations,
+  });
   const staticIssues = analyzeDrydockStaticRules({ blocks: parsedBlocks, assets: draft.assets });
-  const wholeChronicleIssues = draft.analysisMode === "FULL" ? [...graphAnalysis.issues, ...stateAnalysis.issues, ...conditionIssues, ...sideEffectIssues, ...performanceIssues, ...staticIssues] : [];
+  const wholeChronicleIssues =
+    draft.analysisMode === "FULL"
+      ? [
+          ...graphAnalysis.issues,
+          ...stateAnalysis.issues,
+          ...conditionIssues,
+          ...sideEffectIssues,
+          ...performanceIssues,
+          ...staticIssues,
+        ]
+      : [];
   const affected = affectedBlocks(dependencyIndex, change);
   const issues = [...parseIssues, ...semanticIssues, ...wholeChronicleIssues].filter(
     (issue) => !affected || !issue.location.blockId || affected.has(issue.location.blockId),
@@ -333,27 +355,30 @@ export function validateDrydockDraftContracts(draft: DrydockDraftContractInput, 
   };
 }
 
-export function drydockDraftInputFromStudio(input: {
-  chapters: Array<{
-    id: string;
-    blocks: Array<{
+export function drydockDraftInputFromStudio(
+  input: {
+    chapters: Array<{
       id: string;
-      blockType: string;
-      schemaVersion?: number;
-      configuration: JsonObject;
-      presentation?: JsonObject;
-      completion?: JsonObject;
-      connections?: Array<{
-        targetBlockId: string;
-        connectionType: string;
-        label?: string | null;
-        conditionExpression?: string | null;
+      blocks: Array<{
+        id: string;
+        blockType: string;
+        schemaVersion?: number;
+        configuration: JsonObject;
+        presentation?: JsonObject;
+        completion?: JsonObject;
+        connections?: Array<{
+          targetBlockId: string;
+          connectionType: string;
+          label?: string | null;
+          conditionExpression?: string | null;
+        }>;
+        nextBlockId?: string | null;
       }>;
-      nextBlockId?: string | null;
     }>;
-  }>;
-  assets?: readonly DrydockAssetSnapshot[];
-}, options?: { analysisMode?: "CONTRACT" | "FULL" }): DrydockDraftContractInput {
+    assets?: readonly DrydockAssetSnapshot[];
+  },
+  options?: { analysisMode?: "CONTRACT" | "FULL" },
+): DrydockDraftContractInput {
   return {
     schemaVersion: 1,
     ...(options?.analysisMode ? { analysisMode: options.analysisMode } : {}),

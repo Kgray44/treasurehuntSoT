@@ -18,7 +18,18 @@ export type DrydockWaiverReceipt = {
 };
 
 const receiptProjection = (waiver: {
-  id: string; issueId: string; ruleCode: string; ruleVersion: number; sourceChecksum: string; sourceRevision: number; scope: string; authorizedRole: string; createdAt: Date; expiresAt: Date | null; revokedAt: Date | null; auditReference: string | null;
+  id: string;
+  issueId: string;
+  ruleCode: string;
+  ruleVersion: number;
+  sourceChecksum: string;
+  sourceRevision: number;
+  scope: string;
+  authorizedRole: string;
+  createdAt: Date;
+  expiresAt: Date | null;
+  revokedAt: Date | null;
+  auditReference: string | null;
 }): DrydockWaiverReceipt => ({
   id: waiver.id,
   issueId: waiver.issueId,

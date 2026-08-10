@@ -5,7 +5,12 @@ function parseStoredReport(raw: string): DrydockValidationReport {
   const parsed: unknown = JSON.parse(raw);
   if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("DRYDOCK_STORED_REPORT_INVALID");
   const report = parsed as Partial<DrydockValidationReport>;
-  if (report.schemaVersion !== 1 || typeof report.runId !== "string" || typeof report.sourceChecksum !== "string" || !Array.isArray(report.issues))
+  if (
+    report.schemaVersion !== 1 ||
+    typeof report.runId !== "string" ||
+    typeof report.sourceChecksum !== "string" ||
+    !Array.isArray(report.issues)
+  )
     throw new Error("DRYDOCK_STORED_REPORT_INVALID");
   return report as DrydockValidationReport;
 }

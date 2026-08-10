@@ -27,14 +27,26 @@ export function previewCanonicalTargetRepair(block: CanonicalDrydockBlock): Dryd
     sourceChecksum: checksum(block),
     affected: { blockId: block.id, fieldPaths: ["nextBlockId", "configuration"] },
     expectedIssueChanges: { resolved: ["DRYDOCK_LEGACY_NEXT_TARGET_CONFLICT"], introduced: [] },
-    description: "Synchronize legacy target mirrors to the existing canonical BlockConnection without changing the canonical edge.",
+    description:
+      "Synchronize legacy target mirrors to the existing canonical BlockConnection without changing the canonical edge.",
     before: { configuration: structuredClone(block.configuration), nextBlockId: block.nextBlockId },
     after: target,
   };
 }
 
-export function applyDrydockRepair(block: CanonicalDrydockBlock, preview: DrydockRepairPreview): { block: CanonicalDrydockBlock; undo: DrydockRepairPreview } {
-  if (block.id !== preview.blockId || checksum(block) !== preview.sourceChecksum) throw new Error("Repair preview is stale for this authored source.");
-  const repaired = { ...block, configuration: structuredClone(preview.after.configuration), nextBlockId: preview.after.nextBlockId };
-  return { block: repaired, undo: { ...preview, sourceChecksum: checksum(repaired), before: preview.after, after: preview.before } };
+export function applyDrydockRepair(
+  block: CanonicalDrydockBlock,
+  preview: DrydockRepairPreview,
+): { block: CanonicalDrydockBlock; undo: DrydockRepairPreview } {
+  if (block.id !== preview.blockId || checksum(block) !== preview.sourceChecksum)
+    throw new Error("Repair preview is stale for this authored source.");
+  const repaired = {
+    ...block,
+    configuration: structuredClone(preview.after.configuration),
+    nextBlockId: preview.after.nextBlockId,
+  };
+  return {
+    block: repaired,
+    undo: { ...preview, sourceChecksum: checksum(repaired), before: preview.after, after: preview.before },
+  };
 }

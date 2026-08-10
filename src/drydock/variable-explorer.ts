@@ -43,40 +43,66 @@ export function createDrydockVariableExplorer(input: {
 }): DrydockVariableExplorer {
   return {
     schemaVersion: 1,
-    variables: input.declarations.map((declaration) => {
-      const usages = input.usageIndex.byVariableId.get(declaration.id) ?? [];
-      const reachability = (usage: DrydockVariableUsage) => usage.blockId ? input.graphAnalysis.reachableBlockIds.has(usage.blockId) : null;
-      const relatedIssues = input.issues.filter((issue) => issue.location.variableId === declaration.id);
-      const potentiallyUninitializedReferences = relatedIssues
-        .filter((issue) => issue.code === "DRYDOCK_VARIABLE_NOT_DEFINITELY_INITIALIZED" && issue.location.blockId && issue.location.fieldPath)
-        .map((issue) => ({ blockId: issue.location.blockId!, fieldPath: issue.location.fieldPath! }));
-      const unusedState: "USED" | "UNUSED" | "WRITE_NEVER_READ" = relatedIssues.some((issue) => issue.code === "DRYDOCK_VARIABLE_UNUSED")
-        ? "UNUSED"
-        : relatedIssues.some((issue) => issue.code === "DRYDOCK_VARIABLE_WRITE_NEVER_READ")
-          ? "WRITE_NEVER_READ"
-          : "USED";
-      return {
-        id: declaration.id,
-        name: declaration.name,
-        type: declaration.type,
-        scope: declaration.scope,
-        ...(declaration.defaultValue !== undefined ? { defaultValue: declaration.defaultValue } : {}),
-        privacy: declaration.privacy,
-        allowedOperations: declaration.allowedOperations,
-        readers: usages.filter(readable).map((usage) => ({ blockId: usage.blockId, fieldPath: usage.fieldPath, kind: usage.kind, reachable: reachability(usage) })),
-        writers: usages.filter(writable).map((usage) => ({ blockId: usage.blockId, fieldPath: usage.fieldPath, operation: usage.operation, reachable: reachability(usage) })),
-        unreachableReferences: usages
-          .filter((usage) => usage.blockId && !input.graphAnalysis.reachableBlockIds.has(usage.blockId))
-          .map((usage) => ({ blockId: usage.blockId!, fieldPath: usage.fieldPath })),
-        initialization: {
-          hasDefault: declaration.defaultValue !== undefined,
-          proofStatus: input.stateAnalysis.status,
-          potentiallyUninitializedReferences,
-        },
-        unusedState,
-        renameState: "AVAILABLE_WITH_CURRENT_STUDIO_DRAFT_GUARD" as const,
-        relatedIssueCodes: [...new Set(relatedIssues.map((issue) => issue.code))].sort((a, b) => a.localeCompare(b, "en")),
-      };
-    }).sort((a, b) => a.name.localeCompare(b.name, "en") || a.id.localeCompare(b.id, "en")),
+    variables: input.declarations
+      .map((declaration) => {
+        const usages = input.usageIndex.byVariableId.get(declaration.id) ?? [];
+        const reachability = (usage: DrydockVariableUsage) =>
+          usage.blockId ? input.graphAnalysis.reachableBlockIds.has(usage.blockId) : null;
+        const relatedIssues = input.issues.filter((issue) => issue.location.variableId === declaration.id);
+        const potentiallyUninitializedReferences = relatedIssues
+          .filter(
+            (issue) =>
+              issue.code === "DRYDOCK_VARIABLE_NOT_DEFINITELY_INITIALIZED" &&
+              issue.location.blockId &&
+              issue.location.fieldPath,
+          )
+          .map((issue) => ({ blockId: issue.location.blockId!, fieldPath: issue.location.fieldPath! }));
+        const unusedState: "USED" | "UNUSED" | "WRITE_NEVER_READ" = relatedIssues.some(
+          (issue) => issue.code === "DRYDOCK_VARIABLE_UNUSED",
+        )
+          ? "UNUSED"
+          : relatedIssues.some((issue) => issue.code === "DRYDOCK_VARIABLE_WRITE_NEVER_READ")
+            ? "WRITE_NEVER_READ"
+            : "USED";
+        return {
+          id: declaration.id,
+          name: declaration.name,
+          type: declaration.type,
+          scope: declaration.scope,
+          ...(declaration.defaultValue !== undefined ? { defaultValue: declaration.defaultValue } : {}),
+          privacy: declaration.privacy,
+          allowedOperations: declaration.allowedOperations,
+          readers: usages
+            .filter(readable)
+            .map((usage) => ({
+              blockId: usage.blockId,
+              fieldPath: usage.fieldPath,
+              kind: usage.kind,
+              reachable: reachability(usage),
+            })),
+          writers: usages
+            .filter(writable)
+            .map((usage) => ({
+              blockId: usage.blockId,
+              fieldPath: usage.fieldPath,
+              operation: usage.operation,
+              reachable: reachability(usage),
+            })),
+          unreachableReferences: usages
+            .filter((usage) => usage.blockId && !input.graphAnalysis.reachableBlockIds.has(usage.blockId))
+            .map((usage) => ({ blockId: usage.blockId!, fieldPath: usage.fieldPath })),
+          initialization: {
+            hasDefault: declaration.defaultValue !== undefined,
+            proofStatus: input.stateAnalysis.status,
+            potentiallyUninitializedReferences,
+          },
+          unusedState,
+          renameState: "AVAILABLE_WITH_CURRENT_STUDIO_DRAFT_GUARD" as const,
+          relatedIssueCodes: [...new Set(relatedIssues.map((issue) => issue.code))].sort((a, b) =>
+            a.localeCompare(b, "en"),
+          ),
+        };
+      })
+      .sort((a, b) => a.name.localeCompare(b.name, "en") || a.id.localeCompare(b.id, "en")),
   };
 }

@@ -5,19 +5,13 @@
   "owner": "Project Drydock Phase 2 / Sound the Hull",
   "status": "ACTIVE_ADDITIVE",
   "sqlite": {
-    "migration": [
-      "20260810170000_drydock_phase2_validation_reports",
-      "20260810171000_drydock_phase2_rule_waivers"
-    ],
+    "migration": ["20260810170000_drydock_phase2_validation_reports", "20260810171000_drydock_phase2_rule_waivers"],
     "purpose": "Immutable, source-bound static validation receipts and administrator-authorized waiver records",
     "backfill": "NONE",
     "compatibilityWindow": "Additive; readers tolerate no receipt before first full validation."
   },
   "mysql": {
-    "migration": [
-      "0054_drydock_phase2_validation_reports",
-      "0055_drydock_phase2_rule_waivers"
-    ],
+    "migration": ["0054_drydock_phase2_validation_reports", "0055_drydock_phase2_rule_waivers"],
     "purpose": "Parity with the SQLite receipt and waiver tables",
     "backfill": "NONE",
     "compatibilityWindow": "Additive; readers tolerate no receipt before first full validation."

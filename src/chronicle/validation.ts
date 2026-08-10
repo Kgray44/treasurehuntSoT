@@ -41,7 +41,10 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
   const outgoing = new Map<string, string[]>();
   const referencedAssetIds = new Set<string>();
   let taleCompleteCount = 0;
-  const drydockInput = drydockDraftInputFromStudio({ ...studio.draft, assets: studio.assets }, { analysisMode: "FULL" });
+  const drydockInput = drydockDraftInputFromStudio(
+    { ...studio.draft, assets: studio.assets },
+    { analysisMode: "FULL" },
+  );
   const drydock = validateDrydockDraftContracts(drydockInput);
   const drydockIssuesByBlock = new Map<string, typeof drydock.issues>();
   for (const issue of drydock.issues) {
@@ -308,10 +311,16 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
     errors.push({
       severity: "error",
       code: "DRYDOCK_STATIC_PROOF_INCOMPLETE",
-      message: "This Chronicle has incomplete required static proof and cannot be published until the uncertainty is resolved.",
+      message:
+        "This Chronicle has incomplete required static proof and cannot be published until the uncertainty is resolved.",
     });
   const drydockReport = createDrydockValidationReport({
-    source: { schemaVersion: drydockInput.schemaVersion, analysisMode: drydockInput.analysisMode, chapters: drydockInput.chapters, assets: drydockInput.assets ?? [] },
+    source: {
+      schemaVersion: drydockInput.schemaVersion,
+      analysisMode: drydockInput.analysisMode,
+      chapters: drydockInput.chapters,
+      assets: drydockInput.assets ?? [],
+    },
     issues: drydock.issues,
     sourceRevision: studio.draft.autosaveVersion,
     proofCompleteness: staticProofComplete ? "COMPLETE" : "INCOMPLETE_PROOF",

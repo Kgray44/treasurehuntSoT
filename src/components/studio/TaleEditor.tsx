@@ -188,7 +188,10 @@ type DrydockVariableExplorer = {
     privacy: string;
     readers: Array<{ blockId?: string; fieldPath: string; reachable: boolean | null }>;
     writers: Array<{ blockId?: string; fieldPath: string; operation?: string; reachable: boolean | null }>;
-    initialization: { proofStatus: string; potentiallyUninitializedReferences: Array<{ blockId: string; fieldPath: string }> };
+    initialization: {
+      proofStatus: string;
+      potentiallyUninitializedReferences: Array<{ blockId: string; fieldPath: string }>;
+    };
     unusedState: string;
     relatedIssueCodes: string[];
   }>;
@@ -254,8 +257,22 @@ export function TaleEditor({
   const [error, setError] = useState("");
   const [validation, setValidation] = useState<{
     valid: boolean;
-    errors: Array<{ code: string; message: string; category?: string; remediation?: string; blockId?: string; field?: string }>;
-    warnings: Array<{ code: string; message: string; category?: string; remediation?: string; blockId?: string; field?: string }>;
+    errors: Array<{
+      code: string;
+      message: string;
+      category?: string;
+      remediation?: string;
+      blockId?: string;
+      field?: string;
+    }>;
+    warnings: Array<{
+      code: string;
+      message: string;
+      category?: string;
+      remediation?: string;
+      blockId?: string;
+      field?: string;
+    }>;
   } | null>(null);
   const [issueSearch, setIssueSearch] = useState("");
   const [issueCategory, setIssueCategory] = useState("ALL");
@@ -308,17 +325,24 @@ export function TaleEditor({
     return [...validation.errors, ...validation.warnings].filter((issue) => {
       const severity = validation.errors.includes(issue) ? "error" : "warning";
       const category = issue.category ?? "STUDIO";
-      return (issueSeverity === "ALL" || issueSeverity === severity) &&
+      return (
+        (issueSeverity === "ALL" || issueSeverity === severity) &&
         (issueCategory === "ALL" || issueCategory === category) &&
-        (!search || `${issue.code} ${issue.message} ${category}`.toLocaleLowerCase().includes(search));
+        (!search || `${issue.code} ${issue.message} ${category}`.toLocaleLowerCase().includes(search))
+      );
     });
   }, [issueCategory, issueSearch, issueSeverity, validation]);
   const validationCategories = useMemo(
-    () => [...new Set([...(validation?.errors ?? []), ...(validation?.warnings ?? [])].map((issue) => issue.category ?? "STUDIO"))].sort(),
+    () =>
+      [
+        ...new Set(
+          [...(validation?.errors ?? []), ...(validation?.warnings ?? [])].map((issue) => issue.category ?? "STUDIO"),
+        ),
+      ].sort(),
     [validation],
   );
   const selectedRule = useMemo(
-    () => selectedRuleCode ? getDrydockRuleDefinition(selectedRuleCode) : undefined,
+    () => (selectedRuleCode ? getDrydockRuleDefinition(selectedRuleCode) : undefined),
     [selectedRuleCode],
   );
   const dndSensors = useSensors(
@@ -1466,15 +1490,32 @@ export function TaleEditor({
                 <button onClick={() => setValidation(null)}>Close</button>
               </header>
               <div className="validation-filters" aria-label="Issue filters">
-                <input value={issueSearch} onChange={(event) => setIssueSearch(event.target.value)} placeholder="Search rule code or message" aria-label="Search validation issues" />
-                <select value={issueSeverity} onChange={(event) => setIssueSeverity(event.target.value as "ALL" | "error" | "warning")} aria-label="Filter validation severity">
+                <input
+                  value={issueSearch}
+                  onChange={(event) => setIssueSearch(event.target.value)}
+                  placeholder="Search rule code or message"
+                  aria-label="Search validation issues"
+                />
+                <select
+                  value={issueSeverity}
+                  onChange={(event) => setIssueSeverity(event.target.value as "ALL" | "error" | "warning")}
+                  aria-label="Filter validation severity"
+                >
                   <option value="ALL">All severities</option>
                   <option value="error">Blocking</option>
                   <option value="warning">Warnings</option>
                 </select>
-                <select value={issueCategory} onChange={(event) => setIssueCategory(event.target.value)} aria-label="Filter validation category">
+                <select
+                  value={issueCategory}
+                  onChange={(event) => setIssueCategory(event.target.value)}
+                  aria-label="Filter validation category"
+                >
                   <option value="ALL">All categories</option>
-                  {validationCategories.map((category) => <option key={category} value={category}>{category}</option>)}
+                  {validationCategories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="validation-survey-actions">
@@ -1495,17 +1536,26 @@ export function TaleEditor({
                   data-drydock-rule-code={issue.code}
                   title={`Drydock rule ${issue.code}${issue.field ? ` at ${issue.field}` : ""}`}
                 >
-                  <strong>{issue.code}</strong> {issue.message}{issue.category ? ` (${issue.category})` : ""}
+                  <strong>{issue.code}</strong> {issue.message}
+                  {issue.category ? ` (${issue.category})` : ""}
                   {issue.remediation ? <span> {issue.remediation}</span> : null}
                 </button>
               ))}
               {selectedRule && (
                 <section className="validation-rule-detail" aria-live="polite">
-                  <strong>{selectedRule.code}: {selectedRule.title}</strong>
+                  <strong>
+                    {selectedRule.code}: {selectedRule.title}
+                  </strong>
                   <p>{selectedRule.summary}</p>
                   <p>{selectedRule.technicalExplanation}</p>
-                  <p>Category: {selectedRule.category}. Severity: {selectedRule.defaultSeverity}. Repair: {selectedRule.repairClassification}.</p>
-                  <p>Waiver: {selectedRule.waiverPolicy === "NEVER" ? "not permitted" : "requires governed review"}. Compatibility: {selectedRule.compatibilityPolicy}.</p>
+                  <p>
+                    Category: {selectedRule.category}. Severity: {selectedRule.defaultSeverity}. Repair:{" "}
+                    {selectedRule.repairClassification}.
+                  </p>
+                  <p>
+                    Waiver: {selectedRule.waiverPolicy === "NEVER" ? "not permitted" : "requires governed review"}.
+                    Compatibility: {selectedRule.compatibilityPolicy}.
+                  </p>
                 </section>
               )}
               {graphSurvey && (
@@ -1519,9 +1569,16 @@ export function TaleEditor({
                           {node.blockType} ({node.id})
                         </button>
                         <span>
-                          {node.isEntry ? " Entry." : ""}{node.isTerminal ? " Terminal." : ""}{!node.isReachable ? " Unreachable." : ""}{!node.canReachTerminal ? " No terminal path." : ""}
-                          {node.stronglyConnectedComponent !== null ? ` Cycle group ${node.stronglyConnectedComponent}.` : ""}
-                          {node.annotations.length ? ` Rules: ${node.annotations.map((annotation) => annotation.code).join(", ")}.` : ""}
+                          {node.isEntry ? " Entry." : ""}
+                          {node.isTerminal ? " Terminal." : ""}
+                          {!node.isReachable ? " Unreachable." : ""}
+                          {!node.canReachTerminal ? " No terminal path." : ""}
+                          {node.stronglyConnectedComponent !== null
+                            ? ` Cycle group ${node.stronglyConnectedComponent}.`
+                            : ""}
+                          {node.annotations.length
+                            ? ` Rules: ${node.annotations.map((annotation) => annotation.code).join(", ")}.`
+                            : ""}
                         </span>
                       </li>
                     ))}
@@ -1534,11 +1591,53 @@ export function TaleEditor({
                   <ul>
                     {variableExplorer.variables.map((variable) => (
                       <li key={variable.id}>
-                        <strong>{variable.name}</strong> ({variable.id}): {variable.type.kind}, {variable.scope}, {variable.privacy}. {variable.unusedState}. Initialization proof: {variable.initialization.proofStatus}.
-                        {variable.defaultValue !== undefined ? ` Default: ${JSON.stringify(variable.defaultValue)}.` : " No declared default."}
-                        {variable.readers.length ? <span> Readers: {variable.readers.map((reader, index) => reader.blockId ? <button key={`${reader.blockId}:${reader.fieldPath}:${index}`} onClick={(event) => focusBlock(reader.blockId!, event.currentTarget)}>{reader.blockId}</button> : reader.fieldPath)}.</span> : null}
-                        {variable.writers.length ? <span> Writers: {variable.writers.map((writer, index) => writer.blockId ? <button key={`${writer.blockId}:${writer.fieldPath}:${index}`} onClick={(event) => focusBlock(writer.blockId!, event.currentTarget)}>{writer.blockId}</button> : writer.fieldPath)}.</span> : null}
-                        {variable.relatedIssueCodes.length ? <span> Rules: {variable.relatedIssueCodes.join(", ")}.</span> : null}
+                        <strong>{variable.name}</strong> ({variable.id}): {variable.type.kind}, {variable.scope},{" "}
+                        {variable.privacy}. {variable.unusedState}. Initialization proof:{" "}
+                        {variable.initialization.proofStatus}.
+                        {variable.defaultValue !== undefined
+                          ? ` Default: ${JSON.stringify(variable.defaultValue)}.`
+                          : " No declared default."}
+                        {variable.readers.length ? (
+                          <span>
+                            {" "}
+                            Readers:{" "}
+                            {variable.readers.map((reader, index) =>
+                              reader.blockId ? (
+                                <button
+                                  key={`${reader.blockId}:${reader.fieldPath}:${index}`}
+                                  onClick={(event) => focusBlock(reader.blockId!, event.currentTarget)}
+                                >
+                                  {reader.blockId}
+                                </button>
+                              ) : (
+                                reader.fieldPath
+                              ),
+                            )}
+                            .
+                          </span>
+                        ) : null}
+                        {variable.writers.length ? (
+                          <span>
+                            {" "}
+                            Writers:{" "}
+                            {variable.writers.map((writer, index) =>
+                              writer.blockId ? (
+                                <button
+                                  key={`${writer.blockId}:${writer.fieldPath}:${index}`}
+                                  onClick={(event) => focusBlock(writer.blockId!, event.currentTarget)}
+                                >
+                                  {writer.blockId}
+                                </button>
+                              ) : (
+                                writer.fieldPath
+                              ),
+                            )}
+                            .
+                          </span>
+                        ) : null}
+                        {variable.relatedIssueCodes.length ? (
+                          <span> Rules: {variable.relatedIssueCodes.join(", ")}.</span>
+                        ) : null}
                       </li>
                     ))}
                   </ul>

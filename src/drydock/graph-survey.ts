@@ -42,11 +42,18 @@ export function createDrydockGraphSurvey(
   analysis.stronglyConnectedComponents.forEach((component, index) => {
     for (const blockId of component) componentByBlockId.set(blockId, index);
   });
-  const annotation = (issue: DrydockIssue) => ({ code: issue.code, category: issue.category, severity: issue.severity });
+  const annotation = (issue: DrydockIssue) => ({
+    code: issue.code,
+    category: issue.category,
+    severity: issue.severity,
+  });
   const annotationsByBlockId = new Map<string, { code: string; category: string; severity: string }[]>();
   for (const issue of issues)
     if (issue.location.blockId)
-      annotationsByBlockId.set(issue.location.blockId, [...(annotationsByBlockId.get(issue.location.blockId) ?? []), annotation(issue)]);
+      annotationsByBlockId.set(issue.location.blockId, [
+        ...(annotationsByBlockId.get(issue.location.blockId) ?? []),
+        annotation(issue),
+      ]);
   const ordered = (entries: readonly { code: string; category: string; severity: string }[]) =>
     [...entries].sort((a, b) => a.code.localeCompare(b.code, "en") || a.category.localeCompare(b.category, "en"));
   return {
@@ -74,9 +81,11 @@ export function createDrydockGraphSurvey(
         orderIndex: edge.orderIndex,
         hasUnprovenLegacyCondition: Boolean(edge.conditionExpression?.trim()),
       }))
-      .sort((a, b) =>
-        a.sourceBlockId.localeCompare(b.sourceBlockId, "en") ||
-        a.orderIndex - b.orderIndex ||
-        a.targetBlockId.localeCompare(b.targetBlockId, "en")),
+      .sort(
+        (a, b) =>
+          a.sourceBlockId.localeCompare(b.sourceBlockId, "en") ||
+          a.orderIndex - b.orderIndex ||
+          a.targetBlockId.localeCompare(b.targetBlockId, "en"),
+      ),
   };
 }

@@ -50,10 +50,11 @@ export function buildDrydockChronicleGraph(blocks: readonly CanonicalDrydockBloc
     incoming.get(edge.targetBlockId)?.push(edge);
   }
   for (const list of [...outgoing.values(), ...incoming.values()])
-    list.sort((a, b) =>
-      a.orderIndex - b.orderIndex ||
-      a.connectionType.localeCompare(b.connectionType, "en") ||
-      a.targetBlockId.localeCompare(b.targetBlockId, "en"),
+    list.sort(
+      (a, b) =>
+        a.orderIndex - b.orderIndex ||
+        a.connectionType.localeCompare(b.connectionType, "en") ||
+        a.targetBlockId.localeCompare(b.targetBlockId, "en"),
     );
   return {
     entryBlockId: blocks[0]?.id ?? null,
@@ -122,37 +123,98 @@ export function analyzeDrydockGraph(blocks: readonly CanonicalDrydockBlock[]): D
   const stronglyConnectedComponents = components(graph);
   const issues: DrydockIssue[] = [];
   if (!graph.entryBlockId)
-    issues.push(createDrydockIssue({ code: "DRYDOCK_GRAPH_ENTRY_MISSING", category: "GRAPH", severity: "ERROR", ruleVersion: 1, location: {}, message: "This Chronicle has no entry Passage.", remediation: "Add an opening Passage before validating the Chronicle." }));
+    issues.push(
+      createDrydockIssue({
+        code: "DRYDOCK_GRAPH_ENTRY_MISSING",
+        category: "GRAPH",
+        severity: "ERROR",
+        ruleVersion: 1,
+        location: {},
+        message: "This Chronicle has no entry Passage.",
+        remediation: "Add an opening Passage before validating the Chronicle.",
+      }),
+    );
   if (!graph.terminalBlockIds.size)
-    issues.push(createDrydockIssue({ code: "DRYDOCK_GRAPH_TERMINAL_MISSING", category: "GRAPH", severity: "ERROR", ruleVersion: 1, location: {}, message: "This Chronicle has no Voyage Complete terminal.", remediation: "Add a canonical Voyage Complete Passage." }));
+    issues.push(
+      createDrydockIssue({
+        code: "DRYDOCK_GRAPH_TERMINAL_MISSING",
+        category: "GRAPH",
+        severity: "ERROR",
+        ruleVersion: 1,
+        location: {},
+        message: "This Chronicle has no Voyage Complete terminal.",
+        remediation: "Add a canonical Voyage Complete Passage.",
+      }),
+    );
   for (const edge of graph.edges)
     if (edge.conditionExpression?.trim())
-      issues.push(createDrydockIssue({
-        code: "DRYDOCK_CONTROL_FLOW_EDGE_CONDITION_UNPROVEN",
-        category: "CONTROL_FLOW",
-        severity: "WARNING",
-        ruleVersion: 1,
-        location: { blockId: edge.sourceBlockId, fieldPath: `connections.${edge.orderIndex}.conditionExpression` },
-        message: "This legacy edge condition has no typed static-proof adapter.",
-        remediation: "Use a typed Condition Passage or obtain governed review before treating this edge as a proven required path.",
-      }));
+      issues.push(
+        createDrydockIssue({
+          code: "DRYDOCK_CONTROL_FLOW_EDGE_CONDITION_UNPROVEN",
+          category: "CONTROL_FLOW",
+          severity: "WARNING",
+          ruleVersion: 1,
+          location: { blockId: edge.sourceBlockId, fieldPath: `connections.${edge.orderIndex}.conditionExpression` },
+          message: "This legacy edge condition has no typed static-proof adapter.",
+          remediation:
+            "Use a typed Condition Passage or obtain governed review before treating this edge as a proven required path.",
+        }),
+      );
   for (const block of blocks) {
     if (!reachableBlockIds.has(block.id))
-      issues.push(createDrydockIssue({ code: "DRYDOCK_GRAPH_UNREACHABLE", category: "GRAPH", severity: "ERROR", ruleVersion: 1, location: { blockId: block.id, blockType: block.blockType }, message: "This Passage has no syntactic path from the Chronicle entry.", remediation: "Connect it from a reachable canonical BlockConnection or remove it." }));
+      issues.push(
+        createDrydockIssue({
+          code: "DRYDOCK_GRAPH_UNREACHABLE",
+          category: "GRAPH",
+          severity: "ERROR",
+          ruleVersion: 1,
+          location: { blockId: block.id, blockType: block.blockType },
+          message: "This Passage has no syntactic path from the Chronicle entry.",
+          remediation: "Connect it from a reachable canonical BlockConnection or remove it.",
+        }),
+      );
     else if (!completionReachableBlockIds.has(block.id))
-      issues.push(createDrydockIssue({ code: "DRYDOCK_GRAPH_NO_TERMINAL_PATH", category: "GRAPH", severity: "ERROR", ruleVersion: 1, location: { blockId: block.id, blockType: block.blockType }, message: "This reachable Passage has no static path to Voyage Complete.", remediation: "Add an exit toward a canonical terminal or classify the branch as intentionally incomplete proof." }));
+      issues.push(
+        createDrydockIssue({
+          code: "DRYDOCK_GRAPH_NO_TERMINAL_PATH",
+          category: "GRAPH",
+          severity: "ERROR",
+          ruleVersion: 1,
+          location: { blockId: block.id, blockType: block.blockType },
+          message: "This reachable Passage has no static path to Voyage Complete.",
+          remediation:
+            "Add an exit toward a canonical terminal or classify the branch as intentionally incomplete proof.",
+        }),
+      );
   }
   for (const component of stronglyConnectedComponents) {
-    const cyclic = component.length > 1 || (graph.outgoing.get(component[0]) ?? []).some((edge) => edge.targetBlockId === component[0]);
+    const cyclic =
+      component.length > 1 ||
+      (graph.outgoing.get(component[0]) ?? []).some((edge) => edge.targetBlockId === component[0]);
     if (!cyclic) continue;
     const members = new Set(component);
-    const exits = component.flatMap((id) => graph.outgoing.get(id) ?? []).filter((edge) => !members.has(edge.targetBlockId));
+    const exits = component
+      .flatMap((id) => graph.outgoing.get(id) ?? [])
+      .filter((edge) => !members.has(edge.targetBlockId));
     if (!exits.length)
-      issues.push(createDrydockIssue({ code: "DRYDOCK_GRAPH_AUTOMATIC_LOOP", category: "GRAPH", severity: "ERROR", ruleVersion: 1, location: { blockId: component[0] }, message: "A strongly connected Passage group has no static exit.", remediation: "Add a canonical exit or make the bounded state proof explicitly show termination.", metadata: { componentSize: component.length } }));
+      issues.push(
+        createDrydockIssue({
+          code: "DRYDOCK_GRAPH_AUTOMATIC_LOOP",
+          category: "GRAPH",
+          severity: "ERROR",
+          ruleVersion: 1,
+          location: { blockId: component[0] },
+          message: "A strongly connected Passage group has no static exit.",
+          remediation: "Add a canonical exit or make the bounded state proof explicitly show termination.",
+          metadata: { componentSize: component.length },
+        }),
+      );
   }
   return {
     graph,
-    proofCompleteness: issues.some((issue) => issue.code === "DRYDOCK_CONTROL_FLOW_EDGE_CONDITION_UNPROVEN") ? "INCOMPLETE_PROOF" : "COMPLETE",
+    proofCompleteness: issues.some((issue) => issue.code === "DRYDOCK_CONTROL_FLOW_EDGE_CONDITION_UNPROVEN")
+      ? "INCOMPLETE_PROOF"
+      : "COMPLETE",
     reachableBlockIds,
     completionReachableBlockIds,
     stronglyConnectedComponents,

@@ -3,7 +3,13 @@ import type { CanonicalDrydockBlock } from "@/drydock/contracts/model";
 import { analyzeDrydockGraph } from "@/drydock/graph";
 import { analyzeDrydockSideEffects } from "@/drydock/side-effects";
 
-const block = (id: string, blockType: string, targets: string[], configuration: Record<string, unknown> = {}, completion: Record<string, unknown> = {}): CanonicalDrydockBlock => ({
+const block = (
+  id: string,
+  blockType: string,
+  targets: string[],
+  configuration: Record<string, unknown> = {},
+  completion: Record<string, unknown> = {},
+): CanonicalDrydockBlock => ({
   id,
   blockType,
   schemaVersion: 2,
@@ -21,10 +27,14 @@ describe("Drydock Phase 2 authored side-effect analysis", () => {
       block("grant", "artifactReveal", ["entry"], { addToCollection: true, artifactId: "artifact-a" }),
     ];
     const issues = analyzeDrydockSideEffects({ blocks, graphAnalysis: analyzeDrydockGraph(blocks) });
-    expect(issues).toEqual(expect.arrayContaining([expect.objectContaining({
-      code: "DRYDOCK_SIDE_EFFECT_REPEATS_IN_LOOP",
-      location: expect.objectContaining({ blockId: "grant" }),
-    })]));
+    expect(issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          code: "DRYDOCK_SIDE_EFFECT_REPEATS_IN_LOOP",
+          location: expect.objectContaining({ blockId: "grant" }),
+        }),
+      ]),
+    );
   });
 
   it("surfaces duplicate authored artifact and completion outcome risk for review", () => {
@@ -34,7 +44,9 @@ describe("Drydock Phase 2 authored side-effect analysis", () => {
       block("first-complete", "chapterComplete", [], { outcomeId: "outcome-a" }),
       block("second-complete", "taleComplete", [], { outcomeId: "outcome-a" }),
     ];
-    const codes = analyzeDrydockSideEffects({ blocks, graphAnalysis: analyzeDrydockGraph(blocks) }).map((issue) => issue.code);
+    const codes = analyzeDrydockSideEffects({ blocks, graphAnalysis: analyzeDrydockGraph(blocks) }).map(
+      (issue) => issue.code,
+    );
     expect(codes).toContain("DRYDOCK_ARTIFACT_GRANT_DUPLICATE_RISK");
     expect(codes).toContain("DRYDOCK_COMPLETION_OUTCOME_DUPLICATE_RISK");
   });

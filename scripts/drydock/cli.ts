@@ -8,7 +8,12 @@ import type { DrydockAuthoredBlockInput } from "../../src/drydock/contracts/mode
 import { sanitizedIssueProjection } from "../../src/drydock/issues";
 import { validateDrydockDraftContracts, type DrydockDraftContractInput } from "../../src/drydock/incremental";
 import { drydockProviderRegistry } from "../../src/drydock/providers";
-import { createDrydockValidationReport, diffDrydockReports, supportReportProjection, type DrydockValidationReport } from "../../src/drydock/reports";
+import {
+  createDrydockValidationReport,
+  diffDrydockReports,
+  supportReportProjection,
+  type DrydockValidationReport,
+} from "../../src/drydock/reports";
 
 const command = process.argv[2] ?? "help";
 
@@ -33,7 +38,8 @@ function fullInput(path: string): DrydockDraftContractInput {
   const parsed: unknown = JSON.parse(bytes.toString("utf8"));
   if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("DRYDOCK_INPUT_INVALID");
   const candidate = parsed as DrydockDraftContractInput;
-  if (candidate.schemaVersion !== 1 || !Array.isArray(candidate.chapters)) throw new Error("DRYDOCK_FULL_INPUT_INVALID");
+  if (candidate.schemaVersion !== 1 || !Array.isArray(candidate.chapters))
+    throw new Error("DRYDOCK_FULL_INPUT_INVALID");
   return { ...candidate, analysisMode: "FULL" };
 }
 
@@ -44,7 +50,12 @@ function reportInput(path: string): DrydockValidationReport {
   const parsed: unknown = JSON.parse(bytes.toString("utf8"));
   if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("DRYDOCK_REPORT_INVALID");
   const report = parsed as Partial<DrydockValidationReport>;
-  if (report.schemaVersion !== 1 || !Array.isArray(report.issues) || typeof report.sourceChecksum !== "string" || typeof report.runId !== "string")
+  if (
+    report.schemaVersion !== 1 ||
+    !Array.isArray(report.issues) ||
+    typeof report.sourceChecksum !== "string" ||
+    typeof report.runId !== "string"
+  )
     throw new Error("DRYDOCK_REPORT_INVALID");
   return report as DrydockValidationReport;
 }
@@ -66,7 +77,10 @@ function supportReportDiff(previous: DrydockValidationReport, next: DrydockValid
     resolved: diff.resolved.map(safe),
     retained: diff.retained.map(safe),
     severityChanged: diff.severityChanged.map(({ before, after }) => ({ before: safe(before), after: safe(after) })),
-    ruleVersionChanged: diff.ruleVersionChanged.map(({ before, after }) => ({ before: safe(before), after: safe(after) })),
+    ruleVersionChanged: diff.ruleVersionChanged.map(({ before, after }) => ({
+      before: safe(before),
+      after: safe(after),
+    })),
     locationChanged: diff.locationChanged.map(({ before, after }) => ({ before: safe(before), after: safe(after) })),
   };
 }
@@ -169,19 +183,30 @@ else if (command === "canonicalize-fixtures") {
   const report = createDrydockValidationReport({
     source: input,
     issues: result.issues,
-    proofCompleteness: result.stateAnalysis.status === "PROVEN" && result.graphAnalysis.proofCompleteness === "COMPLETE" && !assetProofIncomplete ? "COMPLETE" : "INCOMPLETE_PROOF",
+    proofCompleteness:
+      result.stateAnalysis.status === "PROVEN" &&
+      result.graphAnalysis.proofCompleteness === "COMPLETE" &&
+      !assetProofIncomplete
+        ? "COMPLETE"
+        : "INCOMPLETE_PROOF",
     analysisLimits: [
       ...(result.stateAnalysis.status === "PROVEN" ? [] : [`state-iterations:${result.stateAnalysis.iterations}`]),
       ...(result.graphAnalysis.proofCompleteness === "COMPLETE" ? [] : ["legacy-edge-condition-adapter-unavailable"]),
       ...(assetProofIncomplete ? ["asset-snapshot-unavailable"] : []),
     ],
   });
-  print({ report, supportProjection: supportReportProjection(report), checkedBlockCount: result.checkedBlockCount, stateProof: result.stateAnalysis.status });
+  print({
+    report,
+    supportProjection: supportReportProjection(report),
+    checkedBlockCount: result.checkedBlockCount,
+    stateProof: result.stateAnalysis.status,
+  });
   if (report.status !== "VALID") process.exitCode = 1;
 } else if (command === "report-diff") {
   const previousPath = process.argv[3];
   const nextPath = process.argv[4];
-  if (!previousPath || !nextPath) throw new Error("Usage: npm run drydock:cli -- report-diff <previous-report.json> <next-report.json>");
+  if (!previousPath || !nextPath)
+    throw new Error("Usage: npm run drydock:cli -- report-diff <previous-report.json> <next-report.json>");
   print(supportReportDiff(reportInput(previousPath), reportInput(nextPath)));
 } else
   print({
