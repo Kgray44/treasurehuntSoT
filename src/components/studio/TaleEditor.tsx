@@ -49,6 +49,15 @@ type Block = {
   creatorNotes?: string | null;
   isEnabled: boolean;
   schemaVersion: number;
+  /** Legacy mirror only; canonical BlockConnection remains the edge authority. */
+  nextBlockId?: string | null;
+  connections?: Array<{
+    targetBlockId: string;
+    connectionType: string;
+    label?: string | null;
+    conditionExpression?: string | null;
+    orderIndex?: number;
+  }>;
 };
 type Chapter = {
   id: string;
@@ -196,6 +205,15 @@ type DrydockVariableExplorer = {
     relatedIssueCodes: string[];
   }>;
 };
+type DrydockRepairPreview = {
+  kind: "CANONICAL_TARGET_MIRROR";
+  classification: "SAFE_AUTOMATIC";
+  blockId: string;
+  sourceChecksum: string;
+  expectedIssueChanges: { resolved: readonly string[]; introduced: readonly string[] };
+  description: string;
+  after: { configuration: JsonObject; nextBlockId: string | null };
+};
 
 const clone = <T,>(value: T): T => structuredClone(value);
 
@@ -278,6 +296,7 @@ export function TaleEditor({
   const [issueCategory, setIssueCategory] = useState("ALL");
   const [issueSeverity, setIssueSeverity] = useState<"ALL" | "error" | "warning">("ALL");
   const [selectedRuleCode, setSelectedRuleCode] = useState<string | null>(null);
+  const [selectedRepairBlockId, setSelectedRepairBlockId] = useState<string | null>(null);
   const [graphSurvey, setGraphSurvey] = useState<DrydockGraphSurvey | null>(null);
   const [variableExplorer, setVariableExplorer] = useState<DrydockVariableExplorer | null>(null);
   const [surveyLoading, setSurveyLoading] = useState<"" | "graph" | "variables">("");
@@ -823,8 +842,57 @@ export function TaleEditor({
       setError(body?.error ?? "Validation could not be completed. Try again.");
       return;
     }
+    setSelectedRepairBlockId(null);
     setValidation(body);
     setSaveState(body.valid ? "Draft validation passed" : "Draft validation failed");
+  }
+  async function previewAndApplySafeRepair(blockId: string) {
+    if (!draft || !data) return;
+    if (dirty && !(await save(draft, false))) return;
+    const sourceRevision = autosaveVersionRef.current ?? data.draft.autosaveVersion;
+    setSaveState("Loading safe repair preview...");
+    try {
+      const response = await fetch(
+        `/api/studio/tales/${taleId}/repairs/${encodeURIComponent(blockId)}?autosaveVersion=${sourceRevision}`,
+        { cache: "no-store" },
+      );
+      const body = (await response.json()) as {
+        sourceRevision?: number;
+        preview?: DrydockRepairPreview;
+        error?: string;
+      };
+      if (!response.ok || !body.preview || body.sourceRevision !== sourceRevision || body.preview.blockId !== blockId) {
+        setSaveState("Safe repair unavailable");
+        setError(body.error ?? "A current safe repair preview could not be loaded.");
+        return;
+      }
+      const preview = body.preview;
+      const confirmed = await requestAction({
+        title: "Apply safe target-mirror repair?",
+        detail: `${preview.description} It will resolve ${preview.expectedIssueChanges.resolved.join(", ")} without changing canonical Passage connections.`,
+        confirmLabel: "Apply safe repair",
+      });
+      if (!confirmed) {
+        setSaveState("Safe repair preview dismissed");
+        return;
+      }
+      if ((autosaveVersionRef.current ?? data.draft.autosaveVersion) !== sourceRevision) {
+        setSaveState("Safe repair preview is stale");
+        setError("The Chronicle changed while the repair preview was open. Preview it again from the current draft.");
+        return;
+      }
+      change((next) => {
+        const target = next.chapters.flatMap((chapter) => chapter.blocks).find((block) => block.id === blockId);
+        if (!target) throw new Error("The repaired Passage is no longer present in this draft.");
+        target.configuration = clone(preview.after.configuration);
+        target.nextBlockId = preview.after.nextBlockId;
+      });
+      setSelectedRepairBlockId(null);
+      setSaveState("Safe repair queued for autosave; Undo is available.");
+    } catch (cause) {
+      setSaveState("Safe repair unavailable");
+      setError(cause instanceof Error ? cause.message : "A current safe repair preview could not be loaded.");
+    }
   }
   async function loadGraphSurvey() {
     setSurveyLoading("graph");
@@ -1532,6 +1600,9 @@ export function TaleEditor({
                   key={`${issue.code}:${issue.blockId ?? "chronicle"}:${index}`}
                   onClick={(event) => {
                     setSelectedRuleCode(issue.code);
+                    setSelectedRepairBlockId(
+                      issue.code === "DRYDOCK_LEGACY_NEXT_TARGET_CONFLICT" ? (issue.blockId ?? null) : null,
+                    );
                     if (issue.blockId) focusBlock(issue.blockId, event.currentTarget);
                   }}
                   data-drydock-rule-code={issue.code}
@@ -1557,6 +1628,11 @@ export function TaleEditor({
                     Waiver: {selectedRule.waiverPolicy === "NEVER" ? "not permitted" : "requires governed review"}.
                     Compatibility: {selectedRule.compatibilityPolicy}.
                   </p>
+                  {selectedRuleCode === "DRYDOCK_LEGACY_NEXT_TARGET_CONFLICT" && selectedRepairBlockId ? (
+                    <button onClick={() => void previewAndApplySafeRepair(selectedRepairBlockId)}>
+                      Preview safe repair
+                    </button>
+                  ) : null}
                 </section>
               )}
               {graphSurvey && (

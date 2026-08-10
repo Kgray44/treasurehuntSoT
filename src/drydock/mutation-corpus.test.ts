@@ -12,6 +12,9 @@ type MutationCase = {
 
 const baseDraft = (): DrydockDraftContractInput => structuredClone(fixture) as DrydockDraftContractInput;
 const imageTemplate = authoringFixture.blocks.find((block) => block.blockType === "image") as DrydockAuthoredBlockInput;
+const choiceTemplate = authoringFixture.blocks.find(
+  (block) => block.blockType === "choice",
+) as DrydockAuthoredBlockInput;
 
 function appendSyntheticImage(draft: DrydockDraftContractInput) {
   const image = structuredClone(imageTemplate);
@@ -75,6 +78,46 @@ const cases: readonly MutationCase[] = [
       const opening = draft.chapters[0].blocks[0];
       opening.connections = [{ targetBlockId: opening.id, connectionType: "DEFAULT", orderIndex: 0 }];
       opening.nextBlockId = opening.id;
+    },
+  },
+  {
+    id: "duplicate-canonical-edge",
+    expectedIssueCodes: ["DRYDOCK_GRAPH_DUPLICATE_EDGE"],
+    mutate: (draft) => {
+      const choice = structuredClone(choiceTemplate);
+      choice.id = "synthetic-opening";
+      choice.configuration.choices = [
+        { id: "duplicate-a", label: "First duplicate", targetBlockId: "synthetic-finish" },
+        { id: "duplicate-b", label: "Second duplicate", targetBlockId: "synthetic-finish" },
+      ];
+      choice.connections = [
+        { targetBlockId: "synthetic-finish", connectionType: "CHOICE", orderIndex: 0 },
+        { targetBlockId: "synthetic-finish", connectionType: "CHOICE", orderIndex: 1 },
+      ];
+      choice.nextBlockId = "synthetic-finish";
+      const chapters = draft.chapters as Array<{ id: string; blocks: DrydockAuthoredBlockInput[] }>;
+      chapters[0].blocks[0] = choice;
+    },
+  },
+  {
+    id: "orphan-chapter",
+    expectedIssueCodes: ["DRYDOCK_GRAPH_ORPHAN_CHAPTER"],
+    mutate: (draft) => {
+      const chapters = draft.chapters as Array<{ id: string; blocks: DrydockAuthoredBlockInput[] }>;
+      chapters.push({ id: "synthetic-orphan-chapter", blocks: [] });
+    },
+  },
+  {
+    id: "invalid-cross-chapter-transition",
+    expectedIssueCodes: ["DRYDOCK_GRAPH_CROSS_CHAPTER_TRANSITION_INVALID"],
+    mutate: (draft) => {
+      const chapters = draft.chapters as Array<{ id: string; blocks: DrydockAuthoredBlockInput[] }>;
+      const terminal = structuredClone(chapters[0].blocks[1]);
+      terminal.id = "synthetic-second-chapter-finish";
+      chapters.push({ id: "synthetic-second-chapter", blocks: [terminal] });
+      const opening = chapters[0].blocks[0];
+      opening.connections = [{ targetBlockId: terminal.id, connectionType: "DEFAULT", orderIndex: 0 }];
+      opening.nextBlockId = terminal.id;
     },
   },
   {

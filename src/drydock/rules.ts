@@ -329,6 +329,25 @@ export const drydockRuleCatalog = [
     summary: "A cycle has no static exit.",
   }),
   ruleDefinition({
+    code: "DRYDOCK_GRAPH_DUPLICATE_EDGE",
+    category: "GRAPH",
+    defaultSeverity: "ERROR",
+    summary: "A Passage repeats one canonical edge identity.",
+  }),
+  ruleDefinition({
+    code: "DRYDOCK_GRAPH_ORPHAN_CHAPTER",
+    category: "GRAPH",
+    defaultSeverity: "ERROR",
+    summary: "A chapter has no syntactic path from Chronicle entry.",
+    semanticLocationType: "CHRONICLE",
+  }),
+  ruleDefinition({
+    code: "DRYDOCK_GRAPH_CROSS_CHAPTER_TRANSITION_INVALID",
+    category: "GRAPH",
+    defaultSeverity: "ERROR",
+    summary: "A non-completion Passage crosses a chapter boundary.",
+  }),
+  ruleDefinition({
     code: "DRYDOCK_CONTROL_FLOW_EDGE_CONDITION_UNPROVEN",
     category: "CONTROL_FLOW",
     defaultSeverity: "WARNING",

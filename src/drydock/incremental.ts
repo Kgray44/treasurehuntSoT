@@ -180,6 +180,74 @@ function affectedBlocks(index: DrydockDependencyIndex, change?: DrydockIncrement
   return new Set(keys.flatMap((key) => (index.byKey.get(key) ?? []).map((record) => record.blockId)));
 }
 
+function analyzeDrydockStructure(input: {
+  chapters: readonly { id: string; blocks: readonly DrydockAuthoredBlockInput[] }[];
+  blocks: readonly CanonicalDrydockBlock[];
+  graphAnalysis: ReturnType<typeof analyzeDrydockGraph>;
+}): readonly DrydockIssue[] {
+  const issues: DrydockIssue[] = [];
+  const chapterByBlockId = new Map<string, string>();
+  for (const chapter of input.chapters) for (const block of chapter.blocks) chapterByBlockId.set(block.id, chapter.id);
+
+  for (const block of input.blocks) {
+    const seen = new Set<string>();
+    for (const [index, connection] of block.connections.entries()) {
+      const identity = `${connection.connectionType}:${connection.targetBlockId}`;
+      if (seen.has(identity))
+        issues.push(
+          createDrydockIssue({
+            code: "DRYDOCK_GRAPH_DUPLICATE_EDGE",
+            category: "GRAPH",
+            severity: "ERROR",
+            ruleVersion: 1,
+            location: { blockId: block.id, blockType: block.blockType, fieldPath: `connections.${index}` },
+            message: "This Passage repeats the same canonical edge type and destination.",
+            remediation: "Keep one canonical edge for each authored branch identity.",
+          }),
+        );
+      seen.add(identity);
+      const sourceChapterId = chapterByBlockId.get(block.id);
+      const targetChapterId = chapterByBlockId.get(connection.targetBlockId);
+      if (
+        sourceChapterId &&
+        targetChapterId &&
+        sourceChapterId !== targetChapterId &&
+        block.blockType !== "chapterComplete"
+      )
+        issues.push(
+          createDrydockIssue({
+            code: "DRYDOCK_GRAPH_CROSS_CHAPTER_TRANSITION_INVALID",
+            category: "GRAPH",
+            severity: "ERROR",
+            ruleVersion: 1,
+            location: { blockId: block.id, blockType: block.blockType, fieldPath: `connections.${index}` },
+            message: "Only a Chapter Complete Passage may transition into another chapter.",
+            remediation: "Route cross-chapter progress through a canonical Chapter Complete Passage.",
+          }),
+        );
+    }
+  }
+
+  for (const chapter of input.chapters) {
+    const parsedIds = chapter.blocks
+      .filter((block) => input.graphAnalysis.graph.blocks.has(block.id))
+      .map((block) => block.id);
+    if (!parsedIds.length || !parsedIds.some((id) => input.graphAnalysis.reachableBlockIds.has(id)))
+      issues.push(
+        createDrydockIssue({
+          code: "DRYDOCK_GRAPH_ORPHAN_CHAPTER",
+          category: "GRAPH",
+          severity: "ERROR",
+          ruleVersion: 1,
+          location: { chapterId: chapter.id },
+          message: "This chapter has no static path from the Chronicle entry.",
+          remediation: "Connect the chapter through a canonical Chapter Complete transition or remove it.",
+        }),
+      );
+  }
+  return issues;
+}
+
 export function validateDrydockDraftContracts(draft: DrydockDraftContractInput, change?: DrydockIncrementalChange) {
   const parseIssues: DrydockIssue[] = [];
   const parsedBlocks: CanonicalDrydockBlock[] = [];
@@ -302,6 +370,7 @@ export function validateDrydockDraftContracts(draft: DrydockDraftContractInput, 
   const usageIndex = createVariableUsageIndex(usages);
   const dependencyIndex = createDependencyIndex(parsedBlocks, usageIndex.usages);
   const graphAnalysis = analyzeDrydockGraph(parsedBlocks);
+  const structureIssues = analyzeDrydockStructure({ chapters: draft.chapters, blocks: parsedBlocks, graphAnalysis });
   const stateAnalysis = analyzeDrydockDefiniteInitialization({
     graph: graphAnalysis.graph,
     declarations: variables.declarations,
@@ -323,6 +392,7 @@ export function validateDrydockDraftContracts(draft: DrydockDraftContractInput, 
     draft.analysisMode === "FULL"
       ? [
           ...graphAnalysis.issues,
+          ...structureIssues,
           ...stateAnalysis.issues,
           ...conditionIssues,
           ...sideEffectIssues,
@@ -343,6 +413,7 @@ export function validateDrydockDraftContracts(draft: DrydockDraftContractInput, 
     variableUsageIndex: usageIndex,
     dependencyIndex,
     graphAnalysis,
+    structureIssues,
     stateAnalysis,
     conditionIssues,
     sideEffectIssues,

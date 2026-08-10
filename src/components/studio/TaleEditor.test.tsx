@@ -196,6 +196,56 @@ describe("Voyagewright Studio editor motion and authority", () => {
     await waitFor(() => expect(card).toHaveFocus());
   });
 
+  it("applies a revision-guarded safe repair through the ordinary Studio undo history", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(response(200, editorData()))
+        .mockResolvedValueOnce(
+          response(200, {
+            valid: false,
+            errors: [
+              {
+                code: "DRYDOCK_LEGACY_NEXT_TARGET_CONFLICT",
+                message: "Legacy target disagrees with the canonical connection.",
+                category: "COMPATIBILITY",
+                blockId: "block-1",
+              },
+            ],
+            warnings: [],
+          }),
+        )
+        .mockResolvedValueOnce(
+          response(200, {
+            sourceRevision: 3,
+            preview: {
+              kind: "CANONICAL_TARGET_MIRROR",
+              classification: "SAFE_AUTOMATIC",
+              blockId: "block-1",
+              sourceChecksum: "source-checksum",
+              expectedIssueChanges: { resolved: ["DRYDOCK_LEGACY_NEXT_TARGET_CONFLICT"], introduced: [] },
+              description: "Synchronize legacy target mirrors to the existing canonical BlockConnection.",
+              after: { configuration: { body: "The harbor wakes." }, nextBlockId: "block-2" },
+            },
+          }),
+        ),
+    );
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    fireEvent.click(screen.getByRole("button", { name: "Validate Chronicle" }));
+    fireEvent.click(await screen.findByRole("button", { name: /Legacy target disagrees/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Preview safe repair" }));
+    expect(await screen.findByRole("dialog")).toHaveTextContent("without changing canonical Passage connections");
+    fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Apply safe repair" }));
+
+    await waitFor(() => expect(screen.getByRole("button", { name: "Undo last edit" })).not.toBeDisabled());
+    expect(screen.getByText(/Safe repair queued for autosave/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Undo last edit" }));
+    expect(screen.getByRole("button", { name: "Redo edit" })).not.toBeDisabled();
+  });
+
   it("opens the owner-projected static graph outline and preserves Passage navigation", async () => {
     vi.stubGlobal(
       "fetch",

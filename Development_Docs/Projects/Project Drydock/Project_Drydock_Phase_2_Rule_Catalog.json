@@ -406,6 +406,26 @@
       "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
     },
     {
+      "code": "DRYDOCK_GRAPH_CROSS_CHAPTER_TRANSITION_INVALID",
+      "version": 1,
+      "category": "GRAPH",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_GRAPH_DUPLICATE_EDGE",
+      "version": 1,
+      "category": "GRAPH",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
       "code": "DRYDOCK_GRAPH_ENTRY_MISSING",
       "version": 1,
       "category": "GRAPH",
@@ -417,6 +437,16 @@
     },
     {
       "code": "DRYDOCK_GRAPH_NO_TERMINAL_PATH",
+      "version": 1,
+      "category": "GRAPH",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_GRAPH_ORPHAN_CHAPTER",
       "version": 1,
       "category": "GRAPH",
       "defaultSeverity": "ERROR",

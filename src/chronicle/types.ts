@@ -25,6 +25,14 @@ export type StudioBlockInput = {
   schemaVersion?: number;
   /** Canonical BlockConnection mirrors this legacy pointer; Drydock validates disagreement. */
   nextBlockId?: string | null;
+  /** Canonical edge authority. Studio must round-trip these rather than recreating them from legacy mirrors. */
+  connections?: Array<{
+    targetBlockId: string;
+    connectionType: string;
+    label?: string | null;
+    conditionExpression?: string | null;
+    orderIndex?: number;
+  }>;
 };
 
 export type StudioChapterInput = {

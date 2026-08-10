@@ -34,6 +34,19 @@ const blockInputSchema = z.object({
   creatorNotes: z.string().max(10000).nullish(),
   isEnabled: z.boolean().optional(),
   schemaVersion: z.number().int().min(1).max(100).optional(),
+  nextBlockId: z.string().min(8).max(128).nullish(),
+  connections: z
+    .array(
+      z.object({
+        targetBlockId: z.string().min(8).max(128),
+        connectionType: z.string().min(1).max(80),
+        label: z.string().max(400).nullish(),
+        conditionExpression: z.string().max(10000).nullish(),
+        orderIndex: z.number().int().min(0).max(10000).optional(),
+      }),
+    )
+    .max(1000)
+    .optional(),
 });
 
 export const studioDraftSchema = z.object({
@@ -245,6 +258,7 @@ export async function getStudioTale(taleId: string) {
             connectionType: connection.connectionType,
             label: connection.label,
             conditionExpression: connection.conditionExpression,
+            orderIndex: connection.orderIndex,
           })),
         })),
       })),
@@ -340,7 +354,12 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
       },
     });
     await tx.taleChapter.deleteMany({ where: { draftRevisionId: draft.id } });
-    const flattened: Array<{ id: string; type: string; configuration: JsonObject }> = [];
+    const flattened: Array<{
+      id: string;
+      type: string;
+      configuration: JsonObject;
+      connections?: NonNullable<StudioDraftInput["chapters"]>[number]["blocks"][number]["connections"];
+    }> = [];
     for (let chapterIndex = 0; chapterIndex < input.chapters.length; chapterIndex += 1) {
       const chapter = input.chapters[chapterIndex];
       const createdChapter = await tx.taleChapter.create({
@@ -383,15 +402,33 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
           },
         });
         if (block.isEnabled !== false)
-          flattened.push({ id: block.id, type: block.blockType, configuration: block.configuration });
+          flattened.push({
+            id: block.id,
+            type: block.blockType,
+            configuration: block.configuration,
+            connections: block.connections,
+          });
       }
     }
     const allBlockIds = new Set(flattened.map((block) => block.id));
     for (let index = 0; index < flattened.length; index += 1) {
       const block = flattened[index];
       const fallback = flattened[index + 1]?.id ?? null;
-      const connections: Array<{ target: string; type: string; label?: string; condition?: string }> = [];
-      if (block.type === "choice" && Array.isArray(block.configuration.choices)) {
+      const connections: Array<{ target: string; type: string; label?: string | null; condition?: string | null }> = [];
+      if (block.connections) {
+        for (const connection of [...block.connections].sort(
+          (left, right) => (left.orderIndex ?? 0) - (right.orderIndex ?? 0),
+        )) {
+          if (!allBlockIds.has(connection.targetBlockId))
+            throw new Error("A canonical Passage connection targets a missing or disabled Passage.");
+          connections.push({
+            target: connection.targetBlockId,
+            type: connection.connectionType,
+            label: connection.label,
+            condition: connection.conditionExpression,
+          });
+        }
+      } else if (block.type === "choice" && Array.isArray(block.configuration.choices)) {
         for (const choice of block.configuration.choices as Array<Record<string, unknown>>) {
           const target = typeof choice.targetBlockId === "string" ? choice.targetBlockId : "";
           if (allBlockIds.has(target))
