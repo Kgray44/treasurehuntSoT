@@ -3,25 +3,25 @@ title: Project Helm Phase 1 Validation Record
 audience: product-engineering
 status: current
 canonical_for: project-helm-phase-1-validation-record
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-10
 ---
 
 # Project Helm Phase 1 validation record
 
 ## Current decision
 
-**VALIDATION IN PROGRESS.** The Phase 1 implementation, focused service and
-contract proof, visible product inspection, copied-database browser diagnostic,
-and semantic reconciliation through `origin/main` commit `fca5838` are complete
-on the owned Helm branch. The governed exact-source Helm browser receipt,
-authoritative mainline Sounding Line gate, protected integration, integrated-SHA
-proof, and remote parity remain required. This record does not claim mainline
-acceptance.
+**RELEASE_GO; MAINLINE ACCEPTED.** Protected pull request 31 accepted exact
+candidate `71a2055cf9174cb8c854ad1424b1ecfcb7473abb` as merge
+`d4991766369697584c5d2ea7cba22da903ecab8c`. The hosted mainline finalizer
+recorded 37 of 37 mandatory receipts `PASSED`, 37 of 37 cleanup states `CLEAN`,
+and no invalid, missing, duplicate, or unknown evidence. The accepted merge has
+the validated candidate as its second parent and an identical Git tree.
 
 ## Focused implementation evidence
 
 | Lane                                                                                 | Result                                                                    | Truth boundary                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Protected pull request 31 and mainline finalization                                  | 40/40 checks successful; `RELEASE_GO`; 37/37 passed and `CLEAN`           | Exact hosted proof for candidate `71a2055cf9174cb8c854ad1424b1ecfcb7473abb`, accepted as merge `d4991766369697584c5d2ea7cba22da903ecab8c`; evidence digest `3f3e4650d16b10216932b6a39716414f7f46fa4c80d769f5a42e9415ab7084ed`.                                                                                                                                                                                        |
 | Helm service, API, component, artifact, history, Homeport, and invitation regression | 13 files, 68 tests passed                                                 | Local diagnostic proof on a task-owned SQLite database                                                                                                                                                                                                                                                                                                                                                                |
 | Superseded Sounding Line contract gate                                               | `RELEASE_GO`; `unit.helm` 26/26; `component.helm` 3/3; static gate passed | Exact-source governed proof on commit `98b135a086a5d2e6283965561644f3f620f2fff4`; cleanup was `CLEAN`. The later `40d822c` mainline advance makes it retained diagnostic history, not current acceptance evidence.                                                                                                                                                                                                    |
 | Helm browser diagnostic                                                              | 2/2 passed in 1.2 minutes                                                 | Task-owned port 3101 and copied SQLite database on commit `3f4ba7f8f61f69642f2878eaf0991712bfc0d6be`; the 58.3-second authority/membership journey and 10.1-second responsive/accessibility matrix both passed. This is not yet the governed shared-lane receipt.                                                                                                                                                     |
@@ -102,16 +102,15 @@ no real private Chronicle content.
   deployment, production, live-provider, physical-device, or owner-acceptance
   proof.
 
-## Remaining acceptance work
+## Accepted mainline state
 
-1. Pass the repaired `browser.helm` journey and responsive/accessibility matrix
-   through the governed shared validation lane on the exact candidate.
-2. Finalize the Helm records and branch-candidate Feature Catalog entry after
-   browser acceptance.
-3. Run the authoritative exact-candidate mainline gate.
-4. Integrate through the protected repository path and validate the integrated
-   SHA.
-5. Prove advertised-remote parity and task-owned runtime cleanup.
+- Protected pull request 31 merged exact candidate `71a2055c` as `d4991766`.
+- Sounding Line plan digest:
+  `9a951190d9abb35b7df4d406d1036abfc197410eae112c3519c2ea2c40685652`.
+- Sounding Line evidence digest:
+  `3f3e4650d16b10216932b6a39716414f7f46fa4c80d769f5a42e9415ab7084ed`.
+- The accepted merge tree exactly matches the validated candidate tree.
+- Helm adds no Prisma schema change, migration, backfill, or data rewrite.
 
 Helm Phase 2, **Read the Deck**, has not started and is not authorized by this
 record.

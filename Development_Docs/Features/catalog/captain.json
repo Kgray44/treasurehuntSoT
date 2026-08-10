@@ -3,11 +3,15 @@
     "id": "FT-007",
     "title": "Captain Voyage Operations",
     "summary": "Captains create, launch, operate, recover, and reconcile live Voyages through authoritative commands, with an explicit option to join the same Voyage as an ordinary Player.",
-    "status": "BRANCH_COMPLETE_NOT_MERGED",
-    "branch": "codex/project-helm-phase1-take-the-helm",
-    "commit": "9c1163bd1467f77ee33f0b063f3f3bdddd81609d",
+    "status": "MAINLINE",
     "program": "Captain",
-    "surfaces": ["/captain", "/captain/library", "/captain/voyages/[id]", "/player/playthroughs/[id]"],
+    "surfaces": [
+      "/captain",
+      "/captain/library",
+      "/captain/sessions/[sessionId]",
+      "/captain/voyages/[playthroughId]/player-preview",
+      "/player/playthroughs/[playthroughId]"
+    ],
     "subfeatures": [
       "Voyage creation wizard",
       "Crew readiness",

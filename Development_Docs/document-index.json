@@ -2835,6 +2835,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_1_Completion_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_1_Design_Record.md",
       "record_type": "program-record",
       "status": "preserved",
