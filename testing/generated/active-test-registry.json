@@ -48076,7 +48076,7 @@
     {
       "id": "sl-test-9a2030932e0a00181fc2",
       "title": "registers every currently emitted whole-Chronicle static code with governed metadata",
-      "line": 62,
+      "line": 74,
       "file": "src/drydock/rules.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
@@ -48116,7 +48116,7 @@
     {
       "id": "sl-test-822db5401e50e0c4967a",
       "title": "makes privacy and error rules non-waivable while keeping bounded-proof review explicit",
-      "line": 73,
+      "line": 85,
       "file": "src/drydock/rules.test.ts",
       "suiteId": "unit.drydock",
       "owner": "drydock",
