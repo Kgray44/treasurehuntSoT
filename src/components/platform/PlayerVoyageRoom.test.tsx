@@ -222,6 +222,33 @@ describe("PlayerVoyageRoom", () => {
     await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1/journal"));
   });
 
+  it("reconciles immediately when a backgrounded waiting room becomes visible after launch", async () => {
+    const handoff = vi.fn();
+    const active = {
+      ...voyage,
+      status: "ACTIVE",
+      state: "IN_PROGRESS",
+      canEnter: true,
+      runtimeHref: "/player/playthroughs/voyage-1/journal",
+    };
+    let hidden = true;
+    vi.spyOn(document, "hidden", "get").mockImplementation(() => hidden);
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, body()))
+      .mockResolvedValueOnce(response(200, body(active)));
+    vi.stubGlobal("EventSource", FakeEventSource);
+    vi.stubGlobal("fetch", fetchMock);
+    renderRoom(handoff);
+    await screen.findByRole("heading", { name: "The Moonlit Key" });
+
+    hidden = false;
+    document.dispatchEvent(new Event("visibilitychange"));
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1/journal"));
+  });
+
   it("makes revocation terminal and removes reconnect controls", async () => {
     vi.stubGlobal("EventSource", FakeEventSource);
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, body())));

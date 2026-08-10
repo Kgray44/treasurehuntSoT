@@ -246,8 +246,14 @@ export function PlayerVoyageRoom({
       setConnection("reconnecting");
       reconcile("reconciling");
     };
+    const onVisibilityChange = () => {
+      if (document.hidden || connectionRef.current === "revoked") return;
+      setConnection("reconciling");
+      reconcile("reconciling");
+    };
     window.addEventListener("offline", onOffline);
     window.addEventListener("online", onOnline);
+    document.addEventListener("visibilitychange", onVisibilityChange);
     return () => {
       window.clearInterval(timer);
       source.close();
@@ -259,6 +265,7 @@ export function PlayerVoyageRoom({
       }
       window.removeEventListener("offline", onOffline);
       window.removeEventListener("online", onOnline);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [load, playthroughId]);
 
