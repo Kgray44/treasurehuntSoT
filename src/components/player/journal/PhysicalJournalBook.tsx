@@ -52,6 +52,7 @@ export const PhysicalJournalBook = forwardRef<
     onReadinessChange?: (snapshot: PageFlipReadinessSnapshot) => void;
     onPageTargetsChange?: (authority: PageFlipPageTargetExportAuthority | null) => void;
     onJournalStageTargetChange?: (handle: SceneTargetHandle | null) => void;
+    turnExitMotion?: string;
     overlay?: React.ReactNode;
   }
 >(function PhysicalJournalBook(
@@ -74,6 +75,7 @@ export const PhysicalJournalBook = forwardRef<
     onReadinessChange,
     onPageTargetsChange,
     onJournalStageTargetChange,
+    turnExitMotion,
     overlay,
   },
   ref,
@@ -105,7 +107,7 @@ export const PhysicalJournalBook = forwardRef<
           <span className="binding-cord cord-four" />
           <span className="binding-cord cord-five" />
         </div>
-        <div className="open-page-stage">
+        <div className="open-page-stage" data-story-exit={turnExitMotion}>
           <PageFlipBook
             ref={ref}
             pages={pages}
