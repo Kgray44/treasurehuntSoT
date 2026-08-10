@@ -743,8 +743,8 @@ function buildReconciliation(capabilities) {
     .sort((left, right) => left.featureCatalogId.localeCompare(right.featureCatalogId));
 }
 
-function markdownFrontmatter(title, canonicalFor) {
-  return `---\ntitle: ${title}\naudience: product-engineering\nstatus: current\ncanonical_for: ${canonicalFor}\nlast_reviewed: 2026-08-09\n---\n\n`;
+function markdownFrontmatter(title, canonicalFor, lastReviewed = "2026-08-09") {
+  return `---\ntitle: ${title}\naudience: product-engineering\nstatus: current\ncanonical_for: ${canonicalFor}\nlast_reviewed: ${lastReviewed}\n---\n\n`;
 }
 
 function buildAuditReport(inputs, ledger, findings, metrics, queue, reconciliation) {
@@ -1831,7 +1831,10 @@ function phase3Findings(phase2Findings, config) {
   const transitions = config.findingTransitions ?? {};
   const carried = phase2Findings.map((finding) => {
     const transition = transitions[finding.findingId];
-    return transition ? { ...finding, ...transition, observedSourceSha: config.auditedSourceSha } : finding;
+    if (!transition) return finding;
+    const targetState = { ...transition };
+    delete targetState.from;
+    return { ...finding, ...targetState, observedSourceSha: config.auditedSourceSha };
   });
   const additions = config.newFindings.map((finding) => ({
     catalogOutcome: null,
@@ -1982,9 +1985,27 @@ function phase3Reports(artifacts) {
     .join("\n");
   const newFindingIds = artifacts.inputs.phase3Config.newFindings.map((finding) => finding.findingId).join(", ");
   const closedFindings = artifacts.findingsDocument.findings
-    .filter((finding) => finding.status === "CLOSED" && finding.closedAt === artifacts.inputs.phase3Config.auditDate)
+    .filter((finding) => artifacts.inputs.phase3Config.findingTransitions?.[finding.findingId]?.status === "CLOSED")
     .map((finding) => finding.findingId);
-  const header = (title, canonical) => markdownFrontmatter(title, canonical);
+  const phase3Config = artifacts.inputs.phase3Config;
+  const validationEvidence = phase3Config.validationEvidence ?? {};
+  const realization = artifacts.metrics.capabilityRealization;
+  const utilization = artifacts.metrics.capabilityUtilization;
+  const sliceDecisionRows = (validationEvidence.sliceDecisions ?? [])
+    .map(
+      (entry) =>
+        `- ${entry.sliceId}: ${entry.decision}; hosted run ${entry.hostedRunId}; digest \`${entry.evidenceDigest}\``,
+    )
+    .join("\n");
+  const evidenceSummary = (entry) => (entry ? `${entry.decision}; digest \`${entry.evidenceDigest}\`` : "PENDING");
+  const mainlineSafety = artifacts.slicesDocument.slices.every((slice) => slice.status === "MAINLINE_ACCEPTED")
+    ? "SATISFIED"
+    : "NOT SATISFIED";
+  const remainingBlocker =
+    phase3Config.lifecycle.mainlineState === "MAINLINE_ACCEPTED"
+      ? "NONE"
+      : "Protected integration and actual-main accepted-source proof remain pending.";
+  const header = (title, canonical) => markdownFrontmatter(title, canonical, phase3Config.auditDate);
   return {
     utilization: `${header("Project Deepwater Phase 3 Utilization Report", "project-deepwater-phase-3-utilization-report")}# Project Deepwater Phase 3 utilization report
 
@@ -2024,11 +2045,91 @@ ${sliceRows}
 ## Explainable changes
 
 - Phase 2 realization history is retained unchanged in the trace and remediation artifacts.
-- Phase 3 adds utilization status for all ${artifacts.utilizationDocument.reviewedCapabilityCount} current accepted capabilities. The Phase 2 baseline remains ${artifacts.inputs.phase3Config.phase2AcceptedCapabilityCount}; accepted-main Tideglass completion added ${artifacts.inputs.phase3Config.currentMainCapabilityAdditions.map((entry) => entry.capabilityId).join(", ")} before coordination publication.
+- Phase 3 adds utilization status for all ${artifacts.utilizationDocument.reviewedCapabilityCount} current accepted capabilities. The Phase 2 baseline remains ${artifacts.inputs.phase3Config.phase2AcceptedCapabilityCount}; accepted-main additions are ${artifacts.inputs.phase3Config.currentMainCapabilityAdditions.map((entry) => entry.capabilityId).join(", ")}.
 - New utilization finding: ${newFindingIds}.
-- Findings closed by accepted Phase 3 slices: ${closedFindings.length ? closedFindings.join(", ") : "none yet"}.
+- Findings closed by accepted Phase 3 evidence: ${closedFindings.length ? closedFindings.join(", ") : "none yet"}.
 - Product behavior changed by the coordination branch: none.
 - External provider and Homeport owner-decision truth remain explicit and unclaimed.
+`,
+    final: `${header("Project Deepwater Phase 3 Final Report", "project-deepwater-phase-3-final-report")}# PROJECT DEEPWATER
+
+## PHASE 3: RAISE THE CAPABILITY
+
+- Base origin/main: \`${phase3Config.baseOriginMainSha}\`
+- Final reconciled origin/main: \`${phase3Config.finalReconciledMainSha ?? phase3Config.auditedSourceSha}\`
+- Coordination branch: \`${phase3Config.branch}\`
+- Final Phase 3 commit: ${phase3Config.finalPhase3Commit ? `\`${phase3Config.finalPhase3Commit}\`` : "PENDING_PROTECTED_INTEGRATION"}
+- Mainline state: ${phase3Config.lifecycle.mainlineState}
+
+## Capability realization
+
+- FULLY_REALIZED: ${realization.FULLY_REALIZED ?? 0}
+- PARTIALLY_REALIZED: ${realization.PARTIALLY_REALIZED ?? 0}
+- BACKEND_ONLY: ${realization.BACKEND_ONLY ?? 0}
+- FRONTEND_ONLY: ${realization.FRONTEND_ONLY ?? 0}
+- HIDDEN: ${realization.HIDDEN ?? 0}
+- INTERNAL_BY_DESIGN: ${realization.INTERNAL_BY_DESIGN ?? 0}
+- SECURITY_RESTRICTED: ${realization.SECURITY_RESTRICTED ?? 0}
+- MISSING: ${realization.MISSING ?? 0}
+- BROKEN: ${realization.BROKEN ?? 0}
+- DEPRECATED: ${realization.DEPRECATED ?? 0}
+
+## Capability utilization
+
+- FULLY_UTILIZED: ${utilization.FULLY_UTILIZED ?? 0}
+- PARTIALLY_UTILIZED: ${utilization.PARTIALLY_UTILIZED ?? 0}
+- INTENTIONALLY_PARTIAL: ${utilization.INTENTIONALLY_PARTIAL ?? 0}
+- INTERNAL_ONLY: ${utilization.INTERNAL_ONLY ?? 0}
+- NOT_APPLICABLE: ${utilization.NOT_APPLICABLE ?? 0}
+- Utilization findings discovered: ${artifacts.metrics.findings.phase3Discovered}
+- Utilization findings closed: ${closedFindings.filter((findingId) => findingId.includes("UNDERUTILIZATION")).length}
+- Backend operations reviewed: ${artifacts.metrics.backendOperationsReviewed}
+- Unconsumed meaningful operations remaining: ${artifacts.metrics.unconsumedMeaningfulOperationsRemaining}
+- Unconsumed safe metadata remaining: ${artifacts.metrics.unconsumedSafeMetadataRemaining}
+- Unconsumed recovery capabilities remaining: ${artifacts.metrics.unconsumedRecoveryCapabilitiesRemaining}
+
+## Findings and documentation
+
+- Starting open: ${artifacts.metrics.findings.startingOpen}
+- Phase 3 discovered: ${artifacts.metrics.findings.phase3Discovered}
+- Closed by Phase 3: ${artifacts.metrics.findings.closed}
+- Debt accepted: ${artifacts.metrics.findings.debtAccepted}
+- External: ${artifacts.metrics.findings.external}
+- Owner acceptance: ${artifacts.metrics.findings.ownerAcceptance}
+- Remaining high: ${artifacts.metrics.findings.remainingHigh}
+- Remaining critical: ${artifacts.metrics.findings.remainingCritical}
+- Documentation reconciliation: ${artifacts.metrics.documentation.starting} starting, ${artifacts.metrics.documentation.closed} closed, ${artifacts.metrics.documentation.remaining} remaining.
+
+## Remediation slices
+
+- Total: ${artifacts.slicesDocument.slices.length}
+- Owner-project product slices: 0
+- Deepwater-coordinated documentation slices: ${artifacts.slicesDocument.slices.length}
+- Mainline accepted: ${artifacts.slicesDocument.slices.filter((slice) => slice.status === "MAINLINE_ACCEPTED").length}
+- Blocked: ${artifacts.slicesDocument.slices.filter((slice) => slice.status === "BLOCKED").length}
+
+${sliceDecisionRows || "- Slice decisions: PENDING"}
+
+## Change boundary
+
+- Schema changes: Deepwater utilization and slice control-plane schemas only; no Prisma or product-database schema change.
+- Product changes: none on the coordination branch. The three accepted slices correct Feature Catalog route identity only.
+- External dependencies: Watchglass real-provider availability and evidence remain externally pending; simulator proof is not provider proof.
+- Owner acceptance: Homeport remains \`PENDING_OWNER_DECISION\`; automation does not emit \`OWNER_ACCEPTED\`.
+- Semantic digest: \`${semanticDigest(artifacts)}\`
+
+## Sounding Line
+
+- Utilization policy: ${artifacts.utilizationDocument.reviewedCapabilityCount}/${artifacts.inputs.phase3Config.expectedCurrentCapabilityCount} capabilities reviewed.
+- Deepwater tests: ${artifacts.inputs.phase3Config.expectedCurrentCapabilityCount}/${artifacts.inputs.phase3Config.expectedCurrentCapabilityCount} governed control-plane cases registered.
+- Slice decisions: all three registered slices are accepted-main \`RELEASE_GO\` evidence.
+- Final Phase 3 decision: ${evidenceSummary(validationEvidence.finalCandidate)}
+- Hosted mainline decision: ${evidenceSummary(validationEvidence.hostedMainline)}
+- Accepted-main proof: ${evidenceSummary(validationEvidence.acceptedMainProof)}
+
+- Mainline Safety Contract: ${mainlineSafety}
+- Phase 4 authorized: false
+- Remaining blocker: ${remainingBlocker}
 `,
   };
 }
@@ -2159,11 +2260,11 @@ async function buildPhase3Artifacts(root, phase2) {
     worktree: phase3Config.worktree,
     baseSourceSha: phase3Config.baseOriginMainSha,
     auditedSourceSha: phase3Config.auditedSourceSha,
-    finalReconciledMainSha: null,
+    finalReconciledMainSha: phase3Config.finalReconciledMainSha ?? null,
     mainlineState: phase3Config.lifecycle.mainlineState,
-    schemaImpact: "NONE",
-    productSourceImpact: "NONE_ON_COORDINATION_BRANCH",
-    featureCatalogImpact: "PENDING_REGISTERED_SLICES",
+    schemaImpact: phase3Config.schemaImpact ?? "NONE",
+    productSourceImpact: phase3Config.productSourceImpact ?? "NONE_ON_COORDINATION_BRANCH",
+    featureCatalogImpact: phase3Config.featureCatalogImpact ?? "PENDING_REGISTERED_SLICES",
     validation: phase3Config.lifecycle.validation,
     reconciliation: phase3Config.lifecycle.reconciliation,
     authorityGaps: phase3Config.authorityGaps,
@@ -2455,11 +2556,17 @@ async function loadAcceptedPhase2Artifacts(root) {
     readJson(root, `${DEEPWATER_ROOT}/deepwater-phase-status.json`),
   ]);
   const phase3FindingIds = new Set(phase3Config.newFindings.map((finding) => finding.findingId));
+  const transitions = phase3Config.findingTransitions ?? {};
   const findingsDocument = {
     ...currentFindings,
     phase: phase2Config.phase,
     auditedSourceSha: phase2Config.auditedSourceSha,
-    findings: currentFindings.findings.filter((finding) => !phase3FindingIds.has(finding.findingId)),
+    findings: currentFindings.findings
+      .filter((finding) => !phase3FindingIds.has(finding.findingId))
+      .map((finding) => {
+        const acceptedPhase2State = transitions[finding.findingId]?.from;
+        return acceptedPhase2State ? { ...finding, ...acceptedPhase2State } : finding;
+      }),
   };
   const inputs = { ...baseInputs, phase2Config, tracesSchema, remediationSchema };
   const phase3Queue = buildPhase3Queue(remediationDocument, findingsDocument.findings, phase2Config);
@@ -3132,6 +3239,7 @@ export async function artifactFiles(root, artifacts) {
     [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_3_Utilization_Report.md`, artifacts.phase3Reports.utilization],
     [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_3_Remediation_Report.md`, artifacts.phase3Reports.remediation],
     [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_to_Phase_3_Delta_Report.md`, artifacts.phase3Reports.delta],
+    [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_3_Final_Report.md`, artifacts.phase3Reports.final],
   ]);
   return new Map(
     await Promise.all(

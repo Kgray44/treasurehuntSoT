@@ -68,10 +68,14 @@ export type EventMembership = {
   removedAt: Date | null;
 };
 
-const eligible = (member: EventMembership, occurredAt: Date) =>
-  ["READY", "ACTIVE_MEMBER", "COMPLETED_MEMBER"].includes(member.status) &&
-  (!member.joinedAt || member.joinedAt <= occurredAt) &&
-  (!member.removedAt || member.removedAt > occurredAt);
+const eligible = (member: EventMembership, occurredAt: Date) => {
+  const withinInterval =
+    (!member.joinedAt || member.joinedAt <= occurredAt) && (!member.removedAt || member.removedAt > occurredAt);
+  const wasOrdinaryMember =
+    ["READY", "ACTIVE_MEMBER", "COMPLETED_MEMBER"].includes(member.status) ||
+    (["REMOVED", "LEFT"].includes(member.status) && Boolean(member.joinedAt && member.removedAt));
+  return wasOrdinaryMember && withinInterval;
+};
 
 export function resolveArtifactGrantReceipt(input: {
   artifactDefinitionId: string;

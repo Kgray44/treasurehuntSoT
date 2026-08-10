@@ -4,6 +4,8 @@
 - `Governance/`: current repository-wide governance standards and their source records.
 - `Projects/`: current project governing documents and project-specific records.
 - `Architecture_Decisions/`: durable technical decisions.
+- `Projects/`: governed project and phase records, including design, validation,
+  integration, and completion evidence.
 - `Programs/`: project records grouped by program.
 - `Validation/`: test plans, ledgers, audits, and validation evidence.
 - `Migrations/`: migration, rollback, and compatibility records.

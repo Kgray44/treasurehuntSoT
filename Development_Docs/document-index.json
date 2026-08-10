@@ -813,6 +813,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_3_Final_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_3_Realization_Queue.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -2878,6 +2884,42 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Admiralty/walkthrough/phase1/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_1_Completion_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_1_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_1_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_1_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_1_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/README.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

@@ -3,1482 +3,1482 @@
     {
       "evidenceId": "DW-P3-EV-0001",
       "reference": "/api",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0002",
       "reference": "/api/auth/context",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0003",
       "reference": "/api/player/events",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0004",
       "reference": "/api/verification",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0005",
       "reference": "/api/voyages",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0006",
       "reference": "Development_Docs/Features/catalog/harborlight.json",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0007",
       "reference": "Development_Docs/Features/catalog/one-voyage.json",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0008",
       "reference": "Development_Docs/Features/catalog/player.json",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0009",
       "reference": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Completion_Receipt.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0010",
       "reference": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Final_Program_Closeout_Receipt.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0011",
       "reference": "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0012",
       "reference": "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0013",
       "reference": "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0014",
       "reference": "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0015",
       "reference": "Development_Docs/Project_True_North_Completion_Receipt.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0016",
       "reference": "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0017",
       "reference": "Development_Docs/Projects/Project Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0018",
       "reference": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0019",
       "reference": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0020",
       "reference": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0021",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Account_Data_Export_Contract.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0022",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Account_Deactivation_and_Deletion_Contract.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0023",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_1_Compatibility_Cutover_Ledger.csv",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0024",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_1_Validation_Record.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0025",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_2_Validation_Record.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0026",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_3_Validation_Record.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0027",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_Validation_Record.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0028",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_5_Route_Reachability_Graph.json",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0029",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_5_Validation_Record.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0030",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_6_Screen_Acceptance_Registry.json",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0031",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_6_Validation_Record.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0032",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_1_Validation_Record.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0033",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_2_Validation_Record.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0034",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Validation_Record.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0035",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Validation_Record.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0036",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Integrated_Journey_Registry.json",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0037",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_Decision_Record.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0038",
       "reference": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Validation_Record.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0039",
       "reference": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0040",
       "reference": "Development_Docs/Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0041",
       "reference": "Experience_Images/manifest.json",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0042",
       "reference": "Phase 3 coordination reconciliation after accepted-main merge",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0043",
       "reference": "Sounding Line local-change",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0044",
       "reference": "finding:DW-FIND-EDITION-COMPARISON-SEMANTIC-UNDERUTILIZATION",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0045",
       "reference": "finding:DW-FIND-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0046",
       "reference": "finding:DW-FIND-VERIFICATION-PROVIDER-REALIZATION-GAP",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0047",
       "reference": "journey:HP-JRN-001",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0048",
       "reference": "journey:HP-JRN-002",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0049",
       "reference": "journey:HP-JRN-003",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0050",
       "reference": "journey:HP-JRN-004",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0051",
       "reference": "journey:HP-JRN-005",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0052",
       "reference": "journey:HP-JRN-006",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0053",
       "reference": "journey:HP-JRN-007",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0054",
       "reference": "journey:HP-JRN-008",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0055",
       "reference": "journey:HP-JRN-009",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0056",
       "reference": "journey:HP-JRN-010",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0057",
       "reference": "journey:HP-JRN-011",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0058",
       "reference": "journey:HP-JRN-012",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0059",
       "reference": "journey:HP-JRN-013",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0060",
       "reference": "journey:HP-P1-JRN-A",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0061",
       "reference": "journey:HP-P1-JRN-B",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0062",
       "reference": "journey:HP-P1-JRN-C",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0063",
       "reference": "journey:HP-P1-JRN-D",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0064",
       "reference": "journey:HP-P1-JRN-E",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0065",
       "reference": "journey:HP-P1-JRN-F",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0066",
       "reference": "journey:HP-P1-JRN-I",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0067",
       "reference": "journey:HP-P1-JRN-J",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0068",
       "reference": "journey:HP-P1-JRN-K",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0069",
       "reference": "journey:HP-P1-JRN-M",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0070",
       "reference": "journey:HP-P1-JRN-N",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0071",
       "reference": "journey:HP-P1-JRN-O",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0072",
       "reference": "journey:HP-P1-JRN-P",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0073",
       "reference": "journey:HP-P2-JRN-C",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0074",
       "reference": "journey:HP-P2-JRN-D",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0075",
       "reference": "journey:HP-P2-JRN-E",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0076",
       "reference": "journey:HP-P2-JRN-F",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0077",
       "reference": "journey:HP-P2-JRN-G",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0078",
       "reference": "journey:HP-P2-JRN-O",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0079",
       "reference": "journey:HP-P2-JRN-P",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0080",
       "reference": "journey:HP-P3-JRN-A",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0081",
       "reference": "journey:HP-P3-JRN-AA",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0082",
       "reference": "journey:HP-P3-JRN-AB",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0083",
       "reference": "journey:HP-P3-JRN-AC",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0084",
       "reference": "journey:HP-P3-JRN-AD",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0085",
       "reference": "journey:HP-P3-JRN-AE",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0086",
       "reference": "journey:HP-P3-JRN-B",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0087",
       "reference": "journey:HP-P3-JRN-C",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0088",
       "reference": "journey:HP-P3-JRN-D",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0089",
       "reference": "journey:HP-P3-JRN-E",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0090",
       "reference": "journey:HP-P3-JRN-F",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0091",
       "reference": "journey:HP-P3-JRN-G",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0092",
       "reference": "journey:HP-P4-JRN-A",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0093",
       "reference": "journey:HP-P4-JRN-AA",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0094",
       "reference": "journey:HP-P4-JRN-AB",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0095",
       "reference": "journey:HP-P4-JRN-AC",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0096",
       "reference": "journey:HP-P4-JRN-AD",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0097",
       "reference": "journey:HP-P4-JRN-AE",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0098",
       "reference": "journey:HP-P7-JRN-D",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0099",
       "reference": "npm run docs:index",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0100",
       "reference": "npm run docs:validate",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0101",
       "reference": "npm run features:sync",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0102",
       "reference": "npm run features:validate",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0103",
       "reference": "prisma/migrations/20260725120000_wayfarer_phase4_artifacts_achievements/migration.sql",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0104",
       "reference": "prisma/schema.sqlite.prisma",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0105",
       "reference": "scripts/community/backup.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0106",
       "reference": "scripts/community/ops-status.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0107",
       "reference": "scripts/community/providers-check.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0108",
       "reference": "scripts/community/reconcile.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0109",
       "reference": "scripts/community/restore-verify.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0110",
       "reference": "scripts/community/worker.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0111",
       "reference": "scripts/features/build-feature-catalog.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0112",
       "reference": "scripts/prepare-validation-isolation.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0113",
       "reference": "scripts/private-content/cli.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0114",
       "reference": "scripts/private-content/rehearse-backup.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0115",
       "reference": "scripts/private-content/rehearse-restore.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0116",
       "reference": "scripts/private-content/scan.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0117",
       "reference": "scripts/sounding-line/adapters.mjs",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0118",
       "reference": "scripts/sounding-line/phase3.mjs",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0119",
       "reference": "scripts/sounding-line/phase4.mjs",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0120",
       "reference": "scripts/sounding-line/runtime.mjs",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0121",
       "reference": "scripts/test-all.ps1",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0122",
       "reference": "scripts/validate-documentation.mjs",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0123",
       "reference": "src/admiralty/authorization.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0124",
       "reference": "src/admiralty/support-access.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0125",
       "reference": "src/animation",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0126",
       "reference": "src/animation/scenes/story.scene.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0127",
       "reference": "src/app/account/cancel-deletion/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0128",
       "reference": "src/app/account/data/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0129",
       "reference": "src/app/account/email-change/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0130",
       "reference": "src/app/account/linked-identities/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0131",
       "reference": "src/app/account/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0132",
       "reference": "src/app/account/personal-information/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0133",
       "reference": "src/app/account/preferences/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0134",
       "reference": "src/app/account/privacy/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0135",
       "reference": "src/app/account/profile/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0136",
       "reference": "src/app/account/reactivate/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0137",
       "reference": "src/app/account/roles/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0138",
       "reference": "src/app/account/security/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0139",
       "reference": "src/app/account/sessions/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0140",
       "reference": "src/app/account/support-access/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0141",
       "reference": "src/app/admin/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0142",
       "reference": "src/app/api/account/data/export/route.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0143",
       "reference": "src/app/api/account/email/change/confirm/route.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0144",
       "reference": "src/app/api/account/email/change/request/route.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0145",
       "reference": "src/app/api/auth/account/cancel-deletion/route.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0146",
       "reference": "src/app/api/auth/account/reactivate/route.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0147",
       "reference": "src/app/api/auth/context/route.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0148",
       "reference": "src/app/api/auth/providers/[provider]/callback/route.test.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0149",
       "reference": "src/app/api/captain/sessions/[sessionId]/simulate/route.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0150",
       "reference": "src/app/api/helper/verification/route.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0151",
       "reference": "src/app/api/play/sessions/[sessionId]/route.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0152",
       "reference": "src/app/api/player/[campaignSlug]/events/route.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0153",
       "reference": "src/app/api/player/[campaignSlug]/presence/route.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0154",
       "reference": "src/app/api/studio/private-content/operations/route.test.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0155",
       "reference": "src/app/api/studio/private-content/operations/route.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0156",
       "reference": "src/app/api/studio/tales/[taleId]/versions/compare/route.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0157",
       "reference": "src/app/captain/library/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0158",
       "reference": "src/app/captain/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0159",
       "reference": "src/app/captain/sessions/[sessionId]/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0160",
       "reference": "src/app/captain/sign-in/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0161",
       "reference": "src/app/captain/voyages/[playthroughId]/player-preview/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0162",
       "reference": "src/app/chronicles/[taleSlug]/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0163",
       "reference": "src/app/community/artifacts/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0164",
       "reference": "src/app/community/audio/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0165",
       "reference": "src/app/community/chronicles/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0166",
       "reference": "src/app/community/collections/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0167",
       "reference": "src/app/community/creators/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0168",
       "reference": "src/app/community/featured/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0169",
       "reference": "src/app/community/guides/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0170",
       "reference": "src/app/community/maps/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0171",
       "reference": "src/app/community/moderation/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0172",
       "reference": "src/app/community/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0173",
       "reference": "src/app/community/templates/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0174",
       "reference": "src/app/community/voyage-logs/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0175",
       "reference": "src/app/dev/animations/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0176",
       "reference": "src/app/forgot-password/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0177",
       "reference": "src/app/join/[token]/route.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0178",
       "reference": "src/app/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0179",
       "reference": "src/app/passport/artifacts/[artifactId]/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0180",
       "reference": "src/app/passport/artifacts/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0181",
       "reference": "src/app/passport/history/[recordId]/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0182",
       "reference": "src/app/passport/history/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0183",
       "reference": "src/app/passport/memories/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0184",
       "reference": "src/app/passport/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0185",
       "reference": "src/app/play/[taleSlug]/session/[sessionId]/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0186",
       "reference": "src/app/player/invitation/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0187",
       "reference": "src/app/player/library/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0188",
       "reference": "src/app/player/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0189",
       "reference": "src/app/player/playthroughs/[playthroughId]/journal/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0190",
       "reference": "src/app/player/playthroughs/[playthroughId]/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0191",
       "reference": "src/app/player/sign-in/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0192",
       "reference": "src/app/profile/[handle]/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0193",
       "reference": "src/app/register/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0194",
       "reference": "src/app/sign-in/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0195",
       "reference": "src/app/studio/exchange/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0196",
       "reference": "src/app/studio/library/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0197",
       "reference": "src/app/studio/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0198",
       "reference": "src/app/studio/private-content/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0199",
       "reference": "src/app/studio/sign-in/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0200",
       "reference": "src/app/studio/tales/[taleId]/artifacts/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0201",
       "reference": "src/app/studio/tales/[taleId]/assets/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0202",
       "reference": "src/app/studio/tales/[taleId]/locations/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0203",
       "reference": "src/app/studio/tales/[taleId]/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0204",
       "reference": "src/app/studio/tales/[taleId]/versions/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0205",
       "reference": "src/app/tale/[campaignSlug]/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0206",
       "reference": "src/app/tales/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0207",
       "reference": "src/app/verify-email/page.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0208",
       "reference": "src/chronicle/api.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0209",
       "reference": "src/chronicle/assets.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0210",
       "reference": "src/chronicle/block-registry.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0211",
       "reference": "src/chronicle/journal-contract.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0212",
       "reference": "src/chronicle/journal-page-model.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0213",
       "reference": "src/chronicle/progression.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0214",
       "reference": "src/chronicle/publishing.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0215",
       "reference": "src/chronicle/studio-service.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0216",
       "reference": "src/chronicle/types.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0217",
       "reference": "src/chronicle/validation.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0218",
       "reference": "src/community/exchange-service.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0219",
       "reference": "src/community/operations.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0220",
       "reference": "src/community/outbox.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0221",
       "reference": "src/community/scheduler.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0222",
       "reference": "src/community/worker.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0223",
       "reference": "src/compatibility/compatibility-observation.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0224",
       "reference": "src/components/captain/CaptainSessionControl.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0225",
       "reference": "src/components/homeport/AccountSurfaces.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0226",
       "reference": "src/components/landing/HarborLanding.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0227",
       "reference": "src/components/player/journal/ChronicleJournalSession.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0228",
       "reference": "src/components/player/workspace/ArtifactInspection.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0229",
       "reference": "src/components/player/workspace/FinaleChamber.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0230",
       "reference": "src/components/player/workspace/ShipsLog.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0231",
       "reference": "src/components/player/workspace/SideQuestLedger.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0232",
       "reference": "src/components/player/workspace/VoyageChart.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0233",
       "reference": "src/components/shell/ProductShell.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0234",
       "reference": "src/components/studio/TaleEditor.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0235",
       "reference": "src/components/wayfarer/AccountFlow.tsx",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0236",
       "reference": "src/domain/admin.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0237",
       "reference": "src/domain/replay.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0238",
       "reference": "src/domain/ships-log.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0239",
       "reference": "src/domain/story.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0240",
       "reference": "src/homeport/public-app-origin.test.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0241",
       "reference": "src/homeport/public-app-origin.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0242",
       "reference": "src/language/canonical-terms.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0243",
       "reference": "src/lib/security.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0244",
       "reference": "src/navigation/registry.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0245",
       "reference": "src/platform/audit.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0246",
       "reference": "src/platform/auth.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0247",
       "reference": "src/platform/invitations.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0248",
       "reference": "src/platform/libraries.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0249",
       "reference": "src/platform/player-event-stream.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0250",
       "reference": "src/platform/policy.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0251",
       "reference": "src/platform/state.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0252",
       "reference": "src/private-content/backup-service.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0253",
       "reference": "src/private-content/key-provider.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0254",
       "reference": "src/private-content/media-validation.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0255",
       "reference": "src/private-content/package.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0256",
       "reference": "src/private-content/providers.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0257",
       "reference": "src/private-content/repair-service.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0258",
       "reference": "src/server/admin-command.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0259",
       "reference": "src/server/progression.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0260",
       "reference": "src/tideglass/service.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0261",
       "reference": "src/wayfarer/account-lifecycle.test.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0262",
       "reference": "src/wayfarer/account-lifecycle.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0263",
       "reference": "src/wayfarer/accounts.security.test.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0264",
       "reference": "src/wayfarer/accounts.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0265",
       "reference": "src/wayfarer/artifacts.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0266",
       "reference": "src/wayfarer/chronicle-history.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0267",
       "reference": "src/wayfarer/oauth.exchange.test.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0268",
       "reference": "src/wayfarer/oauth.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0269",
       "reference": "src/wayfarer/profile.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0270",
       "reference": "src/wayfarer/providers.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0271",
       "reference": "src/wayfarer/transactional-email.test.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0272",
       "reference": "src/wayfarer/transactional-email.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0273",
       "reference": "tests/e2e/acceptance.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0274",
       "reference": "tests/e2e/admiralty-phase1.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0275",
       "reference": "tests/e2e/chronicle-platform.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0276",
       "reference": "tests/e2e/chronicle-studio.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0277",
       "reference": "tests/e2e/command-center.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0278",
       "reference": "tests/e2e/harborlight-phase2.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0279",
       "reference": "tests/e2e/homeport-phase1.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0280",
       "reference": "tests/e2e/homeport-phase2.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0281",
       "reference": "tests/e2e/homeport-phase3.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0282",
       "reference": "tests/e2e/homeport-phase4.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0283",
       "reference": "tests/e2e/homeport-phase5.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0284",
       "reference": "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0285",
       "reference": "tests/e2e/lanternwake-journal.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0286",
       "reference": "tests/e2e/phase3-accessibility-viewports.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0287",
       "reference": "tests/e2e/phase3-player-event-matrix.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0288",
       "reference": "tests/e2e/sealed-hold-phase4.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0289",
       "reference": "tests/e2e/voyagewright-language.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0290",
       "reference": "tests/e2e/wayfarer-phase3.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0291",
       "reference": "tests/e2e/wayfarer-phase4.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0292",
       "reference": "tests/oauth/voyagewright-oauth.spec.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0293",
       "reference": "tests/private-content/phase3-operations.test.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0294",
       "reference": "tests/private-content/security.test.ts",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0295",
       "reference": "tests/tideglass",
-      "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+      "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     }
   ],
   "phase": "Phase 3 - Raise the Capability",
   "privacyBoundary": "Repository paths, route/journey identifiers, safe capability conclusions, and slice receipts only; no credentials, tokens, cookies, private content, provider secrets, recipient addresses, message bodies, or object keys.",
   "project": "Project Deepwater",
   "schemaVersion": "1.0.0",
-  "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+  "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
 }

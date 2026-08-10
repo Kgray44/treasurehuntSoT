@@ -3,14 +3,14 @@ title: Project Deepwater Phase 3 Utilization Report
 audience: product-engineering
 status: current
 canonical_for: project-deepwater-phase-3-utilization-report
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-10
 ---
 
 # Project Deepwater Phase 3 utilization report
 
 ## Decision boundary
 
-All 55 governed capabilities received an operation, safe-metadata, state, recovery, and consumer saturation review against accepted source `40d822cd936c9abbfce064fd7799e6a2f8c9785e`. Realization and utilization remain separate dimensions.
+All 55 governed capabilities received an operation, safe-metadata, state, recovery, and consumer saturation review against accepted source `3e235e85b974183f3b0888814a15697596f73730`. Realization and utilization remain separate dimensions.
 
 ## Result
 

@@ -21,6 +21,15 @@ last_reviewed: 2026-08-09
   owner-walkthrough readiness, not mainline availability, deployment, or owner
   acceptance.
 
+- Added Project Helm Phase 1 participating-Captain operation. Voyage creation
+  now defaults to Captain-only and offers an explicit Captain + Player mode
+  backed by exactly one ordinary same-account Player membership. Captain
+  authority and membership remain independently authorized and audited; Player
+  projection, history, artifacts, removal, and perspective switching follow the
+  existing Player contracts. No schema migration or second session system was
+  introduced. The acceptance boundary is governed isolated local evidence and
+  mainline source integration, not deployment or live-Voyage proof.
+
 - Added Project Tideglass Phase 2 Chronicle edition intelligence on top of the
   unchanged Phase 1 semantic/comparison policy: stable change codes,
   explainable significance, compatibility deltas, spoiler-safe public/Player/

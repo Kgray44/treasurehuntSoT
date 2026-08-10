@@ -28,6 +28,15 @@ libraries, journals, profile and Passport surfaces, protected content, and
 animation presentation. Homeport reached main through protected PR #9; this is
 source integration, not deployment or owner acceptance.
 
+**Project Helm Phase 1 branch candidate:** Captain participation is explicit at
+Voyage creation. Captain-only remains the default; Captain + Player attaches
+exactly one ordinary Player membership to the same canonical account while
+keeping Voyage-scoped Captain authority independent. Player access, history,
+artifacts, and removal follow ordinary membership and event-time rules, and the
+Player view remains a Player-safe projection. Current evidence is isolated and
+local; mainline integration, deployment, live-Voyage behavior, and owner
+acceptance are not yet claimed.
+
 Project Tideglass Phase 2 is accepted on main and adds local/server Chronicle edition intelligence:
 stable change codes, explainable significance, compatibility deltas,
 spoiler-safe public/Player/Creator projections, deterministic summaries,

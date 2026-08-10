@@ -138,7 +138,10 @@ export function gmCapabilityAllowedWithinWorkspaceLock(
 export async function requireGmCapability(capability: GmCapability) {
   const session = await requireGm();
   if (!session) return null;
-  const activePlayerWorkspaceLock = await hasActivePlayerWorkspaceLock(session.accountId);
+  const activePlayerWorkspaceLock = await hasActivePlayerWorkspaceLock(
+    session.accountId,
+    capability === "CAPTAIN" ? { target: "CAPTAIN" } : undefined,
+  );
   return gmCapabilityAllowedWithinWorkspaceLock(session.user, capability, activePlayerWorkspaceLock) ? session : null;
 }
 

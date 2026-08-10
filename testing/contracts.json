@@ -3006,6 +3006,62 @@
       "critical": true
     },
     {
+      "id": "helm.authority-membership.independent",
+      "name": "Project Helm Captain Authority and Player Membership Independence",
+      "authority": "project-helm",
+      "owners": ["project-helm"],
+      "critical": true
+    },
+    {
+      "id": "helm.creation.default-captain-only",
+      "name": "Project Helm Explicit Captain Participation Creation Choice",
+      "authority": "project-helm",
+      "owners": ["project-helm"],
+      "critical": true
+    },
+    {
+      "id": "helm.participation.lifecycle",
+      "name": "Project Helm Independent Participation Lifecycle",
+      "authority": "project-helm",
+      "owners": ["project-helm"],
+      "critical": true
+    },
+    {
+      "id": "helm.player-projection.firewall",
+      "name": "Project Helm Ordinary Player Projection Firewall",
+      "authority": "project-helm",
+      "owners": ["project-helm"],
+      "critical": true
+    },
+    {
+      "id": "helm.history.membership-derived",
+      "name": "Project Helm Membership Derived Player History",
+      "authority": "project-helm",
+      "owners": ["project-helm"],
+      "critical": true
+    },
+    {
+      "id": "helm.artifacts.event-time-membership",
+      "name": "Project Helm Event Time Artifact Eligibility",
+      "authority": "project-helm",
+      "owners": ["project-helm"],
+      "critical": true
+    },
+    {
+      "id": "helm.security.resource-authorization",
+      "name": "Project Helm Resource Scoped Authorization",
+      "authority": "project-helm",
+      "owners": ["project-helm"],
+      "critical": true
+    },
+    {
+      "id": "helm.accessibility.responsive",
+      "name": "Project Helm Responsive Accessible Participation Controls",
+      "authority": "project-helm",
+      "owners": ["project-helm"],
+      "critical": true
+    },
+    {
       "id": "admiralty.phase1.identity",
       "name": "Canonical identity and session authority",
       "authority": "project-admiralty",

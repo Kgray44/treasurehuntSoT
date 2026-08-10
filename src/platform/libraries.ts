@@ -7,6 +7,7 @@ import {
   type PlayerJournalReadingState,
   type PlayerJournalReadingStateInput,
 } from "@/chronicle/journal-contract";
+import { captainParticipationProjection } from "@/helm/captain-participation";
 
 const pendingInvitationStates = ["CREATED", "SENT", "COPIED", "VIEWED"];
 const validMembershipStates = ["INVITED", "ACCEPTED", "READY", "ACTIVE_MEMBER", "COMPLETED_MEMBER"];
@@ -358,30 +359,40 @@ export async function updatePlayerJournalReadingState(
 }
 
 export async function listCaptainLibrary(captainId: string | null, captainAccountId?: string) {
-  const sessions = await db.taleSession.findMany({
-    where: {
-      previewMode: false,
-      OR: [
-        ...(captainId ? [{ captainId }] : []),
-        ...(captainAccountId ? [{ captainAccountId }] : []),
-        ...(!captainId && !captainAccountId ? [{ id: "__no_authorized_voyages__" }] : []),
-      ],
-    },
-    orderBy: { updatedAt: "desc" },
-    include: {
-      tale: true,
-      version: true,
-      memberships: { include: { player: { select: { id: true, displayName: true } } } },
-      invitations: {
-        orderBy: { createdAt: "desc" },
-        include: {
-          events: { orderBy: { createdAt: "desc" }, take: 1 },
-          replacement: { select: { id: true } },
-        },
+  const [sessions, captainProfile] = await Promise.all([
+    db.taleSession.findMany({
+      where: {
+        previewMode: false,
+        OR: [
+          ...(captainId ? [{ captainId }] : []),
+          ...(captainAccountId ? [{ captainAccountId }] : []),
+          ...(!captainId && !captainAccountId ? [{ id: "__no_authorized_voyages__" }] : []),
+        ],
       },
-      verificationRequests: { where: { status: "PENDING" }, take: 1 },
-    },
-  });
+      orderBy: { updatedAt: "desc" },
+      include: {
+        tale: true,
+        version: true,
+        memberships: {
+          include: { player: { select: { id: true, displayName: true, accountId: true, status: true } } },
+        },
+        invitations: {
+          orderBy: { createdAt: "desc" },
+          include: {
+            events: { orderBy: { createdAt: "desc" }, take: 1 },
+            replacement: { select: { id: true } },
+          },
+        },
+        verificationRequests: { where: { status: "PENDING" }, take: 1 },
+      },
+    }),
+    captainAccountId
+      ? db.playerProfile.findUnique({
+          where: { accountId: captainAccountId },
+          select: { id: true, displayName: true, status: true },
+        })
+      : Promise.resolve(null),
+  ]);
   const tales = await db.chronicle.findMany({
     where: {
       archivedAt: null,
@@ -392,7 +403,12 @@ export async function listCaptainLibrary(captainId: string | null, captainAccoun
     include: { versions: { orderBy: { versionNumber: "desc" }, include: { _count: { select: { sessions: true } } } } },
   });
   const playerProfiles = await db.playerProfile.findMany({
-    where: { status: "ACTIVE", defaultVisibility: "PUBLIC", handle: { not: null } },
+    where: {
+      status: "ACTIVE",
+      defaultVisibility: "PUBLIC",
+      handle: { not: null },
+      ...(captainProfile ? { id: { not: captainProfile.id } } : {}),
+    },
     orderBy: { displayName: "asc" },
     take: 200,
     select: { id: true, displayName: true, username: true },
@@ -415,6 +431,15 @@ export async function listCaptainLibrary(captainId: string | null, captainAccoun
       displayName: membership.player.displayName,
       status: membership.status,
     })),
+    participation: captainAccountId
+      ? captainParticipationProjection({
+          resource: session,
+          actor: { accountId: captainAccountId, legacyGameMasterId: captainId },
+          profileStatus: captainProfile?.status ?? null,
+          membership:
+            session.memberships.find((membership) => membership.player.accountId === captainAccountId) ?? null,
+        })
+      : null,
     invitationSummary: session.invitations.reduce<Record<string, number>>((summary, invitation) => {
       summary[invitation.status] = (summary[invitation.status] ?? 0) + 1;
       return summary;
@@ -463,6 +488,7 @@ export async function listCaptainLibrary(captainId: string | null, captainAccoun
         activeRunCount: version._count.sessions,
       })),
     })),
+    captainProfile,
     playerProfiles,
     serverTime: new Date().toISOString(),
   };
