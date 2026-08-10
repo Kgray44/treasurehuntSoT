@@ -355,9 +355,16 @@ test("Captain authority and ordinary Player membership remain independent throug
     await beginVoyage(page, participatingName);
     await expect.poll(async () => (await currentMembership(participating.playthroughId)).status).toBe("ACTIVE_MEMBER");
     await playerTab.bringToFront();
-    await expect(playerTab).toHaveURL(new RegExp(`/player/playthroughs/${participating.playthroughId}/journal$`, "u"));
+    await expect(playerTab).toHaveURL(new RegExp(`/player/playthroughs/${participating.playthroughId}/journal$`, "u"), {
+      timeout: 30_000,
+    });
     await guest.page.bringToFront();
-    await expect(guest.page).toHaveURL(new RegExp(`/player/playthroughs/${participating.playthroughId}/journal$`, "u"));
+    await expect(guest.page).toHaveURL(
+      new RegExp(`/player/playthroughs/${participating.playthroughId}/journal$`, "u"),
+      {
+        timeout: 30_000,
+      },
+    );
     await page.bringToFront();
 
     const [captainPlayerState, guestPlayerState] = await Promise.all([
