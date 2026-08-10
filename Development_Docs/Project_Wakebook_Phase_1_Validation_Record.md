@@ -3,7 +3,7 @@ title: Project Wakebook Phase 1 Validation Record
 audience: product-engineering
 status: current
 canonical_for: project-wakebook-phase-1-validation-record
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-10
 ---
 
 # Project Wakebook Phase 1 validation record
@@ -18,9 +18,9 @@ last_reviewed: 2026-08-09
 | ------------------------------- | ------------------------------------------------------------------------ |
 | Branch                          | `codex/project-wakebook-phase1-open-the-wake`                            |
 | Owned worktree                  | `C:\Users\kkids\Documents\treasurehuntSoT-wakebook-phase1-open-the-wake` |
-| Reconciled accepted-main base   | `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`                               |
+| Reconciled accepted-main base   | `384ad39fbc40e8cbe16dd2aa2c83abd3e00a56c6`                               |
 | Archive implementation anchor   | `629f5c7a981b80494f7703b6410b573a661e0f39`                               |
-| Final validation SHA            | `4382584d3` merge reconciliation; governed final evidence pending        |
+| Final validation SHA            | `620ef4eb1` merge reconciliation; governed final evidence pending        |
 | Database schema change          | None                                                                     |
 | Canonical mutable database used | No                                                                       |
 
@@ -56,7 +56,7 @@ Sounding Line owns the authoritative definitions for:
 | Responsive/accessibility                 | 1440x1000, 430x932, 390x844; Axe serious/critical policy                 | Pending browser family | Synthetic browser only                 |
 | Sounding Line subsystem/mainline/release | Exact final source and generated registry                                | Pending                | Required release authority             |
 
-The first `browser.wakebook` diagnostic attempt did not execute product code because another governed validation process owned the global validation-runtime lock. The runner reported cleanup `CLEAN`; no process was stopped and no lock was removed. That environmental collision is not a product failure and is not counted as passing evidence. The 2026-08-10 reconciliation incorporated accepted `origin/main` at `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`; all browser and final-authority evidence must be regenerated from that merged source.
+The first `browser.wakebook` diagnostic attempt did not execute product code because another governed validation process owned the global validation-runtime lock. The runner reported cleanup `CLEAN`; no process was stopped and no lock was removed. That environmental collision is not a product failure and is not counted as passing evidence. The 2026-08-10 reconciliation first incorporated accepted `origin/main` at `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`, then incorporated current accepted `origin/main` at `384ad39fbc40e8cbe16dd2aa2c83abd3e00a56c6` in merge `620ef4eb1`. All browser and final-authority evidence must be regenerated from that merged source.
 
 ## Privacy and source-safety assertions
 
