@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1`
+Audited source commit: `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3`
 
 ## Status vocabulary
 
@@ -1269,9 +1269,9 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 ## FT-B009 - Tideglass Chronicle Edition Intelligence
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Tideglass Phase 1 with Phase 2 candidate
+**Program or subsystem:** Project Tideglass Phases 1-2
 
-The accepted server-side foundation compares exact immutable Chronicle editions; the Phase 2 candidate classifies and summarizes evidence deterministically, projects spoiler-safe audience views, and preserves append-only Creator context without changing published or live Voyage truth.
+The accepted server-side foundation compares exact immutable Chronicle editions, classifies and summarizes evidence deterministically, projects spoiler-safe audience views, and preserves append-only Creator context without changing published or live Voyage truth.
 
 ### Important subfeatures
 
@@ -1294,7 +1294,7 @@ The accepted server-side foundation compares exact immutable Chronicle editions;
 
 ### Meaningful limitations
 
-- The Phase 2 extension remains a candidate until protected mainline acceptance.
+- The accepted Phase 2 extension remains server-side and does not create a polished comparison experience.
 - Ordinary user comparison routes, played-history qualification, and polished What Changed interaction remain outside Phase 2.
 - Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.
 
@@ -1367,4 +1367,4 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1`
+Generation source commit: `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3`
