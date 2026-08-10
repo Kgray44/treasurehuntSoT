@@ -436,6 +436,16 @@
       "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
     },
     {
+      "code": "DRYDOCK_GRAPH_LOOP_PROGRESS_UNPROVEN",
+      "version": 1,
+      "category": "CONTROL_FLOW",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "REVIEW_REQUIRED",
+      "applicability": "FULL",
+      "repairClassification": "REVIEW_REQUIRED",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
       "code": "DRYDOCK_GRAPH_NO_TERMINAL_PATH",
       "version": 1,
       "category": "GRAPH",

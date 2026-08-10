@@ -209,6 +209,28 @@ export function analyzeDrydockGraph(blocks: readonly CanonicalDrydockBlock[]): D
           metadata: { componentSize: component.length },
         }),
       );
+    const internalEdges = component
+      .flatMap((id) => graph.outgoing.get(id) ?? [])
+      .filter((edge) => members.has(edge.targetBlockId));
+    const hasAuthoredProgressWrite = component.some((id) => graph.blocks.get(id)?.blockType === "setVariable");
+    if (
+      internalEdges.length &&
+      internalEdges.every((edge) => edge.connectionType === "DEFAULT") &&
+      !hasAuthoredProgressWrite
+    )
+      issues.push(
+        createDrydockIssue({
+          code: "DRYDOCK_GRAPH_LOOP_PROGRESS_UNPROVEN",
+          category: "CONTROL_FLOW",
+          severity: "WARNING",
+          ruleVersion: 1,
+          location: { blockId: component[0] },
+          message: "An automatic cycle has no authored state-progress write that could bound repeatability.",
+          remediation:
+            "Add a governed progress-state update and typed exit condition, or obtain review for an intentional repeatable loop.",
+          metadata: { componentSize: component.length },
+        }),
+      );
   }
   return {
     graph,

@@ -357,6 +357,15 @@ export const drydockRuleCatalog = [
     repairClassification: "REVIEW_REQUIRED",
   }),
   ruleDefinition({
+    code: "DRYDOCK_GRAPH_LOOP_PROGRESS_UNPROVEN",
+    category: "CONTROL_FLOW",
+    defaultSeverity: "WARNING",
+    summary: "An automatic cycle has no static authored progress step.",
+    applicability: "FULL",
+    semanticLocationType: "BLOCK",
+    repairClassification: "REVIEW_REQUIRED",
+  }),
+  ruleDefinition({
     code: "DRYDOCK_STATE_PROOF_INCOMPLETE",
     category: "STATE",
     defaultSeverity: "WARNING",

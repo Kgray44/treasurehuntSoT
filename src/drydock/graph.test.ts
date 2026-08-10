@@ -36,6 +36,7 @@ describe("Drydock Phase 2 canonical graph analysis", () => {
     blocks[1].connections = [{ targetBlockId: blocks[0].id, connectionType: "DEFAULT", orderIndex: 0 }];
     const result = analyzeDrydockGraph(blocks);
     expect(result.issues.map((issue) => issue.code)).toContain("DRYDOCK_GRAPH_AUTOMATIC_LOOP");
+    expect(result.issues.map((issue) => issue.code)).toContain("DRYDOCK_GRAPH_LOOP_PROGRESS_UNPROVEN");
   });
 
   it("does not pretend a free-form legacy edge condition is statically proven", () => {
