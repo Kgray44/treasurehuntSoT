@@ -3,21 +3,22 @@ title: Project Admiralty Phase 2 Completion Receipt
 audience: product-owner-engineering-security-quality
 status: current
 canonical_for: project-admiralty-phase-2-completion-receipt
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-10
 ---
 
 # Project Admiralty Phase 2 completion receipt
 
 ## Disposition
 
-`PENDING_RECONCILED_EXACT_SOURCE_COMPLETION`.
+`PENDING_EXACT_SOURCE_SOUNDING_LINE_COMPLETION`.
 
-The read-only Chartroom implementation, initial focused tests, production build,
-and isolated production-browser matrix are complete on the owned branch. Final
-documentation, cross-program policy validation, current-main reconciliation,
-exact-source evidence, and retained walkthrough runtime are still being
-completed. This receipt must not be interpreted as owner acceptance or
-mainline availability.
+The read-only Chartroom implementation is reconciled with accepted
+`origin/main` at `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`. Reconciled static,
+focused, documentation, Feature Catalog, Deepwater, production-build, and
+isolated production-browser evidence is complete. Exact-source Sounding Line
+authority and retained walkthrough runtime preparation are still being
+completed. This receipt must not be interpreted as owner acceptance or mainline
+availability.
 
 ## Acceptance boundary
 
