@@ -364,7 +364,7 @@ function Invoke-ValidationStep {
 
 function Assert-BrowserSelectionDiscovery {
     param([Parameter(Mandatory)]$Selection)
-    $arguments = @("node_modules/playwright/cli.js", "test", "--list", "--project=$($Selection.project)", "--grep", [string]$Selection.grep) + @($Selection.files | ForEach-Object { ([string]$_).Replace('\\', '/') })
+    $arguments = @("node_modules/@playwright/test/cli.js", "test", "--list", "--project=$($Selection.project)", "--grep", [string]$Selection.grep) + @($Selection.files | ForEach-Object { ([string]$_).Replace('\\', '/') })
     Write-Host "`n==> Discovering exact governed browser selection for $($Selection.project)" -ForegroundColor Cyan
     Push-Location $runtimeRoot
     try {
@@ -827,7 +827,7 @@ try {
     # silently repeated in each lane.
     if (-not $BrowserOnly) {
         if (-not $SkipBrowserInstall -and -not $SkipBrowser) {
-            Invoke-ValidationStep -Name "Installing Playwright browsers" -Arguments @("node_modules/playwright/cli.js", "install", "chromium", "webkit")
+            Invoke-ValidationStep -Name "Installing Playwright browsers" -Arguments @("node_modules/@playwright/test/cli.js", "install", "chromium", "webkit")
         }
         Invoke-ValidationStep -Name "Validating documentation" -Arguments @("scripts/validate-documentation.mjs")
         Invoke-ValidationStep -Name "Checking formatting" -Arguments @("node_modules/prettier/bin/prettier.cjs", "--check", ".")
@@ -877,7 +877,7 @@ try {
         if ($BrowserSelections.Count -gt 0) {
             foreach ($selection in $BrowserSelections) {
                 Assert-BrowserSelectionDiscovery -Selection $selection
-                $browserCommand = @("node_modules/playwright/cli.js", "test", "--project=$($selection.project)", "--grep", [string]$selection.grep) + @($selection.files | ForEach-Object { ([string]$_).Replace('\', '/') })
+                $browserCommand = @("node_modules/@playwright/test/cli.js", "test", "--project=$($selection.project)", "--grep", [string]$selection.grep) + @($selection.files | ForEach-Object { ([string]$_).Replace('\', '/') })
                 if ($isSoundingLineLane) { $browserCommand += "--global-timeout=$browserGlobalTimeoutMs" }
                 try {
                     Invoke-ValidationStep -Name "Running exact governed browser acceptance tests for $($selection.project)" -Arguments $browserCommand
@@ -886,7 +886,7 @@ try {
                 }
             }
         } else {
-            $browserCommand = @("node_modules/playwright/cli.js", "test") + $BrowserArgs
+            $browserCommand = @("node_modules/@playwright/test/cli.js", "test") + $BrowserArgs
             if ($BrowserGrep) { $browserCommand += @("--grep", $BrowserGrep) }
             if ($BrowserTestPath) {
                 # Harborlight owns a dedicated browser project. Other targeted
@@ -977,7 +977,7 @@ try {
             $env:PHASE3_BASE_URL = "http://127.0.0.1:$productionPort"
             $ownedProductionServer = Start-OwnedProductionServer -Port $productionPort -ArtifactLabel "performance"
             Invoke-ValidationStep -Name "Running Chromium production performance gates" -Arguments @(
-                "node_modules/playwright/cli.js",
+                "node_modules/@playwright/test/cli.js",
                 "test",
                 "--config=playwright.phase3-performance.config.ts"
             )
