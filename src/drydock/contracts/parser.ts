@@ -313,6 +313,9 @@ export function parseDrydockBlock(input: DrydockAuthoredBlockInput): DrydockBloc
       issues,
       migrationsApplied,
       compatibilityStatus: migrationsApplied.length ? "MIGRATION_REQUIRED" : "INVALID",
+      ...(issues.every((issue) => issue.code === "DRYDOCK_LEGACY_NEXT_TARGET_CONFLICT")
+        ? { repairCandidate: block }
+        : {}),
     };
   return { success: true, block, issues, migrationsApplied };
 }

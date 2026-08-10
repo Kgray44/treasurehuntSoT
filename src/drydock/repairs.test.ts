@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { CanonicalDrydockBlock } from "@/drydock/contracts/model";
+import { parseDrydockBlock } from "@/drydock/contracts/parser";
 import { applyDrydockRepair, previewCanonicalTargetRepair } from "@/drydock/repairs";
 
 describe("Drydock safe repair preview", () => {
@@ -39,4 +40,21 @@ describe("Drydock safe repair preview", () => {
     expect(() => applyDrydockRepair({ ...block, nextBlockId: "changed" }, previewCanonicalTargetRepair(block))).toThrow(
       "stale",
     ));
+
+  it("exposes a repair candidate only for the sole unambiguous legacy mirror conflict", () => {
+    const parsed = parseDrydockBlock({
+      ...block,
+      schemaVersion: 2,
+      configuration: {
+        choices: [
+          { id: "a", label: "A", targetBlockId: "one" },
+          { id: "b", label: "B", targetBlockId: "two" },
+        ],
+        prompt: "Choose.",
+        reversible: false,
+      },
+    });
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) expect(parsed.repairCandidate?.id).toBe("choice");
+  });
 });

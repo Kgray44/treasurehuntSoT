@@ -136,6 +136,8 @@ export type DrydockBlockParseResult =
       issues: readonly DrydockIssue[];
       migrationsApplied: readonly string[];
       compatibilityStatus: "UNSUPPORTED" | "MIGRATION_REQUIRED" | "INVALID";
+      /** Available only when a compatibility error has an unambiguous safe repair. */
+      repairCandidate?: CanonicalDrydockBlock;
       /** Creator-authorized use only; never include authored values in broad diagnostics or CI logs. */
       migrationPreview?: DrydockMigrationOutput;
     };
