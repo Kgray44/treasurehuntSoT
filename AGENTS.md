@@ -2,6 +2,8 @@
 
 Active automation guidance belongs in [`.agents/`](.agents/README.md), not in product or user documentation. Preserve repository safety rules, use an owned worktree, avoid real private content, and keep validation isolated from shared runtime state.
 
+Sounding Line work is governed by the consolidated v1.0 charter together with the Part I, Part II, and Part III v1.1 amendments. Read and follow [`.agents/sounding-line-v1.1.md`](.agents/sounding-line-v1.1.md) before selecting validation, repairing a failure, using prior evidence, requesting shared validation resources, or closing a governed task. The v1.1 amendment controls where it conflicts with v1.0.
+
 Project Homeport work must also follow [`.agents/project-homeport.md`](.agents/project-homeport.md) and its canonical governance and evidence paths.
 
 ## Documentation contract

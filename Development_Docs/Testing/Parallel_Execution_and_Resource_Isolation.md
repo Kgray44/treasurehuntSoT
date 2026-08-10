@@ -25,3 +25,7 @@ Run C: no server, no browser, Vitest shard 4
 Prohibited: multiple browser workers sharing a mutable DB unless the suite declares it; task branches sharing a writable storage root; tests on canonical development data; fixed ports without a lease; deletion of another run's artifacts; broad serialization of static/unit work; and silent fallback to a shared DB. Current `validation-runtime.lock` remains until its runtime/baseline/port protections are replaced by these narrower leases.
 
 Acceptance is concurrent independent browser/database work with collision-free receipts, process cleanup, baseline checksum preservation, and no unowned port/artifact deletion.
+
+## Version 1.1 shared validation queue
+
+Scarce resources are scheduled by a broker-owned queue, not manual task/chat diplomacy. Each immutable request records source, base, plan, gate, priority, fairness age, required bundle, state, and block reason. A source guard verifies the exact candidate and material mainline movement immediately before expensive acquisition; stale work is cancelled and replanned outside the lane. Active work is not ordinarily preempted, fairness aging prevents starvation, cleanup completes before automatic handoff, and compatible fully isolated lanes may run concurrently. Do not delete a lock or seize a lease to advance a queue position. Queue, setup, execution, teardown, and finalization timing remain separate. A contended workstation qualifies timing evidence and routes timing-sensitive proof to a hosted/reference environment; it does not prove a product failure.

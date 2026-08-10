@@ -1,6 +1,9 @@
 # Engineering-record index
 
-- `Governing/`: accepted policies and foundational specifications.
+- `Governing/`: accepted policies and foundational specifications, including
+  the Sounding Line v1.1 amendment set. The preserved v1.0 charter plus its
+  applicable v1.1 amendment is authoritative; use `document-index.json` for
+  the six canonical amendment artifacts.
 - `Governance/`: current repository-wide governance standards and their source records.
 - `Projects/`: current project governing documents and project-specific records.
 - `Architecture_Decisions/`: durable technical decisions.

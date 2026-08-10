@@ -79,6 +79,20 @@ Include title, program, phase, record type, status, authority, date, base, scope
 [Project Sounding Line](Project_Sounding_Line_Governing_Document.md) is the
 repository's governing system for software verification, parallel test
 infrastructure, evidence, release gates, and Codex testing obligations. Its
+[v1.0 charter](Project_Sounding_Line_Governing_Document.md) remains preserved
+and in force except where the following v1.1 amendments explicitly supersede
+it: [Part I PDF](Governing/Project_Sounding_Line_Part_I_Governing_Document_v1.1_Amendment_Edition.pdf)
+and [DOCX](Governing/Project_Sounding_Line_Part_I_Governing_Document_v1.1_Amendment_Edition.docx),
+[Part II PDF](Governing/Project_Sounding_Line_Part_II_Governing_Document_v1.1_Amendment_Edition.pdf)
+and [DOCX](Governing/Project_Sounding_Line_Part_II_Governing_Document_v1.1_Amendment_Edition.docx),
+and [Part III PDF](Governing/Project_Sounding_Line_Part_III_Governing_Document_v1.1_Amendment_Edition.pdf)
+and [DOCX](Governing/Project_Sounding_Line_Part_III_Governing_Document_v1.1_Amendment_Edition.docx).
+Future tasks must apply semantic evidence invalidation/carry-forward,
+test-only invalidation ceilings, failure-class repair scope, broker queue
+fairness, reference-environment qualification, closure-revalidation incident
+detection, and proportionate record-only closure from those amendments.
+
+Its
 [testing documentation index](Testing/README.md) distinguishes the retained
 legacy harness from the implemented local control plane. **PHASES 1-4 LOCAL
 CONTROL PLANE COMPLETE — NONAUTHORITATIVE.** The focused hosted workflow has

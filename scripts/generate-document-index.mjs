@@ -3,7 +3,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 
 const root = process.cwd();
-const governedExtensions = new Set([".md", ".pdf", ".csv", ".txt", ".json"]);
+const governedExtensions = new Set([".md", ".pdf", ".docx", ".csv", ".txt", ".json"]);
 const recordsRoot = path.join(root, "Development_Docs");
 const toPosix = (value) => value.split(path.sep).join("/");
 
@@ -37,6 +37,7 @@ const isCurrentGovernance = (file) =>
   file.includes("/Governance/") ||
   file ===
     "Development_Docs/Governing/Voyagewright_Continuous_Development_and_Mainline_Integration_Standard_v1.0.pdf" ||
+  (/\/Governing\/Project_Sounding_Line_Part_(I|II|III)_Governing_Document_v1\.1_Amendment_Edition\.(pdf|docx)$/i.test(file)) ||
   (/\/Projects\/Project [^/]+\//.test(file) && /Governing_Document[^/]*\.pdf$/i.test(file));
 const records = files.map((file) => ({
   path: file,

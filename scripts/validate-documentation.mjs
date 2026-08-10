@@ -58,7 +58,7 @@ const rootAllowlist = new Set([
   "LICENSE.md",
   "CODE_OF_CONDUCT.md",
 ]);
-const governedExtensions = new Set([".md", ".pdf", ".csv", ".txt", ".json"]);
+const governedExtensions = new Set([".md", ".pdf", ".docx", ".csv", ".txt", ".json"]);
 const forbidden = [
   /\bcodex\b/i,
   /\bchatgpt\b/i,

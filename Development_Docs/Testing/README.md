@@ -4,6 +4,8 @@
 
 This directory defines the testing-system architecture; it does not replace `scripts/test-all.ps1` or implement the future planner, orchestrator, lease broker, cloned-baseline service, or CI distributor.
 
+The preserved v1.0 charter is amended by the canonical [Part I](../Governing/Project_Sounding_Line_Part_I_Governing_Document_v1.1_Amendment_Edition.pdf), [Part II](../Governing/Project_Sounding_Line_Part_II_Governing_Document_v1.1_Amendment_Edition.pdf), and [Part III](../Governing/Project_Sounding_Line_Part_III_Governing_Document_v1.1_Amendment_Edition.pdf) v1.1 editions. Where those amendments conflict with v1.0, v1.1 controls.
+
 - [Governing charter](../Project_Sounding_Line_Governing_Document.md)
 - [Current testing-system audit](Current_Testing_System_Audit.md)
 - [Target architecture](Testing_Architecture.md)

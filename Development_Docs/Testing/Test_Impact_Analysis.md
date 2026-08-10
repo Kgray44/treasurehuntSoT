@@ -12,3 +12,5 @@ The planner emits `Selected because`, `Omitted because`, `Escalated because`, `R
 | `src/app/api/**` authorization route        | route/service tests, authorization/privacy contract, selected browser denial/success journey, security escalation                                               |
 
 The initial `testing/impact-map.json` is a seed, not proof of complete coverage. A change outside its map selects ownership fallback and marks the plan uncertain rather than reducing evidence.
+
+Version 1.1 also requires inverse impact analysis: identify which existing receipts remain semantically valid after the change. A documentation or generator-only update does not invalidate unrelated proof unless it changes a policy, executable example, or dependency consumed by that proof. For test-only work, the invalidation ceiling is the changed family and direct finalizer/evidence consumers unless the plan explains a broader shared helper, fixture, route contract, semantic assertion library, or runtime-policy dependency.
