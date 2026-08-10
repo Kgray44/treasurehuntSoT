@@ -8,7 +8,7 @@ last_reviewed: 2026-08-09
 
 # Project Tideglass engineering records
 
-Project Tideglass establishes deterministic semantic intelligence over exact immutable Chronicle editions. Phase 1, Set the Glass, is integrated on main as a read-only internal foundation with source-bound post-merge `RELEASE_GO`; it adds no ordinary user-facing comparison route. Phase 2, Read the Wake, is active on an isolated branch and adds governed derived intelligence plus durable Creator annotation revisions without creating a Phase 3 comparison surface.
+Project Tideglass establishes deterministic semantic intelligence over exact immutable Chronicle editions. Phase 1, Set the Glass, and Phase 2, Read the Wake, are integrated on main with source-bound candidate and post-merge `RELEASE_GO` evidence. Phase 2 adds governed derived intelligence plus durable Creator annotation revisions without creating an ordinary comparison route or Phase 3 comparison surface.
 
 ## Phase 1 records
 

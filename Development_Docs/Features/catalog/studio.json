@@ -146,9 +146,9 @@
   {
     "id": "FT-B009",
     "title": "Tideglass Chronicle Edition Intelligence",
-    "summary": "The accepted server-side foundation compares exact immutable Chronicle editions; the Phase 2 candidate classifies and summarizes evidence deterministically, projects spoiler-safe audience views, and preserves append-only Creator context without changing published or live Voyage truth.",
+    "summary": "The accepted server-side foundation compares exact immutable Chronicle editions, classifies and summarizes evidence deterministically, projects spoiler-safe audience views, and preserves append-only Creator context without changing published or live Voyage truth.",
     "status": "MAINLINE",
-    "program": "Project Tideglass Phase 1 with Phase 2 candidate",
+    "program": "Project Tideglass Phases 1-2",
     "surfaces": ["npm run tideglass:compare", "src/tideglass", "/api/chronicles/:chronicleId/comparison"],
     "subfeatures": [
       "Exact edition and checksum binding",
@@ -179,7 +179,7 @@
       }
     ],
     "limitations": [
-      "The Phase 2 extension remains a candidate until protected mainline acceptance.",
+      "The accepted Phase 2 extension remains server-side and does not create a polished comparison experience.",
       "Ordinary user comparison routes, played-history qualification, and polished What Changed interaction remain outside Phase 2.",
       "Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them."
     ],

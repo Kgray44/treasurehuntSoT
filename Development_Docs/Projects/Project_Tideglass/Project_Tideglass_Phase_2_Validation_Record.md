@@ -8,7 +8,7 @@ last_reviewed: 2026-08-09
 
 # Project Tideglass Phase 2 validation record
 
-Status: reconciled candidate validation in progress; this record does not yet claim exact-candidate `RELEASE_GO`, protected-hosted success, integration, or post-merge proof.
+Status: accepted mainline validation complete for Phase 2 implementation and integration.
 
 ## Baseline and isolation
 
@@ -16,6 +16,8 @@ Status: reconciled candidate validation in progress; this record does not yet cl
 - Branch: `codex/project-tideglass-phase2-read-the-wake`
 - Original implementation base: `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`
 - Latest reconciled accepted main: `9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1`
+- Exact candidate: `311e84b9edeff6b58dafc473d21e58dacbc4091b`
+- Integrated main: `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3`
 - Phase 1 accepted implementation is an ancestor; integrated main receipt: `40d822cd936c9abbfce064fd7799e6a2f8c9785e`.
 - Canonical checkout and canonical databases were not mutated. Runtime lease status was empty before validation.
 
@@ -37,11 +39,15 @@ Status: reconciled candidate validation in progress; this record does not yet cl
 | `npm run features:sync && npm run features:validate`            | PASS; 43 generated entries                                                                                                                                                                                                                                                                                                                                  |
 | `npm run format:check`                                          | PASS                                                                                                                                                                                                                                                                                                                                                        |
 | `npm run lint`                                                  | PASS; zero errors and 96 accepted pre-existing warnings outside Tideglass scope                                                                                                                                                                                                                                                                             |
+| Exact candidate Sounding Line mainline                          | `RELEASE_GO`; 34/34 passed and `CLEAN`; evidence `c67e5f8d1ff86ce46a200b99b21e1d72c007a5fc50630e57c2f47697d6c83ab1`                                                                                                                                                                                                                                         |
+| Protected pull request #29                                      | PASS; 37/37 hosted checks `SUCCESS`, including `Sounding Line / Mainline Decision`                                                                                                                                                                                                                                                                          |
+| Exact integrated-main Sounding Line mainline                    | `RELEASE_GO`; 34/34 passed and `CLEAN`; evidence `29417f6e194a33a0ba8562c5abb49ac093f1ab04e6045ad24fdea52f817a568a`                                                                                                                                                                                                                                         |
+| `npm run features:test`                                         | PASS; 9/9 before final wording repair; final record slice adds an explicit FT-B009 program assertion                                                                                                                                                                                                                                                        |
 | Pre-reconciliation `npm run test:subsystem`                     | Historical local-source `RELEASE_GO`; 7/7 clean receipts; inventory `3c03bc65d6ae3792371f5c03084fe9ba2e1e4fd590600ecd239779abcfbca247`, plan `48595223d5c4c2be49704fafc537b0e53306e73c2338c0a14451417aea26d9d3`, evidence `485449199f0441eb1397ef0032f647e09e8210ad9ee16014c3dbafac01665b06`; superseded for candidacy by reconciliation with accepted main |
 
 ## Current truth boundaries
 
-The passing route tests are local server-contract proof with mocks at canonical authentication/storage ports. They do not prove a deployed runtime or real-account session. SQLite proof is a disposable local migration/upgrade rehearsal. MySQL DDL has provider-parity source plus passing Prisma validation/client generation, but no local MySQL/Docker/WSL provider is available; actual MySQL execution is unavailable and is not claimed. The pre-reconciliation local-source subsystem `RELEASE_GO` is historical focused evidence, not the required exact-commit mainline decision. Exact-candidate Sounding Line, hosted checks, integration, and post-merge parity remain pending.
+The passing route tests are local server-contract proof with mocks at canonical authentication/storage ports. They do not prove a deployed runtime or real-account session. SQLite proof is a disposable local migration/upgrade rehearsal. MySQL DDL has provider-parity source plus passing Prisma validation/client generation, but no local MySQL/Docker/WSL provider is available; actual MySQL execution is unavailable and is not claimed. Candidate, hosted, and exact integrated-main Sounding Line evidence are accepted local/CI integration proof, not deployment or owner acceptance.
 
 ## Invariance and privacy evidence
 
