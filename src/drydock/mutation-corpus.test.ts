@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { createHash } from "node:crypto";
 import fixture from "../../tests/fixtures/drydock/phase2-synthetic-chronicle.json";
 import authoringFixture from "../../tests/fixtures/drydock/current-authoring-v1.json";
 import type { DrydockAuthoredBlockInput } from "@/drydock/contracts/model";
@@ -15,6 +16,17 @@ const imageTemplate = authoringFixture.blocks.find((block) => block.blockType ==
 const choiceTemplate = authoringFixture.blocks.find(
   (block) => block.blockType === "choice",
 ) as DrydockAuthoredBlockInput;
+const conditionTemplate = authoringFixture.blocks.find(
+  (block) => block.blockType === "condition",
+) as DrydockAuthoredBlockInput;
+const setVariableTemplate = authoringFixture.blocks.find(
+  (block) => block.blockType === "setVariable",
+) as DrydockAuthoredBlockInput;
+const legacyVariableId = (name: string) =>
+  `var-${createHash("sha256")
+    .update(`legacy-variable:${name.normalize("NFKC")}`)
+    .digest("hex")
+    .slice(0, 20)}`;
 
 function appendSyntheticImage(draft: DrydockDraftContractInput) {
   const image = structuredClone(imageTemplate);
@@ -136,6 +148,53 @@ const cases: readonly MutationCase[] = [
         provider: { id: "visionLocation", version: 1, options: { providerInstanceId: "synthetic-provider" } },
         fallbackMode: "captainManual",
       };
+    },
+  },
+  {
+    id: "always-true-condition",
+    expectedIssueCodes: ["DRYDOCK_CONDITION_ALWAYS_TRUE"],
+    mutate: (draft) => {
+      const condition = structuredClone(conditionTemplate);
+      condition.id = "synthetic-opening";
+      condition.configuration.variable = "synthetic-flag";
+      condition.configuration.value = true;
+      condition.configuration.successTargetBlockId = "synthetic-finish";
+      condition.configuration.failureTargetBlockId = "synthetic-finish";
+      condition.connections = [
+        { targetBlockId: "synthetic-finish", connectionType: "SUCCESS", orderIndex: 0 },
+        { targetBlockId: "synthetic-finish", connectionType: "FAILURE", orderIndex: 1 },
+      ];
+      condition.nextBlockId = "synthetic-finish";
+      (draft.chapters[0].blocks as DrydockAuthoredBlockInput[])[0] = condition;
+      draft.variables = [
+        {
+          schemaVersion: 1,
+          id: legacyVariableId("synthetic-flag"),
+          name: "Synthetic flag",
+          type: { kind: "BOOLEAN" },
+          scope: "SESSION",
+          defaultValue: true,
+          allowedOperations: ["assign", "toggle"],
+          privacy: "PLAYER_SAFE",
+        },
+      ];
+    },
+  },
+  {
+    id: "write-never-read",
+    expectedIssueCodes: ["DRYDOCK_VARIABLE_WRITE_NEVER_READ"],
+    mutate: (draft) => {
+      const writer = structuredClone(setVariableTemplate);
+      writer.id = "synthetic-writer";
+      writer.configuration.variable = "synthetic-inert";
+      writer.configuration.variableId = "synthetic-inert";
+      writer.configuration.variableName = "Synthetic inert";
+      writer.connections = [{ targetBlockId: "synthetic-finish", connectionType: "DEFAULT", orderIndex: 0 }];
+      writer.nextBlockId = "synthetic-finish";
+      const opening = draft.chapters[0].blocks[0];
+      opening.connections = [{ targetBlockId: writer.id, connectionType: "DEFAULT", orderIndex: 0 }];
+      opening.nextBlockId = writer.id;
+      (draft.chapters[0].blocks as DrydockAuthoredBlockInput[]).splice(1, 0, writer);
     },
   },
   {

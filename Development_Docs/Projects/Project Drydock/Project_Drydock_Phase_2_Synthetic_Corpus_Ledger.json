@@ -51,14 +51,18 @@
     {
       "scenario": "impossible branch and constant conditions",
       "expectedIssueCodes": ["DRYDOCK_CONDITION_ALWAYS_TRUE", "DRYDOCK_CONDITION_ALWAYS_FALSE"],
-      "state": "PENDING"
+      "state": "EXECUTED"
     },
     {
       "scenario": "read-before-init and unreachable writer",
       "expectedIssueCodes": ["DRYDOCK_VARIABLE_NOT_DEFINITELY_INITIALIZED"],
       "state": "PENDING"
     },
-    { "scenario": "write never read", "expectedIssueCodes": ["DRYDOCK_VARIABLE_WRITE_NEVER_READ"], "state": "PENDING" },
+    {
+      "scenario": "write never read",
+      "expectedIssueCodes": ["DRYDOCK_VARIABLE_WRITE_NEVER_READ"],
+      "state": "EXECUTED"
+    },
     {
       "scenario": "enum and type-flow conflict",
       "expectedIssueCodes": ["DRYDOCK_VARIABLE_WRITE_TYPE"],
