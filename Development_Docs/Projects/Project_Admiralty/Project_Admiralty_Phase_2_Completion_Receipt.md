@@ -10,23 +10,24 @@ last_reviewed: 2026-08-10
 
 ## Disposition
 
-`LOCALLY_COMPLETE_EXTERNAL_SOUNDING_LINE_AND_OWNER_PENDING`.
+`LOCALLY_COMPLETE_FINAL_SOUNDING_LINE_AND_OWNER_PENDING`.
 
 The read-only Chartroom implementation is reconciled with accepted
-`origin/main` at `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`. Reconciled static,
-focused, documentation, Feature Catalog, Deepwater, production-build, and
-isolated production-browser evidence is complete. The retained owner walkthrough
-runtime is prepared from source `93b979de1279439eb4c67b087eeab4608f8d0548` with
-synthetic reserved data only and its decision remains `PENDING_OWNER_DECISION`.
+`origin/main` at `384ad39fbc40e8cbe16dd2aa2c83abd3e00a56c6` by merge
+`f6df9e690`. The later accepted Shipwright, documentation, Feature Catalog, and
+Sounding Line changes were retained without replacing any Chartroom projection
+or underlying subsystem authority. Reconciled static, focused, documentation,
+Feature Catalog, Deepwater, production-build, and isolated browser evidence is
+complete. The retained owner walkthrough runtime is synthetic-only and its
+decision remains `PENDING_OWNER_DECISION`.
 
-The exact-source Sounding Line mainline decision is not yet acceptable: its
-finalizer recorded invalid, unexecuted `browser.access-sentinel` and
-`browser.helm` receipts because another validation run owns the shared runtime
-lock. The direct Feature Catalog recheck passed 9/9 tests; it does not replace
-the authoritative finalizer. After that independently owned lock is released,
-rerun the governed exact-source authority, then obtain the separate owner
-walkthrough decision. This receipt must not be interpreted as owner acceptance
-or mainline availability.
+The latest exact isolated Helm browser receipt passed 2/2 journeys at
+`6e677f062c56a9961340f3202317ba9c46157892`, with clean runtime cleanup. The
+earlier invalid browser receipts remain historical lock-contention diagnostics;
+they are not test outcomes. The full exact-source Sounding Line mainline
+finalizer remains required and is the sole release authority. After it records
+an acceptable decision, obtain the separate owner walkthrough decision. This
+receipt must not be interpreted as owner acceptance or mainline availability.
 
 ## Acceptance boundary
 

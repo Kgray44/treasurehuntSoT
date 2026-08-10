@@ -10,14 +10,14 @@ last_reviewed: 2026-08-10
 
 ## Current decision
 
-`LOCALLY_COMPLETE_EXTERNAL_SOUNDING_LINE_AND_OWNER_PENDING`. The owned branch
-has been reconciled through accepted `origin/main`
-`4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3` by merge
-`4e7a3299bac3f60f14bb52858cabb4c8763fe983`. The previous branch evidence is
-historical only; the local and browser checks below were repeated against that
-reconciled source. This record does not claim owner acceptance, canonical-main
-integration, deployment, live-provider behavior, production MySQL execution,
-physical-device proof, or physical assistive-technology proof.
+`LOCALLY_COMPLETE_FINAL_SOUNDING_LINE_AND_OWNER_PENDING`. The owned branch has
+been reconciled through accepted `origin/main`
+`384ad39fbc40e8cbe16dd2aa2c83abd3e00a56c6` by merge `f6df9e690` and remains
+based on that accepted mainline. Earlier branch evidence is historical only;
+the current focused checks below were repeated against current reconciled
+source. This record does not claim owner acceptance, canonical-main integration,
+deployment, live-provider behavior, production MySQL execution, physical-device
+proof, or physical assistive-technology proof.
 
 ## Completed local evidence
 
@@ -29,13 +29,13 @@ physical-device proof, or physical assistive-technology proof.
 | Architecture/language/privacy   | Pass: One Voyage architecture, product language, and private-content scan                                                                                                          | Local static proof                  |
 | Documentation/catalog/Deepwater | Pass: documentation index; Feature Catalog 43 entries; Deepwater current validation                                                                                                | Local cross-program proof           |
 | Production build                | Pass, 131 routes                                                                                                                                                                   | Task-owned production build only    |
-| Production-browser matrix       | Pass: 3/3 journeys at `4e7a3299...`; six role identities; support request/approve/use/revoke; all domains; responsive/keyboard/reduced-motion/200%; zero serious/critical findings | Task-owned synthetic Chromium proof |
+| Production-browser matrix       | Pass: Phase 2 Chartroom matrix 3/3; current Helm isolation 2/2 at `6e677f062...`; six role identities; support request/approve/use/revoke; all domains; responsive/keyboard/reduced-motion/200%; zero serious/critical findings | Task-owned synthetic Chromium proof |
 | Canonical data safety           | Browser database and credential handoff are task-owned; canonical database untouched                                                                                               | Local isolation proof               |
 
 Browser evidence root:
 `C:\Users\kgray\AppData\Local\ProjectAdmiralty\sounding-line-phase2`.
-The reconciled browser manifest identifies merge
-`4e7a3299bac3f60f14bb52858cabb4c8763fe983`; the governed Sounding Line
+The current Helm receipt identifies source
+`6e677f062c56a9961340f3202317ba9c46157892`; the governed Sounding Line
 decision remains the release authority.
 
 ## Pending governed gates
@@ -45,13 +45,12 @@ The owner walkthrough runtime was prepared on `2026-08-10` from
 synthetic database. Its build ID is `sxxixbZUApY_HbaKTtzNS` and its owner
 decision is `PENDING_OWNER_DECISION`.
 
-The full Sounding Line mainline run reached its finalizer but did not receive a
-release decision. `browser.access-sentinel` and `browser.helm` were refused
-before execution because another validation run owns the shared runtime lock;
-the lock was neither removed nor taken over. The finalizer also marked the
-Feature Catalog receipt invalid, while the direct `features:test` recheck passed
-9/9 tests. None of that evidence substitutes for the required exact-source
-Sounding Line rerun after the independently owned lock is released.
+Earlier full Sounding Line attempts reached their finalizer but did not receive
+a release decision because browser receipts were refused before execution by an
+independently held shared runtime lease. The lock was neither removed nor taken
+over. The subsequent exact isolated Helm receipt passed 2/2 cases with clean
+cleanup. None of the focused evidence substitutes for the required current
+exact-source full Sounding Line mainline finalizer.
 
 Canonical-main integration remains prohibited until that authority passes and
 the owner explicitly accepts the walkthrough.

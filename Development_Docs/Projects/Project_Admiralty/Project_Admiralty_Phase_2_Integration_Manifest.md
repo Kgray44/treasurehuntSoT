@@ -16,9 +16,9 @@ last_reviewed: 2026-08-10
 | Accepted Phase 1 ancestor | `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`                                                          |
 | Worktree                  | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\project-admiralty-phase2-open-the-chartroom` |
 | Branch                    | `codex/project-admiralty-phase2-open-the-chartroom`                                                 |
-| Reconciled `origin/main`  | `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`                                                          |
-| Reconciliation merge      | `4e7a3299bac3f60f14bb52858cabb4c8763fe983`                                                          |
-| Exact tested source       | Reconciled browser matrix: `4e7a3299...`; Sounding Line pending                                     |
+| Reconciled `origin/main`  | `384ad39fbc40e8cbe16dd2aa2c83abd3e00a56c6`                                                          |
+| Reconciliation merge      | `f6df9e690`                                                                                           |
+| Exact tested source       | Isolated Helm browser family 2/2: `6e677f062...`; full Sounding Line pending                          |
 | Owner decision            | `PENDING_OWNER_DECISION`                                                                            |
 | Publication               | Branch only; not canonical main and not deployed                                                    |
 
@@ -46,16 +46,16 @@ migration or backfill.
 ## Mainline reconciliation
 
 The 2026-08-10 fetch advanced accepted main from the Phase 2 starting base
-through Project Helm Phase 1, Project Tideglass Phase 2, and Project Deepwater
-Phase 3 final records. Helm/Tideglass product and migration work is `UNRELATED`
-to the Chartroom's owner-named read projections. Shared Feature Catalog,
-Deepwater, documentation index, package/test metadata, navigation, and Sounding
-Line files are `CONTRACT_ADJACENT`; canonical generator output was regenerated
-from both inputs. The few shared Admiralty capability/navigation changes are
-`AUTHORITY_CHANGING` and were retained additively. There was no unresolved
-Chartroom source conflict, no Phase 2 schema migration, and no replacement of a
-Wayfarer, Harborlight, One Voyage, Sealed Hold, Deepwater, or Sounding Line
-canonical owner.
+through Project Helm Phase 1, Project Tideglass Phase 2, Project Deepwater
+Phase 3 records, and Shipwright Phase 1 records. Helm/Tideglass product and
+migration work is `UNRELATED` to the Chartroom's owner-named read projections.
+Shared Feature Catalog, Deepwater, documentation index, package/test metadata,
+navigation, and Sounding Line files are `CONTRACT_ADJACENT`; canonical generator
+output was regenerated from both inputs. The few shared Admiralty
+capability/navigation changes are `AUTHORITY_CHANGING` and were retained
+additively. There was no unresolved Chartroom source conflict, no Phase 2 schema
+migration, and no replacement of a Wayfarer, Harborlight, One Voyage, Sealed
+Hold, Deepwater, or Sounding Line canonical owner.
 
 ## Integration boundary
 
