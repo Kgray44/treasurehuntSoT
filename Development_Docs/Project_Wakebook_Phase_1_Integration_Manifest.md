@@ -10,16 +10,16 @@ last_reviewed: 2026-08-09
 
 ## Current integration state
 
-| Item                    | State                                                             |
-| ----------------------- | ----------------------------------------------------------------- |
-| Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                        |
-| Current reconciled base | `273fb5255ad222812530422e902db04c0ddd1961`                        |
-| Incoming accepted work  | Deepwater Phase 1 control plane and documents                     |
-| Semantic reconciliation | Completed before source modification; no Wakebook runtime overlap |
-| Implementation commits  | Pending                                                           |
-| Sounding Line evidence  | Pending                                                           |
-| Owner walkthrough       | Pending                                                           |
-| Main merge              | Forbidden in this task                                            |
+| Item                    | State                                                                                                                    |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                               |
+| Current reconciled base | `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`                                                                               |
+| Incoming accepted work  | Deepwater Phase 3, Tideglass Phase 1-2, Helm Phase 1, Drydock Phase 1, Admiralty Phase 1, and Homeport governance        |
+| Semantic reconciliation | Completed in merge `4382584d3`; Wakebook registrations and browser project retained alongside accepted mainline families |
+| Implementation commits  | Preserved from the existing remote candidate                                                                             |
+| Sounding Line evidence  | Pending                                                                                                                  |
+| Owner walkthrough       | Pending                                                                                                                  |
+| Main merge              | Forbidden in this task                                                                                                   |
 
 ## Owned implementation paths
 

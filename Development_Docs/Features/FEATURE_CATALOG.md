@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `28a3139e9d43b234778bbbcd4bde2133ece4d8a2`
+Audited source commit: `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`
 
 ## Status vocabulary
 
@@ -1361,7 +1361,7 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 # Completed Branch Features Not Yet Available on Main
 
-## FT-B009 - Private Living Journey Archive
+## FT-B011 - Private Living Journey Archive
 
 **Status:** BRANCH COMPLETE NOT MERGED
 **Program or subsystem:** Project Wakebook Phase 1
@@ -1414,4 +1414,4 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `28a3139e9d43b234778bbbcd4bde2133ece4d8a2`
+Generation source commit: `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`

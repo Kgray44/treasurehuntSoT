@@ -59,11 +59,7 @@
     },
     {
       "id": "contract",
-      "requiredSuites": [
-        "static.core",
-        "unit.helm",
-        "component.helm"
-      ],
+      "requiredSuites": ["static.core", "unit.helm", "component.helm"],
       "conditionalSuites": [
         "unit.helm",
         "component.helm",
@@ -161,12 +157,7 @@
     },
     {
       "id": "cross-project",
-      "requiredSuites": [
-        "static.core",
-        "unit.one-voyage",
-        "unit.wayfarer",
-        "browser.cross-project"
-      ],
+      "requiredSuites": ["static.core", "unit.one-voyage", "unit.wayfarer", "browser.cross-project"],
       "conditionalSuites": [
         "unit.tideglass",
         "browser.invitations",
@@ -289,15 +280,11 @@
         "component.admiralty",
         "browser.admiralty"
       ],
-      "conditionalSuites": [
-        "migration.mysql"
-      ]
+      "conditionalSuites": ["migration.mysql"]
     },
     {
       "id": "external-provider",
-      "requiredSuites": [
-        "migration.mysql"
-      ],
+      "requiredSuites": ["migration.mysql"],
       "conditionalSuites": []
     }
   ]

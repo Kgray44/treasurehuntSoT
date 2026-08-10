@@ -186,7 +186,9 @@ function tideglassContractsFor(file) {
 
 function metadata(file, family, browser = null) {
   const privateOrCommunity =
-    /admiralty|drydock|deepwater|wakebook|homeport|private-content|community|wayfarer|passport|invitation|session/u.test(file);
+    /admiralty|drydock|deepwater|wakebook|homeport|private-content|community|wayfarer|passport|invitation|session/u.test(
+      file,
+    );
   const high = privateOrCommunity || Boolean(browser);
   const ui = Boolean(browser) || file.endsWith(".tsx");
   return {

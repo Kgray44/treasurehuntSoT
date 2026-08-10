@@ -18,9 +18,9 @@ last_reviewed: 2026-08-09
 | ------------------------------- | ------------------------------------------------------------------------ |
 | Branch                          | `codex/project-wakebook-phase1-open-the-wake`                            |
 | Owned worktree                  | `C:\Users\kkids\Documents\treasurehuntSoT-wakebook-phase1-open-the-wake` |
-| Reconciled accepted-main base   | `273fb5255ad222812530422e902db04c0ddd1961`                               |
+| Reconciled accepted-main base   | `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`                               |
 | Archive implementation anchor   | `629f5c7a981b80494f7703b6410b573a661e0f39`                               |
-| Final validation SHA            | Pending final evidence commit                                            |
+| Final validation SHA            | `4382584d3` merge reconciliation; governed final evidence pending        |
 | Database schema change          | None                                                                     |
 | Canonical mutable database used | No                                                                       |
 
@@ -56,7 +56,7 @@ Sounding Line owns the authoritative definitions for:
 | Responsive/accessibility                 | 1440x1000, 430x932, 390x844; Axe serious/critical policy                 | Pending browser family | Synthetic browser only                 |
 | Sounding Line subsystem/mainline/release | Exact final source and generated registry                                | Pending                | Required release authority             |
 
-The first `browser.wakebook` diagnostic attempt did not execute product code because another governed validation process owned the global validation-runtime lock. The runner reported cleanup `CLEAN`; no process was stopped and no lock was removed. That environmental collision is not a product failure and is not counted as passing evidence.
+The first `browser.wakebook` diagnostic attempt did not execute product code because another governed validation process owned the global validation-runtime lock. The runner reported cleanup `CLEAN`; no process was stopped and no lock was removed. That environmental collision is not a product failure and is not counted as passing evidence. The 2026-08-10 reconciliation incorporated accepted `origin/main` at `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`; all browser and final-authority evidence must be regenerated from that merged source.
 
 ## Privacy and source-safety assertions
 
