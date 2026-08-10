@@ -25,6 +25,12 @@ const setVariableTemplate = authoringFixture.blocks.find(
 const arrivalCheckTemplate = authoringFixture.blocks.find(
   (block) => block.blockType === "arrivalCheck",
 ) as DrydockAuthoredBlockInput;
+const artifactRevealTemplate = authoringFixture.blocks.find(
+  (block) => block.blockType === "artifactReveal",
+) as DrydockAuthoredBlockInput;
+const collectionUpdateTemplate = authoringFixture.blocks.find(
+  (block) => block.blockType === "collectionUpdate",
+) as DrydockAuthoredBlockInput;
 const legacyVariableId = (name: string) =>
   `var-${createHash("sha256")
     .update(`legacy-variable:${name.normalize("NFKC")}`)
@@ -262,6 +268,41 @@ const cases: readonly MutationCase[] = [
     expectedIssueCodes: ["DRYDOCK_STATE_PROOF_INCOMPLETE"],
     mutate: (draft) => {
       draft.analysisLimits = { maximumStateIterations: 0 };
+    },
+  },
+  {
+    id: "repeated-artifact-grant",
+    expectedIssueCodes: ["DRYDOCK_ARTIFACT_GRANT_DUPLICATE_RISK"],
+    mutate: (draft) => {
+      const firstGrant = structuredClone(artifactRevealTemplate);
+      const secondGrant = structuredClone(collectionUpdateTemplate);
+      firstGrant.id = "synthetic-first-artifact-grant";
+      secondGrant.id = "synthetic-second-artifact-grant";
+      firstGrant.configuration.artifactId = "synthetic-repeated-artifact";
+      secondGrant.configuration.artifactId = "synthetic-repeated-artifact";
+      firstGrant.connections = [{ targetBlockId: secondGrant.id, connectionType: "DEFAULT", orderIndex: 0 }];
+      firstGrant.nextBlockId = secondGrant.id;
+      secondGrant.connections = [{ targetBlockId: "synthetic-finish", connectionType: "DEFAULT", orderIndex: 0 }];
+      secondGrant.nextBlockId = "synthetic-finish";
+      const blocks = draft.chapters[0].blocks as DrydockAuthoredBlockInput[];
+      blocks[0].connections = [{ targetBlockId: firstGrant.id, connectionType: "DEFAULT", orderIndex: 0 }];
+      blocks[0].nextBlockId = firstGrant.id;
+      blocks.splice(1, 0, firstGrant, secondGrant);
+    },
+  },
+  {
+    id: "artifact-grant-inside-repeatable-cycle",
+    expectedIssueCodes: ["DRYDOCK_SIDE_EFFECT_REPEATS_IN_LOOP"],
+    mutate: (draft) => {
+      const grant = structuredClone(artifactRevealTemplate);
+      grant.id = "synthetic-repeatable-artifact-grant";
+      grant.configuration.artifactId = "synthetic-loop-artifact";
+      grant.connections = [{ targetBlockId: "synthetic-opening", connectionType: "DEFAULT", orderIndex: 0 }];
+      grant.nextBlockId = "synthetic-opening";
+      const blocks = draft.chapters[0].blocks as DrydockAuthoredBlockInput[];
+      blocks[0].connections = [{ targetBlockId: grant.id, connectionType: "DEFAULT", orderIndex: 0 }];
+      blocks[0].nextBlockId = grant.id;
+      blocks.splice(1, 0, grant);
     },
   },
   {

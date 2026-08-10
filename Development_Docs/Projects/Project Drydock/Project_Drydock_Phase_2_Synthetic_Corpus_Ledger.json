@@ -69,8 +69,13 @@
       "state": "EXECUTED"
     },
     {
-      "scenario": "repeated artifact/completion/reveal risk",
-      "expectedIssueCodes": ["DRYDOCK_ARTIFACT_GRANT_DUPLICATE_RISK", "DRYDOCK_COMPLETION_OUTCOME_DUPLICATE_RISK"],
+      "scenario": "repeated and looped artifact grant risk",
+      "expectedIssueCodes": ["DRYDOCK_ARTIFACT_GRANT_DUPLICATE_RISK", "DRYDOCK_SIDE_EFFECT_REPEATS_IN_LOOP"],
+      "state": "EXECUTED"
+    },
+    {
+      "scenario": "repeated completion outcome risk",
+      "expectedIssueCodes": ["DRYDOCK_COMPLETION_OUTCOME_DUPLICATE_RISK"],
       "state": "PENDING"
     },
     {
@@ -79,19 +84,24 @@
       "state": "PENDING"
     },
     {
-      "scenario": "provider fallback and unsupported provider",
-      "expectedIssueCodes": ["DRYDOCK_ACCESS_PROVIDER_FALLBACK", "DRYDOCK_PROVIDER_UNREGISTERED"],
+      "scenario": "provider fallback",
+      "expectedIssueCodes": ["DRYDOCK_ACCESS_PROVIDER_FALLBACK"],
+      "state": "EXECUTED"
+    },
+    {
+      "scenario": "unsupported provider",
+      "expectedIssueCodes": ["DRYDOCK_PROVIDER_UNREGISTERED"],
       "state": "PENDING"
     },
     {
       "scenario": "performance warning",
       "expectedIssueCodes": ["DRYDOCK_PERFORMANCE_BLOCK_COUNT_HIGH"],
-      "state": "PENDING"
+      "state": "EXECUTED"
     },
     {
       "scenario": "state bound exhausted",
       "expectedIssueCodes": ["DRYDOCK_STATE_PROOF_INCOMPLETE"],
-      "state": "PENDING"
+      "state": "EXECUTED"
     }
   ],
   "completionCondition": "Every governed scenario is represented by a synthetic fixture or controlled mutation with declared expected issue codes and a passing Sounding Line-owned test.",
