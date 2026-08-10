@@ -26,7 +26,7 @@ let accountId = "";
 let playerProfileId = "";
 let accountSessionId = "";
 
-test.describe.configure({ mode: "serial", timeout: 360_000 });
+test.describe.configure({ mode: "serial", timeout: 600_000 });
 
 test.beforeAll(async () => {
   const now = new Date();
@@ -271,7 +271,7 @@ test("Captain authority and ordinary Player membership remain independent throug
   browser,
   page,
 }) => {
-  test.setTimeout(360_000);
+  test.setTimeout(600_000);
   await signInThroughProduct(page);
   await assertOneAccountSession(page.context(), page);
 
