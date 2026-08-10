@@ -2,9 +2,15 @@
   "schemaVersion": "1.0.0",
   "project": "Project Deepwater",
   "phase": "Phase 3 - Raise the Capability",
-  "auditDate": "2026-08-09",
+  "auditDate": "2026-08-10",
   "baseOriginMainSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
-  "auditedSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
+  "auditedSourceSha": "3e235e85b974183f3b0888814a15697596f73730",
+  "phase3ControlPlaneAcceptedMainSha": "cf08ed0954e0bfd8279229604d3bec5c1beea4ae",
+  "finalReconciledMainSha": null,
+  "finalPhase3Commit": null,
+  "schemaImpact": "DEEPWATER_CONTROL_PLANE_SCHEMAS_ONLY",
+  "productSourceImpact": "NONE",
+  "featureCatalogImpact": "UPDATED_BY_ACCEPTED_DOCUMENTATION_SLICES",
   "phase2AcceptedCapabilityCount": 53,
   "expectedCurrentCapabilityCount": 55,
   "currentMainCapabilityAdditions": [
@@ -21,13 +27,13 @@
       "basis": "Project Admiralty Phase 1 reached owner-accepted canonical main after Phase 3 activation and before final Admiralty record publication."
     }
   ],
-  "branch": "codex/project-deepwater-phase3-raise-the-capability",
-  "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase3",
+  "branch": "codex/project-deepwater-phase3-mainline-reconciliation",
+  "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase3-mainline",
   "lifecycle": {
-    "state": "ACTIVE",
-    "mainlineState": "NOT_YET_ACCEPTED",
-    "validation": "PENDING",
-    "reconciliation": "CURRENT_MAIN_REVALIDATED"
+    "state": "MAINLINE_CANDIDATE",
+    "mainlineState": "CANDIDATE_PENDING_PROTECTED_INTEGRATION",
+    "validation": "PENDING_EXACT_CANDIDATE_GATE",
+    "reconciliation": "ACCEPTED_SLICES_RECONCILED"
   },
   "authorityGaps": [
     {
@@ -233,7 +239,118 @@
       ]
     }
   ],
-  "findingTransitions": {},
+  "findingTransitions": {
+    "DW-FIND-CATALOG-SURFACE-FT-005": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Player fragment names /join/[token], /player/invitation, and /player/library; PR #24 merged as 9937af957c1c92c9767b4255705a17f3e189904b after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-007": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-10",
+      "closureEvidence": "Accepted Helm fragment promotes FT-007 to MAINLINE and names /captain, /captain/library, /captain/sessions/[sessionId], /captain/voyages/[playthroughId]/player-preview, and /player/playthroughs/[playthroughId]; PR #32 merged validated head 7e2a4fc886c1e2bc62061c5c0dc69c1e08870f44 as 3e235e85b974183f3b0888814a15697596f73730 after 40/40 protected checks, hosted Sounding Line RELEASE_GO with 37/37 PASSED and CLEAN, and exact-main 7/7 PASSED and CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-015": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Player fragment names /player/playthroughs/[playthroughId]/journal; PR #24 merged as 9937af957c1c92c9767b4255705a17f3e189904b after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-016": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Player fragment names /player/playthroughs/[playthroughId]/journal; PR #24 merged as 9937af957c1c92c9767b4255705a17f3e189904b after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-017": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Player fragment names /player/playthroughs/[playthroughId]/journal; PR #24 merged as 9937af957c1c92c9767b4255705a17f3e189904b after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-018": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Player fragment names /player/playthroughs/[playthroughId]/journal; PR #24 merged as 9937af957c1c92c9767b4255705a17f3e189904b after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-019": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Player fragment names /player/playthroughs/[playthroughId]/journal; PR #24 merged as 9937af957c1c92c9767b4255705a17f3e189904b after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-020": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Player fragment names /player/playthroughs/[playthroughId]/journal; PR #24 merged as 9937af957c1c92c9767b4255705a17f3e189904b after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-021": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Player fragment names /api/player/[campaignSlug]/events, /api/player/[campaignSlug]/presence, and /player/playthroughs/[playthroughId]/journal; PR #24 merged as 9937af957c1c92c9767b4255705a17f3e189904b after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-023": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted One Voyage fragment names /api/helper/verification and /captain/sessions/[sessionId] without claiming a real provider; PR #25 merged as 0ded9be4af04feb1785fd9e56abbacdd39f54b3d after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-025": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Harborlight fragment names /community and /studio/exchange; PR #26 merged as 9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1 after exact-head local PASS/CLEAN and hosted Sounding Line RELEASE_GO with all 36 checks successful and every finalization receipt CLEAN."
+    }
+  },
   "catalogSlices": {
     "FT-005": "DW-P3-SLICE-CATALOG-PLAYER",
     "FT-015": "DW-P3-SLICE-CATALOG-PLAYER",
@@ -254,8 +371,8 @@
       "contributingOwners": ["One Voyage", "Wayfarer", "Wakebook", "Landfall"],
       "category": "DOCUMENTATION_RECONCILIATION",
       "concurrencyClass": "B",
-      "status": "REGISTERED",
-      "baseSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
+      "status": "MAINLINE_ACCEPTED",
+      "baseSourceSha": "cf08ed0954e0bfd8279229604d3bec5c1beea4ae",
       "branch": "codex/deepwater-phase3-catalog-player",
       "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-p3-catalog-player",
       "ownedPaths": ["Development_Docs/Features/catalog/player.json"],
@@ -271,11 +388,11 @@
         "Phase 3 coordination reconciliation after accepted-main merge"
       ],
       "closureEvidence": [
-        "Generated Feature Catalog matches the corrected fragment",
-        "Deepwater catalog mismatch validators close only the eight linked findings",
-        "Slice commit is accepted on protected main"
+        "Accepted player.json records /join/[token], /player/invitation, /player/library, and /player/playthroughs/[playthroughId]/journal plus the two bounded Player APIs.",
+        "PR #24 exact head dc9be8e0089e2029e7198f1b03bbd84ec9b55795 reached hosted Sounding Line RELEASE_GO with 30/30 receipts PASSED and CLEAN; evidence digest 4dc0f75b4aa2f8e683d622b525f04bfd7de46acd9aefc31ba39019d9c06cd3a3.",
+        "Protected merge 9937af957c1c92c9767b4255705a17f3e189904b is an ancestor of the reconciled current main."
       ],
-      "acceptedMainSha": null
+      "acceptedMainSha": "9937af957c1c92c9767b4255705a17f3e189904b"
     },
     {
       "sliceId": "DW-P3-SLICE-CATALOG-ONE-VOYAGE",
@@ -284,8 +401,8 @@
       "contributingOwners": ["Ledgerlight"],
       "category": "DOCUMENTATION_RECONCILIATION",
       "concurrencyClass": "B",
-      "status": "REGISTERED",
-      "baseSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
+      "status": "MAINLINE_ACCEPTED",
+      "baseSourceSha": "bbf5e0d991006227ed4097a95b9c89997354798e",
       "branch": "codex/deepwater-phase3-catalog-one-voyage",
       "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-p3-catalog-one-voyage",
       "ownedPaths": ["Development_Docs/Features/catalog/one-voyage.json"],
@@ -301,11 +418,11 @@
         "Phase 3 coordination reconciliation after accepted-main merge"
       ],
       "closureEvidence": [
-        "Generated Feature Catalog matches the corrected fragment",
-        "Internal API boundaries are not mislabeled as ordinary user routes",
-        "Slice commit is accepted on protected main"
+        "Accepted one-voyage.json records /api/helper/verification as an API boundary and /captain/sessions/[sessionId] as the Captain consumer without claiming a real provider.",
+        "PR #25 exact head d65ac8781236697841a12b799aa0e7f26798df38 reached hosted Sounding Line RELEASE_GO with 30/30 receipts PASSED and CLEAN; evidence digest 9df6b8e0359841a1ce720b4a65b3eb6470eb505c9e3cd944437ef7dad85fddfc.",
+        "Protected merge 0ded9be4af04feb1785fd9e56abbacdd39f54b3d is an ancestor of the reconciled current main."
       ],
-      "acceptedMainSha": null
+      "acceptedMainSha": "0ded9be4af04feb1785fd9e56abbacdd39f54b3d"
     },
     {
       "sliceId": "DW-P3-SLICE-CATALOG-HARBORLIGHT",
@@ -314,8 +431,8 @@
       "contributingOwners": ["Ledgerlight"],
       "category": "DOCUMENTATION_RECONCILIATION",
       "concurrencyClass": "B",
-      "status": "REGISTERED",
-      "baseSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
+      "status": "MAINLINE_ACCEPTED",
+      "baseSourceSha": "f07fbb693e32f6b1069870fae9da668ed3392d4b",
       "branch": "codex/deepwater-phase3-catalog-harborlight",
       "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-p3-catalog-harborlight",
       "ownedPaths": ["Development_Docs/Features/catalog/harborlight.json"],
@@ -331,13 +448,44 @@
         "Phase 3 coordination reconciliation after accepted-main merge"
       ],
       "closureEvidence": [
-        "Generated Feature Catalog matches the corrected fragment",
-        "Community and Studio surfaces remain intentionally composite",
-        "Slice commit is accepted on protected main"
+        "Accepted harborlight.json records /community and /studio/exchange as the intentional composite Community and Studio surfaces.",
+        "PR #26 exact head 38dd98e1b31251ee991b2fee52e5a998b1a22b47 passed local Sounding Line with every receipt CLEAN and no invalid evidence; evidence digest 566f87a84b843dae596c6d982fc418410a169c60d0c8808da20ded3861180f3a.",
+        "Hosted Sounding Line finalized RELEASE_GO with all 36 checks successful, every finalization receipt CLEAN, no invalid evidence, and digest 8b2456d4e60062948471c49ec2e56775c4e5b47e7ef5430b0f20436bc67e218a; protected merge 9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1 is the reconciled current main."
       ],
-      "acceptedMainSha": null
+      "acceptedMainSha": "9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1"
     }
   ],
+  "validationEvidence": {
+    "sliceDecisions": [
+      {
+        "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
+        "decision": "RELEASE_GO",
+        "hostedRunId": "31330986258",
+        "receiptCount": 30,
+        "cleanupCleanCount": 30,
+        "evidenceDigest": "4dc0f75b4aa2f8e683d622b525f04bfd7de46acd9aefc31ba39019d9c06cd3a3"
+      },
+      {
+        "sliceId": "DW-P3-SLICE-CATALOG-ONE-VOYAGE",
+        "decision": "RELEASE_GO",
+        "hostedRunId": "31332962528",
+        "receiptCount": 30,
+        "cleanupCleanCount": 30,
+        "evidenceDigest": "9df6b8e0359841a1ce720b4a65b3eb6470eb505c9e3cd944437ef7dad85fddfc"
+      },
+      {
+        "sliceId": "DW-P3-SLICE-CATALOG-HARBORLIGHT",
+        "decision": "RELEASE_GO",
+        "hostedRunId": "31340648169",
+        "successfulCheckCount": 36,
+        "invalidEvidenceCount": 0,
+        "evidenceDigest": "8b2456d4e60062948471c49ec2e56775c4e5b47e7ef5430b0f20436bc67e218a"
+      }
+    ],
+    "finalCandidate": null,
+    "hostedMainline": null,
+    "acceptedMainProof": null
+  },
   "privacy": {
     "forbiddenPatterns": [
       "(?i)password\\s*[=:]\\s*[^<\\s]",

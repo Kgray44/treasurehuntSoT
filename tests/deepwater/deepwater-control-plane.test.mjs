@@ -190,6 +190,24 @@ test("same accepted inputs generate stable semantic output", async () => {
   );
 });
 
+test("Phase 3 rebuild preserves the accepted Phase 2 finding baseline", async () => {
+  assert.equal(baseline.metrics.findings.startingOpen, 20);
+  const acceptedPhase2Finding = baseline.phase2.findingsDocument.findings.find(
+    (finding) => finding.findingId === "DW-FIND-CATALOG-SURFACE-FT-005",
+  );
+  assert.equal(acceptedPhase2Finding.status, "ASSIGNED");
+  assert.equal(acceptedPhase2Finding.closedAt, null);
+  const transitionedFinding = baseline.findingsDocument.findings.find(
+    (finding) => finding.findingId === "DW-FIND-CATALOG-SURFACE-FT-005",
+  );
+  assert.equal(transitionedFinding.status, "CLOSED");
+  assert.equal(transitionedFinding.from, undefined);
+
+  const second = await buildArtifacts(root);
+  assert.equal(second.metrics.findings.startingOpen, 20);
+  assert.equal(semanticDigest(second), semanticDigest(baseline));
+});
+
 test("known capability IDs remain semantic and stable", () => {
   const ids = new Set(baseline.ledger.capabilities.map((capability) => capability.capabilityId));
   for (const id of [
@@ -397,6 +415,39 @@ test("Phase 3 reviews all 55 current accepted capabilities and accepts the gener
     ),
   );
   assert.deepEqual(phase3Errors(phase3Model()), []);
+});
+
+test("Phase 3 reconciliation closes only accepted documentation evidence and preserves governed boundaries", () => {
+  assert.equal(baseline.metrics.documentation.starting, 17);
+  assert.equal(baseline.metrics.documentation.closed, 11);
+  assert.equal(baseline.metrics.documentation.remaining, 6);
+  assert.equal(baseline.metrics.findings.closed, 11);
+  assert.equal(baseline.metrics.findings.external, 1);
+  assert.equal(baseline.metrics.findings.ownerAcceptance, 1);
+  assert.equal(baseline.metrics.findings.remainingHigh, 1);
+  assert.equal(baseline.metrics.findings.remainingCritical, 0);
+  assert.ok(baseline.slicesDocument.slices.every((slice) => slice.status === "MAINLINE_ACCEPTED"));
+  assert.ok(baseline.slicesDocument.slices.every((slice) => /^[0-9a-f]{40}$/u.test(slice.acceptedMainSha)));
+  const helmFinding = baseline.findingsDocument.findings.find(
+    (finding) => finding.findingId === "DW-FIND-CATALOG-SURFACE-FT-007",
+  );
+  assert.equal(helmFinding?.status, "CLOSED");
+  assert.equal(helmFinding?.observedSourceSha, "3e235e85b974183f3b0888814a15697596f73730");
+  assert.match(helmFinding?.closureEvidence ?? "", /PR #32.*3e235e85/u);
+  assert.match(baseline.phase3Reports.delta, /DW-FIND-CATALOG-SURFACE-FT-005/u);
+  assert.match(baseline.phase3Reports.delta, /DW-FIND-CATALOG-SURFACE-FT-007/u);
+  for (const findingId of [
+    "DW-FIND-EDITION-COMPARISON-SEMANTIC-UNDERUTILIZATION",
+    "DW-FIND-HOMEPORT-OWNER-DECISION-PENDING",
+    "DW-FIND-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION",
+    "DW-FIND-VERIFICATION-PROVIDER-REALIZATION-GAP",
+  ])
+    assert.notEqual(
+      baseline.findingsDocument.findings.find((finding) => finding.findingId === findingId)?.status,
+      "CLOSED",
+    );
+  assert.equal(baseline.status.mainlineState, "CANDIDATE_PENDING_PROTECTED_INTEGRATION");
+  assert.equal(baseline.status.finalReconciledMainSha, null);
 });
 
 test("Phase 3 rejects an orphan backend operation", () => {

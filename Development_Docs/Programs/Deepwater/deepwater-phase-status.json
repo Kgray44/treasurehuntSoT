@@ -1,6 +1,6 @@
 {
   "activation": "ACTIVE_OWNER_COORDINATED_REALIZATION_AND_UTILIZATION_CLOSURE",
-  "auditedSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
+  "auditedSourceSha": "3e235e85b974183f3b0888814a15697596f73730",
   "authorityGaps": [
     {
       "basis": "Current accepted source, the Global Product Governance Standard, Feature Catalog, Homeport records, and accepted Landfall references remain the bounded authority.",
@@ -14,8 +14,8 @@
     }
   ],
   "baseSourceSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
-  "branch": "codex/project-deepwater-phase3-raise-the-capability",
-  "featureCatalogImpact": "PENDING_REGISTERED_SLICES",
+  "branch": "codex/project-deepwater-phase3-mainline-reconciliation",
+  "featureCatalogImpact": "UPDATED_BY_ACCEPTED_DOCUMENTATION_SLICES",
   "finalReconciledMainSha": null,
   "limitations": [
     "Unaccepted owner branches are coordination constraints, not implementation truth.",
@@ -23,7 +23,7 @@
     "Homeport PRODUCT_ACCEPTED remains an owner-only decision.",
     "Phase 4 is not authorized."
   ],
-  "mainlineState": "NOT_YET_ACCEPTED",
+  "mainlineState": "CANDIDATE_PENDING_PROTECTED_INTEGRATION",
   "metrics": {
     "backendOperationsReviewed": 349,
     "capabilityRealization": {
@@ -42,12 +42,12 @@
       "PARTIALLY_UTILIZED": 3
     },
     "documentation": {
-      "closed": 0,
-      "remaining": 17,
+      "closed": 11,
+      "remaining": 6,
       "starting": 17
     },
     "findings": {
-      "closed": 0,
+      "closed": 11,
       "debtAccepted": 0,
       "external": 1,
       "ownerAcceptance": 1,
@@ -57,19 +57,19 @@
       "startingOpen": 20
     },
     "slices": {
-      "REGISTERED": 3
+      "MAINLINE_ACCEPTED": 3
     },
     "unconsumedMeaningfulOperationsRemaining": 4,
     "unconsumedRecoveryCapabilitiesRemaining": 0,
     "unconsumedSafeMetadataRemaining": 10
   },
   "phase": "Phase 3 - Raise the Capability",
-  "productSourceImpact": "NONE_ON_COORDINATION_BRANCH",
+  "productSourceImpact": "NONE",
   "project": "Project Deepwater",
-  "reconciliation": "CURRENT_MAIN_REVALIDATED",
-  "schemaImpact": "NONE",
+  "reconciliation": "ACCEPTED_SLICES_RECONCILED",
+  "schemaImpact": "DEEPWATER_CONTROL_PLANE_SCHEMAS_ONLY",
   "schemaVersion": "1.0.0",
-  "state": "ACTIVE",
-  "validation": "PENDING",
-  "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase3"
+  "state": "MAINLINE_CANDIDATE",
+  "validation": "PENDING_EXACT_CANDIDATE_GATE",
+  "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase3-mainline"
 }

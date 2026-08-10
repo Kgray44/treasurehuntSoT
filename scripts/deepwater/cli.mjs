@@ -43,6 +43,7 @@ if (command === "audit") {
       utilizationReport: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_3_Utilization_Report.md",
       remediationReport: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_3_Remediation_Report.md",
       deltaReport: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_2_to_Phase_3_Delta_Report.md",
+      finalReport: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_3_Final_Report.md",
       phase3Queue: artifacts.phase3Queue.queue.length,
     })}\n`,
   );
