@@ -6,7 +6,9 @@ import { parseDrydockBlock } from "../../src/drydock/contracts/parser";
 import { serializeDrydockBlockContractRegistry } from "../../src/drydock/contracts/registry";
 import type { DrydockAuthoredBlockInput } from "../../src/drydock/contracts/model";
 import { sanitizedIssueProjection } from "../../src/drydock/issues";
+import { validateDrydockDraftContracts, type DrydockDraftContractInput } from "../../src/drydock/incremental";
 import { drydockProviderRegistry } from "../../src/drydock/providers";
+import { createDrydockValidationReport, diffDrydockReports, supportReportProjection, type DrydockValidationReport } from "../../src/drydock/reports";
 
 const command = process.argv[2] ?? "help";
 
@@ -22,6 +24,51 @@ function inputBlocks(path: string): DrydockAuthoredBlockInput[] {
   if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("DRYDOCK_INPUT_INVALID");
   const candidate = parsed as { blocks?: unknown[] };
   return (candidate.blocks ?? [candidate]) as DrydockAuthoredBlockInput[];
+}
+
+function fullInput(path: string): DrydockDraftContractInput {
+  const absolute = resolve(process.cwd(), path);
+  const bytes = readFileSync(absolute);
+  if (bytes.byteLength > 5 * 1024 * 1024) throw new Error("DRYDOCK_INPUT_SIZE_LIMIT");
+  const parsed: unknown = JSON.parse(bytes.toString("utf8"));
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("DRYDOCK_INPUT_INVALID");
+  const candidate = parsed as DrydockDraftContractInput;
+  if (candidate.schemaVersion !== 1 || !Array.isArray(candidate.chapters)) throw new Error("DRYDOCK_FULL_INPUT_INVALID");
+  return { ...candidate, analysisMode: "FULL" };
+}
+
+function reportInput(path: string): DrydockValidationReport {
+  const absolute = resolve(process.cwd(), path);
+  const bytes = readFileSync(absolute);
+  if (bytes.byteLength > 5 * 1024 * 1024) throw new Error("DRYDOCK_INPUT_SIZE_LIMIT");
+  const parsed: unknown = JSON.parse(bytes.toString("utf8"));
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("DRYDOCK_REPORT_INVALID");
+  const report = parsed as Partial<DrydockValidationReport>;
+  if (report.schemaVersion !== 1 || !Array.isArray(report.issues) || typeof report.sourceChecksum !== "string" || typeof report.runId !== "string")
+    throw new Error("DRYDOCK_REPORT_INVALID");
+  return report as DrydockValidationReport;
+}
+
+function supportReportDiff(previous: DrydockValidationReport, next: DrydockValidationReport) {
+  const diff = diffDrydockReports(previous, next);
+  const safe = (issue: { id: string; code: string; category: string; severity: string; ruleVersion: number }) => ({
+    id: issue.id,
+    code: issue.code,
+    category: issue.category,
+    severity: issue.severity,
+    ruleVersion: issue.ruleVersion,
+  });
+  return {
+    sourceChanged: diff.sourceChanged,
+    proofCompletenessChanged: diff.proofCompletenessChanged,
+    compatibilityChanged: diff.compatibilityChanged,
+    introduced: diff.introduced.map(safe),
+    resolved: diff.resolved.map(safe),
+    retained: diff.retained.map(safe),
+    severityChanged: diff.severityChanged.map(({ before, after }) => ({ before: safe(before), after: safe(after) })),
+    ruleVersionChanged: diff.ruleVersionChanged.map(({ before, after }) => ({ before: safe(before), after: safe(after) })),
+    locationChanged: diff.locationChanged.map(({ before, after }) => ({ before: safe(before), after: safe(after) })),
+  };
 }
 
 function validate(blocks: readonly DrydockAuthoredBlockInput[]) {
@@ -113,6 +160,29 @@ else if (command === "canonicalize-fixtures") {
   const path = process.argv[3];
   if (!path) throw new Error("Usage: npm run drydock:cli -- validate <json-path>");
   validate(inputBlocks(path));
+} else if (command === "full-validate") {
+  const path = process.argv[3];
+  if (!path) throw new Error("Usage: npm run drydock:cli -- full-validate <json-path>");
+  const input = fullInput(path);
+  const result = validateDrydockDraftContracts(input);
+  const assetProofIncomplete = result.staticIssues.some((issue) => issue.code === "DRYDOCK_ASSET_PROOF_INCOMPLETE");
+  const report = createDrydockValidationReport({
+    source: input,
+    issues: result.issues,
+    proofCompleteness: result.stateAnalysis.status === "PROVEN" && result.graphAnalysis.proofCompleteness === "COMPLETE" && !assetProofIncomplete ? "COMPLETE" : "INCOMPLETE_PROOF",
+    analysisLimits: [
+      ...(result.stateAnalysis.status === "PROVEN" ? [] : [`state-iterations:${result.stateAnalysis.iterations}`]),
+      ...(result.graphAnalysis.proofCompleteness === "COMPLETE" ? [] : ["legacy-edge-condition-adapter-unavailable"]),
+      ...(assetProofIncomplete ? ["asset-snapshot-unavailable"] : []),
+    ],
+  });
+  print({ report, supportProjection: supportReportProjection(report), checkedBlockCount: result.checkedBlockCount, stateProof: result.stateAnalysis.status });
+  if (report.status !== "VALID") process.exitCode = 1;
+} else if (command === "report-diff") {
+  const previousPath = process.argv[3];
+  const nextPath = process.argv[4];
+  if (!previousPath || !nextPath) throw new Error("Usage: npm run drydock:cli -- report-diff <previous-report.json> <next-report.json>");
+  print(supportReportDiff(reportInput(previousPath), reportInput(nextPath)));
 } else
   print({
     commands: [
@@ -125,6 +195,8 @@ else if (command === "canonicalize-fixtures") {
       "validate-fixtures",
       "canonicalize-fixtures",
       "validate <json-path>",
+      "full-validate <json-path>",
+      "report-diff <previous-report.json> <next-report.json>",
     ],
     privacy: "Diagnostics contain contract metadata and sanitized issues only.",
   });

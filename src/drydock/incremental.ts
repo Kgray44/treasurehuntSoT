@@ -3,6 +3,11 @@ import type { CanonicalDrydockBlock, DrydockAuthoredBlockInput } from "@/drydock
 import { parseDrydockBlock } from "@/drydock/contracts/parser";
 import { collectExpressionVariableReferences, typeCheckExpression } from "@/drydock/expressions";
 import { createDrydockIssue, type DrydockIssue } from "@/drydock/issues";
+import { analyzeDrydockGraph } from "@/drydock/graph";
+import { analyzeDrydockConditionFeasibility, analyzeDrydockDefiniteInitialization } from "@/drydock/state";
+import { analyzeDrydockStaticRules, type DrydockAssetSnapshot } from "@/drydock/static-rules";
+import { analyzeDrydockSideEffects } from "@/drydock/side-effects";
+import { analyzeDrydockPerformance } from "@/drydock/performance";
 import {
   createVariableRegistry,
   createVariableUsageIndex,
@@ -16,6 +21,8 @@ import {
 
 export type DrydockDraftContractInput = {
   schemaVersion: 1;
+  analysisMode?: "CONTRACT" | "FULL";
+  assets?: readonly DrydockAssetSnapshot[];
   variables?: readonly unknown[];
   chapters: ReadonlyArray<{
     id: string;
@@ -294,8 +301,15 @@ export function validateDrydockDraftContracts(draft: DrydockDraftContractInput, 
   }
   const usageIndex = createVariableUsageIndex(usages);
   const dependencyIndex = createDependencyIndex(parsedBlocks, usageIndex.usages);
+  const graphAnalysis = analyzeDrydockGraph(parsedBlocks);
+  const stateAnalysis = analyzeDrydockDefiniteInitialization({ graph: graphAnalysis.graph, declarations: variables.declarations, usages: usageIndex.usages });
+  const conditionIssues = analyzeDrydockConditionFeasibility({ blocks: parsedBlocks, declarations: variables.declarations, usages: usageIndex.usages });
+  const sideEffectIssues = analyzeDrydockSideEffects({ blocks: parsedBlocks, graphAnalysis });
+  const performanceIssues = analyzeDrydockPerformance({ blocks: parsedBlocks, graphAnalysis, declarations: variables.declarations });
+  const staticIssues = analyzeDrydockStaticRules({ blocks: parsedBlocks, assets: draft.assets });
+  const wholeChronicleIssues = draft.analysisMode === "FULL" ? [...graphAnalysis.issues, ...stateAnalysis.issues, ...conditionIssues, ...sideEffectIssues, ...performanceIssues, ...staticIssues] : [];
   const affected = affectedBlocks(dependencyIndex, change);
-  const issues = [...parseIssues, ...semanticIssues].filter(
+  const issues = [...parseIssues, ...semanticIssues, ...wholeChronicleIssues].filter(
     (issue) => !affected || !issue.location.blockId || affected.has(issue.location.blockId),
   );
   return {
@@ -306,6 +320,12 @@ export function validateDrydockDraftContracts(draft: DrydockDraftContractInput, 
     variableRegistry: variables,
     variableUsageIndex: usageIndex,
     dependencyIndex,
+    graphAnalysis,
+    stateAnalysis,
+    conditionIssues,
+    sideEffectIssues,
+    performanceIssues,
+    staticIssues,
     migrationsApplied: Object.fromEntries(migrationByBlock),
     checkedBlockCount: affected
       ? affected.size
@@ -332,9 +352,12 @@ export function drydockDraftInputFromStudio(input: {
       nextBlockId?: string | null;
     }>;
   }>;
-}): DrydockDraftContractInput {
+  assets?: readonly DrydockAssetSnapshot[];
+}, options?: { analysisMode?: "CONTRACT" | "FULL" }): DrydockDraftContractInput {
   return {
     schemaVersion: 1,
+    ...(options?.analysisMode ? { analysisMode: options.analysisMode } : {}),
+    ...(input.assets ? { assets: input.assets } : {}),
     chapters: input.chapters.map((chapter) => ({
       id: chapter.id,
       blocks: chapter.blocks.map((block) => ({

@@ -26,6 +26,11 @@ describe("Drydock validation foundation", () => {
     expect(result.blocks.map((block) => block.id)).toEqual(["drydock-fixture-image-v1"]);
   });
 
+  it("makes omitted full-analysis asset input explicit rather than silently clean", () => {
+    const result = validateDrydockDraftContracts({ ...draft, analysisMode: "FULL" });
+    expect(result.staticIssues.map((issue) => issue.code)).toContain("DRYDOCK_ASSET_PROOF_INCOMPLETE");
+  });
+
   it("keeps issue identity stable across copy changes and strips private metadata", () => {
     const base = {
       code: "DRYDOCK_TEST",

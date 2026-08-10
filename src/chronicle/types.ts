@@ -1,3 +1,5 @@
+import type { DrydockValidationReport } from "@/drydock/reports";
+
 export type JsonObject = Record<string, unknown>;
 
 export type InspectorField = {
@@ -58,6 +60,9 @@ export type ValidationIssue = {
   severity: "error" | "warning";
   code: string;
   message: string;
+  /** Drydock category is present for static issues; legacy Studio checks omit it. */
+  category?: string;
+  remediation?: string;
   chapterId?: string;
   blockId?: string;
   assetId?: string;
@@ -69,6 +74,8 @@ export type DraftValidationResult = {
   errors: ValidationIssue[];
   warnings: ValidationIssue[];
   checkedAt: string;
+  /** Latest exact-source Drydock receipt; persisted with the draft validation summary. */
+  drydockReport?: DrydockValidationReport;
 };
 
 export type PublishedBlock = StudioBlockInput & {

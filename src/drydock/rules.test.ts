@@ -1,0 +1,83 @@
+import { describe, expect, it } from "vitest";
+import { drydockRuleCatalog, getDrydockRuleDefinition } from "@/drydock/rules";
+
+describe("Drydock Phase 2 executable rule catalog", () => {
+  const emittedStaticCodes = [
+    "DRYDOCK_BLOCK_ID_DUPLICATE",
+    "DRYDOCK_BLOCK_TYPE_UNSUPPORTED",
+    "DRYDOCK_BLOCK_VERSION_UNSUPPORTED",
+    "DRYDOCK_CONNECTION_POLICY_INVALID",
+    "DRYDOCK_LEGACY_NEXT_TARGET_CONFLICT",
+    "DRYDOCK_CHOICE_TARGET_AUTHORITY_CONFLICT",
+    "DRYDOCK_CONDITION_TARGET_AUTHORITY_CONFLICT",
+    "DRYDOCK_PROVIDER_UNREGISTERED",
+    "DRYDOCK_PROVIDER_NOT_CONFIGURED",
+    "DRYDOCK_MIGRATION_PATH_MISSING",
+    "DRYDOCK_MIGRATION_WARNING",
+    "DRYDOCK_EXTENSION_ENVELOPE_INVALID",
+    "DRYDOCK_EXTENSION_NAMESPACE_UNREGISTERED",
+    "DRYDOCK_EXTENSION_PAYLOAD_INVALID",
+    "DRYDOCK_REFERENCE_TARGET_MISSING",
+    "DRYDOCK_VARIABLE_DECLARATION_INVALID",
+    "DRYDOCK_VARIABLE_DUPLICATE",
+    "DRYDOCK_VARIABLE_WRITE_UNDECLARED",
+    "DRYDOCK_VARIABLE_WRITE_TYPE",
+    "DRYDOCK_GRAPH_ENTRY_MISSING",
+    "DRYDOCK_GRAPH_TERMINAL_MISSING",
+    "DRYDOCK_GRAPH_UNREACHABLE",
+    "DRYDOCK_GRAPH_NO_TERMINAL_PATH",
+    "DRYDOCK_GRAPH_AUTOMATIC_LOOP",
+    "DRYDOCK_CONTROL_FLOW_EDGE_CONDITION_UNPROVEN",
+    "DRYDOCK_STATE_PROOF_INCOMPLETE",
+    "DRYDOCK_VARIABLE_NOT_DEFINITELY_INITIALIZED",
+    "DRYDOCK_VARIABLE_UNUSED",
+    "DRYDOCK_VARIABLE_WRITE_NEVER_READ",
+    "DRYDOCK_CONDITION_EXPRESSION_NOT_BOOLEAN",
+    "DRYDOCK_CONDITION_ALWAYS_TRUE",
+    "DRYDOCK_CONDITION_ALWAYS_FALSE",
+    "DRYDOCK_SIDE_EFFECT_REPEATS_IN_LOOP",
+    "DRYDOCK_PROVIDER_REQUEST_REPEATS_IN_LOOP",
+    "DRYDOCK_ARTIFACT_GRANT_DUPLICATE_RISK",
+    "DRYDOCK_COMPLETION_OUTCOME_DUPLICATE_RISK",
+    "DRYDOCK_PERFORMANCE_BLOCK_COUNT_HIGH",
+    "DRYDOCK_PERFORMANCE_EDGE_COUNT_HIGH",
+    "DRYDOCK_PERFORMANCE_VARIABLE_COUNT_HIGH",
+    "DRYDOCK_PERFORMANCE_STATE_COMPLEXITY_HIGH",
+    "DRYDOCK_PERFORMANCE_FAN_OUT_HIGH",
+    "DRYDOCK_PERFORMANCE_EXPRESSION_NEAR_LIMIT",
+    "DRYDOCK_ASSET_PROOF_INCOMPLETE",
+    "DRYDOCK_ASSET_REQUIRED_MISSING",
+    "DRYDOCK_ASSET_REFERENCE_MISSING",
+    "DRYDOCK_ASSET_MEDIA_TYPE",
+    "DRYDOCK_ASSET_PRIVACY",
+    "DRYDOCK_ASSET_NOT_READY",
+    "DRYDOCK_ACCESS_IMAGE_TEXT_ALTERNATIVE",
+    "DRYDOCK_ACCESS_MOTION_MEANING",
+    "DRYDOCK_ACCESS_VIDEO_NON_MOTION_MEANING",
+    "DRYDOCK_ACCESS_VIDEO_CAPTIONS",
+    "DRYDOCK_ACCESS_AUDIO_TRANSCRIPT",
+    "DRYDOCK_ACCESS_PROVIDER_FALLBACK",
+  ];
+
+  it("registers every currently emitted whole-Chronicle static code with governed metadata", () => {
+    for (const code of emittedStaticCodes) {
+      const rule = getDrydockRuleDefinition(code);
+      expect(rule).toMatchObject({ code, version: 1, affectedSchemaRange: { minimum: 1, maximum: 2 } });
+      expect(rule?.title).not.toHaveLength(0);
+      expect(rule?.technicalExplanation).not.toHaveLength(0);
+      expect(rule?.documentationReference).not.toHaveLength(0);
+      expect(rule?.testIds.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("makes privacy and error rules non-waivable while keeping bounded-proof review explicit", () => {
+    expect(getDrydockRuleDefinition("DRYDOCK_ASSET_PRIVACY")?.waiverPolicy).toBe("NEVER");
+    expect(getDrydockRuleDefinition("DRYDOCK_GRAPH_UNREACHABLE")?.waiverPolicy).toBe("NEVER");
+    expect(getDrydockRuleDefinition("DRYDOCK_STATE_PROOF_INCOMPLETE")).toMatchObject({
+      waiverPolicy: "REVIEW_REQUIRED",
+      repairClassification: "REVIEW_REQUIRED",
+      applicability: "FULL",
+    });
+    expect(new Set(drydockRuleCatalog.map((rule) => rule.code)).size).toBe(drydockRuleCatalog.length);
+  });
+});

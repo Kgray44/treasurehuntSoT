@@ -163,7 +163,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
         .mockResolvedValueOnce(
           response(200, {
             valid: false,
-            errors: [{ message: "Opening Scene needs a destination.", blockId: "block-1" }],
+            errors: [{ code: "DRYDOCK_GRAPH_NO_TERMINAL_PATH", message: "Opening Scene needs a destination.", category: "GRAPH", remediation: "Connect the Passage to a terminal.", blockId: "block-1" }],
             warnings: [],
           }),
         ),
@@ -172,12 +172,40 @@ describe("Voyagewright Studio editor motion and authority", () => {
     await screen.findByRole("heading", { name: "A Test Chronicle" });
 
     fireEvent.click(screen.getByRole("button", { name: "Validate Chronicle" }));
-    const issue = await screen.findByRole("button", { name: "Opening Scene needs a destination." });
+    const issue = await screen.findByRole("button", { name: /Opening Scene needs a destination\./ });
+    expect(issue).toHaveAttribute("data-drydock-rule-code", "DRYDOCK_GRAPH_NO_TERMINAL_PATH");
+    expect(screen.getByRole("combobox", { name: "Filter validation category" })).toHaveValue("ALL");
+    fireEvent.change(screen.getByRole("combobox", { name: "Filter validation category" }), { target: { value: "GRAPH" } });
+    expect(issue).toHaveTextContent("Connect the Passage to a terminal.");
     fireEvent.click(issue);
     const card = screen.getByText("Opening Scene").closest<HTMLElement>("article")!;
 
     expect(card).toHaveAttribute("data-validation-error", "true");
+    expect(await screen.findByText(/A reachable Passage cannot statically reach a terminal/)).toBeInTheDocument();
+    expect(screen.getByText(/Waiver: not permitted/)).toBeInTheDocument();
     await waitFor(() => expect(card).toHaveFocus());
+  });
+
+  it("opens the owner-projected static graph outline and preserves Passage navigation", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(response(200, editorData()))
+        .mockResolvedValueOnce(response(200, { valid: false, errors: [{ code: "DRYDOCK_GRAPH_NO_TERMINAL_PATH", message: "Opening Scene needs a destination.", blockId: "block-1" }], warnings: [] }))
+        .mockResolvedValueOnce(response(200, {
+          survey: { proofCompleteness: "COMPLETE", nodes: [{ id: "block-1", blockType: "narrative", isEntry: true, isTerminal: false, isReachable: true, canReachTerminal: false, stronglyConnectedComponent: null, annotations: [{ code: "DRYDOCK_GRAPH_NO_TERMINAL_PATH", severity: "ERROR" }] }] },
+        })),
+    );
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    fireEvent.click(screen.getByRole("button", { name: "Validate Chronicle" }));
+    await screen.findByRole("button", { name: /Opening Scene needs a destination/ });
+    fireEvent.click(screen.getByRole("button", { name: "Open static graph outline" }));
+    expect(await screen.findByRole("region", { name: "Static graph outline" })).toHaveTextContent("No terminal path.");
+    fireEvent.click(screen.getByRole("button", { name: "narrative (block-1)" }));
+    await waitFor(() => expect(screen.getByText("Opening Scene").closest("article")).toHaveFocus());
   });
 
   it("does not remove a block until the draft save succeeds and reconciles an authoritative undo", async () => {

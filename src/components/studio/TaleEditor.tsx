@@ -36,6 +36,7 @@ import { useActionDialog } from "@/components/ui/ActionDialog";
 import { ResilientImage } from "@/components/ui/ResilientImage";
 import { studioCopy } from "@/language/studio-copy";
 import type { InspectorField, JsonObject } from "@/chronicle/types";
+import { getDrydockRuleDefinition } from "@/drydock/rules";
 
 type Block = {
   id: string;
@@ -164,6 +165,34 @@ type UploadEntry = {
   detail?: string;
 };
 type DeletedBlock = { chapterId: string; index: number; block: Block };
+type DrydockGraphSurvey = {
+  proofCompleteness: string;
+  nodes: Array<{
+    id: string;
+    blockType: string;
+    isEntry: boolean;
+    isTerminal: boolean;
+    isReachable: boolean;
+    canReachTerminal: boolean;
+    stronglyConnectedComponent: number | null;
+    annotations: Array<{ code: string; severity: string }>;
+  }>;
+};
+type DrydockVariableExplorer = {
+  variables: Array<{
+    id: string;
+    name: string;
+    type: { kind: string };
+    scope: string;
+    defaultValue?: unknown;
+    privacy: string;
+    readers: Array<{ blockId?: string; fieldPath: string; reachable: boolean | null }>;
+    writers: Array<{ blockId?: string; fieldPath: string; operation?: string; reachable: boolean | null }>;
+    initialization: { proofStatus: string; potentiallyUninitializedReferences: Array<{ blockId: string; fieldPath: string }> };
+    unusedState: string;
+    relatedIssueCodes: string[];
+  }>;
+};
 
 const clone = <T,>(value: T): T => structuredClone(value);
 
@@ -225,9 +254,16 @@ export function TaleEditor({
   const [error, setError] = useState("");
   const [validation, setValidation] = useState<{
     valid: boolean;
-    errors: Array<{ message: string; blockId?: string }>;
-    warnings: Array<{ message: string; blockId?: string }>;
+    errors: Array<{ code: string; message: string; category?: string; remediation?: string; blockId?: string; field?: string }>;
+    warnings: Array<{ code: string; message: string; category?: string; remediation?: string; blockId?: string; field?: string }>;
   } | null>(null);
+  const [issueSearch, setIssueSearch] = useState("");
+  const [issueCategory, setIssueCategory] = useState("ALL");
+  const [issueSeverity, setIssueSeverity] = useState<"ALL" | "error" | "warning">("ALL");
+  const [selectedRuleCode, setSelectedRuleCode] = useState<string | null>(null);
+  const [graphSurvey, setGraphSurvey] = useState<DrydockGraphSurvey | null>(null);
+  const [variableExplorer, setVariableExplorer] = useState<DrydockVariableExplorer | null>(null);
+  const [surveyLoading, setSurveyLoading] = useState<"" | "graph" | "variables">("");
   const [assetDrawer, setAssetDrawer] = useState(false);
   const [assetSearch, setAssetSearch] = useState("");
   const [assetMedia, setAssetMedia] = useState("ALL");
@@ -266,6 +302,25 @@ export function TaleEditor({
   const inspectorReturnFocus = useRef<HTMLElement | null>(null);
   const inspectorFocusRequested = useRef(false);
   const inspectorTitle = useRef<HTMLInputElement | null>(null);
+  const validationIssues = useMemo(() => {
+    if (!validation) return [];
+    const search = issueSearch.trim().toLocaleLowerCase();
+    return [...validation.errors, ...validation.warnings].filter((issue) => {
+      const severity = validation.errors.includes(issue) ? "error" : "warning";
+      const category = issue.category ?? "STUDIO";
+      return (issueSeverity === "ALL" || issueSeverity === severity) &&
+        (issueCategory === "ALL" || issueCategory === category) &&
+        (!search || `${issue.code} ${issue.message} ${category}`.toLocaleLowerCase().includes(search));
+    });
+  }, [issueCategory, issueSearch, issueSeverity, validation]);
+  const validationCategories = useMemo(
+    () => [...new Set([...(validation?.errors ?? []), ...(validation?.warnings ?? [])].map((issue) => issue.category ?? "STUDIO"))].sort(),
+    [validation],
+  );
+  const selectedRule = useMemo(
+    () => selectedRuleCode ? getDrydockRuleDefinition(selectedRuleCode) : undefined,
+    [selectedRuleCode],
+  );
   const dndSensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
@@ -745,6 +800,28 @@ export function TaleEditor({
     }
     setValidation(body);
     setSaveState(body.valid ? "Draft validation passed" : "Draft validation failed");
+  }
+  async function loadGraphSurvey() {
+    setSurveyLoading("graph");
+    const response = await fetch(`/api/studio/tales/${taleId}/graph-survey`, { cache: "no-store" });
+    const body = (await response.json()) as { survey?: DrydockGraphSurvey; error?: string };
+    setSurveyLoading("");
+    if (!response.ok || !body.survey) {
+      setError(body.error ?? "The static graph survey could not be loaded.");
+      return;
+    }
+    setGraphSurvey(body.survey);
+  }
+  async function loadVariableExplorer() {
+    setSurveyLoading("variables");
+    const response = await fetch(`/api/studio/tales/${taleId}/variable-explorer`, { cache: "no-store" });
+    const body = (await response.json()) as { explorer?: DrydockVariableExplorer; error?: string };
+    setSurveyLoading("");
+    if (!response.ok || !body.explorer) {
+      setError(body.error ?? "The variable explorer could not be loaded.");
+      return;
+    }
+    setVariableExplorer(body.explorer);
   }
   async function publish() {
     if (!draft || !data) return;
@@ -1388,14 +1465,85 @@ export function TaleEditor({
                 </strong>
                 <button onClick={() => setValidation(null)}>Close</button>
               </header>
-              {[...validation.errors, ...validation.warnings].map((issue, index) => (
+              <div className="validation-filters" aria-label="Issue filters">
+                <input value={issueSearch} onChange={(event) => setIssueSearch(event.target.value)} placeholder="Search rule code or message" aria-label="Search validation issues" />
+                <select value={issueSeverity} onChange={(event) => setIssueSeverity(event.target.value as "ALL" | "error" | "warning")} aria-label="Filter validation severity">
+                  <option value="ALL">All severities</option>
+                  <option value="error">Blocking</option>
+                  <option value="warning">Warnings</option>
+                </select>
+                <select value={issueCategory} onChange={(event) => setIssueCategory(event.target.value)} aria-label="Filter validation category">
+                  <option value="ALL">All categories</option>
+                  {validationCategories.map((category) => <option key={category} value={category}>{category}</option>)}
+                </select>
+              </div>
+              <div className="validation-survey-actions">
+                <button onClick={() => void loadGraphSurvey()} disabled={surveyLoading === "graph"}>
+                  {surveyLoading === "graph" ? "Loading graph survey..." : "Open static graph outline"}
+                </button>
+                <button onClick={() => void loadVariableExplorer()} disabled={surveyLoading === "variables"}>
+                  {surveyLoading === "variables" ? "Loading variables..." : "Open variable explorer"}
+                </button>
+              </div>
+              {validationIssues.map((issue, index) => (
                 <button
-                  key={`${issue.message}-${index}`}
-                  onClick={(event) => issue.blockId && focusBlock(issue.blockId, event.currentTarget)}
+                  key={`${issue.code}:${issue.blockId ?? "chronicle"}:${index}`}
+                  onClick={(event) => {
+                    setSelectedRuleCode(issue.code);
+                    if (issue.blockId) focusBlock(issue.blockId, event.currentTarget);
+                  }}
+                  data-drydock-rule-code={issue.code}
+                  title={`Drydock rule ${issue.code}${issue.field ? ` at ${issue.field}` : ""}`}
                 >
-                  {issue.message}
+                  <strong>{issue.code}</strong> {issue.message}{issue.category ? ` (${issue.category})` : ""}
+                  {issue.remediation ? <span> {issue.remediation}</span> : null}
                 </button>
               ))}
+              {selectedRule && (
+                <section className="validation-rule-detail" aria-live="polite">
+                  <strong>{selectedRule.code}: {selectedRule.title}</strong>
+                  <p>{selectedRule.summary}</p>
+                  <p>{selectedRule.technicalExplanation}</p>
+                  <p>Category: {selectedRule.category}. Severity: {selectedRule.defaultSeverity}. Repair: {selectedRule.repairClassification}.</p>
+                  <p>Waiver: {selectedRule.waiverPolicy === "NEVER" ? "not permitted" : "requires governed review"}. Compatibility: {selectedRule.compatibilityPolicy}.</p>
+                </section>
+              )}
+              {graphSurvey && (
+                <section className="validation-graph-outline" aria-label="Static graph outline">
+                  <strong>Static graph outline</strong>
+                  <p>Proof: {graphSurvey.proofCompleteness}. Select a Passage to navigate to it.</p>
+                  <ol>
+                    {graphSurvey.nodes.map((node) => (
+                      <li key={node.id}>
+                        <button onClick={(event) => focusBlock(node.id, event.currentTarget)}>
+                          {node.blockType} ({node.id})
+                        </button>
+                        <span>
+                          {node.isEntry ? " Entry." : ""}{node.isTerminal ? " Terminal." : ""}{!node.isReachable ? " Unreachable." : ""}{!node.canReachTerminal ? " No terminal path." : ""}
+                          {node.stronglyConnectedComponent !== null ? ` Cycle group ${node.stronglyConnectedComponent}.` : ""}
+                          {node.annotations.length ? ` Rules: ${node.annotations.map((annotation) => annotation.code).join(", ")}.` : ""}
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                </section>
+              )}
+              {variableExplorer && (
+                <section className="validation-variable-explorer" aria-label="Variable explorer">
+                  <strong>Variable explorer</strong>
+                  <ul>
+                    {variableExplorer.variables.map((variable) => (
+                      <li key={variable.id}>
+                        <strong>{variable.name}</strong> ({variable.id}): {variable.type.kind}, {variable.scope}, {variable.privacy}. {variable.unusedState}. Initialization proof: {variable.initialization.proofStatus}.
+                        {variable.defaultValue !== undefined ? ` Default: ${JSON.stringify(variable.defaultValue)}.` : " No declared default."}
+                        {variable.readers.length ? <span> Readers: {variable.readers.map((reader, index) => reader.blockId ? <button key={`${reader.blockId}:${reader.fieldPath}:${index}`} onClick={(event) => focusBlock(reader.blockId!, event.currentTarget)}>{reader.blockId}</button> : reader.fieldPath)}.</span> : null}
+                        {variable.writers.length ? <span> Writers: {variable.writers.map((writer, index) => writer.blockId ? <button key={`${writer.blockId}:${writer.fieldPath}:${index}`} onClick={(event) => focusBlock(writer.blockId!, event.currentTarget)}>{writer.blockId}</button> : writer.fieldPath)}.</span> : null}
+                        {variable.relatedIssueCodes.length ? <span> Rules: {variable.relatedIssueCodes.join(", ")}.</span> : null}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
             </motion.aside>
           )}
         </AnimatePresence>
