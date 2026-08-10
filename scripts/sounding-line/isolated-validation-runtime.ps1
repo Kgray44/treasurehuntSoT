@@ -853,6 +853,13 @@ try {
     }
     [void](Invoke-IsolationHelper -Arguments @("checkpoint", "--report", $isolationReport, "--copy-db", $isolatedDatabase))
     if ($BrowserOnly) {
+        # The externally supplied canonical baseline is immutable and may
+        # predate the development Chronicle required by the legacy projection.
+        # Establish that fixture only in the nonce-bound disposable copy before
+        # migrating it. This preserves the baseline boundary while giving every
+        # selected browser family the same seeded One Voyage contract as the
+        # full governed runtime.
+        Invoke-ValidationStep -Name "Seeding focused browser development fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts")
         # Focused browser families still require canonical migration provenance
         # and the migrated Voyage fixture. Prepare both only in the disposable
         # copy before the owned server starts; this is fixture setup, not authority.
