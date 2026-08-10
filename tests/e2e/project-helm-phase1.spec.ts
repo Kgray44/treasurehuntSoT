@@ -1,5 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test, type Browser, type BrowserContext, type Page } from "@playwright/test";
+import { expect, test, type APIRequestContext, type Browser, type BrowserContext, type Page } from "@playwright/test";
 import { hash } from "bcryptjs";
 import { randomUUID } from "node:crypto";
 import { resolveArtifactGrantReceipt, type EventMembership } from "../../src/chronicle/artifact-grant";
@@ -28,7 +28,35 @@ let accountSessionId = "";
 
 test.describe.configure({ mode: "serial", timeout: 600_000 });
 
-test.beforeAll(async () => {
+async function prewarmHelmRoutes(request: APIRequestContext) {
+  const routes: ReadonlyArray<{ method: "GET" | "POST"; path: string }> = [
+    { method: "GET", path: "/" },
+    { method: "GET", path: "/sign-in" },
+    { method: "GET", path: "/account/roles" },
+    { method: "GET", path: "/captain/library" },
+    { method: "GET", path: "/player/invitation?token=helm-prewarm" },
+    { method: "GET", path: "/player/playthroughs/helm-prewarm" },
+    { method: "GET", path: "/player/playthroughs/helm-prewarm/journal" },
+    { method: "GET", path: "/api/auth/context" },
+    { method: "POST", path: "/api/auth/sign-in" },
+    { method: "GET", path: "/api/captain/playthroughs" },
+    { method: "POST", path: "/api/captain/playthroughs" },
+    { method: "POST", path: "/api/invitations/accept" },
+    { method: "GET", path: "/api/player/playthroughs/helm-prewarm" },
+    { method: "GET", path: "/api/play/sessions/helm-prewarm" },
+    { method: "POST", path: "/api/captain/playthroughs/helm-prewarm/launch" },
+  ];
+  for (const route of routes) {
+    await request.fetch(route.path, {
+      method: route.method,
+      failOnStatusCode: false,
+      ...(route.method === "POST" ? { data: {} } : {}),
+    });
+  }
+}
+
+test.beforeAll(async ({ request }) => {
+  await prewarmHelmRoutes(request);
   const now = new Date();
   const account = await db.userAccount.create({
     data: {
