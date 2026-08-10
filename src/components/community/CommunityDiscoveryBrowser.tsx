@@ -159,8 +159,9 @@ export function CommunityDiscoveryBrowser({
   useEffect(() => {
     if (!retryFocusPending.current || !["ready", "empty", "error"].includes(state)) return;
     retryFocusPending.current = false;
-    const frame = requestAnimationFrame(() => outcome.current?.focus());
-    return () => cancelAnimationFrame(frame);
+    // Keep the retry outcome in the keyboard flow even when a quick response
+    // replaces the error panel before the next animation frame.
+    outcome.current?.focus();
   }, [state]);
 
   function navigate(parameters: URLSearchParams) {
