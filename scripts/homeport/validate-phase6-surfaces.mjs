@@ -102,8 +102,11 @@ export function validatePhase6Surfaces(root = moduleRoot) {
   }
 
   if (registry.sourceSha !== implementationSourceSha) errors.push("SCREEN_REGISTRY_SOURCE_SHA_STALE");
-  if (registry.screens.length !== nodes.length + 7)
+  const virtualScreenCount = registry.screens.filter((screen) => screen.routeIds.length === 0).length;
+  if (registry.screens.length !== nodes.length + virtualScreenCount)
     errors.push(`SCREEN_RECORD_COUNT_INVALID:${registry.screens.length}`);
+  if (!/^[0-9a-f]{40}$/u.test(registry.catalogReconciliationSourceSha ?? ""))
+    errors.push("SCREEN_REGISTRY_RECONCILIATION_SOURCE_SHA_INVALID");
   const screenIds = registry.screens.map((screen) => screen.screenId);
   if (new Set(screenIds).size !== screenIds.length) errors.push("SCREEN_ID_DUPLICATE");
   const mappedSources = new Set(registry.screens.flatMap((screen) => screen.sourceFiles));
@@ -119,6 +122,8 @@ export function validatePhase6Surfaces(root = moduleRoot) {
       errors.push(`SCREEN_INPUT_CONTRACT_MISSING:${screen.screenId}`);
     if (!screen.reducedMotionContract) errors.push(`SCREEN_REDUCED_MOTION_MISSING:${screen.screenId}`);
     if (!screen.mediaFallbackContract) errors.push(`SCREEN_MEDIA_FALLBACK_MISSING:${screen.screenId}`);
+    if (![implementationSourceSha, registry.catalogReconciliationSourceSha].includes(screen.sourceSha))
+      errors.push(`SCREEN_SOURCE_SHA_INVALID:${screen.screenId}`);
     if (!allowedMaturity.has(screen.finalMaturity)) errors.push(`SCREEN_MATURITY_INVALID:${screen.screenId}`);
     if (
       ["CRITICAL", "HIGH"].includes(screen.criticality) &&

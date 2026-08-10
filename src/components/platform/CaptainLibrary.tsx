@@ -23,6 +23,22 @@ type Voyage = {
   connected: boolean;
   pendingAction: string | null;
   players: Array<{ id: string; displayName: string; status: string }>;
+  participation: CaptainParticipation | null;
+};
+type CaptainParticipation = {
+  voyageId: string;
+  accessState: "NO_ACCESS" | "PLAYER_ONLY" | "CAPTAIN_ONLY" | "CAPTAIN_AND_PLAYER";
+  hasCaptainAuthority: boolean;
+  hasPlayerMembership: boolean;
+  participationMode: "CAPTAIN_ONLY" | "CAPTAIN_AND_PLAYER";
+  playerMembershipId: string | null;
+  canChangeParticipation: boolean;
+  changeBlockedReason: string | null;
+  voyageLifecycleState: string;
+  playerPerspectiveAvailable: boolean;
+  playerPerspectiveHref: string | null;
+  presence: "UNKNOWN";
+  concurrencyVersion: number;
 };
 type Invitation = {
   id: string;
@@ -56,6 +72,7 @@ type Library = {
   };
   invitations: Invitation[];
   publishedTales: Tale[];
+  captainProfile: { id: string; displayName: string; status: string } | null;
   playerProfiles: Array<{ id: string; displayName: string; username: string | null }>;
   serverTime: string;
 };
@@ -98,6 +115,7 @@ function voyageVersion(row: VersionedVoyage) {
     row.voyage.connected,
     row.voyage.pendingAction,
     row.voyage.players,
+    row.voyage.participation,
   ]);
 }
 
@@ -129,6 +147,9 @@ export function CaptainLibrary() {
   const [taleId, setTaleId] = useState("");
   const [versionId, setVersionId] = useState("");
   const [voyageName, setVoyageName] = useState("");
+  const [captainParticipationMode, setCaptainParticipationMode] = useState<"CAPTAIN_ONLY" | "CAPTAIN_AND_PLAYER">(
+    "CAPTAIN_ONLY",
+  );
   const [captainMode, setCaptainMode] = useState("CAPTAIN_CONTROLLED");
   const [hints, setHints] = useState("ON_REQUEST");
   const [sideQuests, setSideQuests] = useState(true);
@@ -147,8 +168,12 @@ export function CaptainLibrary() {
   const [launchState, setLaunchState] =
     useState<Readonly<{ id: string; phase: "confirming" | "launching" | "launched" } | null>>(null);
 
-  const load = useCallback(async () => {
-    if (activeLoad.current) return;
+  const load = useCallback(async (supersedeActive = false) => {
+    if (activeLoad.current) {
+      if (!supersedeActive) return;
+      activeLoad.current.abort("superseded-by-authoritative-action");
+      activeLoad.current = null;
+    }
     const controller = new AbortController();
     activeLoad.current = controller;
     try {
@@ -267,6 +292,7 @@ export function CaptainLibrary() {
           taleId,
           versionId,
           voyageName,
+          captainParticipationMode,
           captainMode,
           hints,
           sideQuests,
@@ -285,21 +311,76 @@ export function CaptainLibrary() {
           })),
         }),
       });
-      const body = (await response.json()) as { invitations?: CreatedInvitation[]; error?: string };
+      const body = (await response.json()) as {
+        invitations?: CreatedInvitation[];
+        participation?: CaptainParticipation;
+        error?: string;
+      };
       if (!response.ok)
         return setError(
           body.error ??
             "The Voyage could not be created. Check the Voyage list before trying again to avoid duplicate invitations.",
         );
       setCreated(body.invitations ?? []);
-      setNotice("The Voyage and its individual Crew invitations were created together.");
+      setNotice(
+        body.participation?.participationMode === "CAPTAIN_AND_PLAYER"
+          ? "The Voyage, your Player participation, and the Crew invitations were created together."
+          : "The Captain-only Voyage and its individual Crew invitations were created together.",
+      );
       setWizardDirection(1);
       setStep(6);
-      await load();
+      await load(true);
     } catch {
       setError(
         "The Voyage could not be created. Check the Voyage list before trying again to avoid duplicate invitations.",
       );
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function changeParticipation(voyage: Voyage, mode: "CAPTAIN_ONLY" | "CAPTAIN_AND_PLAYER") {
+    if (!library || !voyage.participation?.canChangeParticipation) return;
+    const joining = mode === "CAPTAIN_AND_PLAYER";
+    if (
+      !(await requestAction({
+        eyebrow: "Captain participation",
+        title: joining ? `Join “${voyage.voyageName}” as a Player?` : `Stop Player participation?`,
+        detail: joining
+          ? "You will join this Crew through your ordinary Player Profile while retaining separate Captain controls."
+          : "Your Player access will end and the membership history will be preserved. Your Captain authority will remain active.",
+        confirmLabel: joining ? "Join as Player" : "Stop Player participation",
+        destructive: !joining,
+      }))
+    )
+      return;
+    setBusy(true);
+    setError("");
+    setNotice("");
+    try {
+      const response = await fetch(`/api/captain/playthroughs/${voyage.id}/participation`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": library.csrfToken },
+        body: JSON.stringify({
+          mode,
+          expectedVersion: voyage.participation.concurrencyVersion,
+          idempotencyKey: crypto.randomUUID(),
+        }),
+      });
+      const body = (await response.json()) as { participation?: CaptainParticipation; error?: string };
+      if (!response.ok)
+        setError(
+          body.error ?? "Player participation could not be changed. Refresh the Voyage and review its current state.",
+        );
+      else
+        setNotice(
+          body.participation?.hasPlayerMembership
+            ? "You now participate as an ordinary Player and retain separate Captain authority."
+            : "Player participation ended. Your Captain authority remains active.",
+        );
+      await load(true);
+    } catch {
+      setError("Player participation could not be changed. Refresh the Voyage and try again.");
     } finally {
       setBusy(false);
     }
@@ -338,7 +419,7 @@ export function CaptainLibrary() {
         setLaunchState({ id: voyage.id, phase: "launched" });
         setNotice(`“${voyage.voyageName}” is now available to ready Crew.`);
       }
-      await load();
+      await load(true);
     } catch {
       setError("The Voyage could not begin. Check its current status before trying again.");
       setLaunchState(null);
@@ -403,7 +484,7 @@ export function CaptainLibrary() {
               : `The invitation for ${invitation.recipientName} was revoked.`,
         );
       }
-      await load();
+      await load(true);
     } catch {
       setError("The invitation could not be changed. Check its current status, then try again.");
       setInvitationTransitions((current) => {
@@ -457,6 +538,7 @@ export function CaptainLibrary() {
                 className="brass-button"
                 onClick={(event) => {
                   setWizardRestoreTarget(event.currentTarget);
+                  setCaptainParticipationMode("CAPTAIN_ONLY");
                   setWizard(true);
                   setWizardDirection(1);
                   setStep(0);
@@ -533,6 +615,7 @@ export function CaptainLibrary() {
                             label: "Create a Voyage",
                             onClick: () => {
                               setWizardRestoreTarget(null);
+                              setCaptainParticipationMode("CAPTAIN_ONLY");
                               setWizard(true);
                               setWizardDirection(1);
                               setStep(0);
@@ -562,6 +645,7 @@ export function CaptainLibrary() {
                                 launchPhase={launchState?.id === voyage.id ? launchState.phase : null}
                                 mode={mode}
                                 launch={() => void launch(voyage)}
+                                changeParticipation={(nextMode) => void changeParticipation(voyage, nextMode)}
                               />
                             ))}
                           </div>
@@ -589,6 +673,7 @@ export function CaptainLibrary() {
                             label: "Create a Voyage",
                             onClick: () => {
                               setWizardRestoreTarget(null);
+                              setCaptainParticipationMode("CAPTAIN_ONLY");
                               setWizard(true);
                               setWizardDirection(1);
                               setStep(0);
@@ -686,6 +771,7 @@ export function CaptainLibrary() {
                       <button
                         onClick={(event) => {
                           setWizardRestoreTarget(event.currentTarget);
+                          setCaptainParticipationMode("CAPTAIN_ONLY");
                           chooseTale(tale.id);
                           setWizard(true);
                           setWizardDirection(1);
@@ -727,6 +813,8 @@ export function CaptainLibrary() {
               selectedVersion={selectedVersion}
               voyageName={voyageName}
               setVoyageName={setVoyageName}
+              captainParticipationMode={captainParticipationMode}
+              setCaptainParticipationMode={setCaptainParticipationMode}
               captainMode={captainMode}
               setCaptainMode={setCaptainMode}
               hints={hints}
@@ -764,6 +852,7 @@ function VoyageCard({
   launchPhase,
   mode,
   launch,
+  changeParticipation,
 }: {
   voyage: Voyage;
   busy: boolean;
@@ -772,8 +861,11 @@ function VoyageCard({
   launchPhase: "confirming" | "launching" | "launched" | null;
   mode: ReturnType<typeof useMotionMode>["mode"];
   launch: () => void;
+  changeParticipation: (mode: "CAPTAIN_ONLY" | "CAPTAIN_AND_PLAYER") => void;
 }) {
-  const readyPlayers = voyage.players.filter((player) => ["READY", "JOINED", "ACTIVE"].includes(player.status)).length;
+  const readyPlayers = voyage.players.filter((player) =>
+    ["READY", "JOINED", "ACTIVE", "ACTIVE_MEMBER", "COMPLETED_MEMBER"].includes(player.status),
+  ).length;
   const readiness = voyage.players.length ? Math.round((readyPlayers / voyage.players.length) * 100) : 0;
   return (
     <motion.article
@@ -791,6 +883,22 @@ function VoyageCard({
       <p className="card-kicker">Version {voyage.versionLabel}</p>
       <h3>{voyage.taleTitle}</h3>
       <h4>{voyage.voyageName}</h4>
+      {voyage.participation && (
+        <section className="captain-participation-summary" aria-label="Captain participation">
+          <p className="card-kicker">Captain participation</p>
+          <strong>
+            {voyage.participation.participationMode === "CAPTAIN_AND_PLAYER" ? "Captain + Player" : "Captain only"}
+          </strong>
+          <span>
+            {voyage.participation.hasPlayerMembership
+              ? "You appear as an ordinary Crew member. Player and Captain access remain separate."
+              : "You operate this Voyage without a Player Journal, choices, or personal Player history."}
+          </span>
+          {!voyage.participation.canChangeParticipation && voyage.participation.changeBlockedReason && (
+            <small>{voyage.participation.changeBlockedReason}</small>
+          )}
+        </section>
+      )}
       <dl>
         <div>
           <dt>Status</dt>
@@ -848,7 +956,28 @@ function VoyageCard({
         <Link className="brass-button" href={`/captain/sessions/${voyage.id}`}>
           Open Captain’s Console
         </Link>
+        {voyage.participation?.playerPerspectiveAvailable && voyage.participation.playerPerspectiveHref && (
+          <Link href={voyage.participation.playerPerspectiveHref}>Open Player View</Link>
+        )}
         <Link href={`/captain/voyages/${voyage.id}/player-preview`}>Preview Crew view</Link>
+        {voyage.participation && (
+          <button
+            disabled={busy || !voyage.participation.canChangeParticipation}
+            aria-describedby={
+              !voyage.participation.canChangeParticipation ? `participation-block-${voyage.id}` : undefined
+            }
+            onClick={() =>
+              changeParticipation(voyage.participation!.hasPlayerMembership ? "CAPTAIN_ONLY" : "CAPTAIN_AND_PLAYER")
+            }
+          >
+            {voyage.participation.hasPlayerMembership ? "Stop Player participation" : "Join as Player"}
+          </button>
+        )}
+        {voyage.participation?.changeBlockedReason && (
+          <span className="sr-only" id={`participation-block-${voyage.id}`}>
+            {voyage.participation.changeBlockedReason}
+          </span>
+        )}
         {["READY", "SCHEDULED"].includes(voyage.status) && (
           <button
             disabled={busy || launchPhase === "launched"}
@@ -881,6 +1010,8 @@ type WizardProps = Record<string, unknown> & {
   selectedVersion?: Tale["versions"][number];
   voyageName: string;
   setVoyageName: (value: string) => void;
+  captainParticipationMode: "CAPTAIN_ONLY" | "CAPTAIN_AND_PLAYER";
+  setCaptainParticipationMode: (value: "CAPTAIN_ONLY" | "CAPTAIN_AND_PLAYER") => void;
   captainMode: string;
   setCaptainMode: (value: string) => void;
   hints: string;
@@ -918,9 +1049,11 @@ function VoyageWizard(props: WizardProps) {
     return !props.accountRequired || Boolean(profile?.username);
   });
   const crewValid = props.players.length > 0 && crewNames.every(Boolean);
+  const captainParticipationValid =
+    props.captainParticipationMode === "CAPTAIN_ONLY" || props.library.captainProfile?.status === "ACTIVE";
   const canNext = [
     Boolean(props.taleId && props.versionId),
-    props.voyageName.length >= 3,
+    props.voyageName.length >= 3 && captainParticipationValid,
     crewValid,
     claimedAccountsValid,
     claimedAccountsValid,
@@ -1082,6 +1215,46 @@ function VoyageWizard(props: WizardProps) {
                       <option value="HYBRID">Hybrid</option>
                     </select>
                   </label>
+                  <fieldset className="captain-participation-picker">
+                    <legend>Captain participation</legend>
+                    <label className={props.captainParticipationMode === "CAPTAIN_ONLY" ? "selected" : ""}>
+                      <input
+                        type="radio"
+                        name="captain-participation"
+                        value="CAPTAIN_ONLY"
+                        checked={props.captainParticipationMode === "CAPTAIN_ONLY"}
+                        onChange={() => props.setCaptainParticipationMode("CAPTAIN_ONLY")}
+                      />
+                      <span>
+                        <strong>Captain only</strong>
+                        <small>Operate the Voyage without joining as a Player.</small>
+                        <small>
+                          No Player Journal, choices, personal Player artifacts, or ordinary Voyage history.
+                        </small>
+                      </span>
+                    </label>
+                    <label className={props.captainParticipationMode === "CAPTAIN_AND_PLAYER" ? "selected" : ""}>
+                      <input
+                        type="radio"
+                        name="captain-participation"
+                        value="CAPTAIN_AND_PLAYER"
+                        checked={props.captainParticipationMode === "CAPTAIN_AND_PLAYER"}
+                        disabled={!props.library.captainProfile || props.library.captainProfile.status !== "ACTIVE"}
+                        onChange={() => props.setCaptainParticipationMode("CAPTAIN_AND_PLAYER")}
+                      />
+                      <span>
+                        <strong>Captain + Player</strong>
+                        <small>Operate the Voyage and join the Crew as a normal Player.</small>
+                        <small>
+                          Receive a Player Journal, make choices, receive artifacts by ordinary rules, and appear in
+                          Crew history while retaining separate Captain controls.
+                        </small>
+                      </span>
+                    </label>
+                    {(!props.library.captainProfile || props.library.captainProfile.status !== "ACTIVE") && (
+                      <p role="status">Complete your active Player Profile before choosing Captain + Player.</p>
+                    )}
+                  </fieldset>
                   <label>
                     <span>Hints</span>
                     <select value={props.hints} onChange={(event) => props.setHints(event.target.value)}>
@@ -1266,6 +1439,12 @@ function VoyageWizard(props: WizardProps) {
                     <div>
                       <dt>Crew</dt>
                       <dd>{crewNames.join(", ")}</dd>
+                    </div>
+                    <div>
+                      <dt>Captain participation</dt>
+                      <dd>
+                        {props.captainParticipationMode === "CAPTAIN_AND_PLAYER" ? "Captain + Player" : "Captain only"}
+                      </dd>
                     </div>
                     <div>
                       <dt>Progression</dt>

@@ -1,0 +1,447 @@
+{
+  "blocks": [
+    {
+      "blockType": "narrative",
+      "completion": {},
+      "configuration": {
+        "body": "Write the next part of the voyage.",
+        "completionMode": "playerConfirmation",
+        "entranceAnimation": "ink",
+        "heading": "A new passage",
+        "textAlignment": "left",
+        "widthStyle": "reading"
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-narrative-v1",
+      "id": "drydock-fixture-narrative-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "captainsNote",
+      "completion": {},
+      "configuration": {
+        "body": "Synthetic fixture note.",
+        "completionMode": "playerConfirmation",
+        "inkStyle": "midnight",
+        "paperStyle": "weathered",
+        "signature": "The Captain",
+        "title": "Captain's note"
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-captainsNote-v1",
+      "id": "drydock-fixture-captainsNote-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "riddle",
+      "completion": {},
+      "configuration": {
+        "acceptedAnswers": ["a ship"],
+        "caseSensitive": false,
+        "completionMode": "textAnswer",
+        "hints": [],
+        "normalizeWhitespace": true,
+        "riddleText": "What follows a wake?",
+        "riddleTitle": "A riddle",
+        "wrongAnswerFeedback": "That answer does not turn the lock."
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-riddle-v1",
+      "id": "drydock-fixture-riddle-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "information",
+      "completion": {},
+      "configuration": {
+        "acknowledgmentRequired": true,
+        "body": "Synthetic fixture information.",
+        "buttonLabel": "Understood",
+        "completionMode": "playerConfirmation",
+        "heading": "Before you continue",
+        "importance": "normal"
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-information-v1",
+      "id": "drydock-fixture-information-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "travelDirection",
+      "completion": {},
+      "configuration": {
+        "completionMode": "playerConfirmation",
+        "destinationVisibility": "named",
+        "directionText": "Sail toward the synthetic north star.",
+        "heading": "Set a course"
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-travelDirection-v1",
+      "id": "drydock-fixture-travelDirection-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "location",
+      "completion": {},
+      "configuration": {
+        "arrivalInstructions": "",
+        "completionMode": "playerConfirmation",
+        "futureVision": {},
+        "locationId": "location-fixture",
+        "playerDescription": "Synthetic destination.",
+        "playerTitle": "Destination"
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-location-v1",
+      "id": "drydock-fixture-location-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "arrivalCheck",
+      "completion": {},
+      "configuration": {
+        "allowCaptainOverride": true,
+        "captainNotification": "The crew is awaiting arrival approval.",
+        "completionMode": "captainManual",
+        "futureProviderOptions": {},
+        "pendingText": "Awaiting a truthful bearing…",
+        "prompt": "Confirm when you have arrived.",
+        "verificationProvider": "captainManual"
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-arrivalCheck-v1",
+      "id": "drydock-fixture-arrivalCheck-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "image",
+      "completion": {},
+      "configuration": {
+        "altText": "Synthetic horizon",
+        "assetId": "asset-image",
+        "caption": "",
+        "completionMode": "playerConfirmation",
+        "decorative": false,
+        "displayMode": "journalFrame",
+        "entranceMotion": "reveal",
+        "focalX": 50,
+        "focalY": 50,
+        "objectFit": "cover"
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-image-v1",
+      "id": "drydock-fixture-image-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "imageTransformation",
+      "completion": {},
+      "configuration": {
+        "afterAssetId": "asset-after",
+        "alignment": { "focalX": 50, "focalY": 50, "opacity": 50, "rotation": 0, "scale": 1, "x": 0, "y": 0 },
+        "beforeAssetId": "asset-before",
+        "caption": "",
+        "completionMode": "playerConfirmation",
+        "duration": 3200,
+        "holdAfter": 900,
+        "holdBefore": 600,
+        "nonMotionMeaning": "The marked route becomes visible.",
+        "transitionPreset": "inkSpread"
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-imageTransformation-v1",
+      "id": "drydock-fixture-imageTransformation-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "cinematic",
+      "completion": {},
+      "configuration": {
+        "autoplay": true,
+        "captionsAssetId": "asset-captions",
+        "completionMode": "playerConfirmation",
+        "minimumWatchDuration": 0,
+        "nonMotionMeaning": "The crew reaches the harbor.",
+        "posterAssetId": "asset-poster",
+        "skippable": true,
+        "videoAssetId": "asset-video"
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-cinematic-v1",
+      "id": "drydock-fixture-cinematic-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "audio",
+      "completion": {},
+      "configuration": {
+        "audioAssetId": "asset-audio",
+        "completionMode": "playerConfirmation",
+        "loop": false,
+        "playbackMode": "controls",
+        "title": "Audio",
+        "transcript": "Synthetic spoken clue.",
+        "volume": 0.8
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-audio-v1",
+      "id": "drydock-fixture-audio-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "artifactReveal",
+      "completion": {},
+      "configuration": {
+        "addToCollection": true,
+        "artifactId": "artifact-fixture",
+        "assemblyDefinitionId": null,
+        "completionMode": "playerConfirmation",
+        "componentRole": null,
+        "correctionOfGrantId": null,
+        "correctionReason": null,
+        "custodyKind": "PERSONAL",
+        "discoveringMembershipId": null,
+        "loreDescription": "Synthetic artifact history.",
+        "loreTitle": "Recovered treasure",
+        "ordinaryObjectLabel": "",
+        "personalGrantState": "COLLECTED",
+        "receiptState": "ACTIVE",
+        "recipientPolicy": "CREW_COLLECTION_ONLY",
+        "requiredCrewRole": null,
+        "revealAnimation": "lantern",
+        "selectedRecipientProfileIds": []
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-artifactReveal-v1",
+      "id": "drydock-fixture-artifactReveal-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "hiddenMessageReveal",
+      "completion": {},
+      "configuration": {
+        "baseAssetId": "asset-base",
+        "completionMode": "playerConfirmation",
+        "duration": 2800,
+        "messageText": "Synthetic hidden bearing.",
+        "revealStyle": "moonlight"
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-hiddenMessageReveal-v1",
+      "id": "drydock-fixture-hiddenMessageReveal-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "collectionUpdate",
+      "completion": {},
+      "configuration": {
+        "artifactId": "artifact-fixture",
+        "celebrationStyle": "quiet",
+        "completionMode": "playerConfirmation",
+        "progressLabel": "Recovered",
+        "quantity": 1
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-collectionUpdate-v1",
+      "id": "drydock-fixture-collectionUpdate-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "confirmation",
+      "completion": {},
+      "configuration": {
+        "captainOverride": true,
+        "completionMode": "playerConfirmation",
+        "confirmationStyle": "standard",
+        "primaryLabel": "Continue",
+        "prompt": "Ready to continue?",
+        "secondaryLabel": ""
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-confirmation-v1",
+      "id": "drydock-fixture-confirmation-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "choice",
+      "completion": {},
+      "configuration": {
+        "choices": [
+          { "id": "choice-a", "label": "First course", "targetBlockId": "drydock-fixture-chapterComplete-v1" },
+          { "id": "choice-b", "label": "Second course", "targetBlockId": "drydock-fixture-taleComplete-v1" }
+        ],
+        "completionMode": "playerConfirmation",
+        "prompt": "Choose a course.",
+        "reversible": false
+      },
+      "connections": [
+        { "connectionType": "CHOICE", "label": "First course", "targetBlockId": "drydock-fixture-chapterComplete-v1" },
+        { "connectionType": "CHOICE", "label": "Second course", "targetBlockId": "drydock-fixture-taleComplete-v1" }
+      ],
+      "fixtureId": "drydock-fixture-choice-v1",
+      "id": "drydock-fixture-choice-v1",
+      "nextBlockId": "drydock-fixture-chapterComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "textAnswer",
+      "completion": {},
+      "configuration": {
+        "acceptedAnswers": ["north"],
+        "caseSensitive": false,
+        "completionMode": "textAnswer",
+        "feedback": "Try another bearing.",
+        "hints": [],
+        "normalizeWhitespace": true,
+        "prompt": "Enter the answer."
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-textAnswer-v1",
+      "id": "drydock-fixture-textAnswer-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "captainApproval",
+      "completion": {},
+      "configuration": {
+        "allowRetry": true,
+        "captainInstruction": "Approve when the crew has completed the task.",
+        "completionMode": "captainManual",
+        "waitingText": "The Captain is checking the chart."
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-captainApproval-v1",
+      "id": "drydock-fixture-captainApproval-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "wait",
+      "completion": {},
+      "configuration": {
+        "allowCaptainSkip": true,
+        "completionMode": "timer",
+        "durationSeconds": 5,
+        "waitingText": "The tide is turning…"
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-wait-v1",
+      "id": "drydock-fixture-wait-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "condition",
+      "completion": {},
+      "configuration": {
+        "completionMode": "automatic",
+        "failureTargetBlockId": "drydock-fixture-taleComplete-v1",
+        "operator": "equals",
+        "successTargetBlockId": "drydock-fixture-chapterComplete-v1",
+        "value": true,
+        "variable": "flag"
+      },
+      "connections": [
+        { "connectionType": "SUCCESS", "targetBlockId": "drydock-fixture-chapterComplete-v1" },
+        { "connectionType": "FAILURE", "targetBlockId": "drydock-fixture-taleComplete-v1" }
+      ],
+      "fixtureId": "drydock-fixture-condition-v1",
+      "id": "drydock-fixture-condition-v1",
+      "nextBlockId": "drydock-fixture-chapterComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "setVariable",
+      "completion": {},
+      "configuration": {
+        "completionMode": "automatic",
+        "operation": "set",
+        "value": true,
+        "valueType": "boolean",
+        "variable": "flag"
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-setVariable-v1",
+      "id": "drydock-fixture-setVariable-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "chapterComplete",
+      "completion": {},
+      "configuration": {
+        "animation": "seal",
+        "completionMessage": "Chapter complete",
+        "completionMode": "playerConfirmation",
+        "nextChapterBehavior": "continue",
+        "returnToMap": false,
+        "summary": ""
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-chapterComplete-v1",
+      "id": "drydock-fixture-chapterComplete-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "taleComplete",
+      "completion": {},
+      "configuration": {
+        "completionMessage": "Your voyage is complete.",
+        "completionMode": "playerConfirmation",
+        "credits": "",
+        "finaleContent": "The final mark is written.",
+        "finaleHeading": "Voyage complete",
+        "replayAvailable": true
+      },
+      "connections": [],
+      "fixtureId": "drydock-fixture-taleComplete-v1",
+      "id": "drydock-fixture-taleComplete-v1",
+      "nextBlockId": null,
+      "presentation": {},
+      "schemaVersion": 1
+    }
+  ],
+  "classification": "SYNTHETIC_NO_PRIVATE_CONTENT",
+  "fixtureSetId": "drydock-current-authoring-v1",
+  "frozenAt": "2026-08-09",
+  "schemaVersion": 1
+}

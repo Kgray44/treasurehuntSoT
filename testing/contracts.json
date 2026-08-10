@@ -31,6 +31,13 @@
       "critical": true
     },
     {
+      "id": "drydock-authoring-contracts",
+      "name": "Drydock typed Story Block authoring and compatibility contracts",
+      "authority": "drydock",
+      "owners": ["drydock", "one-voyage"],
+      "critical": true
+    },
+    {
       "id": "wayfarer-history-projection",
       "name": "Wayfarer history projection",
       "authority": "wayfarer",
@@ -168,6 +175,34 @@
       "name": "SQLite and MySQL migration parity",
       "authority": "platform-foundation",
       "owners": ["platform-foundation"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-exact-edition-pair",
+      "name": "Tideglass exact immutable Chronicle edition pair",
+      "authority": "tideglass",
+      "owners": ["tideglass", "one-voyage"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-semantic-determinism",
+      "name": "Tideglass semantic normalization and deterministic Change Set",
+      "authority": "tideglass",
+      "owners": ["tideglass", "one-voyage"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-safe-projection",
+      "name": "Tideglass authorized and redacted comparison projections",
+      "authority": "tideglass",
+      "owners": ["tideglass", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-read-only-invariance",
+      "name": "Tideglass read-only publishing, Voyage, history, and release invariance",
+      "authority": "tideglass",
+      "owners": ["tideglass", "one-voyage", "wayfarer", "harborlight"],
       "critical": true
     },
     {
@@ -2968,6 +3003,167 @@
       "name": "Project Homeport Reduced Motion Transition Semantics",
       "authority": "project-homeport",
       "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "helm.authority-membership.independent",
+      "name": "Project Helm Captain Authority and Player Membership Independence",
+      "authority": "project-helm",
+      "owners": ["project-helm"],
+      "critical": true
+    },
+    {
+      "id": "helm.creation.default-captain-only",
+      "name": "Project Helm Explicit Captain Participation Creation Choice",
+      "authority": "project-helm",
+      "owners": ["project-helm"],
+      "critical": true
+    },
+    {
+      "id": "helm.participation.lifecycle",
+      "name": "Project Helm Independent Participation Lifecycle",
+      "authority": "project-helm",
+      "owners": ["project-helm"],
+      "critical": true
+    },
+    {
+      "id": "helm.player-projection.firewall",
+      "name": "Project Helm Ordinary Player Projection Firewall",
+      "authority": "project-helm",
+      "owners": ["project-helm"],
+      "critical": true
+    },
+    {
+      "id": "helm.history.membership-derived",
+      "name": "Project Helm Membership Derived Player History",
+      "authority": "project-helm",
+      "owners": ["project-helm"],
+      "critical": true
+    },
+    {
+      "id": "helm.artifacts.event-time-membership",
+      "name": "Project Helm Event Time Artifact Eligibility",
+      "authority": "project-helm",
+      "owners": ["project-helm"],
+      "critical": true
+    },
+    {
+      "id": "helm.security.resource-authorization",
+      "name": "Project Helm Resource Scoped Authorization",
+      "authority": "project-helm",
+      "owners": ["project-helm"],
+      "critical": true
+    },
+    {
+      "id": "helm.accessibility.responsive",
+      "name": "Project Helm Responsive Accessible Participation Controls",
+      "authority": "project-helm",
+      "owners": ["project-helm"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase1.identity",
+      "name": "Canonical identity and session authority",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase1.authorization",
+      "name": "Server-side role and capability authorization",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase1.assurance",
+      "name": "Recent privileged assurance and expiry",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase1.support-access",
+      "name": "User-approved scoped Support Access",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase1.audit",
+      "name": "Sanitized canonical administrative audit",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase1.registry",
+      "name": "Living capability-floor registry",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase1.migration",
+      "name": "Additive dual-database migration parity",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase1.responsive-consent",
+      "name": "Accessible responsive support consent",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-change-classification",
+      "name": "Stable governed change codes and explainable significance",
+      "authority": "tideglass",
+      "owners": ["tideglass"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-compatibility-deltas",
+      "name": "Evidence-linked compatibility deltas",
+      "authority": "tideglass",
+      "owners": ["tideglass"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-deterministic-summary",
+      "name": "Traceable deterministic comparison summaries",
+      "authority": "tideglass",
+      "owners": ["tideglass"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-creator-annotations",
+      "name": "Append-only authorized Creator annotation revisions",
+      "authority": "tideglass",
+      "owners": ["tideglass"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-rebuildable-cache",
+      "name": "Digest-validated context-free comparison cache",
+      "authority": "tideglass",
+      "owners": ["tideglass"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-api-security",
+      "name": "Authorized bounded and redacted Tideglass APIs",
+      "authority": "tideglass",
+      "owners": ["tideglass"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-migration-parity",
+      "name": "Additive SQLite and MySQL annotation migration parity",
+      "authority": "tideglass",
+      "owners": ["tideglass"],
       "critical": true
     }
   ]

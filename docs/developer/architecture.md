@@ -3,18 +3,28 @@ title: Architecture
 audience: developer
 status: current
 canonical_for: system-architecture
-last_reviewed: 2026-07-29
+last_reviewed: 2026-08-09
 ---
 
 # Architecture
 
-Chronicles is a Next.js application with route-level role surfaces, domain modules, service boundaries, Prisma persistence, and a typed presentation layer. `src/app` owns routing; `src/chronicle`, `src/platform`, `src/wayfarer`, `src/community`, and `src/private-content` represent major domains; `prisma` defines SQLite and MySQL schema paths.
+Chronicles is a Next.js application with route-level role surfaces, domain modules, service boundaries, Prisma persistence, and a typed presentation layer. `src/app` owns routing; `src/chronicle`, `src/platform`, `src/wayfarer`, `src/community`, `src/private-content`, and `src/tideglass` represent major domains; `prisma` defines SQLite and MySQL schema paths.
 
 Player, Captain, and Studio routes consume domain services rather than treating
 UI state as authorization. True North provides the persistent role-aware
 navigation shell; Wayfarer owns personal history, consent, artifacts, and
 achievements; Harborlight owns community exchange and Phase 3 social/discovery
 projections. Publishing creates immutable versions for stable play.
+
+`src/admiralty` owns platform-administration capability resolution,
+session-bound privileged assurance, scoped Support Access, safe administrative
+projections, and administrative audit composition. It consumes canonical
+identity, session, credential, role, Chronicle, Community, and private-content
+authorities without replacing them. `/admin` is a privileged direct-entry
+surface; `/account/support-access` remains an ordinary account-owner consent
+surface.
+
+Tideglass reads two exact immutable published editions through a server-authorized repository port, verifies their stored-byte checksums, normalizes supported snapshot schemas into one comparison-only semantic model, and emits deterministic redacted Change Sets and receipts. Phase 2 layers versioned classification, significance, compatibility, summaries, audience projections, and a bounded digest-validating cache over that unchanged Phase 1 truth. Its only business persistence is the immutable `TideglassCreatorAnnotation` revision chain plus existing platform audit evidence. Finished Creator-scoped APIs expose typed projections; no raw snapshot, ordinary comparison page, played-history qualification, or live-Voyage mutation exists.
 
 Private-content workflows retain separate authorization, scanning, storage,
 recovery, protected-media, grant, derivative, and withdrawal concerns. Local

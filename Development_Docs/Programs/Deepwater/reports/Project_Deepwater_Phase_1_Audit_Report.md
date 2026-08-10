@@ -16,21 +16,22 @@ Phase 1 establishes the governed inventory foundation. It does not claim complet
 
 | Measure                                     | Count |
 | ------------------------------------------- | ----: |
-| Meaningful capabilities                     |    53 |
-| Feature Catalog mapped                      |    41 |
+| Meaningful capabilities                     |    55 |
+| Feature Catalog mapped                      |    43 |
 | Uncataloged meaningful                      |    12 |
 | Ownership ambiguous                         |     0 |
 | Initial findings                            |    22 |
 | Phase 2 queue                               |    44 |
 | Catalog entries with route-surface mismatch |    17 |
 
-The seed catalog contains 41 accepted entries. The uncataloged survey adds account lifecycle, transactional email, private-provider operations, backup/restore, repair, community operations, bounded compatibility observation, and public-origin trust capabilities that have named consumers or operational purpose.
+The reconciled catalog contains 43 entries. The uncataloged survey adds account lifecycle, transactional email, private-provider operations, backup/restore, repair, community operations, bounded compatibility observation, and public-origin trust capabilities that have named consumers or operational purpose.
 
 ## Realization observations
 
 - BACKEND_ONLY: 3
 - DEPRECATED: 1
-- INTERNAL_BY_DESIGN: 7
+- FULLY_REALIZED: 1
+- INTERNAL_BY_DESIGN: 8
 - PARTIALLY_REALIZED: 40
 - SECURITY_RESTRICTED: 2
 

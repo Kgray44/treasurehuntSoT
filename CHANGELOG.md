@@ -12,14 +12,32 @@ last_reviewed: 2026-08-09
 
 ### Changed
 
-- Completed Project Wakebook Phase 1, Open the Wake, on its named branch. The
-  Chronicle Passport now has a private visual Journey Archive with truthful
-  chronology, full-year summaries, bounded search/filter/sort/pagination,
-  exact played-edition identity, safe historical crew/timing/outcome context,
-  separate invitation history, artifact-provenance boundaries, a polished
-  Voyage Detail, and existing private remembrance handoffs. This is
-  owner-walkthrough readiness, not mainline availability, deployment, or owner
-  acceptance.
+- Added Project Helm Phase 1 participating-Captain operation. Voyage creation
+  now defaults to Captain-only and offers an explicit Captain + Player mode
+  backed by exactly one ordinary same-account Player membership. Captain
+  authority and membership remain independently authorized and audited; Player
+  projection, history, artifacts, removal, and perspective switching follow the
+  existing Player contracts. No schema migration or second session system was
+  introduced. The acceptance boundary is governed isolated local evidence and
+  mainline source integration, not deployment or live-Voyage proof.
+
+- Added Project Tideglass Phase 2 Chronicle edition intelligence on top of the
+  unchanged Phase 1 semantic/comparison policy: stable change codes,
+  explainable significance, compatibility deltas, spoiler-safe public/Player/
+  Creator projections, deterministic summaries, immutable Creator annotation
+  revisions, a digest-validating bounded cache, and authorized comparison,
+  annotation, edition-list, and preview APIs. The change is additive and has no
+  ordinary route, navigation entry, played-history integration, deployment, or
+  production-MySQL claim.
+
+- Integrated the owner-accepted Project Admiralty Phase 1 source on canonical
+  main with exact-source Sounding Line authority and remote parity:
+  canonical role/capability authorization, explicit
+  administrator bootstrap, session-bound privileged assurance, a limited
+  non-navigable `/admin` shell, user-consented scoped Support Access, sanitized
+  canonical audit evidence, dual-provider additive migrations, a 92-entry
+  capability floor, and an isolated owner runtime. This is not deployed or
+  production-MySQL validated, and Phase 2 was not started.
 
 - Anchored every Voyagewright-owned OAuth success and failure redirect to the
   exact configured `HOMEPORT_PUBLIC_APP_ORIGIN` rather than the internal request
@@ -79,11 +97,13 @@ last_reviewed: 2026-08-09
 
 ### Validation
 
-- Registered 12 Wakebook contracts and isolated unit, component, and browser
-  families in Sounding Line, including a synthetic 1,005-record archive,
-  owner/privacy negatives, historical stability, summary redaction, ordinary
-  desktop/mobile navigation, responsive overflow, and serious/critical
-  accessibility checks.
+- Added focused Admiralty policy/service/component coverage, fresh and upgrade
+  migration rehearsal, and exact-source production-browser journeys for
+  unauthorized concealment, assurance expiry/renewal, support approval, denial,
+  revocation, role/session invalidation, desktop/mobile/keyboard/reduced-motion/
+  effective-200-percent behavior, and serious/critical accessibility scanning.
+  The fixture and evidence are local, synthetic, task-owned, and not owner
+  acceptance.
 
 - Added a dual-host Chromium regression for hydration, account bootstrap,
   pointer interaction, keyboard focus/typing, navigation, settled overlays,

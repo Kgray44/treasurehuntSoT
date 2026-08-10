@@ -18,6 +18,8 @@ const homeportPhase2Spec = /homeport-phase2\.spec\.ts/u;
 const homeportPhase4Spec = /homeport-phase4\.spec\.ts/u;
 const homeportPhase7WalkthroughSpecs = /homeport-phase7.*\.spec\.ts/u;
 const wakebookPhase1Spec = /wakebook-phase1\.spec\.ts/u;
+const helmPhase1Spec = /project-helm-phase1\.spec\.ts/u;
+const admiraltyPhase1Spec = /admiralty-phase1\.spec\.ts/u;
 const phase3MutationSpecs =
   /phase3-(?:player-event-matrix|player-motion|replay-resilience|lifecycle(?:-extended)?|performance)\.spec\.ts/u;
 const phase3MutationSpecGuard = [
@@ -83,6 +85,8 @@ export default defineConfig({
         homeportPhase4Spec,
         homeportPhase7WalkthroughSpecs,
         wakebookPhase1Spec,
+        helmPhase1Spec,
+        admiraltyPhase1Spec,
       ],
       use: { ...devices["Desktop Chrome"] },
     },
@@ -106,6 +110,14 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1000 } },
     },
     {
+      // Project Helm owns a canonical-account journey against Sounding Line's
+      // copied database and loopback runtime. It must never share the generic
+      // mutation project or a developer's canonical database.
+      name: "helm-phase1",
+      testMatch: helmPhase1Spec,
+      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1000 } },
+    },
+    {
       // This is the narrow Sounding Line browser sentinel.  It deliberately
       // has no Phase 3 fixture dependency: access-gates never creates a
       // mutation fixture, and adding the dependency would require an
@@ -113,6 +125,13 @@ export default defineConfig({
       name: "sounding-line-access-sentinel",
       testMatch: soundingLineAccessSentinelSpec,
       use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      // Discovery is shared with Sounding Line; authoritative execution uses
+      // the Admiralty-owned fresh synthetic fixture and dedicated config.
+      name: "admiralty-phase1",
+      testMatch: admiraltyPhase1Spec,
+      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } },
     },
     {
       name: "wayfarer-phase2",
@@ -172,6 +191,8 @@ export default defineConfig({
         homeportPhase4Spec,
         homeportPhase7WalkthroughSpecs,
         wakebookPhase1Spec,
+        helmPhase1Spec,
+        admiraltyPhase1Spec,
       ],
       use: { ...devices["iPhone 14"] },
     },

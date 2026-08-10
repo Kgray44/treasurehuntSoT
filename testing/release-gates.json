@@ -1,15 +1,24 @@
 {
   "version": 2,
-  "status": "integrated-deepwater-phase-2-wakebook-phase-1-control-plane",
+  "status": "phase-2-deepwater-control-plane",
   "gates": [
     {
       "id": "local-change",
-      "requiredSuites": ["static.core", "unit.deepwater", "unit.homeport", "unit.sounding-line"],
+      "requiredSuites": [
+        "static.core",
+        "unit.drydock",
+        "unit.deepwater",
+        "unit.homeport",
+        "unit.sounding-line",
+        "unit.tideglass"
+      ],
       "conditionalSuites": [
+        "unit.helm",
+        "component.helm",
+        "browser.helm",
         "unit.auth",
         "unit.one-voyage",
         "unit.wayfarer",
-        "unit.wakebook",
         "unit.community",
         "unit.private-content",
         "unit.journal",
@@ -27,14 +36,12 @@
         "component.private-operations",
         "component.animation",
         "component.passport",
-        "component.wakebook",
         "component.navigation",
         "browser.auth",
         "browser.invitations",
         "browser.player-library",
         "browser.player-journal",
         "browser.passport",
-        "browser.wakebook",
         "browser.artifacts",
         "browser.captain",
         "browser.studio",
@@ -44,17 +51,69 @@
         "browser.accessibility",
         "browser.responsive",
         "browser.animation-lifecycle",
-        "browser.cross-project"
+        "browser.cross-project",
+        "unit.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ]
+    },
+    {
+      "id": "contract",
+      "requiredSuites": [
+        "static.core",
+        "unit.helm",
+        "component.helm"
+      ],
+      "conditionalSuites": [
+        "unit.helm",
+        "component.helm",
+        "unit.auth",
+        "unit.one-voyage",
+        "unit.wayfarer",
+        "unit.community",
+        "unit.private-content",
+        "unit.journal",
+        "unit.animation",
+        "unit.true-north",
+        "unit.feature-catalog",
+        "unit.homeport",
+        "unit.sounding-line",
+        "unit.platform-foundation",
+        "component.auth",
+        "component.player-shell",
+        "component.journal",
+        "component.artifacts",
+        "component.captain",
+        "component.studio",
+        "component.community",
+        "component.private-operations",
+        "component.animation",
+        "component.passport",
+        "component.navigation",
+        "database.sqlite"
       ]
     },
     {
       "id": "subsystem",
-      "requiredSuites": ["static.core", "unit.homeport", "unit.wakebook", "component.wakebook", "browser.wakebook"],
+      "requiredSuites": [
+        "static.core",
+        "unit.drydock",
+        "unit.homeport",
+        "unit.tideglass",
+        "unit.admiralty",
+        "component.admiralty",
+        "browser.admiralty",
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook"
+      ],
       "conditionalSuites": [
+        "unit.helm",
+        "component.helm",
+        "browser.helm",
         "unit.auth",
         "unit.one-voyage",
         "unit.wayfarer",
-        "unit.wakebook",
         "unit.community",
         "unit.private-content",
         "unit.journal",
@@ -75,7 +134,6 @@
         "component.private-operations",
         "component.animation",
         "component.passport",
-        "component.wakebook",
         "component.navigation",
         "database.sqlite",
         "browser.auth",
@@ -83,7 +141,6 @@
         "browser.player-library",
         "browser.player-journal",
         "browser.passport",
-        "browser.wakebook",
         "browser.artifacts",
         "browser.captain",
         "browser.studio",
@@ -93,7 +150,13 @@
         "browser.accessibility",
         "browser.responsive",
         "browser.animation-lifecycle",
-        "browser.cross-project"
+        "browser.cross-project",
+        "unit.admiralty",
+        "component.admiralty",
+        "browser.admiralty",
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook"
       ]
     },
     {
@@ -102,14 +165,12 @@
         "static.core",
         "unit.one-voyage",
         "unit.wayfarer",
-        "unit.wakebook",
-        "browser.wakebook",
         "browser.cross-project"
       ],
       "conditionalSuites": [
+        "unit.tideglass",
         "browser.invitations",
         "browser.passport",
-        "browser.wakebook",
         "browser.community",
         "browser.artifacts",
         "database.sqlite"
@@ -119,10 +180,12 @@
       "id": "mainline",
       "requiredSuites": [
         "static.core",
+        "unit.helm",
         "unit.auth",
         "unit.one-voyage",
+        "unit.drydock",
+        "unit.tideglass",
         "unit.wayfarer",
-        "unit.wakebook",
         "unit.community",
         "unit.private-content",
         "unit.journal",
@@ -143,13 +206,16 @@
         "component.private-operations",
         "component.animation",
         "component.passport",
-        "component.wakebook",
-        "browser.wakebook",
         "component.navigation",
+        "component.helm",
         "database.sqlite",
         "browser.access-sentinel",
+        "browser.helm",
         "retirement.matrix-proof",
-        "build.production"
+        "build.production",
+        "unit.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
       ],
       "conditionalSuites": [
         "migration.mysql",
@@ -158,7 +224,6 @@
         "browser.player-library",
         "browser.player-journal",
         "browser.passport",
-        "browser.wakebook",
         "browser.artifacts",
         "browser.captain",
         "browser.studio",
@@ -173,10 +238,12 @@
       "id": "release-candidate",
       "requiredSuites": [
         "static.core",
+        "unit.helm",
         "unit.auth",
         "unit.one-voyage",
+        "unit.drydock",
+        "unit.tideglass",
         "unit.wayfarer",
-        "unit.wakebook",
         "unit.community",
         "unit.private-content",
         "unit.journal",
@@ -196,16 +263,16 @@
         "component.private-operations",
         "component.animation",
         "component.passport",
-        "component.wakebook",
         "component.navigation",
+        "component.helm",
         "database.sqlite",
         "browser.access-sentinel",
+        "browser.helm",
         "browser.auth",
         "browser.invitations",
         "browser.player-library",
         "browser.player-journal",
         "browser.passport",
-        "browser.wakebook",
         "browser.artifacts",
         "browser.captain",
         "browser.studio",
@@ -217,10 +284,21 @@
         "browser.animation-lifecycle",
         "browser.cross-project",
         "retirement.matrix-proof",
-        "build.production"
+        "build.production",
+        "unit.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
       ],
-      "conditionalSuites": ["migration.mysql"]
+      "conditionalSuites": [
+        "migration.mysql"
+      ]
     },
-    { "id": "external-provider", "requiredSuites": ["migration.mysql"], "conditionalSuites": [] }
+    {
+      "id": "external-provider",
+      "requiredSuites": [
+        "migration.mysql"
+      ],
+      "conditionalSuites": []
+    }
   ]
 }

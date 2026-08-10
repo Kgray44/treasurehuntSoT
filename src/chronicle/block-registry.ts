@@ -755,11 +755,17 @@ export function serializeBlockRegistry() {
   });
 }
 
-export function providerForBlock(type: string, configuration: JsonObject): VerificationProviderType | null {
+export function providerForBlock(
+  type: string,
+  configuration: JsonObject,
+  completion: JsonObject = {},
+): VerificationProviderType | null {
   if (type === "captainApproval") return "captainManual";
   if (type === "textAnswer" || type === "riddle") return "textAnswer";
   if (type === "wait") return "timer";
-  const configured = String(configuration.verificationProvider ?? configuration.completionMode ?? "playerConfirmation");
+  const configured = String(
+    completion.mode ?? configuration.verificationProvider ?? configuration.completionMode ?? "playerConfirmation",
+  );
   if (configured === "automatic") return null;
   if (
     [

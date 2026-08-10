@@ -136,7 +136,7 @@ Captains assemble exact-edition crews through individualized invitations with au
 
 ### Primary surfaces
 
-`/join`, `/player`
+`/join/[token]`, `/player/invitation`, `/player/library`
 
 ### Evidence
 
@@ -176,7 +176,7 @@ Players can discover, resume, archive, and reconcile exact-edition Voyage experi
 **Status:** MAINLINE
 **Program or subsystem:** Captain
 
-Captains create, launch, operate, recover, and reconcile live Voyages through authoritative commands.
+Captains create, launch, operate, recover, and reconcile live Voyages through authoritative commands, with an explicit option to join the same Voyage as an ordinary Player.
 
 ### Important subfeatures
 
@@ -185,15 +185,22 @@ Captains create, launch, operate, recover, and reconcile live Voyages through au
 - Command idempotency
 - Pause and resume
 - Operational audit trail
+- Independent Captain authority and Player membership
+- Captain-only and Captain plus Player participation modes
+- Player-safe perspective switching
+- Membership-bounded personal history and artifact eligibility
 
 ### Primary surfaces
 
-`/captain`, `/captain/voyages/[id]`
+`/captain`, `/captain/library`, `/captain/sessions/[sessionId]`, `/captain/voyages/[playthroughId]/player-preview`, `/player/playthroughs/[playthroughId]`
 
 ### Evidence
 
 - path: `src/server/admin-command.ts`
 - path: `src/domain/admin.ts`
+- path: `src/helm/captain-participation.ts`
+- path: `src/components/platform/CaptainLibrary.tsx`
+- path: `src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts`
 
 ---
 
@@ -228,24 +235,32 @@ Creator Studio supports protected Chronicle authoring, graph editing, previews, 
 **Status:** MAINLINE
 **Program or subsystem:** Studio
 
-A stable registry defines reusable story blocks, validation, metadata, and safe unknown-type behavior.
+Strict versioned contracts define all twenty-three Story Block types with canonical parsing and serialization, typed variables and bounded expressions, deterministic content migration, stable issues, and compatibility-safe validation.
 
 ### Important subfeatures
 
-- Narrative and direction blocks
-- Media and reveal blocks
-- Interaction blocks
-- Logic and completion blocks
-- Safe diagnostic fallback
+- Strict configuration, presentation, and completion contracts
+- Canonical parsing and deterministic serialization
+- Typed variable scopes, operations, usage indexing, and safe rename propagation
+- Typed deterministic expression AST, checking, and bounded evaluation
+- Versioned migration registry with frozen historical compatibility fixtures
+- Stable issues and incremental validation with current Studio and runtime compatibility
 
 ### Primary surfaces
 
 `/studio/chronicles/[id]`
 
+### Meaningful limitations
+
+- Whole-Chronicle static analysis, repair and waiver workflows, and simulation remain outside Phase 1.
+- Provider contracts without configured owner adapters remain explicitly unavailable.
+
 ### Evidence
 
-- path: `src/chronicle/block-registry.ts`
-- path: `src/chronicle/types.ts`
+- path: `src/drydock/index.ts`
+- path: `src/drydock/contracts/registry.ts`
+- test: `src/drydock`
+- completion-record: `Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_1_Completion_Receipt.md`
 
 ---
 
@@ -396,7 +411,7 @@ A Player-safe Journal represents active and historical Chronicles with physical 
 
 ### Primary surfaces
 
-`/player/voyages/[id]`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -422,7 +437,7 @@ The Player chart presents safe geography, progression, revealed routes, and curr
 
 ### Primary surfaces
 
-`/player/voyages/[id]/chart`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -448,7 +463,7 @@ Awarded artifacts have authoritative reveal, inspection, collection, and fallbac
 
 ### Primary surfaces
 
-`/player/voyages/[id]/treasure`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -474,7 +489,7 @@ Optional Chronicle branches retain independent discovery, progression, reward, a
 
 ### Primary surfaces
 
-`/player/voyages/[id]/ledger`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -500,7 +515,7 @@ A readable, filterable, Player-safe event history records the Voyage's ordered n
 
 ### Primary surfaces
 
-`/player/voyages/[id]/log`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -526,7 +541,7 @@ The finale has explicit protected release states and replay behavior that never 
 
 ### Primary surfaces
 
-`/player/voyages/[id]/finale`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -552,7 +567,7 @@ Authenticated event delivery separates durable server replay from observed and a
 
 ### Primary surfaces
 
-`/api/player/events`, `/player`
+`/api/player/[campaignSlug]/events`, `/api/player/[campaignSlug]/presence`, `/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -605,7 +620,7 @@ A narrow versioned verification boundary accepts trusted evidence without giving
 
 ### Primary surfaces
 
-`/api/verification`, `/captain`
+`/api/helper/verification`, `/captain/sessions/[sessionId]`
 
 ### Meaningful limitations
 
@@ -672,7 +687,7 @@ A governed community system supports immutable reusable Chronicle packages, lice
 
 ### Primary surfaces
 
-`/tales`, `/studio/community`
+`/community`, `/studio/exchange`
 
 ### Evidence
 
@@ -1255,6 +1270,92 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 - completion-record: `Development_Docs/Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md`
 - commit: `b4fa3b4b3f50e3f22f82adace3b287b9cadace8a`
 - commit: `7675a9e3c02cb1bad18812c65010e9310d9b977c`
+
+---
+
+## FT-B009 - Tideglass Chronicle Edition Intelligence
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Tideglass Phases 1-2
+
+The accepted server-side foundation compares exact immutable Chronicle editions, classifies and summarizes evidence deterministically, projects spoiler-safe audience views, and preserves append-only Creator context without changing published or live Voyage truth.
+
+### Important subfeatures
+
+- Exact edition and checksum binding
+- Versioned semantic normalization
+- Stable identity and graph comparison
+- Deterministic Change Sets and receipts
+- Stable change codes and explainable significance
+- Evidence-linked compatibility deltas
+- Deterministic concise and detailed summaries
+- Public, Player-safe, and Creator-full projections
+- Append-only Creator annotation revisions
+- Digest-validated rebuildable comparison cache
+- Authorized bounded comparison and annotation APIs
+- Read-only cross-domain invariance
+
+### Primary surfaces
+
+`npm run tideglass:compare`, `src/tideglass`, `/api/chronicles/:chronicleId/comparison`
+
+### Meaningful limitations
+
+- The accepted Phase 2 extension remains server-side and does not create a polished comparison experience.
+- Ordinary user comparison routes, played-history qualification, and polished What Changed interaction remain outside Phase 2.
+- Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.
+
+### Evidence
+
+- path: `src/tideglass/service.ts`
+- path: `src/tideglass/intelligence.ts`
+- path: `src/tideglass/annotations.ts`
+- test: `tests/tideglass`
+- completion-record: `Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md`
+- completion-record: `Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Completion_Receipt.md`
+
+---
+
+## FT-B010 - Governed Platform Administration and Consented Support Access
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Admiralty
+
+Canonical account roles, recent privileged assurance, scoped user consent, sanitized audit evidence, and a limited administration shell establish least-privileged platform operations without creating a second identity authority.
+
+### Important subfeatures
+
+- Server-side role and capability resolution
+- Explicit dry-run-first administrator bootstrap
+- Session-bound recent privileged assurance
+- User-approved target, operator, scope, and time-bounded Support Access
+- Sanitized canonical administrative audit evidence
+- Living 92-entry capability-floor registry
+- Non-revealing unauthorized admin route behavior
+- Additive SQLite and MySQL migration parity
+- Task-owned synthetic browser and owner-walkthrough runtimes
+
+### Primary surfaces
+
+`/admin`, `/account/support-access`
+
+### Meaningful limitations
+
+- The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09
+- Owner-accepted Phase 1 implementation is integrated on canonical main with verified remote parity
+- Production MySQL execution, live-provider behavior, and physical assistive-technology validation remain external
+- Phase 2 and all later operational command-center capabilities remain dormant
+- Owner acceptance does not imply deployment or acceptance of later Admiralty phases
+
+### Evidence
+
+- commit: `49c2f59d6d75791edbdba84f22f5ec1595d2d129`
+- path: `src/admiralty/authorization.ts`
+- path: `src/admiralty/support-access.ts`
+- path: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json`
+- test: `tests/e2e/admiralty-phase1.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md`
+- completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md`
 
 ---
 

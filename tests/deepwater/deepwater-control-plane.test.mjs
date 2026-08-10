@@ -8,6 +8,7 @@ import {
   semanticDigest,
   stableStringify,
   validatePhase2Model,
+  validatePhase3Model,
   validateModel,
 } from "../../scripts/deepwater/lib.mjs";
 
@@ -30,7 +31,7 @@ function errorsFor(candidate) {
 }
 
 function phase2Model() {
-  return structuredClone(baseline);
+  return structuredClone(baseline.phase2);
 }
 
 function phase2Errors(candidate) {
@@ -42,6 +43,14 @@ function includesError(errors, text) {
     errors.some((error) => error.includes(text)),
     `Expected error containing ${text}; received ${errors.join(" | ")}`,
   );
+}
+
+function phase3Model() {
+  return structuredClone(baseline);
+}
+
+function phase3Errors(candidate) {
+  return validatePhase3Model(candidate);
 }
 
 test("valid generated ledger and references are accepted", () => {
@@ -181,6 +190,24 @@ test("same accepted inputs generate stable semantic output", async () => {
   );
 });
 
+test("Phase 3 rebuild preserves the accepted Phase 2 finding baseline", async () => {
+  assert.equal(baseline.metrics.findings.startingOpen, 20);
+  const acceptedPhase2Finding = baseline.phase2.findingsDocument.findings.find(
+    (finding) => finding.findingId === "DW-FIND-CATALOG-SURFACE-FT-005",
+  );
+  assert.equal(acceptedPhase2Finding.status, "ASSIGNED");
+  assert.equal(acceptedPhase2Finding.closedAt, null);
+  const transitionedFinding = baseline.findingsDocument.findings.find(
+    (finding) => finding.findingId === "DW-FIND-CATALOG-SURFACE-FT-005",
+  );
+  assert.equal(transitionedFinding.status, "CLOSED");
+  assert.equal(transitionedFinding.from, undefined);
+
+  const second = await buildArtifacts(root);
+  assert.equal(second.metrics.findings.startingOpen, 20);
+  assert.equal(semanticDigest(second), semanticDigest(baseline));
+});
+
 test("known capability IDs remain semantic and stable", () => {
   const ids = new Set(baseline.ledger.capabilities.map((capability) => capability.capabilityId));
   for (const id of [
@@ -230,7 +257,23 @@ test("catalog maturity and observed realization mismatch remains visible", () =>
 test("Phase 2 accounts for every seed queue item exactly once", () => {
   assert.equal(baseline.tracesDocument.queueItemCount, 44);
   assert.equal(baseline.tracesDocument.traceCount, 43);
+  assert.ok(
+    !baseline.remediationDocument.packages.some(
+      (packet) => packet.capabilityId === "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+    ),
+  );
   assert.deepEqual(phase2Errors(phase2Model()), []);
+});
+
+test("Phase 2 rejects an accepted queue item omitted from trace policy", () => {
+  const candidate = phase2Model();
+  const omittedCapabilityId = candidate.phase1.queueDocument.queue.find((item) =>
+    candidate.inputs.phase2Config.tracePolicies.some((policy) => policy.capabilityId === item.capabilityId),
+  ).capabilityId;
+  candidate.inputs.phase2Config.tracePolicies = candidate.inputs.phase2Config.tracePolicies.filter(
+    (policy) => policy.capabilityId !== omittedCapabilityId,
+  );
+  includesError(phase2Errors(candidate), "trace policy omits accepted seed queue item");
 });
 
 test("Phase 2 rejects an unexplained UNKNOWN layer", () => {
@@ -355,4 +398,177 @@ test("Phase 2 semantic output is deterministic", async () => {
   assert.equal(stableStringify(baseline.tracesDocument), stableStringify(second.tracesDocument));
   assert.equal(stableStringify(baseline.remediationDocument), stableStringify(second.remediationDocument));
   assert.equal(stableStringify(baseline.phase3Queue), stableStringify(second.phase3Queue));
+});
+
+test("Phase 3 reviews all 55 current accepted capabilities and accepts the generated utilization model", () => {
+  assert.equal(baseline.inputs.phase3Config.phase2AcceptedCapabilityCount, 53);
+  assert.equal(baseline.inputs.phase3Config.expectedCurrentCapabilityCount, 55);
+  assert.equal(baseline.utilizationDocument.reviewedCapabilityCount, 55);
+  assert.ok(
+    baseline.phase2.ledger.capabilities.some(
+      (capability) => capability.capabilityId === "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+    ),
+  );
+  assert.ok(
+    baseline.ledger.capabilities.some(
+      (capability) => capability.capabilityId === "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+    ),
+  );
+  assert.deepEqual(phase3Errors(phase3Model()), []);
+});
+
+test("Phase 3 reconciliation closes only accepted documentation evidence and preserves governed boundaries", () => {
+  assert.equal(baseline.metrics.documentation.starting, 17);
+  assert.equal(baseline.metrics.documentation.closed, 11);
+  assert.equal(baseline.metrics.documentation.remaining, 6);
+  assert.equal(baseline.metrics.findings.closed, 11);
+  assert.equal(baseline.metrics.findings.external, 1);
+  assert.equal(baseline.metrics.findings.ownerAcceptance, 1);
+  assert.equal(baseline.metrics.findings.remainingHigh, 1);
+  assert.equal(baseline.metrics.findings.remainingCritical, 0);
+  assert.ok(baseline.slicesDocument.slices.every((slice) => slice.status === "MAINLINE_ACCEPTED"));
+  assert.ok(baseline.slicesDocument.slices.every((slice) => /^[0-9a-f]{40}$/u.test(slice.acceptedMainSha)));
+  const helmFinding = baseline.findingsDocument.findings.find(
+    (finding) => finding.findingId === "DW-FIND-CATALOG-SURFACE-FT-007",
+  );
+  assert.equal(helmFinding?.status, "CLOSED");
+  assert.equal(helmFinding?.observedSourceSha, "3e235e85b974183f3b0888814a15697596f73730");
+  assert.match(helmFinding?.closureEvidence ?? "", /PR #32.*3e235e85/u);
+  assert.match(baseline.phase3Reports.delta, /DW-FIND-CATALOG-SURFACE-FT-005/u);
+  assert.match(baseline.phase3Reports.delta, /DW-FIND-CATALOG-SURFACE-FT-007/u);
+  for (const findingId of [
+    "DW-FIND-EDITION-COMPARISON-SEMANTIC-UNDERUTILIZATION",
+    "DW-FIND-HOMEPORT-OWNER-DECISION-PENDING",
+    "DW-FIND-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION",
+    "DW-FIND-VERIFICATION-PROVIDER-REALIZATION-GAP",
+  ])
+    assert.notEqual(
+      baseline.findingsDocument.findings.find((finding) => finding.findingId === findingId)?.status,
+      "CLOSED",
+    );
+  assert.equal(baseline.status.mainlineState, "MAINLINE_ACCEPTED");
+  assert.equal(baseline.status.finalReconciledMainSha, "ca135585a62f445cd4331df1a7dd21203bd50219");
+  assert.equal(baseline.inputs.phase3Config.validationEvidence.finalCandidate.decision, "RELEASE_GO");
+  assert.equal(baseline.inputs.phase3Config.validationEvidence.finalCandidate.receiptCount, 37);
+  assert.equal(baseline.inputs.phase3Config.validationEvidence.hostedMainline.successfulCheckCount, 40);
+  assert.equal(baseline.inputs.phase3Config.validationEvidence.acceptedMainProof.receiptCount, 7);
+  assert.match(baseline.phase3Reports.final, /Remaining blocker: NONE/u);
+});
+
+test("Phase 3 rejects an orphan backend operation", () => {
+  const candidate = phase3Model();
+  const capability = candidate.utilizationDocument.capabilities.find(
+    (entry) => entry.capabilityId === "DW-CAP-ACCOUNT-DATA-EXPORT",
+  );
+  capability.expectedOperations[0].consumerReferences = [];
+  includesError(phase3Errors(candidate), "orphan backend operation");
+});
+
+test("Phase 3 rejects an unused safe DTO field marked required", () => {
+  const candidate = phase3Model();
+  const capability = candidate.utilizationDocument.capabilities[0];
+  capability.expectedSafeMetadata.push("unused safe decision field");
+  includesError(phase3Errors(candidate), "unused safe DTO field marked required");
+});
+
+test("Phase 3 rejects a fake frontend-only mutation", () => {
+  const candidate = phase3Model();
+  const capability = candidate.utilizationDocument.capabilities.find(
+    (entry) => entry.capabilityId === "DW-CAP-CREATOR-STUDIO",
+  );
+  const operation = capability.expectedOperations[0];
+  operation.name = "fake frontend mutation";
+  operation.sourceReferences = ["src/components/studio/TaleEditor.tsx"];
+  includesError(phase3Errors(candidate), "UI claims an operation absent from backend authority");
+});
+
+test("Phase 3 rejects a UI-only success state", () => {
+  const candidate = phase3Model();
+  const capability = candidate.utilizationDocument.capabilities[0];
+  capability.expectedStates.push("UI_ONLY_SUCCESS");
+  capability.consumedOrRepresentedStates.push("UI_ONLY_SUCCESS");
+  includesError(phase3Errors(candidate), "UI-only state is absent from backend/source contract");
+});
+
+test("Phase 3 rejects a missing recovery state", () => {
+  const candidate = phase3Model();
+  const capability = candidate.utilizationDocument.capabilities.find(
+    (entry) => entry.capabilityId === "DW-CAP-VERIFICATION-PROVIDER-FRAMEWORK",
+  );
+  capability.consumedOrRepresentedStates = capability.consumedOrRepresentedStates.filter(
+    (state) => state !== "RECOVERY",
+  );
+  includesError(phase3Errors(candidate), "missing recovery or lifecycle state RECOVERY");
+});
+
+test("Phase 3 rejects unconsumed retry capability", () => {
+  const candidate = phase3Model();
+  const capability = candidate.utilizationDocument.capabilities.find(
+    (entry) => entry.capabilityId === "DW-CAP-COMMUNITY-WORKER-SCHEDULER",
+  );
+  capability.expectedOperations.push({
+    operationId: "retry-orphaned-work",
+    name: "retry orphaned work",
+    disposition: "CONSUMED",
+    sourceReferences: ["src/community/operations.ts"],
+    consumerReferences: [],
+    rationale: null,
+    findingId: null,
+  });
+  capability.consumedOperations.push("retry-orphaned-work");
+  includesError(phase3Errors(candidate), "orphan backend operation");
+});
+
+test("Phase 3 rejects unconsumed operator health marked internal without justification", () => {
+  const candidate = phase3Model();
+  const capability = candidate.utilizationDocument.capabilities.find(
+    (entry) => entry.capabilityId === "DW-CAP-COMMUNITY-OPERATIONS-HEALTH",
+  );
+  capability.status = "INTERNAL_ONLY";
+  capability.rationale = "";
+  includesError(phase3Errors(candidate), "INTERNAL_ONLY lacks rationale");
+});
+
+test("Phase 3 rejects raw-secret projection evidence", () => {
+  const candidate = phase3Model();
+  const capability = candidate.utilizationDocument.capabilities[0];
+  capability.expectedSafeMetadata.push("api_key=unsafe-projection-value");
+  capability.consumedSafeMetadata.push("api_key=unsafe-projection-value");
+  includesError(phase3Errors(candidate), "Phase 3 privacy scan matched forbidden pattern");
+});
+
+test("Phase 3 rejects a machine capability with no worker", () => {
+  const candidate = phase3Model();
+  const capability = candidate.utilizationDocument.capabilities.find(
+    (entry) => entry.capabilityId === "DW-CAP-COMMUNITY-WORKER-SCHEDULER",
+  );
+  capability.utilizationConsumers = [];
+  includesError(phase3Errors(candidate), "machine capability has no worker or dormant declaration");
+});
+
+test("Phase 3 rejects duplicate client business logic without a finding", () => {
+  const candidate = phase3Model();
+  const capability = candidate.utilizationDocument.capabilities.find(
+    (entry) => entry.capabilityId === "DW-CAP-ACCOUNT-DATA-EXPORT",
+  );
+  capability.canonicalConsumption = false;
+  includesError(phase3Errors(candidate), "duplicate client business logic lacks a governed finding");
+});
+
+test("Phase 3 rejects FULLY_UTILIZED with a missing expected operation", () => {
+  const candidate = phase3Model();
+  const capability = candidate.utilizationDocument.capabilities.find(
+    (entry) => entry.status === "FULLY_UTILIZED" && entry.consumedOperations.length > 0,
+  );
+  capability.consumedOperations.pop();
+  includesError(phase3Errors(candidate), "expected utilization operation is missing");
+});
+
+test("Phase 3 rejects INTENTIONALLY_PARTIAL without rationale", () => {
+  const candidate = phase3Model();
+  const capability = candidate.utilizationDocument.capabilities.find(
+    (entry) => entry.status === "INTENTIONALLY_PARTIAL",
+  );
+  capability.rationale = "";
+  includesError(phase3Errors(candidate), "INTENTIONALLY_PARTIAL lacks rationale");
 });

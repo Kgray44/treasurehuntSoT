@@ -3,23 +3,36 @@ title: Command reference
 audience: reference
 status: current
 canonical_for: command-reference
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-09
 ---
 
 # Command reference
 
-| Command                        | Purpose                            |
-| ------------------------------ | ---------------------------------- |
-| `npm run dev`                  | Start local development.           |
-| `npm run lint`                 | Run lint checks.                   |
-| `npm run typecheck`            | Check TypeScript.                  |
-| `npm test`                     | Run unit tests.                    |
-| `npm run build`                | Build the application.             |
-| `npm run docs:validate`        | Validate documentation governance. |
-| `npm run private-content:scan` | Run the private-content scanner.   |
-| `npm run validate`             | Run the complete repository gate.  |
+| Command                                                                                                             | Purpose                                                     |
+| ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `npm run dev`                                                                                                       | Start local development.                                    |
+| `npm run lint`                                                                                                      | Run lint checks.                                            |
+| `npm run typecheck`                                                                                                 | Check TypeScript.                                           |
+| `npm test`                                                                                                          | Run unit tests.                                             |
+| `npm run build`                                                                                                     | Build the application.                                      |
+| `npm run docs:validate`                                                                                             | Validate documentation governance.                          |
+| `npm run private-content:scan`                                                                                      | Run the private-content scanner.                            |
+| `npm run tideglass:compare -- --account <account-id> --chronicle <id> --from <edition-id> --to <edition-id> --json` | Run the authorized, read-only Tideglass edition diagnostic. |
+| `npm run validate`                                                                                                  | Run the complete repository gate.                           |
+| `npm run admiralty:validate`                                                                                        | Validate Admiralty Phase 1 policy.                          |
+| `npm run admiralty:migrations`                                                                                      | Rehearse its SQLite migrations.                             |
+| `npm run admiralty:journeys`                                                                                        | Run isolated browser journeys.                              |
+
+Admiralty bootstrap is dry-run first:
+`npm run admiralty:bootstrap:plan`, then the explicitly authorized
+`npm run admiralty:bootstrap:commit`. The owner-runtime controller supports
+`admiralty:walkthrough:prepare`, `start`, `status`, `reset`, and `stop`; it
+requires `ADMIRALTY_PHASE1_TASK_ROOT` below the local ProjectAdmiralty task
+directory. See [administrator bootstrap](../administrator/admiralty-bootstrap.md).
 
 Database and private-content commands require an explicitly selected, authorized environment. See [database and migrations](../developer/database-and-migrations.md).
+
+The Tideglass command is a trusted local development diagnostic. It requires an exact canonical account, Chronicle, and two immutable edition IDs; it emits a redacted server projection and never a raw snapshot. It is not an ordinary product route or a substitute for Sounding Line acceptance.
 
 ## Phase 7 correction Round 2 status
 

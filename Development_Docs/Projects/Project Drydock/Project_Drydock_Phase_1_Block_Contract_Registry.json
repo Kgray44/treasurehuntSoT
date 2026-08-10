@@ -1,0 +1,1299 @@
+{
+  "contracts": [
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [
+        {
+          "fieldPath": "configuration.backgroundAssetId",
+          "mediaTypes": ["IMAGE"],
+          "playerSafe": true,
+          "required": false
+        }
+      ],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": {
+        "body": "Write the next part of the voyage.",
+        "entranceAnimation": "ink",
+        "heading": "A new passage",
+        "textAlignment": "left",
+        "widthStyle": "reading"
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "narrative",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-narrative-v1"],
+          "fromVersion": 1,
+          "id": "drydock.narrative.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "narrative",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [
+        {
+          "fieldPath": "configuration.portraitAssetId",
+          "mediaTypes": ["IMAGE"],
+          "playerSafe": true,
+          "required": false
+        },
+        {
+          "fieldPath": "configuration.narrationAssetId",
+          "mediaTypes": ["AUDIO"],
+          "playerSafe": true,
+          "required": false
+        }
+      ],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": {
+        "body": "",
+        "inkStyle": "midnight",
+        "paperStyle": "weathered",
+        "signature": "The Captain",
+        "title": "Captain's note"
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "captainsNote",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-captainsNote-v1"],
+          "fromVersion": 1,
+          "id": "drydock.captainsNote.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "captainsNote",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [
+        {
+          "fieldPath": "configuration.illustrationAssetId",
+          "mediaTypes": ["IMAGE"],
+          "playerSafe": true,
+          "required": false
+        }
+      ],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "textAnswer" },
+      "defaultConfiguration": {
+        "acceptedAnswers": [],
+        "caseSensitive": false,
+        "hints": [],
+        "normalizeWhitespace": true,
+        "riddleText": "",
+        "riddleTitle": "A riddle",
+        "wrongAnswerFeedback": "That answer does not turn the lock."
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "riddle",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-riddle-v1"],
+          "fromVersion": 1,
+          "id": "drydock.riddle.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "textAnswer",
+      "type": "riddle",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [
+        { "fieldPath": "configuration.assetId", "mediaTypes": ["IMAGE"], "playerSafe": true, "required": false }
+      ],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": {
+        "acknowledgmentRequired": true,
+        "body": "",
+        "buttonLabel": "Understood",
+        "heading": "Before you continue",
+        "importance": "normal"
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "information",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-information-v1"],
+          "fromVersion": 1,
+          "id": "drydock.information.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "information",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [
+        { "fieldPath": "configuration.mapAssetId", "mediaTypes": ["IMAGE"], "playerSafe": true, "required": false }
+      ],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": { "destinationVisibility": "named", "directionText": "", "heading": "Set a course" },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "travelDirection",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-travelDirection-v1"],
+          "fromVersion": 1,
+          "id": "drydock.travelDirection.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "travelDirection",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [
+        { "fieldPath": "configuration.displayAssetId", "mediaTypes": ["IMAGE"], "playerSafe": true, "required": false },
+        { "fieldPath": "configuration.mapAssetId", "mediaTypes": ["IMAGE"], "playerSafe": true, "required": false }
+      ],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": { "arrivalInstructions": "", "playerDescription": "", "playerTitle": "Destination" },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "location",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-location-v1"],
+          "fromVersion": 1,
+          "id": "drydock.location.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "location",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [
+        {
+          "code": "DRYDOCK_ACCESS_PROVIDER_FALLBACK",
+          "fieldPath": "completion.fallbackMode",
+          "obligation": "Unavailable or inaccessible provider completion requires a manual accessible fallback.",
+          "required": true
+        }
+      ],
+      "assetRequirements": [],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "captainManual" },
+      "defaultConfiguration": {
+        "allowCaptainOverride": true,
+        "captainNotification": "The crew is awaiting arrival approval.",
+        "pendingText": "Awaiting a truthful bearing…",
+        "prompt": "Confirm when you have arrived."
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "arrivalCheck",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-arrivalCheck-v1"],
+          "fromVersion": 1,
+          "id": "drydock.arrivalCheck.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "arrivalCheck",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [
+        {
+          "code": "DRYDOCK_ACCESS_IMAGE_TEXT_ALTERNATIVE",
+          "fieldPath": "configuration.altText",
+          "obligation": "A player-facing image requires meaningful alternative text or explicit decorative classification.",
+          "required": true
+        }
+      ],
+      "assetRequirements": [
+        { "fieldPath": "configuration.assetId", "mediaTypes": ["IMAGE"], "playerSafe": true, "required": true }
+      ],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": {
+        "altText": "",
+        "caption": "",
+        "displayMode": "journalFrame",
+        "entranceMotion": "reveal",
+        "focalX": 50,
+        "focalY": 50,
+        "objectFit": "cover"
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "image",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-image-v1"],
+          "fromVersion": 1,
+          "id": "drydock.image.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "image",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [
+        {
+          "code": "DRYDOCK_ACCESS_MOTION_MEANING",
+          "fieldPath": "configuration.nonMotionMeaning",
+          "obligation": "A transformation must preserve its meaning without motion.",
+          "required": false
+        }
+      ],
+      "assetRequirements": [
+        { "fieldPath": "configuration.beforeAssetId", "mediaTypes": ["IMAGE"], "playerSafe": true, "required": true },
+        { "fieldPath": "configuration.afterAssetId", "mediaTypes": ["IMAGE"], "playerSafe": true, "required": true },
+        { "fieldPath": "configuration.audioAssetId", "mediaTypes": ["AUDIO"], "playerSafe": true, "required": false }
+      ],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": {
+        "alignment": { "focalX": 50, "focalY": 50, "opacity": 50, "rotation": 0, "scale": 1, "x": 0, "y": 0 },
+        "caption": "",
+        "duration": 3200,
+        "holdAfter": 900,
+        "holdBefore": 600,
+        "transitionPreset": "inkSpread"
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "imageTransformation",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-imageTransformation-v1"],
+          "fromVersion": 1,
+          "id": "drydock.imageTransformation.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "imageTransformation",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [
+        {
+          "code": "DRYDOCK_ACCESS_VIDEO_CAPTIONS",
+          "fieldPath": "configuration.captionsAssetId",
+          "obligation": "Player-facing video requires captions and a poster fallback.",
+          "required": true
+        }
+      ],
+      "assetRequirements": [
+        {
+          "accessibilityFallback": "configuration.captionsAssetId",
+          "fieldPath": "configuration.videoAssetId",
+          "mediaTypes": ["VIDEO"],
+          "playerSafe": true,
+          "required": true
+        },
+        { "fieldPath": "configuration.posterAssetId", "mediaTypes": ["IMAGE"], "playerSafe": true, "required": true },
+        {
+          "fieldPath": "configuration.captionsAssetId",
+          "mediaTypes": ["DOCUMENT"],
+          "playerSafe": true,
+          "required": true
+        }
+      ],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": { "autoplay": true, "minimumWatchDuration": 0, "skippable": true },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "cinematic",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-cinematic-v1"],
+          "fromVersion": 1,
+          "id": "drydock.cinematic.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "cinematic",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [
+        {
+          "code": "DRYDOCK_ACCESS_AUDIO_TRANSCRIPT",
+          "fieldPath": "configuration.transcript",
+          "obligation": "Player-facing audio requires a transcript.",
+          "required": true
+        }
+      ],
+      "assetRequirements": [
+        {
+          "accessibilityFallback": "configuration.transcript",
+          "fieldPath": "configuration.audioAssetId",
+          "mediaTypes": ["AUDIO"],
+          "playerSafe": true,
+          "required": true
+        }
+      ],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": {
+        "loop": false,
+        "playbackMode": "controls",
+        "title": "Audio",
+        "transcript": "",
+        "volume": 0.8
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "audio",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-audio-v1"],
+          "fromVersion": 1,
+          "id": "drydock.audio.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "audio",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [
+        {
+          "fieldPath": "configuration.revealArtworkId",
+          "mediaTypes": ["IMAGE"],
+          "playerSafe": true,
+          "required": false
+        },
+        { "fieldPath": "configuration.revealVideoId", "mediaTypes": ["VIDEO"], "playerSafe": true, "required": false },
+        { "fieldPath": "configuration.audioAssetId", "mediaTypes": ["AUDIO"], "playerSafe": true, "required": false }
+      ],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": {
+        "addToCollection": true,
+        "assemblyDefinitionId": null,
+        "componentRole": null,
+        "correctionOfGrantId": null,
+        "correctionReason": null,
+        "custodyKind": "PERSONAL",
+        "discoveringMembershipId": null,
+        "loreDescription": "",
+        "loreTitle": "Recovered treasure",
+        "ordinaryObjectLabel": "",
+        "personalGrantState": "COLLECTED",
+        "receiptState": "ACTIVE",
+        "recipientPolicy": "CREW_COLLECTION_ONLY",
+        "requiredCrewRole": null,
+        "revealAnimation": "lantern",
+        "selectedRecipientProfileIds": []
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "artifactReveal",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-artifactReveal-v1"],
+          "fromVersion": 1,
+          "id": "drydock.artifactReveal.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "artifactReveal",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [
+        { "fieldPath": "configuration.baseAssetId", "mediaTypes": ["IMAGE"], "playerSafe": true, "required": true },
+        {
+          "fieldPath": "configuration.revealedAssetId",
+          "mediaTypes": ["IMAGE"],
+          "playerSafe": true,
+          "required": false
+        },
+        { "fieldPath": "configuration.audioAssetId", "mediaTypes": ["AUDIO"], "playerSafe": true, "required": false }
+      ],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": { "duration": 2800, "messageText": "", "revealStyle": "moonlight" },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "hiddenMessageReveal",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-hiddenMessageReveal-v1"],
+          "fromVersion": 1,
+          "id": "drydock.hiddenMessageReveal.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "hiddenMessageReveal",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": { "celebrationStyle": "quiet", "progressLabel": "Recovered", "quantity": 1 },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "collectionUpdate",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-collectionUpdate-v1"],
+          "fromVersion": 1,
+          "id": "drydock.collectionUpdate.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "collectionUpdate",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": {
+        "captainOverride": true,
+        "confirmationStyle": "standard",
+        "primaryLabel": "Continue",
+        "prompt": "Ready to continue?",
+        "secondaryLabel": ""
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "confirmation",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-confirmation-v1"],
+          "fromVersion": 1,
+          "id": "drydock.confirmation.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "confirmation",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["configuration.choices[].targetBlockId", "nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["CHOICE"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["configuration.choices[].targetBlockId", "nextBlockId"],
+        "maximum": 20,
+        "minimum": 2,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": {
+        "choices": [
+          { "id": "choice-a", "label": "First course", "targetBlockId": "" },
+          { "id": "choice-b", "label": "Second course", "targetBlockId": "" }
+        ],
+        "prompt": "Choose a course.",
+        "reversible": false
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "choice",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-choice-v1"],
+          "fromVersion": 1,
+          "id": "drydock.choice.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "choice",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "textAnswer" },
+      "defaultConfiguration": {
+        "acceptedAnswers": [],
+        "caseSensitive": false,
+        "feedback": "Try another bearing.",
+        "hints": [],
+        "normalizeWhitespace": true,
+        "prompt": "Enter the answer."
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "textAnswer",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-textAnswer-v1"],
+          "fromVersion": 1,
+          "id": "drydock.textAnswer.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "textAnswer",
+      "type": "textAnswer",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "captainManual" },
+      "defaultConfiguration": {
+        "allowRetry": true,
+        "captainInstruction": "Approve when the crew has completed the task.",
+        "waitingText": "The Captain is checking the chart."
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "captainApproval",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-captainApproval-v1"],
+          "fromVersion": 1,
+          "id": "drydock.captainApproval.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "captainManual",
+      "type": "captainApproval",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "timer" },
+      "defaultConfiguration": { "allowCaptainSkip": true, "durationSeconds": 5, "waitingText": "The tide is turning…" },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "wait",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-wait-v1"],
+          "fromVersion": 1,
+          "id": "drydock.wait.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "timer",
+      "type": "wait",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": [
+          "configuration.successTargetBlockId",
+          "configuration.failureTargetBlockId",
+          "nextBlockId"
+        ],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["SUCCESS", "FAILURE"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["configuration.successTargetBlockId", "configuration.failureTargetBlockId", "nextBlockId"],
+        "maximum": 2,
+        "minimum": 2,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "automatic" },
+      "defaultConfiguration": {
+        "expression": {
+          "root": {
+            "kind": "compare",
+            "left": { "kind": "variable", "variableId": "" },
+            "operator": "equals",
+            "right": { "kind": "literal", "value": true, "valueType": "BOOLEAN" }
+          },
+          "schemaVersion": 1
+        },
+        "failureTargetBlockId": "",
+        "operator": "equals",
+        "successTargetBlockId": "",
+        "value": true,
+        "variable": ""
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "condition",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-condition-v1"],
+          "fromVersion": 1,
+          "id": "drydock.condition.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "condition",
+      "variableReads": [
+        { "access": "READ", "fieldPath": "configuration.expression", "identityFieldPath": "configuration.variable" }
+      ],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "automatic" },
+      "defaultConfiguration": {
+        "operation": "set",
+        "privacy": "PLAYER_SAFE",
+        "scope": "SESSION",
+        "value": true,
+        "valueType": "boolean",
+        "variable": "flag",
+        "variableId": "var-new",
+        "variableName": "flag"
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "setVariable",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-setVariable-v1"],
+          "fromVersion": 1,
+          "id": "drydock.setVariable.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "setVariable",
+      "variableReads": [],
+      "variableWrites": [
+        {
+          "access": "WRITE",
+          "fieldPath": "configuration.variableId",
+          "identityFieldPath": "configuration.variableName",
+          "operations": ["assign", "increment", "decrement", "toggle"]
+        }
+      ]
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": {
+        "animation": "seal",
+        "completionMessage": "Chapter complete",
+        "nextChapterBehavior": "continue",
+        "returnToMap": false,
+        "summary": ""
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "chapterComplete",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-chapterComplete-v1"],
+          "fromVersion": 1,
+          "id": "drydock.chapterComplete.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "chapterComplete",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": [],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 0,
+        "minimum": 0,
+        "terminal": true
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": {
+        "completionMessage": "Your voyage is complete.",
+        "credits": "",
+        "finaleContent": "The final mark is written.",
+        "finaleHeading": "Voyage complete",
+        "replayAvailable": true
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "taleComplete",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-taleComplete-v1"],
+          "fromVersion": 1,
+          "id": "drydock.taleComplete.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "taleComplete",
+      "variableReads": [],
+      "variableWrites": []
+    }
+  ],
+  "generatedBy": "scripts/drydock/generate-contract-artifacts.ts",
+  "schemaVersion": 1
+}

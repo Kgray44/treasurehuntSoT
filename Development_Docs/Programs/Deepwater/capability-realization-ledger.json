@@ -8535,6 +8535,8 @@
             "edge-return-account-roles",
             "edge-return-account-security",
             "edge-return-account-sessions",
+            "edge-return-account-support-access",
+            "edge-return-admin",
             "edge-return-captain-library",
             "edge-return-captain-sessions-sessionid",
             "edge-return-captain-tales-taleid",
@@ -8543,9 +8545,7 @@
             "edge-return-community",
             "edge-return-community-artifacts",
             "edge-return-community-audio",
-            "edge-return-community-chronicles",
-            "edge-return-community-collections",
-            "edge-return-community-collections-slug"
+            "edge-return-community-chronicles"
           ],
           "status": "VERIFIED"
         },
@@ -10910,6 +10910,8 @@
             "edge-return-account-roles",
             "edge-return-account-security",
             "edge-return-account-sessions",
+            "edge-return-account-support-access",
+            "edge-return-admin",
             "edge-return-captain-library",
             "edge-return-captain-sessions-sessionid",
             "edge-return-captain-tales-taleid",
@@ -10918,9 +10920,7 @@
             "edge-return-community",
             "edge-return-community-artifacts",
             "edge-return-community-audio",
-            "edge-return-community-chronicles",
-            "edge-return-community-collections",
-            "edge-return-community-collections-slug"
+            "edge-return-community-chronicles"
           ],
           "status": "VERIFIED"
         },
@@ -15109,6 +15109,236 @@
     },
     {
       "audience": {
+        "privacyClass": "CONSENTED_RESTRICTED_DIAGNOSTIC_METADATA",
+        "privilegeRequirements": ["ACTIVE_SUPPORT_GRANT", "CAPABILITY_AUTHORIZATION", "RECENT_ASSURANCE"],
+        "roles": ["ACCOUNT_OWNER", "ADMINISTRATOR", "SUPPORT_OPERATOR"]
+      },
+      "capabilityId": "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+      "catalogMapping": {
+        "declaredLimitations": [
+          "Owner acceptance does not imply deployment or acceptance of later Admiralty phases",
+          "Owner-accepted mainline candidate; canonical integration and remote parity remain pending",
+          "Phase 2 and all later operational command-center capabilities remain dormant",
+          "Production MySQL execution, live-provider behavior, and physical assistive-technology validation remain external",
+          "The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09"
+        ],
+        "declaredProgram": "Project Admiralty",
+        "declaredStatus": "BRANCH_COMPLETE_NOT_MERGED",
+        "declaredSubfeatures": [
+          "Additive SQLite and MySQL migration parity",
+          "Explicit dry-run-first administrator bootstrap",
+          "Living 92-entry capability-floor registry",
+          "Non-revealing unauthorized admin route behavior",
+          "Sanitized canonical administrative audit evidence",
+          "Server-side role and capability resolution",
+          "Session-bound recent privileged assurance",
+          "Task-owned synthetic browser and owner-walkthrough runtimes",
+          "User-approved target, operator, scope, and time-bounded Support Access"
+        ],
+        "declaredSurfaces": ["/account/support-access", "/admin"],
+        "featureCatalogId": "FT-B010",
+        "mapping": "PARENT"
+      },
+      "currentRealization": {
+        "classification": "FULLY_REALIZED",
+        "confidence": "MEDIUM",
+        "highestRung": "OWNER_ACCEPTED",
+        "secondaryFlags": []
+      },
+      "evidence": {
+        "journeyIds": [],
+        "ownerAcceptance": "UNKNOWN",
+        "references": [
+          {
+            "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-001",
+            "freshness": "CURRENT",
+            "kind": "FEATURE_CATALOG",
+            "reference": "Development_Docs/Features/catalog/admiralty.json#FT-B010",
+            "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+          },
+          {
+            "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-002",
+            "freshness": "BOUNDED",
+            "kind": "COMMIT",
+            "reference": "49c2f59d6d75791edbdba84f22f5ec1595d2d129",
+            "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+          },
+          {
+            "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-003",
+            "freshness": "CURRENT",
+            "kind": "SOURCE_PATH",
+            "reference": "src/admiralty/authorization.ts",
+            "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+          },
+          {
+            "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-004",
+            "freshness": "CURRENT",
+            "kind": "SOURCE_PATH",
+            "reference": "src/admiralty/support-access.ts",
+            "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+          },
+          {
+            "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-005",
+            "freshness": "CURRENT",
+            "kind": "SOURCE_PATH",
+            "reference": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json",
+            "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+          },
+          {
+            "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-006",
+            "freshness": "CURRENT",
+            "kind": "TEST",
+            "reference": "tests/e2e/admiralty-phase1.spec.ts",
+            "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+          },
+          {
+            "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-007",
+            "freshness": "BOUNDED",
+            "kind": "COMPLETION_RECORD",
+            "reference": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md",
+            "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+          },
+          {
+            "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-008",
+            "freshness": "BOUNDED",
+            "kind": "COMPLETION_RECORD",
+            "reference": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md",
+            "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+          },
+          {
+            "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-009",
+            "freshness": "CURRENT",
+            "kind": "ROUTE_INVENTORY",
+            "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-admin",
+            "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+          },
+          {
+            "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-010",
+            "freshness": "CURRENT",
+            "kind": "ROUTE_INVENTORY",
+            "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-support-access",
+            "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+          },
+          {
+            "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-011",
+            "freshness": "CURRENT",
+            "kind": "SCREEN_CATALOG",
+            "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-support-access",
+            "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+          },
+          {
+            "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-012",
+            "freshness": "CURRENT",
+            "kind": "SCREEN_CATALOG",
+            "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-admin",
+            "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+          }
+        ],
+        "screenshotIds": [],
+        "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+        "testIds": ["tests/e2e/admiralty-phase1.spec.ts"]
+      },
+      "expectedRealization": {
+        "disposition": "SECURITY_RESTRICTED",
+        "rationale": "The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09, including its deliberately bounded administration and consent surfaces. Production MySQL execution, deployment, and later Admiralty phases remain separately governed non-claims.",
+        "requiredSurfaces": ["/account/support-access", "/admin"],
+        "terminalRung": "OWNER_ACCEPTED"
+      },
+      "gaps": {
+        "assignedOwner": null,
+        "findingIds": [],
+        "highestSeverity": null,
+        "impact": null,
+        "targetPhase": null
+      },
+      "lifecycle": {
+        "closedAt": null,
+        "firstSeen": "2026-08-09",
+        "lastAudited": "2026-08-09",
+        "regressionState": "NOT_OBSERVED"
+      },
+      "meaning": "Canonical account roles, recent privileged assurance, scoped user consent, sanitized audit evidence, and a limited administration shell establish least-privileged platform operations without creating a second identity authority.",
+      "name": "Governed Platform Administration and Consented Support Access",
+      "owner": {
+        "contract": "Privileged administration, support, moderation, and operational control surfaces",
+        "contributingProjects": ["Homeport", "One Voyage", "Security", "Wayfarer"],
+        "project": "Admiralty"
+      },
+      "quality": {
+        "accessibility": "PARTIAL",
+        "discoverability": "PARTIAL",
+        "recovery": "PARTIAL",
+        "responsive": "PARTIAL",
+        "visualMaturity": "PARTIAL"
+      },
+      "states": {
+        "missing": ["EMPTY"],
+        "represented": [
+          "ACCOUNT_RESTRICTED",
+          "AUTH_REQUIRED",
+          "CURRENT_DEFAULT",
+          "DEPENDENCY_UNAVAILABLE",
+          "INITIAL_LOADING",
+          "MUTATION_FAILURE",
+          "MUTATION_PENDING",
+          "MUTATION_SUCCESS",
+          "OFFLINE_OR_DEGRADED",
+          "PERMISSION_RESTRICTED",
+          "READY_POPULATED",
+          "RECOVERABLE_ERROR",
+          "SESSION_EXPIRED",
+          "SESSION_REVOKED_OR_INVALID"
+        ],
+        "required": ["EMPTY", "ERROR", "LOADING", "READY", "RECOVERY", "UNAUTHORIZED"]
+      },
+      "trace": {
+        "accessibility": {
+          "references": [
+            "homeport.route.inventory-complete;homeport.route.source-parity;homeport.route.classification-exclusive;homeport.route.reachability-graph;homeport.route.user-navigable-entry;homeport.route.dynamic-source;homeport.route.dynamic-invalid-id;homeport.route.dynamic-private-denial;homeport.route.tokenized-safe;homeport.route.tokenized-not-navigation;homeport.route.compatibility-disposition;homeport.route.compatibility-no-competing-ui;homeport.route.redirect-no-loop;homeport.route.redirect-target-valid;homeport.route.redirect-query-safe;homeport.route.parent-complete;homeport.route.parent-cycle-free;homeport.route.no-dead-end;homeport.route.empty-onward;homeport.route.error-recovery;homeport.route.permission-recovery;homeport.route.desktop-mobile-parity;homeport.route.no-pointer-only-entry;homeport.route.keyboard-reachability;homeport.route.compact-exit;homeport.route.immersive-exit;homeport.route.deep-link-after-natural;homeport.route.no-direct-url-only;homeport.route.placeholder-target-rejected;homeport.route.deprecated-disposition;homeport.route.development-exclusion;homeport.route.active-label-consistency;homeport.route.graph-idempotency;homeport.route.inventory-drift;homeport.route.browser-receipt-complete;homeport.route.source-bound-evidence;homeport.route.phase1-regression;homeport.route.phase2-regression;homeport.route.phase3-regression;homeport.route.phase4-regression;homeport.surface.catalog-complete;homeport.surface.source-parity;homeport.surface.visual-maturity;homeport.state.applicability;homeport.responsive.desktop;homeport.responsive.mobile;homeport.accessibility.semantic;homeport.motion.reduced-motion;homeport.media.fallback"
+          ],
+          "status": "PARTIAL"
+        },
+        "authorization": {
+          "references": ["src/admiralty/authorization.ts"],
+          "status": "PARTIAL"
+        },
+        "client": {
+          "references": [],
+          "status": "UNKNOWN"
+        },
+        "domain": {
+          "references": [],
+          "status": "UNKNOWN"
+        },
+        "journey": {
+          "references": [],
+          "status": "ABSENT"
+        },
+        "navigation": {
+          "references": ["/account/support-access", "edge-account-support-access"],
+          "status": "PARTIAL"
+        },
+        "projection": {
+          "references": [],
+          "status": "UNKNOWN"
+        },
+        "service": {
+          "references": ["src/admiralty/authorization.ts", "src/admiralty/support-access.ts"],
+          "status": "PARTIAL"
+        },
+        "suspectedFirstLossPoint": null,
+        "transport": {
+          "references": [],
+          "status": "NOT_APPLICABLE"
+        },
+        "ui": {
+          "references": ["src/app/account/support-access/page.tsx", "src/app/admin/page.tsx"],
+          "status": "PARTIAL"
+        }
+      }
+    },
+    {
+      "audience": {
         "privacyClass": "PUBLIC_OR_ACCOUNT_GOVERNED",
         "privilegeRequirements": ["ROUTE_POLICY"],
         "roles": ["PLAYER"]
@@ -17496,6 +17726,8 @@
             "edge-return-account-roles",
             "edge-return-account-security",
             "edge-return-account-sessions",
+            "edge-return-account-support-access",
+            "edge-return-admin",
             "edge-return-captain-library",
             "edge-return-captain-sessions-sessionid",
             "edge-return-captain-tales-taleid",
@@ -17510,9 +17742,7 @@
             "edge-return-community-creators",
             "edge-return-community-creators-handle",
             "edge-return-community-featured",
-            "edge-return-community-guides",
-            "edge-return-community-guides-slug",
-            "edge-return-community-maps"
+            "edge-return-community-guides"
           ],
           "status": "VERIFIED"
         },
@@ -18189,6 +18419,8 @@
             "edge-return-account-roles",
             "edge-return-account-security",
             "edge-return-account-sessions",
+            "edge-return-account-support-access",
+            "edge-return-admin",
             "edge-return-captain-library",
             "edge-return-captain-sessions-sessionid",
             "edge-return-captain-tales-taleid",
@@ -18203,9 +18435,7 @@
             "edge-return-community-creators",
             "edge-return-community-creators-handle",
             "edge-return-community-featured",
-            "edge-return-community-guides",
-            "edge-return-community-guides-slug",
-            "edge-return-community-maps"
+            "edge-return-community-guides"
           ],
           "status": "VERIFIED"
         },
@@ -19840,15 +20070,15 @@
             "edge-return-account-roles",
             "edge-return-account-security",
             "edge-return-account-sessions",
+            "edge-return-account-support-access",
+            "edge-return-admin",
             "edge-return-captain-library",
             "edge-return-captain-sessions-sessionid",
             "edge-return-captain-tales-taleid",
             "edge-return-captain-voyages-playthroughid-player-preview",
             "edge-return-chronicles-taleslug",
             "edge-return-community",
-            "edge-return-community-artifacts",
-            "edge-return-community-audio",
-            "edge-return-community-chronicles"
+            "edge-return-community-artifacts"
           ],
           "status": "VERIFIED"
         },
@@ -20820,6 +21050,157 @@
         "ui": {
           "references": ["src/app/studio/tales/[taleId]/page.tsx"],
           "status": "VERIFIED"
+        }
+      }
+    },
+    {
+      "audience": {
+        "privacyClass": "INTERNAL_ENGINEERING_METADATA",
+        "privilegeRequirements": ["REPOSITORY_OR_SERVICE_ACCESS"],
+        "roles": ["CREATOR_SERVICE", "DEVELOPER"]
+      },
+      "capabilityId": "DW-CAP-TIDEGLASS-SEMANTIC-EDITION-COMPARISON",
+      "catalogMapping": {
+        "declaredLimitations": [
+          "Ordinary user comparison routes and polished What Changed interaction are outside Phase 1.",
+          "Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them."
+        ],
+        "declaredProgram": "Project Tideglass Phase 1",
+        "declaredStatus": "BRANCH_COMPLETE_NOT_MERGED",
+        "declaredSubfeatures": [
+          "Deterministic Change Sets and receipts",
+          "Exact edition and checksum binding",
+          "Read-only cross-domain invariance",
+          "Server-authorized redacted projections",
+          "Stable identity and graph comparison",
+          "Versioned semantic normalization"
+        ],
+        "declaredSurfaces": ["npm run tideglass:compare", "src/tideglass"],
+        "featureCatalogId": "FT-B009",
+        "mapping": "PARENT"
+      },
+      "currentRealization": {
+        "classification": "INTERNAL_BY_DESIGN",
+        "confidence": "MEDIUM",
+        "highestRung": "SERVICE",
+        "secondaryFlags": ["UNVERIFIED"]
+      },
+      "evidence": {
+        "journeyIds": [],
+        "ownerAcceptance": "NOT_REQUIRED",
+        "references": [
+          {
+            "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-001",
+            "freshness": "CURRENT",
+            "kind": "FEATURE_CATALOG",
+            "reference": "Development_Docs/Features/catalog/studio.json#FT-B009",
+            "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+          },
+          {
+            "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-002",
+            "freshness": "CURRENT",
+            "kind": "SOURCE_PATH",
+            "reference": "src/tideglass/service.ts",
+            "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+          },
+          {
+            "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-003",
+            "freshness": "CURRENT",
+            "kind": "TEST",
+            "reference": "tests/tideglass",
+            "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+          },
+          {
+            "evidenceId": "DW-EV-TIDEGLASS-SEMANTIC-EDITION-COMPARISON-004",
+            "freshness": "BOUNDED",
+            "kind": "COMPLETION_RECORD",
+            "reference": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md",
+            "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+          }
+        ],
+        "screenshotIds": [],
+        "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
+        "testIds": ["tests/tideglass"]
+      },
+      "expectedRealization": {
+        "disposition": "MACHINE_CONSUMER",
+        "rationale": "Tideglass Phase 1 is a read-only internal comparison foundation with bounded branch evidence; it does not claim an ordinary user route, deployment, or owner acceptance.",
+        "requiredSurfaces": ["npm run tideglass:compare", "src/tideglass"],
+        "terminalRung": "SERVICE"
+      },
+      "gaps": {
+        "assignedOwner": null,
+        "findingIds": [],
+        "highestSeverity": null,
+        "impact": null,
+        "targetPhase": null
+      },
+      "lifecycle": {
+        "closedAt": null,
+        "firstSeen": "2026-08-09",
+        "lastAudited": "2026-08-09",
+        "regressionState": "NOT_OBSERVED"
+      },
+      "meaning": "A read-only authority compares exact immutable Chronicle editions through deterministic semantic normalization, stable identity matching, domain comparators, redacted Change Sets, and source-bound receipts.",
+      "name": "Tideglass Semantic Edition Comparison Foundation",
+      "owner": {
+        "contract": "Edition-difference and comparison semantics",
+        "contributingProjects": ["Drydock", "One Voyage"],
+        "project": "Tideglass"
+      },
+      "quality": {
+        "accessibility": "NOT_APPLICABLE",
+        "discoverability": "NOT_APPLICABLE",
+        "recovery": "NOT_APPLICABLE",
+        "responsive": "NOT_APPLICABLE",
+        "visualMaturity": "NOT_APPLICABLE"
+      },
+      "states": {
+        "missing": ["FAILURE", "SUCCESS"],
+        "represented": [],
+        "required": ["FAILURE", "SUCCESS"]
+      },
+      "trace": {
+        "accessibility": {
+          "references": [],
+          "status": "NOT_APPLICABLE"
+        },
+        "authorization": {
+          "references": [],
+          "status": "NOT_APPLICABLE"
+        },
+        "client": {
+          "references": [],
+          "status": "NOT_APPLICABLE"
+        },
+        "domain": {
+          "references": [],
+          "status": "UNKNOWN"
+        },
+        "journey": {
+          "references": [],
+          "status": "NOT_APPLICABLE"
+        },
+        "navigation": {
+          "references": [],
+          "status": "NOT_APPLICABLE"
+        },
+        "projection": {
+          "references": [],
+          "status": "UNKNOWN"
+        },
+        "service": {
+          "references": ["src/tideglass/service.ts"],
+          "status": "PARTIAL"
+        },
+        "suspectedFirstLossPoint": null,
+        "transport": {
+          "references": [],
+          "status": "NOT_APPLICABLE"
+        },
+        "ui": {
+          "references": [],
+          "status": "NOT_APPLICABLE"
         }
       }
     },
@@ -23037,6 +23418,8 @@
             "edge-return-account-roles",
             "edge-return-account-security",
             "edge-return-account-sessions",
+            "edge-return-account-support-access",
+            "edge-return-admin",
             "edge-return-captain-library",
             "edge-return-captain-sessions-sessionid",
             "edge-return-captain-tales-taleid",
@@ -23051,9 +23434,7 @@
             "edge-return-community-creators",
             "edge-return-community-creators-handle",
             "edge-return-community-featured",
-            "edge-return-community-guides",
-            "edge-return-community-guides-slug",
-            "edge-return-community-maps"
+            "edge-return-community-guides"
           ],
           "status": "VERIFIED"
         },
@@ -23852,7 +24233,7 @@
     }
   ],
   "generation": {
-    "catalogEntries": 41,
+    "catalogEntries": 43,
     "deterministic": true,
     "sourceInputs": [
       "Development_Docs/Features/catalog",

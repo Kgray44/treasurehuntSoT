@@ -152,7 +152,7 @@ async function appendEvent(
 }
 
 async function createRequest(tx: Prisma.TransactionClient, sessionId: string, block: PublishedBlock) {
-  const providerType = providerForBlock(block.blockType, block.configuration);
+  const providerType = providerForBlock(block.blockType, block.configuration, block.completion);
   if (!providerType) return null;
   if (futureProviders.has(providerType))
     throw new Error(`${providerType} is reserved for a future paired helper and cannot be active in Phase 1.`);

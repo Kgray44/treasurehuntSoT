@@ -1,0 +1,524 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "Project Deepwater",
+  "phase": "Phase 3 - Raise the Capability",
+  "auditDate": "2026-08-10",
+  "baseOriginMainSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
+  "auditedSourceSha": "3e235e85b974183f3b0888814a15697596f73730",
+  "phase3ControlPlaneAcceptedMainSha": "cf08ed0954e0bfd8279229604d3bec5c1beea4ae",
+  "finalReconciledMainSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
+  "finalPhase3Commit": "ca135585a62f445cd4331df1a7dd21203bd50219",
+  "schemaImpact": "DEEPWATER_CONTROL_PLANE_SCHEMAS_ONLY",
+  "productSourceImpact": "NONE",
+  "featureCatalogImpact": "UPDATED_BY_ACCEPTED_DOCUMENTATION_SLICES",
+  "phase2AcceptedCapabilityCount": 53,
+  "expectedCurrentCapabilityCount": 55,
+  "currentMainCapabilityAdditions": [
+    {
+      "capabilityId": "DW-CAP-TIDEGLASS-SEMANTIC-EDITION-COMPARISON",
+      "canonicalOwner": "Tideglass",
+      "acceptedMainSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
+      "basis": "Project Tideglass Phase 1 reached accepted main after Phase 3 activation and before coordination publication."
+    },
+    {
+      "capabilityId": "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+      "canonicalOwner": "Admiralty",
+      "acceptedMainSha": "fe5e18eb6312c2571616a8faf2dfe1c8583cbd9f",
+      "basis": "Project Admiralty Phase 1 reached owner-accepted canonical main after Phase 3 activation and before final Admiralty record publication."
+    }
+  ],
+  "branch": "codex/project-deepwater-phase3-mainline-reconciliation",
+  "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase3-mainline",
+  "lifecycle": {
+    "state": "MAINLINE_ACCEPTED",
+    "mainlineState": "MAINLINE_ACCEPTED",
+    "validation": "SOURCE_BOUND_RELEASE_GO_HOSTED_MAINLINE_AND_ACTUAL_MAIN_PASSED",
+    "reconciliation": "IMPLEMENTATION_ACCEPTED_PR_33"
+  },
+  "authorityGaps": [
+    {
+      "owner": "Landfall",
+      "status": "STANDALONE_GOVERNING_DOCUMENT_NOT_PRESENT",
+      "basis": "Current accepted source, the Global Product Governance Standard, Feature Catalog, Homeport records, and accepted Landfall references remain the bounded authority."
+    },
+    {
+      "owner": "Watchglass",
+      "status": "STANDALONE_GOVERNING_DOCUMENT_NOT_PRESENT",
+      "basis": "Current accepted source, the Global Product Governance Standard, One Voyage verification contracts, and accepted Watchglass references remain the bounded authority."
+    }
+  ],
+  "manualCapabilityPolicies": {
+    "DW-CAP-ACCOUNT-DATA-EXPORT": {
+      "operations": [
+        "request versioned account export",
+        "download authorized export",
+        "represent pending, ready, expired, and failure states"
+      ]
+    },
+    "DW-CAP-ACCOUNT-EMAIL-CHANGE": {
+      "operations": [
+        "request email change",
+        "confirm bounded email-change token",
+        "notify the prior address",
+        "represent conflict, expiry, and delivery failure"
+      ]
+    },
+    "DW-CAP-ACCOUNT-LIFECYCLE-DEACTIVATION": {
+      "operations": [
+        "deactivate account",
+        "reactivate account",
+        "schedule deletion",
+        "cancel deletion",
+        "process due deletion"
+      ]
+    },
+    "DW-CAP-COMMUNITY-BACKUP-RESTORE": {
+      "operations": ["create logical backup", "verify backup manifest", "rehearse isolated restore"],
+      "status": "INTERNAL_ONLY",
+      "rationale": "Backup and restore are bounded operator workflows; public exposure would weaken operational safety."
+    },
+    "DW-CAP-COMMUNITY-OPERATIONS-HEALTH": {
+      "operations": [
+        "collect provider health",
+        "represent configured, unavailable, degraded, and stale states",
+        "project secret-safe operator evidence"
+      ]
+    },
+    "DW-CAP-COMMUNITY-WORKER-SCHEDULER": {
+      "operations": [
+        "enqueue durable work",
+        "claim and heartbeat leases",
+        "retry with bounded backoff",
+        "surface terminal or dead-letter state",
+        "recover expired leases"
+      ],
+      "status": "INTERNAL_ONLY",
+      "rationale": "The durable worker and scheduler are machine consumers; ordinary users must not invoke queue or lease primitives."
+    },
+    "DW-CAP-COMPATIBILITY-OBSERVATION": {
+      "operations": [
+        "record bounded compatibility use",
+        "summarize privacy-safe observation",
+        "evaluate retirement gate"
+      ],
+      "status": "NOT_APPLICABLE",
+      "rationale": "The retained observer is deprecated compatibility evidence and must not regain an ordinary active consumer."
+    },
+    "DW-CAP-DEVELOPMENT-OPERATIONAL-TOOLING": {
+      "status": "INTERNAL_ONLY",
+      "rationale": "Development and validation operations are intentionally consumed by developers and CI rather than exposed as product actions."
+    },
+    "DW-CAP-DOCUMENTATION-GOVERNANCE-CATALOG": {
+      "status": "INTERNAL_ONLY",
+      "rationale": "Ledgerlight validators and generators are repository automation consumers, not product UI."
+    },
+    "DW-CAP-GOVERNED-VERIFICATION-CONTROL-PLANE": {
+      "status": "INTERNAL_ONLY",
+      "rationale": "Sounding Line is a verification control plane consumed by CI and authorized local runners."
+    },
+    "DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS": {
+      "status": "PARTIALLY_UTILIZED",
+      "blockedOperations": {
+        "Edition comparison": "DW-FIND-EDITION-COMPARISON-SEMANTIC-UNDERUTILIZATION"
+      },
+      "blockedMetadata": [
+        "semantic change category",
+        "explainable significance",
+        "audience-safe before and after evidence"
+      ],
+      "rationale": "Immutable publishing, checksums, forks, and version history are consumed. The current comparison consumer still presents storage-oriented paths and serialized values instead of the governed Tideglass semantic projection."
+    },
+    "DW-CAP-INTEGRATED-WHOLE-PRODUCT-VOYAGE": {
+      "status": "FULLY_UTILIZED",
+      "rationale": "All locally implemented Homeport journeys consume their accepted contracts; the remaining owner decision is an acceptance rung, not an unused operation."
+    },
+    "DW-CAP-PRIVATE-BACKUP-RESTORE": {
+      "operations": [
+        "create private-content backup manifest",
+        "verify protected restore inputs",
+        "rehearse isolated restore"
+      ],
+      "status": "INTERNAL_ONLY",
+      "rationale": "Private-content backup and restore remain bounded operator workflows with no public consumer."
+    },
+    "DW-CAP-PRIVATE-PROVIDER-HEALTH": {
+      "operations": [
+        "collect private provider health",
+        "represent unavailable, degraded, and stale states",
+        "project redacted operational identifiers"
+      ]
+    },
+    "DW-CAP-PRIVATE-REPAIR-OPERATIONS": {
+      "operations": ["plan bounded repair", "execute authorized repair", "verify repair receipt"],
+      "status": "INTENTIONALLY_PARTIAL",
+      "rationale": "Repair execution is security restricted and intentionally available only to approved operators with audit evidence; no generic public or account-owner repair surface is allowed.",
+      "intentionallyUnconsumed": ["unrestricted direct repair"]
+    },
+    "DW-CAP-PUBLIC-ORIGIN-TRUST-BOUNDARY": {
+      "operations": [
+        "validate configured public origin",
+        "construct trusted public callback URL",
+        "reject request-derived external origins"
+      ],
+      "status": "INTERNAL_ONLY",
+      "rationale": "The trust boundary is consumed by server-side redirect and message construction code and has no safe user-invoked operation."
+    },
+    "DW-CAP-SECURITY-PRIVACY-PLATFORM": {
+      "status": "INTENTIONALLY_PARTIAL",
+      "rationale": "Security primitives are consumed through owning services and allowlisted projections; raw rate-limit, credential, scanner, and concurrency internals are intentionally withheld from ordinary users.",
+      "intentionallyUnconsumed": ["public raw security diagnostics", "client-side credential inspection"]
+    },
+    "DW-CAP-TRANSACTIONAL-EMAIL-DELIVERY": {
+      "operations": [
+        "deliver account email through the selected provider",
+        "persist secret-safe delivery receipt",
+        "observe provider availability",
+        "observe delivery, bounce, complaint, failure, and staleness"
+      ],
+      "status": "PARTIALLY_UTILIZED",
+      "blockedOperations": {
+        "observe provider availability": "DW-FIND-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION",
+        "observe delivery, bounce, complaint, failure, and staleness": "DW-FIND-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION"
+      },
+      "metadata": [
+        "provider availability",
+        "configuration classification",
+        "delivery lifecycle state",
+        "safe failure category",
+        "last lifecycle transition"
+      ],
+      "blockedMetadata": [
+        "provider availability",
+        "configuration classification",
+        "delivery lifecycle state",
+        "safe failure category",
+        "last lifecycle transition"
+      ],
+      "omittedMetadata": [
+        "recipient address",
+        "message body",
+        "verification code",
+        "action token",
+        "provider credential"
+      ],
+      "phase3Disposition": "OWNER_PROJECT_WORK",
+      "rationale": "Delivery is consumed by account flows, but safe health and receipt lifecycle truth has no authenticated operator projection on accepted main."
+    },
+    "DW-CAP-VERIFICATION-PROVIDER-FRAMEWORK": {
+      "status": "PARTIALLY_UTILIZED",
+      "blockedOperations": {
+        "Versioned evidence envelope": "DW-FIND-VERIFICATION-PROVIDER-REALIZATION-GAP"
+      },
+      "blockedMetadata": ["real-provider availability", "provider evidence provenance"],
+      "phase3Disposition": "EXTERNAL_DEPENDENCY",
+      "rationale": "The simulator, request lifecycle, Captain override, and recovery are consumed; no accepted real provider emits the evidence envelope."
+    }
+  },
+  "newFindings": [
+    {
+      "findingId": "DW-FIND-EDITION-COMPARISON-SEMANTIC-UNDERUTILIZATION",
+      "capabilityId": "DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS",
+      "severity": "MEDIUM",
+      "status": "ASSIGNED",
+      "confidence": "HIGH",
+      "gapFamilies": ["DW-SVC", "DW-PROJ", "DW-UI"],
+      "firstLossPoint": "PROJECTION",
+      "rootCause": "The accepted comparePublishedVersions path compares serialized snapshot fields and the Studio consumer renders internal paths and before/after serialized values. It does not consume a schema-normalized semantic Change Set or audience-safe Tideglass projection.",
+      "currentBehavior": "Creator Studio provides Compare to current, but its result is a storage-oriented structured diff rather than governed semantic edition intelligence.",
+      "expectedBehavior": "All edition-comparison consumers use the deterministic Tideglass semantic comparison authority, preserve exact edition identities and checksums, and receive the audience-safe projection appropriate to the requesting role.",
+      "canonicalOwner": "Tideglass",
+      "contributingOwners": ["One Voyage", "Shipwright", "Wayfarer"],
+      "assignedProjectPhase": "Tideglass and Shipwright owner-coordinated follow-on; no later phase is started by Deepwater",
+      "mainlineDependency": "Accepted Tideglass semantic comparison authority plus owner-coordinated Studio consumer migration",
+      "closureEvidence": "Accepted-main Tideglass semantic engine and safe projection replace the storage-oriented comparison consumer; focused semantic, privacy, and Studio integration tests pass; Sounding Line accepts the owner slice.",
+      "evidence": [
+        "src/chronicle/studio-service.ts",
+        "src/components/studio/TaleEditor.tsx",
+        "src/app/api/studio/tales/[taleId]/versions/compare/route.ts",
+        "Development_Docs/Projects/Project Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf"
+      ]
+    }
+  ],
+  "findingTransitions": {
+    "DW-FIND-CATALOG-SURFACE-FT-005": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Player fragment names /join/[token], /player/invitation, and /player/library; PR #24 merged as 9937af957c1c92c9767b4255705a17f3e189904b after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-007": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-10",
+      "closureEvidence": "Accepted Helm fragment promotes FT-007 to MAINLINE and names /captain, /captain/library, /captain/sessions/[sessionId], /captain/voyages/[playthroughId]/player-preview, and /player/playthroughs/[playthroughId]; PR #32 merged validated head 7e2a4fc886c1e2bc62061c5c0dc69c1e08870f44 as 3e235e85b974183f3b0888814a15697596f73730 after 40/40 protected checks, hosted Sounding Line RELEASE_GO with 37/37 PASSED and CLEAN, and exact-main 7/7 PASSED and CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-015": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Player fragment names /player/playthroughs/[playthroughId]/journal; PR #24 merged as 9937af957c1c92c9767b4255705a17f3e189904b after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-016": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Player fragment names /player/playthroughs/[playthroughId]/journal; PR #24 merged as 9937af957c1c92c9767b4255705a17f3e189904b after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-017": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Player fragment names /player/playthroughs/[playthroughId]/journal; PR #24 merged as 9937af957c1c92c9767b4255705a17f3e189904b after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-018": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Player fragment names /player/playthroughs/[playthroughId]/journal; PR #24 merged as 9937af957c1c92c9767b4255705a17f3e189904b after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-019": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Player fragment names /player/playthroughs/[playthroughId]/journal; PR #24 merged as 9937af957c1c92c9767b4255705a17f3e189904b after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-020": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Player fragment names /player/playthroughs/[playthroughId]/journal; PR #24 merged as 9937af957c1c92c9767b4255705a17f3e189904b after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-021": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Player fragment names /api/player/[campaignSlug]/events, /api/player/[campaignSlug]/presence, and /player/playthroughs/[playthroughId]/journal; PR #24 merged as 9937af957c1c92c9767b4255705a17f3e189904b after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-023": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted One Voyage fragment names /api/helper/verification and /captain/sessions/[sessionId] without claiming a real provider; PR #25 merged as 0ded9be4af04feb1785fd9e56abbacdd39f54b3d after hosted Sounding Line RELEASE_GO with 30/30 receipts CLEAN."
+    },
+    "DW-FIND-CATALOG-SURFACE-FT-025": {
+      "from": {
+        "status": "ASSIGNED",
+        "closedAt": null,
+        "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      },
+      "status": "CLOSED",
+      "closedAt": "2026-08-09",
+      "closureEvidence": "Accepted Harborlight fragment names /community and /studio/exchange; PR #26 merged as 9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1 after exact-head local PASS/CLEAN and hosted Sounding Line RELEASE_GO with all 36 checks successful and every finalization receipt CLEAN."
+    }
+  },
+  "catalogSlices": {
+    "FT-005": "DW-P3-SLICE-CATALOG-PLAYER",
+    "FT-015": "DW-P3-SLICE-CATALOG-PLAYER",
+    "FT-016": "DW-P3-SLICE-CATALOG-PLAYER",
+    "FT-017": "DW-P3-SLICE-CATALOG-PLAYER",
+    "FT-018": "DW-P3-SLICE-CATALOG-PLAYER",
+    "FT-019": "DW-P3-SLICE-CATALOG-PLAYER",
+    "FT-020": "DW-P3-SLICE-CATALOG-PLAYER",
+    "FT-021": "DW-P3-SLICE-CATALOG-PLAYER",
+    "FT-023": "DW-P3-SLICE-CATALOG-ONE-VOYAGE",
+    "FT-025": "DW-P3-SLICE-CATALOG-HARBORLIGHT"
+  },
+  "slices": [
+    {
+      "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
+      "title": "Reconcile Player Feature Catalog route identities",
+      "canonicalOwner": "Ledgerlight",
+      "contributingOwners": ["One Voyage", "Wayfarer", "Wakebook", "Landfall"],
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "concurrencyClass": "B",
+      "status": "MAINLINE_ACCEPTED",
+      "baseSourceSha": "cf08ed0954e0bfd8279229604d3bec5c1beea4ae",
+      "branch": "codex/deepwater-phase3-catalog-player",
+      "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-p3-catalog-player",
+      "ownedPaths": ["Development_Docs/Features/catalog/player.json"],
+      "excludedPaths": ["src", "prisma", "Development_Docs/Features/FEATURE_CATALOG.md"],
+      "hardDependencies": ["Current accepted Homeport route inventory"],
+      "mainlineSafetyContract": "The fragment-only correction records existing accepted route truth; cancelling every later Deepwater slice leaves product behavior unchanged and documentation more accurate.",
+      "verificationPlan": [
+        "npm run features:sync",
+        "npm run features:validate",
+        "npm run docs:index",
+        "npm run docs:validate",
+        "Sounding Line local-change",
+        "Phase 3 coordination reconciliation after accepted-main merge"
+      ],
+      "closureEvidence": [
+        "Accepted player.json records /join/[token], /player/invitation, /player/library, and /player/playthroughs/[playthroughId]/journal plus the two bounded Player APIs.",
+        "PR #24 exact head dc9be8e0089e2029e7198f1b03bbd84ec9b55795 reached hosted Sounding Line RELEASE_GO with 30/30 receipts PASSED and CLEAN; evidence digest 4dc0f75b4aa2f8e683d622b525f04bfd7de46acd9aefc31ba39019d9c06cd3a3.",
+        "Protected merge 9937af957c1c92c9767b4255705a17f3e189904b is an ancestor of the reconciled current main."
+      ],
+      "acceptedMainSha": "9937af957c1c92c9767b4255705a17f3e189904b"
+    },
+    {
+      "sliceId": "DW-P3-SLICE-CATALOG-ONE-VOYAGE",
+      "title": "Reconcile One Voyage Feature Catalog route identities",
+      "canonicalOwner": "One Voyage",
+      "contributingOwners": ["Ledgerlight"],
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "concurrencyClass": "B",
+      "status": "MAINLINE_ACCEPTED",
+      "baseSourceSha": "bbf5e0d991006227ed4097a95b9c89997354798e",
+      "branch": "codex/deepwater-phase3-catalog-one-voyage",
+      "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-p3-catalog-one-voyage",
+      "ownedPaths": ["Development_Docs/Features/catalog/one-voyage.json"],
+      "excludedPaths": ["src", "prisma", "Development_Docs/Features/FEATURE_CATALOG.md"],
+      "hardDependencies": ["Current accepted Homeport route inventory", "One Voyage provider-framework authority"],
+      "mainlineSafetyContract": "The fragment-only correction records existing accepted helper and Captain route truth without enabling a provider or changing runtime behavior.",
+      "verificationPlan": [
+        "npm run features:sync",
+        "npm run features:validate",
+        "npm run docs:index",
+        "npm run docs:validate",
+        "Sounding Line local-change",
+        "Phase 3 coordination reconciliation after accepted-main merge"
+      ],
+      "closureEvidence": [
+        "Accepted one-voyage.json records /api/helper/verification as an API boundary and /captain/sessions/[sessionId] as the Captain consumer without claiming a real provider.",
+        "PR #25 exact head d65ac8781236697841a12b799aa0e7f26798df38 reached hosted Sounding Line RELEASE_GO with 30/30 receipts PASSED and CLEAN; evidence digest 9df6b8e0359841a1ce720b4a65b3eb6470eb505c9e3cd944437ef7dad85fddfc.",
+        "Protected merge 0ded9be4af04feb1785fd9e56abbacdd39f54b3d is an ancestor of the reconciled current main."
+      ],
+      "acceptedMainSha": "0ded9be4af04feb1785fd9e56abbacdd39f54b3d"
+    },
+    {
+      "sliceId": "DW-P3-SLICE-CATALOG-HARBORLIGHT",
+      "title": "Reconcile Harborlight Feature Catalog route identities",
+      "canonicalOwner": "Harborlight",
+      "contributingOwners": ["Ledgerlight"],
+      "category": "DOCUMENTATION_RECONCILIATION",
+      "concurrencyClass": "B",
+      "status": "MAINLINE_ACCEPTED",
+      "baseSourceSha": "f07fbb693e32f6b1069870fae9da668ed3392d4b",
+      "branch": "codex/deepwater-phase3-catalog-harborlight",
+      "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-p3-catalog-harborlight",
+      "ownedPaths": ["Development_Docs/Features/catalog/harborlight.json"],
+      "excludedPaths": ["src", "prisma", "Development_Docs/Features/FEATURE_CATALOG.md"],
+      "hardDependencies": ["Current accepted Homeport route inventory", "Harborlight listing and release authority"],
+      "mainlineSafetyContract": "The fragment-only correction records existing Community and Studio exchange routes; product behavior and Harborlight ownership remain unchanged if later work is cancelled.",
+      "verificationPlan": [
+        "npm run features:sync",
+        "npm run features:validate",
+        "npm run docs:index",
+        "npm run docs:validate",
+        "Sounding Line local-change",
+        "Phase 3 coordination reconciliation after accepted-main merge"
+      ],
+      "closureEvidence": [
+        "Accepted harborlight.json records /community and /studio/exchange as the intentional composite Community and Studio surfaces.",
+        "PR #26 exact head 38dd98e1b31251ee991b2fee52e5a998b1a22b47 passed local Sounding Line with every receipt CLEAN and no invalid evidence; evidence digest 566f87a84b843dae596c6d982fc418410a169c60d0c8808da20ded3861180f3a.",
+        "Hosted Sounding Line finalized RELEASE_GO with all 36 checks successful, every finalization receipt CLEAN, no invalid evidence, and digest 8b2456d4e60062948471c49ec2e56775c4e5b47e7ef5430b0f20436bc67e218a; protected merge 9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1 is the reconciled current main."
+      ],
+      "acceptedMainSha": "9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1"
+    }
+  ],
+  "validationEvidence": {
+    "sliceDecisions": [
+      {
+        "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
+        "decision": "RELEASE_GO",
+        "hostedRunId": "31330986258",
+        "receiptCount": 30,
+        "cleanupCleanCount": 30,
+        "evidenceDigest": "4dc0f75b4aa2f8e683d622b525f04bfd7de46acd9aefc31ba39019d9c06cd3a3"
+      },
+      {
+        "sliceId": "DW-P3-SLICE-CATALOG-ONE-VOYAGE",
+        "decision": "RELEASE_GO",
+        "hostedRunId": "31332962528",
+        "receiptCount": 30,
+        "cleanupCleanCount": 30,
+        "evidenceDigest": "9df6b8e0359841a1ce720b4a65b3eb6470eb505c9e3cd944437ef7dad85fddfc"
+      },
+      {
+        "sliceId": "DW-P3-SLICE-CATALOG-HARBORLIGHT",
+        "decision": "RELEASE_GO",
+        "hostedRunId": "31340648169",
+        "successfulCheckCount": 36,
+        "invalidEvidenceCount": 0,
+        "evidenceDigest": "8b2456d4e60062948471c49ec2e56775c4e5b47e7ef5430b0f20436bc67e218a"
+      }
+    ],
+    "finalCandidate": {
+      "decision": "RELEASE_GO",
+      "sourceSha": "489adf51d17e3585c590dec625082599957d46d7",
+      "gate": "mainline",
+      "receiptCount": 37,
+      "cleanupCleanCount": 37,
+      "planDigest": "0ad8518a6630c28b74f5d62135302c246afa1f6f43c450da54f4c36d045638b4",
+      "evidenceDigest": "6001f5ddfc8be443d28a92210ba61aae761e2cc4ad61fc7549fcf4117cc989c3"
+    },
+    "hostedMainline": {
+      "decision": "RELEASE_GO",
+      "prNumber": 33,
+      "sourceSha": "489adf51d17e3585c590dec625082599957d46d7",
+      "mergeSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
+      "successfulCheckCount": 40,
+      "receiptCount": 37,
+      "cleanupCleanCount": 37,
+      "invalidEvidenceCount": 0,
+      "planDigest": "b55c42bd7394170381c786e39fcf62d1dade8b2d9419d45b974ab5a62571326c",
+      "evidenceDigest": "6e433bcc37bf2ea7b1d2e301a052138611360f19426e98868bec1517d185ee35"
+    },
+    "acceptedMainProof": {
+      "decision": "RELEASE_GO",
+      "sourceSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
+      "gate": "local-change",
+      "receiptCount": 7,
+      "cleanupCleanCount": 7,
+      "planDigest": "4ea1281c63689ad91c55d142c249368e706f6a3b1a9abcbbe0604191ae9ba608",
+      "evidenceDigest": "58924a2d7b8811040ad6e3e91d64ae74bd54a8164395fcd2359082db32831a65"
+    }
+  },
+  "privacy": {
+    "forbiddenPatterns": [
+      "(?i)password\\s*[=:]\\s*[^<\\s]",
+      "(?i)api[_-]?key\\s*[=:]\\s*[^<\\s]",
+      "(?i)cookie\\s*[=:]\\s*[^<\\s]",
+      "(?i)bearer\\s+[a-z0-9._-]+"
+    ]
+  }
+}

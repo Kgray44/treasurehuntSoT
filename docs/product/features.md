@@ -92,6 +92,20 @@ accessibility, and reduced-motion evidence. The evidence is local and synthetic;
 Phase 7 integrated journeys, deployment, owner acceptance, and product
 acceptance are not claimed.
 
+## Platform administration and consented support
+
+**Audience:** Administrators, support operators, security operators, and account
+owners. **Availability:** owner accepted and integrated on canonical main.
+Phase 1 adds server-resolved roles and capabilities, explicit administrator
+bootstrap, short-lived session-bound
+privileged assurance, a deliberately limited `/admin` shell, canonical
+sanitized audit evidence, a living capability registry, and user-approved
+scoped Support Access. The admin shell is absent from ordinary navigation;
+affected account owners can review, deny, approve, and revoke support requests
+through [Support Access](../user/support-access.md). The owner accepted the full
+Phase 1 walkthrough on 2026-08-09. Deployment, production MySQL, and Phase 2
+remain separate.
+
 ## Integrated whole-product voyage and owner walkthrough
 
 **Audience:** Product owner, Players, Captains, Creators, and account owners.
@@ -109,11 +123,30 @@ evidence, and an owned final walkthrough runtime. Owner Decision is
 
 ## Captain and Voyage operations
 
-**Audience:** Captains. **Availability:** available on main. Captain Library, Voyage creation, invitation management, session views, player preview, and live control foundations are available. [Guide](../user/captain-guide.md).
+**Audience:** Captains. **Availability:** current Captain foundations are
+available on main; Project Helm Phase 1 is branch-complete and not yet merged.
+Captain Library, Voyage creation, invitation management, session views, player
+preview, and live control foundations are available. The Helm candidate adds an
+explicit Captain-only or Captain + Player choice when a Voyage is created.
+Captain + Player uses the same account and one ordinary crew membership, keeps
+Captain authority separate, and opens the ordinary Player view without
+widening its story projection. Participation may be ended without removing
+Captain authority. Current acceptance is isolated and local; it is not mainline
+integration, deployment, or live-Voyage proof.
+[Guide](../user/captain-guide.md).
 
 ## Creator Studio and publishing
 
 **Audience:** Creators. **Availability:** available on main. Studio supports Chronicle settings, story blocks, locations, assets, artifact authoring, version views, and immutable publishing. [Guide](../user/creator-guide.md).
+
+Project Tideglass Phase 1 provides the accepted exact immutable edition
+comparison foundation. The accepted Phase 2 extension adds server-side
+intelligence with stable change codes, explainable significance and
+compatibility, spoiler-safe audience projections, deterministic summaries,
+append-only Creator annotations, and bounded safe APIs. Phase 2 is on main but
+adds no ordinary comparison page, navigation entry, or played-history
+qualification; those remain later work. Repository validation is local and
+synthetic, and no deployment or production MySQL execution is claimed.
 
 ## Community and artifacts
 

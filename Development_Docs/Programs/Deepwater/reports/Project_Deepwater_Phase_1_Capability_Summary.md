@@ -15,14 +15,15 @@ Audited product source: `f1c2f22dd935322c1a71eb80c51592f243dc196d`. Generated de
 | Ratio                    |   Value |
 | ------------------------ | ------: |
 | Feature Catalog mapping  | 100.00% |
-| Initial realization      |  16.98% |
-| Natural-journey evidence |  57.50% |
+| Initial realization      |  20.00% |
+| Natural-journey evidence |  56.10% |
 | Owner mapped             | 100.00% |
 
 ## Capabilities by owner
 
 | Canonical owner    | Capabilities |
 | ------------------ | -----------: |
+| Admiralty          |            1 |
 | Breakwater         |            1 |
 | Drydock            |            3 |
 | Harborlight        |            5 |
@@ -37,6 +38,7 @@ Audited product source: `f1c2f22dd935322c1a71eb80c51592f243dc196d`. Generated de
 | Security           |            2 |
 | Shipwright         |            2 |
 | Sounding Line      |            1 |
+| Tideglass          |            1 |
 | True North         |            4 |
 | Universal Language |            1 |
 | Wakebook           |            2 |
@@ -47,16 +49,16 @@ Audited product source: `f1c2f22dd935322c1a71eb80c51592f243dc196d`. Generated de
 | Terminal rung  | Capabilities |
 | -------------- | -----------: |
 | JOURNEY_PROVEN |           38 |
-| OWNER_ACCEPTED |            2 |
+| OWNER_ACCEPTED |            3 |
 | PROJECTION     |            4 |
-| SERVICE        |            9 |
+| SERVICE        |           10 |
 
 ## Evidence gaps
 
-- User-facing capabilities lacking verified discoverability evidence: 40
-- User-facing capabilities lacking complete state evidence: 31
-- User-facing capabilities lacking verified accessibility evidence: 40
-- User-facing capabilities lacking any mapped journey evidence: 17
+- User-facing capabilities lacking verified discoverability evidence: 41
+- User-facing capabilities lacking complete state evidence: 32
+- User-facing capabilities lacking verified accessibility evidence: 41
+- User-facing capabilities lacking any mapped journey evidence: 18
 - Open findings: 22
 - Prioritized Phase 2 trace items: 44
 

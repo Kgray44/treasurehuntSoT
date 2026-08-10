@@ -22,20 +22,30 @@
   {
     "id": "FT-009",
     "title": "Twenty-Three-Type Story Block System",
-    "summary": "A stable registry defines reusable story blocks, validation, metadata, and safe unknown-type behavior.",
+    "summary": "Strict versioned contracts define all twenty-three Story Block types with canonical parsing and serialization, typed variables and bounded expressions, deterministic content migration, stable issues, and compatibility-safe validation.",
     "status": "MAINLINE",
     "program": "Studio",
     "surfaces": ["/studio/chronicles/[id]"],
     "subfeatures": [
-      "Narrative and direction blocks",
-      "Media and reveal blocks",
-      "Interaction blocks",
-      "Logic and completion blocks",
-      "Safe diagnostic fallback"
+      "Strict configuration, presentation, and completion contracts",
+      "Canonical parsing and deterministic serialization",
+      "Typed variable scopes, operations, usage indexing, and safe rename propagation",
+      "Typed deterministic expression AST, checking, and bounded evaluation",
+      "Versioned migration registry with frozen historical compatibility fixtures",
+      "Stable issues and incremental validation with current Studio and runtime compatibility"
     ],
     "evidence": [
-      { "kind": "path", "value": "src/chronicle/block-registry.ts" },
-      { "kind": "path", "value": "src/chronicle/types.ts" }
+      { "kind": "path", "value": "src/drydock/index.ts" },
+      { "kind": "path", "value": "src/drydock/contracts/registry.ts" },
+      { "kind": "test", "value": "src/drydock" },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_1_Completion_Receipt.md"
+      }
+    ],
+    "limitations": [
+      "Whole-Chronicle static analysis, repair and waiver workflows, and simulation remain outside Phase 1.",
+      "Provider contracts without configured owner adapters remain explicitly unavailable."
     ],
     "catalogVersion": 1
   },
@@ -130,6 +140,48 @@
     "evidence": [
       { "kind": "path", "value": "src/chronicle/progression.ts" },
       { "kind": "path", "value": "src/server/progression.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-B009",
+    "title": "Tideglass Chronicle Edition Intelligence",
+    "summary": "The accepted server-side foundation compares exact immutable Chronicle editions, classifies and summarizes evidence deterministically, projects spoiler-safe audience views, and preserves append-only Creator context without changing published or live Voyage truth.",
+    "status": "MAINLINE",
+    "program": "Project Tideglass Phases 1-2",
+    "surfaces": ["npm run tideglass:compare", "src/tideglass", "/api/chronicles/:chronicleId/comparison"],
+    "subfeatures": [
+      "Exact edition and checksum binding",
+      "Versioned semantic normalization",
+      "Stable identity and graph comparison",
+      "Deterministic Change Sets and receipts",
+      "Stable change codes and explainable significance",
+      "Evidence-linked compatibility deltas",
+      "Deterministic concise and detailed summaries",
+      "Public, Player-safe, and Creator-full projections",
+      "Append-only Creator annotation revisions",
+      "Digest-validated rebuildable comparison cache",
+      "Authorized bounded comparison and annotation APIs",
+      "Read-only cross-domain invariance"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/tideglass/service.ts" },
+      { "kind": "path", "value": "src/tideglass/intelligence.ts" },
+      { "kind": "path", "value": "src/tideglass/annotations.ts" },
+      { "kind": "test", "value": "tests/tideglass" },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md"
+      },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Completion_Receipt.md"
+      }
+    ],
+    "limitations": [
+      "The accepted Phase 2 extension remains server-side and does not create a polished comparison experience.",
+      "Ordinary user comparison routes, played-history qualification, and polished What Changed interaction remain outside Phase 2.",
+      "Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them."
     ],
     "catalogVersion": 1
   }

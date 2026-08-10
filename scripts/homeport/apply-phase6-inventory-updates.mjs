@@ -24,8 +24,18 @@ const evidenceRoot = path.join(auditRoot, "evidence", "phase6");
 mkdirSync(evidenceRoot, { recursive: true });
 const sourceIndex = process.argv.indexOf("--source-sha");
 const sourceSha = sourceIndex >= 0 ? process.argv[sourceIndex + 1] : implementationSourceSha;
+const reconciliationIndex = process.argv.indexOf("--reconciliation-source-sha");
+const existingAcceptanceRegistry = JSON.parse(
+  readFileSync(path.join(auditRoot, "Project_Homeport_Phase_6_Screen_Acceptance_Registry.json"), "utf8"),
+);
+const catalogReconciliationSourceSha =
+  reconciliationIndex >= 0
+    ? process.argv[reconciliationIndex + 1]
+    : (existingAcceptanceRegistry.catalogReconciliationSourceSha ?? implementationSourceSha);
 const final = process.argv.includes("--final");
 if (sourceSha !== implementationSourceSha) throw new Error(`PHASE6_SOURCE_SHA_INVALID:${sourceSha}`);
+if (!/^[0-9a-f]{40}$/u.test(catalogReconciliationSourceSha))
+  throw new Error(`PHASE6_RECONCILIATION_SOURCE_SHA_INVALID:${catalogReconciliationSourceSha}`);
 
 const readJson = (name, directory = auditRoot) => JSON.parse(readFileSync(path.join(directory, name), "utf8"));
 const writeJson = (name, value, directory = auditRoot) =>
@@ -98,6 +108,9 @@ function writeCsv(name, headers, records, directory = auditRoot) {
 
 const nodes = readJson("Project_Homeport_Phase_5_Route_Node_Registry.json").nodes;
 const nodeByRoute = new Map(nodes.map((node) => [node.routeId, node]));
+const existingAcceptanceByRoute = new Map(
+  existingAcceptanceRegistry.screens.flatMap((screen) => screen.routeIds.map((routeId) => [routeId, screen])),
+);
 const existingScreens = readJson("Homeport_Screen_Catalog.json").screens;
 const virtualScreens = existingScreens.filter((screen) => screen.routeIds.length === 0);
 const sources = discoverAppRouteSources(root);
@@ -117,6 +130,7 @@ const screenRegistry = {
   schemaVersion: "1.0.0",
   phase: "PROJECT_HOMEPORT_PHASE_6",
   sourceSha,
+  catalogReconciliationSourceSha,
   architectureFreezeSha,
   fixtureVersion,
   generatedAt,
@@ -470,7 +484,7 @@ function makeScreen(node, legacy = {}) {
     accessibilityStatus: evidence.some((record) => record.accessibilityResult === "ZERO_SERIOUS_OR_CRITICAL")
       ? "AUTOMATED_AND_SEMANTIC_ACCEPTED"
       : "CONTRACT_ONLY",
-    sourceSha,
+    sourceSha: existingAcceptanceByRoute.get(node.routeId)?.sourceSha ?? catalogReconciliationSourceSha,
     fixtureVersion,
     currentMaturity: legacy.currentVisualMaturity ?? "PARTIAL",
     finalMaturity: finalMaturity(node),
@@ -584,12 +598,12 @@ function updateLegacyArtifacts() {
     const catalog = readJson(file);
     if (file === "Homeport_Screen_Catalog.json") catalog.maturityVocabulary = screenRegistry.maturityVocabulary;
     catalog.screens = screenRecords.map((current) => {
-      const existing = catalog.screens.find(
-        (screen) =>
-          screen.screenId === current.screenId ||
-          current.routeIds.some((routeId) => (screen.routeIds ?? []).includes(routeId)),
-      );
-      if (!existing) throw new Error(`PHASE6_LEGACY_SCREEN_RECORD_MISSING:${current.screenId}`);
+      const existing =
+        catalog.screens.find(
+          (screen) =>
+            screen.screenId === current.screenId ||
+            current.routeIds.some((routeId) => (screen.routeIds ?? []).includes(routeId)),
+        ) ?? makeLegacyCatalogScreen(current, file === "Homeport_Screen_Contract_Catalog.json");
       existing.screenId = current.screenId;
       existing.routeIds = [...current.routeIds];
       return existing;
@@ -614,6 +628,7 @@ function updateLegacyArtifacts() {
       architectureFreezeSha,
       fixtureVersion,
       screenRegistryDigest: digest(screenRegistry),
+      catalogReconciliationSourceSha,
     };
     writeJson(file, catalog);
   }
@@ -687,4 +702,55 @@ The Phase 6 screen acceptance system records ${screenRecords.length} human scree
     journey = journey.replace(/<!-- PHASE6_SURFACES_START -->[\s\S]*?<!-- PHASE6_SURFACES_END -->/u, block);
   else journey = `${journey.trimEnd()}\n\n${block}\n`;
   writeFileSync(journeyPath, journey, "utf8");
+}
+
+function makeLegacyCatalogScreen(current, contractCatalog) {
+  const node = current.routeIds.length ? nodeByRoute.get(current.routeIds[0]) : null;
+  const record = {
+    screenId: current.screenId,
+    routeIds: [...current.routeIds],
+    productArea: current.productArea,
+    owner: current.specialistOwner,
+    shellMode: current.shellMode,
+    primaryUserGoal: current.primaryUserGoal,
+    logicalParent: node?.logicalParentRouteId ?? null,
+    visibleEntryPoints: [...(node?.entryEdgeIds ?? [])],
+    authentication: node?.authentication ?? "NOT_APPLICABLE",
+    capabilities: [...(node?.requiredCapabilities ?? [])],
+    primaryHeading: current.primaryHeading,
+    primaryAction: current.primaryActions[0] ?? "ROUTE_SPECIFIC_PRIMARY_ACTION",
+    secondaryActions: [...current.secondaryActions],
+    dataProjection: current.dataProjection,
+    currentResponsiveComposition: "Governed desktop and mobile composition owned by the current project surface.",
+    currentKeyboardOrder: current.keyboardContract,
+    currentFocusBehavior: current.focusContract,
+    currentMotionOwner: current.motionOwner,
+    currentReducedMotionBehavior: current.reducedMotionContract,
+    applicableStates: [...current.applicableStates],
+    currentVisualMaturity: current.finalMaturity,
+    missingStates: [],
+    knownDefects: [...current.limitations],
+    screenshotIds: [...current.evidenceIds],
+    journeyIds: [],
+    targetHomeportPhase: "POST_PHASE_7_GOVERNED_EXTENSION",
+    acceptanceContract: current.testContractIds.join(";"),
+    status: "CURRENT_GOVERNED_EXTENSION",
+    phase5Implementation: {
+      state: "SOURCE_RECONCILED",
+      classification: node?.classification ?? "VIRTUAL_STATE",
+      parentRouteId: node?.logicalParentRouteId ?? null,
+      entryEdgeIds: [...(node?.entryEdgeIds ?? [])],
+      exitEdgeIds: [...(node?.exitEdgeIds ?? [])],
+    },
+  };
+  if (contractCatalog) {
+    record.contractStatus = "CURRENT_STATE_RECORDED";
+    record.targetContract = {
+      routeReachability: "Visible, role-appropriate entry or explicit contextual/deep-link classification.",
+      stateCompleteness: "Every applicable state is explicit and truthful.",
+      responsive: "Desktop, mobile, keyboard, reduced motion, and 200 percent zoom as applicable.",
+      acceptanceOwner: "Owning project owner under current Global Product Governance.",
+    };
+  }
+  return record;
 }

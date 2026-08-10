@@ -3,10 +3,19 @@ title: Testing
 audience: developer
 status: current
 canonical_for: testing-guide
-last_reviewed: 2026-08-07
+last_reviewed: 2026-08-09
 ---
 
 # Testing
+
+Project Tideglass Phase 2 is owned by the `unit.tideglass` Sounding Line
+family. It covers the retained Phase 1 exact-edition contracts plus governed
+classification/significance, compatibility, projection/count privacy,
+deterministic summaries, immutable annotation history and attacks, cache
+identity/corruption rebuild, API auth/CSRF/rate limits, and dual-provider
+migration declarations. `npm run tideglass:migrations:sqlite` uses a disposable
+database and is diagnostic evidence; final authority remains the exact-source
+Sounding Line decision.
 
 Run focused unit or route tests while changing a domain. Before review, run
 formatting, lint, type checking, unit tests, private-content scanning,

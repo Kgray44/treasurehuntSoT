@@ -107,6 +107,7 @@ model UserAccount {
   createdChronicles        Chronicle[]                  @relation("ChronicleCreatorAccount")
   authoredDrafts           TaleDraft[]                  @relation("TaleDraftAuthorAccount")
   publishedVersions        PublishedTaleVersion[]       @relation("PublishedVersionAuthorAccount")
+  tideglassAnnotations     TideglassCreatorAnnotation[] @relation("TideglassAnnotationAuthor")
   createdAssets            TaleAsset[]                  @relation("TaleAssetAuthorAccount")
   captainedSessions        TaleSession[]                @relation("TaleSessionCaptainAccount")
   createdInvitations       Invitation[]                 @relation("InvitationCreatorAccount")
@@ -123,6 +124,13 @@ model UserAccount {
   lifecycleRequests        AccountLifecycleRequest[]
   profileMedia             ProfileMedia[]
   transactionalDeliveries  TransactionalEmailDelivery[]
+  privilegedAssurances     PrivilegedAssurance[]        @relation("PrivilegedAssuranceAccount")
+  supportRequestsInitiated SupportAccessRequest[]       @relation("SupportRequestOperator")
+  supportRequestsTargeted  SupportAccessRequest[]       @relation("SupportRequestTarget")
+  supportRequestsDecided   SupportAccessRequest[]       @relation("SupportRequestDecision")
+  supportGrantsOperated    SupportAccessGrant[]         @relation("SupportGrantOperator")
+  supportGrantsTargeted    SupportAccessGrant[]         @relation("SupportGrantTarget")
+  supportGrantsRevoked     SupportAccessGrant[]         @relation("SupportGrantRevoker")
 
   @@index([status, lastSeenAt])
 }
@@ -173,17 +181,18 @@ model AccountToken {
 }
 
 model AccountSession {
-  id          String      @id @default(cuid())
-  accountId   String
-  tokenHash   String      @unique
-  csrfToken   String
-  deviceLabel String?
-  sessionType String      @default("ORDINARY") @db.VarChar(32)
-  expiresAt   DateTime
-  lastSeenAt  DateTime    @default(now())
-  revokedAt   DateTime?
-  createdAt   DateTime    @default(now())
-  account     UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  id                   String                @id @default(cuid())
+  accountId            String
+  tokenHash            String                @unique
+  csrfToken            String
+  deviceLabel          String?
+  sessionType          String                @default("ORDINARY") @db.VarChar(32)
+  expiresAt            DateTime
+  lastSeenAt           DateTime              @default(now())
+  revokedAt            DateTime?
+  createdAt            DateTime              @default(now())
+  account              UserAccount           @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  privilegedAssurances PrivilegedAssurance[]
 
   @@index([accountId, expiresAt])
 }
@@ -246,6 +255,70 @@ model SecurityEvent {
   account       UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
 
   @@index([accountId, createdAt])
+}
+
+model PrivilegedAssurance {
+  id               String         @id @default(cuid())
+  accountId        String
+  accountSessionId String
+  assuranceLevel   String         @default("ADMIN_REAUTHENTICATED")
+  method           String
+  issuedAt         DateTime       @default(now())
+  expiresAt        DateTime
+  revokedAt        DateTime?
+  correlationId    String
+  account          UserAccount    @relation("PrivilegedAssuranceAccount", fields: [accountId], references: [id], onDelete: Cascade)
+  accountSession   AccountSession @relation(fields: [accountSessionId], references: [id], onDelete: Cascade)
+
+  @@index([accountId, accountSessionId, expiresAt, revokedAt])
+  @@index([correlationId])
+}
+
+model SupportAccessRequest {
+  id                        String              @id @default(cuid())
+  requestingAdminAccountId  String
+  targetAccountId           String
+  purpose                   String
+  requestedScopes           String
+  status                    String              @default("REQUESTED")
+  requestedAt               DateTime            @default(now())
+  expiresAt                 DateTime
+  decisionAt                DateTime?
+  decisionByTargetAccountId String?
+  cancelledAt               DateTime?
+  correlationId             String              @unique
+  createdAt                 DateTime            @default(now())
+  updatedAt                 DateTime            @updatedAt
+  requestingAdmin           UserAccount         @relation("SupportRequestOperator", fields: [requestingAdminAccountId], references: [id], onDelete: Restrict)
+  targetAccount             UserAccount         @relation("SupportRequestTarget", fields: [targetAccountId], references: [id], onDelete: Restrict)
+  decisionByTargetAccount   UserAccount?        @relation("SupportRequestDecision", fields: [decisionByTargetAccountId], references: [id], onDelete: SetNull)
+  grant                     SupportAccessGrant?
+
+  @@index([targetAccountId, status, expiresAt])
+  @@index([requestingAdminAccountId, status, expiresAt])
+}
+
+model SupportAccessGrant {
+  id                 String               @id @default(cuid())
+  requestId          String               @unique
+  operatorAccountId  String
+  targetAccountId    String
+  grantedScopes      String
+  status             String               @default("ACTIVE")
+  issuedAt           DateTime             @default(now())
+  expiresAt          DateTime
+  revokedAt          DateTime?
+  revokedByAccountId String?
+  revocationReason   String?
+  correlationId      String
+  request            SupportAccessRequest @relation(fields: [requestId], references: [id], onDelete: Restrict)
+  operator           UserAccount          @relation("SupportGrantOperator", fields: [operatorAccountId], references: [id], onDelete: Restrict)
+  targetAccount      UserAccount          @relation("SupportGrantTarget", fields: [targetAccountId], references: [id], onDelete: Restrict)
+  revokedBy          UserAccount?         @relation("SupportGrantRevoker", fields: [revokedByAccountId], references: [id], onDelete: SetNull)
+
+  @@index([operatorAccountId, status, expiresAt])
+  @@index([targetAccountId, status, expiresAt])
+  @@index([correlationId])
 }
 
 model WayfarerMigrationRecord {
@@ -602,31 +675,31 @@ model LoginAttempt {
 }
 
 model Chronicle {
-  id                       String                  @id @default(cuid())
-  slug                     String                  @unique
+  id                       String                       @id @default(cuid())
+  slug                     String                       @unique
   title                    String
   subtitle                 String?
-  shortDescription         String?                 @db.Text
-  longDescription          String?                 @db.LongText
+  shortDescription         String?                      @db.Text
+  longDescription          String?                      @db.LongText
   coverAssetId             String?
-  theme                    String                  @default("CARTOGRAPHERS_TABLE")
-  status                   String                  @default("DRAFT")
-  visibility               String                  @default("PRIVATE")
+  theme                    String                       @default("CARTOGRAPHERS_TABLE")
+  status                   String                       @default("DRAFT")
+  visibility               String                       @default("PRIVATE")
   creatorId                String
   creatorAccountId         String?
   currentDraftRevisionId   String?
   latestPublishedVersionId String?
   forkedFromTaleId         String?
   forkedFromVersionId      String?
-  playerCountMin           Int                     @default(1)
-  playerCountMax           Int                     @default(4)
+  playerCountMin           Int                          @default(1)
+  playerCountMax           Int                          @default(4)
   estimatedDuration        Int?
-  contentWarnings          String?                 @db.Text
-  sortOrder                Int                     @default(0)
-  featured                 Boolean                 @default(false)
+  contentWarnings          String?                      @db.Text
+  sortOrder                Int                          @default(0)
+  featured                 Boolean                      @default(false)
   archivedAt               DateTime?
-  createdAt                DateTime                @default(now())
-  updatedAt                DateTime                @updatedAt
+  createdAt                DateTime                     @default(now())
+  updatedAt                DateTime                     @updatedAt
   drafts                   TaleDraft[]
   versions                 PublishedTaleVersion[]
   assets                   TaleAsset[]
@@ -637,7 +710,8 @@ model Chronicle {
   sessions                 TaleSession[]
   privateImports           PrivateContentImport[]
   privateAssetReferences   PrivateAssetReference[]
-  creatorAccount           UserAccount?            @relation("ChronicleCreatorAccount", fields: [creatorAccountId], references: [id], onDelete: SetNull)
+  tideglassAnnotations     TideglassCreatorAnnotation[]
+  creatorAccount           UserAccount?                 @relation("ChronicleCreatorAccount", fields: [creatorAccountId], references: [id], onDelete: SetNull)
 
   @@index([status, visibility, sortOrder])
   @@index([creatorId, updatedAt])
@@ -729,29 +803,69 @@ model BlockConnection {
 }
 
 model PublishedTaleVersion {
-  id                   String                   @id @default(cuid())
-  taleId               String
-  versionNumber        Int
-  versionLabel         String
-  publishedAt          DateTime                 @default(now())
-  publishedBy          String
-  publishedByAccountId String?
-  releaseNotes         String?                  @db.Text
-  contentSnapshot      String                   @db.LongText
-  schemaVersion        Int                      @default(1)
-  checksum             String
-  isCurrent            Boolean                  @default(true)
-  tale                 Chronicle                @relation(fields: [taleId], references: [id], onDelete: Cascade)
-  sessions             TaleSession[]
-  publishedByAccount   UserAccount?             @relation("PublishedVersionAuthorAccount", fields: [publishedByAccountId], references: [id], onDelete: SetNull)
-  communityReleases    CommunityRelease[]       @relation("CommunityReleaseSource")
-  chronicleRecords     PlayerChronicleRecord[]
-  artifactRecords      PlayerArtifactRecord[]
-  assemblyInstances    PlayerArtifactAssembly[]
+  id                         String                       @id @default(cuid())
+  taleId                     String
+  versionNumber              Int
+  versionLabel               String
+  publishedAt                DateTime                     @default(now())
+  publishedBy                String
+  publishedByAccountId       String?
+  releaseNotes               String?                      @db.Text
+  contentSnapshot            String                       @db.LongText
+  schemaVersion              Int                          @default(1)
+  checksum                   String
+  isCurrent                  Boolean                      @default(true)
+  tale                       Chronicle                    @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  sessions                   TaleSession[]
+  publishedByAccount         UserAccount?                 @relation("PublishedVersionAuthorAccount", fields: [publishedByAccountId], references: [id], onDelete: SetNull)
+  communityReleases          CommunityRelease[]           @relation("CommunityReleaseSource")
+  chronicleRecords           PlayerChronicleRecord[]
+  artifactRecords            PlayerArtifactRecord[]
+  assemblyInstances          PlayerArtifactAssembly[]
+  tideglassSourceAnnotations TideglassCreatorAnnotation[] @relation("TideglassSourceEdition")
+  tideglassTargetAnnotations TideglassCreatorAnnotation[] @relation("TideglassTargetEdition")
 
   @@unique([taleId, versionNumber])
   @@index([taleId, isCurrent])
   @@index([publishedByAccountId])
+}
+
+model TideglassCreatorAnnotation {
+  id                      String                      @id @default(cuid())
+  annotationKey           String
+  revision                Int
+  chronicleId             String
+  sourceEditionId         String
+  sourceEditionChecksum   String
+  targetEditionId         String
+  targetEditionChecksum   String
+  comparisonPolicyVersion String
+  scopeType               String
+  category                String?
+  changeRecordId          String?
+  annotationKind          String
+  headline                String?
+  body                    String?                     @db.Text
+  spoilerLevel            String
+  highlighted             Boolean                     @default(false)
+  replayGuidance          String                      @default("NO_RECOMMENDATION")
+  createdByAccountId      String
+  createdAt               DateTime                    @default(now())
+  supersedesAnnotationId  String?                     @unique
+  state                   String                      @default("ACTIVE")
+  idempotencyKey          String?
+  chronicle               Chronicle                   @relation(fields: [chronicleId], references: [id], onDelete: Restrict)
+  sourceEdition           PublishedTaleVersion        @relation("TideglassSourceEdition", fields: [sourceEditionId], references: [id], onDelete: Restrict)
+  targetEdition           PublishedTaleVersion        @relation("TideglassTargetEdition", fields: [targetEditionId], references: [id], onDelete: Restrict)
+  createdByAccount        UserAccount                 @relation("TideglassAnnotationAuthor", fields: [createdByAccountId], references: [id], onDelete: Restrict)
+  supersedes              TideglassCreatorAnnotation? @relation("TideglassAnnotationRevision", fields: [supersedesAnnotationId], references: [id], onDelete: Restrict)
+  supersededBy            TideglassCreatorAnnotation? @relation("TideglassAnnotationRevision")
+
+  @@unique([annotationKey, revision])
+  @@unique([createdByAccountId, idempotencyKey])
+  @@index([chronicleId, sourceEditionId, targetEditionId, createdAt])
+  @@index([changeRecordId])
+  @@index([createdByAccountId, createdAt])
 }
 
 model TaleAsset {

@@ -3,7 +3,7 @@ title: Engineering records
 audience: engineering
 status: current
 canonical_for: engineering-records-index
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-10
 ---
 
 # Engineering records
@@ -25,9 +25,34 @@ and sign-up through the protected staging experience with no internal-origin
 redirect. Automated protocol, security, lifecycle, and redirect-boundary proof
 also passed. See the [OAuth validation and completion record](Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md).
 
+## Project Tideglass
+
+[Project Tideglass](Projects/Project_Tideglass/README.md) owns deterministic semantic comparison of exact immutable Chronicle editions. Phase 1 is a read-only internal foundation with a safe diagnostic seam and no ordinary user-facing comparison route.
+
 ## Project Deepwater
 
-[Project Deepwater](Programs/Deepwater/README.md) governs product capability-realization and systems-audit truth. Phase 1, Sound the Depths, establishes the deterministic capability ledger, schema, ownership map, initial findings, Feature Catalog reconciliation, Phase 2 trace queue, and validation control plane. Phase 2, Trace the Current, converts that queue into complete source-bound traces, exact root causes, canonical assignments, remediation packets, and a Phase 3 realization queue without changing product behavior, schema, or data. Its classifications and maturity rungs are evidence-bound: source existence, local or synthetic validation, staging access, external-provider proof, deployment, and owner acceptance remain distinct.
+[Project Deepwater](Programs/Deepwater/README.md) governs product capability-realization and systems-audit truth. Phase 1, Sound the Depths, establishes the deterministic capability ledger, schema, ownership map, initial findings, Feature Catalog reconciliation, Phase 2 trace queue, and validation control plane. Phase 2, Trace the Current, converts that queue into complete source-bound traces, exact root causes, canonical assignments, remediation packets, and a Phase 3 realization queue without changing product behavior, schema, or data. Phase 3, Raise the Capability, reviews backend utilization, coordinates owner work, and accepts only independently mainline-safe slices; its three registered documentation slices plus accepted Helm owner evidence close eleven of seventeen route-identity findings, while final control-plane integration and actual-main proof remain pending. Its classifications and maturity rungs are evidence-bound: source existence, local or synthetic validation, staging access, external-provider proof, deployment, and owner acceptance remain distinct.
+
+## Project Helm
+
+[Project Helm](Projects/Project_Helm/README.md) governs Captain operations.
+Phase 1, **Take the Helm**, adds explicit Captain-only and Captain + Player
+participation while preserving one canonical account, ordinary Player
+membership, Voyage-scoped Captain authority, and Player-safe projection
+boundaries. Its repository records distinguish candidate validation from
+integrated-main acceptance and stop before Phase 2 operational intelligence.
+
+## Project Admiralty
+
+[Project Admiralty](Projects/Project_Admiralty/README.md) governs canonical
+platform-administration and operations authority. Phase 1, Raise the Colors,
+establishes role/capability policy, explicit administrator bootstrap,
+session-bound recent assurance, user-approved scoped Support Access, sanitized
+canonical audit evidence, an independently authorized limited admin shell, dual
+additive migrations, and a living capability-floor registry. The owner accepted
+the full Phase 1 walkthrough on 2026-08-09, and the accepted source is integrated
+on canonical main with verified parity. Deployment, production MySQL proof, and
+all later Admiralty phases remain separate, and Phase 2 remains dormant.
 
 ## Project Wakebook
 
@@ -44,6 +69,10 @@ The following owner-authored governing documents are current repository authorit
 - [Project Shipwright](Projects/Project%20Shipwright/Project_Shipwright_Creator_Studio_Authoring_Experience_Governing_Document.pdf)
 - [Project Tideglass](Projects/Project%20Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf)
 - [Project Wakebook](Projects/Project%20Wakebook/Project_Wakebook_Governing_Document.pdf)
+
+## Project Drydock
+
+[Project Drydock engineering records](Projects/Project%20Drydock/README.md) govern the typed Chronicle authoring-contract, compatibility, validation, and later simulation program. Phase 1 is limited to strict current Passage contracts, variables, expressions, schema evolution, historical fixtures, stable issues, and incremental contract validation; whole-Chronicle analysis and simulation remain later phases.
 
 ## Engineering-record template
 
