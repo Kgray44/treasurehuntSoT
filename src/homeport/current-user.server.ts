@@ -69,8 +69,13 @@ async function classifySession(session: SessionWithAccount): Promise<CurrentUser
     Boolean(session.account.claimedAt) &&
     Boolean(session.account.ordinaryWorkspaceEntryAt || session.account.status === "PENDING_VERIFICATION");
   const canUsePlayer = ordinaryEntry && session.account.profile?.status === "ACTIVE";
-  const activePlayerWorkspaceLock = canUsePlayer ? await hasActivePlayerWorkspaceLock(session.accountId) : false;
-  const canUseCaptain = !activePlayerWorkspaceLock && (ordinaryEntry || isAdministrator);
+  const [activePlayerWorkspaceLock, captainPlayerWorkspaceLock] = canUsePlayer
+    ? await Promise.all([
+        hasActivePlayerWorkspaceLock(session.accountId),
+        hasActivePlayerWorkspaceLock(session.accountId, { target: "CAPTAIN" }),
+      ])
+    : [false, false];
+  const canUseCaptain = !captainPlayerWorkspaceLock && (ordinaryEntry || isAdministrator);
   const canUseCreator = !activePlayerWorkspaceLock && (ordinaryEntry || isAdministrator);
   const canModerate = roles.has("MODERATOR") || isAdministrator;
   const canUseAdmiralty = [
@@ -125,6 +130,7 @@ async function classifySession(session: SessionWithAccount): Promise<CurrentUser
           .sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right))),
         session: [session.id, session.expiresAt, session.revokedAt],
         activePlayerWorkspaceLock,
+        captainPlayerWorkspaceLock,
       }),
     )
     .digest("hex")

@@ -3,7 +3,7 @@ title: Project Deepwater Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-deepwater-repository-index
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-10
 ---
 
 # Project Deepwater
@@ -24,10 +24,11 @@ Project Deepwater is Voyagewright's capability-realization and systems-audit pro
 - [Utilization report](reports/Project_Deepwater_Phase_3_Utilization_Report.md)
 - [Remediation report](reports/Project_Deepwater_Phase_3_Remediation_Report.md)
 - [Phase 2 to Phase 3 delta report](reports/Project_Deepwater_Phase_2_to_Phase_3_Delta_Report.md)
+- [Final report](reports/Project_Deepwater_Phase_3_Final_Report.md)
 - `reports/Project_Deepwater_Phase_3_Realization_Queue.json`
 - `reports/Project_Deepwater_Phase_4_Proof_Queue.json`
 
-Phase 3 is active and explicitly authorized. Its current artifacts are local coordination-branch evidence until the registered slices and final control-plane candidate pass Sounding Line and protected-mainline integration.
+Phase 3 is complete and accepted on protected main through PR #33 as `ca135585a62f445cd4331df1a7dd21203bd50219`. All three registered documentation slices close ten route-identity findings; accepted Helm owner evidence closes FT-007 as the eleventh documentation reconciliation. The exact candidate, hosted matrix, and actual-main SHA all received source-bound `RELEASE_GO` proof. Six catalog findings remain explicitly open, including the Tideglass semantic-consumer and Admiralty transactional-email health boundaries. Phase 4 remains unauthorized.
 
 ## Current Phase 2 records
 

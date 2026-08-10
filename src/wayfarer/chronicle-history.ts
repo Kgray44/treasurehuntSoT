@@ -100,12 +100,38 @@ export function derivePersonalTiming(
     captainWaitAccuracy: "UNAVAILABLE",
   };
 }
-function lifecycle(membershipStatus: string, sessionStatus: string) {
-  if (completedStatuses.has(membershipStatus) || sessionStatus === "COMPLETED") return "COMPLETED";
-  if (membershipStatus === "REMOVED") return "REMOVED";
+export function deriveHistoryLifecycle(membershipStatus: string, sessionStatus: string) {
+  if (["REMOVED", "LEFT"].includes(membershipStatus)) return "REMOVED";
   if (membershipStatus === "DECLINED") return "DECLINED";
+  if (membershipStatus === "SUSPENDED") return "SUSPENDED";
+  if (
+    completedStatuses.has(membershipStatus) ||
+    (sessionStatus === "COMPLETED" && ["READY", "ACTIVE_MEMBER"].includes(membershipStatus))
+  )
+    return "COMPLETED";
   if (sessionStatus === "ABANDONED") return "ABANDONED";
   return membershipStatus;
+}
+
+export function derivePersonalCompletionAt(
+  membershipStatus: string,
+  membershipCompletedAt: Date | null,
+  sessionStatus: string,
+  sessionCompletedAt: Date | null,
+) {
+  if (membershipCompletedAt) return membershipCompletedAt;
+  return deriveHistoryLifecycle(membershipStatus, sessionStatus) === "COMPLETED" ? sessionCompletedAt : null;
+}
+
+export function eventsWithinMembership<T extends { createdAt: Date }>(
+  events: T[],
+  membership: { joinedAt: Date | null; removedAt: Date | null },
+) {
+  return events.filter(
+    (event) =>
+      (!membership.joinedAt || event.createdAt >= membership.joinedAt) &&
+      (!membership.removedAt || event.createdAt < membership.removedAt),
+  );
 }
 function outcome(status: string, snapshot: PublishedTaleSnapshot, finalBlockId: string | null) {
   if (status === "COMPLETED") {
@@ -212,18 +238,24 @@ export async function materializeChronicleHistory(playerProfileId: string) {
       failures++;
       continue;
     }
-    const nextLifecycle = lifecycle(membership.status, membership.playthrough.status);
-    const summary = summarizeHistoricalEvents(snapshot, membership.playthrough.events);
-    const personalCompletedAt = membership.completedAt ?? membership.playthrough.completedAt;
+    const nextLifecycle = deriveHistoryLifecycle(membership.status, membership.playthrough.status);
+    const personalEvents = eventsWithinMembership(membership.playthrough.events, membership);
+    const summary = summarizeHistoricalEvents(snapshot, personalEvents);
+    const personalCompletedAt = derivePersonalCompletionAt(
+      membership.status,
+      membership.completedAt,
+      membership.playthrough.status,
+      membership.playthrough.completedAt,
+    );
     const nextTiming = derivePersonalTiming(membership.playthrough.startedAt, membership.joinedAt, personalCompletedAt);
-    const finalBlockId =
-      membership.playthrough.events.findLast((event) => event.eventType === "sessionCompleted")?.blockId ?? null;
+    const finalBlockId = personalEvents.findLast((event) => event.eventType === "sessionCompleted")?.blockId ?? null;
     const sourceFingerprint = sha({
       membership: {
         id: membership.id,
         status: membership.status,
         joinedAt: membership.joinedAt,
         completedAt: membership.completedAt,
+        removedAt: membership.removedAt,
       },
       session: {
         id: membership.playthrough.id,
@@ -232,7 +264,7 @@ export async function materializeChronicleHistory(playerProfileId: string) {
         completedAt: membership.playthrough.completedAt,
       },
       version: { id: version.id, checksum: version.checksum },
-      events: membership.playthrough.events.map((event) => [
+      events: personalEvents.map((event) => [
         event.id,
         event.eventType,
         event.blockId,
@@ -270,7 +302,7 @@ export async function materializeChronicleHistory(playerProfileId: string) {
           ? new Date(Math.max(+membership.playthrough.startedAt, +membership.joinedAt))
           : (membership.playthrough.startedAt ?? membership.joinedAt),
       joinedAt: membership.joinedAt,
-      completedAt: membership.completedAt ?? membership.playthrough.completedAt,
+      completedAt: personalCompletedAt,
       ...nextTiming,
       completedChapters: JSON.stringify(chapterSummarySchema.parse(summary.completedChapters)),
       optionalObjectives: JSON.stringify(unavailableSummarySchema.parse(summary.optionalObjectives)),
@@ -303,7 +335,11 @@ export async function materializeChronicleHistory(playerProfileId: string) {
           where: {
             historyRecordId_sourceMembershipId: { historyRecordId: record.id, sourceMembershipId: participant.id },
           },
-          update: {},
+          update: {
+            joinedAt: participant.joinedAt,
+            completedAt: participant.completedAt,
+            removedAt: participant.removedAt,
+          },
           create: {
             historyRecordId: record.id,
             sourceMembershipId: participant.id,

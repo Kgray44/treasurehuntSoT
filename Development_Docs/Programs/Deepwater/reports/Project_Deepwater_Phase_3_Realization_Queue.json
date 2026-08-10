@@ -13,14 +13,14 @@
   "project": "Project Deepwater",
   "queue": [
     {
-      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-PLAYER; implementation must use its fresh-main worktree.",
+      "activeProjectStatus": "Closure is present on current accepted main.",
       "capabilityId": "DW-CAP-INVITATION-CREW-LIFECYCLE",
-      "category": "DOCUMENTATION_RECONCILIATION",
+      "category": "ALREADY_CLOSED_BY_MAIN",
       "closureEvidence": [
         "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
         "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
       ],
-      "deepwaterSliceEligibility": "ELIGIBLE",
+      "deepwaterSliceEligibility": "RETIRED",
       "findingId": "DW-FIND-CATALOG-SURFACE-FT-005",
       "hardDependencies": ["Current owner-approved route identity"],
       "owner": "One Voyage",
@@ -28,17 +28,17 @@
       "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
       "severity": "LOW",
       "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
-      "status": "ASSIGNED"
+      "status": "CLOSED"
     },
     {
-      "activeProjectStatus": "The owning fragment is touched by an unaccepted Helm, Shipwright, or Tideglass lane and is excluded from Deepwater slices.",
+      "activeProjectStatus": "Closure is present on current accepted main.",
       "capabilityId": "DW-CAP-CAPTAIN-VOYAGE-OPERATIONS",
-      "category": "DOCUMENTATION_RECONCILIATION",
+      "category": "ALREADY_CLOSED_BY_MAIN",
       "closureEvidence": [
         "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
         "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
       ],
-      "deepwaterSliceEligibility": "BLOCKED_BY_ACTIVE_OWNER",
+      "deepwaterSliceEligibility": "RETIRED",
       "findingId": "DW-FIND-CATALOG-SURFACE-FT-007",
       "hardDependencies": [
         "Current owner-approved route identity",
@@ -49,7 +49,7 @@
       "recommendedIntegrationVehicle": "Helm and Ledgerlight catalog reconciliation",
       "severity": "LOW",
       "sliceId": null,
-      "status": "ASSIGNED"
+      "status": "CLOSED"
     },
     {
       "activeProjectStatus": "The owning fragment is touched by an unaccepted Helm, Shipwright, or Tideglass lane and is excluded from Deepwater slices.",
@@ -166,14 +166,14 @@
       "status": "ASSIGNED"
     },
     {
-      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-PLAYER; implementation must use its fresh-main worktree.",
+      "activeProjectStatus": "Closure is present on current accepted main.",
       "capabilityId": "DW-CAP-PLAYER-JOURNAL",
-      "category": "DOCUMENTATION_RECONCILIATION",
+      "category": "ALREADY_CLOSED_BY_MAIN",
       "closureEvidence": [
         "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
         "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
       ],
-      "deepwaterSliceEligibility": "ELIGIBLE",
+      "deepwaterSliceEligibility": "RETIRED",
       "findingId": "DW-FIND-CATALOG-SURFACE-FT-015",
       "hardDependencies": ["Current owner-approved route identity", "Refresh if Wakebook reaches accepted main"],
       "owner": "Wakebook",
@@ -181,17 +181,17 @@
       "recommendedIntegrationVehicle": "Wakebook and Ledgerlight catalog reconciliation",
       "severity": "MEDIUM",
       "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
-      "status": "ASSIGNED"
+      "status": "CLOSED"
     },
     {
-      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-PLAYER; implementation must use its fresh-main worktree.",
+      "activeProjectStatus": "Closure is present on current accepted main.",
       "capabilityId": "DW-CAP-VOYAGE-CHART",
-      "category": "DOCUMENTATION_RECONCILIATION",
+      "category": "ALREADY_CLOSED_BY_MAIN",
       "closureEvidence": [
         "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
         "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
       ],
-      "deepwaterSliceEligibility": "ELIGIBLE",
+      "deepwaterSliceEligibility": "RETIRED",
       "findingId": "DW-FIND-CATALOG-SURFACE-FT-016",
       "hardDependencies": ["Current owner-approved route identity"],
       "owner": "Landfall",
@@ -199,17 +199,17 @@
       "recommendedIntegrationVehicle": "Landfall and Ledgerlight catalog reconciliation",
       "severity": "MEDIUM",
       "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
-      "status": "ASSIGNED"
+      "status": "CLOSED"
     },
     {
-      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-PLAYER; implementation must use its fresh-main worktree.",
+      "activeProjectStatus": "Closure is present on current accepted main.",
       "capabilityId": "DW-CAP-ARTIFACT-REVEAL",
-      "category": "DOCUMENTATION_RECONCILIATION",
+      "category": "ALREADY_CLOSED_BY_MAIN",
       "closureEvidence": [
         "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
         "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
       ],
-      "deepwaterSliceEligibility": "ELIGIBLE",
+      "deepwaterSliceEligibility": "RETIRED",
       "findingId": "DW-FIND-CATALOG-SURFACE-FT-017",
       "hardDependencies": ["Current owner-approved route identity"],
       "owner": "One Voyage",
@@ -217,17 +217,17 @@
       "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
       "severity": "MEDIUM",
       "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
-      "status": "ASSIGNED"
+      "status": "CLOSED"
     },
     {
-      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-PLAYER; implementation must use its fresh-main worktree.",
+      "activeProjectStatus": "Closure is present on current accepted main.",
       "capabilityId": "DW-CAP-SIDE-QUEST-LEDGER",
-      "category": "DOCUMENTATION_RECONCILIATION",
+      "category": "ALREADY_CLOSED_BY_MAIN",
       "closureEvidence": [
         "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
         "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
       ],
-      "deepwaterSliceEligibility": "ELIGIBLE",
+      "deepwaterSliceEligibility": "RETIRED",
       "findingId": "DW-FIND-CATALOG-SURFACE-FT-018",
       "hardDependencies": ["Current owner-approved route identity"],
       "owner": "One Voyage",
@@ -235,17 +235,17 @@
       "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
       "severity": "MEDIUM",
       "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
-      "status": "ASSIGNED"
+      "status": "CLOSED"
     },
     {
-      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-PLAYER; implementation must use its fresh-main worktree.",
+      "activeProjectStatus": "Closure is present on current accepted main.",
       "capabilityId": "DW-CAP-SHIPS-LOG",
-      "category": "DOCUMENTATION_RECONCILIATION",
+      "category": "ALREADY_CLOSED_BY_MAIN",
       "closureEvidence": [
         "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
         "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
       ],
-      "deepwaterSliceEligibility": "ELIGIBLE",
+      "deepwaterSliceEligibility": "RETIRED",
       "findingId": "DW-FIND-CATALOG-SURFACE-FT-019",
       "hardDependencies": ["Current owner-approved route identity", "Refresh if Wakebook reaches accepted main"],
       "owner": "Wakebook",
@@ -253,17 +253,17 @@
       "recommendedIntegrationVehicle": "Wakebook and Ledgerlight catalog reconciliation",
       "severity": "MEDIUM",
       "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
-      "status": "ASSIGNED"
+      "status": "CLOSED"
     },
     {
-      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-PLAYER; implementation must use its fresh-main worktree.",
+      "activeProjectStatus": "Closure is present on current accepted main.",
       "capabilityId": "DW-CAP-FINALE-CHAMBER",
-      "category": "DOCUMENTATION_RECONCILIATION",
+      "category": "ALREADY_CLOSED_BY_MAIN",
       "closureEvidence": [
         "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
         "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
       ],
-      "deepwaterSliceEligibility": "ELIGIBLE",
+      "deepwaterSliceEligibility": "RETIRED",
       "findingId": "DW-FIND-CATALOG-SURFACE-FT-020",
       "hardDependencies": ["Current owner-approved route identity"],
       "owner": "One Voyage",
@@ -271,17 +271,17 @@
       "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
       "severity": "MEDIUM",
       "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
-      "status": "ASSIGNED"
+      "status": "CLOSED"
     },
     {
-      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-PLAYER; implementation must use its fresh-main worktree.",
+      "activeProjectStatus": "Closure is present on current accepted main.",
       "capabilityId": "DW-CAP-REALTIME-PRESENCE-REPLAY",
-      "category": "DOCUMENTATION_RECONCILIATION",
+      "category": "ALREADY_CLOSED_BY_MAIN",
       "closureEvidence": [
         "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
         "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
       ],
-      "deepwaterSliceEligibility": "ELIGIBLE",
+      "deepwaterSliceEligibility": "RETIRED",
       "findingId": "DW-FIND-CATALOG-SURFACE-FT-021",
       "hardDependencies": ["Current owner-approved route identity"],
       "owner": "One Voyage",
@@ -289,17 +289,17 @@
       "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
       "severity": "LOW",
       "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
-      "status": "ASSIGNED"
+      "status": "CLOSED"
     },
     {
-      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-ONE-VOYAGE; implementation must use its fresh-main worktree.",
+      "activeProjectStatus": "Closure is present on current accepted main.",
       "capabilityId": "DW-CAP-VERIFICATION-PROVIDER-FRAMEWORK",
-      "category": "DOCUMENTATION_RECONCILIATION",
+      "category": "ALREADY_CLOSED_BY_MAIN",
       "closureEvidence": [
         "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
         "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
       ],
-      "deepwaterSliceEligibility": "ELIGIBLE",
+      "deepwaterSliceEligibility": "RETIRED",
       "findingId": "DW-FIND-CATALOG-SURFACE-FT-023",
       "hardDependencies": ["Current owner-approved route identity"],
       "owner": "One Voyage",
@@ -307,17 +307,17 @@
       "recommendedIntegrationVehicle": "One Voyage and Ledgerlight catalog reconciliation",
       "severity": "LOW",
       "sliceId": "DW-P3-SLICE-CATALOG-ONE-VOYAGE",
-      "status": "ASSIGNED"
+      "status": "CLOSED"
     },
     {
-      "activeProjectStatus": "Registered as DW-P3-SLICE-CATALOG-HARBORLIGHT; implementation must use its fresh-main worktree.",
+      "activeProjectStatus": "Closure is present on current accepted main.",
       "capabilityId": "DW-CAP-COMMUNITY-EXCHANGE",
-      "category": "DOCUMENTATION_RECONCILIATION",
+      "category": "ALREADY_CLOSED_BY_MAIN",
       "closureEvidence": [
         "Focused owner tests and the applicable Sounding Line gate pass on the remediation source SHA.",
         "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
       ],
-      "deepwaterSliceEligibility": "ELIGIBLE",
+      "deepwaterSliceEligibility": "RETIRED",
       "findingId": "DW-FIND-CATALOG-SURFACE-FT-025",
       "hardDependencies": ["Current owner-approved route identity"],
       "owner": "Harborlight",
@@ -325,7 +325,7 @@
       "recommendedIntegrationVehicle": "Harborlight and Ledgerlight catalog reconciliation",
       "severity": "LOW",
       "sliceId": "DW-P3-SLICE-CATALOG-HARBORLIGHT",
-      "status": "ASSIGNED"
+      "status": "CLOSED"
     },
     {
       "activeProjectStatus": "The Tideglass foundation is accepted; Studio consumer migration remains Tideglass and Shipwright owner work, and Deepwater does not compete with the active Shipwright lane.",
@@ -405,5 +405,5 @@
     }
   ],
   "schemaVersion": "1.0.0",
-  "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+  "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
 }

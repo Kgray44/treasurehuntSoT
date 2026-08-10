@@ -176,7 +176,7 @@ Players can discover, resume, archive, and reconcile exact-edition Voyage experi
 **Status:** MAINLINE
 **Program or subsystem:** Captain
 
-Captains create, launch, operate, recover, and reconcile live Voyages through authoritative commands.
+Captains create, launch, operate, recover, and reconcile live Voyages through authoritative commands, with an explicit option to join the same Voyage as an ordinary Player.
 
 ### Important subfeatures
 
@@ -185,15 +185,22 @@ Captains create, launch, operate, recover, and reconcile live Voyages through au
 - Command idempotency
 - Pause and resume
 - Operational audit trail
+- Independent Captain authority and Player membership
+- Captain-only and Captain plus Player participation modes
+- Player-safe perspective switching
+- Membership-bounded personal history and artifact eligibility
 
 ### Primary surfaces
 
-`/captain`, `/captain/voyages/[id]`
+`/captain`, `/captain/library`, `/captain/sessions/[sessionId]`, `/captain/voyages/[playthroughId]/player-preview`, `/player/playthroughs/[playthroughId]`
 
 ### Evidence
 
 - path: `src/server/admin-command.ts`
 - path: `src/domain/admin.ts`
+- path: `src/helm/captain-participation.ts`
+- path: `src/components/platform/CaptainLibrary.tsx`
+- path: `src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts`
 
 ---
 
@@ -228,24 +235,32 @@ Creator Studio supports protected Chronicle authoring, graph editing, previews, 
 **Status:** MAINLINE
 **Program or subsystem:** Studio
 
-A stable registry defines reusable story blocks, validation, metadata, and safe unknown-type behavior.
+Strict versioned contracts define all twenty-three Story Block types with canonical parsing and serialization, typed variables and bounded expressions, deterministic content migration, stable issues, and compatibility-safe validation.
 
 ### Important subfeatures
 
-- Narrative and direction blocks
-- Media and reveal blocks
-- Interaction blocks
-- Logic and completion blocks
-- Safe diagnostic fallback
+- Strict configuration, presentation, and completion contracts
+- Canonical parsing and deterministic serialization
+- Typed variable scopes, operations, usage indexing, and safe rename propagation
+- Typed deterministic expression AST, checking, and bounded evaluation
+- Versioned migration registry with frozen historical compatibility fixtures
+- Stable issues and incremental validation with current Studio and runtime compatibility
 
 ### Primary surfaces
 
 `/studio/chronicles/[id]`
 
+### Meaningful limitations
+
+- Whole-Chronicle static analysis, repair and waiver workflows, and simulation remain outside Phase 1.
+- Provider contracts without configured owner adapters remain explicitly unavailable.
+
 ### Evidence
 
-- path: `src/chronicle/block-registry.ts`
-- path: `src/chronicle/types.ts`
+- path: `src/drydock/index.ts`
+- path: `src/drydock/contracts/registry.ts`
+- test: `src/drydock`
+- completion-record: `Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_1_Completion_Receipt.md`
 
 ---
 
@@ -672,7 +687,7 @@ A governed community system supports immutable reusable Chronicle packages, lice
 
 ### Primary surfaces
 
-`/tales`, `/studio/community`
+`/community`, `/studio/exchange`
 
 ### Evidence
 
@@ -1258,12 +1273,12 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 
 ---
 
-## FT-B009 - Tideglass Semantic Edition Comparison Foundation
+## FT-B009 - Tideglass Chronicle Edition Intelligence
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Tideglass Phase 1
+**Program or subsystem:** Project Tideglass Phases 1-2
 
-A read-only authority compares exact immutable Chronicle editions through deterministic semantic normalization, stable identity matching, domain comparators, redacted Change Sets, and source-bound receipts.
+The accepted server-side foundation compares exact immutable Chronicle editions, classifies and summarizes evidence deterministically, projects spoiler-safe audience views, and preserves append-only Creator context without changing published or live Voyage truth.
 
 ### Important subfeatures
 
@@ -1271,23 +1286,33 @@ A read-only authority compares exact immutable Chronicle editions through determ
 - Versioned semantic normalization
 - Stable identity and graph comparison
 - Deterministic Change Sets and receipts
-- Server-authorized redacted projections
+- Stable change codes and explainable significance
+- Evidence-linked compatibility deltas
+- Deterministic concise and detailed summaries
+- Public, Player-safe, and Creator-full projections
+- Append-only Creator annotation revisions
+- Digest-validated rebuildable comparison cache
+- Authorized bounded comparison and annotation APIs
 - Read-only cross-domain invariance
 
 ### Primary surfaces
 
-`npm run tideglass:compare`, `src/tideglass`
+`npm run tideglass:compare`, `src/tideglass`, `/api/chronicles/:chronicleId/comparison`
 
 ### Meaningful limitations
 
-- Ordinary user comparison routes and polished What Changed interaction are outside Phase 1.
+- The accepted Phase 2 extension remains server-side and does not create a polished comparison experience.
+- Ordinary user comparison routes, played-history qualification, and polished What Changed interaction remain outside Phase 2.
 - Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.
 
 ### Evidence
 
 - path: `src/tideglass/service.ts`
+- path: `src/tideglass/intelligence.ts`
+- path: `src/tideglass/annotations.ts`
 - test: `tests/tideglass`
 - completion-record: `Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md`
+- completion-record: `Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Completion_Receipt.md`
 
 ---
 

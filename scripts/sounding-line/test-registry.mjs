@@ -12,6 +12,9 @@ const ignored = new Set(["node_modules", ".git", ".next", "coverage", "artifacts
 const homeportContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
   .contracts.map((contract) => contract.id)
   .filter((contractId) => contractId.startsWith("homeport."));
+const helmContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
+  .contracts.map((contract) => contract.id)
+  .filter((contractId) => contractId.startsWith("helm."));
 const hash = (text) => createHash("sha256").update(text).digest("hex").slice(0, 20);
 const execFileAsync = promisify(execFile);
 const normal = (value) => value.replaceAll("\\", "/");
@@ -33,8 +36,21 @@ const admiraltyContracts = [
   "admiralty.phase2.registry-activation",
   "admiralty.phase2.responsive-accessibility",
 ];
+const tideglassContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
+  .contracts.map((contract) => contract.id)
+  .filter((contractId) => contractId.startsWith("tideglass-"));
+
+function isHelmFile(file) {
+  return (
+    file.includes("project-helm") ||
+    file.startsWith("src/helm/") ||
+    file.includes(".helm.test.") ||
+    file.includes("src/app/api/captain/playthroughs/")
+  );
+}
 
 function ownerFor(file) {
+  if (isHelmFile(file)) return "project-helm";
   if (file.includes("drydock")) return "drydock";
   if (file.includes("admiralty")) return "project-admiralty";
   if (file.includes("tideglass")) return "tideglass";
@@ -50,6 +66,7 @@ function ownerFor(file) {
 }
 
 function unitFamily(file) {
+  if (isHelmFile(file)) return "unit.helm";
   if (file.startsWith("src/drydock/") || file.startsWith("scripts/drydock/")) return "unit.drydock";
   if (file === "src/admiralty/read-models.test.ts") return "service.admiralty";
   if (file.startsWith("src/admiralty/") || file.startsWith("scripts/admiralty/")) return "unit.admiralty";
@@ -74,6 +91,7 @@ function unitFamily(file) {
 }
 
 function componentFamily(file) {
+  if (isHelmFile(file)) return "component.helm";
   if (file.includes("admiralty") || file === "src/app/admin/page.test.tsx") return "component.admiralty";
   if (file.includes("components/homeport")) return "component.homeport";
   if (file.includes("components/animation")) return "component.animation";
@@ -93,6 +111,7 @@ function componentFamily(file) {
 
 function browserFamily(project, file, title) {
   const value = `${file} ${title}`.toLowerCase();
+  if (file.includes("project-helm") || project.includes("helm")) return "browser.helm";
   if (value.includes("admiralty") || project.includes("admiralty")) return "browser.admiralty";
   // Only the dedicated project is the fast, dependency-free access sentinel.
   // Chromium/WebKit copies remain primary browser.auth cases and must not
@@ -124,15 +143,11 @@ function browserFamily(project, file, title) {
 }
 
 function contractFor(file, family) {
+  if (isHelmFile(file) || family === "unit.helm" || family === "component.helm" || family === "browser.helm")
+    return helmContracts;
   if (file.includes("drydock") || family === "unit.drydock") return ["drydock-authoring-contracts"];
   if (file.includes("admiralty") || family.includes("admiralty")) return admiraltyContracts;
-  if (file.includes("tideglass") || family === "unit.tideglass")
-    return [
-      "tideglass-exact-edition-pair",
-      "tideglass-semantic-determinism",
-      "tideglass-safe-projection",
-      "tideglass-read-only-invariance",
-    ];
+  if (file.includes("tideglass") || family === "unit.tideglass") return tideglassContractsFor(file);
   if (file.includes("deepwater") || family === "unit.deepwater") return ["deepwater.capability-realization-integrity"];
   if (file.includes("homeport") || family === "unit.homeport") return homeportContracts;
   if (file.includes("private-content")) return ["sealed-hold-private-delivery", "public-privacy-projection"];
@@ -144,6 +159,30 @@ function contractFor(file, family) {
     return ["authentication-authorization"];
   if (family.includes("one-voyage") || family.includes("invitations")) return ["invitation-acceptance"];
   return ["authentication-authorization"];
+}
+
+function tideglassContractsFor(file) {
+  const phase1 = [
+    "tideglass-exact-edition-pair",
+    "tideglass-semantic-determinism",
+    "tideglass-safe-projection",
+    "tideglass-read-only-invariance",
+  ];
+  if (file.includes("phase2-intelligence"))
+    return [
+      "tideglass-change-classification",
+      "tideglass-compatibility-deltas",
+      "tideglass-deterministic-summary",
+      "tideglass-safe-projection",
+      "tideglass-rebuildable-cache",
+    ];
+  if (file.includes("phase2-annotations")) return ["tideglass-creator-annotations"];
+  if (file.includes("phase2-api"))
+    return ["tideglass-api-security", "tideglass-safe-projection", "tideglass-creator-annotations"];
+  if (file.includes("phase2-authorization")) return ["tideglass-api-security", "tideglass-creator-annotations"];
+  if (file.includes("phase2-cache-migration"))
+    return ["tideglass-rebuildable-cache", "tideglass-creator-annotations", "tideglass-migration-parity"];
+  return phase1.filter((contractId) => tideglassContracts.includes(contractId));
 }
 
 function metadata(file, family, browser = null) {

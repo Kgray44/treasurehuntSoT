@@ -221,6 +221,20 @@ describe("Project Homeport current-user authority", () => {
     expect(context.status === "authenticated" && decideCapability(context, "captain").status).toBe("permission-denied");
   });
 
+  it("helm.phase1 keeps Captain and Player workspaces available together for a resource-authorized Voyage", async () => {
+    mocks.activePlayerWorkspaceLock.mockImplementation((_accountId: string, options?: { target?: string }) =>
+      Promise.resolve(options?.target !== "CAPTAIN"),
+    );
+    const context = await resolveCurrentUser();
+    expect(context).toMatchObject({
+      status: "authenticated",
+      capabilities: { canUsePlayer: true, canUseCaptain: true, canUseCreator: false },
+      workspaces: expect.arrayContaining(["player", "captain"]),
+    });
+    expect(context.status === "authenticated" && decideCapability(context, "captain").status).toBe("allowed");
+    expect(context.status === "authenticated" && decideCapability(context, "creator").status).toBe("permission-denied");
+  });
+
   it("homeport.permission.explicit preserves authenticated permission denial", async () => {
     const context = await resolveCurrentUser();
     expect(context.status === "authenticated" && decideCapability(context, "moderator")).toMatchObject({

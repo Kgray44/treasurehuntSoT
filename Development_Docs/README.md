@@ -3,7 +3,7 @@ title: Engineering records
 audience: engineering
 status: current
 canonical_for: engineering-records-index
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-10
 ---
 
 # Engineering records
@@ -31,7 +31,16 @@ also passed. See the [OAuth validation and completion record](Validation/Voyagew
 
 ## Project Deepwater
 
-[Project Deepwater](Programs/Deepwater/README.md) governs product capability-realization and systems-audit truth. Phase 1, Sound the Depths, establishes the deterministic capability ledger, schema, ownership map, initial findings, Feature Catalog reconciliation, Phase 2 trace queue, and validation control plane. Phase 2, Trace the Current, converts that queue into complete source-bound traces, exact root causes, canonical assignments, remediation packets, and a Phase 3 realization queue without changing product behavior, schema, or data. Its classifications and maturity rungs are evidence-bound: source existence, local or synthetic validation, staging access, external-provider proof, deployment, and owner acceptance remain distinct.
+[Project Deepwater](Programs/Deepwater/README.md) governs product capability-realization and systems-audit truth. Phase 1, Sound the Depths, establishes the deterministic capability ledger, schema, ownership map, initial findings, Feature Catalog reconciliation, Phase 2 trace queue, and validation control plane. Phase 2, Trace the Current, converts that queue into complete source-bound traces, exact root causes, canonical assignments, remediation packets, and a Phase 3 realization queue without changing product behavior, schema, or data. Phase 3, Raise the Capability, reviews backend utilization, coordinates owner work, and accepts only independently mainline-safe slices; its three registered documentation slices plus accepted Helm owner evidence close eleven of seventeen route-identity findings, while final control-plane integration and actual-main proof remain pending. Its classifications and maturity rungs are evidence-bound: source existence, local or synthetic validation, staging access, external-provider proof, deployment, and owner acceptance remain distinct.
+
+## Project Helm
+
+[Project Helm](Projects/Project_Helm/README.md) governs Captain operations.
+Phase 1, **Take the Helm**, adds explicit Captain-only and Captain + Player
+participation while preserving one canonical account, ordinary Player
+membership, Voyage-scoped Captain authority, and Player-safe projection
+boundaries. Its repository records distinguish candidate validation from
+integrated-main acceptance and stop before Phase 2 operational intelligence.
 
 ## Project Admiralty
 

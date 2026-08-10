@@ -8,6 +8,11 @@ import { parsePublishedSnapshot } from "@/chronicle/publishing";
 import { invitationUsable } from "@/platform/state";
 import { safeAuditMetadata } from "@/platform/audit";
 import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
+import {
+  captainParticipationModeSchema,
+  establishCreatedCaptainParticipation,
+  getCaptainParticipation,
+} from "@/helm/captain-participation";
 
 const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
@@ -15,6 +20,7 @@ export const createPlaythroughSchema = z.object({
   taleId: z.string().min(8).max(128),
   versionId: z.string().min(8).max(128),
   voyageName: z.string().trim().min(3).max(100),
+  captainParticipationMode: captainParticipationModeSchema.default("CAPTAIN_ONLY"),
   captainMode: z.enum(["CAPTAIN_CONTROLLED", "RULE_CONTROLLED", "HYBRID"]).default("CAPTAIN_CONTROLLED"),
   progressionMode: z.enum(["CAPTAIN_CONTROLLED", "RULE_CONTROLLED", "HYBRID"]).optional(),
   hints: z.enum(["DISABLED", "ON_REQUEST", "CAPTAIN_PUSHED", "TIMED", "TALE_DEFINED"]).default("ON_REQUEST"),
@@ -45,7 +51,11 @@ export const createPlaythroughSchema = z.object({
     .max(20),
 });
 
-export type CreatePlaythroughInput = z.infer<typeof createPlaythroughSchema>;
+export type CreatePlaythroughInput = z.input<typeof createPlaythroughSchema>;
+
+export function membershipStatusAfterInvitationAcceptance(playthroughStatus: string) {
+  return ["ACTIVE", "PAUSED"].includes(playthroughStatus) ? "ACTIVE_MEMBER" : "READY";
+}
 
 export class InvitationUnavailableError extends Error {
   constructor(
@@ -198,7 +208,24 @@ export async function createPlaythroughAndInvitations(
   baseUrl: string,
 ) {
   const captainAccountId = await canonicalAccountForLegacyActor(captainId);
+  if (!captainAccountId) throw new Error("Captain account authority is unavailable.");
   const input = createPlaythroughSchema.parse(unchecked);
+  const captainAccount = await db.userAccount.findUnique({
+    where: { id: captainAccountId },
+    select: {
+      id: true,
+      legacyGameMasterId: true,
+      profile: { select: { id: true, status: true, displayName: true } },
+    },
+  });
+  if (!captainAccount) throw new Error("Captain account authority is unavailable.");
+  const captainProfile = captainAccount.profile?.status === "ACTIVE" ? captainAccount.profile : null;
+  if (input.captainParticipationMode === "CAPTAIN_AND_PLAYER" && !captainProfile)
+    throw new Error("Captain + Player requires an active Player Profile on this account.");
+  if (captainProfile && input.players.some((player) => player.playerId === captainProfile.id))
+    throw new Error(
+      "Use Captain participation to join this Voyage. The Captain's Player Profile cannot receive a separate invitation.",
+    );
   const version = await db.publishedTaleVersion.findFirst({
     where: { id: input.versionId, taleId: input.taleId },
     include: { tale: true },
@@ -293,12 +320,25 @@ export async function createPlaythroughAndInvitations(
       });
       Object.assign(secret, { invitationId: invitation.id, playerId: player.id });
     }
+    await establishCreatedCaptainParticipation({
+      tx,
+      voyageId: created.id,
+      captainAccountId,
+      captainLegacyId: captainAccount.legacyGameMasterId,
+      playerProfileId: captainProfile?.id ?? null,
+      mode: input.captainParticipationMode,
+      joinedAt: created.startedAt,
+      correlationId,
+    });
     await tx.platformAuditEvent.create({
       data: {
         actorType: "CAPTAIN",
         actorId: captainId,
         actorAccountId: captainAccountId,
-        action: "PLAYTHROUGH_CREATED",
+        action:
+          input.captainParticipationMode === "CAPTAIN_AND_PLAYER"
+            ? "CAPTAIN_AND_PLAYER_VOYAGE_CREATED"
+            : "CAPTAIN_ONLY_VOYAGE_CREATED",
         resourceType: "PLAYTHROUGH",
         resourceId: created.id,
         correlationId,
@@ -307,6 +347,7 @@ export async function createPlaythroughAndInvitations(
             versionId: version.id,
             versionLabel: version.versionLabel,
             playerCount: input.players.length,
+            captainParticipationMode: input.captainParticipationMode,
           }),
         ),
       },
@@ -318,6 +359,10 @@ export async function createPlaythroughAndInvitations(
     playthroughId: playthrough.id,
     versionId: version.id,
     versionLabel: version.versionLabel,
+    participation: await getCaptainParticipation(playthrough.id, {
+      accountId: captainAccountId,
+      legacyGameMasterId: captainAccount.legacyGameMasterId,
+    }),
     invitations: await Promise.all(
       secrets.map(async (secret) => {
         const link = `${origin}/join/${secret.token}`;
@@ -403,13 +448,14 @@ export async function acceptInvitation(
         where: { playthroughId: invitation.playthroughId, playerProfileId: invitation.intendedPlayerId },
       });
     }
+    const membershipStatus = membershipStatusAfterInvitationAcceptance(invitation.playthrough.status);
     await tx.playthroughMembership.upsert({
       where: { playthroughId_playerProfileId: { playthroughId: invitation.playthroughId, playerProfileId: playerId } },
-      update: { status: "READY", joinedAt: new Date(), removedAt: null },
+      update: { status: membershipStatus, joinedAt: new Date(), removedAt: null },
       create: {
         playthroughId: invitation.playthroughId,
         playerProfileId: playerId,
-        status: "READY",
+        status: membershipStatus,
         joinedAt: new Date(),
       },
     });

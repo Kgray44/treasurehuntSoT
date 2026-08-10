@@ -22,7 +22,11 @@ const clearOverview = {
   accountState: "Active account",
   canSelfInitialize: true,
   activeChronicles: [],
-  transitionLock: { state: "CLEAR", detail: "No active Player participation blocks a workspace transition." },
+  transitionLock: {
+    state: "CLEAR",
+    blockedWorkspaces: [],
+    detail: "No active Player participation blocks a workspace transition.",
+  },
   workspaces: [
     { id: "PLAYER", label: "Player", state: "ACTIVE", href: "/player/library", detail: "Play Chronicles." },
     { id: "CAPTAIN", label: "Captain", state: "AVAILABLE", href: null, detail: "Guide Voyages." },
@@ -83,6 +87,7 @@ describe("Project Homeport All Workspaces dashboard", () => {
       ],
       transitionLock: {
         state: "BLOCKED_ACTIVE_PLAYER_CHRONICLE",
+        blockedWorkspaces: ["CAPTAIN", "CREATOR"],
         detail: "Finish or safely leave active Player participation before switching.",
       },
       workspaces: clearOverview.workspaces.map((workspace) =>
@@ -106,5 +111,40 @@ describe("Project Homeport All Workspaces dashboard", () => {
     fireEvent.change(screen.getByRole("textbox"), { target: { value: "LEAVE ACTIVE CHRONICLES" } });
     expect(leave).toBeEnabled();
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
+  });
+
+  it("keeps Captain visibly available when the active Player membership is on that Captain's Voyage", async () => {
+    const helmOverview = {
+      ...clearOverview,
+      activeChronicles: [
+        {
+          membershipId: "membership-1",
+          playthroughId: "voyage-1",
+          title: "The Moonlit Map",
+          voyageName: "Moonlit Run",
+          alias: "Night Cartographer",
+          status: "ACTIVE_MEMBER",
+          returnHref: "/play/moonlit-map/session/voyage-1",
+        },
+      ],
+      transitionLock: {
+        state: "BLOCKED_ACTIVE_PLAYER_CHRONICLE",
+        blockedWorkspaces: ["CREATOR"],
+        detail:
+          "Captain remains available for this Voyage because Player membership and Captain authority are independent.",
+      },
+      workspaces: clearOverview.workspaces.map((workspace) =>
+        workspace.id === "CAPTAIN"
+          ? { ...workspace, state: "ACTIVE", href: "/captain/library" }
+          : workspace.id === "CREATOR"
+            ? { ...workspace, state: "BLOCKED", href: null }
+            : workspace,
+      ),
+    };
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify(helmOverview), { status: 200 })));
+    render(<WorkspaceCapabilityDashboard />);
+
+    expect(await screen.findByRole("heading", { name: "Creator transitions are paused" })).toBeVisible();
+    expect(screen.getByRole("link", { name: "Enter Captain" })).toHaveAttribute("href", "/captain/library");
   });
 });

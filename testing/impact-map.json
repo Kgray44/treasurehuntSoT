@@ -3,6 +3,93 @@
   "status": "phase-2-deepwater-control-plane",
   "pathMappings": [
     {
+      "path": "Development_Docs/Projects/Project_Helm/**",
+      "suiteIds": ["unit.helm", "component.helm", "browser.helm", "static.core"],
+      "contractIds": [
+        "helm.authority-membership.independent",
+        "helm.creation.default-captain-only",
+        "helm.participation.lifecycle",
+        "helm.player-projection.firewall",
+        "helm.history.membership-derived",
+        "helm.artifacts.event-time-membership",
+        "helm.security.resource-authorization",
+        "helm.accessibility.responsive"
+      ]
+    },
+    {
+      "path": "src/helm/**",
+      "suiteIds": ["unit.helm", "browser.helm"],
+      "contractIds": ["helm.authority-membership.independent", "helm.participation.lifecycle"]
+    },
+    {
+      "path": "src/components/platform/CaptainLibrary*",
+      "suiteIds": ["component.helm", "browser.helm"],
+      "contractIds": [
+        "helm.creation.default-captain-only",
+        "helm.participation.lifecycle",
+        "helm.accessibility.responsive"
+      ]
+    },
+    {
+      "path": "src/platform/invitations*",
+      "suiteIds": ["unit.helm", "unit.one-voyage", "browser.helm", "browser.invitations"],
+      "contractIds": ["helm.creation.default-captain-only", "helm.participation.lifecycle", "invitation-acceptance"]
+    },
+    {
+      "path": "src/wayfarer/chronicle-history*",
+      "suiteIds": ["unit.helm", "unit.wayfarer", "browser.helm", "browser.passport"],
+      "contractIds": ["helm.history.membership-derived", "wayfarer-history-projection"]
+    },
+    {
+      "path": "src/chronicle/artifact-grant*",
+      "suiteIds": ["unit.helm", "unit.one-voyage", "browser.helm", "browser.artifacts"],
+      "contractIds": ["helm.artifacts.event-time-membership", "artifact-grant-projection"]
+    },
+    {
+      "path": "src/app/api/play/sessions/**",
+      "suiteIds": ["unit.helm", "unit.auth", "browser.helm", "browser.player-library"],
+      "contractIds": ["helm.player-projection.firewall", "helm.security.resource-authorization"]
+    },
+    {
+      "path": "src/homeport/workspace-capabilities*",
+      "suiteIds": ["unit.helm", "unit.homeport", "browser.helm", "browser.homeport"],
+      "contractIds": ["helm.authority-membership.independent", "helm.security.resource-authorization"]
+    },
+    {
+      "path": "src/homeport/current-user.server*",
+      "suiteIds": ["unit.helm", "unit.homeport", "browser.helm", "browser.homeport"],
+      "contractIds": ["helm.authority-membership.independent", "helm.security.resource-authorization"]
+    },
+    {
+      "path": "src/lib/security.ts",
+      "suiteIds": ["unit.helm", "unit.auth", "browser.helm", "browser.auth"],
+      "contractIds": ["helm.authority-membership.independent", "helm.security.resource-authorization"]
+    },
+    {
+      "path": "src/styles/platform.css",
+      "suiteIds": ["component.helm", "browser.helm", "static.core"],
+      "contractIds": ["helm.accessibility.responsive"]
+    },
+    {
+      "path": "src/app/api/captain/playthroughs/**",
+      "suiteIds": ["unit.helm", "browser.helm"],
+      "contractIds": ["helm.participation.lifecycle", "helm.security.resource-authorization"]
+    },
+    {
+      "path": "tests/e2e/project-helm-phase1.spec.ts",
+      "suiteIds": ["browser.helm"],
+      "contractIds": [
+        "helm.authority-membership.independent",
+        "helm.creation.default-captain-only",
+        "helm.participation.lifecycle",
+        "helm.player-projection.firewall",
+        "helm.history.membership-derived",
+        "helm.artifacts.event-time-membership",
+        "helm.security.resource-authorization",
+        "helm.accessibility.responsive"
+      ]
+    },
+    {
       "path": "Development_Docs/Governance/**",
       "suiteIds": ["unit.homeport", "static.core"],
       "contractIds": [
@@ -76,13 +163,32 @@
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",
         "tideglass-safe-projection",
-        "tideglass-read-only-invariance"
+        "tideglass-read-only-invariance",
+        "tideglass-change-classification",
+        "tideglass-compatibility-deltas",
+        "tideglass-deterministic-summary",
+        "tideglass-creator-annotations",
+        "tideglass-rebuildable-cache",
+        "tideglass-api-security",
+        "tideglass-migration-parity"
       ]
     },
     {
       "path": "scripts/tideglass/**",
       "suiteIds": ["unit.tideglass", "static.core"],
-      "contractIds": ["tideglass-exact-edition-pair", "tideglass-safe-projection"]
+      "contractIds": [
+        "tideglass-exact-edition-pair",
+        "tideglass-semantic-determinism",
+        "tideglass-safe-projection",
+        "tideglass-read-only-invariance",
+        "tideglass-change-classification",
+        "tideglass-compatibility-deltas",
+        "tideglass-deterministic-summary",
+        "tideglass-creator-annotations",
+        "tideglass-rebuildable-cache",
+        "tideglass-api-security",
+        "tideglass-migration-parity"
+      ]
     },
     {
       "path": "tests/tideglass/**",
@@ -91,7 +197,14 @@
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",
         "tideglass-safe-projection",
-        "tideglass-read-only-invariance"
+        "tideglass-read-only-invariance",
+        "tideglass-change-classification",
+        "tideglass-compatibility-deltas",
+        "tideglass-deterministic-summary",
+        "tideglass-creator-annotations",
+        "tideglass-rebuildable-cache",
+        "tideglass-api-security",
+        "tideglass-migration-parity"
       ]
     },
     {
@@ -101,7 +214,14 @@
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",
         "tideglass-safe-projection",
-        "tideglass-read-only-invariance"
+        "tideglass-read-only-invariance",
+        "tideglass-change-classification",
+        "tideglass-compatibility-deltas",
+        "tideglass-deterministic-summary",
+        "tideglass-creator-annotations",
+        "tideglass-rebuildable-cache",
+        "tideglass-api-security",
+        "tideglass-migration-parity"
       ]
     },
     {
@@ -4139,6 +4259,31 @@
       "contractIds": ["admiralty.phase1.migration"]
     },
     {
+      "path": "src/app/api/chronicles/**",
+      "suiteIds": ["unit.tideglass", "static.core"],
+      "contractIds": ["tideglass-api-security", "tideglass-safe-projection", "tideglass-creator-annotations"]
+    },
+    {
+      "path": "prisma/schema.sqlite.prisma",
+      "suiteIds": ["unit.tideglass", "database.sqlite", "build.production"],
+      "contractIds": ["tideglass-creator-annotations", "tideglass-migration-parity", "migration-parity"]
+    },
+    {
+      "path": "prisma/schema.prisma",
+      "suiteIds": ["unit.tideglass", "migration.mysql", "build.production"],
+      "contractIds": ["tideglass-creator-annotations", "tideglass-migration-parity", "migration-parity"]
+    },
+    {
+      "path": "prisma/migrations/20260809130000_tideglass_phase2_creator_annotations/**",
+      "suiteIds": ["unit.tideglass", "database.sqlite"],
+      "contractIds": ["tideglass-creator-annotations", "tideglass-migration-parity"]
+    },
+    {
+      "path": "prisma/mysql-migrations/0053_tideglass_phase2_creator_annotations/**",
+      "suiteIds": ["unit.tideglass", "migration.mysql"],
+      "contractIds": ["tideglass-creator-annotations", "tideglass-migration-parity"]
+    },
+    {
       "path": "src/admiralty/ports/**",
       "suiteIds": ["service.admiralty", "browser.admiralty"],
       "contractIds": [
@@ -4213,6 +4358,14 @@
     }
   ],
   "contractMappings": [
+    { "contractId": "helm.authority-membership.independent", "suiteIds": ["unit.helm", "browser.helm"] },
+    { "contractId": "helm.creation.default-captain-only", "suiteIds": ["unit.helm", "component.helm", "browser.helm"] },
+    { "contractId": "helm.participation.lifecycle", "suiteIds": ["unit.helm", "component.helm", "browser.helm"] },
+    { "contractId": "helm.player-projection.firewall", "suiteIds": ["unit.helm", "browser.helm"] },
+    { "contractId": "helm.history.membership-derived", "suiteIds": ["unit.helm", "browser.helm"] },
+    { "contractId": "helm.artifacts.event-time-membership", "suiteIds": ["unit.helm", "browser.helm"] },
+    { "contractId": "helm.security.resource-authorization", "suiteIds": ["unit.helm", "browser.helm"] },
+    { "contractId": "helm.accessibility.responsive", "suiteIds": ["component.helm", "browser.helm"] },
     {
       "contractId": "authentication-authorization",
       "suiteIds": ["unit.auth", "component.auth", "browser.auth", "browser.cross-project"]
@@ -5830,6 +5983,16 @@
     {
       "contractId": "admiralty.phase1.responsive-consent",
       "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    { "contractId": "tideglass-change-classification", "suiteIds": ["unit.tideglass"] },
+    { "contractId": "tideglass-compatibility-deltas", "suiteIds": ["unit.tideglass"] },
+    { "contractId": "tideglass-deterministic-summary", "suiteIds": ["unit.tideglass"] },
+    { "contractId": "tideglass-creator-annotations", "suiteIds": ["unit.tideglass"] },
+    { "contractId": "tideglass-rebuildable-cache", "suiteIds": ["unit.tideglass"] },
+    { "contractId": "tideglass-api-security", "suiteIds": ["unit.tideglass"] },
+    {
+      "contractId": "tideglass-migration-parity",
+      "suiteIds": ["unit.tideglass", "database.sqlite", "migration.mysql"]
     },
     {
       "contractId": "admiralty.phase2.authorization-partition",

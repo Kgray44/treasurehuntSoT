@@ -109,16 +109,41 @@ export async function reconcileClaimedAccountCapabilities(options: {
   return { mode, verified: true, accounts: plan };
 }
 
-export async function hasActivePlayerWorkspaceLock(accountId: string) {
-  return (
-    (await db.playthroughMembership.count({
+export async function hasActivePlayerWorkspaceLock(
+  accountId: string,
+  options: { target?: "CAPTAIN" | "CREATOR" } = {},
+) {
+  if (options.target !== "CAPTAIN")
+    return (
+      (await db.playthroughMembership.count({
+        where: {
+          player: { accountId },
+          status: { in: activeMembershipStates },
+          playthrough: { status: "ACTIVE", previewMode: false },
+        },
+      })) > 0
+    );
+  const [account, memberships] = await Promise.all([
+    db.userAccount.findUnique({ where: { id: accountId }, select: { legacyGameMasterId: true } }),
+    db.playthroughMembership.findMany({
       where: {
         player: { accountId },
         status: { in: activeMembershipStates },
         playthrough: { status: "ACTIVE", previewMode: false },
       },
-    })) > 0
-  );
+      select: {
+        playthrough: { select: { captainId: true, captainAccountId: true } },
+      },
+    }),
+  ]);
+  return memberships.some((membership) => {
+    const authority = membership.playthrough;
+    if (authority.captainAccountId) return authority.captainAccountId !== accountId;
+    return !(
+      authority.captainId &&
+      (authority.captainId === accountId || authority.captainId === account?.legacyGameMasterId)
+    );
+  });
 }
 
 async function activePlayerChronicles(accountId: string) {
@@ -152,7 +177,7 @@ async function activePlayerChronicles(accountId: string) {
 }
 
 export async function workspaceCapabilityOverview(accountId: string) {
-  const [account, activeChronicles] = await Promise.all([
+  const [account, activeChronicles, captainWorkspaceLocked] = await Promise.all([
     db.userAccount.findUnique({
       where: { id: accountId },
       select: {
@@ -167,6 +192,7 @@ export async function workspaceCapabilityOverview(accountId: string) {
       },
     }),
     activePlayerChronicles(accountId),
+    hasActivePlayerWorkspaceLock(accountId, { target: "CAPTAIN" }),
   ]);
   if (!account) throw new WorkspaceCapabilityError("Account context is unavailable.", "FORBIDDEN");
   const [captainVoyageCount, creatorChronicleCount] = await Promise.all([
@@ -202,10 +228,16 @@ export async function workspaceCapabilityOverview(accountId: string) {
     transitionLock: locked
       ? {
           state: "BLOCKED_ACTIVE_PLAYER_CHRONICLE" as const,
-          detail:
-            "Finish or safely leave active Player participation before entering Captain or Creator context. This prevents spoilers and conflicting Chronicle writes.",
+          blockedWorkspaces: captainWorkspaceLocked ? (["CAPTAIN", "CREATOR"] as const) : (["CREATOR"] as const),
+          detail: captainWorkspaceLocked
+            ? "Finish or safely leave active Player participation before entering Captain or Creator context. This prevents spoilers and conflicting Chronicle writes."
+            : "Captain remains available for this Voyage because your Player membership and Captain authority are independent on the same account. Creator stays paused until active Player participation ends.",
         }
-      : { state: "CLEAR" as const, detail: "No active Player participation blocks a workspace transition." },
+      : {
+          state: "CLEAR" as const,
+          blockedWorkspaces: [] as const,
+          detail: "No active Player participation blocks a workspace transition.",
+        },
     workspaces: [
       {
         id: "PLAYER" as const,
@@ -220,8 +252,9 @@ export async function workspaceCapabilityOverview(accountId: string) {
       {
         id: "CAPTAIN" as const,
         label: "Captain",
-        state: canEnterOrdinaryWorkspaces || administrator ? (locked ? "BLOCKED" : "ACTIVE") : "UNAVAILABLE",
-        href: (canEnterOrdinaryWorkspaces || administrator) && !locked ? "/captain/library" : null,
+        state:
+          canEnterOrdinaryWorkspaces || administrator ? (captainWorkspaceLocked ? "BLOCKED" : "ACTIVE") : "UNAVAILABLE",
+        href: (canEnterOrdinaryWorkspaces || administrator) && !captainWorkspaceLocked ? "/captain/library" : null,
         detail: "Prepare or guide Voyages assigned to you.",
         emptyHint: captainVoyageCount === 0 ? "No Captain Voyages yet." : null,
       },
@@ -244,12 +277,15 @@ export async function activateWorkspaceCapability(accountId: string, target: Sel
       "Complete account setup and email verification before activating a workspace.",
       "FORBIDDEN",
     );
-  if (overview.activeChronicles.length)
+  const targetWorkspace = overview.workspaces.find((workspace) => workspace.id === target);
+  if (await hasActivePlayerWorkspaceLock(accountId, { target }))
     throw new WorkspaceCapabilityError(
-      "Active Player participation blocks Captain and Creator transitions until you safely leave those Chronicles.",
+      target === "CAPTAIN"
+        ? "Active Player participation on another Voyage blocks Captain access until you safely leave that Chronicle."
+        : "Active Player participation blocks Creator access until you safely leave those Chronicles.",
       "CONFLICT",
     );
-  const existing = overview.workspaces.find((workspace) => workspace.id === target && workspace.state === "ACTIVE");
+  const existing = targetWorkspace?.state === "ACTIVE" ? targetWorkspace : null;
   if (existing) return { state: "ALREADY_ACTIVE" as const, role: target };
   await db.$transaction(async (tx) => {
     await tx.userAccount.update({ where: { id: accountId }, data: { ordinaryWorkspaceEntryAt: new Date() } });

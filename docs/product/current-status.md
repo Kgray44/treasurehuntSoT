@@ -11,11 +11,30 @@ last_reviewed: 2026-08-09
 **Available on main:** Project Homeport Phases 1-7 and Correction Round 3 Patch
 A, Phase 3-4 convergence, Wayfarer Phases 3 and 4,
 Sealed Hold Phases 3 and 4, Harborlight Phase 3, True North, Ledgerlight, the
-Feature Catalog, and the completed Lanternwake system join identity, role-aware
+Feature Catalog, Project Tideglass Phases 1-2, and the completed Lanternwake system join identity, role-aware
 Player/Captain/Creator flows, Studio editing and publishing, invitations,
 libraries, journals, profile and Passport surfaces, protected content, and
 animation presentation. Homeport reached main through protected PR #9; this is
 source integration, not deployment or owner acceptance.
+
+**Project Helm Phase 1 branch candidate:** Captain participation is explicit at
+Voyage creation. Captain-only remains the default; Captain + Player attaches
+exactly one ordinary Player membership to the same canonical account while
+keeping Voyage-scoped Captain authority independent. Player access, history,
+artifacts, and removal follow ordinary membership and event-time rules, and the
+Player view remains a Player-safe projection. Current evidence is isolated and
+local; mainline integration, deployment, live-Voyage behavior, and owner
+acceptance are not yet claimed.
+
+Project Tideglass Phase 2 is accepted on main and adds local/server Chronicle edition intelligence:
+stable change codes, explainable significance, compatibility deltas,
+spoiler-safe public/Player/Creator projections, deterministic summaries,
+append-only Creator annotation revisions, digest-validated rebuildable cache,
+and bounded authorized APIs. It deliberately adds no ordinary comparison route
+or played-history integration. SQLite upgrade rehearsal and provider-schema
+parity pass locally; production MySQL execution, deployment, and a Phase 3
+product surface are not claimed. Exact candidate, protected hosted, and
+integrated-main Sounding Line decisions passed with clean release evidence.
 
 **Available on main and accepted on protected staging, not production deployed:**
 Google and GitHub application OAuth adds
