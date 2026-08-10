@@ -3,13 +3,13 @@ title: Project Helm Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-helm-repository-index
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-10
 ---
 
 # Project Helm
 
 Project Helm governs Captain operations and participating-Captain behavior.
-Phase 1 is the active vertical slice named **Take the Helm**. It establishes
+Phase 1, **Take the Helm**, is accepted on canonical main. It establishes
 independent Voyage-scoped Captain authority and ordinary Player membership,
 including a Player-safe perspective for a Captain who explicitly joins the
 crew. It does not authorize Phase 2 operational projections, Needs Attention,
@@ -36,8 +36,10 @@ this phase. They remain governing sources, not implementation evidence.
 - [Test Plan](Project_Helm_Phase_1_Test_Plan.md)
 - [Validation Record](Project_Helm_Phase_1_Validation_Record.md)
 - [Integration Manifest](Project_Helm_Phase_1_Integration_Manifest.md)
+- [Completion Receipt](Project_Helm_Phase_1_Completion_Receipt.md)
 
-Validation, integration, and completion records are added only when their
-evidence exists. Phase 1 acceptance requires current-main reconciliation,
-Sounding Line acceptance, integration, and remote parity; branch-local code or
-local browser evidence is not mainline acceptance.
+Phase 1 acceptance is anchored by protected pull request 31, merge
+`d4991766369697584c5d2ea7cba22da903ecab8c`, and the retained Sounding Line
+receipt. Local, synthetic, copied-database, and browser evidence remains
+distinct from deployment, live-provider, physical-device, and owner-acceptance
+proof.

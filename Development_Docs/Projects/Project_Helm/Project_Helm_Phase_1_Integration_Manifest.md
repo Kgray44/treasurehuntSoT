@@ -3,27 +3,28 @@ title: Project Helm Phase 1 Integration Manifest
 audience: product-engineering
 status: current
 canonical_for: project-helm-phase-1-integration-manifest
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-10
 ---
 
 # Project Helm Phase 1 integration manifest
 
 ## Evidence boundary
 
-This manifest records the required current-main reconciliation for **Take the
-Helm**. Until the protected integration and post-merge checks are complete, it
-is a pre-integration record and does not claim mainline acceptance.
+This manifest records the completed protected-mainline integration for **Take
+the Helm**. It claims only repository acceptance and retained automated proof;
+it is not deployment, live-provider, physical-device, or owner-acceptance
+evidence.
 
 | Field                  | Value                                                                |
 | ---------------------- | -------------------------------------------------------------------- |
 | Original base SHA      | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                           |
-| Current `origin/main`  | `fca58389a5e6be7bcf1db55e252b7427eb32b2aa`                           |
+| Current `origin/main`  | `d4991766369697584c5d2ea7cba22da903ecab8c`                           |
 | Branch                 | `codex/project-helm-phase1-take-the-helm`                            |
 | Owned worktree         | `C:\Users\kkids\Documents\treasurehuntSoT-helm-phase1-take-the-helm` |
-| Candidate commit       | `014fdde50b4d1959288b7f7e6c4745760ead1657` reconciliation merge      |
-| Protected integration  | Pending                                                              |
-| Final reconciled main  | Pending                                                              |
-| Current mainline state | `RECONCILED_VALIDATION_IN_PROGRESS`                                  |
+| Candidate commit       | `71a2055cf9174cb8c854ad1424b1ecfcb7473abb`                           |
+| Protected integration  | Pull request 31; merge `d4991766369697584c5d2ea7cba22da903ecab8c`    |
+| Final reconciled main  | `d4991766369697584c5d2ea7cba22da903ecab8c`                           |
+| Current mainline state | `MAINLINE_ACCEPTED`                                                  |
 
 ## Intervening commits reviewed
 
@@ -82,23 +83,18 @@ match the authorities reviewed for this phase.
 | Feature Catalog and documentation index outputs  | Generated overlap                | Preserve machine-readable fragment ownership, run the generators, and never choose either generated side manually.                                                                                                 |
 | Prisma schemas and migrations                    | Adjacent upstream change         | Accept Admiralty's additive dual-provider migrations unchanged. Helm adds no schema, migration, backfill, or database rewrite.                                                                                     |
 
-## Evidence invalidation and retention
+## Accepted integration evidence
 
-The mainline advance does not invalidate the behavioral diagnosis already
-obtained from Helm's focused unit, component, route, artifact, history, or
-browser journeys because it changes no product source they exercise. Those
-results remain useful diagnostic evidence only.
+Protected pull request 31 ran the exact candidate against approved base
+`fca58389a5e6be7bcf1db55e252b7427eb32b2aa`. All 40 protected checks succeeded.
+The hosted Sounding Line finalizer returned `RELEASE_GO` with 37 of 37 mandatory
+receipts passed and 37 of 37 cleanup states clean, with no invalid, missing,
+duplicate, or unknown evidence. Its plan digest is
+`9a951190d9abb35b7df4d406d1036abfc197410eae112c3519c2ea2c40685652`; its
+evidence digest is
+`3f3e4650d16b10216932b6a39716414f7f46fa4c80d769f5a42e9415ab7084ed`.
 
-The advance **does** invalidate every acceptance claim tied to the earlier
-Sounding Line policy digest, generated test inventory, generated documentation
-index, or generated Feature Catalog. After semantic reconciliation, Helm must:
-
-1. regenerate and validate the full Sounding Line policy and active registry;
-2. rerun focused Helm contracts where the new registry selects them;
-3. run the authoritative current-main Sounding Line gate on the exact candidate;
-4. regenerate and validate documentation and the Feature Catalog; and
-5. prove the integrated candidate is an ancestor of advertised `origin/main`
-   with required path parity and no task-owned runtime residue.
-
-No branch-local receipt, local browser run, or this manifest substitutes for
-the protected integration and post-merge evidence.
+Merge `d4991766369697584c5d2ea7cba22da903ecab8c` has exact parents
+`fca58389a5e6be7bcf1db55e252b7427eb32b2aa` and
+`71a2055cf9174cb8c854ad1424b1ecfcb7473abb`; its tree exactly matches the
+validated candidate tree. Phase 2 has not started.
