@@ -193,6 +193,7 @@ export type TideglassComparisonReceipt = {
 
 export type TideglassOperationalEnvelope = {
   correlationId: string;
+  cacheStatus: "HIT" | "MISS" | "BYPASS";
   normalizationDurationMs: number;
   comparisonDurationMs: number;
   totalDurationMs: number;

@@ -114,6 +114,15 @@ evidence, and an owned final walkthrough runtime. Owner Decision is
 
 **Audience:** Creators. **Availability:** available on main. Studio supports Chronicle settings, story blocks, locations, assets, artifact authoring, version views, and immutable publishing. [Guide](../user/creator-guide.md).
 
+Project Tideglass Phase 1 provides the accepted exact immutable edition
+comparison foundation. The Phase 2 candidate extends that server-side
+intelligence with stable change codes, explainable significance and
+compatibility, spoiler-safe audience projections, deterministic summaries,
+append-only Creator annotations, and bounded safe APIs. Phase 2 is not yet on
+main and adds no ordinary comparison page, navigation entry, or played-history
+qualification; those remain later work. Repository validation is local and
+synthetic, and no deployment or production MySQL execution is claimed.
+
 ## Community and artifacts
 
 **Audience:** Creators and Captains. **Availability:** available on main for
