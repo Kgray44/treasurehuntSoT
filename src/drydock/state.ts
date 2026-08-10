@@ -70,7 +70,7 @@ export function analyzeDrydockDefiniteInitialization(input: {
       const incoming =
         id === input.graph.entryBlockId
           ? new Set(defaults)
-          : intersection(predecessors.map((source) => after.get(source) ?? new Set()));
+          : new Set([...defaults, ...intersection(predecessors.map((source) => after.get(source) ?? new Set()))]);
       const outgoing = new Set(incoming);
       for (const usage of usagesByBlock.get(id) ?? []) if (writeInitializes(usage)) outgoing.add(usage.variableId);
       const equal = (left: ReadonlySet<string>, right: ReadonlySet<string>) =>

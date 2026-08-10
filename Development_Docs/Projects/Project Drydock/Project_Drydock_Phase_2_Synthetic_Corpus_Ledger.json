@@ -51,7 +51,7 @@
       "expectedIssueCodes": ["DRYDOCK_PROVIDER_REQUEST_REPEATS_IN_LOOP"],
       "state": "EXECUTED"
     },
-    { "scenario": "bounded retry loop", "expectedIssueCodes": [], "state": "PENDING" },
+    { "scenario": "bounded retry loop", "expectedIssueCodes": [], "state": "EXECUTED" },
     {
       "scenario": "impossible branch and constant conditions",
       "expectedIssueCodes": ["DRYDOCK_CONDITION_ALWAYS_TRUE", "DRYDOCK_CONDITION_ALWAYS_FALSE"],

@@ -454,6 +454,70 @@ const validCases: readonly MutationCase[] = [
       (draft.chapters[0].blocks as DrydockAuthoredBlockInput[])[0] = choice;
     },
   },
+  {
+    id: "bounded-counter-retry-loop-with-terminal-exit",
+    expectedIssueCodes: [],
+    mutate: (draft) => {
+      const retryCounterId = "synthetic-retry-count";
+      const initialize = structuredClone(setVariableTemplate);
+      const increment = structuredClone(setVariableTemplate);
+      const condition = structuredClone(conditionTemplate);
+      initialize.id = "synthetic-retry-initialize";
+      increment.id = "synthetic-retry-increment";
+      condition.id = "synthetic-retry-condition";
+      for (const block of [initialize, increment]) {
+        block.configuration.variableId = retryCounterId;
+        block.configuration.variableName = "Synthetic retry count";
+        block.configuration.variable = "Synthetic retry count";
+        block.configuration.valueType = "integer";
+        block.configuration.scope = "SESSION";
+        block.configuration.privacy = "PLAYER_SAFE";
+      }
+      initialize.configuration.operation = "set";
+      initialize.configuration.value = 0;
+      initialize.connections = [{ targetBlockId: increment.id, connectionType: "DEFAULT", orderIndex: 0 }];
+      initialize.nextBlockId = increment.id;
+      increment.configuration.operation = "increment";
+      increment.configuration.value = 1;
+      increment.connections = [{ targetBlockId: condition.id, connectionType: "DEFAULT", orderIndex: 0 }];
+      increment.nextBlockId = condition.id;
+      condition.configuration.variable = "Synthetic retry count";
+      condition.configuration.operator = "lessThan";
+      condition.configuration.value = 3;
+      condition.configuration.successTargetBlockId = increment.id;
+      condition.configuration.failureTargetBlockId = "synthetic-finish";
+      condition.configuration.expression = {
+        schemaVersion: 1,
+        root: {
+          kind: "compare",
+          operator: "lessThan",
+          left: { kind: "variable", variableId: retryCounterId },
+          right: { kind: "literal", valueType: "INTEGER", value: 3 },
+        },
+      };
+      condition.connections = [
+        { targetBlockId: increment.id, connectionType: "SUCCESS", orderIndex: 0 },
+        { targetBlockId: "synthetic-finish", connectionType: "FAILURE", orderIndex: 1 },
+      ];
+      condition.nextBlockId = increment.id;
+      const blocks = draft.chapters[0].blocks as DrydockAuthoredBlockInput[];
+      blocks[0].connections = [{ targetBlockId: initialize.id, connectionType: "DEFAULT", orderIndex: 0 }];
+      blocks[0].nextBlockId = initialize.id;
+      blocks.splice(1, 0, initialize, increment, condition);
+      draft.variables = [
+        {
+          schemaVersion: 1,
+          id: retryCounterId,
+          name: "Synthetic retry count",
+          type: { kind: "INTEGER" },
+          scope: "SESSION",
+          defaultValue: 0,
+          allowedOperations: ["assign", "increment"],
+          privacy: "PLAYER_SAFE",
+        },
+      ];
+    },
+  },
 ];
 
 describe("Drydock Phase 2 synthetic invalid Chronicle mutation corpus", () => {
