@@ -3032,6 +3032,55 @@
       "authority": "project-admiralty",
       "owners": ["project-admiralty"],
       "critical": true
+    },
+    {
+      "id": "tideglass-change-classification",
+      "name": "Stable governed change codes and explainable significance",
+      "authority": "tideglass",
+      "owners": ["tideglass"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-compatibility-deltas",
+      "name": "Evidence-linked compatibility deltas",
+      "authority": "tideglass",
+      "owners": ["tideglass"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-deterministic-summary",
+      "name": "Traceable deterministic comparison summaries",
+      "authority": "tideglass",
+      "owners": ["tideglass"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-creator-annotations",
+      "name": "Append-only authorized Creator annotation revisions",
+      "authority": "tideglass",
+      "owners": ["tideglass"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-rebuildable-cache",
+      "name": "Digest-validated context-free comparison cache",
+      "authority": "tideglass",
+      "owners": ["tideglass"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-api-security",
+      "name": "Authorized bounded and redacted Tideglass APIs",
+      "authority": "tideglass",
+      "owners": ["tideglass"],
+      "critical": true
+    },
+    {
+      "id": "tideglass-migration-parity",
+      "name": "Additive SQLite and MySQL annotation migration parity",
+      "authority": "tideglass",
+      "owners": ["tideglass"],
+      "critical": true
     }
   ]
 }

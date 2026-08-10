@@ -28,6 +28,7 @@ describe("Feature Catalog", () => {
         a.localeCompare(b, undefined, { numeric: true }),
       ),
     );
+    expect(entries.find((item) => item.id === "FT-B009")?.program).toBe("Project Tideglass Phases 1-2");
   });
 
   it("rejects duplicate and empty subfeatures", () => {

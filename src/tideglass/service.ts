@@ -14,6 +14,7 @@ import {
 } from "./core";
 import { compareSemanticSnapshots, comparisonReceipt, type ExplicitReplacementMap } from "./comparison";
 import { canonicalizePublishedSnapshot, type TideglassHistoricalReader } from "./semantic";
+import { canonicalCacheKey, tideglassComparisonCache, type TideglassComparisonCache } from "./cache";
 
 export type TideglassPrincipal = { kind: "ACCOUNT"; accountId: string };
 
@@ -37,6 +38,7 @@ export type TideglassCompareOptions = {
   signal?: AbortSignal;
   explicitReplacements?: ExplicitReplacementMap;
   historicalReaders?: readonly TideglassHistoricalReader[];
+  cache?: TideglassComparisonCache | null;
 };
 
 function anchor(edition: TideglassPublishedEdition): ResolvedEditionAnchor {
@@ -94,6 +96,28 @@ export async function compareExactEditions(
     if (sha256(source.contentSnapshot) !== source.checksum || sha256(target.contentSnapshot) !== target.checksum)
       return failure("CHECKSUM_MISMATCH", correlationId);
 
+    const pair = { chronicleId: source.chronicleId, source: anchor(source), target: anchor(target) };
+    const cache = options.cache === undefined ? tideglassComparisonCache : options.cache;
+    const key = canonicalCacheKey(pair);
+    const cached = cache?.getCanonicalChangeSet(key);
+    if (cached) {
+      const completedAt = performance.now();
+      return {
+        ok: true,
+        value: {
+          changeSet: cached.changeSet,
+          receipt: comparisonReceipt(cached.changeSet, cached.sourceAdapters, cached.targetAdapters),
+          operation: {
+            correlationId,
+            cacheStatus: "HIT",
+            normalizationDurationMs: 0,
+            comparisonDurationMs: 0,
+            totalDurationMs: completedAt - startedAt,
+          },
+        },
+      };
+    }
+
     const beforeNormalization = performance.now();
     const sourceSemantic = canonicalizePublishedSnapshot(
       source.contentSnapshot,
@@ -122,6 +146,11 @@ export async function compareExactEditions(
       sourceSemantic.value.normalizationAdapters,
       targetSemantic.value.normalizationAdapters,
     );
+    cache?.setCanonicalChangeSet(key, {
+      changeSet,
+      sourceAdapters: sourceSemantic.value.normalizationAdapters,
+      targetAdapters: targetSemantic.value.normalizationAdapters,
+    });
     return {
       ok: true,
       value: {
@@ -129,6 +158,7 @@ export async function compareExactEditions(
         receipt,
         operation: {
           correlationId,
+          cacheStatus: cache ? "MISS" : "BYPASS",
           normalizationDurationMs: afterNormalization - beforeNormalization,
           comparisonDurationMs: comparedAt - afterNormalization,
           totalDurationMs: comparedAt - startedAt,
@@ -187,14 +217,13 @@ export const prismaTideglassEditionRepository: TideglassEditionRepository = {
       },
     });
     if (!account) return false;
-    const administrator = account.roles.some((assignment) => assignment.role === "ADMINISTRATOR");
     const collaborator = account.roles.some(
       (assignment) =>
         assignment.role === "CREATOR" &&
         ["CHRONICLE", "TALE"].includes(assignment.scopeType) &&
         assignment.scopeId === edition.chronicleId,
     );
-    if (administrator || collaborator) return true;
+    if (collaborator) return true;
     const chronicle = await db.chronicle.findFirst({
       where: {
         id: edition.chronicleId,

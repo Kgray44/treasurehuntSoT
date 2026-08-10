@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "Project Tideglass",
+  "phase": "2",
+  "reservedAt": "2026-08-09",
+  "baseSha": "d1344e8ce613cdb3e3adc1fc13803b6356f1c0db",
+  "sqlite": "20260809130000_tideglass_phase2_creator_annotations",
+  "mysql": "0053_tideglass_phase2_creator_annotations",
+  "changeClass": "ADDITIVE",
+  "models": ["TideglassCreatorAnnotation"],
+  "concurrencyCheck": {
+    "acceptedLastSQLite": "20260809120000_admiralty_phase1_foundation",
+    "acceptedLastMySQL": "0052_admiralty_phase1_foundation",
+    "activeWorktreesInspected": [
+      "project-drydock-phase1-set-the-blocks",
+      "project-wakebook-phase1-open-the-wake",
+      "project-shipwright-phase1-clear-the-workbench",
+      "project-deepwater-phase3-raise-the-capability"
+    ],
+    "sharedSchemaReservationFound": false,
+    "recheckRequiredBeforeIntegration": true
+  }
+}

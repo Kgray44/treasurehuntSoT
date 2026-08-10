@@ -163,13 +163,32 @@
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",
         "tideglass-safe-projection",
-        "tideglass-read-only-invariance"
+        "tideglass-read-only-invariance",
+        "tideglass-change-classification",
+        "tideglass-compatibility-deltas",
+        "tideglass-deterministic-summary",
+        "tideglass-creator-annotations",
+        "tideglass-rebuildable-cache",
+        "tideglass-api-security",
+        "tideglass-migration-parity"
       ]
     },
     {
       "path": "scripts/tideglass/**",
       "suiteIds": ["unit.tideglass", "static.core"],
-      "contractIds": ["tideglass-exact-edition-pair", "tideglass-safe-projection"]
+      "contractIds": [
+        "tideglass-exact-edition-pair",
+        "tideglass-semantic-determinism",
+        "tideglass-safe-projection",
+        "tideglass-read-only-invariance",
+        "tideglass-change-classification",
+        "tideglass-compatibility-deltas",
+        "tideglass-deterministic-summary",
+        "tideglass-creator-annotations",
+        "tideglass-rebuildable-cache",
+        "tideglass-api-security",
+        "tideglass-migration-parity"
+      ]
     },
     {
       "path": "tests/tideglass/**",
@@ -178,7 +197,14 @@
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",
         "tideglass-safe-projection",
-        "tideglass-read-only-invariance"
+        "tideglass-read-only-invariance",
+        "tideglass-change-classification",
+        "tideglass-compatibility-deltas",
+        "tideglass-deterministic-summary",
+        "tideglass-creator-annotations",
+        "tideglass-rebuildable-cache",
+        "tideglass-api-security",
+        "tideglass-migration-parity"
       ]
     },
     {
@@ -188,7 +214,14 @@
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",
         "tideglass-safe-projection",
-        "tideglass-read-only-invariance"
+        "tideglass-read-only-invariance",
+        "tideglass-change-classification",
+        "tideglass-compatibility-deltas",
+        "tideglass-deterministic-summary",
+        "tideglass-creator-annotations",
+        "tideglass-rebuildable-cache",
+        "tideglass-api-security",
+        "tideglass-migration-parity"
       ]
     },
     {
@@ -4233,6 +4266,31 @@
       "path": "prisma/mysql-migrations/0052_admiralty_phase1_foundation/**",
       "suiteIds": ["unit.admiralty"],
       "contractIds": ["admiralty.phase1.migration"]
+    },
+    {
+      "path": "src/app/api/chronicles/**",
+      "suiteIds": ["unit.tideglass", "static.core"],
+      "contractIds": ["tideglass-api-security", "tideglass-safe-projection", "tideglass-creator-annotations"]
+    },
+    {
+      "path": "prisma/schema.sqlite.prisma",
+      "suiteIds": ["unit.tideglass", "database.sqlite", "build.production"],
+      "contractIds": ["tideglass-creator-annotations", "tideglass-migration-parity", "migration-parity"]
+    },
+    {
+      "path": "prisma/schema.prisma",
+      "suiteIds": ["unit.tideglass", "migration.mysql", "build.production"],
+      "contractIds": ["tideglass-creator-annotations", "tideglass-migration-parity", "migration-parity"]
+    },
+    {
+      "path": "prisma/migrations/20260809130000_tideglass_phase2_creator_annotations/**",
+      "suiteIds": ["unit.tideglass", "database.sqlite"],
+      "contractIds": ["tideglass-creator-annotations", "tideglass-migration-parity"]
+    },
+    {
+      "path": "prisma/mysql-migrations/0053_tideglass_phase2_creator_annotations/**",
+      "suiteIds": ["unit.tideglass", "migration.mysql"],
+      "contractIds": ["tideglass-creator-annotations", "tideglass-migration-parity"]
     }
   ],
   "contractMappings": [
@@ -5879,7 +5937,14 @@
     {
       "contractId": "admiralty.phase1.responsive-consent",
       "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
-    }
+    },
+    { "contractId": "tideglass-change-classification", "suiteIds": ["unit.tideglass"] },
+    { "contractId": "tideglass-compatibility-deltas", "suiteIds": ["unit.tideglass"] },
+    { "contractId": "tideglass-deterministic-summary", "suiteIds": ["unit.tideglass"] },
+    { "contractId": "tideglass-creator-annotations", "suiteIds": ["unit.tideglass"] },
+    { "contractId": "tideglass-rebuildable-cache", "suiteIds": ["unit.tideglass"] },
+    { "contractId": "tideglass-api-security", "suiteIds": ["unit.tideglass"] },
+    { "contractId": "tideglass-migration-parity", "suiteIds": ["unit.tideglass", "database.sqlite", "migration.mysql"] }
   ],
   "impactClasses": [
     "direct-source-ownership",

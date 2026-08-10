@@ -28,6 +28,9 @@ const admiraltyContracts = [
   "admiralty.phase1.migration",
   "admiralty.phase1.responsive-consent",
 ];
+const tideglassContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
+  .contracts.map((contract) => contract.id)
+  .filter((contractId) => contractId.startsWith("tideglass-"));
 
 function isHelmFile(file) {
   return (
@@ -135,13 +138,7 @@ function contractFor(file, family) {
     return helmContracts;
   if (file.includes("drydock") || family === "unit.drydock") return ["drydock-authoring-contracts"];
   if (file.includes("admiralty") || family.includes("admiralty")) return admiraltyContracts;
-  if (file.includes("tideglass") || family === "unit.tideglass")
-    return [
-      "tideglass-exact-edition-pair",
-      "tideglass-semantic-determinism",
-      "tideglass-safe-projection",
-      "tideglass-read-only-invariance",
-    ];
+  if (file.includes("tideglass") || family === "unit.tideglass") return tideglassContractsFor(file);
   if (file.includes("deepwater") || family === "unit.deepwater") return ["deepwater.capability-realization-integrity"];
   if (file.includes("homeport") || family === "unit.homeport") return homeportContracts;
   if (file.includes("private-content")) return ["sealed-hold-private-delivery", "public-privacy-projection"];
@@ -153,6 +150,30 @@ function contractFor(file, family) {
     return ["authentication-authorization"];
   if (family.includes("one-voyage") || family.includes("invitations")) return ["invitation-acceptance"];
   return ["authentication-authorization"];
+}
+
+function tideglassContractsFor(file) {
+  const phase1 = [
+    "tideglass-exact-edition-pair",
+    "tideglass-semantic-determinism",
+    "tideglass-safe-projection",
+    "tideglass-read-only-invariance",
+  ];
+  if (file.includes("phase2-intelligence"))
+    return [
+      "tideglass-change-classification",
+      "tideglass-compatibility-deltas",
+      "tideglass-deterministic-summary",
+      "tideglass-safe-projection",
+      "tideglass-rebuildable-cache",
+    ];
+  if (file.includes("phase2-annotations")) return ["tideglass-creator-annotations"];
+  if (file.includes("phase2-api"))
+    return ["tideglass-api-security", "tideglass-safe-projection", "tideglass-creator-annotations"];
+  if (file.includes("phase2-authorization")) return ["tideglass-api-security", "tideglass-creator-annotations"];
+  if (file.includes("phase2-cache-migration"))
+    return ["tideglass-rebuildable-cache", "tideglass-creator-annotations", "tideglass-migration-parity"];
+  return phase1.filter((contractId) => tideglassContracts.includes(contractId));
 }
 
 function metadata(file, family, browser = null) {

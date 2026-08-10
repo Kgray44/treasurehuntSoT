@@ -21,6 +21,15 @@ last_reviewed: 2026-08-09
   introduced. The acceptance boundary is governed isolated local evidence and
   mainline source integration, not deployment or live-Voyage proof.
 
+- Added Project Tideglass Phase 2 Chronicle edition intelligence on top of the
+  unchanged Phase 1 semantic/comparison policy: stable change codes,
+  explainable significance, compatibility deltas, spoiler-safe public/Player/
+  Creator projections, deterministic summaries, immutable Creator annotation
+  revisions, a digest-validating bounded cache, and authorized comparison,
+  annotation, edition-list, and preview APIs. The change is additive and has no
+  ordinary route, navigation entry, played-history integration, deployment, or
+  production-MySQL claim.
+
 - Integrated the owner-accepted Project Admiralty Phase 1 source on canonical
   main with exact-source Sounding Line authority and remote parity:
   canonical role/capability authorization, explicit
