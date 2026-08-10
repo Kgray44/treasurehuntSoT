@@ -258,6 +258,13 @@ const cases: readonly MutationCase[] = [
     },
   },
   {
+    id: "state-proof-bound-exhausted",
+    expectedIssueCodes: ["DRYDOCK_STATE_PROOF_INCOMPLETE"],
+    mutate: (draft) => {
+      draft.analysisLimits = { maximumStateIterations: 0 };
+    },
+  },
+  {
     id: "asset-snapshot-unavailable",
     expectedIssueCodes: ["DRYDOCK_ASSET_PROOF_INCOMPLETE"],
     mutate: (draft) => {

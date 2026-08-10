@@ -22,6 +22,8 @@ import {
 export type DrydockDraftContractInput = {
   schemaVersion: 1;
   analysisMode?: "CONTRACT" | "FULL";
+  /** Test/worker-owned bound; UI callers use the governed default when omitted. */
+  analysisLimits?: { maximumStateIterations?: number };
   assets?: readonly DrydockAssetSnapshot[];
   variables?: readonly unknown[];
   chapters: ReadonlyArray<{
@@ -375,6 +377,7 @@ export function validateDrydockDraftContracts(draft: DrydockDraftContractInput, 
     graph: graphAnalysis.graph,
     declarations: variables.declarations,
     usages: usageIndex.usages,
+    maximumIterations: draft.analysisLimits?.maximumStateIterations,
   });
   const conditionIssues = analyzeDrydockConditionFeasibility({
     blocks: parsedBlocks,
