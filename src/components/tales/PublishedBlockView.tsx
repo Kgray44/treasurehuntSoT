@@ -7,7 +7,13 @@ import { playerCopy } from "@/language/player-copy";
 import type { JsonObject } from "@/chronicle/types";
 import { readStayStoryMotion, resolveStoryMotion } from "@/animation/presentation/story-motion";
 
-type PlayerBlock = { id: string; blockType: string; title: string; configuration: JsonObject; presentation?: JsonObject };
+type PlayerBlock = {
+  id: string;
+  blockType: string;
+  title: string;
+  configuration: JsonObject;
+  presentation?: JsonObject;
+};
 type PlayerAsset = { id: string; displayName: string; url: string };
 
 const value = (config: JsonObject, key: string) => (typeof config[key] === "string" ? (config[key] as string) : "");
@@ -23,7 +29,9 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
   const config = block.configuration;
   if (block.blockType === "image")
     return (
-      <article className={`runtime-block ${motionClass(block.presentation)} image-block mode-${value(config, "displayMode")}`}>
+      <article
+        className={`runtime-block ${motionClass(block.presentation)} image-block mode-${value(config, "displayMode")}`}
+      >
         <ResilientImage
           src={asset(config.assetId)}
           alt={value(config, "altText")}

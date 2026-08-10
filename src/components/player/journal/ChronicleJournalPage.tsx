@@ -146,7 +146,10 @@ function JournalBlock({
     const before = asset(config.beforeAssetId ?? config.baseAssetId);
     const after = asset(config.afterAssetId ?? config.revealedAssetId);
     return (
-      <section className={`journal-block ${motionClass} journal-${block.journalKind}-page part-${part}`} aria-label={block.title}>
+      <section
+        className={`journal-block ${motionClass} journal-${block.journalKind}-page part-${part}`}
+        aria-label={block.title}
+      >
         <p className="eyebrow">
           {journalEyebrow(block)} · {stateLabel}
         </p>
