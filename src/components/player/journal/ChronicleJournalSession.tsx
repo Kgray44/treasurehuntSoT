@@ -17,7 +17,13 @@ import {
   type JournalReadyReceipt,
   type JournalReadyReason,
 } from "@/animation/journal/opening-machine";
-import type { FlipBookPage, PageFlipBookHandle, PageFlipReadinessSnapshot } from "@/components/animation/PageFlipBook";
+import type {
+  FlipBookPage,
+  PageFlipBookHandle,
+  PageFlipReadinessSnapshot,
+  PageTurnLifecycleEvent,
+} from "@/components/animation/PageFlipBook";
+import { resolveStoryMotion } from "@/animation/presentation/story-motion";
 import { PhysicalJournalBook } from "@/components/player/journal/PhysicalJournalBook";
 import { ChronicleJournalPageContent, type JournalAsset } from "@/components/player/journal/ChronicleJournalPage";
 import {
@@ -243,6 +249,7 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
   const [openingPhase, setOpeningPhase] = useState<JournalOpeningPhase>("ENTRY_IDLE");
   const [connection, setConnection] = useState<ConnectionState>("connecting");
   const [currentPage, setCurrentPage] = useState(0);
+  const [turnExitMotion, setTurnExitMotion] = useState("minimize");
   const [pendingEvent, setPendingEvent] = useState<ProgressionEvent | null>(null);
   const [newContent, setNewContent] = useState(false);
   const [liveNotice, setLiveNotice] = useState("");
@@ -1082,6 +1089,7 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
           }))}
           onReadinessChange={recordPageFlipReadiness}
           onSelectTab={turnTo}
+          turnExitMotion={turnExitMotion}
           onPageChange={(page) => {
             setCurrentPage(page);
             const currentPageBlock = pages[page]?.blockId ?? null;
@@ -1099,6 +1107,10 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
               semanticLabel: "page-turn-complete",
               allowedSemanticLabels: ["page-turn-complete"],
             });
+          }}
+          onTurnLifecycle={(event: PageTurnLifecycleEvent) => {
+            if (event.phase !== "turn-start") return;
+            setTurnExitMotion(resolveStoryMotion(pages[event.fromPage]?.block?.presentation.transitionOut, "minimize"));
           }}
         />
       </section>

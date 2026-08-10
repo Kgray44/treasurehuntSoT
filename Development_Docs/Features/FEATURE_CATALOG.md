@@ -217,6 +217,9 @@ Creator Studio supports protected Chronicle authoring, graph editing, previews, 
 - Block graph editing
 - Optimistic autosave
 - Accessible movement controls
+- Whole-Passage drag reordering and additive or range selection
+- Published Passage opening, leaving, and active-state motion presets
+- Plain-language validation findings with blocking and attention severity presentation
 - Draft preview sessions
 
 ### Primary surfaces

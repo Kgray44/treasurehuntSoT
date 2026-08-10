@@ -73,6 +73,11 @@
   backdrop-filter: blur(18px) saturate(120%);
 }
 
+/* Account navigation must sit above local sticky workbench chrome while it is open. */
+.product-shell-header[data-account-menu-open="true"] {
+  z-index: calc(var(--z-dialog, 1000) + 1);
+}
+
 .shell-mode-GATEWAY_STANDARD .product-shell-header {
   position: absolute;
   right: 0;
