@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "project": "Project Drydock",
+  "phase": 2,
+  "classification": "SYNTHETIC_NO_PRIVATE_CONTENT",
+  "status": "ACTIVE_PARTIAL_CORPUS",
+  "sourceFixture": "tests/fixtures/drydock/phase2-synthetic-chronicle.json",
+  "mutationSuite": "src/drydock/mutation-corpus.test.ts",
+  "ruleSuite": "src/drydock/rules.test.ts",
+  "coverage": [
+    { "scenario": "valid linear Chronicle", "expectedIssueCodes": [], "state": "EXECUTED" },
+    { "scenario": "dead end", "expectedIssueCodes": ["DRYDOCK_GRAPH_NO_TERMINAL_PATH"], "state": "EXECUTED" },
+    { "scenario": "unreachable block", "expectedIssueCodes": ["DRYDOCK_GRAPH_UNREACHABLE"], "state": "EXECUTED" },
+    { "scenario": "orphan chapter", "expectedIssueCodes": ["DRYDOCK_GRAPH_ORPHAN_CHAPTER"], "state": "EXECUTED" },
+    {
+      "scenario": "invalid cross-chapter edge",
+      "expectedIssueCodes": ["DRYDOCK_GRAPH_CROSS_CHAPTER_TRANSITION_INVALID"],
+      "state": "EXECUTED"
+    },
+    { "scenario": "duplicate edge", "expectedIssueCodes": ["DRYDOCK_GRAPH_DUPLICATE_EDGE"], "state": "EXECUTED" },
+    { "scenario": "missing target", "expectedIssueCodes": ["DRYDOCK_REFERENCE_TARGET_MISSING"], "state": "EXECUTED" },
+    { "scenario": "missing terminal", "expectedIssueCodes": ["DRYDOCK_GRAPH_TERMINAL_MISSING"], "state": "EXECUTED" },
+    {
+      "scenario": "invalid automatic loop",
+      "expectedIssueCodes": ["DRYDOCK_GRAPH_AUTOMATIC_LOOP"],
+      "state": "EXECUTED"
+    },
+    {
+      "scenario": "unsupported schema reader",
+      "expectedIssueCodes": ["DRYDOCK_BLOCK_VERSION_UNSUPPORTED"],
+      "state": "EXECUTED"
+    },
+    {
+      "scenario": "provider not configured",
+      "expectedIssueCodes": ["DRYDOCK_PROVIDER_NOT_CONFIGURED"],
+      "state": "EXECUTED"
+    },
+    { "scenario": "missing asset", "expectedIssueCodes": ["DRYDOCK_ASSET_REFERENCE_MISSING"], "state": "EXECUTED" },
+    { "scenario": "wrong media role", "expectedIssueCodes": ["DRYDOCK_ASSET_MEDIA_TYPE"], "state": "EXECUTED" },
+    { "scenario": "Captain-only asset leak", "expectedIssueCodes": ["DRYDOCK_ASSET_PRIVACY"], "state": "EXECUTED" },
+    { "scenario": "unready asset", "expectedIssueCodes": ["DRYDOCK_ASSET_NOT_READY"], "state": "EXECUTED" },
+    {
+      "scenario": "missing image alt text",
+      "expectedIssueCodes": ["DRYDOCK_CONFIGURATION_SCHEMA_INVALID"],
+      "state": "EXECUTED"
+    },
+    { "scenario": "valid branching Chronicle", "expectedIssueCodes": [], "state": "PENDING" },
+    { "scenario": "multiple endings", "expectedIssueCodes": [], "state": "PENDING" },
+    { "scenario": "valid interactive loop", "expectedIssueCodes": [], "state": "PENDING" },
+    { "scenario": "bounded retry loop", "expectedIssueCodes": [], "state": "PENDING" },
+    {
+      "scenario": "impossible branch and constant conditions",
+      "expectedIssueCodes": ["DRYDOCK_CONDITION_ALWAYS_TRUE", "DRYDOCK_CONDITION_ALWAYS_FALSE"],
+      "state": "PENDING"
+    },
+    {
+      "scenario": "read-before-init and unreachable writer",
+      "expectedIssueCodes": ["DRYDOCK_VARIABLE_NOT_DEFINITELY_INITIALIZED"],
+      "state": "PENDING"
+    },
+    { "scenario": "write never read", "expectedIssueCodes": ["DRYDOCK_VARIABLE_WRITE_NEVER_READ"], "state": "PENDING" },
+    {
+      "scenario": "enum and type-flow conflict",
+      "expectedIssueCodes": ["DRYDOCK_VARIABLE_WRITE_TYPE"],
+      "state": "PENDING"
+    },
+    {
+      "scenario": "repeated artifact/completion/reveal risk",
+      "expectedIssueCodes": ["DRYDOCK_ARTIFACT_GRANT_DUPLICATE_RISK", "DRYDOCK_COMPLETION_OUTCOME_DUPLICATE_RISK"],
+      "state": "PENDING"
+    },
+    {
+      "scenario": "captions and transcript",
+      "expectedIssueCodes": ["DRYDOCK_ACCESS_VIDEO_CAPTIONS", "DRYDOCK_ACCESS_AUDIO_TRANSCRIPT"],
+      "state": "PENDING"
+    },
+    {
+      "scenario": "provider fallback and unsupported provider",
+      "expectedIssueCodes": ["DRYDOCK_ACCESS_PROVIDER_FALLBACK", "DRYDOCK_PROVIDER_UNREGISTERED"],
+      "state": "PENDING"
+    },
+    {
+      "scenario": "performance warning",
+      "expectedIssueCodes": ["DRYDOCK_PERFORMANCE_BLOCK_COUNT_HIGH"],
+      "state": "PENDING"
+    },
+    {
+      "scenario": "state bound exhausted",
+      "expectedIssueCodes": ["DRYDOCK_STATE_PROOF_INCOMPLETE"],
+      "state": "PENDING"
+    }
+  ],
+  "completionCondition": "Every governed scenario is represented by a synthetic fixture or controlled mutation with declared expected issue codes and a passing Sounding Line-owned test.",
+  "phase3Boundary": "No scenario executes Chronicle runtime behavior, simulation, virtual time, or live TaleSession mutation."
+}
