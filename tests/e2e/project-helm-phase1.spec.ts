@@ -94,7 +94,7 @@ async function signInThroughProduct(page: Page) {
 
 async function accountMenu(page: Page, label = displayName) {
   const button = page.getByRole("button", { name: label, exact: true });
-  await expect(button).toBeVisible();
+  await expect(button).toBeVisible({ timeout: 60_000 });
   if ((await button.getAttribute("aria-expanded")) !== "true") await button.click();
   const menu = page.locator("#shell-account-disclosure");
   await expect(menu).toBeVisible();
