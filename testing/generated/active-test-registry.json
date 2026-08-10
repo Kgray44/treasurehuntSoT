@@ -140455,9 +140455,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-3b75f745bb59c035e31d",
+      "id": "sl-test-98da74fcfd2f37212ad6",
       "title": "Captain authority and ordinary Player membership remain independent through the visible product journey",
-      "line": 298,
+      "line": 301,
       "file": "tests/e2e/project-helm-phase1.spec.ts",
       "project": "helm-phase1",
       "suiteId": "browser.helm",
@@ -140505,9 +140505,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-3fe0b95feee4ae02e2ea",
+      "id": "sl-test-00ad05de124be8feb7ac",
       "title": "participation choice remains usable at desktop, tablet, phone, 200% zoom, keyboard, and reduced motion",
-      "line": 493,
+      "line": 496,
       "file": "tests/e2e/project-helm-phase1.spec.ts",
       "project": "helm-phase1",
       "suiteId": "browser.helm",
