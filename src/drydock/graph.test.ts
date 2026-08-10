@@ -39,6 +39,21 @@ describe("Drydock Phase 2 canonical graph analysis", () => {
     expect(result.issues.map((issue) => issue.code)).toContain("DRYDOCK_GRAPH_LOOP_PROGRESS_UNPROVEN");
   });
 
+  it("does not call a cycle unproven when it contains an authored progress write", () => {
+    const blocks = structuredClone(parseFixture()).slice(0, 4);
+    blocks[0].connections = [{ targetBlockId: blocks[1].id, connectionType: "DEFAULT", orderIndex: 0 }];
+    blocks[1].blockType = "setVariable";
+    blocks[1].connections = [{ targetBlockId: blocks[2].id, connectionType: "DEFAULT", orderIndex: 0 }];
+    blocks[2].connections = [
+      { targetBlockId: blocks[1].id, connectionType: "DEFAULT", orderIndex: 0 },
+      { targetBlockId: blocks[3].id, connectionType: "DEFAULT", orderIndex: 1 },
+    ];
+    blocks[3].blockType = "taleComplete";
+    blocks[3].connections = [];
+    const codes = analyzeDrydockGraph(blocks).issues.map((issue) => issue.code);
+    expect(codes).not.toContain("DRYDOCK_GRAPH_LOOP_PROGRESS_UNPROVEN");
+  });
+
   it("does not pretend a free-form legacy edge condition is statically proven", () => {
     const blocks = structuredClone(parseFixture()).slice(0, 2);
     blocks[0].connections = [
