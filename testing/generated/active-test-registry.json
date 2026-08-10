@@ -40064,7 +40064,7 @@
     {
       "id": "sl-test-852a7d69036bd3be24a6",
       "title": "keeps canvas view controls presentation-only and keyboard reachable",
-      "line": 378,
+      "line": 380,
       "file": "src/components/studio/TaleEditor.test.tsx",
       "suiteId": "component.studio",
       "owner": "platform-foundation",
