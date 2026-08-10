@@ -6,8 +6,8 @@
   "baseOriginMainSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
   "auditedSourceSha": "3e235e85b974183f3b0888814a15697596f73730",
   "phase3ControlPlaneAcceptedMainSha": "cf08ed0954e0bfd8279229604d3bec5c1beea4ae",
-  "finalReconciledMainSha": null,
-  "finalPhase3Commit": null,
+  "finalReconciledMainSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
+  "finalPhase3Commit": "ca135585a62f445cd4331df1a7dd21203bd50219",
   "schemaImpact": "DEEPWATER_CONTROL_PLANE_SCHEMAS_ONLY",
   "productSourceImpact": "NONE",
   "featureCatalogImpact": "UPDATED_BY_ACCEPTED_DOCUMENTATION_SLICES",
@@ -30,10 +30,10 @@
   "branch": "codex/project-deepwater-phase3-mainline-reconciliation",
   "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase3-mainline",
   "lifecycle": {
-    "state": "MAINLINE_CANDIDATE",
-    "mainlineState": "CANDIDATE_PENDING_PROTECTED_INTEGRATION",
-    "validation": "PENDING_EXACT_CANDIDATE_GATE",
-    "reconciliation": "ACCEPTED_SLICES_RECONCILED"
+    "state": "MAINLINE_ACCEPTED",
+    "mainlineState": "MAINLINE_ACCEPTED",
+    "validation": "SOURCE_BOUND_RELEASE_GO_HOSTED_MAINLINE_AND_ACTUAL_MAIN_PASSED",
+    "reconciliation": "IMPLEMENTATION_ACCEPTED_PR_33"
   },
   "authorityGaps": [
     {
@@ -482,9 +482,36 @@
         "evidenceDigest": "8b2456d4e60062948471c49ec2e56775c4e5b47e7ef5430b0f20436bc67e218a"
       }
     ],
-    "finalCandidate": null,
-    "hostedMainline": null,
-    "acceptedMainProof": null
+    "finalCandidate": {
+      "decision": "RELEASE_GO",
+      "sourceSha": "489adf51d17e3585c590dec625082599957d46d7",
+      "gate": "mainline",
+      "receiptCount": 37,
+      "cleanupCleanCount": 37,
+      "planDigest": "0ad8518a6630c28b74f5d62135302c246afa1f6f43c450da54f4c36d045638b4",
+      "evidenceDigest": "6001f5ddfc8be443d28a92210ba61aae761e2cc4ad61fc7549fcf4117cc989c3"
+    },
+    "hostedMainline": {
+      "decision": "RELEASE_GO",
+      "prNumber": 33,
+      "sourceSha": "489adf51d17e3585c590dec625082599957d46d7",
+      "mergeSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
+      "successfulCheckCount": 40,
+      "receiptCount": 37,
+      "cleanupCleanCount": 37,
+      "invalidEvidenceCount": 0,
+      "planDigest": "b55c42bd7394170381c786e39fcf62d1dade8b2d9419d45b974ab5a62571326c",
+      "evidenceDigest": "6e433bcc37bf2ea7b1d2e301a052138611360f19426e98868bec1517d185ee35"
+    },
+    "acceptedMainProof": {
+      "decision": "RELEASE_GO",
+      "sourceSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
+      "gate": "local-change",
+      "receiptCount": 7,
+      "cleanupCleanCount": 7,
+      "planDigest": "4ea1281c63689ad91c55d142c249368e706f6a3b1a9abcbbe0604191ae9ba608",
+      "evidenceDigest": "58924a2d7b8811040ad6e3e91d64ae74bd54a8164395fcd2359082db32831a65"
+    }
   },
   "privacy": {
     "forbiddenPatterns": [

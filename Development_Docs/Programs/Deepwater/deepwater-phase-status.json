@@ -16,14 +16,14 @@
   "baseSourceSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
   "branch": "codex/project-deepwater-phase3-mainline-reconciliation",
   "featureCatalogImpact": "UPDATED_BY_ACCEPTED_DOCUMENTATION_SLICES",
-  "finalReconciledMainSha": null,
+  "finalReconciledMainSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
   "limitations": [
     "Unaccepted owner branches are coordination constraints, not implementation truth.",
     "Watchglass real-provider proof remains external and is not simulated as completion.",
     "Homeport PRODUCT_ACCEPTED remains an owner-only decision.",
     "Phase 4 is not authorized."
   ],
-  "mainlineState": "CANDIDATE_PENDING_PROTECTED_INTEGRATION",
+  "mainlineState": "MAINLINE_ACCEPTED",
   "metrics": {
     "backendOperationsReviewed": 349,
     "capabilityRealization": {
@@ -66,10 +66,10 @@
   "phase": "Phase 3 - Raise the Capability",
   "productSourceImpact": "NONE",
   "project": "Project Deepwater",
-  "reconciliation": "ACCEPTED_SLICES_RECONCILED",
+  "reconciliation": "IMPLEMENTATION_ACCEPTED_PR_33",
   "schemaImpact": "DEEPWATER_CONTROL_PLANE_SCHEMAS_ONLY",
   "schemaVersion": "1.0.0",
-  "state": "MAINLINE_CANDIDATE",
-  "validation": "PENDING_EXACT_CANDIDATE_GATE",
+  "state": "MAINLINE_ACCEPTED",
+  "validation": "SOURCE_BOUND_RELEASE_GO_HOSTED_MAINLINE_AND_ACTUAL_MAIN_PASSED",
   "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase3-mainline"
 }

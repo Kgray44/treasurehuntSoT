@@ -743,8 +743,8 @@ function buildReconciliation(capabilities) {
     .sort((left, right) => left.featureCatalogId.localeCompare(right.featureCatalogId));
 }
 
-function markdownFrontmatter(title, canonicalFor) {
-  return `---\ntitle: ${title}\naudience: product-engineering\nstatus: current\ncanonical_for: ${canonicalFor}\nlast_reviewed: 2026-08-09\n---\n\n`;
+function markdownFrontmatter(title, canonicalFor, lastReviewed = "2026-08-09") {
+  return `---\ntitle: ${title}\naudience: product-engineering\nstatus: current\ncanonical_for: ${canonicalFor}\nlast_reviewed: ${lastReviewed}\n---\n\n`;
 }
 
 function buildAuditReport(inputs, ledger, findings, metrics, queue, reconciliation) {
@@ -2005,7 +2005,7 @@ function phase3Reports(artifacts) {
     phase3Config.lifecycle.mainlineState === "MAINLINE_ACCEPTED"
       ? "NONE"
       : "Protected integration and actual-main accepted-source proof remain pending.";
-  const header = (title, canonical) => markdownFrontmatter(title, canonical);
+  const header = (title, canonical) => markdownFrontmatter(title, canonical, phase3Config.auditDate);
   return {
     utilization: `${header("Project Deepwater Phase 3 Utilization Report", "project-deepwater-phase-3-utilization-report")}# Project Deepwater Phase 3 utilization report
 
