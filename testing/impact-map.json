@@ -22,6 +22,31 @@
       "contractIds": ["helm.authority-membership.independent", "helm.participation.lifecycle"]
     },
     {
+      "path": "src/platform/membership-presence*",
+      "suiteIds": ["unit.helm", "component.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "helm.security.resource-authorization"]
+    },
+    {
+      "path": "src/platform/presence-client.ts",
+      "suiteIds": ["unit.helm", "component.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "helm.player-projection.firewall"]
+    },
+    {
+      "path": "src/app/api/captain/voyages/**",
+      "suiteIds": ["unit.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "helm.security.resource-authorization"]
+    },
+    {
+      "path": "src/app/api/player/playthroughs/**/presence/**",
+      "suiteIds": ["unit.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "helm.security.resource-authorization"]
+    },
+    {
+      "path": "prisma/**helm_phase2_membership_presence/**",
+      "suiteIds": ["unit.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "migration-parity"]
+    },
+    {
       "path": "src/components/platform/CaptainLibrary*",
       "suiteIds": ["component.helm", "browser.helm"],
       "contractIds": [
@@ -29,6 +54,11 @@
         "helm.participation.lifecycle",
         "helm.accessibility.responsive"
       ]
+    },
+    {
+      "path": "src/components/captain/CaptainOperationalPanel.tsx",
+      "suiteIds": ["component.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "helm.accessibility.responsive"]
     },
     {
       "path": "src/platform/invitations*",

@@ -43,6 +43,8 @@ async function prewarmHelmRoutes(request: APIRequestContext) {
     { method: "POST", path: "/api/captain/playthroughs" },
     { method: "POST", path: "/api/invitations/accept" },
     { method: "GET", path: "/api/player/playthroughs/helm-prewarm" },
+    { method: "POST", path: "/api/player/playthroughs/helm-prewarm/presence" },
+    { method: "GET", path: "/api/captain/voyages/helm-prewarm" },
     { method: "GET", path: "/api/play/sessions/helm-prewarm" },
     { method: "POST", path: "/api/captain/playthroughs/helm-prewarm/launch" },
   ];
@@ -488,6 +490,99 @@ test("Captain authority and ordinary Player membership remain independent throug
   expect(audits.some((event) => event.action === "PLAYER_MEMBERSHIP_ADDED")).toBe(true);
   expect(audits.some((event) => event.action === "PLAYER_MEMBERSHIP_REMOVED")).toBe(true);
   expect(audits.some((event) => event.action === "CAPTAIN_AUTHORITY_REVOKED")).toBe(true);
+});
+
+test("authenticated membership heartbeats are independently visible in the Captain operational projection", async ({
+  browser,
+  page,
+}) => {
+  test.setTimeout(600_000);
+  await signInThroughProduct(page);
+  const voyageName = `Helm presence ${suffix}`;
+  const created = await createVoyage(page, {
+    voyageName,
+    crewName: `Helm Presence Crew ${suffix}`,
+    participation: "CAPTAIN_AND_PLAYER",
+  });
+  const captainPlayer = await page.context().newPage();
+  const guest = await acceptGuestInvitation(browser, created.invitations[0]!.link);
+  try {
+    await page.reload();
+    await beginVoyage(page, voyageName);
+    await captainPlayer.goto(`/player/playthroughs/${created.playthroughId}/journal`);
+    await expect(captainPlayer.getByRole("main")).toBeVisible({ timeout: 30_000 });
+    await expect(guest.page).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}/journal$`, "u"), {
+      timeout: 30_000,
+    });
+
+    const [captainDetails, guestDetails, captainState, guestState] = await Promise.all([
+      browserJson<{ playthrough: { membershipId: string }; csrfToken: string }>(
+        captainPlayer,
+        `/api/player/playthroughs/${created.playthroughId}`,
+      ),
+      browserJson<{ playthrough: { membershipId: string }; csrfToken: string }>(
+        guest.page,
+        `/api/player/playthroughs/${created.playthroughId}`,
+      ),
+      browserJson<{ session: { currentSequence: number } }>(
+        captainPlayer,
+        `/api/play/sessions/${created.playthroughId}`,
+      ),
+      browserJson<{ session: { currentSequence: number } }>(guest.page, `/api/play/sessions/${created.playthroughId}`),
+    ]);
+    expect(captainDetails.status).toBe(200);
+    expect(guestDetails.status).toBe(200);
+    expect(captainState.status).toBe(200);
+    expect(guestState.status).toBe(200);
+
+    const deviceA = randomUUID();
+    const deviceB = randomUUID();
+    const [captainHeartbeat, guestHeartbeat] = await Promise.all([
+      browserJson(captainPlayer, `/api/player/playthroughs/${created.playthroughId}/presence`, {
+        method: "POST",
+        csrf: captainDetails.body.csrfToken,
+        body: {
+          membershipId: captainDetails.body.playthrough.membershipId,
+          deviceInstanceId: deviceA,
+          acknowledgedSequence: captainState.body.session.currentSequence,
+          safeActivity: "JOURNAL",
+        },
+      }),
+      browserJson(guest.page, `/api/player/playthroughs/${created.playthroughId}/presence`, {
+        method: "POST",
+        csrf: guestDetails.body.csrfToken,
+        body: {
+          membershipId: guestDetails.body.playthrough.membershipId,
+          deviceInstanceId: deviceB,
+          acknowledgedSequence: guestState.body.session.currentSequence,
+          safeActivity: "JOURNAL",
+        },
+      }),
+    ]);
+    expect(captainHeartbeat.status).toBe(200);
+    expect(guestHeartbeat.status).toBe(200);
+
+    await expect
+      .poll(async () => {
+        const projection = await browserJson<{
+          crew: Array<{ presence: { state: string }; synchronization: { state: string } }>;
+        }>(page, `/api/captain/voyages/${created.playthroughId}`);
+        expect(projection.status).toBe(200);
+        return projection.body.crew.map((member) => `${member.presence.state}:${member.synchronization.state}`).sort();
+      })
+      .toEqual(["CONNECTED:SYNCHRONIZED", "CONNECTED:SYNCHRONIZED"]);
+
+    const projection = await browserJson<Record<string, unknown>>(
+      page,
+      `/api/captain/voyages/${created.playthroughId}`,
+    );
+    expect(forbiddenProjectionKey(projection.body)).toBe(false);
+    expect(JSON.stringify(projection.body)).not.toContain(deviceA);
+    expect(JSON.stringify(projection.body)).not.toContain(deviceB);
+  } finally {
+    await guest.context.close();
+    await captainPlayer.close();
+  }
 });
 
 test("participation choice remains usable at desktop, tablet, phone, 200% zoom, keyboard, and reduced motion", async ({

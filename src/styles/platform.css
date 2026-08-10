@@ -1883,6 +1883,68 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
   animation: none;
 }
 
+.captain-operational-panel {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 1.25rem auto;
+  padding: clamp(1rem, 2vw, 1.75rem);
+  border: 1px solid rgba(201, 169, 95, 0.28);
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(9, 32, 34, 0.96), rgba(15, 45, 46, 0.9));
+  color: #f6f0de;
+}
+
+.captain-operational-panel > header {
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(201, 169, 95, 0.2);
+}
+
+.captain-operational-panel > section {
+  margin-top: 1rem;
+}
+
+.captain-operational-panel ul,
+.captain-operational-panel ol {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding-left: 1.3rem;
+}
+
+.captain-operational-panel li {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.55rem 0.65rem;
+  border-left: 3px solid rgba(201, 169, 95, 0.55);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.captain-operational-panel li[data-severity="HIGH"],
+.captain-operational-panel li[data-severity="CRITICAL"] {
+  border-left-color: #d4775d;
+}
+
+.captain-operational-panel dl {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.captain-operational-panel dl > div {
+  padding: 0.65rem;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.captain-operational-panel dt {
+  color: #d2c29b;
+  font-size: 0.78rem;
+}
+
+.captain-operational-panel dd {
+  margin: 0.2rem 0 0;
+}
+
 @media (max-width: 850px) {
   .platform-header {
     align-items: start;
@@ -1949,6 +2011,9 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
   }
   .archive-timeline li {
     grid-template-columns: 2rem 1fr;
+  }
+  .captain-operational-panel dl {
+    grid-template-columns: 1fr;
   }
   .archive-timeline time {
     grid-column: 2;

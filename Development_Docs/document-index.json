@@ -2871,6 +2871,36 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_2_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_2_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_2_Mainline_Safety_Contract.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_2_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_2_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Helm/README.md",
       "record_type": "program-record",
       "status": "preserved",

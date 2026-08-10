@@ -8,6 +8,14 @@ import {
   type PlayerJournalReadingStateInput,
 } from "@/chronicle/journal-contract";
 import { captainParticipationProjection } from "@/helm/captain-participation";
+import {
+  aggregateCrewPresence,
+  compareCaptainOperationalPriority,
+  deriveCaptainNeedsAttention,
+  deriveCaptainOperationalStatus,
+  summarizeCrewPresence,
+} from "@/helm/operations";
+import { aggregateMembershipPresence } from "@/platform/membership-presence";
 
 const pendingInvitationStates = ["CREATED", "SENT", "COPIED", "VIEWED"];
 const validMembershipStates = ["INVITED", "ACCEPTED", "READY", "ACTIVE_MEMBER", "COMPLETED_MEMBER"];
@@ -220,6 +228,9 @@ export async function getPlayerPlaythrough(playerId: string, playthroughId: stri
   const playthrough = membership.playthrough;
   return {
     ...card,
+    // This opaque membership identifier is returned only to its authenticated
+    // owner. The presence endpoint still binds it to that identity server-side.
+    membershipId: membership.id,
     crew: playthrough.memberships
       .filter((item) => validMembershipStates.includes(item.status))
       .map((item) => ({ displayName: item.player.displayName, crewRole: item.crewRole, status: item.status })),
@@ -374,7 +385,18 @@ export async function listCaptainLibrary(captainId: string | null, captainAccoun
         tale: true,
         version: true,
         memberships: {
-          include: { player: { select: { id: true, displayName: true, accountId: true, status: true } } },
+          include: {
+            player: { select: { id: true, displayName: true, accountId: true, status: true } },
+            presenceDevices: {
+              select: {
+                lastHeartbeatAt: true,
+                acknowledgedSequence: true,
+                safeActivity: true,
+                disconnectedAt: true,
+                updatedAt: true,
+              },
+            },
+          },
         },
         invitations: {
           orderBy: { createdAt: "desc" },
@@ -413,48 +435,93 @@ export async function listCaptainLibrary(captainId: string | null, captainAccoun
     take: 200,
     select: { id: true, displayName: true, username: true },
   });
-  const cards = sessions.map((session) => ({
-    id: session.id,
-    taleId: session.taleId,
-    taleTitle: session.tale.title,
-    voyageName: session.voyageName ?? session.ownerLabel ?? "Voyage",
-    versionLabel: session.version?.versionLabel ?? "Unpublished",
-    status: session.status,
-    plannedStartAt: session.plannedStartAt?.toISOString() ?? null,
-    lastActivityAt: session.updatedAt.toISOString(),
-    currentSequence: session.currentSequence,
-    currentBlockId: session.currentBlockId,
-    connected: Boolean(session.lastHeartbeatAt && Date.now() - session.lastHeartbeatAt.getTime() < 45_000),
-    pendingAction: session.verificationRequests[0]?.providerType ?? null,
-    players: session.memberships.map((membership) => ({
-      id: membership.player.id,
-      displayName: membership.player.displayName,
-      status: membership.status,
-    })),
-    participation: captainAccountId
-      ? captainParticipationProjection({
-          resource: session,
-          actor: { accountId: captainAccountId, legacyGameMasterId: captainId },
-          profileStatus: captainProfile?.status ?? null,
-          membership:
-            session.memberships.find((membership) => membership.player.accountId === captainAccountId) ?? null,
-        })
-      : null,
-    invitationSummary: session.invitations.reduce<Record<string, number>>((summary, invitation) => {
-      summary[invitation.status] = (summary[invitation.status] ?? 0) + 1;
-      return summary;
-    }, {}),
-  }));
+  const cards = sessions.map((session) => {
+    const crewPresence = session.memberships.map((membership) => ({
+      membershipId: membership.id,
+      displayName: membership.participationAlias ?? membership.player.displayName,
+      membershipStatus: membership.status,
+      presence: aggregateMembershipPresence(membership.presenceDevices, session.currentSequence),
+    }));
+    const presenceSummary = summarizeCrewPresence(crewPresence);
+    const attention = deriveCaptainNeedsAttention({
+      voyageId: session.id,
+      pendingVerification: session.verificationRequests[0] ?? null,
+      membershipStates: session.memberships.map((membership) => membership.status),
+      sessionStatus: session.status,
+      memberPresence: crewPresence,
+      updatedAt: session.updatedAt,
+    });
+    const operationalStatus = deriveCaptainOperationalStatus({
+      sessionStatus: session.status,
+      membershipStates: session.memberships.map((membership) => membership.status),
+      attention,
+    });
+    return {
+      id: session.id,
+      taleId: session.taleId,
+      taleTitle: session.tale.title,
+      voyageName: session.voyageName ?? session.ownerLabel ?? "Voyage",
+      versionLabel: session.version?.versionLabel ?? "Unpublished",
+      status: session.status,
+      plannedStartAt: session.plannedStartAt?.toISOString() ?? null,
+      lastActivityAt: session.updatedAt.toISOString(),
+      currentSequence: session.currentSequence,
+      currentBlockId: session.currentBlockId,
+      connected: presenceSummary.connected > 0,
+      aggregatePresence: aggregateCrewPresence(crewPresence),
+      operationalStatus,
+      attention,
+      crewSummary: {
+        total: presenceSummary.total,
+        ready: session.memberships.filter((membership) =>
+          ["READY", "ACTIVE_MEMBER", "COMPLETED_MEMBER"].includes(membership.status),
+        ).length,
+        connected: presenceSummary.connected,
+        recentlyLost: presenceSummary.recentlyLost,
+        stale: presenceSummary.stale,
+        unknown: presenceSummary.unknown,
+        synchronized: presenceSummary.synchronized,
+        catchingUp: presenceSummary.catchingUp,
+      },
+      pendingAction: session.verificationRequests[0]?.providerType ?? null,
+      players: session.memberships.map((membership) => ({
+        id: membership.player.id,
+        displayName: membership.player.displayName,
+        status: membership.status,
+      })),
+      participation: captainAccountId
+        ? captainParticipationProjection({
+            resource: session,
+            actor: { accountId: captainAccountId, legacyGameMasterId: captainId },
+            profileStatus: captainProfile?.status ?? null,
+            membership:
+              session.memberships.find((membership) => membership.player.accountId === captainAccountId) ?? null,
+          })
+        : null,
+      invitationSummary: session.invitations.reduce<Record<string, number>>((summary, invitation) => {
+        summary[invitation.status] = (summary[invitation.status] ?? 0) + 1;
+        return summary;
+      }, {}),
+    };
+  });
+  cards.sort((left, right) =>
+    compareCaptainOperationalPriority(
+      { status: left.operationalStatus, attention: left.attention, firstObservedAt: left.lastActivityAt, id: left.id },
+      {
+        status: right.operationalStatus,
+        attention: right.attention,
+        firstObservedAt: right.lastActivityAt,
+        id: right.id,
+      },
+    ),
+  );
   return {
     groups: {
-      needsAttention: cards.filter(
-        (card) =>
-          card.pendingAction ||
-          ["READY", "SCHEDULED"].includes(card.status) ||
-          card.players.some((player) => player.status === "READY"),
+      needsAttention: cards.filter((card) => card.attention.length > 0),
+      activeVoyages: cards.filter((card) => ["ACTIVE", "PAUSED"].includes(card.status) && !card.attention.length),
+      readyToLaunch: cards.filter(
+        (card) => ["INVITING", "READY", "SCHEDULED"].includes(card.status) && !card.attention.length,
       ),
-      activeVoyages: cards.filter((card) => ["ACTIVE", "PAUSED"].includes(card.status)),
-      readyToLaunch: cards.filter((card) => ["INVITING", "READY", "SCHEDULED"].includes(card.status)),
       completedPlaythroughs: cards.filter((card) => card.status === "COMPLETED"),
     },
     invitations: sessions.flatMap((session) =>

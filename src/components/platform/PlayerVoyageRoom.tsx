@@ -12,6 +12,7 @@ import { reconcileVersionedRows } from "@/animation/platform/polling-delta";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { ErrorState, LoadingState } from "@/components/ui/AsyncState";
 import { PlatformRelic } from "./PlatformRelic";
+import { membershipPresenceDeviceId } from "@/platform/presence-client";
 
 type CrewMember = { displayName: string; crewRole: string | null; status: string };
 type Playthrough = {
@@ -29,6 +30,7 @@ type Playthrough = {
   crew: CrewMember[];
   canEnter: boolean;
   runtimeHref: string | null;
+  membershipId: string;
 };
 type ConnectionState = "connecting" | "live" | "polling" | "offline" | "reconnecting" | "reconciling" | "revoked";
 type RouteHandoff = (destination: string) => void | Promise<void>;
@@ -126,6 +128,7 @@ export function PlayerVoyageRoom({
   const launchStarted = useRef(false);
   const launchHandoffTimer = useRef<number | null>(null);
   const serverOffset = useRef(0);
+  const csrfToken = useRef<string | null>(null);
   const [voyage, setVoyage] = useState<Playthrough | null>(null);
   const [error, setError] = useState("");
   const [connection, setConnection] = useState<ConnectionState>("connecting");
@@ -150,6 +153,7 @@ export function PlayerVoyageRoom({
         });
         const body = (await response.json().catch(() => ({}))) as {
           playthrough?: Playthrough;
+          csrfToken?: string;
           serverTime?: string;
           error?: string;
         };
@@ -164,6 +168,7 @@ export function PlayerVoyageRoom({
         if (controller.signal.aborted || isAccessRevoked(connectionRef.current)) return;
         requestVersion.current += 1;
         if (body.serverTime) serverOffset.current = new Date(body.serverTime).getTime() - Date.now();
+        csrfToken.current = body.csrfToken ?? null;
         const previous = voyageRef.current;
         const diff = reconcileVersionedRows({
           previous: previous?.crew ?? [],
@@ -270,6 +275,35 @@ export function PlayerVoyageRoom({
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [load, playthroughId]);
+
+  useEffect(() => {
+    if (!voyage?.membershipId || !csrfToken.current || connectionRef.current === "revoked") return;
+    const deviceInstanceId = membershipPresenceDeviceId();
+    const report = (disconnected = false) => {
+      const token = csrfToken.current;
+      if (!token) return;
+      void fetch(`/api/player/playthroughs/${playthroughId}/presence`, {
+        method: "POST",
+        keepalive: disconnected,
+        headers: { "Content-Type": "application/json", "x-csrf-token": token },
+        body: JSON.stringify({
+          membershipId: voyage.membershipId,
+          deviceInstanceId,
+          acknowledgedSequence: 0,
+          safeActivity: disconnected ? "RECONNECTING" : "WAITING_ROOM",
+          disconnected,
+        }),
+      }).catch(() => undefined);
+    };
+    report();
+    const timer = window.setInterval(() => {
+      if (!document.hidden && navigator.onLine && connectionRef.current !== "revoked") report();
+    }, 20_000);
+    return () => {
+      window.clearInterval(timer);
+      report(true);
+    };
+  }, [playthroughId, voyage?.membershipId]);
 
   useEffect(() => {
     if (!voyage?.plannedStartAt) return;

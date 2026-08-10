@@ -400,6 +400,10 @@ export async function changeCaptainParticipation(
           where: { id: current.membership.id },
           data: { status: "REMOVED", removedAt: now },
         });
+        await tx.membershipPresenceDevice.updateMany({
+          where: { playthroughMembershipId: membership.id, disconnectedAt: null },
+          data: { disconnectedAt: now },
+        });
         await tx.platformAuditEvent.create({
           data: auditData({
             actor,
