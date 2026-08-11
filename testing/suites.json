@@ -30,7 +30,7 @@
       "expectedDurationMs": 240000,
       "hardBudgetMs": 600000,
       "parallelSafe": true,
-      "resources": ["node-slot"],
+        "resources": ["node-slot", "vitest-worker-pool"],
       "dependencies": [],
       "contracts": [],
       "affectedPaths": ["src/**", "scripts/**", "testing/**"],
