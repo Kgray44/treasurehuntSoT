@@ -584,7 +584,7 @@ test("Wakebook Phase 1 is private, bounded, historically stable, and normally re
     overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
   });
   await page.getByRole("link", { name: "Back to Your Voyages" }).click();
-  await page.context().route("**/api/passport/voyages", async (route) => {
+  await page.context().route("**/api/passport/voyages**", async (route) => {
     await route.fulfill({
       status: 500,
       contentType: "application/json",
@@ -601,7 +601,7 @@ test("Wakebook Phase 1 is private, bounded, historically stable, and normally re
     semanticResult: "ERROR_STATE_PASSED",
     overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
   });
-  await page.context().unroute("**/api/passport/voyages");
+  await page.context().unroute("**/api/passport/voyages**");
   await page.getByRole("button", { name: /Try again|Retry/i }).click();
   await expect(page.getByRole("heading", { name: "Your Voyages", exact: true }).first()).toBeVisible();
   await captureEvidenceState(page, {
