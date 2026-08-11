@@ -2098,7 +2098,12 @@ html.helm-document-zoom .invitation-secrets article,
 html[style*="zoom: 2"] .invitation-secrets article,
 html.helm-document-zoom .player-card-grid.list .player-tale-card,
 html[style*="zoom: 2"] .player-card-grid.list .player-tale-card {
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+html.helm-document-zoom .captain-card-grid > *,
+html[style*="zoom: 2"] .captain-card-grid > * {
+  min-width: 0;
 }
 
 html.helm-document-zoom .wizard-progress small,
