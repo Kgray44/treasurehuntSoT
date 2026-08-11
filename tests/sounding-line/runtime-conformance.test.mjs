@@ -50,7 +50,11 @@ test("resource-aware preparation eliminates universal database and browser setup
 });
 
 test("conformance fails closed for missing adapter resources and undeclared browser engines", () => {
-  const missingDatabase = deriveWorkerPreparation({ id: "invalid-db", adapter: "sqlite-validate", resources: ["node-slot"] });
+  const missingDatabase = deriveWorkerPreparation({
+    id: "invalid-db",
+    adapter: "sqlite-validate",
+    resources: ["node-slot"],
+  });
   assert.equal(missingDatabase.runtimeConformance.result, "FAILED");
   assert.equal(missingDatabase.runtimeConformance.violations[0].code, CONFORMANCE_CODES.resourceScope);
   const overprovisioned = deriveWorkerPreparation({
@@ -100,7 +104,9 @@ test("finalizer rejects missing or invalid runtime-conformance evidence", () => 
     finalize({
       plan,
       receipts: [receipt],
-      runtimeConformance: [{ suiteId: "static.core", planDigest: "plan", authorityDigest: "authority", result: "PASSED" }],
+      runtimeConformance: [
+        { suiteId: "static.core", planDigest: "plan", authorityDigest: "authority", result: "PASSED" },
+      ],
     }).decision,
     "RELEASE_GO",
   );

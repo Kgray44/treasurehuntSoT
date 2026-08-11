@@ -37,7 +37,12 @@ export function finalize({ plan, receipts, runtimeConformance = [] }) {
       )
     : [];
   const decision =
-    missing.length || invalid.length || duplicates.length || unknown.length || missingConformance.length || invalidConformance.length
+    missing.length ||
+    invalid.length ||
+    duplicates.length ||
+    unknown.length ||
+    missingConformance.length ||
+    invalidConformance.length
       ? "EVIDENCE_INVALID"
       : failed.length
         ? "RELEASE_NO_GO"

@@ -42,7 +42,12 @@ export const CONFORMANCE_CODES = Object.freeze({
 export function adapterRequirements(node) {
   if (node.adapter === "vitest-family") return ["node-slot", "vitest-worker-pool"];
   if (node.adapter === "playwright-family")
-    return ["application-port", "sqlite-clone", "trace-root", ...node.resources.filter((id) => id.startsWith("browser-"))];
+    return [
+      "application-port",
+      "sqlite-clone",
+      "trace-root",
+      ...node.resources.filter((id) => id.startsWith("browser-")),
+    ];
   return requiredByAdapter[node.adapter] ?? [];
 }
 
@@ -53,7 +58,11 @@ export function deriveWorkerPreparation(node) {
   const violations = [];
   for (const resource of required)
     if (!declared.has(resource))
-      violations.push({ code: CONFORMANCE_CODES.resourceScope, resource, message: "adapter requirement is not declared" });
+      violations.push({
+        code: CONFORMANCE_CODES.resourceScope,
+        resource,
+        message: "adapter requirement is not declared",
+      });
   const engines = ["browser-chromium", "browser-webkit"].filter((resource) => declared.has(resource));
   if (node.adapter !== "playwright-family" && engines.length)
     violations.push({

@@ -127,7 +127,10 @@ function validatePolicy(policy) {
       errors.push(`sounding-line-authority: ${part} must be 1.2`);
   if (authorityIndex.requiredProtectedAuthorityCheck !== "Sounding Line / Mainline Decision")
     errors.push("sounding-line-authority: protected check mismatch");
-  if (authorityIndex.runtimeConformance?.required !== true || authorityIndex.runtimeConformance?.failureMode !== "FAIL_CLOSED")
+  if (
+    authorityIndex.runtimeConformance?.required !== true ||
+    authorityIndex.runtimeConformance?.failureMode !== "FAIL_CLOSED"
+  )
     errors.push("sounding-line-authority: runtime conformance must fail closed");
   if (authorityIndex.governingPolicies?.proofMinimization !== "MINIMUM_SUFFICIENT_EVIDENCE")
     errors.push("sounding-line-authority: proof minimization mismatch");
