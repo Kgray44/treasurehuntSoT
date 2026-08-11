@@ -47,6 +47,14 @@ test("resource-aware preparation eliminates universal database and browser setup
     resources: ["application-port", "sqlite-clone", "browser-webkit", "trace-root"],
   });
   assert.deepEqual(webkit.actions.browserEngines, ["webkit"]);
+
+  const nodeBrowser = deriveWorkerPreparation({
+    id: "unit.sounding-line",
+    adapter: "node-test-browser-family",
+    resources: ["node-slot", "application-port", "browser-chromium"],
+  });
+  assert.equal(nodeBrowser.runtimeConformance.result, "PASSED");
+  assert.deepEqual(nodeBrowser.actions.browserEngines, ["chromium"]);
 });
 
 test("conformance fails closed for missing adapter resources and undeclared browser engines", () => {

@@ -41,6 +41,7 @@ export const CONFORMANCE_CODES = Object.freeze({
 
 export function adapterRequirements(node) {
   if (node.adapter === "vitest-family") return ["node-slot", "vitest-worker-pool"];
+  if (node.adapter === "node-test-browser-family") return ["node-slot", "application-port", "browser-chromium"];
   if (node.adapter === "playwright-family")
     return [
       "application-port",
@@ -64,13 +65,13 @@ export function deriveWorkerPreparation(node) {
         message: "adapter requirement is not declared",
       });
   const engines = ["browser-chromium", "browser-webkit"].filter((resource) => declared.has(resource));
-  if (node.adapter !== "playwright-family" && engines.length)
+  if (!new Set(["playwright-family", "node-test-browser-family"]).has(node.adapter) && engines.length)
     violations.push({
       code: CONFORMANCE_CODES.overprovisioning,
       resource: engines.join(","),
       message: "a non-browser adapter declares browser engines",
     });
-  if (node.adapter === "playwright-family" && !engines.length)
+  if (new Set(["playwright-family", "node-test-browser-family"]).has(node.adapter) && !engines.length)
     violations.push({
       code: CONFORMANCE_CODES.browserScope,
       message: "browser adapter has no declared browser engine",

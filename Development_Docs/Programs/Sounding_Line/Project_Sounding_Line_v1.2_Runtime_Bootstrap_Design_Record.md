@@ -39,7 +39,8 @@ This slice will:
 - add Sounding Line-owned runtime-conformance validation, classifications, and
   evidence binding inside the existing mainline decision;
 - derive worker preparation and browser installs from a sealed plan node's
-  declared resources and certified adapter requirements;
+  declared resources and certified adapter requirements, including the
+  Sounding Line control-plane's Chromium-owning Node-test adapter;
 - remove universal database preparation while retaining database setup for
   nodes that declare it;
 - emit machine-readable worker, workflow, and finalizer throughput timings;

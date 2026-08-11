@@ -33,7 +33,7 @@ const readJson = async (file) => {
 
 function suiteAdapter(suite, registry) {
   const definitions = registry.cases.filter((entry) => entry.suiteId === suite.id);
-  if (suite.adapter === "vitest-family") {
+  if (["vitest-family", "node-test-browser-family"].includes(suite.adapter)) {
     const files = [
       ...new Set(
         definitions.map((entry) => entry.file).filter((file) => /\.(?:test|spec)\.(?:ts|tsx|mjs|js)$/u.test(file)),
@@ -42,9 +42,12 @@ function suiteAdapter(suite, registry) {
     if (!files.length) throw new Error(`EMPTY_FAMILY_SELECTION:${suite.id}`);
     if (files.every((file) => file.endsWith(".mjs")))
       return {
-        id: "node-test-family",
+        id: suite.adapter === "node-test-browser-family" ? "node-test-browser-family" : "node-test-family",
         command: [process.execPath, "--test", ...files],
-        resources: ["node-slot"],
+        resources:
+          suite.adapter === "node-test-browser-family"
+            ? ["node-slot", "application-port", "browser-chromium"]
+            : ["node-slot"],
         mode: "CERTIFIED",
       };
     return resolveVitestAdapter(files);

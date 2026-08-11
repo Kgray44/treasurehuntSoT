@@ -30,7 +30,7 @@
       "expectedDurationMs": 240000,
       "hardBudgetMs": 600000,
       "parallelSafe": true,
-      "resources": ["node-slot"],
+      "resources": ["node-slot", "prisma-sqlite-client"],
       "dependencies": [],
       "contracts": [],
       "affectedPaths": ["src/**", "scripts/**", "testing/**"],
@@ -288,13 +288,13 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": ["node-slot", "vitest-worker-pool"],
+      "resources": ["node-slot", "application-port", "browser-chromium"],
       "dependencies": [],
       "contracts": ["authentication-authorization"],
       "affectedPaths": ["scripts/sounding-line/**", "tests/sounding-line/**", "testing/**"],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
-      "adapter": "vitest-family"
+      "adapter": "node-test-browser-family"
     },
     {
       "id": "unit.platform-foundation",

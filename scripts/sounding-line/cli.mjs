@@ -318,7 +318,7 @@ function validatePolicy(policy) {
   for (const definition of activeTests.cases ?? [])
     bySuite.set(definition.suiteId, (bySuite.get(definition.suiteId) ?? 0) + 1);
   for (const suite of suites.suites)
-    if (["vitest-family", "playwright-family"].includes(suite.adapter) && !bySuite.get(suite.id))
+    if (["vitest-family", "node-test-browser-family", "playwright-family"].includes(suite.adapter) && !bySuite.get(suite.id))
       errors.push(`suite ${suite.id}: empty active family`);
   for (const gate of gates.gates) {
     assertKeys(gate, ["id", "requiredSuites", "conditionalSuites"], `gate ${gate.id}`, errors);
