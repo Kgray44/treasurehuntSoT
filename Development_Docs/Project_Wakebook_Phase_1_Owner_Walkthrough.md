@@ -3,7 +3,7 @@ title: Project Wakebook Phase 1 Owner Walkthrough
 audience: product-owner
 status: current
 canonical_for: project-wakebook-phase-1-owner-walkthrough
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-11
 ---
 
 # Project Wakebook Phase 1 owner walkthrough
@@ -14,19 +14,19 @@ This walkthrough begins only after the validation record says `READY_FOR_OWNER_W
 
 ## Runtime identity
 
-| Field                      | Owner handoff value                                                                    |
-| -------------------------- | -------------------------------------------------------------------------------------- |
-| Branch                     | `codex/project-wakebook-phase1-open-the-wake`                                          |
-| Exact source SHA           | `8c6137d6a3c5b00f9abcf66dac24f37945a101d3` (current validated implementation evidence) |
-| Runtime command            | Generated on owner request from the exact selected candidate                           |
-| Loopback URL               | Generated on owner request; never a shared or production endpoint                      |
-| Process ID and listener    | Generated on owner request and recorded with the runtime handoff                       |
-| Task-owned database        | Generated on owner request; must be a new task-owned SQLite clone                      |
-| Synthetic owner identifier | Pending retained-runtime launch                                                        |
-| Synthetic password         | Supplied interactively only; never stored in this record                               |
-| Evidence root              | Pending final Sounding Line run                                                        |
+| Field                       | Owner handoff value                                                                    |
+| --------------------------- | -------------------------------------------------------------------------------------- |
+| Branch                      | `codex/project-wakebook-phase1-open-the-wake`                                          |
+| Implementation evidence SHA | `33e1316426a4d7f014c1472147e42d040ecdd47e` (current validated implementation evidence) |
+| Runtime command             | Generated on owner request from the exact selected candidate                           |
+| Loopback URL                | Generated on owner request; never a shared or production endpoint                      |
+| Process ID and listener     | Generated on owner request and recorded with the runtime handoff                       |
+| Task-owned database         | Generated on owner request; must be a new task-owned SQLite clone                      |
+| Synthetic owner identifier  | Pending retained-runtime launch                                                        |
+| Synthetic password          | Supplied interactively only; never stored in this record                               |
+| Evidence root               | Pending final Sounding Line run                                                        |
 
-Before beginning, verify the runtime process, port, source SHA, and database path match this table. Stop if the application points at a canonical or shared database.
+Before beginning, verify the runtime process, port, implementation-evidence SHA, and database path match this table. Stop if the application points at a canonical or shared database.
 
 ## Walkthrough A: first arrival and ordinary reachability
 

@@ -10,20 +10,21 @@ last_reviewed: 2026-08-11
 
 ## Decision
 
-**Current classification: READY_FOR_OWNER_WALKTHROUGH - PROTECTED-MAIN NO-GO.** The Wakebook unit/component families and the exact isolated browser journey are passing, including checksum-bound visual evidence. The protected Sounding Line mainline attempt for this candidate returned `EVIDENCE_INVALID` because the independently owned `browser.helm` journey failed. This record does not establish owner acceptance, deployment, protected-main integration, or a release decision.
+**Current classification: READY_FOR_OWNER_WALKTHROUGH - PROTECTED-MAIN NO-GO.** The Wakebook unit/component families and the exact isolated browser journey are passing, including checksum-bound visual evidence. The protected Sounding Line mainline attempts returned `EVIDENCE_INVALID` because the independently owned `browser.helm` journey failed. This record does not establish owner acceptance, deployment, protected-main integration, or a release decision.
 
 ## Source identity
 
-| Field                           | Value                                                                                         |
-| ------------------------------- | --------------------------------------------------------------------------------------------- |
-| Branch                          | `codex/project-wakebook-phase1-open-the-wake`                                                 |
-| Owned worktree                  | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\project-wakebook-phase1-open-the-wake` |
-| Reconciled accepted-main base   | `dc430b79aa3ddd27443f47bb493ae6c471a41616`                                                    |
-| Mainline-attempt candidate SHA  | `8c6137d6a3c5b00f9abcf66dac24f37945a101d3`                                                    |
-| Archive implementation anchor   | `629f5c7a981b80494f7703b6410b573a661e0f39`                                                    |
-| Browser-evidence source SHA     | `22940b9004bc89def300a808f426a0ed4dc77658`                                                    |
-| Database schema change          | None                                                                                          |
-| Canonical mutable database used | No                                                                                            |
+| Field                                 | Value                                                                                         |
+| ------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Branch                                | `codex/project-wakebook-phase1-open-the-wake`                                                 |
+| Owned worktree                        | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\project-wakebook-phase1-open-the-wake` |
+| Reconciled accepted-main base         | `dc430b79aa3ddd27443f47bb493ae6c471a41616`                                                    |
+| Latest mainline-attempt candidate SHA | `33e1316426a4d7f014c1472147e42d040ecdd47e`                                                    |
+| Latest authority merge source SHA     | `f1de8f9f541f9dc0b01ba945c36f8c969fcc1f9d`                                                    |
+| Archive implementation anchor         | `629f5c7a981b80494f7703b6410b573a661e0f39`                                                    |
+| Browser-evidence source SHA           | `22940b9004bc89def300a808f426a0ed4dc77658`                                                    |
+| Database schema change                | None                                                                                          |
+| Canonical mutable database used       | No                                                                                            |
 
 ## Contract inventory
 
@@ -44,19 +45,19 @@ Sounding Line owns the authoritative definitions for:
 
 ## Evidence ledger
 
-| Evidence                             | Environment and fixture                                                                 | Result               | Truth boundary                          |
-| ------------------------------------ | --------------------------------------------------------------------------------------- | -------------------- | --------------------------------------- |
-| Focused TypeScript                   | Owned worktree; generated SQLite Prisma client                                          | PASS                 | Compile-time only                       |
-| Focused ESLint and Prettier          | Wakebook source, API, components, pages, tests, styles, control plane                   | PASS                 | Static only                             |
-| `unit.wakebook`                      | Sounding Line Vitest adapter; repository deterministic fixtures                         | PASS, 11/11          | Unit/API contract evidence              |
-| `component.wakebook`                 | Sounding Line Vitest adapter; JSDOM                                                     | PASS, 3/3            | Component contract evidence             |
-| `browser.wakebook`                   | Task-owned SQLite clone, approved immutable baseline witness, isolated Chromium context | PASS, 1/1            | Required synthetic browser evidence     |
-| Visual review                        | 15 source-, fixture-, and SHA256-bound browser captures                                 | ACCEPTED             | Codex review only; not owner acceptance |
-| Large archive                        | 1,005 synthetic owner records across 2025/2026 plus separate invitation                 | PASS in browser lane | Required bounded pagination/year proof  |
-| Owner and cover privacy negatives    | Separate synthetic owner and foreign account                                            | PASS in browser lane | Required private-boundary proof         |
-| Historical stability                 | Mutated current Chronicle and crew profile after archive creation                       | PASS in browser lane | Required snapshot proof                 |
-| Responsive/accessibility             | 1440x1000, 430x932, 390x844; Axe serious/critical policy                                | PASS in browser lane | Synthetic browser only                  |
-| Sounding Line authoritative mainline | GitHub run `31527213266`; candidate `8c6137d6a3c5b00f9abcf66dac24f37945a101d3`          | `EVIDENCE_INVALID`   | Required release authority; no waiver   |
+| Evidence                             | Environment and fixture                                                                                  | Result               | Truth boundary                          |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------- | -------------------- | --------------------------------------- |
+| Focused TypeScript                   | Owned worktree; generated SQLite Prisma client                                                           | PASS                 | Compile-time only                       |
+| Focused ESLint and Prettier          | Wakebook source, API, components, pages, tests, styles, control plane                                    | PASS                 | Static only                             |
+| `unit.wakebook`                      | Sounding Line Vitest adapter; repository deterministic fixtures                                          | PASS, 11/11          | Unit/API contract evidence              |
+| `component.wakebook`                 | Sounding Line Vitest adapter; JSDOM                                                                      | PASS, 3/3            | Component contract evidence             |
+| `browser.wakebook`                   | Task-owned SQLite clone, approved immutable baseline witness, isolated Chromium context                  | PASS, 1/1            | Required synthetic browser evidence     |
+| Visual review                        | 15 source-, fixture-, and SHA256-bound browser captures                                                  | ACCEPTED             | Codex review only; not owner acceptance |
+| Large archive                        | 1,005 synthetic owner records across 2025/2026 plus separate invitation                                  | PASS in browser lane | Required bounded pagination/year proof  |
+| Owner and cover privacy negatives    | Separate synthetic owner and foreign account                                                             | PASS in browser lane | Required private-boundary proof         |
+| Historical stability                 | Mutated current Chronicle and crew profile after archive creation                                        | PASS in browser lane | Required snapshot proof                 |
+| Responsive/accessibility             | 1440x1000, 430x932, 390x844; Axe serious/critical policy                                                 | PASS in browser lane | Synthetic browser only                  |
+| Sounding Line authoritative mainline | GitHub runs `31527213266` and `31529958855`; latest candidate `33e1316426a4d7f014c1472147e42d040ecdd47e` | `EVIDENCE_INVALID`   | Required release authority; no waiver   |
 
 The first `browser.wakebook` diagnostic attempt did not execute product code because another governed validation process owned the global validation-runtime lock. The runner reported cleanup `CLEAN`; no process was stopped and no lock was removed. That environmental collision is not a product failure and is not counted as passing evidence.
 
@@ -65,6 +66,8 @@ On `69b560110a65e7eee55cda0ae40bf80c1700030b`, the sealed Sounding Line subsyste
 On `22940b9004bc89def300a808f426a0ed4dc77658`, the focused governed `browser.wakebook` reran in a task-owned isolated runtime against the approved external baseline witness. It passed 1/1 with runtime conformance `PASSED`; the baseline SHA-256 was unchanged before and after. The capture manifest contains all 15 required states with repository-relative capture paths and SHA-256 checksums. `Project_Wakebook_Phase_1_Visual_Review.md` records their accepted Codex visual review. The successful focused run is minimum-sufficient Wakebook evidence, not a substitute for the protected mainline decision.
 
 On `8c6137d6a3c5b00f9abcf66dac24f37945a101d3`, GitHub Sounding Line authoritative run `31527213266` completed with finalizer decision `EVIDENCE_INVALID`. All Wakebook-owned checks remained clean; `browser.wakebook` and `browser.admiralty` passed. The independently owned `browser.helm` journey failed during guest invitation acceptance: the authoritative accept response was `200`, but the browser remained at `/player/invitation` instead of reaching `/player/playthroughs/<id>`. The worker receipt reported cleanup `CLEAN`. This is a valid mainline no-go, not a Wakebook regression, and must not be repaired, waived, or relabeled from this Phase 1 branch.
+
+For the latest candidate `33e1316426a4d7f014c1472147e42d040ecdd47e`, GitHub Sounding Line authoritative run `31529958855` evaluated the GitHub pull-request merge source `f1de8f9f541f9dc0b01ba945c36f8c969fcc1f9d` and again produced finalizer decision `EVIDENCE_INVALID`. The independently owned `browser.helm` invitation journey timed out after 600 seconds while awaiting its post-click `/api/invitations/accept` response; the worker receipt reported cleanup `CLEAN`. This is a valid protected-main no-go and is not evidence that Wakebook must alter, waive, or take ownership of Project Helm behavior.
 
 ## Privacy and source-safety assertions
 
