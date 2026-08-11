@@ -30,7 +30,7 @@
       "expectedDurationMs": 240000,
       "hardBudgetMs": 600000,
       "parallelSafe": true,
-        "resources": ["node-slot", "vitest-worker-pool"],
+      "resources": ["node-slot"],
       "dependencies": [],
       "contracts": [],
       "affectedPaths": ["src/**", "scripts/**", "testing/**"],
@@ -867,7 +867,7 @@
       "expectedDurationMs": 10000,
       "hardBudgetMs": 60000,
       "parallelSafe": true,
-      "resources": ["node-slot"],
+      "resources": ["node-slot", "vitest-worker-pool"],
       "dependencies": [],
       "contracts": [
         "homeport.route-inventory.complete",

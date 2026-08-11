@@ -89929,7 +89929,7 @@
     {
       "id": "sl-test-41e176d38988253670ff",
       "title": "public repository commands route through Sounding Line",
-      "line": 233,
+      "line": 235,
       "file": "tests/sounding-line/authority-cutover.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -91729,7 +91729,7 @@
     {
       "id": "sl-test-821bfc1a9103ea9560be",
       "title": "hosted planning serializes only actual shared resources while retaining dependencies",
-      "line": 65,
+      "line": 69,
       "file": "tests/sounding-line/runtime-conformance.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -91769,7 +91769,7 @@
     {
       "id": "sl-test-88944a7dd5e2e369d0b9",
       "title": "finalizer rejects missing or invalid runtime-conformance evidence",
-      "line": 75,
+      "line": 79,
       "file": "tests/sounding-line/runtime-conformance.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
