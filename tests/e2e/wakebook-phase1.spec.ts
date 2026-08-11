@@ -56,10 +56,11 @@ async function captureEvidenceState(
 
 async function register(browser: import("@playwright/test").Browser, label: string): Promise<Account> {
   const context = await browser.newContext();
+  const emailLabel = label.toLowerCase().replaceAll(/[^a-z0-9]+/gu, "-");
   const response = await context.request.post("/api/auth/register", {
     data: {
       displayName: `Synthetic ${label}`,
-      email: `${unique}-${label.toLowerCase()}@example.test`,
+      email: `${unique}-${emailLabel}@example.test`,
       password: syntheticPassword,
       confirmPassword: syntheticPassword,
     },
