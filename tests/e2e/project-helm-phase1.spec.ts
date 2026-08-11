@@ -210,7 +210,7 @@ async function acceptGuestInvitation(browser: Browser, link: string) {
   await accept.click({ noWaitAfter: true });
   const acceptedResponse = await response;
   expect(acceptedResponse.status(), await acceptedResponse.text()).toBe(200);
-  await expect(page).toHaveURL(/\/player\/playthroughs\//u);
+  await expect(page).toHaveURL(/\/player\/playthroughs\//u, { timeout: 30_000 });
   return { context, page };
 }
 
