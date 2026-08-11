@@ -2040,6 +2040,39 @@ html.helm-document-zoom .captain-participation-picker {
   grid-template-columns: 1fr;
 }
 
+html.helm-document-zoom .platform-header {
+  align-items: start;
+  flex-direction: column;
+}
+
+html.helm-document-zoom .library-tools,
+html.helm-document-zoom .invitation-table article,
+html.helm-document-zoom .captain-operational-panel dl,
+html.helm-document-zoom .tale-card-copy dl,
+html.helm-document-zoom .captain-voyage-card dl,
+html.helm-document-zoom .invitation-sheet dl,
+html.helm-document-zoom .waiting-room dl,
+html.helm-document-zoom .review-sheet dl,
+html.helm-document-zoom .archive-title dl {
+  grid-template-columns: 1fr;
+}
+
+html.helm-document-zoom .library-tools label:first-child {
+  grid-column: auto;
+}
+
+html.helm-document-zoom .player-card-grid,
+html.helm-document-zoom .waiting-room,
+html.helm-document-zoom .auth-columns,
+html.helm-document-zoom .invitation-secrets article,
+html.helm-document-zoom .player-card-grid.list .player-tale-card {
+  grid-template-columns: 1fr;
+}
+
+html.helm-document-zoom .wizard-progress small {
+  display: none;
+}
+
 @media (forced-colors: active) {
   .role-entry,
   .brass-button,
