@@ -49,6 +49,13 @@ This slice will:
 - add focused tests, governing documentation, and a canonical deferred-work
   backlog.
 
+Hosted execution keeps the planner's wave boundaries. When a wave has no
+exclusive matrix entries, a small fail-closed barrier verifies that the parallel
+worker group passed and that the exclusive group was either successful or
+intentionally empty before later reusable worker matrices are eligible. This
+normalizes GitHub's empty-matrix `skipped` result without accepting a failed or
+cancelled prerequisite.
+
 ## Explicitly deferred v1.2 work
 
 This bootstrap does not implement automatic Evidence Invalidation Manifest and

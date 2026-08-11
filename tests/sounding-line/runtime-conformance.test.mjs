@@ -86,10 +86,10 @@ test("hosted planning serializes only actual shared resources while retaining de
 
 test("empty exclusive waves cannot suppress dependency-ready hosted work", async () => {
   const workflow = await readFile(path.join(root, ".github", "workflows", "sounding-line-authoritative.yml"), "utf8");
-  assert.match(workflow, /governed-parallel-wave-1:[\s\S]*?needs\.governed-parallel-wave-0\.result == 'success'/u);
-  assert.match(workflow, /governed-parallel-wave-1:[\s\S]*?needs\.governed-exclusive-wave-0\.result == 'skipped'/u);
-  assert.match(workflow, /governed-parallel-wave-2:[\s\S]*?needs\.governed-parallel-wave-1\.result == 'success'/u);
-  assert.match(workflow, /governed-parallel-wave-2:[\s\S]*?needs\.governed-exclusive-wave-1\.result == 'skipped'/u);
+  assert.match(workflow, /wave-0-complete:[\s\S]*?if: always\(\)[\s\S]*?SOUNDING_LINE_WAVE_0_PREREQUISITES_INVALID/u);
+  assert.match(workflow, /governed-parallel-wave-1:[\s\S]*?needs: \[plan, wave-0-complete\]/u);
+  assert.match(workflow, /wave-1-complete:[\s\S]*?if: always\(\)[\s\S]*?SOUNDING_LINE_WAVE_1_PREREQUISITES_INVALID/u);
+  assert.match(workflow, /governed-parallel-wave-2:[\s\S]*?needs: \[plan, wave-1-complete\]/u);
   assert.doesNotMatch(workflow, /needs\.\*\.result/u);
 });
 

@@ -95,10 +95,26 @@ jobs:
       suite: ${{ matrix.suiteId }}
       gate: ${{ needs.plan.outputs.gate }}
 
+  wave-0-complete:
+    name: Sounding Line / Wave 0 barrier
+    needs: [plan, governed-parallel-wave-0, governed-exclusive-wave-0]
+    if: always()
+    runs-on: windows-latest
+    steps:
+      - shell: pwsh
+        env:
+          PLAN_RESULT: ${{ needs.plan.result }}
+          PARALLEL_RESULT: ${{ needs.governed-parallel-wave-0.result }}
+          EXCLUSIVE_RESULT: ${{ needs.governed-exclusive-wave-0.result }}
+        run: |
+          if ($env:PLAN_RESULT -ne 'success' -or $env:PARALLEL_RESULT -ne 'success' -or $env:EXCLUSIVE_RESULT -notin @('success', 'skipped')) {
+            throw 'SOUNDING_LINE_WAVE_0_PREREQUISITES_INVALID'
+          }
+
   governed-parallel-wave-1:
     name: Sounding Line / Parallel wave 1
-    needs: [plan, governed-parallel-wave-0, governed-exclusive-wave-0]
-    if: ${{ always() && needs.plan.result == 'success' && needs.governed-parallel-wave-0.result == 'success' && (needs.governed-exclusive-wave-0.result == 'success' || needs.governed-exclusive-wave-0.result == 'skipped') }}
+    needs: [plan, wave-0-complete]
+    if: ${{ always() && needs.plan.result == 'success' && needs.wave-0-complete.result == 'success' }}
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.plan.outputs.parallel1) }}
@@ -109,8 +125,8 @@ jobs:
 
   governed-exclusive-wave-1:
     name: Sounding Line / Exclusive wave 1
-    needs: [plan, governed-parallel-wave-0, governed-exclusive-wave-0]
-    if: ${{ always() && needs.plan.result == 'success' && needs.governed-parallel-wave-0.result == 'success' && (needs.governed-exclusive-wave-0.result == 'success' || needs.governed-exclusive-wave-0.result == 'skipped') }}
+    needs: [plan, wave-0-complete]
+    if: ${{ always() && needs.plan.result == 'success' && needs.wave-0-complete.result == 'success' }}
     strategy:
       fail-fast: false
       max-parallel: 1
@@ -120,10 +136,26 @@ jobs:
       suite: ${{ matrix.suiteId }}
       gate: ${{ needs.plan.outputs.gate }}
 
+  wave-1-complete:
+    name: Sounding Line / Wave 1 barrier
+    needs: [plan, governed-parallel-wave-1, governed-exclusive-wave-1]
+    if: always()
+    runs-on: windows-latest
+    steps:
+      - shell: pwsh
+        env:
+          PLAN_RESULT: ${{ needs.plan.result }}
+          PARALLEL_RESULT: ${{ needs.governed-parallel-wave-1.result }}
+          EXCLUSIVE_RESULT: ${{ needs.governed-exclusive-wave-1.result }}
+        run: |
+          if ($env:PLAN_RESULT -ne 'success' -or $env:PARALLEL_RESULT -ne 'success' -or $env:EXCLUSIVE_RESULT -notin @('success', 'skipped')) {
+            throw 'SOUNDING_LINE_WAVE_1_PREREQUISITES_INVALID'
+          }
+
   governed-parallel-wave-2:
     name: Sounding Line / Parallel wave 2
-    needs: [plan, governed-parallel-wave-1, governed-exclusive-wave-1]
-    if: ${{ always() && needs.plan.result == 'success' && needs.governed-parallel-wave-1.result == 'success' && (needs.governed-exclusive-wave-1.result == 'success' || needs.governed-exclusive-wave-1.result == 'skipped') }}
+    needs: [plan, wave-1-complete]
+    if: ${{ always() && needs.plan.result == 'success' && needs.wave-1-complete.result == 'success' }}
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.plan.outputs.parallel2) }}
@@ -134,8 +166,8 @@ jobs:
 
   governed-exclusive-wave-2:
     name: Sounding Line / Exclusive wave 2
-    needs: [plan, governed-parallel-wave-1, governed-exclusive-wave-1]
-    if: ${{ always() && needs.plan.result == 'success' && needs.governed-parallel-wave-1.result == 'success' && (needs.governed-exclusive-wave-1.result == 'success' || needs.governed-exclusive-wave-1.result == 'skipped') }}
+    needs: [plan, wave-1-complete]
+    if: ${{ always() && needs.plan.result == 'success' && needs.wave-1-complete.result == 'success' }}
     strategy:
       fail-fast: false
       max-parallel: 1
@@ -152,8 +184,10 @@ jobs:
         plan,
         governed-parallel-wave-0,
         governed-exclusive-wave-0,
+        wave-0-complete,
         governed-parallel-wave-1,
         governed-exclusive-wave-1,
+        wave-1-complete,
         governed-parallel-wave-2,
         governed-exclusive-wave-2,
       ]
