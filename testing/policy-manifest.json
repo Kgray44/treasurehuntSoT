@@ -1,6 +1,6 @@
 {
-  "version": "2.0.0",
-  "status": "authority-cutover-in-progress",
+  "version": "2.1.0",
+  "status": "sounding-line-v1.2-runtime-bootstrap",
   "registries": [
     "ownership.json",
     "contracts.json",
@@ -13,7 +13,8 @@
     "file-dispositions.json",
     "test-definition-schema.json",
     "retired-suites.json",
-    "browser-capabilities.json"
+    "browser-capabilities.json",
+    "sounding-line-authority.json"
   ],
   "authority": "sounding-line-authoritative",
   "plannerAuthority": "governed-local-execution-with-allowlisted-adapters",
