@@ -2041,7 +2041,8 @@ html.helm-document-zoom .captain-participation-picker {
   grid-template-columns: 1fr;
 }
 
-html.helm-document-zoom .voyage-wizard {
+html.helm-document-zoom .voyage-wizard,
+html[style*="zoom: 2"] .voyage-wizard {
   width: calc((100% - 2rem) / 2) !important;
   max-width: calc((100% - 2rem) / 2);
 }
