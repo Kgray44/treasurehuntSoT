@@ -10,7 +10,7 @@ last_reviewed: 2026-08-09
 
 [Project Drydock](Project_Drydock_Governing_Document.pdf) governs the Chronicle authoring-contract, validation, compatibility, and later simulation program. Phase 1, Set the Blocks, is limited to typed authoring contracts, variables, expressions, schema evolution, compatibility fixtures, stable issues, and incremental contract validation. It does not implement whole-Chronicle analysis or simulation.
 
-Phase 1 status: **MAINLINE ACCEPTED** through protected PR #22 at mainline merge `468530645e983412e5f4c1aaa103915be77c9c07`. Phase 2, **Sound the Hull**, is active from accepted mainline `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`; it is limited to whole-Chronicle static analysis and must not begin Phase 3 simulation.
+Phase 1 status: **MAINLINE ACCEPTED** through protected PR #22 at mainline merge `468530645e983412e5f4c1aaa103915be77c9c07`. Phase 2, **Sound the Hull**, is **MAINLINE ACCEPTED** through protected PR #36 at merge `847e035775984888be71edf614f2205fd6c5a376`. Phase 2 is limited to whole-Chronicle static analysis; Phase 3 simulation has not started.
 
 ## Phase 1 records
 
@@ -38,6 +38,8 @@ Phase 1 status: **MAINLINE ACCEPTED** through protected PR #22 at mainline merge
 - [Test Plan](Project_Drydock_Phase_2_Test_Plan.md)
 - [Validation Record](Project_Drydock_Phase_2_Validation_Record.md)
 - [Reconciliation Record](Project_Drydock_Phase_2_Reconciliation_Record.md)
+- [Integration Manifest](Project_Drydock_Phase_2_Integration_Manifest.md)
+- [Completion Receipt](Project_Drydock_Phase_2_Completion_Receipt.md)
 - [Mainline Safety Contract](Project_Drydock_Phase_2_Mainline_Safety_Contract.md)
 - [Migration Reservation](Project_Drydock_Phase_2_Migration_Reservation.json)
 - [Synthetic Corpus Ledger](Project_Drydock_Phase_2_Synthetic_Corpus_Ledger.json) — active coverage ledger; not a completion claim.
