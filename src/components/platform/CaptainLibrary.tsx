@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { reconcileVersionedRows } from "@/animation/platform/polling-delta";
@@ -1097,6 +1097,19 @@ function VoyageWizard(props: WizardProps) {
   const closeRef = useRef(props.close);
   const token = resolvePlatformMotionToken("layout", props.mode);
   const direction = props.direction;
+  const [documentZoom, setDocumentZoom] = useState(1);
+
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const syncDocumentZoom = () => {
+      const zoom = Number.parseFloat(root.style.zoom || getComputedStyle(root).zoom);
+      setDocumentZoom(Number.isFinite(zoom) && zoom > 0 ? zoom : 1);
+    };
+    syncDocumentZoom();
+    const observer = new MutationObserver(syncDocumentZoom);
+    observer.observe(root, { attributes: true, attributeFilter: ["style"] });
+    return () => observer.disconnect();
+  }, []);
   const crewNames = props.players.map(
     (crew) =>
       props.library.playerProfiles.find((profile) => profile.id === crew.playerId)?.displayName ??
@@ -1183,6 +1196,7 @@ function VoyageWizard(props: WizardProps) {
       <motion.section
         ref={dialogRef}
         className="voyage-wizard"
+        style={documentZoom > 1 ? { width: `calc(100% / ${documentZoom})` } : undefined}
         role="dialog"
         aria-modal="true"
         aria-labelledby="wizard-title"
