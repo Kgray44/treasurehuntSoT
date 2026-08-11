@@ -235,6 +235,16 @@ function Sync-ForeverRuntime {
             Join-Path $script:ProjectRoot $directoryName
         }
     )
+    if ($Mode -eq "validation") {
+        # Browser validation executes the product, tests, and public assets;
+        # repository records and imported chat material are not runtime inputs.
+        # Keeping them out of each isolated mirror preserves the mandatory
+        # physical dependency boundary on constrained task volumes.
+        $excludedDirectories += @(
+            Join-Path $script:ProjectRoot "Development_Docs",
+            Join-Path $script:ProjectRoot "Codex_Chats"
+        )
+    }
     & robocopy $script:ProjectRoot $resolvedRuntime /E /XD $excludedDirectories /XF .git *.db *.db-journal *.log .forever-dev.json .forever-lock.sha | Out-Null
     if ($LASTEXITCODE -gt 7) { throw "Unable to synchronize the local runtime mirror (robocopy exit $LASTEXITCODE)." }
     if ($Mode -eq "validation") {
