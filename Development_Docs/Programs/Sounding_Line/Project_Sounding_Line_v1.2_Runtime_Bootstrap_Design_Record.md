@@ -51,10 +51,11 @@ This slice will:
 
 Hosted execution keeps the planner's wave boundaries. When a wave has no
 exclusive matrix entries, a small fail-closed barrier verifies that the parallel
-worker group passed and that the exclusive group was either successful or
-intentionally empty before later reusable worker matrices are eligible. This
-normalizes GitHub's empty-matrix `skipped` result without accepting a failed or
-cancelled prerequisite.
+worker group passed and that the sealed exclusive matrix is empty before later
+reusable worker matrices are eligible. GitHub exposes an empty reusable matrix
+as `failure` through `needs` even when the UI labels the job `skipped`; the
+barrier accepts that value only with the sealed zero-entry matrix. A nonempty
+exclusive worker failure or cancellation remains a veto.
 
 ## Explicitly deferred v1.2 work
 

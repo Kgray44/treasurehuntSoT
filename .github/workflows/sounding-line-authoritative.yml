@@ -106,8 +106,12 @@ jobs:
           PLAN_RESULT: ${{ needs.plan.result }}
           PARALLEL_RESULT: ${{ needs.governed-parallel-wave-0.result }}
           EXCLUSIVE_RESULT: ${{ needs.governed-exclusive-wave-0.result }}
+          EXCLUSIVE_MATRIX: ${{ needs.plan.outputs.exclusive0 }}
         run: |
-          if ($env:PLAN_RESULT -ne 'success' -or $env:PARALLEL_RESULT -ne 'success' -or $env:EXCLUSIVE_RESULT -notin @('success', 'skipped')) {
+          $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
+          $exclusiveIntentionallyEmpty = $null -ne $exclusiveMatrix.include -and @($exclusiveMatrix.include).Count -eq 0
+          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -eq 'failure')
+          if ($env:PLAN_RESULT -ne 'success' -or $env:PARALLEL_RESULT -ne 'success' -or -not $exclusiveAccepted) {
             throw 'SOUNDING_LINE_WAVE_0_PREREQUISITES_INVALID'
           }
 
@@ -147,8 +151,12 @@ jobs:
           PLAN_RESULT: ${{ needs.plan.result }}
           PARALLEL_RESULT: ${{ needs.governed-parallel-wave-1.result }}
           EXCLUSIVE_RESULT: ${{ needs.governed-exclusive-wave-1.result }}
+          EXCLUSIVE_MATRIX: ${{ needs.plan.outputs.exclusive1 }}
         run: |
-          if ($env:PLAN_RESULT -ne 'success' -or $env:PARALLEL_RESULT -ne 'success' -or $env:EXCLUSIVE_RESULT -notin @('success', 'skipped')) {
+          $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
+          $exclusiveIntentionallyEmpty = $null -ne $exclusiveMatrix.include -and @($exclusiveMatrix.include).Count -eq 0
+          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -eq 'failure')
+          if ($env:PLAN_RESULT -ne 'success' -or $env:PARALLEL_RESULT -ne 'success' -or -not $exclusiveAccepted) {
             throw 'SOUNDING_LINE_WAVE_1_PREREQUISITES_INVALID'
           }
 
