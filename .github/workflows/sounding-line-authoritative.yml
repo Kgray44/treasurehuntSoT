@@ -35,6 +35,9 @@ jobs:
       exclusive0: ${{ steps.matrix.outputs.exclusive0 }}
       exclusive1: ${{ steps.matrix.outputs.exclusive1 }}
       exclusive2: ${{ steps.matrix.outputs.exclusive2 }}
+      exclusive0Present: ${{ steps.matrix.outputs.exclusive0Present }}
+      exclusive1Present: ${{ steps.matrix.outputs.exclusive1Present }}
+      exclusive2Present: ${{ steps.matrix.outputs.exclusive2Present }}
     steps:
       - id: gate
         shell: pwsh
@@ -67,6 +70,10 @@ jobs:
               $nodes = @($plan.nodes | Where-Object { $_.execution.wave -eq $wave -and $_.execution.mode -eq $mode } | ForEach-Object { @{ suiteId = $_.id } })
               $matrix = @{ include = $nodes } | ConvertTo-Json -Compress
               "$mode$wave=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+              if ($mode -eq 'exclusive') {
+                $present = if ($nodes.Count -gt 0) { 'true' } else { 'false' }
+                "exclusive$wave`Present=$present" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+              }
             }
           }
       - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
@@ -86,6 +93,7 @@ jobs:
   governed-exclusive-wave-0:
     name: Sounding Line / Exclusive wave 0
     needs: plan
+    if: ${{ needs.plan.outputs.exclusive0Present == 'true' }}
     strategy:
       fail-fast: false
       max-parallel: 1
@@ -110,7 +118,7 @@ jobs:
         run: |
           $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
           $exclusiveIntentionallyEmpty = $null -ne $exclusiveMatrix.include -and @($exclusiveMatrix.include).Count -eq 0
-          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -eq 'failure')
+          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -in @('failure', 'skipped'))
           if ($env:PLAN_RESULT -ne 'success' -or $env:PARALLEL_RESULT -ne 'success' -or -not $exclusiveAccepted) {
             throw 'SOUNDING_LINE_WAVE_0_PREREQUISITES_INVALID'
           }
@@ -130,7 +138,7 @@ jobs:
   governed-exclusive-wave-1:
     name: Sounding Line / Exclusive wave 1
     needs: [plan, wave-0-complete]
-    if: ${{ always() && needs.plan.result == 'success' && needs.wave-0-complete.result == 'success' }}
+    if: ${{ always() && needs.plan.outputs.exclusive1Present == 'true' && needs.plan.result == 'success' && needs.wave-0-complete.result == 'success' }}
     strategy:
       fail-fast: false
       max-parallel: 1
@@ -155,7 +163,7 @@ jobs:
         run: |
           $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
           $exclusiveIntentionallyEmpty = $null -ne $exclusiveMatrix.include -and @($exclusiveMatrix.include).Count -eq 0
-          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -eq 'failure')
+          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -in @('failure', 'skipped'))
           if ($env:PLAN_RESULT -ne 'success' -or $env:PARALLEL_RESULT -ne 'success' -or -not $exclusiveAccepted) {
             throw 'SOUNDING_LINE_WAVE_1_PREREQUISITES_INVALID'
           }
@@ -175,7 +183,7 @@ jobs:
   governed-exclusive-wave-2:
     name: Sounding Line / Exclusive wave 2
     needs: [plan, wave-1-complete]
-    if: ${{ always() && needs.plan.result == 'success' && needs.wave-1-complete.result == 'success' }}
+    if: ${{ always() && needs.plan.outputs.exclusive2Present == 'true' && needs.plan.result == 'success' && needs.wave-1-complete.result == 'success' }}
     strategy:
       fail-fast: false
       max-parallel: 1

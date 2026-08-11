@@ -99,12 +99,16 @@ test("empty exclusive waves cannot suppress dependency-ready hosted work", async
     workflow,
     /wave-0-complete:[\s\S]*?EXCLUSIVE_MATRIX:[\s\S]*?exclusiveIntentionallyEmpty[\s\S]*?SOUNDING_LINE_WAVE_0_PREREQUISITES_INVALID/u,
   );
+  assert.match(workflow, /exclusive0Present: \$\{\{ steps\.matrix\.outputs\.exclusive0Present \}\}/u);
+  assert.match(workflow, /governed-exclusive-wave-0:[\s\S]*?exclusive0Present == 'true'/u);
   assert.match(workflow, /governed-parallel-wave-1:[\s\S]*?needs: \[plan, wave-0-complete\]/u);
   assert.match(
     workflow,
     /wave-1-complete:[\s\S]*?EXCLUSIVE_MATRIX:[\s\S]*?exclusiveIntentionallyEmpty[\s\S]*?SOUNDING_LINE_WAVE_1_PREREQUISITES_INVALID/u,
   );
+  assert.match(workflow, /governed-exclusive-wave-1:[\s\S]*?exclusive1Present == 'true'/u);
   assert.match(workflow, /governed-parallel-wave-2:[\s\S]*?needs: \[plan, wave-1-complete\]/u);
+  assert.match(workflow, /governed-exclusive-wave-2:[\s\S]*?exclusive2Present == 'true'/u);
   assert.doesNotMatch(workflow, /needs\.\*\.result/u);
 });
 

@@ -57,6 +57,11 @@ as `failure` through `needs` even when the UI labels the job `skipped`; the
 barrier accepts that value only with the sealed zero-entry matrix. A nonempty
 exclusive worker failure or cancellation remains a veto.
 
+The hosted plan also emits an explicit sealed presence flag for each exclusive
+wave. An empty exclusive matrix is conditionally skipped before GitHub attempts
+to expand it, preventing its reusable-matrix aggregate from misreporting the
+otherwise accepted workflow as failed.
+
 ## Explicitly deferred v1.2 work
 
 This bootstrap does not implement automatic Evidence Invalidation Manifest and
