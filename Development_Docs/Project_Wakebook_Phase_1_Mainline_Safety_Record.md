@@ -3,24 +3,24 @@ title: Project Wakebook Phase 1 Mainline Safety Record
 audience: product-engineering
 status: current
 canonical_for: project-wakebook-phase-1-mainline-safety-record
-last_reviewed: 2026-08-10
+last_reviewed: 2026-08-11
 ---
 
 # Project Wakebook Phase 1 mainline safety record
 
 ## Phase registration
 
-| Field             | Declaration                                                                                                              |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Project / phase   | Project Wakebook / Phase 1 `Open the Wake`                                                                               |
-| Owner             | Wakebook for archive projection and presentation; Wayfarer remains history authority                                     |
-| Branch / worktree | `codex/project-wakebook-phase1-open-the-wake` / `C:\Users\kkids\Documents\treasurehuntSoT-wakebook-phase1-open-the-wake` |
-| Reconciled base   | `384ad39fbc40e8cbe16dd2aa2c83abd3e00a56c6`                                                                               |
-| Dependency class  | Accepted-main contracts only                                                                                             |
-| Schema impact     | None; no migration reservation                                                                                           |
-| Shared seams      | Passport routes/navigation/styles, Feature Catalog, Homeport catalogs, Sounding Line control plane                       |
-| Activation        | Complete authenticated vertical slice; no partial public activation                                                      |
-| Failure path      | Optional context degrades; accepted history remains readable; neutral authorization errors                               |
+| Field             | Declaration                                                                                                                                   |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Project / phase   | Project Wakebook / Phase 1 `Open the Wake`                                                                                                    |
+| Owner             | Wakebook for archive projection and presentation; Wayfarer remains history authority                                                          |
+| Branch / worktree | `codex/project-wakebook-phase1-open-the-wake` / `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\project-wakebook-phase1-open-the-wake` |
+| Reconciled base   | `dc430b79aa3ddd27443f47bb493ae6c471a41616`                                                                                                    |
+| Dependency class  | Accepted-main contracts only                                                                                                                  |
+| Schema impact     | None; no migration reservation                                                                                                                |
+| Shared seams      | Passport routes/navigation/styles, Feature Catalog, Homeport catalogs, Sounding Line control plane                                            |
+| Activation        | Complete authenticated vertical slice; no partial public activation                                                                           |
+| Failure path      | Optional context degrades; accepted history remains readable; neutral authorization errors                                                    |
 
 ## Post-phase capability
 
@@ -47,4 +47,4 @@ The Wakebook vertical slice can be reverted without deleting or rewriting a hist
 
 ## Permanent-stop decision
 
-**PASS BY DESIGN; runtime evidence pending.** The frozen slice is independently useful with no required future control or placeholder. Final classification depends on implementation, Sounding Line evidence, and owner walkthrough, not this design assertion alone.
+**PASS BY DESIGN; Wakebook runtime evidence complete, protected-main decision pending.** The frozen slice is independently useful with no required future control or placeholder. Wakebook-focused runtime evidence is complete, but the authoritative mainline attempt on `8c6137d6a3c5b00f9abcf66dac24f37945a101d3` returned `EVIDENCE_INVALID` because the independently owned `browser.helm` invitation handoff failed. Final acceptance still depends on that clean Sounding Line decision and owner walkthrough; neither is inferred here.
