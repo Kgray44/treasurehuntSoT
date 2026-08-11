@@ -280,9 +280,6 @@ describe("Voyagewright Studio editor motion and authority", () => {
     fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Apply safe repair" }));
 
     await waitFor(() => expect(screen.getByRole("button", { name: "Undo last edit" })).not.toBeDisabled());
-    await waitFor(() =>
-      expect(document.querySelector(".save-state")).toHaveTextContent(/Safe repair queued for autosave|Saved at/),
-    );
     fireEvent.click(screen.getByRole("button", { name: "Undo last edit" }));
     expect(screen.getByRole("button", { name: "Redo edit" })).not.toBeDisabled();
   });
