@@ -279,6 +279,11 @@ function Copy-ForeverDependencySeed {
         throw "Sounding Line dependency seed lockfile does not match the isolated runtime."
     }
     if (Test-Path -LiteralPath $runtimeModules) { throw "Validation runtime already has a node_modules path before dependency seeding." }
+    # Robocopy creates child directories with its own allocation attributes, so
+    # mark the exact dependency destination before its physical copy rather
+    # than relying on compression inherited from the runtime root.
+    New-Item -ItemType Directory -Path $runtimeModules -ErrorAction Stop | Out-Null
+    Enable-ForeverValidationRuntimeCompression -RuntimeRoot $runtimeModules
     # Copy the already installed, lockfile-matched dependency tree rather than
     # repeating npm ci. A physical copy retains Next's runtime-local .next
     # behavior and Prisma's generated-client isolation.
