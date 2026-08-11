@@ -98,7 +98,7 @@ jobs:
   governed-parallel-wave-1:
     name: Sounding Line / Parallel wave 1
     needs: [plan, governed-parallel-wave-0, governed-exclusive-wave-0]
-    if: ${{ always() && needs.plan.result == 'success' && (needs.governed-parallel-wave-0.result == 'success' || needs.governed-parallel-wave-0.result == 'skipped') && (needs.governed-exclusive-wave-0.result == 'success' || needs.governed-exclusive-wave-0.result == 'skipped') }}
+    if: ${{ always() && needs.plan.result == 'success' && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.plan.outputs.parallel1) }}
@@ -110,7 +110,7 @@ jobs:
   governed-exclusive-wave-1:
     name: Sounding Line / Exclusive wave 1
     needs: [plan, governed-parallel-wave-0, governed-exclusive-wave-0]
-    if: ${{ always() && needs.plan.result == 'success' && (needs.governed-parallel-wave-0.result == 'success' || needs.governed-parallel-wave-0.result == 'skipped') && (needs.governed-exclusive-wave-0.result == 'success' || needs.governed-exclusive-wave-0.result == 'skipped') }}
+    if: ${{ always() && needs.plan.result == 'success' && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}
     strategy:
       fail-fast: false
       max-parallel: 1
@@ -123,7 +123,7 @@ jobs:
   governed-parallel-wave-2:
     name: Sounding Line / Parallel wave 2
     needs: [plan, governed-parallel-wave-1, governed-exclusive-wave-1]
-    if: ${{ always() && needs.plan.result == 'success' && (needs.governed-parallel-wave-1.result == 'success' || needs.governed-parallel-wave-1.result == 'skipped') && (needs.governed-exclusive-wave-1.result == 'success' || needs.governed-exclusive-wave-1.result == 'skipped') }}
+    if: ${{ always() && needs.plan.result == 'success' && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.plan.outputs.parallel2) }}
@@ -135,7 +135,7 @@ jobs:
   governed-exclusive-wave-2:
     name: Sounding Line / Exclusive wave 2
     needs: [plan, governed-parallel-wave-1, governed-exclusive-wave-1]
-    if: ${{ always() && needs.plan.result == 'success' && (needs.governed-parallel-wave-1.result == 'success' || needs.governed-parallel-wave-1.result == 'skipped') && (needs.governed-exclusive-wave-1.result == 'success' || needs.governed-exclusive-wave-1.result == 'skipped') }}
+    if: ${{ always() && needs.plan.result == 'success' && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}
     strategy:
       fail-fast: false
       max-parallel: 1
