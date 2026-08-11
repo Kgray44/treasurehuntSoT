@@ -21,7 +21,9 @@ export async function buildPlan({ root, gateId, serial = false, sourceSha = proc
   if (manifest.authority !== "sounding-line-authoritative") throw new Error("SOUNDING_LINE_AUTHORITY_NOT_ENABLED");
   if (
     authorityIndex.authority !== "SOUNDING_LINE" ||
-    !["partI", "partII", "partIII"].every((part) => authorityIndex.effectiveAmendments?.[part] === "1.2")
+    authorityIndex.effectiveAmendments?.partI !== "1.2" ||
+    authorityIndex.effectiveAmendments?.partII !== "1.2" ||
+    authorityIndex.effectiveAmendments?.partIII !== "1.3"
   )
     throw new Error("AUTHORITY_INDEX_MISMATCH");
   const gate = gatesFile.gates.find((candidate) => candidate.id === gateId);

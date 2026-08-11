@@ -5,17 +5,90 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { buildPlan } from "../../scripts/sounding-line/planner.mjs";
 import { finalize } from "../../scripts/sounding-line/finalizer.mjs";
+import { selectFocusedSuite } from "../../scripts/sounding-line/focused-selection.mjs";
 import { CONFORMANCE_CODES, deriveWorkerPreparation } from "../../scripts/sounding-line/worker-preparation.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 
-test("effective v1.2 authority is discoverable and policy-owned", async () => {
+test("effective authority and the development/finalization boundary are discoverable and policy-owned", async () => {
   const authority = JSON.parse(await readFile(path.join(root, "testing", "sounding-line-authority.json"), "utf8"));
   assert.equal(authority.authority, "SOUNDING_LINE");
-  assert.deepEqual(authority.effectiveAmendments, { partI: "1.2", partII: "1.2", partIII: "1.2" });
+  assert.deepEqual(authority.effectiveAmendments, { partI: "1.2", partII: "1.2", partIII: "1.3" });
   assert.equal(authority.requiredProtectedAuthorityCheck, "Sounding Line / Mainline Decision");
   assert.equal(authority.runtimeConformance.required, true);
+  assert.deepEqual(authority.developmentValidation, {
+    incrementalVerificationRequired: true,
+    authoritativeDebuggingForbidden: true,
+    focusedRepairRequiredBeforeReacceptance: true,
+    authoritativeInvocation: "EXPLICIT_FROZEN_CANDIDATE_ONLY",
+  });
   assert.equal(authority.futureProjectInheritance, true);
+});
+
+test("active agent guidance requires the testing workflow contract", async () => {
+  for (const relativePath of ["AGENTS.md", path.join(".agents", "README.md")]) {
+    const guidance = await readFile(path.join(root, relativePath), "utf8");
+    assert.match(
+      guidance,
+      /\.agents\/testing-workflow\.md|testing-workflow\.md/u,
+      "DEVELOPMENT_TESTING_CONTRACT_MISSING",
+    );
+  }
+  const contract = await readFile(path.join(root, ".agents", "testing-workflow.md"), "utf8");
+  for (const heading of ["Development verification", "Candidate qualification", "Authoritative acceptance"])
+    assert.match(contract, new RegExp(`## [A-C]\\. ${heading}`, "u"), "DEVELOPMENT_TESTING_CONTRACT_MISSING");
+});
+
+test("focused selection accepts every sealed node and rejects unknown suites", async () => {
+  for (const gateId of ["mainline", "release-candidate"]) {
+    const plan = await buildPlan({ root, gateId, sourceSha: "focused-selection-test" });
+    for (const node of plan.nodes) assert.equal(selectFocusedSuite(plan, node.id).suiteId, node.id);
+  }
+  const projectPlan = {
+    gate: "mainline",
+    sourceSha: "wakebook-source",
+    planDigest: "wakebook-plan",
+    nodes: [
+      {
+        id: "browser.wakebook",
+        adapter: "playwright-family",
+        resources: ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+      },
+    ],
+  };
+  assert.equal(selectFocusedSuite(projectPlan, "browser.wakebook").suiteId, "browser.wakebook");
+  assert.throws(
+    () => selectFocusedSuite(projectPlan, "browser.unknown"),
+    /FOCUSED_SUITE_NOT_REGISTERED/u,
+    "FOCUSED_SUITE_NOT_REGISTERED",
+  );
+});
+
+test("focused selection fails closed when sealed-node resources are invalid", () => {
+  const invalidPlan = {
+    gate: "mainline",
+    sourceSha: "invalid-source",
+    planDigest: "invalid-plan",
+    nodes: [{ id: "browser.invalid", adapter: "playwright-family", resources: ["application-port"] }],
+  };
+  assert.throws(
+    () => selectFocusedSuite(invalidPlan, "browser.invalid"),
+    /FOCUSED_RESOURCE_SCOPE_VIOLATION/u,
+    "FOCUSED_RESOURCE_SCOPE_VIOLATION",
+  );
+});
+
+test("focused hosted execution delegates resource preparation and has no release authority", async () => {
+  const focused = await readFile(path.join(root, ".github", "workflows", "sounding-line-focused-repair.yml"), "utf8");
+  assert.match(focused, /uses: \.\/\.github\/workflows\/sounding-line-governed-worker\.yml/u);
+  assert.doesNotMatch(
+    focused,
+    /prisma migrate|db:seed|playwright install|finalize-ci\.mjs|finalizer\.mjs|RELEASE_GO/u,
+    "FOCUSED_RELEASE_AUTHORITY_FORBIDDEN",
+  );
+  assert.match(focused, /focused-selection\.mjs/u);
+  assert.match(focused, /type: string/u);
+  assert.doesNotMatch(focused, /type: choice[\s\S]*?browser\.access-sentinel/u);
 });
 
 test("resource-aware preparation eliminates universal database and browser setup", async () => {
