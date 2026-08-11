@@ -2020,6 +2020,18 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
   }
 }
 
+/* Browser zoom can leave a 640px effective layout viewport. Keep the voyage
+ * configuration choices in their single-column, no-overflow layout there too. */
+@media (max-width: 700px) {
+  .wizard-choice-grid,
+  .delivery-options,
+  .wizard-form,
+  .crew-builder fieldset,
+  .captain-participation-picker {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (forced-colors: active) {
   .role-entry,
   .brass-button,
