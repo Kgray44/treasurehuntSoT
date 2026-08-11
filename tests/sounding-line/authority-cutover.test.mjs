@@ -222,6 +222,8 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   assert.match(worker, /browserRestoreMs/u);
   assert.match(worker, /dependencyRestoreMs/u);
   assert.match(worker, /Bind setup and execution timing to worker evidence/u);
+  assert.match(worker, /Add-Member -NotePropertyName suiteExecutionMs/u);
+  assert.doesNotMatch(worker, /\$throughput\.suiteExecutionMs =/u);
   assert.doesNotMatch(worker, /SOUNDING_LINE_SUITE -like 'browser\.\*'/u);
   assert.doesNotMatch(worker, /playwright install chromium webkit/u);
   assert.match(worker, /inputs\.gate/u);

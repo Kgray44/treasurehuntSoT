@@ -115,10 +115,11 @@ jobs:
           if ((Test-Path -LiteralPath sounding-line-worker-evidence.json -PathType Leaf) -and (Test-Path -LiteralPath sounding-line-worker-throughput.json -PathType Leaf)) {
             $evidence = Get-Content -Raw sounding-line-worker-evidence.json | ConvertFrom-Json
             $throughput = Get-Content -Raw sounding-line-worker-throughput.json | ConvertFrom-Json
-            $throughput.suiteExecutionMs = if (@($evidence.receipts).Count -eq 1) { [int]$evidence.receipts[0].durationMs } else { $null }
-            $throughput.teardownMs = 0
-            $throughput.artifactUploadMs = $null
-            $throughput.overallWorkerMs = [int]$throughput.bootstrapMs + [int]($throughput.suiteExecutionMs ?? 0)
+            $suiteExecutionMs = if (@($evidence.receipts).Count -eq 1) { [int]$evidence.receipts[0].durationMs } else { $null }
+            $throughput | Add-Member -NotePropertyName suiteExecutionMs -NotePropertyValue $suiteExecutionMs -Force
+            $throughput | Add-Member -NotePropertyName teardownMs -NotePropertyValue 0 -Force
+            $throughput | Add-Member -NotePropertyName artifactUploadMs -NotePropertyValue $null -Force
+            $throughput | Add-Member -NotePropertyName overallWorkerMs -NotePropertyValue ([int]$throughput.bootstrapMs + [int]($suiteExecutionMs ?? 0)) -Force
             $evidence | Add-Member -NotePropertyName throughput -NotePropertyValue $throughput -Force
             $evidence | ConvertTo-Json -Depth 16 | Set-Content -LiteralPath sounding-line-worker-evidence.json -Encoding utf8
           }
