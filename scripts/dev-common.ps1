@@ -241,8 +241,8 @@ function Sync-ForeverRuntime {
         # Keeping them out of each isolated mirror preserves the mandatory
         # physical dependency boundary on constrained task volumes.
         $excludedDirectories += @(
-            Join-Path $script:ProjectRoot "Development_Docs",
-            Join-Path $script:ProjectRoot "Codex_Chats"
+            (Join-Path $script:ProjectRoot "Development_Docs"),
+            (Join-Path $script:ProjectRoot "Codex_Chats")
         )
     }
     & robocopy $script:ProjectRoot $resolvedRuntime /E /XD $excludedDirectories /XF .git *.db *.db-journal *.log .forever-dev.json .forever-lock.sha | Out-Null
