@@ -645,10 +645,30 @@ test("participation choice remains usable at desktop, tablet, phone, 200% zoom, 
           ]);
           expect(touchTargets.every((box) => box && box.height >= 44 && box.width >= 44)).toBe(true);
         }
-        const overflow = await page.evaluate(
-          () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
-        );
-        expect(overflow).toBeLessThanOrEqual(1);
+        const overflow = await page.evaluate(() => {
+          const root = document.documentElement;
+          const viewportWidth = root.clientWidth;
+          const candidates = Array.from(document.body.querySelectorAll<HTMLElement>("*")
+            .map((node) => {
+              const rect = node.getBoundingClientRect();
+              const style = getComputedStyle(node);
+              return {
+                tag: node.tagName.toLowerCase(),
+                id: node.id || null,
+                className: node.className || null,
+                right: Math.round(rect.right),
+                width: Math.round(rect.width),
+                display: style.display,
+                minWidth: style.minWidth,
+                gridTemplateColumns: style.gridTemplateColumns,
+              };
+            })
+            .filter((node) => node.right > viewportWidth + 1)
+            .sort((left, right) => right.right - left.right)
+            .slice(0, 12);
+          return { amount: root.scrollWidth - viewportWidth, viewportWidth, scrollWidth: root.scrollWidth, candidates };
+        });
+        expect(overflow.amount, JSON.stringify(overflow)).toBeLessThanOrEqual(1);
         if (["desktop", "phone"].includes(configuration.name)) {
           const axe = await new AxeBuilder({ page }).analyze();
           expect(
