@@ -17,8 +17,8 @@ last_reviewed: 2026-08-10
 | Worktree                  | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\project-admiralty-phase2-open-the-chartroom` |
 | Branch                    | `codex/project-admiralty-phase2-open-the-chartroom`                                                 |
 | Reconciled `origin/main`  | `384ad39fbc40e8cbe16dd2aa2c83abd3e00a56c6`                                                          |
-| Reconciliation merge      | `f6df9e690`                                                                                           |
-| Exact tested source       | Isolated Helm browser family 2/2: `6e677f062...`; full Sounding Line pending                          |
+| Reconciliation merge      | `f6df9e690`                                                                                         |
+| Exact tested source       | Isolated Helm browser family 2/2: `6e677f062...`; full Sounding Line pending                        |
 | Owner decision            | `PENDING_OWNER_DECISION`                                                                            |
 | Publication               | Branch only; not canonical main and not deployed                                                    |
 

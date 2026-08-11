@@ -394,7 +394,9 @@ test("Captain authority and ordinary Player membership remain independent throug
     await card.getByRole("button", { name: "Stop Player participation" }).click();
     await page.getByRole("dialog").getByRole("button", { name: "Stop Player participation" }).click();
     await expect(
-      page.getByRole("status").filter({ hasText: "Player participation ended. Your Captain authority remains active." }),
+      page
+        .getByRole("status")
+        .filter({ hasText: "Player participation ended. Your Captain authority remains active." }),
     ).toBeVisible();
     selfMembership = await currentMembership(participating.playthroughId);
     expect(selfMembership.status).toBe("REMOVED");

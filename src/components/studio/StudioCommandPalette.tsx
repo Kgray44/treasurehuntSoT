@@ -26,7 +26,9 @@ export function StudioCommandPalette({
     const normalized = query.trim().toLocaleLowerCase();
     if (!normalized) return commands;
     return commands.filter((command) =>
-      `${command.label} ${command.description ?? ""} ${command.shortcut ?? ""}`.toLocaleLowerCase().includes(normalized),
+      `${command.label} ${command.description ?? ""} ${command.shortcut ?? ""}`
+        .toLocaleLowerCase()
+        .includes(normalized),
     );
   }, [commands, query]);
 
