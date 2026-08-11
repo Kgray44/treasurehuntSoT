@@ -362,7 +362,9 @@ describe("Voyagewright Studio editor motion and authority", () => {
     commands.focus();
     fireEvent.click(commands);
     const palette = await screen.findByRole("dialog", { name: "Find an action" });
-    await waitFor(() => expect(within(palette).getByRole("searchbox", { name: "Search Studio commands" })).toHaveFocus());
+    await waitFor(() =>
+      expect(within(palette).getByRole("searchbox", { name: "Search Studio commands" })).toHaveFocus(),
+    );
     expect(within(palette).getByRole("button", { name: /Validate Chronicle/i })).toBeInTheDocument();
     expect(within(palette).getByRole("button", { name: /Insert Narrative/i })).toBeInTheDocument();
     expect(within(palette).queryByRole("button", { name: /new Story Block/i })).not.toBeInTheDocument();

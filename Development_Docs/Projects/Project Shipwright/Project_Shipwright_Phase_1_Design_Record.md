@@ -10,18 +10,18 @@ last_reviewed: 2026-08-10
 
 ## Authority and baseline
 
-| Field | Value |
-| --- | --- |
-| Phase | Phase 1 - Clear the Workbench |
-| Branch | `codex/project-shipwright-phase1-clear-the-workbench` |
-| Worktree | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\treasurehuntSoT-shipwright-phase1-v2` |
-| Base / fetched `origin/main` | `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3` |
-| Governing baseline | `f1c2f22dd935322c1a71eb80c51592f243dc196d` (ancestor of current base) |
-| Primary project document | `Project_Shipwright_Creator_Studio_Authoring_Experience_Governing_Document.pdf`, v1.0, 2026-08-08 |
-| Global authority | Voyagewright Global Product Governance Standard, current |
-| Integration authority | Voyagewright Continuous Development and Mainline Integration Standard v1.0 |
-| Verification authority | Current Project Sounding Line policy and registered suites |
-| Prisma impact | **NONE planned** |
+| Field                        | Value                                                                                             |
+| ---------------------------- | ------------------------------------------------------------------------------------------------- |
+| Phase                        | Phase 1 - Clear the Workbench                                                                     |
+| Branch                       | `codex/project-shipwright-phase1-clear-the-workbench`                                             |
+| Worktree                     | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\treasurehuntSoT-shipwright-phase1-v2`      |
+| Base / fetched `origin/main` | `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`                                                        |
+| Governing baseline           | `f1c2f22dd935322c1a71eb80c51592f243dc196d` (ancestor of current base)                             |
+| Primary project document     | `Project_Shipwright_Creator_Studio_Authoring_Experience_Governing_Document.pdf`, v1.0, 2026-08-08 |
+| Global authority             | Voyagewright Global Product Governance Standard, current                                          |
+| Integration authority        | Voyagewright Continuous Development and Mainline Integration Standard v1.0                        |
+| Verification authority       | Current Project Sounding Line policy and registered suites                                        |
+| Prisma impact                | **NONE planned**                                                                                  |
 
 ## Frozen ownership boundary
 
@@ -33,18 +33,18 @@ Phase 1 consumes current canonical services and contracts. It does not introduce
 
 ## Current Studio concern map
 
-| Concern | Current file(s) | State / mutation owner | Server dependency | UI consumers | Tests | Phase 1 disposition |
-| --- | --- | --- | --- | --- | --- | --- |
-| Editor orchestration | `src/components/studio/TaleEditor.tsx` (119,277 bytes; 2,889 lines) | React shell | Studio tale routes | tale detail routes | `TaleEditor.test.tsx`, Studio E2E | EXTRACT |
-| Canonical draft loading and persistence | `TaleEditor.tsx`; `src/chronicle/studio-service.ts` | Local draft + canonical service | `/api/studio/tales/:id`, `/draft` | canvas, inspector, header | component and E2E | EXTRACT / PRESERVE |
-| Autosave, conflict, undo/redo | `TaleEditor.tsx` | Local history / server revision token | draft PATCH | status, canvas, inspector | `TaleEditor.test.tsx` | EXTRACT / PRESERVE |
-| Story Block insertion and structural movement | `TaleEditor.tsx`; dnd-kit | Canonical draft operations | autosave only | Library and structural canvas | component and E2E | REORGANIZE |
-| Selection, focus and inspector handoff | `TaleEditor.tsx` | client presentation state | none | canvas and inspector | component tests | EXTRACT |
-| Assets, locations and artifacts | `TaleEditor.tsx`; Studio asset routes | canonical library services | Studio asset/library APIs | Library and dedicated sections | component and E2E | WRAP / PRESERVE |
-| Preview / reduced motion | `TaleEditor.tsx`; published block renderer | client presentation | Studio preview API | header and preview dialog | component and E2E | WRAP / PRESERVE |
-| Validation and publishing | `TaleEditor.tsx`; Drydock / Chronicle services | canonical authorities | validate and publish APIs | header, issue list, publish status | component and E2E | WRAP / PRESERVE |
-| Publishing presentation | `TaleEditor.tsx`; Lanternwake SceneHost | Lanternwake presentation only | canonical publish API | status header | component tests | PRESERVE |
-| Studio visuals / responsive layout | `src/styles/studio.css` | presentation only | none | all Studio surfaces | E2E screenshots | REORGANIZE |
+| Concern                                       | Current file(s)                                                     | State / mutation owner                | Server dependency                 | UI consumers                       | Tests                             | Phase 1 disposition |
+| --------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------- | --------------------------------- | ---------------------------------- | --------------------------------- | ------------------- |
+| Editor orchestration                          | `src/components/studio/TaleEditor.tsx` (119,277 bytes; 2,889 lines) | React shell                           | Studio tale routes                | tale detail routes                 | `TaleEditor.test.tsx`, Studio E2E | EXTRACT             |
+| Canonical draft loading and persistence       | `TaleEditor.tsx`; `src/chronicle/studio-service.ts`                 | Local draft + canonical service       | `/api/studio/tales/:id`, `/draft` | canvas, inspector, header          | component and E2E                 | EXTRACT / PRESERVE  |
+| Autosave, conflict, undo/redo                 | `TaleEditor.tsx`                                                    | Local history / server revision token | draft PATCH                       | status, canvas, inspector          | `TaleEditor.test.tsx`             | EXTRACT / PRESERVE  |
+| Story Block insertion and structural movement | `TaleEditor.tsx`; dnd-kit                                           | Canonical draft operations            | autosave only                     | Library and structural canvas      | component and E2E                 | REORGANIZE          |
+| Selection, focus and inspector handoff        | `TaleEditor.tsx`                                                    | client presentation state             | none                              | canvas and inspector               | component tests                   | EXTRACT             |
+| Assets, locations and artifacts               | `TaleEditor.tsx`; Studio asset routes                               | canonical library services            | Studio asset/library APIs         | Library and dedicated sections     | component and E2E                 | WRAP / PRESERVE     |
+| Preview / reduced motion                      | `TaleEditor.tsx`; published block renderer                          | client presentation                   | Studio preview API                | header and preview dialog          | component and E2E                 | WRAP / PRESERVE     |
+| Validation and publishing                     | `TaleEditor.tsx`; Drydock / Chronicle services                      | canonical authorities                 | validate and publish APIs         | header, issue list, publish status | component and E2E                 | WRAP / PRESERVE     |
+| Publishing presentation                       | `TaleEditor.tsx`; Lanternwake SceneHost                             | Lanternwake presentation only         | canonical publish API             | status header                      | component tests                   | PRESERVE            |
+| Studio visuals / responsive layout            | `src/styles/studio.css`                                             | presentation only                     | none                              | all Studio surfaces                | E2E screenshots                   | REORGANIZE          |
 
 ## Phase 1 module boundary
 

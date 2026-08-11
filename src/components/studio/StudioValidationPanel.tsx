@@ -11,7 +11,9 @@ function readableField(field?: string) {
 }
 
 function issueHeading(issue: ValidationIssue, blocking: boolean) {
-  return blocking ? `Blocks publishing: ${readableField(issue.field)}` : `Needs attention: ${readableField(issue.field)}`;
+  return blocking
+    ? `Blocks publishing: ${readableField(issue.field)}`
+    : `Needs attention: ${readableField(issue.field)}`;
 }
 
 export function StudioValidationPanel({
@@ -57,7 +59,12 @@ export function StudioValidationPanel({
   };
 
   const groups = [
-    { title: "Blocks publishing", detail: "Resolve these before this Chronicle can be published.", issues: result.errors, blocking: true },
+    {
+      title: "Blocks publishing",
+      detail: "Resolve these before this Chronicle can be published.",
+      issues: result.errors,
+      blocking: true,
+    },
     {
       title: "Needs attention",
       detail: "These do not block publication, but they still need a deliberate Creator decision or repair.",
@@ -77,16 +84,27 @@ export function StudioValidationPanel({
       <header className="validation-panel__drag-region" onPointerDown={startMove}>
         <div>
           <p className="eyebrow">Validation results</p>
-          <h2>{result.valid ? "Ready to publish" : `${result.errors.length} issue${result.errors.length === 1 ? "" : "s"} need attention`}</h2>
-          <p className="validation-panel__hint">Drag this header to move the panel. Use its lower-right corner to resize it.</p>
+          <h2>
+            {result.valid
+              ? "Ready to publish"
+              : `${result.errors.length} issue${result.errors.length === 1 ? "" : "s"} need attention`}
+          </h2>
+          <p className="validation-panel__hint">
+            Drag this header to move the panel. Use its lower-right corner to resize it.
+          </p>
         </div>
         <button type="button" onClick={onClose} aria-label="Close validation results">
           Close
         </button>
       </header>
-      {result.valid && !result.warnings.length ? <p className="validation-panel__success">No current validation findings were returned.</p> : null}
+      {result.valid && !result.warnings.length ? (
+        <p className="validation-panel__success">No current validation findings were returned.</p>
+      ) : null}
       {groups.map((group) => (
-        <section key={group.title} className={group.blocking ? "validation-group blocking" : "validation-group warning"}>
+        <section
+          key={group.title}
+          className={group.blocking ? "validation-group blocking" : "validation-group warning"}
+        >
           <h3>{group.title}</h3>
           <p>{group.detail}</p>
           {group.issues.map((issue, index) => (
