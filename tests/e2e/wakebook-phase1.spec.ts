@@ -403,7 +403,7 @@ test("Wakebook Phase 1 is private, bounded, historically stable, and normally re
   const emptyPage = await firstUse.context.newPage();
   await emptyPage.setViewportSize({ width: 1440, height: 1000 });
   await emptyPage.goto("/passport");
-  await emptyPage.getByRole("link", { name: "History" }).click();
+  await emptyPage.getByRole("link", { name: "History", exact: true }).click();
   await expect(emptyPage.getByRole("heading", { name: "Every Voyage leaves a wake" })).toBeVisible();
   await captureEvidenceState(emptyPage, {
     evidenceId: "WB-P1-EV-001-archive-empty",
@@ -417,7 +417,7 @@ test("Wakebook Phase 1 is private, bounded, historically stable, and normally re
   const oneVoyagePage = await oneVoyage.context.newPage();
   await oneVoyagePage.setViewportSize({ width: 1440, height: 1000 });
   await oneVoyagePage.goto("/passport");
-  await oneVoyagePage.getByRole("link", { name: "History" }).click();
+  await oneVoyagePage.getByRole("link", { name: "History", exact: true }).click();
   await expect(oneVoyagePage.getByRole("heading", { name: "The Lantern Below" })).toBeVisible();
   await captureEvidenceState(oneVoyagePage, {
     evidenceId: "WB-P1-EV-002-archive-one-voyage",
@@ -431,7 +431,7 @@ test("Wakebook Phase 1 is private, bounded, historically stable, and normally re
   const page = await owner.context.newPage();
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/passport");
-  await page.getByRole("link", { name: "History" }).click();
+  await page.getByRole("link", { name: "History", exact: true }).click();
   await expect(page).toHaveURL(/\/passport\/history$/u);
   await expect(page.getByRole("heading", { name: "Your Voyages", exact: true }).first()).toBeVisible();
   await expect(page.getByRole("heading", { name: "The Lantern Below" })).toBeVisible();
