@@ -8,6 +8,7 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 
 const resourceSet = (values) => new Set(Array.isArray(values) ? values : []);
+const browserAdapters = new Set(["playwright-family", "node-test-browser-family", "admiralty-phase1-browser"]);
 const requiredByAdapter = {
   static: [],
   policy: [],
@@ -65,13 +66,13 @@ export function deriveWorkerPreparation(node) {
         message: "adapter requirement is not declared",
       });
   const engines = ["browser-chromium", "browser-webkit"].filter((resource) => declared.has(resource));
-  if (!new Set(["playwright-family", "node-test-browser-family"]).has(node.adapter) && engines.length)
+  if (!browserAdapters.has(node.adapter) && engines.length)
     violations.push({
       code: CONFORMANCE_CODES.overprovisioning,
       resource: engines.join(","),
       message: "a non-browser adapter declares browser engines",
     });
-  if (new Set(["playwright-family", "node-test-browser-family"]).has(node.adapter) && !engines.length)
+  if (browserAdapters.has(node.adapter) && !engines.length)
     violations.push({
       code: CONFORMANCE_CODES.browserScope,
       message: "browser adapter has no declared browser engine",

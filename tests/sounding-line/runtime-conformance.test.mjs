@@ -60,6 +60,10 @@ test("resource-aware preparation eliminates universal database and browser setup
   const tideglass = suites.find((suite) => suite.id === "unit.tideglass");
   assert.ok(tideglass?.resources.includes("prisma-sqlite-client"));
   assert.equal(deriveWorkerPreparation(tideglass).actions.prismaGenerate, true);
+
+  const admiralty = suites.find((suite) => suite.id === "browser.admiralty");
+  assert.equal(deriveWorkerPreparation(admiralty).runtimeConformance.result, "PASSED");
+  assert.deepEqual(deriveWorkerPreparation(admiralty).actions.browserEngines, ["chromium"]);
 });
 
 test("conformance fails closed for missing adapter resources and undeclared browser engines", () => {
