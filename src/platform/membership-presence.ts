@@ -124,6 +124,25 @@ export class MembershipPresenceError extends Error {
   }
 }
 
+function isTransientPresenceWriteError(error: unknown) {
+  const detail = error instanceof Error ? `${error.name} ${error.message}` : String(error);
+  return /P1008|P2024|socket timeout|database is locked|database is busy/i.test(detail);
+}
+
+async function retryTransientPresenceWrite<T>(operation: () => Promise<T>) {
+  let lastError: unknown;
+  for (const delayMs of [0, 25, 75, 150]) {
+    if (delayMs) await new Promise((resolve) => setTimeout(resolve, delayMs));
+    try {
+      return await operation();
+    } catch (error) {
+      lastError = error;
+      if (!isTransientPresenceWriteError(error)) throw error;
+    }
+  }
+  throw lastError;
+}
+
 export async function recordMembershipPresence(input: {
   taleSessionId: string;
   playerProfileId: string;
@@ -151,44 +170,50 @@ export async function recordMembershipPresence(input: {
   // Prune only this membership's expired evidence. Presence has no reason to
   // become a permanent browser activity archive, and cleanup never touches
   // Voyage progression or any other member's records.
-  await db.membershipPresenceDevice.deleteMany({
-    where: {
-      playthroughMembershipId: membership.id,
-      OR: [{ lastHeartbeatAt: { lt: retentionCutoff } }, { disconnectedAt: { lt: retentionCutoff } }],
-    },
-  });
-  const device = await db.membershipPresenceDevice.upsert({
-    where: {
-      playthroughMembershipId_deviceInstanceId: {
+  await retryTransientPresenceWrite(() =>
+    db.membershipPresenceDevice.deleteMany({
+      where: {
         playthroughMembershipId: membership.id,
-        deviceInstanceId: input.deviceInstanceId,
+        OR: [{ lastHeartbeatAt: { lt: retentionCutoff } }, { disconnectedAt: { lt: retentionCutoff } }],
       },
-    },
-    create: {
-      playthroughMembershipId: membership.id,
-      taleSessionId: input.taleSessionId,
-      deviceInstanceId: input.deviceInstanceId,
-      lastHeartbeatAt: now,
-      acknowledgedSequence: input.acknowledgedSequence,
-      safeActivity: input.safeActivity,
-      disconnectedAt: input.disconnected ? now : null,
-    },
-    update: {
-      lastHeartbeatAt: now,
-      safeActivity: input.safeActivity,
-      disconnectedAt: input.disconnected ? now : null,
-    },
-    select: { id: true },
-  });
-  if (!input.disconnected)
-    await db.membershipPresenceDevice.updateMany({
-      where: { id: device.id, acknowledgedSequence: { lte: input.acknowledgedSequence } },
-      data: {
+    }),
+  );
+  const device = await retryTransientPresenceWrite(() =>
+    db.membershipPresenceDevice.upsert({
+      where: {
+        playthroughMembershipId_deviceInstanceId: {
+          playthroughMembershipId: membership.id,
+          deviceInstanceId: input.deviceInstanceId,
+        },
+      },
+      create: {
+        playthroughMembershipId: membership.id,
+        taleSessionId: input.taleSessionId,
+        deviceInstanceId: input.deviceInstanceId,
+        lastHeartbeatAt: now,
         acknowledgedSequence: input.acknowledgedSequence,
+        safeActivity: input.safeActivity,
+        disconnectedAt: input.disconnected ? now : null,
+      },
+      update: {
         lastHeartbeatAt: now,
         safeActivity: input.safeActivity,
+        disconnectedAt: input.disconnected ? now : null,
       },
-    });
+      select: { id: true },
+    }),
+  );
+  if (!input.disconnected)
+    await retryTransientPresenceWrite(() =>
+      db.membershipPresenceDevice.updateMany({
+        where: { id: device.id, acknowledgedSequence: { lte: input.acknowledgedSequence } },
+        data: {
+          acknowledgedSequence: input.acknowledgedSequence,
+          lastHeartbeatAt: now,
+          safeActivity: input.safeActivity,
+        },
+      }),
+    );
   const overflow = await db.membershipPresenceDevice.findMany({
     where: { playthroughMembershipId: membership.id },
     orderBy: [{ lastHeartbeatAt: "desc" }, { id: "desc" }],
