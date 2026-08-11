@@ -125,14 +125,12 @@ jobs:
       - if: always()
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
-          {
-            name: "sounding-line-worker-evidence-${{ inputs.suite }}",
-            path: |
-              sounding-line-worker-evidence.json
-              sounding-line-worker-throughput.json
-              sounding-line-worker-preparation.json,
-            retention-days: 14,
-          }
+          name: "sounding-line-worker-evidence-${{ inputs.suite }}"
+          path: |
+            sounding-line-worker-evidence.json
+            sounding-line-worker-throughput.json
+            sounding-line-worker-preparation.json
+          retention-days: 14
       - if: always()
         name: Verify governed worker receipt
         shell: pwsh
