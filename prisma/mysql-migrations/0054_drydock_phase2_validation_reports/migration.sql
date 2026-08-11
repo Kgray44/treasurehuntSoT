@@ -1,0 +1,21 @@
+CREATE TABLE `DrydockValidationRun` (
+    `id` VARCHAR(191) NOT NULL,
+    `draftId` VARCHAR(191) NOT NULL,
+    `runId` VARCHAR(191) NOT NULL,
+    `sourceChecksum` VARCHAR(191) NOT NULL,
+    `sourceRevision` INTEGER NOT NULL,
+    `reportSchemaVersion` INTEGER NOT NULL,
+    `ruleCatalogVersion` INTEGER NOT NULL,
+    `status` VARCHAR(191) NOT NULL,
+    `proofCompleteness` VARCHAR(191) NOT NULL,
+    `issueCount` INTEGER NOT NULL,
+    `issueDigest` VARCHAR(191) NOT NULL,
+    `reportDigest` VARCHAR(191) NOT NULL,
+    `report` LONGTEXT NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    UNIQUE INDEX `DrydockValidationRun_runId_key` (`runId`),
+    INDEX `DrydockValidationRun_draftId_createdAt_idx` (`draftId`, `createdAt`),
+    INDEX `DrydockValidationRun_sourceChecksum_idx` (`sourceChecksum`),
+    PRIMARY KEY (`id`),
+    CONSTRAINT `DrydockValidationRun_draftId_fkey` FOREIGN KEY (`draftId`) REFERENCES `TaleDraft` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

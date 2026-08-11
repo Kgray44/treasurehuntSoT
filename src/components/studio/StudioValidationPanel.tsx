@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import type { ValidationIssue } from "@/chronicle/types";
 
 type ValidationResult = { valid: boolean; errors: ValidationIssue[]; warnings: ValidationIssue[]; checkedAt?: string };
@@ -20,10 +20,12 @@ export function StudioValidationPanel({
   result,
   onClose,
   onFocusIssue,
+  children,
 }: {
   result: ValidationResult;
   onClose: () => void;
   onFocusIssue: (issue: ValidationIssue, origin: HTMLElement) => void;
+  children?: ReactNode;
 }) {
   const panel = useRef<HTMLElement>(null);
   const moving = useRef<{ offsetX: number; offsetY: number } | null>(null);
@@ -112,6 +114,7 @@ export function StudioValidationPanel({
               type="button"
               className="validation-issue"
               key={`${issue.code}-${issue.blockId ?? "chronicle"}-${issue.field ?? "general"}-${index}`}
+              data-drydock-rule-code={issue.code}
               onClick={(event) => onFocusIssue(issue, event.currentTarget)}
             >
               <span>{issueHeading(issue, group.blocking)}</span>
@@ -121,11 +124,13 @@ export function StudioValidationPanel({
                   ? `Open the affected Passage${issue.field ? ` and ${readableField(issue.field)}` : ""}`
                   : "This Chronicle-level finding has no single Passage target."}
               </small>
+              {issue.remediation ? <small>{issue.remediation}</small> : null}
               <em>Rule {issue.code}</em>
             </button>
           ))}
         </section>
       ))}
+      {children}
     </aside>
   );
 }

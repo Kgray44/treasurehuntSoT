@@ -1103,6 +1103,19 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.drydock-graph-annotation {
+  display: block;
+  margin-top: 0.3rem;
+  color: #f0d18a;
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
+.timeline-block[data-drydock-graph-state*="UNREACHABLE"],
+.timeline-block[data-drydock-graph-state*="NO_TERMINAL_PATH"],
+.timeline-block[data-drydock-graph-state*="DRYDOCK_GRAPH_AUTOMATIC_LOOP"] {
+  border-color: #e28278;
+  box-shadow: 0 0 0 2px rgba(226, 130, 120, 0.16);
+}
 .block-move {
   display: flex;
   gap: 0.2rem;

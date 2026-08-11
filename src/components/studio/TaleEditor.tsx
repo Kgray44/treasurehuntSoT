@@ -43,19 +43,59 @@ import { StudioValidationPanel } from "@/components/studio/StudioValidationPanel
 import type {
   Asset,
   Block,
-  Chapter,
   DeletedBlock,
   DraftState,
   EditorData,
   LibraryRecord,
   RegistryItem,
-  Tale,
   UploadEntry,
   Version,
   VersionComparison,
 } from "@/components/studio/studio-types";
 import { studioCopy } from "@/language/studio-copy";
 import type { DraftValidationResult, InspectorField, JsonObject, ValidationIssue } from "@/chronicle/types";
+import { getDrydockRuleDefinition } from "@/drydock/rules";
+
+type DrydockGraphSurvey = {
+  proofCompleteness: string;
+  nodes: Array<{
+    id: string;
+    blockType: string;
+    isEntry: boolean;
+    isTerminal: boolean;
+    isReachable: boolean;
+    canReachTerminal: boolean;
+    stronglyConnectedComponent: number | null;
+    annotations: Array<{ code: string; severity: string }>;
+  }>;
+};
+type DrydockVariableExplorer = {
+  variables: Array<{
+    id: string;
+    name: string;
+    type: { kind: string };
+    scope: string;
+    defaultValue?: unknown;
+    privacy: string;
+    readers: Array<{ blockId?: string; fieldPath: string; reachable: boolean | null }>;
+    writers: Array<{ blockId?: string; fieldPath: string; operation?: string; reachable: boolean | null }>;
+    initialization: {
+      proofStatus: string;
+      potentiallyUninitializedReferences: Array<{ blockId: string; fieldPath: string }>;
+    };
+    unusedState: string;
+    relatedIssueCodes: string[];
+  }>;
+};
+type DrydockRepairPreview = {
+  kind: "CANONICAL_TARGET_MIRROR";
+  classification: "SAFE_AUTOMATIC";
+  blockId: string;
+  sourceChecksum: string;
+  expectedIssueChanges: { resolved: readonly string[]; introduced: readonly string[] };
+  description: string;
+  after: { configuration: JsonObject; nextBlockId: string | null };
+};
 
 const clone = <T,>(value: T): T => structuredClone(value);
 
@@ -119,6 +159,14 @@ export function TaleEditor({
   const [validation, setValidation] = useState<DraftValidationResult | null>(null);
   const [validationPanelOpen, setValidationPanelOpen] = useState(false);
   const [validationFocusField, setValidationFocusField] = useState<string | null>(null);
+  const [issueSearch, setIssueSearch] = useState("");
+  const [issueCategory, setIssueCategory] = useState("ALL");
+  const [issueSeverity, setIssueSeverity] = useState<"ALL" | "error" | "warning">("ALL");
+  const [selectedRuleCode, setSelectedRuleCode] = useState<string | null>(null);
+  const [selectedRepairBlockId, setSelectedRepairBlockId] = useState<string | null>(null);
+  const [graphSurvey, setGraphSurvey] = useState<DrydockGraphSurvey | null>(null);
+  const [variableExplorer, setVariableExplorer] = useState<DrydockVariableExplorer | null>(null);
+  const [surveyLoading, setSurveyLoading] = useState<"" | "graph" | "variables">("");
   const [assetDrawer, setAssetDrawer] = useState(false);
   const [assetSearch, setAssetSearch] = useState("");
   const [assetMedia, setAssetMedia] = useState("ALL");
@@ -161,6 +209,41 @@ export function TaleEditor({
   const commandReturnFocus = useRef<HTMLElement | null>(null);
   const inspectorFocusRequested = useRef(false);
   const inspectorTitle = useRef<HTMLInputElement | null>(null);
+  const validationIssues = useMemo(() => {
+    if (!validation) return [];
+    const search = issueSearch.trim().toLocaleLowerCase();
+    return [...validation.errors, ...validation.warnings].filter((issue) => {
+      const severity = validation.errors.includes(issue) ? "error" : "warning";
+      const category = issue.category ?? "STUDIO";
+      return (
+        (issueSeverity === "ALL" || issueSeverity === severity) &&
+        (issueCategory === "ALL" || issueCategory === category) &&
+        (!search || `${issue.code} ${issue.message} ${category}`.toLocaleLowerCase().includes(search))
+      );
+    });
+  }, [issueCategory, issueSearch, issueSeverity, validation]);
+  const validationCategories = useMemo(
+    () =>
+      [
+        ...new Set(
+          [...(validation?.errors ?? []), ...(validation?.warnings ?? [])].map((issue) => issue.category ?? "STUDIO"),
+        ),
+      ].sort(),
+    [validation],
+  );
+  const filteredValidation = useMemo<DraftValidationResult | null>(() => {
+    if (!validation) return null;
+    return {
+      ...validation,
+      errors: validation.errors.filter((issue) => validationIssues.includes(issue)),
+      warnings: validation.warnings.filter((issue) => validationIssues.includes(issue)),
+    };
+  }, [validation, validationIssues]);
+  const selectedRule = useMemo(
+    () => (selectedRuleCode ? getDrydockRuleDefinition(selectedRuleCode) : undefined),
+    [selectedRuleCode],
+  );
+  const graphNodesById = useMemo(() => new Map(graphSurvey?.nodes.map((node) => [node.id, node]) ?? []), [graphSurvey]);
   const selectionAnchorId = useRef<string | null>(null);
   const dndSensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
@@ -666,6 +749,8 @@ export function TaleEditor({
 
   function focusValidationIssue(issue: ValidationIssue, origin: HTMLElement) {
     setValidationPanelOpen(true);
+    setSelectedRuleCode(issue.code);
+    setSelectedRepairBlockId(issue.code === "DRYDOCK_LEGACY_NEXT_TARGET_CONFLICT" ? (issue.blockId ?? null) : null);
     if (!issue.blockId) return;
     setValidationFocusField(issue.field ?? null);
     focusBlock(issue.blockId, origin);
@@ -825,9 +910,80 @@ export function TaleEditor({
       setError(body?.error ?? "Validation could not be completed. Try again.");
       return;
     }
+    setSelectedRepairBlockId(null);
     setValidation(body);
     setValidationPanelOpen(true);
     setSaveState(body.valid ? "Draft validation passed" : "Draft validation failed");
+  }
+  async function previewAndApplySafeRepair(blockId: string) {
+    if (!draft || !data) return;
+    if (dirty && !(await save(draft, false))) return;
+    const sourceRevision = autosaveVersionRef.current ?? data.draft.autosaveVersion;
+    setSaveState("Loading safe repair preview...");
+    try {
+      const response = await fetch(
+        `/api/studio/tales/${taleId}/repairs/${encodeURIComponent(blockId)}?autosaveVersion=${sourceRevision}`,
+        { cache: "no-store" },
+      );
+      const body = (await response.json()) as {
+        sourceRevision?: number;
+        preview?: DrydockRepairPreview;
+        error?: string;
+      };
+      if (!response.ok || !body.preview || body.sourceRevision !== sourceRevision || body.preview.blockId !== blockId) {
+        setSaveState("Safe repair unavailable");
+        setError(body.error ?? "A current safe repair preview could not be loaded.");
+        return;
+      }
+      const preview = body.preview;
+      const confirmed = await requestAction({
+        title: "Apply safe target-mirror repair?",
+        detail: `${preview.description} It will resolve ${preview.expectedIssueChanges.resolved.join(", ")} without changing canonical Passage connections.`,
+        confirmLabel: "Apply safe repair",
+      });
+      if (!confirmed) {
+        setSaveState("Safe repair preview dismissed");
+        return;
+      }
+      if ((autosaveVersionRef.current ?? data.draft.autosaveVersion) !== sourceRevision) {
+        setSaveState("Safe repair preview is stale");
+        setError("The Chronicle changed while the repair preview was open. Preview it again from the current draft.");
+        return;
+      }
+      change((next) => {
+        const target = next.chapters.flatMap((chapter) => chapter.blocks).find((block) => block.id === blockId);
+        if (!target) throw new Error("The repaired Passage is no longer present in this draft.");
+        target.configuration = clone(preview.after.configuration);
+        target.nextBlockId = preview.after.nextBlockId;
+      });
+      setSelectedRepairBlockId(null);
+      setSaveState("Safe repair queued for autosave; Undo is available.");
+    } catch (cause) {
+      setSaveState("Safe repair unavailable");
+      setError(cause instanceof Error ? cause.message : "A current safe repair preview could not be loaded.");
+    }
+  }
+  async function loadGraphSurvey() {
+    setSurveyLoading("graph");
+    const response = await fetch(`/api/studio/tales/${taleId}/graph-survey`, { cache: "no-store" });
+    const body = (await response.json()) as { survey?: DrydockGraphSurvey; error?: string };
+    setSurveyLoading("");
+    if (!response.ok || !body.survey) {
+      setError(body.error ?? "The static graph survey could not be loaded.");
+      return;
+    }
+    setGraphSurvey(body.survey);
+  }
+  async function loadVariableExplorer() {
+    setSurveyLoading("variables");
+    const response = await fetch(`/api/studio/tales/${taleId}/variable-explorer`, { cache: "no-store" });
+    const body = (await response.json()) as { explorer?: DrydockVariableExplorer; error?: string };
+    setSurveyLoading("");
+    if (!response.ok || !body.explorer) {
+      setError(body.error ?? "The variable explorer could not be loaded.");
+      return;
+    }
+    setVariableExplorer(body.explorer);
   }
   async function publish() {
     if (!draft || !data) return;
@@ -1391,10 +1547,131 @@ export function TaleEditor({
               exit={{ opacity: 0 }}
             >
               <StudioValidationPanel
-                result={validation}
+                result={filteredValidation ?? validation}
                 onClose={() => setValidationPanelOpen(false)}
                 onFocusIssue={focusValidationIssue}
-              />
+              >
+                <div className="validation-filters" aria-label="Issue filters">
+                  <input
+                    value={issueSearch}
+                    onChange={(event) => setIssueSearch(event.target.value)}
+                    placeholder="Search rule code or message"
+                    aria-label="Search validation issues"
+                  />
+                  <select
+                    value={issueSeverity}
+                    onChange={(event) => setIssueSeverity(event.target.value as "ALL" | "error" | "warning")}
+                    aria-label="Filter validation severity"
+                  >
+                    <option value="ALL">All severities</option>
+                    <option value="error">Blocking</option>
+                    <option value="warning">Warnings</option>
+                  </select>
+                  <select
+                    value={issueCategory}
+                    onChange={(event) => setIssueCategory(event.target.value)}
+                    aria-label="Filter validation category"
+                  >
+                    <option value="ALL">All categories</option>
+                    {validationCategories.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="validation-survey-actions">
+                  <button onClick={() => void loadGraphSurvey()} disabled={surveyLoading === "graph"}>
+                    {surveyLoading === "graph" ? "Loading graph survey..." : "Open static graph outline"}
+                  </button>
+                  <button onClick={() => void loadVariableExplorer()} disabled={surveyLoading === "variables"}>
+                    {surveyLoading === "variables" ? "Loading variables..." : "Open variable explorer"}
+                  </button>
+                </div>
+                {selectedRule && (
+                  <section className="validation-rule-detail" aria-live="polite">
+                    <strong>
+                      {selectedRule.code}: {selectedRule.title}
+                    </strong>
+                    <p>{selectedRule.summary}</p>
+                    <p>{selectedRule.technicalExplanation}</p>
+                    <p>
+                      Category: {selectedRule.category}. Severity: {selectedRule.defaultSeverity}. Repair:{" "}
+                      {selectedRule.repairClassification}.
+                    </p>
+                    <p>
+                      Waiver: {selectedRule.waiverPolicy === "NEVER" ? "not permitted" : "requires governed review"}.
+                      Compatibility: {selectedRule.compatibilityPolicy}.
+                    </p>
+                    {selectedRuleCode === "DRYDOCK_LEGACY_NEXT_TARGET_CONFLICT" && selectedRepairBlockId ? (
+                      <button onClick={() => void previewAndApplySafeRepair(selectedRepairBlockId)}>
+                        Preview safe repair
+                      </button>
+                    ) : null}
+                  </section>
+                )}
+                {graphSurvey && (
+                  <section className="validation-graph-outline" aria-label="Static graph outline">
+                    <strong>Static graph outline</strong>
+                    <p>Proof: {graphSurvey.proofCompleteness}. Select a Passage to navigate to it.</p>
+                    <ol>
+                      {graphSurvey.nodes.map((node) => (
+                        <li key={node.id}>
+                          <button onClick={(event) => focusBlock(node.id, event.currentTarget)}>
+                            {node.blockType} ({node.id})
+                          </button>
+                          <span>
+                            {node.isEntry ? " Entry." : ""}
+                            {node.isTerminal ? " Terminal." : ""}
+                            {!node.isReachable ? " Unreachable." : ""}
+                            {!node.canReachTerminal ? " No terminal path." : ""}
+                            {node.stronglyConnectedComponent !== null
+                              ? ` Cycle group ${node.stronglyConnectedComponent}.`
+                              : ""}
+                            {node.annotations.length
+                              ? ` Rules: ${node.annotations.map((annotation) => annotation.code).join(", ")}.`
+                              : ""}
+                          </span>
+                        </li>
+                      ))}
+                    </ol>
+                  </section>
+                )}
+                {variableExplorer && (
+                  <section className="validation-variable-explorer" aria-label="Variable explorer">
+                    <strong>Variable explorer</strong>
+                    <ul>
+                      {variableExplorer.variables.map((variable) => (
+                        <li key={variable.id}>
+                          <strong>{variable.name}</strong> ({variable.id}): {variable.type.kind}, {variable.scope},{" "}
+                          {variable.privacy}. {variable.unusedState}. Initialization proof:{" "}
+                          {variable.initialization.proofStatus}.
+                          {variable.defaultValue !== undefined
+                            ? ` Default: ${JSON.stringify(variable.defaultValue)}.`
+                            : " No declared default."}
+                          {variable.readers.length ? (
+                            <span>
+                              {" "}
+                              Readers: {variable.readers.map((reader) => reader.blockId ?? reader.fieldPath).join(", ")}
+                              .
+                            </span>
+                          ) : null}
+                          {variable.writers.length ? (
+                            <span>
+                              {" "}
+                              Writers: {variable.writers.map((writer) => writer.blockId ?? writer.fieldPath).join(", ")}
+                              .
+                            </span>
+                          ) : null}
+                          {variable.relatedIssueCodes.length ? (
+                            <span> Rules: {variable.relatedIssueCodes.join(", ")}.</span>
+                          ) : null}
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+              </StudioValidationPanel>
             </motion.div>
           ) : null}
         </AnimatePresence>
@@ -1602,6 +1879,19 @@ export function TaleEditor({
                         {!chapter.blocks.length && <div className="empty-chapter">Drop the first Passage here.</div>}
                         {chapter.blocks.map((block, blockIndex) => {
                           const definition = data.registry.find((item) => item.type === block.blockType);
+                          const graphNode = graphNodesById.get(block.id);
+                          const graphState = graphNode
+                            ? [
+                                graphNode.isEntry ? "ENTRY" : "",
+                                graphNode.isTerminal ? "TERMINAL" : "",
+                                !graphNode.isReachable ? "UNREACHABLE" : "",
+                                !graphNode.canReachTerminal ? "NO_TERMINAL_PATH" : "",
+                                graphNode.stronglyConnectedComponent !== null ? "CYCLE" : "",
+                                ...graphNode.annotations.map((annotation) => annotation.code),
+                              ]
+                                .filter(Boolean)
+                                .join(" ")
+                            : undefined;
                           return (
                             <SortableStoryBlock key={block.id} id={block.id}>
                               {(attributes, listeners) => (
@@ -1617,6 +1907,7 @@ export function TaleEditor({
                                         ? "true"
                                         : undefined
                                     }
+                                    data-drydock-graph-state={graphState}
                                     tabIndex={0}
                                     onClick={(event) =>
                                       selectBlock(
@@ -1672,6 +1963,20 @@ export function TaleEditor({
                                             "",
                                         ).slice(0, 130)}
                                       </p>
+                                      {graphNode && (
+                                        <span className="drydock-graph-annotation" aria-label="Static graph analysis">
+                                          {graphNode.isEntry ? "Entry. " : ""}
+                                          {graphNode.isTerminal ? "Terminal. " : ""}
+                                          {!graphNode.isReachable ? "Unreachable. " : ""}
+                                          {!graphNode.canReachTerminal ? "No terminal path. " : ""}
+                                          {graphNode.stronglyConnectedComponent !== null
+                                            ? `Cycle group ${graphNode.stronglyConnectedComponent}. `
+                                            : ""}
+                                          {graphNode.annotations.length
+                                            ? `Rules: ${graphNode.annotations.map((annotation) => annotation.code).join(", ")}.`
+                                            : ""}
+                                        </span>
+                                      )}
                                     </div>
                                     <div className="block-move">
                                       <button
