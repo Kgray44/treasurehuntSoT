@@ -1,0 +1,30 @@
+[
+  {
+    "id": "FT-034",
+    "title": "Bridgewatch Development Mission Control",
+    "summary": "A private, standalone, read-only development mission-control dashboard projects explicit project truth and GitHub repository state without acquiring authority over source, pull requests, tests, releases, or project completion.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "branch": "codex/project-bridgewatch-phase1-raise-the-board",
+    "commit": "8fe1d5b416d96142815b747920ed3b1556cffbf5",
+    "program": "Project Bridgewatch Phase 1",
+    "surfaces": ["bridgewatch", "GET /api/summary", "GET /api/projects", "GET /api/attention"],
+    "subfeatures": [
+      "Loopback-first Fastify service with a static dashboard",
+      "Server-side read-only GitHub collection with conditional cache retention",
+      "SQLite-backed local operational cache without token persistence",
+      "Explicit measured versus unmeasured milestone progress",
+      "Read-only API routes, security headers, and no dashboard controls"
+    ],
+    "limitations": [
+      "Phase 1 does not ingest Sounding Line worker, queue, node, or finalizer telemetry.",
+      "Private deployment and operator acceptance remain separate from mainline integration."
+    ],
+    "evidence": [
+      { "kind": "branch", "value": "codex/project-bridgewatch-phase1-raise-the-board" },
+      { "kind": "commit", "value": "8fe1d5b416d96142815b747920ed3b1556cffbf5" },
+      { "kind": "path", "value": "bridgewatch/lib/server.ts" },
+      { "kind": "completion-record", "value": "Development_Docs/Project_Bridgewatch_Phase_1_Design_Record.md" }
+    ],
+    "catalogVersion": 1
+  }
+]

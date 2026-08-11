@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `dc430b79aa3ddd27443f47bb493ae6c471a41616`
+Audited source commit: `892b574e2b3cc9133fb5deda8f48202c9df24135`
 
 ## Status vocabulary
 
@@ -1364,6 +1364,39 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-034 - Bridgewatch Development Mission Control
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Bridgewatch Phase 1
+
+A private, standalone, read-only development mission-control dashboard projects explicit project truth and GitHub repository state without acquiring authority over source, pull requests, tests, releases, or project completion.
+
+### Important subfeatures
+
+- Loopback-first Fastify service with a static dashboard
+- Server-side read-only GitHub collection with conditional cache retention
+- SQLite-backed local operational cache without token persistence
+- Explicit measured versus unmeasured milestone progress
+- Read-only API routes, security headers, and no dashboard controls
+
+### Primary surfaces
+
+`bridgewatch`, `GET /api/summary`, `GET /api/projects`, `GET /api/attention`
+
+### Meaningful limitations
+
+- Phase 1 does not ingest Sounding Line worker, queue, node, or finalizer telemetry.
+- Private deployment and operator acceptance remain separate from mainline integration.
+
+### Evidence
+
+- branch: `codex/project-bridgewatch-phase1-raise-the-board`
+- commit: `8fe1d5b416d96142815b747920ed3b1556cffbf5`
+- path: `bridgewatch/lib/server.ts`
+- completion-record: `Development_Docs/Project_Bridgewatch_Phase_1_Design_Record.md`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
@@ -1377,4 +1410,4 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `dc430b79aa3ddd27443f47bb493ae6c471a41616`
+Generation source commit: `892b574e2b3cc9133fb5deda8f48202c9df24135`
