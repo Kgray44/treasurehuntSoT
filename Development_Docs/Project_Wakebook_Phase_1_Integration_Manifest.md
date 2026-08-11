@@ -3,7 +3,7 @@ title: Project Wakebook Phase 1 Integration Manifest
 audience: product-engineering
 status: current
 canonical_for: project-wakebook-phase-1-integration-manifest
-last_reviewed: 2026-08-10
+last_reviewed: 2026-08-11
 ---
 
 # Project Wakebook Phase 1 integration manifest
@@ -13,13 +13,13 @@ last_reviewed: 2026-08-10
 | Item                    | State                                                                                                         |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------- |
 | Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                    |
-| Current reconciled base | `dac4a7078d932d4ebbc5828161e675fe5f473181`                                                                    |
-| Incoming accepted work  | Protected-main Sounding Line v1.2 runtime-conformance bootstrap and all accepted mainline work through PR #40 |
-| Semantic reconciliation | `072487a40` retains Wakebook while adopting the v1.2 effective authority and regenerated Feature Catalog      |
+| Current reconciled base | `dc430b79aa3ddd27443f47bb493ae6c471a41616`                                                                    |
+| Incoming accepted work  | Protected-main v1.2 runtime-conformance bootstrap plus the Part III v1.3 amendment documentation              |
+| Semantic reconciliation | `afd3c15d8` retains Wakebook and takes all accepted mainline documentation/index updates                        |
 | Implementation commits  | Preserved from the existing remote candidate                                                                  |
-| Sounding Line evidence  | Hosted mainline authority in progress on draft PR #41                                                         |
+| Sounding Line evidence  | `22940b9004bc89def300a808f426a0ed4dc77658`: focused governed `browser.wakebook` PASS (1/1); 15 capture review accepted |
 | Owner walkthrough       | Pending                                                                                                       |
-| Main merge              | Blocked until final governed evidence and the separately required owner walkthrough/acceptance                |
+| Main merge              | Blocked until the separately required owner walkthrough/acceptance and protected Mainline Decision             |
 
 ## Owned implementation paths
 
