@@ -2727,6 +2727,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_2_Completion_Receipt.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_2_Design_Record.md",
       "record_type": "program-record",
       "status": "current",
@@ -2734,6 +2740,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_2_Mainline_Safety_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_2_Integration_Manifest.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null

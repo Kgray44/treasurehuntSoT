@@ -3,7 +3,7 @@
   "project": "Project Drydock",
   "phase": 2,
   "classification": "SYNTHETIC_NO_PRIVATE_CONTENT",
-  "status": "COMPLETE_STATIC_CORPUS_PENDING_ACCEPTANCE",
+  "status": "ACCEPTED_MAINLINE_STATIC_CORPUS",
   "sourceFixture": "tests/fixtures/drydock/phase2-synthetic-chronicle.json",
   "mutationSuite": "src/drydock/mutation-corpus.test.ts",
   "ruleSuite": "src/drydock/rules.test.ts",

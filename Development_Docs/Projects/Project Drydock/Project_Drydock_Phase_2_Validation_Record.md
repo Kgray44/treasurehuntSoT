@@ -1,7 +1,7 @@
 ---
 title: Project Drydock Phase 2 Validation Record
 audience: engineering
-status: active
+status: current
 canonical_for: project-drydock-phase-2-validation
 last_reviewed: 2026-08-10
 ---
@@ -10,16 +10,12 @@ last_reviewed: 2026-08-10
 
 ## Current evidence checkpoint
 
-The pre-reconciliation exact-source checkpoint `04c069bc8557da7e67844c27fc31a90ae6a106c0` passed the Sounding Line `local-change` gate with seven clean source-bound receipts: `static.core`, `unit.deepwater`, `unit.drydock`, `unit.homeport`, `unit.one-voyage`, `unit.sounding-line`, and `unit.tideglass`.
+Protected PR #36 integrated reconciled candidate `190e31c862c1a504acdf0da01e32efd677b69449` as mainline merge `847e035775984888be71edf614f2205fd6c5a376`. Its protected Sounding Line mainline source `5b70fbd4cf92f4b7b0b9b4753ef498ae699a3d01` returned `RELEASE_GO`: 37 / 37 selected receipts passed and 37 / 37 cleanup states were clean. Evidence digest: `7a0b3ca525273deb3dbd931318fbd400e1310807b0dd3eb7c4e173ad96e428e0`.
 
-The current reconciled implementation commit is `14cc8301d16c8ba02622c7ea15eb5049cd65b88e`, which semantically integrates accepted Shipwright Phase 1 at `384ad39fbc40e8cbe16dd2aa2c83abd3e00a56c6`. It passed strict TypeScript and `src/components/studio/TaleEditor.test.tsx` (13 tests). A new Sounding Line receipt is required for the documentation-complete candidate; pre-reconciliation evidence is not reused as acceptance.
-
-- `drydock:validate` passed: 23 current contracts, rule catalog current at 70 rules, fixture, migration, and canonicalization checks passed.
-- Focused `src/drydock/mutation-corpus.test.ts` passed, including all 31 declared controlled scenarios.
-- `drydock:test` passed: 19 files and 163 tests at the pre-reconciliation exact-source checkpoint.
-
-The corpus ledger is `COMPLETE_STATIC_CORPUS_PENDING_ACCEPTANCE`: every declared synthetic mutation is executed and none is waived. This is still not a completion or protected-mainline acceptance claim.
+- Hosted final closure passed at the exact PR head, including full tests, typecheck, format, lint, documentation, feature-catalog, architecture, language, asset, privacy, build, and cleanup checks.
+- Post-merge `drydock:validate` passed at merge `847e035775984888be71edf614f2205fd6c5a376`: 23 current contracts, 70 current rules, fixtures, migrations, and canonicalization checks are valid.
+- The synthetic corpus ledger is `ACCEPTED_MAINLINE_STATIC_CORPUS`: all 31 declared controlled scenarios are executed and none is waived.
 
 ## Boundary and receipt policy
 
-No Phase 3 simulator, virtual clock, scenario run, runtime adapter, or Tale Session mutation was introduced or executed for this record. This document must be refreshed after exact-candidate Sounding Line validation and protected integration. Only a protected integration decision may produce a Phase 2 completion receipt.
+No Phase 3 simulator, virtual clock, scenario run, runtime adapter, or Tale Session mutation was introduced or executed for this record. Phase 3 remains not started.
