@@ -10,6 +10,8 @@ describe("loadConfig", () => {
 
   it("rejects malformed repository and non-HTTPS API configuration", () => {
     expect(() => loadConfig({ BRIDGEWATCH_REPOSITORY: "not a repository" })).toThrow("owner/repository");
-    expect(() => loadConfig({ BRIDGEWATCH_REPOSITORY: "owner/repository", BRIDGEWATCH_GITHUB_API: "http://example.test" })).toThrow("HTTPS");
+    expect(() =>
+      loadConfig({ BRIDGEWATCH_REPOSITORY: "owner/repository", BRIDGEWATCH_GITHUB_API: "http://example.test" }),
+    ).toThrow("HTTPS");
   });
 });

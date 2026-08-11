@@ -437,7 +437,11 @@ export function TaleEditor({
               }
             : validation?.valid
               ? { state: "ready" as const, label: "Ready", detail: "The current draft passed its latest validation." }
-              : { state: "stale" as const, label: "Not checked", detail: "Run validation before publishing this Chronicle." };
+              : {
+                  state: "stale" as const,
+                  label: "Not checked",
+                  detail: "Run validation before publishing this Chronicle.",
+                };
   const activeDragLabel = activeDragId?.startsWith("library:")
     ? data?.registry.find((item) => item.type === activeDragId.slice("library:".length))?.displayName
     : draft?.chapters.flatMap((chapter) => chapter.blocks).find((block) => block.id === activeDragId)?.title;
@@ -685,12 +689,16 @@ export function TaleEditor({
     if (!draft || selectedIds.length < 2) return;
     const selectedSet = new Set(selectedIds);
     const sourceIndex = Math.max(
-      ...draft.chapters.map((chapter, index) => (chapter.blocks.some((block) => selectedSet.has(block.id)) ? index : -1)),
+      ...draft.chapters.map((chapter, index) =>
+        chapter.blocks.some((block) => selectedSet.has(block.id)) ? index : -1,
+      ),
     );
     const destinationIndex = Math.min(sourceIndex + 1, draft.chapters.length - 1);
     if (sourceIndex < 0 || destinationIndex === sourceIndex) return;
     change((next) => {
-      const selectedBlocks = next.chapters.flatMap((chapter) => chapter.blocks.filter((block) => selectedSet.has(block.id)));
+      const selectedBlocks = next.chapters.flatMap((chapter) =>
+        chapter.blocks.filter((block) => selectedSet.has(block.id)),
+      );
       next.chapters.forEach((chapter) => {
         chapter.blocks = chapter.blocks.filter((block) => !selectedSet.has(block.id));
       });
@@ -1894,7 +1902,8 @@ export function TaleEditor({
                             value={readStayStoryMotion(selected.block.presentation.backgroundScene) ?? ""}
                             onChange={(event) =>
                               updateSelected((block) => {
-                                if (event.target.value) block.presentation.backgroundScene = `shipwright-stay:${event.target.value}`;
+                                if (event.target.value)
+                                  block.presentation.backgroundScene = `shipwright-stay:${event.target.value}`;
                                 else delete block.presentation.backgroundScene;
                               })
                             }
@@ -2600,11 +2609,7 @@ export function TaleEditor({
             </div>
           </aside>
         )}
-        <StudioCommandPalette
-          open={commandPaletteOpen}
-          commands={studioCommands}
-          onClose={closeCommandPalette}
-        />
+        <StudioCommandPalette open={commandPaletteOpen} commands={studioCommands} onClose={closeCommandPalette} />
       </motion.main>
       {dialog}
     </>

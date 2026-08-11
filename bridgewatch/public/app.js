@@ -1,2 +1,20 @@
-const text=v=>v??"UNMEASURED";
-fetch("/api/summary").then(r=>r.json()).then(data=>{document.querySelector("#meta").textContent=`${data.mode} · GitHub ${data.source.state} · ${text(data.source.observedAt)}`;document.querySelector("#projects").innerHTML=data.projects.map(p=>`<article class="card"><strong>${p.name}</strong><p class="state">${p.state} · ${p.phase}</p><p>Milestone: ${p.milestonePercent===null?"UNMEASURED":p.milestonePercent+"%"}</p><p>Head: ${text(p.github?.headSha).slice(0,12)}</p></article>`).join("");if(data.attention.length)document.querySelector("#attention").innerHTML=data.attention.map(a=>`<p class="warn">${a.level}: ${a.message}</p>`).join("")}).catch(()=>{document.querySelector("#meta").textContent="Dashboard unavailable; no observation claim is made."});
+const text = (v) => v ?? "UNMEASURED";
+fetch("/api/summary")
+  .then((r) => r.json())
+  .then((data) => {
+    document.querySelector("#meta").textContent =
+      `${data.mode} · GitHub ${data.source.state} · ${text(data.source.observedAt)}`;
+    document.querySelector("#projects").innerHTML = data.projects
+      .map(
+        (p) =>
+          `<article class="card"><strong>${p.name}</strong><p class="state">${p.state} · ${p.phase}</p><p>Milestone: ${p.milestonePercent === null ? "UNMEASURED" : p.milestonePercent + "%"}</p><p>Head: ${text(p.github?.headSha).slice(0, 12)}</p></article>`,
+      )
+      .join("");
+    if (data.attention.length)
+      document.querySelector("#attention").innerHTML = data.attention
+        .map((a) => `<p class="warn">${a.level}: ${a.message}</p>`)
+        .join("");
+  })
+  .catch(() => {
+    document.querySelector("#meta").textContent = "Dashboard unavailable; no observation claim is made.";
+  });
