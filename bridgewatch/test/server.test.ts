@@ -23,6 +23,8 @@ describe("Bridgewatch read-only API", () => {
       expect(summary.headers["content-security-policy"]).toContain("default-src 'self'");
       const mutation = await app.inject({ method: "POST", url: "/api/summary" });
       expect(mutation.statusCode).toBe(404);
-    } finally { await app.close(); }
+    } finally {
+      await app.close();
+    }
   });
 });

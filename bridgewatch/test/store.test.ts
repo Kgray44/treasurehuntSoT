@@ -10,8 +10,13 @@ describe("BridgewatchStore", () => {
     try {
       store.put("snapshot", { state: "FRESH" }, "etag-1", "2026-08-10T00:00:00.000Z");
       expect(store.get<{ state: string }>("snapshot")).toEqual({
-        value: { state: "FRESH" }, etag: "etag-1", observedAt: "2026-08-10T00:00:00.000Z", error: null,
+        value: { state: "FRESH" },
+        etag: "etag-1",
+        observedAt: "2026-08-10T00:00:00.000Z",
+        error: null,
       });
-    } finally { store.close(); }
+    } finally {
+      store.close();
+    }
   });
 });
