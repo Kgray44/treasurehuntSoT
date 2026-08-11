@@ -2034,10 +2034,15 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
 }
 
 html.helm-document-zoom .wizard-choice-grid,
+html[style*="zoom: 2"] .wizard-choice-grid,
 html.helm-document-zoom .delivery-options,
+html[style*="zoom: 2"] .delivery-options,
 html.helm-document-zoom .wizard-form,
+html[style*="zoom: 2"] .wizard-form,
 html.helm-document-zoom .crew-builder fieldset,
-html.helm-document-zoom .captain-participation-picker {
+html[style*="zoom: 2"] .crew-builder fieldset,
+html.helm-document-zoom .captain-participation-picker,
+html[style*="zoom: 2"] .captain-participation-picker {
   grid-template-columns: 1fr;
 }
 
@@ -2047,50 +2052,74 @@ html[style*="zoom: 2"] .voyage-wizard {
   max-width: calc((100% - 2rem) / 2);
 }
 
-html.helm-document-zoom .platform-header {
+html.helm-document-zoom .platform-header,
+html[style*="zoom: 2"] .platform-header {
   align-items: start;
   flex-direction: column;
 }
 
 html.helm-document-zoom .library-tools,
+html[style*="zoom: 2"] .library-tools,
 html.helm-document-zoom .invitation-table article,
+html[style*="zoom: 2"] .invitation-table article,
 html.helm-document-zoom .captain-operational-panel dl,
+html[style*="zoom: 2"] .captain-operational-panel dl,
 html.helm-document-zoom .tale-card-copy dl,
+html[style*="zoom: 2"] .tale-card-copy dl,
 html.helm-document-zoom .captain-voyage-card dl,
+html[style*="zoom: 2"] .captain-voyage-card dl,
 html.helm-document-zoom .invitation-sheet dl,
+html[style*="zoom: 2"] .invitation-sheet dl,
 html.helm-document-zoom .waiting-room dl,
+html[style*="zoom: 2"] .waiting-room dl,
 html.helm-document-zoom .review-sheet dl,
-html.helm-document-zoom .archive-title dl {
+html[style*="zoom: 2"] .review-sheet dl,
+html.helm-document-zoom .archive-title dl,
+html[style*="zoom: 2"] .archive-title dl {
   grid-template-columns: 1fr;
 }
 
-html.helm-document-zoom .library-tools label:first-child {
+html.helm-document-zoom .library-tools label:first-child,
+html[style*="zoom: 2"] .library-tools label:first-child {
   grid-column: auto;
 }
 
 html.helm-document-zoom .player-card-grid,
+html[style*="zoom: 2"] .player-card-grid,
+html.helm-document-zoom .captain-card-grid,
+html[style*="zoom: 2"] .captain-card-grid,
+html.helm-document-zoom .published-tale-grid,
+html[style*="zoom: 2"] .published-tale-grid,
 html.helm-document-zoom .waiting-room,
+html[style*="zoom: 2"] .waiting-room,
 html.helm-document-zoom .auth-columns,
+html[style*="zoom: 2"] .auth-columns,
 html.helm-document-zoom .invitation-secrets article,
-html.helm-document-zoom .player-card-grid.list .player-tale-card {
+html[style*="zoom: 2"] .invitation-secrets article,
+html.helm-document-zoom .player-card-grid.list .player-tale-card,
+html[style*="zoom: 2"] .player-card-grid.list .player-tale-card {
   grid-template-columns: 1fr;
 }
 
-html.helm-document-zoom .wizard-progress small {
+html.helm-document-zoom .wizard-progress small,
+html[style*="zoom: 2"] .wizard-progress small {
   display: none;
 }
 
-html.helm-document-zoom .platform-tabs {
+html.helm-document-zoom .platform-tabs,
+html[style*="zoom: 2"] .platform-tabs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   overflow: visible;
 }
 
-html.helm-document-zoom .platform-tabs button {
+html.helm-document-zoom .platform-tabs button,
+html[style*="zoom: 2"] .platform-tabs button {
   min-width: 0;
 }
 
-html.helm-document-zoom .platform-tabs button:last-child:nth-child(odd) {
+html.helm-document-zoom .platform-tabs button:last-child:nth-child(odd),
+html[style*="zoom: 2"] .platform-tabs button:last-child:nth-child(odd) {
   grid-column: 1 / -1;
 }
 
