@@ -56,6 +56,8 @@ const invitation = {
   },
 };
 
+const invitationWithoutPin = { ...invitation, requiresPin: false };
+
 function response(status: number, body: unknown) {
   return {
     ok: status >= 200 && status < 300,
@@ -178,6 +180,22 @@ describe("InvitationCeremony", () => {
     fireEvent.change(screen.getByLabelText("Invitation PIN"), { target: { value: "1234" } });
     expect(screen.getByRole("button", { name: "Accept and Join Voyage" })).toHaveAttribute("type", "button");
     expect(screen.getByRole("button", { name: "Decline Invitation" })).toHaveAttribute("type", "button");
+
+    fireEvent.click(screen.getByRole("button", { name: "Accept and Join Voyage" }));
+
+    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+    expect(fetch.mock.calls[1]?.[0]).toBe("/api/invitations/accept");
+  });
+
+  it("starts the visible no-PIN accept request without waiting for presentation", async () => {
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, { invitation: invitationWithoutPin, csrfToken: "csrf" }))
+      .mockResolvedValueOnce(response(200, { ok: true, playthroughId: "voyage-1" }));
+    vi.stubGlobal("fetch", fetch);
+    director.play.mockImplementation(() => new Promise(() => undefined));
+    renderInvitation();
+    await screen.findByRole("button", { name: "Accept and Join Voyage" });
 
     fireEvent.click(screen.getByRole("button", { name: "Accept and Join Voyage" }));
 

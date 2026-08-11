@@ -254,6 +254,7 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
   const root = useRef<HTMLElement>(null);
   const ceremonyHost = useRef<SceneHostHandle | null>(null);
   const resolveRun = useRef<AbortController | null>(null);
+  const acceptActionActive = useRef(false);
   const { director } = useAnimationDirector();
   const { mode } = useMotionMode();
   const asyncState = useAuthoritativeAsyncState(900);
@@ -358,6 +359,14 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
 
   async function act(action: "accept" | "decline") {
     if (!invitation) return;
+    // The visible accept control must never become a no-op because a previous
+    // presentation lifecycle left an async latch behind. The local latch also
+    // keeps a fast double-click from replacing an authoritative operation.
+    if (action === "accept") {
+      if (acceptActionActive.current) return;
+      acceptActionActive.current = true;
+      if (!asyncState.busy) asyncState.reset("recover-visible-invitation-accept");
+    }
     if (
       action === "decline" &&
       !(await requestAction({
@@ -369,7 +378,10 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
     )
       return;
     const run = asyncState.begin();
-    if (!run) return;
+    if (!run) {
+      if (action === "accept") acceptActionActive.current = false;
+      return;
+    }
     const pendingStage = action === "decline" ? "declining" : invitation.requiresPin ? "pin-validating" : "accepting";
     setStage(pendingStage);
     setError("");
@@ -498,6 +510,8 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
       asyncState.release(run, "success");
     } catch {
       restoreFailure(run, operationError, operationCode);
+    } finally {
+      if (action === "accept") acceptActionActive.current = false;
     }
   }
 
