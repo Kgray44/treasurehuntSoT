@@ -950,15 +950,12 @@ export function TaleEditor({
         setError("The Chronicle changed while the repair preview was open. Preview it again from the current draft.");
         return;
       }
-      change(
-        (next) => {
-          const target = next.chapters.flatMap((chapter) => chapter.blocks).find((block) => block.id === blockId);
-          if (!target) throw new Error("The repaired Passage is no longer present in this draft.");
-          target.configuration = clone(preview.after.configuration);
-          target.nextBlockId = preview.after.nextBlockId;
-        },
-        "Safe repair queued for autosave; Undo is available.",
-      );
+      change((next) => {
+        const target = next.chapters.flatMap((chapter) => chapter.blocks).find((block) => block.id === blockId);
+        if (!target) throw new Error("The repaired Passage is no longer present in this draft.");
+        target.configuration = clone(preview.after.configuration);
+        target.nextBlockId = preview.after.nextBlockId;
+      }, "Safe repair queued for autosave; Undo is available.");
       setSelectedRepairBlockId(null);
     } catch (cause) {
       setSaveState("Safe repair unavailable");
