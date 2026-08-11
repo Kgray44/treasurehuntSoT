@@ -1103,7 +1103,15 @@ function VoyageWizard(props: WizardProps) {
     const root = document.documentElement;
     const syncDocumentZoom = () => {
       const zoom = Number.parseFloat(root.style.zoom || getComputedStyle(root).zoom);
-      setDocumentZoom(Number.isFinite(zoom) && zoom > 0 ? zoom : 1);
+      const effectiveZoom = Number.isFinite(zoom) && zoom > 0 ? zoom : 1;
+      // MutationObserver runs before the browser test's next page evaluation,
+      // while React state may not have committed yet. Apply this critical width
+      // adjustment to the live dialog first, then retain it in render state.
+      dialogRef.current?.style.setProperty(
+        "width",
+        effectiveZoom > 1 ? `calc(100% / ${effectiveZoom})` : "",
+      );
+      setDocumentZoom(effectiveZoom);
     };
     syncDocumentZoom();
     const observer = new MutationObserver(syncDocumentZoom);
