@@ -8,6 +8,8 @@ import ts from "typescript";
 import { promisify } from "node:util";
 
 const root = process.cwd();
+const { format, resolveConfig } = dependencyRequire("prettier");
+const ts = dependencyRequire("typescript");
 const ignored = new Set(["node_modules", ".git", ".next", "coverage", "artifacts"]);
 const homeportContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
   .contracts.map((contract) => contract.id)
