@@ -20,7 +20,9 @@ export function StudioSelectionToolbar({
     <aside className="studio-selection-toolbar" aria-label="Selected Passage tools">
       <div>
         <p className="eyebrow">Selected Passage</p>
-        <strong>{selectionCount} {selectionCount === 1 ? "Passage" : "Passages"} selected</strong>
+        <strong>
+          {selectionCount} {selectionCount === 1 ? "Passage" : "Passages"} selected
+        </strong>
       </div>
       <div>
         <button type="button" onClick={onPreview}>

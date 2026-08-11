@@ -11,6 +11,15 @@ export type Block = {
   creatorNotes?: string | null;
   isEnabled: boolean;
   schemaVersion: number;
+  /** Legacy mirror only; canonical BlockConnection remains the edge authority. */
+  nextBlockId?: string | null;
+  connections?: Array<{
+    targetBlockId: string;
+    connectionType: string;
+    label?: string | null;
+    conditionExpression?: string | null;
+    orderIndex?: number;
+  }>;
 };
 
 export type Chapter = {

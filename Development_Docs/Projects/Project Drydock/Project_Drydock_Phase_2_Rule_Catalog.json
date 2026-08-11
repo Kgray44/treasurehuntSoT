@@ -1,0 +1,709 @@
+{
+  "schemaVersion": 1,
+  "catalogVersion": 1,
+  "status": "ACTIVE_IMPLEMENTATION_SUBSET",
+  "authority": "src/drydock/rules.ts",
+  "scope": "Executable Drydock rules currently emitted by implemented Phase 1 and Phase 2 validation; this record does not claim complete Phase 2 coverage.",
+  "rules": [
+    {
+      "code": "DRYDOCK_ACCESS_AUDIO_TRANSCRIPT",
+      "version": 1,
+      "category": "ACCESSIBILITY",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_ACCESS_IMAGE_TEXT_ALTERNATIVE",
+      "version": 1,
+      "category": "ACCESSIBILITY",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_ACCESS_MOTION_MEANING",
+      "version": 1,
+      "category": "ACCESSIBILITY",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_ACCESS_PROVIDER_FALLBACK",
+      "version": 1,
+      "category": "ACCESSIBILITY",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_ACCESS_VIDEO_CAPTIONS",
+      "version": 1,
+      "category": "ACCESSIBILITY",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_ACCESS_VIDEO_NON_MOTION_MEANING",
+      "version": 1,
+      "category": "ACCESSIBILITY",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_ARTIFACT_GRANT_DUPLICATE_RISK",
+      "version": 1,
+      "category": "CONTENT",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "REVIEW_REQUIRED",
+      "applicability": "FULL",
+      "repairClassification": "REVIEW_REQUIRED",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_ASSET_MEDIA_TYPE",
+      "version": 1,
+      "category": "ASSET",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_ASSET_NOT_READY",
+      "version": 1,
+      "category": "ASSET",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_ASSET_PRIVACY",
+      "version": 1,
+      "category": "PRIVACY",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_ASSET_PROOF_INCOMPLETE",
+      "version": 1,
+      "category": "ASSET",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "REVIEW_REQUIRED",
+      "applicability": "FULL",
+      "repairClassification": "REVIEW_REQUIRED",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_ASSET_REFERENCE_MISSING",
+      "version": 1,
+      "category": "ASSET",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_ASSET_REQUIRED_MISSING",
+      "version": 1,
+      "category": "ASSET",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_BLOCK_ID_DUPLICATE",
+      "version": 1,
+      "category": "REFERENCE",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_BLOCK_TYPE_UNSUPPORTED",
+      "version": 1,
+      "category": "COMPATIBILITY",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "UNSUPPORTED"
+    },
+    {
+      "code": "DRYDOCK_BLOCK_VERSION_UNSUPPORTED",
+      "version": 1,
+      "category": "COMPATIBILITY",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "UNSUPPORTED"
+    },
+    {
+      "code": "DRYDOCK_CHOICE_TARGET_AUTHORITY_CONFLICT",
+      "version": 1,
+      "category": "COMPATIBILITY",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "REVIEW_REQUIRED",
+      "compatibilityPolicy": "MIGRATION_REQUIRED"
+    },
+    {
+      "code": "DRYDOCK_COMPLETION_OUTCOME_DUPLICATE_RISK",
+      "version": 1,
+      "category": "CONTENT",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "REVIEW_REQUIRED",
+      "applicability": "FULL",
+      "repairClassification": "REVIEW_REQUIRED",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_CONDITION_ALWAYS_FALSE",
+      "version": 1,
+      "category": "STATE",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "REVIEW_REQUIRED",
+      "applicability": "FULL",
+      "repairClassification": "REVIEW_REQUIRED",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_CONDITION_ALWAYS_TRUE",
+      "version": 1,
+      "category": "STATE",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "REVIEW_REQUIRED",
+      "applicability": "FULL",
+      "repairClassification": "REVIEW_REQUIRED",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_CONDITION_EXPRESSION_NOT_BOOLEAN",
+      "version": 1,
+      "category": "STATE",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_CONDITION_TARGET_AUTHORITY_CONFLICT",
+      "version": 1,
+      "category": "COMPATIBILITY",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "REVIEW_REQUIRED",
+      "compatibilityPolicy": "MIGRATION_REQUIRED"
+    },
+    {
+      "code": "DRYDOCK_CONNECTION_POLICY_INVALID",
+      "version": 1,
+      "category": "REFERENCE",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_CONTROL_FLOW_EDGE_CONDITION_UNPROVEN",
+      "version": 1,
+      "category": "CONTROL_FLOW",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "REVIEW_REQUIRED",
+      "applicability": "FULL",
+      "repairClassification": "REVIEW_REQUIRED",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_EXPRESSION_COMPARE_TYPE",
+      "version": 1,
+      "category": "EXPRESSION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_EXPRESSION_CONTAINS_TYPE",
+      "version": 1,
+      "category": "EXPRESSION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_EXPRESSION_COUNT_TYPE",
+      "version": 1,
+      "category": "EXPRESSION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_EXPRESSION_DEPTH_LIMIT",
+      "version": 1,
+      "category": "EXPRESSION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_EXPRESSION_LITERAL_TYPE",
+      "version": 1,
+      "category": "EXPRESSION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_EXPRESSION_LOGICAL_TYPE",
+      "version": 1,
+      "category": "EXPRESSION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_EXPRESSION_NODE_LIMIT",
+      "version": 1,
+      "category": "EXPRESSION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_EXPRESSION_NOT_TYPE",
+      "version": 1,
+      "category": "EXPRESSION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_EXPRESSION_ORDER_TYPE",
+      "version": 1,
+      "category": "EXPRESSION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_EXPRESSION_SCHEMA_INVALID",
+      "version": 1,
+      "category": "EXPRESSION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_EXPRESSION_SIZE_LIMIT",
+      "version": 1,
+      "category": "EXPRESSION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_EXPRESSION_VARIABLE_UNKNOWN",
+      "version": 1,
+      "category": "EXPRESSION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_EXTENSION_ENVELOPE_INVALID",
+      "version": 1,
+      "category": "EXTENSION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_EXTENSION_NAMESPACE_UNREGISTERED",
+      "version": 1,
+      "category": "EXTENSION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_EXTENSION_PAYLOAD_INVALID",
+      "version": 1,
+      "category": "EXTENSION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_GRAPH_AUTOMATIC_LOOP",
+      "version": 1,
+      "category": "GRAPH",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_GRAPH_CROSS_CHAPTER_TRANSITION_INVALID",
+      "version": 1,
+      "category": "GRAPH",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_GRAPH_DUPLICATE_EDGE",
+      "version": 1,
+      "category": "GRAPH",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_GRAPH_ENTRY_MISSING",
+      "version": 1,
+      "category": "GRAPH",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_GRAPH_LOOP_PROGRESS_UNPROVEN",
+      "version": 1,
+      "category": "CONTROL_FLOW",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "REVIEW_REQUIRED",
+      "applicability": "FULL",
+      "repairClassification": "REVIEW_REQUIRED",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_GRAPH_NO_TERMINAL_PATH",
+      "version": 1,
+      "category": "GRAPH",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_GRAPH_ORPHAN_CHAPTER",
+      "version": 1,
+      "category": "GRAPH",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_GRAPH_TERMINAL_MISSING",
+      "version": 1,
+      "category": "GRAPH",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_GRAPH_UNREACHABLE",
+      "version": 1,
+      "category": "GRAPH",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_LEGACY_NEXT_TARGET_CONFLICT",
+      "version": 1,
+      "category": "COMPATIBILITY",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "SAFE_AUTOMATIC",
+      "compatibilityPolicy": "MIGRATION_REQUIRED"
+    },
+    {
+      "code": "DRYDOCK_MIGRATION_PATH_MISSING",
+      "version": 1,
+      "category": "MIGRATION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "MIGRATION_REQUIRED"
+    },
+    {
+      "code": "DRYDOCK_MIGRATION_WARNING",
+      "version": 1,
+      "category": "MIGRATION",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "REVIEW_REQUIRED",
+      "compatibilityPolicy": "MIGRATION_REQUIRED"
+    },
+    {
+      "code": "DRYDOCK_PERFORMANCE_BLOCK_COUNT_HIGH",
+      "version": 1,
+      "category": "PERFORMANCE",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "REVIEW_REQUIRED",
+      "applicability": "FULL",
+      "repairClassification": "ARCHITECTURAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_PERFORMANCE_EDGE_COUNT_HIGH",
+      "version": 1,
+      "category": "PERFORMANCE",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "REVIEW_REQUIRED",
+      "applicability": "FULL",
+      "repairClassification": "ARCHITECTURAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_PERFORMANCE_EXPRESSION_NEAR_LIMIT",
+      "version": 1,
+      "category": "PERFORMANCE",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "REVIEW_REQUIRED",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_PERFORMANCE_FAN_OUT_HIGH",
+      "version": 1,
+      "category": "PERFORMANCE",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "REVIEW_REQUIRED",
+      "applicability": "FULL",
+      "repairClassification": "REVIEW_REQUIRED",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_PERFORMANCE_STATE_COMPLEXITY_HIGH",
+      "version": 1,
+      "category": "PERFORMANCE",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "REVIEW_REQUIRED",
+      "applicability": "FULL",
+      "repairClassification": "ARCHITECTURAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_PERFORMANCE_VARIABLE_COUNT_HIGH",
+      "version": 1,
+      "category": "PERFORMANCE",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "REVIEW_REQUIRED",
+      "applicability": "FULL",
+      "repairClassification": "ARCHITECTURAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_PROVIDER_NOT_CONFIGURED",
+      "version": 1,
+      "category": "PROVIDER_CONTRACT",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "UNSUPPORTED"
+    },
+    {
+      "code": "DRYDOCK_PROVIDER_REQUEST_REPEATS_IN_LOOP",
+      "version": 1,
+      "category": "PROVIDER",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "REVIEW_REQUIRED",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_PROVIDER_UNREGISTERED",
+      "version": 1,
+      "category": "PROVIDER_CONTRACT",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "UNSUPPORTED"
+    },
+    {
+      "code": "DRYDOCK_REFERENCE_TARGET_MISSING",
+      "version": 1,
+      "category": "REFERENCE",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_SIDE_EFFECT_REPEATS_IN_LOOP",
+      "version": 1,
+      "category": "CONTENT",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "ARCHITECTURAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_STATE_PROOF_INCOMPLETE",
+      "version": 1,
+      "category": "STATE",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "REVIEW_REQUIRED",
+      "applicability": "FULL",
+      "repairClassification": "REVIEW_REQUIRED",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_VARIABLE_DECLARATION_INVALID",
+      "version": 1,
+      "category": "VARIABLE_DECLARATION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_VARIABLE_DUPLICATE",
+      "version": 1,
+      "category": "VARIABLE_DECLARATION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_VARIABLE_NOT_DEFINITELY_INITIALIZED",
+      "version": 1,
+      "category": "STATE",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "FULL",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_VARIABLE_UNUSED",
+      "version": 1,
+      "category": "STATE",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "REVIEW_REQUIRED",
+      "applicability": "FULL",
+      "repairClassification": "REVIEW_REQUIRED",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_VARIABLE_WRITE_NEVER_READ",
+      "version": 1,
+      "category": "STATE",
+      "defaultSeverity": "WARNING",
+      "waiverPolicy": "REVIEW_REQUIRED",
+      "applicability": "FULL",
+      "repairClassification": "REVIEW_REQUIRED",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_VARIABLE_WRITE_TYPE",
+      "version": 1,
+      "category": "VARIABLE_TYPE",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    },
+    {
+      "code": "DRYDOCK_VARIABLE_WRITE_UNDECLARED",
+      "version": 1,
+      "category": "VARIABLE_DECLARATION",
+      "defaultSeverity": "ERROR",
+      "waiverPolicy": "NEVER",
+      "applicability": "BOTH",
+      "repairClassification": "MANUAL",
+      "compatibilityPolicy": "CURRENT_SCHEMA_ONLY"
+    }
+  ]
+}

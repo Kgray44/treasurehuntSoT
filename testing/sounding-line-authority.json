@@ -1,0 +1,20 @@
+{
+  "authority": "SOUNDING_LINE",
+  "effectiveAmendments": {
+    "partI": "1.2",
+    "partII": "1.2",
+    "partIII": "1.2"
+  },
+  "requiredProtectedAuthorityCheck": "Sounding Line / Mainline Decision",
+  "runtimeConformance": {
+    "required": true,
+    "suiteId": "unit.sounding-line",
+    "failureMode": "FAIL_CLOSED"
+  },
+  "governingPolicies": {
+    "proofMinimization": "MINIMUM_SUFFICIENT_EVIDENCE",
+    "semanticInvalidation": "EVIDENCE_PRESERVATION_REQUIRED",
+    "recordOnlyClosure": "TARGET_ARCHITECTURE_PENDING"
+  },
+  "futureProjectInheritance": true
+}

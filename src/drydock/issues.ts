@@ -11,6 +11,17 @@ export const drydockIssueCategories = [
   "EXTENSION",
   "ACCESSIBILITY_CONTRACT",
   "PROVIDER_CONTRACT",
+  "STRUCTURE",
+  "CONTROL_FLOW",
+  "CONTENT",
+  "GRAPH",
+  "STATE",
+  "ASSET",
+  "ACCESSIBILITY",
+  "PRIVACY",
+  "PROVIDER",
+  "PERFORMANCE",
+  "TEST_COVERAGE",
 ] as const;
 
 export type DrydockIssueCategory = (typeof drydockIssueCategories)[number];

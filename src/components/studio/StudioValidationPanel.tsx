@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import type { ValidationIssue } from "@/chronicle/types";
 
 type ValidationResult = { valid: boolean; errors: ValidationIssue[]; warnings: ValidationIssue[]; checkedAt?: string };
@@ -11,17 +11,21 @@ function readableField(field?: string) {
 }
 
 function issueHeading(issue: ValidationIssue, blocking: boolean) {
-  return blocking ? `Blocks publishing: ${readableField(issue.field)}` : `Needs attention: ${readableField(issue.field)}`;
+  return blocking
+    ? `Blocks publishing: ${readableField(issue.field)}`
+    : `Needs attention: ${readableField(issue.field)}`;
 }
 
 export function StudioValidationPanel({
   result,
   onClose,
   onFocusIssue,
+  children,
 }: {
   result: ValidationResult;
   onClose: () => void;
   onFocusIssue: (issue: ValidationIssue, origin: HTMLElement) => void;
+  children?: ReactNode;
 }) {
   const panel = useRef<HTMLElement>(null);
   const moving = useRef<{ offsetX: number; offsetY: number } | null>(null);
@@ -57,7 +61,12 @@ export function StudioValidationPanel({
   };
 
   const groups = [
-    { title: "Blocks publishing", detail: "Resolve these before this Chronicle can be published.", issues: result.errors, blocking: true },
+    {
+      title: "Blocks publishing",
+      detail: "Resolve these before this Chronicle can be published.",
+      issues: result.errors,
+      blocking: true,
+    },
     {
       title: "Needs attention",
       detail: "These do not block publication, but they still need a deliberate Creator decision or repair.",
@@ -77,16 +86,27 @@ export function StudioValidationPanel({
       <header className="validation-panel__drag-region" onPointerDown={startMove}>
         <div>
           <p className="eyebrow">Validation results</p>
-          <h2>{result.valid ? "Ready to publish" : `${result.errors.length} issue${result.errors.length === 1 ? "" : "s"} need attention`}</h2>
-          <p className="validation-panel__hint">Drag this header to move the panel. Use its lower-right corner to resize it.</p>
+          <h2>
+            {result.valid
+              ? "Ready to publish"
+              : `${result.errors.length} issue${result.errors.length === 1 ? "" : "s"} need attention`}
+          </h2>
+          <p className="validation-panel__hint">
+            Drag this header to move the panel. Use its lower-right corner to resize it.
+          </p>
         </div>
         <button type="button" onClick={onClose} aria-label="Close validation results">
           Close
         </button>
       </header>
-      {result.valid && !result.warnings.length ? <p className="validation-panel__success">No current validation findings were returned.</p> : null}
+      {result.valid && !result.warnings.length ? (
+        <p className="validation-panel__success">No current validation findings were returned.</p>
+      ) : null}
       {groups.map((group) => (
-        <section key={group.title} className={group.blocking ? "validation-group blocking" : "validation-group warning"}>
+        <section
+          key={group.title}
+          className={group.blocking ? "validation-group blocking" : "validation-group warning"}
+        >
           <h3>{group.title}</h3>
           <p>{group.detail}</p>
           {group.issues.map((issue, index) => (
@@ -94,6 +114,7 @@ export function StudioValidationPanel({
               type="button"
               className="validation-issue"
               key={`${issue.code}-${issue.blockId ?? "chronicle"}-${issue.field ?? "general"}-${index}`}
+              data-drydock-rule-code={issue.code}
               onClick={(event) => onFocusIssue(issue, event.currentTarget)}
             >
               <span>{issueHeading(issue, group.blocking)}</span>
@@ -103,11 +124,13 @@ export function StudioValidationPanel({
                   ? `Open the affected Passage${issue.field ? ` and ${readableField(issue.field)}` : ""}`
                   : "This Chronicle-level finding has no single Passage target."}
               </small>
+              {issue.remediation ? <small>{issue.remediation}</small> : null}
               <em>Rule {issue.code}</em>
             </button>
           ))}
         </section>
       ))}
+      {children}
     </aside>
   );
 }

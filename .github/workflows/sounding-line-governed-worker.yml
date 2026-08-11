@@ -26,49 +26,112 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc, cache: npm }
-      - run: npm ci
+      - name: Restore dependencies with timing
+        shell: pwsh
+        run: |
+          $startedAt = [DateTimeOffset]::UtcNow
+          & npm ci
+          $exitCode = $LASTEXITCODE
+          $finishedAt = [DateTimeOffset]::UtcNow
+          [ordered]@{
+            version = 1
+            runnerBootstrapMs = $null
+            runnerBootstrapStatus = 'UNAVAILABLE_FROM_WORKER'
+            checkoutMs = $null
+            checkoutStatus = 'UNAVAILABLE_FROM_WORKER'
+            dependencyRestoreMs = [int](($finishedAt - $startedAt).TotalMilliseconds)
+          } | ConvertTo-Json | Set-Content -LiteralPath 'sounding-line-worker-throughput.json' -Encoding utf8
+          if ($exitCode -ne 0) { throw 'GOVERNED_DEPENDENCY_RESTORE_FAILED' }
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: sounding-line-plan
           path: ${{ runner.temp }}/sounding-line-plan
-      - run: npm run db:generate
-      # This is a seeded baseline for a worker-local disposable runtime.
-      - run: npx prisma migrate deploy --schema prisma/schema.sqlite.prisma
-        env: { DATABASE_URL: "file:./dev.db" }
-      - run: npm run db:seed
-        env: { DATABASE_URL: "file:./dev.db" }
-      - name: Install browser engines required by the sealed suite
+      - name: Prepare only sealed-node resources
         shell: pwsh
         env:
           SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-plan/sounding-line-plan.json
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
         run: |
-          $plan = Get-Content -Raw $env:SOUNDING_LINE_PLAN | ConvertFrom-Json
-          $node = @($plan.nodes | Where-Object { $_.id -eq $env:SOUNDING_LINE_SUITE })
-          if ($node.Count -ne 1) { throw "GOVERNED_BROWSER_ENGINE_PLAN_NODE_INVALID" }
-          $browserEngineInstallInvoked = $false
-          if ($env:SOUNDING_LINE_SUITE -like 'browser.*') {
-            $browserEngineInstallInvoked = $true
-            & npx playwright install chromium webkit
-          } elseif (@($node[0].resources) -contains 'browser-chromium') {
-            $browserEngineInstallInvoked = $true
-            & npx playwright install chromium
-          } elseif (@($node[0].resources) -contains 'browser-webkit') {
-            $browserEngineInstallInvoked = $true
-            & npx playwright install webkit
+          $setupStartedAt = [DateTimeOffset]::UtcNow
+          $preparationPath = 'sounding-line-worker-preparation.json'
+          $previousThroughput = if (Test-Path -LiteralPath 'sounding-line-worker-throughput.json' -PathType Leaf) {
+            Get-Content -Raw 'sounding-line-worker-throughput.json' | ConvertFrom-Json
+          } else { $null }
+          & node scripts/sounding-line/worker-preparation.mjs --plan "$env:SOUNDING_LINE_PLAN" --suite "$env:SOUNDING_LINE_SUITE" --out $preparationPath
+          if ($LASTEXITCODE -ne 0) { throw "GOVERNED_WORKER_PREPARATION_FAILED" }
+          $preparation = Get-Content -Raw $preparationPath | ConvertFrom-Json
+          $timings = [ordered]@{ clientGenerateMs = 0; databaseMigrationMs = 0; databaseSeedMs = 0; browserRestoreMs = 0 }
+          function Invoke-TimedPreparation([string]$Name, [scriptblock]$Action) {
+            $watch = [System.Diagnostics.Stopwatch]::StartNew()
+            & $Action
+            $exitCode = $LASTEXITCODE
+            $watch.Stop()
+            $timings[$Name] = [int]$watch.ElapsedMilliseconds
+            if ($exitCode -ne 0) { throw "GOVERNED_RESOURCE_PREPARATION_FAILED:$Name" }
           }
-          if ($browserEngineInstallInvoked -and $LASTEXITCODE -ne 0) { throw "GOVERNED_BROWSER_ENGINE_INSTALL_FAILED" }
+          if ($preparation.actions.prismaGenerate) {
+            Invoke-TimedPreparation 'clientGenerateMs' { & npm run db:generate }
+          }
+          if ($preparation.actions.databaseMigration -or $preparation.actions.databaseSeed) {
+            $env:DATABASE_URL = 'file:./dev.db'
+          }
+          if ($preparation.actions.databaseMigration) {
+            Invoke-TimedPreparation 'databaseMigrationMs' { & npx prisma migrate deploy --schema prisma/schema.sqlite.prisma }
+          }
+          if ($preparation.actions.databaseSeed) {
+            Invoke-TimedPreparation 'databaseSeedMs' { & npm run db:seed }
+          }
+          $engines = @($preparation.actions.browserEngines)
+          if ($engines.Count -gt 0) {
+            Invoke-TimedPreparation 'browserRestoreMs' { & npx playwright install @engines }
+          }
+          $setupFinishedAt = [DateTimeOffset]::UtcNow
+          [ordered]@{
+            version = 1
+            suiteId = $env:SOUNDING_LINE_SUITE
+            githubQueueMs = $null
+            githubQueueStatus = 'UNAVAILABLE_FROM_HOST'
+            bootstrapStartedAt = $setupStartedAt.ToString('o')
+            bootstrapMs = [int](($setupFinishedAt - $setupStartedAt).TotalMilliseconds)
+            runnerBootstrapMs = $previousThroughput.runnerBootstrapMs
+            runnerBootstrapStatus = $previousThroughput.runnerBootstrapStatus
+            checkoutMs = $previousThroughput.checkoutMs
+            checkoutStatus = $previousThroughput.checkoutStatus
+            dependencyRestoreMs = $previousThroughput.dependencyRestoreMs
+            clientGenerateMs = $timings.clientGenerateMs
+            databaseMigrationMs = $timings.databaseMigrationMs
+            databaseSeedMs = $timings.databaseSeedMs
+            browserRestoreMs = $timings.browserRestoreMs
+            serverReadyMs = 0
+            preparation = $preparation
+          } | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath 'sounding-line-worker-throughput.json' -Encoding utf8
       - env:
           SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-plan/sounding-line-plan.json
         run: node scripts/sounding-line/authority.mjs ${{ inputs.gate }} --execute-only --plan-in "$env:SOUNDING_LINE_PLAN" --suite ${{ inputs.suite }} --receipt-out sounding-line-worker-evidence.json
+      - name: Bind setup and execution timing to worker evidence
+        if: always()
+        shell: pwsh
+        run: |
+          if ((Test-Path -LiteralPath sounding-line-worker-evidence.json -PathType Leaf) -and (Test-Path -LiteralPath sounding-line-worker-throughput.json -PathType Leaf)) {
+            $evidence = Get-Content -Raw sounding-line-worker-evidence.json | ConvertFrom-Json
+            $throughput = Get-Content -Raw sounding-line-worker-throughput.json | ConvertFrom-Json
+            $suiteExecutionMs = if (@($evidence.receipts).Count -eq 1) { [int]$evidence.receipts[0].durationMs } else { $null }
+            $throughput | Add-Member -NotePropertyName suiteExecutionMs -NotePropertyValue $suiteExecutionMs -Force
+            $throughput | Add-Member -NotePropertyName teardownMs -NotePropertyValue 0 -Force
+            $throughput | Add-Member -NotePropertyName artifactUploadMs -NotePropertyValue $null -Force
+            $throughput | Add-Member -NotePropertyName overallWorkerMs -NotePropertyValue ([int]$throughput.bootstrapMs + [int]($suiteExecutionMs ?? 0)) -Force
+            $evidence | Add-Member -NotePropertyName throughput -NotePropertyValue $throughput -Force
+            $evidence | ConvertTo-Json -Depth 16 | Set-Content -LiteralPath sounding-line-worker-evidence.json -Encoding utf8
+          }
       - if: always()
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
-          {
-            name: "sounding-line-worker-evidence-${{ inputs.suite }}",
-            path: sounding-line-worker-evidence.json,
-            retention-days: 14,
-          }
+          name: "sounding-line-worker-evidence-${{ inputs.suite }}"
+          path: |
+            sounding-line-worker-evidence.json
+            sounding-line-worker-throughput.json
+            sounding-line-worker-preparation.json
+          retention-days: 14
       - if: always()
         name: Verify governed worker receipt
         shell: pwsh

@@ -49,7 +49,7 @@ const accessibilityByType: Partial<Record<DrydockBlockType, readonly DrydockAcce
       code: "DRYDOCK_ACCESS_MOTION_MEANING",
       fieldPath: "configuration.nonMotionMeaning",
       obligation: "A transformation must preserve its meaning without motion.",
-      required: false,
+      required: true,
     },
   ],
   cinematic: [
@@ -57,6 +57,12 @@ const accessibilityByType: Partial<Record<DrydockBlockType, readonly DrydockAcce
       code: "DRYDOCK_ACCESS_VIDEO_CAPTIONS",
       fieldPath: "configuration.captionsAssetId",
       obligation: "Player-facing video requires captions and a poster fallback.",
+      required: true,
+    },
+    {
+      code: "DRYDOCK_ACCESS_VIDEO_NON_MOTION_MEANING",
+      fieldPath: "configuration.nonMotionMeaning",
+      obligation: "A cinematic must preserve its meaning without motion.",
       required: true,
     },
   ],
