@@ -225,9 +225,8 @@ export async function recordMembershipPresence(input: {
   // Keeping the direct persistence fallback preserves compatibility with the
   // narrow service-test double, while the application runtime uses the bounded
   // transaction path above.
-  const transaction = db.$transaction;
-  if (typeof transaction === "function")
-    await retryTransientPresenceWrite(() => transaction((tx) => persist(tx), { maxWait: 1_000, timeout: 5_000 }));
+  if (typeof db.$transaction === "function")
+    await retryTransientPresenceWrite(() => db.$transaction((tx) => persist(tx), { maxWait: 1_000, timeout: 5_000 }));
   else await retryTransientPresenceWrite(() => persist(db));
   return { recordedAt: now.toISOString(), currentSequence: membership.playthrough.currentSequence };
 }
