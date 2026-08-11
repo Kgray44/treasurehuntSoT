@@ -69,6 +69,7 @@ type InvitationRouteHandoff = (destination: string, signal: AbortSignal) => void
 
 const accessFinalState = "access-result-readable";
 const accessFallback = "readable-access-result";
+const acceptedHandoffDelayMs = 500;
 const targetProperties = {
   invitation: ["transform"],
   "invitation-ink": ["filter", "opacity"],
@@ -397,6 +398,10 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
       if (handoffStarted || !result.playthroughId || run.controller.signal.aborted) return;
       handoffStarted = true;
       if (fallbackHandoffTimer !== undefined) window.clearTimeout(fallbackHandoffTimer);
+      // Keep the accepted state perceptible before replacing the route. This also
+      // lets the completed invitation transaction settle before its page unloads.
+      await new Promise((resolve) => window.setTimeout(resolve, acceptedHandoffDelayMs));
+      if (run.controller.signal.aborted) return;
       await handOffRoute(`/player/playthroughs/${result.playthroughId}`, run.controller.signal);
     };
     const submitAction = () => {
