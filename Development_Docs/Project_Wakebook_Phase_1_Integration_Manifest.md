@@ -10,16 +10,16 @@ last_reviewed: 2026-08-10
 
 ## Current integration state
 
-| Item                    | State                                                                                                                    |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                               |
-| Current reconciled base | `384ad39fbc40e8cbe16dd2aa2c83abd3e00a56c6`                                                                               |
-| Incoming accepted work  | Previously reconciled Deepwater, Tideglass, Helm, Drydock, Admiralty, and Homeport governance; then Shipwright Phase 1    |
-| Semantic reconciliation | `4382584d3` retained Wakebook with the prior accepted wave; `620ef4eb1` retains Wakebook while adopting Shipwright Phase 1 |
-| Implementation commits  | Preserved from the existing remote candidate                                                                             |
-| Sounding Line evidence  | Pending                                                                                                                  |
-| Owner walkthrough       | Pending                                                                                                                  |
-| Main merge              | Blocked until final governed evidence and the separately required owner walkthrough/acceptance                           |
+| Item                    | State                                                                                                         |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                    |
+| Current reconciled base | `dac4a7078d932d4ebbc5828161e675fe5f473181`                                                                    |
+| Incoming accepted work  | Protected-main Sounding Line v1.2 runtime-conformance bootstrap and all accepted mainline work through PR #40 |
+| Semantic reconciliation | `072487a40` retains Wakebook while adopting the v1.2 effective authority and regenerated Feature Catalog      |
+| Implementation commits  | Preserved from the existing remote candidate                                                                  |
+| Sounding Line evidence  | Hosted mainline authority in progress on draft PR #41                                                         |
+| Owner walkthrough       | Pending                                                                                                       |
+| Main merge              | Blocked until final governed evidence and the separately required owner walkthrough/acceptance                |
 
 ## Owned implementation paths
 
