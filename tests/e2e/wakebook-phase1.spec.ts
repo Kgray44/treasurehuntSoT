@@ -27,6 +27,7 @@ const captureEvidence = process.env.WAKEBOOK_PHASE1_CAPTURE_EVIDENCE === "1";
 const evidenceRoot = path.resolve(
   process.env.WAKEBOOK_PHASE1_EVIDENCE_ROOT ?? path.join("Development_Docs", "Project Wakebook", "evidence", "phase1"),
 );
+const evidenceRepositoryRoot = path.resolve(process.env.WAKEBOOK_PHASE1_EVIDENCE_REPOSITORY_ROOT ?? process.cwd());
 const expectedEvidenceSource = process.env.WAKEBOOK_PHASE1_EXPECTED_SOURCE_SHA;
 const sourceSha = expectedEvidenceSource ?? "UNBOUND";
 const visualEvidence: VisualEvidenceRecord[] = [];
@@ -46,7 +47,7 @@ async function captureEvidenceState(
   visualEvidence.push({
     ...input,
     sourceSha,
-    capturePath: path.relative(process.cwd(), capturePath).replaceAll("\\", "/"),
+    capturePath: path.relative(evidenceRepositoryRoot, capturePath).replaceAll("\\", "/"),
     sha256: createHash("sha256").update(bytes).digest("hex"),
     visualReviewClassification: "PENDING_CODEX_VISUAL_REVIEW",
     limitation:
@@ -602,7 +603,7 @@ test("Wakebook Phase 1 is private, bounded, historically stable, and normally re
     overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
   });
   await page.context().unroute("**/api/passport/voyages**");
-  await page.getByRole("button", { name: /Try again|Retry/i }).click();
+  await page.getByRole("button", { name: "Try the archive again", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Your Voyages", exact: true }).first()).toBeVisible();
   await captureEvidenceState(page, {
     evidenceId: "WB-P1-EV-015-error-recovery",
