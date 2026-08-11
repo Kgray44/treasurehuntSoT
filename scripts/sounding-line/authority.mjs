@@ -13,6 +13,7 @@ import {
 } from "./adapters.mjs";
 import { finalize } from "./finalizer.mjs";
 import { buildPlan } from "./planner.mjs";
+import { deriveWorkerPreparation } from "./worker-preparation.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const configuredBaselineDatabase = process.env.SOUNDING_LINE_BASELINE_DATABASE;
@@ -103,6 +104,8 @@ async function loadSealedPlan(gateId, { serial, planPath } = {}) {
   // inventory digest, and every receipt are checked by the finalizer.
   if (plan.policyDigest !== digest(await readJson(path.join(root, "testing", "policy-manifest.json"))))
     throw new Error("SEALED_PLAN_POLICY_MISMATCH");
+  if (plan.authorityDigest !== digest(await readJson(path.join(root, "testing", "sounding-line-authority.json"))))
+    throw new Error("AUTHORITY_INDEX_MISMATCH");
   return plan;
 }
 
@@ -116,9 +119,21 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
   ]);
   const suiteMap = new Map(suites.suites.map((suite) => [suite.id, suite]));
   const receipts = [];
+  const runtimeConformance = [];
   const runtimeRoot = path.join(root, "artifacts", "sounding-line", "runs", process.env.GITHUB_RUN_ID ?? "local");
   for (const node of plan.nodes.filter((node) => !suiteId || node.id === suiteId)) {
     const suite = suiteMap.get(node.id);
+    const preparation = deriveWorkerPreparation(node);
+    if (preparation.runtimeConformance.result !== "PASSED")
+      throw new Error(
+        `RUNTIME_CONFORMANCE_FAILED:${preparation.runtimeConformance.violations.map((entry) => entry.code).join(",")}`,
+      );
+    runtimeConformance.push({
+      suiteId: node.id,
+      planDigest: plan.planDigest,
+      authorityDigest: plan.authorityDigest,
+      ...preparation.runtimeConformance,
+    });
     const adapter = suiteAdapter(suite, registry);
     const startedAt = new Date().toISOString();
     const adapterEnv = {};
@@ -178,14 +193,14 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
       ...result,
     });
   }
-  const evidence = { version: 1, plan, receipts };
+  const evidence = { version: 2, plan, receipts, runtimeConformance };
   if (receiptPath) await writeFile(path.resolve(root, receiptPath), `${JSON.stringify(evidence, null, 2)}\n`, "utf8");
   if (executeOnly) {
     output(evidence);
     if (receipts.some((receipt) => receipt.result !== "PASSED")) process.exitCode = 1;
     return;
   }
-  const result = finalize({ plan, receipts });
+  const result = finalize({ plan, receipts, runtimeConformance });
   output({ plan, finalization: result });
   process.exitCode = result.decision === "RELEASE_GO" ? 0 : 1;
 }

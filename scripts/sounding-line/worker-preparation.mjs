@@ -1,0 +1,113 @@
+/*
+ * Derive costly worker setup solely from a sealed plan node. This is both the
+ * hosted-worker preparation contract and the v1.2 runtime-conformance seam.
+ */
+import { readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
+import process from "node:process";
+import { fileURLToPath } from "node:url";
+
+const resourceSet = (values) => new Set(Array.isArray(values) ? values : []);
+const requiredByAdapter = {
+  static: [],
+  policy: [],
+  inventory: [],
+  runtime: [],
+  docs: [],
+  features: [],
+  architecture: [],
+  language: [],
+  privacy: ["scanner"],
+  build: ["production-build-directory"],
+  "sqlite-validate": ["prisma-sqlite-client"],
+  "mysql-validate": ["mysql-schema"],
+  "admiralty-phase1-browser": [
+    "application-port",
+    "sqlite-clone",
+    "browser-chromium",
+    "trace-root",
+    "production-build-directory",
+  ],
+};
+
+export const CONFORMANCE_CODES = Object.freeze({
+  overprovisioning: "RUNTIME_OVERPROVISIONING",
+  resourceScope: "RESOURCE_SCOPE_VIOLATION",
+  browserScope: "BROWSER_ENGINE_SCOPE_VIOLATION",
+  serialization: "UNJUSTIFIED_GLOBAL_SERIALIZATION",
+  evidenceBoundary: "EVIDENCE_BOUNDARY_VIOLATION",
+  authorityIndex: "AUTHORITY_INDEX_MISMATCH",
+});
+
+export function adapterRequirements(node) {
+  if (node.adapter === "vitest-family") return ["node-slot", "vitest-worker-pool"];
+  if (node.adapter === "playwright-family")
+    return ["application-port", "sqlite-clone", "trace-root", ...node.resources.filter((id) => id.startsWith("browser-"))];
+  return requiredByAdapter[node.adapter] ?? [];
+}
+
+export function deriveWorkerPreparation(node) {
+  if (!node?.id || !Array.isArray(node.resources)) throw new Error("SEALED_PLAN_NODE_RESOURCES_REQUIRED");
+  const declared = resourceSet(node.resources);
+  const required = adapterRequirements(node);
+  const violations = [];
+  for (const resource of required)
+    if (!declared.has(resource))
+      violations.push({ code: CONFORMANCE_CODES.resourceScope, resource, message: "adapter requirement is not declared" });
+  const engines = ["browser-chromium", "browser-webkit"].filter((resource) => declared.has(resource));
+  if (node.adapter !== "playwright-family" && engines.length)
+    violations.push({
+      code: CONFORMANCE_CODES.overprovisioning,
+      resource: engines.join(","),
+      message: "a non-browser adapter declares browser engines",
+    });
+  if (node.adapter === "playwright-family" && !engines.length)
+    violations.push({
+      code: CONFORMANCE_CODES.browserScope,
+      message: "browser adapter has no declared browser engine",
+    });
+  const database = declared.has("sqlite-clone") || declared.has("mysql-schema");
+  const prisma = database || declared.has("prisma-sqlite-client") || declared.has("mysql-schema");
+  return {
+    version: 1,
+    suiteId: node.id,
+    declaredResources: [...declared].sort(),
+    adapterRequirements: [...new Set(required)].sort(),
+    actions: {
+      prismaGenerate: prisma,
+      databaseMigration: database,
+      databaseSeed: declared.has("sqlite-clone"),
+      browserEngines: engines.map((resource) => resource.replace("browser-", "")),
+      applicationRuntime: declared.has("application-port"),
+      productionBuild: declared.has("production-build-directory"),
+    },
+    runtimeConformance: {
+      result: violations.length ? "FAILED" : "PASSED",
+      violations,
+    },
+  };
+}
+
+async function main() {
+  const args = process.argv.slice(2);
+  const valueFor = (flag) => {
+    const index = args.indexOf(flag);
+    return index >= 0 ? args[index + 1] : undefined;
+  };
+  const planPath = valueFor("--plan");
+  const suiteId = valueFor("--suite");
+  const outputPath = valueFor("--out");
+  if (!planPath || !suiteId || !outputPath) throw new Error("WORKER_PREPARATION_PLAN_SUITE_AND_OUTPUT_REQUIRED");
+  const plan = JSON.parse(await readFile(path.resolve(planPath), "utf8"));
+  const matches = plan.nodes.filter((node) => node.id === suiteId);
+  if (matches.length !== 1) throw new Error("WORKER_PREPARATION_PLAN_NODE_INVALID");
+  const preparation = deriveWorkerPreparation(matches[0]);
+  if (preparation.runtimeConformance.result !== "PASSED") {
+    const codes = preparation.runtimeConformance.violations.map((entry) => entry.code).join(",");
+    throw new Error(`RUNTIME_CONFORMANCE_FAILED:${codes}`);
+  }
+  await writeFile(path.resolve(outputPath), `${JSON.stringify(preparation, null, 2)}\n`, "utf8");
+  process.stdout.write(`${JSON.stringify(preparation)}\n`);
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) await main();

@@ -7,6 +7,7 @@ import { createHash } from "node:crypto";
 import { finalize } from "./finalizer.mjs";
 
 const [planPath, evidencePath, ...options] = process.argv.slice(2);
+const finalizerStartedAt = Date.now();
 if (!planPath || !evidencePath) throw new Error("CI_FINALIZER_REQUIRES_PLAN_AND_EVIDENCE");
 const outputIndex = options.indexOf("--out");
 const outputPath = outputIndex >= 0 ? options[outputIndex + 1] : undefined;
@@ -43,7 +44,24 @@ const evidence = await Promise.all(
 );
 if (evidence.some((item) => item.plan?.planDigest !== plan.planDigest)) throw new Error("CI_EVIDENCE_PLAN_MISMATCH");
 if (process.env.GITHUB_SHA && plan.sourceSha !== process.env.GITHUB_SHA) throw new Error("CI_PLAN_SOURCE_MISMATCH");
-const result = finalize({ plan, receipts: evidence.flatMap((item) => item.receipts) });
+const result = finalize({
+  plan,
+  receipts: evidence.flatMap((item) => item.receipts),
+  runtimeConformance: evidence.flatMap((item) => item.runtimeConformance ?? []),
+});
+const workerThroughput = evidence.map((item) => item.throughput).filter(Boolean);
+const workerCriticalPathMs = workerThroughput.length
+  ? Math.max(...workerThroughput.map((item) => Number(item.overallWorkerMs) || 0))
+  : 0;
+result.throughput = {
+  version: 1,
+  githubQueueMs: null,
+  githubQueueStatus: "UNAVAILABLE_FROM_FINALIZER",
+  workerSummaries: workerThroughput,
+  workerCriticalPathMs,
+  finalizerMs: Date.now() - finalizerStartedAt,
+  overallCriticalPathMs: workerCriticalPathMs + (Date.now() - finalizerStartedAt),
+};
 if (outputPath) await writeFile(path.resolve(outputPath), `${JSON.stringify(result, null, 2)}\n`, "utf8");
 process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
 process.exitCode = result.decision === "RELEASE_GO" ? 0 : 1;

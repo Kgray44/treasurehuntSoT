@@ -30,6 +30,7 @@ const registryFiles = [
   "test-definition-schema.json",
   "retired-suites.json",
   "browser-capabilities.json",
+  "sounding-line-authority.json",
 ];
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
@@ -96,6 +97,7 @@ function validatePolicy(policy) {
     "retired-suites": retired,
     activeTests,
     manifest,
+    "sounding-line-authority": authorityIndex,
   } = policy;
   assertKeys(
     manifest,
@@ -106,6 +108,33 @@ function validatePolicy(policy) {
   if (!/^\d+\.\d+\.\d+$/u.test(manifest.version)) errors.push("manifest: malformed semantic version");
   for (const file of registryFiles)
     if (!manifest.registries.includes(file)) errors.push(`manifest: missing registry ${file}`);
+  assertKeys(
+    authorityIndex,
+    [
+      "authority",
+      "effectiveAmendments",
+      "requiredProtectedAuthorityCheck",
+      "runtimeConformance",
+      "governingPolicies",
+      "futureProjectInheritance",
+    ],
+    "sounding-line-authority",
+    errors,
+  );
+  if (authorityIndex.authority !== "SOUNDING_LINE") errors.push("sounding-line-authority: authority mismatch");
+  for (const part of ["partI", "partII", "partIII"])
+    if (authorityIndex.effectiveAmendments?.[part] !== "1.2")
+      errors.push(`sounding-line-authority: ${part} must be 1.2`);
+  if (authorityIndex.requiredProtectedAuthorityCheck !== "Sounding Line / Mainline Decision")
+    errors.push("sounding-line-authority: protected check mismatch");
+  if (authorityIndex.runtimeConformance?.required !== true || authorityIndex.runtimeConformance?.failureMode !== "FAIL_CLOSED")
+    errors.push("sounding-line-authority: runtime conformance must fail closed");
+  if (authorityIndex.governingPolicies?.proofMinimization !== "MINIMUM_SUFFICIENT_EVIDENCE")
+    errors.push("sounding-line-authority: proof minimization mismatch");
+  if (authorityIndex.governingPolicies?.semanticInvalidation !== "EVIDENCE_PRESERVATION_REQUIRED")
+    errors.push("sounding-line-authority: semantic invalidation mismatch");
+  if (authorityIndex.futureProjectInheritance !== true)
+    errors.push("sounding-line-authority: future-project inheritance must be enabled");
   const ids = (items, label) => {
     const seen = new Set();
     for (const item of items) {

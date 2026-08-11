@@ -555,6 +555,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Sounding_Line_Effective_Authority.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/vision_waypoint_external_ar_governing_specification_v1_0.pdf",
       "record_type": "governing-record",
       "status": "preserved",
@@ -2206,6 +2212,18 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Test_Family_Migration_Ledger.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_v1.2_Runtime_Bootstrap_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_v1.2_Runtime_Remediation_Backlog.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
