@@ -1107,10 +1107,7 @@ function VoyageWizard(props: WizardProps) {
       // MutationObserver runs before the browser test's next page evaluation,
       // while React state may not have committed yet. Apply this critical width
       // adjustment to the live dialog first, then retain it in render state.
-      dialogRef.current?.style.setProperty(
-        "width",
-        effectiveZoom > 1 ? `calc(100% / ${effectiveZoom})` : "",
-      );
+      dialogRef.current?.style.setProperty("width", effectiveZoom > 1 ? `calc(100% / ${effectiveZoom})` : "");
       setDocumentZoom(effectiveZoom);
     };
     syncDocumentZoom();
