@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "program": "Project Sounding Line",
+  "authority": "testing/sounding-line-authority.json",
+  "status": "active-after-runtime-bootstrap",
+  "items": [
+    {
+      "id": "immutable-dependency-environment",
+      "implementationGap": "Dependencies are installed independently for each hosted worker.",
+      "governingRequirement": "Part II section 4 prepared immutable dependency environment.",
+      "expectedBenefit": "Eliminate repeated dependency materialization and reduce queue-exposed wall time.",
+      "correctnessInvariant": "Restore only an exact OS, Node, lockfile, package-manager, and install-policy identity.",
+      "dependencyRisk": "Artifact provenance, cache poisoning, and platform drift.",
+      "recommendedNextSlice": "Prepared artifacts and identity receipts."
+    },
+    {
+      "id": "certified-sqlite-baseline",
+      "implementationGap": "DB-required workers still migrate and seed their own disposable database.",
+      "governingRequirement": "Part II section 5 build-once, clone-many certified baseline.",
+      "expectedBenefit": "Remove repeated migration and seed setup while retaining run-owned mutable clones.",
+      "correctnessInvariant": "Baseline hash, migrations, fixture policy, and generated-client identity are verified; every run mutates only a clone.",
+      "dependencyRisk": "Baseline corruption or stale fixture identity.",
+      "recommendedNextSlice": "Prepared artifacts and certified SQLite baseline."
+    },
+    {
+      "id": "worker-bundling",
+      "implementationGap": "Each selected suite receives a separate hosted worker.",
+      "governingRequirement": "Part II section 6 compatible multi-suite workers with per-suite receipts.",
+      "expectedBenefit": "Reduce VM startup and dependency setup repetition.",
+      "correctnessInvariant": "Logical-suite receipts, case counts, result, and cleanup stay independent.",
+      "dependencyRisk": "Receipt collapse and failure masking.",
+      "recommendedNextSlice": "Worker bundling and per-suite receipt integrity."
+    },
+    {
+      "id": "typed-capacity-scheduler",
+      "implementationGap": "Workflow waves remain static even though obvious host-global serialization is removed.",
+      "governingRequirement": "Part II sections 7 and 9 typed capacities and dependency-ready scheduling.",
+      "expectedBenefit": "Shorter critical path without unsafe contention.",
+      "correctnessInvariant": "Only capacity-exhausted declared shared resources serialize execution.",
+      "dependencyRisk": "Provider namespace and restart-host conflicts.",
+      "recommendedNextSlice": "Capacity profiles and dependency-aware scheduler."
+    },
+    {
+      "id": "dual-browser-lanes-and-dynamic-ports",
+      "implementationGap": "Browser adapter retains the compatibility fixed-port path and no dedicated dual-lane broker.",
+      "governingRequirement": "Part II sections 7 and 8 isolated browser lanes and run-owned endpoints.",
+      "expectedBenefit": "Overlap independent browser proof and remove fixed-port contention.",
+      "correctnessInvariant": "Each lane owns port, server identity, DB clone, storage, browser context, and evidence root.",
+      "dependencyRisk": "Cross-lane traffic or stale server identity.",
+      "recommendedNextSlice": "Dynamic port broker and dual browser lanes."
+    },
+    {
+      "id": "semantic-invalidation-and-carry-forward",
+      "implementationGap": "No automatic Evidence Invalidation Manifest or derived carry-forward receipt execution exists.",
+      "governingRequirement": "Part I sections 5 and 6 and Part III section 10.",
+      "expectedBenefit": "Avoid re-running semantically unchanged evidence after narrow changes or unrelated main advances.",
+      "correctnessInvariant": "Every mandatory obligation has exactly one current fresh, preserved, or rebound producer; unknown relations rerun fail closed.",
+      "dependencyRisk": "Stale evidence accepted through incomplete dependency analysis.",
+      "recommendedNextSlice": "Evidence Invalidation Manifest and immutable carry-forward receipts."
+    },
+    {
+      "id": "record-closure-gate",
+      "implementationGap": "Record-only closure remains a target architecture rather than an executable dedicated gate.",
+      "governingRequirement": "Part I section 8 and Part III section 9.",
+      "expectedBenefit": "Remove browser/build/database tax from non-executable record work.",
+      "correctnessInvariant": "Executable proof is selected only when record changes alter executable semantics.",
+      "dependencyRisk": "Misclassified policy or generated-record changes.",
+      "recommendedNextSlice": "Record-closure gate with semantic escalation checks."
+    },
+    {
+      "id": "overvalidation-incident-enforcement",
+      "implementationGap": "Telemetry exposes setup timing but does not yet open or enforce policy incidents for repeated broad reruns.",
+      "governingRequirement": "Part III sections 8 and 12.",
+      "expectedBenefit": "Make verification churn visible and remediable.",
+      "correctnessInvariant": "No incident mechanism may weaken mandatory proof.",
+      "dependencyRisk": "False incident attribution without manifest data.",
+      "recommendedNextSlice": "Invalidation-aware duplicate-run detector and incident records."
+    },
+    {
+      "id": "critical-path-reporting",
+      "implementationGap": "Worker telemetry is machine-readable but lacks a complete hosted queue and critical-path UI.",
+      "governingRequirement": "Part I section 11 and Part II section 11.",
+      "expectedBenefit": "Distinguish queue, setup, execution, teardown, upload, and finalization bottlenecks.",
+      "correctnessInvariant": "Telemetry is diagnostic and cannot alter RELEASE_GO semantics.",
+      "dependencyRisk": "GitHub timestamp availability and misleading aggregate reporting.",
+      "recommendedNextSlice": "Hosted-run critical-path summary and queue timestamp adapter."
+    }
+  ]
+}

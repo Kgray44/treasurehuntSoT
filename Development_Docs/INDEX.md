@@ -23,3 +23,4 @@ it does not replace them.
 - [Part I - Software Verification Architecture, v1.2](Governing/Project_Sounding_Line_Part_I_Governing_Document_v1.2_Amendment_Edition.pdf)
 - [Part II - Execution Infrastructure and Parallel Runtime, v1.2](Governing/Project_Sounding_Line_Part_II_Governing_Document_v1.2_Amendment_Edition.pdf)
 - [Part III - Repository Policy, Codex Governance, and Release Assurance, v1.2](Governing/Project_Sounding_Line_Part_III_Governing_Document_v1.2_Amendment_Edition.pdf)
+- [Effective Sounding Line authority](Governing/Sounding_Line_Effective_Authority.md) - human-readable projection of the canonical `testing/sounding-line-authority.json` source.
