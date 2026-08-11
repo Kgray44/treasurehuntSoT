@@ -167,19 +167,20 @@ export async function recordMembershipPresence(input: {
     throw new MembershipPresenceError("The acknowledged Voyage sequence is unavailable.", "FUTURE_SEQUENCE");
   const now = new Date();
   const retentionCutoff = new Date(now.getTime() - membershipPresencePolicy.retentionMs);
-  // Prune only this membership's expired evidence. Presence has no reason to
-  // become a permanent browser activity archive, and cleanup never touches
-  // Voyage progression or any other member's records.
-  await retryTransientPresenceWrite(() =>
-    db.membershipPresenceDevice.deleteMany({
+  // Keep an individual heartbeat to one short SQLite write transaction. The
+  // Captain's waiting room and an invitation acceptance can legitimately be
+  // active at the same time; allowing the cleanup, upsert, acknowledgement,
+  // and retention trim to interleave would turn that normal overlap into a
+  // transient lock conflict. The bounded retry is intentionally around the
+  // whole idempotent operation, never around a partial acknowledgement.
+  const persist = async (tx: { membershipPresenceDevice: typeof db.membershipPresenceDevice }) => {
+    await tx.membershipPresenceDevice.deleteMany({
       where: {
         playthroughMembershipId: membership.id,
         OR: [{ lastHeartbeatAt: { lt: retentionCutoff } }, { disconnectedAt: { lt: retentionCutoff } }],
       },
-    }),
-  );
-  const device = await retryTransientPresenceWrite(() =>
-    db.membershipPresenceDevice.upsert({
+    });
+    const device = await tx.membershipPresenceDevice.upsert({
       where: {
         playthroughMembershipId_deviceInstanceId: {
           playthroughMembershipId: membership.id,
@@ -201,26 +202,32 @@ export async function recordMembershipPresence(input: {
         disconnectedAt: input.disconnected ? now : null,
       },
       select: { id: true },
-    }),
-  );
-  if (!input.disconnected)
-    await retryTransientPresenceWrite(() =>
-      db.membershipPresenceDevice.updateMany({
+    });
+    if (!input.disconnected)
+      await tx.membershipPresenceDevice.updateMany({
         where: { id: device.id, acknowledgedSequence: { lte: input.acknowledgedSequence } },
         data: {
           acknowledgedSequence: input.acknowledgedSequence,
           lastHeartbeatAt: now,
           safeActivity: input.safeActivity,
         },
-      }),
-    );
-  const overflow = await db.membershipPresenceDevice.findMany({
-    where: { playthroughMembershipId: membership.id },
-    orderBy: [{ lastHeartbeatAt: "desc" }, { id: "desc" }],
-    skip: membershipPresencePolicy.maxDevicesPerMembership,
-    select: { id: true },
-  });
-  if (overflow.length)
-    await db.membershipPresenceDevice.deleteMany({ where: { id: { in: overflow.map((row) => row.id) } } });
+      });
+    const overflow = await tx.membershipPresenceDevice.findMany({
+      where: { playthroughMembershipId: membership.id },
+      orderBy: [{ lastHeartbeatAt: "desc" }, { id: "desc" }],
+      skip: membershipPresencePolicy.maxDevicesPerMembership,
+      select: { id: true },
+    });
+    if (overflow.length)
+      await tx.membershipPresenceDevice.deleteMany({ where: { id: { in: overflow.map((row) => row.id) } } });
+  };
+  // The production Prisma client always provides the transaction function.
+  // Keeping the direct persistence fallback preserves compatibility with the
+  // narrow service-test double, while the application runtime uses the bounded
+  // transaction path above.
+  const transaction = db.$transaction;
+  if (typeof transaction === "function")
+    await retryTransientPresenceWrite(() => transaction((tx) => persist(tx), { maxWait: 1_000, timeout: 5_000 }));
+  else await retryTransientPresenceWrite(() => persist(db));
   return { recordedAt: now.toISOString(), currentSequence: membership.playthrough.currentSequence };
 }
