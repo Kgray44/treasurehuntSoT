@@ -357,7 +357,7 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
   }
 
   async function act(action: "accept" | "decline") {
-    if (!invitation || !root.current) return;
+    if (!invitation) return;
     if (
       action === "decline" &&
       !(await requestAction({
@@ -434,7 +434,7 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
       // or even finish mounting. The ceremony receives this same promise, so it
       // still renders the canonical accept outcome without issuing a duplicate request.
       const authoritativeOperation = submitAction();
-      if (!ceremonyHost.current) {
+      if (!ceremonyHost.current || !root.current) {
         try {
           const result = await authoritativeOperation;
           if (!result.ok || !result.playthroughId || !asyncState.succeed(run)) return;
