@@ -107,7 +107,7 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": ["node-slot", "vitest-worker-pool"],
+      "resources": ["node-slot", "vitest-worker-pool", "prisma-sqlite-client"],
       "dependencies": ["unit.one-voyage"],
       "contracts": [
         "tideglass-exact-edition-pair",

@@ -18,7 +18,7 @@ test("effective v1.2 authority is discoverable and policy-owned", async () => {
   assert.equal(authority.futureProjectInheritance, true);
 });
 
-test("resource-aware preparation eliminates universal database and browser setup", () => {
+test("resource-aware preparation eliminates universal database and browser setup", async () => {
   const pure = deriveWorkerPreparation({ id: "static.core", adapter: "static", resources: ["node-slot"] });
   assert.equal(pure.runtimeConformance.result, "PASSED");
   assert.equal(pure.actions.prismaGenerate, false);
@@ -55,6 +55,11 @@ test("resource-aware preparation eliminates universal database and browser setup
   });
   assert.equal(nodeBrowser.runtimeConformance.result, "PASSED");
   assert.deepEqual(nodeBrowser.actions.browserEngines, ["chromium"]);
+
+  const suites = JSON.parse(await readFile(path.join(root, "testing", "suites.json"), "utf8")).suites;
+  const tideglass = suites.find((suite) => suite.id === "unit.tideglass");
+  assert.ok(tideglass?.resources.includes("prisma-sqlite-client"));
+  assert.equal(deriveWorkerPreparation(tideglass).actions.prismaGenerate, true);
 });
 
 test("conformance fails closed for missing adapter resources and undeclared browser engines", () => {
