@@ -1250,8 +1250,9 @@ dl dd {
 }
 
 .platform-tabs {
-  display: flex;
-  overflow-x: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  overflow: visible;
   gap: 0.35rem;
   max-width: 1450px;
   margin: 0 auto 1.5rem;
@@ -1261,7 +1262,7 @@ dl dd {
 .platform-tabs button {
   position: relative;
   isolation: isolate;
-  min-width: max-content;
+  min-width: 0;
 }
 
 .platform-tabs .active {
