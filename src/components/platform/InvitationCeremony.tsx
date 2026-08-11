@@ -395,14 +395,15 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
     let fallbackHandoffTimer: number | undefined;
     let handoffStarted = false;
     const handOffOnce = async (result: InvitationActionResult) => {
-      if (handoffStarted || !result.playthroughId || run.controller.signal.aborted) return;
+      if (handoffStarted || !result.playthroughId) return;
       handoffStarted = true;
       if (fallbackHandoffTimer !== undefined) window.clearTimeout(fallbackHandoffTimer);
       // Keep the accepted state perceptible before replacing the route. This also
       // lets the completed invitation transaction settle before its page unloads.
       await new Promise((resolve) => window.setTimeout(resolve, acceptedHandoffDelayMs));
-      if (run.controller.signal.aborted) return;
-      await handOffRoute(`/player/playthroughs/${result.playthroughId}`, run.controller.signal);
+      // The membership transaction is already complete. Presentation cancellation
+      // must not strand the newly accepted Player on the invitation route.
+      await handOffRoute(`/player/playthroughs/${result.playthroughId}`, new AbortController().signal);
     };
     const submitAction = () => {
       actionPromise ??= (async () => {
