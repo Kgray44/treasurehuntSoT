@@ -2032,6 +2032,14 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
   }
 }
 
+html.helm-document-zoom .wizard-choice-grid,
+html.helm-document-zoom .delivery-options,
+html.helm-document-zoom .wizard-form,
+html.helm-document-zoom .crew-builder fieldset,
+html.helm-document-zoom .captain-participation-picker {
+  grid-template-columns: 1fr;
+}
+
 @media (forced-colors: active) {
   .role-entry,
   .brass-button,

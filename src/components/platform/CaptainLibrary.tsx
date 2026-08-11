@@ -1108,12 +1108,16 @@ function VoyageWizard(props: WizardProps) {
       // while React state may not have committed yet. Apply this critical width
       // adjustment to the live dialog first, then retain it in render state.
       dialogRef.current?.style.setProperty("width", effectiveZoom > 1 ? `calc(100% / ${effectiveZoom})` : "");
+      root.classList.toggle("helm-document-zoom", effectiveZoom > 1);
       setDocumentZoom(effectiveZoom);
     };
     syncDocumentZoom();
     const observer = new MutationObserver(syncDocumentZoom);
     observer.observe(root, { attributes: true, attributeFilter: ["style"] });
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      root.classList.remove("helm-document-zoom");
+    };
   }, []);
   const crewNames = props.players.map(
     (crew) =>
