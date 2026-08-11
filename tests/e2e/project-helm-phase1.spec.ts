@@ -395,8 +395,14 @@ test("Captain authority and ordinary Player membership remain independent throug
     const beforeRemoval = new Date();
     const card = voyageCard(page, participatingName, "Active Voyages");
     await card.getByRole("button", { name: "Stop Player participation" }).click();
+    const participationResponse = page.waitForResponse(
+      (response) =>
+        /\/api\/captain\/playthroughs\/[^/]+\/participation$/u.test(response.url()) &&
+        response.request().method() === "POST",
+    );
     await page.getByRole("dialog").getByRole("button", { name: "Stop Player participation" }).click();
-    await expect(page.getByText("Player participation ended. Your Captain authority remains active.")).toBeVisible();
+    expect((await participationResponse).status()).toBe(200);
+    await expect(card.getByRole("button", { name: "Join as Player" })).toBeVisible({ timeout: 30_000 });
     selfMembership = await currentMembership(participating.playthroughId);
     expect(selfMembership.status).toBe("REMOVED");
     expect(selfMembership.removedAt).not.toBeNull();
