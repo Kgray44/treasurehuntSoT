@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-08-10",
+  "generated_at": "2026-08-11",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -532,6 +532,24 @@
     },
     {
       "path": "Development_Docs/Governing/Project_Phase_2_Mainline_Convergence_Record.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Sounding_Line_Part_I_Governing_Document_v1.2_Amendment_Edition.pdf",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Sounding_Line_Part_II_Governing_Document_v1.2_Amendment_Edition.pdf",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Sounding_Line_Part_III_Governing_Document_v1.2_Amendment_Edition.pdf",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
@@ -2739,13 +2757,13 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_2_Mainline_Safety_Contract.md",
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_2_Integration_Manifest.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_2_Integration_Manifest.md",
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_2_Mainline_Safety_Contract.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
