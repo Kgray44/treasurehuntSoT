@@ -110,6 +110,18 @@ function Write-ForeverValidationRunEvent {
     Add-Content -LiteralPath $eventPath -Value $entry -Encoding UTF8
 }
 
+function Enable-ForeverValidationRuntimeCompression {
+    param([Parameter(Mandatory)][string]$RuntimeRoot)
+    # Isolated validation deliberately uses a physical, lockfile-matched
+    # dependency copy.  Mark the newly owned NTFS directory as compressed
+    # before that copy so repeated browser families do not exhaust the local
+    # task volume while preserving runtime-local module and Prisma isolation.
+    & compact.exe /C /I /Q $RuntimeRoot | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+        throw "Unable to enable NTFS compression for owned validation runtime: $RuntimeRoot"
+    }
+}
+
 function Assert-ForeverValidationRuntimeOwnership {
     param([Parameter(Mandatory)][string]$RuntimeRoot)
     $resolvedRoot = [System.IO.Path]::GetFullPath($RuntimeRoot)
@@ -155,6 +167,7 @@ function New-ForeverValidationRuntime {
         if ((Test-ForeverGitWorktree -Path $runtimeRoot) -or (Test-Path -LiteralPath (Join-Path $runtimeRoot ".git"))) {
             throw "New validation runtime unexpectedly resolves as a Git worktree: $runtimeRoot"
         }
+        Enable-ForeverValidationRuntimeCompression -RuntimeRoot $runtimeRoot
         $marker = [ordered]@{
             schemaVersion = 1
             runId = $RunId
