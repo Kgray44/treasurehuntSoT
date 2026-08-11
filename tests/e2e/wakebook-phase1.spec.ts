@@ -543,7 +543,11 @@ test("Wakebook Phase 1 is private, bounded, historically stable, and normally re
   await expect(page).toHaveURL(/\/passport\/history$/u);
   await page.goForward();
   await expect(page.getByRole("heading", { name: "Voyage Detail", exact: true })).toBeVisible();
-  await page.getByRole("link", { name: "Back to Your Voyages" }).click();
+  await Promise.all([
+    page.waitForURL(/\/passport\/history$/u),
+    page.getByRole("link", { name: "Back to Your Voyages" }).click(),
+  ]);
+  await expect(page.getByRole("heading", { name: "Your Voyages", exact: true }).first()).toBeVisible();
   await expect(page).toHaveURL(/\/passport\/history$/u);
   await expect(page.getByRole("heading", { name: "Invitations along the way" })).toBeVisible();
   await captureEvidenceState(page, {
