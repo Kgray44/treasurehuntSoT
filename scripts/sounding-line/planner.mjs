@@ -8,15 +8,22 @@ const digest = (value) =>
     .update(typeof value === "string" ? value : JSON.stringify(value))
     .digest("hex");
 const json = async (root, file) => JSON.parse(await readFile(path.join(root, "testing", file), "utf8"));
+const hostedSharedResources = new Set(["restart-host", "external-provider"]);
 
 export async function buildPlan({ root, gateId, serial = false, sourceSha = process.env.GITHUB_SHA ?? "LOCAL" }) {
-  const [manifest, suitesFile, gatesFile, registry] = await Promise.all([
+  const [manifest, suitesFile, gatesFile, registry, authorityIndex] = await Promise.all([
     json(root, "policy-manifest.json"),
     json(root, "suites.json"),
     json(root, "release-gates.json"),
     json(root, "generated/active-test-registry.json"),
+    json(root, "sounding-line-authority.json"),
   ]);
   if (manifest.authority !== "sounding-line-authoritative") throw new Error("SOUNDING_LINE_AUTHORITY_NOT_ENABLED");
+  if (
+    authorityIndex.authority !== "SOUNDING_LINE" ||
+    !["partI", "partII", "partIII"].every((part) => authorityIndex.effectiveAmendments?.[part] === "1.2")
+  )
+    throw new Error("AUTHORITY_INDEX_MISMATCH");
   const gate = gatesFile.gates.find((candidate) => candidate.id === gateId);
   if (!gate) throw new Error(`UNKNOWN_GATE:${gateId}`);
   const suites = new Map(suitesFile.suites.map((suite) => [suite.id, suite]));
@@ -55,7 +62,14 @@ export async function buildPlan({ root, gateId, serial = false, sourceSha = proc
       resources: [...(suite.resources ?? [])],
       explanation: "REQUIRED_BY_GATE",
       adapter: suite.adapter ?? "vitest",
-      execution: { mode: suite.parallelSafe ? "parallel" : "exclusive", wave: 0 },
+      // GitHub-hosted jobs have independent local filesystems, ports, browser
+      // processes, and build directories. Serialize only an actual declared
+      // external/shared resource; the legacy broad parallelSafe flag cannot
+      // create a host-global mutex.
+      execution: {
+        mode: suite.resources.some((resource) => hostedSharedResources.has(resource)) ? "exclusive" : "parallel",
+        wave: 0,
+      },
       testIds: registry.cases.filter((entry) => entry.suiteId === suiteId).map((entry) => entry.id),
     };
   });
@@ -76,13 +90,16 @@ export async function buildPlan({ root, gateId, serial = false, sourceSha = proc
   };
   for (const node of nodes) waveFor(node);
   const plan = {
-    version: 1,
+    version: 2,
     authority: "SOUNDING_LINE",
     sourceSha,
     gate: gateId,
     serial,
     policyDigest: digest(manifest),
     inventoryDigest: digest(registry),
+    authorityDigest: digest(authorityIndex),
+    runtimeConformanceRequired: authorityIndex.runtimeConformance?.required === true,
+    runtimeConformanceSuiteId: authorityIndex.runtimeConformance?.suiteId ?? null,
     nodes,
   };
   return { ...plan, planDigest: digest(plan) };
