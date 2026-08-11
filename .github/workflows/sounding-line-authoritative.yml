@@ -47,6 +47,9 @@ jobs:
         with: { node-version-file: .nvmrc, cache: npm }
       - run: npm ci
       - run: npm run test:policy
+      # Registry discovery imports repository test modules. It needs the Prisma
+      # client, but does not create, migrate, or seed a database.
+      - run: npm run db:generate
       - run: node scripts/sounding-line/test-registry.mjs
       # P34 must be fully mapped and archived before any hosted browser worker
       # may receive a mainline plan.
