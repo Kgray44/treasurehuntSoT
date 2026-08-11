@@ -10,16 +10,16 @@ last_reviewed: 2026-08-11
 
 ## Current integration state
 
-| Item                    | State                                                                                                         |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                    |
-| Current reconciled base | `dc430b79aa3ddd27443f47bb493ae6c471a41616`                                                                    |
-| Incoming accepted work  | Protected-main v1.2 runtime-conformance bootstrap plus the Part III v1.3 amendment documentation              |
-| Semantic reconciliation | `afd3c15d8` retains Wakebook and takes all accepted mainline documentation/index updates                        |
-| Implementation commits  | Preserved from the existing remote candidate                                                                  |
+| Item                    | State                                                                                                                  |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                             |
+| Current reconciled base | `dc430b79aa3ddd27443f47bb493ae6c471a41616`                                                                             |
+| Incoming accepted work  | Protected-main v1.2 runtime-conformance bootstrap plus the Part III v1.3 amendment documentation                       |
+| Semantic reconciliation | `afd3c15d8` retains Wakebook and takes all accepted mainline documentation/index updates                               |
+| Implementation commits  | Preserved from the existing remote candidate                                                                           |
 | Sounding Line evidence  | `22940b9004bc89def300a808f426a0ed4dc77658`: focused governed `browser.wakebook` PASS (1/1); 15 capture review accepted |
-| Owner walkthrough       | Pending                                                                                                       |
-| Main merge              | Blocked until the separately required owner walkthrough/acceptance and protected Mainline Decision             |
+| Owner walkthrough       | Pending                                                                                                                |
+| Main merge              | Blocked until the separately required owner walkthrough/acceptance and protected Mainline Decision                     |
 
 ## Owned implementation paths
 
