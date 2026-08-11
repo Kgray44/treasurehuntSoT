@@ -108,6 +108,7 @@ model UserAccount {
   authoredDrafts           TaleDraft[]                  @relation("TaleDraftAuthorAccount")
   publishedVersions        PublishedTaleVersion[]       @relation("PublishedVersionAuthorAccount")
   tideglassAnnotations     TideglassCreatorAnnotation[] @relation("TideglassAnnotationAuthor")
+  drydockWaiversAuthorized DrydockRuleWaiver[]          @relation("DrydockWaiverAuthor")
   createdAssets            TaleAsset[]                  @relation("TaleAssetAuthorAccount")
   captainedSessions        TaleSession[]                @relation("TaleSessionCaptainAccount")
   createdInvitations       Invitation[]                 @relation("InvitationCreatorAccount")
@@ -722,25 +723,74 @@ model Chronicle {
 }
 
 model TaleDraft {
-  id                        String        @id @default(cuid())
+  id                        String                 @id @default(cuid())
   taleId                    String
-  revisionNumber            Int           @default(1)
+  revisionNumber            Int                    @default(1)
   basedOnPublishedVersionId String?
   createdBy                 String
   createdByAccountId        String?
-  autosaveVersion           Int           @default(1)
-  validationState           String        @default("NOT_VALIDATED")
-  validationSummary         String        @default("{}")
+  autosaveVersion           Int                    @default(1)
+  validationState           String                 @default("NOT_VALIDATED")
+  validationSummary         String                 @default("{}")
   lastValidatedAt           DateTime?
-  createdAt                 DateTime      @default(now())
-  updatedAt                 DateTime      @updatedAt
-  tale                      Chronicle     @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  createdAt                 DateTime               @default(now())
+  updatedAt                 DateTime               @updatedAt
+  tale                      Chronicle              @relation(fields: [taleId], references: [id], onDelete: Cascade)
   chapters                  TaleChapter[]
-  createdByAccount          UserAccount?  @relation("TaleDraftAuthorAccount", fields: [createdByAccountId], references: [id], onDelete: SetNull)
+  drydockValidationRuns     DrydockValidationRun[]
+  createdByAccount          UserAccount?           @relation("TaleDraftAuthorAccount", fields: [createdByAccountId], references: [id], onDelete: SetNull)
+  drydockRuleWaivers        DrydockRuleWaiver[]
 
   @@unique([taleId, revisionNumber])
   @@index([taleId, updatedAt])
   @@index([createdByAccountId])
+}
+
+model DrydockValidationRun {
+  id                  String    @id @default(cuid())
+  draftId             String
+  runId               String    @unique
+  sourceChecksum      String
+  sourceRevision      Int
+  reportSchemaVersion Int
+  ruleCatalogVersion  Int
+  status              String
+  proofCompleteness   String
+  issueCount          Int
+  issueDigest         String
+  reportDigest        String
+  report              String
+  createdAt           DateTime  @default(now())
+  draft               TaleDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
+
+  @@index([draftId, createdAt])
+  @@index([sourceChecksum])
+}
+
+model DrydockRuleWaiver {
+  id                    String      @id
+  draftId               String
+  issueId               String
+  ruleCode              String
+  ruleVersion           Int
+  sourceChecksum        String
+  sourceRevision        Int
+  rationale             String
+  scope                 String
+  authorizedByAccountId String
+  authorizedRole        String
+  createdAt             DateTime    @default(now())
+  expiresAt             DateTime?
+  reviewCondition       String?
+  carryForwardPolicy    String      @default("DO_NOT_CARRY")
+  revokedAt             DateTime?
+  auditReference        String?
+  draft                 TaleDraft   @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  authorizedByAccount   UserAccount @relation("DrydockWaiverAuthor", fields: [authorizedByAccountId], references: [id], onDelete: Restrict)
+
+  @@index([draftId, createdAt])
+  @@index([issueId, sourceChecksum])
+  @@index([authorizedByAccountId, createdAt])
 }
 
 model TaleChapter {

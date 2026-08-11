@@ -7,6 +7,7 @@ import type { PublishedTaleSnapshot } from "@/chronicle/types";
 import { validateTaleDraft } from "@/chronicle/validation";
 import { logger } from "@/lib/logger";
 import { parseDrydockBlock, runtimeCompatibilityProjection } from "@/drydock/contracts/parser";
+import { isDrydockReportPublicationEligible } from "@/drydock/reports";
 
 export class PublishValidationError extends Error {
   constructor(public readonly validation: Awaited<ReturnType<typeof validateTaleDraft>>) {
@@ -109,7 +110,8 @@ export async function publishTale(
   const publisherAccountId = await canonicalAccountForLegacyActor(publisherId);
   logger.info({ area: "chronicle-publish", taleId, publisherId }, "Chronicle publish validation started");
   const validation = await validateTaleDraft(taleId);
-  if (!validation.valid) throw new PublishValidationError(validation);
+  if (!validation.valid || !isDrydockReportPublicationEligible(validation.drydockReport))
+    throw new PublishValidationError(validation);
   if (expectedAutosaveVersion !== undefined && validation.autosaveVersion !== expectedAutosaveVersion)
     throw new Error("This Chronicle changed before publishing. Review the latest saved draft, then try again.");
   const studio = await getStudioTale(taleId);

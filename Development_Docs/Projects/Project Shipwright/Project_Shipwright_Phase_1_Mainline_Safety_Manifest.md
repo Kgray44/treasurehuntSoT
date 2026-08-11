@@ -10,15 +10,15 @@ last_reviewed: 2026-08-10
 
 ## Source identity
 
-| Field | Value |
-| --- | --- |
-| Candidate branch | `codex/project-shipwright-phase1-clear-the-workbench` |
-| Candidate commits | `1428c5fba9b54ee7484719f75c5a30d521e12694` then `d0e900e0ac935388a5f1de24307a5a93d0e343eb` |
-| Base | `origin/main` at `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3` |
-| Governing baseline | `f1c2f22dd935322c1a71eb80c51592f243dc196d` is an ancestor of the base |
-| Migration impact | None |
-| Database change | None |
-| Runtime/API contract change | None |
+| Field                       | Value                                                                                      |
+| --------------------------- | ------------------------------------------------------------------------------------------ |
+| Candidate branch            | `codex/project-shipwright-phase1-clear-the-workbench`                                      |
+| Candidate commits           | `1428c5fba9b54ee7484719f75c5a30d521e12694` then `d0e900e0ac935388a5f1de24307a5a93d0e343eb` |
+| Base                        | `origin/main` at `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`                                |
+| Governing baseline          | `f1c2f22dd935322c1a71eb80c51592f243dc196d` is an ancestor of the base                      |
+| Migration impact            | None                                                                                       |
+| Database change             | None                                                                                       |
+| Runtime/API contract change | None                                                                                       |
 
 ## Safety assertions
 
@@ -33,13 +33,13 @@ last_reviewed: 2026-08-10
 
 ## Integration gates
 
-| Gate | State |
-| --- | --- |
-| Task worktree clean at creation | Passed; isolated local worktree created from the stated base. |
-| Focused component evidence | Passed; 27 targeted Studio/shell/journal/motion tests, recorded separately. |
-| Full registered Sounding Line evidence | Pending; must remain authoritative. |
-| Owner walkthrough | Pending. |
-| Commit / push / protected integration | Pending; no claim made by this manifest. |
+| Gate                                   | State                                                                       |
+| -------------------------------------- | --------------------------------------------------------------------------- |
+| Task worktree clean at creation        | Passed; isolated local worktree created from the stated base.               |
+| Focused component evidence             | Passed; 27 targeted Studio/shell/journal/motion tests, recorded separately. |
+| Full registered Sounding Line evidence | Pending; must remain authoritative.                                         |
+| Owner walkthrough                      | Pending.                                                                    |
+| Commit / push / protected integration  | Pending; no claim made by this manifest.                                    |
 
 ## Rollback
 

@@ -3,7 +3,6 @@ import { journalPresentationSchema } from "@/chronicle/journal-contract";
 import type { JsonObject } from "@/chronicle/types";
 import { drydockExpressionSchema } from "@/drydock/expressions";
 import { drydockExtensionsSchema } from "@/drydock/extensions";
-import { drydockProviderIds } from "@/drydock/providers";
 
 const id = z
   .string()
@@ -21,7 +20,6 @@ const integer = (minimum: number, maximum: number) => z.number().int().min(minim
 const withExtensions = <T extends z.ZodRawShape>(shape: T) =>
   z.object({ ...shape, extensions: drydockExtensionsSchema.optional() }).strict();
 
-const completionModes = ["automatic", ...drydockProviderIds] as const;
 const providerOptionsSchema = z.discriminatedUnion("id", [
   z.object({ id: z.literal("captainManual"), version: z.literal(1), options: z.object({}).strict() }).strict(),
   z.object({ id: z.literal("playerConfirmation"), version: z.literal(1), options: z.object({}).strict() }).strict(),
@@ -52,7 +50,9 @@ const providerOptionsSchema = z.discriminatedUnion("id", [
 
 export const drydockCompletionSchema = z
   .object({
-    mode: z.enum(completionModes),
+    // Provider registration is semantic authority. Preserve a syntactically valid
+    // unknown identifier so the parser can issue DRYDOCK_PROVIDER_UNREGISTERED.
+    mode: id,
     provider: providerOptionsSchema.optional(),
     fallbackMode: z.enum(["captainManual", "playerConfirmation"]).optional(),
     retryPolicy: z.enum(["none", "creatorDeclared", "captainControlled"]).optional(),
@@ -223,7 +223,9 @@ export const drydockConfigurationSchemas = {
   cinematic: withExtensions({
     videoAssetId: id,
     posterAssetId: id,
-    captionsAssetId: id,
+    // An intentionally blank caption reference remains invalid in full analysis,
+    // but reaches the stable accessibility rule instead of a generic schema error.
+    captionsAssetId: z.union([z.literal(""), id]),
     autoplay: z.boolean(),
     skippable: z.boolean(),
     minimumWatchDuration: finite(0, 86400),
@@ -232,7 +234,9 @@ export const drydockConfigurationSchemas = {
   audio: withExtensions({
     audioAssetId: id,
     title: optionalText(240),
-    transcript: requiredText(20000),
+    // Empty transcript content is a semantic accessibility violation; malformed
+    // non-string input remains a contract failure.
+    transcript: z.string().max(20000),
     playbackMode: z.enum(["controls", "autoplay", "background"]),
     loop: z.boolean(),
     volume: finite(0, 1),
