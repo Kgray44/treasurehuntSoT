@@ -21,7 +21,9 @@ last_reviewed: 2026-08-12
 | Owner decision            | `ACCEPTED` on `2026-08-12`                                                                          |
 | Current `origin/main`     | `191a964488d0df71f8dcb91c5b8372fc73b6b32e`                                                          |
 | Current reconciliation    | `0373aa0a63208c5bd24f53f8d751aed2b109c345` merges that accepted main non-destructively              |
-| Publication               | Exact-current-source authority and protected merge pending; not deployed                            |
+| Accepted candidate        | `9ca2b3b89b12470e7cd86457e5d8fd91e419b47c`; `RELEASE_GO` in `31624301196`                           |
+| Protected binding         | `31626044788` succeeded for PR #28                                                                  |
+| Canonical main            | `4edc8de5e30e9748700c19b466061f9b9a97f268`; not deployed                                            |
 
 ## Source families
 
@@ -61,8 +63,7 @@ Hold, Deepwater, or Sounding Line canonical owner.
 ## Integration boundary
 
 The owner accepted the re-prepared synthetic walkthrough for qualified source
-`b32a3c961...` on `2026-08-12`. Current-main reconciliation invalidates that
-source's authority for publication: the current branch head must receive its
-own exact-source `RELEASE_GO` and protected-merge binding before it may be
-merged to canonical main. Phase 2 integration is not a deployment and does not
-authorize Phase 3.
+`b32a3c961...` on `2026-08-12`. The reconciled candidate
+`9ca2b3b89...` then earned its own exact-source `RELEASE_GO` and protected
+merge binding, integrating as canonical main `4edc8de5e...`. Phase 2
+integration is not a deployment and does not authorize Phase 3.

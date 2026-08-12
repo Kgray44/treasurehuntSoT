@@ -77,7 +77,7 @@ The owner decision is `ACCEPTED`; exact reconciled Sounding Line proof,
 canonical integration, and remote parity pass. No deployment, production
 database execution, or Phase 2 mainline availability is claimed.
 
-**Owner-accepted mainline candidate:** Project Admiralty Phase 2 adds a
+**Available on main and owner accepted:** Project Admiralty Phase 2 adds a
 15-route, read-only Chartroom with authorized account-menu reachability,
 role-filtered navigation, bounded account/Chronicle/Voyage/Community search and
 detail, operations/providers/configuration/releases, Audit Explorer, and
@@ -85,8 +85,8 @@ correlation-led investigation. It uses typed owner projections, adds no schema
 or broad mutation, and truthfully marks missing email/verification provider
 contracts. Initial focused, production-build, responsive, accessibility, and
 multi-role synthetic browser evidence passes. The owner accepted the qualified
-walkthrough; the decision-record candidate requires its own exact-source
-Sounding Line authority and protected mainline integration.
+walkthrough; exact-source Sounding Line authority and protected mainline
+integration completed in PR #28.
 
 **Development-only or compatibility-only:** development showcases, legacy routes, and package-exchange integrations are not a promise of a generally hosted service.
 
