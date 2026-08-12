@@ -106,6 +106,21 @@ migration, command, authority model, or Feature Catalog capability. A fresh
 hosted focused receipt and exact protected-main authority remain required for
 the replacement candidate.
 
+Focused hosted `browser.helm` run
+[`31628039327`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31628039327)
+then failed on reconciled candidate `600fff64488054cb98da40d78596c1617142abd2`,
+with `CLEAN` teardown. The invitation acceptance had completed; the first
+journey exposed a distinct background-tab race in which a Player tab could
+receive focus before its visibility state settled, return early from
+reconciliation, and remain at the waiting-room route after launch. Commit
+`59aaa279073ad3d1a86e1127b1dae643e6de7b2b` adds one zero-delay visible-state
+recheck and direct regression coverage. Its focused component test passed
+14/14, exact task-owned `browser.helm` passed 3/3 with `CLEAN` teardown, and
+focused `static.core` passed with `CLEAN` teardown. This remains a Phase 2
+corrective repair with no migration, command, authority-model, or Feature
+Catalog capability change. A new frozen candidate requires one hosted focused
+browser receipt and one exact protected-main authority decision.
+
 ## Explicit exclusions
 
 Phase 2 does not add a duplicate Voyage state machine, Chronicle event store,

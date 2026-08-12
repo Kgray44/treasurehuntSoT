@@ -8,7 +8,9 @@ last_reviewed: 2026-08-12
 
 # Project Helm Phase 2 completion receipt
 
-Receipt state: **MAINLINE ACCEPTED**.
+Receipt state: **CURRENT-MAIN REQUALIFICATION IN PROGRESS**. The prior Phase 2
+integration remains accepted on canonical main; the current-main corrective
+candidate has not yet received replacement authority.
 
 | Field                         | Accepted value                                                                                                                                                                                         |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -25,8 +27,8 @@ Receipt state: **MAINLINE ACCEPTED**.
 | Exact integrated-main proof   | Merge tree `8cd77b00188b23bfcddf46380eb427a97e0ec274` equals fresh `git merge-tree --write-tree` recomputation                                                                                         |
 | Feature Catalog               | `FT-007` expanded for the accepted Phase 2 operations capability                                                                                                                                       |
 | Prisma impact                 | Additive Phase 2 SQLite/MySQL membership-presence migrations are integrated; no later schema rewrite is introduced                                                                                     |
-| Current-main corrective proof | Run `31622810342` was terminal `EVIDENCE_INVALID` only for `browser.helm`'s 5-second invitation transaction expiry; repair `bd89d207` then passed local exact `browser.helm` 3/3 with `CLEAN` teardown |
-| Unresolved Phase 2 blockers   | None                                                                                                                                                                                                   |
+| Current-main corrective proof | Run `31622810342` was terminal `EVIDENCE_INVALID` for `browser.helm`'s 5-second invitation transaction expiry; `bd89d207` passed local exact `browser.helm` 3/3 with `CLEAN` teardown. Focused hosted run `31628039327` then exposed a separate background-tab launch reconciliation race with `CLEAN` teardown; `59aaa279` passed component 14/14, local exact `browser.helm` 3/3, and focused `static.core`. |
+| Unresolved Phase 2 blockers   | Hosted focused `browser.helm` and one exact authoritative Mainline Decision are required for the new frozen corrective candidate.                                                                          |
 | Deferred scope                | Phase 3 command redesign and all Phase 4 preflight/recovery work                                                                                                                                       |
 
 The accepted result gives Captains a truthful, privacy-safe operational view of
