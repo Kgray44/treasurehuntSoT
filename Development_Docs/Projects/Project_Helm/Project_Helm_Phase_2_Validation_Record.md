@@ -1,66 +1,105 @@
 ---
 title: Project Helm Phase 2 Validation Record
 audience: product-engineering
-status: candidate
+status: current
 canonical_for: project-helm-phase-2-validation-record
-last_reviewed: 2026-08-10
+last_reviewed: 2026-08-12
 ---
 
 # Project Helm Phase 2 validation record
 
 ## Current decision
 
-**CANDIDATE VALIDATION IN PROGRESS.** This record is deliberately not a
-`RELEASE_GO`, mainline-acceptance, deployment, provider, or owner-acceptance
-claim. The branch is based on
-`4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`; protected integration and its
-exact integrated-SHA proof remain outstanding.
+**CURRENT-MAIN REQUALIFICATION IN PROGRESS.** The original Phase 2
+implementation was accepted through pull request 35 as merge
+`ca40227cbef3575315c089d224a0cd26ec77bc78`. After current-main reconciliation
+and a focused Helm repair, protected pull request 53 accepted exact candidate
+`61cb6e0fc8df4bf8b5a38cc14f3f1bc715d8ee00` against base
+`5735d43821209adb2259ec2c38979281da1bb5b9` as merge
+`920d92a51a16d60a2dfe35278598e6d921be7e4c`. Hosted Sounding Line run
+[`31614127435`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31614127435)
+returned `RELEASE_GO`: all 38 mandatory receipts passed with clean teardown,
+and there was no missing, duplicate, unknown, invalid, or runtime-conformance
+evidence. That acceptance is historical evidence for the earlier exact source;
+the current corrective candidate still requires its own focused hosted receipt
+and one authoritative Mainline Decision.
 
-## Governing-document reconciliation
+## Current-main reconciliation and invalidation
 
-The Helm v1.0 governing document correctly defines the **target** operational
-presence model, but its repository-context statement that person-level
-heartbeat, active-device, and lag evidence already existed was not fully
-supported by the source surveyed during Phase 2. Phase 2 therefore implemented
-the missing per-member Platform presence source required to satisfy the
-governed Phase 2 product contract. This makes the implementation record
-truthful without claiming that the governing target itself was wrong.
+The post-Phase-2 interval through current base `5735d438` included Bridgewatch
+completion records and Sounding Line workflow-retirement work. It did not
+change Helm's operational projection source, Prisma schema or migrations,
+Captain authorization, membership-presence contract, or persisted product
+model. Earlier authority receipts remained historical evidence, but no longer
+constituted acceptance for a new candidate/base identity.
 
-## Candidate evidence
+The reconciliation uncovered a real `browser.helm` failure family. After a
+200 invitation acceptance, a soft navigation could remain on
+`/player/invitation`; in a separate run, persisted heartbeats could still leave
+the Captain projection short of four `CONNECTED_SYNCED:SYNCHRONIZED` entries.
+The repair supplies a bounded document-navigation fallback and captures
+presence freshness at persistence. Focused hosted `browser.helm` requalification
+passed. The final documentation-only format change touched two Bridgewatch
+records, invalidating `static.core` only; focused hosted `static.core` passed.
+Helm browser evidence was retained, and unrelated suites were not rerun merely
+because the SHA changed.
 
-| Lane                                                                                                | Result                                                                                              | Boundary                                                                                                                                                                  |
-| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Focused presence, projection, service, Captain route, Player route, and Phase 1 participation tests | 34 tests in 6 files passed                                                                          | Local deterministic evidence; proves independent aggregation, authorization, lag, stale/unknown handling, removed-member semantics, and no session-aggregate fabrication. |
-| Adjacent Player/Captain UI regression tests                                                         | 28 tests in 3 discovered files passed                                                               | Local component evidence; the Vite native-loader warning is pre-existing configuration guidance, not a test failure.                                                      |
-| TypeScript                                                                                          | `tsc --noEmit` passed                                                                               | Source type check using the bundled Node runtime.                                                                                                                         |
-| Prisma schemas                                                                                      | MySQL and SQLite validation passed with non-secret validation URLs                                  | Schema-only validation; no canonical database was touched.                                                                                                                |
-| Documentation                                                                                       | index generation and documentation validation passed                                                | Generator-owned index was regenerated rather than hand-edited.                                                                                                            |
-| Sounding Line policy                                                                                | `validate-policy` passed; digest `bcb2611803acb25f3859456d3e747487e5872f5c0af1921c16f6bb14effc5965` | Current local policy shape, not a finalizer receipt.                                                                                                                      |
-| Governed Helm unit contract                                                                         | 47 tests in 11 files passed; cleanup `CLEAN`                                                        | Exact-source execute-only suite evidence recorded before final documentation-only changes.                                                                                |
-| Governed Helm component contract                                                                    | 3 tests in 1 file passed; cleanup `CLEAN`                                                           | Exact-source execute-only suite evidence recorded before final documentation-only changes.                                                                                |
-| Governed Helm browser contract                                                                      | Pending shared validation-runtime lease                                                             | Two attempts were correctly classified as `INFRASTRUCTURE_CONTENTION`; another worktree owns the brokered runtime. No browser pass is claimed.                            |
+The current-main record-only candidate then reached terminal
+`EVIDENCE_INVALID` in run
+[`31622810342`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31622810342)
+because the atomic invitation-acceptance transaction exceeded Prisma's default
+five-second execution window. Commit `bd89d207` bounds that transaction at a
+15-second execution timeout and passed local exact `browser.helm` 3/3. Focused
+hosted run
+[`31628039327`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31628039327)
+then exposed a separate `CLEAN` background-tab handoff failure: a Player tab
+could receive focus before `document.hidden` settled and never issue the
+authoritative launch recheck. Commit `59aaa279` performs one zero-delay
+visible-state recheck; the focused component regression passed 14/14, local
+exact `browser.helm` passed 3/3 with `CLEAN` teardown, and focused
+`static.core` passed with `CLEAN` teardown. No migration, command,
+authority-model, or catalog capability changed.
 
-## Presence acceptance coverage
+## Final qualification evidence
 
-The candidate proves that no member-level evidence produces `UNKNOWN`, that the legacy
-`TaleSession.lastHeartbeatAt` field never fabricates a member state, and that
-one authenticated Player membership's heartbeat cannot alter another's.
-Fresh evidence is `CONNECTED` with a server-derived synchronized/catching-up
-state; expired evidence becomes `RECENTLY_LOST` then `STALE`; inactive member
-rows cannot be re-established after removal. Device acknowledgement is bounded
-by the canonical session sequence and uses a non-regressing high-water update.
-The Captain projection permits only safe label, lifecycle, last-seen,
-device-count, safe-activity, and lag fields; it excludes device identifiers,
-IP/network/fingerprint data, private Player material, raw events, and story
-payloads.
+| Lane                         | Result                                                                                                                         | Boundary                                                                                 |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| Focused local Helm units     | 15/15 passed                                                                                                                   | Direct invitation-handoff and membership-presence repair coverage.                       |
+| Focused local Helm browser   | 3/3 passed                                                                                                                     | Captain/Player invitation, heartbeat, projection, responsive, and accessibility journey. |
+| Hosted focused Helm browser  | [run 31606851534](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31606851534): 3/3 passed; `CLEAN`                    | Exact behavioral-repair qualification on `bf03b081`.                                     |
+| Focused local static core    | Passed                                                                                                                         | Exact final formatting-reconciliation scope.                                             |
+| Hosted focused static core   | [run 31613621741](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31613621741): passed; `CLEAN`                        | Exact final candidate `61cb6e0f`; no Helm browser invalidation.                          |
+| Hosted mainline authority    | [run 31614127435](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31614127435): `RELEASE_GO`, 38/38 passed and `CLEAN` | Exact frozen candidate `61cb6e0f`; the sole final release and merge authority.           |
+| Current corrective component | 14/14 passed                                                                                                                   | `PlayerVoyageRoom` focus-before-visibility handoff regression in `59aaa279`.             |
+| Current corrective browser   | 3/3 passed with `CLEAN` teardown                                                                                               | Exact local `browser.helm` rerun after `59aaa279`.                                       |
+| Current corrective static    | Passed with `CLEAN` teardown                                                                                                   | Focused `static.core` rerun after `59aaa279`.                                            |
 
-## Isolation and remaining gates
+The authoritative plan digest is
+`ace45a6a6a42a0aedbcd42246bcc055bb83e5d5032e0f94f27ad2063b7d612b0` and
+the evidence digest is
+`19b4637132ac199640dd20415c4ff2df48f802b6497834934a8e72a2a0f3e105`.
 
-- Presence writes use task-owned validation data during tests; no canonical
-  development database or production surface was mutated.
-- The browser finalizer will be retried only when the shared brokered lease is
-  available. It must exercise the actual Player heartbeat API, not a direct
-  database mutation.
-- After all exact-source evidence is complete, the candidate still requires a
-  targeted commit, push, protected integration, and post-merge parity check.
-- Phase 3 commands and Phase 4 recovery/preflight remain intentionally absent.
+## Integrated-main proof
+
+The protected merge has exact parents
+`5735d43821209adb2259ec2c38979281da1bb5b9` and
+`61cb6e0fc8df4bf8b5a38cc14f3f1bc715d8ee00`. Recomputing the merge tree with
+`git merge-tree --write-tree` produced
+`8cd77b00188b23bfcddf46380eb427a97e0ec274`, identical to merge
+`920d92a5`'s tree. Protected merge-binding run
+[`31616473977`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31616473977)
+consumed the sealed `RELEASE_GO` envelope and passed. At the product-integration
+check, `origin/main` resolved exactly to
+`920d92a51a16d60a2dfe35278598e6d921be7e4c`, and the accepted candidate is an
+ancestor of it.
+
+## Scope and boundaries
+
+Phase 2 adds the Platform-owned `MembershipPresenceDevice` source, authenticated
+Player heartbeat transport, privacy-safe Captain operational/crew/event/Library
+projections, and read-only progress summaries. It preserves Phase 1
+Captain-only and Captain + Player relationships, ordinary Player projection,
+existing Captain commands, history, and artifacts. It adds no duplicate event
+source, no progression mutation from a read, no deployment claim, no
+live-provider proof, no physical-device proof, and no owner-acceptance claim.
+Phase 3 command redesign and Phase 4 preflight/recovery remain unstarted.

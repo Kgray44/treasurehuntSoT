@@ -189,6 +189,8 @@ Captains create, launch, operate, recover, and reconcile live Voyages through au
 - Captain-only and Captain plus Player participation modes
 - Player-safe perspective switching
 - Membership-bounded personal history and artifact eligibility
+- Captain operational projections and prioritized voyage library
+- Membership-scoped crew presence, sync health, warnings, and safe event stream
 
 ### Primary surfaces
 
@@ -196,9 +198,13 @@ Captains create, launch, operate, recover, and reconcile live Voyages through au
 
 ### Evidence
 
+- commit: `ca40227cbef3575315c089d224a0cd26ec77bc78`
 - path: `src/server/admin-command.ts`
 - path: `src/domain/admin.ts`
 - path: `src/helm/captain-participation.ts`
+- path: `src/helm/operations.ts`
+- path: `src/platform/membership-presence.ts`
+- path: `src/components/captain/CaptainOperationalPanel.tsx`
 - path: `src/components/platform/CaptainLibrary.tsx`
 - path: `src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts`
 
@@ -889,7 +895,7 @@ Audience-separated current documentation, indexed engineering records, and a fra
 **Status:** MAINLINE
 **Program or subsystem:** Sounding Line Phases 1-4
 
-A nonauthoritative, provider-neutral local verification control plane provides sealed plans, reviewed adapters, marker-verified resource leases, durable history, fail-closed worker and evidence controls, isolated SQLite/browser state, and narrowly certified Harborlight moderator browser lanes without weakening release authority.
+A nonauthoritative, provider-neutral local verification control plane provides sealed plans, reviewed adapters, marker-verified resource leases, durable history, fail-closed worker and evidence controls, isolated SQLite/browser state, narrowly certified Harborlight moderator browser lanes, and a strictly record-only protected-mainline closure route without weakening release authority.
 
 ### Important subfeatures
 
@@ -901,6 +907,7 @@ A nonauthoritative, provider-neutral local verification control plane provides s
 - Immutable SQLite baseline clone boundary
 - Two isolated Harborlight Phase 4 browser lanes
 - Explicit emergency-serial legacy release authority
+- Fail-closed record-only protected-mainline closure evidence
 
 ### Primary surfaces
 
@@ -1390,7 +1397,7 @@ The accepted server-side foundation compares exact immutable Chronicle editions,
 **Status:** MAINLINE
 **Program or subsystem:** Project Admiralty
 
-Owner-accepted Phase 1 establishes canonical roles, recent privileged assurance, scoped user consent, and sanitized audit evidence on main. The owner-accepted Phase 2 mainline candidate expands that authority into a read-only cross-domain command center without creating a second source of truth.
+Owner-accepted Phases 1 and 2 establish canonical roles, recent privileged assurance, scoped user consent, sanitized audit evidence, and a read-only cross-domain Chartroom on main without creating a second source of truth.
 
 ### Important subfeatures
 
@@ -1417,7 +1424,7 @@ Owner-accepted Phase 1 establishes canonical roles, recent privileged assurance,
 - The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09
 - Owner-accepted Phase 1 implementation is integrated on canonical main with verified remote parity
 - Production MySQL execution, live-provider behavior, and physical assistive-technology validation remain external
-- The owner accepted the qualified Phase 2 walkthrough on 2026-08-12; its decision-record candidate still requires exact-source authority and canonical-main integration
+- The owner accepted the qualified Phase 2 walkthrough on 2026-08-12; exact-source authority and protected canonical-main integration completed in PR #28
 - Transactional-email delivery health and live verification-provider health are blocked by missing canonical owner contracts
 - Broad administrative mutation remains dormant for later governed phases
 - Owner acceptance does not imply deployment or acceptance of later Admiralty phases
@@ -1433,6 +1440,7 @@ Owner-accepted Phase 1 establishes canonical roles, recent privileged assurance,
 - test: `tests/e2e/admiralty-phase2.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Completion_Receipt.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Owner_Decision_Record.md`
+- completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Mainline_Acceptance_Record.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md`
 

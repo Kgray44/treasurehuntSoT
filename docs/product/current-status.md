@@ -28,14 +28,16 @@ libraries, journals, profile and Passport surfaces, protected content, and
 animation presentation. Homeport reached main through protected PR #9; this is
 source integration, not deployment or owner acceptance.
 
-**Project Helm Phase 1 branch candidate:** Captain participation is explicit at
-Voyage creation. Captain-only remains the default; Captain + Player attaches
-exactly one ordinary Player membership to the same canonical account while
-keeping Voyage-scoped Captain authority independent. Player access, history,
-artifacts, and removal follow ordinary membership and event-time rules, and the
-Player view remains a Player-safe projection. Current evidence is isolated and
-local; mainline integration, deployment, live-Voyage behavior, and owner
-acceptance are not yet claimed.
+**Project Helm Phases 1 and 2 are available on main:** Captain participation is
+explicit at Voyage creation. Captain-only remains the default; Captain + Player
+attaches exactly one ordinary Player membership to the same canonical account
+while keeping Voyage-scoped Captain authority independent. Captain operations
+now add privacy-safe, read-only Voyage status, prioritized attention, safe crew
+presence and synchronization health, current progress, and safe event
+summaries. Player access, history, artifacts, removal, and perspective remain
+membership-bounded and Player-safe. This is protected-mainline source
+integration with local/synthetic automated evidence, not deployment,
+live-Voyage behavior, or owner acceptance.
 
 **Project Drydock Phase 3 active branch:** Creator-only Sea Trials provide
 revisioned source-bound deterministic Scenarios, synthetic faults, virtual
@@ -86,7 +88,7 @@ The owner decision is `ACCEPTED`; exact reconciled Sounding Line proof,
 canonical integration, and remote parity pass. No deployment, production
 database execution, or Phase 2 mainline availability is claimed.
 
-**Owner-accepted mainline candidate:** Project Admiralty Phase 2 adds a
+**Available on main and owner accepted:** Project Admiralty Phase 2 adds a
 15-route, read-only Chartroom with authorized account-menu reachability,
 role-filtered navigation, bounded account/Chronicle/Voyage/Community search and
 detail, operations/providers/configuration/releases, Audit Explorer, and
@@ -94,8 +96,8 @@ correlation-led investigation. It uses typed owner projections, adds no schema
 or broad mutation, and truthfully marks missing email/verification provider
 contracts. Initial focused, production-build, responsive, accessibility, and
 multi-role synthetic browser evidence passes. The owner accepted the qualified
-walkthrough; the decision-record candidate requires its own exact-source
-Sounding Line authority and protected mainline integration.
+walkthrough; exact-source Sounding Line authority and protected mainline
+integration completed in PR #28.
 
 **Development-only or compatibility-only:** development showcases, legacy routes, and package-exchange integrations are not a promise of a generally hosted service.
 

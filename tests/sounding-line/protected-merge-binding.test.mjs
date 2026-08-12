@@ -156,7 +156,9 @@ test("workflow topology retains explicit heavyweight authority and the exact pro
   assert.match(authoritative, /candidate_sha:/u);
   assert.match(bridge, /pull_request:/u);
   assert.match(bridge, /name: Sounding Line \/ Mainline Decision/u);
-  assert.doesNotMatch(bridge, /sounding-line-governed-worker\.yml|authority\.mjs .*--execute-only|finalize-ci\.mjs/u);
+  assert.doesNotMatch(bridge, /sounding-line-governed-worker\.yml|authority\.mjs .*--execute-only/u);
   assert.match(bridge, /sounding-line-finalization/u);
   assert.match(bridge, /sounding-line-plan/u);
+  assert.match(bridge, /record-only-closure\.mjs/u);
+  assert.match(bridge, /Finalize record-only decision/u);
 });

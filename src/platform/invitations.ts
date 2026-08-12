@@ -416,82 +416,93 @@ export async function acceptInvitation(
       throw new InvitationUnavailableError("This invitation belongs to another Player profile.", "INVALID");
   }
   const correlationId = randomUUID();
-  const result = await db.$transaction(async (tx) => {
-    const claimed = await tx.invitation.updateMany({
-      where: {
-        id: invitation.id,
-        status: { in: activeInvitationStates },
-        redemptionCount: invitation.redemptionCount,
-        expiresAt: { gt: new Date() },
-      },
-      data: {
-        status: "READY",
-        acceptedAt: new Date(),
-        redemptionCount: { increment: 1 },
-        lastValidatedAt: new Date(),
-        ...(signedInPlayerId ? { intendedPlayerId: signedInPlayerId } : {}),
-      },
-    });
-    if (!claimed.count)
-      throw new InvitationUnavailableError("Invitation state changed. Refresh and try again.", "CONFLICT");
-    let playerId = signedInPlayerId ?? invitation.intendedPlayerId;
-    if (!playerId) {
-      const player = await tx.playerProfile.create({
-        data: { displayName: input.displayName?.trim() || invitation.recipientName },
-      });
-      playerId = player.id;
-    } else if (input.displayName?.trim()) {
-      await tx.playerProfile.update({ where: { id: playerId }, data: { displayName: input.displayName.trim() } });
-    }
-    if (signedInPlayerId && invitation.intendedPlayerId && signedInPlayerId !== invitation.intendedPlayerId) {
-      await tx.playthroughMembership.deleteMany({
-        where: { playthroughId: invitation.playthroughId, playerProfileId: invitation.intendedPlayerId },
-      });
-    }
-    const membershipStatus = membershipStatusAfterInvitationAcceptance(invitation.playthrough.status);
-    await tx.playthroughMembership.upsert({
-      where: { playthroughId_playerProfileId: { playthroughId: invitation.playthroughId, playerProfileId: playerId } },
-      update: { status: membershipStatus, joinedAt: new Date(), removedAt: null },
-      create: {
-        playthroughId: invitation.playthroughId,
-        playerProfileId: playerId,
-        status: membershipStatus,
-        joinedAt: new Date(),
-      },
-    });
-    const remaining = await tx.invitation.count({
-      where: { playthroughId: invitation.playthroughId, status: { in: activeInvitationStates } },
-    });
-    if (!remaining)
-      await tx.taleSession.updateMany({
-        where: { id: invitation.playthroughId, status: { in: ["INVITING", "SCHEDULED"] } },
+  // Invitation acceptance performs the membership handoff and its durable audit
+  // record atomically. Under a concurrent Captain projection refresh, SQLite
+  // can legitimately spend more than Prisma's five-second default acquiring
+  // and committing that sequence. Keep the transaction bounded, but give this
+  // user-visible handoff a single 15-second window rather than returning a
+  // transient 400 after the default expires.
+  const result = await db.$transaction(
+    async (tx) => {
+      const claimed = await tx.invitation.updateMany({
+        where: {
+          id: invitation.id,
+          status: { in: activeInvitationStates },
+          redemptionCount: invitation.redemptionCount,
+          expiresAt: { gt: new Date() },
+        },
         data: {
-          status: invitation.playthrough.plannedStartAt ? "SCHEDULED" : "READY",
-          concurrencyVersion: { increment: 1 },
+          status: "READY",
+          acceptedAt: new Date(),
+          redemptionCount: { increment: 1 },
+          lastValidatedAt: new Date(),
+          ...(signedInPlayerId ? { intendedPlayerId: signedInPlayerId } : {}),
         },
       });
-    await tx.invitationEvent.create({
-      data: {
-        invitationId: invitation.id,
-        eventType: "ACCEPTED",
-        actorType: "PLAYER",
-        actorId: playerId,
-        metadata: "{}",
-      },
-    });
-    await tx.platformAuditEvent.create({
-      data: {
-        actorType: "PLAYER",
-        actorId: playerId,
-        action: "INVITATION_ACCEPTED",
-        resourceType: "INVITATION",
-        resourceId: invitation.id,
-        correlationId,
-        metadata: JSON.stringify({ playthroughId: invitation.playthroughId }),
-      },
-    });
-    return { playerId, playthroughId: invitation.playthroughId, idempotent: false };
-  });
+      if (!claimed.count)
+        throw new InvitationUnavailableError("Invitation state changed. Refresh and try again.", "CONFLICT");
+      let playerId = signedInPlayerId ?? invitation.intendedPlayerId;
+      if (!playerId) {
+        const player = await tx.playerProfile.create({
+          data: { displayName: input.displayName?.trim() || invitation.recipientName },
+        });
+        playerId = player.id;
+      } else if (input.displayName?.trim()) {
+        await tx.playerProfile.update({ where: { id: playerId }, data: { displayName: input.displayName.trim() } });
+      }
+      if (signedInPlayerId && invitation.intendedPlayerId && signedInPlayerId !== invitation.intendedPlayerId) {
+        await tx.playthroughMembership.deleteMany({
+          where: { playthroughId: invitation.playthroughId, playerProfileId: invitation.intendedPlayerId },
+        });
+      }
+      const membershipStatus = membershipStatusAfterInvitationAcceptance(invitation.playthrough.status);
+      await tx.playthroughMembership.upsert({
+        where: {
+          playthroughId_playerProfileId: { playthroughId: invitation.playthroughId, playerProfileId: playerId },
+        },
+        update: { status: membershipStatus, joinedAt: new Date(), removedAt: null },
+        create: {
+          playthroughId: invitation.playthroughId,
+          playerProfileId: playerId,
+          status: membershipStatus,
+          joinedAt: new Date(),
+        },
+      });
+      const remaining = await tx.invitation.count({
+        where: { playthroughId: invitation.playthroughId, status: { in: activeInvitationStates } },
+      });
+      if (!remaining)
+        await tx.taleSession.updateMany({
+          where: { id: invitation.playthroughId, status: { in: ["INVITING", "SCHEDULED"] } },
+          data: {
+            status: invitation.playthrough.plannedStartAt ? "SCHEDULED" : "READY",
+            concurrencyVersion: { increment: 1 },
+          },
+        });
+      await tx.invitationEvent.create({
+        data: {
+          invitationId: invitation.id,
+          eventType: "ACCEPTED",
+          actorType: "PLAYER",
+          actorId: playerId,
+          metadata: "{}",
+        },
+      });
+      await tx.platformAuditEvent.create({
+        data: {
+          actorType: "PLAYER",
+          actorId: playerId,
+          action: "INVITATION_ACCEPTED",
+          resourceType: "INVITATION",
+          resourceId: invitation.id,
+          correlationId,
+          metadata: JSON.stringify({ playthroughId: invitation.playthroughId }),
+        },
+      });
+      return { playerId, playthroughId: invitation.playthroughId, idempotent: false };
+    },
+    { maxWait: 5_000, timeout: 15_000 },
+  );
   // The sole caller is the browser acceptance route, where createPlayerIdentitySession
   // owns guest-account bootstrap and session issuance as one follow-up operation.
   // Avoiding a duplicate account transaction here keeps invitation acceptance bounded

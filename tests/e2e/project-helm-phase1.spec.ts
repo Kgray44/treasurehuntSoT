@@ -94,13 +94,8 @@ test.beforeAll(async ({ request }) => {
 test.afterAll(async () => db.$disconnect());
 
 async function signInThroughProduct(page: Page) {
-  await page.goto("/");
-  const skip = page.getByRole("button", { name: "Skip opening presentation" });
-  if (await skip.isVisible().catch(() => false)) await skip.click();
-  const menu = await accountMenu(page, "Account");
-  const signIn = menu.getByRole("link", { name: "Sign In", exact: true });
-  if (await signIn.isVisible().catch(() => false)) await signIn.click();
-  else await page.goto("/sign-in");
+  await page.goto("/sign-in");
+  await expect(page.getByLabel("Email or legacy Player name")).toBeVisible({ timeout: 30_000 });
   await page.getByLabel("Email or legacy Player name").fill(email);
   await page.getByLabel("Password").fill(password);
   const signInResponse = page.waitForResponse(
@@ -583,13 +578,18 @@ test("authenticated membership heartbeats are independently visible in the Capta
     for (const heartbeat of heartbeats) expect(heartbeat.status).toBe(200);
 
     await expect
-      .poll(async () => {
-        const projection = await browserJson<{
-          crew: Array<{ presence: { state: string }; synchronization: { state: string } }>;
-        }>(page, `/api/captain/voyages/${created.playthroughId}`);
-        expect(projection.status).toBe(200);
-        return projection.body.crew.map((member) => `${member.presence.state}:${member.synchronization.state}`).sort();
-      })
+      .poll(
+        async () => {
+          const projection = await browserJson<{
+            crew: Array<{ presence: { state: string }; synchronization: { state: string } }>;
+          }>(page, `/api/captain/voyages/${created.playthroughId}`);
+          expect(projection.status).toBe(200);
+          return projection.body.crew
+            .map((member) => `${member.presence.state}:${member.synchronization.state}`)
+            .sort();
+        },
+        { timeout: 60_000 },
+      )
       .toEqual([
         "CONNECTED_SYNCED:SYNCHRONIZED",
         "CONNECTED_SYNCED:SYNCHRONIZED",

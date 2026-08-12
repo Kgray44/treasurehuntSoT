@@ -3,6 +3,7 @@
  * It deliberately has no execution, planning, worker, or release-decision API.
  */
 import { createHash } from "node:crypto";
+import { isApprovedRecordPath, RECORD_ONLY_EVIDENCE_IDS, RECORD_ONLY_SUITE_ID } from "./record-only-closure.mjs";
 
 export const PROTECTED_MAINLINE_CONTEXT = "Sounding Line / Mainline Decision";
 
@@ -62,6 +63,72 @@ function validateFinalizedEvidence({ plan, finalization, qualified }) {
   return errors;
 }
 
+function validateRecordOnlyPlan({
+  plan,
+  qualified,
+  candidateSha,
+  currentBaseSha,
+  mergeSha,
+  recordOnlyChangedPaths,
+  recordOnlyAncestryValid,
+}) {
+  const errors = [];
+  const recordOnly = plan?.recordOnly;
+  if (recordOnly?.version !== 1 || recordOnly?.mode !== "FAIL_CLOSED_RECORD_ONLY")
+    errors.push("RECORD_ONLY_PLAN_MODE_INVALID");
+  if (
+    recordOnly?.candidateSha !== candidateSha ||
+    recordOnly?.currentBaseSha !== currentBaseSha ||
+    recordOnly?.mergeSha !== mergeSha ||
+    !sha(recordOnly?.candidateMergeBaseSha)
+  )
+    errors.push("RECORD_ONLY_PLAN_IDENTITY_INVALID");
+  if (qualified?.qualifiedBaseSha !== currentBaseSha) errors.push("RECORD_ONLY_QUALIFIED_BASE_MISMATCH");
+  if (recordOnlyAncestryValid !== true) errors.push("RECORD_ONLY_IMPLEMENTATION_ANCESTRY_INVALID");
+  const expectedPaths = recordOnly?.changedPaths;
+  if (
+    !Array.isArray(expectedPaths) ||
+    !expectedPaths.length ||
+    expectedPaths.some((value) => !isApprovedRecordPath(value))
+  )
+    errors.push("RECORD_ONLY_PATH_CLASSIFICATION_INVALID");
+  const observedPaths = Array.isArray(recordOnlyChangedPaths) ? recordOnlyChangedPaths : [];
+  if (
+    !Array.isArray(recordOnlyChangedPaths) ||
+    expectedPaths?.length !== observedPaths.length ||
+    expectedPaths?.some((value, index) => value !== observedPaths[index])
+  )
+    errors.push("RECORD_ONLY_DIFF_BINDING_INVALID");
+  const prior = recordOnly?.priorAuthority;
+  if (
+    !Number.isSafeInteger(prior?.prNumber) ||
+    !Number.isSafeInteger(prior?.authorityRunId) ||
+    !sha(prior?.implementationCandidateSha) ||
+    !sha(prior?.implementationMergeSha) ||
+    prior?.protectedContext !== PROTECTED_MAINLINE_CONTEXT
+  )
+    errors.push("RECORD_ONLY_PRIOR_AUTHORITY_INVALID");
+  const actualEvidence = recordOnly?.evidence;
+  if (
+    !Array.isArray(actualEvidence) ||
+    actualEvidence.length !== RECORD_ONLY_EVIDENCE_IDS.length ||
+    actualEvidence.some((entry) => entry?.result !== "PASSED") ||
+    actualEvidence.map((entry) => entry.id).join("\n") !== RECORD_ONLY_EVIDENCE_IDS.join("\n")
+  )
+    errors.push("RECORD_ONLY_EVIDENCE_SET_INVALID");
+  const nodes = plan?.nodes ?? [];
+  if (
+    nodes.length !== 1 ||
+    nodes[0]?.id !== RECORD_ONLY_SUITE_ID ||
+    nodes[0]?.adapter !== "record-only-static" ||
+    nodes[0]?.resources?.join("\n") !== "node-slot" ||
+    plan?.runtimeConformanceRequired !== true ||
+    plan?.runtimeConformanceSuiteId !== RECORD_ONLY_SUITE_ID
+  )
+    errors.push("RECORD_ONLY_PLAN_SCOPE_INVALID");
+  return errors;
+}
+
 export function classifyBaseAdvance({ qualifiedBaseSha, currentBaseSha, changedPaths, semanticPolicy }) {
   if (qualifiedBaseSha === currentBaseSha) return { status: "EXACT_BASE", preserved: [], rejected: [] };
   if (!Array.isArray(changedPaths) || changedPaths.length === 0)
@@ -91,6 +158,8 @@ export function qualifyProtectedMerge({
   changedPaths,
   baseAncestryValid,
   authorityRunId,
+  recordOnlyChangedPaths,
+  recordOnlyAncestryValid,
 }) {
   const errors = [];
   const binding = authority?.protectedMergeBinding;
@@ -100,17 +169,37 @@ export function qualifyProtectedMerge({
   if (!qualified || qualified.prNumber !== Number(prNumber) || qualified.candidateSha !== candidateSha)
     errors.push("QUALIFIED_PR_OR_HEAD_MISMATCH");
   if (!qualified || qualified.authoritativeRunId !== Number(authorityRunId)) errors.push("QUALIFIED_RUN_MISMATCH");
-  if (!sha(qualified?.qualifiedBaseSha) || baseAncestryValid !== true) errors.push("QUALIFIED_BASE_ANCESTRY_INVALID");
+  const recordOnly = plan?.recordOnly?.mode === "FAIL_CLOSED_RECORD_ONLY";
+  if (!sha(qualified?.qualifiedBaseSha)) errors.push("QUALIFIED_BASE_SHA_INVALID");
+  if (!recordOnly && baseAncestryValid !== true) errors.push("QUALIFIED_BASE_ANCESTRY_INVALID");
   if (!Array.isArray(mergeParents) || mergeParents.length !== 2) errors.push("SYNTHETIC_MERGE_PARENT_COUNT_INVALID");
   else if (!mergeParents.includes(candidateSha) || !mergeParents.includes(currentBaseSha))
     errors.push("SYNTHETIC_MERGE_COMPOSITION_INVALID");
   errors.push(...validateFinalizedEvidence({ plan, finalization, qualified: qualified ?? {} }));
-  const carryForward = classifyBaseAdvance({
-    qualifiedBaseSha: qualified?.qualifiedBaseSha,
-    currentBaseSha,
-    changedPaths,
-    semanticPolicy: binding?.semanticCarryForward ?? {},
-  });
+  if (recordOnly)
+    errors.push(
+      ...validateRecordOnlyPlan({
+        plan,
+        qualified,
+        candidateSha,
+        currentBaseSha,
+        mergeSha,
+        recordOnlyChangedPaths,
+        recordOnlyAncestryValid,
+      }),
+    );
+  const carryForward = recordOnly
+    ? {
+        status: "RECORD_ONLY_EXACT_CANDIDATE_DIFF",
+        preserved: plan.recordOnly.changedPaths,
+        rejected: [],
+      }
+    : classifyBaseAdvance({
+        qualifiedBaseSha: qualified?.qualifiedBaseSha,
+        currentBaseSha,
+        changedPaths,
+        semanticPolicy: binding?.semanticCarryForward ?? {},
+      });
   if (carryForward.status === "RECONCILIATION_REQUIRED" || carryForward.status === "FAIL_CLOSED")
     errors.push("BASE_ADVANCE_RECONCILIATION_REQUIRED");
   return {

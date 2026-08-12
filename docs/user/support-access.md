@@ -33,6 +33,6 @@ through a separately trusted channel.
 Project Admiralty Phase 1 is owner accepted on canonical main. Phase 2 places
 the same consent flow in the account dossier for authorized support operators;
 it does not weaken target approval, exact scope, recent assurance, expiry,
-revocation, or auditing. The owner accepted the Phase 2 walkthrough; its
-branch candidate remains pending exact-source authority and protected mainline
-integration. Neither phase is claimed deployed by this guide.
+revocation, or auditing. The owner accepted the Phase 2 walkthrough, and its
+exact-source authority and protected mainline integration completed in PR #28.
+Neither phase is claimed deployed by this guide.
