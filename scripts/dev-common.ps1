@@ -276,7 +276,9 @@ function Copy-ForeverDependencySeed {
     & robocopy $seedModules $runtimeModules /E /XJ /COPY:DAT /DCOPY:DAT /R:1 /W:1 /MT:32 | Out-Null
     if ($LASTEXITCODE -gt 7) { throw "Unable to copy Sounding Line dependency seed (robocopy exit $LASTEXITCODE)." }
     $seedPrefix = $seedModules.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+    $seedRootPrefix = $resolvedSeed.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
     $runtimePrefix = $runtimeModules.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+    $runtimeRootPrefix = $resolvedRuntime.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
     $sourceJunctions = @(& cmd.exe /d /c "dir /a:l /s /b `"$seedModules`"")
     if ($LASTEXITCODE -ne 0) { throw "Unable to enumerate Sounding Line dependency junctions (cmd exit $LASTEXITCODE)." }
     foreach ($sourceJunctionPath in $sourceJunctions) {
@@ -291,18 +293,23 @@ function Copy-ForeverDependencySeed {
         $junctionTargets = @($sourceJunction.Target)
         if ($junctionTargets.Count -ne 1) { throw "Sounding Line dependency junction must have exactly one target." }
         $resolvedSourceTarget = [System.IO.Path]::GetFullPath([string]$junctionTargets[0])
-        if (-not $resolvedSourceTarget.StartsWith($seedPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
-            throw "Sounding Line dependency junction target escaped the seed root."
-        }
+        $targetIsDependency = $resolvedSourceTarget.StartsWith($seedPrefix, [System.StringComparison]::OrdinalIgnoreCase)
+        $targetIsWorkspace = $resolvedSourceTarget.StartsWith($seedRootPrefix, [System.StringComparison]::OrdinalIgnoreCase)
+        if (-not $targetIsDependency -and -not $targetIsWorkspace) { throw "Sounding Line dependency junction target escaped the seed root." }
         $relativeJunction = $resolvedSourceJunction.Substring($seedModules.Length).TrimStart('\', '/')
-        $relativeTarget = $resolvedSourceTarget.Substring($seedModules.Length).TrimStart('\', '/')
+        $relativeTarget = if ($targetIsDependency) {
+            $resolvedSourceTarget.Substring($seedModules.Length).TrimStart('\', '/')
+        } else {
+            $resolvedSourceTarget.Substring($resolvedSeed.Length).TrimStart('\', '/')
+        }
         if ([string]::IsNullOrWhiteSpace($relativeJunction) -or [string]::IsNullOrWhiteSpace($relativeTarget)) {
             throw "Sounding Line dependency junction mapping is empty."
         }
         $runtimeJunction = [System.IO.Path]::GetFullPath((Join-Path $runtimeModules $relativeJunction))
-        $runtimeTarget = [System.IO.Path]::GetFullPath((Join-Path $runtimeModules $relativeTarget))
+        $runtimeTargetRoot = if ($targetIsDependency) { $runtimeModules } else { $resolvedRuntime }
+        $runtimeTarget = [System.IO.Path]::GetFullPath((Join-Path $runtimeTargetRoot $relativeTarget))
         if (-not $runtimeJunction.StartsWith($runtimePrefix, [System.StringComparison]::OrdinalIgnoreCase) -or
-            -not $runtimeTarget.StartsWith($runtimePrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+            -not $runtimeTarget.StartsWith($runtimeRootPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
             throw "Sounding Line dependency junction mapping escaped the runtime root."
         }
         if (-not (Test-Path -LiteralPath $runtimeTarget -PathType Container)) {
