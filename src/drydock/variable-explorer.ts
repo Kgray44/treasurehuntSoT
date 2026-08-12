@@ -8,6 +8,7 @@ export type DrydockVariableExplorer = {
   variables: readonly {
     id: string;
     name: string;
+    description?: string;
     type: DrydockVariableDeclaration["type"];
     scope: DrydockVariableDeclaration["scope"];
     defaultValue?: DrydockVariableDeclaration["defaultValue"];
@@ -67,6 +68,7 @@ export function createDrydockVariableExplorer(input: {
         return {
           id: declaration.id,
           name: declaration.name,
+          ...(declaration.description ? { description: declaration.description } : {}),
           type: declaration.type,
           scope: declaration.scope,
           ...(declaration.defaultValue !== undefined ? { defaultValue: declaration.defaultValue } : {}),

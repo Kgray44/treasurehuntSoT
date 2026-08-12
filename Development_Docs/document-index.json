@@ -3087,6 +3087,42 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_2_Block_Editor_Coverage.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_2_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_2_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_2_Mainline_Safety_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_2_Owner_Walkthrough.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_2_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf",
       "record_type": "program-record",
       "status": "current",
