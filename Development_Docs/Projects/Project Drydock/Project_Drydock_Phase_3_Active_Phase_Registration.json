@@ -72,5 +72,23 @@
   },
   "expectedAcceptanceGate": "Sounding Line / Mainline Decision",
   "registeredAt": "2026-08-12",
-  "acceptance": null
+  "acceptance": {
+    "priorCandidate": {
+      "candidateSha": "1c888c92d7aa54abf9d16d86e916751bab4b7fc1",
+      "candidateTag": "project-drydock-phase3-candidate-20260812",
+      "decision": "RELEASE_NO_GO",
+      "decisionDate": "2026-08-12",
+      "record": "Project_Drydock_Phase_3_Mainline_Decision_Failure_Record.md",
+      "disposition": "TERMINAL_FOR_CANDIDATE_RETURNED_TO_DEVELOPMENT"
+    },
+    "replacementCandidate": {
+      "candidateTag": "project-drydock-phase3-candidate-20260812-r2",
+      "status": "FROZEN_PENDING_SERIALIZED_CANONICAL_ACCEPTANCE",
+      "qualification": [
+        "Drydock subsystem, Studio/API, migration, policy, Prisma, documentation, static, and production-build checks passed",
+        "No persistent task-local browser environment override is present",
+        "Shared validation lock observed released before freeze"
+      ]
+    }
+  }
 }

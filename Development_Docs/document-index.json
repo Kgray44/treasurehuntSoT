@@ -2907,6 +2907,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Mainline_Decision_Failure_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Mainline_Safety_Contract.md",
       "record_type": "program-record",
       "status": "current",

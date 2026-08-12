@@ -997,9 +997,9 @@
       "securityEvidence": "NOT_APPLICABLE",
       "privacyEvidence": "NOT_APPLICABLE",
       "performanceEvidence": "NOT_APPLICABLE",
-      "currentStatus": "RECONCILED_CANDIDATE_FROZEN",
+      "currentStatus": "RECONCILED_REPLACEMENT_CANDIDATE_FROZEN",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "Current main was reconciled once before candidate freeze; any subsequent commit requires a new candidate and Mainline Decision."
+      "limitation": "Current main was reconciled once before the original candidate freeze; its terminal RELEASE_NO_GO was requalified into a replacement candidate, which still requires one Mainline Decision."
     },
     {
       "id": "DD-P3-060",
@@ -1013,9 +1013,9 @@
       "securityEvidence": "protected merge policy",
       "privacyEvidence": "NOT_APPLICABLE",
       "performanceEvidence": "NOT_APPLICABLE",
-      "currentStatus": "CANDIDATE_FROZEN_PENDING_CANONICAL_ACCEPTANCE",
+      "currentStatus": "REPLACEMENT_CANDIDATE_FROZEN_PENDING_CANONICAL_ACCEPTANCE",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "No acceptance is claimed before the one Mainline Decision, protected integration, and exact-main proof."
+      "limitation": "The original candidate's one Mainline Decision ended RELEASE_NO_GO; no acceptance is claimed before the replacement candidate's one decision, protected integration, and exact-main proof."
     }
   ]
 }

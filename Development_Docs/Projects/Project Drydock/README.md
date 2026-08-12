@@ -10,7 +10,7 @@ last_reviewed: 2026-08-09
 
 [Project Drydock](Project_Drydock_Governing_Document.pdf) governs the Chronicle authoring-contract, validation, compatibility, and later simulation program. Phase 1, Set the Blocks, is limited to typed authoring contracts, variables, expressions, schema evolution, compatibility fixtures, stable issues, and incremental contract validation. It does not implement whole-Chronicle analysis or simulation.
 
-Phase 1 status: **MAINLINE ACCEPTED** through protected PR #22 at mainline merge `468530645e983412e5f4c1aaa103915be77c9c07`. Phase 2, **Sound the Hull**, is **MAINLINE ACCEPTED** through protected PR #36 at merge `847e035775984888be71edf614f2205fd6c5a376`. Phase 2 is limited to whole-Chronicle static analysis. Phase 3, **Run Sea Trials**, is active implementation and has not yet entered candidate qualification or protected acceptance.
+Phase 1 status: **MAINLINE ACCEPTED** through protected PR #22 at mainline merge `468530645e983412e5f4c1aaa103915be77c9c07`. Phase 2, **Sound the Hull**, is **MAINLINE ACCEPTED** through protected PR #36 at merge `847e035775984888be71edf614f2205fd6c5a376`. Phase 2 is limited to whole-Chronicle static analysis. Phase 3, **Run Sea Trials**, has a requalified replacement candidate pending serialized canonical acceptance after its original candidate's terminal `RELEASE_NO_GO`; it has no protected acceptance.
 
 ## Phase 1 records
 
@@ -49,6 +49,7 @@ Voyage authority.
 - [Test Plan](Project_Drydock_Phase_3_Test_Plan.md)
 - [Browser Qualification Record](Project_Drydock_Phase_3_Browser_Qualification_Record.md)
 - [Reconciliation Record](Project_Drydock_Phase_3_Reconciliation_Record.md)
+- [Mainline Decision Failure Record](Project_Drydock_Phase_3_Mainline_Decision_Failure_Record.md)
 - [Performance Record](Project_Drydock_Phase_3_Performance_Record.md)
 - `Project_Drydock_Phase_3_Requirement_Ledger.json` — active implementation inventory; not a completion claim.
 
