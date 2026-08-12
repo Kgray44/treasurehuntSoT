@@ -2106,6 +2106,19 @@ html[style*="zoom: 2"] .captain-card-grid > * {
   min-width: 0;
 }
 
+html.helm-document-zoom .captain-card-grid,
+html[style*="zoom: 2"] .captain-card-grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+html.helm-document-zoom .captain-voyage-card,
+html[style*="zoom: 2"] .captain-voyage-card {
+  box-sizing: border-box;
+  max-width: 100%;
+  /* A document-zoom reflow must not retain a stale Framer layout offset. */
+  transform: none !important;
+}
+
 html.helm-document-zoom .wizard-progress small,
 html[style*="zoom: 2"] .wizard-progress small {
   display: none;
