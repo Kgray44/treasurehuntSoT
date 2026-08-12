@@ -3,7 +3,7 @@
   "project": "Project Tideglass",
   "phase": "3",
   "status": "AUTOMATED_BROWSER_PROOF_COMPLETE_OWNER_WALKTHROUGH_PENDING",
-  "sourceSha": "4fb937434e6df893bead908cfaa8b2618f6429d6",
+  "sourceSha": "4d7d7f5908e28275ed5e9b12d5addbe6973f9abb",
   "fixtureVersion": "tideglass-phase3-v2",
   "fixtureChecksum": "7798f816bedd71867d096d0543ee2135a7722388f262d089b4b078d9a50b2002",
   "storage": "LOCALAPPDATA/ProjectTideglass/phase3-qualification/browser/evidence; screenshots and credentials are intentionally untracked",
@@ -29,7 +29,7 @@
       "route": "/chronicles/tideglass-passage-fixture/compare",
       "state": "PARTIAL",
       "viewport": "1440x900",
-      "sha256": "aabef16f425e692eb45f2d5b94a6f7d6fd6deeeee8a6855dd675fdeb73ad7ce6",
+      "sha256": "555006820c42339b00fa411a4126956fbda753147688ca55e02d0f46520755b3",
       "semanticAssertion": "Unsupported fixture semantics are named as partial without source disclosure"
     },
     {
@@ -37,7 +37,7 @@
       "route": "/chronicles/tideglass-passage-fixture/compare",
       "state": "PAIR_SELECTION",
       "viewport": "1440x900",
-      "sha256": "5d14b6433feb030bbf8a645bf9ab291fbabda9651dd0c2a8dbeb9be83f35179a",
+      "sha256": "3b899f0d25b4ba3945731e18d4de41f48edef4a487b7b5b1b879df5136c57336",
       "semanticAssertion": "Swap requests the reverse canonical pair and current restores the server target"
     },
     {
@@ -53,7 +53,7 @@
       "route": "/chronicles/tideglass-passage-fixture/compare",
       "state": "MULTIPLE_HISTORY",
       "viewport": "1440x900",
-      "sha256": "acf3d4341e327b1bf478019fec3e2bf5f999bfff31b3dee323669d02b4ce036f",
+      "sha256": "965aebf1172ff857cd5ca9d03e4b6ff669e9eb59c43ff9d3ef6a6e496ccb8c1c",
       "semanticAssertion": "Each historical Voyage remains independently selectable"
     },
     {
@@ -69,7 +69,7 @@
       "route": "/studio/tales/tg3-chronicle-passage/versions",
       "state": "CREATOR_FULL",
       "viewport": "1440x900",
-      "sha256": "818daa71a5a5097d7437502ee4d041084fdde5d246b389c6cd60a66894a82005",
+      "sha256": "68e28dfc3eb1b6ec7298587808031a8c0f6767ec4ef72f0b2482b09d70472f7d",
       "semanticAssertion": "Studio renders semantic branch, ending, Captain, caption, compatibility, and annotation records rather than a raw diff"
     },
     {

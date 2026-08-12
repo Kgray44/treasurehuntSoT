@@ -13,6 +13,49 @@ const labels: Record<SupportAccessScope, string> = {
 };
 const scopes = Object.keys(labels) as SupportAccessScope[];
 
+type ProjectionField = Readonly<{ label: string; value: string }>;
+
+function projectionFields(value: unknown, prefix = "", fields: ProjectionField[] = []): ProjectionField[] {
+  if (fields.length >= 80) return fields;
+  if (value === null || value === undefined) {
+    fields.push({ label: prefix || "Result", value: "Not available" });
+    return fields;
+  }
+  if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+    fields.push({ label: prefix || "Result", value: String(value) });
+    return fields;
+  }
+  if (Array.isArray(value)) {
+    if (!value.length) fields.push({ label: prefix || "Result", value: "None" });
+    value.forEach((item, index) => projectionFields(item, `${prefix || "Result"} ${index + 1}`, fields));
+    return fields;
+  }
+  if (typeof value === "object") {
+    Object.entries(value).forEach(([key, item]) => projectionFields(item, prefix ? `${prefix} · ${key}` : key, fields));
+    return fields;
+  }
+  fields.push({ label: prefix || "Result", value: "Unavailable" });
+  return fields;
+}
+
+function SupportProjection({ value }: { value: unknown }) {
+  const fields = projectionFields(value);
+  return (
+    <section className="chartroom-projection" aria-labelledby="approved-support-projection-title">
+      <h4 id="approved-support-projection-title">Approved support projection</h4>
+      <dl>
+        {fields.map((field, index) => (
+          <div key={`${field.label}-${index}`}>
+            <dt>{field.label}</dt>
+            <dd>{field.value}</dd>
+          </div>
+        ))}
+      </dl>
+      {fields.length >= 80 ? <p>Additional approved fields are not shown in this view.</p> : null}
+    </section>
+  );
+}
+
 export function DossierSupportPanel({
   targetAccountId,
   csrfToken,
@@ -186,7 +229,7 @@ export function DossierSupportPanel({
           <button type="submit" disabled={busy}>
             Read approved category
           </button>
-          {projection ? <pre className="chartroom-projection">{JSON.stringify(projection, null, 2)}</pre> : null}
+          {projection ? <SupportProjection value={projection} /> : null}
         </form>
       ) : null}
     </div>

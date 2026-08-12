@@ -91,7 +91,7 @@ function writeCsv(name, headers, records) {
 
 function sourceOwner(source) {
   if (
-    source.pathPattern === "/admin" ||
+    source.pathPattern.startsWith("/admin") ||
     source.pathPattern.startsWith("/api/admin") ||
     source.pathPattern === "/account/support-access" ||
     source.pathPattern.startsWith("/api/account/support")
@@ -107,7 +107,7 @@ function sourceOwner(source) {
 
 function sourceProductArea(source) {
   if (
-    source.pathPattern === "/admin" ||
+    source.pathPattern.startsWith("/admin") ||
     source.pathPattern.startsWith("/api/admin") ||
     source.pathPattern === "/account/support-access" ||
     source.pathPattern.startsWith("/api/account/support")
@@ -171,6 +171,8 @@ for (const source of [...pages, ...handlers]) {
     existingBySource.set(source.sourceFile, route);
   }
   route.routePattern = source.pathPattern;
+  route.ownerProject = sourceOwner(source);
+  route.productArea = sourceProductArea(source);
   // Phase 5 originally emitted CURRENT_GOVERNED for newly discovered pages,
   // but that value is not part of the canonical route-maturity vocabulary.
   // Normalize the two historical records through this generator so reruns

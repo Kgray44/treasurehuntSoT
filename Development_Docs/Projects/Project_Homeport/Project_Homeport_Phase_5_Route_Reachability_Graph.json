@@ -2652,13 +2652,13 @@
       ]
     }
   ],
-  "nodeRegistryDigest": "c78e0db57b0c11137dce636fd1cd449365440a2e3062e5a0da42d6af3065d22b",
-  "edgeRegistryDigest": "2516c056b7a8942a573ad8830cae90850f4e701e7b39217997a33eccd369d564",
+  "nodeRegistryDigest": "e79f004d4742afd0ca2cc675c1b0aebfe3a0327179fa963bed4fd7161b30091a",
+  "edgeRegistryDigest": "bc04ad9659b9c92c9f89944ce3d40d39ed7b84673bd9247f09c8d83bb35cf911",
   "summary": {
-    "discoveredPageSources": 95,
+    "discoveredPageSources": 109,
     "discoveredServiceSources": 231,
-    "nodeCount": 95,
-    "edgeCount": 178,
+    "nodeCount": 109,
+    "edgeCount": 206,
     "ordinaryRouteCount": 44,
     "contextualRouteCount": 28,
     "tokenizedRouteCount": 8,

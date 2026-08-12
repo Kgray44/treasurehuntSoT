@@ -6,7 +6,7 @@
   "status": "CANDIDATE_FROZEN_PENDING_OWNER_WALKTHROUGH",
   "originalBaseSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
   "baseSha": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
-  "reconciledOriginMainSha": "191a964488d0df71f8dcb91c5b8372fc73b6b32e",
+  "reconciledOriginMainSha": "4edc8de5e30e9748700c19b466061f9b9a97f268",
   "branch": "codex/project-tideglass-phase3-choose-the-passage",
   "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-tideglass-phase3-choose-the-passage",
   "concurrencyClass": ["B"],
@@ -15,10 +15,10 @@
   "mysqlMigration": null,
   "ordinaryNavigationImpact": "NEW_DISCOVERABLE_COMPARISON_JOURNEY",
   "phase2IntegratedMainSha": "3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3",
-  "phase2AncestryVerifiedAgainst": "191a964488d0df71f8dcb91c5b8372fc73b6b32e",
+  "phase2AncestryVerifiedAgainst": "4edc8de5e30e9748700c19b466061f9b9a97f268",
   "integrationRule": "Independent mainline-safe phase reconciled to current main. Do not stack Phase 4 or consume unaccepted Wakebook source; preserve accepted Shipwright and Helm surfaces through their narrow Tideglass seams.",
   "registeredAt": "2026-08-12",
   "reopenedReason": "The initial candidate lacked a repository-backed fixture and did not exercise the full governed Phase 3 state matrix. It was superseded before owner walkthrough or authority dispatch.",
-  "candidateEvidence": "Reconciled source 4fb937434e6df893bead908cfaa8b2618f6429d6 has a task-owned fixture receipt and source-bound ten-capture visual manifest. No owner acceptance or authority decision is represented here.",
+  "candidateEvidence": "Reconciled source 4d7d7f5908e28275ed5e9b12d5addbe6973f9abb has a task-owned fixture receipt and source-bound ten-capture visual manifest. No owner acceptance or authority decision is represented here.",
   "nextGate": "Present the sealed candidate for canonical owner walkthrough acceptance. Only then may the one Sounding Line Mainline Decision be dispatched."
 }

@@ -11,14 +11,14 @@ last_reviewed: 2026-08-12
 Status: `CANDIDATE_FROZEN_PENDING_OWNER_WALKTHROUGH`.
 
 The reconciled product source is
-`4fb937434e6df893bead908cfaa8b2618f6429d6`, rebased on accepted main
-`191a964488d0df71f8dcb91c5b8372fc73b6b32e`. Phase 2's accepted merge
+`4d7d7f5908e28275ed5e9b12d5addbe6973f9abb`, rebased on accepted main
+`4edc8de5e30e9748700c19b466061f9b9a97f268`. Phase 2's accepted merge
 `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3` is an ancestor of that mainline.
 
 | Evidence                                                  | Result                                                      | Boundary                                                                                                                                         |
 | --------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `npm run tideglass:phase3:validate`                       | PASS                                                        | Source-contract validation; no release authority dispatched.                                                                                     |
-| Focused Tideglass, Passport, navigation, and Studio tests | PASS: 46 tests / 10 files                                   | Development verification of the passage, history ownership, semantic Studio cutover, return safety, performance, and component behavior.         |
+| Focused Tideglass, Passport, navigation, and Studio tests | PASS: 138 tests / 19 files                                  | Development verification of the passage, history ownership, semantic Studio cutover, return safety, performance, and component behavior.         |
 | `npm run db:generate && npx tsc --noEmit`                 | PASS                                                        | Generated Prisma client refreshed for accepted Drydock schema; no Prisma schema or migration changed.                                            |
 | `npm run tideglass:phase3:journeys`                       | PASS: real production build plus visible-entry journeys A-J | Task-owned synthetic SQLite, one isolated Chromium worker, mobile, keyboard, effective 200% zoom, reduced motion, and Axe serious/critical zero. |
 

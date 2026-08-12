@@ -47,6 +47,20 @@ export const knownPagePatterns = [
   "/account/sessions",
   "/account/support-access",
   "/admin",
+  "/admin/audit",
+  "/admin/chronicles",
+  "/admin/chronicles/[chronicleId]",
+  "/admin/community",
+  "/admin/community/[listingId]",
+  "/admin/configuration",
+  "/admin/investigate",
+  "/admin/operations",
+  "/admin/people",
+  "/admin/people/[accountId]",
+  "/admin/providers",
+  "/admin/releases",
+  "/admin/voyages",
+  "/admin/voyages/[voyageId]",
   "/captain",
   "/captain/invitations",
   "/captain/library",
@@ -124,6 +138,10 @@ export const knownPagePatterns = [
 ];
 
 const contextualRoutes = new Set([
+  "/admin/chronicles/[chronicleId]",
+  "/admin/community/[listingId]",
+  "/admin/people/[accountId]",
+  "/admin/voyages/[voyageId]",
   "/captain/sessions/[sessionId]",
   "/captain/tales/[taleId]",
   "/captain/voyages/[playthroughId]/player-preview",
@@ -189,6 +207,7 @@ const developmentRoutes = new Set(["/dev/animations"]);
 
 export function classificationForPath(pathPattern) {
   if (!knownPagePatterns.includes(pathPattern)) throw new Error(`UNCLASSIFIED_PAGE_ROUTE:${pathPattern}`);
+  if (pathPattern === "/admin" || pathPattern.startsWith("/admin/")) return "PRIVILEGED_DIRECT_ENTRY";
   if (contextualRoutes.has(pathPattern)) return "CONTEXTUAL_DYNAMIC";
   if (tokenizedRoutes.has(pathPattern)) return "TOKENIZED_DEEP_LINK";
   if (authCompatibilityRoutes.has(pathPattern)) return "AUTH_COMPATIBILITY_ALIAS";
@@ -209,6 +228,20 @@ const parentOverrides = {
   "/account/profile/view": "/account/profile",
   "/account/reactivate": "/sign-in",
   "/admin": "/",
+  "/admin/audit": "/admin",
+  "/admin/chronicles": "/admin",
+  "/admin/chronicles/[chronicleId]": "/admin/chronicles",
+  "/admin/community": "/admin",
+  "/admin/community/[listingId]": "/admin/community",
+  "/admin/configuration": "/admin",
+  "/admin/investigate": "/admin",
+  "/admin/operations": "/admin",
+  "/admin/people": "/admin",
+  "/admin/people/[accountId]": "/admin/people",
+  "/admin/providers": "/admin",
+  "/admin/releases": "/admin",
+  "/admin/voyages": "/admin",
+  "/admin/voyages/[voyageId]": "/admin/voyages",
   "/captain": "/",
   "/captain/invitations": "/captain/library",
   "/captain/library": "/",
@@ -279,6 +312,7 @@ const canonicalOverrides = {
 
 function defaultParent(pathPattern) {
   if (Object.hasOwn(parentOverrides, pathPattern)) return parentOverrides[pathPattern];
+  if (pathPattern.startsWith("/admin/")) return "/admin";
   if (pathPattern.startsWith("/account/")) return "/account";
   if (pathPattern.startsWith("/passport/")) return "/passport";
   if (pathPattern.startsWith("/community/")) return "/community";
@@ -290,6 +324,7 @@ function defaultParent(pathPattern) {
 function authenticationFor(pathPattern, classification) {
   if (classification === "TOKENIZED_DEEP_LINK") return "BOUNDED_TOKEN_OR_CODE";
   if (classification === "PRIVILEGED_DIRECT_ENTRY") return "AUTHENTICATED_CAPABILITY_REQUIRED";
+  if (pathPattern.startsWith("/admin/")) return "AUTHENTICATED_CAPABILITY_REQUIRED";
   if (pathPattern === "/community/moderation" || pathPattern === "/community/moderation/[id]")
     return "AUTHENTICATED_CAPABILITY_REQUIRED";
   if (pathPattern.startsWith("/community/voyage-logs/owner") || pathPattern.endsWith("/consent"))
@@ -306,7 +341,7 @@ function authenticationFor(pathPattern, classification) {
 }
 
 function capabilitiesFor(pathPattern) {
-  if (pathPattern === "/admin") return ["PLATFORM_OBSERVE"];
+  if (pathPattern === "/admin" || pathPattern.startsWith("/admin/")) return ["PLATFORM_OBSERVE"];
   if (pathPattern === "/community/moderation" || pathPattern === "/community/moderation/[id]") return ["MODERATOR"];
   if (pathPattern === "/studio/private-content/operations") return ["ADMINISTRATOR"];
   if (pathPattern.startsWith("/community/voyage-logs/owner") || pathPattern.endsWith("/consent")) return ["PLAYER"];
@@ -318,7 +353,7 @@ function capabilitiesFor(pathPattern) {
 }
 
 function navigationOwnerFor(pathPattern) {
-  if (pathPattern === "/admin") return "PRIVILEGED_DIRECT_ENTRY";
+  if (pathPattern === "/admin" || pathPattern.startsWith("/admin/")) return "PRIVILEGED_DIRECT_ENTRY";
   if (pathPattern === "/") return "GLOBAL";
   if (pathPattern.startsWith("/account") || pathPattern.startsWith("/passport")) return "PERSONAL_HARBOR_SECTION";
   if (pathPattern.startsWith("/community")) return "COMMUNITY_DISTRICT_OR_CONTEXT";
@@ -337,6 +372,20 @@ function navigationOwnerFor(pathPattern) {
 }
 
 const dynamicSourceIds = {
+  "/admin/audit": ["source-admiralty-navigation"],
+  "/admin/chronicles": ["source-admiralty-navigation"],
+  "/admin/chronicles/[chronicleId]": ["source-admiralty-chronicle-results"],
+  "/admin/community": ["source-admiralty-navigation"],
+  "/admin/community/[listingId]": ["source-admiralty-community-results"],
+  "/admin/configuration": ["source-admiralty-navigation"],
+  "/admin/investigate": ["source-admiralty-navigation"],
+  "/admin/operations": ["source-admiralty-navigation"],
+  "/admin/people": ["source-admiralty-navigation"],
+  "/admin/people/[accountId]": ["source-admiralty-people-results"],
+  "/admin/providers": ["source-admiralty-navigation"],
+  "/admin/releases": ["source-admiralty-navigation"],
+  "/admin/voyages": ["source-admiralty-navigation"],
+  "/admin/voyages/[voyageId]": ["source-admiralty-voyage-results"],
   "/captain/sessions/[sessionId]": ["source-captain-library-voyages"],
   "/captain/tales/[taleId]": ["source-captain-library-chronicles"],
   "/captain/voyages/[playthroughId]/player-preview": ["source-captain-library-preview"],
@@ -417,6 +466,174 @@ export function nodePolicy(pathPattern, base = {}) {
 }
 
 export const dynamicSources = [
+  [
+    "source-admiralty-navigation",
+    "/admin/audit",
+    "/admin",
+    "src/components/admiralty/AdmiraltyShell.tsx",
+    "navigation",
+    "Chartroom section",
+    "Open an authorized Admiralty section",
+    "PLATFORM_OBSERVE",
+    "PRIVATE",
+    "synthetic-admiralty-operator",
+  ],
+  [
+    "source-admiralty-navigation",
+    "/admin/chronicles",
+    "/admin",
+    "src/components/admiralty/AdmiraltyShell.tsx",
+    "navigation",
+    "Chronicles",
+    "Open the authorized Chronicle register",
+    "PLATFORM_OBSERVE",
+    "PRIVATE",
+    "synthetic-admiralty-operator",
+  ],
+  [
+    "source-admiralty-chronicle-results",
+    "/admin/chronicles/[chronicleId]",
+    "/admin/chronicles",
+    "src/app/admin/chronicles/page.tsx",
+    "/admin/chronicles/${chronicle.id}",
+    "Chronicle result",
+    "Open an authorized Chronicle dossier",
+    "PLATFORM_OBSERVE",
+    "PRIVATE",
+    "synthetic-admiralty-chronicle",
+  ],
+  [
+    "source-admiralty-navigation",
+    "/admin/community",
+    "/admin",
+    "src/components/admiralty/AdmiraltyShell.tsx",
+    "navigation",
+    "Community",
+    "Open the authorized Community register",
+    "PLATFORM_OBSERVE",
+    "PRIVATE",
+    "synthetic-admiralty-operator",
+  ],
+  [
+    "source-admiralty-community-results",
+    "/admin/community/[listingId]",
+    "/admin/community",
+    "src/app/admin/community/page.tsx",
+    "/admin/community/${listing.id}",
+    "Community result",
+    "Open an authorized Community dossier",
+    "PLATFORM_OBSERVE",
+    "PRIVATE",
+    "synthetic-admiralty-community",
+  ],
+  [
+    "source-admiralty-navigation",
+    "/admin/configuration",
+    "/admin",
+    "src/components/admiralty/AdmiraltyShell.tsx",
+    "navigation",
+    "Configuration",
+    "Open authorized configuration status",
+    "PLATFORM_OBSERVE",
+    "PRIVATE",
+    "synthetic-admiralty-operator",
+  ],
+  [
+    "source-admiralty-navigation",
+    "/admin/investigate",
+    "/admin",
+    "src/components/admiralty/AdmiraltyShell.tsx",
+    "navigation",
+    "Investigate",
+    "Open authorized investigation tools",
+    "PLATFORM_OBSERVE",
+    "PRIVATE",
+    "synthetic-admiralty-operator",
+  ],
+  [
+    "source-admiralty-navigation",
+    "/admin/operations",
+    "/admin",
+    "src/components/admiralty/AdmiraltyShell.tsx",
+    "navigation",
+    "Operations",
+    "Open authorized operations status",
+    "PLATFORM_OBSERVE",
+    "PRIVATE",
+    "synthetic-admiralty-operator",
+  ],
+  [
+    "source-admiralty-navigation",
+    "/admin/people",
+    "/admin",
+    "src/components/admiralty/AdmiraltyShell.tsx",
+    "navigation",
+    "People",
+    "Open the authorized People register",
+    "PLATFORM_OBSERVE",
+    "PRIVATE",
+    "synthetic-admiralty-operator",
+  ],
+  [
+    "source-admiralty-people-results",
+    "/admin/people/[accountId]",
+    "/admin/people",
+    "src/app/admin/people/page.tsx",
+    "/admin/people/${account.id}",
+    "Person result",
+    "Open an authorized Person dossier",
+    "PLATFORM_OBSERVE",
+    "PRIVATE",
+    "synthetic-admiralty-person",
+  ],
+  [
+    "source-admiralty-navigation",
+    "/admin/providers",
+    "/admin",
+    "src/components/admiralty/AdmiraltyShell.tsx",
+    "navigation",
+    "Providers",
+    "Open authorized provider status",
+    "PLATFORM_OBSERVE",
+    "PRIVATE",
+    "synthetic-admiralty-operator",
+  ],
+  [
+    "source-admiralty-navigation",
+    "/admin/releases",
+    "/admin",
+    "src/components/admiralty/AdmiraltyShell.tsx",
+    "navigation",
+    "Releases",
+    "Open authorized release status",
+    "PLATFORM_OBSERVE",
+    "PRIVATE",
+    "synthetic-admiralty-operator",
+  ],
+  [
+    "source-admiralty-navigation",
+    "/admin/voyages",
+    "/admin",
+    "src/components/admiralty/AdmiraltyShell.tsx",
+    "navigation",
+    "Voyages",
+    "Open the authorized Voyage register",
+    "PLATFORM_OBSERVE",
+    "PRIVATE",
+    "synthetic-admiralty-operator",
+  ],
+  [
+    "source-admiralty-voyage-results",
+    "/admin/voyages/[voyageId]",
+    "/admin/voyages",
+    "src/app/admin/voyages/page.tsx",
+    "/admin/voyages/${voyage.id}",
+    "Voyage result",
+    "Open an authorized Voyage dossier",
+    "PLATFORM_OBSERVE",
+    "PRIVATE",
+    "synthetic-admiralty-voyage",
+  ],
   [
     "source-captain-library-voyages",
     "/captain/sessions/[sessionId]",
@@ -779,7 +996,25 @@ export const dynamicSources = [
   }),
 );
 
+const admiraltyEntryBindings = [
+  ["edge-admiralty-audit", "SECTION_NAV", "/admin", "/admin/audit", "admiralty-audit", "Audit", "src/components/admiralty/AdmiraltyShell.tsx", "/admin/audit", "AUTHENTICATED", ["PLATFORM_OBSERVE"]],
+  ["edge-admiralty-chronicles", "SECTION_NAV", "/admin", "/admin/chronicles", "admiralty-chronicles", "Chronicles", "src/components/admiralty/AdmiraltyShell.tsx", "/admin/chronicles", "AUTHENTICATED", ["PLATFORM_OBSERVE"]],
+  ["edge-admiralty-chronicle-detail", "LIST_DETAIL", "/admin/chronicles", "/admin/chronicles/[chronicleId]", "admiralty-chronicle-detail", "Open Chronicle dossier", "src/app/admin/chronicles/page.tsx", "/admin/chronicles/${chronicle.id}", "AUTHENTICATED", ["PLATFORM_OBSERVE"]],
+  ["edge-admiralty-community", "SECTION_NAV", "/admin", "/admin/community", "admiralty-community", "Community", "src/components/admiralty/AdmiraltyShell.tsx", "/admin/community", "AUTHENTICATED", ["PLATFORM_OBSERVE"]],
+  ["edge-admiralty-community-detail", "LIST_DETAIL", "/admin/community", "/admin/community/[listingId]", "admiralty-community-detail", "Open Community dossier", "src/app/admin/community/page.tsx", "/admin/community/${listing.id}", "AUTHENTICATED", ["PLATFORM_OBSERVE"]],
+  ["edge-admiralty-configuration", "SECTION_NAV", "/admin", "/admin/configuration", "admiralty-configuration", "Configuration", "src/components/admiralty/AdmiraltyShell.tsx", "/admin/configuration", "AUTHENTICATED", ["PLATFORM_OBSERVE"]],
+  ["edge-admiralty-investigate", "SECTION_NAV", "/admin", "/admin/investigate", "admiralty-investigate", "Investigate", "src/components/admiralty/AdmiraltyShell.tsx", "/admin/investigate", "AUTHENTICATED", ["PLATFORM_OBSERVE"]],
+  ["edge-admiralty-operations", "SECTION_NAV", "/admin", "/admin/operations", "admiralty-operations", "Operations", "src/components/admiralty/AdmiraltyShell.tsx", "/admin/operations", "AUTHENTICATED", ["PLATFORM_OBSERVE"]],
+  ["edge-admiralty-people", "SECTION_NAV", "/admin", "/admin/people", "admiralty-people", "People", "src/components/admiralty/AdmiraltyShell.tsx", "/admin/people", "AUTHENTICATED", ["PLATFORM_OBSERVE"]],
+  ["edge-admiralty-person-detail", "LIST_DETAIL", "/admin/people", "/admin/people/[accountId]", "admiralty-person-detail", "Open Person dossier", "src/app/admin/people/page.tsx", "/admin/people/${account.id}", "AUTHENTICATED", ["PLATFORM_OBSERVE"]],
+  ["edge-admiralty-providers", "SECTION_NAV", "/admin", "/admin/providers", "admiralty-providers", "Providers", "src/components/admiralty/AdmiraltyShell.tsx", "/admin/providers", "AUTHENTICATED", ["PLATFORM_OBSERVE"]],
+  ["edge-admiralty-releases", "SECTION_NAV", "/admin", "/admin/releases", "admiralty-releases", "Releases", "src/components/admiralty/AdmiraltyShell.tsx", "/admin/releases", "AUTHENTICATED", ["PLATFORM_OBSERVE"]],
+  ["edge-admiralty-voyages", "SECTION_NAV", "/admin", "/admin/voyages", "admiralty-voyages", "Voyages", "src/components/admiralty/AdmiraltyShell.tsx", "/admin/voyages", "AUTHENTICATED", ["PLATFORM_OBSERVE"]],
+  ["edge-admiralty-voyage-detail", "LIST_DETAIL", "/admin/voyages", "/admin/voyages/[voyageId]", "admiralty-voyage-detail", "Open Voyage dossier", "src/app/admin/voyages/page.tsx", "/admin/voyages/${voyage.id}", "AUTHENTICATED", ["PLATFORM_OBSERVE"]],
+];
+
 export const entryBindings = [
+  ...admiraltyEntryBindings,
   [
     "edge-global-explore",
     "GLOBAL_NAV",

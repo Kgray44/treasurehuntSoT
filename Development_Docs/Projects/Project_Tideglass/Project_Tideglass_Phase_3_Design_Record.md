@@ -15,7 +15,7 @@ Phase 3 creates the ordinary, discoverable **What Changed?** experience over the
 | Item                                      | Frozen value                                                                                                                                              |
 | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Initial implementation `origin/main` base | `54e3d818d49d45282a9c419d562d4b5c78911ccd`                                                                                                                |
-| Current reconciled `origin/main`          | `191a964488d0df71f8dcb91c5b8372fc73b6b32e`                                                                                                                |
+| Current reconciled `origin/main`          | `4edc8de5e30e9748700c19b466061f9b9a97f268`                                                                                                                |
 | Dedicated branch                          | `codex/project-tideglass-phase3-choose-the-passage`                                                                                                       |
 | Dedicated worktree                        | `C:\Users\kkids\Documents\treasurehuntSoT-tideglass-phase3-choose-the-passage`                                                                            |
 | Phase 2 status and ancestry               | `ACCEPTED_MAINLINE`; integrated `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3` is an ancestor of the reconciled current main                                  |
@@ -50,10 +50,12 @@ The canonical ordinary route is `/chronicles/[taleSlug]/compare`. Its bounded qu
 ## Reconciliation to current main
 
 The current-main interval from `54e3d818d49d45282a9c419d562d4b5c78911ccd` to
-`191a964488d0df71f8dcb91c5b8372fc73b6b32e` includes accepted Helm operational
-work, Drydock Phase 3 Sea Trials, Bridgewatch records, and generated catalog
-updates. The direct overlap was Shipwright's accepted `TaleEditor`, shared Studio
-styles, changelog/status documents, and generated Feature Catalog. The
+`4edc8de5e30e9748700c19b466061f9b9a97f268` additionally includes accepted
+Admiralty Phase 2 Chartroom work, its navigation and Sounding Line reconciliation
+repairs, alongside accepted Helm operational work, Drydock Phase 3 Sea Trials,
+Bridgewatch records, and generated catalog updates. The direct overlap was
+Shipwright's accepted `TaleEditor`, shared Studio styles, changelog/status
+documents, and generated Feature Catalog. The
 reconciliation retained the accepted Drydock Studio import and editor behavior,
 kept Tideglass's narrow `TideglassStudioComparison` consumer, retained both
 truthful branch-status statements, and regenerated the catalog. It neither

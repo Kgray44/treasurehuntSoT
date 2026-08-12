@@ -37,7 +37,7 @@ Before the manifest can become a completion receipt: the candidate must be recon
 
 ## Reconciled-main result
 
-The branch is rebased on `191a964488d0df71f8dcb91c5b8372fc73b6b32e`. The current
+The branch is rebased on `4edc8de5e30e9748700c19b466061f9b9a97f268`. The current
 accepted Shipwright/Drydock Studio surface was retained while the Tideglass
 semantic component stayed the only edition-comparison consumer. Wakebook remains
 unmerged and is not consumed. The accepted Helm surface has no edition-comparison
