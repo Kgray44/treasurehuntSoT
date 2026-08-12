@@ -191,7 +191,7 @@ test("governed adapters use fixed argument arrays and retain bounded receipts", 
     assert.throws(() => resolveVitestAdapter(["../outside.test.ts"]), /repository-relative/i);
     const bridgewatch = resolveVitestAdapter(["bridgewatch/test/sounding-line.test.ts"]);
     assert.equal(bridgewatch.workingDirectory, "bridgewatch");
-    assert.deepEqual(bridgewatch.command.slice(1, 3), ["node_modules/vitest/vitest.mjs", "run"]);
+    assert.deepEqual(bridgewatch.command.slice(1, 3), ["../node_modules/vitest/vitest.mjs", "run"]);
     assert.deepEqual(bridgewatch.command.slice(-1), ["test/sounding-line.test.ts"]);
     const result = await executeProductAdapter(run, resolveAdapter("policy"), { cwd: process.cwd() });
     assert.equal(result.status, "PASS");
