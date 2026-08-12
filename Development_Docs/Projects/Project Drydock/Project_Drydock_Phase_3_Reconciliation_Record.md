@@ -109,3 +109,23 @@ fragment was added. This is a terminal candidate evidence failure, not
 protected integration or an exact-main claim. It returns the phase to the
 smallest focused Feature Catalog test before any replacement candidate can be
 requalified and frozen.
+
+## r5 current-main verification and replacement freeze
+
+The focused repair updates the Feature Catalog stable-count expectation from 45
+to 46 and asserts that the Phase 3 `FT-036` branch-complete entry belongs to
+Project Drydock Phase 3. On recovery commit
+`6a5d66e23e1793afb60bcafc16f723661798d68e`, the direct Catalog suite passed
+9/9; Drydock passed 33 files / 196 tests; Studio/API passed 6 files / 14 tests;
+both SQLite migration rehearsals passed at 59 migrations with static MySQL
+parity; policy, both Prisma schemas, generated client, typecheck, static,
+Sounding Line runtime, production build, documentation, and Feature Catalog
+validation all passed.
+
+Immediately before this r5 freeze, fetched `origin/main` was still
+`5735d43821209adb2259ec2c38979281da1bb5b9`, and the recovery branch remained
+a strict descendant. No current-main advance or conflict reconciliation was
+required. The next commit is frozen under tag
+`project-drydock-phase3-candidate-20260812-r5` and may receive one explicit
+Mainline Decision only after serialized canonical acceptance ownership is
+acquired.

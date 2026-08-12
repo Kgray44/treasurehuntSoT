@@ -5,7 +5,7 @@
   "phase": 3,
   "phaseName": "Run Sea Trials",
   "phaseId": "project-drydock-phase-3-run-sea-trials",
-  "state": "RETURNED_TO_FOCUSED_DEVELOPMENT_AFTER_R4_EVIDENCE_INVALID",
+  "state": "CANDIDATE_FROZEN_PENDING_CANONICAL_ACCEPTANCE",
   "branch": "codex/project-drydock-phase3-run-sea-trials",
   "worktree": {
     "ownership": "TASK_OWNED",
@@ -156,6 +156,22 @@
         "record": "Project_Drydock_Phase_3_Mainline_Decision_Failure_Record.md"
       },
       "acceptanceBoundary": "r4 consumed its one Mainline Decision and is terminal. A focused Feature Catalog repair, full replacement qualification, a new frozen SHA, current-main reconciliation, and a new serialized authority grant are required before another decision. Protected integration and exact-main proof remain unclaimed."
+    },
+    "replacementCandidateR5": {
+      "candidateTag": "project-drydock-phase3-candidate-20260812-r5",
+      "status": "FROZEN_PENDING_SERIALIZED_CANONICAL_ACCEPTANCE",
+      "qualifiedRecoveryCommit": "6a5d66e23e1793afb60bcafc16f723661798d68e",
+      "qualifiedBaseSha": "5735d43821209adb2259ec2c38979281da1bb5b9",
+      "baseVerification": "Fetched origin/main remains the r4-qualified base and the recovery branch is a strict descendant; no additional reconciliation or conflict resolution was needed.",
+      "qualification": [
+        "Focused Feature Catalog suite: 9/9 passed; stable audited count is 46 and FT-036 is explicitly asserted",
+        "Drydock Sea Trial suite: 33 files / 196 tests passed",
+        "Studio Scenario Lab and scenario/simulation API scope: 6 files / 14 tests passed",
+        "Phase 2 and Phase 3 SQLite migration rehearsals passed with 59 migrations and static MySQL parity",
+        "Policy, Prisma schema validation, generated client, typecheck, static validation, and Sounding Line runtime checks passed",
+        "Production build, documentation validation, and branch-complete Feature Catalog validation passed at 46 entries"
+      ],
+      "acceptanceBoundary": "This new frozen candidate may receive one explicit Mainline Decision only after serialized canonical acceptance ownership is acquired. r4 is terminal history and may not be retried; protected integration and exact-main proof remain unclaimed."
     }
   }
 }
