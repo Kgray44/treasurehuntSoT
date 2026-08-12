@@ -8,11 +8,11 @@
   "initialReconciledOriginMainSha": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
   "reconciledOriginMainSha": "5735d43821209adb2259ec2c38979281da1bb5b9",
   "phase3AcceptedMainSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
-  "productEvidenceSourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
+  "productEvidenceSourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
   "branch": "codex/project-deepwater-phase4-break-the-surface",
   "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase4",
   "schemaImpact": "DEEPWATER_PHASE4_PROOF_CONTROL_PLANE_ONLY",
-  "productSourceImpact": "NARROW_HELM_INVITATION_RESILIENCY_REPAIR",
+  "productSourceImpact": "NARROW_HELM_LAUNCH_HANDOFF_RESILIENCY_REPAIR",
   "featureCatalogImpact": "NO_CHANGE_REQUIRED",
   "expectedPhase3CapabilityCount": 55,
   "expectedCurrentCapabilityCount": 57,
@@ -49,27 +49,30 @@
   ],
   "semanticCarryForward": {
     "historicalEvidenceSourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
-    "targetEvidenceSourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
+    "targetEvidenceSourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
     "changedPathScope": [
       "bridgewatch/**",
       "scripts/sounding-line/**",
       "testing/**",
       "Development_Docs/Features/**",
       "src/components/platform/InvitationCeremony.tsx",
-      "src/components/platform/InvitationCeremony.test.tsx"
+      "src/components/platform/InvitationCeremony.test.tsx",
+      "src/components/platform/PlayerVoyageRoom.tsx",
+      "src/components/platform/PlayerVoyageRoom.test.tsx",
+      "src/app/api/play/sessions/[sessionId]/events/route.ts",
+      "src/app/api/play/sessions/[sessionId]/events/route.test.ts"
     ],
     "carriedJourneyIds": [
       "DW-P4-JRN-ACCOUNT",
       "DW-P4-JRN-PERSONAL-HARBOR",
-      "DW-P4-JRN-PLAYER",
       "DW-P4-JRN-CREATOR",
       "DW-P4-JRN-COMMUNITY",
       "DW-P4-JRN-WHOLE-PRODUCT",
       "DW-P4-JRN-VERIFICATION",
       "DW-P4-JRN-RESTRICTED-OPERATIONS"
     ],
-    "requalifiedJourneyIds": ["DW-P4-JRN-CAPTAIN", "DW-P4-JRN-BRIDGEWATCH"],
-    "rationale": "Bridgewatch Phase 2 changed its private observer surface and current Sounding Line control-plane wiring. The first hosted candidate then failed closed when the Helm invitation journey remained in its resolving state. The narrow current-source invitation retry repair is requalified through the exact Helm browser family; Bridgewatch remains rerun, while the unchanged Homeport families are retained by explicit declaration."
+    "requalifiedJourneyIds": ["DW-P4-JRN-PLAYER", "DW-P4-JRN-CAPTAIN", "DW-P4-JRN-BRIDGEWATCH"],
+    "rationale": "Bridgewatch Phase 2 changed its private observer surface and current Sounding Line control-plane wiring. The first hosted candidate failed closed when the Helm invitation journey remained in its resolving state; its bounded retry repair exposed a second hosted Helm failure after launch. The current source closes stale Player event streams and rechecks the authoritative waiting-room state as browser visibility settles. Player, Captain, and Bridgewatch are rerun; unchanged Homeport families are retained by explicit declaration."
   },
   "runtimeEvidencePath": "Development_Docs/Programs/Deepwater/evidence/phase4/Project_Deepwater_Phase_4_Runtime_Evidence.json",
   "lifecycle": {
