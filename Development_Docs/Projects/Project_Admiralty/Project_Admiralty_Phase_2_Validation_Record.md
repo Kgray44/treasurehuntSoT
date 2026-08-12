@@ -10,13 +10,15 @@ last_reviewed: 2026-08-12
 
 ## Current decision
 
-`RELEASE_GO_OWNER_WALKTHROUGH_PENDING`. Sounding Line run `31572661444`
+`REQUALIFICATION_PENDING_HELM_BROWSER_REPAIR`. Sounding Line run `31572661444`
 accepted candidate `894eaec061665c4f1b9c50bf7c84ad766551c7e5` against accepted
 `origin/main` `54e3d818d49d45282a9c419d562d4b5c78911ccd`, issuing
 `RELEASE_GO` from 38 mandatory clean receipts. This record does not claim owner
 acceptance, canonical-main integration, deployment, live-provider behavior,
 production MySQL execution, physical-device proof, or physical
-assistive-technology proof.
+assistive-technology proof. The prior release receipt is historical after the
+current Helm browser repair; its new frozen candidate requires a full
+authoritative Mainline Decision.
 
 ## Completed local evidence
 
@@ -39,12 +41,13 @@ for `894eaec...` is the release authority.
 
 ## Pending governed gate
 
-The task-owned synthetic owner walkthrough is prepared and healthy at
-`http://127.0.0.1:3794` for `894eaec...`. Its separate human decision remains
-`PENDING_OWNER_DECISION`; no local evidence substitutes for that decision.
+Requalify the repaired frozen candidate through Sounding Line. After an
+acceptable Mainline Decision, re-prepare the task-owned synthetic owner
+walkthrough and obtain its separate human decision; no local evidence
+substitutes for that decision.
 
-Canonical-main integration remains prohibited until the owner explicitly
-accepts the walkthrough and its decision is recorded.
+Canonical-main integration remains prohibited until requalification passes, the
+owner explicitly accepts the walkthrough, and that decision is recorded.
 
 ## Known truthful limits
 

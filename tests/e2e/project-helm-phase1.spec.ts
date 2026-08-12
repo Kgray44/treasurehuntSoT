@@ -192,7 +192,7 @@ async function createVoyage(
   return created;
 }
 
-async function acceptGuestInvitation(browser: Browser, link: string) {
+async function acceptGuestInvitation(browser: Browser, link: string, playthroughId: string) {
   const context = await browser.newContext();
   const page = await context.newPage();
   await page.goto(link);
@@ -203,10 +203,16 @@ async function acceptGuestInvitation(browser: Browser, link: string) {
   });
   const accept = page.getByRole("button", { name: /Accept and Join Voyage/iu });
   await expect(accept).toBeEnabled();
+  // Warm the authenticated destination before the visible acceptance handoff.
+  // The request carries no invitation credential and therefore cannot mutate
+  // membership; it prevents a first compile/refresh from aborting the
+  // canonical browser submission in long-lived isolated servers.
+  const destinationWarmup = await page.request.get(`/player/playthroughs/${playthroughId}`);
+  expect([200, 302, 303, 307, 308]).toContain(destinationWarmup.status());
   const response = page.waitForResponse(
     (candidate) => candidate.url().endsWith("/api/invitations/accept") && candidate.request().method() === "POST",
   );
-  await accept.click({ noWaitAfter: true });
+  await accept.click();
   expect((await response).status()).toBe(200);
   await expect(page).toHaveURL(/\/player\/playthroughs\//u);
   return { context, page };
@@ -354,7 +360,7 @@ test("Captain authority and ordinary Player membership remain independent throug
   await expect(playerTab).toHaveURL(new RegExp(`/player/playthroughs/${participating.playthroughId}$`, "u"));
   await assertOneAccountSession(page.context(), playerTab);
 
-  const guest = await acceptGuestInvitation(browser, participating.invitations[0]!.link);
+  const guest = await acceptGuestInvitation(browser, participating.invitations[0]!.link, participating.playthroughId);
   try {
     await page.reload();
     await beginVoyage(page, participatingName);

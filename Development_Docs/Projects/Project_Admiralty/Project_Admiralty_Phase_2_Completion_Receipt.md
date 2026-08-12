@@ -10,7 +10,7 @@ last_reviewed: 2026-08-12
 
 ## Disposition
 
-`RELEASE_GO_OWNER_WALKTHROUGH_PENDING`.
+`REQUALIFICATION_PENDING_HELM_BROWSER_REPAIR`.
 
 The read-only Chartroom implementation is reconciled with accepted
 `origin/main` at `54e3d818d49d45282a9c419d562d4b5c78911ccd` by merge
@@ -21,13 +21,17 @@ Studio assertion timing defects, each repaired on this branch. Sounding Line
 authoritatively accepted frozen candidate
 `894eaec061665c4f1b9c50bf7c84ad766551c7e5` against base
 `54e3d818d49d45282a9c419d562d4b5c78911ccd` in run `31572661444`: the
-finalizer issued `RELEASE_GO` from 38 mandatory clean receipts.
+finalizer issued `RELEASE_GO` from 38 mandatory clean receipts. That receipt is
+historical after the current narrow Helm browser repair: a destination warmup
+now prevents a first-route compile/refresh from aborting the visible invitation
+acceptance POST. The repaired frozen candidate requires a new authoritative
+Mainline Decision before the owner walkthrough can resume.
 
 The hosted `browser.admiralty` receipt passed on that candidate, alongside all
 other sealed suites, with clean runtime conformance and synthetic-only database
-isolation. The task-owned owner walkthrough is prepared and healthy at
-`http://127.0.0.1:3794`; its decision remains `PENDING_OWNER_DECISION`. This
-receipt must not be interpreted as owner acceptance or mainline availability.
+isolation. The previous task-owned owner walkthrough must be re-prepared from
+the repaired frozen candidate after its Mainline Decision. This receipt must
+not be interpreted as owner acceptance or mainline availability.
 
 ## Acceptance boundary
 
