@@ -236,7 +236,7 @@ function suite(id, name, tier, adapter, contracts, affectedPaths, parallelSafe, 
             "vitest-worker-pool",
             // These tests are database-free but import modules whose Prisma
             // client types must be generated before Vitest evaluates them.
-            ...(id === "unit.admiralty" ? ["prisma-sqlite-client"] : []),
+            ...(["unit.admiralty", "service.admiralty"].includes(id) ? ["prisma-sqlite-client"] : []),
           ],
     dependencies,
     contracts,
