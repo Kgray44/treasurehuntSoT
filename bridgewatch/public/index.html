@@ -9,7 +9,7 @@
   <body>
     <main>
       <header class="masthead">
-        <p class="eyebrow">PRIVATE / READ ONLY / PHASE 2</p>
+        <p class="eyebrow">PRIVATE / READ ONLY / KEEP THE WATCH</p>
         <h1>BRIDGEWATCH</h1>
         <p id="meta" class="meta">Loading governed observation state...</p>
       </header>
@@ -28,6 +28,18 @@
           <p>Root conditions are deliberately deduplicated.</p>
         </div>
         <div id="attention" class="attention" aria-live="polite"></div>
+      </section>
+
+      <section aria-labelledby="last-check-heading">
+        <div class="section-heading">
+          <h2 id="last-check-heading">Since last check</h2>
+          <p id="last-check-meta">Meaningful governed changes only.</p>
+        </div>
+        <div id="last-check" class="list" aria-live="polite"></div>
+        <div class="history-actions" aria-label="History interval">
+          <button type="button" data-history-window="visit">Since last visit</button>
+          <button type="button" data-history-window="12">Last 12 hours</button>
+        </div>
       </section>
 
       <section aria-labelledby="projects-heading">
@@ -91,6 +103,14 @@
         </div>
       </section>
 
+      <section aria-labelledby="branches-heading">
+        <div class="section-heading">
+          <h2 id="branches-heading">Branch health</h2>
+          <p>Ahead, behind, association, and age are context—not progress.</p>
+        </div>
+        <div id="branches" class="list"></div>
+      </section>
+
       <section aria-labelledby="pulls-heading">
         <div class="section-heading">
           <h2 id="pulls-heading">Open pull requests</h2>
@@ -105,6 +125,34 @@
           <p>One source does not stand in for another.</p>
         </div>
         <div id="sources" class="list"></div>
+      </section>
+
+      <section aria-labelledby="archive-heading">
+        <div class="section-heading">
+          <h2 id="archive-heading">Completed project archive</h2>
+          <p>Durable accepted engineering records.</p>
+        </div>
+        <div class="history-actions" aria-label="Completed project archive order">
+          <button type="button" data-archive-order="chronological">Chronological</button>
+          <button type="button" data-archive-order="name">Project name</button>
+        </div>
+        <div id="archive" class="archive" aria-live="polite"></div>
+      </section>
+
+      <section aria-labelledby="history-heading">
+        <div class="section-heading">
+          <h2 id="history-heading">Program history</h2>
+          <p>Bounded recent evidence with a durable accepted timeline.</p>
+        </div>
+        <div id="history" class="history" aria-live="polite"></div>
+      </section>
+
+      <section aria-labelledby="trends-heading">
+        <div class="section-heading">
+          <h2 id="trends-heading">All-time accepted history</h2>
+          <p>Accepted project and phase chronology only; no completion prediction.</p>
+        </div>
+        <div id="trends" class="history" aria-live="polite"></div>
       </section>
       <footer>
         Bridgewatch observes GitHub, governed project records, Sounding Line, and activity telemetry. It cannot change
