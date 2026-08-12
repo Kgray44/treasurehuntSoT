@@ -43,6 +43,10 @@ Voyage authority.
 - [Mainline Safety Contract](Project_Drydock_Phase_3_Mainline_Safety_Contract.md)
 - [Migration Reservation](Project_Drydock_Phase_3_Migration_Reservation.json)
 - [Scenario Contract](Project_Drydock_Phase_3_Scenario_Contract.md)
+- [Fault Catalog](Project_Drydock_Phase_3_Fault_Catalog.json)
+- [Runtime Fidelity Record](Project_Drydock_Phase_3_Runtime_Fidelity_Record.md)
+- [Regression Scenario Ledger](Project_Drydock_Phase_3_Regression_Scenario_Ledger.json)
+- [Test Plan](Project_Drydock_Phase_3_Test_Plan.md)
 
 ## Phase 2 records
 

@@ -23,6 +23,7 @@ type Scenario = Omit<ScenarioSummary, "scenarioId" | "createdAt"> & {
   schemaVersion: 1;
 };
 type Run = { summary: { runId: string; status: string; sourceChecksum: string; completedInputs: number }; result: { assertions?: Array<{ kind: string; passed: boolean }>; coverage?: { blockIds?: string[]; faultIds?: string[] }; traceDigest?: string }; trace: Array<{ ordinal: number; inputKind: string; status: string; intentTypes: string[]; faultIds: string[] }> };
+type Suite = { suiteId: string; title: string; sourceChecksum: string; updatedAt: string; members: Array<{ scenarioId: string; revision: number }> };
 
 const privateRequest = (csrfToken: string, init: RequestInit = {}) => ({
   ...init,
@@ -56,6 +57,8 @@ function formatJson(value: unknown) {
 export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrfToken: string }) {
   const [sourceChecksum, setSourceChecksum] = useState("");
   const [scenarios, setScenarios] = useState<ScenarioSummary[]>([]);
+  const [suites, setSuites] = useState<Suite[]>([]);
+  const [suiteTitle, setSuiteTitle] = useState("Current Sea Trial suite");
   const [scenario, setScenario] = useState<Scenario | null>(null);
   const [inputsText, setInputsText] = useState(formatJson([{ kind: "CONTINUE" }]));
   const [faultsText, setFaultsText] = useState("[]");
@@ -69,12 +72,17 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
     setLoading(true);
     setError("");
     try {
-      const response = await fetch(`/api/studio/tales/${taleId}/scenarios`, privateRequest(csrfToken));
+      const [response, suitesResponse] = await Promise.all([
+        fetch(`/api/studio/tales/${taleId}/scenarios`, privateRequest(csrfToken)),
+        fetch(`/api/studio/tales/${taleId}/scenarios/suites`, privateRequest(csrfToken)),
+      ]);
       const body = (await response.json()) as { error?: string; sourceChecksum?: string; scenarios?: ScenarioSummary[] };
+      const suitesBody = (await suitesResponse.json()) as { suites?: Suite[] };
       if (!response.ok || !body.sourceChecksum) throw new Error(body.error ?? "Sea Trial Scenarios could not be loaded.");
       const currentSourceChecksum = body.sourceChecksum;
       setSourceChecksum(currentSourceChecksum);
       setScenarios(body.scenarios ?? []);
+      setSuites(suitesResponse.ok ? suitesBody.suites ?? [] : []);
       setScenario((current) => current ?? freshScenario(currentSourceChecksum));
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Sea Trial Scenarios could not be loaded.");
@@ -161,6 +169,56 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
     }
   }
 
+  async function saveSuite() {
+    if (!sourceChecksum || !scenarios.length) {
+      setError("Save at least one current Scenario revision before creating a Suite.");
+      return;
+    }
+    setBusy("save");
+    setError("");
+    try {
+      const response = await fetch(
+        `/api/studio/tales/${taleId}/scenarios/suites`,
+        privateRequest(csrfToken, {
+          method: "POST",
+          body: JSON.stringify({
+            schemaVersion: 1,
+            id: `suite-${crypto.randomUUID()}`,
+            title: suiteTitle,
+            sourceChecksum,
+            members: scenarios.map(({ scenarioId, revision }) => ({ scenarioId, revision })),
+          }),
+        }),
+      );
+      const body = (await response.json()) as { error?: string; suite?: Suite };
+      if (!response.ok || !body.suite) throw new Error(body.error ?? "Suite could not be saved.");
+      setSuites((current) => [body.suite!, ...current.filter((item) => item.suiteId !== body.suite!.suiteId)]);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Suite could not be saved.");
+    } finally {
+      setBusy("");
+    }
+  }
+
+  async function runSuite(suite: Suite) {
+    setBusy("run");
+    setError("");
+    try {
+      const response = await fetch(
+        `/api/studio/tales/${taleId}/scenarios/suites/${encodeURIComponent(suite.suiteId)}/runs`,
+        privateRequest(csrfToken, { method: "POST", body: "{}" }),
+      );
+      const body = (await response.json()) as { error?: string; result?: { proofStatus: string; runs: Array<{ run: Run }> } };
+      if (!response.ok || !body.result) throw new Error(body.error ?? "Suite could not be run.");
+      setRun(body.result.runs.at(-1)?.run ?? null);
+      if (body.result.proofStatus !== "COMPLETE") setError("Suite completed with incomplete proof. Inspect its individual safe receipts.");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Suite could not be run.");
+    } finally {
+      setBusy("");
+    }
+  }
+
   if (loading) return <section className="editor-single-panel"><p>Opening deterministic Sea Trials…</p></section>;
   if (!scenario) return <section className="editor-single-panel"><p role="alert">{error || "Sea Trials are unavailable."}</p></section>;
 
@@ -206,6 +264,22 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
             <button onClick={() => void saveScenario()} disabled={busy !== ""}>{busy === "save" ? "Saving revision…" : "Save Scenario revision"}</button>
             <button className="brass-button" onClick={() => void runScenario()} disabled={busy !== ""}>{busy === "run" ? "Running bounded trial…" : "Save and run Sea Trial"}</button>
           </div>
+          <section className="drydock-suite-panel" aria-label="Scenario Suite controls">
+            <strong>Scenario Suites</strong>
+            <p>Save the current revisions as an ordered, source-bound regression set.</p>
+            <div>
+              <input aria-label="Scenario Suite title" value={suiteTitle} onChange={(event) => setSuiteTitle(event.target.value)} />
+              <button onClick={() => void saveSuite()} disabled={busy !== ""}>Save current revisions as Suite</button>
+            </div>
+            <ul>
+              {suites.map((suite) => (
+                <li key={suite.suiteId}>
+                  <span>{suite.title} ({suite.members.length} revisions)</span>
+                  <button onClick={() => void runSuite(suite)} disabled={busy !== ""}>Run Suite</button>
+                </li>
+              ))}
+            </ul>
+          </section>
         </div>
       </div>
       {run && (

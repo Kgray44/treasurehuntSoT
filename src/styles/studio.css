@@ -1408,6 +1408,20 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   gap: 0.75rem;
   margin-top: 1rem;
 }
+.drydock-suite-panel {
+  margin-top: 1rem;
+  border-top: 1px solid rgba(201, 169, 95, 0.24);
+  padding-top: 1rem;
+}
+.drydock-suite-panel > div,
+.drydock-suite-panel li {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  justify-content: space-between;
+}
+.drydock-suite-panel input { flex: 1; }
+.drydock-suite-panel ul { display: grid; gap: 0.4rem; margin: 0.75rem 0 0; padding: 0; list-style: none; }
 .drydock-run-receipt {
   margin-top: 1rem;
 }

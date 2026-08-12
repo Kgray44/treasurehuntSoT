@@ -11,6 +11,7 @@ describe("Drydock Scenario Lab", () => {
     const checksum = "a".repeat(64);
     const fetchMock = vi.fn()
       .mockResolvedValueOnce(response({ sourceChecksum: checksum, scenarios: [] }))
+      .mockResolvedValueOnce(response({ suites: [] }))
       .mockResolvedValueOnce(response({ scenario: { scenarioId: "scenario-1", revision: 1, sourceChecksum: checksum, title: "New deterministic sea trial", purpose: "Exercise one bounded authored path without changing a live Voyage.", tags: ["creator"], createdAt: "2026-08-12T00:00:00.000Z" } }, 201))
       .mockResolvedValueOnce(response({ run: { summary: { runId: "run-1", status: "COMPLETED", sourceChecksum: checksum, completedInputs: 1 }, result: { assertions: [] }, trace: [{ ordinal: 1, inputKind: "CONTINUE", status: "COMPLETED", intentTypes: ["blockCompleted"], faultIds: [] }] } }, 201));
     vi.stubGlobal("fetch", fetchMock);
@@ -20,9 +21,9 @@ describe("Drydock Scenario Lab", () => {
     await screen.findByRole("heading", { name: "Sea Trials" });
     fireEvent.click(screen.getByRole("button", { name: "Save and run Sea Trial" }));
 
-    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3));
-    expect(fetchMock.mock.calls[1]?.[1]).toEqual(expect.objectContaining({ method: "POST", headers: expect.objectContaining({ "x-csrf-token": "csrf-1" }) }));
-    expect(fetchMock.mock.calls[2]?.[0]).toContain("/scenarios/scenario-1/runs");
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(4));
+    expect(fetchMock.mock.calls[2]?.[1]).toEqual(expect.objectContaining({ method: "POST", headers: expect.objectContaining({ "x-csrf-token": "csrf-1" }) }));
+    expect(fetchMock.mock.calls[3]?.[0]).toContain("/scenarios/scenario-1/runs");
     expect(await screen.findByLabelText("Sea Trial receipt")).toHaveTextContent("COMPLETED");
   });
 });

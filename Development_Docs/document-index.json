@@ -2895,6 +2895,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Fault_Catalog.json",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Mainline_Safety_Contract.md",
       "record_type": "program-record",
       "status": "current",
@@ -2907,7 +2913,25 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Regression_Scenario_Ledger.json",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Runtime_Fidelity_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Scenario_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Test_Plan.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
