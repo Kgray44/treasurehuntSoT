@@ -5,6 +5,7 @@ import { advanceDrydockVirtualClock, createDrydockVirtualClock, type DrydockVirt
 import type { DrydockFaultScheduleEntry, DrydockScenario, DrydockScenarioAssertion, DrydockScenarioInput } from "@/drydock/simulation/model";
 import { createDrydockSeededRandom, type DrydockSeededRandom } from "@/drydock/simulation/random";
 import { parseDrydockScenario } from "@/drydock/simulation/schema";
+import { drydockSimulationSourceChecksum } from "@/drydock/simulation/source";
 
 export const DRYDOCK_SIMULATION_ENGINE_VERSION = "drydock-simulation-v1";
 export const ONE_VOYAGE_TRANSITION_ADAPTER_VERSION = "one-voyage-transition-v1";
@@ -203,7 +204,7 @@ export function runDrydockScenario(
   options: Readonly<{ cancelled?: () => boolean }> = {},
 ): DrydockSimulationResult {
   const scenario = parseDrydockScenario(uncheckedScenario);
-  const sourceChecksum = canonicalChecksum(snapshot);
+  const sourceChecksum = drydockSimulationSourceChecksum(snapshot);
   if (scenario.sourceChecksum !== sourceChecksum) throw new Error("Scenario source checksum is stale.");
   const enabledBlocks = enabledSnapshotBlocks(snapshot);
   const first = scenario.initialState.startBlockId
