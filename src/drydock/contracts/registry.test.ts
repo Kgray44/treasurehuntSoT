@@ -24,6 +24,11 @@ describe("Drydock block contract registry", () => {
     expect(Object.keys(drydockBlockContracts).sort()).toEqual([...drydockBlockTypeIds].sort());
     expect(serializeDrydockBlockContractRegistry()).toHaveLength(23);
     expect(studioRegistryFromDrydock().every((item) => item.schemaVersion === 2)).toBe(true);
+    expect(
+      drydockBlockContracts.setVariable.variableWrites.find(
+        (reference) => reference.fieldPath === "configuration.variableId",
+      )?.operations,
+    ).toEqual(["assign", "increment", "decrement", "toggle"]);
   });
 
   it.each(frozenBlocks)("migrates, parses, and round-trips $blockType v1 deterministically", (authored) => {
