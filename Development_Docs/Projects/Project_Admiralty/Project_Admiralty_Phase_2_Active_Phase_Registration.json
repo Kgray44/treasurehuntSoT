@@ -3,7 +3,7 @@
   "project": "Project Admiralty",
   "phase": "2",
   "phaseName": "Open the Chartroom",
-  "status": "IN_PROGRESS",
+  "status": "OWNER_ACCEPTED_MAINLINE_CANDIDATE",
   "authorization": "OWNER_PROMPT_2026-08-09",
   "branch": "codex/project-admiralty-phase2-open-the-chartroom",
   "worktree": "C:\\Users\\kgray\\AppData\\Local\\ForeverTreasureCompanion\\project-admiralty-phase2-open-the-chartroom",
@@ -35,6 +35,9 @@
   "persistentCache": "NONE",
   "ordinaryNavigationImpact": "ADMINISTRATION_SHELL_ONLY",
   "ownerWalkthroughRequired": true,
+  "ownerDecision": "ACCEPTED_2026-08-12",
+  "qualifiedOwnerObservedSha": "b32a3c961bdd4b4a743a73b7d226f6cd14db9d1c",
+  "qualifiedAuthorityRun": "31581152448",
   "phase3Authorized": false,
   "registeredAt": "2026-08-09"
 }

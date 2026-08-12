@@ -57,6 +57,7 @@ on the server.
 - [Validation record](Project_Admiralty_Phase_2_Validation_Record.md)
 - [Integration manifest](Project_Admiralty_Phase_2_Integration_Manifest.md)
 - [Completion receipt](Project_Admiralty_Phase_2_Completion_Receipt.md)
+- [Owner decision record](Project_Admiralty_Phase_2_Owner_Decision_Record.md)
 - [Owner walkthrough](walkthrough/phase2/README.md)
 
 ## Machine-readable controls
@@ -74,7 +75,7 @@ on the server.
 - `Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json`
 
 The Phase 1 owner decision is `ACCEPTED`; the accepted source is integrated on
-canonical main with verified local/remote parity. Phase 2 is separately
-authorized and remains branch-only with `PENDING_OWNER_DECISION`. Phase 1
-acceptance is not deployment or acceptance of Phase 2, and Phase 2 does not
-authorize Phase 3.
+canonical main with verified local/remote parity. The Phase 2 owner decision is
+also `ACCEPTED` for its qualified branch source and awaits its decision-record
+source-bound authority and protected merge. Neither decision is deployment, and
+Phase 2 does not authorize Phase 3.

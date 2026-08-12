@@ -10,7 +10,7 @@ last_reviewed: 2026-08-12
 
 ## Disposition
 
-`REQUALIFICATION_PENDING_HELM_BROWSER_STABILIZATION`.
+`OWNER_ACCEPTED_MAINLINE_CANDIDATE`.
 
 The read-only Chartroom implementation is reconciled with accepted
 `origin/main` at `54e3d818d49d45282a9c419d562d4b5c78911ccd` by merge
@@ -33,20 +33,21 @@ Mainline Decision is required for that repaired exact source; earlier
 `RELEASE_GO` receipts remain historical only. That retry also exposed an
 independent Sounding Line controller lost-update race: a heartbeat could
 overwrite a concurrent cancellation request. The durable run store now
-serializes updates and has a concurrent-cancellation regression test.
+serializes updates and has a concurrent-cancellation regression test. The
+combined repaired source `b32a3c961bdd4b4a743a73b7d226f6cd14db9d1c` then
+received `RELEASE_GO` in run `31581152448` against the same base, from 38
+mandatory clean receipts and zero unclean receipts.
 
 The hosted `browser.admiralty` receipt passed on that candidate, alongside all
 other sealed suites, with clean runtime conformance and synthetic-only database
-isolation. The prior task-owned owner walkthrough was stopped when its source
-became stale. It will be re-prepared only after the repaired exact source earns
-a new `RELEASE_GO`; its decision remains `PENDING_OWNER_DECISION`. This receipt
-must not be interpreted as owner acceptance or mainline availability.
+isolation. The task-owned owner walkthrough was re-prepared for `b32a3c961...`,
+and the owner accepted it on `2026-08-12`; see
+`Project_Admiralty_Phase_2_Owner_Decision_Record.md`. This receipt must not be
+interpreted as canonical-main availability until this decision-record source
+earns a fresh exact-source Mainline Decision and protected merge.
 
 ## Acceptance boundary
 
-The valid pre-owner terminal state may be reached only after the repaired exact
-source receives `RELEASE_GO`, at which point it is `PROJECT ADMIRALTY PHASE 2 —
-READY FOR OWNER WALKTHROUGH`. The owner decision will remain
-`PENDING_OWNER_DECISION` until a separate human walkthrough is recorded.
-Canonical-main integration requires that explicit acceptance and a fresh
-reconciliation. Phase 3 is not authorized.
+The owner-acceptance boundary is satisfied. Canonical-main integration now
+requires a fresh exact-source Mainline Decision for this decision record and a
+successful protected-merge binding. Phase 3 is not authorized.
