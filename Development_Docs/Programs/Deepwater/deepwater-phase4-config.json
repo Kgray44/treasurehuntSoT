@@ -6,13 +6,13 @@
   "auditDate": "2026-08-12",
   "baseOriginMainSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
   "initialReconciledOriginMainSha": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
-  "reconciledOriginMainSha": "191a964488d0df71f8dcb91c5b8372fc73b6b32e",
+  "reconciledOriginMainSha": "4edc8de5e30e9748700c19b466061f9b9a97f268",
   "phase3AcceptedMainSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
-  "productEvidenceSourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+  "productEvidenceSourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
   "branch": "codex/project-deepwater-phase4-break-the-surface",
   "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase4",
   "schemaImpact": "DEEPWATER_PHASE4_PROOF_CONTROL_PLANE_ONLY",
-  "productSourceImpact": "NARROW_HELM_LAUNCH_HANDOFF_RESILIENCY_REPAIR_AND_ACCEPTED_DRYDOCK_SEA_TRIALS_RECONCILIATION",
+  "productSourceImpact": "NARROW_HELM_LAUNCH_HANDOFF_RESILIENCY_REPAIR_WITH_ACCEPTED_DRYDOCK_AND_ADMIRALTY_RECONCILIATION",
   "featureCatalogImpact": "NO_CHANGE_REQUIRED",
   "expectedPhase3CapabilityCount": 55,
   "expectedCurrentCapabilityCount": 58,
@@ -66,7 +66,7 @@
   ],
   "semanticCarryForward": {
     "historicalEvidenceSourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
-    "targetEvidenceSourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+    "targetEvidenceSourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
     "changedPathScope": [
       "bridgewatch/**",
       "scripts/sounding-line/**",
@@ -86,18 +86,33 @@
       "prisma/migrations/20260812090000_drydock_phase3_simulation/**",
       "prisma/migrations/20260812100000_drydock_phase3_run_provenance/**",
       "prisma/mysql-migrations/0056_drydock_phase3_simulation/**",
-      "prisma/mysql-migrations/0057_drydock_phase3_run_provenance/**"
+      "prisma/mysql-migrations/0057_drydock_phase3_run_provenance/**",
+      "src/admiralty/**",
+      "src/app/admin/**",
+      "src/components/admiralty/**",
+      "src/styles/admiralty.css",
+      "src/navigation/**",
+      "src/homeport/current-user.*",
+      "src/components/auth/AccessDecisionState.tsx",
+      "scripts/admiralty/**",
+      "playwright.admiralty-phase2.config.ts",
+      "tests/e2e/admiralty-phase2.spec.ts"
     ],
     "carriedJourneyIds": [
       "DW-P4-JRN-ACCOUNT",
       "DW-P4-JRN-PERSONAL-HARBOR",
-      "DW-P4-JRN-COMMUNITY",
       "DW-P4-JRN-WHOLE-PRODUCT",
-      "DW-P4-JRN-VERIFICATION",
-      "DW-P4-JRN-RESTRICTED-OPERATIONS"
+      "DW-P4-JRN-VERIFICATION"
     ],
-    "requalifiedJourneyIds": ["DW-P4-JRN-PLAYER", "DW-P4-JRN-CAPTAIN", "DW-P4-JRN-CREATOR", "DW-P4-JRN-BRIDGEWATCH"],
-    "rationale": "Bridgewatch Phase 2 changed its private observer surface and current Sounding Line control-plane wiring. The first hosted candidate failed closed when the Helm invitation journey remained in its resolving state; its bounded retry repair exposed a second hosted Helm failure after launch. Accepted Helm Phase 2 then advanced main and invalidated that freeze. The rebased current source keeps Helm's accepted route recovery and closes stale Player event streams while rechecking the authoritative waiting-room state as browser visibility settles. Accepted Drydock Phase 3 then advanced main at 191a964488d0df71f8dcb91c5b8372fc73b6b32e and adds FT-036's Creator Studio Sea Trials surface. Player, Captain, Creator, and Bridgewatch are rerun; unchanged Homeport families are retained by explicit declaration."
+    "requalifiedJourneyIds": [
+      "DW-P4-JRN-PLAYER",
+      "DW-P4-JRN-CAPTAIN",
+      "DW-P4-JRN-CREATOR",
+      "DW-P4-JRN-COMMUNITY",
+      "DW-P4-JRN-RESTRICTED-OPERATIONS",
+      "DW-P4-JRN-BRIDGEWATCH"
+    ],
+    "rationale": "Bridgewatch Phase 2 changed its private observer surface and current Sounding Line control-plane wiring. The first hosted candidate failed closed when the Helm invitation journey remained in its resolving state; its bounded retry repair exposed a second hosted Helm failure after launch. Accepted Helm and Drydock advances each invalidated a prior freeze and required source-current qualification. Accepted Admiralty Phase 2 then advanced main at 4edc8de5e30e9748700c19b466061f9b9a97f268, expanding existing FT-B010 into a read-only cross-domain Chartroom and dossier-anchored Support Access without adding a catalog denominator entry. Player, Captain, Creator, Community, Restricted Operations, and Bridgewatch are rerun; unchanged Homeport families are retained by explicit declaration."
   },
   "runtimeEvidencePath": "Development_Docs/Programs/Deepwater/evidence/phase4/Project_Deepwater_Phase_4_Runtime_Evidence.json",
   "lifecycle": {

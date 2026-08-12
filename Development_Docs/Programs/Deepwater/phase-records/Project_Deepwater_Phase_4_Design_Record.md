@@ -22,13 +22,16 @@ failed closed as `EVIDENCE_INVALID` only in `browser.helm`. The former
 finalizers were clean, but their candidate sources cannot be reused. Accepted
 Helm Phase 2 moved main to `920d92a51a16d60a2dfe35278598e6d921be7e4c`, and
 accepted Drydock Phase 3 then protected-merged PR #52, moving main to
-`191a964488d0df71f8dcb91c5b8372fc73b6b32e`. The current product repair is
-`276d44a8605b911b62bfd88f86e7357dbe5eb7bc`, based on that current main. It
+`191a964488d0df71f8dcb91c5b8372fc73b6b32e`. Accepted Admiralty Phase 2 then
+protected-merged PR #28 at `4edc8de5e30e9748700c19b466061f9b9a97f268`. Its
+read-only Chartroom and dossier-anchored Support Access expand existing FT-B010
+without adding a Feature Catalog denominator entry. The current product repair
+is `5806ccb3d705eb04322a7be1d176d97dd6f2da9e`, based on that current main. It
 retains Helm's accepted route recovery, makes cancelled or aborted Player event
 streams detach idempotently, and rechecks the authoritative waiting-room state
-when browser visibility settles. It also reconciles current source proof for
-Drydock's Creator Studio Sea Trials without reopening Drydock implementation or
-its separately owner-controlled closure record.
+when browser visibility settles. It reconciles current source proof for
+Drydock's Creator Studio Sea Trials and Admiralty's Community and Restricted
+Operations projections without reopening either owner implementation or record.
 
 The authority stack is repository instructions, the Voyagewright Global Product
 Governance Standard, the Project Deepwater governing document, accepted
@@ -65,9 +68,9 @@ controls; direct URLs are limited to declared deep-link or negative tests.
 
 The retained Homeport families remain explicitly bound to historical source
 `b810e2d0c33cbafb8e4d02c19b9af0db94315783` through validator-enforced
-semantic carry-forward. The Player, Captain, Creator Sea Trials, and
-Bridgewatch families are rerun on current source
-`276d44a8605b911b62bfd88f86e7357dbe5eb7bc`. A sanitized runtime record may
+semantic carry-forward. The Player, Captain, Creator Sea Trials, Community,
+Restricted Operations, and Bridgewatch families are rerun on current source
+`5806ccb3d705eb04322a7be1d176d97dd6f2da9e`. A sanitized runtime record may
 contain source SHA, test references, state and accessibility outcomes,
 screenshot evidence IDs, and SHA-256 values. It may not contain credentials,
 tokens, cookies, private content, task-root paths, raw provider responses, or
