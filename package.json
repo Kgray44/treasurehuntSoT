@@ -2,6 +2,9 @@
   "name": "forever-treasure-companion",
   "version": "0.2.0",
   "private": true,
+  "workspaces": [
+    "bridgewatch"
+  ],
   "packageManager": "npm@11.9.0",
   "engines": {
     "node": ">=22.0.0"

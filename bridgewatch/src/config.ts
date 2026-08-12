@@ -18,7 +18,7 @@ const integer = (value: string | undefined, fallback: number) => {
   return parsed;
 };
 
-export function loadConfig(input = process.env): Config {
+export function loadConfig(input: Record<string, string | undefined> = process.env): Config {
   const repository = input.BRIDGEWATCH_REPOSITORY;
   if (!repository || !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repository))
     throw new Error("BRIDGEWATCH_REPOSITORY must be owner/repository");
