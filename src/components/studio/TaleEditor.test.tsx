@@ -489,6 +489,10 @@ describe("Voyagewright Studio editor motion and authority", () => {
     expect(within(palette).getByRole("button", { name: /Validate Chronicle/i })).toBeInTheDocument();
     expect(within(palette).getByRole("button", { name: /Insert Narrative/i })).toBeInTheDocument();
     expect(within(palette).queryByRole("button", { name: /new Story Block/i })).not.toBeInTheDocument();
+    fireEvent.change(within(palette).getByRole("searchbox", { name: "Search Studio commands" }), {
+      target: { value: "validate" },
+    });
+    expect(within(palette).queryByRole("button", { name: /Insert Narrative/i })).not.toBeInTheDocument();
 
     fireEvent.change(within(palette).getByRole("searchbox", { name: "Search Studio commands" }), {
       target: { value: "Validate" },
@@ -501,6 +505,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     fireEvent.keyDown(window, { key: "k", ctrlKey: true });
     const reopenedPalette = await screen.findByRole("dialog", { name: "Find an action" });
     expect(within(reopenedPalette).getByRole("searchbox", { name: "Search Studio commands" })).toHaveValue("");
+    expect(within(reopenedPalette).getByRole("button", { name: /Insert Narrative/i })).toBeInTheDocument();
   });
 
   it("keeps canvas view controls presentation-only and keyboard reachable", async () => {

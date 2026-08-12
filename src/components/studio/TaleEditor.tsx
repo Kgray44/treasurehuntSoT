@@ -2955,7 +2955,7 @@ function SortableStoryBlock({
   children,
 }: {
   id: string;
-  children: (attributes: DraggableAttributes, listeners: DraggableSyntheticListeners) => React.ReactNode;
+  children: (attributes: DraggableAttributes, listeners: DraggableSyntheticListeners | undefined) => React.ReactNode;
 }) {
   const { mode } = useMotionMode();
   const layoutMotion = resolvePlatformMotionToken("layout", mode);
