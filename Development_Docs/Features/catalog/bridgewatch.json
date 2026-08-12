@@ -3,9 +3,7 @@
     "id": "FT-034",
     "title": "Bridgewatch Development Mission Control",
     "summary": "A private, standalone, read-only development mission-control dashboard projects explicit project truth and GitHub repository state without acquiring authority over source, pull requests, tests, releases, or project completion.",
-    "status": "BRANCH_COMPLETE_NOT_MERGED",
-    "branch": "codex/project-bridgewatch-phase1-raise-the-board",
-    "commit": "8fe1d5b416d96142815b747920ed3b1556cffbf5",
+    "status": "MAINLINE",
     "program": "Project Bridgewatch Phase 1",
     "surfaces": ["bridgewatch", "GET /api/summary", "GET /api/projects", "GET /api/attention"],
     "subfeatures": [
