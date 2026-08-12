@@ -738,6 +738,9 @@ model TaleDraft {
   tale                      Chronicle              @relation(fields: [taleId], references: [id], onDelete: Cascade)
   chapters                  TaleChapter[]
   drydockValidationRuns     DrydockValidationRun[]
+  drydockScenarios          DrydockScenario[]
+  drydockScenarioSuites     DrydockScenarioSuite[]
+  drydockSimulationRuns     DrydockSimulationRun[]
   createdByAccount          UserAccount?           @relation("TaleDraftAuthorAccount", fields: [createdByAccountId], references: [id], onDelete: SetNull)
   drydockRuleWaivers        DrydockRuleWaiver[]
 
@@ -791,6 +794,104 @@ model DrydockRuleWaiver {
   @@index([draftId, createdAt])
   @@index([issueId, sourceChecksum])
   @@index([authorizedByAccountId, createdAt])
+}
+
+model DrydockScenario {
+  id              String                       @id @default(cuid())
+  draftId         String
+  scenarioId      String
+  title           String
+  currentRevision Int                          @default(1)
+  archivedAt      DateTime?
+  createdAt       DateTime                     @default(now())
+  updatedAt       DateTime                     @updatedAt
+  draft           TaleDraft                    @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  revisions       DrydockScenarioRevision[]
+  suiteMembers    DrydockScenarioSuiteMember[]
+
+  @@unique([draftId, scenarioId])
+  @@index([draftId, archivedAt, updatedAt])
+}
+
+model DrydockScenarioRevision {
+  id                    String                       @id @default(cuid())
+  scenarioRecordId      String
+  revision              Int
+  sourceChecksum        String
+  scenarioSchemaVersion Int
+  scenarioDigest        String
+  scenario              String
+  createdAt             DateTime                     @default(now())
+  scenarioRecord        DrydockScenario              @relation(fields: [scenarioRecordId], references: [id], onDelete: Cascade)
+  suiteMembers          DrydockScenarioSuiteMember[]
+  simulationRuns        DrydockSimulationRun[]
+
+  @@unique([scenarioRecordId, revision])
+  @@index([sourceChecksum, createdAt])
+}
+
+model DrydockScenarioSuite {
+  id             String                       @id @default(cuid())
+  draftId        String
+  suiteId        String
+  title          String
+  sourceChecksum String
+  archivedAt     DateTime?
+  createdAt      DateTime                     @default(now())
+  updatedAt      DateTime                     @updatedAt
+  draft          TaleDraft                    @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  members        DrydockScenarioSuiteMember[]
+
+  @@unique([draftId, suiteId])
+  @@index([draftId, archivedAt, updatedAt])
+}
+
+model DrydockScenarioSuiteMember {
+  id                 String                  @id @default(cuid())
+  suiteRecordId      String
+  scenarioRevisionId String
+  orderIndex         Int
+  createdAt          DateTime                @default(now())
+  suiteRecord        DrydockScenarioSuite    @relation(fields: [suiteRecordId], references: [id], onDelete: Cascade)
+  scenarioRevision   DrydockScenarioRevision @relation(fields: [scenarioRevisionId], references: [id], onDelete: Restrict)
+  drydockScenario    DrydockScenario?        @relation(fields: [drydockScenarioId], references: [id])
+  drydockScenarioId  String?
+
+  @@unique([suiteRecordId, scenarioRevisionId])
+  @@unique([suiteRecordId, orderIndex])
+  @@index([scenarioRevisionId])
+}
+
+model DrydockSimulationRun {
+  id                      String                   @id @default(cuid())
+  draftId                 String
+  runId                   String                   @unique
+  scenarioRevisionId      String?
+  sourceChecksum          String
+  sourceRevision          Int
+  engineVersion           String
+  adapterVersion          String
+  status                  String
+  resultDigest            String?
+  coverageDigest          String?
+  result                  String                   @default("{}")
+  trace                   String                   @default("[]")
+  checkpoint              String                   @default("{}")
+  completedInputs         Int                      @default(0)
+  cancellationRequestedAt DateTime?
+  leaseToken              String?
+  leaseExpiresAt          DateTime?
+  startedAt               DateTime                 @default(now())
+  completedAt             DateTime?
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+  draft                   TaleDraft                @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  scenarioRevision        DrydockScenarioRevision? @relation(fields: [scenarioRevisionId], references: [id], onDelete: SetNull)
+
+  @@index([draftId, createdAt])
+  @@index([sourceChecksum, status])
+  @@index([scenarioRevisionId, createdAt])
+  @@index([leaseExpiresAt])
 }
 
 model TaleChapter {

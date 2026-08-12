@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { PublishedBlock, PublishedTaleSnapshot } from "@/chronicle/types";
-import { canonicalChecksum } from "@/drydock/canonical";
+import { drydockSimulationSourceChecksum } from "@/drydock/simulation/source";
 import { runDrydockScenario } from "@/drydock/simulation/engine";
 
 const block = (id: string, blockType: string, configuration: Record<string, unknown> = {}): PublishedBlock => ({
@@ -78,7 +78,7 @@ const scenarioFor = (snapshot: PublishedTaleSnapshot) => ({
   schemaVersion: 1,
   id: "synthetic-full-family",
   revision: 1,
-  sourceChecksum: canonicalChecksum(snapshot),
+  sourceChecksum: drydockSimulationSourceChecksum(snapshot),
   title: "Synthetic deterministic sea trial",
   purpose: "Prove shared canonical transition semantics without live mutation.",
   seed: "sea-trial-seed",
