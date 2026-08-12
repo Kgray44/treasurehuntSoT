@@ -141491,9 +141491,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-e59897f7c39fde58dbb6",
+      "id": "sl-test-dd8651f5f871eb18f684",
       "title": "Captain authority and ordinary Player membership remain independent through the visible product journey",
-      "line": 306,
+      "line": 307,
       "file": "tests/e2e/project-helm-phase1.spec.ts",
       "project": "helm-phase1",
       "suiteId": "browser.helm",
@@ -141532,9 +141532,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-2b8508ca3e01ff08be08",
+      "id": "sl-test-a78ac86b785b846afd90",
       "title": "authenticated membership heartbeats are independently visible in the Captain operational projection",
-      "line": 507,
+      "line": 508,
       "file": "tests/e2e/project-helm-phase1.spec.ts",
       "project": "helm-phase1",
       "suiteId": "browser.helm",
@@ -141573,9 +141573,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-711ca71571e094e4f25c",
+      "id": "sl-test-8cb666126d5a77e54f1d",
       "title": "participation choice remains usable at desktop, tablet, phone, 200% zoom, keyboard, and reduced motion",
-      "line": 601,
+      "line": 602,
       "file": "tests/e2e/project-helm-phase1.spec.ts",
       "project": "helm-phase1",
       "suiteId": "browser.helm",

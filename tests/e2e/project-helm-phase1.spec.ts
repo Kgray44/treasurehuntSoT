@@ -224,7 +224,8 @@ async function beginVoyage(page: Page, voyageName: string) {
       /\/api\/captain\/playthroughs\/[^/]+\/launch$/u.test(response.url()) && response.request().method() === "POST",
   );
   await dialog.getByRole("button", { name: "Begin Voyage" }).click();
-  expect((await responsePromise).status()).toBe(200);
+  const response = await responsePromise;
+  expect(response.status(), await response.text()).toBe(200);
   await expect(voyageCard(page, voyageName, "Active Voyages")).toBeVisible();
 }
 
