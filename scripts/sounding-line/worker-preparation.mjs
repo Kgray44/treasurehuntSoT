@@ -8,7 +8,12 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 
 const resourceSet = (values) => new Set(Array.isArray(values) ? values : []);
-const browserAdapters = new Set(["playwright-family", "node-test-browser-family", "admiralty-phase1-browser"]);
+const browserAdapters = new Set([
+  "playwright-family",
+  "node-test-browser-family",
+  "admiralty-phase1-browser",
+  "admiralty-phase2-browser",
+]);
 const requiredByAdapter = {
   static: [],
   policy: [],

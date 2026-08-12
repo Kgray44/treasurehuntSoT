@@ -34,6 +34,14 @@ const admiraltyContracts = [
   "admiralty.phase1.registry",
   "admiralty.phase1.migration",
   "admiralty.phase1.responsive-consent",
+  "admiralty.phase2.authorization-partition",
+  "admiralty.phase2.read-projection-redaction",
+  "admiralty.phase2.account-dossier-support",
+  "admiralty.phase2.chronicle-voyage-inspection",
+  "admiralty.phase2.community-operations-providers",
+  "admiralty.phase2.audit-investigation",
+  "admiralty.phase2.registry-activation",
+  "admiralty.phase2.responsive-accessibility",
 ];
 const tideglassContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
   .contracts.map((contract) => contract.id)
@@ -93,6 +101,7 @@ function unitFamily(file) {
   if (file.startsWith("src/wakebook/") || file.includes("api/passport/voyages")) return "unit.wakebook";
   if (isHelmFile(file)) return "unit.helm";
   if (file.startsWith("src/drydock/") || file.startsWith("scripts/drydock/")) return "unit.drydock";
+  if (file === "src/admiralty/read-models.test.ts") return "service.admiralty";
   if (file.startsWith("src/admiralty/") || file.startsWith("scripts/admiralty/")) return "unit.admiralty";
   if (file.startsWith("src/tideglass/") || file.startsWith("scripts/tideglass/") || file.startsWith("tests/tideglass/"))
     return "unit.tideglass";

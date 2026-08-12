@@ -12,6 +12,15 @@ last_reviewed: 2026-08-12
 
 ### Changed
 
+- Expanded Project Admiralty on its Phase 2 review branch into a read-only
+  15-route Chartroom with authorized account-menu entry, role-filtered
+  navigation, bounded People/Chronicle/Voyage/Community search and detail,
+  operations/provider/configuration/release visibility, Audit Explorer,
+  correlation-led investigation, and dossier-anchored Phase 1 Support Access.
+  The slice adds no schema or broad mutation and remains pending reconciled
+  exact-source authority, owner walkthrough, mainline integration, and
+  deployment.
+
 - Added Project Drydock Phase 3 Sea Trials on its dedicated branch: authorized
   Creators can save immutable source-bound Scenario revisions and Suites, run
   bounded deterministic simulation with virtual time and catalogued synthetic

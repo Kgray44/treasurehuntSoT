@@ -1390,7 +1390,7 @@ The accepted server-side foundation compares exact immutable Chronicle editions,
 **Status:** MAINLINE
 **Program or subsystem:** Project Admiralty
 
-Canonical account roles, recent privileged assurance, scoped user consent, sanitized audit evidence, and a limited administration shell establish least-privileged platform operations without creating a second identity authority.
+Owner-accepted Phase 1 establishes canonical roles, recent privileged assurance, scoped user consent, and sanitized audit evidence on main. The owner-accepted Phase 2 mainline candidate expands that authority into a read-only cross-domain command center without creating a second source of truth.
 
 ### Important subfeatures
 
@@ -1403,17 +1403,23 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 - Non-revealing unauthorized admin route behavior
 - Additive SQLite and MySQL migration parity
 - Task-owned synthetic browser and owner-walkthrough runtimes
+- Phase 2 branch-only role-filtered Chartroom navigation and 15-route information architecture
+- Phase 2 branch-only bounded People, Chronicle, Voyage, and Community search and detail
+- Phase 2 branch-only operations, provider, configuration, release, audit, and correlation-led investigation projections
+- Phase 2 branch-only dossier-anchored consented Support Access
 
 ### Primary surfaces
 
-`/admin`, `/account/support-access`
+`/admin`, `/admin/people`, `/admin/chronicles`, `/admin/voyages`, `/admin/community`, `/admin/operations`, `/admin/providers`, `/admin/configuration`, `/admin/releases`, `/admin/audit`, `/admin/investigate`, `/account/support-access`
 
 ### Meaningful limitations
 
 - The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09
 - Owner-accepted Phase 1 implementation is integrated on canonical main with verified remote parity
 - Production MySQL execution, live-provider behavior, and physical assistive-technology validation remain external
-- Phase 2 and all later operational command-center capabilities remain dormant
+- The owner accepted the qualified Phase 2 walkthrough on 2026-08-12; its decision-record candidate still requires exact-source authority and canonical-main integration
+- Transactional-email delivery health and live verification-provider health are blocked by missing canonical owner contracts
+- Broad administrative mutation remains dormant for later governed phases
 - Owner acceptance does not imply deployment or acceptance of later Admiralty phases
 
 ### Evidence
@@ -1423,6 +1429,10 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 - path: `src/admiralty/support-access.ts`
 - path: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json`
 - test: `tests/e2e/admiralty-phase1.spec.ts`
+- path: `src/admiralty/read-models.ts`
+- test: `tests/e2e/admiralty-phase2.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Completion_Receipt.md`
+- completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Owner_Decision_Record.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md`
 

@@ -43,6 +43,20 @@ describe("Admiralty capability authority", () => {
     ).toMatchObject({ allowed: false, reason: "SCOPE_MISMATCH" });
   });
 
+  it("keeps the Phase 2 operator partitions least-privileged", () => {
+    const support = resolveAdmiraltyCapability([assignment("SUPPORT_OPERATOR")], "ACCOUNT_OBSERVE");
+    expect(support.allowed).toBe(true);
+    expect(resolveAdmiraltyCapability([assignment("SUPPORT_OPERATOR")], "VOYAGE_OBSERVE").allowed).toBe(false);
+
+    const operations = resolveAdmiraltyCapability([assignment("OPERATIONS_OPERATOR")], "CONTENT_OBSERVE");
+    expect(operations.allowed).toBe(true);
+    expect(resolveAdmiraltyCapability([assignment("OPERATIONS_OPERATOR")], "JOBS_OPERATE").allowed).toBe(false);
+    expect(resolveAdmiraltyCapability([assignment("OPERATIONS_OPERATOR")], "CONFIG_OPERATE").allowed).toBe(false);
+
+    expect(resolveAdmiraltyCapability([assignment("AUDIT_OPERATOR")], "AUDIT_OBSERVE").allowed).toBe(true);
+    expect(resolveAdmiraltyCapability([assignment("AUDIT_OPERATOR")], "ACCOUNT_OBSERVE").allowed).toBe(false);
+  });
+
   it("deduplicates duplicate role rows and honors an exact scoped role", () => {
     const assignments = [
       assignment("SUPPORT_OPERATOR", { scopeType: "ACCOUNT", scopeId: "account-a" }),
@@ -67,7 +81,7 @@ describe("Admiralty capability authority", () => {
     expect(() => operatorFromCanonicalSession(session as never)).toThrow("Administrative access is not available");
   });
 
-  it("validates the complete 92-entry v1.2 floor and dormant truth labels", () => {
+  it("validates the complete 92-entry v1.2 floor and Phase 2 activation overlay", () => {
     expect(validateAdmiraltyRegistry()).toEqual({ valid: true, problems: [] });
     expect(admiraltyRegistrySummary()).toMatchObject({
       total: 92,
@@ -80,6 +94,11 @@ describe("Admiralty capability authority", () => {
         AUDIT: 9,
       },
     });
-    expect(admiraltyRegistrySummary().dormant).toBeGreaterThan(0);
+    expect(admiraltyRegistrySummary()).toMatchObject({
+      implemented: 62,
+      dormant: 30,
+      phase1Implemented: 16,
+      phase2Implemented: 46,
+    });
   });
 });

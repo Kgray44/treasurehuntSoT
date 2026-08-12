@@ -399,11 +399,19 @@
         "src/app/admin/**",
         "src/app/api/admin/**",
         "src/app/api/account/support/**",
+        "src/homeport/current-user*",
+        "src/navigation/**",
         "scripts/admiralty/**",
         "prisma/migrations/20260809120000_admiralty_phase1_foundation/**",
         "prisma/mysql-migrations/0052_admiralty_phase1_foundation/**"
       ],
-      "testPaths": ["src/admiralty/**/*.test.*", "src/app/admin/**/*.test.*", "tests/e2e/admiralty-phase1.spec.ts"],
+      "testPaths": [
+        "src/admiralty/**/*.test.*",
+        "src/app/admin/**/*.test.*",
+        "src/navigation/navigation.test.ts",
+        "tests/e2e/admiralty-phase1.spec.ts",
+        "tests/e2e/admiralty-phase2.spec.ts"
+      ],
       "contractIds": [
         "admiralty.phase1.identity",
         "admiralty.phase1.authorization",
@@ -412,7 +420,15 @@
         "admiralty.phase1.audit",
         "admiralty.phase1.registry",
         "admiralty.phase1.migration",
-        "admiralty.phase1.responsive-consent"
+        "admiralty.phase1.responsive-consent",
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.registry-activation",
+        "admiralty.phase2.responsive-accessibility"
       ]
     },
     {

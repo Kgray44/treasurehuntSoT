@@ -3,7 +3,6 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ requireOperator: vi.fn(), overview: vi.fn(), notFound: vi.fn() }));
 vi.mock("@/admiralty/authorization", () => ({ requireAdmiraltyOperator: mocks.requireOperator }));
 vi.mock("@/admiralty/projections", () => ({ admiraltyOverview: mocks.overview }));
-vi.mock("@/components/admiralty/AdmiraltyConsole", () => ({ AdmiraltyConsole: () => null }));
 vi.mock("next/navigation", () => ({ notFound: mocks.notFound }));
 
 import { AdmiraltyError } from "@/admiralty/errors";
@@ -28,9 +27,22 @@ describe("secure Admiralty page", () => {
   });
 
   it("loads the projection only after server authorization", async () => {
-    const operator = { accountId: "operator-a" };
+    const operator = {
+      accountId: "operator-a",
+      displayName: "Admiral Test",
+      roles: ["ADMINISTRATOR"],
+      capabilities: ["PLATFORM_OBSERVE"],
+      sessionExpiresAt: new Date("2030-01-01T00:00:00.000Z"),
+    };
     mocks.requireOperator.mockResolvedValue(operator);
-    mocks.overview.mockResolvedValue({ operator });
+    mocks.overview.mockResolvedValue({
+      operator,
+      assurance: { recent: false },
+      support: { activeGrantCount: 0, pendingRequestCount: 0 },
+      registry: { total: 92, implemented: 16 },
+      environment: { application: "Voyagewright", version: "0.2.0", environment: "test", buildIdentity: null },
+      audit: { recentCount24Hours: 0, recent: [] },
+    });
     await expect(AdmiraltyPage()).resolves.toBeTruthy();
     expect(mocks.overview).toHaveBeenCalledWith(operator);
   });

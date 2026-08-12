@@ -94,17 +94,24 @@ acceptance are not claimed.
 
 ## Platform administration and consented support
 
-**Audience:** Administrators, support operators, security operators, and account
-owners. **Availability:** owner accepted and integrated on canonical main.
-Phase 1 adds server-resolved roles and capabilities, explicit administrator
-bootstrap, short-lived session-bound
-privileged assurance, a deliberately limited `/admin` shell, canonical
-sanitized audit evidence, a living capability registry, and user-approved
-scoped Support Access. The admin shell is absent from ordinary navigation;
-affected account owners can review, deny, approve, and revoke support requests
-through [Support Access](../user/support-access.md). The owner accepted the full
-Phase 1 walkthrough on 2026-08-09. Deployment, production MySQL, and Phase 2
-remain separate.
+**Audience:** Administrators, support operators, operations observers, audit
+operators, security operators, and account owners. **Availability:** Phase 1 is
+owner accepted and integrated on canonical main. Phase 2 is owner accepted on
+its branch candidate and awaits exact-source authority and protected mainline
+integration.
+
+Phase 1 provides server-resolved roles/capabilities, explicit administrator
+bootstrap, short-lived session-bound privileged assurance, canonical sanitized
+audit evidence, a living capability registry, and user-approved scoped Support
+Access. Affected account owners can review, deny, approve, and revoke requests
+through [Support Access](../user/support-access.md).
+
+Phase 2 expands the authorized shell into a read-only
+[Admiralty Command Center](../administrator/admiralty-command-center.md) with
+bounded People, Chronicle, Voyage, Community, operations, provider,
+configuration, release, audit, and correlation-led investigation projections.
+It adds no schema and no broad mutation. Deployment, live-provider validation,
+owner acceptance, canonical-main integration, and later phases remain separate.
 
 ## Integrated whole-product voyage and owner walkthrough
 
