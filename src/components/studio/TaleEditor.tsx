@@ -41,6 +41,10 @@ import { StudioSelectionToolbar } from "@/components/studio/StudioSelectionToolb
 import { StudioStatusHeader } from "@/components/studio/StudioStatusHeader";
 import { StudioValidationPanel } from "@/components/studio/StudioValidationPanel";
 import { DrydockScenarioLab } from "@/components/studio/DrydockScenarioLab";
+import {
+  ContractAwareInspector,
+  type StudioVariableExplorer,
+} from "@/components/studio/inspector/ContractAwareInspector";
 import type {
   Asset,
   Block,
@@ -70,24 +74,6 @@ type DrydockGraphSurvey = {
     annotations: Array<{ code: string; severity: string }>;
   }>;
 };
-type DrydockVariableExplorer = {
-  variables: Array<{
-    id: string;
-    name: string;
-    type: { kind: string };
-    scope: string;
-    defaultValue?: unknown;
-    privacy: string;
-    readers: Array<{ blockId?: string; fieldPath: string; reachable: boolean | null }>;
-    writers: Array<{ blockId?: string; fieldPath: string; operation?: string; reachable: boolean | null }>;
-    initialization: {
-      proofStatus: string;
-      potentiallyUninitializedReferences: Array<{ blockId: string; fieldPath: string }>;
-    };
-    unusedState: string;
-    relatedIssueCodes: string[];
-  }>;
-};
 type DrydockRepairPreview = {
   kind: "CANONICAL_TARGET_MIRROR";
   classification: "SAFE_AUTOMATIC";
@@ -99,6 +85,8 @@ type DrydockRepairPreview = {
 };
 
 const clone = <T,>(value: T): T => structuredClone(value);
+/** Transitional source guard while the extracted contract-aware Inspector owns the live surface. */
+const legacyInspectorFallbackEnabled = false;
 
 const publishTargetProperties = {
   "version-seal": ["transform", "filter", "opacity"],
@@ -166,7 +154,7 @@ export function TaleEditor({
   const [selectedRuleCode, setSelectedRuleCode] = useState<string | null>(null);
   const [selectedRepairBlockId, setSelectedRepairBlockId] = useState<string | null>(null);
   const [graphSurvey, setGraphSurvey] = useState<DrydockGraphSurvey | null>(null);
-  const [variableExplorer, setVariableExplorer] = useState<DrydockVariableExplorer | null>(null);
+  const [variableExplorer, setVariableExplorer] = useState<StudioVariableExplorer | null>(null);
   const [surveyLoading, setSurveyLoading] = useState<"" | "graph" | "variables">("");
   const [assetDrawer, setAssetDrawer] = useState(false);
   const [assetSearch, setAssetSearch] = useState("");
@@ -280,9 +268,16 @@ export function TaleEditor({
   useEffect(() => {
     if (!selectedId || !validationFocusField) return;
     const frame = requestAnimationFrame(() => {
-      const target = document.querySelector<HTMLElement>(
-        `[data-inspector-field="${validationFocusField}"] input, [data-inspector-field="${validationFocusField}"] select, [data-inspector-field="${validationFocusField}"] textarea`,
+      const paths = new Set([
+        validationFocusField,
+        validationFocusField.startsWith("configuration.")
+          ? validationFocusField.slice("configuration.".length)
+          : `configuration.${validationFocusField}`,
+      ]);
+      const field = [...document.querySelectorAll<HTMLElement>("[data-inspector-field]")].find((element) =>
+        paths.has(element.dataset.inspectorField ?? ""),
       );
+      const target = field?.querySelector<HTMLElement>("input, select, textarea, button");
       target?.focus({ preventScroll: true });
       setValidationFocusField(null);
     });
@@ -977,7 +972,7 @@ export function TaleEditor({
   async function loadVariableExplorer() {
     setSurveyLoading("variables");
     const response = await fetch(`/api/studio/tales/${taleId}/variable-explorer`, { cache: "no-store" });
-    const body = (await response.json()) as { explorer?: DrydockVariableExplorer; error?: string };
+    const body = (await response.json()) as { explorer?: StudioVariableExplorer; error?: string };
     setSurveyLoading("");
     if (!response.ok || !body.explorer) {
       setError(body.error ?? "The variable explorer could not be loaded.");
@@ -2041,201 +2036,226 @@ export function TaleEditor({
               >
                 {selected && selectedDefinition ? (
                   <>
-                    <header>
-                      <button
-                        className="inspector-mobile-close"
-                        onClick={closeInspector}
-                        aria-label="Close Passage inspector"
-                      >
-                        ×
-                      </button>
-                      <p className="eyebrow">{selectedDefinition.displayName}</p>
-                      <input
-                        ref={inspectorTitle}
-                        value={selected.block.title}
-                        aria-label="Passage title"
-                        onChange={(event) =>
-                          updateSelected((block) => {
-                            block.title = event.target.value;
-                          })
-                        }
-                      />
-                    </header>
-                    <div className="inspector-fields">
-                      {selectedDefinition.fields.map((field) => (
-                        <Field
-                          key={field.key}
-                          field={field}
-                          value={
-                            field.key === "completionMode"
-                              ? (selected.block.completion.mode ?? selected.block.configuration.completionMode)
-                              : selected.block.configuration[field.key]
-                          }
-                          assets={data.assets}
-                          locations={data.locations}
-                          artifacts={data.artifacts}
-                          onChange={(value) =>
-                            updateSelected((block) => {
-                              if (field.key === "completionMode") {
-                                block.completion.mode = value;
-                                delete block.configuration.completionMode;
-                                delete block.configuration.verificationProvider;
-                              } else block.configuration[field.key] = value;
-                            })
-                          }
-                        />
-                      ))}
-                      {selected.block.blockType === "imageTransformation" && (
-                        <AlignmentEditor
-                          value={selected.block.configuration.alignment}
-                          assets={data.assets}
-                          beforeId={String(selected.block.configuration.beforeAssetId ?? "")}
-                          afterId={String(selected.block.configuration.afterAssetId ?? "")}
-                          onChange={(value) =>
-                            updateSelected((block) => {
-                              block.configuration.alignment = value;
-                            })
-                          }
-                        />
-                      )}
-                      <fieldset className="journal-presentation-fields">
-                        <legend>Player journal presentation</legend>
-                        <label>
-                          <span>Spread mode</span>
-                          <select
-                            value={String(selected.block.presentation.spreadMode ?? "")}
-                            onChange={(event) =>
-                              updateSelected((block) => {
-                                if (event.target.value) block.presentation.spreadMode = event.target.value;
-                                else delete block.presentation.spreadMode;
-                              })
-                            }
+                    <ContractAwareInspector
+                      block={selected.block}
+                      chapter={selected.chapter}
+                      chapters={draft?.chapters ?? []}
+                      registry={selectedDefinition}
+                      assets={data.assets}
+                      locations={data.locations}
+                      artifacts={data.artifacts}
+                      validation={validation}
+                      onChange={updateSelected}
+                      onTitleChange={(title) =>
+                        updateSelected((block) => {
+                          block.title = title;
+                        })
+                      }
+                      variableExplorer={variableExplorer}
+                      onRequestVariables={() => void loadVariableExplorer()}
+                      initialFocusField={validationFocusField}
+                      titleInputRef={inspectorTitle}
+                      onClose={closeInspector}
+                    />
+                    {legacyInspectorFallbackEnabled && selected && selectedDefinition && data ? (
+                      <>
+                        <header>
+                          <button
+                            className="inspector-mobile-close"
+                            onClick={closeInspector}
+                            aria-label="Close Passage inspector"
                           >
-                            <option value="">Automatic for this Passage type</option>
-                            <option value="left">Left page</option>
-                            <option value="right">Right page</option>
-                            <option value="two-page">Two-page spread</option>
-                            <option value="overlay">Physical insert</option>
-                            <option value="cinematic">Cinematic expansion</option>
-                          </select>
-                        </label>
-                        <label>
-                          <span>Page-turn behavior</span>
-                          <select
-                            value={String(selected.block.presentation.pageTurnBehavior ?? "")}
-                            onChange={(event) =>
-                              updateSelected((block) => {
-                                if (event.target.value) block.presentation.pageTurnBehavior = event.target.value;
-                                else delete block.presentation.pageTurnBehavior;
-                              })
-                            }
-                          >
-                            <option value="">Manual by default</option>
-                            <option value="manual">Manual</option>
-                            <option value="automatic">Automatic</option>
-                            <option value="captain-triggered">Captain-triggered</option>
-                            <option value="locked">Locked</option>
-                          </select>
-                        </label>
-                        <label>
-                          <span>Paper style</span>
+                            ×
+                          </button>
+                          <p className="eyebrow">{selectedDefinition.displayName}</p>
                           <input
-                            value={String(selected.block.presentation.paperStyle ?? "")}
-                            placeholder="weathered"
+                            ref={inspectorTitle}
+                            value={selected.block.title}
+                            aria-label="Passage title"
                             onChange={(event) =>
                               updateSelected((block) => {
-                                block.presentation.paperStyle = event.target.value;
+                                block.title = event.target.value;
                               })
                             }
                           />
-                        </label>
-                        <label>
-                          <span>Ink style</span>
-                          <input
-                            value={String(selected.block.presentation.inkStyle ?? "")}
-                            placeholder="midnight"
-                            onChange={(event) =>
-                              updateSelected((block) => {
-                                block.presentation.inkStyle = event.target.value;
-                              })
-                            }
-                          />
-                        </label>
-                      </fieldset>
-                      <fieldset className="journal-presentation-fields shipwright-motion-fields">
-                        <legend>Passage animation</legend>
-                        <p>
-                          These settings are saved with this Passage and play in the published journal. Reduced-motion
-                          preferences always take priority for the Crew.
-                        </p>
-                        <label data-inspector-field="transitionIn">
-                          <span>Opening animation</span>
-                          <select
-                            value={String(selected.block.presentation.transitionIn ?? "fade")}
-                            onChange={(event) =>
-                              updateSelected((block) => {
-                                block.presentation.transitionIn = event.target.value;
-                              })
-                            }
-                          >
-                            {storyMotionPresets.map((preset) => (
-                              <option key={preset.id} value={preset.id}>
-                                {preset.label} — {preset.description}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
-                        <label data-inspector-field="transitionOut">
-                          <span>Leaving animation</span>
-                          <select
-                            value={String(selected.block.presentation.transitionOut ?? "minimize")}
-                            onChange={(event) =>
-                              updateSelected((block) => {
-                                block.presentation.transitionOut = event.target.value;
-                              })
-                            }
-                          >
-                            {storyMotionPresets.map((preset) => (
-                              <option key={preset.id} value={preset.id}>
-                                {preset.label} — {preset.description}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
-                        <label data-inspector-field="backgroundScene">
-                          <span>While this Passage is active</span>
-                          <select
-                            value={readStayStoryMotion(selected.block.presentation.backgroundScene) ?? ""}
-                            onChange={(event) =>
-                              updateSelected((block) => {
-                                if (event.target.value)
-                                  block.presentation.backgroundScene = `shipwright-stay:${event.target.value}`;
-                                else delete block.presentation.backgroundScene;
-                              })
-                            }
-                          >
-                            <option value="">Keep the journal&apos;s natural resting state</option>
-                            {storyMotionPresets.map((preset) => (
-                              <option key={preset.id} value={preset.id}>
-                                {preset.label} — {preset.description}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
-                      </fieldset>
-                      <label>
-                        <span>Private creator notes</span>
-                        <textarea
-                          rows={5}
-                          value={selected.block.creatorNotes ?? ""}
-                          onChange={(event) =>
-                            updateSelected((block) => {
-                              block.creatorNotes = event.target.value;
-                            })
-                          }
-                        />
-                      </label>
-                    </div>
+                        </header>
+                        <div className="inspector-fields">
+                          {selectedDefinition.fields.map((field) => (
+                            <Field
+                              key={field.key}
+                              field={field}
+                              value={
+                                field.key === "completionMode"
+                                  ? (selected.block.completion.mode ?? selected.block.configuration.completionMode)
+                                  : selected.block.configuration[field.key]
+                              }
+                              assets={data.assets}
+                              locations={data.locations}
+                              artifacts={data.artifacts}
+                              onChange={(value) =>
+                                updateSelected((block) => {
+                                  if (field.key === "completionMode") {
+                                    block.completion.mode = value;
+                                    delete block.configuration.completionMode;
+                                    delete block.configuration.verificationProvider;
+                                  } else block.configuration[field.key] = value;
+                                })
+                              }
+                            />
+                          ))}
+                          {selected.block.blockType === "imageTransformation" && (
+                            <AlignmentEditor
+                              value={selected.block.configuration.alignment}
+                              assets={data.assets}
+                              beforeId={String(selected.block.configuration.beforeAssetId ?? "")}
+                              afterId={String(selected.block.configuration.afterAssetId ?? "")}
+                              onChange={(value) =>
+                                updateSelected((block) => {
+                                  block.configuration.alignment = value;
+                                })
+                              }
+                            />
+                          )}
+                          <fieldset className="journal-presentation-fields">
+                            <legend>Player journal presentation</legend>
+                            <label>
+                              <span>Spread mode</span>
+                              <select
+                                value={String(selected.block.presentation.spreadMode ?? "")}
+                                onChange={(event) =>
+                                  updateSelected((block) => {
+                                    if (event.target.value) block.presentation.spreadMode = event.target.value;
+                                    else delete block.presentation.spreadMode;
+                                  })
+                                }
+                              >
+                                <option value="">Automatic for this Passage type</option>
+                                <option value="left">Left page</option>
+                                <option value="right">Right page</option>
+                                <option value="two-page">Two-page spread</option>
+                                <option value="overlay">Physical insert</option>
+                                <option value="cinematic">Cinematic expansion</option>
+                              </select>
+                            </label>
+                            <label>
+                              <span>Page-turn behavior</span>
+                              <select
+                                value={String(selected.block.presentation.pageTurnBehavior ?? "")}
+                                onChange={(event) =>
+                                  updateSelected((block) => {
+                                    if (event.target.value) block.presentation.pageTurnBehavior = event.target.value;
+                                    else delete block.presentation.pageTurnBehavior;
+                                  })
+                                }
+                              >
+                                <option value="">Manual by default</option>
+                                <option value="manual">Manual</option>
+                                <option value="automatic">Automatic</option>
+                                <option value="captain-triggered">Captain-triggered</option>
+                                <option value="locked">Locked</option>
+                              </select>
+                            </label>
+                            <label>
+                              <span>Paper style</span>
+                              <input
+                                value={String(selected.block.presentation.paperStyle ?? "")}
+                                placeholder="weathered"
+                                onChange={(event) =>
+                                  updateSelected((block) => {
+                                    block.presentation.paperStyle = event.target.value;
+                                  })
+                                }
+                              />
+                            </label>
+                            <label>
+                              <span>Ink style</span>
+                              <input
+                                value={String(selected.block.presentation.inkStyle ?? "")}
+                                placeholder="midnight"
+                                onChange={(event) =>
+                                  updateSelected((block) => {
+                                    block.presentation.inkStyle = event.target.value;
+                                  })
+                                }
+                              />
+                            </label>
+                          </fieldset>
+                          <fieldset className="journal-presentation-fields shipwright-motion-fields">
+                            <legend>Passage animation</legend>
+                            <p>
+                              These settings are saved with this Passage and play in the published journal.
+                              Reduced-motion preferences always take priority for the Crew.
+                            </p>
+                            <label data-inspector-field="transitionIn">
+                              <span>Opening animation</span>
+                              <select
+                                value={String(selected.block.presentation.transitionIn ?? "fade")}
+                                onChange={(event) =>
+                                  updateSelected((block) => {
+                                    block.presentation.transitionIn = event.target.value;
+                                  })
+                                }
+                              >
+                                {storyMotionPresets.map((preset) => (
+                                  <option key={preset.id} value={preset.id}>
+                                    {preset.label} — {preset.description}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                            <label data-inspector-field="transitionOut">
+                              <span>Leaving animation</span>
+                              <select
+                                value={String(selected.block.presentation.transitionOut ?? "minimize")}
+                                onChange={(event) =>
+                                  updateSelected((block) => {
+                                    block.presentation.transitionOut = event.target.value;
+                                  })
+                                }
+                              >
+                                {storyMotionPresets.map((preset) => (
+                                  <option key={preset.id} value={preset.id}>
+                                    {preset.label} — {preset.description}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                            <label data-inspector-field="backgroundScene">
+                              <span>While this Passage is active</span>
+                              <select
+                                value={readStayStoryMotion(selected.block.presentation.backgroundScene) ?? ""}
+                                onChange={(event) =>
+                                  updateSelected((block) => {
+                                    if (event.target.value)
+                                      block.presentation.backgroundScene = `shipwright-stay:${event.target.value}`;
+                                    else delete block.presentation.backgroundScene;
+                                  })
+                                }
+                              >
+                                <option value="">Keep the journal&apos;s natural resting state</option>
+                                {storyMotionPresets.map((preset) => (
+                                  <option key={preset.id} value={preset.id}>
+                                    {preset.label} — {preset.description}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                          </fieldset>
+                          <label>
+                            <span>Private creator notes</span>
+                            <textarea
+                              rows={5}
+                              value={selected.block.creatorNotes ?? ""}
+                              onChange={(event) =>
+                                updateSelected((block) => {
+                                  block.creatorNotes = event.target.value;
+                                })
+                              }
+                            />
+                          </label>
+                        </div>
+                      </>
+                    ) : null}
                     <div className="inspector-danger">
                       <button
                         onClick={() => {

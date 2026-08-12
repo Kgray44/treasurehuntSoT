@@ -385,6 +385,23 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
       });
       for (let blockIndex = 0; blockIndex < chapter.blocks.length; blockIndex += 1) {
         const block = chapter.blocks[blockIndex];
+        const canonicalConfiguration = structuredClone(block.configuration);
+        if (block.connections && block.blockType === "choice" && Array.isArray(canonicalConfiguration.choices)) {
+          const choiceTargets = [...block.connections]
+            .filter((connection) => connection.connectionType === "CHOICE")
+            .sort((left, right) => (left.orderIndex ?? 0) - (right.orderIndex ?? 0));
+          canonicalConfiguration.choices = canonicalConfiguration.choices.map((choice, choiceIndex) =>
+            choice && typeof choice === "object"
+              ? { ...(choice as JsonObject), targetBlockId: choiceTargets[choiceIndex]?.targetBlockId ?? "" }
+              : choice,
+          ) as JsonObject["choices"];
+        }
+        if (block.connections && block.blockType === "condition") {
+          canonicalConfiguration.successTargetBlockId =
+            block.connections.find((connection) => connection.connectionType === "SUCCESS")?.targetBlockId ?? "";
+          canonicalConfiguration.failureTargetBlockId =
+            block.connections.find((connection) => connection.connectionType === "FAILURE")?.targetBlockId ?? "";
+        }
         await tx.storyBlock.create({
           data: {
             id: block.id,
@@ -393,7 +410,7 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
             title: block.title,
             internalLabel: block.internalLabel || null,
             orderIndex: blockIndex,
-            configuration: json(block.configuration),
+            configuration: json(canonicalConfiguration),
             presentation: json(block.presentation),
             completion: json(block.completion),
             creatorNotes: block.creatorNotes || null,
@@ -405,7 +422,7 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
           flattened.push({
             id: block.id,
             type: block.blockType,
-            configuration: block.configuration,
+            configuration: canonicalConfiguration,
             connections: block.connections,
           });
       }
