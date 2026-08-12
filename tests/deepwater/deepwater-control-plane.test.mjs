@@ -609,8 +609,25 @@ test("Phase 4 rejects a capability population that drops current-main work", () 
 
 test("Phase 4 rejects stale runtime evidence", () => {
   const candidate = phase4Model();
+  candidate.inputs.phase4Config.lifecycle.state = "LOCAL_PROVEN";
   candidate.inputs.runtimeEvidence.sourceSha = "0000000000000000000000000000000000000000";
   includesError(phase4Errors(candidate), "runtime evidence source SHA does not match");
+});
+
+test("Phase 4 preserves stale evidence only while an explicit current-main requalification is pending", () => {
+  const candidate = phase4Model();
+  candidate.inputs.phase4Config.lifecycle = {
+    ...candidate.inputs.phase4Config.lifecycle,
+    state: "RECONCILED_PENDING_REQUALIFICATION",
+    mainlineState: "SUPERSEDED_BY_CURRENT_MAIN_RECONCILIATION",
+    qualification: "FULL_REQUALIFICATION_REQUIRED",
+  };
+  candidate.inputs.runtimeEvidence.status = "REQUALIFICATION_REQUIRED";
+  candidate.inputs.phase4Config.productEvidenceSourceSha = "0000000000000000000000000000000000000000";
+  candidate.phase4ProofMatrix.sourceSha = candidate.inputs.phase4Config.productEvidenceSourceSha;
+  assert.deepEqual(phase4Errors(candidate), []);
+  candidate.inputs.runtimeEvidence.status = "LOCAL_SYNTHETIC_PROVEN";
+  includesError(phase4Errors(candidate), "current-main reconciliation lacks explicit requalification state");
 });
 
 test("Phase 4 rejects a passed screenshot without a hash", () => {
