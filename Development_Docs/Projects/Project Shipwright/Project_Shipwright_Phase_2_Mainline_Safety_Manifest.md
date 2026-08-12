@@ -10,12 +10,12 @@ last_reviewed: 2026-08-12
 
 ## Source identity
 
-| Field                  | Value                                                                           |
-| ---------------------- | ------------------------------------------------------------------------------- |
-| Branch                 | `codex/project-shipwright-phase2-fit-the-tools-r3`                              |
-| Original base          | `191a964488d0df71f8dcb91c5b8372fc73b6b32e` (`origin/main` at worktree creation) |
-| Schema / Prisma impact | None                                                                            |
-| Current state          | Owner accepted; current-main qualification complete; authority order pending    |
+| Field                  | Value                                                                                |
+| ---------------------- | ------------------------------------------------------------------------------------ |
+| Branch                 | `codex/project-shipwright-phase2-fit-the-tools-r3`                                   |
+| Original base          | `191a964488d0df71f8dcb91c5b8372fc73b6b32e` (`origin/main` at worktree creation)      |
+| Schema / Prisma impact | None                                                                                 |
+| Current state          | Owner accepted; Tideglass-reconciled qualification complete; authority order pending |
 
 ## Safety assertions under test
 
