@@ -45,6 +45,11 @@
       "proofFamilyId": "DW-P4-JRN-CREATOR",
       "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
       "recoveryEvidence": [
+        "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
+        "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Test_Plan.md#Current locally attainable commands",
+        "src/drydock/simulation/**#deterministic Sea Trial current-source qualification",
+        "src/components/studio/DrydockScenarioLab.test.tsx#private Creator Studio interactions",
+        "src/app/api/studio/tales/[taleId]/scenarios/route.test.ts#Creator scenario ownership and CSRF",
         "tests/e2e/homeport-phase7.spec.ts#Journey E, J, K, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
         "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, P, U, V"
@@ -79,5 +84,5 @@
   "phase": "Phase 4 - Break the Surface",
   "project": "Project Deepwater",
   "schemaVersion": "1.0.0",
-  "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9"
+  "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc"
 }
