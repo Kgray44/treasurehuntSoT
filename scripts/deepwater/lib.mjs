@@ -2855,9 +2855,11 @@ async function buildPhase4Artifacts(root, phase3) {
     branch: phase4Config.branch,
     worktree: phase4Config.worktree,
     baseSourceSha: phase4Config.baseOriginMainSha,
+    reconciledSourceSha: phase4Config.reconciledOriginMainSha,
     auditedSourceSha: phase4Config.productEvidenceSourceSha,
     phase3AcceptedMainSha: phase4Config.phase3AcceptedMainSha,
     mainlineState: phase4Config.lifecycle.mainlineState,
+    acceptanceLane: phase4Config.lifecycle.acceptanceLane,
     schemaImpact: phase4Config.schemaImpact,
     productSourceImpact: phase4Config.productSourceImpact,
     featureCatalogImpact: phase4Config.featureCatalogImpact,
@@ -3482,6 +3484,8 @@ export function validatePhase4Model(artifacts) {
   const screenIds = new Set(artifacts.inputs.screens.screens.map((screen) => screen.screenId));
 
   if (!/^[0-9a-f]{40}$/u.test(phase4Config.baseOriginMainSha ?? "")) errors.push("Phase 4 base source SHA is invalid");
+  if (!/^[0-9a-f]{40}$/u.test(phase4Config.reconciledOriginMainSha ?? ""))
+    errors.push("Phase 4 reconciled source SHA is invalid");
   if (!/^[0-9a-f]{40}$/u.test(phase4Config.productEvidenceSourceSha ?? ""))
     errors.push("Phase 4 product evidence source SHA is invalid");
   if (runtimeEvidence.sourceSha !== phase4Config.productEvidenceSourceSha)
@@ -3506,6 +3510,14 @@ export function validatePhase4Model(artifacts) {
   if (artifacts.phase5GovernanceQueue.phase5Authorized !== false) errors.push("Phase 4 incorrectly authorizes Phase 5");
   if (phase4Config.ownerBoundary.prohibitedClaims.includes(phase4Config.lifecycle.ownerDecision))
     errors.push("Phase 4 lifecycle self-records a prohibited owner or product claim");
+  if (phase4Config.lifecycle.mainlineState === "FROZEN_CANDIDATE") {
+    if (phase4Config.lifecycle.qualification !== "FOCUSED_QUALIFICATION_PASSED")
+      errors.push("Phase 4 frozen candidate lacks focused qualification");
+    if (runtimeEvidence.status !== "LOCAL_SYNTHETIC_PROVEN")
+      errors.push("Phase 4 frozen candidate lacks local synthetic proof");
+    if (phase4Config.lifecycle.acceptanceLane !== "PENDING_SERIALIZED_MAINLINE_OWNERSHIP")
+      errors.push("Phase 4 frozen candidate has an invalid serialized acceptance-lane state");
+  }
 
   for (const family of phase4Config.journeyFamilies) {
     if (!family.capabilityIds.length) errors.push(`${family.journeyId}: journey family has no capabilities`);

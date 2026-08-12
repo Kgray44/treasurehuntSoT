@@ -641,6 +641,12 @@ test("Phase 4 local-proven state requires current journey, state, and accessibil
   includesError(phase4Errors(candidate), "missing accessibility proof");
 });
 
+test("Phase 4 frozen candidate requires completed focused qualification", () => {
+  const candidate = phase4Model();
+  candidate.inputs.phase4Config.lifecycle.qualification = "FOCUSED_QUALIFICATION_PENDING";
+  includesError(phase4Errors(candidate), "frozen candidate lacks focused qualification");
+});
+
 test("Phase 4 rejects an unauthorized Phase 5 promotion", () => {
   const candidate = phase4Model();
   candidate.phase5GovernanceQueue.phase5Authorized = true;
