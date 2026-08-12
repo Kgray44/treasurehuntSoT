@@ -1,14 +1,32 @@
 {
   "schemaVersion": "1.0.0",
   "phase": "Phase 4 - Break the Surface",
-  "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+  "sourceSha": "e57670a010406dc48c7ede1f2939d3d35260484f",
   "status": "LOCAL_SYNTHETIC_PROVEN",
-  "truthBoundary": "The recorded production-build evidence is bound to the reconciled current-main source and task-owned synthetic fixtures. It establishes local implementation evidence only, not live-provider, deployment, protected-main, owner-acceptance, product-acceptance, or release proof.",
+  "semanticCarryForward": {
+    "historicalEvidenceSourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+    "targetEvidenceSourceSha": "e57670a010406dc48c7ede1f2939d3d35260484f",
+    "carriedJourneyIds": [
+      "DW-P4-JRN-ACCOUNT",
+      "DW-P4-JRN-PERSONAL-HARBOR",
+      "DW-P4-JRN-PLAYER",
+      "DW-P4-JRN-CAPTAIN",
+      "DW-P4-JRN-CREATOR",
+      "DW-P4-JRN-COMMUNITY",
+      "DW-P4-JRN-WHOLE-PRODUCT",
+      "DW-P4-JRN-VERIFICATION",
+      "DW-P4-JRN-RESTRICTED-OPERATIONS"
+    ],
+    "requalifiedJourneyIds": ["DW-P4-JRN-BRIDGEWATCH"],
+    "rationale": "Bridgewatch Phase 2 changed the private observer and Sounding Line projection surface. Homeport source paths did not change in this protected-main advance, so their source-bound evidence is retained by declared journey family while Bridgewatch is rerun."
+  },
+  "truthBoundary": "Historical Homeport production-build evidence is retained only through the explicit semantic carry-forward declaration, and the changed Bridgewatch observer family is rerun on the reconciled source. This establishes local implementation evidence only, not live-provider, deployment, protected-main, owner-acceptance, product-acceptance, or release proof.",
   "journeyFamilies": [
     {
       "journeyId": "DW-P4-JRN-ACCOUNT",
       "status": "PASSED",
       "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+      "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey A, I, J, M, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey F through K, N through U",
@@ -31,6 +49,7 @@
       "journeyId": "DW-P4-JRN-PERSONAL-HARBOR",
       "status": "PASSED",
       "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+      "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey G, H, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey M, N, U",
@@ -53,6 +72,7 @@
       "journeyId": "DW-P4-JRN-PLAYER",
       "status": "PASSED",
       "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+      "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
@@ -75,6 +95,7 @@
       "journeyId": "DW-P4-JRN-CAPTAIN",
       "status": "PASSED",
       "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+      "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey D, J, K, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
@@ -97,6 +118,7 @@
       "journeyId": "DW-P4-JRN-CREATOR",
       "status": "PASSED",
       "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+      "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey E, J, K, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
@@ -119,6 +141,7 @@
       "journeyId": "DW-P4-JRN-COMMUNITY",
       "status": "PASSED",
       "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+      "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey F, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey P, Q, T, U",
@@ -141,6 +164,7 @@
       "journeyId": "DW-P4-JRN-WHOLE-PRODUCT",
       "status": "PASSED",
       "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+      "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey A through O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through U",
@@ -164,6 +188,7 @@
       "journeyId": "DW-P4-JRN-VERIFICATION",
       "status": "PASSED",
       "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+      "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey A, I, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey F through I, T, U",
@@ -186,6 +211,7 @@
       "journeyId": "DW-P4-JRN-RESTRICTED-OPERATIONS",
       "status": "PASSED",
       "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+      "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey J, K, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey D, T, U",
@@ -207,15 +233,16 @@
     {
       "journeyId": "DW-P4-JRN-BRIDGEWATCH",
       "status": "PASSED",
-      "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+      "sourceSha": "e57670a010406dc48c7ede1f2939d3d35260484f",
       "testReferences": [
-        "bridgewatch/test/server.test.ts#private dashboard and restricted API contracts",
-        "in-app browser loopback observation#private read-only dashboard on owned port 4322"
+        "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
+        "in-app browser loopback observation#desktop and 390px private dashboard with no horizontal overflow",
+        "loopback API observation#GET /api/summary, GET /api/activity?since=..., GET /api/tests, POST /api/telemetry/heartbeat"
       ],
       "screenshots": [
         {
           "evidenceId": "BW-P4-EV-LOOPBACK-PRIVATE-DASHBOARD",
-          "sha256": "4acc35e88c88a16d600df0b8e126925f519e71e46b3c83171e670b5320468505"
+          "sha256": "8486f223cf313f9bcc43feab6786dc28559afe38a574761dfd0f6bc202c1ae03"
         }
       ],
       "states": ["READY", "LOADING", "ERROR", "RECOVERY"],

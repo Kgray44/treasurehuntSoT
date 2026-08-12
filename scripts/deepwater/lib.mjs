@@ -2626,10 +2626,28 @@ function phase4RuntimeFamilyIndex(runtimeEvidence) {
   return new Map((runtimeEvidence.journeyFamilies ?? []).map((family) => [family.journeyId, family]));
 }
 
-function phase4ProofStatus(phase4Config, runtimeFamily, bounded) {
+function isValidPhase4SemanticCarryForward(phase4Config, runtimeFamily, journeyId) {
+  const carryForward = phase4Config.semanticCarryForward;
+  return Boolean(
+    carryForward &&
+      runtimeFamily?.evidenceDisposition === "SEMANTIC_CARRY_FORWARD" &&
+      runtimeFamily.sourceSha === carryForward.historicalEvidenceSourceSha &&
+      carryForward.targetEvidenceSourceSha === phase4Config.productEvidenceSourceSha &&
+      carryForward.carriedJourneyIds?.includes(journeyId),
+  );
+}
+
+function isCurrentPhase4RuntimeEvidence(phase4Config, runtimeFamily, journeyId) {
+  return Boolean(
+    runtimeFamily?.status === "PASSED" &&
+      (runtimeFamily.sourceSha === phase4Config.productEvidenceSourceSha ||
+        isValidPhase4SemanticCarryForward(phase4Config, runtimeFamily, journeyId)),
+  );
+}
+
+function phase4ProofStatus(phase4Config, family, runtimeFamily, bounded) {
   if (bounded) return "BOUNDARY_CONFIRMED";
-  if (runtimeFamily?.status === "PASSED" && runtimeFamily.sourceSha === phase4Config.productEvidenceSourceSha)
-    return "LOCAL_SYNTHETIC_PROVEN";
+  if (isCurrentPhase4RuntimeEvidence(phase4Config, runtimeFamily, family?.journeyId)) return "LOCAL_SYNTHETIC_PROVEN";
   return "PENDING_LOCAL_SYNTHETIC_PROOF";
 }
 
@@ -2652,7 +2670,7 @@ function buildPhase4ProofMatrix(phase3, phase4Config, runtimeEvidence) {
       terminalRung: capability.expectedRealization.terminalRung,
       realizationClassification: capability.currentRealization.classification,
       utilizationStatus: utilizationByCapability.get(capability.capabilityId) ?? "NOT_APPLICABLE",
-      proofStatus: phase4ProofStatus(phase4Config, runtimeFamily, isBounded),
+      proofStatus: phase4ProofStatus(phase4Config, family, runtimeFamily, isBounded),
       proofFamilyId: family?.journeyId ?? null,
       naturalStart: family?.naturalStart ?? null,
       visibleEntry: family?.visibleEntry ?? null,
@@ -2663,6 +2681,7 @@ function buildPhase4ProofMatrix(phase3, phase4Config, runtimeEvidence) {
       runtimeEvidence: runtimeFamily
         ? {
             sourceSha: runtimeFamily.sourceSha,
+            evidenceDisposition: runtimeFamily.evidenceDisposition ?? "SOURCE_CURRENT",
             testReferences: runtimeFamily.testReferences ?? [],
             screenshots: runtimeFamily.screenshots ?? [],
             states: runtimeFamily.states ?? [],
@@ -3482,6 +3501,7 @@ export function validatePhase4Model(artifacts) {
   const expectedIds = uniqueSorted([...phase3Ids, ...additions]);
   const proofIds = proof.capabilities.map((capability) => capability.capabilityId);
   const configuredJourneyIds = phase4Config.journeyFamilies.flatMap((family) => family.capabilityIds);
+  const registeredJourneyIds = phase4Config.journeyFamilies.map((family) => family.journeyId);
   const boundedIds = phase4Config.boundedCapabilityIds;
   const configuredIds = uniqueSorted([...configuredJourneyIds, ...boundedIds]);
   const runtimeFamilies = new Map((runtimeEvidence.journeyFamilies ?? []).map((family) => [family.journeyId, family]));
@@ -3492,6 +3512,22 @@ export function validatePhase4Model(artifacts) {
     errors.push("Phase 4 reconciled source SHA is invalid");
   if (!/^[0-9a-f]{40}$/u.test(phase4Config.productEvidenceSourceSha ?? ""))
     errors.push("Phase 4 product evidence source SHA is invalid");
+  const carryForward = phase4Config.semanticCarryForward;
+  if (carryForward) {
+    if (!/^[0-9a-f]{40}$/u.test(carryForward.historicalEvidenceSourceSha ?? ""))
+      errors.push("Phase 4 semantic carry-forward historical source SHA is invalid");
+    if (carryForward.targetEvidenceSourceSha !== phase4Config.productEvidenceSourceSha)
+      errors.push("Phase 4 semantic carry-forward target source SHA does not match the frozen product source");
+    if (carryForward.historicalEvidenceSourceSha === carryForward.targetEvidenceSourceSha)
+      errors.push("Phase 4 semantic carry-forward does not identify a distinct historical source");
+    const carriedJourneyIds = carryForward.carriedJourneyIds ?? [];
+    const requalifiedJourneyIds = carryForward.requalifiedJourneyIds ?? [];
+    const declaredJourneyIds = [...carriedJourneyIds, ...requalifiedJourneyIds];
+    if (duplicateValues(declaredJourneyIds).length)
+      errors.push("Phase 4 semantic carry-forward assigns a journey more than once");
+    if (stableStringify(uniqueSorted(declaredJourneyIds)) !== stableStringify(uniqueSorted(registeredJourneyIds)))
+      errors.push("Phase 4 semantic carry-forward does not account for every registered journey exactly once");
+  }
   if (runtimeEvidence.sourceSha !== phase4Config.productEvidenceSourceSha && !requalificationPending)
     errors.push("Phase 4 runtime evidence source SHA does not match the frozen product source");
   if (requalificationPending && runtimeEvidence.status !== "REQUALIFICATION_REQUIRED")
@@ -3539,8 +3575,16 @@ export function validatePhase4Model(artifacts) {
       if (screenId.startsWith("screen-") && !screenIds.has(screenId))
         errors.push(`${family.journeyId}: unknown Homeport screen ${screenId}`);
     const runtime = runtimeFamilies.get(family.journeyId);
-    if (runtime && runtime.sourceSha !== phase4Config.productEvidenceSourceSha && !requalificationPending)
+    const validCarryForward = isValidPhase4SemanticCarryForward(phase4Config, runtime, family.journeyId);
+    if (
+      runtime &&
+      runtime.sourceSha !== phase4Config.productEvidenceSourceSha &&
+      !validCarryForward &&
+      !requalificationPending
+    )
       errors.push(`${family.journeyId}: runtime evidence is stale or bound to the wrong source SHA`);
+    if (runtime?.evidenceDisposition === "SEMANTIC_CARRY_FORWARD" && !validCarryForward)
+      errors.push(`${family.journeyId}: semantic carry-forward evidence is not declared for this source and journey`);
     if (runtime?.status === "PASSED") {
       if (!runtime.testReferences?.length)
         errors.push(`${family.journeyId}: passed runtime evidence lacks test references`);

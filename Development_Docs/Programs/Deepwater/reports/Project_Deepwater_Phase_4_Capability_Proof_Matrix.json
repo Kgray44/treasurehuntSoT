@@ -15,6 +15,7 @@
       "routeReferences": ["/", "/account", "/passport", "/profile"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "REDUCED_MOTION", "MOBILE", "ZOOM_200"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-A-registered-profile",
@@ -95,6 +96,7 @@
       "routeReferences": ["/", "/account", "/passport", "/profile"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "REDUCED_MOTION", "MOBILE", "ZOOM_200"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-A-registered-profile",
@@ -144,6 +146,7 @@
       "routeReferences": ["/", "/account", "/passport", "/profile"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "REDUCED_MOTION", "MOBILE", "ZOOM_200"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-A-registered-profile",
@@ -228,6 +231,7 @@
       "routeReferences": ["/", "/account", "/passport", "/profile"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "REDUCED_MOTION", "MOBILE", "ZOOM_200"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-A-registered-profile",
@@ -320,6 +324,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -406,6 +411,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -459,6 +465,7 @@
       "routeReferences": ["/", "/studio", "/studio/exchange"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-E-creator-private-state",
@@ -505,6 +512,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -558,20 +566,30 @@
       "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
       "realizationClassification": "INTERNAL_BY_DESIGN",
       "requiredStates": ["READY", "LOADING", "ERROR", "RECOVERY"],
-      "routeReferences": ["bridgewatch", "GET /api/summary", "GET /api/projects", "GET /api/attention"],
+      "routeReferences": [
+        "bridgewatch",
+        "GET /api/summary",
+        "GET /api/projects",
+        "GET /api/attention",
+        "GET /api/activity?since=...",
+        "GET /api/tests",
+        "POST /api/telemetry/heartbeat"
+      ],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "REDUCED_MOTION", "RESPONSIVE"],
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "BW-P4-EV-LOOPBACK-PRIVATE-DASHBOARD",
-            "sha256": "4acc35e88c88a16d600df0b8e126925f519e71e46b3c83171e670b5320468505"
+            "sha256": "8486f223cf313f9bcc43feab6786dc28559afe38a574761dfd0f6bc202c1ae03"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "e57670a010406dc48c7ede1f2939d3d35260484f",
         "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
-          "bridgewatch/test/server.test.ts#private dashboard and restricted API contracts",
-          "in-app browser loopback observation#private read-only dashboard on owned port 4322"
+          "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
+          "in-app browser loopback observation#desktop and 390px private dashboard with no horizontal overflow",
+          "loopback API observation#GET /api/summary, GET /api/activity?since=..., GET /api/tests, POST /api/telemetry/heartbeat"
         ]
       },
       "screenReferences": ["BW-SCR-MISSION-CONTROL"],
@@ -579,6 +597,55 @@
         "Development_Docs/Features/catalog/bridgewatch.json",
         "Development_Docs/Project_Bridgewatch_Phase_1_Design_Record.md",
         "bridgewatch/lib/server.ts"
+      ],
+      "terminalRung": "UI",
+      "utilizationStatus": "NOT_APPLICABLE",
+      "visibleEntry": "Authenticated private-network or loopback operator URL"
+    },
+    {
+      "accessibilityRequirements": ["KEYBOARD", "REDUCED_MOTION", "RESPONSIVE"],
+      "boundaryRationale": null,
+      "canonicalOwner": "Project Bridgewatch",
+      "capabilityId": "DW-CAP-BRIDGEWATCH-GOVERNED-SIGNAL-PROJECTION",
+      "disposition": "SECURITY_RESTRICTED",
+      "featureCatalogId": "FT-035",
+      "naturalStart": "LOOPBACK_OPERATOR_START",
+      "proofFamilyId": "DW-P4-JRN-BRIDGEWATCH",
+      "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
+      "realizationClassification": "INTERNAL_BY_DESIGN",
+      "requiredStates": ["READY", "LOADING", "ERROR", "RECOVERY"],
+      "routeReferences": [
+        "bridgewatch",
+        "GET /api/summary",
+        "GET /api/projects",
+        "GET /api/attention",
+        "GET /api/activity?since=...",
+        "GET /api/tests",
+        "POST /api/telemetry/heartbeat"
+      ],
+      "runtimeEvidence": {
+        "accessibility": ["KEYBOARD", "REDUCED_MOTION", "RESPONSIVE"],
+        "evidenceDisposition": "SOURCE_CURRENT",
+        "screenshots": [
+          {
+            "evidenceId": "BW-P4-EV-LOOPBACK-PRIVATE-DASHBOARD",
+            "sha256": "8486f223cf313f9bcc43feab6786dc28559afe38a574761dfd0f6bc202c1ae03"
+          }
+        ],
+        "sourceSha": "e57670a010406dc48c7ede1f2939d3d35260484f",
+        "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
+        "testReferences": [
+          "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
+          "in-app browser loopback observation#desktop and 390px private dashboard with no horizontal overflow",
+          "loopback API observation#GET /api/summary, GET /api/activity?since=..., GET /api/tests, POST /api/telemetry/heartbeat"
+        ]
+      },
+      "screenReferences": ["BW-SCR-MISSION-CONTROL"],
+      "sourceReferences": [
+        "Development_Docs/Features/catalog/bridgewatch.json",
+        "Development_Docs/Project_Bridgewatch_Phase_2_Design_Record.md",
+        "bridgewatch/src/sounding-line.ts",
+        "bridgewatch/src/telemetry.ts"
       ],
       "terminalRung": "UI",
       "utilizationStatus": "NOT_APPLICABLE",
@@ -599,6 +666,7 @@
       "routeReferences": ["/", "/captain", "/captain/library", "/join/[token]"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-D-captain-session",
@@ -657,6 +725,7 @@
       "routeReferences": ["/", "/studio", "/studio/exchange"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-E-creator-private-state",
@@ -704,6 +773,7 @@
       "routeReferences": ["/", "/profile", "/passport"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "TOUCH", "MOBILE", "ZOOM_200", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-OWCR3-EV-F-PROFILE-OVERVIEW-IDENTITY",
@@ -793,6 +863,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -873,6 +944,7 @@
       "routeReferences": ["/", "/community", "/studio/exchange"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "TEXT_CONTRAST"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-F-community-saved",
@@ -976,6 +1048,7 @@
       "routeReferences": ["/", "/community", "/studio/exchange"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "TEXT_CONTRAST"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-F-community-saved",
@@ -1094,6 +1167,7 @@
       "routeReferences": ["/admin", "/admin/support", "/api/helper/verification"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "TEXT_CONTRAST"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-J-session-expired",
@@ -1199,6 +1273,7 @@
       "routeReferences": ["/", "/player", "/captain", "/studio", "/community", "/profile"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "ZOOM_200", "REDUCED_MOTION", "TEXT_CONTRAST"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-OWCR1-EV-AE-CORRECTION-FULL-REGRESSION",
@@ -1400,6 +1475,7 @@
       "routeReferences": ["/", "/studio", "/studio/exchange"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-E-creator-private-state",
@@ -1501,6 +1577,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -1561,6 +1638,7 @@
       "routeReferences": ["/", "/player", "/captain", "/studio", "/community", "/profile"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "ZOOM_200", "REDUCED_MOTION", "TEXT_CONTRAST"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-OWCR1-EV-AE-CORRECTION-FULL-REGRESSION",
@@ -1753,6 +1831,7 @@
       "routeReferences": ["/", "/account", "/passport", "/profile"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "REDUCED_MOTION", "MOBILE", "ZOOM_200"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-A-registered-profile",
@@ -1882,6 +1961,7 @@
       "routeReferences": ["/", "/studio", "/studio/exchange"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-E-creator-private-state",
@@ -1936,6 +2016,7 @@
       "routeReferences": ["/", "/player", "/captain", "/studio", "/community", "/profile"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "ZOOM_200", "REDUCED_MOTION", "TEXT_CONTRAST"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-OWCR1-EV-AE-CORRECTION-FULL-REGRESSION",
@@ -2047,6 +2128,7 @@
       "routeReferences": ["/", "/captain", "/captain/library", "/join/[token]"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-D-captain-session",
@@ -2113,6 +2195,7 @@
       "routeReferences": ["/", "/profile", "/passport"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "TOUCH", "MOBILE", "ZOOM_200", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-OWCR3-EV-F-PROFILE-OVERVIEW-IDENTITY",
@@ -2195,6 +2278,7 @@
       "routeReferences": ["/", "/profile", "/passport"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "TOUCH", "MOBILE", "ZOOM_200", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-OWCR3-EV-F-PROFILE-OVERVIEW-IDENTITY",
@@ -2310,6 +2394,7 @@
       "routeReferences": ["/admin", "/admin/support", "/api/helper/verification"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "TEXT_CONTRAST"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-J-session-expired",
@@ -2362,6 +2447,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -2417,6 +2503,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -2512,6 +2599,7 @@
       "routeReferences": ["/", "/profile", "/passport"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "TOUCH", "MOBILE", "ZOOM_200", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-OWCR3-EV-F-PROFILE-OVERVIEW-IDENTITY",
@@ -2561,6 +2649,7 @@
       "routeReferences": ["/admin", "/admin/support", "/api/helper/verification"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "TEXT_CONTRAST"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-J-session-expired",
@@ -2609,6 +2698,7 @@
       "routeReferences": ["/admin", "/admin/support", "/api/helper/verification"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "TEXT_CONTRAST"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-J-session-expired",
@@ -2668,6 +2758,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -2724,6 +2815,7 @@
       "routeReferences": ["/", "/account", "/passport", "/profile"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "REDUCED_MOTION", "MOBILE", "ZOOM_200"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-A-registered-profile",
@@ -2814,6 +2906,7 @@
       "routeReferences": ["/", "/account", "/passport", "/profile"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "REDUCED_MOTION", "MOBILE", "ZOOM_200"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-A-registered-profile",
@@ -2910,6 +3003,7 @@
       "routeReferences": ["/", "/player", "/captain", "/studio", "/community", "/profile"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "ZOOM_200", "REDUCED_MOTION", "TEXT_CONTRAST"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-OWCR1-EV-AE-CORRECTION-FULL-REGRESSION",
@@ -3111,6 +3205,7 @@
       "routeReferences": ["/admin", "/admin/support", "/api/helper/verification"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "TEXT_CONTRAST"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-J-session-expired",
@@ -3156,6 +3251,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -3209,6 +3305,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -3262,6 +3359,7 @@
       "routeReferences": ["/", "/studio", "/studio/exchange"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-E-creator-private-state",
@@ -3333,6 +3431,7 @@
       "routeReferences": ["/admin", "/admin/support", "/api/helper/verification"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "TEXT_CONTRAST"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-J-session-expired",
@@ -3383,6 +3482,7 @@
       "routeReferences": ["/", "/player", "/captain", "/studio", "/community", "/profile"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "ZOOM_200", "REDUCED_MOTION", "TEXT_CONTRAST"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-OWCR1-EV-AE-CORRECTION-FULL-REGRESSION",
@@ -3467,6 +3567,7 @@
       "routeReferences": ["/", "/account", "/passport", "/profile"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "REDUCED_MOTION", "MOBILE", "ZOOM_200"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-A-registered-profile",
@@ -3585,6 +3686,7 @@
       "routeReferences": ["/", "/player", "/captain", "/studio", "/community", "/profile"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "ZOOM_200", "REDUCED_MOTION", "TEXT_CONTRAST"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-OWCR1-EV-AE-CORRECTION-FULL-REGRESSION",
@@ -3682,6 +3784,7 @@
       "routeReferences": ["/", "/account/register", "/account/verify"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "ZOOM_200"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-OWCR3-EV-K-VERIFICATION-CODE",
@@ -3740,6 +3843,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -3793,6 +3897,7 @@
       "routeReferences": ["/", "/studio", "/studio/exchange"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-E-creator-private-state",
@@ -3826,12 +3931,12 @@
       "visibleEntry": "Gateway Creator workspace"
     }
   ],
-  "expectedCapabilityCount": 56,
+  "expectedCapabilityCount": 57,
   "phase": "Phase 4 - Break the Surface",
   "phase3AcceptedMainSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
   "project": "Project Deepwater",
   "runtimeEvidenceStatus": "LOCAL_SYNTHETIC_PROVEN",
   "schemaVersion": "1.0.0",
-  "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+  "sourceSha": "e57670a010406dc48c7ede1f2939d3d35260484f",
   "truthBoundary": "Source-bound local synthetic evidence is distinct from live-provider proof, deployment, protected-main acceptance, owner acceptance, and product acceptance."
 }
