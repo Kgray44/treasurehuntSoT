@@ -28,24 +28,33 @@ records that condition without changing its owner state. PR #56 then advanced
 accepted main to `541e914f481883200569f8cc7ec5ec9428d7cbb7` with advisory
 Admiralty closure evidence and a governed Helm-browser setup stabilization.
 It adds no product capability or Feature Catalog denominator entry, but
-supersedes the r5 candidate. The current Deepwater product-evidence source is
+supersedes the r5 candidate. The prior Deepwater product-evidence source was
 `399865a70d2b7eeb83d12afd718702834252f870`. It
 retains Helm's accepted route recovery, detaches stale Player event streams on
 cancellation or abort, and rechecks the waiting-room state after visibility
 settles so an authoritative launch cannot strand a backgrounded Player.
 
+Protected Helm Phase 2 closure and accepted record-only infrastructure then
+advanced current main to `fb0f13e35fcdd98434d22c357aee02f24d6d9036`. The r6
+local qualification is historical rather than candidate proof. Rebased source
+`a61ff85676bf3a58eebe2be2df7fc3d789211654` is explicitly
+`LOCAL_PROVEN` after renewed qualification: Player, Captain, governed Helm
+browser, and affected cross-project proof all passed. One fresh candidate is
+still required after the final current-main fetch; no authority has been
+requested for the rebased source.
+
 The focused Player, Captain, and stream suite passes 26/26. The exact isolated
 Helm browser family passes 3/3 in execute-only mode with clean runtime
-conformance at the new source. Drydock current-source qualification passes the
-owner Sea Trials suite 196/196; its SQLite migration rehearsal verifies 59
-migrations and MySQL static parity. Admiralty passes 14 direct capability,
-read-model, and redaction tests; its validator checks 15 routes and its
-migrations pass. Bridgewatch validates and builds with 24 focused tests. The
-dependency-seed copier now skips junction descendants already
-covered by a retained root and cleanly removes an owned runtime on initialization
-failure; its authority-cutover and runtime-safety regressions pass. The refreshed
+conformance at rebased source `a61ff85676bf3a58eebe2be2df7fc3d789211654`.
+Drydock current-source qualification passes the owner Sea Trials suite
+196/196; its SQLite migration rehearsal verifies 59 migrations and MySQL
+static parity. Admiralty passes 14 direct capability, read-model, and
+redaction tests; its validator checks 15 routes and its migrations pass.
+Bridgewatch validates and builds with 24 focused tests. Static candidate
+qualification passes typecheck, policy, documentation, catalog, formatting,
+and diff checks; lint has zero errors and 101 existing warnings. The refreshed
 Deepwater audit and validator pass for 58 capabilities with semantic digest
-`4886d25203da77b21a46d1a5b330f028ace150ea2677146f8352af664a691813`.
+`77e07327d8e5db9d055c229199fc6fda3c85c119dcaee8b4be8d90fe4d506add`.
 
 The production-build Homeport matrix remains source-bound to
 `b810e2d0c33cbafb8e4d02c19b9af0db94315783`: original journeys A-O,
@@ -61,10 +70,10 @@ on exact main.
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
 | Deepwater proof-model tests    | PASS; 66/66                                                                                                        | Deterministic local control-plane tests                              |
 | Historical hosted decisions    | `EVIDENCE_INVALID`; runs 31605432896 and 31609917108; cleanup CLEAN                                                | Historical only; neither candidate may seek authority                |
-| Helm repair qualification      | PASS; invitation, Player, and stream tests 26/26; `browser.helm` 3/3 at `399865a70d2b7eeb83d12afd718702834252f870` | Isolated execute-only evidence; cannot issue `RELEASE_GO`            |
+| Helm repair qualification      | PASS; invitation, Player, and stream tests 26/26; `browser.helm` 3/3 at `a61ff85676bf3a58eebe2be2df7fc3d789211654` | Isolated execute-only evidence; cannot issue `RELEASE_GO`            |
 | Drydock Creator qualification  | PASS; 33/33, 3/3, 7/7, and 196/196; migration rehearsal PASS                                                       | Private Studio Sea Trials; no owner-state override                   |
 | Admiralty current-source scope | PASS; 14 direct tests, 15-route validator, migrations, browser 3/3                                                 | Read-only support and role boundaries; no catalog denominator change |
-| Deepwater audit and validation | PASS; 58 capabilities; digest `4886d25203da77b21a46d1a5b330f028ace150ea2677146f8352af664a691813`                   | Current product source only; no acceptance claim                     |
+| Deepwater audit and validation | PASS; 58 capabilities; digest `77e07327d8e5db9d055c229199fc6fda3c85c119dcaee8b4be8d90fe4d506add`                   | Current rebased source only; no acceptance claim                     |
 | Bridgewatch qualification      | PASS; typecheck, 24 tests, build                                                                                   | Private operator surface; no public-product or release authority     |
 
 ## Runtime proof boundary
@@ -79,8 +88,9 @@ protected-main acceptance.
 
 ## Remaining serialized gates
 
-1. The reconciled branch is frozen as one fresh candidate. Wait for the active serialized Mainline Decision to terminate; only after explicit lane ownership is available may this candidate dispatch exactly one hosted **Sounding Line / Mainline Decision**.
-2. Only after `RELEASE_GO`, complete protected merge, exact-main proof, and a
+1. Fetch current `origin/main` once, then freeze exactly one new candidate and
+   acquire the serialized acceptance lane.
+2. Only after a new `RELEASE_GO`, complete protected merge, exact-main proof, and a
    separately source-bound closure record.
 
 Phase 5 remains unauthorized throughout these gates.
