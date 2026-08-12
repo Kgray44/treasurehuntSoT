@@ -404,7 +404,8 @@
       "sourcePaths": [
         "bridgewatch/**",
         "scripts/sounding-line/status-projection.mjs",
-        "Development_Docs/Project_Bridgewatch_Phase_2_*.md"
+        "Development_Docs/Project_Bridgewatch_Phase_2_*.md",
+        "Development_Docs/Project_Bridgewatch_Phase_3_*.md"
       ],
       "testPaths": ["bridgewatch/test/**/*.test.*"],
       "contractIds": ["bridgewatch.mission-control"]
