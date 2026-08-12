@@ -631,6 +631,7 @@ test("Phase 4 rejects a passed screenshot without a hash", () => {
 
 test("Phase 4 local-proven state requires current journey, state, and accessibility proof", () => {
   const candidate = phase4Model();
+  candidate.inputs.phase4Config.lifecycle.state = "LOCAL_PROVEN";
   const account = candidate.phase4ProofMatrix.capabilities.find(
     (capability) => capability.capabilityId === "DW-CAP-ACCOUNT-DATA-EXPORT",
   );
@@ -643,6 +644,7 @@ test("Phase 4 local-proven state requires current journey, state, and accessibil
 
 test("Phase 4 frozen candidate requires completed focused qualification", () => {
   const candidate = phase4Model();
+  candidate.inputs.phase4Config.lifecycle.mainlineState = "FROZEN_CANDIDATE";
   candidate.inputs.phase4Config.lifecycle.qualification = "FOCUSED_QUALIFICATION_PENDING";
   includesError(phase4Errors(candidate), "frozen candidate lacks focused qualification");
 });
