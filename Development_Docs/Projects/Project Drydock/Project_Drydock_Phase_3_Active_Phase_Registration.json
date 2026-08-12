@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "project": "Project Drydock",
+  "projectId": "project-drydock",
+  "phase": 3,
+  "phaseName": "Run Sea Trials",
+  "phaseId": "project-drydock-phase-3-run-sea-trials",
+  "state": "ACTIVE_IMPLEMENTATION",
+  "branch": "codex/project-drydock-phase3-run-sea-trials",
+  "worktree": {
+    "ownership": "TASK_OWNED",
+    "path": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-drydock-phase3"
+  },
+  "baseSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+  "governingDocument": "Development_Docs/Projects/Project Drydock/Project_Drydock_Governing_Document.pdf",
+  "integrationPattern": ["COMPLETE_VERTICAL_SLICE", "ADDITIVE_FOUNDATION", "CANONICAL_RUNTIME_ADAPTER"],
+  "concurrencyClass": "CLASS_B_COORDINATED",
+  "serializedSharedContracts": [
+    "Drydock simulation model",
+    "One Voyage canonical transition adapter",
+    "Prisma schema and migrations",
+    "Sounding Line policy registries",
+    "Feature Catalog Studio fragment"
+  ],
+  "hardDependencies": [
+    {
+      "project": "Project Drydock Phase 1",
+      "state": "ACCEPTED_MAINLINE",
+      "mergeSha": "468530645e983412e5f4c1aaa103915be77c9c07"
+    },
+    {
+      "project": "Project Drydock Phase 2",
+      "state": "ACCEPTED_MAINLINE",
+      "mergeSha": "847e035775984888be71edf614f2205fd6c5a376"
+    }
+  ],
+  "sharedContracts": [
+    {
+      "contract": "Chronicle runtime transition semantics",
+      "canonicalOwner": "Project One Voyage",
+      "drydockUse": "A pure, exported One Voyage transition adapter consumed by production progression and simulation; Drydock owns no live session mutation."
+    },
+    {
+      "contract": "Creator Studio interaction and layout",
+      "canonicalOwner": "Project Shipwright",
+      "drydockUse": "Drydock-owned scenario, trace, diff, and coverage data are projected through existing Studio interaction patterns."
+    },
+    {
+      "contract": "Presentation outcomes and reduced-motion behavior",
+      "canonicalOwner": "Project Lanternwake",
+      "drydockUse": "Typed simulated presentation outcomes only; no animation-runtime ownership."
+    },
+    {
+      "contract": "Protected assets and provider evidence",
+      "canonicalOwner": "Project Sealed Hold and provider owners",
+      "drydockUse": "Synthetic bounded fault outcomes and redacted evidence only."
+    }
+  ],
+  "schemaImpact": {
+    "prismaChanges": "RESERVED_ADDITIVE",
+    "models": ["DrydockScenario", "DrydockScenarioRevision", "DrydockScenarioSuite", "DrydockSimulationRun"],
+    "migrations": [],
+    "backfills": []
+  },
+  "phaseBoundary": {
+    "deterministicSimulation": "IN_SCOPE",
+    "scenarioLabAndTraceInspection": "IN_SCOPE",
+    "runtimeAdapterAndDifferentialProof": "IN_SCOPE",
+    "liveTaleSessionMutation": "PROHIBITED",
+    "immutablePublishingEvidence": "OUT_OF_SCOPE_PHASE_4",
+    "phase4LaunchIntegration": "OUT_OF_SCOPE"
+  },
+  "expectedAcceptanceGate": "Sounding Line / Mainline Decision",
+  "registeredAt": "2026-08-12",
+  "acceptance": null
+}
