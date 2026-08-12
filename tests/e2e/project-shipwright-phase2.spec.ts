@@ -71,6 +71,20 @@ test("Shipwright Phase 2 keeps contract-aware authoring usable across modes and 
     "Chapter One · Narrative",
   );
 
+  const choiceLabel = page.getByLabel("Choice 1 label");
+  const originalChoiceLabel = await choiceLabel.inputValue();
+  await choiceLabel.fill("Follow the lantern");
+  await page.getByRole("button", { name: "Undo last edit" }).click();
+  await expect(choiceLabel).toHaveValue(originalChoiceLabel);
+  await page.getByRole("button", { name: "Redo edit" }).click();
+  await expect(choiceLabel).toHaveValue("Follow the lantern");
+  await expect(page.locator(".save-state")).toContainText("Saved at", { timeout: 15_000 });
+  await page.reload();
+  await expect(page.locator(".timeline-block")).toHaveCount(4);
+  await page.locator(".timeline-block").last().click();
+  await expect(page.getByLabel("Choice 1 label")).toHaveValue("Follow the lantern");
+  await expect(page.getByRole("button", { name: "Publish Chronicle" })).toBeVisible();
+
   await page.getByRole("button", { name: "Preview Passage" }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.getByRole("button", { name: "Close Passage preview" }).click();
