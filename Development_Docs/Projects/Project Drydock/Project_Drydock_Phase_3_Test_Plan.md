@@ -88,3 +88,19 @@ the other 17 receipts passed with clean teardown. The candidate is terminal and
 must not be retried. The next lifecycle step is the smallest Feature Catalog
 test after the count repair, followed by the complete replacement-candidate
 qualification and a new freeze before any new authority request.
+
+## r5 replacement candidate
+
+The count repair is committed at `6a5d66e23e1793afb60bcafc16f723661798d68e`.
+Its focused Feature Catalog suite passed 9/9, including the stable 46-entry
+count and the `FT-036` Project Drydock Phase 3 assertion. The complete Drydock,
+Studio/API, migration, policy, Prisma, static, Sounding Line runtime,
+production-build, documentation, and 46-entry Feature Catalog qualification
+then passed. Fetched `origin/main` remained
+`5735d43821209adb2259ec2c38979281da1bb5b9` with no advance or conflict.
+
+The next commit is frozen under tag
+`project-drydock-phase3-candidate-20260812-r5`. It is the sole current
+replacement candidate eligible for one explicit Mainline Decision after
+canonical acceptance ownership is acquired. r4 remains terminal history and
+must never be retried.

@@ -10,7 +10,7 @@ last_reviewed: 2026-08-09
 
 [Project Drydock](Project_Drydock_Governing_Document.pdf) governs the Chronicle authoring-contract, validation, compatibility, and later simulation program. Phase 1, Set the Blocks, is limited to typed authoring contracts, variables, expressions, schema evolution, compatibility fixtures, stable issues, and incremental contract validation. It does not implement whole-Chronicle analysis or simulation.
 
-Phase 1 status: **MAINLINE ACCEPTED** through protected PR #22 at mainline merge `468530645e983412e5f4c1aaa103915be77c9c07`. Phase 2, **Sound the Hull**, is **MAINLINE ACCEPTED** through protected PR #36 at merge `847e035775984888be71edf614f2205fd6c5a376`. Phase 2 is limited to whole-Chronicle static analysis. Phase 3, **Run Sea Trials**, returned to focused development after r4's terminal Feature Catalog evidence failure; it has no protected acceptance.
+Phase 1 status: **MAINLINE ACCEPTED** through protected PR #22 at mainline merge `468530645e983412e5f4c1aaa103915be77c9c07`. Phase 2, **Sound the Hull**, is **MAINLINE ACCEPTED** through protected PR #36 at merge `847e035775984888be71edf614f2205fd6c5a376`. Phase 2 is limited to whole-Chronicle static analysis. Phase 3, **Run Sea Trials**, has a requalified r5 candidate frozen from unchanged current main for serialized canonical acceptance; it has no protected acceptance.
 
 ## Phase 1 records
 
