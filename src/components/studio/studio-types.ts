@@ -63,6 +63,14 @@ export type RegistryItem = {
   defaultCompletion?: JsonObject;
   fields: InspectorField[];
   schemaVersion: number;
+  contract?: {
+    currentVersion: number;
+    minimumReaderVersion: number;
+    connectionPolicy: { terminal?: boolean; minimum?: number; maximum?: number; canonicalAuthority?: string };
+    assetRequirements: Array<{ fieldPath: string; mediaTypes: string[]; accessibilityFallback?: string | null }>;
+    providerContract?: string | null;
+    accessibilityRules: Array<{ code: string; obligation: string }>;
+  };
 };
 
 export type Asset = {
