@@ -5,8 +5,9 @@
   "authorization": "EXPLICITLY_AUTHORIZED",
   "auditDate": "2026-08-12",
   "baseOriginMainSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+  "reconciledOriginMainSha": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
   "phase3AcceptedMainSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
-  "productEvidenceSourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+  "productEvidenceSourceSha": "daecc2dc570af34772790d15b6676e53156e1062",
   "branch": "codex/project-deepwater-phase4-break-the-surface",
   "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase4",
   "schemaImpact": "DEEPWATER_PHASE4_PROOF_CONTROL_PLANE_ONLY",
@@ -33,7 +34,8 @@
   "runtimeEvidencePath": "Development_Docs/Programs/Deepwater/evidence/phase4/Project_Deepwater_Phase_4_Runtime_Evidence.json",
   "lifecycle": {
     "state": "LOCAL_PROVEN",
-    "mainlineState": "NOT_CANDIDATE",
+    "mainlineState": "FROZEN_CANDIDATE",
+    "acceptanceLane": "PENDING_SERIALIZED_MAINLINE_OWNERSHIP",
     "qualification": "FOCUSED_QUALIFICATION_PASSED",
     "ownerWalkthrough": "PACKET_READY",
     "ownerDecision": "NOT_REQUESTED"
