@@ -53,6 +53,29 @@ const changedPaths =
   qualified.qualifiedBaseSha === currentBaseSha
     ? []
     : (await git("diff", "--name-only", qualified.qualifiedBaseSha, currentBaseSha)).split(/\r?\n/u).filter(Boolean);
+const recordOnlyChangedPaths = plan.recordOnly
+  ? (
+      await git(
+        "diff",
+        "--name-only",
+        "--no-renames",
+        "--no-ext-diff",
+        plan.recordOnly.candidateMergeBaseSha,
+        candidateSha,
+      )
+    )
+      .split(/\r?\n/u)
+      .filter(Boolean)
+      .sort((left, right) => (left < right ? -1 : left > right ? 1 : 0))
+  : undefined;
+const recordOnlyAncestryValid = plan.recordOnly
+  ? await gitExit(
+      "merge-base",
+      "--is-ancestor",
+      plan.recordOnly.priorAuthority?.implementationMergeSha ?? "",
+      candidateSha,
+    )
+  : undefined;
 const result = qualifyProtectedMerge({
   authority,
   qualified,
@@ -66,6 +89,8 @@ const result = qualifyProtectedMerge({
   changedPaths,
   baseAncestryValid,
   authorityRunId,
+  recordOnlyChangedPaths,
+  recordOnlyAncestryValid,
 });
 process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
 process.exitCode = result.decision === "BINDING_PASS" ? 0 : 1;

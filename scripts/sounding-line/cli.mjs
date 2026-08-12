@@ -150,6 +150,15 @@ function validatePolicy(policy) {
     errors.push("sounding-line-authority: proof minimization mismatch");
   if (authorityIndex.governingPolicies?.semanticInvalidation !== "EVIDENCE_PRESERVATION_REQUIRED")
     errors.push("sounding-line-authority: semantic invalidation mismatch");
+  const recordOnlyClosure = authorityIndex.governingPolicies?.recordOnlyClosure;
+  if (
+    recordOnlyClosure?.mode !== "FAIL_CLOSED_PROTECTED_MERGE_FINALIZATION" ||
+    !Array.isArray(recordOnlyClosure.allowedRecordPathClasses) ||
+    !Array.isArray(recordOnlyClosure.requiredEvidence) ||
+    !recordOnlyClosure.requiredEvidence.includes("PRIOR_PROTECTED_RELEASE_GO") ||
+    !recordOnlyClosure.requiredEvidence.includes("GENERATED_RECORD_CONSISTENCY")
+  )
+    errors.push("sounding-line-authority: record-only closure policy mismatch");
   if (
     authorityIndex.developmentValidation?.incrementalVerificationRequired !== true ||
     authorityIndex.developmentValidation?.authoritativeDebuggingForbidden !== true ||
