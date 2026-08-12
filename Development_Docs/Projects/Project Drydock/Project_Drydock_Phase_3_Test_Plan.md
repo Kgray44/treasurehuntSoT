@@ -37,4 +37,17 @@ Focused Drydock/Studio/API qualification, static checks, build, documentation, c
 
 The original candidate `1c888c92d7aa54abf9d16d86e916751bab4b7fc1` received its one serialized Mainline Decision and terminated `RELEASE_NO_GO` because four unrelated registered evidence suites were invalid. The [failure record](Project_Drydock_Phase_3_Mainline_Decision_Failure_Record.md) preserves the exact disposition. That candidate cannot be retried.
 
-Replacement candidate r2 (`bc8f404b81659348bb229ac662b34961186a4068`, tagged `project-drydock-phase3-candidate-20260812-r2`) was superseded, not rejected, when Bridgewatch's accepted closure advanced current main. The [reconciliation record](Project_Drydock_Phase_3_Reconciliation_Record.md) captures the exact input and merge commit. The r3 candidate is frozen under tag `project-drydock-phase3-candidate-20260812-r3` and may receive exactly one replacement Mainline Decision after acceptance ownership is acquired. Protected integration and exact-main proof remain required after a `RELEASE_GO` decision.
+Replacement candidate r2 (`bc8f404b81659348bb229ac662b34961186a4068`, tagged `project-drydock-phase3-candidate-20260812-r2`) was superseded, not rejected, when Bridgewatch's accepted closure advanced current main. The [reconciliation record](Project_Drydock_Phase_3_Reconciliation_Record.md) captures the exact input and merge commit.
+
+The r3 candidate (`01a925d13fb5ab0a6064c1e6e4d2f1995a032349`, tagged
+`project-drydock-phase3-candidate-20260812-r3`) received its one explicit hosted
+Mainline Decision, run `31601859085`, and ended `EVIDENCE_INVALID` because the
+required `browser.helm` worker failed with clean teardown. Its [failure
+record](Project_Drydock_Phase_3_Mainline_Decision_Failure_Record.md) preserves
+the source-bound receipt and classification. The smallest focused hosted
+`browser.helm` diagnostic, run `31604050573`, independently failed with clean
+teardown: all heartbeat mutations returned HTTP 200 but the Captain presence
+projection did not converge within its governed deadline. Development is now
+with the Helm-owned focused repair; r3 may not be retried. Only a repaired,
+requalified, newly frozen candidate may receive one future authority decision
+after canonical acceptance ownership is reacquired.
