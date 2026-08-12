@@ -5,7 +5,7 @@
   "phase": 3,
   "phaseName": "Run Sea Trials",
   "phaseId": "project-drydock-phase-3-run-sea-trials",
-  "state": "CANDIDATE_FROZEN_PENDING_CANONICAL_ACCEPTANCE",
+  "state": "RETURNED_TO_DEVELOPMENT_AFTER_RELEASE_NO_GO",
   "branch": "codex/project-drydock-phase3-run-sea-trials",
   "worktree": {
     "ownership": "TASK_OWNED",
@@ -99,11 +99,24 @@
     },
     "currentCandidate": {
       "candidateTag": "project-drydock-phase3-candidate-20260812-r3",
-      "status": "FROZEN_PENDING_SERIALIZED_CANONICAL_ACCEPTANCE",
+      "candidateSha": "01a925d13fb5ab0a6064c1e6e4d2f1995a032349",
+      "status": "TERMINAL_EVIDENCE_INVALID_RETURNED_TO_FOCUSED_DEVELOPMENT",
+      "authoritativeDecision": {
+        "workflow": "Sounding Line authoritative",
+        "runId": 31601859085,
+        "gate": "mainline",
+        "decision": "EVIDENCE_INVALID",
+        "failedSuite": "browser.helm",
+        "cleanupState": "CLEAN",
+        "focusedDiagnosticRunId": 31604050573,
+        "focusedDiagnosticDisposition": "FAILED_CLEAN_HELM_PRESENCE_PROJECTION_NONCONVERGENCE",
+        "record": "Project_Drydock_Phase_3_Mainline_Decision_Failure_Record.md"
+      },
       "qualification": [
         "Drydock subsystem, Studio/API, migration, Sounding Line runtime, policy, Prisma, documentation, static, and production-build checks passed",
         "Current-main Bridgewatch closure records were mechanically formatted after the static check identified Prettier drift",
-        "No browser runtime, Mainline Decision, protected integration, or exact-main acceptance is claimed before the next authority dispatch"
+        "The candidate received its one hosted Mainline Decision and cannot be retried; focused Helm failure reproduction is required before any replacement freeze",
+        "No protected integration or exact-main acceptance is claimed"
       ]
     }
   }

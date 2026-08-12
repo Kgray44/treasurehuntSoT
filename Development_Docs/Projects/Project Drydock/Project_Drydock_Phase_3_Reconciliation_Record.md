@@ -63,3 +63,17 @@ The resulting r3 candidate is frozen under tag
 `project-drydock-phase3-candidate-20260812-r3`; that tag and the branch head
 bind its exact SHA. It may receive one serialized current Sounding Line
 Mainline Decision after canonical acceptance ownership is acquired.
+
+## r3 authority disposition
+
+Candidate r3 received that one hosted Mainline Decision at
+`01a925d13fb5ab0a6064c1e6e4d2f1995a032349` (run `31601859085`) and the sealed
+finalizer returned `EVIDENCE_INVALID`. The sole failed receipt is the required
+Helm browser suite; its task-owned worker cleaned up normally. This is not a
+current-main advance and does not justify another reconciliation. It returns the
+phase to focused development verification. The exact hosted `browser.helm`
+diagnostic independently reproduced a cleanly torn-down failure in the Captain
+presence-projection assertion, after successful invitation handoffs and
+heartbeat responses. Helm-owned repair must therefore prove both acceptance
+handoff and presence convergence before any repaired candidate may be
+requalified and frozen.
