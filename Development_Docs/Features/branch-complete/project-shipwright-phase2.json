@@ -28,9 +28,9 @@
     { "kind": "path", "value": "scripts/shipwright/phase2-walkthrough-runtime.mjs" }
   ],
   "branch": "codex/project-shipwright-phase2-fit-the-tools-r2",
-  "commit": "5b8f809563cd17a74a71731e730a92bdc8646827",
+  "commit": "98be581b90b55d108f079c506625544b040310ee",
   "limitations": [
-    "The capability is locally qualified but still requires the Project Shipwright owner walkthrough, authoritative Sounding Line decision, and protected-main integration.",
+    "The owner has accepted the capability; it still requires current-main requalification, one authoritative Sounding Line decision, and protected-main integration.",
     "It consumes current Drydock contracts and does not activate Shipwright Phase 3 block families, templates, fragments, or composition.",
     "Drydock remains the sole authority for canonical contracts, migrations, expression checking, defaults, and issue severity."
   ],
