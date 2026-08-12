@@ -10,21 +10,21 @@ last_reviewed: 2026-08-12
 
 ## Current decision
 
-`TECHNICALLY_QUALIFIED_EXPLICIT_FROZEN_CANDIDATE_AND_OWNER_PENDING`. The owned
+`RECONCILED_REQUALIFICATION_PENDING_EXPLICIT_FROZEN_CANDIDATE_DECISION`. The
 branch has been reconciled through accepted `origin/main`
-`236c27241bb8d1630274f5d5412ec9addbdb8893` by merge `5e6ca3f34`.
-Reconciliation repairs are `f50613964`, `c046df741`, and `7bdcc97a8`. Earlier
-branch evidence is historical only. This record does not claim owner acceptance,
-canonical-main integration, deployment, live-provider behavior, production MySQL
-execution, physical-device proof, or physical assistive-technology proof.
+`54e3d818d49d45282a9c419d562d4b5c78911ccd` by merge `927c54990`.
+The previous hosted decisions are historical: this record does not claim owner
+acceptance, canonical-main integration, deployment, live-provider behavior,
+production MySQL execution, physical-device proof, or physical
+assistive-technology proof.
 
 ## Completed local evidence
 
 | Lane                      | Current result                                                                                                                                                                                                        | Boundary                            |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
 | Admiralty policy          | Pass: 15 routes; 92 capability floor; 16 inherited, 46 Phase 2 active, 30 dormant; no schema or new broad mutation                                                                                                    | Source/registry proof               |
-| Unit/component/navigation | Pass: direct Admiralty 34/34; governed unit 31/31, service 8/8, and component 3/3 receipts with clean conformance                                                                                                     | Local governed focused proof        |
-| TypeScript, lint, format  | Pass; lint reports existing warnings and zero errors                                                                                                                                                                  | Local static proof                  |
+| Unit/component/navigation | Pass: merged Studio and Admiralty focused suites 16/16; earlier governed receipts are historical                                                                                                                      | Local focused proof                 |
+| TypeScript, lint, format  | Pass on merge `927c54990`; lint remains zero-error                                                                                                                                                                    | Local static proof                  |
 | Architecture/Deepwater    | Pass: One Voyage architecture and current Deepwater validation                                                                                                                                                        | Local static proof                  |
 | Documentation/catalog     | Pass: documentation index and Feature Catalog validation, 44 entries                                                                                                                                                  | Local cross-program proof           |
 | Production build          | Pass, 131 routes                                                                                                                                                                                                      | Task-owned production build only    |
@@ -33,9 +33,10 @@ execution, physical-device proof, or physical assistive-technology proof.
 
 Browser evidence root:
 `C:\Users\kgray\AppData\Local\ProjectAdmiralty\sounding-line-phase2`.
-The governed local browser receipt identifies source
-`7bdcc97a8077052604d6457be836cdee4f52024e`; it is focused proof only. The
-hosted Sounding Line Mainline Decision remains the release authority.
+The prior governed local browser receipt identifies source
+`7bdcc97a8077052604d6457be836cdee4f52024e`; it is historical after the
+latest mainline reconciliation. The hosted Sounding Line Mainline Decision
+remains the release authority.
 
 ## Pending governed gates
 
@@ -44,11 +45,11 @@ reconciliation. A new synthetic-only runtime must be prepared from the frozen
 candidate after the explicit Mainline Decision is recorded. Its owner decision
 is therefore `PENDING_OWNER_DECISION`.
 
-Earlier full Sounding Line attempts and the old Helm receipt are invalidated by
-the newer accepted mainline. The current policy permits authoritative
-finalization only for an explicitly frozen candidate through its hosted
-workflow-dispatch path. None of the local focused evidence substitutes for that
-decision.
+The earlier hosted attempts exposed and repaired only candidate-owned validation
+preparation and a Studio test timing race. They are invalidated by the newer
+accepted mainline. The current policy permits authoritative finalization only
+for an explicitly frozen candidate through its hosted workflow-dispatch path.
+None of the local focused evidence substitutes for that decision.
 
 Canonical-main integration remains prohibited until that authority passes and
 the owner explicitly accepts the walkthrough.

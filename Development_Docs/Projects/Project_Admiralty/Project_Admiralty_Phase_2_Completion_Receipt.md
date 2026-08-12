@@ -10,18 +10,16 @@ last_reviewed: 2026-08-12
 
 ## Disposition
 
-`TECHNICALLY_QUALIFIED_EXPLICIT_FROZEN_CANDIDATE_AND_OWNER_PENDING`.
+`RECONCILED_REQUALIFICATION_PENDING_EXPLICIT_FROZEN_CANDIDATE_DECISION`.
 
 The read-only Chartroom implementation is reconciled with accepted
-`origin/main` at `236c27241bb8d1630274f5d5412ec9addbdb8893` by merge
-`5e6ca3f34`. Reconciliation repairs retain the generated Feature Catalog,
-remove a duplicate Studio close declaration, align the pure Admiralty unit-suite
-resources, and recognize the registered Phase 2 browser adapter as a browser
-adapter. None changes Chartroom projections or underlying subsystem authority.
-Static, focused, documentation, Feature Catalog, Deepwater, production-build,
-and isolated-browser evidence is complete. The former owner walkthrough is
-invalidated by the reconciliation; a new synthetic-only preparation is pending
-the frozen candidate and its decision remains `PENDING_OWNER_DECISION`.
+`origin/main` at `54e3d818d49d45282a9c419d562d4b5c78911ccd` by merge
+`927c54990`. It retains the latest mainline Studio and Sounding Line
+improvements while preserving authority boundaries. The prior hosted runs
+identified narrowly-scoped test preparation, workspace-link isolation, and
+Studio assertion timing defects, each repaired on this branch. Requalification
+and a new synthetic-only walkthrough preparation remain pending the next frozen
+candidate decision.
 
 The latest governed isolated Chartroom browser receipt passed 3/3 journeys at
 `7bdcc97a8077052604d6457be836cdee4f52024e`, with clean runtime conformance and

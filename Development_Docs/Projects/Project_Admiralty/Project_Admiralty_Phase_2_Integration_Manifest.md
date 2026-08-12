@@ -10,18 +10,18 @@ last_reviewed: 2026-08-12
 
 ## Source identity
 
-| Item                      | Value                                                                                                             |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| Starting `origin/main`    | `468530645e983412e5f4c1aaa103915be77c9c07`                                                                        |
-| Accepted Phase 1 ancestor | `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`                                                                        |
-| Worktree                  | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\project-admiralty-phase2-open-the-chartroom`               |
-| Branch                    | `codex/project-admiralty-phase2-open-the-chartroom`                                                               |
-| Reconciled `origin/main`  | `236c27241bb8d1630274f5d5412ec9addbdb8893`                                                                        |
-| Reconciliation merge      | `5e6ca3f34ea8eb7eff1fd92ca2fb832f71b3bec1`                                                                        |
-| Reconciliation repairs    | `f50613964`, `c046df741`, and `7bdcc97a8`                                                                         |
-| Exact tested source       | Sounding Line-governed isolated Chartroom browser 3/3: `7bdcc97a8...`; explicit frozen-candidate decision pending |
-| Owner decision            | `PENDING_OWNER_DECISION`                                                                                          |
-| Publication               | Branch only; not canonical main and not deployed                                                                  |
+| Item                      | Value                                                                                                 |
+| ------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Starting `origin/main`    | `468530645e983412e5f4c1aaa103915be77c9c07`                                                            |
+| Accepted Phase 1 ancestor | `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`                                                            |
+| Worktree                  | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\project-admiralty-phase2-open-the-chartroom`   |
+| Branch                    | `codex/project-admiralty-phase2-open-the-chartroom`                                                   |
+| Reconciled `origin/main`  | `54e3d818d49d45282a9c419d562d4b5c78911ccd`                                                            |
+| Reconciliation merge      | `927c54990238e3d2290e104043552789d51a0de4`                                                            |
+| Reconciliation repairs    | `6b2724b67`, `b299bc494`, and `6604efae5`; prior receipts invalidated by new mainline                 |
+| Exact tested source       | Static and focused requalification on `927c54990...`; next explicit frozen-candidate decision pending |
+| Owner decision            | `PENDING_OWNER_DECISION`                                                                              |
+| Publication               | Branch only; not canonical main and not deployed                                                      |
 
 ## Source families
 
@@ -46,16 +46,16 @@ migration or backfill.
 
 ## Mainline reconciliation
 
-The 2026-08-12 fetch advanced accepted main through the explicit-dispatch
-Sounding Line finalization boundary, Bridgewatch workspace delivery, and
-cross-program product, governance, and documentation records. Those changes are
-`CONTRACT_ADJACENT` to the Chartroom's owner-named read projections. The sole
-merge conflict was generated Feature Catalog source identity; accepted-main
-generator state was retained and regenerated. A subsequent Studio duplicate-close
-declaration and Sounding Line Phase 2 browser-adapter classification defect were
-repaired with focused tests. There is no Phase 2 schema migration and no
-replacement of a Wayfarer, Harborlight, One Voyage, Sealed Hold, Deepwater, or
-Sounding Line canonical owner.
+The latest accepted main contains Shipwright acceptance repairs, resource-scoped
+Sounding Line runtime improvements, and Studio command-palette correction. These
+changes are `CONTRACT_ADJACENT` to Chartroom projections. Conflicts were limited
+to the Helm navigation test and a command-palette assertion: the stronger Helm
+settlement waits and both compatible palette assertions were retained. Earlier
+hosted finalization found missing generated-Prisma preparation for two
+Admiralty test lanes, a workspace-link copying gap, and a Studio assertion race;
+each has a narrow repair and focused validation. There is no Phase 2 schema
+migration and no replacement of a Wayfarer, Harborlight, One Voyage, Sealed
+Hold, Deepwater, or Sounding Line canonical owner.
 
 ## Integration boundary
 
