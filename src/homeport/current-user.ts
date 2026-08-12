@@ -1,6 +1,6 @@
 export const CURRENT_USER_CONTEXT_VERSION = "homeport.current-user.v1" as const;
 
-export type HomeportCapability = "player" | "captain" | "creator" | "moderator" | "administrator";
+export type HomeportCapability = "player" | "captain" | "creator" | "moderator" | "administrator" | "admiralty";
 export type HomeportWorkspace = "public" | "account" | "player" | "captain" | "creator" | "community";
 
 export type CurrentUserCapabilities = Readonly<{
@@ -9,6 +9,7 @@ export type CurrentUserCapabilities = Readonly<{
   canUseCreator: boolean;
   canModerate: boolean;
   isAdministrator: boolean;
+  canUseAdmiralty?: boolean;
 }>;
 
 type CurrentUserBase = Readonly<{
@@ -85,6 +86,8 @@ export function capabilityAllowed(context: AuthenticatedCurrentUser, capability:
       return context.capabilities.canModerate;
     case "administrator":
       return context.capabilities.isAdministrator;
+    case "admiralty":
+      return context.capabilities.canUseAdmiralty ?? context.capabilities.isAdministrator;
   }
 }
 

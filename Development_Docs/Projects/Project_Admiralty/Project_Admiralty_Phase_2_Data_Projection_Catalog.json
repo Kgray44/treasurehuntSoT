@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "2.0.0",
+  "phase": "PROJECT ADMIRALTY PHASE 2 — OPEN THE CHARTROOM",
+  "policy": "Admiralty consumes bounded typed projections from canonical owners. No projection establishes a second source of truth, and SECRET data is prohibited.",
+  "dataClasses": ["PUBLIC", "ACCOUNT_PRIVATE", "OPERATIONAL_SENSITIVE", "SECRET"],
+  "prohibitedReturnClass": "SECRET",
+  "ports": [
+    {
+      "port": "WayfarerAdminReadPort",
+      "owner": "Wayfarer",
+      "surfaces": ["People search", "Account dossier", "Support Access anchor"],
+      "classes": ["ACCOUNT_PRIVATE", "OPERATIONAL_SENSITIVE"],
+      "capabilities": ["ACCOUNT_OBSERVE", "SUPPORT_REQUEST", "SUPPORT_USE", "AUDIT_OBSERVE"],
+      "bounds": "25 search results, 25 sessions, 30 events, 20 history/lifecycle/support records",
+      "excluded": [
+        "password hashes",
+        "session token hashes",
+        "CSRF values",
+        "OAuth tokens",
+        "provider scopes",
+        "private profile prose"
+      ]
+    },
+    {
+      "port": "OneVoyageAdminReadPort",
+      "owner": "One Voyage",
+      "surfaces": ["Chronicle search/detail", "Edition inspection", "Voyage search/detail", "Safe Voyage events"],
+      "classes": ["OPERATIONAL_SENSITIVE"],
+      "capabilities": ["CHRONICLE_OBSERVE", "VOYAGE_OBSERVE"],
+      "bounds": "30 search results, 50 editions or crew, 100 events",
+      "excluded": [
+        "access token hashes",
+        "event payloads",
+        "configuration snapshots",
+        "variables",
+        "inventory",
+        "preview snapshots",
+        "private Chronicle content"
+      ]
+    },
+    {
+      "port": "HarborlightAdminReadPort",
+      "owner": "Harborlight",
+      "surfaces": ["Community overview", "Listing search/detail", "Moderation workload", "Community provider health"],
+      "classes": ["OPERATIONAL_SENSITIVE"],
+      "capabilities": ["COMMUNITY_OBSERVE"],
+      "bounds": "30 search results/releases, 20 reports/cases",
+      "excluded": [
+        "reporter identity",
+        "private report prose",
+        "moderation evidence bodies",
+        "raw manifests",
+        "license or attribution prose"
+      ]
+    },
+    {
+      "port": "SealedHoldAdminReadPort",
+      "owner": "Sealed Hold",
+      "surfaces": ["Provider health", "Queue state", "Backup freshness", "Restore drill state"],
+      "classes": ["OPERATIONAL_SENSITIVE"],
+      "capabilities": ["CONTENT_OBSERVE", "JOBS_OBSERVE"],
+      "bounds": "30-second provider cache; 30 schedules; latest backup and restore record",
+      "excluded": [
+        "private content",
+        "object keys",
+        "storage roots",
+        "bucket names",
+        "KMS key material",
+        "wrapped keys",
+        "job payloads"
+      ]
+    },
+    {
+      "port": "SoundingLineAdminReadPort",
+      "owner": "Sounding Line",
+      "surfaces": ["Release/build projection"],
+      "classes": ["OPERATIONAL_SENSITIVE"],
+      "capabilities": ["RELEASE_OBSERVE"],
+      "bounds": "current runtime identity only",
+      "excluded": ["deployment credentials", "mutable release actions", "unverified release claims"]
+    }
+  ],
+  "cachePolicy": {
+    "providerHealthTtlSeconds": 30,
+    "identity": "process-local optimization only",
+    "notAuthority": true,
+    "staleBehavior": "state and safe error remain visible; other domains continue rendering"
+  }
+}

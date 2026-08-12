@@ -27,7 +27,13 @@ export async function POST(request: Request, context: { params: Promise<{ playth
       { error: "Journal state is being saved too quickly." },
       { status: 429, headers: rateLimitHeaders(rate) },
     );
-  const parsed = journalReadingStateInputSchema.safeParse(await request.json());
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid journal reading state." }, { status: 400 });
+  }
+  const parsed = journalReadingStateInputSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Invalid journal reading state." }, { status: 400 });
   const readingState = await updatePlayerJournalReadingState(
     session.playerProfileId,

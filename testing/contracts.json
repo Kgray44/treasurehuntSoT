@@ -3186,6 +3186,62 @@
       "authority": "bridgewatch",
       "owners": ["bridgewatch"],
       "critical": true
+    },
+    {
+      "id": "admiralty.phase2.authorization-partition",
+      "name": "Least-privileged Chartroom route and navigation partition",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase2.read-projection-redaction",
+      "name": "Bounded typed owner projections and secret redaction",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase2.account-dossier-support",
+      "name": "Account dossier and consented Support Access integration",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase2.chronicle-voyage-inspection",
+      "name": "Chronicle, edition, Voyage, crew, and safe event inspection",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase2.community-operations-providers",
+      "name": "Community, operations, provider, configuration, and release truth",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase2.audit-investigation",
+      "name": "Sanitized Audit Explorer and correlation-led investigation",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase2.registry-activation",
+      "name": "Living capability activation and dormant-state accounting",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "admiralty.phase2.responsive-accessibility",
+      "name": "Responsive accessible read-only Chartroom",
+      "authority": "project-admiralty",
+      "owners": ["project-admiralty"],
+      "critical": true
     }
   ]
 }

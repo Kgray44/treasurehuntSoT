@@ -1,6 +1,6 @@
 /* Project Sounding Line Phase 3: durable, local verification intelligence. */
 import { createHash, randomUUID } from "node:crypto";
-import { appendFile, mkdir, readFile, readdir, rename, stat, writeFile } from "node:fs/promises";
+import { appendFile, mkdir, open, readFile, readdir, rename, rm, stat, writeFile } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import os from "node:os";
 import path from "node:path";
@@ -477,6 +477,30 @@ async function writeAtomic(file, data) {
 
 const runFile = (root, id) => path.join(root, `${safeId(id, "run_id")}.json`);
 const runLogFile = (root, id) => path.join(root, `${safeId(id, "run_id")}.log`);
+const runLockFile = (root) => path.join(root, ".phase3-run.lock");
+const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+
+async function withRunLock(root, action) {
+  const lockFile = runLockFile(root);
+  let handle;
+  for (let attempt = 0; attempt < 300; attempt += 1) {
+    try {
+      handle = await open(lockFile, "wx", 0o600);
+      break;
+    } catch (error) {
+      if (error?.code !== "EEXIST") throw error;
+      await sleep(Math.min(5 + attempt, 50));
+    }
+  }
+  if (!handle) throw new Error("PHASE3_RUN_STORE_BUSY");
+  try {
+    return await action();
+  } finally {
+    await handle.close();
+    await rm(lockFile, { force: true });
+  }
+}
+
 export async function readRun(id, root = defaultRuntimeRoot()) {
   return parse(await readFile(runFile(root, id), "utf8"));
 }
@@ -558,11 +582,13 @@ export async function findEquivalentRun({
 }
 export async function updateRun(id, patch, root = defaultRuntimeRoot()) {
   safeId(id, "run_id");
-  const file = runFile(root, id);
-  const current = parse(await readFile(file, "utf8"));
-  const next = { ...current, ...patch, heartbeat: new Date().toISOString() };
-  await writeAtomic(file, next);
-  return next;
+  return withRunLock(root, async () => {
+    const file = runFile(root, id);
+    const current = parse(await readFile(file, "utf8"));
+    const next = { ...current, ...patch, heartbeat: new Date().toISOString() };
+    await writeAtomic(file, next);
+    return next;
+  });
 }
 export async function cancelRun(id, root) {
   const run = await updateRun(
