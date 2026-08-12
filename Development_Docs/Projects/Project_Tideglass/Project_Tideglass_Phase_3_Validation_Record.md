@@ -1,14 +1,14 @@
 ---
 title: Project Tideglass Phase 3 Validation Record
 audience: product-engineering
-status: candidate-frozen-owner-walkthrough-pending
+status: owner-accepted-mainline-pending
 canonical_for: project-tideglass-phase-3-validation
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 validation record
 
-Status: `CANDIDATE_FROZEN_PENDING_OWNER_WALKTHROUGH`.
+Status: `OWNER_ACCEPTED_MAINLINE_PENDING`.
 
 The reconciled product source is
 `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`, rebased on accepted main
@@ -24,4 +24,8 @@ The reconciled product source is
 
 The fixture uses only reserved synthetic accounts and Chronicle content. Comparison is read-only: the suite does not change a published edition, a live Voyage, a Wayfarer history record, an annotation, or canonical `prisma/dev.db`. It also verifies foreign history denial, server-derived audience, bounded return paths, and absence of raw snapshot product output.
 
-This record is local qualification evidence only. The next authority is the owner walkthrough. No Sounding Line Mainline Decision, protected merge, Deepwater finding closure, deployment, or Phase 4 work has been started.
+The owner accepted this reconciled product on `2026-08-12`; the accepted reviewed
+source is recorded in `Project_Tideglass_Phase_3_Owner_Decision_Record.md`.
+This is still local qualification evidence until the next authority, one frozen
+exact-SHA Sounding Line Mainline Decision, is `RELEASE_GO`. No protected merge,
+Deepwater finding closure, deployment, or Phase 4 work has been started.

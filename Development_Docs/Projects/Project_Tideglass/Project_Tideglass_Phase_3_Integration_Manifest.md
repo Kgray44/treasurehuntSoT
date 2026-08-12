@@ -1,14 +1,15 @@
 ---
 title: Project Tideglass Phase 3 Integration Manifest
 audience: product-engineering
-status: candidate-frozen-owner-walkthrough-pending
+status: owner-accepted-mainline-pending
 canonical_for: project-tideglass-phase-3-integration
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 integration manifest
 
-Status: `CANDIDATE_FROZEN_PENDING_OWNER_WALKTHROUGH`. This is a source integration inventory, not an acceptance or protected-mainline receipt.
+Status: `OWNER_ACCEPTED_MAINLINE_PENDING`. This is a source integration
+inventory, not an accepted-mainline or protected-mainline receipt.
 
 ## Canonical consumer path
 
@@ -33,7 +34,12 @@ Status: `CANDIDATE_FROZEN_PENDING_OWNER_WALKTHROUGH`. This is a source integrati
 
 ## Required closeout evidence
 
-Before the manifest can become a completion receipt: the candidate must be reconciled to fetched `origin/main`, the static consumer audit and browser journey must be rerun against that candidate, and canonical owner acceptance must precede the single authoritative decision.
+The candidate was reconciled to fetched `origin/main`, and the static consumer
+audit and browser journey were rerun against the reviewed product source.
+Canonical owner acceptance is recorded in
+`Project_Tideglass_Phase_3_Owner_Decision_Record.md`. Before the manifest can
+become a completion receipt, its exact documentation-qualified SHA must receive
+the single authoritative decision and protected integration.
 
 ## Reconciled-main result
 

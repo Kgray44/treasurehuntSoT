@@ -8,7 +8,12 @@ last_reviewed: 2026-08-12
 
 # Project Tideglass Phase 3 product walkthrough: Choose the Passage
 
-Status: source-bound candidate evidence is complete; canonical owner walkthrough remains pending. The generated visual manifest records the exact candidate SHA, fixture checksum, routes, viewports, screenshot hashes, and semantic assertions. This document does not record owner acceptance.
+Status: source-bound candidate evidence was accepted by the canonical owner on
+`2026-08-12`. The generated visual manifest records the exact reviewed product
+SHA, fixture checksum, routes, viewports, screenshot hashes, and semantic
+assertions. The owner decision is recorded separately in
+`Project_Tideglass_Phase_3_Owner_Decision_Record.md`; this document remains the
+reproducible walkthrough package.
 
 The reconciled product source evidence is `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6` against `origin/main` `4edc8de5e30e9748700c19b466061f9b9a97f268`. Any later source change requires the affected owner-review evidence to be rerun before owner acceptance is recorded.
 
@@ -30,4 +35,4 @@ The available synthetic role aliases are Anonymous, Player A, Player AB, Player 
 
 ## Acceptance boundary
 
-This synthetic local walkthrough is suitable for product review of the governed experience. It is not staging, production, live-provider, physical-device, protected-mainline, or real-user proof. Owner approval must identify the reconciled frozen candidate explicitly. Only after that approval may the task dispatch its one Sounding Line Mainline Decision.
+This synthetic local walkthrough is suitable for product review of the governed experience. It is not staging, production, live-provider, physical-device, protected-mainline, or real-user proof. The owner accepted the reconciled source identified above. The remaining authority is its one exact-SHA Sounding Line Mainline Decision.
