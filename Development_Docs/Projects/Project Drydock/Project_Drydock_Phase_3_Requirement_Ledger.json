@@ -981,9 +981,9 @@
       "securityEvidence": "rollback and safety records",
       "privacyEvidence": "truth-bound evidence classifications",
       "performanceEvidence": "performance record",
-      "currentStatus": "REPLACEMENT_CANDIDATE_QUALIFIED_FROZEN",
+      "currentStatus": "RETURNED_TO_FOCUSED_FEATURE_CATALOG_REPAIR_AFTER_R4",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "The r4 candidate is frozen; protected acceptance and the completion receipt remain pending."
+      "limitation": "r4 ended EVIDENCE_INVALID because the Feature Catalog stable-count test expected 45 rather than the audited 46 entries. No protected acceptance or completion receipt is claimed."
     },
     {
       "id": "DD-P3-059",
@@ -997,9 +997,9 @@
       "securityEvidence": "NOT_APPLICABLE",
       "privacyEvidence": "NOT_APPLICABLE",
       "performanceEvidence": "NOT_APPLICABLE",
-      "currentStatus": "CURRENT_MAIN_VERIFIED_NO_ADVANCE_R4_FROZEN",
+      "currentStatus": "CURRENT_MAIN_VERIFIED_R4_TERMINAL_REPAIR_REQUIRED",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "r3 ended EVIDENCE_INVALID; r4 is requalified and frozen after the Helm recovery. origin/main has not advanced from the reconciled base, so no additional merge reconciliation exists before its one Mainline Decision."
+      "limitation": "r3 ended EVIDENCE_INVALID; r4 then ended EVIDENCE_INVALID solely in the Feature Catalog stable-count test. origin/main had not advanced before r4; a replacement candidate still requires a fresh reconciliation before future authority."
     },
     {
       "id": "DD-P3-060",
@@ -1013,9 +1013,9 @@
       "securityEvidence": "protected merge policy",
       "privacyEvidence": "NOT_APPLICABLE",
       "performanceEvidence": "NOT_APPLICABLE",
-      "currentStatus": "R4_FROZEN_PENDING_CANONICAL_ACCEPTANCE",
+      "currentStatus": "R4_TERMINAL_EVIDENCE_INVALID_REPLACEMENT_REQUIRED",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "r3 ended EVIDENCE_INVALID; r4 may receive exactly one new Mainline Decision only after canonical ownership is acquired. No protected integration or exact-main proof is claimed."
+      "limitation": "r3 and r4 each ended EVIDENCE_INVALID. r4's sole failure was unit.feature-catalog expecting 45 rather than 46 audited entries. It cannot be retried; only a new, fully qualified and frozen candidate may receive future authority after canonical ownership is acquired. No protected integration or exact-main proof is claimed."
     }
   ]
 }

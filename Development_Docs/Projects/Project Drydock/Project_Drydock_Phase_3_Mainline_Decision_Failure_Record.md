@@ -107,3 +107,22 @@ decision. Current `origin/main` remains
 The phase is therefore returned to full replacement-candidate qualification.
 The r3 authority result remains terminal history: these focused recovery
 receipts do not alter it or claim protected integration.
+
+## Hosted r4 decision
+
+The r4 frozen candidate `fd57f0f23330d86502808b197c2b9d5f3a90e422`, tagged
+`project-drydock-phase3-candidate-20260812-r4`, consumed its one explicit
+hosted Mainline Decision in run `31612564391` against qualified base
+`5735d43821209adb2259ec2c38979281da1bb5b9`. The sealed finalizer is
+`SOUNDING_LINE_FINALIZER` with decision `EVIDENCE_INVALID`, not `RELEASE_GO`.
+It received 18 receipts: 17 `PASSED` with `cleanupState: CLEAN`; there were no
+missing, duplicate, unknown, invalid, or runtime-conformance failures.
+
+The sole failed clean receipt is `unit.feature-catalog`. Its audited-catalog
+ordering test expected 45 entries, while the current source contains 46
+entries because this Phase 3 branch-complete fragment is now eligible and
+present. The failure is an exact Feature Catalog test-maintenance defect, not
+a Drydock simulation, Studio, migration, browser, or protected-main defect.
+The r4 candidate remains terminal and cannot be retried. The required path is
+to repair and prove the smallest Feature Catalog scope, then requalify and
+freeze a new candidate before acquiring a future serialized authority lane.

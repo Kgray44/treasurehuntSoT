@@ -5,7 +5,7 @@
   "phase": 3,
   "phaseName": "Run Sea Trials",
   "phaseId": "project-drydock-phase-3-run-sea-trials",
-  "state": "CANDIDATE_FROZEN_PENDING_CANONICAL_ACCEPTANCE",
+  "state": "RETURNED_TO_FOCUSED_DEVELOPMENT_AFTER_R4_EVIDENCE_INVALID",
   "branch": "codex/project-drydock-phase3-run-sea-trials",
   "worktree": {
     "ownership": "TASK_OWNED",
@@ -134,7 +134,7 @@
     },
     "replacementCandidateR4": {
       "candidateTag": "project-drydock-phase3-candidate-20260812-r4",
-      "status": "FROZEN_PENDING_SERIALIZED_CANONICAL_ACCEPTANCE",
+      "status": "TERMINAL_EVIDENCE_INVALID_RETURNED_TO_FOCUSED_DEVELOPMENT",
       "qualifiedBaseSha": "5735d43821209adb2259ec2c38979281da1bb5b9",
       "baseVerification": "Current fetched origin/main has not advanced from the r3-qualified base; the branch remains a strict descendant.",
       "qualification": [
@@ -145,7 +145,17 @@
         "Policy, Prisma schema validation, generated client, typecheck, static validation, and Sounding Line runtime checks passed",
         "Production build, documentation validation, and branch-complete Feature Catalog validation passed"
       ],
-      "acceptanceBoundary": "This frozen candidate may receive one explicit Mainline Decision only after serialized canonical acceptance ownership is acquired. Protected integration and exact-main proof remain unclaimed."
+      "authoritativeDecision": {
+        "workflow": "Sounding Line authoritative",
+        "runId": 31612564391,
+        "gate": "mainline",
+        "decision": "EVIDENCE_INVALID",
+        "failedSuite": "unit.feature-catalog",
+        "failure": "Audited catalog contains 46 entries while the stable-count test expected 45.",
+        "cleanupState": "CLEAN",
+        "record": "Project_Drydock_Phase_3_Mainline_Decision_Failure_Record.md"
+      },
+      "acceptanceBoundary": "r4 consumed its one Mainline Decision and is terminal. A focused Feature Catalog repair, full replacement qualification, a new frozen SHA, current-main reconciliation, and a new serialized authority grant are required before another decision. Protected integration and exact-main proof remain unclaimed."
     }
   }
 }

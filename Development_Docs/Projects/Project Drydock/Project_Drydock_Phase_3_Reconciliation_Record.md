@@ -94,3 +94,18 @@ or conflict resolution exists to perform. The next commit is bound by tag
 `project-drydock-phase3-candidate-20260812-r4` and may receive one new explicit
 Mainline Decision only after serialized canonical acceptance ownership is
 acquired.
+
+## r4 authority disposition
+
+Candidate r4 (`fd57f0f23330d86502808b197c2b9d5f3a90e422`) consumed its one
+hosted Mainline Decision in run `31612564391` against the unchanged accepted
+base `5735d43821209adb2259ec2c38979281da1bb5b9`. The sealed
+`SOUNDING_LINE_FINALIZER` returned `EVIDENCE_INVALID`: 17 of 18 receipts were
+`PASSED` with `CLEAN` cleanup, and no receipt was missing, duplicate, unknown,
+or runtime-nonconformant. The sole failed clean receipt was
+`unit.feature-catalog`, whose stable-count assertion expected 45 entries while
+the audited catalog now correctly contains 46 after the Phase 3 branch-complete
+fragment was added. This is a terminal candidate evidence failure, not
+protected integration or an exact-main claim. It returns the phase to the
+smallest focused Feature Catalog test before any replacement candidate can be
+requalified and frozen.
