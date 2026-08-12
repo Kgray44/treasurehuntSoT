@@ -22,5 +22,48 @@
     "focusedRepairRequiredBeforeReacceptance": true,
     "authoritativeInvocation": "EXPLICIT_FROZEN_CANDIDATE_ONLY"
   },
+  "protectedMergeBinding": {
+    "enabled": true,
+    "requiredContext": "Sounding Line / Mainline Decision",
+    "authoritativeWorkflowName": "Sounding Line authoritative",
+    "qualifiedEvidence": "SEALED_FINALIZER_ARTIFACT_ONLY",
+    "semanticCarryForward": {
+      "mode": "FAIL_CLOSED_PATH_CLASSIFICATION",
+      "unrelatedPathGlobs": [
+        ".agents/**",
+        ".github/workflows/**",
+        "Development_Docs/Governing/**",
+        "Development_Docs/Programs/Sounding_Line/**",
+        "tests/sounding-line/**",
+        "testing/sounding-line-authority.json",
+        "testing/workspace-lifecycle-policy.json",
+        "scripts/sounding-line/**"
+      ],
+      "relevantContractPathGlobs": [
+        "Development_Docs/Projects/Project_Helm/**",
+        "src/**",
+        "prisma/**",
+        "package.json",
+        "package-lock.json",
+        "next.config.*",
+        "playwright*.config.*",
+        "tests/e2e/**"
+      ]
+    },
+    "legacyQualifiedCandidates": [
+      {
+        "prNumber": 35,
+        "candidateSha": "cd49dfca7486f3b2e23cc5ec03152d734aa4bcd3",
+        "qualifiedBaseSha": "e1e0cfee4441ce2985142a442b92541eb45106ff",
+        "authoritativeRunId": 31555993275,
+        "planDigest": "862dea4269ddf1c2ba2e7a12aa6fbe557837076f8a8a417b95a8a68f143c635f",
+        "policyDigest": "2da4d0e462d36d1b8c98d526fba0b2d6d09cd4da4f9dd518a4458549360c68e0",
+        "inventoryDigest": "9e1b3908cecb8c3edf9fbb79677ff75669f9c5b1de053fe14d3fa9bbc10eb4e9",
+        "authorityDigest": "07b34b4acae15446fe0bd3f659680e47a713c911bba22afcd36490013685dcc9",
+        "evidenceDigest": "1c1e40398118f1bdc1693be25c3a635d7514d383bda02a481a42497a25c27f2b",
+        "mandatoryReceiptCount": 37
+      }
+    ]
+  },
   "futureProjectInheritance": true
 }

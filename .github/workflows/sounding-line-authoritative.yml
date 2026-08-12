@@ -16,9 +16,18 @@ on:
         description: Exact 40-character head SHA of the frozen candidate ref
         required: true
         type: string
+      pr_number:
+        description: Pull request number for a future protected-merge binding envelope
+        required: false
+        type: string
+      base_sha:
+        description: Exact 40-character protected base SHA qualified with the candidate
+        required: false
+        type: string
 
 permissions:
   contents: read
+  pull-requests: read
 
 concurrency:
   group: sounding-line-authoritative-${{ github.workflow }}-${{ github.ref }}
@@ -47,6 +56,8 @@ jobs:
           SOUNDING_LINE_GATE: ${{ inputs.gate }}
           SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
           SOUNDING_LINE_DISPATCHED_SHA: ${{ github.sha }}
+          SOUNDING_LINE_PR_NUMBER: ${{ inputs.pr_number }}
+          SOUNDING_LINE_BASE_SHA: ${{ inputs.base_sha }}
         run: |
           $gate = $env:SOUNDING_LINE_GATE
           if ($gate -notin @('mainline', 'release-candidate')) { throw "SOUNDING_LINE_GATE_INVALID" }
@@ -54,9 +65,31 @@ jobs:
           $dispatchedSha = $env:SOUNDING_LINE_DISPATCHED_SHA
           if ($candidateSha -notmatch '^[0-9a-f]{40}$') { throw "SOUNDING_LINE_FROZEN_CANDIDATE_SHA_INVALID" }
           if ($candidateSha -ne $dispatchedSha) { throw "SOUNDING_LINE_FROZEN_CANDIDATE_SHA_MISMATCH" }
+          $prNumber = $env:SOUNDING_LINE_PR_NUMBER
+          $baseSha = $env:SOUNDING_LINE_BASE_SHA
+          if (($prNumber -and -not $baseSha) -or (-not $prNumber -and $baseSha)) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_IDENTITY_PAIR_REQUIRED" }
+          if ($prNumber -and ($prNumber -notmatch '^[1-9][0-9]*$')) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_PR_INVALID" }
+          if ($baseSha -and ($baseSha -notmatch '^[0-9a-f]{40}$')) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_BASE_SHA_INVALID" }
           "value=$gate" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with: { ref: "${{ github.sha }}" }
+        with: { ref: "${{ github.sha }}", fetch-depth: 0 }
+      - name: Verify frozen candidate base metadata
+        if: ${{ inputs.pr_number != '' }}
+        shell: pwsh
+        env:
+          SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+          SOUNDING_LINE_BASE_SHA: ${{ inputs.base_sha }}
+          SOUNDING_LINE_PR_NUMBER: ${{ inputs.pr_number }}
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          git cat-file -e "$env:SOUNDING_LINE_CANDIDATE_SHA^{commit}"
+          git cat-file -e "$env:SOUNDING_LINE_BASE_SHA^{commit}"
+          git merge-base --is-ancestor "$env:SOUNDING_LINE_BASE_SHA" "$env:SOUNDING_LINE_CANDIDATE_SHA"
+          $headers = @{ Authorization = "Bearer $env:GITHUB_TOKEN"; Accept = "application/vnd.github+json"; 'X-GitHub-Api-Version' = '2022-11-28' }
+          $pr = Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:GITHUB_REPOSITORY/pulls/$env:SOUNDING_LINE_PR_NUMBER"
+          if ($pr.head.sha -ne $env:SOUNDING_LINE_CANDIDATE_SHA) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_PR_HEAD_MISMATCH" }
+          if ($pr.base.sha -ne $env:SOUNDING_LINE_BASE_SHA) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_PR_BASE_MISMATCH" }
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc, cache: npm }
       - run: npm ci
@@ -223,7 +256,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with: { ref: "${{ github.sha }}" }
+        with: { ref: "${{ github.sha }}", fetch-depth: 0 }
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc, cache: npm }
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
@@ -233,9 +266,22 @@ jobs:
         with: { pattern: sounding-line-worker-evidence-*, path: sounding-line-worker-evidence, merge-multiple: false }
       - name: Finalizer decision
         run: node scripts/sounding-line/finalize-ci.mjs sounding-line-plan/sounding-line-plan.json sounding-line-worker-evidence --out sounding-line-finalization.json
+      - name: Seal qualified acceptance envelope
+        if: ${{ inputs.pr_number != '' }}
+        env:
+          SOUNDING_LINE_PR_NUMBER: ${{ inputs.pr_number }}
+          SOUNDING_LINE_BASE_SHA: ${{ inputs.base_sha }}
+          SOUNDING_LINE_RUN_ID: ${{ github.run_id }}
+        run: node scripts/sounding-line/create-acceptance-envelope.mjs --plan sounding-line-plan/sounding-line-plan.json --finalization sounding-line-finalization.json --pr-number "$env:SOUNDING_LINE_PR_NUMBER" --base-sha "$env:SOUNDING_LINE_BASE_SHA" --run-id "$env:SOUNDING_LINE_RUN_ID" --out sounding-line-acceptance-envelope.json
       - if: always()
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
           name: sounding-line-finalization
           path: sounding-line-finalization.json
+          retention-days: 14
+      - if: ${{ inputs.pr_number != '' && success() }}
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: sounding-line-acceptance-envelope
+          path: sounding-line-acceptance-envelope.json
           retention-days: 14
