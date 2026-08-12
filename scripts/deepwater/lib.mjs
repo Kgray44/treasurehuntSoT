@@ -3472,6 +3472,10 @@ export function validatePhase3Model(artifacts) {
 export function validatePhase4Model(artifacts) {
   const errors = [];
   const { phase4Config, runtimeEvidence } = artifacts.inputs;
+  const requalificationPending =
+    phase4Config.lifecycle?.state === "RECONCILED_PENDING_REQUALIFICATION" &&
+    phase4Config.lifecycle?.mainlineState === "SUPERSEDED_BY_CURRENT_MAIN_RECONCILIATION" &&
+    phase4Config.lifecycle?.qualification === "FULL_REQUALIFICATION_REQUIRED";
   const proof = artifacts.phase4ProofMatrix;
   const phase3Ids = artifacts.phase3.ledger.capabilities.map((capability) => capability.capabilityId);
   const additions = phase4Config.currentMainAdditions.map((addition) => addition.capabilityId);
@@ -3488,8 +3492,10 @@ export function validatePhase4Model(artifacts) {
     errors.push("Phase 4 reconciled source SHA is invalid");
   if (!/^[0-9a-f]{40}$/u.test(phase4Config.productEvidenceSourceSha ?? ""))
     errors.push("Phase 4 product evidence source SHA is invalid");
-  if (runtimeEvidence.sourceSha !== phase4Config.productEvidenceSourceSha)
+  if (runtimeEvidence.sourceSha !== phase4Config.productEvidenceSourceSha && !requalificationPending)
     errors.push("Phase 4 runtime evidence source SHA does not match the frozen product source");
+  if (requalificationPending && runtimeEvidence.status !== "REQUALIFICATION_REQUIRED")
+    errors.push("Phase 4 current-main reconciliation lacks explicit requalification state");
   if (proof.sourceSha !== phase4Config.productEvidenceSourceSha)
     errors.push("Phase 4 proof matrix source SHA does not match the frozen product source");
   if (expectedIds.length !== phase4Config.expectedCurrentCapabilityCount)
@@ -3533,7 +3539,7 @@ export function validatePhase4Model(artifacts) {
       if (screenId.startsWith("screen-") && !screenIds.has(screenId))
         errors.push(`${family.journeyId}: unknown Homeport screen ${screenId}`);
     const runtime = runtimeFamilies.get(family.journeyId);
-    if (runtime && runtime.sourceSha !== phase4Config.productEvidenceSourceSha)
+    if (runtime && runtime.sourceSha !== phase4Config.productEvidenceSourceSha && !requalificationPending)
       errors.push(`${family.journeyId}: runtime evidence is stale or bound to the wrong source SHA`);
     if (runtime?.status === "PASSED") {
       if (!runtime.testReferences?.length)

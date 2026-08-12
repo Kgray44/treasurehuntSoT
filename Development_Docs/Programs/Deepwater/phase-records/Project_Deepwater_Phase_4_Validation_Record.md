@@ -10,41 +10,37 @@ last_reviewed: 2026-08-12
 
 ## Current result
 
-Phase 4, **Break the Surface**, is locally proven and passed its original
-focused qualification against fetched `origin/main`
-`236c27241bb8d1630274f5d5412ec9addbdb8893`. Its one permitted reconciliation
-then rebased cleanly onto `origin/main`
-`54e3d818d49d45282a9c419d562d4b5c78911ccd`; the complete production-build
-browser matrix was rerun on rebased Phase 4 head
-`daecc2dc570af34772790d15b6676e53156e1062`. The proof model accounts for all
-56 current capabilities: the accepted 55-capability Phase 3 population plus
-the source-current, private Bridgewatch observation dashboard.
+Before a canonical hosted decision was dispatched, accepted Helm Phase 2
+advanced current main from `54e3d818d49d45282a9c419d562d4b5c78911ccd` to
+`ca40227cbef3575315c089d224a0cd26ec77bc78`. The protected-merge authority
+classifies its Captain presence, invitation, and schema paths as relevant, so
+the former candidate and every prior runtime result are retained only as
+historical evidence. Phase 4 rebased onto that exact current main at
+`b810e2d0c33cbafb8e4d02c19b9af0db94315783` and completed a fresh
+source-bound qualification. The proof model accounts for all 56 current
+capabilities: the accepted 55-capability Phase 3 population plus the private,
+read-only Bridgewatch observation dashboard.
 
-The first frozen candidate (`85a39522c8b3ea1cca0207dc0d366cd391e97076`)
-then received its one authorized Mainline Decision. It returned
-`EVIDENCE_INVALID`, with no missing mandatory suites, because `static.core`,
-`component.player-shell`, and `browser.helm` receipts were invalid. The static
-receipt identified eight generated `bridgewatch/dist` files as formatter
-scope. The repair adds that generated build directory to `.prettierignore`;
-the direct static-core repair qualification and the two other invalid focused
-suites now pass with clean isolated-runtime cleanup. This is a repair
-qualification record, not a replacement Mainline Decision or a closure record.
+The refreshed production-build matrix passed original Homeport journeys A-O,
+owner-correction Round 1 journeys A-U, Round 2 journeys A-W with its inherited
+regression chain, and Round 3 journeys A-V with the full prior correction
+regression. Bridgewatch also passed its typecheck and four read-only API tests,
+then a private-loopback desktop and responsive review on task-owned synthetic
+state. The Deepwater proof model, audit, and validator pass against the same
+source. This is local synthetic qualification only: it neither records owner
+or product acceptance nor substitutes for the single canonical hosted Mainline
+Decision. Phase 4 has not been accepted into protected main or proven on exact
+main.
 
-The one reconciliation remains complete. The repaired branch is refrozen with
-its refreshed walkthrough packet; it must acquire the serialized acceptance
-lane before exactly one replacement Mainline Decision. It has not been accepted
-into protected main or proven on exact main.
-
-| Gate                                  | Result                                                                                                         | Boundary                                                              |
-| ------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| Deepwater proof-model tests           | PASS; 64/64                                                                                                    | Deterministic local control-plane tests                               |
-| Deepwater audit and validation        | PASS; 56 capabilities; local-synthetic evidence status                                                         | Source-bound documentation and model proof                            |
-| Production-build Homeport journeys    | PASS; original A-O, Round 1 A-U, Round 2 A-W, and Round 3 A-V with inherited regressions rerun at rebased head | Task-owned loopback fixtures, copied databases, synthetic email only  |
-| Phase 7 static contract               | PASS; 3/3                                                                                                      | Current source contract proof                                         |
-| Bridgewatch validation                | PASS; typecheck plus 4 tests                                                                                   | Private operator surface; no public-product or release authority      |
-| Documentation and catalog             | PASS; documentation validation, catalog sync, catalog validation, catalog tests                                | Generated catalog source stamp is current; no owning fragment changed |
-| Static-core repair qualification      | PASS; generated Bridgewatch `dist` excluded and formatter/lint core clean                                      | Correction to source-governance scope only                            |
-| Invalid focused-suite requalification | PASS; `component.player-shell` and `browser.helm`, clean isolated-runtime cleanup                              | Direct retest after the `EVIDENCE_INVALID` finalization               |
+| Gate                                | Result                                                                                           | Boundary                                                              |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| Deepwater proof-model tests         | PASS; 65/65                                                                                      | Deterministic local control-plane tests                               |
+| Deepwater audit and validation      | PASS; 56 capabilities; digest `b1ba729a9aaeea30b0b31ca607cd0c39188196750fc0118e1398c065480addd2` | Current source only; no acceptance claim                              |
+| Production-build Homeport journeys  | PASS; original A-O, Round 1 A-U, Round 2 A-W, Round 3 A-V with inherited regressions             | Task-owned loopback fixtures, copied databases, synthetic email only  |
+| Phase 7 static contract             | PASS; 3/3                                                                                        | Current source contract proof                                         |
+| Bridgewatch qualification           | PASS; build, typecheck, 4 tests, private-loopback desktop and responsive review                  | Private operator surface; no public-product or release authority      |
+| Focused Sounding Line qualification | PASS; static core, Helm unit/component/browser, Player shell component                           | Execute-only receipts; cannot issue `RELEASE_GO`                      |
+| Documentation and catalog           | PASS; documentation validation, catalog sync, catalog validation, catalog tests                  | Generated catalog source stamp is current; no owning fragment changed |
 
 ## Runtime proof boundary
 
@@ -58,9 +54,10 @@ protected-main acceptance.
 
 ## Remaining serialized gates
 
-1. Acquire the canonical serialized acceptance lane.
-2. Dispatch exactly one replacement **Sounding Line / Mainline Decision** for
-   that repaired frozen candidate.
+1. Freeze the replacement candidate and acquire the canonical serialized
+   acceptance lane.
+2. Dispatch exactly one
+   canonical hosted **Sounding Line / Mainline Decision**.
 3. Only after `RELEASE_GO`, complete protected merge, exact-main proof, and a
    separately source-bound closure record.
 
