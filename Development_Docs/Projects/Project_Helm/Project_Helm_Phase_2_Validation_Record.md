@@ -62,17 +62,17 @@ authority-model, or catalog capability changed.
 
 ## Final qualification evidence
 
-| Lane                        | Result                                                                                                                         | Boundary                                                                                 |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| Focused local Helm units    | 15/15 passed                                                                                                                   | Direct invitation-handoff and membership-presence repair coverage.                       |
-| Focused local Helm browser  | 3/3 passed                                                                                                                     | Captain/Player invitation, heartbeat, projection, responsive, and accessibility journey. |
-| Hosted focused Helm browser | [run 31606851534](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31606851534): 3/3 passed; `CLEAN`                    | Exact behavioral-repair qualification on `bf03b081`.                                     |
-| Focused local static core   | Passed                                                                                                                         | Exact final formatting-reconciliation scope.                                             |
-| Hosted focused static core  | [run 31613621741](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31613621741): passed; `CLEAN`                        | Exact final candidate `61cb6e0f`; no Helm browser invalidation.                          |
-| Hosted mainline authority   | [run 31614127435](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31614127435): `RELEASE_GO`, 38/38 passed and `CLEAN` | Exact frozen candidate `61cb6e0f`; the sole final release and merge authority.           |
-| Current corrective component | 14/14 passed                                                                                                                  | `PlayerVoyageRoom` focus-before-visibility handoff regression in `59aaa279`.              |
-| Current corrective browser   | 3/3 passed with `CLEAN` teardown                                                                                              | Exact local `browser.helm` rerun after `59aaa279`.                                        |
-| Current corrective static    | Passed with `CLEAN` teardown                                                                                                  | Focused `static.core` rerun after `59aaa279`.                                              |
+| Lane                         | Result                                                                                                                         | Boundary                                                                                 |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| Focused local Helm units     | 15/15 passed                                                                                                                   | Direct invitation-handoff and membership-presence repair coverage.                       |
+| Focused local Helm browser   | 3/3 passed                                                                                                                     | Captain/Player invitation, heartbeat, projection, responsive, and accessibility journey. |
+| Hosted focused Helm browser  | [run 31606851534](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31606851534): 3/3 passed; `CLEAN`                    | Exact behavioral-repair qualification on `bf03b081`.                                     |
+| Focused local static core    | Passed                                                                                                                         | Exact final formatting-reconciliation scope.                                             |
+| Hosted focused static core   | [run 31613621741](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31613621741): passed; `CLEAN`                        | Exact final candidate `61cb6e0f`; no Helm browser invalidation.                          |
+| Hosted mainline authority    | [run 31614127435](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31614127435): `RELEASE_GO`, 38/38 passed and `CLEAN` | Exact frozen candidate `61cb6e0f`; the sole final release and merge authority.           |
+| Current corrective component | 14/14 passed                                                                                                                   | `PlayerVoyageRoom` focus-before-visibility handoff regression in `59aaa279`.             |
+| Current corrective browser   | 3/3 passed with `CLEAN` teardown                                                                                               | Exact local `browser.helm` rerun after `59aaa279`.                                       |
+| Current corrective static    | Passed with `CLEAN` teardown                                                                                                   | Focused `static.core` rerun after `59aaa279`.                                            |
 
 The authoritative plan digest is
 `ace45a6a6a42a0aedbcd42246bcc055bb83e5d5032e0f94f27ad2063b7d612b0` and
