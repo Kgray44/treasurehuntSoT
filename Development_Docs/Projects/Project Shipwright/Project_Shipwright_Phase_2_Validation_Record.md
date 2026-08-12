@@ -23,7 +23,9 @@ last_reviewed: 2026-08-12
 
 ## Candidate disposition
 
-All locally attainable Phase 2 qualification evidence is green. The task-owned owner walkthrough is prepared from the frozen branch source and records its exact SHA, production build ID, isolated SQLite database identity, credential-handoff location, and health state outside the repository. The owner explicitly accepted Phase 2 in this task thread on 2026-08-12 with no correction or waiver. Current-main reconciliation and exact-candidate qualification are refreshed before Sounding Line authority.
+All locally attainable Phase 2 qualification evidence is green. The task-owned owner walkthrough is prepared from the frozen branch source and records its exact SHA, production build ID, isolated SQLite database identity, credential-handoff location, and health state outside the repository. The owner explicitly accepted Phase 2 in this task thread on 2026-08-12 with no correction or waiver.
+
+After rebasing onto `fb0f13e35fcdd98434d22c357aee02f24d6d9036`, the qualification rerun passed `npm run typecheck`, tracked-source ESLint, the 37-test focused Studio/authorization set, `npm run drydock:test` (34 files / 197 tests), `npm run drydock:validate` (all 23 current contracts), the isolated Chromium journey (including Axe serious/critical zero and responsive coverage), and `npm run test:raw:build`. The inherited Turbopack tracing warning remains non-failing and is outside the Phase 2 paths.
 
 No Sounding Line Mainline Decision has been dispatched. This record is owner-accepted candidate evidence only; it is not Sounding Line authority or protected-main acceptance.
 
@@ -35,4 +37,6 @@ After the implementation checkpoint, `git fetch origin --prune` advanced `origin
 - `UNRELATED`: Admiralty controls/styles, Helm sign-in tests, governance records, and Sounding Line serialization changes.
 - `NO_DIRECT_OVERLAP`: no intervening change touched `TaleEditor.tsx`, `src/components/studio/inspector`, `src/drydock`, `src/chronicle/studio-service.ts`, Prisma, or the Shipwright documentation records owned here.
 
-The Shipwright commits rebased cleanly onto current accepted main. The first fetch proved `08ab5cedbcd16bf421b03b638af5c3513fe02019` was an ancestor of the qualified branch. Current protected main later advanced to `fb0f13e35fcdd98434d22c357aee02f24d6d9036`, adding the accepted Helm Phase 2 closure and Sounding Line record-only closure policy. The latter is governance-only, while Helm is an authority-relevant product/dependency change under the current Sounding Line classifier; this candidate is therefore rebased and requalified before any later authority action. No current record permits Shipwright to acquire authority until the serialized Helm corrective closure is terminal.
+The Shipwright commits rebased cleanly onto current accepted main. The first fetch proved `08ab5cedbcd16bf421b03b638af5c3513fe02019` was an ancestor of the qualified branch. Current protected main later advanced to `fb0f13e35fcdd98434d22c357aee02f24d6d9036`, adding the accepted Helm Phase 2 closure and Sounding Line record-only closure policy. The latter is governance-only, while Helm is an authority-relevant product/dependency change under the current Sounding Line classifier; this candidate was rebased and requalified against that baseline.
+
+Bridgewatch Phase 2 has a current protected-main completion receipt. The current Helm Phase 2 completion receipt still declares its corrective candidate and one Mainline Decision outstanding. The user-directed shared order therefore keeps Shipwright from acquiring or dispatching authority until that Helm state is terminally released; the record-only closure has already merged after Helm in the prescribed sequence.

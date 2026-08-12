@@ -1550,7 +1550,7 @@ Creators can author every accepted Story Block through a contract-aware Studio I
 
 ### Meaningful limitations
 
-- The owner has accepted the capability; it still requires current-main requalification, one authoritative Sounding Line decision, and protected-main integration.
+- The owner has accepted the requalified capability; it still requires serialized authority release, one authoritative Sounding Line decision, and protected-main integration.
 - It consumes current Drydock contracts and does not activate Shipwright Phase 3 block families, templates, fragments, or composition.
 - Drydock remains the sole authority for canonical contracts, migrations, expression checking, defaults, and issue severity.
 
