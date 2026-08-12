@@ -32,3 +32,34 @@ The earlier [local browser qualification](Project_Drydock_Phase_3_Browser_Qualif
 ## Candidate boundary
 
 The next commit freezes the reconciled candidate. It is the sole candidate eligible for one serialized Sounding Line Mainline Decision. Any later source change invalidates the freeze and requires requalification and a new decision.
+
+## Current-main addendum
+
+After the original candidate's terminal `RELEASE_NO_GO`, the requalified
+replacement candidate was frozen at `bc8f404b81659348bb229ac662b34961186a4068`
+and tagged `project-drydock-phase3-candidate-20260812-r2`. While the shared
+acceptance lane was correctly occupied by Project Bridgewatch, its accepted
+Phase 2 closure advanced protected main to
+`5735d43821209adb2259ec2c38979281da1bb5b9`.
+
+The branch was therefore reconciled a second time at
+`566598c8a785939264c7aebfafad74bdb923d7c1`. The accepted inputs add
+Bridgewatch records and current Sounding Line hosted-acceptance and
+record-only-closure infrastructure. There is no Phase 3 source or migration
+collision; the only merge conflict was the generated Feature Catalog's source
+commit pointer, resolved to the accepted current-main generated state without
+editing a machine-readable feature fragment.
+
+This current-main reconciliation supersedes r2 without classifying it as an
+authority failure. A fresh focused qualification and a new frozen candidate are
+required before the next one Mainline Decision.
+
+During that qualification, `static.core` found only Prettier drift in two
+accepted Bridgewatch closure records. Both were mechanically formatted and the
+same static scope and production build then passed. No product, authority, or
+acceptance evidence was altered by that formatting repair.
+
+The resulting r3 candidate is frozen under tag
+`project-drydock-phase3-candidate-20260812-r3`; that tag and the branch head
+bind its exact SHA. It may receive one serialized current Sounding Line
+Mainline Decision after canonical acceptance ownership is acquired.
