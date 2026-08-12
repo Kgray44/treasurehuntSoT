@@ -10,6 +10,7 @@ import {
   validateModel,
   validatePhase2Model,
   validatePhase3Model,
+  validatePhase4Model,
   writeArtifacts,
 } from "./lib.mjs";
 
@@ -22,8 +23,8 @@ if (command === "audit") {
   process.stdout.write(
     `${JSON.stringify({
       decision: "DEEPWATER_AUDIT_GENERATED",
-      sourceSha: artifacts.ledger.auditedSourceSha,
-      capabilities: artifacts.ledger.capabilities.length,
+      sourceSha: artifacts.phase4ProofMatrix.sourceSha,
+      capabilities: artifacts.phase4ProofMatrix.capabilities.length,
       findings: artifacts.findingsDocument.findings.length,
       prioritizedTraces: artifacts.tracesDocument.traceCount,
       phase2QueueItems: artifacts.tracesDocument.queueItemCount,
@@ -32,6 +33,8 @@ if (command === "audit") {
       utilizationReviews: artifacts.utilizationDocument.reviewedCapabilityCount,
       utilizationStatusCounts: artifacts.utilizationDocument.statusCounts,
       registeredSlices: artifacts.slicesDocument.slices.length,
+      phase4ProofCapabilities: artifacts.phase4ProofMatrix.capabilities.length,
+      phase4RuntimeEvidenceStatus: artifacts.phase4ProofMatrix.runtimeEvidenceStatus,
       semanticDigest: semanticDigest(artifacts),
     })}\n`,
   );
@@ -44,6 +47,9 @@ if (command === "audit") {
       remediationReport: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_3_Remediation_Report.md",
       deltaReport: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_2_to_Phase_3_Delta_Report.md",
       finalReport: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_3_Final_Report.md",
+      phase4ProofReport: "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_4_Proof_Report.md",
+      phase4OwnerWalkthroughPacket:
+        "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_4_Owner_Walkthrough_Packet.md",
       phase3Queue: artifacts.phase3Queue.queue.length,
     })}\n`,
   );
@@ -52,6 +58,7 @@ if (command === "audit") {
     ...validateModel(artifacts),
     ...validatePhase2Model(artifacts.phase2),
     ...validatePhase3Model(artifacts),
+    ...validatePhase4Model(artifacts),
     ...(await validateEvidencePaths(root, artifacts)),
     ...(await compareArtifacts(root, artifacts)),
   ];
@@ -62,8 +69,8 @@ if (command === "audit") {
     process.stdout.write(
       `${JSON.stringify({
         decision: "DEEPWATER_VALIDATION_PASSED",
-        sourceSha: artifacts.ledger.auditedSourceSha,
-        capabilities: artifacts.ledger.capabilities.length,
+        sourceSha: artifacts.phase4ProofMatrix.sourceSha,
+        capabilities: artifacts.phase4ProofMatrix.capabilities.length,
         prioritizedTraces: artifacts.tracesDocument.traceCount,
         phase2QueueItems: artifacts.tracesDocument.queueItemCount,
         findings: artifacts.findingsDocument.findings.length,
@@ -72,6 +79,8 @@ if (command === "audit") {
         utilizationReviews: artifacts.utilizationDocument.reviewedCapabilityCount,
         utilizationStatusCounts: artifacts.utilizationDocument.statusCounts,
         registeredSlices: artifacts.slicesDocument.slices.length,
+        phase4ProofCapabilities: artifacts.phase4ProofMatrix.capabilities.length,
+        phase4RuntimeEvidenceStatus: artifacts.phase4ProofMatrix.runtimeEvidenceStatus,
         semanticDigest: semanticDigest(artifacts),
       })}\n`,
     );
