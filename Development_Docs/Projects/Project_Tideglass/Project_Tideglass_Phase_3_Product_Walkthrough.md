@@ -1,7 +1,7 @@
 ---
 title: Project Tideglass Phase 3 Product Walkthrough
 audience: product-owner
-status: candidate-frozen-owner-walkthrough-pending
+status: owner-accepted-mainline-pending
 canonical_for: project-tideglass-phase-3-product-walkthrough
 last_reviewed: 2026-08-12
 ---
@@ -15,7 +15,7 @@ assertions. The owner decision is recorded separately in
 `Project_Tideglass_Phase_3_Owner_Decision_Record.md`; this document remains the
 reproducible walkthrough package.
 
-The reconciled product source evidence is `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6` against `origin/main` `4edc8de5e30e9748700c19b466061f9b9a97f268`. Any later source change requires the affected owner-review evidence to be rerun before owner acceptance is recorded.
+The owner-reviewed product source is `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`. It remains byte-equivalent across the Phase 3 Tideglass product paths after reconciliation to `origin/main` `08ab5cedbcd16bf421b03b638af5c3513fe02019`; the later deferred-runtime browser-harness repair does not alter those paths. The refreshed source-bound A--J evidence is recorded for `dbbe2c49aa884f6a5e078cfa3c5df580344ca221` in the visual manifest.
 
 ## Safe walkthrough runtime
 

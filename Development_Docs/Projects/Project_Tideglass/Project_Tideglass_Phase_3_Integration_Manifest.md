@@ -48,7 +48,8 @@ proof, and the one permitted replacement authority attempt.
 
 ## Reconciled-main result
 
-The branch is rebased on `541e914f481883200569f8cc7ec5ec9428d7cbb7`. The prior
+The branch now contains accepted `origin/main`
+`08ab5cedbcd16bf421b03b638af5c3513fe02019`. The prior
 reconciled accepted Shipwright/Drydock Studio surface was retained while the Tideglass
 semantic component stayed the only edition-comparison consumer. Wakebook remains
 unmerged and is not consumed. The accepted Helm surface has no edition-comparison
@@ -56,9 +57,10 @@ consumer, so `CAPTAIN_UI_DEFERRED_NO_ACCEPTED_CONSUMER` is retained. The Deepwat
 finding remains open until this owner-accepted candidate receives the required
 mainline decision and protected integration; it is not closed by local evidence.
 
-The post-owner base advance consists of Admiralty's accepted closeout records and
-a Helm browser-test stabilization. The branch preserves exact Tideglass product
+The post-owner base advances consist of Admiralty's accepted closeout records,
+generated Feature Catalog provenance, a Ledgerlight inventory row, and Helm
+browser-test stabilization. The branch preserves exact Tideglass product
 equivalence to owner-reviewed `c2fc8fcc`; the changed Helm browser family passed
-all 3/3 registered cases with clean runtime conformance before candidate freeze.
+all 3/3 registered cases with clean runtime conformance after the final merge.
 No accepted-main change authorizes a Wakebook, Helm, Shipwright, or Deepwater
 Phase 4 dependency.

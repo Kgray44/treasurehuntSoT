@@ -1,14 +1,14 @@
 ---
 title: Project Tideglass Phase 3 Qualification Record
 audience: product-engineering
-status: candidate-frozen-owner-accepted-replacement-pending
+status: authority-repair-qualified-owner-accepted-replacement-pending
 canonical_for: project-tideglass-phase-3-qualification
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 qualification record
 
-Status: `CANDIDATE_FROZEN_OWNER_ACCEPTED_REPLACEMENT_PENDING_MAINLINE_DECISION`.
+Status: `AUTHORITY_REPAIR_QUALIFIED_OWNER_ACCEPTED_REPLACEMENT_PENDING_MAINLINE_DECISION`.
 
 The earlier local candidate is superseded. It used an invented response proxy and did not evidence the complete governed state matrix. No owner walkthrough, Sounding Line Mainline Decision, protected merge, deployment, provider execution, or real-account acceptance was claimed or dispatched for it.
 
@@ -33,8 +33,9 @@ Screenshots, Playwright report, synthetic credentials, and SQLite fixture remain
 
 1. Canonical owner acceptance was recorded for reviewed product source `c2fc8fcc` on `2026-08-12`.
 2. The first documentation-candidate authority preflight exposed the missing-worktree-baseline condition before any receipt. A task-owned immutable clone and registered 3/3 access-sentinel focused repair now support requalification; see the Validation Record.
-3. The accepted-main interval is reconciled to `541e914f`; owner-reviewed Tideglass product source remains equivalent. The required focused `browser.helm` rerun passed 3/3 in the released governed lane with runtime conformance `PASSED`.
-4. The reconciled replacement candidate is frozen. Dispatch exactly one replacement `Sounding Line / Mainline Decision`; only `RELEASE_GO` permits protected-mainline merge and exact-main proof.
+3. Hosted candidate `3c03e7a1` failed during environment-free registry discovery before any worker, plan artifact, finalizer, or acceptance envelope. The focused reproduction, deferred-runtime repair, synchronized registry, TypeScript check, and fresh A--J production journey are recorded in the Validation Record.
+4. The accepted-main interval is reconciled through `08ab5ced`; owner-reviewed Tideglass product source remains equivalent. The required focused `browser.helm` rerun passed 3/3 in the released governed lane with runtime conformance `PASSED`.
+5. Freeze the repaired documentation-qualified candidate. Dispatch exactly one replacement `Sounding Line / Mainline Decision`; only `RELEASE_GO` permits protected-mainline merge and exact-main proof.
 
 ## Known separate condition
 

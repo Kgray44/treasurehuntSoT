@@ -28,6 +28,12 @@ product; the canonical Tideglass route, API, service, Chronicle/Passport, and
 Studio consumer source remains equivalent to `c2fc8fcc`. This preserves the
 owner decision without treating it as approval of unrelated work.
 
+Accepted main subsequently advanced to
+`08ab5cedbcd16bf421b03b638af5c3513fe02019` through Admiralty's accepted record.
+That interval contains Feature Catalog provenance, Ledgerlight documentation,
+and Helm browser stabilization only. The Phase 3 branch merged it and reran the
+affected Helm suite; no owner-reviewed Tideglass product path changed.
+
 ## Accepted walkthrough result
 
 The owner accepted the ordinary Chronicle-detail and Passport-history entries;

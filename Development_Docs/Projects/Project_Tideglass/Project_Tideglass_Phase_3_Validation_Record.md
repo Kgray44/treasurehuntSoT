@@ -96,3 +96,18 @@ again reported the canonical database as untouched.
 This repair supersedes the failed hosted attempt. The next authority dispatch
 must target a newly frozen, documentation-qualified SHA exactly once; the
 failed run must not be retried.
+
+## Final current-main reconciliation
+
+Before the repaired freeze, fetched `origin/main` advanced from
+`541e914f481883200569f8cc7ec5ec9428d7cbb7` to
+`08ab5cedbcd16bf421b03b638af5c3513fe02019` through accepted Admiralty record
+PR `#57`. The intervening files are generated Feature Catalog provenance,
+Ledgerlight documentation inventory, and Helm browser-test stabilization only.
+There is no Tideglass product, policy, API, route, navigation, schema, Studio,
+Wayfarer, Wakebook, Shipwright, or Captain-consumer overlap. The branch merged
+this accepted mainline change without a source conflict. The owner-reviewed
+Tideglass product-path comparison still passes. The registry and Feature Catalog
+provenance were regenerated, and the affected `browser.helm` focused suite
+passed all 3/3 registered cases with runtime conformance `PASSED` (run
+`validation-20260812T160328209Z-a9cdb9cbddc0`).
