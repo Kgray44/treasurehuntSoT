@@ -11,7 +11,7 @@ body {
   margin: 0;
 }
 main {
-  max-width: 1280px;
+  max-width: 1760px;
   margin: auto;
   padding: clamp(1rem, 3vw, 2.5rem);
 }
@@ -75,7 +75,9 @@ h3 {
 .card,
 .list-item,
 .attention-item,
-.detail {
+.detail,
+.history-event,
+.archive-item {
   border: 1px solid #27465c;
   background: #081522;
   padding: 1rem;
@@ -122,6 +124,44 @@ h3 {
 }
 .attention-item p {
   margin: 0.5rem 0 0;
+}
+.history,
+.archive {
+  display: grid;
+  gap: 0.65rem;
+}
+.history-event,
+.archive-item {
+  display: grid;
+  gap: 0.35rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+}
+.history-event .quiet,
+.archive-item .row,
+.history-event .evidence-link {
+  grid-column: 1 / -1;
+}
+.evidence-link {
+  color: #bce7ff;
+  font-size: 0.8rem;
+}
+.history-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+.history-actions button {
+  border: 1px solid #40667f;
+  background: #102437;
+  color: #e0effa;
+  padding: 0.45rem 0.7rem;
+  cursor: pointer;
+  font: inherit;
+}
+.branch-attention {
+  border-color: #e7bf68;
 }
 .level-BLOCKED {
   border-color: #e17676;
@@ -200,6 +240,29 @@ footer {
     display: block;
     text-align: left;
     margin-top: 0.2rem;
+  }
+  .history-event,
+  .archive-item {
+    grid-template-columns: 1fr;
+  }
+  .history-event time,
+  .archive-item time {
+    grid-column: 1;
+  }
+}
+@media (min-width: 1440px) {
+  main {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .operations {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .metric-value {
+    font-size: 1.25rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {
