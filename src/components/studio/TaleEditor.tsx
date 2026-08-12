@@ -40,6 +40,7 @@ import { StudioCanvasViewControls } from "@/components/studio/StudioCanvasViewCo
 import { StudioSelectionToolbar } from "@/components/studio/StudioSelectionToolbar";
 import { StudioStatusHeader } from "@/components/studio/StudioStatusHeader";
 import { StudioValidationPanel } from "@/components/studio/StudioValidationPanel";
+import { DrydockScenarioLab } from "@/components/studio/DrydockScenarioLab";
 import type {
   Asset,
   Block,
@@ -139,7 +140,7 @@ export function TaleEditor({
   authenticated,
 }: {
   taleId: string;
-  initialSection?: "story" | "settings" | "assets" | "locations" | "artifacts" | "versions";
+  initialSection?: "story" | "settings" | "assets" | "locations" | "artifacts" | "versions" | "trials";
   authenticated: boolean;
 }) {
   const { requestAction, dialog } = useActionDialog();
@@ -1450,9 +1451,10 @@ export function TaleEditor({
     );
   if (!data || !draft) return <main className="studio-loading">{error || "Opening your Chronicle..."}</main>;
 
-  const nav = ["story", "settings", "assets", "locations", "artifacts", "versions"] as const;
+  const nav = ["story", "trials", "settings", "assets", "locations", "artifacts", "versions"] as const;
   const navLabels = {
     story: "Passages",
+    trials: "Sea Trials",
     settings: "Chronicle",
     assets: "Assets",
     locations: "Waypoints",
@@ -2351,6 +2353,7 @@ export function TaleEditor({
             </section>
           </div>
         )}
+        {initialSection === "trials" && <DrydockScenarioLab taleId={taleId} csrfToken={data.csrfToken} />}
         {initialSection === "settings" && (
           <section className="editor-single-panel settings-panel">
             <header>

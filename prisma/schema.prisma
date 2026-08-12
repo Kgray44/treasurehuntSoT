@@ -871,6 +871,7 @@ model DrydockSimulationRun {
   status                  String
   resultDigest            String?
   coverageDigest          String?
+  sourceSnapshot          String                   @db.LongText
   result                  String                   @default("{}") @db.LongText
   trace                   String                   @default("[]") @db.LongText
   checkpoint              String                   @default("{}") @db.LongText

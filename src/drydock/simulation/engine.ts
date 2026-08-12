@@ -4,6 +4,7 @@ import { canonicalChecksum } from "@/drydock/canonical";
 import { advanceDrydockVirtualClock, createDrydockVirtualClock, type DrydockVirtualClock } from "@/drydock/simulation/clock";
 import type { DrydockFaultScheduleEntry, DrydockScenario, DrydockScenarioAssertion, DrydockScenarioInput } from "@/drydock/simulation/model";
 import { createDrydockSeededRandom, type DrydockSeededRandom } from "@/drydock/simulation/random";
+import { drydockFaultDefinition } from "@/drydock/simulation/faults";
 import { parseDrydockScenario } from "@/drydock/simulation/schema";
 import { drydockSimulationSourceChecksum } from "@/drydock/simulation/source";
 
@@ -64,6 +65,7 @@ type MutableSimulation = {
   faultIds: Set<string>;
   environmentModes: Set<string>;
   seenStates: Set<string>;
+  currentBlockEnteredAt: string;
 };
 
 function stateDigest(state: CanonicalRuntimeState) {
@@ -115,12 +117,27 @@ function dueFaults(scenario: DrydockScenario, inputIndex: number) {
 
 function applyFaults(runtime: MutableSimulation, scenario: DrydockScenario, faults: readonly DrydockFaultScheduleEntry[]) {
   for (const fault of faults) {
+    const definition = drydockFaultDefinition(fault.family, fault.code);
+    if (!definition) {
+      runtime.status = "FAILED";
+      continue;
+    }
     runtime.faultIds.add(fault.id);
-    runtime.eventTypes.add(`fault:${fault.family}:${fault.code}`);
-    if (fault.family === "RUNTIME" && fault.code === "CANCEL") runtime.status = "CANCELLED";
-    if (fault.family === "NETWORK" && fault.code === "OFFLINE") runtime.status = "PAUSED";
+    runtime.eventTypes.add(definition.safeEventType);
+    if (definition.effect === "CANCEL") runtime.status = "CANCELLED";
+    if (definition.effect === "PAUSE") runtime.status = "PAUSED";
+    if (definition.effect === "INCOMPLETE_PROOF") runtime.status = "INCOMPLETE_PROOF";
+    if (definition.effect === "PRESENTATION_FALLBACK") runtime.eventTypes.add("presentation:FALLBACK");
+    if (definition.effect === "VERIFICATION_UNCERTAIN") runtime.eventTypes.add("verificationUncertain");
   }
-  if (faults.length) appendTrace(runtime, scenario, "FAULT", faults.map((fault) => `fault:${fault.family}:${fault.code}`), faults.map((fault) => fault.id));
+  if (faults.length)
+    appendTrace(
+      runtime,
+      scenario,
+      "FAULT",
+      faults.map((fault) => drydockFaultDefinition(fault.family, fault.code)?.safeEventType ?? "faultRejected"),
+      faults.map((fault) => fault.id),
+    );
 }
 
 function rejectsCompletion(input: DrydockScenarioInput) {
@@ -130,11 +147,40 @@ function rejectsCompletion(input: DrydockScenarioInput) {
   return false;
 }
 
+function blockAtCursor(runtime: MutableSimulation) {
+  return runtime.state.currentBlockId
+    ? enabledSnapshotBlocks(runtime.snapshot).find((block) => block.id === runtime.state.currentBlockId) ?? null
+    : null;
+}
+
+function requiredInputKind(block: NonNullable<ReturnType<typeof blockAtCursor>>) {
+  const provider = String(
+    block.completion?.mode ?? block.configuration.verificationProvider ?? block.configuration.completionMode ?? "playerConfirmation",
+  );
+  if (block.blockType === "choice") return "CHOICE" as const;
+  if (provider === "textAnswer" || ["riddle", "textAnswer"].includes(block.blockType)) return "TEXT_ANSWER" as const;
+  if (provider === "captainManual" || block.blockType === "captainApproval") return "CAPTAIN" as const;
+  if (provider === "timer" || block.blockType === "wait") return "ADVANCE_TIME" as const;
+  if (provider === "visionLocation") return "PROVIDER" as const;
+  return "CONTINUE" as const;
+}
+
+function inputMatchesCurrentBlock(runtime: MutableSimulation, input: DrydockScenarioInput) {
+  const block = blockAtCursor(runtime);
+  if (!block) return false;
+  return requiredInputKind(block) === input.kind;
+}
+
 function executeCompletion(runtime: MutableSimulation, scenario: DrydockScenario, input: DrydockScenarioInput) {
   const beforeBlockId = runtime.state.currentBlockId;
   if (!beforeBlockId) {
     runtime.status = "FAILED";
     appendTrace(runtime, scenario, input.kind, ["error:current-block-unavailable"], []);
+    return;
+  }
+  if (!inputMatchesCurrentBlock(runtime, input)) {
+    runtime.eventTypes.add("inputRejected");
+    appendTrace(runtime, scenario, input.kind, ["inputRejected"], []);
     return;
   }
   if (input.kind === "CHOICE") {
@@ -151,6 +197,7 @@ function executeCompletion(runtime: MutableSimulation, scenario: DrydockScenario
   });
   runtime.state = plan.state;
   runtime.status = simulationStatus(plan.state);
+  runtime.currentBlockEnteredAt = runtime.clock.currentAt;
   for (const intent of plan.intents) {
     runtime.eventTypes.add(intent.eventType);
     if (intent.blockId) runtime.coveredBlocks.add(intent.blockId);
@@ -164,7 +211,12 @@ function applyInput(runtime: MutableSimulation, scenario: DrydockScenario, input
   if (input.kind === "ADVANCE_TIME") {
     try {
       runtime.clock = advanceDrydockVirtualClock(runtime.clock, input.milliseconds, scenario.limits.maxVirtualMilliseconds);
-      appendTrace(runtime, scenario, input.kind, ["virtualTimeAdvanced"], []);
+      const current = blockAtCursor(runtime);
+      const requiredMilliseconds = Number(current?.configuration.durationSeconds ?? 0) * 1_000;
+      const elapsedMilliseconds = Date.parse(runtime.clock.currentAt) - Date.parse(runtime.currentBlockEnteredAt);
+      if (current && requiredInputKind(current) === "ADVANCE_TIME" && elapsedMilliseconds >= requiredMilliseconds)
+        executeCompletion(runtime, scenario, input);
+      else appendTrace(runtime, scenario, input.kind, ["virtualTimeAdvanced"], []);
     } catch {
       runtime.status = "INCOMPLETE_PROOF";
       appendTrace(runtime, scenario, input.kind, ["virtualTimeLimitExceeded"], []);
@@ -234,6 +286,7 @@ export function runDrydockScenario(
       `keyboard:${scenario.environment.keyboardOnly}`,
     ]),
     seenStates: new Set(),
+    currentBlockEnteredAt: scenario.environment.virtualStart,
   };
   recordState(runtime, scenario);
 

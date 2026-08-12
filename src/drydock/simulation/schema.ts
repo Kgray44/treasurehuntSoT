@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { drydockFaultDefinition } from "@/drydock/simulation/faults";
 import { DRYDOCK_SCENARIO_SCHEMA_VERSION, type DrydockScenario } from "@/drydock/simulation/model";
 
 const id = z.string().min(1).max(128).regex(/^[A-Za-z0-9][A-Za-z0-9._:-]*$/);
@@ -86,6 +87,12 @@ export const drydockScenarioSchema = z
     scenario.faults.forEach((fault, index) => {
       if (faultIds.has(fault.id)) context.addIssue({ code: "custom", path: ["faults", index, "id"], message: "Fault IDs must be unique." });
       faultIds.add(fault.id);
+      if (!drydockFaultDefinition(fault.family, fault.code))
+        context.addIssue({
+          code: "custom",
+          path: ["faults", index, "code"],
+          message: "Scenario faults must use a registered Drydock fault catalog entry.",
+        });
     });
   });
 
