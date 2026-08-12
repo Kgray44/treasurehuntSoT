@@ -10,7 +10,7 @@ last_reviewed: 2026-08-12
 
 ## Decision
 
-**Current classification: OWNER_ACCEPTED - REQUALIFICATION PENDING.** The Wakebook unit/component families and the exact isolated browser journey are passing, including checksum-bound visual evidence. The task owner explicitly accepted Phase 1 on 2026-08-12. The prior protected Sounding Line mainline attempts remain valid historical `EVIDENCE_INVALID` evidence because the independently owned `browser.helm` journey failed; accepted main now contains the Helm repair, which must receive fresh focused evidence before exactly one current frozen-candidate authority request. This record does not establish deployment, protected-main integration, or a release decision.
+**Current classification: OWNER_ACCEPTED - EXTERNAL MAINLINE NO-GO.** The Wakebook unit/component families and the exact isolated browser journey are passing, including checksum-bound visual evidence. The task owner explicitly accepted Phase 1 on 2026-08-12. The accepted Helm repair has fresh clean focused browser evidence, but the latest protected Sounding Line authority is blocked by independently owned Studio component evidence. This record does not establish deployment, protected-main integration, or a release decision.
 
 ## Source identity
 
@@ -72,6 +72,8 @@ For the latest candidate `33e1316426a4d7f014c1472147e42d040ecdd47e`, GitHub Soun
 
 For frozen candidate `6ec5b9b797d0272bdde16562ec60a4cb0aa3ee8b`, GitHub Sounding Line authoritative run `31568807207` reached a fail-closed `EVIDENCE_INVALID` finalizer decision. The accepted Helm repair was separately proved by focused run `31568179780`: both governed Helm browser journeys passed with runtime conformance `PASSED` and cleanup `CLEAN`. The authority failure was candidate-integrity-only: `unit.feature-catalog` found 45 catalog entries while its stable-order assertion still expected 44, and `static.core` found Prettier formatting drift in this record and the integration manifest. Both failed receipts cleaned up successfully. Correct those exact defects, requalify the changed candidate, and request one replacement decision; do not waive or misattribute either failure to Wakebook runtime behavior.
 
+For repaired frozen candidate `7b01dab07dd9a4cd45c5119e6f1e7b8afdfbeebc`, GitHub Sounding Line authoritative run `31569669594` reached a fail-closed `EVIDENCE_INVALID` finalizer decision with `component.studio` as the sole invalid receipt. Its `src/components/studio/TaleEditor.test.tsx` keyboard-operable **More actions** disclosure test timed out after 5 seconds; its receipt reported cleanup `CLEAN`. The catalog and formatting repairs passed. `browser.admiralty`, `browser.helm`, and `build.production` were correctly withheld by the wave barrier, not treated as failures. Studio owns this test; Wakebook must preserve its branch, not alter Studio behavior, and wait for the owner to repair and prove that focused dependency before a later exact-candidate decision.
+
 ## Privacy and source-safety assertions
 
 - List projection contains no Reflection text, Memory body, full Chronicle snapshot, raw event payload, storage key, request-derived authorization, or foreign-owner detail.
@@ -91,6 +93,6 @@ Phase 1 exposes no disabled Timeline, People, Statistics, map, Tideglass, sharin
 
 ## Remaining gates
 
-1. Correct and re-run the exact catalog and formatting checks reported by run `31568807207`. The sealed current mainline plan does not select Wakebook browser work; carry forward its unchanged runtime evidence and the clean focused Helm repair evidence rather than bypassing the plan.
-2. Requalify the changed candidate, then run exactly one replacement protected Sounding Line Mainline Decision with its pull-request/base identity envelope.
+1. Wait for the Studio owner to repair and prove the focused `component.studio` dependency that failed in run `31569669594`; do not waive, retime, or take ownership of it from Wakebook.
+2. After the dependency is accepted, fetch and reconcile current main, requalify the exact candidate, then run one protected Sounding Line Mainline Decision with its pull-request/base identity envelope.
 3. Do not start Phase 2 or merge to protected main without a source-bound `RELEASE_GO` decision receipt.
