@@ -28,16 +28,21 @@ The finalizer recorded 38 receipts with no missing, duplicate, unknown, or
 runtime-conformance defect; only `browser.helm` was invalid. No release,
 protected merge, or acceptance was recorded.
 
-The current repair at `38038fcb1687a9b2fe4f556fdbfece49796f364d` makes Player
+Accepted Helm Phase 2 then advanced protected main to
+`920d92a51a16d60a2dfe35278598e6d921be7e4c`, invalidating the `5735d438`
+freeze before it could seek another decision. The branch was freshly reconciled
+onto that exact main. The current product-evidence repair at
+`ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9` retains Helm's accepted route
+recovery and makes Player
 session-event streams idempotently detach on cancellation or request abort, so
 a stale closed stream cannot turn an already-committed launch into a 400. It
 also rechecks the waiting-room state once as browser visibility settles after
 focus, so an authoritative launch cannot strand a backgrounded Player. The
-stream tests pass 2/2, Player waiting-room tests pass 14/14, TypeScript and
-format checks pass, and the exact isolated three-case Helm browser family passes
-3/3 with clean runtime conformance. The proof model continues to account for
-all 57 current capabilities: the accepted 55-capability Phase 3 population plus
-Bridgewatch FT-034 and FT-035.
+focused invitation, Player waiting-room, and stream tests pass 26/26; TypeScript,
+lint with zero errors, and format checks pass; and the exact isolated three-case
+Helm browser family passes 3/3 with clean runtime conformance. The proof model
+continues to account for all 57 current capabilities: the accepted 55-capability
+Phase 3 population plus Bridgewatch FT-034 and FT-035.
 
 The production-build Homeport matrix remains source-bound to
 `b810e2d0c33cbafb8e4d02c19b9af0db94315783`: original journeys A-O,
@@ -49,7 +54,7 @@ current production build, typecheck, 24 focused tests, private-loopback desktop
 and 390px responsive review with no horizontal overflow, and local-only
 telemetry plus summary, activity, and tests endpoint observations. The
 refreshed Deepwater audit and validator pass for the repaired source with 57
-capabilities and semantic digest `94e28de6a9a30b639c6db9519178f370a2829b1e587aaaaafb31b3fd8608a172`.
+capabilities and semantic digest `243cab9705eb6a17884606444eff8200495579bbac64cde80fba6f293773b3d4`.
 This remains local synthetic qualification only: it neither records owner or
 product acceptance nor substitutes for a canonical hosted Mainline Decision.
 Phase 4 has not been accepted into protected main or proven on exact main.
@@ -58,12 +63,12 @@ Phase 4 has not been accepted into protected main or proven on exact main.
 | ----------------------------------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
 | Deepwater proof-model tests         | PASS; 66/66                                                                                      | Deterministic local control-plane tests                                                  |
 | Hosted Mainline Decision            | `EVIDENCE_INVALID`; runs 31605432896 and 31609917108; only `browser.helm` failed; cleanup CLEAN  | Both failed closed; their candidates are invalidated and the acceptance lane is released |
-| Helm repair qualification           | PASS; stream tests 2/2, waiting-room tests 14/14, and exact `browser.helm` 3/3                   | Isolated, local evidence only; the repaired source awaits full Phase 4 refresh           |
-| Deepwater audit and validation      | PASS; 57 capabilities; digest `94e28de6a9a30b639c6db9519178f370a2829b1e587aaaaafb31b3fd8608a172` | Repaired product source only; no acceptance claim                                        |
+| Helm repair qualification           | PASS; focused invitation, Player, and stream tests 26/26; exact `browser.helm` 3/3               | Isolated, local evidence only; the repaired source awaits canonical acceptance           |
+| Deepwater audit and validation      | PASS; 57 capabilities; digest `243cab9705eb6a17884606444eff8200495579bbac64cde80fba6f293773b3d4` | Repaired product source only; no acceptance claim                                        |
 | Production-build Homeport journeys  | RETAINED; original A-O, Round 1 A-U, Round 2 A-W, Round 3 A-V with inherited regressions         | Explicit semantic carry-forward from the historical source                               |
 | Bridgewatch qualification           | PASS; production build, typecheck, 24 tests, private-loopback desktop and 390px review           | Private operator surface; no public-product or release authority                         |
-| Focused Sounding Line qualification | PASS; frozen candidate local-change plan with finalization disabled                              | Qualification evidence only; cannot issue `RELEASE_GO`                                   |
-| Documentation and catalog           | PASS; documentation validation and catalog refresh required before authority                     | No owning Feature Catalog fragment change is expected                                    |
+| Focused Sounding Line qualification | PASS; exact isolated `browser.helm` execute-only receipt with clean runtime conformance          | Qualification evidence only; cannot issue `RELEASE_GO`                                   |
+| Documentation and catalog           | PASS; documentation validation and catalog refresh on `920d92a`                                  | No owning Feature Catalog fragment change is expected                                    |
 
 ## Runtime proof boundary
 
