@@ -189,6 +189,8 @@ Captains create, launch, operate, recover, and reconcile live Voyages through au
 - Captain-only and Captain plus Player participation modes
 - Player-safe perspective switching
 - Membership-bounded personal history and artifact eligibility
+- Captain operational projections and prioritized voyage library
+- Membership-scoped crew presence, sync health, warnings, and safe event stream
 
 ### Primary surfaces
 
@@ -196,9 +198,13 @@ Captains create, launch, operate, recover, and reconcile live Voyages through au
 
 ### Evidence
 
+- commit: `ca40227cbef3575315c089d224a0cd26ec77bc78`
 - path: `src/server/admin-command.ts`
 - path: `src/domain/admin.ts`
 - path: `src/helm/captain-participation.ts`
+- path: `src/helm/operations.ts`
+- path: `src/platform/membership-presence.ts`
+- path: `src/components/captain/CaptainOperationalPanel.tsx`
 - path: `src/components/platform/CaptainLibrary.tsx`
 - path: `src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts`
 

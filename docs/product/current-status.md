@@ -17,14 +17,16 @@ libraries, journals, profile and Passport surfaces, protected content, and
 animation presentation. Homeport reached main through protected PR #9; this is
 source integration, not deployment or owner acceptance.
 
-**Project Helm Phase 1 branch candidate:** Captain participation is explicit at
-Voyage creation. Captain-only remains the default; Captain + Player attaches
-exactly one ordinary Player membership to the same canonical account while
-keeping Voyage-scoped Captain authority independent. Player access, history,
-artifacts, and removal follow ordinary membership and event-time rules, and the
-Player view remains a Player-safe projection. Current evidence is isolated and
-local; mainline integration, deployment, live-Voyage behavior, and owner
-acceptance are not yet claimed.
+**Project Helm Phases 1 and 2 are available on main:** Captain participation is
+explicit at Voyage creation. Captain-only remains the default; Captain + Player
+attaches exactly one ordinary Player membership to the same canonical account
+while keeping Voyage-scoped Captain authority independent. Captain operations
+now add privacy-safe, read-only Voyage status, prioritized attention, safe crew
+presence and synchronization health, current progress, and safe event
+summaries. Player access, history, artifacts, removal, and perspective remain
+membership-bounded and Player-safe. This is protected-mainline source
+integration with local/synthetic automated evidence, not deployment,
+live-Voyage behavior, or owner acceptance.
 
 **Project Drydock Phase 3 active branch:** Creator-only Sea Trials provide
 revisioned source-bound deterministic Scenarios, synthetic faults, virtual

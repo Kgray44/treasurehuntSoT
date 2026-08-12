@@ -3,7 +3,7 @@ title: Engineering records
 audience: engineering
 status: current
 canonical_for: engineering-records-index
-last_reviewed: 2026-08-10
+last_reviewed: 2026-08-12
 ---
 
 # Engineering records
@@ -49,8 +49,9 @@ candidate qualification, protected authority, merge, and exact-main proof.
 Phase 1, **Take the Helm**, adds explicit Captain-only and Captain + Player
 participation while preserving one canonical account, ordinary Player
 membership, Voyage-scoped Captain authority, and Player-safe projection
-boundaries. Its repository records distinguish candidate validation from
-integrated-main acceptance and stop before Phase 2 operational intelligence.
+boundaries. Phase 2, **Read the Deck**, is now integrated on canonical main
+with read-only operational projections and member-scoped presence/synchronization
+evidence; Phase 3 command redesign remains separate.
 
 ## Project Admiralty
 
