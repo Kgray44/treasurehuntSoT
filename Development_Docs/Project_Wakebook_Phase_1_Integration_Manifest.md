@@ -13,9 +13,9 @@ last_reviewed: 2026-08-12
 | Item                    | State                                                                                                                                 |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                                            |
-| Current reconciled base | `4edc8de5e30e9748700c19b466061f9b9a97f268`                                                                                            |
-| Incoming accepted work  | Helm invitation-handoff repair (PR #53, accepted at `920d92a51a16d60a2dfe35278598e6d921be7e4c`) and subsequent accepted mainline work |
-| Semantic reconciliation | `59a03e47ad7d93a6d52cc4e5ad4c0bdaa47c7f2b` retains Wakebook and takes all accepted mainline updates                                   |
+| Current reconciled base | `fb0f13e35fcdd98434d22c357aee02f24d6d9036`                                                                                            |
+| Incoming accepted work  | Helm launch-handoff repair (PR #55, protected merge `772be633857548d9d4bef06329ff6c54ed1b0465`) and subsequent accepted mainline work |
+| Semantic reconciliation | `6d3547b690dab5c35c9cee04a70809fa462ae8cf` retains Wakebook and takes all accepted mainline updates                                   |
 | Implementation commits  | Preserved from the existing remote candidate                                                                                          |
 | Sounding Line evidence  | `22940b9004bc89def300a808f426a0ed4dc77658`: focused governed `browser.wakebook` PASS (1/1); 15 capture review accepted                |
 | Owner walkthrough       | `OWNER_ACCEPTED_PHASE_1` recorded 2026-08-12                                                                                          |
