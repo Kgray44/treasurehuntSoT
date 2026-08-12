@@ -5,9 +5,10 @@
   "authorization": "EXPLICITLY_AUTHORIZED",
   "auditDate": "2026-08-12",
   "baseOriginMainSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
-  "reconciledOriginMainSha": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
+  "initialReconciledOriginMainSha": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
+  "reconciledOriginMainSha": "ca40227cbef3575315c089d224a0cd26ec77bc78",
   "phase3AcceptedMainSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
-  "productEvidenceSourceSha": "daecc2dc570af34772790d15b6676e53156e1062",
+  "productEvidenceSourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
   "branch": "codex/project-deepwater-phase4-break-the-surface",
   "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase4",
   "schemaImpact": "DEEPWATER_PHASE4_PROOF_CONTROL_PLANE_ONLY",
@@ -257,6 +258,7 @@
       "Accepted Phase 3 Deepwater closure is preserved as historical evidence; its ledger is not rewritten.",
       "Bridgewatch Phase 1 adds FT-034 as a private, read-only, human-operated observation dashboard with no ordinary product-route or release authority.",
       "Drydock and Shipwright accepted-main changes are owner-domain changes; Phase 4 consumes only source-current proof and does not reopen their implementation scope.",
+      "Helm Phase 2 is accepted on current main and changes Captain presence, invitations, and supporting schema; its advance invalidated the prior Phase 4 candidate and requires this current-main requalification.",
       "Sounding Line Part III v1.3 governs the final frozen-candidate Mainline Decision; it is not used as a development debugger."
     ]
   },

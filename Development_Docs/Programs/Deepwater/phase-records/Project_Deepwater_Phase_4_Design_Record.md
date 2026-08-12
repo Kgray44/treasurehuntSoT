@@ -15,10 +15,16 @@ Deepwater realization and utilization inventory into a current, whole-product
 proof population. It begins from fetched `origin/main`
 `236c27241bb8d1630274f5d5412ec9addbdb8893` on the fresh branch
 `codex/project-deepwater-phase4-break-the-surface`, not from a Phase 3 branch.
-After focused qualification, the one permitted reconciliation rebased this
-branch onto `origin/main` `54e3d818d49d45282a9c419d562d4b5c78911ccd`.
-The current local browser-proof source is the rebased Phase 4 head
-`daecc2dc570af34772790d15b6676e53156e1062`.
+The first qualification reconciliation rebased this branch onto `origin/main`
+`54e3d818d49d45282a9c419d562d4b5c78911ccd`. Before the protected hosted
+decision was dispatched, current main advanced through accepted Helm Phase 2,
+including Captain presence, invitation, and schema changes. Sounding Line's
+protected-merge binding classifies that as relevant product change, not an
+unrelated carry-forward. The mandatory current-main reconciliation rebased the
+Phase 4 commits onto `ca40227cbef3575315c089d224a0cd26ec77bc78`; the current
+product source is `b810e2d0c33cbafb8e4d02c19b9af0db94315783`. Its fresh
+complete proof matrix has passed and the replacement candidate is frozen for
+serialized acceptance ownership.
 The accepted Phase 3 close is preserved at
 `ca135585a62f445cd4331df1a7dd21203bd50219`; none of its historical records
 are rewritten to imply that Phase 4 was previously authorized.
