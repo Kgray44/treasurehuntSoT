@@ -3,7 +3,7 @@ title: Captain guide
 audience: captain
 status: current
 canonical_for: captain-guide
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-12
 ---
 
 # Captain guide
@@ -20,6 +20,13 @@ View** for the ordinary Player perspective and **Open Captain's Console** for
 Captain controls. Ending Player participation removes Player access while the
 Captain assignment remains active. Existing and omitted choices remain
 Captain-only.
+
+Captain operations also show a read-only, privacy-safe view of Voyage status,
+current attention, crew readiness, connection/synchronization health, progress,
+and recent safe event summaries. These observations help a Captain decide when
+to use the existing session controls; they do not expose Player-private device,
+network, account, draft, or story data, and they do not create new progression
+controls.
 
 Creator authoring is separate: see the [Creator guide](creator-guide.md). Operational safety is in [private-content guidance](../administrator/private-content.md).
 

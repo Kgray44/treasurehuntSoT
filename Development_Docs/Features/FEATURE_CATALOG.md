@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `920d92a51a16d60a2dfe35278598e6d921be7e4c`
+Audited source commit: `191a964488d0df71f8dcb91c5b8372fc73b6b32e`
 
 ## Status vocabulary
 
@@ -189,6 +189,8 @@ Captains create, launch, operate, recover, and reconcile live Voyages through au
 - Captain-only and Captain plus Player participation modes
 - Player-safe perspective switching
 - Membership-bounded personal history and artifact eligibility
+- Captain operational projections and prioritized voyage library
+- Membership-scoped crew presence, sync health, warnings, and safe event stream
 
 ### Primary surfaces
 
@@ -196,9 +198,13 @@ Captains create, launch, operate, recover, and reconcile live Voyages through au
 
 ### Evidence
 
+- commit: `ca40227cbef3575315c089d224a0cd26ec77bc78`
 - path: `src/server/admin-command.ts`
 - path: `src/domain/admin.ts`
 - path: `src/helm/captain-participation.ts`
+- path: `src/helm/operations.ts`
+- path: `src/platform/membership-presence.ts`
+- path: `src/components/captain/CaptainOperationalPanel.tsx`
 - path: `src/components/platform/CaptainLibrary.tsx`
 - path: `src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts`
 
@@ -1481,4 +1487,4 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `920d92a51a16d60a2dfe35278598e6d921be7e4c`
+Generation source commit: `191a964488d0df71f8dcb91c5b8372fc73b6b32e`

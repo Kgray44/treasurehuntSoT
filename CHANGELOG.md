@@ -21,6 +21,14 @@ last_reviewed: 2026-08-12
   focused local branch evidence only; it is not candidate-qualified, on main,
   deployed, or owner accepted.
 
+- Integrated Project Helm Phase 2, **Read the Deck**, on canonical main.
+  Captain operations now provide privacy-safe read-only Voyage status,
+  prioritized attention, member-scoped crew presence and synchronization
+  health, safe recent event summaries, and current progress while preserving
+  Phase 1 Captain authority, ordinary Player membership, and Player-safe
+  perspective boundaries. This is automated protected-mainline source evidence,
+  not deployment, live-Voyage proof, or owner acceptance.
+
 - Added Project Helm Phase 1 participating-Captain operation. Voyage creation
   now defaults to Captain-only and offers an explicit Captain + Player mode
   backed by exactly one ordinary same-account Player membership. Captain
