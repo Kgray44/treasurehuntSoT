@@ -29,3 +29,13 @@ last_reviewed: 2026-08-12
 - Fetch and reconcile accepted `origin/main`, freeze a candidate SHA, then obtain required owner product review.
 
 No Sounding Line Mainline Decision has been dispatched. This record is development evidence only and must not be read as candidate qualification or acceptance.
+
+## Current-main reconciliation
+
+After the implementation checkpoint, `git fetch origin --prune` advanced `origin/main` from the original base `191a964488d0df71f8dcb91c5b8372fc73b6b32e` to `541e914f481883200569f8cc7ec5ec9428d7cbb7` (40 commits). The intervening work was primarily Admiralty Phase 2 records and Helm/validation maintenance. Classification was:
+
+- `STUDIO_ADJACENT`: `a3c6ea75` changed `StudioCommandPalette.tsx`; it does not overlap the Inspector or its mutation boundary.
+- `UNRELATED`: Admiralty controls/styles, Helm sign-in tests, governance records, and Sounding Line serialization changes.
+- `NO_DIRECT_OVERLAP`: no intervening change touched `TaleEditor.tsx`, `src/components/studio/inspector`, `src/drydock`, `src/chronicle/studio-service.ts`, Prisma, or the Shipwright documentation records owned here.
+
+The single implementation checkpoint rebased cleanly onto that accepted main as `6421d518771a0b250d3a89c392aacb72c5e41391`. Focused Studio/Drydock evidence and the task-owned Chromium journey were rerun on the rebased source. This is reconciliation evidence only, not a frozen candidate or authorization to dispatch Sounding Line.
