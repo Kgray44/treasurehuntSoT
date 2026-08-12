@@ -60,6 +60,8 @@ import type {
 import { studioCopy } from "@/language/studio-copy";
 import type { DraftValidationResult, InspectorField, JsonObject, ValidationIssue } from "@/chronicle/types";
 import { getDrydockRuleDefinition } from "@/drydock/rules";
+import type { DrydockVariableDeclaration } from "@/drydock/variables";
+import { renameStudioDraftVariable } from "@/studio/authoring/variables";
 
 type DrydockGraphSurvey = {
   proofCompleteness: string;
@@ -82,6 +84,16 @@ type DrydockRepairPreview = {
   expectedIssueChanges: { resolved: readonly string[]; introduced: readonly string[] };
   description: string;
   after: { configuration: JsonObject; nextBlockId: string | null };
+};
+type DrydockMigrationPreview = {
+  sourceVersion: number;
+  targetVersion: number;
+  migrationIds: string[];
+  warnings: string[];
+  affectedFields: string[];
+  dataLoss: string[];
+  canonicalOutputChanges: string[];
+  after: { schemaVersion: number; configuration: JsonObject; presentation: JsonObject; completion: JsonObject };
 };
 
 const clone = <T,>(value: T): T => structuredClone(value);
@@ -979,6 +991,107 @@ export function TaleEditor({
       return;
     }
     setVariableExplorer(body.explorer);
+  }
+  async function renameVariable(variableId: string, nextName: string): Promise<boolean> {
+    if (!draft || !variableExplorer) return false;
+    const variable = variableExplorer.variables.find((candidate) => candidate.id === variableId);
+    if (!variable) {
+      setError("Reload declared variables before renaming this variable.");
+      return false;
+    }
+    const references = [...variable.readers, ...variable.writers];
+    const affectedBlocks = new Set(references.map((reference) => reference.blockId).filter(Boolean));
+    const expressionCount = variable.readers.filter((reference) => reference.kind === "EXPRESSION").length;
+    const confirmed = await requestAction({
+      title: `Rename ${variable.name}?`,
+      detail: `Drydock will keep stable ID ${variable.id} and update ${references.length} governed reference${references.length === 1 ? "" : "s"} across ${affectedBlocks.size} Passage${affectedBlocks.size === 1 ? "" : "s"}${expressionCount ? `, including ${expressionCount} expression${expressionCount === 1 ? "" : "s"}` : ""}. Authored prose is not searched or changed.`,
+      confirmLabel: "Rename variable",
+    });
+    if (!confirmed) return false;
+    try {
+      const declarations = variableExplorer.variables.map(
+        (candidate) =>
+          ({
+            id: candidate.id,
+            name: candidate.name,
+            type: candidate.type,
+            scope: candidate.scope,
+            ...(candidate.defaultValue === undefined ? {} : { defaultValue: candidate.defaultValue }),
+            ...(candidate.description ? { description: candidate.description } : {}),
+            allowedOperations: candidate.allowedOperations,
+            privacy: candidate.privacy,
+          }) as Omit<DrydockVariableDeclaration, "schemaVersion">,
+      );
+      change((next) => {
+        next.chapters = renameStudioDraftVariable({
+          chapters: next.chapters,
+          declarations,
+          variableId,
+          nextName,
+        });
+      }, "Variable rename queued for autosave; Undo is available.");
+      setVariableExplorer((current) =>
+        current
+          ? {
+              ...current,
+              variables: current.variables.map((candidate) =>
+                candidate.id === variableId ? { ...candidate, name: nextName } : candidate,
+              ),
+            }
+          : current,
+      );
+      return true;
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Drydock could not rename this variable.");
+      return false;
+    }
+  }
+  async function previewAndApplyMigration(blockId: string) {
+    if (!data || !draft) return;
+    try {
+      const response = await fetch(
+        `/api/studio/tales/${taleId}/migrations/${blockId}?autosaveVersion=${autosaveVersionRef.current ?? data.draft.autosaveVersion}`,
+        { cache: "no-store" },
+      );
+      const body = (await response.json()) as {
+        sourceRevision?: number;
+        preview?: DrydockMigrationPreview;
+        error?: string;
+      };
+      if (!response.ok || !body.preview || body.sourceRevision === undefined) {
+        setError(body.error ?? "A current Drydock migration preview could not be loaded.");
+        return;
+      }
+      const preview = body.preview;
+      const warnings = preview.warnings.length ? ` Warnings: ${preview.warnings.join(" ")}` : "";
+      const confirmed = await requestAction({
+        title: `Apply Drydock migration v${preview.sourceVersion} → v${preview.targetVersion}?`,
+        detail: `Drydock will update ${preview.affectedFields.length} structural field${preview.affectedFields.length === 1 ? "" : "s"}: ${preview.affectedFields.join(", ") || "schema metadata"}. Data loss: ${preview.dataLoss.join(", ") || "not reported"}. Canonical output: ${preview.canonicalOutputChanges.join(", ") || "not reported"}.${warnings}`,
+        confirmLabel: "Apply migration",
+      });
+      if (!confirmed) {
+        setSaveState("Migration preview dismissed");
+        return;
+      }
+      if ((autosaveVersionRef.current ?? data.draft.autosaveVersion) !== body.sourceRevision) {
+        setSaveState("Migration preview is stale");
+        setError(
+          "The Chronicle changed while the migration preview was open. Preview it again from the current draft.",
+        );
+        return;
+      }
+      change((next) => {
+        const target = next.chapters.flatMap((chapter) => chapter.blocks).find((block) => block.id === blockId);
+        if (!target) throw new Error("The migrated Passage is no longer present in this draft.");
+        target.schemaVersion = preview.after.schemaVersion;
+        target.configuration = clone(preview.after.configuration);
+        target.presentation = clone(preview.after.presentation);
+        target.completion = clone(preview.after.completion);
+      }, "Drydock migration queued for autosave; Undo is available.");
+    } catch (cause) {
+      setSaveState("Migration unavailable");
+      setError(cause instanceof Error ? cause.message : "A current Drydock migration preview could not be loaded.");
+    }
   }
   async function publish() {
     if (!draft || !data) return;
@@ -2053,6 +2166,8 @@ export function TaleEditor({
                       }
                       variableExplorer={variableExplorer}
                       onRequestVariables={() => void loadVariableExplorer()}
+                      onRenameVariable={renameVariable}
+                      onRequestMigration={(blockId) => void previewAndApplyMigration(blockId)}
                       initialFocusField={validationFocusField}
                       titleInputRef={inspectorTitle}
                       onClose={closeInspector}
