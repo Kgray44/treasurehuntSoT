@@ -8,11 +8,11 @@
   "initialReconciledOriginMainSha": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
   "reconciledOriginMainSha": "5735d43821209adb2259ec2c38979281da1bb5b9",
   "phase3AcceptedMainSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
-  "productEvidenceSourceSha": "e57670a010406dc48c7ede1f2939d3d35260484f",
+  "productEvidenceSourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
   "branch": "codex/project-deepwater-phase4-break-the-surface",
   "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase4",
   "schemaImpact": "DEEPWATER_PHASE4_PROOF_CONTROL_PLANE_ONLY",
-  "productSourceImpact": "NONE_ON_COORDINATION_BRANCH",
+  "productSourceImpact": "NARROW_HELM_INVITATION_RESILIENCY_REPAIR",
   "featureCatalogImpact": "NO_CHANGE_REQUIRED",
   "expectedPhase3CapabilityCount": 55,
   "expectedCurrentCapabilityCount": 57,
@@ -49,21 +49,27 @@
   ],
   "semanticCarryForward": {
     "historicalEvidenceSourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
-    "targetEvidenceSourceSha": "e57670a010406dc48c7ede1f2939d3d35260484f",
-    "changedPathScope": ["bridgewatch/**", "scripts/sounding-line/**", "testing/**", "Development_Docs/Features/**"],
+    "targetEvidenceSourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
+    "changedPathScope": [
+      "bridgewatch/**",
+      "scripts/sounding-line/**",
+      "testing/**",
+      "Development_Docs/Features/**",
+      "src/components/platform/InvitationCeremony.tsx",
+      "src/components/platform/InvitationCeremony.test.tsx"
+    ],
     "carriedJourneyIds": [
       "DW-P4-JRN-ACCOUNT",
       "DW-P4-JRN-PERSONAL-HARBOR",
       "DW-P4-JRN-PLAYER",
-      "DW-P4-JRN-CAPTAIN",
       "DW-P4-JRN-CREATOR",
       "DW-P4-JRN-COMMUNITY",
       "DW-P4-JRN-WHOLE-PRODUCT",
       "DW-P4-JRN-VERIFICATION",
       "DW-P4-JRN-RESTRICTED-OPERATIONS"
     ],
-    "requalifiedJourneyIds": ["DW-P4-JRN-BRIDGEWATCH"],
-    "rationale": "Bridgewatch Phase 2 changed only its private observer surface and current Sounding Line control-plane wiring. The existing Homeport journey evidence is retained by explicit family, while the changed Bridgewatch family and the revised Sounding Line qualification plan are rerun on the reconciled source."
+    "requalifiedJourneyIds": ["DW-P4-JRN-CAPTAIN", "DW-P4-JRN-BRIDGEWATCH"],
+    "rationale": "Bridgewatch Phase 2 changed its private observer surface and current Sounding Line control-plane wiring. The first hosted candidate then failed closed when the Helm invitation journey remained in its resolving state. The narrow current-source invitation retry repair is requalified through the exact Helm browser family; Bridgewatch remains rerun, while the unchanged Homeport families are retained by explicit declaration."
   },
   "runtimeEvidencePath": "Development_Docs/Programs/Deepwater/evidence/phase4/Project_Deepwater_Phase_4_Runtime_Evidence.json",
   "lifecycle": {
