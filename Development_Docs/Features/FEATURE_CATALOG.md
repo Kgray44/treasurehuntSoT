@@ -916,6 +916,39 @@ A nonauthoritative, provider-neutral local verification control plane provides s
 
 ---
 
+## FT-034 - Bridgewatch Development Mission Control
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Bridgewatch Phase 1
+
+A private, standalone, read-only development mission-control dashboard projects explicit project truth and GitHub repository state without acquiring authority over source, pull requests, tests, releases, or project completion.
+
+### Important subfeatures
+
+- Loopback-first Fastify service with a static dashboard
+- Server-side read-only GitHub collection with conditional cache retention
+- SQLite-backed local operational cache without token persistence
+- Explicit measured versus unmeasured milestone progress
+- Read-only API routes, security headers, and no dashboard controls
+
+### Primary surfaces
+
+`bridgewatch`, `GET /api/summary`, `GET /api/projects`, `GET /api/attention`
+
+### Meaningful limitations
+
+- Phase 1 does not ingest Sounding Line worker, queue, node, or finalizer telemetry.
+- Private deployment and operator acceptance remain separate from mainline integration.
+
+### Evidence
+
+- branch: `codex/project-bridgewatch-phase1-raise-the-board`
+- commit: `8fe1d5b416d96142815b747920ed3b1556cffbf5`
+- path: `bridgewatch/lib/server.ts`
+- completion-record: `Development_Docs/Project_Bridgewatch_Phase_1_Design_Record.md`
+
+---
+
 ## FT-B001 - Unified Identity and Session Authority
 
 **Status:** MAINLINE
@@ -1363,39 +1396,6 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 ---
 
 # Completed Branch Features Not Yet Available on Main
-
-## FT-034 - Bridgewatch Development Mission Control
-
-**Status:** BRANCH COMPLETE NOT MERGED
-**Program or subsystem:** Project Bridgewatch Phase 1
-
-A private, standalone, read-only development mission-control dashboard projects explicit project truth and GitHub repository state without acquiring authority over source, pull requests, tests, releases, or project completion.
-
-### Important subfeatures
-
-- Loopback-first Fastify service with a static dashboard
-- Server-side read-only GitHub collection with conditional cache retention
-- SQLite-backed local operational cache without token persistence
-- Explicit measured versus unmeasured milestone progress
-- Read-only API routes, security headers, and no dashboard controls
-
-### Primary surfaces
-
-`bridgewatch`, `GET /api/summary`, `GET /api/projects`, `GET /api/attention`
-
-### Meaningful limitations
-
-- Phase 1 does not ingest Sounding Line worker, queue, node, or finalizer telemetry.
-- Private deployment and operator acceptance remain separate from mainline integration.
-
-### Evidence
-
-- branch: `codex/project-bridgewatch-phase1-raise-the-board`
-- commit: `8fe1d5b416d96142815b747920ed3b1556cffbf5`
-- path: `bridgewatch/lib/server.ts`
-- completion-record: `Development_Docs/Project_Bridgewatch_Phase_1_Design_Record.md`
-
----
 
 # Deliberately Excluded Until Complete
 
