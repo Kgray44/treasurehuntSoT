@@ -68,6 +68,8 @@ export type RegistryItem = {
     minimumReaderVersion: number;
     connectionPolicy: { terminal?: boolean; minimum?: number; maximum?: number; canonicalAuthority?: string };
     assetRequirements: Array<{ fieldPath: string; mediaTypes: string[]; accessibilityFallback?: string | null }>;
+    variableReads: Array<{ fieldPath: string; identityFieldPath?: string; access: string; operations?: string[] }>;
+    variableWrites: Array<{ fieldPath: string; identityFieldPath?: string; access: string; operations?: string[] }>;
     providerContract?: string | null;
     accessibilityRules: Array<{ code: string; obligation: string }>;
   };
