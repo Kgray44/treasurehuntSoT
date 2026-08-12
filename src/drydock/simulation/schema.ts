@@ -130,7 +130,7 @@ export const drydockScenarioSchema = z
         maxSteps: boundedCount.max(10_000),
         maxStates: boundedCount.max(100_000),
         maxTraceEntries: boundedCount.max(100_000),
-        maxVirtualMilliseconds: boundedCount.max(604_800_000),
+        maxVirtualMilliseconds: z.number().int().positive().max(604_800_000),
       })
       .strict(),
     inputs: z.array(inputSchema).max(10_000),
