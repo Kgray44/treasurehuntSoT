@@ -15,7 +15,7 @@ last_reviewed: 2026-08-12
 | Branch                 | `codex/project-shipwright-phase2-fit-the-tools`                                 |
 | Original base          | `191a964488d0df71f8dcb91c5b8372fc73b6b32e` (`origin/main` at worktree creation) |
 | Schema / Prisma impact | None                                                                            |
-| Current state          | Development verification; not a frozen candidate                                |
+| Current state          | Candidate qualification complete; owner product gate pending                    |
 
 ## Safety assertions under test
 
@@ -29,8 +29,10 @@ last_reviewed: 2026-08-12
 - The Inspector and all new controls remain keyboard reachable, with semantic labels, visible focus, section disclosure, and responsive narrow-screen styling.
 - A 100-Passage synthetic component regression and a task-owned Chromium journey cover Inspector selection and desktop/tablet/phone reachability without shared runtime data.
 
-## Not yet attested
+## Candidate safety attestation
 
-`MAINLINE_SAFETY_CONTRACT = PENDING_CANDIDATE_QUALIFICATION`.
+`MAINLINE_SAFETY_CONTRACT = PASS_FOR_OWNER_CANDIDATE`.
 
-The permanent-stop claim cannot be marked PASS until the full current-block coverage, qualification evidence, owner product gate, exact-source Sounding Line decision, and protected-main integration have completed.
+Permanent-stop proof: **YES**. If Shipwright Phase 3 is never built, all 23 current active Story Block types remain authorable through a contract-aware editor strategy or the safe schema-aware fallback, and valid Chronicles retain the existing autosave, undo/redo, preview, validation, publication, and runtime boundaries. The qualification suite includes a 100-Passage selection regression, all 23 Drydock contracts, and the isolated Creator browser journey.
+
+This local safety pass is not a substitution for the remaining owner product gate, exact-source Sounding Line decision, or protected-main integration. Those acceptance layers remain pending.
