@@ -117,6 +117,7 @@ function validatePolicy(policy) {
       "runtimeConformance",
       "governingPolicies",
       "developmentValidation",
+      "protectedMergeBinding",
       "futureProjectInheritance",
     ],
     "sounding-line-authority",
@@ -128,6 +129,18 @@ function validatePolicy(policy) {
       errors.push(`sounding-line-authority: ${part} must be ${version}`);
   if (authorityIndex.requiredProtectedAuthorityCheck !== "Sounding Line / Mainline Decision")
     errors.push("sounding-line-authority: protected check mismatch");
+  const protectedBinding = authorityIndex.protectedMergeBinding;
+  if (
+    protectedBinding?.enabled !== true ||
+    protectedBinding.requiredContext !== authorityIndex.requiredProtectedAuthorityCheck ||
+    protectedBinding.authoritativeWorkflowName !== "Sounding Line authoritative" ||
+    protectedBinding.qualifiedEvidence !== "SEALED_FINALIZER_ARTIFACT_ONLY" ||
+    protectedBinding.semanticCarryForward?.mode !== "FAIL_CLOSED_PATH_CLASSIFICATION" ||
+    !Array.isArray(protectedBinding.semanticCarryForward?.unrelatedPathGlobs) ||
+    !Array.isArray(protectedBinding.semanticCarryForward?.relevantContractPathGlobs) ||
+    !Array.isArray(protectedBinding.legacyQualifiedCandidates)
+  )
+    errors.push("sounding-line-authority: protected merge binding mismatch");
   if (
     authorityIndex.runtimeConformance?.required !== true ||
     authorityIndex.runtimeConformance?.failureMode !== "FAIL_CLOSED"

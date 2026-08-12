@@ -33,6 +33,24 @@ never substitutes for the Mainline Decision. This boundary is already governed
 by Part III Version 1.2 Sections 6 and 8 and is operationalized by
 `.agents/testing-workflow.md`; no additional broad amendment is required.
 
+## Protected merge binding
+
+GitHub evaluates required checks on the current synthetic pull-request merge
+identity, while explicit authoritative acceptance is earned only by the frozen
+candidate head. `protectedMergeBinding` in the machine-readable authority index
+therefore permits a lightweight **protected merge binding** stage. It verifies
+the exact pull-request head, current base, two-parent synthetic merge
+composition, sealed finalizer plan/receipt/evidence digests, and clean mandatory
+receipts before satisfying the unchanged `Sounding Line / Mainline Decision`
+context on that merge identity.
+
+The binding stage is not a test runner and cannot issue `RELEASE_GO`. It
+consumes only an already sealed authoritative finalizer result. When main has
+advanced, it performs the fail-closed semantic path classification declared in
+the authority index: unrelated documentation/testing-infrastructure changes may
+carry forward product evidence, while Helm-owned, product, dependency, or
+unclassified changes require reconciliation and new candidate authority.
+
 The v1.2 target architecture requires minimum sufficient evidence, semantic
 evidence preservation, and record-only closure. Unsupported optimization paths
 fail closed and are tracked in the canonical runtime remediation backlog.
