@@ -213,7 +213,6 @@ export function PlayerVoyageRoom({
 
   useEffect(() => {
     queueMicrotask(() => void load("connecting"));
-    let visibilityRecheck: number | null = null;
     const reconcile = (nextConnection: ConnectionState) => {
       activeLoad.current?.abort("superseded-by-authoritative-event");
       activeLoad.current = null;
@@ -259,27 +258,22 @@ export function PlayerVoyageRoom({
     };
     const reconcileWhenVisible = () => {
       if (connectionRef.current === "revoked") return;
-      // Browser focus can arrive one task before its visibility state changes.
-      // Recheck once so an authoritative launch is not stranded in a tab that
-      // was backgrounded while its Captain started the voyage.
-      if (document.hidden) {
-        if (visibilityRecheck) window.clearTimeout(visibilityRecheck);
-        visibilityRecheck = window.setTimeout(() => {
-          visibilityRecheck = null;
-          if (!document.hidden && connectionRef.current !== "revoked") {
-            setConnection("reconciling");
-            reconcile("reconciling");
-          }
-        }, 0);
-        return;
-      }
+      if (document.hidden) return;
+      setConnection("reconciling");
+      reconcile("reconciling");
+    };
+    // Focus is the resume signal even if the visibility property has not
+    // caught up yet. Waiting for a single visibility recheck can strand a
+    // launched Voyage when the browser delays that update beyond one task.
+    const onFocus = () => {
+      if (connectionRef.current === "revoked") return;
       setConnection("reconciling");
       reconcile("reconciling");
     };
     const onVisibilityChange = reconcileWhenVisible;
     window.addEventListener("offline", onOffline);
     window.addEventListener("online", onOnline);
-    window.addEventListener("focus", onVisibilityChange);
+    window.addEventListener("focus", onFocus);
     document.addEventListener("visibilitychange", onVisibilityChange);
     return () => {
       window.clearInterval(timer);
@@ -290,10 +284,9 @@ export function PlayerVoyageRoom({
         window.clearTimeout(launchHandoffTimer.current);
         launchHandoffTimer.current = null;
       }
-      if (visibilityRecheck) window.clearTimeout(visibilityRecheck);
       window.removeEventListener("offline", onOffline);
       window.removeEventListener("online", onOnline);
-      window.removeEventListener("focus", reconcileWhenVisible);
+      window.removeEventListener("focus", onFocus);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [load, playthroughId]);
