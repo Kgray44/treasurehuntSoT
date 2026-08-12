@@ -133,8 +133,10 @@ async function accountMenu(page: Page, label = displayName) {
 
 async function enterCaptain(page: Page) {
   const menu = await accountMenu(page);
-  await menu.getByRole("link", { name: "All Workspaces", exact: true }).click();
-  await expect(page).toHaveURL(/\/account\/roles$/u, { timeout: 30_000 });
+  await Promise.all([
+    page.waitForURL(/\/account\/roles$/u),
+    menu.getByRole("link", { name: "All Workspaces", exact: true }).click(),
+  ]);
   await expect(page.getByRole("heading", { name: "All Workspaces" })).toBeVisible({ timeout: 30_000 });
   await page.getByRole("link", { name: "Enter Captain" }).click();
   await expect(page).toHaveURL(/\/captain\/library$/u, { timeout: 30_000 });

@@ -1,8 +1,8 @@
 ---
 title: Project Shipwright Phase 1 Owner Walkthrough
 audience: owner
-status: ready-for-owner-walkthrough
-last_reviewed: 2026-08-10
+status: accepted-with-post-review-corrections
+last_reviewed: 2026-08-12
 ---
 
 # Project Shipwright Phase 1 Owner Walkthrough
@@ -23,3 +23,13 @@ last_reviewed: 2026-08-10
 ## Acceptance boundary
 
 This walkthrough is for interaction and presentation acceptance only. It does not authorize new Chronicle semantics, validation, publication, deployment, provider configuration, or production data changes. Full registered Sounding Line validation remains required before any release claim.
+
+## Recorded owner acceptance
+
+The owner previously reviewed the Phase 1 Studio candidate and accepted it with a bounded correction list. Those corrections were implemented before the acceptance repair.
+
+- `OWNER_REVIEW_STATUS: OWNER_ACCEPTED_WITH_POST_REVIEW_CORRECTIONS`
+- `POST_CORRECTION_REPEAT_WALKTHROUGH: WAIVED_BY_OWNER`
+- `OWNER_WALKTHROUGH_GATE: SATISFIED_BY_PRIOR_REVIEW_PLUS_EXPLICIT_WAIVER`
+
+No second walkthrough or post-correction visual evidence is claimed. The authoritative Sounding Line finalizer remains the separate engineering release authority.

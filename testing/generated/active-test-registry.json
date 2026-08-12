@@ -40264,7 +40264,7 @@
     {
       "id": "sl-test-852a7d69036bd3be24a6",
       "title": "keeps canvas view controls presentation-only and keyboard reachable",
-      "line": 500,
+      "line": 505,
       "file": "src/components/studio/TaleEditor.test.tsx",
       "suiteId": "component.studio",
       "owner": "platform-foundation",
@@ -141491,9 +141491,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-dd8651f5f871eb18f684",
+      "id": "sl-test-b174fc7aa55e524c4922",
       "title": "Captain authority and ordinary Player membership remain independent through the visible product journey",
-      "line": 307,
+      "line": 309,
       "file": "tests/e2e/project-helm-phase1.spec.ts",
       "project": "helm-phase1",
       "suiteId": "browser.helm",
@@ -141532,9 +141532,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-a78ac86b785b846afd90",
+      "id": "sl-test-3279e065a6fdae9f9a9b",
       "title": "authenticated membership heartbeats are independently visible in the Captain operational projection",
-      "line": 508,
+      "line": 510,
       "file": "tests/e2e/project-helm-phase1.spec.ts",
       "project": "helm-phase1",
       "suiteId": "browser.helm",
@@ -141573,9 +141573,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-8cb666126d5a77e54f1d",
+      "id": "sl-test-9d6bc851ace69e4d1f45",
       "title": "participation choice remains usable at desktop, tablet, phone, 200% zoom, keyboard, and reduced motion",
-      "line": 602,
+      "line": 604,
       "file": "tests/e2e/project-helm-phase1.spec.ts",
       "project": "helm-phase1",
       "suiteId": "browser.helm",
