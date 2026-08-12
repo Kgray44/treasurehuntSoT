@@ -49,9 +49,8 @@ Project Admiralty Phase 1 adds `/admin` as a privileged route and
 detail routes. Authorized roles receive an account-menu entry and filtered
 Admiralty navigation; ordinary accounts receive neither. Every route still
 returns a non-revealing not-found result before privileged projection when its
-server-side capability check fails. The owner accepted the Phase 2 walkthrough;
-its candidate remains branch-only, not deployed, and pending exact-source
-authority and protected mainline integration.
+server-side capability check fails. Phase 2 is owner accepted and integrated on
+main through PR #28; it is not deployed.
 
 Mainline Google and GitHub OAuth adds public provider discovery and start routes
 plus the exact callbacks

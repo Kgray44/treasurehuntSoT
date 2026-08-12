@@ -81,9 +81,9 @@ acceptance are not claimed.
 
 **Audience:** Administrators, support operators, operations observers, audit
 operators, security operators, and account owners. **Availability:** Phase 1 is
-owner accepted and integrated on canonical main. Phase 2 is owner accepted on
-its branch candidate and awaits exact-source authority and protected mainline
-integration.
+owner accepted and integrated on canonical main. Phase 2 is also owner accepted
+and integrated on canonical main after exact-source authority and protected
+integration in PR #28.
 
 Phase 1 provides server-resolved roles/capabilities, explicit administrator
 bootstrap, short-lived session-bound privileged assurance, canonical sanitized

@@ -10,7 +10,13 @@ last_reviewed: 2026-08-12
 
 ## Disposition
 
-`OWNER_ACCEPTED_MAINLINE_CANDIDATE`.
+`ACCEPTED_MAINLINE`.
+
+The accepted main commit is `4edc8de5e30e9748700c19b466061f9b9a97f268` from
+PR #28. Exact candidate `9ca2b3b89b12470e7cd86457e5d8fd91e419b47c` received
+`RELEASE_GO` in Sounding Line run `31624301196` against base
+`191a964488d0df71f8dcb91c5b8372fc73b6b32e`; protected binding `31626044788`
+then succeeded before the normal merge.
 
 Current-main reconciliation is anchored by merge
 `0373aa0a63208c5bd24f53f8d751aed2b109c345`, which preserves the
@@ -55,6 +61,6 @@ earns a fresh exact-source Mainline Decision and protected merge.
 
 ## Acceptance boundary
 
-The owner-acceptance boundary is satisfied. Canonical-main integration now
-requires a fresh exact-source Mainline Decision for the current reconciled
-source and a successful protected-merge binding. Phase 3 is not authorized.
+The owner-acceptance, exact-source authority, protected binding, and
+canonical-main integration boundaries are satisfied. Phase 3 is not authorized;
+deployment and the external limits recorded above remain outside this receipt.

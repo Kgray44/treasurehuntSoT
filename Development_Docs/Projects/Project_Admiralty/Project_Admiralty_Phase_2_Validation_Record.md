@@ -10,10 +10,15 @@ last_reviewed: 2026-08-12
 
 ## Current decision
 
-`OWNER_ACCEPTED_MAINLINE_CANDIDATE`. The current candidate is based on accepted
+`ACCEPTED_MAINLINE`. The former current candidate was based on accepted
 `origin/main` `191a964488d0df71f8dcb91c5b8372fc73b6b32e`, introduced by
 non-destructive merge `0373aa0a63208c5bd24f53f8d751aed2b109c345`; every prior
-Mainline Decision is historical for publication. Sounding Line run `31572661444`
+Mainline Decision is historical for publication. Sounding Line run `31624301196`
+issued `RELEASE_GO` for exact candidate
+`9ca2b3b89b12470e7cd86457e5d8fd91e419b47c` against that base for PR #28, with
+38 mandatory clean receipts and zero unclean receipts. Protected binding
+`31626044788` then accepted the merge identity, and PR #28 integrated as
+`4edc8de5e30e9748700c19b466061f9b9a97f268`. Sounding Line run `31572661444`
 accepted candidate `894eaec061665c4f1b9c50bf7c84ad766551c7e5` against accepted
 `origin/main` `54e3d818d49d45282a9c419d562d4b5c78911ccd`, issuing
 `RELEASE_GO` from 38 mandatory clean receipts. This record does not claim owner
@@ -55,14 +60,11 @@ for `b32a3c961...` is historical technical authority. The current reconciled
 branch head requires its own exact-source Mainline Decision before protected
 merge.
 
-## Pending governed gate
+## Governed acceptance
 
-Qualify the current reconciled source through Sounding Line, then complete the
-protected-merge binding. The owner decision is `ACCEPTED`; no local automated
-evidence substitutes for that recorded human decision.
-
-Canonical-main integration remains prohibited until this decision-record source
-qualifies and its protected-merge binding succeeds.
+The owner decision is `ACCEPTED`; exact-source authority, protected binding, and
+canonical-main integration are complete. No local automated evidence substituted
+for the recorded human decision.
 
 ## Known truthful limits
 
@@ -71,5 +73,5 @@ qualifies and its protected-merge binding succeeds.
 - Private repair operations remain `ASSIGNED_TO_PHASE_3`.
 - Broad account, role, session, Community, job, provider, configuration,
   release, backup, restore, repair, and break-glass mutations are absent.
-- Owner decision is `ACCEPTED`; canonical-main publication remains pending its
-  source-bound governance.
+- Owner decision is `ACCEPTED`; canonical-main publication is complete at
+  `4edc8de5e30e9748700c19b466061f9b9a97f268`.
