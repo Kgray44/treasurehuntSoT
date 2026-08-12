@@ -5,7 +5,7 @@
   "phase": 3,
   "phaseName": "Run Sea Trials",
   "phaseId": "project-drydock-phase-3-run-sea-trials",
-  "state": "ACTIVE_IMPLEMENTATION",
+  "state": "CANDIDATE_FROZEN_PENDING_CANONICAL_ACCEPTANCE",
   "branch": "codex/project-drydock-phase3-run-sea-trials",
   "worktree": {
     "ownership": "TASK_OWNED",
