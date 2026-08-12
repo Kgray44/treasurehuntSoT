@@ -605,12 +605,7 @@ test("participation choice remains usable at desktop, tablet, phone, 200% zoom, 
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
   const page = await context.newPage();
   try {
-    await page.goto("/sign-in");
-    await page.getByLabel("Email or legacy Player name").fill(email);
-    await page.getByLabel("Password").fill(password);
-    await page.getByRole("button", { name: "Continue" }).click();
-    await expect(page.getByRole("button", { name: displayName, exact: true })).toBeVisible();
-    await enterCaptain(page);
+    await signInThroughProduct(page);
     await page.getByRole("button", { name: "Create a Voyage" }).first().click();
     await expect(page.getByRole("dialog", { name: "Select Chronicle" })).toBeVisible();
     const wizard = page.locator(".voyage-wizard");
@@ -688,12 +683,7 @@ test("participation choice remains usable at desktop, tablet, phone, 200% zoom, 
     });
     const reducedPage = await reducedContext.newPage();
     try {
-      await reducedPage.goto("/sign-in");
-      await reducedPage.getByLabel("Email or legacy Player name").fill(email);
-      await reducedPage.getByLabel("Password").fill(password);
-      await reducedPage.getByRole("button", { name: "Continue" }).click();
-      await expect(reducedPage.getByRole("button", { name: displayName, exact: true })).toBeVisible();
-      await enterCaptain(reducedPage);
+      await signInThroughProduct(reducedPage);
       await reducedPage.getByRole("button", { name: "Create a Voyage" }).first().click();
       await expect(reducedPage.getByRole("dialog", { name: "Select Chronicle" })).toBeVisible();
       const reducedWizard = reducedPage.locator(".voyage-wizard");
