@@ -27,6 +27,8 @@ All locally attainable Phase 2 qualification evidence is green. The task-owned o
 
 After rebasing onto `fb0f13e35fcdd98434d22c357aee02f24d6d9036`, the qualification rerun passed `npm run typecheck`, tracked-source ESLint, the 37-test focused Studio/authorization set, `npm run drydock:test` (34 files / 197 tests), `npm run drydock:validate` (all 23 current contracts), the isolated Chromium journey (including Axe serious/critical zero and responsive coverage), and `npm run test:raw:build`. The inherited Turbopack tracing warning remains non-failing and is outside the Phase 2 paths.
 
+Protected main then advanced to `bb7676a75581d8d415c3ff7712cc38bc8decb031` with accepted Tideglass Phase 3. Its direct changes to `TaleEditor`, Studio types, Chronicle service, and Studio styles required a semantic rebase rather than a mechanical carry-forward. The only conflict was adjacent imports; the reconciled source retains both `TideglassStudioComparison` and `ContractAwareInspector`. Requalification passed TypeScript; the 116-test combined Studio/authoring/authorization/contract set; all 197 Drydock tests and 23 Drydock contracts; Tideglass Phase 3 contract validation; Tideglass’ task-owned production browser journey; Shipwright’s task-owned browser journey; tracked-source ESLint; documentation validation; and Feature Catalog validation. Both browser journeys passed from exact reconciled source `83220ece21a984d9d200007ba556437b6ebbade2`.
+
 No Sounding Line Mainline Decision has been dispatched. This record is owner-accepted candidate evidence only; it is not Sounding Line authority or protected-main acceptance.
 
 ## Current-main reconciliation
