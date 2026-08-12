@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "project": "Project Drydock",
+  "phase": 3,
+  "owner": "Project Drydock Phase 3 / Run Sea Trials",
+  "status": "RESERVED_ADDITIVE",
+  "sqlite": {
+    "migration": [],
+    "reservedModels": ["DrydockScenario", "DrydockScenarioRevision", "DrydockScenarioSuite", "DrydockSimulationRun"],
+    "purpose": "Creator-owned versioned synthetic scenarios, suite membership, source-bound run summaries, and resumable bounded checkpoints.",
+    "backfill": "NONE",
+    "compatibilityWindow": "Readers tolerate no Phase 3 record before the first Scenario is created."
+  },
+  "mysql": {
+    "migration": [],
+    "reservedModels": ["DrydockScenario", "DrydockScenarioRevision", "DrydockScenarioSuite", "DrydockSimulationRun"],
+    "purpose": "Schema parity for the SQLite Phase 3 synthetic simulation records.",
+    "backfill": "NONE",
+    "compatibilityWindow": "Readers tolerate no Phase 3 record before the first Scenario is created."
+  },
+  "prohibitedWrites": [
+    "TaleSession",
+    "TaleSessionEvent",
+    "PlaythroughMembership",
+    "Invitation",
+    "PublishedTaleVersion",
+    "ArtifactGrantReceipt",
+    "Community records",
+    "protected asset state"
+  ],
+  "rollback": "Disable Phase 3 application paths and retain additive synthetic records inert. No destructive rollback migration, backfill, or canonical-data correction is authorized."
+}

@@ -10,7 +10,7 @@ last_reviewed: 2026-08-09
 
 [Project Drydock](Project_Drydock_Governing_Document.pdf) governs the Chronicle authoring-contract, validation, compatibility, and later simulation program. Phase 1, Set the Blocks, is limited to typed authoring contracts, variables, expressions, schema evolution, compatibility fixtures, stable issues, and incremental contract validation. It does not implement whole-Chronicle analysis or simulation.
 
-Phase 1 status: **MAINLINE ACCEPTED** through protected PR #22 at mainline merge `468530645e983412e5f4c1aaa103915be77c9c07`. Phase 2, **Sound the Hull**, is **MAINLINE ACCEPTED** through protected PR #36 at merge `847e035775984888be71edf614f2205fd6c5a376`. Phase 2 is limited to whole-Chronicle static analysis; Phase 3 simulation has not started.
+Phase 1 status: **MAINLINE ACCEPTED** through protected PR #22 at mainline merge `468530645e983412e5f4c1aaa103915be77c9c07`. Phase 2, **Sound the Hull**, is **MAINLINE ACCEPTED** through protected PR #36 at merge `847e035775984888be71edf614f2205fd6c5a376`. Phase 2 is limited to whole-Chronicle static analysis. Phase 3, **Run Sea Trials**, is active implementation and has not yet entered candidate qualification or protected acceptance.
 
 ## Phase 1 records
 
@@ -29,6 +29,20 @@ Phase 1 status: **MAINLINE ACCEPTED** through protected PR #22 at mainline merge
 - `Project_Drydock_Phase_1_Provider_Registry.json`
 - `Project_Drydock_Phase_1_Extension_Registry.json`
 - `Project_Drydock_Phase_1_Active_Phase_Registration.json`
+
+## Phase 3 records
+
+Phase 3, **Run Sea Trials**, is active from fetched `origin/main` at
+`236c27241bb8d1630274f5d5412ec9addbdb8893`. Its scope is deterministic
+Chronicle simulation, scenarios, virtual time, faults, coverage, and
+One Voyage runtime-fidelity proof. It does not begin Phase 4 or change live
+Voyage authority.
+
+- [Active Phase Registration](Project_Drydock_Phase_3_Active_Phase_Registration.json)
+- [Design Record](Project_Drydock_Phase_3_Design_Record.md)
+- [Mainline Safety Contract](Project_Drydock_Phase_3_Mainline_Safety_Contract.md)
+- [Migration Reservation](Project_Drydock_Phase_3_Migration_Reservation.json)
+- [Scenario Contract](Project_Drydock_Phase_3_Scenario_Contract.md)
 
 ## Phase 2 records
 
