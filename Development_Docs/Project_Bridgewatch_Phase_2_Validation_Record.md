@@ -48,6 +48,26 @@ These are local, task-owned package and browser observations. They are not
 Sounding Line acceptance, GitHub protected-check, deployment, provider, or
 owner-acceptance proof.
 
+## Retained authority-failure repair history
+
+- hosted run `31576357908` on `c808b7cbc796b1ebcd20b15126e22b487051321c`
+  stopped at `unit.feature-catalog`: the stable-count assertion still expected
+  44 entries after FT-035 added the forty-fifth. The focused Feature Catalog
+  suite passed after its assertion was repaired;
+- hosted run `31578682546` on `d65734b25f756ec09e291f43de1f6ac6ff9b9189`
+  stopped because the Bridgewatch package cwd resolved Vitest beneath
+  `bridgewatch/node_modules`, while hosted `npm ci` installs the workspace
+  dependency at the repository root. The adapter now resolves the certified
+  root entry point while retaining the package configuration cwd. Its exact
+  focused Bridgewatch and Sounding Line suites passed locally;
+- that run also recorded one `component.community` focus assertion failure.
+  The exact Community test and registered component suite passed locally with
+  clean cleanup; no Community source was changed.
+
+These repairs were made before the current rebase onto
+`ca40227cbef3575315c089d224a0cd26ec77bc78`. The new head requires fresh
+exact-SHA qualification before a further Mainline Decision.
+
 ## Remaining acceptance boundary
 
 Candidate freeze, protected PR creation, canonical acceptance ownership, exactly

@@ -10,18 +10,21 @@ last_reviewed: 2026-08-12
 
 ## Pending protected-mainline binding
 
-| Field            | Value                                                        |
-| ---------------- | ------------------------------------------------------------ |
-| Reconciled base  | `54e3d818d49d45282a9c419d562d4b5c78911ccd`                   |
-| Candidate        | This manifest's final branch head, frozen before PR creation |
-| Pull request     | Pending                                                      |
-| Authority gate   | `mainline`                                                   |
-| Required context | `Sounding Line / Mainline Decision`                          |
-| Decision         | Pending one explicit dispatch                                |
-| Merge SHA        | Pending protected merge                                      |
-| Exact main proof | Pending post-merge fetch and ancestry check                  |
+| Field            | Value                                                       |
+| ---------------- | ----------------------------------------------------------- |
+| Reconciled base  | `ca40227cbef3575315c089d224a0cd26ec77bc78`                  |
+| Candidate        | Pending exact-SHA requalification after this reconciliation |
+| Pull request     | [#49](https://github.com/Kgray44/treasurehuntSoT/pull/49)   |
+| Authority gate   | `mainline`                                                  |
+| Required context | `Sounding Line / Mainline Decision`                         |
+| Decision         | Pending one post-repair explicit dispatch                   |
+| Merge SHA        | Pending protected merge                                     |
+| Exact main proof | Pending post-merge fetch and ancestry check                 |
 
-The candidate must be the exact branch head supplied to the authoritative
-workflow and its PR acceptance envelope. A failure returns to focused
-development verification; it is not retried as diagnosis. This manifest
-contains no merge authorization and does not begin Bridgewatch Phase 3.
+Two earlier authority runs are retained as failed diagnostic history, not
+acceptance: `31576357908` on the original candidate found the stale Feature
+Catalog count; `31578682546` on its repair found Bridgewatch's hosted Vitest
+path and an unrelated Community focus assertion. Each returned to focused
+verification. The next dispatch may occur only after the new branch head is
+fully requalified against the reconciled base. This manifest contains no merge
+authorization and does not begin Bridgewatch Phase 3.
