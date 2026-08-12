@@ -47,6 +47,15 @@ test("Shipwright Phase 2 keeps contract-aware authoring usable across modes and 
   await expect(authoringLevel).toHaveValue("GUIDED");
   await expect(passageTitle).toHaveValue("Narrative");
 
+  // An authoritative Drydock issue must lead back to its ordinary Passage.
+  // Exact field focus and local repair are covered by the component contract
+  // because this first synthetic Chronicle intentionally has no terminal yet.
+  await page.getByRole("button", { name: "Validate Chronicle" }).click();
+  const validationPanel = page.getByRole("region", { name: "Chronicle validation results" });
+  await expect(validationPanel).toBeVisible();
+  await validationPanel.locator(".validation-issue").first().click();
+  await expect(page.locator(".timeline-block").first()).toBeFocused();
+
   await page.getByRole("button", { name: "Add Set Variable to first chapter" }).click();
   await expect(page.locator(".timeline-block")).toHaveCount(2);
   await expect(page.locator(".save-state")).toContainText("Saved at", { timeout: 15_000 });
@@ -91,6 +100,10 @@ test("Shipwright Phase 2 keeps contract-aware authoring usable across modes and 
 
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(page.getByRole("button", { name: "Close Passage inspector" })).toBeVisible();
+  await expect(authoringLevel).toBeVisible();
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await expect(authoringLevel).toBeVisible();
+  await page.setViewportSize({ width: 1280, height: 900 });
   await expect(authoringLevel).toBeVisible();
 
   const accessibility = await new AxeBuilder({ page }).include(".contract-aware-inspector").analyze();
