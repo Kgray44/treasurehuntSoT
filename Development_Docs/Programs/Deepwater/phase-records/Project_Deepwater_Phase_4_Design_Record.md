@@ -15,6 +15,10 @@ Deepwater realization and utilization inventory into a current, whole-product
 proof population. It begins from fetched `origin/main`
 `236c27241bb8d1630274f5d5412ec9addbdb8893` on the fresh branch
 `codex/project-deepwater-phase4-break-the-surface`, not from a Phase 3 branch.
+After focused qualification, the one permitted reconciliation rebased this
+branch onto `origin/main` `54e3d818d49d45282a9c419d562d4b5c78911ccd`.
+The current local browser-proof source is the rebased Phase 4 head
+`daecc2dc570af34772790d15b6676e53156e1062`.
 The accepted Phase 3 close is preserved at
 `ca135585a62f445cd4331df1a7dd21203bd50219`; none of its historical records
 are rewritten to imply that Phase 4 was previously authorized.

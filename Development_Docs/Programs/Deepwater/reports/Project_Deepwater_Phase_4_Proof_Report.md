@@ -11,7 +11,7 @@ last_reviewed: 2026-08-12
 ## Source boundary
 
 - Phase 3 accepted main: `ca135585a62f445cd4331df1a7dd21203bd50219`
-- Phase 4 base and product evidence source: `236c27241bb8d1630274f5d5412ec9addbdb8893`
+- Phase 4 base and product evidence source: `daecc2dc570af34772790d15b6676e53156e1062`
 - Capability population: 56/56
 - Local synthetic proven: 47
 - Intentionally bounded: 9
