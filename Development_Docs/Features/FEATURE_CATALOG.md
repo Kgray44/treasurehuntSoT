@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `e1e0cfee4441ce2985142a442b92541eb45106ff`
+Audited source commit: `236c27241bb8d1630274f5d5412ec9addbdb8893`
 
 ## Status vocabulary
 
@@ -189,6 +189,8 @@ Captains create, launch, operate, recover, and reconcile live Voyages through au
 - Captain-only and Captain plus Player participation modes
 - Player-safe perspective switching
 - Membership-bounded personal history and artifact eligibility
+- Captain operational projections and prioritized voyage library
+- Membership-scoped crew presence, sync health, warnings, and safe event stream
 
 ### Primary surfaces
 
@@ -199,6 +201,9 @@ Captains create, launch, operate, recover, and reconcile live Voyages through au
 - path: `src/server/admin-command.ts`
 - path: `src/domain/admin.ts`
 - path: `src/helm/captain-participation.ts`
+- path: `src/helm/operations.ts`
+- path: `src/platform/membership-presence.ts`
+- path: `src/components/captain/CaptainOperationalPanel.tsx`
 - path: `src/components/platform/CaptainLibrary.tsx`
 - path: `src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts`
 
@@ -1410,4 +1415,4 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `e1e0cfee4441ce2985142a442b92541eb45106ff`
+Generation source commit: `236c27241bb8d1630274f5d5412ec9addbdb8893`

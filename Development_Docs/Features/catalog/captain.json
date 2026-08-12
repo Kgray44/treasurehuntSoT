@@ -21,12 +21,17 @@
       "Independent Captain authority and Player membership",
       "Captain-only and Captain plus Player participation modes",
       "Player-safe perspective switching",
-      "Membership-bounded personal history and artifact eligibility"
+      "Membership-bounded personal history and artifact eligibility",
+      "Captain operational projections and prioritized voyage library",
+      "Membership-scoped crew presence, sync health, warnings, and safe event stream"
     ],
     "evidence": [
       { "kind": "path", "value": "src/server/admin-command.ts" },
       { "kind": "path", "value": "src/domain/admin.ts" },
       { "kind": "path", "value": "src/helm/captain-participation.ts" },
+      { "kind": "path", "value": "src/helm/operations.ts" },
+      { "kind": "path", "value": "src/platform/membership-presence.ts" },
+      { "kind": "path", "value": "src/components/captain/CaptainOperationalPanel.tsx" },
       { "kind": "path", "value": "src/components/platform/CaptainLibrary.tsx" },
       { "kind": "path", "value": "src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts" }
     ],
