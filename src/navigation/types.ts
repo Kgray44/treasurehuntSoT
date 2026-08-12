@@ -14,7 +14,7 @@ export type ShellMode =
 
 export type NavigationLayer = "GLOBAL" | "WORKSPACE" | "ACCOUNT" | "CONTEXTUAL";
 export type NavigationPresentation = "desktop" | "mobile";
-export type NavigationCapability = "player" | "captain" | "creator" | "moderator" | "administrator";
+export type NavigationCapability = "player" | "captain" | "creator" | "moderator" | "administrator" | "admiralty";
 export type NavigationOwner =
   | "project-homeport"
   | "true-north"

@@ -1,4 +1,4 @@
-import roleRegistry from "../../Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Role_Capability_Registry.json";
+import roleRegistry from "../../Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Role_Capability_Registry.json";
 
 export const ADMIRALTY_CAPABILITIES = [
   "PLATFORM_OBSERVE",

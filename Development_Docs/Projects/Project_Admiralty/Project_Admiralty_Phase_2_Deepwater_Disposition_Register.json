@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceAuthority": "Development_Docs/Programs/Deepwater",
+  "sourceSha": "468530645e983412e5f4c1aaa103915be77c9c07",
+  "phase": "PROJECT ADMIRALTY PHASE 2 — OPEN THE CHARTROOM",
+  "rule": "This consumer register records Phase 2 disposition only. It does not replace or edit Deepwater ownership, realization, findings, or closure authority.",
+  "dispositions": [
+    {
+      "capabilityId": "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+      "findingId": null,
+      "disposition": "REALIZED_IN_PHASE_2",
+      "reason": "The owner-accepted Phase 1 control plane now has a natural dossier-anchored Support Access consumer while preserving consent, scope, time, assurance, revocation, and audit controls."
+    },
+    {
+      "capabilityId": "DW-CAP-PRIVATE-PROVIDER-HEALTH",
+      "findingId": "DW-FIND-PRIVATE-PROVIDER-HEALTH-PROJECTION",
+      "disposition": "REALIZED_IN_PHASE_2",
+      "reason": "Admiralty consumes Sealed Hold's accepted sanitized provider-health contract through a bounded read-only provider projection."
+    },
+    {
+      "capabilityId": "DW-CAP-COMMUNITY-EXCHANGE",
+      "findingId": "DW-FIND-COMMUNITY-OPERATIONS-HEALTH-PROJECTION",
+      "disposition": "REALIZED_IN_PHASE_2",
+      "reason": "Admiralty consumes Harborlight's accepted community operations and provider projections without duplicating Community authority."
+    },
+    {
+      "capabilityId": "DW-CAP-TRANSACTIONAL-EMAIL-DELIVERY",
+      "findingId": "DW-FIND-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION",
+      "disposition": "BLOCKED_BY_MISSING_OWNER_CONTRACT",
+      "reason": "Wayfarer has not yet published the authenticated sanitized provider-health DTO required by Deepwater. Admiralty shows configured/not-configured and the explicit block; it does not infer delivery health from internal rows."
+    },
+    {
+      "capabilityId": "DW-CAP-VERIFICATION-PROVIDER-FRAMEWORK",
+      "findingId": "DW-FIND-VERIFICATION-PROVIDER-REALIZATION-GAP",
+      "disposition": "BLOCKED_BY_MISSING_OWNER_CONTRACT",
+      "reason": "Admiralty can inspect canonical verification request state, but no accepted live-provider contract exists and Phase 2 must not invent one."
+    },
+    {
+      "capabilityId": "DW-CAP-PRIVATE-REPAIR-OPERATIONS",
+      "findingId": null,
+      "disposition": "ASSIGNED_TO_PHASE_3",
+      "reason": "Repair is a mutation and remains absent from the Phase 2 command center."
+    },
+    {
+      "capabilityId": "ADMIRALTY-RAW-DATABASE-AND-SECRET-ACCESS",
+      "findingId": null,
+      "disposition": "INTENTIONALLY_PROHIBITED",
+      "reason": "Raw SQL, arbitrary Prisma editing, secret viewing, and raw private-content/event payload browsing are unsafe and outside Admiralty's governed authority."
+    }
+  ]
+}

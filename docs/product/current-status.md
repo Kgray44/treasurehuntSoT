@@ -67,13 +67,24 @@ It is ready for owner walkthrough. Owner Decision remains
 **Available on main and owner accepted:**
 Project Admiralty Phase 1 provides canonical role/capability authorization,
 explicit administrator bootstrap, recent privileged assurance, a limited
-non-navigable `/admin` shell, user-consented scoped Support Access, sanitized
+`/admin` shell, user-consented scoped Support Access, sanitized
 administrative audit evidence, and a 92-entry capability-floor registry. The
 exact-current-main local implementation, additive SQLite/MySQL migration
 rehearsals, focused tests, production build, and isolated browser journeys pass.
 The owner decision is `ACCEPTED`; exact reconciled Sounding Line proof,
 canonical integration, and remote parity pass. No deployment, production
-database execution, or Phase 2 capability is claimed.
+database execution, or Phase 2 mainline availability is claimed.
+
+**Owner-accepted mainline candidate:** Project Admiralty Phase 2 adds a
+15-route, read-only Chartroom with authorized account-menu reachability,
+role-filtered navigation, bounded account/Chronicle/Voyage/Community search and
+detail, operations/providers/configuration/releases, Audit Explorer, and
+correlation-led investigation. It uses typed owner projections, adds no schema
+or broad mutation, and truthfully marks missing email/verification provider
+contracts. Initial focused, production-build, responsive, accessibility, and
+multi-role synthetic browser evidence passes. The owner accepted the qualified
+walkthrough; the decision-record candidate requires its own exact-source
+Sounding Line authority and protected mainline integration.
 
 **Development-only or compatibility-only:** development showcases, legacy routes, and package-exchange integrations are not a promise of a generally hosted service.
 
@@ -89,7 +100,7 @@ for the Phase 3-4 browser matrix. It is not a full matrix pass and does not
 change the external-validation boundary.
 
 **Planned or not validated:** Project Homeport owner acceptance, Harborlight
-Phase 4, Project Admiralty Phase 2 and later phases, Project Drydock, Project
+Phase 4, Project Admiralty Phase 3 and later phases, Project Drydock, Project
 Landfall, and Project Watchglass remain pending. Project Sounding
 Line is the repository validation authority used for Homeport decisions; that
 use does not claim a new user-facing Sounding Line product. Historic records

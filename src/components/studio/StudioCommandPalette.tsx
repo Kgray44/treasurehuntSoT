@@ -32,16 +32,16 @@ export function StudioCommandPalette({
     );
   }, [commands, query]);
 
+  const close = () => {
+    setQuery("");
+    onClose();
+  };
+
   useEffect(() => {
     if (!open) return;
     const frame = requestAnimationFrame(() => input.current?.focus());
     return () => cancelAnimationFrame(frame);
   }, [open]);
-
-  const close = () => {
-    setQuery("");
-    onClose();
-  };
 
   if (!open) return null;
   return (

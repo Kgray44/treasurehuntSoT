@@ -22,6 +22,8 @@ function hasCapability(capability: NavigationCapability, context: NavigationProj
       return context.currentUser.capabilities.canModerate;
     case "administrator":
       return context.currentUser.capabilities.isAdministrator;
+    case "admiralty":
+      return context.currentUser.capabilities.canUseAdmiralty ?? context.currentUser.capabilities.isAdministrator;
   }
 }
 

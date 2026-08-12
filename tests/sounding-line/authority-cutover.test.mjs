@@ -193,7 +193,10 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
   assert.match(authority, /SOUNDING_LINE_SUITE_HARD_BUDGET_MS: String\(suite\.hardBudgetMs\)/u);
   const common = await readFile(path.join(root, "scripts", "dev-common.ps1"), "utf8");
   assert.match(common, /function Copy-ForeverDependencySeed/u);
-  assert.match(common, /robocopy \$seedModules \$runtimeModules \/E \/COPY:DAT/u);
+  assert.match(common, /robocopy \$seedModules \$runtimeModules \/E \/XJ \/COPY:DAT/u);
+  assert.match(common, /dir \/a:l \/s \/b/u);
+  assert.match(common, /New-Item -ItemType Junction/u);
+  assert.match(common, /junction target escaped the seed root/u);
   assert.match(common, /lockfile does not match the isolated runtime/u);
   assert.match(common, /A physical copy retains Next's runtime-local \.next/u);
 });

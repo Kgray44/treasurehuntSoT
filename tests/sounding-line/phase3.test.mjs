@@ -393,6 +393,28 @@ test("detached controller survives the client launch, handles cooperative cancel
   }
 });
 
+test("run updates preserve a concurrent cancellation request", async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "sounding-line-phase3-update-"));
+  try {
+    const started = await phase3.startRun({
+      root,
+      sourceWatermark: "s",
+      policyDigest: "p",
+      planDigest: "d",
+      purpose: "update-serialization",
+    });
+    await Promise.all([
+      phase3.cancelRun(started.run.id, root),
+      ...Array.from({ length: 12 }, () =>
+        phase3.updateRun(started.run.id, { controllerHeartbeatAt: new Date().toISOString() }, root),
+      ),
+    ]);
+    assert.equal((await phase3.readRun(started.run.id, root)).state, "CANCEL_REQUESTED");
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
 test("detached controller executes an allowlisted governed adapter through the Phase 2 runtime", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "sounding-line-governed-controller-"));
   try {
