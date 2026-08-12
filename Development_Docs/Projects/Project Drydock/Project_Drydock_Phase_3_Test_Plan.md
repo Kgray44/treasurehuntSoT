@@ -67,3 +67,20 @@ finalizer and does not substitute for a Mainline Decision.
 needs reconciliation. The next step is the required full replacement-candidate
 qualification, followed by a new exact freeze and one new explicit authority
 decision after acceptance ownership is acquired.
+
+## r4 replacement candidate
+
+Replacement qualification completed after the Helm recovery: `npm run
+drydock:test` passed 33 files / 196 tests; the Studio Scenario Lab plus
+scenario/simulation API scope passed 6 files / 14 tests; both Drydock migration
+rehearsals passed with 59 applied migrations and static MySQL parity; the
+focused Helm unit scope passed 15/15; hosted focused run `31608295048` passed
+the three-case browser selection cleanly. Policy, Prisma, generated client,
+typecheck, static, Sounding Line runtime, production build, documentation, and
+Feature Catalog checks also passed.
+
+The next commit is frozen under tag
+`project-drydock-phase3-candidate-20260812-r4`. It is the only current
+replacement candidate eligible for one explicit Mainline Decision after
+canonical acceptance ownership is acquired. The r3 candidate remains terminal
+history and must never be retried.
