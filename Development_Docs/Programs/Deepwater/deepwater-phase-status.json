@@ -1,7 +1,7 @@
 {
   "acceptanceLane": "PENDING_SERIALIZED_MAINLINE_OWNERSHIP",
   "activation": "EXPLICIT_PHASE_4_WHOLE_PRODUCT_PROOF_AUTHORIZATION",
-  "auditedSourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
+  "auditedSourceSha": "399865a70d2b7eeb83d12afd718702834252f870",
   "baseSourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
   "branch": "codex/project-deepwater-phase4-break-the-surface",
   "featureCatalogImpact": "NO_CHANGE_REQUIRED",
@@ -17,7 +17,7 @@
   "phase3AcceptedMainSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
   "productSourceImpact": "NARROW_HELM_LAUNCH_HANDOFF_RESILIENCY_REPAIR_WITH_ACCEPTED_DRYDOCK_AND_ADMIRALTY_RECONCILIATION",
   "project": "Project Deepwater",
-  "reconciledSourceSha": "4edc8de5e30e9748700c19b466061f9b9a97f268",
+  "reconciledSourceSha": "541e914f481883200569f8cc7ec5ec9428d7cbb7",
   "schemaImpact": "DEEPWATER_PHASE4_PROOF_CONTROL_PLANE_ONLY",
   "schemaVersion": "1.0.0",
   "state": "LOCAL_PROVEN",
