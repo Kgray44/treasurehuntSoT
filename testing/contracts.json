@@ -6,4404 +6,3325 @@
       "id": "invitation-acceptance",
       "name": "Invitation acceptance",
       "authority": "one-voyage",
-      "owners": [
-        "one-voyage",
-        "wayfarer"
-      ],
+      "owners": ["one-voyage", "wayfarer"],
       "critical": true
     },
     {
       "id": "player-session-restoration",
       "name": "Player session restoration",
       "authority": "one-voyage",
-      "owners": [
-        "one-voyage"
-      ],
+      "owners": ["one-voyage"],
       "critical": true
     },
     {
       "id": "journal-ready-state",
       "name": "Player Journal ready state",
       "authority": "lanternwake",
-      "owners": [
-        "lanternwake"
-      ],
+      "owners": ["lanternwake"],
       "critical": true
     },
     {
       "id": "drydock-progression",
       "name": "Chronicle progression consumes valid authored content",
       "authority": "drydock",
-      "owners": [
-        "drydock",
-        "one-voyage"
-      ],
+      "owners": ["drydock", "one-voyage"],
       "critical": true
     },
     {
       "id": "drydock-authoring-contracts",
       "name": "Drydock typed Story Block authoring and compatibility contracts",
       "authority": "drydock",
-      "owners": [
-        "drydock",
-        "one-voyage"
-      ],
+      "owners": ["drydock", "one-voyage"],
       "critical": true
     },
     {
       "id": "drydock-scenario-contract",
       "name": "Drydock strict versioned Scenario and source binding",
       "authority": "drydock",
-      "owners": [
-        "drydock",
-        "one-voyage"
-      ],
+      "owners": ["drydock", "one-voyage"],
       "critical": true
     },
     {
       "id": "drydock-simulation-determinism",
       "name": "Drydock deterministic bounded simulation execution",
       "authority": "drydock",
-      "owners": [
-        "drydock"
-      ],
+      "owners": ["drydock"],
       "critical": true
     },
     {
       "id": "drydock-virtual-time",
       "name": "Drydock virtual clock and deterministic time boundary behavior",
       "authority": "drydock",
-      "owners": [
-        "drydock",
-        "one-voyage"
-      ],
+      "owners": ["drydock", "one-voyage"],
       "critical": true
     },
     {
       "id": "drydock-fault-contract",
       "name": "Drydock catalogued synthetic fault boundaries",
       "authority": "drydock",
-      "owners": [
-        "drydock"
-      ],
+      "owners": ["drydock"],
       "critical": true
     },
     {
       "id": "drydock-trace-privacy",
       "name": "Drydock trace, State Diff, and receipt privacy projection",
       "authority": "drydock",
-      "owners": [
-        "drydock",
-        "one-voyage"
-      ],
+      "owners": ["drydock", "one-voyage"],
       "critical": true
     },
     {
       "id": "drydock-coverage-contract",
       "name": "Drydock explicit coverage and incomplete-proof reporting",
       "authority": "drydock",
-      "owners": [
-        "drydock"
-      ],
+      "owners": ["drydock"],
       "critical": true
     },
     {
       "id": "drydock-runtime-adapter",
       "name": "Drydock shared One Voyage transition adapter fidelity",
       "authority": "drydock",
-      "owners": [
-        "drydock",
-        "one-voyage"
-      ],
+      "owners": ["drydock", "one-voyage"],
       "critical": true
     },
     {
       "id": "drydock-runtime-differential",
       "name": "Drydock differential evidence for current Passage families",
       "authority": "drydock",
-      "owners": [
-        "drydock",
-        "one-voyage"
-      ],
+      "owners": ["drydock", "one-voyage"],
       "critical": true
     },
     {
       "id": "drydock-no-live-mutation",
       "name": "Drydock simulator never mutates live Voyage state",
       "authority": "drydock",
-      "owners": [
-        "drydock",
-        "one-voyage"
-      ],
+      "owners": ["drydock", "one-voyage"],
       "critical": true
     },
     {
       "id": "drydock-durable-run",
       "name": "Drydock durable run, lease, cancellation, and recovery behavior",
       "authority": "drydock",
-      "owners": [
-        "drydock"
-      ],
+      "owners": ["drydock"],
       "critical": true
     },
     {
       "id": "drydock-scenario-authorization",
       "name": "Drydock Creator authorization and CSRF mutation boundary",
       "authority": "drydock",
-      "owners": [
-        "drydock",
-        "wayfarer"
-      ],
+      "owners": ["drydock", "wayfarer"],
       "critical": true
     },
     {
       "id": "drydock-studio-scenario-lab",
       "name": "Drydock Studio Scenario Lab accessible interaction surface",
       "authority": "drydock",
-      "owners": [
-        "drydock"
-      ],
+      "owners": ["drydock"],
       "critical": true
     },
     {
       "id": "drydock-performance",
       "name": "Drydock bounded executor performance contracts",
       "authority": "drydock",
-      "owners": [
-        "drydock"
-      ],
+      "owners": ["drydock"],
       "critical": true
     },
     {
       "id": "wayfarer-history-projection",
       "name": "Wayfarer history projection",
       "authority": "wayfarer",
-      "owners": [
-        "wayfarer",
-        "one-voyage"
-      ],
+      "owners": ["wayfarer", "one-voyage"],
       "critical": true
     },
     {
       "id": "artifact-grant-projection",
       "name": "Artifact grant projection",
       "authority": "wayfarer",
-      "owners": [
-        "wayfarer",
-        "harborlight"
-      ],
+      "owners": ["wayfarer", "harborlight"],
       "critical": true
     },
     {
       "id": "community-public-projection",
       "name": "Community public projection",
       "authority": "harborlight",
-      "owners": [
-        "harborlight",
-        "wayfarer"
-      ],
+      "owners": ["harborlight", "wayfarer"],
       "critical": true
     },
     {
       "id": "sealed-hold-private-delivery",
       "name": "Sealed Hold private delivery",
       "authority": "sealed-hold",
-      "owners": [
-        "sealed-hold",
-        "wayfarer"
-      ],
+      "owners": ["sealed-hold", "wayfarer"],
       "critical": true
     },
     {
       "id": "lanternwake-presentation-receipt",
       "name": "Lanternwake presentation receipt",
       "authority": "lanternwake",
-      "owners": [
-        "lanternwake",
-        "one-voyage"
-      ],
+      "owners": ["lanternwake", "one-voyage"],
       "critical": true
     },
     {
       "id": "authentication-authorization",
       "name": "Authentication and authorization",
       "authority": "platform-foundation",
-      "owners": [
-        "platform-foundation"
-      ],
+      "owners": ["platform-foundation"],
       "critical": true
     },
     {
       "id": "deepwater.capability-realization-integrity",
       "name": "Deepwater capability realization trace and remediation integrity",
       "authority": "project-deepwater",
-      "owners": [
-        "project-deepwater",
-        "platform-foundation"
-      ],
+      "owners": ["project-deepwater", "platform-foundation"],
       "critical": true
     },
     {
       "id": "migration-parity",
       "name": "SQLite and MySQL migration parity",
       "authority": "platform-foundation",
-      "owners": [
-        "platform-foundation"
-      ],
+      "owners": ["platform-foundation"],
       "critical": true
     },
     {
       "id": "tideglass-exact-edition-pair",
       "name": "Tideglass exact immutable Chronicle edition pair",
       "authority": "tideglass",
-      "owners": [
-        "tideglass",
-        "one-voyage"
-      ],
+      "owners": ["tideglass", "one-voyage"],
       "critical": true
     },
     {
       "id": "tideglass-semantic-determinism",
       "name": "Tideglass semantic normalization and deterministic Change Set",
       "authority": "tideglass",
-      "owners": [
-        "tideglass",
-        "one-voyage"
-      ],
+      "owners": ["tideglass", "one-voyage"],
       "critical": true
     },
     {
       "id": "tideglass-safe-projection",
       "name": "Tideglass authorized and redacted comparison projections",
       "authority": "tideglass",
-      "owners": [
-        "tideglass",
-        "wayfarer"
-      ],
+      "owners": ["tideglass", "wayfarer"],
       "critical": true
     },
     {
       "id": "tideglass-read-only-invariance",
       "name": "Tideglass read-only publishing, Voyage, history, and release invariance",
       "authority": "tideglass",
-      "owners": [
-        "tideglass",
-        "one-voyage",
-        "wayfarer",
-        "harborlight"
-      ],
+      "owners": ["tideglass", "one-voyage", "wayfarer", "harborlight"],
       "critical": true
     },
     {
       "id": "public-privacy-projection",
       "name": "Public privacy projection",
       "authority": "wayfarer",
-      "owners": [
-        "wayfarer",
-        "harborlight",
-        "sealed-hold"
-      ],
+      "owners": ["wayfarer", "harborlight", "sealed-hold"],
       "critical": true
     },
     {
       "id": "completion-provider",
       "name": "Landfall completion provider boundary",
       "authority": "landfall",
-      "owners": [
-        "landfall",
-        "one-voyage"
-      ],
+      "owners": ["landfall", "one-voyage"],
       "critical": true
     },
     {
       "id": "community-moderation-integrity",
       "name": "Community moderation transitions and conflict-of-interest denial",
       "authority": "harborlight",
-      "owners": [
-        "harborlight"
-      ],
+      "owners": ["harborlight"],
       "critical": true
     },
     {
       "id": "community-trusted-scan-receipt",
       "name": "Community scanner receipt trust and fail-closed verification",
       "authority": "harborlight",
-      "owners": [
-        "harborlight",
-        "sealed-hold"
-      ],
+      "owners": ["harborlight", "sealed-hold"],
       "critical": true
     },
     {
       "id": "community-operational-leases",
       "name": "Community worker, scheduler, outbox, and rate-limit lease behavior",
       "authority": "harborlight",
-      "owners": [
-        "harborlight"
-      ],
+      "owners": ["harborlight"],
       "critical": true
     },
     {
       "id": "community-migration-integrity",
       "name": "Community SQLite and MySQL migration integrity",
       "authority": "harborlight",
-      "owners": [
-        "harborlight",
-        "platform-foundation"
-      ],
+      "owners": ["harborlight", "platform-foundation"],
       "critical": true
     },
     {
       "id": "homeport.route-inventory.complete",
       "name": "Homeport route inventory is complete and cross-referenced",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.session-inventory.complete",
       "name": "Homeport authentication and session inventory is complete",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.screen-catalog.complete",
       "name": "Homeport screen and screen-contract catalogs are complete",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.journey-catalog.complete",
       "name": "Homeport governed journey catalog is complete",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.evidence-manifest.complete",
       "name": "Homeport visual evidence manifest is complete and checksum-valid",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.nonconformity-ledger.complete",
       "name": "Homeport nonconformity ledger preserves all governing findings",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.community.harbor-home",
       "name": "Community Harbor harbor Home",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.content-first-default",
       "name": "Community Harbor content First Default",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.default-not-no-results",
       "name": "Community Harbor default Not No Results",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.district-registry",
       "name": "Community Harbor district Registry",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.district-navigation",
       "name": "Community Harbor district Navigation",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.mobile-district-parity",
       "name": "Community Harbor mobile District Parity",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.public-projection",
       "name": "Community Harbor public Projection",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.no-private-leak",
       "name": "Community Harbor no Private Leak",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.lifecycle-eligibility",
       "name": "Community Harbor lifecycle Eligibility",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.quarantine",
       "name": "Community Harbor quarantine",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.card-base",
       "name": "Community Harbor card Base",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.card-destinations",
       "name": "Community Harbor card Destinations",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.card-fallback",
       "name": "Community Harbor card Fallback",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.card-accessibility",
       "name": "Community Harbor card Accessibility",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.shelf-strategy",
       "name": "Community Harbor shelf Strategy",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.editorial-labeling",
       "name": "Community Harbor editorial Labeling",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.search",
       "name": "Community Harbor search",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.search-url-state",
       "name": "Community Harbor search Url State",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.search-stale-request",
       "name": "Community Harbor search Stale Request",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.compact-filters",
       "name": "Community Harbor compact Filters",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.advanced-filters",
       "name": "Community Harbor advanced Filters",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.no-results",
       "name": "Community Harbor no Results",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.empty-state",
       "name": "Community Harbor empty State",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.dependency-unavailable",
       "name": "Community Harbor dependency Unavailable",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.partial-media-failure",
       "name": "Community Harbor partial Media Failure",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.chronicles",
       "name": "Community Harbor chronicles",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.artifacts",
       "name": "Community Harbor artifacts",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.templates",
       "name": "Community Harbor templates",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.maps",
       "name": "Community Harbor maps",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.audio",
       "name": "Community Harbor audio",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.creators",
       "name": "Community Harbor creators",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.creator-profile",
       "name": "Community Harbor creator Profile",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.collections",
       "name": "Community Harbor collections",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.guides",
       "name": "Community Harbor guides",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.voyage-logs",
       "name": "Community Harbor voyage Logs",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.saved-state",
       "name": "Community Harbor saved State",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.saved-cross-surface",
       "name": "Community Harbor saved Cross Surface",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.follow-state",
       "name": "Community Harbor follow State",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.social-auth-return",
       "name": "Community Harbor social Auth Return",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.detail",
       "name": "Community Harbor detail",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.detail-parent",
       "name": "Community Harbor detail Parent",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.open-install-remix",
       "name": "Community Harbor open Install Remix",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.mutation-feedback",
       "name": "Community Harbor mutation Feedback",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.restricted-account",
       "name": "Community Harbor restricted Account",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.keyboard",
       "name": "Community Harbor keyboard",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.zoom",
       "name": "Community Harbor zoom",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.reduced-motion",
       "name": "Community Harbor reduced Motion",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.phase1-regression",
       "name": "Community Harbor phase1 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.phase2-regression",
       "name": "Community Harbor phase2 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.phase3-regression",
       "name": "Community Harbor phase3 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.community.artifact-idempotency",
       "name": "Community Harbor artifact Idempotency",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "harborlight"
-      ],
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     },
     {
       "id": "homeport.route.inventory-complete",
       "name": "Homeport Route inventory Complete",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.source-parity",
       "name": "Homeport Route source Parity",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.classification-exclusive",
       "name": "Homeport Route classification Exclusive",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.reachability-graph",
       "name": "Homeport Route reachability Graph",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.user-navigable-entry",
       "name": "Homeport Route user Navigable Entry",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.dynamic-source",
       "name": "Homeport Route dynamic Source",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.dynamic-invalid-id",
       "name": "Homeport Route dynamic Invalid Id",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.dynamic-private-denial",
       "name": "Homeport Route dynamic Private Denial",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.tokenized-safe",
       "name": "Homeport Route tokenized Safe",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.tokenized-not-navigation",
       "name": "Homeport Route tokenized Not Navigation",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.compatibility-disposition",
       "name": "Homeport Route compatibility Disposition",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.compatibility-no-competing-ui",
       "name": "Homeport Route compatibility No Competing Ui",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.redirect-no-loop",
       "name": "Homeport Route redirect No Loop",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.redirect-target-valid",
       "name": "Homeport Route redirect Target Valid",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.redirect-query-safe",
       "name": "Homeport Route redirect Query Safe",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.parent-complete",
       "name": "Homeport Route parent Complete",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.parent-cycle-free",
       "name": "Homeport Route parent Cycle Free",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.no-dead-end",
       "name": "Homeport Route no Dead End",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.empty-onward",
       "name": "Homeport Route empty Onward",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.error-recovery",
       "name": "Homeport Route error Recovery",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.permission-recovery",
       "name": "Homeport Route permission Recovery",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.desktop-mobile-parity",
       "name": "Homeport Route desktop Mobile Parity",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.no-pointer-only-entry",
       "name": "Homeport Route no Pointer Only Entry",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.keyboard-reachability",
       "name": "Homeport Route keyboard Reachability",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.compact-exit",
       "name": "Homeport Route compact Exit",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.immersive-exit",
       "name": "Homeport Route immersive Exit",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.deep-link-after-natural",
       "name": "Homeport Route deep Link After Natural",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.no-direct-url-only",
       "name": "Homeport Route no Direct Url Only",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.placeholder-target-rejected",
       "name": "Homeport Route placeholder Target Rejected",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.deprecated-disposition",
       "name": "Homeport Route deprecated Disposition",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.development-exclusion",
       "name": "Homeport Route development Exclusion",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.active-label-consistency",
       "name": "Homeport Route active Label Consistency",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.graph-idempotency",
       "name": "Homeport Route graph Idempotency",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.inventory-drift",
       "name": "Homeport Route inventory Drift",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.browser-receipt-complete",
       "name": "Homeport Route browser Receipt Complete",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.source-bound-evidence",
       "name": "Homeport Route source Bound Evidence",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.phase1-regression",
       "name": "Homeport Route phase1 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.phase2-regression",
       "name": "Homeport Route phase2 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.phase3-regression",
       "name": "Homeport Route phase3 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.route.phase4-regression",
       "name": "Homeport Route phase4 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.surface.catalog-complete",
       "name": "Project Homeport Surface Catalog Complete",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.surface.source-parity",
       "name": "Project Homeport Surface Source Parity",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.surface.criticality",
       "name": "Project Homeport Surface Criticality",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.surface.visual-maturity",
       "name": "Project Homeport Surface Visual Maturity",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.surface.critical-desktop-evidence",
       "name": "Project Homeport Surface Critical Desktop Evidence",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.surface.critical-mobile-evidence",
       "name": "Project Homeport Surface Critical Mobile Evidence",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.surface.zoom-evidence",
       "name": "Project Homeport Surface Zoom Evidence",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.surface.human-visual-review",
       "name": "Project Homeport Surface Human Visual Review",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.surface.source-bound-evidence",
       "name": "Project Homeport Surface Source Bound Evidence",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.surface.raw-implementation-prohibited",
       "name": "Project Homeport Surface Raw Implementation Prohibited",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.surface.component-family-consistency",
       "name": "Project Homeport Surface Component Family Consistency",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.state.applicability",
       "name": "Project Homeport State Applicability",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.state.loading-truthful",
       "name": "Project Homeport State Loading Truthful",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.state.empty-truthful",
       "name": "Project Homeport State Empty Truthful",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.state.no-results-truthful",
       "name": "Project Homeport State No Results Truthful",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.state.error-recovery",
       "name": "Project Homeport State Error Recovery",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.state.dependency-unavailable",
       "name": "Project Homeport State Dependency Unavailable",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.state.offline-degraded",
       "name": "Project Homeport State Offline Degraded",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.state.permission-explicit",
       "name": "Project Homeport State Permission Explicit",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.state.session-expired",
       "name": "Project Homeport State Session Expired",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.state.account-restricted",
       "name": "Project Homeport State Account Restricted",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.state.mutation-pending",
       "name": "Project Homeport State Mutation Pending",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.state.mutation-success",
       "name": "Project Homeport State Mutation Success",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.state.mutation-failure",
       "name": "Project Homeport State Mutation Failure",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.state.stale-conflict",
       "name": "Project Homeport State Stale Conflict",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.state.archived-removed",
       "name": "Project Homeport State Archived Removed",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.state.tokenized",
       "name": "Project Homeport State Tokenized",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.responsive.desktop",
       "name": "Project Homeport Responsive Desktop",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.responsive.tablet",
       "name": "Project Homeport Responsive Tablet",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.responsive.mobile",
       "name": "Project Homeport Responsive Mobile",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.responsive.narrow-mobile",
       "name": "Project Homeport Responsive Narrow Mobile",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.responsive.zoom",
       "name": "Project Homeport Responsive Zoom",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.responsive.no-horizontal-overflow",
       "name": "Project Homeport Responsive No Horizontal Overflow",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.accessibility.semantic",
       "name": "Project Homeport Accessibility Semantic",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.accessibility.keyboard",
       "name": "Project Homeport Accessibility Keyboard",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.accessibility.touch",
       "name": "Project Homeport Accessibility Touch",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.accessibility.focus",
       "name": "Project Homeport Accessibility Focus",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.accessibility.live-region",
       "name": "Project Homeport Accessibility Live Region",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.accessibility.automated-scan",
       "name": "Project Homeport Accessibility Automated Scan",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.motion.authority",
       "name": "Project Homeport Motion Authority",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.motion.reduced-motion",
       "name": "Project Homeport Motion Reduced Motion",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.motion.route-lifecycle",
       "name": "Project Homeport Motion Route Lifecycle",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.motion.no-false-success",
       "name": "Project Homeport Motion No False Success",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.media.fallback",
       "name": "Project Homeport Media Fallback",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.media.scan-state",
       "name": "Project Homeport Media Scan State",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.media.no-object-key",
       "name": "Project Homeport Media No Object Key",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.mutation.feedback",
       "name": "Project Homeport Mutation Feedback",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.mutation.no-duplicate",
       "name": "Project Homeport Mutation No Duplicate",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.mutation.authoritative-result",
       "name": "Project Homeport Mutation Authoritative Result",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.surface.phase1-regression",
       "name": "Project Homeport Surface Phase1 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.surface.phase2-regression",
       "name": "Project Homeport Surface Phase2 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.surface.phase3-regression",
       "name": "Project Homeport Surface Phase3 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.surface.phase4-regression",
       "name": "Project Homeport Surface Phase4 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.surface.phase5-regression",
       "name": "Project Homeport Surface Phase5 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.surface.artifact-idempotency",
       "name": "Project Homeport Surface Artifact Idempotency",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.fixture.integrated",
       "name": "Project Homeport Phase7 Fixture Integrated",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.fixture.immutable-seed",
       "name": "Project Homeport Phase7 Fixture Immutable Seed",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.fixture.clone-isolation",
       "name": "Project Homeport Phase7 Fixture Clone Isolation",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.fixture.credential-boundary",
       "name": "Project Homeport Phase7 Fixture Credential Boundary",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.fixture.reset",
       "name": "Project Homeport Phase7 Fixture Reset",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.journey-a",
       "name": "Project Homeport Phase7 Journey A",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.journey-b",
       "name": "Project Homeport Phase7 Journey B",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.journey-c",
       "name": "Project Homeport Phase7 Journey C",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.journey-d",
       "name": "Project Homeport Phase7 Journey D",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.journey-e",
       "name": "Project Homeport Phase7 Journey E",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.journey-f",
       "name": "Project Homeport Phase7 Journey F",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.journey-g",
       "name": "Project Homeport Phase7 Journey G",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.journey-h",
       "name": "Project Homeport Phase7 Journey H",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.journey-i",
       "name": "Project Homeport Phase7 Journey I",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.journey-j",
       "name": "Project Homeport Phase7 Journey J",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.journey-k",
       "name": "Project Homeport Phase7 Journey K",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.journey-l",
       "name": "Project Homeport Phase7 Journey L",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.journey-m",
       "name": "Project Homeport Phase7 Journey M",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.journey-n",
       "name": "Project Homeport Phase7 Journey N",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.journey-o",
       "name": "Project Homeport Phase7 Journey O",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.evidence-source-binding",
       "name": "Project Homeport Phase7 Evidence Source Binding",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.evidence-complete",
       "name": "Project Homeport Phase7 Evidence Complete",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.evidence-checksum",
       "name": "Project Homeport Phase7 Evidence Checksum",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.evidence-human-visual-review",
       "name": "Project Homeport Phase7 Evidence Human Visual Review",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.viewport.desktop",
       "name": "Project Homeport Phase7 Viewport Desktop",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.viewport.mobile",
       "name": "Project Homeport Phase7 Viewport Mobile",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.motion.reduced",
       "name": "Project Homeport Phase7 Motion Reduced",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.accessibility.keyboard-focus",
       "name": "Project Homeport Phase7 Accessibility Keyboard Focus",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.account.canonical-lifecycle",
       "name": "Project Homeport Phase7 Account Canonical Lifecycle",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.account.cross-workspace-session",
       "name": "Project Homeport Phase7 Account Cross Workspace Session",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.profile.persistence",
       "name": "Project Homeport Phase7 Profile Persistence",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.passport.private-authorization",
       "name": "Project Homeport Phase7 Passport Private Authorization",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.community.saved-reconciliation",
       "name": "Project Homeport Phase7 Community Saved Reconciliation",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.recovery.tokens",
       "name": "Project Homeport Phase7 Recovery Tokens",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.session.expiry",
       "name": "Project Homeport Phase7 Session Expiry",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.permission.explicit",
       "name": "Project Homeport Phase7 Permission Explicit",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.mobile.parity",
       "name": "Project Homeport Phase7 Mobile Parity",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.multitab.invalidation",
       "name": "Project Homeport Phase7 Multitab Invalidation",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.dependency.failure-recovery",
       "name": "Project Homeport Phase7 Dependency Failure Recovery",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.rehearsal.final",
       "name": "Project Homeport Phase7 Rehearsal Final",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.walkthrough.package",
       "name": "Project Homeport Phase7 Walkthrough Package",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.walkthrough.runtime-health",
       "name": "Project Homeport Phase7 Walkthrough Runtime Health",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.owner-decision.pending",
       "name": "Project Homeport Phase7 Owner Decision Pending",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.control-plane.updated",
       "name": "Project Homeport Phase7 Control Plane Updated",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.feature-catalog.ft-b007",
       "name": "Project Homeport Phase7 Feature Catalog Ft B007",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.privacy.synthetic-only",
       "name": "Project Homeport Phase7 Privacy Synthetic Only",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.database.canonical-invariant",
       "name": "Project Homeport Phase7 Database Canonical Invariant",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.phase7.git.branch-parity",
       "name": "Project Homeport Phase7 Git Branch Parity",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.feedback-ledger",
       "name": "Project Homeport Owner Correction Round1 Feedback Ledger",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.chronicle-preview",
       "name": "Project Homeport Owner Correction Round1 Chronicle Preview",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.preview-no-start-mutation",
       "name": "Project Homeport Owner Correction Round1 Preview No Start Mutation",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.player-name-default",
       "name": "Project Homeport Owner Correction Round1 Player Name Default",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.chronicle-alias",
       "name": "Project Homeport Owner Correction Round1 Chronicle Alias",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.workspaces",
       "name": "Project Homeport Owner Correction Round1 Workspaces",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.capability-unification",
       "name": "Project Homeport Owner Correction Round1 Capability Unification",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.active-chronicle-lock",
       "name": "Project Homeport Owner Correction Round1 Active Chronicle Lock",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.profile-destination",
       "name": "Project Homeport Owner Correction Round1 Profile Destination",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.claiming",
       "name": "Project Homeport Owner Correction Round1 Claiming",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.email-registration",
       "name": "Project Homeport Owner Correction Round1 Email Registration",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.email-verification",
       "name": "Project Homeport Owner Correction Round1 Email Verification",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.email-change",
       "name": "Project Homeport Owner Correction Round1 Email Change",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.email-recovery",
       "name": "Project Homeport Owner Correction Round1 Email Recovery",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.linked-identities",
       "name": "Project Homeport Owner Correction Round1 Linked Identities",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.provider-security",
       "name": "Project Homeport Owner Correction Round1 Provider Security",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.export",
       "name": "Project Homeport Owner Correction Round1 Export",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.deactivation",
       "name": "Project Homeport Owner Correction Round1 Deactivation",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.deletion",
       "name": "Project Homeport Owner Correction Round1 Deletion",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.signout-navigation",
       "name": "Project Homeport Owner Correction Round1 Signout Navigation",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.display-name-authority",
       "name": "Project Homeport Owner Correction Round1 Display Name Authority",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.personal-harbor-hierarchy",
       "name": "Project Homeport Owner Correction Round1 Personal Harbor Hierarchy",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.no-current-area-banner",
       "name": "Project Homeport Owner Correction Round1 No Current Area Banner",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.preference-effects",
       "name": "Project Homeport Owner Correction Round1 Preference Effects",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.delayed-loading",
       "name": "Project Homeport Owner Correction Round1 Delayed Loading",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.route-transitions",
       "name": "Project Homeport Owner Correction Round1 Route Transitions",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.account-menu-motion",
       "name": "Project Homeport Owner Correction Round1 Account Menu Motion",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.community-compact-search",
       "name": "Project Homeport Owner Correction Round1 Community Compact Search",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.community-full-search",
       "name": "Project Homeport Owner Correction Round1 Community Full Search",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.community-reviews",
       "name": "Project Homeport Owner Correction Round1 Community Reviews",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.home-motion",
       "name": "Project Homeport Owner Correction Round1 Home Motion",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.role-card-first-paint",
       "name": "Project Homeport Owner Correction Round1 Role Card First Paint",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.mobile",
       "name": "Project Homeport Owner Correction Round1 Mobile",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.security",
       "name": "Project Homeport Owner Correction Round1 Security",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.privacy",
       "name": "Project Homeport Owner Correction Round1 Privacy",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.phase1-regression",
       "name": "Project Homeport Owner Correction Round1 Phase1 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.phase2-regression",
       "name": "Project Homeport Owner Correction Round1 Phase2 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.phase3-regression",
       "name": "Project Homeport Owner Correction Round1 Phase3 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.phase4-regression",
       "name": "Project Homeport Owner Correction Round1 Phase4 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.phase5-regression",
       "name": "Project Homeport Owner Correction Round1 Phase5 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.phase6-regression",
       "name": "Project Homeport Owner Correction Round1 Phase6 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.phase7-a-o-regression",
       "name": "Project Homeport Owner Correction Round1 Phase7 A O Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round1.artifact-idempotency",
       "name": "Project Homeport Owner Correction Round1 Artifact Idempotency",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.personal-harbor.ia",
       "name": "Personal Harbor Ia",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.personal-harbor.section-registry",
       "name": "Personal Harbor Section Registry",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.personal-harbor.mobile-parity",
       "name": "Personal Harbor Mobile Parity",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.personal-harbor.deep-links",
       "name": "Personal Harbor Deep Links",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.personal-harbor.unsaved-changes",
       "name": "Personal Harbor Unsaved Changes",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.personal-harbor.mutation-feedback",
       "name": "Personal Harbor Mutation Feedback",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.personal-harbor.stale-conflict",
       "name": "Personal Harbor Stale Conflict",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.profile.overview",
       "name": "Profile Overview",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.profile.public-projection",
       "name": "Profile Public Projection",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.profile.owner-edit",
       "name": "Profile Owner Edit",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.profile.media-state",
       "name": "Profile Media State",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.profile.no-private-leak",
       "name": "Profile No Private Leak",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.preferences.typed",
       "name": "Preferences Typed",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.accessibility.preference-consumption",
       "name": "Accessibility Preference Consumption",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.notifications.feedback",
       "name": "Notifications Feedback",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.privacy.server-enforced",
       "name": "Privacy Server Enforced",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.linked-identities.safe",
       "name": "Linked Identities Safe",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.linked-identities.no-lockout",
       "name": "Linked Identities No Lockout",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.passport.product-surface",
       "name": "Passport Product Surface",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.passport.no-test-controls",
       "name": "Passport No Test Controls",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.passport.session-regression",
       "name": "Passport Session Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.history.owner-only",
       "name": "History Owner Only",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.history.version-pinned",
       "name": "History Version Pinned",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.history.empty-state",
       "name": "History Empty State",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.memories.owner-authorized",
       "name": "Memories Owner Authorized",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.keepsake.consent",
       "name": "Keepsake Consent",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.artifacts.owner-only",
       "name": "Artifacts Owner Only",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.artifacts.provenance",
       "name": "Artifacts Provenance",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.artifacts.empty-state",
       "name": "Artifacts Empty State",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.saved-content.owner-only",
       "name": "Saved Content Owner Only",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.saved-content.cross-surface",
       "name": "Saved Content Cross Surface",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.security.sensitive-reauth",
       "name": "Security Sensitive Reauth",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.sessions.list-safe",
       "name": "Sessions List Safe",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.sessions.revoke",
       "name": "Sessions Revoke",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.sessions.signout-all",
       "name": "Sessions Signout All",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.account-data.truthful-availability",
       "name": "Account Data Truthful Availability",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.personal-harbor.phase1-regression",
       "name": "Personal Harbor Phase1 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.personal-harbor.phase2-regression",
       "name": "Personal Harbor Phase2 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.personal-harbor.artifact-idempotency",
       "name": "Personal Harbor Artifact Idempotency",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport",
-        "wayfarer"
-      ],
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.feedback-ledger",
       "name": "Project Homeport Owner Correction Round2 Feedback Ledger",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.runtime-fixture-parity",
       "name": "Project Homeport Owner Correction Round2 Runtime Fixture Parity",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.sera-capabilities",
       "name": "Project Homeport Owner Correction Round2 Sera Capabilities",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.role-card-position",
       "name": "Project Homeport Owner Correction Round2 Role Card Position",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.account-menu-motion",
       "name": "Project Homeport Owner Correction Round2 Account Menu Motion",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.lantern-pivot",
       "name": "Project Homeport Owner Correction Round2 Lantern Pivot",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.lantern-symmetry",
       "name": "Project Homeport Owner Correction Round2 Lantern Symmetry",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.star-twinkle-visible",
       "name": "Project Homeport Owner Correction Round2 Star Twinkle Visible",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.fog-motion",
       "name": "Project Homeport Owner Correction Round2 Fog Motion",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.dark-theme-restored",
       "name": "Project Homeport Owner Correction Round2 Dark Theme Restored",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.light-theme-complete",
       "name": "Project Homeport Owner Correction Round2 Light Theme Complete",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.system-theme",
       "name": "Project Homeport Owner Correction Round2 System Theme",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.theme-no-flash",
       "name": "Project Homeport Owner Correction Round2 Theme No Flash",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.theme-cross-tab",
       "name": "Project Homeport Owner Correction Round2 Theme Cross Tab",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.text-contrast",
       "name": "Project Homeport Owner Correction Round2 Text Contrast",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.no-empty-current-area",
       "name": "Project Homeport Owner Correction Round2 No Empty Current Area",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.community-loading-fast",
       "name": "Project Homeport Owner Correction Round2 Community Loading Fast",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.community-loading-delayed",
       "name": "Project Homeport Owner Correction Round2 Community Loading Delayed",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.community-error-real",
       "name": "Project Homeport Owner Correction Round2 Community Error Real",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.community-retry",
       "name": "Project Homeport Owner Correction Round2 Community Retry",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.public-profile-community-identity",
       "name": "Project Homeport Owner Correction Round2 Public Profile Community Identity",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.review-profile-setup-return",
       "name": "Project Homeport Owner Correction Round2 Review Profile Setup Return",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.save-aggregate",
       "name": "Project Homeport Owner Correction Round2 Save Aggregate",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.rating-aggregate",
       "name": "Project Homeport Owner Correction Round2 Rating Aggregate",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.review-completion-eligibility",
       "name": "Project Homeport Owner Correction Round2 Review Completion Eligibility",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.review-passport-entry",
       "name": "Project Homeport Owner Correction Round2 Review Passport Entry",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.chronicle-preview-expanded",
       "name": "Project Homeport Owner Correction Round2 Chronicle Preview Expanded",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.synthetic-email-truth",
       "name": "Project Homeport Owner Correction Round2 Synthetic Email Truth",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.experience-images-complete",
       "name": "Project Homeport Owner Correction Round2 Experience Images Complete",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.experience-images-source-bound",
       "name": "Project Homeport Owner Correction Round2 Experience Images Source Bound",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.experience-images-private-safe",
       "name": "Project Homeport Owner Correction Round2 Experience Images Private Safe",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.mobile",
       "name": "Project Homeport Owner Correction Round2 Mobile",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.accessibility",
       "name": "Project Homeport Owner Correction Round2 Accessibility",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.phase1-regression",
       "name": "Project Homeport Owner Correction Round2 Phase1 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.phase2-regression",
       "name": "Project Homeport Owner Correction Round2 Phase2 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.phase3-regression",
       "name": "Project Homeport Owner Correction Round2 Phase3 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.phase4-regression",
       "name": "Project Homeport Owner Correction Round2 Phase4 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.phase5-regression",
       "name": "Project Homeport Owner Correction Round2 Phase5 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.phase6-regression",
       "name": "Project Homeport Owner Correction Round2 Phase6 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.phase7-regression",
       "name": "Project Homeport Owner Correction Round2 Phase7 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.round1-regression",
       "name": "Project Homeport Owner Correction Round2 Round1 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round2.artifact-idempotency",
       "name": "Project Homeport Owner Correction Round2 Artifact Idempotency",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.feedback-ledger",
       "name": "Project Homeport Owner Correction Round3 Feedback Ledger",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.profile-image-selection",
       "name": "Project Homeport Owner Correction Round3 Profile Image Selection",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.avatar-crop",
       "name": "Project Homeport Owner Correction Round3 Avatar Crop",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.banner-crop",
       "name": "Project Homeport Owner Correction Round3 Banner Crop",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.crop-keyboard",
       "name": "Project Homeport Owner Correction Round3 Crop Keyboard",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.crop-touch",
       "name": "Project Homeport Owner Correction Round3 Crop Touch",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.media-validation",
       "name": "Project Homeport Owner Correction Round3 Media Validation",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.media-atomic-replacement",
       "name": "Project Homeport Owner Correction Round3 Media Atomic Replacement",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.profile-image-propagation",
       "name": "Project Homeport Owner Correction Round3 Profile Image Propagation",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.account-trigger-avatar",
       "name": "Project Homeport Owner Correction Round3 Account Trigger Avatar",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.profile-overview-identity",
       "name": "Project Homeport Owner Correction Round3 Profile Overview Identity",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.profile-prompt-not-score",
       "name": "Project Homeport Owner Correction Round3 Profile Prompt Not Score",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.registration-verification-screen",
       "name": "Project Homeport Owner Correction Round3 Registration Verification Screen",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.verification-code-security",
       "name": "Project Homeport Owner Correction Round3 Verification Code Security",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.verification-resend",
       "name": "Project Homeport Owner Correction Round3 Verification Resend",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.email-provider-contract",
       "name": "Project Homeport Owner Correction Round3 Email Provider Contract",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.resend-adapter",
       "name": "Project Homeport Owner Correction Round3 Resend Adapter",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.postmark-webhooks",
       "name": "Project Homeport Owner Correction Round3 Postmark Webhooks",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.synthetic-email",
       "name": "Project Homeport Owner Correction Round3 Synthetic Email",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.email-live-evidence",
       "name": "Project Homeport Owner Correction Round3 Email Live Evidence",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.dark-default",
       "name": "Project Homeport Owner Correction Round3 Dark Default",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.no-theme-flash",
       "name": "Project Homeport Owner Correction Round3 No Theme Flash",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.light-deferred",
       "name": "Project Homeport Owner Correction Round3 Light Deferred",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.workspace-entry",
       "name": "Project Homeport Owner Correction Round3 Workspace Entry",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.new-account-capabilities",
       "name": "Project Homeport Owner Correction Round3 New Account Capabilities",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.existing-account-reconciliation",
       "name": "Project Homeport Owner Correction Round3 Existing Account Reconciliation",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.resource-authority-separated",
       "name": "Project Homeport Owner Correction Round3 Resource Authority Separated",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.active-chronicle-lock",
       "name": "Project Homeport Owner Correction Round3 Active Chronicle Lock",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.no-false-chronicle-lock",
       "name": "Project Homeport Owner Correction Round3 No False Chronicle Lock",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.captain-empty",
       "name": "Project Homeport Owner Correction Round3 Captain Empty",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.creator-empty",
       "name": "Project Homeport Owner Correction Round3 Creator Empty",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.route-crossfade",
       "name": "Project Homeport Owner Correction Round3 Route Crossfade",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.no-background-blink",
       "name": "Project Homeport Owner Correction Round3 No Background Blink",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.route-layer-interaction",
       "name": "Project Homeport Owner Correction Round3 Route Layer Interaction",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.loading-threshold",
       "name": "Project Homeport Owner Correction Round3 Loading Threshold",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.account-menu-visible-motion",
       "name": "Project Homeport Owner Correction Round3 Account Menu Visible Motion",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.account-menu-focus",
       "name": "Project Homeport Owner Correction Round3 Account Menu Focus",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.mobile",
       "name": "Project Homeport Owner Correction Round3 Mobile",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.zoom",
       "name": "Project Homeport Owner Correction Round3 Zoom",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.accessibility",
       "name": "Project Homeport Owner Correction Round3 Accessibility",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.phase1-regression",
       "name": "Project Homeport Owner Correction Round3 Phase1 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.phase2-regression",
       "name": "Project Homeport Owner Correction Round3 Phase2 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.phase3-regression",
       "name": "Project Homeport Owner Correction Round3 Phase3 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.phase4-regression",
       "name": "Project Homeport Owner Correction Round3 Phase4 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.phase5-regression",
       "name": "Project Homeport Owner Correction Round3 Phase5 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.phase6-regression",
       "name": "Project Homeport Owner Correction Round3 Phase6 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.phase7-regression",
       "name": "Project Homeport Owner Correction Round3 Phase7 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.round1-regression",
       "name": "Project Homeport Owner Correction Round3 Round1 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.round2-regression",
       "name": "Project Homeport Owner Correction Round3 Round2 Regression",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.owner-correction.round3.artifact-idempotency",
       "name": "Project Homeport Owner Correction Round3 Artifact Idempotency",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.auth.identifier.username",
       "name": "Project Homeport Username Identifier Sign-In",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.auth.identifier.email",
       "name": "Project Homeport Email Identifier Sign-In",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.auth.unverified-signin",
       "name": "Project Homeport Unverified Account Ordinary Sign-In",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.auth.registration.atomic",
       "name": "Project Homeport Atomic Registration",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.auth.registration.username-conflict",
       "name": "Project Homeport Registration Username Conflict",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.auth.registration.email-handoff",
       "name": "Project Homeport Registration Existing Email Handoff",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.auth.password-strength",
       "name": "Project Homeport Password Strength Feedback",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.auth.password-confirmation",
       "name": "Project Homeport Password Confirmation Feedback",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.auth.registration-verification",
       "name": "Project Homeport Registration Email Verification",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.auth.resend-delivery",
       "name": "Project Homeport Resend Transactional Delivery",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.auth.partial-account-repair",
       "name": "Project Homeport Partial Account Reconciliation",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.transition.navigation-generation",
       "name": "Project Homeport Navigation Generation Ownership",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.transition.delayed-loading-cancel",
       "name": "Project Homeport Delayed Loading Cancellation",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.transition.no-late-spinner",
       "name": "Project Homeport No Late Loading Spinner",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.transition.no-route-resurrection",
       "name": "Project Homeport No Route Resurrection",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.transition.direct-crossfade",
       "name": "Project Homeport Direct Route Crossfade",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.transition.auth-routes",
       "name": "Project Homeport Auth Route Transition Lifecycle",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.transition.interruption",
       "name": "Project Homeport Interrupted Navigation Final Route",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.transition.back-forward",
       "name": "Project Homeport Back and Forward Transition Lifecycle",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "homeport.transition.reduced-motion",
       "name": "Project Homeport Reduced Motion Transition Semantics",
       "authority": "project-homeport",
-      "owners": [
-        "project-homeport"
-      ],
+      "owners": ["project-homeport"],
       "critical": true
     },
     {
       "id": "helm.authority-membership.independent",
       "name": "Project Helm Captain Authority and Player Membership Independence",
       "authority": "project-helm",
-      "owners": [
-        "project-helm"
-      ],
+      "owners": ["project-helm"],
       "critical": true
     },
     {
       "id": "helm.creation.default-captain-only",
       "name": "Project Helm Explicit Captain Participation Creation Choice",
       "authority": "project-helm",
-      "owners": [
-        "project-helm"
-      ],
+      "owners": ["project-helm"],
       "critical": true
     },
     {
       "id": "helm.participation.lifecycle",
       "name": "Project Helm Independent Participation Lifecycle",
       "authority": "project-helm",
-      "owners": [
-        "project-helm"
-      ],
+      "owners": ["project-helm"],
       "critical": true
     },
     {
       "id": "helm.player-projection.firewall",
       "name": "Project Helm Ordinary Player Projection Firewall",
       "authority": "project-helm",
-      "owners": [
-        "project-helm"
-      ],
+      "owners": ["project-helm"],
       "critical": true
     },
     {
       "id": "helm.history.membership-derived",
       "name": "Project Helm Membership Derived Player History",
       "authority": "project-helm",
-      "owners": [
-        "project-helm"
-      ],
+      "owners": ["project-helm"],
       "critical": true
     },
     {
       "id": "helm.artifacts.event-time-membership",
       "name": "Project Helm Event Time Artifact Eligibility",
       "authority": "project-helm",
-      "owners": [
-        "project-helm"
-      ],
+      "owners": ["project-helm"],
       "critical": true
     },
     {
       "id": "helm.security.resource-authorization",
       "name": "Project Helm Resource Scoped Authorization",
       "authority": "project-helm",
-      "owners": [
-        "project-helm"
-      ],
+      "owners": ["project-helm"],
       "critical": true
     },
     {
       "id": "helm.accessibility.responsive",
       "name": "Project Helm Responsive Accessible Participation Controls",
       "authority": "project-helm",
-      "owners": [
-        "project-helm"
-      ],
+      "owners": ["project-helm"],
       "critical": true
     },
     {
       "id": "helm.member-presence-synchronization",
       "name": "Project Helm Membership Scoped Presence and Synchronization",
       "authority": "project-helm",
-      "owners": [
-        "project-helm",
-        "platform-foundation"
-      ],
+      "owners": ["project-helm", "platform-foundation"],
       "critical": true
     },
     {
       "id": "admiralty.phase1.identity",
       "name": "Canonical identity and session authority",
       "authority": "project-admiralty",
-      "owners": [
-        "project-admiralty"
-      ],
+      "owners": ["project-admiralty"],
       "critical": true
     },
     {
       "id": "admiralty.phase1.authorization",
       "name": "Server-side role and capability authorization",
       "authority": "project-admiralty",
-      "owners": [
-        "project-admiralty"
-      ],
+      "owners": ["project-admiralty"],
       "critical": true
     },
     {
       "id": "admiralty.phase1.assurance",
       "name": "Recent privileged assurance and expiry",
       "authority": "project-admiralty",
-      "owners": [
-        "project-admiralty"
-      ],
+      "owners": ["project-admiralty"],
       "critical": true
     },
     {
       "id": "admiralty.phase1.support-access",
       "name": "User-approved scoped Support Access",
       "authority": "project-admiralty",
-      "owners": [
-        "project-admiralty"
-      ],
+      "owners": ["project-admiralty"],
       "critical": true
     },
     {
       "id": "admiralty.phase1.audit",
       "name": "Sanitized canonical administrative audit",
       "authority": "project-admiralty",
-      "owners": [
-        "project-admiralty"
-      ],
+      "owners": ["project-admiralty"],
       "critical": true
     },
     {
       "id": "admiralty.phase1.registry",
       "name": "Living capability-floor registry",
       "authority": "project-admiralty",
-      "owners": [
-        "project-admiralty"
-      ],
+      "owners": ["project-admiralty"],
       "critical": true
     },
     {
       "id": "admiralty.phase1.migration",
       "name": "Additive dual-database migration parity",
       "authority": "project-admiralty",
-      "owners": [
-        "project-admiralty"
-      ],
+      "owners": ["project-admiralty"],
       "critical": true
     },
     {
       "id": "admiralty.phase1.responsive-consent",
       "name": "Accessible responsive support consent",
       "authority": "project-admiralty",
-      "owners": [
-        "project-admiralty"
-      ],
+      "owners": ["project-admiralty"],
       "critical": true
     },
     {
       "id": "tideglass-change-classification",
       "name": "Stable governed change codes and explainable significance",
       "authority": "tideglass",
-      "owners": [
-        "tideglass"
-      ],
+      "owners": ["tideglass"],
       "critical": true
     },
     {
       "id": "tideglass-compatibility-deltas",
       "name": "Evidence-linked compatibility deltas",
       "authority": "tideglass",
-      "owners": [
-        "tideglass"
-      ],
+      "owners": ["tideglass"],
       "critical": true
     },
     {
       "id": "tideglass-deterministic-summary",
       "name": "Traceable deterministic comparison summaries",
       "authority": "tideglass",
-      "owners": [
-        "tideglass"
-      ],
+      "owners": ["tideglass"],
       "critical": true
     },
     {
       "id": "tideglass-creator-annotations",
       "name": "Append-only authorized Creator annotation revisions",
       "authority": "tideglass",
-      "owners": [
-        "tideglass"
-      ],
+      "owners": ["tideglass"],
       "critical": true
     },
     {
       "id": "tideglass-rebuildable-cache",
       "name": "Digest-validated context-free comparison cache",
       "authority": "tideglass",
-      "owners": [
-        "tideglass"
-      ],
+      "owners": ["tideglass"],
       "critical": true
     },
     {
       "id": "tideglass-api-security",
       "name": "Authorized bounded and redacted Tideglass APIs",
       "authority": "tideglass",
-      "owners": [
-        "tideglass"
-      ],
+      "owners": ["tideglass"],
       "critical": true
     },
     {
       "id": "tideglass-migration-parity",
       "name": "Additive SQLite and MySQL annotation migration parity",
       "authority": "tideglass",
-      "owners": [
-        "tideglass"
-      ],
+      "owners": ["tideglass"],
       "critical": true
     },
     {
       "id": "bridgewatch.mission-control",
       "name": "Read-only governed mission-control observation integrity",
       "authority": "bridgewatch",
-      "owners": [
-        "bridgewatch"
-      ],
+      "owners": ["bridgewatch"],
       "critical": true
     },
     {
       "id": "admiralty.phase2.authorization-partition",
       "name": "Least-privileged Chartroom route and navigation partition",
       "authority": "project-admiralty",
-      "owners": [
-        "project-admiralty"
-      ],
+      "owners": ["project-admiralty"],
       "critical": true
     },
     {
       "id": "admiralty.phase2.read-projection-redaction",
       "name": "Bounded typed owner projections and secret redaction",
       "authority": "project-admiralty",
-      "owners": [
-        "project-admiralty"
-      ],
+      "owners": ["project-admiralty"],
       "critical": true
     },
     {
       "id": "admiralty.phase2.account-dossier-support",
       "name": "Account dossier and consented Support Access integration",
       "authority": "project-admiralty",
-      "owners": [
-        "project-admiralty"
-      ],
+      "owners": ["project-admiralty"],
       "critical": true
     },
     {
       "id": "admiralty.phase2.chronicle-voyage-inspection",
       "name": "Chronicle, edition, Voyage, crew, and safe event inspection",
       "authority": "project-admiralty",
-      "owners": [
-        "project-admiralty"
-      ],
+      "owners": ["project-admiralty"],
       "critical": true
     },
     {
       "id": "admiralty.phase2.community-operations-providers",
       "name": "Community, operations, provider, configuration, and release truth",
       "authority": "project-admiralty",
-      "owners": [
-        "project-admiralty"
-      ],
+      "owners": ["project-admiralty"],
       "critical": true
     },
     {
       "id": "admiralty.phase2.audit-investigation",
       "name": "Sanitized Audit Explorer and correlation-led investigation",
       "authority": "project-admiralty",
-      "owners": [
-        "project-admiralty"
-      ],
+      "owners": ["project-admiralty"],
       "critical": true
     },
     {
       "id": "admiralty.phase2.registry-activation",
       "name": "Living capability activation and dormant-state accounting",
       "authority": "project-admiralty",
-      "owners": [
-        "project-admiralty"
-      ],
+      "owners": ["project-admiralty"],
       "critical": true
     },
     {
       "id": "admiralty.phase2.responsive-accessibility",
       "name": "Responsive accessible read-only Chartroom",
       "authority": "project-admiralty",
-      "owners": [
-        "project-admiralty"
-      ],
+      "owners": ["project-admiralty"],
       "critical": true
     },
     {
       "id": "wakebook.history.version-pinning",
       "name": "Wakebook historical version pinning",
       "authority": "project-wakebook",
-      "owners": [
-        "project-wakebook",
-        "wayfarer",
-        "one-voyage"
-      ],
+      "owners": ["project-wakebook", "wayfarer", "one-voyage"],
       "critical": true
     },
     {
       "id": "wakebook.history.owner-privacy",
       "name": "Wakebook owner-private archive authorization",
       "authority": "project-wakebook",
-      "owners": [
-        "project-wakebook",
-        "wayfarer"
-      ],
+      "owners": ["project-wakebook", "wayfarer"],
       "critical": true
     },
     {
       "id": "wakebook.history.historical-stability",
       "name": "Wakebook historical snapshot stability",
       "authority": "project-wakebook",
-      "owners": [
-        "project-wakebook",
-        "wayfarer"
-      ],
+      "owners": ["project-wakebook", "wayfarer"],
       "critical": true
     },
     {
       "id": "wakebook.timing.quality",
       "name": "Wakebook truthful timing quality",
       "authority": "project-wakebook",
-      "owners": [
-        "project-wakebook",
-        "wayfarer"
-      ],
+      "owners": ["project-wakebook", "wayfarer"],
       "critical": true
     },
     {
       "id": "wakebook.artifact-context",
       "name": "Wakebook shared and personal artifact boundary",
       "authority": "project-wakebook",
-      "owners": [
-        "project-wakebook",
-        "wayfarer"
-      ],
+      "owners": ["project-wakebook", "wayfarer"],
       "critical": true
     },
     {
       "id": "wakebook.navigation.reachability",
       "name": "Wakebook ordinary desktop and mobile reachability",
       "authority": "project-wakebook",
-      "owners": [
-        "project-wakebook",
-        "project-homeport"
-      ],
+      "owners": ["project-wakebook", "project-homeport"],
       "critical": true
     },
     {
       "id": "wakebook.archive.pagination",
       "name": "Wakebook bounded deterministic archive pagination",
       "authority": "project-wakebook",
-      "owners": [
-        "project-wakebook"
-      ],
+      "owners": ["project-wakebook"],
       "critical": true
     },
     {
       "id": "wakebook.archive.year-grouping",
       "name": "Wakebook accurate archive year grouping",
       "authority": "project-wakebook",
-      "owners": [
-        "project-wakebook"
-      ],
+      "owners": ["project-wakebook"],
       "critical": true
     },
     {
       "id": "wakebook.archive.filters",
       "name": "Wakebook deterministic owner-safe filters",
       "authority": "project-wakebook",
-      "owners": [
-        "project-wakebook"
-      ],
+      "owners": ["project-wakebook"],
       "critical": true
     },
     {
       "id": "wakebook.archive.invitation-separation",
       "name": "Wakebook invitation and played history separation",
       "authority": "project-wakebook",
-      "owners": [
-        "project-wakebook",
-        "wayfarer"
-      ],
+      "owners": ["project-wakebook", "wayfarer"],
       "critical": true
     },
     {
       "id": "wakebook.archive.partial-history",
       "name": "Wakebook safe partial-history degradation",
       "authority": "project-wakebook",
-      "owners": [
-        "project-wakebook",
-        "wayfarer"
-      ],
+      "owners": ["project-wakebook", "wayfarer"],
       "critical": true
     },
     {
       "id": "wakebook.archive.summary-redaction",
       "name": "Wakebook archive summary redaction",
       "authority": "project-wakebook",
-      "owners": [
-        "project-wakebook",
-        "wayfarer"
-      ],
+      "owners": ["project-wakebook", "wayfarer"],
       "critical": true
     }
   ]

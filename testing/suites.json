@@ -12,23 +12,11 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 600000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "trace-root"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": [],
-      "contracts": [
-        "authentication-authorization"
-      ],
-      "affectedPaths": [
-        "tests/e2e/access-gates.spec.ts"
-      ],
-      "releaseGates": [
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["authentication-authorization"],
+      "affectedPaths": ["tests/e2e/access-gates.spec.ts"],
+      "releaseGates": ["mainline", "release-candidate"],
       "currentImplementationState": "distinct-fast-sentinel",
       "adapter": "playwright-family"
     },
@@ -42,23 +30,11 @@
       "expectedDurationMs": 240000,
       "hardBudgetMs": 600000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "prisma-sqlite-client"
-      ],
+      "resources": ["node-slot", "prisma-sqlite-client"],
       "dependencies": [],
       "contracts": [],
-      "affectedPaths": [
-        "src/**",
-        "scripts/**",
-        "testing/**"
-      ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "affectedPaths": ["src/**", "scripts/**", "testing/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "governed-static",
       "adapter": "static"
     },
@@ -72,25 +48,11 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool",
-        "prisma-sqlite-client"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool", "prisma-sqlite-client"],
       "dependencies": [],
-      "contracts": [
-        "authentication-authorization"
-      ],
-      "affectedPaths": [
-        "src/app/**",
-        "src/components/platform/**"
-      ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["authentication-authorization"],
+      "affectedPaths": ["src/app/**", "src/components/platform/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "vitest-family"
     },
@@ -104,26 +66,11 @@
       "expectedDurationMs": 90000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool",
-        "prisma-sqlite-client"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool", "prisma-sqlite-client"],
       "dependencies": [],
-      "contracts": [
-        "invitation-acceptance"
-      ],
-      "affectedPaths": [
-        "src/chronicle/**",
-        "src/server/**",
-        "src/domain/**"
-      ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["invitation-acceptance"],
+      "affectedPaths": ["src/chronicle/**", "src/server/**", "src/domain/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "vitest-family"
     },
@@ -137,28 +84,16 @@
       "expectedDurationMs": 30000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool",
-        "prisma-sqlite-client"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool", "prisma-sqlite-client"],
       "dependencies": [],
-      "contracts": [
-        "drydock-authoring-contracts",
-        "drydock-progression"
-      ],
+      "contracts": ["drydock-authoring-contracts", "drydock-progression"],
       "affectedPaths": [
         "src/drydock/**",
         "scripts/drydock/**",
         "tests/fixtures/drydock/**",
         "Development_Docs/Projects/Project Drydock/**"
       ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "vitest-family"
     },
@@ -172,14 +107,8 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool",
-        "prisma-sqlite-client"
-      ],
-      "dependencies": [
-        "unit.one-voyage"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool", "prisma-sqlite-client"],
+      "dependencies": ["unit.one-voyage"],
       "contracts": [
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",
@@ -201,12 +130,7 @@
         "prisma/migrations/20260809130000_tideglass_phase2_creator_annotations/**",
         "prisma/mysql-migrations/0053_tideglass_phase2_creator_annotations/**"
       ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-2-candidate",
       "adapter": "vitest-family"
     },
@@ -220,25 +144,11 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool",
-        "prisma-sqlite-client"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool", "prisma-sqlite-client"],
       "dependencies": [],
-      "contracts": [
-        "wayfarer-history-projection"
-      ],
-      "affectedPaths": [
-        "src/wayfarer/**"
-      ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "cross-project",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["wayfarer-history-projection"],
+      "affectedPaths": ["src/wayfarer/**"],
+      "releaseGates": ["local-change", "subsystem", "cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "vitest-family"
     },
@@ -252,24 +162,11 @@
       "expectedDurationMs": 90000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool",
-        "prisma-sqlite-client"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool", "prisma-sqlite-client"],
       "dependencies": [],
-      "contracts": [
-        "community-public-projection"
-      ],
-      "affectedPaths": [
-        "src/community/**"
-      ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["community-public-projection"],
+      "affectedPaths": ["src/community/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "vitest-family"
     },
@@ -283,27 +180,11 @@
       "expectedDurationMs": 120000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool",
-        "scanner",
-        "prisma-sqlite-client"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool", "scanner", "prisma-sqlite-client"],
       "dependencies": [],
-      "contracts": [
-        "sealed-hold-private-delivery",
-        "public-privacy-projection"
-      ],
-      "affectedPaths": [
-        "src/private-content/**",
-        "tests/private-content/**"
-      ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["sealed-hold-private-delivery", "public-privacy-projection"],
+      "affectedPaths": ["src/private-content/**", "tests/private-content/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "vitest-family"
     },
@@ -317,24 +198,11 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
       "dependencies": [],
-      "contracts": [
-        "journal-ready-state"
-      ],
-      "affectedPaths": [
-        "src/components/player/journal/**",
-        "src/chronicle/journal-*.test.ts"
-      ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["journal-ready-state"],
+      "affectedPaths": ["src/components/player/journal/**", "src/chronicle/journal-*.test.ts"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "vitest-family"
     },
@@ -348,23 +216,11 @@
       "expectedDurationMs": 90000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
       "dependencies": [],
-      "contracts": [
-        "lanternwake-presentation-receipt"
-      ],
-      "affectedPaths": [
-        "src/animation/**"
-      ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["lanternwake-presentation-receipt"],
+      "affectedPaths": ["src/animation/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "vitest-family"
     },
@@ -378,23 +234,11 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
       "dependencies": [],
-      "contracts": [
-        "authentication-authorization"
-      ],
-      "affectedPaths": [
-        "src/navigation/**"
-      ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["authentication-authorization"],
+      "affectedPaths": ["src/navigation/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "vitest-family"
     },
@@ -408,23 +252,11 @@
       "expectedDurationMs": 30000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
       "dependencies": [],
-      "contracts": [
-        "authentication-authorization"
-      ],
-      "affectedPaths": [
-        "scripts/features/**",
-        "Development_Docs/Features/**"
-      ],
-      "releaseGates": [
-        "local-change",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["authentication-authorization"],
+      "affectedPaths": ["scripts/features/**", "Development_Docs/Features/**"],
+      "releaseGates": ["local-change", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "vitest-family"
     },
@@ -438,25 +270,11 @@
       "expectedDurationMs": 30000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
       "dependencies": [],
-      "contracts": [
-        "deepwater.capability-realization-integrity"
-      ],
-      "affectedPaths": [
-        "Development_Docs/Programs/Deepwater/**",
-        "scripts/deepwater/**",
-        "tests/deepwater/**"
-      ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["deepwater.capability-realization-integrity"],
+      "affectedPaths": ["Development_Docs/Programs/Deepwater/**", "scripts/deepwater/**", "tests/deepwater/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "vitest-family"
     },
@@ -470,26 +288,11 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "application-port",
-        "browser-chromium"
-      ],
+      "resources": ["node-slot", "application-port", "browser-chromium"],
       "dependencies": [],
-      "contracts": [
-        "authentication-authorization"
-      ],
-      "affectedPaths": [
-        "scripts/sounding-line/**",
-        "tests/sounding-line/**",
-        "testing/**"
-      ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["authentication-authorization"],
+      "affectedPaths": ["scripts/sounding-line/**", "tests/sounding-line/**", "testing/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "node-test-browser-family"
     },
@@ -503,26 +306,11 @@
       "expectedDurationMs": 90000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool",
-        "prisma-sqlite-client"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool", "prisma-sqlite-client"],
       "dependencies": [],
-      "contracts": [
-        "authentication-authorization"
-      ],
-      "affectedPaths": [
-        "src/platform/**",
-        "src/lib/**",
-        "src/language/**"
-      ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["authentication-authorization"],
+      "affectedPaths": ["src/platform/**", "src/lib/**", "src/language/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "vitest-family"
     },
@@ -536,25 +324,11 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
-      "dependencies": [
-        "unit.auth"
-      ],
-      "contracts": [
-        "authentication-authorization"
-      ],
-      "affectedPaths": [
-        "src/components/platform/**",
-        "src/components/player/AccessGate.test.tsx"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.auth"],
+      "contracts": ["authentication-authorization"],
+      "affectedPaths": ["src/components/platform/**", "src/components/player/AccessGate.test.tsx"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-component-family",
       "adapter": "vitest-family"
     },
@@ -568,24 +342,11 @@
       "expectedDurationMs": 180000,
       "hardBudgetMs": 600000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
-      "dependencies": [
-        "unit.one-voyage"
-      ],
-      "contracts": [
-        "player-session-restoration"
-      ],
-      "affectedPaths": [
-        "src/components/player/workspace/**"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.one-voyage"],
+      "contracts": ["player-session-restoration"],
+      "affectedPaths": ["src/components/player/workspace/**"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-component-family",
       "adapter": "vitest-family"
     },
@@ -599,24 +360,11 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
-      "dependencies": [
-        "unit.journal"
-      ],
-      "contracts": [
-        "journal-ready-state"
-      ],
-      "affectedPaths": [
-        "src/components/player/journal/**"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.journal"],
+      "contracts": ["journal-ready-state"],
+      "affectedPaths": ["src/components/player/journal/**"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-component-family",
       "adapter": "vitest-family"
     },
@@ -630,25 +378,11 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
-      "dependencies": [
-        "unit.wayfarer"
-      ],
-      "contracts": [
-        "artifact-grant-projection"
-      ],
-      "affectedPaths": [
-        "src/components/player/workspace/Artifact*",
-        "src/components/player/workspace/Treasure*"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.wayfarer"],
+      "contracts": ["artifact-grant-projection"],
+      "affectedPaths": ["src/components/player/workspace/Artifact*", "src/components/player/workspace/Treasure*"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-component-family",
       "adapter": "vitest-family"
     },
@@ -662,25 +396,11 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
-      "dependencies": [
-        "unit.one-voyage"
-      ],
-      "contracts": [
-        "invitation-acceptance"
-      ],
-      "affectedPaths": [
-        "src/components/gm/**",
-        "src/components/tales/**"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.one-voyage"],
+      "contracts": ["invitation-acceptance"],
+      "affectedPaths": ["src/components/gm/**", "src/components/tales/**"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-component-family",
       "adapter": "vitest-family"
     },
@@ -694,24 +414,11 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
-      "dependencies": [
-        "unit.one-voyage"
-      ],
-      "contracts": [
-        "invitation-acceptance"
-      ],
-      "affectedPaths": [
-        "src/components/studio/**"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.one-voyage"],
+      "contracts": ["invitation-acceptance"],
+      "affectedPaths": ["src/components/studio/**"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-component-family",
       "adapter": "vitest-family"
     },
@@ -725,24 +432,11 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
-      "dependencies": [
-        "unit.community"
-      ],
-      "contracts": [
-        "community-public-projection"
-      ],
-      "affectedPaths": [
-        "src/components/community/**"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.community"],
+      "contracts": ["community-public-projection"],
+      "affectedPaths": ["src/components/community/**"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-component-family",
       "adapter": "vitest-family"
     },
@@ -756,25 +450,11 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool",
-        "scanner"
-      ],
-      "dependencies": [
-        "unit.private-content"
-      ],
-      "contracts": [
-        "sealed-hold-private-delivery"
-      ],
-      "affectedPaths": [
-        "src/components/studio/Private*"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool", "scanner"],
+      "dependencies": ["unit.private-content"],
+      "contracts": ["sealed-hold-private-delivery"],
+      "affectedPaths": ["src/components/studio/Private*"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-component-family",
       "adapter": "vitest-family"
     },
@@ -788,24 +468,11 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
-      "dependencies": [
-        "unit.animation"
-      ],
-      "contracts": [
-        "lanternwake-presentation-receipt"
-      ],
-      "affectedPaths": [
-        "src/components/animation/**"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.animation"],
+      "contracts": ["lanternwake-presentation-receipt"],
+      "affectedPaths": ["src/components/animation/**"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-component-family",
       "adapter": "vitest-family"
     },
@@ -819,24 +486,11 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
-      "dependencies": [
-        "unit.wayfarer"
-      ],
-      "contracts": [
-        "wayfarer-history-projection"
-      ],
-      "affectedPaths": [
-        "src/components/wayfarer/**"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.wayfarer"],
+      "contracts": ["wayfarer-history-projection"],
+      "affectedPaths": ["src/components/wayfarer/**"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-component-family",
       "adapter": "vitest-family"
     },
@@ -850,24 +504,11 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
-      "dependencies": [
-        "unit.true-north"
-      ],
-      "contracts": [
-        "authentication-authorization"
-      ],
-      "affectedPaths": [
-        "src/components/shell/**"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.true-north"],
+      "contracts": ["authentication-authorization"],
+      "affectedPaths": ["src/components/shell/**"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-component-family",
       "adapter": "vitest-family"
     },
@@ -881,24 +522,11 @@
       "expectedDurationMs": 180000,
       "hardBudgetMs": 600000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "trace-root"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": [],
-      "contracts": [
-        "authentication-authorization"
-      ],
-      "affectedPaths": [
-        "tests/e2e/access-gates.spec.ts"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["authentication-authorization"],
+      "affectedPaths": ["tests/e2e/access-gates.spec.ts"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
     },
@@ -912,24 +540,11 @@
       "expectedDurationMs": 180000,
       "hardBudgetMs": 600000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "trace-root"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": [],
-      "contracts": [
-        "invitation-acceptance"
-      ],
-      "affectedPaths": [
-        "tests/e2e/project-one-voyage-phase2.spec.ts"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["invitation-acceptance"],
+      "affectedPaths": ["tests/e2e/project-one-voyage-phase2.spec.ts"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
     },
@@ -943,24 +558,11 @@
       "expectedDurationMs": 180000,
       "hardBudgetMs": 600000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "trace-root"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": [],
-      "contracts": [
-        "player-session-restoration"
-      ],
-      "affectedPaths": [
-        "tests/e2e/chronicle-platform.spec.ts"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["player-session-restoration"],
+      "affectedPaths": ["tests/e2e/chronicle-platform.spec.ts"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
     },
@@ -974,25 +576,11 @@
       "expectedDurationMs": 300000,
       "hardBudgetMs": 600000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "media-root",
-        "trace-root"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "media-root", "trace-root"],
       "dependencies": [],
-      "contracts": [
-        "journal-ready-state"
-      ],
-      "affectedPaths": [
-        "tests/e2e/lanternwake-*.spec.ts"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["journal-ready-state"],
+      "affectedPaths": ["tests/e2e/lanternwake-*.spec.ts"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
     },
@@ -1006,24 +594,11 @@
       "expectedDurationMs": 180000,
       "hardBudgetMs": 600000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "trace-root"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": [],
-      "contracts": [
-        "wayfarer-history-projection"
-      ],
-      "affectedPaths": [
-        "tests/e2e/wayfarer-*.spec.ts"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["wayfarer-history-projection"],
+      "affectedPaths": ["tests/e2e/wayfarer-*.spec.ts"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
     },
@@ -1037,24 +612,11 @@
       "expectedDurationMs": 180000,
       "hardBudgetMs": 600000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "trace-root"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": [],
-      "contracts": [
-        "artifact-grant-projection"
-      ],
-      "affectedPaths": [
-        "tests/e2e/wayfarer-phase4.spec.ts"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["artifact-grant-projection"],
+      "affectedPaths": ["tests/e2e/wayfarer-phase4.spec.ts"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
     },
@@ -1068,24 +630,11 @@
       "expectedDurationMs": 180000,
       "hardBudgetMs": 600000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "trace-root"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": [],
-      "contracts": [
-        "invitation-acceptance"
-      ],
-      "affectedPaths": [
-        "tests/e2e/command-center.spec.ts"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["invitation-acceptance"],
+      "affectedPaths": ["tests/e2e/command-center.spec.ts"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
     },
@@ -1099,24 +648,11 @@
       "expectedDurationMs": 180000,
       "hardBudgetMs": 600000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "trace-root"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": [],
-      "contracts": [
-        "invitation-acceptance"
-      ],
-      "affectedPaths": [
-        "tests/e2e/chronicle-studio.spec.ts"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["invitation-acceptance"],
+      "affectedPaths": ["tests/e2e/chronicle-studio.spec.ts"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
     },
@@ -1130,24 +666,11 @@
       "expectedDurationMs": 300000,
       "hardBudgetMs": 600000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "trace-root"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": [],
-      "contracts": [
-        "community-public-projection"
-      ],
-      "affectedPaths": [
-        "tests/e2e/harborlight-*.spec.ts"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["community-public-projection"],
+      "affectedPaths": ["tests/e2e/harborlight-*.spec.ts"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
     },
@@ -1161,24 +684,11 @@
       "expectedDurationMs": 180000,
       "hardBudgetMs": 600000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "trace-root"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": [],
-      "contracts": [
-        "sealed-hold-private-delivery"
-      ],
-      "affectedPaths": [
-        "tests/e2e/sealed-hold-phase4.spec.ts"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["sealed-hold-private-delivery"],
+      "affectedPaths": ["tests/e2e/sealed-hold-phase4.spec.ts"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
     },
@@ -1192,24 +702,11 @@
       "expectedDurationMs": 180000,
       "hardBudgetMs": 600000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "trace-root"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": [],
-      "contracts": [
-        "authentication-authorization"
-      ],
-      "affectedPaths": [
-        "tests/e2e/project-true-north.spec.ts"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["authentication-authorization"],
+      "affectedPaths": ["tests/e2e/project-true-north.spec.ts"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
     },
@@ -1223,24 +720,11 @@
       "expectedDurationMs": 5400000,
       "hardBudgetMs": 6300000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "trace-root"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": [],
-      "contracts": [
-        "journal-ready-state"
-      ],
-      "affectedPaths": [
-        "tests/e2e/phase3-accessibility-viewports.spec.ts"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["journal-ready-state"],
+      "affectedPaths": ["tests/e2e/phase3-accessibility-viewports.spec.ts"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
     },
@@ -1254,23 +738,11 @@
       "expectedDurationMs": 300000,
       "hardBudgetMs": 600000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-webkit",
-        "trace-root"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-webkit", "trace-root"],
       "dependencies": [],
-      "contracts": [
-        "journal-ready-state"
-      ],
-      "affectedPaths": [
-        "tests/e2e/phase3-accessibility-viewports.spec.ts"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "release-candidate"
-      ],
+      "contracts": ["journal-ready-state"],
+      "affectedPaths": ["tests/e2e/phase3-accessibility-viewports.spec.ts"],
+      "releaseGates": ["subsystem", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
     },
@@ -1284,25 +756,11 @@
       "expectedDurationMs": 1800000,
       "hardBudgetMs": 2160000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "trace-root"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": [],
-      "contracts": [
-        "lanternwake-presentation-receipt"
-      ],
-      "affectedPaths": [
-        "tests/e2e/animations.spec.ts",
-        "tests/e2e/phase3-lifecycle*.spec.ts"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["lanternwake-presentation-receipt"],
+      "affectedPaths": ["tests/e2e/animations.spec.ts", "tests/e2e/phase3-lifecycle*.spec.ts"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
     },
@@ -1316,24 +774,11 @@
       "expectedDurationMs": 300000,
       "hardBudgetMs": 600000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "trace-root"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": [],
-      "contracts": [
-        "authentication-authorization"
-      ],
-      "affectedPaths": [
-        "tests/e2e/**"
-      ],
-      "releaseGates": [
-        "cross-project",
-        "mainline",
-        "release-candidate"
-      ],
+      "contracts": ["authentication-authorization"],
+      "affectedPaths": ["tests/e2e/**"],
+      "releaseGates": ["cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
     },
@@ -1347,23 +792,11 @@
       "expectedDurationMs": 120000,
       "hardBudgetMs": 480000,
       "parallelSafe": false,
-      "resources": [
-        "validation-runtime",
-        "sqlite-clone"
-      ],
-      "dependencies": [
-        "static.core"
-      ],
-      "contracts": [
-        "migration-parity"
-      ],
-      "affectedPaths": [
-        "scripts/*.ps1"
-      ],
-      "releaseGates": [
-        "mainline",
-        "release-candidate"
-      ],
+      "resources": ["validation-runtime", "sqlite-clone"],
+      "dependencies": ["static.core"],
+      "contracts": ["migration-parity"],
+      "affectedPaths": ["scripts/*.ps1"],
+      "releaseGates": ["mainline", "release-candidate"],
       "currentImplementationState": "governed-compatibility-validation",
       "adapter": "powershell-family"
     },
@@ -1377,24 +810,11 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 480000,
       "parallelSafe": false,
-      "resources": [
-        "sqlite-clone",
-        "prisma-sqlite-client"
-      ],
-      "dependencies": [
-        "static.core"
-      ],
-      "contracts": [
-        "migration-parity"
-      ],
-      "affectedPaths": [
-        "prisma/schema.sqlite.prisma",
-        "prisma/migrations/**"
-      ],
-      "releaseGates": [
-        "mainline",
-        "release-candidate"
-      ],
+      "resources": ["sqlite-clone", "prisma-sqlite-client"],
+      "dependencies": ["static.core"],
+      "contracts": ["migration-parity"],
+      "affectedPaths": ["prisma/schema.sqlite.prisma", "prisma/migrations/**"],
+      "releaseGates": ["mainline", "release-candidate"],
       "currentImplementationState": "governed-adapter",
       "adapter": "sqlite-validate"
     },
@@ -1408,24 +828,11 @@
       "expectedDurationMs": 240000,
       "hardBudgetMs": 480000,
       "parallelSafe": false,
-      "resources": [
-        "mysql-schema",
-        "external-provider"
-      ],
-      "dependencies": [
-        "static.core"
-      ],
-      "contracts": [
-        "migration-parity"
-      ],
-      "affectedPaths": [
-        "prisma/schema.prisma",
-        "prisma/mysql-migrations/**"
-      ],
-      "releaseGates": [
-        "external-provider",
-        "release-candidate"
-      ],
+      "resources": ["mysql-schema", "external-provider"],
+      "dependencies": ["static.core"],
+      "contracts": ["migration-parity"],
+      "affectedPaths": ["prisma/schema.prisma", "prisma/mysql-migrations/**"],
+      "releaseGates": ["external-provider", "release-candidate"],
       "currentImplementationState": "governed-external-adapter",
       "adapter": "mysql-validate"
     },
@@ -1439,23 +846,14 @@
       "expectedDurationMs": 10000,
       "hardBudgetMs": 60000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot"
-      ],
-      "dependencies": [
-        "unit.sounding-line"
-      ],
-      "contracts": [
-        "journal-ready-state"
-      ],
+      "resources": ["node-slot"],
+      "dependencies": ["unit.sounding-line"],
+      "contracts": ["journal-ready-state"],
       "affectedPaths": [
         "testing/retired-suites.json",
         "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv"
       ],
-      "releaseGates": [
-        "mainline",
-        "release-candidate"
-      ],
+      "releaseGates": ["mainline", "release-candidate"],
       "currentImplementationState": "fail-closed-semantic-retirement",
       "adapter": "p34-retirement"
     },
@@ -1469,11 +867,7 @@
       "expectedDurationMs": 10000,
       "hardBudgetMs": 60000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool",
-        "prisma-sqlite-client"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool", "prisma-sqlite-client"],
       "dependencies": [],
       "contracts": [
         "homeport.route-inventory.complete",
@@ -1956,12 +1350,7 @@
         "src/animation/platform/**",
         "src/app/api/webhooks/postmark/**"
       ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-5-homeport-route-reachability-contract-family",
       "adapter": "vitest-family"
     },
@@ -1975,28 +1364,11 @@
       "expectedDurationMs": 600000,
       "hardBudgetMs": 3600000,
       "parallelSafe": false,
-      "resources": [
-        "validation-runtime",
-        "sqlite-clone",
-        "production-build-directory",
-        "trace-root"
-      ],
-      "dependencies": [
-        "static.core",
-        "unit.platform-foundation",
-        "database.sqlite"
-      ],
-      "contracts": [
-        "migration-parity",
-        "public-privacy-projection"
-      ],
-      "affectedPaths": [
-        "**"
-      ],
-      "releaseGates": [
-        "mainline",
-        "release-candidate"
-      ],
+      "resources": ["validation-runtime", "sqlite-clone", "production-build-directory", "trace-root"],
+      "dependencies": ["static.core", "unit.platform-foundation", "database.sqlite"],
+      "contracts": ["migration-parity", "public-privacy-projection"],
+      "affectedPaths": ["**"],
+      "releaseGates": ["mainline", "release-candidate"],
       "currentImplementationState": "governed-build-adapter",
       "adapter": "build"
     },
@@ -2010,13 +1382,8 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
-      "dependencies": [
-        "unit.homeport"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.homeport"],
       "contracts": [
         "homeport.personal-harbor.ia",
         "homeport.personal-harbor.section-registry",
@@ -2489,11 +1856,7 @@
         "src/animation/platform/**",
         "src/app/api/webhooks/postmark/**"
       ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-5-homeport-route-reachability-contract-family",
       "adapter": "vitest-family"
     },
@@ -2507,17 +1870,8 @@
       "expectedDurationMs": 180000,
       "hardBudgetMs": 900000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "media-root",
-        "trace-root"
-      ],
-      "dependencies": [
-        "unit.homeport",
-        "component.homeport"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "media-root", "trace-root"],
+      "dependencies": ["unit.homeport", "component.homeport"],
       "contracts": [
         "homeport.personal-harbor.ia",
         "homeport.personal-harbor.section-registry",
@@ -2992,11 +2346,7 @@
         "src/animation/platform/**",
         "src/app/api/webhooks/postmark/**"
       ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-5-homeport-route-reachability-contract-family",
       "adapter": "playwright-family"
     },
@@ -3010,11 +2360,7 @@
       "expectedDurationMs": 90000,
       "hardBudgetMs": 240000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool",
-        "prisma-sqlite-client"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool", "prisma-sqlite-client"],
       "dependencies": [],
       "contracts": [
         "helm.authority-membership.independent",
@@ -3033,12 +2379,7 @@
         "src/wayfarer/chronicle-history.helm.test.ts",
         "src/chronicle/artifact-grant.helm.test.ts"
       ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-1-source-bound",
       "adapter": "vitest-family"
     },
@@ -3052,27 +2393,15 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
-      "dependencies": [
-        "unit.helm"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.helm"],
       "contracts": [
         "helm.creation.default-captain-only",
         "helm.participation.lifecycle",
         "helm.accessibility.responsive"
       ],
-      "affectedPaths": [
-        "src/components/platform/CaptainLibrary.tsx",
-        "src/styles/platform.css"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "affectedPaths": ["src/components/platform/CaptainLibrary.tsx", "src/styles/platform.css"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-1-source-bound",
       "adapter": "vitest-family"
     },
@@ -3086,16 +2415,8 @@
       "expectedDurationMs": 600000,
       "hardBudgetMs": 900000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "trace-root"
-      ],
-      "dependencies": [
-        "unit.helm",
-        "component.helm"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+      "dependencies": ["unit.helm", "component.helm"],
       "contracts": [
         "helm.authority-membership.independent",
         "helm.creation.default-captain-only",
@@ -3106,15 +2427,8 @@
         "helm.security.resource-authorization",
         "helm.accessibility.responsive"
       ],
-      "affectedPaths": [
-        "tests/e2e/project-helm-phase1.spec.ts",
-        "playwright.config.ts"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "affectedPaths": ["tests/e2e/project-helm-phase1.spec.ts", "playwright.config.ts"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-1-source-bound",
       "adapter": "playwright-family"
     },
@@ -3128,11 +2442,7 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool",
-        "prisma-sqlite-client"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool", "prisma-sqlite-client"],
       "dependencies": [],
       "contracts": [
         "admiralty.phase2.authorization-partition",
@@ -3140,17 +2450,8 @@
         "admiralty.phase1.authorization",
         "admiralty.phase1.registry"
       ],
-      "affectedPaths": [
-        "src/admiralty/**",
-        "src/navigation/**",
-        "scripts/admiralty/**"
-      ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "affectedPaths": ["src/admiralty/**", "src/navigation/**", "scripts/admiralty/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-2-owner-accepted-mainline-candidate",
       "adapter": "vitest-family"
     },
@@ -3164,13 +2465,8 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
-      "dependencies": [
-        "unit.admiralty"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.admiralty"],
       "contracts": [
         "admiralty.phase2.authorization-partition",
         "admiralty.phase2.account-dossier-support",
@@ -3179,16 +2475,8 @@
         "admiralty.phase1.assurance",
         "admiralty.phase1.support-access"
       ],
-      "affectedPaths": [
-        "src/components/admiralty/**",
-        "src/app/admin/**"
-      ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "affectedPaths": ["src/components/admiralty/**", "src/app/admin/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-2-owner-accepted-mainline-candidate",
       "adapter": "vitest-family"
     },
@@ -3202,18 +2490,8 @@
       "expectedDurationMs": 300000,
       "hardBudgetMs": 900000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "trace-root",
-        "production-build-directory"
-      ],
-      "dependencies": [
-        "unit.admiralty",
-        "service.admiralty",
-        "component.admiralty"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root", "production-build-directory"],
+      "dependencies": ["unit.admiralty", "service.admiralty", "component.admiralty"],
       "contracts": [
         "admiralty.phase2.authorization-partition",
         "admiralty.phase2.read-projection-redaction",
@@ -3231,16 +2509,8 @@
         "admiralty.phase1.registry",
         "admiralty.phase1.responsive-consent"
       ],
-      "affectedPaths": [
-        "tests/e2e/admiralty-phase2.spec.ts",
-        "playwright.admiralty-phase2.config.ts"
-      ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "affectedPaths": ["tests/e2e/admiralty-phase2.spec.ts", "playwright.admiralty-phase2.config.ts"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-2-owner-accepted-mainline-candidate",
       "adapter": "admiralty-phase2-browser"
     },
@@ -3254,14 +2524,8 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool",
-        "prisma-sqlite-client"
-      ],
-      "dependencies": [
-        "unit.admiralty"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool", "prisma-sqlite-client"],
+      "dependencies": ["unit.admiralty"],
       "contracts": [
         "admiralty.phase2.read-projection-redaction",
         "admiralty.phase2.account-dossier-support",
@@ -3271,17 +2535,8 @@
         "admiralty.phase1.support-access",
         "admiralty.phase1.audit"
       ],
-      "affectedPaths": [
-        "src/admiralty/ports/**",
-        "src/admiralty/read-models*",
-        "src/admiralty/investigation.ts"
-      ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "affectedPaths": ["src/admiralty/ports/**", "src/admiralty/read-models*", "src/admiralty/investigation.ts"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-2-owner-accepted-mainline-candidate",
       "adapter": "vitest-family"
     },
@@ -3295,27 +2550,15 @@
       "expectedDurationMs": 30000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
-      "dependencies": [
-        "unit.sounding-line"
-      ],
-      "contracts": [
-        "bridgewatch.mission-control"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.sounding-line"],
+      "contracts": ["bridgewatch.mission-control"],
       "affectedPaths": [
         "bridgewatch/**",
         "scripts/sounding-line/status-projection.mjs",
         "Development_Docs/Project_Bridgewatch_Phase_2_*.md"
       ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-2-branch-complete",
       "adapter": "vitest-family"
     },
@@ -3329,13 +2572,8 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
-      "dependencies": [
-        "unit.wayfarer"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.wayfarer"],
       "contracts": [
         "wakebook.history.version-pinning",
         "wakebook.history.owner-privacy",
@@ -3349,17 +2587,8 @@
         "wakebook.archive.partial-history",
         "wakebook.archive.summary-redaction"
       ],
-      "affectedPaths": [
-        "src/wakebook/**",
-        "src/app/api/passport/voyages/**"
-      ],
-      "releaseGates": [
-        "local-change",
-        "subsystem",
-        "cross-project",
-        "mainline",
-        "release-candidate"
-      ],
+      "affectedPaths": ["src/wakebook/**", "src/app/api/passport/voyages/**"],
+      "releaseGates": ["local-change", "subsystem", "cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "vitest-family"
     },
@@ -3373,13 +2602,8 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": [
-        "node-slot",
-        "vitest-worker-pool"
-      ],
-      "dependencies": [
-        "unit.wakebook"
-      ],
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.wakebook"],
       "contracts": [
         "wakebook.timing.quality",
         "wakebook.artifact-context",
@@ -3387,14 +2611,8 @@
         "wakebook.archive.partial-history",
         "wakebook.archive.summary-redaction"
       ],
-      "affectedPaths": [
-        "src/components/wakebook/**"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "mainline",
-        "release-candidate"
-      ],
+      "affectedPaths": ["src/components/wakebook/**"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-component-family",
       "adapter": "vitest-family"
     },
@@ -3408,16 +2626,8 @@
       "expectedDurationMs": 240000,
       "hardBudgetMs": 600000,
       "parallelSafe": false,
-      "resources": [
-        "application-port",
-        "sqlite-clone",
-        "browser-chromium",
-        "trace-root"
-      ],
-      "dependencies": [
-        "unit.wakebook",
-        "component.wakebook"
-      ],
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+      "dependencies": ["unit.wakebook", "component.wakebook"],
       "contracts": [
         "wakebook.history.version-pinning",
         "wakebook.history.owner-privacy",
@@ -3432,15 +2642,8 @@
         "wakebook.archive.partial-history",
         "wakebook.archive.summary-redaction"
       ],
-      "affectedPaths": [
-        "tests/e2e/wakebook-phase1.spec.ts"
-      ],
-      "releaseGates": [
-        "subsystem",
-        "cross-project",
-        "mainline",
-        "release-candidate"
-      ],
+      "affectedPaths": ["tests/e2e/wakebook-phase1.spec.ts"],
+      "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
     }

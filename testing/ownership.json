@@ -5,83 +5,44 @@
     {
       "id": "platform-foundation",
       "project": "platform",
-      "sourcePaths": [
-        "src/platform/**",
-        "src/server/**",
-        "src/app/api/**",
-        "prisma/**",
-        "scripts/**"
-      ],
-      "testPaths": [
-        "src/platform/**/*.test.*",
-        "src/server/**/*.test.*",
-        "src/app/api/**/*.test.*"
-      ],
-      "contractIds": [
-        "authentication-authorization",
-        "migration-parity"
-      ]
+      "sourcePaths": ["src/platform/**", "src/server/**", "src/app/api/**", "prisma/**", "scripts/**"],
+      "testPaths": ["src/platform/**/*.test.*", "src/server/**/*.test.*", "src/app/api/**/*.test.*"],
+      "contractIds": ["authentication-authorization", "migration-parity"]
     },
     {
       "id": "one-voyage",
       "project": "one-voyage",
-      "sourcePaths": [
-        "src/chronicle/**",
-        "src/components/platform/**"
-      ],
+      "sourcePaths": ["src/chronicle/**", "src/components/platform/**"],
       "testPaths": [
         "src/chronicle/**/*.test.*",
         "tests/e2e/access-gates.spec.ts",
         "tests/e2e/chronicle-platform.spec.ts"
       ],
-      "contractIds": [
-        "invitation-acceptance",
-        "player-session-restoration",
-        "drydock-progression"
-      ]
+      "contractIds": ["invitation-acceptance", "player-session-restoration", "drydock-progression"]
     },
     {
       "id": "lanternwake",
       "project": "lanternwake",
-      "sourcePaths": [
-        "src/animation/**",
-        "src/components/animation/**",
-        "src/components/player/**"
-      ],
+      "sourcePaths": ["src/animation/**", "src/components/animation/**", "src/components/player/**"],
       "testPaths": [
         "src/animation/**/*.test.*",
         "src/components/player/**/*.test.*",
         "tests/e2e/lanternwake-*.spec.ts",
         "tests/e2e/phase3-*.spec.ts"
       ],
-      "contractIds": [
-        "journal-ready-state",
-        "lanternwake-presentation-receipt"
-      ]
+      "contractIds": ["journal-ready-state", "lanternwake-presentation-receipt"]
     },
     {
       "id": "wayfarer",
       "project": "wayfarer",
-      "sourcePaths": [
-        "src/wayfarer/**"
-      ],
-      "testPaths": [
-        "src/wayfarer/**/*.test.*",
-        "tests/e2e/wayfarer-phase2.spec.ts"
-      ],
-      "contractIds": [
-        "wayfarer-history-projection",
-        "artifact-grant-projection",
-        "public-privacy-projection"
-      ]
+      "sourcePaths": ["src/wayfarer/**"],
+      "testPaths": ["src/wayfarer/**/*.test.*", "tests/e2e/wayfarer-phase2.spec.ts"],
+      "contractIds": ["wayfarer-history-projection", "artifact-grant-projection", "public-privacy-projection"]
     },
     {
       "id": "harborlight",
       "project": "harborlight",
-      "sourcePaths": [
-        "src/community/**",
-        "src/components/community/**"
-      ],
+      "sourcePaths": ["src/community/**", "src/components/community/**"],
       "testPaths": [
         "src/community/**/*.test.*",
         "src/components/community/**/*.test.*",
@@ -101,17 +62,9 @@
     {
       "id": "sealed-hold",
       "project": "sealed-hold",
-      "sourcePaths": [
-        "src/private-content/**",
-        "scripts/private-content/**"
-      ],
-      "testPaths": [
-        "tests/private-content/**/*.test.*"
-      ],
-      "contractIds": [
-        "sealed-hold-private-delivery",
-        "public-privacy-projection"
-      ]
+      "sourcePaths": ["src/private-content/**", "scripts/private-content/**"],
+      "testPaths": ["tests/private-content/**/*.test.*"],
+      "contractIds": ["sealed-hold-private-delivery", "public-privacy-projection"]
     },
     {
       "id": "tideglass",
@@ -126,9 +79,7 @@
         "prisma/mysql-migrations/0053_tideglass_phase2_creator_annotations/**",
         "Development_Docs/Projects/Project_Tideglass/**"
       ],
-      "testPaths": [
-        "tests/tideglass/**/*.test.*"
-      ],
+      "testPaths": ["tests/tideglass/**/*.test.*"],
       "contractIds": [
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",
@@ -146,10 +97,7 @@
     {
       "id": "breakwater",
       "project": "breakwater",
-      "sourcePaths": [
-        "scripts/test-all.ps1",
-        "playwright.config.ts"
-      ],
+      "sourcePaths": ["scripts/test-all.ps1", "playwright.config.ts"],
       "testPaths": [],
       "contractIds": []
     },
@@ -162,28 +110,15 @@
         "scripts/drydock/**",
         "Development_Docs/Projects/Project Drydock/**"
       ],
-      "testPaths": [
-        "src/drydock/**/*.test.*",
-        "src/chronicle/**/*.test.*"
-      ],
-      "contractIds": [
-        "drydock-authoring-contracts",
-        "drydock-progression"
-      ]
+      "testPaths": ["src/drydock/**/*.test.*", "src/chronicle/**/*.test.*"],
+      "contractIds": ["drydock-authoring-contracts", "drydock-progression"]
     },
     {
       "id": "project-deepwater",
       "project": "project-deepwater",
-      "sourcePaths": [
-        "Development_Docs/Programs/Deepwater/**",
-        "scripts/deepwater/**"
-      ],
-      "testPaths": [
-        "tests/deepwater/**/*.test.*"
-      ],
-      "contractIds": [
-        "deepwater.capability-realization-integrity"
-      ]
+      "sourcePaths": ["Development_Docs/Programs/Deepwater/**", "scripts/deepwater/**"],
+      "testPaths": ["tests/deepwater/**/*.test.*"],
+      "contractIds": ["deepwater.capability-realization-integrity"]
     },
     {
       "id": "project-homeport",
@@ -420,9 +355,7 @@
       "project": "landfall",
       "sourcePaths": [],
       "testPaths": [],
-      "contractIds": [
-        "completion-provider"
-      ]
+      "contractIds": ["completion-provider"]
     },
     {
       "id": "project-admiralty",
@@ -473,12 +406,8 @@
         "scripts/sounding-line/status-projection.mjs",
         "Development_Docs/Project_Bridgewatch_Phase_2_*.md"
       ],
-      "testPaths": [
-        "bridgewatch/test/**/*.test.*"
-      ],
-      "contractIds": [
-        "bridgewatch.mission-control"
-      ]
+      "testPaths": ["bridgewatch/test/**/*.test.*"],
+      "contractIds": ["bridgewatch.mission-control"]
     },
     {
       "id": "project-wakebook",

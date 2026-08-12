@@ -10,16 +10,16 @@ last_reviewed: 2026-08-12
 
 ## Current integration state
 
-| Item                    | State                                                                                                                                 |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                                            |
-| Current reconciled base | `fb0f13e35fcdd98434d22c357aee02f24d6d9036`                                                                                            |
-| Incoming accepted work  | Helm launch-handoff repair (PR #55, protected merge `772be633857548d9d4bef06329ff6c54ed1b0465`) and subsequent accepted mainline work |
-| Semantic reconciliation | `6d3547b690dab5c35c9cee04a70809fa462ae8cf` retains Wakebook and takes all accepted mainline updates                                   |
-| Implementation commits  | Preserved from the existing remote candidate                                                                                          |
-| Sounding Line evidence  | `22940b9004bc89def300a808f426a0ed4dc77658`: focused governed `browser.wakebook` PASS (1/1); 15 capture review accepted                |
-| Owner walkthrough       | `OWNER_ACCEPTED_PHASE_1` recorded 2026-08-12                                                                                          |
-| Main merge              | Blocked by current-main `static.core` type compatibility until an accepted repair and later source-bound `RELEASE_GO`                 |
+| Item                    | State                                                                                                                                                                    |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                                                                               |
+| Current reconciled base | `fb0f13e35fcdd98434d22c357aee02f24d6d9036`                                                                                                                               |
+| Incoming accepted work  | Helm launch-handoff repair (PR #55, protected merge `772be633857548d9d4bef06329ff6c54ed1b0465`) plus Tideglass Phase 3 accepted main `bb7676a75581d8d415c3ff7712cc38bc8` |
+| Semantic reconciliation | `72a1ae3df50e8972e530c1bd96f4f098f72a4164` retains Wakebook and all its governed registrations while taking accepted mainline updates                                    |
+| Implementation commits  | Preserved from the existing remote candidate                                                                                                                             |
+| Sounding Line evidence  | `22940b9004bc89def300a808f426a0ed4dc77658`: focused governed `browser.wakebook` PASS (1/1); 15 capture review accepted                                                   |
+| Owner walkthrough       | `OWNER_ACCEPTED_PHASE_1` recorded 2026-08-12                                                                                                                             |
+| Main merge              | Blocked by current-main `static.core` type compatibility until an accepted repair and later source-bound `RELEASE_GO`                                                    |
 
 ## Owned implementation paths
 
