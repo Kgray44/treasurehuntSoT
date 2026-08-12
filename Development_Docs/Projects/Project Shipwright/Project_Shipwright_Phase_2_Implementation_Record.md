@@ -32,7 +32,7 @@ Phase 2 replaces the selected-Passage generic field surface with a contract-awar
 - `src/drydock/variable-explorer.ts` now includes the canonical declaration description in its owner-only Explorer projection.
 - The owner-authorized Variable Explorer GET remains private/no-store and now correctly uses the canonical read authorization path without requiring a mutation CSRF header. Mutating Studio routes continue to require the existing CSRF check.
 - `src/components/studio/TaleEditor.tsx` remains the coordinator and provides the existing canonical mutation/history/autosave path to the Inspector.
-- `scripts/shipwright/prepare-phase2-fixture.mjs`, `seed-phase2-fixture.mjs`, and `run-phase2-journeys.mjs` create a fresh task-owned SQLite fixture, synthetic Creator credential handoff, dynamic local port, and isolated browser evidence. The scripts refuse canonical database paths.
+- `scripts/shipwright/prepare-phase2-fixture.mjs`, `seed-phase2-fixture.mjs`, and `run-phase2-journeys.mjs` create a fresh task-owned SQLite fixture, synthetic Creator credential handoff, dynamic local port, and isolated browser evidence. `phase2-walkthrough-runtime.mjs` prepares, starts, verifies, and safely stops a separate task-owned production owner-review environment. The scripts refuse canonical database paths and unrelated port owners.
 - `src/styles/studio.css` adds accessible Inspector, issue, responsive drawer, and focus styling.
 
 ## Explicit non-changes
@@ -44,4 +44,4 @@ Phase 2 replaces the selected-Passage generic field surface with a contract-awar
 
 ## Completion state
 
-Implementation is ready for the remaining broader qualification and owner-review gates, not yet a frozen candidate. The companion validation, safety, coverage, and owner-walkthrough records deliberately distinguish focused evidence from candidate, owner, Sounding Line, and protected-main evidence.
+Implementation and local candidate qualification are complete. The branch is ready for the owner-review gate; the companion validation, safety, coverage, and owner-walkthrough records deliberately distinguish that local state from owner, Sounding Line, and protected-main evidence.
