@@ -87,6 +87,25 @@ passed against the sealed `RELEASE_GO` envelope. At the product-integration
 check, remote parity was
 `origin/main = 920d92a51a16d60a2dfe35278598e6d921be7e4c`.
 
+## Current-main corrective requalification
+
+The documentation-closure candidate at `58c44255e92679637b8cee616ea19cb89be27026`
+reached an `EVIDENCE_INVALID` Mainline Decision in
+[run 31622810342](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31622810342).
+The sole invalid suite was `browser.helm`: invitation acceptance returned 400
+because Prisma's default five-second interactive transaction expired while
+committing the atomic membership handoff. The governed worker completed its
+cleanup, the finalizer was terminal, and acceptance ownership was released.
+
+Commit `bd89d2078f057a0821b271143ac26afa46b34797` retains that atomic handoff
+but bounds it with a 5-second acquisition wait and a 15-second execution
+timeout. Exact task-owned local `browser.helm` evidence then passed all three
+registered cases, including the previously failing invitation journey, with
+`CLEAN` teardown. This is an ordinary Phase 2 corrective fix: it adds no
+migration, command, authority model, or Feature Catalog capability. A fresh
+hosted focused receipt and exact protected-main authority remain required for
+the replacement candidate.
+
 ## Explicit exclusions
 
 Phase 2 does not add a duplicate Voyage state machine, Chronicle event store,
