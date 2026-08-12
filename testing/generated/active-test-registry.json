@@ -147889,9 +147889,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-4387e392a654dc203b05",
+      "id": "sl-test-d1cb92d51378bc55b39e",
       "title": "participation choice remains usable at desktop, tablet, phone, 200% zoom, keyboard, and reduced motion",
-      "line": 614,
+      "line": 612,
       "file": "tests/e2e/project-helm-phase1.spec.ts",
       "project": "helm-phase1",
       "suiteId": "browser.helm",
