@@ -55,6 +55,20 @@ mainline also contains the Phase 2 registry, telemetry, Sounding Line status
 projection, migration 1 and 2, and private Fastify dashboard, so Phase 3 is
 based on current main rather than the retained Phase 2 branch.
 
+### Candidate reconciliation
+
+Before candidate qualification, a fresh fetch advanced protected `origin/main`
+to `4edc8de5e30e9748700c19b466061f9b9a97f268` through the accepted Admiralty
+Phase 2 integration and associated Sounding Line serialization, resource,
+registry, and policy changes. The 37 intervening commits contained no
+`bridgewatch/` implementation, SQLite migration, Project Bridgewatch record,
+or Bridgewatch Feature Catalog change. They did change shared testing metadata,
+so Phase 3 was rebased cleanly onto that exact main identity and its generated
+test registry was regenerated. The changed Bridgewatch ownership/impact/suite
+entries remain additive and policy validation passed afterward. Candidate
+qualification must use this reconciled base and a new frozen SHA, not the
+original `191a...` starting identity.
+
 ### Concurrent-work snapshot
 
 Registered worktrees at preflight included the canonical checkout; the retained
