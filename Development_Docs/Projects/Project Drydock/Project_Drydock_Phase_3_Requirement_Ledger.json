@@ -981,9 +981,9 @@
       "securityEvidence": "rollback and safety records",
       "privacyEvidence": "truth-bound evidence classifications",
       "performanceEvidence": "performance record",
-      "currentStatus": "IMPLEMENTED_PENDING_QUALIFICATION",
+      "currentStatus": "REPLACEMENT_CANDIDATE_QUALIFIED_FROZEN",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "Candidate/acceptance records are not yet final."
+      "limitation": "The r4 candidate is frozen; protected acceptance and the completion receipt remain pending."
     },
     {
       "id": "DD-P3-059",
@@ -997,9 +997,9 @@
       "securityEvidence": "NOT_APPLICABLE",
       "privacyEvidence": "NOT_APPLICABLE",
       "performanceEvidence": "NOT_APPLICABLE",
-      "currentStatus": "CURRENT_MAIN_RECONCILED_CANDIDATE_FROZEN",
+      "currentStatus": "CURRENT_MAIN_VERIFIED_NO_ADVANCE_R4_FROZEN",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "The original candidate was reconciled and retried only after requalification; its replacement candidate was superseded by Bridgewatch's accepted current-main closure. The r3 candidate is frozen and still requires one Mainline Decision."
+      "limitation": "r3 ended EVIDENCE_INVALID; r4 is requalified and frozen after the Helm recovery. origin/main has not advanced from the reconciled base, so no additional merge reconciliation exists before its one Mainline Decision."
     },
     {
       "id": "DD-P3-060",
@@ -1013,9 +1013,9 @@
       "securityEvidence": "protected merge policy",
       "privacyEvidence": "NOT_APPLICABLE",
       "performanceEvidence": "NOT_APPLICABLE",
-      "currentStatus": "CURRENT_MAIN_RECONCILED_CANDIDATE_FROZEN_PENDING_CANONICAL_ACCEPTANCE",
+      "currentStatus": "R4_FROZEN_PENDING_CANONICAL_ACCEPTANCE",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "The original candidate's one Mainline Decision ended RELEASE_NO_GO and r2 was superseded by current-main reconciliation; no acceptance is claimed before r3's one decision, protected integration, and exact-main proof."
+      "limitation": "r3 ended EVIDENCE_INVALID; r4 may receive exactly one new Mainline Decision only after canonical ownership is acquired. No protected integration or exact-main proof is claimed."
     }
   ]
 }

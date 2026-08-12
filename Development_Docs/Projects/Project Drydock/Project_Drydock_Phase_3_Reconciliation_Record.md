@@ -77,3 +77,20 @@ presence-projection assertion, after successful invitation handoffs and
 heartbeat responses. Helm-owned repair must therefore prove both acceptance
 handoff and presence convergence before any repaired candidate may be
 requalified and frozen.
+
+## r4 current-main verification and replacement freeze
+
+The Helm-owned recovery was incorporated at
+`5717ab5c2f1445cd899471932b99eacf20e81bc1` and its exact combined-source
+focused hosted `browser.helm` run `31608295048` passed all three selected cases
+with clean teardown. The replacement qualification then passed the Drydock,
+Studio/API, Phase 2 and Phase 3 migration, policy, Prisma, static, Sounding
+Line runtime, production-build, documentation, and Feature Catalog scopes.
+
+Immediately before the r4 freeze, fetched `origin/main` still resolved to
+`5735d43821209adb2259ec2c38979281da1bb5b9`, the r3-qualified base. The branch
+is a strict descendant of that unchanged base, so no new mainline integration
+or conflict resolution exists to perform. The next commit is bound by tag
+`project-drydock-phase3-candidate-20260812-r4` and may receive one new explicit
+Mainline Decision only after serialized canonical acceptance ownership is
+acquired.
