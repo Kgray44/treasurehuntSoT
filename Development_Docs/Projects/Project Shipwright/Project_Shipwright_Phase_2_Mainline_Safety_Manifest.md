@@ -15,7 +15,7 @@ last_reviewed: 2026-08-12
 | Branch                 | `codex/project-shipwright-phase2-fit-the-tools-r2`                              |
 | Original base          | `191a964488d0df71f8dcb91c5b8372fc73b6b32e` (`origin/main` at worktree creation) |
 | Schema / Prisma impact | None                                                                            |
-| Current state          | Owner accepted; current-main requalification in progress                        |
+| Current state          | Owner accepted; current-main qualification complete; authority order pending    |
 
 ## Safety assertions under test
 
