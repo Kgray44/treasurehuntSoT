@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `892b574e2b3cc9133fb5deda8f48202c9df24135`
+Audited source commit: `0bd33e03efd1deaafe4ab33fe365c7c0c75ba0b4`
 
 ## Status vocabulary
 
@@ -1410,4 +1410,4 @@ A private, standalone, read-only development mission-control dashboard projects 
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `892b574e2b3cc9133fb5deda8f48202c9df24135`
+Generation source commit: `0bd33e03efd1deaafe4ab33fe365c7c0c75ba0b4`
