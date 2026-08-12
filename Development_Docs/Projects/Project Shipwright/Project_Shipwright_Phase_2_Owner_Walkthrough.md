@@ -10,7 +10,7 @@ last_reviewed: 2026-08-12
 
 ## Gate state
 
-Not yet ready for owner walkthrough. The reproducible task-owned browser journey and focused qualification evidence are green; final broader static/documentation checks, current-main reconciliation, and candidate freeze remain. This guide is the task-owned review script to use only after candidate qualification has succeeded.
+Ready for owner walkthrough. Candidate qualification, current-main reconciliation, documentation, catalog, isolated browser evidence, and the task-owned production walkthrough environment are complete. This guide is the required product-review script; no owner review or waiver has yet been recorded.
 
 The automated rehearsal is `npm run shipwright:phase2:journeys`. It creates a fresh SQLite fixture below `%LOCALAPPDATA%\ProjectShipwright`, uses a synthetic Creator account whose credential handoff remains outside the repository, and allocates a task-owned dynamic port. It is evidence for the review journey, not an owner decision.
 
