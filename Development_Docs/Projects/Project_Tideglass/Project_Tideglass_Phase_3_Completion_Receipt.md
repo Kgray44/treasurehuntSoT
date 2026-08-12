@@ -13,7 +13,7 @@ Status: `ACCEPTED_MAINLINE_RECORD_CLOSURE_PENDING`.
 The Phase 3 product is accepted on protected main. Exact candidate
 `6bbb25690f73265ea0f702c2abe112d759c2aedf`, preserving the owner-reviewed
 product source `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`, received
-`RELEASE_GO` in hosted Sounding Line run `31647929505` against base
+`RELEASE_GO` in hosted [Sounding Line run 31647929505](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31647929505) against base
 `fb0f13e35fcdd98434d22c357aee02f24d6d9036`. The run sealed 38 clean receipts,
 with evidence digest
 `252679116059dc6c57cabe4eb978a572df0c5a84fc1de37e04b54c1e20df19ef`.
