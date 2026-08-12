@@ -6,7 +6,7 @@ import {
 } from "@/drydock/simulation-store";
 import { createDrydockCoverageReport } from "@/drydock/simulation/coverage";
 import type { DrydockSimulationResult } from "@/drydock/simulation/engine";
-import { parseDrydockScenarioSuite, type DrydockScenarioSuite } from "@/drydock/simulation/suite";
+import { parseDrydockScenarioSuite } from "@/drydock/simulation/suite";
 import { db } from "@/lib/db";
 
 export class DrydockScenarioSuiteUnavailableError extends Error {
@@ -20,7 +20,10 @@ function suiteProjection(record: {
   title: string;
   sourceChecksum: string;
   updatedAt: Date;
-  members: Array<{ orderIndex: number; scenarioRevision: { revision: number; scenarioRecord: { scenarioId: string } } }>;
+  members: Array<{
+    orderIndex: number;
+    scenarioRevision: { revision: number; scenarioRecord: { scenarioId: string } };
+  }>;
 }) {
   return {
     suiteId: record.suiteId,
@@ -29,7 +32,10 @@ function suiteProjection(record: {
     updatedAt: record.updatedAt.toISOString(),
     members: record.members
       .sort((left, right) => left.orderIndex - right.orderIndex)
-      .map((member) => ({ scenarioId: member.scenarioRevision.scenarioRecord.scenarioId, revision: member.scenarioRevision.revision })),
+      .map((member) => ({
+        scenarioId: member.scenarioRevision.scenarioRecord.scenarioId,
+        revision: member.scenarioRevision.revision,
+      })),
   };
 }
 
@@ -37,30 +43,60 @@ export async function saveDrydockScenarioSuite(taleId: string, unchecked: unknow
   const suite = parseDrydockScenarioSuite(unchecked);
   if (suite.sourceChecksum !== currentSourceChecksum) throw new Error("DRYDOCK_SUITE_STALE_SOURCE");
   return db.$transaction(async (tx) => {
-    const draft = await tx.taleDraft.findFirst({ where: { taleId }, orderBy: { revisionNumber: "desc" }, select: { id: true } });
+    const draft = await tx.taleDraft.findFirst({
+      where: { taleId },
+      orderBy: { revisionNumber: "desc" },
+      select: { id: true },
+    });
     if (!draft) throw new DrydockScenarioSuiteUnavailableError("This Chronicle has no editable draft.");
     const revisionIds: string[] = [];
     for (const member of suite.members) {
       const record = await tx.drydockScenario.findFirst({
         where: { draftId: draft.id, scenarioId: member.scenarioId, archivedAt: null },
-        select: { revisions: { where: { revision: member.revision }, take: 1, select: { id: true, sourceChecksum: true } } },
+        select: {
+          revisions: { where: { revision: member.revision }, take: 1, select: { id: true, sourceChecksum: true } },
+        },
       });
       const revision = record?.revisions[0];
       if (!revision || revision.sourceChecksum !== currentSourceChecksum)
-        throw new DrydockScenarioSuiteUnavailableError("Every Suite member must be a current-source Scenario revision.");
+        throw new DrydockScenarioSuiteUnavailableError(
+          "Every Suite member must be a current-source Scenario revision.",
+        );
       revisionIds.push(revision.id);
     }
-    const existing = await tx.drydockScenarioSuite.findFirst({ where: { draftId: draft.id, suiteId: suite.id }, select: { id: true } });
+    const existing = await tx.drydockScenarioSuite.findFirst({
+      where: { draftId: draft.id, suiteId: suite.id },
+      select: { id: true },
+    });
     const memberData = revisionIds.map((scenarioRevisionId, orderIndex) => ({ scenarioRevisionId, orderIndex }));
     const record = existing
       ? await tx.drydockScenarioSuite.update({
           where: { id: existing.id },
-          data: { title: suite.title, sourceChecksum: suite.sourceChecksum, archivedAt: null, members: { deleteMany: {}, create: memberData } },
-          include: { members: { include: { scenarioRevision: { include: { scenarioRecord: { select: { scenarioId: true } } } } } } },
+          data: {
+            title: suite.title,
+            sourceChecksum: suite.sourceChecksum,
+            archivedAt: null,
+            members: { deleteMany: {}, create: memberData },
+          },
+          include: {
+            members: {
+              include: { scenarioRevision: { include: { scenarioRecord: { select: { scenarioId: true } } } } },
+            },
+          },
         })
       : await tx.drydockScenarioSuite.create({
-          data: { draftId: draft.id, suiteId: suite.id, title: suite.title, sourceChecksum: suite.sourceChecksum, members: { create: memberData } },
-          include: { members: { include: { scenarioRevision: { include: { scenarioRecord: { select: { scenarioId: true } } } } } } },
+          data: {
+            draftId: draft.id,
+            suiteId: suite.id,
+            title: suite.title,
+            sourceChecksum: suite.sourceChecksum,
+            members: { create: memberData },
+          },
+          include: {
+            members: {
+              include: { scenarioRevision: { include: { scenarioRecord: { select: { scenarioId: true } } } } },
+            },
+          },
         });
     return suiteProjection(record);
   });
@@ -70,7 +106,9 @@ export async function listDrydockScenarioSuites(taleId: string) {
   const records = await db.drydockScenarioSuite.findMany({
     where: { draft: { is: { taleId } }, archivedAt: null },
     orderBy: { updatedAt: "desc" },
-    include: { members: { include: { scenarioRevision: { include: { scenarioRecord: { select: { scenarioId: true } } } } } } },
+    include: {
+      members: { include: { scenarioRevision: { include: { scenarioRecord: { select: { scenarioId: true } } } } } },
+    },
   });
   return records.map(suiteProjection);
 }
@@ -78,10 +116,19 @@ export async function listDrydockScenarioSuites(taleId: string) {
 export async function runDrydockScenarioSuite(taleId: string, suiteId: string, snapshot: PublishedTaleSnapshot) {
   const record = await db.drydockScenarioSuite.findFirst({
     where: { draft: { is: { taleId } }, suiteId, archivedAt: null },
-    include: { members: { orderBy: { orderIndex: "asc" }, include: { scenarioRevision: { include: { scenarioRecord: { select: { scenarioId: true } } } } } } },
+    include: {
+      members: {
+        orderBy: { orderIndex: "asc" },
+        include: { scenarioRevision: { include: { scenarioRecord: { select: { scenarioId: true } } } } },
+      },
+    },
   });
   if (!record) throw new DrydockScenarioSuiteUnavailableError();
-  const runs: Array<{ scenarioId: string; revision: number; run: Awaited<ReturnType<typeof executeDrydockSimulationRun>> }> = [];
+  const runs: Array<{
+    scenarioId: string;
+    revision: number;
+    run: Awaited<ReturnType<typeof executeDrydockSimulationRun>>;
+  }> = [];
   for (const member of record.members) {
     const queued = await scheduleDrydockSimulation({
       taleId,
@@ -102,6 +149,9 @@ export async function runDrydockScenarioSuite(taleId: string, suiteId: string, s
     suite: suiteProjection(record),
     runs,
     coverage,
-    proofStatus: summaries.every((run) => run.status === "COMPLETED") && coverage.proofStatus === "COMPLETE" ? "COMPLETE" : "INCOMPLETE_PROOF",
+    proofStatus:
+      summaries.every((run) => run.status === "COMPLETED") && coverage.proofStatus === "COMPLETE"
+        ? "COMPLETE"
+        : "INCOMPLETE_PROOF",
   };
 }

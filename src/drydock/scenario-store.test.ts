@@ -38,7 +38,9 @@ const scenario = (revision = 1) => ({
 describe("Drydock Scenario store", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    prisma.$transaction.mockImplementation(async (operation: (tx: typeof prisma) => Promise<unknown>) => operation(prisma));
+    prisma.$transaction.mockImplementation(async (operation: (tx: typeof prisma) => Promise<unknown>) =>
+      operation(prisma),
+    );
     prisma.taleDraft.findFirst.mockResolvedValue({ id: "draft-a" });
   });
 
@@ -48,7 +50,10 @@ describe("Drydock Scenario store", () => {
       revisions: [{ revision: 1, createdAt: new Date("2026-08-12T00:00:00.000Z") }],
     });
 
-    await expect(saveDrydockScenario("tale-a", scenario())).resolves.toMatchObject({ scenarioId: "scenario-store", revision: 1 });
+    await expect(saveDrydockScenario("tale-a", scenario())).resolves.toMatchObject({
+      scenarioId: "scenario-store",
+      revision: 1,
+    });
     expect(prisma.taleDraft.findFirst).toHaveBeenCalledWith(expect.objectContaining({ where: { taleId: "tale-a" } }));
     expect(prisma.drydockScenario.create).toHaveBeenCalledWith(
       expect.objectContaining({ data: expect.objectContaining({ draftId: "draft-a", scenarioId: "scenario-store" }) }),
@@ -58,7 +63,9 @@ describe("Drydock Scenario store", () => {
   it("rejects stale revision writes rather than overwriting Scenario history", async () => {
     prisma.drydockScenario.findFirst.mockResolvedValue({ id: "record-a", currentRevision: 3 });
 
-    await expect(saveDrydockScenario("tale-a", scenario(3))).rejects.toBeInstanceOf(DrydockScenarioRevisionConflictError);
+    await expect(saveDrydockScenario("tale-a", scenario(3))).rejects.toBeInstanceOf(
+      DrydockScenarioRevisionConflictError,
+    );
     expect(prisma.drydockScenario.update).not.toHaveBeenCalled();
   });
 });

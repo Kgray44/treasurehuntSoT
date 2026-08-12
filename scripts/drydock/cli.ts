@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import fixture from "../../tests/fixtures/drydock/current-authoring-v1.json";
+import { parsePublishedSnapshot } from "../../src/chronicle/publishing";
 import { canonicalChecksum } from "../../src/drydock/canonical";
 import { parseDrydockBlock } from "../../src/drydock/contracts/parser";
 import { serializeDrydockBlockContractRegistry } from "../../src/drydock/contracts/registry";
@@ -8,6 +9,11 @@ import type { DrydockAuthoredBlockInput } from "../../src/drydock/contracts/mode
 import { sanitizedIssueProjection } from "../../src/drydock/issues";
 import { validateDrydockDraftContracts, type DrydockDraftContractInput } from "../../src/drydock/incremental";
 import { drydockProviderRegistry } from "../../src/drydock/providers";
+import { createDrydockCoverageReport } from "../../src/drydock/simulation/coverage";
+import { runDrydockScenario } from "../../src/drydock/simulation/engine";
+import { exploreDrydockScenario } from "../../src/drydock/simulation/explore";
+import { parseDrydockScenario } from "../../src/drydock/simulation/schema";
+import { parseDrydockScenarioSuite } from "../../src/drydock/simulation/suite";
 import {
   createDrydockValidationReport,
   diffDrydockReports,
@@ -58,6 +64,39 @@ function reportInput(path: string): DrydockValidationReport {
   )
     throw new Error("DRYDOCK_REPORT_INVALID");
   return report as DrydockValidationReport;
+}
+
+function jsonDocument(path: string, errorCode: string) {
+  const absolute = resolve(process.cwd(), path);
+  const bytes = readFileSync(absolute);
+  if (bytes.byteLength > 5 * 1024 * 1024) throw new Error("DRYDOCK_INPUT_SIZE_LIMIT");
+  try {
+    return JSON.parse(bytes.toString("utf8")) as unknown;
+  } catch {
+    throw new Error(errorCode);
+  }
+}
+
+function sourceSnapshot(path: string) {
+  return parsePublishedSnapshot(JSON.stringify(jsonDocument(path, "DRYDOCK_SOURCE_INVALID")));
+}
+
+function simulationRun(sourcePath: string, scenarioPath: string) {
+  const snapshot = sourceSnapshot(sourcePath);
+  const scenario = parseDrydockScenario(jsonDocument(scenarioPath, "DRYDOCK_SCENARIO_INVALID"));
+  const result = runDrydockScenario(snapshot, scenario);
+  print({
+    sourceChecksum: result.sourceChecksum,
+    scenarioId: result.scenarioId,
+    scenarioRevision: result.scenarioRevision,
+    status: result.status,
+    traceDigest: result.traceDigest,
+    coverage: result.coverage,
+    assertions: result.assertions,
+    trace: result.trace,
+  });
+  if (result.assertions.some((assertion) => !assertion.passed)) process.exitCode = 1;
+  return result;
 }
 
 function supportReportDiff(previous: DrydockValidationReport, next: DrydockValidationReport) {
@@ -208,6 +247,82 @@ else if (command === "canonicalize-fixtures") {
   if (!previousPath || !nextPath)
     throw new Error("Usage: npm run drydock:cli -- report-diff <previous-report.json> <next-report.json>");
   print(supportReportDiff(reportInput(previousPath), reportInput(nextPath)));
+} else if (command === "scenario-validate") {
+  const scenarioPath = process.argv[3];
+  if (!scenarioPath) throw new Error("Usage: npm run drydock:cli -- scenario-validate <scenario.json>");
+  const scenario = parseDrydockScenario(jsonDocument(scenarioPath, "DRYDOCK_SCENARIO_INVALID"));
+  print({ valid: true, scenarioId: scenario.id, revision: scenario.revision, sourceChecksum: scenario.sourceChecksum });
+} else if (command === "scenario-run" || command === "trace-replay") {
+  const sourcePath = process.argv[3];
+  const scenarioPath = process.argv[4];
+  if (!sourcePath || !scenarioPath)
+    throw new Error(`Usage: npm run drydock:cli -- ${command} <source.json> <scenario.json>`);
+  simulationRun(sourcePath, scenarioPath);
+} else if (command === "suite-run") {
+  const sourcePath = process.argv[3];
+  const suitePath = process.argv[4];
+  const scenarioPaths = process.argv.slice(5);
+  if (!sourcePath || !suitePath || !scenarioPaths.length)
+    throw new Error("Usage: npm run drydock:cli -- suite-run <source.json> <suite.json> <scenario.json> [...]");
+  const snapshot = sourceSnapshot(sourcePath);
+  const suite = parseDrydockScenarioSuite(jsonDocument(suitePath, "DRYDOCK_SUITE_INVALID"));
+  const scenarios = scenarioPaths.map((path) => parseDrydockScenario(jsonDocument(path, "DRYDOCK_SCENARIO_INVALID")));
+  const ordered = suite.members.map((member) => {
+    const scenario = scenarios.find(
+      (candidate) => candidate.id === member.scenarioId && candidate.revision === member.revision,
+    );
+    if (!scenario) throw new Error(`DRYDOCK_SUITE_MEMBER_MISSING:${member.scenarioId}:${member.revision}`);
+    return runDrydockScenario(snapshot, scenario);
+  });
+  const coverage = createDrydockCoverageReport(snapshot, ordered);
+  print({
+    suiteId: suite.id,
+    sourceChecksum: suite.sourceChecksum,
+    results: ordered.map((result) => ({
+      scenarioId: result.scenarioId,
+      status: result.status,
+      traceDigest: result.traceDigest,
+      assertions: result.assertions,
+    })),
+    coverage,
+  });
+  if (ordered.some((result) => result.assertions.some((assertion) => !assertion.passed))) process.exitCode = 1;
+} else if (command === "coverage-report") {
+  const sourcePath = process.argv[3];
+  const scenarioPaths = process.argv.slice(4);
+  if (!sourcePath || !scenarioPaths.length)
+    throw new Error("Usage: npm run drydock:cli -- coverage-report <source.json> <scenario.json> [...]");
+  const snapshot = sourceSnapshot(sourcePath);
+  const results = scenarioPaths.map((path) =>
+    runDrydockScenario(snapshot, parseDrydockScenario(jsonDocument(path, "DRYDOCK_SCENARIO_INVALID"))),
+  );
+  print(createDrydockCoverageReport(snapshot, results));
+} else if (command === "explore") {
+  const sourcePath = process.argv[3];
+  const scenarioPath = process.argv[4];
+  const profilePath = process.argv[5];
+  if (!sourcePath || !scenarioPath || !profilePath)
+    throw new Error("Usage: npm run drydock:cli -- explore <source.json> <scenario.json> <finite-profile.json>");
+  const profile = jsonDocument(profilePath, "DRYDOCK_EXPLORATION_PROFILE_INVALID") as {
+    inputs?: unknown;
+    maxDepth?: unknown;
+    maxStates?: unknown;
+    maxTransitions?: unknown;
+  };
+  if (
+    !Array.isArray(profile.inputs) ||
+    !Number.isSafeInteger(profile.maxDepth) ||
+    !Number.isSafeInteger(profile.maxStates) ||
+    !Number.isSafeInteger(profile.maxTransitions)
+  )
+    throw new Error("DRYDOCK_EXPLORATION_PROFILE_INVALID");
+  print(
+    exploreDrydockScenario(
+      sourceSnapshot(sourcePath),
+      parseDrydockScenario(jsonDocument(scenarioPath, "DRYDOCK_SCENARIO_INVALID")),
+      profile as Parameters<typeof exploreDrydockScenario>[2],
+    ),
+  );
 } else
   print({
     commands: [
@@ -222,6 +337,12 @@ else if (command === "canonicalize-fixtures") {
       "validate <json-path>",
       "full-validate <json-path>",
       "report-diff <previous-report.json> <next-report.json>",
+      "scenario-validate <scenario.json>",
+      "scenario-run <source.json> <scenario.json>",
+      "suite-run <source.json> <suite.json> <scenario.json> [... ]",
+      "trace-replay <source.json> <scenario.json>",
+      "coverage-report <source.json> <scenario.json> [... ]",
+      "explore <source.json> <scenario.json> <finite-profile.json>",
     ],
     privacy: "Diagnostics contain contract metadata and sanitized issues only.",
   });

@@ -37,7 +37,10 @@ function sourceFor(blockType: string): PublishedTaleSnapshot {
     schemaVersion: contract.currentVersion,
     orderIndex: 0,
     nextBlockId: blockType === "taleComplete" ? null : "finish",
-    connections: blockType === "taleComplete" ? [] : [{ targetBlockId: "finish", connectionType: blockType === "choice" ? "CHOICE" : "DEFAULT", orderIndex: 0 }],
+    connections:
+      blockType === "taleComplete"
+        ? []
+        : [{ targetBlockId: "finish", connectionType: blockType === "choice" ? "CHOICE" : "DEFAULT", orderIndex: 0 }],
   };
   if (blockType === "choice") {
     block.configuration.choices = [{ id: "choice", label: "Finish", targetBlockId: "finish" }];
@@ -53,9 +56,35 @@ function sourceFor(blockType: string): PublishedTaleSnapshot {
   }
   return {
     schemaVersion: 1,
-    tale: { id: "synthetic", slug: "synthetic", title: "Synthetic", subtitle: null, shortDescription: null, longDescription: null, coverAssetId: null, theme: "default", visibility: "PRIVATE", playerCountMin: 1, playerCountMax: 1, estimatedDuration: null, contentWarnings: null },
-    chapters: [{ id: "chapter", title: "Synthetic", orderIndex: 0, entryBlockId: "start", completionBlockId: "finish", blocks: blockType === "taleComplete" ? [block] : [block, finish()] }],
-    assets: [], locations: [], artifacts: [], publishedAt: "2026-08-12T00:00:00.000Z",
+    tale: {
+      id: "synthetic",
+      slug: "synthetic",
+      title: "Synthetic",
+      subtitle: null,
+      shortDescription: null,
+      longDescription: null,
+      coverAssetId: null,
+      theme: "default",
+      visibility: "PRIVATE",
+      playerCountMin: 1,
+      playerCountMax: 1,
+      estimatedDuration: null,
+      contentWarnings: null,
+    },
+    chapters: [
+      {
+        id: "chapter",
+        title: "Synthetic",
+        orderIndex: 0,
+        entryBlockId: "start",
+        completionBlockId: "finish",
+        blocks: blockType === "taleComplete" ? [block] : [block, finish()],
+      },
+    ],
+    assets: [],
+    locations: [],
+    artifacts: [],
+    publishedAt: "2026-08-12T00:00:00.000Z",
   };
 }
 
@@ -78,9 +107,19 @@ function scenarioFor(snapshot: PublishedTaleSnapshot, blockType: string): Drydoc
     purpose: "Differentially compare the shared One Voyage transition plan.",
     seed: "all-current-block-types",
     initialState: { variables: {}, inventory: [], actorMode: "CREATOR" },
-    environment: { virtualStart: "2026-08-12T00:00:00.000Z", locale: "en-US", viewport: "DESKTOP", reducedMotion: true, soundEnabled: false, keyboardOnly: true },
+    environment: {
+      virtualStart: "2026-08-12T00:00:00.000Z",
+      locale: "en-US",
+      viewport: "DESKTOP",
+      reducedMotion: true,
+      soundEnabled: false,
+      keyboardOnly: true,
+    },
     limits: { maxSteps: 2, maxStates: 10, maxTraceEntries: 10, maxVirtualMilliseconds: 10_000 },
-    inputs: [input], faults: [], assertions: [], tags: ["synthetic", "differential"],
+    inputs: [input],
+    faults: [],
+    assertions: [],
+    tags: ["synthetic", "differential"],
   };
 }
 

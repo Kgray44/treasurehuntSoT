@@ -1,8 +1,21 @@
 import type { JsonObject, PublishedTaleSnapshot } from "@/chronicle/types";
-import { enabledSnapshotBlocks, planCanonicalCompletion, type CanonicalRuntimeState } from "@/chronicle/runtime-semantics";
+import {
+  enabledSnapshotBlocks,
+  planCanonicalCompletion,
+  type CanonicalRuntimeState,
+} from "@/chronicle/runtime-semantics";
 import { canonicalChecksum } from "@/drydock/canonical";
-import { advanceDrydockVirtualClock, createDrydockVirtualClock, type DrydockVirtualClock } from "@/drydock/simulation/clock";
-import type { DrydockFaultScheduleEntry, DrydockScenario, DrydockScenarioAssertion, DrydockScenarioInput } from "@/drydock/simulation/model";
+import {
+  advanceDrydockVirtualClock,
+  createDrydockVirtualClock,
+  type DrydockVirtualClock,
+} from "@/drydock/simulation/clock";
+import type {
+  DrydockFaultScheduleEntry,
+  DrydockScenario,
+  DrydockScenarioAssertion,
+  DrydockScenarioInput,
+} from "@/drydock/simulation/model";
 import { createDrydockSeededRandom, type DrydockSeededRandom } from "@/drydock/simulation/random";
 import { drydockFaultDefinition } from "@/drydock/simulation/faults";
 import { parseDrydockScenario } from "@/drydock/simulation/schema";
@@ -27,6 +40,9 @@ export type DrydockSimulationTraceEntry = Readonly<{
 export type DrydockSimulationCoverage = Readonly<{
   blockIds: readonly string[];
   edgeIds: readonly string[];
+  endingBlockIds: readonly string[];
+  stateDigests: readonly string[];
+  providerOutcomes: readonly string[];
   eventTypes: readonly string[];
   faultIds: readonly string[];
   environmentModes: readonly string[];
@@ -77,7 +93,9 @@ function stateDigest(state: CanonicalRuntimeState) {
   });
 }
 
-function simulationStatus(state: CanonicalRuntimeState): Extract<DrydockSimulationStatus, "ACTIVE" | "PAUSED" | "COMPLETED"> {
+function simulationStatus(
+  state: CanonicalRuntimeState,
+): Extract<DrydockSimulationStatus, "ACTIVE" | "PAUSED" | "COMPLETED"> {
   return state.status;
 }
 
@@ -115,7 +133,11 @@ function dueFaults(scenario: DrydockScenario, inputIndex: number) {
   return scenario.faults.filter((fault) => fault.beforeInput === inputIndex);
 }
 
-function applyFaults(runtime: MutableSimulation, scenario: DrydockScenario, faults: readonly DrydockFaultScheduleEntry[]) {
+function applyFaults(
+  runtime: MutableSimulation,
+  scenario: DrydockScenario,
+  faults: readonly DrydockFaultScheduleEntry[],
+) {
   for (const fault of faults) {
     const definition = drydockFaultDefinition(fault.family, fault.code);
     if (!definition) {
@@ -149,13 +171,16 @@ function rejectsCompletion(input: DrydockScenarioInput) {
 
 function blockAtCursor(runtime: MutableSimulation) {
   return runtime.state.currentBlockId
-    ? enabledSnapshotBlocks(runtime.snapshot).find((block) => block.id === runtime.state.currentBlockId) ?? null
+    ? (enabledSnapshotBlocks(runtime.snapshot).find((block) => block.id === runtime.state.currentBlockId) ?? null)
     : null;
 }
 
 function requiredInputKind(block: NonNullable<ReturnType<typeof blockAtCursor>>) {
   const provider = String(
-    block.completion?.mode ?? block.configuration.verificationProvider ?? block.configuration.completionMode ?? "playerConfirmation",
+    block.completion?.mode ??
+      block.configuration.verificationProvider ??
+      block.configuration.completionMode ??
+      "playerConfirmation",
   );
   if (block.blockType === "choice") return "CHOICE" as const;
   if (provider === "textAnswer" || ["riddle", "textAnswer"].includes(block.blockType)) return "TEXT_ANSWER" as const;
@@ -185,7 +210,12 @@ function executeCompletion(runtime: MutableSimulation, scenario: DrydockScenario
   }
   if (input.kind === "CHOICE") {
     const current = enabledSnapshotBlocks(runtime.snapshot).find((block) => block.id === beforeBlockId);
-    if (!current || !current.connections.some((connection) => connection.connectionType === "CHOICE" && connection.targetBlockId === input.targetBlockId)) {
+    if (
+      !current ||
+      !current.connections.some(
+        (connection) => connection.connectionType === "CHOICE" && connection.targetBlockId === input.targetBlockId,
+      )
+    ) {
       runtime.status = "FAILED";
       appendTrace(runtime, scenario, input.kind, ["error:choice-target-unavailable"], []);
       return;
@@ -204,13 +234,23 @@ function executeCompletion(runtime: MutableSimulation, scenario: DrydockScenario
   }
   if (beforeBlockId && plan.nextBlockId) runtime.coveredEdges.add(`${beforeBlockId}->${plan.nextBlockId}`);
   recordState(runtime, scenario);
-  appendTrace(runtime, scenario, input.kind, plan.intents.map((intent) => intent.eventType), []);
+  appendTrace(
+    runtime,
+    scenario,
+    input.kind,
+    plan.intents.map((intent) => intent.eventType),
+    [],
+  );
 }
 
 function applyInput(runtime: MutableSimulation, scenario: DrydockScenario, input: DrydockScenarioInput) {
   if (input.kind === "ADVANCE_TIME") {
     try {
-      runtime.clock = advanceDrydockVirtualClock(runtime.clock, input.milliseconds, scenario.limits.maxVirtualMilliseconds);
+      runtime.clock = advanceDrydockVirtualClock(
+        runtime.clock,
+        input.milliseconds,
+        scenario.limits.maxVirtualMilliseconds,
+      );
       const current = blockAtCursor(runtime);
       const requiredMilliseconds = Number(current?.configuration.durationSeconds ?? 0) * 1_000;
       const elapsedMilliseconds = Date.parse(runtime.clock.currentAt) - Date.parse(runtime.currentBlockEnteredAt);
@@ -228,8 +268,10 @@ function applyInput(runtime: MutableSimulation, scenario: DrydockScenario, input
     appendTrace(runtime, scenario, input.kind, [`presentation:${input.outcome}`], []);
     return;
   }
+  if (input.kind === "PROVIDER") runtime.eventTypes.add(`providerOutcome:${input.outcome}`);
   if (rejectsCompletion(input)) {
-    const eventType = input.kind === "PROVIDER" && input.outcome === "UNCERTAIN" ? "verificationUncertain" : "verificationRejected";
+    const eventType =
+      input.kind === "PROVIDER" && input.outcome === "UNCERTAIN" ? "verificationUncertain" : "verificationRejected";
     runtime.eventTypes.add(eventType);
     appendTrace(runtime, scenario, input.kind, [eventType], []);
     return;
@@ -237,16 +279,101 @@ function applyInput(runtime: MutableSimulation, scenario: DrydockScenario, input
   executeCompletion(runtime, scenario, input);
 }
 
-function evaluateAssertions(runtime: MutableSimulation, assertions: readonly DrydockScenarioAssertion[]): DrydockAssertionResult[] {
+function evaluateAssertions(
+  runtime: MutableSimulation,
+  assertions: readonly DrydockScenarioAssertion[],
+): DrydockAssertionResult[] {
+  const eventTypes = runtime.trace.flatMap((entry) => entry.intentTypes);
+  const observedEventTypes = runtime.eventTypes;
+  const currentBlock = blockAtCursor(runtime);
+  const serializedTrace = JSON.stringify(runtime.trace);
+  const countEvents = (eventType: string) => eventTypes.filter((value) => value === eventType).length;
+  const inventoryContains = (artifactId: string) => runtime.state.inventory.includes(artifactId);
   return assertions.map((assertion) => {
-    if (assertion.kind === "CURRENT_BLOCK") return { kind: assertion.kind, passed: runtime.state.currentBlockId === assertion.blockId };
+    if (assertion.kind === "CURRENT_BLOCK")
+      return { kind: assertion.kind, passed: runtime.state.currentBlockId === assertion.blockId };
     if (assertion.kind === "STATUS") return { kind: assertion.kind, passed: runtime.status === assertion.status };
     if (assertion.kind === "EVENT_COUNT")
       return {
         kind: assertion.kind,
-        passed: runtime.trace.flatMap((entry) => entry.intentTypes).filter((eventType) => eventType === assertion.eventType).length === assertion.count,
+        passed: countEvents(assertion.eventType) === assertion.count,
       };
-    return { kind: assertion.kind, passed: runtime.coveredBlocks.has(assertion.blockId) };
+    if (assertion.kind === "COVERED_BLOCK")
+      return { kind: assertion.kind, passed: runtime.coveredBlocks.has(assertion.blockId) };
+    if (assertion.kind === "CURRENT_BLOCK_IS")
+      return { kind: assertion.kind, passed: runtime.state.currentBlockId === assertion.blockId };
+    if (assertion.kind === "CURRENT_CHAPTER_IS")
+      return { kind: assertion.kind, passed: currentBlock?.chapterId === assertion.chapterId };
+    if (assertion.kind === "FINAL_OUTCOME_IS")
+      return { kind: assertion.kind, passed: runtime.status === assertion.status };
+    if (assertion.kind === "VARIABLE_EQUALS")
+      return { kind: assertion.kind, passed: runtime.state.variables[assertion.variable] === assertion.expected };
+    if (assertion.kind === "VARIABLE_NOT_EXPOSED")
+      return { kind: assertion.kind, passed: !serializedTrace.includes(assertion.variable) };
+    if (
+      assertion.kind === "INVENTORY_CONTAINS" ||
+      assertion.kind === "ARTIFACT_GRANTED" ||
+      assertion.kind === "REVEAL_EXISTS"
+    )
+      return {
+        kind: assertion.kind,
+        passed: inventoryContains(assertion.kind === "REVEAL_EXISTS" ? assertion.revealId : assertion.artifactId),
+      };
+    if (assertion.kind === "INVENTORY_DOES_NOT_CONTAIN")
+      return { kind: assertion.kind, passed: !inventoryContains(assertion.artifactId) };
+    if (assertion.kind === "ARTIFACT_NOT_DUPLICATED")
+      return {
+        kind: assertion.kind,
+        passed: runtime.state.inventory.filter((artifactId) => artifactId === assertion.artifactId).length <= 1,
+      };
+    if (assertion.kind === "SIDE_EFFECT_COUNT" || assertion.kind === "EVENT_INTENT_COUNT")
+      return { kind: assertion.kind, passed: countEvents(assertion.eventType) === assertion.count };
+    if (assertion.kind === "EVENT_INTENT_ORDER")
+      return {
+        kind: assertion.kind,
+        passed:
+          JSON.stringify(eventTypes.slice(0, assertion.eventTypes.length)) === JSON.stringify(assertion.eventTypes),
+      };
+    if (assertion.kind === "EVENT_INTENT_TYPE")
+      return { kind: assertion.kind, passed: eventTypes.includes(assertion.eventType) };
+    if (assertion.kind === "IDEMPOTENCY_PRESERVED")
+      return { kind: assertion.kind, passed: runtime.state.inventory.length === new Set(runtime.state.inventory).size };
+    if (assertion.kind === "PROVIDER_REQUESTED")
+      return {
+        kind: assertion.kind,
+        passed: [...observedEventTypes].some((eventType) => eventType.startsWith("providerOutcome:")),
+      };
+    if (assertion.kind === "PROVIDER_OUTCOME")
+      return { kind: assertion.kind, passed: observedEventTypes.has(`providerOutcome:${assertion.outcome}`) };
+    if (assertion.kind === "PLAYER_SAFE_FIELD_PRESENT")
+      return {
+        kind: assertion.kind,
+        passed: assertion.field === "status" || runtime.trace.every((entry) => Boolean(entry.stateDigest)),
+      };
+    if (assertion.kind === "PROTECTED_FIELD_ABSENT")
+      return { kind: assertion.kind, passed: !serializedTrace.includes(assertion.field) };
+    if (assertion.kind === "PRESENTATION_OUTCOME")
+      return { kind: assertion.kind, passed: eventTypes.includes(`presentation:${assertion.outcome}`) };
+    if (assertion.kind === "COVERAGE_THRESHOLD") {
+      const count =
+        assertion.domain === "BLOCKS"
+          ? runtime.coveredBlocks.size
+          : assertion.domain === "EDGES"
+            ? runtime.coveredEdges.size
+            : assertion.domain === "FAULTS"
+              ? runtime.faultIds.size
+              : runtime.environmentModes.size;
+      return { kind: assertion.kind, passed: count >= assertion.minimum };
+    }
+    if (assertion.kind === "TRACE_STEP_LIMIT")
+      return { kind: assertion.kind, passed: runtime.trace.length <= assertion.maximum };
+    if (assertion.kind === "RUN_COMPLETES") return { kind: assertion.kind, passed: runtime.status === "COMPLETED" };
+    if (assertion.kind === "RUN_REMAINS_INCOMPLETE")
+      return { kind: assertion.kind, passed: runtime.status === "INCOMPLETE_PROOF" };
+    return {
+      kind: assertion.kind,
+      passed: eventTypes.includes(`error:${assertion.code}`) || eventTypes.includes(assertion.code),
+    };
   });
 }
 
@@ -321,6 +448,12 @@ export function runDrydockScenario(
     coverage: {
       blockIds: [...runtime.coveredBlocks].sort((left, right) => left.localeCompare(right, "en")),
       edgeIds: [...runtime.coveredEdges].sort((left, right) => left.localeCompare(right, "en")),
+      endingBlockIds:
+        runtime.status === "COMPLETED" && runtime.state.currentBlockId ? [runtime.state.currentBlockId] : [],
+      stateDigests: [...runtime.seenStates].sort((left, right) => left.localeCompare(right, "en")),
+      providerOutcomes: [...runtime.eventTypes]
+        .filter((eventType) => eventType.startsWith("providerOutcome:"))
+        .sort((left, right) => left.localeCompare(right, "en")),
       eventTypes: [...runtime.eventTypes].sort((left, right) => left.localeCompare(right, "en")),
       faultIds: [...runtime.faultIds].sort((left, right) => left.localeCompare(right, "en")),
       environmentModes: [...runtime.environmentModes].sort((left, right) => left.localeCompare(right, "en")),

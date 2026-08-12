@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-12
 ---
 
 # Current status
@@ -25,6 +25,13 @@ artifacts, and removal follow ordinary membership and event-time rules, and the
 Player view remains a Player-safe projection. Current evidence is isolated and
 local; mainline integration, deployment, live-Voyage behavior, and owner
 acceptance are not yet claimed.
+
+**Project Drydock Phase 3 active branch:** Creator-only Sea Trials provide
+revisioned source-bound deterministic Scenarios, synthetic faults, virtual
+time, Suites, safe trace/coverage receipts, and an adapter-level One Voyage
+transition differential. They cannot change a live Voyage, provider, or
+published Chronicle. The branch has focused local evidence only; it is not
+candidate-qualified, on main, deployed, or owner accepted.
 
 Project Tideglass Phase 2 is accepted on main and adds local/server Chronicle edition intelligence:
 stable change codes, explainable significance, compatibility deltas,

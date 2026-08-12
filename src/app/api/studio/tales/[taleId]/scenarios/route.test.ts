@@ -22,7 +22,29 @@ vi.mock("@/drydock/scenario-store", () => ({
 import { GET, POST } from "./route";
 
 const checksum = "a".repeat(64);
-const scenario = { schemaVersion: 1, id: "scenario-1", revision: 1, sourceChecksum: checksum, title: "Path", purpose: "Verify path", seed: "seed", initialState: { variables: {}, inventory: [], actorMode: "CREATOR" }, environment: { virtualStart: "2026-01-01T00:00:00.000Z", locale: "en-US", viewport: "DESKTOP", reducedMotion: false, soundEnabled: true, keyboardOnly: false }, limits: { maxSteps: 10, maxStates: 10, maxTraceEntries: 10, maxVirtualMilliseconds: 1000 }, inputs: [], faults: [], assertions: [], tags: [] };
+const scenario = {
+  schemaVersion: 1,
+  id: "scenario-1",
+  revision: 1,
+  sourceChecksum: checksum,
+  title: "Path",
+  purpose: "Verify path",
+  seed: "seed",
+  initialState: { variables: {}, inventory: [], actorMode: "CREATOR" },
+  environment: {
+    virtualStart: "2026-01-01T00:00:00.000Z",
+    locale: "en-US",
+    viewport: "DESKTOP",
+    reducedMotion: false,
+    soundEnabled: true,
+    keyboardOnly: false,
+  },
+  limits: { maxSteps: 10, maxStates: 10, maxTraceEntries: 10, maxVirtualMilliseconds: 1000 },
+  inputs: [],
+  faults: [],
+  assertions: [],
+  tags: [],
+};
 const context = { params: Promise.resolve({ taleId: "tale-1" }) };
 
 describe("Drydock Scenario route", () => {
@@ -43,7 +65,10 @@ describe("Drydock Scenario route", () => {
 
   it("refuses a stale Scenario before it can be persisted", async () => {
     const response = await POST(
-      new Request("http://localhost/scenarios", { method: "POST", body: JSON.stringify({ ...scenario, sourceChecksum: "b".repeat(64) }) }),
+      new Request("http://localhost/scenarios", {
+        method: "POST",
+        body: JSON.stringify({ ...scenario, sourceChecksum: "b".repeat(64) }),
+      }),
       context,
     );
     expect(response.status).toBe(409);
@@ -53,7 +78,10 @@ describe("Drydock Scenario route", () => {
 
   it("persists only a current, CSRF-authorized Scenario revision", async () => {
     mocks.save.mockResolvedValueOnce({ scenarioId: "scenario-1", revision: 1 });
-    const response = await POST(new Request("http://localhost/scenarios", { method: "POST", body: JSON.stringify(scenario) }), context);
+    const response = await POST(
+      new Request("http://localhost/scenarios", { method: "POST", body: JSON.stringify(scenario) }),
+      context,
+    );
     expect(response.status).toBe(201);
     expect(mocks.authorization).toHaveBeenLastCalledWith("tale-1", expect.any(Request));
     expect(mocks.save).toHaveBeenCalledWith("tale-1", expect.objectContaining({ id: "scenario-1" }));

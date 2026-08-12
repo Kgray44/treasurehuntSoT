@@ -67,7 +67,16 @@ const fixture = (): PublishedTaleSnapshot => {
       estimatedDuration: null,
       contentWarnings: null,
     },
-    chapters: [{ id: "chapter-a", title: "Chapter", orderIndex: 0, entryBlockId: "start", completionBlockId: "finish", blocks: [start, set, condition, choice, reveal, finish] }],
+    chapters: [
+      {
+        id: "chapter-a",
+        title: "Chapter",
+        orderIndex: 0,
+        entryBlockId: "start",
+        completionBlockId: "finish",
+        blocks: [start, set, condition, choice, reveal, finish],
+      },
+    ],
     assets: [],
     locations: [],
     artifacts: [],
@@ -93,7 +102,12 @@ const scenarioFor = (snapshot: PublishedTaleSnapshot): DrydockScenario => ({
     keyboardOnly: true,
   },
   limits: { maxSteps: 10, maxStates: 10, maxTraceEntries: 10, maxVirtualMilliseconds: 10_000 },
-  inputs: [{ kind: "CONTINUE" }, { kind: "CHOICE", targetBlockId: "reveal" }, { kind: "CONTINUE" }, { kind: "CONTINUE" }],
+  inputs: [
+    { kind: "CONTINUE" },
+    { kind: "CHOICE", targetBlockId: "reveal" },
+    { kind: "CONTINUE" },
+    { kind: "CONTINUE" },
+  ],
   faults: [],
   assertions: [
     { kind: "STATUS", status: "COMPLETED" },
@@ -158,7 +172,10 @@ describe("Drydock deterministic simulation", () => {
       connections: [{ targetBlockId: "finish", connectionType: "DEFAULT", orderIndex: 0 }],
     };
     const blocked = { ...scenarioFor(snapshot), inputs: [{ kind: "CONTINUE" as const }] };
-    const accepted = { ...scenarioFor(snapshot), inputs: [{ kind: "TEXT_ANSWER" as const, outcome: "MATCH" as const }, { kind: "CONTINUE" as const }] };
+    const accepted = {
+      ...scenarioFor(snapshot),
+      inputs: [{ kind: "TEXT_ANSWER" as const, outcome: "MATCH" as const }, { kind: "CONTINUE" as const }],
+    };
 
     expect(runDrydockScenario(snapshot, blocked).status).toBe("ACTIVE");
     expect(runDrydockScenario(snapshot, blocked).coverage.eventTypes).toContain("inputRejected");
@@ -176,7 +193,10 @@ describe("Drydock deterministic simulation", () => {
       connections: [{ targetBlockId: "finish", connectionType: "DEFAULT", orderIndex: 0 }],
     };
     const tooSoon = { ...scenarioFor(snapshot), inputs: [{ kind: "ADVANCE_TIME" as const, milliseconds: 1_999 }] };
-    const elapsed = { ...scenarioFor(snapshot), inputs: [{ kind: "ADVANCE_TIME" as const, milliseconds: 2_000 }, { kind: "CONTINUE" as const }] };
+    const elapsed = {
+      ...scenarioFor(snapshot),
+      inputs: [{ kind: "ADVANCE_TIME" as const, milliseconds: 2_000 }, { kind: "CONTINUE" as const }],
+    };
 
     expect(runDrydockScenario(snapshot, tooSoon).status).toBe("ACTIVE");
     expect(runDrydockScenario(snapshot, elapsed).status).toBe("COMPLETED");

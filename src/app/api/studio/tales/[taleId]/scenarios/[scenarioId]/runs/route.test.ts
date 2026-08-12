@@ -1,6 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const mocks = vi.hoisted(() => ({ authorization: vi.fn(), studio: vi.fn(), snapshot: vi.fn(), list: vi.fn(), schedule: vi.fn(), execute: vi.fn() }));
+const mocks = vi.hoisted(() => ({
+  authorization: vi.fn(),
+  studio: vi.fn(),
+  snapshot: vi.fn(),
+  list: vi.fn(),
+  schedule: vi.fn(),
+  execute: vi.fn(),
+}));
 vi.mock("@/chronicle/studio-authorization", () => ({ requireOwnedStudioTale: mocks.authorization }));
 vi.mock("@/chronicle/studio-service", () => ({ getStudioTale: mocks.studio }));
 vi.mock("@/chronicle/publishing", () => ({ snapshotFromStudio: mocks.snapshot }));
@@ -35,18 +42,29 @@ describe("Drydock simulation run route", () => {
     mocks.schedule.mockResolvedValueOnce({ runId: "run-1" });
     mocks.execute.mockResolvedValueOnce({ summary: { runId: "run-1", status: "COMPLETED" } });
 
-    const response = await POST(new Request("http://localhost/runs", { method: "POST", body: JSON.stringify({ revision: 3 }) }), context);
+    const response = await POST(
+      new Request("http://localhost/runs", { method: "POST", body: JSON.stringify({ revision: 3 }) }),
+      context,
+    );
 
     expect(response.status).toBe(201);
     expect(mocks.schedule).toHaveBeenCalledWith(
-      expect.objectContaining({ taleId: "tale", scenarioId: "scenario", revision: 3, snapshot: { source: "server-derived" } }),
+      expect.objectContaining({
+        taleId: "tale",
+        scenarioId: "scenario",
+        revision: 3,
+        snapshot: { source: "server-derived" },
+      }),
     );
     expect(mocks.execute).toHaveBeenCalledWith("tale", "run-1");
     expect(response.headers.get("Cache-Control")).toBe("private, no-store");
   });
 
   it("rejects unsupported run options without scheduling", async () => {
-    const response = await POST(new Request("http://localhost/runs", { method: "POST", body: JSON.stringify({ execute: "now" }) }), context);
+    const response = await POST(
+      new Request("http://localhost/runs", { method: "POST", body: JSON.stringify({ execute: "now" }) }),
+      context,
+    );
     expect(response.status).toBe(400);
     expect(mocks.schedule).not.toHaveBeenCalled();
   });

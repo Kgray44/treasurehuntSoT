@@ -35,6 +35,9 @@ const admiraltyContracts = [
 const tideglassContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
   .contracts.map((contract) => contract.id)
   .filter((contractId) => contractId.startsWith("tideglass-"));
+const drydockContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
+  .contracts.map((contract) => contract.id)
+  .filter((contractId) => contractId.startsWith("drydock-"));
 
 function isHelmFile(file) {
   return (
@@ -162,7 +165,7 @@ function contractFor(file, family) {
   if (isBridgewatchFile(file) || family === "unit.bridgewatch") return ["bridgewatch.mission-control"];
   if (isHelmFile(file) || family === "unit.helm" || family === "component.helm" || family === "browser.helm")
     return isHelmPresenceFile(file) ? helmPresenceContracts : helmBaseContracts;
-  if (file.includes("drydock") || family === "unit.drydock") return ["drydock-authoring-contracts"];
+  if (file.includes("drydock") || family === "unit.drydock") return drydockContracts;
   if (file.includes("admiralty") || family.includes("admiralty")) return admiraltyContracts;
   if (file.includes("tideglass") || family === "unit.tideglass") return tideglassContractsFor(file);
   if (file.includes("deepwater") || family === "unit.deepwater") return ["deepwater.capability-realization-integrity"];

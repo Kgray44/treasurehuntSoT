@@ -10,7 +10,10 @@ import {
 const privateHeaders = { "Cache-Control": "private, no-store" };
 
 function unavailable() {
-  return NextResponse.json({ error: "This simulation run is not available for the current Chronicle." }, { status: 404, headers: privateHeaders });
+  return NextResponse.json(
+    { error: "This simulation run is not available for the current Chronicle." },
+    { status: 404, headers: privateHeaders },
+  );
 }
 
 export async function GET(request: Request, context: { params: Promise<{ taleId: string; runId: string }> }) {

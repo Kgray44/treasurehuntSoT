@@ -18,6 +18,10 @@ const mysqlMigrations = [
       "DrydockSimulationRun_draftId_fkey",
     ],
   ],
+  [
+    "0057_drydock_phase3_run_provenance",
+    ["ALTER TABLE `DrydockSimulationRun`", "`sourceGitSha`", "`scenarioSchemaVersion`", "`faultCatalogVersion`"],
+  ],
 ];
 const temporaryRoot = await mkdtemp(join(tmpdir(), "drydock-phase3-migration-"));
 const databasePath = join(temporaryRoot, "rehearsal.db");
@@ -40,7 +44,12 @@ try {
       );
     }
   }
-  for (const tableName of ["DrydockScenario", "DrydockScenarioRevision", "DrydockScenarioSuite", "DrydockSimulationRun"]) {
+  for (const tableName of [
+    "DrydockScenario",
+    "DrydockScenarioRevision",
+    "DrydockScenarioSuite",
+    "DrydockSimulationRun",
+  ]) {
     const table = database.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?").get(tableName);
     if (!table) throw new Error(`DRYDOCK_PHASE3_MIGRATION_TABLE_MISSING:${tableName}`);
   }
