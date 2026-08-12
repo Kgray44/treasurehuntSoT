@@ -2534,6 +2534,28 @@
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-1-accepted-mainline",
       "adapter": "admiralty-phase1-browser"
+    },
+    {
+      "id": "unit.bridgewatch",
+      "name": "Bridgewatch Phase 2 mission-control units",
+      "tier": 1,
+      "owner": "bridgewatch",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 30000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.sounding-line"],
+      "contracts": ["bridgewatch.mission-control"],
+      "affectedPaths": [
+        "bridgewatch/**",
+        "scripts/sounding-line/status-projection.mjs",
+        "Development_Docs/Project_Bridgewatch_Phase_2_*.md"
+      ],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "phase-2-branch-complete",
+      "adapter": "vitest-family"
     }
   ]
 }

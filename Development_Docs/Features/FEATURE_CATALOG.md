@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `ca40227cbef3575315c089d224a0cd26ec77bc78`
+Audited source commit: `9b950a5fd603be27c813f9298b0b14888fbce6cf`
 
 ## Status vocabulary
 
@@ -949,6 +949,39 @@ A private, standalone, read-only development mission-control dashboard projects 
 
 ---
 
+## FT-035 - Bridgewatch Governed Signal Projection
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Bridgewatch Phase 2
+
+A private Bridgewatch extension that projects explicit Project Registry and Sounding Line observer evidence into durable local operational state while keeping test, release, merge, and project-completion authority outside the dashboard.
+
+### Important subfeatures
+
+- Read-only Sounding Line runtime projection with explicit lifecycle normalization
+- Durable SQLite worker, test-node, and test-run history with idempotent migrations
+- Opt-in bearer-authenticated activity telemetry with rate, skew, stale-state, and credential-redaction controls
+- Lifecycle tabs, project biography, worker/test summaries, responsive layout, and reduced-motion support
+
+### Primary surfaces
+
+`bridgewatch`, `POST /api/telemetry/heartbeat`, `GET /api/history`, `GET /api/tests`
+
+### Meaningful limitations
+
+- Bridgewatch remains an observer and cannot create, approve, merge, retry, or authorize work.
+- Mainline integration does not claim a private deployment, provider proof, or owner-acceptance record.
+
+### Evidence
+
+- commit: `9b950a5fd603be27c813f9298b0b14888fbce6cf`
+- path: `bridgewatch/lib/store.ts`
+- path: `bridgewatch/src/sounding-line.ts`
+- test: `bridgewatch/test/sounding-line.test.ts`
+- completion-record: `Development_Docs/Project_Bridgewatch_Phase_2_Completion_Receipt.md`
+
+---
+
 ## FT-B001 - Unified Identity and Session Authority
 
 **Status:** MAINLINE
@@ -1410,4 +1443,4 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `ca40227cbef3575315c089d224a0cd26ec77bc78`
+Generation source commit: `9b950a5fd603be27c813f9298b0b14888fbce6cf`

@@ -8,7 +8,7 @@ import ts from "typescript";
 import { promisify } from "node:util";
 
 const root = process.cwd();
-const ignored = new Set(["node_modules", ".git", ".next", "coverage", "artifacts"]);
+const ignored = new Set(["node_modules", ".git", ".next", "coverage", "artifacts", "dist"]);
 const homeportContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
   .contracts.map((contract) => contract.id)
   .filter((contractId) => contractId.startsWith("homeport."));
@@ -63,7 +63,12 @@ function isHelmPresenceFile(file) {
   );
 }
 
+function isBridgewatchFile(file) {
+  return file.startsWith("bridgewatch/") || file === "scripts/sounding-line/status-projection.mjs";
+}
+
 function ownerFor(file) {
+  if (isBridgewatchFile(file)) return "bridgewatch";
   if (isHelmFile(file)) return "project-helm";
   if (file.includes("drydock")) return "drydock";
   if (file.includes("admiralty")) return "project-admiralty";
@@ -80,6 +85,7 @@ function ownerFor(file) {
 }
 
 function unitFamily(file) {
+  if (isBridgewatchFile(file)) return "unit.bridgewatch";
   if (isHelmFile(file)) return "unit.helm";
   if (file.startsWith("src/drydock/") || file.startsWith("scripts/drydock/")) return "unit.drydock";
   if (file.startsWith("src/admiralty/") || file.startsWith("scripts/admiralty/")) return "unit.admiralty";
@@ -156,6 +162,7 @@ function browserFamily(project, file, title) {
 }
 
 function contractFor(file, family) {
+  if (isBridgewatchFile(file) || family === "unit.bridgewatch") return ["bridgewatch.mission-control"];
   if (isHelmFile(file) || family === "unit.helm" || family === "component.helm" || family === "browser.helm")
     return isHelmPresenceFile(file) ? helmPresenceContracts : helmBaseContracts;
   if (file.includes("drydock") || family === "unit.drydock") return drydockContracts;
@@ -328,7 +335,7 @@ function collect(source, relative) {
 }
 
 const sources = await Promise.all(
-  ["src", "tests", "scripts"].map(async (name) => (await walk(path.join(root, name))).filter(Boolean)),
+  ["src", "tests", "scripts", "bridgewatch"].map(async (name) => (await walk(path.join(root, name))).filter(Boolean)),
 );
 const cases = [];
 for (const absolute of sources.flat()) {

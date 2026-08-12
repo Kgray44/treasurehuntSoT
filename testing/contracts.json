@@ -3179,6 +3179,13 @@
       "authority": "tideglass",
       "owners": ["tideglass"],
       "critical": true
+    },
+    {
+      "id": "bridgewatch.mission-control",
+      "name": "Read-only governed mission-control observation integrity",
+      "authority": "bridgewatch",
+      "owners": ["bridgewatch"],
+      "critical": true
     }
   ]
 }
