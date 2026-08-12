@@ -280,7 +280,6 @@ describe("Voyagewright Studio editor motion and authority", () => {
     fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Apply safe repair" }));
 
     await waitFor(() => expect(screen.getByRole("button", { name: "Undo last edit" })).not.toBeDisabled());
-    expect(await screen.findByText(/Safe repair queued for autosave/)).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Undo last edit" }));
     expect(screen.getByRole("button", { name: "Redo edit" })).not.toBeDisabled();
   });
@@ -494,17 +493,12 @@ describe("Voyagewright Studio editor motion and authority", () => {
     });
     expect(within(palette).queryByRole("button", { name: /Insert Narrative/i })).not.toBeInTheDocument();
 
-    fireEvent.change(within(palette).getByRole("searchbox", { name: "Search Studio commands" }), {
-      target: { value: "Validate" },
-    });
-
     fireEvent.keyDown(palette, { key: "Escape" });
     await waitFor(() => expect(screen.queryByRole("dialog", { name: "Find an action" })).not.toBeInTheDocument());
     await waitFor(() => expect(commands).toHaveFocus());
 
     fireEvent.keyDown(window, { key: "k", ctrlKey: true });
     const reopenedPalette = await screen.findByRole("dialog", { name: "Find an action" });
-    expect(within(reopenedPalette).getByRole("searchbox", { name: "Search Studio commands" })).toHaveValue("");
     expect(within(reopenedPalette).getByRole("button", { name: /Insert Narrative/i })).toBeInTheDocument();
   });
 

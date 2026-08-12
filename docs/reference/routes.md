@@ -3,7 +3,7 @@ title: Route reference
 audience: reference
 status: current
 canonical_for: route-reference
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-12
 ---
 
 # Route reference
@@ -49,8 +49,9 @@ Project Admiralty Phase 1 adds `/admin` as a privileged route and
 detail routes. Authorized roles receive an account-menu entry and filtered
 Admiralty navigation; ordinary accounts receive neither. Every route still
 returns a non-revealing not-found result before privileged projection when its
-server-side capability check fails. Phase 2 is branch-only, not deployed, and
-pending exact-source authority and owner walkthrough.
+server-side capability check fails. The owner accepted the Phase 2 walkthrough;
+its candidate remains branch-only, not deployed, and pending exact-source
+authority and protected mainline integration.
 
 Mainline Google and GitHub OAuth adds public provider discovery and start routes
 plus the exact callbacks

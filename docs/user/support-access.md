@@ -3,7 +3,7 @@ title: Support Access
 audience: user
 status: current
 canonical_for: support-access-guide
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-12
 ---
 
 # Support Access
@@ -33,5 +33,6 @@ through a separately trusted channel.
 Project Admiralty Phase 1 is owner accepted on canonical main. Phase 2 places
 the same consent flow in the account dossier for authorized support operators;
 it does not weaken target approval, exact scope, recent assurance, expiry,
-revocation, or auditing. Phase 2 remains branch-only and pending owner
-walkthrough. Neither phase is claimed deployed by this guide.
+revocation, or auditing. The owner accepted the Phase 2 walkthrough; its
+branch candidate remains pending exact-source authority and protected mainline
+integration. Neither phase is claimed deployed by this guide.

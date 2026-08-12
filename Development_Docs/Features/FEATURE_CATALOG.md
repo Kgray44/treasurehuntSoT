@@ -949,6 +949,39 @@ A private, standalone, read-only development mission-control dashboard projects 
 
 ---
 
+## FT-035 - Bridgewatch Governed Signal Projection
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Bridgewatch Phase 2
+
+A private Bridgewatch extension that projects explicit Project Registry and Sounding Line observer evidence into durable local operational state while keeping test, release, merge, and project-completion authority outside the dashboard.
+
+### Important subfeatures
+
+- Read-only Sounding Line runtime projection with explicit lifecycle normalization
+- Durable SQLite worker, test-node, and test-run history with idempotent migrations
+- Opt-in bearer-authenticated activity telemetry with rate, skew, stale-state, and credential-redaction controls
+- Lifecycle tabs, project biography, worker/test summaries, responsive layout, and reduced-motion support
+
+### Primary surfaces
+
+`bridgewatch`, `POST /api/telemetry/heartbeat`, `GET /api/history`, `GET /api/tests`
+
+### Meaningful limitations
+
+- Bridgewatch remains an observer and cannot create, approve, merge, retry, or authorize work.
+- Mainline integration does not claim a private deployment, provider proof, or owner-acceptance record.
+
+### Evidence
+
+- commit: `9b950a5fd603be27c813f9298b0b14888fbce6cf`
+- path: `bridgewatch/lib/store.ts`
+- path: `bridgewatch/src/sounding-line.ts`
+- test: `bridgewatch/test/sounding-line.test.ts`
+- completion-record: `Development_Docs/Project_Bridgewatch_Phase_2_Completion_Receipt.md`
+
+---
+
 ## FT-B001 - Unified Identity and Session Authority
 
 **Status:** MAINLINE
@@ -1357,7 +1390,7 @@ The accepted server-side foundation compares exact immutable Chronicle editions,
 **Status:** MAINLINE
 **Program or subsystem:** Project Admiralty
 
-Owner-accepted Phase 1 establishes canonical roles, recent privileged assurance, scoped user consent, and sanitized audit evidence on main. The Phase 2 review branch expands that authority into a read-only cross-domain command center without creating a second source of truth.
+Owner-accepted Phase 1 establishes canonical roles, recent privileged assurance, scoped user consent, and sanitized audit evidence on main. The owner-accepted Phase 2 mainline candidate expands that authority into a read-only cross-domain command center without creating a second source of truth.
 
 ### Important subfeatures
 
@@ -1384,7 +1417,7 @@ Owner-accepted Phase 1 establishes canonical roles, recent privileged assurance,
 - The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09
 - Owner-accepted Phase 1 implementation is integrated on canonical main with verified remote parity
 - Production MySQL execution, live-provider behavior, and physical assistive-technology validation remain external
-- Phase 2 command-center capability is implemented only on codex/project-admiralty-phase2-open-the-chartroom and remains pending exact-source authority, owner walkthrough, and canonical-main integration
+- The owner accepted the qualified Phase 2 walkthrough on 2026-08-12; its decision-record candidate still requires exact-source authority and canonical-main integration
 - Transactional-email delivery health and live verification-provider health are blocked by missing canonical owner contracts
 - Broad administrative mutation remains dormant for later governed phases
 - Owner acceptance does not imply deployment or acceptance of later Admiralty phases
@@ -1399,12 +1432,51 @@ Owner-accepted Phase 1 establishes canonical roles, recent privileged assurance,
 - path: `src/admiralty/read-models.ts`
 - test: `tests/e2e/admiralty-phase2.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Completion_Receipt.md`
+- completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Owner_Decision_Record.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md`
 
 ---
 
 # Completed Branch Features Not Yet Available on Main
+
+## FT-036 - Drydock Deterministic Sea Trials
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Drydock Phase 3
+
+Creators can persist revisioned synthetic Sea Trial scenarios and suites, deterministically execute the canonical One Voyage transition adapter with virtual time, seeded randomness, bounded faults, safe traces, coverage, and semantic comparison, and inspect the resulting private Studio evidence without mutating a live Voyage.
+
+### Important subfeatures
+
+- Strict versioned Scenario and Scenario Suite contracts
+- Revisioned owned Scenario persistence and frozen run source
+- Deterministic virtual clock, seeded randomness, bounded faults, and assertions
+- Canonical One Voyage transition adapter differential proof
+- Safe trace, state-diff, replay, coverage, and suggestion projections
+- Private Creator Studio Scenario Lab and CSRF-protected owned APIs
+- Additive SQLite and static MySQL migration parity
+
+### Primary surfaces
+
+`/studio/tales/[taleId]/trials`, `/api/studio/tales/[taleId]/scenarios`, `/api/studio/tales/[taleId]/simulation-runs`, `npm run drydock:cli`
+
+### Meaningful limitations
+
+- Branch-complete local qualification is not protected-main availability, deployment, or owner acceptance.
+- Sea Trials use synthetic bounded inputs and never mutate a live Tale Session, provider, asset, or Player state.
+- Live provider, production MySQL, physical-device, and external assistive-technology proof remain outside this phase.
+- Immutable publishing evidence and Phase 4 integration remain out of scope.
+
+### Evidence
+
+- path: `src/drydock/simulation/engine.ts`
+- path: `src/drydock/simulation-store.ts`
+- path: `src/components/studio/DrydockScenarioLab.tsx`
+- test: `src/drydock`
+- test: `src/app/api/studio/tales/[taleId]/scenarios`
+
+---
 
 # Deliberately Excluded Until Complete
 

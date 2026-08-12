@@ -2,7 +2,7 @@
   {
     "id": "FT-B010",
     "title": "Governed Platform Administration and Consented Support Access",
-    "summary": "Owner-accepted Phase 1 establishes canonical roles, recent privileged assurance, scoped user consent, and sanitized audit evidence on main. The Phase 2 review branch expands that authority into a read-only cross-domain command center without creating a second source of truth.",
+    "summary": "Owner-accepted Phase 1 establishes canonical roles, recent privileged assurance, scoped user consent, and sanitized audit evidence on main. The owner-accepted Phase 2 mainline candidate expands that authority into a read-only cross-domain command center without creating a second source of truth.",
     "status": "MAINLINE",
     "program": "Project Admiralty",
     "surfaces": [
@@ -51,6 +51,10 @@
       },
       {
         "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Owner_Decision_Record.md"
+      },
+      {
+        "kind": "completion-record",
         "value": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md"
       },
       {
@@ -62,7 +66,7 @@
       "The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09",
       "Owner-accepted Phase 1 implementation is integrated on canonical main with verified remote parity",
       "Production MySQL execution, live-provider behavior, and physical assistive-technology validation remain external",
-      "Phase 2 command-center capability is implemented only on codex/project-admiralty-phase2-open-the-chartroom and remains pending exact-source authority, owner walkthrough, and canonical-main integration",
+      "The owner accepted the qualified Phase 2 walkthrough on 2026-08-12; its decision-record candidate still requires exact-source authority and canonical-main integration",
       "Transactional-email delivery health and live verification-provider health are blocked by missing canonical owner contracts",
       "Broad administrative mutation remains dormant for later governed phases",
       "Owner acceptance does not imply deployment or acceptance of later Admiralty phases"

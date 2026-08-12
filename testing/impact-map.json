@@ -3,6 +3,21 @@
   "status": "phase-2-deepwater-control-plane",
   "pathMappings": [
     {
+      "path": "bridgewatch/**",
+      "suiteIds": ["unit.bridgewatch", "static.core"],
+      "contractIds": ["bridgewatch.mission-control"]
+    },
+    {
+      "path": "scripts/sounding-line/status-projection.mjs",
+      "suiteIds": ["unit.bridgewatch", "unit.sounding-line", "static.core"],
+      "contractIds": ["bridgewatch.mission-control"]
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_Phase_2_*.md",
+      "suiteIds": ["unit.bridgewatch", "static.core"],
+      "contractIds": ["bridgewatch.mission-control"]
+    },
+    {
       "path": "Development_Docs/Projects/Project_Helm/**",
       "suiteIds": ["unit.helm", "component.helm", "browser.helm", "static.core"],
       "contractIds": [
@@ -22,6 +37,31 @@
       "contractIds": ["helm.authority-membership.independent", "helm.participation.lifecycle"]
     },
     {
+      "path": "src/platform/membership-presence*",
+      "suiteIds": ["unit.helm", "component.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "helm.security.resource-authorization"]
+    },
+    {
+      "path": "src/platform/presence-client.ts",
+      "suiteIds": ["unit.helm", "component.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "helm.player-projection.firewall"]
+    },
+    {
+      "path": "src/app/api/captain/voyages/**",
+      "suiteIds": ["unit.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "helm.security.resource-authorization"]
+    },
+    {
+      "path": "src/app/api/player/playthroughs/**/presence/**",
+      "suiteIds": ["unit.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "helm.security.resource-authorization"]
+    },
+    {
+      "path": "prisma/**helm_phase2_membership_presence/**",
+      "suiteIds": ["unit.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "migration-parity"]
+    },
+    {
       "path": "src/components/platform/CaptainLibrary*",
       "suiteIds": ["component.helm", "browser.helm"],
       "contractIds": [
@@ -29,6 +69,11 @@
         "helm.participation.lifecycle",
         "helm.accessibility.responsive"
       ]
+    },
+    {
+      "path": "src/components/captain/CaptainOperationalPanel.tsx",
+      "suiteIds": ["component.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "helm.accessibility.responsive"]
     },
     {
       "path": "src/platform/invitations*",
@@ -132,22 +177,82 @@
     {
       "path": "Development_Docs/Projects/Project Drydock/**",
       "suiteIds": ["unit.drydock", "static.core"],
-      "contractIds": ["drydock-authoring-contracts"]
+      "contractIds": [
+        "drydock-authoring-contracts",
+        "drydock-scenario-contract",
+        "drydock-simulation-determinism",
+        "drydock-virtual-time",
+        "drydock-fault-contract",
+        "drydock-trace-privacy",
+        "drydock-coverage-contract",
+        "drydock-runtime-adapter",
+        "drydock-runtime-differential",
+        "drydock-no-live-mutation",
+        "drydock-durable-run",
+        "drydock-scenario-authorization",
+        "drydock-studio-scenario-lab",
+        "drydock-performance"
+      ]
     },
     {
       "path": "src/drydock/**",
       "suiteIds": ["unit.drydock", "static.core"],
-      "contractIds": ["drydock-authoring-contracts"]
+      "contractIds": [
+        "drydock-authoring-contracts",
+        "drydock-scenario-contract",
+        "drydock-simulation-determinism",
+        "drydock-virtual-time",
+        "drydock-fault-contract",
+        "drydock-trace-privacy",
+        "drydock-coverage-contract",
+        "drydock-runtime-adapter",
+        "drydock-runtime-differential",
+        "drydock-no-live-mutation",
+        "drydock-durable-run",
+        "drydock-scenario-authorization",
+        "drydock-studio-scenario-lab",
+        "drydock-performance"
+      ]
     },
     {
       "path": "scripts/drydock/**",
       "suiteIds": ["unit.drydock", "static.core"],
-      "contractIds": ["drydock-authoring-contracts"]
+      "contractIds": [
+        "drydock-authoring-contracts",
+        "drydock-scenario-contract",
+        "drydock-simulation-determinism",
+        "drydock-virtual-time",
+        "drydock-fault-contract",
+        "drydock-trace-privacy",
+        "drydock-coverage-contract",
+        "drydock-runtime-adapter",
+        "drydock-runtime-differential",
+        "drydock-no-live-mutation",
+        "drydock-durable-run",
+        "drydock-scenario-authorization",
+        "drydock-studio-scenario-lab",
+        "drydock-performance"
+      ]
     },
     {
       "path": "tests/fixtures/drydock/**",
       "suiteIds": ["unit.drydock", "static.core"],
-      "contractIds": ["drydock-authoring-contracts"]
+      "contractIds": [
+        "drydock-authoring-contracts",
+        "drydock-scenario-contract",
+        "drydock-simulation-determinism",
+        "drydock-virtual-time",
+        "drydock-fault-contract",
+        "drydock-trace-privacy",
+        "drydock-coverage-contract",
+        "drydock-runtime-adapter",
+        "drydock-runtime-differential",
+        "drydock-no-live-mutation",
+        "drydock-durable-run",
+        "drydock-scenario-authorization",
+        "drydock-studio-scenario-lab",
+        "drydock-performance"
+      ]
     },
     { "path": "Development_Docs/document-index.json", "suiteIds": ["static.core"], "contractIds": [] },
     {
@@ -5983,6 +6088,10 @@
     {
       "contractId": "admiralty.phase1.responsive-consent",
       "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "bridgewatch.mission-control",
+      "suiteIds": ["unit.bridgewatch", "unit.sounding-line"]
     },
     { "contractId": "tideglass-change-classification", "suiteIds": ["unit.tideglass"] },
     { "contractId": "tideglass-compatibility-deltas", "suiteIds": ["unit.tideglass"] },

@@ -8,13 +8,17 @@ import ts from "typescript";
 import { promisify } from "node:util";
 
 const root = process.cwd();
-const ignored = new Set(["node_modules", ".git", ".next", "coverage", "artifacts"]);
+const ignored = new Set(["node_modules", ".git", ".next", "coverage", "artifacts", "dist"]);
 const homeportContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
   .contracts.map((contract) => contract.id)
   .filter((contractId) => contractId.startsWith("homeport."));
 const helmContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
   .contracts.map((contract) => contract.id)
   .filter((contractId) => contractId.startsWith("helm."));
+const helmPresenceContracts = helmContracts.filter(
+  (contractId) => contractId === "helm.member-presence-synchronization",
+);
+const helmBaseContracts = helmContracts.filter((contractId) => contractId !== "helm.member-presence-synchronization");
 const hash = (text) => createHash("sha256").update(text).digest("hex").slice(0, 20);
 const execFileAsync = promisify(execFile);
 const normal = (value) => value.replaceAll("\\", "/");
@@ -39,17 +43,40 @@ const admiraltyContracts = [
 const tideglassContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
   .contracts.map((contract) => contract.id)
   .filter((contractId) => contractId.startsWith("tideglass-"));
+const drydockContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
+  .contracts.map((contract) => contract.id)
+  .filter((contractId) => contractId.startsWith("drydock-"));
 
 function isHelmFile(file) {
   return (
     file.includes("project-helm") ||
     file.startsWith("src/helm/") ||
+    file.includes("membership-presence") ||
+    file.includes("presence-client") ||
     file.includes(".helm.test.") ||
-    file.includes("src/app/api/captain/playthroughs/")
+    file.includes("src/app/api/captain/playthroughs/") ||
+    file.includes("src/app/api/captain/voyages/") ||
+    (file.includes("src/app/api/player/playthroughs/") && file.includes("/presence/"))
   );
 }
 
+function isHelmPresenceFile(file) {
+  return (
+    file.includes("membership-presence") ||
+    file.includes("presence-client") ||
+    file.includes("src/app/api/captain/voyages/") ||
+    (file.includes("src/app/api/player/playthroughs/") && file.includes("/presence/")) ||
+    file.includes("project-helm-phase") ||
+    file.includes("CaptainLibrary.helm.test")
+  );
+}
+
+function isBridgewatchFile(file) {
+  return file.startsWith("bridgewatch/") || file === "scripts/sounding-line/status-projection.mjs";
+}
+
 function ownerFor(file) {
+  if (isBridgewatchFile(file)) return "bridgewatch";
   if (isHelmFile(file)) return "project-helm";
   if (file.includes("drydock")) return "drydock";
   if (file.includes("admiralty")) return "project-admiralty";
@@ -66,6 +93,7 @@ function ownerFor(file) {
 }
 
 function unitFamily(file) {
+  if (isBridgewatchFile(file)) return "unit.bridgewatch";
   if (isHelmFile(file)) return "unit.helm";
   if (file.startsWith("src/drydock/") || file.startsWith("scripts/drydock/")) return "unit.drydock";
   if (file === "src/admiralty/read-models.test.ts") return "service.admiralty";
@@ -143,9 +171,10 @@ function browserFamily(project, file, title) {
 }
 
 function contractFor(file, family) {
+  if (isBridgewatchFile(file) || family === "unit.bridgewatch") return ["bridgewatch.mission-control"];
   if (isHelmFile(file) || family === "unit.helm" || family === "component.helm" || family === "browser.helm")
-    return helmContracts;
-  if (file.includes("drydock") || family === "unit.drydock") return ["drydock-authoring-contracts"];
+    return isHelmPresenceFile(file) ? helmPresenceContracts : helmBaseContracts;
+  if (file.includes("drydock") || family === "unit.drydock") return drydockContracts;
   if (file.includes("admiralty") || family.includes("admiralty")) return admiraltyContracts;
   if (file.includes("tideglass") || family === "unit.tideglass") return tideglassContractsFor(file);
   if (file.includes("deepwater") || family === "unit.deepwater") return ["deepwater.capability-realization-integrity"];
@@ -315,7 +344,7 @@ function collect(source, relative) {
 }
 
 const sources = await Promise.all(
-  ["src", "tests", "scripts"].map(async (name) => (await walk(path.join(root, name))).filter(Boolean)),
+  ["src", "tests", "scripts", "bridgewatch"].map(async (name) => (await walk(path.join(root, name))).filter(Boolean)),
 );
 const cases = [];
 for (const absolute of sources.flat()) {

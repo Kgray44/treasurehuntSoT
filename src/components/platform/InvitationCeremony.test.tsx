@@ -56,6 +56,8 @@ const invitation = {
   },
 };
 
+const invitationWithoutPin = { ...invitation, requiresPin: false };
+
 function response(status: number, body: unknown) {
   return {
     ok: status >= 200 && status < 300,
@@ -64,10 +66,13 @@ function response(status: number, body: unknown) {
   } as unknown as Response;
 }
 
-function renderInvitation(onRouteHandoff?: (destination: string, signal: AbortSignal) => void | Promise<void>) {
+function renderInvitation(
+  onRouteHandoff?: (destination: string, signal: AbortSignal) => void | Promise<void>,
+  onRouteRecovery?: (destination: string) => void,
+) {
   return render(
     <TestAuthority>
-      <InvitationCeremony onRouteHandoff={onRouteHandoff} />
+      <InvitationCeremony onRouteHandoff={onRouteHandoff} onRouteRecovery={onRouteRecovery} />
     </TestAuthority>,
   );
 }
@@ -166,6 +171,56 @@ describe("InvitationCeremony", () => {
     expect(navigation.refresh).not.toHaveBeenCalled();
   });
 
+  it("recovers with a document navigation when a soft handoff remains on invitation", async () => {
+    window.history.replaceState({}, "", "/player/invitation");
+    const recoverRoute = vi.fn();
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, { invitation, csrfToken: "csrf" }))
+      .mockResolvedValueOnce(response(200, { ok: true, playthroughId: "voyage-1" }));
+    vi.stubGlobal("fetch", fetch);
+    director.play.mockImplementation(async (_scene, options) => {
+      const result = await options.operation();
+      options.finalStateRuntime?.holdSafePose("access-result-readable");
+      return { outcome: "presented", finalSemanticState: "access-result-readable", operationResult: result };
+    });
+    renderInvitation(undefined, recoverRoute);
+    await screen.findByLabelText("Invitation PIN");
+    fireEvent.change(screen.getByLabelText("Invitation PIN"), { target: { value: "1234" } });
+
+    fireEvent.click(screen.getByRole("button", { name: "Accept and Join Voyage" }));
+
+    await waitFor(() => expect(navigation.push).toHaveBeenCalledWith("/player/playthroughs/voyage-1"));
+    await waitFor(() => expect(recoverRoute).toHaveBeenCalledWith("/player/playthroughs/voyage-1"), {
+      timeout: 3_000,
+    });
+  });
+
+  it("routes after acceptance while shared context invalidation is still pending", async () => {
+    const invalidation = deferred<{ status: "authenticated" }>();
+    invalidateCurrentUser.mockReturnValueOnce(invalidation.promise);
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, { invitation, csrfToken: "csrf" }))
+      .mockResolvedValueOnce(response(200, { ok: true, playthroughId: "voyage-1" }));
+    vi.stubGlobal("fetch", fetch);
+    director.play.mockImplementation(async (_scene, options) => {
+      const result = await options.operation();
+      options.finalStateRuntime?.holdSafePose("access-result-readable");
+      return { outcome: "presented", finalSemanticState: "access-result-readable", operationResult: result };
+    });
+    const handoff = vi.fn();
+    renderInvitation(handoff);
+    await screen.findByLabelText("Invitation PIN");
+    fireEvent.change(screen.getByLabelText("Invitation PIN"), { target: { value: "1234" } });
+
+    fireEvent.click(screen.getByRole("button", { name: "Accept and Join Voyage" }));
+
+    await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1", expect.any(AbortSignal)));
+    expect(invalidateCurrentUser).toHaveBeenCalledTimes(1);
+    invalidation.resolve({ status: "authenticated" });
+  });
+
   it("starts the authoritative accept request even when presentation never invokes its operation", async () => {
     const fetch = vi
       .fn()
@@ -178,6 +233,22 @@ describe("InvitationCeremony", () => {
     fireEvent.change(screen.getByLabelText("Invitation PIN"), { target: { value: "1234" } });
     expect(screen.getByRole("button", { name: "Accept and Join Voyage" })).toHaveAttribute("type", "button");
     expect(screen.getByRole("button", { name: "Decline Invitation" })).toHaveAttribute("type", "button");
+
+    fireEvent.click(screen.getByRole("button", { name: "Accept and Join Voyage" }));
+
+    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+    expect(fetch.mock.calls[1]?.[0]).toBe("/api/invitations/accept");
+  });
+
+  it("starts the visible no-PIN accept request without waiting for presentation", async () => {
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, { invitation: invitationWithoutPin, csrfToken: "csrf" }))
+      .mockResolvedValueOnce(response(200, { ok: true, playthroughId: "voyage-1" }));
+    vi.stubGlobal("fetch", fetch);
+    director.play.mockImplementation(() => new Promise(() => undefined));
+    renderInvitation();
+    await screen.findByRole("button", { name: "Accept and Join Voyage" });
 
     fireEvent.click(screen.getByRole("button", { name: "Accept and Join Voyage" }));
 

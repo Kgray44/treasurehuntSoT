@@ -3,14 +3,15 @@ title: Admiralty Command Center
 audience: administrator-support-operations-security
 status: current
 canonical_for: admiralty-command-center-guide
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-12
 ---
 
 # Admiralty Command Center
 
 Project Admiralty is Voyagewright's governed platform-administration surface.
-Phase 1 authority is owner accepted on main. The Phase 2 Chartroom is currently
-available only on its named review branch and remains pending owner walkthrough.
+Phase 1 authority is owner accepted on main. The Phase 2 Chartroom has owner
+acceptance on its named mainline candidate and awaits exact-source authority and
+protected integration.
 
 An identity with an active Admiralty role sees **Admiralty** in the account
 workspace menu. The visible areas are filtered by named read capabilities:

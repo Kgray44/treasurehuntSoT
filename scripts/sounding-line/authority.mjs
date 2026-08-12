@@ -167,7 +167,12 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
         SOUNDING_LINE_SUITE_HARD_BUDGET_MS: String(suite.hardBudgetMs),
       });
     }
-    const result = await executeAdapter(adapter, { cwd: root, env: adapterEnv, timeoutMs: suite.hardBudgetMs });
+    const adapterWorkingDirectory = adapter.workingDirectory === "bridgewatch" ? path.join(root, "bridgewatch") : root;
+    const result = await executeAdapter(adapter, {
+      cwd: adapterWorkingDirectory,
+      env: adapterEnv,
+      timeoutMs: suite.hardBudgetMs,
+    });
     const browserCounts =
       suite.adapter === "playwright-family"
         ? {

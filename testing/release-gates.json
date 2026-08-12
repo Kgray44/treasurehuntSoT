@@ -55,7 +55,8 @@
         "unit.admiralty",
         "component.admiralty",
         "browser.admiralty",
-        "service.admiralty"
+        "service.admiralty",
+        "unit.bridgewatch"
       ]
     },
     {
@@ -100,7 +101,8 @@
         "unit.admiralty",
         "component.admiralty",
         "browser.admiralty",
-        "service.admiralty"
+        "service.admiralty",
+        "unit.bridgewatch"
       ],
       "conditionalSuites": [
         "unit.helm",

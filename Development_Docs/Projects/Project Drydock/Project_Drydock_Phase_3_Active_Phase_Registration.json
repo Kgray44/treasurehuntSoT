@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "project": "Project Drydock",
+  "projectId": "project-drydock",
+  "phase": 3,
+  "phaseName": "Run Sea Trials",
+  "phaseId": "project-drydock-phase-3-run-sea-trials",
+  "state": "CANDIDATE_FROZEN_PENDING_CANONICAL_ACCEPTANCE",
+  "branch": "codex/project-drydock-phase3-run-sea-trials",
+  "worktree": {
+    "ownership": "TASK_OWNED",
+    "path": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-drydock-phase3"
+  },
+  "baseSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+  "governingDocument": "Development_Docs/Projects/Project Drydock/Project_Drydock_Governing_Document.pdf",
+  "integrationPattern": ["COMPLETE_VERTICAL_SLICE", "ADDITIVE_FOUNDATION", "CANONICAL_RUNTIME_ADAPTER"],
+  "concurrencyClass": "CLASS_B_COORDINATED",
+  "serializedSharedContracts": [
+    "Drydock simulation model",
+    "One Voyage canonical transition adapter",
+    "Prisma schema and migrations",
+    "Sounding Line policy registries",
+    "Feature Catalog Studio fragment"
+  ],
+  "hardDependencies": [
+    {
+      "project": "Project Drydock Phase 1",
+      "state": "ACCEPTED_MAINLINE",
+      "mergeSha": "468530645e983412e5f4c1aaa103915be77c9c07"
+    },
+    {
+      "project": "Project Drydock Phase 2",
+      "state": "ACCEPTED_MAINLINE",
+      "mergeSha": "847e035775984888be71edf614f2205fd6c5a376"
+    }
+  ],
+  "sharedContracts": [
+    {
+      "contract": "Chronicle runtime transition semantics",
+      "canonicalOwner": "Project One Voyage",
+      "drydockUse": "A pure, exported One Voyage transition adapter consumed by production progression and simulation; Drydock owns no live session mutation."
+    },
+    {
+      "contract": "Creator Studio interaction and layout",
+      "canonicalOwner": "Project Shipwright",
+      "drydockUse": "Drydock-owned scenario, trace, diff, and coverage data are projected through existing Studio interaction patterns."
+    },
+    {
+      "contract": "Presentation outcomes and reduced-motion behavior",
+      "canonicalOwner": "Project Lanternwake",
+      "drydockUse": "Typed simulated presentation outcomes only; no animation-runtime ownership."
+    },
+    {
+      "contract": "Protected assets and provider evidence",
+      "canonicalOwner": "Project Sealed Hold and provider owners",
+      "drydockUse": "Synthetic bounded fault outcomes and redacted evidence only."
+    }
+  ],
+  "schemaImpact": {
+    "prismaChanges": "RESERVED_ADDITIVE",
+    "models": ["DrydockScenario", "DrydockScenarioRevision", "DrydockScenarioSuite", "DrydockSimulationRun"],
+    "migrations": [],
+    "backfills": []
+  },
+  "phaseBoundary": {
+    "deterministicSimulation": "IN_SCOPE",
+    "scenarioLabAndTraceInspection": "IN_SCOPE",
+    "runtimeAdapterAndDifferentialProof": "IN_SCOPE",
+    "liveTaleSessionMutation": "PROHIBITED",
+    "immutablePublishingEvidence": "OUT_OF_SCOPE_PHASE_4",
+    "phase4LaunchIntegration": "OUT_OF_SCOPE"
+  },
+  "expectedAcceptanceGate": "Sounding Line / Mainline Decision",
+  "registeredAt": "2026-08-12",
+  "acceptance": {
+    "priorCandidate": {
+      "candidateSha": "1c888c92d7aa54abf9d16d86e916751bab4b7fc1",
+      "candidateTag": "project-drydock-phase3-candidate-20260812",
+      "decision": "RELEASE_NO_GO",
+      "decisionDate": "2026-08-12",
+      "record": "Project_Drydock_Phase_3_Mainline_Decision_Failure_Record.md",
+      "disposition": "TERMINAL_FOR_CANDIDATE_RETURNED_TO_DEVELOPMENT"
+    },
+    "replacementCandidate": {
+      "candidateTag": "project-drydock-phase3-candidate-20260812-r2",
+      "candidateSha": "bc8f404b81659348bb229ac662b34961186a4068",
+      "status": "SUPERSEDED_BY_CURRENT_MAIN_RECONCILIATION",
+      "qualification": [
+        "Drydock subsystem, Studio/API, migration, policy, Prisma, documentation, static, and production-build checks passed",
+        "No persistent task-local browser environment override is present",
+        "Shared validation lock observed released before freeze"
+      ]
+    },
+    "currentMainReconciliation": {
+      "acceptedMainSha": "5735d43821209adb2259ec2c38979281da1bb5b9",
+      "reconciliationCommit": "566598c8a785939264c7aebfafad74bdb923d7c1",
+      "record": "Project_Drydock_Phase_3_Reconciliation_Record.md",
+      "disposition": "REQUALIFIED_AND_FROZEN"
+    },
+    "currentCandidate": {
+      "candidateTag": "project-drydock-phase3-candidate-20260812-r3",
+      "candidateSha": "01a925d13fb5ab0a6064c1e6e4d2f1995a032349",
+      "status": "TERMINAL_EVIDENCE_INVALID_RETURNED_TO_FOCUSED_DEVELOPMENT",
+      "authoritativeDecision": {
+        "workflow": "Sounding Line authoritative",
+        "runId": 31601859085,
+        "gate": "mainline",
+        "decision": "EVIDENCE_INVALID",
+        "failedSuite": "browser.helm",
+        "cleanupState": "CLEAN",
+        "focusedDiagnosticRunId": 31604050573,
+        "focusedDiagnosticDisposition": "FAILED_CLEAN_HELM_PRESENCE_PROJECTION_NONCONVERGENCE",
+        "record": "Project_Drydock_Phase_3_Mainline_Decision_Failure_Record.md"
+      },
+      "qualification": [
+        "Drydock subsystem, Studio/API, migration, Sounding Line runtime, policy, Prisma, documentation, static, and production-build checks passed",
+        "Current-main Bridgewatch closure records were mechanically formatted after the static check identified Prettier drift",
+        "The candidate received its one hosted Mainline Decision and cannot be retried; focused Helm failure reproduction is required before any replacement freeze",
+        "No protected integration or exact-main acceptance is claimed"
+      ]
+    },
+    "focusedRecovery": {
+      "helmRepairSourceCommit": "bf03b0811eada44f6f9db56858b76e7c778e1d81",
+      "combinedSourceCommit": "5717ab5c2f1445cd899471932b99eacf20e81bc1",
+      "focusedUnitQualification": "15/15 passed",
+      "focusedHostedRunId": 31608295048,
+      "focusedHostedSuite": "browser.helm",
+      "focusedHostedResult": "PASSED_CLEAN_3_OF_3",
+      "baseVerification": {
+        "originMainSha": "5735d43821209adb2259ec2c38979281da1bb5b9",
+        "advancedSinceR3": false
+      },
+      "disposition": "FULL_REPLACEMENT_CANDIDATE_QUALIFICATION_COMPLETED"
+    },
+    "replacementCandidateR4": {
+      "candidateTag": "project-drydock-phase3-candidate-20260812-r4",
+      "status": "TERMINAL_EVIDENCE_INVALID_RETURNED_TO_FOCUSED_DEVELOPMENT",
+      "qualifiedBaseSha": "5735d43821209adb2259ec2c38979281da1bb5b9",
+      "baseVerification": "Current fetched origin/main has not advanced from the r3-qualified base; the branch remains a strict descendant.",
+      "qualification": [
+        "Drydock Sea Trial suite: 33 files / 196 tests passed",
+        "Studio Scenario Lab and scenario/simulation API scope: 6 files / 14 tests passed",
+        "Phase 2 and Phase 3 SQLite migration rehearsals passed with 59 migrations and static MySQL parity",
+        "Helm recovery unit scope: 15/15 passed; focused hosted browser.helm run 31608295048 passed 3/3 with clean teardown",
+        "Policy, Prisma schema validation, generated client, typecheck, static validation, and Sounding Line runtime checks passed",
+        "Production build, documentation validation, and branch-complete Feature Catalog validation passed"
+      ],
+      "authoritativeDecision": {
+        "workflow": "Sounding Line authoritative",
+        "runId": 31612564391,
+        "gate": "mainline",
+        "decision": "EVIDENCE_INVALID",
+        "failedSuite": "unit.feature-catalog",
+        "failure": "Audited catalog contains 46 entries while the stable-count test expected 45.",
+        "cleanupState": "CLEAN",
+        "record": "Project_Drydock_Phase_3_Mainline_Decision_Failure_Record.md"
+      },
+      "acceptanceBoundary": "r4 consumed its one Mainline Decision and is terminal. A focused Feature Catalog repair, full replacement qualification, a new frozen SHA, current-main reconciliation, and a new serialized authority grant are required before another decision. Protected integration and exact-main proof remain unclaimed."
+    },
+    "replacementCandidateR5": {
+      "candidateTag": "project-drydock-phase3-candidate-20260812-r5",
+      "status": "SUPERSEDED_BY_ACCEPTED_HELM_MAINLINE_RECONCILIATION",
+      "qualifiedRecoveryCommit": "6a5d66e23e1793afb60bcafc16f723661798d68e",
+      "qualifiedBaseSha": "5735d43821209adb2259ec2c38979281da1bb5b9",
+      "baseVerification": "Fetched origin/main remains the r4-qualified base and the recovery branch is a strict descendant; no additional reconciliation or conflict resolution was needed.",
+      "qualification": [
+        "Focused Feature Catalog suite: 9/9 passed; stable audited count is 46 and FT-036 is explicitly asserted",
+        "Drydock Sea Trial suite: 33 files / 196 tests passed",
+        "Studio Scenario Lab and scenario/simulation API scope: 6 files / 14 tests passed",
+        "Phase 2 and Phase 3 SQLite migration rehearsals passed with 59 migrations and static MySQL parity",
+        "Policy, Prisma schema validation, generated client, typecheck, static validation, and Sounding Line runtime checks passed",
+        "Production build, documentation validation, and branch-complete Feature Catalog validation passed at 46 entries"
+      ],
+      "acceptanceBoundary": "r5 did not receive authority. Protected main advanced to Helm-accepted 920d92a51a16d60a2dfe35278598e6d921be7e4c, so r5 is historical and a post-Helm replacement candidate is required. r4 remains terminal history and may not be retried; protected integration and exact-main proof remain unclaimed."
+    },
+    "postHelmMainReconciliation": {
+      "acceptedMainSha": "920d92a51a16d60a2dfe35278598e6d921be7e4c",
+      "acceptedHelmCandidate": "61cb6e0fc8df4bf8b5a38cc14f3f1bc715d8ee00",
+      "record": "Project_Drydock_Phase_3_Reconciliation_Record.md",
+      "disposition": "REBASED_WITH_SHARED_REGISTRY_PRESERVED_AND_REQUALIFIED"
+    },
+    "replacementCandidateR6": {
+      "candidateTag": "project-drydock-phase3-candidate-20260812-r6",
+      "status": "FROZEN_PENDING_SERIALIZED_CANONICAL_ACCEPTANCE",
+      "qualifiedReconciliationHead": "339b3436c42ad59e441a7b1ce6af34c4db36a17b",
+      "qualifiedBaseSha": "920d92a51a16d60a2dfe35278598e6d921be7e4c",
+      "baseVerification": "Fetched origin/main is Helm's accepted protected merge. The rebase skipped Drydock's already-integrated Helm repair and preserved both Helm presence and Drydock contract mappings in the shared Sounding Line registry.",
+      "qualification": [
+        "Feature Catalog sync/validation at 46 entries and focused suite: 9/9 passed",
+        "Sounding Line policy: 57 suites / 455 contracts; runtime scope: 21/21 passed",
+        "Drydock Sea Trial suite: 33 files / 196 tests passed",
+        "Phase 2 and Phase 3 SQLite migration rehearsals passed with 59 migrations and static MySQL parity",
+        "Generated Prisma client, typecheck, static validation, and production build passed",
+        "Documentation index/validation passed"
+      ],
+      "acceptanceBoundary": "This new frozen candidate may receive one explicit Mainline Decision only after serialized canonical acceptance ownership is acquired. r5 is superseded by the accepted Helm main advance; protected integration and exact-main proof remain unclaimed."
+    }
+  }
+}
