@@ -99,8 +99,21 @@ production-build, documentation, and 46-entry Feature Catalog qualification
 then passed. Fetched `origin/main` remained
 `5735d43821209adb2259ec2c38979281da1bb5b9` with no advance or conflict.
 
+Candidate r5 was frozen but did not receive authority. Helm's accepted protected
+merge advanced main to `920d92a51a16d60a2dfe35278598e6d921be7e4c`, so r5 is
+superseded and must not be used for a decision.
+
+## r6 replacement candidate
+
+The r6 rebase preserved both accepted Helm presence contracts and Drydock
+contracts in the shared Sounding Line registry. Feature Catalog passed 9/9 at
+46 entries; policy passed at 57 suites / 455 contracts; Sounding Line runtime
+passed 21/21; Drydock passed 33 files / 196 tests; both migrations passed at 59
+with static MySQL parity; generated Prisma client, typecheck, static, production
+build, documentation, and Catalog validation passed.
+
 The next commit is frozen under tag
-`project-drydock-phase3-candidate-20260812-r5`. It is the sole current
+`project-drydock-phase3-candidate-20260812-r6`. It is the sole current
 replacement candidate eligible for one explicit Mainline Decision after
-canonical acceptance ownership is acquired. r4 remains terminal history and
-must never be retried.
+canonical acceptance ownership is acquired. r3 and r4 remain terminal history;
+r5 is superseded and none may be retried.

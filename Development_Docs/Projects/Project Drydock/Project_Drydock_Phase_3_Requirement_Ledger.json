@@ -981,9 +981,9 @@
       "securityEvidence": "rollback and safety records",
       "privacyEvidence": "truth-bound evidence classifications",
       "performanceEvidence": "performance record",
-      "currentStatus": "REPLACEMENT_CANDIDATE_R5_QUALIFIED_FROZEN",
+      "currentStatus": "REPLACEMENT_CANDIDATE_R6_QUALIFIED_FROZEN",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "r4 ended EVIDENCE_INVALID because the Feature Catalog stable-count test expected 45 rather than the audited 46 entries. r5 is frozen after focused repair and full qualification; no protected acceptance or completion receipt is claimed."
+      "limitation": "r4 ended EVIDENCE_INVALID because the Feature Catalog stable-count test expected 45 rather than the audited 46 entries. r5 was superseded before authority by Helm's accepted main advance; r6 is frozen after reconciliation and qualification. No protected acceptance or completion receipt is claimed."
     },
     {
       "id": "DD-P3-059",
@@ -997,9 +997,9 @@
       "securityEvidence": "NOT_APPLICABLE",
       "privacyEvidence": "NOT_APPLICABLE",
       "performanceEvidence": "NOT_APPLICABLE",
-      "currentStatus": "CURRENT_MAIN_VERIFIED_NO_ADVANCE_R5_FROZEN",
+      "currentStatus": "CURRENT_HELM_MAIN_RECONCILED_R6_FROZEN",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "r3 ended EVIDENCE_INVALID; r4 then ended EVIDENCE_INVALID solely in the Feature Catalog stable-count test. origin/main remained unchanged through r5 reconciliation, so no additional merge reconciliation exists before r5's one Mainline Decision."
+      "limitation": "r3 ended EVIDENCE_INVALID; r4 then ended EVIDENCE_INVALID solely in the Feature Catalog stable-count test. Helm's accepted PR #53 advanced origin/main to 920d92a5 after r5 freeze, so r5 was superseded and the branch was reconciled once for r6."
     },
     {
       "id": "DD-P3-060",
@@ -1013,9 +1013,9 @@
       "securityEvidence": "protected merge policy",
       "privacyEvidence": "NOT_APPLICABLE",
       "performanceEvidence": "NOT_APPLICABLE",
-      "currentStatus": "R5_FROZEN_PENDING_CANONICAL_ACCEPTANCE",
+      "currentStatus": "R6_FROZEN_PENDING_CANONICAL_ACCEPTANCE",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "r3 and r4 each ended EVIDENCE_INVALID. r4's sole failure was unit.feature-catalog expecting 45 rather than 46 audited entries. r5 is newly qualified and frozen; it may receive exactly one new Mainline Decision only after canonical ownership is acquired. No protected integration or exact-main proof is claimed."
+      "limitation": "r3 and r4 each ended EVIDENCE_INVALID. r4's sole failure was unit.feature-catalog expecting 45 rather than 46 audited entries. r5 was superseded by Helm's accepted protected main advance. r6 is newly reconciled, qualified, and frozen; it may receive exactly one new Mainline Decision only after canonical ownership is acquired. No protected integration or exact-main proof is claimed."
     }
   ]
 }

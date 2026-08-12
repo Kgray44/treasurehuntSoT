@@ -159,7 +159,7 @@
     },
     "replacementCandidateR5": {
       "candidateTag": "project-drydock-phase3-candidate-20260812-r5",
-      "status": "FROZEN_PENDING_SERIALIZED_CANONICAL_ACCEPTANCE",
+      "status": "SUPERSEDED_BY_ACCEPTED_HELM_MAINLINE_RECONCILIATION",
       "qualifiedRecoveryCommit": "6a5d66e23e1793afb60bcafc16f723661798d68e",
       "qualifiedBaseSha": "5735d43821209adb2259ec2c38979281da1bb5b9",
       "baseVerification": "Fetched origin/main remains the r4-qualified base and the recovery branch is a strict descendant; no additional reconciliation or conflict resolution was needed.",
@@ -171,7 +171,29 @@
         "Policy, Prisma schema validation, generated client, typecheck, static validation, and Sounding Line runtime checks passed",
         "Production build, documentation validation, and branch-complete Feature Catalog validation passed at 46 entries"
       ],
-      "acceptanceBoundary": "This new frozen candidate may receive one explicit Mainline Decision only after serialized canonical acceptance ownership is acquired. r4 is terminal history and may not be retried; protected integration and exact-main proof remain unclaimed."
+      "acceptanceBoundary": "r5 did not receive authority. Protected main advanced to Helm-accepted 920d92a51a16d60a2dfe35278598e6d921be7e4c, so r5 is historical and a post-Helm replacement candidate is required. r4 remains terminal history and may not be retried; protected integration and exact-main proof remain unclaimed."
+    },
+    "postHelmMainReconciliation": {
+      "acceptedMainSha": "920d92a51a16d60a2dfe35278598e6d921be7e4c",
+      "acceptedHelmCandidate": "61cb6e0fc8df4bf8b5a38cc14f3f1bc715d8ee00",
+      "record": "Project_Drydock_Phase_3_Reconciliation_Record.md",
+      "disposition": "REBASED_WITH_SHARED_REGISTRY_PRESERVED_AND_REQUALIFIED"
+    },
+    "replacementCandidateR6": {
+      "candidateTag": "project-drydock-phase3-candidate-20260812-r6",
+      "status": "FROZEN_PENDING_SERIALIZED_CANONICAL_ACCEPTANCE",
+      "qualifiedReconciliationHead": "339b3436c42ad59e441a7b1ce6af34c4db36a17b",
+      "qualifiedBaseSha": "920d92a51a16d60a2dfe35278598e6d921be7e4c",
+      "baseVerification": "Fetched origin/main is Helm's accepted protected merge. The rebase skipped Drydock's already-integrated Helm repair and preserved both Helm presence and Drydock contract mappings in the shared Sounding Line registry.",
+      "qualification": [
+        "Feature Catalog sync/validation at 46 entries and focused suite: 9/9 passed",
+        "Sounding Line policy: 57 suites / 455 contracts; runtime scope: 21/21 passed",
+        "Drydock Sea Trial suite: 33 files / 196 tests passed",
+        "Phase 2 and Phase 3 SQLite migration rehearsals passed with 59 migrations and static MySQL parity",
+        "Generated Prisma client, typecheck, static validation, and production build passed",
+        "Documentation index/validation passed"
+      ],
+      "acceptanceBoundary": "This new frozen candidate may receive one explicit Mainline Decision only after serialized canonical acceptance ownership is acquired. r5 is superseded by the accepted Helm main advance; protected integration and exact-main proof remain unclaimed."
     }
   }
 }

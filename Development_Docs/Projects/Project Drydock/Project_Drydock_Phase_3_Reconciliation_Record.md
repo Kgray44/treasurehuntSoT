@@ -95,6 +95,31 @@ or conflict resolution exists to perform. The next commit is bound by tag
 Mainline Decision only after serialized canonical acceptance ownership is
 acquired.
 
+## r6 post-Helm main reconciliation and replacement freeze
+
+Helm Phase 2 then completed protected merge PR #53 at
+`920d92a51a16d60a2dfe35278598e6d921be7e4c`, with accepted candidate
+`61cb6e0fc8df4bf8b5a38cc14f3f1bc715d8ee00`; its sealed authority returned
+`RELEASE_GO` with 38 clean receipts and its protected binding passed. That
+accepted main advance supersedes r5 before authority: r5 received no Mainline
+Decision and remains historical evidence only.
+
+Drydock was rebased once onto accepted main `920d92a51a16d60a2dfe35278598e6d921be7e4c`.
+The already-integrated Helm recovery was skipped as equivalent. The sole shared
+policy conflict was resolved by preserving Helm's presence-specific contract
+mapping and Drydock's dynamically loaded Drydock contracts; generated Catalog
+conflicts were rebuilt through `features:sync`, never hand-edited. The exact
+reconciled source then passed Feature Catalog 9/9 at 46 entries, policy (57
+suites / 455 contracts), Sounding Line runtime 21/21, Drydock 33 files / 196
+tests, both 59-migration SQLite rehearsals with static MySQL parity, generated
+Prisma client, typecheck, static validation, production build, and documentation
+validation.
+
+The next commit is frozen under tag
+`project-drydock-phase3-candidate-20260812-r6`. It is the only candidate
+eligible for one new explicit Mainline Decision after serialized canonical
+acceptance ownership is acquired.
+
 ## r4 authority disposition
 
 Candidate r4 (`fd57f0f23330d86502808b197c2b9d5f3a90e422`) consumed its one
