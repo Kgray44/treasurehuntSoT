@@ -31,8 +31,9 @@ Screenshots, Playwright report, synthetic credentials, and SQLite fixture remain
 
 ## Remaining qualification and release gates
 
-1. Present the prepared product walkthrough and acquire canonical owner acceptance.
-2. Dispatch exactly one `Sounding Line / Mainline Decision`; only `RELEASE_GO` permits protected-mainline merge and exact-main proof.
+1. Canonical owner acceptance was recorded for reviewed product source `c2fc8fcc` on `2026-08-12`.
+2. The first documentation-candidate authority preflight exposed the missing-worktree-baseline condition before any receipt. A task-owned immutable clone and registered 3/3 access-sentinel focused repair now support requalification; see the Validation Record.
+3. Dispatch exactly one replacement `Sounding Line / Mainline Decision`; only `RELEASE_GO` permits protected-mainline merge and exact-main proof.
 
 ## Known separate condition
 

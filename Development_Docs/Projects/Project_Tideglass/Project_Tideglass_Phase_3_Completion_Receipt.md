@@ -17,6 +17,12 @@ Mainline Decision, pull request, protected merge, exact-main proof,
 remote-parity proof, Deepwater finding closure, or Feature Catalog promotion
 exists. Phase 4 has not begun.
 
+The first local Mainline Decision invocation for documentation candidate
+`897e7619` failed before it could create any suite receipt or finalizer decision
+because this owned worktree lacked `prisma/dev.db`. The failure is recorded in
+the Validation Record; its task-owned immutable baseline repair has focused
+proof but no replacement authority decision yet.
+
 When and only when those gates are completed, this receipt will record the
 owner-reviewed and candidate SHAs, protected integration, post-merge evidence,
 catalog status, route/screen registrations, cleanup, and explicit Phase 4

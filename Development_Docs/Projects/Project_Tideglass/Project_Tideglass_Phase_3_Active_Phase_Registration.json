@@ -21,6 +21,6 @@
   "reopenedReason": "The initial candidate lacked a repository-backed fixture and did not exercise the full governed Phase 3 state matrix. It was superseded before owner walkthrough or authority dispatch.",
   "ownerReviewedProductSha": "c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6",
   "ownerDecision": "ACCEPTED on 2026-08-12; Project_Tideglass_Phase_3_Owner_Decision_Record.md records the reviewed scope and preserved boundaries.",
-  "candidateEvidence": "Reconciled product source c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6 has a task-owned fixture receipt and source-bound ten-capture visual manifest. Owner acceptance is recorded; no Sounding Line authority decision is represented here.",
-  "nextGate": "Freeze the documentation-qualified candidate and dispatch exactly one Sounding Line Mainline Decision against its exact SHA."
+  "candidateEvidence": "Reconciled product source c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6 has a task-owned fixture receipt and source-bound ten-capture visual manifest. Owner acceptance is recorded. The first local authority preflight for documentation candidate 897e7619 failed before any suite receipt because the worktree baseline was absent; a task-owned immutable clone and a passing focused access-sentinel proof now support requalification.",
+  "nextGate": "Freeze the post-repair documentation-qualified candidate and dispatch exactly one replacement Sounding Line Mainline Decision against its exact SHA."
 }

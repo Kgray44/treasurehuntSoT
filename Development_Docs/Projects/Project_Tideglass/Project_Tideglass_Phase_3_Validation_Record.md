@@ -29,3 +29,24 @@ source is recorded in `Project_Tideglass_Phase_3_Owner_Decision_Record.md`.
 This is still local qualification evidence until the next authority, one frozen
 exact-SHA Sounding Line Mainline Decision, is `RELEASE_GO`. No protected merge,
 Deepwater finding closure, deployment, or Phase 4 work has been started.
+
+## Authority preflight and focused repair
+
+The first local Mainline Decision invocation for documentation candidate
+`897e7619d1c110824a22b93c9e7c5ecef24989aa` ended before a suite receipt or
+finalizer decision. Its exact preflight failure was
+`ENOENT ...\\prisma\\dev.db`: this owned worktree intentionally has no baseline
+database. It is recorded as an infrastructure preflight failure, not as a
+passing decision or a product-test result.
+
+The repair created a fresh task-owned baseline at
+`%LOCALAPPDATA%\\ProjectTideglass\\phase3-mainline-authority\\baseline-897e7619.db`
+from the canonical database as an immutable copy. The canonical source hash,
+the clone hash before focused proof, the canonical hash after focused proof,
+and the clone hash after focused proof were all
+`54647911F63C6A55E5C6B6C95E5EC0A2977B4580A42DE073C8C503A3D8C7A412`.
+The non-authoritative, registered focused repair command
+`node scripts/sounding-line/authority.mjs mainline --suite browser.access-sentinel --execute-only`
+then passed all 3/3 access-sentinel cases with runtime conformance `PASSED`.
+Only this infrastructure proof is carried forward; the next frozen candidate
+must receive one replacement full Mainline Decision using that task-owned clone.

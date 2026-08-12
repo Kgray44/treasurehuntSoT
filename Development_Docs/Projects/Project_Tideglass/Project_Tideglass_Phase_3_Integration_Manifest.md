@@ -38,8 +38,11 @@ The candidate was reconciled to fetched `origin/main`, and the static consumer
 audit and browser journey were rerun against the reviewed product source.
 Canonical owner acceptance is recorded in
 `Project_Tideglass_Phase_3_Owner_Decision_Record.md`. Before the manifest can
-become a completion receipt, its exact documentation-qualified SHA must receive
-the single authoritative decision and protected integration.
+become a completion receipt, its post-repair exact documentation-qualified SHA
+must receive the single replacement authoritative decision and protected
+integration. The recorded preflight `ENOENT` produced no finalizer or suite
+receipt; the Validation Record identifies the immutable task-owned baseline
+repair and focused proof.
 
 ## Reconciled-main result
 
