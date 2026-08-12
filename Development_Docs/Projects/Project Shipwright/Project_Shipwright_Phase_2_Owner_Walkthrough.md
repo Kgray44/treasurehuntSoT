@@ -14,6 +14,8 @@ Not yet ready for owner walkthrough. The reproducible task-owned browser journey
 
 The automated rehearsal is `npm run shipwright:phase2:journeys`. It creates a fresh SQLite fixture below `%LOCALAPPDATA%\ProjectShipwright`, uses a synthetic Creator account whose credential handoff remains outside the repository, and allocates a task-owned dynamic port. It is evidence for the review journey, not an owner decision.
 
+After the candidate is frozen, run `npm run shipwright:phase2:walkthrough:prepare`, then `npm run shipwright:phase2:walkthrough:start`. The launcher creates a separate synthetic SQLite database and production build below `%LOCALAPPDATA%\ProjectShipwright\phase2-owner-walkthrough`, refuses the canonical development database and an occupied port, and records the candidate SHA, build ID, private credential-handoff path, and health state. Use `npm run shipwright:phase2:walkthrough:status` to verify the session; `npm run shipwright:phase2:walkthrough:stop` only stops the PID it started.
+
 ## Review journey
 
 1. Sign in with the synthetic Creator account and enter Studio through normal visible navigation.

@@ -396,7 +396,7 @@ function MigrationControl({
     <section className="migration-control" aria-label="Drydock migration status">
       <strong>Migration requires server confirmation</strong>
       <p className="contract-summary">
-        Draft v{block.schemaVersion}; current contract v{currentVersion}. Review Drydock's safe structural preview
+        Draft v{block.schemaVersion}; current contract v{currentVersion}. Review Drydock&apos;s safe structural preview
         before changing this Passage.
       </p>
       <button type="button" onClick={() => onRequestMigration(block.id)}>
