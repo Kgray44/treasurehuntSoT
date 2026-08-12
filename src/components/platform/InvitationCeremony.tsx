@@ -77,6 +77,8 @@ const accessFinalState = "access-result-readable";
 const accessFallback = "readable-access-result";
 const acceptedHandoffDelayMs = 500;
 const routeRecoveryDelayMs = 1_500;
+export const invitationResolveTimeoutMs = 8_000;
+const invitationResolveAttempts = 2;
 const targetProperties = {
   invitation: ["transform"],
   "invitation-ink": ["filter", "opacity"],
@@ -283,44 +285,56 @@ export function InvitationCeremony({ onRouteHandoff, onRouteRecovery }: Invitati
 
   const resolveInvitation = useCallback(async (replacement = false) => {
     resolveRun.current?.abort("superseded");
-    const controller = new AbortController();
-    resolveRun.current = controller;
     setStage(replacement ? "replacing" : "resolving");
     setError("");
-    try {
-      const response = await fetch("/api/invitations/resolve", { cache: "no-store", signal: controller.signal });
-      const body = (await response.json().catch(() => ({}))) as {
-        invitation?: Invitation;
-        csrfToken?: string;
-        error?: string;
-        code?: string;
-      };
-      if (!response.ok || !body.invitation) {
-        const next = stageFromCode(body.code, false);
+
+    const resolveAttempt = async (attempt: number): Promise<void> => {
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort("lookup-timeout"), invitationResolveTimeoutMs);
+      resolveRun.current = controller;
+      try {
+        const response = await fetch("/api/invitations/resolve", { cache: "no-store", signal: controller.signal });
+        const body = (await response.json().catch(() => ({}))) as {
+          invitation?: Invitation;
+          csrfToken?: string;
+          error?: string;
+          code?: string;
+        };
+        if (!response.ok || !body.invitation) {
+          const next = stageFromCode(body.code, false);
+          setStage(next);
+          setError(body.error ?? "This invitation is not available.");
+          setAnnouncement(body.error ?? "This invitation is not available.");
+          return;
+        }
+        setInvitation(body.invitation);
+        setCsrf(body.csrfToken ?? "");
+        setDisplayName(body.invitation.recipientName);
+        setCoverVisible(true);
+        const next = body.invitation.requiresPin ? "pin-required" : "valid";
         setStage(next);
-        setError(body.error ?? "This invitation is not available.");
-        setAnnouncement(body.error ?? "This invitation is not available.");
-        return;
+        setAnnouncement(
+          body.invitation.requiresPin
+            ? "Invitation found. Enter its PIN to continue."
+            : "Invitation found and ready to accept.",
+        );
+      } catch (cause) {
+        const timedOut = controller.signal.aborted && controller.signal.reason === "lookup-timeout";
+        if (timedOut && attempt + 1 < invitationResolveAttempts && resolveRun.current === controller) {
+          setAnnouncement("Invitation lookup is taking longer than expected. Retrying once.");
+          return resolveAttempt(attempt + 1);
+        }
+        if (controller.signal.aborted && !timedOut) return;
+        setStage("failed");
+        setError("This invitation could not be reached. Check your connection and try again.");
+        setAnnouncement("Invitation lookup failed.");
+      } finally {
+        window.clearTimeout(timeout);
+        if (resolveRun.current === controller) resolveRun.current = null;
       }
-      setInvitation(body.invitation);
-      setCsrf(body.csrfToken ?? "");
-      setDisplayName(body.invitation.recipientName);
-      setCoverVisible(true);
-      const next = body.invitation.requiresPin ? "pin-required" : "valid";
-      setStage(next);
-      setAnnouncement(
-        body.invitation.requiresPin
-          ? "Invitation found. Enter its PIN to continue."
-          : "Invitation found and ready to accept.",
-      );
-    } catch (cause) {
-      if (cause instanceof DOMException && cause.name === "AbortError") return;
-      setStage("failed");
-      setError("This invitation could not be reached. Check your connection and try again.");
-      setAnnouncement("Invitation lookup failed.");
-    } finally {
-      if (resolveRun.current === controller) resolveRun.current = null;
-    }
+    };
+
+    await resolveAttempt(0);
   }, []);
 
   useEffect(() => {
