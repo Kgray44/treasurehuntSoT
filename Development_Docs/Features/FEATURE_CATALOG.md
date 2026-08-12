@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `920d92a51a16d60a2dfe35278598e6d921be7e4c`
+Audited source commit: `191a964488d0df71f8dcb91c5b8372fc73b6b32e`
 
 ## Status vocabulary
 
@@ -889,7 +889,7 @@ Audience-separated current documentation, indexed engineering records, and a fra
 **Status:** MAINLINE
 **Program or subsystem:** Sounding Line Phases 1-4
 
-A nonauthoritative, provider-neutral local verification control plane provides sealed plans, reviewed adapters, marker-verified resource leases, durable history, fail-closed worker and evidence controls, isolated SQLite/browser state, and narrowly certified Harborlight moderator browser lanes without weakening release authority.
+A nonauthoritative, provider-neutral local verification control plane provides sealed plans, reviewed adapters, marker-verified resource leases, durable history, fail-closed worker and evidence controls, isolated SQLite/browser state, narrowly certified Harborlight moderator browser lanes, and a strictly record-only protected-mainline closure route without weakening release authority.
 
 ### Important subfeatures
 
@@ -901,6 +901,7 @@ A nonauthoritative, provider-neutral local verification control plane provides s
 - Immutable SQLite baseline clone boundary
 - Two isolated Harborlight Phase 4 browser lanes
 - Explicit emergency-serial legacy release authority
+- Fail-closed record-only protected-mainline closure evidence
 
 ### Primary surfaces
 
@@ -1481,4 +1482,4 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `920d92a51a16d60a2dfe35278598e6d921be7e4c`
+Generation source commit: `191a964488d0df71f8dcb91c5b8372fc73b6b32e`
