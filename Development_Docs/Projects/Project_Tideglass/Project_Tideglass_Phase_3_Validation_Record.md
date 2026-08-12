@@ -11,7 +11,7 @@ last_reviewed: 2026-08-12
 Status: `CANDIDATE_FROZEN_PENDING_OWNER_WALKTHROUGH`.
 
 The reconciled product source is
-`4d7d7f5908e28275ed5e9b12d5addbe6973f9abb`, rebased on accepted main
+`c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`, rebased on accepted main
 `4edc8de5e30e9748700c19b466061f9b9a97f268`. Phase 2's accepted merge
 `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3` is an ancestor of that mainline.
 

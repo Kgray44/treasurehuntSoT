@@ -3,7 +3,7 @@
   "project": "Project Tideglass",
   "phase": "3",
   "status": "AUTOMATED_BROWSER_PROOF_COMPLETE_OWNER_WALKTHROUGH_PENDING",
-  "sourceSha": "4d7d7f5908e28275ed5e9b12d5addbe6973f9abb",
+  "sourceSha": "c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6",
   "fixtureVersion": "tideglass-phase3-v2",
   "fixtureChecksum": "7798f816bedd71867d096d0543ee2135a7722388f262d089b4b078d9a50b2002",
   "storage": "LOCALAPPDATA/ProjectTideglass/phase3-qualification/browser/evidence; screenshots and credentials are intentionally untracked",
@@ -29,7 +29,7 @@
       "route": "/chronicles/tideglass-passage-fixture/compare",
       "state": "PARTIAL",
       "viewport": "1440x900",
-      "sha256": "555006820c42339b00fa411a4126956fbda753147688ca55e02d0f46520755b3",
+      "sha256": "7ad220bb94f15b70bcbb2e3a1380d6da74336e5d1810473d372df23c8bc8fba8",
       "semanticAssertion": "Unsupported fixture semantics are named as partial without source disclosure"
     },
     {
@@ -37,7 +37,7 @@
       "route": "/chronicles/tideglass-passage-fixture/compare",
       "state": "PAIR_SELECTION",
       "viewport": "1440x900",
-      "sha256": "3b899f0d25b4ba3945731e18d4de41f48edef4a487b7b5b1b879df5136c57336",
+      "sha256": "3f352ff9be2df95e99ddc98a68cd3bb41b971621ff3125713cd89d51410dc253",
       "semanticAssertion": "Swap requests the reverse canonical pair and current restores the server target"
     },
     {
@@ -45,7 +45,7 @@
       "route": "/chronicles/tideglass-passage-fixture/compare",
       "state": "PLAYER_A_HISTORY_DISCLOSURE",
       "viewport": "1440x900",
-      "sha256": "b83602783f212439734ca70d2e756ccabb7c38a6294aef2723c9118b6baa8739",
+      "sha256": "16fc6e6856b1f2b02a0c23c1c6c0d90468a6e9775f5bde331aba46af4fc90b7b",
       "semanticAssertion": "Passport preserves the owner's recorded edition and gates story detail explicitly"
     },
     {
@@ -53,7 +53,7 @@
       "route": "/chronicles/tideglass-passage-fixture/compare",
       "state": "MULTIPLE_HISTORY",
       "viewport": "1440x900",
-      "sha256": "965aebf1172ff857cd5ca9d03e4b6ff669e9eb59c43ff9d3ef6a6e496ccb8c1c",
+      "sha256": "0f3c5b9bf8b301fba7f83c329d31e7313c73e99561b51c65e8f75826fa475297",
       "semanticAssertion": "Each historical Voyage remains independently selectable"
     },
     {
@@ -69,7 +69,7 @@
       "route": "/studio/tales/tg3-chronicle-passage/versions",
       "state": "CREATOR_FULL",
       "viewport": "1440x900",
-      "sha256": "68e28dfc3eb1b6ec7298587808031a8c0f6767ec4ef72f0b2482b09d70472f7d",
+      "sha256": "d039a4d9972db4b4468959326d0ce58fdfef1578e5bb4e33efa6b8608164410a",
       "semanticAssertion": "Studio renders semantic branch, ending, Captain, caption, compatibility, and annotation records rather than a raw diff"
     },
     {

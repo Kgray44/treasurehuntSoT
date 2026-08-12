@@ -19,6 +19,6 @@
   "integrationRule": "Independent mainline-safe phase reconciled to current main. Do not stack Phase 4 or consume unaccepted Wakebook source; preserve accepted Shipwright and Helm surfaces through their narrow Tideglass seams.",
   "registeredAt": "2026-08-12",
   "reopenedReason": "The initial candidate lacked a repository-backed fixture and did not exercise the full governed Phase 3 state matrix. It was superseded before owner walkthrough or authority dispatch.",
-  "candidateEvidence": "Reconciled source 4d7d7f5908e28275ed5e9b12d5addbe6973f9abb has a task-owned fixture receipt and source-bound ten-capture visual manifest. No owner acceptance or authority decision is represented here.",
+  "candidateEvidence": "Reconciled source c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6 has a task-owned fixture receipt and source-bound ten-capture visual manifest. No owner acceptance or authority decision is represented here.",
   "nextGate": "Present the sealed candidate for canonical owner walkthrough acceptance. Only then may the one Sounding Line Mainline Decision be dispatched."
 }
