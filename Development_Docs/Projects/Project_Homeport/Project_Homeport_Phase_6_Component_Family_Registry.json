@@ -1699,7 +1699,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Personal Harbor"],
+      "productAreaConsumers": ["Personal Harbor", "Platform service"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -1731,7 +1731,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Personal Harbor"],
+      "productAreaConsumers": ["Personal Harbor", "Platform service"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -2069,7 +2069,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Captain", "Creator Studio"],
+      "productAreaConsumers": ["Captain", "Creator Studio", "Platform service"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -2276,6 +2276,7 @@
         "Captain",
         "Community Harbor",
         "Personal Harbor",
+        "Platform service",
         "Voyage runtime",
         "Player",
         "Creator Studio"
@@ -2347,6 +2348,7 @@
         "Captain",
         "Community Harbor",
         "Personal Harbor",
+        "Platform service",
         "Voyage runtime",
         "Player",
         "Creator Studio"
@@ -2693,7 +2695,14 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Admiralty", "Captain", "Community Harbor", "Player", "Creator Studio"],
+      "productAreaConsumers": [
+        "Admiralty",
+        "Captain",
+        "Community Harbor",
+        "Player",
+        "Creator Studio",
+        "Platform service"
+      ],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -3137,7 +3146,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Community Harbor", "Personal Harbor", "Player", "Creator Studio"],
+      "productAreaConsumers": ["Community Harbor", "Personal Harbor", "Platform service", "Player", "Creator Studio"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -3221,7 +3230,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Captain", "Community Harbor", "Personal Harbor", "Creator Studio"],
+      "productAreaConsumers": ["Captain", "Community Harbor", "Personal Harbor", "Platform service", "Creator Studio"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -3328,7 +3337,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Personal Harbor"],
+      "productAreaConsumers": ["Personal Harbor", "Platform service"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -3360,7 +3369,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Personal Harbor"],
+      "productAreaConsumers": ["Personal Harbor", "Platform service"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -3424,7 +3433,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Creator Studio"],
+      "productAreaConsumers": ["Creator Studio", "Platform service"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [

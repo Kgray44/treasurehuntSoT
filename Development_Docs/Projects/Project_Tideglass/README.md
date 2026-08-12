@@ -39,5 +39,8 @@ Phase 3, Choose the Passage, is explicitly authorized from current accepted main
 - [Test Plan](Project_Tideglass_Phase_3_Test_Plan.md)
 - [Route and Screen Registration](Project_Tideglass_Phase_3_Route_and_Screen_Registration.json)
 - [Qualification Record](Project_Tideglass_Phase_3_Qualification_Record.md)
+- [Validation Record](Project_Tideglass_Phase_3_Validation_Record.md)
 - [Integration Manifest](Project_Tideglass_Phase_3_Integration_Manifest.md)
 - [Product Walkthrough](Project_Tideglass_Phase_3_Product_Walkthrough.md)
+- [Visual Evidence Manifest](Project_Tideglass_Phase_3_Visual_Evidence_Manifest.json)
+- [Completion Receipt - Unissued](Project_Tideglass_Phase_3_Completion_Receipt.md)

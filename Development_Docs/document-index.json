@@ -5721,6 +5721,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_3_Completion_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_3_Design_Record.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -5752,6 +5758,18 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_3_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_3_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_3_Visual_Evidence_Manifest.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

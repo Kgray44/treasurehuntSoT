@@ -1,7 +1,7 @@
 ---
 title: Project Tideglass Phase 3 Design Record
 audience: product-engineering
-status: implementation-active
+status: candidate-frozen-owner-walkthrough-pending
 canonical_for: project-tideglass-phase-3-design
 last_reviewed: 2026-08-12
 ---
@@ -12,15 +12,16 @@ Phase 3 creates the ordinary, discoverable **What Changed?** experience over the
 
 ## Frozen authority and baseline
 
-| Item                               | Frozen value                                                                                                                                              |
-| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Initial fetched `origin/main` base | `54e3d818d49d45282a9c419d562d4b5c78911ccd`                                                                                                                |
-| Dedicated branch                   | `codex/project-tideglass-phase3-choose-the-passage`                                                                                                       |
-| Dedicated worktree                 | `C:\Users\kkids\Documents\treasurehuntSoT-tideglass-phase3-choose-the-passage`                                                                            |
-| Phase 2 status and ancestry        | `ACCEPTED_MAINLINE`; integrated `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3` is an ancestor of the actual base                                              |
-| Preserved semantic policies        | `tideglass.semantic.v1`, `tideglass.policy.v1`, `tideglass.change-codes.v1`, `tideglass.projection.v1`, `tideglass.summary.v1`, `tideglass.annotation.v1` |
-| Prisma and migrations              | None. The existing immutable editions, annotation rows, and Wayfarer history records satisfy this phase.                                                  |
-| Release authority                  | One explicit, exact-SHA `Sounding Line / Mainline Decision` only after candidate qualification, current-main reconciliation, and owner acceptance.        |
+| Item                                      | Frozen value                                                                                                                                              |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Initial implementation `origin/main` base | `54e3d818d49d45282a9c419d562d4b5c78911ccd`                                                                                                                |
+| Current reconciled `origin/main`          | `191a964488d0df71f8dcb91c5b8372fc73b6b32e`                                                                                                                |
+| Dedicated branch                          | `codex/project-tideglass-phase3-choose-the-passage`                                                                                                       |
+| Dedicated worktree                        | `C:\Users\kkids\Documents\treasurehuntSoT-tideglass-phase3-choose-the-passage`                                                                            |
+| Phase 2 status and ancestry               | `ACCEPTED_MAINLINE`; integrated `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3` is an ancestor of the reconciled current main                                  |
+| Preserved semantic policies               | `tideglass.semantic.v1`, `tideglass.policy.v1`, `tideglass.change-codes.v1`, `tideglass.projection.v1`, `tideglass.summary.v1`, `tideglass.annotation.v1` |
+| Prisma and migrations                     | None. The existing immutable editions, annotation rows, and Wayfarer history records satisfy this phase.                                                  |
+| Release authority                         | One explicit, exact-SHA `Sounding Line / Mainline Decision` only after candidate qualification, current-main reconciliation, and owner acceptance.        |
 
 The governing order is the current repository rules, Global Product Governance Standard, Project Tideglass governing document, Continuous Development and Mainline Integration Standard, effective Sounding Line authority, accepted Phase 1/2 records, accepted cross-project contracts, and current source. The pasted Phase 3 authorization supersedes only the historical Phase 2 statement that Phase 3 was then unauthorized; it does not rewrite that receipt.
 
@@ -39,12 +40,26 @@ The governing order is the current repository rules, Global Product Governance S
 | Creator Studio                                  | The published-version `Compare` action consumes a narrow Tideglass `CREATOR_FULL` adapter. The raw snapshot comparator is removed from ordinary Studio product presentation.                                                                                                           |
 | Legacy comparator / Deepwater finding           | The storage-oriented `comparePublishedVersions` implementation and its ordinary consumer are removed. Studio uses the canonical exact-edition Tideglass comparison and `CREATOR_FULL` semantic projection; the Deepwater finding can be updated only after complete consumer evidence. |
 | Wakebook                                        | Wakebook Phase 1 is not accepted on this base. Phase 3 consumes accepted Wayfarer history and remains complete without the unmerged archive surface.                                                                                                                                   |
-| Shipwright                                      | Shipwright Phase 1 is unaccepted on this base. Tideglass changes only the narrow semantic-comparison consumer, not Studio layout authority.                                                                                                                                            |
-| Helm / Captain                                  | No accepted stable preflight consumer exposes this seam on the base. Phase 3 exposes an operational projection seam and defers visual Captain integration to Phase 4.                                                                                                                  |
+| Shipwright                                      | Shipwright Phase 1 is accepted on the reconciled main. Tideglass preserves its accepted TaleEditor behavior and changes only the narrow semantic-comparison consumer.                                                                                                                  |
+| Helm / Captain                                  | The reconciled Helm surfaces expose no accepted edition-comparison or preflight consumer. `CAPTAIN_UI_DEFERRED_NO_ACCEPTED_CONSUMER` remains the explicit Phase 4 handoff.                                                                                                             |
 
 ## Product and route contract
 
 The canonical ordinary route is `/chronicles/[taleSlug]/compare`. Its bounded query state may select an exact source/target edition, a Wayfarer history record, and a validated return path. Comparison mode, category filter, and expanded disclosure state remain local presentation state and are never persisted.
+
+## Reconciliation to current main
+
+The current-main interval from `54e3d818d49d45282a9c419d562d4b5c78911ccd` to
+`191a964488d0df71f8dcb91c5b8372fc73b6b32e` includes accepted Helm operational
+work, Drydock Phase 3 Sea Trials, Bridgewatch records, and generated catalog
+updates. The direct overlap was Shipwright's accepted `TaleEditor`, shared Studio
+styles, changelog/status documents, and generated Feature Catalog. The
+reconciliation retained the accepted Drydock Studio import and editor behavior,
+kept Tideglass's narrow `TideglassStudioComparison` consumer, retained both
+truthful branch-status statements, and regenerated the catalog. It neither
+consumes unmerged Wakebook source nor adds a Captain UI without a stable accepted
+consumer. The Phase 3 browser, focused test, typecheck, and source-contract
+evidence were rerun after this reconciliation.
 
 The route provides the following complete states: loading, unauthorized/unavailable, retryable comparison failure, no meaningful change, partial/redacted history, historical-only edition, up-to-date, populated concise, populated detailed, spoiler collapsed/revealed, and multiple-history selection. The page stacks selectors and cards at narrow widths, has no horizontal document overflow, uses visible text for every change state, and respects reduced motion.
 

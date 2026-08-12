@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "status": "phase-2-deepwater-control-plane",
+  "status": "phase-5-homeport-route-reachability-impact-map",
   "pathMappings": [
     {
       "path": "bridgewatch/**",
@@ -6089,10 +6089,7 @@
       "contractId": "admiralty.phase1.responsive-consent",
       "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
     },
-    {
-      "contractId": "bridgewatch.mission-control",
-      "suiteIds": ["unit.bridgewatch", "unit.sounding-line"]
-    },
+    { "contractId": "bridgewatch.mission-control", "suiteIds": ["unit.bridgewatch", "unit.sounding-line"] },
     { "contractId": "tideglass-change-classification", "suiteIds": ["unit.tideglass"] },
     { "contractId": "tideglass-compatibility-deltas", "suiteIds": ["unit.tideglass"] },
     { "contractId": "tideglass-deterministic-summary", "suiteIds": ["unit.tideglass"] },

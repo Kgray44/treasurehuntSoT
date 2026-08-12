@@ -10,6 +10,8 @@ last_reviewed: 2026-08-12
 
 Status: source-bound candidate evidence is complete; canonical owner walkthrough remains pending. The generated visual manifest records the exact candidate SHA, fixture checksum, routes, viewports, screenshot hashes, and semantic assertions. This document does not record owner acceptance.
 
+The reconciled product source evidence is `4fb937434e6df893bead908cfaa8b2618f6429d6` against `origin/main` `191a964488d0df71f8dcb91c5b8372fc73b6b32e`. Any later source change requires the affected owner-review evidence to be rerun before owner acceptance is recorded.
+
 ## Safe walkthrough runtime
 
 Run `npm run tideglass:phase3:journeys` from the dedicated Phase 3 worktree. The launcher creates a local, task-owned synthetic fixture under `%LOCALAPPDATA%\\ProjectTideglass\\phase3-qualification`, starts the real production build, runs the journey, and stores private credentials, screenshots, Playwright report, and `browser/evidence/manifest.json` under that task root. It does not use or mutate `prisma/dev.db`.

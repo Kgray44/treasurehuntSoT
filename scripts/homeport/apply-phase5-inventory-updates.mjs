@@ -159,7 +159,7 @@ for (const source of [...pages, ...handlers]) {
       currentSupportedStates: source.kind === "route" ? ["SERVICE_RESPONSE"] : ["CURRENT_DEFAULT"],
       currentJourneys: [],
       currentVisualEvidenceIds: [],
-      currentMaturity: source.kind === "route" ? "INTERNAL_ONLY" : "CURRENT_GOVERNED",
+      currentMaturity: source.kind === "route" ? "INTERNAL_ONLY" : "COMPLETE",
       directUrlRequired: true,
       orphanedOrdinaryRoute: false,
       targetDisposition: "PHASE_5_SOURCE_PARITY",
@@ -171,6 +171,11 @@ for (const source of [...pages, ...handlers]) {
     existingBySource.set(source.sourceFile, route);
   }
   route.routePattern = source.pathPattern;
+  // Phase 5 originally emitted CURRENT_GOVERNED for newly discovered pages,
+  // but that value is not part of the canonical route-maturity vocabulary.
+  // Normalize the two historical records through this generator so reruns
+  // remain valid and source-driven.
+  if (route.currentMaturity === "CURRENT_GOVERNED") route.currentMaturity = "COMPLETE";
   if (source.kind === "route") {
     route.classification = "API_OR_SERVICE";
     route.orphanedOrdinaryRoute = false;
@@ -552,6 +557,7 @@ for (const source of handlers) {
   };
 }
 routeInventory.classifications = routeClassifications;
+routeInventory.knownOwners = unique([...routeInventory.knownOwners, "project-admiralty"]);
 routeInventory.totals = {
   ...routeInventory.totals,
   routeFiles: routeInventory.routes.length,

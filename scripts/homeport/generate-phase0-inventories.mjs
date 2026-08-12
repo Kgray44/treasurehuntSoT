@@ -41,6 +41,7 @@ const maturityVocabulary = [
 const knownOwners = [
   "platform-foundation",
   "project-homeport",
+  "project-admiralty",
   "wayfarer",
   "true-north",
   "one-voyage",

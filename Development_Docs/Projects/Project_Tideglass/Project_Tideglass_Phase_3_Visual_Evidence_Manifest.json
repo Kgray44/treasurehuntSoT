@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "Project Tideglass",
+  "phase": "3",
+  "status": "AUTOMATED_BROWSER_PROOF_COMPLETE_OWNER_WALKTHROUGH_PENDING",
+  "sourceSha": "4fb937434e6df893bead908cfaa8b2618f6429d6",
+  "fixtureVersion": "tideglass-phase3-v2",
+  "fixtureChecksum": "7798f816bedd71867d096d0543ee2135a7722388f262d089b4b078d9a50b2002",
+  "storage": "LOCALAPPDATA/ProjectTideglass/phase3-qualification/browser/evidence; screenshots and credentials are intentionally untracked",
+  "records": [
+    {
+      "id": "TG3-EV-A-VISIBLE-ENTRY",
+      "route": "/chronicles/tideglass-passage-fixture/compare",
+      "state": "POPULATED",
+      "viewport": "1440x900",
+      "sha256": "2868b60cd5f6c49355d7ccdd429bc60bfa4c3900ac1f1cba7695395791a411f3",
+      "semanticAssertion": "Visible Gateway-to-Tideglass route with exact edition context"
+    },
+    {
+      "id": "TG3-EV-B-PUBLIC-DETAILED",
+      "route": "/chronicles/tideglass-passage-fixture/compare",
+      "state": "PUBLIC_DETAILED",
+      "viewport": "1440x900",
+      "sha256": "5e26ee9ec5568ae896f05fcf1efc2484e0b5086f84b90bdcc97fbbc5bbb7d05f",
+      "semanticAssertion": "Public semantic cards are server-projected without withheld story detail"
+    },
+    {
+      "id": "TG3-EV-C-PARTIAL",
+      "route": "/chronicles/tideglass-passage-fixture/compare",
+      "state": "PARTIAL",
+      "viewport": "1440x900",
+      "sha256": "aabef16f425e692eb45f2d5b94a6f7d6fd6deeeee8a6855dd675fdeb73ad7ce6",
+      "semanticAssertion": "Unsupported fixture semantics are named as partial without source disclosure"
+    },
+    {
+      "id": "TG3-EV-D-SWAP-CURRENT",
+      "route": "/chronicles/tideglass-passage-fixture/compare",
+      "state": "PAIR_SELECTION",
+      "viewport": "1440x900",
+      "sha256": "5d14b6433feb030bbf8a645bf9ab291fbabda9651dd0c2a8dbeb9be83f35179a",
+      "semanticAssertion": "Swap requests the reverse canonical pair and current restores the server target"
+    },
+    {
+      "id": "TG3-EV-E-OWNED-HISTORY-DISCLOSURE",
+      "route": "/chronicles/tideglass-passage-fixture/compare",
+      "state": "PLAYER_A_HISTORY_DISCLOSURE",
+      "viewport": "1440x900",
+      "sha256": "b83602783f212439734ca70d2e756ccabb7c38a6294aef2723c9118b6baa8739",
+      "semanticAssertion": "Passport preserves the owner's recorded edition and gates story detail explicitly"
+    },
+    {
+      "id": "TG3-EV-F-MULTIPLE-HISTORY",
+      "route": "/chronicles/tideglass-passage-fixture/compare",
+      "state": "MULTIPLE_HISTORY",
+      "viewport": "1440x900",
+      "sha256": "acf3d4341e327b1bf478019fec3e2bf5f999bfff31b3dee323669d02b4ce036f",
+      "semanticAssertion": "Each historical Voyage remains independently selectable"
+    },
+    {
+      "id": "TG3-EV-G-UP-TO-DATE",
+      "route": "/chronicles/tideglass-passage-fixture/compare",
+      "state": "UP_TO_DATE",
+      "viewport": "1440x900",
+      "sha256": "52a68bd7a9468cd1c9edc322e99f63e647ecaec478509a7bbbd89633c36bd172",
+      "semanticAssertion": "Recorded current edition has an intentional up-to-date state"
+    },
+    {
+      "id": "TG3-EV-H-CREATOR-SEMANTIC",
+      "route": "/studio/tales/tg3-chronicle-passage/versions",
+      "state": "CREATOR_FULL",
+      "viewport": "1440x900",
+      "sha256": "818daa71a5a5097d7437502ee4d041084fdde5d246b389c6cd60a66894a82005",
+      "semanticAssertion": "Studio renders semantic branch, ending, Captain, caption, compatibility, and annotation records rather than a raw diff"
+    },
+    {
+      "id": "TG3-EV-I-MOBILE-REDUCED-MOTION",
+      "route": "/chronicles/tideglass-passage-fixture/compare",
+      "state": "MOBILE_REDUCED_MOTION",
+      "viewport": "390x844",
+      "sha256": "d0fb41115227adc4eec72576cf313215e46a8b31da4e2f59f9fceeb99477a4fd",
+      "semanticAssertion": "Responsive controls fit without horizontal overflow and remain keyboard reachable"
+    },
+    {
+      "id": "TG3-EV-J-EFFECTIVE-200-PERCENT",
+      "route": "/chronicles/tideglass-passage-fixture/compare",
+      "state": "EFFECTIVE_200_PERCENT",
+      "viewport": "720x450",
+      "sha256": "c192b59673e4e486beaca1cb790d3d7e31950a9f0b8413ace759d53dc5359219",
+      "semanticAssertion": "Comparison remains readable at effective 200 percent zoom"
+    }
+  ]
+}

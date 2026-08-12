@@ -14,6 +14,7 @@
       "reachableRouteIds": [
         "route-page-captain-sign-in",
         "route-page-chronicles-taleslug",
+        "route-page-chronicles-taleslug-compare",
         "route-page-community",
         "route-page-community-artifacts",
         "route-page-community-audio",
@@ -51,6 +52,16 @@
           "targetRouteId": "route-page-chronicles-taleslug",
           "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
           "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug-compare",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-chronicles-taleslug",
+            "route-page-chronicles-taleslug-compare"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview", "edge-chronicle-edition-history"]
         },
         {
           "targetRouteId": "route-page-community",
@@ -236,6 +247,7 @@
         "route-page-account-support-access",
         "route-page-captain-sign-in",
         "route-page-chronicles-taleslug",
+        "route-page-chronicles-taleslug-compare",
         "route-page-community",
         "route-page-community-artifacts",
         "route-page-community-audio",
@@ -260,6 +272,7 @@
         "route-page-passport-artifacts-artifactId",
         "route-page-passport-history",
         "route-page-passport-history-recordId",
+        "route-page-passport-history-recordid-compare",
         "route-page-passport-memories",
         "route-page-passport-saved",
         "route-page-play-taleslug",
@@ -355,6 +368,16 @@
           "targetRouteId": "route-page-chronicles-taleslug",
           "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
           "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug-compare",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-chronicles-taleslug",
+            "route-page-chronicles-taleslug-compare"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview", "edge-chronicle-edition-history"]
         },
         {
           "targetRouteId": "route-page-community",
@@ -521,6 +544,16 @@
           "targetRouteId": "route-page-passport-history-recordId",
           "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-recordId"],
           "edgeIds": ["edge-account-history", "edge-passport-history-detail"]
+        },
+        {
+          "targetRouteId": "route-page-passport-history-recordid-compare",
+          "routeIds": [
+            "route-page-root",
+            "route-page-passport-history",
+            "route-page-passport-history-recordId",
+            "route-page-passport-history-recordid-compare"
+          ],
+          "edgeIds": ["edge-account-history", "edge-passport-history-detail", "edge-passport-history-comparison"]
         },
         {
           "targetRouteId": "route-page-passport-memories",
@@ -634,6 +667,7 @@
         "route-page-captain-tales-taleid",
         "route-page-captain-voyages-playthroughid-player-preview",
         "route-page-chronicles-taleslug",
+        "route-page-chronicles-taleslug-compare",
         "route-page-community",
         "route-page-community-artifacts",
         "route-page-community-audio",
@@ -655,6 +689,7 @@
         "route-page-passport-artifacts-artifactId",
         "route-page-passport-history",
         "route-page-passport-history-recordId",
+        "route-page-passport-history-recordid-compare",
         "route-page-passport-memories",
         "route-page-passport-saved",
         "route-page-play-taleslug",
@@ -773,6 +808,16 @@
           "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
         },
         {
+          "targetRouteId": "route-page-chronicles-taleslug-compare",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-chronicles-taleslug",
+            "route-page-chronicles-taleslug-compare"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview", "edge-chronicle-edition-history"]
+        },
+        {
           "targetRouteId": "route-page-community",
           "routeIds": ["route-page-root", "route-page-community"],
           "edgeIds": ["edge-global-community"]
@@ -901,6 +946,16 @@
           "targetRouteId": "route-page-passport-history-recordId",
           "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-recordId"],
           "edgeIds": ["edge-account-history", "edge-passport-history-detail"]
+        },
+        {
+          "targetRouteId": "route-page-passport-history-recordid-compare",
+          "routeIds": [
+            "route-page-root",
+            "route-page-passport-history",
+            "route-page-passport-history-recordId",
+            "route-page-passport-history-recordid-compare"
+          ],
+          "edgeIds": ["edge-account-history", "edge-passport-history-detail", "edge-passport-history-comparison"]
         },
         {
           "targetRouteId": "route-page-passport-memories",
@@ -991,6 +1046,7 @@
         "route-page-account-support-access",
         "route-page-captain-sign-in",
         "route-page-chronicles-taleslug",
+        "route-page-chronicles-taleslug-compare",
         "route-page-community",
         "route-page-community-artifacts",
         "route-page-community-audio",
@@ -1012,6 +1068,7 @@
         "route-page-passport-artifacts-artifactId",
         "route-page-passport-history",
         "route-page-passport-history-recordId",
+        "route-page-passport-history-recordid-compare",
         "route-page-passport-memories",
         "route-page-passport-saved",
         "route-page-play-taleslug",
@@ -1031,6 +1088,7 @@
         "route-page-studio-tales-taleid-assets",
         "route-page-studio-tales-taleid-locations",
         "route-page-studio-tales-taleid-settings",
+        "route-page-studio-tales-taleid-trials",
         "route-page-studio-tales-taleid-versions",
         "route-page-tales"
       ],
@@ -1114,6 +1172,16 @@
           "targetRouteId": "route-page-chronicles-taleslug",
           "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
           "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug-compare",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-chronicles-taleslug",
+            "route-page-chronicles-taleslug-compare"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview", "edge-chronicle-edition-history"]
         },
         {
           "targetRouteId": "route-page-community",
@@ -1244,6 +1312,16 @@
           "targetRouteId": "route-page-passport-history-recordId",
           "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-recordId"],
           "edgeIds": ["edge-account-history", "edge-passport-history-detail"]
+        },
+        {
+          "targetRouteId": "route-page-passport-history-recordid-compare",
+          "routeIds": [
+            "route-page-root",
+            "route-page-passport-history",
+            "route-page-passport-history-recordId",
+            "route-page-passport-history-recordid-compare"
+          ],
+          "edgeIds": ["edge-account-history", "edge-passport-history-detail", "edge-passport-history-comparison"]
         },
         {
           "targetRouteId": "route-page-passport-memories",
@@ -1372,6 +1450,16 @@
           "edgeIds": ["edge-workspace-creator", "edge-studio-tale", "edge-studio-settings"]
         },
         {
+          "targetRouteId": "route-page-studio-tales-taleid-trials",
+          "routeIds": [
+            "route-page-root",
+            "route-page-studio-library",
+            "route-page-studio-tales-taleid",
+            "route-page-studio-tales-taleid-trials"
+          ],
+          "edgeIds": ["edge-workspace-creator", "edge-studio-tale", "edge-studio-trials"]
+        },
+        {
           "targetRouteId": "route-page-studio-tales-taleid-versions",
           "routeIds": [
             "route-page-root",
@@ -1413,6 +1501,7 @@
         "route-page-captain-tales-taleid",
         "route-page-captain-voyages-playthroughid-player-preview",
         "route-page-chronicles-taleslug",
+        "route-page-chronicles-taleslug-compare",
         "route-page-community",
         "route-page-community-artifacts",
         "route-page-community-audio",
@@ -1437,6 +1526,7 @@
         "route-page-passport-artifacts-artifactId",
         "route-page-passport-history",
         "route-page-passport-history-recordId",
+        "route-page-passport-history-recordid-compare",
         "route-page-passport-memories",
         "route-page-passport-saved",
         "route-page-play-taleslug",
@@ -1459,6 +1549,7 @@
         "route-page-studio-tales-taleid-assets",
         "route-page-studio-tales-taleid-locations",
         "route-page-studio-tales-taleid-settings",
+        "route-page-studio-tales-taleid-trials",
         "route-page-studio-tales-taleid-versions",
         "route-page-tales"
       ],
@@ -1566,6 +1657,16 @@
           "targetRouteId": "route-page-chronicles-taleslug",
           "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
           "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug-compare",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-chronicles-taleslug",
+            "route-page-chronicles-taleslug-compare"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview", "edge-chronicle-edition-history"]
         },
         {
           "targetRouteId": "route-page-community",
@@ -1734,6 +1835,16 @@
           "edgeIds": ["edge-account-history", "edge-passport-history-detail"]
         },
         {
+          "targetRouteId": "route-page-passport-history-recordid-compare",
+          "routeIds": [
+            "route-page-root",
+            "route-page-passport-history",
+            "route-page-passport-history-recordId",
+            "route-page-passport-history-recordid-compare"
+          ],
+          "edgeIds": ["edge-account-history", "edge-passport-history-detail", "edge-passport-history-comparison"]
+        },
+        {
           "targetRouteId": "route-page-passport-memories",
           "routeIds": ["route-page-root", "route-page-passport", "route-page-passport-memories"],
           "edgeIds": ["edge-account-passport", "edge-passport-memories"]
@@ -1879,6 +1990,16 @@
           "edgeIds": ["edge-workspace-creator", "edge-studio-tale", "edge-studio-settings"]
         },
         {
+          "targetRouteId": "route-page-studio-tales-taleid-trials",
+          "routeIds": [
+            "route-page-root",
+            "route-page-studio-library",
+            "route-page-studio-tales-taleid",
+            "route-page-studio-tales-taleid-trials"
+          ],
+          "edgeIds": ["edge-workspace-creator", "edge-studio-tale", "edge-studio-trials"]
+        },
+        {
           "targetRouteId": "route-page-studio-tales-taleid-versions",
           "routeIds": [
             "route-page-root",
@@ -1916,6 +2037,7 @@
         "route-page-account-support-access",
         "route-page-captain-sign-in",
         "route-page-chronicles-taleslug",
+        "route-page-chronicles-taleslug-compare",
         "route-page-community",
         "route-page-community-artifacts",
         "route-page-community-audio",
@@ -1942,6 +2064,7 @@
         "route-page-passport-artifacts-artifactId",
         "route-page-passport-history",
         "route-page-passport-history-recordId",
+        "route-page-passport-history-recordid-compare",
         "route-page-passport-memories",
         "route-page-passport-saved",
         "route-page-play-taleslug",
@@ -2037,6 +2160,16 @@
           "targetRouteId": "route-page-chronicles-taleslug",
           "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
           "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug-compare",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-chronicles-taleslug",
+            "route-page-chronicles-taleslug-compare"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview", "edge-chronicle-edition-history"]
         },
         {
           "targetRouteId": "route-page-community",
@@ -2215,6 +2348,16 @@
           "edgeIds": ["edge-account-history", "edge-passport-history-detail"]
         },
         {
+          "targetRouteId": "route-page-passport-history-recordid-compare",
+          "routeIds": [
+            "route-page-root",
+            "route-page-passport-history",
+            "route-page-passport-history-recordId",
+            "route-page-passport-history-recordid-compare"
+          ],
+          "edgeIds": ["edge-account-history", "edge-passport-history-detail", "edge-passport-history-comparison"]
+        },
+        {
           "targetRouteId": "route-page-passport-memories",
           "routeIds": ["route-page-root", "route-page-passport", "route-page-passport-memories"],
           "edgeIds": ["edge-account-passport", "edge-passport-memories"]
@@ -2308,6 +2451,7 @@
       "reachableRouteIds": [
         "route-page-captain-sign-in",
         "route-page-chronicles-taleslug",
+        "route-page-chronicles-taleslug-compare",
         "route-page-community",
         "route-page-community-artifacts",
         "route-page-community-audio",
@@ -2343,6 +2487,16 @@
           "targetRouteId": "route-page-chronicles-taleslug",
           "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
           "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug-compare",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-chronicles-taleslug",
+            "route-page-chronicles-taleslug-compare"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview", "edge-chronicle-edition-history"]
         },
         {
           "targetRouteId": "route-page-community",
@@ -2498,15 +2652,15 @@
       ]
     }
   ],
-  "nodeRegistryDigest": "f4aa3a8f7f0eb40a5765333488d0d7ed63464adb02620a1d553747e501f516c2",
-  "edgeRegistryDigest": "076a6c3b9f36568b836ebb33b72abe1e9a26d9c86e6036308f26f481fd025519",
+  "nodeRegistryDigest": "c78e0db57b0c11137dce636fd1cd449365440a2e3062e5a0da42d6af3065d22b",
+  "edgeRegistryDigest": "2516c056b7a8942a573ad8830cae90850f4e701e7b39217997a33eccd369d564",
   "summary": {
-    "discoveredPageSources": 92,
-    "discoveredServiceSources": 200,
-    "nodeCount": 92,
-    "edgeCount": 172,
+    "discoveredPageSources": 95,
+    "discoveredServiceSources": 231,
+    "nodeCount": 95,
+    "edgeCount": 178,
     "ordinaryRouteCount": 44,
-    "contextualRouteCount": 25,
+    "contextualRouteCount": 28,
     "tokenizedRouteCount": 8,
     "compatibilityRouteCount": 12,
     "internalDiagnosticCount": 1,

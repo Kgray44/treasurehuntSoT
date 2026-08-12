@@ -1,14 +1,14 @@
 ---
 title: Project Tideglass Phase 3 Integration Manifest
 audience: product-engineering
-status: implementation-active
+status: candidate-frozen-owner-walkthrough-pending
 canonical_for: project-tideglass-phase-3-integration
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 integration manifest
 
-Status: `IMPLEMENTATION_REOPENED_QUALIFICATION_IN_PROGRESS`. This is a source integration inventory, not an acceptance or protected-mainline receipt.
+Status: `CANDIDATE_FROZEN_PENDING_OWNER_WALKTHROUGH`. This is a source integration inventory, not an acceptance or protected-mainline receipt.
 
 ## Canonical consumer path
 
@@ -34,3 +34,13 @@ Status: `IMPLEMENTATION_REOPENED_QUALIFICATION_IN_PROGRESS`. This is a source in
 ## Required closeout evidence
 
 Before the manifest can become a completion receipt: the candidate must be reconciled to fetched `origin/main`, the static consumer audit and browser journey must be rerun against that candidate, and canonical owner acceptance must precede the single authoritative decision.
+
+## Reconciled-main result
+
+The branch is rebased on `191a964488d0df71f8dcb91c5b8372fc73b6b32e`. The current
+accepted Shipwright/Drydock Studio surface was retained while the Tideglass
+semantic component stayed the only edition-comparison consumer. Wakebook remains
+unmerged and is not consumed. The accepted Helm surface has no edition-comparison
+consumer, so `CAPTAIN_UI_DEFERRED_NO_ACCEPTED_CONSUMER` is retained. The Deepwater
+finding remains open until this owner-accepted candidate receives the required
+mainline decision and protected integration; it is not closed by local evidence.
