@@ -4,7 +4,10 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import { PROTECTED_MAINLINE_CONTEXT, qualifyProtectedMerge } from "../../scripts/sounding-line/protected-merge-binding.mjs";
+import {
+  PROTECTED_MAINLINE_CONTEXT,
+  qualifyProtectedMerge,
+} from "../../scripts/sounding-line/protected-merge-binding.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const digest = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
@@ -115,7 +118,10 @@ test("semantic carry-forward preserves only declared unrelated base advances", (
   const pass = bind({
     currentBaseSha: currentBase,
     mergeParents: [currentBase, candidate],
-    changedPaths: ["Development_Docs/Governing/Project_Sounding_Line_Part_III_Governing_Document_v1.3_Amendment_Edition.pdf", "tests/sounding-line/authority-cutover.test.mjs"],
+    changedPaths: [
+      "Development_Docs/Governing/Project_Sounding_Line_Part_III_Governing_Document_v1.3_Amendment_Edition.pdf",
+      "tests/sounding-line/authority-cutover.test.mjs",
+    ],
   });
   assert.equal(pass.decision, "BINDING_PASS");
   assert.equal(pass.carryForward.status, "SEMANTIC_CARRY_FORWARD");

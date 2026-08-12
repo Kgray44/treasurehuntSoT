@@ -15,7 +15,10 @@ const value = (name, optional = false) => {
 const readJson = async (file) => JSON.parse(await readFile(file, "utf8"));
 const git = async (...args) => (await execute("git", args, { cwd: process.cwd() })).stdout.trim();
 const gitExit = async (...args) =>
-  execute("git", args, { cwd: process.cwd() }).then(() => true, () => false);
+  execute("git", args, { cwd: process.cwd() }).then(
+    () => true,
+    () => false,
+  );
 const authority = await readJson(value("--authority"));
 const finalization = await readJson(value("--finalization"));
 const plan = await readJson(value("--plan"));
@@ -26,7 +29,8 @@ const currentBaseSha = value("--base-sha");
 const mergeSha = value("--merge-sha");
 const authorityRunId = Number(value("--authority-run-id"));
 const legacy = authority.protectedMergeBinding?.legacyQualifiedCandidates?.find(
-  (entry) => entry.prNumber === prNumber && entry.candidateSha === candidateSha && entry.authoritativeRunId === authorityRunId,
+  (entry) =>
+    entry.prNumber === prNumber && entry.candidateSha === candidateSha && entry.authoritativeRunId === authorityRunId,
 );
 const envelope = envelopePath ? await readJson(envelopePath) : null;
 const qualified = envelope ?? legacy;

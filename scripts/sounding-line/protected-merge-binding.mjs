@@ -34,7 +34,8 @@ function validateFinalizedEvidence({ plan, finalization, qualified }) {
   if (plan?.policyDigest !== qualified.policyDigest) errors.push("QUALIFIED_POLICY_DIGEST_MISMATCH");
   if (plan?.inventoryDigest !== qualified.inventoryDigest) errors.push("QUALIFIED_INVENTORY_DIGEST_MISMATCH");
   if (plan?.authorityDigest !== qualified.authorityDigest) errors.push("QUALIFIED_AUTHORITY_DIGEST_MISMATCH");
-  if (finalization?.evidenceDigest !== digest(finalization?.receipts ?? [])) errors.push("FINALIZATION_EVIDENCE_DIGEST_MISMATCH");
+  if (finalization?.evidenceDigest !== digest(finalization?.receipts ?? []))
+    errors.push("FINALIZATION_EVIDENCE_DIGEST_MISMATCH");
   if (finalization?.evidenceDigest !== qualified.evidenceDigest) errors.push("QUALIFIED_EVIDENCE_DIGEST_MISMATCH");
   const required = new Set((plan?.nodes ?? []).map((node) => node.id));
   const receipts = finalization?.receipts ?? [];
@@ -100,8 +101,7 @@ export function qualifyProtectedMerge({
     errors.push("QUALIFIED_PR_OR_HEAD_MISMATCH");
   if (!qualified || qualified.authoritativeRunId !== Number(authorityRunId)) errors.push("QUALIFIED_RUN_MISMATCH");
   if (!sha(qualified?.qualifiedBaseSha) || baseAncestryValid !== true) errors.push("QUALIFIED_BASE_ANCESTRY_INVALID");
-  if (!Array.isArray(mergeParents) || mergeParents.length !== 2)
-    errors.push("SYNTHETIC_MERGE_PARENT_COUNT_INVALID");
+  if (!Array.isArray(mergeParents) || mergeParents.length !== 2) errors.push("SYNTHETIC_MERGE_PARENT_COUNT_INVALID");
   else if (!mergeParents.includes(candidateSha) || !mergeParents.includes(currentBaseSha))
     errors.push("SYNTHETIC_MERGE_COMPOSITION_INVALID");
   errors.push(...validateFinalizedEvidence({ plan, finalization, qualified: qualified ?? {} }));
