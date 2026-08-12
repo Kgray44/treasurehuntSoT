@@ -26,9 +26,14 @@ hosted Mainline Decision, accepted Bridgewatch Phase 2 then advanced current
 main to `5735d43821209adb2259ec2c38979281da1bb5b9`. That advance adds the
 private FT-035 governed-signal projection and updates the Sounding Line
 observer wiring, so the prior candidate is historical only. The replacement
-source is `e57670a010406dc48c7ede1f2939d3d35260484f`; its local proof and
-focused qualification support one frozen replacement candidate for serialized
-acceptance ownership.
+source `e57670a010406dc48c7ede1f2939d3d35260484f` received the one permitted
+hosted decision for that freeze. It failed closed as `EVIDENCE_INVALID` because
+the governed Helm invitation journey remained in `resolving`, so no release,
+merge, or acceptance was recorded. The narrow repair at
+`ec564fc632fa4836b6eb0a6f0298815649ac452c` bounds invitation lookup time,
+retries one stalled lookup, and requalifies the Captain family. The refreshed
+57-capability proof supports one frozen repaired candidate for one new
+decision.
 The accepted Phase 3 close is preserved at
 `ca135585a62f445cd4331df1a7dd21203bd50219`; none of its historical records
 are rewritten to imply that Phase 4 was previously authorized.
@@ -73,8 +78,8 @@ Phase 4 proof uses an isolated Homeport production-build harness with
 task-owned SQLite clones, synthetic fixtures, owned ports and browser state.
 The retained Homeport families remain explicitly bound to their historical
 source `b810e2d0c33cbafb8e4d02c19b9af0db94315783` through a validator-enforced
-semantic carry-forward declaration; only the changed Bridgewatch family is
-rerun on the replacement source. A sanitized runtime-evidence record may
+semantic carry-forward declaration; the changed Captain invitation and
+Bridgewatch families are rerun on the repaired source. A sanitized runtime-evidence record may
 contain exact product source SHA, test references, state and accessibility
 outcomes, screenshot evidence IDs, and SHA-256 values. It may not contain
 credentials, tokens, cookies, private content, task-root paths, raw provider
