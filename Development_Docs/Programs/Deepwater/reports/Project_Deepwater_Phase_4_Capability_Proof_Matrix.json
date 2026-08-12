@@ -335,7 +335,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -425,7 +425,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -482,7 +482,7 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
@@ -534,7 +534,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -598,7 +598,7 @@
             "sha256": "8486f223cf313f9bcc43feab6786dc28559afe38a574761dfd0f6bc202c1ae03"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
@@ -646,7 +646,7 @@
             "sha256": "8486f223cf313f9bcc43feab6786dc28559afe38a574761dfd0f6bc202c1ae03"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
@@ -691,7 +691,7 @@
             "sha256": "7e09ca347fb1a1830a82a9fd3aa051c3d822bb1afd24098a1caa808263d9b62f"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority, membership heartbeat, and responsive participation journeys",
@@ -750,7 +750,7 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
@@ -893,7 +893,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -966,7 +966,7 @@
       "routeReferences": ["/", "/community", "/studio/exchange"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "TEXT_CONTRAST"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-F-community-saved",
@@ -977,9 +977,12 @@
             "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#DW-CAP-COMMUNITY-EXCHANGE",
+          "tests/e2e/admiralty-phase2.spec.ts#administrator reaches Chartroom full-domain projection",
+          "src/admiralty/read-models.test.ts#bounded community projection",
           "tests/e2e/homeport-phase7.spec.ts#Journey F, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey P, Q, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts#Journey H through J, S, U through W"
@@ -1070,7 +1073,7 @@
       "routeReferences": ["/", "/community", "/studio/exchange"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "TEXT_CONTRAST"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-F-community-saved",
@@ -1081,9 +1084,12 @@
             "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#DW-CAP-COMMUNITY-EXCHANGE",
+          "tests/e2e/admiralty-phase2.spec.ts#administrator reaches Chartroom full-domain projection",
+          "src/admiralty/read-models.test.ts#bounded community projection",
           "tests/e2e/homeport-phase7.spec.ts#Journey F, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey P, Q, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts#Journey H through J, S, U through W"
@@ -1189,7 +1195,7 @@
       "routeReferences": ["/admin", "/admin/support", "/api/helper/verification"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "TEXT_CONTRAST"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-J-session-expired",
@@ -1200,9 +1206,13 @@
             "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
+          "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#platform-administration-and-provider-health",
+          "tests/e2e/admiralty-phase2.spec.ts#role partitions and support consent",
+          "src/admiralty/capabilities.test.ts#capability boundaries",
+          "src/admiralty/ports/redaction.test.ts#no payload secret private content",
           "tests/e2e/homeport-phase7.spec.ts#Journey J, K, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey D, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts#Journey U through W"
@@ -1508,7 +1518,7 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
@@ -1615,7 +1625,7 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
@@ -1667,7 +1677,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -2054,7 +2064,7 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
@@ -2226,7 +2236,7 @@
             "sha256": "7e09ca347fb1a1830a82a9fd3aa051c3d822bb1afd24098a1caa808263d9b62f"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority, membership heartbeat, and responsive participation journeys",
@@ -2481,7 +2491,7 @@
       "routeReferences": ["/admin", "/admin/support", "/api/helper/verification"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "TEXT_CONTRAST"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-J-session-expired",
@@ -2492,9 +2502,13 @@
             "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
+          "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#platform-administration-and-provider-health",
+          "tests/e2e/admiralty-phase2.spec.ts#role partitions and support consent",
+          "src/admiralty/capabilities.test.ts#capability boundaries",
+          "src/admiralty/ports/redaction.test.ts#no payload secret private content",
           "tests/e2e/homeport-phase7.spec.ts#Journey J, K, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey D, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts#Journey U through W"
@@ -2545,7 +2559,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -2604,7 +2618,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -2742,7 +2756,7 @@
       "routeReferences": ["/admin", "/admin/support", "/api/helper/verification"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "TEXT_CONTRAST"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-J-session-expired",
@@ -2753,9 +2767,13 @@
             "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
+          "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#platform-administration-and-provider-health",
+          "tests/e2e/admiralty-phase2.spec.ts#role partitions and support consent",
+          "src/admiralty/capabilities.test.ts#capability boundaries",
+          "src/admiralty/ports/redaction.test.ts#no payload secret private content",
           "tests/e2e/homeport-phase7.spec.ts#Journey J, K, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey D, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts#Journey U through W"
@@ -2791,7 +2809,7 @@
       "routeReferences": ["/admin", "/admin/support", "/api/helper/verification"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "TEXT_CONTRAST"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-J-session-expired",
@@ -2802,9 +2820,13 @@
             "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
+          "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#platform-administration-and-provider-health",
+          "tests/e2e/admiralty-phase2.spec.ts#role partitions and support consent",
+          "src/admiralty/capabilities.test.ts#capability boundaries",
+          "src/admiralty/ports/redaction.test.ts#no payload secret private content",
           "tests/e2e/homeport-phase7.spec.ts#Journey J, K, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey D, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts#Journey U through W"
@@ -2862,7 +2884,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -3301,7 +3323,7 @@
       "routeReferences": ["/admin", "/admin/support", "/api/helper/verification"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "TEXT_CONTRAST"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-J-session-expired",
@@ -3312,9 +3334,13 @@
             "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
+          "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#platform-administration-and-provider-health",
+          "tests/e2e/admiralty-phase2.spec.ts#role partitions and support consent",
+          "src/admiralty/capabilities.test.ts#capability boundaries",
+          "src/admiralty/ports/redaction.test.ts#no payload secret private content",
           "tests/e2e/homeport-phase7.spec.ts#Journey J, K, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey D, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts#Journey U through W"
@@ -3358,7 +3384,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -3415,7 +3441,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -3472,7 +3498,7 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
@@ -3538,7 +3564,7 @@
       "routeReferences": ["/admin", "/admin/support", "/api/helper/verification"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "TEXT_CONTRAST"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-J-session-expired",
@@ -3549,9 +3575,13 @@
             "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
+          "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#platform-administration-and-provider-health",
+          "tests/e2e/admiralty-phase2.spec.ts#role partitions and support consent",
+          "src/admiralty/capabilities.test.ts#capability boundaries",
+          "src/admiralty/ports/redaction.test.ts#no payload secret private content",
           "tests/e2e/homeport-phase7.spec.ts#Journey J, K, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey D, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts#Journey U through W"
@@ -3961,7 +3991,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -4018,7 +4048,7 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
@@ -4052,6 +4082,6 @@
   "project": "Project Deepwater",
   "runtimeEvidenceStatus": "LOCAL_SYNTHETIC_PROVEN",
   "schemaVersion": "1.0.0",
-  "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+  "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e",
   "truthBoundary": "Source-bound local synthetic evidence is distinct from live-provider proof, deployment, protected-main acceptance, owner acceptance, and product acceptance."
 }
