@@ -68,3 +68,31 @@ passed all 3/3 `browser.helm` cases in its owned runtime (run
 `54647911F63C6A55E5C6B6C95E5EC0A2977B4580A42DE073C8C503A3D8C7A412`.
 The reconciled replacement candidate is now frozen for its one full authority
 attempt.
+
+## Hosted authority failure and registry repair
+
+Hosted run `31634707413` was explicitly bound to PR `#59`, base
+`541e914f481883200569f8cc7ec5ec9428d7cbb7`, and candidate
+`3c03e7a1f0aaab79ad725cacd00fb3e4036b4f41`. It failed in the **Plan** job
+before any worker suite, plan artifact, finalizer, or acceptance envelope was
+created. The exact error was `TIDEGLASS_PHASE3_TASK_ROOT is required` while the
+governed registry asked Playwright to list tests. The browser spec read its
+task-owned execution variables at module import time, which is invalid during
+environment-free registry discovery. This is an authority-infrastructure
+failure, not a semantic, product, privacy, or browser-journey failure.
+
+The failure was reproduced locally with the same environment-free
+`node scripts/sounding-line/test-registry.mjs` command. The repair defers the
+three required Tideglass runtime variables until Playwright `beforeAll`; normal
+execution still fails closed before any test if the task-owned fixture contract
+is absent. The focused registry command then passed, `npx tsc --noEmit` passed,
+and `npm run tideglass:phase3:journeys` passed from a fresh synthetic fixture
+at `%LOCALAPPDATA%\\ProjectTideglass\\phase3-final-dbbe2c49` for source
+`dbbe2c49aa884f6a5e078cfa3c5df580344ca221`. It rebuilt production and passed
+the visible A--J journey (including Axe serious/critical zero, mobile,
+keyboard, reduced motion, and effective 200% zoom). The task-owned fixture
+again reported the canonical database as untouched.
+
+This repair supersedes the failed hosted attempt. The next authority dispatch
+must target a newly frozen, documentation-qualified SHA exactly once; the
+failed run must not be retried.

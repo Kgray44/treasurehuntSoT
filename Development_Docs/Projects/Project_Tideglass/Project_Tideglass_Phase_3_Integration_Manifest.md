@@ -41,8 +41,10 @@ Canonical owner acceptance is recorded in
 become a completion receipt, its post-repair exact documentation-qualified SHA
 must receive the single replacement authoritative decision and protected
 integration. The recorded preflight `ENOENT` produced no finalizer or suite
-receipt; the Validation Record identifies the immutable task-owned baseline
-repair and focused proof.
+receipt. Hosted run `31634707413` then failed in environment-free registry
+discovery before any worker receipt or finalizer. The Validation Record records
+the exact failure, the deferred-runtime repair, fresh source-bound browser
+proof, and the one permitted replacement authority attempt.
 
 ## Reconciled-main result
 

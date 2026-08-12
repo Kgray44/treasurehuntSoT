@@ -55,3 +55,13 @@ candidate, dispatch the one exact-SHA authoritative decision, merge through the
 protected procedure only after `RELEASE_GO`, verify the actual integrated source,
 and then update the governed Deepwater and Feature Catalog records from accepted
 main evidence.
+
+## Post-decision authority repair boundary
+
+The registry-discovery repair recorded after this decision defers only the
+Phase 3 browser fixture environment from module import to test setup. It does
+not modify the owner-reviewed route, API, service, policy, Chronicle, Passport,
+Studio, fixture semantics, or visual experience. The refreshed A--J browser
+proof remains synthetic and source-bound; the existing owner decision therefore
+continues to cover the product while a newly frozen candidate receives its one
+replacement authority decision.
