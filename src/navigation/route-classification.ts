@@ -296,6 +296,16 @@ export const routeShellDefinitions: readonly RouteShellDefinition[] = [
     activeFamily: "global-explore-chronicles",
   },
   {
+    id: "tideglass-chronicle-compare",
+    pattern: "/chronicles/:taleSlug/compare",
+    workspace: "public",
+    shellMode: "PUBLIC_STANDARD",
+    owner: "tideglass",
+    reason: "Canonical, server-authorized published-edition comparison passage.",
+    exitTarget: "/tales",
+    activeFamily: "global-explore-chronicles",
+  },
+  {
     id: "public-play",
     pattern: "/play/:slug",
     workspace: "public",
