@@ -32,7 +32,7 @@
     "status": "BRANCH_COMPLETE_NOT_MERGED",
     "program": "Project Bridgewatch Phase 2",
     "branch": "codex/project-bridgewatch-phase2-wire-the-signals",
-    "commit": "09d98e4bf8dc0e7ccdc6355ed91561c4f8db6847",
+    "commit": "51fc2e07975c771ea72a49f9b5b787ba48316384",
     "surfaces": ["bridgewatch", "POST /api/telemetry/heartbeat", "GET /api/history", "GET /api/tests"],
     "subfeatures": [
       "Read-only Sounding Line runtime projection with explicit lifecycle normalization",
@@ -46,7 +46,7 @@
     ],
     "evidence": [
       { "kind": "branch", "value": "codex/project-bridgewatch-phase2-wire-the-signals" },
-      { "kind": "commit", "value": "09d98e4bf8dc0e7ccdc6355ed91561c4f8db6847" },
+      { "kind": "commit", "value": "51fc2e07975c771ea72a49f9b5b787ba48316384" },
       { "kind": "path", "value": "bridgewatch/lib/store.ts" },
       { "kind": "path", "value": "bridgewatch/src/sounding-line.ts" },
       { "kind": "test", "value": "bridgewatch/test/sounding-line.test.ts" },

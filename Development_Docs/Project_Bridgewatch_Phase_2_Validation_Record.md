@@ -38,15 +38,20 @@ The following isolated focused checks passed during implementation:
   `bridgewatch.mission-control`; the generated registry excludes `dist` output
   and current policy validation passed.
 
+- governed focused qualification: `unit.bridgewatch`, `unit.sounding-line`, and
+  `static.core` each passed with a clean cleanup receipt; `static.core` included
+  repository formatting, lint, type, product-language, and architecture checks;
+- repository documentation index/validation and Feature Catalog sync/validation
+  passed after the single reconciliation to `54e3d818d49d45282a9c419d562d4b5c78911ccd`.
+
 These are local, task-owned package and browser observations. They are not
 Sounding Line acceptance, GitHub protected-check, deployment, provider, or
 owner-acceptance proof.
 
 ## Remaining acceptance boundary
 
-Documentation index/validation, Feature Catalog sync/validation, current-main
-reconciliation, candidate freeze, protected PR creation, canonical acceptance
-ownership, exactly one hosted `Sounding Line / Mainline Decision`, protected
-merge, and exact-main proof remain pending. This local evidence is not a
+Candidate freeze, protected PR creation, canonical acceptance ownership, exactly
+one hosted `Sounding Line / Mainline Decision`, protected merge, and exact-main
+proof remain pending. This local evidence is not a
 Sounding Line acceptance, GitHub protected-check, deployment, provider, or
 owner-acceptance claim.
