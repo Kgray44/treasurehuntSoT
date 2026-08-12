@@ -29,13 +29,27 @@ without adding a Feature Catalog denominator entry. PR #56 subsequently advanced
 accepted main to `541e914f481883200569f8cc7ec5ec9428d7cbb7` with advisory
 Admiralty closure evidence and a governed Helm-browser setup stabilization. It
 adds no product capability, but invalidates the earlier frozen r5 candidate.
-The current product repair is `399865a70d2b7eeb83d12afd718702834252f870`, based
-on that current main. It
+The prior product repair is `399865a70d2b7eeb83d12afd718702834252f870`, based
+on that former current main. It
 retains Helm's accepted route recovery, makes cancelled or aborted Player event
 streams detach idempotently, and rechecks the authoritative waiting-room state
-when browser visibility settles. It reconciles current source proof for
+when browser visibility settles. It reconciles source proof for
 Drydock's Creator Studio Sea Trials and Admiralty's Community and Restricted
 Operations projections without reopening either owner implementation or record.
+Protected Helm Phase 2 closure and accepted record-only infrastructure later
+advanced main to `fb0f13e35fcdd98434d22c357aee02f24d6d9036`, superseding r6.
+The rebased Phase 4 target source is
+`a61ff85676bf3a58eebe2be2df7fc3d789211654`; it must complete renewed
+qualification before another frozen candidate can seek authority.
+
+That requalification is now locally proven: the direct Player, Captain, and
+stream suite passes 26/26; isolated execute-only `browser.helm` passes 3/3
+with clean runtime conformance; Deepwater passes 66/66; Drydock passes 196/196
+with 59-migration rehearsal; Admiralty passes 14 direct tests, 15-route
+validation, and migration rehearsal; and Bridgewatch passes typecheck, 24
+tests, and build. This is source-bound local qualification only, so it does
+not claim protected-main, owner, product, live-provider, or deployment
+acceptance.
 
 The authority stack is repository instructions, the Voyagewright Global Product
 Governance Standard, the Project Deepwater governing document, accepted
