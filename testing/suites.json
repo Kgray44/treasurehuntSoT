@@ -2542,7 +2542,7 @@
     },
     {
       "id": "unit.bridgewatch",
-      "name": "Bridgewatch Phase 3 mission-control history units",
+      "name": "Bridgewatch Phase 2 mission-control units",
       "tier": 1,
       "owner": "bridgewatch",
       "command": "registry-selected Vitest files",
@@ -2556,11 +2556,10 @@
       "affectedPaths": [
         "bridgewatch/**",
         "scripts/sounding-line/status-projection.mjs",
-        "Development_Docs/Project_Bridgewatch_Phase_2_*.md",
-        "Development_Docs/Project_Bridgewatch_Phase_3_*.md"
+        "Development_Docs/Project_Bridgewatch_Phase_2_*.md"
       ],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "phase-3-history-current",
+      "currentImplementationState": "phase-2-branch-complete",
       "adapter": "vitest-family"
     }
   ]
