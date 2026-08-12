@@ -10,15 +10,15 @@ last_reviewed: 2026-08-12
 
 ## Source identity
 
-| Field                       | Value                                                                                      |
-| --------------------------- | ------------------------------------------------------------------------------------------ |
-| Acceptance-repair branch    | `codex/project-shipwright-phase1-acceptance-repair`                                        |
-| Validated source            | `d7f3d0a2c9889134919402b8338f9df5095c657f`                                                |
-| Validated base              | `origin/main` at `236c27241bb8d1630274f5d5412ec9addbdb8893`                                |
-| Governing baseline          | `f1c2f22dd935322c1a71eb80c51592f243dc196d` is an ancestor of the base                      |
-| Migration impact            | None                                                                                       |
-| Database change             | None                                                                                       |
-| Runtime/API contract change | None                                                                                       |
+| Field                       | Value                                                                 |
+| --------------------------- | --------------------------------------------------------------------- |
+| Acceptance-repair branch    | `codex/project-shipwright-phase1-acceptance-repair`                   |
+| Validated source            | `d7f3d0a2c9889134919402b8338f9df5095c657f`                            |
+| Validated base              | `origin/main` at `236c27241bb8d1630274f5d5412ec9addbdb8893`           |
+| Governing baseline          | `f1c2f22dd935322c1a71eb80c51592f243dc196d` is an ancestor of the base |
+| Migration impact            | None                                                                  |
+| Database change             | None                                                                  |
+| Runtime/API contract change | None                                                                  |
 
 ## Safety assertions
 
@@ -33,13 +33,13 @@ last_reviewed: 2026-08-12
 
 ## Integration gates
 
-| Gate                                   | State                                                                       |
-| -------------------------------------- | --------------------------------------------------------------------------- |
-| Task worktree clean at creation        | Passed; isolated local worktree created from the stated base.               |
-| Focused component evidence             | Passed; 27 targeted Studio/shell/journal/motion tests, recorded separately. |
+| Gate                                   | State                                                                                                                                                                                                                                  |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Task worktree clean at creation        | Passed; isolated local worktree created from the stated base.                                                                                                                                                                          |
+| Focused component evidence             | Passed; 27 targeted Studio/shell/journal/motion tests, recorded separately.                                                                                                                                                            |
 | Full registered Sounding Line evidence | Passed: hosted run `31568707098` returned `RELEASE_GO` for the validated source, plan `84d5ea51cd6301b95409b11aa4884914ebc0ebc068a1f0fce830c43dbf38aaef`, evidence `b7dbe23b6a9d55af528323a03ab3f8d2dd4ea7f213d8855b616f3bc9558df07b`. |
-| Owner walkthrough                      | Satisfied by prior owner review plus explicit waiver of a post-correction repeat walkthrough. |
-| Commit / push / protected integration  | Confirmed through protected PR #48 integration into `origin/main`.          |
+| Owner walkthrough                      | Satisfied by prior owner review plus explicit waiver of a post-correction repeat walkthrough.                                                                                                                                          |
+| Commit / push / protected integration  | Confirmed through protected PR #48 integration into `origin/main`.                                                                                                                                                                     |
 
 ## Rollback
 
