@@ -1,0 +1,95 @@
+name: Sounding Line protected merge binding
+
+on:
+  # This inexpensive bridge binds existing authority to GitHub's synthetic PR
+  # merge identity. It is deliberately separate from the explicit heavyweight
+  # frozen-candidate workflow.
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize, ready_for_review, edited]
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: sounding-line-protected-merge-binding-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  bind:
+    # The name is intentionally the unchanged protected branch context.
+    name: Sounding Line / Mainline Decision
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: "${{ github.sha }}", fetch-depth: 0 }
+      - id: authority
+        name: Locate sealed explicit authority
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          $legacy = Get-Content -Raw testing/sounding-line-authority.json | ConvertFrom-Json | Select-Object -ExpandProperty protectedMergeBinding | Select-Object -ExpandProperty legacyQualifiedCandidates | Where-Object { $_.prNumber -eq [int]$env:PR_NUMBER -and $_.candidateSha -eq $env:CANDIDATE_SHA }
+          if (@($legacy).Count -gt 1) { throw "AMBIGUOUS_LEGACY_QUALIFIED_AUTHORITY" }
+          if ($legacy) {
+            "run-id=$($legacy.authoritativeRunId)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            "legacy=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            exit 0
+          }
+          $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = "application/vnd.github+json"; 'X-GitHub-Api-Version' = '2022-11-28' }
+          $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&head_sha=$env:CANDIDATE_SHA&per_page=100").workflow_runs |
+            Where-Object { $_.name -eq 'Sounding Line authoritative' -and $_.status -eq 'completed' -and $_.conclusion -eq 'success' }
+          if (@($runs).Count -ne 1) { throw "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE" }
+          "run-id=$(@($runs)[0].id)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "legacy=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - name: Download sealed finalization
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sounding-line-finalization
+          path: accepted-finalization
+          run-id: ${{ steps.authority.outputs.run-id }}
+          github-token: ${{ github.token }}
+      - name: Download sealed plan
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sounding-line-plan
+          path: accepted-plan
+          run-id: ${{ steps.authority.outputs.run-id }}
+          github-token: ${{ github.token }}
+      - name: Download qualified acceptance envelope
+        if: ${{ steps.authority.outputs.legacy != 'true' }}
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sounding-line-acceptance-envelope
+          path: accepted-envelope
+          run-id: ${{ steps.authority.outputs.run-id }}
+          github-token: ${{ github.token }}
+      - name: Bind sealed authority to current merge identity
+        shell: pwsh
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          MERGE_SHA: ${{ github.sha }}
+          AUTHORITY_RUN_ID: ${{ steps.authority.outputs.run-id }}
+          LEGACY: ${{ steps.authority.outputs.legacy }}
+        run: |
+          $args = @(
+            'scripts/sounding-line/protected-merge-binding-ci.mjs',
+            '--authority', 'testing/sounding-line-authority.json',
+            '--finalization', 'accepted-finalization/sounding-line-finalization.json',
+            '--plan', 'accepted-plan/sounding-line-plan.json',
+            '--pr-number', $env:PR_NUMBER,
+            '--candidate-sha', $env:CANDIDATE_SHA,
+            '--base-sha', $env:BASE_SHA,
+            '--merge-sha', $env:MERGE_SHA,
+            '--authority-run-id', $env:AUTHORITY_RUN_ID
+          )
+          if ($env:LEGACY -ne 'true') { $args += @('--envelope', 'accepted-envelope/sounding-line-acceptance-envelope.json') }
+          node @args
