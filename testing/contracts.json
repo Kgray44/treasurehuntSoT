@@ -3069,6 +3069,13 @@
       "critical": true
     },
     {
+      "id": "helm.member-presence-synchronization",
+      "name": "Project Helm Membership Scoped Presence and Synchronization",
+      "authority": "project-helm",
+      "owners": ["project-helm", "platform-foundation"],
+      "critical": true
+    },
+    {
       "id": "admiralty.phase1.identity",
       "name": "Canonical identity and session authority",
       "authority": "project-admiralty",

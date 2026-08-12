@@ -809,7 +809,7 @@
       "id": "DD-P3-049",
       "requirement": "MySQL schema parity",
       "governingSource": "§11.49",
-      "sourceImplementation": ["prisma/schema.prisma", "prisma/mysql-migrations/0057_drydock_phase3_run_provenance"],
+      "sourceImplementation": ["prisma/schema.prisma", "prisma/mysql-migrations/0058_drydock_phase3_run_provenance"],
       "testIds": ["scripts/drydock/rehearse-phase3-migrations.mjs", "prisma validate"],
       "soundingLineSuite": "unit.drydock",
       "scenarioFixture": "static-mysql-parity",

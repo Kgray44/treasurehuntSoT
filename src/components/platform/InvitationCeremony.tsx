@@ -69,6 +69,7 @@ type InvitationRouteHandoff = (destination: string, signal: AbortSignal) => void
 
 const accessFinalState = "access-result-readable";
 const accessFallback = "readable-access-result";
+const acceptedHandoffDelayMs = 500;
 const targetProperties = {
   invitation: ["transform"],
   "invitation-ink": ["filter", "opacity"],
@@ -254,6 +255,7 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
   const root = useRef<HTMLElement>(null);
   const ceremonyHost = useRef<SceneHostHandle | null>(null);
   const resolveRun = useRef<AbortController | null>(null);
+  const acceptActionActive = useRef(false);
   const { director } = useAnimationDirector();
   const { mode } = useMotionMode();
   const asyncState = useAuthoritativeAsyncState(900);
@@ -357,7 +359,15 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
   }
 
   async function act(action: "accept" | "decline") {
-    if (!invitation || !root.current) return;
+    if (!invitation) return;
+    // The visible accept control must never become a no-op because a previous
+    // presentation lifecycle left an async latch behind. The local latch also
+    // keeps a fast double-click from replacing an authoritative operation.
+    if (action === "accept") {
+      if (acceptActionActive.current) return;
+      acceptActionActive.current = true;
+      if (!asyncState.busy) asyncState.reset("recover-visible-invitation-accept");
+    }
     if (
       action === "decline" &&
       !(await requestAction({
@@ -369,7 +379,10 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
     )
       return;
     const run = asyncState.begin();
-    if (!run) return;
+    if (!run) {
+      if (action === "accept") acceptActionActive.current = false;
+      return;
+    }
     const pendingStage = action === "decline" ? "declining" : invitation.requiresPin ? "pin-validating" : "accepting";
     setStage(pendingStage);
     setError("");
@@ -382,10 +395,15 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
     let fallbackHandoffTimer: number | undefined;
     let handoffStarted = false;
     const handOffOnce = async (result: InvitationActionResult) => {
-      if (handoffStarted || !result.playthroughId || run.controller.signal.aborted) return;
+      if (handoffStarted || !result.playthroughId) return;
       handoffStarted = true;
       if (fallbackHandoffTimer !== undefined) window.clearTimeout(fallbackHandoffTimer);
-      await handOffRoute(`/player/playthroughs/${result.playthroughId}`, run.controller.signal);
+      // Keep the accepted state perceptible before replacing the route. This also
+      // lets the completed invitation transaction settle before its page unloads.
+      await new Promise((resolve) => window.setTimeout(resolve, acceptedHandoffDelayMs));
+      // The membership transaction is already complete. Presentation cancellation
+      // must not strand the newly accepted Player on the invitation route.
+      await handOffRoute(`/player/playthroughs/${result.playthroughId}`, new AbortController().signal);
     };
     const submitAction = () => {
       actionPromise ??= (async () => {
@@ -405,13 +423,17 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
           operationCode = body.code;
           throw new Error("invitation-operation-rejected");
         }
-        if (action === "accept") await invalidateCurrentUser();
         const result = { ok: true as const, playthroughId: body.playthroughId };
         if (action === "accept" && result.playthroughId) {
           // A valid canonical membership must not leave a Player stranded if an
           // optional presentation runtime never settles. The normal ceremony
           // completes first; this is a bounded, single-fire recovery handoff.
           fallbackHandoffTimer = window.setTimeout(() => void handOffOnce(result), stateToken.durationMs + 250);
+          // Context invalidation keeps the shared shell current, but it is not
+          // authoritative for the already-committed membership or its route.
+          // A congested context refresh must not strand a newly accepted Player
+          // on the one-time invitation page.
+          void invalidateCurrentUser().catch(() => undefined);
         }
         return result;
       })();
@@ -434,7 +456,7 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
       // or even finish mounting. The ceremony receives this same promise, so it
       // still renders the canonical accept outcome without issuing a duplicate request.
       const authoritativeOperation = submitAction();
-      if (!ceremonyHost.current) {
+      if (!ceremonyHost.current || !root.current) {
         try {
           const result = await authoritativeOperation;
           if (!result.ok || !result.playthroughId || !asyncState.succeed(run)) return;
@@ -498,6 +520,8 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
       asyncState.release(run, "success");
     } catch {
       restoreFailure(run, operationError, operationCode);
+    } finally {
+      if (action === "accept") acceptActionActive.current = false;
     }
   }
 

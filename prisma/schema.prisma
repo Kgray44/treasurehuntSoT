@@ -1268,6 +1268,7 @@ model TaleSession {
   verificationRequests   TaleVerificationRequest[]
   helperPairings         TaleHelperPairing[]
   memberships            PlaythroughMembership[]
+  presenceDevices        MembershipPresenceDevice[]
   invitations            Invitation[]
   revealStates           RevealState[]
   artifactGrantReceipts  ArtifactGrantReceipt[]
@@ -1515,9 +1516,32 @@ model PlaythroughMembership {
   updatedAt                  DateTime      @updatedAt
   playthrough                TaleSession   @relation(fields: [playthroughId], references: [id], onDelete: Cascade)
   player                     PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+  presenceDevices            MembershipPresenceDevice[]
 
   @@unique([playthroughId, playerProfileId])
   @@index([playerProfileId, status, updatedAt])
+}
+
+// Platform-owned, membership-scoped operational evidence. These records are
+// not Chronicle progression, a Helm state store, or a device fingerprint.
+model MembershipPresenceDevice {
+  id                      String                @id @default(cuid())
+  playthroughMembershipId String
+  taleSessionId           String
+  deviceInstanceId        String
+  lastHeartbeatAt         DateTime              @default(now())
+  acknowledgedSequence    Int                   @default(0)
+  safeActivity            String?
+  connectionGeneration    Int                   @default(0)
+  disconnectedAt          DateTime?
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
+  membership              PlaythroughMembership @relation(fields: [playthroughMembershipId], references: [id], onDelete: Cascade)
+  taleSession             TaleSession           @relation(fields: [taleSessionId], references: [id], onDelete: Cascade)
+
+  @@unique([playthroughMembershipId, deviceInstanceId])
+  @@index([taleSessionId, lastHeartbeatAt])
+  @@index([playthroughMembershipId, lastHeartbeatAt])
 }
 
 model AccountDataExport {

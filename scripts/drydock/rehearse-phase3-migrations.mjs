@@ -7,7 +7,7 @@ const repositoryRoot = resolve(import.meta.dirname, "..", "..");
 const migrationsRoot = join(repositoryRoot, "prisma", "migrations");
 const mysqlMigrations = [
   [
-    "0056_drydock_phase3_simulation",
+    "0057_drydock_phase3_simulation",
     [
       "CREATE TABLE `DrydockScenario`",
       "CREATE TABLE `DrydockScenarioRevision`",
@@ -19,7 +19,7 @@ const mysqlMigrations = [
     ],
   ],
   [
-    "0057_drydock_phase3_run_provenance",
+    "0058_drydock_phase3_run_provenance",
     ["ALTER TABLE `DrydockSimulationRun`", "`sourceGitSha`", "`scenarioSchemaVersion`", "`faultCatalogVersion`"],
   ],
 ];

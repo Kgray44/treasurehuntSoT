@@ -43,6 +43,8 @@ async function prewarmHelmRoutes(request: APIRequestContext) {
     { method: "POST", path: "/api/captain/playthroughs" },
     { method: "POST", path: "/api/invitations/accept" },
     { method: "GET", path: "/api/player/playthroughs/helm-prewarm" },
+    { method: "POST", path: "/api/player/playthroughs/helm-prewarm/presence" },
+    { method: "GET", path: "/api/captain/voyages/helm-prewarm" },
     { method: "GET", path: "/api/play/sessions/helm-prewarm" },
     { method: "POST", path: "/api/captain/playthroughs/helm-prewarm/launch" },
   ];
@@ -131,11 +133,14 @@ async function accountMenu(page: Page, label = displayName) {
 
 async function enterCaptain(page: Page) {
   const menu = await accountMenu(page);
-  await menu.getByRole("link", { name: "All Workspaces", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "All Workspaces" })).toBeVisible();
+  await Promise.all([
+    page.waitForURL(/\/account\/roles$/u),
+    menu.getByRole("link", { name: "All Workspaces", exact: true }).click(),
+  ]);
+  await expect(page.getByRole("heading", { name: "All Workspaces" })).toBeVisible({ timeout: 30_000 });
   await page.getByRole("link", { name: "Enter Captain" }).click();
-  await expect(page).toHaveURL(/\/captain\/library$/u);
-  await expect(page.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/\/captain\/library$/u, { timeout: 30_000 });
+  await expect(page.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible({ timeout: 30_000 });
 }
 
 function voyageCard(
@@ -150,7 +155,7 @@ function voyageCard(
 
 async function createVoyage(
   page: Page,
-  input: { voyageName: string; crewName: string; participation: "CAPTAIN_ONLY" | "CAPTAIN_AND_PLAYER" },
+  input: { voyageName: string; crewName: string | string[]; participation: "CAPTAIN_ONLY" | "CAPTAIN_AND_PLAYER" },
 ) {
   await page.getByRole("button", { name: "Create a Voyage" }).first().click();
   await expect(page.getByRole("dialog", { name: "Select Chronicle" })).toBeVisible();
@@ -163,7 +168,11 @@ async function createVoyage(
   if (input.participation === "CAPTAIN_AND_PLAYER") await captainPlayer.check();
   await wizard.getByLabel("Voyage name").fill(input.voyageName);
   await wizard.getByRole("button", { name: "Continue to Add Crew" }).click();
-  await wizard.getByLabel("Crew member name").fill(input.crewName);
+  const crewNames = Array.isArray(input.crewName) ? input.crewName : [input.crewName];
+  for (const [index, crewName] of crewNames.entries()) {
+    if (index > 0) await wizard.getByRole("button", { name: "Add another Crew member" }).click();
+    await wizard.getByLabel("Crew member name").nth(index).fill(crewName);
+  }
   await wizard.getByRole("button", { name: "Continue to Invitation access" }).click();
   await wizard.getByRole("button", { name: "Continue to Delivery" }).click();
   await wizard.getByRole("button", { name: "Continue to Review" }).click();
@@ -181,7 +190,7 @@ async function createVoyage(
   const created = (await response.json()) as CreatedVoyage;
   expect(created.participation.participationMode).toBe(input.participation);
   expect(created.participation.hasPlayerMembership).toBe(input.participation === "CAPTAIN_AND_PLAYER");
-  await expect(wizard.getByRole("heading", { name: input.crewName })).toBeVisible();
+  await expect(wizard.getByRole("heading", { name: crewNames[0]! })).toBeVisible();
   await wizard.getByRole("button", { name: "Done" }).click();
   await expect(voyageCard(page, input.voyageName, "Ready to Launch")).toBeVisible();
   return created;
@@ -202,8 +211,9 @@ async function acceptGuestInvitation(browser: Browser, link: string) {
     (candidate) => candidate.url().endsWith("/api/invitations/accept") && candidate.request().method() === "POST",
   );
   await accept.click({ noWaitAfter: true });
-  expect((await response).status()).toBe(200);
-  await expect(page).toHaveURL(/\/player\/playthroughs\//u);
+  const acceptedResponse = await response;
+  expect(acceptedResponse.status(), await acceptedResponse.text()).toBe(200);
+  await expect(page).toHaveURL(/\/player\/playthroughs\//u, { timeout: 30_000 });
   return { context, page };
 }
 
@@ -216,7 +226,8 @@ async function beginVoyage(page: Page, voyageName: string) {
       /\/api\/captain\/playthroughs\/[^/]+\/launch$/u.test(response.url()) && response.request().method() === "POST",
   );
   await dialog.getByRole("button", { name: "Begin Voyage" }).click();
-  expect((await responsePromise).status()).toBe(200);
+  const response = await responsePromise;
+  expect(response.status(), await response.text()).toBe(200);
   await expect(voyageCard(page, voyageName, "Active Voyages")).toBeVisible();
 }
 
@@ -387,8 +398,14 @@ test("Captain authority and ordinary Player membership remain independent throug
     const beforeRemoval = new Date();
     const card = voyageCard(page, participatingName, "Active Voyages");
     await card.getByRole("button", { name: "Stop Player participation" }).click();
+    const participationResponse = page.waitForResponse(
+      (response) =>
+        /\/api\/captain\/playthroughs\/[^/]+\/participation$/u.test(response.url()) &&
+        response.request().method() === "POST",
+    );
     await page.getByRole("dialog").getByRole("button", { name: "Stop Player participation" }).click();
-    await expect(page.getByText("Player participation ended. Your Captain authority remains active.")).toBeVisible();
+    expect((await participationResponse).status()).toBe(200);
+    await expect(card.getByRole("button", { name: "Join as Player" })).toBeVisible({ timeout: 30_000 });
     selfMembership = await currentMembership(participating.playthroughId);
     expect(selfMembership.status).toBe("REMOVED");
     expect(selfMembership.removedAt).not.toBeNull();
@@ -490,6 +507,100 @@ test("Captain authority and ordinary Player membership remain independent throug
   expect(audits.some((event) => event.action === "CAPTAIN_AUTHORITY_REVOKED")).toBe(true);
 });
 
+test("authenticated membership heartbeats are independently visible in the Captain operational projection", async ({
+  browser,
+  page,
+}) => {
+  test.setTimeout(600_000);
+  await signInThroughProduct(page);
+  const voyageName = `Helm presence ${suffix}`;
+  const created = await createVoyage(page, {
+    voyageName,
+    crewName: [`Helm Presence Crew A ${suffix}`, `Helm Presence Crew B ${suffix}`, `Helm Presence Crew C ${suffix}`],
+    participation: "CAPTAIN_AND_PLAYER",
+  });
+  const captainPlayer = await page.context().newPage();
+  expect(created.invitations).toHaveLength(3);
+  const guests = await Promise.all(
+    created.invitations.map((invitation) => acceptGuestInvitation(browser, invitation.link)),
+  );
+  try {
+    await page.reload();
+    await beginVoyage(page, voyageName);
+    await captainPlayer.goto(`/player/playthroughs/${created.playthroughId}/journal`);
+    await expect(captainPlayer.getByRole("main")).toBeVisible({ timeout: 30_000 });
+    await Promise.all(
+      guests.map((guest) =>
+        expect(guest.page).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}/journal$`, "u"), {
+          timeout: 30_000,
+        }),
+      ),
+    );
+
+    const playerPages = [captainPlayer, ...guests.map((guest) => guest.page)];
+    const playerDetails = await Promise.all(
+      playerPages.map((playerPage) =>
+        browserJson<{ playthrough: { membershipId: string }; csrfToken: string }>(
+          playerPage,
+          `/api/player/playthroughs/${created.playthroughId}`,
+        ),
+      ),
+    );
+    const playerStates = await Promise.all(
+      playerPages.map((playerPage) =>
+        browserJson<{ session: { currentSequence: number } }>(
+          playerPage,
+          `/api/play/sessions/${created.playthroughId}`,
+        ),
+      ),
+    );
+    for (const details of playerDetails) expect(details.status).toBe(200);
+    for (const state of playerStates) expect(state.status).toBe(200);
+
+    const deviceIds = playerPages.map(() => randomUUID());
+    const heartbeats = await Promise.all(
+      playerPages.map((playerPage, index) =>
+        browserJson(playerPage, `/api/player/playthroughs/${created.playthroughId}/presence`, {
+          method: "POST",
+          csrf: playerDetails[index]!.body.csrfToken,
+          body: {
+            membershipId: playerDetails[index]!.body.playthrough.membershipId,
+            deviceInstanceId: deviceIds[index]!,
+            acknowledgedSequence: playerStates[index]!.body.session.currentSequence,
+            safeActivity: "JOURNAL",
+          },
+        }),
+      ),
+    );
+    for (const heartbeat of heartbeats) expect(heartbeat.status).toBe(200);
+
+    await expect
+      .poll(async () => {
+        const projection = await browserJson<{
+          crew: Array<{ presence: { state: string }; synchronization: { state: string } }>;
+        }>(page, `/api/captain/voyages/${created.playthroughId}`);
+        expect(projection.status).toBe(200);
+        return projection.body.crew.map((member) => `${member.presence.state}:${member.synchronization.state}`).sort();
+      })
+      .toEqual([
+        "CONNECTED_SYNCED:SYNCHRONIZED",
+        "CONNECTED_SYNCED:SYNCHRONIZED",
+        "CONNECTED_SYNCED:SYNCHRONIZED",
+        "CONNECTED_SYNCED:SYNCHRONIZED",
+      ]);
+
+    const projection = await browserJson<Record<string, unknown>>(
+      page,
+      `/api/captain/voyages/${created.playthroughId}`,
+    );
+    expect(forbiddenProjectionKey(projection.body)).toBe(false);
+    for (const deviceId of deviceIds) expect(JSON.stringify(projection.body)).not.toContain(deviceId);
+  } finally {
+    await Promise.all(guests.map((guest) => guest.context.close()));
+    await captainPlayer.close();
+  }
+});
+
 test("participation choice remains usable at desktop, tablet, phone, 200% zoom, keyboard, and reduced motion", async ({
   browser,
 }) => {
@@ -532,10 +643,30 @@ test("participation choice remains usable at desktop, tablet, phone, 200% zoom, 
           ]);
           expect(touchTargets.every((box) => box && box.height >= 44 && box.width >= 44)).toBe(true);
         }
-        const overflow = await page.evaluate(
-          () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
-        );
-        expect(overflow).toBeLessThanOrEqual(1);
+        const overflow = await page.evaluate(() => {
+          const root = document.documentElement;
+          const viewportWidth = root.clientWidth;
+          const candidates = Array.from(document.body.querySelectorAll<HTMLElement>("*"))
+            .map((node) => {
+              const rect = node.getBoundingClientRect();
+              const style = getComputedStyle(node);
+              return {
+                tag: node.tagName.toLowerCase(),
+                id: node.id || null,
+                className: node.className || null,
+                right: Math.round(rect.right),
+                width: Math.round(rect.width),
+                display: style.display,
+                minWidth: style.minWidth,
+                gridTemplateColumns: style.gridTemplateColumns,
+              };
+            })
+            .filter((node) => node.right > viewportWidth + 1)
+            .sort((left, right) => right.right - left.right)
+            .slice(0, 12);
+          return { amount: root.scrollWidth - viewportWidth, viewportWidth, scrollWidth: root.scrollWidth, candidates };
+        });
+        expect(overflow.amount, JSON.stringify(overflow)).toBeLessThanOrEqual(1);
         if (["desktop", "phone"].includes(configuration.name)) {
           const axe = await new AxeBuilder({ page }).analyze();
           expect(

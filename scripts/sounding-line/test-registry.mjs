@@ -15,6 +15,10 @@ const homeportContracts = JSON.parse(await fs.readFile(path.join(root, "testing"
 const helmContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
   .contracts.map((contract) => contract.id)
   .filter((contractId) => contractId.startsWith("helm."));
+const helmPresenceContracts = helmContracts.filter(
+  (contractId) => contractId === "helm.member-presence-synchronization",
+);
+const helmBaseContracts = helmContracts.filter((contractId) => contractId !== "helm.member-presence-synchronization");
 const hash = (text) => createHash("sha256").update(text).digest("hex").slice(0, 20);
 const execFileAsync = promisify(execFile);
 const normal = (value) => value.replaceAll("\\", "/");
@@ -39,8 +43,23 @@ function isHelmFile(file) {
   return (
     file.includes("project-helm") ||
     file.startsWith("src/helm/") ||
+    file.includes("membership-presence") ||
+    file.includes("presence-client") ||
     file.includes(".helm.test.") ||
-    file.includes("src/app/api/captain/playthroughs/")
+    file.includes("src/app/api/captain/playthroughs/") ||
+    file.includes("src/app/api/captain/voyages/") ||
+    (file.includes("src/app/api/player/playthroughs/") && file.includes("/presence/"))
+  );
+}
+
+function isHelmPresenceFile(file) {
+  return (
+    file.includes("membership-presence") ||
+    file.includes("presence-client") ||
+    file.includes("src/app/api/captain/voyages/") ||
+    (file.includes("src/app/api/player/playthroughs/") && file.includes("/presence/")) ||
+    file.includes("project-helm-phase") ||
+    file.includes("CaptainLibrary.helm.test")
   );
 }
 
@@ -138,7 +157,7 @@ function browserFamily(project, file, title) {
 
 function contractFor(file, family) {
   if (isHelmFile(file) || family === "unit.helm" || family === "component.helm" || family === "browser.helm")
-    return helmContracts;
+    return isHelmPresenceFile(file) ? helmPresenceContracts : helmBaseContracts;
   if (file.includes("drydock") || family === "unit.drydock") return drydockContracts;
   if (file.includes("admiralty") || family.includes("admiralty")) return admiraltyContracts;
   if (file.includes("tideglass") || family === "unit.tideglass") return tideglassContractsFor(file);

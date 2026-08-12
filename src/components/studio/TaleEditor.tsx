@@ -376,7 +376,7 @@ export function TaleEditor({
     return () => clearTimeout(timer);
   }, [autosaveKick, draft, dirty, save]);
 
-  function change(mutator: (next: DraftState) => void) {
+  function change(mutator: (next: DraftState) => void, pendingSaveState = "Unsaved changes") {
     if (!draft) return;
     publicationStatusHold.current = false;
     const next = clone(draft);
@@ -386,7 +386,7 @@ export function TaleEditor({
     setFuture([]);
     setDraft(next);
     setDirty(true);
-    setSaveState("Unsaved changes");
+    setSaveState(pendingSaveState);
     setValidation(null);
     setValidationPanelOpen(false);
   }
@@ -956,9 +956,8 @@ export function TaleEditor({
         if (!target) throw new Error("The repaired Passage is no longer present in this draft.");
         target.configuration = clone(preview.after.configuration);
         target.nextBlockId = preview.after.nextBlockId;
-      });
+      }, "Safe repair queued for autosave; Undo is available.");
       setSelectedRepairBlockId(null);
-      setSaveState("Safe repair queued for autosave; Undo is available.");
     } catch (cause) {
       setSaveState("Safe repair unavailable");
       setError(cause instanceof Error ? cause.message : "A current safe repair preview could not be loaded.");
@@ -2958,7 +2957,7 @@ function SortableStoryBlock({
   children,
 }: {
   id: string;
-  children: (attributes: DraggableAttributes, listeners: DraggableSyntheticListeners) => React.ReactNode;
+  children: (attributes: DraggableAttributes, listeners: DraggableSyntheticListeners | undefined) => React.ReactNode;
 }) {
   const { mode } = useMotionMode();
   const layoutMotion = resolvePlatformMotionToken("layout", mode);

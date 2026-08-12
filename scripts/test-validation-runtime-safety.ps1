@@ -39,6 +39,10 @@ try {
     if (-not (Test-Path -LiteralPath (Join-Path $runtime ".forever-validation-run.json"))) {
         throw "Fresh non-Git validation runtime did not receive its ownership marker."
     }
+    $compressionState = (Get-Item -LiteralPath $runtime).Attributes
+    if (($compressionState -band [System.IO.FileAttributes]::Compressed) -ne [System.IO.FileAttributes]::Compressed) {
+        throw "Fresh owned validation runtime did not enable NTFS compression for its physical dependency copy."
+    }
     $historical = Join-Path $script:RuntimeBase "validation"
     if ([string]::Equals($runtime, $historical, [System.StringComparison]::OrdinalIgnoreCase)) {
         throw "Historical fixed validation path was selected."

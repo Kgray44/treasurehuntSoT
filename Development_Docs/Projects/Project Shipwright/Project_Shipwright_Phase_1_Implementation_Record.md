@@ -1,9 +1,9 @@
 ---
 title: Project Shipwright Phase 1 Implementation Record
 audience: engineering
-status: ready-for-owner-walkthrough
+status: accepted-mainline
 canonical_for: project-shipwright-phase-1-implementation
-last_reviewed: 2026-08-10
+last_reviewed: 2026-08-12
 ---
 
 # Project Shipwright Phase 1: Clear the Workbench - Implementation Record
@@ -55,3 +55,7 @@ Phase 1 reorganizes the Creator Studio authoring interaction without changing Ch
 ## Phase boundary
 
 This is Phase 1 only. Contract-aware block editors, variable/expression authoring, new validation meaning, new Story Block semantics, graph changes, and any persistence design remain Phase 2-or-later work and require a fresh accepted-main branch plus their owning authority.
+
+## Acceptance-repair closure
+
+Implementation is `COMPLETE`. The exact integrated-source acceptance candidate `d7f3d0a2c9889134919402b8338f9df5095c657f` received the hosted Sounding Line mainline `RELEASE_GO` decision in run `31568707098` (plan digest `84d5ea51cd6301b95409b11aa4884914ebc0ebc068a1f0fce830c43dbf38aaef`; evidence digest `b7dbe23b6a9d55af528323a03ab3f8d2dd4ea7f213d8855b616f3bc9558df07b`). This repair includes no Phase 2 implementation.

@@ -12,7 +12,7 @@
     "compatibilityWindow": "Readers tolerate no Phase 3 record before the first Scenario is created."
   },
   "mysql": {
-    "migration": ["0056_drydock_phase3_simulation", "0057_drydock_phase3_run_provenance"],
+    "migration": ["0057_drydock_phase3_simulation", "0058_drydock_phase3_run_provenance"],
     "reservedModels": ["DrydockScenario", "DrydockScenarioRevision", "DrydockScenarioSuite", "DrydockSimulationRun"],
     "purpose": "Schema parity for the SQLite Phase 3 synthetic simulation records.",
     "backfill": "NONE",
