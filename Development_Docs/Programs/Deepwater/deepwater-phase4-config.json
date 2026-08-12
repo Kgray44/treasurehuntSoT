@@ -118,8 +118,8 @@
   "runtimeEvidencePath": "Development_Docs/Programs/Deepwater/evidence/phase4/Project_Deepwater_Phase_4_Runtime_Evidence.json",
   "lifecycle": {
     "state": "LOCAL_PROVEN",
-    "mainlineState": "REQUALIFIED_UNFROZEN",
-    "acceptanceLane": "SERIALIZED_ACCEPTANCE_OWNERSHIP_PENDING",
+    "mainlineState": "FROZEN_CANDIDATE",
+    "acceptanceLane": "PENDING_SERIALIZED_MAINLINE_OWNERSHIP",
     "qualification": "FOCUSED_QUALIFICATION_PASSED",
     "ownerWalkthrough": "PACKET_READY",
     "ownerDecision": "NOT_REQUESTED"
