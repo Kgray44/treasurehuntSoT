@@ -10,16 +10,16 @@ last_reviewed: 2026-08-12
 
 ## Current integration state
 
-| Item                    | State                                                                                                                     |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                                |
-| Current reconciled base | `54e3d818d49d45282a9c419d562d4b5c78911ccd`                                                                                |
-| Incoming accepted work  | Shipwright Phase 1 acceptance repair at `54e3d818d49d45282a9c419d562d4b5c78911ccd`, including the Studio and Helm repairs |
-| Semantic reconciliation | `7a7f43837b7e948081f6b6b3f44bc8f2c80cfaae` retains Wakebook and takes all accepted mainline updates                       |
-| Implementation commits  | Preserved from the existing remote candidate                                                                              |
-| Sounding Line evidence  | `22940b9004bc89def300a808f426a0ed4dc77658`: focused governed `browser.wakebook` PASS (1/1); 15 capture review accepted    |
-| Owner walkthrough       | `OWNER_ACCEPTED_PHASE_1` recorded 2026-08-12                                                                              |
-| Main merge              | Blocked by the external Helm invitation repair and a later source-bound Mainline Decision `RELEASE_GO`                    |
+| Item                    | State                                                                                                                                 |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                                            |
+| Current reconciled base | `191a964488d0df71f8dcb91c5b8372fc73b6b32e`                                                                                            |
+| Incoming accepted work  | Helm invitation-handoff repair (PR #53, accepted at `920d92a51a16d60a2dfe35278598e6d921be7e4c`) and subsequent accepted mainline work |
+| Semantic reconciliation | `c29c7551ccfeac05d8d33047634289d9bafe9ee3` retains Wakebook and takes all accepted mainline updates                                   |
+| Implementation commits  | Preserved from the existing remote candidate                                                                                          |
+| Sounding Line evidence  | `22940b9004bc89def300a808f426a0ed4dc77658`: focused governed `browser.wakebook` PASS (1/1); 15 capture review accepted                |
+| Owner walkthrough       | `OWNER_ACCEPTED_PHASE_1` recorded 2026-08-12                                                                                          |
+| Main merge              | Blocked by current-main `static.core` type compatibility until an accepted repair and later source-bound `RELEASE_GO`                 |
 
 ## Owned implementation paths
 
@@ -29,7 +29,7 @@ Wayfarer materialization/mutation ownership, One Voyage runtime rows, Artifact C
 
 ## Shared-file protocol
 
-Before each shared-file edit and final validation, compare current `origin/main`. Preserve accepted Deepwater additions in Feature Catalog and Sounding Line files. Stage only enumerated Wakebook paths. Do not merge, rebase, copy, or modify concurrent Phase 1 worktrees.
+Before each shared-file edit and final validation, compare current `origin/main`. Preserve accepted incoming Feature Catalog and Sounding Line additions, including Bridgewatch mappings. Stage only enumerated Wakebook paths. Do not merge, rebase, copy, or modify concurrent Phase 1 worktrees.
 
 ## Final convergence requirements
 
