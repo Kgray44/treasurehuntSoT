@@ -346,24 +346,26 @@ export function PlayerVoyageRoom({
     launchStarted.current = true;
     setLaunchReady(true);
     const showCeremony = consumeOneShot(launchCeremonyKey);
-    const timer = window.setTimeout(
-      async () => {
-        launchHandoffTimer.current = null;
-        if (connectionRef.current === "revoked") return;
-        try {
-          if (onRouteHandoff) await onRouteHandoff(voyage.runtimeHref!);
-          else router.push(voyage.runtimeHref!);
-        } catch {
-          launchStarted.current = false;
-          setRouteFailed(true);
-          setError("The voyage launched, but the journal route could not open. Try again.");
-        }
-      },
-      // Background documents throttle timers. The authoritative launch route
-      // must not wait behind a ceremony that the browser cannot present.
-      showCeremony && !document.hidden ? ceremonyToken.durationMs : 0,
-    );
-    launchHandoffTimer.current = timer;
+    const handOff = async () => {
+      launchHandoffTimer.current = null;
+      if (connectionRef.current === "revoked") return;
+      try {
+        if (onRouteHandoff) await onRouteHandoff(voyage.runtimeHref!);
+        else router.push(voyage.runtimeHref!);
+      } catch {
+        launchStarted.current = false;
+        setRouteFailed(true);
+        setError("The voyage launched, but the journal route could not open. Try again.");
+      }
+    };
+    // A background tab can expose the authoritative active state before the
+    // browser resumes its timer queue. Do not put the zero-delay recovery
+    // route behind that queue; only a visible ceremony earns a delay.
+    if (showCeremony && !document.hidden) {
+      launchHandoffTimer.current = window.setTimeout(() => void handOff(), ceremonyToken.durationMs);
+    } else {
+      void handOff();
+    }
   }, [
     ceremonyToken.durationMs,
     launchCeremonyKey,
