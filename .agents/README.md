@@ -4,6 +4,7 @@ This directory contains active automation instructions and historical handoffs. 
 
 - [Documentation workflow](documentation-workflow.md)
 - [Repository rules](repository-rules.md)
+- [Testing workflow](testing-workflow.md)
 - [Validation isolation](validation-isolation.md)
 - [Project Homeport](project-homeport.md)
 - `handoffs/` holds historical or active handoff material.

@@ -26,6 +26,14 @@ export const adapters = Object.freeze({
   // Family adapters are resolved from the sealed active registry by authority.mjs.
   // They intentionally cannot be run without an exact, non-empty file selection.
   "vitest-family": { command: null, resources: ["node-slot", "vitest-worker-pool"], mode: "CERTIFIED" },
+  // The Sounding Line control-plane runs Node's test runner, but its owned
+  // runtime proof launches a Chromium context and a loopback fixture service.
+  // Keep that capability distinct from ordinary Node/Vitest unit families.
+  "node-test-browser-family": {
+    command: null,
+    resources: ["node-slot", "application-port", "browser-chromium"],
+    mode: "CERTIFIED",
+  },
   "playwright-family": {
     command: null,
     resources: ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],

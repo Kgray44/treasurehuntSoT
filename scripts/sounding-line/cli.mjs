@@ -30,6 +30,7 @@ const registryFiles = [
   "test-definition-schema.json",
   "retired-suites.json",
   "browser-capabilities.json",
+  "sounding-line-authority.json",
 ];
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
@@ -96,6 +97,7 @@ function validatePolicy(policy) {
     "retired-suites": retired,
     activeTests,
     manifest,
+    "sounding-line-authority": authorityIndex,
   } = policy;
   assertKeys(
     manifest,
@@ -106,6 +108,57 @@ function validatePolicy(policy) {
   if (!/^\d+\.\d+\.\d+$/u.test(manifest.version)) errors.push("manifest: malformed semantic version");
   for (const file of registryFiles)
     if (!manifest.registries.includes(file)) errors.push(`manifest: missing registry ${file}`);
+  assertKeys(
+    authorityIndex,
+    [
+      "authority",
+      "effectiveAmendments",
+      "requiredProtectedAuthorityCheck",
+      "runtimeConformance",
+      "governingPolicies",
+      "developmentValidation",
+      "protectedMergeBinding",
+      "futureProjectInheritance",
+    ],
+    "sounding-line-authority",
+    errors,
+  );
+  if (authorityIndex.authority !== "SOUNDING_LINE") errors.push("sounding-line-authority: authority mismatch");
+  for (const [part, version] of Object.entries({ partI: "1.2", partII: "1.2", partIII: "1.3" }))
+    if (authorityIndex.effectiveAmendments?.[part] !== version)
+      errors.push(`sounding-line-authority: ${part} must be ${version}`);
+  if (authorityIndex.requiredProtectedAuthorityCheck !== "Sounding Line / Mainline Decision")
+    errors.push("sounding-line-authority: protected check mismatch");
+  const protectedBinding = authorityIndex.protectedMergeBinding;
+  if (
+    protectedBinding?.enabled !== true ||
+    protectedBinding.requiredContext !== authorityIndex.requiredProtectedAuthorityCheck ||
+    protectedBinding.authoritativeWorkflowName !== "Sounding Line authoritative" ||
+    protectedBinding.qualifiedEvidence !== "SEALED_FINALIZER_ARTIFACT_ONLY" ||
+    protectedBinding.semanticCarryForward?.mode !== "FAIL_CLOSED_PATH_CLASSIFICATION" ||
+    !Array.isArray(protectedBinding.semanticCarryForward?.unrelatedPathGlobs) ||
+    !Array.isArray(protectedBinding.semanticCarryForward?.relevantContractPathGlobs) ||
+    !Array.isArray(protectedBinding.legacyQualifiedCandidates)
+  )
+    errors.push("sounding-line-authority: protected merge binding mismatch");
+  if (
+    authorityIndex.runtimeConformance?.required !== true ||
+    authorityIndex.runtimeConformance?.failureMode !== "FAIL_CLOSED"
+  )
+    errors.push("sounding-line-authority: runtime conformance must fail closed");
+  if (authorityIndex.governingPolicies?.proofMinimization !== "MINIMUM_SUFFICIENT_EVIDENCE")
+    errors.push("sounding-line-authority: proof minimization mismatch");
+  if (authorityIndex.governingPolicies?.semanticInvalidation !== "EVIDENCE_PRESERVATION_REQUIRED")
+    errors.push("sounding-line-authority: semantic invalidation mismatch");
+  if (
+    authorityIndex.developmentValidation?.incrementalVerificationRequired !== true ||
+    authorityIndex.developmentValidation?.authoritativeDebuggingForbidden !== true ||
+    authorityIndex.developmentValidation?.focusedRepairRequiredBeforeReacceptance !== true ||
+    authorityIndex.developmentValidation?.authoritativeInvocation !== "EXPLICIT_FROZEN_CANDIDATE_ONLY"
+  )
+    errors.push("sounding-line-authority: development/finalization boundary mismatch");
+  if (authorityIndex.futureProjectInheritance !== true)
+    errors.push("sounding-line-authority: future-project inheritance must be enabled");
   const ids = (items, label) => {
     const seen = new Set();
     for (const item of items) {
@@ -286,7 +339,10 @@ function validatePolicy(policy) {
   for (const definition of activeTests.cases ?? [])
     bySuite.set(definition.suiteId, (bySuite.get(definition.suiteId) ?? 0) + 1);
   for (const suite of suites.suites)
-    if (["vitest-family", "playwright-family"].includes(suite.adapter) && !bySuite.get(suite.id))
+    if (
+      ["vitest-family", "node-test-browser-family", "playwright-family"].includes(suite.adapter) &&
+      !bySuite.get(suite.id)
+    )
       errors.push(`suite ${suite.id}: empty active family`);
   for (const gate of gates.gates) {
     assertKeys(gate, ["id", "requiredSuites", "conditionalSuites"], `gate ${gate.id}`, errors);

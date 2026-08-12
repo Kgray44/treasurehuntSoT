@@ -3,6 +3,11 @@ import type { CanonicalDrydockBlock, DrydockAuthoredBlockInput } from "@/drydock
 import { parseDrydockBlock } from "@/drydock/contracts/parser";
 import { collectExpressionVariableReferences, typeCheckExpression } from "@/drydock/expressions";
 import { createDrydockIssue, type DrydockIssue } from "@/drydock/issues";
+import { analyzeDrydockGraph } from "@/drydock/graph";
+import { analyzeDrydockConditionFeasibility, analyzeDrydockDefiniteInitialization } from "@/drydock/state";
+import { analyzeDrydockStaticRules, type DrydockAssetSnapshot } from "@/drydock/static-rules";
+import { analyzeDrydockSideEffects } from "@/drydock/side-effects";
+import { analyzeDrydockPerformance } from "@/drydock/performance";
 import {
   createVariableRegistry,
   createVariableUsageIndex,
@@ -16,6 +21,10 @@ import {
 
 export type DrydockDraftContractInput = {
   schemaVersion: 1;
+  analysisMode?: "CONTRACT" | "FULL";
+  /** Test/worker-owned bound; UI callers use the governed default when omitted. */
+  analysisLimits?: { maximumStateIterations?: number };
+  assets?: readonly DrydockAssetSnapshot[];
   variables?: readonly unknown[];
   chapters: ReadonlyArray<{
     id: string;
@@ -173,6 +182,74 @@ function affectedBlocks(index: DrydockDependencyIndex, change?: DrydockIncrement
   return new Set(keys.flatMap((key) => (index.byKey.get(key) ?? []).map((record) => record.blockId)));
 }
 
+function analyzeDrydockStructure(input: {
+  chapters: readonly { id: string; blocks: readonly DrydockAuthoredBlockInput[] }[];
+  blocks: readonly CanonicalDrydockBlock[];
+  graphAnalysis: ReturnType<typeof analyzeDrydockGraph>;
+}): readonly DrydockIssue[] {
+  const issues: DrydockIssue[] = [];
+  const chapterByBlockId = new Map<string, string>();
+  for (const chapter of input.chapters) for (const block of chapter.blocks) chapterByBlockId.set(block.id, chapter.id);
+
+  for (const block of input.blocks) {
+    const seen = new Set<string>();
+    for (const [index, connection] of block.connections.entries()) {
+      const identity = `${connection.connectionType}:${connection.targetBlockId}`;
+      if (seen.has(identity))
+        issues.push(
+          createDrydockIssue({
+            code: "DRYDOCK_GRAPH_DUPLICATE_EDGE",
+            category: "GRAPH",
+            severity: "ERROR",
+            ruleVersion: 1,
+            location: { blockId: block.id, blockType: block.blockType, fieldPath: `connections.${index}` },
+            message: "This Passage repeats the same canonical edge type and destination.",
+            remediation: "Keep one canonical edge for each authored branch identity.",
+          }),
+        );
+      seen.add(identity);
+      const sourceChapterId = chapterByBlockId.get(block.id);
+      const targetChapterId = chapterByBlockId.get(connection.targetBlockId);
+      if (
+        sourceChapterId &&
+        targetChapterId &&
+        sourceChapterId !== targetChapterId &&
+        block.blockType !== "chapterComplete"
+      )
+        issues.push(
+          createDrydockIssue({
+            code: "DRYDOCK_GRAPH_CROSS_CHAPTER_TRANSITION_INVALID",
+            category: "GRAPH",
+            severity: "ERROR",
+            ruleVersion: 1,
+            location: { blockId: block.id, blockType: block.blockType, fieldPath: `connections.${index}` },
+            message: "Only a Chapter Complete Passage may transition into another chapter.",
+            remediation: "Route cross-chapter progress through a canonical Chapter Complete Passage.",
+          }),
+        );
+    }
+  }
+
+  for (const chapter of input.chapters) {
+    const parsedIds = chapter.blocks
+      .filter((block) => input.graphAnalysis.graph.blocks.has(block.id))
+      .map((block) => block.id);
+    if (!parsedIds.length || !parsedIds.some((id) => input.graphAnalysis.reachableBlockIds.has(id)))
+      issues.push(
+        createDrydockIssue({
+          code: "DRYDOCK_GRAPH_ORPHAN_CHAPTER",
+          category: "GRAPH",
+          severity: "ERROR",
+          ruleVersion: 1,
+          location: { chapterId: chapter.id },
+          message: "This chapter has no static path from the Chronicle entry.",
+          remediation: "Connect the chapter through a canonical Chapter Complete transition or remove it.",
+        }),
+      );
+  }
+  return issues;
+}
+
 export function validateDrydockDraftContracts(draft: DrydockDraftContractInput, change?: DrydockIncrementalChange) {
   const parseIssues: DrydockIssue[] = [];
   const parsedBlocks: CanonicalDrydockBlock[] = [];
@@ -294,8 +371,40 @@ export function validateDrydockDraftContracts(draft: DrydockDraftContractInput, 
   }
   const usageIndex = createVariableUsageIndex(usages);
   const dependencyIndex = createDependencyIndex(parsedBlocks, usageIndex.usages);
+  const graphAnalysis = analyzeDrydockGraph(parsedBlocks);
+  const structureIssues = analyzeDrydockStructure({ chapters: draft.chapters, blocks: parsedBlocks, graphAnalysis });
+  const stateAnalysis = analyzeDrydockDefiniteInitialization({
+    graph: graphAnalysis.graph,
+    declarations: variables.declarations,
+    usages: usageIndex.usages,
+    maximumIterations: draft.analysisLimits?.maximumStateIterations,
+  });
+  const conditionIssues = analyzeDrydockConditionFeasibility({
+    blocks: parsedBlocks,
+    declarations: variables.declarations,
+    usages: usageIndex.usages,
+  });
+  const sideEffectIssues = analyzeDrydockSideEffects({ blocks: parsedBlocks, graphAnalysis });
+  const performanceIssues = analyzeDrydockPerformance({
+    blocks: parsedBlocks,
+    graphAnalysis,
+    declarations: variables.declarations,
+  });
+  const staticIssues = analyzeDrydockStaticRules({ blocks: parsedBlocks, assets: draft.assets });
+  const wholeChronicleIssues =
+    draft.analysisMode === "FULL"
+      ? [
+          ...graphAnalysis.issues,
+          ...structureIssues,
+          ...stateAnalysis.issues,
+          ...conditionIssues,
+          ...sideEffectIssues,
+          ...performanceIssues,
+          ...staticIssues,
+        ]
+      : [];
   const affected = affectedBlocks(dependencyIndex, change);
-  const issues = [...parseIssues, ...semanticIssues].filter(
+  const issues = [...parseIssues, ...semanticIssues, ...wholeChronicleIssues].filter(
     (issue) => !affected || !issue.location.blockId || affected.has(issue.location.blockId),
   );
   return {
@@ -306,6 +415,13 @@ export function validateDrydockDraftContracts(draft: DrydockDraftContractInput, 
     variableRegistry: variables,
     variableUsageIndex: usageIndex,
     dependencyIndex,
+    graphAnalysis,
+    structureIssues,
+    stateAnalysis,
+    conditionIssues,
+    sideEffectIssues,
+    performanceIssues,
+    staticIssues,
     migrationsApplied: Object.fromEntries(migrationByBlock),
     checkedBlockCount: affected
       ? affected.size
@@ -313,28 +429,34 @@ export function validateDrydockDraftContracts(draft: DrydockDraftContractInput, 
   };
 }
 
-export function drydockDraftInputFromStudio(input: {
-  chapters: Array<{
-    id: string;
-    blocks: Array<{
+export function drydockDraftInputFromStudio(
+  input: {
+    chapters: Array<{
       id: string;
-      blockType: string;
-      schemaVersion?: number;
-      configuration: JsonObject;
-      presentation?: JsonObject;
-      completion?: JsonObject;
-      connections?: Array<{
-        targetBlockId: string;
-        connectionType: string;
-        label?: string | null;
-        conditionExpression?: string | null;
+      blocks: Array<{
+        id: string;
+        blockType: string;
+        schemaVersion?: number;
+        configuration: JsonObject;
+        presentation?: JsonObject;
+        completion?: JsonObject;
+        connections?: Array<{
+          targetBlockId: string;
+          connectionType: string;
+          label?: string | null;
+          conditionExpression?: string | null;
+        }>;
+        nextBlockId?: string | null;
       }>;
-      nextBlockId?: string | null;
     }>;
-  }>;
-}): DrydockDraftContractInput {
+    assets?: readonly DrydockAssetSnapshot[];
+  },
+  options?: { analysisMode?: "CONTRACT" | "FULL" },
+): DrydockDraftContractInput {
   return {
     schemaVersion: 1,
+    ...(options?.analysisMode ? { analysisMode: options.analysisMode } : {}),
+    ...(input.assets ? { assets: input.assets } : {}),
     chapters: input.chapters.map((chapter) => ({
       id: chapter.id,
       blocks: chapter.blocks.map((block) => ({

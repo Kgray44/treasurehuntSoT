@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "project": "Project Drydock",
+  "projectId": "project-drydock",
+  "phase": 2,
+  "phaseName": "Sound the Hull",
+  "phaseId": "project-drydock-phase-2-sound-the-hull",
+  "state": "ACCEPTED_MAINLINE",
+  "branch": "codex/project-drydock-phase2-sound-the-hull",
+  "worktree": {
+    "ownership": "TASK_OWNED",
+    "path": "C:\\Users\\kgray\\AppData\\Local\\ForeverTreasureCompanion\\treasurehuntSoT-drydock-phase2-sound-the-hull"
+  },
+  "baseSha": "4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3",
+  "governingDocument": "Development_Docs/Projects/Project Drydock/Project_Drydock_Governing_Document.pdf",
+  "integrationPattern": ["COMPLETE_VERTICAL_SLICE", "ADDITIVE_FOUNDATION", "COMPATIBLE_MIGRATION"],
+  "concurrencyClass": "CLASS_B_COORDINATED",
+  "serializedSharedContracts": [
+    "Drydock rule catalog",
+    "Drydock canonical graph semantics",
+    "Sounding Line policy registries",
+    "Prisma schema and migrations"
+  ],
+  "hardDependencies": [
+    {
+      "project": "Project Drydock Phase 1",
+      "state": "ACCEPTED_MAINLINE",
+      "mergeSha": "468530645e983412e5f4c1aaa103915be77c9c07"
+    }
+  ],
+  "sharedContracts": [
+    {
+      "contract": "Creator Studio interaction and layout",
+      "canonicalOwner": "Project Shipwright",
+      "drydockUse": "minimum presentation of Drydock-owned issue and graph-analysis data"
+    },
+    {
+      "contract": "Chronicle runtime progression and publication transaction",
+      "canonicalOwner": "Project One Voyage",
+      "drydockUse": "static reasoning only; no runtime mutation or simulator in Phase 2"
+    }
+  ],
+  "schemaImpact": {
+    "prismaChanges": "YES_ADDITIVE",
+    "models": ["TaleDraft", "DrydockValidationRun", "DrydockRuleWaiver", "UserAccount"],
+    "migrations": [
+      "SQLite:20260810170000_drydock_phase2_validation_reports",
+      "SQLite:20260810171000_drydock_phase2_rule_waivers",
+      "MySQL:0054_drydock_phase2_validation_reports",
+      "MySQL:0055_drydock_phase2_rule_waivers"
+    ],
+    "backfills": []
+  },
+  "phaseBoundary": {
+    "wholeChronicleStaticAnalysis": "IN_SCOPE",
+    "graphAndStateLinting": "IN_SCOPE",
+    "reportsRepairsAndWaivers": "IN_SCOPE",
+    "simulationAndScenarioLab": "OUT_OF_SCOPE_PHASE_3",
+    "liveTaleSessionMutation": "PROHIBITED"
+  },
+  "expectedAcceptanceGate": "Sounding Line / Mainline Decision",
+  "registeredAt": "2026-08-10",
+  "acceptedAt": "2026-08-10",
+  "acceptance": {
+    "pullRequest": 36,
+    "candidateSha": "190e31c862c1a504acdf0da01e32efd677b69449",
+    "mergeSha": "847e035775984888be71edf614f2205fd6c5a376",
+    "mainlineSourceSha": "5b70fbd4cf92f4b7b0b9b4753ef498ae699a3d01",
+    "mainlineDecision": "RELEASE_GO",
+    "selectedReceipts": 37,
+    "passedReceipts": 37,
+    "cleanReceipts": 37,
+    "evidenceDigest": "7a0b3ca525273deb3dbd931318fbd400e1310807b0dd3eb7c4e173ad96e428e0"
+  }
+}

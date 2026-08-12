@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "fixtureSetId": "drydock-phase2-synthetic-chronicle-v1",
+  "classification": "SYNTHETIC_NO_PRIVATE_CONTENT",
+  "expectedIssueCodes": [],
+  "assets": [],
+  "chapters": [
+    {
+      "id": "synthetic-chapter",
+      "blocks": [
+        {
+          "id": "synthetic-opening",
+          "blockType": "narrative",
+          "schemaVersion": 1,
+          "configuration": {
+            "heading": "Synthetic opening",
+            "body": "This synthetic Chronicle exists only to exercise static validation.",
+            "completionMode": "playerConfirmation",
+            "entranceAnimation": "none",
+            "textAlignment": "left",
+            "widthStyle": "reading"
+          },
+          "presentation": {},
+          "completion": {},
+          "connections": [{ "targetBlockId": "synthetic-finish", "connectionType": "DEFAULT", "orderIndex": 0 }],
+          "nextBlockId": "synthetic-finish"
+        },
+        {
+          "id": "synthetic-finish",
+          "blockType": "taleComplete",
+          "schemaVersion": 1,
+          "configuration": {
+            "finaleHeading": "Synthetic complete",
+            "finaleContent": "No real Chronicle content is represented here.",
+            "completionMessage": "Complete.",
+            "credits": "",
+            "replayAvailable": false,
+            "completionMode": "playerConfirmation"
+          },
+          "presentation": {},
+          "completion": {},
+          "connections": [],
+          "nextBlockId": null
+        }
+      ]
+    }
+  ]
+}

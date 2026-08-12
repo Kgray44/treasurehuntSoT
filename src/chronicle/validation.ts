@@ -3,6 +3,7 @@ import { getBlockDefinition } from "@/chronicle/block-registry";
 import { getStudioTale, slugSchema } from "@/chronicle/studio-service";
 import type { DraftValidationResult, ValidationIssue } from "@/chronicle/types";
 import { drydockDraftInputFromStudio, validateDrydockDraftContracts } from "@/drydock/incremental";
+import { createDrydockValidationReport } from "@/drydock/reports";
 
 const futureProviders = new Set(["visionLocation", "visionObject", "externalWebhook"]);
 
@@ -40,7 +41,11 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
   const outgoing = new Map<string, string[]>();
   const referencedAssetIds = new Set<string>();
   let taleCompleteCount = 0;
-  const drydock = validateDrydockDraftContracts(drydockDraftInputFromStudio(studio.draft));
+  const drydockInput = drydockDraftInputFromStudio(
+    { ...studio.draft, assets: studio.assets },
+    { analysisMode: "FULL" },
+  );
+  const drydock = validateDrydockDraftContracts(drydockInput);
   const drydockIssuesByBlock = new Map<string, typeof drydock.issues>();
   for (const issue of drydock.issues) {
     if (!issue.location.blockId) continue;
@@ -77,6 +82,8 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
         add({
           code: issue.code,
           message: `${block.title}: ${issue.message}`,
+          category: issue.category,
+          remediation: issue.remediation,
           chapterId: chapter.id,
           blockId: block.id,
           field: issue.location.fieldPath,
@@ -298,19 +305,65 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
       });
 
   const checkedAt = new Date();
+  const staticProofComplete =
+    drydock.stateAnalysis.status === "PROVEN" && drydock.graphAnalysis.proofCompleteness === "COMPLETE";
+  if (!staticProofComplete)
+    errors.push({
+      severity: "error",
+      code: "DRYDOCK_STATIC_PROOF_INCOMPLETE",
+      message:
+        "This Chronicle has incomplete required static proof and cannot be published until the uncertainty is resolved.",
+    });
+  const drydockReport = createDrydockValidationReport({
+    source: {
+      schemaVersion: drydockInput.schemaVersion,
+      analysisMode: drydockInput.analysisMode,
+      chapters: drydockInput.chapters,
+      assets: drydockInput.assets ?? [],
+    },
+    issues: drydock.issues,
+    sourceRevision: studio.draft.autosaveVersion,
+    proofCompleteness: staticProofComplete ? "COMPLETE" : "INCOMPLETE_PROOF",
+    analysisLimits: [
+      ...(drydock.stateAnalysis.status === "PROVEN" ? [] : [`state-iterations:${drydock.stateAnalysis.iterations}`]),
+      ...(drydock.graphAnalysis.proofCompleteness === "COMPLETE" ? [] : ["legacy-edge-condition-adapter-unavailable"]),
+    ],
+    generatedAt: checkedAt.toISOString(),
+  });
   const result: DraftValidationResult = {
     valid: errors.length === 0,
     errors,
     warnings,
     checkedAt: checkedAt.toISOString(),
+    drydockReport,
   };
-  await db.taleDraft.update({
-    where: { id: studio.draft.id },
-    data: {
-      validationState: result.valid ? "VALID" : "INVALID",
-      validationSummary: JSON.stringify(result),
-      lastValidatedAt: checkedAt,
-    },
-  });
+  await db.$transaction([
+    db.taleDraft.update({
+      where: { id: studio.draft.id },
+      data: {
+        validationState: result.valid ? "VALID" : "INVALID",
+        validationSummary: JSON.stringify(result),
+        lastValidatedAt: checkedAt,
+      },
+    }),
+    db.drydockValidationRun.upsert({
+      where: { runId: drydockReport.runId },
+      create: {
+        draftId: studio.draft.id,
+        runId: drydockReport.runId,
+        sourceChecksum: drydockReport.sourceChecksum,
+        sourceRevision: studio.draft.autosaveVersion,
+        reportSchemaVersion: drydockReport.schemaVersion,
+        ruleCatalogVersion: drydockReport.ruleCatalogVersion,
+        status: drydockReport.status,
+        proofCompleteness: drydockReport.proof.completeness,
+        issueCount: drydockReport.summary.total,
+        issueDigest: drydockReport.issueDigest,
+        reportDigest: drydockReport.digest,
+        report: JSON.stringify(drydockReport),
+      },
+      update: {},
+    }),
+  ]);
   return { ...result, autosaveVersion: studio.draft.autosaveVersion };
 }
