@@ -8,8 +8,11 @@ import { createDrydockVariableExplorer } from "@/drydock/variable-explorer";
 const privateNoStore = { "Cache-Control": "private, no-store" };
 
 export async function GET(request: Request, context: { params: Promise<{ taleId: string }> }) {
+  void request;
   const { taleId } = await context.params;
-  const authorization = await requireOwnedStudioTale(taleId, request);
+  // This is a private, no-store read. Passing a GET request to the canonical
+  // session helper would incorrectly require a mutation CSRF header.
+  const authorization = await requireOwnedStudioTale(taleId);
   if (!authorization)
     return NextResponse.json(
       { error: "This Chronicle is not available to this Creator account." },

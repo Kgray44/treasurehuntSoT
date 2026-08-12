@@ -1,6 +1,7 @@
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { TaleEditor } from "./TaleEditor";
+import type { EditorData } from "./studio-types";
 
 const animationDirector = vi.hoisted(() => ({ play: vi.fn() }));
 
@@ -27,7 +28,7 @@ function response(status: number, body: unknown) {
   return { ok: status >= 200 && status < 300, status, json: vi.fn().mockResolvedValue(body) } as unknown as Response;
 }
 
-function editorData() {
+function editorData(): EditorData {
   return {
     csrfToken: "csrf",
     tale: {
@@ -107,6 +108,63 @@ function editorData() {
         defaultConfiguration: { body: "" },
         fields: [{ key: "body", label: "Body", kind: "textarea", required: true }],
         schemaVersion: 1,
+        contract: {
+          currentVersion: 2,
+          minimumReaderVersion: 1,
+          connectionPolicy: { minimum: 0, maximum: 1, canonicalAuthority: "BlockConnection" },
+          assetRequirements: [],
+          providerContract: null,
+          accessibilityRules: [],
+        },
+      },
+    ],
+  };
+}
+
+function variableExplorer() {
+  return {
+    variables: [
+      {
+        id: "lantern-found",
+        name: "lanternFound",
+        description: "Tracks whether the crew recovered the lantern.",
+        type: { kind: "BOOLEAN" },
+        scope: "SESSION",
+        defaultValue: false,
+        privacy: "PLAYER_SAFE",
+        allowedOperations: ["assign", "toggle"],
+        readers: [],
+        writers: [],
+        initialization: { proofStatus: "COMPLETE", potentiallyUninitializedReferences: [] },
+        unusedState: "UNUSED",
+        relatedIssueCodes: [],
+      },
+      {
+        id: "crew-score",
+        name: "crewScore",
+        type: { kind: "INTEGER" },
+        scope: "SESSION",
+        defaultValue: 0,
+        privacy: "CREATOR_SAFE",
+        allowedOperations: ["assign", "increment", "decrement", "min", "max"],
+        readers: [],
+        writers: [],
+        initialization: { proofStatus: "COMPLETE", potentiallyUninitializedReferences: [] },
+        unusedState: "USED",
+        relatedIssueCodes: [],
+      },
+      {
+        id: "found-items",
+        name: "foundItems",
+        type: { kind: "STRING_SET" },
+        scope: "SESSION",
+        privacy: "CREATOR_SAFE",
+        allowedOperations: ["assign", "add", "remove", "contains", "count", "clear"],
+        readers: [],
+        writers: [],
+        initialization: { proofStatus: "COMPLETE", potentiallyUninitializedReferences: [] },
+        unusedState: "USED",
+        relatedIssueCodes: [],
       },
     ],
   };
@@ -233,6 +291,195 @@ describe("Voyagewright Studio editor motion and authority", () => {
     fireEvent.click(screen.getByRole("button", { name: /Validation/ }));
     await waitFor(() => expect(screen.getByLabelText("Chronicle validation results")).toBeVisible());
     expect(screen.getByText("Blocks publishing")).toBeVisible();
+  });
+
+  it("keeps authoring modes as disclosure and focuses the affected contract field from a Drydock issue", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(response(200, editorData()))
+        .mockResolvedValueOnce(
+          response(200, {
+            valid: false,
+            errors: [
+              {
+                code: "DRYDOCK_NARRATIVE_BODY_REQUIRED",
+                message: "Opening Scene needs Player-facing text.",
+                category: "CONTENT",
+                remediation: "Add a short opening for Players to read.",
+                blockId: "block-1",
+                field: "configuration.body",
+              },
+            ],
+            warnings: [],
+          }),
+        ),
+    );
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    const opening = screen.getByText("Opening Scene").closest<HTMLElement>("article")!;
+    fireEvent.click(opening);
+    const level = screen.getByRole("combobox", { name: "Authoring level" });
+    expect(level).toHaveValue("GUIDED");
+    fireEvent.change(level, { target: { value: "ENGINEERING" } });
+    expect(level).toHaveValue("ENGINEERING");
+    expect(screen.getByText(/It never bypasses Drydock/)).toBeInTheDocument();
+    fireEvent.change(level, { target: { value: "GUIDED" } });
+    expect(screen.getByRole("textbox", { name: "Passage title" })).toHaveValue("Opening Scene");
+
+    fireEvent.click(screen.getByRole("button", { name: "Validate Chronicle" }));
+    fireEvent.click(await screen.findByRole("button", { name: /Opening Scene needs Player-facing text/ }));
+    const body = await screen.findByRole("textbox", { name: /Body/ });
+    await waitFor(() => expect(body).toHaveFocus());
+  });
+
+  it("uses the Drydock variable explorer to constrain operations and build a nested visual condition", async () => {
+    const data = editorData();
+    data.draft.chapters[0].blocks = [
+      {
+        id: "set-variable",
+        blockType: "setVariable",
+        title: "Set the lantern flag",
+        configuration: { variableId: "", operation: "set", value: false },
+        presentation: {},
+        completion: {},
+        creatorNotes: null,
+        isEnabled: true,
+        schemaVersion: 1,
+      },
+      {
+        id: "condition",
+        blockType: "condition",
+        title: "Check the lantern",
+        configuration: {
+          variable: "",
+          operator: "equals",
+          value: false,
+          successTargetBlockId: "",
+          failureTargetBlockId: "",
+        },
+        presentation: {},
+        completion: {},
+        creatorNotes: null,
+        isEnabled: true,
+        schemaVersion: 1,
+      },
+    ];
+    data.registry = [
+      {
+        type: "setVariable",
+        displayName: "Set Variable",
+        category: "Logic",
+        icon: "=",
+        description: "Set a typed variable.",
+        defaultTitle: "Set Variable",
+        defaultConfiguration: {},
+        fields: [
+          { key: "variable", label: "Variable", kind: "text", required: true },
+          { key: "operation", label: "Operation", kind: "select", options: [] },
+          { key: "value", label: "Value", kind: "json" },
+        ],
+        schemaVersion: 2,
+      },
+      {
+        type: "condition",
+        displayName: "Condition",
+        category: "Logic",
+        icon: "◇",
+        description: "Route through a typed expression.",
+        defaultTitle: "Condition",
+        defaultConfiguration: {},
+        fields: [
+          { key: "variable", label: "Variable", kind: "text", required: true },
+          { key: "operator", label: "Comparison", kind: "select", options: [] },
+          { key: "value", label: "Value", kind: "json" },
+          { key: "successTargetBlockId", label: "Success", kind: "text" },
+          { key: "failureTargetBlockId", label: "Failure", kind: "text" },
+        ],
+        schemaVersion: 2,
+      },
+    ];
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(response(200, data))
+        .mockResolvedValue(response(200, { explorer: variableExplorer() })),
+    );
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    fireEvent.click(screen.getByText("Set the lantern flag").closest<HTMLElement>("article")!);
+    fireEvent.click(screen.getByRole("button", { name: "Load declared variables" }));
+    const search = await screen.findByRole("searchbox", { name: "Search declared variables" });
+    fireEvent.change(search, { target: { value: "lantern" } });
+    fireEvent.change(screen.getByRole("combobox", { name: "Choose a declared variable" }), {
+      target: { value: "lantern-found" },
+    });
+    expect(screen.getByRole("option", { name: "Set" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "Toggle" })).toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: "Increase by" })).not.toBeInTheDocument();
+    expect(screen.getByText(/Tracks whether the crew recovered/)).toBeVisible();
+
+    fireEvent.click(screen.getByText("Check the lantern").closest<HTMLElement>("article")!);
+    fireEvent.click(screen.getByRole("button", { name: "Add ALL group" }));
+    fireEvent.click(screen.getByRole("button", { name: "Add ANY group" }));
+    fireEvent.click(screen.getByRole("button", { name: "Add contains check" }));
+    fireEvent.click(screen.getByRole("button", { name: "Add count check" }));
+    expect(screen.getAllByText(/All of these must be true|Any of these may be true/).length).toBeGreaterThan(1);
+  });
+
+  it("keeps a forward-compatible registry type editable through the safe generic fallback", async () => {
+    const data = editorData();
+    data.draft.chapters[0].blocks[0] = {
+      ...data.draft.chapters[0].blocks[0],
+      id: "future-compass",
+      blockType: "futureCompass",
+      title: "Future compass",
+      configuration: { instruction: "Turn toward the bell." },
+      schemaVersion: 2,
+    };
+    data.registry = [
+      {
+        type: "futureCompass",
+        displayName: "Future Compass",
+        category: "Future",
+        icon: "?",
+        description: "A contract supplied by a later accepted block family.",
+        defaultTitle: "Future Compass",
+        defaultConfiguration: { instruction: "" },
+        fields: [{ key: "instruction", label: "Instruction", kind: "textarea", required: true }],
+        schemaVersion: 2,
+      },
+    ];
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, data)));
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    fireEvent.click(screen.getByText("Future compass").closest<HTMLElement>("article")!);
+    const inspector = screen
+      .getByLabelText("Selected Passage tools")
+      .parentElement?.querySelector(".contract-aware-inspector");
+    expect(inspector).toHaveAttribute("data-editor-strategy", "SAFE_GENERIC_FALLBACK");
+    const instruction = screen.getByRole("textbox", { name: /Instruction/ });
+    fireEvent.change(instruction, { target: { value: "Turn to the lighthouse." } });
+    expect(instruction).toHaveValue("Turn to the lighthouse.");
+  });
+
+  it("surfaces an older schema as requiring a server-confirmed Drydock migration", async () => {
+    const data = editorData();
+    data.draft.chapters[0].blocks[0].configuration = { heading: "Opening scene", body: "The harbor wakes." };
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, data)));
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    fireEvent.click(screen.getByText("Opening Scene").closest<HTMLElement>("article")!);
+    expect(await screen.findByText("Migration requires server confirmation")).toBeVisible();
+    fireEvent.change(screen.getByRole("combobox", { name: "Authoring level" }), { target: { value: "ENGINEERING" } });
+    expect(screen.getByText(/Draft v1; current v2/)).toBeVisible();
+    expect(screen.getByText(/Run Drydock validation/)).toBeVisible();
   });
 
   it("applies a revision-guarded safe repair through the ordinary Studio undo history", async () => {
