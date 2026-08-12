@@ -38,6 +38,9 @@
   "ownerDecision": "ACCEPTED_2026-08-12",
   "qualifiedOwnerObservedSha": "b32a3c961bdd4b4a743a73b7d226f6cd14db9d1c",
   "qualifiedAuthorityRun": "31581152448",
+  "reconciledBaseSha": "191a964488d0df71f8dcb91c5b8372fc73b6b32e",
+  "reconciliationMergeSha": "0373aa0a63208c5bd24f53f8d751aed2b109c345",
+  "currentAuthorityState": "PENDING_EXACT_SOURCE_MAINLINE_DECISION",
   "phase3Authorized": false,
   "registeredAt": "2026-08-09"
 }

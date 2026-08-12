@@ -25,7 +25,7 @@ production resources.
 
 ## Accepted walkthrough results
 
-The owner accepted the governed walkthrough’s authorization partitions,
+The owner accepted the governed walkthrough's authorization partitions,
 role-filtered natural navigation, all 15 Chartroom routes, bounded cross-domain
 search and dossiers, consented Support Access lifecycle, safe owner-domain
 projections, unavailable-evidence presentation, responsive/keyboard/reduced-
@@ -44,7 +44,7 @@ and Phase 3 capability remain outside this decision.
 
 This record establishes owner acceptance only. It does not establish deployment,
 production MySQL execution, live-provider behavior, physical-device proof, or
-physical assistive-technology proof. The record’s source must receive a fresh
+physical assistive-technology proof. The record's source must receive a fresh
 exact-source Sounding Line Mainline Decision and protected-merge binding before
 canonical-main publication. The isolated walkthrough runtime is retained only
 until governed integration cleanup completes.

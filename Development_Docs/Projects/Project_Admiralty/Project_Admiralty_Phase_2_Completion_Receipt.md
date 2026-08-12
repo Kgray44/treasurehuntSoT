@@ -12,6 +12,13 @@ last_reviewed: 2026-08-12
 
 `OWNER_ACCEPTED_MAINLINE_CANDIDATE`.
 
+Current-main reconciliation is anchored by merge
+`0373aa0a63208c5bd24f53f8d751aed2b109c345`, which preserves the
+owner-accepted Chartroom and incorporates accepted `origin/main`
+`191a964488d0df71f8dcb91c5b8372fc73b6b32e`. The current branch head, rather
+than any historical receipt, is the only source eligible for the next Mainline
+Decision.
+
 The read-only Chartroom implementation is reconciled with accepted
 `origin/main` at `54e3d818d49d45282a9c419d562d4b5c78911ccd` by merge
 `927c54990`. It retains the latest mainline Studio and Sounding Line
@@ -43,11 +50,11 @@ other sealed suites, with clean runtime conformance and synthetic-only database
 isolation. The task-owned owner walkthrough was re-prepared for `b32a3c961...`,
 and the owner accepted it on `2026-08-12`; see
 `Project_Admiralty_Phase_2_Owner_Decision_Record.md`. This receipt must not be
-interpreted as canonical-main availability until this decision-record source
+interpreted as canonical-main availability until the current reconciled source
 earns a fresh exact-source Mainline Decision and protected merge.
 
 ## Acceptance boundary
 
 The owner-acceptance boundary is satisfied. Canonical-main integration now
-requires a fresh exact-source Mainline Decision for this decision record and a
-successful protected-merge binding. Phase 3 is not authorized.
+requires a fresh exact-source Mainline Decision for the current reconciled
+source and a successful protected-merge binding. Phase 3 is not authorized.
