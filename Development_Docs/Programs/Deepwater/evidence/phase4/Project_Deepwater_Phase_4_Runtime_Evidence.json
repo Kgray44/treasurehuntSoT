@@ -1,11 +1,11 @@
 {
   "schemaVersion": "1.0.0",
   "phase": "Phase 4 - Break the Surface",
-  "sourceSha": "a61ff85676bf3a58eebe2be2df7fc3d789211654",
+  "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
   "status": "LOCAL_SYNTHETIC_PROVEN",
   "semanticCarryForward": {
     "historicalEvidenceSourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
-    "targetEvidenceSourceSha": "a61ff85676bf3a58eebe2be2df7fc3d789211654",
+    "targetEvidenceSourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
     "carriedJourneyIds": [
       "DW-P4-JRN-ACCOUNT",
       "DW-P4-JRN-PERSONAL-HARBOR",
@@ -20,9 +20,9 @@
       "DW-P4-JRN-RESTRICTED-OPERATIONS",
       "DW-P4-JRN-BRIDGEWATCH"
     ],
-    "rationale": "Bridgewatch Phase 2 changed the private observer and Sounding Line projection surface. The source repair addresses both a recorded Helm invitation lookup stall and the later launch-handoff failure caused by a stale Player event stream. Accepted Drydock Phase 3 adds FT-036's Creator Studio Sea Trials surface, and accepted Admiralty Phase 2 expands FT-B010's read-only Chartroom and dossier-anchored Support Access. Protected Helm closure and accepted record-only infrastructure advanced current main to fb0f13e35fcdd98434d22c357aee02f24d6d9036. Player, Captain, governed Helm browser, Drydock, Admiralty, and Bridgewatch evidence has now been renewed at rebased source a61ff85676bf3a58eebe2be2df7fc3d789211654. Unchanged Homeport families remain explicitly retained."
+    "rationale": "Bridgewatch Phase 2 changed the private observer and Sounding Line projection surface. The source repair addresses both a recorded Helm invitation lookup stall and the later launch-handoff failure caused by a stale Player event stream. Accepted Drydock Phase 3 adds FT-036's Creator Studio Sea Trials surface, and accepted Admiralty Phase 2 expands FT-B010's read-only Chartroom and dossier-anchored Support Access. Tideglass Phase 3 protected-merged PR #59 at bb7676a75581d8d415c3ff7712cc38bc8decb031 without changing the Deepwater capability denominator. Player, Captain, governed Helm browser, Drydock, Admiralty, and Bridgewatch evidence has now been renewed at rebased source 51ab80bde478de95194d882eba8b1e7fce5fedac. Unchanged Homeport families remain explicitly retained."
   },
-  "truthBoundary": "Historical Homeport production-build evidence is retained only through the explicit semantic carry-forward declaration. The earlier r5 and r6 evidence is superseded for candidate purposes by accepted current main fb0f13e35fcdd98434d22c357aee02f24d6d9036. Player waiting-room, Captain invitation and launch, governed Helm browser, Drydock Creator, Admiralty Community and Restricted Operations, and Bridgewatch proof were renewed on rebased source a61ff85676bf3a58eebe2be2df7fc3d789211654. This record does not establish live-provider, deployment, protected-main, owner-acceptance, product-acceptance, or release proof.",
+  "truthBoundary": "Historical Homeport production-build evidence is retained only through the explicit semantic carry-forward declaration. The earlier r5, r6, and r7 evidence is superseded for candidate purposes by accepted current main bb7676a75581d8d415c3ff7712cc38bc8decb031. Player waiting-room, Captain invitation and launch, governed Helm browser, Drydock Creator, Admiralty Community and Restricted Operations, and Bridgewatch proof were renewed on rebased source 51ab80bde478de95194d882eba8b1e7fce5fedac. This record does not establish live-provider, deployment, protected-main, owner-acceptance, product-acceptance, or release proof.",
   "journeyFamilies": [
     {
       "journeyId": "DW-P4-JRN-ACCOUNT",
@@ -73,7 +73,7 @@
     {
       "journeyId": "DW-P4-JRN-PLAYER",
       "status": "PASSED",
-      "sourceSha": "a61ff85676bf3a58eebe2be2df7fc3d789211654",
+      "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
       "testReferences": [
         "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
         "src/components/platform/PlayerVoyageRoom.test.tsx#backgrounded visibility-transition recovery",
@@ -98,7 +98,7 @@
     {
       "journeyId": "DW-P4-JRN-CAPTAIN",
       "status": "PASSED",
-      "sourceSha": "a61ff85676bf3a58eebe2be2df7fc3d789211654",
+      "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
       "testReferences": [
         "tests/e2e/project-helm-phase1.spec.ts#Captain authority, membership heartbeat, and responsive participation journeys",
         "src/components/platform/InvitationCeremony.test.tsx#stalled invitation lookup retries once before terminal failure",
@@ -120,7 +120,7 @@
     {
       "journeyId": "DW-P4-JRN-CREATOR",
       "status": "PASSED",
-      "sourceSha": "a61ff85676bf3a58eebe2be2df7fc3d789211654",
+      "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
       "testReferences": [
         "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
         "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Test_Plan.md#Current locally attainable commands",
@@ -147,7 +147,7 @@
     {
       "journeyId": "DW-P4-JRN-COMMUNITY",
       "status": "PASSED",
-      "sourceSha": "a61ff85676bf3a58eebe2be2df7fc3d789211654",
+      "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
       "testReferences": [
         "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#DW-CAP-COMMUNITY-EXCHANGE",
         "tests/e2e/admiralty-phase2.spec.ts#administrator reaches Chartroom full-domain projection",
@@ -219,7 +219,7 @@
     {
       "journeyId": "DW-P4-JRN-RESTRICTED-OPERATIONS",
       "status": "PASSED",
-      "sourceSha": "a61ff85676bf3a58eebe2be2df7fc3d789211654",
+      "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
       "testReferences": [
         "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#platform-administration-and-provider-health",
         "tests/e2e/admiralty-phase2.spec.ts#role partitions and support consent",
@@ -245,7 +245,7 @@
     {
       "journeyId": "DW-P4-JRN-BRIDGEWATCH",
       "status": "PASSED",
-      "sourceSha": "a61ff85676bf3a58eebe2be2df7fc3d789211654",
+      "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
       "testReferences": [
         "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
         "in-app browser loopback observation#desktop and 390px private dashboard with no horizontal overflow",
