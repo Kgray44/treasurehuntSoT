@@ -116,15 +116,16 @@ function validatePolicy(policy) {
       "requiredProtectedAuthorityCheck",
       "runtimeConformance",
       "governingPolicies",
+      "developmentValidation",
       "futureProjectInheritance",
     ],
     "sounding-line-authority",
     errors,
   );
   if (authorityIndex.authority !== "SOUNDING_LINE") errors.push("sounding-line-authority: authority mismatch");
-  for (const part of ["partI", "partII", "partIII"])
-    if (authorityIndex.effectiveAmendments?.[part] !== "1.2")
-      errors.push(`sounding-line-authority: ${part} must be 1.2`);
+  for (const [part, version] of Object.entries({ partI: "1.2", partII: "1.2", partIII: "1.3" }))
+    if (authorityIndex.effectiveAmendments?.[part] !== version)
+      errors.push(`sounding-line-authority: ${part} must be ${version}`);
   if (authorityIndex.requiredProtectedAuthorityCheck !== "Sounding Line / Mainline Decision")
     errors.push("sounding-line-authority: protected check mismatch");
   if (
@@ -136,6 +137,13 @@ function validatePolicy(policy) {
     errors.push("sounding-line-authority: proof minimization mismatch");
   if (authorityIndex.governingPolicies?.semanticInvalidation !== "EVIDENCE_PRESERVATION_REQUIRED")
     errors.push("sounding-line-authority: semantic invalidation mismatch");
+  if (
+    authorityIndex.developmentValidation?.incrementalVerificationRequired !== true ||
+    authorityIndex.developmentValidation?.authoritativeDebuggingForbidden !== true ||
+    authorityIndex.developmentValidation?.focusedRepairRequiredBeforeReacceptance !== true ||
+    authorityIndex.developmentValidation?.authoritativeInvocation !== "EXPLICIT_FROZEN_CANDIDATE_ONLY"
+  )
+    errors.push("sounding-line-authority: development/finalization boundary mismatch");
   if (authorityIndex.futureProjectInheritance !== true)
     errors.push("sounding-line-authority: future-project inheritance must be enabled");
   const ids = (items, label) => {
