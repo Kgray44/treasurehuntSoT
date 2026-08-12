@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -9,6 +9,49 @@ import { selectFocusedSuite } from "../../scripts/sounding-line/focused-selectio
 import { CONFORMANCE_CODES, deriveWorkerPreparation } from "../../scripts/sounding-line/worker-preparation.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+
+function workflowTriggers(source) {
+  const lines = source.split(/\r?\n/u);
+  const start = lines.findIndex((line) => /^on:\s*/u.test(line));
+  assert.notEqual(start, -1, "WORKFLOW_TRIGGER_BLOCK_MISSING");
+  const triggers = [lines[start]];
+  for (let index = start + 1; index < lines.length; index += 1) {
+    const line = lines[index];
+    if (/^[^\s#]/u.test(line)) break;
+    triggers.push(line);
+  }
+  return triggers.join("\n");
+}
+
+function hasOrdinaryDevelopmentTrigger(triggers) {
+  if (/\bpull_request\b/u.test(triggers)) return true;
+  const push = triggers.match(/(?:^|\n)\s{2}push:\s*([^\n]*)([\s\S]*?)(?=\n\s{2}[\w-]+:|$)/u);
+  if (!push) return /^on:\s*(?:push|\[[^\]]*\bpush\b[^\]]*\])/mu.test(triggers);
+  if (push[1].trim()) return true;
+  const pushOptions = push[2];
+  const hasBranchFilter = /^\s{4}branches(?:-ignore)?:/mu.test(pushOptions);
+  const hasTagFilter = /^\s{4}tags(?:-ignore)?:/mu.test(pushOptions);
+  return hasBranchFilter || !hasTagFilter;
+}
+
+function isHeavyweightRepositoryClosure(source) {
+  if (/^name:\s*.*(?:authoritative|final closure|full closure|finalization)\s*$/imu.test(source)) return true;
+  if (/finalize-ci\.mjs|finalizer\.mjs/u.test(source)) return true;
+  const broadClosureSignals = [
+    /\bnpm test\b/u,
+    /\bnpm run test:policy\b/u,
+    /\bnpm run test:inventory\b/u,
+    /\bnpm run typecheck\b/u,
+    /\bnpm run format:check\b/u,
+    /\bnpm run lint\b/u,
+    /\bnpm run docs:validate\b/u,
+    /\bnpm run features:validate\b/u,
+    /\bnpm run architecture:validate\b/u,
+    /\bnpm run private-content:scan\b/u,
+    /\bnpm run build\b/u,
+  ];
+  return broadClosureSignals.filter((signal) => signal.test(source)).length >= 5;
+}
 
 test("effective authority and the development/finalization boundary are discoverable and policy-owned", async () => {
   const authority = JSON.parse(await readFile(path.join(root, "testing", "sounding-line-authority.json"), "utf8"));
@@ -89,6 +132,25 @@ test("focused hosted execution delegates resource preparation and has no release
   assert.match(focused, /focused-selection\.mjs/u);
   assert.match(focused, /type: string/u);
   assert.doesNotMatch(focused, /type: choice[\s\S]*?browser\.access-sentinel/u);
+});
+
+test("heavyweight repository closure and finalization workflows require explicit dispatch", async () => {
+  const workflowDirectory = path.join(root, ".github", "workflows");
+  const workflowFiles = (await readdir(workflowDirectory)).filter((file) => /\.ya?ml$/u.test(file));
+  const violations = [];
+  let heavyweightCount = 0;
+
+  for (const file of workflowFiles) {
+    const source = await readFile(path.join(workflowDirectory, file), "utf8");
+    if (!isHeavyweightRepositoryClosure(source)) continue;
+    heavyweightCount += 1;
+    const triggers = workflowTriggers(source);
+    if (!/\bworkflow_dispatch\b/u.test(triggers)) violations.push(`${file}:EXPLICIT_DISPATCH_MISSING`);
+    if (hasOrdinaryDevelopmentTrigger(triggers)) violations.push(`${file}:ORDINARY_DEVELOPMENT_TRIGGER_FORBIDDEN`);
+  }
+
+  assert.ok(heavyweightCount > 0, "HEAVYWEIGHT_WORKFLOW_POLICY_UNEXERCISED");
+  assert.deepEqual(violations, [], "HEAVYWEIGHT_WORKFLOW_MUST_BE_EXPLICIT_DISPATCH_ONLY");
 });
 
 test("resource-aware preparation eliminates universal database and browser setup", async () => {
