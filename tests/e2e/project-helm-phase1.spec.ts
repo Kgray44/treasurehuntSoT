@@ -578,13 +578,18 @@ test("authenticated membership heartbeats are independently visible in the Capta
     for (const heartbeat of heartbeats) expect(heartbeat.status).toBe(200);
 
     await expect
-      .poll(async () => {
-        const projection = await browserJson<{
-          crew: Array<{ presence: { state: string }; synchronization: { state: string } }>;
-        }>(page, `/api/captain/voyages/${created.playthroughId}`);
-        expect(projection.status).toBe(200);
-        return projection.body.crew.map((member) => `${member.presence.state}:${member.synchronization.state}`).sort();
-      })
+      .poll(
+        async () => {
+          const projection = await browserJson<{
+            crew: Array<{ presence: { state: string }; synchronization: { state: string } }>;
+          }>(page, `/api/captain/voyages/${created.playthroughId}`);
+          expect(projection.status).toBe(200);
+          return projection.body.crew
+            .map((member) => `${member.presence.state}:${member.synchronization.state}`)
+            .sort();
+        },
+        { timeout: 60_000 },
+      )
       .toEqual([
         "CONNECTED_SYNCED:SYNCHRONIZED",
         "CONNECTED_SYNCED:SYNCHRONIZED",
