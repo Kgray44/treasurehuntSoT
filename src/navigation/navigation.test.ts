@@ -106,6 +106,7 @@ describe("Homeport Phase 2 navigation authority", () => {
     const cases: Array<[string, ShellMode]> = [
       ["/", "GATEWAY_STANDARD"],
       ["/tales", "PUBLIC_STANDARD"],
+      ["/chronicles/lantern-test/compare", "PUBLIC_STANDARD"],
       ["/community/guides/example", "PUBLIC_STANDARD"],
       ["/player/library", "WORKSPACE_STANDARD"],
       ["/captain/sessions/session-1", "COMPACT"],
@@ -117,6 +118,11 @@ describe("Homeport Phase 2 navigation authority", () => {
       ["/dev/animations", "DEVELOPMENT"],
     ];
     for (const [pathname, mode] of cases) expect(classifyRoute(pathname).shellMode).toBe(mode);
+    expect(classifyRoute("/chronicles/lantern-test/compare")).toMatchObject({
+      id: "tideglass-chronicle-compare",
+      owner: "tideglass",
+      activeFamily: "global-explore-chronicles",
+    });
     expect(new Set(routeShellDefinitions.map((definition) => definition.shellMode))).toEqual(
       new Set([
         "GATEWAY_STANDARD",

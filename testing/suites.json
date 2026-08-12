@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "status": "phase-2-deepwater-control-plane",
+  "status": "phase-5-homeport-route-reachability-owned-families",
   "suites": [
     {
       "id": "browser.access-sentinel",
@@ -1351,7 +1351,7 @@
         "src/app/api/webhooks/postmark/**"
       ],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "phase-7-owner-correction-round-3-source-bound",
+      "currentImplementationState": "phase-5-homeport-route-reachability-contract-family",
       "adapter": "vitest-family"
     },
     {
@@ -1857,7 +1857,7 @@
         "src/app/api/webhooks/postmark/**"
       ],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "phase-7-owner-correction-round-3-source-bound",
+      "currentImplementationState": "phase-5-homeport-route-reachability-contract-family",
       "adapter": "vitest-family"
     },
     {
@@ -2347,7 +2347,7 @@
         "src/app/api/webhooks/postmark/**"
       ],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "phase-7-owner-correction-round-3-source-bound",
+      "currentImplementationState": "phase-5-homeport-route-reachability-contract-family",
       "adapter": "playwright-family"
     },
     {

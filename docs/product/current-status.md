@@ -41,9 +41,17 @@ spoiler-safe public/Player/Creator projections, deterministic summaries,
 append-only Creator annotation revisions, digest-validated rebuildable cache,
 and bounded authorized APIs. It deliberately adds no ordinary comparison route
 or played-history integration. SQLite upgrade rehearsal and provider-schema
-parity pass locally; production MySQL execution, deployment, and a Phase 3
-product surface are not claimed. Exact candidate, protected hosted, and
-integrated-main Sounding Line decisions passed with clean release evidence.
+parity pass locally; production MySQL execution and deployment are not claimed.
+Exact candidate, protected hosted, and integrated-main Sounding Line decisions
+passed with clean release evidence.
+
+**Project Tideglass Phase 3 implementation worktree, not available on main:**
+the ordinary Chronicle and Passport **What changed?** journey, exact
+publishing-owned recommended target, spoiler-safe semantic presentation, and
+Creator Studio semantic comparison are under local qualification. The isolated
+synthetic fixture and browser journey are evidence of the local product path
+only. Current-main reconciliation, one frozen candidate, canonical owner
+walkthrough acceptance, protected merge, and deployment remain separate gates.
 
 **Available on main and accepted on protected staging, not production deployed:**
 Google and GitHub application OAuth adds

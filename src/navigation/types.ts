@@ -22,7 +22,8 @@ export type NavigationOwner =
   | "one-voyage"
   | "harborlight"
   | "sealed-hold"
-  | "admiralty";
+  | "admiralty"
+  | "tideglass";
 export type NavigationPlacement = "primary" | "drawer" | "account" | "contextual" | "hidden";
 export type NavigationStatus = "active" | "contextual" | "compatibility" | "development";
 export type AccountGroup = "identity" | "personal" | "workspace" | "action";

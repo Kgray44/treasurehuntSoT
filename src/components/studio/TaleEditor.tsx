@@ -41,6 +41,10 @@ import { StudioSelectionToolbar } from "@/components/studio/StudioSelectionToolb
 import { StudioStatusHeader } from "@/components/studio/StudioStatusHeader";
 import { StudioValidationPanel } from "@/components/studio/StudioValidationPanel";
 import { DrydockScenarioLab } from "@/components/studio/DrydockScenarioLab";
+import {
+  TideglassStudioComparison,
+  type TideglassStudioComparisonDto,
+} from "@/components/tideglass/TideglassStudioComparison";
 import type {
   Asset,
   Block,
@@ -51,7 +55,6 @@ import type {
   RegistryItem,
   UploadEntry,
   Version,
-  VersionComparison,
 } from "@/components/studio/studio-types";
 import { studioCopy } from "@/language/studio-copy";
 import type { DraftValidationResult, InspectorField, JsonObject, ValidationIssue } from "@/chronicle/types";
@@ -186,7 +189,7 @@ export function TaleEditor({
   const [previewReplay, setPreviewReplay] = useState(0);
   const [librarySearch, setLibrarySearch] = useState("");
   const [librarySort, setLibrarySort] = useState<"name" | "region">("name");
-  const [versionComparison, setVersionComparison] = useState<VersionComparison | null>(null);
+  const [versionComparison, setVersionComparison] = useState<TideglassStudioComparisonDto | null>(null);
   const [activeDragId, setActiveDragId] = useState<string | null>(null);
   const [dragAnnouncement, setDragAnnouncement] = useState("");
   const [insertedId, setInsertedId] = useState<string | null>(null);
@@ -1157,7 +1160,7 @@ export function TaleEditor({
       `/api/studio/tales/${taleId}/versions/compare?left=${encodeURIComponent(version.id)}&right=${encodeURIComponent(current.id)}`,
       { cache: "no-store" },
     );
-    const body = (await response.json()) as VersionComparison & { error?: string };
+    const body = (await response.json()) as TideglassStudioComparisonDto & { error?: string };
     if (!response.ok) return setError(body.error ?? "Version comparison failed.");
     setVersionComparison(body);
   }
@@ -2733,47 +2736,11 @@ export function TaleEditor({
               ))}
             </div>
             {versionComparison && (
-              <section className="version-comparison" aria-live="polite">
-                <header>
-                  <div>
-                    <p className="eyebrow">Structured immutable diff</p>
-                    <h3>
-                      Version {versionComparison.left.label} to {versionComparison.right.label}
-                    </h3>
-                  </div>
-                  <button onClick={() => setVersionComparison(null)}>Close comparison</button>
-                </header>
-                <ul className="comparison-summary">
-                  {Object.entries(versionComparison.summary).map(([type, count]) => (
-                    <li key={type}>
-                      <strong>{count}</strong>
-                      <span>{type}</span>
-                    </li>
-                  ))}
-                </ul>
-                {versionComparison.compatibilityWarnings.length > 0 && (
-                  <p className="platform-error">
-                    Compatibility warnings: {versionComparison.compatibilityWarnings.join(", ")}
-                  </p>
-                )}
-                <ol>
-                  {versionComparison.changes.map((change, index) => (
-                    <li key={`${change.path}-${index}`}>
-                      <b>{change.type}</b>
-                      <div>
-                        <code>{change.path}</code>
-                        {(change.before !== undefined || change.after !== undefined) && (
-                          <span className="comparison-values">
-                            <del>{change.before ?? "Not present"}</del>
-                            <span aria-hidden="true">→</span>
-                            <ins>{change.after ?? "Removed"}</ins>
-                          </span>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-              </section>
+              <TideglassStudioComparison
+                comparison={versionComparison}
+                versionLabels={Object.fromEntries(data.versions.map((version) => [version.id, version.versionLabel]))}
+                onClose={() => setVersionComparison(null)}
+              />
             )}
           </LibraryPanel>
         )}
