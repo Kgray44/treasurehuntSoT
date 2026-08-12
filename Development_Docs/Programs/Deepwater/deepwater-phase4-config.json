@@ -6,16 +6,16 @@
   "auditDate": "2026-08-12",
   "baseOriginMainSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
   "initialReconciledOriginMainSha": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
-  "reconciledOriginMainSha": "ca40227cbef3575315c089d224a0cd26ec77bc78",
+  "reconciledOriginMainSha": "5735d43821209adb2259ec2c38979281da1bb5b9",
   "phase3AcceptedMainSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
-  "productEvidenceSourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+  "productEvidenceSourceSha": "e57670a010406dc48c7ede1f2939d3d35260484f",
   "branch": "codex/project-deepwater-phase4-break-the-surface",
   "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase4",
   "schemaImpact": "DEEPWATER_PHASE4_PROOF_CONTROL_PLANE_ONLY",
   "productSourceImpact": "NONE_ON_COORDINATION_BRANCH",
   "featureCatalogImpact": "NO_CHANGE_REQUIRED",
   "expectedPhase3CapabilityCount": 55,
-  "expectedCurrentCapabilityCount": 56,
+  "expectedCurrentCapabilityCount": 57,
   "currentMainAdditions": [
     {
       "capabilityId": "DW-CAP-BRIDGEWATCH-DEVELOPMENT-MISSION-CONTROL",
@@ -30,8 +30,41 @@
         "Development_Docs/Features/catalog/bridgewatch.json",
         "bridgewatch/lib/server.ts"
       ]
+    },
+    {
+      "capabilityId": "DW-CAP-BRIDGEWATCH-GOVERNED-SIGNAL-PROJECTION",
+      "featureCatalogId": "FT-035",
+      "canonicalOwner": "Project Bridgewatch",
+      "disposition": "SECURITY_RESTRICTED",
+      "terminalRung": "UI",
+      "classification": "INTERNAL_BY_DESIGN",
+      "rationale": "Bridgewatch Phase 2 projects governed observation and activity signals into its private dashboard while remaining unable to authorize tests, merges, releases, project completion, or ordinary public-product behavior.",
+      "sourceReferences": [
+        "Development_Docs/Project_Bridgewatch_Phase_2_Design_Record.md",
+        "Development_Docs/Features/catalog/bridgewatch.json",
+        "bridgewatch/src/sounding-line.ts",
+        "bridgewatch/src/telemetry.ts"
+      ]
     }
   ],
+  "semanticCarryForward": {
+    "historicalEvidenceSourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+    "targetEvidenceSourceSha": "e57670a010406dc48c7ede1f2939d3d35260484f",
+    "changedPathScope": ["bridgewatch/**", "scripts/sounding-line/**", "testing/**", "Development_Docs/Features/**"],
+    "carriedJourneyIds": [
+      "DW-P4-JRN-ACCOUNT",
+      "DW-P4-JRN-PERSONAL-HARBOR",
+      "DW-P4-JRN-PLAYER",
+      "DW-P4-JRN-CAPTAIN",
+      "DW-P4-JRN-CREATOR",
+      "DW-P4-JRN-COMMUNITY",
+      "DW-P4-JRN-WHOLE-PRODUCT",
+      "DW-P4-JRN-VERIFICATION",
+      "DW-P4-JRN-RESTRICTED-OPERATIONS"
+    ],
+    "requalifiedJourneyIds": ["DW-P4-JRN-BRIDGEWATCH"],
+    "rationale": "Bridgewatch Phase 2 changed only its private observer surface and current Sounding Line control-plane wiring. The existing Homeport journey evidence is retained by explicit family, while the changed Bridgewatch family and the revised Sounding Line qualification plan are rerun on the reconciled source."
+  },
   "runtimeEvidencePath": "Development_Docs/Programs/Deepwater/evidence/phase4/Project_Deepwater_Phase_4_Runtime_Evidence.json",
   "lifecycle": {
     "state": "LOCAL_PROVEN",
@@ -200,14 +233,25 @@
     },
     {
       "journeyId": "DW-P4-JRN-BRIDGEWATCH",
-      "title": "Private Bridgewatch observation dashboard",
+      "title": "Private Bridgewatch observer and signal dashboard",
       "naturalStart": "LOOPBACK_OPERATOR_START",
       "visibleEntry": "Authenticated private-network or loopback operator URL",
-      "routeReferences": ["bridgewatch", "GET /api/summary", "GET /api/projects", "GET /api/attention"],
+      "routeReferences": [
+        "bridgewatch",
+        "GET /api/summary",
+        "GET /api/projects",
+        "GET /api/attention",
+        "GET /api/activity?since=...",
+        "GET /api/tests",
+        "POST /api/telemetry/heartbeat"
+      ],
       "screenReferences": ["BW-SCR-MISSION-CONTROL"],
       "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
       "accessibility": ["KEYBOARD", "REDUCED_MOTION", "RESPONSIVE"],
-      "capabilityIds": ["DW-CAP-BRIDGEWATCH-DEVELOPMENT-MISSION-CONTROL"]
+      "capabilityIds": [
+        "DW-CAP-BRIDGEWATCH-DEVELOPMENT-MISSION-CONTROL",
+        "DW-CAP-BRIDGEWATCH-GOVERNED-SIGNAL-PROJECTION"
+      ]
     }
   ],
   "boundedCapabilityIds": [
