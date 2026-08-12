@@ -1,10 +1,10 @@
 # Project Bridgewatch Phase 1 — Design Record
 
-**Status:** FROZEN FOR PHASE 1 IMPLEMENTATION  
-**Project:** Project Bridgewatch  
-**Phase:** Phase 1 — Raise the Board  
-**Task branch:** `codex/project-bridgewatch-phase1-raise-the-board`  
-**Source baseline:** `origin/main` at `384ad39fbc40e8cbe16dd2aa2c83abd3e00a56c6`  
+**Status:** FROZEN FOR PHASE 1 IMPLEMENTATION
+**Project:** Project Bridgewatch
+**Phase:** Phase 1 — Raise the Board
+**Task branch:** `codex/project-bridgewatch-phase1-raise-the-board`
+**Source baseline:** `origin/main` at `384ad39fbc40e8cbe16dd2aa2c83abd3e00a56c6`
 **Decision date:** 2026-08-10
 
 ## Governing sources and precedence
