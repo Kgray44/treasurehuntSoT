@@ -58,6 +58,7 @@ on the server.
 - [Integration manifest](Project_Admiralty_Phase_2_Integration_Manifest.md)
 - [Completion receipt](Project_Admiralty_Phase_2_Completion_Receipt.md)
 - [Owner decision record](Project_Admiralty_Phase_2_Owner_Decision_Record.md)
+- [Mainline acceptance record](Project_Admiralty_Phase_2_Mainline_Acceptance_Record.md)
 - [Owner walkthrough](walkthrough/phase2/README.md)
 
 ## Machine-readable controls

@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `191a964488d0df71f8dcb91c5b8372fc73b6b32e`
+Audited source commit: `4edc8de5e30e9748700c19b466061f9b9a97f268`
 
 ## Status vocabulary
 
@@ -1390,7 +1390,7 @@ The accepted server-side foundation compares exact immutable Chronicle editions,
 **Status:** MAINLINE
 **Program or subsystem:** Project Admiralty
 
-Owner-accepted Phase 1 establishes canonical roles, recent privileged assurance, scoped user consent, and sanitized audit evidence on main. The owner-accepted Phase 2 mainline candidate expands that authority into a read-only cross-domain command center without creating a second source of truth.
+Owner-accepted Phases 1 and 2 establish canonical roles, recent privileged assurance, scoped user consent, sanitized audit evidence, and a read-only cross-domain Chartroom on main without creating a second source of truth.
 
 ### Important subfeatures
 
@@ -1417,7 +1417,7 @@ Owner-accepted Phase 1 establishes canonical roles, recent privileged assurance,
 - The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09
 - Owner-accepted Phase 1 implementation is integrated on canonical main with verified remote parity
 - Production MySQL execution, live-provider behavior, and physical assistive-technology validation remain external
-- The owner accepted the qualified Phase 2 walkthrough on 2026-08-12; its decision-record candidate still requires exact-source authority and canonical-main integration
+- The owner accepted the qualified Phase 2 walkthrough on 2026-08-12; exact-source authority and protected canonical-main integration completed in PR #28
 - Transactional-email delivery health and live verification-provider health are blocked by missing canonical owner contracts
 - Broad administrative mutation remains dormant for later governed phases
 - Owner acceptance does not imply deployment or acceptance of later Admiralty phases
@@ -1433,6 +1433,7 @@ Owner-accepted Phase 1 establishes canonical roles, recent privileged assurance,
 - test: `tests/e2e/admiralty-phase2.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Completion_Receipt.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Owner_Decision_Record.md`
+- completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Mainline_Acceptance_Record.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md`
 
@@ -1491,4 +1492,4 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `191a964488d0df71f8dcb91c5b8372fc73b6b32e`
+Generation source commit: `4edc8de5e30e9748700c19b466061f9b9a97f268`
