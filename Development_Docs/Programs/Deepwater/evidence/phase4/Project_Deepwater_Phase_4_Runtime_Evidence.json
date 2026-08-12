@@ -1,26 +1,25 @@
 {
   "schemaVersion": "1.0.0",
   "phase": "Phase 4 - Break the Surface",
-  "sourceSha": "e57670a010406dc48c7ede1f2939d3d35260484f",
+  "sourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
   "status": "LOCAL_SYNTHETIC_PROVEN",
   "semanticCarryForward": {
     "historicalEvidenceSourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
-    "targetEvidenceSourceSha": "e57670a010406dc48c7ede1f2939d3d35260484f",
+    "targetEvidenceSourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
     "carriedJourneyIds": [
       "DW-P4-JRN-ACCOUNT",
       "DW-P4-JRN-PERSONAL-HARBOR",
       "DW-P4-JRN-PLAYER",
-      "DW-P4-JRN-CAPTAIN",
       "DW-P4-JRN-CREATOR",
       "DW-P4-JRN-COMMUNITY",
       "DW-P4-JRN-WHOLE-PRODUCT",
       "DW-P4-JRN-VERIFICATION",
       "DW-P4-JRN-RESTRICTED-OPERATIONS"
     ],
-    "requalifiedJourneyIds": ["DW-P4-JRN-BRIDGEWATCH"],
-    "rationale": "Bridgewatch Phase 2 changed the private observer and Sounding Line projection surface. Homeport source paths did not change in this protected-main advance, so their source-bound evidence is retained by declared journey family while Bridgewatch is rerun."
+    "requalifiedJourneyIds": ["DW-P4-JRN-CAPTAIN", "DW-P4-JRN-BRIDGEWATCH"],
+    "rationale": "Bridgewatch Phase 2 changed the private observer and Sounding Line projection surface. The current source also repairs a recorded Helm invitation lookup stall, so the Captain family and Bridgewatch are rerun while the unchanged Homeport families remain explicitly retained."
   },
-  "truthBoundary": "Historical Homeport production-build evidence is retained only through the explicit semantic carry-forward declaration, and the changed Bridgewatch observer family is rerun on the reconciled source. This establishes local implementation evidence only, not live-provider, deployment, protected-main, owner-acceptance, product-acceptance, or release proof.",
+  "truthBoundary": "Historical Homeport production-build evidence is retained only through the explicit semantic carry-forward declaration. The changed Captain invitation family and Bridgewatch observer family are rerun on the current source. This establishes local implementation evidence only, not live-provider, deployment, protected-main, owner-acceptance, product-acceptance, or release proof.",
   "journeyFamilies": [
     {
       "journeyId": "DW-P4-JRN-ACCOUNT",
@@ -94,12 +93,10 @@
     {
       "journeyId": "DW-P4-JRN-CAPTAIN",
       "status": "PASSED",
-      "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
-      "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+      "sourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
       "testReferences": [
-        "tests/e2e/homeport-phase7.spec.ts#Journey D, J, K, N, O",
-        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
-        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, O, U, V"
+        "tests/e2e/project-helm-phase1.spec.ts#Captain authority, membership heartbeat, and responsive participation journeys",
+        "src/components/platform/InvitationCeremony.test.tsx#stalled invitation lookup retries once before terminal failure"
       ],
       "screenshots": [
         {
@@ -233,7 +230,7 @@
     {
       "journeyId": "DW-P4-JRN-BRIDGEWATCH",
       "status": "PASSED",
-      "sourceSha": "e57670a010406dc48c7ede1f2939d3d35260484f",
+      "sourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
       "testReferences": [
         "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
         "in-app browser loopback observation#desktop and 390px private dashboard with no horizontal overflow",
