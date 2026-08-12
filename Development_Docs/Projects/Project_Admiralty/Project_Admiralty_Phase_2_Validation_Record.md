@@ -22,8 +22,10 @@ Line run `31577075177` accepted candidate
 `RELEASE_GO`, 38 mandatory receipts, and zero unclean receipts. The
 documentation-only exact-head retry `31578742514` invalidated that release for
 the newer source when a separate Helm participation assertion raced a transient
-notice. The repair waits for the POST response and refreshed card state; it
-requires a fresh hosted Mainline Decision.
+notice. The repair waits for the POST response and refreshed card state. That
+retry also revealed an unrelated Sounding Line controller lost-update race;
+the durable run store now serializes updates and protects concurrent
+cancellation. The combined repair requires a fresh hosted Mainline Decision.
 
 ## Completed local evidence
 

@@ -30,7 +30,10 @@ exposed a second Helm browser race: the test relied on a transient participation
 notice after a successful action. The test now waits for the authoritative
 participation response and refreshed voyage-card state. A fresh Sounding Line
 Mainline Decision is required for that repaired exact source; earlier
-`RELEASE_GO` receipts remain historical only.
+`RELEASE_GO` receipts remain historical only. That retry also exposed an
+independent Sounding Line controller lost-update race: a heartbeat could
+overwrite a concurrent cancellation request. The durable run store now
+serializes updates and has a concurrent-cancellation regression test.
 
 The hosted `browser.admiralty` receipt passed on that candidate, alongside all
 other sealed suites, with clean runtime conformance and synthetic-only database

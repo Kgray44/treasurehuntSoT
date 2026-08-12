@@ -52,10 +52,11 @@ changes are `CONTRACT_ADJACENT` to Chartroom projections. Conflicts were limited
 to the Helm navigation test and a command-palette assertion: the stronger Helm
 settlement waits and both compatible palette assertions were retained. Earlier
 hosted finalization found missing generated-Prisma preparation for two
-Admiralty test lanes, a workspace-link copying gap, and a Studio assertion race;
-each has a narrow repair and focused validation. There is no Phase 2 schema
-migration and no replacement of a Wayfarer, Harborlight, One Voyage, Sealed
-Hold, Deepwater, or Sounding Line canonical owner.
+Admiralty test lanes, a workspace-link copying gap, a Studio assertion race,
+and a Sounding Line controller lost-update race. Each has a narrow repair and
+focused validation. There is no Phase 2 schema migration and no replacement of
+a Wayfarer, Harborlight, One Voyage, Sealed Hold, Deepwater, or Sounding Line
+canonical owner.
 
 ## Integration boundary
 
