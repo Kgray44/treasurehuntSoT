@@ -62,6 +62,9 @@
       "proofFamilyId": "DW-P4-JRN-COMMUNITY",
       "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
       "recoveryEvidence": [
+        "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#DW-CAP-COMMUNITY-EXCHANGE",
+        "tests/e2e/admiralty-phase2.spec.ts#administrator reaches Chartroom full-domain projection",
+        "src/admiralty/read-models.test.ts#bounded community projection",
         "tests/e2e/homeport-phase7.spec.ts#Journey F, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey P, Q, T, U",
         "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts#Journey H through J, S, U through W"
@@ -74,6 +77,10 @@
       "proofFamilyId": "DW-P4-JRN-RESTRICTED-OPERATIONS",
       "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
       "recoveryEvidence": [
+        "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#platform-administration-and-provider-health",
+        "tests/e2e/admiralty-phase2.spec.ts#role partitions and support consent",
+        "src/admiralty/capabilities.test.ts#capability boundaries",
+        "src/admiralty/ports/redaction.test.ts#no payload secret private content",
         "tests/e2e/homeport-phase7.spec.ts#Journey J, K, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey D, T, U",
         "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts#Journey U through W"
@@ -84,5 +91,5 @@
   "phase": "Phase 4 - Break the Surface",
   "project": "Project Deepwater",
   "schemaVersion": "1.0.0",
-  "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc"
+  "sourceSha": "5806ccb3d705eb04322a7be1d176d97dd6f2da9e"
 }
