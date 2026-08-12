@@ -25,20 +25,25 @@ type Evidence = {
   capturePath: string;
 };
 
-const taskRoot = path.resolve(required("TIDEGLASS_PHASE3_TASK_ROOT"));
-const sourceSha = required("TIDEGLASS_PHASE3_SOURCE_SHA");
-const fixtureChecksum = required("TIDEGLASS_PHASE3_FIXTURE_CHECKSUM");
-const credentialPath = path.join(taskRoot, "credentials", "tideglass-phase3-walkthrough.private.json");
-const evidenceRoot = path.join(taskRoot, "browser", "evidence");
+let sourceSha = "";
+let fixtureChecksum = "";
+let credentialPath = "";
+let evidenceRoot = "";
 const evidence: Evidence[] = [];
 let credentials: Credentials;
 
 test.beforeAll(() => {
+  const taskRoot = path.resolve(required("TIDEGLASS_PHASE3_TASK_ROOT"));
+  sourceSha = required("TIDEGLASS_PHASE3_SOURCE_SHA");
+  fixtureChecksum = required("TIDEGLASS_PHASE3_FIXTURE_CHECKSUM");
+  credentialPath = path.join(taskRoot, "credentials", "tideglass-phase3-walkthrough.private.json");
+  evidenceRoot = path.join(taskRoot, "browser", "evidence");
   credentials = JSON.parse(readFileSync(credentialPath, "utf8")) as Credentials;
   expect(credentials.fixtureVersion).toBe("tideglass-phase3-v2");
 });
 
 test.afterAll(async () => {
+  if (!credentials || !evidenceRoot) return;
   await mkdir(evidenceRoot, { recursive: true });
   await writeFile(
     path.join(evidenceRoot, "manifest.json"),
