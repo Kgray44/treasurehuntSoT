@@ -28,7 +28,7 @@ A `DrydockScenario` revision is strict JSON with `schemaVersion`, immutable sour
 
 The simulation state carries only synthetic data: source identity, current block, variables, inventory, reveal identifiers, pending provider request, status, virtual time, seeded random state, ordered event intents, and bounded trace/coverage. A deterministic virtual clock begins at an explicit ISO instant and advances only through Scenario inputs or governed auto-advance. Repeat runs with the same source, scenario revision, adapter version, and limits must produce the same trace digest, semantic result, coverage, and assertion dispositions.
 
-Single-path, suite, replay, differential, bounded-exhaustive, and performance profiles share one executor. Exploration enforces explicit step, state, trace, recursion, memory, and virtual-duration limits. Reaching a limit yields `INCOMPLETE_PROOF`, never a silent pass. Cancellation is observed between safe steps. Durable runs use idempotency/lease fields and source checksum revalidation; recovered work resumes only from a persisted synthetic checkpoint and never repeats a completed input step.
+Single-path, suite, replay, and differential profiles share one bounded executor. Exploration limits currently enforce step, state, trace, and virtual-duration bounds; reaching a limit yields `INCOMPLETE_PROOF`, never a silent pass. Cancellation is observed at engine safe-step callbacks. Durable runs use frozen source snapshots, source-checksum revalidation, and leases. An expired lease returns a run to `QUEUED` for a fresh bounded replay; partial-input resume is not claimed by this phase implementation.
 
 ## Faults, privacy, and projections
 
