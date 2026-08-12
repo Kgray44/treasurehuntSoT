@@ -107,7 +107,10 @@ jobs:
           } | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath 'sounding-line-worker-throughput.json' -Encoding utf8
       - env:
           SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-plan/sounding-line-plan.json
-        run: node scripts/sounding-line/authority.mjs ${{ inputs.gate }} --execute-only --plan-in "$env:SOUNDING_LINE_PLAN" --suite ${{ inputs.suite }} --receipt-out sounding-line-worker-evidence.json
+          SOUNDING_LINE_GATE: ${{ inputs.gate }}
+          SOUNDING_LINE_SUITE: ${{ inputs.suite }}
+        shell: pwsh
+        run: node scripts/sounding-line/authority.mjs "$env:SOUNDING_LINE_GATE" --execute-only --plan-in "$env:SOUNDING_LINE_PLAN" --suite "$env:SOUNDING_LINE_SUITE" --receipt-out sounding-line-worker-evidence.json
       - name: Bind setup and execution timing to worker evidence
         if: always()
         shell: pwsh
@@ -135,13 +138,15 @@ jobs:
       - if: always()
         name: Verify governed worker receipt
         shell: pwsh
+        env:
+          SOUNDING_LINE_SUITE: ${{ inputs.suite }}
         run: |
           if (-not (Test-Path -LiteralPath sounding-line-worker-evidence.json -PathType Leaf)) {
             throw "GOVERNED_WORKER_RECEIPT_MISSING"
           }
           $evidence = Get-Content -Raw sounding-line-worker-evidence.json | ConvertFrom-Json
           $receipts = @($evidence.receipts)
-          if ($receipts.Count -ne 1 -or $receipts[0].suiteId -ne '${{ inputs.suite }}') {
+          if ($receipts.Count -ne 1 -or $receipts[0].suiteId -ne $env:SOUNDING_LINE_SUITE) {
             throw "GOVERNED_WORKER_RECEIPT_BOUNDARY_INVALID"
           }
           if ($receipts[0].result -ne 'PASSED' -or [int]$receipts[0].exitCode -ne 0 -or $receipts[0].cleanupState -ne 'CLEAN') {

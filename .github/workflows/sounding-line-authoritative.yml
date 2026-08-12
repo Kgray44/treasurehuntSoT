@@ -1,11 +1,9 @@
 name: Sounding Line authoritative
 
 on:
-  # The protected main PR is the sole automatic authority path. Incremental
-  # repair pushes remain nonauthoritative because no push trigger is present.
-  pull_request:
-    branches:
-      - main
+  # Heavyweight authority is an explicit finalization action for one qualified,
+  # frozen candidate. Ordinary development pushes and PR synchronization never
+  # invoke this workflow.
   workflow_dispatch:
     inputs:
       gate:
@@ -14,6 +12,10 @@ on:
         type: choice
         default: mainline
         options: [mainline, release-candidate]
+      candidate_sha:
+        description: Exact 40-character head SHA of the frozen candidate ref
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -41,11 +43,20 @@ jobs:
     steps:
       - id: gate
         shell: pwsh
+        env:
+          SOUNDING_LINE_GATE: ${{ inputs.gate }}
+          SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+          SOUNDING_LINE_DISPATCHED_SHA: ${{ github.sha }}
         run: |
-          $gate = if ('${{ github.event_name }}' -eq 'workflow_dispatch') { '${{ inputs.gate }}' } else { 'mainline' }
+          $gate = $env:SOUNDING_LINE_GATE
           if ($gate -notin @('mainline', 'release-candidate')) { throw "SOUNDING_LINE_GATE_INVALID" }
+          $candidateSha = $env:SOUNDING_LINE_CANDIDATE_SHA
+          $dispatchedSha = $env:SOUNDING_LINE_DISPATCHED_SHA
+          if ($candidateSha -notmatch '^[0-9a-f]{40}$') { throw "SOUNDING_LINE_FROZEN_CANDIDATE_SHA_INVALID" }
+          if ($candidateSha -ne $dispatchedSha) { throw "SOUNDING_LINE_FROZEN_CANDIDATE_SHA_MISMATCH" }
           "value=$gate" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: "${{ github.sha }}" }
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc, cache: npm }
       - run: npm ci
@@ -212,6 +223,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: "${{ github.sha }}" }
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc, cache: npm }
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093

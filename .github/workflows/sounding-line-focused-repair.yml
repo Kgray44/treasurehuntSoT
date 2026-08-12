@@ -4,28 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       suite:
-        description: Exact governed browser family selected from the sealed gate plan
+        description: Exact registered suite ID selected from the sealed gate plan
         required: true
-        type: choice
-        options:
-          - browser.access-sentinel
-          - browser.auth
-          - browser.invitations
-          - browser.player-library
-          - browser.player-journal
-          - browser.passport
-          - browser.artifacts
-          - browser.captain
-          - browser.studio
-          - browser.community
-          - browser.private-operations
-          - browser.navigation
-          - browser.accessibility
-          - browser.responsive
-          - browser.animation-lifecycle
-          - browser.cross-project
+        type: string
       gate:
-        description: Gate that must govern the selected browser family
+        description: Gate whose sealed plan must govern the selected suite
         required: true
         type: choice
         default: release-candidate
@@ -35,30 +18,35 @@ permissions:
   contents: read
 
 jobs:
-  focused-suite:
-    name: Sounding Line / Focused Browser Evidence
+  focused-plan:
+    name: Sounding Line / Validate focused selection
     runs-on: windows-latest
-    # Accommodates the 105-minute serial accessibility hard budget plus measured
-    # runtime setup, teardown, receipt emission, and artifact upload headroom.
-    timeout-minutes: 120
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: "${{ github.sha }}" }
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with: { node-version-file: .nvmrc, cache: npm }
-      - run: npm ci
-      - run: npm run db:generate
-      - run: npx prisma migrate deploy --schema prisma/schema.sqlite.prisma
-        env: { DATABASE_URL: "file:./dev.db" }
-      - run: npm run db:seed
-        env: { DATABASE_URL: "file:./dev.db" }
-      - run: npx playwright install chromium webkit
+        with: { node-version-file: .nvmrc }
       - env:
           SOUNDING_LINE_GATE: ${{ inputs.gate }}
         run: node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:process.env.SOUNDING_LINE_GATE,serial:false,sourceSha:process.env.GITHUB_SHA}),null,2)))" > sounding-line-plan.json
-      - run: node scripts/sounding-line/authority.mjs ${{ inputs.gate }} --execute-only --plan-in sounding-line-plan.json --suite ${{ inputs.suite }} --receipt-out sounding-line-worker-evidence.json
+      - name: Validate exact registered suite and resource scope
+        shell: pwsh
+        env:
+          SOUNDING_LINE_SUITE: ${{ inputs.suite }}
+        run: node scripts/sounding-line/focused-selection.mjs --plan sounding-line-plan.json --suite "$env:SOUNDING_LINE_SUITE" --out sounding-line-focused-selection.json
       - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
-        if: always()
         with:
-          name: "sounding-line-focused-${{ inputs.suite }}"
-          path: sounding-line-worker-evidence.json
+          name: sounding-line-plan
+          path: |
+            sounding-line-plan.json
+            sounding-line-focused-selection.json
           retention-days: 14
+
+  focused-suite:
+    name: Sounding Line / Focused diagnostic evidence
+    needs: focused-plan
+    uses: ./.github/workflows/sounding-line-governed-worker.yml
+    with:
+      suite: ${{ inputs.suite }}
+      gate: ${{ inputs.gate }}
