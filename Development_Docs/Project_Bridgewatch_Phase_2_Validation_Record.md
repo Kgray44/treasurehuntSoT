@@ -38,11 +38,16 @@ The following isolated focused checks passed during implementation:
   `bridgewatch.mission-control`; the generated registry excludes `dist` output
   and current policy validation passed.
 
-- governed focused qualification: `unit.bridgewatch`, `unit.sounding-line`, and
-  `static.core` each passed with a clean cleanup receipt; `static.core` included
+- after the reconciliation to `ca40227cbef3575315c089d224a0cd26ec77bc78`,
+  `unit.bridgewatch`, `unit.sounding-line`, `unit.feature-catalog`,
+  `component.community`, and `static.core` passed against exact candidate
+  `20b0b065e290201405cb78e1503fac102575232f`; `static.core` included
   repository formatting, lint, type, product-language, and architecture checks;
 - repository documentation index/validation and Feature Catalog sync/validation
-  passed after the single reconciliation to `54e3d818d49d45282a9c419d562d4b5c78911ccd`.
+  passed for that exact candidate; and
+- after repairing the worktree's lockfile dependency topology, the exact
+  `browser.access-sentinel` and `browser.helm` families passed 3/3 each in
+  isolated task-owned runtimes with clean cleanup.
 
 These are local, task-owned package and browser observations. They are not
 Sounding Line acceptance, GitHub protected-check, deployment, provider, or
@@ -64,14 +69,24 @@ owner-acceptance proof.
   The exact Community test and registered component suite passed locally with
   clean cleanup; no Community source was changed.
 
-These repairs were made before the current rebase onto
-`ca40227cbef3575315c089d224a0cd26ec77bc78`. The new head requires fresh
-exact-SHA qualification before a further Mainline Decision.
+The candidate-local mainline execution after reconciliation was not a hosted
+release decision and returned two cleanly released browser lock refusals. The
+smallest affected browser scopes later exposed a broken pnpm-style worktree
+dependency topology (`@prisma/engines` missing in the copied seed). A
+lockfile-exact `npm ci`, `npm run db:generate`, and fresh exact browser-family
+qualification repaired that environment without changing tracked source.
 
-## Remaining acceptance boundary
+## Canonical acceptance and exact-main proof
 
-Candidate freeze, protected PR creation, canonical acceptance ownership, exactly
-one hosted `Sounding Line / Mainline Decision`, protected merge, and exact-main
-proof remain pending. This local evidence is not a
-Sounding Line acceptance, GitHub protected-check, deployment, provider, or
-owner-acceptance claim.
+Hosted [Sounding Line authoritative run 31598563933](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31598563933)
+finalized `RELEASE_GO` for exact candidate
+`20b0b065e290201405cb78e1503fac102575232f`: all 38 mandatory receipts passed
+with `CLEAN` cleanup. Its acceptance envelope bound PR #49 and base
+`ca40227cbef3575315c089d224a0cd26ec77bc78`; protected binding run
+`31600365805` then passed the required `Sounding Line / Mainline Decision`
+context. PR #49 merged at `9b950a5fd603be27c813f9298b0b14888fbce6cf`, and a
+fresh fetch proved that exact commit in `origin/main` with the candidate as its
+second parent.
+
+This is Sounding Line and protected-main acceptance. It is not deployment,
+provider, or owner-acceptance proof, and it does not authorize Phase 3.
