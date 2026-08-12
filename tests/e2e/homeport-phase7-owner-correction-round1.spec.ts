@@ -147,7 +147,7 @@ test("Journey F: Claim account", async ({ context, page }) => {
   await page.goto("/account/claim");
   await expect(page.getByRole("heading", { name: "Claim your guest voyage" })).toBeVisible();
   const email = "claimed-guest@owner-correction.example.test";
-  await page.getByLabel("Email").fill(email);
+  await page.getByRole("textbox", { name: "Email", exact: true }).fill(email);
   await page.getByLabel("Password").fill(credentialHandoff.password);
   await page.getByRole("button", { name: "Continue" }).click();
   const delivery = await waitForDelivery("VERIFY_EMAIL", email);
@@ -166,7 +166,7 @@ test("Journey G: Email registration and verification", async ({ page }) => {
   await settledLink(page, menu.getByRole("link", { name: "Create Account", exact: true }));
   const email = `registered-${Date.now()}@owner-correction.example.test`;
   await page.getByLabel("Display name").fill("Verified Registration Test");
-  await page.getByLabel("Email").fill(email);
+  await page.getByRole("textbox", { name: "Email", exact: true }).fill(email);
   await page.getByLabel("Password", { exact: true }).fill(credentialHandoff.password);
   await page.getByLabel("Confirm password").fill(credentialHandoff.password);
   await page.getByRole("button", { name: "Continue" }).click();
