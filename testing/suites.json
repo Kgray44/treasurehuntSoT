@@ -2369,12 +2369,17 @@
         "helm.player-projection.firewall",
         "helm.history.membership-derived",
         "helm.artifacts.event-time-membership",
-        "helm.security.resource-authorization"
+        "helm.security.resource-authorization",
+        "helm.member-presence-synchronization"
       ],
       "affectedPaths": [
         "src/helm/**",
+        "src/platform/membership-presence*",
+        "src/platform/presence-client.ts",
         "src/platform/invitations.helm.test.ts",
         "src/app/api/captain/playthroughs/**",
+        "src/app/api/captain/voyages/**",
+        "src/app/api/player/playthroughs/**/presence/**",
         "src/app/api/play/sessions/**/route.helm.test.ts",
         "src/wayfarer/chronicle-history.helm.test.ts",
         "src/chronicle/artifact-grant.helm.test.ts"
@@ -2398,9 +2403,16 @@
       "contracts": [
         "helm.creation.default-captain-only",
         "helm.participation.lifecycle",
-        "helm.accessibility.responsive"
+        "helm.accessibility.responsive",
+        "helm.member-presence-synchronization"
       ],
-      "affectedPaths": ["src/components/platform/CaptainLibrary.tsx", "src/styles/platform.css"],
+      "affectedPaths": [
+        "src/components/platform/CaptainLibrary.tsx",
+        "src/components/captain/CaptainOperationalPanel.tsx",
+        "src/components/platform/PlayerVoyageRoom.tsx",
+        "src/components/player/journal/ChronicleJournalSession.tsx",
+        "src/styles/platform.css"
+      ],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-1-source-bound",
       "adapter": "vitest-family"

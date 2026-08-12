@@ -1250,8 +1250,9 @@ dl dd {
 }
 
 .platform-tabs {
-  display: flex;
-  overflow-x: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  overflow: visible;
   gap: 0.35rem;
   max-width: 1450px;
   margin: 0 auto 1.5rem;
@@ -1261,7 +1262,7 @@ dl dd {
 .platform-tabs button {
   position: relative;
   isolation: isolate;
-  min-width: max-content;
+  min-width: 0;
 }
 
 .platform-tabs .active {
@@ -1883,6 +1884,68 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
   animation: none;
 }
 
+.captain-operational-panel {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 1.25rem auto;
+  padding: clamp(1rem, 2vw, 1.75rem);
+  border: 1px solid rgba(201, 169, 95, 0.28);
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(9, 32, 34, 0.96), rgba(15, 45, 46, 0.9));
+  color: #f6f0de;
+}
+
+.captain-operational-panel > header {
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(201, 169, 95, 0.2);
+}
+
+.captain-operational-panel > section {
+  margin-top: 1rem;
+}
+
+.captain-operational-panel ul,
+.captain-operational-panel ol {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding-left: 1.3rem;
+}
+
+.captain-operational-panel li {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.55rem 0.65rem;
+  border-left: 3px solid rgba(201, 169, 95, 0.55);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.captain-operational-panel li[data-severity="HIGH"],
+.captain-operational-panel li[data-severity="CRITICAL"] {
+  border-left-color: #d4775d;
+}
+
+.captain-operational-panel dl {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.captain-operational-panel dl > div {
+  padding: 0.65rem;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.captain-operational-panel dt {
+  color: #d2c29b;
+  font-size: 0.78rem;
+}
+
+.captain-operational-panel dd {
+  margin: 0.2rem 0 0;
+}
+
 @media (max-width: 850px) {
   .platform-header {
     align-items: start;
@@ -1950,9 +2013,132 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
   .archive-timeline li {
     grid-template-columns: 2rem 1fr;
   }
+  .captain-operational-panel dl {
+    grid-template-columns: 1fr;
+  }
   .archive-timeline time {
     grid-column: 2;
   }
+}
+
+/* Browser zoom can leave a 640px effective layout viewport. Keep the voyage
+ * configuration choices in their single-column, no-overflow layout there too. */
+@media (max-width: 700px) {
+  .wizard-choice-grid,
+  .delivery-options,
+  .wizard-form,
+  .crew-builder fieldset,
+  .captain-participation-picker {
+    grid-template-columns: 1fr;
+  }
+}
+
+html.helm-document-zoom .wizard-choice-grid,
+html[style*="zoom: 2"] .wizard-choice-grid,
+html.helm-document-zoom .delivery-options,
+html[style*="zoom: 2"] .delivery-options,
+html.helm-document-zoom .wizard-form,
+html[style*="zoom: 2"] .wizard-form,
+html.helm-document-zoom .crew-builder fieldset,
+html[style*="zoom: 2"] .crew-builder fieldset,
+html.helm-document-zoom .captain-participation-picker,
+html[style*="zoom: 2"] .captain-participation-picker {
+  grid-template-columns: 1fr;
+}
+
+html.helm-document-zoom .voyage-wizard,
+html[style*="zoom: 2"] .voyage-wizard {
+  width: calc((100% - 2rem) / 2) !important;
+  max-width: calc((100% - 2rem) / 2);
+}
+
+html.helm-document-zoom .platform-header,
+html[style*="zoom: 2"] .platform-header {
+  align-items: start;
+  flex-direction: column;
+}
+
+html.helm-document-zoom .library-tools,
+html[style*="zoom: 2"] .library-tools,
+html.helm-document-zoom .invitation-table article,
+html[style*="zoom: 2"] .invitation-table article,
+html.helm-document-zoom .captain-operational-panel dl,
+html[style*="zoom: 2"] .captain-operational-panel dl,
+html.helm-document-zoom .tale-card-copy dl,
+html[style*="zoom: 2"] .tale-card-copy dl,
+html.helm-document-zoom .captain-voyage-card dl,
+html[style*="zoom: 2"] .captain-voyage-card dl,
+html.helm-document-zoom .invitation-sheet dl,
+html[style*="zoom: 2"] .invitation-sheet dl,
+html.helm-document-zoom .waiting-room dl,
+html[style*="zoom: 2"] .waiting-room dl,
+html.helm-document-zoom .review-sheet dl,
+html[style*="zoom: 2"] .review-sheet dl,
+html.helm-document-zoom .archive-title dl,
+html[style*="zoom: 2"] .archive-title dl {
+  grid-template-columns: 1fr;
+}
+
+html.helm-document-zoom .library-tools label:first-child,
+html[style*="zoom: 2"] .library-tools label:first-child {
+  grid-column: auto;
+}
+
+html.helm-document-zoom .player-card-grid,
+html[style*="zoom: 2"] .player-card-grid,
+html.helm-document-zoom .captain-card-grid,
+html[style*="zoom: 2"] .captain-card-grid,
+html.helm-document-zoom .published-tale-grid,
+html[style*="zoom: 2"] .published-tale-grid,
+html.helm-document-zoom .waiting-room,
+html[style*="zoom: 2"] .waiting-room,
+html.helm-document-zoom .auth-columns,
+html[style*="zoom: 2"] .auth-columns,
+html.helm-document-zoom .invitation-secrets article,
+html[style*="zoom: 2"] .invitation-secrets article,
+html.helm-document-zoom .player-card-grid.list .player-tale-card,
+html[style*="zoom: 2"] .player-card-grid.list .player-tale-card {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+html.helm-document-zoom .captain-card-grid > *,
+html[style*="zoom: 2"] .captain-card-grid > * {
+  min-width: 0;
+}
+
+html.helm-document-zoom .captain-card-grid,
+html[style*="zoom: 2"] .captain-card-grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+html.helm-document-zoom .captain-voyage-card,
+html[style*="zoom: 2"] .captain-voyage-card {
+  box-sizing: border-box;
+  max-width: 100%;
+  /* A document-zoom reflow must not retain a stale Framer layout offset. */
+  transform: none !important;
+}
+
+html.helm-document-zoom .wizard-progress small,
+html[style*="zoom: 2"] .wizard-progress small {
+  display: none;
+}
+
+html.helm-document-zoom .platform-tabs,
+html[style*="zoom: 2"] .platform-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  overflow: visible;
+}
+
+html.helm-document-zoom .platform-tabs button,
+html[style*="zoom: 2"] .platform-tabs button {
+  min-width: 0;
+}
+
+html.helm-document-zoom .platform-tabs button:last-child:nth-child(odd),
+html[style*="zoom: 2"] .platform-tabs button:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
 }
 
 @media (forced-colors: active) {

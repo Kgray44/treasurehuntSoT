@@ -505,6 +505,7 @@
 
 .product-shell-content {
   display: grid;
+  min-width: 0;
   min-height: calc(100svh - var(--shell-header-height) - var(--shell-footer-height));
   align-items: start;
 }
@@ -550,6 +551,7 @@
   display: grid;
   grid-area: 1 / 1;
   width: 100%;
+  min-width: 0;
   min-height: inherit;
   outline: 0;
 }
@@ -557,12 +559,14 @@
 .product-route-transition {
   display: grid;
   grid-area: 1 / 1;
+  min-width: 0;
   min-height: inherit;
 }
 
 .product-route-content,
 .route-preparation-fallback {
   grid-area: 1 / 1;
+  min-width: 0;
   min-height: inherit;
 }
 
