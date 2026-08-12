@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `54e3d818d49d45282a9c419d562d4b5c78911ccd`
+Audited source commit: `ca40227cbef3575315c089d224a0cd26ec77bc78`
 
 ## Status vocabulary
 
@@ -1397,6 +1397,40 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-035 - Bridgewatch Governed Signal Projection
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Bridgewatch Phase 2
+
+A private Bridgewatch extension that projects explicit Project Registry and Sounding Line observer evidence into durable local operational state while keeping test, release, merge, and project-completion authority outside the dashboard.
+
+### Important subfeatures
+
+- Read-only Sounding Line runtime projection with explicit lifecycle normalization
+- Durable SQLite worker, test-node, and test-run history with idempotent migrations
+- Opt-in bearer-authenticated activity telemetry with rate, skew, stale-state, and credential-redaction controls
+- Lifecycle tabs, project biography, worker/test summaries, responsive layout, and reduced-motion support
+
+### Primary surfaces
+
+`bridgewatch`, `POST /api/telemetry/heartbeat`, `GET /api/history`, `GET /api/tests`
+
+### Meaningful limitations
+
+- Bridgewatch remains an observer and cannot create, approve, merge, retry, or authorize work.
+- This branch-complete capability is not mainline acceptance, a hosted deployment, or an owner-acceptance record.
+
+### Evidence
+
+- branch: `codex/project-bridgewatch-phase2-wire-the-signals`
+- commit: `cd8f4331fd8cbed878a96e2c503757998ed366bb`
+- path: `bridgewatch/lib/store.ts`
+- path: `bridgewatch/src/sounding-line.ts`
+- test: `bridgewatch/test/sounding-line.test.ts`
+- path: `Development_Docs/Project_Bridgewatch_Phase_2_Design_Record.md`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
@@ -1410,4 +1444,4 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `54e3d818d49d45282a9c419d562d4b5c78911ccd`
+Generation source commit: `ca40227cbef3575315c089d224a0cd26ec77bc78`

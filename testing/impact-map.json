@@ -3,6 +3,21 @@
   "status": "phase-2-deepwater-control-plane",
   "pathMappings": [
     {
+      "path": "bridgewatch/**",
+      "suiteIds": ["unit.bridgewatch", "static.core"],
+      "contractIds": ["bridgewatch.mission-control"]
+    },
+    {
+      "path": "scripts/sounding-line/status-projection.mjs",
+      "suiteIds": ["unit.bridgewatch", "unit.sounding-line", "static.core"],
+      "contractIds": ["bridgewatch.mission-control"]
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_Phase_2_*.md",
+      "suiteIds": ["unit.bridgewatch", "static.core"],
+      "contractIds": ["bridgewatch.mission-control"]
+    },
+    {
       "path": "Development_Docs/Projects/Project_Helm/**",
       "suiteIds": ["unit.helm", "component.helm", "browser.helm", "static.core"],
       "contractIds": [
@@ -5967,6 +5982,10 @@
     {
       "contractId": "admiralty.phase1.responsive-consent",
       "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "bridgewatch.mission-control",
+      "suiteIds": ["unit.bridgewatch", "unit.sounding-line"]
     },
     { "contractId": "tideglass-change-classification", "suiteIds": ["unit.tideglass"] },
     { "contractId": "tideglass-compatibility-deltas", "suiteIds": ["unit.tideglass"] },

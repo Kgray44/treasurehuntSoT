@@ -3,22 +3,113 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Bridgewatch</title>
+    <title>Bridgewatch Mission Control</title>
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
     <main>
-      <header>
-        <p class="eyebrow">PRIVATE · READ ONLY · PHASE 1</p>
+      <header class="masthead">
+        <p class="eyebrow">PRIVATE / READ ONLY / PHASE 2</p>
         <h1>BRIDGEWATCH</h1>
-        <p id="meta">Loading governed observation state…</p>
+        <p id="meta" class="meta">Loading governed observation state...</p>
       </header>
-      <section id="attention" aria-live="polite"></section>
-      <section>
-        <h2>Program board</h2>
-        <div id="projects" class="grid"></div>
+
+      <section aria-labelledby="program-heading">
+        <div class="section-heading">
+          <h2 id="program-heading">Program summary</h2>
+          <p>Counts, never a fabricated global percentage.</p>
+        </div>
+        <div id="program" class="metrics" aria-live="polite"></div>
       </section>
-      <footer>GitHub and accepted project records remain authoritative. UNMEASURED is not zero.</footer>
+
+      <section aria-labelledby="attention-heading">
+        <div class="section-heading">
+          <h2 id="attention-heading">Attention required</h2>
+          <p>Root conditions are deliberately deduplicated.</p>
+        </div>
+        <div id="attention" class="attention" aria-live="polite"></div>
+      </section>
+
+      <section aria-labelledby="projects-heading">
+        <div class="section-heading">
+          <h2 id="projects-heading">Project workspace</h2>
+          <p>Durable registry and accepted history.</p>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Project lifecycle views">
+          <button
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="projects"
+            id="tab-active"
+            data-tab="ACTIVE"
+          >
+            Active
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="projects"
+            id="tab-completed"
+            data-tab="COMPLETED"
+          >
+            Completed
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="projects"
+            id="tab-planned"
+            data-tab="PLANNED"
+          >
+            Planned
+          </button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="projects" id="tab-all" data-tab="ALL">
+            All
+          </button>
+        </div>
+        <div id="projects" class="grid" role="tabpanel" aria-labelledby="tab-active"></div>
+        <div id="project-detail" class="detail" aria-live="polite"></div>
+      </section>
+
+      <section aria-labelledby="operations-heading">
+        <div class="section-heading">
+          <h2 id="operations-heading">Active workers and tests</h2>
+          <p>Activity is separate from project lifecycle authority.</p>
+        </div>
+        <div class="operations">
+          <div>
+            <h3>Workers</h3>
+            <div id="workers" class="list"></div>
+          </div>
+          <div>
+            <h3>Sounding Line</h3>
+            <div id="tests" class="list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="pulls-heading">
+        <div class="section-heading">
+          <h2 id="pulls-heading">Open pull requests</h2>
+          <p>Observed GitHub state only.</p>
+        </div>
+        <div id="pulls" class="list"></div>
+      </section>
+
+      <section aria-labelledby="sources-heading">
+        <div class="section-heading">
+          <h2 id="sources-heading">Source freshness</h2>
+          <p>One source does not stand in for another.</p>
+        </div>
+        <div id="sources" class="list"></div>
+      </section>
+      <footer>
+        Bridgewatch observes GitHub, governed project records, Sounding Line, and activity telemetry. It cannot change
+        any of them. UNMEASURED is not zero.
+      </footer>
     </main>
     <script src="/app.js" defer></script>
   </body>

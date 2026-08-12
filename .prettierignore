@@ -1,5 +1,6 @@
 .next
 .admiralty-phase1-build
+bridgewatch/dist
 .forever-validation-run.json
 node_modules
 node_modules.failed

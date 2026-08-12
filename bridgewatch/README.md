@@ -1,4 +1,4 @@
-# Bridgewatch — Phase 1
+# Bridgewatch - Phase 2
 
 Bridgewatch is a private, read-only internal board for Project Bridgewatch.
 It is a standalone Fastify service with a local SQLite cache and a static
@@ -9,8 +9,12 @@ dashboard. It does not belong to the public Next.js application.
 - GitHub calls use `GET` only; Bridgewatch has no GitHub write path.
 - The optional GitHub token is server-side only and is never included in the
   dashboard, API payloads, logs, or SQLite cache.
-- Dashboard and API endpoints are GET/HEAD observation endpoints. There are no
-  control buttons, webhooks, mutations, worker queues, or browser credentials.
+- Human dashboard and API endpoints are GET/HEAD observation endpoints. There
+  are no control buttons, GitHub writes, Sounding Line controls, worker queues,
+  or browser credentials.
+- The only POST routes are machine-only activity telemetry endpoints. They use
+  a dedicated Bridgewatch token, cannot change lifecycle/milestone/finalizer
+  truth, and retain no prompts, logs, commands, secrets, or private content.
 - GitHub and accepted repository records remain authoritative. A missing
   denominator displays `UNMEASURED`; a cached green check is not a release Go.
 
@@ -18,26 +22,46 @@ dashboard. It does not belong to the public Next.js application.
 
 Copy `.env.example` to an untracked `.env`, set `BRIDGEWATCH_REPOSITORY`, then
 load those environment variables using the approved host mechanism. The default
-host is `127.0.0.1`; expose it only through an authenticated private reverse
-proxy if remote access is required.
+host is `127.0.0.1`. Non-loopback hosting is rejected unless it explicitly sets
+`BRIDGEWATCH_ALLOW_EXTERNAL=true` and a dedicated dashboard username/password;
+human dashboard and observation routes then use HTTP Basic authentication.
 
 ```text
-pnpm install
-pnpm build
+cd bridgewatch
+npm install
+npm run build
 node dist/lib/server.js
 ```
 
-The service initializes `var/bridgewatch.sqlite` itself. Deleting that local
-cache is recoverable but removes the last known observation state until the next
-successful collection. Keep deployment storage private and back up only when
-the local operational cache is needed for continuity.
+The service initializes `var/bridgewatch.sqlite` itself and safely migrates a
+Phase 1 cache to permanent project/phase/milestone/completion history plus
+durable worker and observed-test history. Deleting this local cache is recoverable but
+removes the last known observation state until sources are collected again.
+Keep deployment storage private and back up only when local continuity is
+needed.
 
 ## Operations
 
 `GET /healthz` reports process health. `GET /readyz` reports whether a usable
-GitHub snapshot is cached. `GET /api/summary` is the dashboard source. A startup
-attempts a bounded refresh; failures keep previous cache data and visibly report
-an unavailable source. Polling is disabled in Phase 1.
+GitHub snapshot is cached. `GET /api/summary`, `/api/projects`,
+`/api/projects/:id`, `/api/pull-requests`, `/api/workers`, `/api/tests`,
+`/api/attention`, `/api/activity?since=...`, and `/api/sources` are human
+read-only observation endpoints. Startup refreshes GitHub and the source-owned
+Sounding Line projection; a source failure retains a cached state and never
+blanks the board.
 
-Focused validation uses `pnpm validate`. It is implementation evidence only;
+## Reporter and Sounding Line integration
+
+Set `BRIDGEWATCH_TELEMETRY_TOKEN` only in private host configuration, then send
+a strict activity heartbeat to `POST /api/telemetry/heartbeat` or completion to
+`POST /api/telemetry/finish` with `Authorization: Bearer <dedicated token>`.
+Telemetry credentials are rejected in URLs and payloads; there is a 4 KiB body
+limit, a 60/minute client limit, and a default 90-second stale threshold.
+
+Bridgewatch invokes the read-only
+`scripts/sounding-line/status-projection.mjs` adapter over Sounding Line runtime
+markers, sealed plans, receipts, and leases. It never reads terminal logs or
+process lists, and it cannot schedule, cancel, clean up, lease, or finalize.
+
+Focused validation uses `npm run validate`. It is implementation evidence only;
 Sounding Line remains the authority for phase, mainline, and release decisions.
