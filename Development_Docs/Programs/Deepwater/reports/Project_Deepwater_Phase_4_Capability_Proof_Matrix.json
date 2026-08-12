@@ -584,7 +584,7 @@
             "sha256": "8486f223cf313f9bcc43feab6786dc28559afe38a574761dfd0f6bc202c1ae03"
           }
         ],
-        "sourceSha": "e57670a010406dc48c7ede1f2939d3d35260484f",
+        "sourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
         "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
@@ -632,7 +632,7 @@
             "sha256": "8486f223cf313f9bcc43feab6786dc28559afe38a574761dfd0f6bc202c1ae03"
           }
         ],
-        "sourceSha": "e57670a010406dc48c7ede1f2939d3d35260484f",
+        "sourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
         "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
@@ -666,7 +666,7 @@
       "routeReferences": ["/", "/captain", "/captain/library", "/join/[token]"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-D-captain-session",
@@ -677,12 +677,11 @@
             "sha256": "7e09ca347fb1a1830a82a9fd3aa051c3d822bb1afd24098a1caa808263d9b62f"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
         "states": ["READY", "EMPTY", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
-          "tests/e2e/homeport-phase7.spec.ts#Journey D, J, K, N, O",
-          "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
-          "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, O, U, V"
+          "tests/e2e/project-helm-phase1.spec.ts#Captain authority, membership heartbeat, and responsive participation journeys",
+          "src/components/platform/InvitationCeremony.test.tsx#stalled invitation lookup retries once before terminal failure"
         ]
       },
       "screenReferences": ["screen-page-captain", "screen-page-captain-library", "screen-page-captain-invitations"],
@@ -2128,7 +2127,7 @@
       "routeReferences": ["/", "/captain", "/captain/library", "/join/[token]"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-D-captain-session",
@@ -2139,12 +2138,11 @@
             "sha256": "7e09ca347fb1a1830a82a9fd3aa051c3d822bb1afd24098a1caa808263d9b62f"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
         "states": ["READY", "EMPTY", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
-          "tests/e2e/homeport-phase7.spec.ts#Journey D, J, K, N, O",
-          "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
-          "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, O, U, V"
+          "tests/e2e/project-helm-phase1.spec.ts#Captain authority, membership heartbeat, and responsive participation journeys",
+          "src/components/platform/InvitationCeremony.test.tsx#stalled invitation lookup retries once before terminal failure"
         ]
       },
       "screenReferences": ["screen-page-captain", "screen-page-captain-library", "screen-page-captain-invitations"],
@@ -3937,6 +3935,6 @@
   "project": "Project Deepwater",
   "runtimeEvidenceStatus": "LOCAL_SYNTHETIC_PROVEN",
   "schemaVersion": "1.0.0",
-  "sourceSha": "e57670a010406dc48c7ede1f2939d3d35260484f",
+  "sourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
   "truthBoundary": "Source-bound local synthetic evidence is distinct from live-provider proof, deployment, protected-main acceptance, owner acceptance, and product acceptance."
 }
