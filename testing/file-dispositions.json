@@ -1,8 +1,44 @@
 {
   "version": "2.0.0",
-  "status": "phase-2-deepwater-control-plane",
+  "status": "integrated-deepwater-phase-2-wakebook-phase-1-control-plane",
   "defaultDisposition": "REGISTERED_SUITE_CHILD",
   "rules": [
+    {
+      "match": "tests/e2e/wakebook-phase1.spec.ts",
+      "suiteId": "browser.wakebook",
+      "role": "REGISTERED_SUITE_CHILD",
+      "owner": "project-wakebook",
+      "tier": 4,
+      "parallelSafety": "ISOLATED_MUTABLE_PARALLEL",
+      "adapter": "playwright"
+    },
+    {
+      "match": "src/components/wakebook/**",
+      "suiteId": "component.wakebook",
+      "role": "REGISTERED_SUITE_CHILD",
+      "owner": "project-wakebook",
+      "tier": 2,
+      "parallelSafety": "READ_ONLY_PARALLEL",
+      "adapter": "vitest"
+    },
+    {
+      "match": "src/wakebook/**",
+      "suiteId": "unit.wakebook",
+      "role": "REGISTERED_SUITE_CHILD",
+      "owner": "project-wakebook",
+      "tier": 1,
+      "parallelSafety": "READ_ONLY_PARALLEL",
+      "adapter": "vitest"
+    },
+    {
+      "match": "src/app/api/passport/voyages/**",
+      "suiteId": "unit.wakebook",
+      "role": "REGISTERED_SUITE_CHILD",
+      "owner": "project-wakebook",
+      "tier": 1,
+      "parallelSafety": "READ_ONLY_PARALLEL",
+      "adapter": "vitest"
+    },
     {
       "match": "tests/e2e/**",
       "suiteId": "browser.cross-project",

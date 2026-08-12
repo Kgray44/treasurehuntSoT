@@ -18,6 +18,15 @@ descendants cover history and version-pinned detail, Memories, Artifact Cabinet
 and artifact detail, and Saved from Community. `/profile/[handle]` is the
 separate public projection.
 
+Project Wakebook Phase 1 keeps the visible History paths at
+`/passport/history` and `/passport/history/[recordId]`. The branch adds
+owner-authenticated read projections at `/api/passport/voyages`,
+`/api/passport/voyages/[recordId]`, and
+`/api/passport/voyages/[recordId]/cover`. These are bounded private archive
+services, not public discovery routes. Existing `/api/passport/history`
+mutation compatibility remains in place for Reflection, Memories, Keepsakes,
+and consent.
+
 Phase 4 makes `/community` the content-first Harbor Home. Ordinary districts
 are `/community/featured`, `/chronicles`, `/artifacts`, `/templates`, `/maps`,
 `/audio`, `/creators`, `/collections`, `/guides`, and `/voyage-logs`. Public

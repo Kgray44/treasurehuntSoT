@@ -5425,6 +5425,45 @@
       "futureAcceptanceTest": "homeport.phase7.journey-i"
     },
     {
+      "journeyId": "WB-P1-JRN-A",
+      "name": "Private Living Journey Archive",
+      "sourceSha": "629f5c7a981b80494f7703b6410b573a661e0f39",
+      "fixtureIdentity": "wakebook-phase1:task-owned-sqlite-clone:1005-records",
+      "browser": "Playwright Chromium through the isolated Sounding Line adapter",
+      "viewport": "1440x1000, 430x932, 390x844",
+      "steps": [
+        "Start at /",
+        "Sign in with the synthetic owner",
+        "Reach Chronicle Passport through visible controls",
+        "Reach Your Voyages through the visible History control",
+        "Search and filter the archive",
+        "Traverse every opaque page without duplicates or gaps",
+        "Open The Lantern Below through its visible Voyage card",
+        "Read Journey Summary, Path, Crew, Artifacts, Edition, and Remembrance",
+        "Return to Your Voyages through the visible archive return"
+      ],
+      "controlsUsed": [
+        "Chronicle Passport",
+        "History",
+        "Read the wake",
+        "More filters",
+        "Show more Voyages",
+        "Open Voyage",
+        "Back to Your Voyages"
+      ],
+      "routeTransitions": ["/passport", "/passport/history", "/passport/history/[recordId]"],
+      "sessionAuthoritiesObservedWithoutValues": ["AccountSession"],
+      "expectedCurrentBehavior": "Prove the branch-complete owner-private archive, exact Voyage Detail, bounded large-history pagination, historical stability, privacy, responsive layout, and accessibility contracts.",
+      "observedBehavior": "The registered browser family is waiting for the shared validation-runtime lease; no product case has executed yet.",
+      "screenshots": [],
+      "traces": [],
+      "result": "BLOCKED_BY_ENVIRONMENT",
+      "rootBlocker": "Another governed validation owns the repository-wide runtime lease.",
+      "relatedNonconformityIds": [],
+      "targetPhase": "WAKEBOOK_PHASE_1_OPEN_THE_WAKE",
+      "futureAcceptanceTest": "wakebook.phase1.private-living-journey-archive"
+    },
+    {
       "journeyId": "HP-P7-JRN-J",
       "name": "Session expiry",
       "sourceSha": "61ea9ec546622b2bce2036d249fca408922786d2",

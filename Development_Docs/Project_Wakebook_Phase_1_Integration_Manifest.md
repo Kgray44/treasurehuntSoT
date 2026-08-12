@@ -1,0 +1,36 @@
+---
+title: Project Wakebook Phase 1 Integration Manifest
+audience: product-engineering
+status: current
+canonical_for: project-wakebook-phase-1-integration-manifest
+last_reviewed: 2026-08-12
+---
+
+# Project Wakebook Phase 1 integration manifest
+
+## Current integration state
+
+| Item                    | State                                                                                                                                                                    |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                                                                               |
+| Current reconciled base | `fb0f13e35fcdd98434d22c357aee02f24d6d9036`                                                                                                                               |
+| Incoming accepted work  | Helm launch-handoff repair (PR #55, protected merge `772be633857548d9d4bef06329ff6c54ed1b0465`) plus Tideglass Phase 3 accepted main `bb7676a75581d8d415c3ff7712cc38bc8` |
+| Semantic reconciliation | `72a1ae3df50e8972e530c1bd96f4f098f72a4164` retains Wakebook and all its governed registrations while taking accepted mainline updates                                    |
+| Implementation commits  | Preserved from the existing remote candidate                                                                                                                             |
+| Sounding Line evidence  | `22940b9004bc89def300a808f426a0ed4dc77658`: focused governed `browser.wakebook` PASS (1/1); 15 capture review accepted                                                   |
+| Owner walkthrough       | `OWNER_ACCEPTED_PHASE_1` recorded 2026-08-12                                                                                                                             |
+| Main merge              | Blocked by current-main `static.core` type compatibility until an accepted repair and later source-bound `RELEASE_GO`                                                    |
+
+## Owned implementation paths
+
+Expected Wakebook-owned additions are `src/wakebook/**`, `src/components/wakebook/**`, `/api/passport/voyages/**`, focused tests, and Phase 1 records. Existing Passport page entry points and Personal Harbor styles/navigation are shared seams and will receive targeted changes only.
+
+Wayfarer materialization/mutation ownership, One Voyage runtime rows, Artifact Cabinet provenance, Homeport shell identity, and adjacent-project contracts remain outside Wakebook ownership.
+
+## Shared-file protocol
+
+Before each shared-file edit and final validation, compare current `origin/main`. Preserve accepted incoming Feature Catalog and Sounding Line additions, including Bridgewatch mappings. Stage only enumerated Wakebook paths. Do not merge, rebase, copy, or modify concurrent Phase 1 worktrees.
+
+## Final convergence requirements
+
+Immediately before final evidence: fetch origin; inspect every incoming relevant change; reconcile semantically; regenerate docs/Feature Catalog/test registry; rerun invalidated Sounding Line gates; record final SHA relationship; commit and push the Wakebook branch; verify local/remote parity; leave main untouched unless the governed owner-acceptance process authorizes normal protected integration.
