@@ -10,65 +10,53 @@ last_reviewed: 2026-08-12
 
 ## Current result
 
-Before a canonical hosted decision was dispatched, accepted Helm Phase 2
-advanced current main from `54e3d818d49d45282a9c419d562d4b5c78911ccd` to
-`ca40227cbef3575315c089d224a0cd26ec77bc78`. A replacement candidate was
-prepared, but accepted Bridgewatch Phase 2 then advanced current main to
-`5735d43821209adb2259ec2c38979281da1bb5b9` before a hosted decision. That
-advance adds FT-035 and changes the private observer plus Sounding Line
-projection scope, so the replacement candidate is historical only. Phase 4
-rebased onto that exact current main at
-`e57670a010406dc48c7ede1f2939d3d35260484f`. Its hosted Mainline Decision
-failed closed as `EVIDENCE_INVALID`: all mandatory evidence was present, but
-the `browser.helm` receipt failed after an invitation remained in `resolving`.
-The first narrow repair at `ec564fc632fa4836b6eb0a6f0298815649ac452c` passed
-focused local proof but its one replacement hosted decision also failed closed:
-the Player tab remained on the waiting-room route after an authoritative launch.
-The finalizer recorded 38 receipts with no missing, duplicate, unknown, or
-runtime-conformance defect; only `browser.helm` was invalid. No release,
-protected merge, or acceptance was recorded.
+Two historical hosted Mainline Decisions, `31605432896` and `31609917108`,
+failed closed as `EVIDENCE_INVALID` solely in `browser.helm`; both finalizers
+reported clean cleanup and no missing, duplicate, unknown, or
+runtime-conformance evidence. Their source freezes are historical and cannot
+be reused. Accepted Helm Phase 2 then advanced main to
+`920d92a51a16d60a2dfe35278598e6d921be7e4c`, invalidating the second freeze.
 
-Accepted Helm Phase 2 then advanced protected main to
-`920d92a51a16d60a2dfe35278598e6d921be7e4c`, invalidating the `5735d438`
-freeze before it could seek another decision. The branch was freshly reconciled
-onto that exact main. The current product-evidence repair at
-`ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9` retains Helm's accepted route
-recovery and makes Player
-session-event streams idempotently detach on cancellation or request abort, so
-a stale closed stream cannot turn an already-committed launch into a 400. It
-also rechecks the waiting-room state once as browser visibility settles after
-focus, so an authoritative launch cannot strand a backgrounded Player. The
-focused invitation, Player waiting-room, and stream tests pass 26/26; TypeScript,
-lint with zero errors, and format checks pass; and the exact isolated three-case
-Helm browser family passes 3/3 with clean runtime conformance. The proof model
-continues to account for all 57 current capabilities: the accepted 55-capability
-Phase 3 population plus Bridgewatch FT-034 and FT-035.
+Accepted Drydock Phase 3 subsequently protected-merged PR #52 and advanced
+`origin/main` to `191a964488d0df71f8dcb91c5b8372fc73b6b32e`. That accepted
+source adds FT-036, Drydock Deterministic Sea Trials, to the private Creator
+Studio surface. Its catalog fragment remains `BRANCH_COMPLETE_NOT_MERGED`
+because its separate owner-controlled record promotion is pending; Deepwater
+records that condition without changing its owner state. The current Deepwater
+product-evidence source is
+`276d44a8605b911b62bfd88f86e7357dbe5eb7bc`, rebased on that current main.
+It retains Helm's accepted route recovery, detaches stale Player event streams
+on cancellation or abort, and rechecks the waiting-room state after visibility
+settles so an authoritative launch cannot strand a backgrounded Player.
+
+The focused Player, Captain, and stream suite passes 26/26. Drydock current
+source qualification passes the simulation/store group 33/33, Studio 3/3,
+scenario API 7/7, and the owner Sea Trials suite 196/196; its SQLite migration
+rehearsal verifies 59 migrations and MySQL static parity. TypeScript passes
+after the required local Prisma-client generation, Bridgewatch validates and
+builds with 24 focused tests, and the exact isolated Helm browser family passes
+3/3 in execute-only mode with clean runtime conformance. The refreshed
+Deepwater audit and validator pass for 58 capabilities with semantic digest
+`2a26efb1cafa8f831704e214eb5038195edb418f8e2e4592cb7dd563927fef88`.
 
 The production-build Homeport matrix remains source-bound to
 `b810e2d0c33cbafb8e4d02c19b9af0db94315783`: original journeys A-O,
 owner-correction Round 1 journeys A-U, Round 2 journeys A-W with its inherited
 regression chain, and Round 3 journeys A-V with the full prior correction
-regression. It is retained only through the explicit family-level semantic
-carry-forward declaration. The changed Bridgewatch family has passed its
-current production build, typecheck, 24 focused tests, private-loopback desktop
-and 390px responsive review with no horizontal overflow, and local-only
-telemetry plus summary, activity, and tests endpoint observations. The
-refreshed Deepwater audit and validator pass for the repaired source with 57
-capabilities and semantic digest `243cab9705eb6a17884606444eff8200495579bbac64cde80fba6f293773b3d4`.
-This remains local synthetic qualification only: it neither records owner or
-product acceptance nor substitutes for a canonical hosted Mainline Decision.
-Phase 4 has not been accepted into protected main or proven on exact main.
+regression. It is retained only through explicit family-level semantic
+carry-forward. This result is local synthetic qualification only: it neither
+records owner or product acceptance nor substitutes for a canonical hosted
+Mainline Decision. Phase 4 has not been accepted into protected main or proven
+on exact main.
 
-| Gate                                | Result                                                                                           | Boundary                                                                                 |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| Deepwater proof-model tests         | PASS; 66/66                                                                                      | Deterministic local control-plane tests                                                  |
-| Hosted Mainline Decision            | `EVIDENCE_INVALID`; runs 31605432896 and 31609917108; only `browser.helm` failed; cleanup CLEAN  | Both failed closed; their candidates are invalidated and the acceptance lane is released |
-| Helm repair qualification           | PASS; focused invitation, Player, and stream tests 26/26; exact `browser.helm` 3/3               | Isolated, local evidence only; the repaired source awaits canonical acceptance           |
-| Deepwater audit and validation      | PASS; 57 capabilities; digest `243cab9705eb6a17884606444eff8200495579bbac64cde80fba6f293773b3d4` | Repaired product source only; no acceptance claim                                        |
-| Production-build Homeport journeys  | RETAINED; original A-O, Round 1 A-U, Round 2 A-W, Round 3 A-V with inherited regressions         | Explicit semantic carry-forward from the historical source                               |
-| Bridgewatch qualification           | PASS; production build, typecheck, 24 tests, private-loopback desktop and 390px review           | Private operator surface; no public-product or release authority                         |
-| Focused Sounding Line qualification | PASS; exact isolated `browser.helm` execute-only receipt with clean runtime conformance          | Qualification evidence only; cannot issue `RELEASE_GO`                                   |
-| Documentation and catalog           | PASS; documentation validation and catalog refresh on `920d92a`                                  | No owning Feature Catalog fragment change is expected                                    |
+| Gate                           | Result                                                                                           | Boundary                                                         |
+| ------------------------------ | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| Deepwater proof-model tests    | PASS; 66/66                                                                                      | Deterministic local control-plane tests                          |
+| Historical hosted decisions    | `EVIDENCE_INVALID`; runs 31605432896 and 31609917108; cleanup CLEAN                              | Historical only; neither candidate may seek authority            |
+| Helm repair qualification      | PASS; invitation, Player, and stream tests 26/26; `browser.helm` 3/3                             | Isolated execute-only evidence; cannot issue `RELEASE_GO`        |
+| Drydock Creator qualification  | PASS; 33/33, 3/3, 7/7, and 196/196; migration rehearsal PASS                                     | Private Studio Sea Trials; no owner-state override               |
+| Deepwater audit and validation | PASS; 58 capabilities; digest `2a26efb1cafa8f831704e214eb5038195edb418f8e2e4592cb7dd563927fef88` | Current product source only; no acceptance claim                 |
+| Bridgewatch qualification      | PASS; typecheck, 24 tests, build                                                                 | Private operator surface; no public-product or release authority |
 
 ## Runtime proof boundary
 
@@ -82,9 +70,9 @@ protected-main acceptance.
 
 ## Remaining serialized gates
 
-1. Acquire the canonical serialized acceptance lane.
-2. Dispatch exactly one new canonical hosted **Sounding Line / Mainline
-   Decision** for this frozen repaired candidate.
+1. Reconcile fetched `origin/main` once more and freeze one exact candidate.
+2. Acquire the canonical serialized acceptance lane and dispatch exactly one
+   hosted **Sounding Line / Mainline Decision** for that frozen candidate.
 3. Only after `RELEASE_GO`, complete protected merge, exact-main proof, and a
    separately source-bound closure record.
 

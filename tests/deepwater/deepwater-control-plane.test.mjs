@@ -582,11 +582,11 @@ test("Phase 3 rejects INTENTIONALLY_PARTIAL without rationale", () => {
   includesError(phase3Errors(candidate), "INTENTIONALLY_PARTIAL lacks rationale");
 });
 
-test("Phase 4 creates a source-current proof population from Phase 3 plus both Bridgewatch capabilities", () => {
+test("Phase 4 creates a source-current proof population from Phase 3 plus Bridgewatch and Drydock current-main capabilities", () => {
   assert.equal(baseline.status.phase, "Phase 4 - Break the Surface");
-  assert.equal(baseline.phase4ProofMatrix.capabilities.length, 57);
+  assert.equal(baseline.phase4ProofMatrix.capabilities.length, 58);
   assert.equal(baseline.inputs.phase4Config.expectedPhase3CapabilityCount, 55);
-  assert.equal(baseline.inputs.phase4Config.expectedCurrentCapabilityCount, 57);
+  assert.equal(baseline.inputs.phase4Config.expectedCurrentCapabilityCount, 58);
   const bridgewatch = baseline.phase4ProofMatrix.capabilities.find(
     (capability) => capability.capabilityId === "DW-CAP-BRIDGEWATCH-DEVELOPMENT-MISSION-CONTROL",
   );
@@ -605,6 +605,11 @@ test("Phase 4 creates a source-current proof population from Phase 3 plus both B
     "LOCAL_SYNTHETIC_PROVEN",
   );
   assert.equal(bridgewatch?.proofStatus, "LOCAL_SYNTHETIC_PROVEN");
+  const drydock = baseline.phase4ProofMatrix.capabilities.find(
+    (capability) => capability.capabilityId === "DW-CAP-DRYDOCK-DETERMINISTIC-SEA-TRIALS",
+  );
+  assert.equal(drydock?.proofFamilyId, "DW-P4-JRN-CREATOR");
+  assert.equal(drydock?.proofStatus, "LOCAL_SYNTHETIC_PROVEN");
   assert.equal(
     baseline.phase4StateRecoveryMatrix.families.find((family) => family.familyId === "ACCOUNT")?.proofFamilyId,
     "DW-P4-JRN-ACCOUNT",

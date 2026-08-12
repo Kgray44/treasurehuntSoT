@@ -335,7 +335,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -425,7 +425,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -468,10 +468,10 @@
       "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
       "realizationClassification": "FULLY_REALIZED",
       "requiredStates": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
-      "routeReferences": ["/", "/studio", "/studio/exchange"],
+      "routeReferences": ["/", "/studio", "/studio/exchange", "/studio/tales/[taleId]/trials"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-E-creator-private-state",
@@ -482,9 +482,14 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
+          "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Test_Plan.md#Current locally attainable commands",
+          "src/drydock/simulation/**#deterministic Sea Trial current-source qualification",
+          "src/components/studio/DrydockScenarioLab.test.tsx#private Creator Studio interactions",
+          "src/app/api/studio/tales/[taleId]/scenarios/route.test.ts#Creator scenario ownership and CSRF",
           "tests/e2e/homeport-phase7.spec.ts#Journey E, J, K, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, P, U, V"
@@ -529,7 +534,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -593,7 +598,7 @@
             "sha256": "8486f223cf313f9bcc43feab6786dc28559afe38a574761dfd0f6bc202c1ae03"
           }
         ],
-        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
@@ -641,7 +646,7 @@
             "sha256": "8486f223cf313f9bcc43feab6786dc28559afe38a574761dfd0f6bc202c1ae03"
           }
         ],
-        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
@@ -686,7 +691,7 @@
             "sha256": "7e09ca347fb1a1830a82a9fd3aa051c3d822bb1afd24098a1caa808263d9b62f"
           }
         ],
-        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority, membership heartbeat, and responsive participation journeys",
@@ -731,10 +736,10 @@
       "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
       "realizationClassification": "FULLY_REALIZED",
       "requiredStates": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
-      "routeReferences": ["/", "/studio", "/studio/exchange"],
+      "routeReferences": ["/", "/studio", "/studio/exchange", "/studio/tales/[taleId]/trials"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-E-creator-private-state",
@@ -745,9 +750,14 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
+          "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Test_Plan.md#Current locally attainable commands",
+          "src/drydock/simulation/**#deterministic Sea Trial current-source qualification",
+          "src/components/studio/DrydockScenarioLab.test.tsx#private Creator Studio interactions",
+          "src/app/api/studio/tales/[taleId]/scenarios/route.test.ts#Creator scenario ownership and CSRF",
           "tests/e2e/homeport-phase7.spec.ts#Journey E, J, K, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, P, U, V"
@@ -883,7 +893,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -1484,10 +1494,10 @@
       "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
       "realizationClassification": "FULLY_REALIZED",
       "requiredStates": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
-      "routeReferences": ["/", "/studio", "/studio/exchange"],
+      "routeReferences": ["/", "/studio", "/studio/exchange", "/studio/tales/[taleId]/trials"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-E-creator-private-state",
@@ -1498,9 +1508,14 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
+          "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Test_Plan.md#Current locally attainable commands",
+          "src/drydock/simulation/**#deterministic Sea Trial current-source qualification",
+          "src/components/studio/DrydockScenarioLab.test.tsx#private Creator Studio interactions",
+          "src/app/api/studio/tales/[taleId]/scenarios/route.test.ts#Creator scenario ownership and CSRF",
           "tests/e2e/homeport-phase7.spec.ts#Journey E, J, K, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, P, U, V"
@@ -1577,6 +1592,58 @@
     {
       "accessibilityRequirements": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
       "boundaryRationale": null,
+      "canonicalOwner": "Drydock",
+      "capabilityId": "DW-CAP-DRYDOCK-DETERMINISTIC-SEA-TRIALS",
+      "disposition": "USER_FACING",
+      "featureCatalogId": "FT-036",
+      "naturalStart": "/",
+      "proofFamilyId": "DW-P4-JRN-CREATOR",
+      "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
+      "realizationClassification": "FULLY_REALIZED",
+      "requiredStates": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
+      "routeReferences": ["/", "/studio", "/studio/exchange", "/studio/tales/[taleId]/trials"],
+      "runtimeEvidence": {
+        "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+        "evidenceDisposition": "SOURCE_CURRENT",
+        "screenshots": [
+          {
+            "evidenceId": "HP-P7-EV-E-creator-private-state",
+            "sha256": "91ff2995947d6fbed2d076ab021250539441b0f3417ded6991d6b5d4b6a9e948"
+          },
+          {
+            "evidenceId": "HP-OWCR3-EV-P-CREATOR-EMPTY",
+            "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
+          }
+        ],
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
+        "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
+        "testReferences": [
+          "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
+          "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Test_Plan.md#Current locally attainable commands",
+          "src/drydock/simulation/**#deterministic Sea Trial current-source qualification",
+          "src/components/studio/DrydockScenarioLab.test.tsx#private Creator Studio interactions",
+          "src/app/api/studio/tales/[taleId]/scenarios/route.test.ts#Creator scenario ownership and CSRF",
+          "tests/e2e/homeport-phase7.spec.ts#Journey E, J, K, N, O",
+          "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
+          "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, P, U, V"
+        ]
+      },
+      "screenReferences": ["screen-page-studio", "screen-page-studio-tales-taleid", "screen-page-studio-exchange"],
+      "sourceReferences": [
+        "Development_Docs/Features/branch-complete/project-drydock-phase3.json",
+        "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md",
+        "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Test_Plan.md",
+        "src/app/api/studio/tales/[taleId]/scenarios",
+        "src/components/studio/DrydockScenarioLab.tsx",
+        "src/drydock/simulation/engine.ts"
+      ],
+      "terminalRung": "UI",
+      "utilizationStatus": "NOT_APPLICABLE",
+      "visibleEntry": "Gateway Creator workspace"
+    },
+    {
+      "accessibilityRequirements": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+      "boundaryRationale": null,
       "canonicalOwner": "One Voyage",
       "capabilityId": "DW-CAP-FINALE-CHAMBER",
       "disposition": "USER_FACING",
@@ -1600,7 +1667,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -1973,10 +2040,10 @@
       "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
       "realizationClassification": "FULLY_REALIZED",
       "requiredStates": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
-      "routeReferences": ["/", "/studio", "/studio/exchange"],
+      "routeReferences": ["/", "/studio", "/studio/exchange", "/studio/tales/[taleId]/trials"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-E-creator-private-state",
@@ -1987,9 +2054,14 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
+          "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Test_Plan.md#Current locally attainable commands",
+          "src/drydock/simulation/**#deterministic Sea Trial current-source qualification",
+          "src/components/studio/DrydockScenarioLab.test.tsx#private Creator Studio interactions",
+          "src/app/api/studio/tales/[taleId]/scenarios/route.test.ts#Creator scenario ownership and CSRF",
           "tests/e2e/homeport-phase7.spec.ts#Journey E, J, K, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, P, U, V"
@@ -2154,7 +2226,7 @@
             "sha256": "7e09ca347fb1a1830a82a9fd3aa051c3d822bb1afd24098a1caa808263d9b62f"
           }
         ],
-        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority, membership heartbeat, and responsive participation journeys",
@@ -2473,7 +2545,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -2532,7 +2604,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -2790,7 +2862,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -3286,7 +3358,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -3343,7 +3415,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -3386,10 +3458,10 @@
       "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
       "realizationClassification": "FULLY_REALIZED",
       "requiredStates": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
-      "routeReferences": ["/", "/studio", "/studio/exchange"],
+      "routeReferences": ["/", "/studio", "/studio/exchange", "/studio/tales/[taleId]/trials"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-E-creator-private-state",
@@ -3400,9 +3472,14 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
+          "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Test_Plan.md#Current locally attainable commands",
+          "src/drydock/simulation/**#deterministic Sea Trial current-source qualification",
+          "src/components/studio/DrydockScenarioLab.test.tsx#private Creator Studio interactions",
+          "src/app/api/studio/tales/[taleId]/scenarios/route.test.ts#Creator scenario ownership and CSRF",
           "tests/e2e/homeport-phase7.spec.ts#Journey E, J, K, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, P, U, V"
@@ -3884,7 +3961,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -3927,10 +4004,10 @@
       "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
       "realizationClassification": "FULLY_REALIZED",
       "requiredStates": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
-      "routeReferences": ["/", "/studio", "/studio/exchange"],
+      "routeReferences": ["/", "/studio", "/studio/exchange", "/studio/tales/[taleId]/trials"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-E-creator-private-state",
@@ -3941,9 +4018,14 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
+          "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Test_Plan.md#Current locally attainable commands",
+          "src/drydock/simulation/**#deterministic Sea Trial current-source qualification",
+          "src/components/studio/DrydockScenarioLab.test.tsx#private Creator Studio interactions",
+          "src/app/api/studio/tales/[taleId]/scenarios/route.test.ts#Creator scenario ownership and CSRF",
           "tests/e2e/homeport-phase7.spec.ts#Journey E, J, K, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, P, U, V"
@@ -3964,12 +4046,12 @@
       "visibleEntry": "Gateway Creator workspace"
     }
   ],
-  "expectedCapabilityCount": 57,
+  "expectedCapabilityCount": 58,
   "phase": "Phase 4 - Break the Surface",
   "phase3AcceptedMainSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
   "project": "Project Deepwater",
   "runtimeEvidenceStatus": "LOCAL_SYNTHETIC_PROVEN",
   "schemaVersion": "1.0.0",
-  "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
+  "sourceSha": "276d44a8605b911b62bfd88f86e7357dbe5eb7bc",
   "truthBoundary": "Source-bound local synthetic evidence is distinct from live-provider proof, deployment, protected-main acceptance, owner acceptance, and product acceptance."
 }
