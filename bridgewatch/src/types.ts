@@ -1,5 +1,7 @@
 export type SourceState = "FRESH" | "STALE" | "DEGRADED" | "UNAVAILABLE" | "UNMEASURED";
-export type ProjectState = "ACTIVE" | "BLOCKED" | "MERGED" | "COMPLETE" | "UNKNOWN";
+import type { ProjectState as ProjectLifecycleState } from "./domain.js";
+
+export type ProjectState = ProjectLifecycleState;
 export type AttentionLevel = "NONE" | "NOTICE" | "ACTION" | "BLOCKED";
 
 export interface ProjectDefinition {
@@ -47,7 +49,7 @@ export interface GithubSnapshot {
 
 export interface AttentionItem {
   level: AttentionLevel;
-  projectId: string;
+  projectId?: string;
   code: string;
   message: string;
 }
