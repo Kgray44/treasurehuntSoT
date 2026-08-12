@@ -1,14 +1,14 @@
 {
   "schemaVersion": "1.0.0",
   "phase": "Phase 4 - Break the Surface",
-  "sourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+  "sourceSha": "daecc2dc570af34772790d15b6676e53156e1062",
   "status": "LOCAL_SYNTHETIC_PROVEN",
   "truthBoundary": "Production builds were exercised against task-owned synthetic fixtures on loopback. This evidence is source-bound local proof only; it is not live-provider, deployment, protected-main, owner-acceptance, product-acceptance, or release proof.",
   "journeyFamilies": [
     {
       "journeyId": "DW-P4-JRN-ACCOUNT",
       "status": "PASSED",
-      "sourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+      "sourceSha": "daecc2dc570af34772790d15b6676e53156e1062",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey A, I, J, M, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey F through K, N through U",
@@ -21,7 +21,7 @@
         },
         {
           "evidenceId": "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
-          "sha256": "a86b64d029bd89713c43a3409b4800bac2f23e13c24a7a7778bfb01813e2ab38"
+          "sha256": "76bed79dbf9e1690d0832617747202dceaecee911f795deed86496a3e23230df"
         }
       ],
       "states": ["READY", "LOADING", "ERROR", "UNAUTHORIZED", "RECOVERY"],
@@ -30,7 +30,7 @@
     {
       "journeyId": "DW-P4-JRN-PERSONAL-HARBOR",
       "status": "PASSED",
-      "sourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+      "sourceSha": "daecc2dc570af34772790d15b6676e53156e1062",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey G, H, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey M, N, U",
@@ -52,7 +52,7 @@
     {
       "journeyId": "DW-P4-JRN-PLAYER",
       "status": "PASSED",
-      "sourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+      "sourceSha": "daecc2dc570af34772790d15b6676e53156e1062",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
@@ -61,11 +61,11 @@
       "screenshots": [
         {
           "evidenceId": "HP-P7-EV-C-player-voyage",
-          "sha256": "dfa6251aed6e94a31cc57b0c75d0dfdac23ae0784178183a37145013aee55fd5"
+          "sha256": "054c00661f1da9c548f364d1562a7346432f23a30a71ac418377f442c3ebf5ef"
         },
         {
           "evidenceId": "HP-OWCR3-EV-Q-ACTIVE-CHRONICLE-LOCK",
-          "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
+          "sha256": "7016d1ebff9ec67f0db7eddbf5a6038613973f4e2039b90ddbc8eaa5a0e99e8c"
         }
       ],
       "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
@@ -74,7 +74,7 @@
     {
       "journeyId": "DW-P4-JRN-CAPTAIN",
       "status": "PASSED",
-      "sourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+      "sourceSha": "daecc2dc570af34772790d15b6676e53156e1062",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey D, J, K, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
@@ -96,7 +96,7 @@
     {
       "journeyId": "DW-P4-JRN-CREATOR",
       "status": "PASSED",
-      "sourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+      "sourceSha": "daecc2dc570af34772790d15b6676e53156e1062",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey E, J, K, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
@@ -118,7 +118,7 @@
     {
       "journeyId": "DW-P4-JRN-COMMUNITY",
       "status": "PASSED",
-      "sourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+      "sourceSha": "daecc2dc570af34772790d15b6676e53156e1062",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey F, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey P, Q, T, U",
@@ -131,7 +131,7 @@
         },
         {
           "evidenceId": "HP-OWCR2-EV-AE-FULL-ROUND2-REGRESSION",
-          "sha256": "2977524756e1865d5679243b82c64006d9dabad0e60805a4927b277595ace922"
+          "sha256": "2892eaab33a23113fd9ffb3168c93ad91a9890f89953f744497ed2746f3e08f3"
         }
       ],
       "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
@@ -140,7 +140,7 @@
     {
       "journeyId": "DW-P4-JRN-WHOLE-PRODUCT",
       "status": "PASSED",
-      "sourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+      "sourceSha": "daecc2dc570af34772790d15b6676e53156e1062",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey A through O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through U",
@@ -154,7 +154,7 @@
         },
         {
           "evidenceId": "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
-          "sha256": "7f4b37a863616e65ef7c360f0b982f77e86281a880d1b3f46bc1295baab4805f"
+          "sha256": "60878456cae4872138c52cfc8764aba99c5ca0822cd1bf7d7e9c41c05c82f69c"
         }
       ],
       "states": ["READY", "LOADING", "ERROR", "UNAUTHORIZED", "RECOVERY"],
@@ -163,7 +163,7 @@
     {
       "journeyId": "DW-P4-JRN-VERIFICATION",
       "status": "PASSED",
-      "sourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+      "sourceSha": "daecc2dc570af34772790d15b6676e53156e1062",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey A, I, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey F through I, T, U",
@@ -185,7 +185,7 @@
     {
       "journeyId": "DW-P4-JRN-RESTRICTED-OPERATIONS",
       "status": "PASSED",
-      "sourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+      "sourceSha": "daecc2dc570af34772790d15b6676e53156e1062",
       "testReferences": [
         "tests/e2e/homeport-phase7.spec.ts#Journey J, K, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey D, T, U",
@@ -198,7 +198,7 @@
         },
         {
           "evidenceId": "HP-OWCR2-EV-AE-FULL-ROUND2-REGRESSION",
-          "sha256": "2977524756e1865d5679243b82c64006d9dabad0e60805a4927b277595ace922"
+          "sha256": "2892eaab33a23113fd9ffb3168c93ad91a9890f89953f744497ed2746f3e08f3"
         }
       ],
       "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"],
@@ -207,15 +207,15 @@
     {
       "journeyId": "DW-P4-JRN-BRIDGEWATCH",
       "status": "PASSED",
-      "sourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+      "sourceSha": "daecc2dc570af34772790d15b6676e53156e1062",
       "testReferences": [
         "bridgewatch/test/server.test.ts#private dashboard and restricted API contracts",
-        "in-app browser loopback observation#private read-only dashboard on owned port 4321"
+        "in-app browser loopback observation#private read-only dashboard on owned port 4322"
       ],
       "screenshots": [
         {
           "evidenceId": "BW-P4-EV-LOOPBACK-PRIVATE-DASHBOARD",
-          "sha256": "8a210b7e467487120048d47330e6f0f1fe367867e4892fff3442a858b96e5da9"
+          "sha256": "4294398e2c0cd2e737135d7ba50e0ba579351985ce3923f8a24ce76957d76949"
         }
       ],
       "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
