@@ -110,6 +110,18 @@ function Write-ForeverValidationRunEvent {
     Add-Content -LiteralPath $eventPath -Value $entry -Encoding UTF8
 }
 
+function Enable-ForeverValidationRuntimeCompression {
+    param([Parameter(Mandatory)][string]$RuntimeRoot)
+    # Isolated validation deliberately uses a physical, lockfile-matched
+    # dependency copy.  Mark the newly owned NTFS directory as compressed
+    # before that copy so repeated browser families do not exhaust the local
+    # task volume while preserving runtime-local module and Prisma isolation.
+    & compact.exe /C /I /Q $RuntimeRoot | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+        throw "Unable to enable NTFS compression for owned validation runtime: $RuntimeRoot"
+    }
+}
+
 function Assert-ForeverValidationRuntimeOwnership {
     param([Parameter(Mandatory)][string]$RuntimeRoot)
     $resolvedRoot = [System.IO.Path]::GetFullPath($RuntimeRoot)
@@ -155,6 +167,7 @@ function New-ForeverValidationRuntime {
         if ((Test-ForeverGitWorktree -Path $runtimeRoot) -or (Test-Path -LiteralPath (Join-Path $runtimeRoot ".git"))) {
             throw "New validation runtime unexpectedly resolves as a Git worktree: $runtimeRoot"
         }
+        Enable-ForeverValidationRuntimeCompression -RuntimeRoot $runtimeRoot
         $marker = [ordered]@{
             schemaVersion = 1
             runId = $RunId
@@ -222,6 +235,16 @@ function Sync-ForeverRuntime {
             Join-Path $script:ProjectRoot $directoryName
         }
     )
+    if ($Mode -eq "validation") {
+        # Browser validation executes the product, tests, and public assets;
+        # repository records and imported chat material are not runtime inputs.
+        # Keeping them out of each isolated mirror preserves the mandatory
+        # physical dependency boundary on constrained task volumes.
+        $excludedDirectories += @(
+            (Join-Path $script:ProjectRoot "Development_Docs"),
+            (Join-Path $script:ProjectRoot "Codex_Chats")
+        )
+    }
     & robocopy $script:ProjectRoot $resolvedRuntime /E /XD $excludedDirectories /XF .git *.db *.db-journal *.log .forever-dev.json .forever-lock.sha | Out-Null
     if ($LASTEXITCODE -gt 7) { throw "Unable to synchronize the local runtime mirror (robocopy exit $LASTEXITCODE)." }
     if ($Mode -eq "validation") {
@@ -266,6 +289,11 @@ function Copy-ForeverDependencySeed {
         throw "Sounding Line dependency seed lockfile does not match the isolated runtime."
     }
     if (Test-Path -LiteralPath $runtimeModules) { throw "Validation runtime already has a node_modules path before dependency seeding." }
+    # Robocopy creates child directories with its own allocation attributes, so
+    # mark the exact dependency destination before its physical copy rather
+    # than relying on compression inherited from the runtime root.
+    New-Item -ItemType Directory -Path $runtimeModules -ErrorAction Stop | Out-Null
+    Enable-ForeverValidationRuntimeCompression -RuntimeRoot $runtimeModules
     # Copy the already installed, lockfile-matched dependency tree rather than
     # repeating npm ci. A physical copy retains Next's runtime-local .next
     # behavior and Prisma's generated-client isolation.
