@@ -23,16 +23,15 @@ The fixture contains the required exact editions A, B, and C, individual owned V
 | Check                                                      | Result                                                                                                                                                                                                                                       | Boundary                                                                                                                  |
 | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | Focused passage, service, performance, and component tests | PASS: 16 tests                                                                                                                                                                                                                               | Local non-authoritative test evidence.                                                                                    |
-| Real production-build browser journey A-J                  | PASS during implementation: visible Chronicle entry, public, partial, pair swap, owner history, multiple history, up-to-date, Creator semantic detail, mobile/reduced motion, keyboard, effective 200% zoom, and Axe serious/critical checks | Synthetic local runtime only. The sealed-candidate run regenerates the task-owned visual manifest with the candidate SHA. |
+| Real production-build browser journey A-J                  | PASS: visible Chronicle entry, public, partial, pair swap, owner history, multiple history, up-to-date, Creator semantic detail, mobile/reduced motion, keyboard, effective 200% zoom, and Axe serious/critical checks                | Synthetic local runtime only. The source-bound visual manifest records the candidate SHA.                               |
 | Responsive defect correction                               | PASS: a real mobile qualification run exposed intrinsic grid overflow; the Community containers now shrink to the 390px viewport and the rerun proved document width equality                                                                | Local browser evidence only.                                                                                              |
 
-The development browser manifest is intentionally excluded from version control together with screenshots, Playwright report, synthetic credentials, and SQLite fixture. The sealed-candidate run is the owner-walkthrough evidence source; neither manifest is deployment, provider, protected-mainline, or owner-acceptance proof.
+The development browser manifest is intentionally excluded from version control together with screenshots, Playwright report, synthetic credentials, and SQLite fixture. The source-bound candidate manifest is the owner-walkthrough evidence source; it is not deployment, provider, protected-mainline, or owner-acceptance proof.
 
 ## Remaining qualification and release gates
 
-1. Regenerate the sealed-candidate visual evidence from the exact branch head without invoking Sounding Line authority.
-2. Present the prepared product walkthrough and acquire canonical owner acceptance.
-3. Dispatch exactly one `Sounding Line / Mainline Decision`; only `RELEASE_GO` permits protected-mainline merge and exact-main proof.
+1. Present the prepared product walkthrough and acquire canonical owner acceptance.
+2. Dispatch exactly one `Sounding Line / Mainline Decision`; only `RELEASE_GO` permits protected-mainline merge and exact-main proof.
 
 ## Known separate condition
 

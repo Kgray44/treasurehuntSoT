@@ -8,7 +8,7 @@ last_reviewed: 2026-08-12
 
 # Project Tideglass Phase 3 product walkthrough: Choose the Passage
 
-Status: sealed candidate pending the final task-owned evidence run and canonical owner walkthrough. The generated visual manifest records the exact candidate SHA, fixture checksum, routes, viewports, screenshot hashes, and semantic assertions. This document does not record owner acceptance.
+Status: source-bound candidate evidence is complete; canonical owner walkthrough remains pending. The generated visual manifest records the exact candidate SHA, fixture checksum, routes, viewports, screenshot hashes, and semantic assertions. This document does not record owner acceptance.
 
 ## Safe walkthrough runtime
 
