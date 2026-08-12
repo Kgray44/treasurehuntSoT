@@ -45,20 +45,20 @@ Sounding Line owns the authoritative definitions for:
 
 ## Evidence ledger
 
-| Evidence                             | Environment and fixture                                                                                  | Result               | Truth boundary                          |
-| ------------------------------------ | -------------------------------------------------------------------------------------------------------- | -------------------- | --------------------------------------- |
-| Focused TypeScript                   | Owned worktree; generated SQLite Prisma client                                                           | PASS                 | Compile-time only                       |
-| Focused ESLint and Prettier          | Wakebook source, API, components, pages, tests, styles, control plane                                    | PASS                 | Static only                             |
-| `unit.wakebook`                      | Sounding Line Vitest adapter; repository deterministic fixtures                                          | PASS, 11/11          | Unit/API contract evidence              |
-| `component.wakebook`                 | Sounding Line Vitest adapter; JSDOM                                                                      | PASS, 3/3            | Component contract evidence             |
-| `browser.wakebook`                   | Task-owned SQLite clone, approved immutable baseline witness, isolated Chromium context                  | PASS, 1/1            | Required synthetic browser evidence     |
-| Visual review                        | 15 source-, fixture-, and SHA256-bound browser captures                                                  | ACCEPTED             | Codex review only; not owner acceptance |
-| Large archive                        | 1,005 synthetic owner records across 2025/2026 plus separate invitation                                  | PASS in browser lane | Required bounded pagination/year proof  |
-| Owner and cover privacy negatives    | Separate synthetic owner and foreign account                                                             | PASS in browser lane | Required private-boundary proof         |
-| Historical stability                 | Mutated current Chronicle and crew profile after archive creation                                        | PASS in browser lane | Required snapshot proof                 |
-| Responsive/accessibility             | 1440x1000, 430x932, 390x844; Axe serious/critical policy                                                 | PASS in browser lane | Synthetic browser only                  |
-| Historical Sounding Line mainline | GitHub runs `31527213266` and `31529958855`; latest prior candidate `33e1316426a4d7f014c1472147e42d040ecdd47e` | `EVIDENCE_INVALID` | Required release authority; no waiver |
-| Owner walkthrough decision | Task owner instruction, 2026-08-12 | `OWNER_ACCEPTED_PHASE_1` | Owner gate only; not a release decision |
+| Evidence                          | Environment and fixture                                                                                        | Result                   | Truth boundary                          |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------ | --------------------------------------- |
+| Focused TypeScript                | Owned worktree; generated SQLite Prisma client                                                                 | PASS                     | Compile-time only                       |
+| Focused ESLint and Prettier       | Wakebook source, API, components, pages, tests, styles, control plane                                          | PASS                     | Static only                             |
+| `unit.wakebook`                   | Sounding Line Vitest adapter; repository deterministic fixtures                                                | PASS, 11/11              | Unit/API contract evidence              |
+| `component.wakebook`              | Sounding Line Vitest adapter; JSDOM                                                                            | PASS, 3/3                | Component contract evidence             |
+| `browser.wakebook`                | Task-owned SQLite clone, approved immutable baseline witness, isolated Chromium context                        | PASS, 1/1                | Required synthetic browser evidence     |
+| Visual review                     | 15 source-, fixture-, and SHA256-bound browser captures                                                        | ACCEPTED                 | Codex review only; not owner acceptance |
+| Large archive                     | 1,005 synthetic owner records across 2025/2026 plus separate invitation                                        | PASS in browser lane     | Required bounded pagination/year proof  |
+| Owner and cover privacy negatives | Separate synthetic owner and foreign account                                                                   | PASS in browser lane     | Required private-boundary proof         |
+| Historical stability              | Mutated current Chronicle and crew profile after archive creation                                              | PASS in browser lane     | Required snapshot proof                 |
+| Responsive/accessibility          | 1440x1000, 430x932, 390x844; Axe serious/critical policy                                                       | PASS in browser lane     | Synthetic browser only                  |
+| Historical Sounding Line mainline | GitHub runs `31527213266` and `31529958855`; latest prior candidate `33e1316426a4d7f014c1472147e42d040ecdd47e` | `EVIDENCE_INVALID`       | Required release authority; no waiver   |
+| Owner walkthrough decision        | Task owner instruction, 2026-08-12                                                                             | `OWNER_ACCEPTED_PHASE_1` | Owner gate only; not a release decision |
 
 The first `browser.wakebook` diagnostic attempt did not execute product code because another governed validation process owned the global validation-runtime lock. The runner reported cleanup `CLEAN`; no process was stopped and no lock was removed. That environmental collision is not a product failure and is not counted as passing evidence.
 
@@ -69,6 +69,8 @@ On `22940b9004bc89def300a808f426a0ed4dc77658`, the focused governed `browser.wak
 On `8c6137d6a3c5b00f9abcf66dac24f37945a101d3`, GitHub Sounding Line authoritative run `31527213266` completed with finalizer decision `EVIDENCE_INVALID`. All Wakebook-owned checks remained clean; `browser.wakebook` and `browser.admiralty` passed. The independently owned `browser.helm` journey failed during guest invitation acceptance: the authoritative accept response was `200`, but the browser remained at `/player/invitation` instead of reaching `/player/playthroughs/<id>`. The worker receipt reported cleanup `CLEAN`. This is a valid mainline no-go, not a Wakebook regression, and must not be repaired, waived, or relabeled from this Phase 1 branch.
 
 For the latest candidate `33e1316426a4d7f014c1472147e42d040ecdd47e`, GitHub Sounding Line authoritative run `31529958855` evaluated the GitHub pull-request merge source `f1de8f9f541f9dc0b01ba945c36f8c969fcc1f9d` and again produced finalizer decision `EVIDENCE_INVALID`. The independently owned `browser.helm` invitation journey timed out after 600 seconds while awaiting its post-click `/api/invitations/accept` response; the worker receipt reported cleanup `CLEAN`. This is a valid protected-main no-go and is not evidence that Wakebook must alter, waive, or take ownership of Project Helm behavior.
+
+For frozen candidate `6ec5b9b797d0272bdde16562ec60a4cb0aa3ee8b`, GitHub Sounding Line authoritative run `31568807207` reached a fail-closed `EVIDENCE_INVALID` finalizer decision. The accepted Helm repair was separately proved by focused run `31568179780`: both governed Helm browser journeys passed with runtime conformance `PASSED` and cleanup `CLEAN`. The authority failure was candidate-integrity-only: `unit.feature-catalog` found 45 catalog entries while its stable-order assertion still expected 44, and `static.core` found Prettier formatting drift in this record and the integration manifest. Both failed receipts cleaned up successfully. Correct those exact defects, requalify the changed candidate, and request one replacement decision; do not waive or misattribute either failure to Wakebook runtime behavior.
 
 ## Privacy and source-safety assertions
 
@@ -89,6 +91,6 @@ Phase 1 exposes no disabled Timeline, People, Statistics, map, Tideglass, sharin
 
 ## Remaining gates
 
-1. Run fresh focused governed evidence for `browser.helm` (the accepted main repair) and `browser.wakebook` against the exact frozen candidate; do not treat the historical failure or an optimization as a waiver.
-2. Run exactly one protected Sounding Line Mainline Decision against the exact then-current candidate with its pull-request/base identity envelope.
+1. Correct and re-run the exact catalog and formatting checks reported by run `31568807207`. The sealed current mainline plan does not select Wakebook browser work; carry forward its unchanged runtime evidence and the clean focused Helm repair evidence rather than bypassing the plan.
+2. Requalify the changed candidate, then run exactly one replacement protected Sounding Line Mainline Decision with its pull-request/base identity envelope.
 3. Do not start Phase 2 or merge to protected main without a source-bound `RELEASE_GO` decision receipt.

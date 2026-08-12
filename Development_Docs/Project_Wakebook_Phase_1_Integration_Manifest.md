@@ -10,16 +10,16 @@ last_reviewed: 2026-08-12
 
 ## Current integration state
 
-| Item                    | State                                                                                                                  |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                             |
-| Current reconciled base | `dc430b79aa3ddd27443f47bb493ae6c471a41616`                                                                             |
+| Item                    | State                                                                                                                           |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                                      |
+| Current reconciled base | `dc430b79aa3ddd27443f47bb493ae6c471a41616`                                                                                      |
 | Incoming accepted work  | Protected-main runtime/finalization correction at `236c27241bb8d1630274f5d5412ec9addbdb8893`, including the Helm browser repair |
-| Semantic reconciliation | `afd3c15d8` retains Wakebook and takes all accepted mainline documentation/index updates                               |
-| Implementation commits  | Preserved from the existing remote candidate                                                                           |
-| Sounding Line evidence  | `22940b9004bc89def300a808f426a0ed4dc77658`: focused governed `browser.wakebook` PASS (1/1); 15 capture review accepted |
-| Owner walkthrough       | `OWNER_ACCEPTED_PHASE_1` recorded 2026-08-12                                                                           |
-| Main merge              | Blocked until focused requalification and a source-bound protected Mainline Decision `RELEASE_GO`                      |
+| Semantic reconciliation | `afd3c15d8` retains Wakebook and takes all accepted mainline documentation/index updates                                        |
+| Implementation commits  | Preserved from the existing remote candidate                                                                                    |
+| Sounding Line evidence  | `22940b9004bc89def300a808f426a0ed4dc77658`: focused governed `browser.wakebook` PASS (1/1); 15 capture review accepted          |
+| Owner walkthrough       | `OWNER_ACCEPTED_PHASE_1` recorded 2026-08-12                                                                                    |
+| Main merge              | Blocked until focused requalification and a source-bound protected Mainline Decision `RELEASE_GO`                               |
 
 ## Owned implementation paths
 
