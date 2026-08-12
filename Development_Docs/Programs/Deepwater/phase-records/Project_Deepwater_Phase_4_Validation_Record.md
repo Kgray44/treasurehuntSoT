@@ -43,16 +43,16 @@ This remains local synthetic qualification only: it neither records owner or
 product acceptance nor substitutes for a canonical hosted Mainline Decision.
 Phase 4 has not been accepted into protected main or proven on exact main.
 
-| Gate                                | Result                                                                                           | Boundary                                                              |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
-| Deepwater proof-model tests         | PASS; 66/66                                                                                      | Deterministic local control-plane tests                               |
-| Hosted Mainline Decision            | `EVIDENCE_INVALID`; run 31605432896; `browser.helm` failed; cleanup CLEAN                        | Failed closed; candidate invalidated and acceptance lane released     |
-| Helm repair qualification           | PASS; component regression 9/9 and exact `browser.helm` 3/3                                     | Isolated, local evidence only; repair awaits full Phase 4 refresh     |
-| Deepwater audit and validation      | PASS; 57 capabilities; digest `94e28de6a9a30b639c6db9519178f370a2829b1e587aaaaafb31b3fd8608a172` | Repaired product source only; no acceptance claim                     |
-| Production-build Homeport journeys  | RETAINED; original A-O, Round 1 A-U, Round 2 A-W, Round 3 A-V with inherited regressions         | Explicit semantic carry-forward from the historical source            |
-| Bridgewatch qualification           | PASS; production build, typecheck, 24 tests, private-loopback desktop and 390px review           | Private operator surface; no public-product or release authority      |
-| Focused Sounding Line qualification | PASS; frozen candidate local-change plan with finalization disabled                               | Qualification evidence only; cannot issue `RELEASE_GO`                |
-| Documentation and catalog           | PASS; documentation validation and catalog refresh required before authority                      | No owning Feature Catalog fragment change is expected                 |
+| Gate                                | Result                                                                                           | Boundary                                                          |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| Deepwater proof-model tests         | PASS; 66/66                                                                                      | Deterministic local control-plane tests                           |
+| Hosted Mainline Decision            | `EVIDENCE_INVALID`; run 31605432896; `browser.helm` failed; cleanup CLEAN                        | Failed closed; candidate invalidated and acceptance lane released |
+| Helm repair qualification           | PASS; component regression 9/9 and exact `browser.helm` 3/3                                      | Isolated, local evidence only; repair awaits full Phase 4 refresh |
+| Deepwater audit and validation      | PASS; 57 capabilities; digest `94e28de6a9a30b639c6db9519178f370a2829b1e587aaaaafb31b3fd8608a172` | Repaired product source only; no acceptance claim                 |
+| Production-build Homeport journeys  | RETAINED; original A-O, Round 1 A-U, Round 2 A-W, Round 3 A-V with inherited regressions         | Explicit semantic carry-forward from the historical source        |
+| Bridgewatch qualification           | PASS; production build, typecheck, 24 tests, private-loopback desktop and 390px review           | Private operator surface; no public-product or release authority  |
+| Focused Sounding Line qualification | PASS; frozen candidate local-change plan with finalization disabled                              | Qualification evidence only; cannot issue `RELEASE_GO`            |
+| Documentation and catalog           | PASS; documentation validation and catalog refresh required before authority                     | No owning Feature Catalog fragment change is expected             |
 
 ## Runtime proof boundary
 
