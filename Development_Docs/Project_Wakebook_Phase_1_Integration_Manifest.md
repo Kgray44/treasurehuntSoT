@@ -19,7 +19,7 @@ last_reviewed: 2026-08-12
 | Implementation commits  | Preserved from the existing remote candidate                                                                              |
 | Sounding Line evidence  | `22940b9004bc89def300a808f426a0ed4dc77658`: focused governed `browser.wakebook` PASS (1/1); 15 capture review accepted    |
 | Owner walkthrough       | `OWNER_ACCEPTED_PHASE_1` recorded 2026-08-12                                                                              |
-| Main merge              | Blocked until requalification and a source-bound protected Mainline Decision `RELEASE_GO`                                 |
+| Main merge              | Blocked by the external Helm invitation repair and a later source-bound Mainline Decision `RELEASE_GO`                    |
 
 ## Owned implementation paths
 

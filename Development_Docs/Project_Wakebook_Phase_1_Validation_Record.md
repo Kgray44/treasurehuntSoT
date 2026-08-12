@@ -10,21 +10,21 @@ last_reviewed: 2026-08-12
 
 ## Decision
 
-**Current classification: OWNER_ACCEPTED - REQUALIFICATION IN PROGRESS.** The Wakebook unit/component families and the exact isolated browser journey are passing, including checksum-bound visual evidence. The task owner explicitly accepted Phase 1 on 2026-08-12. The independently owned Studio repair is now accepted on `origin/main`; this branch is reconciled to that accepted source and is being requalified for one final source-bound decision. This record does not establish deployment, protected-main integration, or a release decision.
+**Current classification: OWNER_ACCEPTED - EXTERNAL MAINLINE NO-GO.** The Wakebook unit/component families and the exact isolated browser journey are passing, including checksum-bound visual evidence. The task owner explicitly accepted Phase 1 on 2026-08-12. The Studio repair is accepted on `origin/main`, but the subsequent exact-candidate mainline authority again failed only in the independently owned Helm browser journey. This record does not establish deployment, protected-main integration, or a release decision.
 
 ## Source identity
 
-| Field                                 | Value                                                                                         |
-| ------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Branch                                | `codex/project-wakebook-phase1-open-the-wake`                                                 |
-| Owned worktree                        | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\project-wakebook-phase1-open-the-wake` |
-| Reconciled accepted-main base         | `54e3d818d49d45282a9c419d562d4b5c78911ccd`                                                    |
-| Current requalification candidate SHA | `7a7f43837b7e948081f6b6b3f44bc8f2c80cfaae`                                                    |
-| Latest authority merge source SHA     | `f1de8f9f541f9dc0b01ba945c36f8c969fcc1f9d` (historical failed attempt)                        |
-| Archive implementation anchor         | `629f5c7a981b80494f7703b6410b573a661e0f39`                                                    |
-| Browser-evidence source SHA           | `22940b9004bc89def300a808f426a0ed4dc77658`                                                    |
-| Database schema change                | None                                                                                          |
-| Canonical mutable database used       | No                                                                                            |
+| Field                           | Value                                                                                         |
+| ------------------------------- | --------------------------------------------------------------------------------------------- |
+| Branch                          | `codex/project-wakebook-phase1-open-the-wake`                                                 |
+| Owned worktree                  | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\project-wakebook-phase1-open-the-wake` |
+| Reconciled accepted-main base   | `54e3d818d49d45282a9c419d562d4b5c78911ccd`                                                    |
+| Latest authority candidate SHA  | `bbadc6adfe88b53a6677ef08ecfb4137f617f976`                                                    |
+| Latest authority run            | `31572273321` (`EVIDENCE_INVALID`)                                                            |
+| Archive implementation anchor   | `629f5c7a981b80494f7703b6410b573a661e0f39`                                                    |
+| Browser-evidence source SHA     | `22940b9004bc89def300a808f426a0ed4dc77658`                                                    |
+| Database schema change          | None                                                                                          |
+| Canonical mutable database used | No                                                                                            |
 
 ## Contract inventory
 
@@ -76,6 +76,8 @@ For repaired frozen candidate `7b01dab07dd9a4cd45c5119e6f1e7b8afdfbeebc`, GitHub
 
 The Studio owner repaired that independent defect in PR #48. GitHub Sounding Line authoritative run `31570478927` completed `SUCCESS` on its exact source `ac622f4306299dcb48d11d1f0b246cf7d7ce78c9`, including `component.studio` and final `browser.helm` receipts. The protected merge binding then refreshed successfully and PR #48 merged to accepted main as `54e3d818d49d45282a9c419d562d4b5c78911ccd`. Wakebook reconciled that source without changing Studio behavior. This clears the external dependency; it does not waive the need to requalify and obtain a new exact-candidate Wakebook decision.
 
+For requalified candidate `bbadc6adfe88b53a6677ef08ecfb4137f617f976`, GitHub Sounding Line authoritative run `31572273321` again reached a fail-closed `EVIDENCE_INVALID` finalizer decision. Every completed receipt other than `browser.helm` passed, including `component.studio`, `browser.admiralty`, and `build.production`. `browser.helm` alone returned `FAILED`, exit code `124`, and cleanup `CLEAN` after 910370ms in the visible Captain/Player invitation journey; its failure trace enters `acceptGuestInvitation` at `tests/e2e/project-helm-phase1.spec.ts:204`. Runtime conformance was `PASSED`. This is an independently owned Helm mainline regression; Wakebook must neither waive it nor change Helm behavior. The next valid action is a Helm-owned repair with focused evidence, followed by a later exact-candidate authority only after accepted main changes.
+
 ## Privacy and source-safety assertions
 
 - List projection contains no Reflection text, Memory body, full Chronicle snapshot, raw event payload, storage key, request-derived authorization, or foreign-owner detail.
@@ -95,5 +97,6 @@ Phase 1 exposes no disabled Timeline, People, Statistics, map, Tideglass, sharin
 
 ## Remaining gates
 
-1. Requalify the exact reconciled candidate, then run one protected Sounding Line Mainline Decision with its pull-request/base identity envelope.
-2. Do not start Phase 2 or merge to protected main without a source-bound `RELEASE_GO` decision receipt.
+1. Wait for the Helm owner to repair and prove the focused `browser.helm` invitation dependency that failed in run `31572273321`; do not waive, retime, or take ownership of it from Wakebook.
+2. After that dependency is accepted, fetch and reconcile current main, requalify the exact candidate, then run one protected Sounding Line Mainline Decision with its pull-request/base identity envelope.
+3. Do not start Phase 2 or merge to protected main without a source-bound `RELEASE_GO` decision receipt.
