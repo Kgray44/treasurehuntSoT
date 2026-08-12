@@ -1,5 +1,5 @@
 {
-  "acceptanceLane": "SERIALIZED_ACCEPTANCE_OWNERSHIP_PENDING",
+  "acceptanceLane": "PENDING_SERIALIZED_MAINLINE_OWNERSHIP",
   "activation": "EXPLICIT_PHASE_4_WHOLE_PRODUCT_PROOF_AUTHORIZATION",
   "auditedSourceSha": "a61ff85676bf3a58eebe2be2df7fc3d789211654",
   "baseSourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
@@ -10,7 +10,7 @@
     "Bridgewatch is a private, read-only observation surface and has no release authority.",
     "No Phase 5 work is authorized by this record."
   ],
-  "mainlineState": "REQUALIFIED_UNFROZEN",
+  "mainlineState": "FROZEN_CANDIDATE",
   "ownerDecision": "NOT_REQUESTED",
   "ownerWalkthrough": "PACKET_READY",
   "phase": "Phase 4 - Break the Surface",

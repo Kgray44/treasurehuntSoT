@@ -39,9 +39,10 @@ advanced current main to `fb0f13e35fcdd98434d22c357aee02f24d6d9036`. The r6
 local qualification is historical rather than candidate proof. Rebased source
 `a61ff85676bf3a58eebe2be2df7fc3d789211654` is explicitly
 `LOCAL_PROVEN` after renewed qualification: Player, Captain, governed Helm
-browser, and affected cross-project proof all passed. One fresh candidate is
-still required after the final current-main fetch; no authority has been
-requested for the rebased source.
+browser, and affected cross-project proof all passed. The final current-main
+fetch confirmed `fb0f13e35fcdd98434d22c357aee02f24d6d9036` as the exact merge
+base, and one fresh candidate is frozen; no authority has been requested for
+the rebased source.
 
 The focused Player, Captain, and stream suite passes 26/26. The exact isolated
 Helm browser family passes 3/3 in execute-only mode with clean runtime
@@ -88,9 +89,9 @@ protected-main acceptance.
 
 ## Remaining serialized gates
 
-1. Fetch current `origin/main` once, then freeze exactly one new candidate and
-   acquire the serialized acceptance lane.
-2. Only after a new `RELEASE_GO`, complete protected merge, exact-main proof, and a
+1. Acquire serialized acceptance ownership, then dispatch exactly one hosted
+   **Sounding Line / Mainline Decision** for this frozen candidate.
+2. Only after `RELEASE_GO`, complete protected merge, exact-main proof, and a
    separately source-bound closure record.
 
 Phase 5 remains unauthorized throughout these gates.
