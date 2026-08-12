@@ -804,7 +804,6 @@ model DrydockScenario {
   updatedAt       DateTime                     @updatedAt
   draft           TaleDraft                    @relation(fields: [draftId], references: [id], onDelete: Cascade)
   revisions       DrydockScenarioRevision[]
-  suiteMembers    DrydockScenarioSuiteMember[]
 
   @@unique([draftId, scenarioId])
   @@index([draftId, archivedAt, updatedAt])
@@ -851,8 +850,6 @@ model DrydockScenarioSuiteMember {
   createdAt          DateTime                @default(now())
   suiteRecord        DrydockScenarioSuite    @relation(fields: [suiteRecordId], references: [id], onDelete: Cascade)
   scenarioRevision   DrydockScenarioRevision @relation(fields: [scenarioRevisionId], references: [id], onDelete: Restrict)
-  drydockScenario    DrydockScenario?        @relation(fields: [drydockScenarioId], references: [id])
-  drydockScenarioId  String?
 
   @@unique([suiteRecordId, scenarioRevisionId])
   @@unique([suiteRecordId, orderIndex])

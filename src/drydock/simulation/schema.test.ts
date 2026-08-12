@@ -31,6 +31,14 @@ describe("Drydock Scenario schema", () => {
     expect(parseDrydockScenario(scenario())).toMatchObject({ id: "scenario-linear", schemaVersion: 1 });
   });
 
+  it("accepts the Scenario Lab's one-day virtual-time default without relaxing other bounds", () => {
+    expect(
+      parseDrydockScenario({ ...scenario(), limits: { ...scenario().limits, maxVirtualMilliseconds: 86_400_000 } }),
+    ).toMatchObject({
+      limits: { maxVirtualMilliseconds: 86_400_000 },
+    });
+  });
+
   it("rejects executable or raw-answer-shaped Scenario content", () => {
     expect(() => parseDrydockScenario({ ...scenario(), script: "process.exit(1)" })).toThrow();
     expect(() =>

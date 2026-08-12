@@ -47,6 +47,7 @@ Voyage authority.
 - [Runtime Fidelity Record](Project_Drydock_Phase_3_Runtime_Fidelity_Record.md)
 - [Regression Scenario Ledger](Project_Drydock_Phase_3_Regression_Scenario_Ledger.json)
 - [Test Plan](Project_Drydock_Phase_3_Test_Plan.md)
+- [Browser Qualification Record](Project_Drydock_Phase_3_Browser_Qualification_Record.md)
 - [Performance Record](Project_Drydock_Phase_3_Performance_Record.md)
 - `Project_Drydock_Phase_3_Requirement_Ledger.json` — active implementation inventory; not a completion claim.
 

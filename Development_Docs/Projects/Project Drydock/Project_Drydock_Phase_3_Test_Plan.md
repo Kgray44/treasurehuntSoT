@@ -25,6 +25,12 @@ npm run typecheck
 
 The migration rehearsal uses a disposable task-owned SQLite file and checks additive migration ordering, schema creation, foreign-key integrity, and static MySQL fragment parity. It does not claim a live MySQL migration. The Sounding Line policy command validates registration only; it is not a Mainline Decision and cannot certify this phase.
 
+## Focused browser qualification
+
+The focused task-owned browser qualification is recorded in [the browser qualification record](Project_Drydock_Phase_3_Browser_Qualification_Record.md). It exercised an authenticated Creator's normal Scenario save/run, deterministic replay, semantic receipt comparison, coverage/suggestion projection, Scenario Suite save, and Scenario Suite run against an isolated production build and task-owned SQLite database. The initial run exposed two schema/persistence defects; both were repaired and covered by a schema regression test and an expanded migration-rehearsal shape check before the successful rerun.
+
+This is local, synthetic, task-owned evidence only. It is not a staging, deployment, live-provider, physical-device, owner-acceptance, or protected-mainline claim.
+
 ## Candidate qualification pending
 
-Before a candidate can request the serialized Mainline Decision, run the complete affected Drydock/Chronicle/Studio suite, lint, build, docs and feature catalog validation, browser checks in an isolated runtime, performance measurements, migration proof, current-main reconciliation, and the Phase 3 requirement ledger. Sounding Line remains prohibited until those qualification records are complete and a frozen candidate owns canonical acceptance.
+Before a candidate can request the serialized Mainline Decision, run the complete affected Drydock/Chronicle/Studio suite, lint, build, docs and feature catalog validation, performance measurements, migration proof, current-main reconciliation, and the Phase 3 requirement ledger. Sounding Line remains prohibited until those qualification records are complete and a frozen candidate owns canonical acceptance.

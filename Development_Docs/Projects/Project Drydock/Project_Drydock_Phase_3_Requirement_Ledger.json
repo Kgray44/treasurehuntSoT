@@ -656,13 +656,13 @@
       "testIds": ["src/components/studio/DrydockScenarioLab.test.tsx"],
       "soundingLineSuite": "unit.drydock",
       "scenarioFixture": "normal-control-builder",
-      "browserEvidence": "ISOLATED_CDP_SESSION_TIMEOUT",
+      "browserEvidence": "LOCAL_TASK_OWNED_BROWSER_QUALIFIED",
       "securityEvidence": "CSRF-bearing private requests",
       "privacyEvidence": "safe controls and receipts",
       "performanceEvidence": "bounded action states",
-      "currentStatus": "IMPLEMENTED_BROWSER_QUALIFICATION_BLOCKED",
+      "currentStatus": "IMPLEMENTED_LOCAL_BROWSER_QUALIFIED",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "Isolated in-app browser CDP timed out despite local HTTP route health."
+      "limitation": "Focused local browser qualification only; not staging, owner acceptance, or protected-mainline proof."
     },
     {
       "id": "DD-P3-041",
@@ -675,13 +675,13 @@
       "testIds": ["src/components/studio/DrydockScenarioLab.test.tsx"],
       "soundingLineSuite": "unit.drydock",
       "scenarioFixture": "linear-deterministic-replay",
-      "browserEvidence": "ISOLATED_CDP_SESSION_TIMEOUT",
+      "browserEvidence": "LOCAL_TASK_OWNED_BROWSER_QUALIFIED",
       "securityEvidence": "owned trace API",
       "privacyEvidence": "redacted trace",
       "performanceEvidence": "bounded trace limit",
-      "currentStatus": "IMPLEMENTED_BROWSER_QUALIFICATION_BLOCKED",
+      "currentStatus": "IMPLEMENTED_LOCAL_BROWSER_QUALIFIED",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "No interactive browser capture."
+      "limitation": "Focused local browser trace inspection only; no staging or owner-acceptance claim."
     },
     {
       "id": "DD-P3-042",
@@ -691,13 +691,13 @@
       "testIds": ["src/drydock/simulation/compare.test.ts"],
       "soundingLineSuite": "unit.drydock",
       "scenarioFixture": "linear-deterministic-replay",
-      "browserEvidence": "ISOLATED_CDP_SESSION_TIMEOUT",
+      "browserEvidence": "NOT_EXERCISED_IN_LOCAL_BROWSER_QUALIFICATION",
       "securityEvidence": "owned diff API",
       "privacyEvidence": "digest-only state diff",
       "performanceEvidence": "two-entry diff",
-      "currentStatus": "IMPLEMENTED_BROWSER_QUALIFICATION_BLOCKED",
+      "currentStatus": "IMPLEMENTED_PENDING_FULL_QUALIFICATION",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "No interactive browser capture."
+      "limitation": "Covered by unit/component scope; the State Diff selection flow was not exercised in the focused local browser run."
     },
     {
       "id": "DD-P3-043",
@@ -707,13 +707,13 @@
       "testIds": ["src/components/studio/DrydockScenarioLab.test.tsx", "src/drydock/simulation/coverage.test.ts"],
       "soundingLineSuite": "unit.drydock",
       "scenarioFixture": "coverage-no-upgrade",
-      "browserEvidence": "ISOLATED_CDP_SESSION_TIMEOUT",
+      "browserEvidence": "LOCAL_TASK_OWNED_BROWSER_QUALIFIED",
       "securityEvidence": "owned suggestions API",
       "privacyEvidence": "safe aggregate",
       "performanceEvidence": "set aggregation",
-      "currentStatus": "IMPLEMENTED_BROWSER_QUALIFICATION_BLOCKED",
+      "currentStatus": "IMPLEMENTED_LOCAL_BROWSER_QUALIFIED",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "No interactive browser capture."
+      "limitation": "Focused local browser coverage/suggestion projection only; no deployment or owner-acceptance proof."
     },
     {
       "id": "DD-P3-044",
@@ -723,13 +723,13 @@
       "testIds": ["src/components/studio/DrydockScenarioLab.test.tsx", "src/drydock/simulation/schema.test.ts"],
       "soundingLineSuite": "unit.drydock",
       "scenarioFixture": "normal-control-builder",
-      "browserEvidence": "ISOLATED_CDP_SESSION_TIMEOUT",
+      "browserEvidence": "LOCAL_BROWSER_CONTROL_SURFACE_OBSERVED",
       "securityEvidence": "strict assertion schema",
       "privacyEvidence": "protected-field assertions",
       "performanceEvidence": "bounded assertion count",
-      "currentStatus": "IMPLEMENTED_BROWSER_QUALIFICATION_BLOCKED",
+      "currentStatus": "IMPLEMENTED_PENDING_FULL_QUALIFICATION",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "No interactive browser capture."
+      "limitation": "Normal controls were located locally; assertion commit remains covered by component/schema qualification, not this browser flow."
     },
     {
       "id": "DD-P3-045",
@@ -743,13 +743,13 @@
       "testIds": ["src/drydock/simulation/compare.test.ts", "src/drydock/simulation-store.test.ts"],
       "soundingLineSuite": "unit.drydock",
       "scenarioFixture": "linear-deterministic-replay",
-      "browserEvidence": "ISOLATED_CDP_SESSION_TIMEOUT",
+      "browserEvidence": "LOCAL_TASK_OWNED_BROWSER_QUALIFIED",
       "securityEvidence": "owned run access",
       "privacyEvidence": "safe comparison fields",
       "performanceEvidence": "bounded receipt comparison",
-      "currentStatus": "IMPLEMENTED_BROWSER_QUALIFICATION_BLOCKED",
+      "currentStatus": "IMPLEMENTED_LOCAL_BROWSER_QUALIFIED",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "No interactive browser capture."
+      "limitation": "Focused local browser replay/semantic comparison only; no staging or owner-acceptance proof."
     },
     {
       "id": "DD-P3-046",
@@ -781,13 +781,13 @@
       ],
       "soundingLineSuite": "unit.drydock",
       "scenarioFixture": "durable-run",
-      "browserEvidence": "ISOLATED_CDP_SESSION_TIMEOUT",
+      "browserEvidence": "LOCAL_TASK_OWNED_BROWSER_QUALIFIED",
       "securityEvidence": "owned+CSRF checks",
       "privacyEvidence": "private no-store",
       "performanceEvidence": "windowed bounded routes",
-      "currentStatus": "IMPLEMENTED_BROWSER_QUALIFICATION_BLOCKED",
+      "currentStatus": "IMPLEMENTED_LOCAL_BROWSER_QUALIFIED",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "No interactive browser capture."
+      "limitation": "Focused local browser exercised scenario, run, replay, comparison, coverage, and Suite routes; no deployment or owner-acceptance proof."
     },
     {
       "id": "DD-P3-048",
@@ -905,13 +905,13 @@
       "testIds": ["src/components/studio/DrydockScenarioLab.test.tsx"],
       "soundingLineSuite": "unit.drydock",
       "scenarioFixture": "environment-modes",
-      "browserEvidence": "ISOLATED_CDP_SESSION_TIMEOUT",
+      "browserEvidence": "LOCAL_SEMANTIC_LOCATORS_OBSERVED",
       "securityEvidence": "NOT_APPLICABLE",
       "privacyEvidence": "NOT_APPLICABLE",
       "performanceEvidence": "NOT_APPLICABLE",
-      "currentStatus": "IMPLEMENTED_BROWSER_QUALIFICATION_BLOCKED",
+      "currentStatus": "IMPLEMENTED_PENDING_FULL_QUALIFICATION",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "Component semantics pass; no browser accessibility capture."
+      "limitation": "Labelled controls and semantic regions were located locally; this is not assistive-technology or device accessibility proof."
     },
     {
       "id": "DD-P3-055",
@@ -940,13 +940,13 @@
       "testIds": ["src/components/studio/DrydockScenarioLab.test.tsx", "local HTTP redirect check"],
       "soundingLineSuite": "unit.drydock",
       "scenarioFixture": "normal-control-builder",
-      "browserEvidence": "ISOLATED_CDP_SESSION_TIMEOUT",
-      "securityEvidence": "auth-gated redirect observed over HTTP",
-      "privacyEvidence": "no account seeded",
+      "browserEvidence": "LOCAL_TASK_OWNED_BROWSER_QUALIFIED",
+      "securityEvidence": "authenticated task-owned Creator with CSRF-bearing requests",
+      "privacyEvidence": "synthetic task-owned account, Chronicle, and SQLite database",
       "performanceEvidence": "NOT_APPLICABLE",
-      "currentStatus": "BROWSER_QUALIFICATION_BLOCKED",
+      "currentStatus": "IMPLEMENTED_LOCAL_BROWSER_QUALIFIED",
       "commit": "CANDIDATE_SHA_PENDING",
-      "limitation": "Local Webpack route returned 307 to /studio/library, while in-app CDP navigation and DOM evaluation timed out."
+      "limitation": "Local browser qualification only; not staging, live provider, physical device, owner acceptance, protected-mainline, or exact-main proof."
     },
     {
       "id": "DD-P3-057",
