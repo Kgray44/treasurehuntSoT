@@ -1921,3 +1921,110 @@ html[data-motion-level="reduced"] .chronicle-journal-shell * {
   transition-duration: 1ms !important;
   scroll-behavior: auto !important;
 }
+
+.tideglass-passage {
+  display: grid;
+  gap: 1.15rem;
+  max-width: 980px;
+  margin: 1rem auto 0;
+  padding: clamp(1rem, 2vw, 1.75rem);
+  border: 1px solid rgba(194, 145, 71, 0.36);
+  border-radius: 18px;
+  background: radial-gradient(circle at top right, rgba(74, 139, 146, 0.16), transparent 38%), rgba(9, 21, 27, 0.88);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24);
+}
+.tideglass-passage__header {
+  max-width: 70ch;
+}
+.tideglass-passage__header h1,
+.tideglass-passage__header h2 {
+  margin: 0.15rem 0 0.45rem;
+}
+.tideglass-passage__selectors {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: end;
+  gap: 0.9rem;
+}
+.tideglass-passage__selector-actions {
+  display: grid;
+  gap: 0.45rem;
+}
+.tideglass-passage__selectors label,
+.tideglass-passage__history,
+.tideglass-passage__filter {
+  display: grid;
+  gap: 0.35rem;
+  color: #e7d5ac;
+  font-weight: 700;
+}
+.tideglass-passage select {
+  min-width: 0;
+  min-height: 2.75rem;
+  border: 1px solid rgba(194, 145, 71, 0.5);
+  border-radius: 8px;
+  padding: 0.5rem 0.6rem;
+  color: #f8eed7;
+  background: rgba(1, 12, 17, 0.82);
+}
+.tideglass-passage__history,
+.tideglass-passage__filter {
+  max-width: 32rem;
+}
+.tideglass-passage__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+.tideglass-passage__error,
+.tideglass-passage__limitation {
+  margin: 0;
+  border-left: 3px solid #d4a65a;
+  padding: 0.65rem 0.8rem;
+  color: #ffe0a2;
+  background: rgba(120, 76, 24, 0.2);
+}
+.tideglass-passage__result {
+  display: grid;
+  gap: 0.9rem;
+  border-top: 1px solid rgba(194, 145, 71, 0.26);
+  padding-top: 1.25rem;
+}
+.tideglass-passage__result h2,
+.tideglass-passage__result h3,
+.tideglass-passage__result h4,
+.tideglass-passage__result p {
+  margin: 0;
+}
+.tideglass-passage__groups,
+.tideglass-passage__annotations {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0.75rem;
+}
+.tideglass-passage__groups article,
+.tideglass-passage__annotations article,
+.tideglass-passage__compatibility {
+  border: 1px solid rgba(164, 207, 206, 0.23);
+  border-radius: 10px;
+  padding: 0.8rem;
+  background: rgba(17, 48, 56, 0.36);
+}
+.tideglass-passage__compatibility ul {
+  margin: 0.45rem 0 0;
+  padding-left: 1.2rem;
+}
+
+@media (max-width: 760px) {
+  .tideglass-passage__selectors {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+  .tideglass-passage__selector-actions > .community-button {
+    width: 100%;
+  }
+  .tideglass-passage__actions > * {
+    flex: 1 1 12rem;
+    text-align: center;
+  }
+}

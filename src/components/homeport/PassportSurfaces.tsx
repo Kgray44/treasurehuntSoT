@@ -167,6 +167,12 @@ export function HistoryExplorer() {
                   <Link className="button" href={`/passport/history/${encodeURIComponent(item.id)}`}>
                     Open record
                   </Link>
+                  <Link
+                    className="button button--quiet"
+                    href={`/passport/history/${encodeURIComponent(item.id)}/compare`}
+                  >
+                    See what changed
+                  </Link>
                   {item.review ? (
                     <Link className="button button--quiet" href={item.review.href}>
                       Review Chronicle
@@ -286,6 +292,9 @@ export function HistoryDetail({ recordId }: { recordId: string }) {
             Write or update public review
           </Link>
         ) : null}
+        <Link className="button button--quiet" href={`/passport/history/${encodeURIComponent(recordId)}/compare`}>
+          See what changed
+        </Link>
       </section>
       <section className="harbor-panel">
         <h2>Version-pinned record</h2>

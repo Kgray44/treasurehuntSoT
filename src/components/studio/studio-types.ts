@@ -110,14 +110,6 @@ export type Version = {
   activeSessions: number;
 };
 
-export type VersionComparison = {
-  left: { label: string };
-  right: { label: string };
-  summary: Record<string, number>;
-  changes: Array<{ type: string; path: string; before?: string; after?: string }>;
-  compatibilityWarnings: string[];
-};
-
 export type EditorData = {
   csrfToken: string;
   tale: Tale;

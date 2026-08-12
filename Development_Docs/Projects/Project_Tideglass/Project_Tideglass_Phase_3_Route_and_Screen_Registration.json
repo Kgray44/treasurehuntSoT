@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "Project Tideglass",
+  "phase": "PHASE_3_CHOOSE_THE_PASSAGE",
+  "status": "CANDIDATE_FROZEN_PENDING_OWNER_WALKTHROUGH",
+  "originalBaseSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+  "baseSha": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
+  "truthBoundary": "Source registration only. Browser, owner, protected-mainline, deployment, and provider proof are separate gates.",
+  "routes": [
+    {
+      "routeId": "tideglass-chronicle-compare",
+      "pattern": "/chronicles/[taleSlug]/compare",
+      "source": "src/app/chronicles/[taleSlug]/compare/page.tsx",
+      "screen": "Tideglass What Changed",
+      "owner": "tideglass",
+      "shellMode": "PUBLIC_STANDARD",
+      "logicalParent": "/chronicles/[taleSlug]",
+      "visibleEntries": [
+        {
+          "source": "src/app/chronicles/[taleSlug]/page.tsx",
+          "label": "See what changed"
+        },
+        {
+          "source": "src/components/homeport/PassportSurfaces.tsx",
+          "label": "See what changed",
+          "ownerBoundRedirect": "/passport/history/[recordId]/compare"
+        }
+      ],
+      "returnBehavior": "Allowlisted same-origin Chronicle, Passport, Tales, or Studio return path; invalid values fall back to the Chronicle detail.",
+      "states": [
+        "LOADING",
+        "UNAVAILABLE_WITH_RETRY",
+        "SELECTION_REQUIRED",
+        "PAIR",
+        "UP_TO_DATE",
+        "NO_MEANINGFUL_CHANGE",
+        "PARTIAL",
+        "CONCISE",
+        "DETAILED",
+        "DISCLOSURE_COLLAPSED",
+        "DISCLOSURE_REVEALED",
+        "CATEGORY_FILTERED"
+      ],
+      "accessContract": "GET and POST derive edition visibility, history ownership, exact pair authorization, and audience on the server. Query state cannot elevate an audience or authorize a foreign record."
+    },
+    {
+      "routeId": "tideglass-passport-history-compare-redirect",
+      "pattern": "/passport/history/[recordId]/compare",
+      "source": "src/app/passport/history/[recordId]/compare/page.tsx",
+      "screen": "Owner-bound compare handoff",
+      "owner": "wayfarer-with-tideglass-passage",
+      "shellMode": "WORKSPACE_STANDARD",
+      "logicalParent": "/passport/history/[recordId]",
+      "visibleEntries": [
+        {
+          "source": "src/components/homeport/PassportSurfaces.tsx",
+          "label": "See what changed"
+        }
+      ],
+      "returnBehavior": "Redirects only after the signed-in owner record resolves its trusted Chronicle slug; non-owner or missing records return not-found.",
+      "states": ["OWNER_REDIRECT", "NOT_FOUND"],
+      "accessContract": "The redirect does not add the edition or slug to the Passport API DTO and does not trust client-supplied tale identity."
+    },
+    {
+      "routeId": "tideglass-studio-semantic-comparison",
+      "pattern": "/api/studio/tales/[taleId]/versions/compare",
+      "source": "src/app/api/studio/tales/[taleId]/versions/compare/route.ts",
+      "screen": "Creator Studio version comparison panel",
+      "owner": "tideglass",
+      "shellMode": "WORKSPACE_STANDARD",
+      "logicalParent": "/studio/tales/[taleId]/versions",
+      "visibleEntries": [
+        {
+          "source": "src/components/studio/TaleEditor.tsx",
+          "label": "Compare to current"
+        }
+      ],
+      "returnBehavior": "The panel closes locally without changing published edition, draft, session, or annotation truth.",
+      "states": ["SEMANTIC_PROJECTION", "NO_MEANINGFUL_CHANGE", "PARTIAL", "COMPATIBILITY", "ANNOTATIONS", "ERROR"],
+      "accessContract": "Creator workspace and Chronicle ownership are rechecked before an exact Tideglass comparison and CREATOR_FULL projection. No legacy path/value diff is returned."
+    }
+  ]
+}
