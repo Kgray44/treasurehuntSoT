@@ -225,14 +225,19 @@ export function PlayerVoyageRoom({
       void load(nextConnection);
     }, 5_000);
     const source = new EventSource(`/api/play/sessions/${playthroughId}/events`);
-    source.onopen = () => {
+    const reconcileFromServer = () => {
       setConnection("reconciling");
       reconcile("live");
     };
+    source.onopen = reconcileFromServer;
     source.addEventListener("progression", () => {
-      setConnection("reconciling");
-      reconcile("live");
+      reconcileFromServer();
     });
+    // The stream heartbeat is the durable reconciliation path when a browser
+    // backgrounds a waiting room long enough to defer local timers or an
+    // in-process progression notification. A newly active Voyage must still
+    // release its Player route without requiring a manual refresh.
+    source.addEventListener("heartbeat", reconcileFromServer);
     source.addEventListener("access-revoked", () => {
       const currentLoad = activeLoad.current;
       activeLoad.current = null;

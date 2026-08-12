@@ -249,6 +249,32 @@ describe("PlayerVoyageRoom", () => {
     await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1/journal"));
   });
 
+  it("reconciles a backgrounded waiting room from its stream heartbeat after launch", async () => {
+    const handoff = vi.fn();
+    const active = {
+      ...voyage,
+      status: "ACTIVE",
+      state: "IN_PROGRESS",
+      canEnter: true,
+      runtimeHref: "/player/playthroughs/voyage-1/journal",
+    };
+    motion.mode = "full";
+    vi.spyOn(document, "hidden", "get").mockReturnValue(true);
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, body()))
+      .mockResolvedValueOnce(response(200, body(active)));
+    vi.stubGlobal("EventSource", FakeEventSource);
+    vi.stubGlobal("fetch", fetchMock);
+    renderRoom(handoff);
+    await screen.findByRole("heading", { name: "The Moonlit Key" });
+
+    FakeEventSource.current?.emit("heartbeat");
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1/journal"));
+  });
+
   it("does not defer an authoritative launch handoff behind a backgrounded ceremony", async () => {
     const handoff = vi.fn();
     const active = {
