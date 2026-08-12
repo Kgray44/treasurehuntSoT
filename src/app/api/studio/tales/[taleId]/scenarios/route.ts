@@ -21,7 +21,8 @@ export async function GET(request: Request, context: { params: Promise<{ taleId:
   const { taleId } = await context.params;
   if (!(await requireOwnedStudioTale(taleId, request))) return unavailable();
   try {
-    return NextResponse.json({ scenarios: await listDrydockScenarios(taleId) }, { headers: privateHeaders });
+    const sourceChecksum = drydockSimulationSourceChecksum(snapshotFromStudio(await getStudioTale(taleId)));
+    return NextResponse.json({ sourceChecksum, scenarios: await listDrydockScenarios(taleId) }, { headers: privateHeaders });
   } catch (cause) {
     return apiError(cause);
   }

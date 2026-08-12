@@ -39,4 +39,10 @@ describe("Drydock Scenario schema", () => {
   it("fails closed when trace limits cannot retain the declared Scenario", () => {
     expect(() => parseDrydockScenario({ ...scenario(), limits: { ...scenario().limits, maxTraceEntries: 0 } })).toThrow();
   });
+
+  it("fails closed when a Scenario names a fault outside the governed catalog", () => {
+    expect(() =>
+      parseDrydockScenario({ ...scenario(), faults: [{ id: "fault", family: "NETWORK", code: "UNKNOWN", beforeInput: 0 }] }),
+    ).toThrow(/registered Drydock fault catalog/u);
+  });
 });

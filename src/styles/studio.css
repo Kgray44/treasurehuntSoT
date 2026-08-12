@@ -1349,6 +1349,82 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   margin: 0;
   font-size: 2.2rem;
 }
+.drydock-scenario-lab > header p:last-child {
+  max-width: 46rem;
+  color: var(--mist-300);
+}
+.drydock-scenario-layout {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.38fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+.drydock-scenario-layout aside,
+.drydock-scenario-editor,
+.drydock-run-receipt {
+  border: 1px solid rgba(201, 169, 95, 0.25);
+  border-radius: 12px;
+  padding: 1rem;
+  background: rgba(2, 14, 16, 0.55);
+}
+.drydock-scenario-layout aside ul,
+.drydock-run-receipt ul,
+.drydock-run-receipt ol {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.drydock-scenario-layout aside button {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+  text-align: left;
+}
+.drydock-scenario-layout aside button.active,
+.drydock-scenario-layout aside button:focus-visible {
+  outline: 2px solid var(--brass-300);
+  outline-offset: 2px;
+}
+.drydock-checksum,
+.drydock-run-receipt small {
+  color: var(--mist-300);
+  overflow-wrap: anywhere;
+}
+.drydock-json-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.drydock-json-fields textarea {
+  min-height: 180px;
+  width: 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.drydock-scenario-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.drydock-run-receipt {
+  margin-top: 1rem;
+}
+.drydock-run-receipt > header,
+.drydock-run-receipt ol li {
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.drydock-run-receipt li[data-passed="false"] { color: #ffad9e; }
+.drydock-run-receipt li[data-passed="true"] { color: #b6ebc0; }
+.drydock-run-receipt ol li { border-top: 1px solid rgba(201, 169, 95, 0.16); padding: 0.6rem 0; }
+.drydock-run-receipt ol li small { flex: 1; text-align: right; }
+@media (max-width: 780px) {
+  .drydock-scenario-layout, .drydock-json-fields { grid-template-columns: 1fr; }
+}
 .settings-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

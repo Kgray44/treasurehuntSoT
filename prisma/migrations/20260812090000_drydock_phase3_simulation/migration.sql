@@ -56,6 +56,7 @@ CREATE TABLE "DrydockSimulationRun" (
     "status" TEXT NOT NULL,
     "resultDigest" TEXT,
     "coverageDigest" TEXT,
+    "sourceSnapshot" TEXT NOT NULL,
     "result" TEXT NOT NULL DEFAULT '{}',
     "trace" TEXT NOT NULL DEFAULT '[]',
     "checkpoint" TEXT NOT NULL DEFAULT '{}',

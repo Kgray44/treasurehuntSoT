@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { PublishedBlock, PublishedTaleSnapshot } from "@/chronicle/types";
+import type { DrydockScenario } from "@/drydock/simulation/model";
 import { drydockSimulationSourceChecksum } from "@/drydock/simulation/source";
 import { runDrydockScenario } from "@/drydock/simulation/engine";
 
@@ -74,7 +75,7 @@ const fixture = (): PublishedTaleSnapshot => {
   };
 };
 
-const scenarioFor = (snapshot: PublishedTaleSnapshot) => ({
+const scenarioFor = (snapshot: PublishedTaleSnapshot): DrydockScenario => ({
   schemaVersion: 1,
   id: "synthetic-full-family",
   revision: 1,
@@ -118,8 +119,7 @@ describe("Drydock deterministic simulation", () => {
 
   it("returns an explicit incomplete proof when its declared step bound is exhausted", () => {
     const snapshot = fixture();
-    const scenario = scenarioFor(snapshot);
-    scenario.limits.maxSteps = 2;
+    const scenario = { ...scenarioFor(snapshot), limits: { ...scenarioFor(snapshot).limits, maxSteps: 2 } };
 
     expect(runDrydockScenario(snapshot, scenario).status).toBe("INCOMPLETE_PROOF");
   });
@@ -132,5 +132,53 @@ describe("Drydock deterministic simulation", () => {
 
     expect(result.status).toBe("CANCELLED");
     expect(JSON.stringify(snapshot)).toBe(original);
+  });
+
+  it("applies catalogued faults as explicit safe outcomes", () => {
+    const snapshot = fixture();
+    const scenario = {
+      ...scenarioFor(snapshot),
+      faults: [{ id: "asset-unavailable", family: "ASSET" as const, code: "UNAVAILABLE", beforeInput: 0 }],
+    };
+
+    const result = runDrydockScenario(snapshot, scenario);
+
+    expect(result.status).toBe("COMPLETED");
+    expect(result.coverage.eventTypes).toContain("assetUnavailable");
+    expect(result.coverage.eventTypes).toContain("presentation:FALLBACK");
+  });
+
+  it("does not let an outcome token bypass the current One Voyage completion contract", () => {
+    const snapshot = fixture();
+    snapshot.chapters[0]!.blocks[0] = {
+      ...snapshot.chapters[0]!.blocks[0]!,
+      blockType: "textAnswer",
+      completion: { mode: "textAnswer" },
+      nextBlockId: "finish",
+      connections: [{ targetBlockId: "finish", connectionType: "DEFAULT", orderIndex: 0 }],
+    };
+    const blocked = { ...scenarioFor(snapshot), inputs: [{ kind: "CONTINUE" as const }] };
+    const accepted = { ...scenarioFor(snapshot), inputs: [{ kind: "TEXT_ANSWER" as const, outcome: "MATCH" as const }, { kind: "CONTINUE" as const }] };
+
+    expect(runDrydockScenario(snapshot, blocked).status).toBe("ACTIVE");
+    expect(runDrydockScenario(snapshot, blocked).coverage.eventTypes).toContain("inputRejected");
+    expect(runDrydockScenario(snapshot, accepted).status).toBe("COMPLETED");
+  });
+
+  it("uses virtual time, not wall-clock time, for a timer completion", () => {
+    const snapshot = fixture();
+    snapshot.chapters[0]!.blocks[0] = {
+      ...snapshot.chapters[0]!.blocks[0]!,
+      blockType: "wait",
+      configuration: { durationSeconds: 2 },
+      completion: { mode: "timer" },
+      nextBlockId: "finish",
+      connections: [{ targetBlockId: "finish", connectionType: "DEFAULT", orderIndex: 0 }],
+    };
+    const tooSoon = { ...scenarioFor(snapshot), inputs: [{ kind: "ADVANCE_TIME" as const, milliseconds: 1_999 }] };
+    const elapsed = { ...scenarioFor(snapshot), inputs: [{ kind: "ADVANCE_TIME" as const, milliseconds: 2_000 }, { kind: "CONTINUE" as const }] };
+
+    expect(runDrydockScenario(snapshot, tooSoon).status).toBe("ACTIVE");
+    expect(runDrydockScenario(snapshot, elapsed).status).toBe("COMPLETED");
   });
 });
