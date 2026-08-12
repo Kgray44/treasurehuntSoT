@@ -43,11 +43,6 @@ export function StudioCommandPalette({
     return () => cancelAnimationFrame(frame);
   }, [open]);
 
-  const close = () => {
-    setQuery("");
-    onClose();
-  };
-
   if (!open) return null;
   return (
     <div className="studio-command-palette-backdrop" role="presentation" onMouseDown={close}>
