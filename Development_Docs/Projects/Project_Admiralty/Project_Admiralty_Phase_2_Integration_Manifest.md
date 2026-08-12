@@ -3,24 +3,25 @@ title: Project Admiralty Phase 2 Integration Manifest
 audience: product-engineering-security
 status: current
 canonical_for: project-admiralty-phase-2-integration-manifest
-last_reviewed: 2026-08-10
+last_reviewed: 2026-08-12
 ---
 
 # Project Admiralty Phase 2 integration manifest
 
 ## Source identity
 
-| Item                      | Value                                                                                               |
-| ------------------------- | --------------------------------------------------------------------------------------------------- |
-| Starting `origin/main`    | `468530645e983412e5f4c1aaa103915be77c9c07`                                                          |
-| Accepted Phase 1 ancestor | `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`                                                          |
-| Worktree                  | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\project-admiralty-phase2-open-the-chartroom` |
-| Branch                    | `codex/project-admiralty-phase2-open-the-chartroom`                                                 |
-| Reconciled `origin/main`  | `384ad39fbc40e8cbe16dd2aa2c83abd3e00a56c6`                                                          |
-| Reconciliation merge      | `f6df9e690`                                                                                         |
-| Exact tested source       | Isolated Helm browser family 2/2: `6e677f062...`; full Sounding Line pending                        |
-| Owner decision            | `PENDING_OWNER_DECISION`                                                                            |
-| Publication               | Branch only; not canonical main and not deployed                                                    |
+| Item                      | Value                                                                                                             |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Starting `origin/main`    | `468530645e983412e5f4c1aaa103915be77c9c07`                                                                        |
+| Accepted Phase 1 ancestor | `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`                                                                        |
+| Worktree                  | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\project-admiralty-phase2-open-the-chartroom`               |
+| Branch                    | `codex/project-admiralty-phase2-open-the-chartroom`                                                               |
+| Reconciled `origin/main`  | `236c27241bb8d1630274f5d5412ec9addbdb8893`                                                                        |
+| Reconciliation merge      | `5e6ca3f34ea8eb7eff1fd92ca2fb832f71b3bec1`                                                                        |
+| Reconciliation repairs    | `f50613964`, `c046df741`, and `7bdcc97a8`                                                                         |
+| Exact tested source       | Sounding Line-governed isolated Chartroom browser 3/3: `7bdcc97a8...`; explicit frozen-candidate decision pending |
+| Owner decision            | `PENDING_OWNER_DECISION`                                                                                          |
+| Publication               | Branch only; not canonical main and not deployed                                                                  |
 
 ## Source families
 
@@ -45,21 +46,20 @@ migration or backfill.
 
 ## Mainline reconciliation
 
-The 2026-08-10 fetch advanced accepted main from the Phase 2 starting base
-through Project Helm Phase 1, Project Tideglass Phase 2, Project Deepwater
-Phase 3 records, and Shipwright Phase 1 records. Helm/Tideglass product and
-migration work is `UNRELATED` to the Chartroom's owner-named read projections.
-Shared Feature Catalog, Deepwater, documentation index, package/test metadata,
-navigation, and Sounding Line files are `CONTRACT_ADJACENT`; canonical generator
-output was regenerated from both inputs. The few shared Admiralty
-capability/navigation changes are `AUTHORITY_CHANGING` and were retained
-additively. There was no unresolved Chartroom source conflict, no Phase 2 schema
-migration, and no replacement of a Wayfarer, Harborlight, One Voyage, Sealed
-Hold, Deepwater, or Sounding Line canonical owner.
+The 2026-08-12 fetch advanced accepted main through the explicit-dispatch
+Sounding Line finalization boundary, Bridgewatch workspace delivery, and
+cross-program product, governance, and documentation records. Those changes are
+`CONTRACT_ADJACENT` to the Chartroom's owner-named read projections. The sole
+merge conflict was generated Feature Catalog source identity; accepted-main
+generator state was retained and regenerated. A subsequent Studio duplicate-close
+declaration and Sounding Line Phase 2 browser-adapter classification defect were
+repaired with focused tests. There is no Phase 2 schema migration and no
+replacement of a Wayfarer, Harborlight, One Voyage, Sealed Hold, Deepwater, or
+Sounding Line canonical owner.
 
 ## Integration boundary
 
 The branch may be pushed for review and walkthrough preparation. It must not be
-merged to canonical main until latest main is reconciled, exact-source Sounding
-Line authority passes, and the owner explicitly accepts the walkthrough. Phase
+merged to canonical main until an explicit frozen-candidate Sounding Line
+Mainline Decision passes and the owner explicitly accepts the walkthrough. Phase
 2 integration is not a deployment and does not authorize Phase 3.

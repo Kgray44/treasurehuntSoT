@@ -3,31 +3,34 @@ title: Project Admiralty Phase 2 Completion Receipt
 audience: product-owner-engineering-security-quality
 status: current
 canonical_for: project-admiralty-phase-2-completion-receipt
-last_reviewed: 2026-08-10
+last_reviewed: 2026-08-12
 ---
 
 # Project Admiralty Phase 2 completion receipt
 
 ## Disposition
 
-`LOCALLY_COMPLETE_FINAL_SOUNDING_LINE_AND_OWNER_PENDING`.
+`TECHNICALLY_QUALIFIED_EXPLICIT_FROZEN_CANDIDATE_AND_OWNER_PENDING`.
 
 The read-only Chartroom implementation is reconciled with accepted
-`origin/main` at `384ad39fbc40e8cbe16dd2aa2c83abd3e00a56c6` by merge
-`f6df9e690`. The later accepted Shipwright, documentation, Feature Catalog, and
-Sounding Line changes were retained without replacing any Chartroom projection
-or underlying subsystem authority. Reconciled static, focused, documentation,
-Feature Catalog, Deepwater, production-build, and isolated browser evidence is
-complete. The retained owner walkthrough runtime is synthetic-only and its
-decision remains `PENDING_OWNER_DECISION`.
+`origin/main` at `236c27241bb8d1630274f5d5412ec9addbdb8893` by merge
+`5e6ca3f34`. Reconciliation repairs retain the generated Feature Catalog,
+remove a duplicate Studio close declaration, align the pure Admiralty unit-suite
+resources, and recognize the registered Phase 2 browser adapter as a browser
+adapter. None changes Chartroom projections or underlying subsystem authority.
+Static, focused, documentation, Feature Catalog, Deepwater, production-build,
+and isolated-browser evidence is complete. The former owner walkthrough is
+invalidated by the reconciliation; a new synthetic-only preparation is pending
+the frozen candidate and its decision remains `PENDING_OWNER_DECISION`.
 
-The latest exact isolated Helm browser receipt passed 2/2 journeys at
-`6e677f062c56a9961340f3202317ba9c46157892`, with clean runtime cleanup. The
-earlier invalid browser receipts remain historical lock-contention diagnostics;
-they are not test outcomes. The full exact-source Sounding Line mainline
-finalizer remains required and is the sole release authority. After it records
-an acceptable decision, obtain the separate owner walkthrough decision. This
-receipt must not be interpreted as owner acceptance or mainline availability.
+The latest governed isolated Chartroom browser receipt passed 3/3 journeys at
+`7bdcc97a8077052604d6457be836cdee4f52024e`, with clean runtime conformance and
+synthetic-only database isolation. The earlier setup and lock-contention
+diagnostics remain historical and are not acceptance outcomes. The explicit
+frozen-candidate Sounding Line Mainline Decision is the sole release authority.
+After it records an acceptable decision, prepare and obtain the separate owner
+walkthrough decision. This receipt must not be interpreted as owner acceptance
+or mainline availability.
 
 ## Acceptance boundary
 

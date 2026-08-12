@@ -3,54 +3,52 @@ title: Project Admiralty Phase 2 Validation Record
 audience: product-engineering-security-quality
 status: current
 canonical_for: project-admiralty-phase-2-validation
-last_reviewed: 2026-08-10
+last_reviewed: 2026-08-12
 ---
 
 # Project Admiralty Phase 2 validation record
 
 ## Current decision
 
-`LOCALLY_COMPLETE_FINAL_SOUNDING_LINE_AND_OWNER_PENDING`. The owned branch has
-been reconciled through accepted `origin/main`
-`384ad39fbc40e8cbe16dd2aa2c83abd3e00a56c6` by merge `f6df9e690` and remains
-based on that accepted mainline. Earlier branch evidence is historical only;
-the current focused checks below were repeated against current reconciled
-source. This record does not claim owner acceptance, canonical-main integration,
-deployment, live-provider behavior, production MySQL execution, physical-device
-proof, or physical assistive-technology proof.
+`TECHNICALLY_QUALIFIED_EXPLICIT_FROZEN_CANDIDATE_AND_OWNER_PENDING`. The owned
+branch has been reconciled through accepted `origin/main`
+`236c27241bb8d1630274f5d5412ec9addbdb8893` by merge `5e6ca3f34`.
+Reconciliation repairs are `f50613964`, `c046df741`, and `7bdcc97a8`. Earlier
+branch evidence is historical only. This record does not claim owner acceptance,
+canonical-main integration, deployment, live-provider behavior, production MySQL
+execution, physical-device proof, or physical assistive-technology proof.
 
 ## Completed local evidence
 
-| Lane                            | Current result                                                                                                                                                                                                                  | Boundary                            |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| Admiralty policy                | Pass: 15 routes; 92 capability floor; 16 inherited, 46 Phase 2 active, 30 dormant; no schema or new broad mutation                                                                                                              | Source/registry proof               |
-| Unit/component/navigation       | Pass: 9 files, 49 tests                                                                                                                                                                                                         | Local diagnostic proof              |
-| TypeScript, lint, format        | Pass; lint has 96 pre-existing non-Admiralty warnings and zero errors                                                                                                                                                           | Local static proof                  |
-| Architecture/language/privacy   | Pass: One Voyage architecture, product language, and private-content scan                                                                                                                                                       | Local static proof                  |
-| Documentation/catalog/Deepwater | Pass: documentation index; Feature Catalog 43 entries; Deepwater current validation                                                                                                                                             | Local cross-program proof           |
-| Production build                | Pass, 131 routes                                                                                                                                                                                                                | Task-owned production build only    |
-| Production-browser matrix       | Pass: Phase 2 Chartroom matrix 3/3; current Helm isolation 2/2 at `6e677f062...`; six role identities; support request/approve/use/revoke; all domains; responsive/keyboard/reduced-motion/200%; zero serious/critical findings | Task-owned synthetic Chromium proof |
-| Canonical data safety           | Browser database and credential handoff are task-owned; canonical database untouched                                                                                                                                            | Local isolation proof               |
+| Lane                      | Current result                                                                                                                                                                                                        | Boundary                            |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| Admiralty policy          | Pass: 15 routes; 92 capability floor; 16 inherited, 46 Phase 2 active, 30 dormant; no schema or new broad mutation                                                                                                    | Source/registry proof               |
+| Unit/component/navigation | Pass: direct Admiralty 34/34; governed unit 31/31, service 8/8, and component 3/3 receipts with clean conformance                                                                                                     | Local governed focused proof        |
+| TypeScript, lint, format  | Pass; lint reports existing warnings and zero errors                                                                                                                                                                  | Local static proof                  |
+| Architecture/Deepwater    | Pass: One Voyage architecture and current Deepwater validation                                                                                                                                                        | Local static proof                  |
+| Documentation/catalog     | Pass: documentation index and Feature Catalog validation, 44 entries                                                                                                                                                  | Local cross-program proof           |
+| Production build          | Pass, 131 routes                                                                                                                                                                                                      | Task-owned production build only    |
+| Production-browser matrix | Pass: current Sounding Line-governed Phase 2 Chartroom matrix 3/3 at `7bdcc97a8...`; six synthetic identities; support request/approve/use/revoke; responsive and accessible surfaces; zero serious/critical findings | Task-owned synthetic Chromium proof |
+| Canonical data safety     | Browser database and credential handoff are task-owned; canonical database untouched                                                                                                                                  | Local isolation proof               |
 
 Browser evidence root:
 `C:\Users\kgray\AppData\Local\ProjectAdmiralty\sounding-line-phase2`.
-The current Helm receipt identifies source
-`6e677f062c56a9961340f3202317ba9c46157892`; the governed Sounding Line
-decision remains the release authority.
+The governed local browser receipt identifies source
+`7bdcc97a8077052604d6457be836cdee4f52024e`; it is focused proof only. The
+hosted Sounding Line Mainline Decision remains the release authority.
 
 ## Pending governed gates
 
-The owner walkthrough runtime was prepared on `2026-08-10` from
-`93b979de1279439eb4c67b087eeab4608f8d0548`, using only the task-owned
-synthetic database. Its build ID is `sxxixbZUApY_HbaKTtzNS` and its owner
-decision is `PENDING_OWNER_DECISION`.
+The previous owner walkthrough preparation is invalidated by the latest
+reconciliation. A new synthetic-only runtime must be prepared from the frozen
+candidate after the explicit Mainline Decision is recorded. Its owner decision
+is therefore `PENDING_OWNER_DECISION`.
 
-Earlier full Sounding Line attempts reached their finalizer but did not receive
-a release decision because browser receipts were refused before execution by an
-independently held shared runtime lease. The lock was neither removed nor taken
-over. The subsequent exact isolated Helm receipt passed 2/2 cases with clean
-cleanup. None of the focused evidence substitutes for the required current
-exact-source full Sounding Line mainline finalizer.
+Earlier full Sounding Line attempts and the old Helm receipt are invalidated by
+the newer accepted mainline. The current policy permits authoritative
+finalization only for an explicitly frozen candidate through its hosted
+workflow-dispatch path. None of the local focused evidence substitutes for that
+decision.
 
 Canonical-main integration remains prohibited until that authority passes and
 the owner explicitly accepts the walkthrough.
