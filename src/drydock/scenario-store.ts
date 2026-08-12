@@ -67,7 +67,9 @@ export async function saveDrydockScenario(taleId: string, unchecked: unknown) {
       });
     }
     if (scenario.revision !== existing.currentRevision + 1)
-      throw new DrydockScenarioRevisionConflictError("Scenario revision is stale. Reload the current revision before saving.");
+      throw new DrydockScenarioRevisionConflictError(
+        "Scenario revision is stale. Reload the current revision before saving.",
+      );
     return tx.drydockScenario.update({
       where: { id: existing.id },
       data: {
@@ -112,4 +114,26 @@ export async function getDrydockScenario(taleId: string, scenarioId: string, rev
   });
   const stored = record?.revisions[0];
   return stored ? parseStoredScenario(stored.scenario) : null;
+}
+
+/** Duplicates only a parsed immutable Scenario revision; no client-owned fields are trusted. */
+export async function duplicateDrydockScenario(taleId: string, scenarioId: string, revision?: number) {
+  const source = await getDrydockScenario(taleId, scenarioId, revision);
+  if (!source) return null;
+  const duplicate: DrydockScenario = {
+    ...source,
+    id: `scenario-${crypto.randomUUID()}`,
+    revision: 1,
+    title: `${source.title} copy`.slice(0, 240),
+  };
+  return saveDrydockScenario(taleId, duplicate);
+}
+
+/** Archives Scenario discovery only; immutable revisions and existing Run receipts are retained. */
+export async function archiveDrydockScenario(taleId: string, scenarioId: string) {
+  const updated = await db.drydockScenario.updateMany({
+    where: { scenarioId, archivedAt: null, draft: { is: { taleId } } },
+    data: { archivedAt: new Date() },
+  });
+  return updated.count === 1;
 }

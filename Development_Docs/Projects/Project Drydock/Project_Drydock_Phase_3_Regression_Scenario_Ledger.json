@@ -7,9 +7,24 @@
   "lastReviewed": "2026-08-12",
   "classification": "SYNTHETIC_NO_PRIVATE_CONTENT",
   "fixtures": [
-    { "id": "all-current-passage-types", "authority": "src/drydock/simulation/differential.test.ts", "scope": "23 current Passage types against the shared One Voyage transition plan", "result": "adapter-level differential" },
-    { "id": "linear-deterministic-replay", "authority": "src/drydock/simulation/engine.test.ts", "scope": "fixed seed, trace digest, redaction, cancellation, timer, text and fault boundaries", "result": "deterministic executor" },
-    { "id": "coverage-no-upgrade", "authority": "src/drydock/simulation/coverage.test.ts", "scope": "coverage gaps and nonterminal proof disposition", "result": "no silent full-coverage claim" }
+    {
+      "id": "all-current-passage-types",
+      "authority": "src/drydock/simulation/differential.test.ts",
+      "scope": "23 current Passage types against the shared One Voyage transition plan",
+      "result": "adapter-level differential"
+    },
+    {
+      "id": "linear-deterministic-replay",
+      "authority": "src/drydock/simulation/engine.test.ts",
+      "scope": "fixed seed, trace digest, redaction, cancellation, timer, text and fault boundaries",
+      "result": "deterministic executor"
+    },
+    {
+      "id": "coverage-no-upgrade",
+      "authority": "src/drydock/simulation/coverage.test.ts",
+      "scope": "coverage gaps and nonterminal proof disposition",
+      "result": "no silent full-coverage claim"
+    }
   ],
   "nonClaims": [
     "No entry is real Chronicle, account, provider, device, or production-session evidence.",

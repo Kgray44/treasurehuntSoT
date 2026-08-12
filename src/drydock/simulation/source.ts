@@ -7,6 +7,7 @@ import { canonicalChecksum } from "@/drydock/canonical";
  * make an unchanged Scenario stale on every request.
  */
 export function drydockSimulationSourceChecksum(snapshot: PublishedTaleSnapshot) {
-  const { publishedAt: _publishedAt, ...stableSnapshot } = snapshot;
+  const { publishedAt, ...stableSnapshot } = snapshot;
+  void publishedAt;
   return canonicalChecksum(stableSnapshot);
 }

@@ -5,14 +5,14 @@
   "owner": "Project Drydock Phase 3 / Run Sea Trials",
   "status": "RESERVED_ADDITIVE",
   "sqlite": {
-    "migration": [],
+    "migration": ["20260812090000_drydock_phase3_simulation", "20260812100000_drydock_phase3_run_provenance"],
     "reservedModels": ["DrydockScenario", "DrydockScenarioRevision", "DrydockScenarioSuite", "DrydockSimulationRun"],
     "purpose": "Creator-owned versioned synthetic scenarios, suite membership, source-bound run summaries, and resumable bounded checkpoints.",
     "backfill": "NONE",
     "compatibilityWindow": "Readers tolerate no Phase 3 record before the first Scenario is created."
   },
   "mysql": {
-    "migration": [],
+    "migration": ["0056_drydock_phase3_simulation", "0057_drydock_phase3_run_provenance"],
     "reservedModels": ["DrydockScenario", "DrydockScenarioRevision", "DrydockScenarioSuite", "DrydockSimulationRun"],
     "purpose": "Schema parity for the SQLite Phase 3 synthetic simulation records.",
     "backfill": "NONE",

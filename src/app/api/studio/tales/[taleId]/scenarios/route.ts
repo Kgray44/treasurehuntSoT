@@ -14,7 +14,10 @@ import { drydockSimulationSourceChecksum } from "@/drydock/simulation/source";
 const privateHeaders = { "Cache-Control": "private, no-store" };
 
 function unavailable() {
-  return NextResponse.json({ error: "This Chronicle is not available to this Creator account." }, { status: 404, headers: privateHeaders });
+  return NextResponse.json(
+    { error: "This Chronicle is not available to this Creator account." },
+    { status: 404, headers: privateHeaders },
+  );
 }
 
 export async function GET(request: Request, context: { params: Promise<{ taleId: string }> }) {
@@ -22,7 +25,10 @@ export async function GET(request: Request, context: { params: Promise<{ taleId:
   if (!(await requireOwnedStudioTale(taleId, request))) return unavailable();
   try {
     const sourceChecksum = drydockSimulationSourceChecksum(snapshotFromStudio(await getStudioTale(taleId)));
-    return NextResponse.json({ sourceChecksum, scenarios: await listDrydockScenarios(taleId) }, { headers: privateHeaders });
+    return NextResponse.json(
+      { sourceChecksum, scenarios: await listDrydockScenarios(taleId) },
+      { headers: privateHeaders },
+    );
   } catch (cause) {
     return apiError(cause);
   }
@@ -38,13 +44,22 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
     const sourceChecksum = drydockSimulationSourceChecksum(snapshotFromStudio(await getStudioTale(taleId)));
     if (scenario.sourceChecksum !== sourceChecksum)
       return NextResponse.json(
-        { error: "This Scenario was authored against an older Chronicle source. Reload it before saving.", code: "DRYDOCK_SCENARIO_STALE_SOURCE" },
+        {
+          error: "This Scenario was authored against an older Chronicle source. Reload it before saving.",
+          code: "DRYDOCK_SCENARIO_STALE_SOURCE",
+        },
         { status: 409, headers: privateHeaders },
       );
-    return NextResponse.json({ scenario: await saveDrydockScenario(taleId, scenario) }, { status: 201, headers: privateHeaders });
+    return NextResponse.json(
+      { scenario: await saveDrydockScenario(taleId, scenario) },
+      { status: 201, headers: privateHeaders },
+    );
   } catch (cause) {
     if (cause instanceof DrydockScenarioRevisionConflictError)
-      return NextResponse.json({ error: cause.message, code: "DRYDOCK_SCENARIO_REVISION_CONFLICT" }, { status: 409, headers: privateHeaders });
+      return NextResponse.json(
+        { error: cause.message, code: "DRYDOCK_SCENARIO_REVISION_CONFLICT" },
+        { status: 409, headers: privateHeaders },
+      );
     return apiError(cause);
   }
 }

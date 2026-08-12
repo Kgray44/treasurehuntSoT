@@ -24,6 +24,6 @@ npx vitest run src/drydock/simulation/differential.test.ts
 
 ## Explicit limitations
 
-Scenario outcomes model provider and presentation dispositions; they do not call real providers or browser/device APIs. A virtual timer uses only the Scenario clock. Durable records preserve a frozen source snapshot and Scenario revision; an expired lease returns work to `QUEUED` for a fresh bounded replay, rather than claiming partial-input resume. Cancellation is checked before the bounded executor begins and at engine safe-step callbacks.
+Scenario outcomes model provider and presentation dispositions; they do not call real providers or browser/device APIs. A virtual timer uses only the Scenario clock. Durable records preserve a frozen source snapshot, Scenario revision, engine/adapter versions, Scenario schema version, and fault-catalog version; `SOURCE_GIT_SHA` is recorded when the runtime supplies it and is otherwise explicitly `UNRESOLVED`. An expired lease returns work to `QUEUED` for a fresh bounded replay, rather than claiming partial-input resume. Cancellation is checked before the bounded executor begins and at engine safe-step callbacks.
 
 This record is development evidence only. Candidate qualification, protected-mainline acceptance, and live provider/device proof remain separate gates.

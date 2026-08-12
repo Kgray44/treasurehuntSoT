@@ -3,7 +3,7 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-12
 ---
 
 # Feature status
@@ -30,7 +30,8 @@ last_reviewed: 2026-08-09
 | Lanternwake                                           | available              | integration validated | The cinematic system is complete on main; the P34 browser exception is not a full matrix pass.                                                                                                                                                                                                                                                                                                                             |
 | Ledgerlight and Feature Catalog                       | available              | focused validated     | Documentation governance, index, fragments, and generated catalog are repository systems.                                                                                                                                                                                                                                                                                                                                  |
 | Compatibility routes                                  | compatibility-only     | not validated         | Transitional, not preferred for new work.                                                                                                                                                                                                                                                                                                                                                                                  |
-| Drydock, Landfall, and Watchglass                     | planned                | not validated         | The remaining planned projects have no current product availability claim.                                                                                                                                                                                                                                                                                                                                                 |
+| Project Drydock Sea Trials                            | development-only       | focused local         | Phase 3 provides source-bound deterministic Creator Scenario/Suite simulation, safe trace/coverage receipts, and One Voyage adapter differential on its dedicated branch. It is not candidate-qualified, on main, deployed, or owner accepted; live Voyage/provider/device proof is not claimed.                                                                                                                           |
+| Landfall and Watchglass                               | planned                | not validated         | The remaining planned projects have no current product availability claim.                                                                                                                                                                                                                                                                                                                                                 |
 
 ## Phase 7 correction Round 1 status
 

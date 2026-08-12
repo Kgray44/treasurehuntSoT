@@ -2,7 +2,11 @@ import { z } from "zod";
 import { drydockFaultDefinition } from "@/drydock/simulation/faults";
 import { DRYDOCK_SCENARIO_SCHEMA_VERSION, type DrydockScenario } from "@/drydock/simulation/model";
 
-const id = z.string().min(1).max(128).regex(/^[A-Za-z0-9][A-Za-z0-9._:-]*$/);
+const id = z
+  .string()
+  .min(1)
+  .max(128)
+  .regex(/^[A-Za-z0-9][A-Za-z0-9._:-]*$/);
 const safeText = z.string().min(1).max(240);
 const boundedCount = z.number().int().positive().max(100_000);
 const providerOutcome = z.enum(["MATCH", "NO_MATCH", "UNCERTAIN", "UNAVAILABLE", "STALE", "DUPLICATE", "CANCELLED"]);
@@ -15,15 +19,80 @@ const inputSchema = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("PROVIDER"), outcome: providerOutcome }).strict(),
   z.object({ kind: z.literal("ADVANCE_TIME"), milliseconds: z.number().int().nonnegative().max(86_400_000) }).strict(),
   z
-    .object({ kind: z.literal("PRESENTATION"), outcome: z.enum(["PRESENTED", "FALLBACK", "SKIPPED", "INTERRUPTED", "FAILED"]) })
+    .object({
+      kind: z.literal("PRESENTATION"),
+      outcome: z.enum(["PRESENTED", "FALLBACK", "SKIPPED", "INTERRUPTED", "FAILED"]),
+    })
     .strict(),
 ]);
 
 const assertionSchema = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("CURRENT_BLOCK"), blockId: id }).strict(),
-  z.object({ kind: z.literal("STATUS"), status: z.enum(["ACTIVE", "PAUSED", "COMPLETED", "INCOMPLETE_PROOF", "CANCELLED", "FAILED"]) }).strict(),
-  z.object({ kind: z.literal("EVENT_COUNT"), eventType: id, count: z.number().int().nonnegative().max(100_000) }).strict(),
+  z
+    .object({
+      kind: z.literal("STATUS"),
+      status: z.enum(["ACTIVE", "PAUSED", "COMPLETED", "INCOMPLETE_PROOF", "CANCELLED", "FAILED"]),
+    })
+    .strict(),
+  z
+    .object({ kind: z.literal("EVENT_COUNT"), eventType: id, count: z.number().int().nonnegative().max(100_000) })
+    .strict(),
   z.object({ kind: z.literal("COVERED_BLOCK"), blockId: id }).strict(),
+  z.object({ kind: z.literal("CURRENT_BLOCK_IS"), blockId: id }).strict(),
+  z.object({ kind: z.literal("CURRENT_CHAPTER_IS"), chapterId: id }).strict(),
+  z
+    .object({
+      kind: z.literal("FINAL_OUTCOME_IS"),
+      status: z.enum(["ACTIVE", "PAUSED", "COMPLETED", "INCOMPLETE_PROOF", "CANCELLED", "FAILED"]),
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("VARIABLE_EQUALS"),
+      variable: id,
+      expected: z.union([z.boolean(), z.number().finite(), z.string().max(256)]),
+    })
+    .strict(),
+  z.object({ kind: z.literal("VARIABLE_NOT_EXPOSED"), variable: id }).strict(),
+  z.object({ kind: z.literal("INVENTORY_CONTAINS"), artifactId: id }).strict(),
+  z.object({ kind: z.literal("INVENTORY_DOES_NOT_CONTAIN"), artifactId: id }).strict(),
+  z.object({ kind: z.literal("ARTIFACT_GRANTED"), artifactId: id }).strict(),
+  z.object({ kind: z.literal("ARTIFACT_NOT_DUPLICATED"), artifactId: id }).strict(),
+  z.object({ kind: z.literal("REVEAL_EXISTS"), revealId: id }).strict(),
+  z
+    .object({ kind: z.literal("SIDE_EFFECT_COUNT"), eventType: id, count: z.number().int().nonnegative().max(100_000) })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("EVENT_INTENT_COUNT"),
+      eventType: id,
+      count: z.number().int().nonnegative().max(100_000),
+    })
+    .strict(),
+  z.object({ kind: z.literal("EVENT_INTENT_ORDER"), eventTypes: z.array(id).max(1_000) }).strict(),
+  z.object({ kind: z.literal("EVENT_INTENT_TYPE"), eventType: id }).strict(),
+  z.object({ kind: z.literal("IDEMPOTENCY_PRESERVED") }).strict(),
+  z.object({ kind: z.literal("PROVIDER_REQUESTED") }).strict(),
+  z.object({ kind: z.literal("PROVIDER_OUTCOME"), outcome: providerOutcome }).strict(),
+  z.object({ kind: z.literal("PLAYER_SAFE_FIELD_PRESENT"), field: z.enum(["stateDigest", "status"]) }).strict(),
+  z.object({ kind: z.literal("PROTECTED_FIELD_ABSENT"), field: z.string().min(1).max(128) }).strict(),
+  z
+    .object({
+      kind: z.literal("PRESENTATION_OUTCOME"),
+      outcome: z.enum(["PRESENTED", "FALLBACK", "SKIPPED", "INTERRUPTED", "FAILED"]),
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("COVERAGE_THRESHOLD"),
+      domain: z.enum(["BLOCKS", "EDGES", "FAULTS", "ENVIRONMENT"]),
+      minimum: z.number().int().nonnegative().max(100_000),
+    })
+    .strict(),
+  z.object({ kind: z.literal("TRACE_STEP_LIMIT"), maximum: z.number().int().nonnegative().max(100_000) }).strict(),
+  z.object({ kind: z.literal("RUN_COMPLETES") }).strict(),
+  z.object({ kind: z.literal("RUN_REMAINS_INCOMPLETE") }).strict(),
+  z.object({ kind: z.literal("ERROR_CLASS_IS"), code: id }).strict(),
 ]);
 
 export const drydockScenarioSchema = z
@@ -38,7 +107,10 @@ export const drydockScenarioSchema = z
     initialState: z
       .object({
         startBlockId: id.optional(),
-        variables: z.record(id, z.union([z.boolean(), z.number().finite(), z.string().max(256), z.array(z.string().max(128)).max(128)])),
+        variables: z.record(
+          id,
+          z.union([z.boolean(), z.number().finite(), z.string().max(256), z.array(z.string().max(128)).max(128)]),
+        ),
         inventory: z.array(id).max(256),
         actorMode: z.enum(["PLAYER", "CAPTAIN", "CREATOR"]),
       })
@@ -67,7 +139,16 @@ export const drydockScenarioSchema = z
         z
           .object({
             id,
-            family: z.enum(["NETWORK", "ASSET", "PROVIDER", "RUNTIME", "PRESENTATION", "DEVICE", "ACCESSIBILITY", "TIME"]),
+            family: z.enum([
+              "NETWORK",
+              "ASSET",
+              "PROVIDER",
+              "RUNTIME",
+              "PRESENTATION",
+              "DEVICE",
+              "ACCESSIBILITY",
+              "TIME",
+            ]),
             code: id,
             beforeInput: z.number().int().nonnegative().max(10_000),
           })
@@ -80,12 +161,21 @@ export const drydockScenarioSchema = z
   .strict()
   .superRefine((scenario, context) => {
     if (Object.keys(scenario.initialState.variables).length > 256)
-      context.addIssue({ code: "custom", path: ["initialState", "variables"], message: "Scenario variables exceed the governed limit." });
+      context.addIssue({
+        code: "custom",
+        path: ["initialState", "variables"],
+        message: "Scenario variables exceed the governed limit.",
+      });
     if (scenario.limits.maxTraceEntries < scenario.inputs.length)
-      context.addIssue({ code: "custom", path: ["limits", "maxTraceEntries"], message: "Trace limit must hold every declared Scenario input." });
+      context.addIssue({
+        code: "custom",
+        path: ["limits", "maxTraceEntries"],
+        message: "Trace limit must hold every declared Scenario input.",
+      });
     const faultIds = new Set<string>();
     scenario.faults.forEach((fault, index) => {
-      if (faultIds.has(fault.id)) context.addIssue({ code: "custom", path: ["faults", index, "id"], message: "Fault IDs must be unique." });
+      if (faultIds.has(fault.id))
+        context.addIssue({ code: "custom", path: ["faults", index, "id"], message: "Fault IDs must be unique." });
       faultIds.add(fault.id);
       if (!drydockFaultDefinition(fault.family, fault.code))
         context.addIssue({

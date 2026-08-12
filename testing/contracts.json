@@ -38,6 +38,97 @@
       "critical": true
     },
     {
+      "id": "drydock-scenario-contract",
+      "name": "Drydock strict versioned Scenario and source binding",
+      "authority": "drydock",
+      "owners": ["drydock", "one-voyage"],
+      "critical": true
+    },
+    {
+      "id": "drydock-simulation-determinism",
+      "name": "Drydock deterministic bounded simulation execution",
+      "authority": "drydock",
+      "owners": ["drydock"],
+      "critical": true
+    },
+    {
+      "id": "drydock-virtual-time",
+      "name": "Drydock virtual clock and deterministic time boundary behavior",
+      "authority": "drydock",
+      "owners": ["drydock", "one-voyage"],
+      "critical": true
+    },
+    {
+      "id": "drydock-fault-contract",
+      "name": "Drydock catalogued synthetic fault boundaries",
+      "authority": "drydock",
+      "owners": ["drydock"],
+      "critical": true
+    },
+    {
+      "id": "drydock-trace-privacy",
+      "name": "Drydock trace, State Diff, and receipt privacy projection",
+      "authority": "drydock",
+      "owners": ["drydock", "one-voyage"],
+      "critical": true
+    },
+    {
+      "id": "drydock-coverage-contract",
+      "name": "Drydock explicit coverage and incomplete-proof reporting",
+      "authority": "drydock",
+      "owners": ["drydock"],
+      "critical": true
+    },
+    {
+      "id": "drydock-runtime-adapter",
+      "name": "Drydock shared One Voyage transition adapter fidelity",
+      "authority": "drydock",
+      "owners": ["drydock", "one-voyage"],
+      "critical": true
+    },
+    {
+      "id": "drydock-runtime-differential",
+      "name": "Drydock differential evidence for current Passage families",
+      "authority": "drydock",
+      "owners": ["drydock", "one-voyage"],
+      "critical": true
+    },
+    {
+      "id": "drydock-no-live-mutation",
+      "name": "Drydock simulator never mutates live Voyage state",
+      "authority": "drydock",
+      "owners": ["drydock", "one-voyage"],
+      "critical": true
+    },
+    {
+      "id": "drydock-durable-run",
+      "name": "Drydock durable run, lease, cancellation, and recovery behavior",
+      "authority": "drydock",
+      "owners": ["drydock"],
+      "critical": true
+    },
+    {
+      "id": "drydock-scenario-authorization",
+      "name": "Drydock Creator authorization and CSRF mutation boundary",
+      "authority": "drydock",
+      "owners": ["drydock", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "drydock-studio-scenario-lab",
+      "name": "Drydock Studio Scenario Lab accessible interaction surface",
+      "authority": "drydock",
+      "owners": ["drydock"],
+      "critical": true
+    },
+    {
+      "id": "drydock-performance",
+      "name": "Drydock bounded executor performance contracts",
+      "authority": "drydock",
+      "owners": ["drydock"],
+      "critical": true
+    },
+    {
       "id": "wayfarer-history-projection",
       "name": "Wayfarer history projection",
       "authority": "wayfarer",

@@ -83,9 +83,6 @@ export type CanonicalCompletionPlan = Readonly<{
   intents: readonly CanonicalTransitionIntent[];
 }>;
 
-const chapterIdForBlock = (snapshot: PublishedTaleSnapshot, blockId: string) =>
-  snapshot.chapters.find((chapter) => chapter.blocks.some((block) => block.id === blockId))?.id ?? null;
-
 /**
  * Plans a successfully authorized block completion. Authorization, persistence,
  * real event delivery, and real provider evidence remain One Voyage concerns.

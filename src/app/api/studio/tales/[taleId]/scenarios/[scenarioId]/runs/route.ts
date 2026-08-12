@@ -14,7 +14,10 @@ import {
 const privateHeaders = { "Cache-Control": "private, no-store" };
 
 function unavailable() {
-  return NextResponse.json({ error: "This Chronicle is not available to this Creator account." }, { status: 404, headers: privateHeaders });
+  return NextResponse.json(
+    { error: "This Chronicle is not available to this Creator account." },
+    { status: 404, headers: privateHeaders },
+  );
 }
 
 function requestedRevision(body: unknown) {
@@ -51,9 +54,15 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
     return NextResponse.json({ run }, { status: 201, headers: privateHeaders });
   } catch (cause) {
     if (cause instanceof DrydockSimulationSourceChangedError)
-      return NextResponse.json({ error: cause.message, code: "DRYDOCK_SIMULATION_SOURCE_CHANGED" }, { status: 409, headers: privateHeaders });
+      return NextResponse.json(
+        { error: cause.message, code: "DRYDOCK_SIMULATION_SOURCE_CHANGED" },
+        { status: 409, headers: privateHeaders },
+      );
     if (cause instanceof DrydockSimulationUnavailableError)
-      return NextResponse.json({ error: cause.message, code: "DRYDOCK_SIMULATION_UNAVAILABLE" }, { status: 404, headers: privateHeaders });
+      return NextResponse.json(
+        { error: cause.message, code: "DRYDOCK_SIMULATION_UNAVAILABLE" },
+        { status: 404, headers: privateHeaders },
+      );
     return apiError(cause);
   }
 }

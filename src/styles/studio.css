@@ -1402,6 +1402,71 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   width: 100%;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
+.drydock-filter,
+.drydock-json-fields section,
+.drydock-advanced-json,
+.drydock-run-actions,
+.drydock-comparison,
+.drydock-state-diff,
+.drydock-run-history {
+  display: grid;
+  gap: 0.55rem;
+}
+.drydock-coverage-view {
+  margin-top: 1rem;
+  border-top: 1px solid rgba(201, 169, 95, 0.24);
+  padding-top: 1rem;
+}
+.drydock-coverage-view ul {
+  display: grid;
+  gap: 0.4rem;
+  padding-left: 1.2rem;
+}
+.drydock-filter {
+  margin-top: 0.75rem;
+}
+.drydock-filter input,
+.drydock-run-actions select {
+  width: 100%;
+}
+.drydock-json-fields section,
+.drydock-advanced-json,
+.drydock-comparison,
+.drydock-state-diff,
+.drydock-run-history {
+  border: 1px solid rgba(201, 169, 95, 0.2);
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+.drydock-json-fields section > div,
+.drydock-run-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.5rem;
+}
+.drydock-json-fields section > div label {
+  display: grid;
+  min-width: 8rem;
+  gap: 0.2rem;
+}
+.settings-grid .drydock-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2.5rem;
+}
+.settings-grid .drydock-toggle input {
+  width: auto;
+}
+.drydock-advanced-json label {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 0.65rem;
+}
+.drydock-advanced-json textarea {
+  min-height: 120px;
+}
 .drydock-scenario-actions {
   display: flex;
   flex-wrap: wrap;
@@ -1420,8 +1485,16 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   align-items: center;
   justify-content: space-between;
 }
-.drydock-suite-panel input { flex: 1; }
-.drydock-suite-panel ul { display: grid; gap: 0.4rem; margin: 0.75rem 0 0; padding: 0; list-style: none; }
+.drydock-suite-panel input {
+  flex: 1;
+}
+.drydock-suite-panel ul {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
 .drydock-run-receipt {
   margin-top: 1rem;
 }
@@ -1432,12 +1505,79 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   align-items: baseline;
   justify-content: space-between;
 }
-.drydock-run-receipt li[data-passed="false"] { color: #ffad9e; }
-.drydock-run-receipt li[data-passed="true"] { color: #b6ebc0; }
-.drydock-run-receipt ol li { border-top: 1px solid rgba(201, 169, 95, 0.16); padding: 0.6rem 0; }
-.drydock-run-receipt ol li small { flex: 1; text-align: right; }
+.drydock-coverage-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0.8rem 0;
+}
+.drydock-coverage-summary div {
+  min-width: 6.5rem;
+  border: 1px solid rgba(201, 169, 95, 0.2);
+  border-radius: 8px;
+  padding: 0.4rem 0.6rem;
+}
+.drydock-coverage-summary dt {
+  color: var(--mist-300);
+  font-size: 0.72rem;
+}
+.drydock-coverage-summary dd {
+  margin: 0.15rem 0 0;
+  font-weight: 700;
+}
+.drydock-run-receipt li[data-passed="false"] {
+  color: #ffad9e;
+}
+.drydock-run-receipt li[data-passed="true"] {
+  color: #b6ebc0;
+}
+.drydock-run-receipt ol li {
+  border-top: 1px solid rgba(201, 169, 95, 0.16);
+  padding: 0.6rem 0;
+}
+.drydock-run-receipt ol li small {
+  flex: 1;
+  text-align: right;
+}
+.drydock-run-receipt table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.drydock-run-receipt th,
+.drydock-run-receipt td {
+  border-top: 1px solid rgba(201, 169, 95, 0.16);
+  padding: 0.4rem;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.drydock-run-history {
+  margin-top: 1rem;
+}
+.drydock-run-history ul {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.drydock-run-history li {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  align-items: center;
+}
 @media (max-width: 780px) {
-  .drydock-scenario-layout, .drydock-json-fields { grid-template-columns: 1fr; }
+  .drydock-scenario-layout,
+  .drydock-json-fields {
+    grid-template-columns: 1fr;
+  }
+  .drydock-run-receipt ol li {
+    align-items: start;
+    flex-direction: column;
+  }
+  .drydock-run-receipt ol li small {
+    text-align: left;
+  }
 }
 .settings-grid {
   display: grid;

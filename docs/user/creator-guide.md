@@ -3,7 +3,7 @@ title: Creator guide
 audience: creator
 status: current
 canonical_for: creator-guide
-last_reviewed: 2026-08-07
+last_reviewed: 2026-08-12
 ---
 
 # Creator guide
@@ -46,6 +46,17 @@ Phase 7 proves the Creator voyage from Home through the canonical account,
 Studio Library, private draft state, Community Harbor, Profile, Passport, and
 final sign-out while retaining public/private boundaries. The final package is
 ready for owner walkthrough; the source is on main but not deployed or owner accepted.
+
+## Project Drydock Phase 3 branch status
+
+The current Project Drydock Phase 3 branch adds a **Sea Trials** editor section
+at `/studio/tales/[taleId]/trials` for authorized Creators. It creates
+source-bound, revisioned deterministic Scenarios; accepts fixed outcome tokens,
+virtual time, catalogued synthetic faults, assertions, and bounded Suites; and
+shows safe run receipts, state digests, and coverage counts. Saving or running
+never advances a live Voyage, changes a provider/device, publishes a Chronicle,
+or rewrites a historical Scenario revision. The work is not available on main,
+deployed, or owner accepted; candidate qualification remains separate.
 
 ## Phase 7 correction Round 1 status
 

@@ -866,8 +866,11 @@ model DrydockSimulationRun {
   scenarioRevisionId      String?
   sourceChecksum          String
   sourceRevision          Int
+  sourceGitSha            String                   @default("UNRESOLVED") @db.VarChar(64)
   engineVersion           String
   adapterVersion          String
+  scenarioSchemaVersion   Int                      @default(1)
+  faultCatalogVersion     String                   @default("drydock-fault-catalog-v1") @db.VarChar(64)
   status                  String
   resultDigest            String?
   coverageDigest          String?

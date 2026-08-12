@@ -19,10 +19,11 @@ npx vitest run src/drydock/simulation src/drydock/scenario-store.test.ts src/dry
 npx vitest run src/components/studio/DrydockScenarioLab.test.tsx
 npx vitest run "src/app/api/studio/tales/[taleId]/scenarios/route.test.ts" "src/app/api/studio/tales/[taleId]/scenarios/[scenarioId]/runs/route.test.ts" "src/app/api/studio/tales/[taleId]/scenarios/suites/route.test.ts"
 npm run drydock:phase3:migrations:sqlite
+npm run test:policy
 npm run typecheck
 ```
 
-The migration rehearsal uses a disposable task-owned SQLite file and checks additive migration ordering, schema creation, foreign-key integrity, and static MySQL fragment parity. It does not claim a live MySQL migration.
+The migration rehearsal uses a disposable task-owned SQLite file and checks additive migration ordering, schema creation, foreign-key integrity, and static MySQL fragment parity. It does not claim a live MySQL migration. The Sounding Line policy command validates registration only; it is not a Mainline Decision and cannot certify this phase.
 
 ## Candidate qualification pending
 

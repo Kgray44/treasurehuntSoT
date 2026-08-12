@@ -27,7 +27,12 @@ const definitions: readonly DrydockFaultDefinition[] = [
   { family: "PROVIDER", code: "DUPLICATE", effect: "VERIFICATION_UNCERTAIN", safeEventType: "providerDuplicate" },
   { family: "RUNTIME", code: "CANCEL", effect: "CANCEL", safeEventType: "runtimeCancelled" },
   { family: "RUNTIME", code: "RESTART", effect: "PAUSE", safeEventType: "runtimeRestarted" },
-  { family: "PRESENTATION", code: "INTERRUPTED", effect: "PRESENTATION_FALLBACK", safeEventType: "presentationInterrupted" },
+  {
+    family: "PRESENTATION",
+    code: "INTERRUPTED",
+    effect: "PRESENTATION_FALLBACK",
+    safeEventType: "presentationInterrupted",
+  },
   { family: "PRESENTATION", code: "FAILED", effect: "PRESENTATION_FALLBACK", safeEventType: "presentationFailed" },
   { family: "DEVICE", code: "INPUT_UNAVAILABLE", effect: "PAUSE", safeEventType: "deviceInputUnavailable" },
   { family: "ACCESSIBILITY", code: "REDUCED_MOTION", effect: "AUDIT_ONLY", safeEventType: "reducedMotionApplied" },
@@ -37,7 +42,9 @@ const definitions: readonly DrydockFaultDefinition[] = [
 
 export const DRYDOCK_FAULT_CATALOG = Object.freeze(definitions.map((definition) => Object.freeze({ ...definition })));
 
-const byIdentity = new Map(DRYDOCK_FAULT_CATALOG.map((definition) => [`${definition.family}:${definition.code}`, definition]));
+const byIdentity = new Map(
+  DRYDOCK_FAULT_CATALOG.map((definition) => [`${definition.family}:${definition.code}`, definition]),
+);
 
 export function drydockFaultDefinition(family: DrydockFaultFamily, code: string) {
   return byIdentity.get(`${family}:${code}`) ?? null;
