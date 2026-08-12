@@ -12,6 +12,11 @@
 - `Completion_Receipts/`: historical implementation receipts.
 - `Project_Bridgewatch_Phase_2_*.md`: current Phase 2 design, registry,
   qualification, validation, integration, and closure records.
+- `Project_Bridgewatch_Phase_3_*.md`: Phase 3 history, retention, archive,
+  branch-health, validation, performance, deployment, integration, and
+  closure records.
+- `Project_Bridgewatch_Completion_Receipt.md`: final program receipt; it is
+  authoritative only after protected-main acceptance is recorded.
 - `Archive/`: superseded, prompt, and legacy material.
 
 Use [document-index.json](document-index.json) for complete path-level classification.
