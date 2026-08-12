@@ -130340,9 +130340,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-e864d36f62c10ec2ac44",
+      "id": "sl-test-c0ea217b5d431be41f4e",
       "title": "Journeys A-J: visible entry, passage states, owned history, creator detail, security, and responsive accessibility",
-      "line": 50,
+      "line": 55,
       "file": "tests/e2e/tideglass-phase3.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -148385,9 +148385,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-7c4477717d1c3ae7217d",
+      "id": "sl-test-176503728e9beb31b123",
       "title": "Captain authority and ordinary Player membership remain independent through the visible product journey",
-      "line": 315,
+      "line": 310,
       "file": "tests/e2e/project-helm-phase1.spec.ts",
       "project": "helm-phase1",
       "suiteId": "browser.helm",
@@ -148426,9 +148426,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-d170acf1613567d2526d",
+      "id": "sl-test-947b1c2964f317286fcf",
       "title": "authenticated membership heartbeats are independently visible in the Captain operational projection",
-      "line": 518,
+      "line": 513,
       "file": "tests/e2e/project-helm-phase1.spec.ts",
       "project": "helm-phase1",
       "suiteId": "browser.helm",
@@ -148467,9 +148467,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-d1cb92d51378bc55b39e",
+      "id": "sl-test-02a6849f0637d4526215",
       "title": "participation choice remains usable at desktop, tablet, phone, 200% zoom, keyboard, and reduced motion",
-      "line": 612,
+      "line": 607,
       "file": "tests/e2e/project-helm-phase1.spec.ts",
       "project": "helm-phase1",
       "suiteId": "browser.helm",
@@ -173243,9 +173243,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-cf8e67a6c9346ec5f4b9",
+      "id": "sl-test-06e714be79b1a76a0186",
       "title": "Journeys A-J: visible entry, passage states, owned history, creator detail, security, and responsive accessibility",
-      "line": 50,
+      "line": 55,
       "file": "tests/e2e/tideglass-phase3.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
