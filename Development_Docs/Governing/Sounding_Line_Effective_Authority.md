@@ -51,6 +51,30 @@ the authority index: unrelated documentation/testing-infrastructure changes may
 carry forward product evidence, while Helm-owned, product, dependency, or
 unclassified changes require reconciliation and new candidate authority.
 
-The v1.2 target architecture requires minimum sufficient evidence, semantic
-evidence preservation, and record-only closure. Unsupported optimization paths
-fail closed and are tracked in the canonical runtime remediation backlog.
+## Record-only closure
+
+The protected binding also supplies a distinct **record-only** finalization path
+for a documentation/metadata closure whose exact three-dot candidate diff is
+limited to the machine-readable authority index allowlist: CHANGELOG.md,
+current engineering records under Development_Docs, and current Markdown under
+docs. Empty, renamed, deleted, binary, unclassified, product, Prisma,
+dependency, configuration, workflow, Sounding Line runtime, test, security, or
+runtime-asset changes are refused before record evidence is run.
+
+The path executes from the protected synthetic merge so its classifier is
+already accepted mainline tooling, while its sealed plan, receipt, and
+finalizer source identity remain the exact candidate SHA. It requires one
+referenced merged implementation PR whose candidate is an ancestor of the
+closure, a completed successful explicit Sounding Line authority run for that
+implementation candidate, its valid sealed full-mainline RELEASE_GO, and the
+two successful protected Sounding Line / Mainline Decision checks attached to
+that implementation candidate. It then records only policy/inventory, generated-record consistency,
+documentation index/validation, Feature Catalog synchronization/validation,
+changed-file whitespace/diff formatting checks. It never starts browser,
+product-unit, build, migration, Prisma, or unrelated product proof.
+
+The finalizer remains the only release-decision emitter. The binding validates
+the record-only plan shape, the classified path set, the prior implementation
+ancestry, the evidence set, the sealed finalizer result, and the exact
+two-parent merge before publishing the unchanged protected context. Unsupported
+or ambiguous candidates fail closed.

@@ -35,6 +35,7 @@ function hasOrdinaryDevelopmentTrigger(triggers) {
 }
 
 function isHeavyweightRepositoryClosure(source) {
+  if (/record-only-closure\.mjs/u.test(source) && /Record-only classification/u.test(source)) return false;
   if (/^name:\s*.*(?:authoritative|final closure|full closure|finalization)\s*$/imu.test(source)) return true;
   if (/finalize-ci\.mjs|finalizer\.mjs/u.test(source)) return true;
   const broadClosureSignals = [
