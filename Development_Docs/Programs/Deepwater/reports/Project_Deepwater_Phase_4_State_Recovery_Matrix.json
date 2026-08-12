@@ -30,6 +30,9 @@
       "proofFamilyId": "DW-P4-JRN-PLAYER",
       "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
       "recoveryEvidence": [
+        "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
+        "src/components/platform/PlayerVoyageRoom.test.tsx#backgrounded visibility-transition recovery",
+        "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup",
         "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
         "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, K, L, M, U, V"
@@ -76,5 +79,5 @@
   "phase": "Phase 4 - Break the Surface",
   "project": "Project Deepwater",
   "schemaVersion": "1.0.0",
-  "sourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c"
+  "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d"
 }
