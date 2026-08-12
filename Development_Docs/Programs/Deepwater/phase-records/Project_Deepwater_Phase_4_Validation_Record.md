@@ -24,20 +24,24 @@ Admiralty Phase 2 then protected-merged PR #28 and advanced current main to
 a read-only cross-domain Chartroom and dossier-anchored Support Access, without
 adding a catalog denominator entry. FT-036 remains `BRANCH_COMPLETE_NOT_MERGED`
 because its separate owner-controlled record promotion is pending; Deepwater
-records that condition without changing its owner state. The current Deepwater
-product-evidence source is `5806ccb3d705eb04322a7be1d176d97dd6f2da9e`. It
+records that condition without changing its owner state. PR #56 then advanced
+accepted main to `541e914f481883200569f8cc7ec5ec9428d7cbb7` with advisory
+Admiralty closure evidence and a governed Helm-browser setup stabilization.
+It adds no product capability or Feature Catalog denominator entry, but
+supersedes the r5 candidate. The current Deepwater product-evidence source is
+`399865a70d2b7eeb83d12afd718702834252f870`. It
 retains Helm's accepted route recovery, detaches stale Player event streams on
 cancellation or abort, and rechecks the waiting-room state after visibility
 settles so an authoritative launch cannot strand a backgrounded Player.
 
-The focused Player, Captain, and stream suite passes 26/26. Drydock current
-source qualification passes the owner Sea Trials suite 196/196; its SQLite
-migration rehearsal verifies 59 migrations and MySQL static parity. Admiralty
-passes 14 direct capability, read-model, and redaction tests; its validator
-checks 15 routes, its migrations pass, and its task-owned browser suite passes
-3/3. Bridgewatch validates and builds with 24 focused tests. The exact isolated
+The focused Player, Captain, and stream suite passes 26/26. The exact isolated
 Helm browser family passes 3/3 in execute-only mode with clean runtime
-conformance. The dependency-seed copier now skips junction descendants already
+conformance at the new source. Drydock current-source qualification passes the
+owner Sea Trials suite 196/196; its SQLite migration rehearsal verifies 59
+migrations and MySQL static parity. Admiralty passes 14 direct capability,
+read-model, and redaction tests; its validator checks 15 routes and its
+migrations pass. Bridgewatch validates and builds with 24 focused tests. The
+dependency-seed copier now skips junction descendants already
 covered by a retained root and cleanly removes an owned runtime on initialization
 failure; its authority-cutover and runtime-safety regressions pass. The refreshed
 Deepwater audit and validator pass for 58 capabilities with semantic digest
@@ -53,15 +57,15 @@ records owner or product acceptance nor substitutes for a canonical hosted
 Mainline Decision. Phase 4 has not been accepted into protected main or proven
 on exact main.
 
-| Gate                           | Result                                                                                           | Boundary                                                             |
-| ------------------------------ | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
-| Deepwater proof-model tests    | PASS; 66/66                                                                                      | Deterministic local control-plane tests                              |
-| Historical hosted decisions    | `EVIDENCE_INVALID`; runs 31605432896 and 31609917108; cleanup CLEAN                              | Historical only; neither candidate may seek authority                |
-| Helm repair qualification      | PASS; invitation, Player, and stream tests 26/26; `browser.helm` 3/3                             | Isolated execute-only evidence; cannot issue `RELEASE_GO`            |
-| Drydock Creator qualification  | PASS; 33/33, 3/3, 7/7, and 196/196; migration rehearsal PASS                                     | Private Studio Sea Trials; no owner-state override                   |
-| Admiralty current-source scope | PASS; 14 direct tests, 15-route validator, migrations, browser 3/3                               | Read-only support and role boundaries; no catalog denominator change |
-| Deepwater audit and validation | PASS; 58 capabilities; digest `4886d25203da77b21a46d1a5b330f028ace150ea2677146f8352af664a691813` | Current product source only; no acceptance claim                     |
-| Bridgewatch qualification      | PASS; typecheck, 24 tests, build                                                                 | Private operator surface; no public-product or release authority     |
+| Gate                           | Result                                                                                                             | Boundary                                                             |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
+| Deepwater proof-model tests    | PASS; 66/66                                                                                                        | Deterministic local control-plane tests                              |
+| Historical hosted decisions    | `EVIDENCE_INVALID`; runs 31605432896 and 31609917108; cleanup CLEAN                                                | Historical only; neither candidate may seek authority                |
+| Helm repair qualification      | PASS; invitation, Player, and stream tests 26/26; `browser.helm` 3/3 at `399865a70d2b7eeb83d12afd718702834252f870` | Isolated execute-only evidence; cannot issue `RELEASE_GO`            |
+| Drydock Creator qualification  | PASS; 33/33, 3/3, 7/7, and 196/196; migration rehearsal PASS                                                       | Private Studio Sea Trials; no owner-state override                   |
+| Admiralty current-source scope | PASS; 14 direct tests, 15-route validator, migrations, browser 3/3                                                 | Read-only support and role boundaries; no catalog denominator change |
+| Deepwater audit and validation | PASS; 58 capabilities; digest `4886d25203da77b21a46d1a5b330f028ace150ea2677146f8352af664a691813`                   | Current product source only; no acceptance claim                     |
+| Bridgewatch qualification      | PASS; typecheck, 24 tests, build                                                                                   | Private operator surface; no public-product or release authority     |
 
 ## Runtime proof boundary
 
@@ -75,7 +79,7 @@ protected-main acceptance.
 
 ## Remaining serialized gates
 
-1. The current reconciled branch is frozen as one candidate; acquire the canonical serialized acceptance lane and dispatch exactly one hosted **Sounding Line / Mainline Decision** for that frozen candidate.
+1. The reconciled branch is frozen as one fresh candidate. Wait for the active serialized Mainline Decision to terminate; only after explicit lane ownership is available may this candidate dispatch exactly one hosted **Sounding Line / Mainline Decision**.
 2. Only after `RELEASE_GO`, complete protected merge, exact-main proof, and a
    separately source-bound closure record.
 
