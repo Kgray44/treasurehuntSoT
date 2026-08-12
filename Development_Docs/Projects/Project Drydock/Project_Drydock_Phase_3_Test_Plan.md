@@ -79,8 +79,12 @@ the three-case browser selection cleanly. Policy, Prisma, generated client,
 typecheck, static, Sounding Line runtime, production build, documentation, and
 Feature Catalog checks also passed.
 
-The next commit is frozen under tag
-`project-drydock-phase3-candidate-20260812-r4`. It is the only current
-replacement candidate eligible for one explicit Mainline Decision after
-canonical acceptance ownership is acquired. The r3 candidate remains terminal
-history and must never be retried.
+Candidate r4 (`fd57f0f23330d86502808b197c2b9d5f3a90e422`, tagged
+`project-drydock-phase3-candidate-20260812-r4`) consumed its one hosted
+Mainline Decision in run `31612564391`. The finalizer returned
+`EVIDENCE_INVALID` solely because `unit.feature-catalog` expected 45 audited
+entries while the branch-complete Phase 3 fragment makes the correct count 46;
+the other 17 receipts passed with clean teardown. The candidate is terminal and
+must not be retried. The next lifecycle step is the smallest Feature Catalog
+test after the count repair, followed by the complete replacement-candidate
+qualification and a new freeze before any new authority request.
