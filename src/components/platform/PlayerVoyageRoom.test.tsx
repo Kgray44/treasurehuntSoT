@@ -249,6 +249,24 @@ describe("PlayerVoyageRoom", () => {
     await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1/journal"));
   });
 
+  it("does not defer an authoritative launch handoff behind a backgrounded ceremony", async () => {
+    const handoff = vi.fn();
+    const active = {
+      ...voyage,
+      status: "ACTIVE",
+      state: "IN_PROGRESS",
+      canEnter: true,
+      runtimeHref: "/player/playthroughs/voyage-1/journal",
+    };
+    motion.mode = "full";
+    vi.spyOn(document, "hidden", "get").mockReturnValue(true);
+    vi.stubGlobal("EventSource", FakeEventSource);
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, body(active))));
+    renderRoom(handoff);
+
+    await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1/journal"));
+  });
+
   it("reconciles immediately when a waiting room regains focus after launch", async () => {
     const handoff = vi.fn();
     const active = {

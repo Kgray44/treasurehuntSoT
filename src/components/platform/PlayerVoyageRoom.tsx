@@ -344,7 +344,9 @@ export function PlayerVoyageRoom({
           setError("The voyage launched, but the journal route could not open. Try again.");
         }
       },
-      showCeremony ? ceremonyToken.durationMs : 0,
+      // Background documents throttle timers. The authoritative launch route
+      // must not wait behind a ceremony that the browser cannot present.
+      showCeremony && !document.hidden ? ceremonyToken.durationMs : 0,
     );
     launchHandoffTimer.current = timer;
   }, [
