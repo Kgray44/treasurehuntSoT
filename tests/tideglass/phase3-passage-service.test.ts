@@ -38,4 +38,17 @@ describe("Tideglass Phase 3 server-passage authorization", () => {
 
     expect(result).toMatchObject({ ok: false, code: "EDITION_NOT_AUTHORIZED" });
   });
+
+  it("fails closed for a redacted exact edition without exposing its retained contents", async () => {
+    const source = edition("edition-redacted", baseSnapshot(), { retainedState: "REDACTED" });
+    const target = edition("edition-playable", clone(baseSnapshot()));
+    const result = await compareExactEditions(
+      constrainTideglassPassageRepository(new FixtureRepository([source, target]), [source.id, target.id]),
+      { kind: "PASSAGE", subjectId: "public:synthetic-chronicle" },
+      { chronicleId: source.chronicleId, sourceEditionId: source.id, targetEditionId: target.id },
+      { cache: null },
+    );
+    expect(result).toMatchObject({ ok: false, code: "EDITION_NOT_AUTHORIZED" });
+    expect(JSON.stringify(result)).not.toContain("contentSnapshot");
+  });
 });

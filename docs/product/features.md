@@ -135,10 +135,12 @@ Project Tideglass Phase 1 provides the accepted exact immutable edition
 comparison foundation. The accepted Phase 2 extension adds server-side
 intelligence with stable change codes, explainable significance and
 compatibility, spoiler-safe audience projections, deterministic summaries,
-append-only Creator annotations, and bounded safe APIs. Phase 2 is on main but
-adds no ordinary comparison page, navigation entry, or played-history
-qualification; those remain later work. Repository validation is local and
-synthetic, and no deployment or production MySQL execution is claimed.
+append-only Creator annotations, and bounded safe APIs. Phase 2 is on main.
+The Phase 3 ordinary comparison page, navigation entry, owned played-history
+handoff, and Studio semantic comparison are currently an unmerged worktree
+under local qualification, not an available-on-main feature. Repository
+validation is local and synthetic, and no deployment or production MySQL
+execution is claimed.
 
 Project Drydock Phase 3 is active implementation on its dedicated branch. It
 adds Creator-only, source-bound deterministic Sea Trials with revisioned

@@ -9,6 +9,18 @@ const comparison: TideglassStudioComparisonDto = {
   projection: {
     projectionStatus: "COMPLETE",
     visibleChangeCount: 2,
+    changes: [
+      {
+        changeCode: "TG-STRUCTURE-ROUTE",
+        category: "STRUCTURE",
+        kind: "MODIFIED",
+        significance: "MAJOR",
+        disclosureState: "VISIBLE",
+        compatibilityRelevant: false,
+        entityType: "CHAPTER",
+        entityId: "synthetic-chapter",
+      },
+    ],
     summary: {
       headline: { templateKey: "tideglass.summary.overall", parameters: { visibleChangeCount: 2 } },
       categoryGroups: [
@@ -41,6 +53,8 @@ describe("TideglassStudioComparison", () => {
     expect(screen.getByText("Structure")).toBeInTheDocument();
     expect(screen.getByText("2 semantic changes")).toBeInTheDocument();
     expect(screen.getByText("platform: potentially breaking")).toBeInTheDocument();
+    expect(screen.getByText("Technical semantic detail")).toBeInTheDocument();
+    expect(screen.getByText("TG-STRUCTURE-ROUTE")).toBeInTheDocument();
     expect(screen.queryByText(/PRIVATE_RAW_PATH|before|after/i)).not.toBeInTheDocument();
   });
 });

@@ -51,9 +51,17 @@ export async function loadTideglassPassageContext(
       status: true,
       visibility: true,
       archivedAt: true,
+      creatorAccount: { select: { profile: { select: { displayName: true } } } },
       versions: {
         orderBy: { versionNumber: "asc" },
-        select: { id: true, versionLabel: true, publishedAt: true, isCurrent: true },
+        select: {
+          id: true,
+          versionLabel: true,
+          publishedAt: true,
+          publishedBy: true,
+          releaseNotes: true,
+          isCurrent: true,
+        },
       },
     },
   });
@@ -67,6 +75,8 @@ export async function loadTideglassPassageContext(
           id: true,
           publishedVersionId: true,
           publishedVersionChecksum: true,
+          lifecycleStatus: true,
+          outcome: true,
           completedAt: true,
         },
       })
@@ -86,6 +96,9 @@ export async function loadTideglassPassageContext(
       id: edition.id,
       label: `Edition ${edition.versionLabel}`,
       publishedAt: edition.publishedAt.toISOString(),
+      creatorName: chronicle.creatorAccount?.profile?.displayName ?? "Voyagewright Creator",
+      releaseNotes: edition.releaseNotes,
+      compatibilitySummary: "Compatibility is assessed for the exact pair you choose.",
       availability: edition.isCurrent ? "PLAYABLE" : "HISTORICAL_ONLY",
     })),
     // Publishing sets this pointer atomically with the version used by new Voyage creation.
@@ -95,6 +108,8 @@ export async function loadTideglassPassageContext(
       recordId: anchor.id,
       editionId: anchor.publishedVersionId,
       editionChecksum: anchor.publishedVersionChecksum,
+      lifecycleStatus: anchor.lifecycleStatus,
+      outcome: anchor.outcome,
       completedAt: anchor.completedAt?.toISOString() ?? null,
     })),
     allowedEditionIds: [...allowedEditionIds],

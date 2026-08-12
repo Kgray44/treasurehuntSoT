@@ -19,6 +19,9 @@ export type TideglassEditionOption = {
   id: string;
   label: string;
   publishedAt: string;
+  creatorName: string;
+  releaseNotes: string | null;
+  compatibilitySummary: string;
   availability?: TideglassEditionAvailability | null;
 };
 
@@ -26,6 +29,8 @@ export type TideglassPlayedAnchor = {
   recordId: string;
   editionId: string;
   editionChecksum: string;
+  lifecycleStatus: string;
+  outcome: string;
   completedAt: string | null;
 };
 

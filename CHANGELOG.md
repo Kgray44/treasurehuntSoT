@@ -30,13 +30,15 @@ last_reviewed: 2026-08-12
   focused local branch evidence only; it is not candidate-qualified, on main,
   deployed, or owner accepted.
 
-- Implemented the Project Tideglass Phase 3 candidate on its dedicated branch:
-  a discoverable Chronicle `What changed?` route, exact owner-bound Passport
-  history entry, current-publishing edition target, spoiler-safe concise and
-  detailed semantic views, category filtering, and semantic Creator Studio
-  comparison. The storage-oriented Studio diff is retired. This is local
-  branch implementation only; candidate qualification, owner walkthrough,
-  protected merge, and deployment remain separate gates.
+- Project Tideglass Phase 3 implementation is in local qualification on its
+  dedicated branch: a discoverable Chronicle `What changed?` route, exact
+  owner-bound Passport history entry, publishing-owned recommended target,
+  spoiler-safe concise/detailed semantic views, category filtering, edition
+  context, and semantic Creator Studio comparison. The storage-oriented Studio
+  product diff is retired. A v2 task-owned fixture exercises history, partial,
+  branch/ending/setup/accessibility/compatibility, and Creator-annotation
+  outcomes. This is not a frozen candidate, owner acceptance, protected merge,
+  deployment, or live-provider claim.
 
 - Added Project Helm Phase 1 participating-Captain operation. Voyage creation
   now defaults to Captain-only and offers an explicit Captain + Player mode

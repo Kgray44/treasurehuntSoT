@@ -17,5 +17,8 @@
   "phase2IntegratedMainSha": "3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3",
   "phase2AncestryVerifiedAgainst": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
   "integrationRule": "Independent mainline-safe phase. Do not stack Phase 4 or consume unaccepted Wakebook, Shipwright, or Helm source.",
-  "registeredAt": "2026-08-12"
+  "registeredAt": "2026-08-12",
+  "reopenedReason": "The initial candidate lacked a repository-backed fixture and did not exercise the full governed Phase 3 state matrix. It was superseded before owner walkthrough or authority dispatch.",
+  "candidateEvidence": "The sealed candidate source identity, fixture receipt, and screenshot manifest are generated in the task-owned Phase 3 walkthrough root. No owner acceptance or authority decision is represented here.",
+  "nextGate": "Present the sealed candidate for canonical owner walkthrough acceptance. Only then may the one Sounding Line Mainline Decision be dispatched."
 }

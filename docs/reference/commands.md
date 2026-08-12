@@ -3,7 +3,7 @@ title: Command reference
 audience: reference
 status: current
 canonical_for: command-reference
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-12
 ---
 
 # Command reference
@@ -18,6 +18,9 @@ last_reviewed: 2026-08-09
 | `npm run docs:validate`                                                                                             | Validate documentation governance.                          |
 | `npm run private-content:scan`                                                                                      | Run the private-content scanner.                            |
 | `npm run tideglass:compare -- --account <account-id> --chronicle <id> --from <edition-id> --to <edition-id> --json` | Run the authorized, read-only Tideglass edition diagnostic. |
+| `npm run tideglass:phase3:validate`                                                                                 | Check Phase 3 source and route contracts.                   |
+| `npm run tideglass:phase3:fixture`                                                                                  | Prepare the task-owned Phase 3 synthetic SQLite fixture.    |
+| `npm run tideglass:phase3:journeys`                                                                                 | Run the isolated Phase 3 production-browser journey.        |
 | `npm run validate`                                                                                                  | Run the complete repository gate.                           |
 | `npm run admiralty:validate`                                                                                        | Validate Admiralty Phase 1 policy.                          |
 | `npm run admiralty:migrations`                                                                                      | Rehearse its SQLite migrations.                             |
@@ -32,7 +35,7 @@ directory. See [administrator bootstrap](../administrator/admiralty-bootstrap.md
 
 Database and private-content commands require an explicitly selected, authorized environment. See [database and migrations](../developer/database-and-migrations.md).
 
-The Tideglass command is a trusted local development diagnostic. It requires an exact canonical account, Chronicle, and two immutable edition IDs; it emits a redacted server projection and never a raw snapshot. It is not an ordinary product route or a substitute for Sounding Line acceptance.
+The Tideglass diagnostic command requires an exact canonical account, Chronicle, and two immutable edition IDs; it emits a redacted server projection and never a raw snapshot. The Phase 3 commands are available only for its dedicated worktree and task-owned fixture. Neither is a substitute for Sounding Line acceptance.
 
 ## Phase 7 correction Round 2 status
 

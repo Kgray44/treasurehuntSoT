@@ -12,15 +12,15 @@ Phase 3 creates the ordinary, discoverable **What Changed?** experience over the
 
 ## Frozen authority and baseline
 
-| Item                        | Frozen value                                                                                                                                              |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Actual `origin/main` base   | `236c27241bb8d1630274f5d5412ec9addbdb8893`                                                                                                                |
-| Dedicated branch            | `codex/project-tideglass-phase3-choose-the-passage`                                                                                                       |
-| Dedicated worktree          | `C:\Users\kkids\Documents\treasurehuntSoT-tideglass-phase3-choose-the-passage`                                                                            |
-| Phase 2 status and ancestry | `ACCEPTED_MAINLINE`; integrated `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3` is an ancestor of the actual base                                              |
-| Preserved semantic policies | `tideglass.semantic.v1`, `tideglass.policy.v1`, `tideglass.change-codes.v1`, `tideglass.projection.v1`, `tideglass.summary.v1`, `tideglass.annotation.v1` |
-| Prisma and migrations       | None. The existing immutable editions, annotation rows, and Wayfarer history records satisfy this phase.                                                  |
-| Release authority           | One explicit, exact-SHA `Sounding Line / Mainline Decision` only after candidate qualification, current-main reconciliation, and owner acceptance.        |
+| Item                               | Frozen value                                                                                                                                              |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Initial fetched `origin/main` base | `54e3d818d49d45282a9c419d562d4b5c78911ccd`                                                                                                                |
+| Dedicated branch                   | `codex/project-tideglass-phase3-choose-the-passage`                                                                                                       |
+| Dedicated worktree                 | `C:\Users\kkids\Documents\treasurehuntSoT-tideglass-phase3-choose-the-passage`                                                                            |
+| Phase 2 status and ancestry        | `ACCEPTED_MAINLINE`; integrated `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3` is an ancestor of the actual base                                              |
+| Preserved semantic policies        | `tideglass.semantic.v1`, `tideglass.policy.v1`, `tideglass.change-codes.v1`, `tideglass.projection.v1`, `tideglass.summary.v1`, `tideglass.annotation.v1` |
+| Prisma and migrations              | None. The existing immutable editions, annotation rows, and Wayfarer history records satisfy this phase.                                                  |
+| Release authority                  | One explicit, exact-SHA `Sounding Line / Mainline Decision` only after candidate qualification, current-main reconciliation, and owner acceptance.        |
 
 The governing order is the current repository rules, Global Product Governance Standard, Project Tideglass governing document, Continuous Development and Mainline Integration Standard, effective Sounding Line authority, accepted Phase 1/2 records, accepted cross-project contracts, and current source. The pasted Phase 3 authorization supersedes only the historical Phase 2 statement that Phase 3 was then unauthorized; it does not rewrite that receipt.
 
@@ -71,4 +71,4 @@ The edition selector DTO is a server-derived list of exact IDs, human labels, pu
 
 ## Candidate and owner gates
 
-Each implementation change follows the mandatory focused-test lifecycle. Once the complete candidate passes Tideglass, Wayfarer, Studio, navigation, browser, accessibility, static, documentation, catalog, and build qualification, this task stops at `TIDEGLASS PHASE 3 READY FOR OWNER WALKTHROUGH`. The owner must inspect the running synthetic product and explicitly accept it before reconciliation, one frozen-candidate Mainline Decision, protected merge, exact-main proof, and closure records.
+Each implementation change follows the mandatory focused-test lifecycle. Once the complete candidate passes Tideglass, Wayfarer, Studio, navigation, browser, accessibility, static, documentation, catalog, and build qualification, this task reconciles fetched `origin/main` once, freezes one candidate, and stops at `TIDEGLASS PHASE 3 READY FOR OWNER WALKTHROUGH`. The owner must inspect the running synthetic product and explicitly accept it before one frozen-candidate Mainline Decision, protected merge, exact-main proof, and closure records.

@@ -2,13 +2,21 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { TideglassChangeCards, type TideglassSemanticChange } from "@/components/tideglass/TideglassChangeCards";
+import { TideglassEditionCard } from "@/components/tideglass/TideglassEditionCard";
 import { editionStatusBadges, safeTideglassReturnPath, type TideglassEditionOption } from "@/tideglass/passage";
 
 export type TideglassPassageContextDto = {
   chronicle: { slug: string; title: string };
   editions: TideglassEditionOption[];
   recommendation: { available: boolean; editionId?: string; reason?: string };
-  playedAnchors: Array<{ recordId: string; editionId: string; completedAt: string | null }>;
+  playedAnchors: Array<{
+    recordId: string;
+    editionId: string;
+    lifecycleStatus: string;
+    outcome: string;
+    completedAt: string | null;
+  }>;
 };
 
 type PassageSummaryLine = {
@@ -29,6 +37,7 @@ type PassageCategoryGroup = {
 type PassageProjection = {
   projectionStatus?: "NO_MEANINGFUL_CHANGE" | "PARTIAL" | "AVAILABLE" | "COMPLETE" | "PROJECTED";
   visibleChangeCount?: number;
+  changes?: TideglassSemanticChange[];
   summary?: {
     headline?: PassageSummaryLine | string | null;
     categoryGroups?: PassageCategoryGroup[];
@@ -49,7 +58,24 @@ export type TideglassPassageComparisonDto = {
   projection?: PassageProjection;
 };
 
-type PassageError = { error?: string; code?: string };
+type PassageError = { error?: string; code?: string; correlationId?: string };
+
+function safeFailureMessage(code: string | null, fallback: string) {
+  if (code === "TIDEGLASS_UNAUTHORIZED") return "This comparison is unavailable.";
+  if (code === "TIDEGLASS_SOURCE_UNAVAILABLE" || code === "TIDEGLASS_TARGET_UNAVAILABLE")
+    return "A selected edition is no longer available. Choose another edition.";
+  if (code === "TIDEGLASS_ANNOTATION_UNAVAILABLE") return "Creator guidance is unavailable for this comparison.";
+  if (code === "TIDEGLASS_MEDIA_UNAVAILABLE") return "Some media details are unavailable for this comparison.";
+  return fallback;
+}
+
+function unavailableSectionCopy(section: { section?: string; code?: string }) {
+  const value = `${section.section ?? ""}:${section.code ?? ""}`.toUpperCase();
+  if (value.includes("ANNOTATION")) return "Creator guidance is unavailable for this comparison.";
+  if (value.includes("MEDIA") || value.includes("CAPTION"))
+    return "Some media details are unavailable for this comparison.";
+  return "Some location behavior could not be compared for this historical edition.";
+}
 
 function labelForCategory(category?: string) {
   return (category ?? "Chronicle").replaceAll("_", " ").toLocaleLowerCase();
@@ -78,6 +104,15 @@ function categoryGroupCopy(group: PassageCategoryGroup) {
   const category = labelForCategory(group.category ?? line?.category);
   if (count === null) return `Changes to ${category} are available to review.`;
   return `${count} ${category} ${count === 1 ? "change is" : "changes are"} available to review.`;
+}
+
+function recordedVoyageLabel(anchor: TideglassPassageContextDto["playedAnchors"][number]) {
+  const lifecycle = anchor.lifecycleStatus.replaceAll("_", " ").toLocaleLowerCase();
+  const outcome = anchor.outcome.replaceAll("_", " ").toLocaleLowerCase();
+  const completed = anchor.completedAt
+    ? `completed ${new Date(anchor.completedAt).toLocaleDateString()}`
+    : "not completed";
+  return `${completed}; ${lifecycle}; ${outcome}`;
 }
 
 function compatibilityCopy(compatibility: NonNullable<NonNullable<PassageProjection["summary"]>["compatibility"]>) {
@@ -126,6 +161,7 @@ export function TideglassPassage({
   const [loading, setLoading] = useState(!initialContext);
   const [comparing, setComparing] = useState(false);
   const [error, setError] = useState("");
+  const [correlationId, setCorrelationId] = useState<string | null>(null);
   const [detailsRevealed, setDetailsRevealed] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState("ALL");
   const requestedInitialComparison = useRef(Boolean(initialComparison));
@@ -136,10 +172,16 @@ export function TideglassPassage({
   const loadContext = useCallback(async () => {
     setLoading(true);
     setError("");
+    setCorrelationId(null);
     try {
       const response = await fetch(`/api/tideglass/chronicles/${encodeURIComponent(taleSlug)}`, { cache: "no-store" });
       const body = (await response.json()) as TideglassPassageContextDto & PassageError;
-      if (!response.ok) throw new Error(body.error ?? "This Chronicle comparison is unavailable.");
+      if (!response.ok) {
+        setCorrelationId(body.correlationId ?? null);
+        throw new Error(
+          safeFailureMessage(body.code ?? null, body.error ?? "This Chronicle comparison is unavailable."),
+        );
+      }
       setContext(body);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "This Chronicle comparison is unavailable.");
@@ -173,6 +215,7 @@ export function TideglassPassage({
       }
       setComparing(true);
       setError("");
+      setCorrelationId(null);
       try {
         const response = await fetch(`/api/tideglass/chronicles/${encodeURIComponent(taleSlug)}`, {
           method: "POST",
@@ -185,7 +228,10 @@ export function TideglassPassage({
           }),
         });
         const body = (await response.json()) as TideglassPassageComparisonDto & PassageError;
-        if (!response.ok) throw new Error(body.error ?? "This edition pair cannot be compared.");
+        if (!response.ok) {
+          setCorrelationId(body.correlationId ?? null);
+          throw new Error(safeFailureMessage(body.code ?? null, body.error ?? "This edition pair cannot be compared."));
+        }
         setMode(requestedMode);
         setComparison(body);
       } catch (cause) {
@@ -223,6 +269,15 @@ export function TideglassPassage({
     () => (summary?.compatibility ? compatibilityCopy(summary.compatibility) : null),
     [summary],
   );
+  const sourceEdition = context?.editions.find((edition) => edition.id === selectedSourceEditionId) ?? null;
+  const targetEdition = context?.editions.find((edition) => edition.id === selectedTargetEditionId) ?? null;
+  const editionContext = context
+    ? {
+        recommendedEditionId: context.recommendation.available ? context.recommendation.editionId : null,
+        earliestEditionId: context.editions.at(0)?.id,
+        playedEditionIds: new Set(context.playedAnchors.map((anchor) => anchor.editionId)),
+      }
+    : null;
 
   if (loading)
     return (
@@ -238,6 +293,7 @@ export function TideglassPassage({
       <section className="tideglass-passage" role="alert">
         <Heading>What changed?</Heading>
         <p>{error || "This Chronicle comparison is unavailable."}</p>
+        {correlationId ? <p>Reference: {correlationId}</p> : null}
         <button type="button" className="community-button community-button--primary" onClick={() => void loadContext()}>
           Try again
         </button>
@@ -298,7 +354,7 @@ export function TideglassPassage({
               requestedInitialComparison.current = true;
             }}
           >
-            Compare to current publishing edition
+            Compare to recommended
           </button>
         </div>
         <label>
@@ -338,14 +394,16 @@ export function TideglassPassage({
             <option value="">Compare without a recorded Voyage</option>
             {context.playedAnchors.map((anchor) => (
               <option key={anchor.recordId} value={anchor.recordId}>
-                {anchor.completedAt
-                  ? `Completed ${new Date(anchor.completedAt).toLocaleDateString()}`
-                  : "Recorded Voyage"}
+                {recordedVoyageLabel(anchor)}
               </option>
             ))}
           </select>
         </label>
-      ) : null}
+      ) : (
+        <p className="tideglass-passage__empty-state">
+          No recorded Voyage is available for this Chronicle. You can still compare its public editions.
+        </p>
+      )}
 
       <div className="tideglass-passage__actions">
         <button
@@ -361,15 +419,31 @@ export function TideglassPassage({
         </Link>
       </div>
 
+      {sourceEdition && targetEdition && editionContext ? (
+        <section className="tideglass-passage__edition-context" aria-label="Selected edition context">
+          <TideglassEditionCard
+            label="Starting edition"
+            edition={sourceEdition}
+            badges={editionStatusBadges(sourceEdition, editionContext)}
+          />
+          <TideglassEditionCard
+            label="Edition to review"
+            edition={targetEdition}
+            badges={editionStatusBadges(targetEdition, editionContext)}
+          />
+        </section>
+      ) : null}
+
       {error ? (
-        <p className="tideglass-passage__error" role="alert">
-          {error}
-        </p>
+        <div className="tideglass-passage__error" role="alert">
+          <p>{error}</p>
+          {correlationId ? <p>Reference: {correlationId}</p> : null}
+        </div>
       ) : null}
 
       {comparison?.selection?.kind === "UP_TO_DATE" ? (
         <section className="tideglass-passage__result" aria-live="polite">
-          <h2>You already played this current edition</h2>
+          <h2>You are up to date.</h2>
           <p>{sourceLabel} is the current publishing edition for this Chronicle.</p>
         </section>
       ) : null}
@@ -391,7 +465,13 @@ export function TideglassPassage({
             </p>
           ) : null}
           {summary?.unavailableSections?.length ? (
-            <p className="tideglass-passage__limitation">Some semantic sections could not be compared.</p>
+            <ul className="tideglass-passage__limitation" aria-label="Unavailable comparison details">
+              {summary.unavailableSections.map((section, index) => (
+                <li key={`${section.section ?? "section"}-${section.code ?? index}`}>
+                  {unavailableSectionCopy(section)}
+                </li>
+              ))}
+            </ul>
           ) : null}
 
           {revealedGroups.some((group) => group.disclosureState === "DISCLOSABLE") ? (
@@ -399,6 +479,7 @@ export function TideglassPassage({
               type="button"
               className="community-button community-button--quiet"
               onClick={() => setDetailsRevealed((current) => !current)}
+              aria-expanded={detailsRevealed}
             >
               {detailsRevealed ? "Hide safe-to-reveal details" : "Show safe-to-reveal details"}
             </button>
@@ -424,6 +505,7 @@ export function TideglassPassage({
                 <article key={group.id ?? `${group.category ?? "category"}-${index}`}>
                   <h3>{group.label ?? labelForCategory(group.category)}</h3>
                   <p>{categoryGroupCopy(group)}</p>
+                  <TideglassChangeCards changes={projection.changes ?? []} category={group.category} />
                 </article>
               ))}
             </section>

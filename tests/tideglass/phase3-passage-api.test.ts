@@ -8,6 +8,7 @@ const mocks = vi.hoisted(() => ({
   rate: vi.fn(),
   parse: vi.fn(),
   safeError: vi.fn(),
+  unavailable: vi.fn(),
 }));
 
 vi.mock("@/wayfarer/http", () => ({ requireWayfarerAccount: mocks.session }));
@@ -19,6 +20,7 @@ vi.mock("@/tideglass/http", () => ({
   enforceTideglassRateLimit: mocks.rate,
   parseBoundedTideglassJson: mocks.parse,
   tideglassSafeError: mocks.safeError,
+  tideglassUnavailable: mocks.unavailable,
 }));
 
 const context = {
@@ -55,6 +57,9 @@ describe("Tideglass Phase 3 passage API", () => {
     mocks.safeError
       .mockReset()
       .mockReturnValue(NextResponse.json({ code: "TIDEGLASS_INTERNAL_FAILURE" }, { status: 500 }));
+    mocks.unavailable
+      .mockReset()
+      .mockReturnValue(NextResponse.json({ code: "TIDEGLASS_UNAVAILABLE" }, { status: 404 }));
   });
 
   it("returns a narrow server-derived context without checksums or internal authorization sets", async () => {

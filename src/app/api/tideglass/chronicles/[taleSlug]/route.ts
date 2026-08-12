@@ -2,7 +2,12 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireWayfarerAccount } from "@/wayfarer/http";
 import { compareTideglassPassage, loadTideglassPassageContext } from "@/tideglass/passage-service";
-import { enforceTideglassRateLimit, parseBoundedTideglassJson, tideglassSafeError } from "@/tideglass/http";
+import {
+  enforceTideglassRateLimit,
+  parseBoundedTideglassJson,
+  tideglassSafeError,
+  tideglassUnavailable,
+} from "@/tideglass/http";
 
 const requestSchema = z
   .object({
@@ -27,16 +32,18 @@ function contextDto(context: NonNullable<Awaited<ReturnType<typeof loadTideglass
     recommendation: context.recommendedEditionId
       ? { available: true, editionId: context.recommendedEditionId }
       : { available: false, reason: "No current publishing selection is available for this Chronicle." },
-    playedAnchors: context.playedAnchors.map(({ recordId, editionId, completedAt }) => ({
+    playedAnchors: context.playedAnchors.map(({ recordId, editionId, lifecycleStatus, outcome, completedAt }) => ({
       recordId,
       editionId,
+      lifecycleStatus,
+      outcome,
       completedAt,
     })),
   };
 }
 
-function unavailable() {
-  return NextResponse.json({ code: "TIDEGLASS_UNAVAILABLE" }, { status: 404 });
+function unavailable(correlationId?: string) {
+  return tideglassUnavailable(correlationId);
 }
 
 export async function GET(_: Request, context: { params: Promise<{ taleSlug: string }> }) {
@@ -81,7 +88,7 @@ export async function POST(request: Request, context: { params: Promise<{ taleSl
       historyRecordId: parsed.data.historyRecord,
       mode: parsed.data.mode,
     });
-    if (result.kind === "UNAVAILABLE") return unavailable();
+    if (result.kind === "UNAVAILABLE") return unavailable(result.correlationId);
     if (result.kind === "SELECTION")
       return NextResponse.json({ code: `TIDEGLASS_${result.selection.kind}` }, { status: 409, headers: rate.headers });
     return NextResponse.json(

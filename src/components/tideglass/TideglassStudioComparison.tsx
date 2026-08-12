@@ -1,8 +1,11 @@
+import { TideglassChangeCards, type TideglassSemanticChange } from "@/components/tideglass/TideglassChangeCards";
+
 export type TideglassStudioComparisonDto = {
   selection: { kind: "PAIR" | "UP_TO_DATE"; sourceEditionId: string; targetEditionId: string };
   projection: {
     projectionStatus: string;
     visibleChangeCount: number;
+    changes: TideglassSemanticChange[];
     summary: {
       headline: { templateKey?: string; parameters?: { visibleChangeCount?: unknown } } | null;
       categoryGroups: Array<{
@@ -84,6 +87,13 @@ export function TideglassStudioComparison({
               </article>
             );
           })}
+        </section>
+      ) : null}
+      {projection.changes.length ? (
+        <section aria-label="Creator semantic change detail">
+          <h4>Technical semantic detail</h4>
+          <p>These are governed Tideglass records, not a raw storage diff.</p>
+          <TideglassChangeCards changes={projection.changes} creatorTechnical />
         </section>
       ) : null}
       {projection.summary.compatibility.length ? (

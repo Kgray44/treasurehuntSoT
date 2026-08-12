@@ -10,9 +10,33 @@ import {
 } from "../../src/tideglass/passage";
 
 const editions: TideglassEditionOption[] = [
-  { id: "edition-a", label: "Edition A", publishedAt: "2026-08-01T00:00:00.000Z", availability: "HISTORICAL_ONLY" },
-  { id: "edition-b", label: "Edition B", publishedAt: "2026-08-02T00:00:00.000Z", availability: "PLAYABLE" },
-  { id: "edition-c", label: "Edition C", publishedAt: "2026-08-03T00:00:00.000Z", availability: "PLAYABLE" },
+  {
+    id: "edition-a",
+    label: "Edition A",
+    publishedAt: "2026-08-01T00:00:00.000Z",
+    creatorName: "Synthetic Creator",
+    releaseNotes: null,
+    compatibilitySummary: "Exact pair assessment",
+    availability: "HISTORICAL_ONLY",
+  },
+  {
+    id: "edition-b",
+    label: "Edition B",
+    publishedAt: "2026-08-02T00:00:00.000Z",
+    creatorName: "Synthetic Creator",
+    releaseNotes: "A safe release note.",
+    compatibilitySummary: "Exact pair assessment",
+    availability: "PLAYABLE",
+  },
+  {
+    id: "edition-c",
+    label: "Edition C",
+    publishedAt: "2026-08-03T00:00:00.000Z",
+    creatorName: "Synthetic Creator",
+    releaseNotes: null,
+    compatibilitySummary: "Exact pair assessment",
+    availability: "PLAYABLE",
+  },
 ];
 
 describe("Tideglass Phase 3 passage view model", () => {
@@ -33,10 +57,29 @@ describe("Tideglass Phase 3 passage view model", () => {
     ).toEqual(["PLAYED_BY_YOU", "ORIGINAL", "HISTORICAL_ONLY"]);
   });
 
+  it("keeps redaction and incompatibility status distinct from recommendation and play history", () => {
+    expect(editionStatusBadges({ ...editions[0], availability: "REDACTED" })).toEqual(["REDACTED"]);
+    expect(editionStatusBadges({ ...editions[1], availability: "INCOMPATIBLE" })).toEqual(["INCOMPATIBLE"]);
+  });
+
   it("retains each historical record as a separate exact played-anchor choice", () => {
     const anchors: TideglassPlayedAnchor[] = [
-      { recordId: "record-first", editionId: "edition-a", editionChecksum: "checksum-a", completedAt: "2026-08-01" },
-      { recordId: "record-second", editionId: "edition-b", editionChecksum: "checksum-b", completedAt: "2026-08-02" },
+      {
+        recordId: "record-first",
+        editionId: "edition-a",
+        editionChecksum: "checksum-a",
+        lifecycleStatus: "COMPLETED",
+        outcome: "SUCCESS",
+        completedAt: "2026-08-01",
+      },
+      {
+        recordId: "record-second",
+        editionId: "edition-b",
+        editionChecksum: "checksum-b",
+        lifecycleStatus: "COMPLETED",
+        outcome: "SUCCESS",
+        completedAt: "2026-08-02",
+      },
     ];
     expect(selectPlayedAnchor(anchors, "record-second")).toMatchObject({
       recordId: "record-second",
@@ -70,8 +113,22 @@ describe("Tideglass Phase 3 passage view model", () => {
       editions,
       recommendedEditionId: "edition-c",
       playedAnchors: [
-        { recordId: "record-first", editionId: "edition-a", editionChecksum: "checksum-a", completedAt: "2026-08-01" },
-        { recordId: "record-second", editionId: "edition-b", editionChecksum: "checksum-b", completedAt: "2026-08-02" },
+        {
+          recordId: "record-first",
+          editionId: "edition-a",
+          editionChecksum: "checksum-a",
+          lifecycleStatus: "COMPLETED",
+          outcome: "SUCCESS",
+          completedAt: "2026-08-01",
+        },
+        {
+          recordId: "record-second",
+          editionId: "edition-b",
+          editionChecksum: "checksum-b",
+          lifecycleStatus: "COMPLETED",
+          outcome: "SUCCESS",
+          completedAt: "2026-08-02",
+        },
       ],
       requestedHistoryRecordId: "record-first",
     });
@@ -89,7 +146,14 @@ describe("Tideglass Phase 3 passage view model", () => {
         editions,
         recommendedEditionId: "edition-c",
         playedAnchors: [
-          { recordId: "record-current", editionId: "edition-c", editionChecksum: "checksum-c", completedAt: null },
+          {
+            recordId: "record-current",
+            editionId: "edition-c",
+            editionChecksum: "checksum-c",
+            lifecycleStatus: "COMPLETED",
+            outcome: "SUCCESS",
+            completedAt: null,
+          },
         ],
       }),
     ).toMatchObject({ kind: "UP_TO_DATE", sourceEditionId: "edition-c", targetEditionId: "edition-c" });
@@ -101,7 +165,14 @@ describe("Tideglass Phase 3 passage view model", () => {
         editions,
         recommendedEditionId: "edition-c",
         playedAnchors: [
-          { recordId: "record-first", editionId: "edition-a", editionChecksum: "checksum-a", completedAt: null },
+          {
+            recordId: "record-first",
+            editionId: "edition-a",
+            editionChecksum: "checksum-a",
+            lifecycleStatus: "COMPLETED",
+            outcome: "SUCCESS",
+            completedAt: null,
+          },
         ],
         requestedHistoryRecordId: "foreign-record",
       }),

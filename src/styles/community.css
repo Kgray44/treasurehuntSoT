@@ -10,6 +10,7 @@
   --community-muted: #b9c8c1;
   --community-border: color-mix(in srgb, var(--community-teal-bright) 34%, transparent);
   width: 100%;
+  min-width: 0;
   max-width: 100%;
   overflow-x: clip;
   color: #f7f0df;
@@ -104,6 +105,7 @@ html[data-voyage-theme="light"] :where(.community-button--quiet, .community-filt
   position: relative;
   display: grid;
   width: min(100%, 92rem);
+  min-width: 0;
   min-height: clamp(18rem, 35vw, 29rem);
   align-items: end;
   gap: 2rem;
@@ -157,6 +159,7 @@ html[data-voyage-theme="light"] :where(.community-button--quiet, .community-filt
 }
 
 .community-hero__copy {
+  min-width: 0;
   max-width: 54rem;
 }
 
@@ -233,6 +236,7 @@ html[data-voyage-theme="light"] :where(.community-button--quiet, .community-filt
 .community-district-nav__track {
   display: flex;
   width: min(100%, 92rem);
+  min-width: 0;
   gap: 0.35rem;
   margin: 0 auto;
   padding: 0.6rem clamp(1rem, 4vw, 4rem);
@@ -272,6 +276,7 @@ html[data-voyage-theme="light"] :where(.community-button--quiet, .community-filt
 .community-content {
   display: grid;
   width: min(100%, 92rem);
+  min-width: 0;
   gap: clamp(4rem, 9vw, 8rem);
   margin: 0 auto;
   padding: clamp(3rem, 7vw, 6rem) clamp(1rem, 4vw, 4rem) clamp(5rem, 9vw, 9rem);
