@@ -10,6 +10,16 @@ export interface Config {
   BRIDGEWATCH_GITHUB_API: string;
   BRIDGEWATCH_GITHUB_TOKEN?: string;
   BRIDGEWATCH_REQUEST_TIMEOUT_MS: number;
+  BRIDGEWATCH_SNAPSHOT_INTERVAL_MS: number;
+  BRIDGEWATCH_SOUNDING_LINE_POLL_INTERVAL_MS: number;
+  BRIDGEWATCH_EVENT_RETENTION_DAYS: number;
+  BRIDGEWATCH_ROLLUP_RETENTION_DAYS: number;
+  BRIDGEWATCH_HISTORY_PAGE_SIZE: number;
+  BRIDGEWATCH_HISTORY_MAX_RANGE_HOURS: number;
+  BRIDGEWATCH_BRANCH_STALE_MS: number;
+  BRIDGEWATCH_REVIEW_BRANCH_STALE_MS: number;
+  BRIDGEWATCH_BRANCH_BEHIND_THRESHOLD: number;
+  BRIDGEWATCH_GITHUB_MAX_BRANCHES: number;
   BRIDGEWATCH_TELEMETRY_TOKEN?: string;
   BRIDGEWATCH_TELEMETRY_STALE_MS: number;
   BRIDGEWATCH_TELEMETRY_MAX_BODY_BYTES: number;
@@ -21,6 +31,12 @@ export interface Config {
 const integer = (value: string | undefined, fallback: number) => {
   const parsed = Number(value ?? fallback);
   if (!Number.isInteger(parsed) || parsed <= 0) throw new Error("Invalid positive integer Bridgewatch configuration");
+  return parsed;
+};
+
+const boundedInteger = (value: string | undefined, fallback: number, minimum: number, maximum: number) => {
+  const parsed = integer(value, fallback);
+  if (parsed < minimum || parsed > maximum) throw new Error("Bridgewatch configuration is outside its governed bounds");
   return parsed;
 };
 
@@ -57,6 +73,26 @@ export function loadConfig(input: Record<string, string | undefined> = process.e
     BRIDGEWATCH_GITHUB_API: api,
     BRIDGEWATCH_GITHUB_TOKEN: input.BRIDGEWATCH_GITHUB_TOKEN,
     BRIDGEWATCH_REQUEST_TIMEOUT_MS: integer(input.BRIDGEWATCH_REQUEST_TIMEOUT_MS, 8000),
+    BRIDGEWATCH_SNAPSHOT_INTERVAL_MS: boundedInteger(input.BRIDGEWATCH_SNAPSHOT_INTERVAL_MS, 60_000, 10_000, 3_600_000),
+    BRIDGEWATCH_SOUNDING_LINE_POLL_INTERVAL_MS: boundedInteger(
+      input.BRIDGEWATCH_SOUNDING_LINE_POLL_INTERVAL_MS,
+      10_000,
+      5_000,
+      60_000,
+    ),
+    BRIDGEWATCH_EVENT_RETENTION_DAYS: boundedInteger(input.BRIDGEWATCH_EVENT_RETENTION_DAYS, 30, 1, 3_650),
+    BRIDGEWATCH_ROLLUP_RETENTION_DAYS: boundedInteger(input.BRIDGEWATCH_ROLLUP_RETENTION_DAYS, 90, 1, 3_650),
+    BRIDGEWATCH_HISTORY_PAGE_SIZE: boundedInteger(input.BRIDGEWATCH_HISTORY_PAGE_SIZE, 100, 1, 250),
+    BRIDGEWATCH_HISTORY_MAX_RANGE_HOURS: boundedInteger(input.BRIDGEWATCH_HISTORY_MAX_RANGE_HOURS, 720, 1, 8_760),
+    BRIDGEWATCH_BRANCH_STALE_MS: boundedInteger(input.BRIDGEWATCH_BRANCH_STALE_MS, 604_800_000, 60_000, 31_536_000_000),
+    BRIDGEWATCH_REVIEW_BRANCH_STALE_MS: boundedInteger(
+      input.BRIDGEWATCH_REVIEW_BRANCH_STALE_MS,
+      259_200_000,
+      60_000,
+      31_536_000_000,
+    ),
+    BRIDGEWATCH_BRANCH_BEHIND_THRESHOLD: boundedInteger(input.BRIDGEWATCH_BRANCH_BEHIND_THRESHOLD, 5, 1, 10_000),
+    BRIDGEWATCH_GITHUB_MAX_BRANCHES: boundedInteger(input.BRIDGEWATCH_GITHUB_MAX_BRANCHES, 30, 1, 100),
     BRIDGEWATCH_TELEMETRY_TOKEN: input.BRIDGEWATCH_TELEMETRY_TOKEN,
     BRIDGEWATCH_TELEMETRY_STALE_MS: integer(input.BRIDGEWATCH_TELEMETRY_STALE_MS, 90_000),
     BRIDGEWATCH_TELEMETRY_MAX_BODY_BYTES: integer(input.BRIDGEWATCH_TELEMETRY_MAX_BODY_BYTES, 4096),
