@@ -168,6 +168,31 @@ describe("InvitationCeremony", () => {
     expect(navigation.refresh).not.toHaveBeenCalled();
   });
 
+  it("routes after acceptance while shared context invalidation is still pending", async () => {
+    const invalidation = deferred<{ status: "authenticated" }>();
+    invalidateCurrentUser.mockReturnValueOnce(invalidation.promise);
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, { invitation, csrfToken: "csrf" }))
+      .mockResolvedValueOnce(response(200, { ok: true, playthroughId: "voyage-1" }));
+    vi.stubGlobal("fetch", fetch);
+    director.play.mockImplementation(async (_scene, options) => {
+      const result = await options.operation();
+      options.finalStateRuntime?.holdSafePose("access-result-readable");
+      return { outcome: "presented", finalSemanticState: "access-result-readable", operationResult: result };
+    });
+    const handoff = vi.fn();
+    renderInvitation(handoff);
+    await screen.findByLabelText("Invitation PIN");
+    fireEvent.change(screen.getByLabelText("Invitation PIN"), { target: { value: "1234" } });
+
+    fireEvent.click(screen.getByRole("button", { name: "Accept and Join Voyage" }));
+
+    await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1", expect.any(AbortSignal)));
+    expect(invalidateCurrentUser).toHaveBeenCalledTimes(1);
+    invalidation.resolve({ status: "authenticated" });
+  });
+
   it("starts the authoritative accept request even when presentation never invokes its operation", async () => {
     const fetch = vi
       .fn()

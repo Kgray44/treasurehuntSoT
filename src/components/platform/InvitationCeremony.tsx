@@ -423,13 +423,17 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
           operationCode = body.code;
           throw new Error("invitation-operation-rejected");
         }
-        if (action === "accept") await invalidateCurrentUser();
         const result = { ok: true as const, playthroughId: body.playthroughId };
         if (action === "accept" && result.playthroughId) {
           // A valid canonical membership must not leave a Player stranded if an
           // optional presentation runtime never settles. The normal ceremony
           // completes first; this is a bounded, single-fire recovery handoff.
           fallbackHandoffTimer = window.setTimeout(() => void handOffOnce(result), stateToken.durationMs + 250);
+          // Context invalidation keeps the shared shell current, but it is not
+          // authoritative for the already-committed membership or its route.
+          // A congested context refresh must not strand a newly accepted Player
+          // on the one-time invitation page.
+          void invalidateCurrentUser().catch(() => undefined);
         }
         return result;
       })();
