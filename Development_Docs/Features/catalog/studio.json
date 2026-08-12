@@ -147,6 +147,42 @@
     "catalogVersion": 1
   },
   {
+    "id": "FT-036",
+    "title": "Drydock Deterministic Sea Trials",
+    "summary": "Creators can persist revisioned synthetic Sea Trial scenarios and suites, deterministically execute the canonical One Voyage transition adapter with virtual time, seeded randomness, bounded faults, safe traces, coverage, and semantic comparison, and inspect the resulting private Studio evidence without mutating a live Voyage.",
+    "status": "MAINLINE",
+    "program": "Project Drydock Phase 3",
+    "surfaces": [
+      "/studio/tales/[taleId]/trials",
+      "/api/studio/tales/[taleId]/scenarios",
+      "/api/studio/tales/[taleId]/simulation-runs",
+      "npm run drydock:cli"
+    ],
+    "subfeatures": [
+      "Strict versioned Scenario and Scenario Suite contracts",
+      "Revisioned owned Scenario persistence and frozen run source",
+      "Deterministic virtual clock, seeded randomness, bounded faults, and assertions",
+      "Canonical One Voyage transition adapter differential proof",
+      "Safe trace, state-diff, replay, coverage, and suggestion projections",
+      "Private Creator Studio Scenario Lab and CSRF-protected owned APIs",
+      "Additive SQLite and static MySQL migration parity"
+    ],
+    "evidence": [
+      { "kind": "commit", "value": "191a964488d0df71f8dcb91c5b8372fc73b6b32e" },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Completion_Receipt.md"
+      }
+    ],
+    "limitations": [
+      "Sea Trials use synthetic bounded inputs and never mutate a live Tale Session, provider, asset, or Player state.",
+      "Live provider, production MySQL, physical-device, and external assistive-technology proof remain outside this phase.",
+      "Immutable publishing evidence and Phase 4 launch integration remain out of scope.",
+      "The accepted product integration is on protected main; the record-only completion packet remains unmergeable until the current Sounding Line closure architecture supports it."
+    ],
+    "catalogVersion": 1
+  },
+  {
     "id": "FT-B009",
     "title": "Tideglass Chronicle Edition Intelligence",
     "summary": "The accepted server-side foundation compares exact immutable Chronicle editions, classifies and summarizes evidence deterministically, projects spoiler-safe audience views, and preserves append-only Creator context without changing published or live Voyage truth.",

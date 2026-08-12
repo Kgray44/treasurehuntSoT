@@ -3,14 +3,14 @@ title: Project Drydock engineering records
 audience: engineering
 status: current
 canonical_for: project-drydock-engineering-records
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-12
 ---
 
 # Project Drydock engineering records
 
 [Project Drydock](Project_Drydock_Governing_Document.pdf) governs the Chronicle authoring-contract, validation, compatibility, and later simulation program. Phase 1, Set the Blocks, is limited to typed authoring contracts, variables, expressions, schema evolution, compatibility fixtures, stable issues, and incremental contract validation. It does not implement whole-Chronicle analysis or simulation.
 
-Phase 1 status: **MAINLINE ACCEPTED** through protected PR #22 at mainline merge `468530645e983412e5f4c1aaa103915be77c9c07`. Phase 2, **Sound the Hull**, is **MAINLINE ACCEPTED** through protected PR #36 at merge `847e035775984888be71edf614f2205fd6c5a376`. Phase 2 is limited to whole-Chronicle static analysis. Phase 3, **Run Sea Trials**, has a requalified r6 candidate frozen from current Helm-accepted main for serialized canonical acceptance; it has no protected acceptance.
+Phase 1 status: **MAINLINE ACCEPTED** through protected PR #22 at mainline merge `468530645e983412e5f4c1aaa103915be77c9c07`. Phase 2, **Sound the Hull**, is **MAINLINE ACCEPTED** through protected PR #36 at merge `847e035775984888be71edf614f2205fd6c5a376`. Phase 2 is limited to whole-Chronicle static analysis. Phase 3, **Run Sea Trials**, is **MAINLINE ACCEPTED** through protected PR #52 at merge `191a964488d0df71f8dcb91c5b8372fc73b6b32e`; a separately prepared record-only closure packet cannot be merged until the current Sounding Line closure architecture permits it.
 
 ## Phase 1 records
 
@@ -32,8 +32,8 @@ Phase 1 status: **MAINLINE ACCEPTED** through protected PR #22 at mainline merge
 
 ## Phase 3 records
 
-Phase 3, **Run Sea Trials**, is active from fetched `origin/main` at
-`236c27241bb8d1630274f5d5412ec9addbdb8893`. Its scope is deterministic
+Phase 3, **Run Sea Trials**, was accepted after reconciliation from
+`920d92a51a16d60a2dfe35278598e6d921be7e4c`. Its scope is deterministic
 Chronicle simulation, scenarios, virtual time, faults, coverage, and
 One Voyage runtime-fidelity proof. It does not begin Phase 4 or change live
 Voyage authority.
@@ -51,6 +51,11 @@ Voyage authority.
 - [Reconciliation Record](Project_Drydock_Phase_3_Reconciliation_Record.md)
 - [Mainline Decision Failure Record](Project_Drydock_Phase_3_Mainline_Decision_Failure_Record.md)
 - [Performance Record](Project_Drydock_Phase_3_Performance_Record.md)
+- [Completion Receipt](Project_Drydock_Phase_3_Completion_Receipt.md)
+
+The Phase 3 requirement ledger retains historical candidate qualification detail;
+the completion receipt is canonical for its protected-main acceptance.
+
 - `Project_Drydock_Phase_3_Requirement_Ledger.json` — active implementation inventory; not a completion claim.
 
 ## Phase 2 records

@@ -411,12 +411,6 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Features/branch-complete/project-drydock-phase3.json",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Features/catalog/admiralty.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -2896,6 +2890,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Completion_Receipt.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null

@@ -154,3 +154,27 @@ required. The next commit is frozen under tag
 `project-drydock-phase3-candidate-20260812-r5` and may receive one explicit
 Mainline Decision only after serialized canonical acceptance ownership is
 acquired.
+
+## r6 protected acceptance and exact-main proof
+
+After serialized canonical acceptance ownership was acquired, r6
+(`fcd9010a37224759bb5b71c640e121c9e4f1e1e2`, tagged
+`project-drydock-phase3-candidate-20260812-r6`) received its sole hosted
+Mainline Decision in run `31618253086`. The sealed finalizer was
+`SOUNDING_LINE_FINALIZER` with decision `RELEASE_GO`: all 38 required receipts
+passed, all 38 cleanup states were `CLEAN`, and there were no missing,
+duplicate, unknown, or invalid receipts. Its evidence digest is
+`be3cba53bb4a22a1b44b921882b4cf27af982964c73de1f3dd85b5479583009e`.
+
+Protected binding run `31620037280` then passed and PR #52 merged at
+`191a964488d0df71f8dcb91c5b8372fc73b6b32e`. Exact-main proof verifies that
+this merge has parents
+`920d92a51a16d60a2dfe35278598e6d921be7e4c` and
+`fcd9010a37224759bb5b71c640e121c9e4f1e1e2`, the candidate is an ancestor of
+`origin/main`, and fetched remote `origin/main` is exactly
+`191a964488d0df71f8dcb91c5b8372fc73b6b32e`.
+
+The accepted product integration is final for Phase 3. Current authority
+marks record-only closure `TARGET_ARCHITECTURE_PENDING`, so the completion
+receipt and Feature Catalog promotion are separately prepared without a
+documentation-only merge or another authority invocation.

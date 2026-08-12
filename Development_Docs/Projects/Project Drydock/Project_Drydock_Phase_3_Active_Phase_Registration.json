@@ -5,7 +5,7 @@
   "phase": 3,
   "phaseName": "Run Sea Trials",
   "phaseId": "project-drydock-phase-3-run-sea-trials",
-  "state": "CANDIDATE_FROZEN_PENDING_CANONICAL_ACCEPTANCE",
+  "state": "ACCEPTED_MAINLINE_RECORD_ONLY_CLOSURE_PENDING",
   "branch": "codex/project-drydock-phase3-run-sea-trials",
   "worktree": {
     "ownership": "TASK_OWNED",
@@ -181,7 +181,8 @@
     },
     "replacementCandidateR6": {
       "candidateTag": "project-drydock-phase3-candidate-20260812-r6",
-      "status": "FROZEN_PENDING_SERIALIZED_CANONICAL_ACCEPTANCE",
+      "candidateSha": "fcd9010a37224759bb5b71c640e121c9e4f1e1e2",
+      "status": "ACCEPTED_MAINLINE",
       "qualifiedReconciliationHead": "339b3436c42ad59e441a7b1ce6af34c4db36a17b",
       "qualifiedBaseSha": "920d92a51a16d60a2dfe35278598e6d921be7e4c",
       "baseVerification": "Fetched origin/main is Helm's accepted protected merge. The rebase skipped Drydock's already-integrated Helm repair and preserved both Helm presence and Drydock contract mappings in the shared Sounding Line registry.",
@@ -193,7 +194,32 @@
         "Generated Prisma client, typecheck, static validation, and production build passed",
         "Documentation index/validation passed"
       ],
-      "acceptanceBoundary": "This new frozen candidate may receive one explicit Mainline Decision only after serialized canonical acceptance ownership is acquired. r5 is superseded by the accepted Helm main advance; protected integration and exact-main proof remain unclaimed."
+      "acceptanceBoundary": "r6 received its one explicit Mainline Decision after serialized canonical acceptance ownership was acquired. r5 is superseded by the accepted Helm main advance; r3 and r4 remain terminal historical candidates."
+    },
+    "protectedAcceptance": {
+      "pullRequest": 52,
+      "candidateSha": "fcd9010a37224759bb5b71c640e121c9e4f1e1e2",
+      "candidateTag": "project-drydock-phase3-candidate-20260812-r6",
+      "acceptedBaseSha": "920d92a51a16d60a2dfe35278598e6d921be7e4c",
+      "mainlineDecision": {
+        "workflow": "Sounding Line authoritative",
+        "runId": 31618253086,
+        "decision": "RELEASE_GO",
+        "receiptCount": "38/38 PASSED",
+        "cleanupState": "38/38 CLEAN",
+        "evidenceDigest": "be3cba53bb4a22a1b44b921882b4cf27af982964c73de1f3dd85b5479583009e"
+      },
+      "protectedBindingRunId": 31620037280,
+      "mergeSha": "191a964488d0df71f8dcb91c5b8372fc73b6b32e",
+      "exactMainProof": {
+        "mergeParents": ["920d92a51a16d60a2dfe35278598e6d921be7e4c", "fcd9010a37224759bb5b71c640e121c9e4f1e1e2"],
+        "candidateAncestorOfOriginMain": true,
+        "remoteOriginMainParity": "191a964488d0df71f8dcb91c5b8372fc73b6b32e"
+      },
+      "recordOnlyClosure": {
+        "state": "TARGET_ARCHITECTURE_PENDING",
+        "disposition": "CLOSURE_PACKET_PREPARED_SEPARATELY; no record-only merge or additional authority is permitted by current Sounding Line policy."
+      }
     }
   }
 }

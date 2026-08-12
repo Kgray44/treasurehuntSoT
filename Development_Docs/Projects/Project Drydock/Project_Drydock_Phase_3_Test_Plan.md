@@ -117,3 +117,17 @@ The next commit is frozen under tag
 replacement candidate eligible for one explicit Mainline Decision after
 canonical acceptance ownership is acquired. r3 and r4 remain terminal history;
 r5 is superseded and none may be retried.
+
+## Protected acceptance result
+
+The frozen r6 candidate `fcd9010a37224759bb5b71c640e121c9e4f1e1e2` received
+one hosted Mainline Decision: run `31618253086` finalized `RELEASE_GO` with
+38 / 38 required receipts passed and 38 / 38 cleanup states `CLEAN`. Protected
+binding run `31620037280` passed before PR #52 merged at
+`191a964488d0df71f8dcb91c5b8372fc73b6b32e`; the exact-main proof is recorded
+in the [reconciliation record](Project_Drydock_Phase_3_Reconciliation_Record.md)
+and [completion receipt](Project_Drydock_Phase_3_Completion_Receipt.md).
+
+No additional Mainline Decision is permitted for this accepted phase. The
+remaining closure documentation is record-only and currently remains
+unmergeable under `TARGET_ARCHITECTURE_PENDING`.
