@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `9b950a5fd603be27c813f9298b0b14888fbce6cf`
+Audited source commit: `920d92a51a16d60a2dfe35278598e6d921be7e4c`
 
 ## Status vocabulary
 
@@ -1430,6 +1430,44 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-036 - Drydock Deterministic Sea Trials
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Drydock Phase 3
+
+Creators can persist revisioned synthetic Sea Trial scenarios and suites, deterministically execute the canonical One Voyage transition adapter with virtual time, seeded randomness, bounded faults, safe traces, coverage, and semantic comparison, and inspect the resulting private Studio evidence without mutating a live Voyage.
+
+### Important subfeatures
+
+- Strict versioned Scenario and Scenario Suite contracts
+- Revisioned owned Scenario persistence and frozen run source
+- Deterministic virtual clock, seeded randomness, bounded faults, and assertions
+- Canonical One Voyage transition adapter differential proof
+- Safe trace, state-diff, replay, coverage, and suggestion projections
+- Private Creator Studio Scenario Lab and CSRF-protected owned APIs
+- Additive SQLite and static MySQL migration parity
+
+### Primary surfaces
+
+`/studio/tales/[taleId]/trials`, `/api/studio/tales/[taleId]/scenarios`, `/api/studio/tales/[taleId]/simulation-runs`, `npm run drydock:cli`
+
+### Meaningful limitations
+
+- Branch-complete local qualification is not protected-main availability, deployment, or owner acceptance.
+- Sea Trials use synthetic bounded inputs and never mutate a live Tale Session, provider, asset, or Player state.
+- Live provider, production MySQL, physical-device, and external assistive-technology proof remain outside this phase.
+- Immutable publishing evidence and Phase 4 integration remain out of scope.
+
+### Evidence
+
+- path: `src/drydock/simulation/engine.ts`
+- path: `src/drydock/simulation-store.ts`
+- path: `src/components/studio/DrydockScenarioLab.tsx`
+- test: `src/drydock`
+- test: `src/app/api/studio/tales/[taleId]/scenarios`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
@@ -1443,4 +1481,4 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `9b950a5fd603be27c813f9298b0b14888fbce6cf`
+Generation source commit: `920d92a51a16d60a2dfe35278598e6d921be7e4c`

@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-12
 ---
 
 # Changelog
@@ -11,6 +11,15 @@ last_reviewed: 2026-08-09
 ## Unreleased
 
 ### Changed
+
+- Added Project Drydock Phase 3 Sea Trials on its dedicated branch: authorized
+  Creators can save immutable source-bound Scenario revisions and Suites, run
+  bounded deterministic simulation with virtual time and catalogued synthetic
+  faults, and inspect redacted trace, state-digest, assertion, and coverage
+  receipts. The simulator shares One Voyage's pure transition planner but does
+  not mutate live Voyages, providers, devices, or published Chronicles. This is
+  focused local branch evidence only; it is not candidate-qualified, on main,
+  deployed, or owner accepted.
 
 - Added Project Helm Phase 1 participating-Captain operation. Voyage creation
   now defaults to Captain-only and offers an explicit Captain + Player mode

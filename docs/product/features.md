@@ -3,7 +3,7 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-12
 ---
 
 # Features and subfeatures
@@ -132,6 +132,13 @@ append-only Creator annotations, and bounded safe APIs. Phase 2 is on main but
 adds no ordinary comparison page, navigation entry, or played-history
 qualification; those remain later work. Repository validation is local and
 synthetic, and no deployment or production MySQL execution is claimed.
+
+Project Drydock Phase 3 is active implementation on its dedicated branch. It
+adds Creator-only, source-bound deterministic Sea Trials with revisioned
+Scenarios, virtual time, registered synthetic faults, Suites, redacted traces,
+coverage ledgers, and a shared One Voyage transition planner. It never mutates
+live Voyages or providers. This branch work is not available on main, deployed,
+or accepted; its candidate qualification remains governed separately.
 
 ## Community and artifacts
 

@@ -86,6 +86,7 @@
     "drydock:rules:check": "tsx scripts/drydock/generate-rule-catalog.ts",
     "drydock:cli": "tsx scripts/drydock/cli.ts",
     "drydock:migrations:sqlite": "node --experimental-sqlite scripts/drydock/rehearse-phase2-migrations.mjs",
+    "drydock:phase3:migrations:sqlite": "node --experimental-sqlite scripts/drydock/rehearse-phase3-migrations.mjs",
     "drydock:validate": "tsx scripts/drydock/generate-contract-artifacts.ts && tsx scripts/drydock/generate-rule-catalog.ts && tsx scripts/drydock/cli.ts validate-registry && tsx scripts/drydock/cli.ts validate-fixtures && tsx scripts/drydock/cli.ts verify-migrations && tsx scripts/drydock/cli.ts canonicalize-fixtures",
     "drydock:test": "vitest run src/drydock",
     "architecture:validate": "tsx scripts/validate-project-one-voyage.ts",

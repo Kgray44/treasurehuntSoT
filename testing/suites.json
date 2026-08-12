@@ -76,7 +76,7 @@
     },
     {
       "id": "unit.drydock",
-      "name": "Drydock typed authoring contract units",
+      "name": "Drydock authoring and deterministic Sea Trial contracts",
       "tier": 1,
       "owner": "drydock",
       "command": "registry-selected Vitest files",
@@ -86,7 +86,23 @@
       "parallelSafe": true,
       "resources": ["node-slot", "vitest-worker-pool", "prisma-sqlite-client"],
       "dependencies": [],
-      "contracts": ["drydock-authoring-contracts", "drydock-progression"],
+      "contracts": [
+        "drydock-authoring-contracts",
+        "drydock-progression",
+        "drydock-scenario-contract",
+        "drydock-simulation-determinism",
+        "drydock-virtual-time",
+        "drydock-fault-contract",
+        "drydock-trace-privacy",
+        "drydock-coverage-contract",
+        "drydock-runtime-adapter",
+        "drydock-runtime-differential",
+        "drydock-no-live-mutation",
+        "drydock-durable-run",
+        "drydock-scenario-authorization",
+        "drydock-studio-scenario-lab",
+        "drydock-performance"
+      ],
       "affectedPaths": [
         "src/drydock/**",
         "scripts/drydock/**",
@@ -94,7 +110,7 @@
         "Development_Docs/Projects/Project Drydock/**"
       ],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "owned-family",
+      "currentImplementationState": "phase-3-source-bound",
       "adapter": "vitest-family"
     },
     {

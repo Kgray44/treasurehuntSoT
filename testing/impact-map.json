@@ -177,22 +177,82 @@
     {
       "path": "Development_Docs/Projects/Project Drydock/**",
       "suiteIds": ["unit.drydock", "static.core"],
-      "contractIds": ["drydock-authoring-contracts"]
+      "contractIds": [
+        "drydock-authoring-contracts",
+        "drydock-scenario-contract",
+        "drydock-simulation-determinism",
+        "drydock-virtual-time",
+        "drydock-fault-contract",
+        "drydock-trace-privacy",
+        "drydock-coverage-contract",
+        "drydock-runtime-adapter",
+        "drydock-runtime-differential",
+        "drydock-no-live-mutation",
+        "drydock-durable-run",
+        "drydock-scenario-authorization",
+        "drydock-studio-scenario-lab",
+        "drydock-performance"
+      ]
     },
     {
       "path": "src/drydock/**",
       "suiteIds": ["unit.drydock", "static.core"],
-      "contractIds": ["drydock-authoring-contracts"]
+      "contractIds": [
+        "drydock-authoring-contracts",
+        "drydock-scenario-contract",
+        "drydock-simulation-determinism",
+        "drydock-virtual-time",
+        "drydock-fault-contract",
+        "drydock-trace-privacy",
+        "drydock-coverage-contract",
+        "drydock-runtime-adapter",
+        "drydock-runtime-differential",
+        "drydock-no-live-mutation",
+        "drydock-durable-run",
+        "drydock-scenario-authorization",
+        "drydock-studio-scenario-lab",
+        "drydock-performance"
+      ]
     },
     {
       "path": "scripts/drydock/**",
       "suiteIds": ["unit.drydock", "static.core"],
-      "contractIds": ["drydock-authoring-contracts"]
+      "contractIds": [
+        "drydock-authoring-contracts",
+        "drydock-scenario-contract",
+        "drydock-simulation-determinism",
+        "drydock-virtual-time",
+        "drydock-fault-contract",
+        "drydock-trace-privacy",
+        "drydock-coverage-contract",
+        "drydock-runtime-adapter",
+        "drydock-runtime-differential",
+        "drydock-no-live-mutation",
+        "drydock-durable-run",
+        "drydock-scenario-authorization",
+        "drydock-studio-scenario-lab",
+        "drydock-performance"
+      ]
     },
     {
       "path": "tests/fixtures/drydock/**",
       "suiteIds": ["unit.drydock", "static.core"],
-      "contractIds": ["drydock-authoring-contracts"]
+      "contractIds": [
+        "drydock-authoring-contracts",
+        "drydock-scenario-contract",
+        "drydock-simulation-determinism",
+        "drydock-virtual-time",
+        "drydock-fault-contract",
+        "drydock-trace-privacy",
+        "drydock-coverage-contract",
+        "drydock-runtime-adapter",
+        "drydock-runtime-differential",
+        "drydock-no-live-mutation",
+        "drydock-durable-run",
+        "drydock-scenario-authorization",
+        "drydock-studio-scenario-lab",
+        "drydock-performance"
+      ]
     },
     { "path": "Development_Docs/document-index.json", "suiteIds": ["static.core"], "contractIds": [] },
     {

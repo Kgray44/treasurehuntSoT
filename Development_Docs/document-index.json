@@ -411,6 +411,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Features/branch-complete/project-drydock-phase3.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Features/catalog/admiralty.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -2878,6 +2884,90 @@
     },
     {
       "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_2_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Active_Phase_Registration.json",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Design_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Fault_Catalog.json",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Mainline_Decision_Failure_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Mainline_Safety_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Migration_Reservation.json",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Performance_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Reconciliation_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Regression_Scenario_Ledger.json",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Requirement_Ledger.json",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Runtime_Fidelity_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Scenario_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Test_Plan.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
