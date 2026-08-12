@@ -51,3 +51,19 @@ projection did not converge within its governed deadline. Development is now
 with the Helm-owned focused repair; r3 may not be retried. Only a repaired,
 requalified, newly frozen candidate may receive one future authority decision
 after canonical acceptance ownership is reacquired.
+
+## Replacement-candidate recovery
+
+The Helm-owned remediation was published at
+`bf03b0811eada44f6f9db56858b76e7c778e1d81` and incorporated into this Drydock
+branch as `5717ab5c2f1445cd899471932b99eacf20e81bc1`. On that combined source,
+the directly affected unit scope passed 15/15 and focused hosted run
+`31608295048` passed the sealed three-case `browser.helm` selection with exit
+code `0` and clean teardown. This is development evidence only; it has no
+finalizer and does not substitute for a Mainline Decision.
+
+`origin/main` still resolves to the r3-qualified base
+`5735d43821209adb2259ec2c38979281da1bb5b9`, so no new current-main advance
+needs reconciliation. The next step is the required full replacement-candidate
+qualification, followed by a new exact freeze and one new explicit authority
+decision after acceptance ownership is acquired.

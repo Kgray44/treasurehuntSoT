@@ -83,3 +83,27 @@ heartbeat POST returned HTTP 200. The two source-bound observations establish a
 Helm browser compatibility failure family: Player handoff after accepted
 invitation and Captain presence projection convergence both require focused
 Helm-owned repair and verification.
+
+## Focused recovery evidence
+
+Project Helm repaired the two source-level resilience gaps in published commit
+`bf03b0811eada44f6f9db56858b76e7c778e1d81`: an accepted invitation now has a
+single bounded hard-navigation recovery when the soft handoff remains on the
+invitation route, and membership presence records timestamps at persistence
+time so delayed concurrent heartbeat writes retain bounded freshness. The
+repair's 15 focused unit cases and its exact three-case browser suite passed
+locally; its hosted focused diagnostic run `31606851534` passed all three
+registered cases with clean teardown.
+
+Drydock incorporated that exact repair as
+`5717ab5c2f1445cd899471932b99eacf20e81bc1`. The same smallest direct unit
+scope passed 15/15 on the combined source, and focused hosted run `31608295048`
+then passed the exact `browser.helm` suite: three registered, discovered,
+executed, and passed cases; exit code `0`; `cleanupState: CLEAN`; duration
+454,023 ms. The focused workflow contains no finalizer and issued no authority
+decision. Current `origin/main` remains
+`5735d43821209adb2259ec2c38979281da1bb5b9`, unchanged from the r3 base.
+
+The phase is therefore returned to full replacement-candidate qualification.
+The r3 authority result remains terminal history: these focused recovery
+receipts do not alter it or claim protected integration.

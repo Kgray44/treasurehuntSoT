@@ -5,7 +5,7 @@
   "phase": 3,
   "phaseName": "Run Sea Trials",
   "phaseId": "project-drydock-phase-3-run-sea-trials",
-  "state": "RETURNED_TO_DEVELOPMENT_AFTER_RELEASE_NO_GO",
+  "state": "REQUALIFICATION_IN_PROGRESS_AFTER_HELM_REPAIR",
   "branch": "codex/project-drydock-phase3-run-sea-trials",
   "worktree": {
     "ownership": "TASK_OWNED",
@@ -118,6 +118,19 @@
         "The candidate received its one hosted Mainline Decision and cannot be retried; focused Helm failure reproduction is required before any replacement freeze",
         "No protected integration or exact-main acceptance is claimed"
       ]
+    },
+    "focusedRecovery": {
+      "helmRepairSourceCommit": "bf03b0811eada44f6f9db56858b76e7c778e1d81",
+      "combinedSourceCommit": "5717ab5c2f1445cd899471932b99eacf20e81bc1",
+      "focusedUnitQualification": "15/15 passed",
+      "focusedHostedRunId": 31608295048,
+      "focusedHostedSuite": "browser.helm",
+      "focusedHostedResult": "PASSED_CLEAN_3_OF_3",
+      "baseVerification": {
+        "originMainSha": "5735d43821209adb2259ec2c38979281da1bb5b9",
+        "advancedSinceR3": false
+      },
+      "disposition": "FULL_REPLACEMENT_CANDIDATE_QUALIFICATION_REQUIRED"
     }
   }
 }
