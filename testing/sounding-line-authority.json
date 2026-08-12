@@ -14,7 +14,19 @@
   "governingPolicies": {
     "proofMinimization": "MINIMUM_SUFFICIENT_EVIDENCE",
     "semanticInvalidation": "EVIDENCE_PRESERVATION_REQUIRED",
-    "recordOnlyClosure": "TARGET_ARCHITECTURE_PENDING"
+    "recordOnlyClosure": {
+      "mode": "FAIL_CLOSED_PROTECTED_MERGE_FINALIZATION",
+      "allowedRecordPathClasses": ["CHANGELOG.md", "Development_Docs/**/*.md|json|csv|txt", "docs/**/*.md"],
+      "requiredEvidence": [
+        "EXACT_CANDIDATE_DIFF",
+        "PRIOR_PROTECTED_RELEASE_GO",
+        "DOCUMENTATION",
+        "CATALOG_IF_APPLICABLE",
+        "FORMAT_DIFF",
+        "POLICY_INVENTORY",
+        "GENERATED_RECORD_CONSISTENCY"
+      ]
+    }
   },
   "developmentValidation": {
     "incrementalVerificationRequired": true,

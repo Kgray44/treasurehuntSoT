@@ -2,7 +2,7 @@
   {
     "id": "FT-033",
     "title": "Sounding Line Governed Verification Control Plane",
-    "summary": "A nonauthoritative, provider-neutral local verification control plane provides sealed plans, reviewed adapters, marker-verified resource leases, durable history, fail-closed worker and evidence controls, isolated SQLite/browser state, and narrowly certified Harborlight moderator browser lanes without weakening release authority.",
+    "summary": "A nonauthoritative, provider-neutral local verification control plane provides sealed plans, reviewed adapters, marker-verified resource leases, durable history, fail-closed worker and evidence controls, isolated SQLite/browser state, narrowly certified Harborlight moderator browser lanes, and a strictly record-only protected-mainline closure route without weakening release authority.",
     "status": "MAINLINE",
     "program": "Sounding Line Phases 1-4",
     "surfaces": ["npm run test:policy", "scripts/sounding-line", "scripts/test-all.ps1"],
@@ -14,7 +14,8 @@
       "Fail-closed local worker enrollment, sealed assignments, evidence, and attestations",
       "Immutable SQLite baseline clone boundary",
       "Two isolated Harborlight Phase 4 browser lanes",
-      "Explicit emergency-serial legacy release authority"
+      "Explicit emergency-serial legacy release authority",
+      "Fail-closed record-only protected-mainline closure evidence"
     ],
     "evidence": [
       { "kind": "path", "value": "scripts/sounding-line/runtime.mjs" },
