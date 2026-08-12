@@ -1,7 +1,7 @@
 ---
 title: Project Tideglass Phase 3 Product Walkthrough
 audience: product-owner
-status: owner-accepted-mainline-pending
+status: owner-accepted-product-mainline
 canonical_for: project-tideglass-phase-3-product-walkthrough
 last_reviewed: 2026-08-12
 ---
@@ -9,13 +9,14 @@ last_reviewed: 2026-08-12
 # Project Tideglass Phase 3 product walkthrough: Choose the Passage
 
 Status: source-bound candidate evidence was accepted by the canonical owner on
-`2026-08-12`. The generated visual manifest records the exact reviewed product
-SHA, fixture checksum, routes, viewports, screenshot hashes, and semantic
-assertions. The owner decision is recorded separately in
+`2026-08-12` and the product was integrated on protected main as PR #59. The
+generated visual manifest records the exact reviewed product SHA, fixture
+checksum, routes, viewports, screenshot hashes, and semantic assertions. The
+owner decision is recorded separately in
 `Project_Tideglass_Phase_3_Owner_Decision_Record.md`; this document remains the
 reproducible walkthrough package.
 
-The owner-reviewed product source is `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`. It remains byte-equivalent across the Phase 3 Tideglass product paths after reconciliation to `origin/main` `fb0f13e35fcdd98434d22c357aee02f24d6d9036`; the later deferred-runtime browser-harness repair and accepted Helm/Sounding Line record-only changes do not alter those paths. The refreshed source-bound A--J evidence is recorded for `dbbe2c49aa884f6a5e078cfa3c5df580344ca221` in the visual manifest.
+The owner-reviewed product source is `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`. It remains byte-equivalent across the Phase 3 Tideglass product paths through accepted main `bb7676a75581d8d415c3ff7712cc38bc8decb031`; the deferred-runtime browser-harness repair and accepted Helm/Sounding Line record-only changes did not alter those paths. The refreshed source-bound A--J evidence is recorded for `dbbe2c49aa884f6a5e078cfa3c5df580344ca221` in the visual manifest.
 
 ## Safe walkthrough runtime
 
@@ -35,4 +36,4 @@ The available synthetic role aliases are Anonymous, Player A, Player AB, Player 
 
 ## Acceptance boundary
 
-This synthetic local walkthrough is suitable for product review of the governed experience. It is not staging, production, live-provider, physical-device, protected-mainline, or real-user proof. The owner accepted the reconciled source identified above. The remaining authority is its one exact-SHA Sounding Line Mainline Decision.
+This synthetic local walkthrough is suitable for product review of the governed experience. It is not staging, production, live-provider, physical-device, or real-user proof. The owner accepted the reconciled source identified above; exact candidate and integrated-main Sounding Line decisions passed before protected integration.

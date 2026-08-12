@@ -18,6 +18,16 @@ descendants cover history and version-pinned detail, Memories, Artifact Cabinet
 and artifact detail, and Saved from Community. `/profile/[handle]` is the
 separate public projection.
 
+Project Tideglass Phase 3 adds the ordinary comparison route
+`/chronicles/[taleSlug]/compare`, reached from a visible Chronicle-detail
+**See what changed** action. An owned past-Voyage action resolves through
+`/passport/history/[recordId]/compare` and redirects only after server-side
+history ownership and Chronicle identity checks. Creator Studio published
+versions use `/api/studio/tales/[taleId]/versions/compare` for a
+`CREATOR_FULL` semantic projection. These routes accept bounded selection or
+return context only; URL knowledge never grants a foreign history record,
+edition, or elevated audience.
+
 Phase 4 makes `/community` the content-first Harbor Home. Ordinary districts
 are `/community/featured`, `/chronicles`, `/artifacts`, `/templates`, `/maps`,
 `/audio`, `/creators`, `/collections`, `/guides`, and `/voyage-logs`. Public

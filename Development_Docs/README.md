@@ -27,7 +27,7 @@ also passed. See the [OAuth validation and completion record](Validation/Voyagew
 
 ## Project Tideglass
 
-[Project Tideglass](Projects/Project_Tideglass/README.md) owns deterministic semantic comparison of exact immutable Chronicle editions. Phases 1-2 are accepted mainline semantic authority. Phase 3's ordinary comparison, owned-history, and Studio semantic-consumer work is in governed local qualification on its dedicated branch; it is not merged, owner accepted, or deployed.
+[Project Tideglass](Projects/Project_Tideglass/README.md) owns deterministic semantic comparison of exact immutable Chronicle editions. Phases 1-3 are accepted mainline semantic authority. Phase 3 adds ordinary comparison, owned-history, and Studio semantic-consumer journeys through protected PR #59 and exact-main Sounding Line evidence; deployment and production-provider claims remain separate.
 
 ## Project Bridgewatch
 

@@ -61,14 +61,18 @@ Helm does not supply one. It also does not replace the required exact-candidate
 Sounding Line Mainline Decision, protected integration, actual-main proof,
 Deepwater closure evidence, or post-integration Feature Catalog publication.
 
-## Integration state at decision recording
+## Integration result
 
-This record establishes owner acceptance only. Before it can support an
-`ACCEPTED_MAINLINE` receipt, the task must freeze its documentation-qualified
-candidate, dispatch the one exact-SHA authoritative decision, merge through the
-protected procedure only after `RELEASE_GO`, verify the actual integrated source,
-and then update the governed Deepwater and Feature Catalog records from accepted
-main evidence.
+The one exact-SHA authority was satisfied after this decision. Candidate
+`6bbb25690f73265ea0f702c2abe112d759c2aedf` received hosted `RELEASE_GO` in
+run `31647929505`, then merged through protected PR #59 as
+`bb7676a75581d8d415c3ff7712cc38bc8decb031`. Exact integrated main received
+local `RELEASE_GO` with 38 clean receipts and 38 runtime-conformance records.
+The resulting product remains equivalent to the owner-reviewed Tideglass paths.
+This record-only candidate publishes the Feature Catalog; the same receipt
+provides exact evidence for the Deepwater Phase 4 owner, which alone may
+transition the historic Deepwater finding. Its protected binding and merge
+remain required, with no Tideglass Phase 4 authorization.
 
 ## Post-decision authority repair boundary
 

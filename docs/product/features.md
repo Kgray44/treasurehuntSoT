@@ -132,16 +132,15 @@ deployment, live-Voyage proof, or owner acceptance.
 
 **Audience:** Creators. **Availability:** available on main. Studio supports Chronicle settings, story blocks, locations, assets, artifact authoring, version views, and immutable publishing. [Guide](../user/creator-guide.md).
 
-Project Tideglass Phase 1 provides the accepted exact immutable edition
-comparison foundation. The accepted Phase 2 extension adds server-side
-intelligence with stable change codes, explainable significance and
-compatibility, spoiler-safe audience projections, deterministic summaries,
-append-only Creator annotations, and bounded safe APIs. Phase 2 is on main.
-The Phase 3 ordinary comparison page, navigation entry, owned played-history
-handoff, and Studio semantic comparison are currently an unmerged worktree
-under local qualification, not an available-on-main feature. Repository
-validation is local and synthetic, and no deployment or production MySQL
-execution is claimed.
+Project Tideglass Phases 1-3 are on main. Exact immutable edition comparison
+and server-side semantic intelligence now reach an ordinary **What changed?**
+journey from Chronicle detail and owned Passport history. The page uses a
+publishing-owned current target, exact played-history anchors, spoiler-safe
+concise/detailed semantic presentation, compatibility and accessibility changes,
+and distinct multiple-playthrough selection. Creator Studio published-version
+comparison uses the same canonical semantic projection rather than a raw
+snapshot diff. This is protected-main source integration with synthetic
+automated evidence; deployment and production MySQL execution are separate.
 
 Project Drydock Phase 3 is active implementation on its dedicated branch. It
 adds Creator-only, source-bound deterministic Sea Trials with revisioned

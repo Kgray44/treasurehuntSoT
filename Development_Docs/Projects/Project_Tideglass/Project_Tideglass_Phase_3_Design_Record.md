@@ -1,7 +1,7 @@
 ---
 title: Project Tideglass Phase 3 Design Record
 audience: product-engineering
-status: candidate-frozen-owner-accepted-replacement-pending
+status: product-mainline-accepted-record-closure-pending
 canonical_for: project-tideglass-phase-3-design
 last_reviewed: 2026-08-12
 ---
@@ -12,16 +12,16 @@ Phase 3 creates the ordinary, discoverable **What Changed?** experience over the
 
 ## Frozen authority and baseline
 
-| Item                                      | Frozen value                                                                                                                                              |
-| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Initial implementation `origin/main` base | `54e3d818d49d45282a9c419d562d4b5c78911ccd`                                                                                                                |
-| Current reconciled `origin/main`          | `fb0f13e35fcdd98434d22c357aee02f24d6d9036`                                                                                                                |
-| Dedicated branch                          | `codex/project-tideglass-phase3-choose-the-passage`                                                                                                       |
-| Dedicated worktree                        | `C:\Users\kkids\Documents\treasurehuntSoT-tideglass-phase3-choose-the-passage`                                                                            |
-| Phase 2 status and ancestry               | `ACCEPTED_MAINLINE`; integrated `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3` is an ancestor of the reconciled current main                                  |
-| Preserved semantic policies               | `tideglass.semantic.v1`, `tideglass.policy.v1`, `tideglass.change-codes.v1`, `tideglass.projection.v1`, `tideglass.summary.v1`, `tideglass.annotation.v1` |
-| Prisma and migrations                     | None. The existing immutable editions, annotation rows, and Wayfarer history records satisfy this phase.                                                  |
-| Release authority                         | One explicit, exact-SHA `Sounding Line / Mainline Decision` only after candidate qualification, current-main reconciliation, and owner acceptance.        |
+| Item                                      | Frozen value                                                                                                                                                                                               |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Initial implementation `origin/main` base | `54e3d818d49d45282a9c419d562d4b5c78911ccd`                                                                                                                                                                 |
+| Current reconciled `origin/main`          | `bb7676a75581d8d415c3ff7712cc38bc8decb031`                                                                                                                                                                 |
+| Dedicated branch                          | `codex/project-tideglass-phase3-choose-the-passage`                                                                                                                                                        |
+| Dedicated worktree                        | `C:\Users\kkids\Documents\treasurehuntSoT-tideglass-phase3-choose-the-passage`                                                                                                                             |
+| Phase 2 status and ancestry               | `ACCEPTED_MAINLINE`; integrated `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3` is an ancestor of the reconciled current main                                                                                   |
+| Preserved semantic policies               | `tideglass.semantic.v1`, `tideglass.policy.v1`, `tideglass.change-codes.v1`, `tideglass.projection.v1`, `tideglass.summary.v1`, `tideglass.annotation.v1`                                                  |
+| Prisma and migrations                     | None. The existing immutable editions, annotation rows, and Wayfarer history records satisfy this phase.                                                                                                   |
+| Release authority                         | Candidate `6bbb25690f73265ea0f702c2abe112d759c2aedf` received hosted `RELEASE_GO` in run `31647929505`; exact integrated main `bb7676a75581d8d415c3ff7712cc38bc8decb031` also received local `RELEASE_GO`. |
 
 The governing order is the current repository rules, Global Product Governance Standard, Project Tideglass governing document, Continuous Development and Mainline Integration Standard, effective Sounding Line authority, accepted Phase 1/2 records, accepted cross-project contracts, and current source. The pasted Phase 3 authorization supersedes only the historical Phase 2 statement that Phase 3 was then unauthorized; it does not rewrite that receipt.
 
@@ -96,6 +96,18 @@ The edition selector DTO is a server-derived list of exact IDs, human labels, pu
 3. All ordinary user comparison output remains server-projected. No raw snapshot, storage key, private location, private media, hidden count, Creator note, or unauthorized Change Record is sent to the browser.
 4. The permanently useful outcome, if Phase 4 never starts, is a discoverable Chronicle-detail and Passport-history comparison journey plus a Studio semantic published-version comparison.
 5. Phase 4 retains Harborlight and accepted Helm visual integration, larger historical-compatibility corpus, distributed processing, final observability/localization, and program closure.
+
+## Accepted-main result
+
+The owner-accepted product candidate `6bbb25690f73265ea0f702c2abe112d759c2aedf`
+received hosted `RELEASE_GO` in run `31647929505` with 38 clean receipts and
+merged through protected PR #59 as
+`bb7676a75581d8d415c3ff7712cc38bc8decb031`. The exact integrated source then
+received local `RELEASE_GO` with 38 mandatory receipts and 38 runtime
+conformance records. This design is therefore realized on main without a
+semantic-policy migration, Prisma change, history rewrite, live-Voyage mutation,
+Wakebook dependency, or accepted Captain UI consumer. The remaining closure is
+record-only and must not start Phase 4.
 
 ## Interaction, accessibility, and evidence matrix
 

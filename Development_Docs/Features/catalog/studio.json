@@ -149,10 +149,17 @@
   {
     "id": "FT-B009",
     "title": "Tideglass Chronicle Edition Intelligence",
-    "summary": "The accepted server-side foundation compares exact immutable Chronicle editions, classifies and summarizes evidence deterministically, projects spoiler-safe audience views, and preserves append-only Creator context without changing published or live Voyage truth.",
+    "summary": "Tideglass compares exact immutable Chronicle editions with deterministic semantic intelligence and explains those changes through ordinary Chronicle, Passport-history, and Creator Studio journeys without changing published or live Voyage truth.",
     "status": "MAINLINE",
-    "program": "Project Tideglass Phases 1-2",
-    "surfaces": ["npm run tideglass:compare", "src/tideglass", "/api/chronicles/:chronicleId/comparison"],
+    "program": "Project Tideglass Phases 1-3",
+    "surfaces": [
+      "npm run tideglass:compare",
+      "src/tideglass",
+      "/api/chronicles/:chronicleId/comparison",
+      "/chronicles/[taleSlug]/compare",
+      "/passport/history/[recordId]/compare",
+      "/api/studio/tales/[taleId]/versions/compare"
+    ],
     "subfeatures": [
       "Exact edition and checksum binding",
       "Versioned semantic normalization",
@@ -165,7 +172,11 @@
       "Append-only Creator annotation revisions",
       "Digest-validated rebuildable comparison cache",
       "Authorized bounded comparison and annotation APIs",
-      "Read-only cross-domain invariance"
+      "Read-only cross-domain invariance",
+      "Discoverable What Changed comparison journey",
+      "Exact played-history anchors and multiple playthrough selection",
+      "Server-projected spoiler disclosure and compatibility presentation",
+      "Creator Studio semantic published-version comparison"
     ],
     "evidence": [
       { "kind": "path", "value": "src/tideglass/service.ts" },
@@ -179,12 +190,16 @@
       {
         "kind": "completion-record",
         "value": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Completion_Receipt.md"
+      },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_3_Completion_Receipt.md"
       }
     ],
     "limitations": [
-      "The accepted Phase 2 extension remains server-side and does not create a polished comparison experience.",
-      "Ordinary user comparison routes, played-history qualification, and polished What Changed interaction remain outside Phase 2.",
-      "Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them."
+      "Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.",
+      "Captain visual comparison remains deferred until Helm supplies an accepted preflight consumer.",
+      "Deployment and production-MySQL execution are separate from protected-main source integration."
     ],
     "catalogVersion": 1
   }

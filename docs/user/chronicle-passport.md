@@ -3,7 +3,7 @@ title: Chronicle Passport
 audience: user
 status: current
 canonical_for: chronicle-passport-guide
-last_reviewed: 2026-08-07
+last_reviewed: 2026-08-12
 ---
 
 # Chronicle Passport
@@ -33,6 +33,13 @@ In Project Homeport Phase 3, `/passport` and its History, Memories,
 Artifacts, and Saved sections are complete product routes. Desktop and mobile
 show the same Personal Harbor destinations. The behavior is on main; its
 retained evidence is synthetic and does not establish deployment or owner acceptance.
+
+When a retained past Voyage has an authorized comparison target, its history
+detail offers **See what changed**. It opens a comparison from the exact edition
+recorded for that Voyage, not a guessed current version. If you have several
+Voyages for the same Chronicle, choose the specific record first. The comparison
+uses server-authorized spoiler disclosure and returns you to the same history
+record; it does not change your history, Memories, or live Voyage.
 
 In Phase 4, saving or unsaving eligible Community content preserves
 the Harborlight authoritative state and reconciles after refresh with Saved
