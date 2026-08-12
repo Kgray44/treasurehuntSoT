@@ -24554,7 +24554,7 @@
     {
       "id": "sl-test-7df8cc04e7b1026444f2",
       "title": "homeport.signout.multitab broadcasts only a versioned invalidation event",
-      "line": 104,
+      "line": 106,
       "file": "src/components/auth/CurrentUserProvider.test.tsx",
       "suiteId": "component.player-shell",
       "owner": "platform-foundation",
@@ -24594,7 +24594,7 @@
     {
       "id": "sl-test-3140bd45e4176a8dcb07",
       "title": "homeport.current-user.no-stale-overwrite ignores an older request that finishes last",
-      "line": 119,
+      "line": 121,
       "file": "src/components/auth/CurrentUserProvider.test.tsx",
       "suiteId": "component.player-shell",
       "owner": "platform-foundation",
@@ -24634,7 +24634,7 @@
     {
       "id": "sl-test-c67df0b641df66e1988a",
       "title": "homeport.context.failure-state rejects malformed server projections",
-      "line": 149,
+      "line": 151,
       "file": "src/components/auth/CurrentUserProvider.test.tsx",
       "suiteId": "component.player-shell",
       "owner": "platform-foundation",
