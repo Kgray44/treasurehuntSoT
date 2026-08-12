@@ -10,6 +10,8 @@
 - `Validation/`: test plans, ledgers, audits, and validation evidence.
 - `Migrations/`: migration, rollback, and compatibility records.
 - `Completion_Receipts/`: historical implementation receipts.
+- `Project_Bridgewatch_Phase_2_*.md`: current Phase 2 design, registry,
+  qualification, validation, integration, and closure records.
 - `Archive/`: superseded, prompt, and legacy material.
 
 Use [document-index.json](document-index.json) for complete path-level classification.

@@ -1,0 +1,38 @@
+{
+  "id": "FT-036",
+  "title": "Drydock Deterministic Sea Trials",
+  "summary": "Creators can persist revisioned synthetic Sea Trial scenarios and suites, deterministically execute the canonical One Voyage transition adapter with virtual time, seeded randomness, bounded faults, safe traces, coverage, and semantic comparison, and inspect the resulting private Studio evidence without mutating a live Voyage.",
+  "status": "BRANCH_COMPLETE_NOT_MERGED",
+  "program": "Project Drydock Phase 3",
+  "surfaces": [
+    "/studio/tales/[taleId]/trials",
+    "/api/studio/tales/[taleId]/scenarios",
+    "/api/studio/tales/[taleId]/simulation-runs",
+    "npm run drydock:cli"
+  ],
+  "subfeatures": [
+    "Strict versioned Scenario and Scenario Suite contracts",
+    "Revisioned owned Scenario persistence and frozen run source",
+    "Deterministic virtual clock, seeded randomness, bounded faults, and assertions",
+    "Canonical One Voyage transition adapter differential proof",
+    "Safe trace, state-diff, replay, coverage, and suggestion projections",
+    "Private Creator Studio Scenario Lab and CSRF-protected owned APIs",
+    "Additive SQLite and static MySQL migration parity"
+  ],
+  "evidence": [
+    { "kind": "path", "value": "src/drydock/simulation/engine.ts" },
+    { "kind": "path", "value": "src/drydock/simulation-store.ts" },
+    { "kind": "path", "value": "src/components/studio/DrydockScenarioLab.tsx" },
+    { "kind": "test", "value": "src/drydock" },
+    { "kind": "test", "value": "src/app/api/studio/tales/[taleId]/scenarios" }
+  ],
+  "branch": "codex/project-drydock-phase3-run-sea-trials",
+  "commit": "99460bf5bec750586667b13f78149bbb20683cf5",
+  "limitations": [
+    "Branch-complete local qualification is not protected-main availability, deployment, or owner acceptance.",
+    "Sea Trials use synthetic bounded inputs and never mutate a live Tale Session, provider, asset, or Player state.",
+    "Live provider, production MySQL, physical-device, and external assistive-technology proof remain outside this phase.",
+    "Immutable publishing evidence and Phase 4 integration remain out of scope."
+  ],
+  "catalogVersion": 1
+}

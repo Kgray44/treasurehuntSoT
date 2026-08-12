@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import type { HomeportCommunityCard } from "@/community/homeport";
@@ -156,11 +156,12 @@ export function CommunityDiscoveryBrowser({
     return () => controller.abort();
   }, [active, apiParameters, requestKey]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!retryFocusPending.current || !["ready", "empty", "error"].includes(state)) return;
     retryFocusPending.current = false;
-    const frame = requestAnimationFrame(() => outcome.current?.focus());
-    return () => cancelAnimationFrame(frame);
+    // Commit focus with the rendered retry outcome so a quick response cannot
+    // leave keyboard users on a detached error control.
+    outcome.current?.focus();
   }, [state]);
 
   function navigate(parameters: URLSearchParams) {

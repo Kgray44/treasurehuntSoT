@@ -6,7 +6,7 @@ export async function TaleEditorSection({
   section,
 }: {
   taleId: string;
-  section?: "settings" | "assets" | "locations" | "artifacts" | "versions";
+  section?: "settings" | "assets" | "locations" | "artifacts" | "versions" | "trials";
 }) {
   const workspace = await requireStudioWorkspace();
   if (!workspace) return <TaleEditor taleId={taleId} initialSection={section} authenticated={false} />;

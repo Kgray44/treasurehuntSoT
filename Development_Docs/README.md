@@ -29,6 +29,16 @@ also passed. See the [OAuth validation and completion record](Validation/Voyagew
 
 [Project Tideglass](Projects/Project_Tideglass/README.md) owns deterministic semantic comparison of exact immutable Chronicle editions. Phase 1 is a read-only internal foundation with a safe diagnostic seam and no ordinary user-facing comparison route.
 
+## Project Bridgewatch
+
+[Project Bridgewatch Phase 2](Project_Bridgewatch_Phase_2_Design_Record.md)
+extends the standalone private mission-control board with a durable,
+source-indexed Project Registry, permanent phase and completion history,
+read-only Sounding Line runtime projection, narrow machine activity telemetry,
+and ordinary active/completed/planned/all project navigation. The Phase 2
+records distinguish local implementation evidence from its still-required
+candidate qualification, protected authority, merge, and exact-main proof.
+
 ## Project Deepwater
 
 [Project Deepwater](Programs/Deepwater/README.md) governs product capability-realization and systems-audit truth. Phase 1, Sound the Depths, establishes the deterministic capability ledger, schema, ownership map, initial findings, Feature Catalog reconciliation, Phase 2 trace queue, and validation control plane. Phase 2, Trace the Current, converts that queue into complete source-bound traces, exact root causes, canonical assignments, remediation packets, and a Phase 3 realization queue without changing product behavior, schema, or data. Phase 3, Raise the Capability, reviews backend utilization, coordinates owner work, and accepts only independently mainline-safe slices; its three registered documentation slices plus accepted Helm owner evidence close eleven of seventeen route-identity findings, while final control-plane integration and actual-main proof remain pending. Its classifications and maturity rungs are evidence-bound: source existence, local or synthetic validation, staging access, external-provider proof, deployment, and owner acceptance remain distinct.

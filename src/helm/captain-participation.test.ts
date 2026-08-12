@@ -40,6 +40,7 @@ const mocks = vi.hoisted(() => {
     sessionUpdateMany: vi.fn(),
     membershipUpsert: vi.fn(),
     membershipUpdate: vi.fn(),
+    presenceUpdateMany: vi.fn(),
     auditCreate: vi.fn(),
     transaction: vi.fn(),
   };
@@ -55,6 +56,7 @@ vi.mock("@/lib/db", () => {
       upsert: mocks.membershipUpsert,
       update: mocks.membershipUpdate,
     },
+    membershipPresenceDevice: { updateMany: mocks.presenceUpdateMany },
     platformAuditEvent: { create: mocks.auditCreate },
   };
   return {
@@ -70,6 +72,7 @@ vi.mock("@/lib/db", () => {
         upsert: mocks.membershipUpsert,
         update: mocks.membershipUpdate,
       },
+      membershipPresenceDevice: { updateMany: mocks.presenceUpdateMany },
       platformAuditEvent: { create: mocks.auditCreate },
       $transaction: mocks.transaction,
       __tx: tx,
@@ -160,6 +163,7 @@ describe("Project Helm Phase 1 Captain participation", () => {
         return operation({
           taleSession: { updateMany: mocks.sessionUpdateMany, update: mocks.sessionUpdate },
           playthroughMembership: { upsert: mocks.membershipUpsert, update: mocks.membershipUpdate },
+          membershipPresenceDevice: { updateMany: mocks.presenceUpdateMany },
           platformAuditEvent: { create: mocks.auditCreate },
         });
       return Promise.all(operation as Promise<unknown>[]);

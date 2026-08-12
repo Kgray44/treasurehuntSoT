@@ -340,20 +340,32 @@
       "sourcePaths": [
         "Development_Docs/Projects/Project_Helm/**",
         "src/helm/**",
+        "src/platform/membership-presence*",
+        "src/platform/presence-client.ts",
         "src/platform/invitations.ts",
         "src/platform/libraries.ts",
         "src/components/platform/CaptainLibrary.tsx",
+        "src/components/platform/PlayerVoyageRoom.tsx",
+        "src/components/player/journal/ChronicleJournalSession.tsx",
+        "src/components/captain/CaptainOperationalPanel.tsx",
         "src/homeport/**",
         "src/wayfarer/chronicle-history.ts",
         "src/chronicle/artifact-grant.ts",
         "src/app/api/captain/playthroughs/**",
+        "src/app/api/captain/voyages/**",
+        "src/app/api/player/playthroughs/**/presence/**",
+        "prisma/migrations/20260810160000_helm_phase2_membership_presence/**",
+        "prisma/mysql-migrations/0054_helm_phase2_membership_presence/**",
         "src/app/api/play/sessions/**"
       ],
       "testPaths": [
         "src/helm/**/*.test.*",
+        "src/platform/membership-presence*.test.*",
         "src/platform/invitations.helm.test.ts",
         "src/components/platform/CaptainLibrary.helm.test.tsx",
         "src/app/api/captain/playthroughs/**/route.test.ts",
+        "src/app/api/captain/voyages/**/route.test.ts",
+        "src/app/api/player/playthroughs/**/presence/**/route.test.ts",
         "src/app/api/play/sessions/**/route.helm.test.ts",
         "src/wayfarer/chronicle-history.helm.test.ts",
         "src/chronicle/artifact-grant.helm.test.ts",
@@ -367,7 +379,8 @@
         "helm.history.membership-derived",
         "helm.artifacts.event-time-membership",
         "helm.security.resource-authorization",
-        "helm.accessibility.responsive"
+        "helm.accessibility.responsive",
+        "helm.member-presence-synchronization"
       ]
     },
     {
@@ -401,6 +414,17 @@
         "admiralty.phase1.migration",
         "admiralty.phase1.responsive-consent"
       ]
+    },
+    {
+      "id": "bridgewatch",
+      "project": "bridgewatch",
+      "sourcePaths": [
+        "bridgewatch/**",
+        "scripts/sounding-line/status-projection.mjs",
+        "Development_Docs/Project_Bridgewatch_Phase_2_*.md"
+      ],
+      "testPaths": ["bridgewatch/test/**/*.test.*"],
+      "contractIds": ["bridgewatch.mission-control"]
     }
   ]
 }

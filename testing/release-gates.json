@@ -10,7 +10,8 @@
         "unit.deepwater",
         "unit.homeport",
         "unit.sounding-line",
-        "unit.tideglass"
+        "unit.tideglass",
+        "unit.bridgewatch"
       ],
       "conditionalSuites": [
         "unit.helm",
@@ -150,6 +151,7 @@
         "unit.admiralty",
         "component.admiralty",
         "browser.admiralty",
+        "unit.bridgewatch",
         "unit.wakebook",
         "component.wakebook",
         "browser.wakebook"
@@ -206,7 +208,8 @@
         "build.production",
         "unit.admiralty",
         "component.admiralty",
-        "browser.admiralty"
+        "browser.admiralty",
+        "unit.bridgewatch"
       ],
       "conditionalSuites": [
         "migration.mysql",
@@ -278,7 +281,8 @@
         "build.production",
         "unit.admiralty",
         "component.admiralty",
-        "browser.admiralty"
+        "browser.admiralty",
+        "unit.bridgewatch"
       ],
       "conditionalSuites": ["migration.mysql"]
     },

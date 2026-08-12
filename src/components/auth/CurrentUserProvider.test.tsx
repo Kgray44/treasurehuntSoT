@@ -95,7 +95,9 @@ describe("CurrentUserProvider", () => {
     );
     expect(document.documentElement).toHaveAttribute("data-homeport-hydration", "complete");
     expect(await screen.findByText("anonymous")).toBeInTheDocument();
-    expect(document.documentElement).toHaveAttribute("data-homeport-current-user-state", "anonymous");
+    await waitFor(() =>
+      expect(document.documentElement).toHaveAttribute("data-homeport-current-user-state", "anonymous"),
+    );
     expect(document.documentElement.outerHTML).not.toMatch(/account-1|csrf-client-value|session-1/u);
     view.unmount();
     expect(document.documentElement).toHaveAttribute("data-homeport-hydration", "pending");

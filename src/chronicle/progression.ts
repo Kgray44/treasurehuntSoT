@@ -6,6 +6,7 @@ import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
 import { publishTaleSessionEvent } from "@/lib/events";
 import { providerForBlock } from "@/chronicle/block-registry";
 import { snapshotFromStudio, parsePublishedSnapshot } from "@/chronicle/publishing";
+import { enabledSnapshotBlocks, planCanonicalCompletion } from "@/chronicle/runtime-semantics";
 import { getStudioTale } from "@/chronicle/studio-service";
 import type {
   JsonObject,
@@ -101,8 +102,7 @@ export class VerificationRejectedError extends Error {
 
 const identity = (session: { publishedVersionId: string | null; draftRevisionId: string | null }) =>
   session.publishedVersionId ?? `draft:${session.draftRevisionId ?? "unknown"}`;
-const blocksOf = (snapshot: PublishedTaleSnapshot) =>
-  snapshot.chapters.flatMap((chapter) => chapter.blocks.filter((block) => block.isEnabled));
+const blocksOf = enabledSnapshotBlocks;
 const blockById = (snapshot: PublishedTaleSnapshot, id: string | null) =>
   id ? (blocksOf(snapshot).find((block) => block.id === id) ?? null) : null;
 const chapterByBlock = (snapshot: PublishedTaleSnapshot, id: string | null) =>
@@ -226,53 +226,7 @@ async function enterBlock(
   return event;
 }
 
-export function conditionPasses(block: PublishedBlock, variables: JsonObject, inventory: string[]) {
-  const config = block.configuration;
-  const key = String(config.variable ?? "");
-  const actual = key.startsWith("artifact:") ? inventory.includes(key.slice(9)) : variables[key];
-  const expected = config.value;
-  if (config.operator === "notEquals") return actual !== expected;
-  if (config.operator === "greaterThan") return Number(actual) > Number(expected);
-  if (config.operator === "lessThan") return Number(actual) < Number(expected);
-  if (config.operator === "contains")
-    return Array.isArray(actual) ? actual.includes(expected) : String(actual ?? "").includes(String(expected ?? ""));
-  return actual === expected;
-}
-
-function chooseNext(
-  snapshot: PublishedTaleSnapshot,
-  block: PublishedBlock,
-  variables: JsonObject,
-  inventory: string[],
-  selected?: string,
-) {
-  const blocks = blocksOf(snapshot);
-  if (selected) return blocks.find((candidate) => candidate.id === selected) ?? null;
-  if (block.blockType === "condition") {
-    const target = String(
-      block.configuration[
-        conditionPasses(block, variables, inventory) ? "successTargetBlockId" : "failureTargetBlockId"
-      ] ?? "",
-    );
-    return blocks.find((candidate) => candidate.id === target) ?? null;
-  }
-  const target =
-    block.connections.find((connection) => connection.connectionType === "DEFAULT")?.targetBlockId ?? block.nextBlockId;
-  return blocks.find((candidate) => candidate.id === target) ?? null;
-}
-
-export function mutateVariables(block: PublishedBlock, variables: JsonObject) {
-  if (block.blockType !== "setVariable") return variables;
-  const next = { ...variables };
-  const key = String(block.configuration.variable ?? "");
-  const operation = String(block.configuration.operation ?? "set");
-  if (!key) return next;
-  if (operation === "increment") next[key] = Number(next[key] ?? 0) + Number(block.configuration.value ?? 1);
-  else if (operation === "decrement") next[key] = Number(next[key] ?? 0) - Number(block.configuration.value ?? 1);
-  else if (operation === "toggle") next[key] = !Boolean(next[key]);
-  else next[key] = block.configuration.value;
-  return next;
-}
+export { conditionPasses, mutateVariables } from "@/chronicle/runtime-semantics";
 
 async function completeBlock(
   tx: Prisma.TransactionClient,
@@ -294,85 +248,92 @@ async function completeBlock(
     where: { sessionId: session.id, blockId: block.id, eventType: "blockCompleted" },
   });
   if (completedBefore) return completedBefore;
-  let variables = mutateVariables(block, parseJsonObject(session.variables));
-  let inventory = parseJsonArray<string>(session.inventory);
-  if (["artifactReveal", "collectionUpdate"].includes(block.blockType)) {
-    const artifactId = String(block.configuration.artifactId ?? "");
-    if (artifactId && !inventory.includes(artifactId)) {
-      inventory = [...inventory, artifactId];
-      await tx.revealState.upsert({
-        where: {
-          playthroughId_contentType_contentKey: {
-            playthroughId: session.id,
-            contentType: "ARTIFACT",
-            contentKey: artifactId,
-          },
-        },
-        update: {},
-        create: {
+  const initialInventory = parseJsonArray<string>(session.inventory);
+  const plan = planCanonicalCompletion(
+    snapshot,
+    {
+      currentBlockId: block.id,
+      variables: parseJsonObject(session.variables),
+      inventory: initialInventory,
+      status: "ACTIVE",
+    },
+    { selectedTargetId: selectedTarget },
+  );
+  const variables = plan.state.variables;
+  const inventory = plan.state.inventory;
+  if (plan.addedArtifactId && !initialInventory.includes(plan.addedArtifactId)) {
+    const artifactId = plan.addedArtifactId;
+    await tx.revealState.upsert({
+      where: {
+        playthroughId_contentType_contentKey: {
           playthroughId: session.id,
           contentType: "ARTIFACT",
           contentKey: artifactId,
-          revealedBy: sourceId ?? sourceType,
+        },
+      },
+      update: {},
+      create: {
+        playthroughId: session.id,
+        contentType: "ARTIFACT",
+        contentKey: artifactId,
+        revealedBy: sourceId ?? sourceType,
+      },
+    });
+    const grantEvent = await appendEvent(tx, session, {
+      eventType: "artifactGranted",
+      sourceType,
+      sourceId,
+      blockId: block.id,
+      idempotencyKey: `grant:${session.id}:${block.id}:${artifactId}`,
+      payload: { artifactId },
+      correlationId: key,
+    });
+    // The event remains the canonical progression fact.  The receipt freezes
+    // server-resolved recipients so later membership/role changes cannot
+    // rewrite personal ownership.
+    if (session.publishedVersionId) {
+      const memberships = await tx.playthroughMembership.findMany({
+        where: { playthroughId: session.id },
+        select: { id: true, playerProfileId: true, status: true, crewRole: true, joinedAt: true, removedAt: true },
+      });
+      const receipt = resolveArtifactGrantReceipt({
+        artifactDefinitionId: artifactId,
+        playthroughId: session.id,
+        publishedVersionId: session.publishedVersionId,
+        sourceEventId: grantEvent.id,
+        sourceBlockId: block.id,
+        occurredAt: grantEvent.createdAt,
+        configuration: block.configuration,
+        memberships,
+      });
+      await tx.artifactGrantReceipt.create({
+        data: {
+          sessionId: session.id,
+          sourceEventId: receipt.sourceEventId,
+          grantId: receipt.grantId,
+          schemaVersion: receipt.schemaVersion,
+          artifactDefinitionId: receipt.artifactDefinitionId,
+          artifactOccurrenceId: receipt.artifactOccurrenceId,
+          publishedVersionId: receipt.publishedVersionId,
+          sourceBlockId: receipt.sourceBlockId,
+          recipientPolicy: receipt.recipientPolicy,
+          resolvedRecipientMembershipIds: JSON.stringify(receipt.resolvedRecipientMembershipIds),
+          resolvedRecipientProfileIds: JSON.stringify(receipt.resolvedRecipientProfileIds),
+          discoveringMembershipId: receipt.discoveringMembershipId,
+          requiredCrewRole: receipt.requiredCrewRole,
+          sharedInventoryAction: receipt.sharedInventoryAction,
+          personalGrantState: receipt.personalGrantState,
+          custodyKind: receipt.custodyKind,
+          assemblyDefinitionId: receipt.assemblyDefinitionId,
+          componentRole: receipt.componentRole,
+          receiptState: receipt.receiptState,
+          occurredAt: new Date(receipt.occurredAt),
+          correctionOfGrantId: receipt.correctionOfGrantId,
+          correctionReason: receipt.correctionReason,
         },
       });
-      const grantEvent = await appendEvent(tx, session, {
-        eventType: "artifactGranted",
-        sourceType,
-        sourceId,
-        blockId: block.id,
-        idempotencyKey: `grant:${session.id}:${block.id}:${artifactId}`,
-        payload: { artifactId },
-        correlationId: key,
-      });
-      // The event remains the canonical progression fact.  The receipt freezes
-      // server-resolved recipients so later membership/role changes cannot
-      // rewrite personal ownership.
-      if (session.publishedVersionId) {
-        const memberships = await tx.playthroughMembership.findMany({
-          where: { playthroughId: session.id },
-          select: { id: true, playerProfileId: true, status: true, crewRole: true, joinedAt: true, removedAt: true },
-        });
-        const receipt = resolveArtifactGrantReceipt({
-          artifactDefinitionId: artifactId,
-          playthroughId: session.id,
-          publishedVersionId: session.publishedVersionId,
-          sourceEventId: grantEvent.id,
-          sourceBlockId: block.id,
-          occurredAt: grantEvent.createdAt,
-          configuration: block.configuration,
-          memberships,
-        });
-        await tx.artifactGrantReceipt.create({
-          data: {
-            sessionId: session.id,
-            sourceEventId: receipt.sourceEventId,
-            grantId: receipt.grantId,
-            schemaVersion: receipt.schemaVersion,
-            artifactDefinitionId: receipt.artifactDefinitionId,
-            artifactOccurrenceId: receipt.artifactOccurrenceId,
-            publishedVersionId: receipt.publishedVersionId,
-            sourceBlockId: receipt.sourceBlockId,
-            recipientPolicy: receipt.recipientPolicy,
-            resolvedRecipientMembershipIds: JSON.stringify(receipt.resolvedRecipientMembershipIds),
-            resolvedRecipientProfileIds: JSON.stringify(receipt.resolvedRecipientProfileIds),
-            discoveringMembershipId: receipt.discoveringMembershipId,
-            requiredCrewRole: receipt.requiredCrewRole,
-            sharedInventoryAction: receipt.sharedInventoryAction,
-            personalGrantState: receipt.personalGrantState,
-            custodyKind: receipt.custodyKind,
-            assemblyDefinitionId: receipt.assemblyDefinitionId,
-            componentRole: receipt.componentRole,
-            receiptState: receipt.receiptState,
-            occurredAt: new Date(receipt.occurredAt),
-            correctionOfGrantId: receipt.correctionOfGrantId,
-            correctionReason: receipt.correctionReason,
-          },
-        });
-      }
     }
   }
-  if (block.blockType === "choice" && selectedTarget) variables[`choice:${block.id}`] = selectedTarget;
   await tx.taleSession.update({
     where: { id: session.id },
     data: { variables: JSON.stringify(variables), inventory: JSON.stringify(inventory) },
@@ -418,24 +379,20 @@ async function completeBlock(
     });
     return completed;
   }
-  let next = chooseNext(snapshot, block, variables, inventory, selectedTarget);
-  const seen = new Set<string>();
-  while (next && ["condition", "setVariable"].includes(next.blockType) && !seen.has(next.id)) {
-    seen.add(next.id);
-    await enterBlock(tx, session, snapshot, next, "progression", null, `${key}:logic`);
-    variables = mutateVariables(next, variables);
-    await tx.taleSession.update({ where: { id: session.id }, data: { variables: JSON.stringify(variables) } });
+  for (const automaticBlockId of plan.automaticBlockIds) {
+    const automaticBlock = blockById(snapshot, automaticBlockId);
+    if (!automaticBlock) throw new Error("A planned automatic Passage is unavailable.");
+    await enterBlock(tx, session, snapshot, automaticBlock, "progression", null, `${key}:logic`);
     await appendEvent(tx, session, {
       eventType: "blockCompleted",
       sourceType: "progression",
-      blockId: next.id,
-      idempotencyKey: `${key}:logic:${next.id}`,
+      blockId: automaticBlock.id,
+      idempotencyKey: `${key}:logic:${automaticBlock.id}`,
       payload: { automatic: true },
       correlationId: key,
     });
-    next = chooseNext(snapshot, next, variables, inventory);
   }
-  if (!next) {
+  if (plan.state.status === "PAUSED") {
     await tx.taleSession.update({ where: { id: session.id }, data: { status: "PAUSED" } });
     await appendEvent(tx, session, {
       eventType: "progressionStopped",
@@ -445,7 +402,11 @@ async function completeBlock(
       payload: { reason: "No valid next connection" },
       correlationId: key,
     });
-  } else await enterBlock(tx, session, snapshot, next, sourceType, sourceId, key);
+  } else {
+    const next = plan.nextBlockId ? blockById(snapshot, plan.nextBlockId) : null;
+    if (!next) throw new Error("A planned next Passage is unavailable.");
+    await enterBlock(tx, session, snapshot, next, sourceType, sourceId, key);
+  }
   return completed;
 }
 

@@ -76,7 +76,7 @@
     },
     {
       "id": "unit.drydock",
-      "name": "Drydock typed authoring contract units",
+      "name": "Drydock authoring and deterministic Sea Trial contracts",
       "tier": 1,
       "owner": "drydock",
       "command": "registry-selected Vitest files",
@@ -86,7 +86,23 @@
       "parallelSafe": true,
       "resources": ["node-slot", "vitest-worker-pool", "prisma-sqlite-client"],
       "dependencies": [],
-      "contracts": ["drydock-authoring-contracts", "drydock-progression"],
+      "contracts": [
+        "drydock-authoring-contracts",
+        "drydock-progression",
+        "drydock-scenario-contract",
+        "drydock-simulation-determinism",
+        "drydock-virtual-time",
+        "drydock-fault-contract",
+        "drydock-trace-privacy",
+        "drydock-coverage-contract",
+        "drydock-runtime-adapter",
+        "drydock-runtime-differential",
+        "drydock-no-live-mutation",
+        "drydock-durable-run",
+        "drydock-scenario-authorization",
+        "drydock-studio-scenario-lab",
+        "drydock-performance"
+      ],
       "affectedPaths": [
         "src/drydock/**",
         "scripts/drydock/**",
@@ -94,7 +110,7 @@
         "Development_Docs/Projects/Project Drydock/**"
       ],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "owned-family",
+      "currentImplementationState": "phase-3-source-bound",
       "adapter": "vitest-family"
     },
     {
@@ -2454,12 +2470,17 @@
         "helm.player-projection.firewall",
         "helm.history.membership-derived",
         "helm.artifacts.event-time-membership",
-        "helm.security.resource-authorization"
+        "helm.security.resource-authorization",
+        "helm.member-presence-synchronization"
       ],
       "affectedPaths": [
         "src/helm/**",
+        "src/platform/membership-presence*",
+        "src/platform/presence-client.ts",
         "src/platform/invitations.helm.test.ts",
         "src/app/api/captain/playthroughs/**",
+        "src/app/api/captain/voyages/**",
+        "src/app/api/player/playthroughs/**/presence/**",
         "src/app/api/play/sessions/**/route.helm.test.ts",
         "src/wayfarer/chronicle-history.helm.test.ts",
         "src/chronicle/artifact-grant.helm.test.ts"
@@ -2483,9 +2504,16 @@
       "contracts": [
         "helm.creation.default-captain-only",
         "helm.participation.lifecycle",
-        "helm.accessibility.responsive"
+        "helm.accessibility.responsive",
+        "helm.member-presence-synchronization"
       ],
-      "affectedPaths": ["src/components/platform/CaptainLibrary.tsx", "src/styles/platform.css"],
+      "affectedPaths": [
+        "src/components/platform/CaptainLibrary.tsx",
+        "src/components/captain/CaptainOperationalPanel.tsx",
+        "src/components/platform/PlayerVoyageRoom.tsx",
+        "src/components/player/journal/ChronicleJournalSession.tsx",
+        "src/styles/platform.css"
+      ],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-1-source-bound",
       "adapter": "vitest-family"
@@ -2591,6 +2619,28 @@
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-1-accepted-mainline",
       "adapter": "admiralty-phase1-browser"
+    },
+    {
+      "id": "unit.bridgewatch",
+      "name": "Bridgewatch Phase 2 mission-control units",
+      "tier": 1,
+      "owner": "bridgewatch",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 30000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.sounding-line"],
+      "contracts": ["bridgewatch.mission-control"],
+      "affectedPaths": [
+        "bridgewatch/**",
+        "scripts/sounding-line/status-projection.mjs",
+        "Development_Docs/Project_Bridgewatch_Phase_2_*.md"
+      ],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "phase-2-branch-complete",
+      "adapter": "vitest-family"
     }
   ]
 }

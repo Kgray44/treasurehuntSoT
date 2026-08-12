@@ -735,6 +735,9 @@ model TaleDraft {
   tale                      Chronicle              @relation(fields: [taleId], references: [id], onDelete: Cascade)
   chapters                  TaleChapter[]
   drydockValidationRuns     DrydockValidationRun[]
+  drydockScenarios          DrydockScenario[]
+  drydockScenarioSuites     DrydockScenarioSuite[]
+  drydockSimulationRuns     DrydockSimulationRun[]
   createdByAccount          UserAccount?           @relation("TaleDraftAuthorAccount", fields: [createdByAccountId], references: [id], onDelete: SetNull)
   drydockRuleWaivers        DrydockRuleWaiver[]
 
@@ -788,6 +791,105 @@ model DrydockRuleWaiver {
   @@index([draftId, createdAt])
   @@index([issueId, sourceChecksum])
   @@index([authorizedByAccountId, createdAt])
+}
+
+model DrydockScenario {
+  id              String                       @id @default(cuid())
+  draftId         String
+  scenarioId      String
+  title           String
+  currentRevision Int                          @default(1)
+  archivedAt      DateTime?
+  createdAt       DateTime                     @default(now())
+  updatedAt       DateTime                     @updatedAt
+  draft           TaleDraft                    @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  revisions       DrydockScenarioRevision[]
+
+  @@unique([draftId, scenarioId])
+  @@index([draftId, archivedAt, updatedAt])
+}
+
+model DrydockScenarioRevision {
+  id                    String                       @id @default(cuid())
+  scenarioRecordId      String
+  revision              Int
+  sourceChecksum        String
+  scenarioSchemaVersion Int
+  scenarioDigest        String
+  scenario              String                       @db.LongText
+  createdAt             DateTime                     @default(now())
+  scenarioRecord        DrydockScenario              @relation(fields: [scenarioRecordId], references: [id], onDelete: Cascade)
+  suiteMembers          DrydockScenarioSuiteMember[]
+  simulationRuns        DrydockSimulationRun[]
+
+  @@unique([scenarioRecordId, revision])
+  @@index([sourceChecksum, createdAt])
+}
+
+model DrydockScenarioSuite {
+  id             String                       @id @default(cuid())
+  draftId        String
+  suiteId        String
+  title          String
+  sourceChecksum String
+  archivedAt     DateTime?
+  createdAt      DateTime                     @default(now())
+  updatedAt      DateTime                     @updatedAt
+  draft          TaleDraft                    @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  members        DrydockScenarioSuiteMember[]
+
+  @@unique([draftId, suiteId])
+  @@index([draftId, archivedAt, updatedAt])
+}
+
+model DrydockScenarioSuiteMember {
+  id                 String                  @id @default(cuid())
+  suiteRecordId      String
+  scenarioRevisionId String
+  orderIndex         Int
+  createdAt          DateTime                @default(now())
+  suiteRecord        DrydockScenarioSuite    @relation(fields: [suiteRecordId], references: [id], onDelete: Cascade)
+  scenarioRevision   DrydockScenarioRevision @relation(fields: [scenarioRevisionId], references: [id], onDelete: Restrict)
+
+  @@unique([suiteRecordId, scenarioRevisionId])
+  @@unique([suiteRecordId, orderIndex])
+  @@index([scenarioRevisionId])
+}
+
+model DrydockSimulationRun {
+  id                      String                   @id @default(cuid())
+  draftId                 String
+  runId                   String                   @unique
+  scenarioRevisionId      String?
+  sourceChecksum          String
+  sourceRevision          Int
+  sourceGitSha            String                   @default("UNRESOLVED") @db.VarChar(64)
+  engineVersion           String
+  adapterVersion          String
+  scenarioSchemaVersion   Int                      @default(1)
+  faultCatalogVersion     String                   @default("drydock-fault-catalog-v1") @db.VarChar(64)
+  status                  String
+  resultDigest            String?
+  coverageDigest          String?
+  sourceSnapshot          String                   @db.LongText
+  result                  String                   @default("{}") @db.LongText
+  trace                   String                   @default("[]") @db.LongText
+  checkpoint              String                   @default("{}") @db.LongText
+  completedInputs         Int                      @default(0)
+  cancellationRequestedAt DateTime?
+  leaseToken              String?
+  leaseExpiresAt          DateTime?
+  startedAt               DateTime                 @default(now())
+  completedAt             DateTime?
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+  draft                   TaleDraft                @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  scenarioRevision        DrydockScenarioRevision? @relation(fields: [scenarioRevisionId], references: [id], onDelete: SetNull)
+
+  @@index([draftId, createdAt])
+  @@index([sourceChecksum, status])
+  @@index([scenarioRevisionId, createdAt])
+  @@index([leaseExpiresAt])
 }
 
 model TaleChapter {
@@ -1166,6 +1268,7 @@ model TaleSession {
   verificationRequests   TaleVerificationRequest[]
   helperPairings         TaleHelperPairing[]
   memberships            PlaythroughMembership[]
+  presenceDevices        MembershipPresenceDevice[]
   invitations            Invitation[]
   revealStates           RevealState[]
   artifactGrantReceipts  ArtifactGrantReceipt[]
@@ -1413,9 +1516,32 @@ model PlaythroughMembership {
   updatedAt                  DateTime      @updatedAt
   playthrough                TaleSession   @relation(fields: [playthroughId], references: [id], onDelete: Cascade)
   player                     PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+  presenceDevices            MembershipPresenceDevice[]
 
   @@unique([playthroughId, playerProfileId])
   @@index([playerProfileId, status, updatedAt])
+}
+
+// Platform-owned, membership-scoped operational evidence. These records are
+// not Chronicle progression, a Helm state store, or a device fingerprint.
+model MembershipPresenceDevice {
+  id                      String                @id @default(cuid())
+  playthroughMembershipId String
+  taleSessionId           String
+  deviceInstanceId        String
+  lastHeartbeatAt         DateTime              @default(now())
+  acknowledgedSequence    Int                   @default(0)
+  safeActivity            String?
+  connectionGeneration    Int                   @default(0)
+  disconnectedAt          DateTime?
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
+  membership              PlaythroughMembership @relation(fields: [playthroughMembershipId], references: [id], onDelete: Cascade)
+  taleSession             TaleSession           @relation(fields: [taleSessionId], references: [id], onDelete: Cascade)
+
+  @@unique([playthroughMembershipId, deviceInstanceId])
+  @@index([taleSessionId, lastHeartbeatAt])
+  @@index([playthroughMembershipId, lastHeartbeatAt])
 }
 
 model AccountDataExport {

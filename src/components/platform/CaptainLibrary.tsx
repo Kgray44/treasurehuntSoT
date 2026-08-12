@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { reconcileVersionedRows } from "@/animation/platform/polling-delta";
@@ -21,6 +21,24 @@ type Voyage = {
   lastActivityAt: string;
   currentSequence: number;
   connected: boolean;
+  aggregatePresence:
+    | "CONNECTED_SYNCED"
+    | "CONNECTED_CATCHING_UP"
+    | "RECENTLY_LOST"
+    | "NOT_CURRENTLY_CONNECTED"
+    | "UNKNOWN";
+  operationalStatus: string;
+  attention: Array<{ key: string; severity: "INFO" | "NOTICE" | "WARNING" | "HIGH" | "CRITICAL"; title: string }>;
+  crewSummary: {
+    total: number;
+    ready: number;
+    connected: number;
+    recentlyLost: number;
+    stale: number;
+    unknown: number;
+    synchronized: number;
+    catchingUp: number;
+  };
   pendingAction: string | null;
   players: Array<{ id: string; displayName: string; status: string }>;
   participation: CaptainParticipation | null;
@@ -113,6 +131,10 @@ function voyageVersion(row: VersionedVoyage) {
     row.voyage.versionLabel,
     row.voyage.currentSequence,
     row.voyage.connected,
+    row.voyage.aggregatePresence,
+    row.voyage.operationalStatus,
+    row.voyage.attention,
+    row.voyage.crewSummary,
     row.voyage.pendingAction,
     row.voyage.players,
     row.voyage.participation,
@@ -863,6 +885,24 @@ function VoyageCard({
   launch: () => void;
   changeParticipation: (mode: "CAPTAIN_ONLY" | "CAPTAIN_AND_PLAYER") => void;
 }) {
+  // A rolling deploy can momentarily serve the established Phase 1 library
+  // shape. Keep that response useful while the Phase 2 projection endpoint
+  // converges; it never grants or infers any new operational fact.
+  const operationalStatus = voyage.operationalStatus ?? voyage.status;
+  const attention = voyage.attention ?? [];
+  const crewSummary = voyage.crewSummary ?? {
+    total: voyage.players.length,
+    ready: voyage.players.filter((player) =>
+      ["READY", "JOINED", "ACTIVE", "ACTIVE_MEMBER", "COMPLETED_MEMBER"].includes(player.status),
+    ).length,
+    connected: 0,
+    recentlyLost: 0,
+    stale: 0,
+    unknown: voyage.players.length,
+    synchronized: 0,
+    catchingUp: 0,
+  };
+  const aggregatePresence = voyage.aggregatePresence ?? (voyage.connected ? "CONNECTED_SYNCED" : "UNKNOWN");
   const readyPlayers = voyage.players.filter((player) =>
     ["READY", "JOINED", "ACTIVE", "ACTIVE_MEMBER", "COMPLETED_MEMBER"].includes(player.status),
   ).length;
@@ -878,7 +918,15 @@ function VoyageCard({
     >
       <div className="session-signal">
         <i className={voyage.connected ? "connected" : "quiet"} />
-        <span>{voyage.connected ? "Crew member recently connected" : "No recent Crew connection"}</span>
+        <span>
+          {aggregatePresence === "UNKNOWN"
+            ? "Crew presence awaiting evidence"
+            : aggregatePresence === "NOT_CURRENTLY_CONNECTED"
+              ? "No crew connection currently confirmed"
+              : voyage.connected
+                ? "Crew connection currently confirmed"
+                : "Crew connection recently changed"}
+        </span>
       </div>
       <p className="card-kicker">Version {voyage.versionLabel}</p>
       <h3>{voyage.taleTitle}</h3>
@@ -901,8 +949,15 @@ function VoyageCard({
       )}
       <dl>
         <div>
-          <dt>Status</dt>
-          <dd>{voyage.status.toLocaleLowerCase()}</dd>
+          <dt>Operational status</dt>
+          <dd>{operationalStatus.replaceAll("_", " ").toLocaleLowerCase()}</dd>
+        </div>
+        <div>
+          <dt>Crew readiness</dt>
+          <dd>
+            {crewSummary.ready} of {crewSummary.total} ready · {crewSummary.connected} connected ·{" "}
+            {crewSummary.catchingUp} catching up
+          </dd>
         </div>
         <div>
           <dt>Crew</dt>
@@ -916,16 +971,19 @@ function VoyageCard({
           <dt>Last activity</dt>
           <dd>{new Date(voyage.lastActivityAt).toLocaleTimeString()}</dd>
         </div>
-        {voyage.pendingAction && (
+        {attention[0] && (
           <div>
-            <dt>Needs action</dt>
-            <dd>{voyage.pendingAction}</dd>
+            <dt>Needs Attention</dt>
+            <dd>
+              {attention[0].severity.toLocaleLowerCase()} · {attention[0].title}
+            </dd>
           </div>
         )}
       </dl>
       {group === "Needs Attention" && (
         <p className="needs-attention-mark">
-          <span aria-hidden="true">!</span> A Captain action is required before this Voyage can continue.
+          <span aria-hidden="true">!</span> Review the current operational condition before taking any existing Captain
+          action.
         </p>
       )}
       {group === "Ready to Launch" && (
@@ -1039,6 +1097,28 @@ function VoyageWizard(props: WizardProps) {
   const closeRef = useRef(props.close);
   const token = resolvePlatformMotionToken("layout", props.mode);
   const direction = props.direction;
+  const [documentZoom, setDocumentZoom] = useState(1);
+
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const syncDocumentZoom = () => {
+      const zoom = Number.parseFloat(root.style.zoom || getComputedStyle(root).zoom);
+      const effectiveZoom = Number.isFinite(zoom) && zoom > 0 ? zoom : 1;
+      // MutationObserver runs before the browser test's next page evaluation,
+      // while React state may not have committed yet. Apply this critical width
+      // adjustment to the live dialog first, then retain it in render state.
+      dialogRef.current?.style.setProperty("width", effectiveZoom > 1 ? `calc(100% / ${effectiveZoom})` : "");
+      root.classList.toggle("helm-document-zoom", effectiveZoom > 1);
+      setDocumentZoom(effectiveZoom);
+    };
+    syncDocumentZoom();
+    const observer = new MutationObserver(syncDocumentZoom);
+    observer.observe(root, { attributes: true, attributeFilter: ["style"] });
+    return () => {
+      observer.disconnect();
+      root.classList.remove("helm-document-zoom");
+    };
+  }, []);
   const crewNames = props.players.map(
     (crew) =>
       props.library.playerProfiles.find((profile) => profile.id === crew.playerId)?.displayName ??
@@ -1125,6 +1205,7 @@ function VoyageWizard(props: WizardProps) {
       <motion.section
         ref={dialogRef}
         className="voyage-wizard"
+        style={documentZoom > 1 ? { width: `calc(100% / ${documentZoom})` } : undefined}
         role="dialog"
         aria-modal="true"
         aria-labelledby="wizard-title"
