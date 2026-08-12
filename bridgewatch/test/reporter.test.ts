@@ -23,7 +23,9 @@ describe("reporter helper", () => {
       await import("../lib/reporter.js");
       expect(fetchStub).toHaveBeenCalledWith(
         process.env.BRIDGEWATCH_TELEMETRY_ENDPOINT,
-        expect.objectContaining({ headers: expect.objectContaining({ Authorization: "Bearer distinct-reporter-token" }) }),
+        expect.objectContaining({
+          headers: expect.objectContaining({ Authorization: "Bearer distinct-reporter-token" }),
+        }),
       );
       expect(output.mock.calls.flat().join("")).not.toContain("distinct-reporter-token");
       expect(output.mock.calls.flat().join("")).not.toContain("Wire durable telemetry");

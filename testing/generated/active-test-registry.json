@@ -91325,7 +91325,7 @@
     {
       "id": "sl-test-f8d8c751aee805e3301d",
       "title": "PID reuse is quarantined unless every process identity proof matches",
-      "line": 201,
+      "line": 205,
       "file": "tests/sounding-line/phase2-runtime.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",

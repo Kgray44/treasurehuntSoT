@@ -44,9 +44,7 @@ describe("Phase 2 durable history migration", () => {
         state: "COMPLETE",
         acceptedAt: "2026-08-12T00:00:00.000Z",
         integratedMainSha: "abc",
-        milestones: [
-          { id: "archive-p1-record", title: "Record", weight: 1, state: "ACCEPTED", evidence: ["receipt"] },
-        ],
+        milestones: [{ id: "archive-p1-record", title: "Record", weight: 1, state: "ACCEPTED", evidence: ["receipt"] }],
       },
     ],
   };
@@ -71,9 +69,40 @@ describe("Phase 2 durable history migration", () => {
   it("retains recent governed test runs and nodes independently from the cache", () => {
     const store = new BridgewatchStore(join(mkdtempSync(join(tmpdir(), "bridgewatch-test-")), "cache.sqlite"));
     try {
-      const projection = normalizeSoundingLineProjection({ schemaVersion: 1, observedAt: "2026-08-12T00:00:00.000Z", source: "SOUNDING_LINE_RUNTIME", leases: 0, workers: [], plans: [{ id: "run-1", sourceSha: "abc", gate: "mainline", state: "FINISHED", createdAt: "2026-08-12T00:00:00.000Z", cleanupState: "CLEAN", finalDecision: "RELEASE_GO", nodes: [{ id: "unit.bridgewatch", suiteId: "unit.bridgewatch", state: "PASSED", queuedAt: "2026-08-12T00:00:00.000Z", startedAt: "2026-08-12T00:00:01.000Z", completedAt: "2026-08-12T00:00:02.000Z", attempt: 1, rootFailureId: null }] }] });
+      const projection = normalizeSoundingLineProjection({
+        schemaVersion: 1,
+        observedAt: "2026-08-12T00:00:00.000Z",
+        source: "SOUNDING_LINE_RUNTIME",
+        leases: 0,
+        workers: [],
+        plans: [
+          {
+            id: "run-1",
+            sourceSha: "abc",
+            gate: "mainline",
+            state: "FINISHED",
+            createdAt: "2026-08-12T00:00:00.000Z",
+            cleanupState: "CLEAN",
+            finalDecision: "RELEASE_GO",
+            nodes: [
+              {
+                id: "unit.bridgewatch",
+                suiteId: "unit.bridgewatch",
+                state: "PASSED",
+                queuedAt: "2026-08-12T00:00:00.000Z",
+                startedAt: "2026-08-12T00:00:01.000Z",
+                completedAt: "2026-08-12T00:00:02.000Z",
+                attempt: 1,
+                rootFailureId: null,
+              },
+            ],
+          },
+        ],
+      });
       store.replaceTestProjection(projection);
-      expect(store.recentTestRuns()).toEqual([{ id: "run-1", observedAt: "2026-08-12T00:00:00.000Z", value: projection.plans[0] }]);
+      expect(store.recentTestRuns()).toEqual([
+        { id: "run-1", observedAt: "2026-08-12T00:00:00.000Z", value: projection.plans[0] },
+      ]);
     } finally {
       store.close();
     }

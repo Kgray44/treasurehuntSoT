@@ -4,18 +4,37 @@ import { readdir, readFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
-const runtimeRoot = process.argv[2] ?? process.env.SOUNDING_LINE_RUNTIME_ROOT ?? path.join(process.env.LOCALAPPDATA ?? path.join(os.homedir(), "AppData", "Local"), "ForeverTreasureCompanion", "SoundingLine", "runs");
+const runtimeRoot =
+  process.argv[2] ??
+  process.env.SOUNDING_LINE_RUNTIME_ROOT ??
+  path.join(
+    process.env.LOCALAPPDATA ?? path.join(os.homedir(), "AppData", "Local"),
+    "ForeverTreasureCompanion",
+    "SoundingLine",
+    "runs",
+  );
 const readJson = async (file, fallback = null) => {
-  try { return JSON.parse(await readFile(file, "utf8")); } catch (error) { if (error?.code === "ENOENT") return fallback; throw error; }
+  try {
+    return JSON.parse(await readFile(file, "utf8"));
+  } catch (error) {
+    if (error?.code === "ENOENT") return fallback;
+    throw error;
+  }
 };
 const nodeState = (node) => node?.state ?? node?.status ?? "UNKNOWN";
 
 export async function projectStatus(base = runtimeRoot) {
   const leases = await readJson(path.join(base, "broker-leases.json"), { version: 1, leases: [] });
   let entries = [];
-  try { entries = await readdir(base, { withFileTypes: true }); } catch (error) { if (error?.code !== "ENOENT") throw error; }
+  try {
+    entries = await readdir(base, { withFileTypes: true });
+  } catch (error) {
+    if (error?.code !== "ENOENT") throw error;
+  }
   const plans = [];
-  for (const entry of entries.filter((candidate) => candidate.isDirectory() && /^sl-[a-z0-9-]+$/u.test(candidate.name))) {
+  for (const entry of entries.filter(
+    (candidate) => candidate.isDirectory() && /^sl-[a-z0-9-]+$/u.test(candidate.name),
+  )) {
     const root = path.join(base, entry.name);
     const [marker, plan, receipts, finalization] = await Promise.all([
       readJson(path.join(root, "run-marker.json")),
@@ -45,10 +64,24 @@ export async function projectStatus(base = runtimeRoot) {
       nodes,
     });
   }
-  const workers = (leases.leases ?? []).filter((lease) => lease.state === "ACTIVE").map((lease) => ({
-    id: String(lease.id), runId: String(lease.runId), lane: String(lease.resource ?? lease.key ?? "resource"), state: "RUNNING", heartbeatAt: lease.expiresAt ?? null,
-  }));
-  return { schemaVersion: 1, observedAt: new Date().toISOString(), source: "SOUNDING_LINE_RUNTIME", plans, workers, leases: (leases.leases ?? []).length };
+  const workers = (leases.leases ?? [])
+    .filter((lease) => lease.state === "ACTIVE")
+    .map((lease) => ({
+      id: String(lease.id),
+      runId: String(lease.runId),
+      lane: String(lease.resource ?? lease.key ?? "resource"),
+      state: "RUNNING",
+      heartbeatAt: lease.expiresAt ?? null,
+    }));
+  return {
+    schemaVersion: 1,
+    observedAt: new Date().toISOString(),
+    source: "SOUNDING_LINE_RUNTIME",
+    plans,
+    workers,
+    leases: (leases.leases ?? []).length,
+  };
 }
 
-if (import.meta.url === `file:///${process.argv[1]?.replaceAll("\\", "/")}`) console.log(JSON.stringify(await projectStatus(), null, 2));
+if (import.meta.url === `file:///${process.argv[1]?.replaceAll("\\", "/")}`)
+  console.log(JSON.stringify(await projectStatus(), null, 2));

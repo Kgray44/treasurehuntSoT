@@ -6,9 +6,21 @@ export type WorkerState = (typeof workerStates)[number];
 const identifier = z.string().regex(/^[a-z][a-z0-9._-]{0,80}$/i);
 const sha = z.string().regex(/^[a-f0-9]{7,64}$/i);
 const date = z.string().datetime({ offset: true });
-const task = z.string().min(1).max(200).regex(/^[^\r\n]*$/);
-const branch = z.string().min(1).max(160).regex(/^[A-Za-z0-9._/-]+$/);
-const host = z.string().min(1).max(120).regex(/^[A-Za-z0-9._-]+$/);
+const task = z
+  .string()
+  .min(1)
+  .max(200)
+  .regex(/^[^\r\n]*$/);
+const branch = z
+  .string()
+  .min(1)
+  .max(160)
+  .regex(/^[A-Za-z0-9._/-]+$/);
+const host = z
+  .string()
+  .min(1)
+  .max(120)
+  .regex(/^[A-Za-z0-9._-]+$/);
 
 export const heartbeatSchema = z
   .object({

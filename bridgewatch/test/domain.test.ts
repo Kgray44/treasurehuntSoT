@@ -34,7 +34,12 @@ describe("governed milestone progress", () => {
         },
       ],
     };
-    expect(projectProgress(project)).toEqual({ state: "UNMEASURED", percent: null, completedWeight: null, totalWeight: null });
+    expect(projectProgress(project)).toEqual({
+      state: "UNMEASURED",
+      percent: null,
+      completedWeight: null,
+      totalWeight: null,
+    });
     expect(project.state).toBe("ACTIVE");
   });
 });

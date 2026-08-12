@@ -10,15 +10,15 @@ last_reviewed: 2026-08-12
 
 ## Pending protected-mainline binding
 
-| Field | Value |
-| --- | --- |
-| Base | `236c27241bb8d1630274f5d5412ec9addbdb8893` |
-| Candidate | Pending qualified freeze |
-| Pull request | Pending |
-| Authority gate | `mainline` |
-| Required context | `Sounding Line / Mainline Decision` |
-| Decision | Pending one explicit dispatch |
-| Merge SHA | Pending protected merge |
+| Field            | Value                                       |
+| ---------------- | ------------------------------------------- |
+| Base             | `236c27241bb8d1630274f5d5412ec9addbdb8893`  |
+| Candidate        | Pending qualified freeze                    |
+| Pull request     | Pending                                     |
+| Authority gate   | `mainline`                                  |
+| Required context | `Sounding Line / Mainline Decision`         |
+| Decision         | Pending one explicit dispatch               |
+| Merge SHA        | Pending protected merge                     |
 | Exact main proof | Pending post-merge fetch and ancestry check |
 
 The candidate must be the exact branch head supplied to the authoritative

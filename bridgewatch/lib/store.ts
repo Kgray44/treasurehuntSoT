@@ -1,7 +1,7 @@
 import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import type { MilestoneRecord, PhaseRecord, ProjectRecord } from "../src/domain.js";
+import type { ProjectRecord } from "../src/domain.js";
 import type { SoundingLineProjection } from "../src/sounding-line.js";
 import type { Heartbeat } from "../src/telemetry.js";
 
@@ -80,12 +80,16 @@ export class BridgewatchStore {
 
   private applyMigrations(): void {
     for (const migration of migrations) {
-      const exists = this.db.prepare("SELECT version FROM bridgewatch_migrations WHERE version = ?").get(migration.version);
+      const exists = this.db
+        .prepare("SELECT version FROM bridgewatch_migrations WHERE version = ?")
+        .get(migration.version);
       if (exists) continue;
       this.db.exec("BEGIN");
       try {
         this.db.exec(migration.sql);
-        this.db.prepare("INSERT INTO bridgewatch_migrations (version, applied_at) VALUES (?, ?)").run(migration.version, new Date().toISOString());
+        this.db
+          .prepare("INSERT INTO bridgewatch_migrations (version, applied_at) VALUES (?, ?)")
+          .run(migration.version, new Date().toISOString());
         this.db.exec("COMMIT");
       } catch (error) {
         this.db.exec("ROLLBACK");
@@ -151,7 +155,13 @@ export class BridgewatchStore {
             .prepare(
               "INSERT INTO completion_records (project_id, receipt_path, final_main_sha, final_decision, completed_at) VALUES (?, ?, ?, ?, ?) ON CONFLICT(project_id) DO UPDATE SET receipt_path=excluded.receipt_path, final_main_sha=excluded.final_main_sha, final_decision=excluded.final_decision, completed_at=excluded.completed_at",
             )
-            .run(entry.id, entry.completionReceipt, entry.finalMainSha ?? null, entry.finalDecision ?? null, observedAt);
+            .run(
+              entry.id,
+              entry.completionReceipt,
+              entry.finalMainSha ?? null,
+              entry.finalDecision ?? null,
+              observedAt,
+            );
       }
       this.db.exec("COMMIT");
     } catch (error) {
@@ -179,12 +189,7 @@ export class BridgewatchStore {
       for (const plan of projection.plans) {
         run.run(plan.id, JSON.stringify(plan), projection.observedAt);
         for (const testNode of plan.nodes)
-          node.run(
-            `${plan.id}:${testNode.id}`,
-            plan.id,
-            JSON.stringify(testNode),
-            testNode.completedAt,
-          );
+          node.run(`${plan.id}:${testNode.id}`, plan.id, JSON.stringify(testNode), testNode.completedAt);
       }
       this.db.exec("COMMIT");
     } catch (error) {
@@ -193,14 +198,21 @@ export class BridgewatchStore {
     }
   }
 
-  recentTestRuns(limit = 20): Array<{ id: string; observedAt: string; value: SoundingLineProjection["plans"][number] }> {
-    if (!Number.isInteger(limit) || limit < 1 || limit > 100) throw new Error("Invalid Bridgewatch test-run history limit");
+  recentTestRuns(
+    limit = 20,
+  ): Array<{ id: string; observedAt: string; value: SoundingLineProjection["plans"][number] }> {
+    if (!Number.isInteger(limit) || limit < 1 || limit > 100)
+      throw new Error("Invalid Bridgewatch test-run history limit");
     return this.db
       .prepare("SELECT run_id, value_json, observed_at FROM test_runs ORDER BY observed_at DESC LIMIT ?")
       .all(limit)
       .map((row) => {
         const result = row as { run_id: string; value_json: string; observed_at: string };
-        return { id: result.run_id, observedAt: result.observed_at, value: JSON.parse(result.value_json) as SoundingLineProjection["plans"][number] };
+        return {
+          id: result.run_id,
+          observedAt: result.observed_at,
+          value: JSON.parse(result.value_json) as SoundingLineProjection["plans"][number],
+        };
       });
   }
 

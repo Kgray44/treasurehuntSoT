@@ -9,7 +9,10 @@ describe("source-indexed Project Registry", () => {
     expect(projectRegistry.map((project) => project.id)).toContain("bridgewatch");
     expect(projectRegistry.map((project) => project.id)).toContain("sounding-line");
     expect(new Set(projectRegistry.map((project) => project.id)).size).toBe(projectRegistry.length);
-    expect(projectProgress(projectRegistry.find((project) => project.id === "bridgewatch")!)).toMatchObject({ state: "UNMEASURED", percent: null });
+    expect(projectProgress(projectRegistry.find((project) => project.id === "bridgewatch")!)).toMatchObject({
+      state: "UNMEASURED",
+      percent: null,
+    });
   });
 
   it("links every backfilled source to a repository record", () => {

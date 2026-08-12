@@ -1,7 +1,9 @@
 import type { ProjectState } from "./domain.js";
 
 export type ProjectTab = "ACTIVE" | "COMPLETED" | "PLANNED" | "ALL";
-export interface ProjectListItem { state: ProjectState }
+export interface ProjectListItem {
+  state: ProjectState;
+}
 
 export function projectInTab(project: ProjectListItem, tab: ProjectTab): boolean {
   if (tab === "ALL") return true;

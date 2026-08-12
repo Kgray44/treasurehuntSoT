@@ -15,7 +15,7 @@ const safePath = (value) =>
 const safeProject = (value) => typeof value === "string" && /^[a-z][a-z0-9-]{0,80}$/u.test(value);
 const safeSuite = (value) =>
   safePath(value) &&
-  /(?:^src\/.*\.(?:test|spec)\.(?:ts|tsx|mjs|js)|^tests\/.*\.(?:test|spec)\.(?:ts|tsx|mjs|js)|^scripts\/.*\.(?:test|spec)\.(?:ts|tsx|mjs|js))$/u.test(
+  /(?:^src\/.*\.(?:test|spec)\.(?:ts|tsx|mjs|js)|^tests\/.*\.(?:test|spec)\.(?:ts|tsx|mjs|js)|^scripts\/.*\.(?:test|spec)\.(?:ts|tsx|mjs|js)|^bridgewatch\/(?:src|test)\/.*\.(?:test|spec)\.(?:ts|tsx|mjs|js))$/u.test(
     value.replace(/\\/gu, "/"),
   );
 
@@ -154,9 +154,19 @@ export function resolveAdapter(id, argumentsList = []) {
 export function resolveVitestAdapter(files) {
   if (!Array.isArray(files) || !files.length || files.some((file) => !safeSuite(file)))
     throw new Error("Vitest adapter accepts only repository-relative test files");
+  const normalizedFiles = files.map((file) => file.replace(/\\/gu, "/"));
+  const bridgewatchFiles = normalizedFiles.filter((file) => file.startsWith("bridgewatch/"));
+  if (bridgewatchFiles.length && bridgewatchFiles.length !== normalizedFiles.length)
+    throw new Error("Vitest family cannot mix Bridgewatch and root test paths");
+  const isBridgewatchFamily = bridgewatchFiles.length === normalizedFiles.length;
   return {
     id: "vitest",
-    command: [node, ...vitest, ...files.map((file) => file.replace(/\\/gu, "/"))],
+    workingDirectory: isBridgewatchFamily ? "bridgewatch" : undefined,
+    command: [
+      node,
+      ...vitest,
+      ...normalizedFiles.map((file) => (isBridgewatchFamily ? file.slice("bridgewatch/".length) : file)),
+    ],
     resources: ["node-slot", "vitest-worker-pool"],
     mode: "CERTIFIED",
   };

@@ -68,8 +68,12 @@ export interface ProgressView {
   totalWeight: number | null;
 }
 
-export function measureMilestones(milestones: readonly MilestoneRecord[], confidence: EvidenceConfidence): ProgressView {
-  if (confidence === "LOW" || !milestones.length) return { state: "UNMEASURED", percent: null, completedWeight: null, totalWeight: null };
+export function measureMilestones(
+  milestones: readonly MilestoneRecord[],
+  confidence: EvidenceConfidence,
+): ProgressView {
+  if (confidence === "LOW" || !milestones.length)
+    return { state: "UNMEASURED", percent: null, completedWeight: null, totalWeight: null };
   const totalWeight = milestones.reduce((total, milestone) => total + milestone.weight, 0);
   if (!Number.isFinite(totalWeight) || totalWeight <= 0 || milestones.some((milestone) => milestone.weight <= 0))
     return { state: "UNMEASURED", percent: null, completedWeight: null, totalWeight: null };
@@ -85,7 +89,10 @@ export function measureMilestones(milestones: readonly MilestoneRecord[], confid
 }
 
 export function projectProgress(project: ProjectRecord): ProgressView {
-  return measureMilestones(project.phases.flatMap((phase) => phase.milestones), project.confidence);
+  return measureMilestones(
+    project.phases.flatMap((phase) => phase.milestones),
+    project.confidence,
+  );
 }
 
 export function phaseProgress(phase: PhaseRecord, confidence: EvidenceConfidence): ProgressView {

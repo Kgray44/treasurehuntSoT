@@ -15,42 +15,101 @@
       </header>
 
       <section aria-labelledby="program-heading">
-        <div class="section-heading"><h2 id="program-heading">Program summary</h2><p>Counts, never a fabricated global percentage.</p></div>
+        <div class="section-heading">
+          <h2 id="program-heading">Program summary</h2>
+          <p>Counts, never a fabricated global percentage.</p>
+        </div>
         <div id="program" class="metrics" aria-live="polite"></div>
       </section>
 
       <section aria-labelledby="attention-heading">
-        <div class="section-heading"><h2 id="attention-heading">Attention required</h2><p>Root conditions are deliberately deduplicated.</p></div>
+        <div class="section-heading">
+          <h2 id="attention-heading">Attention required</h2>
+          <p>Root conditions are deliberately deduplicated.</p>
+        </div>
         <div id="attention" class="attention" aria-live="polite"></div>
       </section>
 
       <section aria-labelledby="projects-heading">
-        <div class="section-heading"><h2 id="projects-heading">Project workspace</h2><p>Durable registry and accepted history.</p></div>
+        <div class="section-heading">
+          <h2 id="projects-heading">Project workspace</h2>
+          <p>Durable registry and accepted history.</p>
+        </div>
         <div class="tabs" role="tablist" aria-label="Project lifecycle views">
-          <button type="button" role="tab" aria-selected="true" aria-controls="projects" id="tab-active" data-tab="ACTIVE">Active</button>
-          <button type="button" role="tab" aria-selected="false" aria-controls="projects" id="tab-completed" data-tab="COMPLETED">Completed</button>
-          <button type="button" role="tab" aria-selected="false" aria-controls="projects" id="tab-planned" data-tab="PLANNED">Planned</button>
-          <button type="button" role="tab" aria-selected="false" aria-controls="projects" id="tab-all" data-tab="ALL">All</button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="projects"
+            id="tab-active"
+            data-tab="ACTIVE"
+          >
+            Active
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="projects"
+            id="tab-completed"
+            data-tab="COMPLETED"
+          >
+            Completed
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="projects"
+            id="tab-planned"
+            data-tab="PLANNED"
+          >
+            Planned
+          </button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="projects" id="tab-all" data-tab="ALL">
+            All
+          </button>
         </div>
         <div id="projects" class="grid" role="tabpanel" aria-labelledby="tab-active"></div>
         <div id="project-detail" class="detail" aria-live="polite"></div>
       </section>
 
       <section aria-labelledby="operations-heading">
-        <div class="section-heading"><h2 id="operations-heading">Active workers and tests</h2><p>Activity is separate from project lifecycle authority.</p></div>
-        <div class="operations"><div><h3>Workers</h3><div id="workers" class="list"></div></div><div><h3>Sounding Line</h3><div id="tests" class="list"></div></div></div>
+        <div class="section-heading">
+          <h2 id="operations-heading">Active workers and tests</h2>
+          <p>Activity is separate from project lifecycle authority.</p>
+        </div>
+        <div class="operations">
+          <div>
+            <h3>Workers</h3>
+            <div id="workers" class="list"></div>
+          </div>
+          <div>
+            <h3>Sounding Line</h3>
+            <div id="tests" class="list"></div>
+          </div>
+        </div>
       </section>
 
       <section aria-labelledby="pulls-heading">
-        <div class="section-heading"><h2 id="pulls-heading">Open pull requests</h2><p>Observed GitHub state only.</p></div>
+        <div class="section-heading">
+          <h2 id="pulls-heading">Open pull requests</h2>
+          <p>Observed GitHub state only.</p>
+        </div>
         <div id="pulls" class="list"></div>
       </section>
 
       <section aria-labelledby="sources-heading">
-        <div class="section-heading"><h2 id="sources-heading">Source freshness</h2><p>One source does not stand in for another.</p></div>
+        <div class="section-heading">
+          <h2 id="sources-heading">Source freshness</h2>
+          <p>One source does not stand in for another.</p>
+        </div>
         <div id="sources" class="list"></div>
       </section>
-      <footer>Bridgewatch observes GitHub, governed project records, Sounding Line, and activity telemetry. It cannot change any of them. UNMEASURED is not zero.</footer>
+      <footer>
+        Bridgewatch observes GitHub, governed project records, Sounding Line, and activity telemetry. It cannot change
+        any of them. UNMEASURED is not zero.
+      </footer>
     </main>
     <script src="/app.js" defer></script>
   </body>
