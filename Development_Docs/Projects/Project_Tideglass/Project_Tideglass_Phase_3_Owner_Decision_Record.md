@@ -34,6 +34,14 @@ That interval contains Feature Catalog provenance, Ledgerlight documentation,
 and Helm browser stabilization only. The Phase 3 branch merged it and reran the
 affected Helm suite; no owner-reviewed Tideglass product path changed.
 
+It subsequently advanced through accepted Helm Phase 2 and the Sounding Line
+record-only closure to `fb0f13e35fcdd98434d22c357aee02f24d6d9036`. Those
+intervals contain Helm-owned invitation/Player-room behavior and
+Sounding-Line-owned authority/binding mechanics; the Tideglass product-path
+comparison against this owner-reviewed source remains clean. This decision
+therefore continues to cover the frozen Phase 3 product, not the unrelated
+accepted changes.
+
 ## Accepted walkthrough result
 
 The owner accepted the ordinary Chronicle-detail and Passport-history entries;

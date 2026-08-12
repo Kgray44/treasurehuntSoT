@@ -15,7 +15,7 @@ Phase 3 creates the ordinary, discoverable **What Changed?** experience over the
 | Item                                      | Frozen value                                                                                                                                              |
 | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Initial implementation `origin/main` base | `54e3d818d49d45282a9c419d562d4b5c78911ccd`                                                                                                                |
-| Current reconciled `origin/main`          | `08ab5cedbcd16bf421b03b638af5c3513fe02019`                                                                                                                |
+| Current reconciled `origin/main`          | `fb0f13e35fcdd98434d22c357aee02f24d6d9036`                                                                                                                |
 | Dedicated branch                          | `codex/project-tideglass-phase3-choose-the-passage`                                                                                                       |
 | Dedicated worktree                        | `C:\Users\kkids\Documents\treasurehuntSoT-tideglass-phase3-choose-the-passage`                                                                            |
 | Phase 2 status and ancestry               | `ACCEPTED_MAINLINE`; integrated `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3` is an ancestor of the reconciled current main                                  |
@@ -75,15 +75,15 @@ focused Helm browser family was rerun and passed all 3/3 registered cases with
 runtime conformance `PASSED`. Wakebook, unmerged Shipwright work, Helm Phase 2
 work, and Deepwater Phase 4 remain unconsumed.
 
-Accepted main then advanced to `08ab5cedbcd16bf421b03b638af5c3513fe02019`
-through Admiralty's accepted mainline record. The interval contains only the
-generated Feature Catalog provenance refresh, Ledgerlight documentation
-inventory, and Helm's browser stabilization. It has no Tideglass, Wakebook,
-Shipwright, Chronicle, Passport, Studio semantic-consumer, schema, route, or
-navigation overlap. The branch merged that accepted main without conflict,
-regenerated the test registry and catalog provenance, and reran the affected
-`browser.helm` suite: all 3/3 registered cases passed with runtime conformance
-`PASSED`. The Tideglass product-path comparison to `c2fc8fcc` remains exact.
+Accepted main then advanced to `fb0f13e35fcdd98434d22c357aee02f24d6d9036`
+through Admiralty and Helm's accepted mainline records plus the Sounding Line
+record-only closure. The intervals contain Feature Catalog provenance,
+Ledgerlight documentation inventory, Helm's invitation/Player-room behavior,
+and Sounding Line authority/binding mechanics. They have no Tideglass,
+Wakebook, Shipwright, Chronicle, Passport, Studio semantic-consumer, schema,
+route, or navigation overlap. The branch merged those accepted intervals,
+regenerated the test registry and catalog provenance, and preserved the exact
+Tideglass product-path comparison to `c2fc8fcc`.
 
 The route provides the following complete states: loading, unauthorized/unavailable, retryable comparison failure, no meaningful change, partial/redacted history, historical-only edition, up-to-date, populated concise, populated detailed, spoiler collapsed/revealed, and multiple-history selection. The page stacks selectors and cards at narrow widths, has no horizontal document overflow, uses visible text for every change state, and respects reduced motion.
 

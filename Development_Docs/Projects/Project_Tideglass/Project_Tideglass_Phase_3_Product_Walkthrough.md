@@ -15,7 +15,7 @@ assertions. The owner decision is recorded separately in
 `Project_Tideglass_Phase_3_Owner_Decision_Record.md`; this document remains the
 reproducible walkthrough package.
 
-The owner-reviewed product source is `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`. It remains byte-equivalent across the Phase 3 Tideglass product paths after reconciliation to `origin/main` `08ab5cedbcd16bf421b03b638af5c3513fe02019`; the later deferred-runtime browser-harness repair does not alter those paths. The refreshed source-bound A--J evidence is recorded for `dbbe2c49aa884f6a5e078cfa3c5df580344ca221` in the visual manifest.
+The owner-reviewed product source is `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`. It remains byte-equivalent across the Phase 3 Tideglass product paths after reconciliation to `origin/main` `fb0f13e35fcdd98434d22c357aee02f24d6d9036`; the later deferred-runtime browser-harness repair and accepted Helm/Sounding Line record-only changes do not alter those paths. The refreshed source-bound A--J evidence is recorded for `dbbe2c49aa884f6a5e078cfa3c5df580344ca221` in the visual manifest.
 
 ## Safe walkthrough runtime
 

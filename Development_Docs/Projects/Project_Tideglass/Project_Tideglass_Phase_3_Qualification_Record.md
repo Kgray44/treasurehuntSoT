@@ -34,7 +34,7 @@ Screenshots, Playwright report, synthetic credentials, and SQLite fixture remain
 1. Canonical owner acceptance was recorded for reviewed product source `c2fc8fcc` on `2026-08-12`.
 2. The first documentation-candidate authority preflight exposed the missing-worktree-baseline condition before any receipt. A task-owned immutable clone and registered 3/3 access-sentinel focused repair now support requalification; see the Validation Record.
 3. Hosted candidate `3c03e7a1` failed during environment-free registry discovery before any worker, plan artifact, finalizer, or acceptance envelope. The focused reproduction, deferred-runtime repair, synchronized registry, TypeScript check, and fresh A--J production journey are recorded in the Validation Record.
-4. The accepted-main interval is reconciled through `08ab5ced`; owner-reviewed Tideglass product source remains equivalent. The required focused `browser.helm` rerun passed 3/3 in the released governed lane with runtime conformance `PASSED`.
+4. The accepted-main interval is reconciled through `fb0f13e3`; owner-reviewed Tideglass product source remains equivalent. The required focused `browser.helm` rerun passed 3/3 in the released governed lane with runtime conformance `PASSED`; later Helm and Sounding Line record-only changes do not overlap Tideglass product paths.
 5. Freeze the repaired documentation-qualified candidate. Dispatch exactly one replacement `Sounding Line / Mainline Decision`; only `RELEASE_GO` permits protected-mainline merge and exact-main proof.
 
 ## Known separate condition
