@@ -25,7 +25,7 @@ Project Deepwater is Voyagewright's capability-realization and systems-audit pro
 - `reports/Project_Deepwater_Phase_4_Proof_Queue.json`
 - `reports/Project_Deepwater_Phase_5_Governance_Queue.json`
 
-Phase 4 is locally proven with source-bound, loopback, synthetic-fixture evidence for all 56 current capabilities, and focused qualification has passed. A single current-main reconciliation, frozen-candidate acceptance ownership, and exactly one Sounding Line Mainline Decision remain required before `RELEASE_GO`, protected merge, exact-main proof, and a closure record. Homeport owner re-review remains `PENDING_OWNER_DECISION`; neither the local proof nor this index records owner or product acceptance. Phase 5 remains unauthorized.
+Phase 4 is locally proven with source-bound, loopback, synthetic-fixture evidence for all 56 current capabilities. Its first Mainline Decision returned `EVIDENCE_INVALID` because generated Bridgewatch build output was included in the source formatter scope. The correction and focused requalification are complete and the repaired branch is frozen; it must acquire serialized acceptance ownership before exactly one replacement Mainline Decision may be dispatched. Homeport owner re-review remains `PENDING_OWNER_DECISION`; neither the local proof nor this index records owner or product acceptance. Phase 5 remains unauthorized.
 
 ## Current Phase 3 records
 
