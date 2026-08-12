@@ -31,9 +31,13 @@ hosted decision for that freeze. It failed closed as `EVIDENCE_INVALID` because
 the governed Helm invitation journey remained in `resolving`, so no release,
 merge, or acceptance was recorded. The narrow repair at
 `ec564fc632fa4836b6eb0a6f0298815649ac452c` bounds invitation lookup time,
-retries one stalled lookup, and requalifies the Captain family. The refreshed
-57-capability proof supports one frozen repaired candidate for one new
-decision.
+retries one stalled lookup, and requalifies the Captain family. Accepted Helm
+Phase 2 subsequently advanced protected main to
+`920d92a51a16d60a2dfe35278598e6d921be7e4c`, so that freeze is historical
+only. The fresh reconciliation retains Helm's accepted route recovery and
+rewrites the current product repair as `ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9`.
+The refreshed 57-capability proof supports one frozen repaired candidate for
+one new decision only after current-main qualification is complete.
 The accepted Phase 3 close is preserved at
 `ca135585a62f445cd4331df1a7dd21203bd50219`; none of its historical records
 are rewritten to imply that Phase 4 was previously authorized.

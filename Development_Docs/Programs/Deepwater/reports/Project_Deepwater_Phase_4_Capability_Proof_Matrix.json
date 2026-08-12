@@ -335,7 +335,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
+        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -425,7 +425,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
+        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -529,7 +529,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
+        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -593,7 +593,7 @@
             "sha256": "8486f223cf313f9bcc43feab6786dc28559afe38a574761dfd0f6bc202c1ae03"
           }
         ],
-        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
+        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
         "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
@@ -641,7 +641,7 @@
             "sha256": "8486f223cf313f9bcc43feab6786dc28559afe38a574761dfd0f6bc202c1ae03"
           }
         ],
-        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
+        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
         "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
@@ -686,7 +686,7 @@
             "sha256": "7e09ca347fb1a1830a82a9fd3aa051c3d822bb1afd24098a1caa808263d9b62f"
           }
         ],
-        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
+        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
         "states": ["READY", "EMPTY", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority, membership heartbeat, and responsive participation journeys",
@@ -883,7 +883,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
+        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -1600,7 +1600,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
+        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -2154,7 +2154,7 @@
             "sha256": "7e09ca347fb1a1830a82a9fd3aa051c3d822bb1afd24098a1caa808263d9b62f"
           }
         ],
-        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
+        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
         "states": ["READY", "EMPTY", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority, membership heartbeat, and responsive participation journeys",
@@ -2473,7 +2473,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
+        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -2532,7 +2532,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
+        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -2790,7 +2790,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
+        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -3286,7 +3286,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
+        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -3343,7 +3343,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
+        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -3884,7 +3884,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
+        "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -3970,6 +3970,6 @@
   "project": "Project Deepwater",
   "runtimeEvidenceStatus": "LOCAL_SYNTHETIC_PROVEN",
   "schemaVersion": "1.0.0",
-  "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
+  "sourceSha": "ceb99e1bdd1c99c13d20200e1afae5f86f8d39f9",
   "truthBoundary": "Source-bound local synthetic evidence is distinct from live-provider proof, deployment, protected-main acceptance, owner acceptance, and product acceptance."
 }
