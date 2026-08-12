@@ -1,11 +1,11 @@
 {
   "schemaVersion": "1.0.0",
   "phase": "Phase 4 - Break the Surface",
-  "sourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
+  "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
   "status": "LOCAL_SYNTHETIC_PROVEN",
   "semanticCarryForward": {
     "historicalEvidenceSourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
-    "targetEvidenceSourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
+    "targetEvidenceSourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
     "carriedJourneyIds": [
       "DW-P4-JRN-ACCOUNT",
       "DW-P4-JRN-PERSONAL-HARBOR",
@@ -16,10 +16,10 @@
       "DW-P4-JRN-VERIFICATION",
       "DW-P4-JRN-RESTRICTED-OPERATIONS"
     ],
-    "requalifiedJourneyIds": ["DW-P4-JRN-CAPTAIN", "DW-P4-JRN-BRIDGEWATCH"],
-    "rationale": "Bridgewatch Phase 2 changed the private observer and Sounding Line projection surface. The current source also repairs a recorded Helm invitation lookup stall, so the Captain family and Bridgewatch are rerun while the unchanged Homeport families remain explicitly retained."
+    "requalifiedJourneyIds": ["DW-P4-JRN-PLAYER", "DW-P4-JRN-CAPTAIN", "DW-P4-JRN-BRIDGEWATCH"],
+    "rationale": "Bridgewatch Phase 2 changed the private observer and Sounding Line projection surface. The current source repairs both a recorded Helm invitation lookup stall and the later launch-handoff failure caused by a stale Player event stream, so Player, Captain, and Bridgewatch are rerun while unchanged Homeport families remain explicitly retained."
   },
-  "truthBoundary": "Historical Homeport production-build evidence is retained only through the explicit semantic carry-forward declaration. The changed Captain invitation family and Bridgewatch observer family are rerun on the current source. This establishes local implementation evidence only, not live-provider, deployment, protected-main, owner-acceptance, product-acceptance, or release proof.",
+  "truthBoundary": "Historical Homeport production-build evidence is retained only through the explicit semantic carry-forward declaration. The changed Player waiting-room, Captain invitation and launch, and Bridgewatch observer families are rerun on the current source. This establishes local implementation evidence only, not live-provider, deployment, protected-main, owner-acceptance, product-acceptance, or release proof.",
   "journeyFamilies": [
     {
       "journeyId": "DW-P4-JRN-ACCOUNT",
@@ -70,9 +70,11 @@
     {
       "journeyId": "DW-P4-JRN-PLAYER",
       "status": "PASSED",
-      "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
-      "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+      "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
       "testReferences": [
+        "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
+        "src/components/platform/PlayerVoyageRoom.test.tsx#backgrounded visibility-transition recovery",
+        "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup",
         "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
         "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
         "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, K, L, M, U, V"
@@ -93,10 +95,11 @@
     {
       "journeyId": "DW-P4-JRN-CAPTAIN",
       "status": "PASSED",
-      "sourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
+      "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
       "testReferences": [
         "tests/e2e/project-helm-phase1.spec.ts#Captain authority, membership heartbeat, and responsive participation journeys",
-        "src/components/platform/InvitationCeremony.test.tsx#stalled invitation lookup retries once before terminal failure"
+        "src/components/platform/InvitationCeremony.test.tsx#stalled invitation lookup retries once before terminal failure",
+        "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup"
       ],
       "screenshots": [
         {
@@ -230,7 +233,7 @@
     {
       "journeyId": "DW-P4-JRN-BRIDGEWATCH",
       "status": "PASSED",
-      "sourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
+      "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
       "testReferences": [
         "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
         "in-app browser loopback observation#desktop and 390px private dashboard with no horizontal overflow",
