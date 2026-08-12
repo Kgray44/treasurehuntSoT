@@ -324,7 +324,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -335,9 +335,12 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
+          "src/components/platform/PlayerVoyageRoom.test.tsx#backgrounded visibility-transition recovery",
+          "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup",
           "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, K, L, M, U, V"
@@ -411,7 +414,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -422,9 +425,12 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
+          "src/components/platform/PlayerVoyageRoom.test.tsx#backgrounded visibility-transition recovery",
+          "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup",
           "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, K, L, M, U, V"
@@ -512,7 +518,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -523,9 +529,12 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
+          "src/components/platform/PlayerVoyageRoom.test.tsx#backgrounded visibility-transition recovery",
+          "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup",
           "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, K, L, M, U, V"
@@ -584,7 +593,7 @@
             "sha256": "8486f223cf313f9bcc43feab6786dc28559afe38a574761dfd0f6bc202c1ae03"
           }
         ],
-        "sourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
+        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
         "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
@@ -632,7 +641,7 @@
             "sha256": "8486f223cf313f9bcc43feab6786dc28559afe38a574761dfd0f6bc202c1ae03"
           }
         ],
-        "sourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
+        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
         "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
@@ -677,11 +686,12 @@
             "sha256": "7e09ca347fb1a1830a82a9fd3aa051c3d822bb1afd24098a1caa808263d9b62f"
           }
         ],
-        "sourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
+        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
         "states": ["READY", "EMPTY", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority, membership heartbeat, and responsive participation journeys",
-          "src/components/platform/InvitationCeremony.test.tsx#stalled invitation lookup retries once before terminal failure"
+          "src/components/platform/InvitationCeremony.test.tsx#stalled invitation lookup retries once before terminal failure",
+          "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup"
         ]
       },
       "screenReferences": ["screen-page-captain", "screen-page-captain-library", "screen-page-captain-invitations"],
@@ -862,7 +872,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -873,9 +883,12 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
+          "src/components/platform/PlayerVoyageRoom.test.tsx#backgrounded visibility-transition recovery",
+          "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup",
           "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, K, L, M, U, V"
@@ -1576,7 +1589,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -1587,9 +1600,12 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
+          "src/components/platform/PlayerVoyageRoom.test.tsx#backgrounded visibility-transition recovery",
+          "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup",
           "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, K, L, M, U, V"
@@ -2138,11 +2154,12 @@
             "sha256": "7e09ca347fb1a1830a82a9fd3aa051c3d822bb1afd24098a1caa808263d9b62f"
           }
         ],
-        "sourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
+        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
         "states": ["READY", "EMPTY", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority, membership heartbeat, and responsive participation journeys",
-          "src/components/platform/InvitationCeremony.test.tsx#stalled invitation lookup retries once before terminal failure"
+          "src/components/platform/InvitationCeremony.test.tsx#stalled invitation lookup retries once before terminal failure",
+          "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup"
         ]
       },
       "screenReferences": ["screen-page-captain", "screen-page-captain-library", "screen-page-captain-invitations"],
@@ -2445,7 +2462,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -2456,9 +2473,12 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
+          "src/components/platform/PlayerVoyageRoom.test.tsx#backgrounded visibility-transition recovery",
+          "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup",
           "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, K, L, M, U, V"
@@ -2501,7 +2521,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -2512,9 +2532,12 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
+          "src/components/platform/PlayerVoyageRoom.test.tsx#backgrounded visibility-transition recovery",
+          "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup",
           "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, K, L, M, U, V"
@@ -2756,7 +2779,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -2767,9 +2790,12 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
+          "src/components/platform/PlayerVoyageRoom.test.tsx#backgrounded visibility-transition recovery",
+          "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup",
           "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, K, L, M, U, V"
@@ -3249,7 +3275,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -3260,9 +3286,12 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
+          "src/components/platform/PlayerVoyageRoom.test.tsx#backgrounded visibility-transition recovery",
+          "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup",
           "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, K, L, M, U, V"
@@ -3303,7 +3332,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -3314,9 +3343,12 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
+          "src/components/platform/PlayerVoyageRoom.test.tsx#backgrounded visibility-transition recovery",
+          "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup",
           "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, K, L, M, U, V"
@@ -3841,7 +3873,7 @@
       "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
       "runtimeEvidence": {
         "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
-        "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+        "evidenceDisposition": "SOURCE_CURRENT",
         "screenshots": [
           {
             "evidenceId": "HP-P7-EV-C-player-voyage",
@@ -3852,9 +3884,12 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+        "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
+          "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
+          "src/components/platform/PlayerVoyageRoom.test.tsx#backgrounded visibility-transition recovery",
+          "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup",
           "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
           "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
           "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, K, L, M, U, V"
@@ -3935,6 +3970,6 @@
   "project": "Project Deepwater",
   "runtimeEvidenceStatus": "LOCAL_SYNTHETIC_PROVEN",
   "schemaVersion": "1.0.0",
-  "sourceSha": "ec564fc632fa4836b6eb0a6f0298815649ac452c",
+  "sourceSha": "38038fcb1687a9b2fe4f556fdbfece49796f364d",
   "truthBoundary": "Source-bound local synthetic evidence is distinct from live-provider proof, deployment, protected-main acceptance, owner acceptance, and product acceptance."
 }
