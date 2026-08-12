@@ -3,14 +3,14 @@ title: Project Wakebook Phase 1 Validation Record
 audience: product-engineering
 status: current
 canonical_for: project-wakebook-phase-1-validation-record
-last_reviewed: 2026-08-11
+last_reviewed: 2026-08-12
 ---
 
 # Project Wakebook Phase 1 validation record
 
 ## Decision
 
-**Current classification: READY_FOR_OWNER_WALKTHROUGH - PROTECTED-MAIN NO-GO.** The Wakebook unit/component families and the exact isolated browser journey are passing, including checksum-bound visual evidence. The protected Sounding Line mainline attempts returned `EVIDENCE_INVALID` because the independently owned `browser.helm` journey failed. This record does not establish owner acceptance, deployment, protected-main integration, or a release decision.
+**Current classification: OWNER_ACCEPTED - REQUALIFICATION PENDING.** The Wakebook unit/component families and the exact isolated browser journey are passing, including checksum-bound visual evidence. The task owner explicitly accepted Phase 1 on 2026-08-12. The prior protected Sounding Line mainline attempts remain valid historical `EVIDENCE_INVALID` evidence because the independently owned `browser.helm` journey failed; accepted main now contains the Helm repair, which must receive fresh focused evidence before exactly one current frozen-candidate authority request. This record does not establish deployment, protected-main integration, or a release decision.
 
 ## Source identity
 
@@ -57,7 +57,8 @@ Sounding Line owns the authoritative definitions for:
 | Owner and cover privacy negatives    | Separate synthetic owner and foreign account                                                             | PASS in browser lane | Required private-boundary proof         |
 | Historical stability                 | Mutated current Chronicle and crew profile after archive creation                                        | PASS in browser lane | Required snapshot proof                 |
 | Responsive/accessibility             | 1440x1000, 430x932, 390x844; Axe serious/critical policy                                                 | PASS in browser lane | Synthetic browser only                  |
-| Sounding Line authoritative mainline | GitHub runs `31527213266` and `31529958855`; latest candidate `33e1316426a4d7f014c1472147e42d040ecdd47e` | `EVIDENCE_INVALID`   | Required release authority; no waiver   |
+| Historical Sounding Line mainline | GitHub runs `31527213266` and `31529958855`; latest prior candidate `33e1316426a4d7f014c1472147e42d040ecdd47e` | `EVIDENCE_INVALID` | Required release authority; no waiver |
+| Owner walkthrough decision | Task owner instruction, 2026-08-12 | `OWNER_ACCEPTED_PHASE_1` | Owner gate only; not a release decision |
 
 The first `browser.wakebook` diagnostic attempt did not execute product code because another governed validation process owned the global validation-runtime lock. The runner reported cleanup `CLEAN`; no process was stopped and no lock was removed. That environmental collision is not a product failure and is not counted as passing evidence.
 
@@ -88,7 +89,6 @@ Phase 1 exposes no disabled Timeline, People, Statistics, map, Tideglass, sharin
 
 ## Remaining gates
 
-1. Obtain the required owner walkthrough and explicit acceptance; Codex visual review does not fulfill it.
-2. Resolve or receive the Project Helm owner's disposition for the independently failing `browser.helm` invitation handoff; do not waive it from a Wakebook authority.
-3. Re-run the protected Sounding Line Mainline Decision against the exact then-current candidate after the owner and dependency gates permit it.
-4. Do not start Phase 2 or merge to protected main without a `RELEASE_GO` decision receipt.
+1. Run fresh focused governed evidence for `browser.helm` (the accepted main repair) and `browser.wakebook` against the exact frozen candidate; do not treat the historical failure or an optimization as a waiver.
+2. Run exactly one protected Sounding Line Mainline Decision against the exact then-current candidate with its pull-request/base identity envelope.
+3. Do not start Phase 2 or merge to protected main without a source-bound `RELEASE_GO` decision receipt.

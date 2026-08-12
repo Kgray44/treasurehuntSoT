@@ -3,7 +3,7 @@ title: Project Wakebook Phase 1 Owner Walkthrough
 audience: product-owner
 status: current
 canonical_for: project-wakebook-phase-1-owner-walkthrough
-last_reviewed: 2026-08-11
+last_reviewed: 2026-08-12
 ---
 
 # Project Wakebook Phase 1 owner walkthrough
@@ -87,7 +87,9 @@ Expected: no horizontal scrolling, trapped focus, pointer-only action, foreign-o
 
 ## Owner decision
 
-Record exactly one decision after completing the walkthrough:
+**Recorded decision: `OWNER_ACCEPTED_PHASE_1` (2026-08-12).** The Wakebook task owner explicitly accepted the Phase 1 scope and walkthrough. This is the required owner decision; it is not a Sounding Line `RELEASE_GO`, a protected-main merge authorization by itself, deployment approval, or authorization to begin Phase 2.
+
+For future walkthroughs, record exactly one decision after completing the walkthrough:
 
 - `OWNER_ACCEPTED_PHASE_1`;
 - `OWNER_RETURNED_WITH_ACTIONABLE_FINDINGS` plus exact steps and expected/observed behavior;

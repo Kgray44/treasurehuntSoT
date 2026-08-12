@@ -3,7 +3,7 @@ title: Project Wakebook Phase 1 Mainline Safety Record
 audience: product-engineering
 status: current
 canonical_for: project-wakebook-phase-1-mainline-safety-record
-last_reviewed: 2026-08-11
+last_reviewed: 2026-08-12
 ---
 
 # Project Wakebook Phase 1 mainline safety record
@@ -47,4 +47,4 @@ The Wakebook vertical slice can be reverted without deleting or rewriting a hist
 
 ## Permanent-stop decision
 
-**PASS BY DESIGN; Wakebook runtime evidence complete, protected-main decision pending.** The frozen slice is independently useful with no required future control or placeholder. Wakebook-focused runtime evidence is complete, but the latest authoritative mainline attempt for candidate `33e1316426a4d7f014c1472147e42d040ecdd47e` (GitHub pull-request merge source `f1de8f9f541f9dc0b01ba945c36f8c969fcc1f9d`) returned `EVIDENCE_INVALID` because the independently owned `browser.helm` invitation handoff timed out waiting for the accept response. The worker cleaned up successfully. Final acceptance still depends on a clean Sounding Line decision and owner walkthrough; neither is inferred here.
+**PASS BY DESIGN; Wakebook runtime evidence complete, protected-main decision pending.** The frozen slice is independently useful with no required future control or placeholder. The task owner recorded `OWNER_ACCEPTED_PHASE_1` on 2026-08-12. The historical authoritative mainline attempt for candidate `33e1316426a4d7f014c1472147e42d040ecdd47e` (GitHub pull-request merge source `f1de8f9f541f9dc0b01ba945c36f8c969fcc1f9d`) returned `EVIDENCE_INVALID` because the independently owned `browser.helm` invitation handoff timed out waiting for the accept response; the worker cleaned up successfully. Accepted main now contains the Helm repair, so fresh focused proof must precede one source-bound Sounding Line decision for the current frozen Wakebook candidate. Only that clean `RELEASE_GO` can authorize protected integration.
