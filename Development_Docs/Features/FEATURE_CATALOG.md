@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `fb0f13e35fcdd98434d22c357aee02f24d6d9036`
+Audited source commit: `bb7676a75581d8d415c3ff7712cc38bc8decb031`
 
 ## Status vocabulary
 
@@ -1539,4 +1539,4 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `fb0f13e35fcdd98434d22c357aee02f24d6d9036`
+Generation source commit: `bb7676a75581d8d415c3ff7712cc38bc8decb031`

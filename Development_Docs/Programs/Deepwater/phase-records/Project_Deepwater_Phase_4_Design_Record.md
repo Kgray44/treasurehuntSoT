@@ -38,14 +38,16 @@ Drydock's Creator Studio Sea Trials and Admiralty's Community and Restricted
 Operations projections without reopening either owner implementation or record.
 Protected Helm Phase 2 closure and accepted record-only infrastructure later
 advanced main to `fb0f13e35fcdd98434d22c357aee02f24d6d9036`, superseding r6.
-The rebased Phase 4 target source is
-`a61ff85676bf3a58eebe2be2df7fc3d789211654`; it must complete renewed
-qualification before another frozen candidate can seek authority.
+Tideglass Phase 3 then protected-merged PR #59 at
+`bb7676a75581d8d415c3ff7712cc38bc8decb031`, superseding r7 without changing
+the Deepwater capability denominator. The rebased Phase 4 qualification source
+is `51ab80bde478de95194d882eba8b1e7fce5fedac`; r8 is frozen from this source
+and may seek authority only after it acquires serialized acceptance ownership.
 
 That requalification is now locally proven: the direct Player, Captain, and
 stream suite passes 26/26; isolated execute-only `browser.helm` passes 3/3
 with clean runtime conformance; Deepwater passes 66/66; Drydock passes 196/196
-with 59-migration rehearsal; Admiralty passes 14 direct tests, 15-route
+with 59-migration rehearsal; Admiralty passes 34 direct tests, 15-route
 validation, and migration rehearsal; and Bridgewatch passes typecheck, 24
 tests, and build. This is source-bound local qualification only, so it does
 not claim protected-main, owner, product, live-provider, or deployment
