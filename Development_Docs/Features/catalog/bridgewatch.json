@@ -24,5 +24,34 @@
       { "kind": "completion-record", "value": "Development_Docs/Project_Bridgewatch_Phase_1_Design_Record.md" }
     ],
     "catalogVersion": 1
+  },
+  {
+    "id": "FT-035",
+    "title": "Bridgewatch Governed Signal Projection",
+    "summary": "A private Bridgewatch extension that projects explicit Project Registry and Sounding Line observer evidence into durable local operational state while keeping test, release, merge, and project-completion authority outside the dashboard.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "program": "Project Bridgewatch Phase 2",
+    "branch": "codex/project-bridgewatch-phase2-wire-the-signals",
+    "commit": "09d98e4bf8dc0e7ccdc6355ed91561c4f8db6847",
+    "surfaces": ["bridgewatch", "POST /api/telemetry/heartbeat", "GET /api/history", "GET /api/tests"],
+    "subfeatures": [
+      "Read-only Sounding Line runtime projection with explicit lifecycle normalization",
+      "Durable SQLite worker, test-node, and test-run history with idempotent migrations",
+      "Opt-in bearer-authenticated activity telemetry with rate, skew, stale-state, and credential-redaction controls",
+      "Lifecycle tabs, project biography, worker/test summaries, responsive layout, and reduced-motion support"
+    ],
+    "limitations": [
+      "Bridgewatch remains an observer and cannot create, approve, merge, retry, or authorize work.",
+      "This branch-complete capability is not mainline acceptance, a hosted deployment, or an owner-acceptance record."
+    ],
+    "evidence": [
+      { "kind": "branch", "value": "codex/project-bridgewatch-phase2-wire-the-signals" },
+      { "kind": "commit", "value": "09d98e4bf8dc0e7ccdc6355ed91561c4f8db6847" },
+      { "kind": "path", "value": "bridgewatch/lib/store.ts" },
+      { "kind": "path", "value": "bridgewatch/src/sounding-line.ts" },
+      { "kind": "test", "value": "bridgewatch/test/sounding-line.test.ts" },
+      { "kind": "path", "value": "Development_Docs/Project_Bridgewatch_Phase_2_Design_Record.md" }
+    ],
+    "catalogVersion": 1
   }
 ]
