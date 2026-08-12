@@ -50,6 +50,16 @@ describe("membership presence aggregation", () => {
     });
   });
 
+  it("retains a bounded queue-delayed heartbeat as connected evidence", () => {
+    expect(
+      aggregateMembershipPresence([device({ lastHeartbeatAt: new Date("2026-08-10T19:58:31.000Z") })], 7, now),
+    ).toMatchObject({
+      state: "CONNECTED",
+      synchronizationState: "SYNCHRONIZED",
+      activeDeviceCount: 1,
+    });
+  });
+
   it("uses the freshest acknowledged device and ignores a disconnected tab", () => {
     const projection = aggregateMembershipPresence(
       [device({ acknowledgedSequence: 3 }), device({ acknowledgedSequence: 7, disconnectedAt: now })],
