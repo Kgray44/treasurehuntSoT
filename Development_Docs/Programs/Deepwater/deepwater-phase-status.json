@@ -1,7 +1,7 @@
 {
   "acceptanceLane": "PENDING_SERIALIZED_MAINLINE_OWNERSHIP",
   "activation": "EXPLICIT_PHASE_4_WHOLE_PRODUCT_PROOF_AUTHORIZATION",
-  "auditedSourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+  "auditedSourceSha": "e57670a010406dc48c7ede1f2939d3d35260484f",
   "baseSourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
   "branch": "codex/project-deepwater-phase4-break-the-surface",
   "featureCatalogImpact": "NO_CHANGE_REQUIRED",
@@ -17,7 +17,7 @@
   "phase3AcceptedMainSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
   "productSourceImpact": "NONE_ON_COORDINATION_BRANCH",
   "project": "Project Deepwater",
-  "reconciledSourceSha": "ca40227cbef3575315c089d224a0cd26ec77bc78",
+  "reconciledSourceSha": "5735d43821209adb2259ec2c38979281da1bb5b9",
   "schemaImpact": "DEEPWATER_PHASE4_PROOF_CONTROL_PLANE_ONLY",
   "schemaVersion": "1.0.0",
   "state": "LOCAL_PROVEN",

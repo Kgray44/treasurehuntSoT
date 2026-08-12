@@ -21,10 +21,14 @@ decision was dispatched, current main advanced through accepted Helm Phase 2,
 including Captain presence, invitation, and schema changes. Sounding Line's
 protected-merge binding classifies that as relevant product change, not an
 unrelated carry-forward. The mandatory current-main reconciliation rebased the
-Phase 4 commits onto `ca40227cbef3575315c089d224a0cd26ec77bc78`; the current
-product source is `b810e2d0c33cbafb8e4d02c19b9af0db94315783`. Its fresh
-complete proof matrix has passed and the replacement candidate is frozen for
-serialized acceptance ownership.
+Phase 4 commits onto `ca40227cbef3575315c089d224a0cd26ec77bc78`; before any
+hosted Mainline Decision, accepted Bridgewatch Phase 2 then advanced current
+main to `5735d43821209adb2259ec2c38979281da1bb5b9`. That advance adds the
+private FT-035 governed-signal projection and updates the Sounding Line
+observer wiring, so the prior candidate is historical only. The replacement
+source is `e57670a010406dc48c7ede1f2939d3d35260484f`; its local proof and
+focused qualification support one frozen replacement candidate for serialized
+acceptance ownership.
 The accepted Phase 3 close is preserved at
 `ca135585a62f445cd4331df1a7dd21203bd50219`; none of its historical records
 are rewritten to imply that Phase 4 was previously authorized.
@@ -39,8 +43,9 @@ development diagnostic tool.
 ## Population and selection
 
 The Phase 3 ledger supplies 55 accepted capabilities. The current Feature
-Catalog also contains FT-034, Bridgewatch Development Mission Control, yielding
-a 56-capability Phase 4 denominator. The deterministic proof matrix accounts
+Catalog also contains FT-034, Bridgewatch Development Mission Control, and
+FT-035, Bridgewatch Governed Signal Projection, yielding a 57-capability Phase
+4 denominator. The deterministic proof matrix accounts
 for every capability exactly once:
 
 - 40 ordinary user-facing capabilities require gateway-started, visible-control
@@ -49,7 +54,8 @@ for every capability exactly once:
   and must never use a public route to raise a metric;
 - nine internal, machine, compatibility, backup, or trust-boundary capabilities
   are explicitly retained as bounded rather than forced into UI; and
-- Bridgewatch is a private, loopback-first, read-only operator dashboard. Its
+- Bridgewatch is a private, loopback-first, read-only operator dashboard and
+  governed-signal projection surface. Its
   human dashboard is reviewed as a restricted surface, never as a public product
   route, provider authority, or release authority.
 
@@ -64,11 +70,15 @@ IDs in `deepwater-phase4-config.json`.
 ## Evidence and quality model
 
 Phase 4 proof uses an isolated Homeport production-build harness with
-task-owned SQLite clones, synthetic fixtures, owned ports and browser state. A
-sanitized runtime-evidence record may contain exact product source SHA, test
-references, state and accessibility outcomes, screenshot evidence IDs, and
-SHA-256 values. It may not contain credentials, tokens, cookies, private
-content, task-root paths, raw provider responses, or screenshots themselves.
+task-owned SQLite clones, synthetic fixtures, owned ports and browser state.
+The retained Homeport families remain explicitly bound to their historical
+source `b810e2d0c33cbafb8e4d02c19b9af0db94315783` through a validator-enforced
+semantic carry-forward declaration; only the changed Bridgewatch family is
+rerun on the replacement source. A sanitized runtime-evidence record may
+contain exact product source SHA, test references, state and accessibility
+outcomes, screenshot evidence IDs, and SHA-256 values. It may not contain
+credentials, tokens, cookies, private content, task-root paths, raw provider
+responses, or screenshots themselves.
 
 The required quality facets are visible-entry discoverability, ready, loading,
 empty, error, unauthorized and recovery states where applicable; desktop,
