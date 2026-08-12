@@ -582,16 +582,29 @@ test("Phase 3 rejects INTENTIONALLY_PARTIAL without rationale", () => {
   includesError(phase3Errors(candidate), "INTENTIONALLY_PARTIAL lacks rationale");
 });
 
-test("Phase 4 creates a source-current proof population from Phase 3 plus Bridgewatch", () => {
+test("Phase 4 creates a source-current proof population from Phase 3 plus both Bridgewatch capabilities", () => {
   assert.equal(baseline.status.phase, "Phase 4 - Break the Surface");
-  assert.equal(baseline.phase4ProofMatrix.capabilities.length, 56);
+  assert.equal(baseline.phase4ProofMatrix.capabilities.length, 57);
   assert.equal(baseline.inputs.phase4Config.expectedPhase3CapabilityCount, 55);
-  assert.equal(baseline.inputs.phase4Config.expectedCurrentCapabilityCount, 56);
+  assert.equal(baseline.inputs.phase4Config.expectedCurrentCapabilityCount, 57);
   const bridgewatch = baseline.phase4ProofMatrix.capabilities.find(
     (capability) => capability.capabilityId === "DW-CAP-BRIDGEWATCH-DEVELOPMENT-MISSION-CONTROL",
   );
   assert.equal(bridgewatch?.proofFamilyId, "DW-P4-JRN-BRIDGEWATCH");
   assert.equal(bridgewatch?.disposition, "SECURITY_RESTRICTED");
+  assert.equal(
+    baseline.phase4ProofMatrix.capabilities.find(
+      (capability) => capability.capabilityId === "DW-CAP-BRIDGEWATCH-GOVERNED-SIGNAL-PROJECTION",
+    )?.proofFamilyId,
+    "DW-P4-JRN-BRIDGEWATCH",
+  );
+  assert.equal(
+    baseline.phase4ProofMatrix.capabilities.find(
+      (capability) => capability.capabilityId === "DW-CAP-ACCOUNT-DATA-EXPORT",
+    )?.proofStatus,
+    "LOCAL_SYNTHETIC_PROVEN",
+  );
+  assert.equal(bridgewatch?.proofStatus, "LOCAL_SYNTHETIC_PROVEN");
   assert.equal(
     baseline.phase4StateRecoveryMatrix.families.find((family) => family.familyId === "ACCOUNT")?.proofFamilyId,
     "DW-P4-JRN-ACCOUNT",
@@ -624,10 +637,21 @@ test("Phase 4 preserves stale evidence only while an explicit current-main requa
   };
   candidate.inputs.runtimeEvidence.status = "REQUALIFICATION_REQUIRED";
   candidate.inputs.phase4Config.productEvidenceSourceSha = "0000000000000000000000000000000000000000";
+  candidate.inputs.phase4Config.semanticCarryForward.targetEvidenceSourceSha =
+    candidate.inputs.phase4Config.productEvidenceSourceSha;
   candidate.phase4ProofMatrix.sourceSha = candidate.inputs.phase4Config.productEvidenceSourceSha;
   assert.deepEqual(phase4Errors(candidate), []);
   candidate.inputs.runtimeEvidence.status = "LOCAL_SYNTHETIC_PROVEN";
   includesError(phase4Errors(candidate), "current-main reconciliation lacks explicit requalification state");
+});
+
+test("Phase 4 rejects undeclared semantic carry-forward evidence", () => {
+  const candidate = phase4Model();
+  const account = candidate.inputs.runtimeEvidence.journeyFamilies.find(
+    (family) => family.journeyId === "DW-P4-JRN-ACCOUNT",
+  );
+  account.sourceSha = candidate.inputs.phase4Config.productEvidenceSourceSha;
+  includesError(phase4Errors(candidate), "semantic carry-forward evidence is not declared for this source and journey");
 });
 
 test("Phase 4 rejects a passed screenshot without a hash", () => {
