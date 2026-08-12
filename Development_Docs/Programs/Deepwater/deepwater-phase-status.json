@@ -1,75 +1,24 @@
 {
-  "activation": "ACTIVE_OWNER_COORDINATED_REALIZATION_AND_UTILIZATION_CLOSURE",
-  "auditedSourceSha": "3e235e85b974183f3b0888814a15697596f73730",
-  "authorityGaps": [
-    {
-      "basis": "Current accepted source, the Global Product Governance Standard, Feature Catalog, Homeport records, and accepted Landfall references remain the bounded authority.",
-      "owner": "Landfall",
-      "status": "STANDALONE_GOVERNING_DOCUMENT_NOT_PRESENT"
-    },
-    {
-      "basis": "Current accepted source, the Global Product Governance Standard, One Voyage verification contracts, and accepted Watchglass references remain the bounded authority.",
-      "owner": "Watchglass",
-      "status": "STANDALONE_GOVERNING_DOCUMENT_NOT_PRESENT"
-    }
-  ],
-  "baseSourceSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
-  "branch": "codex/project-deepwater-phase3-mainline-reconciliation",
-  "featureCatalogImpact": "UPDATED_BY_ACCEPTED_DOCUMENTATION_SLICES",
-  "finalReconciledMainSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
+  "activation": "EXPLICIT_PHASE_4_WHOLE_PRODUCT_PROOF_AUTHORIZATION",
+  "auditedSourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+  "baseSourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+  "branch": "codex/project-deepwater-phase4-break-the-surface",
+  "featureCatalogImpact": "NO_CHANGE_REQUIRED",
   "limitations": [
-    "Unaccepted owner branches are coordination constraints, not implementation truth.",
-    "Watchglass real-provider proof remains external and is not simulated as completion.",
-    "Homeport PRODUCT_ACCEPTED remains an owner-only decision.",
-    "Phase 4 is not authorized."
+    "Homeport owner acceptance remains PENDING_OWNER_DECISION and cannot be self-recorded.",
+    "Bridgewatch is a private, read-only observation surface and has no release authority.",
+    "No Phase 5 work is authorized by this record."
   ],
-  "mainlineState": "MAINLINE_ACCEPTED",
-  "metrics": {
-    "backendOperationsReviewed": 349,
-    "capabilityRealization": {
-      "BACKEND_ONLY": 1,
-      "DEPRECATED": 1,
-      "FULLY_REALIZED": 41,
-      "INTERNAL_BY_DESIGN": 8,
-      "PARTIALLY_REALIZED": 2,
-      "SECURITY_RESTRICTED": 2
-    },
-    "capabilityUtilization": {
-      "FULLY_UTILIZED": 41,
-      "INTENTIONALLY_PARTIAL": 2,
-      "INTERNAL_ONLY": 8,
-      "NOT_APPLICABLE": 1,
-      "PARTIALLY_UTILIZED": 3
-    },
-    "documentation": {
-      "closed": 11,
-      "remaining": 6,
-      "starting": 17
-    },
-    "findings": {
-      "closed": 11,
-      "debtAccepted": 0,
-      "external": 1,
-      "ownerAcceptance": 1,
-      "phase3Discovered": 1,
-      "remainingCritical": 0,
-      "remainingHigh": 1,
-      "startingOpen": 20
-    },
-    "slices": {
-      "MAINLINE_ACCEPTED": 3
-    },
-    "unconsumedMeaningfulOperationsRemaining": 4,
-    "unconsumedRecoveryCapabilitiesRemaining": 0,
-    "unconsumedSafeMetadataRemaining": 10
-  },
-  "phase": "Phase 3 - Raise the Capability",
-  "productSourceImpact": "NONE",
+  "mainlineState": "NOT_CANDIDATE",
+  "ownerDecision": "NOT_REQUESTED",
+  "ownerWalkthrough": "PACKET_READY",
+  "phase": "Phase 4 - Break the Surface",
+  "phase3AcceptedMainSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
+  "productSourceImpact": "NONE_ON_COORDINATION_BRANCH",
   "project": "Project Deepwater",
-  "reconciliation": "IMPLEMENTATION_ACCEPTED_PR_33",
-  "schemaImpact": "DEEPWATER_CONTROL_PLANE_SCHEMAS_ONLY",
+  "schemaImpact": "DEEPWATER_PHASE4_PROOF_CONTROL_PLANE_ONLY",
   "schemaVersion": "1.0.0",
-  "state": "MAINLINE_ACCEPTED",
-  "validation": "SOURCE_BOUND_RELEASE_GO_HOSTED_MAINLINE_AND_ACTUAL_MAIN_PASSED",
-  "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase3-mainline"
+  "state": "LOCAL_PROVEN",
+  "validation": "FOCUSED_QUALIFICATION_PASSED",
+  "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase4"
 }

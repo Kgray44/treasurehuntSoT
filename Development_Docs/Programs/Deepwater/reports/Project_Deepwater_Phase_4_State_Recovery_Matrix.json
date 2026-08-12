@@ -1,0 +1,80 @@
+{
+  "families": [
+    {
+      "familyId": "ACCOUNT",
+      "observedStates": ["READY", "LOADING", "ERROR", "UNAUTHORIZED", "RECOVERY"],
+      "proofFamilyId": "DW-P4-JRN-ACCOUNT",
+      "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
+      "recoveryEvidence": [
+        "tests/e2e/homeport-phase7.spec.ts#Journey A, I, J, M, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey F through K, N through U",
+        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey F through I, Q through V"
+      ],
+      "states": ["READY", "LOADING", "ERROR", "UNAUTHORIZED", "RECOVERY"]
+    },
+    {
+      "familyId": "PERSONAL_HARBOR",
+      "observedStates": ["READY", "EMPTY", "ERROR", "RECOVERY"],
+      "proofFamilyId": "DW-P4-JRN-PERSONAL-HARBOR",
+      "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
+      "recoveryEvidence": [
+        "tests/e2e/homeport-phase7.spec.ts#Journey G, H, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey M, N, U",
+        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey A through E, N, S, T, U"
+      ],
+      "states": ["READY", "EMPTY", "ERROR", "RECOVERY"]
+    },
+    {
+      "familyId": "PLAYER",
+      "observedStates": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
+      "proofFamilyId": "DW-P4-JRN-PLAYER",
+      "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
+      "recoveryEvidence": [
+        "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
+        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, K, L, M, U, V"
+      ],
+      "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"]
+    },
+    {
+      "familyId": "CREATOR",
+      "observedStates": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
+      "proofFamilyId": "DW-P4-JRN-CREATOR",
+      "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
+      "recoveryEvidence": [
+        "tests/e2e/homeport-phase7.spec.ts#Journey E, J, K, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
+        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, P, U, V"
+      ],
+      "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"]
+    },
+    {
+      "familyId": "COMMUNITY",
+      "observedStates": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
+      "proofFamilyId": "DW-P4-JRN-COMMUNITY",
+      "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
+      "recoveryEvidence": [
+        "tests/e2e/homeport-phase7.spec.ts#Journey F, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey P, Q, T, U",
+        "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts#Journey H through J, S, U through W"
+      ],
+      "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"]
+    },
+    {
+      "familyId": "RESTRICTED",
+      "observedStates": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"],
+      "proofFamilyId": "DW-P4-JRN-RESTRICTED-OPERATIONS",
+      "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
+      "recoveryEvidence": [
+        "tests/e2e/homeport-phase7.spec.ts#Journey J, K, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey D, T, U",
+        "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts#Journey U through W"
+      ],
+      "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"]
+    }
+  ],
+  "phase": "Phase 4 - Break the Surface",
+  "project": "Project Deepwater",
+  "schemaVersion": "1.0.0",
+  "sourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893"
+}

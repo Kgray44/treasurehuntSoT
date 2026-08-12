@@ -33,9 +33,9 @@ test(`Journey A: account creation`, async ({ page }) => {
   await keyboardMilestone(page);
   const menu = await accountMenu(page, "Account");
   await menu.getByRole("link", { name: "Create Account", exact: true }).click();
-  await expect(page.getByRole("heading", { name: /Create/u })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Create your account", exact: true })).toBeVisible();
   await page.getByLabel("Display name").fill("Phase 7 Registration Candidate");
-  await page.getByLabel("Email").fill("registration-candidate@phase7.example.test");
+  await page.getByRole("textbox", { name: "Email", exact: true }).fill("registration-candidate@phase7.example.test");
   await page.getByLabel("Password", { exact: true }).fill(credentialHandoff.password);
   await page.getByLabel("Confirm password").fill(`${credentialHandoff.password}x`);
   await page.getByLabel("Confirm password").press("Enter");
@@ -62,7 +62,7 @@ test(`Journey B: returning account`, async ({ page }) => {
   const account = await signIn(page, "RETURNING_FULL_CAPABILITY");
   await accountDestination(page, account, "All Workspaces");
   await expect(page.getByRole("heading", { name: "All Workspaces" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Captain and Creator transitions are paused" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Creator transitions are paused", exact: true })).toBeVisible();
   await accountDestination(page, account, "View My Profile");
   await expect(page.getByRole("heading", { name: account.displayName })).toBeVisible();
   await expect(page.getByText("Owner preview", { exact: true })).toBeVisible();
@@ -221,7 +221,9 @@ test(`Journey I: password recovery`, async ({ page }) => {
   const menu = await accountMenu(page, "Account");
   await settledLinkNavigation(page, menu.getByRole("link", { name: "Sign In", exact: true }), /\/sign-in/u);
   await settledLinkNavigation(page, page.getByRole("link", { name: "Forgot Password" }), /\/forgot-password/u);
-  await page.getByLabel("Email").fill(credentialHandoff.accounts.RECOVERY_ACCOUNT.email!);
+  await page
+    .getByRole("textbox", { name: "Email", exact: true })
+    .fill(credentialHandoff.accounts.RECOVERY_ACCOUNT.email!);
   const recoveryResponse = page.waitForResponse(
     (response) => response.url().endsWith("/api/auth/password-reset/request") && response.request().method() === "POST",
   );
@@ -438,7 +440,7 @@ async function accountDestination(page: Page, account: Alias, label: string) {
 
 async function leaveActiveChronicles(page: Page, account: Alias) {
   await accountDestination(page, account, "All Workspaces");
-  await expect(page.getByRole("heading", { name: "Captain and Creator transitions are paused" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Creator transitions are paused", exact: true })).toBeVisible();
   await page.getByLabel(/Type LEAVE ACTIVE CHRONICLES/u).fill("LEAVE ACTIVE CHRONICLES");
   await page.getByRole("button", { name: "Safely leave active Chronicles" }).click();
   await expect(page.getByRole("link", { name: "Enter Captain" })).toBeVisible();

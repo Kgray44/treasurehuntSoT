@@ -3,12 +3,29 @@ title: Project Deepwater Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-deepwater-repository-index
-last_reviewed: 2026-08-10
+last_reviewed: 2026-08-12
 ---
 
 # Project Deepwater
 
-Project Deepwater is Voyagewright's capability-realization and systems-audit program. Phase 1 establishes the audit-only machine-readable inventory and control plane. Phase 2 traces the accepted priority queue, identifies exact loss points and root causes, and creates owner-assigned remediation packets without changing product behavior, schema, or data. Phase 3 reviews utilization across every governed capability, coordinates owner closure, and processes only independently mainline-safe remediation slices.
+Project Deepwater is Voyagewright's capability-realization and systems-audit program. Phase 1 establishes the audit-only machine-readable inventory and control plane. Phase 2 traces the accepted priority queue, identifies exact loss points and root causes, and creates owner-assigned remediation packets without changing product behavior, schema, or data. Phase 3 reviews utilization across every governed capability, coordinates owner closure, and processes only independently mainline-safe remediation slices. Phase 4, Break the Surface, turns the accepted inventory into a source-current whole-product proof population while preserving explicit owner, provider, deployment, and protected-main boundaries.
+
+## Current Phase 4 records
+
+- [Design record](phase-records/Project_Deepwater_Phase_4_Design_Record.md)
+- [Validation record](phase-records/Project_Deepwater_Phase_4_Validation_Record.md)
+- `deepwater-phase4-config.json`
+- `evidence/phase4/Project_Deepwater_Phase_4_Runtime_Evidence.json`
+- [Proof report](reports/Project_Deepwater_Phase_4_Proof_Report.md)
+- `reports/Project_Deepwater_Phase_4_Capability_Proof_Matrix.json`
+- `reports/Project_Deepwater_Phase_4_State_Recovery_Matrix.json`
+- [Visual and accessibility report](reports/Project_Deepwater_Phase_4_Visual_Accessibility_Report.md)
+- [Owner walkthrough packet](reports/Project_Deepwater_Phase_4_Owner_Walkthrough_Packet.md)
+- [Phase 3 to Phase 4 delta report](reports/Project_Deepwater_Phase_3_to_Phase_4_Delta_Report.md)
+- `reports/Project_Deepwater_Phase_4_Proof_Queue.json`
+- `reports/Project_Deepwater_Phase_5_Governance_Queue.json`
+
+Phase 4 is locally proven with source-bound, loopback, synthetic-fixture evidence for all 56 current capabilities, and focused qualification has passed. A single current-main reconciliation, frozen-candidate acceptance ownership, and exactly one Sounding Line Mainline Decision remain required before `RELEASE_GO`, protected merge, exact-main proof, and a closure record. Homeport owner re-review remains `PENDING_OWNER_DECISION`; neither the local proof nor this index records owner or product acceptance. Phase 5 remains unauthorized.
 
 ## Current Phase 3 records
 
@@ -28,7 +45,7 @@ Project Deepwater is Voyagewright's capability-realization and systems-audit pro
 - `reports/Project_Deepwater_Phase_3_Realization_Queue.json`
 - `reports/Project_Deepwater_Phase_4_Proof_Queue.json`
 
-Phase 3 is complete and accepted on protected main through PR #33 as `ca135585a62f445cd4331df1a7dd21203bd50219`. All three registered documentation slices close ten route-identity findings; accepted Helm owner evidence closes FT-007 as the eleventh documentation reconciliation. The exact candidate, hosted matrix, and actual-main SHA all received source-bound `RELEASE_GO` proof. Six catalog findings remain explicitly open, including the Tideglass semantic-consumer and Admiralty transactional-email health boundaries. Phase 4 remains unauthorized.
+Phase 3 is complete and accepted on protected main through PR #33 as `ca135585a62f445cd4331df1a7dd21203bd50219`. All three registered documentation slices close ten route-identity findings; accepted Helm owner evidence closes FT-007 as the eleventh documentation reconciliation. The exact candidate, hosted matrix, and actual-main SHA all received source-bound `RELEASE_GO` proof. Six catalog findings remain explicitly open, including the Tideglass semantic-consumer and Admiralty transactional-email health boundaries. Phase 4 is separately authorized from a fresh current-main base; Phase 3 history remains immutable.
 
 ## Current Phase 2 records
 
