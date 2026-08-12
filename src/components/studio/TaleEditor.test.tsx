@@ -113,6 +113,8 @@ function editorData(): EditorData {
           minimumReaderVersion: 1,
           connectionPolicy: { minimum: 0, maximum: 1, canonicalAuthority: "BlockConnection" },
           assetRequirements: [],
+          variableReads: [],
+          variableWrites: [],
           providerContract: null,
           accessibilityRules: [],
         },
@@ -243,6 +245,36 @@ describe("Voyagewright Studio editor motion and authority", () => {
     expect(screen.getByLabelText("Leaving animation")).toBeVisible();
     expect(screen.getByLabelText("While this Passage is active")).toBeVisible();
     expect(screen.getAllByRole("option", { name: /Tidal wake/ })).toHaveLength(3);
+  });
+
+  it("keeps contract-aware selection usable for a representative 100-Passage Chronicle", async () => {
+    const data = editorData();
+    data.draft.chapters = Array.from({ length: 5 }, (_, chapterIndex) => ({
+      id: `chapter-${chapterIndex + 1}`,
+      title: `Chapter ${chapterIndex + 1}`,
+      isOptional: false,
+      metadata: {},
+      blocks: Array.from({ length: 20 }, (_, blockIndex) => ({
+        id: `large-${chapterIndex}-${blockIndex}`,
+        blockType: "narrative",
+        title: `Large Passage ${chapterIndex * 20 + blockIndex + 1}`,
+        configuration: { body: "A synthetic Passage for Inspector scale coverage." },
+        presentation: {},
+        completion: {},
+        isEnabled: true,
+        schemaVersion: 2,
+      })),
+    }));
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, data)));
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    const target = screen.getByText("Large Passage 20").closest<HTMLElement>("article")!;
+    fireEvent.click(target);
+    expect(await screen.findByRole("textbox", { name: "Passage title" })).toHaveValue("Large Passage 20");
+    expect(
+      screen.getAllByRole("button", { name: /Content|Behavior|Completion|Presentation|Accessibility|Advanced/ }),
+    ).toHaveLength(6);
   });
 
   it("highlights and focuses the exact block named by authoritative validation", async () => {
@@ -382,6 +414,23 @@ describe("Voyagewright Studio editor motion and authority", () => {
           { key: "value", label: "Value", kind: "json" },
         ],
         schemaVersion: 2,
+        contract: {
+          currentVersion: 2,
+          minimumReaderVersion: 1,
+          connectionPolicy: { minimum: 0, maximum: 0, canonicalAuthority: "BlockConnection" },
+          assetRequirements: [],
+          variableReads: [],
+          variableWrites: [
+            {
+              fieldPath: "configuration.variableId",
+              identityFieldPath: "configuration.variableName",
+              access: "WRITE",
+              operations: ["assign", "increment", "decrement", "toggle"],
+            },
+          ],
+          providerContract: null,
+          accessibilityRules: [],
+        },
       },
       {
         type: "condition",
@@ -479,7 +528,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     expect(await screen.findByText("Migration requires server confirmation")).toBeVisible();
     fireEvent.change(screen.getByRole("combobox", { name: "Authoring level" }), { target: { value: "ENGINEERING" } });
     expect(screen.getByText(/Draft v1; current v2/)).toBeVisible();
-    expect(screen.getByText(/Run Drydock validation/)).toBeVisible();
+    expect(screen.getByRole("button", { name: "Preview Drydock migration" })).toBeVisible();
   });
 
   it("applies a revision-guarded safe repair through the ordinary Studio undo history", async () => {

@@ -36,13 +36,20 @@ export type StudioVariableExplorer = {
     defaultValue?: unknown;
     privacy: string;
     allowedOperations: readonly string[];
-    readers: Array<{ blockId?: string; fieldPath: string; reachable?: boolean | null }>;
-    writers: Array<{ blockId?: string; fieldPath: string; operation?: string; reachable?: boolean | null }>;
+    readers: Array<{ blockId?: string; fieldPath: string; kind?: string; reachable?: boolean | null }>;
+    writers: Array<{
+      blockId?: string;
+      fieldPath: string;
+      kind?: string;
+      operation?: string;
+      reachable?: boolean | null;
+    }>;
     initialization: {
       proofStatus: string;
       potentiallyUninitializedReferences: Array<{ blockId: string; fieldPath: string }>;
     };
     unusedState: string;
+    renameState: "AVAILABLE_WITH_CURRENT_STUDIO_DRAFT_GUARD";
     relatedIssueCodes: string[];
   }>;
 };
@@ -60,6 +67,8 @@ type Props = {
   onTitleChange: (title: string) => void;
   variableExplorer: StudioVariableExplorer | null;
   onRequestVariables: () => void;
+  onRenameVariable: (variableId: string, nextName: string) => Promise<boolean>;
+  onRequestMigration: (blockId: string) => void;
   initialFocusField?: string | null;
   titleInputRef?: RefObject<HTMLInputElement | null>;
   onClose: () => void;
@@ -372,16 +381,27 @@ function FinaleEditor({ block, chapter }: { block: Block; chapter: Chapter }) {
   );
 }
 
-function MigrationControl({ block, registry }: { block: Block; registry?: RegistryItem }) {
+function MigrationControl({
+  block,
+  registry,
+  onRequestMigration,
+}: {
+  block: Block;
+  registry?: RegistryItem;
+  onRequestMigration: (blockId: string) => void;
+}) {
   const currentVersion = registry?.contract?.currentVersion;
   if (!currentVersion || block.schemaVersion >= currentVersion) return null;
   return (
     <section className="migration-control" aria-label="Drydock migration status">
       <strong>Migration requires server confirmation</strong>
       <p className="contract-summary">
-        Draft v{block.schemaVersion}; current contract v{currentVersion}. Run Drydock validation to obtain the canonical
-        migration/compatibility result before publishing.
+        Draft v{block.schemaVersion}; current contract v{currentVersion}. Review Drydock's safe structural preview
+        before changing this Passage.
       </p>
+      <button type="button" onClick={() => onRequestMigration(block.id)}>
+        Preview Drydock migration
+      </button>
     </section>
   );
 }
@@ -758,16 +778,19 @@ function VariablePicker({
   label,
   onChange,
   onRequest,
+  onRename,
 }: {
   explorer: StudioVariableExplorer | null;
   value: string;
   label: string;
   onChange: (variable: StudioVariableExplorer["variables"][number]) => void;
   onRequest: () => void;
+  onRename: (variableId: string, nextName: string) => Promise<boolean>;
 }) {
   const [query, setQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState("ALL");
   const [scopeFilter, setScopeFilter] = useState("ALL");
+  const [renameName, setRenameName] = useState("");
   if (!explorer)
     return (
       <button type="button" className="load-variables" onClick={onRequest}>
@@ -783,6 +806,15 @@ function VariablePicker({
   );
   const typeOptions = [...new Set(explorer.variables.map((variable) => variable.type.kind))];
   const scopeOptions = [...new Set(explorer.variables.map((variable) => variable.scope))];
+  const selectedVariable = explorer.variables.find((variable) => variable.id === value);
+  const affectedBlocks = new Set(
+    [...(selectedVariable?.readers ?? []), ...(selectedVariable?.writers ?? [])]
+      .map((reference) => reference.blockId)
+      .filter((blockId): blockId is string => Boolean(blockId)),
+  );
+  const expressionCount = (selectedVariable?.readers ?? []).filter(
+    (reference) => reference.kind === "EXPRESSION",
+  ).length;
   return (
     <fieldset className="variable-browser">
       <legend>{label}</legend>
@@ -839,8 +871,39 @@ function VariablePicker({
       <p className="contract-summary">
         {variables.length} declared variable{variables.length === 1 ? "" : "s"} match the current filters.
       </p>
-      {explorer.variables.find((variable) => variable.id === value)?.description ? (
-        <p className="contract-summary">{explorer.variables.find((variable) => variable.id === value)?.description}</p>
+      {selectedVariable?.description ? <p className="contract-summary">{selectedVariable.description}</p> : null}
+      {selectedVariable?.renameState === "AVAILABLE_WITH_CURRENT_STUDIO_DRAFT_GUARD" ? (
+        <fieldset className="variable-rename" aria-label="Rename selected variable">
+          <legend>Rename selected variable</legend>
+          <p className="contract-summary">
+            {selectedVariable.readers.length + selectedVariable.writers.length} governed reference
+            {selectedVariable.readers.length + selectedVariable.writers.length === 1 ? "" : "s"} across{" "}
+            {affectedBlocks.size} Passage
+            {affectedBlocks.size === 1 ? "" : "s"}
+            {expressionCount ? `, including ${expressionCount} expression${expressionCount === 1 ? "" : "s"}` : ""}.
+            Stable ID stays the same.
+          </p>
+          <label className="contract-field">
+            <span>New variable name</span>
+            <input
+              value={renameName}
+              onChange={(event) => setRenameName(event.target.value)}
+              placeholder={selectedVariable.name}
+              aria-label={`New name for ${selectedVariable.name}`}
+            />
+          </label>
+          <button
+            type="button"
+            disabled={!renameName.trim() || renameName.trim() === selectedVariable.name}
+            onClick={() =>
+              void onRename(selectedVariable.id, renameName.trim()).then((renamed) => {
+                if (renamed) setRenameName("");
+              })
+            }
+          >
+            Rename with Drydock
+          </button>
+        </fieldset>
       ) : null}
     </fieldset>
   );
@@ -911,6 +974,8 @@ function SetVariableEditor({
   issues,
   onChange,
   onRequestVariables,
+  onRenameVariable,
+  allowedOperations,
 }: {
   block: Block;
   explorer: StudioVariableExplorer | null;
@@ -918,12 +983,11 @@ function SetVariableEditor({
   issues: readonly ValidationIssue[];
   onChange: Props["onChange"];
   onRequestVariables: () => void;
+  onRenameVariable: Props["onRenameVariable"];
+  allowedOperations: readonly string[];
 }) {
   const variable = explorer?.variables.find((item) => item.id === block.configuration.variableId) ?? null;
-  const allowed =
-    variable?.allowedOperations.filter((operation) =>
-      ["assign", "increment", "decrement", "toggle"].includes(operation),
-    ) ?? [];
+  const allowed = variable?.allowedOperations.filter((operation) => allowedOperations.includes(operation)) ?? [];
   return (
     <div className="purpose-built-editor variable-editor" data-inspector-field="configuration.variableId">
       <VariablePicker
@@ -931,6 +995,7 @@ function SetVariableEditor({
         value={String(block.configuration.variableId ?? "")}
         label="Variable"
         onRequest={onRequestVariables}
+        onRename={onRenameVariable}
         onChange={(next) =>
           onChange((current) => {
             current.configuration.variableId = next.id;
@@ -1571,6 +1636,8 @@ export function ContractAwareInspector({
   onTitleChange,
   variableExplorer,
   onRequestVariables,
+  onRenameVariable,
+  onRequestMigration,
   initialFocusField,
   titleInputRef,
   onClose,
@@ -1703,6 +1770,11 @@ export function ContractAwareInspector({
             issues={allIssues}
             onChange={onChange}
             onRequestVariables={onRequestVariables}
+            onRenameVariable={onRenameVariable}
+            allowedOperations={
+              contract?.variableWrites.find((reference) => reference.fieldPath === "configuration.variableId")
+                ?.operations ?? []
+            }
           />
         ) : null}
         {block.blockType === "wait" ? <DurationControl block={block} onChange={onChange} /> : null}
@@ -1779,7 +1851,7 @@ export function ContractAwareInspector({
         ) : (
           <p>Compatibility, identifiers, and safe structural diagnostics are available in Engineering mode.</p>
         )}
-        <MigrationControl block={block} registry={registry} />
+        <MigrationControl block={block} registry={registry} onRequestMigration={onRequestMigration} />
         <InlineIssues
           issues={blockIssues.filter((issue) => sectionForFieldPath(issue.field) === "ADVANCED")}
           mode={mode}
