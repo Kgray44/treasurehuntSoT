@@ -21,6 +21,13 @@ following documentation-evidence commit `6d4a05528a2283dbd57231845beae46bef902ee
 does not alter the reviewed product source, route behavior, policy, fixtures,
 or visual evidence.
 
+Accepted main later advanced to `541e914f481883200569f8cc7ec5ec9428d7cbb7`.
+The Phase 3 branch was reconciled to that base. Its Admiralty closure records
+and Helm browser-test stabilization do not alter the owner-reviewed Tideglass
+product; the canonical Tideglass route, API, service, Chronicle/Passport, and
+Studio consumer source remains equivalent to `c2fc8fcc`. This preserves the
+owner decision without treating it as approval of unrelated work.
+
 ## Accepted walkthrough result
 
 The owner accepted the ordinary Chronicle-detail and Passport-history entries;

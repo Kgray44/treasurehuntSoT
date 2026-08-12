@@ -11,8 +11,8 @@ last_reviewed: 2026-08-12
 Status: `OWNER_ACCEPTED_MAINLINE_PENDING`.
 
 The reconciled product source is
-`c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`, rebased on accepted main
-`4edc8de5e30e9748700c19b466061f9b9a97f268`. Phase 2's accepted merge
+`c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`, subsequently reconciled to accepted main
+`541e914f481883200569f8cc7ec5ec9428d7cbb7`. Phase 2's accepted merge
 `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3` is an ancestor of that mainline.
 
 | Evidence                                                  | Result                                                      | Boundary                                                                                                                                         |
@@ -50,3 +50,21 @@ The non-authoritative, registered focused repair command
 then passed all 3/3 access-sentinel cases with runtime conformance `PASSED`.
 Only this infrastructure proof is carried forward; the next frozen candidate
 must receive one replacement full Mainline Decision using that task-owned clone.
+
+## Post-owner accepted-main reconciliation
+
+The `4edc8de5..541e914f` advance contains Admiralty closeout documentation and
+the accepted `4b346397` Helm browser-test stabilization only. No Tideglass route,
+API, service, semantic, policy, schema, Studio consumer, or Chronicle/Passport
+source changed. A direct product-path comparison against owner-reviewed
+`c2fc8fcc` passed. The shared validation lane was occupied when the required
+focused `browser.helm` rerun was requested, so it produced a governed
+`validation-runtime.lock` refusal before any test was discovered or executed.
+The lock was owned by another active process and was neither removed nor treated
+as a product failure. After the governed lane released it, the focused command
+passed all 3/3 `browser.helm` cases in its owned runtime (run
+`validation-20260812T151554539Z-c62d2dc891ea`) with runtime conformance
+`PASSED`. The canonical and task-owned baseline hashes remain
+`54647911F63C6A55E5C6B6C95E5EC0A2977B4580A42DE073C8C503A3D8C7A412`.
+The reconciled replacement candidate is now frozen for its one full authority
+attempt.

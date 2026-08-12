@@ -3,10 +3,10 @@
   "project": "Project Tideglass",
   "phase": "3",
   "phaseName": "Choose the Passage",
-  "status": "OWNER_ACCEPTED_PENDING_MAINLINE_DECISION",
+  "status": "CANDIDATE_FROZEN_OWNER_ACCEPTED_REPLACEMENT_PENDING_MAINLINE_DECISION",
   "originalBaseSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
   "baseSha": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
-  "reconciledOriginMainSha": "4edc8de5e30e9748700c19b466061f9b9a97f268",
+  "reconciledOriginMainSha": "541e914f481883200569f8cc7ec5ec9428d7cbb7",
   "branch": "codex/project-tideglass-phase3-choose-the-passage",
   "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-tideglass-phase3-choose-the-passage",
   "concurrencyClass": ["B"],
@@ -15,12 +15,12 @@
   "mysqlMigration": null,
   "ordinaryNavigationImpact": "NEW_DISCOVERABLE_COMPARISON_JOURNEY",
   "phase2IntegratedMainSha": "3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3",
-  "phase2AncestryVerifiedAgainst": "4edc8de5e30e9748700c19b466061f9b9a97f268",
+  "phase2AncestryVerifiedAgainst": "541e914f481883200569f8cc7ec5ec9428d7cbb7",
   "integrationRule": "Independent mainline-safe phase reconciled to current main. Do not stack Phase 4 or consume unaccepted Wakebook source; preserve accepted Shipwright and Helm surfaces through their narrow Tideglass seams.",
   "registeredAt": "2026-08-12",
   "reopenedReason": "The initial candidate lacked a repository-backed fixture and did not exercise the full governed Phase 3 state matrix. It was superseded before owner walkthrough or authority dispatch.",
   "ownerReviewedProductSha": "c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6",
   "ownerDecision": "ACCEPTED on 2026-08-12; Project_Tideglass_Phase_3_Owner_Decision_Record.md records the reviewed scope and preserved boundaries.",
-  "candidateEvidence": "Reconciled product source c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6 has a task-owned fixture receipt and source-bound ten-capture visual manifest. Owner acceptance is recorded. The first local authority preflight for documentation candidate 897e7619 failed before any suite receipt because the worktree baseline was absent; a task-owned immutable clone and a passing focused access-sentinel proof now support requalification.",
-  "nextGate": "Freeze the post-repair documentation-qualified candidate and dispatch exactly one replacement Sounding Line Mainline Decision against its exact SHA."
+  "candidateEvidence": "Rebased source retains product-equivalent Tideglass route, API, service, and Studio source to owner-reviewed c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6 while reconciling accepted main 541e914f481883200569f8cc7ec5ec9428d7cbb7. The task-owned fixture receipt and source-bound ten-capture visual manifest remain valid. Owner acceptance is recorded. The first local authority preflight for documentation candidate 897e7619 failed before any suite receipt because the worktree baseline was absent; a task-owned immutable clone, a passing focused access-sentinel proof, and a passing post-main-reconciliation Helm browser proof support this replacement candidate.",
+  "nextGate": "Dispatch exactly one replacement Sounding Line Mainline Decision against the frozen exact branch SHA."
 }

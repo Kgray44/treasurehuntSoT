@@ -1,7 +1,7 @@
 ---
 title: Project Tideglass Phase 3 Design Record
 audience: product-engineering
-status: candidate-frozen-owner-walkthrough-pending
+status: candidate-frozen-owner-accepted-replacement-pending
 canonical_for: project-tideglass-phase-3-design
 last_reviewed: 2026-08-12
 ---
@@ -15,7 +15,7 @@ Phase 3 creates the ordinary, discoverable **What Changed?** experience over the
 | Item                                      | Frozen value                                                                                                                                              |
 | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Initial implementation `origin/main` base | `54e3d818d49d45282a9c419d562d4b5c78911ccd`                                                                                                                |
-| Current reconciled `origin/main`          | `4edc8de5e30e9748700c19b466061f9b9a97f268`                                                                                                                |
+| Current reconciled `origin/main`          | `541e914f481883200569f8cc7ec5ec9428d7cbb7`                                                                                                                |
 | Dedicated branch                          | `codex/project-tideglass-phase3-choose-the-passage`                                                                                                       |
 | Dedicated worktree                        | `C:\Users\kkids\Documents\treasurehuntSoT-tideglass-phase3-choose-the-passage`                                                                            |
 | Phase 2 status and ancestry               | `ACCEPTED_MAINLINE`; integrated `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3` is an ancestor of the reconciled current main                                  |
@@ -62,6 +62,18 @@ truthful branch-status statements, and regenerated the catalog. It neither
 consumes unmerged Wakebook source nor adds a Captain UI without a stable accepted
 consumer. The Phase 3 browser, focused test, typecheck, and source-contract
 evidence were rerun after this reconciliation.
+
+After owner acceptance, accepted main advanced again to
+`541e914f481883200569f8cc7ec5ec9428d7cbb7` through Admiralty Phase 2's
+completion records and `4b346397`'s Helm browser-test stabilization. The
+advance contains no Tideglass product, schema, policy, API, navigation, or
+Studio semantic-consumer source. A range comparison confirms that the reviewed
+Tideglass route, API, service, component, Studio, and Chronicle/Passport source
+is byte-equivalent to reviewed product source `c2fc8fcc` after rebase. The
+documentation truth was reconciled to Admiralty's accepted-main state; only the
+focused Helm browser family was rerun and passed all 3/3 registered cases with
+runtime conformance `PASSED`. Wakebook, unmerged Shipwright work, Helm Phase 2
+work, and Deepwater Phase 4 remain unconsumed.
 
 The route provides the following complete states: loading, unauthorized/unavailable, retryable comparison failure, no meaningful change, partial/redacted history, historical-only edition, up-to-date, populated concise, populated detailed, spoiler collapsed/revealed, and multiple-history selection. The page stacks selectors and cards at narrow widths, has no horizontal document overflow, uses visible text for every change state, and respects reduced motion.
 
