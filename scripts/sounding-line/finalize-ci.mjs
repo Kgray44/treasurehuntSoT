@@ -43,7 +43,8 @@ const evidence = await Promise.all(
   ),
 );
 if (evidence.some((item) => item.plan?.planDigest !== plan.planDigest)) throw new Error("CI_EVIDENCE_PLAN_MISMATCH");
-if (process.env.GITHUB_SHA && plan.sourceSha !== process.env.GITHUB_SHA) throw new Error("CI_PLAN_SOURCE_MISMATCH");
+const expectedSourceSha = process.env.SOUNDING_LINE_EXPECTED_SOURCE_SHA || process.env.GITHUB_SHA;
+if (expectedSourceSha && plan.sourceSha !== expectedSourceSha) throw new Error("CI_PLAN_SOURCE_MISMATCH");
 const result = finalize({
   plan,
   receipts: evidence.flatMap((item) => item.receipts),
