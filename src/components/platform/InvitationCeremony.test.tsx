@@ -66,10 +66,13 @@ function response(status: number, body: unknown) {
   } as unknown as Response;
 }
 
-function renderInvitation(onRouteHandoff?: (destination: string, signal: AbortSignal) => void | Promise<void>) {
+function renderInvitation(
+  onRouteHandoff?: (destination: string, signal: AbortSignal) => void | Promise<void>,
+  onRouteRecovery?: (destination: string) => void,
+) {
   return render(
     <TestAuthority>
-      <InvitationCeremony onRouteHandoff={onRouteHandoff} />
+      <InvitationCeremony onRouteHandoff={onRouteHandoff} onRouteRecovery={onRouteRecovery} />
     </TestAuthority>,
   );
 }
@@ -166,6 +169,31 @@ describe("InvitationCeremony", () => {
 
     await waitFor(() => expect(navigation.push).toHaveBeenCalledWith("/player/playthroughs/voyage-1"));
     expect(navigation.refresh).not.toHaveBeenCalled();
+  });
+
+  it("recovers with a document navigation when a soft handoff remains on invitation", async () => {
+    window.history.replaceState({}, "", "/player/invitation");
+    const recoverRoute = vi.fn();
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, { invitation, csrfToken: "csrf" }))
+      .mockResolvedValueOnce(response(200, { ok: true, playthroughId: "voyage-1" }));
+    vi.stubGlobal("fetch", fetch);
+    director.play.mockImplementation(async (_scene, options) => {
+      const result = await options.operation();
+      options.finalStateRuntime?.holdSafePose("access-result-readable");
+      return { outcome: "presented", finalSemanticState: "access-result-readable", operationResult: result };
+    });
+    renderInvitation(undefined, recoverRoute);
+    await screen.findByLabelText("Invitation PIN");
+    fireEvent.change(screen.getByLabelText("Invitation PIN"), { target: { value: "1234" } });
+
+    fireEvent.click(screen.getByRole("button", { name: "Accept and Join Voyage" }));
+
+    await waitFor(() => expect(navigation.push).toHaveBeenCalledWith("/player/playthroughs/voyage-1"));
+    await waitFor(() => expect(recoverRoute).toHaveBeenCalledWith("/player/playthroughs/voyage-1"), {
+      timeout: 3_000,
+    });
   });
 
   it("routes after acceptance while shared context invalidation is still pending", async () => {

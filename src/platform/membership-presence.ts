@@ -2,7 +2,10 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 
 export const membershipPresencePolicy = Object.freeze({
-  freshMs: 45_000,
+  // Player and Captain clients pulse every 20 seconds. Leave room for a
+  // bounded write queue so a successful heartbeat remains live evidence when
+  // several members report at once.
+  freshMs: 90_000,
   recentlyLostMs: 5 * 60_000,
   heartbeatLimitPerMinute: 120,
   retentionMs: 30 * 24 * 60 * 60_000,
@@ -165,14 +168,17 @@ export async function recordMembershipPresence(input: {
     throw new MembershipPresenceError("This Player membership is unavailable.", "MEMBERSHIP_UNAVAILABLE");
   if (input.acknowledgedSequence > membership.playthrough.currentSequence)
     throw new MembershipPresenceError("The acknowledged Voyage sequence is unavailable.", "FUTURE_SEQUENCE");
-  const now = new Date();
-  const retentionCutoff = new Date(now.getTime() - membershipPresencePolicy.retentionMs);
+  let persistedAt = new Date();
   // SQLite can hold an interactive transaction open while a Captain's waiting
   // room and invitation acceptance are both writing. Each heartbeat statement
   // is independently idempotent, and the acknowledgement update is guarded
   // monotonically, so use short statements with one bounded retry instead of
   // making an ordinary heartbeat hold the database across cleanup and trimming.
   const persist = async () => {
+    // Capture freshness at the point this attempt reaches persistence, rather
+    // than before it may have waited behind another SQLite write.
+    persistedAt = new Date();
+    const retentionCutoff = new Date(persistedAt.getTime() - membershipPresencePolicy.retentionMs);
     await db.membershipPresenceDevice.deleteMany({
       where: {
         playthroughMembershipId: membership.id,
@@ -190,15 +196,15 @@ export async function recordMembershipPresence(input: {
         playthroughMembershipId: membership.id,
         taleSessionId: input.taleSessionId,
         deviceInstanceId: input.deviceInstanceId,
-        lastHeartbeatAt: now,
+        lastHeartbeatAt: persistedAt,
         acknowledgedSequence: input.acknowledgedSequence,
         safeActivity: input.safeActivity,
-        disconnectedAt: input.disconnected ? now : null,
+        disconnectedAt: input.disconnected ? persistedAt : null,
       },
       update: {
-        lastHeartbeatAt: now,
+        lastHeartbeatAt: persistedAt,
         safeActivity: input.safeActivity,
-        disconnectedAt: input.disconnected ? now : null,
+        disconnectedAt: input.disconnected ? persistedAt : null,
       },
       select: { id: true },
     });
@@ -207,7 +213,7 @@ export async function recordMembershipPresence(input: {
         where: { id: device.id, acknowledgedSequence: { lte: input.acknowledgedSequence } },
         data: {
           acknowledgedSequence: input.acknowledgedSequence,
-          lastHeartbeatAt: now,
+          lastHeartbeatAt: persistedAt,
           safeActivity: input.safeActivity,
         },
       });
@@ -221,5 +227,5 @@ export async function recordMembershipPresence(input: {
       await db.membershipPresenceDevice.deleteMany({ where: { id: { in: overflow.map((row) => row.id) } } });
   };
   await retryTransientPresenceWrite(persist);
-  return { recordedAt: now.toISOString(), currentSequence: membership.playthrough.currentSequence };
+  return { recordedAt: persistedAt.toISOString(), currentSequence: membership.playthrough.currentSequence };
 }

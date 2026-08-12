@@ -66,10 +66,17 @@ type InvitationStage =
 
 type InvitationActionResult = { ok: true; playthroughId?: string };
 type InvitationRouteHandoff = (destination: string, signal: AbortSignal) => void | Promise<void>;
+type InvitationRouteRecovery = (destination: string) => void;
+
+type InvitationCeremonyProps = {
+  onRouteHandoff?: InvitationRouteHandoff;
+  onRouteRecovery?: InvitationRouteRecovery;
+};
 
 const accessFinalState = "access-result-readable";
 const accessFallback = "readable-access-result";
 const acceptedHandoffDelayMs = 500;
+const routeRecoveryDelayMs = 1_500;
 const targetProperties = {
   invitation: ["transform"],
   "invitation-ink": ["filter", "opacity"],
@@ -247,7 +254,7 @@ function TerminalInvitationState({
   );
 }
 
-export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: InvitationRouteHandoff } = {}) {
+export function InvitationCeremony({ onRouteHandoff, onRouteRecovery }: InvitationCeremonyProps = {}) {
   const { requestAction, dialog } = useActionDialog();
   const router = useRouter();
   const { invalidate: invalidateCurrentUser } = useCurrentUser();
@@ -256,6 +263,7 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
   const ceremonyHost = useRef<SceneHostHandle | null>(null);
   const resolveRun = useRef<AbortController | null>(null);
   const acceptActionActive = useRef(false);
+  const routeRecoveryTimer = useRef<number | null>(null);
   const { director } = useAnimationDirector();
   const { mode } = useMotionMode();
   const asyncState = useAuthoritativeAsyncState(900);
@@ -323,6 +331,13 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
 
   useEffect(() => () => resolveRun.current?.abort("unmounted"), []);
 
+  useEffect(
+    () => () => {
+      if (routeRecoveryTimer.current !== null) window.clearTimeout(routeRecoveryTimer.current);
+    },
+    [],
+  );
+
   useEffect(() => {
     const timer = window.setTimeout(
       () => document.getElementById("invitation-state-title")?.focus(),
@@ -347,6 +362,13 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
   async function handOffRoute(destination: string, signal: AbortSignal) {
     if (onRouteHandoff) return onRouteHandoff(destination, signal);
     router.push(destination);
+    if (routeRecoveryTimer.current !== null) window.clearTimeout(routeRecoveryTimer.current);
+    routeRecoveryTimer.current = window.setTimeout(() => {
+      routeRecoveryTimer.current = null;
+      if (window.location.pathname === "/player/invitation") {
+        (onRouteRecovery ?? ((href: string) => window.location.assign(href)))(destination);
+      }
+    }, routeRecoveryDelayMs);
   }
 
   function restoreFailure(run: AuthoritativeAsyncRun, message: string, code?: string) {
