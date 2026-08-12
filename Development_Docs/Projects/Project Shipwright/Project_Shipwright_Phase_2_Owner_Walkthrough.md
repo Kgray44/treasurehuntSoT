@@ -10,7 +10,7 @@ last_reviewed: 2026-08-12
 
 ## Gate state
 
-Ready for owner walkthrough. Candidate qualification, current-main reconciliation, documentation, catalog, isolated browser evidence, and the task-owned production walkthrough environment are complete. This guide is the required product-review script; no owner review or waiver has yet been recorded.
+**OWNER_ACCEPTED** — the owner explicitly accepted Project Shipwright Phase 2 in this task thread on 2026-08-12. No correction, waiver, or scope expansion was requested. The reviewed implementation candidate was `4b052064cbd17754b6ca9d813ac288a0cf257ee0`; any later authority attempt remains subject to current-main reconciliation and exact-candidate qualification.
 
 The automated rehearsal is `npm run shipwright:phase2:journeys`. It creates a fresh SQLite fixture below `%LOCALAPPDATA%\ProjectShipwright`, uses a synthetic Creator account whose credential handoff remains outside the repository, and allocates a task-owned dynamic port. It is evidence for the review journey, not an owner decision.
 
@@ -35,4 +35,4 @@ After the candidate is frozen, run `npm run shipwright:phase2:walkthrough:prepar
 - Any owner correction and its requalification scope.
 - Explicit waiver text if the owner waives this review.
 
-No owner review or waiver is recorded by this document.
+The owner decision is satisfied. Sounding Line authority and protected-main integration remain separate, pending gates.
