@@ -1,9 +1,9 @@
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useEffect, useMemo } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { AnimationAuthorityContext } from "@/animation/hosts/SceneHostContext";
 import { SceneHostRegistry } from "@/animation/hosts/scene-host-registry";
-import { InvitationCeremony } from "./InvitationCeremony";
+import { invitationResolveTimeoutMs, InvitationCeremony } from "./InvitationCeremony";
 
 const navigation = vi.hoisted(() => ({ push: vi.fn(), refresh: vi.fn() }));
 const director = vi.hoisted(() => ({ play: vi.fn(), cancel: vi.fn(), skip: vi.fn() }));
@@ -89,6 +89,7 @@ describe("InvitationCeremony", () => {
   afterEach(() => {
     cleanup();
     window.history.replaceState({}, "", "/");
+    vi.useRealTimers();
     vi.unstubAllGlobals();
     vi.clearAllMocks();
   });
@@ -105,6 +106,33 @@ describe("InvitationCeremony", () => {
     expect(document.querySelector('[data-scene-host-boundary="access"]')).toBeInTheDocument();
     expect(document.querySelectorAll('[data-runtime-boundary="gsap"]')).toHaveLength(5);
     expect(document.querySelector('[data-animation-owner="rive"]')).toHaveAttribute("data-rive-runtime", "ready");
+  });
+
+  it("retries one stalled invitation lookup instead of remaining in the resolving state", async () => {
+    vi.useFakeTimers();
+    const fetch = vi
+      .fn()
+      .mockImplementationOnce(
+        (_url: string, options: RequestInit) =>
+          new Promise<Response>((_resolve, reject) => {
+            options.signal?.addEventListener(
+              "abort",
+              () => reject(new DOMException("Invitation lookup timed out", "AbortError")),
+              { once: true },
+            );
+          }),
+      )
+      .mockResolvedValueOnce(response(200, { invitation, csrfToken: "csrf" }));
+    vi.stubGlobal("fetch", fetch);
+
+    renderInvitation();
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(invitationResolveTimeoutMs);
+    });
+
+    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(screen.getByRole("main")).toHaveAttribute("data-invitation-state", "pin-required");
+    expect(screen.getByLabelText("Invitation PIN")).toBeInTheDocument();
   });
 
   it("renders a distinct terminal state from an authoritative revoked result", async () => {
