@@ -1,15 +1,15 @@
 ---
 title: Project Tideglass Phase 3 Integration Manifest
 audience: product-engineering
-status: owner-accepted-mainline-pending
+status: product-mainline-accepted-record-closure-pending
 canonical_for: project-tideglass-phase-3-integration
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 integration manifest
 
-Status: `OWNER_ACCEPTED_MAINLINE_PENDING`. This is a source integration
-inventory, not an accepted-mainline or protected-mainline receipt.
+Status: `PRODUCT_MAINLINE_ACCEPTED_RECORD_CLOSURE_PENDING`. This is the source
+integration inventory for the protected-main product receipt.
 
 ## Canonical consumer path
 
@@ -30,32 +30,36 @@ inventory, not an accepted-mainline or protected-mainline receipt.
 - Tideglass semantic comparison, projection, summary, annotation, publishing `isCurrent`, and Wayfarer history remain their existing accepted authorities.
 - Phase 3 does not write editions, Voyage history, annotations, release state, publishing state, or schema migrations.
 - Phase 4 integrations, background processing, and any broader historical corpus remain deferred.
-- The Deepwater legacy-comparator finding is not closed by this branch until the governed qualification, owner acceptance, mainline decision, merge, and closure record all exist.
+- The Deepwater legacy-comparator finding is a Deepwater-owned historical audit
+  record. This manifest supplies the exact consumer and mainline evidence to
+  its active Phase 4 owner; Tideglass does not rewrite that audit or declare
+  its finding state closed.
 
-## Required closeout evidence
+## Accepted closeout evidence
 
 The candidate was reconciled to fetched `origin/main`, and the static consumer
 audit and browser journey were rerun against the reviewed product source.
 Canonical owner acceptance is recorded in
-`Project_Tideglass_Phase_3_Owner_Decision_Record.md`. Before the manifest can
-become a completion receipt, its post-repair exact documentation-qualified SHA
-must receive the single replacement authoritative decision and protected
-integration. The recorded preflight `ENOENT` produced no finalizer or suite
-receipt. Hosted run `31634707413` then failed in environment-free registry
-discovery before any worker receipt or finalizer. The Validation Record records
-the exact failure, the deferred-runtime repair, fresh source-bound browser
-proof, and the one permitted replacement authority attempt.
+`Project_Tideglass_Phase_3_Owner_Decision_Record.md`. The replacement candidate
+`6bbb25690f73265ea0f702c2abe112d759c2aedf` received the one hosted
+authoritative decision in run `31647929505`, `RELEASE_GO` with 38 clean
+receipts, then merged through PR #59. Exact integrated main
+`bb7676a75581d8d415c3ff7712cc38bc8decb031` also received local `RELEASE_GO`
+with 38 clean receipts and runtime-conformance records. The earlier preflight
+and registry-discovery attempts remain historical failures before a finalizer,
+as recorded in the Validation Record.
 
 ## Reconciled-main result
 
-The branch now contains accepted `origin/main`
-`fb0f13e35fcdd98434d22c357aee02f24d6d9036`. The prior
+The accepted product now exists on `origin/main`
+`bb7676a75581d8d415c3ff7712cc38bc8decb031`. The prior
 reconciled accepted Shipwright/Drydock Studio surface was retained while the Tideglass
 semantic component stayed the only edition-comparison consumer. Wakebook remains
 unmerged and is not consumed. The accepted Helm surface has no edition-comparison
 consumer, so `CAPTAIN_UI_DEFERRED_NO_ACCEPTED_CONSUMER` is retained. The Deepwater
-finding remains open until this owner-accepted candidate receives the required
-mainline decision and protected integration; it is not closed by local evidence.
+finding remains owned by its immutable Phase 3 audit; this accepted product
+evidence is ready for the active Deepwater Phase 4 governed disposition rather
+than a Tideglass-side state rewrite.
 
 The post-owner base advances consist of Admiralty's accepted closeout records,
 Helm's accepted Phase 2 product/record changes, and the Sounding Line

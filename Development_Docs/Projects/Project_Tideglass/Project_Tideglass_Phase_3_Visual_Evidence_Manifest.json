@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "project": "Project Tideglass",
   "phase": "3",
-  "status": "AUTOMATED_BROWSER_PROOF_COMPLETE_OWNER_ACCEPTED_MAINLINE_PENDING",
+  "status": "AUTOMATED_BROWSER_PROOF_COMPLETE_OWNER_ACCEPTED_PRODUCT_MAINLINE",
   "sourceSha": "dbbe2c49aa884f6a5e078cfa3c5df580344ca221",
   "fixtureVersion": "tideglass-phase3-v2",
   "fixtureChecksum": "7798f816bedd71867d096d0543ee2135a7722388f262d089b4b078d9a50b2002",

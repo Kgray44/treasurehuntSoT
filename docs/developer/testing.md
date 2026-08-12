@@ -17,7 +17,7 @@ migration declarations. `npm run tideglass:migrations:sqlite` uses a disposable
 database and is diagnostic evidence; final authority remains the exact-source
 Sounding Line decision.
 
-## Tideglass Phase 3 worktree qualification
+## Tideglass Phase 3 reproducible qualification
 
 Use `npm run tideglass:phase3:validate` for the non-authoritative Phase 3
 source contract, `npm run tideglass:phase3:fixture` for the task-owned
@@ -26,7 +26,9 @@ visible-entry production-build browser journey. The fixture, credentials,
 database, reports, screenshots, and visual manifest stay under
 `%LOCALAPPDATA%\\ProjectTideglass\\phase3-qualification`; never point these
 commands at canonical `prisma/dev.db`. These checks are development and local
-qualification evidence only. Do not invoke Sounding Line to discover defects;
+qualification evidence only. The accepted Phase 3 product has separate
+source-bound candidate and integrated-main Sounding Line receipts. Do not invoke
+Sounding Line to discover defects;
 the single Mainline Decision is reserved for the reconciled, frozen,
 owner-accepted candidate.
 

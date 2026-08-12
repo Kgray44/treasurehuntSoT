@@ -1,7 +1,7 @@
 ---
 title: Project Tideglass Phase 3 Test Plan
 audience: product-engineering
-status: implementation-active
+status: current
 canonical_for: project-tideglass-phase-3-test-plan
 last_reviewed: 2026-08-12
 ---
@@ -10,7 +10,7 @@ last_reviewed: 2026-08-12
 
 ## Testing lifecycle
 
-Development verification runs the smallest relevant Tideglass, Wayfarer, Studio, route, or component test immediately after every coherent behavior change. A red focused test is repaired before unrelated work continues. Candidate qualification is deferred until the complete user journey is present. `Sounding Line / Mainline Decision` is not a debugging tool and is dispatched exactly once only for the owner-accepted, reconciled, frozen candidate.
+Development verification runs the smallest relevant Tideglass, Wayfarer, Studio, route, or component test immediately after every coherent behavior change. A red focused test is repaired before unrelated work continues. Candidate qualification is deferred until the complete user journey is present. `Sounding Line / Mainline Decision` is not a debugging tool and was dispatched once for the owner-accepted, reconciled, frozen candidate.
 
 ## Required qualification matrix
 
@@ -38,4 +38,4 @@ Development verification runs the smallest relevant Tideglass, Wayfarer, Studio,
 
 ## Truth boundaries
 
-All fixtures are synthetic and task-owned. Browser, visual, and performance proof demonstrate the local governed runtime only; they do not claim staging, production, private Chronicle, physical-device, provider, protected-mainline, or owner-acceptance proof. Owner acceptance remains a separate mandatory gate for this human-facing phase.
+All fixtures are synthetic and task-owned. Browser, visual, and performance proof demonstrate the local governed runtime only; they do not claim staging, production, private Chronicle, physical-device, or provider proof. Owner acceptance, hosted candidate authority, protected integration, and exact-integrated-main authority are recorded separately; they do not establish deployment.

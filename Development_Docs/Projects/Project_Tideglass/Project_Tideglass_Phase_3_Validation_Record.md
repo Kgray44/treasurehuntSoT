@@ -1,18 +1,18 @@
 ---
 title: Project Tideglass Phase 3 Validation Record
 audience: product-engineering
-status: owner-accepted-mainline-pending
+status: product-mainline-accepted-record-closure-pending
 canonical_for: project-tideglass-phase-3-validation
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 validation record
 
-Status: `OWNER_ACCEPTED_MAINLINE_PENDING`.
+Status: `PRODUCT_MAINLINE_ACCEPTED_RECORD_CLOSURE_PENDING`.
 
-The reconciled product source is
-`c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`, subsequently reconciled to accepted main
-`541e914f481883200569f8cc7ec5ec9428d7cbb7`. Phase 2's accepted merge
+The owner-reviewed product source is `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`.
+Its frozen candidate `6bbb25690f73265ea0f702c2abe112d759c2aedf` was integrated
+as `bb7676a75581d8d415c3ff7712cc38bc8decb031`. Phase 2's accepted merge
 `3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3` is an ancestor of that mainline.
 
 | Evidence                                                  | Result                                                      | Boundary                                                                                                                                         |
@@ -26,9 +26,12 @@ The fixture uses only reserved synthetic accounts and Chronicle content. Compari
 
 The owner accepted this reconciled product on `2026-08-12`; the accepted reviewed
 source is recorded in `Project_Tideglass_Phase_3_Owner_Decision_Record.md`.
-This is still local qualification evidence until the next authority, one frozen
-exact-SHA Sounding Line Mainline Decision, is `RELEASE_GO`. No protected merge,
-Deepwater finding closure, deployment, or Phase 4 work has been started.
+Hosted run `31647929505` issued `RELEASE_GO` for frozen candidate
+`6bbb25690f73265ea0f702c2abe112d759c2aedf` with 38 clean receipts. PR #59 then
+merged it as `bb7676a75581d8d415c3ff7712cc38bc8decb031`; that exact integrated
+source also received local `RELEASE_GO` with 38 clean receipts and 38
+runtime-conformance records. Deployment, provider proof, and Phase 4 work have
+not started.
 
 ## Authority preflight and focused repair
 

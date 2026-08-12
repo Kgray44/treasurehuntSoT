@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "project": "Project Tideglass",
   "phase": "PHASE_3_CHOOSE_THE_PASSAGE",
-  "status": "CANDIDATE_FROZEN_PENDING_OWNER_WALKTHROUGH",
+  "status": "PRODUCT_MAINLINE_ACCEPTED_RECORD_CLOSURE_PENDING",
   "originalBaseSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
   "baseSha": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
   "truthBoundary": "Source registration only. Browser, owner, protected-mainline, deployment, and provider proof are separate gates.",

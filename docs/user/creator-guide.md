@@ -8,7 +8,7 @@ last_reviewed: 2026-08-12
 
 # Creator guide
 
-Creator Studio is the authoring workspace. Create or select a Chronicle, then use its settings, story blocks, locations, assets, artifacts, and version views to assemble the experience. Publish only after reviewing the intended version: published versions are immutable so a Voyage can depend on stable material.
+Creator Studio is the authoring workspace. Create or select a Chronicle, then use its settings, story blocks, locations, assets, artifacts, and version views to assemble the experience. Publish only after reviewing the intended version: published versions are immutable so a Voyage can depend on stable material. From Published versions, use **Compare to current** to review Tideglass’s semantic change summary, compatibility effects, annotations, and optional technical evidence. It compares exact published editions and does not publish or modify a draft.
 
 Expected result: your owned Chronicle appears in Studio and its editing surfaces retain the changes you are authorized to make. If a save fails, preserve the error details without copying story content and retry after checking your session. Use synthetic content for demonstrations.
 

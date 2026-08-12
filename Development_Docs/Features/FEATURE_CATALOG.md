@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `fb0f13e35fcdd98434d22c357aee02f24d6d9036`
+Audited source commit: `bb7676a75581d8d415c3ff7712cc38bc8decb031`
 
 ## Status vocabulary
 
@@ -1352,9 +1352,9 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 ## FT-B009 - Tideglass Chronicle Edition Intelligence
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Tideglass Phases 1-2
+**Program or subsystem:** Project Tideglass Phases 1-3
 
-The accepted server-side foundation compares exact immutable Chronicle editions, classifies and summarizes evidence deterministically, projects spoiler-safe audience views, and preserves append-only Creator context without changing published or live Voyage truth.
+Tideglass compares exact immutable Chronicle editions with deterministic semantic intelligence and explains those changes through ordinary Chronicle, Passport-history, and Creator Studio journeys without changing published or live Voyage truth.
 
 ### Important subfeatures
 
@@ -1370,16 +1370,20 @@ The accepted server-side foundation compares exact immutable Chronicle editions,
 - Digest-validated rebuildable comparison cache
 - Authorized bounded comparison and annotation APIs
 - Read-only cross-domain invariance
+- Discoverable What Changed comparison journey
+- Exact played-history anchors and multiple playthrough selection
+- Server-projected spoiler disclosure and compatibility presentation
+- Creator Studio semantic published-version comparison
 
 ### Primary surfaces
 
-`npm run tideglass:compare`, `src/tideglass`, `/api/chronicles/:chronicleId/comparison`
+`npm run tideglass:compare`, `src/tideglass`, `/api/chronicles/:chronicleId/comparison`, `/chronicles/[taleSlug]/compare`, `/passport/history/[recordId]/compare`, `/api/studio/tales/[taleId]/versions/compare`
 
 ### Meaningful limitations
 
-- The accepted Phase 2 extension remains server-side and does not create a polished comparison experience.
-- Ordinary user comparison routes, played-history qualification, and polished What Changed interaction remain outside Phase 2.
 - Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.
+- Captain visual comparison remains deferred until Helm supplies an accepted preflight consumer.
+- Deployment and production-MySQL execution are separate from protected-main source integration.
 
 ### Evidence
 
@@ -1389,6 +1393,7 @@ The accepted server-side foundation compares exact immutable Chronicle editions,
 - test: `tests/tideglass`
 - completion-record: `Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md`
 - completion-record: `Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Completion_Receipt.md`
+- completion-record: `Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_3_Completion_Receipt.md`
 
 ---
 
@@ -1499,4 +1504,4 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `fb0f13e35fcdd98434d22c357aee02f24d6d9036`
+Generation source commit: `bb7676a75581d8d415c3ff7712cc38bc8decb031`
