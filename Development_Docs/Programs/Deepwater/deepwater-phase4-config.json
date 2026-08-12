@@ -1,0 +1,274 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "Project Deepwater",
+  "phase": "Phase 4 - Break the Surface",
+  "authorization": "EXPLICITLY_AUTHORIZED",
+  "auditDate": "2026-08-12",
+  "baseOriginMainSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+  "phase3AcceptedMainSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
+  "productEvidenceSourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+  "branch": "codex/project-deepwater-phase4-break-the-surface",
+  "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase4",
+  "schemaImpact": "DEEPWATER_PHASE4_PROOF_CONTROL_PLANE_ONLY",
+  "productSourceImpact": "NONE_ON_COORDINATION_BRANCH",
+  "featureCatalogImpact": "NO_CHANGE_REQUIRED",
+  "expectedPhase3CapabilityCount": 55,
+  "expectedCurrentCapabilityCount": 56,
+  "currentMainAdditions": [
+    {
+      "capabilityId": "DW-CAP-BRIDGEWATCH-DEVELOPMENT-MISSION-CONTROL",
+      "featureCatalogId": "FT-034",
+      "canonicalOwner": "Project Bridgewatch",
+      "disposition": "SECURITY_RESTRICTED",
+      "terminalRung": "UI",
+      "classification": "INTERNAL_BY_DESIGN",
+      "rationale": "Bridgewatch Phase 1 is a private, loopback-first, read-only operator dashboard. It has a human dashboard but is explicitly not an ordinary Voyagewright product route, public endpoint, release authority, or a completion source.",
+      "sourceReferences": [
+        "Development_Docs/Project_Bridgewatch_Phase_1_Design_Record.md",
+        "Development_Docs/Features/catalog/bridgewatch.json",
+        "bridgewatch/lib/server.ts"
+      ]
+    }
+  ],
+  "runtimeEvidencePath": "Development_Docs/Programs/Deepwater/evidence/phase4/Project_Deepwater_Phase_4_Runtime_Evidence.json",
+  "lifecycle": {
+    "state": "LOCAL_PROVEN",
+    "mainlineState": "NOT_CANDIDATE",
+    "qualification": "FOCUSED_QUALIFICATION_PASSED",
+    "ownerWalkthrough": "PACKET_READY",
+    "ownerDecision": "NOT_REQUESTED"
+  },
+  "journeyFamilies": [
+    {
+      "journeyId": "DW-P4-JRN-ACCOUNT",
+      "title": "Account and identity lifecycle",
+      "naturalStart": "/",
+      "visibleEntry": "Gateway account controls and role workspace cards",
+      "routeReferences": ["/", "/account", "/passport", "/profile"],
+      "screenReferences": ["screen-page-root", "screen-page-account", "screen-page-passport"],
+      "states": ["READY", "LOADING", "ERROR", "UNAUTHORIZED", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "REDUCED_MOTION", "MOBILE", "ZOOM_200"],
+      "capabilityIds": [
+        "DW-CAP-ACCOUNT-DATA-EXPORT",
+        "DW-CAP-ACCOUNT-EMAIL-CHANGE",
+        "DW-CAP-ACCOUNT-LIFECYCLE-DEACTIVATION",
+        "DW-CAP-ACCOUNT-SESSION-ROLE-SYSTEM",
+        "DW-CAP-GOOGLE-GITHUB-AUTHENTICATION",
+        "DW-CAP-ROLE-AWARE-NAVIGATION-SHELL",
+        "DW-CAP-ROLE-GATEWAY-WORKSPACE-ROUTING",
+        "DW-CAP-UNIFIED-IDENTITY-SESSION-AUTHORITY"
+      ]
+    },
+    {
+      "journeyId": "DW-P4-JRN-PERSONAL-HARBOR",
+      "title": "Personal Harbor and public-profile continuity",
+      "naturalStart": "/",
+      "visibleEntry": "Account menu to Personal Harbor",
+      "routeReferences": ["/", "/profile", "/passport"],
+      "screenReferences": ["screen-page-account-profile", "screen-page-account-profile-view", "screen-page-passport"],
+      "states": ["READY", "EMPTY", "ERROR", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "TOUCH", "MOBILE", "ZOOM_200", "REDUCED_MOTION"],
+      "capabilityIds": [
+        "DW-CAP-CHRONICLE-PASSPORT-PUBLIC-PROFILE",
+        "DW-CAP-PERSONAL-CHRONICLE-HISTORY",
+        "DW-CAP-PERSONAL-HARBOR",
+        "DW-CAP-PRIVATE-CHRONICLE-PROTECTION"
+      ]
+    },
+    {
+      "journeyId": "DW-P4-JRN-PLAYER",
+      "title": "Player voyage and progression continuity",
+      "naturalStart": "/",
+      "visibleEntry": "Gateway Player workspace and visible voyage controls",
+      "routeReferences": ["/", "/player", "/player/library", "/player/playthroughs/[playthroughId]/journal"],
+      "screenReferences": [
+        "screen-page-player",
+        "screen-page-player-library",
+        "screen-page-player-playthroughs-playthroughid-journal"
+      ],
+      "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+      "capabilityIds": [
+        "DW-CAP-ARTIFACT-CABINET-ACHIEVEMENTS",
+        "DW-CAP-ARTIFACT-REVEAL",
+        "DW-CAP-AUTHORITATIVE-PROGRESSION",
+        "DW-CAP-CINEMATIC-RUNTIME",
+        "DW-CAP-FINALE-CHAMBER",
+        "DW-CAP-PLAYER-JOURNAL",
+        "DW-CAP-PLAYER-LIBRARY-VOYAGE-LIFECYCLE",
+        "DW-CAP-REALTIME-PRESENCE-REPLAY",
+        "DW-CAP-SHIPS-LOG",
+        "DW-CAP-SIDE-QUEST-LEDGER",
+        "DW-CAP-VOYAGE-CHART"
+      ]
+    },
+    {
+      "journeyId": "DW-P4-JRN-CAPTAIN",
+      "title": "Captain operations and invitation continuity",
+      "naturalStart": "/",
+      "visibleEntry": "Gateway Captain workspace",
+      "routeReferences": ["/", "/captain", "/captain/library", "/join/[token]"],
+      "screenReferences": ["screen-page-captain", "screen-page-captain-library", "screen-page-captain-invitations"],
+      "states": ["READY", "EMPTY", "UNAUTHORIZED", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE"],
+      "capabilityIds": ["DW-CAP-CAPTAIN-VOYAGE-OPERATIONS", "DW-CAP-INVITATION-CREW-LIFECYCLE"]
+    },
+    {
+      "journeyId": "DW-P4-JRN-CREATOR",
+      "title": "Creator Studio authoring and edition continuity",
+      "naturalStart": "/",
+      "visibleEntry": "Gateway Creator workspace",
+      "routeReferences": ["/", "/studio", "/studio/exchange"],
+      "screenReferences": ["screen-page-studio", "screen-page-studio-tales-taleid", "screen-page-studio-exchange"],
+      "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"],
+      "capabilityIds": [
+        "DW-CAP-ASSET-LIBRARY-MEDIA-PIPELINE",
+        "DW-CAP-CHRONICLE-ARTIFACT-DEFINITIONS",
+        "DW-CAP-CREATOR-STUDIO",
+        "DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS",
+        "DW-CAP-STORY-BLOCK-SYSTEM",
+        "DW-CAP-WAYPOINT-REFERENCE-LIBRARY"
+      ]
+    },
+    {
+      "journeyId": "DW-P4-JRN-COMMUNITY",
+      "title": "Community discovery and exchange",
+      "naturalStart": "/",
+      "visibleEntry": "Gateway Community navigation",
+      "routeReferences": ["/", "/community", "/studio/exchange"],
+      "screenReferences": ["screen-page-community", "screen-page-studio-exchange"],
+      "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "TEXT_CONTRAST"],
+      "capabilityIds": ["DW-CAP-COMMUNITY-EXCHANGE", "DW-CAP-COMMUNITY-HARBOR-DISCOVERY"]
+    },
+    {
+      "journeyId": "DW-P4-JRN-WHOLE-PRODUCT",
+      "title": "Whole-product shell, route, and language coherence",
+      "naturalStart": "/",
+      "visibleEntry": "Gateway controls and ordinary shell navigation",
+      "routeReferences": ["/", "/player", "/captain", "/studio", "/community", "/profile"],
+      "screenReferences": [
+        "screen-page-root",
+        "screen-page-player",
+        "screen-page-captain",
+        "screen-page-studio",
+        "screen-page-community"
+      ],
+      "states": ["READY", "LOADING", "ERROR", "UNAUTHORIZED", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "ZOOM_200", "REDUCED_MOTION", "TEXT_CONTRAST"],
+      "capabilityIds": [
+        "DW-CAP-COMPLETE-PRODUCT-SURFACES-STATES",
+        "DW-CAP-GLOBAL-SHELL-WAYFINDING",
+        "DW-CAP-INTEGRATED-WHOLE-PRODUCT-VOYAGE",
+        "DW-CAP-ROUTE-REACHABILITY-GRAPH",
+        "DW-CAP-UNIFIED-CHRONICLE-PLATFORM",
+        "DW-CAP-UNIVERSAL-LANGUAGE-DESIGN-SYSTEM"
+      ]
+    },
+    {
+      "journeyId": "DW-P4-JRN-VERIFICATION",
+      "title": "Verification framework and bounded recovery",
+      "naturalStart": "/",
+      "visibleEntry": "Visible registration and verification controls",
+      "routeReferences": ["/", "/account/register", "/account/verify"],
+      "screenReferences": ["screen-page-register", "screen-page-account"],
+      "states": ["READY", "LOADING", "ERROR", "UNAUTHORIZED", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "ZOOM_200"],
+      "capabilityIds": ["DW-CAP-VERIFICATION-PROVIDER-FRAMEWORK"]
+    },
+    {
+      "journeyId": "DW-P4-JRN-RESTRICTED-OPERATIONS",
+      "title": "Restricted operator and service-boundary proof",
+      "naturalStart": "/",
+      "visibleEntry": "Authenticated, approved operator controls only",
+      "routeReferences": ["/admin", "/admin/support", "/api/helper/verification"],
+      "screenReferences": ["screen-page-admin", "screen-page-account-support-access"],
+      "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "TEXT_CONTRAST"],
+      "capabilityIds": [
+        "DW-CAP-COMMUNITY-OPERATIONS-HEALTH",
+        "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+        "DW-CAP-PRIVATE-PROVIDER-HEALTH",
+        "DW-CAP-PRIVATE-REPAIR-OPERATIONS",
+        "DW-CAP-SECURITY-PRIVACY-PLATFORM",
+        "DW-CAP-TRANSACTIONAL-EMAIL-DELIVERY"
+      ]
+    },
+    {
+      "journeyId": "DW-P4-JRN-BRIDGEWATCH",
+      "title": "Private Bridgewatch observation dashboard",
+      "naturalStart": "LOOPBACK_OPERATOR_START",
+      "visibleEntry": "Authenticated private-network or loopback operator URL",
+      "routeReferences": ["bridgewatch", "GET /api/summary", "GET /api/projects", "GET /api/attention"],
+      "screenReferences": ["BW-SCR-MISSION-CONTROL"],
+      "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "REDUCED_MOTION", "RESPONSIVE"],
+      "capabilityIds": ["DW-CAP-BRIDGEWATCH-DEVELOPMENT-MISSION-CONTROL"]
+    }
+  ],
+  "boundedCapabilityIds": [
+    "DW-CAP-COMMUNITY-BACKUP-RESTORE",
+    "DW-CAP-COMMUNITY-WORKER-SCHEDULER",
+    "DW-CAP-COMPATIBILITY-OBSERVATION",
+    "DW-CAP-DEVELOPMENT-OPERATIONAL-TOOLING",
+    "DW-CAP-DOCUMENTATION-GOVERNANCE-CATALOG",
+    "DW-CAP-GOVERNED-VERIFICATION-CONTROL-PLANE",
+    "DW-CAP-PRIVATE-BACKUP-RESTORE",
+    "DW-CAP-PUBLIC-ORIGIN-TRUST-BOUNDARY",
+    "DW-CAP-TIDEGLASS-SEMANTIC-EDITION-COMPARISON"
+  ],
+  "stateRecoveryFamilies": [
+    {
+      "familyId": "ACCOUNT",
+      "proofFamilyId": "DW-P4-JRN-ACCOUNT",
+      "states": ["READY", "LOADING", "ERROR", "UNAUTHORIZED", "RECOVERY"]
+    },
+    {
+      "familyId": "PERSONAL_HARBOR",
+      "proofFamilyId": "DW-P4-JRN-PERSONAL-HARBOR",
+      "states": ["READY", "EMPTY", "ERROR", "RECOVERY"]
+    },
+    {
+      "familyId": "PLAYER",
+      "proofFamilyId": "DW-P4-JRN-PLAYER",
+      "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"]
+    },
+    {
+      "familyId": "CREATOR",
+      "proofFamilyId": "DW-P4-JRN-CREATOR",
+      "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"]
+    },
+    {
+      "familyId": "COMMUNITY",
+      "proofFamilyId": "DW-P4-JRN-COMMUNITY",
+      "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"]
+    },
+    {
+      "familyId": "RESTRICTED",
+      "proofFamilyId": "DW-P4-JRN-RESTRICTED-OPERATIONS",
+      "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"]
+    }
+  ],
+  "delta": {
+    "phase3ToCurrentMain": [
+      "Accepted Phase 3 Deepwater closure is preserved as historical evidence; its ledger is not rewritten.",
+      "Bridgewatch Phase 1 adds FT-034 as a private, read-only, human-operated observation dashboard with no ordinary product-route or release authority.",
+      "Drydock and Shipwright accepted-main changes are owner-domain changes; Phase 4 consumes only source-current proof and does not reopen their implementation scope.",
+      "Sounding Line Part III v1.3 governs the final frozen-candidate Mainline Decision; it is not used as a development debugger."
+    ]
+  },
+  "ownerBoundary": {
+    "homeport": "PENDING_OWNER_DECISION",
+    "bridgewatch": "PRIVATE_OPERATOR_ACCEPTANCE_SEPARATE_FROM_MAINLINE",
+    "prohibitedClaims": ["OWNER_ACCEPTED", "PRODUCT_ACCEPTED", "LIVE_PROVIDER_PROVEN", "DEPLOYED"]
+  },
+  "privacy": {
+    "forbiddenPatterns": [
+      "(?i)password\\s*[=:]\\s*[^<\\s]",
+      "(?i)api[_-]?key\\s*[=:]\\s*[^<\\s]",
+      "(?i)cookie\\s*[=:]\\s*[^<\\s]",
+      "(?i)bearer\\s+[a-z0-9._-]+"
+    ]
+  }
+}
