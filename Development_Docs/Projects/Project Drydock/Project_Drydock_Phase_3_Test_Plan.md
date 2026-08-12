@@ -31,6 +31,8 @@ The focused task-owned browser qualification is recorded in [the browser qualifi
 
 This is local, synthetic, task-owned evidence only. It is not a staging, deployment, live-provider, physical-device, owner-acceptance, or protected-mainline claim.
 
-## Candidate qualification pending
+## Candidate freeze and acceptance boundary
 
-Before a candidate can request the serialized Mainline Decision, run the complete affected Drydock/Chronicle/Studio suite, lint, build, docs and feature catalog validation, performance measurements, migration proof, current-main reconciliation, and the Phase 3 requirement ledger. Sounding Line remains prohibited until those qualification records are complete and a frozen candidate owns canonical acceptance.
+Focused Drydock/Studio/API qualification, static checks, build, documentation, catalog, migration rehearsal, and the local browser record completed before the one current-main reconciliation. The reconciled candidate's schema/client, deterministic suite, policy registry, and migration proof were rerun; the [reconciliation record](Project_Drydock_Phase_3_Reconciliation_Record.md) captures that exact mainline input and conflict resolution.
+
+The candidate is frozen pending canonical acceptance. Sounding Line remains prohibited for any new commit. Only the one serialized Mainline Decision against the frozen branch head may determine `RELEASE_GO`; protected integration and exact-main proof remain required after that decision.
