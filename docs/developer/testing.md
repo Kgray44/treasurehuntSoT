@@ -3,7 +3,7 @@ title: Testing
 audience: developer
 status: current
 canonical_for: testing-guide
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-12
 ---
 
 # Testing
@@ -16,6 +16,19 @@ identity/corruption rebuild, API auth/CSRF/rate limits, and dual-provider
 migration declarations. `npm run tideglass:migrations:sqlite` uses a disposable
 database and is diagnostic evidence; final authority remains the exact-source
 Sounding Line decision.
+
+## Tideglass Phase 3 worktree qualification
+
+Use `npm run tideglass:phase3:validate` for the non-authoritative Phase 3
+source contract, `npm run tideglass:phase3:fixture` for the task-owned
+synthetic SQLite fixture, and `npm run tideglass:phase3:journeys` for the
+visible-entry production-build browser journey. The fixture, credentials,
+database, reports, screenshots, and visual manifest stay under
+`%LOCALAPPDATA%\\ProjectTideglass\\phase3-qualification`; never point these
+commands at canonical `prisma/dev.db`. These checks are development and local
+qualification evidence only. Do not invoke Sounding Line to discover defects;
+the single Mainline Decision is reserved for the reconciled, frozen,
+owner-accepted candidate.
 
 Run focused unit or route tests while changing a domain. Before review, run
 formatting, lint, type checking, unit tests, private-content scanning,

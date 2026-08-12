@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "Project Tideglass",
+  "phase": "PHASE_3_CHOOSE_THE_PASSAGE",
+  "status": "CANDIDATE_FROZEN_PENDING_OWNER_WALKTHROUGH",
+  "originalBaseSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
+  "baseSha": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
+  "truthBoundary": "Source registration only. Browser, owner, protected-mainline, deployment, and provider proof are separate gates.",
+  "routes": [
+    {
+      "routeId": "tideglass-chronicle-compare",
+      "pattern": "/chronicles/[taleSlug]/compare",
+      "source": "src/app/chronicles/[taleSlug]/compare/page.tsx",
+      "screen": "Tideglass What Changed",
+      "owner": "tideglass",
+      "shellMode": "PUBLIC_STANDARD",
+      "logicalParent": "/chronicles/[taleSlug]",
+      "desktopEntry": "Gateway -> Explore Chronicles -> Chronicle detail -> See what changed",
+      "mobileEntry": "The same visible Chronicle-detail action remains available in the stacked mobile layout.",
+      "capabilities": ["exact-edition-selection", "semantic-projection-read", "safe-return-navigation"],
+      "dynamicSource": [
+        "publishing isCurrent pointer",
+        "Tideglass projection",
+        "owner-bound Wayfarer history when signed in"
+      ],
+      "visibleEntries": [
+        {
+          "source": "src/app/chronicles/[taleSlug]/page.tsx",
+          "label": "See what changed"
+        },
+        {
+          "source": "src/components/homeport/PassportSurfaces.tsx",
+          "label": "See what changed",
+          "ownerBoundRedirect": "/passport/history/[recordId]/compare"
+        }
+      ],
+      "returnBehavior": "Allowlisted same-origin Chronicle, Passport, Tales, or Studio return path; invalid values fall back to the Chronicle detail.",
+      "failureOnwardAction": "Retry a transient request, choose another visible edition, or return to the Chronicle. Unauthorized/unavailable records expose no existence detail.",
+      "states": [
+        "LOADING",
+        "POPULATED",
+        "NO_CHANGE",
+        "PARTIAL",
+        "UP_TO_DATE",
+        "NO_HISTORY",
+        "MULTIPLE_HISTORY",
+        "SOURCE_UNAVAILABLE",
+        "TARGET_UNAVAILABLE",
+        "UNAUTHORIZED",
+        "REDACTED",
+        "INCOMPATIBLE",
+        "COMPARISON_FAILED",
+        "RETRYING",
+        "ANNOTATION_UNAVAILABLE",
+        "MEDIA_UNAVAILABLE",
+        "SELECTION_REQUIRED",
+        "CONCISE",
+        "DETAILED",
+        "DISCLOSURE_COLLAPSED",
+        "DISCLOSURE_REVEALED",
+        "CATEGORY_FILTERED"
+      ],
+      "accessContract": "GET and POST derive edition visibility, history ownership, exact pair authorization, and audience on the server. Query state cannot elevate an audience or authorize a foreign record."
+    },
+    {
+      "routeId": "tideglass-passport-history-compare-redirect",
+      "pattern": "/passport/history/[recordId]/compare",
+      "source": "src/app/passport/history/[recordId]/compare/page.tsx",
+      "screen": "Owner-bound compare handoff",
+      "owner": "wayfarer-with-tideglass-passage",
+      "shellMode": "WORKSPACE_STANDARD",
+      "logicalParent": "/passport/history/[recordId]",
+      "desktopEntry": "Passport -> Chronicle History -> past Voyage -> See what changed",
+      "mobileEntry": "The same history action is retained in the mobile Passport list.",
+      "capabilities": ["owned-history-handoff", "exact-played-edition-anchor"],
+      "dynamicSource": ["signed-in owner record", "trusted Chronicle slug resolved on the server"],
+      "visibleEntries": [
+        {
+          "source": "src/components/homeport/PassportSurfaces.tsx",
+          "label": "See what changed"
+        }
+      ],
+      "returnBehavior": "Redirects only after the signed-in owner record resolves its trusted Chronicle slug; non-owner or missing records return not-found.",
+      "failureOnwardAction": "Return to the history list; missing or foreign records remain not-found.",
+      "states": ["OWNER_REDIRECT", "NOT_FOUND"],
+      "accessContract": "The redirect does not add the edition or slug to the Passport API DTO and does not trust client-supplied tale identity."
+    },
+    {
+      "routeId": "tideglass-studio-semantic-comparison",
+      "pattern": "/api/studio/tales/[taleId]/versions/compare",
+      "source": "src/app/api/studio/tales/[taleId]/versions/compare/route.ts",
+      "screen": "Creator Studio version comparison panel",
+      "owner": "tideglass",
+      "shellMode": "WORKSPACE_STANDARD",
+      "logicalParent": "/studio/tales/[taleId]/versions",
+      "desktopEntry": "Studio -> Chronicle -> Published versions -> Compare to current",
+      "mobileEntry": "Studio's existing responsive Version history action remains the contextual entry.",
+      "capabilities": ["creator-semantic-projection", "exact-pair-authorization"],
+      "dynamicSource": ["Studio authorization", "Tideglass CREATOR_FULL projection"],
+      "visibleEntries": [
+        {
+          "source": "src/components/studio/TaleEditor.tsx",
+          "label": "Compare to current"
+        }
+      ],
+      "returnBehavior": "The panel closes locally without changing published edition, draft, session, or annotation truth.",
+      "failureOnwardAction": "Keep the version list available and show a bounded comparison error without raw snapshot data.",
+      "states": ["SEMANTIC_PROJECTION", "NO_MEANINGFUL_CHANGE", "PARTIAL", "COMPATIBILITY", "ANNOTATIONS", "ERROR"],
+      "accessContract": "Creator workspace and Chronicle ownership are rechecked before an exact Tideglass comparison and CREATOR_FULL projection. No legacy path/value diff is returned."
+    }
+  ],
+  "captainEdge": {
+    "applicable": false,
+    "reason": "No accepted Captain/Helm surface on the current mainline exposes this Phase 3 comparison seam; Phase 4 owns any broader visual integration."
+  }
+}

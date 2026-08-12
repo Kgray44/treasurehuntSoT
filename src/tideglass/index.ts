@@ -6,3 +6,5 @@ export * from "./cache";
 export * from "./intelligence";
 export * from "./annotations";
 export * from "./projection";
+export * from "./passage";
+export * from "./passage-service";

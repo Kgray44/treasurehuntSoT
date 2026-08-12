@@ -7,7 +7,8 @@ import { getPublicChroniclePreview } from "@/chronicle/public-preview";
 export const dynamic = "force-dynamic";
 
 export default async function ChroniclePreviewPage({ params }: { params: Promise<{ taleSlug: string }> }) {
-  const preview = await getPublicChroniclePreview((await params).taleSlug);
+  const { taleSlug } = await params;
+  const preview = await getPublicChroniclePreview(taleSlug);
   if (!preview) notFound();
   if (preview.communityHref) redirect(preview.communityHref);
   return (
@@ -85,6 +86,12 @@ export default async function ChroniclePreviewPage({ params }: { params: Promise
             </p>
             <Link className="community-button community-button--primary" href={preview.startHref}>
               Start Chronicle
+            </Link>
+            <Link
+              className="community-button community-button--quiet"
+              href={`/chronicles/${encodeURIComponent(taleSlug)}/compare?returnTo=${encodeURIComponent(`/chronicles/${taleSlug}`)}`}
+            >
+              See what changed
             </Link>
           </section>
         </div>

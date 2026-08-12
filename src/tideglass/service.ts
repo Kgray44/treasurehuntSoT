@@ -16,7 +16,7 @@ import { compareSemanticSnapshots, comparisonReceipt, type ExplicitReplacementMa
 import { canonicalizePublishedSnapshot, type TideglassHistoricalReader } from "./semantic";
 import { canonicalCacheKey, tideglassComparisonCache, type TideglassComparisonCache } from "./cache";
 
-export type TideglassPrincipal = { kind: "ACCOUNT"; accountId: string };
+export type TideglassPrincipal = { kind: "ACCOUNT"; accountId: string } | { kind: "PASSAGE"; subjectId: string };
 
 export type TideglassPublishedEdition = {
   id: string;

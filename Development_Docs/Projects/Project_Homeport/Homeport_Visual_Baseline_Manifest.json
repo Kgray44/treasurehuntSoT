@@ -9774,8 +9774,8 @@
     "implementationSourceSha": "IMPLEMENTATION_SOURCE_PENDING",
     "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
     "updatedAt": "2026-08-03T18:00:00.000Z",
-    "routeNodeCount": 92,
-    "routeEdgeCount": 172,
+    "routeNodeCount": 109,
+    "routeEdgeCount": 206,
     "unexplainedOrdinaryOrphans": 0,
     "noSchemaChange": true,
     "phase6NotStarted": true

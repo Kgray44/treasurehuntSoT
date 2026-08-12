@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "status": "phase-2-deepwater-control-plane",
+  "status": "phase-5-homeport-route-reachability-impact-map",
   "pathMappings": [
     {
       "path": "bridgewatch/**",
@@ -842,8 +842,50 @@
     },
     {
       "path": "src/navigation/**",
-      "suiteIds": ["unit.admiralty", "browser.admiralty"],
-      "contractIds": ["admiralty.phase2.authorization-partition"]
+      "suiteIds": ["unit.admiralty", "browser.admiralty", "unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "admiralty.phase2.authorization-partition",
+        "homeport.route.inventory-complete",
+        "homeport.route.source-parity",
+        "homeport.route.classification-exclusive",
+        "homeport.route.reachability-graph",
+        "homeport.route.user-navigable-entry",
+        "homeport.route.dynamic-source",
+        "homeport.route.dynamic-invalid-id",
+        "homeport.route.dynamic-private-denial",
+        "homeport.route.tokenized-safe",
+        "homeport.route.tokenized-not-navigation",
+        "homeport.route.compatibility-disposition",
+        "homeport.route.compatibility-no-competing-ui",
+        "homeport.route.redirect-no-loop",
+        "homeport.route.redirect-target-valid",
+        "homeport.route.redirect-query-safe",
+        "homeport.route.parent-complete",
+        "homeport.route.parent-cycle-free",
+        "homeport.route.no-dead-end",
+        "homeport.route.empty-onward",
+        "homeport.route.error-recovery",
+        "homeport.route.permission-recovery",
+        "homeport.route.desktop-mobile-parity",
+        "homeport.route.no-pointer-only-entry",
+        "homeport.route.keyboard-reachability",
+        "homeport.route.compact-exit",
+        "homeport.route.immersive-exit",
+        "homeport.route.deep-link-after-natural",
+        "homeport.route.no-direct-url-only",
+        "homeport.route.placeholder-target-rejected",
+        "homeport.route.deprecated-disposition",
+        "homeport.route.development-exclusion",
+        "homeport.route.active-label-consistency",
+        "homeport.route.graph-idempotency",
+        "homeport.route.inventory-drift",
+        "homeport.route.browser-receipt-complete",
+        "homeport.route.source-bound-evidence",
+        "homeport.route.phase1-regression",
+        "homeport.route.phase2-regression",
+        "homeport.route.phase3-regression",
+        "homeport.route.phase4-regression"
+      ]
     },
     {
       "path": "prisma/**",
@@ -6089,10 +6131,7 @@
       "contractId": "admiralty.phase1.responsive-consent",
       "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
     },
-    {
-      "contractId": "bridgewatch.mission-control",
-      "suiteIds": ["unit.bridgewatch", "unit.sounding-line"]
-    },
+    { "contractId": "bridgewatch.mission-control", "suiteIds": ["unit.bridgewatch", "unit.sounding-line"] },
     { "contractId": "tideglass-change-classification", "suiteIds": ["unit.tideglass"] },
     { "contractId": "tideglass-compatibility-deltas", "suiteIds": ["unit.tideglass"] },
     { "contractId": "tideglass-deterministic-summary", "suiteIds": ["unit.tideglass"] },
