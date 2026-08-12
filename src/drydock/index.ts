@@ -22,3 +22,8 @@ export * from "@/drydock/variables";
 export * from "@/drydock/variable-explorer";
 export * from "@/drydock/waivers";
 export * from "@/drydock/waiver-store";
+export * from "@/drydock/simulation/clock";
+export * from "@/drydock/simulation/engine";
+export * from "@/drydock/simulation/model";
+export * from "@/drydock/simulation/random";
+export * from "@/drydock/simulation/schema";
