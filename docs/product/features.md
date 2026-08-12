@@ -115,16 +115,17 @@ evidence, and an owned final walkthrough runtime. Owner Decision is
 
 ## Captain and Voyage operations
 
-**Audience:** Captains. **Availability:** current Captain foundations are
-available on main; Project Helm Phase 1 is branch-complete and not yet merged.
-Captain Library, Voyage creation, invitation management, session views, player
-preview, and live control foundations are available. The Helm candidate adds an
-explicit Captain-only or Captain + Player choice when a Voyage is created.
-Captain + Player uses the same account and one ordinary crew membership, keeps
-Captain authority separate, and opens the ordinary Player view without
-widening its story projection. Participation may be ended without removing
-Captain authority. Current acceptance is isolated and local; it is not mainline
-integration, deployment, or live-Voyage proof.
+**Audience:** Captains. **Availability:** available on main. Captain Library,
+Voyage creation, invitation management, session views, Player preview, and
+live-control foundations are available. Project Helm Phases 1 and 2 add an
+explicit Captain-only or Captain + Player choice, one ordinary same-account
+Player membership where chosen, independent Captain authority, and a
+privacy-safe read-only operations view. Captains can see prioritized Voyage
+status, safe crew presence and synchronization health, current warnings, safe
+event summaries, and read-only progress without gaining Player-private device,
+network, identity, draft, or progression-command data. Participation may end
+without removing Captain authority. Mainline source integration is not
+deployment, live-Voyage proof, or owner acceptance.
 [Guide](../user/captain-guide.md).
 
 ## Creator Studio and publishing
