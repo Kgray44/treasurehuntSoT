@@ -23,9 +23,9 @@ last_reviewed: 2026-08-12
 
 ## Candidate disposition
 
-All locally attainable Phase 2 qualification evidence is green. The task-owned owner walkthrough is prepared from the frozen branch source and records its exact SHA, production build ID, isolated SQLite database identity, credential-handoff location, and health state outside the repository. The next mandatory gate is the explicit owner product walkthrough.
+All locally attainable Phase 2 qualification evidence is green. The task-owned owner walkthrough is prepared from the frozen branch source and records its exact SHA, production build ID, isolated SQLite database identity, credential-handoff location, and health state outside the repository. The owner explicitly accepted Phase 2 in this task thread on 2026-08-12 with no correction or waiver. Current-main reconciliation and exact-candidate qualification are refreshed before Sounding Line authority.
 
-No Sounding Line Mainline Decision has been dispatched. This record is candidate qualification evidence only; it is not owner acceptance, Sounding Line authority, or protected-main acceptance.
+No Sounding Line Mainline Decision has been dispatched. This record is owner-accepted candidate evidence only; it is not Sounding Line authority or protected-main acceptance.
 
 ## Current-main reconciliation
 
@@ -35,4 +35,4 @@ After the implementation checkpoint, `git fetch origin --prune` advanced `origin
 - `UNRELATED`: Admiralty controls/styles, Helm sign-in tests, governance records, and Sounding Line serialization changes.
 - `NO_DIRECT_OVERLAP`: no intervening change touched `TaleEditor.tsx`, `src/components/studio/inspector`, `src/drydock`, `src/chronicle/studio-service.ts`, Prisma, or the Shipwright documentation records owned here.
 
-The Shipwright commits rebased cleanly onto current accepted main. The final fetch proved `08ab5cedbcd16bf421b03b638af5c3513fe02019` is an ancestor of the qualified branch. Focused Studio/Drydock evidence, the Chromium journey, production build, static checks, documentation, and Feature Catalog checks were rerun after that reconciliation. This is not authorization to dispatch Sounding Line; owner product review remains mandatory.
+The Shipwright commits rebased cleanly onto current accepted main. The first fetch proved `08ab5cedbcd16bf421b03b638af5c3513fe02019` was an ancestor of the qualified branch. Current protected main later advanced to `fb0f13e35fcdd98434d22c357aee02f24d6d9036`, adding the accepted Helm Phase 2 closure and Sounding Line record-only closure policy. The latter is governance-only, while Helm is an authority-relevant product/dependency change under the current Sounding Line classifier; this candidate is therefore rebased and requalified before any later authority action. No current record permits Shipwright to acquire authority until the serialized Helm corrective closure is terminal.
