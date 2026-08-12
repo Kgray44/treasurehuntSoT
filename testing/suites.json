@@ -2442,7 +2442,7 @@
       "expectedDurationMs": 60000,
       "hardBudgetMs": 180000,
       "parallelSafe": true,
-      "resources": ["node-slot", "vitest-worker-pool", "prisma-sqlite-client"],
+      "resources": ["node-slot", "vitest-worker-pool"],
       "dependencies": [],
       "contracts": [
         "admiralty.phase2.authorization-partition",
