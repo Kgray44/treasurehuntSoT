@@ -88,6 +88,19 @@ Bridgewatch migration or history implementation entered main. The new base is
 an ancestor of the candidate; all implementation and qualification evidence
 below applies to this post-Helm, post-Deepwater candidate path.
 
+### Latest pre-freeze reconciliation
+
+Before final qualification, Shipwright Phase 2 protected-merged at
+`25a5ecc3989d137a95291c340f07143860b821cc`. Its intervening changes add Studio
+authoring code, Shipwright records, and generated Feature Catalog provenance;
+they do not change `bridgewatch/`, its SQLite migrations, its project registry,
+or the Bridgewatch test definitions. This branch was rebased cleanly onto that
+main identity. The only conflict was generated Feature Catalog provenance, which
+was regenerated from the current machine-readable fragments. No historical
+Bridgewatch evidence was rewritten. The post-rebase focused suite now covers 15
+files / 41 tests, including the concise since-last-check selector regression;
+the branch remains unfrozen until a final fetch confirms the protected main.
+
 ### Concurrent-work snapshot
 
 Registered worktrees at preflight included the canonical checkout; the retained

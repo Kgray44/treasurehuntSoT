@@ -14,7 +14,7 @@ last_reviewed: 2026-08-12
 | ------------------------------ | ----------------------------------------------------- |
 | Starting protected main        | `191a964488d0df71f8dcb91c5b8372fc73b6b32e`            |
 | Current Phase branch           | `codex/project-bridgewatch-phase3-keep-the-watch-4`   |
-| Reconciled base                | `582f32a35d918ae892bd2feae766c00043038f39`            |
+| Reconciled base                | `25a5ecc3989d137a95291c340f07143860b821cc`            |
 | Frozen candidate               | pending                                               |
 | Pull request                   | pending                                               |
 | Authority gate                 | `mainline`                                            |
@@ -22,12 +22,14 @@ last_reviewed: 2026-08-12
 | Canonical decision and cleanup | pending; no authority run has been used for debugging |
 | Protected merge / final main   | pending                                               |
 
-The Phase 3 implementation was replayed onto the reconciled base after the
-historical external Helm browser failure was resolved by Helm's independently
-protected correction and after the ordered Deepwater record-only closure. It
-must not edit the remaining pending facts speculatively. This manifest is
-updated only after the frozen candidate is bound to the current protected-main
-process and after a fresh post-merge fetch proves the merged ancestry.
+The Phase 3 implementation was replayed after the historical external Helm
+browser failure was resolved by Helm's independently protected correction and
+after the ordered Deepwater record-only closure, then reconciled a second time
+after Shipwright Phase 2 protected-merged. Shipwright changed no Bridgewatch
+implementation or migration. This manifest must not edit the remaining pending
+facts speculatively. It is updated only after the frozen candidate is bound to
+the current protected-main process and after a fresh post-merge fetch proves
+the merged ancestry.
 
 Phase 3 materially extends the existing `FT-035` Bridgewatch signal-projection
 capability. The current fragment correctly records its accepted Phase 2
