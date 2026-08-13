@@ -8,45 +8,48 @@ last_reviewed: 2026-08-13
 
 # Project Bridgewatch Phase 3 Integration Manifest
 
-## Status: not yet accepted into main
+## Status: accepted into protected main
 
-| Field                          | Current value                                             |
-| ------------------------------ | --------------------------------------------------------- |
-| Starting protected main        | `191a964488d0df71f8dcb91c5b8372fc73b6b32e`                |
-| Current Phase branch           | `codex/project-bridgewatch-phase3-keep-the-watch-6`       |
-| Reconciled base                | `60b89841986e66fbc2c0828489d38002a1617506`                |
-| Frozen candidate               | `e960db8c...` was invalidated by authority failure        |
-| Pull request                   | [#83](https://github.com/Kgray44/treasurehuntSoT/pull/83) |
-| Authority gate                 | `mainline`                                                |
-| Required protected context     | `Sounding Line / Mainline Decision`                       |
-| Canonical decision and cleanup | `31714713467` `EVIDENCE_INVALID`; all cleanup `CLEAN`     |
-| Protected merge / final main   | pending                                                   |
+Phase 3, _Keep the Watch_, is the final governed implementation phase of
+Project Bridgewatch. It was integrated in two protected-main steps: the
+history/retention implementation, then the source-indexed Project Registry
+lifecycle record required for Bridgewatch to observe its own accepted closure.
+Neither step starts a Phase 4.
 
-The Phase 3 implementation was replayed after the historical external Helm
-browser failure was resolved by Helm's independently protected correction and
-after the ordered Deepwater record-only closure, then reconciled after
-Shipwright Phase 2 and again after Wakebook Phase 1 protected-merged. The
-earlier `-4` candidate received `RELEASE_GO` only for its exact old base and is
-retained as historical evidence. The subsequent `-5` candidate received one
-hosted-only `component.studio` invalid receipt in run `31668485208`; it was
-never retried. After Tideglass Phase 3 accepted/reconciled records advanced
-protected main, the implementation was replayed on this `-6` branch. This
-candidate must not edit the remaining pending facts speculatively. It is updated
-only after its own frozen candidate is bound to the current protected-main
-process and after a fresh post-merge fetch proves the merged ancestry.
+| Field                                                         | Accepted value                                                                                                                    |
+| ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Starting protected main                                       | `191a964488d0df71f8dcb91c5b8372fc73b6b32e`                                                                                        |
+| Reconciled implementation base                                | `60b89841986e66fbc2c0828489d38002a1617506`                                                                                        |
+| Implementation branch                                         | `codex/project-bridgewatch-phase3-keep-the-watch-6`                                                                               |
+| Frozen implementation candidate                               | `5bae2e4d2d0aee6993f8e619cc8c79ef99235ff6`                                                                                        |
+| Implementation pull request                                   | [#83](https://github.com/Kgray44/treasurehuntSoT/pull/83)                                                                         |
+| Implementation authority                                      | Sounding Line mainline authority `31718170750`, `RELEASE_GO`                                                                      |
+| Implementation finalizer evidence                             | 38 mandatory receipts; all `PASSED` and `CLEAN`                                                                                   |
+| Implementation protected binding                              | `31719929034` succeeded                                                                                                           |
+| Implementation protected merge                                | `dead22dc26aeec2b722625aa9a68dc5688111fca`                                                                                        |
+| Registry completion candidate                                 | `636eae926c013dc6ace79f7da0fae5d6ac856d3b`                                                                                        |
+| Registry completion PR #86                                    | [protected record](https://github.com/Kgray44/treasurehuntSoT/pull/86)                                                            |
+| Registry completion authority                                 | [Sounding Line mainline authority 31720843942](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31720843942), `RELEASE_GO` |
+| Registry completion finalizer evidence                        | 38 mandatory receipts; all `PASSED` and `CLEAN`; no missing, duplicate, unknown, invalid, or runtime-conformance evidence         |
+| Registry completion protected binding                         | `31722507891` succeeded                                                                                                           |
+| Registry completion protected merge / accepted lifecycle main | `d6eb335880376f59403cf7108bf26690d8da4891`                                                                                        |
 
-The `-6` candidate's first authority, `31714713467`, was `EVIDENCE_INVALID`
-only because its source-bound `browser.helm` receipt failed; its 37 other
-mandatory receipts and every cleanup receipt were clean. The governing
-smallest-scope local reproduction and hosted focused repair `31716941169`
-both passed the same 3 Helm cases on unchanged `e960db8c...`. That evidence
-does not revive the invalidated candidate or substitute for a finalizer; this
-manifest remains unaccepted until a fresh candidate completes a new exact-SHA
-authority and protected merge.
+The implementation merge has the exact parents
+`60b89841986e66fbc2c0828489d38002a1617506` and
+`5bae2e4d2d0aee6993f8e619cc8c79ef99235ff6`; its tree is identical to the
+frozen implementation candidate. The registry completion merge has the exact
+parents `dead22dc26aeec2b722625aa9a68dc5688111fca` and
+`636eae926c013dc6ace79f7da0fae5d6ac856d3b`; its tree is identical to that
+frozen candidate. Both candidates are ancestors of the freshly fetched
+protected main at their respective integration points.
 
-Phase 3 materially extends the existing `FT-035` Bridgewatch signal-projection
-capability. The current fragment correctly records its accepted Phase 2
-mainline state and cannot be altered to claim Phase 3 availability before this
-protected integration. After merge, the record-only closure updates that same
-owning fragment with exact mainline evidence; no speculative feature ID or
-branch-complete duplicate is created.
+The accepted registry now preserves Project Bridgewatch Phase 1 _Raise the
+Board_, Phase 2 _Wire the Signals_, and Phase 3 _Keep the Watch_, with the
+project and final phase in `COMPLETE`. This state comes only from accepted
+source records and Sounding Line evidence; Bridgewatch runtime data did not
+declare itself complete.
+
+Phase 3 materially expands the existing `FT-035` Bridgewatch governed-signal
+projection capability. The owning fragment is updated with protected-main
+implementation evidence in this final record-only closure; no duplicate
+feature ID or speculative future phase is created.

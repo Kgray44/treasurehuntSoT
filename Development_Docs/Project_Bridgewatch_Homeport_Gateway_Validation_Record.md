@@ -11,7 +11,7 @@ last_reviewed: 2026-08-13
 ## Source binding
 
 - Accepted starting main: `60b89841986e66fbc2c0828489d38002a1617506`.
-- Reconciled accepted main: `d6eb335880376f59403cf7108bf26690d8da4891`.
+- Reconciled accepted main: `72075eb551ec39bdb59bd7d78fd900f2eaf73a88`.
 - Qualified implementation: `6212bd1ab9ed23abd52f98154b55d846267a1133`.
 - First frozen candidate: `1cd4f3a6cb4a3c370a72995c8b6a1e0ff8bf80e2`.
 - Owned branch: `agent/bring-the-watch-home`.
@@ -107,6 +107,11 @@ Bridgewatch's accepted program-completion correction then advanced main to
 delta is reconciled unchanged; it records the accepted Phase 3 completion and
 does not alter the gateway, authorization, deployment, or mounted-path
 boundary.
+
+The Phase 3 final record-only closure subsequently advanced main to
+`72075eb551ec39bdb59bd7d78fd900f2eaf73a88`. Its documentation and catalog
+truth is reconciled with the gateway's additive `/bridgewatch`, authorization,
+test, and deployment evidence. No runtime source changed in that advance.
 
 ## Deployment verification boundary
 

@@ -28,28 +28,43 @@
   {
     "id": "FT-035",
     "title": "Bridgewatch Governed Signal Projection",
-    "summary": "A private Bridgewatch extension that projects explicit Project Registry and Sounding Line observer evidence into durable local operational state and is available to canonically authorized Voyagewright operators through a same-host /bridgewatch gateway, while keeping test, release, merge, and project-completion authority outside the dashboard.",
+    "summary": "A private Bridgewatch extension that projects explicit Project Registry, Sounding Line, and GitHub observer evidence into durable current and historical operational state and is available to canonically authorized Voyagewright operators through a same-host /bridgewatch gateway, while keeping test, release, merge, and project-completion authority outside the dashboard.",
     "status": "MAINLINE",
-    "program": "Project Bridgewatch Phase 2",
-    "surfaces": ["bridgewatch", "/bridgewatch", "POST /api/telemetry/heartbeat", "GET /api/history", "GET /api/tests"],
+    "program": "Project Bridgewatch Phases 2-3",
+    "surfaces": [
+      "bridgewatch",
+      "/bridgewatch",
+      "POST /api/telemetry/heartbeat",
+      "GET /api/history",
+      "GET /api/trends",
+      "GET /api/archive",
+      "GET /api/branches",
+      "GET /api/tests"
+    ],
     "subfeatures": [
       "Read-only Sounding Line runtime projection with explicit lifecycle normalization",
       "Durable SQLite worker, test-node, and test-run history with idempotent migrations",
       "Opt-in bearer-authenticated activity telemetry with rate, skew, stale-state, and credential-redaction controls",
-      "Lifecycle tabs, project biography, worker/test summaries, responsive layout, and reduced-motion support",
+      "Normalized meaningful events, digest-deduplicated snapshots, daily rollups, and durable-history retention guards",
+      "Bounded since-last-check history, completed-project archive, project/program trends, and chronological phase evidence",
+      "GitHub-authoritative branch ahead/behind and aging context with stale-work attention that never changes governed progress",
+      "Lifecycle tabs, project biography, worker/test summaries, responsive phone and wide control-room layouts, and reduced-motion support",
       "Canonical PLATFORM_OBSERVE authorization with a same-host, allowlisted GET/HEAD gateway for local and deployed private access",
       "Independent loopback service deployment with safe gateway failure and machine telemetry excluded from the browser mount"
     ],
     "limitations": [
       "Bridgewatch remains an observer and cannot create, approve, merge, retry, or authorize work.",
-      "Mainline integration does not claim completed host deployment, provider proof, or owner-acceptance record."
+      "Mainline integration does not claim a live private deployment, provider proof, or owner-acceptance record.",
+      "Bridgewatch does not infer completion, ETA, risk, or percentage progress from activity, branch commits, or test counts."
     ],
     "evidence": [
-      { "kind": "commit", "value": "9b950a5fd603be27c813f9298b0b14888fbce6cf" },
+      { "kind": "commit", "value": "dead22dc26aeec2b722625aa9a68dc5688111fca" },
       { "kind": "commit", "value": "6212bd1ab9ed23abd52f98154b55d846267a1133" },
       { "kind": "path", "value": "bridgewatch/lib/store.ts" },
       { "kind": "path", "value": "bridgewatch/src/sounding-line.ts" },
+      { "kind": "path", "value": "bridgewatch/src/history.ts" },
       { "kind": "test", "value": "bridgewatch/test/sounding-line.test.ts" },
+      { "kind": "test", "value": "bridgewatch/test/history.test.ts" },
       { "kind": "test", "value": "src/admiralty/bridgewatch-gateway.test.ts" },
       { "kind": "test", "value": "tests/e2e/admiralty-phase2.spec.ts" },
       { "kind": "path", "value": "deploy/nginx.conf" },
@@ -57,7 +72,8 @@
         "kind": "completion-record",
         "value": "Development_Docs/Project_Bridgewatch_Homeport_Gateway_Validation_Record.md"
       },
-      { "kind": "completion-record", "value": "Development_Docs/Project_Bridgewatch_Phase_2_Completion_Receipt.md" }
+      { "kind": "completion-record", "value": "Development_Docs/Project_Bridgewatch_Phase_2_Completion_Receipt.md" },
+      { "kind": "completion-record", "value": "Development_Docs/Project_Bridgewatch_Completion_Receipt.md" }
     ],
     "catalogVersion": 1
   }

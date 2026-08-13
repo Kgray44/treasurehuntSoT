@@ -3,7 +3,7 @@ title: Project Bridgewatch Phase 3 Performance Record
 audience: engineering
 status: current
 canonical_for: project-bridgewatch-phase-3-performance
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-13
 ---
 
 # Project Bridgewatch Phase 3 Performance Record
@@ -25,7 +25,7 @@ also exercises authenticated telemetry at 10, 25, and 50 workers and a warm
 summary response for each count. The fixture contains no private repository,
 user, prompt, command, log, cookie, credential, or application payload.
 
-## Current-main candidate-preparation result
+## Accepted implementation measurement
 
 On 2026-08-12, the task-owned production build ran loopback-only on a separate
 port with an isolated private test database and no credential. After startup,
