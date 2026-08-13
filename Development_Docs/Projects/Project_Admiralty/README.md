@@ -3,7 +3,7 @@ title: Project Admiralty Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-admiralty-repository-index
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-13
 ---
 
 # Project Admiralty
@@ -14,11 +14,17 @@ capability resolver, explicit administrator bootstrap, session-bound privileged
 assurance, user-approved Support Access, canonical audit evidence, the living
 capability registry, and a deliberately limited secure `/admin` shell.
 
-Phase 2, **Open the Chartroom**, is active on its task-owned branch. It expands
-that accepted authority into a read-only command center, cross-domain search,
+Phase 2, **Open the Chartroom**, is accepted on canonical main. It expanded
+the accepted authority into a read-only command center, cross-domain search,
 provider and configuration visibility, rich account/support inspection, and
-correlation-led investigation. Phase 2 adds no broad domain mutation and does
-not authorize Phase 3.
+correlation-led investigation. Phase 2 added no broad domain mutation.
+
+Phase 3, **Take the Watch**, is the currently authorized active phase. It adds
+only governed, owner-domain administrative commands for account/support,
+security, Community moderation, jobs, and typed configuration mutations. It
+does not authorize Chronicle, Voyage, private-content, feature-flag,
+maintenance, release, recovery, or break-glass operations; those remain Phase
+4 or separately governed work.
 
 The Phase 2 shell is naturally reachable from the account workspace menu only
 for identities holding an active Admiralty role. Ordinary accounts receive no
@@ -45,7 +51,7 @@ on the server.
 - [Owner decision record](Project_Admiralty_Phase_1_Owner_Decision_Record.md)
 - [Owner walkthrough](walkthrough/phase1/README.md)
 
-## Active Phase 2 records
+## Accepted Phase 2 records
 
 - [Design record](Project_Admiralty_Phase_2_Design_Record.md)
 - [Mainline safety contract](Project_Admiralty_Phase_2_Mainline_Safety_Contract.md)
@@ -61,6 +67,13 @@ on the server.
 - [Mainline acceptance record](Project_Admiralty_Phase_2_Mainline_Acceptance_Record.md)
 - [Owner walkthrough](walkthrough/phase2/README.md)
 
+## Active Phase 3 records
+
+- [Active phase registration](Project_Admiralty_Phase_3_Active_Phase_Registration.json)
+- [Design record](Project_Admiralty_Phase_3_Design_Record.md)
+- [Mainline safety contract](Project_Admiralty_Phase_3_Mainline_Safety_Contract.md)
+- [Command catalog](Project_Admiralty_Phase_3_Command_Catalog.md)
+
 ## Machine-readable controls
 
 - `Project_Admiralty_Phase_1_Active_Phase_Registration.json`
@@ -75,8 +88,10 @@ on the server.
 - `Project_Admiralty_Phase_2_Information_Architecture_Registry.json`
 - `Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json`
 
-The Phase 1 owner decision is `ACCEPTED`; the accepted source is integrated on
-canonical main with verified local/remote parity. The Phase 2 owner decision is
-also `ACCEPTED` for its qualified branch source and awaits its decision-record
-source-bound authority and protected merge. Neither decision is deployment, and
-Phase 2 does not authorize Phase 3.
+- `Project_Admiralty_Phase_3_Active_Phase_Registration.json`
+- `Project_Admiralty_Phase_3_Command_Catalog.json`
+
+The Phase 1 and Phase 2 owner decisions are `ACCEPTED`; both phases are
+integrated on canonical main. Phase 3 is active under the owner authorization
+recorded in its active-phase registration. Neither prior decision is deployment
+or permission to begin Phase 4.

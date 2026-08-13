@@ -14,6 +14,8 @@ export type AdmiraltyErrorCode =
   | "ADMIN_AUDIT_UNAVAILABLE"
   | "ADMIN_OPERATION_UNAVAILABLE"
   | "ADMIN_VALIDATION_FAILED"
+  | "ADMIN_IDEMPOTENCY_INVALID"
+  | "ADMIN_REASON_INVALID"
   | "ADMIN_RATE_LIMITED";
 
 export class AdmiraltyError extends Error {

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "Project Admiralty",
+  "phase": "3",
+  "phaseName": "Take the Watch",
+  "status": "ACTIVE",
+  "authorization": "OWNER_PROMPT_2026-08-13",
+  "branch": "codex/project-admiralty-phase3-take-the-watch",
+  "worktree": "C:\\Users\\kgray\\AppData\\Local\\ForeverTreasureCompanion\\treasurehuntSoT-admiralty-phase3",
+  "baseRef": "origin/main",
+  "baseSha": "60b89841986e66fbc2c0828489d38002a1617506",
+  "phase2Status": "ACCEPTED_MAINLINE",
+  "phase2AcceptedMainSha": "4edc8de5e30e9748700c19b466061f9b9a97f268",
+  "concurrencyClass": "B_WITH_CLASS_C_OWNER_BOUNDARIES",
+  "schemaReservation": "NONE",
+  "schemaImpact": "NONE_EXPECTED",
+  "ownerWalkthroughRequired": true,
+  "sharedContracts": [
+    "Admiralty capability authorization and privileged assurance",
+    "Wayfarer canonical account, session, and role commands",
+    "Harborlight canonical moderation commands",
+    "owner-scoped job controls",
+    "typed configuration owner contracts",
+    "canonical PlatformAuditEvent evidence",
+    "Sounding Line exact-source authority",
+    "Deepwater consumer dispositions"
+  ],
+  "phase4NonGoals": [
+    "Chronicle and Voyage mutations",
+    "private-content repair or recovery",
+    "feature and beta flags",
+    "maintenance mode",
+    "release orchestration",
+    "break-glass authority and secret access"
+  ],
+  "registeredAt": "2026-08-13"
+}
