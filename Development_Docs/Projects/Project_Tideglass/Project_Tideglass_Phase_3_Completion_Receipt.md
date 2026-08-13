@@ -1,7 +1,7 @@
 ---
 title: Project Tideglass Phase 3 Completion Receipt
 audience: product-engineering
-status: unissued-owner-accepted-mainline-pending
+status: unissued-current-main-wakebook-reconciliation
 canonical_for: project-tideglass-phase-3-completion
 last_reviewed: 2026-08-12
 ---
@@ -11,11 +11,13 @@ last_reviewed: 2026-08-12
 Status: `NOT_ISSUED`.
 
 This required record is intentionally a placeholder, not a completion claim.
-The product source is qualified and owner-accepted for the walkthrough recorded
-in `Project_Tideglass_Phase_3_Owner_Decision_Record.md`, but no Sounding Line
-Mainline Decision, pull request, protected merge, exact-main proof,
-remote-parity proof, Deepwater finding closure, or Feature Catalog promotion
-exists. Phase 4 has not begun.
+The product source was qualified, owner-accepted, and entered protected main as
+`bb7676a75581d8d415c3ff7712cc38bc8decb031`; its original walkthrough remains
+recorded in `Project_Tideglass_Phase_3_Owner_Decision_Record.md`. The later
+record-only closeout path is not accepted current main. Current accepted
+Wakebook Phase 1 changes the past-Voyage surface, so this isolated reconciliation
+must complete its addendum evidence and targeted owner review before any future
+completion receipt can be issued. Phase 4 has not begun.
 
 The first local Mainline Decision invocation for documentation candidate
 `897e7619` failed before it could create any suite receipt or finalizer decision
@@ -26,4 +28,5 @@ proof but no replacement authority decision yet.
 When and only when those gates are completed, this receipt will record the
 owner-reviewed and candidate SHAs, protected integration, post-merge evidence,
 catalog status, route/screen registrations, cleanup, and explicit Phase 4
-deferrals.
+deferrals. No frozen PR, protected binding, or shared runtime may be resumed
+without an explicit later serial-queue position.

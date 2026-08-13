@@ -168,6 +168,7 @@ export function TideglassPassage({
   const Heading = headingLevel;
 
   const returnTo = safeTideglassReturnPath(initialReturnTo, `/chronicles/${encodeURIComponent(taleSlug)}`);
+  const returnLabel = returnTo.startsWith("/passport/history/") ? "Return to past Voyage" : "Return to Chronicle";
 
   const loadContext = useCallback(async () => {
     setLoading(true);
@@ -415,7 +416,7 @@ export function TideglassPassage({
           {comparing ? "Comparing editions…" : "Compare editions"}
         </button>
         <Link className="community-button community-button--quiet" href={returnTo}>
-          Return to Chronicle
+          {returnLabel}
         </Link>
       </div>
 

@@ -3,6 +3,7 @@ import { compareExactEditions, prismaTideglassEditionRepository, type TideglassE
 import { prismaTideglassAnnotationRepository } from "./annotations";
 import { projectTideglassComparison } from "./projection";
 import {
+  buildTideglassCompareHref,
   resolveTideglassPassageSelection,
   type TideglassEditionOption,
   type TideglassPlayedAnchor,
@@ -21,6 +22,11 @@ export type TideglassPassageContext = {
   playedAnchors: TideglassPlayedAnchor[];
   allowedEditionIds: string[];
   audience: "PUBLIC_PREVIEW" | "PLAYER_SAFE";
+};
+
+export type TideglassHistoryComparisonEntry = {
+  href: string;
+  state: "COMPARE" | "UP_TO_DATE";
 };
 
 export function constrainTideglassPassageRepository(
@@ -115,6 +121,39 @@ export async function loadTideglassPassageContext(
     allowedEditionIds: [...allowedEditionIds],
     audience: viewer.playerProfileId ? "PLAYER_SAFE" : "PUBLIC_PREVIEW",
   };
+}
+
+export function resolveTideglassHistoryComparisonEntry(
+  context: TideglassPassageContext,
+  input: { historyRecordId: string; returnTo: string },
+): TideglassHistoryComparisonEntry | null {
+  const selection = resolveTideglassPassageSelection({
+    editions: context.editions,
+    recommendedEditionId: context.recommendedEditionId,
+    playedAnchors: context.playedAnchors,
+    requestedHistoryRecordId: input.historyRecordId,
+  });
+  if ((selection.kind !== "PAIR" && selection.kind !== "UP_TO_DATE") || !selection.playedAnchor) return null;
+  return {
+    href: buildTideglassCompareHref({
+      taleSlug: context.chronicle.slug,
+      sourceEditionId: selection.sourceEditionId,
+      targetEditionId: selection.targetEditionId,
+      historyRecordId: selection.playedAnchor.recordId,
+      returnTo: input.returnTo,
+    }),
+    state: selection.kind === "UP_TO_DATE" ? "UP_TO_DATE" : "COMPARE",
+  };
+}
+
+export async function loadTideglassHistoryComparisonEntry(input: {
+  taleSlug: string;
+  playerProfileId: string;
+  historyRecordId: string;
+  returnTo: string;
+}): Promise<TideglassHistoryComparisonEntry | null> {
+  const context = await loadTideglassPassageContext(input.taleSlug, { playerProfileId: input.playerProfileId });
+  return context ? resolveTideglassHistoryComparisonEntry(context, input) : null;
 }
 
 export type TideglassPassageComparison =

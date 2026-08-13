@@ -1,16 +1,33 @@
 ---
 title: Project Tideglass Phase 3 Qualification Record
 audience: product-engineering
-status: authority-repair-qualified-owner-accepted-replacement-pending
+status: current-main-wakebook-reconciliation
 canonical_for: project-tideglass-phase-3-qualification
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 qualification record
 
-Status: `AUTHORITY_REPAIR_QUALIFIED_OWNER_ACCEPTED_REPLACEMENT_PENDING_MAINLINE_DECISION`.
+Status: `CURRENT_MAIN_WAKEBOOK_RECONCILIATION`.
 
 The earlier local candidate is superseded. It used an invented response proxy and did not evidence the complete governed state matrix. No owner walkthrough, Sounding Line Mainline Decision, protected merge, deployment, provider execution, or real-account acceptance was claimed or dispatched for it.
+
+## Accepted Wakebook reconciliation
+
+The original Phase 3 product received its governed release evidence and entered
+protected main as `bb7676a75581d8d415c3ff7712cc38bc8decb031`. Current main
+`cbf634d4d5db9cf47edebb89e005e8cc910068bd` subsequently accepted Wakebook
+Phase 1, which replaces the former past-Voyage detail with Journey Detail. This
+candidate restores the required Tideglass history handoff through that accepted
+surface without changing semantic policy, history truth, Studio, schema, or
+migrations.
+
+The focused proof for the addendum is intentionally separate from the historic
+product qualification: Tideglass passage-service, Wakebook archive-query, and
+Journey Detail component tests pass with TypeScript, documentation, and the
+non-authoritative Phase 3 contract validator. Browser/visual addendum evidence
+and targeted owner review remain pending; the serial authority lane is released
+and must not be reacquired without an explicit later position.
 
 ## Current qualification approach
 

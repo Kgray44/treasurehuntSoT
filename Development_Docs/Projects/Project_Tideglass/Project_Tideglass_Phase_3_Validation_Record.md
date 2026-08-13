@@ -1,14 +1,16 @@
 ---
 title: Project Tideglass Phase 3 Validation Record
 audience: product-engineering
-status: owner-accepted-mainline-pending
+status: current-main-wakebook-reconciliation
 canonical_for: project-tideglass-phase-3-validation
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 validation record
 
-Status: `OWNER_ACCEPTED_MAINLINE_PENDING`.
+Status: `CURRENT_MAIN_WAKEBOOK_RECONCILIATION`. The original product decision
+remains recorded, while the accepted Wakebook Journey Detail handoff is being
+qualified for targeted owner review.
 
 The reconciled product source is
 `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`, subsequently reconciled to accepted main
@@ -26,9 +28,22 @@ The fixture uses only reserved synthetic accounts and Chronicle content. Compari
 
 The owner accepted this reconciled product on `2026-08-12`; the accepted reviewed
 source is recorded in `Project_Tideglass_Phase_3_Owner_Decision_Record.md`.
-This is still local qualification evidence until the next authority, one frozen
-exact-SHA Sounding Line Mainline Decision, is `RELEASE_GO`. No protected merge,
-Deepwater finding closure, deployment, or Phase 4 work has been started.
+The original product subsequently received its governed release evidence and
+entered protected main as `bb7676a75581d8d415c3ff7712cc38bc8decb031`. The
+record-only closeout path is not accepted current main, and this document does
+not represent it as completed. No Deepwater finding closure, deployment, or
+Phase 4 work has been started.
+
+## Current accepted-Wakebook reconciliation
+
+Current `origin/main` `cbf634d4d5db9cf47edebb89e005e8cc910068bd` accepts
+Wakebook Phase 1, replacing the old Passport detail with Journey Detail. The
+new Tideglass-owned adapter preserves the exact owned-history handoff without
+copying a checksum, raw snapshot, annotation, or semantic record into the
+Wakebook DTO. Focused proof is 34 tests across the direct Tideglass and
+Wakebook files, plus passing `npm run tideglass:phase3:validate`, TypeScript,
+and documentation validation. This is local, non-authoritative evidence only;
+browser/visual addendum proof and targeted owner review remain pending.
 
 ## Authority preflight and focused repair
 

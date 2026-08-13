@@ -1352,9 +1352,9 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 ## FT-B009 - Tideglass Chronicle Edition Intelligence
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Tideglass Phases 1-2
+**Program or subsystem:** Project Tideglass Phases 1-3
 
-The accepted server-side foundation compares exact immutable Chronicle editions, classifies and summarizes evidence deterministically, projects spoiler-safe audience views, and preserves append-only Creator context without changing published or live Voyage truth.
+Tideglass compares exact immutable Chronicle editions, explains semantic change in an ordinary spoiler-safe What Changed experience, anchors comparison to a player's retained Voyage history, and gives Creator Studio the same canonical semantic truth without changing published or live Voyage state.
 
 ### Important subfeatures
 
@@ -1370,23 +1370,31 @@ The accepted server-side foundation compares exact immutable Chronicle editions,
 - Digest-validated rebuildable comparison cache
 - Authorized bounded comparison and annotation APIs
 - Read-only cross-domain invariance
+- Discoverable What Changed edition comparison
+- Exact edition selection, pair swap, and Publishing-owned current target
+- Compare to What I Played using owner-bound retained Voyage history
+- Spoiler disclosure, concise/detailed modes, category filters, compatibility, and accessibility presentation
+- Creator Studio published-version comparison through canonical semantic projection
 
 ### Primary surfaces
 
-`npm run tideglass:compare`, `src/tideglass`, `/api/chronicles/:chronicleId/comparison`
+`npm run tideglass:compare`, `src/tideglass`, `/chronicles/[taleSlug]/compare`, `/passport/history/[recordId]/compare`, `/api/studio/tales/[taleId]/versions/compare`
 
 ### Meaningful limitations
 
-- The accepted Phase 2 extension remains server-side and does not create a polished comparison experience.
-- Ordinary user comparison routes, played-history qualification, and polished What Changed interaction remain outside Phase 2.
 - Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.
+- Final Harborlight update integration and any accepted Captain/Helm visual comparison consumer remain deferred to later work.
+- The current accepted Wakebook Journey Detail reconciliation is pending its own targeted owner review and is not represented here as accepted capability.
 
 ### Evidence
 
 - path: `src/tideglass/service.ts`
 - path: `src/tideglass/intelligence.ts`
 - path: `src/tideglass/annotations.ts`
+- path: `src/components/tideglass/TideglassPassage.tsx`
+- path: `src/components/tideglass/TideglassStudioComparison.tsx`
 - test: `tests/tideglass`
+- test: `tests/e2e/tideglass-phase3.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md`
 - completion-record: `Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Completion_Receipt.md`
 

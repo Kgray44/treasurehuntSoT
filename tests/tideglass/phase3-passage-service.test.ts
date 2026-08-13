@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { compareExactEditions } from "../../src/tideglass/service";
-import { constrainTideglassPassageRepository } from "../../src/tideglass/passage-service";
+import {
+  constrainTideglassPassageRepository,
+  resolveTideglassHistoryComparisonEntry,
+  type TideglassPassageContext,
+} from "../../src/tideglass/passage-service";
 import { baseSnapshot, clone, edition, FixtureRepository } from "./fixtures";
 
 describe("Tideglass Phase 3 server-passage authorization", () => {
@@ -50,5 +54,60 @@ describe("Tideglass Phase 3 server-passage authorization", () => {
     );
     expect(result).toMatchObject({ ok: false, code: "EDITION_NOT_AUTHORIZED" });
     expect(JSON.stringify(result)).not.toContain("contentSnapshot");
+  });
+
+  it("creates a Wakebook handoff only for the exact owner-bound history anchor and publishing target", () => {
+    const context: TideglassPassageContext = {
+      chronicle: { id: "chronicle-synthetic", slug: "synthetic-chronicle", title: "Synthetic Chronicle" },
+      editions: [
+        {
+          id: "edition-played",
+          label: "Edition 1.0",
+          publishedAt: "2026-01-01T00:00:00.000Z",
+          creatorName: "Synthetic Creator",
+          releaseNotes: null,
+          compatibilitySummary: "Exact pair assessment",
+          availability: "HISTORICAL_ONLY",
+        },
+        {
+          id: "edition-recommended",
+          label: "Edition 2.0",
+          publishedAt: "2026-02-01T00:00:00.000Z",
+          creatorName: "Synthetic Creator",
+          releaseNotes: null,
+          compatibilitySummary: "Exact pair assessment",
+          availability: "PLAYABLE",
+        },
+      ],
+      recommendedEditionId: "edition-recommended",
+      playedAnchors: [
+        {
+          recordId: "record-owned",
+          editionId: "edition-played",
+          editionChecksum: "checksum-played",
+          lifecycleStatus: "COMPLETED",
+          outcome: "COMPLETED",
+          completedAt: "2026-01-01T00:00:00.000Z",
+        },
+      ],
+      allowedEditionIds: ["edition-played", "edition-recommended"],
+      audience: "PLAYER_SAFE",
+    };
+
+    expect(
+      resolveTideglassHistoryComparisonEntry(context, {
+        historyRecordId: "record-owned",
+        returnTo: "/passport/history/record-owned",
+      }),
+    ).toEqual({
+      href: "/chronicles/synthetic-chronicle/compare?from=edition-played&to=edition-recommended&historyRecord=record-owned&returnTo=%2Fpassport%2Fhistory%2Frecord-owned",
+      state: "COMPARE",
+    });
+    expect(
+      resolveTideglassHistoryComparisonEntry(context, {
+        historyRecordId: "record-foreign",
+        returnTo: "/passport/history/record-foreign",
+      }),
+    ).toBeNull();
   });
 });

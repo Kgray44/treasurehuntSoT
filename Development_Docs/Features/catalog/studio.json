@@ -149,10 +149,16 @@
   {
     "id": "FT-B009",
     "title": "Tideglass Chronicle Edition Intelligence",
-    "summary": "The accepted server-side foundation compares exact immutable Chronicle editions, classifies and summarizes evidence deterministically, projects spoiler-safe audience views, and preserves append-only Creator context without changing published or live Voyage truth.",
+    "summary": "Tideglass compares exact immutable Chronicle editions, explains semantic change in an ordinary spoiler-safe What Changed experience, anchors comparison to a player's retained Voyage history, and gives Creator Studio the same canonical semantic truth without changing published or live Voyage state.",
     "status": "MAINLINE",
-    "program": "Project Tideglass Phases 1-2",
-    "surfaces": ["npm run tideglass:compare", "src/tideglass", "/api/chronicles/:chronicleId/comparison"],
+    "program": "Project Tideglass Phases 1-3",
+    "surfaces": [
+      "npm run tideglass:compare",
+      "src/tideglass",
+      "/chronicles/[taleSlug]/compare",
+      "/passport/history/[recordId]/compare",
+      "/api/studio/tales/[taleId]/versions/compare"
+    ],
     "subfeatures": [
       "Exact edition and checksum binding",
       "Versioned semantic normalization",
@@ -165,13 +171,21 @@
       "Append-only Creator annotation revisions",
       "Digest-validated rebuildable comparison cache",
       "Authorized bounded comparison and annotation APIs",
-      "Read-only cross-domain invariance"
+      "Read-only cross-domain invariance",
+      "Discoverable What Changed edition comparison",
+      "Exact edition selection, pair swap, and Publishing-owned current target",
+      "Compare to What I Played using owner-bound retained Voyage history",
+      "Spoiler disclosure, concise/detailed modes, category filters, compatibility, and accessibility presentation",
+      "Creator Studio published-version comparison through canonical semantic projection"
     ],
     "evidence": [
       { "kind": "path", "value": "src/tideglass/service.ts" },
       { "kind": "path", "value": "src/tideglass/intelligence.ts" },
       { "kind": "path", "value": "src/tideglass/annotations.ts" },
+      { "kind": "path", "value": "src/components/tideglass/TideglassPassage.tsx" },
+      { "kind": "path", "value": "src/components/tideglass/TideglassStudioComparison.tsx" },
       { "kind": "test", "value": "tests/tideglass" },
+      { "kind": "test", "value": "tests/e2e/tideglass-phase3.spec.ts" },
       {
         "kind": "completion-record",
         "value": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md"
@@ -182,9 +196,9 @@
       }
     ],
     "limitations": [
-      "The accepted Phase 2 extension remains server-side and does not create a polished comparison experience.",
-      "Ordinary user comparison routes, played-history qualification, and polished What Changed interaction remain outside Phase 2.",
-      "Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them."
+      "Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.",
+      "Final Harborlight update integration and any accepted Captain/Helm visual comparison consumer remain deferred to later work.",
+      "The current accepted Wakebook Journey Detail reconciliation is pending its own targeted owner review and is not represented here as accepted capability."
     ],
     "catalogVersion": 1
   }

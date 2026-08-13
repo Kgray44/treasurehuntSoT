@@ -1,25 +1,28 @@
 ---
 title: Project Tideglass Phase 3 Integration Manifest
 audience: product-engineering
-status: owner-accepted-mainline-pending
+status: current-main-wakebook-reconciliation
 canonical_for: project-tideglass-phase-3-integration
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 integration manifest
 
-Status: `OWNER_ACCEPTED_MAINLINE_PENDING`. This is a source integration
-inventory, not an accepted-mainline or protected-mainline receipt.
+Status: `CURRENT_MAIN_WAKEBOOK_RECONCILIATION`. This is a source integration
+inventory, not an accepted-mainline or protected-mainline receipt. The original
+owner decision remains evidence for the reviewed product; the accepted Wakebook
+Journey Detail handoff requires a targeted addendum review.
 
 ## Canonical consumer path
 
-| Consumer         | Phase 3 integration                                                                                                      | Safety contract                                                                                                                                                                |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Chronicle detail | `src/app/chronicles/[taleSlug]/page.tsx` exposes **See what changed** to the canonical compare page                      | The user can reach comparison without guessing a URL.                                                                                                                          |
-| Passage page     | `src/app/chronicles/[taleSlug]/compare/page.tsx` renders `TideglassPassage`                                              | Query state selects only exact edition IDs and an owner-bound record; it cannot grant authority.                                                                               |
-| Passage API      | `src/app/api/tideglass/chronicles/[taleSlug]/route.ts` reads `loadTideglassPassageContext` and `compareTideglassPassage` | The server derives edition visibility, current pointer, history ownership, and audience. No raw snapshot, private location, media, Creator notes, or storage key is projected. |
-| Passport history | `src/app/passport/history/[recordId]/compare/page.tsx` resolves the signed-in owner record then redirects                | Client input never supplies a trusted Chronicle identity. Foreign records fail closed.                                                                                         |
-| Creator Studio   | `src/components/studio/TaleEditor.tsx` renders `TideglassStudioComparison` using the Studio semantic comparison API      | Creator output is `CREATOR_FULL` Tideglass semantic change data, not a raw before/after storage comparison.                                                                    |
+| Consumer                | Phase 3 integration                                                                                                      | Safety contract                                                                                                                                                                |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Chronicle detail        | `src/app/chronicles/[taleSlug]/page.tsx` exposes **See what changed** to the canonical compare page                      | The user can reach comparison without guessing a URL.                                                                                                                          |
+| Passage page            | `src/app/chronicles/[taleSlug]/compare/page.tsx` renders `TideglassPassage`                                              | Query state selects only exact edition IDs and an owner-bound record; it cannot grant authority.                                                                               |
+| Passage API             | `src/app/api/tideglass/chronicles/[taleSlug]/route.ts` reads `loadTideglassPassageContext` and `compareTideglassPassage` | The server derives edition visibility, current pointer, history ownership, and audience. No raw snapshot, private location, media, Creator notes, or storage key is projected. |
+| Passport history        | `src/app/passport/history/[recordId]/compare/page.tsx` resolves the signed-in owner record then redirects                | Client input never supplies a trusted Chronicle identity. Foreign records fail closed.                                                                                         |
+| Wakebook Journey Detail | `src/wakebook/archive-query.ts` creates a Tideglass-owned safe handoff and `WakebookVoyageDetail` renders it             | The archive selects no edition and performs no comparison. It receives a link only after exact owner-record and publishing-target resolution.                                  |
+| Creator Studio          | `src/components/studio/TaleEditor.tsx` renders `TideglassStudioComparison` using the Studio semantic comparison API      | Creator output is `CREATOR_FULL` Tideglass semantic change data, not a raw before/after storage comparison.                                                                    |
 
 ## Retired ordinary consumer
 
@@ -51,8 +54,7 @@ proof, and the one permitted replacement authority attempt.
 The branch now contains accepted `origin/main`
 `fb0f13e35fcdd98434d22c357aee02f24d6d9036`. The prior
 reconciled accepted Shipwright/Drydock Studio surface was retained while the Tideglass
-semantic component stayed the only edition-comparison consumer. Wakebook remains
-unmerged and is not consumed. The accepted Helm surface has no edition-comparison
+semantic component stayed the only edition-comparison consumer. The accepted Helm surface has no edition-comparison
 consumer, so `CAPTAIN_UI_DEFERRED_NO_ACCEPTED_CONSUMER` is retained. The Deepwater
 finding remains open until this owner-accepted candidate receives the required
 mainline decision and protected integration; it is not closed by local evidence.
@@ -64,3 +66,17 @@ owner-reviewed `c2fc8fcc`; the changed Helm browser family passed all 3/3
 registered cases with clean runtime conformance, and record-only changes affect
 only governed authority/binding behavior. No accepted-main change authorizes a
 Wakebook, Helm, Shipwright, or Deepwater Phase 4 dependency.
+
+## Accepted Wakebook reconciliation
+
+Current `origin/main` is `cbf634d4d5db9cf47edebb89e005e8cc910068bd`, which
+contains accepted Wakebook Phase 1. Its Journey Detail is now the ordinary past
+Voyage surface. Tideglass therefore supplies a narrow read-only adapter that
+uses the signed-in owner profile, exact `PlayerChronicleRecord`, and the
+Publishing-owned current pointer to produce a same-origin comparison link only
+for `PAIR` or `UP_TO_DATE`. Wakebook renders that link and never receives a
+checksum, a raw snapshot, annotations, semantic records, or authority inputs.
+
+This is an isolated current-main reconciliation. Its focused service, archive
+query, component, and TypeScript proof must qualify before targeted owner review.
+It does not authorize a protected binding, merge, or a retry of any frozen PR.

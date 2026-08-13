@@ -2,9 +2,9 @@
   "schemaVersion": "1.0.0",
   "project": "Project Tideglass",
   "phase": "PHASE_3_CHOOSE_THE_PASSAGE",
-  "status": "CANDIDATE_FROZEN_PENDING_OWNER_WALKTHROUGH",
+  "status": "CURRENT_MAIN_WAKEBOOK_RECONCILIATION",
   "originalBaseSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
-  "baseSha": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
+  "baseSha": "cbf634d4d5db9cf47edebb89e005e8cc910068bd",
   "truthBoundary": "Source registration only. Browser, owner, protected-mainline, deployment, and provider proof are separate gates.",
   "routes": [
     {
@@ -32,6 +32,12 @@
           "source": "src/components/homeport/PassportSurfaces.tsx",
           "label": "See what changed",
           "ownerBoundRedirect": "/passport/history/[recordId]/compare"
+        },
+        {
+          "source": "src/components/wakebook/WakebookVoyageDetail.tsx",
+          "label": "See what changed",
+          "ownerBoundRedirect": "/passport/history/[recordId]/compare",
+          "availability": "exact owned history anchor plus publishing current target"
         }
       ],
       "returnBehavior": "Allowlisted same-origin Chronicle, Passport, Tales, or Studio return path; invalid values fall back to the Chronicle detail.",
@@ -67,16 +73,20 @@
       "pattern": "/passport/history/[recordId]/compare",
       "source": "src/app/passport/history/[recordId]/compare/page.tsx",
       "screen": "Owner-bound compare handoff",
-      "owner": "wayfarer-with-tideglass-passage",
+      "owner": "wayfarer-wakebook-with-tideglass-passage",
       "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/passport/history/[recordId]",
-      "desktopEntry": "Passport -> Chronicle History -> past Voyage -> See what changed",
-      "mobileEntry": "The same history action is retained in the mobile Passport list.",
+      "desktopEntry": "Passport -> Chronicle History -> past Voyage -> Journey Detail -> See what changed",
+      "mobileEntry": "The same Journey Detail action remains available in the mobile Passport history flow.",
       "capabilities": ["owned-history-handoff", "exact-played-edition-anchor"],
       "dynamicSource": ["signed-in owner record", "trusted Chronicle slug resolved on the server"],
       "visibleEntries": [
         {
           "source": "src/components/homeport/PassportSurfaces.tsx",
+          "label": "See what changed"
+        },
+        {
+          "source": "src/components/wakebook/WakebookVoyageDetail.tsx",
           "label": "See what changed"
         }
       ],

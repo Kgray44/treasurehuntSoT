@@ -32,17 +32,29 @@ async function main() {
   for (const file of requiredFiles) if (!(await exists(file))) missing.push(file);
   assert(missing.length === 0, `TIDEGLASS_PHASE3_REQUIRED_FILES_MISSING:${missing.join(",")}`);
 
-  const [registration, routes, passage, service, apiRoute, studioService, studioComparison, browserTest] =
-    await Promise.all([
-      json("Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_3_Active_Phase_Registration.json"),
-      json("Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_3_Route_and_Screen_Registration.json"),
-      text("src/tideglass/passage.ts"),
-      text("src/tideglass/passage-service.ts"),
-      text("src/app/api/tideglass/chronicles/[taleSlug]/route.ts"),
-      text("src/chronicle/studio-service.ts"),
-      text("src/components/tideglass/TideglassStudioComparison.tsx"),
-      text("tests/e2e/tideglass-phase3.spec.ts"),
-    ]);
+  const [
+    registration,
+    routes,
+    passage,
+    service,
+    archiveQuery,
+    wakebookDetail,
+    apiRoute,
+    studioService,
+    studioComparison,
+    browserTest,
+  ] = await Promise.all([
+    json("Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_3_Active_Phase_Registration.json"),
+    json("Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_3_Route_and_Screen_Registration.json"),
+    text("src/tideglass/passage.ts"),
+    text("src/tideglass/passage-service.ts"),
+    text("src/wakebook/archive-query.ts"),
+    text("src/components/wakebook/WakebookVoyageDetail.tsx"),
+    text("src/app/api/tideglass/chronicles/[taleSlug]/route.ts"),
+    text("src/chronicle/studio-service.ts"),
+    text("src/components/tideglass/TideglassStudioComparison.tsx"),
+    text("tests/e2e/tideglass-phase3.spec.ts"),
+  ]);
 
   assert(
     registration.project === "Project Tideglass" && registration.phase === "3",
@@ -84,6 +96,19 @@ async function main() {
   assert(passage.includes("requestedHistoryRecordId"), "history record selection is not explicit");
   assert(service.includes("isCurrent"), "current publishing pointer is not read from publishing truth");
   assert(service.includes("db.playerChronicleRecord"), "Wayfarer history adapter is absent");
+  assert(service.includes("loadTideglassHistoryComparisonEntry"), "Tideglass-owned history handoff adapter is absent");
+  assert(
+    archiveQuery.includes("loadTideglassHistoryComparisonEntry"),
+    "accepted Wakebook Journey Detail is not connected to the Tideglass history handoff",
+  );
+  assert(
+    wakebookDetail.includes("WakebookTideglassComparisonEntry") && wakebookDetail.includes("See what changed"),
+    "Wakebook Journey Detail has no visible Tideglass comparison entry",
+  );
+  assert(
+    JSON.stringify(routes).includes("WakebookVoyageDetail"),
+    "route registration omits the accepted Wakebook Journey Detail edge",
+  );
   assert(!/contentSnapshot|creatorNotes|storageKey/u.test(apiRoute), "public passage API mentions a raw/private field");
   assert(
     !studioService.includes("comparePublishedVersions"),

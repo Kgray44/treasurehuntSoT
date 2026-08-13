@@ -2,6 +2,7 @@ import type { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { parsePublishedSnapshot } from "@/chronicle/types";
 import { db } from "@/lib/db";
+import { loadTideglassHistoryComparisonEntry, type TideglassHistoryComparisonEntry } from "@/tideglass/passage-service";
 import type {
   ArchiveQuery,
   ArchiveYearGroup,
@@ -109,7 +110,7 @@ const summarySelect = {
       tombstoneState: true,
     },
   },
-  publishedVersion: { select: { versionLabel: true, ...reviewSelect } },
+  publishedVersion: { select: { versionLabel: true, tale: { select: { slug: true } }, ...reviewSelect } },
 } satisfies Prisma.PlayerChronicleRecordSelect;
 
 type SummaryRecord = Prisma.PlayerChronicleRecordGetPayload<{ select: typeof summarySelect }>;
@@ -535,14 +536,20 @@ export async function queryVoyageDetail(playerProfileId: string, recordId: strin
     select: detailSelect,
   });
   if (!record) return null;
-  const [personalArtifacts] = await Promise.all([
+  const [personalArtifacts, comparison] = await Promise.all([
     db.playerArtifactRecord.findMany({
       where: { playerProfileId, sourcePlaythroughId: record.sourcePlaythroughId, recordStatus: "ACTIVE" },
       orderBy: [{ grantedAt: "asc" }, { id: "asc" }],
       select: { id: true, artifactNameSnapshot: true, ownershipState: true, grantedAt: true },
     }),
+    loadTideglassHistoryComparisonEntry({
+      taleSlug: record.publishedVersion.tale.slug,
+      playerProfileId,
+      historyRecordId: record.id,
+      returnTo: `/passport/history/${encodeURIComponent(record.id)}`,
+    }),
   ]);
-  return detailProjection(record, personalArtifacts);
+  return detailProjection(record, personalArtifacts, comparison);
 }
 
 function detailProjection(
@@ -553,6 +560,7 @@ function detailProjection(
     ownershipState: string;
     grantedAt: Date | null;
   }>,
+  comparison: TideglassHistoryComparisonEntry | null,
 ): VoyageDetail {
   const chapters = parseStored(chapterSummarySchema, record.completedChapters, "Chapter history", []);
   const objectives = parseStored(unavailableSummarySchema, record.optionalObjectives, "Optional-objective history", []);
@@ -655,6 +663,7 @@ function detailProjection(
     },
     dataQuality: warnings.length ? "PARTIAL" : "COMPLETE",
     warnings,
+    ...(comparison ? { comparison } : {}),
     ...(() => {
       const review = reviewOf(record);
       return review ? { review } : {};
