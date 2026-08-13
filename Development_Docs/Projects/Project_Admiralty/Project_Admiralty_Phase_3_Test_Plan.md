@@ -22,7 +22,8 @@ last_reviewed: 2026-08-13
   audit failure and stale lifecycle revision fail closed.
 - Moderation: Harborlight owner preview/action lifecycle and transaction-bound
   audit composition, case-attached target projection, endpoint error
-  normalization, and a constrained Community action panel.
+  normalization, owner-enforced distinct-second-review presence, and a
+  constrained Community action panel.
 
 ## Qualification still required
 

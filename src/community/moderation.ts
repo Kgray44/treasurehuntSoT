@@ -84,10 +84,26 @@ const appealTransitionMatrix: Record<AppealStatus, readonly AppealStatus[]> = {
 };
 const highImpactActions = new Set([
   "QUARANTINE_RELEASE",
+  "QUARANTINE_LISTING",
   "QUARANTINE_PACKAGE",
   "SUSPEND_PROFILE",
   "REVOKE_PUBLICATION",
 ]);
+
+export function requireIndependentSecondReviewer(
+  actionType: string,
+  actorAccountId: string,
+  secondReviewerId?: string,
+) {
+  if (!highImpactActions.has(actionType)) return;
+  if (!secondReviewerId?.trim())
+    throw new CommunityError(
+      "COMMUNITY_SECOND_REVIEW_REQUIRED",
+      "A distinct second reviewer is required for this high-impact moderation action.",
+    );
+  if (secondReviewerId === actorAccountId)
+    throw new CommunityError("COMMUNITY_SELF_REVIEW_FORBIDDEN", "A moderator cannot review their own action.");
+}
 
 function valueIn<T extends readonly string[]>(value: string, values: T): value is T[number] {
   return values.includes(value);
@@ -471,6 +487,7 @@ export async function previewModerationAction(
   );
   const reason = requiredReason(input.reasonCode);
   await assertNotSelfModeration(actor, input.subjectType, input.subjectId);
+  requireIndependentSecondReviewer(input.actionType, actor.accountId, input.secondReviewerId);
   const moderationCase = await db.communityModerationCase.findUnique({ where: { id: input.caseId } });
   if (
     !moderationCase ||
@@ -492,8 +509,6 @@ export async function previewModerationAction(
       "COMMUNITY_MODERATION_CROSS_CASE_ACTION",
       "The action target is not attached to this case.",
     );
-  if (input.secondReviewerId === actor.accountId)
-    throw new CommunityError("COMMUNITY_SELF_REVIEW_FORBIDDEN", "A moderator cannot review their own action.");
   return {
     dryRun: true as const,
     nextCaseStatus: "ACTIONED",
@@ -515,7 +530,12 @@ export async function applyModerationAction(
     reasonCode: string;
     idempotencyKey: string;
     secondReviewerId?: string;
-    administrativeAudit?: { actorRole: string; capability: AdmiraltyCapabilityId; authorizationBasis: string; reason: string };
+    administrativeAudit?: {
+      actorRole: string;
+      capability: AdmiraltyCapabilityId;
+      authorizationBasis: string;
+      reason: string;
+    };
   },
 ) {
   requireModerator(
@@ -526,6 +546,7 @@ export async function applyModerationAction(
   if (!/^[A-Za-z0-9_-]{16,128}$/u.test(input.idempotencyKey))
     throw new CommunityError("COMMUNITY_IDEMPOTENCY_INVALID", "A valid idempotency key is required.");
   await assertNotSelfModeration(actor, input.subjectType, input.subjectId);
+  requireIndependentSecondReviewer(input.actionType, actor.accountId, input.secondReviewerId);
   const replay = await db.communityModerationAction.findUnique({ where: { idempotencyKey: input.idempotencyKey } });
   if (replay) {
     if (
@@ -560,8 +581,6 @@ export async function applyModerationAction(
       "COMMUNITY_MODERATION_CROSS_CASE_ACTION",
       "The action target is not attached to this case.",
     );
-  if (input.secondReviewerId === actor.accountId)
-    throw new CommunityError("COMMUNITY_SELF_REVIEW_FORBIDDEN", "A moderator cannot review their own action.");
   const action = await db.$transaction(async (tx) => {
     // Claim the revision before persisting any action. Reading the revision
     // above only makes validation and error reporting clearer; this predicate
