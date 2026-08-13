@@ -14,7 +14,7 @@ export type ShellMode =
 
 export type NavigationLayer = "GLOBAL" | "WORKSPACE" | "ACCOUNT" | "CONTEXTUAL";
 export type NavigationPresentation = "desktop" | "mobile";
-export type NavigationCapability = "player" | "captain" | "creator" | "moderator" | "administrator";
+export type NavigationCapability = "player" | "captain" | "creator" | "moderator" | "administrator" | "admiralty";
 export type NavigationOwner =
   | "project-homeport"
   | "true-north"
@@ -22,7 +22,8 @@ export type NavigationOwner =
   | "one-voyage"
   | "harborlight"
   | "sealed-hold"
-  | "admiralty";
+  | "admiralty"
+  | "tideglass";
 export type NavigationPlacement = "primary" | "drawer" | "account" | "contextual" | "hidden";
 export type NavigationStatus = "active" | "contextual" | "compatibility" | "development";
 export type AccountGroup = "identity" | "personal" | "workspace" | "action";

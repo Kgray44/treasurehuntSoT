@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "title": "Project Drydock Phase 3 Fault Catalog",
+  "audience": "engineering",
+  "status": "current",
+  "canonicalFor": "project-drydock-phase-3-fault-catalog",
+  "lastReviewed": "2026-08-12",
+  "catalogVersion": "drydock-fault-catalog-v1",
+  "authority": "src/drydock/simulation/faults.ts",
+  "entries": [
+    { "family": "NETWORK", "code": "OFFLINE", "effect": "PAUSE", "safeEventType": "networkUnavailable" },
+    { "family": "NETWORK", "code": "LATENCY", "effect": "AUDIT_ONLY", "safeEventType": "networkLatencyInjected" },
+    {
+      "family": "ASSET",
+      "code": "UNAVAILABLE",
+      "effect": "PRESENTATION_FALLBACK",
+      "safeEventType": "assetUnavailable"
+    },
+    {
+      "family": "ASSET",
+      "code": "DECODE_FAILED",
+      "effect": "PRESENTATION_FALLBACK",
+      "safeEventType": "assetDecodeFailed"
+    },
+    {
+      "family": "PROVIDER",
+      "code": "UNAVAILABLE",
+      "effect": "VERIFICATION_UNCERTAIN",
+      "safeEventType": "providerUnavailable"
+    },
+    { "family": "PROVIDER", "code": "STALE", "effect": "VERIFICATION_UNCERTAIN", "safeEventType": "providerStale" },
+    {
+      "family": "PROVIDER",
+      "code": "DUPLICATE",
+      "effect": "VERIFICATION_UNCERTAIN",
+      "safeEventType": "providerDuplicate"
+    },
+    { "family": "RUNTIME", "code": "CANCEL", "effect": "CANCEL", "safeEventType": "runtimeCancelled" },
+    { "family": "RUNTIME", "code": "RESTART", "effect": "PAUSE", "safeEventType": "runtimeRestarted" },
+    {
+      "family": "PRESENTATION",
+      "code": "INTERRUPTED",
+      "effect": "PRESENTATION_FALLBACK",
+      "safeEventType": "presentationInterrupted"
+    },
+    {
+      "family": "PRESENTATION",
+      "code": "FAILED",
+      "effect": "PRESENTATION_FALLBACK",
+      "safeEventType": "presentationFailed"
+    },
+    { "family": "DEVICE", "code": "INPUT_UNAVAILABLE", "effect": "PAUSE", "safeEventType": "deviceInputUnavailable" },
+    {
+      "family": "ACCESSIBILITY",
+      "code": "REDUCED_MOTION",
+      "effect": "AUDIT_ONLY",
+      "safeEventType": "reducedMotionApplied"
+    },
+    {
+      "family": "ACCESSIBILITY",
+      "code": "SCREEN_READER",
+      "effect": "AUDIT_ONLY",
+      "safeEventType": "screenReaderModeApplied"
+    },
+    {
+      "family": "TIME",
+      "code": "CLOCK_LIMIT",
+      "effect": "INCOMPLETE_PROOF",
+      "safeEventType": "virtualClockLimitReached"
+    }
+  ],
+  "limits": "Unknown family/code pairs are rejected by the strict Scenario parser. Effects are synthetic only and never call a provider, device, or live Voyage."
+}

@@ -1,105 +1,21 @@
 {
   "version": 2,
-  "status": "integrated-deepwater-phase-2-wakebook-phase-1-control-plane",
+  "status": "integrated-tideglass-phase-3-wakebook-phase-1-control-plane",
   "pathMappings": [
     {
-      "path": "Development_Docs/Projects/Project Wakebook/**",
-      "suiteIds": ["unit.wakebook", "static.core"],
-      "contractIds": [
-        "wakebook.history.version-pinning",
-        "wakebook.history.owner-privacy",
-        "wakebook.history.historical-stability",
-        "wakebook.timing.quality",
-        "wakebook.artifact-context",
-        "wakebook.navigation.reachability",
-        "wakebook.archive.pagination",
-        "wakebook.archive.year-grouping",
-        "wakebook.archive.filters",
-        "wakebook.archive.invitation-separation",
-        "wakebook.archive.partial-history",
-        "wakebook.archive.summary-redaction"
-      ]
+      "path": "bridgewatch/**",
+      "suiteIds": ["unit.bridgewatch", "static.core"],
+      "contractIds": ["bridgewatch.mission-control"]
     },
     {
-      "path": "Development_Docs/Project_Wakebook_Phase_1_*.md",
-      "suiteIds": ["unit.wakebook", "static.core"],
-      "contractIds": [
-        "wakebook.history.version-pinning",
-        "wakebook.history.owner-privacy",
-        "wakebook.history.historical-stability",
-        "wakebook.timing.quality",
-        "wakebook.artifact-context",
-        "wakebook.navigation.reachability",
-        "wakebook.archive.pagination",
-        "wakebook.archive.year-grouping",
-        "wakebook.archive.filters",
-        "wakebook.archive.invitation-separation",
-        "wakebook.archive.partial-history",
-        "wakebook.archive.summary-redaction"
-      ]
+      "path": "scripts/sounding-line/status-projection.mjs",
+      "suiteIds": ["unit.bridgewatch", "unit.sounding-line", "static.core"],
+      "contractIds": ["bridgewatch.mission-control"]
     },
     {
-      "path": "src/wakebook/**",
-      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"],
-      "contractIds": [
-        "wakebook.history.version-pinning",
-        "wakebook.history.owner-privacy",
-        "wakebook.history.historical-stability",
-        "wakebook.timing.quality",
-        "wakebook.artifact-context",
-        "wakebook.archive.pagination",
-        "wakebook.archive.year-grouping",
-        "wakebook.archive.filters",
-        "wakebook.archive.invitation-separation",
-        "wakebook.archive.partial-history",
-        "wakebook.archive.summary-redaction"
-      ]
-    },
-    {
-      "path": "src/components/wakebook/**",
-      "suiteIds": ["component.wakebook", "browser.wakebook"],
-      "contractIds": [
-        "wakebook.timing.quality",
-        "wakebook.artifact-context",
-        "wakebook.navigation.reachability",
-        "wakebook.archive.invitation-separation",
-        "wakebook.archive.partial-history",
-        "wakebook.archive.summary-redaction"
-      ]
-    },
-    {
-      "path": "src/app/api/passport/voyages/**",
-      "suiteIds": ["unit.wakebook", "browser.wakebook"],
-      "contractIds": [
-        "wakebook.history.version-pinning",
-        "wakebook.history.owner-privacy",
-        "wakebook.archive.pagination",
-        "wakebook.archive.filters",
-        "wakebook.archive.partial-history",
-        "wakebook.archive.summary-redaction"
-      ]
-    },
-    {
-      "path": "src/app/passport/history/**",
-      "suiteIds": ["component.wakebook", "browser.wakebook"],
-      "contractIds": ["wakebook.navigation.reachability", "wakebook.history.owner-privacy"]
-    },
-    {
-      "path": "tests/e2e/wakebook-phase1.spec.ts",
-      "suiteIds": ["browser.wakebook"],
-      "contractIds": [
-        "wakebook.history.version-pinning",
-        "wakebook.history.owner-privacy",
-        "wakebook.history.historical-stability",
-        "wakebook.artifact-context",
-        "wakebook.navigation.reachability",
-        "wakebook.archive.pagination",
-        "wakebook.archive.year-grouping",
-        "wakebook.archive.filters",
-        "wakebook.archive.invitation-separation",
-        "wakebook.archive.partial-history",
-        "wakebook.archive.summary-redaction"
-      ]
+      "path": "Development_Docs/Project_Bridgewatch_Phase_2_*.md",
+      "suiteIds": ["unit.bridgewatch", "static.core"],
+      "contractIds": ["bridgewatch.mission-control"]
     },
     {
       "path": "Development_Docs/Projects/Project_Helm/**",
@@ -121,6 +37,31 @@
       "contractIds": ["helm.authority-membership.independent", "helm.participation.lifecycle"]
     },
     {
+      "path": "src/platform/membership-presence*",
+      "suiteIds": ["unit.helm", "component.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "helm.security.resource-authorization"]
+    },
+    {
+      "path": "src/platform/presence-client.ts",
+      "suiteIds": ["unit.helm", "component.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "helm.player-projection.firewall"]
+    },
+    {
+      "path": "src/app/api/captain/voyages/**",
+      "suiteIds": ["unit.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "helm.security.resource-authorization"]
+    },
+    {
+      "path": "src/app/api/player/playthroughs/**/presence/**",
+      "suiteIds": ["unit.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "helm.security.resource-authorization"]
+    },
+    {
+      "path": "prisma/**helm_phase2_membership_presence/**",
+      "suiteIds": ["unit.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "migration-parity"]
+    },
+    {
       "path": "src/components/platform/CaptainLibrary*",
       "suiteIds": ["component.helm", "browser.helm"],
       "contractIds": [
@@ -128,6 +69,11 @@
         "helm.participation.lifecycle",
         "helm.accessibility.responsive"
       ]
+    },
+    {
+      "path": "src/components/captain/CaptainOperationalPanel.tsx",
+      "suiteIds": ["component.helm", "browser.helm"],
+      "contractIds": ["helm.member-presence-synchronization", "helm.accessibility.responsive"]
     },
     {
       "path": "src/platform/invitations*",
@@ -205,9 +151,21 @@
       "suiteIds": ["unit.homeport", "static.core"],
       "contractIds": ["homeport.nonconformity-ledger.complete"]
     },
-    { "path": "AGENTS.md", "suiteIds": ["static.core"], "contractIds": [] },
-    { "path": ".agents/README.md", "suiteIds": ["static.core"], "contractIds": [] },
-    { "path": "Development_Docs/README.md", "suiteIds": ["static.core"], "contractIds": [] },
+    {
+      "path": "AGENTS.md",
+      "suiteIds": ["static.core"],
+      "contractIds": []
+    },
+    {
+      "path": ".agents/README.md",
+      "suiteIds": ["static.core"],
+      "contractIds": []
+    },
+    {
+      "path": "Development_Docs/README.md",
+      "suiteIds": ["static.core"],
+      "contractIds": []
+    },
     {
       "path": "Development_Docs/Features/FEATURE_CATALOG.md",
       "suiteIds": ["unit.feature-catalog", "static.core"],
@@ -231,30 +189,98 @@
     {
       "path": "Development_Docs/Projects/Project Drydock/**",
       "suiteIds": ["unit.drydock", "static.core"],
-      "contractIds": ["drydock-authoring-contracts"]
+      "contractIds": [
+        "drydock-authoring-contracts",
+        "drydock-scenario-contract",
+        "drydock-simulation-determinism",
+        "drydock-virtual-time",
+        "drydock-fault-contract",
+        "drydock-trace-privacy",
+        "drydock-coverage-contract",
+        "drydock-runtime-adapter",
+        "drydock-runtime-differential",
+        "drydock-no-live-mutation",
+        "drydock-durable-run",
+        "drydock-scenario-authorization",
+        "drydock-studio-scenario-lab",
+        "drydock-performance"
+      ]
     },
     {
       "path": "src/drydock/**",
       "suiteIds": ["unit.drydock", "static.core"],
-      "contractIds": ["drydock-authoring-contracts"]
+      "contractIds": [
+        "drydock-authoring-contracts",
+        "drydock-scenario-contract",
+        "drydock-simulation-determinism",
+        "drydock-virtual-time",
+        "drydock-fault-contract",
+        "drydock-trace-privacy",
+        "drydock-coverage-contract",
+        "drydock-runtime-adapter",
+        "drydock-runtime-differential",
+        "drydock-no-live-mutation",
+        "drydock-durable-run",
+        "drydock-scenario-authorization",
+        "drydock-studio-scenario-lab",
+        "drydock-performance"
+      ]
     },
     {
       "path": "scripts/drydock/**",
       "suiteIds": ["unit.drydock", "static.core"],
-      "contractIds": ["drydock-authoring-contracts"]
+      "contractIds": [
+        "drydock-authoring-contracts",
+        "drydock-scenario-contract",
+        "drydock-simulation-determinism",
+        "drydock-virtual-time",
+        "drydock-fault-contract",
+        "drydock-trace-privacy",
+        "drydock-coverage-contract",
+        "drydock-runtime-adapter",
+        "drydock-runtime-differential",
+        "drydock-no-live-mutation",
+        "drydock-durable-run",
+        "drydock-scenario-authorization",
+        "drydock-studio-scenario-lab",
+        "drydock-performance"
+      ]
     },
     {
       "path": "tests/fixtures/drydock/**",
       "suiteIds": ["unit.drydock", "static.core"],
-      "contractIds": ["drydock-authoring-contracts"]
+      "contractIds": [
+        "drydock-authoring-contracts",
+        "drydock-scenario-contract",
+        "drydock-simulation-determinism",
+        "drydock-virtual-time",
+        "drydock-fault-contract",
+        "drydock-trace-privacy",
+        "drydock-coverage-contract",
+        "drydock-runtime-adapter",
+        "drydock-runtime-differential",
+        "drydock-no-live-mutation",
+        "drydock-durable-run",
+        "drydock-scenario-authorization",
+        "drydock-studio-scenario-lab",
+        "drydock-performance"
+      ]
     },
-    { "path": "Development_Docs/document-index.json", "suiteIds": ["static.core"], "contractIds": [] },
+    {
+      "path": "Development_Docs/document-index.json",
+      "suiteIds": ["static.core"],
+      "contractIds": []
+    },
     {
       "path": "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
       "suiteIds": ["static.core"],
       "contractIds": []
     },
-    { "path": "scripts/generate-document-index.mjs", "suiteIds": ["static.core"], "contractIds": [] },
+    {
+      "path": "scripts/generate-document-index.mjs",
+      "suiteIds": ["static.core"],
+      "contractIds": []
+    },
     {
       "path": "src/tideglass/**",
       "suiteIds": ["unit.tideglass", "static.core"],
@@ -836,16 +862,9 @@
     },
     {
       "path": "src/navigation/**",
-      "suiteIds": [
-        "unit.true-north",
-        "component.navigation",
-        "browser.navigation",
-        "unit.homeport",
-        "component.homeport",
-        "browser.homeport"
-      ],
+      "suiteIds": ["unit.admiralty", "browser.admiralty", "unit.homeport", "component.homeport", "browser.homeport"],
       "contractIds": [
-        "authentication-authorization",
+        "admiralty.phase2.authorization-partition",
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
         "homeport.route.classification-exclusive",
@@ -4267,7 +4286,7 @@
     },
     {
       "path": "src/admiralty/**",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"],
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"],
       "contractIds": [
         "admiralty.phase1.identity",
         "admiralty.phase1.authorization",
@@ -4276,51 +4295,83 @@
         "admiralty.phase1.audit",
         "admiralty.phase1.registry",
         "admiralty.phase1.migration",
-        "admiralty.phase1.responsive-consent"
+        "admiralty.phase1.responsive-consent",
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.registry-activation",
+        "admiralty.phase2.responsive-accessibility"
       ]
     },
     {
       "path": "src/components/admiralty/**",
       "suiteIds": ["component.admiralty", "browser.admiralty"],
       "contractIds": [
-        "admiralty.phase1.authorization",
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.responsive-accessibility",
         "admiralty.phase1.assurance",
-        "admiralty.phase1.support-access",
-        "admiralty.phase1.responsive-consent"
+        "admiralty.phase1.support-access"
       ]
     },
     {
       "path": "src/app/admin/**",
       "suiteIds": ["component.admiralty", "browser.admiralty"],
       "contractIds": [
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.registry-activation",
+        "admiralty.phase2.responsive-accessibility",
         "admiralty.phase1.identity",
         "admiralty.phase1.authorization",
         "admiralty.phase1.assurance",
         "admiralty.phase1.support-access",
         "admiralty.phase1.audit",
+        "admiralty.phase1.registry",
         "admiralty.phase1.responsive-consent"
       ]
     },
     {
       "path": "src/app/api/admin/**",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"],
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"],
       "contractIds": [
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.registry-activation",
+        "admiralty.phase2.responsive-accessibility",
         "admiralty.phase1.identity",
         "admiralty.phase1.authorization",
         "admiralty.phase1.assurance",
         "admiralty.phase1.support-access",
         "admiralty.phase1.audit",
+        "admiralty.phase1.registry",
         "admiralty.phase1.responsive-consent"
       ]
     },
     {
       "path": "src/app/api/account/support/**",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"],
-      "contractIds": ["admiralty.phase1.support-access", "admiralty.phase1.audit"]
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"],
+      "contractIds": [
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit",
+        "admiralty.phase2.account-dossier-support"
+      ]
     },
     {
       "path": "scripts/admiralty/**",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"],
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"],
       "contractIds": [
         "admiralty.phase1.identity",
         "admiralty.phase1.authorization",
@@ -4329,7 +4380,15 @@
         "admiralty.phase1.audit",
         "admiralty.phase1.registry",
         "admiralty.phase1.migration",
-        "admiralty.phase1.responsive-consent"
+        "admiralty.phase1.responsive-consent",
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.registry-activation",
+        "admiralty.phase2.responsive-accessibility"
       ]
     },
     {
@@ -4390,6 +4449,178 @@
       "path": "prisma/mysql-migrations/0053_tideglass_phase2_creator_annotations/**",
       "suiteIds": ["unit.tideglass", "migration.mysql"],
       "contractIds": ["tideglass-creator-annotations", "tideglass-migration-parity"]
+    },
+    {
+      "path": "src/admiralty/ports/**",
+      "suiteIds": ["service.admiralty", "browser.admiralty"],
+      "contractIds": [
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit"
+      ]
+    },
+    {
+      "path": "src/admiralty/read-models*",
+      "suiteIds": ["service.admiralty", "browser.admiralty"],
+      "contractIds": [
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit"
+      ]
+    },
+    {
+      "path": "src/homeport/current-user*",
+      "suiteIds": ["unit.admiralty", "browser.admiralty"],
+      "contractIds": ["admiralty.phase2.authorization-partition"]
+    },
+    {
+      "path": "tests/e2e/admiralty-phase2.spec.ts",
+      "suiteIds": ["browser.admiralty"],
+      "contractIds": [
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.registry-activation",
+        "admiralty.phase2.responsive-accessibility",
+        "admiralty.phase1.identity",
+        "admiralty.phase1.authorization",
+        "admiralty.phase1.assurance",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit",
+        "admiralty.phase1.registry",
+        "admiralty.phase1.responsive-consent"
+      ]
+    },
+    {
+      "path": "playwright.admiralty-phase2.config.ts",
+      "suiteIds": ["browser.admiralty"],
+      "contractIds": [
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.registry-activation",
+        "admiralty.phase2.responsive-accessibility",
+        "admiralty.phase1.identity",
+        "admiralty.phase1.authorization",
+        "admiralty.phase1.assurance",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit",
+        "admiralty.phase1.registry",
+        "admiralty.phase1.responsive-consent"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project Wakebook/**",
+      "suiteIds": ["unit.wakebook", "static.core"],
+      "contractIds": [
+        "wakebook.history.version-pinning",
+        "wakebook.history.owner-privacy",
+        "wakebook.history.historical-stability",
+        "wakebook.timing.quality",
+        "wakebook.artifact-context",
+        "wakebook.navigation.reachability",
+        "wakebook.archive.pagination",
+        "wakebook.archive.year-grouping",
+        "wakebook.archive.filters",
+        "wakebook.archive.invitation-separation",
+        "wakebook.archive.partial-history",
+        "wakebook.archive.summary-redaction"
+      ]
+    },
+    {
+      "path": "Development_Docs/Project_Wakebook_Phase_1_*.md",
+      "suiteIds": ["unit.wakebook", "static.core"],
+      "contractIds": [
+        "wakebook.history.version-pinning",
+        "wakebook.history.owner-privacy",
+        "wakebook.history.historical-stability",
+        "wakebook.timing.quality",
+        "wakebook.artifact-context",
+        "wakebook.navigation.reachability",
+        "wakebook.archive.pagination",
+        "wakebook.archive.year-grouping",
+        "wakebook.archive.filters",
+        "wakebook.archive.invitation-separation",
+        "wakebook.archive.partial-history",
+        "wakebook.archive.summary-redaction"
+      ]
+    },
+    {
+      "path": "src/wakebook/**",
+      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"],
+      "contractIds": [
+        "wakebook.history.version-pinning",
+        "wakebook.history.owner-privacy",
+        "wakebook.history.historical-stability",
+        "wakebook.timing.quality",
+        "wakebook.artifact-context",
+        "wakebook.archive.pagination",
+        "wakebook.archive.year-grouping",
+        "wakebook.archive.filters",
+        "wakebook.archive.invitation-separation",
+        "wakebook.archive.partial-history",
+        "wakebook.archive.summary-redaction"
+      ]
+    },
+    {
+      "path": "src/components/wakebook/**",
+      "suiteIds": ["component.wakebook", "browser.wakebook"],
+      "contractIds": [
+        "wakebook.timing.quality",
+        "wakebook.artifact-context",
+        "wakebook.navigation.reachability",
+        "wakebook.archive.invitation-separation",
+        "wakebook.archive.partial-history",
+        "wakebook.archive.summary-redaction"
+      ]
+    },
+    {
+      "path": "src/app/api/passport/voyages/**",
+      "suiteIds": ["unit.wakebook", "browser.wakebook"],
+      "contractIds": [
+        "wakebook.history.version-pinning",
+        "wakebook.history.owner-privacy",
+        "wakebook.archive.pagination",
+        "wakebook.archive.filters",
+        "wakebook.archive.partial-history",
+        "wakebook.archive.summary-redaction"
+      ]
+    },
+    {
+      "path": "src/app/passport/history/**",
+      "suiteIds": ["component.wakebook", "browser.wakebook"],
+      "contractIds": ["wakebook.navigation.reachability", "wakebook.history.owner-privacy"]
+    },
+    {
+      "path": "tests/e2e/wakebook-phase1.spec.ts",
+      "suiteIds": ["browser.wakebook"],
+      "contractIds": [
+        "wakebook.history.version-pinning",
+        "wakebook.history.owner-privacy",
+        "wakebook.history.historical-stability",
+        "wakebook.artifact-context",
+        "wakebook.navigation.reachability",
+        "wakebook.archive.pagination",
+        "wakebook.archive.year-grouping",
+        "wakebook.archive.filters",
+        "wakebook.archive.invitation-separation",
+        "wakebook.archive.partial-history",
+        "wakebook.archive.summary-redaction"
+      ]
     }
   ],
   "contractMappings": [
@@ -4405,8 +4636,14 @@
       "contractId": "helm.participation.lifecycle",
       "suiteIds": ["unit.helm", "component.helm", "browser.helm"]
     },
-    { "contractId": "helm.player-projection.firewall", "suiteIds": ["unit.helm", "browser.helm"] },
-    { "contractId": "helm.history.membership-derived", "suiteIds": ["unit.helm", "browser.helm"] },
+    {
+      "contractId": "helm.player-projection.firewall",
+      "suiteIds": ["unit.helm", "browser.helm"]
+    },
+    {
+      "contractId": "helm.history.membership-derived",
+      "suiteIds": ["unit.helm", "browser.helm"]
+    },
     {
       "contractId": "helm.artifacts.event-time-membership",
       "suiteIds": ["unit.helm", "browser.helm"]
@@ -4427,10 +4664,22 @@
       "contractId": "journal-ready-state",
       "suiteIds": ["unit.journal", "component.journal", "browser.player-journal", "browser.accessibility"]
     },
-    { "contractId": "migration-parity", "suiteIds": ["database.sqlite", "migration.mysql", "build.production"] },
-    { "contractId": "tideglass-exact-edition-pair", "suiteIds": ["unit.tideglass", "unit.one-voyage"] },
-    { "contractId": "tideglass-semantic-determinism", "suiteIds": ["unit.tideglass"] },
-    { "contractId": "tideglass-safe-projection", "suiteIds": ["unit.tideglass", "unit.wayfarer"] },
+    {
+      "contractId": "migration-parity",
+      "suiteIds": ["database.sqlite", "migration.mysql", "build.production"]
+    },
+    {
+      "contractId": "tideglass-exact-edition-pair",
+      "suiteIds": ["unit.tideglass", "unit.one-voyage"]
+    },
+    {
+      "contractId": "tideglass-semantic-determinism",
+      "suiteIds": ["unit.tideglass"]
+    },
+    {
+      "contractId": "tideglass-safe-projection",
+      "suiteIds": ["unit.tideglass", "unit.wayfarer"]
+    },
     {
       "contractId": "tideglass-read-only-invariance",
       "suiteIds": ["unit.tideglass", "unit.one-voyage", "unit.wayfarer", "unit.community"]
@@ -4447,12 +4696,30 @@
       "contractId": "community-public-projection",
       "suiteIds": ["unit.community", "component.community", "browser.community"]
     },
-    { "contractId": "homeport.route-inventory.complete", "suiteIds": ["unit.homeport"] },
-    { "contractId": "homeport.session-inventory.complete", "suiteIds": ["unit.homeport"] },
-    { "contractId": "homeport.screen-catalog.complete", "suiteIds": ["unit.homeport"] },
-    { "contractId": "homeport.journey-catalog.complete", "suiteIds": ["unit.homeport"] },
-    { "contractId": "homeport.evidence-manifest.complete", "suiteIds": ["unit.homeport"] },
-    { "contractId": "homeport.nonconformity-ledger.complete", "suiteIds": ["unit.homeport"] },
+    {
+      "contractId": "homeport.route-inventory.complete",
+      "suiteIds": ["unit.homeport"]
+    },
+    {
+      "contractId": "homeport.session-inventory.complete",
+      "suiteIds": ["unit.homeport"]
+    },
+    {
+      "contractId": "homeport.screen-catalog.complete",
+      "suiteIds": ["unit.homeport"]
+    },
+    {
+      "contractId": "homeport.journey-catalog.complete",
+      "suiteIds": ["unit.homeport"]
+    },
+    {
+      "contractId": "homeport.evidence-manifest.complete",
+      "suiteIds": ["unit.homeport"]
+    },
+    {
+      "contractId": "homeport.nonconformity-ledger.complete",
+      "suiteIds": ["unit.homeport"]
+    },
     {
       "contractId": "homeport.community.harbor-home",
       "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
@@ -6006,6 +6273,102 @@
       "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
     },
     {
+      "contractId": "admiralty.phase1.identity",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase1.authorization",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase1.assurance",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase1.support-access",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase1.audit",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase1.registry",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase1.migration",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase1.responsive-consent",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "bridgewatch.mission-control",
+      "suiteIds": ["unit.bridgewatch", "unit.sounding-line"]
+    },
+    {
+      "contractId": "tideglass-change-classification",
+      "suiteIds": ["unit.tideglass"]
+    },
+    {
+      "contractId": "tideglass-compatibility-deltas",
+      "suiteIds": ["unit.tideglass"]
+    },
+    {
+      "contractId": "tideglass-deterministic-summary",
+      "suiteIds": ["unit.tideglass"]
+    },
+    {
+      "contractId": "tideglass-creator-annotations",
+      "suiteIds": ["unit.tideglass"]
+    },
+    {
+      "contractId": "tideglass-rebuildable-cache",
+      "suiteIds": ["unit.tideglass"]
+    },
+    {
+      "contractId": "tideglass-api-security",
+      "suiteIds": ["unit.tideglass"]
+    },
+    {
+      "contractId": "tideglass-migration-parity",
+      "suiteIds": ["unit.tideglass", "database.sqlite", "migration.mysql"]
+    },
+    {
+      "contractId": "admiralty.phase2.authorization-partition",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase2.account-dossier-support",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase2.chronicle-voyage-inspection",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase2.community-operations-providers",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase2.audit-investigation",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase2.registry-activation",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase2.responsive-accessibility",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
       "contractId": "wakebook.history.version-pinning",
       "suiteIds": ["unit.wakebook", "browser.wakebook"]
     },
@@ -6052,46 +6415,7 @@
     {
       "contractId": "wakebook.archive.summary-redaction",
       "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
-    },
-    {
-      "contractId": "admiralty.phase1.identity",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
-    },
-    {
-      "contractId": "admiralty.phase1.authorization",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
-    },
-    {
-      "contractId": "admiralty.phase1.assurance",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
-    },
-    {
-      "contractId": "admiralty.phase1.support-access",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
-    },
-    {
-      "contractId": "admiralty.phase1.audit",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
-    },
-    {
-      "contractId": "admiralty.phase1.registry",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
-    },
-    {
-      "contractId": "admiralty.phase1.migration",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
-    },
-    {
-      "contractId": "admiralty.phase1.responsive-consent",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
-    },
-    { "contractId": "tideglass-change-classification", "suiteIds": ["unit.tideglass"] },
-    { "contractId": "tideglass-compatibility-deltas", "suiteIds": ["unit.tideglass"] },
-    { "contractId": "tideglass-deterministic-summary", "suiteIds": ["unit.tideglass"] },
-    { "contractId": "tideglass-creator-annotations", "suiteIds": ["unit.tideglass"] },
-    { "contractId": "tideglass-rebuildable-cache", "suiteIds": ["unit.tideglass"] },
-    { "contractId": "tideglass-api-security", "suiteIds": ["unit.tideglass"] },
-    { "contractId": "tideglass-migration-parity", "suiteIds": ["unit.tideglass", "database.sqlite", "migration.mysql"] }
+    }
   ],
   "impactClasses": [
     "direct-source-ownership",

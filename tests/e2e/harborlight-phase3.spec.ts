@@ -40,15 +40,14 @@ test.describe.serial("Harborlight Phase 3 persisted browser acceptance", () => {
   test("public discovery, Guides, metadata, keyboard operation, mobile layout, and reduced motion remain safe", async () => {
     const page = fixture.owner.page;
     await page.goto(`/community?q=${encodeURIComponent(fixture.listing.title)}`);
-    await expect(page.getByRole("heading", { name: "Search the Harbor" })).toBeVisible();
-    const results = page.locator('[aria-label="Public Community Harbor results"]');
-    await expect(results.getByRole("link", { name: fixture.listing.title })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Find a public chart" })).toBeVisible();
+    await expect(page.getByRole("link", { name: fixture.listing.title })).toBeVisible();
     await expect(page.getByText("Hidden unlisted listing")).toHaveCount(0);
 
     await page.getByRole("searchbox", { name: "Search public Community Harbor" }).focus();
     await expect(page.getByRole("searchbox", { name: "Search public Community Harbor" })).toBeFocused();
     await page.getByRole("button", { name: "Clear search and filters" }).press("Enter");
-    await expect(page).toHaveURL(/\/community$/u);
+    await expect(page).toHaveURL(/\/community\?sort=FEATURED$/u);
     await page.goBack();
     await expect(page).toHaveURL(/q=/u);
 
@@ -256,15 +255,7 @@ async function createActor(browser: Browser, handle: string): Promise<SignedInAc
   });
   const account = await db.userAccount.create({ data: { status: "ACTIVE", legacyGameMasterId: gm.id } });
   await db.playerProfile.create({
-    data: {
-      accountId: account.id,
-      displayName: handle,
-      handle,
-      normalizedHandle: handle,
-      defaultVisibility: "PUBLIC",
-      status: "ACTIVE",
-      claimedAt: new Date(),
-    },
+    data: { accountId: account.id, displayName: handle, status: "ACTIVE", claimedAt: new Date() },
   });
   const profile = await db.communityProfile.create({
     data: { accountId: account.id, handle, normalizedHandle: handle, displayName: handle, visibility: "COMMUNITY" },

@@ -43,6 +43,7 @@ function authenticated(
     canUseCreator: boolean;
     canModerate: boolean;
     isAdministrator: boolean;
+    canUseAdmiralty: boolean;
   }> = {},
   handle: string | null = "mara",
 ): CurrentUserClientState {
@@ -105,6 +106,7 @@ describe("Homeport Phase 2 navigation authority", () => {
     const cases: Array<[string, ShellMode]> = [
       ["/", "GATEWAY_STANDARD"],
       ["/tales", "PUBLIC_STANDARD"],
+      ["/chronicles/lantern-test/compare", "PUBLIC_STANDARD"],
       ["/community/guides/example", "PUBLIC_STANDARD"],
       ["/player/library", "WORKSPACE_STANDARD"],
       ["/captain/sessions/session-1", "COMPACT"],
@@ -116,6 +118,11 @@ describe("Homeport Phase 2 navigation authority", () => {
       ["/dev/animations", "DEVELOPMENT"],
     ];
     for (const [pathname, mode] of cases) expect(classifyRoute(pathname).shellMode).toBe(mode);
+    expect(classifyRoute("/chronicles/lantern-test/compare")).toMatchObject({
+      id: "tideglass-chronicle-compare",
+      owner: "tideglass",
+      activeFamily: "global-explore-chronicles",
+    });
     expect(new Set(routeShellDefinitions.map((definition) => definition.shellMode))).toEqual(
       new Set([
         "GATEWAY_STANDARD",
@@ -258,6 +265,14 @@ describe("Homeport Phase 2 navigation authority", () => {
     expect(functionalDestinationIds({ ...input, presentation: "desktop" })).toEqual(
       functionalDestinationIds({ ...input, presentation: "mobile" }),
     );
+  });
+
+  it("projects Admiralty only for an explicitly authorized operator", () => {
+    const ordinary = projection("/account", "WORKSPACE_STANDARD", "account", authenticated());
+    const operator = projection("/account", "WORKSPACE_STANDARD", "account", authenticated({ canUseAdmiralty: true }));
+    expect(ordinary.accountItems.some((item) => item.id === "account-workspace-admiralty")).toBe(false);
+    expect(operator.accountItems.find((item) => item.id === "account-workspace-admiralty")?.href).toBe("/admin");
+    expect(classifyRoute("/admin/people/account-1")).toMatchObject({ owner: "admiralty", shellMode: "TOKENIZED" });
   });
 
   it("homeport.shell.active-state handles exact, section, dynamic, aliases, and false prefixes", () => {

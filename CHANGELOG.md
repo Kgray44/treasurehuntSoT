@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-12
 ---
 
 # Changelog
@@ -12,14 +12,50 @@ last_reviewed: 2026-08-09
 
 ### Changed
 
-- Completed Project Wakebook Phase 1, Open the Wake, on its named branch. The
-  Chronicle Passport now has a private visual Journey Archive with truthful
-  chronology, full-year summaries, bounded search/filter/sort/pagination,
-  exact played-edition identity, safe historical crew/timing/outcome context,
-  separate invitation history, artifact-provenance boundaries, a polished
-  Voyage Detail, and existing private remembrance handoffs. This is
-  owner-walkthrough readiness, not mainline availability, deployment, or owner
-  acceptance.
+- Integrated owner-accepted Project Wakebook Phase 1, **Open the Wake**, on
+  canonical main through protected PR #41. Chronicle Passport History now opens
+  the private **Your Voyages** archive with truthful chronology, accurate year
+  summaries, bounded discovery and pagination, exact played-edition and
+  historical crew context, invitation separation, artifact-provenance
+  boundaries, responsive archive/detail states, and preserved Reflection,
+  Memory, Keepsake, Cabinet, and eligible review handoffs. This is protected
+  mainline source integration, not deployment or authorization for Phase 2.
+
+- Expanded Project Admiralty on its Phase 2 review branch into a read-only
+  15-route Chartroom with authorized account-menu entry, role-filtered
+  navigation, bounded People/Chronicle/Voyage/Community search and detail,
+  operations/provider/configuration/release visibility, Audit Explorer,
+  correlation-led investigation, and dossier-anchored Phase 1 Support Access.
+  The slice adds no schema or broad mutation and remains pending reconciled
+  exact-source authority, owner walkthrough, mainline integration, and
+  deployment.
+
+- Added Project Drydock Phase 3 Sea Trials on its dedicated branch: authorized
+  Creators can save immutable source-bound Scenario revisions and Suites, run
+  bounded deterministic simulation with virtual time and catalogued synthetic
+  faults, and inspect redacted trace, state-digest, assertion, and coverage
+  receipts. The simulator shares One Voyage's pure transition planner but does
+  not mutate live Voyages, providers, devices, or published Chronicles. This is
+  focused local branch evidence only; it is not candidate-qualified, on main,
+  deployed, or owner accepted.
+
+- Integrated Project Helm Phase 2, **Read the Deck**, on canonical main.
+  Captain operations now provide privacy-safe read-only Voyage status,
+  prioritized attention, member-scoped crew presence and synchronization
+  health, safe recent event summaries, and current progress while preserving
+  Phase 1 Captain authority, ordinary Player membership, and Player-safe
+  perspective boundaries. This is automated protected-mainline source evidence,
+  not deployment, live-Voyage proof, or owner acceptance.
+
+- Project Tideglass Phase 3 is a frozen, owner-accepted candidate on its
+  dedicated branch: a discoverable Chronicle `What changed?` route, exact
+  owner-bound Passport history entry, publishing-owned recommended target,
+  spoiler-safe concise/detailed semantic views, category filtering, edition
+  context, and semantic Creator Studio comparison. The storage-oriented Studio
+  product diff is retired. A v2 task-owned fixture exercises history, partial,
+  branch/ending/setup/accessibility/compatibility, and Creator-annotation
+  outcomes. Protected merge, deployment, and live-provider claims remain
+  pending.
 
 - Added Project Helm Phase 1 participating-Captain operation. Voyage creation
   now defaults to Captain-only and offers an explicit Captain + Player mode
@@ -106,11 +142,6 @@ last_reviewed: 2026-08-09
 
 ### Validation
 
-- Registered 12 Wakebook contracts and isolated unit, component, and browser
-  families in Sounding Line, including a synthetic 1,005-record archive,
-  owner/privacy negatives, historical stability, summary redaction, ordinary
-  desktop/mobile navigation, responsive overflow, and serious/critical
-  accessibility checks.
 - Added focused Admiralty policy/service/component coverage, fresh and upgrade
   migration rehearsal, and exact-source production-browser journeys for
   unauthorized concealment, assurance expiry/renewal, support approval, denial,

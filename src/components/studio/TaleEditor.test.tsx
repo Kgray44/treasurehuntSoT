@@ -75,6 +75,18 @@ function editorData() {
               isEnabled: true,
               schemaVersion: 1,
             },
+            {
+              id: "block-2",
+              blockType: "narrative",
+              title: "Second Scene",
+              internalLabel: null,
+              configuration: { body: "The crew chooses a bearing." },
+              presentation: {},
+              completion: {},
+              creatorNotes: null,
+              isEnabled: true,
+              schemaVersion: 1,
+            },
           ],
         },
       ],
@@ -154,6 +166,27 @@ describe("Voyagewright Studio editor motion and authority", () => {
     await waitFor(() => expect(card).toHaveFocus());
   });
 
+  it("supports whole-card drag wiring, additive Passage selection, and the persisted animation controls", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, editorData())));
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    const first = screen.getByText("Opening Scene").closest<HTMLElement>("article")!;
+    const second = screen.getByText("Second Scene").closest<HTMLElement>("article")!;
+    expect(first).toHaveAttribute("role", "button");
+    expect(first).toHaveAttribute("aria-roledescription", "sortable");
+    fireEvent.click(first);
+    fireEvent.click(second, { ctrlKey: true });
+    expect(screen.getByText("2 Passages selected")).toBeVisible();
+
+    fireEvent.click(first);
+    expect(await screen.findByText("Passage animation")).toBeVisible();
+    expect(screen.getByLabelText("Opening animation")).toBeVisible();
+    expect(screen.getByLabelText("Leaving animation")).toBeVisible();
+    expect(screen.getByLabelText("While this Passage is active")).toBeVisible();
+    expect(screen.getAllByRole("option", { name: /Tidal wake/ })).toHaveLength(3);
+  });
+
   it("highlights and focuses the exact block named by authoritative validation", async () => {
     vi.stubGlobal(
       "fetch",
@@ -163,7 +196,15 @@ describe("Voyagewright Studio editor motion and authority", () => {
         .mockResolvedValueOnce(
           response(200, {
             valid: false,
-            errors: [{ message: "Opening Scene needs a destination.", blockId: "block-1" }],
+            errors: [
+              {
+                code: "DRYDOCK_GRAPH_NO_TERMINAL_PATH",
+                message: "Opening Scene needs a destination.",
+                category: "GRAPH",
+                remediation: "Connect the Passage to a terminal.",
+                blockId: "block-1",
+              },
+            ],
             warnings: [],
           }),
         ),
@@ -172,12 +213,130 @@ describe("Voyagewright Studio editor motion and authority", () => {
     await screen.findByRole("heading", { name: "A Test Chronicle" });
 
     fireEvent.click(screen.getByRole("button", { name: "Validate Chronicle" }));
-    const issue = await screen.findByRole("button", { name: "Opening Scene needs a destination." });
+    const issue = await screen.findByRole("button", { name: /Opening Scene needs a destination\./ });
+    expect(issue).toHaveAttribute("data-drydock-rule-code", "DRYDOCK_GRAPH_NO_TERMINAL_PATH");
+    expect(screen.getByRole("combobox", { name: "Filter validation category" })).toHaveValue("ALL");
+    fireEvent.change(screen.getByRole("combobox", { name: "Filter validation category" }), {
+      target: { value: "GRAPH" },
+    });
+    expect(issue).toHaveTextContent("Connect the Passage to a terminal.");
     fireEvent.click(issue);
     const card = screen.getByText("Opening Scene").closest<HTMLElement>("article")!;
 
     expect(card).toHaveAttribute("data-validation-error", "true");
+    expect(await screen.findByText(/A reachable Passage cannot statically reach a terminal/)).toBeInTheDocument();
+    expect(screen.getByText(/Waiver: not permitted/)).toBeInTheDocument();
     await waitFor(() => expect(card).toHaveFocus());
+
+    fireEvent.click(screen.getByRole("button", { name: "Close validation results" }));
+    await waitFor(() => expect(screen.queryByLabelText("Chronicle validation results")).not.toBeInTheDocument());
+    fireEvent.click(screen.getByRole("button", { name: /Validation/ }));
+    await waitFor(() => expect(screen.getByLabelText("Chronicle validation results")).toBeVisible());
+    expect(screen.getByText("Blocks publishing")).toBeVisible();
+  });
+
+  it("applies a revision-guarded safe repair through the ordinary Studio undo history", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(response(200, editorData()))
+        .mockResolvedValueOnce(
+          response(200, {
+            valid: false,
+            errors: [
+              {
+                code: "DRYDOCK_LEGACY_NEXT_TARGET_CONFLICT",
+                message: "Legacy target disagrees with the canonical connection.",
+                category: "COMPATIBILITY",
+                blockId: "block-1",
+              },
+            ],
+            warnings: [],
+          }),
+        )
+        .mockResolvedValueOnce(
+          response(200, {
+            sourceRevision: 3,
+            preview: {
+              kind: "CANONICAL_TARGET_MIRROR",
+              classification: "SAFE_AUTOMATIC",
+              blockId: "block-1",
+              sourceChecksum: "source-checksum",
+              expectedIssueChanges: { resolved: ["DRYDOCK_LEGACY_NEXT_TARGET_CONFLICT"], introduced: [] },
+              description: "Synchronize legacy target mirrors to the existing canonical BlockConnection.",
+              after: { configuration: { body: "The harbor wakes." }, nextBlockId: "block-2" },
+            },
+          }),
+        ),
+    );
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    fireEvent.click(screen.getByRole("button", { name: "Validate Chronicle" }));
+    fireEvent.click(await screen.findByRole("button", { name: /Legacy target disagrees/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Preview safe repair" }));
+    expect(await screen.findByRole("dialog")).toHaveTextContent("without changing canonical Passage connections");
+    fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Apply safe repair" }));
+
+    await waitFor(() => expect(screen.getByRole("button", { name: "Undo last edit" })).not.toBeDisabled());
+    fireEvent.click(screen.getByRole("button", { name: "Undo last edit" }));
+    expect(screen.getByRole("button", { name: "Redo edit" })).not.toBeDisabled();
+  });
+
+  it("opens the owner-projected static graph outline and preserves Passage navigation", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(response(200, editorData()))
+        .mockResolvedValueOnce(
+          response(200, {
+            valid: false,
+            errors: [
+              {
+                code: "DRYDOCK_GRAPH_NO_TERMINAL_PATH",
+                message: "Opening Scene needs a destination.",
+                blockId: "block-1",
+              },
+            ],
+            warnings: [],
+          }),
+        )
+        .mockResolvedValueOnce(
+          response(200, {
+            survey: {
+              proofCompleteness: "COMPLETE",
+              nodes: [
+                {
+                  id: "block-1",
+                  blockType: "narrative",
+                  isEntry: true,
+                  isTerminal: false,
+                  isReachable: true,
+                  canReachTerminal: false,
+                  stronglyConnectedComponent: null,
+                  annotations: [{ code: "DRYDOCK_GRAPH_NO_TERMINAL_PATH", severity: "ERROR" }],
+                },
+              ],
+            },
+          }),
+        ),
+    );
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    fireEvent.click(screen.getByRole("button", { name: "Validate Chronicle" }));
+    await screen.findByRole("button", { name: /Opening Scene needs a destination/ });
+    fireEvent.click(screen.getByRole("button", { name: "Open static graph outline" }));
+    expect(await screen.findByRole("region", { name: "Static graph outline" })).toHaveTextContent("No terminal path.");
+    expect(screen.getByText("Opening Scene").closest("article")).toHaveAttribute(
+      "data-drydock-graph-state",
+      expect.stringContaining("DRYDOCK_GRAPH_NO_TERMINAL_PATH"),
+    );
+    expect(screen.getByLabelText("Static graph analysis")).toHaveTextContent("No terminal path.");
+    fireEvent.click(screen.getByRole("button", { name: "narrative (block-1)" }));
+    await waitFor(() => expect(screen.getByText("Opening Scene").closest("article")).toHaveFocus());
   });
 
   it("does not remove a block until the draft save succeeds and reconciles an authoritative undo", async () => {
@@ -312,5 +471,45 @@ describe("Voyagewright Studio editor motion and authority", () => {
       expect(within(progress).getByText("harbor.png").closest("li")).toHaveAttribute("data-upload-state", "ready");
       expect(within(progress).getByText("notes.exe").closest("li")).toHaveAttribute("data-upload-state", "failed");
     });
+  });
+
+  it("opens the command palette from the keyboard and exposes only current canonical actions", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, editorData())));
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    const commands = screen.getByRole("button", { name: "Open Studio command palette" });
+    commands.focus();
+    fireEvent.click(commands);
+    const palette = await screen.findByRole("dialog", { name: "Find an action" });
+    await waitFor(() =>
+      expect(within(palette).getByRole("searchbox", { name: "Search Studio commands" })).toHaveFocus(),
+    );
+    expect(within(palette).getByRole("button", { name: /Validate Chronicle/i })).toBeInTheDocument();
+    expect(within(palette).getByRole("button", { name: /Insert Narrative/i })).toBeInTheDocument();
+    expect(within(palette).queryByRole("button", { name: /new Story Block/i })).not.toBeInTheDocument();
+    fireEvent.change(within(palette).getByRole("searchbox", { name: "Search Studio commands" }), {
+      target: { value: "validate" },
+    });
+    expect(within(palette).queryByRole("button", { name: /Insert Narrative/i })).not.toBeInTheDocument();
+
+    fireEvent.keyDown(palette, { key: "Escape" });
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Find an action" })).not.toBeInTheDocument());
+    await waitFor(() => expect(commands).toHaveFocus());
+
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+    const reopenedPalette = await screen.findByRole("dialog", { name: "Find an action" });
+    expect(within(reopenedPalette).getByRole("button", { name: /Insert Narrative/i })).toBeInTheDocument();
+  });
+
+  it("keeps canvas view controls presentation-only and keyboard reachable", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, editorData())));
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    expect(screen.getByRole("status", { name: "Canvas zoom 100 percent" })).toHaveTextContent("100%");
+    fireEvent.click(screen.getByRole("button", { name: "Zoom in" }));
+    expect(screen.getByRole("status", { name: "Canvas zoom 110 percent" })).toHaveTextContent("110%");
+    expect(screen.getByText("Opening Scene")).toBeInTheDocument();
   });
 });

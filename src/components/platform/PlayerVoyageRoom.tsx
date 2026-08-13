@@ -12,6 +12,7 @@ import { reconcileVersionedRows } from "@/animation/platform/polling-delta";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { ErrorState, LoadingState } from "@/components/ui/AsyncState";
 import { PlatformRelic } from "./PlatformRelic";
+import { membershipPresenceDeviceId } from "@/platform/presence-client";
 
 type CrewMember = { displayName: string; crewRole: string | null; status: string };
 type Playthrough = {
@@ -29,6 +30,7 @@ type Playthrough = {
   crew: CrewMember[];
   canEnter: boolean;
   runtimeHref: string | null;
+  membershipId: string;
 };
 type ConnectionState = "connecting" | "live" | "polling" | "offline" | "reconnecting" | "reconciling" | "revoked";
 type RouteHandoff = (destination: string) => void | Promise<void>;
@@ -126,6 +128,7 @@ export function PlayerVoyageRoom({
   const launchStarted = useRef(false);
   const launchHandoffTimer = useRef<number | null>(null);
   const serverOffset = useRef(0);
+  const csrfToken = useRef<string | null>(null);
   const [voyage, setVoyage] = useState<Playthrough | null>(null);
   const [error, setError] = useState("");
   const [connection, setConnection] = useState<ConnectionState>("connecting");
@@ -150,6 +153,7 @@ export function PlayerVoyageRoom({
         });
         const body = (await response.json().catch(() => ({}))) as {
           playthrough?: Playthrough;
+          csrfToken?: string;
           serverTime?: string;
           error?: string;
         };
@@ -164,6 +168,7 @@ export function PlayerVoyageRoom({
         if (controller.signal.aborted || isAccessRevoked(connectionRef.current)) return;
         requestVersion.current += 1;
         if (body.serverTime) serverOffset.current = new Date(body.serverTime).getTime() - Date.now();
+        csrfToken.current = body.csrfToken ?? null;
         const previous = voyageRef.current;
         const diff = reconcileVersionedRows({
           previous: previous?.crew ?? [],
@@ -220,14 +225,19 @@ export function PlayerVoyageRoom({
       void load(nextConnection);
     }, 5_000);
     const source = new EventSource(`/api/play/sessions/${playthroughId}/events`);
-    source.onopen = () => {
+    const reconcileFromServer = () => {
       setConnection("reconciling");
       reconcile("live");
     };
+    source.onopen = reconcileFromServer;
     source.addEventListener("progression", () => {
-      setConnection("reconciling");
-      reconcile("live");
+      reconcileFromServer();
     });
+    // The stream heartbeat is the durable reconciliation path when a browser
+    // backgrounds a waiting room long enough to defer local timers or an
+    // in-process progression notification. A newly active Voyage must still
+    // release its Player route without requiring a manual refresh.
+    source.addEventListener("heartbeat", reconcileFromServer);
     source.addEventListener("access-revoked", () => {
       const currentLoad = activeLoad.current;
       activeLoad.current = null;
@@ -246,14 +256,24 @@ export function PlayerVoyageRoom({
       setConnection("reconnecting");
       reconcile("reconciling");
     };
-    const onVisibilityChange = () => {
-      if (document.hidden || connectionRef.current === "revoked") return;
+    const reconcileWhenVisible = () => {
+      if (connectionRef.current === "revoked") return;
+      if (document.hidden) return;
       setConnection("reconciling");
       reconcile("reconciling");
     };
+    // Focus is the resume signal even if the visibility property has not
+    // caught up yet. Waiting for a single visibility recheck can strand a
+    // launched Voyage when the browser delays that update beyond one task.
+    const onFocus = () => {
+      if (connectionRef.current === "revoked") return;
+      setConnection("reconciling");
+      reconcile("reconciling");
+    };
+    const onVisibilityChange = reconcileWhenVisible;
     window.addEventListener("offline", onOffline);
     window.addEventListener("online", onOnline);
-    window.addEventListener("focus", onVisibilityChange);
+    window.addEventListener("focus", onFocus);
     document.addEventListener("visibilitychange", onVisibilityChange);
     return () => {
       window.clearInterval(timer);
@@ -266,10 +286,39 @@ export function PlayerVoyageRoom({
       }
       window.removeEventListener("offline", onOffline);
       window.removeEventListener("online", onOnline);
-      window.removeEventListener("focus", onVisibilityChange);
+      window.removeEventListener("focus", onFocus);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [load, playthroughId]);
+
+  useEffect(() => {
+    if (!voyage?.membershipId || !csrfToken.current || connectionRef.current === "revoked") return;
+    const deviceInstanceId = membershipPresenceDeviceId();
+    const report = (disconnected = false) => {
+      const token = csrfToken.current;
+      if (!token) return;
+      void fetch(`/api/player/playthroughs/${playthroughId}/presence`, {
+        method: "POST",
+        keepalive: disconnected,
+        headers: { "Content-Type": "application/json", "x-csrf-token": token },
+        body: JSON.stringify({
+          membershipId: voyage.membershipId,
+          deviceInstanceId,
+          acknowledgedSequence: 0,
+          safeActivity: disconnected ? "RECONNECTING" : "WAITING_ROOM",
+          disconnected,
+        }),
+      }).catch(() => undefined);
+    };
+    report();
+    const timer = window.setInterval(() => {
+      if (!document.hidden && navigator.onLine && connectionRef.current !== "revoked") report();
+    }, 20_000);
+    return () => {
+      window.clearInterval(timer);
+      report(true);
+    };
+  }, [playthroughId, voyage?.membershipId]);
 
   useEffect(() => {
     if (!voyage?.plannedStartAt) return;
@@ -297,22 +346,26 @@ export function PlayerVoyageRoom({
     launchStarted.current = true;
     setLaunchReady(true);
     const showCeremony = consumeOneShot(launchCeremonyKey);
-    const timer = window.setTimeout(
-      async () => {
-        launchHandoffTimer.current = null;
-        if (connectionRef.current === "revoked") return;
-        try {
-          if (onRouteHandoff) await onRouteHandoff(voyage.runtimeHref!);
-          else router.push(voyage.runtimeHref!);
-        } catch {
-          launchStarted.current = false;
-          setRouteFailed(true);
-          setError("The voyage launched, but the journal route could not open. Try again.");
-        }
-      },
-      showCeremony ? ceremonyToken.durationMs : 0,
-    );
-    launchHandoffTimer.current = timer;
+    const handOff = async () => {
+      launchHandoffTimer.current = null;
+      if (connectionRef.current === "revoked") return;
+      try {
+        if (onRouteHandoff) await onRouteHandoff(voyage.runtimeHref!);
+        else router.push(voyage.runtimeHref!);
+      } catch {
+        launchStarted.current = false;
+        setRouteFailed(true);
+        setError("The voyage launched, but the journal route could not open. Try again.");
+      }
+    };
+    // A background tab can expose the authoritative active state before the
+    // browser resumes its timer queue. Do not put the zero-delay recovery
+    // route behind that queue; only a visible ceremony earns a delay.
+    if (showCeremony && !document.hidden) {
+      launchHandoffTimer.current = window.setTimeout(() => void handOff(), ceremonyToken.durationMs);
+    } else {
+      void handOff();
+    }
   }, [
     ceremonyToken.durationMs,
     launchCeremonyKey,

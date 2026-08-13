@@ -1,0 +1,9 @@
+{
+  "phase": "Phase 5",
+  "phase5Authorized": false,
+  "project": "Project Deepwater",
+  "queue": [],
+  "rationale": "Phase 5 is not authorized by Phase 4 implementation, local proof, qualification, candidate status, or owner walkthrough preparation.",
+  "schemaVersion": "1.0.0",
+  "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa"
+}

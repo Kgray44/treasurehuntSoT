@@ -17,6 +17,7 @@ const eslintConfig = defineConfig([
     "artifacts/**",
     ".sealed-build*/**",
     ".admiralty-phase1-build/**",
+    ".next-admiralty-phase2*/**",
     "next-env.d.ts",
   ]),
 ]);

@@ -5,11 +5,23 @@ import { ResilientAudio, ResilientImage, ResilientVideo } from "@/components/ui/
 import { errorCopy } from "@/language/error-copy";
 import { playerCopy } from "@/language/player-copy";
 import type { JsonObject } from "@/chronicle/types";
+import { readStayStoryMotion, resolveStoryMotion } from "@/animation/presentation/story-motion";
 
-type PlayerBlock = { id: string; blockType: string; title: string; configuration: JsonObject };
+type PlayerBlock = {
+  id: string;
+  blockType: string;
+  title: string;
+  configuration: JsonObject;
+  presentation?: JsonObject;
+};
 type PlayerAsset = { id: string; displayName: string; url: string };
 
 const value = (config: JsonObject, key: string) => (typeof config[key] === "string" ? (config[key] as string) : "");
+const motionClass = (presentation: JsonObject | undefined) =>
+  `story-motion-enter-${resolveStoryMotion(presentation?.transitionIn)} story-motion-exit-${resolveStoryMotion(
+    presentation?.transitionOut,
+    "minimize",
+  )} story-motion-stay-${readStayStoryMotion(presentation?.backgroundScene) ?? "none"}`;
 
 export function PublishedBlockView({ block, assets }: { block: PlayerBlock; assets: PlayerAsset[] }) {
   const [replay, setReplay] = useState(0);
@@ -17,7 +29,9 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
   const config = block.configuration;
   if (block.blockType === "image")
     return (
-      <article className={`runtime-block image-block mode-${value(config, "displayMode")}`}>
+      <article
+        className={`runtime-block ${motionClass(block.presentation)} image-block mode-${value(config, "displayMode")}`}
+      >
         <ResilientImage
           src={asset(config.assetId)}
           alt={value(config, "altText")}
@@ -33,7 +47,7 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
     const alignment = config.alignment && typeof config.alignment === "object" ? (config.alignment as JsonObject) : {};
     return (
       <article
-        className={`runtime-block transformation preset-${value(config, "transitionPreset") || value(config, "revealStyle")}`}
+        className={`runtime-block ${motionClass(block.presentation)} transformation preset-${value(config, "transitionPreset") || value(config, "revealStyle")}`}
         key={replay}
         style={
           {
@@ -67,7 +81,7 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
   }
   if (block.blockType === "cinematic")
     return (
-      <article className="runtime-block media-block">
+      <article className={`runtime-block ${motionClass(block.presentation)} media-block`}>
         <ResilientVideo
           controls
           autoPlay={Boolean(config.autoplay)}
@@ -80,7 +94,7 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
     );
   if (block.blockType === "audio")
     return (
-      <article className="runtime-block media-block">
+      <article className={`runtime-block ${motionClass(block.presentation)} media-block`}>
         <h2>{value(config, "title") || block.title}</h2>
         <ResilientAudio
           controls
@@ -98,7 +112,7 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
     );
   if (block.blockType === "artifactReveal" || block.blockType === "collectionUpdate")
     return (
-      <article className="runtime-block artifact-block">
+      <article className={`runtime-block ${motionClass(block.presentation)} artifact-block`}>
         {asset(config.revealArtworkId) && (
           <ResilientImage
             src={asset(config.revealArtworkId)}
@@ -114,7 +128,7 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
     );
   if (block.blockType === "captainsNote")
     return (
-      <article className="runtime-block captains-note">
+      <article className={`runtime-block ${motionClass(block.presentation)} captains-note`}>
         <p className="eyebrow">A page from the Captain</p>
         <h2>{value(config, "title") || block.title}</h2>
         <div className="rich-copy">
@@ -129,7 +143,7 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
     );
   if (block.blockType === "travelDirection" || block.blockType === "location" || block.blockType === "arrivalCheck")
     return (
-      <article className="runtime-block direction-block">
+      <article className={`runtime-block ${motionClass(block.presentation)} direction-block`}>
         <span aria-hidden="true">⌖</span>
         <p className="eyebrow">Set a course</p>
         <h2>{value(config, "heading") || value(config, "playerTitle") || block.title}</h2>
@@ -141,7 +155,7 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
     );
   if (block.blockType === "taleComplete" || block.blockType === "chapterComplete")
     return (
-      <article className="runtime-block completion-block">
+      <article className={`runtime-block ${motionClass(block.presentation)} completion-block`}>
         <span aria-hidden="true">★</span>
         <p className="eyebrow">{block.blockType === "taleComplete" ? "Voyage complete" : "Chapter complete"}</p>
         <h2>{value(config, "finaleHeading") || value(config, "completionMessage") || block.title}</h2>
@@ -155,7 +169,7 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
     )
   )
     return (
-      <article className={`runtime-block prose-block type-${block.blockType}`}>
+      <article className={`runtime-block ${motionClass(block.presentation)} prose-block type-${block.blockType}`}>
         <p className="eyebrow">{value(config, "narratorLabel") || block.title}</p>
         <h2>{value(config, "heading") || value(config, "riddleTitle") || block.title}</h2>
         <div className="rich-copy">
@@ -173,7 +187,7 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
       </article>
     );
   return (
-    <article className="runtime-block unknown-block" role="alert">
+    <article className={`runtime-block ${motionClass(block.presentation)} unknown-block`} role="alert">
       <h2>{errorCopy.newerVersionRequired.value}</h2>
       <p>
         This Passage type (<code>{block.blockType}</code>) is not supported.{" "}

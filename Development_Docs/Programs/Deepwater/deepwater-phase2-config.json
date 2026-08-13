@@ -487,21 +487,6 @@
       "testReferences": ["tests/e2e/wayfarer-phase3.spec.ts", "tests/e2e/homeport-phase3.spec.ts"]
     },
     {
-      "capabilityId": "DW-CAP-PRIVATE-LIVING-JOURNEY-ARCHIVE",
-      "profile": "OWNER_ACCEPTANCE_GAP",
-      "classification": "PARTIALLY_REALIZED",
-      "currentHighestRung": "JOURNEY_PROVEN",
-      "firstLossPoint": "OWNER_ACCEPTANCE",
-      "rootCause": "Wakebook Phase 1 has source-bound browser, privacy, state, accessibility, and natural-navigation evidence on its governed branch, but only the owner walkthrough can promote the capability to OWNER_ACCEPTED.",
-      "canonicalRoutes": ["/passport/history", "/passport/history/[recordId]"],
-      "testReferences": ["tests/e2e/wakebook-phase1.spec.ts"],
-      "recordReferences": [
-        "Development_Docs/Project_Wakebook_Phase_1_Validation_Record.md",
-        "Development_Docs/Project_Wakebook_Phase_1_Owner_Walkthrough.md"
-      ],
-      "ownerAcceptance": "PENDING_OWNER_DECISION"
-    },
-    {
       "capabilityId": "DW-CAP-PERSONAL-HARBOR",
       "profile": "FULL_STACK",
       "classification": "FULLY_REALIZED",

@@ -229,7 +229,7 @@ These branch-only results use the reserved synthetic fixture and production loca
 
 ## Phase 5 route-reachability amendment
 
-The source-driven Phase 5 graph records 92 page nodes and 172 typed transitions from 92 current page sources. Machine traversal reports zero unexplained ordinary orphans. Status: **IMPLEMENTED_PENDING_BROWSER_VALIDATION**. Exact implementation source: `IMPLEMENTATION_SOURCE_PENDING`. Browser, merge, deployment, owner acceptance, Phase 6, Phase 7, and product acceptance remain separate boundaries.
+The source-driven Phase 5 graph records 109 page nodes and 206 typed transitions from 109 current page sources. Machine traversal reports zero unexplained ordinary orphans. Status: **IMPLEMENTED_PENDING_BROWSER_VALIDATION**. Exact implementation source: `IMPLEMENTATION_SOURCE_PENDING`. Browser, merge, deployment, owner acceptance, Phase 6, Phase 7, and product acceptance remain separate boundaries.
 
 - `HP-P5-JRN-A`: Gateway route-map summary — STRUCTURALLY_REACHABLE; BROWSER PENDING
 - `HP-P5-JRN-B`: Anonymous account entry — STRUCTURALLY_REACHABLE; BROWSER PENDING
@@ -267,7 +267,7 @@ The source-driven Phase 5 graph records 92 page nodes and 172 typed transitions 
 
 ## Phase 6 complete-product-surface amendment
 
-The Phase 6 screen acceptance system records 99 human screen contracts across 92 current page sources. Critical and high screens use exact-source production-runtime desktop/mobile evidence; cross-product state, responsive, accessibility, motion, media, mutation, and raw-surface gates remain independently validated. Status: **BRANCH_VALIDATED_NOT_MERGED**. Exact implementation source: `e02ee0dae0469a2ba573beaf409c0b34e8668d09`. Phase 7 integrated journeys, owner walkthrough, merge, deployment, and acceptance remain separate boundaries.
+The Phase 6 screen acceptance system records 116 human screen contracts across 109 current page sources. Critical and high screens use exact-source production-runtime desktop/mobile evidence; cross-product state, responsive, accessibility, motion, media, mutation, and raw-surface gates remain independently validated. Status: **BRANCH_VALIDATED_NOT_MERGED**. Exact implementation source: `e02ee0dae0469a2ba573beaf409c0b34e8668d09`. Phase 7 integrated journeys, owner walkthrough, merge, deployment, and acceptance remain separate boundaries.
 
 <!-- PHASE6_SURFACES_END -->
 

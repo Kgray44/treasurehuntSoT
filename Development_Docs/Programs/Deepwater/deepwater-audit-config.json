@@ -343,16 +343,6 @@
       "privacyClass": "CONSENTED_RESTRICTED_DIAGNOSTIC_METADATA",
       "privilegeRequirements": ["CAPABILITY_AUTHORIZATION", "RECENT_ASSURANCE", "ACTIVE_SUPPORT_GRANT"],
       "rationale": "The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09, including its deliberately bounded administration and consent surfaces. Production MySQL execution, deployment, and later Admiralty phases remain separately governed non-claims."
-    },
-    "FT-B011": {
-      "capabilityId": "DW-CAP-PRIVATE-LIVING-JOURNEY-ARCHIVE",
-      "ownerProject": "Wakebook",
-      "contributingProjects": ["Wayfarer", "One Voyage", "Homeport"],
-      "expectedTerminalRung": "OWNER_ACCEPTED",
-      "currentHighestRung": "JOURNEY_PROVEN",
-      "classification": "PARTIALLY_REALIZED",
-      "secondaryFlags": ["UNVERIFIED"],
-      "rationale": "Wakebook Phase 1 has source-bound automated journey evidence on its governed branch, while owner walkthrough and owner acceptance remain separate required authorities."
     }
   },
   "uncatalogedCapabilities": [
@@ -635,26 +625,6 @@
     }
   ],
   "explicitFindings": [
-    {
-      "findingId": "DW-FIND-WAKEBOOK-OWNER-DECISION-PENDING",
-      "capabilityId": "DW-CAP-PRIVATE-LIVING-JOURNEY-ARCHIVE",
-      "gapFamilies": ["DW-CAP"],
-      "severity": "HIGH",
-      "confidence": "HIGH",
-      "expectedBehavior": "The private Living Journey Archive reaches its OWNER_ACCEPTED terminal rung only after the owner completes the governed Wakebook Phase 1 walkthrough.",
-      "currentBehavior": "The governed branch contains source-bound automated journey evidence, while the authoritative owner decision remains pending.",
-      "firstLossPoint": "OWNER_ACCEPTANCE",
-      "canonicalOwner": "Wakebook",
-      "contributingOwners": ["Wayfarer", "One Voyage", "Homeport"],
-      "assignedProjectPhase": "Project Wakebook Phase 1 owner walkthrough",
-      "mainlineDependency": "Owner decision on the retained governed Wakebook runtime",
-      "closureEvidence": "Owner walkthrough decision bound to the reviewed running source and recorded before any protected mainline integration.",
-      "status": "ASSIGNED",
-      "evidence": [
-        "Development_Docs/Project_Wakebook_Phase_1_Validation_Record.md",
-        "Development_Docs/Project_Wakebook_Phase_1_Owner_Walkthrough.md"
-      ]
-    },
     {
       "findingId": "DW-FIND-HOMEPORT-OWNER-DECISION-PENDING",
       "capabilityId": "DW-CAP-INTEGRATED-WHOLE-PRODUCT-VOYAGE",

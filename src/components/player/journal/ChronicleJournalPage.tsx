@@ -3,6 +3,7 @@
 import type { PlayerJournalBlock } from "@/chronicle/journal-contract";
 import type { ChronicleJournalPage } from "@/chronicle/journal-page-model";
 import { ResilientAudio, ResilientImage, ResilientVideo } from "@/components/ui/ResilientImage";
+import { readStayStoryMotion, resolveStoryMotion } from "@/animation/presentation/story-motion";
 
 export type JournalAsset = {
   id: string;
@@ -102,12 +103,16 @@ function JournalBlock({
   const image = asset(imageId);
   const stateLabel =
     block.progress === "active" ? "Current page" : block.progress === "completed" ? "Completed" : "Released";
+  const motionClass = `story-motion-enter-${resolveStoryMotion(block.presentation.transitionIn)} story-motion-exit-${resolveStoryMotion(
+    block.presentation.transitionOut,
+    "minimize",
+  )} story-motion-stay-${readStayStoryMotion(block.presentation.backgroundScene) ?? "none"}`;
 
   if (block.journalKind === "cinematic") {
     const video = asset(config.videoAssetId);
     const audio = asset(config.audioAssetId);
     return (
-      <section className="journal-block journal-cinematic-page" aria-label={block.title}>
+      <section className={`journal-block ${motionClass} journal-cinematic-page`} aria-label={block.title}>
         <p className="eyebrow">Cinematic leaf · {stateLabel}</p>
         <h3>{heading}</h3>
         {video && (
@@ -141,7 +146,10 @@ function JournalBlock({
     const before = asset(config.beforeAssetId ?? config.baseAssetId);
     const after = asset(config.afterAssetId ?? config.revealedAssetId);
     return (
-      <section className={`journal-block journal-${block.journalKind}-page part-${part}`} aria-label={block.title}>
+      <section
+        className={`journal-block ${motionClass} journal-${block.journalKind}-page part-${part}`}
+        aria-label={block.title}
+      >
         <p className="eyebrow">
           {journalEyebrow(block)} · {stateLabel}
         </p>
@@ -193,7 +201,7 @@ function JournalBlock({
   if (block.journalKind === "decision") {
     const choices = Array.isArray(config.choices) ? (config.choices as Array<Record<string, unknown>>) : [];
     return (
-      <section className="journal-block journal-decision-page" aria-label={block.title}>
+      <section className={`journal-block ${motionClass} journal-decision-page`} aria-label={block.title}>
         <p className="eyebrow">A course was offered · {stateLabel}</p>
         <h3>{heading}</h3>
         {copy.map((line, index) => (
@@ -222,7 +230,7 @@ function JournalBlock({
 
   if (block.journalKind === "message") {
     return (
-      <section className="journal-block journal-message-page" aria-label={block.title}>
+      <section className={`journal-block ${motionClass} journal-message-page`} aria-label={block.title}>
         <div className="loose-letter">
           <p className="eyebrow">A letter tucked into the binding</p>
           <h3>{heading}</h3>
@@ -238,7 +246,7 @@ function JournalBlock({
   }
 
   return (
-    <section className={`journal-block journal-${block.journalKind}-page`} aria-label={block.title}>
+    <section className={`journal-block ${motionClass} journal-${block.journalKind}-page`} aria-label={block.title}>
       <p className="eyebrow">
         {journalEyebrow(block)} · {stateLabel}
       </p>

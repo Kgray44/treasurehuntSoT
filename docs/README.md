@@ -22,7 +22,7 @@ last_reviewed: 2026-08-09
 
 ## Hosting Chronicles
 
-[Installation](administrator/installation.md), [configuration](administrator/configuration.md), [Admiralty bootstrap](administrator/admiralty-bootstrap.md), [OAuth providers](administrator/oauth-configuration.md), [self-hosting](administrator/self-hosting.md), [deployment](administrator/deployment.md), [backup and recovery](administrator/backup-and-recovery.md), [private content](administrator/private-content.md), and [upgrading](administrator/upgrading.md).
+[Installation](administrator/installation.md), [configuration](administrator/configuration.md), [Admiralty bootstrap](administrator/admiralty-bootstrap.md), [Admiralty Command Center](administrator/admiralty-command-center.md), [OAuth providers](administrator/oauth-configuration.md), [self-hosting](administrator/self-hosting.md), [deployment](administrator/deployment.md), [backup and recovery](administrator/backup-and-recovery.md), [private content](administrator/private-content.md), and [upgrading](administrator/upgrading.md).
 
 ## Developing Chronicles
 

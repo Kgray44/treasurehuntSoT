@@ -1,0 +1,264 @@
+{
+  "schemaVersion": "1.0.0",
+  "phase": "Phase 4 - Break the Surface",
+  "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
+  "status": "LOCAL_SYNTHETIC_PROVEN",
+  "semanticCarryForward": {
+    "historicalEvidenceSourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+    "targetEvidenceSourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
+    "carriedJourneyIds": [
+      "DW-P4-JRN-ACCOUNT",
+      "DW-P4-JRN-PERSONAL-HARBOR",
+      "DW-P4-JRN-WHOLE-PRODUCT",
+      "DW-P4-JRN-VERIFICATION"
+    ],
+    "requalifiedJourneyIds": [
+      "DW-P4-JRN-PLAYER",
+      "DW-P4-JRN-CAPTAIN",
+      "DW-P4-JRN-CREATOR",
+      "DW-P4-JRN-COMMUNITY",
+      "DW-P4-JRN-RESTRICTED-OPERATIONS",
+      "DW-P4-JRN-BRIDGEWATCH"
+    ],
+    "rationale": "Bridgewatch Phase 2 changed the private observer and Sounding Line projection surface. The source repair addresses both a recorded Helm invitation lookup stall and the later launch-handoff failure caused by a stale Player event stream. Accepted Drydock Phase 3 adds FT-036's Creator Studio Sea Trials surface, and accepted Admiralty Phase 2 expands FT-B010's read-only Chartroom and dossier-anchored Support Access. Tideglass Phase 3 protected-merged PR #59 at bb7676a75581d8d415c3ff7712cc38bc8decb031 without changing the Deepwater capability denominator. Wakebook Phase 1 then protected-merged PR #41 at cbf634d4d5db9cf47edebb89e005e8cc910068bd, adding accepted Chronicle history consumers and governed registry updates without changing that denominator. Player, Captain, governed Helm browser, Drydock, Admiralty, and Bridgewatch evidence has now been renewed at rebased source 054bd19b7da4f57cd8be0b39758a3cc03e43c3aa. Unchanged Homeport families remain explicitly retained."
+  },
+  "truthBoundary": "Historical Homeport production-build evidence is retained only through the explicit semantic carry-forward declaration. The earlier r5 through r8 evidence is superseded for candidate purposes by accepted current main cbf634d4d5db9cf47edebb89e005e8cc910068bd. Player waiting-room, Captain invitation and launch, governed Helm browser, Drydock Creator, Admiralty Community and Restricted Operations, and Bridgewatch proof were renewed on rebased source 054bd19b7da4f57cd8be0b39758a3cc03e43c3aa. This record does not establish live-provider, deployment, protected-main, owner-acceptance, product-acceptance, or release proof.",
+  "journeyFamilies": [
+    {
+      "journeyId": "DW-P4-JRN-ACCOUNT",
+      "status": "PASSED",
+      "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+      "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+      "testReferences": [
+        "tests/e2e/homeport-phase7.spec.ts#Journey A, I, J, M, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey F through K, N through U",
+        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey F through I, Q through V"
+      ],
+      "screenshots": [
+        {
+          "evidenceId": "HP-P7-EV-A-registered-profile",
+          "sha256": "9598fed68dc0638558dc52040028e9353a4e231f424090f958d68d6215b54cd9"
+        },
+        {
+          "evidenceId": "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+          "sha256": "2a0075806d3648c8205a4219f0f2871359e63e610d1a3f68617efbc7c0e59309"
+        }
+      ],
+      "states": ["READY", "LOADING", "ERROR", "UNAUTHORIZED", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "REDUCED_MOTION", "MOBILE", "ZOOM_200"]
+    },
+    {
+      "journeyId": "DW-P4-JRN-PERSONAL-HARBOR",
+      "status": "PASSED",
+      "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+      "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+      "testReferences": [
+        "tests/e2e/homeport-phase7.spec.ts#Journey G, H, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey M, N, U",
+        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey A through E, N, S, T, U"
+      ],
+      "screenshots": [
+        {
+          "evidenceId": "HP-OWCR3-EV-F-PROFILE-OVERVIEW-IDENTITY",
+          "sha256": "6499fefbc393da5c5796df69de190ce57558461d4689de293e5635e74fff0feb"
+        },
+        {
+          "evidenceId": "HP-OWCR3-EV-Y-MOBILE-AVATAR-CROP",
+          "sha256": "c8699fa9a05be761253747f26485930cfb90af25c11078cc71442b1fdc2be75c"
+        }
+      ],
+      "states": ["READY", "EMPTY", "ERROR", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "TOUCH", "MOBILE", "ZOOM_200", "REDUCED_MOTION"]
+    },
+    {
+      "journeyId": "DW-P4-JRN-PLAYER",
+      "status": "PASSED",
+      "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
+      "testReferences": [
+        "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
+        "src/components/platform/PlayerVoyageRoom.test.tsx#backgrounded visibility-transition recovery",
+        "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup",
+        "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
+        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, K, L, M, U, V"
+      ],
+      "screenshots": [
+        {
+          "evidenceId": "HP-P7-EV-C-player-voyage",
+          "sha256": "ae55f364675ce176507cf5bb10d7c603b5510419fe2633fc89bec897de376d99"
+        },
+        {
+          "evidenceId": "HP-OWCR3-EV-Q-ACTIVE-CHRONICLE-LOCK",
+          "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
+        }
+      ],
+      "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"]
+    },
+    {
+      "journeyId": "DW-P4-JRN-CAPTAIN",
+      "status": "PASSED",
+      "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
+      "testReferences": [
+        "tests/e2e/project-helm-phase1.spec.ts#Captain authority, membership heartbeat, and responsive participation journeys",
+        "src/components/platform/InvitationCeremony.test.tsx#stalled invitation lookup retries once before terminal failure",
+        "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup"
+      ],
+      "screenshots": [
+        {
+          "evidenceId": "HP-P7-EV-D-captain-session",
+          "sha256": "a25311e3da08751f32991afd7f233819ba5a76c9fe32d4597ce68a5bed6e0cde"
+        },
+        {
+          "evidenceId": "HP-OWCR3-EV-O-CAPTAIN-EMPTY",
+          "sha256": "7e09ca347fb1a1830a82a9fd3aa051c3d822bb1afd24098a1caa808263d9b62f"
+        }
+      ],
+      "states": ["READY", "EMPTY", "UNAUTHORIZED", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE"]
+    },
+    {
+      "journeyId": "DW-P4-JRN-CREATOR",
+      "status": "PASSED",
+      "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
+      "testReferences": [
+        "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
+        "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Test_Plan.md#Current locally attainable commands",
+        "src/drydock/simulation/**#deterministic Sea Trial current-source qualification",
+        "src/components/studio/DrydockScenarioLab.test.tsx#private Creator Studio interactions",
+        "src/app/api/studio/tales/[taleId]/scenarios/route.test.ts#Creator scenario ownership and CSRF",
+        "tests/e2e/homeport-phase7.spec.ts#Journey E, J, K, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
+        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, P, U, V"
+      ],
+      "screenshots": [
+        {
+          "evidenceId": "HP-P7-EV-E-creator-private-state",
+          "sha256": "91ff2995947d6fbed2d076ab021250539441b0f3417ded6991d6b5d4b6a9e948"
+        },
+        {
+          "evidenceId": "HP-OWCR3-EV-P-CREATOR-EMPTY",
+          "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
+        }
+      ],
+      "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "REDUCED_MOTION"]
+    },
+    {
+      "journeyId": "DW-P4-JRN-COMMUNITY",
+      "status": "PASSED",
+      "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
+      "testReferences": [
+        "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#DW-CAP-COMMUNITY-EXCHANGE",
+        "tests/e2e/admiralty-phase2.spec.ts#administrator reaches Chartroom full-domain projection",
+        "src/admiralty/read-models.test.ts#bounded community projection",
+        "tests/e2e/homeport-phase7.spec.ts#Journey F, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey P, Q, T, U",
+        "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts#Journey H through J, S, U through W"
+      ],
+      "screenshots": [
+        {
+          "evidenceId": "HP-P7-EV-F-community-saved",
+          "sha256": "a8e2f463198290cd40ad28c16567d3dd79982decad32c605067dfaa1c0c1cfc4"
+        },
+        {
+          "evidenceId": "HP-OWCR2-EV-AE-FULL-ROUND2-REGRESSION",
+          "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
+        }
+      ],
+      "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "TEXT_CONTRAST"]
+    },
+    {
+      "journeyId": "DW-P4-JRN-WHOLE-PRODUCT",
+      "status": "PASSED",
+      "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+      "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+      "testReferences": [
+        "tests/e2e/homeport-phase7.spec.ts#Journey A through O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through U",
+        "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts#Journey A through W",
+        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey A through V"
+      ],
+      "screenshots": [
+        {
+          "evidenceId": "HP-OWCR1-EV-AE-CORRECTION-FULL-REGRESSION",
+          "sha256": "5dfe9ad40a3facb65c9499debc6d86a617f9d4a30eabff4713190174118cd849"
+        },
+        {
+          "evidenceId": "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+          "sha256": "fda2753a525be6362a25ecee1ea57ed49975a76c364882a42d299fb717804932"
+        }
+      ],
+      "states": ["READY", "LOADING", "ERROR", "UNAUTHORIZED", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "ZOOM_200", "REDUCED_MOTION", "TEXT_CONTRAST"]
+    },
+    {
+      "journeyId": "DW-P4-JRN-VERIFICATION",
+      "status": "PASSED",
+      "sourceSha": "b810e2d0c33cbafb8e4d02c19b9af0db94315783",
+      "evidenceDisposition": "SEMANTIC_CARRY_FORWARD",
+      "testReferences": [
+        "tests/e2e/homeport-phase7.spec.ts#Journey A, I, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey F through I, T, U",
+        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey F through I, S, T, U"
+      ],
+      "screenshots": [
+        {
+          "evidenceId": "HP-OWCR3-EV-K-VERIFICATION-CODE",
+          "sha256": "ea68738885069cc1d50baf075b3f5962fcccbeab119a7d76fea35b5039f9bbc4"
+        },
+        {
+          "evidenceId": "HP-OWCR3-EV-Z-MOBILE-VERIFICATION",
+          "sha256": "e67fdd279ddf6c40a9ccff45fe027bdffeb6a4c49438562afb03bb786f3ec56d"
+        }
+      ],
+      "states": ["READY", "LOADING", "ERROR", "UNAUTHORIZED", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "MOBILE", "ZOOM_200"]
+    },
+    {
+      "journeyId": "DW-P4-JRN-RESTRICTED-OPERATIONS",
+      "status": "PASSED",
+      "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
+      "testReferences": [
+        "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#platform-administration-and-provider-health",
+        "tests/e2e/admiralty-phase2.spec.ts#role partitions and support consent",
+        "src/admiralty/capabilities.test.ts#capability boundaries",
+        "src/admiralty/ports/redaction.test.ts#no payload secret private content",
+        "tests/e2e/homeport-phase7.spec.ts#Journey J, K, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey D, T, U",
+        "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts#Journey U through W"
+      ],
+      "screenshots": [
+        {
+          "evidenceId": "HP-P7-EV-J-session-expired",
+          "sha256": "c2fdedc7e54e5beb3c93d5d366126268ffb534514c66d04916a8e5f2bfe8f2f8"
+        },
+        {
+          "evidenceId": "HP-OWCR2-EV-AE-FULL-ROUND2-REGRESSION",
+          "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
+        }
+      ],
+      "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "VISIBLE_FOCUS", "TEXT_CONTRAST"]
+    },
+    {
+      "journeyId": "DW-P4-JRN-BRIDGEWATCH",
+      "status": "PASSED",
+      "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
+      "testReferences": [
+        "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
+        "in-app browser loopback observation#desktop and 390px private dashboard with no horizontal overflow",
+        "loopback API observation#GET /api/summary, GET /api/activity?since=..., GET /api/tests, POST /api/telemetry/heartbeat"
+      ],
+      "screenshots": [
+        {
+          "evidenceId": "BW-P4-EV-LOOPBACK-PRIVATE-DASHBOARD",
+          "sha256": "8486f223cf313f9bcc43feab6786dc28559afe38a574761dfd0f6bc202c1ae03"
+        }
+      ],
+      "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
+      "accessibility": ["KEYBOARD", "REDUCED_MOTION", "RESPONSIVE"]
+    }
+  ]
+}

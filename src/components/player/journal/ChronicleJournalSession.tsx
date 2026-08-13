@@ -17,7 +17,13 @@ import {
   type JournalReadyReceipt,
   type JournalReadyReason,
 } from "@/animation/journal/opening-machine";
-import type { FlipBookPage, PageFlipBookHandle, PageFlipReadinessSnapshot } from "@/components/animation/PageFlipBook";
+import type {
+  FlipBookPage,
+  PageFlipBookHandle,
+  PageFlipReadinessSnapshot,
+  PageTurnLifecycleEvent,
+} from "@/components/animation/PageFlipBook";
+import { resolveStoryMotion } from "@/animation/presentation/story-motion";
 import { PhysicalJournalBook } from "@/components/player/journal/PhysicalJournalBook";
 import { ChronicleJournalPageContent, type JournalAsset } from "@/components/player/journal/ChronicleJournalPage";
 import {
@@ -36,6 +42,7 @@ import {
 import type { JsonObject } from "@/chronicle/types";
 import { platformCopy } from "@/language/platform-copy";
 import { playerCopy } from "@/language/player-copy";
+import { membershipPresenceDeviceId } from "@/platform/presence-client";
 
 type SessionState = {
   csrfToken?: string;
@@ -242,6 +249,7 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
   const [openingPhase, setOpeningPhase] = useState<JournalOpeningPhase>("ENTRY_IDLE");
   const [connection, setConnection] = useState<ConnectionState>("connecting");
   const [currentPage, setCurrentPage] = useState(0);
+  const [turnExitMotion, setTurnExitMotion] = useState("minimize");
   const [pendingEvent, setPendingEvent] = useState<ProgressionEvent | null>(null);
   const [newContent, setNewContent] = useState(false);
   const [liveNotice, setLiveNotice] = useState("");
@@ -355,6 +363,53 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
       release();
     };
   }, [load]);
+
+  useEffect(() => {
+    if (!identitySession || !state?.csrfToken || ["COMPLETED", "CANCELLED", "ABANDONED"].includes(state.session.status))
+      return;
+    let active = true;
+    let membershipId: string | null = null;
+    const deviceInstanceId = membershipPresenceDeviceId();
+    const report = (disconnected = false) => {
+      const current = stateRef.current;
+      if (!active || !membershipId || !current?.csrfToken) return;
+      void fetch(`/api/player/playthroughs/${sessionId}/presence`, {
+        method: "POST",
+        keepalive: disconnected,
+        headers: { "Content-Type": "application/json", "x-csrf-token": current.csrfToken },
+        body: JSON.stringify({
+          membershipId,
+          deviceInstanceId,
+          acknowledgedSequence: current.session.currentSequence,
+          safeActivity: disconnected ? "RECONNECTING" : "JOURNAL",
+          disconnected,
+        }),
+      }).catch(() => undefined);
+    };
+    void fetch(`/api/player/playthroughs/${sessionId}`, { cache: "no-store" })
+      .then(async (response) => {
+        const body = (await response.json().catch(() => ({}))) as { playthrough?: { membershipId?: string } };
+        if (active && response.ok && body.playthrough?.membershipId) {
+          membershipId = body.playthrough.membershipId;
+          report();
+        }
+      })
+      .catch(() => undefined);
+    const timer = window.setInterval(() => {
+      if (!document.hidden && navigator.onLine) report();
+    }, 20_000);
+    return () => {
+      active = false;
+      window.clearInterval(timer);
+      // A best-effort clean close is intentionally non-authoritative; timeout
+      // classification remains the source of truth if it cannot be delivered.
+      if (membershipId) {
+        active = true;
+        report(true);
+        active = false;
+      }
+    };
+  }, [identitySession, sessionId, state?.csrfToken, state?.session.status]);
 
   useEffect(() => {
     const registry = teardownRegistry.current;
@@ -1034,6 +1089,7 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
           }))}
           onReadinessChange={recordPageFlipReadiness}
           onSelectTab={turnTo}
+          turnExitMotion={turnExitMotion}
           onPageChange={(page) => {
             setCurrentPage(page);
             const currentPageBlock = pages[page]?.blockId ?? null;
@@ -1051,6 +1107,10 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
               semanticLabel: "page-turn-complete",
               allowedSemanticLabels: ["page-turn-complete"],
             });
+          }}
+          onTurnLifecycle={(event: PageTurnLifecycleEvent) => {
+            if (event.phase !== "turn-start") return;
+            setTurnExitMotion(resolveStoryMotion(pages[event.fromPage]?.block?.presentation.transitionOut, "minimize"));
           }}
         />
       </section>

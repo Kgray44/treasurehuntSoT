@@ -462,6 +462,193 @@ html[data-voyage-theme="light"]
   width: 100%;
   animation: runtime-arrive 600ms ease both;
 }
+
+/* Shipwright stores Passage motion in the existing published presentation contract. */
+.story-motion-enter-fade {
+  animation: story-fade-in 520ms ease both;
+}
+.story-motion-enter-slide {
+  animation: story-chart-slide-in 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.story-motion-enter-expand {
+  animation: story-expand-in 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.story-motion-enter-minimize {
+  animation: story-minimize-in 500ms ease-out both;
+}
+.story-motion-enter-glide {
+  animation: story-glide-in 720ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
+}
+.story-motion-enter-ink-bloom {
+  animation: story-ink-bloom 850ms ease-out both;
+}
+.story-motion-enter-lantern-swell {
+  animation: story-lantern-swell 780ms ease-out both;
+}
+.story-motion-enter-compass-spin {
+  animation: story-compass-spin 720ms cubic-bezier(0.18, 0.8, 0.25, 1) both;
+}
+.story-motion-enter-tidal-wake {
+  animation: story-tidal-wake 820ms ease-out both;
+}
+.story-motion-enter-starlight-fall {
+  animation: story-starlight-fall 760ms ease-out both;
+}
+
+.story-motion-stay-ink-bloom {
+  box-shadow: inset 0 0 4rem rgb(40 24 70 / 12%);
+}
+.story-motion-stay-lantern-swell {
+  box-shadow: inset 0 0 4rem rgb(224 176 66 / 22%);
+}
+.story-motion-stay-compass-spin::after {
+  content: "✦";
+  position: absolute;
+  right: 1.1rem;
+  bottom: 0.8rem;
+  color: rgb(151 105 36 / 48%);
+  animation: story-compass-rest 5s linear infinite;
+}
+.story-motion-stay-tidal-wake {
+  background-image: linear-gradient(transparent 84%, rgb(42 125 140 / 16%));
+}
+.story-motion-stay-starlight-fall {
+  background-image: radial-gradient(circle at 82% 12%, rgb(255 243 188 / 46%) 0 1px, transparent 2px);
+}
+
+.open-page-stage[data-story-exit="fade"] {
+  --story-turn-exit: 0.45;
+}
+.open-page-stage[data-story-exit="slide"] {
+  --story-turn-exit: 0.6;
+}
+.open-page-stage[data-story-exit="expand"] {
+  --story-turn-exit: 0.8;
+}
+.open-page-stage[data-story-exit="minimize"] {
+  --story-turn-exit: 0.35;
+}
+.open-page-stage[data-story-exit="glide"] {
+  --story-turn-exit: 0.55;
+}
+.open-page-stage[data-story-exit="ink-bloom"],
+.open-page-stage[data-story-exit="lantern-swell"],
+.open-page-stage[data-story-exit="compass-spin"],
+.open-page-stage[data-story-exit="tidal-wake"],
+.open-page-stage[data-story-exit="starlight-fall"] {
+  --story-turn-exit: 0.7;
+}
+.open-page-stage[data-story-exit] .page-flip-book[data-flip-state="flipping"] {
+  filter: saturate(calc(0.74 + var(--story-turn-exit, 0.5) * 0.35));
+}
+
+@keyframes story-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes story-chart-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(2.2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes story-expand-in {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes story-minimize-in {
+  from {
+    opacity: 0;
+    transform: scale(0.74);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes story-glide-in {
+  from {
+    opacity: 0;
+    transform: translate3d(-1.5rem, 0.7rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes story-ink-bloom {
+  from {
+    opacity: 0;
+    filter: blur(9px) contrast(1.3);
+    transform: scale(1.035);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
+@keyframes story-lantern-swell {
+  from {
+    opacity: 0;
+    filter: brightness(1.9) sepia(0.4);
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
+@keyframes story-compass-spin {
+  from {
+    opacity: 0;
+    transform: rotate(-7deg) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+@keyframes story-tidal-wake {
+  from {
+    opacity: 0;
+    transform: translateY(1.2rem) skewY(-2deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes story-starlight-fall {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0);
+  }
+}
+@keyframes story-compass-rest {
+  to {
+    transform: rotate(1turn);
+  }
+}
 .prose-block,
 .captains-note,
 .direction-block,
@@ -1069,10 +1256,6 @@ html[data-voyage-theme="light"]
 .chronicle-session-header p {
   margin: 0.3rem 0 0;
 }
-.chronicle-session-header > div:first-child {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
 .journal-session-tools {
   display: flex;
   align-items: center;
@@ -1115,11 +1298,38 @@ html[data-voyage-theme="light"]
   position: relative;
   z-index: 2;
   display: flex;
-  min-width: 0;
   min-height: 0;
   flex: 1;
   flex-direction: column;
-  overflow-wrap: anywhere;
+}
+
+.voyage-shell[data-motion-mode="reduced"]
+  :is(
+    .story-motion-enter-fade,
+    .story-motion-enter-slide,
+    .story-motion-enter-expand,
+    .story-motion-enter-minimize,
+    .story-motion-enter-glide,
+    .story-motion-enter-ink-bloom,
+    .story-motion-enter-lantern-swell,
+    .story-motion-enter-compass-spin,
+    .story-motion-enter-tidal-wake,
+    .story-motion-enter-starlight-fall
+  ),
+html[data-motion-level="reduced"]
+  :is(
+    .story-motion-enter-fade,
+    .story-motion-enter-slide,
+    .story-motion-enter-expand,
+    .story-motion-enter-minimize,
+    .story-motion-enter-glide,
+    .story-motion-enter-ink-bloom,
+    .story-motion-enter-lantern-swell,
+    .story-motion-enter-compass-spin,
+    .story-motion-enter-tidal-wake,
+    .story-motion-enter-starlight-fall
+  ) {
+  animation: none;
 }
 .chronicle-journal-shell[data-live-event="revealed"] .chronicle-leaf .journal-block {
   animation: journal-live-ink 900ms ease both;
@@ -1710,4 +1920,185 @@ html[data-motion-level="reduced"] .chronicle-journal-shell * {
   animation-duration: 1ms !important;
   transition-duration: 1ms !important;
   scroll-behavior: auto !important;
+}
+
+.tideglass-passage {
+  display: grid;
+  gap: 1.15rem;
+  max-width: 980px;
+  margin: 1rem auto 0;
+  padding: clamp(1rem, 2vw, 1.75rem);
+  border: 1px solid rgba(194, 145, 71, 0.36);
+  border-radius: 18px;
+  background: radial-gradient(circle at top right, rgba(74, 139, 146, 0.16), transparent 38%), rgba(9, 21, 27, 0.88);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24);
+}
+.tideglass-passage__header {
+  max-width: 70ch;
+}
+.tideglass-passage__header h1,
+.tideglass-passage__header h2 {
+  margin: 0.15rem 0 0.45rem;
+}
+.tideglass-passage__selectors {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: end;
+  gap: 0.9rem;
+}
+.tideglass-passage__selector-actions {
+  display: grid;
+  gap: 0.45rem;
+}
+.tideglass-passage__selectors label,
+.tideglass-passage__history,
+.tideglass-passage__filter {
+  display: grid;
+  gap: 0.35rem;
+  color: #e7d5ac;
+  font-weight: 700;
+}
+.tideglass-passage select {
+  min-width: 0;
+  min-height: 2.75rem;
+  border: 1px solid rgba(194, 145, 71, 0.5);
+  border-radius: 8px;
+  padding: 0.5rem 0.6rem;
+  color: #f8eed7;
+  background: rgba(1, 12, 17, 0.82);
+}
+.tideglass-passage__history,
+.tideglass-passage__filter {
+  max-width: 32rem;
+}
+.tideglass-passage__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+.tideglass-passage__edition-context {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+.tideglass-edition-card,
+.tideglass-change-cards article {
+  min-width: 0;
+  border: 1px solid rgba(164, 207, 206, 0.23);
+  border-radius: 10px;
+  padding: 1rem;
+  background: rgba(17, 48, 56, 0.36);
+}
+.tideglass-edition-card h3,
+.tideglass-edition-card p,
+.tideglass-edition-card dl,
+.tideglass-change-cards h4,
+.tideglass-change-cards p,
+.tideglass-change-cards dl {
+  margin: 0;
+}
+.tideglass-edition-card dl,
+.tideglass-change-cards dl {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+}
+.tideglass-edition-card dl > div,
+.tideglass-change-cards dl > div {
+  display: grid;
+  grid-template-columns: minmax(7rem, 0.65fr) minmax(0, 1.35fr);
+  gap: 0.55rem;
+}
+.tideglass-edition-card dt,
+.tideglass-change-cards dt {
+  color: rgba(217, 239, 239, 0.76);
+}
+.tideglass-edition-card dd,
+.tideglass-change-cards dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.tideglass-edition-card > p:last-child {
+  margin-top: 0.8rem;
+}
+.tideglass-edition-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.65rem 0;
+}
+.tideglass-edition-card__badges span {
+  border: 1px solid rgba(212, 166, 90, 0.5);
+  border-radius: 999px;
+  padding: 0.2rem 0.5rem;
+  color: #f5deb3;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.tideglass-change-cards {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.tideglass-change-cards article {
+  display: grid;
+  gap: 0.55rem;
+}
+.tideglass-passage__error,
+.tideglass-passage__limitation {
+  margin: 0;
+  border-left: 3px solid #d4a65a;
+  padding: 0.65rem 0.8rem;
+  color: #ffe0a2;
+  background: rgba(120, 76, 24, 0.2);
+}
+.tideglass-passage__result {
+  display: grid;
+  gap: 0.9rem;
+  border-top: 1px solid rgba(194, 145, 71, 0.26);
+  padding-top: 1.25rem;
+}
+.tideglass-passage__result h2,
+.tideglass-passage__result h3,
+.tideglass-passage__result h4,
+.tideglass-passage__result p {
+  margin: 0;
+}
+.tideglass-passage__groups,
+.tideglass-passage__annotations {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0.75rem;
+}
+.tideglass-passage__groups article,
+.tideglass-passage__annotations article,
+.tideglass-passage__compatibility {
+  border: 1px solid rgba(164, 207, 206, 0.23);
+  border-radius: 10px;
+  padding: 0.8rem;
+  background: rgba(17, 48, 56, 0.36);
+}
+.tideglass-passage__compatibility ul {
+  margin: 0.45rem 0 0;
+  padding-left: 1.2rem;
+}
+
+@media (max-width: 760px) {
+  .tideglass-passage__selectors {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+  .tideglass-passage__selector-actions > .community-button {
+    width: 100%;
+  }
+  .tideglass-passage__actions > * {
+    flex: 1 1 12rem;
+    text-align: center;
+  }
+  .tideglass-passage__edition-context {
+    grid-template-columns: 1fr;
+  }
 }

@@ -3,7 +3,7 @@ title: Project Wakebook Phase 1 Owner Walkthrough
 audience: product-owner
 status: current
 canonical_for: project-wakebook-phase-1-owner-walkthrough
-last_reviewed: 2026-08-10
+last_reviewed: 2026-08-12
 ---
 
 # Project Wakebook Phase 1 owner walkthrough
@@ -14,24 +14,19 @@ This walkthrough begins only after the validation record says `READY_FOR_OWNER_W
 
 ## Runtime identity
 
-| Field                      | Owner handoff value                                                                                                                                                         |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Branch                     | `codex/project-wakebook-phase1-open-the-wake`                                                                                                                               |
-| Exact source SHA           | Final completion source will be recorded after exact-source authority                                                                                                       |
-| Runtime command            | `$env:HOMEPORT_PHASE7_TASK_ROOT='C:\Users\kkids\AppData\Local\ProjectHomeport\wakebook-phase1-owner-20260809'; node scripts/homeport/phase7-walkthrough-runtime.mjs status` |
-| Loopback URL               | `http://127.0.0.1:3717`                                                                                                                                                     |
-| Process ID and listener    | Retained preparation runtime PID `28952`, loopback port `3717`; final restart identity must replace this value                                                              |
-| Task-owned database        | `C:\Users\kkids\AppData\Local\ProjectHomeport\wakebook-phase1-owner-20260809\final-walkthrough-database\homeport-phase7-walkthrough.db`                                     |
-| Synthetic owner identifier | `player-only@phase7.example.test`                                                                                                                                           |
-| First-use / foreign IDs    | `empty-new@phase7.example.test` / `creator-only@phase7.example.test`                                                                                                        |
-| Synthetic password         | Supplied from the private task-root handoff only; never stored in this record                                                                                               |
-| Evidence root              | `artifacts/sounding-line` plus the task-root runtime state and browser evidence                                                                                             |
+| Field                       | Owner handoff value                                                                    |
+| --------------------------- | -------------------------------------------------------------------------------------- |
+| Branch                      | `codex/project-wakebook-phase1-open-the-wake`                                          |
+| Implementation evidence SHA | `33e1316426a4d7f014c1472147e42d040ecdd47e` (current validated implementation evidence) |
+| Runtime command             | Generated on owner request from the exact selected candidate                           |
+| Loopback URL                | Generated on owner request; never a shared or production endpoint                      |
+| Process ID and listener     | Generated on owner request and recorded with the runtime handoff                       |
+| Task-owned database         | Generated on owner request; must be a new task-owned SQLite clone                      |
+| Synthetic owner identifier  | Pending retained-runtime launch                                                        |
+| Synthetic password          | Supplied interactively only; never stored in this record                               |
+| Evidence root               | Pending final Sounding Line run                                                        |
 
-Before beginning, verify the runtime process, port, source SHA, and database path match this table. Stop if the application points at a canonical or shared database.
-
-## Preparation review already completed
-
-Codex completed a non-owner product-reality pass on the retained synthetic runtime. Ordinary visible navigation reached Chronicle Passport and History from `/`; archive search narrowed 1,005 played Voyages to **The Lantern Below**; the visible **Open Voyage** link reached Journey Summary, Path, Crew, Artifacts, Exact Edition, and Remembrance; and **Personal Lantern** opened its owned Artifact Cabinet provenance. A foreign synthetic account received a neutral missing-record state, while the first-use account received the intentional empty archive with discovery, invitation, and Passport actions. This preparation is evidence that the walkthrough is usable, not an owner decision.
+Before beginning, verify the runtime process, port, implementation-evidence SHA, and database path match this table. Stop if the application points at a canonical or shared database.
 
 ## Walkthrough A: first arrival and ordinary reachability
 
@@ -92,7 +87,9 @@ Expected: no horizontal scrolling, trapped focus, pointer-only action, foreign-o
 
 ## Owner decision
 
-Record exactly one decision after completing the walkthrough:
+**Recorded decision: `OWNER_ACCEPTED_PHASE_1` (2026-08-12).** The Wakebook task owner explicitly accepted the Phase 1 scope and walkthrough. This is the required owner decision; it is not a Sounding Line `RELEASE_GO`, a protected-main merge authorization by itself, deployment approval, or authorization to begin Phase 2.
+
+For future walkthroughs, record exactly one decision after completing the walkthrough:
 
 - `OWNER_ACCEPTED_PHASE_1`;
 - `OWNER_RETURNED_WITH_ACTIONABLE_FINDINGS` plus exact steps and expected/observed behavior;

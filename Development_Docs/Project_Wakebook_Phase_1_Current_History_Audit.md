@@ -3,7 +3,7 @@ title: Project Wakebook Phase 1 Current History Audit
 audience: product-engineering
 status: current
 canonical_for: project-wakebook-phase-1-current-history-audit
-last_reviewed: 2026-08-10
+last_reviewed: 2026-08-09
 ---
 
 # Project Wakebook Phase 1 current history audit
@@ -87,7 +87,3 @@ Sounding Line currently owns the critical `wayfarer-history-projection` contract
 ## Audit conclusion
 
 Accepted history is substantially complete and historically stable. Phase 1 is a schema-free service/query and product-experience realization. The correct implementation is a bounded Wakebook summary/detail layer over Wayfarer records, not a data migration or projector rewrite.
-
-## Final accepted-main revalidation
-
-The audit conclusion was rechecked after semantic reconciliation through accepted `origin/main` `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`. Later Deepwater and Harborlight corrections, Tideglass Phases 1-2, Helm Phase 1, Admiralty, Drydock and Drydock closure, Feature Catalog, Homeport catalog, Sounding Line, and documentation work did not add a competing history projector or change the canonical One Voyage, Wayfarer, AccountSession, Artifact Cabinet, or remembrance authorities above. Helm adds current participating-Captain behavior without becoming history authority; Tideglass adds semantic edition comparison without replacing version-pinned historical identity; Drydock strengthens Story Block authoring/runtime contracts without becoming history authority. Wakebook remains a bounded owner-private projection and presentation layer with no schema change.

@@ -279,7 +279,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
       <a className="skip-link" href="#main-content">
         Skip to main content
       </a>
-      <header className="product-shell-header">
+      <header className="product-shell-header" data-account-menu-open={accountOpen || undefined}>
         <ShellBrand label={workspace.label} compact={compact} />
 
         {ordinaryNavigation ? (

@@ -3,7 +3,7 @@ title: Project Helm Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-helm-repository-index
-last_reviewed: 2026-08-10
+last_reviewed: 2026-08-12
 ---
 
 # Project Helm
@@ -14,6 +14,13 @@ independent Voyage-scoped Captain authority and ordinary Player membership,
 including a Player-safe perspective for a Captain who explicitly joins the
 crew. It does not authorize Phase 2 operational projections, Needs Attention,
 or the larger Helm command experience.
+
+Phase 2, **Read the Deck**, is accepted on canonical main. It adds read-only
+Captain operational projections, membership-scoped presence and synchronization
+truth, privacy-safe attention/status/event summaries, and a prioritized Voyage
+Library while preserving Phase 1 authority and ordinary Player membership.
+The accepted result stops before Phase 3 command redesign and Phase 4
+preflight/recovery work.
 
 ## Authority
 
@@ -37,6 +44,23 @@ this phase. They remain governing sources, not implementation evidence.
 - [Validation Record](Project_Helm_Phase_1_Validation_Record.md)
 - [Integration Manifest](Project_Helm_Phase_1_Integration_Manifest.md)
 - [Completion Receipt](Project_Helm_Phase_1_Completion_Receipt.md)
+
+## Phase 2 records
+
+- [Design Record](Project_Helm_Phase_2_Design_Record.md)
+- [Mainline Safety Contract](Project_Helm_Phase_2_Mainline_Safety_Contract.md)
+- [Test Plan](Project_Helm_Phase_2_Test_Plan.md)
+- [Validation Record](Project_Helm_Phase_2_Validation_Record.md)
+- [Integration Manifest](Project_Helm_Phase_2_Integration_Manifest.md)
+- [Completion Receipt](Project_Helm_Phase_2_Completion_Receipt.md)
+
+Phase 2 was initially integrated through protected pull request 35. Its final
+current-main repair is anchored by protected pull request 53, candidate
+`61cb6e0fc8df4bf8b5a38cc14f3f1bc715d8ee00`, and merge
+`920d92a51a16d60a2dfe35278598e6d921be7e4c`. The hosted Sounding Line mainline
+decision returned `RELEASE_GO`; local, synthetic, copied-database, and browser
+evidence remains distinct from deployment, live-provider, physical-device, and
+owner-acceptance proof.
 
 Phase 1 acceptance is anchored by protected pull request 31, merge
 `d4991766369697584c5d2ea7cba22da903ecab8c`, and the retained Sounding Line

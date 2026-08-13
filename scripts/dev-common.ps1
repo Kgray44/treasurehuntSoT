@@ -110,6 +110,18 @@ function Write-ForeverValidationRunEvent {
     Add-Content -LiteralPath $eventPath -Value $entry -Encoding UTF8
 }
 
+function Enable-ForeverValidationRuntimeCompression {
+    param([Parameter(Mandatory)][string]$RuntimeRoot)
+    # Isolated validation deliberately uses a physical, lockfile-matched
+    # dependency copy.  Mark the newly owned NTFS directory as compressed
+    # before that copy so repeated browser families do not exhaust the local
+    # task volume while preserving runtime-local module and Prisma isolation.
+    & compact.exe /C /I /Q $RuntimeRoot | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+        throw "Unable to enable NTFS compression for owned validation runtime: $RuntimeRoot"
+    }
+}
+
 function Assert-ForeverValidationRuntimeOwnership {
     param([Parameter(Mandatory)][string]$RuntimeRoot)
     $resolvedRoot = [System.IO.Path]::GetFullPath($RuntimeRoot)
@@ -155,6 +167,7 @@ function New-ForeverValidationRuntime {
         if ((Test-ForeverGitWorktree -Path $runtimeRoot) -or (Test-Path -LiteralPath (Join-Path $runtimeRoot ".git"))) {
             throw "New validation runtime unexpectedly resolves as a Git worktree: $runtimeRoot"
         }
+        Enable-ForeverValidationRuntimeCompression -RuntimeRoot $runtimeRoot
         $marker = [ordered]@{
             schemaVersion = 1
             runId = $RunId
@@ -170,7 +183,7 @@ function New-ForeverValidationRuntime {
     } catch {
         if (Test-Path -LiteralPath $runtimeRoot) {
             $markerPath = Join-Path $runtimeRoot ".forever-validation-run.json"
-            if (Test-Path -LiteralPath $markerPath) { Remove-Item -LiteralPath $runtimeRoot -Recurse -Force }
+            if (Test-Path -LiteralPath $markerPath) { Clear-ForeverValidationRuntime -RuntimeRoot $runtimeRoot }
         }
         throw
     }
@@ -190,7 +203,8 @@ function Clear-ForeverValidationRuntime {
         reason = "owned-validation-runtime-cleanup"
     } | ConvertTo-Json
     Set-Content -LiteralPath $receipt -Value $receiptBody -Encoding UTF8
-    Remove-Item -LiteralPath $resolvedRoot -Recurse -Force
+    & cmd.exe /d /c "rmdir /s /q `"$resolvedRoot`""
+    if ($LASTEXITCODE -ne 0) { throw "Owned validation runtime cleanup failed (rmdir exit $LASTEXITCODE)." }
     if (Test-Path -LiteralPath $resolvedRoot) { throw "Owned validation runtime cleanup did not remove $resolvedRoot" }
     Add-Content -LiteralPath $receipt -Value ("cleanupCompletedUtc={0}" -f [DateTime]::UtcNow.ToString("o", [System.Globalization.CultureInfo]::InvariantCulture)) -Encoding UTF8
 }
@@ -222,6 +236,16 @@ function Sync-ForeverRuntime {
             Join-Path $script:ProjectRoot $directoryName
         }
     )
+    if ($Mode -eq "validation") {
+        # Browser validation executes the product, tests, and public assets;
+        # repository records and imported chat material are not runtime inputs.
+        # Keeping them out of each isolated mirror preserves the mandatory
+        # physical dependency boundary on constrained task volumes.
+        $excludedDirectories += @(
+            (Join-Path $script:ProjectRoot "Development_Docs"),
+            (Join-Path $script:ProjectRoot "Codex_Chats")
+        )
+    }
     & robocopy $script:ProjectRoot $resolvedRuntime /E /XD $excludedDirectories /XF .git *.db *.db-journal *.log .forever-dev.json .forever-lock.sha | Out-Null
     if ($LASTEXITCODE -gt 7) { throw "Unable to synchronize the local runtime mirror (robocopy exit $LASTEXITCODE)." }
     if ($Mode -eq "validation") {
@@ -266,11 +290,78 @@ function Copy-ForeverDependencySeed {
         throw "Sounding Line dependency seed lockfile does not match the isolated runtime."
     }
     if (Test-Path -LiteralPath $runtimeModules) { throw "Validation runtime already has a node_modules path before dependency seeding." }
+    # Robocopy creates child directories with its own allocation attributes, so
+    # mark the exact dependency destination before its physical copy rather
+    # than relying on compression inherited from the runtime root.
+    New-Item -ItemType Directory -Path $runtimeModules -ErrorAction Stop | Out-Null
+    Enable-ForeverValidationRuntimeCompression -RuntimeRoot $runtimeModules
     # Copy the already installed, lockfile-matched dependency tree rather than
     # repeating npm ci. A physical copy retains Next's runtime-local .next
-    # behavior and Prisma's generated-client isolation.
-    & robocopy $seedModules $runtimeModules /E /COPY:DAT /DCOPY:DAT /R:1 /W:1 | Out-Null
+    # behavior and Prisma's generated-client isolation. pnpm exposes packages
+    # through an in-tree junction graph: dereferencing it makes duplicate
+    # physical copies of the same packages and can consume a browser suite's
+    # entire governed budget. Copy the physical store once, then recreate only
+    # its in-tree junctions with runtime-local targets.
+    & robocopy $seedModules $runtimeModules /E /XJ /COPY:DAT /DCOPY:DAT /R:1 /W:1 /MT:32 | Out-Null
     if ($LASTEXITCODE -gt 7) { throw "Unable to copy Sounding Line dependency seed (robocopy exit $LASTEXITCODE)." }
+    $seedPrefix = $seedModules.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+    $seedRootPrefix = $resolvedSeed.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+    $runtimePrefix = $runtimeModules.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+    $runtimeRootPrefix = $resolvedRuntime.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+    $sourceJunctions = @(
+        & cmd.exe /d /c "dir /a:l /s /b `"$seedModules`"" |
+            ForEach-Object { [System.IO.Path]::GetFullPath([string]$_) } |
+            Sort-Object { $_.Length }
+    )
+    if ($LASTEXITCODE -ne 0) { throw "Unable to enumerate Sounding Line dependency junctions (cmd exit $LASTEXITCODE)." }
+    $retainedSourceJunctions = [System.Collections.Generic.List[string]]::new()
+    foreach ($sourceJunctionPath in $sourceJunctions) {
+        $resolvedSourceJunction = [string]$sourceJunctionPath
+        if (-not $resolvedSourceJunction.StartsWith($seedPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+            throw "Sounding Line dependency junction escaped the seed root."
+        }
+        $isNestedInRetainedJunction = $false
+        foreach ($retainedSourceJunction in $retainedSourceJunctions) {
+            $retainedPrefix = $retainedSourceJunction.TrimEnd([char]92, [char]47) + [System.IO.Path]::DirectorySeparatorChar
+            if ($resolvedSourceJunction.StartsWith($retainedPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+                $isNestedInRetainedJunction = $true
+                break
+            }
+        }
+        if ($isNestedInRetainedJunction) { continue }
+        $sourceJunction = Get-Item -LiteralPath $resolvedSourceJunction -Force
+        if (-not $sourceJunction.PSIsContainer -or $sourceJunction.LinkType -ne "Junction") {
+            throw "Sounding Line dependency link is not an in-tree directory junction."
+        }
+        $junctionTargets = @($sourceJunction.Target)
+        if ($junctionTargets.Count -ne 1) { throw "Sounding Line dependency junction must have exactly one target." }
+        $resolvedSourceTarget = [System.IO.Path]::GetFullPath([string]$junctionTargets[0])
+        $targetIsDependency = $resolvedSourceTarget.StartsWith($seedPrefix, [System.StringComparison]::OrdinalIgnoreCase)
+        $targetIsWorkspace = $resolvedSourceTarget.StartsWith($seedRootPrefix, [System.StringComparison]::OrdinalIgnoreCase)
+        if (-not $targetIsDependency -and -not $targetIsWorkspace) { throw "Sounding Line dependency junction target escaped the seed root." }
+        $relativeJunction = $resolvedSourceJunction.Substring($seedModules.Length).TrimStart('\', '/')
+        $relativeTarget = if ($targetIsDependency) {
+            $resolvedSourceTarget.Substring($seedModules.Length).TrimStart('\', '/')
+        } else {
+            $resolvedSourceTarget.Substring($resolvedSeed.Length).TrimStart('\', '/')
+        }
+        if ([string]::IsNullOrWhiteSpace($relativeJunction) -or [string]::IsNullOrWhiteSpace($relativeTarget)) {
+            throw "Sounding Line dependency junction mapping is empty."
+        }
+        $runtimeJunction = [System.IO.Path]::GetFullPath((Join-Path $runtimeModules $relativeJunction))
+        $runtimeTargetRoot = if ($targetIsDependency) { $runtimeModules } else { $resolvedRuntime }
+        $runtimeTarget = [System.IO.Path]::GetFullPath((Join-Path $runtimeTargetRoot $relativeTarget))
+        if (-not $runtimeJunction.StartsWith($runtimePrefix, [System.StringComparison]::OrdinalIgnoreCase) -or
+            -not $runtimeTarget.StartsWith($runtimeRootPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+            throw "Sounding Line dependency junction mapping escaped the runtime root."
+        }
+        if (-not (Test-Path -LiteralPath $runtimeTarget -PathType Container)) {
+            throw "Sounding Line dependency junction target was not copied into the runtime."
+        }
+        if (Test-Path -LiteralPath $runtimeJunction) { throw "Sounding Line dependency junction already exists in the runtime." }
+        New-Item -ItemType Junction -Path $runtimeJunction -Target $runtimeTarget -ErrorAction Stop | Out-Null
+        $retainedSourceJunctions.Add($resolvedSourceJunction)
+    }
     if (-not (Test-Path -LiteralPath (Join-Path $runtimeModules "next\package.json") -PathType Leaf)) {
         throw "Sounding Line dependency seed copy is incomplete."
     }
@@ -312,28 +403,41 @@ function Invoke-ForeverNode {
 
 function Initialize-ForeverRuntime {
     param([ValidateSet("development", "validation")][string]$Mode = "development", [switch]$ResetDatabase)
-    $environmentPath = Ensure-ForeverEnvironment
-    $runtimeRoot = Sync-ForeverRuntime -Mode $Mode
-    Install-ForeverDependencies -RuntimeRoot $runtimeRoot
-    $runtimeEnvironment = Join-Path $runtimeRoot ".env"
-    Import-ForeverEnvironment -Path $runtimeEnvironment
-    if ($Mode -eq "validation") { $env:DATABASE_URL = "file:./validation.db" }
-    $databaseName = if ($Mode -eq "validation") { "validation.db" } else { "dev.db" }
-    $databasePath = Join-Path $runtimeRoot "prisma\$databaseName"
-    if ($ResetDatabase -and (Test-Path $databasePath)) { Remove-Item -LiteralPath $databasePath -Force }
-    if (-not (Test-Path $databasePath)) { New-Item -ItemType File -Path $databasePath | Out-Null }
-    Write-Host "Generating the database client..." -ForegroundColor Cyan
-    Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments @("node_modules/prisma/build/index.js", "generate", "--schema", "prisma/schema.sqlite.prisma")
-    Write-Host "Applying database migrations..." -ForegroundColor Cyan
-    Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments @("node_modules/prisma/build/index.js", "migrate", "deploy", "--schema", "prisma/schema.sqlite.prisma")
-    if ($Mode -eq "development") {
-        Write-Host "Ensuring development seed data without resetting voyage progress..." -ForegroundColor Cyan
-        Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
-    } else {
-        Write-Host "Verifying development seed data..." -ForegroundColor Cyan
-        Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts")
+    $runtimeRoot = $null
+    try {
+        $environmentPath = Ensure-ForeverEnvironment
+        $runtimeRoot = Sync-ForeverRuntime -Mode $Mode
+        Install-ForeverDependencies -RuntimeRoot $runtimeRoot
+        $runtimeEnvironment = Join-Path $runtimeRoot ".env"
+        Import-ForeverEnvironment -Path $runtimeEnvironment
+        if ($Mode -eq "validation") { $env:DATABASE_URL = "file:./validation.db" }
+        $databaseName = if ($Mode -eq "validation") { "validation.db" } else { "dev.db" }
+        $databasePath = Join-Path $runtimeRoot "prisma\$databaseName"
+        if ($ResetDatabase -and (Test-Path $databasePath)) { Remove-Item -LiteralPath $databasePath -Force }
+        if (-not (Test-Path $databasePath)) { New-Item -ItemType File -Path $databasePath | Out-Null }
+        Write-Host "Generating the database client..." -ForegroundColor Cyan
+        Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments @("node_modules/prisma/build/index.js", "generate", "--schema", "prisma/schema.sqlite.prisma")
+        Write-Host "Applying database migrations..." -ForegroundColor Cyan
+        Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments @("node_modules/prisma/build/index.js", "migrate", "deploy", "--schema", "prisma/schema.sqlite.prisma")
+        if ($Mode -eq "development") {
+            Write-Host "Ensuring development seed data without resetting voyage progress..." -ForegroundColor Cyan
+            Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
+        } else {
+            Write-Host "Verifying development seed data..." -ForegroundColor Cyan
+            Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts")
+        }
+        return $runtimeRoot
+    } catch {
+        $initializationFailure = $_.Exception
+        if ($Mode -eq "validation" -and $runtimeRoot -and (Test-Path -LiteralPath $runtimeRoot)) {
+            try {
+                Clear-ForeverValidationRuntime -RuntimeRoot $runtimeRoot
+            } catch {
+                throw [System.InvalidOperationException]::new("Validation runtime initialization failed: $($initializationFailure.Message) Cleanup also failed: $($_.Exception.Message)", $initializationFailure)
+            }
+        }
+        throw $initializationFailure
     }
-    return $runtimeRoot
 }
 
 function Wait-ForeverHttp {

@@ -78,6 +78,16 @@ async function classifySession(session: SessionWithAccount): Promise<CurrentUser
   const canUseCaptain = !captainPlayerWorkspaceLock && (ordinaryEntry || isAdministrator);
   const canUseCreator = !activePlayerWorkspaceLock && (ordinaryEntry || isAdministrator);
   const canModerate = roles.has("MODERATOR") || isAdministrator;
+  const canUseAdmiralty = [
+    "ADMINISTRATOR",
+    "SUPPORT_OPERATOR",
+    "SECURITY_OPERATOR",
+    "MODERATION_OPERATOR",
+    "OPERATIONS_OPERATOR",
+    "RELEASE_OPERATOR",
+    "AUDIT_OPERATOR",
+    "EMERGENCY_OPERATOR",
+  ].some((role) => roles.has(role));
   const workspaces: HomeportWorkspace[] = ["public", "account", "community"];
   if (canUsePlayer) workspaces.push("player");
   if (canUseCaptain) workspaces.push("captain");
@@ -141,7 +151,7 @@ async function classifySession(session: SessionWithAccount): Promise<CurrentUser
         ? { avatarUrl: `/api/profile-media/${profile.avatarMedia.id}` }
         : {}),
     },
-    capabilities: { canUsePlayer, canUseCaptain, canUseCreator, canModerate, isAdministrator },
+    capabilities: { canUsePlayer, canUseCaptain, canUseCreator, canModerate, isAdministrator, canUseAdmiralty },
     emailVerification: {
       status: emailVerified ? "verified" : "unverified",
       ...(primaryEmail?.verifiedAt ? { verifiedAt: primaryEmail.verifiedAt.toISOString() } : {}),

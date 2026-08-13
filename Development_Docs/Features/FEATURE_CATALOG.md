@@ -189,6 +189,8 @@ Captains create, launch, operate, recover, and reconcile live Voyages through au
 - Captain-only and Captain plus Player participation modes
 - Player-safe perspective switching
 - Membership-bounded personal history and artifact eligibility
+- Captain operational projections and prioritized voyage library
+- Membership-scoped crew presence, sync health, warnings, and safe event stream
 
 ### Primary surfaces
 
@@ -196,9 +198,13 @@ Captains create, launch, operate, recover, and reconcile live Voyages through au
 
 ### Evidence
 
+- commit: `ca40227cbef3575315c089d224a0cd26ec77bc78`
 - path: `src/server/admin-command.ts`
 - path: `src/domain/admin.ts`
 - path: `src/helm/captain-participation.ts`
+- path: `src/helm/operations.ts`
+- path: `src/platform/membership-presence.ts`
+- path: `src/components/captain/CaptainOperationalPanel.tsx`
 - path: `src/components/platform/CaptainLibrary.tsx`
 - path: `src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts`
 
@@ -217,6 +223,9 @@ Creator Studio supports protected Chronicle authoring, graph editing, previews, 
 - Block graph editing
 - Optimistic autosave
 - Accessible movement controls
+- Whole-Passage drag reordering and additive or range selection
+- Published Passage opening, leaving, and active-state motion presets
+- Plain-language validation findings with blocking and attention severity presentation
 - Draft preview sessions
 
 ### Primary surfaces
@@ -886,7 +895,7 @@ Audience-separated current documentation, indexed engineering records, and a fra
 **Status:** MAINLINE
 **Program or subsystem:** Sounding Line Phases 1-4
 
-A nonauthoritative, provider-neutral local verification control plane provides sealed plans, reviewed adapters, marker-verified resource leases, durable history, fail-closed worker and evidence controls, isolated SQLite/browser state, and narrowly certified Harborlight moderator browser lanes without weakening release authority.
+A nonauthoritative, provider-neutral local verification control plane provides sealed plans, reviewed adapters, marker-verified resource leases, durable history, fail-closed worker and evidence controls, isolated SQLite/browser state, narrowly certified Harborlight moderator browser lanes, and a strictly record-only protected-mainline closure route without weakening release authority.
 
 ### Important subfeatures
 
@@ -898,6 +907,7 @@ A nonauthoritative, provider-neutral local verification control plane provides s
 - Immutable SQLite baseline clone boundary
 - Two isolated Harborlight Phase 4 browser lanes
 - Explicit emergency-serial legacy release authority
+- Fail-closed record-only protected-mainline closure evidence
 
 ### Primary surfaces
 
@@ -910,6 +920,72 @@ A nonauthoritative, provider-neutral local verification control plane provides s
 - path: `scripts/sounding-line/phase3.mjs`
 - path: `scripts/sounding-line/phase4.mjs`
 - completion-record: `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Final_Program_Closeout_Receipt.md`
+
+---
+
+## FT-034 - Bridgewatch Development Mission Control
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Bridgewatch Phase 1
+
+A private, standalone, read-only development mission-control dashboard projects explicit project truth and GitHub repository state without acquiring authority over source, pull requests, tests, releases, or project completion.
+
+### Important subfeatures
+
+- Loopback-first Fastify service with a static dashboard
+- Server-side read-only GitHub collection with conditional cache retention
+- SQLite-backed local operational cache without token persistence
+- Explicit measured versus unmeasured milestone progress
+- Read-only API routes, security headers, and no dashboard controls
+
+### Primary surfaces
+
+`bridgewatch`, `GET /api/summary`, `GET /api/projects`, `GET /api/attention`
+
+### Meaningful limitations
+
+- Phase 1 does not ingest Sounding Line worker, queue, node, or finalizer telemetry.
+- Private deployment and operator acceptance remain separate from mainline integration.
+
+### Evidence
+
+- branch: `codex/project-bridgewatch-phase1-raise-the-board`
+- commit: `8fe1d5b416d96142815b747920ed3b1556cffbf5`
+- path: `bridgewatch/lib/server.ts`
+- completion-record: `Development_Docs/Project_Bridgewatch_Phase_1_Design_Record.md`
+
+---
+
+## FT-035 - Bridgewatch Governed Signal Projection
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Bridgewatch Phase 2
+
+A private Bridgewatch extension that projects explicit Project Registry and Sounding Line observer evidence into durable local operational state while keeping test, release, merge, and project-completion authority outside the dashboard.
+
+### Important subfeatures
+
+- Read-only Sounding Line runtime projection with explicit lifecycle normalization
+- Durable SQLite worker, test-node, and test-run history with idempotent migrations
+- Opt-in bearer-authenticated activity telemetry with rate, skew, stale-state, and credential-redaction controls
+- Lifecycle tabs, project biography, worker/test summaries, responsive layout, and reduced-motion support
+
+### Primary surfaces
+
+`bridgewatch`, `POST /api/telemetry/heartbeat`, `GET /api/history`, `GET /api/tests`
+
+### Meaningful limitations
+
+- Bridgewatch remains an observer and cannot create, approve, merge, retry, or authorize work.
+- Mainline integration does not claim a private deployment, provider proof, or owner-acceptance record.
+
+### Evidence
+
+- commit: `9b950a5fd603be27c813f9298b0b14888fbce6cf`
+- path: `bridgewatch/lib/store.ts`
+- path: `bridgewatch/src/sounding-line.ts`
+- test: `bridgewatch/test/sounding-line.test.ts`
+- completion-record: `Development_Docs/Project_Bridgewatch_Phase_2_Completion_Receipt.md`
 
 ---
 
@@ -1321,7 +1397,7 @@ The accepted server-side foundation compares exact immutable Chronicle editions,
 **Status:** MAINLINE
 **Program or subsystem:** Project Admiralty
 
-Canonical account roles, recent privileged assurance, scoped user consent, sanitized audit evidence, and a limited administration shell establish least-privileged platform operations without creating a second identity authority.
+Owner-accepted Phases 1 and 2 establish canonical roles, recent privileged assurance, scoped user consent, sanitized audit evidence, and a read-only cross-domain Chartroom on main without creating a second source of truth.
 
 ### Important subfeatures
 
@@ -1334,17 +1410,23 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 - Non-revealing unauthorized admin route behavior
 - Additive SQLite and MySQL migration parity
 - Task-owned synthetic browser and owner-walkthrough runtimes
+- Phase 2 branch-only role-filtered Chartroom navigation and 15-route information architecture
+- Phase 2 branch-only bounded People, Chronicle, Voyage, and Community search and detail
+- Phase 2 branch-only operations, provider, configuration, release, audit, and correlation-led investigation projections
+- Phase 2 branch-only dossier-anchored consented Support Access
 
 ### Primary surfaces
 
-`/admin`, `/account/support-access`
+`/admin`, `/admin/people`, `/admin/chronicles`, `/admin/voyages`, `/admin/community`, `/admin/operations`, `/admin/providers`, `/admin/configuration`, `/admin/releases`, `/admin/audit`, `/admin/investigate`, `/account/support-access`
 
 ### Meaningful limitations
 
 - The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09
 - Owner-accepted Phase 1 implementation is integrated on canonical main with verified remote parity
 - Production MySQL execution, live-provider behavior, and physical assistive-technology validation remain external
-- Phase 2 and all later operational command-center capabilities remain dormant
+- The owner accepted the qualified Phase 2 walkthrough on 2026-08-12; exact-source authority and protected canonical-main integration completed in PR #28
+- Transactional-email delivery health and live verification-provider health are blocked by missing canonical owner contracts
+- Broad administrative mutation remains dormant for later governed phases
 - Owner acceptance does not imply deployment or acceptance of later Admiralty phases
 
 ### Evidence
@@ -1354,16 +1436,19 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 - path: `src/admiralty/support-access.ts`
 - path: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json`
 - test: `tests/e2e/admiralty-phase1.spec.ts`
+- path: `src/admiralty/read-models.ts`
+- test: `tests/e2e/admiralty-phase2.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Completion_Receipt.md`
+- completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Owner_Decision_Record.md`
+- completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Mainline_Acceptance_Record.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md`
 
 ---
 
-# Completed Branch Features Not Yet Available on Main
-
 ## FT-B011 - Private Living Journey Archive
 
-**Status:** BRANCH COMPLETE NOT MERGED
+**Status:** MAINLINE
 **Program or subsystem:** Project Wakebook Phase 1
 
 Project Wakebook turns version-pinned Wayfarer records into a polished, owner-private visual archive with truthful chronology, safe historical context, bounded discovery, and a complete Voyage Detail baseline.
@@ -1386,8 +1471,8 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 ### Meaningful limitations
 
-- Available only on codex/project-wakebook-phase1-open-the-wake until protected mainline integration
-- Owner walkthrough and owner acceptance remain separate from automated readiness
+- Protected mainline integration completed in PR #41 as cbf634d4d5db9cf47edebb89e005e8cc910068bd
+- The owner accepted the qualified Phase 1 walkthrough on 2026-08-12; deployment remains separate
 - Timeline, People, Statistics, geographic recap, public sharing, competitive metrics, and Tideglass semantics are outside Phase 1
 
 ### Evidence
@@ -1397,7 +1482,47 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 - path: `src/components/wakebook/WakebookVoyageDetail.tsx`
 - test: `tests/e2e/wakebook-phase1.spec.ts`
 - completion-record: `Development_Docs/Project_Wakebook_Phase_1_Validation_Record.md`
-- commit: `ab47dc33a29b2cdd80a97da7fd1af4a9e897b2cc`
+- commit: `cbf634d4d5db9cf47edebb89e005e8cc910068bd`
+
+---
+
+# Completed Branch Features Not Yet Available on Main
+
+## FT-036 - Drydock Deterministic Sea Trials
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Drydock Phase 3
+
+Creators can persist revisioned synthetic Sea Trial scenarios and suites, deterministically execute the canonical One Voyage transition adapter with virtual time, seeded randomness, bounded faults, safe traces, coverage, and semantic comparison, and inspect the resulting private Studio evidence without mutating a live Voyage.
+
+### Important subfeatures
+
+- Strict versioned Scenario and Scenario Suite contracts
+- Revisioned owned Scenario persistence and frozen run source
+- Deterministic virtual clock, seeded randomness, bounded faults, and assertions
+- Canonical One Voyage transition adapter differential proof
+- Safe trace, state-diff, replay, coverage, and suggestion projections
+- Private Creator Studio Scenario Lab and CSRF-protected owned APIs
+- Additive SQLite and static MySQL migration parity
+
+### Primary surfaces
+
+`/studio/tales/[taleId]/trials`, `/api/studio/tales/[taleId]/scenarios`, `/api/studio/tales/[taleId]/simulation-runs`, `npm run drydock:cli`
+
+### Meaningful limitations
+
+- Branch-complete local qualification is not protected-main availability, deployment, or owner acceptance.
+- Sea Trials use synthetic bounded inputs and never mutate a live Tale Session, provider, asset, or Player state.
+- Live provider, production MySQL, physical-device, and external assistive-technology proof remain outside this phase.
+- Immutable publishing evidence and Phase 4 integration remain out of scope.
+
+### Evidence
+
+- path: `src/drydock/simulation/engine.ts`
+- path: `src/drydock/simulation-store.ts`
+- path: `src/components/studio/DrydockScenarioLab.tsx`
+- test: `src/drydock`
+- test: `src/app/api/studio/tales/[taleId]/scenarios`
 
 ---
 

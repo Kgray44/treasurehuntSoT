@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 
 const digest = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
 
-export function finalize({ plan, receipts }) {
+export function finalize({ plan, receipts, runtimeConformance = [] }) {
   const mandatory = new Set(plan.nodes.map((node) => node.id));
   const duplicates = [
     ...new Set(receipts.map((receipt) => receipt.suiteId).filter((id, index, ids) => ids.indexOf(id) !== index)),
@@ -23,8 +23,26 @@ export function finalize({ plan, receipts }) {
       receipt.timedOut === true,
   );
   const failed = receipts.filter((receipt) => receipt.result !== "PASSED");
+  const conformanceBySuite = new Map(runtimeConformance.map((receipt) => [receipt.suiteId, receipt]));
+  const missingConformance = plan.runtimeConformanceRequired
+    ? [...mandatory].filter((suiteId) => !conformanceBySuite.has(suiteId))
+    : [];
+  const invalidConformance = plan.runtimeConformanceRequired
+    ? runtimeConformance.filter(
+        (receipt) =>
+          !mandatory.has(receipt.suiteId) ||
+          receipt.result !== "PASSED" ||
+          receipt.planDigest !== plan.planDigest ||
+          receipt.authorityDigest !== plan.authorityDigest,
+      )
+    : [];
   const decision =
-    missing.length || invalid.length || duplicates.length || unknown.length
+    missing.length ||
+    invalid.length ||
+    duplicates.length ||
+    unknown.length ||
+    missingConformance.length ||
+    invalidConformance.length
       ? "EVIDENCE_INVALID"
       : failed.length
         ? "RELEASE_NO_GO"
@@ -39,6 +57,8 @@ export function finalize({ plan, receipts }) {
     duplicateSuiteReceipts: duplicates,
     unknownSuiteReceipts: unknown.map((receipt) => receipt.suiteId),
     invalidEvidence: invalid.map((receipt) => receipt.suiteId),
+    missingRuntimeConformance: missingConformance,
+    invalidRuntimeConformance: invalidConformance.map((receipt) => receipt.suiteId),
     evidenceDigest: digest(receipts),
   };
 }

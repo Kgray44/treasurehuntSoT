@@ -22,7 +22,8 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
   for (const node of mainline.nodes)
     for (const dependency of node.dependencies)
       assert.ok(mainline.nodes.find((candidate) => candidate.id === dependency).execution.wave < node.execution.wave);
-  assert.equal(mainline.nodes.find((node) => node.id === "database.sqlite").execution.mode, "exclusive");
+  assert.equal(mainline.nodes.find((node) => node.id === "database.sqlite").execution.mode, "parallel");
+  assert.equal(mainline.nodes.find((node) => node.id === "build.production").execution.mode, "parallel");
   assert.equal(mainline.nodes.find((node) => node.id === "unit.community").execution.mode, "parallel");
   assert.ok(
     mainline.nodes.every(
@@ -145,27 +146,23 @@ test("focused suite execution is evidence-only and cannot invoke authority", asy
   );
 });
 
-test("the protected main PR emits the stable authority decision while focused repair remains evidence-only", async () => {
+test("authoritative acceptance is explicit frozen-candidate finalization while focused repair remains evidence-only", async () => {
   const authoritative = await readFile(
     path.join(root, ".github", "workflows", "sounding-line-authoritative.yml"),
     "utf8",
   );
   const focused = await readFile(path.join(root, ".github", "workflows", "sounding-line-focused-repair.yml"), "utf8");
-  const pullRequestBranches = authoritative.match(
-    /pull_request:\s*\n\s+branches:\s*\n(?<branches>(?:\s+-\s+[^\n]+\n)+)/u,
-  )?.groups?.branches;
-
-  assert.ok(pullRequestBranches, "authoritative workflow must run for pull requests");
-  assert.deepEqual(
-    [...pullRequestBranches.matchAll(/^\s+-\s+([^\s#]+).*$/gmu)].map((match) => match[1]),
-    ["main"],
-    "only pull requests targeting main may trigger authority",
-  );
+  assert.doesNotMatch(authoritative, /^\s{2}(?:pull_request|push):/mu, "AUTHORITATIVE_DEBUG_TRIGGER_FORBIDDEN");
   assert.match(authoritative, /workflow_dispatch:\s*\n\s+inputs:\s*\n\s+gate:/u);
   assert.match(authoritative, /options: \[mainline, release-candidate\]/u);
+  assert.match(authoritative, /candidate_sha:[\s\S]*?required: true[\s\S]*?type: string/u);
+  assert.match(authoritative, /SOUNDING_LINE_FROZEN_CANDIDATE_SHA_MISMATCH/u);
+  assert.match(authoritative, /sourceSha:process\.env\.GITHUB_SHA/u);
   assert.match(authoritative, /Sounding Line \/ \$\{\{ needs\.plan\.outputs\.gate/u);
   assert.match(authoritative, /gate: \$\{\{ needs\.plan\.outputs\.gate \}\}/u);
-  assert.match(focused, /--execute-only/u);
+  assert.match(focused, /type: string/u);
+  assert.match(focused, /focused-selection\.mjs/u);
+  assert.match(focused, /uses: \.\/\.github\/workflows\/sounding-line-governed-worker\.yml/u);
   assert.doesNotMatch(focused, /finalize-ci\.mjs|finalizer\.mjs|Sounding Line \/ Mainline Decision|RELEASE_GO/u);
 });
 
@@ -196,7 +193,13 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
   assert.match(authority, /SOUNDING_LINE_SUITE_HARD_BUDGET_MS: String\(suite\.hardBudgetMs\)/u);
   const common = await readFile(path.join(root, "scripts", "dev-common.ps1"), "utf8");
   assert.match(common, /function Copy-ForeverDependencySeed/u);
-  assert.match(common, /robocopy \$seedModules \$runtimeModules \/E \/COPY:DAT/u);
+  assert.match(common, /robocopy \$seedModules \$runtimeModules \/E \/XJ \/COPY:DAT/u);
+  assert.match(common, /dir \/a:l \/s \/b/u);
+  assert.match(common, /New-Item -ItemType Junction/u);
+  assert.match(common, /retainedSourceJunctions/u);
+  assert.match(common, /TrimEnd\(\[char\]92, \[char\]47\)/u);
+  assert.match(common, /rmdir \/s \/q/u);
+  assert.match(common, /junction target escaped the seed root/u);
   assert.match(common, /lockfile does not match the isolated runtime/u);
   assert.match(common, /A physical copy retains Next's runtime-local \.next/u);
 });
@@ -215,10 +218,16 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   assert.match(worker, /--plan-in "\$env:SOUNDING_LINE_PLAN"/u);
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_MISSING/u);
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_FAILED/u);
-  assert.match(worker, /Install browser engines required by the sealed suite/u);
-  assert.match(worker, /npx playwright install chromium/u);
-  assert.match(worker, /\$browserEngineInstallInvoked -and \$LASTEXITCODE -ne 0/u);
-  assert.match(worker, /GOVERNED_BROWSER_ENGINE_INSTALL_FAILED/u);
+  assert.match(worker, /Prepare only sealed-node resources/u);
+  assert.match(worker, /worker-preparation\.mjs/u);
+  assert.match(worker, /databaseMigrationMs/u);
+  assert.match(worker, /browserRestoreMs/u);
+  assert.match(worker, /dependencyRestoreMs/u);
+  assert.match(worker, /Bind setup and execution timing to worker evidence/u);
+  assert.match(worker, /Add-Member -NotePropertyName suiteExecutionMs/u);
+  assert.doesNotMatch(worker, /\$throughput\.suiteExecutionMs =/u);
+  assert.doesNotMatch(worker, /SOUNDING_LINE_SUITE -like 'browser\.\*'/u);
+  assert.doesNotMatch(worker, /playwright install chromium webkit/u);
   assert.match(worker, /inputs\.gate/u);
   assert.match(worker, /timeout-minutes: 120/u);
   assert.match(adapters, /taskkill", \["\/pid", String\(child\.pid\), "\/T", "\/F"\]/u);

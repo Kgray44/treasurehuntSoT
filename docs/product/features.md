@@ -3,7 +3,7 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-12
 ---
 
 # Features and subfeatures
@@ -43,8 +43,8 @@ identities](../user/linked-identities.md).
 
 ## Private Living Journey Archive
 
-**Audience:** Players and account owners. **Availability:** branch-complete,
-not on main. Project Wakebook Phase 1 turns Chronicle Passport History into
+**Audience:** Players and account owners. **Availability:** available on main.
+Project Wakebook Phase 1 turns Chronicle Passport History into
 `Your Voyages`: an owner-private visual shelf grouped by truthful archive date,
 with accurate displayed-year summaries, bounded search and filters, stable
 opaque pagination, exact played-edition identity, historical crew context, and
@@ -52,8 +52,9 @@ calm unavailable/partial-history states. Voyage Detail keeps shared artifact
 moments separate from personal Artifact Cabinet provenance and preserves the
 existing private Reflection, Memory, Keepsake, consent, and eligible review
 workflows. Invitation-only history is visible but never counted as a played
-Voyage. [Chronicle Passport guide](../user/chronicle-passport.md). Owner
-walkthrough, mainline integration, deployment, public sharing, Tideglass
+Voyage. [Chronicle Passport guide](../user/chronicle-passport.md). The owner
+accepted the qualified Phase 1 walkthrough on 2026-08-12 and protected mainline
+integration completed in PR #41. Deployment, public sharing, Tideglass
 semantics, and later Timeline/People/Statistics views remain separate.
 
 ## Global shell and wayfinding
@@ -94,17 +95,24 @@ acceptance are not claimed.
 
 ## Platform administration and consented support
 
-**Audience:** Administrators, support operators, security operators, and account
-owners. **Availability:** owner accepted and integrated on canonical main.
-Phase 1 adds server-resolved roles and capabilities, explicit administrator
-bootstrap, short-lived session-bound
-privileged assurance, a deliberately limited `/admin` shell, canonical
-sanitized audit evidence, a living capability registry, and user-approved
-scoped Support Access. The admin shell is absent from ordinary navigation;
-affected account owners can review, deny, approve, and revoke support requests
-through [Support Access](../user/support-access.md). The owner accepted the full
-Phase 1 walkthrough on 2026-08-09. Deployment, production MySQL, and Phase 2
-remain separate.
+**Audience:** Administrators, support operators, operations observers, audit
+operators, security operators, and account owners. **Availability:** Phase 1 is
+owner accepted and integrated on canonical main. Phase 2 is also owner accepted
+and integrated on canonical main after exact-source authority and protected
+integration in PR #28.
+
+Phase 1 provides server-resolved roles/capabilities, explicit administrator
+bootstrap, short-lived session-bound privileged assurance, canonical sanitized
+audit evidence, a living capability registry, and user-approved scoped Support
+Access. Affected account owners can review, deny, approve, and revoke requests
+through [Support Access](../user/support-access.md).
+
+Phase 2 expands the authorized shell into a read-only
+[Admiralty Command Center](../administrator/admiralty-command-center.md) with
+bounded People, Chronicle, Voyage, Community, operations, provider,
+configuration, release, audit, and correlation-led investigation projections.
+It adds no schema and no broad mutation. Deployment, live-provider validation,
+owner acceptance, canonical-main integration, and later phases remain separate.
 
 ## Integrated whole-product voyage and owner walkthrough
 
@@ -123,16 +131,17 @@ evidence, and an owned final walkthrough runtime. Owner Decision is
 
 ## Captain and Voyage operations
 
-**Audience:** Captains. **Availability:** current Captain foundations are
-available on main; Project Helm Phase 1 is branch-complete and not yet merged.
-Captain Library, Voyage creation, invitation management, session views, player
-preview, and live control foundations are available. The Helm candidate adds an
-explicit Captain-only or Captain + Player choice when a Voyage is created.
-Captain + Player uses the same account and one ordinary crew membership, keeps
-Captain authority separate, and opens the ordinary Player view without
-widening its story projection. Participation may be ended without removing
-Captain authority. Current acceptance is isolated and local; it is not mainline
-integration, deployment, or live-Voyage proof.
+**Audience:** Captains. **Availability:** available on main. Captain Library,
+Voyage creation, invitation management, session views, Player preview, and
+live-control foundations are available. Project Helm Phases 1 and 2 add an
+explicit Captain-only or Captain + Player choice, one ordinary same-account
+Player membership where chosen, independent Captain authority, and a
+privacy-safe read-only operations view. Captains can see prioritized Voyage
+status, safe crew presence and synchronization health, current warnings, safe
+event summaries, and read-only progress without gaining Player-private device,
+network, identity, draft, or progression-command data. Participation may end
+without removing Captain authority. Mainline source integration is not
+deployment, live-Voyage proof, or owner acceptance.
 [Guide](../user/captain-guide.md).
 
 ## Creator Studio and publishing
@@ -143,10 +152,19 @@ Project Tideglass Phase 1 provides the accepted exact immutable edition
 comparison foundation. The accepted Phase 2 extension adds server-side
 intelligence with stable change codes, explainable significance and
 compatibility, spoiler-safe audience projections, deterministic summaries,
-append-only Creator annotations, and bounded safe APIs. Phase 2 is on main but
-adds no ordinary comparison page, navigation entry, or played-history
-qualification; those remain later work. Repository validation is local and
-synthetic, and no deployment or production MySQL execution is claimed.
+append-only Creator annotations, and bounded safe APIs. Phase 2 is on main.
+The Phase 3 ordinary comparison page, navigation entry, owned played-history
+handoff, and Studio semantic comparison are currently an unmerged worktree
+under local qualification, not an available-on-main feature. Repository
+validation is local and synthetic, and no deployment or production MySQL
+execution is claimed.
+
+Project Drydock Phase 3 is active implementation on its dedicated branch. It
+adds Creator-only, source-bound deterministic Sea Trials with revisioned
+Scenarios, virtual time, registered synthetic faults, Suites, redacted traces,
+coverage ledgers, and a shared One Voyage transition planner. It never mutates
+live Voyages or providers. This branch work is not available on main, deployed,
+or accepted; its candidate qualification remains governed separately.
 
 ## Community and artifacts
 

@@ -1,20 +1,67 @@
 import { createHash, randomUUID } from "node:crypto";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import { db } from "../../src/lib/db";
 
 type Account = { context: import("@playwright/test").BrowserContext; profileId: string };
+type VisualEvidenceRecord = {
+  evidenceId: string;
+  state: string;
+  viewportFamily: "STANDARD_DESKTOP" | "MODERN_MOBILE";
+  viewport: string;
+  sourceSha: string;
+  capturePath: string;
+  sha256: string;
+  semanticResult: string;
+  overflowResult: string;
+  visualReviewClassification: "PENDING_CODEX_VISUAL_REVIEW";
+  limitation: string;
+};
 
 const unique = `wakebook-p1-${randomUUID().slice(0, 12)}`;
 const privateMemory = "TOP-SECRET-WAKEBOOK-MEMORY";
 const syntheticPassword = "T!de-9Rope-4Quartz-7Beacon";
+const captureEvidence = process.env.WAKEBOOK_PHASE1_CAPTURE_EVIDENCE === "1";
+const evidenceRoot = path.resolve(
+  process.env.WAKEBOOK_PHASE1_EVIDENCE_ROOT ?? path.join("Development_Docs", "Project Wakebook", "evidence", "phase1"),
+);
+const evidenceRepositoryRoot = path.resolve(process.env.WAKEBOOK_PHASE1_EVIDENCE_REPOSITORY_ROOT ?? process.cwd());
+const expectedEvidenceSource = process.env.WAKEBOOK_PHASE1_EXPECTED_SOURCE_SHA;
+const sourceSha = expectedEvidenceSource ?? "UNBOUND";
+const visualEvidence: VisualEvidenceRecord[] = [];
+
+async function captureEvidenceState(
+  page: Page,
+  input: Omit<
+    VisualEvidenceRecord,
+    "sourceSha" | "capturePath" | "sha256" | "visualReviewClassification" | "limitation"
+  >,
+) {
+  if (!captureEvidence) return;
+  await mkdir(evidenceRoot, { recursive: true });
+  const capturePath = path.join(evidenceRoot, `${input.evidenceId}.png`);
+  await page.screenshot({ path: capturePath, fullPage: true });
+  const bytes = await readFile(capturePath);
+  visualEvidence.push({
+    ...input,
+    sourceSha,
+    capturePath: path.relative(evidenceRepositoryRoot, capturePath).replaceAll("\\", "/"),
+    sha256: createHash("sha256").update(bytes).digest("hex"),
+    visualReviewClassification: "PENDING_CODEX_VISUAL_REVIEW",
+    limitation:
+      "Synthetic task-owned browser evidence only; not owner acceptance, production, deployment, or protected-main evidence.",
+  });
+}
 
 async function register(browser: import("@playwright/test").Browser, label: string): Promise<Account> {
   const context = await browser.newContext();
+  const emailLabel = label.toLowerCase().replaceAll(/[^a-z0-9]+/gu, "-");
   const response = await context.request.post("/api/auth/register", {
     data: {
       displayName: `Synthetic ${label}`,
-      email: `${unique}-${label.toLowerCase()}@example.test`,
+      email: `${unique}-${emailLabel}@example.test`,
       password: syntheticPassword,
       confirmPassword: syntheticPassword,
     },
@@ -44,7 +91,7 @@ async function register(browser: import("@playwright/test").Browser, label: stri
   return { context, profileId: body.player.id };
 }
 
-async function seedArchive(ownerId: string, crewId: string) {
+async function seedArchive(ownerId: string, crewId: string, additionalRecords = 1_004) {
   const snapshot = {
     schemaVersion: 1,
     tale: {
@@ -213,7 +260,7 @@ async function seedArchive(ownerId: string, crewId: string) {
     },
   });
 
-  const bulk = Array.from({ length: 1_004 }, (_, index) => {
+  const bulk = Array.from({ length: additionalRecords }, (_, index) => {
     const year = index < 501 ? 2026 : 2025;
     const day = (index % 27) + 1;
     return {
@@ -263,10 +310,32 @@ async function seedArchive(ownerId: string, crewId: string) {
 }
 
 test("Wakebook Phase 1 is private, bounded, historically stable, and normally reachable", async ({ browser }) => {
+  if (captureEvidence) expect(expectedEvidenceSource).toMatch(/^[0-9a-f]{40}$/u);
   const owner = await register(browser, "Owner");
   const crew = await register(browser, "Crew");
   const foreign = await register(browser, "Foreign");
+  const firstUse = await register(browser, "First use");
+  const oneVoyage = await register(browser, "One Voyage");
   const fixture = await seedArchive(owner.profileId, crew.profileId);
+  await db.playerChronicleRecord.create({
+    data: {
+      id: `${unique}-one-voyage-record`,
+      playerProfileId: oneVoyage.profileId,
+      sourcePlaythroughId: `${unique}-one-voyage-playthrough`,
+      publishedVersionId: fixture.version.id,
+      publishedVersionChecksum: fixture.checksum,
+      chronicleTitleSnapshot: "The Lantern Below",
+      playerNameSnapshot: "Synthetic One Voyage",
+      lifecycleStatus: "COMPLETED",
+      outcome: "COMPLETED",
+      startedAt: new Date("2026-12-31T10:00:00.000Z"),
+      joinedAt: new Date("2026-12-31T10:00:00.000Z"),
+      completedAt: new Date("2026-12-31T11:00:00.000Z"),
+      wallClockSeconds: 3600,
+      wallClockAccuracy: "EXACT",
+      sourceFingerprint: `${unique}-one-voyage-fingerprint`,
+    },
+  });
 
   const first = await owner.context.request.get("/api/passport/voyages?limit=24");
   expect(first.ok(), await first.text()).toBeTruthy();
@@ -332,13 +401,101 @@ test("Wakebook Phase 1 is private, bounded, historically stable, and normally re
   expect(stableText).toContain("Synthetic Crew");
   expect(stableText).not.toContain("Mutable crew name");
 
+  const emptyPage = await firstUse.context.newPage();
+  await emptyPage.setViewportSize({ width: 1440, height: 1000 });
+  await emptyPage.goto("/passport");
+  await emptyPage.getByRole("link", { name: "History", exact: true }).click();
+  await expect(emptyPage.getByRole("heading", { name: "Every Voyage leaves a wake" })).toBeVisible();
+  await captureEvidenceState(emptyPage, {
+    evidenceId: "WB-P1-EV-001-archive-empty",
+    state: "READY_EMPTY",
+    viewportFamily: "STANDARD_DESKTOP",
+    viewport: "1440x1000",
+    semanticResult: "VISIBLE_PASSPORT_TO_HISTORY_NAVIGATION_AND_EMPTY_ACTIONS_PASSED",
+    overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
+  });
+
+  const oneVoyagePage = await oneVoyage.context.newPage();
+  await oneVoyagePage.setViewportSize({ width: 1440, height: 1000 });
+  await oneVoyagePage.goto("/passport");
+  await oneVoyagePage.getByRole("link", { name: "History", exact: true }).click();
+  await expect(oneVoyagePage.getByRole("heading", { name: "The Lantern Below" })).toBeVisible();
+  await captureEvidenceState(oneVoyagePage, {
+    evidenceId: "WB-P1-EV-002-archive-one-voyage",
+    state: "READY_ONE_VOYAGE",
+    viewportFamily: "STANDARD_DESKTOP",
+    viewport: "1440x1000",
+    semanticResult: "ONE_VOYAGE_COMPOSITION_PASSED",
+    overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
+  });
+
   const page = await owner.context.newPage();
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/passport");
-  await page.getByRole("link", { name: "History" }).click();
+  await page.getByRole("link", { name: "History", exact: true }).click();
   await expect(page).toHaveURL(/\/passport\/history$/u);
   await expect(page.getByRole("heading", { name: "Your Voyages", exact: true }).first()).toBeVisible();
   await expect(page.getByRole("heading", { name: "The Lantern Below" })).toBeVisible();
   expect(await page.locator("body").innerText()).not.toContain(privateMemory);
+  await captureEvidenceState(page, {
+    evidenceId: "WB-P1-EV-003-archive-many-voyages",
+    state: "READY_MANY_VOYAGES",
+    viewportFamily: "STANDARD_DESKTOP",
+    viewport: "1440x1000",
+    semanticResult: "MANY_VOYAGE_SHELF_PASSED",
+    overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
+  });
+  await expect(page.getByRole("heading", { name: "2026", exact: true })).toBeVisible();
+  await captureEvidenceState(page, {
+    evidenceId: "WB-P1-EV-004-archive-year-grouping",
+    state: "READY_YEAR_GROUPING",
+    viewportFamily: "STANDARD_DESKTOP",
+    viewport: "1440x1000",
+    semanticResult: "YEAR_GROUPING_TOTALS_PASSED",
+    overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
+  });
+  await page.getByText("More filters", { exact: true }).click();
+  await expect(page.getByRole("group", { name: "Remembrance and context" })).toBeVisible();
+  await captureEvidenceState(page, {
+    evidenceId: "WB-P1-EV-005-archive-filter-controls",
+    state: "FILTER_CONTROLS_OPEN",
+    viewportFamily: "STANDARD_DESKTOP",
+    viewport: "1440x1000",
+    semanticResult: "EXPANDED_FILTER_CONTROLS_PASSED",
+    overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
+  });
+  await page.getByLabel("Search your archive").fill("No historical Voyage has this title");
+  await page.getByRole("button", { name: "Read the wake" }).click();
+  await expect(page.getByRole("heading", { name: "No Voyages match these archive filters" })).toBeVisible();
+  await captureEvidenceState(page, {
+    evidenceId: "WB-P1-EV-006-archive-filtered-no-results",
+    state: "FILTERED_NO_RESULTS",
+    viewportFamily: "STANDARD_DESKTOP",
+    viewport: "1440x1000",
+    semanticResult: "FILTERED_NO_RESULTS_AND_CLEAR_ACTION_PASSED",
+    overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
+  });
+  await page.getByRole("button", { name: "Clear all filters" }).click();
+  await expect(page.getByRole("heading", { name: "The Lantern Below" })).toBeVisible();
+  await captureEvidenceState(page, {
+    evidenceId: "WB-P1-EV-007-voyage-card-desktop",
+    state: "READY_VOYAGE_CARD",
+    viewportFamily: "STANDARD_DESKTOP",
+    viewport: "1440x1000",
+    semanticResult: "VOYAGE_CARD_DESKTOP_PASSED",
+    overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.getByRole("heading", { name: "The Lantern Below" })).toBeVisible();
+  await captureEvidenceState(page, {
+    evidenceId: "WB-P1-EV-008-voyage-card-mobile",
+    state: "READY_VOYAGE_CARD",
+    viewportFamily: "MODERN_MOBILE",
+    viewport: "390x844",
+    semanticResult: "VOYAGE_CARD_MOBILE_PASSED",
+    overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
+  });
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole("link", { name: "Open The Lantern Below Voyage" }).click();
   await expect(page.getByRole("heading", { name: "Voyage Detail", exact: true })).toBeVisible();
   for (const heading of [
@@ -351,6 +508,24 @@ test("Wakebook Phase 1 is private, bounded, historically stable, and normally re
   ])
     await expect(page.getByRole("heading", { name: heading })).toBeVisible();
   await expect(page.getByText(/A shared Voyage artifact is never presented as personally owned/u)).toBeVisible();
+  await captureEvidenceState(page, {
+    evidenceId: "WB-P1-EV-009-voyage-detail-desktop",
+    state: "READY_DETAIL",
+    viewportFamily: "STANDARD_DESKTOP",
+    viewport: "1440x1000",
+    semanticResult: "VOYAGE_DETAIL_DESKTOP_PASSED",
+    overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await captureEvidenceState(page, {
+    evidenceId: "WB-P1-EV-010-voyage-detail-mobile",
+    state: "READY_DETAIL",
+    viewportFamily: "MODERN_MOBILE",
+    viewport: "390x844",
+    semanticResult: "VOYAGE_DETAIL_MOBILE_PASSED",
+    overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
+  });
+  await page.setViewportSize({ width: 1440, height: 1000 });
   expect(
     (await new AxeBuilder({ page }).analyze()).violations.filter((item) =>
       ["serious", "critical"].includes(item.impact ?? ""),
@@ -364,8 +539,117 @@ test("Wakebook Phase 1 is private, bounded, historically stable, and normally re
     await page.setViewportSize(viewport);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
   }
-  await page.getByRole("link", { name: "Back to Your Voyages" }).click();
+  await page.goBack();
   await expect(page).toHaveURL(/\/passport\/history$/u);
+  await page.goForward();
+  await expect(page.getByRole("heading", { name: "Voyage Detail", exact: true })).toBeVisible();
+  await Promise.all([
+    page.waitForURL(/\/passport\/history$/u),
+    page.getByRole("link", { name: "Back to Your Voyages" }).click(),
+  ]);
+  await expect(page.getByRole("heading", { name: "Your Voyages", exact: true }).first()).toBeVisible();
+  await expect(page).toHaveURL(/\/passport\/history$/u);
+  await expect(page.getByRole("heading", { name: "Invitations along the way" })).toBeVisible();
+  await captureEvidenceState(page, {
+    evidenceId: "WB-P1-EV-011-invitation-history",
+    state: "INVITATION_HISTORY_SEPARATE",
+    viewportFamily: "STANDARD_DESKTOP",
+    viewport: "1440x1000",
+    semanticResult: "INVITATION_HISTORY_SEPARATION_PASSED",
+    overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
+  });
 
-  await Promise.all([owner.context.close(), crew.context.close(), foreign.context.close()]);
+  await db.playerChronicleRecord.update({
+    where: { id: fixture.detailRecordId },
+    data: {
+      wallClockSeconds: null,
+      wallClockAccuracy: "UNAVAILABLE",
+      completedChapters: "not-json",
+      projectionStatus: "STALE",
+    },
+  });
+  await page.reload();
+  await page.getByRole("link", { name: "Open The Lantern Below Voyage" }).click();
+  await expect(page.getByText("Duration unavailable", { exact: true })).toBeVisible();
+  await captureEvidenceState(page, {
+    evidenceId: "WB-P1-EV-012-unavailable-timing",
+    state: "UNAVAILABLE_TIMING",
+    viewportFamily: "STANDARD_DESKTOP",
+    viewport: "1440x1000",
+    semanticResult: "UNAVAILABLE_TIMING_FALLBACK_PASSED",
+    overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
+  });
+  await expect(page.getByText(/needs history reconciliation/u).first()).toBeVisible();
+  await captureEvidenceState(page, {
+    evidenceId: "WB-P1-EV-013-partial-history",
+    state: "PARTIAL_HISTORY",
+    viewportFamily: "STANDARD_DESKTOP",
+    viewport: "1440x1000",
+    semanticResult: "PARTIAL_HISTORY_SAFE_FALLBACK_PASSED",
+    overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
+  });
+  await Promise.all([
+    page.waitForURL(/\/passport\/history$/u),
+    page.getByRole("link", { name: "Back to Your Voyages" }).click(),
+  ]);
+  await expect(page.getByRole("heading", { name: "Your Voyages", exact: true }).first()).toBeVisible();
+  await page.context().route("**/api/passport/voyages**", async (route) => {
+    await route.fulfill({
+      status: 500,
+      contentType: "application/json",
+      body: JSON.stringify({ error: "Synthetic read failure" }),
+    });
+  });
+  await page.reload();
+  await expect(page.getByText("Synthetic read failure", { exact: true })).toBeVisible();
+  await captureEvidenceState(page, {
+    evidenceId: "WB-P1-EV-014-error-state",
+    state: "READ_ERROR",
+    viewportFamily: "STANDARD_DESKTOP",
+    viewport: "1440x1000",
+    semanticResult: "ERROR_STATE_PASSED",
+    overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
+  });
+  await page.context().unroute("**/api/passport/voyages**");
+  await page.getByRole("button", { name: "Try the archive again", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Your Voyages", exact: true }).first()).toBeVisible();
+  await captureEvidenceState(page, {
+    evidenceId: "WB-P1-EV-015-error-recovery",
+    state: "READ_RECOVERED",
+    viewportFamily: "STANDARD_DESKTOP",
+    viewport: "1440x1000",
+    semanticResult: "ERROR_RETRY_RECOVERY_PASSED",
+    overflowResult: "NO_ACCIDENTAL_HORIZONTAL_DOCUMENT_OVERFLOW",
+  });
+
+  if (captureEvidence) {
+    expect(visualEvidence).toHaveLength(15);
+    await writeFile(
+      path.join(evidenceRoot, "manifest.json"),
+      `${JSON.stringify(
+        {
+          schemaVersion: "1.0.0",
+          phase: "PROJECT_WAKEBOOK_PHASE_1",
+          sourceSha,
+          branch: process.env.WAKEBOOK_PHASE1_EVIDENCE_BRANCH ?? "isolated-validation-runtime",
+          fixtureVersion: "wakebook-phase1-browser-v1",
+          fixtureChecksum: createHash("sha256").update(unique).digest("hex"),
+          records: visualEvidence,
+          limitation:
+            "Synthetic task-owned browser evidence only; not owner acceptance, production, deployment, or protected-main evidence.",
+        },
+        null,
+        2,
+      )}\n`,
+      "utf8",
+    );
+  }
+
+  await Promise.all([
+    owner.context.close(),
+    crew.context.close(),
+    foreign.context.close(),
+    firstUse.context.close(),
+    oneVoyage.context.close(),
+  ]);
 });

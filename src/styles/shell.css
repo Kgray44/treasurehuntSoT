@@ -8,7 +8,6 @@
   --shell-header-height: 4.75rem;
   --shell-footer-height: 4.5rem;
   min-height: 100svh;
-  overflow-x: clip;
   color: var(--shell-ink);
   background: var(--background-primary);
 }
@@ -72,6 +71,11 @@
     radial-gradient(circle at 40% 0%, var(--shell-accent-soft), transparent 45%);
   box-shadow: 0 0.75rem 2.5rem rgb(0 0 0 / 26%);
   backdrop-filter: blur(18px) saturate(120%);
+}
+
+/* Account navigation must sit above local sticky workbench chrome while it is open. */
+.product-shell-header[data-account-menu-open="true"] {
+  z-index: calc(var(--z-dialog, 1000) + 1);
 }
 
 .shell-mode-GATEWAY_STANDARD .product-shell-header {
@@ -501,6 +505,7 @@
 
 .product-shell-content {
   display: grid;
+  min-width: 0;
   min-height: calc(100svh - var(--shell-header-height) - var(--shell-footer-height));
   align-items: start;
 }
@@ -546,6 +551,7 @@
   display: grid;
   grid-area: 1 / 1;
   width: 100%;
+  min-width: 0;
   min-height: inherit;
   outline: 0;
 }
@@ -553,12 +559,14 @@
 .product-route-transition {
   display: grid;
   grid-area: 1 / 1;
+  min-width: 0;
   min-height: inherit;
 }
 
 .product-route-content,
 .route-preparation-fallback {
   grid-area: 1 / 1;
+  min-width: 0;
   min-height: inherit;
 }
 

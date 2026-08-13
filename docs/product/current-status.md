@@ -3,21 +3,21 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-12
 ---
 
 # Current status
 
-**Branch-complete and ready for owner walkthrough:** Project Wakebook Phase 1,
-Open the Wake, replaces the skeletal Passport history presentation on
-the named Project Wakebook branch with a complete owner-private
-Living Journey Archive. The branch provides chronological visual shelves,
+**Available on main and owner accepted:** Project Wakebook Phase 1,
+Open the Wake, replaces the skeletal Passport history presentation with a
+complete owner-private Living Journey Archive. The accepted source provides chronological visual shelves,
 accurate year summaries, bounded search/filter/sort/pagination, exact played
 edition identity, truthful timing quality, historical crew and chapter context,
 separate invitation history, artifact-provenance boundaries, and a polished
 Voyage Detail with existing Reflection, Memory, Keepsake, Cabinet, and review
-handoffs. It is not on main, deployed, or owner accepted. Automated readiness
-does not replace the separate owner walkthrough.
+handoffs. The owner accepted the qualified Phase 1 walkthrough on 2026-08-12,
+and protected mainline integration completed in PR #41. Deployment remains a
+separate decision.
 
 **Available on main:** Project Homeport Phases 1-7 and Correction Round 3 Patch
 A, Phase 3-4 convergence, Wayfarer Phases 3 and 4,
@@ -28,14 +28,23 @@ libraries, journals, profile and Passport surfaces, protected content, and
 animation presentation. Homeport reached main through protected PR #9; this is
 source integration, not deployment or owner acceptance.
 
-**Project Helm Phase 1 branch candidate:** Captain participation is explicit at
-Voyage creation. Captain-only remains the default; Captain + Player attaches
-exactly one ordinary Player membership to the same canonical account while
-keeping Voyage-scoped Captain authority independent. Player access, history,
-artifacts, and removal follow ordinary membership and event-time rules, and the
-Player view remains a Player-safe projection. Current evidence is isolated and
-local; mainline integration, deployment, live-Voyage behavior, and owner
-acceptance are not yet claimed.
+**Project Helm Phases 1 and 2 are available on main:** Captain participation is
+explicit at Voyage creation. Captain-only remains the default; Captain + Player
+attaches exactly one ordinary Player membership to the same canonical account
+while keeping Voyage-scoped Captain authority independent. Captain operations
+now add privacy-safe, read-only Voyage status, prioritized attention, safe crew
+presence and synchronization health, current progress, and safe event
+summaries. Player access, history, artifacts, removal, and perspective remain
+membership-bounded and Player-safe. This is protected-mainline source
+integration with local/synthetic automated evidence, not deployment,
+live-Voyage behavior, or owner acceptance.
+
+**Project Drydock Phase 3 active branch:** Creator-only Sea Trials provide
+revisioned source-bound deterministic Scenarios, synthetic faults, virtual
+time, Suites, safe trace/coverage receipts, and an adapter-level One Voyage
+transition differential. They cannot change a live Voyage, provider, or
+published Chronicle. The branch has focused local evidence only; it is not
+candidate-qualified, on main, deployed, or owner accepted.
 
 Project Tideglass Phase 2 is accepted on main and adds local/server Chronicle edition intelligence:
 stable change codes, explainable significance, compatibility deltas,
@@ -43,9 +52,17 @@ spoiler-safe public/Player/Creator projections, deterministic summaries,
 append-only Creator annotation revisions, digest-validated rebuildable cache,
 and bounded authorized APIs. It deliberately adds no ordinary comparison route
 or played-history integration. SQLite upgrade rehearsal and provider-schema
-parity pass locally; production MySQL execution, deployment, and a Phase 3
-product surface are not claimed. Exact candidate, protected hosted, and
-integrated-main Sounding Line decisions passed with clean release evidence.
+parity pass locally; production MySQL execution and deployment are not claimed.
+Exact candidate, protected hosted, and integrated-main Sounding Line decisions
+passed with clean release evidence.
+
+**Project Tideglass Phase 3 implementation worktree, not available on main:**
+the ordinary Chronicle and Passport **What changed?** journey, exact
+publishing-owned recommended target, spoiler-safe semantic presentation, and
+Creator Studio semantic comparison are under local qualification. The isolated
+synthetic fixture and browser journey are evidence of the local product path
+only. Current-main reconciliation, one frozen candidate, canonical owner
+walkthrough acceptance, protected merge, and deployment remain separate gates.
 
 **Available on main and accepted on protected staging, not production deployed:**
 Google and GitHub application OAuth adds
@@ -71,13 +88,24 @@ It is ready for owner walkthrough. Owner Decision remains
 **Available on main and owner accepted:**
 Project Admiralty Phase 1 provides canonical role/capability authorization,
 explicit administrator bootstrap, recent privileged assurance, a limited
-non-navigable `/admin` shell, user-consented scoped Support Access, sanitized
+`/admin` shell, user-consented scoped Support Access, sanitized
 administrative audit evidence, and a 92-entry capability-floor registry. The
 exact-current-main local implementation, additive SQLite/MySQL migration
 rehearsals, focused tests, production build, and isolated browser journeys pass.
 The owner decision is `ACCEPTED`; exact reconciled Sounding Line proof,
 canonical integration, and remote parity pass. No deployment, production
-database execution, or Phase 2 capability is claimed.
+database execution, or Phase 2 mainline availability is claimed.
+
+**Available on main and owner accepted:** Project Admiralty Phase 2 adds a
+15-route, read-only Chartroom with authorized account-menu reachability,
+role-filtered navigation, bounded account/Chronicle/Voyage/Community search and
+detail, operations/providers/configuration/releases, Audit Explorer, and
+correlation-led investigation. It uses typed owner projections, adds no schema
+or broad mutation, and truthfully marks missing email/verification provider
+contracts. Initial focused, production-build, responsive, accessibility, and
+multi-role synthetic browser evidence passes. The owner accepted the qualified
+walkthrough; exact-source Sounding Line authority and protected mainline
+integration completed in PR #28.
 
 **Development-only or compatibility-only:** development showcases, legacy routes, and package-exchange integrations are not a promise of a generally hosted service.
 
@@ -93,7 +121,7 @@ for the Phase 3-4 browser matrix. It is not a full matrix pass and does not
 change the external-validation boundary.
 
 **Planned or not validated:** Project Homeport owner acceptance, Harborlight
-Phase 4, Project Admiralty Phase 2 and later phases, Project Drydock, Project
+Phase 4, Project Admiralty Phase 3 and later phases, Project Drydock, Project
 Landfall, and Project Watchglass remain pending. Project Sounding
 Line is the repository validation authority used for Homeport decisions; that
 use does not claim a new user-facing Sounding Line product. Historic records

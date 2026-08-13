@@ -1,5 +1,4 @@
-import { expect, type APIResponse, type BrowserContext, type Page } from "@playwright/test";
-import { phase3Test as test } from "./fixtures/lanternwake-phase3";
+import { expect, test, type APIResponse, type BrowserContext, type Page } from "@playwright/test";
 import {
   PAGE_FLIP_DEVELOPMENT_FAILPOINT_GLOBAL,
   PAGE_TURN_LIFECYCLE_BROWSER_EVENT,
@@ -503,16 +502,26 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     "The unique voyage fixture mutates the isolated validation database once in Chromium; WebKit is explicitly skipped.",
   );
 
-  test.beforeAll(async ({ browser, browserName, baseURL, phase3Captain }) => {
+  test.beforeAll(async ({ browser, browserName, baseURL }) => {
     if (browserName !== "chromium") return;
     expect(baseURL, "Playwright must provide its isolated base URL.").toBeTruthy();
+    const captainContext = await browser.newContext({ baseURL });
     const playerContext = await browser.newContext({ baseURL });
+    const captain = captainContext.request;
     const playerPage = await playerContext.newPage();
 
     try {
-      const captain = phase3Captain.context;
-      const { csrfToken } = phase3Captain;
       await expectValidationIsolation(await captain.get("/api/dev/validation/database-identity"));
+
+      const loginBody = await expectOk(
+        await captain.post("/api/gm/login", {
+          data: {
+            username: process.env.GM_USERNAME ?? "kato",
+            password: process.env.GM_PASSWORD ?? "development-captain-only",
+          },
+        }),
+      );
+      const { csrfToken } = JSON.parse(loginBody) as { csrfToken: string };
       const libraryBody = await expectOk(await captain.get("/api/captain/library"));
       const library = JSON.parse(libraryBody) as CaptainLibrary;
       const tale = library.publishedTales.find((item) => item.title.includes("Studio Development Voyage"));
@@ -563,7 +572,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
       expect(playerCookies.some((cookie) => cookie.name === "wayfarer_account")).toBe(true);
       expect(playerCookies.some((cookie) => cookie.name === "chronicle_player")).toBe(false);
     } finally {
-      await playerContext.close();
+      await Promise.all([playerContext.close(), captainContext.close()]);
     }
   });
 
@@ -852,10 +861,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     });
   }
 
-  test("completed archive auto-opens quietly, remains read-only, and preserves replay", async ({
-    page,
-    phase3Captain,
-  }) => {
+  test("completed archive auto-opens quietly, remains read-only, and preserves replay", async ({ page }) => {
     const sessionPath = journalPath.replace("/player/playthroughs/", "/api/play/sessions/").replace("/journal", "");
     const sessionUrl = new URL(sessionPath, journalUrl).href;
     const readState = async () => {
@@ -884,10 +890,17 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
       }),
     );
 
+    const gmLogin = await page.request.post("/api/gm/login", {
+      data: {
+        username: process.env.GM_USERNAME ?? "kato",
+        password: process.env.GM_PASSWORD ?? "development-captain-only",
+      },
+    });
+    const gmBody = JSON.parse(await expectOk(gmLogin)) as { csrfToken: string };
     const playthroughId = journalPath.split("/").at(-2)!;
     await expectOk(
-      await phase3Captain.context.post(`/api/captain/sessions/${playthroughId}`, {
-        headers: { "x-csrf-token": phase3Captain.csrfToken },
+      await page.request.post(`/api/captain/sessions/${playthroughId}`, {
+        headers: { "x-csrf-token": gmBody.csrfToken },
         data: {
           action: "approve",
           reason: "Lanternwake completed archive profile",

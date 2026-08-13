@@ -3,7 +3,7 @@ title: Engineering records
 audience: engineering
 status: current
 canonical_for: engineering-records-index
-last_reviewed: 2026-08-10
+last_reviewed: 2026-08-12
 ---
 
 # Engineering records
@@ -27,7 +27,17 @@ also passed. See the [OAuth validation and completion record](Validation/Voyagew
 
 ## Project Tideglass
 
-[Project Tideglass](Projects/Project_Tideglass/README.md) owns deterministic semantic comparison of exact immutable Chronicle editions. Phase 1 is a read-only internal foundation with a safe diagnostic seam and no ordinary user-facing comparison route.
+[Project Tideglass](Projects/Project_Tideglass/README.md) owns deterministic semantic comparison of exact immutable Chronicle editions. Phases 1-2 are accepted mainline semantic authority. Phase 3's ordinary comparison, owned-history, and Studio semantic-consumer work is in governed local qualification on its dedicated branch; it is not merged, owner accepted, or deployed.
+
+## Project Bridgewatch
+
+[Project Bridgewatch Phase 2](Project_Bridgewatch_Phase_2_Design_Record.md)
+extends the standalone private mission-control board with a durable,
+source-indexed Project Registry, permanent phase and completion history,
+read-only Sounding Line runtime projection, narrow machine activity telemetry,
+and ordinary active/completed/planned/all project navigation. The Phase 2
+records distinguish local implementation evidence from its still-required
+candidate qualification, protected authority, merge, and exact-main proof.
 
 ## Project Deepwater
 
@@ -39,12 +49,9 @@ also passed. See the [OAuth validation and completion record](Validation/Voyagew
 Phase 1, **Take the Helm**, adds explicit Captain-only and Captain + Player
 participation while preserving one canonical account, ordinary Player
 membership, Voyage-scoped Captain authority, and Player-safe projection
-boundaries. Its repository records distinguish candidate validation from
-integrated-main acceptance and stop before Phase 2 operational intelligence.
-
-## Project Wakebook
-
-Project Wakebook governs the private Living Journey Archive over accepted Wayfarer history. Phase 1, Open the Wake, is branch-complete and preparing its separate owner walkthrough from the frozen [design record](Project_Wakebook_Phase_1_Design_Record.md), [current-history audit](Project_Wakebook_Phase_1_Current_History_Audit.md), [test plan](Project_Wakebook_Phase_1_Test_Plan.md), [mainline-safety record](Project_Wakebook_Phase_1_Mainline_Safety_Record.md), [integration manifest](Project_Wakebook_Phase_1_Integration_Manifest.md), [validation record](Project_Wakebook_Phase_1_Validation_Record.md), and [owner walkthrough](Project_Wakebook_Phase_1_Owner_Walkthrough.md). These records authorize no schema change, duplicate history authority, Phase 2 behavior, main merge, deployment claim, or owner-acceptance claim.
+boundaries. Phase 2, **Read the Deck**, is now integrated on canonical main
+with read-only operational projections and member-scoped presence/synchronization
+evidence; Phase 3 command redesign remains separate.
 
 ## Project Admiralty
 
@@ -57,6 +64,10 @@ additive migrations, and a living capability-floor registry. The owner accepted
 the full Phase 1 walkthrough on 2026-08-09, and the accepted source is integrated
 on canonical main with verified parity. Deployment, production MySQL proof, and
 all later Admiralty phases remain separate, and Phase 2 remains dormant.
+
+## Project Wakebook
+
+Project Wakebook governs the private Living Journey Archive over accepted Wayfarer history. Phase 1, Open the Wake, is branch-complete and preparing its separate owner walkthrough from the frozen [design record](Project_Wakebook_Phase_1_Design_Record.md), [current-history audit](Project_Wakebook_Phase_1_Current_History_Audit.md), [test plan](Project_Wakebook_Phase_1_Test_Plan.md), [mainline-safety record](Project_Wakebook_Phase_1_Mainline_Safety_Record.md), [integration manifest](Project_Wakebook_Phase_1_Integration_Manifest.md), [validation record](Project_Wakebook_Phase_1_Validation_Record.md), and [owner walkthrough](Project_Wakebook_Phase_1_Owner_Walkthrough.md). These records authorize no schema change, duplicate history authority, Phase 2 behavior, main merge, deployment claim, or owner-acceptance claim.
 
 ## Current project-governance wave
 

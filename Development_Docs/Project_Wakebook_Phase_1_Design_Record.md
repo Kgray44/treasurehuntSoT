@@ -3,7 +3,7 @@ title: Project Wakebook Phase 1 Design Record
 audience: product-engineering
 status: current
 canonical_for: project-wakebook-phase-1-design-record
-last_reviewed: 2026-08-10
+last_reviewed: 2026-08-09
 ---
 
 # Project Wakebook Phase 1 design record
@@ -167,5 +167,3 @@ No visible Phase 1 page depends on a `coming soon` control. Archive Home, one-Vo
 Deepwater Phase 1 advanced `origin/main` by five commits while Wakebook was blocked. The Wakebook branch fast-forwarded to `273fb52`; incoming changes were confined to Deepwater documentation/tooling plus shared Feature Catalog and Sounding Line control-plane files. No Wakebook-relevant runtime source changed. Shared control-plane edits will be made against the reconciled files and rechecked immediately before final evidence.
 
 No concurrent Phase 1 branch had tracked divergence in Wakebook-owned runtime paths at architecture freeze. Wakebook will not consume unaccepted Tideglass, Helm, Admiralty, Shipwright, or other branch work.
-
-Before final evidence, Wakebook semantically reconciled the later accepted-main sequence through `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3`. That sequence adds accepted Deepwater Phase 2/3 and closure, Harborlight corrections, Tideglass Phases 1-2, Helm Phase 1, Admiralty Phase 1, Drydock Phase 1 and closure records, Feature Catalog, Homeport catalog, Sounding Line, and documentation truth. Shared conflicts were resolved by preserving Tideglass as `FT-B009`, Admiralty as `FT-B010`, branch-only Wakebook as `FT-B011`, and Helm's accepted expansion of Captain `FT-007`; combining all project ownership, suite, contract, impact, and gate entries; and regenerating the generated Feature Catalog and active-test registry from authoritative inputs. The accepted Helm Captain-participation seam remains distinct from Wakebook's owner-private historical participation projection. No incoming commit replaced Wakebook's archive service, UI, API routes, or schema-free design.

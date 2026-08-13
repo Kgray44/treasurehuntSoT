@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "integrated-deepwater-phase-2-wakebook-phase-1-control-plane",
+  "status": "integrated-tideglass-phase-3-wakebook-phase-1-control-plane",
   "owners": [
     {
       "id": "platform-foundation",
@@ -119,39 +119,6 @@
       "sourcePaths": ["Development_Docs/Programs/Deepwater/**", "scripts/deepwater/**"],
       "testPaths": ["tests/deepwater/**/*.test.*"],
       "contractIds": ["deepwater.capability-realization-integrity"]
-    },
-    {
-      "id": "project-wakebook",
-      "project": "project-wakebook",
-      "sourcePaths": [
-        "Development_Docs/Projects/Project Wakebook/**",
-        "Development_Docs/Project_Wakebook_Phase_1_*.md",
-        "src/wakebook/**",
-        "src/components/wakebook/**",
-        "src/app/api/passport/voyages/**",
-        "src/app/passport/history/**",
-        "src/styles/personal-harbor.css"
-      ],
-      "testPaths": [
-        "src/wakebook/**/*.test.*",
-        "src/components/wakebook/**/*.test.*",
-        "src/app/api/passport/voyages/**/*.test.*",
-        "tests/e2e/wakebook-phase1.spec.ts"
-      ],
-      "contractIds": [
-        "wakebook.history.version-pinning",
-        "wakebook.history.owner-privacy",
-        "wakebook.history.historical-stability",
-        "wakebook.timing.quality",
-        "wakebook.artifact-context",
-        "wakebook.navigation.reachability",
-        "wakebook.archive.pagination",
-        "wakebook.archive.year-grouping",
-        "wakebook.archive.filters",
-        "wakebook.archive.invitation-separation",
-        "wakebook.archive.partial-history",
-        "wakebook.archive.summary-redaction"
-      ]
     },
     {
       "id": "project-homeport",
@@ -340,20 +307,32 @@
       "sourcePaths": [
         "Development_Docs/Projects/Project_Helm/**",
         "src/helm/**",
+        "src/platform/membership-presence*",
+        "src/platform/presence-client.ts",
         "src/platform/invitations.ts",
         "src/platform/libraries.ts",
         "src/components/platform/CaptainLibrary.tsx",
+        "src/components/platform/PlayerVoyageRoom.tsx",
+        "src/components/player/journal/ChronicleJournalSession.tsx",
+        "src/components/captain/CaptainOperationalPanel.tsx",
         "src/homeport/**",
         "src/wayfarer/chronicle-history.ts",
         "src/chronicle/artifact-grant.ts",
         "src/app/api/captain/playthroughs/**",
+        "src/app/api/captain/voyages/**",
+        "src/app/api/player/playthroughs/**/presence/**",
+        "prisma/migrations/20260810160000_helm_phase2_membership_presence/**",
+        "prisma/mysql-migrations/0054_helm_phase2_membership_presence/**",
         "src/app/api/play/sessions/**"
       ],
       "testPaths": [
         "src/helm/**/*.test.*",
+        "src/platform/membership-presence*.test.*",
         "src/platform/invitations.helm.test.ts",
         "src/components/platform/CaptainLibrary.helm.test.tsx",
         "src/app/api/captain/playthroughs/**/route.test.ts",
+        "src/app/api/captain/voyages/**/route.test.ts",
+        "src/app/api/player/playthroughs/**/presence/**/route.test.ts",
         "src/app/api/play/sessions/**/route.helm.test.ts",
         "src/wayfarer/chronicle-history.helm.test.ts",
         "src/chronicle/artifact-grant.helm.test.ts",
@@ -367,7 +346,8 @@
         "helm.history.membership-derived",
         "helm.artifacts.event-time-membership",
         "helm.security.resource-authorization",
-        "helm.accessibility.responsive"
+        "helm.accessibility.responsive",
+        "helm.member-presence-synchronization"
       ]
     },
     {
@@ -386,11 +366,19 @@
         "src/app/admin/**",
         "src/app/api/admin/**",
         "src/app/api/account/support/**",
+        "src/homeport/current-user*",
+        "src/navigation/**",
         "scripts/admiralty/**",
         "prisma/migrations/20260809120000_admiralty_phase1_foundation/**",
         "prisma/mysql-migrations/0052_admiralty_phase1_foundation/**"
       ],
-      "testPaths": ["src/admiralty/**/*.test.*", "src/app/admin/**/*.test.*", "tests/e2e/admiralty-phase1.spec.ts"],
+      "testPaths": [
+        "src/admiralty/**/*.test.*",
+        "src/app/admin/**/*.test.*",
+        "src/navigation/navigation.test.ts",
+        "tests/e2e/admiralty-phase1.spec.ts",
+        "tests/e2e/admiralty-phase2.spec.ts"
+      ],
       "contractIds": [
         "admiralty.phase1.identity",
         "admiralty.phase1.authorization",
@@ -399,7 +387,59 @@
         "admiralty.phase1.audit",
         "admiralty.phase1.registry",
         "admiralty.phase1.migration",
-        "admiralty.phase1.responsive-consent"
+        "admiralty.phase1.responsive-consent",
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.registry-activation",
+        "admiralty.phase2.responsive-accessibility"
+      ]
+    },
+    {
+      "id": "bridgewatch",
+      "project": "bridgewatch",
+      "sourcePaths": [
+        "bridgewatch/**",
+        "scripts/sounding-line/status-projection.mjs",
+        "Development_Docs/Project_Bridgewatch_Phase_2_*.md"
+      ],
+      "testPaths": ["bridgewatch/test/**/*.test.*"],
+      "contractIds": ["bridgewatch.mission-control"]
+    },
+    {
+      "id": "project-wakebook",
+      "project": "project-wakebook",
+      "sourcePaths": [
+        "Development_Docs/Projects/Project Wakebook/**",
+        "Development_Docs/Project_Wakebook_Phase_1_*.md",
+        "src/wakebook/**",
+        "src/components/wakebook/**",
+        "src/app/api/passport/voyages/**",
+        "src/app/passport/history/**",
+        "src/styles/personal-harbor.css"
+      ],
+      "testPaths": [
+        "src/wakebook/**/*.test.*",
+        "src/components/wakebook/**/*.test.*",
+        "src/app/api/passport/voyages/**/*.test.*",
+        "tests/e2e/wakebook-phase1.spec.ts"
+      ],
+      "contractIds": [
+        "wakebook.history.version-pinning",
+        "wakebook.history.owner-privacy",
+        "wakebook.history.historical-stability",
+        "wakebook.timing.quality",
+        "wakebook.artifact-context",
+        "wakebook.navigation.reachability",
+        "wakebook.archive.pagination",
+        "wakebook.archive.year-grouping",
+        "wakebook.archive.filters",
+        "wakebook.archive.invitation-separation",
+        "wakebook.archive.partial-history",
+        "wakebook.archive.summary-redaction"
       ]
     }
   ]

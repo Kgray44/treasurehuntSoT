@@ -3,7 +3,7 @@ title: Support Access
 audience: user
 status: current
 canonical_for: support-access-guide
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-12
 ---
 
 # Support Access
@@ -30,5 +30,9 @@ operator, a wrong target, or an unapproved scope all deny access. If a request
 does not match the assistance you expect, deny it and contact the service owner
 through a separately trusted channel.
 
-Project Admiralty Phase 1 is ready for an owner walkthrough on its named
-development branch. It is not on main, deployed, or owner accepted.
+Project Admiralty Phase 1 is owner accepted on canonical main. Phase 2 places
+the same consent flow in the account dossier for authorized support operators;
+it does not weaken target approval, exact scope, recent assurance, expiry,
+revocation, or auditing. The owner accepted the Phase 2 walkthrough, and its
+exact-source authority and protected mainline integration completed in PR #28.
+Neither phase is claimed deployed by this guide.

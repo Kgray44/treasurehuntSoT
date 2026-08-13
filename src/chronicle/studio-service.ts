@@ -34,6 +34,19 @@ const blockInputSchema = z.object({
   creatorNotes: z.string().max(10000).nullish(),
   isEnabled: z.boolean().optional(),
   schemaVersion: z.number().int().min(1).max(100).optional(),
+  nextBlockId: z.string().min(8).max(128).nullish(),
+  connections: z
+    .array(
+      z.object({
+        targetBlockId: z.string().min(8).max(128),
+        connectionType: z.string().min(1).max(80),
+        label: z.string().max(400).nullish(),
+        conditionExpression: z.string().max(10000).nullish(),
+        orderIndex: z.number().int().min(0).max(10000).optional(),
+      }),
+    )
+    .max(1000)
+    .optional(),
 });
 
 export const studioDraftSchema = z.object({
@@ -239,11 +252,13 @@ export async function getStudioTale(taleId: string) {
           creatorNotes: block.creatorNotes,
           isEnabled: block.isEnabled,
           schemaVersion: block.schemaVersion,
+          nextBlockId: block.nextBlockId,
           connections: block.outgoing.map((connection) => ({
             targetBlockId: connection.targetBlockId,
             connectionType: connection.connectionType,
             label: connection.label,
             conditionExpression: connection.conditionExpression,
+            orderIndex: connection.orderIndex,
           })),
         })),
       })),
@@ -339,7 +354,12 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
       },
     });
     await tx.taleChapter.deleteMany({ where: { draftRevisionId: draft.id } });
-    const flattened: Array<{ id: string; type: string; configuration: JsonObject }> = [];
+    const flattened: Array<{
+      id: string;
+      type: string;
+      configuration: JsonObject;
+      connections?: NonNullable<StudioDraftInput["chapters"]>[number]["blocks"][number]["connections"];
+    }> = [];
     for (let chapterIndex = 0; chapterIndex < input.chapters.length; chapterIndex += 1) {
       const chapter = input.chapters[chapterIndex];
       const createdChapter = await tx.taleChapter.create({
@@ -382,15 +402,33 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
           },
         });
         if (block.isEnabled !== false)
-          flattened.push({ id: block.id, type: block.blockType, configuration: block.configuration });
+          flattened.push({
+            id: block.id,
+            type: block.blockType,
+            configuration: block.configuration,
+            connections: block.connections,
+          });
       }
     }
     const allBlockIds = new Set(flattened.map((block) => block.id));
     for (let index = 0; index < flattened.length; index += 1) {
       const block = flattened[index];
       const fallback = flattened[index + 1]?.id ?? null;
-      const connections: Array<{ target: string; type: string; label?: string; condition?: string }> = [];
-      if (block.type === "choice" && Array.isArray(block.configuration.choices)) {
+      const connections: Array<{ target: string; type: string; label?: string | null; condition?: string | null }> = [];
+      if (block.connections) {
+        for (const connection of [...block.connections].sort(
+          (left, right) => (left.orderIndex ?? 0) - (right.orderIndex ?? 0),
+        )) {
+          if (!allBlockIds.has(connection.targetBlockId))
+            throw new Error("A canonical Passage connection targets a missing or disabled Passage.");
+          connections.push({
+            target: connection.targetBlockId,
+            type: connection.connectionType,
+            label: connection.label,
+            condition: connection.conditionExpression,
+          });
+        }
+      } else if (block.type === "choice" && Array.isArray(block.configuration.choices)) {
         for (const choice of block.configuration.choices as Array<Record<string, unknown>>) {
           const target = typeof choice.targetBlockId === "string" ? choice.targetBlockId : "";
           if (allBlockIds.has(target))
@@ -562,93 +600,6 @@ export async function restorePublishedVersionToDraft(taleId: string, versionId: 
     throw cause;
   }
   return { draftId: draft.id, basedOnPublishedVersionId: version.id, revisionNumber: draft.revisionNumber };
-}
-
-export async function comparePublishedVersions(taleId: string, leftVersionId: string, rightVersionId: string) {
-  const versions = await db.publishedTaleVersion.findMany({
-    where: { taleId, id: { in: [leftVersionId, rightVersionId] } },
-  });
-  const leftRow = versions.find((version) => version.id === leftVersionId);
-  const rightRow = versions.find((version) => version.id === rightVersionId);
-  if (!leftRow || !rightRow) throw new Error("Choose two published Versions from this Chronicle.");
-  const left = JSON.parse(leftRow.contentSnapshot) as PublishedTaleSnapshot;
-  const right = JSON.parse(rightRow.contentSnapshot) as PublishedTaleSnapshot;
-  const changes: Array<{ type: string; path: string; before?: string; after?: string }> = [];
-  const record = (type: string, path: string, before?: unknown, after?: unknown) =>
-    changes.push({
-      type,
-      path,
-      ...(before === undefined ? {} : { before: typeof before === "string" ? before : JSON.stringify(before) }),
-      ...(after === undefined ? {} : { after: typeof after === "string" ? after : JSON.stringify(after) }),
-    });
-  for (const key of ["title", "subtitle", "shortDescription", "longDescription", "theme", "visibility"] as const)
-    if (left.tale[key] !== right.tale[key])
-      record(
-        key === "title" ? "renamed" : key === "visibility" ? "access-scope-changed" : "modified",
-        `tale.${key}`,
-        left.tale[key],
-        right.tale[key],
-      );
-  const leftChapters = new Map(left.chapters.map((chapter) => [chapter.id, chapter]));
-  const rightChapters = new Map(right.chapters.map((chapter) => [chapter.id, chapter]));
-  for (const [id, chapter] of leftChapters)
-    if (!rightChapters.has(id)) record("removed", `chapters.${id}`, chapter.title);
-  for (const [id, chapter] of rightChapters)
-    if (!leftChapters.has(id)) record("added", `chapters.${id}`, undefined, chapter.title);
-  for (const [id, before] of leftChapters) {
-    const after = rightChapters.get(id);
-    if (!after) continue;
-    if (before.title !== after.title) record("renamed", `chapters.${id}.title`, before.title, after.title);
-    if (before.orderIndex !== after.orderIndex)
-      record("moved", `chapters.${id}.orderIndex`, before.orderIndex, after.orderIndex);
-    const beforeBlocks = new Map(before.blocks.map((block) => [block.id, block]));
-    const afterBlocks = new Map(after.blocks.map((block) => [block.id, block]));
-    for (const [blockId, block] of beforeBlocks)
-      if (!afterBlocks.has(blockId)) record("removed", `chapters.${id}.blocks.${blockId}`, block.title);
-    for (const [blockId, block] of afterBlocks)
-      if (!beforeBlocks.has(blockId)) record("added", `chapters.${id}.blocks.${blockId}`, undefined, block.title);
-    for (const [blockId, beforeBlock] of beforeBlocks) {
-      const afterBlock = afterBlocks.get(blockId);
-      if (!afterBlock) continue;
-      if (beforeBlock.title !== afterBlock.title)
-        record("renamed", `chapters.${id}.blocks.${blockId}.title`, beforeBlock.title, afterBlock.title);
-      if (beforeBlock.orderIndex !== afterBlock.orderIndex)
-        record("moved", `chapters.${id}.blocks.${blockId}.orderIndex`, beforeBlock.orderIndex, afterBlock.orderIndex);
-      for (const key of ["blockType", "configuration", "presentation", "completion", "nextBlockId"] as const)
-        if (JSON.stringify(beforeBlock[key]) !== JSON.stringify(afterBlock[key]))
-          record("modified", `chapters.${id}.blocks.${blockId}.${key}`, beforeBlock[key], afterBlock[key]);
-    }
-  }
-  const leftAssets = new Map(left.assets.map((asset) => [asset.id, asset]));
-  const rightAssets = new Map(right.assets.map((asset) => [asset.id, asset]));
-  for (const [id, asset] of leftAssets) if (!rightAssets.has(id)) record("removed", `assets.${id}`, asset.displayName);
-  for (const [id, asset] of rightAssets)
-    if (!leftAssets.has(id)) record("added", `assets.${id}`, undefined, asset.displayName);
-  for (const [id, before] of leftAssets) {
-    const after = rightAssets.get(id);
-    if (after && JSON.stringify(before.roles) !== JSON.stringify(after.roles))
-      record("access-scope-changed", `assets.${id}.roles`, before.roles, after.roles);
-  }
-  const activeSessions = await db.taleSession.count({
-    where: {
-      publishedVersionId: leftVersionId,
-      status: { in: ["INVITING", "READY", "SCHEDULED", "ACTIVE", "PAUSED"] },
-    },
-  });
-  const compatibilityWarnings = changes
-    .filter((change) => ["removed", "access-scope-changed"].includes(change.type))
-    .map((change) => `${change.type}: ${change.path}`);
-  return {
-    left: { id: leftRow.id, label: leftRow.versionLabel, checksum: leftRow.checksum },
-    right: { id: rightRow.id, label: rightRow.versionLabel, checksum: rightRow.checksum },
-    changes,
-    summary: changes.reduce<Record<string, number>>((summary, change) => {
-      summary[change.type] = (summary[change.type] ?? 0) + 1;
-      return summary;
-    }, {}),
-    activeSessionsOnLeft: activeSessions,
-    compatibilityWarnings,
-  };
 }
 
 export async function forkPublishedVersion(taleId: string, versionId: string, creatorId: string) {

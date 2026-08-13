@@ -1,0 +1,210 @@
+name: Sounding Line protected merge binding
+
+on:
+  # This inexpensive bridge binds existing authority to GitHub's synthetic PR
+  # merge identity. It is deliberately separate from the explicit heavyweight
+  # frozen-candidate workflow.
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize, ready_for_review, edited]
+
+permissions:
+  actions: read
+  checks: read
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: sounding-line-protected-merge-binding-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  record-only-preflight:
+    name: Sounding Line / Record-only classification
+    runs-on: windows-latest
+    timeout-minutes: 10
+    outputs:
+      recordOnly: ${{ steps.classification.outputs.recordOnly }}
+      proofAvailable: ${{ steps.classification.outputs.proofAvailable }}
+      priorAuthorityRunId: ${{ steps.classification.outputs.priorAuthorityRunId }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: "${{ github.sha }}", fetch-depth: 0 }
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with: { node-version-file: .nvmrc }
+      - id: classification
+        name: Classify exact candidate diff
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          MERGE_SHA: ${{ github.sha }}
+        run: |
+          node scripts/sounding-line/record-only-closure.mjs preflight --repository "$env:GITHUB_REPOSITORY" --candidate-sha "$env:CANDIDATE_SHA" --base-sha "$env:BASE_SHA" --merge-sha "$env:MERGE_SHA" --out record-only-preflight.json
+          if ($LASTEXITCODE -ne 0) { throw "RECORD_ONLY_PREFLIGHT_FAILED" }
+          $preflight = Get-Content -Raw record-only-preflight.json | ConvertFrom-Json
+          $recordOnly = if ($preflight.eligible) { 'true' } else { 'false' }
+          $proofAvailable = if ($preflight.priorAuthority -and @($preflight.errors).Count -eq 0) { 'true' } else { 'false' }
+          "recordOnly=$recordOnly" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "proofAvailable=$proofAvailable" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          if ($proofAvailable -eq 'true') {
+            "priorAuthorityRunId=$($preflight.priorAuthority.authorityRunId)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          }
+      - if: ${{ steps.classification.outputs.recordOnly == 'true' }}
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: sounding-line-record-only-preflight
+          path: record-only-preflight.json
+          retention-days: 14
+
+  record-only-evidence:
+    name: Sounding Line / Record-only evidence
+    needs: record-only-preflight
+    if: ${{ needs.record-only-preflight.outputs.recordOnly == 'true' }}
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: "${{ github.sha }}", fetch-depth: 0 }
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with: { node-version-file: .nvmrc, cache: npm }
+      - run: npm ci
+      - name: Require one valid prior implementation authority
+        shell: pwsh
+        env:
+          PROOF_AVAILABLE: ${{ needs.record-only-preflight.outputs.proofAvailable }}
+        run: |
+          if ($env:PROOF_AVAILABLE -ne 'true') { throw 'RECORD_ONLY_PRIOR_AUTHORITY_REFUSED' }
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sounding-line-record-only-preflight
+          path: record-only-preflight
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sounding-line-plan
+          path: prior-plan
+          run-id: ${{ needs.record-only-preflight.outputs.priorAuthorityRunId }}
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sounding-line-finalization
+          path: prior-finalization
+          run-id: ${{ needs.record-only-preflight.outputs.priorAuthorityRunId }}
+          github-token: ${{ github.token }}
+      - name: Seal minimum record-only evidence
+        run: node scripts/sounding-line/record-only-closure.mjs evidence --preflight record-only-preflight/record-only-preflight.json --prior-plan prior-plan/sounding-line-plan.json --prior-finalization prior-finalization/sounding-line-finalization.json --plan-out record-only-plan.json --evidence-out record-only-evidence.json
+      - name: Finalize record-only decision
+        env:
+          GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
+        run: node scripts/sounding-line/finalize-ci.mjs record-only-plan.json record-only-evidence.json --out record-only-finalization.json
+      - name: Seal record-only acceptance envelope
+        env:
+          SOUNDING_LINE_PR_NUMBER: ${{ github.event.pull_request.number }}
+          SOUNDING_LINE_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          SOUNDING_LINE_RUN_ID: ${{ github.run_id }}
+        run: node scripts/sounding-line/create-acceptance-envelope.mjs --plan record-only-plan.json --finalization record-only-finalization.json --pr-number "$env:SOUNDING_LINE_PR_NUMBER" --base-sha "$env:SOUNDING_LINE_BASE_SHA" --run-id "$env:SOUNDING_LINE_RUN_ID" --out record-only-acceptance-envelope.json
+      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: sounding-line-record-only-acceptance
+          path: |
+            record-only-plan.json
+            record-only-finalization.json
+            record-only-acceptance-envelope.json
+          retention-days: 14
+
+  bind:
+    # The name is intentionally the unchanged protected branch context.
+    name: Sounding Line / Mainline Decision
+    needs: [record-only-preflight, record-only-evidence]
+    if: ${{ always() && needs.record-only-preflight.result == 'success' }}
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: "${{ github.sha }}", fetch-depth: 0 }
+      - id: authority
+        name: Locate sealed explicit authority
+        if: ${{ needs.record-only-preflight.outputs.recordOnly != 'true' }}
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          $legacy = Get-Content -Raw testing/sounding-line-authority.json | ConvertFrom-Json | Select-Object -ExpandProperty protectedMergeBinding | Select-Object -ExpandProperty legacyQualifiedCandidates | Where-Object { $_.prNumber -eq [int]$env:PR_NUMBER -and $_.candidateSha -eq $env:CANDIDATE_SHA }
+          if (@($legacy).Count -gt 1) { throw "AMBIGUOUS_LEGACY_QUALIFIED_AUTHORITY" }
+          if ($legacy) {
+            "run-id=$($legacy.authoritativeRunId)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            "legacy=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            exit 0
+          }
+          $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = "application/vnd.github+json"; 'X-GitHub-Api-Version' = '2022-11-28' }
+          $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&head_sha=$env:CANDIDATE_SHA&per_page=100").workflow_runs |
+            Where-Object { $_.name -eq 'Sounding Line authoritative' -and $_.status -eq 'completed' -and $_.conclusion -eq 'success' }
+          if (@($runs).Count -ne 1) { throw "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE" }
+          "run-id=$(@($runs)[0].id)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "legacy=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - name: Download sealed finalization
+        if: ${{ needs.record-only-preflight.outputs.recordOnly != 'true' }}
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sounding-line-finalization
+          path: accepted-finalization
+          run-id: ${{ steps.authority.outputs.run-id }}
+          github-token: ${{ github.token }}
+      - name: Download sealed plan
+        if: ${{ needs.record-only-preflight.outputs.recordOnly != 'true' }}
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sounding-line-plan
+          path: accepted-plan
+          run-id: ${{ steps.authority.outputs.run-id }}
+          github-token: ${{ github.token }}
+      - name: Download qualified acceptance envelope
+        if: ${{ needs.record-only-preflight.outputs.recordOnly != 'true' && steps.authority.outputs.legacy != 'true' }}
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sounding-line-acceptance-envelope
+          path: accepted-envelope
+          run-id: ${{ steps.authority.outputs.run-id }}
+          github-token: ${{ github.token }}
+      - name: Download sealed record-only acceptance
+        if: ${{ needs.record-only-preflight.outputs.recordOnly == 'true' }}
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sounding-line-record-only-acceptance
+          path: accepted-record-only
+      - name: Normalize record-only sealed artifacts
+        if: ${{ needs.record-only-preflight.outputs.recordOnly == 'true' }}
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path accepted-finalization, accepted-plan, accepted-envelope | Out-Null
+          Copy-Item -LiteralPath accepted-record-only/record-only-finalization.json -Destination accepted-finalization/sounding-line-finalization.json
+          Copy-Item -LiteralPath accepted-record-only/record-only-plan.json -Destination accepted-plan/sounding-line-plan.json
+          Copy-Item -LiteralPath accepted-record-only/record-only-acceptance-envelope.json -Destination accepted-envelope/sounding-line-acceptance-envelope.json
+      - name: Bind sealed authority to current merge identity
+        shell: pwsh
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          MERGE_SHA: ${{ github.sha }}
+          AUTHORITY_RUN_ID: ${{ needs.record-only-preflight.outputs.recordOnly == 'true' && github.run_id || steps.authority.outputs.run-id }}
+          LEGACY: ${{ needs.record-only-preflight.outputs.recordOnly == 'true' && 'false' || steps.authority.outputs.legacy }}
+        run: |
+          $args = @(
+            'scripts/sounding-line/protected-merge-binding-ci.mjs',
+            '--authority', 'testing/sounding-line-authority.json',
+            '--finalization', 'accepted-finalization/sounding-line-finalization.json',
+            '--plan', 'accepted-plan/sounding-line-plan.json',
+            '--pr-number', $env:PR_NUMBER,
+            '--candidate-sha', $env:CANDIDATE_SHA,
+            '--base-sha', $env:BASE_SHA,
+            '--merge-sha', $env:MERGE_SHA,
+            '--authority-run-id', $env:AUTHORITY_RUN_ID
+          )
+          if ($env:LEGACY -ne 'true') { $args += @('--envelope', 'accepted-envelope/sounding-line-acceptance-envelope.json') }
+          node @args
