@@ -3,7 +3,7 @@
     "id": "FT-B011",
     "title": "Private Living Journey Archive",
     "summary": "Project Wakebook turns version-pinned Wayfarer records into a polished, owner-private visual archive with truthful chronology, safe historical context, bounded discovery, and a complete Voyage Detail baseline.",
-    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "status": "MAINLINE",
     "program": "Project Wakebook Phase 1",
     "surfaces": ["/passport/history", "/passport/history/[recordId]"],
     "subfeatures": [
@@ -23,15 +23,13 @@
       { "kind": "path", "value": "src/components/wakebook/WakebookVoyageDetail.tsx" },
       { "kind": "test", "value": "tests/e2e/wakebook-phase1.spec.ts" },
       { "kind": "completion-record", "value": "Development_Docs/Project_Wakebook_Phase_1_Validation_Record.md" },
-      { "kind": "commit", "value": "629f5c7a981b80494f7703b6410b573a661e0f39" }
+      { "kind": "commit", "value": "cbf634d4d5db9cf47edebb89e005e8cc910068bd" }
     ],
     "limitations": [
-      "Available only on codex/project-wakebook-phase1-open-the-wake until protected mainline integration",
-      "Owner walkthrough and owner acceptance remain separate from automated readiness",
+      "Protected mainline integration completed in PR #41 as cbf634d4d5db9cf47edebb89e005e8cc910068bd",
+      "The owner accepted the qualified Phase 1 walkthrough on 2026-08-12; deployment remains separate",
       "Timeline, People, Statistics, geographic recap, public sharing, competitive metrics, and Tideglass semantics are outside Phase 1"
     ],
-    "branch": "codex/project-wakebook-phase1-open-the-wake",
-    "commit": "629f5c7a981b80494f7703b6410b573a661e0f39",
     "catalogVersion": 1
   }
 ]

@@ -10,17 +10,17 @@ last_reviewed: 2026-08-12
 
 ## Phase registration
 
-| Field             | Declaration                                                                                                                                   |
-| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| Project / phase   | Project Wakebook / Phase 1 `Open the Wake`                                                                                                    |
-| Owner             | Wakebook for archive projection and presentation; Wayfarer remains history authority                                                          |
-| Branch / worktree | `codex/project-wakebook-phase1-open-the-wake` / `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\project-wakebook-phase1-open-the-wake` |
-| Reconciled base   | `fb0f13e35fcdd98434d22c357aee02f24d6d9036`                                                                                                    |
-| Dependency class  | Accepted-main contracts only                                                                                                                  |
-| Schema impact     | None; no migration reservation                                                                                                                |
-| Shared seams      | Passport routes/navigation/styles, Feature Catalog, Homeport catalogs, Sounding Line control plane                                            |
-| Activation        | Complete authenticated vertical slice; no partial public activation                                                                           |
-| Failure path      | Optional context degrades; accepted history remains readable; neutral authorization errors                                                    |
+| Field             | Declaration                                                                                                              |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Project / phase   | Project Wakebook / Phase 1 `Open the Wake`                                                                               |
+| Owner             | Wakebook for archive projection and presentation; Wayfarer remains history authority                                     |
+| Branch / worktree | `codex/project-wakebook-phase1-open-the-wake` / `C:\Users\kkids\Documents\treasurehuntSoT-wakebook-phase1-open-the-wake` |
+| Reconciled base   | `25a5ecc3989d137a95291c340f07143860b821cc`                                                                               |
+| Dependency class  | Accepted-main contracts only                                                                                             |
+| Schema impact     | None; no migration reservation                                                                                           |
+| Shared seams      | Passport routes/navigation/styles, Feature Catalog, Homeport catalogs, Sounding Line control plane                       |
+| Activation        | Complete authenticated vertical slice; no partial public activation                                                      |
+| Failure path      | Optional context degrades; accepted history remains readable; neutral authorization errors                               |
 
 ## Post-phase capability
 
@@ -47,4 +47,16 @@ The Wakebook vertical slice can be reverted without deleting or rewriting a hist
 
 ## Permanent-stop decision
 
-**PASS BY DESIGN; exact-source authority pending.** The frozen slice is independently useful with no required future control or placeholder. The task owner recorded `OWNER_ACCEPTED_PHASE_1` on 2026-08-12. Historical candidate `33e1316426a4d7f014c1472147e42d040ecdd47e` received `EVIDENCE_INVALID` because independently owned `browser.helm` invitation handoff evidence timed out; runtime conformance and cleanup were `CLEAN`. Helm subsequently repaired the launch handoff in PR #55: exact source `94200b69343c55632f7f008fda7c95e24e863425` received focused `SUCCESS` in `31641766364`, authoritative `SUCCESS` in `31642248271`, and protected binding `SUCCESS` in `31643763885`; its protected merge is `772be633857548d9d4bef06329ff6c54ed1b0465`. A fresh local subsystem on `ae5a28a751a437f8476f25c18ccc06ab4c03a52b` returned `RELEASE_GO` with 15 clean receipts, including the 1/1 Wakebook browser journey. Wakebook then reconciled accepted Tideglass main `bb7676a75581d8d415c3ff7712cc38bc8` through `72a1ae3df50e8972e530c1bd96f4f098f72a4164`, retaining all Wakebook ownership and control-plane mappings. Wakebook will neither weaken static checking nor alter another project's ownership. A fresh hosted source-bound `RELEASE_GO` and normal protected integration remain required.
+**PASS; OWNER ACCEPTED AND ACCEPTED MAINLINE.** The slice remains independently
+useful with no required future control or placeholder. The owner recorded
+`OWNER_ACCEPTED_PHASE_1` on 2026-08-12. Exact candidate `1d1c1aaa` received
+hosted Sounding Line `RELEASE_GO` in run `31651096047` with 38/38 mandatory
+receipts `PASSED` and `CLEAN`, zero invalid evidence, plan digest
+`839c6e8a54f63cc8fe8b414dc39db3996524b477b9b70152161fe1190feb52bb`,
+and evidence digest
+`290c5062dc4f779eee2c7ca6ead51fc706db498b9e61491e3e9e94fe0d8100eb`.
+Protected binding run `31652303048` succeeded and PR #41 merged as
+`cbf634d4d5db9cf47edebb89e005e8cc910068bd`. Current-main reconciliation
+`6d65b9aa` retains that accepted implementation and consumes accepted main
+through `25a5ecc3` outside Wakebook-owned record seams. No deployment or Phase 2
+claim follows.

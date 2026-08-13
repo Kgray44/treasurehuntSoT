@@ -10,23 +10,31 @@ last_reviewed: 2026-08-12
 
 ## Acceptance boundary
 
-This walkthrough begins only after the validation record says `READY_FOR_OWNER_WALKTHROUGH` and the retained task-owned runtime identity below is complete. Automated readiness is not owner acceptance. The walkthrough does not authorize a main merge, deployment, production data, public sharing, or Wakebook Phase 2.
+This walkthrough began only after the validation record reached
+`READY_FOR_OWNER_WALKTHROUGH` and the task-owned evidence was complete. The
+owner recorded `OWNER_ACCEPTED_PHASE_1` on 2026-08-12, and the separately
+governed implementation later reached protected main through PR #41. Owner
+acceptance and source integration do not authorize deployment, production data,
+public sharing, or Wakebook Phase 2.
 
 ## Runtime identity
 
-| Field                       | Owner handoff value                                                                    |
-| --------------------------- | -------------------------------------------------------------------------------------- |
-| Branch                      | `codex/project-wakebook-phase1-open-the-wake`                                          |
-| Implementation evidence SHA | `33e1316426a4d7f014c1472147e42d040ecdd47e` (current validated implementation evidence) |
-| Runtime command             | Generated on owner request from the exact selected candidate                           |
-| Loopback URL                | Generated on owner request; never a shared or production endpoint                      |
-| Process ID and listener     | Generated on owner request and recorded with the runtime handoff                       |
-| Task-owned database         | Generated on owner request; must be a new task-owned SQLite clone                      |
-| Synthetic owner identifier  | Pending retained-runtime launch                                                        |
-| Synthetic password          | Supplied interactively only; never stored in this record                               |
-| Evidence root               | Pending final Sounding Line run                                                        |
+| Field                       | Owner handoff value                                                                     |
+| --------------------------- | --------------------------------------------------------------------------------------- |
+| Branch                      | `codex/project-wakebook-phase1-open-the-wake`                                           |
+| Accepted implementation SHA | `1d1c1aaa5a0f2fbbc6b083911cb19422782afff0`                                              |
+| Runtime command             | Historical task-owned walkthrough runtime; no retained process is claimed after cleanup |
+| Loopback URL                | Historical loopback only; no active or shared endpoint is claimed                       |
+| Process ID and listener     | No active retained process is claimed                                                   |
+| Task-owned database         | Synthetic task-owned SQLite clone only; no canonical or shared database was used        |
+| Synthetic owner identifier  | Task-owned synthetic identity only; identifier not retained                             |
+| Synthetic password          | Supplied interactively only; never stored in this record                                |
+| Evidence root               | `Development_Docs/Project Wakebook/evidence/phase1`                                     |
 
-Before beginning, verify the runtime process, port, implementation-evidence SHA, and database path match this table. Stop if the application points at a canonical or shared database.
+Any future repeat must create a fresh task-owned runtime and database, verify
+its exact implementation SHA and listener before use, and stop if it points at
+a canonical or shared database. The historical owner decision does not depend
+on keeping that runtime alive.
 
 ## Walkthrough A: first arrival and ordinary reachability
 
@@ -88,6 +96,11 @@ Expected: no horizontal scrolling, trapped focus, pointer-only action, foreign-o
 ## Owner decision
 
 **Recorded decision: `OWNER_ACCEPTED_PHASE_1` (2026-08-12).** The Wakebook task owner explicitly accepted the Phase 1 scope and walkthrough. This is the required owner decision; it is not a Sounding Line `RELEASE_GO`, a protected-main merge authorization by itself, deployment approval, or authorization to begin Phase 2.
+
+After this decision, exact candidate `1d1c1aaa5a0f2fbbc6b083911cb19422782afff0`
+separately received Sounding Line `RELEASE_GO` and protected PR #41 merged it as
+`cbf634d4d5db9cf47edebb89e005e8cc910068bd`. That later integration does not
+change the scope or meaning of the recorded owner decision.
 
 For future walkthroughs, record exactly one decision after completing the walkthrough:
 

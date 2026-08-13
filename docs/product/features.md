@@ -43,8 +43,8 @@ identities](../user/linked-identities.md).
 
 ## Private Living Journey Archive
 
-**Audience:** Players and account owners. **Availability:** branch-complete,
-not on main. Project Wakebook Phase 1 turns Chronicle Passport History into
+**Audience:** Players and account owners. **Availability:** available on main.
+Project Wakebook Phase 1 turns Chronicle Passport History into
 `Your Voyages`: an owner-private visual shelf grouped by truthful archive date,
 with accurate displayed-year summaries, bounded search and filters, stable
 opaque pagination, exact played-edition identity, historical crew context, and
@@ -52,8 +52,9 @@ calm unavailable/partial-history states. Voyage Detail keeps shared artifact
 moments separate from personal Artifact Cabinet provenance and preserves the
 existing private Reflection, Memory, Keepsake, consent, and eligible review
 workflows. Invitation-only history is visible but never counted as a played
-Voyage. [Chronicle Passport guide](../user/chronicle-passport.md). Owner
-walkthrough, mainline integration, deployment, public sharing, Tideglass
+Voyage. [Chronicle Passport guide](../user/chronicle-passport.md). The owner
+accepted the qualified Phase 1 walkthrough on 2026-08-12 and protected mainline
+integration completed in PR #41. Deployment, public sharing, Tideglass
 semantics, and later Timeline/People/Statistics views remain separate.
 
 ## Global shell and wayfinding

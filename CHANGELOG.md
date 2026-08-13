@@ -12,6 +12,15 @@ last_reviewed: 2026-08-12
 
 ### Changed
 
+- Integrated owner-accepted Project Wakebook Phase 1, **Open the Wake**, on
+  canonical main through protected PR #41. Chronicle Passport History now opens
+  the private **Your Voyages** archive with truthful chronology, accurate year
+  summaries, bounded discovery and pagination, exact played-edition and
+  historical crew context, invitation separation, artifact-provenance
+  boundaries, responsive archive/detail states, and preserved Reflection,
+  Memory, Keepsake, Cabinet, and eligible review handoffs. This is protected
+  mainline source integration, not deployment or authorization for Phase 2.
+
 - Expanded Project Admiralty on its Phase 2 review branch into a read-only
   15-route Chartroom with authorized account-menu entry, role-filtered
   navigation, bounded People/Chronicle/Voyage/Community search and detail,
