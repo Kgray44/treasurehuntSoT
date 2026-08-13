@@ -80,6 +80,13 @@ type Tale = {
   visibility: string;
   versions: Array<{ id: string; label: string; publishedAt: string; activeRunCount: number }>;
 };
+type EditionPreflight = {
+  state: "UP_TO_DATE" | "COMPARISON";
+  selectedEdition: { id: string; label: string; publishedAt: string };
+  recommendedEdition: { id: string; label: string; publishedAt: string };
+  visibleChangeCount?: number;
+  summary?: { headline: string; digest: string; partial: boolean };
+};
 type Library = {
   csrfToken: string;
   groups: {
@@ -168,6 +175,9 @@ export function CaptainLibrary() {
   const [wizardDirection, setWizardDirection] = useState<1 | -1>(1);
   const [taleId, setTaleId] = useState("");
   const [versionId, setVersionId] = useState("");
+  const [editionPreflight, setEditionPreflight] = useState<EditionPreflight | null>(null);
+  const [editionPreflightLoading, setEditionPreflightLoading] = useState(false);
+  const [editionPreflightError, setEditionPreflightError] = useState("");
   const [voyageName, setVoyageName] = useState("");
   const [captainParticipationMode, setCaptainParticipationMode] = useState<"CAPTAIN_ONLY" | "CAPTAIN_AND_PLAYER">(
     "CAPTAIN_ONLY",
@@ -300,6 +310,40 @@ export function CaptainLibrary() {
     setVersionId(tale?.versions[0]?.id ?? "");
     if (!voyageName && tale) setVoyageName(`${resolvedPlayers[0]?.displayName || "New Crew"} · ${tale.title}`);
   }
+
+  useEffect(() => {
+    if (!wizard || !taleId || !versionId) {
+      setEditionPreflight(null);
+      setEditionPreflightLoading(false);
+      setEditionPreflightError("");
+      return;
+    }
+    const controller = new AbortController();
+    setEditionPreflight(null);
+    setEditionPreflightLoading(true);
+    setEditionPreflightError("");
+    void fetch(
+      `/api/captain/tideglass/preflight?taleId=${encodeURIComponent(taleId)}&selectedEditionId=${encodeURIComponent(versionId)}`,
+      { cache: "no-store", signal: controller.signal },
+    )
+      .then(async (response) => {
+        const body = (await response.json()) as EditionPreflight & { error?: string };
+        if (!response.ok) throw new Error(body.error ?? "Edition readiness is temporarily unavailable.");
+        setEditionPreflight(body);
+      })
+      .catch((reason: unknown) => {
+        if (controller.signal.aborted) return;
+        setEditionPreflightError(
+          reason instanceof Error
+            ? reason.message
+            : "Edition readiness is temporarily unavailable. No Voyage settings changed.",
+        );
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setEditionPreflightLoading(false);
+      });
+    return () => controller.abort();
+  }, [wizard, taleId, versionId]);
 
   async function createVoyage() {
     if (!library || resolvedPlayers.some((player) => !player.displayName)) return;
@@ -833,6 +877,9 @@ export function CaptainLibrary() {
               setVersionId={setVersionId}
               selectedTale={selectedTale}
               selectedVersion={selectedVersion}
+              editionPreflight={editionPreflight}
+              editionPreflightLoading={editionPreflightLoading}
+              editionPreflightError={editionPreflightError}
               voyageName={voyageName}
               setVoyageName={setVoyageName}
               captainParticipationMode={captainParticipationMode}
@@ -1066,6 +1113,9 @@ type WizardProps = Record<string, unknown> & {
   setVersionId: (id: string) => void;
   selectedTale?: Tale;
   selectedVersion?: Tale["versions"][number];
+  editionPreflight: EditionPreflight | null;
+  editionPreflightLoading: boolean;
+  editionPreflightError: string;
   voyageName: string;
   setVoyageName: (value: string) => void;
   captainParticipationMode: "CAPTAIN_ONLY" | "CAPTAIN_AND_PLAYER";
@@ -1269,16 +1319,47 @@ function VoyageWizard(props: WizardProps) {
                     </button>
                   ))}
                   {props.selectedTale && (
-                    <label>
-                      <span>Published version</span>
-                      <select value={props.versionId} onChange={(event) => props.setVersionId(event.target.value)}>
-                        {props.selectedTale.versions.map((version) => (
-                          <option key={version.id} value={version.id}>
-                            Version {version.label} · {new Date(version.publishedAt).toLocaleDateString()}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
+                    <div className="edition-selection">
+                      <label>
+                        <span>Published version</span>
+                        <select value={props.versionId} onChange={(event) => props.setVersionId(event.target.value)}>
+                          {props.selectedTale.versions.map((version) => (
+                            <option key={version.id} value={version.id}>
+                              Version {version.label} · {new Date(version.publishedAt).toLocaleDateString()}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      <section className="edition-preflight" aria-live="polite" data-testid="edition-preflight">
+                        <p className="eyebrow">Edition preflight</p>
+                        {props.editionPreflightLoading && <p>Reviewing player-safe edition differences…</p>}
+                        {props.editionPreflightError && <p role="alert">{props.editionPreflightError}</p>}
+                        {props.editionPreflight?.state === "UP_TO_DATE" && (
+                          <p>
+                            Version {props.editionPreflight.selectedEdition.label} is the current recommended edition
+                            for new Voyages.
+                          </p>
+                        )}
+                        {props.editionPreflight?.state === "COMPARISON" && (
+                          <>
+                            <p>
+                              Version {props.editionPreflight.selectedEdition.label} is selected; Version{" "}
+                              {props.editionPreflight.recommendedEdition.label} is currently recommended for new
+                              Voyages.
+                            </p>
+                            <p>
+                              {props.editionPreflight.visibleChangeCount
+                                ? `${props.editionPreflight.visibleChangeCount} player-safe semantic difference${
+                                    props.editionPreflight.visibleChangeCount === 1 ? "" : "s"
+                                  } available for this preflight.`
+                                : "A different edition is selected. Player-safe semantic details are not available before launch."}
+                            </p>
+                            {props.editionPreflight.summary && <p>{props.editionPreflight.summary.headline}</p>}
+                          </>
+                        )}
+                        <small>Preflight is read-only and never changes the selected edition or Voyage settings.</small>
+                      </section>
+                    </div>
                   )}
                 </div>
               )}

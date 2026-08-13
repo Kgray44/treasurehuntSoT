@@ -25,6 +25,7 @@ const accounts = {
   PLAYER_AB: identity("player-ab", "player.ab@tideglass.example.test", "Player AB", ["PLAYER"]),
   PLAYER_C: identity("player-c", "player.c@tideglass.example.test", "Player C", ["PLAYER"]),
   CREATOR: identity("creator", "creator@tideglass.example.test", "Tideglass Fixture Creator", ["PLAYER", "CREATOR"]),
+  CAPTAIN: identity("captain", "captain@tideglass.example.test", "Tideglass Fixture Captain", ["CAPTAIN"]),
   FOREIGN: identity("foreign", "foreign@tideglass.example.test", "Foreign Player", ["PLAYER"]),
   SUPPORT: identity("support", "support@tideglass.example.test", "Tideglass Fixture Support", ["SUPPORT_OPERATOR"]),
 };

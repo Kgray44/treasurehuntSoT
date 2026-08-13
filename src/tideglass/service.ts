@@ -16,7 +16,10 @@ import { compareSemanticSnapshots, comparisonReceipt, type ExplicitReplacementMa
 import { canonicalizePublishedSnapshot, type TideglassHistoricalReader } from "./semantic";
 import { canonicalCacheKey, tideglassComparisonCache, type TideglassComparisonCache } from "./cache";
 
-export type TideglassPrincipal = { kind: "ACCOUNT"; accountId: string } | { kind: "PASSAGE"; subjectId: string };
+export type TideglassPrincipal =
+  | { kind: "ACCOUNT"; accountId: string }
+  | { kind: "CAPTAIN"; accountId: string }
+  | { kind: "PASSAGE"; subjectId: string };
 
 export type TideglassPublishedEdition = {
   id: string;
@@ -198,6 +201,18 @@ export const prismaTideglassEditionRepository: TideglassEditionRepository = {
   },
 
   async authorizeEdition(principal, edition) {
+    if (principal.kind === "CAPTAIN") {
+      const chronicle = await db.chronicle.findFirst({
+        where: {
+          id: edition.chronicleId,
+          archivedAt: null,
+          latestPublishedVersionId: { not: null },
+          OR: [{ creatorAccountId: principal.accountId }, { visibility: "PUBLIC" }],
+        },
+        select: { id: true },
+      });
+      return Boolean(chronicle);
+    }
     if (principal.kind !== "ACCOUNT") return false;
     let overview;
     try {

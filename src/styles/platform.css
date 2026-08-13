@@ -1630,6 +1630,26 @@ dl dd {
 .wizard-choice-grid label {
   grid-column: 1 / -1;
 }
+.edition-selection {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 0.75rem;
+}
+.edition-selection > label {
+  grid-column: auto;
+}
+.edition-preflight {
+  display: grid;
+  gap: 0.45rem;
+  border: 1px solid rgba(201, 169, 95, 0.28);
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  background: rgba(15, 49, 50, 0.4);
+}
+.edition-preflight p,
+.edition-preflight small {
+  margin: 0;
+}
 .wizard-form {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

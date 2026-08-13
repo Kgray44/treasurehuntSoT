@@ -53,7 +53,7 @@ test.afterAll(async () => {
   );
 });
 
-test("Journeys A-K: visible entry, accepted Journey Detail history, creator detail, security, and responsive accessibility", async ({
+test("Journeys A-L: visible entry, Captain preflight, accepted Journey Detail history, creator detail, security, and responsive accessibility", async ({
   browser,
 }) => {
   const anonymous = await anonymousPage(browser);
@@ -231,6 +231,27 @@ test("Journeys A-K: visible entry, accepted Journey Detail history, creator deta
     "Creator Studio proves a branch rewire, alternate ending, Captain requirement, caption/accessibility, compatibility, and Creator annotation through semantic records only",
   );
   await creator.context.close();
+
+  const captain = await signedInPage(browser, "CAPTAIN", "/captain/library");
+  await expect(captain.page.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible();
+  await captain.page.getByRole("button", { name: "Create a Voyage", exact: true }).click();
+  const captainWizard = captain.page.getByRole("dialog", { name: "Select Chronicle", exact: true });
+  await captainWizard.getByRole("button", { name: /The Tideglass Passage Fixture/u }).click();
+  await captainWizard.getByRole("combobox", { name: "Published version", exact: true }).selectOption("tg3-edition-a");
+  await expect(captainWizard.getByTestId("edition-preflight")).toContainText(
+    "Version 1.0 is selected; Version 2.0 is currently recommended for new Voyages.",
+  );
+  await expect(captainWizard.getByTestId("edition-preflight")).toContainText(/player-safe semantic difference/u);
+  await expect(captainWizard.getByTestId("edition-preflight")).not.toContainText("Synthetic alternate ending");
+  await capture(
+    captain.page,
+    "TG4-EV-I-HELM-CAPTAIN-PREFLIGHT",
+    "SELECTED_NONRECOMMENDED_EDITION",
+    "Captain selects an exact historical playable edition, sees only player-safe semantic difference context against the owner-recommended edition, then remains in Voyage creation.",
+  );
+  await captainWizard.getByRole("button", { name: "Continue to Configure Voyage", exact: true }).click();
+  await expect(captain.page.getByRole("heading", { name: "Configure Voyage", exact: true })).toBeVisible();
+  await captain.context.close();
 
   const harborlight = await anonymousPage(browser);
   await harborlight.page.goto(`/community/${credentials.community.slug}`);
