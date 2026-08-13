@@ -1,63 +1,87 @@
 ---
 title: Project Tideglass Phase 3 Completion Receipt
 audience: product-engineering
-status: unissued-current-main-qualified-authority-pending
+status: current
 canonical_for: project-tideglass-phase-3-completion
 last_reviewed: 2026-08-13
 ---
 
 # Project Tideglass Phase 3 completion receipt
 
-Status: `NOT_ISSUED`.
+Status: `ACCEPTED_MAINLINE` — record-only closeout pending protected
+incorporation.
 
-This required record is intentionally a placeholder, not a completion claim.
-The product source was qualified, owner-accepted, and entered protected main as
-`bb7676a75581d8d415c3ff7712cc38bc8decb031`; its original walkthrough remains
-recorded in `Project_Tideglass_Phase_3_Owner_Decision_Record.md`. The later
-record-only closeout path is not accepted current main. Current accepted
-Wakebook Phase 1 changes the past-Voyage surface. Its isolated reconciliation
-now has explicit owner acceptance and protected integration at `0cdaa802`. The
-Tideglass-owned addendum remains reconciled and qualified, but Tideglass itself
-must complete its separately assigned protected integration before any future
-completion receipt can be issued. Phase 4 has not begun.
+| Field                          | Accepted value                                                                                                                                                             |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Project / Phase                | Project Tideglass / Phase 3 — Choose the Passage                                                                                                                           |
+| Original base                  | `236c27241bb8d1630274f5d5412ec9addbdb8893`                                                                                                                                 |
+| Qualified base                 | `4e88ba5463878e3b2cab8d03bb4471201bb1f039`                                                                                                                                 |
+| Owner-reviewed source          | `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`                                                                                                                                 |
+| Owner decision                 | Accepted 2026-08-12, including the explicit Wakebook Journey Detail addendum                                                                                               |
+| Final implementation candidate | `aa161a377f87a4cbdbc6a8f308cee25493962bc5`                                                                                                                                 |
+| Authoritative decision         | [Run 31670646385](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31670646385): `RELEASE_GO`                                                                       |
+| Authority evidence             | 38 mandatory receipts; no missing, duplicate, unknown, invalid, or runtime-conformance evidence; digest `85ebf2da23aff5162dc9437a029b11058b2c586b2c022261194c2df607d4c229` |
+| Protected binding              | [Run 31671905583](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31671905583): passed                                                                             |
+| Protected integration          | [PR #68](https://github.com/Kgray44/treasurehuntSoT/pull/68), merge `634312adbf72a8a4279a755b20fb06957ced7e77`                                                             |
+| Prisma / migrations            | None                                                                                                                                                                       |
+| Phase 4                        | Not started; Harborlight, final Helm integration, historical-corpus hardening, distributed comparison work, observability, and localization remain deferred                |
 
-Hosted Mainline Decision `31658984596` for candidate `a70e9f6c` returned
-`RELEASE_NO_GO` because a Feature Catalog test still expected the former
-FT-B009 program label. Its terminal receipt and focused 9/9 repair are recorded
-in the Validation and Qualification Records. This placeholder remains
-unissued; no merge or replacement authority has occurred.
+The protected merge parents are qualified base
+`4e88ba5463878e3b2cab8d03bb4471201bb1f039` and exact implementation candidate
+`aa161a377f87a4cbdbc6a8f308cee25493962bc5`. The integrated merge tree is
+`d424a1c9038bbd917d0ea8108d9d1a20381c8c86`, equal to the candidate tree, and
+the candidate is an ancestor of fetched protected main.
 
-The subsequent Sounding Line infrastructure repair accepted as `d3ed7c4c` has
-been reconciled and its production A--K Tideglass qualification rerun. This
-does not issue the receipt: a fresh candidate, later serial authority position,
-protected integration, and exact-main proof are still required.
+## Product and safety result
 
-Deepwater's later record-only closure at `582f32a3` is reconciled as a
-non-product advance. Its required documentation/catalog revalidation does not
-convert this placeholder into a completion claim.
+Phase 3 supplies the ordinary, discoverable **What Changed?** experience.
+Chronicle Detail reaches edition comparison through visible controls; Passport
+history and accepted Wakebook Journey Detail select the owner-bound exact played
+edition and return safely to its record; and Creator Studio presents the
+canonical `CREATOR_FULL` Tideglass projection rather than raw snapshot fields.
+The human-facing route is `/chronicles/[taleSlug]/compare`, with the exact
+history redirect at `/passport/history/[recordId]/compare`.
 
-Admiralty's later `95cff272` record-truth repair is reconciled under the same
-non-product rule. This receipt remains unissued until a frozen Tideglass
-candidate receives a later authorized Mainline Decision and protected merge.
+The result uses Phase 1/2 semantic, policy, change-code, projection, summary,
+and annotation contracts without redefining them. Client state can select and
+render only server-authorized edition projections; it cannot widen audience,
+fetch raw snapshots, reveal withheld spoilers, or read a foreign history record.
+Comparison remains read-only for live Voyages, personal history, published
+editions, annotations absent an explicit mutation, and Captain operations.
 
-Shipwright Phase 2's accepted Studio surface at `25a5ecc3` received refreshed
-Tideglass Studio browser proof on `622ee2bc`. This does not issue the receipt
-or authorize a parallel closeout path.
+The accepted source includes source/target selection and swap, authoritative
+recommended-edition comparison, exact played-history selection, multiple
+playthrough choice, up-to-date, historical, partial/redacted, no-change,
+failure/retry, concise/detailed, filtering, explicit spoiler disclosure,
+compatibility and accessibility presentation, responsive layout, keyboard,
+reduced motion, effective 200% zoom, and serious/critical Axe findings of zero.
+The source-bound synthetic A--K journey evidence is recorded by
+`Project_Tideglass_Phase_3_Visual_Evidence_Manifest.json` (fixture checksum
+`7798f816bedd71867d096d0543ee2135a7722388f262d089b4b078d9a50b2002`).
 
-Shipwright's narrow formatting repair is accepted at `4e88ba54`, restoring the
-global format gate without changing Tideglass product source. The Tideglass
-focused semantic/history/Studio suite remains green 136/136. This receipt
-remains unissued until Tideglass receives its own fresh authority, protected
-integration, and exact-main proof.
+## Consumer and catalog disposition
 
-The first local Mainline Decision invocation for documentation candidate
-`897e7619` failed before it could create any suite receipt or finalizer decision
-because this owned worktree lacked `prisma/dev.db`. The failure is recorded in
-the Validation Record; its task-owned immutable baseline repair has focused
-proof but no replacement authority decision yet.
+The legacy Studio `comparePublishedVersions` product consumer is retired: the
+ordinary published-version path renders `TideglassStudioComparison`, whose
+tests cover branch rewire, ending, Captain requirement, captions, annotations,
+and safe technical disclosure. The relevant Deepwater underutilization finding
+remains open until its own governed owner records formal closure; Tideglass
+provides the tested consumer evidence but does not self-close it. Helm has no
+accepted ordinary edition/preflight comparison surface, so
+`CAPTAIN_UI_DEFERRED_NO_ACCEPTED_CONSUMER` remains an explicit Phase 4 handoff.
 
-When and only when those gates are completed, this receipt will record the
-owner-reviewed and candidate SHAs, protected integration, post-merge evidence,
-catalog status, route/screen registrations, cleanup, and explicit Phase 4
-deferrals. No frozen PR, protected binding, or shared runtime may be resumed
-without an explicit later serial-queue position.
+FT-B009 truthfully records **Project Tideglass Phases 1-3**, including the
+ordinary comparison route, Edition selection, Compare to recommended, Compare
+to What I Played, history and Chronicle entries, and Studio semantic comparison.
+No additional Tideglass feature fragment is required for this closeout.
+
+## Record-only closeout boundary
+
+The local post-merge observation on `634312ad` was terminal
+`EVIDENCE_INVALID` solely because generated `FEATURE_CATALOG.md` still carried
+the previous `4e88ba54` audit provenance. The hosted sealed authority and
+protected merge remain valid; all Tideglass-specific receipts were clean. The
+runtime was released (exclusive lock access, ports 3100/3101/3102/3200 free,
+and no authority process). This final record packet synchronizes the generated
+catalog and acceptance records through the governed record-only procedure; it
+does not retry, replace, or widen the product authority.

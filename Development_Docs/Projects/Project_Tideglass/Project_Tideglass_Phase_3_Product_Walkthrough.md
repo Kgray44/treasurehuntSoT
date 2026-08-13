@@ -1,7 +1,7 @@
 ---
 title: Project Tideglass Phase 3 Product Walkthrough
 audience: product-owner
-status: current-main-qualified-candidate-freeze-pending
+status: current
 canonical_for: project-tideglass-phase-3-product-walkthrough
 last_reviewed: 2026-08-12
 ---
@@ -9,11 +9,11 @@ last_reviewed: 2026-08-12
 # Project Tideglass Phase 3 product walkthrough: Choose the Passage
 
 Status: source-bound candidate evidence was accepted by the canonical owner on
-`2026-08-12`. The generated visual manifest records the exact reviewed product
-SHA, fixture checksum, routes, viewports, screenshot hashes, and semantic
-assertions. The owner decision is recorded separately in
-`Project_Tideglass_Phase_3_Owner_Decision_Record.md`; this document remains the
-reproducible walkthrough package.
+`2026-08-12` and protected-integrated at `634312ad`. The generated visual
+manifest records the exact reviewed product SHA, fixture checksum, routes,
+viewports, screenshot hashes, and semantic assertions. The owner decision is
+recorded separately in `Project_Tideglass_Phase_3_Owner_Decision_Record.md`;
+this document remains the reproducible walkthrough package.
 
 The owner-reviewed product source is `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`. Accepted Wakebook Phase 1 later replaced the ordinary past-Voyage detail with Journey Detail at `cbf634d4d5db9cf47edebb89e005e8cc910068bd`; the current reconciliation base is `770404dd11cdfc1b86658a488979c43c22ed1711`. The owner explicitly accepted this walkthrough addendum for the preserved, owner-safe Tideglass handoff. The original A--J evidence remains source-bound to its recorded candidate and is not misrepresented as evidence for the new shared surface; current-main qualification is complete and protected finalization still precedes acceptance.
 
@@ -36,4 +36,10 @@ The available synthetic role aliases are Anonymous, Player A, Player AB, Player 
 
 ## Acceptance boundary
 
-This synthetic local walkthrough is suitable for product review of the governed experience. It is not staging, production, live-provider, physical-device, protected-mainline, or real-user proof. The owner accepted the original reviewed source; the accepted-Wakebook handoff has refreshed A-K production-browser and visual proof and is ready for targeted addendum review. The later Sounding Line decision remains unavailable until an explicit serial queue position is granted.
+This synthetic local walkthrough is suitable for product review of the governed
+experience. It is not staging, production, live-provider, physical-device, or
+real-user proof. The owner accepted the reviewed source and the Wakebook
+addendum; hosted Mainline Decision `31670646385` released the exact product
+candidate and protected binding `31671905583` admitted it to protected main.
+The remaining record-only closeout does not change this walkthrough or begin
+Phase 4.

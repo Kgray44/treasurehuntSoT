@@ -1,18 +1,18 @@
 ---
 title: Project Tideglass Phase 3 Integration Manifest
 audience: product-engineering
-status: current-main-qualified-authority-pending
+status: current
 canonical_for: project-tideglass-phase-3-integration
 last_reviewed: 2026-08-13
 ---
 
 # Project Tideglass Phase 3 integration manifest
 
-Status: `CURRENT_MAIN_QUALIFIED_AUTHORITY_PENDING`.
-This is a source integration inventory, not an accepted-mainline or
-protected-mainline receipt. The original owner decision and the explicit
-Wakebook Journey Detail addendum acceptance are recorded; protected integration
-remains required.
+Status: `INTEGRATED_MAINLINE_RECORD_ONLY_CLOSEOUT_PENDING`.
+This is a source integration inventory, not a replacement for the Completion
+Receipt. The original owner decision and the explicit Wakebook Journey Detail
+addendum acceptance are recorded; protected integration is complete and the
+governed record-only closeout remains required.
 
 ## Canonical consumer path
 
@@ -36,7 +36,7 @@ remains required.
 - Phase 4 integrations, background processing, and any broader historical corpus remain deferred.
 - The Deepwater legacy-comparator finding is not closed by this branch until the governed qualification, owner acceptance, mainline decision, merge, and closure record all exist.
 
-## Required closeout evidence
+## Pre-integration evidence requirements (historical)
 
 The candidate was reconciled to fetched `origin/main`, and the static consumer
 audit and browser journey were rerun against the reviewed product source.
@@ -148,3 +148,22 @@ Tideglass contracts, documentation, and Feature Catalog validation are green.
 No Tideglass product/browser source changed, so the source-bound browser proof
 and current semantic/history/Studio qualification remain applicable to the
 fresh authority candidate.
+
+## Protected integration result
+
+The fresh authority candidate
+`aa161a377f87a4cbdbc6a8f308cee25493962bc5` received hosted Mainline Decision
+[`31670646385`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31670646385)
+with `RELEASE_GO`: 38 mandatory receipts, all clean, and evidence digest
+`85ebf2da23aff5162dc9437a029b11058b2c586b2c022261194c2df607d4c229`.
+Protected binding
+[`31671905583`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31671905583)
+accepted the same candidate. PR #68 protected-merged at
+`634312adbf72a8a4279a755b20fb06957ced7e77`; its tree
+`d424a1c9038bbd917d0ea8108d9d1a20381c8c86` equals the candidate tree.
+
+The immediately following local exact-main observation detected only stale
+generated Feature Catalog provenance and was terminal `EVIDENCE_INVALID`. It
+does not reopen product integration, alter the sealed hosted authority, or
+authorize a retry. The correction is constrained to the current record packet
+and generated catalog, through the governed record-only closure procedure.

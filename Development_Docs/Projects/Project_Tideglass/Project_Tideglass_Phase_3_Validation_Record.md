@@ -1,16 +1,17 @@
 ---
 title: Project Tideglass Phase 3 Validation Record
 audience: product-engineering
-status: current-main-qualified-authority-pending
+status: current
 canonical_for: project-tideglass-phase-3-validation
 last_reviewed: 2026-08-13
 ---
 
 # Project Tideglass Phase 3 validation record
 
-Status: `CURRENT_MAIN_QUALIFIED_AUTHORITY_PENDING`.
+Status: `INTEGRATED_MAINLINE_RECORD_ONLY_CLOSEOUT_PENDING`.
 The original product decision and the explicit Wakebook Journey Detail addendum
-acceptance are recorded; protected integration remains pending.
+acceptance are recorded; protected integration is complete and the record-only
+closeout remains pending.
 
 The reconciled product source is
 `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`, subsequently reconciled to accepted main
@@ -238,3 +239,33 @@ semantic consumer, policy, schema, or navigation. The product-path comparison
 against owner-reviewed `c2fc8fcc` remains clean; current registry discovery
 passes with 2092 definitions, and Tideglass contract, TypeScript,
 documentation, catalog, and formatting checks pass before the new freeze.
+
+# Protected integration and post-merge observation
+
+The frozen implementation candidate
+`aa161a377f87a4cbdbc6a8f308cee25493962bc5` received hosted Sounding Line
+Mainline Decision [`31670646385`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31670646385)
+with finalizer `RELEASE_GO`. Its sealed acceptance envelope records plan digest
+`1d261623d02e9bc447ece8db33569a9c9efb9270f0f785bbda0959e231f432c3`, policy
+digest `2da4d0e462d36d1b8c98d526fba0b2d6d09cd4da4f9dd518a4458549360c68e0`,
+inventory digest `ec5576034e6d05b80863e8df65ae8c91fdbcf5fcc371d42ceecfa8cb970f27e3`,
+and evidence digest
+`85ebf2da23aff5162dc9437a029b11058b2c586b2c022261194c2df607d4c229`.
+All 38 mandatory receipts and runtime-conformance records are present and
+clean. Protected binding [`31671905583`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31671905583)
+then passed before PR #68 merged as
+`634312adbf72a8a4279a755b20fb06957ced7e77`. Its parents are exact qualified
+base `4e88ba5463878e3b2cab8d03bb4471201bb1f039` and exact candidate `aa161a37`;
+integrated tree `d424a1c9038bbd917d0ea8108d9d1a20381c8c86` equals the candidate
+tree.
+
+One local exact-main observation was then attempted with source identity
+`634312ad`. It is terminal `EVIDENCE_INVALID`, not a new product authority and
+not eligible for retry: its sole invalid receipt was `unit.feature-catalog`,
+which correctly found that generated `FEATURE_CATALOG.md` retained the prior
+`4e88ba54` audit provenance. Every Tideglass receipt is clean. The smallest
+registered reproduction is `npm run features:validate`, which reports exactly
+that stale generated file. The narrowly correct response is the record-only
+catalog/record closeout, not a source change or a repeated Mainline Decision.
+The process exited; `validation-runtime.lock` was exclusively openable and
+ports 3100, 3101, 3102, and 3200 were free.
