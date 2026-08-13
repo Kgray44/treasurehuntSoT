@@ -31,13 +31,15 @@ also passed. See the [OAuth validation and completion record](Validation/Voyagew
 
 ## Project Bridgewatch
 
-[Project Bridgewatch Phase 2](Project_Bridgewatch_Phase_2_Design_Record.md)
-extends the standalone private mission-control board with a durable,
-source-indexed Project Registry, permanent phase and completion history,
-read-only Sounding Line runtime projection, narrow machine activity telemetry,
-and ordinary active/completed/planned/all project navigation. The Phase 2
-records distinguish local implementation evidence from its still-required
-candidate qualification, protected authority, merge, and exact-main proof.
+Project Bridgewatch is complete. Phase 1 _Raise the Board_,
+[Phase 2: Wire the Signals](Project_Bridgewatch_Phase_2_Completion_Receipt.md),
+and [Phase 3: Keep the Watch](Project_Bridgewatch_Phase_3_Completion_Receipt.md)
+are accepted in protected main. Phase 3 adds normalized meaningful history,
+snapshots, bounded trend/archive/branch views, browser-local since-last-visit
+display state, retention, and deployment/backup guidance while preserving the
+private, read-only observer boundary. The final program receipt and Phase 3
+integration, validation, performance, and deployment records retain the exact
+accepted evidence and optional future extensions without starting a Phase 4.
 
 ## Project Deepwater
 
