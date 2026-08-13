@@ -18,8 +18,8 @@ last_reviewed: 2026-08-12
 | Sounding Line authority      | Run `31651096047`: `RELEASE_GO`, 38/38 `PASSED` and 38/38 `CLEAN`                                                |
 | Protected binding            | Run `31652303048`: successful `Sounding Line / Mainline Decision`                                                |
 | Protected main merge         | PR #41, `cbf634d4d5db9cf47edebb89e005e8cc910068bd`                                                               |
-| Current accepted-main base   | `d3ed7c4cd1877be601e6854b376cb1dd9eb668a3`                                                                       |
-| Current reconciliation       | `fac85f2d`, with exact parents `5a999090` and `d3ed7c4c`; accepted main wins outside Wakebook-owned record seams |
+| Current accepted-main base   | `582f32a35d918ae892bd2feae766c00043038f39`                                                                       |
+| Current reconciliation       | `ebf6afe2`, with exact parents `6af4c63e` and `582f32a3`; accepted main wins outside Wakebook-owned record seams |
 | Derived artifacts            | Feature Catalog 47 entries; active test registry 2,122 cases / 56 families; P34 retirement 316/316               |
 | Owner walkthrough            | `OWNER_ACCEPTED_PHASE_1` recorded 2026-08-12                                                                     |
 | Deployment / Phase 2         | Not authorized or claimed                                                                                        |

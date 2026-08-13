@@ -90,7 +90,7 @@ Accepted history is substantially complete and historically stable. Phase 1 is a
 
 ## Post-acceptance current-main reconciliation
 
-After Wakebook's protected-main acceptance, the owned branch audited the complete first-parent interval from accepted Deepwater Phase 3 source `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3` through `770404dd11cdfc1b86658a488979c43c22ed1711`, then consumed the Sounding Line source-binding repair accepted as `d3ed7c4cd1877be601e6854b376cb1dd9eb668a3`.
+After Wakebook's protected-main acceptance, the owned branch audited the complete first-parent interval from accepted Deepwater Phase 3 source `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3` through `770404dd11cdfc1b86658a488979c43c22ed1711`, then consumed the Sounding Line source-binding repair accepted as `d3ed7c4cd1877be601e6854b376cb1dd9eb668a3` and the Deepwater Phase 4 closure accepted as `582f32a35d918ae892bd2feae766c00043038f39`.
 
 That interval contains accepted Shipwright, Bridgewatch, Drydock, Admiralty, Helm, Tideglass, Deepwater, Sounding Line, and Wakebook work. Wakebook's own protected acceptance is PR #41: exact qualified head `1d1c1aaa5a0f2fbbc6b083911cb19422782afff0`, exact base `bb7676a75581d8d415c3ff7712cc38bc8decb031`, and protected merge `cbf634d4d5db9cf47edebb89e005e8cc910068bd`.
 
@@ -99,6 +99,7 @@ Ownership reconciliation used accepted mainline as the source of truth for every
 The reconciliation was preserved as two non-destructive merges:
 
 - `5a99909019afce378b04fd667a9970b8a19fd64c`, with parents `b846631b` and `770404dd`, for the full accepted-main interval;
-- `fac85f2db6cb2f1c3481ee6288bfd6db727a9277`, with parents `5a999090` and `d3ed7c4c`, for the accepted Sounding Line source-binding repair.
+- `fac85f2db6cb2f1c3481ee6288bfd6db727a9277`, with parents `5a999090` and `d3ed7c4c`, for the accepted Sounding Line source-binding repair;
+- `ebf6afe29c05a805f38c9766995e7185cfd47e5d`, with parents `6af4c63e` and `582f32a3`, for the accepted Deepwater Phase 4 closure.
 
 The active test registry and P34 retirement matrix were regenerated rather than hand-resolved. The registry currently enumerates 2,122 governed cases across 56 families, and the retirement proof reconciles all 316 of 316 governed identities across 14 dispositions.

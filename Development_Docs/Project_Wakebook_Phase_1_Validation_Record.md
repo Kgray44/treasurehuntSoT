@@ -15,11 +15,11 @@ accepted Phase 1 on 2026-08-12. Exact implementation candidate
 `1d1c1aaa5a0f2fbbc6b083911cb19422782afff0` then received hosted Sounding Line
 `RELEASE_GO` with 38/38 mandatory receipts `PASSED` and `CLEAN`. Protected PR
 #41 merged that exact head as `cbf634d4d5db9cf47edebb89e005e8cc910068bd`.
-Reconciliation `5a999090` preserved that accepted implementation through main
-`770404dd`; follow-up merge `fac85f2d` consumes the accepted record-only binding
-repair `d3ed7c4c`. The candidate updates generated/catalog records without
-changing Wakebook runtime behavior. This is source integration and owner
-acceptance, not deployment or authorization for Phase 2.
+Reconciliations `5a999090` and `fac85f2d` preserved that accepted implementation
+through main `d3ed7c4c`; follow-up merge `ebf6afe2` consumes the accepted
+Deepwater Phase 4 closure `582f32a3`. The candidate updates generated/catalog
+records without changing Wakebook runtime behavior. This is source integration
+and owner acceptance, not deployment or authorization for Phase 2.
 
 ## Source identity
 
@@ -32,8 +32,8 @@ acceptance, not deployment or authorization for Phase 2.
 | Protected merge                 | `cbf634d4d5db9cf47edebb89e005e8cc910068bd` (PR #41)                      |
 | Hosted authority                | `31651096047` (`RELEASE_GO`, 38/38 `PASSED` and `CLEAN`)                 |
 | Protected binding               | `31652303048` (`Sounding Line / Mainline Decision` successful)           |
-| Current accepted-main base      | `d3ed7c4cd1877be601e6854b376cb1dd9eb668a3`                               |
-| Current-main reconciliation     | `fac85f2d` (parents `5a999090` and `d3ed7c4c`)                           |
+| Current accepted-main base      | `582f32a35d918ae892bd2feae766c00043038f39`                               |
+| Current-main reconciliation     | `ebf6afe2` (parents `6af4c63e` and `582f32a3`)                           |
 | Archive implementation anchor   | `629f5c7a981b80494f7703b6410b573a661e0f39`                               |
 | Browser-evidence source SHA     | `22940b9004bc89def300a808f426a0ed4dc77658`                               |
 | Database schema change          | None                                                                     |
