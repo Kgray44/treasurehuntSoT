@@ -6,6 +6,7 @@ import {
   archiveReusableAuthoringItem,
   createBlockPreset,
   createReusableAuthoringItem,
+  getReusableAuthoringItemVersion,
   listReusableAuthoringItems,
 } from "@/studio/reusable-library-service";
 
@@ -21,12 +22,15 @@ const requestSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("archive"), itemId: z.string().min(8).max(128) }),
 ]);
 
-export async function GET(_: Request, context: { params: Promise<{ taleId: string }> }) {
+export async function GET(request: Request, context: { params: Promise<{ taleId: string }> }) {
   const { taleId } = await context.params;
   const authorization = await requireOwnedStudioTale(taleId);
   if (!authorization)
     return NextResponse.json({ error: "This Chronicle is not available to this Creator account." }, { status: 404 });
   try {
+    const itemId = new URL(request.url).searchParams.get("itemId");
+    if (itemId)
+      return NextResponse.json(await getReusableAuthoringItemVersion(authorization.session.accountId, itemId));
     return NextResponse.json({ items: await listReusableAuthoringItems(authorization.session.accountId) });
   } catch (cause) {
     return apiError(cause);

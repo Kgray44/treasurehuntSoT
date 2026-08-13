@@ -5,6 +5,7 @@ const mocks = vi.hoisted(() => ({
   list: vi.fn(),
   create: vi.fn(),
   createPreset: vi.fn(),
+  getVersion: vi.fn(),
   archive: vi.fn(),
 }));
 vi.mock("@/chronicle/studio-authorization", () => ({ requireOwnedStudioTale: mocks.authorization }));
@@ -13,6 +14,7 @@ vi.mock("@/studio/reusable-library-service", () => ({
   listReusableAuthoringItems: mocks.list,
   createReusableAuthoringItem: mocks.create,
   createBlockPreset: mocks.createPreset,
+  getReusableAuthoringItemVersion: mocks.getVersion,
   archiveReusableAuthoringItem: mocks.archive,
 }));
 
@@ -49,5 +51,12 @@ describe("reusable authoring content route", () => {
       name: "Opening preset",
       blockId: "block-1",
     });
+  });
+
+  it("returns a reusable envelope only through its owner-scoped Library identity", async () => {
+    mocks.getVersion.mockResolvedValueOnce({ itemId: "item-1", versionId: "version-1", envelope: { kind: "PRESET" } });
+    const response = await GET(new Request("http://localhost/reusable?itemId=item-1"), context);
+    expect(response.status).toBe(200);
+    expect(mocks.getVersion).toHaveBeenCalledWith("creator-1", "item-1");
   });
 });

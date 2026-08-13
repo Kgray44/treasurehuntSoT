@@ -61,7 +61,14 @@ import type {
   Version,
 } from "@/components/studio/studio-types";
 import { studioCopy } from "@/language/studio-copy";
-import type { DraftValidationResult, InspectorField, JsonObject, ValidationIssue } from "@/chronicle/types";
+import type {
+  DraftValidationResult,
+  InspectorField,
+  JsonObject,
+  StudioDraftInput,
+  ValidationIssue,
+} from "@/chronicle/types";
+import type { ReusableContentEnvelope } from "@/studio/reusable-content";
 import { getDrydockRuleDefinition } from "@/drydock/rules";
 import type { DrydockVariableDeclaration } from "@/drydock/variables";
 import { renameStudioDraftVariable } from "@/studio/authoring/variables";
@@ -346,6 +353,54 @@ export function TaleEditor({
     await loadReusableItems();
   }
 
+  async function applyReusablePreset(item: ReusableLibraryItem) {
+    if (!data || !draft || !selected) return setReusableError("Select a Passage before applying a reusable preset.");
+    setReusableError("");
+    const response = await fetch(`/api/studio/tales/${taleId}/reusable-content?itemId=${encodeURIComponent(item.id)}`, {
+      cache: "no-store",
+    });
+    const body = (await response.json()) as { envelope?: ReusableContentEnvelope; error?: string };
+    const source = body.envelope?.blocks[0];
+    if (!response.ok || !body.envelope || !source)
+      return setReusableError(body.error ?? "The reusable preset could not be opened.");
+    if (body.envelope.kind !== "PRESET" || body.envelope.blocks.length !== 1)
+      return setReusableError("Only a single-Passage preset can be applied in this context.");
+    if (source.blockType !== selected.block.blockType)
+      return setReusableError(
+        `This ${source.blockType} preset cannot be applied to a ${selected.block.blockType} Passage.`,
+      );
+    const next = change((candidate) => {
+      const target = candidate.chapters
+        .flatMap((chapter) => chapter.blocks)
+        .find((block) => block.id === selected.block.id);
+      if (!target) return;
+      target.configuration = structuredClone(source.configuration);
+      target.presentation = structuredClone(source.presentation);
+      target.completion = structuredClone(source.completion);
+      target.schemaVersion = source.schemaVersion;
+    }, "Reusable preset pending save");
+    if (!next) return;
+    const saved = await save(next, false, undefined, {
+      itemId: body.envelope.itemId,
+      versionId: body.envelope.versionId,
+      sourceKind: "PRESET_APPLIED",
+      insertedBlockIds: [selected.block.id],
+      insertedChapterIds: [],
+      provenance: {
+        ...body.envelope.attribution,
+        sourceItemId: body.envelope.itemId,
+        sourceVersionId: body.envelope.versionId,
+        modified: true,
+      },
+    });
+    if (!saved) return;
+    setReusableItems((items) =>
+      items.map((candidate) =>
+        candidate.id === item.id ? { ...candidate, usageCount: candidate.usageCount + 1 } : candidate,
+      ),
+    );
+  }
+
   useEffect(() => {
     if (!selectedId || !inspectorFocusRequested.current) return;
     inspectorFocusRequested.current = false;
@@ -384,7 +439,12 @@ export function TaleEditor({
   }, [insertedId]);
 
   const save = useCallback(
-    async (state: DraftState, quiet = true, revision = draftRevision.current) => {
+    async (
+      state: DraftState,
+      quiet = true,
+      revision = draftRevision.current,
+      reusableUsage?: StudioDraftInput["reusableUsage"],
+    ) => {
       if (!data) return false;
       if (saving.current) return saving.current;
       const savePromise = (async () => {
@@ -398,6 +458,7 @@ export function TaleEditor({
               autosaveVersion: autosaveVersionRef.current ?? data.draft.autosaveVersion,
               tale: state.tale,
               chapters: state.chapters,
+              reusableUsage,
             }),
           });
           const body = (await response.json()) as {
@@ -460,7 +521,7 @@ export function TaleEditor({
   }, [autosaveKick, draft, dirty, save]);
 
   function change(mutator: (next: DraftState) => void, pendingSaveState = "Unsaved changes") {
-    if (!draft) return;
+    if (!draft) return undefined;
     publicationStatusHold.current = false;
     const next = clone(draft);
     mutator(next);
@@ -470,6 +531,7 @@ export function TaleEditor({
     setDraft(next);
     setDirty(true);
     setSaveState(pendingSaveState);
+    return next;
     setValidation(null);
     setValidationPanelOpen(false);
   }
@@ -1998,6 +2060,11 @@ export function TaleEditor({
                           <button type="button" onClick={() => void archiveReusableItem(item)}>
                             Archive
                           </button>
+                          {item.kind === "PRESET" && (
+                            <button type="button" onClick={() => void applyReusablePreset(item)} disabled={!selected}>
+                              Apply to selected Passage
+                            </button>
+                          )}
                         </li>
                       ))}
                     </ul>

@@ -842,4 +842,75 @@ describe("Voyagewright Studio editor motion and authority", () => {
     expect(screen.getByText("FRAGMENT · Version 1")).toBeInTheDocument();
     expect(screen.queryByText(/coming soon/i)).not.toBeInTheDocument();
   });
+
+  it("applies a compatible preset through the ordinary save path with immutable source-version provenance", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, editorData()))
+      .mockResolvedValueOnce(
+        response(200, {
+          items: [
+            {
+              id: "reusable-1",
+              kind: "PRESET",
+              name: "A stronger opening",
+              description: "A governed narrative preset.",
+              tags: [],
+              status: "ACTIVE",
+              currentVersionNumber: 1,
+              currentVersionId: "version-1",
+              checksum: "a".repeat(64),
+              usageCount: 0,
+              updatedAt: "2026-08-13T12:00:00.000Z",
+            },
+          ],
+        }),
+      )
+      .mockResolvedValueOnce(
+        response(200, {
+          itemId: "reusable-1",
+          versionId: "version-1",
+          envelope: {
+            kind: "PRESET",
+            itemId: "reusable-1",
+            versionId: "version-1",
+            attribution: { sourceOwnerId: "creator-1", modified: false },
+            blocks: [
+              {
+                id: "source-block",
+                blockType: "narrative",
+                configuration: { body: "A safer, reusable opening." },
+                presentation: {},
+                completion: {},
+                schemaVersion: 1,
+              },
+            ],
+          },
+        }),
+      )
+      .mockResolvedValueOnce(response(200, { autosaveVersion: 4, savedAt: "2026-08-13T12:00:00.000Z" }));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+
+    fireEvent.click(screen.getByText("Opening Scene").closest<HTMLElement>("article")!);
+    fireEvent.click(screen.getByRole("tab", { name: "Reuse" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Apply to selected Passage" }));
+
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith(
+        "/api/studio/tales/tale-1/reusable-content?itemId=reusable-1",
+        expect.objectContaining({ cache: "no-store" }),
+      ),
+    );
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith(
+        "/api/studio/tales/tale-1/draft",
+        expect.objectContaining({
+          method: "PATCH",
+          body: expect.stringContaining('"sourceKind":"PRESET_APPLIED"'),
+        }),
+      ),
+    );
+  });
 });

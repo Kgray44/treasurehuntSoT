@@ -38,6 +38,19 @@ export async function listReusableAuthoringItems(ownerAccountId: string) {
   }));
 }
 
+export async function getReusableAuthoringItemVersion(ownerAccountId: string, itemId: string) {
+  const item = await db.reusableAuthoringItem.findFirst({
+    where: { id: itemId, ownerAccountId, archivedAt: null },
+    include: { versions: { orderBy: { versionNumber: "desc" }, take: 1 } },
+  });
+  const version = item?.versions[0];
+  if (!item || !version) throw new Error("That reusable item is not available to this Creator.");
+  const envelope = parseReusableEnvelope(JSON.parse(version.envelope));
+  if (envelope.itemId !== item.id || envelope.versionId !== version.id || envelope.ownerId !== ownerAccountId)
+    throw new Error("The reusable item version does not match its owner-scoped Library record.");
+  return { itemId: item.id, versionId: version.id, versionNumber: version.versionNumber, envelope };
+}
+
 export async function createReusableAuthoringItem(ownerAccountId: string, rawEnvelope: unknown) {
   const envelope = parseReusableEnvelope(rawEnvelope);
   if (envelope.ownerId !== ownerAccountId || envelope.attribution.sourceOwnerId !== ownerAccountId)
