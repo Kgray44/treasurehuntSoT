@@ -25,7 +25,12 @@ const dependencyContentManifest = async (sourceDirectory) =>
 export async function dependencyLayerInputs(root) {
   const npmVersion =
     process.env.SOUNDING_LINE_NPM_VERSION ??
-    (await exec(process.platform === "win32" ? "npm.cmd" : "npm", ["--version"], { cwd: root })).stdout.trim();
+    (
+      await exec(process.platform === "win32" ? "npm.cmd" : "npm", ["--version"], {
+        cwd: root,
+        shell: process.platform === "win32",
+      })
+    ).stdout.trim();
   const [packageJsonDigest, packageLockDigest, policy] = await Promise.all([
     sha256File(path.join(root, "package.json")),
     sha256File(path.join(root, "package-lock.json")),
