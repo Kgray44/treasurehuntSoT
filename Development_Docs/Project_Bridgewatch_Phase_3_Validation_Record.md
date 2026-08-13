@@ -8,11 +8,18 @@ last_reviewed: 2026-08-12
 
 # Project Bridgewatch Phase 3 Validation Record
 
-## Current status: candidate preparation
+## Current status: current-main candidate preparation
 
 This record distinguishes local, task-owned implementation evidence from the
 still-required frozen-candidate, protected-main, and Sounding Line acceptance
 evidence. It does not mark Phase 3 or Project Bridgewatch complete.
+
+The current task-owned branch is
+`codex/project-bridgewatch-phase3-keep-the-watch-4`, replayed onto protected
+main `582f32a35d918ae892bd2feae766c00043038f39` after the accepted Helm browser
+correction and the user-ordered Deepwater record-only closure. The prior
+Bridgewatch authority run remains historical external-failure evidence and is
+not reused for this candidate.
 
 ## Focused evidence
 
@@ -38,20 +45,35 @@ evidence. It does not mark Phase 3 or Project Bridgewatch complete.
   GET-only history, and unchanged worker-only `/api/activity` semantics.
 - The configured dashboard authentication, CSP, private host policy, and
   activity-only bearer telemetry boundary remain covered by server tests.
+- On this current-main candidate, `npm --prefix bridgewatch run validate` and
+  `npm --prefix bridgewatch run build` passed: TypeScript plus 14 Vitest files
+  / 39 tests. The realistic performance test has an explicit 15-second test
+  harness ceiling while retaining its stricter one-second query and
+  five-second retention product assertions.
+- Current-main static qualification passed: `docs:validate`,
+  `features:validate`, `test:policy`, `test:inventory`, `lint` (0 errors; the
+  repository's existing warnings only), and `format:check`.
 
 ## Browser and accessibility evidence
 
-On the task-owned local server, keyboard-visible controls and semantic event
-ordering were inspected at ordinary desktop, 390x844 phone, and 1440-wide
-control-room widths. At 390x844, `scrollWidth` did not exceed the available
-content width; the history, archive, Attention, active projects, worker/test,
-and pull-request surfaces remained reachable. At wide desktop, the project
-grid used four compact columns rather than stretched cards.
+On the current-main task-owned local server, keyboard-visible controls and
+semantic event ordering were inspected at ordinary desktop, 390x844 phone, and
+1440x900 control-room widths. A phone-width regression was found and repaired:
+long branch identifiers could force attention/list cards beyond the viewport.
+Those cards now use `min-width: 0` plus safe identifier wrapping. At 390x844,
+the final rendered `scrollWidth` equaled the client width (no horizontal
+overflow); the history interval, lifecycle tabs, archive, Attention, active
+projects, worker/test, and pull-request surfaces remained reachable. At wide
+desktop, the project grid used four 323px compact columns rather than stretched
+cards. The last-visit control displayed a browser-local timestamp without
+server-side acknowledgement mutation.
 
-The WCAG 2 A/AA Axe audit on the rendered dashboard reported 19 passing rule
-groups, zero serious findings, and zero critical findings. The audit script was
-injected only into the task-owned browser tab for the scan and the page was
-reloaded immediately afterward; it is not shipped by Bridgewatch.
+The current WCAG 2 A/AA Axe audit on the rendered dashboard reported zero
+violations (therefore zero serious and zero critical findings). Reduced-motion
+emulation produced `0s` transition/animation duration and automatic scrolling;
+visible keyboard focus remained present. The audit script was injected only
+into the task-owned browser tab for the scan and the page was reloaded
+immediately afterward; it is not shipped by Bridgewatch.
 
 ## Read-only route inventory
 
