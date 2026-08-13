@@ -8,9 +8,10 @@ last_reviewed: 2026-08-13
 
 # Project Wakebook Phase 2 owner walkthrough
 
-This walkthrough is ready for owner review. Phase 2 is candidate-qualified on
-an isolated local runtime and reconciled with current mainline, but is not yet
-product accepted or merged.
+This walkthrough is ready for owner review. Phase 2 implementation candidate
+`823c9f726d778f59aa6df5dc5f2f383b7c22b5ba` is qualified on an isolated local
+runtime and reconciled with current mainline, but is not yet product accepted
+or merged.
 
 1. Sign in with the owner account and open **Chronicle Passport**.
 2. Use the visible **History** control, open **Your Voyages**, and choose a

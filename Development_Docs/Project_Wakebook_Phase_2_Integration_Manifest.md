@@ -14,7 +14,7 @@ last_reviewed: 2026-08-13
 | Reconciled main         | `72075eb551ec39bdb59bd7d78fd900f2eaf73a88`                                       |
 | Worktree                | task-owned local Companion worktree                                              |
 | Mainline reconciliation | Completed against current `origin/main`; Bridgewatch-only incoming work retained |
-| Candidate source        | Recorded by the final candidate-freeze receipt                                   |
+| Candidate source        | `823c9f726d778f59aa6df5dc5f2f383b7c22b5ba`                                       |
 | Owner walkthrough       | Ready for owner walkthrough; no owner acceptance recorded                        |
 | Protected merge         | Not requested                                                                    |
 
