@@ -6,6 +6,7 @@ import {
   TIDEGLASS_SEMANTIC_SCHEMA_VERSION,
 } from "../../src/tideglass/core";
 import { canonicalizePublishedSnapshot } from "../../src/tideglass/semantic";
+import { parseDrydockBlock } from "../../src/drydock/contracts/parser";
 import { anchor, baseSnapshot, clone } from "./fixtures";
 
 function reverseObjectOrder(value: unknown): unknown {
@@ -112,6 +113,26 @@ describe("Tideglass contracts and canonicalization", () => {
       semantic(current, "edition-current", "checksum-current", 1),
     );
     expect(result.status).toBe("NO_MEANINGFUL_CHANGE");
+  });
+
+  it("uses the accepted Drydock reader to suppress declared Story Block migration noise", () => {
+    const source = baseSnapshot();
+    for (const block of source.chapters.flatMap((chapter) => chapter.blocks)) block.presentation = {};
+    const target = clone(source);
+    for (const block of target.chapters.flatMap((chapter) => chapter.blocks)) {
+      const parsed = parseDrydockBlock(block as never);
+      expect(parsed.success).toBe(true);
+      if (!parsed.success) continue;
+      block.schemaVersion = parsed.block.schemaVersion;
+      block.configuration = parsed.block.configuration;
+      block.presentation = parsed.block.presentation;
+      block.completion = parsed.block.completion;
+      block.connections = parsed.block.connections;
+      block.nextBlockId = parsed.block.nextBlockId;
+    }
+    const result = compareSemanticSnapshots(semantic(source, "edition-v1"), semantic(target, "edition-v2"));
+    expect(result.status).toBe("NO_MEANINGFUL_CHANGE");
+    expect(result.changes).toEqual([]);
   });
 
   it("F20 compares unaffected metadata while reporting an unsupported historical section", () => {

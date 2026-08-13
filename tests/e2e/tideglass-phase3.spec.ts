@@ -229,6 +229,26 @@ test("Journeys A-J: visible entry, accepted Journey Detail history, creator deta
   );
   await creator.context.close();
 
+  const support = await signedInPage(browser, "SUPPORT", `/admin/people/${credentials.accounts.CREATOR.accountId}`);
+  await expect(support.page.getByRole("heading", { name: "Support access", exact: true })).toBeVisible();
+  await support.page.getByLabel("Confirm current password").fill(credentials.password);
+  await support.page.getByRole("button", { name: "Verify for privileged work", exact: true }).click();
+  await expect(support.page.getByText("Privileged assurance is active for this session.")).toBeVisible();
+  await support.page.getByLabel("Scoped category").selectOption("TIDEGLASS_DIAGNOSTICS");
+  await support.page.getByLabel("Chronicle ID").fill(credentials.chronicle.id);
+  await support.page.getByLabel("Source edition ID").fill(credentials.chronicle.versions[0].id);
+  await support.page.getByLabel("Target edition ID").fill(credentials.chronicle.versions[2].id);
+  await support.page.getByRole("button", { name: "Read approved category", exact: true }).click();
+  await expect(support.page.getByText("Tideglass diagnostic read and audited.")).toBeVisible();
+  await expect(support.page.getByRole("heading", { name: "Approved support projection", exact: true })).toBeVisible();
+  await capture(
+    support.page,
+    "TG4-EV-J-ADMIRALTY-DIAGNOSTIC",
+    "AUDITED_TIDEGLASS_DIAGNOSTIC",
+    "Scoped support grant, target-account edition authorization, and bounded diagnostic projection are visible without snapshots or private history",
+  );
+  await support.context.close();
+
   const responsive = await anonymousPage(browser);
   await responsive.page.goto(`/chronicles/${credentials.chronicle.slug}/compare`);
   await responsive.page.setViewportSize({ width: 390, height: 844 });

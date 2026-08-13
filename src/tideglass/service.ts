@@ -99,7 +99,8 @@ export async function compareExactEditions(
     const pair = { chronicleId: source.chronicleId, source: anchor(source), target: anchor(target) };
     const cache = options.cache === undefined ? tideglassComparisonCache : options.cache;
     const key = canonicalCacheKey(pair);
-    const cached = cache?.getCanonicalChangeSet(key);
+    const cacheRead = cache?.readCanonicalChangeSet?.(key);
+    const cached = cacheRead?.entry ?? cache?.getCanonicalChangeSet(key);
     if (cached) {
       const completedAt = performance.now();
       return {
@@ -158,7 +159,7 @@ export async function compareExactEditions(
         receipt,
         operation: {
           correlationId,
-          cacheStatus: cache ? "MISS" : "BYPASS",
+          cacheStatus: cache ? (cacheRead?.status === "CORRUPT" ? "CORRUPT_REBUILT" : "MISS") : "BYPASS",
           normalizationDurationMs: afterNormalization - beforeNormalization,
           comparisonDurationMs: comparedAt - afterNormalization,
           totalDurationMs: comparedAt - startedAt,

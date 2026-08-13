@@ -26,8 +26,39 @@ const accounts = {
   PLAYER_C: identity("player-c", "player.c@tideglass.example.test", "Player C", ["PLAYER"]),
   CREATOR: identity("creator", "creator@tideglass.example.test", "Tideglass Fixture Creator", ["PLAYER", "CREATOR"]),
   FOREIGN: identity("foreign", "foreign@tideglass.example.test", "Foreign Player", ["PLAYER"]),
+  SUPPORT: identity("support", "support@tideglass.example.test", "Tideglass Fixture Support", ["SUPPORT_OPERATOR"]),
 };
 for (const [key, account] of Object.entries(accounts)) await createIdentity(key, account);
+
+await db.supportAccessRequest.create({
+  data: {
+    id: "tg3-support-request",
+    requestingAdminAccountId: accounts.SUPPORT.id,
+    targetAccountId: accounts.CREATOR.id,
+    purpose: "Synthetic Tideglass comparison diagnostic walkthrough.",
+    requestedScopes: JSON.stringify(["TIDEGLASS_DIAGNOSTICS"]),
+    status: "APPROVED",
+    requestedAt: createdAt,
+    expiresAt: new Date("2027-08-12T12:00:00.000Z"),
+    decisionAt: createdAt,
+    decisionByTargetAccountId: accounts.CREATOR.id,
+    correlationId: "tg3-support-correlation",
+    createdAt,
+  },
+});
+await db.supportAccessGrant.create({
+  data: {
+    id: "tg3-support-grant",
+    requestId: "tg3-support-request",
+    operatorAccountId: accounts.SUPPORT.id,
+    targetAccountId: accounts.CREATOR.id,
+    grantedScopes: JSON.stringify(["TIDEGLASS_DIAGNOSTICS"]),
+    status: "ACTIVE",
+    issuedAt: createdAt,
+    expiresAt: new Date("2027-08-12T12:00:00.000Z"),
+    correlationId: "tg3-support-correlation",
+  },
+});
 
 const chronicleId = "tg3-chronicle-passage";
 const versions = [
