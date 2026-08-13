@@ -25,11 +25,14 @@ surface without changing semantic policy, history truth, Studio, schema, or
 migrations.
 
 The focused proof for the addendum is intentionally separate from the historic
-product qualification: Tideglass passage-service, Wakebook archive-query, and
-Journey Detail component tests pass with TypeScript, documentation, and the
-non-authoritative Phase 3 contract validator. Browser/visual addendum evidence
-and targeted owner review remain pending; the serial authority lane is released
-and must not be reacquired without an explicit later position.
+product qualification: 34 direct Tideglass, Wayfarer/Wakebook, component, and
+API tests pass with TypeScript, documentation, catalog, and the
+non-authoritative Phase 3 contract validator. A fresh task-owned production
+browser A-K journey passes for `c298d5c0db5c0cd015323fd7f7ad073b3e64e82a`,
+including direct Journey Detail visual evidence, exact-record return, mobile,
+reduced-motion, effective 200% zoom, and Axe serious/critical zero. Targeted
+owner review remains pending; the serial authority lane is released and must
+not be reacquired without an explicit later position.
 
 ## Current qualification approach
 

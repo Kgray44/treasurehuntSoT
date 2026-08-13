@@ -44,8 +44,12 @@ new Tideglass-owned adapter preserves the exact owned-history handoff without
 copying a checksum, raw snapshot, annotation, or semantic record into the
 Wakebook DTO. Focused proof is 34 tests across the direct Tideglass and
 Wakebook files, plus passing `npm run tideglass:phase3:validate`, TypeScript,
-and documentation validation. This is local, non-authoritative evidence only;
-browser/visual addendum proof and targeted owner review remain pending.
+documentation, catalog, and targeted lint/format checks. A fresh task-owned
+production A-K browser journey passed for source
+`c298d5c0db5c0cd015323fd7f7ad073b3e64e82a`; it includes the direct Journey
+Detail entry capture, exact-record return, privacy assertions, mobile,
+reduced-motion, effective 200% zoom, and Axe serious/critical zero. This is
+still local, non-authoritative evidence only; targeted owner review is next.
 
 ## Authority preflight and focused repair
 

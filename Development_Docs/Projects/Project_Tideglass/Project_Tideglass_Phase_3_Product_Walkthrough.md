@@ -1,7 +1,7 @@
 ---
 title: Project Tideglass Phase 3 Product Walkthrough
 audience: product-owner
-status: targeted-owner-review-pending
+status: targeted-wakebook-owner-review-ready
 canonical_for: project-tideglass-phase-3-product-walkthrough
 last_reviewed: 2026-08-12
 ---
@@ -36,4 +36,4 @@ The available synthetic role aliases are Anonymous, Player A, Player AB, Player 
 
 ## Acceptance boundary
 
-This synthetic local walkthrough is suitable for product review of the governed experience. It is not staging, production, live-provider, physical-device, protected-mainline, or real-user proof. The owner accepted the original reviewed source; the current accepted-Wakebook handoff awaits targeted addendum review. The later Sounding Line decision remains unavailable until an explicit serial queue position is granted.
+This synthetic local walkthrough is suitable for product review of the governed experience. It is not staging, production, live-provider, physical-device, protected-mainline, or real-user proof. The owner accepted the original reviewed source; the accepted-Wakebook handoff has refreshed A-K production-browser and visual proof and is ready for targeted addendum review. The later Sounding Line decision remains unavailable until an explicit serial queue position is granted.

@@ -115,7 +115,7 @@ async function main() {
     "legacy Studio raw comparator remains in the product service",
   );
   assert(studioComparison.includes("TideglassChangeCards"), "Studio does not render Tideglass semantic change cards");
-  assert(browserTest.includes("Journeys A-J"), "browser journey record is incomplete");
+  assert(browserTest.includes("accepted Journey Detail history"), "browser journey record is incomplete");
   for (const id of [
     "TG3-EV-A",
     "TG3-EV-B",

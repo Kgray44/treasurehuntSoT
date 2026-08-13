@@ -79,6 +79,10 @@ Publishing-owned current pointer to produce a same-origin comparison link only
 for `PAIR` or `UP_TO_DATE`. Wakebook renders that link and never receives a
 checksum, a raw snapshot, annotations, semantic records, or authority inputs.
 
-This is an isolated current-main reconciliation. Its focused service, archive
-query, component, and TypeScript proof must qualify before targeted owner review.
-It does not authorize a protected binding, merge, or a retry of any frozen PR.
+This is an isolated current-main reconciliation. Focused service, archive-query,
+component, TypeScript, documentation, catalog, and A-K task-owned production
+browser proof are complete for source `c298d5c0db5c0cd015323fd7f7ad073b3e64e82a`.
+The generated visual evidence adds a direct Journey Detail entry frame and
+retains the exact-record return, privacy, Creator, mobile, zoom, reduced-motion,
+and Axe assertions. Targeted owner review is the next gate; this does not
+authorize a protected binding, merge, or a retry of any frozen PR.
