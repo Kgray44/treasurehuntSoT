@@ -18,26 +18,13 @@ issued `RELEASE_GO` for exact candidate
 `9ca2b3b89b12470e7cd86457e5d8fd91e419b47c` against that base for PR #28, with
 38 mandatory clean receipts and zero unclean receipts. Protected binding
 `31626044788` then accepted the merge identity, and PR #28 integrated as
-`4edc8de5e30e9748700c19b466061f9b9a97f268`. Sounding Line run `31572661444`
-accepted candidate `894eaec061665c4f1b9c50bf7c84ad766551c7e5` against accepted
-`origin/main` `54e3d818d49d45282a9c419d562d4b5c78911ccd`, issuing
-`RELEASE_GO` from 38 mandatory clean receipts. This record does not claim owner
-acceptance, canonical-main integration, deployment, live-provider behavior,
-production MySQL execution, physical-device proof, or physical
-assistive-technology proof. Following the narrow Helm browser repair, Sounding
-Line run `31577075177` accepted candidate
-`fdafed62ceba92a09014abb288ec27beeed830f1` against the same base with
-`RELEASE_GO`, 38 mandatory receipts, and zero unclean receipts. The
-documentation-only exact-head retry `31578742514` invalidated that release for
-the newer source when a separate Helm participation assertion raced a transient
-notice. The repair waits for the POST response and refreshed card state. That
-retry also revealed an unrelated Sounding Line controller lost-update race;
-the durable run store now serializes updates and protects concurrent
-cancellation. The combined repair received a fresh hosted Mainline Decision:
-run `31581152448` issued `RELEASE_GO` for
-`b32a3c961bdd4b4a743a73b7d226f6cd14db9d1c` against the same accepted base, from
-38 mandatory clean receipts and zero unclean receipts. The owner then accepted
-the re-prepared walkthrough on `2026-08-12`.
+`4edc8de5e30e9748700c19b466061f9b9a97f268`. Earlier hosted decisions remain
+historical qualification evidence. The final pre-reconciliation technical
+source `b32a3c961bdd4b4a743a73b7d226f6cd14db9d1c` received `RELEASE_GO` in run
+`31581152448` from 38 mandatory clean receipts, and the owner accepted its
+re-prepared synthetic walkthrough on `2026-08-12`. This record does not claim
+deployment, live-provider behavior, production MySQL execution, physical-device
+proof, or physical assistive-technology proof.
 
 ## Completed local evidence
 
@@ -56,9 +43,9 @@ Browser evidence root:
 `C:\Users\kgray\AppData\Local\ProjectAdmiralty\sounding-line-phase2`.
 The prior governed local browser receipt at `7bdcc97a8...` is historical after
 the latest mainline reconciliation. The hosted Sounding Line Mainline Decision
-for `b32a3c961...` is historical technical authority. The current reconciled
-branch head requires its own exact-source Mainline Decision before protected
-merge.
+for `b32a3c961...` is historical technical authority. Exact publication
+authority is run `31624301196` for candidate `9ca2b3b89...`, followed by
+protected binding `31626044788` and canonical merge `4edc8de5e...`.
 
 ## Governed acceptance
 
