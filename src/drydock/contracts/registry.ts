@@ -312,6 +312,8 @@ export function studioRegistryFromDrydock() {
         minimumReaderVersion: contract.minimumReaderVersion,
         connectionPolicy: contract.connectionPolicy,
         assetRequirements: contract.assetRequirements,
+        variableReads: contract.variableReads,
+        variableWrites: contract.variableWrites,
         providerContract: contract.providerContract,
         accessibilityRules: contract.accessibilityRules,
       },
