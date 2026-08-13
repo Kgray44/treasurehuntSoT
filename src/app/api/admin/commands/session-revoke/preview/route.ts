@@ -19,7 +19,10 @@ export async function POST(request: Request) {
       input: { sessionId: input.sessionId },
     });
     const preview = await previewAdmiraltyCommand(wayfarerSessionRevokePort(operator), command);
-    return NextResponse.json({ ok: true, command, preview }, { headers: enforceAdmiraltyRateLimit(`session-preview:${operator.accountId}`, 20, 10 * 60_000) });
+    return NextResponse.json(
+      { ok: true, command, preview },
+      { headers: enforceAdmiraltyRateLimit(`session-preview:${operator.accountId}`, 20, 10 * 60_000) },
+    );
   } catch (cause) {
     return admiraltyErrorResponse(cause);
   }

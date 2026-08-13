@@ -23,7 +23,10 @@ export async function POST(request: Request) {
     const port = wayfarerSessionRevokePort(operator);
     const preview = await previewAdmiraltyCommand(port, command);
     const receipt = await executeAdmiraltyCommand(port, command, preview);
-    return NextResponse.json({ ok: true, receipt }, { headers: enforceAdmiraltyRateLimit(`session-execute:${operator.accountId}`, 10, 10 * 60_000) });
+    return NextResponse.json(
+      { ok: true, receipt },
+      { headers: enforceAdmiraltyRateLimit(`session-execute:${operator.accountId}`, 10, 10 * 60_000) },
+    );
   } catch (cause) {
     return admiraltyErrorResponse(cause);
   }

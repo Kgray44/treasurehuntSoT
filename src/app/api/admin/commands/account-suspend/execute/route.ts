@@ -10,8 +10,22 @@ export async function POST(request: Request) {
     const operator = await requireAdmiraltyOperator("ACCOUNT_OPERATE", { request });
     await requireRecentPrivilegedAssurance(operator);
     const input = await parseAdmiraltyBody(request, accountSuspendSchema);
-    const command = newAdmiraltyCommandRequest({ commandType: "ACCOUNT_SUSPEND", actorAccountId: operator.accountId, targetType: "UserAccount", targetId: input.targetAccountId, expectedRevision: input.expectedUpdatedAt, reason: input.reason, idempotencyKey: input.idempotencyKey, input: { expectedUpdatedAt: input.expectedUpdatedAt } });
+    const command = newAdmiraltyCommandRequest({
+      commandType: "ACCOUNT_SUSPEND",
+      actorAccountId: operator.accountId,
+      targetType: "UserAccount",
+      targetId: input.targetAccountId,
+      expectedRevision: input.expectedUpdatedAt,
+      reason: input.reason,
+      idempotencyKey: input.idempotencyKey,
+      input: { expectedUpdatedAt: input.expectedUpdatedAt },
+    });
     const port = wayfarerAccountSuspendPort(operator);
-    return NextResponse.json({ ok: true, receipt: await executeAdmiraltyCommand(port, command, await previewAdmiraltyCommand(port, command)) }, { headers: enforceAdmiraltyRateLimit(`account-suspend-execute:${operator.accountId}`, 5, 10 * 60_000) });
-  } catch (cause) { return admiraltyErrorResponse(cause); }
+    return NextResponse.json(
+      { ok: true, receipt: await executeAdmiraltyCommand(port, command, await previewAdmiraltyCommand(port, command)) },
+      { headers: enforceAdmiraltyRateLimit(`account-suspend-execute:${operator.accountId}`, 5, 10 * 60_000) },
+    );
+  } catch (cause) {
+    return admiraltyErrorResponse(cause);
+  }
 }

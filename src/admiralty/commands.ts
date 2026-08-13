@@ -61,7 +61,12 @@ export type AdmiraltyCommandPort<TInput extends Record<string, unknown> = Record
   execute(
     request: AdmiraltyCommandRequest<TInput>,
     preview: AdmiraltyCommandPreview,
-  ): Promise<Omit<AdmiraltyCommandReceipt, "commandId" | "commandType" | "targetType" | "targetId" | "ownerDomain" | "completedAt">>;
+  ): Promise<
+    Omit<
+      AdmiraltyCommandReceipt,
+      "commandId" | "commandType" | "targetType" | "targetId" | "ownerDomain" | "completedAt"
+    >
+  >;
 }>;
 
 const secretPattern = /(?:password|token|secret|credential|cookie|private key|csrf)/iu;
@@ -86,7 +91,8 @@ export function validateAdmiraltyCommandRequest(request: AdmiraltyCommandRequest
 }
 
 export function newAdmiraltyCommandRequest<TInput extends Record<string, unknown>>(
-  request: Omit<AdmiraltyCommandRequest<TInput>, "commandId" | "requestedAt"> & Partial<Pick<AdmiraltyCommandRequest<TInput>, "commandId" | "requestedAt">>,
+  request: Omit<AdmiraltyCommandRequest<TInput>, "commandId" | "requestedAt"> &
+    Partial<Pick<AdmiraltyCommandRequest<TInput>, "commandId" | "requestedAt">>,
 ) {
   return {
     ...request,
@@ -104,7 +110,11 @@ export async function previewAdmiraltyCommand<TInput extends Record<string, unkn
   if (!preview.commandType || preview.commandType !== request.commandType)
     throw new AdmiraltyError("ADMIN_OPERATION_UNAVAILABLE", "The owning service returned an invalid preview.", 503);
   if (commandRequiresRecentAssurance(preview.risk) !== preview.reauthenticationRequired)
-    throw new AdmiraltyError("ADMIN_OPERATION_UNAVAILABLE", "The owning service returned an unsafe assurance policy.", 503);
+    throw new AdmiraltyError(
+      "ADMIN_OPERATION_UNAVAILABLE",
+      "The owning service returned an unsafe assurance policy.",
+      503,
+    );
   return preview;
 }
 
