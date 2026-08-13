@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `6d7dba1205ec24c1a7317556e137516df02ba51c`
+Audited source commit: `60b89841986e66fbc2c0828489d38002a1617506`
 
 ## Status vocabulary
 
@@ -961,7 +961,7 @@ A private, standalone, read-only development mission-control dashboard projects 
 **Status:** MAINLINE
 **Program or subsystem:** Project Bridgewatch Phase 2
 
-A private Bridgewatch extension that projects explicit Project Registry and Sounding Line observer evidence into durable local operational state while keeping test, release, merge, and project-completion authority outside the dashboard.
+A private Bridgewatch extension that projects explicit Project Registry and Sounding Line observer evidence into durable local operational state and is available to canonically authorized Voyagewright operators through a same-host /bridgewatch gateway, while keeping test, release, merge, and project-completion authority outside the dashboard.
 
 ### Important subfeatures
 
@@ -969,15 +969,17 @@ A private Bridgewatch extension that projects explicit Project Registry and Soun
 - Durable SQLite worker, test-node, and test-run history with idempotent migrations
 - Opt-in bearer-authenticated activity telemetry with rate, skew, stale-state, and credential-redaction controls
 - Lifecycle tabs, project biography, worker/test summaries, responsive layout, and reduced-motion support
+- Canonical PLATFORM_OBSERVE authorization with a same-host, allowlisted GET/HEAD gateway for local and deployed private access
+- Independent loopback service deployment with safe gateway failure and machine telemetry excluded from the browser mount
 
 ### Primary surfaces
 
-`bridgewatch`, `POST /api/telemetry/heartbeat`, `GET /api/history`, `GET /api/tests`
+`bridgewatch`, `/bridgewatch`, `POST /api/telemetry/heartbeat`, `GET /api/history`, `GET /api/tests`
 
 ### Meaningful limitations
 
 - Bridgewatch remains an observer and cannot create, approve, merge, retry, or authorize work.
-- Mainline integration does not claim a private deployment, provider proof, or owner-acceptance record.
+- Mainline integration does not claim completed host deployment, provider proof, or owner-acceptance record.
 
 ### Evidence
 
@@ -985,6 +987,9 @@ A private Bridgewatch extension that projects explicit Project Registry and Soun
 - path: `bridgewatch/lib/store.ts`
 - path: `bridgewatch/src/sounding-line.ts`
 - test: `bridgewatch/test/sounding-line.test.ts`
+- test: `src/admiralty/bridgewatch-gateway.test.ts`
+- test: `tests/e2e/admiralty-phase2.spec.ts`
+- path: `deploy/nginx.conf`
 - completion-record: `Development_Docs/Project_Bridgewatch_Phase_2_Completion_Receipt.md`
 
 ---
@@ -1588,4 +1593,4 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `6d7dba1205ec24c1a7317556e137516df02ba51c`
+Generation source commit: `60b89841986e66fbc2c0828489d38002a1617506`

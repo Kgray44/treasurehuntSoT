@@ -27,6 +27,15 @@ describe("Bridgewatch read-only API", () => {
           .find((entry: { name: string }) => entry.name === "reporter").state,
       ).toBe("UNMEASURED");
       expect(summary.headers["content-security-policy"]).toContain("default-src 'self'");
+      const dashboard = await app.inject({ method: "GET", url: "/" });
+      expect(dashboard.statusCode).toBe(200);
+      expect(dashboard.body).toContain('href="/style.css"');
+      expect(dashboard.body).toContain('src="/app.js"');
+      expect(dashboard.body).toContain('href="/admin"');
+      expect((await app.inject({ method: "GET", url: "/style.css" })).statusCode).toBe(200);
+      const appScript = (await app.inject({ method: "GET", url: "/app.js" })).body;
+      expect(appScript).toContain('window.location.pathname.startsWith("/bridgewatch")');
+      expect(appScript).toContain("`${bridgewatchBase}api/summary`");
       const mutation = await app.inject({ method: "POST", url: "/api/summary" });
       expect(mutation.statusCode).toBe(404);
       const heartbeat = {

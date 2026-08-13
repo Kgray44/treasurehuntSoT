@@ -2,6 +2,7 @@ const text = (value) => value ?? "UNMEASURED";
 const short = (value) => (value ? String(value).slice(0, 12) : "UNMEASURED");
 let board = null;
 let selectedTab = "ACTIVE";
+const bridgewatchBase = window.location.pathname.startsWith("/bridgewatch") ? "/bridgewatch/" : "/";
 
 const element = (tag, className, content) => {
   const node = document.createElement(tag);
@@ -184,7 +185,7 @@ function renderPulls(snapshot) {
   });
 }
 async function refreshSources() {
-  const response = await fetch("/api/sources");
+  const response = await fetch(new URL(`${bridgewatchBase}api/sources`, window.location.origin));
   const sources = await response.json();
   const host = document.querySelector("#sources");
   host.replaceChildren();
@@ -217,7 +218,7 @@ document.querySelectorAll("[data-tab]").forEach((button) =>
   }),
 );
 const refreshBoard = () =>
-  fetch("/api/summary")
+  fetch(new URL(`${bridgewatchBase}api/summary`, window.location.origin))
     .then((response) => response.json())
     .then(render)
     .catch(() => {

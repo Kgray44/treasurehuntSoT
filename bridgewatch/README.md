@@ -40,6 +40,23 @@ removes the last known observation state until sources are collected again.
 Keep deployment storage private and back up only when local continuity is
 needed.
 
+## Same-host Voyagewright gateway
+
+The accepted internal listener is `127.0.0.1:4318`. Voyagewright exposes the
+same standalone service at `/bridgewatch` through canonical Admiralty
+`PLATFORM_OBSERVE` authorization. The root application uses the server-only
+`BRIDGEWATCH_INTERNAL_URL=http://127.0.0.1:4318` value for local development;
+deployed NGINX sends an internal authorization subrequest to Voyagewright and
+then proxies only the allowlisted dashboard, static asset, and read-only API
+GET/HEAD routes directly to port 4318. Browser cookies and authorization
+headers are removed before the upstream request.
+
+The gateway never exposes `/healthz`, `/readyz`, arbitrary paths, or
+`/api/telemetry/*`. The telemetry POST endpoints remain available only on the
+private Bridgewatch listener with their distinct machine bearer token. Keep
+Bridgewatch loopback-only; do not set `BRIDGEWATCH_ALLOW_EXTERNAL` for this
+same-host deployment.
+
 ## Operations
 
 `GET /healthz` reports process health. `GET /readyz` reports whether a usable

@@ -8,6 +8,41 @@
       "contractIds": ["bridgewatch.mission-control"]
     },
     {
+      "path": "src/admiralty/bridgewatch-gateway*",
+      "suiteIds": ["unit.admiralty", "browser.admiralty", "static.core"],
+      "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
+    },
+    {
+      "path": "src/app/bridgewatch/**",
+      "suiteIds": ["unit.admiralty", "browser.admiralty", "static.core"],
+      "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
+    },
+    {
+      "path": "src/app/api/internal/bridgewatch/**",
+      "suiteIds": ["unit.admiralty", "browser.admiralty", "static.core"],
+      "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
+    },
+    {
+      "path": "deploy/nginx.conf",
+      "suiteIds": ["unit.bridgewatch", "unit.admiralty", "browser.admiralty", "static.core"],
+      "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
+    },
+    {
+      "path": "deploy/*bridgewatch*",
+      "suiteIds": ["unit.bridgewatch", "unit.admiralty", "browser.admiralty", "static.core"],
+      "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
+    },
+    {
+      "path": "scripts/bridgewatch/**",
+      "suiteIds": ["unit.bridgewatch", "unit.admiralty", "static.core"],
+      "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_Homeport_Gateway_*.md",
+      "suiteIds": ["unit.bridgewatch", "unit.admiralty", "static.core"],
+      "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
+    },
+    {
       "path": "scripts/sounding-line/status-projection.mjs",
       "suiteIds": ["unit.bridgewatch", "unit.sounding-line", "static.core"],
       "contractIds": ["bridgewatch.mission-control"]

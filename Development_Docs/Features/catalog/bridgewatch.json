@@ -28,25 +28,30 @@
   {
     "id": "FT-035",
     "title": "Bridgewatch Governed Signal Projection",
-    "summary": "A private Bridgewatch extension that projects explicit Project Registry and Sounding Line observer evidence into durable local operational state while keeping test, release, merge, and project-completion authority outside the dashboard.",
+    "summary": "A private Bridgewatch extension that projects explicit Project Registry and Sounding Line observer evidence into durable local operational state and is available to canonically authorized Voyagewright operators through a same-host /bridgewatch gateway, while keeping test, release, merge, and project-completion authority outside the dashboard.",
     "status": "MAINLINE",
     "program": "Project Bridgewatch Phase 2",
-    "surfaces": ["bridgewatch", "POST /api/telemetry/heartbeat", "GET /api/history", "GET /api/tests"],
+    "surfaces": ["bridgewatch", "/bridgewatch", "POST /api/telemetry/heartbeat", "GET /api/history", "GET /api/tests"],
     "subfeatures": [
       "Read-only Sounding Line runtime projection with explicit lifecycle normalization",
       "Durable SQLite worker, test-node, and test-run history with idempotent migrations",
       "Opt-in bearer-authenticated activity telemetry with rate, skew, stale-state, and credential-redaction controls",
-      "Lifecycle tabs, project biography, worker/test summaries, responsive layout, and reduced-motion support"
+      "Lifecycle tabs, project biography, worker/test summaries, responsive layout, and reduced-motion support",
+      "Canonical PLATFORM_OBSERVE authorization with a same-host, allowlisted GET/HEAD gateway for local and deployed private access",
+      "Independent loopback service deployment with safe gateway failure and machine telemetry excluded from the browser mount"
     ],
     "limitations": [
       "Bridgewatch remains an observer and cannot create, approve, merge, retry, or authorize work.",
-      "Mainline integration does not claim a private deployment, provider proof, or owner-acceptance record."
+      "Mainline integration does not claim completed host deployment, provider proof, or owner-acceptance record."
     ],
     "evidence": [
       { "kind": "commit", "value": "9b950a5fd603be27c813f9298b0b14888fbce6cf" },
       { "kind": "path", "value": "bridgewatch/lib/store.ts" },
       { "kind": "path", "value": "bridgewatch/src/sounding-line.ts" },
       { "kind": "test", "value": "bridgewatch/test/sounding-line.test.ts" },
+      { "kind": "test", "value": "src/admiralty/bridgewatch-gateway.test.ts" },
+      { "kind": "test", "value": "tests/e2e/admiralty-phase2.spec.ts" },
+      { "kind": "path", "value": "deploy/nginx.conf" },
       { "kind": "completion-record", "value": "Development_Docs/Project_Bridgewatch_Phase_2_Completion_Receipt.md" }
     ],
     "catalogVersion": 1
