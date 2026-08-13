@@ -40,6 +40,38 @@ const chapterSummarySchema = z.array(
     .strict(),
 );
 const unavailableSummarySchema = z.array(z.object({ schemaVersion: z.literal(1), reason: z.string() }).strict());
+const objectiveSummarySchema = z.array(
+  z.discriminatedUnion("state", [
+    z
+      .object({
+        schemaVersion: z.literal(1),
+        state: z.literal("AVAILABLE"),
+        label: z.string().min(1).max(240),
+        completed: z.boolean(),
+      })
+      .strict(),
+    z
+      .object({ schemaVersion: z.literal(1), state: z.literal("UNAVAILABLE"), reason: z.string().min(1).max(480) })
+      .strict(),
+  ]),
+);
+const safeChoiceSummarySchema = z.array(
+  z.discriminatedUnion("state", [
+    z
+      .object({
+        schemaVersion: z.literal(1),
+        state: z.literal("AVAILABLE"),
+        label: z.string().min(1).max(240),
+        chapterTitle: z.string().min(1).max(240).nullable().optional(),
+        kind: z.enum(["CHOICE", "HINT", "REJOIN", "CHECKPOINT", "ATTEMPT"]),
+        detail: z.string().min(1).max(480).nullable().optional(),
+      })
+      .strict(),
+    z
+      .object({ schemaVersion: z.literal(1), state: z.literal("UNAVAILABLE"), reason: z.string().min(1).max(480) })
+      .strict(),
+  ]),
+);
 const artifactSummarySchema = z.array(
   z
     .object({
@@ -118,6 +150,8 @@ type SummaryRecord = Prisma.PlayerChronicleRecordGetPayload<{ select: typeof sum
 const detailSelect = {
   ...summarySelect,
   playerNameSnapshot: true,
+  creatorAttributionSnapshot: true,
+  lastDerivedAt: true,
   metricDefinitionVersion: true,
   activeSeconds: true,
   activeAccuracy: true,
@@ -138,6 +172,7 @@ const detailSelect = {
       favoriteMomentReference: true,
       favoriteArtifactReference: true,
       privateNote: true,
+      updatedAt: true,
     },
   },
   memories: {
@@ -150,13 +185,18 @@ const detailSelect = {
       referenceType: true,
       referenceId: true,
       createdAt: true,
+      updatedAt: true,
     },
   },
   keepsake: {
     select: {
       status: true,
       generatedAt: true,
-      consents: { where: { state: "GRANTED" }, select: { id: true } },
+      regeneratedAt: true,
+      consents: {
+        select: { scope: true, state: true, historicalLabel: true, decidedAt: true },
+        orderBy: [{ participantId: "asc" }, { scope: "asc" }],
+      },
     },
   },
   participantSnapshots: {
@@ -174,6 +214,7 @@ const detailSelect = {
       tombstoneState: true,
     },
   },
+  player: { select: { accountId: true } },
 } satisfies Prisma.PlayerChronicleRecordSelect;
 
 type DetailRecord = Prisma.PlayerChronicleRecordGetPayload<{ select: typeof detailSelect }>;
@@ -536,11 +577,41 @@ export async function queryVoyageDetail(playerProfileId: string, recordId: strin
     select: detailSelect,
   });
   if (!record) return null;
-  const [personalArtifacts, comparison] = await Promise.all([
+  const [personalArtifacts, assemblies, achievements, comparison] = await Promise.all([
     db.playerArtifactRecord.findMany({
       where: { playerProfileId, sourcePlaythroughId: record.sourcePlaythroughId, recordStatus: "ACTIVE" },
       orderBy: [{ grantedAt: "asc" }, { id: "asc" }],
-      select: { id: true, artifactNameSnapshot: true, ownershipState: true, grantedAt: true },
+      take: 48,
+      select: {
+        id: true,
+        artifactNameSnapshot: true,
+        ownershipState: true,
+        grantedAt: true,
+        witnessedAt: true,
+        sourceBlockId: true,
+        collectionKeySnapshot: true,
+        assemblyKeySnapshot: true,
+        componentRoleSnapshot: true,
+      },
+    }),
+    db.playerArtifactAssembly.findMany({
+      where: { playerProfileId, sourcePlaythroughId: record.sourcePlaythroughId },
+      orderBy: [{ completedAt: "asc" }, { id: "asc" }],
+      take: 24,
+      select: { id: true, assemblyKeySnapshot: true, assembledArtifactName: true, status: true, completedAt: true },
+    }),
+    db.playerAchievement.findMany({
+      where: { playerProfileId, state: "EARNED" },
+      orderBy: [{ earnedAt: "asc" }, { id: "asc" }],
+      take: 96,
+      select: {
+        id: true,
+        state: true,
+        earnedAt: true,
+        definitionVersion: true,
+        evidenceSnapshot: true,
+        definition: { select: { titleSnapshot: true, descriptionSnapshot: true } },
+      },
     }),
     loadTideglassHistoryComparisonEntry({
       taleSlug: record.publishedVersion.tale.slug,
@@ -549,7 +620,24 @@ export async function queryVoyageDetail(playerProfileId: string, recordId: strin
       returnTo: `/passport/history/${encodeURIComponent(record.id)}`,
     }),
   ]);
-  return detailProjection(record, personalArtifacts, comparison);
+  return detailProjection(
+    record,
+    personalArtifacts,
+    assemblies,
+    achievements.filter((achievement) =>
+      achievementIsForVoyage(achievement.evidenceSnapshot, record.sourcePlaythroughId),
+    ),
+    comparison,
+  );
+}
+
+function achievementIsForVoyage(evidenceSnapshot: string, sourcePlaythroughId: string) {
+  try {
+    const evidence = JSON.parse(evidenceSnapshot) as Record<string, unknown>;
+    return evidence.sourcePlaythroughId === sourcePlaythroughId || evidence.playthroughId === sourcePlaythroughId;
+  } catch {
+    return false;
+  }
 }
 
 function detailProjection(
@@ -559,12 +647,31 @@ function detailProjection(
     artifactNameSnapshot: string;
     ownershipState: string;
     grantedAt: Date | null;
+    witnessedAt: Date | null;
+    sourceBlockId: string | null;
+    collectionKeySnapshot: string | null;
+    assemblyKeySnapshot: string | null;
+    componentRoleSnapshot: string | null;
+  }>,
+  assemblies: Array<{
+    id: string;
+    assemblyKeySnapshot: string;
+    assembledArtifactName: string;
+    status: string;
+    completedAt: Date | null;
+  }>,
+  achievements: Array<{
+    id: string;
+    state: string;
+    earnedAt: Date | null;
+    definitionVersion: number;
+    definition: { titleSnapshot: string; descriptionSnapshot: string };
   }>,
   comparison: TideglassHistoryComparisonEntry | null,
 ): VoyageDetail {
   const chapters = parseStored(chapterSummarySchema, record.completedChapters, "Chapter history", []);
-  const objectives = parseStored(unavailableSummarySchema, record.optionalObjectives, "Optional-objective history", []);
-  const choices = parseStored(unavailableSummarySchema, record.choiceSummary, "Choice history", []);
+  const objectives = parseStored(objectiveSummarySchema, record.optionalObjectives, "Optional-objective history", []);
+  const choices = parseStored(safeChoiceSummarySchema, record.choiceSummary, "Choice history", []);
   const artifacts = parseStored(artifactSummarySchema, record.artifactSummary, "Artifact history", []);
   const warnings = [chapters.warning, objectives.warning, choices.warning, artifacts.warning].filter(
     (warning): warning is string => Boolean(warning),
@@ -603,22 +710,58 @@ function detailProjection(
       interactive: presentTiming(record.interactiveSeconds, record.interactiveAccuracy),
       captainWait: presentTiming(record.captainWaitSeconds, record.captainWaitAccuracy),
     },
+    attribution: {
+      creator: record.creatorAttributionSnapshot
+        ? {
+            historicalLabel: record.creatorAttributionSnapshot,
+            roleLabel: "Creator",
+            quality: "EXACT",
+            source: "PUBLISHED_VERSION",
+            explanation: null,
+          }
+        : {
+            historicalLabel: null,
+            roleLabel: "Creator",
+            quality: "UNAVAILABLE",
+            source: "UNAVAILABLE",
+            explanation: "Historical Creator attribution was not preserved for this edition.",
+          },
+      captain: captainAttribution(record),
+    },
     chapters: chapters.value.map((chapter) => ({
+      id: chapter.blockId,
       title: chapter.title,
       completedAt: chapter.completedAt,
+      sequence: chapter.sourceSequence,
       quality: chapter.accuracy,
+      source: "SESSION_FACT",
     })),
     optionalObjectives: {
-      available: false,
-      explanation:
-        objectives.value.at(0)?.reason.replace(/^UNAVAILABLE:\s*/u, "") ||
-        "Optional-objective history was not preserved for this edition.",
+      available: objectives.value.some((objective) => objective.state === "AVAILABLE"),
+      completedCount:
+        objectives.value.filter((objective) => objective.state === "AVAILABLE" && objective.completed).length || null,
+      totalCount: objectives.value.filter((objective) => objective.state === "AVAILABLE").length || null,
+      objectives: objectives.value
+        .filter((objective) => objective.state === "AVAILABLE")
+        .map((objective) => ({ label: objective.label, completed: objective.completed, quality: "EXACT" })),
+      explanation: objectiveExplanation(objectives.value, objectives.warning),
+      quality: objectives.value.some((objective) => objective.state === "AVAILABLE") ? "EXACT" : "UNAVAILABLE",
+      source: "WAYFARER_RECORD",
     },
     choices: {
-      available: false,
-      explanation:
-        choices.value.at(0)?.reason.replace(/^UNAVAILABLE:\s*/u, "") ||
-        "Detailed choice history was not preserved for this edition.",
+      available: choices.value.some((choice) => choice.state === "AVAILABLE"),
+      items: choices.value
+        .filter((choice) => choice.state === "AVAILABLE")
+        .map((choice) => ({
+          label: choice.label,
+          chapterTitle: choice.chapterTitle ?? null,
+          kind: choice.kind,
+          detail: choice.detail ?? null,
+          quality: "EXACT",
+        })),
+      explanation: choiceExplanation(choices.value, choices.warning),
+      quality: choices.value.some((choice) => choice.state === "AVAILABLE") ? "EXACT" : "UNAVAILABLE",
+      source: "WAYFARER_RECORD",
     },
     crew: record.participantSnapshots.map((participant) => ({
       historicalDisplayName:
@@ -630,11 +773,14 @@ function detailProjection(
       joinedAt: participant.joinedAt?.toISOString() ?? null,
       completedAt: participant.completedAt?.toISOString() ?? null,
       removedAt: participant.removedAt?.toISOString() ?? null,
+      isHistoricalCaptain: participant.participationRole === "CAPTAIN",
+      quality: participant.tombstoneState === "ACTIVE" ? "EXACT" : "UNAVAILABLE",
     })),
     artifacts: {
       sharedVoyageContext: artifacts.value.map((artifact) => ({
         name: artifact.name,
         revealedAt: artifact.revealedAt,
+        source: "SESSION_FACT",
       })),
       personalRecords: personalArtifacts.map((artifact) => ({
         id: artifact.id,
@@ -642,24 +788,79 @@ function detailProjection(
         state: artifact.ownershipState,
         humanState: presentArtifactState(artifact.ownershipState),
         grantedAt: artifact.grantedAt?.toISOString() ?? null,
+        witnessedAt: artifact.witnessedAt?.toISOString() ?? null,
+        sourceBlockId: artifact.sourceBlockId,
+        collectionKey: artifact.collectionKeySnapshot,
+        assemblyKey: artifact.assemblyKeySnapshot,
+        componentRole: artifact.componentRoleSnapshot,
+        source: "PERSONAL_ARTIFACT_RECORD",
+      })),
+      assemblies: assemblies.map((assembly) => ({
+        id: assembly.id,
+        key: assembly.assemblyKeySnapshot,
+        name: assembly.assembledArtifactName,
+        status: assembly.status,
+        completedAt: assembly.completedAt?.toISOString() ?? null,
+        source: "PERSONAL_ARTIFACT_RECORD",
       })),
     },
+    achievements: achievements.map((achievement) => ({
+      id: achievement.id,
+      title: achievement.definition.titleSnapshot,
+      description: achievement.definition.descriptionSnapshot,
+      state: achievement.state,
+      earnedAt: achievement.earnedAt?.toISOString() ?? null,
+      definitionVersion: achievement.definitionVersion,
+      source: "ACHIEVEMENT_EVIDENCE",
+    })),
     reflection: record.reflection,
-    memories: record.memories.map((memory) => ({ ...memory, createdAt: memory.createdAt.toISOString() })),
+    memories: record.memories.map((memory) => ({
+      ...memory,
+      createdAt: memory.createdAt.toISOString(),
+      updatedAt: memory.updatedAt.toISOString(),
+      media: [],
+    })),
     keepsake: record.keepsake
       ? {
           status: record.keepsake.status,
           humanStatus: presentKeepsakeStatus(record.keepsake.status),
           generatedAt: record.keepsake.generatedAt.toISOString(),
-          participantCount: record.keepsake.consents.length,
+          regeneratedAt: record.keepsake.regeneratedAt?.toISOString() ?? null,
+          participantCount: new Set(record.keepsake.consents.map((consent) => consent.historicalLabel ?? consent.scope))
+            .size,
+          consent: record.keepsake.consents.map((consent) => ({
+            scope: consent.scope,
+            state: consent.state,
+            historicalLabel: consent.historicalLabel,
+            decidedAt: consent.decidedAt?.toISOString() ?? null,
+          })),
+          state: keepsakeState(
+            record.keepsake.status,
+            record.keepsake.consents.map((consent) => consent.state),
+          ),
+          explanation: keepsakeExplanation(record.keepsake.consents.map((consent) => consent.state)),
         }
       : null,
     provenance: {
+      historyRecordId: record.id,
+      sourcePlaythroughId: record.sourcePlaythroughId,
+      sourceMembershipId: record.sourceMembershipId,
       publishedVersionId: record.publishedVersionId,
       publishedVersionChecksum: record.publishedVersionChecksum,
       metricDefinitionVersion: record.metricDefinitionVersion,
       projectionStatus: record.projectionStatus,
-      projectionReason: null,
+      projectionReason: record.projectionReason,
+      lastDerivedAt: record.lastDerivedAt.toISOString(),
+      fields: [
+        { label: "Played edition", quality: "EXACT", source: "PUBLISHED_VERSION" },
+        {
+          label: "Journey timing",
+          quality: record.wallClockAccuracy as VoyageDetail["timing"]["wallClock"]["quality"],
+          source: "DERIVED_VERSIONED_METRIC",
+        },
+        { label: "Historical crew", quality: "EXACT", source: "MEMBERSHIP_FACT" },
+        { label: "Owner remembrance", quality: "NOT_APPLICABLE", source: "OWNER_ANNOTATION" },
+      ],
     },
     dataQuality: warnings.length ? "PARTIAL" : "COMPLETE",
     warnings,
@@ -669,6 +870,67 @@ function detailProjection(
       return review ? { review } : {};
     })(),
   };
+}
+
+function captainAttribution(record: DetailRecord): VoyageDetail["attribution"]["captain"] {
+  const captain = record.participantSnapshots.find((participant) => participant.participationRole === "CAPTAIN");
+  if (!captain)
+    return {
+      historicalLabel: null,
+      roleLabel: "Captain",
+      quality: "UNAVAILABLE",
+      source: "UNAVAILABLE",
+      explanation: "Historical Captain attribution was not preserved for this Voyage.",
+    };
+  return {
+    historicalLabel: captain.tombstoneState === "ACTIVE" ? captain.displayNameSnapshot : "Former crew member",
+    roleLabel: "Captain",
+    quality: captain.tombstoneState === "ACTIVE" ? "EXACT" : "UNAVAILABLE",
+    source: "MEMBERSHIP_FACT",
+    explanation: captain.tombstoneState === "ACTIVE" ? null : "The historical Captain profile is no longer available.",
+  };
+}
+
+function objectiveExplanation(
+  objectives: Array<z.infer<typeof objectiveSummarySchema>[number]>,
+  warning: string | null,
+) {
+  if (warning) return "Optional-objective history needs reconciliation.";
+  return (
+    objectives.find((objective) => objective.state === "UNAVAILABLE")?.reason.replace(/^UNAVAILABLE:\s*/u, "") ??
+    (objectives.some((objective) => objective.state === "AVAILABLE")
+      ? null
+      : "Optional objective detail was not preserved for this edition.")
+  );
+}
+
+function choiceExplanation(choices: Array<z.infer<typeof safeChoiceSummarySchema>[number]>, warning: string | null) {
+  if (warning) return "Choice history needs reconciliation.";
+  return (
+    choices.find((choice) => choice.state === "UNAVAILABLE")?.reason.replace(/^UNAVAILABLE:\s*/u, "") ??
+    (choices.some((choice) => choice.state === "AVAILABLE")
+      ? null
+      : "Detailed choice history was not preserved for this edition.")
+  );
+}
+
+function keepsakeState(
+  status: string,
+  consentStates: string[],
+): "READY" | "INCOMPLETE_CONSENT" | "DEGRADED" | "UNAVAILABLE" {
+  if (status !== "READY") return "UNAVAILABLE";
+  if (consentStates.includes("REVOKED")) return "DEGRADED";
+  if (consentStates.some((state) => state === "PENDING" || state === "DENIED")) return "INCOMPLETE_CONSENT";
+  return "READY";
+}
+
+function keepsakeExplanation(consentStates: string[]) {
+  if (consentStates.includes("REVOKED"))
+    return "A participant revoked consent, so their affected Keepsake representation is redacted.";
+  if (consentStates.includes("DENIED"))
+    return "A participant did not permit one or more requested Keepsake representations.";
+  if (consentStates.includes("PENDING")) return "Some participant representation remains pending consent.";
+  return null;
 }
 
 export async function ownedHistoricalCover(playerProfileId: string, recordId: string) {

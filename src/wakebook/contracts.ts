@@ -5,6 +5,20 @@ export type ArchiveSort = z.infer<typeof archiveSortSchema>;
 
 export const timingQualitySchema = z.enum(["EXACT", "ESTIMATED", "UNAVAILABLE", "NOT_APPLICABLE"]);
 export type TimingQuality = z.infer<typeof timingQualitySchema>;
+export type HistoricalQuality = TimingQuality;
+
+export type HistoricalSource =
+  | "PUBLISHED_VERSION"
+  | "SESSION_FACT"
+  | "MEMBERSHIP_FACT"
+  | "WAYFARER_RECORD"
+  | "ARTIFACT_GRANT_RECEIPT"
+  | "PERSONAL_ARTIFACT_RECORD"
+  | "ACHIEVEMENT_EVIDENCE"
+  | "OWNER_ANNOTATION"
+  | "CONSENT_RECORD"
+  | "AUTHORIZED_MEDIA_REFERENCE"
+  | "DERIVED_VERSIONED_METRIC";
 
 export const lifecycleFilterSchema = z.enum([
   "INVITED",
@@ -171,6 +185,10 @@ export type VoyageDetail = {
   lifecycle: JourneyArchiveItem["lifecycle"];
   participation: JourneyArchiveItem["participation"] & { historicalDisplayName: string };
   outcome: JourneyArchiveItem["outcome"];
+  attribution: {
+    creator: HistoricalAttribution;
+    captain: HistoricalAttribution;
+  };
   timing: {
     definitionVersion: string;
     wallClock: { seconds: number | null; quality: TimingQuality; humanLabel: string };
@@ -180,9 +198,16 @@ export type VoyageDetail = {
     interactive: { seconds: number | null; quality: TimingQuality; humanLabel: string };
     captainWait: { seconds: number | null; quality: TimingQuality; humanLabel: string };
   };
-  chapters: Array<{ title: string; completedAt: string; quality: "EXACT" | "UNAVAILABLE" }>;
-  optionalObjectives: { available: boolean; explanation: string | null };
-  choices: { available: boolean; explanation: string | null };
+  chapters: Array<{
+    id: string;
+    title: string;
+    completedAt: string;
+    sequence: number;
+    quality: "EXACT" | "UNAVAILABLE";
+    source: "SESSION_FACT";
+  }>;
+  optionalObjectives: HistoricalObjectiveSummary;
+  choices: SafeChoiceContext;
   crew: Array<{
     historicalDisplayName: string;
     avatarAlt: string | null;
@@ -192,17 +217,42 @@ export type VoyageDetail = {
     joinedAt: string | null;
     completedAt: string | null;
     removedAt: string | null;
+    isHistoricalCaptain: boolean;
+    quality: "EXACT" | "UNAVAILABLE";
   }>;
   artifacts: {
-    sharedVoyageContext: Array<{ name: string; revealedAt: string }>;
+    sharedVoyageContext: Array<{ name: string; revealedAt: string; source: "SESSION_FACT" }>;
     personalRecords: Array<{
       id: string;
       name: string;
       state: string;
       humanState: string;
       grantedAt: string | null;
+      witnessedAt: string | null;
+      sourceBlockId: string | null;
+      collectionKey: string | null;
+      assemblyKey: string | null;
+      componentRole: string | null;
+      source: "PERSONAL_ARTIFACT_RECORD";
+    }>;
+    assemblies: Array<{
+      id: string;
+      key: string;
+      name: string;
+      status: string;
+      completedAt: string | null;
+      source: "PERSONAL_ARTIFACT_RECORD";
     }>;
   };
+  achievements: Array<{
+    id: string;
+    title: string;
+    description: string;
+    state: string;
+    earnedAt: string | null;
+    definitionVersion: number;
+    source: "ACHIEVEMENT_EVIDENCE";
+  }>;
   reflection: {
     favoriteChapterId: string | null;
     favoriteClueReference: string | null;
@@ -217,17 +267,89 @@ export type VoyageDetail = {
     referenceType: string | null;
     referenceId: string | null;
     createdAt: string;
+    updatedAt: string;
+    media: Array<MemoryMediaReference>;
   }>;
-  keepsake: { status: string; humanStatus: string; generatedAt: string; participantCount: number } | null;
+  keepsake: KeepsakePresentationContract | null;
   provenance: {
+    historyRecordId: string;
+    sourcePlaythroughId: string;
+    sourceMembershipId: string | null;
     publishedVersionId: string;
     publishedVersionChecksum: string;
     metricDefinitionVersion: string;
     projectionStatus: string;
     projectionReason: string | null;
+    lastDerivedAt: string;
+    fields: Array<{ label: string; quality: HistoricalQuality; source: HistoricalSource }>;
   };
   dataQuality: "COMPLETE" | "PARTIAL";
   warnings: string[];
   review?: JourneyArchiveItem["review"];
   comparison?: { href: string; state: "COMPARE" | "UP_TO_DATE" };
+};
+
+export type HistoricalAttribution = {
+  historicalLabel: string | null;
+  roleLabel: "Creator" | "Captain";
+  quality: HistoricalQuality;
+  source: "PUBLISHED_VERSION" | "MEMBERSHIP_FACT" | "UNAVAILABLE";
+  explanation: string | null;
+};
+
+export type HistoricalObjectiveSummary = {
+  available: boolean;
+  completedCount: number | null;
+  totalCount: number | null;
+  objectives: Array<{ label: string; completed: boolean; quality: HistoricalQuality }>;
+  explanation: string | null;
+  quality: HistoricalQuality;
+  source: HistoricalSource;
+};
+
+export type SafeChoiceContext = {
+  available: boolean;
+  items: Array<{
+    label: string;
+    chapterTitle: string | null;
+    kind: "CHOICE" | "HINT" | "REJOIN" | "CHECKPOINT" | "ATTEMPT";
+    detail: string | null;
+    quality: HistoricalQuality;
+  }>;
+  explanation: string | null;
+  quality: HistoricalQuality;
+  source: HistoricalSource;
+};
+
+export type MemoryMediaReference = {
+  id: string;
+  kind: string;
+  description: string | null;
+  state:
+    | "AVAILABLE"
+    | "LOADING"
+    | "UNAVAILABLE"
+    | "QUARANTINED"
+    | "WITHDRAWN"
+    | "EXPIRED"
+    | "CONSENT_REVOKED"
+    | "UNSUPPORTED"
+    | "DELIVERY_ERROR";
+  deliveryHref: string | null;
+};
+
+export type KeepsakePresentationContract = {
+  status: string;
+  humanStatus: string;
+  generatedAt: string;
+  regeneratedAt: string | null;
+  participantCount: number;
+  consent: Array<{
+    scope: string;
+    state: string;
+    historicalLabel: string | null;
+    decidedAt: string | null;
+  }>;
+  state: "READY" | "INCOMPLETE_CONSENT" | "DEGRADED" | "UNAVAILABLE";
+  explanation: string | null;
 };

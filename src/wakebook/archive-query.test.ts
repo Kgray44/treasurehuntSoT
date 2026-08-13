@@ -4,6 +4,8 @@ const { db, loadTideglassHistoryComparisonEntry } = vi.hoisted(() => ({
   db: {
     playerChronicleRecord: { findFirst: vi.fn() },
     playerArtifactRecord: { findMany: vi.fn() },
+    playerArtifactAssembly: { findMany: vi.fn() },
+    playerAchievement: { findMany: vi.fn() },
   },
   loadTideglassHistoryComparisonEntry: vi.fn(),
 }));
@@ -21,6 +23,7 @@ const exactRecord = {
   publishedVersionChecksum: "checksum-played",
   chronicleTitleSnapshot: "Synthetic Chronicle",
   chronicleCoverSnapshot: null,
+  creatorAttributionSnapshot: "Synthetic Creator",
   participationRole: "PLAYER",
   crewRoleSnapshot: "Navigator",
   lifecycleStatus: "COMPLETED",
@@ -46,12 +49,14 @@ const exactRecord = {
   artifactSummary: "[]",
   projectionStatus: "CURRENT",
   projectionReason: null,
+  lastDerivedAt: new Date("2026-01-02T00:00:00.000Z"),
   playerNameSnapshot: "Synthetic Player",
   metricDefinitionVersion: "wayfarer-timing.v1",
   reflection: null,
   memories: [],
   keepsake: null,
   participantSnapshots: [],
+  player: { accountId: "account-owner" },
   publishedVersion: {
     versionLabel: "1.0",
     tale: { slug: "synthetic-chronicle" },
@@ -63,12 +68,16 @@ describe("Wakebook Tideglass history handoff", () => {
   beforeEach(() => {
     db.playerChronicleRecord.findFirst.mockReset();
     db.playerArtifactRecord.findMany.mockReset();
+    db.playerArtifactAssembly.findMany.mockReset();
+    db.playerAchievement.findMany.mockReset();
     loadTideglassHistoryComparisonEntry.mockReset();
   });
 
   it("passes only exact owner-bound history evidence to the Tideglass adapter", async () => {
     db.playerChronicleRecord.findFirst.mockResolvedValue(exactRecord);
     db.playerArtifactRecord.findMany.mockResolvedValue([]);
+    db.playerArtifactAssembly.findMany.mockResolvedValue([]);
+    db.playerAchievement.findMany.mockResolvedValue([]);
     loadTideglassHistoryComparisonEntry.mockResolvedValue({
       href: "/chronicles/synthetic-chronicle/compare?historyRecord=record-owned",
       state: "COMPARE",
