@@ -173,6 +173,24 @@ describe("reusable authoring insertion", () => {
     expect(inserted[0].connections?.[0].targetBlockId).toBe("operation-0001-block-block-source-2");
   });
 
+  it("attaches a fragment entry to its explicit selected destination within the same immutable plan", () => {
+    const plan = planReusableInsertion({
+      envelope: envelope(),
+      draft: baseDraft,
+      operationId: "operation-attachment-0001",
+      targetBlockId: "block-0001",
+    });
+    const target = plan.chapters[0].blocks.find((block) => block.id === "block-0001")!;
+    expect(target.nextBlockId).toBe("operation-attachment-0001-block-block-source-1");
+    expect(target.connections).toEqual([
+      {
+        targetBlockId: "operation-attachment-0001-block-block-source-1",
+        connectionType: "DEFAULT",
+        orderIndex: 0,
+      },
+    ]);
+  });
+
   it("applies the entire plan in one immutable draft result", () => {
     const plan = planReusableInsertion({ envelope: envelope(), draft: baseDraft, operationId: "operation-0002" });
     const next = applyReusableInsertion(baseDraft, plan);

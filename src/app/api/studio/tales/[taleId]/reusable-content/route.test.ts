@@ -9,6 +9,7 @@ const mocks = vi.hoisted(() => ({
   createFragment: vi.fn(),
   createTemplate: vi.fn(),
   getVersion: vi.fn(),
+  resolvePreset: vi.fn(),
   planInsert: vi.fn(),
   archive: vi.fn(),
 }));
@@ -22,6 +23,7 @@ vi.mock("@/studio/reusable-library-service", () => ({
   createBlockFragment: mocks.createFragment,
   createChapterTemplate: mocks.createTemplate,
   getReusableAuthoringItemVersion: mocks.getVersion,
+  resolveReusableAuthoringPreset: mocks.resolvePreset,
   planReusableAuthoringInsertion: mocks.planInsert,
   archiveReusableAuthoringItem: mocks.archive,
 }));
@@ -112,6 +114,28 @@ describe("reusable authoring content route", () => {
     expect(mocks.getVersion).toHaveBeenCalledWith("creator-1", "item-1");
   });
 
+  it("resolves a preset only through the owner-scoped server path", async () => {
+    mocks.resolvePreset.mockResolvedValueOnce({ itemId: "reusable-1", envelope: { kind: "PRESET" } });
+    const response = await POST(
+      new Request("http://localhost/reusable", {
+        method: "POST",
+        body: JSON.stringify({
+          action: "resolve-preset",
+          itemId: "reusable-1",
+          parameterValues: { opening_text: "Welcome" },
+        }),
+      }),
+      context,
+    );
+    expect(response.status).toBe(200);
+    expect(mocks.resolvePreset).toHaveBeenCalledWith({
+      ownerAccountId: "creator-1",
+      taleId: "tale-1",
+      itemId: "reusable-1",
+      parameterValues: { opening_text: "Welcome" },
+    });
+  });
+
   it("derives a reusable fragment only from persisted selected Passage identities", async () => {
     mocks.createFragment.mockResolvedValueOnce({ itemId: "item-1", versionId: "version-1", versionNumber: 1 });
     const response = await POST(
@@ -146,7 +170,12 @@ describe("reusable authoring content route", () => {
     );
     expect(response.status).toBe(200);
     expect(mocks.planInsert).toHaveBeenCalledWith(
-      expect.objectContaining({ ownerAccountId: "creator-1", itemId: "reusable-1", targetChapterId: "chapter-1" }),
+      expect.objectContaining({
+        ownerAccountId: "creator-1",
+        itemId: "reusable-1",
+        targetChapterId: "chapter-1",
+        targetBlockId: undefined,
+      }),
     );
   });
 

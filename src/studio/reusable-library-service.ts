@@ -7,6 +7,7 @@ import {
   checksumReusableEnvelope,
   planReusableInsertion,
   parseReusableEnvelope,
+  resolveReusableParameters,
   type InsertionPlan,
   type ReusableContentEnvelope,
 } from "@/studio/reusable-content";
@@ -146,12 +147,54 @@ export async function getReusableAuthoringItemVersion(ownerAccountId: string, it
   return { itemId: item.id, versionId: version.id, versionNumber: version.versionNumber, envelope };
 }
 
+export async function resolveReusableAuthoringPreset(input: {
+  ownerAccountId: string;
+  taleId: string;
+  itemId: string;
+  parameterValues?: Record<string, string | number | boolean>;
+}) {
+  const { envelope } = await getReusableAuthoringItemVersion(input.ownerAccountId, input.itemId);
+  if (envelope.kind !== "PRESET" || envelope.blocks.length !== 1)
+    throw new Error("Only a single-Passage reusable preset can be resolved in this context.");
+  const resolved = resolveReusableParameters(envelope, input.parameterValues);
+  const [assets, artifacts, locations] = await Promise.all([
+    db.taleAsset.findMany({ where: { taleId: input.taleId, deletedAt: null }, select: { id: true } }),
+    db.taleArtifact.findMany({ where: { taleId: input.taleId, archivedAt: null }, select: { id: true } }),
+    db.taleLocation.findMany({ where: { taleId: input.taleId, archivedAt: null }, select: { id: true } }),
+  ]);
+  const dependencies = {
+    assetIds: new Set(resolved.dependencies.assetIds),
+    artifactIds: new Set(resolved.dependencies.artifactIds),
+    locationIds: new Set(resolved.dependencies.locationIds),
+    providerIds: new Set(resolved.dependencies.providerIds),
+  };
+  for (const block of resolved.blocks) {
+    collectDependencyIds(block.configuration, dependencies);
+    collectDependencyIds(block.presentation, dependencies);
+    collectDependencyIds(block.completion, dependencies);
+  }
+  const missing = [
+    ...[...dependencies.assetIds].filter((id) => !assets.some((asset) => asset.id === id)).map((id) => `asset ${id}`),
+    ...[...dependencies.artifactIds]
+      .filter((id) => !artifacts.some((artifact) => artifact.id === id))
+      .map((id) => `artifact ${id}`),
+    ...[...dependencies.locationIds]
+      .filter((id) => !locations.some((location) => location.id === id))
+      .map((id) => `location ${id}`),
+    ...[...dependencies.providerIds].map((id) => `provider ${id}`),
+  ];
+  if (missing.length)
+    throw new Error(`Reusable preset dependencies are unavailable in this Chronicle: ${missing.join(", ")}.`);
+  return { itemId: input.itemId, versionId: envelope.versionId, envelope: resolved };
+}
+
 export async function planReusableAuthoringInsertion(input: {
   ownerAccountId: string;
   taleId: string;
   itemId: string;
   operationId: string;
   targetChapterId?: string;
+  targetBlockId?: string;
   draft: DraftState;
   parameterValues?: Record<string, string | number | boolean>;
 }): Promise<InsertionPlan> {
@@ -177,6 +220,7 @@ export async function planReusableAuthoringInsertion(input: {
     draft: input.draft,
     operationId: input.operationId,
     targetChapterId: input.targetChapterId,
+    targetBlockId: input.targetBlockId,
     parameterValues: input.parameterValues,
   });
   const resolvedDependencies = {

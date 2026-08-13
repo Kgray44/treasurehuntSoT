@@ -888,6 +888,28 @@ describe("Voyagewright Studio editor motion and authority", () => {
           },
         }),
       )
+      .mockResolvedValueOnce(
+        response(200, {
+          itemId: "reusable-1",
+          versionId: "version-1",
+          envelope: {
+            kind: "PRESET",
+            itemId: "reusable-1",
+            versionId: "version-1",
+            attribution: { sourceOwnerId: "creator-1", modified: false },
+            blocks: [
+              {
+                id: "source-block",
+                blockType: "narrative",
+                configuration: { body: "A safer, reusable opening." },
+                presentation: {},
+                completion: {},
+                schemaVersion: 1,
+              },
+            ],
+          },
+        }),
+      )
       .mockResolvedValueOnce(response(200, { autosaveVersion: 4, savedAt: "2026-08-13T12:00:00.000Z" }));
     vi.stubGlobal("fetch", fetchMock);
     render(<TaleEditor taleId="tale-1" authenticated />);
@@ -901,6 +923,12 @@ describe("Voyagewright Studio editor motion and authority", () => {
       expect(fetchMock).toHaveBeenCalledWith(
         "/api/studio/tales/tale-1/reusable-content?itemId=reusable-1",
         expect.objectContaining({ cache: "no-store" }),
+      ),
+    );
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith(
+        "/api/studio/tales/tale-1/reusable-content",
+        expect.objectContaining({ method: "POST", body: expect.stringContaining('"resolve-preset"') }),
       ),
     );
     await waitFor(() =>

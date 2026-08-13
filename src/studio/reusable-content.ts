@@ -400,6 +400,7 @@ export function planReusableInsertion(input: {
   draft: DraftState;
   operationId: string;
   targetChapterId?: string;
+  targetBlockId?: string;
   parameterValues?: Record<string, ReusableParameterValue>;
 }): InsertionPlan {
   if (!/^[a-zA-Z0-9][a-zA-Z0-9-]{7,95}$/.test(input.operationId))
@@ -447,6 +448,21 @@ export function planReusableInsertion(input: {
         };
       })
     : [{ ...clone(fallbackChapter), blocks: [...fallbackChapter.blocks, ...remappedBlocks] }];
+  if (input.targetBlockId) {
+    const target = chapters.flatMap((chapter) => chapter.blocks).find((block) => block.id === input.targetBlockId);
+    const entrySourceId = envelope.entryPorts[0]?.sourceBlockId ?? envelope.blocks[0]?.id;
+    const entryBlockId = entrySourceId ? remap.blocks[entrySourceId] : undefined;
+    if (!target || !entryBlockId)
+      throw new Error("The selected insertion destination is not available in this reusable-content plan.");
+    const connections = target.connections ?? [];
+    if (connections.some((connection) => connection.targetBlockId === entryBlockId))
+      throw new Error("The selected insertion destination already connects to this reusable entry Passage.");
+    target.connections = [
+      ...connections,
+      { targetBlockId: entryBlockId, connectionType: "DEFAULT", orderIndex: connections.length },
+    ];
+    target.nextBlockId = entryBlockId;
+  }
   return {
     operationId: input.operationId,
     sourceItemId: envelope.itemId,

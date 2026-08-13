@@ -13,6 +13,7 @@ import {
   listReusableAuthoringItems,
   listInstalledCommunityReusableContent,
   planReusableAuthoringInsertion,
+  resolveReusableAuthoringPreset,
 } from "@/studio/reusable-library-service";
 
 const reusableParameterSchema = z.object({
@@ -42,6 +43,14 @@ const reusableParameterSchema = z.object({
 const requestSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("create"), envelope: z.unknown() }),
   z.object({
+    action: z.literal("resolve-preset"),
+    itemId: z.string().min(8).max(128),
+    parameterValues: z
+      .record(z.string().regex(/^[a-z][a-z0-9_]*$/), z.union([z.string().max(10000), z.number().finite(), z.boolean()]))
+      .refine((value) => Object.keys(value).length <= 100, "At most 100 parameter values may be supplied.")
+      .optional(),
+  }),
+  z.object({
     action: z.literal("create-preset"),
     name: z.string().trim().min(1).max(160),
     description: z.string().max(10000).optional(),
@@ -54,6 +63,7 @@ const requestSchema = z.discriminatedUnion("action", [
     itemId: z.string().min(8).max(128),
     operationId: z.string().min(8).max(128),
     targetChapterId: z.string().min(8).max(128).optional(),
+    targetBlockId: z.string().min(8).max(128).optional(),
     parameterValues: z
       .record(z.string().regex(/^[a-z][a-z0-9_]*$/), z.union([z.string().max(10000), z.number().finite(), z.boolean()]))
       .refine((value) => Object.keys(value).length <= 100, "At most 100 parameter values may be supplied.")
@@ -109,6 +119,15 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
       return NextResponse.json(await createReusableAuthoringItem(authorization.session.accountId, input.envelope), {
         status: 201,
       });
+    if (input.action === "resolve-preset")
+      return NextResponse.json(
+        await resolveReusableAuthoringPreset({
+          ownerAccountId: authorization.session.accountId,
+          taleId,
+          itemId: input.itemId,
+          parameterValues: input.parameterValues,
+        }),
+      );
     if (input.action === "create-preset")
       return NextResponse.json(await createBlockPreset(authorization.session.accountId, taleId, input), {
         status: 201,
@@ -129,6 +148,7 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
           itemId: input.itemId,
           operationId: input.operationId,
           targetChapterId: input.targetChapterId,
+          targetBlockId: input.targetBlockId,
           parameterValues: input.parameterValues,
           draft: input.draft as DraftState,
         }),

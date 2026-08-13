@@ -64,7 +64,7 @@ Insertion is a pure planning operation followed by one ordinary Studio mutation.
 2. verifies owner access, source version, compatibility, dependencies, and parameter values;
 3. builds a reserved namespace from the destination Chronicle's block, edge, chapter, variable, artifact, asset, location, provider-config, fragment, template, and uniqueness-sensitive label identities;
 4. deterministically allocates new local IDs from an operation nonce and stable source identity;
-5. remaps blocks, connections, chapters when applicable, local variable IDs/names, copied local assets/artifacts, anchors, and internal references; deliberately preserves only validated global references;
+5. remaps blocks, connections, chapters when applicable, local variable IDs/names, copied local assets/artifacts, anchors, and internal references; for a fragment, connects the imported entry root from the explicitly selected compatible destination Passage and then validates the resulting graph; deliberately preserves only validated global references;
 6. resolves fragment entry and exit ports to explicitly selected destinations;
 7. validates the proposed resulting graph through current Drydock canonical parsing and static analysis;
 8. emits an immutable insertion preview containing additions, remaps, dependency decisions, attribution/lineage, conflicts, warnings, and validation prerequisites; and

@@ -119,6 +119,7 @@ type ReusableLibraryItem = {
   updatedAt: string;
 };
 type ReusableParameterPrompt = {
+  mode: "PRESET" | "INSERT";
   item: ReusableLibraryItem;
   parameters: ReusableParameter[];
   values: Record<string, string | number | boolean>;
@@ -452,22 +453,47 @@ export function TaleEditor({
     await loadReusableItems();
   }
 
-  async function applyReusablePreset(item: ReusableLibraryItem) {
+  async function applyReusablePreset(
+    item: ReusableLibraryItem,
+    parameterValues: Record<string, string | number | boolean> = {},
+    parametersChecked = false,
+  ) {
     if (!data || !draft || !selected) return setReusableError("Select a Passage before applying a reusable preset.");
     setReusableError("");
     const response = await fetch(`/api/studio/tales/${taleId}/reusable-content?itemId=${encodeURIComponent(item.id)}`, {
       cache: "no-store",
     });
-    const body = (await response.json()) as { envelope?: ReusableContentEnvelope; error?: string };
-    const source = body.envelope?.blocks[0];
-    if (!response.ok || !body.envelope || !source)
-      return setReusableError(body.error ?? "The reusable preset could not be opened.");
-    if (body.envelope.kind !== "PRESET" || body.envelope.blocks.length !== 1)
+    const definition = (await response.json()) as { envelope?: ReusableContentEnvelope; error?: string };
+    if (!response.ok || !definition.envelope)
+      return setReusableError(definition.error ?? "The reusable preset could not be opened.");
+    if (definition.envelope.kind !== "PRESET" || definition.envelope.blocks.length !== 1)
       return setReusableError("Only a single-Passage preset can be applied in this context.");
-    if (source.blockType !== selected.block.blockType)
+    if (definition.envelope.blocks[0].blockType !== selected.block.blockType)
       return setReusableError(
-        `This ${source.blockType} preset cannot be applied to a ${selected.block.blockType} Passage.`,
+        `This ${definition.envelope.blocks[0].blockType} preset cannot be applied to a ${selected.block.blockType} Passage.`,
       );
+    if (!parametersChecked && (definition.envelope.parameters?.length ?? 0)) {
+      setReusableParameterPrompt({
+        mode: "PRESET",
+        item,
+        parameters: definition.envelope.parameters,
+        values: Object.fromEntries(
+          definition.envelope.parameters
+            .filter((parameter) => parameter.defaultValue !== undefined)
+            .map((parameter) => [parameter.key, parameter.defaultValue!]),
+        ),
+      });
+      return;
+    }
+    const resolvedResponse = await fetch(`/api/studio/tales/${taleId}/reusable-content`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
+      body: JSON.stringify({ action: "resolve-preset", itemId: item.id, parameterValues }),
+    });
+    const resolved = (await resolvedResponse.json()) as { envelope?: ReusableContentEnvelope; error?: string };
+    const source = resolved.envelope?.blocks[0];
+    if (!resolvedResponse.ok || !resolved.envelope || !source)
+      return setReusableError(resolved.error ?? "The reusable preset could not be resolved.");
     const next = change((candidate) => {
       const target = candidate.chapters
         .flatMap((chapter) => chapter.blocks)
@@ -480,15 +506,15 @@ export function TaleEditor({
     }, "Reusable preset pending save");
     if (!next) return;
     const saved = await save(next, false, undefined, {
-      itemId: body.envelope.itemId,
-      versionId: body.envelope.versionId,
+      itemId: resolved.envelope.itemId,
+      versionId: resolved.envelope.versionId,
       sourceKind: "PRESET_APPLIED",
       insertedBlockIds: [selected.block.id],
       insertedChapterIds: [],
       provenance: {
-        ...body.envelope.attribution,
-        sourceItemId: body.envelope.itemId,
-        sourceVersionId: body.envelope.versionId,
+        ...resolved.envelope.attribution,
+        sourceItemId: resolved.envelope.itemId,
+        sourceVersionId: resolved.envelope.versionId,
         modified: true,
       },
     });
@@ -519,6 +545,7 @@ export function TaleEditor({
         return setReusableError(definition.error ?? "The reusable item could not be opened.");
       if (definition.envelope.parameters.length) {
         setReusableParameterPrompt({
+          mode: "INSERT",
           item,
           parameters: definition.envelope.parameters,
           values: Object.fromEntries(
@@ -538,6 +565,7 @@ export function TaleEditor({
         itemId: item.id,
         operationId: crypto.randomUUID(),
         targetChapterId: selected?.chapter.id,
+        targetBlockId: item.kind === "FRAGMENT" ? selected?.block.id : undefined,
         draft,
         parameterValues,
       }),
@@ -545,7 +573,7 @@ export function TaleEditor({
     const plan = (await response.json()) as InsertionPlan & { error?: string };
     if (!response.ok) return setReusableError(plan.error ?? "The reusable fragment could not be planned.");
     const preview = [
-      `${Object.keys(plan.remap.blocks).length} Passage${Object.keys(plan.remap.blocks).length === 1 ? "" : "es"} will be copied.`,
+      `${Object.keys(plan.remap.blocks).length} Passage${Object.keys(plan.remap.blocks).length === 1 ? "" : "es"} will be copied${item.kind === "FRAGMENT" ? " and connected from the selected Passage" : ""}.`,
       `${Object.keys(plan.remap.chapters).length} Chapter${Object.keys(plan.remap.chapters).length === 1 ? "" : "s"} will be added.`,
       plan.warnings.length ? plan.warnings.join(" ") : "No unresolved external ports were reported.",
     ].join(" ");
@@ -2256,6 +2284,7 @@ export function TaleEditor({
                           <label>
                             <span>Key</span>
                             <input
+                              aria-label="Reusable parameter key"
                               value={reusableParameterDraft.key}
                               onChange={(event) =>
                                 setReusableParameterDraft((current) => ({ ...current, key: event.target.value }))
@@ -2266,6 +2295,7 @@ export function TaleEditor({
                           <label>
                             <span>Label</span>
                             <input
+                              aria-label="Reusable parameter label"
                               value={reusableParameterDraft.label}
                               onChange={(event) =>
                                 setReusableParameterDraft((current) => ({ ...current, label: event.target.value }))
@@ -2276,6 +2306,7 @@ export function TaleEditor({
                           <label>
                             <span>Type</span>
                             <select
+                              aria-label="Reusable parameter type"
                               value={reusableParameterDraft.type}
                               onChange={(event) =>
                                 setReusableParameterDraft((current) => ({
@@ -2307,6 +2338,7 @@ export function TaleEditor({
                           <label>
                             <span>Destination</span>
                             <select
+                              aria-label="Reusable parameter destination"
                               value={reusableParameterDraft.destinationPath}
                               onChange={(event) =>
                                 setReusableParameterDraft((current) => ({
@@ -2326,6 +2358,7 @@ export function TaleEditor({
                           <label>
                             <span>Help text</span>
                             <input
+                              aria-label="Reusable parameter help text"
                               value={reusableParameterDraft.helpText}
                               onChange={(event) =>
                                 setReusableParameterDraft((current) => ({ ...current, helpText: event.target.value }))
@@ -2335,6 +2368,7 @@ export function TaleEditor({
                           </label>
                           <label>
                             <input
+                              aria-label="Reusable parameter required"
                               type="checkbox"
                               checked={reusableParameterDraft.required}
                               onChange={(event) =>
@@ -2411,7 +2445,8 @@ export function TaleEditor({
                           event.preventDefault();
                           const prompt = reusableParameterPrompt;
                           setReusableParameterPrompt(null);
-                          void insertReusableFragment(prompt.item, prompt.values, true);
+                          if (prompt.mode === "PRESET") void applyReusablePreset(prompt.item, prompt.values, true);
+                          else void insertReusableFragment(prompt.item, prompt.values, true);
                         }}
                       >
                         <h4>Configure {reusableParameterPrompt.item.name}</h4>
