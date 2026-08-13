@@ -165,5 +165,7 @@ accepted the same candidate. PR #68 protected-merged at
 The immediately following local exact-main observation detected only stale
 generated Feature Catalog provenance and was terminal `EVIDENCE_INVALID`. It
 does not reopen product integration, alter the sealed hosted authority, or
-authorize a retry. The correction is constrained to the current record packet
-and generated catalog, through the governed record-only closure procedure.
+authorize a retry. The correction was constrained to the record packet and
+generated catalog. Record-only PR #79 completed that procedure through run
+`31673540201` (`RELEASE_GO`, one clean closure receipt) and protected merge
+`0fb9dfe96e1d414b45edf1841198beeda40e9c27`.

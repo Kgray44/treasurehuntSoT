@@ -1,9 +1,9 @@
 ---
 title: Project Tideglass Phase 3 Design Record
 audience: product-engineering
-status: current-main-qualified-candidate-freeze-pending
+status: current
 canonical_for: project-tideglass-phase-3-design
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-13
 ---
 
 # Project Tideglass Phase 3 design record: Choose the Passage
@@ -132,6 +132,21 @@ The edition selector DTO is a server-derived list of exact IDs, human labels, pu
 | Responsive and accessibility | Desktop and mobile, keyboard focus, 200% zoom, reduced motion, screen-reader names/landmarks, and Axe serious/critical zero.                                 |
 | Security and privacy         | Cross-Chronicle, foreign history, audience-escalation, open-redirect, raw snapshot/storage/private-media, Creator-note, and hidden-count leakage denials.    |
 
-## Candidate and owner gates
+## Candidate and owner gates (historical)
 
-Each implementation change follows the mandatory focused-test lifecycle. The original owner decision accepted the reviewed Phase 3 product path, and the owner explicitly accepted the Wakebook Journey Detail addendum after its affected qualification and visual evidence. The rebased source passed current-main unit, component, semantic Studio, browser, accessibility, static, catalog, and Homeport navigation qualification. A newly frozen current-main candidate may request its single Mainline Decision only when the separately governed serial authority queue explicitly grants that position. No frozen PR, protected binding, or shared validation runtime is resumed by this reconciliation.
+Each implementation change followed the mandatory focused-test lifecycle. The
+owner accepted the reviewed Phase 3 product path and explicitly accepted the
+Wakebook Journey Detail addendum after its affected qualification and visual
+evidence. The rebased source passed current-main unit, component, semantic
+Studio, browser, accessibility, static, catalog, and Homeport navigation
+qualification before its frozen candidate requested the governed decision.
+
+## Accepted-main completion
+
+Candidate `aa161a377f87a4cbdbc6a8f308cee25493962bc5` received hosted Mainline
+Decision `31670646385` with `RELEASE_GO` and 38 clean mandatory receipts, then
+protected-merged through PR #68 as `634312adbf72a8a4279a755b20fb06957ced7e77`.
+The record-only catalog/receipt closeout subsequently received `RELEASE_GO`
+through run `31673540201` and protected-merged through PR #79 as
+`0fb9dfe96e1d414b45edf1841198beeda40e9c27`. Phase 3 is accepted mainline.
+The Mainline Safety Contract and Phase 4 deferrals remain unchanged.

@@ -1,9 +1,9 @@
 ---
 title: Project Tideglass Phase 3 Test Plan
 audience: product-engineering
-status: implementation-active
+status: current
 canonical_for: project-tideglass-phase-3-test-plan
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-13
 ---
 
 # Project Tideglass Phase 3 test plan: Choose the Passage
@@ -40,4 +40,18 @@ Development verification runs the smallest relevant Tideglass, Wayfarer, Studio,
 
 ## Truth boundaries
 
-All fixtures are synthetic and task-owned. Browser, visual, and performance proof demonstrate the local governed runtime only; they do not claim staging, production, private Chronicle, physical-device, provider, protected-mainline, or owner-acceptance proof. Owner acceptance remains a separate mandatory gate for this human-facing phase.
+All fixtures are synthetic and task-owned. Browser, visual, and performance
+proof demonstrate the local governed runtime only; they do not claim staging,
+production, private Chronicle, physical-device, provider, protected-mainline,
+or owner-acceptance proof. Owner acceptance was a separate mandatory gate for
+this human-facing phase and is recorded as satisfied below.
+
+## Completion disposition
+
+The owner gate was accepted on 2026-08-12, including the Wakebook Journey
+Detail addendum. The qualified product candidate received hosted `RELEASE_GO`
+through `31670646385` with 38 clean mandatory receipts and protected merge
+`634312adbf72a8a4279a755b20fb06957ced7e77`. Record-only run `31673540201`
+then sealed the acceptance packet and PR #79 merged as
+`0fb9dfe96e1d414b45edf1841198beeda40e9c27`. This plan is complete; Phase 4 is
+not authorized by it.

@@ -8,23 +8,23 @@ last_reviewed: 2026-08-13
 
 # Project Tideglass Phase 3 completion receipt
 
-Status: `ACCEPTED_MAINLINE` — record-only closeout pending protected
-incorporation.
+Status: `ACCEPTED_MAINLINE`.
 
-| Field                          | Accepted value                                                                                                                                                             |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Project / Phase                | Project Tideglass / Phase 3 — Choose the Passage                                                                                                                           |
-| Original base                  | `236c27241bb8d1630274f5d5412ec9addbdb8893`                                                                                                                                 |
-| Qualified base                 | `4e88ba5463878e3b2cab8d03bb4471201bb1f039`                                                                                                                                 |
-| Owner-reviewed source          | `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`                                                                                                                                 |
-| Owner decision                 | Accepted 2026-08-12, including the explicit Wakebook Journey Detail addendum                                                                                               |
-| Final implementation candidate | `aa161a377f87a4cbdbc6a8f308cee25493962bc5`                                                                                                                                 |
-| Authoritative decision         | [Run 31670646385](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31670646385): `RELEASE_GO`                                                                       |
-| Authority evidence             | 38 mandatory receipts; no missing, duplicate, unknown, invalid, or runtime-conformance evidence; digest `85ebf2da23aff5162dc9437a029b11058b2c586b2c022261194c2df607d4c229` |
-| Protected binding              | [Run 31671905583](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31671905583): passed                                                                             |
-| Protected integration          | [PR #68](https://github.com/Kgray44/treasurehuntSoT/pull/68), merge `634312adbf72a8a4279a755b20fb06957ced7e77`                                                             |
-| Prisma / migrations            | None                                                                                                                                                                       |
-| Phase 4                        | Not started; Harborlight, final Helm integration, historical-corpus hardening, distributed comparison work, observability, and localization remain deferred                |
+| Field                          | Accepted value                                                                                                                                                                                                       |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Project / Phase                | Project Tideglass / Phase 3 — Choose the Passage                                                                                                                                                                     |
+| Original base                  | `236c27241bb8d1630274f5d5412ec9addbdb8893`                                                                                                                                                                           |
+| Qualified base                 | `4e88ba5463878e3b2cab8d03bb4471201bb1f039`                                                                                                                                                                           |
+| Owner-reviewed source          | `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`                                                                                                                                                                           |
+| Owner decision                 | Accepted 2026-08-12, including the explicit Wakebook Journey Detail addendum                                                                                                                                         |
+| Final implementation candidate | `aa161a377f87a4cbdbc6a8f308cee25493962bc5`                                                                                                                                                                           |
+| Authoritative decision         | [Run 31670646385](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31670646385): `RELEASE_GO`                                                                                                                 |
+| Authority evidence             | 38 mandatory receipts; no missing, duplicate, unknown, invalid, or runtime-conformance evidence; digest `85ebf2da23aff5162dc9437a029b11058b2c586b2c022261194c2df607d4c229`                                           |
+| Protected binding              | [Run 31671905583](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31671905583): passed                                                                                                                       |
+| Protected integration          | [PR #68](https://github.com/Kgray44/treasurehuntSoT/pull/68), merge `634312adbf72a8a4279a755b20fb06957ced7e77`                                                                                                       |
+| Record-only closeout           | [PR #79](https://github.com/Kgray44/treasurehuntSoT/pull/79), [run 31673540201](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31673540201): `RELEASE_GO`, merge `0fb9dfe96e1d414b45edf1841198beeda40e9c27` |
+| Prisma / migrations            | None                                                                                                                                                                                                                 |
+| Phase 4                        | Not started; Harborlight, final Helm integration, historical-corpus hardening, distributed comparison work, observability, and localization remain deferred                                                          |
 
 The protected merge parents are qualified base
 `4e88ba5463878e3b2cab8d03bb4471201bb1f039` and exact implementation candidate
@@ -75,13 +75,17 @@ ordinary comparison route, Edition selection, Compare to recommended, Compare
 to What I Played, history and Chronicle entries, and Studio semantic comparison.
 No additional Tideglass feature fragment is required for this closeout.
 
-## Record-only closeout boundary
+## Record-only closeout result
 
 The local post-merge observation on `634312ad` was terminal
 `EVIDENCE_INVALID` solely because generated `FEATURE_CATALOG.md` still carried
 the previous `4e88ba54` audit provenance. The hosted sealed authority and
 protected merge remain valid; all Tideglass-specific receipts were clean. The
 runtime was released (exclusive lock access, ports 3100/3101/3102/3200 free,
-and no authority process). This final record packet synchronizes the generated
-catalog and acceptance records through the governed record-only procedure; it
-does not retry, replace, or widen the product authority.
+and no authority process). Governed record-only PR #79 then accepted exact
+candidate `7c3da7a902d69372cd49db66ff745e2bcd4f4c27` over `634312ad`: its sealed
+finalizer returned `RELEASE_GO` with one clean `record-only.closure` receipt and
+evidence digest `f3bac06ae94128bb99c403db6fda1a1d4b79ab6b23fef9e9bdba7557c2b13cf3`.
+It protected-merged as `0fb9dfe96e1d414b45edf1841198beeda40e9c27`; merge tree
+`04a610e6ab892d0e075b49c0675858f0bb95a5ac` equals the record candidate tree.
+This closure neither retried nor widened the product authority.

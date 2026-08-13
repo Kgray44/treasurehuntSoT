@@ -2,10 +2,12 @@
   "schemaVersion": "1.0.0",
   "project": "Project Tideglass",
   "phase": "PHASE_3_CHOOSE_THE_PASSAGE",
-  "status": "CURRENT_MAIN_WAKEBOOK_RECONCILIATION",
+  "status": "ACCEPTED_MAINLINE",
   "originalBaseSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
-  "baseSha": "9e9d629085cb1551b1a3959c31b0b460c37724a9",
-  "truthBoundary": "Source registration only. Browser, owner, protected-mainline, deployment, and provider proof are separate gates.",
+  "baseSha": "0fb9dfe96e1d414b45edf1841198beeda40e9c27",
+  "productIntegrationSha": "634312adbf72a8a4279a755b20fb06957ced7e77",
+  "recordOnlyClosureSha": "0fb9dfe96e1d414b45edf1841198beeda40e9c27",
+  "truthBoundary": "Source registration. Owner acceptance, hosted product authority, protected integration, and record-only closeout are recorded in the Phase 3 completion packet; deployment and provider proof remain outside Phase 3.",
   "routes": [
     {
       "routeId": "tideglass-chronicle-compare",

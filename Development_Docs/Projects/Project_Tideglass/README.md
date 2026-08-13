@@ -15,8 +15,9 @@ Phase 3, Choose the Passage, is integrated through protected main at
 comparison and history journey plus the Studio semantic-consumer cutover without
 changing the accepted Phase 1/2 semantic authority. Its sealed authority,
 protected binding, tree identity, owner decision, and source-bound product
-evidence are recorded in the Phase 3 packet. The remaining record-only closeout
-only synchronizes that accepted state; it does not start Phase 4.
+evidence are recorded in the Phase 3 packet. Its record-only closeout is
+protected-integrated at `0fb9dfe96e1d414b45edf1841198beeda40e9c27`; it did not
+start Phase 4.
 
 ## Phase 1 records
 
