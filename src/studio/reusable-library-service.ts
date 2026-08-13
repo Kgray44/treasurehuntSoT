@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { randomUUID } from "node:crypto";
 import {
   applyReusableInsertion,
+  assertReusableParameterDefinitions,
   assertReusableCaptureSafe,
   checksumReusableEnvelope,
   planReusableInsertion,
@@ -171,14 +172,6 @@ export async function planReusableAuthoringInsertion(input: {
     artifactIds: new Set(artifacts.map((artifact) => artifact.id)),
     locationIds: new Set(locations.map((location) => location.id)),
   };
-  const missing = [
-    ...envelope.dependencies.assetIds.filter((id) => !available.assetIds.has(id)).map((id) => `asset ${id}`),
-    ...envelope.dependencies.artifactIds.filter((id) => !available.artifactIds.has(id)).map((id) => `artifact ${id}`),
-    ...envelope.dependencies.locationIds.filter((id) => !available.locationIds.has(id)).map((id) => `location ${id}`),
-    ...envelope.dependencies.providerIds.map((id) => `provider ${id}`),
-  ];
-  if (missing.length)
-    throw new Error(`Reusable content dependencies are unavailable in this Chronicle: ${missing.join(", ")}.`);
   const plan = planReusableInsertion({
     envelope,
     draft: input.draft,
@@ -186,6 +179,30 @@ export async function planReusableAuthoringInsertion(input: {
     targetChapterId: input.targetChapterId,
     parameterValues: input.parameterValues,
   });
+  const resolvedDependencies = {
+    assetIds: new Set(envelope.dependencies.assetIds),
+    artifactIds: new Set(envelope.dependencies.artifactIds),
+    locationIds: new Set(envelope.dependencies.locationIds),
+    providerIds: new Set(envelope.dependencies.providerIds),
+  };
+  for (const chapter of plan.chapters)
+    for (const block of chapter.blocks) {
+      collectDependencyIds(block.configuration, resolvedDependencies);
+      collectDependencyIds(block.presentation, resolvedDependencies);
+      collectDependencyIds(block.completion, resolvedDependencies);
+    }
+  const missing = [
+    ...[...resolvedDependencies.assetIds].filter((id) => !available.assetIds.has(id)).map((id) => `asset ${id}`),
+    ...[...resolvedDependencies.artifactIds]
+      .filter((id) => !available.artifactIds.has(id))
+      .map((id) => `artifact ${id}`),
+    ...[...resolvedDependencies.locationIds]
+      .filter((id) => !available.locationIds.has(id))
+      .map((id) => `location ${id}`),
+    ...[...resolvedDependencies.providerIds].map((id) => `provider ${id}`),
+  ];
+  if (missing.length)
+    throw new Error(`Reusable content dependencies are unavailable in this Chronicle: ${missing.join(", ")}.`);
   const studio = await getStudioTale(input.taleId);
   const issueKey = (issue: { severity: string; code: string; location: { blockId?: string; fieldPath?: string } }) =>
     `${issue.severity}:${issue.code}:${issue.location.blockId ?? ""}:${issue.location.fieldPath ?? ""}`;
@@ -261,7 +278,13 @@ function collectDependencyIds(
 export async function createBlockPreset(
   ownerAccountId: string,
   taleId: string,
-  input: { name: string; description?: string; tags?: string[]; blockId: string },
+  input: {
+    name: string;
+    description?: string;
+    tags?: string[];
+    blockId: string;
+    parameters?: ReusableContentEnvelope["parameters"];
+  },
 ) {
   const source = await db.chronicle.findFirst({
     where: { id: taleId },
@@ -309,6 +332,7 @@ export async function createBlockPreset(
     providerIds: new Set<string>(),
   };
   assertReusableCaptureSafe([block]);
+  assertReusableParameterDefinitions([block], input.parameters ?? []);
   collectDependencyIds(block.configuration, collected);
   collectDependencyIds(block.presentation, collected);
   collectDependencyIds(block.completion, collected);
@@ -329,7 +353,7 @@ export async function createBlockPreset(
     chapters: [],
     entryPorts: [],
     exitPorts: [],
-    parameters: [],
+    parameters: input.parameters ?? [],
     dependencies: {
       assetIds: [...collected.assetIds].sort(),
       artifactIds: [...collected.artifactIds].sort(),
@@ -348,7 +372,13 @@ export async function createBlockPreset(
 export async function createBlockFragment(
   ownerAccountId: string,
   taleId: string,
-  input: { name: string; description?: string; tags?: string[]; blockIds: string[] },
+  input: {
+    name: string;
+    description?: string;
+    tags?: string[];
+    blockIds: string[];
+    parameters?: ReusableContentEnvelope["parameters"];
+  },
 ) {
   const source = await db.chronicle.findFirst({
     where: { id: taleId },
@@ -398,6 +428,7 @@ export async function createBlockFragment(
     providerIds: new Set<string>(),
   };
   assertReusableCaptureSafe(blocks);
+  assertReusableParameterDefinitions(blocks, input.parameters ?? []);
   for (const block of blocks) {
     collectDependencyIds(block.configuration, collected);
     collectDependencyIds(block.presentation, collected);
@@ -440,7 +471,7 @@ export async function createBlockFragment(
     chapters: [],
     entryPorts,
     exitPorts,
-    parameters: [],
+    parameters: input.parameters ?? [],
     dependencies: {
       assetIds: [...collected.assetIds].sort(),
       artifactIds: [...collected.artifactIds].sort(),
@@ -462,7 +493,13 @@ export async function createBlockFragment(
 export async function createChapterTemplate(
   ownerAccountId: string,
   taleId: string,
-  input: { name: string; description?: string; tags?: string[]; chapterId: string },
+  input: {
+    name: string;
+    description?: string;
+    tags?: string[];
+    chapterId: string;
+    parameters?: ReusableContentEnvelope["parameters"];
+  },
 ) {
   const source = await db.chronicle.findFirst({
     where: { id: taleId },
@@ -504,6 +541,7 @@ export async function createChapterTemplate(
     providerIds: new Set<string>(),
   };
   assertReusableCaptureSafe(blocks);
+  assertReusableParameterDefinitions(blocks, input.parameters ?? []);
   for (const block of blocks) {
     collectDependencyIds(block.configuration, collected);
     collectDependencyIds(block.presentation, collected);
@@ -549,7 +587,7 @@ export async function createChapterTemplate(
           connectionType: connection.connectionType,
         })),
     ),
-    parameters: [],
+    parameters: input.parameters ?? [],
     dependencies: {
       assetIds: [...collected.assetIds].sort(),
       artifactIds: [...collected.artifactIds].sort(),

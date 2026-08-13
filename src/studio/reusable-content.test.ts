@@ -99,6 +99,7 @@ function envelope(): ReusableContentEnvelope {
 describe("reusable authoring insertion", () => {
   it("resolves declared parameters only into bounded canonical destinations", () => {
     const base = envelope();
+    base.blocks[1].configuration.body = "Original opening.";
     const parameterized = {
       ...base,
       parameters: [
@@ -123,6 +124,24 @@ describe("reusable authoring insertion", () => {
         { opening_text: "A calm harbor." },
       ),
     ).toThrow(/destinations/i);
+    expect(() =>
+      resolveReusableParameters(
+        {
+          ...signed,
+          parameters: [{ ...signed.parameters[0], destinationPath: "blocks.block-source-2.configuration.newField" }],
+        },
+        { opening_text: "A calm harbor." },
+      ),
+    ).toThrow(/existing canonical field/i);
+    expect(() =>
+      resolveReusableParameters(
+        {
+          ...signed,
+          parameters: [signed.parameters[0], { ...signed.parameters[0], label: "Duplicate key" }],
+        },
+        { opening_text: "A calm harbor." },
+      ),
+    ).toThrow(/unique/i);
   });
   it("fails closed when a reusable capture contains protected source material", () => {
     expect(() =>
@@ -160,5 +179,40 @@ describe("reusable authoring insertion", () => {
     expect(baseDraft.chapters[0].blocks).toHaveLength(1);
     expect(next.chapters[0].blocks).toHaveLength(3);
     expect(plan.warnings).toEqual(["Review 1 inherited accessibility obligation(s) before publication."]);
+  });
+
+  it("keeps a 100-plus Passage multi-Chapter composition collision-safe and undoable", () => {
+    const largeDraft: DraftState = {
+      ...baseDraft,
+      chapters: Array.from({ length: 5 }, (_, chapterIndex) => ({
+        id: `chapter-large-${chapterIndex}`,
+        title: `Chapter ${chapterIndex + 1}`,
+        isOptional: false,
+        metadata: {},
+        blocks: Array.from({ length: 20 }, (_, blockIndex) => ({
+          id: `large-${chapterIndex}-${blockIndex}`,
+          blockType: "narrative",
+          title: `Passage ${chapterIndex * 20 + blockIndex + 1}`,
+          configuration: {},
+          presentation: {},
+          completion: {},
+          isEnabled: true,
+          schemaVersion: 1,
+        })),
+      })),
+    };
+    const plan = planReusableInsertion({
+      envelope: envelope(),
+      draft: largeDraft,
+      operationId: "operation-large-0001",
+      targetChapterId: "chapter-large-3",
+    });
+    const applied = applyReusableInsertion(largeDraft, plan);
+    expect(largeDraft.chapters[3].blocks).toHaveLength(20);
+    expect(applied.chapters[3].blocks).toHaveLength(22);
+    expect(new Set(applied.chapters.flatMap((chapter) => chapter.blocks.map((block) => block.id))).size).toBe(102);
+    expect(applied.chapters[3].blocks.at(-2)?.connections?.[0]?.targetBlockId).toBe(
+      "operation-large-0001-block-block-source-2",
+    );
   });
 });

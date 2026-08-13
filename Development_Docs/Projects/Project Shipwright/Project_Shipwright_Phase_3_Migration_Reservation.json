@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "project": "Project Shipwright",
+  "phase": 3,
+  "status": "IMPLEMENTED_UNQUALIFIED",
+  "reservedAt": "2026-08-13",
+  "owner": "Shipwright reusable-authoring persistence",
+  "sqliteMigration": "20260813110000_shipwright_phase3_reusable_authoring",
+  "mysqlMigration": "0058_shipwright_phase3_reusable_authoring",
+  "models": ["ReusableAuthoringItem", "ReusableAuthoringItemVersion", "ReusableAuthoringUsage"],
+  "scope": "Additive owner-scoped immutable reusable-authoring versions and draft-local provenance only.",
+  "prohibitions": [
+    "No db push, reset, truncate, or down migration.",
+    "No Harborlight release/package/install/lineage mutation.",
+    "No Chronicle runtime, publication, session, or provider-semantic ownership transfer."
+  ],
+  "verification": {
+    "sqliteSchema": "validated locally against prisma/schema.sqlite.prisma",
+    "mysqlSchema": "validated locally against prisma/schema.prisma",
+    "migrationApplication": "Not applied to a canonical or production database; final isolated rehearsal remains qualification work."
+  }
+}

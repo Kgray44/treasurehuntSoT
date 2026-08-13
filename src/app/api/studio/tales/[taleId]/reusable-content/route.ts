@@ -15,6 +15,30 @@ import {
   planReusableAuthoringInsertion,
 } from "@/studio/reusable-library-service";
 
+const reusableParameterSchema = z.object({
+  key: z
+    .string()
+    .regex(/^[a-z][a-z0-9_]*$/)
+    .max(80),
+  label: z.string().min(1).max(160),
+  type: z.enum([
+    "TEXT",
+    "TITLE",
+    "ASSET",
+    "ARTIFACT",
+    "LOCATION",
+    "VARIABLE",
+    "DURATION",
+    "TARGET",
+    "CHOICE_LABEL",
+    "VISIBILITY",
+  ]),
+  required: z.boolean(),
+  defaultValue: z.union([z.string().max(10000), z.number().finite(), z.boolean()]).optional(),
+  helpText: z.string().max(1000),
+  destinationPath: z.string().min(1).max(240),
+});
+
 const requestSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("create"), envelope: z.unknown() }),
   z.object({
@@ -23,6 +47,7 @@ const requestSchema = z.discriminatedUnion("action", [
     description: z.string().max(10000).optional(),
     tags: z.array(z.string().max(64)).max(30).optional(),
     blockId: z.string().min(1).max(128),
+    parameters: z.array(reusableParameterSchema).max(100).optional(),
   }),
   z.object({
     action: z.literal("plan-insert"),
@@ -41,6 +66,7 @@ const requestSchema = z.discriminatedUnion("action", [
     description: z.string().max(10000).optional(),
     tags: z.array(z.string().max(64)).max(30).optional(),
     blockIds: z.array(z.string().min(1).max(128)).min(2).max(1000),
+    parameters: z.array(reusableParameterSchema).max(100).optional(),
   }),
   z.object({
     action: z.literal("create-chapter-template"),
@@ -48,6 +74,7 @@ const requestSchema = z.discriminatedUnion("action", [
     description: z.string().max(10000).optional(),
     tags: z.array(z.string().max(64)).max(30).optional(),
     chapterId: z.string().min(1).max(128),
+    parameters: z.array(reusableParameterSchema).max(100).optional(),
   }),
   z.object({ action: z.literal("archive"), itemId: z.string().min(8).max(128) }),
 ]);

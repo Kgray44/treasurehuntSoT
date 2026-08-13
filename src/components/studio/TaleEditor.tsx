@@ -228,6 +228,15 @@ export function TaleEditor({
     "ALL",
   );
   const [reusableParameterPrompt, setReusableParameterPrompt] = useState<ReusableParameterPrompt | null>(null);
+  const [reusableParameters, setReusableParameters] = useState<ReusableParameter[]>([]);
+  const [reusableParameterDraft, setReusableParameterDraft] = useState({
+    key: "",
+    label: "",
+    type: "TEXT" as ReusableParameter["type"],
+    required: true,
+    helpText: "",
+    destinationPath: "",
+  });
   const [blockSearch, setBlockSearch] = useState("");
   const [collapsedChapters, setCollapsedChapters] = useState<string[]>([]);
   const [previewBlock, setPreviewBlock] = useState(false);
@@ -368,6 +377,20 @@ export function TaleEditor({
     setReusableItems((items) => items.filter((candidate) => candidate.id !== item.id));
   }
 
+  function addReusableParameter() {
+    if (!reusableParameterDraft.key || !reusableParameterDraft.label || !reusableParameterDraft.destinationPath) {
+      setReusableError("Give the reusable parameter a key, label, and canonical destination field.");
+      return;
+    }
+    if (reusableParameters.some((parameter) => parameter.key === reusableParameterDraft.key)) {
+      setReusableError("Reusable parameter keys must be unique within this item.");
+      return;
+    }
+    setReusableError("");
+    setReusableParameters((items) => [...items, { ...reusableParameterDraft }]);
+    setReusableParameterDraft({ key: "", label: "", type: "TEXT", required: true, helpText: "", destinationPath: "" });
+  }
+
   async function saveSelectedAsPreset() {
     if (!data || !draft || !selected) return;
     if (dirty && !(await save(draft, false))) return;
@@ -376,7 +399,12 @@ export function TaleEditor({
     const response = await fetch(`/api/studio/tales/${taleId}/reusable-content`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
-      body: JSON.stringify({ action: "create-preset", name, blockId: selected.block.id }),
+      body: JSON.stringify({
+        action: "create-preset",
+        name,
+        blockId: selected.block.id,
+        parameters: reusableParameters,
+      }),
     });
     const body = (await response.json()) as { error?: string };
     if (!response.ok) return setReusableError(body.error ?? "The Passage preset could not be saved.");
@@ -395,6 +423,7 @@ export function TaleEditor({
         action: "create-fragment",
         name: `${selectedIds.length} Passage fragment`,
         blockIds: selectedIds,
+        parameters: reusableParameters,
       }),
     });
     const body = (await response.json()) as { error?: string };
@@ -414,6 +443,7 @@ export function TaleEditor({
         action: "create-chapter-template",
         name: `${selected.chapter.title} template`,
         chapterId: selected.chapter.id,
+        parameters: reusableParameters,
       }),
     });
     const body = (await response.json()) as { error?: string };
@@ -729,6 +759,16 @@ export function TaleEditor({
     [draft, selectedId],
   );
   const selectedDefinition = data?.registry.find((item) => item.type === selected?.block.blockType);
+  const reusableParameterDestinations = useMemo(() => {
+    if (!selected) return [];
+    const source = selected.block;
+    return (["configuration", "presentation", "completion"] as const).flatMap((section) =>
+      Object.keys(source[section]).map((field) => ({
+        label: `${section} · ${field}`,
+        value: `blocks.${source.id}.${section}.${field}`,
+      })),
+    );
+  }, [selected]);
   const rankedReusableItems = useMemo(() => {
     const search = reusableSearch.trim().toLocaleLowerCase();
     const score = (item: ReusableLibraryItem) => {
@@ -2208,6 +2248,124 @@ export function TaleEditor({
                         {reusableLoading ? "Refreshing…" : "Refresh"}
                       </button>
                     </div>
+                    {selected && (
+                      <section className="reusable-parameter-authoring" aria-label="Reusable parameter slots">
+                        <h4>Reusable parameter slots</h4>
+                        <p>Optional slots apply only to the next preset, fragment, or Chapter template you save.</p>
+                        <div>
+                          <label>
+                            <span>Key</span>
+                            <input
+                              value={reusableParameterDraft.key}
+                              onChange={(event) =>
+                                setReusableParameterDraft((current) => ({ ...current, key: event.target.value }))
+                              }
+                              placeholder="opening_text"
+                            />
+                          </label>
+                          <label>
+                            <span>Label</span>
+                            <input
+                              value={reusableParameterDraft.label}
+                              onChange={(event) =>
+                                setReusableParameterDraft((current) => ({ ...current, label: event.target.value }))
+                              }
+                              placeholder="Opening text"
+                            />
+                          </label>
+                          <label>
+                            <span>Type</span>
+                            <select
+                              value={reusableParameterDraft.type}
+                              onChange={(event) =>
+                                setReusableParameterDraft((current) => ({
+                                  ...current,
+                                  type: event.target.value as ReusableParameter["type"],
+                                }))
+                              }
+                            >
+                              {(
+                                [
+                                  "TEXT",
+                                  "TITLE",
+                                  "ASSET",
+                                  "ARTIFACT",
+                                  "LOCATION",
+                                  "VARIABLE",
+                                  "DURATION",
+                                  "TARGET",
+                                  "CHOICE_LABEL",
+                                  "VISIBILITY",
+                                ] as const
+                              ).map((type) => (
+                                <option key={type} value={type}>
+                                  {type.replaceAll("_", " ")}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+                          <label>
+                            <span>Destination</span>
+                            <select
+                              value={reusableParameterDraft.destinationPath}
+                              onChange={(event) =>
+                                setReusableParameterDraft((current) => ({
+                                  ...current,
+                                  destinationPath: event.target.value,
+                                }))
+                              }
+                            >
+                              <option value="">Choose a field</option>
+                              {reusableParameterDestinations.map((destination) => (
+                                <option key={destination.value} value={destination.value}>
+                                  {destination.label}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+                          <label>
+                            <span>Help text</span>
+                            <input
+                              value={reusableParameterDraft.helpText}
+                              onChange={(event) =>
+                                setReusableParameterDraft((current) => ({ ...current, helpText: event.target.value }))
+                              }
+                              placeholder="Explain what the Creator should choose."
+                            />
+                          </label>
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={reusableParameterDraft.required}
+                              onChange={(event) =>
+                                setReusableParameterDraft((current) => ({ ...current, required: event.target.checked }))
+                              }
+                            />
+                            Required
+                          </label>
+                          <button type="button" onClick={addReusableParameter}>
+                            Add parameter slot
+                          </button>
+                        </div>
+                        {reusableParameters.length > 0 && (
+                          <ul>
+                            {reusableParameters.map((parameter) => (
+                              <li key={parameter.key}>
+                                {parameter.label} ({parameter.type}) → {parameter.destinationPath}
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setReusableParameters((items) => items.filter((item) => item.key !== parameter.key))
+                                  }
+                                >
+                                  Remove
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </section>
+                    )}
                     {selected && (
                       <button type="button" onClick={() => void saveSelectedAsPreset()}>
                         Save selected Passage as preset

@@ -75,6 +75,36 @@ describe("reusable authoring content route", () => {
     });
   });
 
+  it("passes bounded reusable parameter definitions to the persisted preset capture path", async () => {
+    mocks.createPreset.mockResolvedValueOnce({ itemId: "item-1", versionId: "version-1", versionNumber: 1 });
+    const parameter = {
+      key: "opening_text",
+      label: "Opening text",
+      type: "TEXT",
+      required: true,
+      helpText: "Player-facing opening.",
+      destinationPath: "blocks.block-1.configuration.body",
+    };
+    const response = await POST(
+      new Request("http://localhost/reusable", {
+        method: "POST",
+        body: JSON.stringify({
+          action: "create-preset",
+          name: "Opening preset",
+          blockId: "block-1",
+          parameters: [parameter],
+        }),
+      }),
+      context,
+    );
+    expect(response.status).toBe(201);
+    expect(mocks.createPreset).toHaveBeenCalledWith(
+      "creator-1",
+      "tale-1",
+      expect.objectContaining({ parameters: [parameter] }),
+    );
+  });
+
   it("returns a reusable envelope only through its owner-scoped Library identity", async () => {
     mocks.getVersion.mockResolvedValueOnce({ itemId: "item-1", versionId: "version-1", envelope: { kind: "PRESET" } });
     const response = await GET(new Request("http://localhost/reusable?itemId=item-1"), context);

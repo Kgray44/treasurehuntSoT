@@ -294,11 +294,49 @@ function assignParameter(blocks: Block[], destinationPath: string, value: Reusab
   cursor[parts.at(-1)!] = value;
 }
 
+function assertExistingParameterDestination(blocks: Block[], destinationPath: string) {
+  const match = /^blocks\.([^\.]+)\.(configuration|presentation|completion)\.([a-zA-Z][a-zA-Z0-9_.-]{0,200})$/u.exec(
+    destinationPath,
+  );
+  if (!match)
+    throw new Error(
+      "Reusable parameter destinations must target a canonical block configuration, presentation, or completion field.",
+    );
+  const block = blocks.find((candidate) => candidate.id === match[1]);
+  if (!block) throw new Error("Reusable parameter destination does not belong to this reusable item.");
+  let cursor: unknown = block[match[2] as "configuration" | "presentation" | "completion"];
+  for (const part of match[3].split(".")) {
+    if (!cursor || typeof cursor !== "object" || Array.isArray(cursor) || !Object.hasOwn(cursor, part))
+      throw new Error("Reusable parameter destination must be an existing canonical field in the reusable item.");
+    cursor = (cursor as JsonObject)[part];
+  }
+}
+
+export function assertReusableParameterDefinitions(blocks: Block[], parameters: ReusableParameter[]) {
+  const sampleFor = (parameter: ReusableParameter): ReusableParameterValue => {
+    if (parameter.type === "DURATION") return 1;
+    if (parameter.type === "VISIBILITY") return "PRIVATE";
+    return "parameter-validation";
+  };
+  const copied = clone(blocks);
+  const keys = new Set<string>();
+  for (const parameter of parameters) {
+    if (!/^[a-z][a-z0-9_]*$/u.test(parameter.key))
+      throw new Error("Reusable parameter keys must use lowercase letters, numbers, and underscores.");
+    if (keys.has(parameter.key)) throw new Error("Reusable parameter keys must be unique within this item.");
+    keys.add(parameter.key);
+    assertExistingParameterDestination(blocks, parameter.destinationPath);
+    if (parameter.defaultValue !== undefined) assertParameterValue(parameter, parameter.defaultValue);
+    assignParameter(copied, parameter.destinationPath, sampleFor(parameter));
+  }
+}
+
 export function resolveReusableParameters(
   envelope: ReusableContentEnvelope,
   supplied: Record<string, ReusableParameterValue> = {},
 ) {
   const resolved = clone(envelope);
+  assertReusableParameterDefinitions(resolved.blocks, resolved.parameters);
   for (const parameter of resolved.parameters) {
     const value = supplied[parameter.key] ?? parameter.defaultValue;
     if (value === undefined) {
