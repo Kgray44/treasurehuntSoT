@@ -11,6 +11,7 @@ last_reviewed: 2026-08-13
 ## Authority and source boundary
 
 - Starting `origin/main`: `60b89841986e66fbc2c0828489d38002a1617506`.
+- Reconciled accepted `origin/main`: `dead22dc26aeec2b722625aa9a68dc5688111fca`.
 - Qualified implementation: `6212bd1ab9ed23abd52f98154b55d846267a1133`.
 - Task branch: `agent/bring-the-watch-home` in a dedicated local worktree.
 - Bridgewatch governing authority: Version 1.1, August 11, 2026.
@@ -21,8 +22,11 @@ last_reviewed: 2026-08-13
 
 The canonical nested checkout was dirty and behind current main, so it was
 preserved. No Project Bridgewatch Phase 3 branch, worktree, listener, database,
-or process was modified. This increment is not Bridgewatch Phase 4 and does not
-change Phase 3 behavior or authority.
+or process was modified. After Phase 3 reached accepted main, its implementation
+was merged into this branch and preserved. This increment is not Bridgewatch
+Phase 4; its only Phase 3 dashboard-source adjustment makes accepted read-only
+API requests mount-aware at `/bridgewatch` while retaining standalone `/`
+behavior.
 
 ## Frozen topology
 
@@ -86,7 +90,8 @@ The gateway permits only `GET` and `HEAD` for:
 - dashboard root;
 - `app.js` and `style.css`;
 - summary, projects/project detail, pull-request, action, worker, test,
-  attention, activity, and source observation APIs.
+  attention, activity, source, history, archive, and trend observation APIs,
+  including the exact bounded project-history query used by the dashboard.
 
 All other routes fail closed. In particular, health/readiness endpoints,
 arbitrary paths, traversal, and `/api/telemetry/*` are not browser-gateway

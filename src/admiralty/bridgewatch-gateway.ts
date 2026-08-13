@@ -14,6 +14,7 @@ const READ_ONLY_API_ROUTES = new Set([
   "api/attention",
   "api/activity",
   "api/sources",
+  "api/trends",
 ]);
 const SECURITY_HEADERS = {
   "Cache-Control": "no-store",
@@ -75,16 +76,37 @@ function readOnlyPath(path: readonly string[]) {
     /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/u.test(path[2]!)
   )
     return joined;
+  if (
+    path.length === 4 &&
+    path[0] === "api" &&
+    path[1] === "projects" &&
+    /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/u.test(path[2]!) &&
+    ["history", "trends"].includes(path[3]!)
+  )
+    return joined;
+  if (path.length === 2 && path[0] === "api" && ["history", "archive"].includes(path[1]!)) return joined;
   return null;
 }
 
 function allowedQuery(path: string, requestUrl: URL) {
-  if (!requestUrl.search) return "";
-  if (path !== "api/activity") return null;
-  if ([...requestUrl.searchParams.keys()].some((key) => key !== "since")) return null;
-  const values = requestUrl.searchParams.getAll("since");
-  if (values.length !== 1 || Number.isNaN(Date.parse(values[0]!))) return null;
-  return `?since=${encodeURIComponent(values[0]!)}`;
+  if (!requestUrl.search) return path === "api/history" || path === "api/archive" ? null : "";
+  if (path === "api/activity" || path === "api/history") {
+    if ([...requestUrl.searchParams.keys()].some((key) => key !== "since")) return null;
+    const values = requestUrl.searchParams.getAll("since");
+    if (values.length !== 1 || Number.isNaN(Date.parse(values[0]!))) return null;
+    return `?since=${encodeURIComponent(values[0]!)}`;
+  }
+  if (path === "api/archive") {
+    const values = requestUrl.searchParams.getAll("order");
+    if ([...requestUrl.searchParams.keys()].some((key) => key !== "order") || values.length !== 1) return null;
+    return ["chronological", "name"].includes(values[0]!) ? `?order=${values[0]}` : null;
+  }
+  if (/^api\/projects\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\/history$/u.test(path)) {
+    const values = requestUrl.searchParams.getAll("limit");
+    if ([...requestUrl.searchParams.keys()].some((key) => key !== "limit") || values.length !== 1) return null;
+    return values[0] === "20" ? "?limit=20" : null;
+  }
+  return null;
 }
 
 function privateNotFound() {

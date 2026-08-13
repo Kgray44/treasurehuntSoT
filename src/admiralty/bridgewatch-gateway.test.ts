@@ -52,10 +52,20 @@ describe("Bridgewatch same-host gateway", () => {
     expect(url.toString()).toBe("http://127.0.0.1:4318/api/activity?since=2026-08-13T12%3A00%3A00Z");
     expect(init?.headers).toEqual({ Accept: "application/json" });
 
-    for (const path of [["app.js"], ["style.css"], ["api", "summary"], ["api", "projects", "bridgewatch"]])
+    for (const [suffix, path] of [
+      ["app.js", ["app.js"]],
+      ["style.css", ["style.css"]],
+      ["api/summary", ["api", "summary"]],
+      ["api/projects/bridgewatch", ["api", "projects", "bridgewatch"]],
+      ["api/trends", ["api", "trends"]],
+      ["api/history?since=2026-08-13T12:00:00Z", ["api", "history"]],
+      ["api/archive?order=name", ["api", "archive"]],
+      ["api/projects/bridgewatch/trends", ["api", "projects", "bridgewatch", "trends"]],
+      ["api/projects/bridgewatch/history?limit=20", ["api", "projects", "bridgewatch", "history"]],
+    ] as const)
       expect(
         (
-          await handleBridgewatchGateway(new Request(`http://voyagewright.test/bridgewatch/${path.join("/")}`), path, {
+          await handleBridgewatchGateway(new Request(`http://voyagewright.test/bridgewatch/${suffix}`), path, {
             authorize: async () => true,
             fetcher,
           })
@@ -80,6 +90,13 @@ describe("Bridgewatch same-host gateway", () => {
       ["http://voyagewright.test/bridgewatch/healthz", ["healthz"]],
       ["http://voyagewright.test/bridgewatch/../secret", ["..", "secret"]],
       ["http://voyagewright.test/bridgewatch/api/summary?upstream=http://evil.test", ["api", "summary"]],
+      ["http://voyagewright.test/bridgewatch/api/history", ["api", "history"]],
+      ["http://voyagewright.test/bridgewatch/api/history?kind=MAIN_ADVANCED", ["api", "history"]],
+      ["http://voyagewright.test/bridgewatch/api/archive?order=unknown", ["api", "archive"]],
+      [
+        "http://voyagewright.test/bridgewatch/api/projects/bridgewatch/history?limit=200",
+        ["api", "projects", "bridgewatch", "history"],
+      ],
     ] as const)
       expect((await handleBridgewatchGateway(new Request(url), path, { authorize, fetcher })).status).toBe(404);
     expect(fetcher).not.toHaveBeenCalled();

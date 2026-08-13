@@ -1,7 +1,7 @@
 ---
 title: Project Bridgewatch Homeport Gateway Validation Record
 audience: engineering
-status: qualified-pending-authoritative-mainline-decision
+status: requalified-pending-replacement-authoritative-mainline-decision
 canonical_for: project-bridgewatch-homeport-gateway-validation
 last_reviewed: 2026-08-13
 ---
@@ -11,7 +11,9 @@ last_reviewed: 2026-08-13
 ## Source binding
 
 - Accepted starting main: `60b89841986e66fbc2c0828489d38002a1617506`.
+- Reconciled accepted main: `dead22dc26aeec2b722625aa9a68dc5688111fca`.
 - Qualified implementation: `6212bd1ab9ed23abd52f98154b55d846267a1133`.
+- First frozen candidate: `1cd4f3a6cb4a3c370a72995c8b6a1e0ff8bf80e2`.
 - Owned branch: `agent/bring-the-watch-home`.
 - Canonical path: `/bridgewatch`.
 - Server-only upstream: `BRIDGEWATCH_INTERNAL_URL=http://127.0.0.1:4318`.
@@ -44,7 +46,7 @@ that port 4318 has been verified on a production host.
 | Evidence                                                  | Result                                                                      |
 | --------------------------------------------------------- | --------------------------------------------------------------------------- |
 | Gateway unit boundary                                     | 7 passed                                                                    |
-| Full standalone Bridgewatch unit family                   | 11 files, 24 tests passed                                                   |
+| Full standalone Bridgewatch unit family                   | 15 files, 41 tests passed after accepted Phase 3 reconciliation             |
 | Root TypeScript and Bridgewatch TypeScript/build          | passed                                                                      |
 | Production Next.js build                                  | passed; `/bridgewatch/[[...path]]` and internal authorization route present |
 | Admiralty isolated browser journeys                       | 4 passed, including private desktop/mobile Bridgewatch journey              |
@@ -74,6 +76,32 @@ positive asset/API assertions were moved into the signed-in page. Fresh
 production build evidence and the final four-journey pass followed those
 repairs.
 
+## First authority result and current-main reconciliation
+
+Authoritative run `31719635154` was exactly bound to PR `#85`, base
+`60b89841986e66fbc2c0828489d38002a1617506`, and candidate
+`1cd4f3a6cb4a3c370a72995c8b6a1e0ff8bf80e2`. It correctly ended
+`RELEASE_NO_GO`. The sole failed worker was the unchanged `browser.helm`
+family: its first journey observed the membership as active but did not reach
+the expected Player journal URL before the 30-second URL assertion expired.
+The candidate-specific Bridgewatch, Admiralty, build, security, privacy, and
+other governed workers passed. No acceptance envelope or merge authority was
+produced.
+
+A same-source focused governed Helm reproduction then passed all 3/3 journeys
+with runtime conformance `PASSED` and clean teardown. Sounding Line policy does
+not convert one failure plus one retry pass into a clean decision or qualified
+flake, so the failed authoritative run was not rerun or waived.
+
+While that diagnosis completed, accepted Bridgewatch Phase 3 advanced
+`origin/main` to `dead22dc26aeec2b722625aa9a68dc5688111fca`. The replacement
+candidate reconciles its history, archive, trends, branch-health, maintenance,
+tests, and records. The same-host mount now resolves every Phase 3 dashboard
+request under `/bridgewatch`, and the application and NGINX allowlists add
+only the exact history, archive, trend, and project-history queries used by
+that accepted dashboard. Telemetry, health, arbitrary query, and mutation
+routes remain excluded.
+
 ## Deployment verification boundary
 
 The Windows qualification host did not provide an NGINX executable, so an
@@ -84,7 +112,7 @@ that production verification.
 
 ## Mainline state
 
-Local qualification is complete. Authoritative frozen-candidate Sounding Line
-finalization, exact protected `Mainline Decision` binding, merge identity, and
-remote-main parity remain pending and must be appended only from their actual
-receipts.
+The reconciled replacement is undergoing complete qualification. A new exact
+candidate must receive a fresh authoritative Sounding Line finalization before
+protected `Mainline Decision` binding, merge identity, and remote-main parity
+can be appended from their actual receipts.

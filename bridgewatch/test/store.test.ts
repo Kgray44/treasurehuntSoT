@@ -1,6 +1,7 @@
 import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { DatabaseSync } from "node:sqlite";
 import { describe, expect, it } from "vitest";
 import { BridgewatchStore } from "../lib/store.js";
 import type { ProjectRecord } from "../src/domain.js";
@@ -58,11 +59,96 @@ describe("Phase 2 durable history migration", () => {
     try {
       upgraded.replaceProjectRegistry([project]);
       upgraded.replaceProjectRegistry([project]);
-      expect(upgraded.migrationVersions()).toEqual([1, 2]);
+      expect(upgraded.migrationVersions()).toEqual([1, 2, 3]);
       expect(upgraded.get<{ headSha: string }>("github:snapshot")?.value).toEqual({ headSha: "phase-1" });
       expect(upgraded.projects()).toEqual([project]);
     } finally {
       upgraded.close();
+    }
+  });
+
+  it("upgrades a genuine Phase 2-format database to migration 3 without losing durable or operational rows", () => {
+    const file = join(mkdtempSync(join(tmpdir(), "bridgewatch-test-")), "phase-2.sqlite");
+    const phaseTwo = new DatabaseSync(file);
+    phaseTwo.exec(`
+      CREATE TABLE bridgewatch_migrations (version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL);
+      INSERT INTO bridgewatch_migrations VALUES (1, '2026-08-01T00:00:00.000Z'), (2, '2026-08-01T00:00:00.000Z');
+      CREATE TABLE bridgewatch_cache (cache_key TEXT PRIMARY KEY, value_json TEXT NOT NULL, etag TEXT, observed_at TEXT NOT NULL, error_text TEXT);
+      CREATE TABLE project_history (project_id TEXT PRIMARY KEY, value_json TEXT NOT NULL, updated_at TEXT NOT NULL);
+      CREATE TABLE phase_history (phase_id TEXT PRIMARY KEY, project_id TEXT NOT NULL, ordinal INTEGER NOT NULL, value_json TEXT NOT NULL, accepted_at TEXT, integrated_main_sha TEXT);
+      CREATE TABLE milestone_history (milestone_id TEXT PRIMARY KEY, phase_id TEXT NOT NULL, value_json TEXT NOT NULL, accepted_at TEXT);
+      CREATE TABLE completion_records (project_id TEXT PRIMARY KEY, receipt_path TEXT NOT NULL, final_main_sha TEXT, final_decision TEXT, completed_at TEXT);
+      CREATE TABLE workers (worker_id TEXT PRIMARY KEY, value_json TEXT NOT NULL, heartbeat_at TEXT NOT NULL, finished_at TEXT);
+      CREATE TABLE test_runs (run_id TEXT PRIMARY KEY, value_json TEXT NOT NULL, observed_at TEXT NOT NULL);
+      CREATE TABLE test_nodes (node_id TEXT PRIMARY KEY, run_id TEXT NOT NULL, value_json TEXT NOT NULL, completed_at TEXT);`);
+    phaseTwo
+      .prepare("INSERT INTO project_history VALUES (?, ?, ?)")
+      .run(project.id, JSON.stringify(project), "2026-08-12T00:00:00.000Z");
+    phaseTwo
+      .prepare("INSERT INTO phase_history VALUES (?, ?, ?, ?, ?, ?)")
+      .run("archive-p1", "archive", 1, JSON.stringify(project.phases[0]), "2026-08-12T00:00:00.000Z", "abc");
+    phaseTwo
+      .prepare("INSERT INTO milestone_history VALUES (?, ?, ?, ?)")
+      .run(
+        "archive-p1-record",
+        "archive-p1",
+        JSON.stringify(project.phases[0]!.milestones[0]),
+        "2026-08-12T00:00:00.000Z",
+      );
+    phaseTwo
+      .prepare("INSERT INTO completion_records VALUES (?, ?, ?, ?, ?)")
+      .run("archive", "Development_Docs/receipt.md", "abc", "RELEASE_GO", "2026-08-12T00:00:00.000Z");
+    phaseTwo
+      .prepare("INSERT INTO workers VALUES (?, ?, ?, ?)")
+      .run("worker-1", JSON.stringify({ workerId: "worker-1" }), "2026-08-12T00:00:00.000Z", null);
+    phaseTwo
+      .prepare("INSERT INTO test_runs VALUES (?, ?, ?)")
+      .run("run-1", JSON.stringify({ id: "run-1", nodes: [] }), "2026-08-12T00:00:00.000Z");
+    phaseTwo
+      .prepare("INSERT INTO test_nodes VALUES (?, ?, ?, ?)")
+      .run("run-1:node", "run-1", JSON.stringify({ id: "node" }), "2026-08-12T00:00:00.000Z");
+    phaseTwo.close();
+
+    const upgraded = new BridgewatchStore(file);
+    try {
+      expect(upgraded.migrationVersions()).toEqual([1, 2, 3]);
+      expect(upgraded.projects()).toEqual([project]);
+      expect(upgraded.workers()).toHaveLength(1);
+      expect(upgraded.recentTestRuns()).toHaveLength(1);
+      expect(upgraded.history({ since: "2026-01-01T00:00:00.000Z", limit: 1 }).events).toEqual([]);
+      expect(upgraded.migrationVersions()).toEqual([1, 2, 3]);
+    } finally {
+      upgraded.close();
+    }
+  });
+
+  it("preserves accepted identities and evidence when a later source recollection renames or omits them", () => {
+    const store = new BridgewatchStore(join(mkdtempSync(join(tmpdir(), "bridgewatch-test-")), "cache.sqlite"));
+    try {
+      store.replaceProjectRegistry([project]);
+      const recollected = structuredClone(project);
+      recollected.name = "Current project name";
+      recollected.completionReceipt = undefined;
+      recollected.finalMainSha = undefined;
+      recollected.finalDecision = undefined;
+      recollected.phases[0]!.name = "Current phase name";
+      recollected.phases[0]!.integratedMainSha = undefined;
+      recollected.phases[0]!.milestones = [];
+      store.replaceProjectRegistry([recollected]);
+      const retained = store.projects()[0]!;
+      expect(retained.name).toBe("Current project name");
+      expect(retained.historicalNames).toContain("Archived project");
+      expect(retained.completionReceipt).toBe(project.completionReceipt);
+      expect(retained.finalMainSha).toBe("abc");
+      expect(retained.finalDecision).toBe("RELEASE_GO");
+      expect(retained.phases[0]).toMatchObject({
+        name: "Current phase name",
+        historicalNames: ["Accepted phase"],
+        integratedMainSha: "abc",
+      });
+      expect(retained.phases[0]!.milestones).toEqual(project.phases[0]!.milestones);
+    } finally {
+      store.close();
     }
   });
 

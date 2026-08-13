@@ -2439,6 +2439,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Project_Bridgewatch_Completion_Receipt.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Project_Bridgewatch_Homeport_Gateway_Design_Record.md",
       "record_type": "archive-index",
       "status": "preserved",
@@ -2488,6 +2494,48 @@
     },
     {
       "path": "Development_Docs/Project_Bridgewatch_Phase_2_Validation_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_Phase_3_Completion_Receipt.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_Phase_3_Deployment_Runbook.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_Phase_3_Design_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_Phase_3_Integration_Manifest.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_Phase_3_Performance_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_Phase_3_Test_Plan.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_Phase_3_Validation_Record.md",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
