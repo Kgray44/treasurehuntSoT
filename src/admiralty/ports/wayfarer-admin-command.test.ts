@@ -79,4 +79,28 @@ describe("Wayfarer Admiralty command ports", () => {
       status: 404,
     });
   });
+
+  it("uses the stable idempotency key for both owner receipt and correlation", async () => {
+    owner.revokeAccountSessionByAdministrator.mockResolvedValue({
+      id: "session_1234567890",
+      revokedAt: "2026-08-13T12:00:00.000Z",
+      alreadyRevoked: false,
+    });
+    const session = newAdmiraltyCommandRequest({
+      commandType: "SESSION_REVOKE",
+      actorAccountId: actor.accountId,
+      targetType: "UserAccount",
+      targetId: "account_1234567890",
+      reason: "Verified account-security incident requires revocation.",
+      idempotencyKey: "session_12345678901234567890",
+      input: { sessionId: "session_1234567890" },
+    });
+    await wayfarerSessionRevokePort(actor).execute(session, await wayfarerSessionRevokePort(actor).preview(session));
+    expect(owner.revokeAccountSessionByAdministrator).toHaveBeenCalledWith(
+      expect.objectContaining({
+        correlationId: "session_12345678901234567890",
+        idempotencyKey: "session_12345678901234567890",
+      }),
+    );
+  });
 });
