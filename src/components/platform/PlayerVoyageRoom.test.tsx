@@ -317,7 +317,7 @@ describe("PlayerVoyageRoom", () => {
     await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1/journal"));
   });
 
-  it("rechecks a backgrounded waiting room when focus arrives before visibility settles", async () => {
+  it("reconciles a launched waiting room when focus precedes a delayed visibility update", async () => {
     const handoff = vi.fn();
     const active = {
       ...voyage,
@@ -326,7 +326,7 @@ describe("PlayerVoyageRoom", () => {
       canEnter: true,
       runtimeHref: "/player/playthroughs/voyage-1/journal",
     };
-    let hidden = true;
+    const hidden = true;
     vi.spyOn(document, "hidden", "get").mockImplementation(() => hidden);
     const fetchMock = vi
       .fn()
@@ -338,7 +338,6 @@ describe("PlayerVoyageRoom", () => {
     await screen.findByRole("heading", { name: "The Moonlit Key" });
 
     window.dispatchEvent(new Event("focus"));
-    hidden = false;
 
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
     await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1/journal"));

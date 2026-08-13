@@ -213,7 +213,6 @@ export function PlayerVoyageRoom({
 
   useEffect(() => {
     queueMicrotask(() => void load("connecting"));
-    let visibilityRecheck: number | null = null;
     const reconcile = (nextConnection: ConnectionState) => {
       activeLoad.current?.abort("superseded-by-authoritative-event");
       activeLoad.current = null;
@@ -259,27 +258,22 @@ export function PlayerVoyageRoom({
     };
     const reconcileWhenVisible = () => {
       if (connectionRef.current === "revoked") return;
-      // Browser focus can arrive one task before its visibility state changes.
-      // Recheck once so an authoritative launch is not stranded in a tab that
-      // was backgrounded while its Captain started the voyage.
-      if (document.hidden) {
-        if (visibilityRecheck) window.clearTimeout(visibilityRecheck);
-        visibilityRecheck = window.setTimeout(() => {
-          visibilityRecheck = null;
-          if (!document.hidden && connectionRef.current !== "revoked") {
-            setConnection("reconciling");
-            reconcile("reconciling");
-          }
-        }, 0);
-        return;
-      }
+      if (document.hidden) return;
+      setConnection("reconciling");
+      reconcile("reconciling");
+    };
+    // Focus is the resume signal even if the visibility property has not
+    // caught up yet. Waiting for a single visibility recheck can strand a
+    // launched Voyage when the browser delays that update beyond one task.
+    const onFocus = () => {
+      if (connectionRef.current === "revoked") return;
       setConnection("reconciling");
       reconcile("reconciling");
     };
     const onVisibilityChange = reconcileWhenVisible;
     window.addEventListener("offline", onOffline);
     window.addEventListener("online", onOnline);
-    window.addEventListener("focus", onVisibilityChange);
+    window.addEventListener("focus", onFocus);
     document.addEventListener("visibilitychange", onVisibilityChange);
     return () => {
       window.clearInterval(timer);
@@ -290,10 +284,9 @@ export function PlayerVoyageRoom({
         window.clearTimeout(launchHandoffTimer.current);
         launchHandoffTimer.current = null;
       }
-      if (visibilityRecheck) window.clearTimeout(visibilityRecheck);
       window.removeEventListener("offline", onOffline);
       window.removeEventListener("online", onOnline);
-      window.removeEventListener("focus", reconcileWhenVisible);
+      window.removeEventListener("focus", onFocus);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [load, playthroughId]);
@@ -353,24 +346,26 @@ export function PlayerVoyageRoom({
     launchStarted.current = true;
     setLaunchReady(true);
     const showCeremony = consumeOneShot(launchCeremonyKey);
-    const timer = window.setTimeout(
-      async () => {
-        launchHandoffTimer.current = null;
-        if (connectionRef.current === "revoked") return;
-        try {
-          if (onRouteHandoff) await onRouteHandoff(voyage.runtimeHref!);
-          else router.push(voyage.runtimeHref!);
-        } catch {
-          launchStarted.current = false;
-          setRouteFailed(true);
-          setError("The voyage launched, but the journal route could not open. Try again.");
-        }
-      },
-      // Background documents throttle timers. The authoritative launch route
-      // must not wait behind a ceremony that the browser cannot present.
-      showCeremony && !document.hidden ? ceremonyToken.durationMs : 0,
-    );
-    launchHandoffTimer.current = timer;
+    const handOff = async () => {
+      launchHandoffTimer.current = null;
+      if (connectionRef.current === "revoked") return;
+      try {
+        if (onRouteHandoff) await onRouteHandoff(voyage.runtimeHref!);
+        else router.push(voyage.runtimeHref!);
+      } catch {
+        launchStarted.current = false;
+        setRouteFailed(true);
+        setError("The voyage launched, but the journal route could not open. Try again.");
+      }
+    };
+    // A background tab can expose the authoritative active state before the
+    // browser resumes its timer queue. Do not put the zero-delay recovery
+    // route behind that queue; only a visible ceremony earns a delay.
+    if (showCeremony && !document.hidden) {
+      launchHandoffTimer.current = window.setTimeout(() => void handOff(), ceremonyToken.durationMs);
+    } else {
+      void handOff();
+    }
   }, [
     ceremonyToken.durationMs,
     launchCeremonyKey,
