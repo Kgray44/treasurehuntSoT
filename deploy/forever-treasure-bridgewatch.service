@@ -1,0 +1,23 @@
+[Unit]
+Description=Forever Treasure Bridgewatch (standalone read-only observer)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=forever-treasure
+WorkingDirectory=/opt/forever-treasure/bridgewatch
+EnvironmentFile=/etc/forever-treasure-bridgewatch.env
+Environment=BRIDGEWATCH_HOST=127.0.0.1
+Environment=BRIDGEWATCH_PORT=4318
+ExecStart=/usr/bin/node dist/lib/server.js
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

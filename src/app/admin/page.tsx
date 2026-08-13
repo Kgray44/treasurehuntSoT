@@ -17,6 +17,7 @@ export default async function AdmiraltyPage() {
   const operator = await admiraltyPageOperator("PLATFORM_OBSERVE");
   const overview = await admiraltyOverview(operator);
   const available = [
+    ["PLATFORM_OBSERVE", "Bridgewatch", "/bridgewatch"],
     ["ACCOUNT_OBSERVE", "People", "/admin/people"],
     ["CHRONICLE_OBSERVE", "Chronicles", "/admin/chronicles"],
     ["VOYAGE_OBSERVE", "Voyages", "/admin/voyages"],

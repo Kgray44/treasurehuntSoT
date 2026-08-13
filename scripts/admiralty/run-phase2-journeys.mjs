@@ -22,6 +22,7 @@ const env = {
   NEXT_DIST_DIR: distDir,
   VOYAGEWRIGHT_BUILD_SHA: sourceSha,
 };
+run("node_modules/typescript/bin/tsc", ["-p", "bridgewatch/tsconfig.json"], env);
 if (!(process.env.ADMIRALTY_PHASE2_REUSE_BUILD === "1" && existsSync(path.join(root, distDir, "BUILD_ID"))))
   run("node_modules/next/dist/bin/next", ["build"], env);
 run("node_modules/@playwright/test/cli.js", ["test", "-c", "playwright.admiralty-phase2.config.ts"], env);
