@@ -89,6 +89,7 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
       return NextResponse.json(
         await planReusableAuthoringInsertion({
           ownerAccountId: authorization.session.accountId,
+          taleId,
           itemId: input.itemId,
           operationId: input.operationId,
           targetChapterId: input.targetChapterId,

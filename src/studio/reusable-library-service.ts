@@ -56,6 +56,7 @@ export async function getReusableAuthoringItemVersion(ownerAccountId: string, it
 
 export async function planReusableAuthoringInsertion(input: {
   ownerAccountId: string;
+  taleId: string;
   itemId: string;
   operationId: string;
   targetChapterId?: string;
@@ -68,6 +69,24 @@ export async function planReusableAuthoringInsertion(input: {
   )
     throw new Error("The destination Chronicle draft is invalid for reusable-content planning.");
   const { envelope } = await getReusableAuthoringItemVersion(input.ownerAccountId, input.itemId);
+  const [assets, artifacts, locations] = await Promise.all([
+    db.taleAsset.findMany({ where: { taleId: input.taleId, deletedAt: null }, select: { id: true } }),
+    db.taleArtifact.findMany({ where: { taleId: input.taleId, archivedAt: null }, select: { id: true } }),
+    db.taleLocation.findMany({ where: { taleId: input.taleId, archivedAt: null }, select: { id: true } }),
+  ]);
+  const available = {
+    assetIds: new Set(assets.map((asset) => asset.id)),
+    artifactIds: new Set(artifacts.map((artifact) => artifact.id)),
+    locationIds: new Set(locations.map((location) => location.id)),
+  };
+  const missing = [
+    ...envelope.dependencies.assetIds.filter((id) => !available.assetIds.has(id)).map((id) => `asset ${id}`),
+    ...envelope.dependencies.artifactIds.filter((id) => !available.artifactIds.has(id)).map((id) => `artifact ${id}`),
+    ...envelope.dependencies.locationIds.filter((id) => !available.locationIds.has(id)).map((id) => `location ${id}`),
+    ...envelope.dependencies.providerIds.map((id) => `provider ${id}`),
+  ];
+  if (missing.length)
+    throw new Error(`Reusable content dependencies are unavailable in this Chronicle: ${missing.join(", ")}.`);
   const plan = planReusableInsertion({
     envelope,
     draft: input.draft,

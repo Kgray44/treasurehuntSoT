@@ -461,6 +461,19 @@ export function TaleEditor({
     });
     const plan = (await response.json()) as InsertionPlan & { error?: string };
     if (!response.ok) return setReusableError(plan.error ?? "The reusable fragment could not be planned.");
+    const preview = [
+      `${Object.keys(plan.remap.blocks).length} Passage${Object.keys(plan.remap.blocks).length === 1 ? "" : "es"} will be copied.`,
+      `${Object.keys(plan.remap.chapters).length} Chapter${Object.keys(plan.remap.chapters).length === 1 ? "" : "s"} will be added.`,
+      plan.warnings.length ? plan.warnings.join(" ") : "No unresolved external ports were reported.",
+    ].join(" ");
+    if (
+      !(await requestAction({
+        title: `Insert “${item.name}”?`,
+        detail: preview,
+        confirmLabel: "Insert reusable content",
+      }))
+    )
+      return;
     const next = change((candidate) => {
       const replacement = new Map(plan.chapters.map((chapter) => [chapter.id, chapter]));
       candidate.chapters = candidate.chapters.map((chapter) => replacement.get(chapter.id) ?? chapter);
