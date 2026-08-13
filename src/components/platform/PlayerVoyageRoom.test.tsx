@@ -326,7 +326,7 @@ describe("PlayerVoyageRoom", () => {
       canEnter: true,
       runtimeHref: "/player/playthroughs/voyage-1/journal",
     };
-    let hidden = true;
+    const hidden = true;
     vi.spyOn(document, "hidden", "get").mockImplementation(() => hidden);
     const fetchMock = vi
       .fn()
