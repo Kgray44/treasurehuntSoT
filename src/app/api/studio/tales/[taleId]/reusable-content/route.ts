@@ -28,6 +28,10 @@ const requestSchema = z.discriminatedUnion("action", [
     itemId: z.string().min(8).max(128),
     operationId: z.string().min(8).max(128),
     targetChapterId: z.string().min(8).max(128).optional(),
+    parameterValues: z
+      .record(z.string().regex(/^[a-z][a-z0-9_]*$/), z.union([z.string().max(10000), z.number().finite(), z.boolean()]))
+      .refine((value) => Object.keys(value).length <= 100, "At most 100 parameter values may be supplied.")
+      .optional(),
     draft: z.unknown(),
   }),
   z.object({
@@ -93,6 +97,7 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
           itemId: input.itemId,
           operationId: input.operationId,
           targetChapterId: input.targetChapterId,
+          parameterValues: input.parameterValues,
           draft: input.draft as DraftState,
         }),
       );

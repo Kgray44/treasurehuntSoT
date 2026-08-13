@@ -6,6 +6,7 @@ import {
   checksumReusableEnvelope,
   parseReusableEnvelope,
   planReusableInsertion,
+  resolveReusableParameters,
   type ReusableContentEnvelope,
 } from "@/studio/reusable-content";
 
@@ -96,6 +97,33 @@ function envelope(): ReusableContentEnvelope {
 }
 
 describe("reusable authoring insertion", () => {
+  it("resolves declared parameters only into bounded canonical destinations", () => {
+    const base = envelope();
+    const parameterized = {
+      ...base,
+      parameters: [
+        {
+          key: "opening_text",
+          label: "Opening text",
+          type: "TEXT" as const,
+          required: true,
+          helpText: "Player-facing opening.",
+          destinationPath: "blocks.block-source-2.configuration.body",
+        },
+      ],
+    };
+    const signed = { ...parameterized, checksum: checksumReusableEnvelope(parameterized) };
+    expect(resolveReusableParameters(signed, { opening_text: "A calm harbor." }).blocks[1].configuration.body).toBe(
+      "A calm harbor.",
+    );
+    expect(() => resolveReusableParameters(signed)).toThrow(/required/i);
+    expect(() =>
+      resolveReusableParameters(
+        { ...signed, parameters: [{ ...signed.parameters[0], destinationPath: "tale.visibility" }] },
+        { opening_text: "A calm harbor." },
+      ),
+    ).toThrow(/destinations/i);
+  });
   it("fails closed when a reusable capture contains protected source material", () => {
     expect(() =>
       assertReusableCaptureSafe([{ ...envelope().blocks[0], configuration: { privacy: "CREATOR_PRIVATE" } }]),

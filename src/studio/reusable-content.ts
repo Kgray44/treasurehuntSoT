@@ -256,6 +256,61 @@ export type InsertionPlan = {
   warnings: string[];
 };
 
+type ReusableParameterValue = string | number | boolean;
+
+function assertParameterValue(parameter: ReusableParameter, value: ReusableParameterValue) {
+  if (
+    ["TEXT", "TITLE", "ASSET", "ARTIFACT", "LOCATION", "VARIABLE", "TARGET", "CHOICE_LABEL"].includes(parameter.type)
+  ) {
+    if (typeof value !== "string" || !value.trim())
+      throw new Error(`Parameter ${parameter.label} requires a non-empty text value.`);
+  }
+  if (parameter.type === "DURATION" && (typeof value !== "number" || !Number.isFinite(value) || value <= 0))
+    throw new Error(`Parameter ${parameter.label} requires a positive duration.`);
+  if (parameter.type === "VISIBILITY" && !["PRIVATE", "UNLISTED", "PUBLIC"].includes(String(value)))
+    throw new Error(`Parameter ${parameter.label} requires a supported visibility value.`);
+}
+
+function assignParameter(blocks: Block[], destinationPath: string, value: ReusableParameterValue) {
+  const match = /^blocks\.([^\.]+)\.(configuration|presentation|completion)\.([a-zA-Z][a-zA-Z0-9_.-]{0,200})$/u.exec(
+    destinationPath,
+  );
+  if (!match)
+    throw new Error(
+      "Reusable parameter destinations must target a canonical block configuration, presentation, or completion field.",
+    );
+  const block = blocks.find((candidate) => candidate.id === match[1]);
+  if (!block) throw new Error("Reusable parameter destination does not belong to this reusable item.");
+  const root = block[match[2] as "configuration" | "presentation" | "completion"] as JsonObject;
+  const parts = match[3].split(".");
+  let cursor: JsonObject = root;
+  for (const part of parts.slice(0, -1)) {
+    const existing = cursor[part];
+    if (existing !== undefined && (!existing || typeof existing !== "object" || Array.isArray(existing)))
+      throw new Error("Reusable parameter destination conflicts with a non-object canonical field.");
+    cursor[part] = (existing as JsonObject | undefined) ?? {};
+    cursor = cursor[part] as JsonObject;
+  }
+  cursor[parts.at(-1)!] = value;
+}
+
+export function resolveReusableParameters(
+  envelope: ReusableContentEnvelope,
+  supplied: Record<string, ReusableParameterValue> = {},
+) {
+  const resolved = clone(envelope);
+  for (const parameter of resolved.parameters) {
+    const value = supplied[parameter.key] ?? parameter.defaultValue;
+    if (value === undefined) {
+      if (parameter.required) throw new Error(`Reusable parameter ${parameter.label} is required before insertion.`);
+      continue;
+    }
+    assertParameterValue(parameter, value);
+    assignParameter(resolved.blocks, parameter.destinationPath, value);
+  }
+  return resolved;
+}
+
 function clone<T>(value: T): T {
   return structuredClone(value);
 }
@@ -307,10 +362,11 @@ export function planReusableInsertion(input: {
   draft: DraftState;
   operationId: string;
   targetChapterId?: string;
+  parameterValues?: Record<string, ReusableParameterValue>;
 }): InsertionPlan {
   if (!/^[a-zA-Z0-9][a-zA-Z0-9-]{7,95}$/.test(input.operationId))
     throw new Error("Insertion operation identity is invalid.");
-  const envelope = parseReusableEnvelope(input.envelope);
+  const envelope = resolveReusableParameters(parseReusableEnvelope(input.envelope), input.parameterValues);
   const occupied = destinationIds(input.draft);
   const remap: ReferenceRemap = { blocks: {}, chapters: {}, variables: {} };
   for (const block of envelope.blocks)

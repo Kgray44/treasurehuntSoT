@@ -61,6 +61,7 @@ export async function planReusableAuthoringInsertion(input: {
   operationId: string;
   targetChapterId?: string;
   draft: DraftState;
+  parameterValues?: Record<string, string | number | boolean>;
 }): Promise<InsertionPlan> {
   if (
     !input.draft ||
@@ -92,6 +93,7 @@ export async function planReusableAuthoringInsertion(input: {
     draft: input.draft,
     operationId: input.operationId,
     targetChapterId: input.targetChapterId,
+    parameterValues: input.parameterValues,
   });
   const portWarnings = [
     ...envelope.entryPorts.map((port) => `Connect the imported entry port: ${port.label}.`),
