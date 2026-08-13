@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `ddc1935217f15d866353cdd5a84b1725c5aac39e`
+Audited source commit: `6d7dba1205ec24c1a7317556e137516df02ba51c`
 
 ## Status vocabulary
 
@@ -1414,6 +1414,7 @@ Tideglass compares exact immutable Chronicle editions, explains semantic change 
 - Discoverable What Changed edition comparison
 - Exact edition selection, pair swap, and Publishing-owned current target
 - Compare to What I Played using owner-bound retained Voyage history
+- Wakebook Journey Detail See what's changed handoff
 - Spoiler disclosure, concise/detailed modes, category filters, compatibility, and accessibility presentation
 - Creator Studio published-version comparison through canonical semantic projection
 
@@ -1425,7 +1426,6 @@ Tideglass compares exact immutable Chronicle editions, explains semantic change 
 
 - Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.
 - Final Harborlight update integration and any accepted Captain/Helm visual comparison consumer remain deferred to later work.
-- The Wakebook Journey Detail handoff is owner-accepted in the current reconciliation candidate; it is not represented as accepted-main capability until protected integration completes.
 
 ### Evidence
 
@@ -1588,4 +1588,4 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `ddc1935217f15d866353cdd5a84b1725c5aac39e`
+Generation source commit: `6d7dba1205ec24c1a7317556e137516df02ba51c`
