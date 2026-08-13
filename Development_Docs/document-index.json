@@ -3207,6 +3207,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_3_Block_Readiness_Matrix.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_3_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf",
       "record_type": "program-record",
       "status": "current",
