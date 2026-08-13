@@ -12,10 +12,10 @@ last_reviewed: 2026-08-12
 
 | Field                  | Value                                                                                |
 | ---------------------- | ------------------------------------------------------------------------------------ |
-| Branch                 | `codex/project-shipwright-phase2-fit-the-tools-r4`                                   |
+| Branch                 | `codex/project-shipwright-phase2-fit-the-tools-r5`                                   |
 | Original base          | `191a964488d0df71f8dcb91c5b8372fc73b6b32e` (`origin/main` at worktree creation)      |
 | Schema / Prisma impact | None                                                                                 |
-| Current state          | Owner accepted; Tideglass-reconciled qualification complete; authority order pending |
+| Current state          | Owner accepted; Wakebook-reconciled qualification complete; authority order pending |
 
 ## Safety assertions under test
 
