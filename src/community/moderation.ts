@@ -1,6 +1,8 @@
 import { createHash, randomUUID } from "node:crypto";
 import type { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
+import { writeAdministrativeAudit } from "@/admiralty/audit";
+import type { AdmiraltyCapabilityId } from "@/admiralty/capabilities";
 import { CommunityError } from "./domain";
 import { requireLiveModerationSubject, resolveModerationSubject } from "./moderation-subject";
 
@@ -513,6 +515,7 @@ export async function applyModerationAction(
     reasonCode: string;
     idempotencyKey: string;
     secondReviewerId?: string;
+    administrativeAudit?: { actorRole: string; capability: AdmiraltyCapabilityId; authorizationBasis: string; reason: string };
   },
 ) {
   requireModerator(
@@ -620,6 +623,23 @@ export async function applyModerationAction(
         }),
       },
     });
+    if (input.administrativeAudit)
+      await writeAdministrativeAudit(
+        {
+          actorAccountId: actor.accountId,
+          actorRole: input.administrativeAudit.actorRole,
+          capability: input.administrativeAudit.capability,
+          action: "ADMIRALTY_MODERATION_ACTION",
+          targetType: input.subjectType,
+          targetId: input.subjectId,
+          reason: input.administrativeAudit.reason,
+          authorizationBasis: input.administrativeAudit.authorizationBasis,
+          correlationId: correlation(actor),
+          beforeSummary: { caseId: input.caseId, revision: input.expectedRevision },
+          afterSummary: { actionType: input.actionType, state: "ACTIONED" },
+        },
+        tx,
+      );
     return created;
   });
   return action;
