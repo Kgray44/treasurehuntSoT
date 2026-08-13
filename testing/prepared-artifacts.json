@@ -1,0 +1,54 @@
+{
+  "version": "1.4",
+  "status": "candidate-pending-protected-mainline-acceptance",
+  "identityAlgorithm": "SHA-256",
+  "trustedPublisherClasses": ["protected-authoritative-workflow"],
+  "consumerPolicy": {
+    "sourceRehashRequired": true,
+    "destinationRehashRequired": true,
+    "corruptionAction": "REJECT",
+    "cacheMissAction": "NORMAL_GOVERNED_PREPARATION",
+    "revocationAction": "REJECT"
+  },
+  "retention": {
+    "sharedImmutableOnly": true,
+    "expiryRequired": true,
+    "usageTelemetryRequired": true
+  },
+  "layers": [
+    {
+      "id": "dependency",
+      "mutable": false,
+      "identityFamilies": ["package", "lockfile", "node-npm", "os-arch", "install-policy"]
+    },
+    {
+      "id": "prisma-client",
+      "mutable": false,
+      "identityFamilies": ["dependency", "prisma", "schema", "generator", "os-arch"]
+    },
+    {
+      "id": "browser-chromium",
+      "mutable": false,
+      "identityFamilies": ["playwright", "browser-revision", "os-arch", "browser-policy"]
+    },
+    {
+      "id": "browser-webkit",
+      "mutable": false,
+      "identityFamilies": ["playwright", "browser-revision", "os-arch", "browser-policy"]
+    },
+    {
+      "id": "sqlite-baseline",
+      "mutable": false,
+      "identityFamilies": ["schema", "migrations", "seed-fixture", "prisma-client", "baseline-policy"]
+    }
+  ],
+  "runOwnedExclusions": [
+    "database",
+    "browser-profile",
+    "browser-context",
+    "port",
+    "storage-root",
+    "build-output",
+    "workspace"
+  ]
+}

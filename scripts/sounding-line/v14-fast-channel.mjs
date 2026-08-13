@@ -16,14 +16,18 @@ const git = async (root, ...args) => (await exec("git", ["-C", root, ...args])).
 const json = async (root, name) => JSON.parse(await readFile(path.join(root, "testing", name), "utf8"));
 
 export async function generateV14FastChannelPlan({ root, baseSha, candidateSha, gateId = "mainline" }) {
-  const [gates, suites, impact, debt, contracts, ownership] = await Promise.all([
-    json(root, "release-gates.json"),
-    json(root, "suites.json"),
-    json(root, "impact-map.json"),
-    json(root, "v14/contract-map-debt.json"),
-    json(root, "contracts.json"),
-    json(root, "ownership.json"),
-  ]);
+  const [gates, suites, impact, debt, contracts, ownership, fingerprintPolicy, preparedArtifacts, trainPolicy] =
+    await Promise.all([
+      json(root, "release-gates.json"),
+      json(root, "suites.json"),
+      json(root, "impact-map.json"),
+      json(root, "v14/contract-map-debt.json"),
+      json(root, "contracts.json"),
+      json(root, "ownership.json"),
+      json(root, "evidence-fingerprint-policy.json"),
+      json(root, "prepared-artifacts.json"),
+      json(root, "mainline-train-policy.json"),
+    ]);
   const gate = gates.gates.find((entry) => entry.id === gateId);
   if (!gate) throw new Error(`UNKNOWN_GATE:${gateId}`);
   const changedPaths = (await git(root, "diff", "--name-only", baseSha, candidateSha)).split(/\r?\n/u).filter(Boolean);
@@ -48,6 +52,9 @@ export async function generateV14FastChannelPlan({ root, baseSha, candidateSha, 
       predictedParentTreeSha: qualifiedBaseTreeSha,
       predictedIntegrationTreeSha: candidateTreeSha,
       mergeStrategyIdentity: "single-candidate-shadow",
+      fingerprintPolicyDigest: digest(fingerprintPolicy),
+      preparedArtifactPolicyDigest: digest(preparedArtifacts),
+      trainPolicyDigest: digest(trainPolicy),
     },
     policyDigest: digest(gates),
     inventoryDigest: digest({ contracts, ownership, suites }),
