@@ -1,14 +1,14 @@
 ---
 title: Project Tideglass Phase 3 Qualification Record
 audience: product-engineering
-status: current-main-qualified-candidate-freeze-pending
+status: authority-repair-focused-proof-pending
 canonical_for: project-tideglass-phase-3-qualification
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 qualification record
 
-Status: `CURRENT_MAIN_QUALIFIED_CANDIDATE_FREEZE_PENDING`.
+Status: `AUTHORITY_REPAIR_FOCUSED_PROOF_PENDING`.
 
 The earlier local candidate is superseded. It used an invented response proxy and did not evidence the complete governed state matrix. No owner walkthrough, Sounding Line Mainline Decision, protected merge, deployment, provider execution, or real-account acceptance was claimed or dispatched for it.
 
@@ -59,6 +59,24 @@ Axe serious/critical zero. The final `npm run homeport:validate` pass repaired
 only three missing `notes` fields and one model-name/authority-ID mismatch in
 pre-existing Wakebook Homeport governance records; it introduced no product
 route, capability, or semantic change.
+
+## Terminal Mainline Decision and focused repair
+
+The one explicit Mainline Decision for candidate
+`a70e9f6c6800249f21f8aa9edca322a4a4e39369` against base
+`770404dd11cdfc1b86658a488979c43c22ed1711` was dispatched as hosted run
+`31658984596`. Its plan and runtime conformance were valid, but its finalizer
+returned `RELEASE_NO_GO`: `unit.feature-catalog` was the sole failed worker.
+The sealed receipt records one failing assertion in
+`scripts/features/feature-catalog.test.ts`: the FT-B009 fragment correctly
+reports `Project Tideglass Phases 1-3`, while the test still expected
+`Project Tideglass Phases 1-2`.
+
+The repair updates only that stale expected string. Its exact focused test passes
+9/9 and Feature Catalog synchronization/validation are green. The hosted
+authority run is terminally complete, the draft PR remains non-merging, and no
+replacement authority will be dispatched until the repaired candidate has been
+requalified, frozen, and assigned a later serial position.
 
 ## Candidate qualification evidence
 

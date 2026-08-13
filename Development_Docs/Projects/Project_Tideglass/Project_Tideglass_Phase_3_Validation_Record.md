@@ -1,14 +1,14 @@
 ---
 title: Project Tideglass Phase 3 Validation Record
 audience: product-engineering
-status: current-main-qualified-candidate-freeze-pending
+status: authority-repair-focused-proof-pending
 canonical_for: project-tideglass-phase-3-validation
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 validation record
 
-Status: `CURRENT_MAIN_QUALIFIED_CANDIDATE_FREEZE_PENDING`.
+Status: `AUTHORITY_REPAIR_FOCUSED_PROOF_PENDING`.
 The original product decision and the explicit Wakebook Journey Detail addendum
 acceptance are recorded; protected integration remains pending.
 
@@ -59,6 +59,23 @@ requires authority ID `HP-SES-001`. The narrow metadata repair passed the full
 Homeport contract, reachability, surface, visual, accessibility, and host-origin
 validation stack. It does not change a product route, visibility, capability,
 or Tideglass behavior.
+
+## Hosted authority failure and focused repair
+
+Hosted `Sounding Line / Mainline Decision` run `31658984596` was explicitly
+bound to candidate `a70e9f6c6800249f21f8aa9edca322a4a4e39369`, PR `#68`, and
+base `770404dd11cdfc1b86658a488979c43c22ed1711`. It ended `RELEASE_NO_GO`.
+The plan, runtime conformance, 18 other wave-0 workers, and access-sentinel
+browser worker passed. The sole failure was `unit.feature-catalog`, whose sealed
+receipt identifies the stale FT-B009 expected program label in
+`scripts/features/feature-catalog.test.ts`.
+
+The smallest registered reproduction failed 1/9 with the same assertion. The
+single-string expectation repair passes the same focused test 9/9 plus
+`npm run features:sync` and `npm run features:validate`. This is a repair of a
+governed test expectation, not a semantic, product, or authority-policy change.
+The hosted authority run has completed and released its lane; no retry is
+authorized until current-main requalification and a new frozen candidate exist.
 
 ## Authority preflight and focused repair
 
