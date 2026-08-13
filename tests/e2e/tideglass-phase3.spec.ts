@@ -128,7 +128,7 @@ test("Journeys A-J: visible entry, accepted Journey Detail history, creator deta
   await anonymous.context.close();
 
   const playerA = await signedInPage(browser, "PLAYER_A", "/passport/history");
-  await expect(playerA.page.getByRole("heading", { name: "Your Voyages", exact: true })).toBeVisible();
+  await expect(playerA.page.getByRole("heading", { name: "Your Voyages", exact: true, level: 1 })).toBeVisible();
   await playerA.page.getByRole("link", { name: "Open The Tideglass Passage Fixture Voyage", exact: true }).click();
   await expect(playerA.page.getByRole("heading", { name: "Voyage Detail", exact: true })).toBeVisible();
   await playerA.page.getByRole("link", { name: "See what changed", exact: true }).click();
@@ -167,7 +167,7 @@ test("Journeys A-J: visible entry, accepted Journey Detail history, creator deta
   await playerA.context.close();
 
   const playerAB = await signedInPage(browser, "PLAYER_AB", "/passport/history");
-  await expect(playerAB.page.getByRole("heading", { name: "Your Voyages", exact: true })).toBeVisible();
+  await expect(playerAB.page.getByRole("heading", { name: "Your Voyages", exact: true, level: 1 })).toBeVisible();
   await playerAB.page
     .getByRole("link", { name: "Open The Tideglass Passage Fixture Voyage", exact: true })
     .first()
@@ -192,7 +192,7 @@ test("Journeys A-J: visible entry, accepted Journey Detail history, creator deta
   await playerAB.context.close();
 
   const playerC = await signedInPage(browser, "PLAYER_C", "/passport/history");
-  await expect(playerC.page.getByRole("heading", { name: "Your Voyages", exact: true })).toBeVisible();
+  await expect(playerC.page.getByRole("heading", { name: "Your Voyages", exact: true, level: 1 })).toBeVisible();
   await playerC.page.getByRole("link", { name: "Open The Tideglass Passage Fixture Voyage", exact: true }).click();
   await expect(playerC.page.getByRole("heading", { name: "Voyage Detail", exact: true })).toBeVisible();
   await playerC.page.getByRole("link", { name: "See what changed", exact: true }).click();
