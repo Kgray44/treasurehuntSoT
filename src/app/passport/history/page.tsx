@@ -1,5 +1,5 @@
 import { AuthenticatedHarborPage } from "@/components/homeport/AuthenticatedHarborPage";
-import { HistoryExplorer } from "@/components/homeport/PassportSurfaces";
+import { WakebookArchive } from "@/components/wakebook/WakebookArchive";
 export const dynamic = "force-dynamic";
 export default function PassportHistoryPage() {
   return (
@@ -7,11 +7,11 @@ export default function PassportHistoryPage() {
       returnTo="/passport/history"
       activeSection="passport-history"
       eyebrow="Chronicle Passport"
-      title="Chronicle History"
-      description="Owner-authorized, version-pinned records from Voyages you joined."
+      title="Your Voyages"
+      description="Return to a private, version-pinned archive of the journeys you lived."
       capability="player"
     >
-      <HistoryExplorer />
+      <WakebookArchive />
     </AuthenticatedHarborPage>
   );
 }

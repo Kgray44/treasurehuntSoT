@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "phase-5-homeport-route-reachability-registered",
+  "status": "integrated-tideglass-phase-3-wakebook-phase-1-control-plane",
   "contracts": [
     {
       "id": "invitation-acceptance",
@@ -3241,6 +3241,90 @@
       "name": "Responsive accessible read-only Chartroom",
       "authority": "project-admiralty",
       "owners": ["project-admiralty"],
+      "critical": true
+    },
+    {
+      "id": "wakebook.history.version-pinning",
+      "name": "Wakebook historical version pinning",
+      "authority": "project-wakebook",
+      "owners": ["project-wakebook", "wayfarer", "one-voyage"],
+      "critical": true
+    },
+    {
+      "id": "wakebook.history.owner-privacy",
+      "name": "Wakebook owner-private archive authorization",
+      "authority": "project-wakebook",
+      "owners": ["project-wakebook", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "wakebook.history.historical-stability",
+      "name": "Wakebook historical snapshot stability",
+      "authority": "project-wakebook",
+      "owners": ["project-wakebook", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "wakebook.timing.quality",
+      "name": "Wakebook truthful timing quality",
+      "authority": "project-wakebook",
+      "owners": ["project-wakebook", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "wakebook.artifact-context",
+      "name": "Wakebook shared and personal artifact boundary",
+      "authority": "project-wakebook",
+      "owners": ["project-wakebook", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "wakebook.navigation.reachability",
+      "name": "Wakebook ordinary desktop and mobile reachability",
+      "authority": "project-wakebook",
+      "owners": ["project-wakebook", "project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "wakebook.archive.pagination",
+      "name": "Wakebook bounded deterministic archive pagination",
+      "authority": "project-wakebook",
+      "owners": ["project-wakebook"],
+      "critical": true
+    },
+    {
+      "id": "wakebook.archive.year-grouping",
+      "name": "Wakebook accurate archive year grouping",
+      "authority": "project-wakebook",
+      "owners": ["project-wakebook"],
+      "critical": true
+    },
+    {
+      "id": "wakebook.archive.filters",
+      "name": "Wakebook deterministic owner-safe filters",
+      "authority": "project-wakebook",
+      "owners": ["project-wakebook"],
+      "critical": true
+    },
+    {
+      "id": "wakebook.archive.invitation-separation",
+      "name": "Wakebook invitation and played history separation",
+      "authority": "project-wakebook",
+      "owners": ["project-wakebook", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "wakebook.archive.partial-history",
+      "name": "Wakebook safe partial-history degradation",
+      "authority": "project-wakebook",
+      "owners": ["project-wakebook", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "wakebook.archive.summary-redaction",
+      "name": "Wakebook archive summary redaction",
+      "authority": "project-wakebook",
+      "owners": ["project-wakebook", "wayfarer"],
       "critical": true
     }
   ]

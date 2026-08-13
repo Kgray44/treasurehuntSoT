@@ -3,7 +3,7 @@ title: Chronicle Passport
 audience: user
 status: current
 canonical_for: chronicle-passport-guide
-last_reviewed: 2026-08-07
+last_reviewed: 2026-08-09
 ---
 
 # Chronicle Passport
@@ -19,6 +19,30 @@ private Keepsakes stay owner-authorized; Artifact Cabinet entries retain grant
 provenance; Saved from Community contains only eligible public items you chose
 to keep. Empty sections explain that no records exist instead of offering test
 controls or simulated data.
+
+On the Project Wakebook Phase 1 branch, choose **History** to open **Your
+Voyages**. Each card represents the Chronicle edition you actually played. Use
+the search field for a historical Chronicle or crew name, open **More filters**
+for state/year/role/remembrance context, change the order, or choose **Show more
+Voyages** for the next bounded page. Year headings describe the complete
+matching year, not just the cards already loaded. Invitations appear in their
+own section and do not increase the played-Voyage total.
+
+Choose **Open Voyage** for Journey Summary, Path, Crew, Artifacts, Exact
+Edition, and Remembrance. `Duration unavailable` means trustworthy timing was
+not preserved; it never means zero. Shared Voyage artifact moments describe
+what the crew witnessed, while **Your Artifact Cabinet records** are the only
+items presented as personally held. Reflection, Memories, and Keepsakes remain
+private. The exact version identifier and checksum are available under
+**Edition provenance** for advanced verification without dominating the normal
+experience.
+
+If the archive is empty, use its visible Chronicle discovery or invitation
+actions. If filters return no matches, clear them in one action; the underlying
+history is unchanged. A partial-history notice means accepted version-pinned
+records remain readable while supplementary reconciliation needs attention.
+Signing out or opening another account's record never makes that private record
+available.
 
 Related: [Profile](profile.md), [account security](account-security.md),
 [privacy](privacy.md), and [troubleshooting](troubleshooting.md).
