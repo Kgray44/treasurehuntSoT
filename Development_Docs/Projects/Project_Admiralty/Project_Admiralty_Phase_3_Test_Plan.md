@@ -31,10 +31,14 @@ last_reviewed: 2026-08-13
   normalization, owner-enforced distinct-second-review eligibility, and a
   constrained Community action panel.
 
-## Qualification still required
+## Qualification result
 
-Add isolated owner-service, audit-failure, durable duplicate receipt,
-stale-preview, CSRF, IDOR, privacy, accessible UI, and browser journeys for
-each partially implemented command.
+The focused owner-service suite covers audit failure, stale revision,
+idempotency, authorization, and second-review eligibility. The isolated
+Chromium suite covers the three qualified commands through preview, assurance,
+confirmation, receipt persistence, privacy, serious/critical Axe checks, an
+authenticated CSRF denial, and a moderator-to-account-dossier denial. Its
+development-server fallback is explicitly limited by the unrelated full
+repository TypeScript blocker; it does not certify a production build.
 Job, role, and configuration mutation tests remain blocked until their canonical
 owner command contracts exist; they are not interpreted as passing by absence.
