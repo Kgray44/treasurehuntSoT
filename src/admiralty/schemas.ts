@@ -35,6 +35,19 @@ export const sessionRevokeSchema = z
     idempotencyKey: z.string().trim().min(16).max(128).regex(/^[A-Za-z0-9_-]+$/u),
   })
   .strict();
+export const moderationActionSchema = z
+  .object({
+    caseId: z.string().trim().min(1).max(128).regex(/^[A-Za-z0-9_-]+$/u),
+    subjectType: z.string().trim().min(1).max(64),
+    subjectId: z.string().trim().min(1).max(128).regex(/^[A-Za-z0-9_-]+$/u),
+    actionType: z.string().trim().min(1).max(64),
+    expectedRevision: z.number().int().min(0),
+    reasonCode: z.string().trim().min(1).max(64),
+    reason: z.string().trim().min(8).max(240),
+    idempotencyKey: z.string().trim().min(16).max(128).regex(/^[A-Za-z0-9_-]+$/u),
+    secondReviewerId: z.string().trim().min(1).max(128).regex(/^[A-Za-z0-9_-]+$/u).optional(),
+  })
+  .strict();
 export const supportReadSchema = z
   .object({
     grantId: z
