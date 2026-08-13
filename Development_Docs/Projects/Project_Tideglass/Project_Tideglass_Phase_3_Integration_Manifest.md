@@ -69,9 +69,11 @@ Wakebook, Helm, Shipwright, or Deepwater Phase 4 dependency.
 
 ## Accepted Wakebook reconciliation
 
-Current `origin/main` is `cbf634d4d5db9cf47edebb89e005e8cc910068bd`, which
-contains accepted Wakebook Phase 1. Its Journey Detail is now the ordinary past
-Voyage surface. Tideglass therefore supplies a narrow read-only adapter that
+Wakebook Phase 1 was accepted at `cbf634d4d5db9cf47edebb89e005e8cc910068bd`;
+current `origin/main` is `9e9d629085cb1551b1a3959c31b0b460c37724a9` after
+accepted Deepwater/Helm/Homeport work with no direct Tideglass or Wakebook
+product-source overlap. Journey Detail is now the ordinary past Voyage surface.
+Tideglass therefore supplies a narrow read-only adapter that
 uses the signed-in owner profile, exact `PlayerChronicleRecord`, and the
 Publishing-owned current pointer to produce a same-origin comparison link only
 for `PAIR` or `UP_TO_DATE`. Wakebook renders that link and never receives a

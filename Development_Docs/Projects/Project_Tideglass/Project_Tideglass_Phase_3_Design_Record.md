@@ -15,7 +15,7 @@ Phase 3 creates the ordinary, discoverable **What Changed?** experience over the
 | Item                                        | Frozen value                                                                                                                                              |
 | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Initial implementation `origin/main` base   | `54e3d818d49d45282a9c419d562d4b5c78911ccd`                                                                                                                |
-| Current reconciliation target `origin/main` | `cbf634d4d5db9cf47edebb89e005e8cc910068bd`                                                                                                                |
+| Current reconciliation target `origin/main` | `9e9d629085cb1551b1a3959c31b0b460c37724a9`                                                                                                                |
 | Dedicated branch                            | `codex/project-tideglass-phase3-choose-the-passage`                                                                                                       |
 | Dedicated worktree                          | `C:\Users\kkids\Documents\treasurehuntSoT-tideglass-phase3-choose-the-passage`                                                                            |
 | Wakebook reconciliation worktree            | `C:\Users\kkids\Documents\treasurehuntSoT-tideglass-phase3-wakebook-reconciliation` on `codex/project-tideglass-phase3-wakebook-reconciliation`           |
@@ -101,6 +101,13 @@ the accepted Journey Detail replaces the former Passport history detail and
 therefore needs the owner-safe Tideglass history handoff described above. This
 isolated reconciliation neither imports an unaccepted branch nor changes a
 semantic policy, schema, Studio consumer, or Captain surface.
+
+Current main subsequently advanced to `9e9d629085cb1551b1a3959c31b0b460c37724a9`
+through accepted Deepwater Phase 4 plus Helm/Homeport repairs. The interval has
+no direct Tideglass or Wakebook product-source overlap. It does change shared
+validation-runtime infrastructure, so the isolated branch is rebased to that
+base and requalifies its task-owned browser addendum rather than borrowing a
+prior runtime receipt.
 
 The route provides the following complete states: loading, unauthorized/unavailable, retryable comparison failure, no meaningful change, partial/redacted history, historical-only edition, up-to-date, populated concise, populated detailed, spoiler collapsed/revealed, and multiple-history selection. The page stacks selectors and cards at narrow widths, has no horizontal document overflow, uses visible text for every change state, and respects reduced motion.
 

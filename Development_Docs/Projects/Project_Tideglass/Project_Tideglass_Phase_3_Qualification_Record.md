@@ -15,9 +15,11 @@ The earlier local candidate is superseded. It used an invented response proxy an
 ## Accepted Wakebook reconciliation
 
 The original Phase 3 product received its governed release evidence and entered
-protected main as `bb7676a75581d8d415c3ff7712cc38bc8decb031`. Current main
-`cbf634d4d5db9cf47edebb89e005e8cc910068bd` subsequently accepted Wakebook
-Phase 1, which replaces the former past-Voyage detail with Journey Detail. This
+protected main as `bb7676a75581d8d415c3ff7712cc38bc8decb031`. Wakebook Phase 1
+was accepted at `cbf634d4d5db9cf47edebb89e005e8cc910068bd`; current main
+`9e9d629085cb1551b1a3959c31b0b460c37724a9` includes later accepted
+Deepwater/Helm/Homeport work with no direct Tideglass or Wakebook product-source
+overlap. Journey Detail replaces the former past-Voyage detail. This
 candidate restores the required Tideglass history handoff through that accepted
 surface without changing semantic policy, history truth, Studio, schema, or
 migrations.

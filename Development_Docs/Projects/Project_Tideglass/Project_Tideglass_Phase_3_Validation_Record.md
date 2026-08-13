@@ -36,8 +36,10 @@ Phase 4 work has been started.
 
 ## Current accepted-Wakebook reconciliation
 
-Current `origin/main` `cbf634d4d5db9cf47edebb89e005e8cc910068bd` accepts
-Wakebook Phase 1, replacing the old Passport detail with Journey Detail. The
+Wakebook Phase 1 at `cbf634d4d5db9cf47edebb89e005e8cc910068bd` replaces the
+old Passport detail with Journey Detail; current `origin/main`
+`9e9d629085cb1551b1a3959c31b0b460c37724a9` adds accepted Deepwater/Helm/Homeport
+work without direct Tideglass or Wakebook product-source overlap. The
 new Tideglass-owned adapter preserves the exact owned-history handoff without
 copying a checksum, raw snapshot, annotation, or semantic record into the
 Wakebook DTO. Focused proof is 34 tests across the direct Tideglass and

@@ -6,7 +6,7 @@
   "status": "CURRENT_MAIN_WAKEBOOK_RECONCILIATION_PENDING_TARGETED_OWNER_REVIEW",
   "originalBaseSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
   "baseSha": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
-  "reconciledOriginMainSha": "cbf634d4d5db9cf47edebb89e005e8cc910068bd",
+  "reconciledOriginMainSha": "9e9d629085cb1551b1a3959c31b0b460c37724a9",
   "branch": "codex/project-tideglass-phase3-choose-the-passage",
   "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-tideglass-phase3-choose-the-passage",
   "concurrencyClass": ["B"],
@@ -15,12 +15,12 @@
   "mysqlMigration": null,
   "ordinaryNavigationImpact": "NEW_DISCOVERABLE_COMPARISON_JOURNEY",
   "phase2IntegratedMainSha": "3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3",
-  "phase2AncestryVerifiedAgainst": "cbf634d4d5db9cf47edebb89e005e8cc910068bd",
+  "phase2AncestryVerifiedAgainst": "9e9d629085cb1551b1a3959c31b0b460c37724a9",
   "integrationRule": "Independent mainline-safe phase reconciled to current main. Preserve the accepted Wakebook Journey Detail through a narrow Tideglass-owned history handoff; do not stack Phase 4 or change Wakebook, Shipwright, or Helm ownership.",
   "registeredAt": "2026-08-12",
   "reopenedReason": "The initial candidate lacked a repository-backed fixture and did not exercise the full governed Phase 3 state matrix. It was superseded before owner walkthrough or authority dispatch.",
   "ownerReviewedProductSha": "c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6",
   "ownerDecision": "ACCEPTED on 2026-08-12 for the reviewed product source; Project_Tideglass_Phase_3_Owner_Decision_Record.md preserves that decision. A targeted Wakebook Journey Detail addendum review is pending because current main changes the visible personal-history surface.",
-  "candidateEvidence": "The original product candidate received its governed release evidence and entered protected main as merge bb7676a75581d8d415c3ff7712cc38bc8decb031. Current main cbf634d4 contains accepted Wakebook Phase 1, whose Journey Detail supersedes the former Passport detail. This isolated candidate preserves the required owner-safe Tideglass entry through a server-side adapter using an exact owned record and Publishing current pointer. Focused Tideglass service, Wakebook archive-query, Journey Detail component, TypeScript, documentation, and source-contract proof are local and non-authoritative. No Prisma schema or migration changes are present.",
+  "candidateEvidence": "The original product candidate received its governed release evidence and entered protected main as merge bb7676a75581d8d415c3ff7712cc38bc8decb031. Wakebook Phase 1 was accepted at cbf634d4, whose Journey Detail supersedes the former Passport detail; current main 9e9d6290 adds accepted Deepwater/Helm/Homeport work without direct Tideglass or Wakebook source overlap. This isolated candidate preserves the required owner-safe Tideglass entry through a server-side adapter using an exact owned record and Publishing current pointer. Focused Tideglass service, Wakebook archive-query, Journey Detail component, TypeScript, documentation, and source-contract proof are local and non-authoritative. No Prisma schema or migration changes are present.",
   "nextGate": "Complete affected current-main qualification and visual evidence, then request targeted owner review. Do not dispatch, resume, or reconcile any protected binding until a later explicit serial authority position."
 }

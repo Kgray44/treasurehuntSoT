@@ -15,7 +15,7 @@ assertions. The owner decision is recorded separately in
 `Project_Tideglass_Phase_3_Owner_Decision_Record.md`; this document remains the
 reproducible walkthrough package.
 
-The owner-reviewed product source is `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`. Accepted Wakebook Phase 1 later replaced the ordinary past-Voyage detail with Journey Detail on `origin/main` `cbf634d4d5db9cf47edebb89e005e8cc910068bd`. This walkthrough addendum therefore requires a targeted review of the preserved, owner-safe Tideglass handoff before any later finalization. The original A--J evidence remains source-bound to its recorded candidate and is not misrepresented as evidence for the new shared surface.
+The owner-reviewed product source is `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`. Accepted Wakebook Phase 1 later replaced the ordinary past-Voyage detail with Journey Detail at `cbf634d4d5db9cf47edebb89e005e8cc910068bd`; the current reconciliation base is `9e9d629085cb1551b1a3959c31b0b460c37724a9`. This walkthrough addendum therefore requires a targeted review of the preserved, owner-safe Tideglass handoff before any later finalization. The original A--J evidence remains source-bound to its recorded candidate and is not misrepresented as evidence for the new shared surface.
 
 ## Safe walkthrough runtime
 

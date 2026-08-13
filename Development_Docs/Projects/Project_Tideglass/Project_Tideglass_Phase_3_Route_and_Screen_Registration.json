@@ -4,7 +4,7 @@
   "phase": "PHASE_3_CHOOSE_THE_PASSAGE",
   "status": "CURRENT_MAIN_WAKEBOOK_RECONCILIATION",
   "originalBaseSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
-  "baseSha": "cbf634d4d5db9cf47edebb89e005e8cc910068bd",
+  "baseSha": "9e9d629085cb1551b1a3959c31b0b460c37724a9",
   "truthBoundary": "Source registration only. Browser, owner, protected-mainline, deployment, and provider proof are separate gates.",
   "routes": [
     {
