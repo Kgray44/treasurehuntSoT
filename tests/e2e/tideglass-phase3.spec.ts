@@ -11,6 +11,7 @@ type Credentials = {
   password: string;
   accounts: Record<string, Alias>;
   chronicle: { id: string; slug: string; versions: Array<{ id: string; label: string }> };
+  community: { slug: string };
 };
 type Evidence = {
   id: string;
@@ -39,7 +40,7 @@ test.beforeAll(() => {
   credentialPath = path.join(taskRoot, "credentials", "tideglass-phase3-walkthrough.private.json");
   evidenceRoot = path.join(taskRoot, "browser", "evidence");
   credentials = JSON.parse(readFileSync(credentialPath, "utf8")) as Credentials;
-  expect(credentials.fixtureVersion).toBe("tideglass-phase3-v2");
+  expect(credentials.fixtureVersion).toBe("tideglass-phase4-v1");
 });
 
 test.afterAll(async () => {
@@ -52,7 +53,7 @@ test.afterAll(async () => {
   );
 });
 
-test("Journeys A-J: visible entry, accepted Journey Detail history, creator detail, security, and responsive accessibility", async ({
+test("Journeys A-K: visible entry, accepted Journey Detail history, creator detail, security, and responsive accessibility", async ({
   browser,
 }) => {
   const anonymous = await anonymousPage(browser);
@@ -228,6 +229,22 @@ test("Journeys A-J: visible entry, accepted Journey Detail history, creator deta
     "Creator Studio proves a branch rewire, alternate ending, Captain requirement, caption/accessibility, compatibility, and Creator annotation through semantic records only",
   );
   await creator.context.close();
+
+  const harborlight = await anonymousPage(browser);
+  await harborlight.page.goto(`/community/${credentials.community.slug}`);
+  await expect(
+    harborlight.page.getByRole("heading", { name: "What changed in this Chronicle?", exact: true }),
+  ).toBeVisible();
+  await harborlight.page.getByRole("link", { name: "See semantic changes", exact: true }).click();
+  await expect(harborlight.page.getByRole("heading", { name: "What changed?", exact: true })).toBeVisible();
+  await expect(harborlight.page.getByRole("region", { name: "Selected edition context" })).toBeVisible();
+  await capture(
+    harborlight.page,
+    "TG4-EV-K-HARBORLIGHT-RELEASE-HANDOFF",
+    "SAME_CHRONICLE_RELEASE_PAIR",
+    "Community Harbor supplies its exact same-Chronicle release source editions to the public Tideglass passage without package comparison",
+  );
+  await harborlight.context.close();
 
   const support = await signedInPage(browser, "SUPPORT", `/admin/people/${credentials.accounts.CREATOR.accountId}`);
   await expect(support.page.getByRole("heading", { name: "Support access", exact: true })).toBeVisible();

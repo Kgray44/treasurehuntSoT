@@ -43,9 +43,11 @@ or authoritative acceptance.
 
 ## Not yet qualified
 
-The Harborlight and Helm Phase 4 journeys require an accepted same-Chronicle
-release pair and an accepted edition-selection/preflight consumer respectively;
-neither exists on this current mainline. The new Admiralty diagnostic route has
-unit coverage but no complete synthetic support-grant browser journey yet. No
+Helm still requires an accepted edition-selection/preflight consumer, which does
+not exist on this current mainline. Harborlight now uses the exact source editions
+recorded by its current and earlier active Community releases, only when they
+resolve to the same public Chronicle; cross-lineage and package-only inputs are
+absent. The new Admiralty diagnostic route has unit coverage but no complete
+synthetic support-grant browser journey yet. No
 Sounding Line authority, owner walkthrough, protected merge, or completion
 receipt has been issued.

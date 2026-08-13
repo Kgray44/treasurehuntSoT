@@ -12,7 +12,7 @@ const password = required("TIDEGLASS_PHASE3_SYNTHETIC_PASSWORD");
 const allowedRoot = path.resolve(required("LOCALAPPDATA"), "ProjectTideglass");
 const canonicalDatabase = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
 const createdAt = new Date("2026-08-12T12:00:00.000Z");
-const fixtureVersion = "tideglass-phase3-v2";
+const fixtureVersion = "tideglass-phase4-v1";
 
 if (!taskRoot.startsWith(`${allowedRoot}${path.sep}`)) throw new Error(`TIDEGLASS_TASK_ROOT_REFUSED:${taskRoot}`);
 if (!databasePath.startsWith(`${taskRoot}${path.sep}`) || databasePath === canonicalDatabase)
@@ -159,6 +159,63 @@ await db.tideglassCreatorAnnotation.create({
   },
 });
 
+const communityListing = { id: "tg4-community-listing", slug: "tideglass-passage-update" };
+const communityProfileId = "tg4-community-profile-creator";
+await db.communityProfile.create({
+  data: {
+    id: communityProfileId,
+    accountId: accounts.CREATOR.id,
+    normalizedHandle: "tideglass-fixture-creator",
+    handle: "Tideglass Fixture Creator",
+    displayName: "Tideglass Fixture Creator",
+    visibility: "COMMUNITY",
+    creatorStatus: "ACTIVE",
+    moderationStatus: "ACTIVE",
+    supportedLanguages: JSON.stringify(["en"]),
+    createdAt,
+  },
+});
+await db.communityListing.create({
+  data: {
+    id: communityListing.id,
+    slug: communityListing.slug,
+    itemType: "CHRONICLE",
+    ownerProfileId: communityProfileId,
+    title: "The Tideglass Passage Fixture",
+    shortDescription: "A synthetic Community Harbor Chronicle update for Tideglass qualification.",
+    longDescription: "No real Community Harbor listing, release, or account data is represented.",
+    visibility: "COMMUNITY",
+    publicationStatus: "PUBLISHED",
+    moderationStatus: "ACTIVE",
+    locationClass: "FICTIONAL",
+    primaryCategory: "MYSTERY",
+    tags: JSON.stringify(["SYNTHETIC"]),
+    publishedAt: createdAt,
+    createdAt,
+  },
+});
+for (const [index, version] of [versions[1], versions[2]].entries()) {
+  await db.communityRelease.create({
+    data: {
+      id: `tg4-community-release-${version.label.replaceAll(".", "-")}`,
+      listingId: communityListing.id,
+      semanticVersion: version.label,
+      sourcePublishedTaleVersionId: version.id,
+      manifest: JSON.stringify({ kind: "SYNTHETIC_TIDEGLASS_FIXTURE", editionId: version.id }),
+      manifestChecksum: sha256(`tg4-community-release-${version.id}`),
+      licenseSnapshot: "SYNTHETIC_FIXTURE_ONLY",
+      moderationStatus: "ACTIVE",
+      publishedByProfileId: communityProfileId,
+      publishedAt: new Date(createdAt.getTime() + (index + 1) * 86_400_000),
+      createdAt,
+    },
+  });
+}
+await db.communityListing.update({
+  where: { id: communityListing.id },
+  data: { currentReleaseId: "tg4-community-release-2-0" },
+});
+
 await createRecord(accounts.PLAYER_A, "tg3-record-a", versions[0], "synthetic-a", "COMPLETED", "SUCCESS");
 await createRecord(accounts.PLAYER_AB, "tg3-record-ab-a", versions[0], "synthetic-ab-a", "COMPLETED", "SUCCESS");
 await createRecord(accounts.PLAYER_AB, "tg3-record-ab-b", versions[1], "synthetic-ab-b", "COMPLETED", "SUCCESS");
@@ -175,7 +232,7 @@ const privateCredentials = path.join(taskRoot, "credentials", "tideglass-phase3-
 await mkdir(path.dirname(privateCredentials), { recursive: true });
 await writeFile(
   privateCredentials,
-  `${JSON.stringify({ classification: "LOCAL_SYNTHETIC_CREDENTIAL_HANDOFF", fixtureVersion, password, accounts: aliases, chronicle: { id: chronicleId, slug: "tideglass-passage-fixture", versions: versions.map(({ id, label }) => ({ id, label })) } }, null, 2)}\n`,
+  `${JSON.stringify({ classification: "LOCAL_SYNTHETIC_CREDENTIAL_HANDOFF", fixtureVersion, password, accounts: aliases, chronicle: { id: chronicleId, slug: "tideglass-passage-fixture", versions: versions.map(({ id, label }) => ({ id, label })) }, community: { slug: communityListing.slug } }, null, 2)}\n`,
   { encoding: "utf8", mode: 0o600 },
 );
 const fixtureChecksum = sha256(
@@ -183,6 +240,7 @@ const fixtureChecksum = sha256(
     fixtureVersion,
     aliases,
     chronicleId,
+    communityListing,
     versions: versions.map((version) => ({
       id: version.id,
       snapshotChecksum: sha256(JSON.stringify(version.snapshot)),
