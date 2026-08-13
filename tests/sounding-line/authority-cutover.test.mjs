@@ -155,9 +155,15 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
   assert.doesNotMatch(authoritative, /^\s{2}(?:pull_request|push):/mu, "AUTHORITATIVE_DEBUG_TRIGGER_FORBIDDEN");
   assert.match(authoritative, /workflow_dispatch:\s*\n\s+inputs:\s*\n\s+gate:/u);
   assert.match(authoritative, /options: \[mainline, release-candidate\]/u);
+  assert.match(authoritative, /authority_mode:[\s\S]*?options: \[current, v13-cutover\]/u);
+  assert.match(authoritative, /SOUNDING_LINE_V13_CUTOVER_MAINLINE_ONLY/u);
+  assert.match(authoritative, /SOUNDING_LINE_AUTHORITY_MODE_INVALID/u);
+  assert.match(authoritative, /authorityMode=\$\(if \(\$authorityMode -eq 'v13-cutover'\)/u);
   assert.match(authoritative, /candidate_sha:[\s\S]*?required: true[\s\S]*?type: string/u);
   assert.match(authoritative, /SOUNDING_LINE_FROZEN_CANDIDATE_SHA_MISMATCH/u);
   assert.match(authoritative, /sourceSha:process\.env\.GITHUB_SHA/u);
+  assert.match(authoritative, /qualifiedBaseSha:process\.env\.SOUNDING_LINE_BASE_SHA/u);
+  assert.match(authoritative, /authorityMode:process\.env\.SOUNDING_LINE_AUTHORITY_MODE/u);
   assert.match(authoritative, /Sounding Line \/ \$\{\{ needs\.plan\.outputs\.gate/u);
   assert.match(authoritative, /gate: \$\{\{ needs\.plan\.outputs\.gate \}\}/u);
   assert.match(focused, /type: string/u);

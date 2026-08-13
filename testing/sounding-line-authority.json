@@ -1,5 +1,11 @@
 {
   "authority": "SOUNDING_LINE",
+  "currentAuthorityVersion": "1.3",
+  "pendingV14": {
+    "documentId": "CS-SL-XP-001 v1.4-R1",
+    "documentSha256": "4D9DE559A24A7A2A8427171EAB679CCD423A1E9BE94FA104CF10B3D14AA31211",
+    "activation": "PROTECTED_MAINLINE_MERGE_ONLY"
+  },
   "effectiveAmendments": {
     "partI": "1.2",
     "partII": "1.2",

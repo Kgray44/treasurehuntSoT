@@ -14,7 +14,10 @@
     "test-definition-schema.json",
     "retired-suites.json",
     "browser-capabilities.json",
-    "sounding-line-authority.json"
+    "sounding-line-authority.json",
+    "evidence-fingerprint-policy.json",
+    "prepared-artifacts.json",
+    "mainline-train-policy.json"
   ],
   "authority": "sounding-line-authoritative",
   "plannerAuthority": "governed-local-execution-with-allowlisted-adapters",
