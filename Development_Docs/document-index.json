@@ -3453,6 +3453,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_3_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_3_Job_Operations_Architecture.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -3490,6 +3496,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_3_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_3_Validation_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

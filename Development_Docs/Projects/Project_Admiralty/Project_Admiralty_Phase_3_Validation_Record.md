@@ -1,0 +1,29 @@
+---
+title: Project Admiralty Phase 3 Validation Record
+audience: product-owner-engineering-security-quality
+status: in-progress
+canonical_for: project-admiralty-phase-3-validation-record
+last_reviewed: 2026-08-13
+---
+
+# Project Admiralty Phase 3 validation record
+
+This is a rolling engineering record, not an acceptance record or a release
+authorization.
+
+| Check                                                   | Result                                | Evidence / limitation                                                                                                                                                                    |
+| ------------------------------------------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Command/capability/owner-port suite                     | Passing                               | Focused Vitest run: 5 files, 19 tests. Includes command validation, role partitioning, Wayfarer boundary errors, Harborlight boundary errors, and Wayfarer transaction failure behavior. |
+| Documentation generator and validator                   | Passing                               | `scripts/generate-document-index.mjs` indexed 1,044 engineering records; `scripts/validate-documentation.mjs` passed.                                                                    |
+| Phase 2 regression validator                            | Previously passing during this branch | `scripts/admiralty/validate-phase2.ts` reported 15 routes, 92 capability floor, and read-mutation boundary unchanged. Re-run required for a frozen candidate.                            |
+| Phase 3 owned TypeScript diagnostics                    | Passing                               | No diagnostics matched the Phase 3-owned Admiralty, Wayfarer command, or Community command paths.                                                                                        |
+| Full repository TypeScript check                        | Blocked outside Phase 3               | The current install lacks unrelated Bridgewatch `fastify` and `@fastify/static` dependencies, causing errors in `bridgewatch/lib/server.ts`. This is not a Phase 3 pass.                 |
+| Browser, accessibility, and live owner-runtime journeys | Not run                               | No synthetic runtime/browser qualification or owner walkthrough has been completed.                                                                                                      |
+| Job/configuration/role mutation qualification           | Blocked                               | No canonical owner command contract exists; absence is recorded as blocked, not passing.                                                                                                 |
+
+## Result
+
+**IN PROGRESS — NOT READY FOR OWNER WALKTHROUGH.** The command catalog and
+integration manifest are the source of current command disposition. No
+completion receipt, mainline decision, or protected integration may be created
+from this record.
