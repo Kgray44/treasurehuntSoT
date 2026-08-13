@@ -577,7 +577,7 @@ export async function queryVoyageDetail(playerProfileId: string, recordId: strin
     select: detailSelect,
   });
   if (!record) return null;
-  const [personalArtifacts, assemblies, achievements, comparison] = await Promise.all([
+  const [personalArtifacts, assemblies, achievements, comparison, mediaAssociations] = await Promise.all([
     db.playerArtifactRecord.findMany({
       where: { playerProfileId, sourcePlaythroughId: record.sourcePlaythroughId, recordStatus: "ACTIVE" },
       orderBy: [{ grantedAt: "asc" }, { id: "asc" }],
@@ -619,6 +619,32 @@ export async function queryVoyageDetail(playerProfileId: string, recordId: strin
       historyRecordId: record.id,
       returnTo: `/passport/history/${encodeURIComponent(record.id)}`,
     }),
+    record.player.accountId && record.memories.length
+      ? db.protectedMediaAssociation.findMany({
+          where: {
+            ownerAccountId: record.player.accountId,
+            authority: "WAYFARER",
+            subjectKind: "WAYFARER_MEMORY",
+            subjectOpaqueId: { in: record.memories.map((memory) => memory.id) },
+            purpose: "MEMORY_PRIVATE",
+            removedAt: null,
+          },
+          select: {
+            subjectOpaqueId: true,
+            protectedMedia: {
+              select: {
+                id: true,
+                mediaKind: true,
+                accessibilityDescription: true,
+                scanState: true,
+                availabilityState: true,
+                withdrawnAt: true,
+                archivedAt: true,
+              },
+            },
+          },
+        })
+      : Promise.resolve([]),
   ]);
   return detailProjection(
     record,
@@ -628,6 +654,7 @@ export async function queryVoyageDetail(playerProfileId: string, recordId: strin
       achievementIsForVoyage(achievement.evidenceSnapshot, record.sourcePlaythroughId),
     ),
     comparison,
+    mediaAssociations,
   );
 }
 
@@ -668,6 +695,18 @@ function detailProjection(
     definition: { titleSnapshot: string; descriptionSnapshot: string };
   }>,
   comparison: TideglassHistoryComparisonEntry | null,
+  mediaAssociations: Array<{
+    subjectOpaqueId: string;
+    protectedMedia: {
+      id: string;
+      mediaKind: string;
+      accessibilityDescription: string | null;
+      scanState: string;
+      availabilityState: string;
+      withdrawnAt: Date | null;
+      archivedAt: Date | null;
+    };
+  }>,
 ): VoyageDetail {
   const chapters = parseStored(chapterSummarySchema, record.completedChapters, "Chapter history", []);
   const objectives = parseStored(objectiveSummarySchema, record.optionalObjectives, "Optional-objective history", []);
@@ -818,7 +857,18 @@ function detailProjection(
       ...memory,
       createdAt: memory.createdAt.toISOString(),
       updatedAt: memory.updatedAt.toISOString(),
-      media: [],
+      media: mediaAssociations
+        .filter((association) => association.subjectOpaqueId === memory.id)
+        .map(({ protectedMedia }) => ({
+          id: protectedMedia.id,
+          kind: protectedMedia.mediaKind,
+          description: protectedMedia.accessibilityDescription,
+          state: presentMemoryMediaState(protectedMedia),
+          deliveryHref:
+            presentMemoryMediaState(protectedMedia) === "AVAILABLE"
+              ? `/api/passport/voyages/${encodeURIComponent(record.id)}/memories/${encodeURIComponent(memory.id)}/media/${encodeURIComponent(protectedMedia.id)}`
+              : null,
+        })),
     })),
     keepsake: record.keepsake
       ? {
@@ -931,6 +981,22 @@ function keepsakeExplanation(consentStates: string[]) {
     return "A participant did not permit one or more requested Keepsake representations.";
   if (consentStates.includes("PENDING")) return "Some participant representation remains pending consent.";
   return null;
+}
+
+function presentMemoryMediaState(media: {
+  scanState: string;
+  availabilityState: string;
+  withdrawnAt: Date | null;
+  archivedAt: Date | null;
+}): VoyageDetail["memories"][number]["media"][number]["state"] {
+  if (media.withdrawnAt) return "WITHDRAWN";
+  if (media.scanState === "PENDING" || media.scanState === "SCANNING") return "LOADING";
+  if (media.scanState !== "CLEAN") return "QUARANTINED";
+  if (media.archivedAt) return "UNAVAILABLE";
+  if (media.availabilityState === "AVAILABLE") return "AVAILABLE";
+  if (media.availabilityState === "EXPIRED") return "EXPIRED";
+  if (media.availabilityState === "REVOKED") return "CONSENT_REVOKED";
+  return "UNAVAILABLE";
 }
 
 export async function ownedHistoricalCover(playerProfileId: string, recordId: string) {

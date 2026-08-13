@@ -80,11 +80,10 @@ content. Foreign and missing records receive the same neutral result.
 Historical truth tables are not added. The initial audit finds that existing
 `PlayerChronicleRecord`, historical participant snapshots, Reflection, Memory,
 Keepsake consent, artifact records, assembly records, and achievements provide
-the required canonical truth. A narrowly scoped, additive Memory-to-protected-
-media reference may be added only after the Sealed Hold identifier and
-authorization seam is verified; it must not persist a provider key, URL, or
-media bytes. SQLite and MySQL must remain equivalent and a migration is only
-valid with fresh and upgrade proof.
+the required canonical truth. The existing Sealed Hold
+`ProtectedMediaAssociation` seam now binds an owner-clean `WAYFARER_MEMORY`
+to `MEMORY_PRIVATE`; it persists no provider key, URL, or media bytes. No new
+Wakebook schema or migration is required.
 
 ## Rollback
 

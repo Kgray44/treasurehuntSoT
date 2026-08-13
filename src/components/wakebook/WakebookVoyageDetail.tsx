@@ -16,6 +16,8 @@ import {
   wakebookResponse,
 } from "@/components/wakebook/WakebookShared";
 
+type MemoryMediaOption = { id: string; kind: string; description: string | null };
+
 export function WakebookTideglassComparisonEntry({ comparison }: { comparison?: VoyageDetail["comparison"] }) {
   if (!comparison) return null;
   return (
@@ -38,6 +40,9 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
   });
   const [memory, setMemory] = useState({ title: "", body: "", referenceType: "", referenceId: "" });
   const [editingMemoryId, setEditingMemoryId] = useState<string | null>(null);
+  const [memoryMediaOptions, setMemoryMediaOptions] = useState<MemoryMediaOption[]>([]);
+  const [attachmentMemoryId, setAttachmentMemoryId] = useState<string | null>(null);
+  const [selectedMediaId, setSelectedMediaId] = useState("");
   const [message, setMessage] = useState("");
   const [mutationState, setMutationState] = useState<"pending" | "success" | "failure" | null>(null);
 
@@ -54,6 +59,21 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
       });
   }, [resource.state]);
   useEffect(() => () => setDirty(false), [setDirty]);
+  useEffect(() => {
+    if (resource.state.status !== "ready") return;
+    let cancelled = false;
+    void fetch(`/api/passport/voyages/${encodeURIComponent(recordId)}/memory-media`, { cache: "no-store" })
+      .then(async (response) => (response.ok ? ((await response.json()) as MemoryMediaOption[]) : []))
+      .then((options) => {
+        if (!cancelled) setMemoryMediaOptions(options);
+      })
+      .catch(() => {
+        if (!cancelled) setMemoryMediaOptions([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [recordId, resource.state]);
 
   if (resource.state.status === "loading")
     return <WakebookLoading detail="Opening the exact Chronicle edition and your private Voyage record." />;
@@ -611,6 +631,23 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
                       <strong>{item.title}</strong>
                       {item.body ? <p>{item.body}</p> : null}
                       <time dateTime={item.createdAt}>{formatArchiveDate(item.createdAt)}</time>
+                      {item.media.length ? (
+                        <ul aria-label={`Private media attached to ${item.title}`}>
+                          {item.media.map((media) => (
+                            <li key={media.id}>
+                              {media.deliveryHref ? (
+                                <a href={media.deliveryHref} target="_blank" rel="noreferrer">
+                                  Open private {media.kind.toLocaleLowerCase()}
+                                </a>
+                              ) : (
+                                <span>Private {media.kind.toLocaleLowerCase()} unavailable</span>
+                              )}
+                              {media.description ? ` — ${media.description}` : ""}
+                              {media.state !== "AVAILABLE" ? ` (${media.state.toLocaleLowerCase()})` : ""}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
                     </div>
                     <button
                       className="button button--danger"
@@ -635,6 +672,51 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
                     >
                       Edit
                     </button>
+                    <button
+                      className="button button--quiet"
+                      type="button"
+                      onClick={() => {
+                        setAttachmentMemoryId(item.id);
+                        setSelectedMediaId("");
+                      }}
+                    >
+                      Attach private media
+                    </button>
+                    {attachmentMemoryId === item.id ? (
+                      <div className="personal-harbor__actions">
+                        <label>
+                          <span className="sr-only">Available private media</span>
+                          <select value={selectedMediaId} onChange={(event) => setSelectedMediaId(event.target.value)}>
+                            <option value="">Choose available private media</option>
+                            {memoryMediaOptions.map((option) => (
+                              <option key={option.id} value={option.id}>
+                                {option.kind.toLocaleLowerCase()}
+                                {option.description ? ` — ${option.description}` : ""}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <button
+                          className="button button--primary"
+                          type="button"
+                          disabled={!selectedMediaId}
+                          onClick={() =>
+                            void mutate(
+                              `/api/passport/voyages/${encodeURIComponent(recordId)}/memories/${encodeURIComponent(item.id)}/media`,
+                              "POST",
+                              { mediaId: selectedMediaId },
+                            ).then((saved) => {
+                              if (saved) {
+                                setAttachmentMemoryId(null);
+                                setSelectedMediaId("");
+                              }
+                            })
+                          }
+                        >
+                          Attach
+                        </button>
+                      </div>
+                    ) : null}
                   </li>
                 ))}
               </ul>

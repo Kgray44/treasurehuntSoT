@@ -6,6 +6,7 @@ const { db, loadTideglassHistoryComparisonEntry } = vi.hoisted(() => ({
     playerArtifactRecord: { findMany: vi.fn() },
     playerArtifactAssembly: { findMany: vi.fn() },
     playerAchievement: { findMany: vi.fn() },
+    protectedMediaAssociation: { findMany: vi.fn() },
   },
   loadTideglassHistoryComparisonEntry: vi.fn(),
 }));
@@ -70,6 +71,7 @@ describe("Wakebook Tideglass history handoff", () => {
     db.playerArtifactRecord.findMany.mockReset();
     db.playerArtifactAssembly.findMany.mockReset();
     db.playerAchievement.findMany.mockReset();
+    db.protectedMediaAssociation.findMany.mockReset();
     loadTideglassHistoryComparisonEntry.mockReset();
   });
 
@@ -108,5 +110,62 @@ describe("Wakebook Tideglass history handoff", () => {
 
     expect(loadTideglassHistoryComparisonEntry).not.toHaveBeenCalled();
     expect(db.playerArtifactRecord.findMany).not.toHaveBeenCalled();
+  });
+
+  it("projects only an owner-bound opaque private-media delivery reference", async () => {
+    db.playerChronicleRecord.findFirst.mockResolvedValue({
+      ...exactRecord,
+      memories: [
+        {
+          id: "memory-owner",
+          title: "A private moment",
+          body: null,
+          referenceType: null,
+          referenceId: null,
+          createdAt: new Date("2026-01-02T01:00:00.000Z"),
+          updatedAt: new Date("2026-01-02T01:00:00.000Z"),
+        },
+      ],
+    });
+    db.playerArtifactRecord.findMany.mockResolvedValue([]);
+    db.playerArtifactAssembly.findMany.mockResolvedValue([]);
+    db.playerAchievement.findMany.mockResolvedValue([]);
+    db.protectedMediaAssociation.findMany.mockResolvedValue([
+      {
+        subjectOpaqueId: "memory-owner",
+        protectedMedia: {
+          id: "media-owner",
+          mediaKind: "IMAGE",
+          accessibilityDescription: "A lighthouse at dusk",
+          scanState: "CLEAN",
+          availabilityState: "AVAILABLE",
+          withdrawnAt: null,
+          archivedAt: null,
+        },
+      },
+    ]);
+    loadTideglassHistoryComparisonEntry.mockResolvedValue(null);
+
+    const detail = await queryVoyageDetail("profile-owner", "record-owned");
+
+    expect(db.protectedMediaAssociation.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          ownerAccountId: "account-owner",
+          subjectOpaqueId: { in: ["memory-owner"] },
+          purpose: "MEMORY_PRIVATE",
+        }),
+      }),
+    );
+    expect(detail?.memories[0]?.media).toEqual([
+      {
+        id: "media-owner",
+        kind: "IMAGE",
+        description: "A lighthouse at dusk",
+        state: "AVAILABLE",
+        deliveryHref: "/api/passport/voyages/record-owned/memories/memory-owner/media/media-owner",
+      },
+    ]);
+    expect(JSON.stringify(detail?.memories[0]?.media)).not.toContain("storageKey");
   });
 });

@@ -18,6 +18,7 @@ const homeportPhase2Spec = /homeport-phase2\.spec\.ts/u;
 const homeportPhase4Spec = /homeport-phase4\.spec\.ts/u;
 const homeportPhase7WalkthroughSpecs = /homeport-phase7.*\.spec\.ts/u;
 const wakebookPhase1Spec = /wakebook-phase1\.spec\.ts/u;
+const wakebookPhase2Spec = /wakebook-phase2\.spec\.ts/u;
 const helmPhase1Spec = /project-helm-phase1\.spec\.ts/u;
 const admiraltyPhase1Spec = /admiralty-phase1\.spec\.ts/u;
 const phase3MutationSpecs =
@@ -85,6 +86,7 @@ export default defineConfig({
         homeportPhase4Spec,
         homeportPhase7WalkthroughSpecs,
         wakebookPhase1Spec,
+        wakebookPhase2Spec,
         helmPhase1Spec,
         admiraltyPhase1Spec,
       ],
@@ -154,6 +156,11 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1000 } },
     },
     {
+      name: "wakebook-phase2",
+      testMatch: wakebookPhase2Spec,
+      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1000 } },
+    },
+    {
       // Harborlight owns its own isolated browser journey. It must not depend
       // on the Phase 3 fixture setup, whose Captain/session data is unrelated
       // to Exchange publication and installation evidence.
@@ -191,6 +198,7 @@ export default defineConfig({
         homeportPhase4Spec,
         homeportPhase7WalkthroughSpecs,
         wakebookPhase1Spec,
+        wakebookPhase2Spec,
         helmPhase1Spec,
         admiraltyPhase1Spec,
       ],

@@ -13,6 +13,15 @@
       "adapter": "playwright"
     },
     {
+      "match": "tests/e2e/wakebook-phase2.spec.ts",
+      "suiteId": "browser.wakebook",
+      "role": "REGISTERED_SUITE_CHILD",
+      "owner": "project-wakebook",
+      "tier": 4,
+      "parallelSafety": "ISOLATED_MUTABLE_PARALLEL",
+      "adapter": "playwright"
+    },
+    {
       "match": "src/components/wakebook/**",
       "suiteId": "component.wakebook",
       "role": "REGISTERED_SUITE_CHILD",
