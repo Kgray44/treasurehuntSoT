@@ -190,12 +190,12 @@ export function planReusableInsertion(input: { envelope: ReusableContentEnvelope
     const variableId = block.configuration.variableId;
     if (typeof variableId === "string" && !remap.variables[variableId]) remap.variables[variableId] = allocate(input.operationId, "variable", variableId, occupied.variables);
   }
-  const remappedBlocks = envelope.blocks.map((source) => ({
+  const remappedBlocks: Block[] = envelope.blocks.map((source) => ({
     ...clone(source), id: remap.blocks[source.id], nextBlockId: source.nextBlockId ? remap.blocks[source.nextBlockId] ?? source.nextBlockId : source.nextBlockId,
     configuration: remapKnownReferences(source.configuration, remap), presentation: remapKnownReferences(source.presentation, remap), completion: remapKnownReferences(source.completion, remap),
     connections: source.connections?.map((connection) => ({ ...connection, targetBlockId: remap.blocks[connection.targetBlockId] ?? connection.targetBlockId })),
   }));
-  const blockBySourceId = new Map(remappedBlocks.map((block) => [block.id, block]));
+  const blockBySourceId = new Map<string, Block>(remappedBlocks.map((block) => [block.id, block]));
   const fallbackChapter = input.targetChapterId ? input.draft.chapters.find((chapter) => chapter.id === input.targetChapterId) : input.draft.chapters[0];
   if (!fallbackChapter) throw new Error("A destination Chronicle needs at least one Chapter before reusable content can be inserted.");
   const chapters = envelope.chapters.length
