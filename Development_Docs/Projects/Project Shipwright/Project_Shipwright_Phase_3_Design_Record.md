@@ -42,6 +42,14 @@ Phase 3 introduces a minimal authoring-library persistence boundary rather than 
 
 The initial personal-library model is private to the authenticated Creator. It stores no runtime session state, player state, Captain-command state, secret, storage key, passphrase, raw scanner detail, or executable payload. Harborlight content remains a separate installed package/release authority: Shipwright only projects its release, license, attribution, lineage, compatibility, and installation state into a read-only adapter.
 
+## Implemented Phase 3 composition checkpoint
+
+The current branch implements the private reusable-authoring persistence schema and matched SQLite/MySQL migration, immutable checksum-backed versions, and owner-scoped list/read/archive operations. A Creator can save a persisted canonical Passage as a preset, a persisted multi-Passage selection as a fragment, or a persisted Chapter as a template. The server reloads source identities from the authorized current draft and never accepts client-supplied reusable bodies.
+
+Insertion is server-planned against the selected immutable item version. Presets apply only to the same canonical Passage type. Fragment/template copies receive deterministic collision-safe local IDs, retain internal graph edges only, and surface dropped external connections as explicit reconnection warnings. The normal Studio save records item/version provenance atomically with the copied draft state, so archive never changes existing copies. Capture fails closed for Creator notes, protected/private field names, non-player-safe privacy configuration, and the Sealed Hold protected-content sentinel.
+
+This checkpoint does not yet satisfy the remaining Phase 3 Library-ranking, dependency/parameter resolution, provider projection, full browser qualification, documentation/catalog reconciliation, or protected Mainline Decision obligations.
+
 ## Envelope, parameters, and compatibility
 
 Every reusable version has a strict `voyagewright.reusable-authoring/v1` envelope with item kind, schema version, immutable version ID, source owner, metadata, body, dependencies, accessibility metadata, attribution, lineage, compatibility, and checksum. The body is constrained to canonical current Chronicle/Drydock data and cannot carry JavaScript, HTML, SQL, shell commands, arbitrary expressions, remote scripts, or provider secrets.
