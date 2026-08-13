@@ -3,10 +3,10 @@
   "project": "Project Tideglass",
   "phase": "3",
   "phaseName": "Choose the Passage",
-  "status": "AUTHORITY_REPAIR_FOCUSED_PROOF_PENDING",
+  "status": "CURRENT_MAIN_QUALIFIED_CANDIDATE_FREEZE_PENDING",
   "originalBaseSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
   "baseSha": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
-  "reconciledOriginMainSha": "770404dd11cdfc1b86658a488979c43c22ed1711",
+  "reconciledOriginMainSha": "d3ed7c4cd1877be601e6854b376cb1dd9eb668a3",
   "branch": "codex/project-tideglass-phase3-choose-the-passage",
   "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-tideglass-phase3-choose-the-passage",
   "concurrencyClass": ["B"],
@@ -15,12 +15,12 @@
   "mysqlMigration": null,
   "ordinaryNavigationImpact": "NEW_DISCOVERABLE_COMPARISON_JOURNEY",
   "phase2IntegratedMainSha": "3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3",
-  "phase2AncestryVerifiedAgainst": "770404dd11cdfc1b86658a488979c43c22ed1711",
+  "phase2AncestryVerifiedAgainst": "d3ed7c4cd1877be601e6854b376cb1dd9eb668a3",
   "integrationRule": "Independent mainline-safe phase reconciled to current main. Preserve the accepted Wakebook Journey Detail through a narrow Tideglass-owned history handoff; do not stack Phase 4 or change Wakebook, Shipwright, or Helm ownership.",
   "registeredAt": "2026-08-12",
   "reopenedReason": "The initial candidate lacked a repository-backed fixture and did not exercise the full governed Phase 3 state matrix. It was superseded before owner walkthrough or authority dispatch.",
   "ownerReviewedProductSha": "c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6",
   "ownerDecision": "ACCEPTED on 2026-08-12 for the reviewed product source, with explicit owner acceptance on 2026-08-12 for the Wakebook Journey Detail addendum. Project_Tideglass_Phase_3_Owner_Decision_Record.md preserves both decisions.",
-  "candidateEvidence": "Candidate a70e9f6c6800249f21f8aa9edca322a4a4e39369 received one explicit hosted Mainline Decision attempt 31658984596 against base 770404dd11cdfc1b86658a488979c43c22ed1711. The finalizer returned RELEASE_NO_GO because unit.feature-catalog found one stale expectation: the governed FT-B009 fragment truthfully reports Project Tideglass Phases 1-3 while its test still expected Phases 1-2. The exact focused repair is green (9/9), and no Tideglass product, policy, history, route, or schema behavior changed. The hosted authority lane is terminally released. The original product candidate received its governed release evidence and entered protected main as merge bb7676a75581d8d415c3ff7712cc38bc8decb031. Wakebook Phase 1 was accepted at cbf634d4, whose Journey Detail supersedes the former Passport detail.",
-  "nextGate": "Requalify and freeze a new current-main candidate after the focused Feature Catalog repair. Do not reuse authority run 31658984596 or dispatch a replacement until the serial coordinator grants the next position; frozen record-only PRs #64 and #65 remain out of scope."
+  "candidateEvidence": "Candidate a70e9f6c6800249f21f8aa9edca322a4a4e39369 received one explicit hosted Mainline Decision attempt 31658984596 against base 770404dd11cdfc1b86658a488979c43c22ed1711. The finalizer returned RELEASE_NO_GO because unit.feature-catalog found one stale expectation: the governed FT-B009 fragment truthfully reports Project Tideglass Phases 1-3 while its test still expected Phases 1-2. The exact focused repair is green (9/9). PR #69 then accepted the Sounding Line binding repair at d3ed7c4c; its three-file finalizer/workflow/test advance has no Tideglass product, policy, history, route, schema, or navigation overlap. On reconciled source 89fb1df6, Tideglass semantic/history/Studio tests, static validation, full Homeport validation, and the task-owned production A-K browser journey all passed. The hosted authority lane is terminally released. The original product candidate received its governed release evidence and entered protected main as merge bb7676a75581d8d415c3ff7712cc38bc8decb031. Wakebook Phase 1 was accepted at cbf634d4, whose Journey Detail supersedes the former Passport detail.",
+  "nextGate": "Freeze this reconciled current-main candidate. Do not reuse authority run 31658984596 or dispatch a replacement until the serial coordinator grants a new position; frozen record-only PRs #64 and #65 remain out of scope."
 }

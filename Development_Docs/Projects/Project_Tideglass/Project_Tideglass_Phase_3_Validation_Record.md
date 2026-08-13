@@ -1,14 +1,14 @@
 ---
 title: Project Tideglass Phase 3 Validation Record
 audience: product-engineering
-status: authority-repair-focused-proof-pending
+status: current-main-qualified-candidate-freeze-pending
 canonical_for: project-tideglass-phase-3-validation
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 validation record
 
-Status: `AUTHORITY_REPAIR_FOCUSED_PROOF_PENDING`.
+Status: `CURRENT_MAIN_QUALIFIED_CANDIDATE_FREEZE_PENDING`.
 The original product decision and the explicit Wakebook Journey Detail addendum
 acceptance are recorded; protected integration remains pending.
 
@@ -76,6 +76,23 @@ single-string expectation repair passes the same focused test 9/9 plus
 governed test expectation, not a semantic, product, or authority-policy change.
 The hosted authority run has completed and released its lane; no retry is
 authorized until current-main requalification and a new frozen candidate exist.
+
+## Reconciled current-main qualification
+
+After explicit infrastructure-lane release, PR `#69` reached protected main as
+`d3ed7c4cd1877be601e6854b376cb1dd9eb668a3`. The three-file advance changes
+only Sounding Line's protected-binding workflow, finalizer source, and
+record-only test. The Tideglass branch reconciled it as `89fb1df6`; no
+Tideglass, Wakebook, Wayfarer, Studio, route, schema, policy, or navigation
+source changed.
+
+On that reconciled source, Tideglass unit/history/Studio suites, typecheck,
+lint with zero errors, format, documentation, Feature Catalog, Tideglass
+contract, and full Homeport validation pass. The registered task-owned
+production browser wrapper passes A--K for `89fb1df6`, with the same synthetic
+fixture checksum and zero serious/critical Axe findings. Its only runtime data
+is under `%LOCALAPPDATA%\\ProjectTideglass\\phase3-qualification`; canonical
+`prisma/dev.db` remains untouched. No replacement authority has been dispatched.
 
 ## Authority preflight and focused repair
 

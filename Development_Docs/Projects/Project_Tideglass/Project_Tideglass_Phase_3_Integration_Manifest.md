@@ -1,14 +1,14 @@
 ---
 title: Project Tideglass Phase 3 Integration Manifest
 audience: product-engineering
-status: authority-repair-focused-proof-pending
+status: current-main-qualified-candidate-freeze-pending
 canonical_for: project-tideglass-phase-3-integration
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 integration manifest
 
-Status: `AUTHORITY_REPAIR_FOCUSED_PROOF_PENDING`.
+Status: `CURRENT_MAIN_QUALIFIED_CANDIDATE_FREEZE_PENDING`.
 This is a source integration inventory, not an accepted-mainline or
 protected-mainline receipt. The original owner decision and the explicit
 Wakebook Journey Detail addendum acceptance are recorded; protected integration
@@ -99,3 +99,9 @@ Studio consumer evidence did not fail. The focused 9/9 Feature Catalog repair
 is recorded in the Validation and Qualification Records. This manifest remains
 non-merging until the repaired source has been requalified, frozen, and granted
 a later serial authority position.
+
+The required Sounding Line infrastructure prerequisite is now accepted at
+`d3ed7c4c`; the Tideglass branch reconciles that finalizer/workflow/test-only
+advance and reruns its production A--K browser journey on `89fb1df6`. The
+ordinary Tideglass product surface is unchanged. A fresh frozen candidate and a
+later serial authority position remain required before protected integration.
