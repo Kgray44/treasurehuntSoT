@@ -15,7 +15,7 @@ if (!taskRoot.startsWith(`${allowedRoot}${path.sep}`) || !databasePath.startsWit
   throw new Error("ADMIRALTY_PHASE3_FIXTURE_SCOPE_REFUSED");
 
 const passwordHash = await bcrypt.hash(password, 10);
-for (const definition of [
+const fixtureAccounts = [
   {
     key: "MODERATION_OPERATOR",
     accountId: "adm3-account-moderator",
@@ -28,7 +28,8 @@ for (const definition of [
     profileId: "adm3-profile-reviewer",
     role: "MODERATION_OPERATOR",
   },
-]) {
+];
+for (const definition of fixtureAccounts) {
   await db.userAccount.upsert({
     where: { id: definition.accountId },
     update: { status: "ACTIVE" },
@@ -51,11 +52,12 @@ for (const definition of [
   });
   await db.accountEmail.upsert({
     where: { normalizedEmail: `${definition.key.toLowerCase()}@admiralty.example.test` },
-    update: {},
+    update: { isPrimary: true, verificationState: "VERIFIED", verifiedAt: createdAt },
     create: {
       accountId: definition.accountId,
       normalizedEmail: `${definition.key.toLowerCase()}@admiralty.example.test`,
       displayEmail: `${definition.key.toLowerCase()}@admiralty.example.test`,
+      isPrimary: true,
       verificationState: "VERIFIED",
       verifiedAt: createdAt,
       createdAt,
@@ -66,19 +68,40 @@ for (const definition of [
     update: { passwordHash },
     create: { accountId: definition.accountId, passwordHash, changedAt: createdAt, createdAt },
   });
-  await db.accountRoleAssignment.upsert({
-    where: {
-      accountId_role_scopeType_scopeId: {
+  const roleAssignment = await db.accountRoleAssignment.findFirst({
+    where: { accountId: definition.accountId, role: definition.role, scopeType: "GLOBAL", scopeId: null },
+  });
+  if (roleAssignment) {
+    await db.accountRoleAssignment.update({ where: { id: roleAssignment.id }, data: { revokedAt: null } });
+  } else {
+    await db.accountRoleAssignment.create({
+      data: {
+        id: `adm3-role-${definition.key.toLowerCase()}-${definition.role.toLowerCase()}`,
         accountId: definition.accountId,
         role: definition.role,
-        scopeType: "GLOBAL",
-        scopeId: null,
+        grantedAt: createdAt,
       },
-    },
-    update: { revokedAt: null },
-    create: { accountId: definition.accountId, role: definition.role, scopeType: "GLOBAL", grantedAt: createdAt },
-  });
+    });
+  }
 }
+
+const credentialPath = path.join(taskRoot, "credentials", "admiralty-phase2-walkthrough.private.json");
+const credentialHandoff = JSON.parse(await fs.readFile(credentialPath, "utf8"));
+credentialHandoff.fixtureVersion = "admiralty-phase3-v1";
+credentialHandoff.accounts = {
+  ...credentialHandoff.accounts,
+  ...Object.fromEntries(
+    fixtureAccounts.map((definition) => [
+      definition.key,
+      {
+        accountId: definition.accountId,
+        email: `${definition.key.toLowerCase()}@admiralty.example.test`,
+        displayName: definition.key.replaceAll("_", " "),
+      },
+    ]),
+  ),
+};
+await fs.writeFile(credentialPath, `${JSON.stringify(credentialHandoff, null, 2)}\n`);
 
 const subjectId = "adm2-community-listing-chart-kit";
 const moderationCase = await db.communityModerationCase.upsert({

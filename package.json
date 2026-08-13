@@ -70,6 +70,8 @@
     "admiralty:validate": "tsx scripts/admiralty/validate-phase2.ts",
     "admiralty:migrations": "node scripts/admiralty/rehearse-migrations.mjs",
     "admiralty:phase3:migrations": "node scripts/admiralty/rehearse-phase3-migrations.mjs",
+    "admiralty:phase3:fixture": "node scripts/admiralty/prepare-phase3-fixture.mjs",
+    "admiralty:phase3:journeys": "node scripts/admiralty/run-phase3-journeys.mjs",
     "admiralty:phase1:fixture": "node scripts/admiralty/prepare-phase1-fixture.mjs",
     "admiralty:phase1:journeys": "node scripts/admiralty/run-phase1-journeys.mjs",
     "admiralty:fixture": "node scripts/admiralty/prepare-phase2-fixture.mjs",

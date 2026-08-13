@@ -3,7 +3,7 @@
   "project": "Project Admiralty",
   "phase": "3",
   "phaseName": "Take the Watch",
-  "status": "ACTIVE",
+  "status": "READY_FOR_OWNER_WALKTHROUGH",
   "authorization": "OWNER_PROMPT_2026-08-13",
   "branch": "codex/project-admiralty-phase3-take-the-watch",
   "worktree": "C:\\Users\\kgray\\AppData\\Local\\ForeverTreasureCompanion\\treasurehuntSoT-admiralty-phase3",
@@ -15,6 +15,11 @@
   "schemaReservation": "NONE",
   "schemaImpact": "NONE_EXPECTED",
   "ownerWalkthroughRequired": true,
+  "qualificationScope": [
+    "Wayfarer session revocation",
+    "Wayfarer active-account suspension",
+    "Harborlight case-attached Community moderation"
+  ],
   "sharedContracts": [
     "Admiralty capability authorization and privileged assurance",
     "Wayfarer canonical account, session, and role commands",

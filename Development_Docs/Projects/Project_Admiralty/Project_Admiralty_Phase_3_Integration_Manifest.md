@@ -20,27 +20,29 @@ last_reviewed: 2026-08-13
 
 ## Current integration state
 
-The integration is **not ready for owner walkthrough or protected-main
+The integration is **ready for owner walkthrough but has no protected-main
 authority**. Session revocation, active-account suspension, and selected
 case-attached Community moderation actions have controlled server routes and
-human-facing dossier/listing panels, but each remains
-`PARTIALLY_IMPLEMENTED` until its full qualification evidence is complete.
+human-facing dossier/listing panels. Their local synthetic browser
+qualification includes preview, assurance, confirmation, durable receipts,
+CSRF denial, least-privilege dossier denial, redaction, and accessibility
+checks. The full repository build remains blocked by unrelated Bridgewatch
+dependencies, so this is not a production-build qualification.
 
 | Family               | Owner               | State                               | Integration boundary                                                                                                    |
 | -------------------- | ------------------- | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Session revocation   | Wayfarer            | `PARTIALLY_IMPLEMENTED`             | Owner transaction invalidates session/assurance, writes security/audit evidence, and persists a durable receipt.         |
-| Account suspension   | Wayfarer            | `PARTIALLY_IMPLEMENTED`             | Active-account, revision-checked owner transition with immediate session invalidation and durable receipt.               |
+| Session revocation   | Wayfarer            | `PARTIALLY_IMPLEMENTED`             | Owner transaction invalidates session/assurance, writes security/audit evidence, and persists a durable receipt.        |
+| Account suspension   | Wayfarer            | `PARTIALLY_IMPLEMENTED`             | Active-account, revision-checked owner transition with immediate session invalidation and durable receipt.              |
 | Community moderation | Harborlight         | `PARTIALLY_IMPLEMENTED`             | Case-attached, revision-checked owner action with a required independent eligible reviewer and transaction-bound audit. |
 | Role assignment      | Wayfarer            | `OWNER_EXTENSION_REQUIRED`          | Bootstrap reconciliation is not an operational role-management contract.                                                |
 | Job control          | Job owner           | `BLOCKED_BY_MISSING_OWNER_CONTRACT` | Existing workers expose no safe administrator retry, requeue, or cancellation contract.                                 |
 | Typed configuration  | Configuration owner | `BLOCKED_BY_MISSING_OWNER_CONTRACT` | Current settings are deployment- or secret-managed; no typed runtime setting owner exists.                              |
 
-## Required downstream work
+## Owner walkthrough boundary
 
-Before any owner walkthrough, satisfy the Phase 3 test plan’s remaining
-negative-path, durable idempotency, authorization, privacy, accessibility, and
-browser-journey evidence. A future owner command contract may unblock only its
-named family; it must not be inferred from a table, worker, seed script, or
-bootstrap reconciler.
+The walkthrough must use the disposable synthetic fixture only and must not
+exercise blocked command families. A future owner command contract may unblock
+only its named family; it must not be inferred from a table, worker, seed
+script, or bootstrap reconciler.
 
 No Sounding Line authority or protected-main binding has been requested or run.
