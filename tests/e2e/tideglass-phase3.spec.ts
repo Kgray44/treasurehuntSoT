@@ -237,7 +237,15 @@ test("Journeys A-L: visible entry, Captain preflight, accepted Journey Detail hi
   await captain.page.getByRole("button", { name: "Create a Voyage", exact: true }).first().click();
   const captainWizard = captain.page.getByRole("dialog", { name: "Select Chronicle", exact: true });
   await captainWizard.getByRole("button", { name: /The Tideglass Passage Fixture/u }).click();
+  const preflightResponse = captain.page.waitForResponse(
+    (response) =>
+      response.url().includes("/api/captain/tideglass/preflight") &&
+      response.url().includes("selectedEditionId=tg3-edition-a"),
+  );
   await captainWizard.getByRole("combobox", { name: "Published version", exact: true }).selectOption("tg3-edition-a");
+  const preflight = await preflightResponse;
+  expect(preflight.status()).toBe(200);
+  expect((await preflight.json()).state).toBe("COMPARISON");
   await expect(captainWizard.getByTestId("edition-preflight")).toContainText(
     "Version 1.0 is selected; Version 2.0 is currently recommended for new Voyages.",
   );
