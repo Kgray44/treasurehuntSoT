@@ -25,7 +25,7 @@ authority**. Session revocation, active-account suspension, and selected
 case-attached Community moderation actions have controlled server routes and
 human-facing dossier/listing panels. Their local synthetic browser
 qualification includes preview, assurance, confirmation, durable receipts,
-CSRF denial, unrelated Operations-station denial, redaction, and accessibility
+CSRF denial, ordinary-user command-center denial, redaction, and accessibility
 checks. The full repository build remains blocked by unrelated Bridgewatch
 dependencies, so this is not a production-build qualification.
 
