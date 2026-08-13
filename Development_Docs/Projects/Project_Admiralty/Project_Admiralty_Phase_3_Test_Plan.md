@@ -17,6 +17,9 @@ last_reviewed: 2026-08-13
   endpoint controls, endpoint error normalization, and a dossier action panel.
 - Account suspension: expected-revision and owner transaction controls,
   endpoint error normalization, and a dossier lifecycle action panel.
+- Owner transaction tests: session invalidation composes related privileged
+  assurance invalidation, a redacted security event, and administrative audit;
+  audit failure and stale lifecycle revision fail closed.
 - Moderation: Harborlight owner preview/action lifecycle and transaction-bound
   audit composition.
 
