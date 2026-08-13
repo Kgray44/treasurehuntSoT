@@ -14,7 +14,9 @@ last_reviewed: 2026-08-12
 
 The accepted main commit is `4edc8de5e30e9748700c19b466061f9b9a97f268` from
 PR #28. Exact candidate `9ca2b3b89b12470e7cd86457e5d8fd91e419b47c` received
-`RELEASE_GO` in Sounding Line run `31624301196` against base
+`RELEASE_GO` in Sounding Line run
+[`31624301196`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31624301196)
+against base
 `191a964488d0df71f8dcb91c5b8372fc73b6b32e`; protected binding `31626044788`
 then succeeded before the normal merge.
 
@@ -31,7 +33,8 @@ Before final reconciliation, qualified source
 `browser.admiralty`. The task-owned synthetic walkthrough was re-prepared for
 that source, and the owner accepted it on `2026-08-12`; see
 `Project_Admiralty_Phase_2_Owner_Decision_Record.md`. That qualification and
-owner decision remain historical product evidence, while run `31624301196`
+owner decision remain historical product evidence, while run
+[`31624301196`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31624301196)
 and protected binding `31626044788` are the exact publication authority.
 
 ## Acceptance boundary

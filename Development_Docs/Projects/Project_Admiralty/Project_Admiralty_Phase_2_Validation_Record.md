@@ -13,7 +13,8 @@ last_reviewed: 2026-08-12
 `ACCEPTED_MAINLINE`. The former current candidate was based on accepted
 `origin/main` `191a964488d0df71f8dcb91c5b8372fc73b6b32e`, introduced by
 non-destructive merge `0373aa0a63208c5bd24f53f8d751aed2b109c345`; every prior
-Mainline Decision is historical for publication. Sounding Line run `31624301196`
+Mainline Decision is historical for publication. Sounding Line run
+[`31624301196`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31624301196)
 issued `RELEASE_GO` for exact candidate
 `9ca2b3b89b12470e7cd86457e5d8fd91e419b47c` against that base for PR #28, with
 38 mandatory clean receipts and zero unclean receipts. Protected binding
@@ -44,7 +45,9 @@ Browser evidence root:
 The prior governed local browser receipt at `7bdcc97a8...` is historical after
 the latest mainline reconciliation. The hosted Sounding Line Mainline Decision
 for `b32a3c961...` is historical technical authority. Exact publication
-authority is run `31624301196` for candidate `9ca2b3b89...`, followed by
+authority is run
+[`31624301196`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31624301196)
+for candidate `9ca2b3b89...`, followed by
 protected binding `31626044788` and canonical merge `4edc8de5e...`.
 
 ## Governed acceptance
