@@ -65,7 +65,7 @@ export function AccountLifecycleActionPanel({
     <section className="chartroom-support" aria-labelledby="account-lifecycle-action-title">
       <h3 id="account-lifecycle-action-title">Suspend account</h3>
       <p>
-        Suspension immediately revokes active sessions. Reactivation is intentionally unavailable until Wayfarer
+        Suspension immediately ends all current sign-ins. Reactivation is intentionally unavailable until Wayfarer
         supplies its separate governed owner command.
       </p>
       {notice ? (
