@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `60b89841986e66fbc2c0828489d38002a1617506`
+Audited source commit: `d6eb335880376f59403cf7108bf26690d8da4891`
 
 ## Status vocabulary
 
@@ -959,33 +959,38 @@ A private, standalone, read-only development mission-control dashboard projects 
 ## FT-035 - Bridgewatch Governed Signal Projection
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Bridgewatch Phase 2
+**Program or subsystem:** Project Bridgewatch Phases 2-3
 
-A private Bridgewatch extension that projects explicit Project Registry and Sounding Line observer evidence into durable local operational state while keeping test, release, merge, and project-completion authority outside the dashboard.
+A private Bridgewatch extension that projects explicit Project Registry, Sounding Line, and GitHub observer evidence into durable current and historical operational state while keeping test, release, merge, and project-completion authority outside the dashboard.
 
 ### Important subfeatures
 
 - Read-only Sounding Line runtime projection with explicit lifecycle normalization
 - Durable SQLite worker, test-node, and test-run history with idempotent migrations
 - Opt-in bearer-authenticated activity telemetry with rate, skew, stale-state, and credential-redaction controls
-- Lifecycle tabs, project biography, worker/test summaries, responsive layout, and reduced-motion support
+- Normalized meaningful events, digest-deduplicated snapshots, daily rollups, and durable-history retention guards
+- Bounded since-last-check history, completed-project archive, project/program trends, and chronological phase evidence
+- GitHub-authoritative branch ahead/behind and aging context with stale-work attention that never changes governed progress
+- Lifecycle tabs, project biography, worker/test summaries, responsive phone and wide control-room layouts, and reduced-motion support
 
 ### Primary surfaces
 
-`bridgewatch`, `POST /api/telemetry/heartbeat`, `GET /api/history`, `GET /api/tests`
+`bridgewatch`, `POST /api/telemetry/heartbeat`, `GET /api/history`, `GET /api/trends`, `GET /api/archive`, `GET /api/branches`, `GET /api/tests`
 
 ### Meaningful limitations
 
 - Bridgewatch remains an observer and cannot create, approve, merge, retry, or authorize work.
-- Mainline integration does not claim a private deployment, provider proof, or owner-acceptance record.
+- Mainline integration does not claim a live private deployment, provider proof, or owner-acceptance record.
+- Bridgewatch does not infer completion, ETA, risk, or percentage progress from activity, branch commits, or test counts.
 
 ### Evidence
 
-- commit: `9b950a5fd603be27c813f9298b0b14888fbce6cf`
+- commit: `dead22dc26aeec2b722625aa9a68dc5688111fca`
 - path: `bridgewatch/lib/store.ts`
 - path: `bridgewatch/src/sounding-line.ts`
-- test: `bridgewatch/test/sounding-line.test.ts`
-- completion-record: `Development_Docs/Project_Bridgewatch_Phase_2_Completion_Receipt.md`
+- path: `bridgewatch/src/history.ts`
+- test: `bridgewatch/test/history.test.ts`
+- completion-record: `Development_Docs/Project_Bridgewatch_Completion_Receipt.md`
 
 ---
 
@@ -1588,4 +1593,4 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `60b89841986e66fbc2c0828489d38002a1617506`
+Generation source commit: `d6eb335880376f59403cf7108bf26690d8da4891`

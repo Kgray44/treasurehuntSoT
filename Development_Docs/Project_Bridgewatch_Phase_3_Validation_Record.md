@@ -8,13 +8,21 @@ last_reviewed: 2026-08-13
 
 # Project Bridgewatch Phase 3 Validation Record
 
-## Current status: current-main candidate preparation
+## Status: ACCEPTED INTO MAIN
 
-This record distinguishes local, task-owned implementation evidence from the
-still-required frozen-candidate, protected-main, and Sounding Line acceptance
-evidence. It does not mark Phase 3 or Project Bridgewatch complete.
+This record distinguishes retained diagnostic evidence from accepted
+protected-main evidence. Phase 3 implementation candidate
+`5bae2e4d2d0aee6993f8e619cc8c79ef99235ff6` was accepted by Sounding Line
+mainline authority `31718170750` with `RELEASE_GO`, 38 mandatory `PASSED` and
+`CLEAN` receipts, and protected binding `31719929034`; it merged at
+`dead22dc26aeec2b722625aa9a68dc5688111fca`. The required source-indexed
+lifecycle correction then received its own exact authority `31720843942`,
+`RELEASE_GO`, 38 clean mandatory receipts, and protected binding `31722507891`;
+it merged at `d6eb335880376f59403cf7108bf26690d8da4891`. The Project Registry
+now records Phase 3 and Project Bridgewatch as `COMPLETE` only from that
+accepted evidence.
 
-The current task-owned branch is
+The implementation branch was
 `codex/project-bridgewatch-phase3-keep-the-watch-6`, replayed onto protected
 main `60b89841986e66fbc2c0828489d38002a1617506` after the accepted Tideglass
 Phase 3 reconciliations. The prior `-4` candidate
@@ -52,7 +60,7 @@ registry, or migration paths.
   GET-only history, and unchanged worker-only `/api/activity` semantics.
 - The configured dashboard authentication, CSP, private host policy, and
   activity-only bearer telemetry boundary remain covered by server tests.
-- On this current-main candidate, `npm --prefix bridgewatch run validate` and
+- On the implementation candidate, `npm --prefix bridgewatch run validate` and
   `npm --prefix bridgewatch run build` passed: TypeScript plus 15 Vitest files
   / 41 tests. The concise recent-change selector test proves branch/source
   polling context is suppressed, governed events dedupe by entity, and the
@@ -132,12 +140,13 @@ mainline authority attempt.
 No Phase 3 route changes GitHub, Sounding Line, branches, tests, releases,
 project lifecycle, milestones, source code, or a user acknowledgement state.
 
-## Required candidate evidence still pending
+## Final acceptance evidence
 
-Before this record can become an acceptance record, freeze the fresh
-post-repair candidate, reconcile current main if it changes, complete the
-current planner's qualification scope and cleanup, dispatch exactly one
-explicit `mainline` authority, obtain a valid `RELEASE_GO` bound to that SHA,
-merge through protected main, then replace pending fields in the Integration
-Manifest and completion receipts with exact evidence. Focused green evidence
-is not Sounding Line acceptance.
+The implementation finalizer was intentionally not used as a debugger. The
+earlier Helm browser receipt was preserved as invalid historical evidence, the
+smallest focused reproduction passed, and the fresh candidate was qualified,
+frozen, accepted once on its exact SHA, and protected-merged. The later
+registry-only lifecycle correction also received fresh exact-SHA qualification,
+one authority decision, and its protected merge. The Integration Manifest and
+completion receipts now hold those exact identities; focused green evidence is
+not represented as an authority substitute.
