@@ -148,6 +148,15 @@ deployment, live-Voyage proof, or owner acceptance.
 
 **Audience:** Creators. **Availability:** available on main. Studio supports Chronicle settings, story blocks, locations, assets, artifact authoring, version views, and immutable publishing. [Guide](../user/creator-guide.md).
 
+Project Shipwright Phase 2 makes current Story Block authoring contract-aware:
+the Inspector groups content, behavior, completion, presentation,
+accessibility, and advanced diagnostics; it offers Guided, Detailed, and
+Engineering disclosure over the same Chronicle data. Creators select readable
+targets and typed variables, build canonical visual conditions, see effective
+Drydock defaults and local issues, and retain existing autosave, history,
+preview, and publication behavior. Drydock remains the sole contract and
+validation authority; deployment and live-provider execution are separate.
+
 Project Tideglass Phase 1 provides the accepted exact immutable edition
 comparison foundation. The accepted Phase 2 extension adds server-side
 intelligence with stable change codes, explainable significance and

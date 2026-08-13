@@ -3,7 +3,7 @@ title: Project Wakebook Phase 1 Mainline Safety Record
 audience: product-engineering
 status: current
 canonical_for: project-wakebook-phase-1-mainline-safety-record
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-13
 ---
 
 # Project Wakebook Phase 1 mainline safety record
@@ -15,7 +15,7 @@ last_reviewed: 2026-08-12
 | Project / phase   | Project Wakebook / Phase 1 `Open the Wake`                                                                               |
 | Owner             | Wakebook for archive projection and presentation; Wayfarer remains history authority                                     |
 | Branch / worktree | `codex/project-wakebook-phase1-open-the-wake` / `C:\Users\kkids\Documents\treasurehuntSoT-wakebook-phase1-open-the-wake` |
-| Reconciled base   | `25a5ecc3989d137a95291c340f07143860b821cc`                                                                               |
+| Reconciled base   | `0cdaa80245e47ec67ca6758daec7cd1453b37297`                                                                               |
 | Dependency class  | Accepted-main contracts only                                                                                             |
 | Schema impact     | None; no migration reservation                                                                                           |
 | Shared seams      | Passport routes/navigation/styles, Feature Catalog, Homeport catalogs, Sounding Line control plane                       |
@@ -57,6 +57,13 @@ and evidence digest
 `290c5062dc4f779eee2c7ca6ead51fc706db498b9e61491e3e9e94fe0d8100eb`.
 Protected binding run `31652303048` succeeded and PR #41 merged as
 `cbf634d4d5db9cf47edebb89e005e8cc910068bd`. Current-main reconciliation
-`6d65b9aa` retains that accepted implementation and consumes accepted main
-through `25a5ecc3` outside Wakebook-owned record seams. No deployment or Phase 2
-claim follows.
+Current record candidate `10f3cdf5` received hosted mainline `RELEASE_GO` in
+run `31665087005` with 38/38 mandatory receipts `PASSED` and `CLEAN`, zero
+evidence or runtime-conformance defects, plan digest
+`013ce57a4e82b24767f8e22e36b17ddb19d53e76bd772d0b0da9148f6bd7a416`,
+and evidence digest
+`ce26ea0198040adfc651d90371d9dc32dd7a432e0facf9c29e447a7411794748`.
+Protected binding run `31665077267` attempt 2 succeeded, and PR #73 merged as
+`0cdaa80245e47ec67ca6758daec7cd1453b37297`. Its exact parents are `25a5ecc3`
+and `10f3cdf5`, and its tree equals the validated candidate tree. No deployment
+or Phase 2 claim follows.

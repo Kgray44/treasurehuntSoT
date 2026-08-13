@@ -1,12 +1,43 @@
 ---
 title: Project Shipwright Phase 2 Validation Record
 audience: engineering
-status: active
+status: current
 canonical_for: project-shipwright-phase-2-validation
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-13
 ---
 
 # Project Shipwright Phase 2: Fit the Tools - Validation Record
+
+## Protected-main acceptance
+
+Exact candidate `00e58fc427d97d5775e1b911ea8f62ba428b0c51` received
+`RELEASE_GO` through hosted Sounding Line Mainline Decision
+[`31662185476`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31662185476)
+against base `95cff272450af34a3f8c00eb3ae01081be810f79`. The sealed
+acceptance envelope reports plan digest
+`ee64d9cb8ee400cb91812a1fc6f8ce2ef5398adb01973abbf18124dc94342c03`,
+evidence digest
+`3b8794336540506f2052ec0a09b3d6185e7d1d229519458898a51397b1e87983`,
+and 38 mandatory receipts. Missing, duplicate, unknown, invalid, missing
+runtime-conformance, and invalid-runtime-conformance evidence counts are all
+zero.
+
+Protected binding
+[`31662099042`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31662099042)
+passed for the same candidate and base. PR
+[#72](https://github.com/Kgray44/treasurehuntSoT/pull/72) then merged as
+`25a5ecc3989d137a95291c340f07143860b821cc` with parents
+`95cff272450af34a3f8c00eb3ae01081be810f79` and
+`00e58fc427d97d5775e1b911ea8f62ba428b0c51`. Recomputing the merge tree
+produced `9e18eae0ec5522299f5683c7361f93fb384ff56d`, the integrated merge
+tree, and the candidate is an ancestor of fetched `origin/main`.
+
+The local post-merge observation process exited after its outer 15-minute
+observer timeout before it could emit a receipt or a finalizer decision. It is
+not acceptance evidence and was not retried. Physical cleanup was verified:
+the authority process exited, `validation-runtime.lock` was exclusively
+openable, and port 3100 was free. The sealed hosted decision and successful
+protected binding remain the complete authoritative product-integration proof.
 
 ## Candidate qualification completed
 
@@ -29,7 +60,9 @@ After rebasing onto `fb0f13e35fcdd98434d22c357aee02f24d6d9036`, the qualificatio
 
 Protected main then advanced to `bb7676a75581d8d415c3ff7712cc38bc8decb031` with accepted Tideglass Phase 3. Its direct changes to `TaleEditor`, Studio types, Chronicle service, and Studio styles required a semantic rebase rather than a mechanical carry-forward. The only conflict was adjacent imports; the reconciled source retains both `TideglassStudioComparison` and `ContractAwareInspector`. Requalification passed TypeScript; the 116-test combined Studio/authoring/authorization/contract set; all 197 Drydock tests and 23 Drydock contracts; Tideglass Phase 3 contract validation; Tideglass’ task-owned production browser journey; Shipwright’s task-owned browser journey; tracked-source ESLint; documentation validation; and Feature Catalog validation. Both browser journeys passed from exact reconciled source `83220ece21a984d9d200007ba556437b6ebbade2`.
 
-No Sounding Line Mainline Decision has been dispatched. This record is owner-accepted candidate evidence only; it is not Sounding Line authority or protected-main acceptance.
+At this candidate-qualification point, no Sounding Line Mainline Decision had
+yet been dispatched. This historical section is owner-accepted candidate
+evidence only; the protected-main acceptance is recorded above.
 
 ## Current-main reconciliation
 
@@ -49,7 +82,7 @@ Wakebook-reconciled qualification completed on the rebased source: the focused S
 
 Current protected main then advanced to `770404dd11cdfc1b86658a488979c43c22ed1711`: accepted Deepwater Phase 4 evidence/control-plane files and a Helm Player-room route-timeout repair. The delta does not modify Studio, Drydock, Chronicle contracts, Prisma, or the Shipwright Inspector; it does modify shared Player-room code and the Feature Catalog/document indexes. The r6 candidate resolves the generated-record conflict by regeneration and preserves both the accepted mainline entries and `FT-037`. On the reconciled source, the combined Studio/authoring/Drydock/authorization plus affected Player/Helm suite passed (8 files / 130 tests); Drydock validation passed all 23 contracts and its full suite passed (34 files / 197 tests); TypeScript and tracked-source ESLint passed; the task-owned Creator browser journey passed from `ea49571d0bc0a95ac440333bed5a46f53a338dc8`; and the optimized build passed with the same inherited non-failing Turbopack trace warning.
 
-The serial authority hold is released by current GitHub evidence: Helm candidate `eeb3f535b095211b6f59b7be07b37256548ee659` received Sounding Line authoritative run `31656263466`, whose sealed finalizer artifact reports `RELEASE_GO` with 38 mandatory receipts and whose protected merge binding run `31656243531` passed before merge `770404dd11cdfc1b86658a488979c43c22ed1711`. The Helm completion receipt has not yet been restamped, so this record preserves that distinction rather than altering Helm-owned documentation. No Shipwright Mainline Decision has yet been dispatched; the next exact frozen candidate may now receive one governed attempt.
+The serial authority hold was released by current GitHub evidence: Helm candidate `eeb3f535b095211b6f59b7be07b37256548ee659` received Sounding Line authoritative run `31656263466`, whose sealed finalizer artifact reports `RELEASE_GO` with 38 mandatory receipts and whose protected merge binding run `31656243531` passed before merge `770404dd11cdfc1b86658a488979c43c22ed1711`. The Helm completion receipt had not yet been restamped, so this record preserved that distinction rather than altering Helm-owned documentation. At this historical reconciliation point, the next exact frozen Shipwright candidate could receive one governed attempt; its subsequent accepted decision is recorded above.
 
 ## Authoritative attempt 1: evidence invalid
 

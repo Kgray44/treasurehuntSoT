@@ -3,7 +3,7 @@ title: Project Wakebook Phase 1 Validation Record
 audience: product-engineering
 status: current
 canonical_for: project-wakebook-phase-1-validation-record
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-13
 ---
 
 # Project Wakebook Phase 1 validation record
@@ -17,28 +17,34 @@ accepted Phase 1 on 2026-08-12. Exact implementation candidate
 #41 merged that exact head as `cbf634d4d5db9cf47edebb89e005e8cc910068bd`.
 Reconciliations `5a999090`, `fac85f2d`, `ebf6afe2`, and `147d4cbe` preserved
 that accepted implementation through main `95cff272`; follow-up merge
-`6d65b9aa` consumes accepted Shipwright Phase 2 `25a5ecc3`. The candidate
-updates generated/catalog records without changing Wakebook runtime behavior.
-This is source integration and owner acceptance, not deployment or
-authorization for Phase 2.
+`6d65b9aa` consumes accepted Shipwright Phase 2 `25a5ecc3`. Exact current-record
+candidate `10f3cdf5` then received hosted mainline `RELEASE_GO`, successful
+protected binding, and protected merge `0cdaa802`. The correction updates
+generated/catalog records without changing Wakebook runtime behavior. This is
+source integration and owner acceptance, not deployment or authorization for
+Phase 2.
 
 ## Source identity
 
-| Field                           | Value                                                                    |
-| ------------------------------- | ------------------------------------------------------------------------ |
-| Branch                          | `codex/project-wakebook-phase1-open-the-wake`                            |
-| Owned worktree                  | `C:\Users\kkids\Documents\treasurehuntSoT-wakebook-phase1-open-the-wake` |
-| Accepted implementation head    | `1d1c1aaa5a0f2fbbc6b083911cb19422782afff0`                               |
-| Accepted implementation base    | `bb7676a75581d8d415c3ff7712cc38bc8decb031`                               |
-| Protected merge                 | `cbf634d4d5db9cf47edebb89e005e8cc910068bd` (PR #41)                      |
-| Hosted authority                | `31651096047` (`RELEASE_GO`, 38/38 `PASSED` and `CLEAN`)                 |
-| Protected binding               | `31652303048` (`Sounding Line / Mainline Decision` successful)           |
-| Current accepted-main base      | `25a5ecc3989d137a95291c340f07143860b821cc`                               |
-| Current-main reconciliation     | `6d65b9aa` (parents `4745c83e` and `25a5ecc3`)                           |
-| Archive implementation anchor   | `629f5c7a981b80494f7703b6410b573a661e0f39`                               |
-| Browser-evidence source SHA     | `22940b9004bc89def300a808f426a0ed4dc77658`                               |
-| Database schema change          | None                                                                     |
-| Canonical mutable database used | No                                                                       |
+| Field                           | Value                                                                                                                           |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Branch                          | `codex/project-wakebook-phase1-open-the-wake`                                                                                   |
+| Owned worktree                  | `C:\Users\kkids\Documents\treasurehuntSoT-wakebook-phase1-open-the-wake`                                                        |
+| Accepted implementation head    | `1d1c1aaa5a0f2fbbc6b083911cb19422782afff0`                                                                                      |
+| Accepted implementation base    | `bb7676a75581d8d415c3ff7712cc38bc8decb031`                                                                                      |
+| Protected merge                 | `cbf634d4d5db9cf47edebb89e005e8cc910068bd` (PR #41)                                                                             |
+| Hosted authority                | `31651096047` (`RELEASE_GO`, 38/38 `PASSED` and `CLEAN`)                                                                        |
+| Protected binding               | `31652303048` (`Sounding Line / Mainline Decision` successful)                                                                  |
+| Current accepted-main base      | `25a5ecc3989d137a95291c340f07143860b821cc`                                                                                      |
+| Current-main reconciliation     | `6d65b9aa` (parents `4745c83e` and `25a5ecc3`)                                                                                  |
+| Current accepted record head    | `10f3cdf554ac0100f4529ed8bc192663d16703e9`                                                                                      |
+| Current hosted authority        | [`31665087005`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31665087005) (`RELEASE_GO`, 38/38 `PASSED` and `CLEAN`) |
+| Current protected binding       | `31665077267`, attempt 2 (`Sounding Line / Mainline Decision` successful)                                                       |
+| Current protected merge         | `0cdaa80245e47ec67ca6758daec7cd1453b37297` (PR #73)                                                                             |
+| Archive implementation anchor   | `629f5c7a981b80494f7703b6410b573a661e0f39`                                                                                      |
+| Browser-evidence source SHA     | `22940b9004bc89def300a808f426a0ed4dc77658`                                                                                      |
+| Database schema change          | None                                                                                                                            |
+| Canonical mutable database used | No                                                                                                                              |
 
 ## Contract inventory
 
@@ -78,6 +84,8 @@ Sounding Line owns the authoritative definitions for:
 | Exact hosted implementation gate  | Candidate `1d1c1aaa5a0f2fbbc6b083911cb19422782afff0`; authority run `31651096047`; plan `839c6e8a54f63cc8fe8b414dc39db3996524b477b9b70152161fe1190feb52bb`; evidence `290c5062dc4f779eee2c7ca6ead51fc706db498b9e61491e3e9e94fe0d8100eb` | `RELEASE_GO`, 38/38 `PASSED`/`CLEAN` | Exact implementation authority; zero missing, duplicate, unknown, invalid, or conformance evidence     |
 | Protected merge binding           | PR #41 run `31652303048`; exact head `1d1c1aaa`; base `bb7676a7`; merge `cbf634d4`                                                                                                                                                      | `SUCCESS`                            | Protected `Sounding Line / Mainline Decision`                                                          |
 | Current reconciliation attempt    | Candidate `4745c83e191c95a708a59e56d26b200025712ff0`; authority run `31662830817`; plan `fc9112e31d1ba008a085bc2a437d24ef0a98fced5f16539779de2d8d0bdb6e70`; evidence `d6caf3b942e133e3c0c41ebf90f91bbd401881cb4225d4057c37b7978c730408` | `RELEASE_GO`, 38/38 `PASSED`/`CLEAN` | Exact-source qualification only; base advanced to Shipwright merge `25a5ecc3` before protected binding |
+| Current accepted record gate      | Candidate `10f3cdf554ac0100f4529ed8bc192663d16703e9`; authority run `31665087005`; plan `013ce57a4e82b24767f8e22e36b17ddb19d53e76bd772d0b0da9148f6bd7a416`; evidence `ce26ea0198040adfc651d90371d9dc32dd7a432e0facf9c29e447a7411794748` | `RELEASE_GO`, 38/38 `PASSED`/`CLEAN` | Exact current-main record/catalog authority; zero evidence or conformance defects                      |
+| Current protected merge binding   | PR #73 run `31665077267`, attempt 2; exact head `10f3cdf5`; base `25a5ecc3`; merge `0cdaa802`                                                                                                                                           | `SUCCESS`                            | Protected merge tree equals validated candidate tree                                                   |
 | Owner walkthrough decision        | Task owner instruction, 2026-08-12                                                                                                                                                                                                      | `OWNER_ACCEPTED_PHASE_1`             | Owner gate; deployment remains separate                                                                |
 
 The first `browser.wakebook` diagnostic attempt did not execute product code because another governed validation process owned the global validation-runtime lock. The runner reported cleanup `CLEAN`; no process was stopped and no lock was removed. That environmental collision is not a product failure and is not counted as passing evidence.
