@@ -127,6 +127,7 @@ async function main() {
     "TG3-EV-H",
     "TG3-EV-I",
     "TG3-EV-J",
+    "TG3-EV-K",
   ])
     assert(browserTest.includes(id), `visual evidence capture missing: ${id}`);
 

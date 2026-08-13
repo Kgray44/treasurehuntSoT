@@ -35,7 +35,7 @@ Development verification runs the smallest relevant Tideglass, Wayfarer, Studio,
 - `src/components/wakebook/WakebookVoyageDetail.test.tsx` covers the visible Journey Detail entry and its no-dead-control absence state.
 - `src/components/tideglass/TideglassPassage.test.tsx` covers visible state copy, partial/no-change/up-to-date treatment, and bounded retry behavior.
 - `tests/tideglass/phase3-performance.test.ts` uses a 600-block synthetic comparison and preserves the Phase 3 synchronous scope rather than introducing Phase 4 processing.
-- `tests/e2e/tideglass-phase3.spec.ts` provides the A-J visible-entry browser record, including Passport -> Wakebook Journey Detail -> See what changed -> exact-record return, and writes its private local evidence manifest.
+- `tests/e2e/tideglass-phase3.spec.ts` provides the A-K visible-entry browser record, including a captured Passport -> Wakebook Journey Detail entry, See what changed, and exact-record return; it writes its private local evidence manifest.
 - `npm run tideglass:phase3:validate` is a non-authoritative source contract check. It must pass before candidate qualification but is not a Sounding Line decision.
 
 ## Truth boundaries

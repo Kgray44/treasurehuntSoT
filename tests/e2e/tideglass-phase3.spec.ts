@@ -131,6 +131,12 @@ test("Journeys A-J: visible entry, accepted Journey Detail history, creator deta
   await expect(playerA.page.getByRole("heading", { name: "Your Voyages", exact: true, level: 1 })).toBeVisible();
   await playerA.page.getByRole("link", { name: "Open The Tideglass Passage Fixture Voyage", exact: true }).click();
   await expect(playerA.page.getByRole("heading", { name: "Voyage Detail", exact: true })).toBeVisible();
+  await capture(
+    playerA.page,
+    "TG3-EV-K-WAKEBOOK-JOURNEY-ENTRY",
+    "WAKEBOOK_JOURNEY_DETAIL",
+    "Accepted Journey Detail exposes the owner-safe Tideglass history entry before comparison navigation",
+  );
   await playerA.page.getByRole("link", { name: "See what changed", exact: true }).click();
   await expect(playerA.page.getByRole("heading", { name: "What changed?", exact: true })).toBeVisible();
   await expect(playerA.page.getByLabel("Your recorded Voyage")).toContainText(/completed .*; completed; success/u);
