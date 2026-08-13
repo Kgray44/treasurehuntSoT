@@ -56,7 +56,8 @@ describe("GET /api/captain/tideglass/preflight", () => {
       context,
       projection: {
         visibleChangeCount: 2,
-        summary: { headline: "Two player-safe changes", digest: "safe-digest", partial: false },
+        summary: { partial: false },
+        visibleCategoryCounts: { ACCESSIBILITY: 2, STORY_CONTENT: 0 },
         audience: "CAPTAIN_SAFE",
         changes: [{ hiddenInternalField: "must-not-leak" }],
       },
@@ -77,7 +78,7 @@ describe("GET /api/captain/tideglass/preflight", () => {
       selectedEdition: context.selectedEdition,
       recommendedEdition: context.recommendedEdition,
       visibleChangeCount: 2,
-      summary: { headline: "Two player-safe changes", digest: "safe-digest", partial: false },
+      summary: { partial: false, categories: [{ category: "ACCESSIBILITY", count: 2 }] },
     });
   });
 });

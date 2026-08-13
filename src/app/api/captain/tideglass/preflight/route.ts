@@ -39,9 +39,10 @@ export async function GET(request: Request) {
     ...common,
     visibleChangeCount: preflight.projection.visibleChangeCount,
     summary: {
-      headline: preflight.projection.summary.headline,
-      digest: preflight.projection.summary.digest,
       partial: preflight.projection.summary.partial,
+      categories: Object.entries(preflight.projection.visibleCategoryCounts)
+        .filter(([, count]) => count > 0)
+        .map(([category, count]) => ({ category, count })),
     },
   });
 }

@@ -85,7 +85,7 @@ type EditionPreflight = {
   selectedEdition: { id: string; label: string; publishedAt: string };
   recommendedEdition: { id: string; label: string; publishedAt: string };
   visibleChangeCount?: number;
-  summary?: { headline: string; digest: string; partial: boolean };
+  summary?: { partial: boolean; categories: Array<{ category: string; count: number }> };
 };
 type Library = {
   csrfToken: string;
@@ -1354,7 +1354,15 @@ function VoyageWizard(props: WizardProps) {
                                   } available for this preflight.`
                                 : "A different edition is selected. Player-safe semantic details are not available before launch."}
                             </p>
-                            {props.editionPreflight.summary && <p>{props.editionPreflight.summary.headline}</p>}
+                            {props.editionPreflight.summary?.categories.length ? (
+                              <p>
+                                Player-safe categories:{" "}
+                                {props.editionPreflight.summary.categories
+                                  .map((category) => category.category.toLocaleLowerCase().replaceAll("_", " "))
+                                  .join(", ")}
+                                .
+                              </p>
+                            ) : null}
                           </>
                         )}
                         <small>Preflight is read-only and never changes the selected edition or Voyage settings.</small>
