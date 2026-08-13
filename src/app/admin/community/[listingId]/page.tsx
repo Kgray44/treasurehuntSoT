@@ -12,6 +12,7 @@ import {
   dateTime,
   humanize,
 } from "@/components/admiralty/AdminPrimitives";
+import { ModerationActionPanel } from "@/components/admiralty/ModerationActionPanel";
 
 function stringList(value: string) {
   try {
@@ -167,6 +168,16 @@ export default async function CommunityListingPage({ params }: { params: Promise
             )}
           </div>
         </div>
+      </Panel>
+      <Panel
+        title="Moderation action"
+        kicker="Owner preview, distinct reviewer, recent assurance, confirmation, and receipt"
+      >
+        <ModerationActionPanel
+          cases={listing.cases}
+          csrfToken={operator.csrfToken}
+          enabled={operator.capabilities.includes("COMMUNITY_MODERATE")}
+        />
       </Panel>
       <EvidenceStrip evidence={result.evidence} />
     </ChartroomPage>
