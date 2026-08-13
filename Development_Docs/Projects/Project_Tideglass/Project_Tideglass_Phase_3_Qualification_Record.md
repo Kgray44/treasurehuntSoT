@@ -8,7 +8,7 @@ last_reviewed: 2026-08-13
 
 # Project Tideglass Phase 3 qualification record
 
-Status: `INTEGRATED_MAINLINE_RECORD_ONLY_CLOSEOUT_PENDING`.
+Status: `ACCEPTED_MAINLINE`.
 
 The earlier local candidate is superseded. It used an invented response proxy and did not evidence the complete governed state matrix. No owner walkthrough, Sounding Line Mainline Decision, protected merge, deployment, provider execution, or real-account acceptance was claimed or dispatched for it.
 

@@ -8,11 +8,11 @@ last_reviewed: 2026-08-13
 
 # Project Tideglass Phase 3 integration manifest
 
-Status: `INTEGRATED_MAINLINE_RECORD_ONLY_CLOSEOUT_PENDING`.
+Status: `ACCEPTED_MAINLINE`.
 This is a source integration inventory, not a replacement for the Completion
 Receipt. The original owner decision and the explicit Wakebook Journey Detail
-addendum acceptance are recorded; protected integration is complete and the
-governed record-only closeout remains required.
+addendum acceptance are recorded; protected integration and the governed
+record-only closeout are complete.
 
 ## Canonical consumer path
 

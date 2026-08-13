@@ -8,10 +8,10 @@ last_reviewed: 2026-08-13
 
 # Project Tideglass Phase 3 validation record
 
-Status: `INTEGRATED_MAINLINE_RECORD_ONLY_CLOSEOUT_PENDING`.
+Status: `ACCEPTED_MAINLINE`.
 The original product decision and the explicit Wakebook Journey Detail addendum
-acceptance are recorded; protected integration is complete and the record-only
-closeout remains pending.
+acceptance are recorded; protected integration and the record-only closeout are
+complete.
 
 The reconciled product source is
 `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`, subsequently reconciled to accepted main
@@ -31,9 +31,10 @@ The owner accepted this reconciled product on `2026-08-12`; the accepted reviewe
 source is recorded in `Project_Tideglass_Phase_3_Owner_Decision_Record.md`.
 The original product subsequently received its governed release evidence and
 entered protected main as `bb7676a75581d8d415c3ff7712cc38bc8decb031`. The
-record-only closeout path is not accepted current main, and this document does
-not represent it as completed. No Deepwater finding closure, deployment, or
-Phase 4 work has been started.
+record-only closeout merged at `0fb9dfe96e1d414b45edf1841198beeda40e9c27`
+after its sealed `RELEASE_GO` receipt, so this document records the
+accepted-main state. No Deepwater finding closure, deployment, or Phase 4 work
+has been started.
 
 ## Current accepted-Wakebook reconciliation
 
