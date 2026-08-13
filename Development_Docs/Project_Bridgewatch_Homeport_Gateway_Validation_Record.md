@@ -1,7 +1,7 @@
 ---
 title: Project Bridgewatch Homeport Gateway Validation Record
 audience: engineering
-status: requalified-pending-replacement-authoritative-mainline-decision
+status: repaired-pending-current-main-reconciliation-and-authoritative-mainline-decision
 canonical_for: project-bridgewatch-homeport-gateway-validation
 last_reviewed: 2026-08-13
 ---
@@ -58,6 +58,8 @@ that port 4318 has been verified on a production host.
 | Documentation and Feature Catalog validators              | passed                                                                      |
 | Sounding Line policy validation                           | passed; no policy errors                                                    |
 | Sounding Line governed `local-change`                     | passed with clean static and runtime-conformance evidence                   |
+| Helm background-handoff component regression              | 15 passed; hidden waiting rooms retain authoritative polling                |
+| Helm focused governed browser stability                   | two consecutive 3/3 passes with clean teardown                              |
 
 The governed local-change selection passed `static.core`, `unit.deepwater`,
 `unit.drydock`, `unit.homeport`, `unit.one-voyage`, `unit.sounding-line`, and
@@ -92,6 +94,29 @@ A same-source focused governed Helm reproduction then passed all 3/3 journeys
 with runtime conformance `PASSED` and clean teardown. Sounding Line policy does
 not convert one failure plus one retry pass into a clean decision or qualified
 flake, so the failed authoritative run was not rerun or waived.
+
+Replacement authoritative run `31724278156` was exactly bound to PR `#85`,
+base `72075eb551ec39bdb59bd7d78fd900f2eaf73a88`, and candidate
+`e169c97bfdf5292e4ff97f661589ff9d2dc7734c`. It again ended
+`RELEASE_NO_GO` solely because the first `browser.helm` journey observed the
+Captain's Player membership as `ACTIVE_MEMBER` while the already-open hidden
+waiting-room tab remained on its prelaunch URL. Every Bridgewatch-specific
+worker, the production build, the Admiralty browser family, and the other
+governed workers passed. No acceptance envelope or merge authority was
+produced.
+
+The repeated failure established a product race rather than a candidate retry
+artifact. `PlayerVoyageRoom` suppressed its only periodic authoritative load
+while `document.hidden`, leaving progression dependent on browser delivery of
+EventSource, focus, or visibility events. The repair keeps the existing
+five-second canonical load active in hidden waiting rooms while preserving the
+terminal revocation guard, credential boundary, and original 30-second browser
+assertion. A component regression proves a hidden waiting room fetches active
+state and hands off to the journal. Two fresh focused governed Helm runs then
+passed 3/3 journeys consecutively with runtime conformance `PASSED` and clean
+teardown. An earlier local attempt that reset the development server during
+route prewarming was retained as infrastructure diagnostics and is not counted
+as product evidence because no Helm test began.
 
 While that diagnosis completed, accepted Bridgewatch Phase 3 advanced
 `origin/main` through `dead22dc26aeec2b722625aa9a68dc5688111fca`. The replacement
