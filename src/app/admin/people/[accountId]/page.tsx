@@ -13,6 +13,7 @@ import {
   humanize,
 } from "@/components/admiralty/AdminPrimitives";
 import { DossierSupportPanel } from "@/components/admiralty/DossierSupportPanel";
+import { AccountLifecycleActionPanel } from "@/components/admiralty/AccountLifecycleActionPanel";
 import { SessionActionPanel } from "@/components/admiralty/SessionActionPanel";
 
 export default async function AccountDossierPage({ params }: { params: Promise<{ accountId: string }> }) {
@@ -172,12 +173,24 @@ export default async function AccountDossierPage({ params }: { params: Promise<{
           <EmptyState title="No security events recorded" />
         )}
       </Panel>
-      <Panel title="Security actions" kicker="Preview, recent assurance, explicit confirmation, owner command, and receipt">
+      <Panel
+        title="Security actions"
+        kicker="Preview, recent assurance, explicit confirmation, owner command, and receipt"
+      >
         <SessionActionPanel
           targetAccountId={account.id}
           csrfToken={operator.csrfToken}
           sessions={account.sessions}
           enabled={operator.capabilities.includes("SECURITY_OPERATE")}
+        />
+      </Panel>
+      <Panel title="Account lifecycle" kicker="Critical command with stale-state protection and explicit confirmation">
+        <AccountLifecycleActionPanel
+          targetAccountId={account.id}
+          expectedUpdatedAt={account.updatedAt.toISOString()}
+          accountStatus={account.status}
+          csrfToken={operator.csrfToken}
+          enabled={operator.capabilities.includes("ACCOUNT_OPERATE")}
         />
       </Panel>
       <div className="chartroom-grid">

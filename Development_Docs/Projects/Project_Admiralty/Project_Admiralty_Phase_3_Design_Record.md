@@ -40,7 +40,10 @@ Admiralty data write.
 
 ## Failure behavior
 
-Stale preview returns a safe conflict. Duplicate requests return their original
-owner result. Missing assurance, CSRF, capability, audit, or owner availability
+Stale preview returns a safe conflict. A command may be marked implemented only
+when its owner supplies durable idempotency semantics that return the original
+owner result on retry; the present session, lifecycle, and moderation command
+families remain partially implemented while that family-level evidence is
+completed. Missing assurance, CSRF, capability, audit, or owner availability
 fails closed. The UI refreshes the authoritative read projection after success
 and presents a bounded, actionable error after failure.
