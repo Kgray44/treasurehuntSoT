@@ -9,6 +9,7 @@ import {
   stableStringify,
   validatePhase2Model,
   validatePhase3Model,
+  validatePhase4Model,
   validateModel,
 } from "../../scripts/deepwater/lib.mjs";
 
@@ -51,6 +52,14 @@ function phase3Model() {
 
 function phase3Errors(candidate) {
   return validatePhase3Model(candidate);
+}
+
+function phase4Model() {
+  return structuredClone(baseline);
+}
+
+function phase4Errors(candidate) {
+  return validatePhase4Model(candidate);
 }
 
 test("valid generated ledger and references are accepted", () => {
@@ -446,8 +455,8 @@ test("Phase 3 reconciliation closes only accepted documentation evidence and pre
       baseline.findingsDocument.findings.find((finding) => finding.findingId === findingId)?.status,
       "CLOSED",
     );
-  assert.equal(baseline.status.mainlineState, "MAINLINE_ACCEPTED");
-  assert.equal(baseline.status.finalReconciledMainSha, "ca135585a62f445cd4331df1a7dd21203bd50219");
+  assert.equal(baseline.phase3.status.mainlineState, "MAINLINE_ACCEPTED");
+  assert.equal(baseline.phase3.status.finalReconciledMainSha, "ca135585a62f445cd4331df1a7dd21203bd50219");
   assert.equal(baseline.inputs.phase3Config.validationEvidence.finalCandidate.decision, "RELEASE_GO");
   assert.equal(baseline.inputs.phase3Config.validationEvidence.finalCandidate.receiptCount, 37);
   assert.equal(baseline.inputs.phase3Config.validationEvidence.hostedMainline.successfulCheckCount, 40);
@@ -571,4 +580,133 @@ test("Phase 3 rejects INTENTIONALLY_PARTIAL without rationale", () => {
   );
   capability.rationale = "";
   includesError(phase3Errors(candidate), "INTENTIONALLY_PARTIAL lacks rationale");
+});
+
+test("Phase 4 creates a source-bound proof population from Phase 3 plus Bridgewatch and Drydock current-main capabilities", () => {
+  assert.equal(baseline.status.phase, "Phase 4 - Break the Surface");
+  assert.equal(baseline.phase4ProofMatrix.capabilities.length, 58);
+  assert.equal(baseline.inputs.phase4Config.expectedPhase3CapabilityCount, 55);
+  assert.equal(baseline.inputs.phase4Config.expectedCurrentCapabilityCount, 58);
+  const bridgewatch = baseline.phase4ProofMatrix.capabilities.find(
+    (capability) => capability.capabilityId === "DW-CAP-BRIDGEWATCH-DEVELOPMENT-MISSION-CONTROL",
+  );
+  assert.equal(bridgewatch?.proofFamilyId, "DW-P4-JRN-BRIDGEWATCH");
+  assert.equal(bridgewatch?.disposition, "SECURITY_RESTRICTED");
+  assert.equal(
+    baseline.phase4ProofMatrix.capabilities.find(
+      (capability) => capability.capabilityId === "DW-CAP-BRIDGEWATCH-GOVERNED-SIGNAL-PROJECTION",
+    )?.proofFamilyId,
+    "DW-P4-JRN-BRIDGEWATCH",
+  );
+  assert.equal(
+    baseline.phase4ProofMatrix.capabilities.find(
+      (capability) => capability.capabilityId === "DW-CAP-ACCOUNT-DATA-EXPORT",
+    )?.proofStatus,
+    "LOCAL_SYNTHETIC_PROVEN",
+  );
+  assert.equal(
+    bridgewatch?.proofStatus,
+    baseline.inputs.phase4Config.lifecycle.state === "LOCAL_PROVEN"
+      ? "LOCAL_SYNTHETIC_PROVEN"
+      : "PENDING_LOCAL_SYNTHETIC_PROOF",
+  );
+  const drydock = baseline.phase4ProofMatrix.capabilities.find(
+    (capability) => capability.capabilityId === "DW-CAP-DRYDOCK-DETERMINISTIC-SEA-TRIALS",
+  );
+  assert.equal(drydock?.proofFamilyId, "DW-P4-JRN-CREATOR");
+  assert.equal(
+    drydock?.proofStatus,
+    baseline.inputs.phase4Config.lifecycle.state === "LOCAL_PROVEN"
+      ? "LOCAL_SYNTHETIC_PROVEN"
+      : "PENDING_LOCAL_SYNTHETIC_PROOF",
+  );
+  assert.equal(
+    baseline.phase4StateRecoveryMatrix.families.find((family) => family.familyId === "ACCOUNT")?.proofFamilyId,
+    "DW-P4-JRN-ACCOUNT",
+  );
+  assert.deepEqual(phase4Errors(phase4Model()), []);
+});
+
+test("Phase 4 rejects a capability population that drops current-main work", () => {
+  const candidate = phase4Model();
+  candidate.phase4ProofMatrix.capabilities = candidate.phase4ProofMatrix.capabilities.filter(
+    (capability) => capability.capabilityId !== "DW-CAP-BRIDGEWATCH-DEVELOPMENT-MISSION-CONTROL",
+  );
+  includesError(phase4Errors(candidate), "does not include every current capability");
+});
+
+test("Phase 4 rejects stale runtime evidence", () => {
+  const candidate = phase4Model();
+  candidate.inputs.phase4Config.lifecycle.state = "LOCAL_PROVEN";
+  candidate.inputs.runtimeEvidence.sourceSha = "0000000000000000000000000000000000000000";
+  includesError(phase4Errors(candidate), "runtime evidence source SHA does not match");
+});
+
+test("Phase 4 preserves stale evidence only while an explicit current-main requalification is pending", () => {
+  const candidate = phase4Model();
+  candidate.inputs.phase4Config.lifecycle = {
+    ...candidate.inputs.phase4Config.lifecycle,
+    state: "RECONCILED_PENDING_REQUALIFICATION",
+    mainlineState: "SUPERSEDED_BY_CURRENT_MAIN_RECONCILIATION",
+    qualification: "FULL_REQUALIFICATION_REQUIRED",
+  };
+  candidate.inputs.runtimeEvidence.status = "REQUALIFICATION_REQUIRED";
+  candidate.inputs.phase4Config.productEvidenceSourceSha = "0000000000000000000000000000000000000000";
+  candidate.inputs.phase4Config.semanticCarryForward.targetEvidenceSourceSha =
+    candidate.inputs.phase4Config.productEvidenceSourceSha;
+  candidate.phase4ProofMatrix.sourceSha = candidate.inputs.phase4Config.productEvidenceSourceSha;
+  assert.deepEqual(phase4Errors(candidate), []);
+  candidate.inputs.runtimeEvidence.status = "LOCAL_SYNTHETIC_PROVEN";
+  includesError(phase4Errors(candidate), "current-main reconciliation lacks explicit requalification state");
+});
+
+test("Phase 4 rejects undeclared semantic carry-forward evidence", () => {
+  const candidate = phase4Model();
+  const account = candidate.inputs.runtimeEvidence.journeyFamilies.find(
+    (family) => family.journeyId === "DW-P4-JRN-ACCOUNT",
+  );
+  account.sourceSha = candidate.inputs.phase4Config.productEvidenceSourceSha;
+  includesError(phase4Errors(candidate), "semantic carry-forward evidence is not declared for this source and journey");
+});
+
+test("Phase 4 rejects a passed screenshot without a hash", () => {
+  const candidate = phase4Model();
+  candidate.inputs.runtimeEvidence.journeyFamilies = [
+    {
+      journeyId: "DW-P4-JRN-ACCOUNT",
+      status: "PASSED",
+      sourceSha: candidate.inputs.phase4Config.productEvidenceSourceSha,
+      testReferences: ["tests/e2e/homeport-phase7-owner-correction-round3.spec.ts"],
+      screenshots: [{ evidenceId: "DW-P4-EV-ACCOUNT", sha256: "not-a-hash" }],
+      states: ["READY"],
+      accessibility: ["KEYBOARD"],
+    },
+  ];
+  includesError(phase4Errors(candidate), "screenshot reference lacks a valid SHA-256");
+});
+
+test("Phase 4 local-proven state requires current journey, state, and accessibility proof", () => {
+  const candidate = phase4Model();
+  candidate.inputs.phase4Config.lifecycle.state = "LOCAL_PROVEN";
+  const account = candidate.phase4ProofMatrix.capabilities.find(
+    (capability) => capability.capabilityId === "DW-CAP-ACCOUNT-DATA-EXPORT",
+  );
+  account.proofStatus = "PENDING_LOCAL_SYNTHETIC_PROOF";
+  account.runtimeEvidence = { states: ["READY"], accessibility: ["KEYBOARD"] };
+  includesError(phase4Errors(candidate), "lacks source-current runtime proof");
+  includesError(phase4Errors(candidate), "missing required observed state");
+  includesError(phase4Errors(candidate), "missing accessibility proof");
+});
+
+test("Phase 4 frozen candidate requires completed focused qualification", () => {
+  const candidate = phase4Model();
+  candidate.inputs.phase4Config.lifecycle.mainlineState = "FROZEN_CANDIDATE";
+  candidate.inputs.phase4Config.lifecycle.qualification = "FOCUSED_QUALIFICATION_PENDING";
+  includesError(phase4Errors(candidate), "frozen candidate lacks focused qualification");
+});
+
+test("Phase 4 rejects an unauthorized Phase 5 promotion", () => {
+  const candidate = phase4Model();
+  candidate.phase5GovernanceQueue.phase5Authorized = true;
+  includesError(phase4Errors(candidate), "incorrectly authorizes Phase 5");
 });

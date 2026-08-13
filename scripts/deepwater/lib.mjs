@@ -2589,7 +2589,319 @@ async function loadAcceptedPhase2Artifacts(root) {
 }
 
 export async function buildArtifacts(root) {
-  return buildPhase3Artifacts(root, await loadAcceptedPhase2Artifacts(root));
+  return buildPhase4Artifacts(root, await buildPhase3Artifacts(root, await loadAcceptedPhase2Artifacts(root)));
+}
+
+function evidenceReferencePaths(capability) {
+  return uniqueSorted((capability.evidence?.references ?? []).map((reference) => reference.reference ?? reference));
+}
+
+function phase4CapabilityPopulation(phase3, phase4Config) {
+  const additions = phase4Config.currentMainAdditions.map((addition) => ({
+    capabilityId: addition.capabilityId,
+    expectedRealization: {
+      disposition: addition.disposition,
+      terminalRung: addition.terminalRung,
+      rationale: addition.rationale,
+    },
+    currentRealization: { classification: addition.classification },
+    owner: { project: addition.canonicalOwner },
+    catalogMapping: { featureCatalogId: addition.featureCatalogId },
+    evidence: { references: addition.sourceReferences.map((reference) => ({ reference })) },
+    phase4Addition: true,
+  }));
+  return [...phase3.ledger.capabilities, ...additions].sort((left, right) =>
+    left.capabilityId.localeCompare(right.capabilityId),
+  );
+}
+
+function phase4FamilyIndex(phase4Config) {
+  const index = new Map();
+  for (const family of phase4Config.journeyFamilies)
+    for (const capabilityId of family.capabilityIds) index.set(capabilityId, family);
+  return index;
+}
+
+function phase4RuntimeFamilyIndex(runtimeEvidence) {
+  return new Map((runtimeEvidence.journeyFamilies ?? []).map((family) => [family.journeyId, family]));
+}
+
+function isValidPhase4SemanticCarryForward(phase4Config, runtimeFamily, journeyId) {
+  const carryForward = phase4Config.semanticCarryForward;
+  return Boolean(
+    carryForward &&
+      runtimeFamily?.evidenceDisposition === "SEMANTIC_CARRY_FORWARD" &&
+      runtimeFamily.sourceSha === carryForward.historicalEvidenceSourceSha &&
+      carryForward.targetEvidenceSourceSha === phase4Config.productEvidenceSourceSha &&
+      carryForward.carriedJourneyIds?.includes(journeyId),
+  );
+}
+
+function isCurrentPhase4RuntimeEvidence(phase4Config, runtimeFamily, journeyId) {
+  return Boolean(
+    runtimeFamily?.status === "PASSED" &&
+      (runtimeFamily.sourceSha === phase4Config.productEvidenceSourceSha ||
+        isValidPhase4SemanticCarryForward(phase4Config, runtimeFamily, journeyId)),
+  );
+}
+
+function phase4ProofStatus(phase4Config, family, runtimeFamily, bounded) {
+  if (bounded) return "BOUNDARY_CONFIRMED";
+  if (isCurrentPhase4RuntimeEvidence(phase4Config, runtimeFamily, family?.journeyId)) return "LOCAL_SYNTHETIC_PROVEN";
+  return "PENDING_LOCAL_SYNTHETIC_PROOF";
+}
+
+function buildPhase4ProofMatrix(phase3, phase4Config, runtimeEvidence) {
+  const familyByCapability = phase4FamilyIndex(phase4Config);
+  const runtimeByFamily = phase4RuntimeFamilyIndex(runtimeEvidence);
+  const bounded = new Set(phase4Config.boundedCapabilityIds);
+  const utilizationByCapability = new Map(
+    phase3.utilizationDocument.capabilities.map((capability) => [capability.capabilityId, capability.status]),
+  );
+  const capabilities = phase4CapabilityPopulation(phase3, phase4Config).map((capability) => {
+    const family = familyByCapability.get(capability.capabilityId) ?? null;
+    const runtimeFamily = family ? (runtimeByFamily.get(family.journeyId) ?? null) : null;
+    const isBounded = bounded.has(capability.capabilityId);
+    return {
+      capabilityId: capability.capabilityId,
+      canonicalOwner: capability.owner.project,
+      featureCatalogId: capability.catalogMapping?.featureCatalogId ?? null,
+      disposition: capability.expectedRealization.disposition,
+      terminalRung: capability.expectedRealization.terminalRung,
+      realizationClassification: capability.currentRealization.classification,
+      utilizationStatus: utilizationByCapability.get(capability.capabilityId) ?? "NOT_APPLICABLE",
+      proofStatus: phase4ProofStatus(phase4Config, family, runtimeFamily, isBounded),
+      proofFamilyId: family?.journeyId ?? null,
+      naturalStart: family?.naturalStart ?? null,
+      visibleEntry: family?.visibleEntry ?? null,
+      routeReferences: family?.routeReferences ?? [],
+      screenReferences: family?.screenReferences ?? [],
+      requiredStates: family?.states ?? [],
+      accessibilityRequirements: family?.accessibility ?? [],
+      runtimeEvidence: runtimeFamily
+        ? {
+            sourceSha: runtimeFamily.sourceSha,
+            evidenceDisposition: runtimeFamily.evidenceDisposition ?? "SOURCE_CURRENT",
+            testReferences: runtimeFamily.testReferences ?? [],
+            screenshots: runtimeFamily.screenshots ?? [],
+            states: runtimeFamily.states ?? [],
+            accessibility: runtimeFamily.accessibility ?? [],
+          }
+        : null,
+      sourceReferences: evidenceReferencePaths(capability),
+      boundaryRationale: isBounded
+        ? (capability.expectedRealization.rationale ?? "Intentionally bounded capability.")
+        : null,
+    };
+  });
+  return {
+    schemaVersion: "1.0.0",
+    project: phase4Config.project,
+    phase: phase4Config.phase,
+    sourceSha: phase4Config.productEvidenceSourceSha,
+    phase3AcceptedMainSha: phase4Config.phase3AcceptedMainSha,
+    expectedCapabilityCount: phase4Config.expectedCurrentCapabilityCount,
+    runtimeEvidenceStatus: runtimeEvidence.status,
+    truthBoundary:
+      "Source-bound local synthetic evidence is distinct from live-provider proof, deployment, protected-main acceptance, owner acceptance, and product acceptance.",
+    capabilities,
+  };
+}
+
+function buildPhase4StateRecoveryMatrix(phase4Config, runtimeEvidence) {
+  const runtimeByFamily = phase4RuntimeFamilyIndex(runtimeEvidence);
+  return {
+    schemaVersion: "1.0.0",
+    project: phase4Config.project,
+    phase: phase4Config.phase,
+    sourceSha: phase4Config.productEvidenceSourceSha,
+    families: phase4Config.stateRecoveryFamilies.map((family) => {
+      const proofFamily = phase4Config.journeyFamilies.find(
+        (candidate) => candidate.journeyId === family.proofFamilyId,
+      );
+      const runtime = proofFamily ? (runtimeByFamily.get(proofFamily.journeyId) ?? null) : null;
+      return {
+        ...family,
+        proofFamilyId: proofFamily?.journeyId ?? null,
+        proofStatus: runtime?.status === "PASSED" ? "LOCAL_SYNTHETIC_PROVEN" : "PENDING_LOCAL_SYNTHETIC_PROOF",
+        observedStates: runtime?.states ?? [],
+        recoveryEvidence: runtime?.testReferences ?? [],
+      };
+    }),
+  };
+}
+
+function phase4Reports(artifacts) {
+  const { phase4Config, runtimeEvidence } = artifacts.inputs;
+  const proof = artifacts.phase4ProofMatrix;
+  const statuses = countBy(proof.capabilities.map((capability) => capability.proofStatus));
+  const familyRows = phase4Config.journeyFamilies
+    .map((family) => {
+      const runtime = (runtimeEvidence.journeyFamilies ?? []).find(
+        (candidate) => candidate.journeyId === family.journeyId,
+      );
+      return `| ${family.journeyId} | ${family.naturalStart} | ${family.visibleEntry} | ${runtime?.status ?? "PENDING"} |`;
+    })
+    .join("\n");
+  const visualRows = phase4Config.journeyFamilies
+    .map(
+      (family) =>
+        `| ${family.journeyId} | ${family.accessibility.join(", ")} | ${family.states.join(", ")} | ${family.routeReferences.join(", ")} |`,
+    )
+    .join("\n");
+  return {
+    proof: `---
+title: Project Deepwater Phase 4 Proof Report
+audience: product-engineering
+status: current
+canonical_for: project-deepwater-phase-4-proof-report
+last_reviewed: ${phase4Config.auditDate}
+---
+
+# Project Deepwater Phase 4 proof report
+
+## Source boundary
+
+- Phase 3 accepted main: \`${phase4Config.phase3AcceptedMainSha}\`
+- Phase 4 base and product evidence source: \`${phase4Config.productEvidenceSourceSha}\`
+- Capability population: ${proof.capabilities.length}/${phase4Config.expectedCurrentCapabilityCount}
+- Local synthetic proven: ${statuses.LOCAL_SYNTHETIC_PROVEN ?? 0}
+- Intentionally bounded: ${statuses.BOUNDARY_CONFIRMED ?? 0}
+- Pending local proof: ${statuses.PENDING_LOCAL_SYNTHETIC_PROOF ?? 0}
+
+This report never upgrades local synthetic browser proof into live-provider, deployment, protected-main, owner, or product-acceptance proof.
+
+## Proof families
+
+| Family | Natural start | Visible entry | Current evidence |
+| --- | --- | --- | --- |
+${familyRows}
+
+## Current owner boundary
+
+Homeport owner re-review remains \`${phase4Config.ownerBoundary.homeport}\`. Bridgewatch remains a private operator surface and cannot declare project or release completion.
+`,
+    visual: `---
+title: Project Deepwater Phase 4 Visual and Accessibility Report
+audience: product-engineering
+status: current
+canonical_for: project-deepwater-phase-4-visual-accessibility-report
+last_reviewed: ${phase4Config.auditDate}
+---
+
+# Project Deepwater Phase 4 visual and accessibility report
+
+The matrix defines required observed states and interaction checks for each natural journey family. Screenshots are identified only by sanitized IDs and SHA-256 values in the runtime-evidence record; raw browser profiles, credentials, tokens, private content, and task-root paths are excluded.
+
+| Family | Accessibility and responsive requirements | Required states | Route or surface references |
+| --- | --- | --- | --- |
+${visualRows}
+
+The target viewport set is desktop, tablet, mobile, and effective 200 percent zoom where the family applies. Reduced motion, keyboard focus, touch, empty, loading, error, unauthorized, and recovery remain distinct checks rather than visual styling claims.
+`,
+    ownerPacket: `---
+title: Project Deepwater Phase 4 Owner Walkthrough Packet
+audience: product-owner
+status: current
+canonical_for: project-deepwater-phase-4-owner-walkthrough-packet
+last_reviewed: ${phase4Config.auditDate}
+---
+
+# Project Deepwater Phase 4 owner walkthrough packet
+
+## What this packet can establish
+
+The packet prepares a source-bound walkthrough of \`${phase4Config.productEvidenceSourceSha}\` using synthetic task-owned fixtures and natural visible entry controls. It can demonstrate local readiness; it cannot self-record owner acceptance, product acceptance, live-provider behavior, deployment, or a release decision.
+
+## Walkthrough order
+
+${phase4Config.journeyFamilies
+  .filter((family) => family.journeyId !== "DW-P4-JRN-BRIDGEWATCH")
+  .map(
+    (family, index) =>
+      `${index + 1}. **${family.title}** — start at \`${family.naturalStart}\` through ${family.visibleEntry}.`,
+  )
+  .join("\n")}
+
+Bridgewatch is reviewed separately by an approved operator at its private loopback or authenticated private-network entry. It is not a public-product walkthrough path.
+
+## Owner decision boundary
+
+Current Homeport decision: \`${phase4Config.ownerBoundary.homeport}\`. The owner may accept, return actionable findings, or defer. This record deliberately contains no owner name, date, or inferred decision.
+`,
+    delta: `---
+title: Project Deepwater Phase 3 to Phase 4 Delta Report
+audience: product-engineering
+status: current
+canonical_for: project-deepwater-phase-3-to-phase-4-delta-report
+last_reviewed: ${phase4Config.auditDate}
+---
+
+# Project Deepwater Phase 3 to Phase 4 delta report
+
+- Phase 3 accepted main remains immutable historical evidence at \`${phase4Config.phase3AcceptedMainSha}\`.
+- Phase 4 starts from fetched \`origin/main\` \`${phase4Config.baseOriginMainSha}\`, not a Phase 3 branch.
+${phase4Config.delta.phase3ToCurrentMain.map((entry) => `- ${entry}`).join("\n")}
+
+No owner-domain product source, Prisma schema, canonical database, Feature Catalog fragment, or protected-main assertion is changed by this coordination record.
+`,
+  };
+}
+
+async function buildPhase4Artifacts(root, phase3) {
+  const [phase4Config, runtimeEvidence] = await Promise.all([
+    readJson(root, `${DEEPWATER_ROOT}/deepwater-phase4-config.json`),
+    readJson(root, `${DEEPWATER_ROOT}/evidence/phase4/Project_Deepwater_Phase_4_Runtime_Evidence.json`),
+  ]);
+  const phase4ProofMatrix = buildPhase4ProofMatrix(phase3, phase4Config, runtimeEvidence);
+  const phase4StateRecoveryMatrix = buildPhase4StateRecoveryMatrix(phase4Config, runtimeEvidence);
+  const phase5GovernanceQueue = {
+    schemaVersion: "1.0.0",
+    project: phase4Config.project,
+    phase: "Phase 5",
+    phase5Authorized: false,
+    sourceSha: phase4Config.productEvidenceSourceSha,
+    queue: [],
+    rationale:
+      "Phase 5 is not authorized by Phase 4 implementation, local proof, qualification, candidate status, or owner walkthrough preparation.",
+  };
+  const status = {
+    schemaVersion: "1.0.0",
+    project: phase4Config.project,
+    phase: phase4Config.phase,
+    state: phase4Config.lifecycle.state,
+    activation: "EXPLICIT_PHASE_4_WHOLE_PRODUCT_PROOF_AUTHORIZATION",
+    branch: phase4Config.branch,
+    worktree: phase4Config.worktree,
+    baseSourceSha: phase4Config.baseOriginMainSha,
+    reconciledSourceSha: phase4Config.reconciledOriginMainSha,
+    auditedSourceSha: phase4Config.productEvidenceSourceSha,
+    phase3AcceptedMainSha: phase4Config.phase3AcceptedMainSha,
+    mainlineState: phase4Config.lifecycle.mainlineState,
+    acceptanceLane: phase4Config.lifecycle.acceptanceLane,
+    schemaImpact: phase4Config.schemaImpact,
+    productSourceImpact: phase4Config.productSourceImpact,
+    featureCatalogImpact: phase4Config.featureCatalogImpact,
+    validation: phase4Config.lifecycle.qualification,
+    ownerWalkthrough: phase4Config.lifecycle.ownerWalkthrough,
+    ownerDecision: phase4Config.lifecycle.ownerDecision,
+    limitations: [
+      "Homeport owner acceptance remains PENDING_OWNER_DECISION and cannot be self-recorded.",
+      "Bridgewatch is a private, read-only observation surface and has no release authority.",
+      "No Phase 5 work is authorized by this record.",
+    ],
+  };
+  const artifacts = {
+    ...phase3,
+    phase3,
+    inputs: { ...phase3.inputs, phase4Config, runtimeEvidence },
+    phase4ProofMatrix,
+    phase4StateRecoveryMatrix,
+    phase5GovernanceQueue,
+    status,
+  };
+  artifacts.phase4Reports = phase4Reports(artifacts);
+  return artifacts;
 }
 
 function duplicateValues(values) {
@@ -3176,6 +3488,162 @@ export function validatePhase3Model(artifacts) {
   return uniqueSorted(errors);
 }
 
+export function validatePhase4Model(artifacts) {
+  const errors = [];
+  const { phase4Config, runtimeEvidence } = artifacts.inputs;
+  const requalificationPending =
+    phase4Config.lifecycle?.state === "RECONCILED_PENDING_REQUALIFICATION" &&
+    phase4Config.lifecycle?.mainlineState === "SUPERSEDED_BY_CURRENT_MAIN_RECONCILIATION" &&
+    phase4Config.lifecycle?.qualification === "FULL_REQUALIFICATION_REQUIRED";
+  const proof = artifacts.phase4ProofMatrix;
+  const phase3Ids = artifacts.phase3.ledger.capabilities.map((capability) => capability.capabilityId);
+  const additions = phase4Config.currentMainAdditions.map((addition) => addition.capabilityId);
+  const expectedIds = uniqueSorted([...phase3Ids, ...additions]);
+  const proofIds = proof.capabilities.map((capability) => capability.capabilityId);
+  const configuredJourneyIds = phase4Config.journeyFamilies.flatMap((family) => family.capabilityIds);
+  const registeredJourneyIds = phase4Config.journeyFamilies.map((family) => family.journeyId);
+  const boundedIds = phase4Config.boundedCapabilityIds;
+  const configuredIds = uniqueSorted([...configuredJourneyIds, ...boundedIds]);
+  const runtimeFamilies = new Map((runtimeEvidence.journeyFamilies ?? []).map((family) => [family.journeyId, family]));
+  const screenIds = new Set(artifacts.inputs.screens.screens.map((screen) => screen.screenId));
+
+  if (!/^[0-9a-f]{40}$/u.test(phase4Config.baseOriginMainSha ?? "")) errors.push("Phase 4 base source SHA is invalid");
+  if (!/^[0-9a-f]{40}$/u.test(phase4Config.reconciledOriginMainSha ?? ""))
+    errors.push("Phase 4 reconciled source SHA is invalid");
+  if (!/^[0-9a-f]{40}$/u.test(phase4Config.productEvidenceSourceSha ?? ""))
+    errors.push("Phase 4 product evidence source SHA is invalid");
+  const carryForward = phase4Config.semanticCarryForward;
+  if (carryForward) {
+    if (!/^[0-9a-f]{40}$/u.test(carryForward.historicalEvidenceSourceSha ?? ""))
+      errors.push("Phase 4 semantic carry-forward historical source SHA is invalid");
+    if (carryForward.targetEvidenceSourceSha !== phase4Config.productEvidenceSourceSha)
+      errors.push("Phase 4 semantic carry-forward target source SHA does not match the frozen product source");
+    if (carryForward.historicalEvidenceSourceSha === carryForward.targetEvidenceSourceSha)
+      errors.push("Phase 4 semantic carry-forward does not identify a distinct historical source");
+    const carriedJourneyIds = carryForward.carriedJourneyIds ?? [];
+    const requalifiedJourneyIds = carryForward.requalifiedJourneyIds ?? [];
+    const declaredJourneyIds = [...carriedJourneyIds, ...requalifiedJourneyIds];
+    if (duplicateValues(declaredJourneyIds).length)
+      errors.push("Phase 4 semantic carry-forward assigns a journey more than once");
+    if (stableStringify(uniqueSorted(declaredJourneyIds)) !== stableStringify(uniqueSorted(registeredJourneyIds)))
+      errors.push("Phase 4 semantic carry-forward does not account for every registered journey exactly once");
+  }
+  if (runtimeEvidence.sourceSha !== phase4Config.productEvidenceSourceSha && !requalificationPending)
+    errors.push("Phase 4 runtime evidence source SHA does not match the frozen product source");
+  if (requalificationPending && runtimeEvidence.status !== "REQUALIFICATION_REQUIRED")
+    errors.push("Phase 4 current-main reconciliation lacks explicit requalification state");
+  if (proof.sourceSha !== phase4Config.productEvidenceSourceSha)
+    errors.push("Phase 4 proof matrix source SHA does not match the frozen product source");
+  if (expectedIds.length !== phase4Config.expectedCurrentCapabilityCount)
+    errors.push("Phase 4 configured current-capability denominator is stale");
+  if (proof.capabilities.length !== phase4Config.expectedCurrentCapabilityCount)
+    errors.push("Phase 4 proof matrix does not include every current capability");
+  if (duplicateValues(proofIds).length) errors.push("Phase 4 proof matrix contains duplicate capability IDs");
+  if (stableStringify(proofIds) !== stableStringify([...proofIds].sort()))
+    errors.push("Phase 4 proof matrix capability IDs are not sorted");
+  if (stableStringify(proofIds.sort()) !== stableStringify(expectedIds))
+    errors.push("Phase 4 proof matrix does not match the Phase 3 ledger plus accepted-main additions");
+  if (duplicateValues([...configuredJourneyIds, ...boundedIds]).length)
+    errors.push("Phase 4 capability selection assigns a capability more than once");
+  if (stableStringify(configuredIds) !== stableStringify(expectedIds))
+    errors.push("Phase 4 capability selection does not account for every current capability exactly once");
+  if (phase4Config.currentMainAdditions.some((addition) => !addition.rationale || !addition.sourceReferences?.length))
+    errors.push("Phase 4 current-main addition lacks bounded rationale or source references");
+  if (artifacts.phase5GovernanceQueue.phase5Authorized !== false) errors.push("Phase 4 incorrectly authorizes Phase 5");
+  if (phase4Config.ownerBoundary.prohibitedClaims.includes(phase4Config.lifecycle.ownerDecision))
+    errors.push("Phase 4 lifecycle self-records a prohibited owner or product claim");
+  if (phase4Config.lifecycle.mainlineState === "FROZEN_CANDIDATE") {
+    if (phase4Config.lifecycle.qualification !== "FOCUSED_QUALIFICATION_PASSED")
+      errors.push("Phase 4 frozen candidate lacks focused qualification");
+    if (runtimeEvidence.status !== "LOCAL_SYNTHETIC_PROVEN")
+      errors.push("Phase 4 frozen candidate lacks local synthetic proof");
+    if (phase4Config.lifecycle.acceptanceLane !== "PENDING_SERIALIZED_MAINLINE_OWNERSHIP")
+      errors.push("Phase 4 frozen candidate has an invalid serialized acceptance-lane state");
+  }
+
+  for (const family of phase4Config.journeyFamilies) {
+    if (!family.capabilityIds.length) errors.push(`${family.journeyId}: journey family has no capabilities`);
+    if (!family.routeReferences.length || !family.screenReferences.length)
+      errors.push(`${family.journeyId}: route or screen mapping is incomplete`);
+    if (!family.states.includes("READY") || !family.states.includes("RECOVERY"))
+      errors.push(`${family.journeyId}: required state or recovery coverage is incomplete`);
+    if (!family.accessibility.includes("KEYBOARD") && family.journeyId !== "DW-P4-JRN-BRIDGEWATCH")
+      errors.push(`${family.journeyId}: ordinary or restricted human proof lacks keyboard coverage`);
+    if (family.journeyId !== "DW-P4-JRN-BRIDGEWATCH" && family.naturalStart !== "/")
+      errors.push(`${family.journeyId}: ordinary journey does not start from the gateway`);
+    for (const screenId of family.screenReferences)
+      if (screenId.startsWith("screen-") && !screenIds.has(screenId))
+        errors.push(`${family.journeyId}: unknown Homeport screen ${screenId}`);
+    const runtime = runtimeFamilies.get(family.journeyId);
+    const validCarryForward = isValidPhase4SemanticCarryForward(phase4Config, runtime, family.journeyId);
+    if (
+      runtime &&
+      runtime.sourceSha !== phase4Config.productEvidenceSourceSha &&
+      !validCarryForward &&
+      !requalificationPending
+    )
+      errors.push(`${family.journeyId}: runtime evidence is stale or bound to the wrong source SHA`);
+    if (runtime?.evidenceDisposition === "SEMANTIC_CARRY_FORWARD" && !validCarryForward)
+      errors.push(`${family.journeyId}: semantic carry-forward evidence is not declared for this source and journey`);
+    if (runtime?.status === "PASSED") {
+      if (!runtime.testReferences?.length)
+        errors.push(`${family.journeyId}: passed runtime evidence lacks test references`);
+      if (!runtime.screenshots?.length)
+        errors.push(`${family.journeyId}: passed runtime evidence lacks screenshot hashes`);
+      for (const screenshot of runtime.screenshots ?? [])
+        if (!screenshot.evidenceId || !/^[0-9a-f]{64}$/u.test(screenshot.sha256 ?? ""))
+          errors.push(`${family.journeyId}: screenshot reference lacks a valid SHA-256`);
+    }
+  }
+  for (const runtime of runtimeFamilies.values())
+    if (!phase4Config.journeyFamilies.some((family) => family.journeyId === runtime.journeyId))
+      errors.push(`${runtime.journeyId}: runtime evidence has no registered proof family`);
+
+  for (const capability of proof.capabilities) {
+    const requiresHumanProof = ["USER_FACING", "SECURITY_RESTRICTED"].includes(capability.disposition);
+    if (requiresHumanProof && !capability.proofFamilyId)
+      errors.push(
+        `${capability.capabilityId}: human-facing capability lacks a route, screen, and natural-journey mapping`,
+      );
+    if (
+      requiresHumanProof &&
+      (!capability.routeReferences.length || !capability.screenReferences.length || !capability.naturalStart)
+    )
+      errors.push(`${capability.capabilityId}: human-facing capability has incomplete route/screen/journey proof`);
+    if (capability.realizationClassification === "FULLY_REALIZED" && requiresHumanProof && !capability.proofFamilyId)
+      errors.push(`${capability.capabilityId}: FULLY_REALIZED capability lacks a natural journey`);
+    if (capability.utilizationStatus === "FULLY_UTILIZED" && !capability.sourceReferences.length)
+      errors.push(`${capability.capabilityId}: FULLY_UTILIZED capability lacks utilization source proof`);
+    if (capability.proofStatus === "BOUNDARY_CONFIRMED" && !capability.boundaryRationale)
+      errors.push(`${capability.capabilityId}: bounded capability lacks a rationale`);
+    if (phase4Config.lifecycle.state === "LOCAL_PROVEN" && requiresHumanProof) {
+      if (capability.proofStatus !== "LOCAL_SYNTHETIC_PROVEN")
+        errors.push(`${capability.capabilityId}: local-proven Phase 4 lacks source-current runtime proof`);
+      const requiredStates = new Set(capability.requiredStates);
+      const observedStates = new Set(capability.runtimeEvidence?.states ?? []);
+      for (const state of requiredStates)
+        if (!observedStates.has(state))
+          errors.push(`${capability.capabilityId}: missing required observed state ${state}`);
+      const requiredAccessibility = new Set(capability.accessibilityRequirements);
+      const observedAccessibility = new Set(capability.runtimeEvidence?.accessibility ?? []);
+      for (const requirement of requiredAccessibility)
+        if (!observedAccessibility.has(requirement))
+          errors.push(`${capability.capabilityId}: missing accessibility proof ${requirement}`);
+    }
+  }
+  const privacyText = stableStringify({
+    phase4Config,
+    runtimeEvidence,
+    proof,
+    stateRecovery: artifacts.phase4StateRecoveryMatrix,
+  });
+  for (const pattern of phase4Config.privacy.forbiddenPatterns) {
+    const expression = pattern.startsWith("(?i)") ? new RegExp(pattern.slice(4), "iu") : new RegExp(pattern, "u");
+    if (expression.test(privacyText)) errors.push("Phase 4 privacy scan matched forbidden pattern");
+  }
+  return uniqueSorted(errors);
+}
+
 export async function validateEvidencePaths(root, artifacts) {
   const errors = [];
   for (const reference of artifacts.phase2.evidenceIndex.evidence) {
@@ -3230,6 +3698,18 @@ export async function artifactFiles(root, artifacts) {
       stableStringify(artifacts.phase4ProofQueue),
     ],
     [
+      `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_4_Capability_Proof_Matrix.json`,
+      stableStringify(artifacts.phase4ProofMatrix),
+    ],
+    [
+      `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_4_State_Recovery_Matrix.json`,
+      stableStringify(artifacts.phase4StateRecoveryMatrix),
+    ],
+    [
+      `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_5_Governance_Queue.json`,
+      stableStringify(artifacts.phase5GovernanceQueue),
+    ],
+    [
       `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_3_Realization_Queue.json`,
       stableStringify(artifacts.phase3Queue),
     ],
@@ -3237,6 +3717,16 @@ export async function artifactFiles(root, artifacts) {
     [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_3_Remediation_Report.md`, artifacts.phase3Reports.remediation],
     [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_2_to_Phase_3_Delta_Report.md`, artifacts.phase3Reports.delta],
     [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_3_Final_Report.md`, artifacts.phase3Reports.final],
+    [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_4_Proof_Report.md`, artifacts.phase4Reports.proof],
+    [
+      `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_4_Visual_Accessibility_Report.md`,
+      artifacts.phase4Reports.visual,
+    ],
+    [
+      `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_4_Owner_Walkthrough_Packet.md`,
+      artifacts.phase4Reports.ownerPacket,
+    ],
+    [`${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_3_to_Phase_4_Delta_Report.md`, artifacts.phase4Reports.delta],
   ]);
   return new Map(
     await Promise.all(
@@ -3282,6 +3772,9 @@ export function semanticDigest(artifacts) {
       utilization: artifacts.utilizationDocument,
       slices: artifacts.slicesDocument,
       phase4ProofQueue: artifacts.phase4ProofQueue,
+      phase4ProofMatrix: artifacts.phase4ProofMatrix,
+      phase4StateRecoveryMatrix: artifacts.phase4StateRecoveryMatrix,
+      phase5GovernanceQueue: artifacts.phase5GovernanceQueue,
     }),
   );
 }

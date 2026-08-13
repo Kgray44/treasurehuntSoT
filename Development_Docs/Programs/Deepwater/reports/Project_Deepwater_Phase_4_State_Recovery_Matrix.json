@@ -1,0 +1,95 @@
+{
+  "families": [
+    {
+      "familyId": "ACCOUNT",
+      "observedStates": ["READY", "LOADING", "ERROR", "UNAUTHORIZED", "RECOVERY"],
+      "proofFamilyId": "DW-P4-JRN-ACCOUNT",
+      "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
+      "recoveryEvidence": [
+        "tests/e2e/homeport-phase7.spec.ts#Journey A, I, J, M, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey F through K, N through U",
+        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey F through I, Q through V"
+      ],
+      "states": ["READY", "LOADING", "ERROR", "UNAUTHORIZED", "RECOVERY"]
+    },
+    {
+      "familyId": "PERSONAL_HARBOR",
+      "observedStates": ["READY", "EMPTY", "ERROR", "RECOVERY"],
+      "proofFamilyId": "DW-P4-JRN-PERSONAL-HARBOR",
+      "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
+      "recoveryEvidence": [
+        "tests/e2e/homeport-phase7.spec.ts#Journey G, H, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey M, N, U",
+        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey A through E, N, S, T, U"
+      ],
+      "states": ["READY", "EMPTY", "ERROR", "RECOVERY"]
+    },
+    {
+      "familyId": "PLAYER",
+      "observedStates": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
+      "proofFamilyId": "DW-P4-JRN-PLAYER",
+      "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
+      "recoveryEvidence": [
+        "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
+        "src/components/platform/PlayerVoyageRoom.test.tsx#backgrounded visibility-transition recovery",
+        "src/app/api/play/sessions/[sessionId]/events/route.test.ts#canceled and aborted stream cleanup",
+        "tests/e2e/homeport-phase7.spec.ts#Journey C, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey A through D, O, T, U",
+        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, K, L, M, U, V"
+      ],
+      "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"]
+    },
+    {
+      "familyId": "CREATOR",
+      "observedStates": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
+      "proofFamilyId": "DW-P4-JRN-CREATOR",
+      "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
+      "recoveryEvidence": [
+        "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
+        "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Test_Plan.md#Current locally attainable commands",
+        "src/drydock/simulation/**#deterministic Sea Trial current-source qualification",
+        "src/components/studio/DrydockScenarioLab.test.tsx#private Creator Studio interactions",
+        "src/app/api/studio/tales/[taleId]/scenarios/route.test.ts#Creator scenario ownership and CSRF",
+        "tests/e2e/homeport-phase7.spec.ts#Journey E, J, K, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey C, D, T, U",
+        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts#Journey J, P, U, V"
+      ],
+      "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"]
+    },
+    {
+      "familyId": "COMMUNITY",
+      "observedStates": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
+      "proofFamilyId": "DW-P4-JRN-COMMUNITY",
+      "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
+      "recoveryEvidence": [
+        "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#DW-CAP-COMMUNITY-EXCHANGE",
+        "tests/e2e/admiralty-phase2.spec.ts#administrator reaches Chartroom full-domain projection",
+        "src/admiralty/read-models.test.ts#bounded community projection",
+        "tests/e2e/homeport-phase7.spec.ts#Journey F, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey P, Q, T, U",
+        "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts#Journey H through J, S, U through W"
+      ],
+      "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"]
+    },
+    {
+      "familyId": "RESTRICTED",
+      "observedStates": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"],
+      "proofFamilyId": "DW-P4-JRN-RESTRICTED-OPERATIONS",
+      "proofStatus": "LOCAL_SYNTHETIC_PROVEN",
+      "recoveryEvidence": [
+        "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#platform-administration-and-provider-health",
+        "tests/e2e/admiralty-phase2.spec.ts#role partitions and support consent",
+        "src/admiralty/capabilities.test.ts#capability boundaries",
+        "src/admiralty/ports/redaction.test.ts#no payload secret private content",
+        "tests/e2e/homeport-phase7.spec.ts#Journey J, K, N, O",
+        "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts#Journey D, T, U",
+        "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts#Journey U through W"
+      ],
+      "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"]
+    }
+  ],
+  "phase": "Phase 4 - Break the Surface",
+  "project": "Project Deepwater",
+  "schemaVersion": "1.0.0",
+  "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa"
+}
