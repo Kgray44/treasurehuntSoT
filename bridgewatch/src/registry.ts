@@ -45,8 +45,8 @@ export const projectRegistry: readonly ProjectRecord[] = [
   record(
     "bridgewatch",
     "Project Bridgewatch",
-    "ACTIVE",
-    "Development_Docs/Project_Bridgewatch_Phase_1_Design_Record.md",
+    "COMPLETE",
+    "Development_Docs/Project_Bridgewatch_Completion_Receipt.md",
     [
       phase(
         "bridgewatch",
@@ -82,12 +82,25 @@ export const projectRegistry: readonly ProjectRecord[] = [
         "bridgewatch",
         3,
         "Keep the Watch",
-        "ACTIVE",
+        "COMPLETE",
         "Development_Docs/Project_Bridgewatch_Phase_3_Design_Record.md",
-        { branch: "codex/project-bridgewatch-phase3-keep-the-watch-1" },
+        {
+          branch: "codex/project-bridgewatch-phase3-keep-the-watch-6",
+          pullRequest: 83,
+          acceptedHeadSha: "5bae2e4d2d0aee6993f8e619cc8c79ef99235ff6",
+          integratedMainSha: "dead22dc26aeec2b722625aa9a68dc5688111fca",
+          finalDecision: "RELEASE_GO",
+          completionReceipt: "Development_Docs/Project_Bridgewatch_Phase_3_Completion_Receipt.md",
+          mergedAt: "2026-08-13T16:19:31.000Z",
+          completedAt: "2026-08-13T16:19:31.000Z",
+        },
       ),
     ],
-    { missingEvidence: ["Phase 3 is active; only accepted source records may close Project Bridgewatch."] },
+    {
+      completionReceipt: "Development_Docs/Project_Bridgewatch_Completion_Receipt.md",
+      finalMainSha: "dead22dc26aeec2b722625aa9a68dc5688111fca",
+      finalDecision: "RELEASE_GO",
+    },
   ),
   record(
     "sounding-line",
