@@ -3,7 +3,7 @@ title: Project Wakebook Phase 1 Current History Audit
 audience: product-engineering
 status: current
 canonical_for: project-wakebook-phase-1-current-history-audit
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-12
 ---
 
 # Project Wakebook Phase 1 current history audit
@@ -87,3 +87,18 @@ Sounding Line currently owns the critical `wayfarer-history-projection` contract
 ## Audit conclusion
 
 Accepted history is substantially complete and historically stable. Phase 1 is a schema-free service/query and product-experience realization. The correct implementation is a bounded Wakebook summary/detail layer over Wayfarer records, not a data migration or projector rewrite.
+
+## Post-acceptance current-main reconciliation
+
+After Wakebook's protected-main acceptance, the owned branch audited the complete first-parent interval from accepted Deepwater Phase 3 source `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3` through `770404dd11cdfc1b86658a488979c43c22ed1711`, then consumed the Sounding Line source-binding repair accepted as `d3ed7c4cd1877be601e6854b376cb1dd9eb668a3`.
+
+That interval contains accepted Shipwright, Bridgewatch, Drydock, Admiralty, Helm, Tideglass, Deepwater, Sounding Line, and Wakebook work. Wakebook's own protected acceptance is PR #41: exact qualified head `1d1c1aaa5a0f2fbbc6b083911cb19422782afff0`, exact base `bb7676a75581d8d415c3ff7712cc38bc8decb031`, and protected merge `cbf634d4d5db9cf47edebb89e005e8cc910068bd`.
+
+Ownership reconciliation used accepted mainline as the source of truth for every non-Wakebook product, test, policy, and shared-control path. Superseded cross-project changes from the historical branch were not replayed. The resulting current branch has no Wakebook runtime divergence from accepted main; it retains only Wakebook-owned current records and Feature Catalog availability truth, plus shared generated artifacts regenerated from their authoritative inputs.
+
+The reconciliation was preserved as two non-destructive merges:
+
+- `5a99909019afce378b04fd667a9970b8a19fd64c`, with parents `b846631b` and `770404dd`, for the full accepted-main interval;
+- `fac85f2db6cb2f1c3481ee6288bfd6db727a9277`, with parents `5a999090` and `d3ed7c4c`, for the accepted Sounding Line source-binding repair.
+
+The active test registry and P34 retirement matrix were regenerated rather than hand-resolved. The registry currently enumerates 2,122 governed cases across 56 families, and the retirement proof reconciles all 316 of 316 governed identities across 14 dispositions.
