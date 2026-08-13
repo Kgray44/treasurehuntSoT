@@ -2379,6 +2379,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_v1.4_Prompt_4_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_v1.4_Prompt_4_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_v1.4_Ratified_Requirement_Traceability.md",
       "record_type": "program-record",
       "status": "preserved",
