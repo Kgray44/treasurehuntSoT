@@ -10,12 +10,12 @@ last_reviewed: 2026-08-13
 
 ## Source identity
 
-| Field                  | Value                                                                                |
-| ---------------------- | ------------------------------------------------------------------------------------ |
-| Branch                 | `codex/project-shipwright-phase2-fit-the-tools-r9`                                   |
-| Original base          | `191a964488d0df71f8dcb91c5b8372fc73b6b32e` (`origin/main` at worktree creation)      |
-| Schema / Prisma impact | None                                                                                 |
-| Current state          | Protected-main product accepted; record-only closeout packet prepared                  |
+| Field                  | Value                                                                           |
+| ---------------------- | ------------------------------------------------------------------------------- |
+| Branch                 | `codex/project-shipwright-phase2-fit-the-tools-r9`                              |
+| Original base          | `191a964488d0df71f8dcb91c5b8372fc73b6b32e` (`origin/main` at worktree creation) |
+| Schema / Prisma impact | None                                                                            |
+| Current state          | Protected-main product accepted; record-only closeout packet prepared           |
 
 ## Safety assertions under test
 
