@@ -2,6 +2,26 @@ const text = (value) => value ?? "UNMEASURED";
 const short = (value) => (value ? String(value).slice(0, 12) : "UNMEASURED");
 const lastSeenKey = "bridgewatch:last-seen:v1";
 const twelveHours = 12 * 60 * 60 * 1000;
+const recentChangePriority = {
+  PROJECT_STATE_CHANGED: 0,
+  PHASE_STATE_CHANGED: 0,
+  MILESTONE_STATE_CHANGED: 1,
+  SOUNDING_LINE_ROOT_FAILURE: 1,
+  SOUNDING_LINE_DECISION: 1,
+  MAIN_ADVANCED: 1,
+  PULL_REQUEST_MERGED: 2,
+  PULL_REQUEST_OPENED: 3,
+  PULL_REQUEST_CLOSED: 3,
+  EXTERNAL_GATE_CHANGED: 3,
+  PULL_REQUEST_CHECK_STATE_CHANGED: 4,
+  WORKER_BLOCKED: 4,
+  WORKER_STALE: 4,
+  WORKER_FINISHED: 5,
+  WORKER_STARTED: 5,
+  SOURCE_STATE_CHANGED: 6,
+  BRANCH_HEALTH_CHANGED: 7,
+};
+const recentChangeMaximum = 8;
 let board = null;
 let selectedTab = "ACTIVE";
 
@@ -296,12 +316,51 @@ function eventRow(event) {
   }
   return row;
 }
-function renderHistory(events, hostSelector) {
+function eventChronology(left, right) {
+  return (
+    Date.parse(right.occurredAt) - Date.parse(left.occurredAt) ||
+    Date.parse(right.observedAt) - Date.parse(left.observedAt) ||
+    String(right.id).localeCompare(String(left.id))
+  );
+}
+function conciseRecentChanges(events) {
+  const selected = [];
+  const entities = new Set();
+  [...events]
+    .sort(
+      (left, right) =>
+        (recentChangePriority[left.kind] ?? Number.MAX_SAFE_INTEGER) -
+          (recentChangePriority[right.kind] ?? Number.MAX_SAFE_INTEGER) || eventChronology(left, right),
+    )
+    .forEach((event) => {
+      if (event.kind === "BRANCH_HEALTH_CHANGED" || event.kind === "SOURCE_STATE_CHANGED") return;
+      const entity = `${event.entityType}:${event.entityId}`;
+      if (entities.has(entity) || selected.length >= recentChangeMaximum) return;
+      entities.add(entity);
+      selected.push(event);
+    });
+  return selected.sort(eventChronology);
+}
+function renderHistory(events, hostSelector, { concise = false } = {}) {
   const host = document.querySelector(hostSelector);
   host.replaceChildren();
-  if (!events.length)
-    return host.append(element("p", "quiet", "No meaningful governed changes were observed in this bounded interval."));
-  events.forEach((event) => host.append(eventRow(event)));
+  const visible = concise ? conciseRecentChanges(events) : events;
+  if (!visible.length) {
+    const message = events.length
+      ? "No accepted lifecycle, blocker, mainline, PR, milestone, or validation change was observed in this interval. Branch and source context remain available below."
+      : "No meaningful governed changes were observed in this bounded interval.";
+    return host.append(element("p", "quiet", message));
+  }
+  visible.forEach((event) => host.append(eventRow(event)));
+  const omitted = events.length - visible.length;
+  if (concise && omitted > 0)
+    host.append(
+      element(
+        "p",
+        "quiet",
+        `${omitted} lower-priority or related event${omitted === 1 ? " is" : "s are"} available in Program history.`,
+      ),
+    );
 }
 async function loadRecent(windowName = "visit") {
   const since = windowName === "visit" ? currentLastSeen() : null;
@@ -310,12 +369,12 @@ async function loadRecent(windowName = "visit") {
     ? `Since browser-local visit: ${dateText(since)}`
     : "Last 12 hours (no usable local visit cursor).";
   try {
-    const result = await fetch(`/api/history?since=${encodeURIComponent(effectiveSince)}&limit=25`).then((response) =>
+    const result = await fetch(`/api/history?since=${encodeURIComponent(effectiveSince)}`).then((response) =>
       response.ok ? response.json() : { events: [] },
     );
-    renderHistory(result.events ?? [], "#last-check");
+    renderHistory(result.events ?? [], "#last-check", { concise: true });
   } catch {
-    renderHistory([], "#last-check");
+    renderHistory([], "#last-check", { concise: true });
   }
 }
 async function renderArchive(order = "chronological") {
