@@ -8,12 +8,25 @@ last_reviewed: 2026-08-12
 
 # Project Deepwater
 
+## Phase 4 accepted integration
+
+Phase 4 is accepted on protected `origin/main` as
+`9e9d629085cb1551b1a3959c31b0b460c37724a9`. Protected PR #50 integrated exact
+candidate `10f505d2188f0c51e356ad935503e5236df62256` over qualified base
+`cbf634d4d5db9cf47edebb89e005e8cc910068bd`. The sole Mainline Decision
+returned `RELEASE_GO` with 38/38 mandatory receipts `PASSED` and `CLEAN`; the
+protected binding passed, and exact-main local proof passed seven sealed suites
+with clean runtime conformance. The integration record contains the exact
+source-bound evidence. The r9 paragraph below is a historical qualification
+snapshot. Phase 5 remains unauthorized.
+
 Project Deepwater is Voyagewright's capability-realization and systems-audit program. Phase 1 establishes the audit-only machine-readable inventory and control plane. Phase 2 traces the accepted priority queue, identifies exact loss points and root causes, and creates owner-assigned remediation packets without changing product behavior, schema, or data. Phase 3 reviews utilization across every governed capability, coordinates owner closure, and processes only independently mainline-safe remediation slices. Phase 4, Break the Surface, turns the accepted inventory into a source-current whole-product proof population while preserving explicit owner, provider, deployment, and protected-main boundaries.
 
 ## Current Phase 4 records
 
 - [Design record](phase-records/Project_Deepwater_Phase_4_Design_Record.md)
 - [Validation record](phase-records/Project_Deepwater_Phase_4_Validation_Record.md)
+- [Integration record](phase-records/Project_Deepwater_Phase_4_Integration_Record.md)
 - `deepwater-phase4-config.json`
 - `evidence/phase4/Project_Deepwater_Phase_4_Runtime_Evidence.json`
 - [Proof report](reports/Project_Deepwater_Phase_4_Proof_Report.md)

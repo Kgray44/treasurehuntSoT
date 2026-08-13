@@ -8,7 +8,24 @@ last_reviewed: 2026-08-12
 
 # Project Deepwater Phase 4 validation record
 
-## Current result
+## Accepted result
+
+Phase 4 is accepted through protected PR #50 as exact candidate
+`10f505d2188f0c51e356ad935503e5236df62256`, qualified over
+`cbf634d4d5db9cf47edebb89e005e8cc910068bd`, and integrated as
+`9e9d629085cb1551b1a3959c31b0b460c37724a9`. The sole authoritative
+[Sounding Line Mainline Decision](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31653726495)
+returned `RELEASE_GO`: all 38 mandatory receipts were `PASSED` with `CLEAN`
+cleanup, and the finalizer reported no missing, duplicate, unknown, invalid, or
+runtime-conformance evidence. The subsequent protected binding passed, and the
+exact-main local-change proof on `9e9d629085cb1551b1a3959c31b0b460c37724a9`
+passed all seven sealed suites with clean runtime conformance and cleanup.
+
+This protected-main acceptance does not record Homeport owner or product
+acceptance, live-provider proof, deployment, or a promotion of Drydock's
+separate catalog record. Phase 5 remains unauthorized.
+
+## Historical qualification
 
 Two historical hosted Mainline Decisions, `31605432896` and `31609917108`,
 failed closed as `EVIDENCE_INVALID` solely in `browser.helm`; both finalizers
@@ -66,10 +83,10 @@ The production-build Homeport matrix remains source-bound to
 owner-correction Round 1 journeys A-U, Round 2 journeys A-W with its inherited
 regression chain, and Round 3 journeys A-V with the full prior correction
 regression. It is retained only through explicit family-level semantic
-carry-forward. This result is local synthetic qualification only: it neither
-records owner or product acceptance nor substitutes for a canonical hosted
-Mainline Decision. Phase 4 has not been accepted into protected main or proven
-on exact main.
+carry-forward. This historical result was local synthetic qualification only
+when recorded. It is superseded for protected-main status by the accepted
+result above; its owner, product, provider, and deployment boundaries remain
+unchanged.
 
 | Gate                           | Result                                                                                                             | Boundary                                                             |
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
@@ -91,11 +108,9 @@ behavior and does not establish live-provider behavior, deployment, physical
 assistive-technology validation, owner acceptance, product acceptance, or
 protected-main acceptance.
 
-## Remaining serialized gates
+## Completion boundary
 
-1. Acquire serialized acceptance ownership, then dispatch exactly one hosted
-   **Sounding Line / Mainline Decision** for frozen r9.
-2. Only after `RELEASE_GO`, complete protected merge, exact-main proof, and a
-   separately source-bound closure record.
-
-Phase 5 remains unauthorized throughout these gates.
+The frozen r9 candidate received its one permitted Mainline Decision, then
+protected merge and exact-main proof. The separate integration record binds
+that accepted implementation without adding product scope. Phase 5 remains
+unauthorized.
