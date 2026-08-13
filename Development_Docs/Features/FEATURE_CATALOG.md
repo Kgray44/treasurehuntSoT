@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `d3ed7c4cd1877be601e6854b376cb1dd9eb668a3`
+Audited source commit: `582f32a35d918ae892bd2feae766c00043038f39`
 
 ## Status vocabulary
 
@@ -1410,10 +1410,10 @@ Owner-accepted Phases 1 and 2 establish canonical roles, recent privileged assur
 - Non-revealing unauthorized admin route behavior
 - Additive SQLite and MySQL migration parity
 - Task-owned synthetic browser and owner-walkthrough runtimes
-- Phase 2 branch-only role-filtered Chartroom navigation and 15-route information architecture
-- Phase 2 branch-only bounded People, Chronicle, Voyage, and Community search and detail
-- Phase 2 branch-only operations, provider, configuration, release, audit, and correlation-led investigation projections
-- Phase 2 branch-only dossier-anchored consented Support Access
+- Phase 2 role-filtered Chartroom navigation and 15-route information architecture
+- Phase 2 bounded People, Chronicle, Voyage, and Community search and detail
+- Phase 2 operations, provider, configuration, release, audit, and correlation-led investigation projections
+- Phase 2 dossier-anchored consented Support Access
 
 ### Primary surfaces
 
@@ -1539,4 +1539,4 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `d3ed7c4cd1877be601e6854b376cb1dd9eb668a3`
+Generation source commit: `582f32a35d918ae892bd2feae766c00043038f39`
