@@ -41,6 +41,16 @@ jobs:
             Copy-Item -LiteralPath "$layerRoot/node_modules" -Destination 'node_modules' -Recurse
             & node scripts/sounding-line/v14/prepared-layer-artifact.mjs verify --source 'node_modules' --manifest "$layerRoot/dependency-manifest.json"
             $exitCode = $LASTEXITCODE
+            if ($exitCode -eq 0) {
+              # This workspace source link is deliberately excluded from the
+              # immutable dependency layer. Recreate it from this sealed
+              # checkout only after the transferred bytes have rehashed.
+              $workspaceScope = 'node_modules/@forever-treasure'
+              $workspaceLink = Join-Path $workspaceScope 'bridgewatch'
+              if (Test-Path -LiteralPath $workspaceLink) { throw 'GOVERNED_WORKSPACE_LINK_ALREADY_PRESENT' }
+              New-Item -ItemType Directory -Path $workspaceScope -Force | Out-Null
+              New-Item -ItemType Junction -Path $workspaceLink -Target (Join-Path $PWD 'bridgewatch') | Out-Null
+            }
           }
           $finishedAt = [DateTimeOffset]::UtcNow
           [ordered]@{
