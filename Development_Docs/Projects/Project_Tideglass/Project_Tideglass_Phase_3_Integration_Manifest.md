@@ -1,14 +1,14 @@
 ---
 title: Project Tideglass Phase 3 Integration Manifest
 audience: product-engineering
-status: current-main-qualified-candidate-freeze-pending
+status: authority-repair-focused-proof-pending
 canonical_for: project-tideglass-phase-3-integration
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 integration manifest
 
-Status: `CURRENT_MAIN_QUALIFIED_CANDIDATE_FREEZE_PENDING`.
+Status: `AUTHORITY_REPAIR_FOCUSED_PROOF_PENDING`.
 This is a source integration inventory, not an accepted-mainline or
 protected-mainline receipt. The original owner decision and the explicit
 Wakebook Journey Detail addendum acceptance are recorded; protected integration
@@ -88,3 +88,14 @@ retains the exact-record return, privacy, Creator, mobile, zoom, reduced-motion,
 and Axe assertions. The owner explicitly accepted this addendum and the rebased
 current-main qualification is green. Neither fact authorizes a protected
 binding, merge, or a retry of either frozen PR.
+
+## Terminal authority result
+
+The one hosted Mainline Decision for the reconciled candidate, run
+`31658984596`, ended `RELEASE_NO_GO` solely because
+`scripts/features/feature-catalog.test.ts` retained the former FT-B009 program
+expectation. The semantic Tideglass, Wakebook handoff, navigation, privacy, and
+Studio consumer evidence did not fail. The focused 9/9 Feature Catalog repair
+is recorded in the Validation and Qualification Records. This manifest remains
+non-merging until the repaired source has been requalified, frozen, and granted
+a later serial authority position.
