@@ -42,6 +42,12 @@ async function compatibilityFor(taleId: string, snapshot: ReturnType<typeof snap
   return assessment;
 }
 
+/** Returns the current, owner-scoped compatibility assessment without exposing draft prose. */
+export async function getDrydockCurrentCompatibility(taleId: string): Promise<DrydockCompatibilityResult> {
+  const snapshot = snapshotFromStudio(await getStudioTale(taleId));
+  return compatibilityFor(taleId, snapshot);
+}
+
 async function currentSuiteStatus(taleId: string, snapshot: ReturnType<typeof snapshotFromStudio>): Promise<RequiredSuiteStatus[]> {
   const checksum = publishedSourceChecksum(snapshot);
   const requiredClasses = requiredScenarioClasses(snapshot);

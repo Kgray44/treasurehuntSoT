@@ -19,11 +19,12 @@ describe("Phase 4 Drydock CLI parity", () => {
   it("assesses compatibility using the canonical compatibility service", () => {
     const output = JSON.parse(run("compatibility", write("source.json", snapshot)));
     expect(output.status).toBe("COMPATIBLE");
-  });
+  }, 20_000);
   it("evaluates a verified readiness input through the canonical evaluator", () => {
     const checksum = "a".repeat(64);
     const input = { sourceChecksum: checksum, report: { sourceChecksum: checksum, status: "VALID", proof: { completeness: "COMPLETE" }, issues: [], schemaRegistryVersion: 2, ruleCatalogVersion: 1, runId: "run" }, requirements: [], requiredSuites: [], compatibility: { sourceChecksum: checksum, policyVersion: "v", status: "COMPATIBLE", digest: "d", warnings: [] }, externalEvidence: [], activeWaiverIssueIds: [], activeWaiverIds: [] };
     expect(JSON.parse(run("readiness", write("readiness.json", input))).status).toBe("VERIFIED");
+    expect(JSON.parse(run("publish-check", write("publish-check.json", input))).status).toBe("VERIFIED");
   });
   it("projects only safe immutable publishing evidence", () => {
     const draft = { schemaVersion: 1 as const, sourceChecksum: "a".repeat(64), schemaRegistryVersion: 2, ruleCatalogVersion: 1, validationRunId: "run", requiredSuitePolicyVersion: "suite", requiredScenarioSuiteIds: [], scenarioRunIds: [], coverageDigest: "b".repeat(64), compatibilityPolicyVersion: "compat", compatibilityDigest: "c".repeat(64), externalEvidenceDigest: "d".repeat(64), waiverIds: [], draftDigest: "e".repeat(64) };

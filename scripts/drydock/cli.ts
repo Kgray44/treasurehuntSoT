@@ -331,9 +331,9 @@ else if (command === "canonicalize-fixtures") {
   const assessment = assessDrydockCompatibility(sourceSnapshot(sourcePath));
   print(assessment);
   if (!["COMPATIBLE", "COMPATIBLE_WITH_UPCAST", "COMPATIBLE_WITH_WARNINGS"].includes(assessment.status)) process.exitCode = 1;
-} else if (command === "readiness") {
+} else if (command === "readiness" || command === "publish-check") {
   const inputPath = process.argv[3];
-  if (!inputPath) throw new Error("Usage: npm run drydock:cli -- readiness <readiness-input.json>");
+  if (!inputPath) throw new Error(`Usage: npm run drydock:cli -- ${command} <readiness-input.json>`);
   const decision = evaluateDrydockReadiness(readinessInput(inputPath));
   print(decision);
   if (decision.status !== "VERIFIED" && decision.status !== "PUBLISHED") process.exitCode = 1;
@@ -390,6 +390,7 @@ else if (command === "canonicalize-fixtures") {
       "coverage-report <source.json> <scenario.json> [... ]",
       "compatibility <published-source.json>",
       "readiness <readiness-input.json>",
+      "publish-check <readiness-input.json>",
       "evidence-inspect <publishing-evidence.json>",
       "explore <source.json> <scenario.json> <finite-profile.json>",
     ],

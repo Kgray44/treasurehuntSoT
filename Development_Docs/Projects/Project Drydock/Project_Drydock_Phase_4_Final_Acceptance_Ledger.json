@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "project": "Project Drydock",
+  "phase": 4,
+  "status": "QUALIFICATION_IN_PROGRESS_NOT_ACCEPTED",
+  "governingSource": "Project Drydock Phase 4: Clear for Launch",
+  "acceptedCommit": null,
+  "mandatoryFamilies": [
+    { "id": "DD-F-READINESS", "implementation": "src/drydock/readiness.ts;src/drydock/readiness-store.ts", "tests": ["src/drydock/readiness.test.ts", "src/app/api/studio/tales/[taleId]/readiness/route.test.ts"], "suite": "unit.drydock", "status": "LOCAL_PROOF" },
+    { "id": "DD-F-PUBLISHING", "implementation": "src/chronicle/publishing.ts;src/drydock/publishing-evidence.ts", "tests": ["src/chronicle/publishing-phase4.test.ts", "src/drydock/publishing-evidence.test.ts"], "suite": "unit.drydock", "status": "LOCAL_PROOF" },
+    { "id": "DD-F-COMPATIBILITY", "implementation": "src/drydock/compatibility.ts;src/drydock/historical-store.ts", "tests": ["src/drydock/compatibility-phase4.test.ts", "src/drydock/historical-corpus-phase4.test.ts"], "suite": "unit.drydock", "status": "LOCAL_PROOF" },
+    { "id": "DD-F-EXTERNAL-EVIDENCE", "implementation": "src/drydock/evidence-requirements.ts;src/drydock/external-evidence-store.ts;src/drydock/adapters.ts", "tests": ["src/drydock/evidence-requirements.test.ts", "src/app/api/studio/tales/[taleId]/external-evidence/route.test.ts", "src/drydock/adapters.test.ts"], "suite": "unit.drydock", "status": "LOCAL_PROOF_CONTRACT_ONLY_ADAPTERS" },
+    { "id": "DD-F-STUDIO", "implementation": "src/components/studio/DrydockLaunchGate.tsx;src/components/studio/DrydockScenarioLab.tsx;src/components/studio/TaleEditor.tsx", "tests": ["src/components/studio/DrydockLaunchGate.test.tsx", "src/components/studio/TaleEditor.test.tsx"], "suite": "component.studio", "status": "LOCAL_PROOF" },
+    { "id": "DD-F-CLI-CI", "implementation": "scripts/drydock/cli.ts;package.json;testing/generated/active-test-registry.json", "tests": ["src/drydock/cli-phase4.test.ts", "npm run test:policy"], "suite": "unit.drydock", "status": "LOCAL_PROOF" },
+    { "id": "DD-F-SECURITY-PRIVACY", "implementation": "src/chronicle/publishing.ts;src/drydock/evidence-store.ts", "tests": ["src/chronicle/published-snapshot-security.test.ts", "src/drydock/simulation-store.test.ts"], "suite": "unit.drydock", "status": "LOCAL_PROOF" },
+    { "id": "DD-F-PERSISTENCE", "implementation": "prisma/migrations/20260813100000_drydock_phase4_readiness_evidence;prisma/migrations/20260813110000_drydock_phase4_suite_evidence;prisma/migrations/20260813120000_drydock_phase4_publish_idempotency", "tests": ["npm run drydock:phase4:migrations:sqlite"], "suite": "unit.drydock", "status": "SQLITE_REHEARSED_MYSQL_STATIC_PARITY" },
+    { "id": "DD-F-PERFORMANCE-RECOVERY", "implementation": "src/drydock/performance.ts;src/drydock/simulation-store.ts", "tests": ["src/drydock/simulation/performance.test.ts", "src/drydock/incremental.test.ts", "src/drydock/simulation-store.test.ts"], "suite": "unit.drydock", "status": "LOCAL_PROOF" },
+    { "id": "DD-F-BROWSER-ACCESSIBILITY", "implementation": "src/components/studio/DrydockLaunchGate.tsx", "tests": ["task-owned authenticated local browser journey", "src/components/studio/DrydockLaunchGate.test.tsx"], "suite": "component.studio", "status": "LOCAL_BROWSER_PROOF_AXE_REGISTERED_EVIDENCE_PENDING" }
+  ],
+  "closureInvariants": {
+    "unmappedMandatoryFamilies": "NOT_YET_EVALUATED_AT_FINAL_CLOSURE",
+    "unexplainedRuntimeDifferences": "NO_KNOWN_LOCAL_DIFFERENCES",
+    "unsupportedCurrentBlockTypes": 0,
+    "syntheticCorpusUnresolvedBlockers": "NOT_YET_FINALIZED",
+    "unknownMandatoryCompatibilityRows": 0,
+    "knownPublicationBypasses": 0,
+    "unregisteredAuthoritativeFamilies": "NOT_YET_FINALIZED"
+  }
+}

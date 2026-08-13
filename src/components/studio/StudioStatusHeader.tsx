@@ -17,6 +17,7 @@ export function StudioStatusHeader({
   validationLabel,
   validationDetail,
   publishState,
+  publishPermitted,
   publishedVersion,
   moreOpen,
   reducedMotion,
@@ -45,6 +46,7 @@ export function StudioStatusHeader({
   validationLabel: string;
   validationDetail: string;
   publishState: PublishState;
+  publishPermitted: boolean;
   publishedVersion: string | null;
   moreOpen: boolean;
   reducedMotion: boolean;
@@ -143,8 +145,9 @@ export function StudioStatusHeader({
           type="button"
           className="publish-button"
           data-authority-state={publishState}
-          disabled={publishState === "publishing"}
+          disabled={publishState === "publishing" || !publishPermitted}
           aria-busy={publishState === "publishing"}
+          title={publishPermitted ? undefined : "Drydock has not verified the current Chronicle source for publication."}
           onClick={onPublish}
         >
           {publishState === "publishing" ? "Publishing..." : studioCopy.publishChronicle.value}

@@ -18,4 +18,25 @@ describe("Drydock Launch Gate", () => {
     render(<DrydockLaunchGate taleId="tale-1" csrfToken="csrf" />);
     expect(await screen.findByRole("alert")).toHaveTextContent("could not load");
   });
+
+  it("shows a safe next action and source-bound missing external evidence", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          readiness: {
+            status: "NEEDS_REPAIR",
+            sourceChecksum: "b".repeat(64),
+            blockingIssues: [],
+            missingEvidence: [{ id: "DD-R-LANDFALL-FIELD", resolver: "Project Landfall", capability: "LOCATION_PROVIDER" }],
+          },
+        }),
+      }),
+    );
+    render(<DrydockLaunchGate taleId="tale-1" csrfToken="csrf" />);
+    expect(await screen.findByRole("heading", { name: "Missing current-source evidence" })).toBeInTheDocument();
+    expect(screen.getByText(/Fix blocking issues or provide/i)).toBeInTheDocument();
+    expect(screen.getByText(/DD-R-LANDFALL-FIELD/)).toBeInTheDocument();
+  });
 });

@@ -12,6 +12,7 @@ import { canonicalChecksum } from "@/drydock/canonical";
 import {
   DrydockSimulationSourceChangedError,
   getDrydockSimulationRun,
+  recoverExpiredDrydockSimulationLeases,
   requestDrydockSimulationCancellation,
   scheduleDrydockSimulation,
 } from "@/drydock/simulation-store";
@@ -132,6 +133,17 @@ describe("Drydock simulation store", () => {
     expect(prisma.drydockSimulationRun.updateMany).toHaveBeenCalledWith({
       where: { runId: "run", draft: { is: { taleId: "tale" } }, status: { in: ["QUEUED", "RUNNING"] } },
       data: { cancellationRequestedAt: expect.any(Date) },
+    });
+  });
+
+  it("requeues only an expired nonterminal lease after a worker restart", async () => {
+    prisma.drydockSimulationRun.updateMany.mockResolvedValue({ count: 1 });
+    const now = new Date("2026-08-13T12:00:00.000Z");
+
+    await expect(recoverExpiredDrydockSimulationLeases(now)).resolves.toEqual({ count: 1 });
+    expect(prisma.drydockSimulationRun.updateMany).toHaveBeenCalledWith({
+      where: { status: "RUNNING", leaseExpiresAt: { lt: now }, completedAt: null },
+      data: { status: "QUEUED", leaseToken: null, leaseExpiresAt: null },
     });
   });
 

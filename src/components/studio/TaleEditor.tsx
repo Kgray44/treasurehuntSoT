@@ -42,6 +42,7 @@ import { StudioStatusHeader } from "@/components/studio/StudioStatusHeader";
 import { StudioValidationPanel } from "@/components/studio/StudioValidationPanel";
 import { DrydockScenarioLab } from "@/components/studio/DrydockScenarioLab";
 import { DrydockLaunchGate } from "@/components/studio/DrydockLaunchGate";
+import { DrydockCompatibilityPanel } from "@/components/studio/DrydockCompatibilityPanel";
 import {
   TideglassStudioComparison,
   type TideglassStudioComparisonDto,
@@ -197,6 +198,7 @@ export function TaleEditor({
   const [deletedBlock, setDeletedBlock] = useState<DeletedBlock | null>(null);
   const [publishState, setPublishState] = useState<"idle" | "publishing" | "published" | "failed">("idle");
   const [publishedVersion, setPublishedVersion] = useState<string | null>(null);
+  const [launchGateStatus, setLaunchGateStatus] = useState<string | null>(null);
   const [uploadEntries, setUploadEntries] = useState<UploadEntry[]>([]);
   const [placedAssetId, setPlacedAssetId] = useState<string | null>(null);
   const [moreOpen, setMoreOpen] = useState(false);
@@ -478,7 +480,7 @@ export function TaleEditor({
         id: "studio.publish",
         label: "Publish Chronicle",
         description: "Open the canonical immutable publication flow.",
-        disabled: publishState === "publishing",
+        disabled: publishState === "publishing" || (launchGateStatus !== null && launchGateStatus !== "VERIFIED"),
         run: () => void publish(),
       },
       {
@@ -505,7 +507,7 @@ export function TaleEditor({
         run: () => addBlock(item.type, 0),
       })) as StudioCommand[]),
     ],
-    [data?.registry, draft?.chapters.length, future.length, past.length, publishState, selected],
+    [data?.registry, draft?.chapters.length, future.length, launchGateStatus, past.length, publishState, selected],
   );
   const saveVisualState =
     saveState.includes("failed") || saveState.includes("Conflict")
@@ -1099,6 +1101,10 @@ export function TaleEditor({
   }
   async function publish() {
     if (!draft || !data) return;
+    if (launchGateStatus !== null && launchGateStatus !== "VERIFIED") {
+      setError("Drydock has not verified the current Chronicle source for publication.");
+      return;
+    }
     if (dirty && !(await save(draft, false))) return;
     const publication = await requestAction({
       title: "Publish a new immutable Version?",
@@ -1594,6 +1600,7 @@ export function TaleEditor({
           validationLabel={validationStatus.label}
           validationDetail={validationStatus.detail}
           publishState={publishState}
+          publishPermitted={launchGateStatus === null || launchGateStatus === "VERIFIED"}
           publishedVersion={publishedVersion}
           moreOpen={moreOpen}
           reducedMotion={mode === "reduced"}
@@ -2491,7 +2498,7 @@ export function TaleEditor({
             </section>
           </div>
         )}
-        {initialSection === "trials" && <><DrydockLaunchGate taleId={taleId} csrfToken={data.csrfToken} /><DrydockScenarioLab taleId={taleId} csrfToken={data.csrfToken} /></>}
+        {initialSection === "trials" && <><DrydockLaunchGate taleId={taleId} csrfToken={data.csrfToken} onReadinessChange={setLaunchGateStatus} /><DrydockCompatibilityPanel taleId={taleId} csrfToken={data.csrfToken} /><DrydockScenarioLab taleId={taleId} csrfToken={data.csrfToken} /></>}
         {initialSection === "settings" && (
           <section className="editor-single-panel settings-panel">
             <header>
@@ -2838,7 +2845,7 @@ export function TaleEditor({
           <LibraryPanel
             title="Version history"
             eyebrow="Immutable releases"
-            action={<button onClick={() => void publish()}>Publish current Chronicle draft</button>}
+            action={<button onClick={() => void publish()} disabled={launchGateStatus !== null && launchGateStatus !== "VERIFIED"}>Publish current Chronicle draft</button>}
           >
             <div className="version-list">
               {!data.versions.length && <p>No published Version exists yet.</p>}

@@ -135,7 +135,7 @@ function requirementMissing(requirement: DrydockEvidenceRequirement, input: Eval
     return !input.requiredSuites.some((suite) => suite.status === "PASSED" && suite.sourceChecksum === input.sourceChecksum);
   if (requirement.requirementType === "COMPATIBILITY")
     return !input.compatibility || input.compatibility.sourceChecksum !== input.sourceChecksum || !compatibilityAllowsLaunch(input.compatibility.status);
-  if (requirement.requirementType === "EXTERNAL")
+  if (["EXTERNAL", "SECURITY", "ACCESSIBILITY"].includes(requirement.requirementType))
     return !input.externalEvidence.some((evidence) =>
       evidence.status === "PRESENT" &&
       (!requirement.providerId || evidence.providerId === requirement.providerId) &&

@@ -69,6 +69,12 @@ describe("Drydock readiness", () => {
     expect(evaluateDrydockReadiness(input({ requirements: [requirement], externalEvidence: [{ providerId: "landfall", providerVersion: "adapter-v1", evidenceKind: "field-evidence", status: "PRESENT", safeSummary: "Current reference" }] })).status).toBe("VERIFIED");
   });
 
+  it("fails closed for source-derived accessibility evidence until the matching receipt is present", () => {
+    const requirement = { id: "artifact-accessibility", version: "1", capability: "ARTIFACT_3D", requirementType: "ACCESSIBILITY" as const, mandatory: true, resolver: "Artifact provider", providerId: "artifact", providerVersion: "adapter-unavailable", evidenceKind: "accessibility-evidence" };
+    expect(evaluateDrydockReadiness(input({ requirements: [requirement] })).status).toBe("NEEDS_REPAIR");
+    expect(evaluateDrydockReadiness(input({ requirements: [requirement], externalEvidence: [{ providerId: "artifact", providerVersion: "adapter-unavailable", evidenceKind: "accessibility-evidence", status: "PRESENT", safeSummary: "Synthetic task-owned receipt" }] })).status).toBe("VERIFIED");
+  });
+
   it("keeps valid source-bound warnings visible without treating them as a repair failure", () => {
     const warning = { id: "warning-1", code: "DD-WARN", severity: "WARNING" as const, ruleVersion: 1, category: "GRAPH" as const, location: {}, message: "Review", remediation: "Review" };
     expect(evaluateDrydockReadiness(input({ report: report({ issues: [warning], summary: { total: 1, errors: 0, warnings: 1, infos: 0 } }) })).status).toBe("READY_WITH_WARNINGS");
