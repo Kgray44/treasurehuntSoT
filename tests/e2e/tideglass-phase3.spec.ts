@@ -234,7 +234,7 @@ test("Journeys A-L: visible entry, Captain preflight, accepted Journey Detail hi
 
   const captain = await signedInPage(browser, "CAPTAIN", "/captain/library");
   await expect(captain.page.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible();
-  await captain.page.getByRole("button", { name: "Create a Voyage", exact: true }).click();
+  await captain.page.getByRole("button", { name: "Create a Voyage", exact: true }).first().click();
   const captainWizard = captain.page.getByRole("dialog", { name: "Select Chronicle", exact: true });
   await captainWizard.getByRole("button", { name: /The Tideglass Passage Fixture/u }).click();
   await captainWizard.getByRole("combobox", { name: "Published version", exact: true }).selectOption("tg3-edition-a");
