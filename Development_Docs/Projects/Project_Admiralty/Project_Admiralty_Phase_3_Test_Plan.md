@@ -14,14 +14,16 @@ last_reviewed: 2026-08-13
   policy, preview normalization, and receipt normalization.
 - Authorization: role partitions deny cross-family authority.
 - Session revocation: Wayfarer owner transaction, CSRF/capability/assurance
-  endpoint controls, and Phase 2 dossier regression coverage.
-- Account suspension: expected-revision and owner transaction controls.
+  endpoint controls, endpoint error normalization, and a dossier action panel.
+- Account suspension: expected-revision and owner transaction controls,
+  endpoint error normalization, and a dossier lifecycle action panel.
 - Moderation: Harborlight owner preview/action lifecycle and transaction-bound
   audit composition.
 
 ## Qualification still required
 
-Add isolated owner-service, audit-failure, duplicate, stale-preview, CSRF,
-IDOR, privacy, accessible UI, and browser journeys for each implemented command.
+Add isolated owner-service, audit-failure, durable duplicate receipt,
+stale-preview, CSRF, IDOR, privacy, accessible UI, and browser journeys for
+each partially implemented command.
 Job, role, and configuration mutation tests remain blocked until their canonical
 owner command contracts exist; they are not interpreted as passing by absence.
