@@ -90,6 +90,14 @@ visible keyboard focus remained present. The audit script was injected only
 into the task-owned browser tab for the scan and the page was reloaded
 immediately afterward; it is not shipped by Bridgewatch.
 
+On the `-6` replay, the task-owned local runtime again served the complete
+dashboard without browser-console errors. The phone viewport had no horizontal
+overflow, the completed archive tab and its chronological/name controls were
+reachable, and the wide layout retained four approximately 323px columns.
+Keyboard traversal reached the Since-last-visit button with a solid visible
+outline. These checks exercised display state only; they did not acknowledge
+events or mutate upstream systems.
+
 ## Read-only route inventory
 
 | Route family                                                                                                               | Allowed methods | Purpose                                                                  |
