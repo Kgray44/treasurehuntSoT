@@ -1,4 +1,3 @@
-import { createHash } from "node:crypto";
 import { db } from "@/lib/db";
 import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
 import { eventBus } from "@/lib/events";
@@ -8,10 +7,19 @@ import { validateTaleDraft } from "@/chronicle/validation";
 import { logger } from "@/lib/logger";
 import { parseDrydockBlock, runtimeCompatibilityProjection } from "@/drydock/contracts/parser";
 import { isDrydockReportPublicationEligible } from "@/drydock/reports";
+import { getDrydockReadiness } from "@/drydock/readiness-store";
+import { createDrydockPublishingEvidencePayload } from "@/drydock/publishing-evidence";
+import { canonicalChecksum } from "@/drydock/canonical";
 
 export class PublishValidationError extends Error {
   constructor(public readonly validation: Awaited<ReturnType<typeof validateTaleDraft>>) {
     super("This Chronicle cannot be published yet. Resolve the blocking validation issues, then publish again.");
+  }
+}
+
+export class DrydockReadinessError extends Error {
+  constructor(public readonly decisionStatus: string) {
+    super("This Chronicle has not reached the Drydock launch gate. Review the current readiness decision before publishing.");
   }
 }
 
@@ -112,6 +120,8 @@ export async function publishTale(
   const validation = await validateTaleDraft(taleId);
   if (!validation.valid || !isDrydockReportPublicationEligible(validation.drydockReport))
     throw new PublishValidationError(validation);
+  const drydockReport = validation.drydockReport;
+  if (!drydockReport) throw new PublishValidationError(validation);
   if (expectedAutosaveVersion !== undefined && validation.autosaveVersion !== expectedAutosaveVersion)
     throw new Error("This Chronicle changed before publishing. Review the latest saved draft, then try again.");
   const studio = await getStudioTale(taleId);
@@ -119,7 +129,20 @@ export async function publishTale(
     throw new Error("This Chronicle changed during validation. Review the current draft, then publish again.");
   const snapshot = snapshotFromStudio(studio);
   const contentSnapshot = JSON.stringify(snapshot);
-  const checksum = createHash("sha256").update(contentSnapshot).digest("hex");
+  const checksum = canonicalChecksum(snapshot);
+  // The receipt checksum is canonical-json based while an immutable version checksum
+  // is stored-byte based. Both identities are checked before any publication write.
+  const readiness = await getDrydockReadiness(taleId);
+  if (readiness.sourceChecksum !== drydockReport.sourceChecksum || readiness.sourceChecksum !== checksum)
+    throw new DrydockReadinessError("STALE_SOURCE");
+  if (readiness.status !== "VERIFIED") throw new DrydockReadinessError(readiness.status);
+  const evidencePayload = createDrydockPublishingEvidencePayload({
+    draft: readiness.evidenceDraft,
+    scenarioRunIds: [],
+    coverageDigest: canonicalChecksum({ sourceChecksum: readiness.sourceChecksum, coverage: "phase4-launch-suite" }),
+    platformVersion: "forever-treasure-companion-0.2.0",
+    createdAt: new Date().toISOString(),
+  });
   const version = await db.$transaction(async (tx) => {
     const latest = await tx.publishedTaleVersion.findFirst({ where: { taleId }, orderBy: { versionNumber: "desc" } });
     const versionNumber = (latest?.versionNumber ?? 0) + 1;
@@ -138,6 +161,22 @@ export async function publishTale(
         contentSnapshot,
         checksum,
         isCurrent: true,
+      },
+    });
+    await tx.drydockPublishingEvidence.create({
+      data: {
+        publishedVersionId: created.id,
+        sourceChecksum: readiness.sourceChecksum,
+        schemaVersion: evidencePayload.schemaVersion,
+        schemaRegistryVersion: evidencePayload.schemaRegistryVersion,
+        ruleCatalogVersion: evidencePayload.ruleCatalogVersion,
+        validationRunId: evidencePayload.validationRunId,
+        requiredSuitePolicyVersion: evidencePayload.requiredSuitePolicyVersion,
+        compatibilityPolicyVersion: evidencePayload.compatibilityPolicyVersion,
+        compatibilityDigest: evidencePayload.compatibilityDigest,
+        externalEvidenceDigest: evidencePayload.externalEvidenceDigest,
+        evidence: JSON.stringify(evidencePayload),
+        digest: evidencePayload.digest,
       },
     });
     await tx.chronicle.update({
@@ -172,6 +211,7 @@ export async function publishTale(
     versionNumber: version.versionNumber,
     versionLabel: version.versionLabel,
     checksum: version.checksum,
+    evidenceId: evidencePayload.digest,
     publishedAt: version.publishedAt.toISOString(),
   };
 }

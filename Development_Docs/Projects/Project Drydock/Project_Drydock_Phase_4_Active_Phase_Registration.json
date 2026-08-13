@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "project": "Project Drydock",
+  "projectId": "project-drydock",
+  "phase": 4,
+  "phaseName": "Clear for Launch",
+  "phaseId": "project-drydock-phase-4-clear-for-launch",
+  "state": "IMPLEMENTATION_ACTIVE",
+  "branch": "codex/project-drydock-phase4-clear-for-launch",
+  "worktree": {
+    "ownership": "TASK_OWNED",
+    "path": "C:\\Users\\kgray\\AppData\\Local\\ForeverTreasureCompanion\\treasurehuntSoT-drydock-phase4"
+  },
+  "baseSha": "60b89841986e66fbc2c0828489d38002a1617506",
+  "governingDocument": "Development_Docs/Projects/Project Drydock/Project_Drydock_Governing_Document.pdf",
+  "hardDependencies": [
+    { "phase": 1, "state": "ACCEPTED_MAINLINE", "mergeSha": "468530645e983412e5f4c1aaa103915be77c9c07" },
+    { "phase": 2, "state": "ACCEPTED_MAINLINE", "mergeSha": "847e035775984888be71edf614f2205fd6c5a376" },
+    { "phase": 3, "state": "ACCEPTED_MAINLINE", "mergeSha": "191a964488d0df71f8dcb91c5b8372fc73b6b32e" }
+  ],
+  "serializedSharedContracts": [
+    "Drydock readiness decision",
+    "Drydock publishing evidence schema",
+    "Drydock compatibility result",
+    "Drydock required Scenario Suite policy",
+    "Prisma schemas and migrations",
+    "One Voyage publication transaction",
+    "Sounding Line registry",
+    "Feature Catalog source fragments"
+  ],
+  "phaseBoundary": {
+    "readinessDecision": "IN_SCOPE",
+    "immutablePublishingEvidence": "IN_SCOPE",
+    "historicalCompatibility": "IN_SCOPE",
+    "studioLaunchGate": "IN_SCOPE",
+    "oneVoyagePublicationAuthority": "PRESERVED",
+    "liveSessionMutation": "PROHIBITED",
+    "providerDomainTruth": "ADAPTER_ONLY"
+  },
+  "registeredAt": "2026-08-13"
+}
