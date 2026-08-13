@@ -116,3 +116,11 @@ Admiralty's `95cff272` record-truth repair is also non-product with respect to
 Tideglass. The candidate carries its generated Feature Catalog provenance and
 revalidated documentation/contract evidence forward without changing any
 Tideglass consumer or creating a second authority path.
+
+Shipwright Phase 2 at `25a5ecc3` changes the accepted Studio interaction
+surface. Its current `TaleEditor` retains `TideglassStudioComparison` as the
+ordinary semantic published-version consumer. Direct consumer proof is green;
+the component's presentation must receive a refreshed Tideglass browser journey
+after Wakebook's active shared-runtime lane releases. The Shipwright test-budget
+finding is recorded for its owner and does not justify a second comparison
+engine or a Tideglass UI rollback.

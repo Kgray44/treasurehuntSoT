@@ -113,6 +113,23 @@ validation reran on this current main; the source-equivalent browser evidence
 continues to apply. This candidate remains locally frozen and awaits an explicit
 serial authority position.
 
+## Shipwright shared-Studio reconciliation
+
+Shipwright Phase 2 accepted at `25a5ecc3989d137a95291c340f07143860b821cc` and
+substantially changed Creator Studio's layout and authoring tools. The ordinary
+published-version comparison remains the Tideglass semantic consumer:
+`TaleEditor` imports and renders `TideglassStudioComparison` and calls the
+canonical versions-compare endpoint. The direct Tideglass Studio component/API
+suite passes on the accepted source.
+
+Three Shipwright-owned `TaleEditor` checks exceed their 5-second default
+envelope (large 100-passage selection and two focus journeys); the same checks
+pass with a 30-second diagnostic timeout. This is recorded as a Shipwright
+test-budget boundary, not a Tideglass semantic defect. Because accepted Studio
+presentation changed, the task-owned Tideglass production A--K browser journey
+must rerun after the active Wakebook authority lane releases. No Tideglass
+authority may be requested before that proof is refreshed.
+
 ## Candidate qualification evidence
 
 | Check                                                                                    | Result                                                                                                                                                                                                                 | Boundary                                                                                                                                                           |

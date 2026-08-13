@@ -39,6 +39,10 @@ Admiralty's later `95cff272` record-truth repair is reconciled under the same
 non-product rule. This receipt remains unissued until a frozen Tideglass
 candidate receives a later authorized Mainline Decision and protected merge.
 
+Shipwright Phase 2's accepted Studio surface at `25a5ecc3` requires refreshed
+Tideglass Studio browser proof before any candidate can be frozen. This does
+not change the unissued status or authorize a parallel closeout path.
+
 The first local Mainline Decision invocation for documentation candidate
 `897e7619` failed before it could create any suite receipt or finalizer decision
 because this owned worktree lacked `prisma/dev.db`. The failure is recorded in

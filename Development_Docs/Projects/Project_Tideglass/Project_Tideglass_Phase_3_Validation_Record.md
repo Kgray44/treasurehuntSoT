@@ -107,6 +107,19 @@ The affected documentation/catalog and Tideglass contract checks reran cleanly;
 the Tideglass browser source remains unchanged, so no duplicate browser run was
 required. No replacement authority has been dispatched.
 
+## Shipwright shared-Studio reconciliation
+
+Accepted Shipwright Phase 2 at `25a5ecc3` changes the Studio UI and therefore
+invalidates only the Tideglass browser evidence that enters Studio. Static audit
+confirms `TaleEditor` still invokes the canonical Tideglass version comparison
+endpoint and renders `TideglassStudioComparison`; direct Tideglass Studio
+component/API tests pass. The Shipwright-owned large-editor/focus tests exceed
+their 5-second defaults but pass under a 30-second diagnostic timeout, so the
+observed issue is a test-budget boundary rather than a semantic comparison
+failure. The required A--K task-owned production browser rerun is deferred only
+while the active Wakebook authority owns the shared runtime. No replacement
+authority has been dispatched.
+
 ## Authority preflight and focused repair
 
 The first local Mainline Decision invocation for documentation candidate
