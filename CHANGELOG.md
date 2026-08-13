@@ -21,6 +21,15 @@ last_reviewed: 2026-08-12
   Memory, Keepsake, Cabinet, and eligible review handoffs. This is protected
   mainline source integration, not deployment or authorization for Phase 2.
 
+- Integrated Project Shipwright Phase 2, **Fit the Tools**, on canonical main.
+  Creator Studio now presents the existing Story Block contracts as a
+  contract-aware Inspector with Guided, Detailed, and Engineering disclosure;
+  readable targets; typed variables and operations; visual canonical
+  conditions; effective defaults; accessibility guidance; and field-local
+  Drydock issues. It preserves the existing Chronicle draft, autosave,
+  undo/redo, preview, and immutable-publication boundaries, and introduces no
+  Prisma schema or competing Drydock authority.
+
 - Expanded Project Admiralty on its Phase 2 review branch into a read-only
   15-route Chartroom with authorized account-menu entry, role-filtered
   navigation, bounded People/Chronicle/Voyage/Community search and detail,
