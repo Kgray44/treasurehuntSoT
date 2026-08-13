@@ -27,7 +27,7 @@
     { "kind": "test", "value": "src/components/studio/TaleEditor.test.tsx" },
     { "kind": "path", "value": "scripts/shipwright/phase2-walkthrough-runtime.mjs" }
   ],
-  "branch": "codex/project-shipwright-phase2-fit-the-tools-r5",
+  "branch": "codex/project-shipwright-phase2-fit-the-tools-r6",
   "commit": "98be581b90b55d108f079c506625544b040310ee",
   "limitations": [
     "The owner has accepted the requalified capability; it still requires serialized authority release, one authoritative Sounding Line decision, and protected-main integration.",
