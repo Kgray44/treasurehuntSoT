@@ -37,6 +37,10 @@ fresh merge-tree recomputation yielded
 tree. The candidate is an ancestor of fetched protected main. The accepted
 Phase 1 and Drydock Phase 1 prerequisites remain satisfied.
 
-The catalog and record publication is a governed record-only closeout. It does
-not add a Story Block family, a Prisma authority, templates, fragments,
-composition, scenario-lab work, or a new publishing workflow.
+The catalog and record publication is a governed record-only closeout. Its
+historical branch-fragment file is retained as the sole `MAINLINE` catalog
+source because current record-only policy rejects a source-file deletion; the
+generated Catalog still reports FT-037 as mainline and does not duplicate it.
+This compatibility disposition does not add a Story Block family, a Prisma
+authority, templates, fragments, composition, scenario-lab work, or a new
+publishing workflow.

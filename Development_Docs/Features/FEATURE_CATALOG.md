@@ -1016,6 +1016,7 @@ Creators author every accepted Story Block through a contract-aware Studio Inspe
 - It does not activate Shipwright Phase 3 block families, templates, fragments, or composition.
 - Drydock remains the sole authority for canonical contracts, migrations, expression checking, defaults, and issue severity.
 - Deployment and live-provider execution remain separate from protected-main source integration.
+- The historical fragment remains the single mainline source because current record-only closure policy permits additions and modifications but rejects source-file deletion.
 
 ### Evidence
 
