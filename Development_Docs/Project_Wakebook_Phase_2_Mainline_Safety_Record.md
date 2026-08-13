@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Mainline Safety Record
 audience: product-engineering
-status: draft
+status: candidate-qualified
 canonical_for: project-wakebook-phase-2-mainline-safety-record
 last_reviewed: 2026-08-13
 ---
@@ -19,3 +19,11 @@ and source-finalization state before opening the provider stream.
 Rollback removes Wakebook-owned UI, DTO, routes, and tests without modifying
 historical records, annotations, consent, artifacts, achievements, or protected
 media source objects.
+
+Current-main reconciliation was completed before candidate freeze at
+`origin/main` `72075eb551ec39bdb59bd7d78fd900f2eaf73a88`. Incoming accepted
+changes were Bridgewatch documentation, registry, and its independent
+application seam; no Wakebook, Wayfarer, Tideglass, Helm, Sealed Hold,
+artifact, achievement, Personal Harbor, navigation, or Prisma source seam was
+overwritten. The merged generated registry was regenerated and validated with
+the final candidate evidence.

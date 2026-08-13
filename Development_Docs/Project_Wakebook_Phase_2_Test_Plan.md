@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Test Plan
 audience: product-engineering
-status: draft
+status: candidate-qualified
 canonical_for: project-wakebook-phase-2-test-plan
 last_reviewed: 2026-08-13
 ---
@@ -17,11 +17,23 @@ cross-project proof, protected-media authorization, consent revocation, mobile,
 keyboard, zoom, reduced-motion, and visual evidence. A final authoritative
 Sounding Line decision is prohibited until that frozen candidate is qualified.
 
-On 2026-08-13 the focused Vitest evidence passed 13 tests across five files,
-and TypeScript completed with no errors. The dedicated browser fixture could
-not begin because a fresh task-owned SQLite database failed in the local Prisma
-schema engine before creating any database or launching a browser. This is an
-open environment qualification blocker, not a browser pass or product defect.
+On 2026-08-13 the focused Vitest evidence passed 30 tests across eight files,
+and TypeScript completed with no errors. The local Prisma diagnosis used Node
+`v24.19.0`, Prisma `6.19.3`, and `prisma/schema.sqlite.prisma`: client
+generation and schema validation were sound, and the Windows schema engine
+launched. The original failure was fresh SQLite-file creation at a task URL of
+the form `file:C:/wt/wb2-prisma/browser/<task-owned>.db`. Creating that
+task-owned file with Prisma's shipped schema engine before migration restored
+the supported local path without using a canonical development database.
+
+The registered `wakebook-phase2` browser project then passed two focused
+Chromium journeys on isolated task-owned SQLite data: the visible owner
+walkthrough and the private-media/consent/snapshot-safety journey. Their
+combined coverage includes desktop, narrow mobile widths, keyboard focus,
+effective 200% zoom, reduced motion, no horizontal overflow, and zero serious
+or critical axe violations. The synthetic evidence also verifies unavailable
+choice truthfulness and unscanned, withdrawn, archived, and revoked media
+non-delivery. No real Chronicle, account, or private media was used.
 
 The synthetic corpus will cover a complete solo Voyage, multi-crew/consent
 state, partial legacy history, protected media, historical stability, and a

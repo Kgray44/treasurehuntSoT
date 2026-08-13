@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `d6eb335880376f59403cf7108bf26690d8da4891`
+Audited source commit: `72075eb551ec39bdb59bd7d78fd900f2eaf73a88`
 
 ## Status vocabulary
 
@@ -1580,6 +1580,43 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 
 ---
 
+## FT-B012 - Owner-Safe Historical Voyage Remembrance
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Wakebook Phase 2
+
+Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe path and objective context, historical attribution and crew, artifact and achievement chronology, owner-authored remembrance, participant-consented Keepsake degradation, and Sealed Hold-backed private Memory media without rewriting canonical Voyage truth.
+
+### Important subfeatures
+
+- Version-pinned rich Voyage Detail with bounded historical path, objectives, choices, Creator, Captain, crew, artifact, assembly, and achievement context
+- Owner-only Reflection and Memory curation with owned historical-reference validation and cross-owner rejection
+- Opaque Sealed Hold Memory-media associations with owner-only protected delivery and truthful unavailable, unscanned, withdrawn, archived, and revoked states
+- Participant-owned consent denial, grant, and revocation for private Keepsake representation without changing the underlying Voyage record
+- Owner-only technical provenance, Tideglass handoff, visible Personal Harbor navigation, responsive layouts, keyboard support, reduced motion, and effective 200 percent zoom evidence
+
+### Primary surfaces
+
+`/passport/history/[recordId]`, `/api/passport/voyages/[recordId]`, `/api/passport/voyages/[recordId]/memories/[memoryId]/media/[mediaId]`
+
+### Meaningful limitations
+
+- Candidate-qualified for owner walkthrough only; owner acceptance and protected-main integration have not occurred
+- Historical detail retains only explicitly preserved safe facts and never reconstructs unavailable raw choices, clues, or source payloads
+- Private media delivery remains owner-only and depends on Sealed Hold clean, available, non-withdrawn, finalized source state
+
+### Evidence
+
+- branch: `codex/project-wakebook-phase2-bind-the-voyages`
+- commit: `e3843d7c6df1bb7a0f561b640ee0a8c1e9199f99`
+- path: `src/wakebook/archive-query.ts`
+- path: `src/wayfarer/chronicle-history.ts`
+- path: `src/components/wakebook/WakebookVoyageDetail.tsx`
+- test: `tests/e2e/wakebook-phase2.spec.ts`
+- completion-record: `Development_Docs/Project_Wakebook_Phase_2_Validation_Record.md`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
@@ -1593,4 +1630,4 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `d6eb335880376f59403cf7108bf26690d8da4891`
+Generation source commit: `72075eb551ec39bdb59bd7d78fd900f2eaf73a88`

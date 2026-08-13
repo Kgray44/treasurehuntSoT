@@ -47,16 +47,21 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
   const [mutationState, setMutationState] = useState<"pending" | "success" | "failure" | null>(null);
 
   useEffect(() => {
-    // Editable reflection intentionally hydrates from the authoritative async record.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (resource.state.status === "ready")
+    if (resource.state.status !== "ready") return;
+    const voyage = resource.state.value;
+    // Hydrate the editable draft after the authoritative resource has settled.
+    // Deferring the draft update avoids a synchronous cascading render while
+    // preserving the server record as the only initialization source.
+    const timer = window.setTimeout(() => {
       setReflection({
-        privateNote: resource.state.value.reflection?.privateNote ?? "",
-        favoriteChapterId: resource.state.value.reflection?.favoriteChapterId ?? "",
-        favoriteArtifactReference: resource.state.value.reflection?.favoriteArtifactReference ?? "",
-        favoriteClueReference: resource.state.value.reflection?.favoriteClueReference ?? "",
-        favoriteMomentReference: resource.state.value.reflection?.favoriteMomentReference ?? "",
+        privateNote: voyage.reflection?.privateNote ?? "",
+        favoriteChapterId: voyage.reflection?.favoriteChapterId ?? "",
+        favoriteArtifactReference: voyage.reflection?.favoriteArtifactReference ?? "",
+        favoriteClueReference: voyage.reflection?.favoriteClueReference ?? "",
+        favoriteMomentReference: voyage.reflection?.favoriteMomentReference ?? "",
       });
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [resource.state]);
   useEffect(() => () => setDirty(false), [setDirty]);
   useEffect(() => {

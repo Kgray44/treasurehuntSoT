@@ -21,6 +21,41 @@ const chapterSummarySchema = z.array(
     .strict(),
 );
 const unavailableSummarySchema = z.array(z.object({ schemaVersion: z.literal(1), reason: z.string() }).strict());
+// Wakebook Phase 2 may retain safe, structured context instead of the Phase 1
+// unavailable sentinel. Keepsake generation must preserve both truthful record
+// forms; it must not require a downgrade of richer historical evidence.
+const objectiveHistorySchema = z.array(
+  z.discriminatedUnion("state", [
+    z
+      .object({
+        schemaVersion: z.literal(1),
+        state: z.literal("AVAILABLE"),
+        label: z.string().min(1).max(240),
+        completed: z.boolean(),
+      })
+      .strict(),
+    z
+      .object({ schemaVersion: z.literal(1), state: z.literal("UNAVAILABLE"), reason: z.string().min(1).max(480) })
+      .strict(),
+  ]),
+);
+const safeChoiceHistorySchema = z.array(
+  z.discriminatedUnion("state", [
+    z
+      .object({
+        schemaVersion: z.literal(1),
+        state: z.literal("AVAILABLE"),
+        label: z.string().min(1).max(240),
+        chapterTitle: z.string().min(1).max(240).nullable().optional(),
+        kind: z.enum(["CHOICE", "HINT", "REJOIN", "CHECKPOINT", "ATTEMPT"]),
+        detail: z.string().min(1).max(480).nullable().optional(),
+      })
+      .strict(),
+    z
+      .object({ schemaVersion: z.literal(1), state: z.literal("UNAVAILABLE"), reason: z.string().min(1).max(480) })
+      .strict(),
+  ]),
+);
 const artifactSummarySchema = z.array(
   z
     .object({
@@ -622,8 +657,8 @@ function ownerRecordProjection(record: OwnerRecord) {
       captainWait: { seconds: record.captainWaitSeconds, accuracy: record.captainWaitAccuracy },
     },
     completedChapters: parseStored(chapterSummarySchema, record.completedChapters, "chapter summary"),
-    optionalObjectives: parseStored(unavailableSummarySchema, record.optionalObjectives, "objective summary"),
-    choiceSummary: parseStored(unavailableSummarySchema, record.choiceSummary, "choice summary"),
+    optionalObjectives: parseStored(objectiveHistorySchema, record.optionalObjectives, "objective summary"),
+    choiceSummary: parseStored(safeChoiceHistorySchema, record.choiceSummary, "choice summary"),
     artifactSummary: parseStored(artifactSummarySchema, record.artifactSummary, "artifact summary"),
     reflection: record.reflection
       ? {

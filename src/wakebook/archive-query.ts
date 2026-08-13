@@ -39,7 +39,6 @@ const chapterSummarySchema = z.array(
     })
     .strict(),
 );
-const unavailableSummarySchema = z.array(z.object({ schemaVersion: z.literal(1), reason: z.string() }).strict());
 const objectiveSummarySchema = z.array(
   z.discriminatedUnion("state", [
     z
