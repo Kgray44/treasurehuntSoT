@@ -60,6 +60,18 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
   assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.navigation").length, 2);
 });
 
+test("a pending v1.4 candidate remains on the broad v1.3 plan only when explicitly dispatched for cutover", async () => {
+  const plan = await buildPlan({
+    root,
+    gateId: "mainline",
+    sourceSha: "test-sha",
+    qualifiedBaseSha: "0055d012a121a8950b7fa70d371d5eafc6223d10",
+    authorityMode: "V13_CUTOVER",
+  });
+  assert.equal(plan.version, 2);
+  assert.equal(plan.nodes.length, 38);
+});
+
 test("only the finalizer produces an accepted decision from source-bound clean receipts", () => {
   const plan = {
     sourceSha: "abc",
