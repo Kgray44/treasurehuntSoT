@@ -1410,10 +1410,10 @@ Owner-accepted Phases 1 and 2 establish canonical roles, recent privileged assur
 - Non-revealing unauthorized admin route behavior
 - Additive SQLite and MySQL migration parity
 - Task-owned synthetic browser and owner-walkthrough runtimes
-- Phase 2 branch-only role-filtered Chartroom navigation and 15-route information architecture
-- Phase 2 branch-only bounded People, Chronicle, Voyage, and Community search and detail
-- Phase 2 branch-only operations, provider, configuration, release, audit, and correlation-led investigation projections
-- Phase 2 branch-only dossier-anchored consented Support Access
+- Phase 2 role-filtered Chartroom navigation and 15-route information architecture
+- Phase 2 bounded People, Chronicle, Voyage, and Community search and detail
+- Phase 2 operations, provider, configuration, release, audit, and correlation-led investigation projections
+- Phase 2 dossier-anchored consented Support Access
 
 ### Primary surfaces
 
