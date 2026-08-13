@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { randomUUID } from "node:crypto";
 import {
+  assertReusableCaptureSafe,
   checksumReusableEnvelope,
   planReusableInsertion,
   parseReusableEnvelope,
@@ -177,6 +178,7 @@ export async function createBlockPreset(
     locationIds: new Set<string>(),
     providerIds: new Set<string>(),
   };
+  assertReusableCaptureSafe([block]);
   collectDependencyIds(block.configuration, collected);
   collectDependencyIds(block.presentation, collected);
   collectDependencyIds(block.completion, collected);
@@ -265,6 +267,7 @@ export async function createBlockFragment(
     locationIds: new Set<string>(),
     providerIds: new Set<string>(),
   };
+  assertReusableCaptureSafe(blocks);
   for (const block of blocks) {
     collectDependencyIds(block.configuration, collected);
     collectDependencyIds(block.presentation, collected);
@@ -370,6 +373,7 @@ export async function createChapterTemplate(
     locationIds: new Set<string>(),
     providerIds: new Set<string>(),
   };
+  assertReusableCaptureSafe(blocks);
   for (const block of blocks) {
     collectDependencyIds(block.configuration, collected);
     collectDependencyIds(block.presentation, collected);

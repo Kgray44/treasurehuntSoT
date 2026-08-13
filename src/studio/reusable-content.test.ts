@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { DraftState } from "@/components/studio/studio-types";
 import {
   applyReusableInsertion,
+  assertReusableCaptureSafe,
   checksumReusableEnvelope,
   parseReusableEnvelope,
   planReusableInsertion,
@@ -95,6 +96,19 @@ function envelope(): ReusableContentEnvelope {
 }
 
 describe("reusable authoring insertion", () => {
+  it("fails closed when a reusable capture contains protected source material", () => {
+    expect(() =>
+      assertReusableCaptureSafe([{ ...envelope().blocks[0], configuration: { privacy: "CREATOR_PRIVATE" } }]),
+    ).toThrow(/private variable/i);
+    expect(() =>
+      assertReusableCaptureSafe([
+        {
+          ...envelope().blocks[0],
+          configuration: { body: "SEALED-HOLD-SYNTHETIC-PRIVATE-SENTINEL-73A9C1" },
+        },
+      ]),
+    ).toThrow(/Sealed Hold/i);
+  });
   it("rejects envelopes whose content changes after checksum creation", () => {
     const changed = { ...envelope(), name: "Changed" };
     expect(() => parseReusableEnvelope(changed)).toThrow("checksum");

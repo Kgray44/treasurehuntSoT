@@ -210,6 +210,35 @@ export function parseReusableEnvelope(value: unknown): ReusableContentEnvelope {
   return parsed;
 }
 
+const unsafeReusableField =
+  /(?:password|passphrase|access[_-]?code|invitation|creator[_-]?notes|captain[_-]?notes|private[_-]?(?:text|note|content)|secret|token)/iu;
+
+export function assertReusableCaptureSafe(blocks: Block[]) {
+  const inspect = (value: unknown, path = "") => {
+    if (typeof value === "string") {
+      if (value.includes("SEALED-HOLD-SYNTHETIC-PRIVATE-SENTINEL"))
+        throw new Error("Reusable content cannot capture protected Sealed Hold text.");
+      return;
+    }
+    if (Array.isArray(value)) return value.forEach((entry, index) => inspect(entry, `${path}[${index}]`));
+    if (!value || typeof value !== "object") return;
+    for (const [key, entry] of Object.entries(value)) {
+      const fieldPath = path ? `${path}.${key}` : key;
+      if (unsafeReusableField.test(key))
+        throw new Error(`Reusable content cannot capture protected field ${fieldPath}.`);
+      if (key === "privacy" && typeof entry === "string" && entry !== "PLAYER_SAFE")
+        throw new Error("Reusable content cannot capture private variable or state configuration.");
+      inspect(entry, fieldPath);
+    }
+  };
+  for (const block of blocks) {
+    if (block.creatorNotes) throw new Error("Reusable content cannot capture Creator notes.");
+    inspect(block.configuration, `blocks.${block.id}.configuration`);
+    inspect(block.presentation, `blocks.${block.id}.presentation`);
+    inspect(block.completion, `blocks.${block.id}.completion`);
+  }
+}
+
 type IdKind = "block" | "chapter" | "variable";
 export type ReferenceRemap = {
   blocks: Record<string, string>;
