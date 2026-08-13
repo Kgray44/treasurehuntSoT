@@ -22,6 +22,10 @@ const credentialPath = path.join(
   "credentials",
   `owner-correction-round${correctionRound}-walkthrough-credentials.private.json`,
 );
+const compatibilityCredentialPath =
+  correctionRound === "1"
+    ? path.join(taskRoot, "credentials", "owner-correction-walkthrough-credentials.private.json")
+    : null;
 const outboxPath = path.join(taskRoot, "synthetic-outbox", `owner-correction-round${correctionRound}-email.jsonl`);
 const receiptPath = path.join(
   taskRoot,
@@ -87,41 +91,40 @@ if (correctionRound === "2" || correctionRound === "3") {
 const privateAliases = JSON.parse(
   await readFile(path.join(taskRoot, "credentials", "account-aliases.private.json"), "utf8"),
 );
-await writeFile(
-  credentialPath,
-  `${JSON.stringify(
-    {
-      classification: "LOCAL_SYNTHETIC_CREDENTIAL_HANDOFF",
-      fixtureVersion: correction.fixtureVersion,
-      liveUrl: `http://127.0.0.1:${port}`,
-      password: syntheticPassword,
-      accounts: privateAliases.aliases,
-      correctionTokenMaterial: path.join(taskRoot, "tokens", "owner-correction-tokens.private.json"),
-      syntheticOutboxPath: outboxPath,
-      statusCommand:
-        correctionRound === "3"
-          ? "npm run homeport:phase7:correction:round3:walkthrough:status"
-          : correctionRound === "2"
-            ? "npm run homeport:phase7:correction:round2:walkthrough:status"
-            : "npm run homeport:phase7:correction:walkthrough:status",
-      resetCommand:
-        correctionRound === "3"
-          ? "npm run homeport:phase7:correction:round3:walkthrough:reset"
-          : correctionRound === "2"
-            ? "npm run homeport:phase7:correction:round2:walkthrough:reset"
-            : "npm run homeport:phase7:correction:walkthrough:reset",
-      stopCommand:
-        correctionRound === "3"
-          ? "npm run homeport:phase7:correction:round3:walkthrough:stop"
-          : correctionRound === "2"
-            ? "npm run homeport:phase7:correction:round2:walkthrough:stop"
-            : "npm run homeport:phase7:correction:walkthrough:stop",
-    },
-    null,
-    2,
-  )}\n`,
-  { encoding: "utf8", mode: 0o600 },
-);
+const credentialHandoff = `${JSON.stringify(
+  {
+    classification: "LOCAL_SYNTHETIC_CREDENTIAL_HANDOFF",
+    fixtureVersion: correction.fixtureVersion,
+    liveUrl: `http://127.0.0.1:${port}`,
+    password: syntheticPassword,
+    accounts: privateAliases.aliases,
+    correctionTokenMaterial: path.join(taskRoot, "tokens", "owner-correction-tokens.private.json"),
+    syntheticOutboxPath: outboxPath,
+    statusCommand:
+      correctionRound === "3"
+        ? "npm run homeport:phase7:correction:round3:walkthrough:status"
+        : correctionRound === "2"
+          ? "npm run homeport:phase7:correction:round2:walkthrough:status"
+          : "npm run homeport:phase7:correction:walkthrough:status",
+    resetCommand:
+      correctionRound === "3"
+        ? "npm run homeport:phase7:correction:round3:walkthrough:reset"
+        : correctionRound === "2"
+          ? "npm run homeport:phase7:correction:round2:walkthrough:reset"
+          : "npm run homeport:phase7:correction:walkthrough:reset",
+    stopCommand:
+      correctionRound === "3"
+        ? "npm run homeport:phase7:correction:round3:walkthrough:stop"
+        : correctionRound === "2"
+          ? "npm run homeport:phase7:correction:round2:walkthrough:stop"
+          : "npm run homeport:phase7:correction:walkthrough:stop",
+  },
+  null,
+  2,
+)}\n`;
+await writeFile(credentialPath, credentialHandoff, { encoding: "utf8", mode: 0o600 });
+if (compatibilityCredentialPath)
+  await writeFile(compatibilityCredentialPath, credentialHandoff, { encoding: "utf8", mode: 0o600 });
 
 await chmod(seedDatabase, 0o444);
 const schemaBytes = await readFile(path.join(repositoryRoot, "prisma", "schema.sqlite.prisma"));
@@ -149,6 +152,7 @@ const receipt = {
     phase7: phase7.fixtureChecksum,
   },
   credentialPath,
+  ...(compatibilityCredentialPath ? { compatibilityCredentialPath } : {}),
   outboxPath,
   privacyScan: "SYNTHETIC_RESERVED_DATA_ONLY",
   immutableMode: "READ_ONLY_SEED",

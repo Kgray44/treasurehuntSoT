@@ -9,14 +9,45 @@ export async function GET(request: Request, context: { params: Promise<{ session
   if (!access) return new Response("Voyage session required.", { status: 401 });
   const after = Number(request.headers.get("last-event-id") ?? new URL(request.url).searchParams.get("after") ?? 0);
   const encoder = new TextEncoder();
-  let heartbeat: ReturnType<typeof setInterval>;
+  let closeStream: (() => void) | null = null;
   const stream = new ReadableStream({
     async start(controller) {
-      const send = (event: { id: string; eventType: string; sequence: number; createdAt: string }) =>
-        controller.enqueue(
-          encoder.encode(`id: ${event.sequence}\nevent: progression\ndata: ${JSON.stringify(event)}\n\n`),
-        );
-      controller.enqueue(encoder.encode(": authorized playthrough channel connected\n\n"));
+      const channel = `tale-session:${sessionId}`;
+      let heartbeat: ReturnType<typeof setInterval> | null = null;
+      let closed = false;
+      let send: ((event: { id: string; eventType: string; sequence: number; createdAt: string }) => void) | null = null;
+      const cleanup = () => {
+        if (heartbeat) {
+          clearInterval(heartbeat);
+          heartbeat = null;
+        }
+        if (send) eventBus.off(channel, send);
+        request.signal.removeEventListener("abort", close);
+      };
+      const close = () => {
+        if (closed) return;
+        closed = true;
+        cleanup();
+        try {
+          controller.close();
+        } catch {}
+      };
+      const enqueue = (payload: Uint8Array) => {
+        if (closed) return false;
+        try {
+          controller.enqueue(payload);
+          return true;
+        } catch {
+          close();
+          return false;
+        }
+      };
+      send = (event) => {
+        enqueue(encoder.encode(`id: ${event.sequence}\nevent: progression\ndata: ${JSON.stringify(event)}\n\n`));
+      };
+      closeStream = close;
+      request.signal.addEventListener("abort", close, { once: true });
+      if (!enqueue(encoder.encode(": authorized playthrough channel connected\n\n"))) return;
       const missed = await db.taleSessionEvent.findMany({
         where: { sessionId, sequence: { gt: Number.isFinite(after) ? after : 0 } },
         orderBy: { sequence: "asc" },
@@ -28,30 +59,21 @@ export async function GET(request: Request, context: { params: Promise<{ session
           sequence: event.sequence,
           createdAt: event.createdAt.toISOString(),
         });
-      const channel = `tale-session:${sessionId}`;
+      if (closed) return;
       eventBus.on(channel, send);
       heartbeat = setInterval(() => {
         void (async () => {
           if (access.kind === "identity" && !(await playerCanAccessPlaythrough(sessionId, access.playerId))) {
-            clearInterval(heartbeat);
-            eventBus.off(channel, send);
-            controller.enqueue(encoder.encode("event: access-revoked\ndata: {}\n\n"));
-            controller.close();
+            enqueue(encoder.encode("event: access-revoked\ndata: {}\n\n"));
+            close();
             return;
           }
-          controller.enqueue(encoder.encode(`event: heartbeat\ndata: ${Date.now()}\n\n`));
+          enqueue(encoder.encode(`event: heartbeat\ndata: ${Date.now()}\n\n`));
         })().catch(() => undefined);
       }, 15000);
-      request.signal.addEventListener("abort", () => {
-        clearInterval(heartbeat);
-        eventBus.off(channel, send);
-        try {
-          controller.close();
-        } catch {}
-      });
     },
     cancel() {
-      clearInterval(heartbeat);
+      closeStream?.();
     },
   });
   return new Response(stream, {
