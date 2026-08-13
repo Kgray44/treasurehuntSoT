@@ -41,6 +41,7 @@ import { StudioSelectionToolbar } from "@/components/studio/StudioSelectionToolb
 import { StudioStatusHeader } from "@/components/studio/StudioStatusHeader";
 import { StudioValidationPanel } from "@/components/studio/StudioValidationPanel";
 import { DrydockScenarioLab } from "@/components/studio/DrydockScenarioLab";
+import { DrydockLaunchGate } from "@/components/studio/DrydockLaunchGate";
 import {
   TideglassStudioComparison,
   type TideglassStudioComparisonDto,
@@ -2490,7 +2491,7 @@ export function TaleEditor({
             </section>
           </div>
         )}
-        {initialSection === "trials" && <DrydockScenarioLab taleId={taleId} csrfToken={data.csrfToken} />}
+        {initialSection === "trials" && <><DrydockLaunchGate taleId={taleId} csrfToken={data.csrfToken} /><DrydockScenarioLab taleId={taleId} csrfToken={data.csrfToken} /></>}
         {initialSection === "settings" && (
           <section className="editor-single-panel settings-panel">
             <header>

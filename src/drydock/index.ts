@@ -1,4 +1,5 @@
 export * from "@/drydock/canonical";
+export * from "@/drydock/compatibility";
 export * from "@/drydock/contracts/model";
 export * from "@/drydock/contracts/parser";
 export * from "@/drydock/contracts/registry";
@@ -19,6 +20,9 @@ export * from "@/drydock/reports";
 export * from "@/drydock/readiness";
 export * from "@/drydock/readiness-store";
 export * from "@/drydock/publishing-evidence";
+export * from "@/drydock/evidence-store";
+export * from "@/drydock/historical-store";
+export * from "@/drydock/required-suite-policy";
 export * from "@/drydock/repairs";
 export * from "@/drydock/rules";
 export * from "@/drydock/variables";

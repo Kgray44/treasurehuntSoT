@@ -2,14 +2,14 @@ import { db } from "@/lib/db";
 import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
 import { eventBus } from "@/lib/events";
 import { getStudioTale } from "@/chronicle/studio-service";
-import type { PublishedTaleSnapshot } from "@/chronicle/types";
 import { validateTaleDraft } from "@/chronicle/validation";
 import { logger } from "@/lib/logger";
-import { parseDrydockBlock, runtimeCompatibilityProjection } from "@/drydock/contracts/parser";
 import { isDrydockReportPublicationEligible } from "@/drydock/reports";
 import { getDrydockReadiness } from "@/drydock/readiness-store";
 import { createDrydockPublishingEvidencePayload } from "@/drydock/publishing-evidence";
-import { canonicalChecksum } from "@/drydock/canonical";
+import { publishedSourceChecksum, snapshotFromStudio } from "@/chronicle/snapshot";
+import type { PublishedTaleSnapshot } from "@/chronicle/types";
+export { snapshotFromStudio } from "@/chronicle/snapshot";
 
 export class PublishValidationError extends Error {
   constructor(public readonly validation: Awaited<ReturnType<typeof validateTaleDraft>>) {
@@ -23,91 +23,6 @@ export class DrydockReadinessError extends Error {
   }
 }
 
-export function snapshotFromStudio(studio: Awaited<ReturnType<typeof getStudioTale>>): PublishedTaleSnapshot {
-  return {
-    schemaVersion: 1,
-    tale: {
-      id: studio.tale.id,
-      slug: studio.tale.slug,
-      title: studio.tale.title,
-      subtitle: studio.tale.subtitle,
-      shortDescription: studio.tale.shortDescription,
-      longDescription: studio.tale.longDescription,
-      coverAssetId: studio.tale.coverAssetId,
-      theme: studio.tale.theme,
-      visibility: studio.tale.visibility,
-      playerCountMin: studio.tale.playerCountMin,
-      playerCountMax: studio.tale.playerCountMax,
-      estimatedDuration: studio.tale.estimatedDuration,
-      contentWarnings: studio.tale.contentWarnings,
-    },
-    chapters: studio.draft.chapters.map((chapter, chapterIndex) => ({
-      id: chapter.id,
-      title: chapter.title,
-      subtitle: chapter.subtitle,
-      description: chapter.description,
-      coverAssetId: chapter.coverAssetId,
-      estimatedDuration: chapter.estimatedDuration,
-      isOptional: chapter.isOptional,
-      metadata: chapter.metadata,
-      orderIndex: chapterIndex,
-      entryBlockId: chapter.blocks[0]?.id ?? null,
-      completionBlockId:
-        [...chapter.blocks]
-          .reverse()
-          .find((block) => block.blockType === "chapterComplete" || block.blockType === "taleComplete")?.id ??
-        chapter.blocks.at(-1)?.id ??
-        null,
-      blocks: chapter.blocks.map((block, blockIndex) => {
-        const parsed = parseDrydockBlock({
-          ...block,
-          connections: block.connections,
-          nextBlockId: block.connections[0]?.targetBlockId ?? null,
-        });
-        if (!parsed.success) throw new Error(`Passage ${block.id} does not satisfy its Drydock publishing contract.`);
-        const canonical = runtimeCompatibilityProjection(parsed.block);
-        return {
-          id: block.id,
-          chapterId: chapter.id,
-          blockType: block.blockType,
-          title: block.title,
-          internalLabel: block.internalLabel,
-          configuration: canonical.configuration,
-          presentation: canonical.presentation,
-          completion: canonical.completion,
-          creatorNotes: null,
-          isEnabled: block.isEnabled,
-          schemaVersion: canonical.schemaVersion,
-          orderIndex: blockIndex,
-          nextBlockId: canonical.nextBlockId,
-          connections: canonical.connections.map((connection, connectionIndex) => ({
-            ...connection,
-            orderIndex: connectionIndex,
-          })),
-        };
-      }),
-    })),
-    assets: studio.assets.map((asset) => ({
-      id: asset.id,
-      mediaType: asset.mediaType,
-      displayName: asset.displayName,
-      description: asset.description,
-      mimeType: asset.mimeType,
-      width: asset.width,
-      height: asset.height,
-      roles: asset.roles,
-      variants: asset.variants.map((variant) => ({
-        id: variant.id,
-        role: variant.role,
-        mimeType: variant.mimeType,
-        processingState: variant.processingState,
-      })),
-    })) as PublishedTaleSnapshot["assets"],
-    locations: studio.locations.map((location) => ({ ...location, captainNotes: undefined })),
-    artifacts: studio.artifacts,
-    publishedAt: new Date().toISOString(),
-  };
-}
 
 export async function publishTale(
   taleId: string,
@@ -129,17 +44,17 @@ export async function publishTale(
     throw new Error("This Chronicle changed during validation. Review the current draft, then publish again.");
   const snapshot = snapshotFromStudio(studio);
   const contentSnapshot = JSON.stringify(snapshot);
-  const checksum = canonicalChecksum(snapshot);
-  // The receipt checksum is canonical-json based while an immutable version checksum
-  // is stored-byte based. Both identities are checked before any publication write.
+  const checksum = publishedSourceChecksum(snapshot);
+  // The receipt and immutable version use the same authored-source identity. The
+  // stored snapshot additionally records its server-assigned publication time.
   const readiness = await getDrydockReadiness(taleId);
   if (readiness.sourceChecksum !== drydockReport.sourceChecksum || readiness.sourceChecksum !== checksum)
     throw new DrydockReadinessError("STALE_SOURCE");
   if (readiness.status !== "VERIFIED") throw new DrydockReadinessError(readiness.status);
   const evidencePayload = createDrydockPublishingEvidencePayload({
     draft: readiness.evidenceDraft,
-    scenarioRunIds: [],
-    coverageDigest: canonicalChecksum({ sourceChecksum: readiness.sourceChecksum, coverage: "phase4-launch-suite" }),
+    scenarioRunIds: readiness.evidenceDraft.scenarioRunIds,
+    coverageDigest: readiness.evidenceDraft.coverageDigest,
     platformVersion: "forever-treasure-companion-0.2.0",
     createdAt: new Date().toISOString(),
   });

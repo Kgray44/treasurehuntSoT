@@ -14,6 +14,8 @@ const draft: DrydockPublishingEvidenceDraft = {
   validationRunId: "run-1",
   requiredSuitePolicyVersion: "suite-v1",
   requiredScenarioSuiteIds: ["baseline"],
+  scenarioRunIds: ["run-a", "run-b"],
+  coverageDigest: "e".repeat(64),
   compatibilityPolicyVersion: "compat-v1",
   compatibilityDigest: "b".repeat(64),
   externalEvidenceDigest: "c".repeat(64),

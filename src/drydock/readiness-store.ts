@@ -1,6 +1,11 @@
-import { canonicalChecksum } from "@/drydock/canonical";
 import { validateTaleDraft } from "@/chronicle/validation";
+import { getStudioTale } from "@/chronicle/studio-service";
+import { publishedSourceChecksum, snapshotFromStudio } from "@/chronicle/snapshot";
 import { db } from "@/lib/db";
+import { assessDrydockCompatibility } from "@/drydock/compatibility";
+import { requiredScenarioClasses } from "@/drydock/required-suite-policy";
+import { parseDrydockScenario } from "@/drydock/simulation/schema";
+import { ONE_VOYAGE_TRANSITION_ADAPTER_VERSION } from "@/drydock/simulation/engine";
 import {
   DRYDOCK_COMPATIBILITY_POLICY_VERSION,
   DRYDOCK_REQUIRED_SUITE_POLICY_VERSION,
@@ -19,28 +24,85 @@ const requirements: readonly DrydockEvidenceRequirement[] = [
   { id: "DD-R-COMPATIBILITY", version: "1", capability: "BASELINE", requirementType: "COMPATIBILITY", mandatory: true, resolver: "Drydock compatibility" },
 ];
 
-function compatibilityFor(source: string): DrydockCompatibilityResult {
-  const unsigned = { sourceChecksum: source, policyVersion: DRYDOCK_COMPATIBILITY_POLICY_VERSION, status: "COMPATIBLE" as const, warnings: [] as string[] };
-  return { ...unsigned, digest: canonicalChecksum(unsigned) };
+async function compatibilityFor(taleId: string, snapshot: ReturnType<typeof snapshotFromStudio>): Promise<DrydockCompatibilityResult> {
+  const assessment = assessDrydockCompatibility(snapshot);
+  const draft = await db.taleDraft.findFirst({ where: { taleId }, orderBy: { revisionNumber: "desc" }, select: { id: true } });
+  if (!draft) return assessment;
+  const existing = await db.drydockCompatibilityRun.findFirst({
+    where: { draftId: draft.id, sourceChecksum: assessment.sourceChecksum, policyVersion: assessment.policyVersion, digest: assessment.digest },
+    select: { id: true },
+  });
+  if (!existing)
+    await db.drydockCompatibilityRun.create({
+      data: {
+        draftId: draft.id,
+        runId: `drydock-compatibility-${crypto.randomUUID()}`,
+        sourceChecksum: assessment.sourceChecksum,
+        policyVersion: assessment.policyVersion,
+        status: assessment.status,
+        digest: assessment.digest,
+        result: JSON.stringify(assessment),
+      },
+    });
+  return assessment;
 }
 
-async function currentSuiteStatus(taleId: string, checksum: string): Promise<RequiredSuiteStatus[]> {
+async function currentSuiteStatus(taleId: string, snapshot: ReturnType<typeof snapshotFromStudio>): Promise<RequiredSuiteStatus[]> {
+  const checksum = publishedSourceChecksum(snapshot);
+  const requiredClasses = requiredScenarioClasses(snapshot);
   const suites = await db.drydockScenarioSuite.findMany({
     where: { draft: { is: { taleId } }, archivedAt: null },
-    include: { members: { include: { scenarioRevision: true } } },
+    include: {
+      members: { include: { scenarioRevision: true } },
+      launchEvidence: {
+        where: {
+          sourceChecksum: checksum,
+          requiredSuitePolicyVersion: DRYDOCK_REQUIRED_SUITE_POLICY_VERSION,
+          compatibilityPolicyVersion: DRYDOCK_COMPATIBILITY_POLICY_VERSION,
+          runtimeAdapterVersion: ONE_VOYAGE_TRANSITION_ADAPTER_VERSION,
+          proofStatus: "COMPLETE",
+        },
+        orderBy: { createdAt: "desc" },
+        take: 1,
+      },
+    },
     take: 100,
   });
   if (!suites.length) return [{ suiteId: "required-suite", revision: 0, sourceChecksum: checksum, status: "MISSING", reason: "No current Scenario Suite exists." }];
-  return suites.map((suite) => {
+  return Promise.all(suites.map(async (suite) => {
     const memberCurrent = suite.members.length > 0 && suite.members.every((member) => member.scenarioRevision.sourceChecksum === checksum);
-    return {
+    const base = {
       suiteId: suite.suiteId,
-      revision: 1,
+      revision: suite.revision,
       sourceChecksum: suite.sourceChecksum,
-      status: suite.sourceChecksum !== checksum || !memberCurrent ? "STALE" : "MISSING",
-      reason: suite.sourceChecksum !== checksum || !memberCurrent ? "The Suite or a member Scenario is stale." : "No completed Phase 4 launch evidence has been recorded for this Suite.",
-    };
-  });
+    } as const;
+    if (suite.sourceChecksum !== checksum || !memberCurrent)
+      return { ...base, status: "STALE" as const, reason: "The Suite or a member Scenario is stale." };
+    const tags = new Set<string>();
+    try {
+      suite.members.forEach((member) => parseDrydockScenario(JSON.parse(member.scenarioRevision.scenario)).tags.forEach((tag) => tags.add(tag)));
+    } catch {
+      return { ...base, status: "INCOMPLETE" as const, reason: "A required Scenario revision is malformed." };
+    }
+    const missingClasses = requiredClasses.filter((required) => !tags.has(`required:${required.id}`));
+    if (missingClasses.length)
+      return { ...base, status: "INCOMPLETE" as const, reason: `Required Scenario classes are missing: ${missingClasses.map((item) => item.id).join(", ")}.` };
+    const evidence = suite.launchEvidence[0];
+    if (!evidence)
+      return { ...base, status: "MISSING" as const, reason: "No completed current-policy launch evidence has been recorded for this Suite." };
+    let runIds: string[];
+    try {
+      const parsed = JSON.parse(evidence.runIds);
+      if (!Array.isArray(parsed) || parsed.some((value) => typeof value !== "string")) throw new Error("invalid");
+      runIds = [...new Set(parsed)].sort((left, right) => left.localeCompare(right, "en"));
+    } catch {
+      return { ...base, status: "INCOMPLETE" as const, reason: "The Suite evidence run identity is malformed." };
+    }
+    const runs = await db.drydockSimulationRun.findMany({ where: { runId: { in: runIds }, sourceChecksum: checksum, status: "COMPLETED" }, select: { runId: true, adapterVersion: true } });
+    if (runs.length !== runIds.length || runs.some((run) => run.adapterVersion !== ONE_VOYAGE_TRANSITION_ADAPTER_VERSION))
+      return { ...base, status: "STALE" as const, reason: "A required Scenario receipt is missing, stale, or uses a different runtime adapter." };
+    return { ...base, status: "PASSED" as const, reason: "Current-source Scenario, policy, and coverage evidence are complete.", runIds, coverageDigest: evidence.coverageDigest };
+  }));
 }
 
 async function currentWaivers(
@@ -89,18 +151,20 @@ async function externalEvidenceFor(taleId: string, checksum: string): Promise<Ex
 export async function getDrydockReadiness(taleId: string): Promise<DrydockReadinessDecision> {
   const validation = await validateTaleDraft(taleId);
   const report = validation.drydockReport;
-  const checksum = report?.sourceChecksum ?? canonicalChecksum({ taleId, state: "MISSING_DRYDOCK_REPORT" });
-  const [requiredSuites, externalEvidence, waivers] = await Promise.all([
-    currentSuiteStatus(taleId, checksum),
+  const snapshot = snapshotFromStudio(await getStudioTale(taleId));
+  const checksum = publishedSourceChecksum(snapshot);
+  const [requiredSuites, externalEvidence, waivers, compatibility] = await Promise.all([
+    currentSuiteStatus(taleId, snapshot),
     externalEvidenceFor(taleId, checksum),
     currentWaivers(taleId, checksum, report),
+    compatibilityFor(taleId, snapshot),
   ]);
   return evaluateDrydockReadiness({
     sourceChecksum: checksum,
     report,
     requirements,
     requiredSuites,
-    compatibility: compatibilityFor(checksum),
+    compatibility,
     externalEvidence,
     activeWaiverIssueIds: waivers.issueIds,
     activeWaiverIds: waivers.ids,

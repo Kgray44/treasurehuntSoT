@@ -29,6 +29,8 @@ export type RequiredSuiteStatus = Readonly<{
   sourceChecksum: string;
   status: "PASSED" | "FAILED" | "MISSING" | "STALE" | "INCOMPLETE";
   reason: string;
+  runIds?: readonly string[];
+  coverageDigest?: string;
 }>;
 
 export type DrydockCompatibilityStatus =
@@ -64,6 +66,8 @@ export type DrydockPublishingEvidenceDraft = Readonly<{
   validationRunId: string;
   requiredSuitePolicyVersion: string;
   requiredScenarioSuiteIds: readonly string[];
+  scenarioRunIds: readonly string[];
+  coverageDigest: string;
   compatibilityPolicyVersion: string;
   compatibilityDigest: string;
   externalEvidenceDigest: string;
@@ -158,7 +162,7 @@ export function evaluateDrydockReadiness(input: EvaluateDrydockReadinessInput): 
   const report = input.report;
   const waiverIssueIds = new Set(input.activeWaiverIssueIds);
   const blockingIssues = stable(
-    report?.issues.filter((issue) => issue.severity === "ERROR" || (issue.severity === "WARNING" && !waiverIssueIds.has(issue.id))) ?? [],
+    report?.issues.filter((issue) => issue.severity === "ERROR") ?? [],
     (issue) => issue.id,
   ).map(issueRef);
   const missingEvidence = stable(
@@ -198,6 +202,8 @@ export function evaluateDrydockReadiness(input: EvaluateDrydockReadinessInput): 
     validationRunId: report.runId,
     requiredSuitePolicyVersion: DRYDOCK_REQUIRED_SUITE_POLICY_VERSION,
     requiredScenarioSuiteIds: requiredSuites.map((suite) => suite.suiteId),
+    scenarioRunIds: requiredSuites.flatMap((suite) => suite.runIds ?? []).sort((left, right) => left.localeCompare(right, "en")),
+    coverageDigest: canonicalChecksum(requiredSuites.map((suite) => ({ suiteId: suite.suiteId, coverageDigest: suite.coverageDigest ?? null }))),
     compatibilityPolicyVersion: input.compatibility.policyVersion,
     compatibilityDigest: input.compatibility.digest,
     externalEvidenceDigest: canonicalChecksum(externalEvidence),

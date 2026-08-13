@@ -63,9 +63,9 @@ describe("Drydock readiness", () => {
     ).toBe("TRIALS_INCOMPLETE");
   });
 
-  it("does not allow warnings to become waived unless an active source-bound waiver is supplied", () => {
+  it("keeps valid source-bound warnings visible without treating them as a repair failure", () => {
     const warning = { id: "warning-1", code: "DD-WARN", severity: "WARNING" as const, ruleVersion: 1, category: "GRAPH" as const, location: {}, message: "Review", remediation: "Review" };
-    expect(evaluateDrydockReadiness(input({ report: report({ issues: [warning], summary: { total: 1, errors: 0, warnings: 1, infos: 0 } }) })).status).toBe("NEEDS_REPAIR");
+    expect(evaluateDrydockReadiness(input({ report: report({ issues: [warning], summary: { total: 1, errors: 0, warnings: 1, infos: 0 } }) })).status).toBe("READY_WITH_WARNINGS");
     expect(evaluateDrydockReadiness(input({ report: report({ issues: [warning], summary: { total: 1, errors: 0, warnings: 1, infos: 0 } }), activeWaiverIssueIds: [warning.id], activeWaiverIds: ["waiver-1"] })).status).toBe("READY_WITH_WARNINGS");
   });
 

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { DraftConflictError } from "@/chronicle/studio-service";
-import { PublishValidationError } from "@/chronicle/publishing";
+import { DrydockReadinessError, PublishValidationError } from "@/chronicle/publishing";
 import { VerificationRejectedError } from "@/chronicle/progression";
 import { logger } from "@/lib/logger";
 import { InvitationUnavailableError } from "@/platform/invitations";
@@ -15,6 +15,8 @@ export function apiError(cause: unknown) {
           ? "DRAFT_CONFLICT"
           : cause instanceof PublishValidationError
             ? "VALIDATION_FAILED"
+            : cause instanceof DrydockReadinessError
+              ? "DRYDOCK_READINESS_NOT_VERIFIED"
             : cause instanceof VerificationRejectedError
               ? cause.reason
               : cause instanceof InvitationUnavailableError
@@ -31,6 +33,11 @@ export function apiError(cause: unknown) {
   if (cause instanceof PublishValidationError)
     return NextResponse.json(
       { error: cause.message, code: "VALIDATION_FAILED", validation: cause.validation },
+      { status: 422 },
+    );
+  if (cause instanceof DrydockReadinessError)
+    return NextResponse.json(
+      { error: cause.message, code: "DRYDOCK_READINESS_NOT_VERIFIED", readinessStatus: cause.decisionStatus },
       { status: 422 },
     );
   if (cause instanceof VerificationRejectedError)

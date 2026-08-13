@@ -720,28 +720,29 @@ model Chronicle {
 }
 
 model TaleDraft {
-  id                        String                             @id @default(cuid())
-  taleId                    String
-  revisionNumber            Int                                @default(1)
-  basedOnPublishedVersionId String?
-  createdBy                 String
-  createdByAccountId        String?
-  autosaveVersion           Int                                @default(1)
-  validationState           String                             @default("NOT_VALIDATED")
-  validationSummary         String                             @default("{}") @db.LongText
-  lastValidatedAt           DateTime?
-  createdAt                 DateTime                           @default(now())
-  updatedAt                 DateTime                           @updatedAt
-  tale                      Chronicle                          @relation(fields: [taleId], references: [id], onDelete: Cascade)
-  chapters                  TaleChapter[]
-  drydockValidationRuns     DrydockValidationRun[]
-  drydockScenarios          DrydockScenario[]
-  drydockScenarioSuites     DrydockScenarioSuite[]
-  drydockSimulationRuns     DrydockSimulationRun[]
-  drydockCompatibilityRuns  DrydockCompatibilityRun[]
-  drydockExternalEvidence   DrydockExternalEvidenceReference[]
-  createdByAccount          UserAccount?                       @relation("TaleDraftAuthorAccount", fields: [createdByAccountId], references: [id], onDelete: SetNull)
-  drydockRuleWaivers        DrydockRuleWaiver[]
+  id                           String                             @id @default(cuid())
+  taleId                       String
+  revisionNumber               Int                                @default(1)
+  basedOnPublishedVersionId    String?
+  createdBy                    String
+  createdByAccountId           String?
+  autosaveVersion              Int                                @default(1)
+  validationState              String                             @default("NOT_VALIDATED")
+  validationSummary            String                             @default("{}") @db.LongText
+  lastValidatedAt              DateTime?
+  createdAt                    DateTime                           @default(now())
+  updatedAt                    DateTime                           @updatedAt
+  tale                         Chronicle                          @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  chapters                     TaleChapter[]
+  drydockValidationRuns        DrydockValidationRun[]
+  drydockScenarios             DrydockScenario[]
+  drydockScenarioSuites        DrydockScenarioSuite[]
+  drydockScenarioSuiteEvidence DrydockScenarioSuiteEvidence[]
+  drydockSimulationRuns        DrydockSimulationRun[]
+  drydockCompatibilityRuns     DrydockCompatibilityRun[]
+  drydockExternalEvidence      DrydockExternalEvidenceReference[]
+  createdByAccount             UserAccount?                       @relation("TaleDraftAuthorAccount", fields: [createdByAccountId], references: [id], onDelete: SetNull)
+  drydockRuleWaivers           DrydockRuleWaiver[]
 
   @@unique([taleId, revisionNumber])
   @@index([taleId, updatedAt])
@@ -829,16 +830,18 @@ model DrydockScenarioRevision {
 }
 
 model DrydockScenarioSuite {
-  id             String                       @id @default(cuid())
+  id             String                         @id @default(cuid())
   draftId        String
   suiteId        String
   title          String
   sourceChecksum String
+  revision       Int                            @default(1)
   archivedAt     DateTime?
-  createdAt      DateTime                     @default(now())
-  updatedAt      DateTime                     @updatedAt
-  draft          TaleDraft                    @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  createdAt      DateTime                       @default(now())
+  updatedAt      DateTime                       @updatedAt
+  draft          TaleDraft                      @relation(fields: [draftId], references: [id], onDelete: Cascade)
   members        DrydockScenarioSuiteMember[]
+  launchEvidence DrydockScenarioSuiteEvidence[]
 
   @@unique([draftId, suiteId])
   @@index([draftId, archivedAt, updatedAt])
@@ -856,6 +859,32 @@ model DrydockScenarioSuiteMember {
   @@unique([suiteRecordId, scenarioRevisionId])
   @@unique([suiteRecordId, orderIndex])
   @@index([scenarioRevisionId])
+}
+
+/**
+ * Immutable Phase 4 binding of an exact Suite revision to existing Scenario receipts.
+ */
+model DrydockScenarioSuiteEvidence {
+  id                         String               @id @default(cuid())
+  draftId                    String
+  suiteRecordId              String
+  suiteRevision              Int
+  sourceChecksum             String               @db.VarChar(64)
+  schemaRegistryVersion      Int
+  ruleCatalogVersion         Int
+  runtimeAdapterVersion      String               @db.VarChar(128)
+  requiredSuitePolicyVersion String               @db.VarChar(128)
+  compatibilityPolicyVersion String               @db.VarChar(128)
+  runIds                     String               @db.LongText
+  coverageDigest             String               @db.VarChar(64)
+  proofStatus                String               @db.VarChar(64)
+  createdAt                  DateTime             @default(now())
+  draft                      TaleDraft            @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  suiteRecord                DrydockScenarioSuite @relation(fields: [suiteRecordId], references: [id], onDelete: Cascade)
+
+  @@index([draftId, sourceChecksum, createdAt])
+  @@index([suiteRecordId, suiteRevision, createdAt])
+  @@index([sourceChecksum, proofStatus])
 }
 
 model DrydockSimulationRun {

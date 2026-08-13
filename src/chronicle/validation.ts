@@ -4,7 +4,7 @@ import { getStudioTale, slugSchema } from "@/chronicle/studio-service";
 import type { DraftValidationResult, ValidationIssue } from "@/chronicle/types";
 import { drydockDraftInputFromStudio, validateDrydockDraftContracts } from "@/drydock/incremental";
 import { createDrydockValidationReport } from "@/drydock/reports";
-import { snapshotFromStudio } from "@/chronicle/publishing";
+import { publishedSourceIdentity, snapshotFromStudio } from "@/chronicle/snapshot";
 
 const futureProviders = new Set(["visionLocation", "visionObject", "externalWebhook"]);
 
@@ -318,7 +318,7 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
   const drydockReport = createDrydockValidationReport({
     // Phase 4 binds the static receipt to exactly the same canonical snapshot that
     // One Voyage will persist. Analysis still consumes its purpose-built input above.
-    source: snapshotFromStudio(studio),
+    source: publishedSourceIdentity(snapshotFromStudio(studio)),
     issues: drydock.issues,
     sourceRevision: studio.draft.autosaveVersion,
     proofCompleteness: staticProofComplete ? "COMPLETE" : "INCOMPLETE_PROOF",
