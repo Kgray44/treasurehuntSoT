@@ -15,13 +15,15 @@ still-required frozen-candidate, protected-main, and Sounding Line acceptance
 evidence. It does not mark Phase 3 or Project Bridgewatch complete.
 
 The current task-owned branch is
-`codex/project-bridgewatch-phase3-keep-the-watch-4`, first replayed after the
-accepted Helm browser correction and the user-ordered Deepwater record-only
-closure, then rebased onto protected main
-`25a5ecc3989d137a95291c340f07143860b821cc` after Shipwright Phase 2 merged.
-Shipwright changed no Bridgewatch source, schema, registry, or test-definition
-path. The prior Bridgewatch authority run remains historical external-failure
-evidence and is not reused for this candidate.
+`codex/project-bridgewatch-phase3-keep-the-watch-5`, replayed onto protected
+main `0cdaa80245e47ec67ca6758daec7cd1453b37297` after Wakebook Phase 1 merged.
+The prior `-4` candidate
+`efd574010a7bcf5533d50c28799fc661bd719697` is preserved with its valid
+`RELEASE_GO` authority `31665028258` only for base
+`25a5ecc3989d137a95291c340f07143860b821cc`; it is not reused as current-candidate
+acceptance evidence. Wakebook changed shared generated test inventory/catalog
+and broader application paths, not Bridgewatch source, schema, registry, or
+migration paths.
 
 ## Focused evidence
 
@@ -57,6 +59,11 @@ evidence and is not reused for this candidate.
 - Current-main static qualification passed: `docs:validate`,
   `features:validate`, `test:policy`, `test:inventory`, `lint` (0 errors; the
   repository's existing warnings only), and `format:check`.
+- After the Wakebook-base replay, the 15-file / 41-test Bridgewatch validation
+  and build were rerun. Current `docs:validate`, `features:sync` /
+  `features:validate`, `test:policy`, `test:inventory`, `format:check`, root
+  TypeScript, product-language, and One Voyage architecture checks passed. A
+  final clean exact-SHA check remains required immediately before dispatch.
 
 ## Browser and accessibility evidence
 
