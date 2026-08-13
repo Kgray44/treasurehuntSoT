@@ -1689,3 +1689,1198 @@ html[data-motion-preference="reduced"] .personal-harbor *::after {
     border-left-color: Highlight;
   }
 }
+
+/* Project Wakebook: the quiet, private journey archive. */
+.wakebook-archive,
+.wakebook-detail {
+  display: grid;
+  min-width: 0;
+  gap: clamp(1rem, 2.5vw, 1.8rem);
+}
+
+.wakebook-intro {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(1.25rem, 4vw, 3.5rem);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--harbor-brass) 44%, transparent);
+  border-radius: 1.35rem;
+  padding: clamp(1.35rem, 4vw, 2.7rem);
+  background:
+    radial-gradient(circle at 92% 12%, rgb(209 175 105 / 17%), transparent 31%),
+    repeating-linear-gradient(100deg, transparent 0 4rem, rgb(255 255 255 / 1.5%) 4rem 4.08rem),
+    linear-gradient(135deg, #0d3839 0%, #0a292d 58%, #071c22 100%);
+  box-shadow: var(--shadow-card);
+}
+
+.wakebook-intro::after {
+  position: absolute;
+  right: -3.5rem;
+  bottom: -5.5rem;
+  width: 15rem;
+  height: 15rem;
+  border: 1px solid rgb(209 175 105 / 17%);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 1.8rem rgb(209 175 105 / 2.5%),
+    inset 0 0 0 4.2rem rgb(209 175 105 / 2.5%);
+  content: "";
+  pointer-events: none;
+}
+
+.wakebook-intro > * {
+  position: relative;
+  z-index: 1;
+}
+
+.wakebook-intro h2 {
+  max-width: 16ch;
+  margin: 0;
+  font-size: clamp(2.35rem, 6vw, 5rem);
+  line-height: 0.95;
+}
+
+.wakebook-intro p:not(.personal-harbor__eyebrow) {
+  max-width: 62ch;
+  margin: 0.85rem 0 0;
+  color: var(--text-secondary);
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  line-height: 1.7;
+}
+
+.wakebook-intro__count {
+  display: grid;
+  min-width: 8.6rem;
+  align-content: center;
+  justify-items: center;
+  border-left: 1px solid rgb(209 175 105 / 26%);
+  padding-left: clamp(1.2rem, 3vw, 2.5rem);
+  text-align: center;
+}
+
+.wakebook-intro__count strong {
+  color: var(--harbor-brass);
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  line-height: 0.9;
+}
+
+.wakebook-intro__count span {
+  margin-top: 0.55rem;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.wakebook-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid rgb(224 184 96 / 42%);
+  border-radius: 0.8rem;
+  padding: 0.9rem 1rem;
+  color: var(--text-secondary);
+  background: rgb(77 58 19 / 23%);
+}
+
+.wakebook-notice strong {
+  flex: none;
+  color: var(--brass-100);
+}
+
+.wakebook-controls {
+  display: grid;
+  gap: 0.8rem;
+  border: 1px solid var(--border-default);
+  border-radius: 1.1rem;
+  padding: clamp(0.9rem, 2.5vw, 1.25rem);
+  background: linear-gradient(145deg, rgb(8 31 34 / 94%), rgb(5 23 27 / 96%));
+  box-shadow: var(--shadow-card);
+}
+
+.wakebook-controls__primary {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1fr) minmax(10rem, 0.32fr) auto;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.wakebook-controls label,
+.wakebook-controls fieldset {
+  display: grid;
+  min-width: 0;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+.wakebook-controls label > span,
+.wakebook-controls legend {
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.wakebook-controls input:not([type="checkbox"]),
+.wakebook-controls select,
+.wakebook-remembrance input,
+.wakebook-remembrance textarea {
+  width: 100%;
+  min-height: 2.8rem;
+  border: 1px solid var(--border-default);
+  border-radius: 0.65rem;
+  padding: 0.7rem 0.8rem;
+  color: var(--text-primary);
+  background: rgb(4 20 23 / 82%);
+}
+
+.wakebook-controls__more {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 0.7rem;
+}
+
+.wakebook-controls__more summary,
+.wakebook-edition-panel summary {
+  width: fit-content;
+  cursor: pointer;
+  color: var(--harbor-brass);
+  font-weight: 800;
+}
+
+.wakebook-controls__more > div {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.8rem;
+}
+
+.wakebook-controls fieldset {
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 0;
+  padding: 0;
+}
+
+.wakebook-controls fieldset legend {
+  grid-column: 1 / -1;
+  margin-bottom: 0.25rem;
+}
+
+.wakebook-controls fieldset label {
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.65rem;
+  padding: 0.65rem 0.75rem;
+  color: var(--text-secondary);
+  background: rgb(255 255 255 / 2%);
+}
+
+.wakebook-controls fieldset input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--harbor-brass);
+}
+
+.wakebook-controls__clear {
+  width: fit-content;
+  border: 0;
+  padding: 0.2rem 0;
+  color: var(--harbor-brass);
+  background: transparent;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.wakebook-results,
+.wakebook-year__coverage {
+  margin: -0.45rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.wakebook-years,
+.wakebook-year {
+  display: grid;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.wakebook-year {
+  border-top: 1px solid color-mix(in srgb, var(--harbor-brass) 30%, transparent);
+  padding-top: clamp(1rem, 3vw, 1.8rem);
+}
+
+.wakebook-year > header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.wakebook-year h2 {
+  margin: 0;
+  color: var(--text-heading);
+  font-size: clamp(2.2rem, 6vw, 4.5rem);
+  line-height: 0.9;
+}
+
+.wakebook-year > header dl {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.wakebook-year > header dl > div {
+  display: grid;
+  min-width: 6.7rem;
+  gap: 0.1rem;
+  border-left: 1px solid var(--border-subtle);
+  padding: 0.25rem 0.8rem;
+}
+
+.wakebook-year dt {
+  color: var(--text-muted);
+  font-size: 0.67rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.wakebook-year dd {
+  margin: 0;
+  color: var(--text-heading);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+}
+
+.wakebook-shelf {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.9rem, 2vw, 1.25rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wakebook-shelf > li,
+.wakebook-voyage-card {
+  min-width: 0;
+  height: 100%;
+}
+
+.wakebook-archive--single .wakebook-shelf {
+  grid-template-columns: minmax(0, 48rem);
+}
+
+.wakebook-voyage-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(8.8rem, 34%) minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+  border-radius: 1.15rem;
+  background: linear-gradient(145deg, rgb(14 53 54 / 94%), rgb(5 23 28 / 98%));
+  box-shadow: var(--shadow-card);
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.wakebook-voyage-card:hover,
+.wakebook-voyage-card:focus-within {
+  border-color: color-mix(in srgb, var(--harbor-brass) 68%, transparent);
+  box-shadow: 0 1.2rem 2.7rem rgb(0 0 0 / 25%);
+  transform: translateY(-0.16rem);
+}
+
+.wakebook-voyage-card[data-quality="partial"] {
+  border-style: dashed;
+}
+
+.wakebook-cover {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  background: #0b2d31;
+}
+
+.wakebook-cover--card {
+  min-height: 100%;
+}
+
+.wakebook-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wakebook-cover__fallback {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 15rem;
+  align-content: center;
+  justify-items: center;
+  gap: 0.65rem;
+  padding: 1rem;
+  color: #f2e4c3;
+  background:
+    radial-gradient(circle at 50% 42%, rgb(209 175 105 / 20%), transparent 31%),
+    repeating-radial-gradient(circle at 50% 45%, transparent 0 1.9rem, rgb(209 175 105 / 8%) 1.95rem 2rem),
+    linear-gradient(160deg, #175253, #09282d 65%, #061a20);
+  text-align: center;
+}
+
+.wakebook-cover__fallback > span {
+  display: grid;
+  width: 4.6rem;
+  height: 4.6rem;
+  place-items: center;
+  border: 1px solid rgb(209 175 105 / 62%);
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  box-shadow: inset 0 0 0 0.45rem rgb(209 175 105 / 7%);
+}
+
+.wakebook-cover__fallback small {
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.wakebook-voyage-card__body {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: 0.9rem;
+  padding: clamp(1rem, 2.5vw, 1.35rem);
+}
+
+.wakebook-voyage-card__meta,
+.wakebook-detail-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.wakebook-status {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid rgb(209 175 105 / 42%);
+  border-radius: 999px;
+  padding: 0.28rem 0.55rem;
+  color: var(--brass-100);
+  background: rgb(209 175 105 / 8%);
+  font-size: 0.66rem;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.wakebook-edition {
+  margin: 0;
+  color: var(--harbor-brass);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.wakebook-voyage-card h3 {
+  margin: 0.2rem 0 0;
+  font-size: clamp(1.35rem, 2.7vw, 2rem);
+  line-height: 1.05;
+}
+
+.wakebook-voyage-card__outcome {
+  margin: 0.5rem 0 0;
+  color: var(--text-secondary);
+}
+
+.wakebook-voyage-card__crew {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.wakebook-voyage-card__crew > div {
+  display: flex;
+  flex: none;
+  padding-left: 0.35rem;
+}
+
+.wakebook-voyage-card__crew > div span,
+.wakebook-crew-avatar {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  margin-left: -0.35rem;
+  border: 2px solid #0b3033;
+  border-radius: 50%;
+  color: #f2e4c3;
+  background: #256461;
+  font-size: 0.62rem;
+  font-weight: 850;
+}
+
+.wakebook-voyage-card__crew p {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wakebook-voyage-card__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+  margin: 0;
+}
+
+.wakebook-voyage-card__facts > div {
+  min-width: 0;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 0.45rem;
+}
+
+.wakebook-voyage-card__facts dt {
+  color: var(--text-muted);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.wakebook-voyage-card__facts dd {
+  margin: 0.15rem 0 0;
+  overflow-wrap: anywhere;
+  font-size: 0.8rem;
+}
+
+.wakebook-voyage-card__warning,
+.wakebook-boundary-note {
+  margin: 0;
+  color: #f0cb85;
+  font-size: 0.75rem;
+}
+
+.wakebook-voyage-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+  margin-top: auto;
+}
+
+.wakebook-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 1.2rem;
+}
+
+.wakebook-pagination p {
+  color: var(--text-muted);
+}
+
+.wakebook-invitations,
+.wakebook-empty {
+  display: grid;
+  gap: 1rem;
+  border: 1px solid var(--border-default);
+  border-radius: 1.15rem;
+  padding: clamp(1.2rem, 4vw, 2rem);
+  background: linear-gradient(140deg, rgb(11 41 43 / 88%), rgb(8 26 31 / 95%));
+}
+
+.wakebook-invitations > div > h2,
+.wakebook-empty h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 3.5vw, 2.45rem);
+}
+
+.wakebook-invitations > div > p:not(.personal-harbor__eyebrow),
+.wakebook-empty p:not(.personal-harbor__eyebrow) {
+  max-width: 68ch;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.wakebook-invitations ul {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wakebook-invitations li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 0.65rem;
+}
+
+.wakebook-invitations li > div {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.wakebook-invitations li > div:last-child {
+  justify-items: end;
+  text-align: right;
+}
+
+.wakebook-invitations li span:not(.wakebook-invitation__mark) {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.wakebook-invitation__mark {
+  color: var(--harbor-brass);
+  font-size: 1.15rem;
+}
+
+.wakebook-empty {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  min-height: 19rem;
+  background:
+    radial-gradient(circle at 13% 50%, rgb(209 175 105 / 12%), transparent 22%),
+    linear-gradient(140deg, rgb(11 43 44 / 94%), rgb(7 25 30 / 98%));
+}
+
+.wakebook-empty__compass {
+  display: grid;
+  width: clamp(6rem, 14vw, 10rem);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgb(209 175 105 / 42%);
+  border-radius: 50%;
+  color: var(--harbor-brass);
+  box-shadow:
+    inset 0 0 0 1rem rgb(209 175 105 / 3%),
+    inset 0 0 0 2.6rem rgb(209 175 105 / 3%);
+  font-size: 2rem;
+}
+
+.wakebook-loading {
+  display: grid;
+  gap: 1rem;
+}
+
+.wakebook-loading__shelf {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.wakebook-loading__shelf span {
+  min-height: 13rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
+  background: linear-gradient(105deg, rgb(16 55 55 / 62%), rgb(27 73 70 / 52%), rgb(16 55 55 / 62%));
+  background-size: 200% 100%;
+  animation: wakebook-sheen 1.8s ease-in-out infinite;
+}
+
+@keyframes wakebook-sheen {
+  0%,
+  100% {
+    background-position: 100% 0;
+  }
+  50% {
+    background-position: 0 0;
+  }
+}
+
+.wakebook-detail__back {
+  width: fit-content;
+  color: var(--harbor-brass);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.wakebook-detail-hero {
+  display: grid;
+  grid-template-columns: minmax(14rem, 34%) minmax(0, 1fr);
+  min-height: 31rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--harbor-brass) 42%, transparent);
+  border-radius: 1.35rem;
+  background: linear-gradient(140deg, #123f40, #071f24 70%);
+  box-shadow: var(--shadow-card);
+}
+
+.wakebook-cover--hero,
+.wakebook-cover--hero .wakebook-cover__fallback {
+  min-height: 100%;
+}
+
+.wakebook-detail-hero__body {
+  display: grid;
+  align-content: center;
+  gap: 1rem;
+  padding: clamp(1.35rem, 4vw, 3rem);
+}
+
+.wakebook-detail-hero h2 {
+  max-width: 18ch;
+  margin: 0;
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  line-height: 0.92;
+}
+
+.wakebook-detail-hero__lede {
+  max-width: 58ch;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.wakebook-detail-hero__facts,
+.wakebook-definition-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin: 0;
+}
+
+.wakebook-detail-hero__facts > div,
+.wakebook-definition-grid > div {
+  min-width: 0;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 0.6rem;
+}
+
+.wakebook-detail-hero__facts dt,
+.wakebook-definition-grid dt {
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.wakebook-detail-hero__facts dd,
+.wakebook-definition-grid dd {
+  margin: 0.2rem 0 0;
+  overflow-wrap: anywhere;
+  color: var(--text-heading);
+}
+
+.wakebook-definition-grid small {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.wakebook-detail-nav {
+  position: sticky;
+  z-index: 2;
+  top: calc(var(--shell-header-height, 4.75rem) + 0.5rem);
+  display: flex;
+  gap: 0.35rem;
+  overflow-x: auto;
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  padding: 0.35rem;
+  background: rgb(5 23 27 / 94%);
+  box-shadow: var(--shadow-navigation);
+  scrollbar-width: thin;
+}
+
+.wakebook-detail-nav a {
+  flex: none;
+  border-radius: 999px;
+  padding: 0.55rem 0.75rem;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.wakebook-detail-nav a:hover,
+.wakebook-detail-nav a:focus-visible {
+  color: var(--text-heading);
+  background: rgb(209 175 105 / 10%);
+}
+
+.wakebook-detail-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.wakebook-detail-section {
+  scroll-margin-top: calc(var(--shell-header-height, 4.75rem) + 5rem);
+  border: 1px solid var(--border-default);
+  border-radius: 1.15rem;
+  padding: clamp(1.15rem, 3.5vw, 2rem);
+  background:
+    radial-gradient(circle at 96% 2%, rgb(209 175 105 / 7%), transparent 24%),
+    linear-gradient(145deg, rgb(9 35 37 / 94%), rgb(5 23 27 / 97%));
+  box-shadow: var(--shadow-card);
+}
+
+.wakebook-section-heading {
+  margin-bottom: 1.1rem;
+}
+
+.wakebook-section-heading h2 {
+  margin: 0;
+  font-size: clamp(1.7rem, 4vw, 2.65rem);
+}
+
+.wakebook-chapters,
+.wakebook-crew-list,
+.wakebook-artifact-boundary ul,
+.wakebook-memory-list ul {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wakebook-chapters li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.85rem;
+  align-items: center;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 0.65rem;
+}
+
+.wakebook-chapters li > span {
+  color: var(--harbor-brass);
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+}
+
+.wakebook-chapters li > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.wakebook-chapters time {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.wakebook-unavailable-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.wakebook-unavailable {
+  display: flex;
+  min-width: 0;
+  gap: 0.65rem;
+  border: 1px dashed var(--border-default);
+  border-radius: 0.75rem;
+  padding: 0.8rem;
+  color: var(--text-secondary);
+  background: rgb(255 255 255 / 1.5%);
+}
+
+.wakebook-unavailable > span {
+  color: var(--harbor-brass);
+}
+
+.wakebook-unavailable p {
+  margin: 0.2rem 0 0;
+  line-height: 1.5;
+}
+
+.wakebook-crew-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.wakebook-crew-list li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.7rem;
+  align-items: center;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.8rem;
+  padding: 0.8rem;
+}
+
+.wakebook-crew-list li > div {
+  display: grid;
+  min-width: 0;
+  gap: 0.12rem;
+}
+
+.wakebook-crew-list li > div span,
+.wakebook-crew-list small {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.wakebook-artifact-boundary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.wakebook-artifact-boundary > div {
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.85rem;
+  padding: 1rem;
+}
+
+.wakebook-artifact-boundary h3 {
+  margin-top: 0;
+}
+
+.wakebook-artifact-boundary li {
+  display: grid;
+  gap: 0.12rem;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 0.55rem;
+}
+
+.wakebook-artifact-boundary li span,
+.wakebook-artifact-boundary p {
+  color: var(--text-muted);
+  font-size: 0.76rem;
+}
+
+.wakebook-boundary-note {
+  margin-bottom: 0.8rem;
+}
+
+.wakebook-edition-panel {
+  display: grid;
+  gap: 0.8rem;
+  border-left: 3px solid var(--harbor-brass);
+  padding: 0.8rem 0 0.8rem 1rem;
+}
+
+.wakebook-edition-panel > div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.wakebook-edition-panel > div span,
+.wakebook-edition-panel > p {
+  color: var(--text-muted);
+}
+
+.wakebook-edition-panel > div strong {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+}
+
+.wakebook-edition-panel details dl {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0.8rem 0 0;
+}
+
+.wakebook-code {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.78rem;
+  word-break: break-all;
+}
+
+.wakebook-section-lede {
+  max-width: 64ch;
+  color: var(--text-secondary);
+}
+
+.wakebook-remembrance-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.wakebook-remembrance form,
+.wakebook-memory-list,
+.wakebook-keepsake {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.9rem;
+  padding: 1rem;
+  background: rgb(255 255 255 / 1.5%);
+}
+
+.wakebook-remembrance form h3,
+.wakebook-memory-list h3,
+.wakebook-keepsake h3 {
+  margin: 0;
+}
+
+.wakebook-remembrance form label {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--text-secondary);
+  font-weight: 750;
+}
+
+.wakebook-memory-list,
+.wakebook-keepsake {
+  margin-top: 0.8rem;
+}
+
+.wakebook-memory-list > div:first-child,
+.wakebook-keepsake {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.wakebook-memory-list li {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.8rem;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 0.7rem;
+}
+
+.wakebook-memory-list li p {
+  margin: 0.35rem 0;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.wakebook-memory-list time {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.wakebook-soft-empty {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+html[data-voyage-theme="light"]
+  :where(
+    .wakebook-intro,
+    .wakebook-controls,
+    .wakebook-voyage-card,
+    .wakebook-invitations,
+    .wakebook-empty,
+    .wakebook-detail-hero,
+    .wakebook-detail-section
+  ) {
+  border-color: var(--border-default);
+  color: var(--text-primary);
+  background:
+    radial-gradient(circle at 94% 5%, rgb(118 85 28 / 10%), transparent 28%), linear-gradient(145deg, #fffaf0, #ecdfc7);
+}
+
+html[data-voyage-theme="light"]
+  :where(
+    .wakebook-intro p:not(.personal-harbor__eyebrow),
+    .wakebook-voyage-card__outcome,
+    .wakebook-detail-hero__lede,
+    .wakebook-section-lede,
+    .wakebook-empty p:not(.personal-harbor__eyebrow),
+    .wakebook-invitations p:not(.personal-harbor__eyebrow)
+  ) {
+  color: #514b3a;
+}
+
+html[data-voyage-theme="light"]
+  :where(
+    .wakebook-controls input:not([type="checkbox"]),
+    .wakebook-controls select,
+    .wakebook-remembrance input,
+    .wakebook-remembrance textarea,
+    .wakebook-detail-nav
+  ) {
+  color: var(--text-primary);
+  background: #fffdf7;
+}
+
+html[data-voyage-theme="light"] .wakebook-voyage-card__crew > div span,
+html[data-voyage-theme="light"] .wakebook-crew-avatar {
+  border-color: #f7ecd6;
+}
+
+@media (max-width: 72rem) {
+  .wakebook-shelf {
+    grid-template-columns: 1fr;
+  }
+  .wakebook-voyage-card {
+    grid-template-columns: minmax(10rem, 28%) minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 52rem) {
+  .wakebook-intro {
+    grid-template-columns: 1fr;
+  }
+  .wakebook-intro__count {
+    grid-template-columns: auto 1fr;
+    min-width: 0;
+    justify-items: start;
+    border-top: 1px solid rgb(209 175 105 / 26%);
+    border-left: 0;
+    padding-top: 1rem;
+    padding-left: 0;
+    text-align: left;
+  }
+  .wakebook-intro__count strong {
+    grid-row: 1 / 3;
+    margin-right: 0.8rem;
+    font-size: 3.2rem;
+  }
+  .wakebook-controls__primary,
+  .wakebook-controls__more > div,
+  .wakebook-controls fieldset,
+  .wakebook-detail-hero,
+  .wakebook-remembrance-grid,
+  .wakebook-artifact-boundary {
+    grid-template-columns: 1fr;
+  }
+  .wakebook-controls fieldset {
+    grid-column: auto;
+  }
+  .wakebook-detail-hero {
+    min-height: 0;
+  }
+  .wakebook-cover--hero,
+  .wakebook-cover--hero .wakebook-cover__fallback {
+    min-height: 20rem;
+    max-height: 28rem;
+  }
+  .wakebook-detail-nav {
+    border-radius: 0.8rem;
+  }
+}
+
+@media (max-width: 40rem) {
+  .wakebook-year > header,
+  .wakebook-pagination,
+  .wakebook-memory-list > div:first-child,
+  .wakebook-keepsake {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .wakebook-year > header {
+    display: grid;
+  }
+  .wakebook-year > header dl {
+    justify-content: start;
+  }
+  .wakebook-year > header dl > div {
+    min-width: 5.5rem;
+    padding-left: 0;
+    border-left: 0;
+  }
+  .wakebook-voyage-card {
+    grid-template-columns: 1fr;
+  }
+  .wakebook-cover--card,
+  .wakebook-cover--card .wakebook-cover__fallback {
+    min-height: 14rem;
+    max-height: 18rem;
+  }
+  .wakebook-voyage-card__crew p {
+    white-space: normal;
+  }
+  .wakebook-voyage-card__actions .button,
+  .wakebook-pagination .button,
+  .wakebook-remembrance form .button,
+  .wakebook-memory-list .button,
+  .wakebook-keepsake .button {
+    width: 100%;
+  }
+  .wakebook-invitations li {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .wakebook-invitations li > div:last-child {
+    grid-column: 2;
+    justify-items: start;
+    text-align: left;
+  }
+  .wakebook-empty {
+    grid-template-columns: 1fr;
+  }
+  .wakebook-empty__compass {
+    width: 6.5rem;
+  }
+  .wakebook-detail-hero__facts,
+  .wakebook-definition-grid,
+  .wakebook-unavailable-grid,
+  .wakebook-crew-list {
+    grid-template-columns: 1fr;
+  }
+  .wakebook-crew-list li {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .wakebook-crew-list small {
+    grid-column: 2;
+  }
+  .wakebook-memory-list li {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .wakebook-loading__shelf {
+    grid-template-columns: 1fr;
+  }
+  .wakebook-loading__shelf span:not(:first-child) {
+    display: none;
+  }
+}
+
+@media (forced-colors: active) {
+  :where(
+    .wakebook-intro,
+    .wakebook-controls,
+    .wakebook-voyage-card,
+    .wakebook-invitations,
+    .wakebook-empty,
+    .wakebook-detail-hero,
+    .wakebook-detail-section
+  ) {
+    border: 1px solid CanvasText;
+    color: CanvasText;
+    background: Canvas;
+  }
+  .wakebook-status,
+  .wakebook-cover__fallback,
+  .wakebook-empty__compass {
+    border: 1px solid CanvasText;
+    color: CanvasText;
+    background: Canvas;
+  }
+}

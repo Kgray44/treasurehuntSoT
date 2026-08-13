@@ -65,6 +65,10 @@ the full Phase 1 walkthrough on 2026-08-09, and the accepted source is integrate
 on canonical main with verified parity. Deployment, production MySQL proof, and
 all later Admiralty phases remain separate, and Phase 2 remains dormant.
 
+## Project Wakebook
+
+Project Wakebook governs the private Living Journey Archive over accepted Wayfarer history. Phase 1, Open the Wake, is branch-complete and preparing its separate owner walkthrough from the frozen [design record](Project_Wakebook_Phase_1_Design_Record.md), [current-history audit](Project_Wakebook_Phase_1_Current_History_Audit.md), [test plan](Project_Wakebook_Phase_1_Test_Plan.md), [mainline-safety record](Project_Wakebook_Phase_1_Mainline_Safety_Record.md), [integration manifest](Project_Wakebook_Phase_1_Integration_Manifest.md), [validation record](Project_Wakebook_Phase_1_Validation_Record.md), and [owner walkthrough](Project_Wakebook_Phase_1_Owner_Walkthrough.md). These records authorize no schema change, duplicate history authority, Phase 2 behavior, main merge, deployment claim, or owner-acceptance claim.
+
 ## Current project-governance wave
 
 The following owner-authored governing documents are current repository authority. The [Continuous Development and Mainline Integration Standard](Governing/Voyagewright_Continuous_Development_and_Mainline_Integration_Standard_v1.0.pdf) governs their concurrent implementation and protected-mainline reconciliation.

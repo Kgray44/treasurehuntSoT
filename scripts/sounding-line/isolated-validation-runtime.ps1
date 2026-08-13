@@ -328,33 +328,12 @@ if (Test-Path -LiteralPath $isolatedDatabase) { throw "Unique isolated validatio
 if ([System.StringComparer]::OrdinalIgnoreCase.Equals($canonicalDatabase, $isolatedDatabase)) {
     throw "BaselineDatabasePath must not identify the isolated mutation database."
 }
-# The runtime's bootstrap database proves migration/seed reproducibility, but
-# browser families must begin from the stable, caller-approved canonical
-# baseline (including its compatibility projection).  Only the task-owned
-# seed file is replaced; the canonical source remains read-only and is
-# fingerprinted again during finalization.
-Remove-Item -LiteralPath $seedDatabase -Force
-Copy-Item -LiteralPath $canonicalDatabase -Destination $seedDatabase -ErrorAction Stop
-# The canonical baseline is intentionally immutable and can predate migrations
-# introduced by the source under evaluation. Bring only the task-owned seed copy
-# forward before the nonce-bound browser clone is prepared.
-$priorDatabaseUrl = $env:DATABASE_URL
-try {
-    $env:DATABASE_URL = "file:" + $seedDatabase.Replace('\', '/')
-    Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments @(
-        "node_modules/prisma/build/index.js",
-        "migrate",
-        "deploy",
-        "--schema",
-        "prisma/schema.sqlite.prisma"
-    )
-} finally {
-    if ($null -eq $priorDatabaseUrl) {
-        Remove-Item Env:DATABASE_URL -ErrorAction SilentlyContinue
-    } else {
-        $env:DATABASE_URL = $priorDatabaseUrl
-    }
-}
+# Initialize-ForeverRuntime has already created a task-owned seed and proved
+# generation, migration, and seeding against the candidate source. The caller
+# baseline is an immutable identity/invariance witness only: copying an older
+# non-empty baseline into the seed would erase its migration provenance and
+# make Prisma correctly reject the resulting clone with P3005. Preserve that
+# boundary and clone only the migrated task-owned seed below.
 
 function Invoke-ValidationStep {
     param([Parameter(Mandatory)][string]$Name, [Parameter(Mandatory)][string[]]$Arguments)

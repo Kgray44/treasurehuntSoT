@@ -8,6 +8,17 @@ last_reviewed: 2026-08-12
 
 # Current status
 
+**Branch-complete and ready for owner walkthrough:** Project Wakebook Phase 1,
+Open the Wake, replaces the skeletal Passport history presentation on
+the named Project Wakebook branch with a complete owner-private
+Living Journey Archive. The branch provides chronological visual shelves,
+accurate year summaries, bounded search/filter/sort/pagination, exact played
+edition identity, truthful timing quality, historical crew and chapter context,
+separate invitation history, artifact-provenance boundaries, and a polished
+Voyage Detail with existing Reflection, Memory, Keepsake, Cabinet, and review
+handoffs. It is not on main, deployed, or owner accepted. Automated readiness
+does not replace the separate owner walkthrough.
+
 **Available on main:** Project Homeport Phases 1-7 and Correction Round 3 Patch
 A, Phase 3-4 convergence, Wayfarer Phases 3 and 4,
 Sealed Hold Phases 3 and 4, Harborlight Phase 3, True North, Ledgerlight, the

@@ -101,6 +101,9 @@
         "unit.admiralty",
         "component.admiralty",
         "browser.admiralty",
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook",
         "service.admiralty",
         "unit.bridgewatch"
       ],
@@ -150,7 +153,11 @@
         "browser.cross-project",
         "unit.admiralty",
         "component.admiralty",
-        "browser.admiralty"
+        "browser.admiralty",
+        "unit.bridgewatch",
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook"
       ]
     },
     {
@@ -282,6 +289,10 @@
       ],
       "conditionalSuites": ["migration.mysql"]
     },
-    { "id": "external-provider", "requiredSuites": ["migration.mysql"], "conditionalSuites": [] }
+    {
+      "id": "external-provider",
+      "requiredSuites": ["migration.mysql"],
+      "conditionalSuites": []
+    }
   ]
 }

@@ -12,6 +12,9 @@ const ignored = new Set(["node_modules", ".git", ".next", "coverage", "artifacts
 const homeportContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
   .contracts.map((contract) => contract.id)
   .filter((contractId) => contractId.startsWith("homeport."));
+const wakebookContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
+  .contracts.map((contract) => contract.id)
+  .filter((contractId) => contractId.startsWith("wakebook."));
 const helmContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
   .contracts.map((contract) => contract.id)
   .filter((contractId) => contractId.startsWith("helm."));
@@ -77,6 +80,7 @@ function isBridgewatchFile(file) {
 
 function ownerFor(file) {
   if (isBridgewatchFile(file)) return "bridgewatch";
+  if (file.includes("wakebook") || file.includes("api/passport/voyages")) return "project-wakebook";
   if (isHelmFile(file)) return "project-helm";
   if (file.includes("drydock")) return "drydock";
   if (file.includes("admiralty")) return "project-admiralty";
@@ -94,6 +98,7 @@ function ownerFor(file) {
 
 function unitFamily(file) {
   if (isBridgewatchFile(file)) return "unit.bridgewatch";
+  if (file.startsWith("src/wakebook/") || file.includes("api/passport/voyages")) return "unit.wakebook";
   if (isHelmFile(file)) return "unit.helm";
   if (file.startsWith("src/drydock/") || file.startsWith("scripts/drydock/")) return "unit.drydock";
   if (file === "src/admiralty/read-models.test.ts") return "service.admiralty";
@@ -119,6 +124,7 @@ function unitFamily(file) {
 }
 
 function componentFamily(file) {
+  if (file.includes("components/wakebook")) return "component.wakebook";
   if (isHelmFile(file)) return "component.helm";
   if (file.includes("admiralty") || file === "src/app/admin/page.test.tsx") return "component.admiralty";
   if (file.includes("components/homeport")) return "component.homeport";
@@ -146,6 +152,7 @@ function browserFamily(project, file, title) {
   // inherit a fixture-free ownership contract they do not satisfy.
   if (file.endsWith("access-gates.spec.ts") && project === "sounding-line-access-sentinel")
     return "browser.access-sentinel";
+  if (value.includes("wakebook")) return "browser.wakebook";
   if (value.includes("homeport") || project.includes("homeport")) return "browser.homeport";
   if (file.endsWith("chronicle-platform.spec.ts") || file.endsWith("acceptance.spec.ts"))
     return "browser.player-library";
@@ -172,6 +179,7 @@ function browserFamily(project, file, title) {
 
 function contractFor(file, family) {
   if (isBridgewatchFile(file) || family === "unit.bridgewatch") return ["bridgewatch.mission-control"];
+  if (file.includes("wakebook") || family.includes("wakebook")) return wakebookContracts;
   if (isHelmFile(file) || family === "unit.helm" || family === "component.helm" || family === "browser.helm")
     return isHelmPresenceFile(file) ? helmPresenceContracts : helmBaseContracts;
   if (file.includes("drydock") || family === "unit.drydock") return drydockContracts;
@@ -216,7 +224,9 @@ function tideglassContractsFor(file) {
 
 function metadata(file, family, browser = null) {
   const privateOrCommunity =
-    /admiralty|drydock|deepwater|homeport|private-content|community|wayfarer|passport|invitation|session/u.test(file);
+    /admiralty|drydock|deepwater|wakebook|homeport|private-content|community|wayfarer|passport|invitation|session/u.test(
+      file,
+    );
   const high = privateOrCommunity || Boolean(browser);
   const ui = Boolean(browser) || file.endsWith(".tsx");
   return {

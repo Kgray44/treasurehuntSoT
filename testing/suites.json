@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "status": "phase-5-homeport-route-reachability-owned-families",
+  "status": "integrated-tideglass-phase-3-wakebook-phase-1-control-plane",
   "suites": [
     {
       "id": "browser.access-sentinel",
@@ -2561,6 +2561,91 @@
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-2-branch-complete",
       "adapter": "vitest-family"
+    },
+    {
+      "id": "unit.wakebook",
+      "name": "Wakebook archive read-model and API contracts",
+      "tier": 1,
+      "owner": "project-wakebook",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 60000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.wayfarer"],
+      "contracts": [
+        "wakebook.history.version-pinning",
+        "wakebook.history.owner-privacy",
+        "wakebook.history.historical-stability",
+        "wakebook.timing.quality",
+        "wakebook.artifact-context",
+        "wakebook.archive.pagination",
+        "wakebook.archive.year-grouping",
+        "wakebook.archive.filters",
+        "wakebook.archive.invitation-separation",
+        "wakebook.archive.partial-history",
+        "wakebook.archive.summary-redaction"
+      ],
+      "affectedPaths": ["src/wakebook/**", "src/app/api/passport/voyages/**"],
+      "releaseGates": ["local-change", "subsystem", "cross-project", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-family",
+      "adapter": "vitest-family"
+    },
+    {
+      "id": "component.wakebook",
+      "name": "Wakebook archive and Voyage Detail components",
+      "tier": 2,
+      "owner": "project-wakebook",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 60000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.wakebook"],
+      "contracts": [
+        "wakebook.timing.quality",
+        "wakebook.artifact-context",
+        "wakebook.archive.invitation-separation",
+        "wakebook.archive.partial-history",
+        "wakebook.archive.summary-redaction"
+      ],
+      "affectedPaths": ["src/components/wakebook/**"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-component-family",
+      "adapter": "vitest-family"
+    },
+    {
+      "id": "browser.wakebook",
+      "name": "Wakebook private archive browser journeys",
+      "tier": 4,
+      "owner": "project-wakebook",
+      "command": "registry-selected Playwright cases",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 240000,
+      "hardBudgetMs": 600000,
+      "parallelSafe": false,
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+      "dependencies": ["unit.wakebook", "component.wakebook"],
+      "contracts": [
+        "wakebook.history.version-pinning",
+        "wakebook.history.owner-privacy",
+        "wakebook.history.historical-stability",
+        "wakebook.timing.quality",
+        "wakebook.artifact-context",
+        "wakebook.navigation.reachability",
+        "wakebook.archive.pagination",
+        "wakebook.archive.year-grouping",
+        "wakebook.archive.filters",
+        "wakebook.archive.invitation-separation",
+        "wakebook.archive.partial-history",
+        "wakebook.archive.summary-redaction"
+      ],
+      "affectedPaths": ["tests/e2e/wakebook-phase1.spec.ts"],
+      "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-browser-family",
+      "adapter": "playwright-family"
     }
   ]
 }
