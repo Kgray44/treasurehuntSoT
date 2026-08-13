@@ -10,7 +10,7 @@ last_reviewed: 2026-08-12
 
 ## What this packet can establish
 
-The packet prepares a source-bound walkthrough of `51ab80bde478de95194d882eba8b1e7fce5fedac` using synthetic task-owned fixtures and natural visible entry controls. It can demonstrate local readiness; it cannot self-record owner acceptance, product acceptance, live-provider behavior, deployment, or a release decision.
+The packet prepares a source-bound walkthrough of `054bd19b7da4f57cd8be0b39758a3cc03e43c3aa` using synthetic task-owned fixtures and natural visible entry controls. It can demonstrate local readiness; it cannot self-record owner acceptance, product acceptance, live-provider behavior, deployment, or a release decision.
 
 ## Walkthrough order
 

@@ -40,9 +40,12 @@ Protected Helm Phase 2 closure and accepted record-only infrastructure later
 advanced main to `fb0f13e35fcdd98434d22c357aee02f24d6d9036`, superseding r6.
 Tideglass Phase 3 then protected-merged PR #59 at
 `bb7676a75581d8d415c3ff7712cc38bc8decb031`, superseding r7 without changing
-the Deepwater capability denominator. The rebased Phase 4 qualification source
-is `51ab80bde478de95194d882eba8b1e7fce5fedac`; r8 is frozen from this source
-and may seek authority only after it acquires serialized acceptance ownership.
+the Deepwater capability denominator. Wakebook Phase 1 then protected-merged
+PR #41 at `cbf634d4d5db9cf47edebb89e005e8cc910068bd`, superseding r8 with
+accepted Chronicle history consumers and Sounding Line registry updates, again
+without changing that denominator. The rebased Phase 4 qualification source is
+`054bd19b7da4f57cd8be0b39758a3cc03e43c3aa`; r9 is frozen from this source and
+may seek authority only after it acquires serialized acceptance ownership.
 
 That requalification is now locally proven: the direct Player, Captain, and
 stream suite passes 26/26; isolated execute-only `browser.helm` passes 3/3

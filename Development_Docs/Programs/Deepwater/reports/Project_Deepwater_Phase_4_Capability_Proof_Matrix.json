@@ -335,7 +335,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -425,7 +425,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -482,7 +482,7 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
@@ -534,7 +534,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -598,7 +598,7 @@
             "sha256": "8486f223cf313f9bcc43feab6786dc28559afe38a574761dfd0f6bc202c1ae03"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
@@ -646,7 +646,7 @@
             "sha256": "8486f223cf313f9bcc43feab6786dc28559afe38a574761dfd0f6bc202c1ae03"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "bridgewatch/test/*.test.ts#Phase 2 private observer, governed signal projection, telemetry, and restricted API contracts",
@@ -691,7 +691,7 @@
             "sha256": "7e09ca347fb1a1830a82a9fd3aa051c3d822bb1afd24098a1caa808263d9b62f"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority, membership heartbeat, and responsive participation journeys",
@@ -750,7 +750,7 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
@@ -893,7 +893,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -977,7 +977,7 @@
             "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#DW-CAP-COMMUNITY-EXCHANGE",
@@ -1084,7 +1084,7 @@
             "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#DW-CAP-COMMUNITY-EXCHANGE",
@@ -1206,7 +1206,7 @@
             "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#platform-administration-and-provider-health",
@@ -1518,7 +1518,7 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
@@ -1625,7 +1625,7 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
@@ -1677,7 +1677,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -2064,7 +2064,7 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
@@ -2236,7 +2236,7 @@
             "sha256": "7e09ca347fb1a1830a82a9fd3aa051c3d822bb1afd24098a1caa808263d9b62f"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority, membership heartbeat, and responsive participation journeys",
@@ -2502,7 +2502,7 @@
             "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#platform-administration-and-provider-health",
@@ -2559,7 +2559,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -2618,7 +2618,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -2767,7 +2767,7 @@
             "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#platform-administration-and-provider-health",
@@ -2820,7 +2820,7 @@
             "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#platform-administration-and-provider-health",
@@ -2884,7 +2884,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -3334,7 +3334,7 @@
             "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#platform-administration-and-provider-health",
@@ -3384,7 +3384,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -3441,7 +3441,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -3498,7 +3498,7 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
@@ -3575,7 +3575,7 @@
             "sha256": "d9d20fede6a4028305646d35d197ce20357462df3e5e22ccc04a5529e234ffa1"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "ERROR", "UNAUTHORIZED", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json#platform-administration-and-provider-health",
@@ -3991,7 +3991,7 @@
             "sha256": "00cedb20578c481c463b71275e5fee9afd158f5252c3e4cc03cfe7bbaa5360e2"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "tests/e2e/project-helm-phase1.spec.ts#Captain authority and ordinary Player membership remain independent through the visible product journey",
@@ -4048,7 +4048,7 @@
             "sha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8"
           }
         ],
-        "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+        "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
         "states": ["READY", "EMPTY", "LOADING", "ERROR", "RECOVERY"],
         "testReferences": [
           "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md#Observed successful flow",
@@ -4082,6 +4082,6 @@
   "project": "Project Deepwater",
   "runtimeEvidenceStatus": "LOCAL_SYNTHETIC_PROVEN",
   "schemaVersion": "1.0.0",
-  "sourceSha": "51ab80bde478de95194d882eba8b1e7fce5fedac",
+  "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
   "truthBoundary": "Source-bound local synthetic evidence is distinct from live-provider proof, deployment, protected-main acceptance, owner acceptance, and product acceptance."
 }

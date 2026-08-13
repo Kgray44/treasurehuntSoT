@@ -38,16 +38,19 @@ Protected Helm Phase 2 closure and accepted record-only infrastructure then
 advanced current main to `fb0f13e35fcdd98434d22c357aee02f24d6d9036`. The r6
 local qualification is historical rather than candidate proof. Tideglass Phase
 3 then protected-merged PR #59 at `bb7676a75581d8d415c3ff7712cc38bc8decb031`,
-superseding r7 without changing the Deepwater capability denominator. Rebased
-source `51ab80bde478de95194d882eba8b1e7fce5fedac` is explicitly `LOCAL_PROVEN`
-after renewed qualification: Player, Captain, governed Helm browser, and
-affected cross-project proof all passed. The final current-main fetch confirmed
-`bb7676a75581d8d415c3ff7712cc38bc8decb031` as the exact merge base; r8 is
+superseding r7 without changing the Deepwater capability denominator. Wakebook
+Phase 1 then protected-merged PR #41 at `cbf634d4d5db9cf47edebb89e005e8cc910068bd`,
+superseding r8 with accepted Chronicle history consumers and Sounding Line
+registry updates, again without changing that denominator. Rebased source
+`054bd19b7da4f57cd8be0b39758a3cc03e43c3aa` is explicitly `LOCAL_PROVEN` after
+renewed qualification: Player, Captain, governed Helm browser, and affected
+cross-project proof all passed. The final current-main fetch confirmed
+`cbf634d4d5db9cf47edebb89e005e8cc910068bd` as the exact merge base; r9 is
 frozen and no authority has been requested for this source.
 
 The focused Player, Captain, and stream suite passes 26/26. The exact isolated
 Helm browser family passes 3/3 in execute-only mode with clean runtime
-conformance at rebased source `51ab80bde478de95194d882eba8b1e7fce5fedac`.
+conformance at rebased source `054bd19b7da4f57cd8be0b39758a3cc03e43c3aa`.
 Drydock current-source qualification passes the owner Sea Trials suite
 196/196; its SQLite migration rehearsal verifies 59 migrations and MySQL
 static parity. Admiralty passes 34 direct capability, read-model, and
@@ -56,7 +59,7 @@ Bridgewatch validates and builds with 24 focused tests. Static candidate
 qualification passes typecheck, policy, documentation, catalog, formatting,
 and diff checks; lint has zero errors and 101 existing warnings. The refreshed
 Deepwater audit and validator pass for 58 capabilities with semantic digest
-`77e07327d8e5db9d055c229199fc6fda3c85c119dcaee8b4be8d90fe4d506add`.
+`58c9f2d5f6d44d8d2627428df79f40d7ec6978ce5c78a987e2fdc5553b55e302`.
 
 The production-build Homeport matrix remains source-bound to
 `b810e2d0c33cbafb8e4d02c19b9af0db94315783`: original journeys A-O,
@@ -72,10 +75,10 @@ on exact main.
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
 | Deepwater proof-model tests    | PASS; 66/66                                                                                                        | Deterministic local control-plane tests                              |
 | Historical hosted decisions    | `EVIDENCE_INVALID`; runs 31605432896 and 31609917108; cleanup CLEAN                                                | Historical only; neither candidate may seek authority                |
-| Helm repair qualification      | PASS; invitation, Player, and stream tests 26/26; `browser.helm` 3/3 at `51ab80bde478de95194d882eba8b1e7fce5fedac` | Isolated execute-only evidence; cannot issue `RELEASE_GO`            |
+| Helm repair qualification      | PASS; invitation, Player, and stream tests 26/26; `browser.helm` 3/3 at `054bd19b7da4f57cd8be0b39758a3cc03e43c3aa` | Isolated execute-only evidence; cannot issue `RELEASE_GO`            |
 | Drydock Creator qualification  | PASS; 33/33, 3/3, 7/7, and 196/196; migration rehearsal PASS                                                       | Private Studio Sea Trials; no owner-state override                   |
 | Admiralty current-source scope | PASS; 34 direct tests, 15-route validator, migrations                                                              | Read-only support and role boundaries; no catalog denominator change |
-| Deepwater audit and validation | PASS; 58 capabilities; digest `77e07327d8e5db9d055c229199fc6fda3c85c119dcaee8b4be8d90fe4d506add`                   | Current rebased source only; no acceptance claim                     |
+| Deepwater audit and validation | PASS; 58 capabilities; digest `58c9f2d5f6d44d8d2627428df79f40d7ec6978ce5c78a987e2fdc5553b55e302`                   | Current rebased source only; no acceptance claim                     |
 | Bridgewatch qualification      | PASS; typecheck, 24 tests, build                                                                                   | Private operator surface; no public-product or release authority     |
 
 ## Runtime proof boundary
@@ -91,7 +94,7 @@ protected-main acceptance.
 ## Remaining serialized gates
 
 1. Acquire serialized acceptance ownership, then dispatch exactly one hosted
-   **Sounding Line / Mainline Decision** for frozen r8.
+   **Sounding Line / Mainline Decision** for frozen r9.
 2. Only after `RELEASE_GO`, complete protected merge, exact-main proof, and a
    separately source-bound closure record.
 
