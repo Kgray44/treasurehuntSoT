@@ -1,0 +1,7 @@
+{
+  "schemaVersion": "1.0.0",
+  "phase": "3",
+  "settings": [],
+  "disposition": "BLOCKED_BY_MISSING_OWNER_CONTRACT",
+  "reason": "The accepted source has deployment-managed and secret-backed environment configuration but no typed runtime-editable owner setting contract."
+}

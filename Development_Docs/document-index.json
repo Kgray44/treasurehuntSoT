@@ -3471,6 +3471,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_3_Configuration_Mutation_Registry.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_3_Deepwater_Disposition_Register.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -3483,7 +3489,25 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_3_Job_Operations_Architecture.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_3_Mainline_Safety_Contract.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_3_Mutation_Risk_Matrix.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_3_Privacy_and_Redaction_Matrix.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
