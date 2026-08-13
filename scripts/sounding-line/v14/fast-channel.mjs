@@ -401,7 +401,43 @@ export function selectV14Mainline({
             .map((debt) => ({ id: debt.contractId, owner: debt.owner }))
         : [],
     }));
+  const suiteById = new Map(suites.map((suite) => [suite.id, suite]));
+  const visiting = new Set();
+  const includeDependencies = (suiteId) => {
+    if (visiting.has(suiteId)) throw new Error(`V14_SUITE_DEPENDENCY_CYCLE:${suiteId}`);
+    const suite = suiteById.get(suiteId);
+    if (!suite) throw new Error(`V14_UNKNOWN_SUITE:${suiteId}`);
+    visiting.add(suiteId);
+    for (const dependency of suite.dependencies ?? []) {
+      candidates.add(dependency);
+      includeDependencies(dependency);
+    }
+    visiting.delete(suiteId);
+  };
+  for (const suiteId of [...candidates]) includeDependencies(suiteId);
   const selectedSuiteIds = sorted([...candidates]);
+  const nodes = suites
+    .filter((suite) => candidates.has(suite.id))
+    .map((suite) => ({
+      id: suite.id,
+      dependencies: (suite.dependencies ?? []).filter((dependency) => candidates.has(dependency)),
+      adapter: suite.adapter ?? null,
+      resources: suite.resources ?? [],
+      preparedLayers: suite.preparedLayers ?? [],
+      execution: { mode: "parallel", wave: 0 },
+    }));
+  const nodesById = new Map(nodes.map((node) => [node.id, node]));
+  const waveFor = (node, chain = new Set()) => {
+    if (node.execution.wave) return node.execution.wave;
+    if (chain.has(node.id)) throw new Error(`V14_SUITE_DEPENDENCY_CYCLE:${node.id}`);
+    chain.add(node.id);
+    node.execution.wave = node.dependencies.length
+      ? Math.max(...node.dependencies.map((dependency) => waveFor(nodesById.get(dependency), chain))) + 1
+      : 0;
+    chain.delete(node.id);
+    return node.execution.wave;
+  };
+  for (const node of nodes) waveFor(node);
   return sealedRecord("plan", {
     authorityBoundary: V14_AUTHORITY_BOUNDARY,
     authorityVersion: V14_EVIDENCE_FINGERPRINT_VERSION,
@@ -415,14 +451,7 @@ export function selectV14Mainline({
       riskRegistryDigest: digest(V14_RISK_FLOORS),
     },
     selectedSuiteIds,
-    nodes: suites
-      .filter((suite) => candidates.has(suite.id))
-      .map((suite) => ({
-        id: suite.id,
-        adapter: suite.adapter ?? null,
-        resources: suite.resources ?? [],
-        preparedLayers: suite.preparedLayers ?? [],
-      })),
+    nodes,
     ledger,
     fallback: unknown
       ? { disposition: "CONSERVATIVE_FALLBACK", failure: mappingDebt.length ? "MAPPING_DEBT" : "UNKNOWN_IMPACT" }

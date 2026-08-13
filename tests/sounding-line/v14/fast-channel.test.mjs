@@ -78,7 +78,7 @@ test("risk floors and unknown mapping produce sealed, explained plans without si
   const suites = [
     { id: "static.core", domains: ["security"] },
     { id: "unit.auth", domains: ["security"] },
-    { id: "browser.navigation", domains: ["navigation"] },
+    { id: "browser.navigation", domains: ["navigation"], dependencies: ["unit.auth"] },
     { id: "unit.unrelated", domains: ["feature"] },
   ];
   const known = selectV14Mainline({
@@ -89,6 +89,8 @@ test("risk floors and unknown mapping produce sealed, explained plans without si
   });
   assert.equal(verifySealedRecord(known, "plan").valid, true);
   assert.equal(known.ledger.find((entry) => entry.suiteId === "browser.navigation").selected, true);
+  assert.ok(known.selectedSuiteIds.includes("unit.auth"));
+  assert.equal(known.nodes.find((entry) => entry.id === "browser.navigation").execution.wave, 1);
   assert.equal(
     known.ledger.find((entry) => entry.suiteId === "unit.unrelated").selectionReason,
     "SEMANTICALLY_UNCHANGED",
