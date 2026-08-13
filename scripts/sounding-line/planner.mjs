@@ -59,7 +59,10 @@ export async function buildV14HostedPlan({
     semanticPlanDigest: semanticPlan.digest,
     runtimeConformanceRequired: authorityIndex.runtimeConformance?.required === true,
     runtimeConformanceSuiteId: authorityIndex.runtimeConformance?.suiteId ?? null,
-    nodes: semanticPlan.nodes,
+    nodes: semanticPlan.nodes.map((node) => ({
+      ...node,
+      testIds: registry.cases.filter((entry) => entry.suiteId === node.id).map((entry) => entry.id),
+    })),
   };
   return { ...plan, planDigest: digest(plan) };
 }

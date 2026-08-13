@@ -291,10 +291,19 @@ test("v1.3 worker preparation is unchanged and v1.4 preparation is explicitly ve
   const plan = {
     authorityVersion: "1.4",
     authorityBoundary: "SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE",
-    nodes: [{ id: "unit.example", preparedLayers: [] }],
+    nodes: [{ id: "unit.example", adapter: "static", resources: [], preparedLayers: [] }],
   };
   const preparation = deriveV14WorkerPreparation({ plan, node: plan.nodes[0], runId: "run-1" });
   assert.equal(preparation.authorityBoundary, "SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE");
+  assert.equal(preparation.runtimeConformance.result, "PASSED");
+  assert.equal(
+    deriveV14WorkerPreparation({
+      plan: { ...plan, authorityBoundary: "CURRENT_AUTHORITATIVE_V14" },
+      node: plan.nodes[0],
+      runId: "run-1",
+    }).runtimeConformance.result,
+    "PASSED",
+  );
 });
 
 test("future self-hosted consumers fail closed without approved identity, attestation, run ownership, and scrub proof", () => {

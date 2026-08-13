@@ -110,16 +110,25 @@ export function deriveWorkerPreparation(node) {
  * synchronous function above; a v1.4 plan cannot be silently consumed there.
  */
 export function deriveV14WorkerPreparation({ plan, node, restoreResults = [], runId, mutableResources = [] }) {
-  if (plan?.authorityVersion !== "1.4" || plan?.authorityBoundary !== "SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE")
+  if (
+    plan?.authorityVersion !== "1.4" ||
+    !["SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE", "CURRENT_AUTHORITATIVE_V14"].includes(plan?.authorityBoundary)
+  )
     throw new Error("V14_WORKER_AUTHORITY_BOUNDARY_REQUIRED");
   if (!plan?.nodes?.some((entry) => entry.id === node?.id)) throw new Error("V14_WORKER_PLAN_NODE_INVALID");
-  return prepareV14Worker({
+  const resourceConformance = deriveWorkerPreparation(node);
+  const prepared = prepareV14Worker({
     planNode: node,
     layers: node.preparedLayers ?? [],
     restoreResults,
     runId,
     mutableResources,
   });
+  return {
+    ...prepared,
+    actions: resourceConformance.actions,
+    runtimeConformance: resourceConformance.runtimeConformance,
+  };
 }
 
 async function main() {
@@ -135,7 +144,10 @@ async function main() {
   const plan = JSON.parse(await readFile(path.resolve(planPath), "utf8"));
   const matches = plan.nodes.filter((node) => node.id === suiteId);
   if (matches.length !== 1) throw new Error("WORKER_PREPARATION_PLAN_NODE_INVALID");
-  const preparation = deriveWorkerPreparation(matches[0]);
+  const preparation =
+    plan.authorityVersion === "1.4"
+      ? deriveV14WorkerPreparation({ plan, node: matches[0], runId: process.env.GITHUB_RUN_ID ?? "local" })
+      : deriveWorkerPreparation(matches[0]);
   if (preparation.runtimeConformance.result !== "PASSED") {
     const codes = preparation.runtimeConformance.violations.map((entry) => entry.code).join(",");
     throw new Error(`RUNTIME_CONFORMANCE_FAILED:${codes}`);
