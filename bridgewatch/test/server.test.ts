@@ -143,6 +143,9 @@ describe("Bridgewatch read-only API", () => {
         workers: [],
         soundingLine: null,
       };
+      const baselineProject = before.projects.find((entry) => entry.id === "bridgewatch")!;
+      baselineProject.state = "ACTIVE";
+      baselineProject.phases[2]!.state = "ACTIVE";
       const after = structuredClone(before);
       const project = after.projects.find((entry) => entry.id === "bridgewatch")!;
       project.state = "COMPLETE";

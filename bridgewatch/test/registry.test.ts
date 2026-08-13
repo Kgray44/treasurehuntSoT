@@ -20,4 +20,22 @@ describe("source-indexed Project Registry", () => {
       for (const source of project.sourcePaths)
         expect(existsSync(resolve(process.cwd(), "..", source)), `${project.id}: ${source}`).toBe(true);
   });
+
+  it("retains the accepted three-phase Bridgewatch completion record", () => {
+    const project = projectRegistry.find((entry) => entry.id === "bridgewatch");
+    const phase = project?.phases.find((entry) => entry.ordinal === 3);
+
+    expect(project?.state).toBe("COMPLETE");
+    expect(project?.completionReceipt).toBe("Development_Docs/Project_Bridgewatch_Completion_Receipt.md");
+    expect(project?.finalMainSha).toBe("dead22dc26aeec2b722625aa9a68dc5688111fca");
+    expect(phase).toMatchObject({
+      name: "Keep the Watch",
+      state: "COMPLETE",
+      branch: "codex/project-bridgewatch-phase3-keep-the-watch-6",
+      pullRequest: 83,
+      acceptedHeadSha: "5bae2e4d2d0aee6993f8e619cc8c79ef99235ff6",
+      integratedMainSha: "dead22dc26aeec2b722625aa9a68dc5688111fca",
+      finalDecision: "RELEASE_GO",
+    });
+  });
 });
