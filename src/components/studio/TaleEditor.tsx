@@ -204,6 +204,10 @@ export function TaleEditor({
   const [reusableItems, setReusableItems] = useState<ReusableLibraryItem[]>([]);
   const [reusableLoading, setReusableLoading] = useState(false);
   const [reusableError, setReusableError] = useState("");
+  const [reusableSearch, setReusableSearch] = useState("");
+  const [reusableKindFilter, setReusableKindFilter] = useState<"ALL" | "PRESET" | "FRAGMENT" | "CHAPTER_TEMPLATE">(
+    "ALL",
+  );
   const [blockSearch, setBlockSearch] = useState("");
   const [collapsedChapters, setCollapsedChapters] = useState<string[]>([]);
   const [previewBlock, setPreviewBlock] = useState(false);
@@ -659,6 +663,25 @@ export function TaleEditor({
     [draft, selectedId],
   );
   const selectedDefinition = data?.registry.find((item) => item.type === selected?.block.blockType);
+  const rankedReusableItems = useMemo(() => {
+    const search = reusableSearch.trim().toLocaleLowerCase();
+    const score = (item: ReusableLibraryItem) => {
+      if (item.kind === "PRESET") return selected ? 3 : 0;
+      if (item.kind === "FRAGMENT") return selected ? 2 : 0;
+      return 1;
+    };
+    return reusableItems
+      .filter((item) => reusableKindFilter === "ALL" || item.kind === reusableKindFilter)
+      .filter(
+        (item) =>
+          !search ||
+          `${item.name} ${item.description} ${item.tags.join(" ")} ${item.kind}`.toLocaleLowerCase().includes(search),
+      )
+      .sort(
+        (left, right) =>
+          score(right) - score(left) || left.name.localeCompare(right.name) || left.id.localeCompare(right.id),
+      );
+  }, [reusableItems, reusableKindFilter, reusableSearch, selected]);
   const studioCommands = useMemo<StudioCommand[]>(
     () => [
       {
@@ -2134,18 +2157,52 @@ export function TaleEditor({
                         Save selected Chapter as template
                       </button>
                     )}
+                    <div className="reusable-library-controls">
+                      <input
+                        type="search"
+                        value={reusableSearch}
+                        onChange={(event) => setReusableSearch(event.target.value)}
+                        placeholder="Search reusable content"
+                        aria-label="Search reusable content"
+                      />
+                      <select
+                        value={reusableKindFilter}
+                        onChange={(event) =>
+                          setReusableKindFilter(
+                            event.target.value as "ALL" | "PRESET" | "FRAGMENT" | "CHAPTER_TEMPLATE",
+                          )
+                        }
+                        aria-label="Filter reusable content"
+                      >
+                        <option value="ALL">All reusable content</option>
+                        <option value="PRESET">Presets</option>
+                        <option value="FRAGMENT">Fragments</option>
+                        <option value="CHAPTER_TEMPLATE">Chapter templates</option>
+                      </select>
+                    </div>
                     {reusableError && <p role="alert">{reusableError}</p>}
-                    {!reusableLoading && !reusableError && !reusableItems.length && (
+                    {!reusableLoading && !reusableError && !rankedReusableItems.length && (
                       <p>No reusable content yet. Save a governed Passage, selection, or Chapter to reuse it safely.</p>
                     )}
                     <ul className="reusable-library-list">
-                      {reusableItems.map((item) => (
+                      {rankedReusableItems.map((item) => (
                         <li key={item.id}>
                           <p className="eyebrow">
                             {item.kind.replaceAll("_", " ")} · Version {item.currentVersionNumber}
                           </p>
                           <strong>{item.name}</strong>
                           <p>{item.description || "No description provided."}</p>
+                          <small>
+                            {item.kind === "PRESET"
+                              ? selected
+                                ? "Available when its canonical Passage type matches the selected Passage."
+                                : "Select a compatible Passage to apply this preset."
+                              : item.kind === "FRAGMENT"
+                                ? selected
+                                  ? "Will copy internal connections into the selected Chapter; reconnect exposed ports explicitly."
+                                  : "Select a destination Passage to choose a Chapter for this fragment."
+                                : "Will create a new Chapter and preserve only its internal connections."}
+                          </small>
                           {item.tags.length > 0 && <small>{item.tags.join(" · ")}</small>}
                           <p>
                             <small>
