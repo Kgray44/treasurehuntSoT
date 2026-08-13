@@ -18,7 +18,8 @@ export function resolvePlanAuthority({ authorityIndex, gateId, authorityMode, gi
     if (authorityIndex.currentAuthorityVersion === "1.4") throw new Error("V13_CUTOVER_FORBIDDEN_AFTER_V14_ACTIVATION");
     return "V13_CUTOVER";
   }
-  if (authorityIndex.currentAuthorityVersion === "1.4" && gateId === "mainline") {
+  if (authorityIndex.currentAuthorityVersion === "1.4") {
+    if (gateId !== "mainline") throw new Error("V14_AUTHORITY_MAINLINE_ONLY");
     // A candidate can contain the future authority index while it is still
     // subject to v1.3 acceptance. Only the protected-main ref may exercise it.
     if (githubRef !== "refs/heads/main") throw new Error("V14_CURRENT_AUTHORITY_REQUIRES_PROTECTED_MAIN");

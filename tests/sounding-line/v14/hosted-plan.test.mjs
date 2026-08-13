@@ -68,4 +68,14 @@ test("v1.4 current authority is restricted to protected main while v1.3 cutover 
       }),
     /V13_CUTOVER_FORBIDDEN_AFTER_V14_ACTIVATION/u,
   );
+  assert.throws(
+    () =>
+      resolvePlanAuthority({
+        authorityIndex: v14Authority,
+        gateId: "release-candidate",
+        authorityMode: "CURRENT",
+        githubRef: "refs/heads/main",
+      }),
+    /V14_AUTHORITY_MAINLINE_ONLY/u,
+  );
 });
