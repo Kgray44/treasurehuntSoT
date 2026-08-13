@@ -198,7 +198,7 @@
     "limitations": [
       "Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.",
       "Final Harborlight update integration and any accepted Captain/Helm visual comparison consumer remain deferred to later work.",
-      "The current accepted Wakebook Journey Detail reconciliation is pending its own targeted owner review and is not represented here as accepted capability."
+      "The Wakebook Journey Detail handoff is owner-accepted in the current reconciliation candidate; it is not represented as accepted-main capability until protected integration completes."
     ],
     "catalogVersion": 1
   }

@@ -2,10 +2,11 @@
   "schemaVersion": "1.0.0",
   "project": "Project Tideglass",
   "phase": "3",
-  "status": "AUTOMATED_BROWSER_PROOF_COMPLETE_TARGETED_WAKEBOOK_OWNER_REVIEW_PENDING",
+  "status": "AUTOMATED_BROWSER_PROOF_COMPLETE_WAKEBOOK_ADDENDUM_OWNER_ACCEPTED",
   "sourceSha": "c298d5c0db5c0cd015323fd7f7ad073b3e64e82a",
   "fixtureVersion": "tideglass-phase3-v2",
   "fixtureChecksum": "7798f816bedd71867d096d0543ee2135a7722388f262d089b4b078d9a50b2002",
+  "ownerDecision": "Wakebook Journey Detail addendum explicitly accepted by the owner on 2026-08-12; this evidence remains source-bound to the recorded SHA.",
   "storage": "LOCALAPPDATA/ProjectTideglass/phase3-wakebook-reconciliation-c298d5c0/browser/evidence; screenshots and credentials are intentionally untracked",
   "records": [
     {

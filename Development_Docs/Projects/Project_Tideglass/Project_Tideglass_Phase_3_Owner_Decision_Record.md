@@ -52,6 +52,28 @@ comparison presentation; and Creator Studio's Tideglass semantic published-versi
 comparison. The walkthrough used only the task-owned synthetic runtime, accounts,
 Chronicle, and evidence fixture described in the product walkthrough package.
 
+## Wakebook Journey Detail addendum
+
+Owner decision: `ACCEPTED`.
+
+Decision date: `2026-08-12`.
+
+The owner explicitly accepted the Wakebook Journey Detail addendum after it
+preserved **See what's changed** on the accepted past-Voyage surface. The
+addendum is evidenced by source
+`c298d5c0db5c0cd015323fd7f7ad073b3e64e82a`, its A--K task-owned browser
+journey, and visual record `TG3-EV-K-WAKEBOOK-JOURNEY-ENTRY`. It resolves a
+same-origin comparison link only from the signed-in owner's exact retained
+history record and Publishing-owned target, returns to that same Journey Detail,
+and renders no control for foreign or unavailable records.
+
+The approved addendum was then rebased without conflict to current accepted
+main `770404dd11cdfc1b86658a488979c43c22ed1711`. The intervening Helm changes
+are limited to `PlayerVoyageRoom` behavior and tests; they do not alter the
+reviewed Tideglass or Wakebook Journey Detail product path. This approval does
+not itself create a protected candidate, Mainline Decision, merge, or
+`ACCEPTED_MAINLINE` receipt.
+
 ## Preserved boundaries
 
 This decision accepts the human-facing Phase 3 product. It does not establish

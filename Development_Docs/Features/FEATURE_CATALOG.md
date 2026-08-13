@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `9e9d629085cb1551b1a3959c31b0b460c37724a9`
+Audited source commit: `770404dd11cdfc1b86658a488979c43c22ed1711`
 
 ## Status vocabulary
 
@@ -1384,7 +1384,7 @@ Tideglass compares exact immutable Chronicle editions, explains semantic change 
 
 - Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.
 - Final Harborlight update integration and any accepted Captain/Helm visual comparison consumer remain deferred to later work.
-- The current accepted Wakebook Journey Detail reconciliation is pending its own targeted owner review and is not represented here as accepted capability.
+- The Wakebook Journey Detail handoff is owner-accepted in the current reconciliation candidate; it is not represented as accepted-main capability until protected integration completes.
 
 ### Evidence
 
@@ -1547,4 +1547,4 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `9e9d629085cb1551b1a3959c31b0b460c37724a9`
+Generation source commit: `770404dd11cdfc1b86658a488979c43c22ed1711`

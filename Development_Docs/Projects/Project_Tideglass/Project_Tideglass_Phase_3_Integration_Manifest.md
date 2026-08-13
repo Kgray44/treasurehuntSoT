@@ -1,17 +1,18 @@
 ---
 title: Project Tideglass Phase 3 Integration Manifest
 audience: product-engineering
-status: current-main-wakebook-reconciliation
+status: wakebook-addendum-owner-accepted-current-main-qualification-pending
 canonical_for: project-tideglass-phase-3-integration
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 integration manifest
 
-Status: `CURRENT_MAIN_WAKEBOOK_RECONCILIATION`. This is a source integration
-inventory, not an accepted-mainline or protected-mainline receipt. The original
-owner decision remains evidence for the reviewed product; the accepted Wakebook
-Journey Detail handoff requires a targeted addendum review.
+Status: `WAKEBOOK_ADDENDUM_OWNER_ACCEPTED_CURRENT_MAIN_QUALIFICATION_PENDING`.
+This is a source integration inventory, not an accepted-mainline or
+protected-mainline receipt. The original owner decision and the explicit
+Wakebook Journey Detail addendum acceptance are recorded; current-main
+qualification and protected integration remain required.
 
 ## Canonical consumer path
 
@@ -70,7 +71,7 @@ Wakebook, Helm, Shipwright, or Deepwater Phase 4 dependency.
 ## Accepted Wakebook reconciliation
 
 Wakebook Phase 1 was accepted at `cbf634d4d5db9cf47edebb89e005e8cc910068bd`;
-current `origin/main` is `9e9d629085cb1551b1a3959c31b0b460c37724a9` after
+current `origin/main` is `770404dd11cdfc1b86658a488979c43c22ed1711` after
 accepted Deepwater/Helm/Homeport work with no direct Tideglass or Wakebook
 product-source overlap. Journey Detail is now the ordinary past Voyage surface.
 Tideglass therefore supplies a narrow read-only adapter that
@@ -84,5 +85,5 @@ component, TypeScript, documentation, catalog, and A-K task-owned production
 browser proof are complete for source `c298d5c0db5c0cd015323fd7f7ad073b3e64e82a`.
 The generated visual evidence adds a direct Journey Detail entry frame and
 retains the exact-record return, privacy, Creator, mobile, zoom, reduced-motion,
-and Axe assertions. Targeted owner review is the next gate; this does not
-authorize a protected binding, merge, or a retry of any frozen PR.
+and Axe assertions. The owner explicitly accepted this addendum. That decision
+does not authorize a protected binding, merge, or a retry of either frozen PR.

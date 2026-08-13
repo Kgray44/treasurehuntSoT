@@ -15,9 +15,10 @@ The product source was qualified, owner-accepted, and entered protected main as
 `bb7676a75581d8d415c3ff7712cc38bc8decb031`; its original walkthrough remains
 recorded in `Project_Tideglass_Phase_3_Owner_Decision_Record.md`. The later
 record-only closeout path is not accepted current main. Current accepted
-Wakebook Phase 1 changes the past-Voyage surface, so this isolated reconciliation
-must complete its addendum evidence and targeted owner review before any future
-completion receipt can be issued. Phase 4 has not begun.
+Wakebook Phase 1 changes the past-Voyage surface. Its isolated reconciliation
+now has explicit owner acceptance for the addendum, but it must complete
+current-main qualification and protected integration before any future completion
+receipt can be issued. Phase 4 has not begun.
 
 The first local Mainline Decision invocation for documentation candidate
 `897e7619` failed before it could create any suite receipt or finalizer decision

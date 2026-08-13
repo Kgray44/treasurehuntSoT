@@ -1,7 +1,7 @@
 ---
 title: Project Tideglass Phase 3 Design Record
 audience: product-engineering
-status: current-main-wakebook-reconciliation
+status: wakebook-addendum-owner-accepted-current-main-qualification-pending
 canonical_for: project-tideglass-phase-3-design
 last_reviewed: 2026-08-12
 ---
@@ -15,7 +15,7 @@ Phase 3 creates the ordinary, discoverable **What Changed?** experience over the
 | Item                                        | Frozen value                                                                                                                                              |
 | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Initial implementation `origin/main` base   | `54e3d818d49d45282a9c419d562d4b5c78911ccd`                                                                                                                |
-| Current reconciliation target `origin/main` | `9e9d629085cb1551b1a3959c31b0b460c37724a9`                                                                                                                |
+| Current reconciliation target `origin/main` | `770404dd11cdfc1b86658a488979c43c22ed1711`                                                                                                                |
 | Dedicated branch                            | `codex/project-tideglass-phase3-choose-the-passage`                                                                                                       |
 | Dedicated worktree                          | `C:\Users\kkids\Documents\treasurehuntSoT-tideglass-phase3-choose-the-passage`                                                                            |
 | Wakebook reconciliation worktree            | `C:\Users\kkids\Documents\treasurehuntSoT-tideglass-phase3-wakebook-reconciliation` on `codex/project-tideglass-phase3-wakebook-reconciliation`           |
@@ -134,4 +134,4 @@ The edition selector DTO is a server-derived list of exact IDs, human labels, pu
 
 ## Candidate and owner gates
 
-Each implementation change follows the mandatory focused-test lifecycle. The original owner decision accepted the reviewed Phase 3 product path. Because accepted Wakebook changes the visible personal-history surface, this reconciliation requires targeted owner review after its affected qualification and visual evidence. Only then may a newly frozen candidate later request its single Mainline Decision, and only when the separately governed serial authority queue explicitly grants that position. No frozen PR, protected binding, or shared validation runtime is resumed by this reconciliation.
+Each implementation change follows the mandatory focused-test lifecycle. The original owner decision accepted the reviewed Phase 3 product path, and the owner explicitly accepted the Wakebook Journey Detail addendum after its affected qualification and visual evidence. A newly frozen current-main candidate may request its single Mainline Decision only when the separately governed serial authority queue explicitly grants that position. No frozen PR, protected binding, or shared validation runtime is resumed by this reconciliation.

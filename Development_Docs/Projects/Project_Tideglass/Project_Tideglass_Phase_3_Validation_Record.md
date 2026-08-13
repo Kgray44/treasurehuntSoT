@@ -1,16 +1,16 @@
 ---
 title: Project Tideglass Phase 3 Validation Record
 audience: product-engineering
-status: current-main-wakebook-reconciliation
+status: wakebook-addendum-owner-accepted-current-main-qualification-pending
 canonical_for: project-tideglass-phase-3-validation
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 validation record
 
-Status: `CURRENT_MAIN_WAKEBOOK_RECONCILIATION`. The original product decision
-remains recorded, while the accepted Wakebook Journey Detail handoff is being
-qualified for targeted owner review.
+Status: `WAKEBOOK_ADDENDUM_OWNER_ACCEPTED_CURRENT_MAIN_QUALIFICATION_PENDING`.
+The original product decision and the explicit Wakebook Journey Detail addendum
+acceptance are recorded; current-main qualification remains pending.
 
 The reconciled product source is
 `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`, subsequently reconciled to accepted main
