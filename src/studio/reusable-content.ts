@@ -18,7 +18,17 @@ export type ReusableAttribution = {
 export type ReusableParameter = {
   key: string;
   label: string;
-  type: "TEXT" | "TITLE" | "ASSET" | "ARTIFACT" | "LOCATION" | "VARIABLE" | "DURATION" | "TARGET" | "CHOICE_LABEL" | "VISIBILITY";
+  type:
+    | "TEXT"
+    | "TITLE"
+    | "ASSET"
+    | "ARTIFACT"
+    | "LOCATION"
+    | "VARIABLE"
+    | "DURATION"
+    | "TARGET"
+    | "CHOICE_LABEL"
+    | "VISIBILITY";
   required: boolean;
   defaultValue?: string | number | boolean;
   helpText: string;
@@ -88,24 +98,88 @@ const envelopeSchema: z.ZodType<ReusableContentEnvelope> = z.object({
   tags: z.array(z.string().min(1).max(64)).max(30),
   ownerId: z.string().min(1).max(128),
   blocks: z.array(blockSchema).min(1).max(1000),
-  chapters: z.array(z.object({
-    id: z.string().min(8).max(128), title: z.string().min(1).max(160), subtitle: z.string().max(240).nullable().optional(),
-    description: z.string().max(10000).nullable().optional(), coverAssetId: z.string().max(128).nullable().optional(),
-    estimatedDuration: z.number().int().min(1).max(10000).nullable().optional(), isOptional: z.boolean(), metadata: jsonObjectSchema,
-    blockIds: z.array(z.string().min(8).max(128)).max(1000),
-  })).max(200),
-  entryPorts: z.array(z.object({ key: z.string().min(1).max(80), label: z.string().min(1).max(160), sourceBlockId: z.string().min(8).max(128), connectionType: z.string().min(1).max(80) })).max(100),
-  exitPorts: z.array(z.object({ key: z.string().min(1).max(80), label: z.string().min(1).max(160), sourceBlockId: z.string().min(8).max(128), connectionType: z.string().min(1).max(80) })).max(100),
-  parameters: z.array(z.object({
-    key: z.string().regex(/^[a-z][a-z0-9_]*$/).max(80), label: z.string().min(1).max(160),
-    type: z.enum(["TEXT", "TITLE", "ASSET", "ARTIFACT", "LOCATION", "VARIABLE", "DURATION", "TARGET", "CHOICE_LABEL", "VISIBILITY"]),
-    required: z.boolean(), defaultValue: z.union([z.string().max(10000), z.number().finite(), z.boolean()]).optional(), helpText: z.string().max(1000), destinationPath: z.string().min(1).max(240),
-  })).max(100),
-  dependencies: z.object({ assetIds: z.array(z.string().min(1).max(128)).max(1000), artifactIds: z.array(z.string().min(1).max(128)).max(1000), locationIds: z.array(z.string().min(1).max(128)).max(1000), providerIds: z.array(z.string().min(1).max(128)).max(1000) }),
+  chapters: z
+    .array(
+      z.object({
+        id: z.string().min(8).max(128),
+        title: z.string().min(1).max(160),
+        subtitle: z.string().max(240).nullable().optional(),
+        description: z.string().max(10000).nullable().optional(),
+        coverAssetId: z.string().max(128).nullable().optional(),
+        estimatedDuration: z.number().int().min(1).max(10000).nullable().optional(),
+        isOptional: z.boolean(),
+        metadata: jsonObjectSchema,
+        blockIds: z.array(z.string().min(8).max(128)).max(1000),
+      }),
+    )
+    .max(200),
+  entryPorts: z
+    .array(
+      z.object({
+        key: z.string().min(1).max(80),
+        label: z.string().min(1).max(160),
+        sourceBlockId: z.string().min(8).max(128),
+        connectionType: z.string().min(1).max(80),
+      }),
+    )
+    .max(100),
+  exitPorts: z
+    .array(
+      z.object({
+        key: z.string().min(1).max(80),
+        label: z.string().min(1).max(160),
+        sourceBlockId: z.string().min(8).max(128),
+        connectionType: z.string().min(1).max(80),
+      }),
+    )
+    .max(100),
+  parameters: z
+    .array(
+      z.object({
+        key: z
+          .string()
+          .regex(/^[a-z][a-z0-9_]*$/)
+          .max(80),
+        label: z.string().min(1).max(160),
+        type: z.enum([
+          "TEXT",
+          "TITLE",
+          "ASSET",
+          "ARTIFACT",
+          "LOCATION",
+          "VARIABLE",
+          "DURATION",
+          "TARGET",
+          "CHOICE_LABEL",
+          "VISIBILITY",
+        ]),
+        required: z.boolean(),
+        defaultValue: z.union([z.string().max(10000), z.number().finite(), z.boolean()]).optional(),
+        helpText: z.string().max(1000),
+        destinationPath: z.string().min(1).max(240),
+      }),
+    )
+    .max(100),
+  dependencies: z.object({
+    assetIds: z.array(z.string().min(1).max(128)).max(1000),
+    artifactIds: z.array(z.string().min(1).max(128)).max(1000),
+    locationIds: z.array(z.string().min(1).max(128)).max(1000),
+    providerIds: z.array(z.string().min(1).max(128)).max(1000),
+  }),
   accessibilityObligations: z.array(z.string().min(1).max(200)).max(100),
-  attribution: z.object({ sourceOwnerId: z.string().min(1).max(128), sourceItemId: z.string().min(8).max(128).optional(), sourceVersionId: z.string().min(8).max(128).optional(), sourceReleaseId: z.string().min(8).max(128).optional(), license: z.string().max(240).optional(), modified: z.boolean() }),
+  attribution: z.object({
+    sourceOwnerId: z.string().min(1).max(128),
+    sourceItemId: z.string().min(8).max(128).optional(),
+    sourceVersionId: z.string().min(8).max(128).optional(),
+    sourceReleaseId: z.string().min(8).max(128).optional(),
+    license: z.string().max(240).optional(),
+    modified: z.boolean(),
+  }),
   lineage: z.array(z.object({ itemId: z.string().min(8).max(128), versionId: z.string().min(8).max(128) })).max(100),
-  compatibility: z.object({ minimumReaderVersion: z.number().int().min(1).max(100), blockContractVersions: z.record(z.string().min(1).max(80), z.number().int().min(1).max(100)) }),
+  compatibility: z.object({
+    minimumReaderVersion: z.number().int().min(1).max(100),
+    blockContractVersions: z.record(z.string().min(1).max(80), z.number().int().min(1).max(100)),
+  }),
   checksum: z.string().length(64),
 }) as z.ZodType<ReusableContentEnvelope>;
 
@@ -131,12 +205,17 @@ export function checksumReusableEnvelope(value: Omit<ReusableContentEnvelope, "c
 export function parseReusableEnvelope(value: unknown): ReusableContentEnvelope {
   const parsed = envelopeSchema.parse(value);
   const { checksum, ...unsigned } = parsed;
-  if (checksumReusableEnvelope(unsigned) !== checksum) throw new Error("Reusable content checksum does not match its canonical envelope.");
+  if (checksumReusableEnvelope(unsigned) !== checksum)
+    throw new Error("Reusable content checksum does not match its canonical envelope.");
   return parsed;
 }
 
 type IdKind = "block" | "chapter" | "variable";
-export type ReferenceRemap = { blocks: Record<string, string>; chapters: Record<string, string>; variables: Record<string, string> };
+export type ReferenceRemap = {
+  blocks: Record<string, string>;
+  chapters: Record<string, string>;
+  variables: Record<string, string>;
+};
 export type InsertionPlan = {
   operationId: string;
   sourceItemId: string;
@@ -148,13 +227,21 @@ export type InsertionPlan = {
   warnings: string[];
 };
 
-function clone<T>(value: T): T { return structuredClone(value); }
+function clone<T>(value: T): T {
+  return structuredClone(value);
+}
 
 function destinationIds(draft: DraftState) {
   return {
     blocks: new Set(draft.chapters.flatMap((chapter) => chapter.blocks.map((block) => block.id))),
     chapters: new Set(draft.chapters.map((chapter) => chapter.id)),
-    variables: new Set(draft.chapters.flatMap((chapter) => chapter.blocks.flatMap((block) => typeof block.configuration.variableId === "string" ? [block.configuration.variableId] : []))),
+    variables: new Set(
+      draft.chapters.flatMap((chapter) =>
+        chapter.blocks.flatMap((block) =>
+          typeof block.configuration.variableId === "string" ? [block.configuration.variableId] : [],
+        ),
+      ),
+    ),
   };
 }
 
@@ -169,35 +256,61 @@ function allocate(operationId: string, kind: IdKind, sourceId: string, occupied:
 function remapKnownReferences(value: JsonObject, remap: ReferenceRemap): JsonObject {
   const result = clone(value);
   for (const [key, item] of Object.entries(result)) {
-    if (typeof item === "object" && item && !Array.isArray(item)) result[key] = remapKnownReferences(item as JsonObject, remap);
-    else if (Array.isArray(item)) result[key] = item.map((entry) => typeof entry === "object" && entry && !Array.isArray(entry) ? remapKnownReferences(entry as JsonObject, remap) : entry);
+    if (typeof item === "object" && item && !Array.isArray(item))
+      result[key] = remapKnownReferences(item as JsonObject, remap);
+    else if (Array.isArray(item))
+      result[key] = item.map((entry) =>
+        typeof entry === "object" && entry && !Array.isArray(entry)
+          ? remapKnownReferences(entry as JsonObject, remap)
+          : entry,
+      );
     else if (typeof item === "string") {
-      if (["targetBlockId", "nextBlockId", "successTargetBlockId", "failureTargetBlockId"].includes(key)) result[key] = remap.blocks[item] ?? item;
+      if (["targetBlockId", "nextBlockId", "successTargetBlockId", "failureTargetBlockId"].includes(key))
+        result[key] = remap.blocks[item] ?? item;
       if (key === "variableId") result[key] = remap.variables[item] ?? item;
     }
   }
   return result;
 }
 
-export function planReusableInsertion(input: { envelope: ReusableContentEnvelope; draft: DraftState; operationId: string; targetChapterId?: string }): InsertionPlan {
-  if (!/^[a-zA-Z0-9][a-zA-Z0-9-]{7,95}$/.test(input.operationId)) throw new Error("Insertion operation identity is invalid.");
+export function planReusableInsertion(input: {
+  envelope: ReusableContentEnvelope;
+  draft: DraftState;
+  operationId: string;
+  targetChapterId?: string;
+}): InsertionPlan {
+  if (!/^[a-zA-Z0-9][a-zA-Z0-9-]{7,95}$/.test(input.operationId))
+    throw new Error("Insertion operation identity is invalid.");
   const envelope = parseReusableEnvelope(input.envelope);
   const occupied = destinationIds(input.draft);
   const remap: ReferenceRemap = { blocks: {}, chapters: {}, variables: {} };
-  for (const block of envelope.blocks) remap.blocks[block.id] = allocate(input.operationId, "block", block.id, occupied.blocks);
-  for (const chapter of envelope.chapters) remap.chapters[chapter.id] = allocate(input.operationId, "chapter", chapter.id, occupied.chapters);
+  for (const block of envelope.blocks)
+    remap.blocks[block.id] = allocate(input.operationId, "block", block.id, occupied.blocks);
+  for (const chapter of envelope.chapters)
+    remap.chapters[chapter.id] = allocate(input.operationId, "chapter", chapter.id, occupied.chapters);
   for (const block of envelope.blocks) {
     const variableId = block.configuration.variableId;
-    if (typeof variableId === "string" && !remap.variables[variableId]) remap.variables[variableId] = allocate(input.operationId, "variable", variableId, occupied.variables);
+    if (typeof variableId === "string" && !remap.variables[variableId])
+      remap.variables[variableId] = allocate(input.operationId, "variable", variableId, occupied.variables);
   }
   const remappedBlocks: Block[] = envelope.blocks.map((source) => ({
-    ...clone(source), id: remap.blocks[source.id], nextBlockId: source.nextBlockId ? remap.blocks[source.nextBlockId] ?? source.nextBlockId : source.nextBlockId,
-    configuration: remapKnownReferences(source.configuration, remap), presentation: remapKnownReferences(source.presentation, remap), completion: remapKnownReferences(source.completion, remap),
-    connections: source.connections?.map((connection) => ({ ...connection, targetBlockId: remap.blocks[connection.targetBlockId] ?? connection.targetBlockId })),
+    ...clone(source),
+    id: remap.blocks[source.id],
+    nextBlockId: source.nextBlockId ? (remap.blocks[source.nextBlockId] ?? source.nextBlockId) : source.nextBlockId,
+    configuration: remapKnownReferences(source.configuration, remap),
+    presentation: remapKnownReferences(source.presentation, remap),
+    completion: remapKnownReferences(source.completion, remap),
+    connections: source.connections?.map((connection) => ({
+      ...connection,
+      targetBlockId: remap.blocks[connection.targetBlockId] ?? connection.targetBlockId,
+    })),
   }));
   const blockBySourceId = new Map<string, Block>(remappedBlocks.map((block) => [block.id, block]));
-  const fallbackChapter = input.targetChapterId ? input.draft.chapters.find((chapter) => chapter.id === input.targetChapterId) : input.draft.chapters[0];
-  if (!fallbackChapter) throw new Error("A destination Chronicle needs at least one Chapter before reusable content can be inserted.");
+  const fallbackChapter = input.targetChapterId
+    ? input.draft.chapters.find((chapter) => chapter.id === input.targetChapterId)
+    : input.draft.chapters[0];
+  if (!fallbackChapter)
+    throw new Error("A destination Chronicle needs at least one Chapter before reusable content can be inserted.");
   const chapters = envelope.chapters.length
     ? envelope.chapters.map((source) => {
         const { blockIds, ...chapter } = clone(source);
@@ -205,17 +318,31 @@ export function planReusableInsertion(input: { envelope: ReusableContentEnvelope
           ...chapter,
           id: remap.chapters[source.id],
           metadata: remapKnownReferences(source.metadata, remap),
-          blocks: blockIds.map((id) => blockBySourceId.get(remap.blocks[id])).filter((block): block is Block => Boolean(block)),
+          blocks: blockIds
+            .map((id) => blockBySourceId.get(remap.blocks[id]))
+            .filter((block): block is Block => Boolean(block)),
         };
       })
     : [{ ...clone(fallbackChapter), blocks: [...fallbackChapter.blocks, ...remappedBlocks] }];
-  return { operationId: input.operationId, sourceItemId: envelope.itemId, sourceVersionId: envelope.versionId, remap, chapters, attribution: { ...envelope.attribution, modified: true }, lineage: [...envelope.lineage, { itemId: envelope.itemId, versionId: envelope.versionId }], warnings: envelope.accessibilityObligations.length ? [`Review ${envelope.accessibilityObligations.length} inherited accessibility obligation(s) before publication.`] : [] };
+  return {
+    operationId: input.operationId,
+    sourceItemId: envelope.itemId,
+    sourceVersionId: envelope.versionId,
+    remap,
+    chapters,
+    attribution: { ...envelope.attribution, modified: true },
+    lineage: [...envelope.lineage, { itemId: envelope.itemId, versionId: envelope.versionId }],
+    warnings: envelope.accessibilityObligations.length
+      ? [`Review ${envelope.accessibilityObligations.length} inherited accessibility obligation(s) before publication.`]
+      : [],
+  };
 }
 
 export function applyReusableInsertion(draft: DraftState, plan: InsertionPlan): DraftState {
   const next = clone(draft);
   const replacement = new Map(plan.chapters.map((chapter) => [chapter.id, chapter]));
   next.chapters = next.chapters.map((chapter) => replacement.get(chapter.id) ?? chapter);
-  for (const chapter of plan.chapters) if (!next.chapters.some((candidate) => candidate.id === chapter.id)) next.chapters.push(chapter);
+  for (const chapter of plan.chapters)
+    if (!next.chapters.some((candidate) => candidate.id === chapter.id)) next.chapters.push(chapter);
   return next;
 }

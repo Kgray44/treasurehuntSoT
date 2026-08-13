@@ -2,17 +2,30 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { apiError } from "@/chronicle/api";
 import { requireOwnedStudioTale } from "@/chronicle/studio-authorization";
-import { archiveReusableAuthoringItem, createReusableAuthoringItem, listReusableAuthoringItems } from "@/studio/reusable-library-service";
+import {
+  archiveReusableAuthoringItem,
+  createBlockPreset,
+  createReusableAuthoringItem,
+  listReusableAuthoringItems,
+} from "@/studio/reusable-library-service";
 
 const requestSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("create"), envelope: z.unknown() }),
+  z.object({
+    action: z.literal("create-preset"),
+    name: z.string().trim().min(1).max(160),
+    description: z.string().max(10000).optional(),
+    tags: z.array(z.string().max(64)).max(30).optional(),
+    blockId: z.string().min(1).max(128),
+  }),
   z.object({ action: z.literal("archive"), itemId: z.string().min(8).max(128) }),
 ]);
 
 export async function GET(_: Request, context: { params: Promise<{ taleId: string }> }) {
   const { taleId } = await context.params;
   const authorization = await requireOwnedStudioTale(taleId);
-  if (!authorization) return NextResponse.json({ error: "This Chronicle is not available to this Creator account." }, { status: 404 });
+  if (!authorization)
+    return NextResponse.json({ error: "This Chronicle is not available to this Creator account." }, { status: 404 });
   try {
     return NextResponse.json({ items: await listReusableAuthoringItems(authorization.session.accountId) });
   } catch (cause) {
@@ -23,10 +36,18 @@ export async function GET(_: Request, context: { params: Promise<{ taleId: strin
 export async function POST(request: Request, context: { params: Promise<{ taleId: string }> }) {
   const { taleId } = await context.params;
   const authorization = await requireOwnedStudioTale(taleId, request);
-  if (!authorization) return NextResponse.json({ error: "This Chronicle is not available to this Creator account." }, { status: 404 });
+  if (!authorization)
+    return NextResponse.json({ error: "This Chronicle is not available to this Creator account." }, { status: 404 });
   try {
     const input = requestSchema.parse(await request.json());
-    if (input.action === "create") return NextResponse.json(await createReusableAuthoringItem(authorization.session.accountId, input.envelope), { status: 201 });
+    if (input.action === "create")
+      return NextResponse.json(await createReusableAuthoringItem(authorization.session.accountId, input.envelope), {
+        status: 201,
+      });
+    if (input.action === "create-preset")
+      return NextResponse.json(await createBlockPreset(authorization.session.accountId, taleId, input), {
+        status: 201,
+      });
     return NextResponse.json(await archiveReusableAuthoringItem(authorization.session.accountId, input.itemId));
   } catch (cause) {
     return apiError(cause);

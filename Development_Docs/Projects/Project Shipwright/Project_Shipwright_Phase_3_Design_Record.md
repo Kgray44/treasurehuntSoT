@@ -10,17 +10,17 @@ last_reviewed: 2026-08-13
 
 ## Authority and frozen starting point
 
-| Field | Value |
-| --- | --- |
-| Branch | `codex/project-shipwright-phase3-shape-the-chronicle` |
-| Actual worktree | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\treasurehuntSoT-shipwright-phase3-shape-the-chronicle` |
-| Original branch base | `60b89841986e66fbc2c0828489d38002a1617506` |
-| Fetched `origin/main` | `60b89841986e66fbc2c0828489d38002a1617506` |
-| Preferred UNC worktree | Attempted only as a fresh checkout and abandoned before authoring when its checkout could not populate. The local worktree is the governed UNC-safe execution location. |
-| Shipwright Phase 2 | Satisfied: accepted candidate `00e58fc427d97d5775e1b911ea8f62ba428b0c51`, protected PR #72, merge `25a5ecc3989d137a95291c340f07143860b821cc`, formal `ACCEPTED_MAINLINE` receipt. |
-| Drydock Phase 2 | Satisfied: accepted merge `847e035775984888be71edf614f2205fd6c5a376`, 70-rule static catalog, 23/23 current contracts verified. |
-| Semantic authority | Drydock owns block schemas, canonicalization, validation, migrations, compatibility, and static analysis. One Voyage/Chronicle owns draft persistence, immutable publication, and runtime progression. |
-| Phase boundary | Phase 4 simulation UX and Phase 5 publishing overhaul are not started. |
+| Field                  | Value                                                                                                                                                                                                  |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Branch                 | `codex/project-shipwright-phase3-shape-the-chronicle`                                                                                                                                                  |
+| Actual worktree        | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\treasurehuntSoT-shipwright-phase3-shape-the-chronicle`                                                                                          |
+| Original branch base   | `60b89841986e66fbc2c0828489d38002a1617506`                                                                                                                                                             |
+| Fetched `origin/main`  | `60b89841986e66fbc2c0828489d38002a1617506`                                                                                                                                                             |
+| Preferred UNC worktree | Attempted only as a fresh checkout and abandoned before authoring when its checkout could not populate. The local worktree is the governed UNC-safe execution location.                                |
+| Shipwright Phase 2     | Satisfied: accepted candidate `00e58fc427d97d5775e1b911ea8f62ba428b0c51`, protected PR #72, merge `25a5ecc3989d137a95291c340f07143860b821cc`, formal `ACCEPTED_MAINLINE` receipt.                      |
+| Drydock Phase 2        | Satisfied: accepted merge `847e035775984888be71edf614f2205fd6c5a376`, 70-rule static catalog, 23/23 current contracts verified.                                                                        |
+| Semantic authority     | Drydock owns block schemas, canonicalization, validation, migrations, compatibility, and static analysis. One Voyage/Chronicle owns draft persistence, immutable publication, and runtime progression. |
+| Phase boundary         | Phase 4 simulation UX and Phase 5 publishing overhaul are not started.                                                                                                                                 |
 
 The current source inventory contains 23 active, versioned block contracts. The complete Appendix A audit is frozen in [the Phase 3 readiness matrix](Project_Shipwright_Phase_3_Block_Readiness_Matrix.md). No Appendix A candidate is newly activated merely because it has a familiar name; existing semantic equivalents remain existing types and all unsupported types stay absent from the Library.
 
@@ -89,4 +89,3 @@ This phase requires additive Prisma persistence for the personal reusable librar
 Focused evidence covers pure envelope/remapping/planning tests, access/IDOR/import tests, persistence migrations, Library and editor components, autosave/history/conflict tests, current Shipwright P1/P2 regressions, Drydock P2 static-analysis tests, accessibility/responsive evidence, and a synthetic Creator browser journey through visible Studio navigation. The final candidate additionally requires docs, catalog, type/lint/format, privacy/security, build, and current governed Sounding Line qualification. A focused hosted run is diagnostic/qualification evidence only; exactly one frozen-candidate Mainline Decision may be dispatched after complete qualification and required owner walkthrough/waiver.
 
 If development stopped after Phase 3, the 23 existing blocks and P1/P2 interaction model remain unchanged and usable. Every reusable item inserted by Phase 3 is a validated copy with version identity, compatible provenance, atomic undo/autosave, preview, publication, and historical-read support. No unsupported provider block, placeholder Library item, hidden runtime dependency, Phase 4 simulation UI, or Phase 5 publishing overhaul is required. **Mainline Safety Contract: pending implementation and qualification; designed to pass.**
-

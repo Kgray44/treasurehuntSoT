@@ -305,16 +305,20 @@ export function TaleEditor({
     }
   }, [data, taleId]);
 
-  useEffect(() => {
-    if (libraryTab === "reuse") void loadReusableItems();
-  }, [libraryTab, loadReusableItems]);
-
   async function archiveReusableItem(item: ReusableLibraryItem) {
     if (!data) return;
     const usageDetail = item.usageCount
       ? `This item has ${item.usageCount} recorded ${item.usageCount === 1 ? "use" : "uses"}. Existing Chronicle copies remain unchanged.`
       : "This item has no recorded uses. Existing Chronicle copies remain unchanged.";
-    if (!(await requestAction({ title: `Archive “${item.name}”?`, detail: usageDetail, confirmLabel: "Archive reusable item", destructive: true }))) return;
+    if (
+      !(await requestAction({
+        title: `Archive “${item.name}”?`,
+        detail: usageDetail,
+        confirmLabel: "Archive reusable item",
+        destructive: true,
+      }))
+    )
+      return;
     setReusableError("");
     const response = await fetch(`/api/studio/tales/${taleId}/reusable-content`, {
       method: "POST",
@@ -324,6 +328,22 @@ export function TaleEditor({
     const body = (await response.json()) as { error?: string };
     if (!response.ok) return setReusableError(body.error ?? "The reusable item could not be archived.");
     setReusableItems((items) => items.filter((candidate) => candidate.id !== item.id));
+  }
+
+  async function saveSelectedAsPreset() {
+    if (!data || !draft || !selected) return;
+    if (dirty && !(await save(draft, false))) return;
+    setReusableError("");
+    const name = `${selected.block.title} preset`;
+    const response = await fetch(`/api/studio/tales/${taleId}/reusable-content`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
+      body: JSON.stringify({ action: "create-preset", name, blockId: selected.block.id }),
+    });
+    const body = (await response.json()) as { error?: string };
+    if (!response.ok) return setReusableError(body.error ?? "The Passage preset could not be saved.");
+    setLibraryTab("reuse");
+    await loadReusableItems();
   }
 
   useEffect(() => {
@@ -1873,9 +1893,18 @@ export function TaleEditor({
                       role="tab"
                       aria-selected={libraryTab === tab}
                       className={libraryTab === tab ? "active" : ""}
-                      onClick={() => setLibraryTab(tab)}
+                      onClick={() => {
+                        setLibraryTab(tab);
+                        if (tab === "reuse") void loadReusableItems();
+                      }}
                     >
-                      {tab === "blocks" ? "Passages" : tab === "chapters" ? "Chapters" : tab === "outline" ? "Outline" : "Reuse"}
+                      {tab === "blocks"
+                        ? "Passages"
+                        : tab === "chapters"
+                          ? "Chapters"
+                          : tab === "outline"
+                            ? "Outline"
+                            : "Reuse"}
                     </button>
                   ))}
                 </div>
@@ -1943,6 +1972,11 @@ export function TaleEditor({
                         {reusableLoading ? "Refreshing…" : "Refresh"}
                       </button>
                     </div>
+                    {selected && (
+                      <button type="button" onClick={() => void saveSelectedAsPreset()}>
+                        Save selected Passage as preset
+                      </button>
+                    )}
                     {reusableError && <p role="alert">{reusableError}</p>}
                     {!reusableLoading && !reusableError && !reusableItems.length && (
                       <p>No reusable content yet. Save a governed Passage, selection, or Chapter to reuse it safely.</p>
@@ -1950,12 +1984,20 @@ export function TaleEditor({
                     <ul className="reusable-library-list">
                       {reusableItems.map((item) => (
                         <li key={item.id}>
-                          <p className="eyebrow">{item.kind.replaceAll("_", " ")} · Version {item.currentVersionNumber}</p>
+                          <p className="eyebrow">
+                            {item.kind.replaceAll("_", " ")} · Version {item.currentVersionNumber}
+                          </p>
                           <strong>{item.name}</strong>
                           <p>{item.description || "No description provided."}</p>
                           {item.tags.length > 0 && <small>{item.tags.join(" · ")}</small>}
-                          <p><small>{item.usageCount} recorded {item.usageCount === 1 ? "use" : "uses"}</small></p>
-                          <button type="button" onClick={() => void archiveReusableItem(item)}>Archive</button>
+                          <p>
+                            <small>
+                              {item.usageCount} recorded {item.usageCount === 1 ? "use" : "uses"}
+                            </small>
+                          </p>
+                          <button type="button" onClick={() => void archiveReusableItem(item)}>
+                            Archive
+                          </button>
                         </li>
                       ))}
                     </ul>
