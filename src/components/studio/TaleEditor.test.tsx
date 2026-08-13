@@ -808,4 +808,38 @@ describe("Voyagewright Studio editor motion and authority", () => {
     expect(screen.getByRole("status", { name: "Canvas zoom 110 percent" })).toHaveTextContent("110%");
     expect(screen.getByText("Opening Scene")).toBeInTheDocument();
   });
+
+  it("shows the owner-scoped reusable Library without inventing unavailable block types", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(response(200, editorData()))
+        .mockResolvedValueOnce(
+          response(200, {
+            items: [
+              {
+                id: "reusable-1",
+                kind: "FRAGMENT",
+                name: "A safe choice",
+                description: "A preserved two-passage choice.",
+                tags: ["choice"],
+                status: "ACTIVE",
+                currentVersionNumber: 1,
+                currentVersionId: "version-1",
+                checksum: "a".repeat(64),
+                usageCount: 2,
+                updatedAt: "2026-08-13T12:00:00.000Z",
+              },
+            ],
+          }),
+        ),
+    );
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+    fireEvent.click(screen.getByRole("tab", { name: "Reuse" }));
+    expect(await screen.findByText("A safe choice")).toBeInTheDocument();
+    expect(screen.getByText("FRAGMENT · Version 1")).toBeInTheDocument();
+    expect(screen.queryByText(/coming soon/i)).not.toBeInTheDocument();
+  });
 });

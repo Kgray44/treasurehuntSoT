@@ -98,6 +98,19 @@ type DrydockMigrationPreview = {
   canonicalOutputChanges: string[];
   after: { schemaVersion: number; configuration: JsonObject; presentation: JsonObject; completion: JsonObject };
 };
+type ReusableLibraryItem = {
+  id: string;
+  kind: string;
+  name: string;
+  description: string;
+  tags: string[];
+  status: string;
+  currentVersionNumber: number;
+  currentVersionId: string | null;
+  checksum: string | null;
+  usageCount: number;
+  updatedAt: string;
+};
 
 const clone = <T,>(value: T): T => structuredClone(value);
 /** Transitional source guard while the extracted contract-aware Inspector owns the live surface. */
@@ -180,7 +193,10 @@ export function TaleEditor({
   const [assetContext, setAssetContext] = useState("ALL");
   const [assetUsage, setAssetUsage] = useState("ALL");
   const [assetLimit, setAssetLimit] = useState(24);
-  const [libraryTab, setLibraryTab] = useState<"blocks" | "chapters" | "outline">("blocks");
+  const [libraryTab, setLibraryTab] = useState<"blocks" | "chapters" | "outline" | "reuse">("blocks");
+  const [reusableItems, setReusableItems] = useState<ReusableLibraryItem[]>([]);
+  const [reusableLoading, setReusableLoading] = useState(false);
+  const [reusableError, setReusableError] = useState("");
   const [blockSearch, setBlockSearch] = useState("");
   const [collapsedChapters, setCollapsedChapters] = useState<string[]>([]);
   const [previewBlock, setPreviewBlock] = useState(false);
@@ -272,6 +288,43 @@ export function TaleEditor({
     if (!authenticated) return;
     queueMicrotask(() => void load());
   }, [authenticated, load]);
+
+  const loadReusableItems = useCallback(async () => {
+    if (!data) return;
+    setReusableLoading(true);
+    setReusableError("");
+    try {
+      const response = await fetch(`/api/studio/tales/${taleId}/reusable-content`, { cache: "no-store" });
+      const body = (await response.json()) as { items?: ReusableLibraryItem[]; error?: string };
+      if (!response.ok) setReusableError(body.error ?? "Reusable content could not be opened.");
+      else setReusableItems(body.items ?? []);
+    } catch {
+      setReusableError("Reusable content could not be opened. Check your connection and try again.");
+    } finally {
+      setReusableLoading(false);
+    }
+  }, [data, taleId]);
+
+  useEffect(() => {
+    if (libraryTab === "reuse") void loadReusableItems();
+  }, [libraryTab, loadReusableItems]);
+
+  async function archiveReusableItem(item: ReusableLibraryItem) {
+    if (!data) return;
+    const usageDetail = item.usageCount
+      ? `This item has ${item.usageCount} recorded ${item.usageCount === 1 ? "use" : "uses"}. Existing Chronicle copies remain unchanged.`
+      : "This item has no recorded uses. Existing Chronicle copies remain unchanged.";
+    if (!(await requestAction({ title: `Archive “${item.name}”?`, detail: usageDetail, confirmLabel: "Archive reusable item", destructive: true }))) return;
+    setReusableError("");
+    const response = await fetch(`/api/studio/tales/${taleId}/reusable-content`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
+      body: JSON.stringify({ action: "archive", itemId: item.id }),
+    });
+    const body = (await response.json()) as { error?: string };
+    if (!response.ok) return setReusableError(body.error ?? "The reusable item could not be archived.");
+    setReusableItems((items) => items.filter((candidate) => candidate.id !== item.id));
+  }
 
   useEffect(() => {
     if (!selectedId || !inspectorFocusRequested.current) return;
@@ -1814,7 +1867,7 @@ export function TaleEditor({
                   <p>Build, navigate, and inspect the complete Chronicle flow.</p>
                 </div>
                 <div className="library-tabs" role="tablist" aria-label="Chronicle tools">
-                  {(["blocks", "chapters", "outline"] as const).map((tab) => (
+                  {(["blocks", "chapters", "outline", "reuse"] as const).map((tab) => (
                     <button
                       key={tab}
                       role="tab"
@@ -1822,7 +1875,7 @@ export function TaleEditor({
                       className={libraryTab === tab ? "active" : ""}
                       onClick={() => setLibraryTab(tab)}
                     >
-                      {tab === "blocks" ? "Passages" : tab === "chapters" ? "Chapters" : "Outline"}
+                      {tab === "blocks" ? "Passages" : tab === "chapters" ? "Chapters" : tab === "outline" ? "Outline" : "Reuse"}
                     </button>
                   ))}
                 </div>
@@ -1878,6 +1931,35 @@ export function TaleEditor({
                       )),
                     )}
                   </ol>
+                )}
+                {libraryTab === "reuse" && (
+                  <section className="reusable-library" aria-label="Reusable content">
+                    <div className="library-section-heading">
+                      <div>
+                        <h3>Templates, fragments, and presets</h3>
+                        <p>Private reusable content keeps its source version and attribution when it is inserted.</p>
+                      </div>
+                      <button type="button" onClick={() => void loadReusableItems()} disabled={reusableLoading}>
+                        {reusableLoading ? "Refreshing…" : "Refresh"}
+                      </button>
+                    </div>
+                    {reusableError && <p role="alert">{reusableError}</p>}
+                    {!reusableLoading && !reusableError && !reusableItems.length && (
+                      <p>No reusable content yet. Save a governed Passage, selection, or Chapter to reuse it safely.</p>
+                    )}
+                    <ul className="reusable-library-list">
+                      {reusableItems.map((item) => (
+                        <li key={item.id}>
+                          <p className="eyebrow">{item.kind.replaceAll("_", " ")} · Version {item.currentVersionNumber}</p>
+                          <strong>{item.name}</strong>
+                          <p>{item.description || "No description provided."}</p>
+                          {item.tags.length > 0 && <small>{item.tags.join(" · ")}</small>}
+                          <p><small>{item.usageCount} recorded {item.usageCount === 1 ? "use" : "uses"}</small></p>
+                          <button type="button" onClick={() => void archiveReusableItem(item)}>Archive</button>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
                 )}
               </aside>
               <section
