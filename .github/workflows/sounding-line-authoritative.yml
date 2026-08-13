@@ -167,6 +167,7 @@ jobs:
             sounding-line-prepared-dependency
             !sounding-line-prepared-dependency/node_modules/.prisma/**
           if-no-files-found: error
+          include-hidden-files: true
           retention-days: 14
 
   governed-parallel-wave-0:
