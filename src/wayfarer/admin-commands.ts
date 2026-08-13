@@ -86,3 +86,46 @@ export async function revokeAccountSessionByAdministrator(input: WayfarerSession
     return { id: session.id, accountId: session.accountId, revokedAt, alreadyRevoked: false };
   });
 }
+
+export async function inspectAccountLifecycleForAdministrator(accountId: string) {
+  return db.userAccount.findUnique({
+    where: { id: accountId },
+    select: { id: true, status: true, updatedAt: true, suspendedAt: true },
+  });
+}
+
+export async function suspendAccountByAdministrator(input: {
+  actor: WayfarerAdministratorActor;
+  accountId: string;
+  expectedUpdatedAt: string;
+  reason: string;
+  correlationId: string;
+}) {
+  return db.$transaction(async (tx) => {
+    const account = await tx.userAccount.findUnique({
+      where: { id: input.accountId },
+      select: { id: true, status: true, updatedAt: true, suspendedAt: true },
+    });
+    if (!account) throw new Error("WAYFARER_ADMIN_ACCOUNT_NOT_FOUND");
+    if (account.updatedAt.toISOString() !== input.expectedUpdatedAt)
+      throw new Error("WAYFARER_ADMIN_ACCOUNT_CONFLICT");
+    if (account.status === "SUSPENDED") return { ...account, alreadySuspended: true };
+    if (account.status !== "ACTIVE") throw new Error("WAYFARER_ADMIN_ACCOUNT_TRANSITION_INVALID");
+    const suspendedAt = new Date();
+    const changed = await tx.userAccount.updateMany({
+      where: { id: account.id, status: "ACTIVE", updatedAt: account.updatedAt },
+      data: { status: "SUSPENDED", suspendedAt },
+    });
+    if (!changed.count) throw new Error("WAYFARER_ADMIN_ACCOUNT_CONFLICT");
+    await tx.accountSession.updateMany({ where: { accountId: account.id, revokedAt: null }, data: { revokedAt: suspendedAt } });
+    await tx.privilegedAssurance.updateMany({ where: { accountId: account.id, revokedAt: null }, data: { revokedAt: suspendedAt } });
+    await tx.securityEvent.create({ data: { accountId: account.id, eventType: "ADMIN_ACCOUNT_SUSPENDED", correlationId: input.correlationId, metadata: JSON.stringify({ actorAccountId: input.actor.accountId }) } });
+    await writeAdministrativeAudit({
+      actorAccountId: input.actor.accountId, actorRole: input.actor.role, capability: input.actor.capability,
+      action: "ADMIRALTY_ACCOUNT_SUSPEND", targetType: "UserAccount", targetId: account.id, reason: input.reason,
+      authorizationBasis: input.actor.authorizationBasis, accountSessionId: input.actor.accountSessionId, correlationId: input.correlationId,
+      beforeSummary: { status: account.status, updatedAt: account.updatedAt }, afterSummary: { status: "SUSPENDED", suspendedAt, sessions: "REVOKED" },
+    }, tx);
+    return { id: account.id, status: "SUSPENDED", suspendedAt, alreadySuspended: false };
+  });
+}
