@@ -37,7 +37,7 @@ The focused owner-service suite covers audit failure, stale revision,
 idempotency, authorization, and second-review eligibility. The isolated
 Chromium suite covers the three qualified commands through preview, assurance,
 confirmation, receipt persistence, privacy, serious/critical Axe checks, an
-authenticated CSRF denial, and a moderation-operator Operations-station denial. Its
+authenticated CSRF denial, and an ordinary-user command-center denial. Its
 development-server fallback is explicitly limited by the unrelated full
 repository TypeScript blocker; it does not certify a production build.
 Job, role, and configuration mutation tests remain blocked until their canonical
