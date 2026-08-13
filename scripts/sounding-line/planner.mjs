@@ -2,6 +2,7 @@
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { generateV14FastChannelPlan } from "./v14-fast-channel.mjs";
 
 const digest = (value) =>
   createHash("sha256")
@@ -10,7 +11,72 @@ const digest = (value) =>
 const json = async (root, file) => JSON.parse(await readFile(path.join(root, "testing", file), "utf8"));
 const hostedSharedResources = new Set(["restart-host", "external-provider"]);
 
-export async function buildPlan({ root, gateId, serial = false, sourceSha = process.env.GITHUB_SHA ?? "LOCAL" }) {
+export function resolvePlanAuthority({ authorityIndex, gateId, authorityMode, githubRef }) {
+  if (authorityMode !== "CURRENT" && authorityMode !== "V13_CUTOVER")
+    throw new Error(`UNKNOWN_AUTHORITY_MODE:${authorityMode}`);
+  if (authorityMode === "V13_CUTOVER") {
+    if (authorityIndex.currentAuthorityVersion === "1.4") throw new Error("V13_CUTOVER_FORBIDDEN_AFTER_V14_ACTIVATION");
+    return "V13_CUTOVER";
+  }
+  if (authorityIndex.currentAuthorityVersion === "1.4") {
+    if (gateId !== "mainline") throw new Error("V14_AUTHORITY_MAINLINE_ONLY");
+    // A candidate can contain the future authority index while it is still
+    // subject to v1.3 acceptance. Only the protected-main ref may exercise it.
+    if (githubRef !== "refs/heads/main") throw new Error("V14_CURRENT_AUTHORITY_REQUIRES_PROTECTED_MAIN");
+    return "V14_CURRENT";
+  }
+  return "V13_CURRENT";
+}
+
+export async function buildV14HostedPlan({
+  root,
+  gateId,
+  serial,
+  sourceSha,
+  qualifiedBaseSha,
+  manifest,
+  registry,
+  authorityIndex,
+}) {
+  if (!qualifiedBaseSha || !/^[0-9a-f]{40}$/u.test(qualifiedBaseSha)) throw new Error("V14_QUALIFIED_BASE_REQUIRED");
+  const semanticPlan = await generateV14FastChannelPlan({
+    root,
+    baseSha: qualifiedBaseSha,
+    candidateSha: sourceSha,
+    gateId,
+  });
+  const plan = {
+    version: 14,
+    authority: "SOUNDING_LINE",
+    authorityVersion: "1.4",
+    authorityBoundary: "CURRENT_AUTHORITATIVE_V14",
+    sourceSha,
+    qualifiedBaseSha,
+    gate: gateId,
+    serial,
+    policyDigest: digest(manifest),
+    inventoryDigest: digest(registry),
+    authorityDigest: digest(authorityIndex),
+    semanticPlanDigest: semanticPlan.digest,
+    runtimeConformanceRequired: authorityIndex.runtimeConformance?.required === true,
+    runtimeConformanceSuiteId: authorityIndex.runtimeConformance?.suiteId ?? null,
+    nodes: semanticPlan.nodes.map((node) => ({
+      ...node,
+      testIds: registry.cases.filter((entry) => entry.suiteId === node.id).map((entry) => entry.id),
+    })),
+  };
+  return { ...plan, planDigest: digest(plan) };
+}
+
+export async function buildPlan({
+  root,
+  gateId,
+  serial = false,
+  sourceSha = process.env.GITHUB_SHA ?? "LOCAL",
+  qualifiedBaseSha = process.env.SOUNDING_LINE_BASE_SHA,
+  authorityMode = process.env.SOUNDING_LINE_AUTHORITY_MODE ?? "CURRENT",
+  githubRef = process.env.GITHUB_REF,
+}) {
   const [manifest, suitesFile, gatesFile, registry, authorityIndex] = await Promise.all([
     json(root, "policy-manifest.json"),
     json(root, "suites.json"),
@@ -26,6 +92,19 @@ export async function buildPlan({ root, gateId, serial = false, sourceSha = proc
     authorityIndex.effectiveAmendments?.partIII !== "1.3"
   )
     throw new Error("AUTHORITY_INDEX_MISMATCH");
+  const resolvedAuthority = resolvePlanAuthority({ authorityIndex, gateId, authorityMode, githubRef });
+  if (resolvedAuthority === "V14_CURRENT") {
+    return buildV14HostedPlan({
+      root,
+      gateId,
+      serial,
+      sourceSha,
+      qualifiedBaseSha,
+      manifest,
+      registry,
+      authorityIndex,
+    });
+  }
   const gate = gatesFile.gates.find((candidate) => candidate.id === gateId);
   if (!gate) throw new Error(`UNKNOWN_GATE:${gateId}`);
   const suites = new Map(suitesFile.suites.map((suite) => [suite.id, suite]));

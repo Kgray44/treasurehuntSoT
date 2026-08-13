@@ -1,0 +1,33 @@
+{
+  "version": "1.4",
+  "status": "candidate-pending-protected-mainline-acceptance",
+  "mergeStrategyIdentity": "github-protected-merge-commit",
+  "admission": {
+    "frozenHeadRequired": true,
+    "cleanResourceStateRequired": true,
+    "deterministicSyntheticTreeRequired": true,
+    "recordOnlyAllowedOnlyWithStrictClassifier": true
+  },
+  "ordering": {
+    "default": "qualified-ready-timestamp-with-fairness-aging",
+    "sameProjectSequence": "BLOCK_LATER_UNACCEPTED_PHASE",
+    "emergencyPreemption": "EXPLICIT_AUDITED_AUTHORIZATION_REQUIRED"
+  },
+  "physicalLanding": {
+    "headCarOnly": true,
+    "predictedActualTreeEqualityRequired": true,
+    "differentCommitObjectAllowedWithEqualTree": true
+  },
+  "replan": {
+    "sourceMutation": "MUTATED_CAR_AND_SUFFIX",
+    "withdrawal": "DOWNSTREAM_SUFFIX",
+    "externalMainAdvance": "FIRST_AFFECTED_CAR_AND_SUFFIX",
+    "policyDrift": "AFFECTED_CARS_OR_CONSERVATIVE_ALL",
+    "treeMismatch": "CURRENT_AND_SUFFIX_BRAKE",
+    "migrationCollision": "SCHEMA_DEPENDENT_SUFFIX_BRAKE"
+  },
+  "emergency": {
+    "mode": "SERIAL_CURRENT_BASE_FAIL_CLOSED",
+    "reusesStaleEvidence": false
+  }
+}

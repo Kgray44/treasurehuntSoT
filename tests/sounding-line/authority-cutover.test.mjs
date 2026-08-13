@@ -60,6 +60,18 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
   assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.navigation").length, 2);
 });
 
+test("a pending v1.4 candidate remains on the broad v1.3 plan only when explicitly dispatched for cutover", async () => {
+  const plan = await buildPlan({
+    root,
+    gateId: "mainline",
+    sourceSha: "test-sha",
+    qualifiedBaseSha: "0055d012a121a8950b7fa70d371d5eafc6223d10",
+    authorityMode: "V13_CUTOVER",
+  });
+  assert.equal(plan.version, 2);
+  assert.equal(plan.nodes.length, 38);
+});
+
 test("only the finalizer produces an accepted decision from source-bound clean receipts", () => {
   const plan = {
     sourceSha: "abc",
@@ -155,9 +167,17 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
   assert.doesNotMatch(authoritative, /^\s{2}(?:pull_request|push):/mu, "AUTHORITATIVE_DEBUG_TRIGGER_FORBIDDEN");
   assert.match(authoritative, /workflow_dispatch:\s*\n\s+inputs:\s*\n\s+gate:/u);
   assert.match(authoritative, /options: \[mainline, release-candidate\]/u);
+  assert.match(authoritative, /authority_mode:[\s\S]*?options: \[current, v13-cutover\]/u);
+  assert.match(authoritative, /SOUNDING_LINE_V13_CUTOVER_MAINLINE_ONLY/u);
+  assert.match(authoritative, /SOUNDING_LINE_AUTHORITY_MODE_INVALID/u);
+  assert.match(authoritative, /authorityMode=\$\(if \(\$authorityMode -eq 'v13-cutover'\)/u);
   assert.match(authoritative, /candidate_sha:[\s\S]*?required: true[\s\S]*?type: string/u);
   assert.match(authoritative, /SOUNDING_LINE_FROZEN_CANDIDATE_SHA_MISMATCH/u);
   assert.match(authoritative, /sourceSha:process\.env\.GITHUB_SHA/u);
+  assert.match(authoritative, /qualifiedBaseSha:process\.env\.SOUNDING_LINE_BASE_SHA/u);
+  assert.match(authoritative, /authorityMode:process\.env\.SOUNDING_LINE_AUTHORITY_MODE/u);
+  const planner = await readFile(path.join(root, "scripts", "sounding-line", "planner.mjs"), "utf8");
+  assert.match(planner, /V14_CURRENT_AUTHORITY_REQUIRES_PROTECTED_MAIN/u);
   assert.match(authoritative, /Sounding Line \/ \$\{\{ needs\.plan\.outputs\.gate/u);
   assert.match(authoritative, /gate: \$\{\{ needs\.plan\.outputs\.gate \}\}/u);
   assert.match(focused, /type: string/u);

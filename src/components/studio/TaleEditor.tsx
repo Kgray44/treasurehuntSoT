@@ -282,21 +282,29 @@ export function TaleEditor({
 
   useEffect(() => {
     if (!selectedId || !validationFocusField) return;
+    let focusFrame: number | undefined;
     const frame = requestAnimationFrame(() => {
-      const paths = new Set([
-        validationFocusField,
-        validationFocusField.startsWith("configuration.")
-          ? validationFocusField.slice("configuration.".length)
-          : `configuration.${validationFocusField}`,
-      ]);
-      const field = [...document.querySelectorAll<HTMLElement>("[data-inspector-field]")].find((element) =>
-        paths.has(element.dataset.inspectorField ?? ""),
-      );
-      const target = field?.querySelector<HTMLElement>("input, select, textarea, button");
-      target?.focus({ preventScroll: true });
-      setValidationFocusField(null);
+      // The inspector section remounts to open the issue's section. Defer one
+      // paint beyond selection so its contract field exists before focus.
+      focusFrame = requestAnimationFrame(() => {
+        const paths = new Set([
+          validationFocusField,
+          validationFocusField.startsWith("configuration.")
+            ? validationFocusField.slice("configuration.".length)
+            : `configuration.${validationFocusField}`,
+        ]);
+        const field = [...document.querySelectorAll<HTMLElement>("[data-inspector-field]")].find((element) =>
+          paths.has(element.dataset.inspectorField ?? ""),
+        );
+        const target = field?.querySelector<HTMLElement>("input, select, textarea, button");
+        target?.focus({ preventScroll: true });
+        setValidationFocusField(null);
+      });
     });
-    return () => cancelAnimationFrame(frame);
+    return () => {
+      cancelAnimationFrame(frame);
+      if (focusFrame !== undefined) cancelAnimationFrame(focusFrame);
+    };
   }, [selectedId, validationFocusField]);
 
   useEffect(() => {

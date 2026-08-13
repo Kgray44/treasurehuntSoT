@@ -31,6 +31,9 @@ const registryFiles = [
   "retired-suites.json",
   "browser-capabilities.json",
   "sounding-line-authority.json",
+  "evidence-fingerprint-policy.json",
+  "prepared-artifacts.json",
+  "mainline-train-policy.json",
 ];
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
@@ -112,6 +115,8 @@ function validatePolicy(policy) {
     authorityIndex,
     [
       "authority",
+      "currentAuthorityVersion",
+      "pendingV14",
       "effectiveAmendments",
       "requiredProtectedAuthorityCheck",
       "runtimeConformance",
@@ -124,6 +129,14 @@ function validatePolicy(policy) {
     errors,
   );
   if (authorityIndex.authority !== "SOUNDING_LINE") errors.push("sounding-line-authority: authority mismatch");
+  if (authorityIndex.currentAuthorityVersion !== "1.3" && authorityIndex.currentAuthorityVersion !== "1.4")
+    errors.push("sounding-line-authority: current authority version mismatch");
+  if (
+    authorityIndex.pendingV14?.documentId !== "CS-SL-XP-001 v1.4-R1" ||
+    authorityIndex.pendingV14?.documentSha256 !== "4D9DE559A24A7A2A8427171EAB679CCD423A1E9BE94FA104CF10B3D14AA31211" ||
+    authorityIndex.pendingV14?.activation !== "PROTECTED_MAINLINE_MERGE_ONLY"
+  )
+    errors.push("sounding-line-authority: v1.4 pending amendment mismatch");
   for (const [part, version] of Object.entries({ partI: "1.2", partII: "1.2", partIII: "1.3" }))
     if (authorityIndex.effectiveAmendments?.[part] !== version)
       errors.push(`sounding-line-authority: ${part} must be ${version}`);

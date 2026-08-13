@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "authorityBoundary": "SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE",
+  "methodology": "Local filesystem copy microprototype. It measures identity, copy, and verification only; it does not claim npm ci, GitHub cache, compression, artifact-transfer, or hosted-runner improvement.",
+  "results": [
+    {
+      "layerType": "dependency",
+      "transport": "local-filesystem-copy",
+      "normalPreparationMs": 4.514899999999997,
+      "preparedCreationMs": 3.622700000000002,
+      "preparedRestoreMs": 3.2256,
+      "verificationMs": 1.4904999999999973,
+      "contentFiles": 1,
+      "contentBytes": 381300,
+      "verification": {
+        "valid": true,
+        "reason": "VERIFIED"
+      }
+    },
+    {
+      "layerType": "prisma-generated",
+      "transport": "local-filesystem-copy",
+      "normalPreparationMs": 228.8474,
+      "preparedCreationMs": 264.8591,
+      "preparedRestoreMs": 221.6861,
+      "verificationMs": 43.53489999999999,
+      "contentFiles": 121,
+      "contentBytes": 724944,
+      "verification": {
+        "valid": true,
+        "reason": "VERIFIED"
+      }
+    }
+  ]
+}

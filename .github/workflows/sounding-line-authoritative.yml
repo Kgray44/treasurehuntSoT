@@ -24,6 +24,12 @@ on:
         description: Exact 40-character protected base SHA qualified with the candidate
         required: false
         type: string
+      authority_mode:
+        description: Current authority, or the one final v1.3 cutover acceptance before v1.4 activation
+        required: true
+        type: choice
+        default: current
+        options: [current, v13-cutover]
 
 permissions:
   contents: read
@@ -40,6 +46,8 @@ jobs:
     timeout-minutes: 10
     outputs:
       gate: ${{ steps.gate.outputs.value }}
+      authorityMode: ${{ steps.gate.outputs.authorityMode }}
+      qualifiedBaseSha: ${{ steps.base.outputs.value }}
       parallel0: ${{ steps.matrix.outputs.parallel0 }}
       parallel1: ${{ steps.matrix.outputs.parallel1 }}
       parallel2: ${{ steps.matrix.outputs.parallel2 }}
@@ -58,9 +66,13 @@ jobs:
           SOUNDING_LINE_DISPATCHED_SHA: ${{ github.sha }}
           SOUNDING_LINE_PR_NUMBER: ${{ inputs.pr_number }}
           SOUNDING_LINE_BASE_SHA: ${{ inputs.base_sha }}
+          SOUNDING_LINE_AUTHORITY_MODE: ${{ inputs.authority_mode }}
         run: |
           $gate = $env:SOUNDING_LINE_GATE
           if ($gate -notin @('mainline', 'release-candidate')) { throw "SOUNDING_LINE_GATE_INVALID" }
+          $authorityMode = $env:SOUNDING_LINE_AUTHORITY_MODE
+          if ($authorityMode -notin @('current', 'v13-cutover')) { throw "SOUNDING_LINE_AUTHORITY_MODE_INVALID" }
+          if ($authorityMode -eq 'v13-cutover' -and $gate -ne 'mainline') { throw "SOUNDING_LINE_V13_CUTOVER_MAINLINE_ONLY" }
           $candidateSha = $env:SOUNDING_LINE_CANDIDATE_SHA
           $dispatchedSha = $env:SOUNDING_LINE_DISPATCHED_SHA
           if ($candidateSha -notmatch '^[0-9a-f]{40}$') { throw "SOUNDING_LINE_FROZEN_CANDIDATE_SHA_INVALID" }
@@ -68,17 +80,33 @@ jobs:
           $prNumber = $env:SOUNDING_LINE_PR_NUMBER
           $baseSha = $env:SOUNDING_LINE_BASE_SHA
           if (($prNumber -and -not $baseSha) -or (-not $prNumber -and $baseSha)) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_IDENTITY_PAIR_REQUIRED" }
+          if ($authorityMode -eq 'v13-cutover' -and (-not $prNumber -or -not $baseSha)) { throw "SOUNDING_LINE_V13_CUTOVER_ACCEPTANCE_ENVELOPE_REQUIRED" }
           if ($prNumber -and ($prNumber -notmatch '^[1-9][0-9]*$')) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_PR_INVALID" }
           if ($baseSha -and ($baseSha -notmatch '^[0-9a-f]{40}$')) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_BASE_SHA_INVALID" }
           "value=$gate" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "authorityMode=$(if ($authorityMode -eq 'v13-cutover') { 'V13_CUTOVER' } else { 'CURRENT' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with: { ref: "${{ github.sha }}", fetch-depth: 0 }
+      - id: base
+        shell: pwsh
+        env:
+          SOUNDING_LINE_REQUESTED_BASE_SHA: ${{ inputs.base_sha }}
+        run: |
+          $baseSha = $env:SOUNDING_LINE_REQUESTED_BASE_SHA
+          $authority = Get-Content -Raw 'testing/sounding-line-authority.json' | ConvertFrom-Json
+          if (-not $baseSha -and $authority.currentAuthorityVersion -eq '1.4') {
+            $baseSha = (git rev-parse "$env:GITHUB_SHA^").Trim()
+          }
+          if ($authority.currentAuthorityVersion -eq '1.4' -and $baseSha -notmatch '^[0-9a-f]{40}$') {
+            throw 'SOUNDING_LINE_V14_CURRENT_BASE_REQUIRED'
+          }
+          "value=$baseSha" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - name: Verify frozen candidate base metadata
         if: ${{ inputs.pr_number != '' }}
         shell: pwsh
         env:
           SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
-          SOUNDING_LINE_BASE_SHA: ${{ inputs.base_sha }}
+          SOUNDING_LINE_BASE_SHA: ${{ steps.base.outputs.value }}
           SOUNDING_LINE_PR_NUMBER: ${{ inputs.pr_number }}
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -103,7 +131,17 @@ jobs:
       - run: node scripts/sounding-line/p34-retirement.mjs
       - env:
           SOUNDING_LINE_GATE: ${{ steps.gate.outputs.value }}
-        run: node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:process.env.SOUNDING_LINE_GATE,serial:false,sourceSha:process.env.GITHUB_SHA}),null,2)))" > sounding-line-plan.json
+          SOUNDING_LINE_BASE_SHA: ${{ inputs.base_sha }}
+          SOUNDING_LINE_AUTHORITY_MODE: ${{ steps.gate.outputs.authorityMode }}
+        run: node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:process.env.SOUNDING_LINE_GATE,serial:false,sourceSha:process.env.GITHUB_SHA,qualifiedBaseSha:process.env.SOUNDING_LINE_BASE_SHA,authorityMode:process.env.SOUNDING_LINE_AUTHORITY_MODE}),null,2)))" > sounding-line-plan.json
+      - name: Seal immutable dependency layer
+        shell: pwsh
+        run: |
+          $expiry = ([DateTimeOffset]::UtcNow).AddDays(14).ToString('o')
+          New-Item -ItemType Directory -Path sounding-line-prepared-dependency -Force | Out-Null
+          & node scripts/sounding-line/v14/prepared-layer-artifact.mjs publish --source node_modules --manifest sounding-line-prepared-dependency/dependency-manifest.json --producer "protected-authoritative-workflow:$env:GITHUB_RUN_ID" --expires-at $expiry
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_DEPENDENCY_LAYER_PUBLICATION_FAILED' }
+          Move-Item -LiteralPath node_modules -Destination sounding-line-prepared-dependency/node_modules
       - id: matrix
         shell: pwsh
         run: |
@@ -122,6 +160,16 @@ jobs:
           }
       - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with: { name: sounding-line-plan, path: sounding-line-plan.json, retention-days: 14 }
+      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: sounding-line-prepared-dependency
+          path: |
+            sounding-line-prepared-dependency
+            !sounding-line-prepared-dependency/node_modules/.prisma/**
+            !sounding-line-prepared-dependency/node_modules/@forever-treasure/bridgewatch/**
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 14
 
   governed-parallel-wave-0:
     name: Sounding Line / Parallel wave 0
