@@ -11,6 +11,22 @@ const digest = (value) =>
 const json = async (root, file) => JSON.parse(await readFile(path.join(root, "testing", file), "utf8"));
 const hostedSharedResources = new Set(["restart-host", "external-provider"]);
 
+export function resolvePlanAuthority({ authorityIndex, gateId, authorityMode, githubRef }) {
+  if (authorityMode !== "CURRENT" && authorityMode !== "V13_CUTOVER")
+    throw new Error(`UNKNOWN_AUTHORITY_MODE:${authorityMode}`);
+  if (authorityMode === "V13_CUTOVER") {
+    if (authorityIndex.currentAuthorityVersion === "1.4") throw new Error("V13_CUTOVER_FORBIDDEN_AFTER_V14_ACTIVATION");
+    return "V13_CUTOVER";
+  }
+  if (authorityIndex.currentAuthorityVersion === "1.4" && gateId === "mainline") {
+    // A candidate can contain the future authority index while it is still
+    // subject to v1.3 acceptance. Only the protected-main ref may exercise it.
+    if (githubRef !== "refs/heads/main") throw new Error("V14_CURRENT_AUTHORITY_REQUIRES_PROTECTED_MAIN");
+    return "V14_CURRENT";
+  }
+  return "V13_CURRENT";
+}
+
 export async function buildV14HostedPlan({
   root,
   gateId,
@@ -55,6 +71,7 @@ export async function buildPlan({
   sourceSha = process.env.GITHUB_SHA ?? "LOCAL",
   qualifiedBaseSha = process.env.SOUNDING_LINE_BASE_SHA,
   authorityMode = process.env.SOUNDING_LINE_AUTHORITY_MODE ?? "CURRENT",
+  githubRef = process.env.GITHUB_REF,
 }) {
   const [manifest, suitesFile, gatesFile, registry, authorityIndex] = await Promise.all([
     json(root, "policy-manifest.json"),
@@ -71,9 +88,8 @@ export async function buildPlan({
     authorityIndex.effectiveAmendments?.partIII !== "1.3"
   )
     throw new Error("AUTHORITY_INDEX_MISMATCH");
-  if (authorityMode === "V13_CUTOVER") {
-    if (authorityIndex.currentAuthorityVersion === "1.4") throw new Error("V13_CUTOVER_FORBIDDEN_AFTER_V14_ACTIVATION");
-  } else if (authorityIndex.currentAuthorityVersion === "1.4" && gateId === "mainline") {
+  const resolvedAuthority = resolvePlanAuthority({ authorityIndex, gateId, authorityMode, githubRef });
+  if (resolvedAuthority === "V14_CURRENT") {
     return buildV14HostedPlan({
       root,
       gateId,

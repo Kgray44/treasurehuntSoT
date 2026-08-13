@@ -176,6 +176,8 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
   assert.match(authoritative, /sourceSha:process\.env\.GITHUB_SHA/u);
   assert.match(authoritative, /qualifiedBaseSha:process\.env\.SOUNDING_LINE_BASE_SHA/u);
   assert.match(authoritative, /authorityMode:process\.env\.SOUNDING_LINE_AUTHORITY_MODE/u);
+  const planner = await readFile(path.join(root, "scripts", "sounding-line", "planner.mjs"), "utf8");
+  assert.match(planner, /V14_CURRENT_AUTHORITY_REQUIRES_PROTECTED_MAIN/u);
   assert.match(authoritative, /Sounding Line \/ \$\{\{ needs\.plan\.outputs\.gate/u);
   assert.match(authoritative, /gate: \$\{\{ needs\.plan\.outputs\.gate \}\}/u);
   assert.match(focused, /type: string/u);

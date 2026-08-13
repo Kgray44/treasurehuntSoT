@@ -5,7 +5,7 @@ import { promisify } from "node:util";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import { buildV14HostedPlan } from "../../../scripts/sounding-line/planner.mjs";
+import { buildV14HostedPlan, resolvePlanAuthority } from "../../../scripts/sounding-line/planner.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 const execute = promisify(execFile);
@@ -34,4 +34,37 @@ test("v1.4 hosted plan carries the semantic plan and worker-compatible dependenc
   for (const node of plan.nodes)
     for (const dependency of node.dependencies)
       assert.ok(plan.nodes.find((candidate) => candidate.id === dependency).execution.wave < node.execution.wave);
+});
+
+test("v1.4 current authority is restricted to protected main while v1.3 cutover remains pre-activation only", () => {
+  const v14Authority = { currentAuthorityVersion: "1.4" };
+  assert.throws(
+    () =>
+      resolvePlanAuthority({
+        authorityIndex: v14Authority,
+        gateId: "mainline",
+        authorityMode: "CURRENT",
+        githubRef: "refs/heads/candidate",
+      }),
+    /V14_CURRENT_AUTHORITY_REQUIRES_PROTECTED_MAIN/u,
+  );
+  assert.equal(
+    resolvePlanAuthority({
+      authorityIndex: v14Authority,
+      gateId: "mainline",
+      authorityMode: "CURRENT",
+      githubRef: "refs/heads/main",
+    }),
+    "V14_CURRENT",
+  );
+  assert.throws(
+    () =>
+      resolvePlanAuthority({
+        authorityIndex: v14Authority,
+        gateId: "mainline",
+        authorityMode: "V13_CUTOVER",
+        githubRef: "refs/heads/candidate",
+      }),
+    /V13_CUTOVER_FORBIDDEN_AFTER_V14_ACTIVATION/u,
+  );
 });
