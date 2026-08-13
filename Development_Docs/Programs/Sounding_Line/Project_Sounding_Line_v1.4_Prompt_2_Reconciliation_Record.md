@@ -14,6 +14,10 @@ Prompt 2 reconciles the Prompt 1 shadow foundation only. Current Sounding Line v
 
 The target-design authority is `Project_Sounding_Line_Governing_Amendment_v1.4_Run_the_Mainline_Train_Prompt0_Integrated_Edition.pdf`, document `CS-SL-XP-001 v1.4-R1`, August 13, 2026, SHA-256 `4D9DE559A24A7A2A8427171EAB679CCD423A1E9BE94FA104CF10B3D14AA31211`. Its own document control calls it a governing-amendment candidate until protected-mainline acceptance; that is consistent with this branch remaining shadow-only until Prompt 5.
 
+## Branch and baseline
+
+Prompt 2 continued `codex/sounding-line-v1.4-mainline-throughput` from Prompt 1 head `fa382767e990d85e64c1712dd54c5cfbc2f2753b`, whose base is accepted `origin/main` `0055d012a121a8950b7fa70d371d5eafc6223d10`. Live remote verification at closure still reported that same `origin/main` SHA, so no rebase or current-main reconciliation was required.
+
 ## Prompt 1 assumptions confirmed
 
 - Canonical deterministic digests, immutable derivation rather than receipt rewrite, guarded legacy reconstruction, content rehashing, mutable-state rejection, resource-level cleanup, local deterministic synthetic trees and explicit debt all remain correct shadow-foundation directions.
