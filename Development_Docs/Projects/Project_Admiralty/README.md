@@ -92,6 +92,7 @@ on the server.
 - `Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json`
 
 - `Project_Admiralty_Phase_3_Active_Phase_Registration.json`
+- `Project_Admiralty_Phase_3_Migration_Reservation.json`
 - `Project_Admiralty_Phase_3_Command_Catalog.json`
 - `Project_Admiralty_Phase_3_Role_Capability_Registry.json`
 - `Project_Admiralty_Phase_3_Deepwater_Disposition_Register.json`

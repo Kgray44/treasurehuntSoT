@@ -6,6 +6,7 @@ const mocks = vi.hoisted(() => {
     privilegedAssurance: { updateMany: vi.fn() },
     securityEvent: { create: vi.fn() },
     userAccount: { findUnique: vi.fn(), updateMany: vi.fn() },
+    wayfarerAdminCommandReceipt: { findUnique: vi.fn(), create: vi.fn() },
   };
   return {
     tx,
@@ -36,6 +37,8 @@ describe("Wayfarer administrative owner commands", () => {
     mocks.tx.securityEvent.create.mockResolvedValue({ id: "event_1234567890" });
     mocks.tx.userAccount.findUnique.mockResolvedValue(null);
     mocks.tx.userAccount.updateMany.mockResolvedValue({ count: 1 });
+    mocks.tx.wayfarerAdminCommandReceipt.findUnique.mockResolvedValue(null);
+    mocks.tx.wayfarerAdminCommandReceipt.create.mockResolvedValue({ id: "receipt_1234567890" });
     mocks.writeAdministrativeAudit.mockResolvedValue("command_1234567890");
   });
 
@@ -55,6 +58,7 @@ describe("Wayfarer administrative owner commands", () => {
       sessionId: "session_1234567890",
       reason: "Verified account-security incident requires revocation.",
       correlationId: "command_1234567890",
+      idempotencyKey: "session_12345678901234567890",
     });
 
     expect(result).toMatchObject({ id: "session_1234567890", alreadyRevoked: false });
@@ -67,6 +71,11 @@ describe("Wayfarer administrative owner commands", () => {
     expect(mocks.writeAdministrativeAudit).toHaveBeenCalledWith(
       expect.objectContaining({ action: "ADMIRALTY_SESSION_REVOKE", correlationId: "command_1234567890" }),
       mocks.tx,
+    );
+    expect(mocks.tx.wayfarerAdminCommandReceipt.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ commandType: "SESSION_REVOKE", targetId: "session_1234567890" }),
+      }),
     );
   });
 
@@ -88,6 +97,7 @@ describe("Wayfarer administrative owner commands", () => {
         sessionId: "session_1234567890",
         reason: "Verified account-security incident requires revocation.",
         correlationId: "command_1234567890",
+        idempotencyKey: "session_12345678901234567890",
       }),
     ).rejects.toThrow("audit write failed");
   });
@@ -107,9 +117,40 @@ describe("Wayfarer administrative owner commands", () => {
         expectedUpdatedAt: "2026-08-13T11:59:00.000Z",
         reason: "Verified account-security incident requires suspension.",
         correlationId: "command_1234567890",
+        idempotencyKey: "account_12345678901234567890",
       }),
     ).rejects.toThrow("WAYFARER_ADMIN_ACCOUNT_CONFLICT");
     expect(mocks.tx.userAccount.updateMany).not.toHaveBeenCalled();
+    expect(mocks.writeAdministrativeAudit).not.toHaveBeenCalled();
+  });
+
+  it("returns the original receipt for a matching idempotency retry without another mutation", async () => {
+    mocks.tx.wayfarerAdminCommandReceipt.findUnique.mockResolvedValue({
+      commandType: "SESSION_REVOKE",
+      idempotencyKey: "session_12345678901234567890",
+      actorAccountId: actor.accountId,
+      targetType: "AccountSession",
+      targetId: "session_1234567890",
+      correlationId: "session_12345678901234567890",
+      result: JSON.stringify({
+        id: "session_1234567890",
+        accountId: "account_1234567890",
+        revokedAt: "2026-08-13T12:00:00.000Z",
+        alreadyRevoked: false,
+      }),
+    });
+
+    await expect(
+      revokeAccountSessionByAdministrator({
+        actor,
+        accountId: "account_1234567890",
+        sessionId: "session_1234567890",
+        reason: "Verified account-security incident requires revocation.",
+        correlationId: "session_12345678901234567890",
+        idempotencyKey: "session_12345678901234567890",
+      }),
+    ).resolves.toMatchObject({ id: "session_1234567890", alreadyRevoked: false });
+    expect(mocks.tx.accountSession.findFirst).not.toHaveBeenCalled();
     expect(mocks.writeAdministrativeAudit).not.toHaveBeenCalled();
   });
 });

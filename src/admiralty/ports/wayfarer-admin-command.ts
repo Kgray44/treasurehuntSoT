@@ -69,7 +69,8 @@ export function wayfarerSessionRevokePort(actor: {
           accountId: request.targetId,
           sessionId: request.input.sessionId,
           reason: request.reason,
-          correlationId: request.commandId,
+          correlationId: request.idempotencyKey,
+          idempotencyKey: request.idempotencyKey,
         });
       } catch (cause) {
         rethrowWayfarerCommandError(cause);
@@ -134,7 +135,8 @@ export function wayfarerAccountSuspendPort(actor: {
           accountId: request.targetId,
           expectedUpdatedAt: request.input.expectedUpdatedAt,
           reason: request.reason,
-          correlationId: request.commandId,
+          correlationId: request.idempotencyKey,
+          idempotencyKey: request.idempotencyKey,
         });
       } catch (cause) {
         rethrowWayfarerCommandError(cause);

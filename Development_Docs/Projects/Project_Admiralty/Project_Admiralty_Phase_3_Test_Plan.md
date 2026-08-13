@@ -19,7 +19,9 @@ last_reviewed: 2026-08-13
   endpoint error normalization, and a dossier lifecycle action panel.
 - Owner transaction tests: session invalidation composes related privileged
   assurance invalidation, a redacted security event, and administrative audit;
-  audit failure and stale lifecycle revision fail closed.
+  audit failure and stale lifecycle revision fail closed. Wayfarer persists a
+  receipt keyed by idempotency key inside the same owner transaction; matching
+  retries return that original normalized result without another mutation.
 - Moderation: Harborlight owner preview/action lifecycle and transaction-bound
   audit composition, case-attached target projection, endpoint error
   normalization, owner-enforced distinct-second-review eligibility, and a
