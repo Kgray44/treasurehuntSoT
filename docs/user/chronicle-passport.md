@@ -3,7 +3,7 @@ title: Chronicle Passport
 audience: user
 status: current
 canonical_for: chronicle-passport-guide
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-12
 ---
 
 # Chronicle Passport
@@ -20,8 +20,8 @@ provenance; Saved from Community contains only eligible public items you chose
 to keep. Empty sections explain that no records exist instead of offering test
 controls or simulated data.
 
-On the Project Wakebook Phase 1 branch, choose **History** to open **Your
-Voyages**. Each card represents the Chronicle edition you actually played. Use
+Choose **History** to open **Your Voyages**, available on main through Project
+Wakebook Phase 1. Each card represents the Chronicle edition you actually played. Use
 the search field for a historical Chronicle or crew name, open **More filters**
 for state/year/role/remembrance context, change the order, or choose **Show more
 Voyages** for the next bounded page. Year headings describe the complete

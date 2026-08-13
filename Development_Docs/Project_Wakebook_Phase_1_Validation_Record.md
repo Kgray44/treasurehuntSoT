@@ -10,22 +10,35 @@ last_reviewed: 2026-08-12
 
 ## Decision
 
-**Current classification: OWNER_ACCEPTED - RECONCILED CANDIDATE PENDING MAINLINE DECISION.** The Wakebook unit/component families and the exact isolated browser journey remain passing, including checksum-bound visual evidence. The task owner explicitly accepted Phase 1 on 2026-08-12. The independently owned Helm invitation-handoff repair is accepted on `origin/main`; a fresh governed subsystem qualification subsequently passed with all 15 selected receipts clean. During that qualification, accepted main advanced through the Tideglass merge, so the exact reconciled candidate must now receive its own hosted source-bound Mainline Decision. This record does not establish deployment, protected-main integration, or a release decision.
+**Current classification: OWNER_ACCEPTED - ACCEPTED_MAINLINE.** The task owner
+accepted Phase 1 on 2026-08-12. Exact implementation candidate
+`1d1c1aaa5a0f2fbbc6b083911cb19422782afff0` then received hosted Sounding Line
+`RELEASE_GO` with 38/38 mandatory receipts `PASSED` and `CLEAN`. Protected PR
+#41 merged that exact head as `cbf634d4d5db9cf47edebb89e005e8cc910068bd`.
+Reconciliations `5a999090`, `fac85f2d`, `ebf6afe2`, and `147d4cbe` preserved
+that accepted implementation through main `95cff272`; follow-up merge
+`6d65b9aa` consumes accepted Shipwright Phase 2 `25a5ecc3`. The candidate
+updates generated/catalog records without changing Wakebook runtime behavior.
+This is source integration and owner acceptance, not deployment or
+authorization for Phase 2.
 
 ## Source identity
 
-| Field                           | Value                                                                                         |
-| ------------------------------- | --------------------------------------------------------------------------------------------- |
-| Branch                          | `codex/project-wakebook-phase1-open-the-wake`                                                 |
-| Owned worktree                  | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\project-wakebook-phase1-open-the-wake` |
-| Reconciled accepted-main base   | `fb0f13e35fcdd98434d22c357aee02f24d6d9036`                                                    |
-| Reconciliation merge SHA        | `6d3547b690dab5c35c9cee04a70809fa462ae8cf`                                                    |
-| Latest authority run            | `31572273321` (`EVIDENCE_INVALID`, historical)                                                |
-| Next authority candidate        | Frozen only after final local qualification, remote parity, and a final `origin/main` fetch   |
-| Archive implementation anchor   | `629f5c7a981b80494f7703b6410b573a661e0f39`                                                    |
-| Browser-evidence source SHA     | `22940b9004bc89def300a808f426a0ed4dc77658`                                                    |
-| Database schema change          | None                                                                                          |
-| Canonical mutable database used | No                                                                                            |
+| Field                           | Value                                                                    |
+| ------------------------------- | ------------------------------------------------------------------------ |
+| Branch                          | `codex/project-wakebook-phase1-open-the-wake`                            |
+| Owned worktree                  | `C:\Users\kkids\Documents\treasurehuntSoT-wakebook-phase1-open-the-wake` |
+| Accepted implementation head    | `1d1c1aaa5a0f2fbbc6b083911cb19422782afff0`                               |
+| Accepted implementation base    | `bb7676a75581d8d415c3ff7712cc38bc8decb031`                               |
+| Protected merge                 | `cbf634d4d5db9cf47edebb89e005e8cc910068bd` (PR #41)                      |
+| Hosted authority                | `31651096047` (`RELEASE_GO`, 38/38 `PASSED` and `CLEAN`)                 |
+| Protected binding               | `31652303048` (`Sounding Line / Mainline Decision` successful)           |
+| Current accepted-main base      | `25a5ecc3989d137a95291c340f07143860b821cc`                               |
+| Current-main reconciliation     | `6d65b9aa` (parents `4745c83e` and `25a5ecc3`)                           |
+| Archive implementation anchor   | `629f5c7a981b80494f7703b6410b573a661e0f39`                               |
+| Browser-evidence source SHA     | `22940b9004bc89def300a808f426a0ed4dc77658`                               |
+| Database schema change          | None                                                                     |
+| Canonical mutable database used | No                                                                       |
 
 ## Contract inventory
 
@@ -46,23 +59,26 @@ Sounding Line owns the authoritative definitions for:
 
 ## Evidence ledger
 
-| Evidence                          | Environment and fixture                                                                                                                     | Result                   | Truth boundary                                                        |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | --------------------------------------------------------------------- |
-| Focused TypeScript                | Owned worktree; generated SQLite Prisma client                                                                                              | PASS                     | Compile-time only                                                     |
-| Focused ESLint and Prettier       | Wakebook source, API, components, pages, tests, styles, control plane                                                                       | PASS                     | Static only                                                           |
-| `unit.wakebook`                   | Sounding Line Vitest adapter; repository deterministic fixtures                                                                             | PASS, 11/11              | Unit/API contract evidence                                            |
-| `component.wakebook`              | Sounding Line Vitest adapter; JSDOM                                                                                                         | PASS, 3/3                | Component contract evidence                                           |
-| `browser.wakebook`                | Task-owned SQLite clone, approved immutable baseline witness, isolated Chromium context                                                     | PASS, 1/1                | Required synthetic browser evidence                                   |
-| Visual review                     | 15 source-, fixture-, and SHA256-bound browser captures                                                                                     | ACCEPTED                 | Codex review only; not owner acceptance                               |
-| Large archive                     | 1,005 synthetic owner records across 2025/2026 plus separate invitation                                                                     | PASS in browser lane     | Required bounded pagination/year proof                                |
-| Owner and cover privacy negatives | Separate synthetic owner and foreign account                                                                                                | PASS in browser lane     | Required private-boundary proof                                       |
-| Historical stability              | Mutated current Chronicle and crew profile after archive creation                                                                           | PASS in browser lane     | Required snapshot proof                                               |
-| Responsive/accessibility          | 1440x1000, 430x932, 390x844; Axe serious/critical policy                                                                                    | PASS in browser lane     | Synthetic browser only                                                |
-| Historical Sounding Line mainline | GitHub runs `31527213266` and `31529958855`; latest prior candidate `33e1316426a4d7f014c1472147e42d040ecdd47e`                              | `EVIDENCE_INVALID`       | Required release authority; no waiver                                 |
-| Helm dependency repair            | PR #55 source `94200b69343c55632f7f008fda7c95e24e863425`; authority `31642248271`; accepted main `772be633857548d9d4bef06329ff6c54ed1b0465` | `SUCCESS`                | Independently owned repair, now consumed only through accepted main   |
-| Fresh local subsystem authority   | Candidate `ae5a28a751a437f8476f25c18ccc06ab4c03a52b`; 15 governed receipts, including `browser.wakebook` 1/1 in 33s                         | `RELEASE_GO`             | Local-only source boundary; all runtime conformance and cleanup clean |
-| Tideglass reconciliation          | Accepted `origin/main` `bb7676a75581d8d415c3ff7712cc38bc8`; reconciliation merge `72a1ae3df50e8972e530c1bd96f4f098f72a4164`                 | `PENDING`                | Requires a fresh hosted exact-source Mainline Decision                |
-| Owner walkthrough decision        | Task owner instruction, 2026-08-12                                                                                                          | `OWNER_ACCEPTED_PHASE_1` | Owner gate only; not a release decision                               |
+| Evidence                          | Environment and fixture                                                                                                                                                                                                                 | Result                               | Truth boundary                                                                                         |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| Focused TypeScript                | Owned worktree; generated SQLite Prisma client                                                                                                                                                                                          | PASS                                 | Compile-time only                                                                                      |
+| Focused ESLint and Prettier       | Wakebook source, API, components, pages, tests, styles, control plane                                                                                                                                                                   | PASS                                 | Static only                                                                                            |
+| `unit.wakebook`                   | Sounding Line Vitest adapter; repository deterministic fixtures                                                                                                                                                                         | PASS, 11/11                          | Unit/API contract evidence                                                                             |
+| `component.wakebook`              | Sounding Line Vitest adapter; JSDOM                                                                                                                                                                                                     | PASS, 3/3                            | Component contract evidence                                                                            |
+| `browser.wakebook`                | Task-owned SQLite clone, approved immutable baseline witness, isolated Chromium context                                                                                                                                                 | PASS, 1/1                            | Required synthetic browser evidence                                                                    |
+| Visual review                     | 15 source-, fixture-, and SHA256-bound browser captures                                                                                                                                                                                 | ACCEPTED                             | Codex review only; not owner acceptance                                                                |
+| Large archive                     | 1,005 synthetic owner records across 2025/2026 plus separate invitation                                                                                                                                                                 | PASS in browser lane                 | Required bounded pagination/year proof                                                                 |
+| Owner and cover privacy negatives | Separate synthetic owner and foreign account                                                                                                                                                                                            | PASS in browser lane                 | Required private-boundary proof                                                                        |
+| Historical stability              | Mutated current Chronicle and crew profile after archive creation                                                                                                                                                                       | PASS in browser lane                 | Required snapshot proof                                                                                |
+| Responsive/accessibility          | 1440x1000, 430x932, 390x844; Axe serious/critical policy                                                                                                                                                                                | PASS in browser lane                 | Synthetic browser only                                                                                 |
+| Historical Sounding Line mainline | GitHub runs `31527213266` and `31529958855`; latest prior candidate `33e1316426a4d7f014c1472147e42d040ecdd47e`                                                                                                                          | `EVIDENCE_INVALID`                   | Required release authority; no waiver                                                                  |
+| Helm dependency repair            | PR #55 source `94200b69343c55632f7f008fda7c95e24e863425`; authority `31642248271`; accepted main `772be633857548d9d4bef06329ff6c54ed1b0465`                                                                                             | `SUCCESS`                            | Independently owned repair, now consumed only through accepted main                                    |
+| Fresh local subsystem authority   | Candidate `ae5a28a751a437f8476f25c18ccc06ab4c03a52b`; 15 governed receipts, including `browser.wakebook` 1/1 in 33s                                                                                                                     | `RELEASE_GO`                         | Local-only source boundary; all runtime conformance and cleanup clean                                  |
+| Pre-acceptance local broad proof  | Candidate `b846631bf02fbf064cea86e9ce3bbaf4de994270`; subsystem 12/12 and mainline 40/40 `PASSED`/`CLEAN`; release-candidate 42/54 passed, all 54 clean                                                                                 | `EVIDENCE_INVALID`                   | Retained historical diagnosis only; never used as acceptance                                           |
+| Exact hosted implementation gate  | Candidate `1d1c1aaa5a0f2fbbc6b083911cb19422782afff0`; authority run `31651096047`; plan `839c6e8a54f63cc8fe8b414dc39db3996524b477b9b70152161fe1190feb52bb`; evidence `290c5062dc4f779eee2c7ca6ead51fc706db498b9e61491e3e9e94fe0d8100eb` | `RELEASE_GO`, 38/38 `PASSED`/`CLEAN` | Exact implementation authority; zero missing, duplicate, unknown, invalid, or conformance evidence     |
+| Protected merge binding           | PR #41 run `31652303048`; exact head `1d1c1aaa`; base `bb7676a7`; merge `cbf634d4`                                                                                                                                                      | `SUCCESS`                            | Protected `Sounding Line / Mainline Decision`                                                          |
+| Current reconciliation attempt    | Candidate `4745c83e191c95a708a59e56d26b200025712ff0`; authority run `31662830817`; plan `fc9112e31d1ba008a085bc2a437d24ef0a98fced5f16539779de2d8d0bdb6e70`; evidence `d6caf3b942e133e3c0c41ebf90f91bbd401881cb4225d4057c37b7978c730408` | `RELEASE_GO`, 38/38 `PASSED`/`CLEAN` | Exact-source qualification only; base advanced to Shipwright merge `25a5ecc3` before protected binding |
+| Owner walkthrough decision        | Task owner instruction, 2026-08-12                                                                                                                                                                                                      | `OWNER_ACCEPTED_PHASE_1`             | Owner gate; deployment remains separate                                                                |
 
 The first `browser.wakebook` diagnostic attempt did not execute product code because another governed validation process owned the global validation-runtime lock. The runner reported cleanup `CLEAN`; no process was stopped and no lock was removed. That environmental collision is not a product failure and is not counted as passing evidence.
 
@@ -88,6 +104,18 @@ Fresh governed local-change qualification on the reconciled candidate selected `
 
 The accepted mainline repair restored root static qualification without any Wakebook ownership change. On candidate `ae5a28a751a437f8476f25c18ccc06ab4c03a52b`, the governed `subsystem` authority selected 15 suites and returned local finalizer `RELEASE_GO`: `static.core`, both Wakebook families, and `browser.wakebook` (1/1 in 33 seconds) all passed; every runtime-conformance and cleanup receipt was `CLEAN`. This evidence is source-bound only to that local candidate. `origin/main` then advanced through accepted Tideglass Phase 3 work, so Wakebook reconciled it in `72a1ae3df50e8972e530c1bd96f4f098f72a4164`, preserving the Wakebook control plane alongside the accepted mainline registrations. No local receipt substitutes for the fresh hosted decision required for that reconciliation commit.
 
+The succeeding exact candidate `1d1c1aaa5a0f2fbbc6b083911cb19422782afff0`
+received hosted mainline authority in run `31651096047`. The finalizer retained
+38 mandatory receipts, all 38 `PASSED` and all 38 cleanup states `CLEAN`, with
+zero missing, duplicate, unknown, invalid, missing-conformance, or
+invalid-conformance evidence. Its plan digest is
+`839c6e8a54f63cc8fe8b414dc39db3996524b477b9b70152161fe1190feb52bb`
+and evidence digest is
+`290c5062dc4f779eee2c7ca6ead51fc706db498b9e61491e3e9e94fe0d8100eb`.
+Protected binding run `31652303048` verified that exact authority against PR
+#41's head/base/merge identity, and the protected merge became
+`cbf634d4d5db9cf47edebb89e005e8cc910068bd`.
+
 ## Privacy and source-safety assertions
 
 - List projection contains no Reflection text, Memory body, full Chronicle snapshot, raw event payload, storage key, request-derived authorization, or foreign-owner detail.
@@ -107,6 +135,8 @@ Phase 1 exposes no disabled Timeline, People, Statistics, map, Tideglass, sharin
 
 ## Remaining gates
 
-1. Verify the reconciled candidate's static/document/policy integrity and remote parity with the pull-request/base identity envelope.
-2. Run one hosted Sounding Line Mainline Decision on the exact reconciled source. Do not start Phase 2 or merge to protected main without its source-bound `RELEASE_GO` decision receipt.
-3. After `RELEASE_GO`, require the normal protected merge binding and exact integrated-main parity proof before calling Phase 1 accepted.
+No Phase 1 implementation, owner, Sounding Line, or protected-main acceptance
+gate remains. The current task is record/catalog reconciliation only: keep the
+accepted implementation unchanged, validate and publish the current records
+through the governed closure path, and preserve deployment and Phase 2 as
+separate future decisions.
