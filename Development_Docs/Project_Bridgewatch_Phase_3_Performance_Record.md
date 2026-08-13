@@ -25,15 +25,16 @@ also exercises authenticated telemetry at 10, 25, and 50 workers and a warm
 summary response for each count. The fixture contains no private repository,
 user, prompt, command, log, cookie, credential, or application payload.
 
-## Candidate-preparation result
+## Current-main candidate-preparation result
 
 On 2026-08-12, the task-owned production build ran loopback-only on a separate
-port with an empty private test database and no credential. After startup,
+port with an isolated private test database and no credential. After startup,
 ten warm `GET /api/summary` requests returned `200`: mean 25.51 ms and maximum
 82.83 ms. The Node process RSS was 79.02 MB. A five-second idle sample on the
 16-logical-processor host produced 0.000% normalized CPU. The task-owned
-browser's post-load dashboard showed all six program cards and the history
-surface at 37.90 ms navigation / 36.90 ms DOM-content-loaded timing.
+browser's post-load dashboard showed the current history/control-room surface
+without a client error; desktop, phone, and wide layout observations are in the
+Validation Record.
 
 The representative historical fixture recorded the following from its exact
 test output:
@@ -43,8 +44,8 @@ test output:
 | Projects / phases / milestones                       |                              36 / 108 / 324 |
 | Workers / recent test nodes                          |                                    50 / 240 |
 | Last-12-hour events / project-history events queried |                     73 / 100 (bounded page) |
-| History query                                        |                                     1.22 ms |
-| Retention                                            |                                   816.31 ms |
+| History query                                        |                                     1.85 ms |
+| Retention                                            |                                 1,415.41 ms |
 | SQLite file                                          |                30,887,936 bytes (29.45 MiB) |
 | Warm summary fixtures                                | 10, 25, and 50 workers all below one second |
 

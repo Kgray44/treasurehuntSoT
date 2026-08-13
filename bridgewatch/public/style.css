@@ -82,6 +82,13 @@ h3 {
   background: #081522;
   padding: 1rem;
 }
+.list-item,
+.attention-item,
+.history-event,
+.archive-item {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
 .metric-value {
   display: block;
   margin-top: 0.4rem;
