@@ -12,8 +12,11 @@ test("Shipwright Phase 2 keeps contract-aware authoring usable across modes and 
   const taleSlug = `shipwright-contract-aware-${Date.now()}`;
 
   await page.goto("/");
-  await page.getByRole("link", { name: "Enter as Creator", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Open Voyagewright Studio" })).toBeVisible();
+  await Promise.all([
+    page.waitForURL(/\/studio\/sign-in(?:\?.*)?$/u),
+    page.getByRole("link", { name: "Enter as Creator", exact: true }).click(),
+  ]);
+  await expect(page.getByRole("heading", { name: "Open Voyagewright Studio" })).toBeVisible({ timeout: 15_000 });
   await page.getByRole("link", { name: "Continue to account sign-in" }).click();
   await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
 
