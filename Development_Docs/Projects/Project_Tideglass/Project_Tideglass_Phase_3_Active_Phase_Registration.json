@@ -3,7 +3,7 @@
   "project": "Project Tideglass",
   "phase": "3",
   "phaseName": "Choose the Passage",
-  "status": "INTEGRATED_MAINLINE_RECORD_ONLY_CLOSEOUT_PENDING",
+  "status": "ACCEPTED_MAINLINE",
   "originalBaseSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
   "qualifiedBaseSha": "4e88ba5463878e3b2cab8d03bb4471201bb1f039",
   "integratedMainSha": "634312adbf72a8a4279a755b20fb06957ced7e77",
@@ -32,8 +32,17 @@
     "mergeSha": "634312adbf72a8a4279a755b20fb06957ced7e77",
     "mergeTreeEqualsCandidateTree": true
   },
-  "postMergeObservation": "The local observation bound to 634312ad was terminal EVIDENCE_INVALID only because the generated FEATURE_CATALOG.md retained 4e88ba54 provenance. It did not invalidate the sealed hosted candidate authority or protected merge. The validation runtime was released; the remaining correction is record-only.",
-  "integrationRule": "The closeout changes only Tideglass records, documentation index state, and generated catalog provenance. It preserves Phase 1/2 semantic authority, Wayfarer history authority, accepted Wakebook Journey Detail, accepted Shipwright Studio UI, and all Phase 4 deferrals.",
+  "recordOnlyClosure": {
+    "pr": 79,
+    "bindingRunId": "31673540201",
+    "candidateSha": "7c3da7a902d69372cd49db66ff745e2bcd4f4c27",
+    "mergeSha": "0fb9dfe96e1d414b45edf1841198beeda40e9c27",
+    "mandatoryReceiptCount": 1,
+    "evidenceDigest": "f3bac06ae94128bb99c403db6fda1a1d4b79ab6b23fef9e9bdba7557c2b13cf3",
+    "mergeTreeEqualsCandidateTree": true
+  },
+  "postMergeObservation": "The local observation bound to 634312ad was terminal EVIDENCE_INVALID only because the generated FEATURE_CATALOG.md retained 4e88ba54 provenance. Record-only PR #79 corrected that provenance and acceptance packet through a sealed RELEASE_GO closure. The validation runtime was released.",
+  "integrationRule": "Phase 3 is accepted mainline. Its record-only closure preserved Phase 1/2 semantic authority, Wayfarer history authority, accepted Wakebook Journey Detail, accepted Shipwright Studio UI, and all Phase 4 deferrals.",
   "registeredAt": "2026-08-13",
-  "nextGate": "Run the governed record-only closeout against exact current main and its one sealed prior Tideglass implementation authority. Do not dispatch a new product Mainline Decision or start Phase 4."
+  "nextGate": "NONE_PHASE_3_ACCEPTED_MAINLINE. Do not begin Phase 4 without separate authorization."
 }

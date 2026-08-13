@@ -212,7 +212,7 @@ The subsequent local post-merge observation is intentionally not elevated to
 authority: it returned `EVIDENCE_INVALID` only because the generated Feature
 Catalog was still stamped with the qualified-base SHA. The exact focused
 `npm run features:validate` reproduction reports that sole stale artifact.
-All runtime resources were released. The next and only remaining action is a
-record-only catalog/record closure that carries the sealed implementation
-authority forward; it neither repeats Mainline Decision nor changes product
-source.
+All runtime resources were released. Record-only PR #79 then carried the sealed
+implementation authority forward through run `31673540201` (`RELEASE_GO`, one
+clean closure receipt) and protected merge `0fb9dfe96e1d414b45edf1841198beeda40e9c27`.
+It neither repeated Mainline Decision nor changed product source.

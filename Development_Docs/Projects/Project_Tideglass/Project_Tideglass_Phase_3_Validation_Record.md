@@ -265,7 +265,11 @@ not eligible for retry: its sole invalid receipt was `unit.feature-catalog`,
 which correctly found that generated `FEATURE_CATALOG.md` retained the prior
 `4e88ba54` audit provenance. Every Tideglass receipt is clean. The smallest
 registered reproduction is `npm run features:validate`, which reports exactly
-that stale generated file. The narrowly correct response is the record-only
+that stale generated file. The narrowly correct response was a record-only
 catalog/record closeout, not a source change or a repeated Mainline Decision.
-The process exited; `validation-runtime.lock` was exclusively openable and
-ports 3100, 3101, 3102, and 3200 were free.
+PR #79 then received sealed record-only `RELEASE_GO` through run `31673540201`,
+with one clean closure receipt and evidence digest
+`f3bac06ae94128bb99c403db6fda1a1d4b79ab6b23fef9e9bdba7557c2b13cf3`, before
+protected merge `0fb9dfe96e1d414b45edf1841198beeda40e9c27`. The process exited;
+`validation-runtime.lock` was exclusively openable and ports 3100, 3101, 3102,
+and 3200 were free.
