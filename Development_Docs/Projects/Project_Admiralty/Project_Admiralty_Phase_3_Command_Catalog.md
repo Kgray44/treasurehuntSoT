@@ -8,9 +8,11 @@ last_reviewed: 2026-08-13
 
 # Project Admiralty Phase 3 command catalog
 
-The machine-readable catalog is the command inventory. Its starting disposition
-records the result of the accepted-source owner survey: Harborlight has
-canonical moderation primitives, while admin-specific Wayfarer commands need
-an owner-domain extension. No generic job or configuration mutation port was
+The machine-readable catalog is the command inventory. Wayfarer now owns the
+implemented session-revocation and bounded account-suspension extensions, and
+Harborlight owns the implemented canonical moderation command port. Role
+assignment remains an owner-domain extension because the only current writer is
+the one-time bootstrap reconciler; it must not be repurposed as an everyday
+administrator role editor. No generic job or configuration mutation port was
 found; those capabilities remain unavailable until a bounded owner contract is
 implemented and proved.
