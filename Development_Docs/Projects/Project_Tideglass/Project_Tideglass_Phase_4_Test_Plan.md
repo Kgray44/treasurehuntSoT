@@ -14,8 +14,8 @@ canonical_for: project-tideglass-phase-4-test-plan
 | Cache/execution               | Exact key isolation, digest corruption rebuild, warm read, local-only truth, deterministic separate-process output | Corruption rebuild covered; remaining work pending                                        |
 | Admiralty diagnostics         | CSRF, assurance, rate limit, exact target grant, target-account edition authorization, safe DTO                    | Unit/schema coverage in progress                                                          |
 | Wakebook and Studio           | Exact played anchor, return context, Creator comparison, disclosure                                                | Regression pending                                                                        |
-| Harborlight and Helm          | Only accepted same-Chronicle/update or edition-selection consumers                                                 | Harborlight exact-release handoff unit coverage added; Helm remains unavailable by design |
-| UI/accessibility              | Desktop, mobile, keyboard, zoom, reduced motion, Axe, failure/no-change/partial states                             | Browser qualification pending                                                             |
+| Harborlight and Helm          | Only accepted same-Chronicle/update or edition-selection consumers                                                 | Harborlight exact-release and Helm exact selected-to-recommended preflight covered; Helm is read-only and CAPTAIN_SAFE |
+| UI/accessibility              | Desktop, mobile, keyboard, zoom, reduced motion, Axe, failure/no-change/partial states                             | Frozen-candidate browser journey passed, including Helm preflight                         |
 | Documentation/catalog         | Document index, generated catalog, catalog validation                                                              | Incremental validation required after each record update                                  |
 
 The authoritative Sounding Line run is reserved for a frozen, owner-reviewed

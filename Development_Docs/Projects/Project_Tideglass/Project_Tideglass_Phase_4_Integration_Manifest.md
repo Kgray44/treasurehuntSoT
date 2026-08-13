@@ -15,7 +15,8 @@ canonical_for: project-tideglass-phase-4-integration-manifest
 | Shipwright        | Existing Creator-authorized Studio route                                                                                   | Retained; final regression pending                                                                                    |
 | Admiralty         | Dossier approved-grant panel -> `POST /api/admin/support/tideglass` through support grant and target-account authorization | Implemented; exact-pair form is only shown for the scoped category                                                    |
 | Harborlight       | Community listing current release plus an earlier active release with exact same-Chronicle source editions                 | Public Tideglass handoff implemented; package checksums, install, rollback, and license data remain Harborlight-owned |
-| Helm              | Current main has no accepted edition-selection/preflight comparison consumer                                               | No Captain projection or launch behavior fabricated                                                                   |
+| Helm              | Captain Library -> `GET /api/captain/tideglass/preflight` -> exact selected-to-recommended Tideglass pair                 | Implemented; requires active Captain workspace, verifies public-or-own Chronicle scope, returns CAPTAIN_SAFE category/count summary only, and never changes Voyage state |
 
-This manifest is deliberately not a completion receipt. It records exact seams
-and the reasons unavailable consumers are not simulated.
+This manifest is deliberately not a completion receipt. It records exact seams,
+including the read-only Helm preflight; owner acceptance and protected integration
+remain separate gates.

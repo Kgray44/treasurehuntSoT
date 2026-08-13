@@ -35,19 +35,30 @@ exact-target `TIDEGLASS_DIAGNOSTICS` grant through the visible Dossier panel.
 Its synthetic fixture checksum was
 `a8bb058d45787649190922896968af3cb7fc012839d12b4f7b9b08a15980fa84`.
 
-This is **not final Phase 4 candidate evidence**. The harness labels its source
-with checked-out `HEAD` (`60b89841986e66fbc2c0828489d38002a1617506`) while
-the Phase 4 worktree had uncommitted changes. A frozen candidate must be
-committed, then rebuilt and rerun under its exact SHA before owner walkthrough
-or authoritative acceptance.
+## Frozen candidate qualification
 
-## Not yet qualified
+The frozen candidate `f040e892b901050fe210743c98ac1df85cea8b0a` passed the
+focused Captain-preflight route, boundary, and Captain Library tests (8 tests),
+repository TypeScript checking, and `git diff --check` before its clean browser
+run. The browser harness then rebuilt this exact SHA and passed its full A-L
+journey against a fresh, synthetic SQLite fixture rooted at:
 
-Helm still requires an accepted edition-selection/preflight consumer, which does
-not exist on this current mainline. Harborlight now uses the exact source editions
-recorded by its current and earlier active Community releases, only when they
-resolve to the same public Chronicle; cross-lineage and package-only inputs are
-absent. The new Admiralty diagnostic route has unit coverage but no complete
-synthetic support-grant browser journey yet. No
-Sounding Line authority, owner walkthrough, protected merge, or completion
-receipt has been issued.
+`C:\Users\kgray\AppData\Local\ProjectTideglass\phase4-candidate-f040e89-helm`
+
+Its fixture checksum is
+`ee5a9368c85126bdae3c7678980f59942204a7a32b0aaf3ccd2bdbc1efcdc3e3`.
+The run includes `TG4-EV-I-HELM-CAPTAIN-PREFLIGHT`: a Captain selects historical
+edition 1.0, receives the exact selected-versus-recommended 2.0 CAPTAIN_SAFE
+semantic category/count summary without story or ending disclosure, and returns
+to the Voyage configuration step. The browser evidence manifest is at:
+
+`C:\Users\kgray\AppData\Local\ProjectTideglass\phase4-candidate-f040e89-helm\browser\evidence\manifest.json`
+
+The production build passed with the inherited Turbopack NFT warning traced to
+`next.config.ts` and Community Harbor media routing; it did not fail the build.
+
+## Remaining authority boundary
+
+Local implementation and qualification are complete. No owner walkthrough
+decision, Sounding Line authority, protected merge, or completion receipt has
+been issued.
