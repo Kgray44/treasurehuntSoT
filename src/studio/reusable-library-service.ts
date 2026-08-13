@@ -23,6 +23,94 @@ function parseJsonArray(value: string) {
   }
 }
 
+function parseJsonRecord(value: string): Record<string, unknown> {
+  try {
+    const parsed = JSON.parse(value);
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? (parsed as Record<string, unknown>) : {};
+  } catch {
+    return {};
+  }
+}
+
+export async function listInstalledCommunityReusableContent(ownerAccountId: string) {
+  const installations = await db.communityInstallation.findMany({
+    where: { accountId: ownerAccountId },
+    select: {
+      id: true,
+      packageId: true,
+      releaseId: true,
+      installedPackageChecksum: true,
+      localModificationChecksum: true,
+      installedAt: true,
+    },
+  });
+  if (!installations.length) return [];
+  const [packages, releases] = await Promise.all([
+    db.communityPackage.findMany({
+      where: {
+        id: { in: installations.map((installation) => installation.packageId) },
+        storageStatus: "READY",
+        scanStatus: "CLEAN",
+      },
+      select: { id: true, packageChecksum: true },
+    }),
+    db.communityRelease.findMany({
+      where: {
+        id: { in: installations.map((installation) => installation.releaseId) },
+        moderationStatus: "ACTIVE",
+        deprecatedAt: null,
+      },
+      select: {
+        id: true,
+        semanticVersion: true,
+        licenseSnapshot: true,
+        attributionSnapshot: true,
+        compatibility: true,
+        listing: { select: { title: true } },
+      },
+    }),
+  ]);
+  const packageById = new Map(packages.map((item) => [item.id, item]));
+  const releaseById = new Map(releases.map((item) => [item.id, item]));
+  const eligible = installations.filter(
+    (installation) =>
+      packageById.get(installation.packageId)?.packageChecksum === installation.installedPackageChecksum &&
+      Boolean(releaseById.get(installation.releaseId)),
+  );
+  if (!eligible.length) return [];
+  const items = await db.communityPackageItem.findMany({
+    where: {
+      packageId: { in: eligible.map((installation) => installation.packageId) },
+      itemType: { in: ["CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"] },
+    },
+    orderBy: [{ logicalId: "asc" }],
+  });
+  const installationByPackage = new Map(eligible.map((item) => [item.packageId, item]));
+  return items.flatMap((item) => {
+    const installation = installationByPackage.get(item.packageId);
+    if (!installation) return [];
+    const release = releaseById.get(installation.releaseId);
+    if (!release) return [];
+    const metadata = parseJsonRecord(item.metadata);
+    return [
+      {
+        id: `community:${installation.id}:${item.logicalId}`,
+        itemType: item.itemType,
+        title: typeof metadata.title === "string" && metadata.title.trim() ? metadata.title : item.logicalId,
+        releaseId: installation.releaseId,
+        releaseVersion: release.semanticVersion,
+        listingTitle: release.listing.title,
+        license: parseJsonRecord(release.licenseSnapshot),
+        attribution: parseJsonArray(release.attributionSnapshot),
+        compatibility: parseJsonRecord(release.compatibility),
+        updateState: installation.localModificationChecksum ? "LOCAL_MODIFICATION" : "CURRENT",
+        installedAt: installation.installedAt.toISOString(),
+        insertionState: "UNAVAILABLE_NO_AUTHORING_ENVELOPE" as const,
+      },
+    ];
+  });
+}
+
 export async function listReusableAuthoringItems(ownerAccountId: string) {
   const items = await db.reusableAuthoringItem.findMany({
     where: { ownerAccountId, archivedAt: null },

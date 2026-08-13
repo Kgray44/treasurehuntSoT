@@ -123,6 +123,19 @@ type ReusableParameterPrompt = {
   parameters: ReusableParameter[];
   values: Record<string, string | number | boolean>;
 };
+type InstalledCommunityReusableItem = {
+  id: string;
+  itemType: string;
+  title: string;
+  releaseId: string;
+  releaseVersion: string;
+  listingTitle: string;
+  license: Record<string, unknown>;
+  attribution: string[];
+  compatibility: Record<string, unknown>;
+  updateState: "CURRENT" | "LOCAL_MODIFICATION";
+  insertionState: "UNAVAILABLE_NO_AUTHORING_ENVELOPE";
+};
 
 const clone = <T,>(value: T): T => structuredClone(value);
 /** Transitional source guard while the extracted contract-aware Inspector owns the live surface. */
@@ -207,6 +220,7 @@ export function TaleEditor({
   const [assetLimit, setAssetLimit] = useState(24);
   const [libraryTab, setLibraryTab] = useState<"blocks" | "chapters" | "outline" | "reuse">("blocks");
   const [reusableItems, setReusableItems] = useState<ReusableLibraryItem[]>([]);
+  const [installedCommunityItems, setInstalledCommunityItems] = useState<InstalledCommunityReusableItem[]>([]);
   const [reusableLoading, setReusableLoading] = useState(false);
   const [reusableError, setReusableError] = useState("");
   const [reusableSearch, setReusableSearch] = useState("");
@@ -312,9 +326,16 @@ export function TaleEditor({
     setReusableError("");
     try {
       const response = await fetch(`/api/studio/tales/${taleId}/reusable-content`, { cache: "no-store" });
-      const body = (await response.json()) as { items?: ReusableLibraryItem[]; error?: string };
+      const body = (await response.json()) as {
+        items?: ReusableLibraryItem[];
+        installedCommunityItems?: InstalledCommunityReusableItem[];
+        error?: string;
+      };
       if (!response.ok) setReusableError(body.error ?? "Reusable content could not be opened.");
-      else setReusableItems(body.items ?? []);
+      else {
+        setReusableItems(body.items ?? []);
+        setInstalledCommunityItems(body.installedCommunityItems ?? []);
+      }
     } catch {
       setReusableError("Reusable content could not be opened. Check your connection and try again.");
     } finally {
@@ -2326,6 +2347,40 @@ export function TaleEditor({
                         </li>
                       ))}
                     </ul>
+                    <section className="installed-community-content" aria-label="Installed Community content">
+                      <h4>Installed Community content</h4>
+                      {!installedCommunityItems.length && (
+                        <p>No clean, active installed Community templates or presets are available to this Creator.</p>
+                      )}
+                      <ul className="reusable-library-list">
+                        {installedCommunityItems.map((item) => (
+                          <li key={item.id}>
+                            <p className="eyebrow">
+                              {item.itemType.replaceAll("_", " ")} · Release {item.releaseVersion}
+                            </p>
+                            <strong>{item.title}</strong>
+                            <p>
+                              From {item.listingTitle}.{" "}
+                              {item.updateState === "CURRENT"
+                                ? "Installed release is current."
+                                : "Installed copy has local changes."}
+                            </p>
+                            <small>
+                              License:{" "}
+                              {typeof item.license.key === "string" ? item.license.key : "recorded by Harborlight"}.
+                              Attribution:{" "}
+                              {item.attribution.length ? item.attribution.join(", ") : "recorded by Harborlight"}.
+                            </small>
+                            <p>
+                              <small>
+                                Insertion is unavailable: this accepted package stores no Shipwright authoring envelope.
+                                Harborlight release and lineage remain read-only.
+                              </small>
+                            </p>
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
                   </section>
                 )}
               </aside>

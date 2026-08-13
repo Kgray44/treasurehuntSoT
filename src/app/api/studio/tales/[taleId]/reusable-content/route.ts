@@ -11,6 +11,7 @@ import {
   createReusableAuthoringItem,
   getReusableAuthoringItemVersion,
   listReusableAuthoringItems,
+  listInstalledCommunityReusableContent,
   planReusableAuthoringInsertion,
 } from "@/studio/reusable-library-service";
 
@@ -60,7 +61,11 @@ export async function GET(request: Request, context: { params: Promise<{ taleId:
     const itemId = new URL(request.url).searchParams.get("itemId");
     if (itemId)
       return NextResponse.json(await getReusableAuthoringItemVersion(authorization.session.accountId, itemId));
-    return NextResponse.json({ items: await listReusableAuthoringItems(authorization.session.accountId) });
+    const [items, installedCommunityItems] = await Promise.all([
+      listReusableAuthoringItems(authorization.session.accountId),
+      listInstalledCommunityReusableContent(authorization.session.accountId),
+    ]);
+    return NextResponse.json({ items, installedCommunityItems });
   } catch (cause) {
     return apiError(cause);
   }

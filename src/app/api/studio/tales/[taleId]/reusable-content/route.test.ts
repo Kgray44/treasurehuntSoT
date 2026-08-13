@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({
   authorization: vi.fn(),
   list: vi.fn(),
+  listCommunity: vi.fn(),
   create: vi.fn(),
   createPreset: vi.fn(),
   createFragment: vi.fn(),
@@ -15,6 +16,7 @@ vi.mock("@/chronicle/studio-authorization", () => ({ requireOwnedStudioTale: moc
 vi.mock("@/chronicle/api", () => ({ apiError: () => new Response(null, { status: 400 }) }));
 vi.mock("@/studio/reusable-library-service", () => ({
   listReusableAuthoringItems: mocks.list,
+  listInstalledCommunityReusableContent: mocks.listCommunity,
   createReusableAuthoringItem: mocks.create,
   createBlockPreset: mocks.createPreset,
   createBlockFragment: mocks.createFragment,
@@ -40,6 +42,20 @@ describe("reusable authoring content route", () => {
     expect((await POST(new Request("http://localhost/reusable", { method: "POST" }), context)).status).toBe(404);
     expect(mocks.list).not.toHaveBeenCalled();
     expect(mocks.createPreset).not.toHaveBeenCalled();
+  });
+
+  it("projects only the owner-scoped installed Community metadata alongside local reusable items", async () => {
+    mocks.list.mockResolvedValueOnce([{ id: "local-1" }]);
+    mocks.listCommunity.mockResolvedValueOnce([
+      { id: "community-1", insertionState: "UNAVAILABLE_NO_AUTHORING_ENVELOPE" },
+    ]);
+    const response = await GET(new Request("http://localhost/reusable"), context);
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({
+      items: [{ id: "local-1" }],
+      installedCommunityItems: [{ id: "community-1", insertionState: "UNAVAILABLE_NO_AUTHORING_ENVELOPE" }],
+    });
+    expect(mocks.listCommunity).toHaveBeenCalledWith("creator-1");
   });
 
   it("saves a preset only from a persisted, authorized block identity", async () => {
