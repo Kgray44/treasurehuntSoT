@@ -90,6 +90,7 @@ function writeCsv(name, headers, records) {
 }
 
 function sourceOwner(source) {
+  if (source.pathPattern.startsWith("/api/studio/tales/[taleId]/migrations/")) return "shipwright";
   if (
     source.pathPattern.startsWith("/admin") ||
     source.pathPattern.startsWith("/api/admin") ||
@@ -130,10 +131,13 @@ const census = censusSummary(sources);
 const routeInventory = readJson("Homeport_Route_Inventory.json");
 const existingBySource = new Map(routeInventory.routes.map((route) => [route.implementationSource, route]));
 const sourceByFile = new Map(sources.map((source) => [source.sourceFile, source]));
+const discoveredSourceFiles = new Set();
 
 for (const source of [...pages, ...handlers]) {
   let route = existingBySource.get(source.sourceFile);
+  const discovered = !route;
   if (!route) {
+    discoveredSourceFiles.add(source.sourceFile);
     if (source.kind === "page" && !knownPagePatterns.includes(source.pathPattern))
       throw new Error(`PHASE5_PAGE_INVENTORY_MISSING:${source.sourceFile}`);
     route = {
@@ -171,8 +175,10 @@ for (const source of [...pages, ...handlers]) {
     existingBySource.set(source.sourceFile, route);
   }
   route.routePattern = source.pathPattern;
-  route.ownerProject = sourceOwner(source);
-  route.productArea = sourceProductArea(source);
+  if (discovered) {
+    route.ownerProject = sourceOwner(source);
+    route.productArea = sourceProductArea(source);
+  }
   // Phase 5 originally emitted CURRENT_GOVERNED for newly discovered pages,
   // but that value is not part of the canonical route-maturity vocabulary.
   // Normalize the two historical records through this generator so reruns
@@ -547,6 +553,7 @@ for (const { source, route, policy } of pageInventory) {
 }
 
 for (const source of handlers) {
+  if (!discoveredSourceFiles.has(source.sourceFile)) continue;
   const route = existingBySource.get(source.sourceFile);
   route.phase5Implementation = {
     phase: "PHASE_5_CLOSE_ROUTE_AND_INFORMATION_ARCHITECTURE_GAPS",
@@ -559,7 +566,7 @@ for (const source of handlers) {
   };
 }
 routeInventory.classifications = routeClassifications;
-routeInventory.knownOwners = unique([...routeInventory.knownOwners, "project-admiralty"]);
+routeInventory.knownOwners = unique([...routeInventory.knownOwners, "project-admiralty", "shipwright"]);
 routeInventory.totals = {
   ...routeInventory.totals,
   routeFiles: routeInventory.routes.length,

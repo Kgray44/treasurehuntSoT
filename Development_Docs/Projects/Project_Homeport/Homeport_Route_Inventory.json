@@ -36,14 +36,15 @@
     "lanternwake",
     "sounding-line",
     "project-admiralty",
-    "project-wakebook"
+    "project-wakebook",
+    "shipwright"
   ],
   "totals": {
-    "routeFiles": 343,
+    "routeFiles": 344,
     "pages": 109,
-    "services": 234,
+    "services": 235,
     "sourceDiscoveredPages": 109,
-    "sourceDiscoveredServices": 234,
+    "sourceDiscoveredServices": 235,
     "orphanedOrdinaryRoutes": 0
   },
   "routes": [
@@ -25586,6 +25587,45 @@
       "targetDisposition": "WAKEBOOK_PHASE_1_OWNER_PRIVATE_SERVICE",
       "status": "BRANCH_COMPLETE_NOT_MERGED",
       "notes": "Owner-private Journey Detail cover endpoint; it returns only retained safe cover media and has no ordinary navigation."
+    },
+    {
+      "routeId": "route-route-api-studio-tales-taleid-migrations-blockid",
+      "routePattern": "/api/studio/tales/[taleId]/migrations/[blockId]",
+      "implementationSource": "src/app/api/studio/tales/[taleId]/migrations/[blockId]/route.ts",
+      "kind": "route",
+      "classification": "API_OR_SERVICE",
+      "ownerProject": "shipwright",
+      "productArea": "Creator Studio",
+      "shellMode": "N/A",
+      "logicalParent": null,
+      "currentVisibleEntries": [],
+      "currentDesktopPath": [],
+      "currentMobilePath": [],
+      "authenticationRequirement": "ROUTE_HANDLER_POLICY",
+      "capabilityRequirements": [],
+      "returnOrBackRoute": null,
+      "emptyStateAction": "N/A_SERVICE_ROUTE",
+      "dynamicSourceRouteOrContentSource": null,
+      "compatibilityAliases": [],
+      "redirects": [],
+      "currentSupportedStates": ["SERVICE_RESPONSE"],
+      "currentJourneys": [],
+      "currentVisualEvidenceIds": [],
+      "currentMaturity": "INTERNAL_ONLY",
+      "directUrlRequired": true,
+      "orphanedOrdinaryRoute": false,
+      "targetDisposition": "PHASE_5_SOURCE_PARITY",
+      "status": "PHASE_5_SOURCE_RECONCILED",
+      "notes": "Added additively by the source-driven Phase 5 route census under an explicit current policy classification.",
+      "phase5Implementation": {
+        "phase": "PHASE_5_CLOSE_ROUTE_AND_INFORMATION_ARCHITECTURE_GAPS",
+        "startingSha": "54372224fc9bf4b4fb42797ca58a5a224ffdb92a",
+        "architectureFreezeSha": "bbe9659cc5077c834510c3e4db77aa362e45b6fd",
+        "implementationSourceSha": "IMPLEMENTATION_SOURCE_PENDING",
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "sourceParityOnly": true,
+        "humanReachabilityExcluded": true
+      }
     }
   ],
   "phase1Implementation": {
@@ -25734,16 +25774,10 @@
     "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
     "updatedAt": "2026-08-03T18:00:00.000Z",
     "census": {
-      "sourceCount": 349,
-      "counts": {
-        "page": 109,
-        "route": 231,
-        "layout": 7,
-        "not-found": 0,
-        "error": 2
-      },
+      "sourceCount": 353,
+      "counts": { "page": 109, "route": 235, "layout": 7, "not-found": 0, "error": 2 },
       "humanRouteCount": 109,
-      "serviceRouteCount": 231
+      "serviceRouteCount": 235
     },
     "sourceParity": true,
     "noSchemaChange": true,
