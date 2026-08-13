@@ -166,6 +166,7 @@ jobs:
           path: |
             sounding-line-prepared-dependency
             !sounding-line-prepared-dependency/node_modules/.prisma/**
+            !sounding-line-prepared-dependency/node_modules/@forever-treasure/bridgewatch/**
           if-no-files-found: error
           include-hidden-files: true
           retention-days: 14
