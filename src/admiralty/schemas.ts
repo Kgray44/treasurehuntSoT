@@ -48,6 +48,14 @@ export const moderationActionSchema = z
     secondReviewerId: z.string().trim().min(1).max(128).regex(/^[A-Za-z0-9_-]+$/u).optional(),
   })
   .strict();
+export const accountSuspendSchema = z
+  .object({
+    targetAccountId: z.string().trim().min(1).max(128).regex(/^[A-Za-z0-9_-]+$/u),
+    expectedUpdatedAt: z.string().datetime(),
+    reason: z.string().trim().min(8).max(240),
+    idempotencyKey: z.string().trim().min(16).max(128).regex(/^[A-Za-z0-9_-]+$/u),
+  })
+  .strict();
 export const supportReadSchema = z
   .object({
     grantId: z
