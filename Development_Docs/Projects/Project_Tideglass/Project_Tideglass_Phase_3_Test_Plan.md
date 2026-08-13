@@ -21,7 +21,7 @@ Development verification runs the smallest relevant Tideglass, Wayfarer, Studio,
 | Comparison API           | Independent exact-edition authorization, same-Chronicle enforcement, public/player/Creator server-derived audience, no client elevation, and no raw snapshot payload.                                          |
 | Components               | Edition card, selectors, summary, significance, compatibility, filter, change card, disclosure, annotation panel, history chooser, no-change, partial, error, mobile stack, and keyboard semantics.            |
 | Studio cutover           | Semantic branch rewire, ending, Captain requirement, and caption change render from Tideglass; a regression fails if the ordinary Studio path calls the raw snapshot comparator.                               |
-| Navigation               | Chronicle-detail and history entries are visible and return naturally; route and screen records have no orphaned route.                                                                                        |
+| Navigation               | Chronicle-detail, Passport, and accepted Wakebook Journey Detail entries are visible and return naturally; route and screen records have no orphaned route.                                                    |
 | Product journeys         | Discovery, what-I-played, multiple playthroughs, up-to-date, historical, spoiler safety, Studio, mobile, keyboard/zoom/reduced-motion, and Axe journeys use privacy-safe synthetic data.                       |
 | Privacy/security         | History and edition IDOR, cross-Chronicle pair, Creator/technical escalation, spoiler escalation, open redirect, storage/raw snapshot/private media/Creator note/hidden-count absence.                         |
 | Performance              | Synthetic multi-chapter, hundreds-of-blocks comparison measures service, summary/projection, initial page render, and category filtering without a Phase 4 distributed-job design.                             |
@@ -31,9 +31,11 @@ Development verification runs the smallest relevant Tideglass, Wayfarer, Studio,
 
 - `tests/tideglass/phase3-passage.test.ts` covers current-pointer selection, exact pair reversal, owned-history selection, redaction, incompatibility, and safe return paths.
 - `tests/tideglass/phase3-passage-service.test.ts` covers server-derived edition visibility, exact owned history, and fail-closed redacted edition behavior.
+- `src/wakebook/archive-query.test.ts` covers the owner-bound Wakebook Journey Detail adapter input and verifies that only a safe comparison link/state enters its DTO.
+- `src/components/wakebook/WakebookVoyageDetail.test.tsx` covers the visible Journey Detail entry and its no-dead-control absence state.
 - `src/components/tideglass/TideglassPassage.test.tsx` covers visible state copy, partial/no-change/up-to-date treatment, and bounded retry behavior.
 - `tests/tideglass/phase3-performance.test.ts` uses a 600-block synthetic comparison and preserves the Phase 3 synchronous scope rather than introducing Phase 4 processing.
-- `tests/e2e/tideglass-phase3.spec.ts` provides the A-J visible-entry browser record and writes its private local evidence manifest.
+- `tests/e2e/tideglass-phase3.spec.ts` provides the A-K visible-entry browser record, including a captured Passport -> Wakebook Journey Detail entry, See what changed, and exact-record return; it writes its private local evidence manifest.
 - `npm run tideglass:phase3:validate` is a non-authoritative source contract check. It must pass before candidate qualification but is not a Sounding Line decision.
 
 ## Truth boundaries

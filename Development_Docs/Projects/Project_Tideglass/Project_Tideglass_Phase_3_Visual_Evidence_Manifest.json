@@ -2,11 +2,12 @@
   "schemaVersion": "1.0.0",
   "project": "Project Tideglass",
   "phase": "3",
-  "status": "AUTOMATED_BROWSER_PROOF_COMPLETE_OWNER_ACCEPTED_MAINLINE_PENDING",
-  "sourceSha": "dbbe2c49aa884f6a5e078cfa3c5df580344ca221",
+  "status": "AUTOMATED_BROWSER_PROOF_COMPLETE_SHIPWRIGHT_RECONCILIATION",
+  "sourceSha": "622ee2bcba025ddffd557aa0437af5c671d56b06",
   "fixtureVersion": "tideglass-phase3-v2",
   "fixtureChecksum": "7798f816bedd71867d096d0543ee2135a7722388f262d089b4b078d9a50b2002",
-  "storage": "LOCALAPPDATA/ProjectTideglass/phase3-final-dbbe2c49/browser/evidence; screenshots and credentials are intentionally untracked",
+  "ownerDecision": "Wakebook Journey Detail addendum explicitly accepted by the owner on 2026-08-12; this evidence remains source-bound to the recorded SHA.",
+  "storage": "LOCALAPPDATA/ProjectTideglass/phase3-qualification/browser/evidence; screenshots and credentials are intentionally untracked",
   "records": [
     {
       "id": "TG3-EV-A-VISIBLE-ENTRY",
@@ -29,31 +30,39 @@
       "route": "/chronicles/tideglass-passage-fixture/compare",
       "state": "PARTIAL",
       "viewport": "1440x900",
-      "sha256": "7ad220bb94f15b70bcbb2e3a1380d6da74336e5d1810473d372df23c8bc8fba8",
-      "semanticAssertion": "Unsupported fixture semantics are named as partial without source disclosure"
+      "sha256": "b27685a0e745b657d41b2191f948f32aa06193b906882ecf3e35ab54dc37dcb1",
+      "semanticAssertion": "Known unsupported fixture semantics are named as partial without source disclosure"
     },
     {
       "id": "TG3-EV-D-SWAP-CURRENT",
       "route": "/chronicles/tideglass-passage-fixture/compare",
       "state": "PAIR_SELECTION",
       "viewport": "1440x900",
-      "sha256": "ac7ec1355354a9c12826c6ef4a1c7692efde7a2ff91d69053f11f02b45629295",
+      "sha256": "debcec1509d7c2fabd9c321d64eadf9002f4632960e942138d633dee58e7ba4a",
       "semanticAssertion": "Swap requests the reverse canonical pair and current restores the server target"
+    },
+    {
+      "id": "TG3-EV-K-WAKEBOOK-JOURNEY-ENTRY",
+      "route": "/passport/history/tg3-record-a",
+      "state": "WAKEBOOK_JOURNEY_DETAIL",
+      "viewport": "1440x900",
+      "sha256": "91cfeda2c37c6a9e443ded6733dc23045cd1c348f2d3c9728b1277acb89ec606",
+      "semanticAssertion": "Accepted Journey Detail exposes the owner-safe Tideglass history entry before comparison navigation"
     },
     {
       "id": "TG3-EV-E-OWNED-HISTORY-DISCLOSURE",
       "route": "/chronicles/tideglass-passage-fixture/compare",
       "state": "PLAYER_A_HISTORY_DISCLOSURE",
       "viewport": "1440x900",
-      "sha256": "d8022e459619a6d6c7cf88089457b98321cdef8531f0f39260212cbe36a3132d",
-      "semanticAssertion": "Passport preserves the owner's recorded edition and gates story detail explicitly"
+      "sha256": "0be6665c4d1b529ce06ccf5f3764dfff3d58b2827d27fca3f96717561b2808e2",
+      "semanticAssertion": "Accepted Journey Detail preserves the owner-recorded edition, returns to the same Voyage, and gates story detail by explicit disclosure"
     },
     {
       "id": "TG3-EV-F-MULTIPLE-HISTORY",
       "route": "/chronicles/tideglass-passage-fixture/compare",
       "state": "MULTIPLE_HISTORY",
       "viewport": "1440x900",
-      "sha256": "965aebf1172ff857cd5ca9d03e4b6ff669e9eb59c43ff9d3ef6a6e496ccb8c1c",
+      "sha256": "346d635e7961980051cf8b2e2c5e53777261c96c71cda60cdaf16b0ddeb20cf8",
       "semanticAssertion": "Each historical Voyage remains independently selectable"
     },
     {
@@ -61,7 +70,7 @@
       "route": "/chronicles/tideglass-passage-fixture/compare",
       "state": "UP_TO_DATE",
       "viewport": "1440x900",
-      "sha256": "52a68bd7a9468cd1c9edc322e99f63e647ecaec478509a7bbbd89633c36bd172",
+      "sha256": "b89378590e89bc6092d6a66f540052b2a82f0909f3bc2f7e8a9e727e722b41d4",
       "semanticAssertion": "Recorded current edition has an intentional up-to-date state"
     },
     {
@@ -69,7 +78,7 @@
       "route": "/studio/tales/tg3-chronicle-passage/versions",
       "state": "CREATOR_FULL",
       "viewport": "1440x900",
-      "sha256": "7d1b3acdb6bc58f8005fa5baffe49e02ab1b5bd5ed2a5d4699d1160a605171e3",
+      "sha256": "43d891f104ffaf7fb67d58e7eefbb683c1fdd0063919d2a43a9525cad4b82d5b",
       "semanticAssertion": "Studio renders semantic branch, ending, Captain, caption, compatibility, and annotation records rather than a raw diff"
     },
     {

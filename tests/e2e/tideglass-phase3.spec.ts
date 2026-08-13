@@ -52,7 +52,7 @@ test.afterAll(async () => {
   );
 });
 
-test("Journeys A-J: visible entry, passage states, owned history, creator detail, security, and responsive accessibility", async ({
+test("Journeys A-J: visible entry, accepted Journey Detail history, creator detail, security, and responsive accessibility", async ({
   browser,
 }) => {
   const anonymous = await anonymousPage(browser);
@@ -128,7 +128,15 @@ test("Journeys A-J: visible entry, passage states, owned history, creator detail
   await anonymous.context.close();
 
   const playerA = await signedInPage(browser, "PLAYER_A", "/passport/history");
-  await expect(playerA.page.getByRole("heading", { name: "Chronicle History", exact: true })).toBeVisible();
+  await expect(playerA.page.getByRole("heading", { name: "Your Voyages", exact: true, level: 1 })).toBeVisible();
+  await playerA.page.getByRole("link", { name: "Open The Tideglass Passage Fixture Voyage", exact: true }).click();
+  await expect(playerA.page.getByRole("heading", { name: "Voyage Detail", exact: true })).toBeVisible();
+  await capture(
+    playerA.page,
+    "TG3-EV-K-WAKEBOOK-JOURNEY-ENTRY",
+    "WAKEBOOK_JOURNEY_DETAIL",
+    "Accepted Journey Detail exposes the owner-safe Tideglass history entry before comparison navigation",
+  );
   await playerA.page.getByRole("link", { name: "See what changed", exact: true }).click();
   await expect(playerA.page.getByRole("heading", { name: "What changed?", exact: true })).toBeVisible();
   await expect(playerA.page.getByLabel("Your recorded Voyage")).toContainText(/completed .*; completed; success/u);
@@ -151,15 +159,27 @@ test("Journeys A-J: visible entry, passage states, owned history, creator detail
   });
   expect(foreignResult.status).toBe(409);
   expect(foreignResult.body.code).toBe("TIDEGLASS_INVALID_HISTORY_RECORD");
+  await playerA.page.getByRole("link", { name: "Return to past Voyage", exact: true }).click();
+  await expect(playerA.page).toHaveURL(/\/passport\/history\/tg3-record-a$/u);
+  await expect(playerA.page.getByRole("heading", { name: "Voyage Detail", exact: true })).toBeVisible();
+  await playerA.page.goBack();
+  await expect(playerA.page.getByRole("heading", { name: "What changed?", exact: true })).toBeVisible();
   await capture(
     playerA.page,
     "TG3-EV-E-OWNED-HISTORY-DISCLOSURE",
     "PLAYER_A_HISTORY_DISCLOSURE",
-    "Passport redirect preserves the owner-recorded edition and gates story detail by explicit disclosure",
+    "Accepted Journey Detail preserves the owner-recorded edition, returns to the same Voyage, and gates story detail by explicit disclosure",
   );
   await playerA.context.close();
 
-  const playerAB = await signedInPage(browser, "PLAYER_AB", `/chronicles/${credentials.chronicle.slug}/compare`);
+  const playerAB = await signedInPage(browser, "PLAYER_AB", "/passport/history");
+  await expect(playerAB.page.getByRole("heading", { name: "Your Voyages", exact: true, level: 1 })).toBeVisible();
+  await playerAB.page
+    .getByRole("link", { name: "Open The Tideglass Passage Fixture Voyage", exact: true })
+    .first()
+    .click();
+  await expect(playerAB.page.getByRole("heading", { name: "Voyage Detail", exact: true })).toBeVisible();
+  await playerAB.page.getByRole("link", { name: "See what changed", exact: true }).click();
   await expect(
     playerAB.page.getByRole("combobox", { name: "Your recorded Voyage", exact: true }).locator("option"),
   ).toHaveCount(3);
@@ -178,6 +198,9 @@ test("Journeys A-J: visible entry, passage states, owned history, creator detail
   await playerAB.context.close();
 
   const playerC = await signedInPage(browser, "PLAYER_C", "/passport/history");
+  await expect(playerC.page.getByRole("heading", { name: "Your Voyages", exact: true, level: 1 })).toBeVisible();
+  await playerC.page.getByRole("link", { name: "Open The Tideglass Passage Fixture Voyage", exact: true }).click();
+  await expect(playerC.page.getByRole("heading", { name: "Voyage Detail", exact: true })).toBeVisible();
   await playerC.page.getByRole("link", { name: "See what changed", exact: true }).click();
   await expect(playerC.page.getByRole("heading", { name: "You are up to date.", exact: true })).toBeVisible();
   await capture(

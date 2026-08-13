@@ -83,6 +83,24 @@ afterEach(() => {
 });
 
 describe("TideglassPassage", () => {
+  it("names the exact past-Voyage return when a trusted history handoff supplied one", () => {
+    render(
+      <TideglassPassage
+        taleSlug="lantern-test"
+        initialContext={context}
+        initialComparison={comparison}
+        initialHistoryRecordId="record-1"
+        initialReturnTo="/passport/history/record-1"
+      />,
+    );
+
+    expect(screen.getByRole("link", { name: "Return to past Voyage" })).toHaveAttribute(
+      "href",
+      "/passport/history/record-1",
+    );
+    expect(screen.queryByRole("link", { name: "Return to Chronicle" })).not.toBeInTheDocument();
+  });
+
   it("labels editions and keeps disclosure-gated detail hidden until the visitor asks to reveal it", () => {
     render(
       <TideglassPassage

@@ -229,4 +229,5 @@ export type VoyageDetail = {
   dataQuality: "COMPLETE" | "PARTIAL";
   warnings: string[];
   review?: JourneyArchiveItem["review"];
+  comparison?: { href: string; state: "COMPARE" | "UP_TO_DATE" };
 };

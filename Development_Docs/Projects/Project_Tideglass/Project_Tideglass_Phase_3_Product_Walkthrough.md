@@ -1,7 +1,7 @@
 ---
 title: Project Tideglass Phase 3 Product Walkthrough
 audience: product-owner
-status: owner-accepted-mainline-pending
+status: current-main-qualified-candidate-freeze-pending
 canonical_for: project-tideglass-phase-3-product-walkthrough
 last_reviewed: 2026-08-12
 ---
@@ -15,7 +15,7 @@ assertions. The owner decision is recorded separately in
 `Project_Tideglass_Phase_3_Owner_Decision_Record.md`; this document remains the
 reproducible walkthrough package.
 
-The owner-reviewed product source is `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`. It remains byte-equivalent across the Phase 3 Tideglass product paths after reconciliation to `origin/main` `fb0f13e35fcdd98434d22c357aee02f24d6d9036`; the later deferred-runtime browser-harness repair and accepted Helm/Sounding Line record-only changes do not alter those paths. The refreshed source-bound A--J evidence is recorded for `dbbe2c49aa884f6a5e078cfa3c5df580344ca221` in the visual manifest.
+The owner-reviewed product source is `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`. Accepted Wakebook Phase 1 later replaced the ordinary past-Voyage detail with Journey Detail at `cbf634d4d5db9cf47edebb89e005e8cc910068bd`; the current reconciliation base is `770404dd11cdfc1b86658a488979c43c22ed1711`. The owner explicitly accepted this walkthrough addendum for the preserved, owner-safe Tideglass handoff. The original A--J evidence remains source-bound to its recorded candidate and is not misrepresented as evidence for the new shared surface; current-main qualification is complete and protected finalization still precedes acceptance.
 
 ## Safe walkthrough runtime
 
@@ -29,10 +29,11 @@ The available synthetic role aliases are Anonymous, Player A, Player AB, Player 
 2. Confirm the ordinary What Changed screen gives selected-edition context, human edition metadata, source/target selectors, swap, current-publishing target, concise/detailed presentation, semantic cards, compatibility wording, category filtering, and a bounded return action.
 3. Review the synthetic public, partial, and no-history states. Partial must describe unavailable semantic scope without exposing source snapshots or hidden details.
 4. Sign in as Player A and enter from Passport history. Confirm the played edition and its recorded lifecycle/outcome are selected; safe-to-reveal story detail stays collapsed until the explicit control is used.
-5. Sign in as Player AB to review separately selectable historical records, then as Player C to see the intentional up-to-date state.
-6. Sign in as Creator and use the Version history **Compare to current** action. Confirm technical semantic detail and semantic cards are shown, never raw storage values.
-7. Review the 390px reduced-motion view, keyboard access, and effective 200% zoom capture in the generated manifest.
+5. From Player A's **Past Voyage**, open the accepted **Journey Detail** and choose **See what changed**. Confirm the route uses that exact retained record, targets Publishing's current edition, returns to the same Journey Detail, and has no link for an unavailable or foreign record.
+6. Sign in as Player AB to review separately selectable historical records, then as Player C to see the intentional up-to-date state.
+7. Sign in as Creator and use the Version history **Compare to current** action. Confirm technical semantic detail and semantic cards are shown, never raw storage values.
+8. Review the 390px reduced-motion view, keyboard access, and effective 200% zoom capture in the generated manifest.
 
 ## Acceptance boundary
 
-This synthetic local walkthrough is suitable for product review of the governed experience. It is not staging, production, live-provider, physical-device, protected-mainline, or real-user proof. The owner accepted the reconciled source identified above. The remaining authority is its one exact-SHA Sounding Line Mainline Decision.
+This synthetic local walkthrough is suitable for product review of the governed experience. It is not staging, production, live-provider, physical-device, protected-mainline, or real-user proof. The owner accepted the original reviewed source; the accepted-Wakebook handoff has refreshed A-K production-browser and visual proof and is ready for targeted addendum review. The later Sounding Line decision remains unavailable until an explicit serial queue position is granted.

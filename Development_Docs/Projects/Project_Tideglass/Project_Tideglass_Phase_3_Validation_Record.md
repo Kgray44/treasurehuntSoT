@@ -1,14 +1,16 @@
 ---
 title: Project Tideglass Phase 3 Validation Record
 audience: product-engineering
-status: owner-accepted-mainline-pending
+status: current-main-qualified-authority-pending
 canonical_for: project-tideglass-phase-3-validation
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-13
 ---
 
 # Project Tideglass Phase 3 validation record
 
-Status: `OWNER_ACCEPTED_MAINLINE_PENDING`.
+Status: `CURRENT_MAIN_QUALIFIED_AUTHORITY_PENDING`.
+The original product decision and the explicit Wakebook Journey Detail addendum
+acceptance are recorded; protected integration remains pending.
 
 The reconciled product source is
 `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`, subsequently reconciled to accepted main
@@ -26,9 +28,124 @@ The fixture uses only reserved synthetic accounts and Chronicle content. Compari
 
 The owner accepted this reconciled product on `2026-08-12`; the accepted reviewed
 source is recorded in `Project_Tideglass_Phase_3_Owner_Decision_Record.md`.
-This is still local qualification evidence until the next authority, one frozen
-exact-SHA Sounding Line Mainline Decision, is `RELEASE_GO`. No protected merge,
-Deepwater finding closure, deployment, or Phase 4 work has been started.
+The original product subsequently received its governed release evidence and
+entered protected main as `bb7676a75581d8d415c3ff7712cc38bc8decb031`. The
+record-only closeout path is not accepted current main, and this document does
+not represent it as completed. No Deepwater finding closure, deployment, or
+Phase 4 work has been started.
+
+## Current accepted-Wakebook reconciliation
+
+Wakebook Phase 1 at `cbf634d4d5db9cf47edebb89e005e8cc910068bd` replaces the
+old Passport detail with Journey Detail; current `origin/main`
+`770404dd11cdfc1b86658a488979c43c22ed1711` adds accepted Deepwater/Helm/Homeport
+work without direct Tideglass or Wakebook product-source overlap. The
+new Tideglass-owned adapter preserves the exact owned-history handoff without
+copying a checksum, raw snapshot, annotation, or semantic record into the
+Wakebook DTO. Focused proof is 34 tests across the direct Tideglass and
+Wakebook files, plus passing `npm run tideglass:phase3:validate`, TypeScript,
+documentation, catalog, and targeted lint/format checks. A fresh task-owned
+production A-K browser journey passed for source
+`e99bbe3174a6d0c94c88ef6cc7b4f33c4eff28d0`; it includes the direct Journey
+Detail entry capture, exact-record return, privacy assertions, mobile,
+reduced-motion, effective 200% zoom, and Axe serious/critical zero. This is
+still local, non-authoritative evidence only; the owner explicitly accepted the
+addendum, and candidate freeze is next.
+
+The full `npm run homeport:validate` qualification initially exposed three
+missing required `notes` fields in existing Wakebook-owned API inventory records
+and one `AccountSession` model-name reference where the governed Journey catalog
+requires authority ID `HP-SES-001`. The narrow metadata repair passed the full
+Homeport contract, reachability, surface, visual, accessibility, and host-origin
+validation stack. It does not change a product route, visibility, capability,
+or Tideglass behavior.
+
+## Hosted authority failure and focused repair
+
+Hosted `Sounding Line / Mainline Decision` run `31658984596` was explicitly
+bound to candidate `a70e9f6c6800249f21f8aa9edca322a4a4e39369`, PR `#68`, and
+base `770404dd11cdfc1b86658a488979c43c22ed1711`. It ended `RELEASE_NO_GO`.
+The plan, runtime conformance, 18 other wave-0 workers, and access-sentinel
+browser worker passed. The sole failure was `unit.feature-catalog`, whose sealed
+receipt identifies the stale FT-B009 expected program label in
+`scripts/features/feature-catalog.test.ts`.
+
+The smallest registered reproduction failed 1/9 with the same assertion. The
+single-string expectation repair passes the same focused test 9/9 plus
+`npm run features:sync` and `npm run features:validate`. This is a repair of a
+governed test expectation, not a semantic, product, or authority-policy change.
+The hosted authority run has completed and released its lane; no retry is
+authorized until current-main requalification and a new frozen candidate exist.
+
+## Reconciled current-main qualification
+
+After explicit infrastructure-lane release, PR `#69` reached protected main as
+`d3ed7c4cd1877be601e6854b376cb1dd9eb668a3`. The three-file advance changes
+only Sounding Line's protected-binding workflow, finalizer source, and
+record-only test. The Tideglass branch reconciled it as `89fb1df6`; no
+Tideglass, Wakebook, Wayfarer, Studio, route, schema, policy, or navigation
+source changed.
+
+On that reconciled source, Tideglass unit/history/Studio suites, typecheck,
+lint with zero errors, format, documentation, Feature Catalog, Tideglass
+contract, and full Homeport validation pass. The registered task-owned
+production browser wrapper passes A--K for `89fb1df6`, with the same synthetic
+fixture checksum and zero serious/critical Axe findings. Its only runtime data
+is under `%LOCALAPPDATA%\\ProjectTideglass\\phase3-qualification`; canonical
+`prisma/dev.db` remains untouched. No replacement authority has been dispatched.
+
+Deepwater record-only closure `582f32a3` subsequently advanced main. Its diff
+contains only Deepwater governance records, documentation inventory, and
+generated catalog provenance. Tideglass contract, documentation, and catalog
+validation reran on the reconciled source; the product/browser source is
+unchanged, so the task-owned A--K result above is retained without an
+unnecessary shared-runtime rerun.
+
+Admiralty record-truth repair `95cff272` then advanced main with only Admiralty
+records, catalog fragment/provenance, and Ledgerlight documentation changes.
+The affected documentation/catalog and Tideglass contract checks reran cleanly;
+the Tideglass browser source remains unchanged, so no duplicate browser run was
+required. No replacement authority has been dispatched.
+
+## Shipwright shared-Studio reconciliation
+
+Accepted Shipwright Phase 2 at `25a5ecc3` changes the Studio UI and therefore
+invalidates only the Tideglass browser evidence that enters Studio. Static audit
+confirms `TaleEditor` still invokes the canonical Tideglass version comparison
+endpoint and renders `TideglassStudioComparison`; direct Tideglass Studio
+component/API tests pass. The Shipwright-owned large-editor/focus tests exceed
+their 5-second defaults but pass under a 30-second diagnostic timeout, so the
+observed issue is a test-budget boundary rather than a semantic comparison
+failure. The refreshed A--K task-owned production browser journey passes on
+`622ee2bcba025ddffd557aa0437af5c671d56b06`, including the accepted Journey
+Detail entry, current Studio semantic comparison, privacy, mobile, keyboard,
+reduced motion, effective 200% zoom, and zero serious/critical Axe findings.
+Wakebook Phase 1 then protected-merged documentation/catalog/registry-only
+source at `0cdaa802`. The branch merges it as `836ef9d3`; its interval has no
+Tideglass runtime, route, schema, or Tideglass-test source. Tideglass 109/109,
+direct Journey Detail/history handoff 24/24, Studio 2/2, contracts, Prisma
+generation/typecheck, lint with zero errors, formatting, documentation, and
+Feature Catalog validation pass on that source. No replacement authority has
+been dispatched; the candidate awaits an explicitly assigned serialized slot.
+
+## Shared-format qualification boundary
+
+After Shipwright's record-only closeout protected-merged at `9867e3d4`, the
+focused Tideglass/Wayfarer/Wakebook/Studio suite passes 136/136 across 19 files,
+including all 18 `TaleEditor` cases. Contracts, Prisma generation/typecheck,
+lint with zero errors, documentation, and Feature Catalog validation pass. The
+only failed qualification command is `npm run format:check`, which identifies
+only Shipwright-owned accepted-main closeout documents. Tideglass has handed the
+exact paths to Shipwright and will not edit cross-project accepted records or
+dispatch authority before the owner supplies a narrow repair.
+
+Shipwright's narrow repair protected-merged at `4e88ba54`; it restores the
+global formatting gate without changing Tideglass runtime, route, schema, or
+test source. `npm run format:check`, Tideglass contracts, documentation, and
+Feature Catalog validation now pass on the reconciled source. The retained
+136/136 semantic/history/Studio proof and source-bound browser proof remain
+valid; one fresh Tideglass Mainline Decision is now permitted when the exact
+candidate and free serialized lane are rechecked.
 
 ## Authority preflight and focused repair
 
