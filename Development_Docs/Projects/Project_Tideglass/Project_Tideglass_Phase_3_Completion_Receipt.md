@@ -72,8 +72,9 @@ accepted ordinary edition/preflight comparison surface, so
 
 FT-B009 truthfully records **Project Tideglass Phases 1-3**, including the
 ordinary comparison route, Edition selection, Compare to recommended, Compare
-to What I Played, history and Chronicle entries, and Studio semantic comparison.
-No additional Tideglass feature fragment is required for this closeout.
+to What I Played, history and Chronicle entries, the accepted Wakebook Journey
+Detail handoff, and Studio semantic comparison. The fragment is regenerated
+with this accepted-main correction; no new product authority is required.
 
 ## Record-only closeout result
 
