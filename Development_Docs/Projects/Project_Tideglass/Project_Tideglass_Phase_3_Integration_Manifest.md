@@ -1,14 +1,14 @@
 ---
 title: Project Tideglass Phase 3 Integration Manifest
 audience: product-engineering
-status: current-main-qualified-candidate-freeze-pending
+status: current-main-qualified-serial-slot-pending
 canonical_for: project-tideglass-phase-3-integration
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-13
 ---
 
 # Project Tideglass Phase 3 integration manifest
 
-Status: `CURRENT_MAIN_QUALIFIED_CANDIDATE_FREEZE_PENDING`.
+Status: `CURRENT_MAIN_QUALIFIED_SERIAL_SLOT_PENDING`.
 This is a source integration inventory, not an accepted-mainline or
 protected-mainline receipt. The original owner decision and the explicit
 Wakebook Journey Detail addendum acceptance are recorded; protected integration
@@ -124,3 +124,11 @@ and the refreshed A--K Tideglass production browser journey passes on
 `622ee2bc`, including the Studio semantic card. The Shipwright test-budget
 finding is recorded for its owner and does not justify a second comparison
 engine or a Tideglass UI rollback.
+
+Wakebook's protected merge at `0cdaa802` then advanced only governed
+documentation, catalog fragments/provenance, and the generated test registry.
+The branch carries it as `836ef9d3`; it contains no Tideglass runtime, route,
+schema, or Tideglass-test source overlap. The source-bound browser proof remains
+applicable, and the current source passes Tideglass 109/109, direct history
+handoff 24/24, Studio 2/2, contracts, Prisma generation/typecheck, lint with
+zero errors, formatting, documentation, and Feature Catalog validation.
