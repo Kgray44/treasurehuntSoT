@@ -27,6 +27,14 @@ export const supportRequestSchema = z
 export const supportDecisionSchema = z.object({ decision: z.enum(["APPROVE", "DENY"]) }).strict();
 export const supportCancelSchema = z.object({ reason: z.string().trim().min(2).max(160).optional() }).strict();
 export const supportRevokeSchema = z.object({ reason: z.string().trim().min(2).max(160) }).strict();
+export const sessionRevokeSchema = z
+  .object({
+    targetAccountId: z.string().trim().min(1).max(128).regex(/^[A-Za-z0-9_-]+$/u),
+    sessionId: z.string().trim().min(1).max(128).regex(/^[A-Za-z0-9_-]+$/u),
+    reason: z.string().trim().min(8).max(240),
+    idempotencyKey: z.string().trim().min(16).max(128).regex(/^[A-Za-z0-9_-]+$/u),
+  })
+  .strict();
 export const supportReadSchema = z
   .object({
     grantId: z

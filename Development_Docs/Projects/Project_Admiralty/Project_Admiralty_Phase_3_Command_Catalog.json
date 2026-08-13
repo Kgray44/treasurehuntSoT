@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0.0",
+  "phase": "3",
+  "commandModel": "PREVIEW_AUTHORIZE_EXECUTE_RECEIPT",
+  "commands": [
+    { "id": "ADM-CMD-SESSION-REVOKE", "owner": "Wayfarer", "risk": "HIGH", "status": "OWNER_EXTENSION_REQUIRED" },
+    { "id": "ADM-CMD-ACCOUNT-LIFECYCLE", "owner": "Wayfarer", "risk": "CRITICAL", "status": "OWNER_EXTENSION_REQUIRED" },
+    { "id": "ADM-CMD-ROLE-ASSIGNMENT", "owner": "Wayfarer", "risk": "CRITICAL", "status": "OWNER_EXTENSION_REQUIRED" },
+    { "id": "ADM-CMD-MODERATION", "owner": "Harborlight", "risk": "CRITICAL", "status": "IMPLEMENTABLE_WITH_EXISTING_OWNER_COMMAND" },
+    { "id": "ADM-CMD-JOB-CONTROL", "owner": "Job owner", "risk": "HIGH", "status": "BLOCKED_BY_MISSING_OWNER_CONTRACT" },
+    { "id": "ADM-CMD-CONFIGURATION", "owner": "Configuration owner", "risk": "HIGH", "status": "BLOCKED_BY_MISSING_OWNER_CONTRACT" }
+  ]
+}

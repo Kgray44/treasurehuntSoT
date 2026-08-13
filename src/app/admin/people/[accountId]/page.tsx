@@ -13,6 +13,7 @@ import {
   humanize,
 } from "@/components/admiralty/AdminPrimitives";
 import { DossierSupportPanel } from "@/components/admiralty/DossierSupportPanel";
+import { SessionActionPanel } from "@/components/admiralty/SessionActionPanel";
 
 export default async function AccountDossierPage({ params }: { params: Promise<{ accountId: string }> }) {
   const operator = await admiraltyPageOperator("ACCOUNT_OBSERVE");
@@ -170,6 +171,14 @@ export default async function AccountDossierPage({ params }: { params: Promise<{
         ) : (
           <EmptyState title="No security events recorded" />
         )}
+      </Panel>
+      <Panel title="Security actions" kicker="Preview, recent assurance, explicit confirmation, owner command, and receipt">
+        <SessionActionPanel
+          targetAccountId={account.id}
+          csrfToken={operator.csrfToken}
+          sessions={account.sessions}
+          enabled={operator.capabilities.includes("SECURITY_OPERATE")}
+        />
       </Panel>
       <div className="chartroom-grid">
         <Panel title="Chronicle activity">
