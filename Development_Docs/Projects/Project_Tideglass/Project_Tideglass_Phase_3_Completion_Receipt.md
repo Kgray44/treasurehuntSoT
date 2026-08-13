@@ -31,6 +31,10 @@ been reconciled and its production A--K Tideglass qualification rerun. This
 does not issue the receipt: a fresh candidate, later serial authority position,
 protected integration, and exact-main proof are still required.
 
+Deepwater's later record-only closure at `582f32a3` is reconciled as a
+non-product advance. Its required documentation/catalog revalidation does not
+convert this placeholder into a completion claim.
+
 The first local Mainline Decision invocation for documentation candidate
 `897e7619` failed before it could create any suite receipt or finalizer decision
 because this owned worktree lacked `prisma/dev.db`. The failure is recorded in

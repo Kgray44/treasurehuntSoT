@@ -95,6 +95,15 @@ keyboard, reduced motion, effective 200% zoom, privacy, and Axe serious/critical
 zero. This is a fresh current-main qualification only. The candidate is not yet
 published, authority-bound, or merged.
 
+Deepwater's record-only closure then accepted at
+`582f32a35d918ae892bd2feae766c00043038f39`. Its changed files are Deepwater
+program records, documentation index/ledger entries, and generated catalog
+provenance only. No Tideglass product, route, policy, history, Studio, or
+browser-test source changed. Documentation, Tideglass contract, and Feature
+Catalog validation reran against that main; the source-equivalent production
+browser result remains valid. This updates the current-main base without
+creating a second Tideglass closure candidate.
+
 ## Candidate qualification evidence
 
 | Check                                                                                    | Result                                                                                                                                                                                                                 | Boundary                                                                                                                                                           |

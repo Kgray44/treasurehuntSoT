@@ -105,3 +105,9 @@ The required Sounding Line infrastructure prerequisite is now accepted at
 advance and reruns its production A--K browser journey on `89fb1df6`. The
 ordinary Tideglass product surface is unchanged. A fresh frozen candidate and a
 later serial authority position remain required before protected integration.
+
+Deepwater's accepted record-only closure at `582f32a3` changes only its own
+governance records, documentation index, and generated catalog provenance.
+Tideglass revalidated the affected documentation/catalog contracts and retains
+the source-equivalent product/browser proof. It does not create a parallel
+Tideglass closure path or authorize a Mainline Decision.
