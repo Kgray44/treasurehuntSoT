@@ -68,7 +68,7 @@ import type {
   StudioDraftInput,
   ValidationIssue,
 } from "@/chronicle/types";
-import type { ReusableContentEnvelope } from "@/studio/reusable-content";
+import type { InsertionPlan, ReusableContentEnvelope } from "@/studio/reusable-content";
 import { getDrydockRuleDefinition } from "@/drydock/rules";
 import type { DrydockVariableDeclaration } from "@/drydock/variables";
 import { renameStudioDraftVariable } from "@/studio/authoring/variables";
@@ -353,6 +353,25 @@ export function TaleEditor({
     await loadReusableItems();
   }
 
+  async function saveSelectionAsFragment() {
+    if (!data || !draft || selectedIds.length < 2) return;
+    if (dirty && !(await save(draft, false))) return;
+    setReusableError("");
+    const response = await fetch(`/api/studio/tales/${taleId}/reusable-content`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
+      body: JSON.stringify({
+        action: "create-fragment",
+        name: `${selectedIds.length} Passage fragment`,
+        blockIds: selectedIds,
+      }),
+    });
+    const body = (await response.json()) as { error?: string };
+    if (!response.ok) return setReusableError(body.error ?? "The reusable fragment could not be saved.");
+    setLibraryTab("reuse");
+    await loadReusableItems();
+  }
+
   async function applyReusablePreset(item: ReusableLibraryItem) {
     if (!data || !draft || !selected) return setReusableError("Select a Passage before applying a reusable preset.");
     setReusableError("");
@@ -394,6 +413,52 @@ export function TaleEditor({
       },
     });
     if (!saved) return;
+    setReusableItems((items) =>
+      items.map((candidate) =>
+        candidate.id === item.id ? { ...candidate, usageCount: candidate.usageCount + 1 } : candidate,
+      ),
+    );
+  }
+
+  async function insertReusableFragment(item: ReusableLibraryItem) {
+    if (!data || !draft || !selected)
+      return setReusableError("Select a destination Passage before inserting a reusable fragment.");
+    setReusableError("");
+    const response = await fetch(`/api/studio/tales/${taleId}/reusable-content`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
+      body: JSON.stringify({
+        action: "plan-insert",
+        itemId: item.id,
+        operationId: crypto.randomUUID(),
+        targetChapterId: selected.chapter.id,
+        draft,
+      }),
+    });
+    const plan = (await response.json()) as InsertionPlan & { error?: string };
+    if (!response.ok) return setReusableError(plan.error ?? "The reusable fragment could not be planned.");
+    const next = change((candidate) => {
+      const replacement = new Map(plan.chapters.map((chapter) => [chapter.id, chapter]));
+      candidate.chapters = candidate.chapters.map((chapter) => replacement.get(chapter.id) ?? chapter);
+      for (const chapter of plan.chapters)
+        if (!candidate.chapters.some((existing) => existing.id === chapter.id)) candidate.chapters.push(chapter);
+    }, "Reusable fragment pending save");
+    if (!next) return;
+    const saved = await save(next, false, undefined, {
+      itemId: plan.sourceItemId,
+      versionId: plan.sourceVersionId,
+      sourceKind: "FRAGMENT_INSERTED",
+      insertedBlockIds: Object.values(plan.remap.blocks),
+      insertedChapterIds: Object.values(plan.remap.chapters),
+      provenance: {
+        ...plan.attribution,
+        sourceItemId: plan.sourceItemId,
+        sourceVersionId: plan.sourceVersionId,
+        modified: true,
+      },
+    });
+    if (!saved) return;
+    if (plan.warnings.length) setReusableError(plan.warnings.join(" "));
     setReusableItems((items) =>
       items.map((candidate) =>
         candidate.id === item.id ? { ...candidate, usageCount: candidate.usageCount + 1 } : candidate,
@@ -2039,6 +2104,11 @@ export function TaleEditor({
                         Save selected Passage as preset
                       </button>
                     )}
+                    {selectedIds.length >= 2 && (
+                      <button type="button" onClick={() => void saveSelectionAsFragment()}>
+                        Save {selectedIds.length} selected Passages as fragment
+                      </button>
+                    )}
                     {reusableError && <p role="alert">{reusableError}</p>}
                     {!reusableLoading && !reusableError && !reusableItems.length && (
                       <p>No reusable content yet. Save a governed Passage, selection, or Chapter to reuse it safely.</p>
@@ -2063,6 +2133,15 @@ export function TaleEditor({
                           {item.kind === "PRESET" && (
                             <button type="button" onClick={() => void applyReusablePreset(item)} disabled={!selected}>
                               Apply to selected Passage
+                            </button>
+                          )}
+                          {item.kind === "FRAGMENT" && (
+                            <button
+                              type="button"
+                              onClick={() => void insertReusableFragment(item)}
+                              disabled={!selected}
+                            >
+                              Insert into selected Chapter
                             </button>
                           )}
                         </li>

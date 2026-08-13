@@ -2,10 +2,12 @@ import { db } from "@/lib/db";
 import { randomUUID } from "node:crypto";
 import {
   checksumReusableEnvelope,
+  planReusableInsertion,
   parseReusableEnvelope,
+  type InsertionPlan,
   type ReusableContentEnvelope,
 } from "@/studio/reusable-content";
-import type { Block } from "@/components/studio/studio-types";
+import type { Block, DraftState } from "@/components/studio/studio-types";
 import { parseJsonObject } from "@/chronicle/types";
 
 function parseJsonArray(value: string) {
@@ -49,6 +51,33 @@ export async function getReusableAuthoringItemVersion(ownerAccountId: string, it
   if (envelope.itemId !== item.id || envelope.versionId !== version.id || envelope.ownerId !== ownerAccountId)
     throw new Error("The reusable item version does not match its owner-scoped Library record.");
   return { itemId: item.id, versionId: version.id, versionNumber: version.versionNumber, envelope };
+}
+
+export async function planReusableAuthoringInsertion(input: {
+  ownerAccountId: string;
+  itemId: string;
+  operationId: string;
+  targetChapterId?: string;
+  draft: DraftState;
+}): Promise<InsertionPlan> {
+  if (
+    !input.draft ||
+    !Array.isArray(input.draft.chapters) ||
+    !input.draft.chapters.every((chapter) => typeof chapter?.id === "string")
+  )
+    throw new Error("The destination Chronicle draft is invalid for reusable-content planning.");
+  const { envelope } = await getReusableAuthoringItemVersion(input.ownerAccountId, input.itemId);
+  const plan = planReusableInsertion({
+    envelope,
+    draft: input.draft,
+    operationId: input.operationId,
+    targetChapterId: input.targetChapterId,
+  });
+  const portWarnings = [
+    ...envelope.entryPorts.map((port) => `Connect the imported entry port: ${port.label}.`),
+    ...envelope.exitPorts.map((port) => `Connect the imported exit port: ${port.label}.`),
+  ];
+  return { ...plan, warnings: [...plan.warnings, ...portWarnings] };
 }
 
 export async function createReusableAuthoringItem(ownerAccountId: string, rawEnvelope: unknown) {
@@ -179,6 +208,119 @@ export async function createBlockPreset(
     attribution: { sourceOwnerId: source.creatorAccountId ?? source.creatorId, modified: false },
     lineage: [],
     compatibility: { minimumReaderVersion: 1, blockContractVersions: { [block.blockType]: block.schemaVersion } },
+  };
+  const envelope: ReusableContentEnvelope = { ...unsigned, checksum: checksumReusableEnvelope(unsigned) };
+  return createReusableAuthoringItem(ownerAccountId, envelope);
+}
+
+export async function createBlockFragment(
+  ownerAccountId: string,
+  taleId: string,
+  input: { name: string; description?: string; tags?: string[]; blockIds: string[] },
+) {
+  const source = await db.chronicle.findFirst({
+    where: { id: taleId },
+    select: { creatorAccountId: true, creatorId: true, currentDraftRevisionId: true },
+  });
+  if (!source?.currentDraftRevisionId)
+    throw new Error("This Chronicle does not have a current draft to save as a reusable fragment.");
+  const selectedIds = [...new Set(input.blockIds)];
+  const selected = new Set(selectedIds);
+  const sourceBlocks = await db.storyBlock.findMany({
+    where: { id: { in: selectedIds }, chapter: { draft: { id: source.currentDraftRevisionId, taleId } } },
+    orderBy: [{ chapter: { orderIndex: "asc" } }, { orderIndex: "asc" }],
+    include: {
+      chapter: { select: { orderIndex: true } },
+      outgoing: { orderBy: { orderIndex: "asc" } },
+      incoming: { orderBy: { orderIndex: "asc" } },
+    },
+  });
+  if (sourceBlocks.length !== selectedIds.length)
+    throw new Error("Every Passage in a reusable fragment must belong to this Chronicle's saved draft.");
+
+  const blocks: Block[] = sourceBlocks.map((sourceBlock) => ({
+    id: sourceBlock.id,
+    blockType: sourceBlock.blockType,
+    title: sourceBlock.title,
+    internalLabel: sourceBlock.internalLabel,
+    configuration: parseJsonObject(sourceBlock.configuration),
+    presentation: parseJsonObject(sourceBlock.presentation),
+    completion: parseJsonObject(sourceBlock.completion),
+    isEnabled: sourceBlock.isEnabled,
+    schemaVersion: sourceBlock.schemaVersion,
+    nextBlockId: sourceBlock.nextBlockId && selected.has(sourceBlock.nextBlockId) ? sourceBlock.nextBlockId : null,
+    connections: sourceBlock.outgoing
+      .filter((connection) => selected.has(connection.targetBlockId))
+      .map((connection) => ({
+        targetBlockId: connection.targetBlockId,
+        connectionType: connection.connectionType,
+        label: connection.label,
+        conditionExpression: connection.conditionExpression,
+        orderIndex: connection.orderIndex,
+      })),
+  }));
+  const collected = {
+    assetIds: new Set<string>(),
+    artifactIds: new Set<string>(),
+    locationIds: new Set<string>(),
+    providerIds: new Set<string>(),
+  };
+  for (const block of blocks) {
+    collectDependencyIds(block.configuration, collected);
+    collectDependencyIds(block.presentation, collected);
+    collectDependencyIds(block.completion, collected);
+  }
+  const entryPorts = sourceBlocks
+    .filter((block) => block.incoming.some((connection) => !selected.has(connection.sourceBlockId)))
+    .map((block) => ({
+      key: `entry-${block.id}`,
+      label: `Connect into ${block.title}`,
+      sourceBlockId: block.id,
+      connectionType: "DEFAULT",
+    }));
+  const exitPorts = sourceBlocks.flatMap((block) =>
+    block.outgoing
+      .filter((connection) => !selected.has(connection.targetBlockId))
+      .map((connection, index) => ({
+        key: `exit-${block.id}-${index}`,
+        label: connection.label || `Connect ${block.title} onward`,
+        sourceBlockId: block.id,
+        connectionType: connection.connectionType,
+      })),
+  );
+  const itemId = randomUUID();
+  const versionId = randomUUID();
+  const unsigned = {
+    envelopeType: "voyagewright.reusable-authoring" as const,
+    envelopeVersion: 1 as const,
+    itemId,
+    versionId,
+    kind: "FRAGMENT" as const,
+    name: input.name.trim(),
+    description: input.description?.trim() ?? "",
+    tags: (input.tags ?? [])
+      .map((tag) => tag.trim())
+      .filter(Boolean)
+      .slice(0, 30),
+    ownerId: ownerAccountId,
+    blocks,
+    chapters: [],
+    entryPorts,
+    exitPorts,
+    parameters: [],
+    dependencies: {
+      assetIds: [...collected.assetIds].sort(),
+      artifactIds: [...collected.artifactIds].sort(),
+      locationIds: [...collected.locationIds].sort(),
+      providerIds: [...collected.providerIds].sort(),
+    },
+    accessibilityObligations: [],
+    attribution: { sourceOwnerId: source.creatorAccountId ?? source.creatorId, modified: false },
+    lineage: [],
+    compatibility: {
+      minimumReaderVersion: 1,
+      blockContractVersions: Object.fromEntries(blocks.map((block) => [block.blockType, block.schemaVersion])),
+    },
   };
   const envelope: ReusableContentEnvelope = { ...unsigned, checksum: checksumReusableEnvelope(unsigned) };
   return createReusableAuthoringItem(ownerAccountId, envelope);
