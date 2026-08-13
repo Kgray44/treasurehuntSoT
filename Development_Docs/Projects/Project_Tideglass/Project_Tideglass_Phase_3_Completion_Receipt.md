@@ -35,6 +35,10 @@ Deepwater's later record-only closure at `582f32a3` is reconciled as a
 non-product advance. Its required documentation/catalog revalidation does not
 convert this placeholder into a completion claim.
 
+Admiralty's later `95cff272` record-truth repair is reconciled under the same
+non-product rule. This receipt remains unissued until a frozen Tideglass
+candidate receives a later authorized Mainline Decision and protected merge.
+
 The first local Mainline Decision invocation for documentation candidate
 `897e7619` failed before it could create any suite receipt or finalizer decision
 because this owned worktree lacked `prisma/dev.db`. The failure is recorded in

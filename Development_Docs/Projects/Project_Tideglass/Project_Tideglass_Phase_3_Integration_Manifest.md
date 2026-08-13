@@ -111,3 +111,8 @@ governance records, documentation index, and generated catalog provenance.
 Tideglass revalidated the affected documentation/catalog contracts and retains
 the source-equivalent product/browser proof. It does not create a parallel
 Tideglass closure path or authorize a Mainline Decision.
+
+Admiralty's `95cff272` record-truth repair is also non-product with respect to
+Tideglass. The candidate carries its generated Feature Catalog provenance and
+revalidated documentation/contract evidence forward without changing any
+Tideglass consumer or creating a second authority path.

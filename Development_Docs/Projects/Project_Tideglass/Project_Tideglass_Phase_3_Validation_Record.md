@@ -101,6 +101,12 @@ validation reran on the reconciled source; the product/browser source is
 unchanged, so the task-owned A--K result above is retained without an
 unnecessary shared-runtime rerun.
 
+Admiralty record-truth repair `95cff272` then advanced main with only Admiralty
+records, catalog fragment/provenance, and Ledgerlight documentation changes.
+The affected documentation/catalog and Tideglass contract checks reran cleanly;
+the Tideglass browser source remains unchanged, so no duplicate browser run was
+required. No replacement authority has been dispatched.
+
 ## Authority preflight and focused repair
 
 The first local Mainline Decision invocation for documentation candidate

@@ -104,6 +104,15 @@ Catalog validation reran against that main; the source-equivalent production
 browser result remains valid. This updates the current-main base without
 creating a second Tideglass closure candidate.
 
+Admiralty's accepted record-truth repair at
+`95cff272450af34a3f8c00eb3ae01081be810f79` is likewise limited to Admiralty
+records, its owning catalog fragment, Ledgerlight metadata, and generated
+catalog provenance. The Tideglass product source and governed browser inputs
+remain unchanged. Documentation, Tideglass contract, and Feature Catalog
+validation reran on this current main; the source-equivalent browser evidence
+continues to apply. This candidate remains locally frozen and awaits an explicit
+serial authority position.
+
 ## Candidate qualification evidence
 
 | Check                                                                                    | Result                                                                                                                                                                                                                 | Boundary                                                                                                                                                           |
