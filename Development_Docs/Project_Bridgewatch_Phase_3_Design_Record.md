@@ -28,7 +28,7 @@ copy later supplies a contradictory requirement.
 | -------------------------------------- | ---------------------------------------------------------------------------- |
 | Canonical checkout                     | `C:\Users\kkids\Documents\Codex_TreasureHunt`                                |
 | Phase 3 worktree                       | `C:\Users\kkids\Documents\treasurehuntSoT-bridgewatch-phase3-keep-the-watch` |
-| Branch                                 | `codex/project-bridgewatch-phase3-keep-the-watch-1`                          |
+| Initial Phase 3 branch                 | `codex/project-bridgewatch-phase3-keep-the-watch-1`                          |
 | Upstream                               | `origin/main`                                                                |
 | Starting `origin/main` / base          | `191a964488d0df71f8dcb91c5b8372fc73b6b32e`                                   |
 | Starting ahead / behind                | `0 / 0`                                                                      |
@@ -68,6 +68,25 @@ test registry was regenerated. The changed Bridgewatch ownership/impact/suite
 entries remain additive and policy validation passed afterward. Candidate
 qualification must use this reconciled base and a new frozen SHA, not the
 original `191a...` starting identity.
+
+### Current candidate reconciliation
+
+The original exact-candidate authority (`a6e90d44...`) was preserved as a
+historical external failure: its only failed seam was the independently owned
+Helm browser journey. The Helm correction then protected-merged at
+`770404dd11cdfc1b86658a488979c43c22ed1711`; Deepwater's ordered record-only
+closure subsequently protected-merged at
+`582f32a35d918ae892bd2feae766c00043038f39`. After the lane's explicit release,
+this Phase 3 work was replayed onto that current main on owned branch
+`codex/project-bridgewatch-phase3-keep-the-watch-4`.
+
+The replay retained the accepted migrations and resolved only generated
+documentation/catalog provenance: the document index was regenerated and the
+obsolete old-base Feature Catalog stamp was intentionally discarded in favor
+of a fresh `features:sync` at the eventual frozen candidate. No competing
+Bridgewatch migration or history implementation entered main. The new base is
+an ancestor of the candidate; all implementation and qualification evidence
+below applies to this post-Helm, post-Deepwater candidate path.
 
 ### Concurrent-work snapshot
 
