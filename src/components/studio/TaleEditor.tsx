@@ -372,6 +372,25 @@ export function TaleEditor({
     await loadReusableItems();
   }
 
+  async function saveSelectedChapterAsTemplate() {
+    if (!data || !draft || !selected) return;
+    if (dirty && !(await save(draft, false))) return;
+    setReusableError("");
+    const response = await fetch(`/api/studio/tales/${taleId}/reusable-content`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
+      body: JSON.stringify({
+        action: "create-chapter-template",
+        name: `${selected.chapter.title} template`,
+        chapterId: selected.chapter.id,
+      }),
+    });
+    const body = (await response.json()) as { error?: string };
+    if (!response.ok) return setReusableError(body.error ?? "The Chapter template could not be saved.");
+    setLibraryTab("reuse");
+    await loadReusableItems();
+  }
+
   async function applyReusablePreset(item: ReusableLibraryItem) {
     if (!data || !draft || !selected) return setReusableError("Select a Passage before applying a reusable preset.");
     setReusableError("");
@@ -421,7 +440,8 @@ export function TaleEditor({
   }
 
   async function insertReusableFragment(item: ReusableLibraryItem) {
-    if (!data || !draft || !selected)
+    if (!data || !draft) return;
+    if (item.kind === "FRAGMENT" && !selected)
       return setReusableError("Select a destination Passage before inserting a reusable fragment.");
     setReusableError("");
     const response = await fetch(`/api/studio/tales/${taleId}/reusable-content`, {
@@ -431,7 +451,7 @@ export function TaleEditor({
         action: "plan-insert",
         itemId: item.id,
         operationId: crypto.randomUUID(),
-        targetChapterId: selected.chapter.id,
+        targetChapterId: selected?.chapter.id,
         draft,
       }),
     });
@@ -2109,6 +2129,11 @@ export function TaleEditor({
                         Save {selectedIds.length} selected Passages as fragment
                       </button>
                     )}
+                    {selected && (
+                      <button type="button" onClick={() => void saveSelectedChapterAsTemplate()}>
+                        Save selected Chapter as template
+                      </button>
+                    )}
                     {reusableError && <p role="alert">{reusableError}</p>}
                     {!reusableLoading && !reusableError && !reusableItems.length && (
                       <p>No reusable content yet. Save a governed Passage, selection, or Chapter to reuse it safely.</p>
@@ -2142,6 +2167,11 @@ export function TaleEditor({
                               disabled={!selected}
                             >
                               Insert into selected Chapter
+                            </button>
+                          )}
+                          {item.kind === "CHAPTER_TEMPLATE" && (
+                            <button type="button" onClick={() => void insertReusableFragment(item)}>
+                              Insert as new Chapter
                             </button>
                           )}
                         </li>

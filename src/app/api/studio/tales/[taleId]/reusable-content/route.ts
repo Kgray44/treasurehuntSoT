@@ -5,8 +5,9 @@ import { requireOwnedStudioTale } from "@/chronicle/studio-authorization";
 import type { DraftState } from "@/components/studio/studio-types";
 import {
   archiveReusableAuthoringItem,
-  createBlockPreset,
   createBlockFragment,
+  createBlockPreset,
+  createChapterTemplate,
   createReusableAuthoringItem,
   getReusableAuthoringItemVersion,
   listReusableAuthoringItems,
@@ -35,6 +36,13 @@ const requestSchema = z.discriminatedUnion("action", [
     description: z.string().max(10000).optional(),
     tags: z.array(z.string().max(64)).max(30).optional(),
     blockIds: z.array(z.string().min(1).max(128)).min(2).max(1000),
+  }),
+  z.object({
+    action: z.literal("create-chapter-template"),
+    name: z.string().trim().min(1).max(160),
+    description: z.string().max(10000).optional(),
+    tags: z.array(z.string().max(64)).max(30).optional(),
+    chapterId: z.string().min(1).max(128),
   }),
   z.object({ action: z.literal("archive"), itemId: z.string().min(8).max(128) }),
 ]);
@@ -71,6 +79,10 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
       });
     if (input.action === "create-fragment")
       return NextResponse.json(await createBlockFragment(authorization.session.accountId, taleId, input), {
+        status: 201,
+      });
+    if (input.action === "create-chapter-template")
+      return NextResponse.json(await createChapterTemplate(authorization.session.accountId, taleId, input), {
         status: 201,
       });
     if (input.action === "plan-insert")

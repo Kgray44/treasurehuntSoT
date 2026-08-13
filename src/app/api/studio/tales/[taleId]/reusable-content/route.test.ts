@@ -6,6 +6,7 @@ const mocks = vi.hoisted(() => ({
   create: vi.fn(),
   createPreset: vi.fn(),
   createFragment: vi.fn(),
+  createTemplate: vi.fn(),
   getVersion: vi.fn(),
   planInsert: vi.fn(),
   archive: vi.fn(),
@@ -17,6 +18,7 @@ vi.mock("@/studio/reusable-library-service", () => ({
   createReusableAuthoringItem: mocks.create,
   createBlockPreset: mocks.createPreset,
   createBlockFragment: mocks.createFragment,
+  createChapterTemplate: mocks.createTemplate,
   getReusableAuthoringItemVersion: mocks.getVersion,
   planReusableAuthoringInsertion: mocks.planInsert,
   archiveReusableAuthoringItem: mocks.archive,
@@ -100,5 +102,22 @@ describe("reusable authoring content route", () => {
     expect(mocks.planInsert).toHaveBeenCalledWith(
       expect.objectContaining({ ownerAccountId: "creator-1", itemId: "reusable-1", targetChapterId: "chapter-1" }),
     );
+  });
+
+  it("derives a Chapter template only from the persisted selected Chapter identity", async () => {
+    mocks.createTemplate.mockResolvedValueOnce({ itemId: "item-1", versionId: "version-1", versionNumber: 1 });
+    const response = await POST(
+      new Request("http://localhost/reusable", {
+        method: "POST",
+        body: JSON.stringify({ action: "create-chapter-template", name: "Opening template", chapterId: "chapter-1" }),
+      }),
+      context,
+    );
+    expect(response.status).toBe(201);
+    expect(mocks.createTemplate).toHaveBeenCalledWith("creator-1", "tale-1", {
+      action: "create-chapter-template",
+      name: "Opening template",
+      chapterId: "chapter-1",
+    });
   });
 });
