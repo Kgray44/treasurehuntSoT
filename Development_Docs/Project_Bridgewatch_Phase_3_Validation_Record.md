@@ -98,6 +98,29 @@ Keyboard traversal reached the Since-last-visit button with a solid visible
 outline. These checks exercised display state only; they did not acknowledge
 events or mutate upstream systems.
 
+## Authority failure and focused repair evidence
+
+The first exact-source mainline authority for PR #83, run `31714713467`,
+tested `e960db8c64133ac514aa4c63e652f0f3eb891b95` against base
+`60b89841986e66fbc2c0828489d38002a1617506`. Its finalizer decision was
+`EVIDENCE_INVALID`: 37 of 38 mandatory receipts passed and every receipt
+reported `CLEAN` teardown, but `browser.helm` failed. The failing first
+Captain/Player invitation journey could not find the expected **Accept and
+Join Voyage** button at the 10-second enabled-state assertion. This is a
+Helm-owned product journey, not a Bridgewatch surface; no Bridgewatch source
+was changed in response and the failed authority was not retried.
+
+The required smallest-scope reproduction was then completed in two independent
+task-owned contexts on the unchanged source. The local isolated
+`browser.helm` execution passed all 3 registered cases with runtime
+conformance `PASSED`, `CLEAN` teardown, and no remaining resource lease or
+orphan. Hosted focused repair run `31716941169` then passed the same 3/3
+registered cases on the same SHA with `CLEAN` teardown and runtime conformance
+`PASSED` (duration 412,217 ms). This establishes a non-reproducing hosted
+failure, not an accepted release decision. A fresh candidate incorporating
+this evidence must be qualified and frozen before the one permitted new
+mainline authority attempt.
+
 ## Read-only route inventory
 
 | Route family                                                                                                               | Allowed methods | Purpose                                                                  |
@@ -111,9 +134,10 @@ project lifecycle, milestones, source code, or a user acknowledgement state.
 
 ## Required candidate evidence still pending
 
-Before this record can become an acceptance record, run the current planner's
-affected qualification scope on one frozen SHA, reconcile current main if it
-changes, complete cleanup, dispatch exactly one explicit `mainline` authority,
-obtain a valid `RELEASE_GO` bound to that SHA, merge through protected main,
-then replace pending fields in the Integration Manifest and completion receipts
-with exact evidence. A local green test is not Sounding Line acceptance.
+Before this record can become an acceptance record, freeze the fresh
+post-repair candidate, reconcile current main if it changes, complete the
+current planner's qualification scope and cleanup, dispatch exactly one
+explicit `mainline` authority, obtain a valid `RELEASE_GO` bound to that SHA,
+merge through protected main, then replace pending fields in the Integration
+Manifest and completion receipts with exact evidence. Focused green evidence
+is not Sounding Line acceptance.
