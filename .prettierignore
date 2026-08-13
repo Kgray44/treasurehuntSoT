@@ -1,4 +1,5 @@
 .next
+/.next-shipwright-phase2*/
 .admiralty-phase1-build
 bridgewatch/dist
 .forever-validation-run.json
@@ -17,5 +18,6 @@ prisma/mysql-migrations
 src/app/favicon.ico
 .codex/chat-sync.json
 Codex_Chats
+/tmp/
 Development_Docs/KG_Original_Animation_Audit_Reconciliation_Source.md
 Development_Docs/Project_Harborlight_Phase_4_Implementation_Manifest.txt

@@ -7,7 +7,9 @@ import path from "node:path";
 const command = process.argv[2] ?? "status";
 const repositoryRoot = path.resolve(process.cwd());
 const allowedRoot = path.resolve(required("LOCALAPPDATA"), "ProjectShipwright");
-const taskRoot = path.resolve(process.env.SHIPWRIGHT_PHASE2_TASK_ROOT ?? path.join(allowedRoot, "phase2-owner-walkthrough"));
+const taskRoot = path.resolve(
+  process.env.SHIPWRIGHT_PHASE2_TASK_ROOT ?? path.join(allowedRoot, "phase2-owner-walkthrough"),
+);
 const canonicalDatabase = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
 const port = Number.parseInt(process.env.SHIPWRIGHT_PHASE2_WALKTHROUGH_PORT ?? "3982", 10);
 const distDir = process.env.SHIPWRIGHT_PHASE2_WALKTHROUGH_DIST ?? ".next-shipwright-phase2-owner-walkthrough";
@@ -126,30 +128,48 @@ async function status() {
   const processAlive = pid ? isAlive(pid) : false;
   const health = await fetchHealth();
   return {
-    status: processAlive && portOwnerPid === pid && health.ok ? "SHIPWRIGHT_PHASE2_WALKTHROUGH_HEALTHY" : "SHIPWRIGHT_PHASE2_WALKTHROUGH_STOPPED",
-    pid, port, portOwnerPid, processAlive, health,
+    status:
+      processAlive && portOwnerPid === pid && health.ok
+        ? "SHIPWRIGHT_PHASE2_WALKTHROUGH_HEALTHY"
+        : "SHIPWRIGHT_PHASE2_WALKTHROUGH_STOPPED",
+    pid,
+    port,
+    portOwnerPid,
+    processAlive,
+    health,
     sourceSha: state?.sourceSha ?? null,
     databasePath: state?.databasePath ?? databasePath,
     databaseHash: state?.databaseHash ?? null,
     fixtureVersion: state?.fixtureVersion ?? "shipwright-phase2-v1",
-    credentialHandoffPath, statePath, distDir,
+    credentialHandoffPath,
+    statePath,
+    distDir,
   };
 }
 
 async function stop(report) {
   const state = await readJson(statePath);
   if (!state?.pid) {
-    if (report) process.stdout.write(`${JSON.stringify({ status: "SHIPWRIGHT_PHASE2_WALKTHROUGH_ALREADY_STOPPED", port })}\n`);
+    if (report)
+      process.stdout.write(`${JSON.stringify({ status: "SHIPWRIGHT_PHASE2_WALKTHROUGH_ALREADY_STOPPED", port })}\n`);
     return;
   }
   const portOwnerPid = ownerPid(port);
-  if (portOwnerPid && portOwnerPid !== state.pid) throw new Error(`SHIPWRIGHT_REFUSES_UNRELATED_PORT_OWNER:${portOwnerPid}`);
+  if (portOwnerPid && portOwnerPid !== state.pid)
+    throw new Error(`SHIPWRIGHT_REFUSES_UNRELATED_PORT_OWNER:${portOwnerPid}`);
   if (isAlive(state.pid)) {
-    const result = spawnSync("taskkill.exe", ["/PID", String(state.pid), "/T", "/F"], { encoding: "utf8", windowsHide: true });
-    if (result.status !== 0 && isAlive(state.pid)) throw new Error(`SHIPWRIGHT_WALKTHROUGH_STOP_FAILED:${result.stderr}`);
+    const result = spawnSync("taskkill.exe", ["/PID", String(state.pid), "/T", "/F"], {
+      encoding: "utf8",
+      windowsHide: true,
+    });
+    if (result.status !== 0 && isAlive(state.pid))
+      throw new Error(`SHIPWRIGHT_WALKTHROUGH_STOP_FAILED:${result.stderr}`);
   }
   await rm(statePath, { force: true });
-  if (report) process.stdout.write(`${JSON.stringify({ status: "SHIPWRIGHT_PHASE2_WALKTHROUGH_STOPPED", pid: state.pid, port })}\n`);
+  if (report)
+    process.stdout.write(
+      `${JSON.stringify({ status: "SHIPWRIGHT_PHASE2_WALKTHROUGH_STOPPED", pid: state.pid, port })}\n`,
+    );
 }
 
 function runtimeEnv(sourceSha) {
@@ -162,27 +182,62 @@ function runtimeEnv(sourceSha) {
   };
 }
 function run(script, args, env) {
-  const result = spawnSync(process.execPath, [script, ...args], { cwd: repositoryRoot, env, encoding: "utf8", windowsHide: true });
+  const result = spawnSync(process.execPath, [script, ...args], {
+    cwd: repositoryRoot,
+    env,
+    encoding: "utf8",
+    windowsHide: true,
+  });
   if (result.error) throw result.error;
   if (result.status !== 0) throw new Error(`${script} failed:\n${result.stderr || result.stdout}`);
 }
 function ownerPid(value) {
   const script = `(Get-NetTCPConnection -State Listen -LocalPort ${value} -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty OwningProcess)`;
-  const result = spawnSync("powershell.exe", ["-NoProfile", "-Command", script], { encoding: "utf8", windowsHide: true });
+  const result = spawnSync("powershell.exe", ["-NoProfile", "-Command", script], {
+    encoding: "utf8",
+    windowsHide: true,
+  });
   const parsed = Number.parseInt(result.stdout.trim(), 10);
   return Number.isFinite(parsed) ? parsed : null;
 }
-function isAlive(pid) { try { process.kill(pid, 0); return true; } catch { return false; } }
-async function fetchHealth() {
-  try { const response = await fetch(baseUrl, { redirect: "manual" }); return { ok: response.status >= 200 && response.status < 400, status: response.status }; }
-  catch { return { ok: false, status: null }; }
+function isAlive(pid) {
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch {
+    return false;
+  }
 }
-async function readJson(file) { try { return JSON.parse(await readFile(file, "utf8")); } catch { return null; } }
+async function fetchHealth() {
+  try {
+    const response = await fetch(baseUrl, { redirect: "manual" });
+    return { ok: response.status >= 200 && response.status < 400, status: response.status };
+  } catch {
+    return { ok: false, status: null };
+  }
+}
+async function readJson(file) {
+  try {
+    return JSON.parse(await readFile(file, "utf8"));
+  } catch {
+    return null;
+  }
+}
 function git(args) {
   const result = spawnSync("git", args, { cwd: repositoryRoot, encoding: "utf8", windowsHide: true });
   if (result.status !== 0) throw new Error(`git ${args.join(" ")} failed`);
   return result.stdout.trim();
 }
-async function sha256(file) { return createHash("sha256").update(await readFile(file)).digest("hex"); }
-function sqliteUrl(value) { return `file:${value.replaceAll("\\", "/")}`; }
-function required(name) { const value = process.env[name]; if (!value) throw new Error(`${name} is required.`); return value; }
+async function sha256(file) {
+  return createHash("sha256")
+    .update(await readFile(file))
+    .digest("hex");
+}
+function sqliteUrl(value) {
+  return `file:${value.replaceAll("\\", "/")}`;
+}
+function required(name) {
+  const value = process.env[name];
+  if (!value) throw new Error(`${name} is required.`);
+  return value;
+}
