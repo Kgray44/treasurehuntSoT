@@ -73,6 +73,7 @@ on the server.
 - [Design record](Project_Admiralty_Phase_3_Design_Record.md)
 - [Mainline safety contract](Project_Admiralty_Phase_3_Mainline_Safety_Contract.md)
 - [Command catalog](Project_Admiralty_Phase_3_Command_Catalog.md)
+- [Deepwater disposition register](Project_Admiralty_Phase_3_Deepwater_Disposition_Register.json)
 
 ## Machine-readable controls
 
@@ -90,6 +91,8 @@ on the server.
 
 - `Project_Admiralty_Phase_3_Active_Phase_Registration.json`
 - `Project_Admiralty_Phase_3_Command_Catalog.json`
+- `Project_Admiralty_Phase_3_Role_Capability_Registry.json`
+- `Project_Admiralty_Phase_3_Deepwater_Disposition_Register.json`
 
 The Phase 1 and Phase 2 owner decisions are `ACCEPTED`; both phases are
 integrated on canonical main. Phase 3 is active under the owner authorization

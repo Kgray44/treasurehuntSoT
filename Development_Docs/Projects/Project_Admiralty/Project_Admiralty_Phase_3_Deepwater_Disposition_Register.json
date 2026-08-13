@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceAuthority": "Development_Docs/Programs/Deepwater",
+  "phase": "PROJECT ADMIRALTY PHASE 3 - TAKE THE WATCH",
+  "rule": "This consumer register records Admiralty's Phase 3 disposition only and does not modify the Deepwater ledger.",
+  "dispositions": [
+    { "capabilityId": "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS", "disposition": "REALIZED_IN_PHASE_2", "reason": "Phase 1 consent control-plane and Phase 2 dossier integration remain authoritative." },
+    { "capabilityId": "DW-CAP-COMMUNITY-EXCHANGE", "disposition": "REALIZED_IN_PHASE_3", "reason": "Phase 3 consumes Harborlight's canonical moderation commands through a bounded command port; it does not duplicate Community state." },
+    { "capabilityId": "DW-CAP-TRANSACTIONAL-EMAIL-DELIVERY", "disposition": "BLOCKED_BY_MISSING_OWNER_CONTRACT", "reason": "No authenticated sanitized canonical owner command or provider-health mutation contract exists." },
+    { "capabilityId": "DW-CAP-VERIFICATION-PROVIDER-FRAMEWORK", "disposition": "BLOCKED_BY_MISSING_OWNER_CONTRACT", "reason": "No accepted live-provider administrative command exists." },
+    { "capabilityId": "DW-CAP-PRIVATE-REPAIR-OPERATIONS", "disposition": "ASSIGNED_TO_PHASE_4", "reason": "Private-content repair and recovery are explicitly Phase 4 non-goals even though an older Phase 2 consumer record classified repair as a mutation." },
+    { "capabilityId": "ADMIRALTY-RAW-DATABASE-AND-SECRET-ACCESS", "disposition": "INTENTIONALLY_PROHIBITED", "reason": "Raw SQL, arbitrary Prisma editing, secret values, raw private content, and raw event payloads remain unavailable." }
+  ]
+}

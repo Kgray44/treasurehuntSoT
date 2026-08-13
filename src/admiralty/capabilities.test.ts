@@ -43,15 +43,18 @@ describe("Admiralty capability authority", () => {
     ).toMatchObject({ allowed: false, reason: "SCOPE_MISMATCH" });
   });
 
-  it("keeps the Phase 2 operator partitions least-privileged", () => {
+  it("keeps the Phase 3 operator partitions least-privileged", () => {
     const support = resolveAdmiraltyCapability([assignment("SUPPORT_OPERATOR")], "ACCOUNT_OBSERVE");
     expect(support.allowed).toBe(true);
     expect(resolveAdmiraltyCapability([assignment("SUPPORT_OPERATOR")], "VOYAGE_OBSERVE").allowed).toBe(false);
 
     const operations = resolveAdmiraltyCapability([assignment("OPERATIONS_OPERATOR")], "CONTENT_OBSERVE");
     expect(operations.allowed).toBe(true);
-    expect(resolveAdmiraltyCapability([assignment("OPERATIONS_OPERATOR")], "JOBS_OPERATE").allowed).toBe(false);
+    expect(resolveAdmiraltyCapability([assignment("OPERATIONS_OPERATOR")], "JOBS_OPERATE").allowed).toBe(true);
     expect(resolveAdmiraltyCapability([assignment("OPERATIONS_OPERATOR")], "CONFIG_OPERATE").allowed).toBe(false);
+
+    expect(resolveAdmiraltyCapability([assignment("CONFIGURATION_OPERATOR")], "CONFIG_OPERATE").allowed).toBe(true);
+    expect(resolveAdmiraltyCapability([assignment("CONFIGURATION_OPERATOR")], "JOBS_OPERATE").allowed).toBe(false);
 
     expect(resolveAdmiraltyCapability([assignment("AUDIT_OPERATOR")], "AUDIT_OBSERVE").allowed).toBe(true);
     expect(resolveAdmiraltyCapability([assignment("AUDIT_OPERATOR")], "ACCOUNT_OBSERVE").allowed).toBe(false);
