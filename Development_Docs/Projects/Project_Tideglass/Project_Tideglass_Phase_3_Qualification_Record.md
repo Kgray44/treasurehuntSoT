@@ -125,10 +125,14 @@ suite passes on the accepted source.
 Three Shipwright-owned `TaleEditor` checks exceed their 5-second default
 envelope (large 100-passage selection and two focus journeys); the same checks
 pass with a 30-second diagnostic timeout. This is recorded as a Shipwright
-test-budget boundary, not a Tideglass semantic defect. Because accepted Studio
-presentation changed, the task-owned Tideglass production A--K browser journey
-must rerun after the active Wakebook authority lane releases. No Tideglass
-authority may be requested before that proof is refreshed.
+test-budget boundary, not a Tideglass semantic defect. The task-owned Tideglass
+production A--K browser journey now passes on `622ee2bcba025ddffd557aa0437af5c671d56b06`,
+including the current Studio semantic comparison, Journey Detail entry, privacy,
+mobile, keyboard, reduced motion, effective 200% zoom, and zero
+serious/critical Axe findings. This completes the Shipwright browser refresh.
+Wakebook Phase 1 then protected-merged documentation/catalog/registry-only
+source at `0cdaa802`; a final current-main reconciliation remains required
+before freezing a candidate or requesting a later serialized authority position.
 
 ## Candidate qualification evidence
 

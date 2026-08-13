@@ -119,8 +119,8 @@ Tideglass consumer or creating a second authority path.
 
 Shipwright Phase 2 at `25a5ecc3` changes the accepted Studio interaction
 surface. Its current `TaleEditor` retains `TideglassStudioComparison` as the
-ordinary semantic published-version consumer. Direct consumer proof is green;
-the component's presentation must receive a refreshed Tideglass browser journey
-after Wakebook's active shared-runtime lane releases. The Shipwright test-budget
+ordinary semantic published-version consumer. Direct consumer proof is green,
+and the refreshed A--K Tideglass production browser journey passes on
+`622ee2bc`, including the Studio semantic card. The Shipwright test-budget
 finding is recorded for its owner and does not justify a second comparison
 engine or a Tideglass UI rollback.

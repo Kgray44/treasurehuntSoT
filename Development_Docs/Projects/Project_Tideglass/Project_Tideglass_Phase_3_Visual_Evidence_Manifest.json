@@ -2,8 +2,8 @@
   "schemaVersion": "1.0.0",
   "project": "Project Tideglass",
   "phase": "3",
-  "status": "AUTOMATED_BROWSER_PROOF_COMPLETE_WAKEBOOK_ADDENDUM_OWNER_ACCEPTED",
-  "sourceSha": "e99bbe3174a6d0c94c88ef6cc7b4f33c4eff28d0",
+  "status": "AUTOMATED_BROWSER_PROOF_COMPLETE_SHIPWRIGHT_RECONCILIATION",
+  "sourceSha": "622ee2bcba025ddffd557aa0437af5c671d56b06",
   "fixtureVersion": "tideglass-phase3-v2",
   "fixtureChecksum": "7798f816bedd71867d096d0543ee2135a7722388f262d089b4b078d9a50b2002",
   "ownerDecision": "Wakebook Journey Detail addendum explicitly accepted by the owner on 2026-08-12; this evidence remains source-bound to the recorded SHA.",
@@ -30,7 +30,7 @@
       "route": "/chronicles/tideglass-passage-fixture/compare",
       "state": "PARTIAL",
       "viewport": "1440x900",
-      "sha256": "2bf560f1c7442eb67f31e8623e649b6c4d96d9740f84fa1d0b83e2ecaed93c4c",
+      "sha256": "b27685a0e745b657d41b2191f948f32aa06193b906882ecf3e35ab54dc37dcb1",
       "semanticAssertion": "Known unsupported fixture semantics are named as partial without source disclosure"
     },
     {
@@ -38,7 +38,7 @@
       "route": "/chronicles/tideglass-passage-fixture/compare",
       "state": "PAIR_SELECTION",
       "viewport": "1440x900",
-      "sha256": "8bf1f7732704c9f43f48bf721f478556dd4b7fa53af81f81d760d144b2470777",
+      "sha256": "debcec1509d7c2fabd9c321d64eadf9002f4632960e942138d633dee58e7ba4a",
       "semanticAssertion": "Swap requests the reverse canonical pair and current restores the server target"
     },
     {
@@ -46,7 +46,7 @@
       "route": "/passport/history/tg3-record-a",
       "state": "WAKEBOOK_JOURNEY_DETAIL",
       "viewport": "1440x900",
-      "sha256": "cd534f9c5997d3dec64e05cb4eccd71715646dcb72eb2b6e71690e33c74e3478",
+      "sha256": "91cfeda2c37c6a9e443ded6733dc23045cd1c348f2d3c9728b1277acb89ec606",
       "semanticAssertion": "Accepted Journey Detail exposes the owner-safe Tideglass history entry before comparison navigation"
     },
     {
@@ -54,7 +54,7 @@
       "route": "/chronicles/tideglass-passage-fixture/compare",
       "state": "PLAYER_A_HISTORY_DISCLOSURE",
       "viewport": "1440x900",
-      "sha256": "ef27b5f77359299d9063495535b97923e50322debf29bb451eb949dce0109e04",
+      "sha256": "0be6665c4d1b529ce06ccf5f3764dfff3d58b2827d27fca3f96717561b2808e2",
       "semanticAssertion": "Accepted Journey Detail preserves the owner-recorded edition, returns to the same Voyage, and gates story detail by explicit disclosure"
     },
     {
@@ -62,7 +62,7 @@
       "route": "/chronicles/tideglass-passage-fixture/compare",
       "state": "MULTIPLE_HISTORY",
       "viewport": "1440x900",
-      "sha256": "e570ed3fa7cfc5a120b5f276d45e704120377f9a7287cdecd9195bdfec4e109d",
+      "sha256": "346d635e7961980051cf8b2e2c5e53777261c96c71cda60cdaf16b0ddeb20cf8",
       "semanticAssertion": "Each historical Voyage remains independently selectable"
     },
     {
@@ -70,7 +70,7 @@
       "route": "/chronicles/tideglass-passage-fixture/compare",
       "state": "UP_TO_DATE",
       "viewport": "1440x900",
-      "sha256": "8edf33a20ba5a27d3e4bb100b41442c75c3dd45cff9cfcde06cefa76c2cc42da",
+      "sha256": "b89378590e89bc6092d6a66f540052b2a82f0909f3bc2f7e8a9e727e722b41d4",
       "semanticAssertion": "Recorded current edition has an intentional up-to-date state"
     },
     {
@@ -78,7 +78,7 @@
       "route": "/studio/tales/tg3-chronicle-passage/versions",
       "state": "CREATOR_FULL",
       "viewport": "1440x900",
-      "sha256": "9c4fbe5c62cf4744f81481e61fd78a2edbc6b4627cc4c4f1c6ec337995ddba17",
+      "sha256": "43d891f104ffaf7fb67d58e7eefbb683c1fdd0063919d2a43a9525cad4b82d5b",
       "semanticAssertion": "Studio renders semantic branch, ending, Captain, caption, compatibility, and annotation records rather than a raw diff"
     },
     {

@@ -116,9 +116,13 @@ endpoint and renders `TideglassStudioComparison`; direct Tideglass Studio
 component/API tests pass. The Shipwright-owned large-editor/focus tests exceed
 their 5-second defaults but pass under a 30-second diagnostic timeout, so the
 observed issue is a test-budget boundary rather than a semantic comparison
-failure. The required A--K task-owned production browser rerun is deferred only
-while the active Wakebook authority owns the shared runtime. No replacement
-authority has been dispatched.
+failure. The refreshed A--K task-owned production browser journey passes on
+`622ee2bcba025ddffd557aa0437af5c671d56b06`, including the accepted Journey
+Detail entry, current Studio semantic comparison, privacy, mobile, keyboard,
+reduced motion, effective 200% zoom, and zero serious/critical Axe findings.
+Wakebook Phase 1 then protected-merged documentation/catalog/registry-only
+source at `0cdaa802`, so a final current-main reconciliation is required before
+freezing a candidate. No replacement authority has been dispatched.
 
 ## Authority preflight and focused repair
 
