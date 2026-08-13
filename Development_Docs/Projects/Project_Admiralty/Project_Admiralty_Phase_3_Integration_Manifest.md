@@ -10,8 +10,8 @@ last_reviewed: 2026-08-13
 
 ## Scope and source
 
-- Working branch: `codex/project-admiralty-phase3-take-the-watch`
-- Starting accepted mainline: `60b89841986e66fbc2c0828489d38002a1617506`
+- Working branch: `codex/project-admiralty-phase3-mainline-reconcile`
+- Reconciled mainline base: `72075eb551ec39bdb59bd7d78fd900f2eaf73a88`
 - Phase 2 baseline: accepted Project Admiralty Phase 2 read-only control plane.
 - In scope: owner-backed account/security and Community moderation command
   seams, role partitions, command evidence, and safe operator projections.
