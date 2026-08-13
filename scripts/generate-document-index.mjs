@@ -37,7 +37,7 @@ const isCurrentGovernance = (file) =>
   file.includes("/Governance/") ||
   file ===
     "Development_Docs/Governing/Voyagewright_Continuous_Development_and_Mainline_Integration_Standard_v1.0.pdf" ||
-  (/\/Projects\/Project [^/]+\//.test(file) && /Governing_Document[^/]*\.pdf$/i.test(file));
+  (/\/Projects\/Project [^/]+\//.test(file) && /Governing_(?:Document|Amendment)[^/]*\.pdf$/i.test(file));
 const records = files.map((file) => ({
   path: file,
   record_type: classify(file),

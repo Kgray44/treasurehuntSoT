@@ -53,7 +53,11 @@ participation while preserving one canonical account, ordinary Player
 membership, Voyage-scoped Captain authority, and Player-safe projection
 boundaries. Phase 2, **Read the Deck**, is now integrated on canonical main
 with read-only operational projections and member-scoped presence/synchronization
-evidence; Phase 3 command redesign remains separate.
+evidence. Governing Amendment v1.1 supplements the v1.0 authority and inserts
+A1 **Muster the Crew**, A2 **Pass the Helm**, and A3 **Ready the Room** before
+the unchanged P3 **Give the Orders**, P4 **Weather the Passage**, and P5
+**Clear for Voyage** sequence. The amendment is governing-only; it implements
+none of A1, A2, or A3.
 
 ## Project Admiralty
 
@@ -79,6 +83,7 @@ The following owner-authored governing documents are current repository authorit
 - [Project Deepwater](Projects/Project%20Deepwater/Project_Deepwater_Product_Capability_Realization_and_Systems_Audit_Program_Governing_Document.pdf)
 - [Project Drydock](Projects/Project%20Drydock/Project_Drydock_Governing_Document.pdf)
 - [Project Helm](Projects/Project%20Helm/Project_Helm_Captain_Operations_and_Participating_Captain_System_Governing_Document_v1.0.pdf)
+- [Project Helm Governing Amendment v1.1](Projects/Project%20Helm/Project_Helm_Governing_Amendment_v1.1_Crew_Lifecycle_Captain_Succession_and_Muster_Experience.pdf)
 - [Project Shipwright](Projects/Project%20Shipwright/Project_Shipwright_Creator_Studio_Authoring_Experience_Governing_Document.pdf)
 - [Project Tideglass](Projects/Project%20Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf)
 - [Project Wakebook](Projects/Project%20Wakebook/Project_Wakebook_Governing_Document.pdf)
