@@ -1,7 +1,7 @@
 ---
 title: Project Shipwright Phase 2 Block Editor Coverage
 audience: engineering
-status: active
+status: product-mainline-accepted-record-closure-pending
 canonical_for: project-shipwright-phase-2-block-editor-coverage
 last_reviewed: 2026-08-12
 ---
@@ -45,4 +45,10 @@ The inventory is derived from the active `blockTypeIds` and Drydock registry at 
 - 2 domain-adapter strategies
 - 0 active types unsupported
 
-Unknown future block types resolve to `SAFE_GENERIC_FALLBACK`; this strategy is tested by `src/studio/authoring/adapters.test.ts`. Every active type resolves through the Drydock-derived registry and has Guided, Detailed, Engineering, inline-issue, and safe fallback coverage. Per-type end-to-end qualification and owner review remain governed by the validation record; this coverage document does not claim acceptance.
+Unknown future block types resolve to `SAFE_GENERIC_FALLBACK`; this strategy is
+tested by `src/studio/authoring/adapters.test.ts`. Every active type resolves
+through the Drydock-derived registry and has Guided, Detailed, Engineering,
+inline-issue, and safe fallback coverage. The owner accepted the reviewed
+capability, Sounding Line run `31662185476` returned `RELEASE_GO`, and the
+product merged in PR #72. This coverage publication creates no new Story Block
+family and leaves Shipwright Phase 3 unstarted.

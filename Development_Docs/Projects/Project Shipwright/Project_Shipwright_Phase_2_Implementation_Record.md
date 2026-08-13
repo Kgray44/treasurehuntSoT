@@ -1,7 +1,7 @@
 ---
 title: Project Shipwright Phase 2 Implementation Record
 audience: engineering
-status: active
+status: product-mainline-accepted-record-closure-pending
 canonical_for: project-shipwright-phase-2-implementation
 last_reviewed: 2026-08-12
 ---
@@ -44,4 +44,12 @@ Phase 2 replaces the selected-Passage generic field surface with a contract-awar
 
 ## Completion state
 
-Implementation and local candidate qualification are complete. The branch is ready for the owner-review gate; the companion validation, safety, coverage, and owner-walkthrough records deliberately distinguish that local state from owner, Sounding Line, and protected-main evidence.
+Implementation, owner acceptance, exact-source Sounding Line authority, and
+protected-main product integration are complete. Candidate
+`00e58fc427d97d5775e1b911ea8f62ba428b0c51` received `RELEASE_GO` in run
+`31662185476`; its sealed envelope contains 38 mandatory clean receipts.
+Protected binding run `31662099042` consumed that envelope and PR #72 merged
+the candidate as `25a5ecc3989d137a95291c340f07143860b821cc`.
+
+This closeout changes no product source. It promotes the accepted capability's
+records and Feature Catalog entry only. Shipwright Phase 3 remains not started.

@@ -1,7 +1,7 @@
 ---
 title: Project Shipwright Phase 2 Mainline Safety Manifest
 audience: engineering
-status: active
+status: product-mainline-accepted-record-closure-pending
 canonical_for: project-shipwright-phase-2-mainline-safety
 last_reviewed: 2026-08-12
 ---
@@ -12,10 +12,10 @@ last_reviewed: 2026-08-12
 
 | Field                  | Value                                                                                |
 | ---------------------- | ------------------------------------------------------------------------------------ |
-| Branch                 | `codex/project-shipwright-phase2-fit-the-tools-r6`                                   |
+| Branch                 | `codex/project-shipwright-phase2-fit-the-tools-r9`                                   |
 | Original base          | `191a964488d0df71f8dcb91c5b8372fc73b6b32e` (`origin/main` at worktree creation)      |
 | Schema / Prisma impact | None                                                                                 |
-| Current state          | Owner accepted; Helm/Deepwater-reconciled qualification complete; authority eligible |
+| Current state          | Protected-main product accepted; record/catalog closeout pending                       |
 
 ## Safety assertions under test
 
@@ -31,8 +31,13 @@ last_reviewed: 2026-08-12
 
 ## Candidate safety attestation
 
-`MAINLINE_SAFETY_CONTRACT = PASS_FOR_OWNER_CANDIDATE`.
+`MAINLINE_SAFETY_CONTRACT = PASS`.
 
 Permanent-stop proof: **YES**. If Shipwright Phase 3 is never built, all 23 current active Story Block types remain authorable through a contract-aware editor strategy or the safe schema-aware fallback, and valid Chronicles retain the existing autosave, undo/redo, preview, validation, publication, and runtime boundaries. The qualification suite includes a 100-Passage selection regression, all 23 Drydock contracts, and the isolated Creator browser journey.
 
-This local safety pass is not a substitution for the remaining owner product gate, exact-source Sounding Line decision, or protected-main integration. Those acceptance layers remain pending.
+Owner acceptance, exact-source Sounding Line authority, and protected-main
+integration are complete: run `31662185476` returned `RELEASE_GO` for
+`00e58fc427d97d5775e1b911ea8f62ba428b0c51`; protected binding run
+`31662099042` passed; and PR #72 merged at
+`25a5ecc3989d137a95291c340f07143860b821cc`. The post-merge record/catalog
+publication is not a new product gate and does not begin Phase 3.

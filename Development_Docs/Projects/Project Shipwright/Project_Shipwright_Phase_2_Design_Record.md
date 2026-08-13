@@ -1,7 +1,7 @@
 ---
 title: Project Shipwright Phase 2 Design Record
 audience: engineering
-status: active
+status: product-mainline-accepted-record-closure-pending
 canonical_for: project-shipwright-phase-2-design
 last_reviewed: 2026-08-12
 ---
@@ -119,3 +119,18 @@ Stable contract lookup, memoized draft indexes, callback stability, and localize
 ## Mainline Safety Contract and Phase 3 boundary
 
 If implementation stops after Phase 2, all current 23 Story Block types remain editable and publishable through canonical Drydock contracts; existing autosave, undo/redo, pointer/keyboard movement, multi-select, current animation settings, validation panel, preview, comparison, and publishing remain intact. No Prisma authority, Story Block family, template/fragment, scenario-lab expansion, or publication-workflow redesign is introduced. Phase 3 remains explicitly not started.
+
+## Accepted product integration
+
+The qualified candidate `00e58fc427d97d5775e1b911ea8f62ba428b0c51`
+received `RELEASE_GO` in hosted Sounding Line run
+[`31662185476`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31662185476)
+against base `95cff272450af34a3f8c00eb3ae01081be810f79`. The sealed
+acceptance envelope records 38 mandatory receipts with no missing, duplicate,
+unknown, invalid, or runtime-conformance evidence. Protected binding run
+[`31662099042`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31662099042)
+passed before protected PR [#72](https://github.com/Kgray44/treasurehuntSoT/pull/72)
+merged it as `25a5ecc3989d137a95291c340f07143860b821cc`.
+
+This record publication promotes the accepted capability and does not authorize
+Shipwright Phase 3.

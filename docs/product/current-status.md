@@ -39,6 +39,16 @@ membership-bounded and Player-safe. This is protected-mainline source
 integration with local/synthetic automated evidence, not deployment,
 live-Voyage behavior, or owner acceptance.
 
+**Project Shipwright Phase 2 is available on main:** Creator Studio now turns
+the existing Drydock Story Block contracts into a contract-aware Inspector with
+Guided, Detailed, and Engineering disclosure; readable destinations; typed
+variables and operations; visual canonical conditions; effective-default
+summaries; accessibility obligations; and field-local Drydock guidance. It
+preserves current drafts, autosave, undo/redo, preview, comparison, and
+publishing without adding a Prisma schema or second authoring/validation
+authority. This is protected-main source integration, not deployment or
+live-provider execution.
+
 **Project Drydock Phase 3 active branch:** Creator-only Sea Trials provide
 revisioned source-bound deterministic Scenarios, synthetic faults, virtual
 time, Suites, safe trace/coverage receipts, and an adapter-level One Voyage

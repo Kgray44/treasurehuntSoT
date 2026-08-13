@@ -417,12 +417,6 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Features/branch-complete/project-shipwright-phase2.json",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Features/catalog/admiralty.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -3166,6 +3160,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_2_Block_Editor_Coverage.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_2_Completion_Receipt.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

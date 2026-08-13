@@ -989,6 +989,46 @@ A private Bridgewatch extension that projects explicit Project Registry and Soun
 
 ---
 
+## FT-037 - Shipwright Contract-Aware Creator Studio Authoring
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Shipwright Phase 2
+
+Creators author every accepted Story Block through a contract-aware Studio Inspector that projects canonical Drydock schemas, defaults, variables, expressions, targets, accessibility obligations, migrations, and field-addressed validation without introducing a second authoring or validation authority.
+
+### Important subfeatures
+
+- Guided, Detailed, and Engineering disclosure over unchanged canonical Chronicle data
+- Semantic Content, Behavior, Completion, Presentation, Accessibility, and Advanced Inspector sections
+- Drydock-derived effective defaults, compatibility state, and migration preview
+- Searchable typed variable browser with only permitted operations and governed rename propagation
+- Visual canonical expression editing and readable Chronicle target selection
+- Inline Drydock severity, field-path guidance, and issue-to-control navigation
+- Purpose-built, contract-generated, hybrid, and domain-adapter coverage for all active Story Blocks with a safe future fallback
+- Task-owned isolated browser and owner-walkthrough environments
+
+### Primary surfaces
+
+`/studio/tales/[taleId]`, `src/components/studio/inspector/ContractAwareInspector.tsx`, `npm run shipwright:phase2:journeys`
+
+### Meaningful limitations
+
+- It does not activate Shipwright Phase 3 block families, templates, fragments, or composition.
+- Drydock remains the sole authority for canonical contracts, migrations, expression checking, defaults, and issue severity.
+- Deployment and live-provider execution remain separate from protected-main source integration.
+
+### Evidence
+
+- path: `src/components/studio/inspector/ContractAwareInspector.tsx`
+- path: `src/studio/authoring`
+- path: `src/drydock/migration-preview.ts`
+- test: `tests/e2e/project-shipwright-phase2.spec.ts`
+- test: `src/components/studio/TaleEditor.test.tsx`
+- path: `scripts/shipwright/phase2-walkthrough-runtime.mjs`
+- completion-record: `Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_2_Completion_Receipt.md`
+
+---
+
 ## FT-B001 - Unified Identity and Session Authority
 
 **Status:** MAINLINE
@@ -1526,42 +1566,43 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 
 ---
 
-## FT-037 - Shipwright Contract-Aware Creator Studio Authoring
+## FT-B011 - Private Living Journey Archive
 
 **Status:** BRANCH COMPLETE NOT MERGED
-**Program or subsystem:** Project Shipwright Phase 2
+**Program or subsystem:** Project Wakebook Phase 1
 
-Creators can author every accepted Story Block through a contract-aware Studio Inspector that projects canonical Drydock schemas, defaults, variables, expressions, targets, accessibility obligations, migrations, and field-addressed validation without introducing a second authoring or validation authority.
+Project Wakebook turns version-pinned Wayfarer records into a polished, owner-private visual archive with truthful chronology, safe historical context, bounded discovery, and a complete Voyage Detail baseline.
 
 ### Important subfeatures
 
-- Guided, Detailed, and Engineering disclosure over unchanged canonical Chronicle data
-- Semantic Content, Behavior, Completion, Presentation, Accessibility, and Advanced Inspector sections
-- Drydock-derived effective defaults, compatibility state, and migration preview
-- Searchable typed variable browser with only permitted operations and governed rename propagation
-- Visual canonical expression editing and readable Chronicle target selection
-- Inline Drydock severity, field-path guidance, and issue-to-control navigation
-- Purpose-built, contract-generated, hybrid, and domain-adapter coverage for all active Story Blocks with a safe future fallback
-- Task-owned isolated browser and owner-walkthrough environments
+- Chronological visual shelf with accurate full-year summaries
+- Owner-scoped title and historical-crew search, filters, sorting, and opaque cursor pagination
+- Human lifecycle, outcome, role, and timing-quality presentation without raw source values
+- Exact played-edition identity and historically stable title, cover, crew, chapter, and timing snapshots
+- Separate invitation history that never contributes to played-Voyage statistics
+- Distinct shared Voyage artifact context and personal Artifact Cabinet provenance
+- Private Reflection, Memory, Keepsake, consent, Cabinet, and eligible review handoffs
+- First-use, one-Voyage, many-Voyage, filtered-empty, unavailable, supplementary-history, loading, and failure states
+- Ordinary Chronicle Passport navigation with responsive and accessible desktop and mobile layouts
 
 ### Primary surfaces
 
-`/studio/tales/[taleId]`, `src/components/studio/inspector/ContractAwareInspector.tsx`, `npm run shipwright:phase2:journeys`
+`/passport/history`, `/passport/history/[recordId]`
 
 ### Meaningful limitations
 
-- The owner has accepted the requalified capability; it still requires serialized authority release, one authoritative Sounding Line decision, and protected-main integration.
-- It consumes current Drydock contracts and does not activate Shipwright Phase 3 block families, templates, fragments, or composition.
-- Drydock remains the sole authority for canonical contracts, migrations, expression checking, defaults, and issue severity.
+- Available only on codex/project-wakebook-phase1-open-the-wake until protected mainline integration
+- Owner walkthrough and owner acceptance remain separate from automated readiness
+- Timeline, People, Statistics, geographic recap, public sharing, competitive metrics, and Tideglass semantics are outside Phase 1
 
 ### Evidence
 
-- path: `src/components/studio/inspector/ContractAwareInspector.tsx`
-- path: `src/studio/authoring`
-- path: `src/drydock/migration-preview.ts`
-- test: `tests/e2e/project-shipwright-phase2.spec.ts`
-- test: `src/components/studio/TaleEditor.test.tsx`
-- path: `scripts/shipwright/phase2-walkthrough-runtime.mjs`
+- path: `src/wakebook/archive-query.ts`
+- path: `src/components/wakebook/WakebookArchive.tsx`
+- path: `src/components/wakebook/WakebookVoyageDetail.tsx`
+- test: `tests/e2e/wakebook-phase1.spec.ts`
+- completion-record: `Development_Docs/Project_Wakebook_Phase_1_Validation_Record.md`
+- commit: `629f5c7a981b80494f7703b6410b573a661e0f39`
 
 ---
 

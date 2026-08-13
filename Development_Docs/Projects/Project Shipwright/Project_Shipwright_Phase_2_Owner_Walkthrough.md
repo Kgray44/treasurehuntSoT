@@ -35,4 +35,8 @@ After the candidate is frozen, run `npm run shipwright:phase2:walkthrough:prepar
 - Any owner correction and its requalification scope.
 - Explicit waiver text if the owner waives this review.
 
-The owner decision is satisfied. Sounding Line authority and protected-main integration remain separate, pending gates.
+The owner decision is satisfied. The accepted exact candidate subsequently
+received `RELEASE_GO` in Sounding Line run `31662185476`; protected binding run
+`31662099042` passed and PR #72 integrated it on protected main as
+`25a5ecc3989d137a95291c340f07143860b821cc`. This does not authorize
+Shipwright Phase 3.

@@ -12,6 +12,22 @@ Creator Studio is the authoring workspace. Create or select a Chronicle, then us
 
 Expected result: your owned Chronicle appears in Studio and its editing surfaces retain the changes you are authorized to make. If a save fails, preserve the error details without copying story content and retry after checking your session. Use synthetic content for demonstrations.
 
+## Contract-aware Story Block editing
+
+Select a Story Block to open its Inspector. Start in **Guided** mode for the
+required authoring steps and plain-language issue guidance; use **Detailed**
+for all supported controls; use **Engineering** to inspect safe contract paths,
+versions, and rule codes. Switching modes changes disclosure only, not your
+Chronicle.
+
+Choose destinations by their chapter and block title rather than an ID. Choose
+variables from the typed browser, then select only the operations the current
+Drydock contract permits. Build conditions with the visual editor; the saved
+result remains Drydock's canonical expression. When a local issue appears,
+select it to reveal and focus the affected control. Required accessibility
+details, such as alternate text or transcripts, appear next to the relevant
+media control.
+
 Related: [Captain guide](captain-guide.md), [private content](../administrator/private-content.md), and [accessibility](accessibility.md).
 
 On the Project Homeport Phase 2 branch, Creator Studio navigation owns
