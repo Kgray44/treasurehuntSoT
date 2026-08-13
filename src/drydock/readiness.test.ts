@@ -63,6 +63,12 @@ describe("Drydock readiness", () => {
     ).toBe("TRIALS_INCOMPLETE");
   });
 
+  it("requires matching provider evidence instead of allowing an unrelated present reference", () => {
+    const requirement = { id: "landfall", version: "1", capability: "LOCATION_PROVIDER", requirementType: "EXTERNAL" as const, mandatory: true, resolver: "Landfall", providerId: "landfall", providerVersion: "adapter-v1", evidenceKind: "field-evidence" };
+    expect(evaluateDrydockReadiness(input({ requirements: [requirement], externalEvidence: [{ providerId: "other", providerVersion: "adapter-v1", evidenceKind: "field-evidence", status: "PRESENT", safeSummary: "Other provider" }] })).status).toBe("NEEDS_REPAIR");
+    expect(evaluateDrydockReadiness(input({ requirements: [requirement], externalEvidence: [{ providerId: "landfall", providerVersion: "adapter-v1", evidenceKind: "field-evidence", status: "PRESENT", safeSummary: "Current reference" }] })).status).toBe("VERIFIED");
+  });
+
   it("keeps valid source-bound warnings visible without treating them as a repair failure", () => {
     const warning = { id: "warning-1", code: "DD-WARN", severity: "WARNING" as const, ruleVersion: 1, category: "GRAPH" as const, location: {}, message: "Review", remediation: "Review" };
     expect(evaluateDrydockReadiness(input({ report: report({ issues: [warning], summary: { total: 1, errors: 0, warnings: 1, infos: 0 } }) })).status).toBe("READY_WITH_WARNINGS");

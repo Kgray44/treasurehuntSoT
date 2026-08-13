@@ -21,6 +21,9 @@ export type DrydockEvidenceRequirement = Readonly<{
   requirementType: "STATIC" | "SCENARIO_SUITE" | "COMPATIBILITY" | "EXTERNAL" | "SECURITY" | "ACCESSIBILITY";
   mandatory: boolean;
   resolver: string;
+  providerId?: string;
+  providerVersion?: string;
+  evidenceKind?: string;
 }>;
 
 export type RequiredSuiteStatus = Readonly<{
@@ -133,7 +136,12 @@ function requirementMissing(requirement: DrydockEvidenceRequirement, input: Eval
   if (requirement.requirementType === "COMPATIBILITY")
     return !input.compatibility || input.compatibility.sourceChecksum !== input.sourceChecksum || !compatibilityAllowsLaunch(input.compatibility.status);
   if (requirement.requirementType === "EXTERNAL")
-    return input.externalEvidence.some((evidence) => evidence.status !== "PRESENT" && evidence.status !== "NOT_REQUIRED");
+    return !input.externalEvidence.some((evidence) =>
+      evidence.status === "PRESENT" &&
+      (!requirement.providerId || evidence.providerId === requirement.providerId) &&
+      (!requirement.providerVersion || evidence.providerVersion === requirement.providerVersion) &&
+      (!requirement.evidenceKind || evidence.evidenceKind === requirement.evidenceKind),
+    );
   return false;
 }
 

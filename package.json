@@ -99,6 +99,7 @@
     "drydock:cli": "tsx scripts/drydock/cli.ts",
     "drydock:migrations:sqlite": "node --experimental-sqlite scripts/drydock/rehearse-phase2-migrations.mjs",
     "drydock:phase3:migrations:sqlite": "node --experimental-sqlite scripts/drydock/rehearse-phase3-migrations.mjs",
+    "drydock:phase4:migrations:sqlite": "node --experimental-sqlite scripts/drydock/rehearse-phase4-migrations.mjs",
     "shipwright:phase2:fixture": "node scripts/shipwright/prepare-phase2-fixture.mjs",
     "shipwright:phase2:journeys": "node scripts/shipwright/run-phase2-journeys.mjs",
     "shipwright:phase2:walkthrough:prepare": "node scripts/shipwright/phase2-walkthrough-runtime.mjs prepare",

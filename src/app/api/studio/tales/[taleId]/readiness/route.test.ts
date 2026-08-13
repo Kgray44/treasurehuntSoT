@@ -17,7 +17,7 @@ describe("Drydock readiness route", () => {
     vi.clearAllMocks();
     mocks.authorization.mockResolvedValue({ session: { accountId: "creator-1" } });
     mocks.readiness.mockResolvedValue({ status: "TRIALS_INCOMPLETE", sourceChecksum: "a".repeat(64), requiredSuites: [] });
-    mocks.requirements.mockReturnValue({ policyVersion: "drydock-required-suite-v1", requirements: [] });
+    mocks.requirements.mockResolvedValue({ policyVersion: "drydock-required-suite-v1", requirements: [] });
   });
 
   it("does not inspect a foreign Chronicle", async () => {
@@ -35,5 +35,6 @@ describe("Drydock readiness route", () => {
       readiness: { status: "TRIALS_INCOMPLETE", sourceChecksum: "a".repeat(64), requiredSuites: [] },
       requirements: { policyVersion: "drydock-required-suite-v1", requirements: [] },
     });
+    expect(mocks.requirements).toHaveBeenCalledWith("tale-1");
   });
 });

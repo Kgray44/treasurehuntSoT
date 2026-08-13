@@ -2,6 +2,13 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import fixture from "../../tests/fixtures/drydock/current-authoring-v1.json";
 import { parsePublishedSnapshot } from "../../src/chronicle/publishing";
+import { assessDrydockCompatibility } from "../../src/drydock/compatibility";
+import {
+  assertSafeDrydockPublishingEvidencePayload,
+  creatorPublishingEvidenceProjection,
+  type DrydockPublishingEvidencePayload,
+} from "../../src/drydock/publishing-evidence";
+import { evaluateDrydockReadiness, type EvaluateDrydockReadinessInput } from "../../src/drydock/readiness";
 import { canonicalChecksum } from "../../src/drydock/canonical";
 import { parseDrydockBlock } from "../../src/drydock/contracts/parser";
 import { serializeDrydockBlockContractRegistry } from "../../src/drydock/contracts/registry";
@@ -79,6 +86,27 @@ function jsonDocument(path: string, errorCode: string) {
 
 function sourceSnapshot(path: string) {
   return parsePublishedSnapshot(JSON.stringify(jsonDocument(path, "DRYDOCK_SOURCE_INVALID")));
+}
+
+function readinessInput(path: string): EvaluateDrydockReadinessInput {
+  const candidate = jsonDocument(path, "DRYDOCK_READINESS_INPUT_INVALID");
+  if (!candidate || typeof candidate !== "object" || Array.isArray(candidate)) throw new Error("DRYDOCK_READINESS_INPUT_INVALID");
+  const input = candidate as Partial<EvaluateDrydockReadinessInput>;
+  if (
+    typeof input.sourceChecksum !== "string" ||
+    !Array.isArray(input.requirements) ||
+    !Array.isArray(input.requiredSuites) ||
+    !Array.isArray(input.externalEvidence) ||
+    !Array.isArray(input.activeWaiverIssueIds) ||
+    !Array.isArray(input.activeWaiverIds)
+  ) throw new Error("DRYDOCK_READINESS_INPUT_INVALID");
+  return input as EvaluateDrydockReadinessInput;
+}
+
+function evidenceInput(path: string): DrydockPublishingEvidencePayload {
+  const candidate = jsonDocument(path, "DRYDOCK_EVIDENCE_INVALID");
+  if (!candidate || typeof candidate !== "object" || Array.isArray(candidate)) throw new Error("DRYDOCK_EVIDENCE_INVALID");
+  return candidate as DrydockPublishingEvidencePayload;
 }
 
 function simulationRun(sourcePath: string, scenarioPath: string) {
@@ -297,6 +325,24 @@ else if (command === "canonicalize-fixtures") {
     runDrydockScenario(snapshot, parseDrydockScenario(jsonDocument(path, "DRYDOCK_SCENARIO_INVALID"))),
   );
   print(createDrydockCoverageReport(snapshot, results));
+} else if (command === "compatibility") {
+  const sourcePath = process.argv[3];
+  if (!sourcePath) throw new Error("Usage: npm run drydock:cli -- compatibility <published-source.json>");
+  const assessment = assessDrydockCompatibility(sourceSnapshot(sourcePath));
+  print(assessment);
+  if (!["COMPATIBLE", "COMPATIBLE_WITH_UPCAST", "COMPATIBLE_WITH_WARNINGS"].includes(assessment.status)) process.exitCode = 1;
+} else if (command === "readiness") {
+  const inputPath = process.argv[3];
+  if (!inputPath) throw new Error("Usage: npm run drydock:cli -- readiness <readiness-input.json>");
+  const decision = evaluateDrydockReadiness(readinessInput(inputPath));
+  print(decision);
+  if (decision.status !== "VERIFIED" && decision.status !== "PUBLISHED") process.exitCode = 1;
+} else if (command === "evidence-inspect") {
+  const evidencePath = process.argv[3];
+  if (!evidencePath) throw new Error("Usage: npm run drydock:cli -- evidence-inspect <publishing-evidence.json>");
+  const evidence = evidenceInput(evidencePath);
+  assertSafeDrydockPublishingEvidencePayload(evidence);
+  print(creatorPublishingEvidenceProjection(evidence));
 } else if (command === "explore") {
   const sourcePath = process.argv[3];
   const scenarioPath = process.argv[4];
@@ -342,6 +388,9 @@ else if (command === "canonicalize-fixtures") {
       "suite-run <source.json> <suite.json> <scenario.json> [... ]",
       "trace-replay <source.json> <scenario.json>",
       "coverage-report <source.json> <scenario.json> [... ]",
+      "compatibility <published-source.json>",
+      "readiness <readiness-input.json>",
+      "evidence-inspect <publishing-evidence.json>",
       "explore <source.json> <scenario.json> <finite-profile.json>",
     ],
     privacy: "Diagnostics contain contract metadata and sanitized issues only.",

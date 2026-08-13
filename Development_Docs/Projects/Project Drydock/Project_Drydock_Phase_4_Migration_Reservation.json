@@ -5,13 +5,13 @@
   "owner": "Project Drydock Phase 4 / Clear for Launch",
   "status": "RESERVED_ADDITIVE",
   "sqlite": {
-    "migration": ["20260813100000_drydock_phase4_readiness_evidence", "20260813110000_drydock_phase4_suite_evidence"],
+    "migration": ["20260813100000_drydock_phase4_readiness_evidence", "20260813110000_drydock_phase4_suite_evidence", "20260813120000_drydock_phase4_publish_idempotency"],
     "reservedModels": ["DrydockCompatibilityRun", "DrydockExternalEvidenceReference", "DrydockPublishingEvidence", "DrydockScenarioSuiteEvidence"],
     "backfill": "NONE",
     "compatibilityWindow": "Existing drafts and published versions remain readable without Phase 4 rows."
   },
   "mysql": {
-    "migration": ["0058_drydock_phase4_readiness_evidence", "0059_drydock_phase4_suite_evidence"],
+    "migration": ["0058_drydock_phase4_readiness_evidence", "0059_drydock_phase4_suite_evidence", "0060_drydock_phase4_publish_idempotency"],
     "reservedModels": ["DrydockCompatibilityRun", "DrydockExternalEvidenceReference", "DrydockPublishingEvidence", "DrydockScenarioSuiteEvidence"],
     "backfill": "NONE",
     "compatibilityWindow": "Existing drafts and published versions remain readable without Phase 4 rows."

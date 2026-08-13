@@ -4,6 +4,7 @@ import { publishedSourceChecksum, snapshotFromStudio } from "@/chronicle/snapsho
 import { db } from "@/lib/db";
 import { assessDrydockCompatibility } from "@/drydock/compatibility";
 import { requiredScenarioClasses } from "@/drydock/required-suite-policy";
+import { baseDrydockEvidenceRequirements, deriveDrydockEvidenceRequirements } from "@/drydock/evidence-requirements";
 import { parseDrydockScenario } from "@/drydock/simulation/schema";
 import { ONE_VOYAGE_TRANSITION_ADAPTER_VERSION } from "@/drydock/simulation/engine";
 import {
@@ -17,12 +18,6 @@ import {
   type RequiredSuiteStatus,
 } from "@/drydock/readiness";
 import { evaluateDrydockWaiver, type DrydockRuleWaiver } from "@/drydock/waivers";
-
-const requirements: readonly DrydockEvidenceRequirement[] = [
-  { id: "DD-R-STATIC", version: "1", capability: "BASELINE", requirementType: "STATIC", mandatory: true, resolver: "Drydock validation report" },
-  { id: "DD-R-SCENARIOS", version: "1", capability: "BASELINE", requirementType: "SCENARIO_SUITE", mandatory: true, resolver: "Drydock Scenario Suite" },
-  { id: "DD-R-COMPATIBILITY", version: "1", capability: "BASELINE", requirementType: "COMPATIBILITY", mandatory: true, resolver: "Drydock compatibility" },
-];
 
 async function compatibilityFor(taleId: string, snapshot: ReturnType<typeof snapshotFromStudio>): Promise<DrydockCompatibilityResult> {
   const assessment = assessDrydockCompatibility(snapshot);
@@ -152,6 +147,7 @@ export async function getDrydockReadiness(taleId: string): Promise<DrydockReadin
   const validation = await validateTaleDraft(taleId);
   const report = validation.drydockReport;
   const snapshot = snapshotFromStudio(await getStudioTale(taleId));
+  const requirements = deriveDrydockEvidenceRequirements(snapshot);
   const checksum = publishedSourceChecksum(snapshot);
   const [requiredSuites, externalEvidence, waivers, compatibility] = await Promise.all([
     currentSuiteStatus(taleId, snapshot),
@@ -171,6 +167,7 @@ export async function getDrydockReadiness(taleId: string): Promise<DrydockReadin
   });
 }
 
-export function drydockReadinessRequirements() {
-  return { policyVersion: DRYDOCK_REQUIRED_SUITE_POLICY_VERSION, requirements };
+export async function drydockReadinessRequirements(taleId?: string) {
+  const snapshot = taleId ? snapshotFromStudio(await getStudioTale(taleId)) : null;
+  return { policyVersion: DRYDOCK_REQUIRED_SUITE_POLICY_VERSION, requirements: snapshot ? deriveDrydockEvidenceRequirements(snapshot) : baseDrydockEvidenceRequirements() };
 }

@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import type { Prisma } from "@prisma/client";
 import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
 import { eventBus } from "@/lib/events";
 import { getStudioTale } from "@/chronicle/studio-service";
@@ -58,7 +59,14 @@ export async function publishTale(
     platformVersion: "forever-treasure-companion-0.2.0",
     createdAt: new Date().toISOString(),
   });
-  const version = await db.$transaction(async (tx) => {
+  const transaction = async (tx: Prisma.TransactionClient) => {
+    const existing = await tx.publishedTaleVersion.findFirst({
+      where: { taleId, checksum },
+      include: { drydockPublishingEvidence: { select: { digest: true } } },
+    });
+    if (existing?.drydockPublishingEvidence)
+      return { version: existing, evidenceId: existing.drydockPublishingEvidence.digest, created: false };
+    if (existing) throw new Error("DRYDOCK_PUBLISHING_EVIDENCE_MISSING_FOR_EXISTING_SOURCE");
     const latest = await tx.publishedTaleVersion.findFirst({ where: { taleId }, orderBy: { versionNumber: "desc" } });
     const versionNumber = (latest?.versionNumber ?? 0) + 1;
     const structuredReleaseNotes =
@@ -109,13 +117,19 @@ export async function publishTale(
         metadata: JSON.stringify({ taleId, versionLabel: created.versionLabel, checksum: created.checksum }),
       },
     });
-    return created;
-  });
-  eventBus.emit("chronicle:catalog", {
-    type: "catalog.updated",
-    taleId,
-    versionId: version.id,
-    at: version.publishedAt.toISOString(),
+    return { version: created, evidenceId: evidencePayload.digest, created: true };
+  };
+  let outcome: Awaited<ReturnType<typeof transaction>>;
+  try { outcome = await db.$transaction(transaction); }
+  catch (cause) {
+    if (!(typeof cause === "object" && cause && "code" in cause && (cause as { code?: string }).code === "P2002")) throw cause;
+    const existing = await db.publishedTaleVersion.findFirst({ where: { taleId, checksum }, include: { drydockPublishingEvidence: { select: { digest: true } } } });
+    if (!existing?.drydockPublishingEvidence) throw cause;
+    outcome = { version: existing, evidenceId: existing.drydockPublishingEvidence.digest, created: false };
+  }
+  const { version } = outcome;
+  if (outcome.created) eventBus.emit("chronicle:catalog", {
+    type: "catalog.updated", taleId, versionId: version.id, at: version.publishedAt.toISOString(),
   });
   logger.info(
     { area: "chronicle-publish", taleId, versionId: version.id, versionLabel: version.versionLabel },
@@ -126,13 +140,33 @@ export async function publishTale(
     versionNumber: version.versionNumber,
     versionLabel: version.versionLabel,
     checksum: version.checksum,
-    evidenceId: evidencePayload.digest,
+    evidenceId: outcome.evidenceId,
     publishedAt: version.publishedAt.toISOString(),
   };
 }
 
 export function parsePublishedSnapshot(raw: string): PublishedTaleSnapshot {
-  const snapshot = JSON.parse(raw) as PublishedTaleSnapshot;
+  if (Buffer.byteLength(raw, "utf8") > 5 * 1024 * 1024)
+    throw new Error("This Chronicle version is too large for the governed historical reader.");
+  let snapshot: PublishedTaleSnapshot;
+  try { snapshot = JSON.parse(raw) as PublishedTaleSnapshot; }
+  catch { throw new Error("This Chronicle version contains invalid stored content."); }
+  const inspect = (value: unknown, depth = 0): void => {
+    if (depth > 32) throw new Error("This Chronicle version exceeds the governed historical reader depth limit.");
+    if (Array.isArray(value)) {
+      if (value.length > 10_000) throw new Error("This Chronicle version exceeds the governed historical reader array limit.");
+      value.forEach((item) => inspect(item, depth + 1));
+      return;
+    }
+    if (!value || typeof value !== "object") return;
+    const record = value as Record<string, unknown>;
+    for (const [key, child] of Object.entries(record)) {
+      if (key === "__proto__" || key === "prototype" || key === "constructor")
+        throw new Error("This Chronicle version contains a forbidden historical reader key.");
+      inspect(child, depth + 1);
+    }
+  };
+  inspect(snapshot);
   if (snapshot.schemaVersion !== 1 || !Array.isArray(snapshot.chapters))
     throw new Error("This Chronicle version uses an unsupported format. Update Voyagewright, then try again.");
   return snapshot;

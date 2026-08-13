@@ -13,7 +13,7 @@ export async function GET(request: Request, context: { params: Promise<{ taleId:
     return NextResponse.json({ error: "This Chronicle is not available to this Creator account." }, { status: 404 });
   try {
     return NextResponse.json(
-      { readiness: await getDrydockReadiness(taleId), requirements: drydockReadinessRequirements() },
+      { readiness: await getDrydockReadiness(taleId), requirements: await drydockReadinessRequirements(taleId) },
       { headers: privateHeaders },
     );
   } catch (cause) {

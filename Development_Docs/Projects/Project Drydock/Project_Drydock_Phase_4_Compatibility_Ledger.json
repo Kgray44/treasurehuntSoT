@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "status": "DEVELOPMENT_VERIFIED_SUBSET",
+  "classification": "SYNTHETIC_NO_PRIVATE_CONTENT",
+  "sourceFixture": "tests/fixtures/drydock/current-authoring-v1.json",
+  "reader": { "publishedSnapshotSchemaVersion": 1, "supportedBlockSourceVersion": 1, "destinationBlockVersion": 2, "behavior": "IN_MEMORY_UPCAST_ONLY" },
+  "commonExpectation": { "reader": "COMPATIBLE_WITH_UPCAST", "validation": "PARSER_VALID", "simulation": "PHASE_3_SCENARIO_CONTRACT_WHERE_MEANINGFUL", "fallback": "SAFE_ERROR_OR_CANONICAL_RUNTIME_PROJECTION", "versionPinned": true, "status": "VERIFIED" },
+  "fixtures": [
+    "drydock-fixture-narrative-v1", "drydock-fixture-captainsNote-v1", "drydock-fixture-riddle-v1", "drydock-fixture-information-v1", "drydock-fixture-travelDirection-v1", "drydock-fixture-location-v1", "drydock-fixture-arrivalCheck-v1", "drydock-fixture-image-v1", "drydock-fixture-imageTransformation-v1", "drydock-fixture-cinematic-v1", "drydock-fixture-audio-v1", "drydock-fixture-artifactReveal-v1", "drydock-fixture-hiddenMessageReveal-v1", "drydock-fixture-collectionUpdate-v1", "drydock-fixture-confirmation-v1", "drydock-fixture-choice-v1", "drydock-fixture-textAnswer-v1", "drydock-fixture-captainApproval-v1", "drydock-fixture-wait-v1", "drydock-fixture-condition-v1", "drydock-fixture-setVariable-v1", "drydock-fixture-chapterComplete-v1", "drydock-fixture-taleComplete-v1"
+  ],
+  "test": "src/drydock/historical-corpus-phase4.test.ts",
+  "unknownSupportedRows": 0,
+  "unsupportedCurrentBlockTypes": 0
+}

@@ -21,6 +21,8 @@ export * from "@/drydock/readiness";
 export * from "@/drydock/readiness-store";
 export * from "@/drydock/publishing-evidence";
 export * from "@/drydock/evidence-store";
+export * from "@/drydock/evidence-requirements";
+export * from "@/drydock/external-evidence-store";
 export * from "@/drydock/historical-store";
 export * from "@/drydock/required-suite-policy";
 export * from "@/drydock/repairs";

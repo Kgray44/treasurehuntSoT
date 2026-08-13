@@ -8,7 +8,7 @@ Status: DEVELOPMENT — this plan is not an acceptance receipt.
 - `drydock:compatibility` and `drydock:historical`: parser/upcast compatibility and non-destructive migration preview.
 - `drydock:publishing-contract`: owner-safe readiness/evidence APIs and immutable evidence projection.
 - Launch Gate component tests: loading, server decision/checksum, and failure presentation.
-- Prisma SQLite/MySQL static schema validation and Drydock contract/migration verifier.
+- Prisma SQLite/MySQL static schema validation and task-owned SQLite rehearsal through all 62 migrations, including Suite evidence and source-idempotent publication constraints; MySQL SQL parity is statically verified.
 
 ## Required before qualification
 

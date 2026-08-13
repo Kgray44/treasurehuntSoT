@@ -1049,6 +1049,7 @@ model PublishedTaleVersion {
   drydockPublishingEvidence  DrydockPublishingEvidence?
 
   @@unique([taleId, versionNumber])
+  @@unique([taleId, checksum])
   @@index([taleId, isCurrent])
   @@index([publishedByAccountId])
 }
