@@ -15,11 +15,13 @@ still-required frozen-candidate, protected-main, and Sounding Line acceptance
 evidence. It does not mark Phase 3 or Project Bridgewatch complete.
 
 The current task-owned branch is
-`codex/project-bridgewatch-phase3-keep-the-watch-4`, replayed onto protected
-main `582f32a35d918ae892bd2feae766c00043038f39` after the accepted Helm browser
-correction and the user-ordered Deepwater record-only closure. The prior
-Bridgewatch authority run remains historical external-failure evidence and is
-not reused for this candidate.
+`codex/project-bridgewatch-phase3-keep-the-watch-4`, first replayed after the
+accepted Helm browser correction and the user-ordered Deepwater record-only
+closure, then rebased onto protected main
+`25a5ecc3989d137a95291c340f07143860b821cc` after Shipwright Phase 2 merged.
+Shipwright changed no Bridgewatch source, schema, registry, or test-definition
+path. The prior Bridgewatch authority run remains historical external-failure
+evidence and is not reused for this candidate.
 
 ## Focused evidence
 
@@ -46,8 +48,10 @@ not reused for this candidate.
 - The configured dashboard authentication, CSP, private host policy, and
   activity-only bearer telemetry boundary remain covered by server tests.
 - On this current-main candidate, `npm --prefix bridgewatch run validate` and
-  `npm --prefix bridgewatch run build` passed: TypeScript plus 14 Vitest files
-  / 39 tests. The realistic performance test has an explicit 15-second test
+  `npm --prefix bridgewatch run build` passed: TypeScript plus 15 Vitest files
+  / 41 tests. The concise recent-change selector test proves branch/source
+  polling context is suppressed, governed events dedupe by entity, and the
+  compact panel remains bounded. The realistic performance test has an explicit 15-second test
   harness ceiling while retaining its stricter one-second query and
   five-second retention product assertions.
 - Current-main static qualification passed: `docs:validate`,
