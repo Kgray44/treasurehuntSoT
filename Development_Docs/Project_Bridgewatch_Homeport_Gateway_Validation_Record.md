@@ -11,7 +11,7 @@ last_reviewed: 2026-08-13
 ## Source binding
 
 - Accepted starting main: `60b89841986e66fbc2c0828489d38002a1617506`.
-- Reconciled accepted main: `dead22dc26aeec2b722625aa9a68dc5688111fca`.
+- Reconciled accepted main: `d6eb335880376f59403cf7108bf26690d8da4891`.
 - Qualified implementation: `6212bd1ab9ed23abd52f98154b55d846267a1133`.
 - First frozen candidate: `1cd4f3a6cb4a3c370a72995c8b6a1e0ff8bf80e2`.
 - Owned branch: `agent/bring-the-watch-home`.
@@ -94,13 +94,19 @@ not convert one failure plus one retry pass into a clean decision or qualified
 flake, so the failed authoritative run was not rerun or waived.
 
 While that diagnosis completed, accepted Bridgewatch Phase 3 advanced
-`origin/main` to `dead22dc26aeec2b722625aa9a68dc5688111fca`. The replacement
+`origin/main` through `dead22dc26aeec2b722625aa9a68dc5688111fca`. The replacement
 candidate reconciles its history, archive, trends, branch-health, maintenance,
 tests, and records. The same-host mount now resolves every Phase 3 dashboard
 request under `/bridgewatch`, and the application and NGINX allowlists add
 only the exact history, archive, trend, and project-history queries used by
 that accepted dashboard. Telemetry, health, arbitrary query, and mutation
 routes remain excluded.
+
+Bridgewatch's accepted program-completion correction then advanced main to
+`d6eb335880376f59403cf7108bf26690d8da4891`. Its three-file registry and test
+delta is reconciled unchanged; it records the accepted Phase 3 completion and
+does not alter the gateway, authorization, deployment, or mounted-path
+boundary.
 
 ## Deployment verification boundary
 

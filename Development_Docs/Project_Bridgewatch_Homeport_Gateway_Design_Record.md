@@ -11,7 +11,7 @@ last_reviewed: 2026-08-13
 ## Authority and source boundary
 
 - Starting `origin/main`: `60b89841986e66fbc2c0828489d38002a1617506`.
-- Reconciled accepted `origin/main`: `dead22dc26aeec2b722625aa9a68dc5688111fca`.
+- Reconciled accepted `origin/main`: `d6eb335880376f59403cf7108bf26690d8da4891`.
 - Qualified implementation: `6212bd1ab9ed23abd52f98154b55d846267a1133`.
 - Task branch: `agent/bring-the-watch-home` in a dedicated local worktree.
 - Bridgewatch governing authority: Version 1.1, August 11, 2026.
