@@ -105,6 +105,30 @@ export function requireIndependentSecondReviewer(
     throw new CommunityError("COMMUNITY_SELF_REVIEW_FORBIDDEN", "A moderator cannot review their own action.");
 }
 
+export async function requireEligibleSecondReviewer(
+  actionType: string,
+  actorAccountId: string,
+  secondReviewerId?: string,
+) {
+  requireIndependentSecondReviewer(actionType, actorAccountId, secondReviewerId);
+  if (!highImpactActions.has(actionType)) return;
+  const reviewer = await db.userAccount.findUnique({
+    where: { id: secondReviewerId },
+    select: { status: true, roles: { where: { revokedAt: null }, select: { role: true } } },
+  });
+  if (
+    !reviewer ||
+    reviewer.status !== "ACTIVE" ||
+    !reviewer.roles.some((assignment) =>
+      ["ADMINISTRATOR", "MODERATION_OPERATOR", "MODERATOR"].includes(assignment.role),
+    )
+  )
+    throw new CommunityError(
+      "COMMUNITY_SECOND_REVIEWER_INELIGIBLE",
+      "The second reviewer is not an active eligible moderation reviewer.",
+    );
+}
+
 function valueIn<T extends readonly string[]>(value: string, values: T): value is T[number] {
   return values.includes(value);
 }
@@ -487,7 +511,7 @@ export async function previewModerationAction(
   );
   const reason = requiredReason(input.reasonCode);
   await assertNotSelfModeration(actor, input.subjectType, input.subjectId);
-  requireIndependentSecondReviewer(input.actionType, actor.accountId, input.secondReviewerId);
+  await requireEligibleSecondReviewer(input.actionType, actor.accountId, input.secondReviewerId);
   const moderationCase = await db.communityModerationCase.findUnique({ where: { id: input.caseId } });
   if (
     !moderationCase ||
@@ -546,7 +570,7 @@ export async function applyModerationAction(
   if (!/^[A-Za-z0-9_-]{16,128}$/u.test(input.idempotencyKey))
     throw new CommunityError("COMMUNITY_IDEMPOTENCY_INVALID", "A valid idempotency key is required.");
   await assertNotSelfModeration(actor, input.subjectType, input.subjectId);
-  requireIndependentSecondReviewer(input.actionType, actor.accountId, input.secondReviewerId);
+  await requireEligibleSecondReviewer(input.actionType, actor.accountId, input.secondReviewerId);
   const replay = await db.communityModerationAction.findUnique({ where: { idempotencyKey: input.idempotencyKey } });
   if (replay) {
     if (
