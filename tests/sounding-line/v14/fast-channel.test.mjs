@@ -22,6 +22,7 @@ import {
   selectV14Mainline,
   typedFailure,
   validateLayerConsumption,
+  validateSelfHostedPreparedEvidence,
   validateV14Binding,
   verifySealedRecord,
 } from "../../../scripts/sounding-line/v14/fast-channel.mjs";
@@ -292,4 +293,49 @@ test("v1.3 worker preparation is unchanged and v1.4 preparation is explicitly ve
   };
   const preparation = deriveV14WorkerPreparation({ plan, node: plan.nodes[0], runId: "run-1" });
   assert.equal(preparation.authorityBoundary, "SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE");
+});
+
+test("future self-hosted consumers fail closed without approved identity, attestation, run ownership, and scrub proof", () => {
+  const attestation = {
+    workerId: "approved-worker",
+    bootAttestationDigest: "a".repeat(64),
+    runtimeAttestationDigest: "b".repeat(64),
+    layerIdentity: "layer-identity",
+    layerMutable: false,
+    owner: "team-a",
+    workspace: { owner: "team-a", runId: "run-1", runOwned: true },
+    scrub: { owner: "team-a", runId: "run-1", result: "CLEAN", finalState: "ABSENT" },
+    staleState: false,
+    tampered: false,
+  };
+  const options = {
+    layerIdentity: "layer-identity",
+    runId: "run-1",
+    owner: "team-a",
+    approvedWorkers: ["approved-worker"],
+  };
+  assert.equal(validateSelfHostedPreparedEvidence({ attestation, ...options }).valid, true);
+  assert.equal(
+    validateSelfHostedPreparedEvidence({ attestation: { ...attestation, workerId: "unknown" }, ...options }).code,
+    "SELF_HOSTED_WORKER_UNAPPROVED",
+  );
+  assert.equal(
+    validateSelfHostedPreparedEvidence({ attestation: { ...attestation, staleState: true }, ...options }).code,
+    "SELF_HOSTED_STALE_STATE_REJECTED",
+  );
+  assert.equal(
+    validateSelfHostedPreparedEvidence({ attestation: { ...attestation, tampered: true }, ...options }).code,
+    "SELF_HOSTED_TAMPER_REJECTED",
+  );
+  assert.equal(
+    validateSelfHostedPreparedEvidence({ attestation: { ...attestation, owner: "wrong" }, ...options }).code,
+    "SELF_HOSTED_OWNER_MISMATCH",
+  );
+  assert.equal(
+    validateSelfHostedPreparedEvidence({
+      attestation: { ...attestation, scrub: { ...attestation.scrub, result: "DIRTY" } },
+      ...options,
+    }).code,
+    "SELF_HOSTED_SCRUB_PROOF_REQUIRED",
+  );
 });

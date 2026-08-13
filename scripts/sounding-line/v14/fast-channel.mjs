@@ -156,6 +156,36 @@ export function validateLayerConsumption(
   return { valid: true };
 }
 
+/**
+ * Future self-hosted workers may consume a portable layer, but never promote
+ * evidence merely by presenting a cache hit.  This is an interface contract,
+ * not an Option C deployment or a release decision.
+ */
+export function validateSelfHostedPreparedEvidence({ attestation, layerIdentity, runId, owner, approvedWorkers = [] }) {
+  const invalid = (code) => ({ valid: false, code });
+  if (!attestation || !approvedWorkers.includes(attestation.workerId)) return invalid("SELF_HOSTED_WORKER_UNAPPROVED");
+  if (!/^[0-9a-f]{64}$/u.test(attestation.bootAttestationDigest ?? ""))
+    return invalid("SELF_HOSTED_BOOT_ATTESTATION_REQUIRED");
+  if (!/^[0-9a-f]{64}$/u.test(attestation.runtimeAttestationDigest ?? ""))
+    return invalid("SELF_HOSTED_RUNTIME_ATTESTATION_REQUIRED");
+  if (attestation.layerIdentity !== layerIdentity || attestation.layerMutable !== false)
+    return invalid("SELF_HOSTED_LAYER_IDENTITY_INVALID");
+  if (attestation.owner !== owner || attestation.workspace?.owner !== owner)
+    return invalid("SELF_HOSTED_OWNER_MISMATCH");
+  if (attestation.workspace?.runId !== runId || attestation.workspace?.runOwned !== true)
+    return invalid("SELF_HOSTED_WORKSPACE_NOT_RUN_OWNED");
+  if (
+    attestation.scrub?.runId !== runId ||
+    attestation.scrub?.owner !== owner ||
+    attestation.scrub?.result !== "CLEAN" ||
+    attestation.scrub?.finalState !== "ABSENT"
+  )
+    return invalid("SELF_HOSTED_SCRUB_PROOF_REQUIRED");
+  if (attestation.staleState === true || attestation.tampered === true)
+    return invalid(attestation.tampered === true ? "SELF_HOSTED_TAMPER_REJECTED" : "SELF_HOSTED_STALE_STATE_REJECTED");
+  return { valid: true };
+}
+
 /** A deterministic JSON artifact store.  Writes use exclusive creation, so evidence is never mutable state. */
 export class FileEvidenceStore {
   constructor(root) {
