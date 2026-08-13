@@ -3,7 +3,7 @@ title: Project Bridgewatch Phase 3 Validation Record
 audience: engineering
 status: current
 canonical_for: project-bridgewatch-phase-3-validation
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-13
 ---
 
 # Project Bridgewatch Phase 3 Validation Record
@@ -15,15 +15,18 @@ still-required frozen-candidate, protected-main, and Sounding Line acceptance
 evidence. It does not mark Phase 3 or Project Bridgewatch complete.
 
 The current task-owned branch is
-`codex/project-bridgewatch-phase3-keep-the-watch-5`, replayed onto protected
-main `0cdaa80245e47ec67ca6758daec7cd1453b37297` after Wakebook Phase 1 merged.
-The prior `-4` candidate
+`codex/project-bridgewatch-phase3-keep-the-watch-6`, replayed onto protected
+main `60b89841986e66fbc2c0828489d38002a1617506` after the accepted Tideglass
+Phase 3 reconciliations. The prior `-4` candidate
 `efd574010a7bcf5533d50c28799fc661bd719697` is preserved with its valid
 `RELEASE_GO` authority `31665028258` only for base
 `25a5ecc3989d137a95291c340f07143860b821cc`; it is not reused as current-candidate
-acceptance evidence. Wakebook changed shared generated test inventory/catalog
-and broader application paths, not Bridgewatch source, schema, registry, or
-migration paths.
+acceptance evidence. The intermediate `-5` candidate `7aca79b9...` produced
+one hosted-only, non-reproducing `component.studio` invalid receipt in run
+`31668485208`; it was not retried and is likewise not acceptance evidence.
+The intervening current-main changes are accepted reconciliation, completion,
+and Feature Catalog records; they do not change Bridgewatch source, schema,
+registry, or migration paths.
 
 ## Focused evidence
 
@@ -59,8 +62,9 @@ migration paths.
 - Current-main static qualification passed: `docs:validate`,
   `features:validate`, `test:policy`, `test:inventory`, `lint` (0 errors; the
   repository's existing warnings only), and `format:check`.
-- After the Wakebook-base replay, the 15-file / 41-test Bridgewatch validation
-  and build were rerun. Current `docs:validate`, `features:sync` /
+- After the Tideglass-current-main replay, `npm --prefix bridgewatch run
+validate` and `npm --prefix bridgewatch run build` again passed: 15 files /
+  41 tests and TypeScript. Current `docs:validate`, `features:sync` /
   `features:validate`, `test:policy`, `test:inventory`, `format:check`, root
   TypeScript, product-language, and One Voyage architecture checks passed. A
   final clean exact-SHA check remains required immediately before dispatch.

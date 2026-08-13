@@ -3,7 +3,7 @@ title: Project Bridgewatch Phase 3 Design Record
 audience: engineering
 status: current
 canonical_for: project-bridgewatch-phase-3-design
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-13
 ---
 
 # Project Bridgewatch Phase 3 - Keep the Watch
@@ -118,6 +118,30 @@ rewriting the published candidate, the Phase 3 commits were replayed onto
 `codex/project-bridgewatch-phase3-keep-the-watch-5`. The replay is a fresh,
 unfrozen candidate and must receive its own exact-SHA qualification and one
 explicit authority decision.
+
+### Post-invalid-evidence replay
+
+The `-5` candidate `7aca79b9de7db3ccf9db8f5e930b23a56ba0e271` was submitted
+once to the exact-source mainline authority as run `31668485208`. Its finalizer
+was `EVIDENCE_INVALID`: the sole invalid receipt was `component.studio`, whose
+hosted `TaleEditor.test.tsx:367` focus assertion failed with exit code 1 and
+`CLEAN` teardown. The Wave 1 barrier consequently left later mandatory suites
+uncollected; no authority was retried. The candidate did not change Studio
+source or tests. The smallest exact-candidate local reproduction passed the
+full Studio test file five consecutive times and passed the formerly failing
+assertion in isolation, so the receipt is preserved as non-reproducing
+hosted-only evidence rather than attributed to Bridgewatch.
+
+After the accepted Tideglass Phase 3 reconciliations advanced protected main
+to `60b89841986e66fbc2c0828489d38002a1617506`, the user directed a fresh
+attempt. The old published branch and PR #75 remain untouched as historical
+evidence. The seven Bridgewatch commits were replayed without source conflicts
+onto that exact main on the new task-owned branch
+`codex/project-bridgewatch-phase3-keep-the-watch-6`. The only overlap was the
+generated Feature Catalog provenance, regenerated from the current 48
+machine-readable entries. This is a new unfrozen candidate: it receives fresh
+focused qualification and one new explicit authority only after its exact SHA
+is frozen.
 
 ### Concurrent-work snapshot
 
