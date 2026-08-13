@@ -6450,6 +6450,45 @@
     {
       "contractId": "wakebook.archive.summary-redaction",
       "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+    },
+    {
+      "contractId": "invitation-acceptance",
+      "suiteIds": [
+        "unit.one-voyage",
+        "component.captain",
+        "component.studio",
+        "browser.invitations",
+        "browser.captain",
+        "browser.studio"
+      ]
+    },
+    {
+      "contractId": "player-session-restoration",
+      "suiteIds": ["component.player-shell", "browser.player-library"]
+    },
+    {
+      "contractId": "drydock-progression",
+      "suiteIds": ["unit.drydock"]
+    },
+    {
+      "contractId": "drydock-authoring-contracts",
+      "suiteIds": ["unit.drydock"]
+    },
+    {
+      "contractId": "artifact-grant-projection",
+      "suiteIds": ["component.artifacts", "browser.artifacts"]
+    },
+    {
+      "contractId": "lanternwake-presentation-receipt",
+      "suiteIds": ["unit.animation", "component.animation", "browser.animation-lifecycle"]
+    },
+    {
+      "contractId": "deepwater.capability-realization-integrity",
+      "suiteIds": ["unit.deepwater"]
+    },
+    {
+      "contractId": "public-privacy-projection",
+      "suiteIds": ["unit.private-content", "build.production"]
     }
   ],
   "impactClasses": [
