@@ -1,14 +1,14 @@
 ---
 title: Project Tideglass Phase 3 Validation Record
 audience: product-engineering
-status: current-main-qualified-serial-slot-pending
+status: upstream-format-repair-pending
 canonical_for: project-tideglass-phase-3-validation
 last_reviewed: 2026-08-13
 ---
 
 # Project Tideglass Phase 3 validation record
 
-Status: `CURRENT_MAIN_QUALIFIED_SERIAL_SLOT_PENDING`.
+Status: `UPSTREAM_FORMAT_REPAIR_PENDING`.
 The original product decision and the explicit Wakebook Journey Detail addendum
 acceptance are recorded; protected integration remains pending.
 
@@ -127,6 +127,17 @@ direct Journey Detail/history handoff 24/24, Studio 2/2, contracts, Prisma
 generation/typecheck, lint with zero errors, formatting, documentation, and
 Feature Catalog validation pass on that source. No replacement authority has
 been dispatched; the candidate awaits an explicitly assigned serialized slot.
+
+## Shared-format qualification boundary
+
+After Shipwright's record-only closeout protected-merged at `9867e3d4`, the
+focused Tideglass/Wayfarer/Wakebook/Studio suite passes 136/136 across 19 files,
+including all 18 `TaleEditor` cases. Contracts, Prisma generation/typecheck,
+lint with zero errors, documentation, and Feature Catalog validation pass. The
+only failed qualification command is `npm run format:check`, which identifies
+only Shipwright-owned accepted-main closeout documents. Tideglass has handed the
+exact paths to Shipwright and will not edit cross-project accepted records or
+dispatch authority before the owner supplies a narrow repair.
 
 ## Authority preflight and focused repair
 

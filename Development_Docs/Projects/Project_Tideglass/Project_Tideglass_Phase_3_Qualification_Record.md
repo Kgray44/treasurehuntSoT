@@ -1,14 +1,14 @@
 ---
 title: Project Tideglass Phase 3 Qualification Record
 audience: product-engineering
-status: current-main-qualified-serial-slot-pending
+status: upstream-format-repair-pending
 canonical_for: project-tideglass-phase-3-qualification
 last_reviewed: 2026-08-13
 ---
 
 # Project Tideglass Phase 3 qualification record
 
-Status: `CURRENT_MAIN_QUALIFIED_SERIAL_SLOT_PENDING`.
+Status: `UPSTREAM_FORMAT_REPAIR_PENDING`.
 
 The earlier local candidate is superseded. It used an invented response proxy and did not evidence the complete governed state matrix. No owner walkthrough, Sounding Line Mainline Decision, protected merge, deployment, provider execution, or real-account acceptance was claimed or dispatched for it.
 
@@ -139,6 +139,25 @@ Prisma generation/typecheck, lint with zero errors, formatting, documentation,
 and Feature Catalog validation. The source-bound Shipwright browser proof remains
 valid because the product/browser source did not change. The candidate now awaits
 only an explicitly assigned serialized authority position.
+
+## Shipwright closeout-format handoff
+
+Shipwright's record-only closeout then protected-merged at
+`9867e3d4f217c248b7434b1cabff802ec5e0537e`. Its interval adds only accepted
+Wakebook/Shipwright records, catalog/document provenance, and product-status
+documentation; no Tideglass runtime, route, schema, or Tideglass-test source
+changed. The focused Tideglass/Wayfarer/Wakebook/Studio suite passes 136/136
+across 19 files on that source, including all 18 `TaleEditor` cases after the
+Bridgewatch-hosted timing-sensitive focus timeout. Contracts, Prisma
+generation/typecheck, lint with zero errors, documentation, and Feature Catalog
+validation also pass.
+
+`npm run format:check` fails only on Shipwright-owned accepted-main closeout
+documents: its Phase 2 Completion Receipt, Phase 2 Mainline Safety Manifest,
+and `docs/reference/feature-status.md`. Tideglass does not rewrite another
+project's accepted records. The exact paths and failure have been handed to
+Shipwright; no Tideglass authority is permitted until its narrow current-main
+repair is accepted and this check is green.
 
 ## Candidate qualification evidence
 

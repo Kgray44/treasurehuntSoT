@@ -1,14 +1,14 @@
 ---
 title: Project Tideglass Phase 3 Integration Manifest
 audience: product-engineering
-status: current-main-qualified-serial-slot-pending
+status: upstream-format-repair-pending
 canonical_for: project-tideglass-phase-3-integration
 last_reviewed: 2026-08-13
 ---
 
 # Project Tideglass Phase 3 integration manifest
 
-Status: `CURRENT_MAIN_QUALIFIED_SERIAL_SLOT_PENDING`.
+Status: `UPSTREAM_FORMAT_REPAIR_PENDING`.
 This is a source integration inventory, not an accepted-mainline or
 protected-mainline receipt. The original owner decision and the explicit
 Wakebook Journey Detail addendum acceptance are recorded; protected integration
@@ -132,3 +132,12 @@ schema, or Tideglass-test source overlap. The source-bound browser proof remains
 applicable, and the current source passes Tideglass 109/109, direct history
 handoff 24/24, Studio 2/2, contracts, Prisma generation/typecheck, lint with
 zero errors, formatting, documentation, and Feature Catalog validation.
+
+Shipwright's record-only Phase 2 closeout protected-merged at `9867e3d4`.
+Its source interval is records, catalog/document provenance, and product-status
+documentation only. The Tideglass product/browser source is unchanged and the
+focused semantic/history/Studio suite is green 136/136, including all 18
+`TaleEditor` cases. The sole pending item is a format failure in three
+Shipwright-owned accepted-main closeout documents. This is an ownership handoff,
+not a Tideglass semantic regression or authorization to alter Shipwright
+records.
