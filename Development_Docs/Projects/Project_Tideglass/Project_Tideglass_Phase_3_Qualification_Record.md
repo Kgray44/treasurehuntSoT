@@ -1,14 +1,14 @@
 ---
 title: Project Tideglass Phase 3 Qualification Record
 audience: product-engineering
-status: current-main-qualified-authority-pending
+status: current
 canonical_for: project-tideglass-phase-3-qualification
 last_reviewed: 2026-08-13
 ---
 
 # Project Tideglass Phase 3 qualification record
 
-Status: `CURRENT_MAIN_QUALIFIED_AUTHORITY_PENDING`.
+Status: `INTEGRATED_MAINLINE_RECORD_ONLY_CLOSEOUT_PENDING`.
 
 The earlier local candidate is superseded. It used an invented response proxy and did not evidence the complete governed state matrix. No owner walkthrough, Sounding Line Mainline Decision, protected merge, deployment, provider execution, or real-account acceptance was claimed or dispatched for it.
 
@@ -178,7 +178,10 @@ permitted replacement Mainline Decision.
 
 Screenshots, Playwright report, synthetic credentials, and SQLite fixture remain outside version control in the task root. The checked-in visual-evidence manifest records only their source-bound metadata and SHA-256 hashes. This is owner-walkthrough evidence, not deployment, provider, protected-mainline, or owner-acceptance proof.
 
-## Remaining qualification and release gates
+## Historical pre-integration gates
+
+This retained sequence describes the path that led to the accepted protected
+integration recorded below; it is not an outstanding product gate.
 
 1. Canonical owner acceptance was recorded for reviewed product source `c2fc8fcc` on `2026-08-12`.
 2. The first documentation-candidate authority preflight exposed the missing-worktree-baseline condition before any receipt. A task-owned immutable clone and registered 3/3 access-sentinel focused repair now support requalification; see the Validation Record.
@@ -189,3 +192,27 @@ Screenshots, Playwright report, synthetic credentials, and SQLite fixture remain
 ## Known separate condition
 
 The post-rebase Homeport source census now registers the Chronicle comparison, Passport history comparison handoff, and accepted Studio Sea Trials route through its canonical generator. `npm run homeport:validate` passes with no unexplained ordinary-route orphan; this does not promote any unrelated project phase.
+
+## Accepted protected integration
+
+Hosted Sounding Line Mainline Decision
+[`31670646385`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31670646385)
+returned `RELEASE_GO` for exact candidate
+`aa161a377f87a4cbdbc6a8f308cee25493962bc5` over
+`4e88ba5463878e3b2cab8d03bb4471201bb1f039`. The sealed envelope carries 38
+mandatory clean receipts and evidence digest
+`85ebf2da23aff5162dc9437a029b11058b2c586b2c022261194c2df607d4c229`.
+Protected binding
+[`31671905583`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/31671905583)
+passed before PR #68 merged as `634312adbf72a8a4279a755b20fb06957ced7e77`.
+The merge tree equals the candidate tree, so the sealed decision is exact
+integrated product evidence.
+
+The subsequent local post-merge observation is intentionally not elevated to
+authority: it returned `EVIDENCE_INVALID` only because the generated Feature
+Catalog was still stamped with the qualified-base SHA. The exact focused
+`npm run features:validate` reproduction reports that sole stale artifact.
+All runtime resources were released. The next and only remaining action is a
+record-only catalog/record closure that carries the sealed implementation
+authority forward; it neither repeats Mainline Decision nor changes product
+source.
