@@ -3,10 +3,10 @@
   "project": "Project Tideglass",
   "phase": "3",
   "phaseName": "Choose the Passage",
-  "status": "UPSTREAM_FORMAT_REPAIR_PENDING",
+  "status": "CURRENT_MAIN_QUALIFIED_AUTHORITY_PENDING",
   "originalBaseSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
   "baseSha": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
-  "reconciledOriginMainSha": "9867e3d4f217c248b7434b1cabff802ec5e0537e",
+  "reconciledOriginMainSha": "4e88ba5463878e3b2cab8d03bb4471201bb1f039",
   "branch": "codex/project-tideglass-phase3-wakebook-reconciliation",
   "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-tideglass-phase3-wakebook-reconciliation",
   "concurrencyClass": ["B"],
@@ -15,12 +15,13 @@
   "mysqlMigration": null,
   "ordinaryNavigationImpact": "NEW_DISCOVERABLE_COMPARISON_JOURNEY",
   "phase2IntegratedMainSha": "3219fd1b5598d1997b7f85d641f2f3cb1fe3f1b3",
-  "phase2AncestryVerifiedAgainst": "9867e3d4f217c248b7434b1cabff802ec5e0537e",
+  "phase2AncestryVerifiedAgainst": "4e88ba5463878e3b2cab8d03bb4471201bb1f039",
   "integrationRule": "Independent mainline-safe phase reconciled to current main. Preserve the accepted Wakebook Journey Detail through a narrow Tideglass-owned history handoff; do not stack Phase 4 or change Wakebook, Shipwright, or Helm ownership.",
   "registeredAt": "2026-08-12",
   "reopenedReason": "The initial candidate lacked a repository-backed fixture and did not exercise the full governed Phase 3 state matrix. It was superseded before owner walkthrough or authority dispatch.",
   "ownerReviewedProductSha": "c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6",
   "ownerDecision": "ACCEPTED on 2026-08-12 for the reviewed product source, with explicit owner acceptance on 2026-08-12 for the Wakebook Journey Detail addendum. Project_Tideglass_Phase_3_Owner_Decision_Record.md preserves both decisions.",
   "candidateEvidence": "Candidate a70e9f6c6800249f21f8aa9edca322a4a4e39369 received one explicit hosted Mainline Decision attempt 31658984596 against base 770404dd11cdfc1b86658a488979c43c22ed1711. The finalizer returned RELEASE_NO_GO because unit.feature-catalog found one stale expectation: the governed FT-B009 fragment truthfully reports Project Tideglass Phases 1-3 while its test still expected Phases 1-2. The exact focused repair is green (9/9). PR #69 then accepted the Sounding Line binding repair at d3ed7c4c; its three-file finalizer/workflow/test advance has no Tideglass product, policy, history, route, schema, or navigation overlap. The later Deepwater record-only closure at 582f32a3 and Admiralty record-truth repair at 95cff272 change only their governed records, documentation, and generated catalog provenance; neither has Tideglass product overlap. Accepted Shipwright Phase 2 at 25a5ecc3 changes the shared Studio UI. Its published-version comparison still renders TideglassStudioComparison and calls the canonical semantic endpoint; direct Tideglass Studio component/API tests pass. The task-owned production A-K browser journey passes on reconciled source 622ee2bc with fixture checksum 7798f816, including Journey Detail, Studio semantic comparison, privacy, mobile, keyboard, reduced motion, effective 200 percent zoom, and zero serious/critical Axe findings. Wakebook and Shipwright closeout records then advanced current main to 9867e3d4 without Tideglass runtime, route, schema, or test-source overlap. On that source, the focused Tideglass/Wayfarer/Wakebook/Studio suite passes 136/136 across 19 files, including all 18 TaleEditor cases; contracts, Prisma generation/typecheck, lint with zero errors, documentation, and Feature Catalog validation also pass. The only failed qualification check is format, caused exclusively by three Shipwright-owned accepted-main closeout documents; their owner has been notified. The hosted Tideglass authority lane is terminally released. The original product candidate received its governed release evidence and entered protected main as merge bb7676a75581d8d415c3ff7712cc38bc8decb031.",
-  "nextGate": "Await Shipwright's narrow formatting repair for its three accepted-main closeout documents, then rerun full formatting, freeze a fresh candidate, and recheck the serialized authority lane. Do not reuse authority run 31658984596; frozen record-only PRs #64 and #65 remain out of scope."
+  "sharedFormatRepair": "Shipwright's narrow repair accepted at 4e88ba5463878e3b2cab8d03bb4471201bb1f039 restores global format. On the reconciled source, Tideglass contracts, documentation, Feature Catalog validation, and full formatting pass; no Tideglass runtime, route, schema, or test source changed.",
+  "nextGate": "Publish this fresh exact candidate to PR #68. After confirming current main, candidate identity, clean worktree, and a free serialized lane, dispatch exactly one replacement Mainline Decision. Do not reuse authority run 31658984596; frozen record-only PRs #64 and #65 remain out of scope."
 }

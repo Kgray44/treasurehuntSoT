@@ -1,14 +1,14 @@
 ---
 title: Project Tideglass Phase 3 Integration Manifest
 audience: product-engineering
-status: upstream-format-repair-pending
+status: current-main-qualified-authority-pending
 canonical_for: project-tideglass-phase-3-integration
 last_reviewed: 2026-08-13
 ---
 
 # Project Tideglass Phase 3 integration manifest
 
-Status: `UPSTREAM_FORMAT_REPAIR_PENDING`.
+Status: `CURRENT_MAIN_QUALIFIED_AUTHORITY_PENDING`.
 This is a source integration inventory, not an accepted-mainline or
 protected-mainline receipt. The original owner decision and the explicit
 Wakebook Journey Detail addendum acceptance are recorded; protected integration
@@ -141,3 +141,10 @@ focused semantic/history/Studio suite is green 136/136, including all 18
 Shipwright-owned accepted-main closeout documents. This is an ownership handoff,
 not a Tideglass semantic regression or authorization to alter Shipwright
 records.
+
+Shipwright repaired that exact formatting boundary at accepted main
+`4e88ba54`. The Tideglass branch carries it as `d4d13ce3`; global formatting,
+Tideglass contracts, documentation, and Feature Catalog validation are green.
+No Tideglass product/browser source changed, so the source-bound browser proof
+and current semantic/history/Studio qualification remain applicable to the
+fresh authority candidate.

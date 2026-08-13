@@ -1,14 +1,14 @@
 ---
 title: Project Tideglass Phase 3 Validation Record
 audience: product-engineering
-status: upstream-format-repair-pending
+status: current-main-qualified-authority-pending
 canonical_for: project-tideglass-phase-3-validation
 last_reviewed: 2026-08-13
 ---
 
 # Project Tideglass Phase 3 validation record
 
-Status: `UPSTREAM_FORMAT_REPAIR_PENDING`.
+Status: `CURRENT_MAIN_QUALIFIED_AUTHORITY_PENDING`.
 The original product decision and the explicit Wakebook Journey Detail addendum
 acceptance are recorded; protected integration remains pending.
 
@@ -138,6 +138,14 @@ only failed qualification command is `npm run format:check`, which identifies
 only Shipwright-owned accepted-main closeout documents. Tideglass has handed the
 exact paths to Shipwright and will not edit cross-project accepted records or
 dispatch authority before the owner supplies a narrow repair.
+
+Shipwright's narrow repair protected-merged at `4e88ba54`; it restores the
+global formatting gate without changing Tideglass runtime, route, schema, or
+test source. `npm run format:check`, Tideglass contracts, documentation, and
+Feature Catalog validation now pass on the reconciled source. The retained
+136/136 semantic/history/Studio proof and source-bound browser proof remain
+valid; one fresh Tideglass Mainline Decision is now permitted when the exact
+candidate and free serialized lane are rechecked.
 
 ## Authority preflight and focused repair
 

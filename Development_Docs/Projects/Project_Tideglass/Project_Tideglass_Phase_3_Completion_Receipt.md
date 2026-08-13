@@ -1,7 +1,7 @@
 ---
 title: Project Tideglass Phase 3 Completion Receipt
 audience: product-engineering
-status: unissued-upstream-format-repair-pending
+status: unissued-current-main-qualified-authority-pending
 canonical_for: project-tideglass-phase-3-completion
 last_reviewed: 2026-08-13
 ---
@@ -44,12 +44,11 @@ Shipwright Phase 2's accepted Studio surface at `25a5ecc3` received refreshed
 Tideglass Studio browser proof on `622ee2bc`. This does not issue the receipt
 or authorize a parallel closeout path.
 
-Shipwright's record-only Phase 2 closeout at `9867e3d4` leaves a current-main
-format failure in three Shipwright-owned accepted documents. The Tideglass
-focused semantic/history/Studio suite is otherwise green 136/136. This receipt
-remains unissued until the owner repairs that shared qualification boundary and
-Tideglass receives its own fresh authority, protected integration, and
-exact-main proof.
+Shipwright's narrow formatting repair is accepted at `4e88ba54`, restoring the
+global format gate without changing Tideglass product source. The Tideglass
+focused semantic/history/Studio suite remains green 136/136. This receipt
+remains unissued until Tideglass receives its own fresh authority, protected
+integration, and exact-main proof.
 
 The first local Mainline Decision invocation for documentation candidate
 `897e7619` failed before it could create any suite receipt or finalizer decision

@@ -1,14 +1,14 @@
 ---
 title: Project Tideglass Phase 3 Qualification Record
 audience: product-engineering
-status: upstream-format-repair-pending
+status: current-main-qualified-authority-pending
 canonical_for: project-tideglass-phase-3-qualification
 last_reviewed: 2026-08-13
 ---
 
 # Project Tideglass Phase 3 qualification record
 
-Status: `UPSTREAM_FORMAT_REPAIR_PENDING`.
+Status: `CURRENT_MAIN_QUALIFIED_AUTHORITY_PENDING`.
 
 The earlier local candidate is superseded. It used an invented response proxy and did not evidence the complete governed state matrix. No owner walkthrough, Sounding Line Mainline Decision, protected merge, deployment, provider execution, or real-account acceptance was claimed or dispatched for it.
 
@@ -158,6 +158,14 @@ and `docs/reference/feature-status.md`. Tideglass does not rewrite another
 project's accepted records. The exact paths and failure have been handed to
 Shipwright; no Tideglass authority is permitted until its narrow current-main
 repair is accepted and this check is green.
+
+Shipwright's narrow repair is accepted at `4e88ba54`. The branch reconciles it
+as `d4d13ce3`, and global `npm run format:check` is green again alongside
+Tideglass contracts, documentation, and Feature Catalog validation. The
+intervening source is formatting and documentation provenance only, so the
+source-bound Tideglass production browser proof and 136/136 semantic/history/
+Studio proof remain valid. A fresh exact candidate is ready for the one
+permitted replacement Mainline Decision.
 
 ## Candidate qualification evidence
 
