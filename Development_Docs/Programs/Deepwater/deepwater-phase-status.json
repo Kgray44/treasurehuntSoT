@@ -1,5 +1,5 @@
 {
-  "acceptanceLane": "PENDING_SERIALIZED_MAINLINE_OWNERSHIP",
+  "acceptanceLane": "RECORD_ONLY_CLOSURE_PENDING",
   "activation": "EXPLICIT_PHASE_4_WHOLE_PRODUCT_PROOF_AUTHORIZATION",
   "auditedSourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
   "baseSourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
@@ -10,7 +10,7 @@
     "Bridgewatch is a private, read-only observation surface and has no release authority.",
     "No Phase 5 work is authorized by this record."
   ],
-  "mainlineState": "FROZEN_CANDIDATE",
+  "mainlineState": "MAINLINE_ACCEPTED",
   "ownerDecision": "NOT_REQUESTED",
   "ownerWalkthrough": "PACKET_READY",
   "phase": "Phase 4 - Break the Surface",
@@ -21,6 +21,6 @@
   "schemaImpact": "DEEPWATER_PHASE4_PROOF_CONTROL_PLANE_ONLY",
   "schemaVersion": "1.0.0",
   "state": "LOCAL_PROVEN",
-  "validation": "FOCUSED_QUALIFICATION_PASSED",
+  "validation": "RELEASE_GO_PROTECTED_MERGE_AND_EXACT_MAIN_PASSED",
   "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase4"
 }
