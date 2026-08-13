@@ -101,6 +101,24 @@ Bridgewatch evidence was rewritten. The post-rebase focused suite now covers 15
 files / 41 tests, including the concise since-last-check selector regression;
 the branch remains unfrozen until a final fetch confirms the protected main.
 
+### Post-authority current-main reconciliation
+
+The first frozen replay candidate, `efd574010a7bcf5533d50c28799fc661bd719697`,
+received a valid exact-source `RELEASE_GO` from Sounding Line run `31665028258`
+on base `25a5ecc3989d137a95291c340f07143860b821cc` (38 mandatory receipts,
+all `PASSED` and `CLEAN`). Before its protected binding could merge, Wakebook
+Phase 1 protected-merged at `0cdaa80245e47ec67ca6758daec7cd1453b37297`.
+
+That integration changed shared generated test inventory/catalog material and
+broader application paths. The first envelope is retained as valid historical
+evidence for its exact SHA, but it cannot be carried forward as an acceptance
+claim for the changed base. To preserve that evidence without force-pushing or
+rewriting the published candidate, the Phase 3 commits were replayed onto
+`0cdaa802...` on the new owned branch
+`codex/project-bridgewatch-phase3-keep-the-watch-5`. The replay is a fresh,
+unfrozen candidate and must receive its own exact-SHA qualification and one
+explicit authority decision.
+
 ### Concurrent-work snapshot
 
 Registered worktrees at preflight included the canonical checkout; the retained
