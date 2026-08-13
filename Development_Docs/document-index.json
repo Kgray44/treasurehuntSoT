@@ -3405,6 +3405,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_3_Account_and_Security_Operations_Architecture.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_3_Active_Phase_Registration.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -3418,6 +3424,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_3_Command_Catalog.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_3_Configuration_Mutation_Architecture.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -3448,6 +3460,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_3_Mainline_Safety_Contract.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_3_Moderation_Command_Architecture.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
