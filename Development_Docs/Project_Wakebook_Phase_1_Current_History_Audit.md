@@ -3,7 +3,7 @@ title: Project Wakebook Phase 1 Current History Audit
 audience: product-engineering
 status: current
 canonical_for: project-wakebook-phase-1-current-history-audit
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-13
 ---
 
 # Project Wakebook Phase 1 current history audit
@@ -103,5 +103,7 @@ The reconciliation was preserved as two non-destructive merges:
 - `ebf6afe29c05a805f38c9766995e7185cfd47e5d`, with parents `6af4c63e` and `582f32a3`, for the accepted Deepwater Phase 4 closure.
 - `147d4cbe25ef4b502d5ec2439c544fd34df58f02`, with parents `0aed6050` and `95cff272`, for the accepted Admiralty Phase 2 record closure.
 - `6d65b9aaa0e852719eeceed88d42cfc79fc88b61`, with parents `4745c83e` and `25a5ecc3`, for accepted Shipwright Phase 2.
+
+The current-main record/catalog reconciliation then completed through protected PR #73. Exact candidate `10f3cdf554ac0100f4529ed8bc192663d16703e9` received hosted mainline `RELEASE_GO` in run `31665087005` with 38/38 mandatory receipts `PASSED` and `CLEAN`. Protected binding run `31665077267` attempt 2 succeeded, and PR #73 merged as `0cdaa80245e47ec67ca6758daec7cd1453b37297` with exact parents `25a5ecc3` and `10f3cdf5`; the protected merge tree exactly matches the validated candidate tree.
 
 The active test registry and P34 retirement matrix were regenerated rather than hand-resolved. The registry currently enumerates 2,142 governed cases across 56 families, and the retirement proof reconciles all 316 of 316 governed identities across 14 dispositions.
