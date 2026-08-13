@@ -127,8 +127,8 @@ test("governed Community moderation requires a case-attached target, independent
   });
   expect(csrfProbe.status).toBe(403);
   expect(csrfProbe.body).not.toContain("must-never-appear");
-  const forbiddenDossier = await moderator.page.goto(`/admin/people/${credentials.accounts.SUPPORT_TARGET.accountId}`);
-  expect(forbiddenDossier?.status()).toBe(404);
+  const forbiddenOperations = await moderator.page.goto("/admin/operations");
+  expect(forbiddenOperations?.status()).toBe(404);
   await moderator.page.goto("/admin/community");
   await search(moderator.page, "Chartroom Navigator Kit");
   await moderator.page.getByRole("link", { name: "Chartroom Navigator Kit", exact: true }).click();
