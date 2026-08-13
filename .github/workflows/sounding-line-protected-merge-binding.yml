@@ -97,7 +97,7 @@ jobs:
         run: node scripts/sounding-line/record-only-closure.mjs evidence --preflight record-only-preflight/record-only-preflight.json --prior-plan prior-plan/sounding-line-plan.json --prior-finalization prior-finalization/sounding-line-finalization.json --plan-out record-only-plan.json --evidence-out record-only-evidence.json
       - name: Finalize record-only decision
         env:
-          GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
+          SOUNDING_LINE_EXPECTED_SOURCE_SHA: ${{ github.event.pull_request.head.sha }}
         run: node scripts/sounding-line/finalize-ci.mjs record-only-plan.json record-only-evidence.json --out record-only-finalization.json
       - name: Seal record-only acceptance envelope
         env:
