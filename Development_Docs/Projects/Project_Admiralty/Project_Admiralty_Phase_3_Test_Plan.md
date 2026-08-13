@@ -22,6 +22,10 @@ last_reviewed: 2026-08-13
   audit failure and stale lifecycle revision fail closed. Wayfarer persists a
   receipt keyed by idempotency key inside the same owner transaction; matching
   retries return that original normalized result without another mutation.
+- Migration rehearsal: an isolated SQLite baseline upgrades through
+  `20260813130000_admiralty_phase3_wayfarer_command_receipts`, preserves a
+  sentinel account, and confirms the receipt table on upgraded and fresh
+  databases.
 - Moderation: Harborlight owner preview/action lifecycle and transaction-bound
   audit composition, case-attached target projection, endpoint error
   normalization, owner-enforced distinct-second-review eligibility, and a
