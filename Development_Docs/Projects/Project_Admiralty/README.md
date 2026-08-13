@@ -73,6 +73,8 @@ on the server.
 - [Design record](Project_Admiralty_Phase_3_Design_Record.md)
 - [Mainline safety contract](Project_Admiralty_Phase_3_Mainline_Safety_Contract.md)
 - [Command catalog](Project_Admiralty_Phase_3_Command_Catalog.md)
+- [Integration manifest](Project_Admiralty_Phase_3_Integration_Manifest.md)
+- [Validation record](Project_Admiralty_Phase_3_Validation_Record.md)
 - [Deepwater disposition register](Project_Admiralty_Phase_3_Deepwater_Disposition_Register.json)
 
 ## Machine-readable controls
