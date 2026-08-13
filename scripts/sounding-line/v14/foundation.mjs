@@ -472,6 +472,8 @@ export function createPreparedLayerManifest({
   securityScan,
   retentionClass,
   consumerConstraints,
+  retentionState = { expiresAt: null },
+  revocationState = "ACTIVE",
   createdAt = new Date().toISOString(),
   schemaVersion = V14_PREPARED_ARTIFACT_IDENTITY_VERSION,
 }) {
@@ -504,6 +506,8 @@ export function createPreparedLayerManifest({
     policyDigest,
     securityScan: canonicalize(securityScan),
     retentionClass,
+    retentionState: canonicalize(retentionState),
+    revocationState,
     consumerConstraints: canonicalize(consumerConstraints),
     verificationStatus: "VERIFIED",
     mutable: false,
@@ -576,6 +580,8 @@ export function verifyPreparedLayerManifest(manifest, observedContentManifest) {
     "policyDigest",
     "securityScan",
     "retentionClass",
+    "retentionState",
+    "revocationState",
     "consumerConstraints",
   ];
   if (required.some((field) => manifest[field] === undefined || manifest[field] === null || manifest[field] === ""))

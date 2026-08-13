@@ -6,6 +6,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import { prepareV14Worker } from "./v14/fast-channel.mjs";
 
 const resourceSet = (values) => new Set(Array.isArray(values) ? values : []);
 const browserAdapters = new Set([
@@ -102,6 +103,23 @@ export function deriveWorkerPreparation(node) {
       violations,
     },
   };
+}
+
+/**
+ * Version-gated v1.4 preparation.  Current v1.3 callers continue to use the
+ * synchronous function above; a v1.4 plan cannot be silently consumed there.
+ */
+export function deriveV14WorkerPreparation({ plan, node, restoreResults = [], runId, mutableResources = [] }) {
+  if (plan?.authorityVersion !== "1.4" || plan?.authorityBoundary !== "SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE")
+    throw new Error("V14_WORKER_AUTHORITY_BOUNDARY_REQUIRED");
+  if (!plan?.nodes?.some((entry) => entry.id === node?.id)) throw new Error("V14_WORKER_PLAN_NODE_INVALID");
+  return prepareV14Worker({
+    planNode: node,
+    layers: node.preparedLayers ?? [],
+    restoreResults,
+    runId,
+    mutableResources,
+  });
 }
 
 async function main() {

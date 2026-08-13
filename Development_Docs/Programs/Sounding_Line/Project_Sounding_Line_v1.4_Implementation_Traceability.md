@@ -1,7 +1,7 @@
 ---
 title: Project Sounding Line v1.4 Implementation Traceability
 audience: engineering
-status: prompt-2-handoff
+status: prompt-3-local-implementation
 canonical_for: sounding-line-v14-implementation-handoff
 last_reviewed: 2026-08-13
 ---
@@ -9,6 +9,30 @@ last_reviewed: 2026-08-13
 # Project Sounding Line v1.4 Implementation Traceability
 
 This is the compact implementation handoff. It is subordinate to the v1.4 amendment and the ratified requirement traceability; it does not activate v1.4.
+
+## Prompt 3 implementation status (2026-08-13)
+
+| Requirement ID | Prompt 3 status     | Implemented truth                                                                                                                                                                        | Deferred boundary                                     |
+| -------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| SL14-EP-001    | implemented locally | Exclusive-write durable receipt store and zero/duplicate current producer rejection.                                                                                                     | Hosted evidence operations in Prompt 5.               |
+| SL14-EP-002    | implemented locally | Canonical digest verification, immutable derivation, sealed bundle import/export, and ancestor verification.                                                                             | Fleet adoption in Prompt 5.                           |
+| SL14-SI-001    | implemented locally | Fingerprint-bound evidence, plan identity, and producer resolution are sealed.                                                                                                           | Train identities in Prompt 4.                         |
+| SL14-SI-002    | implemented locally | Conditional ledger records selection, omission, confidence, debt ID/owner, and fallback.                                                                                                 | Corpus calibration in Prompt 5.                       |
+| SL14-IM-001    | implemented locally | Real Git changed interval creates an impact-selected shadow plan and omission ledger.                                                                                                    | Ordered train selection in Prompt 4.                  |
+| SL14-IM-002    | implemented locally | Machine-readable source rule registry covers authority, static, security, privacy, persistence, identity, navigation, build, and accessibility floors.                                   | Policy calibration in Prompt 5.                       |
+| SL14-RC-001    | implemented locally | Independently exhaustive release closure rejects missing and duplicate obligations.                                                                                                      | Actual release authority remains v1.3 until Prompt 5. |
+| SL14-RC-002    | implemented locally | Persistence source class and distinct layer identities force database/migration proof selection.                                                                                         | Train collision rules in Prompt 4.                    |
+| SL14-PL-001    | implemented locally | All five exact immutable layer types have typed identities; local host-neutral transport rehashes contents and gates producer, scan, expiry-compatible manifest fields, and constraints. | Hosted cross-run performance proof in Prompt 5.       |
+| SL14-PL-002    | implemented locally | Run-owned mutable resource preparation and cleanup receipt validation reject wrong owners, survivors, duplicates, and incomplete cleanup.                                                | Hosted worker lifecycle proof in Prompt 5.            |
+| SL14-TI-001    | implemented locally | Git plan carries distinct candidate/base/predicted commit and tree identity fields into binding.                                                                                         | Landed-tree equality in Prompt 4.                     |
+| SL14-PB-001    | implemented locally | V1.4 lightweight binding verifies integrity/provenance without product execution.                                                                                                        | Protected activation in Prompt 5.                     |
+| SL14-PB-002    | implemented locally | Finalization/binding deny missing or unresolved cleanup provenance.                                                                                                                      | Hosted receipt proof in Prompt 5.                     |
+| SL14-SE-001    | implemented locally | Sealed records, lineage, plan, layer, cleanup, tree, and authority validation fail closed.                                                                                               | Controlled hosted security exercise in Prompt 5.      |
+| SL14-SE-002    | implemented locally | Trusted-producer and clean scan gates reject untrusted/tampered prepared layers.                                                                                                         | Hosted producer policy activation in Prompt 5.        |
+| SL14-FR-001    | implemented locally | Persistable typed failure-to-safe-recovery route table is supplied.                                                                                                                      | Train-specific brake scopes in Prompt 4.              |
+| SL14-LE-001    | implemented locally | Legacy importer emits immutable adoption outcomes and narrow fresh/conservative action.                                                                                                  | Paused fleet import in Prompt 5.                      |
+| SL14-LE-002    | implemented locally | Machine-readable compatibility inputs/prohibited assumptions prevent silent promotion.                                                                                                   | Fleet compatibility application in Prompt 5.          |
+| SL14-SH-001    | implemented locally | Host-neutral immutable layer transport interface and local provider are exercised.                                                                                                       | Self-hosted attestation in Prompt 5.                  |
 
 ## Prompt 3 - Open the Fast Channel
 
