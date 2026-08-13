@@ -75,7 +75,7 @@ test("administrator reaches the Chartroom naturally and inspects every Phase 2 r
   await assertNoSeriousAxeViolations(admin.page);
   await capture(admin.page, "ADM2-EV-B-ACCOUNT-DOSSIER");
 
-  await admin.page.getByLabel("Confirm current password").fill(credentials.password);
+  await admin.page.getByLabel("Confirm current password", { exact: true }).fill(credentials.password);
   await admin.page.getByRole("button", { name: "Verify for privileged work" }).click();
   await expect(admin.page.getByText("Privileged assurance is active for this session.")).toBeVisible();
   const purpose = "Review synthetic account and authentication diagnostics for the owner walkthrough.";
