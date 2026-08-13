@@ -1,7 +1,7 @@
 ---
 title: Project Tideglass Phase 3 Design Record
 audience: product-engineering
-status: wakebook-addendum-owner-accepted-current-main-qualification-pending
+status: current-main-qualified-candidate-freeze-pending
 canonical_for: project-tideglass-phase-3-design
 last_reviewed: 2026-08-12
 ---
@@ -134,4 +134,4 @@ The edition selector DTO is a server-derived list of exact IDs, human labels, pu
 
 ## Candidate and owner gates
 
-Each implementation change follows the mandatory focused-test lifecycle. The original owner decision accepted the reviewed Phase 3 product path, and the owner explicitly accepted the Wakebook Journey Detail addendum after its affected qualification and visual evidence. A newly frozen current-main candidate may request its single Mainline Decision only when the separately governed serial authority queue explicitly grants that position. No frozen PR, protected binding, or shared validation runtime is resumed by this reconciliation.
+Each implementation change follows the mandatory focused-test lifecycle. The original owner decision accepted the reviewed Phase 3 product path, and the owner explicitly accepted the Wakebook Journey Detail addendum after its affected qualification and visual evidence. The rebased source passed current-main unit, component, semantic Studio, browser, accessibility, static, catalog, and Homeport navigation qualification. A newly frozen current-main candidate may request its single Mainline Decision only when the separately governed serial authority queue explicitly grants that position. No frozen PR, protected binding, or shared validation runtime is resumed by this reconciliation.

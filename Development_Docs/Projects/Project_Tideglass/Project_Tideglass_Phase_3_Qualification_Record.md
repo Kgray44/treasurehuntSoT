@@ -1,14 +1,14 @@
 ---
 title: Project Tideglass Phase 3 Qualification Record
 audience: product-engineering
-status: wakebook-addendum-owner-accepted-current-main-qualification-pending
+status: current-main-qualified-candidate-freeze-pending
 canonical_for: project-tideglass-phase-3-qualification
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 qualification record
 
-Status: `WAKEBOOK_ADDENDUM_OWNER_ACCEPTED_CURRENT_MAIN_QUALIFICATION_PENDING`.
+Status: `CURRENT_MAIN_QUALIFIED_CANDIDATE_FREEZE_PENDING`.
 
 The earlier local candidate is superseded. It used an invented response proxy and did not evidence the complete governed state matrix. No owner walkthrough, Sounding Line Mainline Decision, protected merge, deployment, provider execution, or real-account acceptance was claimed or dispatched for it.
 
@@ -31,14 +31,34 @@ non-authoritative Phase 3 contract validator. A fresh task-owned production
 browser A-K journey passes for `c298d5c0db5c0cd015323fd7f7ad073b3e64e82a`,
 including direct Journey Detail visual evidence, exact-record return, mobile,
 reduced-motion, effective 200% zoom, and Axe serious/critical zero. The owner
-explicitly accepted the addendum. Current-main qualification remains required;
-the serial authority lane must be acquired only after an explicit position.
+explicitly accepted the addendum. The resulting current-main qualification is
+recorded below; the serial authority lane must be acquired only after an
+explicit position.
 
 ## Current qualification approach
 
 Phase 3 now prepares a task-owned SQLite fixture at `%LOCALAPPDATA%\\ProjectTideglass\\phase3-qualification`. It uses reserved synthetic accounts and the real production build, application routes, session handling, Prisma schema, Tideglass service, and server projections. The canonical repository database at `prisma/dev.db` is not opened or changed.
 
 The fixture contains the required exact editions A, B, and C, individual owned Voyage records for Player A, Player AB, and Player C, a Creator, and a foreign-record control. Its B-to-C semantic pair intentionally includes an unsupported semantic configuration so the real Tideglass projection produces `PARTIAL` without revealing source data.
+
+## Owner-accepted current-main qualification
+
+The owner-accepted source was rebased cleanly onto
+`770404dd11cdfc1b86658a488979c43c22ed1711`. The focused Journey Detail and
+history handoff suite passed 34/34; the complete Tideglass suite passed 109/109;
+and the explicit Studio semantic consumer suite passed 2/2. `npm run
+tideglass:phase3:validate`, `npm run db:generate && npm run typecheck`, `npm
+run lint` (zero errors; 100 unrelated warnings), `npm run format:check`, `npm
+run docs:validate`, and Feature Catalog sync/validation all passed.
+
+`npm run tideglass:phase3:journeys` passed its real production-build A--K
+journey for `e99bbe3174a6d0c94c88ef6cc7b4f33c4eff28d0`, including the accepted
+Journey Detail entry, exact-record return, foreign-record denial, Creator
+semantic comparison, mobile/reduced-motion behavior, effective 200% zoom, and
+Axe serious/critical zero. The final `npm run homeport:validate` pass repaired
+only three missing `notes` fields and one model-name/authority-ID mismatch in
+pre-existing Wakebook Homeport governance records; it introduced no product
+route, capability, or semantic change.
 
 ## Candidate qualification evidence
 

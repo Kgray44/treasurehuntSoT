@@ -1,16 +1,16 @@
 ---
 title: Project Tideglass Phase 3 Validation Record
 audience: product-engineering
-status: wakebook-addendum-owner-accepted-current-main-qualification-pending
+status: current-main-qualified-candidate-freeze-pending
 canonical_for: project-tideglass-phase-3-validation
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 validation record
 
-Status: `WAKEBOOK_ADDENDUM_OWNER_ACCEPTED_CURRENT_MAIN_QUALIFICATION_PENDING`.
+Status: `CURRENT_MAIN_QUALIFIED_CANDIDATE_FREEZE_PENDING`.
 The original product decision and the explicit Wakebook Journey Detail addendum
-acceptance are recorded; current-main qualification remains pending.
+acceptance are recorded; protected integration remains pending.
 
 The reconciled product source is
 `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`, subsequently reconciled to accepted main
@@ -38,7 +38,7 @@ Phase 4 work has been started.
 
 Wakebook Phase 1 at `cbf634d4d5db9cf47edebb89e005e8cc910068bd` replaces the
 old Passport detail with Journey Detail; current `origin/main`
-`9e9d629085cb1551b1a3959c31b0b460c37724a9` adds accepted Deepwater/Helm/Homeport
+`770404dd11cdfc1b86658a488979c43c22ed1711` adds accepted Deepwater/Helm/Homeport
 work without direct Tideglass or Wakebook product-source overlap. The
 new Tideglass-owned adapter preserves the exact owned-history handoff without
 copying a checksum, raw snapshot, annotation, or semantic record into the
@@ -46,10 +46,19 @@ Wakebook DTO. Focused proof is 34 tests across the direct Tideglass and
 Wakebook files, plus passing `npm run tideglass:phase3:validate`, TypeScript,
 documentation, catalog, and targeted lint/format checks. A fresh task-owned
 production A-K browser journey passed for source
-`c298d5c0db5c0cd015323fd7f7ad073b3e64e82a`; it includes the direct Journey
+`e99bbe3174a6d0c94c88ef6cc7b4f33c4eff28d0`; it includes the direct Journey
 Detail entry capture, exact-record return, privacy assertions, mobile,
 reduced-motion, effective 200% zoom, and Axe serious/critical zero. This is
-still local, non-authoritative evidence only; targeted owner review is next.
+still local, non-authoritative evidence only; the owner explicitly accepted the
+addendum, and candidate freeze is next.
+
+The full `npm run homeport:validate` qualification initially exposed three
+missing required `notes` fields in existing Wakebook-owned API inventory records
+and one `AccountSession` model-name reference where the governed Journey catalog
+requires authority ID `HP-SES-001`. The narrow metadata repair passed the full
+Homeport contract, reachability, surface, visual, accessibility, and host-origin
+validation stack. It does not change a product route, visibility, capability,
+or Tideglass behavior.
 
 ## Authority preflight and focused repair
 

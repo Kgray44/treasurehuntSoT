@@ -1,18 +1,18 @@
 ---
 title: Project Tideglass Phase 3 Integration Manifest
 audience: product-engineering
-status: wakebook-addendum-owner-accepted-current-main-qualification-pending
+status: current-main-qualified-candidate-freeze-pending
 canonical_for: project-tideglass-phase-3-integration
 last_reviewed: 2026-08-12
 ---
 
 # Project Tideglass Phase 3 integration manifest
 
-Status: `WAKEBOOK_ADDENDUM_OWNER_ACCEPTED_CURRENT_MAIN_QUALIFICATION_PENDING`.
+Status: `CURRENT_MAIN_QUALIFIED_CANDIDATE_FREEZE_PENDING`.
 This is a source integration inventory, not an accepted-mainline or
 protected-mainline receipt. The original owner decision and the explicit
-Wakebook Journey Detail addendum acceptance are recorded; current-main
-qualification and protected integration remain required.
+Wakebook Journey Detail addendum acceptance are recorded; protected integration
+remains required.
 
 ## Canonical consumer path
 
@@ -85,5 +85,6 @@ component, TypeScript, documentation, catalog, and A-K task-owned production
 browser proof are complete for source `c298d5c0db5c0cd015323fd7f7ad073b3e64e82a`.
 The generated visual evidence adds a direct Journey Detail entry frame and
 retains the exact-record return, privacy, Creator, mobile, zoom, reduced-motion,
-and Axe assertions. The owner explicitly accepted this addendum. That decision
-does not authorize a protected binding, merge, or a retry of either frozen PR.
+and Axe assertions. The owner explicitly accepted this addendum and the rebased
+current-main qualification is green. Neither fact authorizes a protected
+binding, merge, or a retry of either frozen PR.

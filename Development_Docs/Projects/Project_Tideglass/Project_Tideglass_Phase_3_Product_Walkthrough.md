@@ -1,7 +1,7 @@
 ---
 title: Project Tideglass Phase 3 Product Walkthrough
 audience: product-owner
-status: wakebook-addendum-owner-accepted-current-main-qualification-pending
+status: current-main-qualified-candidate-freeze-pending
 canonical_for: project-tideglass-phase-3-product-walkthrough
 last_reviewed: 2026-08-12
 ---
@@ -15,7 +15,7 @@ assertions. The owner decision is recorded separately in
 `Project_Tideglass_Phase_3_Owner_Decision_Record.md`; this document remains the
 reproducible walkthrough package.
 
-The owner-reviewed product source is `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`. Accepted Wakebook Phase 1 later replaced the ordinary past-Voyage detail with Journey Detail at `cbf634d4d5db9cf47edebb89e005e8cc910068bd`; the current reconciliation base is `770404dd11cdfc1b86658a488979c43c22ed1711`. The owner explicitly accepted this walkthrough addendum for the preserved, owner-safe Tideglass handoff. The original A--J evidence remains source-bound to its recorded candidate and is not misrepresented as evidence for the new shared surface; current-main qualification still precedes finalization.
+The owner-reviewed product source is `c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6`. Accepted Wakebook Phase 1 later replaced the ordinary past-Voyage detail with Journey Detail at `cbf634d4d5db9cf47edebb89e005e8cc910068bd`; the current reconciliation base is `770404dd11cdfc1b86658a488979c43c22ed1711`. The owner explicitly accepted this walkthrough addendum for the preserved, owner-safe Tideglass handoff. The original A--J evidence remains source-bound to its recorded candidate and is not misrepresented as evidence for the new shared surface; current-main qualification is complete and protected finalization still precedes acceptance.
 
 ## Safe walkthrough runtime
 

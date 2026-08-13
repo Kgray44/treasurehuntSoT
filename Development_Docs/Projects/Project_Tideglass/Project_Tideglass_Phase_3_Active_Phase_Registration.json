@@ -3,7 +3,7 @@
   "project": "Project Tideglass",
   "phase": "3",
   "phaseName": "Choose the Passage",
-  "status": "WAKEBOOK_ADDENDUM_OWNER_ACCEPTED_CURRENT_MAIN_QUALIFICATION_PENDING",
+  "status": "CURRENT_MAIN_QUALIFIED_CANDIDATE_FREEZE_PENDING",
   "originalBaseSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
   "baseSha": "54e3d818d49d45282a9c419d562d4b5c78911ccd",
   "reconciledOriginMainSha": "770404dd11cdfc1b86658a488979c43c22ed1711",
@@ -21,6 +21,6 @@
   "reopenedReason": "The initial candidate lacked a repository-backed fixture and did not exercise the full governed Phase 3 state matrix. It was superseded before owner walkthrough or authority dispatch.",
   "ownerReviewedProductSha": "c2fc8fcc414db4c2f3fab6108ba7c2e7becb16c6",
   "ownerDecision": "ACCEPTED on 2026-08-12 for the reviewed product source, with explicit owner acceptance on 2026-08-12 for the Wakebook Journey Detail addendum. Project_Tideglass_Phase_3_Owner_Decision_Record.md preserves both decisions.",
-  "candidateEvidence": "The original product candidate received its governed release evidence and entered protected main as merge bb7676a75581d8d415c3ff7712cc38bc8decb031. Wakebook Phase 1 was accepted at cbf634d4, whose Journey Detail supersedes the former Passport detail. The accepted addendum source and its A-K browser proof were rebased from 9e9d6290 to 770404dd; the seven intervening Helm commits affect PlayerVoyageRoom only and have no Tideglass or Wakebook Journey Detail product-source overlap. This isolated candidate preserves the required owner-safe Tideglass entry through a server-side adapter using an exact owned record and Publishing current pointer. No Prisma schema or migration changes are present.",
-  "nextGate": "Run current-main qualification, freeze a fresh candidate, and use a new protected PR. The frozen record-only PRs #64 and #65 remain out of scope; acquire a Sounding Line Mainline Decision only after the serial authority coordinator confirms the released position."
+  "candidateEvidence": "The original product candidate received its governed release evidence and entered protected main as merge bb7676a75581d8d415c3ff7712cc38bc8decb031. Wakebook Phase 1 was accepted at cbf634d4, whose Journey Detail supersedes the former Passport detail. The owner-accepted addendum was rebased from 9e9d6290 to 770404dd; the seven intervening Helm commits affect PlayerVoyageRoom only and have no Tideglass or Wakebook Journey Detail product-source overlap. Current-main qualification passed: 34 direct handoff tests, 109 Tideglass tests, Studio checks, production A-K browser journey, typecheck, lint with zero errors, format, documentation, Feature Catalog, Tideglass contracts, and full Homeport navigation validation. This isolated candidate preserves the required owner-safe Tideglass entry through a server-side adapter using an exact owned record and Publishing current pointer. No Prisma schema or migration changes are present.",
+  "nextGate": "Freeze a fresh candidate and use a new protected PR. The frozen record-only PRs #64 and #65 remain out of scope; acquire a Sounding Line Mainline Decision only after the serial authority coordinator confirms the released position."
 }

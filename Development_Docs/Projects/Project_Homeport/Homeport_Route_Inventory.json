@@ -25524,7 +25524,8 @@
       "directUrlRequired": false,
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "WAKEBOOK_PHASE_1_OWNER_PRIVATE_SERVICE",
-      "status": "BRANCH_COMPLETE_NOT_MERGED"
+      "status": "BRANCH_COMPLETE_NOT_MERGED",
+      "notes": "Owner-private Journey Archive list endpoint; an authenticated account receives only its own retained Voyage records."
     },
     {
       "routeId": "route-api-passport-voyages-recordId",
@@ -25553,7 +25554,8 @@
       "directUrlRequired": false,
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "WAKEBOOK_PHASE_1_OWNER_PRIVATE_SERVICE",
-      "status": "BRANCH_COMPLETE_NOT_MERGED"
+      "status": "BRANCH_COMPLETE_NOT_MERGED",
+      "notes": "Owner-private Journey Detail endpoint; foreign or unavailable records fail closed without a distinct disclosure."
     },
     {
       "routeId": "route-api-passport-voyages-recordId-cover",
@@ -25582,7 +25584,8 @@
       "directUrlRequired": false,
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "WAKEBOOK_PHASE_1_OWNER_PRIVATE_SERVICE",
-      "status": "BRANCH_COMPLETE_NOT_MERGED"
+      "status": "BRANCH_COMPLETE_NOT_MERGED",
+      "notes": "Owner-private Journey Detail cover endpoint; it returns only retained safe cover media and has no ordinary navigation."
     }
   ],
   "phase1Implementation": {

@@ -5452,7 +5452,7 @@
         "Back to Your Voyages"
       ],
       "routeTransitions": ["/passport", "/passport/history", "/passport/history/[recordId]"],
-      "sessionAuthoritiesObservedWithoutValues": ["AccountSession"],
+      "sessionAuthoritiesObservedWithoutValues": ["HP-SES-001"],
       "expectedCurrentBehavior": "Prove the branch-complete owner-private archive, exact Voyage Detail, bounded large-history pagination, historical stability, privacy, responsive layout, and accessibility contracts.",
       "observedBehavior": "The registered browser family is waiting for the shared validation-runtime lease; no product case has executed yet.",
       "screenshots": [],
