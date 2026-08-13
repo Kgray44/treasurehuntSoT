@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { randomUUID } from "node:crypto";
 import {
+  applyReusableInsertion,
   assertReusableCaptureSafe,
   checksumReusableEnvelope,
   planReusableInsertion,
@@ -10,6 +11,8 @@ import {
 } from "@/studio/reusable-content";
 import type { Block, DraftState } from "@/components/studio/studio-types";
 import { parseJsonObject } from "@/chronicle/types";
+import { getStudioTale } from "@/chronicle/studio-service";
+import { drydockDraftInputFromStudio, validateDrydockDraftContracts } from "@/drydock/incremental";
 
 function parseJsonArray(value: string) {
   try {
@@ -95,6 +98,24 @@ export async function planReusableAuthoringInsertion(input: {
     targetChapterId: input.targetChapterId,
     parameterValues: input.parameterValues,
   });
+  const studio = await getStudioTale(input.taleId);
+  const issueKey = (issue: { severity: string; code: string; location: { blockId?: string; fieldPath?: string } }) =>
+    `${issue.severity}:${issue.code}:${issue.location.blockId ?? ""}:${issue.location.fieldPath ?? ""}`;
+  const baseline = validateDrydockDraftContracts(
+    drydockDraftInputFromStudio({ chapters: input.draft.chapters, assets: studio.assets }, { analysisMode: "FULL" }),
+  );
+  const proposedDraft = applyReusableInsertion(input.draft, plan);
+  const proposed = validateDrydockDraftContracts(
+    drydockDraftInputFromStudio({ chapters: proposedDraft.chapters, assets: studio.assets }, { analysisMode: "FULL" }),
+  );
+  const existingErrors = new Set(baseline.issues.filter((issue) => issue.severity === "ERROR").map(issueKey));
+  const introducedErrors = proposed.issues.filter(
+    (issue) => issue.severity === "ERROR" && !existingErrors.has(issueKey(issue)),
+  );
+  if (introducedErrors.length)
+    throw new Error(
+      `Reusable insertion introduces Drydock errors: ${[...new Set(introducedErrors.map((issue) => issue.code))].join(", ")}.`,
+    );
   const portWarnings = [
     ...envelope.entryPorts.map((port) => `Connect the imported entry port: ${port.label}.`),
     ...envelope.exitPorts.map((port) => `Connect the imported exit port: ${port.label}.`),
