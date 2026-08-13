@@ -15,7 +15,7 @@ last_reviewed: 2026-08-12
 | Project / phase   | Project Wakebook / Phase 1 `Open the Wake`                                                                               |
 | Owner             | Wakebook for archive projection and presentation; Wayfarer remains history authority                                     |
 | Branch / worktree | `codex/project-wakebook-phase1-open-the-wake` / `C:\Users\kkids\Documents\treasurehuntSoT-wakebook-phase1-open-the-wake` |
-| Reconciled base   | `582f32a35d918ae892bd2feae766c00043038f39`                                                                               |
+| Reconciled base   | `95cff272450af34a3f8c00eb3ae01081be810f79`                                                                               |
 | Dependency class  | Accepted-main contracts only                                                                                             |
 | Schema impact     | None; no migration reservation                                                                                           |
 | Shared seams      | Passport routes/navigation/styles, Feature Catalog, Homeport catalogs, Sounding Line control plane                       |
@@ -57,6 +57,6 @@ and evidence digest
 `290c5062dc4f779eee2c7ca6ead51fc706db498b9e61491e3e9e94fe0d8100eb`.
 Protected binding run `31652303048` succeeded and PR #41 merged as
 `cbf634d4d5db9cf47edebb89e005e8cc910068bd`. Current-main reconciliation
-`ebf6afe2` retains that accepted implementation and consumes accepted main
-through `582f32a3` outside Wakebook-owned record seams. No deployment or Phase 2
+`147d4cbe` retains that accepted implementation and consumes accepted main
+through `95cff272` outside Wakebook-owned record seams. No deployment or Phase 2
 claim follows.
