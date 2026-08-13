@@ -8,8 +8,9 @@ canonical_for: project-tideglass-phase-4-completion-receipt
 
 # Project Tideglass Phase 4 Completion Receipt
 
-This receipt is intentionally unissued. The phase has not reached owner
-walkthrough, frozen-candidate qualification, Sounding Line acceptance, protected
-merge, or integrated-main proof. When and only when those events occur, this
-record must contain their exact SHAs, decision receipts, evidence digest, PR,
-remote-parity proof, Feature Catalog result, and cleanup state.
+This receipt is intentionally unissued. The Phase 4 candidate is frozen and
+locally qualified, and its owner walkthrough is pending; it has not reached an
+owner decision, Sounding Line acceptance, protected merge, or integrated-main
+proof. When and only when those events occur, this record must contain their
+exact SHAs, decision receipts, evidence digest, PR, remote-parity proof, Feature
+Catalog result, and cleanup state.

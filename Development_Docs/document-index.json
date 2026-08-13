@@ -6009,7 +6009,19 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_4_Owner_Decision_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_4_Performance_and_Observability_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_4_Product_Walkthrough.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
