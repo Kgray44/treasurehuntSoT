@@ -90,7 +90,7 @@ Accepted history is substantially complete and historically stable. Phase 1 is a
 
 ## Post-acceptance current-main reconciliation
 
-After Wakebook's protected-main acceptance, the owned branch audited the complete first-parent interval from accepted Deepwater Phase 3 source `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3` through `770404dd11cdfc1b86658a488979c43c22ed1711`, then consumed the Sounding Line source-binding repair accepted as `d3ed7c4cd1877be601e6854b376cb1dd9eb668a3`, the Deepwater Phase 4 closure accepted as `582f32a35d918ae892bd2feae766c00043038f39`, and the Admiralty Phase 2 record closure accepted as `95cff272450af34a3f8c00eb3ae01081be810f79`.
+After Wakebook's protected-main acceptance, the owned branch audited the complete first-parent interval from accepted Deepwater Phase 3 source `4a0f803a8ac4c238dc875da07df3cf0d1a5c81a3` through `770404dd11cdfc1b86658a488979c43c22ed1711`, then consumed the Sounding Line source-binding repair accepted as `d3ed7c4cd1877be601e6854b376cb1dd9eb668a3`, the Deepwater Phase 4 closure accepted as `582f32a35d918ae892bd2feae766c00043038f39`, the Admiralty Phase 2 record closure accepted as `95cff272450af34a3f8c00eb3ae01081be810f79`, and Shipwright Phase 2 accepted as `25a5ecc3989d137a95291c340f07143860b821cc`.
 
 That interval contains accepted Shipwright, Bridgewatch, Drydock, Admiralty, Helm, Tideglass, Deepwater, Sounding Line, and Wakebook work. Wakebook's own protected acceptance is PR #41: exact qualified head `1d1c1aaa5a0f2fbbc6b083911cb19422782afff0`, exact base `bb7676a75581d8d415c3ff7712cc38bc8decb031`, and protected merge `cbf634d4d5db9cf47edebb89e005e8cc910068bd`.
 
@@ -102,5 +102,6 @@ The reconciliation was preserved as two non-destructive merges:
 - `fac85f2db6cb2f1c3481ee6288bfd6db727a9277`, with parents `5a999090` and `d3ed7c4c`, for the accepted Sounding Line source-binding repair;
 - `ebf6afe29c05a805f38c9766995e7185cfd47e5d`, with parents `6af4c63e` and `582f32a3`, for the accepted Deepwater Phase 4 closure.
 - `147d4cbe25ef4b502d5ec2439c544fd34df58f02`, with parents `0aed6050` and `95cff272`, for the accepted Admiralty Phase 2 record closure.
+- `6d65b9aaa0e852719eeceed88d42cfc79fc88b61`, with parents `4745c83e` and `25a5ecc3`, for accepted Shipwright Phase 2.
 
-The active test registry and P34 retirement matrix were regenerated rather than hand-resolved. The registry currently enumerates 2,122 governed cases across 56 families, and the retirement proof reconciles all 316 of 316 governed identities across 14 dispositions.
+The active test registry and P34 retirement matrix were regenerated rather than hand-resolved. The registry currently enumerates 2,142 governed cases across 56 families, and the retirement proof reconciles all 316 of 316 governed identities across 14 dispositions.
