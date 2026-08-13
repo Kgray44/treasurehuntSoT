@@ -46,12 +46,17 @@
     ],
     "evidence": [
       { "kind": "commit", "value": "9b950a5fd603be27c813f9298b0b14888fbce6cf" },
+      { "kind": "commit", "value": "6212bd1ab9ed23abd52f98154b55d846267a1133" },
       { "kind": "path", "value": "bridgewatch/lib/store.ts" },
       { "kind": "path", "value": "bridgewatch/src/sounding-line.ts" },
       { "kind": "test", "value": "bridgewatch/test/sounding-line.test.ts" },
       { "kind": "test", "value": "src/admiralty/bridgewatch-gateway.test.ts" },
       { "kind": "test", "value": "tests/e2e/admiralty-phase2.spec.ts" },
       { "kind": "path", "value": "deploy/nginx.conf" },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Project_Bridgewatch_Homeport_Gateway_Validation_Record.md"
+      },
       { "kind": "completion-record", "value": "Development_Docs/Project_Bridgewatch_Phase_2_Completion_Receipt.md" }
     ],
     "catalogVersion": 1

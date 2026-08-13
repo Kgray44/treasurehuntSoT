@@ -984,12 +984,14 @@ A private Bridgewatch extension that projects explicit Project Registry and Soun
 ### Evidence
 
 - commit: `9b950a5fd603be27c813f9298b0b14888fbce6cf`
+- commit: `6212bd1ab9ed23abd52f98154b55d846267a1133`
 - path: `bridgewatch/lib/store.ts`
 - path: `bridgewatch/src/sounding-line.ts`
 - test: `bridgewatch/test/sounding-line.test.ts`
 - test: `src/admiralty/bridgewatch-gateway.test.ts`
 - test: `tests/e2e/admiralty-phase2.spec.ts`
 - path: `deploy/nginx.conf`
+- completion-record: `Development_Docs/Project_Bridgewatch_Homeport_Gateway_Validation_Record.md`
 - completion-record: `Development_Docs/Project_Bridgewatch_Phase_2_Completion_Receipt.md`
 
 ---
