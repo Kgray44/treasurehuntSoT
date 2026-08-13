@@ -68,7 +68,7 @@ import type {
   StudioDraftInput,
   ValidationIssue,
 } from "@/chronicle/types";
-import type { InsertionPlan, ReusableContentEnvelope } from "@/studio/reusable-content";
+import type { InsertionPlan, ReusableContentEnvelope, ReusableParameter } from "@/studio/reusable-content";
 import { getDrydockRuleDefinition } from "@/drydock/rules";
 import type { DrydockVariableDeclaration } from "@/drydock/variables";
 import { renameStudioDraftVariable } from "@/studio/authoring/variables";
@@ -117,6 +117,11 @@ type ReusableLibraryItem = {
   checksum: string | null;
   usageCount: number;
   updatedAt: string;
+};
+type ReusableParameterPrompt = {
+  item: ReusableLibraryItem;
+  parameters: ReusableParameter[];
+  values: Record<string, string | number | boolean>;
 };
 
 const clone = <T,>(value: T): T => structuredClone(value);
@@ -208,6 +213,7 @@ export function TaleEditor({
   const [reusableKindFilter, setReusableKindFilter] = useState<"ALL" | "PRESET" | "FRAGMENT" | "CHAPTER_TEMPLATE">(
     "ALL",
   );
+  const [reusableParameterPrompt, setReusableParameterPrompt] = useState<ReusableParameterPrompt | null>(null);
   const [blockSearch, setBlockSearch] = useState("");
   const [collapsedChapters, setCollapsedChapters] = useState<string[]>([]);
   const [previewBlock, setPreviewBlock] = useState(false);
@@ -443,11 +449,36 @@ export function TaleEditor({
     );
   }
 
-  async function insertReusableFragment(item: ReusableLibraryItem) {
+  async function insertReusableFragment(
+    item: ReusableLibraryItem,
+    parameterValues: Record<string, string | number | boolean> = {},
+    parametersChecked = false,
+  ) {
     if (!data || !draft) return;
     if (item.kind === "FRAGMENT" && !selected)
       return setReusableError("Select a destination Passage before inserting a reusable fragment.");
     setReusableError("");
+    if (!parametersChecked) {
+      const definitionResponse = await fetch(
+        `/api/studio/tales/${taleId}/reusable-content?itemId=${encodeURIComponent(item.id)}`,
+        { cache: "no-store" },
+      );
+      const definition = (await definitionResponse.json()) as { envelope?: ReusableContentEnvelope; error?: string };
+      if (!definitionResponse.ok || !definition.envelope)
+        return setReusableError(definition.error ?? "The reusable item could not be opened.");
+      if (definition.envelope.parameters.length) {
+        setReusableParameterPrompt({
+          item,
+          parameters: definition.envelope.parameters,
+          values: Object.fromEntries(
+            definition.envelope.parameters
+              .filter((parameter) => parameter.defaultValue !== undefined)
+              .map((parameter) => [parameter.key, parameter.defaultValue!]),
+          ),
+        });
+        return;
+      }
+    }
     const response = await fetch(`/api/studio/tales/${taleId}/reusable-content`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
@@ -457,6 +488,7 @@ export function TaleEditor({
         operationId: crypto.randomUUID(),
         targetChapterId: selected?.chapter.id,
         draft,
+        parameterValues,
       }),
     });
     const plan = (await response.json()) as InsertionPlan & { error?: string };
@@ -2193,6 +2225,53 @@ export function TaleEditor({
                         <option value="CHAPTER_TEMPLATE">Chapter templates</option>
                       </select>
                     </div>
+                    {reusableParameterPrompt && (
+                      <form
+                        className="reusable-parameter-prompt"
+                        onSubmit={(event) => {
+                          event.preventDefault();
+                          const prompt = reusableParameterPrompt;
+                          setReusableParameterPrompt(null);
+                          void insertReusableFragment(prompt.item, prompt.values, true);
+                        }}
+                      >
+                        <h4>Configure {reusableParameterPrompt.item.name}</h4>
+                        {reusableParameterPrompt.parameters.map((parameter) => (
+                          <label key={parameter.key}>
+                            <span>
+                              {parameter.label}
+                              {parameter.required ? " (required)" : ""}
+                            </span>
+                            <input
+                              type={parameter.type === "DURATION" ? "number" : "text"}
+                              required={parameter.required}
+                              value={String(reusableParameterPrompt.values[parameter.key] ?? "")}
+                              onChange={(event) =>
+                                setReusableParameterPrompt((current) =>
+                                  current
+                                    ? {
+                                        ...current,
+                                        values: {
+                                          ...current.values,
+                                          [parameter.key]:
+                                            parameter.type === "DURATION"
+                                              ? Number(event.target.value)
+                                              : event.target.value,
+                                        },
+                                      }
+                                    : current,
+                                )
+                              }
+                            />
+                            <small>{parameter.helpText}</small>
+                          </label>
+                        ))}
+                        <button type="button" onClick={() => setReusableParameterPrompt(null)}>
+                          Cancel
+                        </button>
+                        <button type="submit">Preview insertion</button>
+                      </form>
+                    )}
                     {reusableError && <p role="alert">{reusableError}</p>}
                     {!reusableLoading && !reusableError && !rankedReusableItems.length && (
                       <p>No reusable content yet. Save a governed Passage, selection, or Chapter to reuse it safely.</p>
