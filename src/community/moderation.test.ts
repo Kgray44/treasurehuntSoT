@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { assertAppealTransition, assertModerationTransition, moderationPublicReceipt } from "./moderation";
+import {
+  assertAppealTransition,
+  assertModerationTransition,
+  moderationPublicReceipt,
+  requireIndependentSecondReviewer,
+} from "./moderation";
 import { isTrustedCurrentCommunityScanReceipt } from "./scanner";
 
 describe("Harborlight Phase 4 moderation contracts", () => {
@@ -19,6 +24,17 @@ describe("Harborlight Phase 4 moderation contracts", () => {
     expect(() => assertModerationTransition("DISMISSED", "ACTIONED")).toThrow("not permitted");
     expect(() => assertAppealTransition("WITHDRAWN", "UNDER_REVIEW")).toThrow("not permitted");
     expect(() => assertAppealTransition("CLOSED", "UPHELD")).toThrow("not permitted");
+  });
+
+  it("requires a distinct second reviewer for high-impact moderation", () => {
+    expect(() => requireIndependentSecondReviewer("QUARANTINE_LISTING", "moderator_1", undefined)).toThrow(
+      "distinct second reviewer",
+    );
+    expect(() => requireIndependentSecondReviewer("QUARANTINE_LISTING", "moderator_1", "moderator_1")).toThrow(
+      "cannot review their own",
+    );
+    expect(() => requireIndependentSecondReviewer("QUARANTINE_LISTING", "moderator_1", "reviewer_1")).not.toThrow();
+    expect(() => requireIndependentSecondReviewer("NO_ACTION", "moderator_1", undefined)).not.toThrow();
   });
 
   it("keeps reporter receipts minimal", () => {
