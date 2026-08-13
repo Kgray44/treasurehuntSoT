@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
+import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import path from "node:path";
+import { promisify } from "node:util";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import {
@@ -18,6 +21,7 @@ import {
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const digest = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
+const execFileAsync = promisify(execFile);
 const candidate = "a".repeat(40);
 const base = "b".repeat(40);
 const merge = "c".repeat(40);
@@ -239,4 +243,45 @@ test("the protected Mainline Decision context remains exact", async () => {
   assert.equal(PROTECTED_MAINLINE_CONTEXT, "Sounding Line / Mainline Decision");
   assert.equal(authority.requiredProtectedAuthorityCheck, PROTECTED_MAINLINE_CONTEXT);
   assert.match(workflow, /name: Sounding Line \/ Mainline Decision/u);
+});
+
+test("record-only finalization binds the pull-request head instead of GitHub's synthetic merge SHA", async (t) => {
+  const fixture = recordOnlyBindingFixture();
+  const workspace = await mkdtemp(path.join(tmpdir(), "sounding-line-record-only-"));
+  t.after(() => rm(workspace, { recursive: true, force: true }));
+  const planPath = path.join(workspace, "plan.json");
+  const evidencePath = path.join(workspace, "evidence.json");
+  const outputPath = path.join(workspace, "finalization.json");
+  await Promise.all([
+    writeFile(planPath, `${JSON.stringify(fixture.plan)}\n`, "utf8"),
+    writeFile(
+      evidencePath,
+      `${JSON.stringify({
+        plan: { planDigest: fixture.plan.planDigest },
+        receipts: fixture.finalization.receipts,
+        runtimeConformance: [
+          {
+            suiteId: RECORD_ONLY_SUITE_ID,
+            result: "PASSED",
+            planDigest: fixture.plan.planDigest,
+            authorityDigest: fixture.plan.authorityDigest,
+          },
+        ],
+      })}\n`,
+      "utf8",
+    ),
+  ]);
+  const { stdout } = await execFileAsync(
+    process.execPath,
+    [path.join(root, "scripts", "sounding-line", "finalize-ci.mjs"), planPath, evidencePath, "--out", outputPath],
+    {
+      env: {
+        ...process.env,
+        GITHUB_SHA: merge,
+        SOUNDING_LINE_EXPECTED_SOURCE_SHA: candidate,
+      },
+    },
+  );
+  assert.equal(JSON.parse(stdout).decision, "RELEASE_GO");
+  assert.equal(JSON.parse(await readFile(outputPath, "utf8")).decision, "RELEASE_GO");
 });
