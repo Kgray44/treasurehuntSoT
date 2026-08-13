@@ -1,9 +1,9 @@
 ---
 title: Project Shipwright Phase 2 Block Editor Coverage
 audience: engineering
-status: product-mainline-accepted-record-closure-pending
+status: current
 canonical_for: project-shipwright-phase-2-block-editor-coverage
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-13
 ---
 
 # Project Shipwright Phase 2: Current Block Editor Coverage

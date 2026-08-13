@@ -1,9 +1,9 @@
 ---
 title: Project Shipwright Phase 2 Implementation Record
 audience: engineering
-status: product-mainline-accepted-record-closure-pending
+status: current
 canonical_for: project-shipwright-phase-2-implementation
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-13
 ---
 
 # Project Shipwright Phase 2: Fit the Tools - Implementation Record

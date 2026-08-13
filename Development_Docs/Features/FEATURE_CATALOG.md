@@ -1567,46 +1567,6 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 
 ---
 
-## FT-B011 - Private Living Journey Archive
-
-**Status:** BRANCH COMPLETE NOT MERGED
-**Program or subsystem:** Project Wakebook Phase 1
-
-Project Wakebook turns version-pinned Wayfarer records into a polished, owner-private visual archive with truthful chronology, safe historical context, bounded discovery, and a complete Voyage Detail baseline.
-
-### Important subfeatures
-
-- Chronological visual shelf with accurate full-year summaries
-- Owner-scoped title and historical-crew search, filters, sorting, and opaque cursor pagination
-- Human lifecycle, outcome, role, and timing-quality presentation without raw source values
-- Exact played-edition identity and historically stable title, cover, crew, chapter, and timing snapshots
-- Separate invitation history that never contributes to played-Voyage statistics
-- Distinct shared Voyage artifact context and personal Artifact Cabinet provenance
-- Private Reflection, Memory, Keepsake, consent, Cabinet, and eligible review handoffs
-- First-use, one-Voyage, many-Voyage, filtered-empty, unavailable, supplementary-history, loading, and failure states
-- Ordinary Chronicle Passport navigation with responsive and accessible desktop and mobile layouts
-
-### Primary surfaces
-
-`/passport/history`, `/passport/history/[recordId]`
-
-### Meaningful limitations
-
-- Available only on codex/project-wakebook-phase1-open-the-wake until protected mainline integration
-- Owner walkthrough and owner acceptance remain separate from automated readiness
-- Timeline, People, Statistics, geographic recap, public sharing, competitive metrics, and Tideglass semantics are outside Phase 1
-
-### Evidence
-
-- path: `src/wakebook/archive-query.ts`
-- path: `src/components/wakebook/WakebookArchive.tsx`
-- path: `src/components/wakebook/WakebookVoyageDetail.tsx`
-- test: `tests/e2e/wakebook-phase1.spec.ts`
-- completion-record: `Development_Docs/Project_Wakebook_Phase_1_Validation_Record.md`
-- commit: `629f5c7a981b80494f7703b6410b573a661e0f39`
-
----
-
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.

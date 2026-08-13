@@ -1,9 +1,9 @@
 ---
 title: Project Shipwright Phase 2 Mainline Safety Manifest
 audience: engineering
-status: product-mainline-accepted-record-closure-pending
+status: current
 canonical_for: project-shipwright-phase-2-mainline-safety
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-13
 ---
 
 # Project Shipwright Phase 2: Fit the Tools - Mainline Safety Manifest
@@ -15,7 +15,7 @@ last_reviewed: 2026-08-12
 | Branch                 | `codex/project-shipwright-phase2-fit-the-tools-r9`                                   |
 | Original base          | `191a964488d0df71f8dcb91c5b8372fc73b6b32e` (`origin/main` at worktree creation)      |
 | Schema / Prisma impact | None                                                                                 |
-| Current state          | Protected-main product accepted; record/catalog closeout pending                       |
+| Current state          | Protected-main product accepted; record-only closeout packet prepared                  |
 
 ## Safety assertions under test
 

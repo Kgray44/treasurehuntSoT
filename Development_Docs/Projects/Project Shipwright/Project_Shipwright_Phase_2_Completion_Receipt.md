@@ -3,12 +3,12 @@ title: Project Shipwright Phase 2 Completion Receipt
 audience: product-engineering
 status: current
 canonical_for: project-shipwright-phase-2-completion
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-13
 ---
 
 # Project Shipwright Phase 2 completion receipt
 
-Status: `ACCEPTED_MAINLINE_RECORD_CLOSURE_PENDING`.
+Status: `ACCEPTED_MAINLINE`.
 
 | Field | Accepted value |
 | --- | --- |
@@ -37,7 +37,7 @@ fresh merge-tree recomputation yielded
 tree. The candidate is an ancestor of fetched protected main. The accepted
 Phase 1 and Drydock Phase 1 prerequisites remain satisfied.
 
-The catalog and record publication is a governed record-only closeout. Its
+This catalog and record packet is a governed record-only closeout. Its
 historical branch-fragment file is retained as the sole `MAINLINE` catalog
 source because current record-only policy rejects a source-file deletion; the
 generated Catalog still reports FT-037 as mainline and does not duplicate it.
