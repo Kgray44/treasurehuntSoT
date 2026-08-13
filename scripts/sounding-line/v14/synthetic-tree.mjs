@@ -1,7 +1,7 @@
 /* Local-only deterministic synthetic integration-tree prototype (v1.4 shadow). */
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { createTreeIdentity } from "./foundation.mjs";
+import { createTreeIdentity, V14_AUTHORITY_BOUNDARY } from "./foundation.mjs";
 
 const exec = promisify(execFile);
 const git = async (repoPath, args, env = {}) => {
@@ -31,7 +31,16 @@ export async function inspectGitTree(repoPath, commitSha) {
  * Builds temporary, unreachable commits in the caller-provided isolated
  * repository only. No refs, remotes, worktrees, or GitHub state are changed.
  */
-export async function buildSyntheticIntegrationTree({ repoPath, baseSha, candidateShas }) {
+export async function buildSyntheticIntegrationTree({
+  repoPath,
+  baseSha,
+  candidateShas,
+  trainId = "shadow-train",
+  policyDigest = "shadow-policy",
+  mergeStrategyIdentity = "git-merge-tree-write-tree",
+  planDigest = "shadow-plan",
+  msesDigest = "shadow-mses",
+}) {
   let parentSha = baseSha;
   const base = await inspectGitTree(repoPath, baseSha);
   const cars = [];
@@ -42,7 +51,7 @@ export async function buildSyntheticIntegrationTree({ repoPath, baseSha, candida
     } catch (error) {
       return {
         status: "CONFLICT",
-        authorityBoundary: "SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE",
+        authorityBoundary: V14_AUTHORITY_BOUNDARY,
         failedCandidateSha: candidateSha,
         parentIntegrationSha: parentSha,
         cars,
@@ -56,17 +65,30 @@ export async function buildSyntheticIntegrationTree({ repoPath, baseSha, candida
       commitEnvironment,
     );
     const identity = createTreeIdentity({
-      commitSha: syntheticCommitSha,
-      treeSha,
-      baseSha,
-      baseTreeSha: base.treeSha,
-      candidateSha,
+      candidateHeadSha: candidateSha,
       candidateTreeSha: candidate.treeSha,
-      resultingIntegrationTreeSha: treeSha,
-      mergeMethod: "git-merge-tree-write-tree",
+      predictedParentCommitSha: parentSha,
+      predictedParentTreeSha: (await inspectGitTree(repoPath, parentSha)).treeSha,
+      predictedIntegrationTreeSha: treeSha,
+      mergeStrategyIdentity,
+      trainId,
+      trainPosition: cars.length,
     });
     cars.push({
-      candidateSha,
+      carId: `${trainId}:${cars.length}`,
+      sourceHeadSha: candidateSha,
+      sourceTreeSha: candidate.treeSha,
+      predictedParentCommitSha: parentSha,
+      predictedParentTreeSha: identity.predictedParentTreeSha,
+      predictedIntegrationTreeSha: treeSha,
+      syntheticMergeEvidenceDigest: identity.treeIdentityDigest,
+      planDigest,
+      msesDigest,
+      currentStatus: "PREDICTED",
+      qualificationReceiptDigests: [],
+      policyDigest,
+      replanGeneration: 0,
+      mutationCounter: 0,
       parentIntegrationSha: parentSha,
       resultingIntegrationSha: syntheticCommitSha,
       conflictState: "NONE",
@@ -76,7 +98,10 @@ export async function buildSyntheticIntegrationTree({ repoPath, baseSha, candida
   }
   return {
     status: "READY",
-    authorityBoundary: "SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE",
+    authorityBoundary: V14_AUTHORITY_BOUNDARY,
+    trainId,
+    policyDigest,
+    mergeStrategyIdentity,
     base,
     cars,
     resultingIntegrationSha: parentSha,
@@ -85,7 +110,7 @@ export async function buildSyntheticIntegrationTree({ repoPath, baseSha, candida
 }
 
 export function rebuildAfterWithdrawal(train, withdrawnCandidateSha) {
-  const index = train.cars.findIndex((car) => car.candidateSha === withdrawnCandidateSha);
+  const index = train.cars.findIndex((car) => car.sourceHeadSha === withdrawnCandidateSha);
   if (index < 0) return { status: "UNCHANGED", retainedCars: train.cars, invalidatedCars: [] };
   return {
     status: "REBUILD_REQUIRED",

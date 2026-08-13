@@ -89,3 +89,14 @@ fingerprint from complete immutable facts; otherwise the shadow result is
 rerun-required. Prompt 2 must reconcile all field names, gates, spine policy,
 coverage thresholds, trust boundaries, and final authority consumption against
 the final governing amendment.
+
+## Prompt 2 reconciliation note (2026-08-13)
+
+The Prompt 1 record remains historically accurate. Prompt 2 reconciled its
+shadow contracts to `CS-SL-XP-001 v1.4-R1`: evidence dispositions now use the
+amendment's `FRESH`, `PRESERVED`, `REBOUND`, `INVALIDATED`, `SUPERSEDED`, and
+`CONSERVATIVE_FALLBACK` vocabulary; fingerprints, prepared-layer manifests and
+tree/train identities now use the ratified schemas; and unknown/debt impact
+uses a conservative fallback. The current v1.3 authority boundary is unchanged.
+See the Prompt 2 reconciliation and traceability records for the complete
+nonhistorical status.

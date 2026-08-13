@@ -34,46 +34,76 @@ const exec = (file, args, options = {}) =>
 const sha = (letter) => letter.repeat(40);
 const fingerprintInput = (overrides = {}) => ({
   suiteId: "unit.example",
-  protectedContractIds: ["beta", "alpha"],
-  sourceClosureDigest: "source",
-  contractClosureDigest: "contracts",
-  testDefinitionDigest: "tests",
-  fixtureDigest: "fixtures",
+  testSetDigest: "cases",
+  protectedContracts: [
+    { id: "beta", version: "1" },
+    { id: "alpha", version: "1" },
+  ],
+  productionClosureDigest: "source",
+  productionClosureMembers: ["adapter", "producer"],
   schemaDigest: "schema",
   migrationDigest: "migrations",
-  dependencyDigest: "lock",
-  toolchainDigest: "node",
-  browserDigest: "browser",
-  runtimeEnvironmentDigest: "runtime",
-  policyDigest: "policy",
-  authorityDigest: "authority",
-  adapterDigest: "adapter",
-  resourceDeclarationDigest: "resources",
-  originalSourceSha: sha("a"),
-  originalTreeSha: sha("b"),
+  generatedClientIdentity: "prisma-client",
+  testDefinitionDigest: "tests",
+  assertionLibraryDigest: "assertions",
+  fixtureDigest: "fixtures",
+  baselineIdentity: "baseline",
+  packageLockDigest: "lock",
+  nodeRuntimeIdentity: "node",
+  toolchainIdentity: "toolchain",
+  browserIdentity: "browser",
+  providerIdentity: "provider",
+  environmentClass: "hosted",
+  soundingLinePolicyDigest: "policy",
+  gatePolicyDigest: "gate-policy",
+  resourceContractDigest: "resources",
+  preparedArtifactIdentities: ["browser", "dependency"],
+  cleanupContractDigest: "cleanup",
+  sourceIdentity: { candidateHeadSha: sha("a") },
+  treeIdentity: { predictedIntegrationTreeSha: sha("b") },
+  authorityIdentity: "SOUNDING_LINE_V14_SHADOW",
+  adapterIdentity: "node-test",
+  originalEvidenceIdentity: "receipt-1",
+  inapplicableDependencyClasses: [],
   ...overrides,
 });
 
 test("fingerprints are deterministic, canonical, and detect each material identity", () => {
-  const first = createEvidenceFingerprint(fingerprintInput({ protectedContractIds: ["beta", "alpha"] }));
-  const second = createEvidenceFingerprint(fingerprintInput({ protectedContractIds: ["alpha", "beta"] }));
+  const first = createEvidenceFingerprint(fingerprintInput());
+  const second = createEvidenceFingerprint(
+    fingerprintInput({
+      protectedContracts: [
+        { id: "alpha", version: "1" },
+        { id: "beta", version: "1" },
+      ],
+    }),
+  );
   assert.equal(first.fingerprintDigest, second.fingerprintDigest);
-  assert.equal(first.protectedContractIds.join(","), "alpha,beta");
+  assert.deepEqual(first.productionClosureMembers, ["adapter", "producer"]);
   for (const field of [
-    "sourceClosureDigest",
-    "contractClosureDigest",
+    "productionClosureDigest",
     "testDefinitionDigest",
     "fixtureDigest",
     "schemaDigest",
     "migrationDigest",
-    "dependencyDigest",
-    "toolchainDigest",
-    "browserDigest",
-    "policyDigest",
+    "packageLockDigest",
+    "toolchainIdentity",
+    "browserIdentity",
+    "soundingLinePolicyDigest",
   ]) {
     const changed = createEvidenceFingerprint(fingerprintInput({ [field]: `changed-${field}` }));
     assert.ok(compareEvidenceFingerprints({ prior: first, current: changed }).changedFields.includes(field));
   }
+  assert.throws(
+    () => createEvidenceFingerprint(fingerprintInput({ browserIdentity: null })),
+    /EVIDENCE_FINGERPRINT_INAPPLICABILITY_UNEXPLAINED/,
+  );
+  assert.equal(
+    createEvidenceFingerprint(
+      fingerprintInput({ browserIdentity: null, inapplicableDependencyClasses: ["browserIdentity"] }),
+    ).browserIdentity,
+    null,
+  );
   assert.equal(canonicalJson({ b: [2, 1], a: { z: 1, y: 2 } }), canonicalJson({ a: { y: 2, z: 1 }, b: [1, 2] }));
 });
 
@@ -81,9 +111,12 @@ test("evidence disposition is explicit, fail-closed, and lineage is immutable", 
   const prior = createEvidenceFingerprint(fingerprintInput());
   const current = createEvidenceFingerprint(fingerprintInput());
   assert.equal(compareEvidenceFingerprints({ prior, current, priorReceiptId: "receipt-1" }).disposition, "PRESERVED");
-  assert.equal(compareEvidenceFingerprints({ prior, current, corruption: true }).disposition, "CORRUPT");
-  assert.equal(compareEvidenceFingerprints({ prior: null, current }).disposition, "UNKNOWN_REQUIRES_EXECUTION");
-  assert.equal(compareEvidenceFingerprints({ prior: { ...prior, version: 9 }, current }).disposition, "INCOMPATIBLE");
+  assert.equal(compareEvidenceFingerprints({ prior, current, corruption: true }).disposition, "CONSERVATIVE_FALLBACK");
+  assert.equal(compareEvidenceFingerprints({ prior: null, current }).disposition, "FRESH");
+  assert.equal(
+    compareEvidenceFingerprints({ prior: { ...prior, version: "9" }, current }).disposition,
+    "CONSERVATIVE_FALLBACK",
+  );
   const lineage = createEvidenceLineage({
     originalReceiptId: "receipt-1",
     priorFingerprint: prior,
@@ -101,7 +134,7 @@ test("contract closure declares incomplete graph rather than hashing a known sub
     contractRelations: [{ from: "a", to: "b" }],
     knownContractIds: ["a", "b"],
   });
-  assert.equal(closed.complete, true);
+  assert.equal(closed.closureClass, "EXACT");
   assert.deepEqual(closed.contractIds, ["a", "b"]);
   const incomplete = deriveContractClosure({
     suiteId: "unit.x",
@@ -109,8 +142,8 @@ test("contract closure declares incomplete graph rather than hashing a known sub
     contractRelations: [{ from: "a", to: "missing" }],
     knownContractIds: ["a"],
   });
-  assert.equal(incomplete.state, "INCOMPLETE");
-  assert.equal(incomplete.reason, "UNKNOWN_REQUIRES_EXECUTION");
+  assert.equal(incomplete.closureClass, "UNKNOWN");
+  assert.equal(incomplete.reason, "EVIDENCE_DEPENDENCY_UNKNOWN");
 });
 
 test("legacy reconstruction refuses missing runtime, policy, and schema identity", () => {
@@ -121,14 +154,14 @@ test("legacy reconstruction refuses missing runtime, policy, and schema identity
   });
   assert.equal(complete.classification, "RECONSTRUCTABLE");
   const partial = reconstructLegacyEvidence({
-    receipt: { result: "PASSED", ...fingerprintInput({ runtimeEnvironmentDigest: undefined }) },
+    receipt: { result: "PASSED", ...fingerprintInput({ environmentClass: undefined }) },
     currentFingerprint: current,
   });
   assert.equal(partial.classification, "PARTIALLY_RECONSTRUCTABLE");
   assert.ok(partial.reasonCodes.includes("RERUN_REQUIRED"));
   assert.equal(
     reconstructLegacyEvidence({
-      receipt: { result: "PASSED", ...fingerprintInput({ policyDigest: "old" }) },
+      receipt: { result: "PASSED", ...fingerprintInput({ soundingLinePolicyDigest: "old" }) },
       currentFingerprint: current,
     }).classification,
     "RERUN_REQUIRED",
@@ -161,6 +194,7 @@ test("impact classification handles direct, transitive, schema, unknown, and unm
     riskFloorSuiteIds: ["static.core"],
   });
   assert.deepEqual(direct.selectedSuiteIds, ["component.admiralty", "static.core", "unit.admiralty"]);
+  assert.equal(direct.mappingConfidence, "EXACT");
   const schema = classifyImpact({
     changedPaths: ["prisma/schema.prisma"],
     impactMap,
@@ -216,8 +250,8 @@ test("shadow comparison never loses a current obligation and explains conditiona
   assert.equal(plan.comparison.status, "SHADOW_SAFE");
   assert.equal(plan.ledger.find((entry) => entry.suiteId === "component.admiralty").proposedV14, "SELECTED");
   assert.equal(
-    plan.ledger.find((entry) => entry.suiteId === "browser.admiralty").reasonCodes[0],
-    "CONDITIONAL_NOT_IMPACTED",
+    plan.ledger.find((entry) => entry.suiteId === "browser.admiralty").selectionDisposition,
+    "OMITTED_WITH_PROOF",
   );
 });
 
@@ -229,6 +263,10 @@ test("prepared layers are content-addressed, platform-aware, corruption-checked,
     contentManifest: content,
     producer: "test",
     platform: { os: "linux", arch: "x64" },
+    policyDigest: "prepared-policy",
+    securityScan: { status: "CLEAN" },
+    retentionClass: "shared-immutable",
+    consumerConstraints: { os: "linux", architecture: "x64" },
     createdAt: "2026-01-01T00:00:00.000Z",
   });
   assert.equal(verifyPreparedLayerManifest(manifest, content).valid, true);
@@ -236,6 +274,8 @@ test("prepared layers are content-addressed, platform-aware, corruption-checked,
     verifyPreparedLayerManifest(manifest, [{ ...content[0], digest: "changed" }]).reason,
     "LAYER_CONTENT_CORRUPT",
   );
+  const incomplete = Object.fromEntries(Object.entries(manifest).filter(([key]) => key !== "consumerConstraints"));
+  assert.equal(verifyPreparedLayerManifest(incomplete, content).reason, "LAYER_PROVENANCE_INCOMPLETE");
   assert.throws(
     () =>
       createPreparedLayerManifest({
@@ -249,30 +289,44 @@ test("prepared layers are content-addressed, platform-aware, corruption-checked,
   );
   const typed = {
     dependency: {
+      packageJsonDigest: "package-json",
       packageLockDigest: "lock",
       nodeVersion: "22",
       npmVersion: "11",
       os: "linux",
-      arch: "x64",
-      installPolicy: "npm-ci",
+      architecture: "x64",
+      nativeDependencyClass: "none",
+      installPolicyDigest: "npm-ci",
     },
-    "prisma-generated": {
+    "prisma-client": {
       dependencyLayerIdentity: "dependency",
       prismaVersion: "6",
       schemaDigest: "schema",
-      generatorConfiguration: "client",
-      os: "linux",
-      arch: "x64",
+      generatorConfigurationDigest: "client",
+      targetPlatformIdentity: "linux-x64",
     },
-    chromium: { playwrightVersion: "1", browserRevision: "100", os: "linux", arch: "x64" },
-    webkit: { playwrightVersion: "1", browserRevision: "200", os: "linux", arch: "x64" },
+    "browser-chromium": {
+      playwrightVersion: "1",
+      browserEngine: "chromium",
+      browserRevision: "100",
+      os: "linux",
+      architecture: "x64",
+      browserPolicyDigest: "browser-policy",
+    },
+    "browser-webkit": {
+      playwrightVersion: "1",
+      browserEngine: "webkit",
+      browserRevision: "200",
+      os: "linux",
+      architecture: "x64",
+      browserPolicyDigest: "browser-policy",
+    },
     "sqlite-baseline": {
-      schemaDigest: "schema",
-      migrationDigest: "migrations",
-      seedFixtureDigest: "seed",
-      prismaIdentity: "prisma",
-      sqliteRuntimeIdentity: "sqlite",
-      baselineVersion: "1",
+      sqliteSchemaDigest: "schema",
+      orderedMigrationDigest: "migrations",
+      fixtureBuilderDigest: "seed",
+      fixtureVersion: "1",
+      baselineCertificationPolicyDigest: "baseline-policy",
     },
   };
   for (const [layerType, sourceInputs] of Object.entries(typed))
@@ -283,6 +337,10 @@ test("prepared layers are content-addressed, platform-aware, corruption-checked,
         contentManifest: content,
         producer: "test",
         platform: { os: "linux", arch: "x64" },
+        policyDigest: "prepared-policy",
+        securityScan: { status: "CLEAN" },
+        retentionClass: "shared-immutable",
+        consumerConstraints: { os: "linux", architecture: "x64" },
       }).mutable,
       false,
     );
@@ -294,6 +352,10 @@ test("prepared layers are content-addressed, platform-aware, corruption-checked,
         contentManifest: content,
         producer: "test",
         platform: {},
+        policyDigest: "prepared-policy",
+        securityScan: { status: "CLEAN" },
+        retentionClass: "shared-immutable",
+        consumerConstraints: { os: "linux", architecture: "x64" },
       }),
     /PREPARED_LAYER_IDENTITY_INCOMPLETE/,
   );
@@ -301,23 +363,25 @@ test("prepared layers are content-addressed, platform-aware, corruption-checked,
 
 test("tree identity distinguishes commit from content identity", () => {
   const one = createTreeIdentity({
-    commitSha: sha("a"),
-    treeSha: sha("b"),
-    baseSha: sha("c"),
-    baseTreeSha: sha("d"),
-    candidateSha: sha("e"),
+    candidateHeadSha: sha("a"),
     candidateTreeSha: sha("f"),
-    resultingIntegrationTreeSha: sha("b"),
-    mergeMethod: "test",
+    predictedParentCommitSha: sha("c"),
+    predictedParentTreeSha: sha("d"),
+    predictedIntegrationTreeSha: sha("b"),
+    mergeStrategyIdentity: "test",
   });
-  const two = { ...one, commitSha: sha("f") };
+  const two = { ...one, actualIntegratedCommitSha: sha("f"), actualIntegratedTreeSha: sha("b") };
   assert.equal(treesEqual(one, two), true);
-  assert.equal(treesEqual(one, { ...two, treeSha: sha("1") }), false);
+  assert.equal(treesEqual(one, { ...two, actualIntegratedTreeSha: sha("1") }), false);
+  assert.throws(
+    () => createTreeIdentity({ ...one, actualIntegratedCommitSha: sha("1"), actualIntegratedTreeSha: null }),
+    /TREE_IDENTITY_ACTUAL_PAIR_INCOMPLETE/,
+  );
 });
 
 test("cleanup provenance rejects missing cleanup, wrong owners, survivors, and corrupt structure", () => {
   const manifest = {
-    version: 1,
+    version: "1.4",
     resources: [
       {
         id: "db-1",
@@ -364,10 +428,12 @@ test("synthetic integration trees are deterministic and conflicts, withdrawals, 
     const first = await buildSyntheticIntegrationTree({ repoPath: root, baseSha: base, candidateShas: [a, b] });
     const second = await buildSyntheticIntegrationTree({ repoPath: root, baseSha: base, candidateShas: [a, b] });
     assert.equal(first.status, "READY");
+    assert.equal(first.cars[0].currentStatus, "PREDICTED");
+    assert.equal(first.cars[0].planDigest, "shadow-plan");
     assert.equal(first.resultingTreeSha, second.resultingTreeSha);
     assert.equal(rebuildAfterWithdrawal(first, a).invalidatedCars.length, 2);
     const upstreamOnly = await buildSyntheticIntegrationTree({ repoPath: root, baseSha: base, candidateShas: [a] });
-    assert.equal(first.cars[0].identity.resultingIntegrationTreeSha, upstreamOnly.resultingTreeSha);
+    assert.equal(first.cars[0].identity.predictedIntegrationTreeSha, upstreamOnly.resultingTreeSha);
     await git("checkout", a);
     await git("checkout", "-b", "a-mutation");
     await writeFile(path.join(root, "a.txt"), "a changed\n");
@@ -379,8 +445,8 @@ test("synthetic integration trees are deterministic and conflicts, withdrawals, 
       candidateShas: [await git("rev-parse", "HEAD"), b],
     });
     assert.notEqual(
-      mutated.cars[0].identity.resultingIntegrationTreeSha,
-      first.cars[0].identity.resultingIntegrationTreeSha,
+      mutated.cars[0].identity.predictedIntegrationTreeSha,
+      first.cars[0].identity.predictedIntegrationTreeSha,
     );
     await git("checkout", base);
     await git("checkout", "-b", "base-advance");

@@ -8,15 +8,16 @@
 import { createHash } from "node:crypto";
 
 export const V14_AUTHORITY_BOUNDARY = "SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE";
+export const V14_EVIDENCE_FINGERPRINT_VERSION = "1.4";
+export const V14_PREPARED_ARTIFACT_IDENTITY_VERSION = "1.4";
+export const MAPPING_CONFIDENCE = Object.freeze(["EXACT", "BOUNDED", "COARSE", "UNKNOWN"]);
 export const EVIDENCE_DISPOSITIONS = Object.freeze([
-  "FRESH_REQUIRED",
+  "FRESH",
   "PRESERVED",
   "REBOUND",
   "INVALIDATED",
-  "UNKNOWN_REQUIRES_EXECUTION",
-  "INCOMPATIBLE",
-  "EXPIRED",
-  "CORRUPT",
+  "SUPERSEDED",
+  "CONSERVATIVE_FALLBACK",
 ]);
 export const LEGACY_CLASSIFICATIONS = Object.freeze([
   "RECONSTRUCTABLE",
@@ -55,38 +56,85 @@ export function digestFileEntries(entries = []) {
 
 const fingerprintFields = [
   "suiteId",
-  "protectedContractIds",
-  "sourceClosureDigest",
-  "contractClosureDigest",
-  "testDefinitionDigest",
-  "fixtureDigest",
+  "testSetDigest",
+  "protectedContracts",
+  "productionClosureDigest",
+  "productionClosureMembers",
   "schemaDigest",
   "migrationDigest",
-  "dependencyDigest",
-  "toolchainDigest",
-  "browserDigest",
-  "runtimeEnvironmentDigest",
-  "policyDigest",
-  "authorityDigest",
-  "adapterDigest",
-  "resourceDeclarationDigest",
-  "originalSourceSha",
-  "originalTreeSha",
+  "generatedClientIdentity",
+  "testDefinitionDigest",
+  "assertionLibraryDigest",
+  "fixtureDigest",
+  "baselineIdentity",
+  "packageLockDigest",
+  "nodeRuntimeIdentity",
+  "toolchainIdentity",
+  "browserIdentity",
+  "providerIdentity",
+  "environmentClass",
+  "soundingLinePolicyDigest",
+  "gatePolicyDigest",
+  "resourceContractDigest",
+  "preparedArtifactIdentities",
+  "cleanupContractDigest",
+  "sourceIdentity",
+  "treeIdentity",
+  "authorityIdentity",
+  "adapterIdentity",
+  "originalEvidenceIdentity",
+  "inapplicableDependencyClasses",
 ];
 
 /**
- * Create a stable v1 fingerprint.  Null is meaningful for inapplicable
- * optional identities; undefined is rejected to avoid silent omissions.
+ * Create the v1.4 canonical fingerprint. Null is allowed only where the
+ * sealed inapplicability rule names that dependency class; this prevents an
+ * absent identity from becoming an accidental preservation opportunity.
  */
 export function createEvidenceFingerprint(input) {
   const missing = fingerprintFields.filter((field) => input[field] === undefined);
   if (missing.length) throw new Error(`EVIDENCE_FINGERPRINT_FIELD_MISSING:${missing.join(",")}`);
-  if (!input.suiteId || !Array.isArray(input.protectedContractIds))
+  if (
+    !input.suiteId ||
+    !input.testSetDigest ||
+    !Array.isArray(input.protectedContracts) ||
+    !Array.isArray(input.productionClosureMembers) ||
+    !Array.isArray(input.preparedArtifactIdentities) ||
+    !Array.isArray(input.inapplicableDependencyClasses)
+  )
     throw new Error("EVIDENCE_FINGERPRINT_IDENTITY_INVALID");
+  if (
+    input.protectedContracts.some((contract) => !contract?.id || !contract.version) ||
+    !isObject(input.sourceIdentity) ||
+    !isObject(input.treeIdentity) ||
+    !input.authorityIdentity ||
+    !input.adapterIdentity ||
+    !input.originalEvidenceIdentity
+  )
+    throw new Error("EVIDENCE_FINGERPRINT_CLOSURE_INVALID");
+  const optional = new Set(input.inapplicableDependencyClasses);
+  const optionalFields = [
+    "schemaDigest",
+    "migrationDigest",
+    "generatedClientIdentity",
+    "assertionLibraryDigest",
+    "fixtureDigest",
+    "baselineIdentity",
+    "browserIdentity",
+    "providerIdentity",
+    "environmentClass",
+  ];
+  for (const field of optionalFields) {
+    if (input[field] === null && !optional.has(field))
+      throw new Error(`EVIDENCE_FINGERPRINT_INAPPLICABILITY_UNEXPLAINED:${field}`);
+  }
   const fingerprint = {
-    version: 1,
+    version: V14_EVIDENCE_FINGERPRINT_VERSION,
     ...Object.fromEntries(fingerprintFields.map((field) => [field, input[field]])),
-    protectedContractIds: uniqueSorted(input.protectedContractIds),
+    protectedContracts: canonicalize(input.protectedContracts),
+    productionClosureMembers: uniqueSorted(input.productionClosureMembers),
+    preparedArtifactIdentities: uniqueSorted(input.preparedArtifactIdentities),
+    inapplicableDependencyClasses: uniqueSorted(input.inapplicableDependencyClasses),
   };
   return { ...canonicalize(fingerprint), fingerprintDigest: digest(fingerprint) };
 }
@@ -96,8 +144,10 @@ export function deriveContractClosure({
   directContractIds = [],
   contractRelations = [],
   knownContractIds = [],
-  mappingComplete = true,
+  mappingConfidence = "EXACT",
 }) {
+  if (!MAPPING_CONFIDENCE.includes(mappingConfidence))
+    throw new Error(`MAPPING_CONFIDENCE_INVALID:${mappingConfidence}`);
   const known = new Set(knownContractIds);
   const closure = new Set(directContractIds);
   const reasons = [];
@@ -113,16 +163,17 @@ export function deriveContractClosure({
     }
   }
   const unknown = [...closure].filter((contractId) => !known.has(contractId));
-  const complete = mappingComplete && unknown.length === 0;
+  const closureClass = unknown.length ? "UNKNOWN" : mappingConfidence;
+  const preservationEligible = closureClass === "EXACT" || closureClass === "BOUNDED";
   return {
     suiteId,
     contractIds: uniqueSorted(closure),
-    complete,
-    state: complete ? "COMPLETE" : "INCOMPLETE",
-    reason: complete ? null : "UNKNOWN_REQUIRES_EXECUTION",
+    closureClass,
+    preservationEligible,
+    reason: preservationEligible ? null : "EVIDENCE_DEPENDENCY_UNKNOWN",
     unknownContractIds: uniqueSorted(unknown),
     relations: reasons.sort((a, b) => `${a.from}:${a.to}`.localeCompare(`${b.from}:${b.to}`)),
-    digest: digest({ suiteId, contractIds: uniqueSorted(closure), complete, unknown }),
+    digest: digest({ suiteId, contractIds: uniqueSorted(closure), closureClass, unknown }),
   };
 }
 
@@ -135,11 +186,12 @@ export function compareEvidenceFingerprints({
   corruption = false,
   expired = false,
 }) {
-  if (corruption) return disposition("CORRUPT", "EVIDENCE_INTEGRITY_FAILURE");
-  if (expired) return disposition("EXPIRED", "EVIDENCE_EXPIRED");
-  if (!prior || !current) return disposition("UNKNOWN_REQUIRES_EXECUTION", "FINGERPRINT_UNAVAILABLE");
-  if (prior.version !== 1 || current.version !== 1)
-    return disposition("INCOMPATIBLE", "FINGERPRINT_VERSION_INCOMPATIBLE");
+  if (corruption) return disposition("CONSERVATIVE_FALLBACK", "EVIDENCE_INTEGRITY_FAILURE");
+  if (expired) return disposition("INVALIDATED", "EVIDENCE_EXPIRED");
+  if (!prior) return disposition("FRESH", "NO_CURRENT_EVIDENCE");
+  if (!current) return disposition("CONSERVATIVE_FALLBACK", "FINGERPRINT_UNAVAILABLE");
+  if (prior.version !== V14_EVIDENCE_FINGERPRINT_VERSION || current.version !== V14_EVIDENCE_FINGERPRINT_VERSION)
+    return disposition("CONSERVATIVE_FALLBACK", "FINGERPRINT_VERSION_INCOMPATIBLE");
   const changed = fingerprintFields.filter((field) => canonicalJson(prior[field]) !== canonicalJson(current[field]));
   if (changed.length)
     return {
@@ -172,12 +224,16 @@ export function createEvidenceLineage({
   if (["PRESERVED", "REBOUND"].includes(decision.disposition) && !priorFingerprint)
     throw new Error("EVIDENCE_LINEAGE_ORIGIN_REQUIRED");
   const claim = {
-    version: 1,
+    version: V14_EVIDENCE_FINGERPRINT_VERSION,
     immutable: true,
     originalReceiptId,
+    derivedReceiptId: decision.derivedReceiptId ?? null,
     priorFingerprintDigest: priorFingerprint?.fingerprintDigest ?? null,
     currentFingerprintDigest: currentFingerprint?.fingerprintDigest ?? null,
     changedInterval: canonicalize(changedInterval),
+    dependencyComparison: canonicalize(decision.dependencyComparison ?? {}),
+    authorityIdentity: currentFingerprint?.authorityIdentity ?? null,
+    policyIdentity: currentFingerprint?.soundingLinePolicyDigest ?? null,
     decision: canonicalize(decision),
   };
   return { ...claim, lineageDigest: digest(claim) };
@@ -185,28 +241,37 @@ export function createEvidenceLineage({
 
 export function reconstructLegacyEvidence({ receipt, immutableFacts = {}, currentFingerprint }) {
   if (!receipt || receipt.result !== "PASSED")
-    return { classification: "INCOMPATIBLE", reasonCodes: ["LEGACY_RECEIPT_NOT_GREEN"] };
+    return {
+      classification: "INCOMPATIBLE",
+      adoptionDisposition: "INVALIDATED",
+      reasonCodes: ["LEGACY_RECEIPT_NOT_GREEN"],
+    };
   const fields = { ...receipt, ...immutableFacts };
   const missing = fingerprintFields.filter((field) => fields[field] === undefined);
   const policyMismatch =
-    fields.policyDigest && currentFingerprint?.policyDigest && fields.policyDigest !== currentFingerprint.policyDigest;
+    fields.soundingLinePolicyDigest &&
+    currentFingerprint?.soundingLinePolicyDigest &&
+    fields.soundingLinePolicyDigest !== currentFingerprint.soundingLinePolicyDigest;
   const schemaMismatch =
     fields.schemaDigest && currentFingerprint?.schemaDigest && fields.schemaDigest !== currentFingerprint.schemaDigest;
   if (policyMismatch || schemaMismatch)
     return {
       classification: "RERUN_REQUIRED",
+      adoptionDisposition: "INVALIDATED",
       reasonCodes: [policyMismatch ? "POLICY_MISMATCH" : "SCHEMA_MISMATCH"],
       missingFields: missing,
     };
   if (missing.length)
     return {
       classification: missing.length < fingerprintFields.length ? "PARTIALLY_RECONSTRUCTABLE" : "RERUN_REQUIRED",
+      adoptionDisposition: "INVALIDATED",
       reasonCodes: ["LEGACY_IDENTITY_MISSING", "RERUN_REQUIRED"],
       missingFields: missing,
     };
   const reconstructed = createEvidenceFingerprint(fields);
   return {
     classification: "RECONSTRUCTABLE",
+    adoptionDisposition: "PRESERVED",
     reasonCodes: ["IMMUTABLE_FACTS_COMPLETE"],
     missingFields: [],
     fingerprint: reconstructed,
@@ -267,7 +332,10 @@ export function classifyImpact({
   mappingDebt = [],
   allSuiteIds = [],
   riskFloorSuiteIds = [],
+  mappingConfidence = "EXACT",
 }) {
+  if (!MAPPING_CONFIDENCE.includes(mappingConfidence))
+    throw new Error(`MAPPING_CONFIDENCE_INVALID:${mappingConfidence}`);
   const paths = uniqueSorted(changedPaths);
   const contracts = new Set(changedContractIds);
   const result = mappingsFor({ changedPaths: paths, changedContracts: contracts, impactMap });
@@ -277,17 +345,18 @@ export function classifyImpact({
   const debtAffectedContracts = uniqueSorted([...contracts].filter((contractId) => debtContracts.has(contractId)));
   const unknown =
     result.unknownPaths.length > 0 || result.unmappedContracts.length > 0 || debtAffectedContracts.length > 0;
+  const effectiveConfidence = unknown ? "UNKNOWN" : mappingConfidence;
   const selectedSuiteIds = unknown
     ? uniqueSorted([...allSuiteIds, ...riskFloorSuiteIds])
     : uniqueSorted([...result.affectedSuites, ...riskFloorSuiteIds]);
   return {
-    version: 1,
+    version: V14_EVIDENCE_FINGERPRINT_VERSION,
     authorityBoundary: V14_AUTHORITY_BOUNDARY,
-    mappingConfidence: unknown ? "UNKNOWN" : "COMPLETE_KNOWN",
+    mappingConfidence: effectiveConfidence,
     riskFloor: unknown
-      ? "CURRENT_LEGACY_MANDATORY_BEHAVIOR"
+      ? "CONSERVATIVE_FALLBACK_REQUIRED"
       : riskFloorSuiteIds.length
-        ? "CONFIGURED_SENTINEL_SPINE"
+        ? "RISK_FLOOR_AND_SENTINEL_POLICY"
         : "NONE",
     selectedSuiteIds,
     affectedContractIds: uniqueSorted(contracts),
@@ -296,6 +365,14 @@ export function classifyImpact({
     unmappedContracts: result.unmappedContracts,
     mappingDebtContracts: debtAffectedContracts,
     reasons: result.reasons.sort((a, b) => canonicalJson(a).localeCompare(canonicalJson(b))),
+    fallbackDebt: unknown
+      ? {
+          reason: "UNKNOWN_OR_UNMAPPED_IMPACT",
+          affectedUnknownPaths: result.unknownPaths,
+          affectedUnmappedContracts: result.unmappedContracts,
+          affectedDebtContracts: debtAffectedContracts,
+        }
+      : null,
   };
 }
 
@@ -310,15 +387,16 @@ export function buildShadowPlan({
   alwaysFreshSpine = [],
 }) {
   const currentRequired = uniqueSorted(currentPlan.nodes.map((node) => node.id));
+  const conditional = new Set(gate.conditionalSuites ?? []);
+  const eligibleSuiteIds = uniqueSorted([...currentRequired, ...conditional]);
   const impact = classifyImpact({
     changedPaths,
     changedContractIds,
     impactMap,
     mappingDebt,
-    allSuiteIds: currentRequired,
+    allSuiteIds: eligibleSuiteIds,
     riskFloorSuiteIds: alwaysFreshSpine,
   });
-  const conditional = new Set(gate.conditionalSuites ?? []);
   const proposed = new Set(currentRequired);
   for (const suiteId of impact.selectedSuiteIds) if (conditional.has(suiteId)) proposed.add(suiteId);
   const ledger = [...new Set([...currentRequired, ...conditional])].sort().map((suiteId) => {
@@ -331,12 +409,20 @@ export function buildShadowPlan({
           current: currentFingerprint,
           priorReceiptId: priorEvidence.priorReceiptIds?.[suiteId],
         })
-      : disposition("FRESH_REQUIRED", "CONDITIONAL_NOT_IMPACTED");
+      : disposition("PRESERVED", "CONDITIONAL_NOT_IMPACTED");
+    const selectionDisposition = selected
+      ? impact.mappingConfidence === "UNKNOWN"
+        ? "CONSERVATIVE_FALLBACK_REQUIRED"
+        : alwaysFreshSpine.includes(suiteId)
+          ? "SELECTED_BY_RISK_FLOOR"
+          : "SELECTED_BY_IMPACT"
+      : "OMITTED_WITH_PROOF";
     return {
       suiteId,
       currentV13: Boolean(currentNode) ? "SELECTED" : "OMITTED",
       proposedV14: selected ? "SELECTED" : "OMITTED",
       disposition: evidence.disposition,
+      selectionDisposition,
       reasonCodes: selected
         ? [
             ...evidence.reasonCodes,
@@ -382,25 +468,43 @@ export function createPreparedLayerManifest({
   contentManifest,
   producer,
   platform,
+  policyDigest,
+  securityScan,
+  retentionClass,
+  consumerConstraints,
   createdAt = new Date().toISOString(),
-  schemaVersion = 1,
+  schemaVersion = V14_PREPARED_ARTIFACT_IDENTITY_VERSION,
 }) {
   if (MUTABLE_LAYER_TYPES.has(layerType)) throw new Error("MUTABLE_RESOURCE_REJECTED");
   if (!Array.isArray(contentManifest) || !contentManifest.length) throw new Error("LAYER_CONTENT_MANIFEST_REQUIRED");
   const normalizedContent = contentManifest
     .map((entry) => ({ path: entry.path.replaceAll("\\\\", "/"), digest: entry.digest, bytes: entry.bytes ?? null }))
     .sort((a, b) => a.path.localeCompare(b.path));
-  const identityInputs = canonicalize({ layerType, schemaVersion, sourceInputs, platform });
-  const manifest = {
-    schemaVersion,
+  if (!producer || !policyDigest || !securityScan || !retentionClass || !consumerConstraints)
+    throw new Error("PREPARED_LAYER_PROVENANCE_INCOMPLETE");
+  const identityInputs = canonicalize({
     layerType,
+    schemaVersion,
+    sourceInputs,
+    platform,
+    policyDigest,
+    consumerConstraints,
+  });
+  const manifest = {
+    identityVersion: schemaVersion,
+    artifactType: layerType,
+    inputDigests: canonicalize(sourceInputs),
     identityDigest: digest(identityInputs),
     sourceInputs: canonicalize(sourceInputs),
     createdAt,
     producer,
     platform: canonicalize(platform),
     contentManifest: normalizedContent,
-    contentDigest: digest(normalizedContent),
+    artifactDigest: digest(normalizedContent),
+    policyDigest,
+    securityScan: canonicalize(securityScan),
+    retentionClass,
+    consumerConstraints: canonicalize(consumerConstraints),
     verificationStatus: "VERIFIED",
     mutable: false,
   };
@@ -408,24 +512,45 @@ export function createPreparedLayerManifest({
 }
 
 const requiredLayerInputs = Object.freeze({
-  dependency: ["packageLockDigest", "nodeVersion", "npmVersion", "os", "arch", "installPolicy"],
-  "prisma-generated": [
+  dependency: [
+    "packageJsonDigest",
+    "packageLockDigest",
+    "nodeVersion",
+    "npmVersion",
+    "os",
+    "architecture",
+    "nativeDependencyClass",
+    "installPolicyDigest",
+  ],
+  "prisma-client": [
     "dependencyLayerIdentity",
     "prismaVersion",
     "schemaDigest",
-    "generatorConfiguration",
-    "os",
-    "arch",
+    "generatorConfigurationDigest",
+    "targetPlatformIdentity",
   ],
-  chromium: ["playwrightVersion", "browserRevision", "os", "arch"],
-  webkit: ["playwrightVersion", "browserRevision", "os", "arch"],
+  "browser-chromium": [
+    "playwrightVersion",
+    "browserEngine",
+    "browserRevision",
+    "os",
+    "architecture",
+    "browserPolicyDigest",
+  ],
+  "browser-webkit": [
+    "playwrightVersion",
+    "browserEngine",
+    "browserRevision",
+    "os",
+    "architecture",
+    "browserPolicyDigest",
+  ],
   "sqlite-baseline": [
-    "schemaDigest",
-    "migrationDigest",
-    "seedFixtureDigest",
-    "prismaIdentity",
-    "sqliteRuntimeIdentity",
-    "baselineVersion",
+    "sqliteSchemaDigest",
+    "orderedMigrationDigest",
+    "fixtureBuilderDigest",
+    "fixtureVersion",
+    "baselineCertificationPolicyDigest",
   ],
 });
 
@@ -439,53 +564,84 @@ export function createTypedPreparedLayerManifest({ layerType, sourceInputs, ...r
 }
 
 export function verifyPreparedLayerManifest(manifest, observedContentManifest) {
-  if (!manifest || manifest.mutable !== false || MUTABLE_LAYER_TYPES.has(manifest.layerType))
+  if (!manifest || manifest.mutable !== false || MUTABLE_LAYER_TYPES.has(manifest.artifactType))
     return { valid: false, reason: "MUTABLE_LAYER_REJECTED" };
+  const required = [
+    "identityVersion",
+    "artifactType",
+    "inputDigests",
+    "artifactDigest",
+    "producer",
+    "createdAt",
+    "policyDigest",
+    "securityScan",
+    "retentionClass",
+    "consumerConstraints",
+  ];
+  if (required.some((field) => manifest[field] === undefined || manifest[field] === null || manifest[field] === ""))
+    return { valid: false, reason: "LAYER_PROVENANCE_INCOMPLETE" };
   const observed = (observedContentManifest ?? [])
     .map((entry) => ({ path: entry.path.replaceAll("\\\\", "/"), digest: entry.digest, bytes: entry.bytes ?? null }))
     .sort((a, b) => a.path.localeCompare(b.path));
-  if (digest(observed) !== manifest.contentDigest) return { valid: false, reason: "LAYER_CONTENT_CORRUPT" };
+  if (digest(observed) !== manifest.artifactDigest) return { valid: false, reason: "LAYER_CONTENT_CORRUPT" };
   const { manifestDigest, ...unsigned } = manifest;
   if (digest(unsigned) !== manifestDigest) return { valid: false, reason: "LAYER_MANIFEST_CORRUPT" };
   return { valid: true, reason: "VERIFIED" };
 }
 
 export function createTreeIdentity({
-  commitSha,
-  treeSha,
-  baseSha,
-  baseTreeSha,
-  candidateSha,
+  candidateHeadSha,
   candidateTreeSha,
-  resultingIntegrationTreeSha,
-  mergeMethod,
+  predictedParentCommitSha,
+  predictedParentTreeSha,
+  predictedIntegrationTreeSha,
+  actualIntegratedCommitSha = null,
+  actualIntegratedTreeSha = null,
+  mergeStrategyIdentity,
+  trainId = null,
+  trainPosition = null,
 }) {
   const identity = {
-    version: 1,
-    commitSha,
-    treeSha,
-    baseSha,
-    baseTreeSha,
-    candidateSha,
+    version: V14_EVIDENCE_FINGERPRINT_VERSION,
+    candidateHeadSha,
     candidateTreeSha,
-    resultingIntegrationTreeSha,
-    mergeMethod,
+    predictedParentCommitSha,
+    predictedParentTreeSha,
+    predictedIntegrationTreeSha,
+    actualIntegratedCommitSha,
+    actualIntegratedTreeSha,
+    mergeStrategyIdentity,
+    trainId,
+    trainPosition,
   };
-  if (Object.values(identity).some((value) => value === undefined || value === null || value === ""))
+  const required = [
+    candidateHeadSha,
+    candidateTreeSha,
+    predictedParentCommitSha,
+    predictedParentTreeSha,
+    predictedIntegrationTreeSha,
+    mergeStrategyIdentity,
+  ];
+  if (required.some((value) => value === undefined || value === null || value === ""))
     throw new Error("TREE_IDENTITY_FIELD_MISSING");
+  if ((actualIntegratedCommitSha === null) !== (actualIntegratedTreeSha === null))
+    throw new Error("TREE_IDENTITY_ACTUAL_PAIR_INCOMPLETE");
   return { ...identity, treeIdentityDigest: digest(identity) };
 }
 
-export const treesEqual = (left, right) => Boolean(left && right && left.treeSha === right.treeSha);
+export const treesEqual = (left, right) =>
+  Boolean(left && right && left.predictedIntegrationTreeSha === right.actualIntegratedTreeSha);
 
 export function validateCleanupManifest(manifest, { owner, existingResourceIds = [] } = {}) {
-  if (!manifest || manifest.version !== 1 || !Array.isArray(manifest.resources))
+  if (!manifest || manifest.version !== V14_EVIDENCE_FINGERPRINT_VERSION || !Array.isArray(manifest.resources))
     return { valid: false, errors: ["CLEANUP_MANIFEST_INVALID"] };
   const errors = [];
   const resourceIds = new Set();
   for (const resource of manifest.resources) {
     if (!resource.id || resourceIds.has(resource.id)) errors.push("CLEANUP_RESOURCE_ID_INVALID");
     resourceIds.add(resource.id);
+    if (!resource.type || !resource.allocated || !resource.createdIdentity)
+      errors.push(`CLEANUP_RESOURCE_PROVENANCE_INCOMPLETE:${resource.id}`);
     if (!resource.leaseOwner || resource.leaseOwner !== owner) errors.push(`CLEANUP_OWNER_INVALID:${resource.id}`);
     if (
       !resource.cleanupAction ||
