@@ -40,7 +40,7 @@ test.beforeAll(() => {
   credentialPath = path.join(taskRoot, "credentials", "tideglass-phase3-walkthrough.private.json");
   evidenceRoot = path.join(taskRoot, "browser", "evidence");
   credentials = JSON.parse(readFileSync(credentialPath, "utf8")) as Credentials;
-  expect(credentials.fixtureVersion).toBe("tideglass-phase4-v1");
+  expect(credentials.fixtureVersion).toBe("tideglass-phase4-v2");
 });
 
 test.afterAll(async () => {

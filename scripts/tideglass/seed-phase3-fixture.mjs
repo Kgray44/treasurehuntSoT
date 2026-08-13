@@ -12,7 +12,7 @@ const password = required("TIDEGLASS_PHASE3_SYNTHETIC_PASSWORD");
 const allowedRoot = path.resolve(required("LOCALAPPDATA"), "ProjectTideglass");
 const canonicalDatabase = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
 const createdAt = new Date("2026-08-12T12:00:00.000Z");
-const fixtureVersion = "tideglass-phase4-v1";
+const fixtureVersion = "tideglass-phase4-v2";
 
 if (!taskRoot.startsWith(`${allowedRoot}${path.sep}`)) throw new Error(`TIDEGLASS_TASK_ROOT_REFUSED:${taskRoot}`);
 if (!databasePath.startsWith(`${taskRoot}${path.sep}`) || databasePath === canonicalDatabase)
@@ -161,6 +161,49 @@ await db.tideglassCreatorAnnotation.create({
 
 const communityListing = { id: "tg4-community-listing", slug: "tideglass-passage-update" };
 const communityProfileId = "tg4-community-profile-creator";
+const communityChronicleId = "tg4-community-chronicle";
+const communityChronicleSlug = "tideglass-harbor-update-fixture";
+const communityVersions = [
+  { id: "tg4-community-edition-a", label: "1.1", snapshot: communitySnapshot(2), current: false },
+  { id: "tg4-community-edition-b", label: "2.0", snapshot: communitySnapshot(3), current: true },
+];
+await db.chronicle.create({
+  data: {
+    id: communityChronicleId,
+    slug: communityChronicleSlug,
+    title: "The Tideglass Harbor Update Fixture",
+    shortDescription: "A synthetic Chronicle dedicated to Community Harbor release-handoff qualification.",
+    longDescription: "No real Chronicle, Community Harbor listing, release, or account data is represented.",
+    creatorId: accounts.CREATOR.id,
+    creatorAccountId: accounts.CREATOR.id,
+    status: "PUBLISHED",
+    visibility: "PUBLIC",
+    latestPublishedVersionId: communityVersions[1].id,
+    playerCountMin: 2,
+    playerCountMax: 4,
+    estimatedDuration: 60,
+    createdAt,
+  },
+});
+for (const [index, version] of communityVersions.entries()) {
+  const contentSnapshot = JSON.stringify(version.snapshot);
+  await db.publishedTaleVersion.create({
+    data: {
+      id: version.id,
+      taleId: communityChronicleId,
+      versionNumber: index + 1,
+      versionLabel: version.label,
+      publishedAt: new Date(createdAt.getTime() + (index + 1) * 86_400_000),
+      publishedBy: "Tideglass Fixture Creator",
+      publishedByAccountId: accounts.CREATOR.id,
+      releaseNotes: "Synthetic Community Harbor release source.",
+      contentSnapshot,
+      schemaVersion: 1,
+      checksum: sha256(contentSnapshot),
+      isCurrent: version.current,
+    },
+  });
+}
 await db.communityProfile.create({
   data: {
     id: communityProfileId,
@@ -181,7 +224,7 @@ await db.communityListing.create({
     slug: communityListing.slug,
     itemType: "CHRONICLE",
     ownerProfileId: communityProfileId,
-    title: "The Tideglass Passage Fixture",
+    title: "The Tideglass Harbor Update Fixture",
     shortDescription: "A synthetic Community Harbor Chronicle update for Tideglass qualification.",
     longDescription: "No real Community Harbor listing, release, or account data is represented.",
     visibility: "COMMUNITY",
@@ -194,7 +237,7 @@ await db.communityListing.create({
     createdAt,
   },
 });
-for (const [index, version] of [versions[1], versions[2]].entries()) {
+for (const [index, version] of communityVersions.entries()) {
   await db.communityRelease.create({
     data: {
       id: `tg4-community-release-${version.label.replaceAll(".", "-")}`,
@@ -241,6 +284,7 @@ const fixtureChecksum = sha256(
     aliases,
     chronicleId,
     communityListing,
+    communityChronicleId,
     versions: versions.map((version) => ({
       id: version.id,
       snapshotChecksum: sha256(JSON.stringify(version.snapshot)),
@@ -510,6 +554,19 @@ function snapshot(version) {
         ]
       : [],
     publishedAt: new Date(createdAt.getTime() + (version - 1) * 86_400_000).toISOString(),
+  };
+}
+
+function communitySnapshot(version) {
+  const source = snapshot(version);
+  return {
+    ...source,
+    tale: {
+      ...source.tale,
+      id: communityChronicleId,
+      slug: communityChronicleSlug,
+      title: "The Tideglass Harbor Update Fixture",
+    },
   };
 }
 
