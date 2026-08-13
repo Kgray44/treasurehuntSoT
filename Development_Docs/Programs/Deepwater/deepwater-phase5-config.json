@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "Project Deepwater",
+  "phase": "Phase 5 - Keep the Soundings",
+  "auditDate": "2026-08-13",
+  "phase5Authorized": true,
+  "authorization": {
+    "ownerPrompt": "Project Deepwater Phase 5: Keep the Soundings explicit owner authorization, 2026-08-13",
+    "scope": "Continuous governance, Feature Catalog integration, regression prevention, drift detection, and program closure."
+  },
+  "baseOriginMainSha": "60b89841986e66fbc2c0828489d38002a1617506",
+  "soundingLinePolicyDigest": "b2f365b10769b09c92e93226ec6633c673cc4be1e6eb0821e49c4c45c9ca7d99",
+  "phase4Authority": {
+    "qualifiedCandidate": "10f505d2188f0c51e356ad935503e5236df62256",
+    "qualifiedBase": "cbf634d4d5db9cf47edebb89e005e8cc910068bd",
+    "protectedImplementationMerge": "9e9d629085cb1551b1a3959c31b0b460c37724a9",
+    "recordOnlyMerge": "582f32a35d918ae892bd2feae766c00043038f39",
+    "mainlineDecisionRun": "31653726495",
+    "decision": "RELEASE_GO"
+  },
+  "scope": {
+    "schemaImpact": "NONE",
+    "productBehaviorImpact": "NONE",
+    "featureCatalogBusinessCapabilityImpact": "NONE"
+  },
+  "releaseAuthority": {
+    "decisionEmitter": "Sounding Line",
+    "deepwaterRole": "impact-selected structural and regression evidence only"
+  },
+  "completionRecordPolicy": {
+    "activation": "2026-08-13",
+    "governedRecordPaths": ["Development_Docs/Programs/Deepwater/Project_Deepwater_Program_Completion_Receipt.md"]
+  },
+  "continuousGovernance": {
+    "openItems": [
+      {
+        "findingId": "DW-P5-EXTERNAL-HOMEPORT-INVENTORY-001",
+        "kind": "EXTERNAL_CURRENT_MAIN_INVENTORY_BLOCKER",
+        "severity": "HIGH",
+        "owner": "project-homeport",
+        "capabilityId": null,
+        "status": "OPEN",
+        "source": "scripts/homeport/validate-phase5-reachability.mjs",
+        "evidence": "INVENTORY_SOURCE_MISSING:src/app/api/studio/tales/[taleId]/migrations/[blockId]/route.ts",
+        "sourceIntroducedBy": "06a0d1f3 feat(studio): complete contract-aware authoring tools",
+        "historicalPrecondition": "Project Homeport PR #9 merged at 320c25c3 before the current-main route was introduced.",
+        "closureRequirement": "The Project Homeport owner must reconcile the route inventory against current accepted source, pass the governed reachability validation, and supply source-bound closure evidence.",
+        "retryTrigger": "Accepted Project Homeport reconciliation or a current-main inventory correction."
+      }
+    ]
+  },
+  "phase5ImpactDeclaration": {
+    "disposition": "NO_REALIZATION_IMPACT",
+    "affectedCapabilityIds": [],
+    "affectedFeatureCatalogIds": [],
+    "potentialLayerImpact": ["EVIDENCE_ONLY"],
+    "affectedSurfaces": {
+      "routes": [],
+      "screens": [],
+      "journeys": [],
+      "apis": []
+    },
+    "expectedTerminalRungEffect": "NONE",
+    "evidenceRequiringRefresh": ["Deepwater control-plane structural validation"],
+    "rationale": "Phase 5 adds governance metadata, deterministic drift detection, and validation only; it does not alter product capability behavior."
+  }
+}

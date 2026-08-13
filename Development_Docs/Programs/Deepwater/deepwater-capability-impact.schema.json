@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "disposition",
+    "affectedCapabilityIds",
+    "affectedFeatureCatalogIds",
+    "potentialLayerImpact",
+    "affectedSurfaces",
+    "expectedTerminalRungEffect",
+    "evidenceRequiringRefresh",
+    "rationale"
+  ],
+  "properties": {
+    "disposition": {
+      "enum": [
+        "ADDS_CAPABILITY",
+        "CHANGES_EXISTING_CAPABILITY",
+        "RETIRES_CAPABILITY",
+        "EVIDENCE_ONLY",
+        "NO_REALIZATION_IMPACT"
+      ]
+    },
+    "affectedCapabilityIds": { "type": "array", "items": { "type": "string", "pattern": "^DW-CAP-" } },
+    "affectedFeatureCatalogIds": { "type": "array", "items": { "type": "string", "pattern": "^FT-" } },
+    "potentialLayerImpact": { "type": "array", "items": { "type": "string" } },
+    "affectedSurfaces": { "type": "object", "required": ["routes", "screens", "journeys", "apis"] },
+    "expectedTerminalRungEffect": { "type": "string" },
+    "evidenceRequiringRefresh": { "type": "array", "items": { "type": "string" } },
+    "rationale": { "type": "string", "minLength": 1 }
+  }
+}

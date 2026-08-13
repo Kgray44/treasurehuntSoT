@@ -1,0 +1,35 @@
+---
+title: Project Deepwater Phase 5 Design Record
+audience: product-engineering
+status: current
+canonical_for: project-deepwater-phase-5-design-record
+last_reviewed: 2026-08-13
+---
+
+# Project Deepwater Phase 5 - Keep the Soundings
+
+## Authority and boundary
+
+The owner explicitly authorized Phase 5 on 2026-08-13. Phase 4 remains immutable historical evidence: qualified candidate `10f505d2188f0c51e356ad935503e5236df62256`, protected implementation merge `9e9d629085cb1551b1a3959c31b0b460c37724a9`, and record-only closure merge `582f32a35d918ae892bd2feae766c00043038f39`. Phase 5 starts from accepted `origin/main` `60b89841986e66fbc2c0828489d38002a1617506`.
+
+Phase 5 owns governance metadata, deterministic audit tooling, policy, validation, and closure records. It does not own product business logic, Prisma schema, live business state, Feature Catalog business facts, or release authority. Sounding Line remains the sole decision emitter.
+
+## Stable baseline and delta model
+
+`Project_Deepwater_Phase_5_Drift_Baseline.json` is the current accepted-main capability snapshot. Stable capability ID is the primary identity; path movement alone is never a new capability. Each row includes the canonical owner, Catalog relationship, audience and privacy disposition, expected and observed rung, routes, screens, journey family, operation/projection references, state/accessibility evidence, finding lifecycle, and evidence source identity.
+
+`Project_Deepwater_Phase_5_Delta_Report.json` compares semantic snapshots in stable capability-ID order. It detects capability, ownership, audience, privacy, rung, classification, Catalog, route, screen, journey, API/action, projection, state, accessibility, evidence, finding, and debt changes. Every delta states source identities, reason, owner, severity when applicable, review requirement, and Sounding Line invalidation effect. Re-running unchanged input must produce byte-identical JSON.
+
+## Continuous governance rules
+
+- Every Catalog entry maps to one current Deepwater capability; Deepwater does not generate or hand-edit Catalog facts.
+- Human-facing and restricted capabilities must retain valid route, screen, journey, state, and accessibility relationships at their governed terminal rung.
+- A closed finding retains closure evidence. A semantic regression becomes an explicit reopening delta; historical closure evidence is retained.
+- Internal and security-restricted capabilities retain intentional audience/disposition boundaries. They are not forced into public UI.
+- Evidence source identity is retained. Source SHA movement alone is not a regression; affected evidence must be invalidated only through semantic-impact rules.
+- New project work records a machine-readable capability-realization impact declaration. `NO_REALIZATION_IMPACT` requires a rationale.
+- Completion and current governance language may not claim authority that belongs to Sounding Line or owner acceptance that has not occurred.
+
+## Integration and acceptance
+
+Deepwater remains an impact-selected Sounding Line evidence family. Phase 5 qualification includes its focused tests, structural validation, Feature Catalog validation, documentation validation, affected Homeport inventory checks, and Sounding Line policy checks. A frozen candidate must receive one explicit Sounding Line Mainline Decision and protected merge binding. A separate record-only closure, if eligible under current policy, is limited to source-bound records and indexes.

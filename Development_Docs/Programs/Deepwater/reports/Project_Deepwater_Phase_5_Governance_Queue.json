@@ -1,9 +1,24 @@
 {
   "phase": "Phase 5",
-  "phase5Authorized": false,
+  "phase5Authorized": true,
   "project": "Project Deepwater",
-  "queue": [],
-  "rationale": "Phase 5 is not authorized by Phase 4 implementation, local proof, qualification, candidate status, or owner walkthrough preparation.",
+  "queue": [
+    {
+      "capabilityId": null,
+      "closureRequirement": "The Project Homeport owner must reconcile the route inventory against current accepted source, pass the governed reachability validation, and supply source-bound closure evidence.",
+      "evidence": "INVENTORY_SOURCE_MISSING:src/app/api/studio/tales/[taleId]/migrations/[blockId]/route.ts",
+      "findingId": "DW-P5-EXTERNAL-HOMEPORT-INVENTORY-001",
+      "historicalPrecondition": "Project Homeport PR #9 merged at 320c25c3 before the current-main route was introduced.",
+      "kind": "EXTERNAL_CURRENT_MAIN_INVENTORY_BLOCKER",
+      "owner": "project-homeport",
+      "retryTrigger": "Accepted Project Homeport reconciliation or a current-main inventory correction.",
+      "severity": "HIGH",
+      "source": "scripts/homeport/validate-phase5-reachability.mjs",
+      "sourceIntroducedBy": "06a0d1f3 feat(studio): complete contract-aware authoring tools",
+      "status": "OPEN"
+    }
+  ],
+  "rationale": "Phase 5 is explicitly owner-authorized as a governance institutionalization phase. Any discovered external blocker remains visible with its owner and closure lifecycle.",
   "schemaVersion": "1.0.0",
-  "sourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa"
+  "sourceSha": "60b89841986e66fbc2c0828489d38002a1617506"
 }

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "Project Deepwater",
+  "phase": "Phase 5 - Keep the Soundings",
+  "sourceSha": "60b89841986e66fbc2c0828489d38002a1617506",
+  "state": "CANDIDATE_DEVELOPMENT",
+  "checks": [
+    { "id": "P5-AUTHORIZATION", "state": "PASSED", "evidence": "Explicit owner prompt, 2026-08-13" },
+    { "id": "P5-CURRENT-BASELINE", "state": "PASSED", "evidence": "Project_Deepwater_Phase_5_Drift_Baseline.json" },
+    { "id": "P5-DETERMINISTIC-DELTA", "state": "PASSED", "evidence": "deepwater:drift semantic digest" },
+    { "id": "P5-REGRESSION-MUTATIONS", "state": "PASSED", "evidence": "tests/deepwater/deepwater-phase5.test.mjs" },
+    {
+      "id": "P5-FEATURE-CATALOG-GUARD",
+      "state": "PASSED",
+      "evidence": "scripts/features/validate-feature-catalog.ts, current accepted baseline"
+    },
+    {
+      "id": "P5-SOUNDING-LINE-POLICY",
+      "state": "PASSED",
+      "evidence": "scripts/sounding-line/cli.mjs validate-policy and tests/sounding-line/phase3.test.mjs"
+    },
+    {
+      "id": "P5-HOMEPORT-INVENTORY",
+      "state": "BLOCKED_CURRENT_MAIN_INVENTORY_MISMATCH",
+      "evidence": "validate-phase5-reachability: INVENTORY_SOURCE_MISSING studio tale migration route"
+    },
+    {
+      "id": "P5-REPOSITORY-TYPECHECK",
+      "state": "BLOCKED_LOCAL_TOOLCHAIN_CONFIGURATION",
+      "evidence": "missing optional Bridgewatch workspace packages and Vitest matcher ambient types; Prisma clients generated locally"
+    },
+    { "id": "P5-SOUNDING-LINE-DECISION", "state": "PENDING_QUALIFICATION", "evidence": null },
+    { "id": "P5-PROTECTED-MERGE", "state": "PENDING_QUALIFICATION", "evidence": null },
+    { "id": "P5-EXACT-MAIN-PROOF", "state": "PENDING_QUALIFICATION", "evidence": null }
+  ]
+}
