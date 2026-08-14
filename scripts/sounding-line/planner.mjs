@@ -15,7 +15,7 @@ export function resolvePlanAuthority({ authorityIndex, gateId, authorityMode, gi
   if (authorityMode !== "CURRENT" && authorityMode !== "V13_CUTOVER")
     throw new Error(`UNKNOWN_AUTHORITY_MODE:${authorityMode}`);
   if (authorityMode === "V13_CUTOVER") {
-    if (authorityIndex.currentAuthorityVersion === "1.4") {
+    if (["1.4", "1.4.1"].includes(authorityIndex.currentAuthorityVersion)) {
       // A corrective candidate must carry the authority state it will make
       // effective on protected main, but that candidate is accepted only by
       // the current v1.3 authority. The exception is unavailable on main.
@@ -30,7 +30,7 @@ export function resolvePlanAuthority({ authorityIndex, gateId, authorityMode, gi
     }
     return "V13_CUTOVER";
   }
-  if (authorityIndex.currentAuthorityVersion === "1.4") {
+  if (["1.4", "1.4.1"].includes(authorityIndex.currentAuthorityVersion)) {
     if (gateId !== "mainline") throw new Error("V14_AUTHORITY_MAINLINE_ONLY");
     // A candidate can contain the future authority index while it is still
     // subject to v1.3 acceptance. Only the protected-main ref may exercise it.
@@ -60,7 +60,9 @@ export async function buildV14HostedPlan({
   const plan = {
     version: 14,
     authority: "SOUNDING_LINE",
-    authorityVersion: "1.4",
+    authorityVersion: authorityIndex.currentAuthorityVersion,
+    // The plan boundary is a v1.4 compatibility contract; the patch authority
+    // is carried separately in authorityVersion and must not perturb receipts.
     authorityBoundary: "CURRENT_AUTHORITATIVE_V14",
     sourceSha,
     qualifiedBaseSha,

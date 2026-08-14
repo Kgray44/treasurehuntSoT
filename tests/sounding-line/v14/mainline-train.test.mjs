@@ -5,6 +5,7 @@ import path from "node:path";
 import test from "node:test";
 import {
   applyPolicyDrift,
+  replanAfterMaintenanceAuthorityChange,
   compareLandedTree,
   createMainlineTrain,
   detectMigrationCollisions,
@@ -156,6 +157,28 @@ test("head failure, evidence revocation, policy drift, and illegal landing trans
     /STATE_TRANSITION|HEAD_ONLY/,
   );
   assert.throws(() => transitionTrainCar(state, { position: 0, to: "LANDED", timestamp: at }), /STATE_TRANSITION/);
+});
+
+test("an authority-changing maintenance car preserves its prefix and replans the downstream suffix", () => {
+  const state = planned([
+    candidate("M", "a", {
+      priorityClass: "MAINTENANCE",
+      maintenanceClassification: { valid: true },
+      authorityChanging: true,
+    }),
+    candidate("B", "b"),
+    candidate("C", "c"),
+  ]);
+  const replanned = replanAfterMaintenanceAuthorityChange(state, {
+    candidateId: "M",
+    authorityIdentity: "v1.4.1",
+    policyIdentity: "policy-v1.4.1",
+    timestamp: at,
+    integrate: integrator,
+  });
+  assert.equal(replanned.cars[0].candidateId, "M");
+  assert.equal(replanned.cars[1].replanGeneration, 1);
+  assert.equal(replanned.replans.at(-1).cause, "MAINTENANCE_AUTHORITY_CHANGE");
 });
 
 test("external main recognizes content-equivalent predictions and conservatively replans unexpected content", () => {

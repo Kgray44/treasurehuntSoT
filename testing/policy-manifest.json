@@ -17,7 +17,8 @@
     "sounding-line-authority.json",
     "evidence-fingerprint-policy.json",
     "prepared-artifacts.json",
-    "mainline-train-policy.json"
+    "mainline-train-policy.json",
+    "governed-test-identities.json"
   ],
   "authority": "sounding-line-authoritative",
   "plannerAuthority": "governed-local-execution-with-allowlisted-adapters",

@@ -127,7 +127,7 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
   for (const node of plan.nodes.filter((node) => !suiteId || node.id === suiteId)) {
     const suite = suiteMap.get(node.id);
     const preparation =
-      plan.authorityVersion === "1.4"
+      ["1.4", "1.4.1"].includes(plan.authorityVersion)
         ? deriveV14WorkerPreparation({
             plan,
             node,

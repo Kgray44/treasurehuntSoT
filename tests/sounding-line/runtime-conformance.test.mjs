@@ -62,7 +62,7 @@ function isHeavyweightRepositoryClosure(source) {
 test("effective authority and the development/finalization boundary are discoverable and policy-owned", async () => {
   const authority = JSON.parse(await readFile(path.join(root, "testing", "sounding-line-authority.json"), "utf8"));
   assert.equal(authority.authority, "SOUNDING_LINE");
-  assert.equal(authority.currentAuthorityVersion, "1.4");
+  assert.equal(authority.currentAuthorityVersion, "1.4.1");
   assert.deepEqual(authority.effectiveAmendments, { partI: "1.2", partII: "1.2", partIII: "1.3", crossPart: "1.4" });
   assert.equal(authority.pendingV14, undefined);
   assert.deepEqual(authority.effectiveV14, {

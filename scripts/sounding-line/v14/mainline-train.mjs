@@ -63,7 +63,8 @@ const normalizeTimestamp = (value, code) => {
   if (typeof value !== "string" || Number.isNaN(Date.parse(value))) throw new Error(code);
   return value;
 };
-const priority = (candidate) => ({ EMERGENCY: 0, RECORD_ONLY: 1, NORMAL: 2 })[candidate.priorityClass ?? "NORMAL"] ?? 3;
+const priority = (candidate) =>
+  ({ EMERGENCY: 0, MAINTENANCE: 1, RECORD_ONLY: 2, NORMAL: 3 })[candidate.priorityClass ?? "NORMAL"] ?? 4;
 const sortString = (left, right) => left.localeCompare(right, "en", { sensitivity: "variant", numeric: false });
 
 function assertCandidate(candidate) {
@@ -77,6 +78,8 @@ function assertCandidate(candidate) {
   if (!Number.isInteger(candidate.ageCycles) || candidate.ageCycles < 0) throw new Error("TRAIN_AGE_REQUIRED");
   if (candidate.priorityClass === "RECORD_ONLY" && candidate.recordOnlyClassification?.valid !== true)
     throw new Error("RECORD_ONLY_CLASSIFICATION_INVALID");
+  if (candidate.priorityClass === "MAINTENANCE" && candidate.maintenanceClassification?.valid !== true)
+    throw new Error("MAINTENANCE_CLASSIFICATION_INVALID");
   return candidate;
 }
 
@@ -128,6 +131,8 @@ function decorateCar(candidate, index, generation) {
     admittedAt: candidate.admittedAt,
     admissionOrdinal: candidate.admissionOrdinal,
     recordOnlyClassification: candidate.recordOnlyClassification ?? null,
+    maintenanceClassification: candidate.maintenanceClassification ?? null,
+    authorityChanging: candidate.authorityChanging === true,
     migrations: clone(candidate.migrations ?? []),
     trainPosition: index,
     replanGeneration: generation,
@@ -325,6 +330,8 @@ function replan(train, { earliestPosition, cause, timestamp, replacement = null,
     ageCycles: car.ageCycles,
     priorityClass: car.priorityClass,
     recordOnlyClassification: car.recordOnlyClassification,
+    maintenanceClassification: car.maintenanceClassification,
+    authorityChanging: car.authorityChanging,
     migrations: car.migrations,
     evidenceClosureIdentity: car.evidenceClosureIdentity,
     planIdentity: car.planIdentity,
@@ -413,6 +420,26 @@ export function applyPolicyDrift(
   brake(next, { code, position: earliestPosition, timestamp });
   next.updatedAt = timestamp;
   return sealTrain(next);
+}
+
+export function replanAfterMaintenanceAuthorityChange(
+  train,
+  { candidateId, authorityIdentity, policyIdentity, timestamp, integrate },
+) {
+  const position = train.cars.findIndex((car) => car.candidateId === candidateId);
+  if (position < 0) throw new Error("TRAIN_CANDIDATE_UNKNOWN");
+  const car = train.cars[position];
+  if (car.priorityClass !== "MAINTENANCE" || !car.authorityChanging)
+    throw new Error("TRAIN_MAINTENANCE_AUTHORITY_CHANGE_REQUIRED");
+  const next = clone(train);
+  next.authorityIdentity = required(authorityIdentity, "TRAIN_AUTHORITY_REQUIRED");
+  next.policyIdentity = required(policyIdentity, "TRAIN_POLICY_REQUIRED");
+  return replan(sealTrain(next), {
+    earliestPosition: position + 1,
+    cause: "MAINTENANCE_AUTHORITY_CHANGE",
+    timestamp,
+    integrate,
+  });
 }
 export function reconcileExternalMain(train, { actualMainCommitSha, actualMainTreeSha, timestamp, integrate }) {
   if (!sha(actualMainCommitSha) || !sha(actualMainTreeSha)) throw new Error("TRAIN_ACTUAL_MAIN_IDENTITY_REQUIRED");

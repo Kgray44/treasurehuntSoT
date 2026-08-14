@@ -3,7 +3,7 @@ title: Sounding Line Effective Authority
 audience: engineering
 status: current-on-protected-mainline-acceptance
 canonical_for: sounding-line-effective-authority-human-index
-last_reviewed: 2026-08-13
+last_reviewed: 2026-08-14
 machine_source: testing/sounding-line-authority.json
 ---
 
@@ -13,7 +13,7 @@ machine_source: testing/sounding-line-authority.json
 source. This document is a discoverability projection and must agree with that
 source; it does not independently define policy.
 
-Project Sounding Line Version 1.4 is the effective repository-wide verification authority on protected main. The v1.4 cross-part amendment is additive to the Part I/II Version 1.2 and Part III Version 1.3 amendments; those part amendments remain effective as listed in the machine-readable index.
+Project Sounding Line Version 1.4.1 is the effective repository-wide verification authority on protected main. It is a normal forward service-track improvement to v1.4: stable governed test identity and pre-merge trusted-main candidate qualification. The v1.4 cross-part amendment remains additive to the Part I/II Version 1.2 and Part III Version 1.3 amendments; those part amendments remain effective as listed in the machine-readable index.
 
 The Version 1.4 activation is a corrective, owner-authorized protected merge following PR #90. PR #90 integrated the accepted implementation tree but did not flip the authority version. Accordingly, the ratified atomic-one-merge activation requirement is recorded as **not satisfied historically**; protected history is preserved and the evidence requirements are not waived. The permanent deviation and corrective-activation record is `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_v1.4_Corrective_Authority_Activation_Record.md`.
 
@@ -40,6 +40,25 @@ by Part III Version 1.2 Sections 6 and 8 and is operationalized by
 ## Corrective activation boundary
 
 The corrective candidate declares the exact authority index that becomes effective only when that tree lands on protected main. Before that merge, it may be accepted only through an explicit `V13_CUTOVER` plan on the recorded corrective ref and exact recorded v1.3 base. The exception is identity-bound and unavailable on every other ref; `CURRENT` v1.4 execution remains protected-main-only. This prevents v1.4 from authorizing its own activation while leaving no mixed-version execution path after activation.
+
+## v1.4.1 service-track qualification
+
+The active registry uses persistent `stableId` values from
+`testing/governed-test-identities.json`; source line, source path, and display
+title are diagnostics, not identity. Legacy generated IDs remain historical
+aliases. `scripts/sounding-line/validate-test-identities.mjs` fails closed for
+missing, duplicate, silently disappeared, cyclic, unknown, or P34-unresolvable
+identities.
+
+Pre-merge execution has three identities: `CURRENT` validates protected main;
+`CANDIDATE` qualifies an ordinary frozen subject; and `MAINTENANCE` qualifies a
+narrow verification-only subject. For either pre-merge identity, the planner,
+classifier, policy, registry, workers' governing controls, and finalizer load
+from a separately checked-out protected-main authority source. Candidate code
+is subject matter only. A mixed product plus verification change is
+`INELIGIBLE_MIXED_SCOPE` and must take the ordinary candidate lane. Maintenance
+success is an internal `MAINTENANCE_GO`; the protected check remains the single
+`Sounding Line / Mainline Decision` contract.
 
 ## Protected merge binding
 

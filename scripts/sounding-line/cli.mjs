@@ -36,6 +36,7 @@ const registryFiles = [
   "evidence-fingerprint-policy.json",
   "prepared-artifacts.json",
   "mainline-train-policy.json",
+  "governed-test-identities.json",
 ];
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
@@ -129,12 +130,13 @@ function validatePolicy(policy) {
       "protectedMergeBinding",
       "futureProjectInheritance",
       "hostedExecutionCapacity",
+      "candidateQualification",
     ],
     "sounding-line-authority",
     errors,
   );
   if (authorityIndex.authority !== "SOUNDING_LINE") errors.push("sounding-line-authority: authority mismatch");
-  if (authorityIndex.currentAuthorityVersion !== "1.3" && authorityIndex.currentAuthorityVersion !== "1.4")
+  if (!new Set(["1.3", "1.4", "1.4.1"]).has(authorityIndex.currentAuthorityVersion))
     errors.push("sounding-line-authority: current authority version mismatch");
   const v14DocumentMatches = (record) =>
     record?.documentId === "CS-SL-XP-001 v1.4-R1" &&
@@ -148,7 +150,7 @@ function validatePolicy(policy) {
     if (authorityIndex.effectiveV14 !== undefined || authorityIndex.correctiveActivation !== undefined)
       errors.push("sounding-line-authority: inactive v1.4 cannot carry corrective activation fields");
   }
-  if (authorityIndex.currentAuthorityVersion === "1.4") {
+  if (["1.4", "1.4.1"].includes(authorityIndex.currentAuthorityVersion)) {
     if (
       !v14DocumentMatches(authorityIndex.effectiveV14) ||
       authorityIndex.effectiveV14?.activation !== "OWNER_AUTHORIZED_CORRECTIVE_PROTECTED_MAINLINE_MERGE" ||
@@ -170,7 +172,10 @@ function validatePolicy(policy) {
   for (const [part, version] of Object.entries({ partI: "1.2", partII: "1.2", partIII: "1.3" }))
     if (authorityIndex.effectiveAmendments?.[part] !== version)
       errors.push(`sounding-line-authority: ${part} must be ${version}`);
-  if (authorityIndex.currentAuthorityVersion === "1.4" && authorityIndex.effectiveAmendments?.crossPart !== "1.4")
+  if (
+    ["1.4", "1.4.1"].includes(authorityIndex.currentAuthorityVersion) &&
+    authorityIndex.effectiveAmendments?.crossPart !== "1.4"
+  )
     errors.push("sounding-line-authority: crossPart must be 1.4 after activation");
   if (authorityIndex.currentAuthorityVersion === "1.3" && authorityIndex.effectiveAmendments?.crossPart !== undefined)
     errors.push("sounding-line-authority: crossPart must remain absent before activation");
@@ -215,6 +220,18 @@ function validatePolicy(policy) {
     errors.push("sounding-line-authority: development/finalization boundary mismatch");
   if (authorityIndex.futureProjectInheritance !== true)
     errors.push("sounding-line-authority: future-project inheritance must be enabled");
+  const candidateQualification = authorityIndex.candidateQualification;
+  if (
+    authorityIndex.currentAuthorityVersion === "1.4.1" &&
+    (candidateQualification?.trustedAuthoritySource !== "PROTECTED_CURRENT_MAIN" ||
+      candidateQualification?.candidateAuthority !== "NONAUTHORITATIVE_UNTIL_MERGED" ||
+      candidateQualification?.requiredProtectedCheck !== authorityIndex.requiredProtectedAuthorityCheck ||
+      candidateQualification?.maintenance?.mode !== "FAIL_CLOSED_TRUSTED_MAIN_CLASSIFIER" ||
+      !Array.isArray(candidateQualification?.maintenance?.eligiblePathGlobs) ||
+      !Array.isArray(candidateQualification?.maintenance?.recordOnlyPathGlobs) ||
+      !Array.isArray(candidateQualification?.maintenance?.productPathGlobs))
+  )
+    errors.push("sounding-line-authority: v1.4.1 trusted candidate qualification mismatch");
   const hostedCapacity = validateHostedWaveCapacity({
     capacity: authorityIndex.hostedExecutionCapacity,
     suites: suites.suites,
@@ -270,8 +287,10 @@ function validatePolicy(policy) {
     for (const field of testDefinitionSchema.required ?? [])
       if (definition[field] === undefined || definition[field] === null || definition[field] === "")
         errors.push(`test definition ${definition.id ?? "missing"}: missing ${field}`);
-    if (!/^sl-test-[a-f0-9]{20}$/u.test(definition.id ?? ""))
+    if (!/^sl-[a-z0-9][a-z0-9-]*-v\d+$/u.test(definition.id ?? "") || definition.id !== definition.stableId)
       errors.push(`test definition: invalid stable id ${definition.id ?? "missing"}`);
+    if (!/^sl-test-[a-f0-9]{20}$/u.test(definition.legacyTestId ?? ""))
+      errors.push(`test definition ${definition.id}: invalid legacy test id`);
     if (activeIds.has(definition.id)) errors.push(`test definition: duplicate stable id ${definition.id}`);
     activeIds.add(definition.id);
     if (!suiteIds.has(definition.suiteId))

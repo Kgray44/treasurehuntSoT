@@ -6,6 +6,12 @@ import path from "node:path";
 import { format, resolveConfig } from "prettier";
 import ts from "typescript";
 import { promisify } from "node:util";
+import {
+  assertNoSilentDisappearance,
+  identityKey,
+  previewStableIdentity,
+  resolveStableIdentity,
+} from "./stable-test-identities.mjs";
 
 const root = process.cwd();
 const ignored = new Set(["node_modules", ".git", ".next", "coverage", "artifacts", "dist"]);
@@ -349,6 +355,7 @@ async function walk(directory) {
 
 function collect(source, relative) {
   const cases = [];
+  const titleOccurrences = new Map();
   const isTest = (expression) => {
     if (ts.isIdentifier(expression)) return ["test", "it"].includes(expression.text);
     return (
@@ -364,10 +371,16 @@ function collect(source, relative) {
       const title = node.arguments[0];
       if (title && (ts.isStringLiteralLike(title) || ts.isTemplateExpression(title))) {
         const caseTitle = ts.isStringLiteralLike(title) ? title.text : title.getText(source);
+        const ordinal = titleOccurrences.get(caseTitle) ?? 0;
+        titleOccurrences.set(caseTitle, ordinal + 1);
+        const leading = source.text.slice(node.getFullStart(), node.getStart());
+        const marker = [...leading.matchAll(/sounding-line-id:\s*([a-z][a-z0-9-]*-v\d+)/giu)].at(-1);
         cases.push({
           id: `sl-test-${hash(`${relative}:${caseTitle}`)}`,
           title: caseTitle,
           line: source.getLineAndCharacterOfPosition(node.getStart(source)).line + 1,
+          ordinal,
+          explicitStableId: marker?.[1]?.toLowerCase() ?? null,
         });
       }
     }
@@ -402,17 +415,97 @@ for (const absolute of sources.flat()) {
   for (const test of discovered) cases.push({ ...test, file, suiteId, ...metadata(file, suiteId) });
 }
 cases.push(...(await discoverPlaywright()));
+const manifestPath = path.join(root, "testing", "governed-test-identities.json");
+const migrationMode =
+  process.argv.find((argument) => argument.startsWith("--stable-identity-migration="))?.split("=")[1] ?? null;
+if (migrationMode && !["preview", "write"].includes(migrationMode))
+  throw new Error("STABLE_IDENTITY_MIGRATION_MODE_INVALID");
+let manifest = null;
+try {
+  manifest = JSON.parse(await fs.readFile(manifestPath, "utf8"));
+} catch (error) {
+  if (error.code !== "ENOENT") throw error;
+  if (!migrationMode) throw new Error("STABLE_IDENTITY_MANIFEST_MISSING");
+}
+const occurrences = new Map();
+const migrationPreview = [];
+for (const entry of cases) {
+  const occurrenceKey = `${entry.project ?? ""}\u0000${entry.file}\u0000${entry.title}`;
+  const ordinal = entry.ordinal ?? occurrences.get(occurrenceKey) ?? 0;
+  occurrences.set(occurrenceKey, ordinal + 1);
+  const sourceKey = identityKey({ project: entry.project, file: entry.file, title: entry.title, ordinal });
+  const legacyTestId = entry.id;
+  const preview = previewStableIdentity({ sourceKey, suiteId: entry.suiteId, title: entry.title, legacyTestId });
+  migrationPreview.push(preview);
+  let resolved;
+  try {
+    resolved = manifest
+      ? resolveStableIdentity({
+          manifest,
+          sourceKey,
+          suiteId: entry.suiteId,
+          title: entry.title,
+          explicitStableId: entry.explicitStableId,
+        })
+      : { stableId: preview.stableId, historicalAliases: [legacyTestId] };
+  } catch (error) {
+    if (migrationMode === "write" && error.message.startsWith("MISSING_STABLE_TEST_ID:"))
+      resolved = { stableId: preview.stableId, historicalAliases: [legacyTestId] };
+    else throw error;
+  }
+  Object.assign(entry, {
+    id: resolved.stableId,
+    stableId: resolved.stableId,
+    legacyTestId,
+    historicalAliases: resolved.historicalAliases,
+    sourceIdentityKey: sourceKey,
+  });
+  delete entry.explicitStableId;
+  delete entry.ordinal;
+}
 const ids = new Set();
 for (const entry of cases) {
   if (ids.has(entry.id)) throw new Error(`DUPLICATE_TEST_ID:${entry.id}`);
   ids.add(entry.id);
+}
+if (manifest && !migrationMode) assertNoSilentDisappearance(manifest, ids);
+if (migrationMode === "write") {
+  const identities = migrationPreview
+    .sort((left, right) => left.stableId.localeCompare(right.stableId))
+    .map((entry) => ({
+      ...entry,
+      sourceKeys: [...entry.sourceKeys].sort(),
+      legacyTestIds: [...entry.legacyTestIds].sort(),
+    }));
+  const stableIds = new Set(identities.map((entry) => entry.stableId));
+  if (stableIds.size !== identities.length) throw new Error("DUPLICATE_MIGRATED_STABLE_TEST_ID");
+  const prettierConfig = (await resolveConfig(manifestPath)) ?? {};
+  await fs.writeFile(
+    manifestPath,
+    await format(JSON.stringify({ version: 1, schemaVersion: "1.0.0", generated: true, identities }), {
+      ...prettierConfig,
+      parser: "json",
+    }),
+  );
+}
+if (migrationMode === "preview") {
+  console.log(
+    JSON.stringify({
+      activeGovernedTests: cases.length,
+      migratedStableIds: migrationPreview.length,
+      unresolvedActiveTestIdentities: manifest ? 0 : migrationPreview.length,
+      duplicateActiveTestIdentities:
+        migrationPreview.length - new Set(migrationPreview.map((entry) => entry.stableId)).size,
+      historicalAliases: migrationPreview.flatMap((entry) => entry.legacyTestIds).length,
+    }),
+  );
 }
 await fs.mkdir(path.join(root, "testing", "generated"), { recursive: true });
 const registryPath = path.join(root, "testing", "generated", "active-test-registry.json");
 const prettierConfig = (await resolveConfig(registryPath)) ?? {};
 await fs.writeFile(
   registryPath,
-  await format(JSON.stringify({ version: 2, schemaVersion: "2.0.0", generated: true, cases }), {
+  await format(JSON.stringify({ version: 3, schemaVersion: "3.0.0", generated: true, cases }), {
     ...prettierConfig,
     parser: "json",
   }),

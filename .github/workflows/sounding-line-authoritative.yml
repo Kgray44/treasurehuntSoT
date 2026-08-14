@@ -103,10 +103,10 @@ jobs:
         run: |
           $baseSha = $env:SOUNDING_LINE_REQUESTED_BASE_SHA
           $authority = Get-Content -Raw 'testing/sounding-line-authority.json' | ConvertFrom-Json
-          if (-not $baseSha -and $authority.currentAuthorityVersion -eq '1.4') {
+          if (-not $baseSha -and $authority.currentAuthorityVersion -in @('1.4', '1.4.1')) {
             $baseSha = (git rev-parse "$env:GITHUB_SHA^").Trim()
           }
-          if ($authority.currentAuthorityVersion -eq '1.4' -and $baseSha -notmatch '^[0-9a-f]{40}$') {
+          if ($authority.currentAuthorityVersion -in @('1.4', '1.4.1') -and $baseSha -notmatch '^[0-9a-f]{40}$') {
             throw 'SOUNDING_LINE_V14_CURRENT_BASE_REQUIRED'
           }
           "value=$baseSha" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8

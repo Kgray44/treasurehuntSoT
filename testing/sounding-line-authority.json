@@ -1,6 +1,6 @@
 {
   "authority": "SOUNDING_LINE",
-  "currentAuthorityVersion": "1.4",
+  "currentAuthorityVersion": "1.4.1",
   "effectiveV14": {
     "documentId": "CS-SL-XP-001 v1.4-R1",
     "documentSha256": "4D9DE559A24A7A2A8427171EAB679CCD423A1E9BE94FA104CF10B3D14AA31211",
@@ -46,6 +46,37 @@
         "FORMAT_DIFF",
         "POLICY_INVENTORY",
         "GENERATED_RECORD_CONSISTENCY"
+      ]
+    }
+  },
+  "candidateQualification": {
+    "trustedAuthoritySource": "PROTECTED_CURRENT_MAIN",
+    "candidateAuthority": "NONAUTHORITATIVE_UNTIL_MERGED",
+    "requiredProtectedCheck": "Sounding Line / Mainline Decision",
+    "maintenance": {
+      "mode": "FAIL_CLOSED_TRUSTED_MAIN_CLASSIFIER",
+      "eligiblePathGlobs": [
+        ".github/workflows/sounding-line-*",
+        "scripts/sounding-line/**",
+        "tests/sounding-line/**",
+        "testing/sounding-line-authority.json",
+        "testing/governed-test-identities.json",
+        "testing/generated/active-test-registry.json",
+        "testing/generated/p34-retirement-ledger.json",
+        "testing/retired-suites.json",
+        "Development_Docs/Programs/Sounding_Line/**",
+        "Development_Docs/Governing/Sounding_Line_Effective_Authority.md"
+      ],
+      "recordOnlyPathGlobs": ["CHANGELOG.md", "docs/**/*.md", "Development_Docs/**/*.md"],
+      "productPathGlobs": [
+        "src/**",
+        "prisma/**",
+        "app/**",
+        "components/**",
+        "bridgewatch/**",
+        "package.json",
+        "package-lock.json",
+        "next.config.*"
       ]
     }
   },
