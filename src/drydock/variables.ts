@@ -117,7 +117,7 @@ export function permittedOperations(type: DrydockVariableType): readonly Drydock
   if (type.kind === "INTEGER" || type.kind === "NUMBER") return ["assign", "increment", "decrement", "min", "max"];
   if (type.kind === "STRING") return ["assign", "clear", "compare"];
   if (type.kind === "ENUM") return ["assign", "compare"];
-  if (type.kind === "STRING_SET") return ["add", "remove", "contains", "count"];
+  if (type.kind === "STRING_SET") return ["assign", "add", "remove", "contains", "count"];
   return ["assign", "clear"];
 }
 
