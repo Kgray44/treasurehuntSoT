@@ -13,6 +13,7 @@ const json = async (file) => JSON.parse(await readFile(path.join(root, "testing"
 
 test("v1.4 hosted plan carries the semantic plan and worker-compatible dependency waves", async () => {
   const sourceSha = (await execute("git", ["-C", root, "rev-parse", "HEAD"])).stdout.trim();
+  const qualifiedBaseSha = (await execute("git", ["-C", root, "rev-parse", "HEAD^"])).stdout.trim();
   const [manifest, registry, authorityIndex] = await Promise.all([
     json("policy-manifest.json"),
     json("generated/active-test-registry.json"),
@@ -23,7 +24,7 @@ test("v1.4 hosted plan carries the semantic plan and worker-compatible dependenc
     gateId: "mainline",
     serial: false,
     sourceSha,
-    qualifiedBaseSha: "0055d012a121a8950b7fa70d371d5eafc6223d10",
+    qualifiedBaseSha,
     manifest,
     registry,
     authorityIndex,
