@@ -7,6 +7,8 @@
 - `Projects/`: governed project and phase records, including design, validation,
   integration, and completion evidence.
 - `Programs/`: project records grouped by program.
+- `Programs/Project_Trim/`: bounded context-efficiency baseline records and
+  governing input; these records do not implement Project Trim.
 - `Validation/`: test plans, ledgers, audits, and validation evidence.
 - `Migrations/`: migration, rollback, and compatibility records.
 - `Completion_Receipts/`: historical implementation receipts.
