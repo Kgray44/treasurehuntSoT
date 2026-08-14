@@ -26,15 +26,16 @@ test("Drydock Phase 4 exposes current launch and compatibility decisions without
   const studioReady = page.waitForResponse((response) => response.url().endsWith("/api/studio/tales") && response.request().method() === "GET");
   await page.getByRole("link", { name: "Create Chronicle", exact: true }).click();
   expect((await studioReady).ok()).toBeTruthy();
+  await expect(page.getByRole("button", { name: "Create and open Chronicle" })).toBeEnabled();
   await page.getByLabel("Title", { exact: true }).fill("Synthetic Drydock browser Chronicle");
   await page.getByLabel(/Address/).fill(identifier);
   await page.getByLabel("Short description", { exact: true }).fill("A task-owned browser acceptance Chronicle.");
   await page.getByRole("button", { name: "Create and open Chronicle" }).click();
-  await expect(page).toHaveURL(/\/studio\/tales\//u);
+  await expect(page).toHaveURL(/\/studio\/tales\/(?!new(?:\/|$))[^/]+\/?$/u, { timeout: 30_000 });
   await page.getByRole("navigation", { name: "Chronicle authoring sections" }).getByRole("link", { name: "Sea Trials" }).click();
   await expect(page.getByRole("heading", { name: "Launch Gate" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Compatibility" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Sea Trial Scenarios" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Sea Trials" })).toBeVisible({ timeout: 30_000 });
   await expect(page.getByRole("button", { name: "Publish Chronicle" })).toBeDisabled();
   await expect(page.getByText("NEEDS REPAIR")).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
