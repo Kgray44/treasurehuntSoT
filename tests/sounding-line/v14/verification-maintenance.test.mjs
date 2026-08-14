@@ -171,3 +171,22 @@ test("maintenance qualification keeps the static-safe changed-path proof outside
   assert.match(workflow, /\$\{\{ steps\.trusted-maintenance\.outputs\.maintenance_temp \}\}\/maintenance-plan\.json/u);
   assert.match(workflow, /Remove-Item -LiteralPath \$maintenanceTemp -Recurse -Force/u);
 });
+
+test("routine maintenance keeps every sealed qualification artifact runner-owned", async () => {
+  const workflow = await readFile(
+    new URL("../../../.github/workflows/sounding-line-verification-maintenance.yml", import.meta.url),
+    "utf8",
+  );
+  for (const artifact of [
+    "trusted-maintenance-policy.json",
+    "trusted-verification-maintenance.mjs",
+    "maintenance-changed-paths.json",
+    "maintenance-plan.json",
+    "maintenance-evidence.json",
+    "maintenance-finalization.json",
+  ]) {
+    assert.match(workflow, new RegExp(`Join-Path \\$maintenanceTemp '${artifact.replace(/\./gu, "\\.")}'`, "u"));
+  }
+  assert.doesNotMatch(workflow, /--out maintenance-plan\.json/u);
+  assert.doesNotMatch(workflow, /--out maintenance-finalization\.json/u);
+});
