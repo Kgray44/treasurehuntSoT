@@ -164,20 +164,64 @@ jobs:
           if (@($legacy).Count -gt 1) { throw "AMBIGUOUS_LEGACY_QUALIFIED_AUTHORITY" }
           if ($legacy) {
             "run-id=$($legacy.authoritativeRunId)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            "finalization-artifact=sounding-line-finalization" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            "plan-artifact=sounding-line-plan" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
             "legacy=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
             exit 0
           }
           $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = "application/vnd.github+json"; 'X-GitHub-Api-Version' = '2022-11-28' }
-          $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&head_sha=$env:CANDIDATE_SHA&per_page=100").workflow_runs |
-            Where-Object { $_.name -eq 'Sounding Line authoritative' -and $_.status -eq 'completed' -and $_.conclusion -eq 'success' }
-          if (@($runs).Count -ne 1) { throw "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE" }
-          "run-id=$(@($runs)[0].id)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          # V14_CANDIDATE is deliberately dispatched from trusted main, so its
+          # workflow-run head is main rather than the unmerged PR SHA. Select
+          # the sole sealed envelope bound to this exact PR/head/base instead
+          # of treating a matching workflow-run head as authority evidence.
+          $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&per_page=100").workflow_runs |
+            Where-Object {
+              $_.status -eq 'completed' -and $_.conclusion -eq 'success' -and (
+                ($_.name -eq 'Sounding Line authoritative' -and $_.path -eq '.github/workflows/sounding-line-authoritative.yml') -or
+                ($_.name -eq 'Sounding Line mainline train' -and $_.path -eq '.github/workflows/sounding-line-mainline-train.yml')
+              )
+            }
+          $matches = @()
+          foreach ($run in $runs) {
+            try {
+              $artifacts = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs/$($run.id)/artifacts?per_page=100").artifacts |
+                Where-Object {
+                  -not $_.expired -and (
+                    $_.name -eq 'sounding-line-acceptance-envelope' -or
+                    $_.name -like 'sounding-line-train-acceptance-envelope-*'
+                  )
+                }
+              foreach ($artifact in $artifacts) {
+                $directory = Join-Path $env:RUNNER_TEMP "sounding-line-envelope-$($run.id)-$($artifact.id)"
+                $zip = "$directory.zip"
+                New-Item -ItemType Directory -Force -Path $directory | Out-Null
+                Invoke-WebRequest -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/artifacts/$($artifact.id)/zip" -OutFile $zip
+                Expand-Archive -LiteralPath $zip -DestinationPath $directory -Force
+                $envelope = Get-Content -Raw (Join-Path $directory 'sounding-line-acceptance-envelope.json') | ConvertFrom-Json
+                # The protected-binding module evaluates the qualified-base to
+                # current-base interval itself. Do not discard a candidate here
+                # merely because an unrelated protected-main advance requires a
+                # governed semantic carry-forward decision.
+                if ($envelope.prNumber -eq [int]$env:PR_NUMBER -and $envelope.candidateSha -eq $env:CANDIDATE_SHA) {
+                  $matches += @{ run = $run; artifact = $artifact.name }
+                }
+              }
+            } catch { }
+          }
+          if (@($matches).Count -ne 1) { throw "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE" }
+          $match = @($matches)[0]
+          "run-id=$($match.run.id)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          $finalizationArtifact = if ($match.artifact -eq 'sounding-line-acceptance-envelope') { 'sounding-line-finalization' } else { $match.artifact }
+          $planArtifact = if ($match.artifact -eq 'sounding-line-acceptance-envelope') { 'sounding-line-plan' } else { $match.artifact }
+          "finalization-artifact=$finalizationArtifact" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "plan-artifact=$planArtifact" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "envelope-artifact=$($match.artifact)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           "legacy=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - name: Download sealed finalization
         if: ${{ needs.record-only-preflight.outputs.recordOnly != 'true' }}
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: sounding-line-finalization
+          name: ${{ steps.authority.outputs.finalization-artifact }}
           path: accepted-finalization
           run-id: ${{ steps.authority.outputs.run-id }}
           github-token: ${{ github.token }}
@@ -185,7 +229,7 @@ jobs:
         if: ${{ needs.record-only-preflight.outputs.recordOnly != 'true' }}
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: sounding-line-plan
+          name: ${{ steps.authority.outputs.plan-artifact }}
           path: accepted-plan
           run-id: ${{ steps.authority.outputs.run-id }}
           github-token: ${{ github.token }}
@@ -193,7 +237,7 @@ jobs:
         if: ${{ needs.record-only-preflight.outputs.recordOnly != 'true' && steps.authority.outputs.legacy != 'true' }}
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: sounding-line-acceptance-envelope
+          name: ${{ steps.authority.outputs.envelope-artifact }}
           path: accepted-envelope
           run-id: ${{ steps.authority.outputs.run-id }}
           github-token: ${{ github.token }}

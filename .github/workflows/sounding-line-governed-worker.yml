@@ -11,6 +11,55 @@ on:
         description: Sealed-plan gate identifier
         required: true
         type: string
+      candidate_sha:
+        description: Exact sealed source identity represented by the plan
+        required: true
+        type: string
+      plan_artifact:
+        description: Sealed plan artifact for this qualified candidate
+        required: false
+        default: sounding-line-plan
+        type: string
+      plan_path:
+        description: Relative sealed plan path inside the downloaded plan artifact
+        required: false
+        default: sounding-line-plan.json
+        type: string
+      prepared_artifact:
+        description: Verified prepared dependency artifact for this candidate
+        required: false
+        default: sounding-line-prepared-dependency
+        type: string
+      prepared_path:
+        description: Relative prepared dependency-layer path inside the artifact
+        required: false
+        default: ""
+        type: string
+      prepared_producer:
+        description: Exact trusted producer identity bound into the dependency manifest
+        required: false
+        default: ""
+        type: string
+      execution_sha:
+        description: Candidate SHA or sealed predicted integration commit to execute
+        required: false
+        default: ""
+        type: string
+      integration_artifact:
+        description: Optional Git bundle containing the sealed predicted integration commit
+        required: false
+        default: ""
+        type: string
+      integration_bundle_path:
+        description: Relative bundle path inside the integration artifact
+        required: false
+        default: integration.bundle
+        type: string
+      receipt_artifact:
+        description: Optional unique artifact name for this logical worker receipt
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: read
@@ -28,26 +77,56 @@ jobs:
           # workflow_call otherwise resolves the mutable default-branch ref.
           # Each worker must execute the same frozen candidate that the plan
           # sealed, including when protected main advances while workers start.
-          ref: ${{ github.event.inputs.candidate_sha }}
+          ref: ${{ inputs.candidate_sha }}
           fetch-depth: 0
+      - name: Restore sealed predicted integration commit
+        if: ${{ inputs.integration_artifact != '' }}
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: ${{ inputs.integration_artifact }}
+          path: ${{ runner.temp }}/sounding-line-integration
+      - name: Checkout sealed execution identity
+        shell: pwsh
+        env:
+          SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+          SOUNDING_LINE_EXECUTION_SHA: ${{ inputs.execution_sha }}
+          SOUNDING_LINE_INTEGRATION_ARTIFACT: ${{ inputs.integration_artifact }}
+          SOUNDING_LINE_INTEGRATION_BUNDLE_PATH: ${{ inputs.integration_bundle_path }}
+        run: |
+          $execution = if ($env:SOUNDING_LINE_EXECUTION_SHA) { $env:SOUNDING_LINE_EXECUTION_SHA } else { $env:SOUNDING_LINE_CANDIDATE_SHA }
+          if ($execution -notmatch '^[0-9a-f]{40}$') { throw 'GOVERNED_WORKER_EXECUTION_SHA_INVALID' }
+          if ($env:SOUNDING_LINE_INTEGRATION_ARTIFACT) {
+            $bundle = Join-Path (Join-Path $env:RUNNER_TEMP 'sounding-line-integration') $env:SOUNDING_LINE_INTEGRATION_BUNDLE_PATH
+            if (-not (Test-Path -LiteralPath $bundle -PathType Leaf)) { throw 'GOVERNED_INTEGRATION_BUNDLE_MISSING' }
+            git fetch $bundle $execution
+            if ($LASTEXITCODE -ne 0) { throw 'GOVERNED_INTEGRATION_BUNDLE_FETCH_FAILED' }
+          }
+          git checkout --detach $execution
+          if ($LASTEXITCODE -ne 0 -or (git rev-parse HEAD).Trim() -ne $execution) { throw 'GOVERNED_WORKER_EXECUTION_CHECKOUT_MISMATCH' }
       - name: Verify sealed candidate checkout
         shell: pwsh
         env:
-          SOUNDING_LINE_CANDIDATE_SHA: ${{ github.event.inputs.candidate_sha }}
+          SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+          SOUNDING_LINE_EXECUTION_SHA: ${{ inputs.execution_sha }}
         run: |
           if ($env:SOUNDING_LINE_CANDIDATE_SHA -notmatch '^[0-9a-f]{40}$') { throw 'GOVERNED_WORKER_CANDIDATE_SHA_INVALID' }
-          if ((git rev-parse HEAD).Trim() -ne $env:SOUNDING_LINE_CANDIDATE_SHA) { throw 'GOVERNED_WORKER_CANDIDATE_CHECKOUT_MISMATCH' }
+          $execution = if ($env:SOUNDING_LINE_EXECUTION_SHA) { $env:SOUNDING_LINE_EXECUTION_SHA } else { $env:SOUNDING_LINE_CANDIDATE_SHA }
+          if ((git rev-parse HEAD).Trim() -ne $execution) { throw 'GOVERNED_WORKER_CANDIDATE_CHECKOUT_MISMATCH' }
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc, cache: npm }
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: sounding-line-prepared-dependency
+          name: ${{ inputs.prepared_artifact }}
           path: ${{ runner.temp }}/sounding-line-prepared-dependency
       - name: Restore verified immutable dependency layer with timing
         shell: pwsh
+        env:
+          SOUNDING_LINE_PREPARED_PATH: ${{ inputs.prepared_path }}
+          SOUNDING_LINE_PREPARED_PRODUCER: ${{ inputs.prepared_producer }}
         run: |
           $startedAt = [DateTimeOffset]::UtcNow
           $layerRoot = Join-Path $env:RUNNER_TEMP 'sounding-line-prepared-dependency'
+          if ($env:SOUNDING_LINE_PREPARED_PATH) { $layerRoot = Join-Path $layerRoot $env:SOUNDING_LINE_PREPARED_PATH }
           & node scripts/sounding-line/v14/prepared-layer-artifact.mjs verify --source "$layerRoot/node_modules" --manifest "$layerRoot/dependency-manifest.json"
           $exitCode = $LASTEXITCODE
           if ($exitCode -eq 0) {
@@ -77,12 +156,12 @@ jobs:
           if ($exitCode -ne 0) { throw 'GOVERNED_DEPENDENCY_LAYER_RESTORE_FAILED' }
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: sounding-line-plan
+          name: ${{ inputs.plan_artifact }}
           path: ${{ runner.temp }}/sounding-line-plan
       - name: Prepare only sealed-node resources
         shell: pwsh
         env:
-          SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-plan/sounding-line-plan.json
+          SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-plan/${{ inputs.plan_path }}
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
         run: |
           $setupStartedAt = [DateTimeOffset]::UtcNow
@@ -139,7 +218,7 @@ jobs:
             preparation = $preparation
           } | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath 'sounding-line-worker-throughput.json' -Encoding utf8
       - env:
-          SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-plan/sounding-line-plan.json
+          SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-plan/${{ inputs.plan_path }}
           SOUNDING_LINE_GATE: ${{ inputs.gate }}
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
         shell: pwsh
@@ -162,7 +241,7 @@ jobs:
       - if: always()
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
-          name: "sounding-line-worker-evidence-${{ inputs.suite }}"
+          name: "${{ inputs.receipt_artifact || format('sounding-line-worker-evidence-{0}', inputs.suite) }}"
           path: |
             sounding-line-worker-evidence.json
             sounding-line-worker-throughput.json

@@ -127,6 +127,7 @@ function validatePolicy(policy) {
       "requiredProtectedAuthorityCheck",
       "runtimeConformance",
       "verificationMaintenance",
+      "ordinaryCandidateQualification",
       "governingPolicies",
       "developmentValidation",
       "protectedMergeBinding",
@@ -208,6 +209,16 @@ function validatePolicy(policy) {
     maintenance?.protectedBinding !== "EXACT_CANDIDATE_BASE_AND_LANDED_TREE"
   )
     errors.push("sounding-line-authority: verification maintenance policy mismatch");
+  const ordinaryCandidate = authorityIndex.ordinaryCandidateQualification;
+  if (
+    ordinaryCandidate?.mode !== "V14_CANDIDATE" ||
+    ordinaryCandidate?.trustedWorkflowRef !== "refs/heads/main" ||
+    ordinaryCandidate?.gate !== "mainline" ||
+    ordinaryCandidate?.releaseDisposition !== "RELEASE_GO" ||
+    ordinaryCandidate?.currentClaim !== "FORBIDDEN" ||
+    ordinaryCandidate?.protectedBinding !== "REQUIRED"
+  )
+    errors.push("sounding-line-authority: ordinary candidate qualification mismatch");
   if (
     maintenancePolicy?.authority !== "SOUNDING_LINE_VERIFICATION_MAINTENANCE" ||
     maintenancePolicy?.trustedMainOnly !== true ||
@@ -220,6 +231,12 @@ function validatePolicy(policy) {
     !maintenancePolicy.requiredEvidence.length
   )
     errors.push("verification-maintenance-policy: fail-closed contract mismatch");
+  if (
+    !Array.isArray(maintenancePolicy?.ordinaryCandidateEligiblePathGlobs) ||
+    !maintenancePolicy.ordinaryCandidateEligiblePathGlobs.length ||
+    maintenancePolicy.ordinaryCandidateEligiblePathGlobs.some((entry) => maintenancePolicy.authorityChangePathGlobs.includes(entry))
+  )
+    errors.push("verification-maintenance-policy: ordinary candidate boundary mismatch");
   if (authorityIndex.governingPolicies?.proofMinimization !== "MINIMUM_SUFFICIENT_EVIDENCE")
     errors.push("sounding-line-authority: proof minimization mismatch");
   if (authorityIndex.governingPolicies?.semanticInvalidation !== "EVIDENCE_PRESERVATION_REQUIRED")

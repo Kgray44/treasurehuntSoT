@@ -29,7 +29,26 @@
     "scripts/sounding-line/protected-merge-binding*.mjs",
     ".github/workflows/sounding-line-authoritative.yml",
     ".github/workflows/sounding-line-protected-merge-binding.yml",
-    ".github/workflows/sounding-line-verification-maintenance.yml"
+    ".github/workflows/sounding-line-verification-maintenance.yml",
+    "scripts/sounding-line/v14/**",
+    "scripts/sounding-line/v14-fast-channel.mjs",
+    "testing/mainline-train-policy.json",
+    "testing/impact-map.json",
+    "testing/contracts.json",
+    "testing/ownership.json",
+    "testing/suites.json",
+    "testing/resources.json"
+  ],
+  "ordinaryCandidateEligiblePathGlobs": [
+    "src/**",
+    "prisma/**",
+    "public/**",
+    "tests/**",
+    "package.json",
+    "package-lock.json",
+    "next.config.*",
+    "playwright*.config.*",
+    "Development_Docs/Projects/**"
   ],
   "requiredEvidence": [
     "FOCUSED_REGRESSION",

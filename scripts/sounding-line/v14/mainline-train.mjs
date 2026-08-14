@@ -1,14 +1,16 @@
 /*
- * Sounding Line v1.4 mainline train.  This is deliberately a shadow-only
- * controller: it plans and records local, content-addressed integration
- * states but contains no remote mutation, merge, or RELEASE_GO capability.
+ * Sounding Line v1.4 mainline train state controller. It plans exact,
+ * content-addressed integration trees for the live ordinary orchestration
+ * path; protected binding remains the only physical merge authority.
  */
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { V14_AUTHORITY_BOUNDARY, createTreeIdentity, digest } from "./foundation.mjs";
+import { createTreeIdentity, digest } from "./foundation.mjs";
 import { sealedRecord } from "./fast-channel.mjs";
+import { buildSyntheticIntegrationTree, inspectGitTree } from "./synthetic-tree.mjs";
 
 export const V14_TRAIN_STATE_VERSION = "1.4";
+export const V14_TRAIN_AUTHORITY_BOUNDARY = "V14_MAINLINE_TRAIN_LIVE";
 export const TRAIN_CAR_STATES = Object.freeze([
   "ADMITTED",
   "PLANNING",
@@ -164,7 +166,7 @@ export function createMainlineTrain({
   const ordered = orderTrainCandidates(candidates);
   const train = {
     version: V14_TRAIN_STATE_VERSION,
-    authorityBoundary: V14_AUTHORITY_BOUNDARY,
+    authorityBoundary: V14_TRAIN_AUTHORITY_BOUNDARY,
     trainId,
     generation: 0,
     authorityIdentity,
@@ -191,12 +193,72 @@ export function createMainlineTrain({
   return sealTrain(train);
 }
 
+/**
+ * Admit immutable candidate heads and construct their real Git merge-tree
+ * predictions in order. The commits are unreachable local artifacts only;
+ * protected binding remains the sole operation that can land main.
+ */
+export async function admitLiveMainlineTrain({
+  repoPath,
+  trainId,
+  authorityIdentity,
+  policyIdentity,
+  admissionPolicyIdentity,
+  mergeStrategyIdentity,
+  actualMainCommitSha,
+  candidates,
+  createdAt,
+}) {
+  const base = await inspectGitTree(repoPath, actualMainCommitSha);
+  const resolvedCandidates = await Promise.all(
+    candidates.map(async (candidate) => {
+      const identity = await inspectGitTree(repoPath, candidate.headCommitSha);
+      if (identity.treeSha !== candidate.headTreeSha) throw new Error("TRAIN_CANDIDATE_TREE_MISMATCH");
+      return candidate;
+    }),
+  );
+  const initial = createMainlineTrain({
+    trainId,
+    authorityIdentity,
+    policyIdentity,
+    admissionPolicyIdentity,
+    mergeStrategyIdentity,
+    actualMainCommitSha: base.commitSha,
+    actualMainTreeSha: base.treeSha,
+    candidates: resolvedCandidates,
+    createdAt,
+  });
+  const migrationSafety = detectMigrationCollisions(initial.cars);
+  if (!migrationSafety.safe) throw new Error("TRAIN_MIGRATION_COLLISION");
+  const orderedHeads = initial.cars.map((car) => car.candidateHeadCommitSha);
+  const predicted = await buildSyntheticIntegrationTree({
+    repoPath,
+    baseSha: base.commitSha,
+    candidateShas: orderedHeads,
+    trainId,
+    policyDigest: policyIdentity,
+    mergeStrategyIdentity,
+    planDigest: "V14_MAINLINE_TRAIN",
+    msesDigest: "V14_MSES_PENDING",
+    authorityBoundary: V14_TRAIN_AUTHORITY_BOUNDARY,
+  });
+  if (predicted.status !== "READY") throw new Error("TRAIN_SYNTHETIC_INTEGRATION_CONFLICT");
+  const planned = planMainlineTrain(initial, {
+    timestamp: createdAt,
+    integrate: ({ position }) => ({
+      treeSha: predicted.cars[position].predictedIntegrationTreeSha,
+      commitSha: predicted.cars[position].resultingIntegrationSha,
+    }),
+  });
+  return { train: planned, predicted };
+}
+
 export function sealTrain(train) {
   const state = clone(train);
   return { ...state, trainDigest: stateDigest(state) };
 }
 export function verifyTrain(train) {
-  if (!train || train.version !== V14_TRAIN_STATE_VERSION || train.authorityBoundary !== V14_AUTHORITY_BOUNDARY)
+  if (!train || train.version !== V14_TRAIN_STATE_VERSION || train.authorityBoundary !== V14_TRAIN_AUTHORITY_BOUNDARY)
     return { valid: false, code: "TAMPERED_STATE" };
   return train.trainDigest === stateDigest(train) ? { valid: true } : { valid: false, code: "TAMPERED_STATE" };
 }
@@ -265,16 +327,55 @@ export function planMainlineTrain(train, { integrate, timestamp }) {
       trainId: next.trainId,
       trainPosition: index,
     });
-    car.state = "QUALIFIED";
-    car.reason = "PREDICTED_TREE_QUALIFIED";
+    car.state = "PLANNING";
+    car.reason = "PREDICTED_TREE_READY_FOR_QUALIFICATION";
     parentCommitSha = outcome.commitSha ?? parentCommitSha;
     parentTreeSha = outcome.treeSha;
   }
   if (next.status !== "BLOCKED") {
-    next.status = next.cars.length ? "QUALIFIED" : "EMPTY";
-    next.headPosition = next.cars.findIndex((car) => car.state === "QUALIFIED");
+    next.status = next.cars.length ? "PLANNING" : "EMPTY";
+    next.headPosition = next.cars.findIndex((car) => car.state !== "LANDED");
   }
   next.updatedAt = timestamp;
+  return sealTrain(next);
+}
+
+/**
+ * Binds one exact V14_CANDIDATE finalization to the car's predicted tree.
+ * Planning alone is never a qualification claim: the finalizer's RELEASE_GO
+ * and the exact candidate/base/tree identities are all required first.
+ */
+export function qualifyTrainCar(
+  train,
+  { candidateId, plan, finalization, evidenceClosureIdentity, timestamp },
+) {
+  if (!verifyTrain(train).valid) throw new Error("TAMPERED_STATE");
+  normalizeTimestamp(timestamp, "TRAIN_UPDATE_TIMESTAMP_REQUIRED");
+  const next = clone(train);
+  const car = next.cars.find((entry) => entry.candidateId === candidateId);
+  if (!car || car.state !== "PLANNING") throw new Error("TRAIN_CAR_NOT_READY_FOR_QUALIFICATION");
+  if (
+    plan?.authorityBoundary !== "V14_CANDIDATE_QUALIFICATION" ||
+    plan?.authorityMode !== "V14_CANDIDATE" ||
+    plan?.gate !== "mainline" ||
+    plan?.sourceSha !== car.candidateHeadCommitSha ||
+    plan?.qualifiedBaseSha !== car.predictedParentCommitSha ||
+    plan?.qualifiedBaseTreeSha !== car.predictedParentTreeSha ||
+    plan?.predictedIntegrationTreeSha !== car.predictedIntegrationTreeSha ||
+    !plan?.planDigest ||
+    finalization?.decision !== "RELEASE_GO" ||
+    finalization?.planDigest !== plan.planDigest ||
+    !evidenceClosureIdentity
+  )
+    throw new Error("TRAIN_QUALIFICATION_IDENTITY_MISMATCH");
+  car.state = "QUALIFIED";
+  car.reason = "V14_CANDIDATE_RELEASE_GO";
+  car.evidenceClosureIdentity = evidenceClosureIdentity;
+  car.planIdentity = plan.planDigest;
+  car.msesClosureIdentity = plan.semanticPlanDigest ?? car.msesClosureIdentity;
+  next.status = "QUALIFIED";
+  next.updatedAt = timestamp;
+  next.audit.push({ kind: "QUALIFIED", candidateId, planDigest: plan.planDigest, timestamp });
   return sealTrain(next);
 }
 
@@ -414,7 +515,10 @@ export function applyPolicyDrift(
   next.updatedAt = timestamp;
   return sealTrain(next);
 }
-export function reconcileExternalMain(train, { actualMainCommitSha, actualMainTreeSha, timestamp, integrate }) {
+export function reconcileExternalMain(
+  train,
+  { actualMainCommitSha, actualMainTreeSha, earliestAffectedPosition = null, timestamp, integrate },
+) {
   if (!sha(actualMainCommitSha) || !sha(actualMainTreeSha)) throw new Error("TRAIN_ACTUAL_MAIN_IDENTITY_REQUIRED");
   const matching = train.cars.findIndex((car) => car.predictedIntegrationTreeSha === actualMainTreeSha);
   const next = clone(train);
@@ -435,7 +539,21 @@ export function reconcileExternalMain(train, { actualMainCommitSha, actualMainTr
       integrate,
     });
   }
-  return replan(sealTrain(next), { earliestPosition: 0, cause: "EXTERNAL_MAIN_UNEXPECTED", timestamp, integrate });
+  // A caller that has completed the governed semantic comparison may retain a
+  // proven-unaffected prefix. Without that proof, failing closed at zero is
+  // intentional: unknown main movement cannot preserve evidence by wish.
+  const earliest =
+    Number.isInteger(earliestAffectedPosition) &&
+    earliestAffectedPosition >= 0 &&
+    earliestAffectedPosition < next.cars.length
+      ? earliestAffectedPosition
+      : 0;
+  return replan(sealTrain(next), {
+    earliestPosition: earliest,
+    cause: earliest ? "EXTERNAL_MAIN_AFFECTED_SUFFIX" : "EXTERNAL_MAIN_UNEXPECTED",
+    timestamp,
+    integrate,
+  });
 }
 
 export function compareLandedTree(
@@ -483,7 +601,38 @@ export function compareLandedTree(
     policyIdentity: train.policyIdentity,
     timestamp,
   });
-  return { result, code, receipt, authorityBoundary: V14_AUTHORITY_BOUNDARY };
+  return { result, code, receipt, authorityBoundary: V14_TRAIN_AUTHORITY_BOUNDARY };
+}
+
+/** Head-only live landing: compare actual protected-main tree, then replan only its suffix. */
+export function landTrainHead(
+  train,
+  { actualLandedCommitSha, actualLandedTreeSha, mergeStrategyIdentity, timestamp, integrate },
+) {
+  const position = train.headPosition;
+  if (position < 0 || train.cars[position]?.state !== "HEAD_READY") throw new Error("TRAIN_HEAD_NOT_READY");
+  const landing = transitionTrainCar(train, { position, to: "LANDING", timestamp });
+  const comparison = compareLandedTree(landing, {
+    position,
+    actualLandedCommitSha,
+    actualLandedTreeSha,
+    mergeStrategyIdentity,
+    timestamp,
+  });
+  if (comparison.result !== "MATCH") {
+    const next = clone(landing);
+    brake(next, { code: comparison.code, position, timestamp, sourceEvidence: comparison.receipt.id });
+    return { train: sealTrain(next), comparison };
+  }
+  return {
+    train: reconcileExternalMain(landing, {
+      actualMainCommitSha: actualLandedCommitSha,
+      actualMainTreeSha: actualLandedTreeSha,
+      timestamp,
+      integrate,
+    }),
+    comparison,
+  };
 }
 
 export function preemptTrain(train, { emergencyCandidate, timestamp, integrate }) {

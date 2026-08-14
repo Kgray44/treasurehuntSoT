@@ -132,6 +132,63 @@ test("corrective activation preserves v1.3 candidate authority and enables v1.4 
     }),
     "V14_CURRENT",
   );
+  assert.equal(
+    resolvePlanAuthority({
+      authorityIndex,
+      gateId: "mainline",
+      authorityMode: "V14_CANDIDATE",
+      githubRef: "refs/heads/main",
+      qualifiedBaseSha: "b173b34fdce46c1a6d029c9955e946a1d5156b63",
+    }),
+    "V14_CANDIDATE",
+  );
+  assert.throws(
+    () =>
+      resolvePlanAuthority({
+        authorityIndex,
+        gateId: "mainline",
+        authorityMode: "V14_CANDIDATE",
+        githubRef: candidateRef,
+        qualifiedBaseSha: "b173b34fdce46c1a6d029c9955e946a1d5156b63",
+      }),
+    /V14_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED/u,
+  );
+});
+
+test("ordinary V14_CANDIDATE planning uses the impact-selected v1.4 mainline path without claiming CURRENT", async () => {
+  const sourceSha = (await execute("git", ["rev-parse", "HEAD"], { cwd: root })).stdout.trim();
+  const qualifiedBaseSha = (await execute("git", ["rev-parse", "HEAD^"], { cwd: root })).stdout.trim();
+  const authorityIndex = JSON.parse(
+    await readFile(path.join(root, "testing", "sounding-line-authority.json"), "utf8"),
+  );
+  const plan = await buildPlan({
+    root,
+    gateId: "mainline",
+    sourceSha,
+    qualifiedBaseSha,
+    authorityMode: "V14_CANDIDATE",
+    githubRef: "refs/heads/main",
+  });
+  assert.equal(plan.version, 14);
+  assert.equal(plan.authorityMode, "V14_CANDIDATE");
+  assert.equal(plan.authorityBoundary, "V14_CANDIDATE_QUALIFICATION");
+  assert.equal(plan.sourceSha, sourceSha);
+  assert.equal(plan.qualifiedBaseSha, qualifiedBaseSha);
+  assert.match(plan.candidateTreeSha, /^[0-9a-f]{40}$/u);
+  assert.match(plan.qualifiedBaseTreeSha, /^[0-9a-f]{40}$/u);
+  assert.match(plan.predictedIntegrationTreeSha, /^[0-9a-f]{40}$/u);
+  assert.ok(plan.semanticPlanDigest);
+  assert.throws(
+    () =>
+      resolvePlanAuthority({
+        authorityIndex,
+        gateId: "mainline",
+        authorityMode: "V14_CANDIDATE",
+        githubRef: "refs/heads/ordinary-feature",
+        qualifiedBaseSha,
+      }),
+    /V14_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED/u,
+  );
 });
 
 test("only the finalizer produces an accepted decision from source-bound clean receipts", () => {
@@ -229,12 +286,18 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
   assert.doesNotMatch(authoritative, /^\s{2}(?:pull_request|push):/mu, "AUTHORITATIVE_DEBUG_TRIGGER_FORBIDDEN");
   assert.match(authoritative, /workflow_dispatch:\s*\n\s+inputs:\s*\n\s+gate:/u);
   assert.match(authoritative, /options: \[mainline, release-candidate\]/u);
-  assert.match(authoritative, /authority_mode:[\s\S]*?options: \[current, v13-cutover\]/u);
+  assert.match(authoritative, /authority_mode:[\s\S]*?options: \[current, candidate, v13-cutover\]/u);
   assert.match(authoritative, /SOUNDING_LINE_V13_CUTOVER_MAINLINE_ONLY/u);
   assert.match(authoritative, /SOUNDING_LINE_AUTHORITY_MODE_INVALID/u);
   assert.match(authoritative, /authorityMode=\$\(if \(\$authorityMode -eq 'v13-cutover'\)/u);
   assert.match(authoritative, /candidate_sha:[\s\S]*?required: true[\s\S]*?type: string/u);
+  assert.match(authoritative, /candidate_ref:[\s\S]*?type: string/u);
+  assert.match(authoritative, /group: sounding-line-authoritative-\$\{\{ github\.workflow \}\}-\$\{\{ inputs\.candidate_sha \}\}/u);
   assert.match(authoritative, /SOUNDING_LINE_FROZEN_CANDIDATE_SHA_MISMATCH/u);
+  assert.match(authoritative, /SOUNDING_LINE_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED/u);
+  assert.match(authoritative, /SOUNDING_LINE_CANDIDATE_REF_HEAD_MISMATCH/u);
+  assert.match(authoritative, /SOUNDING_LINE_ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED/u);
+  assert.match(authoritative, /SOUNDING_LINE_ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED/u);
   assert.match(
     authoritative,
     /if \(\$prNumber -and -not \$baseSha\) \{ throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_BASE_REQUIRED" \}/u,
@@ -250,7 +313,7 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
     /if \(\$authorityMode -eq 'v13-cutover' -and \(-not \$prNumber -or -not \$baseSha\)\) \{ throw "SOUNDING_LINE_V13_CUTOVER_ACCEPTANCE_ENVELOPE_REQUIRED" \}/u,
     "V13_CUTOVER_ENVELOPE_REMAINS_REQUIRED",
   );
-  assert.match(authoritative, /sourceSha:process\.env\.GITHUB_SHA/u);
+  assert.match(authoritative, /sourceSha:process\.env\.SOUNDING_LINE_CANDIDATE_SHA/u);
   assert.match(
     authoritative,
     /SOUNDING_LINE_GATE: \$\{\{ steps\.gate\.outputs\.value \}\}\s*\n\s*SOUNDING_LINE_BASE_SHA: \$\{\{ steps\.base\.outputs\.value \}\}/u,
@@ -260,12 +323,23 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
   assert.match(authoritative, /authorityMode:process\.env\.SOUNDING_LINE_AUTHORITY_MODE/u);
   const planner = await readFile(path.join(root, "scripts", "sounding-line", "planner.mjs"), "utf8");
   assert.match(planner, /V14_CURRENT_AUTHORITY_REQUIRES_PROTECTED_MAIN/u);
+  assert.match(planner, /V14_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED/u);
   assert.match(authoritative, /Sounding Line \/ \$\{\{ needs\.plan\.outputs\.gate/u);
   assert.match(authoritative, /gate: \$\{\{ needs\.plan\.outputs\.gate \}\}/u);
   assert.match(focused, /type: string/u);
   assert.match(focused, /focused-selection\.mjs/u);
   assert.match(focused, /uses: \.\/\.github\/workflows\/sounding-line-governed-worker\.yml/u);
   assert.doesNotMatch(focused, /finalize-ci\.mjs|finalizer\.mjs|Sounding Line \/ Mainline Decision|RELEASE_GO/u);
+  const binding = await readFile(
+    path.join(root, ".github", "workflows", "sounding-line-protected-merge-binding.yml"),
+    "utf8",
+  );
+  assert.match(binding, /V14_CANDIDATE is deliberately dispatched from trusted main/u);
+  assert.match(binding, /sounding-line-acceptance-envelope/u);
+  assert.match(binding, /sounding-line-train-acceptance-envelope/u);
+  assert.match(binding, /sounding-line-mainline-train\.yml/u);
+  assert.match(binding, /envelope\.candidateSha -eq \$env:CANDIDATE_SHA/u);
+  assert.match(binding, /qualified-base to[\s\S]*?current-base interval itself/u);
 });
 
 test("BrowserOnly Harborlight lanes do not repeat independent broad gates", async () => {
@@ -331,7 +405,28 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   assert.doesNotMatch(worker, /SOUNDING_LINE_SUITE -like 'browser\.\*'/u);
   assert.doesNotMatch(worker, /playwright install chromium webkit/u);
   assert.match(worker, /inputs\.gate/u);
-  assert.match(worker, /ref: \$\{\{ github\.event\.inputs\.candidate_sha \}\}/u);
+  assert.match(worker, /ref: \$\{\{ inputs\.candidate_sha \}\}/u);
+  assert.match(worker, /plan_artifact:[\s\S]*?default: sounding-line-plan/u);
+  assert.match(worker, /prepared_artifact:[\s\S]*?default: sounding-line-prepared-dependency/u);
+  assert.match(worker, /prepared_path:[\s\S]*?Relative prepared dependency-layer path/u);
+  assert.match(worker, /receipt_artifact:[\s\S]*?unique artifact name/u);
+  assert.match(worker, /execution_sha:[\s\S]*?sealed predicted integration commit/u);
+  assert.match(worker, /GOVERNED_INTEGRATION_BUNDLE_FETCH_FAILED/u);
+  assert.match(worker, /GOVERNED_WORKER_EXECUTION_CHECKOUT_MISMATCH/u);
+  const trainWorkflow = await readFile(
+    path.join(root, ".github", "workflows", "sounding-line-mainline-train.yml"),
+    "utf8",
+  );
+  assert.match(trainWorkflow, /name: Sounding Line mainline train/u);
+  assert.match(trainWorkflow, /TRAIN_CANDIDATE_REF_HEAD_MISMATCH/u);
+  assert.match(trainWorkflow, /issues\?state=open/u);
+  assert.match(trainWorkflow, /Where-Object \{ \$null -ne \$_\.pull_request \}/u);
+  assert.match(trainWorkflow, /mainline-train-cli\.mjs admit/u);
+  assert.match(trainWorkflow, /mainline-train-prepare\.mjs/u);
+  assert.match(trainWorkflow, /sounding-line-train-wave\.yml/u);
+  assert.match(trainWorkflow, /Finalize exact predicted-tree candidate evidence/u);
+  assert.match(trainWorkflow, /merge-train-qualifications\.mjs/u);
+  assert.match(trainWorkflow, /TRAIN_LIVE_BOUNDARY_REQUIRED/u);
   assert.match(worker, /GOVERNED_WORKER_CANDIDATE_CHECKOUT_MISMATCH/u);
   assert.match(worker, /timeout-minutes: 120/u);
   assert.match(adapters, /taskkill", \["\/pid", String\(child\.pid\), "\/T", "\/F"\]/u);
