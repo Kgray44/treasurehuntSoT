@@ -27,6 +27,11 @@
     "suiteId": "unit.sounding-line",
     "failureMode": "FAIL_CLOSED"
   },
+  "hostedExecutionCapacity": {
+    "maximumWave": 5,
+    "minimumHeadroom": 2,
+    "enforcement": "FAIL_CLOSED_STATIC_QUALIFICATION"
+  },
   "governingPolicies": {
     "proofMinimization": "MINIMUM_SUFFICIENT_EVIDENCE",
     "semanticInvalidation": "EVIDENCE_PRESERVATION_REQUIRED",
