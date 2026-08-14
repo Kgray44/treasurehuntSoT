@@ -36,6 +36,15 @@ test("v1.4 hosted plan carries the semantic plan and worker-compatible dependenc
   for (const node of plan.nodes)
     for (const dependency of node.dependencies)
       assert.ok(plan.nodes.find((candidate) => candidate.id === dependency).execution.wave < node.execution.wave);
+  for (const node of plan.nodes.filter((candidate) => candidate.adapter === "playwright-family")) {
+    const selectedEngines = new Set(
+      registry.cases
+        .filter((entry) => entry.suiteId === node.id)
+        .flatMap((entry) => entry.resources.filter((resource) => resource.startsWith("browser-"))),
+    );
+    for (const engine of selectedEngines)
+      assert.ok(node.resources.includes(engine), `hosted node ${node.id} omits ${engine}`);
+  }
 });
 
 test("v1.4 current authority is restricted to protected main while v1.3 cutover remains pre-activation only", () => {
