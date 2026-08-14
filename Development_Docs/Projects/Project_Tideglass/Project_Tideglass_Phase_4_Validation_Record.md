@@ -94,3 +94,14 @@ component suites (3 files, 8 tests) passed under Node `24.19.0`; repository
 TypeScript, documentation validation, Feature Catalog validation, and
 `git diff --check` passed. This entry neither records owner acceptance nor
 authorizes a Mainline Decision, protected merge, or completion receipt.
+
+The full current-main rebound ran after that reconciliation at
+`c502d842ff467934413d5b866b82bdb0fdd92e0b`. Its isolated production build and
+one A--L browser journey passed against a fresh `tideglass-phase4-v2` fixture
+with the same checksum. The new manifest is
+`C:\Users\kgray\AppData\Local\ProjectTideglass\phase4-candidate-c502d84-v14\browser\evidence\manifest.json`.
+The build retained the known non-failing Turbopack NFT warning from
+`next.config.ts` through Community voyage-log media routing; Phase 4 did not
+introduce or suppress that warning. This local rebound remains qualification
+evidence only and is held for a future exact-candidate v1.4 decision after the
+owner decision and separate v1.4 post-cutover closure are both green.
