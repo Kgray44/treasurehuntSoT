@@ -59,6 +59,17 @@
         }
       }
     },
+    "localQualification": {
+      "type": "object",
+      "required": ["state", "mainlineState", "acceptanceLane", "holdReason"]
+    },
+    "backendSurfaceDispositions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "capabilityId", "featureCatalogId", "canonicalOwner", "rationale"]
+      }
+    },
     "phase5ImpactDeclaration": { "$ref": "./deepwater-capability-impact.schema.json" }
   }
 }

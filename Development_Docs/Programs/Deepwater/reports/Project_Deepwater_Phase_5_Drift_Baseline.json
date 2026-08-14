@@ -831,6 +831,11 @@
       "path": "src/app/api/helper/verification/route.ts"
     },
     {
+      "id": "API_ROUTE:src/app/api/internal/bridgewatch/authorize/route.ts",
+      "kind": "API_ROUTE",
+      "path": "src/app/api/internal/bridgewatch/authorize/route.ts"
+    },
+    {
       "id": "API_ROUTE:src/app/api/invitations/accept/route.ts",
       "kind": "API_ROUTE",
       "path": "src/app/api/invitations/accept/route.ts"
@@ -2884,7 +2889,7 @@
       "evidence": {
         "disposition": "BOUNDARY_CONFIRMED",
         "family": null,
-        "sourceSha": "60b89841986e66fbc2c0828489d38002a1617506",
+        "sourceSha": "268932d630ee0ea1721d0072da4041f7209b7464",
         "status": "BOUNDARY_CONFIRMED"
       },
       "featureCatalogId": null,
@@ -3319,7 +3324,7 @@
       "evidence": {
         "disposition": "BOUNDARY_CONFIRMED",
         "family": null,
-        "sourceSha": "60b89841986e66fbc2c0828489d38002a1617506",
+        "sourceSha": "268932d630ee0ea1721d0072da4041f7209b7464",
         "status": "BOUNDARY_CONFIRMED"
       },
       "featureCatalogId": null,
@@ -3362,7 +3367,7 @@
       "evidence": {
         "disposition": "BOUNDARY_CONFIRMED",
         "family": null,
-        "sourceSha": "60b89841986e66fbc2c0828489d38002a1617506",
+        "sourceSha": "268932d630ee0ea1721d0072da4041f7209b7464",
         "status": "BOUNDARY_CONFIRMED"
       },
       "featureCatalogId": null,
@@ -3737,7 +3742,7 @@
       "evidence": {
         "disposition": "BOUNDARY_CONFIRMED",
         "family": null,
-        "sourceSha": "60b89841986e66fbc2c0828489d38002a1617506",
+        "sourceSha": "268932d630ee0ea1721d0072da4041f7209b7464",
         "status": "BOUNDARY_CONFIRMED"
       },
       "featureCatalogId": "FT-028",
@@ -3781,7 +3786,7 @@
       "evidence": {
         "disposition": "BOUNDARY_CONFIRMED",
         "family": null,
-        "sourceSha": "60b89841986e66fbc2c0828489d38002a1617506",
+        "sourceSha": "268932d630ee0ea1721d0072da4041f7209b7464",
         "status": "BOUNDARY_CONFIRMED"
       },
       "featureCatalogId": "FT-032",
@@ -4362,7 +4367,7 @@
       "evidence": {
         "disposition": "BOUNDARY_CONFIRMED",
         "family": null,
-        "sourceSha": "60b89841986e66fbc2c0828489d38002a1617506",
+        "sourceSha": "268932d630ee0ea1721d0072da4041f7209b7464",
         "status": "BOUNDARY_CONFIRMED"
       },
       "featureCatalogId": "FT-033",
@@ -5354,7 +5359,7 @@
       "evidence": {
         "disposition": "BOUNDARY_CONFIRMED",
         "family": null,
-        "sourceSha": "60b89841986e66fbc2c0828489d38002a1617506",
+        "sourceSha": "268932d630ee0ea1721d0072da4041f7209b7464",
         "status": "BOUNDARY_CONFIRMED"
       },
       "featureCatalogId": null,
@@ -5634,7 +5639,7 @@
       "evidence": {
         "disposition": "BOUNDARY_CONFIRMED",
         "family": null,
-        "sourceSha": "60b89841986e66fbc2c0828489d38002a1617506",
+        "sourceSha": "268932d630ee0ea1721d0072da4041f7209b7464",
         "status": "BOUNDARY_CONFIRMED"
       },
       "featureCatalogId": null,
@@ -6613,7 +6618,7 @@
       "evidence": {
         "disposition": "BOUNDARY_CONFIRMED",
         "family": null,
-        "sourceSha": "60b89841986e66fbc2c0828489d38002a1617506",
+        "sourceSha": "268932d630ee0ea1721d0072da4041f7209b7464",
         "status": "BOUNDARY_CONFIRMED"
       },
       "featureCatalogId": "FT-B009",
@@ -7985,6 +7990,7 @@
       "route-route-api-helper-pair-pairingid",
       "route-route-api-helper-status",
       "route-route-api-helper-verification",
+      "route-route-api-internal-bridgewatch-authorize",
       "route-route-api-invitations-accept",
       "route-route-api-invitations-code",
       "route-route-api-invitations-decline",
@@ -8053,6 +8059,7 @@
       "route-route-api-studio-tales-taleid-draft",
       "route-route-api-studio-tales-taleid-graph-survey",
       "route-route-api-studio-tales-taleid-library",
+      "route-route-api-studio-tales-taleid-migrations-blockid",
       "route-route-api-studio-tales-taleid-preview",
       "route-route-api-studio-tales-taleid-publish",
       "route-route-api-studio-tales-taleid-repairs-blockid",
@@ -8083,6 +8090,7 @@
       "route-route-api-tales-taleslug-start",
       "route-route-api-tideglass-chronicles-taleslug",
       "route-route-api-webhooks-postmark",
+      "route-route-bridgewatch-path",
       "route-route-join-token"
     ],
     "screenIds": [
@@ -8212,5 +8220,5 @@
     "accepted": true,
     "branch": "origin/main"
   },
-  "sourceSha": "60b89841986e66fbc2c0828489d38002a1617506"
+  "sourceSha": "268932d630ee0ea1721d0072da4041f7209b7464"
 }

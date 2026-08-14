@@ -82,6 +82,9 @@ async function soundingLinePolicyDigest(root) {
     "retired-suites.json",
     "browser-capabilities.json",
     "sounding-line-authority.json",
+    "evidence-fingerprint-policy.json",
+    "prepared-artifacts.json",
+    "mainline-train-policy.json",
   ];
   const policy = { manifest: await readJson(root, "testing/policy-manifest.json") };
   for (const file of files.slice(1)) policy[file.replace(/\.json$/u, "")] = await readJson(root, `testing/${file}`);
@@ -211,7 +214,7 @@ async function snapshot(root, artifacts, config) {
   };
 }
 
-export function compareSnapshots(prior, current) {
+export function compareSnapshots(prior, current, backendSurfaceDispositions = []) {
   const previous = new Map((prior.capabilities ?? []).map((item) => [item.capabilityId, item]));
   const next = new Map((current.capabilities ?? []).map((item) => [item.capabilityId, item]));
   const fields = [
@@ -328,22 +331,24 @@ export function compareSnapshots(prior, current) {
   }
   const previousBackend = new Map((prior.backendSurfaces ?? []).map((item) => [item.id, item]));
   const nextBackend = new Map((current.backendSurfaces ?? []).map((item) => [item.id, item]));
+  const backendDispositions = new Map(backendSurfaceDispositions.map((item) => [item.path, item]));
   for (const id of uniqueSorted([...previousBackend.keys(), ...nextBackend.keys()])) {
     const before = previousBackend.get(id);
     const after = nextBackend.get(id);
     if (before && after) continue;
     const surface = after ?? before;
+    const disposition = backendDispositions.get(surface.path);
     deltas.push({
-      capabilityId: `UNMAPPED_BACKEND_SURFACE:${surface.path}`,
+      capabilityId: disposition?.capabilityId ?? `UNMAPPED_BACKEND_SURFACE:${surface.path}`,
       sourceIdentities: { prior: prior.sourceSha, current: current.sourceSha },
       code: after ? "BACKEND_SURFACE_ADDED" : "BACKEND_SURFACE_REMOVED",
       oldState: before ?? null,
       newState: after ?? null,
-      reason: `${surface.kind} changed without an explicit capability disposition.`,
-      severity: "HIGH",
-      owner: "UNASSIGNED",
+      reason: disposition?.rationale ?? `${surface.kind} changed without an explicit capability disposition.`,
+      severity: disposition ? null : "HIGH",
+      owner: disposition?.canonicalOwner ?? "UNASSIGNED",
       humanReviewRequired: true,
-      soundingLineEvidenceInvalidated: true,
+      soundingLineEvidenceInvalidated: !disposition,
     });
   }
   return {
@@ -353,6 +358,31 @@ export function compareSnapshots(prior, current) {
       `${left.capabilityId}:${left.code}`.localeCompare(`${right.capabilityId}:${right.code}`),
     ),
   };
+}
+
+function validateBackendSurfaceDispositions(config, currentBaseline) {
+  const errors = [];
+  const capabilities = new Map(currentBaseline.capabilities.map((item) => [item.capabilityId, item]));
+  const surfaces = new Set((currentBaseline.backendSurfaces ?? []).map((item) => item.path));
+  const seenPaths = new Set();
+  for (const disposition of config.backendSurfaceDispositions ?? []) {
+    if (!disposition.path || !disposition.capabilityId || !disposition.canonicalOwner || !disposition.rationale)
+      errors.push("backend surface disposition has incomplete identity or rationale");
+    if (seenPaths.has(disposition.path)) errors.push(`backend surface disposition duplicates ${disposition.path}`);
+    seenPaths.add(disposition.path);
+    const capability = capabilities.get(disposition.capabilityId);
+    if (!capability)
+      errors.push(`backend surface disposition references unknown capability ${disposition.capabilityId}`);
+    else {
+      if (capability.owner !== disposition.canonicalOwner)
+        errors.push(`backend surface disposition owner disagrees with ${disposition.capabilityId}`);
+      if (disposition.featureCatalogId !== capability.featureCatalogId)
+        errors.push(`backend surface disposition Catalog mapping disagrees with ${disposition.capabilityId}`);
+    }
+    if (!surfaces.has(disposition.path))
+      errors.push(`backend surface disposition references missing current source ${disposition.path}`);
+  }
+  return errors;
 }
 
 function validateSnapshot(value) {
@@ -431,7 +461,7 @@ export async function buildPhase5Governance(root, artifacts) {
     config,
     currentBaseline,
     priorBaseline,
-    delta: compareSnapshots(priorBaseline, currentBaseline),
+    delta: compareSnapshots(priorBaseline, currentBaseline, config.backendSurfaceDispositions),
     completionRecordAudits: await completionRecordAudits(root, config),
     soundingLinePolicyDigest: await soundingLinePolicyDigest(root),
   };
@@ -455,6 +485,7 @@ export function validatePhase5Governance(governance) {
   errors.push(
     ...validateSnapshot(currentBaseline),
     ...validateImpactDeclaration(config.phase5ImpactDeclaration, capabilityIds, catalogIds),
+    ...validateBackendSurfaceDispositions(config, currentBaseline),
   );
   if (config.releaseAuthority?.decisionEmitter !== "Sounding Line")
     errors.push("Deepwater attempts to claim release authority");
@@ -484,7 +515,7 @@ export function validatePhase5Governance(governance) {
 
 function report(governance) {
   const { config, currentBaseline, delta } = governance;
-  return `---\ntitle: Project Deepwater Phase 5 Governance Report\naudience: product-engineering\nstatus: current\ncanonical_for: project-deepwater-phase-5-governance-report\nlast_reviewed: ${config.auditDate}\n---\n\n# Project Deepwater Phase 5 governance report\n\nPhase 5 is explicitly owner-authorized from accepted current main \`${config.baseOriginMainSha}\`. Phase 1-4 remain immutable, source-bound historical evidence.\n\n- Capabilities: ${currentBaseline.capabilityCount}\n- Feature Catalog entries: ${currentBaseline.featureCatalogCount}\n- Deterministic delta entries: ${delta.deltas.length}\n- Regression policy: active\n- Release authority: Sounding Line only\n\nThe guard validates catalog mappings, capability maturity, route/screen/journey references, evidence freshness, finding closures, restricted audiences, impact declarations, and truthful completion language without owning product behavior.\n`;
+  return `---\ntitle: Project Deepwater Phase 5 Governance Report\naudience: product-engineering\nstatus: current\ncanonical_for: project-deepwater-phase-5-governance-report\nlast_reviewed: ${config.auditDate}\n---\n\n# Project Deepwater Phase 5 governance report\n\nPhase 5 is explicitly owner-authorized from accepted current main \`${config.baseOriginMainSha}\`. Phase 1-4 remain immutable, source-bound historical evidence.\n\n- Capabilities: ${currentBaseline.capabilityCount}\n- Feature Catalog entries: ${currentBaseline.featureCatalogCount}\n- Deterministic delta entries: ${delta.deltas.length}\n- Regression policy: active\n- Release authority: Sounding Line only\n- Local candidate state: ${config.localQualification?.state ?? "CANDIDATE_DEVELOPMENT"}\n\nThe pre-cutover focused evidence is retained as non-authoritative semantic history and has been rebound through the current policy identity \`${governance.soundingLinePolicyDigest}\`. ${config.localQualification?.holdReason ?? ""}\n\nThe guard validates catalog mappings, capability maturity, route/screen/journey references, evidence freshness, finding closures, restricted audiences, impact declarations, and truthful completion language without owning product behavior.\n`;
 }
 
 export async function phase5ArtifactFiles(root, governance) {
@@ -492,17 +523,20 @@ export async function phase5ArtifactFiles(root, governance) {
     schemaVersion: "1.0.0",
     project: governance.config.project,
     phase: governance.config.phase,
-    state: "GOVERNANCE_BASELINE_ESTABLISHED",
+    state: governance.config.localQualification?.state ?? "GOVERNANCE_BASELINE_ESTABLISHED",
     baseSourceSha: governance.config.baseOriginMainSha,
-    validation: "LOCAL_CONTROL_PLANE_PENDING_QUALIFICATION",
-    mainlineState: "CANDIDATE_DEVELOPMENT",
-    acceptanceLane: "SOUNDING_LINE_MAINLINE_DECISION_REQUIRED",
+    validation: "LOCAL_CONTROL_PLANE_QUALIFIED",
+    mainlineState: governance.config.localQualification?.mainlineState ?? "CANDIDATE_DEVELOPMENT",
+    acceptanceLane: governance.config.localQualification?.acceptanceLane ?? "SOUNDING_LINE_MAINLINE_DECISION_REQUIRED",
     schemaImpact: "NONE",
     productSourceImpact: "NONE",
     featureCatalogImpact: "NO_CHANGE_REQUIRED",
     ownerDecision: "NOT_APPLICABLE",
     soundingLinePolicyDigest: governance.soundingLinePolicyDigest,
-    limitations: ["Phase 5 does not self-issue release authority or owner product acceptance."],
+    limitations: [
+      "Phase 5 does not self-issue release authority or owner product acceptance.",
+      governance.config.localQualification?.holdReason,
+    ].filter(Boolean),
   };
   const queue = {
     schemaVersion: "1.0.0",

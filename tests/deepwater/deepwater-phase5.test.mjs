@@ -130,6 +130,31 @@ test("Phase 5 identifies unreviewed backend surface drift", () => {
   assert.equal(removed?.soundingLineEvidenceInvalidated, true);
 });
 
+test("Phase 5 records an explicit governed backend-surface adoption without masking unmapped drift", () => {
+  const current = clone(baseline.currentBaseline);
+  const added = {
+    id: "API_ROUTE:src/app/api/internal/example/route.ts",
+    kind: "API_ROUTE",
+    path: "src/app/api/internal/example/route.ts",
+  };
+  current.backendSurfaces.push(added);
+  const dispositions = [
+    {
+      path: added.path,
+      capabilityId: "DW-CAP-BRIDGEWATCH-GOVERNED-SIGNAL-PROJECTION",
+      featureCatalogId: "FT-035",
+      canonicalOwner: "Project Bridgewatch",
+      rationale: "The private authorization probe extends the existing restricted Bridgewatch projection.",
+    },
+  ];
+  const delta = compareSnapshots(baseline.currentBaseline, current, dispositions);
+  const governed = delta.deltas.find((item) => item.newState?.path === added.path);
+  assert.equal(governed?.capabilityId, "DW-CAP-BRIDGEWATCH-GOVERNED-SIGNAL-PROJECTION");
+  assert.equal(governed?.owner, "Project Bridgewatch");
+  assert.equal(governed?.severity, null);
+  assert.equal(governed?.soundingLineEvidenceInvalidated, false);
+});
+
 test("Phase 5 rejects governed completion records without an impact declaration or with an overclaim", () => {
   const missing = clone(baseline);
   missing.completionRecordAudits = [
@@ -146,9 +171,16 @@ test("Phase 5 rejects governed completion records without an impact declaration 
 
 test("Phase 5 requires an owner and closure lifecycle for continuous governance blockers", () => {
   const candidate = clone(baseline);
-  candidate.config.continuousGovernance.openItems[0].owner = "";
-  candidate.config.continuousGovernance.openItems[0].closureRequirement = "";
-  candidate.config.continuousGovernance.openItems[0].retryTrigger = "";
+  candidate.config.continuousGovernance.openItems.push({
+    findingId: "DW-P5-MALFORMED-BLOCKER",
+    severity: "HIGH",
+    owner: "",
+    status: "OPEN",
+    source: "test",
+    evidence: "test",
+    closureRequirement: "",
+    retryTrigger: "",
+  });
   const errors = validatePhase5Governance(candidate);
   includes(errors, "continuous-governance item has incomplete identity or evidence");
   includes(errors, "continuous-governance item lacks closure lifecycle");

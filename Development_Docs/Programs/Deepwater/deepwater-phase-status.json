@@ -1,18 +1,19 @@
 {
-  "acceptanceLane": "SOUNDING_LINE_MAINLINE_DECISION_REQUIRED",
-  "baseSourceSha": "60b89841986e66fbc2c0828489d38002a1617506",
+  "acceptanceLane": "SOUNDING_LINE_V14_MAINLINE_DECISION_REQUIRED_AFTER_POST_CUTOVER_CLOSURE",
+  "baseSourceSha": "268932d630ee0ea1721d0072da4041f7209b7464",
   "featureCatalogImpact": "NO_CHANGE_REQUIRED",
   "limitations": [
-    "Phase 5 does not self-issue release authority or owner product acceptance."
+    "Phase 5 does not self-issue release authority or owner product acceptance.",
+    "Sounding Line v1.4 is active, but its independent hosted browser-fixture post-cutover self-verification remains open. This phase must not dispatch an authoritative decision or merge until that closure is confirmed green."
   ],
-  "mainlineState": "CANDIDATE_DEVELOPMENT",
+  "mainlineState": "HOLD_V14_POSTCUTOVER_CLOSURE",
   "ownerDecision": "NOT_APPLICABLE",
   "phase": "Phase 5 - Keep the Soundings",
   "productSourceImpact": "NONE",
   "project": "Project Deepwater",
   "schemaImpact": "NONE",
   "schemaVersion": "1.0.0",
-  "soundingLinePolicyDigest": "b2f365b10769b09c92e93226ec6633c673cc4be1e6eb0821e49c4c45c9ca7d99",
-  "state": "GOVERNANCE_BASELINE_ESTABLISHED",
-  "validation": "LOCAL_CONTROL_PLANE_PENDING_QUALIFICATION"
+  "soundingLinePolicyDigest": "ffe5734091a96b34ca6ecbc077cc46ff99f74ace22ec50a671ed453abd0c509e",
+  "state": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
+  "validation": "LOCAL_CONTROL_PLANE_QUALIFIED"
 }

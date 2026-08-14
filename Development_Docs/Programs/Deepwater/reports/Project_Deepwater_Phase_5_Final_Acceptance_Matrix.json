@@ -2,34 +2,51 @@
   "schemaVersion": "1.0.0",
   "project": "Project Deepwater",
   "phase": "Phase 5 - Keep the Soundings",
-  "sourceSha": "60b89841986e66fbc2c0828489d38002a1617506",
-  "state": "CANDIDATE_DEVELOPMENT",
+  "sourceSha": "268932d630ee0ea1721d0072da4041f7209b7464",
+  "state": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
   "checks": [
     { "id": "P5-AUTHORIZATION", "state": "PASSED", "evidence": "Explicit owner prompt, 2026-08-13" },
-    { "id": "P5-CURRENT-BASELINE", "state": "PASSED", "evidence": "Project_Deepwater_Phase_5_Drift_Baseline.json" },
-    { "id": "P5-DETERMINISTIC-DELTA", "state": "PASSED", "evidence": "deepwater:drift semantic digest" },
-    { "id": "P5-REGRESSION-MUTATIONS", "state": "PASSED", "evidence": "tests/deepwater/deepwater-phase5.test.mjs" },
+    {
+      "id": "P5-CURRENT-BASELINE",
+      "state": "PASSED",
+      "evidence": "Project_Deepwater_Phase_5_Drift_Baseline.json, rebound to origin/main 268932d630ee0ea1721d0072da4041f7209b7464"
+    },
+    {
+      "id": "P5-DETERMINISTIC-DELTA",
+      "state": "PASSED",
+      "evidence": "deepwater:drift semantic digest 5da4d243b4e1072efafebf3fb6f1c88e1995aea9fe8f50e99634ddb5674c61e1"
+    },
+    {
+      "id": "P5-REGRESSION-MUTATIONS",
+      "state": "PASSED",
+      "evidence": "11 resumed Phase 5 mutations passed; 76 pre-cutover focused tests preserved as semantic history"
+    },
     {
       "id": "P5-FEATURE-CATALOG-GUARD",
       "state": "PASSED",
-      "evidence": "scripts/features/validate-feature-catalog.ts, current accepted baseline"
+      "evidence": "scripts/features/build-feature-catalog.ts and scripts/features/validate-feature-catalog.ts, 48 entries"
     },
     {
       "id": "P5-SOUNDING-LINE-POLICY",
       "state": "PASSED",
-      "evidence": "scripts/sounding-line/cli.mjs validate-policy and tests/sounding-line/phase3.test.mjs"
+      "evidence": "scripts/sounding-line/cli.mjs validate-policy; v1.4 policy digest ffe5734091a96b34ca6ecbc077cc46ff99f74ace22ec50a671ed453abd0c509e"
     },
     {
       "id": "P5-HOMEPORT-INVENTORY",
-      "state": "BLOCKED_CURRENT_MAIN_INVENTORY_MISMATCH",
-      "evidence": "validate-phase5-reachability: INVENTORY_SOURCE_MISSING studio tale migration route"
+      "state": "PASSED_CURRENT_MAIN_RECONCILIATION",
+      "evidence": "validate-phase5-reachability passed after accepted current-main 6212bd1a updates the Homeport Route Inventory; 355 sources and zero unexplained ordinary orphans"
     },
     {
       "id": "P5-REPOSITORY-TYPECHECK",
-      "state": "BLOCKED_LOCAL_TOOLCHAIN_CONFIGURATION",
-      "evidence": "missing optional Bridgewatch workspace packages and Vitest matcher ambient types; Prisma clients generated locally"
+      "state": "NOT_CLAIMED_BOUNDED_LOCAL_CHECK",
+      "evidence": "Bridgewatch frozen-lockfile restore, typecheck, and 42-test suite passed; repository-wide tsc produced no result within the bounded local check window"
     },
-    { "id": "P5-SOUNDING-LINE-DECISION", "state": "PENDING_QUALIFICATION", "evidence": null },
+    {
+      "id": "P5-V14-POSTCUTOVER-CLOSURE",
+      "state": "BLOCKED_EXTERNAL_V14_CLOSURE",
+      "evidence": "Independent hosted browser-fixture post-cutover self-verification remains open; no authoritative decision may be dispatched."
+    },
+    { "id": "P5-SOUNDING-LINE-DECISION", "state": "HELD_PENDING_V14_POSTCUTOVER_CLOSURE", "evidence": null },
     { "id": "P5-PROTECTED-MERGE", "state": "PENDING_QUALIFICATION", "evidence": null },
     { "id": "P5-EXACT-MAIN-PROOF", "state": "PENDING_QUALIFICATION", "evidence": null }
   ]
