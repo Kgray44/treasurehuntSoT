@@ -15,12 +15,13 @@ test("workflow dependency layers bind source inputs and rehash every transferred
   const fixture = await mkdtemp(path.join(os.tmpdir(), "sounding-line-layer-"));
   await writeFile(path.join(fixture, "module.js"), "export const immutable = true;\n", "utf8");
   const previous = process.env.SOUNDING_LINE_NPM_VERSION;
+  const producer = `protected-authoritative-workflow:${process.env.GITHUB_RUN_ID ?? "test-run"}`;
   process.env.SOUNDING_LINE_NPM_VERSION = "test-npm";
   try {
     const manifest = await createDependencyLayerManifest({
       root,
       sourceDirectory: fixture,
-      producer: "protected-authoritative-workflow:test-run",
+      producer,
       expiresAt: "2099-01-01T00:00:00.000Z",
     });
     const verified = await verifyDependencyLayer({ root, sourceDirectory: fixture, manifest });
