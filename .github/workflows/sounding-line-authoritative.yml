@@ -131,7 +131,7 @@ jobs:
       - run: node scripts/sounding-line/p34-retirement.mjs
       - env:
           SOUNDING_LINE_GATE: ${{ steps.gate.outputs.value }}
-          SOUNDING_LINE_BASE_SHA: ${{ inputs.base_sha }}
+          SOUNDING_LINE_BASE_SHA: ${{ steps.base.outputs.value }}
           SOUNDING_LINE_AUTHORITY_MODE: ${{ steps.gate.outputs.authorityMode }}
         run: node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:process.env.SOUNDING_LINE_GATE,serial:false,sourceSha:process.env.GITHUB_SHA,qualifiedBaseSha:process.env.SOUNDING_LINE_BASE_SHA,authorityMode:process.env.SOUNDING_LINE_AUTHORITY_MODE}),null,2)))" > sounding-line-plan.json
       - name: Seal immutable dependency layer
