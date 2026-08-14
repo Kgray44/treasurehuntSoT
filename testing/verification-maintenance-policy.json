@@ -22,6 +22,7 @@
     "testing/sounding-line-authority.json",
     "scripts/sounding-line/verification-maintenance.mjs",
     "scripts/sounding-line/maintenance-protected-binding.mjs",
+    "scripts/sounding-line/maintenance-authority-selection.mjs",
     "scripts/sounding-line/planner.mjs",
     "scripts/sounding-line/finalizer.mjs",
     "scripts/sounding-line/finalize-ci.mjs",
