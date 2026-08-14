@@ -7,15 +7,37 @@ const unique = `wayfarer-p4-${randomUUID().slice(0, 12)}`;
 
 async function register(browser: import("@playwright/test").Browser, label: string) {
   const context = await browser.newContext();
+  const password = "BrassComet!73Harbor";
   const response = await context.request.post("/api/auth/register", {
     data: {
-      displayName: `Synthetic ${label}`,
+      displayName: `Synthetic ${label} ${unique}`,
       email: `${unique}-${label.toLowerCase()}@example.test`,
-      password: "A synthetic test password 42!",
+      password,
+      confirmPassword: password,
     },
   });
   expect(response.status(), await response.text()).toBe(201);
   const body = (await response.json()) as { csrfToken: string; player: { id: string } };
+  const profile = await db.playerProfile.findUniqueOrThrow({
+    where: { id: body.player.id },
+    select: { accountId: true },
+  });
+  if (!profile.accountId) throw new Error(`Synthetic ${label} account was not linked.`);
+  const verifiedAt = new Date();
+  await db.$transaction([
+    db.userAccount.update({
+      where: { id: profile.accountId },
+      data: { status: "ACTIVE", claimedAt: verifiedAt, ordinaryWorkspaceEntryAt: verifiedAt },
+    }),
+    db.accountEmail.updateMany({
+      where: { accountId: profile.accountId, isPrimary: true },
+      data: { verificationState: "VERIFIED", verifiedAt },
+    }),
+    db.accountSession.updateMany({
+      where: { accountId: profile.accountId, revokedAt: null },
+      data: { sessionType: "ORDINARY" },
+    }),
+  ]);
   return { context, profileId: body.player.id, csrfToken: body.csrfToken };
 }
 
@@ -137,7 +159,7 @@ test("Wayfarer Phase 4 projects only receipt-authorized artifacts and protects p
     memberships: await db.playthroughMembership.count({ where: { playthroughId: fixture.session.id } }),
   };
   const ownerPage = await owner.context.newPage();
-  await ownerPage.goto("/passport");
+  await ownerPage.goto("/passport/artifacts");
   await expect(ownerPage.getByRole("heading", { name: "Artifact Cabinet" })).toBeVisible();
   await expect(ownerPage.getByText("Synthetic Compass")).toBeVisible();
   expect(
