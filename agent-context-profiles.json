@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "1.0",
+  "program": "PROJECT_TRIM_PHASE_1",
+  "profiles": {
+    "product-phase": {
+      "initialContextEmphasis": ["scope", "ownership", "contracts", "source", "verification", "main-delta"],
+      "normallyDeferred": ["unrelated project histories", "full governing libraries"],
+      "pointerGuidance": { "minimum": 6, "maximum": 12, "authoritySlicesMaximum": 2 },
+      "expectedAuthoritySlice": "current task governance plus Sounding Line pointers",
+      "expectedClosure": ["owner", "contracts", "suites"],
+      "expansionTriggers": ["unmapped path", "cross-owner contract", "schema change"],
+      "fallback": "CONSERVATIVE_EXPANSION"
+    },
+    "bug-repair": {
+      "initialContextEmphasis": ["changed source", "direct test", "one authority slice", "mapped contracts"],
+      "normallyDeferred": ["phase record families", "unrelated schemas"],
+      "pointerGuidance": { "minimum": 3, "maximum": 6, "authoritySlicesMaximum": 1 },
+      "expectedAuthoritySlice": "testing workflow and applicable current authority",
+      "expectedClosure": ["owner", "contracts", "direct suites"],
+      "expansionTriggers": ["no direct mapping", "failing focused test", "adjacent invariant"],
+      "fallback": "CONSERVATIVE_EXPANSION"
+    },
+    "documentation-only": {
+      "initialContextEmphasis": ["document identity", "documentation workflow", "index", "governing pointer"],
+      "normallyDeferred": ["product source", "browser suites"],
+      "pointerGuidance": { "minimum": 3, "maximum": 6, "authoritySlicesMaximum": 1 },
+      "expectedAuthoritySlice": "documentation and relevant governing record",
+      "expectedClosure": ["document index", "validation"],
+      "expansionTriggers": ["current-authority ambiguity", "generated index requirement"],
+      "fallback": "CONSERVATIVE_EXPANSION"
+    },
+    "infrastructure": {
+      "initialContextEmphasis": ["source", "resources", "ownership", "contracts", "verification"],
+      "normallyDeferred": ["unrelated product records"],
+      "pointerGuidance": { "minimum": 6, "maximum": 12, "authoritySlicesMaximum": 2 },
+      "expectedAuthoritySlice": "runtime and Sounding Line policy",
+      "expectedClosure": ["owner", "resources", "suites"],
+      "expansionTriggers": ["resource declaration", "workflow change", "unmapped path"],
+      "fallback": "CONSERVATIVE_EXPANSION"
+    },
+    "security-sensitive": {
+      "initialContextEmphasis": ["authority", "ownership", "security contract", "source", "verification"],
+      "normallyDeferred": ["unrelated status history"],
+      "pointerGuidance": { "minimum": 6, "maximum": 12, "authoritySlicesMaximum": 2 },
+      "expectedAuthoritySlice": "current security/privacy authority and Sounding Line",
+      "expectedClosure": ["owner", "critical contracts", "security suites"],
+      "expansionTriggers": ["secret-bearing input", "authorization ambiguity", "external boundary"],
+      "fallback": "ESCALATE_OR_CONSERVATIVELY_EXPAND"
+    },
+    "integration": {
+      "initialContextEmphasis": ["accepted status", "contracts", "owners", "main delta", "verification"],
+      "normallyDeferred": ["unrelated program history"],
+      "pointerGuidance": { "minimum": 6, "maximum": 12, "authoritySlicesMaximum": 2 },
+      "expectedAuthoritySlice": "integration governance and Sounding Line",
+      "expectedClosure": ["owners", "contracts", "suites"],
+      "expansionTriggers": ["conflicting plateau", "main advanced", "cross-project contract"],
+      "fallback": "CONSERVATIVE_EXPANSION"
+    },
+    "release-closure": {
+      "initialContextEmphasis": ["accepted status", "release authority", "exact candidate identity", "verification"],
+      "normallyDeferred": ["complete phase-record family"],
+      "pointerGuidance": { "minimum": 6, "maximum": 12, "authoritySlicesMaximum": 2 },
+      "expectedAuthoritySlice": "Sounding Line release authority",
+      "expectedClosure": ["release gate", "suites", "prior accepted status"],
+      "expansionTriggers": ["candidate mismatch", "authority conflict", "main advance"],
+      "fallback": "STALE_REQUIRES_ESCALATION"
+    }
+  }
+}

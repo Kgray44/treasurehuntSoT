@@ -32,6 +32,10 @@ last_reviewed: 2026-08-17
 
 Use [document-index.json](document-index.json) for complete path-level classification.
 
+## Project Trim
+
+- [Project Trim governing baseline v1.0-R1](Governing/Project_Trim_Codex_Context_and_Inference_Efficiency_Governing_Document_v1.0-R1.pdf) is the current Project Trim governing baseline. Phase 0 records under `Programs/Project_Trim/` are preserved program evidence, not governing authority.
+
 ## Project Sounding Line amendments
 
 The Version 1.3 Amendment Edition is the newest Sounding Line amendment. It
