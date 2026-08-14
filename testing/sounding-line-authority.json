@@ -37,6 +37,14 @@
     "antiSelfAuthorization": "FAIL_CLOSED",
     "protectedBinding": "EXACT_CANDIDATE_BASE_AND_LANDED_TREE"
   },
+  "ordinaryCandidateQualification": {
+    "mode": "V14_CANDIDATE",
+    "trustedWorkflowRef": "refs/heads/main",
+    "gate": "mainline",
+    "releaseDisposition": "RELEASE_GO",
+    "currentClaim": "FORBIDDEN",
+    "protectedBinding": "REQUIRED"
+  },
   "hostedExecutionCapacity": {
     "maximumWave": 5,
     "minimumHeadroom": 2,

@@ -68,6 +68,7 @@ function validateRecordOnlyPlan({
   qualified,
   candidateSha,
   currentBaseSha,
+  currentBaseTree,
   mergeSha,
   recordOnlyChangedPaths,
   recordOnlyAncestryValid,
@@ -153,6 +154,7 @@ export function qualifyProtectedMerge({
   prNumber,
   candidateSha,
   currentBaseSha,
+  currentBaseTree,
   mergeSha,
   mergeParents,
   changedPaths,
@@ -171,7 +173,10 @@ export function qualifyProtectedMerge({
   if (!qualified || qualified.authoritativeRunId !== Number(authorityRunId)) errors.push("QUALIFIED_RUN_MISMATCH");
   const recordOnly = plan?.recordOnly?.mode === "FAIL_CLOSED_RECORD_ONLY";
   if (!sha(qualified?.qualifiedBaseSha)) errors.push("QUALIFIED_BASE_SHA_INVALID");
-  if (!recordOnly && baseAncestryValid !== true) errors.push("QUALIFIED_BASE_ANCESTRY_INVALID");
+  const treeEquivalentPredictedBase =
+    sha(qualified?.qualifiedBaseTreeSha) && qualified.qualifiedBaseTreeSha === currentBaseTree;
+  if (!recordOnly && baseAncestryValid !== true && !treeEquivalentPredictedBase)
+    errors.push("QUALIFIED_BASE_ANCESTRY_INVALID");
   if (!Array.isArray(mergeParents) || mergeParents.length !== 2) errors.push("SYNTHETIC_MERGE_PARENT_COUNT_INVALID");
   else if (!mergeParents.includes(candidateSha) || !mergeParents.includes(currentBaseSha))
     errors.push("SYNTHETIC_MERGE_COMPOSITION_INVALID");
@@ -194,7 +199,9 @@ export function qualifyProtectedMerge({
         preserved: plan.recordOnly.changedPaths,
         rejected: [],
       }
-    : classifyBaseAdvance({
+    : treeEquivalentPredictedBase
+      ? { status: "TREE_EQUIVALENT_PREDICTED_BASE", preserved: ["EXACT_BASE_TREE"], rejected: [] }
+      : classifyBaseAdvance({
         qualifiedBaseSha: qualified?.qualifiedBaseSha,
         currentBaseSha,
         changedPaths,
@@ -211,6 +218,7 @@ export function qualifyProtectedMerge({
     currentBaseSha,
     mergeSha,
     qualifiedBaseSha: qualified?.qualifiedBaseSha ?? null,
+    qualifiedBaseTreeSha: qualified?.qualifiedBaseTreeSha ?? null,
     authoritativeRunId: Number(authorityRunId),
     carryForward,
     errors: [...new Set(errors)].sort(),

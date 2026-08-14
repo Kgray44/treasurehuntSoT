@@ -134,6 +134,31 @@ test("semantic carry-forward preserves only declared unrelated base advances", (
   assert.deepEqual(rejected.carryForward.rejected, ["src/helm/membership.ts"]);
 });
 
+test("an unreachable predicted base may rebind only to its exact protected-base tree", () => {
+  const tree = "e".repeat(40);
+  const rebound = fixture();
+  rebound.qualified.qualifiedBaseTreeSha = tree;
+  const pass = bind({
+    ...rebound,
+    currentBaseSha: currentBase,
+    currentBaseTree: tree,
+    mergeParents: [currentBase, candidate],
+    changedPaths: [],
+    baseAncestryValid: false,
+  });
+  assert.equal(pass.decision, "BINDING_PASS");
+  assert.equal(pass.carryForward.status, "TREE_EQUIVALENT_PREDICTED_BASE");
+  const reject = bind({
+    ...rebound,
+    currentBaseSha: currentBase,
+    currentBaseTree: "f".repeat(40),
+    mergeParents: [currentBase, candidate],
+    changedPaths: undefined,
+    baseAncestryValid: false,
+  });
+  assert.equal(reject.decision, "BINDING_NO_GO");
+});
+
 test("synthetic composition is exact and the bridge never becomes candidate authority", () => {
   const wrongParents = bind({ mergeParents: [qualifiedBase, "f".repeat(40)] });
   assert.equal(wrongParents.decision, "BINDING_NO_GO");
@@ -161,4 +186,5 @@ test("workflow topology retains explicit heavyweight authority and the exact pro
   assert.match(bridge, /sounding-line-plan/u);
   assert.match(bridge, /record-only-closure\.mjs/u);
   assert.match(bridge, /Finalize record-only decision/u);
+  assert.match(bridge, /sounding-line-mainline-train\.yml/u);
 });

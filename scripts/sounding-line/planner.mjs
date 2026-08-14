@@ -12,7 +12,7 @@ const json = async (root, file) => JSON.parse(await readFile(path.join(root, "te
 const hostedSharedResources = new Set(["restart-host", "external-provider"]);
 
 export function resolvePlanAuthority({ authorityIndex, gateId, authorityMode, githubRef, qualifiedBaseSha }) {
-  if (authorityMode !== "CURRENT" && authorityMode !== "V13_CUTOVER")
+  if (authorityMode !== "CURRENT" && authorityMode !== "V13_CUTOVER" && authorityMode !== "V14_CANDIDATE")
     throw new Error(`UNKNOWN_AUTHORITY_MODE:${authorityMode}`);
   if (authorityMode === "V13_CUTOVER") {
     if (authorityIndex.currentAuthorityVersion === "1.4") {
@@ -32,6 +32,14 @@ export function resolvePlanAuthority({ authorityIndex, gateId, authorityMode, gi
   }
   if (authorityIndex.currentAuthorityVersion === "1.4") {
     if (gateId !== "mainline") throw new Error("V14_AUTHORITY_MAINLINE_ONLY");
+    if (authorityMode === "V14_CANDIDATE") {
+      // Candidate qualification is dispatched from trusted protected main, but
+      // plans and evidence bind an unmerged frozen PR head. It is deliberately
+      // distinct from CURRENT, which remains accepted protected-main truth.
+      if (githubRef !== "refs/heads/main") throw new Error("V14_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED");
+      if (!/^[0-9a-f]{40}$/u.test(qualifiedBaseSha ?? "")) throw new Error("V14_CANDIDATE_QUALIFIED_BASE_REQUIRED");
+      return "V14_CANDIDATE";
+    }
     // A candidate can contain the future authority index while it is still
     // subject to v1.3 acceptance. Only the protected-main ref may exercise it.
     if (githubRef !== "refs/heads/main") throw new Error("V14_CURRENT_AUTHORITY_REQUIRES_PROTECTED_MAIN");
@@ -49,6 +57,8 @@ export async function buildV14HostedPlan({
   manifest,
   registry,
   authorityIndex,
+  authorityMode,
+  predictedIdentity,
 }) {
   if (!qualifiedBaseSha || !/^[0-9a-f]{40}$/u.test(qualifiedBaseSha)) throw new Error("V14_QUALIFIED_BASE_REQUIRED");
   const semanticPlan = await generateV14FastChannelPlan({
@@ -56,14 +66,23 @@ export async function buildV14HostedPlan({
     baseSha: qualifiedBaseSha,
     candidateSha: sourceSha,
     gateId,
+    predictedIdentity,
   });
   const plan = {
     version: 14,
     authority: "SOUNDING_LINE",
     authorityVersion: "1.4",
-    authorityBoundary: "CURRENT_AUTHORITATIVE_V14",
+    authorityBoundary:
+      authorityMode === "V14_CANDIDATE" ? "V14_CANDIDATE_QUALIFICATION" : "CURRENT_AUTHORITATIVE_V14",
+    authorityMode,
     sourceSha,
     qualifiedBaseSha,
+    candidateTreeSha: semanticPlan.candidateTreeSha,
+    qualifiedBaseTreeSha: semanticPlan.qualifiedBaseTreeSha,
+    predictedParentCommitSha: semanticPlan.predictedParentCommitSha,
+    predictedParentTreeSha: semanticPlan.predictedParentTreeSha,
+    predictedIntegrationTreeSha: semanticPlan.predictedIntegrationTreeSha,
+    mergeStrategyIdentity: semanticPlan.mergeStrategyIdentity,
     gate: gateId,
     serial,
     policyDigest: digest(manifest),
@@ -96,6 +115,7 @@ export async function buildPlan({
   qualifiedBaseSha = process.env.SOUNDING_LINE_BASE_SHA,
   authorityMode = process.env.SOUNDING_LINE_AUTHORITY_MODE ?? "CURRENT",
   githubRef = process.env.GITHUB_REF,
+  predictedIdentity = undefined,
 }) {
   const [manifest, suitesFile, gatesFile, registry, authorityIndex] = await Promise.all([
     json(root, "policy-manifest.json"),
@@ -119,7 +139,7 @@ export async function buildPlan({
     githubRef,
     qualifiedBaseSha,
   });
-  if (resolvedAuthority === "V14_CURRENT") {
+  if (resolvedAuthority === "V14_CURRENT" || resolvedAuthority === "V14_CANDIDATE") {
     return buildV14HostedPlan({
       root,
       gateId,
@@ -129,6 +149,8 @@ export async function buildPlan({
       manifest,
       registry,
       authorityIndex,
+      authorityMode: resolvedAuthority,
+      predictedIdentity,
     });
   }
   const gate = gatesFile.gates.find((candidate) => candidate.id === gateId);

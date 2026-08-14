@@ -1,0 +1,337 @@
+name: Sounding Line mainline train
+
+on:
+  workflow_dispatch:
+    inputs:
+      train_id:
+        description: Auditable train identity
+        required: true
+        type: string
+      label:
+        description: Exact PR label admitting ordinary frozen candidates
+        required: true
+        default: sounding-line-train
+        type: string
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: sounding-line-mainline-train-${{ inputs.train_id }}
+  cancel-in-progress: false
+
+jobs:
+  admit:
+    name: Sounding Line / Train admission
+    runs-on: windows-latest
+    timeout-minutes: 15
+    outputs:
+      cars: ${{ steps.matrix.outputs.cars }}
+      parallel0: ${{ steps.matrix.outputs.parallel0 }}
+      parallel1: ${{ steps.matrix.outputs.parallel1 }}
+      parallel2: ${{ steps.matrix.outputs.parallel2 }}
+      parallel3: ${{ steps.matrix.outputs.parallel3 }}
+      parallel4: ${{ steps.matrix.outputs.parallel4 }}
+      parallel5: ${{ steps.matrix.outputs.parallel5 }}
+      exclusive0: ${{ steps.matrix.outputs.exclusive0 }}
+      exclusive1: ${{ steps.matrix.outputs.exclusive1 }}
+      exclusive2: ${{ steps.matrix.outputs.exclusive2 }}
+      exclusive3: ${{ steps.matrix.outputs.exclusive3 }}
+      exclusive4: ${{ steps.matrix.outputs.exclusive4 }}
+      exclusive5: ${{ steps.matrix.outputs.exclusive5 }}
+      parallel0Present: ${{ steps.matrix.outputs.parallel0Present }}
+      parallel1Present: ${{ steps.matrix.outputs.parallel1Present }}
+      parallel2Present: ${{ steps.matrix.outputs.parallel2Present }}
+      parallel3Present: ${{ steps.matrix.outputs.parallel3Present }}
+      parallel4Present: ${{ steps.matrix.outputs.parallel4Present }}
+      parallel5Present: ${{ steps.matrix.outputs.parallel5Present }}
+      exclusive0Present: ${{ steps.matrix.outputs.exclusive0Present }}
+      exclusive1Present: ${{ steps.matrix.outputs.exclusive1Present }}
+      exclusive2Present: ${{ steps.matrix.outputs.exclusive2Present }}
+      exclusive3Present: ${{ steps.matrix.outputs.exclusive3Present }}
+      exclusive4Present: ${{ steps.matrix.outputs.exclusive4Present }}
+      exclusive5Present: ${{ steps.matrix.outputs.exclusive5Present }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: "${{ github.sha }}", fetch-depth: 0 }
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with: { node-version-file: .nvmrc }
+      - name: Discover and freeze ordinary candidates
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          TRAIN_ID: ${{ inputs.train_id }}
+          LABEL: ${{ inputs.label }}
+        run: |
+          if ($env:TRAIN_ID -notmatch '^[A-Za-z0-9._-]+$') { throw 'TRAIN_ID_INVALID' }
+          $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' }
+          $encodedLabel = [uri]::EscapeDataString($env:LABEL)
+          $issues = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/issues?state=open&per_page=100&labels=$encodedLabel") |
+            Where-Object { $null -ne $_.pull_request }
+          $prs = @($issues | ForEach-Object {
+            Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/pulls/$($_.number)"
+          } | Where-Object { $_.base.ref -eq 'main' } | Sort-Object number)
+          if (@($prs).Count -eq 0) { throw 'TRAIN_NO_ADMISSIBLE_CANDIDATES' }
+          $base = (git rev-parse HEAD).Trim()
+          $policy = Get-Content -Raw testing/verification-maintenance-policy.json | ConvertFrom-Json
+          function Test-TrustedGlob([string]$file, [string]$glob) {
+            $pattern = '^' + [regex]::Escape($glob).Replace('\*\*', '.*').Replace('\*', '[^/]*') + '$'
+            return $file -match $pattern
+          }
+          $candidates = @()
+          $ordinal = 0
+          foreach ($pr in $prs) {
+            if ($pr.head.repo.full_name -ne $env:REPOSITORY) { throw "TRAIN_FORK_CANDIDATE_UNSUPPORTED:$($pr.number)" }
+            $ref = "refs/heads/$($pr.head.ref)"
+            git fetch origin $ref
+            if ($LASTEXITCODE -ne 0) { throw "TRAIN_CANDIDATE_FETCH_FAILED:$($pr.number)" }
+            $resolved = (git rev-parse FETCH_HEAD).Trim()
+            if ($resolved -ne $pr.head.sha) { throw "TRAIN_CANDIDATE_REF_HEAD_MISMATCH:$($pr.number)" }
+            if ($pr.base.sha -ne $base) { throw "TRAIN_CANDIDATE_BASE_STALE:$($pr.number)" }
+            git merge-base --is-ancestor $base $resolved
+            if ($LASTEXITCODE -ne 0) { throw "TRAIN_CANDIDATE_BASE_ANCESTRY_INVALID:$($pr.number)" }
+            $tree = (git rev-parse "$resolved`^{tree}").Trim()
+            $changed = @(git diff --name-only --no-renames --no-ext-diff $base $resolved | Sort-Object)
+            $authority = @($changed | Where-Object { $file = $_; @($policy.authorityChangePathGlobs | Where-Object { Test-TrustedGlob $file $_ }).Count -gt 0 })
+            $unknown = @($changed | Where-Object { $file = $_; @($policy.ordinaryCandidateEligiblePathGlobs | Where-Object { Test-TrustedGlob $file $_ }).Count -eq 0 })
+            if ($authority.Count -gt 0) { throw "TRAIN_CANDIDATE_AUTHORITY_CHANGE_REJECTED:$($pr.number):$($authority -join ',')" }
+            if ($unknown.Count -gt 0) { throw "TRAIN_CANDIDATE_UNKNOWN_SCOPE_REJECTED:$($pr.number):$($unknown -join ',')" }
+            $migrations = @($changed | Where-Object { $_ -like 'prisma/migrations/*' })
+            $candidates += @{ candidateId = "pr-$($pr.number)"; headCommitSha = $resolved; headTreeSha = $tree; admissionPolicyIdentity = 'testing/mainline-train-policy.json'; admittedAt = [DateTimeOffset]::UtcNow.ToString('o'); admissionOrdinal = $ordinal; ageCycles = 0; prIdentity = @{ number = $pr.number; ref = $ref; baseSha = $pr.base.sha }; migrations = $migrations }
+            $ordinal += 1
+          }
+          @{ repoPath = $PWD.Path; trainId = $env:TRAIN_ID; authorityIdentity = 'SOUNDING_LINE_V14'; policyIdentity = 'testing/mainline-train-policy.json'; admissionPolicyIdentity = 'testing/mainline-train-policy.json'; mergeStrategyIdentity = 'github-protected-merge-commit'; actualMainCommitSha = $base; candidates = $candidates; createdAt = [DateTimeOffset]::UtcNow.ToString('o') } | ConvertTo-Json -Depth 16 | Set-Content train-input.json
+      - name: Construct deterministic predicted integration train
+        run: node scripts/sounding-line/v14/mainline-train-cli.mjs admit --input train-input.json --out mainline-train.json
+      - name: Prepare sealed per-car qualification inputs
+        run: node scripts/sounding-line/v14/mainline-train-prepare.mjs --train mainline-train.json --repo . --out train-prepared
+      - name: Verify live train state
+        shell: pwsh
+        run: |
+          $train = Get-Content -Raw mainline-train.json | ConvertFrom-Json
+          if ($train.train.authorityBoundary -ne 'V14_MAINLINE_TRAIN_LIVE') { throw 'TRAIN_LIVE_BOUNDARY_REQUIRED' }
+          if (@($train.train.cars).Count -eq 0 -or @($train.train.cars | Where-Object { $_.state -ne 'PLANNING' }).Count -ne 0) { throw 'TRAIN_ADMISSION_STATE_INVALID' }
+      - id: matrix
+        name: Derive dependency-respecting worker matrices
+        shell: pwsh
+        run: |
+          $workers = (Get-Content -Raw train-prepared/worker-matrix.json | ConvertFrom-Json).include
+          $cars = (Get-Content -Raw train-prepared/car-matrix.json | ConvertFrom-Json) | ConvertTo-Json -Compress -Depth 16
+          $authority = Get-Content -Raw testing/sounding-line-authority.json | ConvertFrom-Json
+          $maximumWave = [int]$authority.hostedExecutionCapacity.maximumWave
+          if ($maximumWave -ne 5) { throw 'TRAIN_WORKFLOW_WAVE_LAYOUT_STALE' }
+          foreach ($wave in 0..$maximumWave) {
+            foreach ($mode in @('parallel', 'exclusive')) {
+              $nodes = @($workers | Where-Object { [int]$_.wave -eq $wave -and $_.mode -eq $mode })
+              $matrix = @{ include = $nodes } | ConvertTo-Json -Compress -Depth 16
+              "$mode$wave=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+              "$mode$wave`Present=$(if ($nodes.Count -gt 0) { 'true' } else { 'false' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            }
+          }
+          "cars=$cars" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: sounding-line-mainline-train-${{ inputs.train_id }}
+          path: |
+            mainline-train.json
+            train-input.json
+            train-prepared/car-matrix.json
+            train-prepared/worker-matrix.json
+          retention-days: 14
+      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: sounding-line-train-prepared
+          path: |
+            train-prepared
+            !train-prepared/dependencies/**
+          retention-days: 14
+      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: sounding-line-train-prepared-dependency
+          path: |
+            train-prepared/dependencies
+            !train-prepared/dependencies/**/.prisma/**
+            !train-prepared/dependencies/**/@forever-treasure/bridgewatch/**
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 14
+
+  wave-0:
+    needs: admit
+    uses: ./.github/workflows/sounding-line-train-wave.yml
+    with:
+      parallel_matrix: ${{ needs.admit.outputs.parallel0 }}
+      parallel_present: ${{ needs.admit.outputs.parallel0Present }}
+      exclusive_matrix: ${{ needs.admit.outputs.exclusive0 }}
+      exclusive_present: ${{ needs.admit.outputs.exclusive0Present }}
+
+  wave-1:
+    needs: [admit, wave-0]
+    uses: ./.github/workflows/sounding-line-train-wave.yml
+    with:
+      parallel_matrix: ${{ needs.admit.outputs.parallel1 }}
+      parallel_present: ${{ needs.admit.outputs.parallel1Present }}
+      exclusive_matrix: ${{ needs.admit.outputs.exclusive1 }}
+      exclusive_present: ${{ needs.admit.outputs.exclusive1Present }}
+
+  wave-2:
+    needs: [admit, wave-1]
+    uses: ./.github/workflows/sounding-line-train-wave.yml
+    with:
+      parallel_matrix: ${{ needs.admit.outputs.parallel2 }}
+      parallel_present: ${{ needs.admit.outputs.parallel2Present }}
+      exclusive_matrix: ${{ needs.admit.outputs.exclusive2 }}
+      exclusive_present: ${{ needs.admit.outputs.exclusive2Present }}
+
+  wave-3:
+    needs: [admit, wave-2]
+    uses: ./.github/workflows/sounding-line-train-wave.yml
+    with:
+      parallel_matrix: ${{ needs.admit.outputs.parallel3 }}
+      parallel_present: ${{ needs.admit.outputs.parallel3Present }}
+      exclusive_matrix: ${{ needs.admit.outputs.exclusive3 }}
+      exclusive_present: ${{ needs.admit.outputs.exclusive3Present }}
+
+  wave-4:
+    needs: [admit, wave-3]
+    uses: ./.github/workflows/sounding-line-train-wave.yml
+    with:
+      parallel_matrix: ${{ needs.admit.outputs.parallel4 }}
+      parallel_present: ${{ needs.admit.outputs.parallel4Present }}
+      exclusive_matrix: ${{ needs.admit.outputs.exclusive4 }}
+      exclusive_present: ${{ needs.admit.outputs.exclusive4Present }}
+
+  wave-5:
+    needs: [admit, wave-4]
+    uses: ./.github/workflows/sounding-line-train-wave.yml
+    with:
+      parallel_matrix: ${{ needs.admit.outputs.parallel5 }}
+      parallel_present: ${{ needs.admit.outputs.parallel5Present }}
+      exclusive_matrix: ${{ needs.admit.outputs.exclusive5 }}
+      exclusive_present: ${{ needs.admit.outputs.exclusive5Present }}
+
+  finalize-cars:
+    name: Sounding Line / Train car finalizer
+    needs: [admit, wave-5]
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.admit.outputs.cars) }}
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: "${{ github.sha }}", fetch-depth: 0 }
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with: { node-version-file: .nvmrc }
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sounding-line-train-prepared
+          path: train-prepared
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: sounding-line-train-worker-${{ matrix.candidateId }}-*
+          path: worker-evidence
+          merge-multiple: false
+      - name: Finalize exact predicted-tree candidate evidence
+        env:
+          SOUNDING_LINE_EXPECTED_SOURCE_SHA: ${{ matrix.candidateSha }}
+        run: node scripts/sounding-line/finalize-ci.mjs train-prepared/${{ matrix.planPath }} worker-evidence --out sounding-line-finalization.json
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sounding-line-mainline-train-${{ inputs.train_id }}
+          path: train-state
+      - name: Bind finalization to the planned car without landing it
+        shell: pwsh
+        run: |
+          $admission = Get-Content -Raw train-state/mainline-train.json | ConvertFrom-Json
+          $admission.train | ConvertTo-Json -Depth 24 | Set-Content -LiteralPath mainline-train.json -Encoding utf8
+          $finalization = Get-Content -Raw sounding-line-finalization.json | ConvertFrom-Json
+          if ($finalization.decision -ne 'RELEASE_GO' -or -not $finalization.evidenceDigest) { throw 'TRAIN_CAR_RELEASE_GO_REQUIRED' }
+          node scripts/sounding-line/v14/mainline-train-cli.mjs qualify --state mainline-train.json --plan train-prepared/${{ matrix.planPath }} --finalization sounding-line-finalization.json --candidate-id ${{ matrix.candidateId }} --evidence-closure $finalization.evidenceDigest --out mainline-train-qualified.json
+      - name: Seal exact protected-binding envelope
+        env:
+          SOUNDING_LINE_PR_NUMBER: ${{ matrix.prNumber }}
+          SOUNDING_LINE_BASE_SHA: ${{ matrix.qualifiedBaseSha }}
+          SOUNDING_LINE_RUN_ID: ${{ github.run_id }}
+        run: node scripts/sounding-line/create-acceptance-envelope.mjs --plan train-prepared/${{ matrix.planPath }} --finalization sounding-line-finalization.json --pr-number "$env:SOUNDING_LINE_PR_NUMBER" --base-sha "$env:SOUNDING_LINE_BASE_SHA" --run-id "$env:SOUNDING_LINE_RUN_ID" --out sounding-line-acceptance-envelope.json
+      - name: Normalize sealed plan for protected binding
+        shell: pwsh
+        run: Copy-Item -LiteralPath train-prepared/${{ matrix.planPath }} -Destination sounding-line-plan.json
+      - name: Bind the first train head to its current protected merge identity
+        if: ${{ matrix.position == 0 }}
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ matrix.prNumber }}
+          CANDIDATE_SHA: ${{ matrix.candidateSha }}
+          AUTHORITY_RUN_ID: ${{ github.run_id }}
+        run: |
+          git fetch origin main "refs/pull/$env:PR_NUMBER/merge:refs/remotes/origin/sounding-line-train-head-merge"
+          if ($LASTEXITCODE -ne 0) { throw 'TRAIN_HEAD_MERGE_IDENTITY_UNAVAILABLE' }
+          $merge = (git rev-parse origin/sounding-line-train-head-merge).Trim()
+          $base = (git rev-parse origin/main).Trim()
+          node scripts/sounding-line/protected-merge-binding-ci.mjs --authority testing/sounding-line-authority.json --finalization sounding-line-finalization.json --plan sounding-line-plan.json --envelope sounding-line-acceptance-envelope.json --pr-number $env:PR_NUMBER --candidate-sha $env:CANDIDATE_SHA --base-sha $base --merge-sha $merge --authority-run-id $env:AUTHORITY_RUN_ID
+          if ($LASTEXITCODE -ne 0) { throw 'TRAIN_HEAD_PROTECTED_BINDING_NO_GO' }
+          $body = @{ name = 'Sounding Line / Mainline Decision'; head_sha = $merge; status = 'completed'; conclusion = 'success'; output = @{ title = 'Train head bound'; summary = 'Exact sealed train-head authority bound to the current protected merge identity.' } } | ConvertTo-Json -Depth 8
+          Invoke-RestMethod -Method Post -Headers @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' } -Uri "https://api.github.com/repos/$env:REPOSITORY/check-runs" -ContentType 'application/json' -Body $body | Out-Null
+      - if: always()
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: ${{ matrix.finalizationArtifact }}
+          path: sounding-line-finalization.json
+          retention-days: 14
+      - if: success()
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: ${{ matrix.qualificationArtifact }}
+          path: mainline-train-qualified.json
+          retention-days: 14
+      - if: success()
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: ${{ matrix.acceptanceArtifact }}
+          path: |
+            sounding-line-acceptance-envelope.json
+            sounding-line-finalization.json
+            sounding-line-plan.json
+          retention-days: 14
+
+  merge-qualifications:
+    name: Sounding Line / Merge sealed train qualifications
+    needs: [admit, finalize-cars]
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: "${{ github.sha }}", fetch-depth: 0 }
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with: { node-version-file: .nvmrc }
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sounding-line-mainline-train-${{ inputs.train_id }}
+          path: train-state
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: sounding-line-train-qualified-*
+          path: qualifications
+          merge-multiple: false
+      - name: Seal all car qualifications and prepare only the head for normal protected landing
+        shell: pwsh
+        run: |
+          $admission = Get-Content -Raw train-state/mainline-train.json | ConvertFrom-Json
+          $admission.train | ConvertTo-Json -Depth 24 | Set-Content -LiteralPath mainline-train.json -Encoding utf8
+          node scripts/sounding-line/v14/merge-train-qualifications.mjs --base mainline-train.json --states qualifications --out mainline-train-qualified.json
+          $qualified = Get-Content -Raw mainline-train-qualified.json | ConvertFrom-Json
+          $head = $qualified.cars[$qualified.headPosition]
+          node scripts/sounding-line/v14/mainline-train-cli.mjs head-ready --state mainline-train-qualified.json --candidate-id $head.candidateId --out mainline-train-head-ready.json
+      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: sounding-line-mainline-train-live-${{ inputs.train_id }}
+          path: |
+            mainline-train-qualified.json
+            mainline-train-head-ready.json
+          retention-days: 14

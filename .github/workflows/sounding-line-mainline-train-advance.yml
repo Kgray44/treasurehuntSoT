@@ -1,0 +1,115 @@
+name: Sounding Line mainline train advance
+
+on:
+  pull_request:
+    branches: [main]
+    types: [closed]
+
+permissions:
+  actions: read
+  checks: write
+  contents: read
+  pull-requests: read
+
+jobs:
+  advance:
+    if: ${{ github.event.pull_request.merged == true }}
+    name: Sounding Line / Advance landed train head
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: main, fetch-depth: 0 }
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with: { node-version-file: .nvmrc }
+      - id: train
+        name: Locate exactly one sealed head-ready train for this merged candidate
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = "application/vnd.github+json"; 'X-GitHub-Api-Version' = '2022-11-28' }
+          $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&per_page=100").workflow_runs |
+            Where-Object { $_.name -eq 'Sounding Line mainline train' -and $_.path -eq '.github/workflows/sounding-line-mainline-train.yml' -and $_.status -eq 'completed' -and $_.conclusion -eq 'success' }
+          $matches = @()
+          foreach ($run in $runs) {
+            try {
+              $artifacts = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs/$($run.id)/artifacts?per_page=100").artifacts
+              $envelopes = @($artifacts | Where-Object { -not $_.expired -and $_.name -like 'sounding-line-train-acceptance-envelope-*' })
+              $live = @($artifacts | Where-Object { -not $_.expired -and $_.name -like 'sounding-line-mainline-train-live-*' })
+              if ($live.Count -ne 1) { continue }
+              foreach ($artifact in $envelopes) {
+                $directory = Join-Path $env:RUNNER_TEMP "sounding-line-train-envelope-$($run.id)-$($artifact.id)"
+                $zip = "$directory.zip"
+                New-Item -ItemType Directory -Force -Path $directory | Out-Null
+                Invoke-WebRequest -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/artifacts/$($artifact.id)/zip" -OutFile $zip
+                Expand-Archive -LiteralPath $zip -DestinationPath $directory -Force
+                $envelope = Get-Content -Raw (Join-Path $directory 'sounding-line-acceptance-envelope.json') | ConvertFrom-Json
+                if ($envelope.prNumber -eq [int]$env:PR_NUMBER -and $envelope.candidateSha -eq $env:CANDIDATE_SHA) {
+                  $matches += @{ runId = $run.id; liveArtifact = $live[0].name }
+                }
+              }
+            } catch { }
+          }
+          if ($matches.Count -eq 0) { 'found=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8; exit 0 }
+          if ($matches.Count -ne 1) { throw 'TRAIN_ADVANCE_AUTHORITY_NOT_UNIQUE' }
+          'found=true' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "run-id=$($matches[0].runId)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "live-artifact=$($matches[0].liveArtifact)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - if: ${{ steps.train.outputs.found == 'true' }}
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: ${{ steps.train.outputs.live-artifact }}
+          path: train-state
+          run-id: ${{ steps.train.outputs.run-id }}
+          github-token: ${{ github.token }}
+      - if: ${{ steps.train.outputs.found == 'true' }}
+        id: advanced
+        name: Compare actual protected-main tree and advance only the exact predicted prefix
+        shell: pwsh
+        run: |
+          $commit = (git rev-parse HEAD).Trim()
+          $tree = (git rev-parse "HEAD^{tree}").Trim()
+          node scripts/sounding-line/v14/mainline-train-cli.mjs land --state train-state/mainline-train-head-ready.json --commit $commit --tree $tree --merge-strategy github-protected-merge-commit --out mainline-train-advanced.json
+          $advance = Get-Content -Raw mainline-train-advanced.json | ConvertFrom-Json
+          $next = if ($advance.train.headPosition -ge 0) { $advance.train.cars[$advance.train.headPosition] } else { $null }
+          if ($next -and $next.state -eq 'HEAD_READY') {
+            'next-ready=true' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            "next-pr=$($next.candidatePrIdentity.number)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            "next-candidate=$($next.candidateHeadCommitSha)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            "next-artifact=sounding-line-train-acceptance-envelope-$($next.candidateId)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          } else { 'next-ready=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8 }
+      - if: ${{ steps.advanced.outputs.next-ready == 'true' }}
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: ${{ steps.advanced.outputs.next-artifact }}
+          path: next-acceptance
+          run-id: ${{ steps.train.outputs.run-id }}
+          github-token: ${{ github.token }}
+      - if: ${{ steps.advanced.outputs.next-ready == 'true' }}
+        name: Bind retained next head to its now-current protected merge identity
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ steps.advanced.outputs.next-pr }}
+          CANDIDATE_SHA: ${{ steps.advanced.outputs.next-candidate }}
+          AUTHORITY_RUN_ID: ${{ steps.train.outputs.run-id }}
+        run: |
+          git fetch origin main "refs/pull/$env:PR_NUMBER/merge:refs/remotes/origin/sounding-line-train-next-merge"
+          if ($LASTEXITCODE -ne 0) { throw 'TRAIN_NEXT_HEAD_MERGE_IDENTITY_UNAVAILABLE' }
+          $base = (git rev-parse origin/main).Trim()
+          $merge = (git rev-parse origin/sounding-line-train-next-merge).Trim()
+          node scripts/sounding-line/protected-merge-binding-ci.mjs --authority testing/sounding-line-authority.json --finalization next-acceptance/sounding-line-finalization.json --plan next-acceptance/sounding-line-plan.json --envelope next-acceptance/sounding-line-acceptance-envelope.json --pr-number $env:PR_NUMBER --candidate-sha $env:CANDIDATE_SHA --base-sha $base --merge-sha $merge --authority-run-id $env:AUTHORITY_RUN_ID
+          if ($LASTEXITCODE -ne 0) { throw 'TRAIN_NEXT_HEAD_PROTECTED_BINDING_NO_GO' }
+          $body = @{ name = 'Sounding Line / Mainline Decision'; head_sha = $merge; status = 'completed'; conclusion = 'success'; output = @{ title = 'Retained train head bound'; summary = 'Exact tree-equivalent predicted-base evidence rebound to the current protected merge identity.' } } | ConvertTo-Json -Depth 8
+          Invoke-RestMethod -Method Post -Headers @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' } -Uri "https://api.github.com/repos/$env:REPOSITORY/check-runs" -ContentType 'application/json' -Body $body | Out-Null
+      - if: ${{ steps.train.outputs.found == 'true' }}
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: sounding-line-mainline-train-advance-${{ github.event.pull_request.number }}
+          path: mainline-train-advanced.json
+          retention-days: 14

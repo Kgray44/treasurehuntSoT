@@ -48,11 +48,20 @@ await git("cat-file", "-e", `${candidateSha}^{commit}`);
 await git("cat-file", "-e", `${currentBaseSha}^{commit}`);
 await git("cat-file", "-e", `${mergeSha}^{commit}`);
 const mergeParents = (await git("show", "-s", "--format=%P", mergeSha)).split(/\s+/u).filter(Boolean);
-const baseAncestryValid = await gitExit("merge-base", "--is-ancestor", qualified.qualifiedBaseSha, currentBaseSha);
+const qualifiedBaseAvailable = await gitExit("cat-file", "-e", `${qualified.qualifiedBaseSha}^{commit}`);
+const currentBaseTree = await git("rev-parse", `${currentBaseSha}^{tree}`);
+const exactPredictedBaseTree = qualified.qualifiedBaseTreeSha === currentBaseTree;
+const baseAncestryValid = qualifiedBaseAvailable
+  ? await gitExit("merge-base", "--is-ancestor", qualified.qualifiedBaseSha, currentBaseSha)
+  : exactPredictedBaseTree;
 const changedPaths =
   qualified.qualifiedBaseSha === currentBaseSha
     ? []
-    : (await git("diff", "--name-only", qualified.qualifiedBaseSha, currentBaseSha)).split(/\r?\n/u).filter(Boolean);
+    : qualifiedBaseAvailable
+      ? (await git("diff", "--name-only", qualified.qualifiedBaseSha, currentBaseSha)).split(/\r?\n/u).filter(Boolean)
+      : exactPredictedBaseTree
+        ? []
+        : undefined;
 const recordOnlyChangedPaths = plan.recordOnly
   ? (
       await git(
@@ -84,6 +93,7 @@ const result = qualifyProtectedMerge({
   prNumber,
   candidateSha,
   currentBaseSha,
+  currentBaseTree,
   mergeSha,
   mergeParents,
   changedPaths,

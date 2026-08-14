@@ -18,7 +18,7 @@ const runId = Number(required("--run-id"));
 const output = required("--out");
 if (!Number.isSafeInteger(prNumber) || prNumber < 1 || !Number.isSafeInteger(runId) || runId < 1)
   throw new Error("ACCEPTANCE_ENVELOPE_IDENTITY_INVALID");
-if (!/^[0-9a-f]{40}$/u.test(baseSha) || !/^[0-9a-f]{40}$/u.test(plan.sourceSha))
+if (!/^[0-9a-f]{40}$/u.test(baseSha) || !/^[0-9a-f]{40}$/u.test(plan.sourceSha) || !/^[0-9a-f]{40}$/u.test(plan.qualifiedBaseTreeSha))
   throw new Error("ACCEPTANCE_ENVELOPE_SHA_INVALID");
 if (finalization.authority !== "SOUNDING_LINE_FINALIZER" || finalization.decision !== "RELEASE_GO")
   throw new Error("ACCEPTANCE_ENVELOPE_FINALIZER_DECISION_INVALID");
@@ -34,6 +34,7 @@ await writeFile(
       prNumber,
       candidateSha: plan.sourceSha,
       qualifiedBaseSha: baseSha,
+      qualifiedBaseTreeSha: plan.qualifiedBaseTreeSha,
       gate: "mainline",
       planDigest: plan.planDigest,
       policyDigest: plan.policyDigest,

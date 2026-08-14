@@ -15,7 +15,13 @@ const valueFor = (args, flag) => {
 const git = async (root, ...args) => (await exec("git", ["-C", root, ...args])).stdout.trim();
 const json = async (root, name) => JSON.parse(await readFile(path.join(root, "testing", name), "utf8"));
 
-export async function generateV14FastChannelPlan({ root, baseSha, candidateSha, gateId = "mainline" }) {
+export async function generateV14FastChannelPlan({
+  root,
+  baseSha,
+  candidateSha,
+  gateId = "mainline",
+  predictedIdentity = {},
+}) {
   const [gates, suites, impact, debt, contracts, ownership, fingerprintPolicy, preparedArtifacts, trainPolicy] =
     await Promise.all([
       json(root, "release-gates.json"),
@@ -48,9 +54,9 @@ export async function generateV14FastChannelPlan({ root, baseSha, candidateSha, 
       candidateTreeSha,
       qualifiedBaseSha: baseSha,
       qualifiedBaseTreeSha,
-      predictedParentCommitSha: baseSha,
-      predictedParentTreeSha: qualifiedBaseTreeSha,
-      predictedIntegrationTreeSha: candidateTreeSha,
+      predictedParentCommitSha: predictedIdentity.predictedParentCommitSha ?? baseSha,
+      predictedParentTreeSha: predictedIdentity.predictedParentTreeSha ?? qualifiedBaseTreeSha,
+      predictedIntegrationTreeSha: predictedIdentity.predictedIntegrationTreeSha ?? candidateTreeSha,
       mergeStrategyIdentity: "single-candidate-shadow",
       fingerprintPolicyDigest: digest(fingerprintPolicy),
       preparedArtifactPolicyDigest: digest(preparedArtifacts),

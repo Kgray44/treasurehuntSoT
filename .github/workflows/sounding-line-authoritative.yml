@@ -16,6 +16,10 @@ on:
         description: Exact 40-character head SHA of the frozen candidate ref
         required: true
         type: string
+      candidate_ref:
+        description: Exact refs/heads/... ref resolving to the frozen candidate SHA (required for candidate mode)
+        required: false
+        type: string
       pr_number:
         description: Pull request number for a future protected-merge binding envelope
         required: false
@@ -25,18 +29,20 @@ on:
         required: false
         type: string
       authority_mode:
-        description: Current authority, or the one final v1.3 cutover acceptance before v1.4 activation
+        description: Current protected-main authority, ordinary frozen candidate qualification, or the historical v1.3 cutover
         required: true
         type: choice
         default: current
-        options: [current, v13-cutover]
+        options: [current, candidate, v13-cutover]
 
 permissions:
   contents: read
   pull-requests: read
 
 concurrency:
-  group: sounding-line-authoritative-${{ github.workflow }}-${{ github.ref }}
+  # Candidate runs are independently source-bound. Do not serialize ordinary
+  # frozen candidates merely because every dispatch is trusted-main hosted.
+  group: sounding-line-authoritative-${{ github.workflow }}-${{ inputs.candidate_sha }}
   cancel-in-progress: false
 
 jobs:
@@ -72,6 +78,7 @@ jobs:
         env:
           SOUNDING_LINE_GATE: ${{ inputs.gate }}
           SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+          SOUNDING_LINE_CANDIDATE_REF: ${{ inputs.candidate_ref }}
           SOUNDING_LINE_DISPATCHED_SHA: ${{ github.sha }}
           SOUNDING_LINE_PR_NUMBER: ${{ inputs.pr_number }}
           SOUNDING_LINE_BASE_SHA: ${{ inputs.base_sha }}
@@ -80,12 +87,16 @@ jobs:
           $gate = $env:SOUNDING_LINE_GATE
           if ($gate -notin @('mainline', 'release-candidate')) { throw "SOUNDING_LINE_GATE_INVALID" }
           $authorityMode = $env:SOUNDING_LINE_AUTHORITY_MODE
-          if ($authorityMode -notin @('current', 'v13-cutover')) { throw "SOUNDING_LINE_AUTHORITY_MODE_INVALID" }
+          if ($authorityMode -notin @('current', 'candidate', 'v13-cutover')) { throw "SOUNDING_LINE_AUTHORITY_MODE_INVALID" }
           if ($authorityMode -eq 'v13-cutover' -and $gate -ne 'mainline') { throw "SOUNDING_LINE_V13_CUTOVER_MAINLINE_ONLY" }
           $candidateSha = $env:SOUNDING_LINE_CANDIDATE_SHA
           $dispatchedSha = $env:SOUNDING_LINE_DISPATCHED_SHA
           if ($candidateSha -notmatch '^[0-9a-f]{40}$') { throw "SOUNDING_LINE_FROZEN_CANDIDATE_SHA_INVALID" }
-          if ($candidateSha -ne $dispatchedSha) { throw "SOUNDING_LINE_FROZEN_CANDIDATE_SHA_MISMATCH" }
+          if ($authorityMode -ne 'candidate' -and $candidateSha -ne $dispatchedSha) { throw "SOUNDING_LINE_FROZEN_CANDIDATE_SHA_MISMATCH" }
+          if ($authorityMode -eq 'candidate' -and $env:GITHUB_REF -ne 'refs/heads/main') { throw "SOUNDING_LINE_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED" }
+          if ($authorityMode -eq 'candidate' -and $gate -ne 'mainline') { throw "SOUNDING_LINE_CANDIDATE_MAINLINE_ONLY" }
+          $candidateRef = $env:SOUNDING_LINE_CANDIDATE_REF
+          if ($authorityMode -eq 'candidate' -and $candidateRef -notmatch '^refs/heads/[A-Za-z0-9._/-]+$') { throw "SOUNDING_LINE_CANDIDATE_REF_INVALID" }
           $prNumber = $env:SOUNDING_LINE_PR_NUMBER
           $baseSha = $env:SOUNDING_LINE_BASE_SHA
           # CURRENT protected-main verification deliberately has no PR envelope, but
@@ -93,12 +104,13 @@ jobs:
           # its base; v13 cutover continues to require both values below.
           if ($prNumber -and -not $baseSha) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_BASE_REQUIRED" }
           if ($authorityMode -eq 'v13-cutover' -and (-not $prNumber -or -not $baseSha)) { throw "SOUNDING_LINE_V13_CUTOVER_ACCEPTANCE_ENVELOPE_REQUIRED" }
+          if ($authorityMode -eq 'candidate' -and (-not $prNumber -or -not $baseSha)) { throw "SOUNDING_LINE_CANDIDATE_ACCEPTANCE_ENVELOPE_REQUIRED" }
           if ($prNumber -and ($prNumber -notmatch '^[1-9][0-9]*$')) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_PR_INVALID" }
           if ($baseSha -and ($baseSha -notmatch '^[0-9a-f]{40}$')) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_BASE_SHA_INVALID" }
           "value=$gate" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-          "authorityMode=$(if ($authorityMode -eq 'v13-cutover') { 'V13_CUTOVER' } else { 'CURRENT' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "authorityMode=$(if ($authorityMode -eq 'v13-cutover') { 'V13_CUTOVER' } elseif ($authorityMode -eq 'candidate') { 'V14_CANDIDATE' } else { 'CURRENT' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with: { ref: "${{ github.sha }}", fetch-depth: 0 }
+        with: { ref: "${{ inputs.candidate_sha }}", fetch-depth: 0 }
       - id: base
         shell: pwsh
         env:
@@ -120,6 +132,8 @@ jobs:
           SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
           SOUNDING_LINE_BASE_SHA: ${{ steps.base.outputs.value }}
           SOUNDING_LINE_PR_NUMBER: ${{ inputs.pr_number }}
+          SOUNDING_LINE_CANDIDATE_REF: ${{ inputs.candidate_ref }}
+          SOUNDING_LINE_AUTHORITY_MODE: ${{ inputs.authority_mode }}
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
@@ -130,6 +144,30 @@ jobs:
           $pr = Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:GITHUB_REPOSITORY/pulls/$env:SOUNDING_LINE_PR_NUMBER"
           if ($pr.head.sha -ne $env:SOUNDING_LINE_CANDIDATE_SHA) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_PR_HEAD_MISMATCH" }
           if ($pr.base.sha -ne $env:SOUNDING_LINE_BASE_SHA) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_PR_BASE_MISMATCH" }
+          if ($env:SOUNDING_LINE_AUTHORITY_MODE -eq 'candidate') {
+            $expectedRef = "refs/heads/$($pr.head.ref)"
+            if ($env:SOUNDING_LINE_CANDIDATE_REF -ne $expectedRef) { throw "SOUNDING_LINE_CANDIDATE_REF_PR_MISMATCH" }
+            $resolved = @(git ls-remote origin $env:SOUNDING_LINE_CANDIDATE_REF)
+            if ($resolved.Count -ne 1 -or -not $resolved[0].StartsWith("$env:SOUNDING_LINE_CANDIDATE_SHA`t")) { throw "SOUNDING_LINE_CANDIDATE_REF_HEAD_MISMATCH" }
+          }
+      - name: Enforce trusted ordinary-candidate boundary
+        if: ${{ inputs.authority_mode == 'candidate' }}
+        shell: pwsh
+        env:
+          SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+          SOUNDING_LINE_BASE_SHA: ${{ steps.base.outputs.value }}
+        run: |
+          git show "$env:SOUNDING_LINE_BASE_SHA`:testing/verification-maintenance-policy.json" > trusted-maintenance-policy.json
+          $policy = Get-Content -Raw trusted-maintenance-policy.json | ConvertFrom-Json
+          $changed = @(git diff --name-only --no-renames --no-ext-diff $env:SOUNDING_LINE_BASE_SHA $env:SOUNDING_LINE_CANDIDATE_SHA | Sort-Object)
+          function Test-TrustedGlob([string]$file, [string]$glob) {
+            $pattern = '^' + [regex]::Escape($glob).Replace('\*\*', '.*').Replace('\*', '[^/]*') + '$'
+            return $file -match $pattern
+          }
+          $authority = @($changed | Where-Object { $file = $_; @($policy.authorityChangePathGlobs | Where-Object { Test-TrustedGlob $file $_ }).Count -gt 0 })
+          $unknown = @($changed | Where-Object { $file = $_; @($policy.ordinaryCandidateEligiblePathGlobs | Where-Object { Test-TrustedGlob $file $_ }).Count -eq 0 })
+          if ($authority.Count -gt 0) { throw "SOUNDING_LINE_ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED:$($authority -join ',')" }
+          if ($unknown.Count -gt 0) { throw "SOUNDING_LINE_ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:$($unknown -join ',')" }
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc, cache: npm }
       - run: npm ci
@@ -145,7 +183,8 @@ jobs:
           SOUNDING_LINE_GATE: ${{ steps.gate.outputs.value }}
           SOUNDING_LINE_BASE_SHA: ${{ steps.base.outputs.value }}
           SOUNDING_LINE_AUTHORITY_MODE: ${{ steps.gate.outputs.authorityMode }}
-        run: node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:process.env.SOUNDING_LINE_GATE,serial:false,sourceSha:process.env.GITHUB_SHA,qualifiedBaseSha:process.env.SOUNDING_LINE_BASE_SHA,authorityMode:process.env.SOUNDING_LINE_AUTHORITY_MODE}),null,2)))" > sounding-line-plan.json
+          SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+        run: node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:process.env.SOUNDING_LINE_GATE,serial:false,sourceSha:process.env.SOUNDING_LINE_CANDIDATE_SHA,qualifiedBaseSha:process.env.SOUNDING_LINE_BASE_SHA,authorityMode:process.env.SOUNDING_LINE_AUTHORITY_MODE}),null,2)))" > sounding-line-plan.json
       - name: Seal immutable dependency layer
         shell: pwsh
         run: |
@@ -197,6 +236,7 @@ jobs:
     with:
       suite: ${{ matrix.suiteId }}
       gate: ${{ needs.plan.outputs.gate }}
+      candidate_sha: ${{ inputs.candidate_sha }}
 
   governed-exclusive-wave-0:
     name: Sounding Line / Exclusive wave 0
@@ -210,6 +250,7 @@ jobs:
     with:
       suite: ${{ matrix.suiteId }}
       gate: ${{ needs.plan.outputs.gate }}
+      candidate_sha: ${{ inputs.candidate_sha }}
 
   wave-0-complete:
     name: Sounding Line / Wave 0 barrier
@@ -246,6 +287,7 @@ jobs:
     with:
       suite: ${{ matrix.suiteId }}
       gate: ${{ needs.plan.outputs.gate }}
+      candidate_sha: ${{ inputs.candidate_sha }}
 
   governed-exclusive-wave-1:
     name: Sounding Line / Exclusive wave 1
@@ -259,6 +301,7 @@ jobs:
     with:
       suite: ${{ matrix.suiteId }}
       gate: ${{ needs.plan.outputs.gate }}
+      candidate_sha: ${{ inputs.candidate_sha }}
 
   wave-1-complete:
     name: Sounding Line / Wave 1 barrier
@@ -295,6 +338,7 @@ jobs:
     with:
       suite: ${{ matrix.suiteId }}
       gate: ${{ needs.plan.outputs.gate }}
+      candidate_sha: ${{ inputs.candidate_sha }}
 
   governed-exclusive-wave-2:
     name: Sounding Line / Exclusive wave 2
@@ -308,6 +352,7 @@ jobs:
     with:
       suite: ${{ matrix.suiteId }}
       gate: ${{ needs.plan.outputs.gate }}
+      candidate_sha: ${{ inputs.candidate_sha }}
 
   wave-2-complete:
     name: Sounding Line / Wave 2 barrier
@@ -344,6 +389,7 @@ jobs:
     with:
       suite: ${{ matrix.suiteId }}
       gate: ${{ needs.plan.outputs.gate }}
+      candidate_sha: ${{ inputs.candidate_sha }}
 
   governed-exclusive-wave-3:
     name: Sounding Line / Exclusive wave 3
@@ -357,6 +403,7 @@ jobs:
     with:
       suite: ${{ matrix.suiteId }}
       gate: ${{ needs.plan.outputs.gate }}
+      candidate_sha: ${{ inputs.candidate_sha }}
 
   wave-3-complete:
     name: Sounding Line / Wave 3 barrier
@@ -393,6 +440,7 @@ jobs:
     with:
       suite: ${{ matrix.suiteId }}
       gate: ${{ needs.plan.outputs.gate }}
+      candidate_sha: ${{ inputs.candidate_sha }}
 
   governed-exclusive-wave-4:
     name: Sounding Line / Exclusive wave 4
@@ -406,6 +454,7 @@ jobs:
     with:
       suite: ${{ matrix.suiteId }}
       gate: ${{ needs.plan.outputs.gate }}
+      candidate_sha: ${{ inputs.candidate_sha }}
 
   wave-4-complete:
     name: Sounding Line / Wave 4 barrier
@@ -442,6 +491,7 @@ jobs:
     with:
       suite: ${{ matrix.suiteId }}
       gate: ${{ needs.plan.outputs.gate }}
+      candidate_sha: ${{ inputs.candidate_sha }}
 
   governed-exclusive-wave-5:
     name: Sounding Line / Exclusive wave 5
@@ -455,6 +505,7 @@ jobs:
     with:
       suite: ${{ matrix.suiteId }}
       gate: ${{ needs.plan.outputs.gate }}
+      candidate_sha: ${{ inputs.candidate_sha }}
 
   wave-5-complete:
     name: Sounding Line / Wave 5 barrier
@@ -518,6 +569,8 @@ jobs:
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with: { pattern: sounding-line-worker-evidence-*, path: sounding-line-worker-evidence, merge-multiple: false }
       - name: Finalizer decision
+        env:
+          SOUNDING_LINE_EXPECTED_SOURCE_SHA: ${{ inputs.candidate_sha }}
         run: node scripts/sounding-line/finalize-ci.mjs sounding-line-plan/sounding-line-plan.json sounding-line-worker-evidence --out sounding-line-finalization.json
       - name: Seal qualified acceptance envelope
         if: ${{ inputs.pr_number != '' }}
