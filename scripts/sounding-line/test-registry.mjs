@@ -6,6 +6,7 @@ import path from "node:path";
 import { format, resolveConfig } from "prettier";
 import ts from "typescript";
 import { promisify } from "node:util";
+import { semanticTestId, validateRegistryIdentity } from "./test-identity.mjs";
 
 const root = process.cwd();
 const ignored = new Set(["node_modules", ".git", ".next", "coverage", "artifacts", "dist"]);
@@ -319,6 +320,7 @@ async function discoverPlaywright() {
     const suiteId = browserFamily(project, file, title);
     cases.push({
       id: `sl-test-${hash(`${project}:${file}:${line}:${title}`)}`,
+      semanticId: semanticTestId({ project, suiteId, file, title }),
       title,
       line: Number(line),
       file,
@@ -366,6 +368,7 @@ function collect(source, relative) {
         const caseTitle = ts.isStringLiteralLike(title) ? title.text : title.getText(source);
         cases.push({
           id: `sl-test-${hash(`${relative}:${caseTitle}`)}`,
+          semanticId: semanticTestId({ suiteId: "unclassified", file: relative, title: caseTitle }),
           title: caseTitle,
           line: source.getLineAndCharacterOfPosition(node.getStart(source)).line + 1,
         });
@@ -394,25 +397,33 @@ for (const absolute of sources.flat()) {
     ? [
         {
           id: `sl-test-${hash(`${file}:powershell-validation`)}`,
+          semanticId: semanticTestId({
+            suiteId: "validation.powershell",
+            file,
+            title: `${path.basename(file)} governed PowerShell validation`,
+          }),
           title: `${path.basename(file)} governed PowerShell validation`,
           line: 1,
         },
       ]
     : collect(source, file);
-  for (const test of discovered) cases.push({ ...test, file, suiteId, ...metadata(file, suiteId) });
+  for (const test of discovered)
+    cases.push({
+      ...test,
+      semanticId: semanticTestId({ suiteId, file, title: test.title }),
+      file,
+      suiteId,
+      ...metadata(file, suiteId),
+    });
 }
 cases.push(...(await discoverPlaywright()));
-const ids = new Set();
-for (const entry of cases) {
-  if (ids.has(entry.id)) throw new Error(`DUPLICATE_TEST_ID:${entry.id}`);
-  ids.add(entry.id);
-}
+validateRegistryIdentity(cases);
 await fs.mkdir(path.join(root, "testing", "generated"), { recursive: true });
 const registryPath = path.join(root, "testing", "generated", "active-test-registry.json");
 const prettierConfig = (await resolveConfig(registryPath)) ?? {};
 await fs.writeFile(
   registryPath,
-  await format(JSON.stringify({ version: 2, schemaVersion: "2.0.0", generated: true, cases }), {
+  await format(JSON.stringify({ version: 3, schemaVersion: "3.0.0", generated: true, cases }), {
     ...prettierConfig,
     parser: "json",
   }),
