@@ -26,6 +26,12 @@ function semantic(snapshot: unknown, id: string, checksum = id, schemaVersion: n
 }
 
 describe("Tideglass contracts and canonicalization", () => {
+  it("keeps receipt canonical JSON explicit about nulls while eliding undefined values", () => {
+    expect(canonicalJson({ z: undefined, a: { retained: null, negativeZero: -0 } })).toBe(
+      '{"a":{"negativeZero":0,"retained":null}}',
+    );
+  });
+
   it("F01 normalizes object/property ordering to identical semantics", () => {
     const original = baseSnapshot();
     const reordered = reverseObjectOrder(original);
