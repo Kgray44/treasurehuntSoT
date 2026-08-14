@@ -1,24 +1,31 @@
+---
+title: Project Drydock Phase 4 Test Plan
+audience: engineering
+status: v1.4-reconciled-qualification
+canonical_for: project-drydock-phase-4-test-plan
+last_reviewed: 2026-08-14
+---
+
 # Project Drydock Phase 4 Test Plan
 
-Status: DEVELOPMENT — this plan is not an acceptance receipt.
+This plan separates local qualification from protected-main acceptance. Sounding Line remains the sole release authority.
 
-## Implemented focused checks
+## Reconciled local evidence
 
-- `drydock:readiness`: canonical decisions, warnings, stale evidence, capability-derived Suite policy, and safe publishing evidence.
-- `drydock:compatibility` and `drydock:historical`: parser/upcast compatibility and non-destructive migration preview.
-- `drydock:publishing-contract`: owner-safe readiness/evidence APIs and immutable evidence projection.
-- Launch Gate component tests: loading, server decision/checksum, and failure presentation.
-- Prisma SQLite/MySQL static schema validation and task-owned SQLite rehearsal through all 62 migrations, including Suite evidence and source-idempotent publication constraints; MySQL SQL parity is statically verified.
+- `drydock:test`: all Drydock readiness, evidence, compatibility, persistence, performance, recovery, privacy, and contract checks.
+- `drydock:readiness`, `drydock:publishing-contract`, `drydock:historical`, `drydock:sea-trials`, and `drydock:harborlight`: focused contract-family rebounds.
+- `drydock:phase4:migrations:sqlite`: task-owned SQLite rehearsal through all Phase 4 migrations with representative Phase 3 Suite data. MySQL is static SQL parity only.
+- `drydock:validate` and `test:policy`: generated authoring/rule artifacts, fixture compatibility, migration metadata, and v1.4 policy registration.
+- `drydock:browser`: authenticated task-owned Chromium journey with a fresh SQLite database, visible Studio navigation, source-bound Launch Gate and Compatibility, Sea Trials, 390 px viewport, keyboard focus, and Axe serious/critical assertions.
+- `docs:validate`, `features:validate`, `lint`, and `test:raw:build`: current documentation, catalog, static lint, and non-authoritative production-build proof.
 
-## Required before qualification
+## Candidate qualification sequence
 
-- task-owned SQLite migration rehearsal with Phase 3 representative data;
-- MySQL live proof if an isolated policy-approved service is available;
-- exact-source publication race, double-submit, and transaction-rollback tests;
-- required Suite persistence/recovery and stale-policy tests;
-- full historical fixture matrix and reader-security limits;
-- authenticated browser, Axe, keyboard, responsive, privacy/security, and performance evidence;
-- Harborlight/provider/Sealed Hold/Lanternwake integration evidence;
-- registered Sounding Line authoritative suites and frozen-candidate qualification.
+1. Regenerate source-owned catalog, document-index, and Sounding Line test-registry outputs.
+2. Freeze one exact branch head and rerun the impacted project evidence against that source identity.
+3. Record the candidate SHA, remote parity, and preserved v1.4 rebound evidence.
+4. Do not dispatch Sounding Line Mainline Decision or merge until the independent v1.4 post-cutover browser-fixture closure is green.
 
-No item in the second section may be inferred from the focused checks above.
+## External boundaries
+
+Live MySQL and connected provider proof are distinct from the isolated SQLite and contract-adapter evidence. They remain explicitly unpassed until an isolated policy-approved service or provider proof is available.

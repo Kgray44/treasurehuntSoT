@@ -15,7 +15,7 @@
     { "id": "DD-F-SECURITY-PRIVACY", "implementation": "src/chronicle/publishing.ts;src/drydock/evidence-store.ts", "tests": ["src/chronicle/published-snapshot-security.test.ts", "src/drydock/simulation-store.test.ts"], "suite": "unit.drydock", "status": "LOCAL_PROOF" },
     { "id": "DD-F-PERSISTENCE", "implementation": "prisma/migrations/20260813100000_drydock_phase4_readiness_evidence;prisma/migrations/20260813110000_drydock_phase4_suite_evidence;prisma/migrations/20260813120000_drydock_phase4_publish_idempotency", "tests": ["npm run drydock:phase4:migrations:sqlite"], "suite": "unit.drydock", "status": "SQLITE_REHEARSED_MYSQL_STATIC_PARITY" },
     { "id": "DD-F-PERFORMANCE-RECOVERY", "implementation": "src/drydock/performance.ts;src/drydock/simulation-store.ts", "tests": ["src/drydock/simulation/performance.test.ts", "src/drydock/incremental.test.ts", "src/drydock/simulation-store.test.ts"], "suite": "unit.drydock", "status": "LOCAL_PROOF" },
-    { "id": "DD-F-BROWSER-ACCESSIBILITY", "implementation": "src/components/studio/DrydockLaunchGate.tsx", "tests": ["task-owned authenticated local browser journey", "src/components/studio/DrydockLaunchGate.test.tsx"], "suite": "component.studio", "status": "LOCAL_BROWSER_PROOF_AXE_REGISTERED_EVIDENCE_PENDING" }
+    { "id": "DD-F-BROWSER-ACCESSIBILITY", "implementation": "src/components/studio/DrydockLaunchGate.tsx", "tests": ["task-owned authenticated local browser journey", "src/components/studio/DrydockLaunchGate.test.tsx"], "suite": "component.studio", "status": "LOCAL_BROWSER_AXE_PROOF" }
   ],
   "closureInvariants": {
     "unmappedMandatoryFamilies": "NOT_YET_EVALUATED_AT_FINAL_CLOSURE",
