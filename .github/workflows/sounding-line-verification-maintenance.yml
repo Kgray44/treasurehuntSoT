@@ -39,7 +39,10 @@ jobs:
           git show "$env:BASE_SHA`:testing/verification-maintenance-policy.json" > trusted-maintenance-policy.json
           git show "$env:BASE_SHA`:scripts/sounding-line/verification-maintenance.mjs" > trusted-verification-maintenance.mjs
           $paths = @(git diff --name-only --no-renames --no-ext-diff "$env:BASE_SHA" "$env:CANDIDATE_SHA" | Sort-Object)
-          $paths | ConvertTo-Json -Compress | Set-Content -NoNewline maintenance-changed-paths.json
+          # This temporary proof input is in the checkout while static
+          # qualification runs, so emit repository-format JSON rather than an
+          # intentionally compact one-line artifact.
+          $paths | ConvertTo-Json | Set-Content maintenance-changed-paths.json
           $tree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
           node trusted-verification-maintenance.mjs plan --policy trusted-maintenance-policy.json --paths maintenance-changed-paths.json --trusted-main-sha $env:BASE_SHA --candidate-sha $env:CANDIDATE_SHA --candidate-tree $tree --base-sha $env:BASE_SHA --out maintenance-plan.json
       - run: npm ci
