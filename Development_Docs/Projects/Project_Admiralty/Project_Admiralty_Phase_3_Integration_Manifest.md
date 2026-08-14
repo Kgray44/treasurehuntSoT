@@ -3,7 +3,7 @@ title: Project Admiralty Phase 3 Integration Manifest
 audience: product-owner-engineering-security-quality
 status: in-progress
 canonical_for: project-admiralty-phase-3-integration-manifest
-last_reviewed: 2026-08-13
+last_reviewed: 2026-08-14
 ---
 
 # Project Admiralty Phase 3 integration manifest
@@ -11,7 +11,9 @@ last_reviewed: 2026-08-13
 ## Scope and source
 
 - Working branch: `codex/project-admiralty-phase3-mainline-reconcile`
-- Reconciled mainline base: `72075eb551ec39bdb59bd7d78fd900f2eaf73a88`
+- Paused checkpoint: `56caa166a5ab6171f4d9d7e4b0ed544a92f541d5`
+- Reconciled mainline base: `268932d630ee0ea1721d0072da4041f7209b7464`
+- Reconciliation merge: `32f45c88665f8597bc642917ca523ca87d650566`
 - Phase 2 baseline: accepted Project Admiralty Phase 2 read-only control plane.
 - In scope: owner-backed account/security and Community moderation command
   seams, role partitions, command evidence, and safe operator projections.
@@ -20,14 +22,21 @@ last_reviewed: 2026-08-13
 
 ## Current integration state
 
-The integration is **ready for owner walkthrough but has no protected-main
-authority**. Session revocation, active-account suspension, and selected
+The integration is **ready for Sounding Line v1.4 Mainline acceptance but has
+no protected-main authority**. Session revocation, active-account suspension, and selected
 case-attached Community moderation actions have controlled server routes and
 human-facing dossier/listing panels. Their local synthetic browser
 qualification includes preview, assurance, confirmation, durable receipts,
 CSRF denial, ordinary-user command-center denial, redaction, and accessibility
-checks. The full repository build remains blocked by unrelated Bridgewatch
-dependencies, so this is not a production-build qualification.
+checks. Reconciliation adopted the current Sounding Line v1.4 authority and
+Bridgewatch contracts without source conflict; current-source local production
+build and the Phase 2 and Phase 3 browser journeys pass on the disposable
+synthetic fixtures.
+
+The paused v1.3-era focused evidence is preserved as
+`PRESERVED_NONAUTHORITATIVE_PENDING_V14_SEMANTIC_ADOPTION`. It is not a v1.4
+authority receipt and must be evaluated under the v1.4 legacy-evidence policy
+by a future authorized Mainline Decision.
 
 | Family               | Owner               | State                               | Integration boundary                                                                                                    |
 | -------------------- | ------------------- | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
@@ -45,4 +54,6 @@ exercise blocked command families. A future owner command contract may unblock
 only its named family; it must not be inferred from a table, worker, seed
 script, or bootstrap reconciler.
 
-No Sounding Line authority or protected-main binding has been requested or run.
+No Sounding Line v1.4 Mainline Decision or protected-main binding has been
+requested or run. Both remain held until the independent v1.4 post-cutover
+hosted browser-fixture closure is green.

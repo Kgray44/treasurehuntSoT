@@ -3,12 +3,16 @@
   "project": "Project Admiralty",
   "phase": "3",
   "phaseName": "Take the Watch",
-  "status": "READY_FOR_OWNER_WALKTHROUGH",
+  "status": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
   "authorization": "OWNER_PROMPT_2026-08-13",
   "branch": "codex/project-admiralty-phase3-mainline-reconcile",
   "worktree": "C:\\Users\\kgray\\AppData\\Local\\ForeverTreasureCompanion\\treasurehuntSoT-admiralty-phase3-mainline-reconcile",
   "baseRef": "origin/main",
-  "baseSha": "72075eb551ec39bdb59bd7d78fd900f2eaf73a88",
+  "baseSha": "268932d630ee0ea1721d0072da4041f7209b7464",
+  "pausedCheckpointSha": "56caa166a5ab6171f4d9d7e4b0ed544a92f541d5",
+  "v14ReconciliationSha": "32f45c88665f8597bc642917ca523ca87d650566",
+  "legacyEvidenceDisposition": "PRESERVED_NONAUTHORITATIVE_PENDING_V14_SEMANTIC_ADOPTION",
+  "mainlineHold": "Sounding Line v1.4 post-cutover hosted browser-fixture closure remains external and must be green before authoritative Mainline Decision or merge.",
   "phase2Status": "ACCEPTED_MAINLINE",
   "phase2AcceptedMainSha": "4edc8de5e30e9748700c19b466061f9b9a97f268",
   "concurrencyClass": "B_WITH_CLASS_C_OWNER_BOUNDARIES",
@@ -38,5 +42,6 @@
     "release orchestration",
     "break-glass authority and secret access"
   ],
-  "registeredAt": "2026-08-13"
+  "registeredAt": "2026-08-13",
+  "reconciledAt": "2026-08-14"
 }
