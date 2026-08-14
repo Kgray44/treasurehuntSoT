@@ -62,3 +62,35 @@ The production build passed with the inherited Turbopack NFT warning traced to
 Local implementation and qualification are complete. No owner walkthrough
 decision, Sounding Line authority, protected merge, or completion receipt has
 been issued.
+
+## Sounding Line v1.4 reconciliation and evidence rebound
+
+The preserved Phase 4 head `951f0d71bacf3e2058629d6c13449e634b9b46f4` was
+reconciled with current protected main
+`268932d630ee0ea1721d0072da4041f7209b7464` in merge commit
+`e86deed62e2d66868c112ad44f627d597ab31f3e`. The current-main advance contains
+Sounding Line v1.4 authority, hosted-worker, Bridgewatch, and generated-record
+work. It does not change Phase 4 source, Prisma schema or migrations, or
+package dependency contracts. The only runtime pin change is Node `24` to
+`24.19.0`; Phase 4's focused Captain preflight proof was rerun successfully
+under that exact runtime after reconciliation.
+
+The prior browser qualification remains preserved as a **rebound candidate**,
+not promoted authority evidence: source
+`32652761bb41046a417f4223aeea0b0c1fcebad0`, fixture
+`tideglass-phase4-v2`, checksum
+`ee5a9368c85126bdae3c7678980f59942204a7a32b0aaf3ccd2bdbc1efcdc3e3`, and
+manifest
+`C:\Users\kgray\AppData\Local\ProjectTideglass\phase4-candidate-3265276-final\browser\evidence\manifest.json`.
+It supplies the preserved product, suite, fixture, and provenance inputs that
+Sounding Line v1.4 requires for a future semantic rebound; it is not equivalent
+to a current v1.4 receipt. Reconciliation found no Phase 4 product or
+dependency invalidator, but a future authority decision must still bind the
+exact frozen candidate/base/tree and current v1.4 policy, inventory, semantic
+fingerprint, and trusted-producer inputs.
+
+Current incremental rebound evidence is: Captain preflight route, boundary, and
+component suites (3 files, 8 tests) passed under Node `24.19.0`; repository
+TypeScript, documentation validation, Feature Catalog validation, and
+`git diff --check` passed. This entry neither records owner acceptance nor
+authorizes a Mainline Decision, protected merge, or completion receipt.
