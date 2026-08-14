@@ -158,14 +158,16 @@ test("maintenance qualification keeps the static-safe changed-path proof outside
     new URL("../../../.github/workflows/sounding-line-verification-maintenance.yml", import.meta.url),
     "utf8",
   );
+  assert.match(workflow, /id: trusted-maintenance/u);
   assert.match(
     workflow,
-    /MAINTENANCE_TEMP: \$\{\{ runner\.temp \}\}\/sounding-line-maintenance-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/u,
+    /\$maintenanceTemp = Join-Path \$env:RUNNER_TEMP "sounding-line-maintenance-\$env:GITHUB_RUN_ID-\$env:GITHUB_RUN_ATTEMPT"/u,
   );
-  assert.match(workflow, /\$pathsFile = Join-Path \$env:MAINTENANCE_TEMP 'maintenance-changed-paths\.json'/u);
+  assert.match(workflow, /\$pathsFile = Join-Path \$maintenanceTemp 'maintenance-changed-paths\.json'/u);
   assert.match(workflow, /\$pathsJson = ConvertTo-Json -InputObject \$paths -Compress/u);
   assert.match(workflow, /\[System\.IO\.File\]::WriteAllText\(\$pathsFile, \$pathsJson, \$utf8NoBom\)/u);
   assert.match(workflow, /--paths \$pathsFile/u);
   assert.doesNotMatch(workflow, /Set-Content maintenance-changed-paths\.json/u);
-  assert.match(workflow, /Remove-Item -LiteralPath \$env:MAINTENANCE_TEMP -Recurse -Force/u);
+  assert.match(workflow, /\$\{\{ steps\.trusted-maintenance\.outputs\.maintenance_temp \}\}\/maintenance-plan\.json/u);
+  assert.match(workflow, /Remove-Item -LiteralPath \$maintenanceTemp -Recurse -Force/u);
 });
