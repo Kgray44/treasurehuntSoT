@@ -39,6 +39,23 @@
   "missingGatewayEntries": ["Account", "Create Account", "Community Harbor", "Profile", "Chronicle Passport"],
   "edges": [
     {
+      "nodeId": "nav-bridgewatch-private-gateway",
+      "routeId": "route-route-bridgewatch-path",
+      "label": "Bridgewatch",
+      "controlId": "admiralty-bridgewatch",
+      "sourceScreen": "src/components/admiralty/AdmiraltyShell.tsx",
+      "destinationScreen": "/bridgewatch",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
+      "capabilities": ["PLATFORM_OBSERVE"],
+      "hiddenCondition": "PLATFORM_OBSERVE_ABSENT",
+      "disabledCondition": null,
+      "redirectBehavior": "NONE_CANONICAL_PATH_IS_BRIDGEWATCH",
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "evidenceId": null
+    },
+    {
       "nodeId": "nav-1",
       "routeId": "route-page-sign-in",
       "label": "Link to /sign-in",
