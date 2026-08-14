@@ -498,6 +498,8 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   assert.match(worker, /execution_sha:[\s\S]*?sealed predicted integration commit/u);
   assert.match(worker, /GOVERNED_INTEGRATION_BUNDLE_FETCH_FAILED/u);
   assert.match(worker, /GOVERNED_WORKER_EXECUTION_CHECKOUT_MISMATCH/u);
+  assert.match(worker, /SOUNDING_LINE_SEALED_SOURCE_SHA: \$\{\{ inputs\.candidate_sha \}\}/u);
+  assert.match(worker, /\$env:GITHUB_SHA = \$env:SOUNDING_LINE_SEALED_SOURCE_SHA/u);
   const trainWorkflow = await readFile(
     path.join(root, ".github", "workflows", "sounding-line-mainline-train.yml"),
     "utf8",
