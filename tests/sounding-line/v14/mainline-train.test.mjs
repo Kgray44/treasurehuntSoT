@@ -156,6 +156,19 @@ test("independently finalized cars merge into one complete head-ready train with
   const ready = transitionTrainCar(merged, { position: merged.headPosition, to: "HEAD_READY", timestamp: at });
   assert.equal(ready.cars[0].state, "HEAD_READY");
   assert.equal(ready.cars[1].state, "QUALIFIED");
+  const advanced = landTrainHead(ready, {
+    actualLandedCommitSha: sha("z"),
+    actualLandedTreeSha: ready.cars[0].predictedIntegrationTreeSha,
+    mergeStrategyIdentity: "merge-tree",
+    timestamp: at,
+    integrate: integrator,
+  });
+  assert.equal(advanced.comparison.result, "MATCH");
+  assert.equal(advanced.train.cars[0].state, "LANDED");
+  assert.equal(advanced.train.cars[1].state, "HEAD_READY");
+  assert.equal(advanced.train.cars[2].state, "QUALIFIED");
+  assert.equal(advanced.train.replans.length, 0);
+  assert.ok(advanced.train.audit.some((entry) => entry.kind === "PREDICTED_PREFIX_REBOUND"));
 });
 
 test("live admission derives ordered predicted trees from real immutable Git heads", async () => {

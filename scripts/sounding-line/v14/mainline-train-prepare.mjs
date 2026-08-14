@@ -102,6 +102,7 @@ export async function prepareMainlineTrain({
       }
       cars.push({
         candidateId: car.candidateId,
+        position,
         candidateSha: car.candidateHeadCommitSha,
         prNumber: car.candidatePrIdentity?.number,
         qualifiedBaseSha: car.predictedParentCommitSha,

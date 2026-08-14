@@ -14,6 +14,7 @@ on:
         type: string
 
 permissions:
+  checks: write
   contents: read
   pull-requests: read
 
@@ -259,6 +260,24 @@ jobs:
       - name: Normalize sealed plan for protected binding
         shell: pwsh
         run: Copy-Item -LiteralPath train-prepared/${{ matrix.planPath }} -Destination sounding-line-plan.json
+      - name: Bind the first train head to its current protected merge identity
+        if: ${{ matrix.position == 0 }}
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ matrix.prNumber }}
+          CANDIDATE_SHA: ${{ matrix.candidateSha }}
+          AUTHORITY_RUN_ID: ${{ github.run_id }}
+        run: |
+          git fetch origin main "refs/pull/$env:PR_NUMBER/merge:refs/remotes/origin/sounding-line-train-head-merge"
+          if ($LASTEXITCODE -ne 0) { throw 'TRAIN_HEAD_MERGE_IDENTITY_UNAVAILABLE' }
+          $merge = (git rev-parse origin/sounding-line-train-head-merge).Trim()
+          $base = (git rev-parse origin/main).Trim()
+          node scripts/sounding-line/protected-merge-binding-ci.mjs --authority testing/sounding-line-authority.json --finalization sounding-line-finalization.json --plan sounding-line-plan.json --envelope sounding-line-acceptance-envelope.json --pr-number $env:PR_NUMBER --candidate-sha $env:CANDIDATE_SHA --base-sha $base --merge-sha $merge --authority-run-id $env:AUTHORITY_RUN_ID
+          if ($LASTEXITCODE -ne 0) { throw 'TRAIN_HEAD_PROTECTED_BINDING_NO_GO' }
+          $body = @{ name = 'Sounding Line / Mainline Decision'; head_sha = $merge; status = 'completed'; conclusion = 'success'; output = @{ title = 'Train head bound'; summary = 'Exact sealed train-head authority bound to the current protected merge identity.' } } | ConvertTo-Json -Depth 8
+          Invoke-RestMethod -Method Post -Headers @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' } -Uri "https://api.github.com/repos/$env:REPOSITORY/check-runs" -ContentType 'application/json' -Body $body | Out-Null
       - if: always()
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:

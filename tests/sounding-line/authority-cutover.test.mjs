@@ -426,6 +426,14 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   assert.match(trainWorkflow, /sounding-line-train-wave\.yml/u);
   assert.match(trainWorkflow, /Finalize exact predicted-tree candidate evidence/u);
   assert.match(trainWorkflow, /merge-train-qualifications\.mjs/u);
+  assert.match(trainWorkflow, /Bind the first train head to its current protected merge identity/u);
+  const advanceWorkflow = await readFile(
+    path.join(root, ".github", "workflows", "sounding-line-mainline-train-advance.yml"),
+    "utf8",
+  );
+  assert.match(advanceWorkflow, /types: \[closed\]/u);
+  assert.match(advanceWorkflow, /Compare actual protected-main tree/u);
+  assert.match(advanceWorkflow, /Bind retained next head/u);
   assert.match(trainWorkflow, /TRAIN_LIVE_BOUNDARY_REQUIRED/u);
   assert.match(worker, /GOVERNED_WORKER_CANDIDATE_CHECKOUT_MISMATCH/u);
   assert.match(worker, /timeout-minutes: 120/u);

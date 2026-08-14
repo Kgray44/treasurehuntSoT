@@ -532,12 +532,22 @@ export function reconcileExternalMain(
       next.cars[index].actualLandedTreeSha =
         index === matching ? actualMainTreeSha : next.cars[index].predictedIntegrationTreeSha;
     }
-    return replan(sealTrain(next), {
-      earliestPosition: matching + 1,
-      cause: "EXTERNAL_MAIN_MATCHED_PREDICTION",
+    // The actual protected tree equals an already qualified predicted prefix.
+    // Its remaining cars were evaluated against that exact parent content, so
+    // invalidate neither their evidence nor their deterministic predictions.
+    // The changed physical commit identity is recorded as a tree-equivalent
+    // rebind; protected binding still independently checks that carry-forward.
+    next.headPosition = next.cars.findIndex((car) => car.state !== "LANDED");
+    next.status = next.headPosition < 0 ? "LANDED" : next.cars.some((car) => car.state === "PLANNING") ? "PLANNING" : "QUALIFIED";
+    next.audit.push({
+      kind: "PREDICTED_PREFIX_REBOUND",
+      matchedPosition: matching,
+      preservedSuffix: next.cars.slice(matching + 1).map((car) => car.carId),
+      evidenceDisposition: "REBOUND",
       timestamp,
-      integrate,
     });
+    next.updatedAt = timestamp;
+    return sealTrain(next);
   }
   // A caller that has completed the governed semantic comparison may retain a
   // proven-unaffected prefix. Without that proof, failing closed at zero is
@@ -624,15 +634,15 @@ export function landTrainHead(
     brake(next, { code: comparison.code, position, timestamp, sourceEvidence: comparison.receipt.id });
     return { train: sealTrain(next), comparison };
   }
-  return {
-    train: reconcileExternalMain(landing, {
+  let reconciled = reconcileExternalMain(landing, {
       actualMainCommitSha: actualLandedCommitSha,
       actualMainTreeSha: actualLandedTreeSha,
       timestamp,
       integrate,
-    }),
-    comparison,
-  };
+    });
+  if (comparison.result === "MATCH" && reconciled.headPosition >= 0 && reconciled.cars[reconciled.headPosition]?.state === "QUALIFIED")
+    reconciled = transitionTrainCar(reconciled, { position: reconciled.headPosition, to: "HEAD_READY", timestamp });
+  return { train: reconciled, comparison };
 }
 
 export function preemptTrain(train, { emergencyCandidate, timestamp, integrate }) {
