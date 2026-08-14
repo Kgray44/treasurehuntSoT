@@ -175,8 +175,14 @@ for (const source of [...pages, ...handlers]) {
     existingBySource.set(source.sourceFile, route);
   }
   route.routePattern = source.pathPattern;
-  if (discovered) {
+  // This source was introduced by the Shipwright authoring-tools increment.
+  // It may already be present through a generic API census, but that fallback
+  // must not replace the explicit specialist owner with one-voyage.
+  const hasExplicitSpecialistOwner = source.pathPattern.startsWith("/api/studio/tales/[taleId]/migrations/");
+  if (discovered || hasExplicitSpecialistOwner) {
     route.ownerProject = sourceOwner(source);
+  }
+  if (discovered) {
     route.productArea = sourceProductArea(source);
   }
   // Phase 5 originally emitted CURRENT_GOVERNED for newly discovered pages,

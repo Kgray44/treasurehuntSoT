@@ -2656,7 +2656,7 @@
   "edgeRegistryDigest": "bc04ad9659b9c92c9f89944ce3d40d39ed7b84673bd9247f09c8d83bb35cf911",
   "summary": {
     "discoveredPageSources": 109,
-    "discoveredServiceSources": 235,
+    "discoveredServiceSources": 237,
     "nodeCount": 109,
     "edgeCount": 206,
     "ordinaryRouteCount": 44,

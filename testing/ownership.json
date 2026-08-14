@@ -403,11 +403,22 @@
       "project": "bridgewatch",
       "sourcePaths": [
         "bridgewatch/**",
+        "src/admiralty/bridgewatch-gateway*",
+        "src/app/bridgewatch/**",
+        "src/app/api/internal/bridgewatch/**",
+        "deploy/nginx.conf",
+        "deploy/forever-treasure-bridgewatch.service",
+        "scripts/bridgewatch/**",
         "scripts/sounding-line/status-projection.mjs",
-        "Development_Docs/Project_Bridgewatch_Phase_2_*.md"
+        "Development_Docs/Project_Bridgewatch_Phase_2_*.md",
+        "Development_Docs/Project_Bridgewatch_Homeport_Gateway_*.md"
       ],
-      "testPaths": ["bridgewatch/test/**/*.test.*"],
-      "contractIds": ["bridgewatch.mission-control"]
+      "testPaths": [
+        "bridgewatch/test/**/*.test.*",
+        "src/admiralty/bridgewatch-gateway.test.ts",
+        "tests/e2e/admiralty-phase2.spec.ts"
+      ],
+      "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
     },
     {
       "id": "project-wakebook",

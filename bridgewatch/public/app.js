@@ -24,6 +24,10 @@ const recentChangePriority = {
 const recentChangeMaximum = 8;
 let board = null;
 let selectedTab = "ACTIVE";
+const bridgewatchUrl = (path) => {
+  const base = window.location.pathname.startsWith("/bridgewatch") ? "/bridgewatch/" : "/";
+  return new URL(`${base}${String(path).replace(/^\/+/, "")}`, window.location.origin);
+};
 
 const element = (tag, className, content) => {
   const node = document.createElement(tag);
@@ -119,11 +123,11 @@ async function showProject(project) {
   let trend = null;
   let history = [];
   try {
-    trend = await fetch(`/api/projects/${encodeURIComponent(project.id)}/trends`).then((response) =>
+    trend = await fetch(bridgewatchUrl(`api/projects/${encodeURIComponent(project.id)}/trends`)).then((response) =>
       response.ok ? response.json() : null,
     );
-    history = await fetch(`/api/projects/${encodeURIComponent(project.id)}/history?limit=20`).then((response) =>
-      response.ok ? response.json() : [],
+    history = await fetch(bridgewatchUrl(`api/projects/${encodeURIComponent(project.id)}/history?limit=20`)).then(
+      (response) => (response.ok ? response.json() : []),
     );
   } catch {
     trend = null;
@@ -369,8 +373,8 @@ async function loadRecent(windowName = "visit") {
     ? `Since browser-local visit: ${dateText(since)}`
     : "Last 12 hours (no usable local visit cursor).";
   try {
-    const result = await fetch(`/api/history?since=${encodeURIComponent(effectiveSince)}`).then((response) =>
-      response.ok ? response.json() : { events: [] },
+    const result = await fetch(bridgewatchUrl(`api/history?since=${encodeURIComponent(effectiveSince)}`)).then(
+      (response) => (response.ok ? response.json() : { events: [] }),
     );
     renderHistory(result.events ?? [], "#last-check", { concise: true });
   } catch {
@@ -381,7 +385,7 @@ async function renderArchive(order = "chronological") {
   const host = document.querySelector("#archive");
   host.replaceChildren();
   try {
-    const projects = await fetch(`/api/archive?order=${order}`).then((response) =>
+    const projects = await fetch(bridgewatchUrl(`api/archive?order=${order}`)).then((response) =>
       response.ok ? response.json() : [],
     );
     if (!projects.length)
@@ -402,7 +406,7 @@ async function renderTrends() {
   const host = document.querySelector("#trends");
   host.replaceChildren();
   try {
-    const trends = await fetch("/api/trends").then((response) => (response.ok ? response.json() : null));
+    const trends = await fetch(bridgewatchUrl("api/trends")).then((response) => (response.ok ? response.json() : null));
     const accepted = trends?.acceptedTimeline ?? [];
     if (!accepted.length)
       return host.append(element("p", "quiet", "No accepted timestamp is currently recorded for a program trend."));
@@ -418,7 +422,8 @@ async function renderTrends() {
   }
 }
 async function refreshSources() {
-  const sources = await fetch("/api/sources").then((response) => response.json());
+  const response = await fetch(bridgewatchUrl("api/sources"));
+  const sources = await response.json();
   const host = document.querySelector("#sources");
   host.replaceChildren();
   sources.forEach((source) => {
@@ -463,7 +468,7 @@ document.querySelectorAll("[data-archive-order]").forEach((button) =>
   }),
 );
 const refreshBoard = () =>
-  fetch("/api/summary")
+  fetch(bridgewatchUrl("api/summary"))
     .then((response) => response.json())
     .then(render)
     .catch(() => {

@@ -8,6 +8,41 @@
       "contractIds": ["bridgewatch.mission-control"]
     },
     {
+      "path": "src/admiralty/bridgewatch-gateway*",
+      "suiteIds": ["unit.admiralty", "browser.admiralty", "static.core"],
+      "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
+    },
+    {
+      "path": "src/app/bridgewatch/**",
+      "suiteIds": ["unit.admiralty", "browser.admiralty", "static.core"],
+      "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
+    },
+    {
+      "path": "src/app/api/internal/bridgewatch/**",
+      "suiteIds": ["unit.admiralty", "browser.admiralty", "static.core"],
+      "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
+    },
+    {
+      "path": "deploy/nginx.conf",
+      "suiteIds": ["unit.bridgewatch", "unit.admiralty", "browser.admiralty", "static.core"],
+      "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
+    },
+    {
+      "path": "deploy/*bridgewatch*",
+      "suiteIds": ["unit.bridgewatch", "unit.admiralty", "browser.admiralty", "static.core"],
+      "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
+    },
+    {
+      "path": "scripts/bridgewatch/**",
+      "suiteIds": ["unit.bridgewatch", "unit.admiralty", "static.core"],
+      "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_Homeport_Gateway_*.md",
+      "suiteIds": ["unit.bridgewatch", "unit.admiralty", "static.core"],
+      "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
+    },
+    {
       "path": "scripts/sounding-line/status-projection.mjs",
       "suiteIds": ["unit.bridgewatch", "unit.sounding-line", "static.core"],
       "contractIds": ["bridgewatch.mission-control"]
@@ -6415,6 +6450,45 @@
     {
       "contractId": "wakebook.archive.summary-redaction",
       "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+    },
+    {
+      "contractId": "invitation-acceptance",
+      "suiteIds": [
+        "unit.one-voyage",
+        "component.captain",
+        "component.studio",
+        "browser.invitations",
+        "browser.captain",
+        "browser.studio"
+      ]
+    },
+    {
+      "contractId": "player-session-restoration",
+      "suiteIds": ["component.player-shell", "browser.player-library"]
+    },
+    {
+      "contractId": "drydock-progression",
+      "suiteIds": ["unit.drydock"]
+    },
+    {
+      "contractId": "drydock-authoring-contracts",
+      "suiteIds": ["unit.drydock"]
+    },
+    {
+      "contractId": "artifact-grant-projection",
+      "suiteIds": ["component.artifacts", "browser.artifacts"]
+    },
+    {
+      "contractId": "lanternwake-presentation-receipt",
+      "suiteIds": ["unit.animation", "component.animation", "browser.animation-lifecycle"]
+    },
+    {
+      "contractId": "deepwater.capability-realization-integrity",
+      "suiteIds": ["unit.deepwater"]
+    },
+    {
+      "contractId": "public-privacy-projection",
+      "suiteIds": ["unit.private-content", "build.production"]
     }
   ],
   "impactClasses": [
