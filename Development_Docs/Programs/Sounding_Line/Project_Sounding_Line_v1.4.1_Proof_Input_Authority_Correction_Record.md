@@ -20,6 +20,11 @@ trusted classifier consumes the same sorted changed-path set from that path;
 no browser, request, or user input controls the location. Cleanup runs
 deterministically after artifact upload.
 
+The workflow derives that directory from `RUNNER_TEMP` inside runner-executed
+PowerShell steps, because GitHub does not expose the `runner` context to a
+job-level environment expression. The trusted binding step publishes the
+already-derived path only as a same-job step output for artifact upload.
+
 ## Authority boundary
 
 The repaired workflow remains an authority-change path in

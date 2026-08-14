@@ -21,14 +21,13 @@ jobs:
     name: Sounding Line / Verification maintenance qualification
     runs-on: windows-latest
     timeout-minutes: 25
-    env:
-      MAINTENANCE_TEMP: ${{ runner.temp }}/sounding-line-maintenance-${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with: { ref: "${{ inputs.candidate_sha }}", fetch-depth: 0 }
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc, cache: npm }
       - name: Bind classifier and policy to protected main
+        id: trusted-maintenance
         shell: pwsh
         env:
           CANDIDATE_SHA: ${{ inputs.candidate_sha }}
@@ -38,11 +37,13 @@ jobs:
           $protected = (git ls-remote origin refs/heads/main).Split("`t")[0]
           if ($protected -ne $env:BASE_SHA) { throw 'MAINTENANCE_TRUSTED_MAIN_STALE' }
           if ((git rev-parse HEAD).Trim() -ne $env:CANDIDATE_SHA) { throw 'MAINTENANCE_CANDIDATE_SHA_MISMATCH' }
-          New-Item -ItemType Directory -Force -Path $env:MAINTENANCE_TEMP | Out-Null
-          $policyFile = Join-Path $env:MAINTENANCE_TEMP 'trusted-maintenance-policy.json'
-          $verifierFile = Join-Path $env:MAINTENANCE_TEMP 'trusted-verification-maintenance.mjs'
-          $pathsFile = Join-Path $env:MAINTENANCE_TEMP 'maintenance-changed-paths.json'
-          $planFile = Join-Path $env:MAINTENANCE_TEMP 'maintenance-plan.json'
+          $maintenanceTemp = Join-Path $env:RUNNER_TEMP "sounding-line-maintenance-$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT"
+          New-Item -ItemType Directory -Force -Path $maintenanceTemp | Out-Null
+          "maintenance_temp=$maintenanceTemp" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          $policyFile = Join-Path $maintenanceTemp 'trusted-maintenance-policy.json'
+          $verifierFile = Join-Path $maintenanceTemp 'trusted-verification-maintenance.mjs'
+          $pathsFile = Join-Path $maintenanceTemp 'maintenance-changed-paths.json'
+          $planFile = Join-Path $maintenanceTemp 'maintenance-plan.json'
           $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
           [System.IO.File]::WriteAllText($policyFile, ((git show "$env:BASE_SHA`:testing/verification-maintenance-policy.json") -join "`n"), $utf8NoBom)
           [System.IO.File]::WriteAllText($verifierFile, ((git show "$env:BASE_SHA`:scripts/sounding-line/verification-maintenance.mjs") -join "`n"), $utf8NoBom)
@@ -83,10 +84,11 @@ jobs:
         env:
           CANDIDATE_SHA: ${{ inputs.candidate_sha }}
         run: |
-          $planFile = Join-Path $env:MAINTENANCE_TEMP 'maintenance-plan.json'
-          $verifierFile = Join-Path $env:MAINTENANCE_TEMP 'trusted-verification-maintenance.mjs'
-          $evidenceFile = Join-Path $env:MAINTENANCE_TEMP 'maintenance-evidence.json'
-          $finalizationFile = Join-Path $env:MAINTENANCE_TEMP 'maintenance-finalization.json'
+          $maintenanceTemp = Join-Path $env:RUNNER_TEMP "sounding-line-maintenance-$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT"
+          $planFile = Join-Path $maintenanceTemp 'maintenance-plan.json'
+          $verifierFile = Join-Path $maintenanceTemp 'trusted-verification-maintenance.mjs'
+          $evidenceFile = Join-Path $maintenanceTemp 'maintenance-evidence.json'
+          $finalizationFile = Join-Path $maintenanceTemp 'maintenance-finalization.json'
           $ids = @('FOCUSED_REGRESSION','AFFECTED_SOUNDING_LINE_TESTS','POLICY','GENERATED_ARTIFACTS','STATIC','PRIVACY','DOCUMENTATION','IDEMPOTENT_REGENERATION','CLEANUP')
           $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
           $evidenceJson = ConvertTo-Json -InputObject @($ids | ForEach-Object { @{ id = $_; result = 'PASSED'; candidateSha = $env:CANDIDATE_SHA } }) -Compress
@@ -96,14 +98,15 @@ jobs:
         with:
           name: sounding-line-maintenance-qualification
           path: |
-            ${{ env.MAINTENANCE_TEMP }}/maintenance-plan.json
-            ${{ env.MAINTENANCE_TEMP }}/maintenance-evidence.json
-            ${{ env.MAINTENANCE_TEMP }}/maintenance-finalization.json
+            ${{ steps.trusted-maintenance.outputs.maintenance_temp }}/maintenance-plan.json
+            ${{ steps.trusted-maintenance.outputs.maintenance_temp }}/maintenance-evidence.json
+            ${{ steps.trusted-maintenance.outputs.maintenance_temp }}/maintenance-finalization.json
           retention-days: 14
       - name: Clean maintenance temporary artifacts
         if: always()
         shell: pwsh
         run: |
-          if (Test-Path -LiteralPath $env:MAINTENANCE_TEMP) {
-            Remove-Item -LiteralPath $env:MAINTENANCE_TEMP -Recurse -Force
+          $maintenanceTemp = Join-Path $env:RUNNER_TEMP "sounding-line-maintenance-$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT"
+          if (Test-Path -LiteralPath $maintenanceTemp) {
+            Remove-Item -LiteralPath $maintenanceTemp -Recurse -Force
           }
