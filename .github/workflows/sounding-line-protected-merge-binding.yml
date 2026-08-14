@@ -250,10 +250,31 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
           CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
-          $runs = (Invoke-RestMethod -Headers @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' } -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&head_sha=$env:CANDIDATE_SHA&per_page=100").workflow_runs | Where-Object { $_.name -eq 'Sounding Line verification maintenance' -and $_.status -eq 'completed' -and $_.conclusion -eq 'success' }
-          if (@($runs).Count -ne 1) { throw 'SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE' }
-          "run-id=$(@($runs)[0].id)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          git show "$env:BASE_SHA`:scripts/sounding-line/maintenance-authority-selection.mjs" > trusted-maintenance-authority-selection.mjs
+          $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' }
+          $candidateTree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
+          $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&head_sha=$env:BASE_SHA&per_page=100").workflow_runs
+          $sealed = @()
+          foreach ($run in $runs) {
+            if ($run.name -ne 'Sounding Line verification maintenance' -or $run.path -ne '.github/workflows/sounding-line-verification-maintenance.yml' -or $run.status -ne 'completed' -or $run.conclusion -ne 'success') { continue }
+            try {
+              $artifacts = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs/$($run.id)/artifacts?per_page=100").artifacts | Where-Object { $_.name -eq 'sounding-line-maintenance-qualification' -and -not $_.expired }
+              if (@($artifacts).Count -ne 1) { continue }
+              $runDirectory = Join-Path $env:RUNNER_TEMP "sounding-line-maintenance-$($run.id)"
+              $zip = "$runDirectory.zip"
+              New-Item -ItemType Directory -Force -Path $runDirectory | Out-Null
+              Invoke-WebRequest -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/artifacts/$($artifacts[0].id)/zip" -OutFile $zip
+              Expand-Archive -LiteralPath $zip -DestinationPath $runDirectory -Force
+              $sealed += @{ id = $run.id; name = $run.name; path = $run.path; event = $run.event; status = $run.status; conclusion = $run.conclusion; headSha = $run.head_sha; plan = (Get-Content -Raw (Join-Path $runDirectory 'maintenance-plan.json') | ConvertFrom-Json); finalization = (Get-Content -Raw (Join-Path $runDirectory 'maintenance-finalization.json') | ConvertFrom-Json) }
+            } catch { }
+          }
+          @{ runs = $sealed; candidateSha = $env:CANDIDATE_SHA; candidateTree = $candidateTree; qualifiedBaseSha = $env:BASE_SHA } | ConvertTo-Json -Depth 16 | Set-Content maintenance-authorities.json
+          node trusted-maintenance-authority-selection.mjs maintenance-authorities.json > maintenance-authority-selection.json
+          if ($LASTEXITCODE -ne 0) { throw 'SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE' }
+          $selection = Get-Content -Raw maintenance-authority-selection.json | ConvertFrom-Json
+          "run-id=$($selection.selectedRunId)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: sounding-line-maintenance-qualification
