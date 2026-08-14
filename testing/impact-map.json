@@ -4,22 +4,129 @@
   "pathMappings": [
     {
       "path": "bridgewatch/**",
-      "suiteIds": ["unit.bridgewatch", "static.core"],
-      "contractIds": ["bridgewatch.mission-control"]
+      "suiteIds": [
+        "unit.bridgewatch",
+        "static.core"
+      ],
+      "contractIds": [
+        "bridgewatch.mission-control"
+      ]
+    },
+    {
+      "path": "src/admiralty/bridgewatch-gateway*",
+      "suiteIds": [
+        "unit.admiralty",
+        "browser.admiralty",
+        "static.core"
+      ],
+      "contractIds": [
+        "bridgewatch.mission-control",
+        "admiralty.phase2.authorization-partition"
+      ]
+    },
+    {
+      "path": "src/app/bridgewatch/**",
+      "suiteIds": [
+        "unit.admiralty",
+        "browser.admiralty",
+        "static.core"
+      ],
+      "contractIds": [
+        "bridgewatch.mission-control",
+        "admiralty.phase2.authorization-partition"
+      ]
+    },
+    {
+      "path": "src/app/api/internal/bridgewatch/**",
+      "suiteIds": [
+        "unit.admiralty",
+        "browser.admiralty",
+        "static.core"
+      ],
+      "contractIds": [
+        "bridgewatch.mission-control",
+        "admiralty.phase2.authorization-partition"
+      ]
+    },
+    {
+      "path": "deploy/nginx.conf",
+      "suiteIds": [
+        "unit.bridgewatch",
+        "unit.admiralty",
+        "browser.admiralty",
+        "static.core"
+      ],
+      "contractIds": [
+        "bridgewatch.mission-control",
+        "admiralty.phase2.authorization-partition"
+      ]
+    },
+    {
+      "path": "deploy/*bridgewatch*",
+      "suiteIds": [
+        "unit.bridgewatch",
+        "unit.admiralty",
+        "browser.admiralty",
+        "static.core"
+      ],
+      "contractIds": [
+        "bridgewatch.mission-control",
+        "admiralty.phase2.authorization-partition"
+      ]
+    },
+    {
+      "path": "scripts/bridgewatch/**",
+      "suiteIds": [
+        "unit.bridgewatch",
+        "unit.admiralty",
+        "static.core"
+      ],
+      "contractIds": [
+        "bridgewatch.mission-control",
+        "admiralty.phase2.authorization-partition"
+      ]
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_Homeport_Gateway_*.md",
+      "suiteIds": [
+        "unit.bridgewatch",
+        "unit.admiralty",
+        "static.core"
+      ],
+      "contractIds": [
+        "bridgewatch.mission-control",
+        "admiralty.phase2.authorization-partition"
+      ]
     },
     {
       "path": "scripts/sounding-line/status-projection.mjs",
-      "suiteIds": ["unit.bridgewatch", "unit.sounding-line", "static.core"],
-      "contractIds": ["bridgewatch.mission-control"]
+      "suiteIds": [
+        "unit.bridgewatch",
+        "unit.sounding-line",
+        "static.core"
+      ],
+      "contractIds": [
+        "bridgewatch.mission-control"
+      ]
     },
     {
       "path": "Development_Docs/Project_Bridgewatch_Phase_2_*.md",
-      "suiteIds": ["unit.bridgewatch", "static.core"],
-      "contractIds": ["bridgewatch.mission-control"]
+      "suiteIds": [
+        "unit.bridgewatch",
+        "static.core"
+      ],
+      "contractIds": [
+        "bridgewatch.mission-control"
+      ]
     },
     {
       "path": "Development_Docs/Projects/Project_Helm/**",
-      "suiteIds": ["unit.helm", "component.helm", "browser.helm", "static.core"],
+      "suiteIds": [
+        "unit.helm",
+        "component.helm",
+        "browser.helm",
+        "static.core"
+      ],
       "contractIds": [
         "helm.authority-membership.independent",
         "helm.creation.default-captain-only",
@@ -33,37 +140,78 @@
     },
     {
       "path": "src/helm/**",
-      "suiteIds": ["unit.helm", "browser.helm"],
-      "contractIds": ["helm.authority-membership.independent", "helm.participation.lifecycle"]
+      "suiteIds": [
+        "unit.helm",
+        "browser.helm"
+      ],
+      "contractIds": [
+        "helm.authority-membership.independent",
+        "helm.participation.lifecycle"
+      ]
     },
     {
       "path": "src/platform/membership-presence*",
-      "suiteIds": ["unit.helm", "component.helm", "browser.helm"],
-      "contractIds": ["helm.member-presence-synchronization", "helm.security.resource-authorization"]
+      "suiteIds": [
+        "unit.helm",
+        "component.helm",
+        "browser.helm"
+      ],
+      "contractIds": [
+        "helm.member-presence-synchronization",
+        "helm.security.resource-authorization"
+      ]
     },
     {
       "path": "src/platform/presence-client.ts",
-      "suiteIds": ["unit.helm", "component.helm", "browser.helm"],
-      "contractIds": ["helm.member-presence-synchronization", "helm.player-projection.firewall"]
+      "suiteIds": [
+        "unit.helm",
+        "component.helm",
+        "browser.helm"
+      ],
+      "contractIds": [
+        "helm.member-presence-synchronization",
+        "helm.player-projection.firewall"
+      ]
     },
     {
       "path": "src/app/api/captain/voyages/**",
-      "suiteIds": ["unit.helm", "browser.helm"],
-      "contractIds": ["helm.member-presence-synchronization", "helm.security.resource-authorization"]
+      "suiteIds": [
+        "unit.helm",
+        "browser.helm"
+      ],
+      "contractIds": [
+        "helm.member-presence-synchronization",
+        "helm.security.resource-authorization"
+      ]
     },
     {
       "path": "src/app/api/player/playthroughs/**/presence/**",
-      "suiteIds": ["unit.helm", "browser.helm"],
-      "contractIds": ["helm.member-presence-synchronization", "helm.security.resource-authorization"]
+      "suiteIds": [
+        "unit.helm",
+        "browser.helm"
+      ],
+      "contractIds": [
+        "helm.member-presence-synchronization",
+        "helm.security.resource-authorization"
+      ]
     },
     {
       "path": "prisma/**helm_phase2_membership_presence/**",
-      "suiteIds": ["unit.helm", "browser.helm"],
-      "contractIds": ["helm.member-presence-synchronization", "migration-parity"]
+      "suiteIds": [
+        "unit.helm",
+        "browser.helm"
+      ],
+      "contractIds": [
+        "helm.member-presence-synchronization",
+        "migration-parity"
+      ]
     },
     {
       "path": "src/components/platform/CaptainLibrary*",
-      "suiteIds": ["component.helm", "browser.helm"],
+      "suiteIds": [
+        "component.helm",
+        "browser.helm"
+      ],
       "contractIds": [
         "helm.creation.default-captain-only",
         "helm.participation.lifecycle",
@@ -72,57 +220,134 @@
     },
     {
       "path": "src/components/captain/CaptainOperationalPanel.tsx",
-      "suiteIds": ["component.helm", "browser.helm"],
-      "contractIds": ["helm.member-presence-synchronization", "helm.accessibility.responsive"]
+      "suiteIds": [
+        "component.helm",
+        "browser.helm"
+      ],
+      "contractIds": [
+        "helm.member-presence-synchronization",
+        "helm.accessibility.responsive"
+      ]
     },
     {
       "path": "src/platform/invitations*",
-      "suiteIds": ["unit.helm", "unit.one-voyage", "browser.helm", "browser.invitations"],
-      "contractIds": ["helm.creation.default-captain-only", "helm.participation.lifecycle", "invitation-acceptance"]
+      "suiteIds": [
+        "unit.helm",
+        "unit.one-voyage",
+        "browser.helm",
+        "browser.invitations"
+      ],
+      "contractIds": [
+        "helm.creation.default-captain-only",
+        "helm.participation.lifecycle",
+        "invitation-acceptance"
+      ]
     },
     {
       "path": "src/wayfarer/chronicle-history*",
-      "suiteIds": ["unit.helm", "unit.wayfarer", "browser.helm", "browser.passport"],
-      "contractIds": ["helm.history.membership-derived", "wayfarer-history-projection"]
+      "suiteIds": [
+        "unit.helm",
+        "unit.wayfarer",
+        "browser.helm",
+        "browser.passport"
+      ],
+      "contractIds": [
+        "helm.history.membership-derived",
+        "wayfarer-history-projection"
+      ]
     },
     {
       "path": "src/chronicle/artifact-grant*",
-      "suiteIds": ["unit.helm", "unit.one-voyage", "browser.helm", "browser.artifacts"],
-      "contractIds": ["helm.artifacts.event-time-membership", "artifact-grant-projection"]
+      "suiteIds": [
+        "unit.helm",
+        "unit.one-voyage",
+        "browser.helm",
+        "browser.artifacts"
+      ],
+      "contractIds": [
+        "helm.artifacts.event-time-membership",
+        "artifact-grant-projection"
+      ]
     },
     {
       "path": "src/app/api/play/sessions/**",
-      "suiteIds": ["unit.helm", "unit.auth", "browser.helm", "browser.player-library"],
-      "contractIds": ["helm.player-projection.firewall", "helm.security.resource-authorization"]
+      "suiteIds": [
+        "unit.helm",
+        "unit.auth",
+        "browser.helm",
+        "browser.player-library"
+      ],
+      "contractIds": [
+        "helm.player-projection.firewall",
+        "helm.security.resource-authorization"
+      ]
     },
     {
       "path": "src/homeport/workspace-capabilities*",
-      "suiteIds": ["unit.helm", "unit.homeport", "browser.helm", "browser.homeport"],
-      "contractIds": ["helm.authority-membership.independent", "helm.security.resource-authorization"]
+      "suiteIds": [
+        "unit.helm",
+        "unit.homeport",
+        "browser.helm",
+        "browser.homeport"
+      ],
+      "contractIds": [
+        "helm.authority-membership.independent",
+        "helm.security.resource-authorization"
+      ]
     },
     {
       "path": "src/homeport/current-user.server*",
-      "suiteIds": ["unit.helm", "unit.homeport", "browser.helm", "browser.homeport"],
-      "contractIds": ["helm.authority-membership.independent", "helm.security.resource-authorization"]
+      "suiteIds": [
+        "unit.helm",
+        "unit.homeport",
+        "browser.helm",
+        "browser.homeport"
+      ],
+      "contractIds": [
+        "helm.authority-membership.independent",
+        "helm.security.resource-authorization"
+      ]
     },
     {
       "path": "src/lib/security.ts",
-      "suiteIds": ["unit.helm", "unit.auth", "browser.helm", "browser.auth"],
-      "contractIds": ["helm.authority-membership.independent", "helm.security.resource-authorization"]
+      "suiteIds": [
+        "unit.helm",
+        "unit.auth",
+        "browser.helm",
+        "browser.auth"
+      ],
+      "contractIds": [
+        "helm.authority-membership.independent",
+        "helm.security.resource-authorization"
+      ]
     },
     {
       "path": "src/styles/platform.css",
-      "suiteIds": ["component.helm", "browser.helm", "static.core"],
-      "contractIds": ["helm.accessibility.responsive"]
+      "suiteIds": [
+        "component.helm",
+        "browser.helm",
+        "static.core"
+      ],
+      "contractIds": [
+        "helm.accessibility.responsive"
+      ]
     },
     {
       "path": "src/app/api/captain/playthroughs/**",
-      "suiteIds": ["unit.helm", "browser.helm"],
-      "contractIds": ["helm.participation.lifecycle", "helm.security.resource-authorization"]
+      "suiteIds": [
+        "unit.helm",
+        "browser.helm"
+      ],
+      "contractIds": [
+        "helm.participation.lifecycle",
+        "helm.security.resource-authorization"
+      ]
     },
     {
       "path": "tests/e2e/project-helm-phase1.spec.ts",
-      "suiteIds": ["browser.helm"],
+      "suiteIds": [
+        "browser.helm"
+      ],
       "contractIds": [
         "helm.authority-membership.independent",
         "helm.creation.default-captain-only",
@@ -136,7 +361,10 @@
     },
     {
       "path": "Development_Docs/Governance/**",
-      "suiteIds": ["unit.homeport", "static.core"],
+      "suiteIds": [
+        "unit.homeport",
+        "static.core"
+      ],
       "contractIds": [
         "homeport.route-inventory.complete",
         "homeport.session-inventory.complete",
@@ -148,47 +376,79 @@
     },
     {
       "path": ".agents/project-homeport.md",
-      "suiteIds": ["unit.homeport", "static.core"],
-      "contractIds": ["homeport.nonconformity-ledger.complete"]
+      "suiteIds": [
+        "unit.homeport",
+        "static.core"
+      ],
+      "contractIds": [
+        "homeport.nonconformity-ledger.complete"
+      ]
     },
     {
       "path": "AGENTS.md",
-      "suiteIds": ["static.core"],
+      "suiteIds": [
+        "static.core"
+      ],
       "contractIds": []
     },
     {
       "path": ".agents/README.md",
-      "suiteIds": ["static.core"],
+      "suiteIds": [
+        "static.core"
+      ],
       "contractIds": []
     },
     {
       "path": "Development_Docs/README.md",
-      "suiteIds": ["static.core"],
+      "suiteIds": [
+        "static.core"
+      ],
       "contractIds": []
     },
     {
       "path": "Development_Docs/Features/FEATURE_CATALOG.md",
-      "suiteIds": ["unit.feature-catalog", "static.core"],
+      "suiteIds": [
+        "unit.feature-catalog",
+        "static.core"
+      ],
       "contractIds": []
     },
     {
       "path": "Development_Docs/Programs/Deepwater/**",
-      "suiteIds": ["unit.deepwater", "static.core"],
-      "contractIds": ["deepwater.capability-realization-integrity"]
+      "suiteIds": [
+        "unit.deepwater",
+        "static.core"
+      ],
+      "contractIds": [
+        "deepwater.capability-realization-integrity"
+      ]
     },
     {
       "path": "scripts/deepwater/**",
-      "suiteIds": ["unit.deepwater", "static.core"],
-      "contractIds": ["deepwater.capability-realization-integrity"]
+      "suiteIds": [
+        "unit.deepwater",
+        "static.core"
+      ],
+      "contractIds": [
+        "deepwater.capability-realization-integrity"
+      ]
     },
     {
       "path": "tests/deepwater/**",
-      "suiteIds": ["unit.deepwater", "static.core"],
-      "contractIds": ["deepwater.capability-realization-integrity"]
+      "suiteIds": [
+        "unit.deepwater",
+        "static.core"
+      ],
+      "contractIds": [
+        "deepwater.capability-realization-integrity"
+      ]
     },
     {
       "path": "Development_Docs/Projects/Project Drydock/**",
-      "suiteIds": ["unit.drydock", "static.core"],
+      "suiteIds": [
+        "unit.drydock",
+        "static.core"
+      ],
       "contractIds": [
         "drydock-authoring-contracts",
         "drydock-scenario-contract",
@@ -208,7 +468,10 @@
     },
     {
       "path": "src/drydock/**",
-      "suiteIds": ["unit.drydock", "static.core"],
+      "suiteIds": [
+        "unit.drydock",
+        "static.core"
+      ],
       "contractIds": [
         "drydock-authoring-contracts",
         "drydock-scenario-contract",
@@ -228,7 +491,10 @@
     },
     {
       "path": "scripts/drydock/**",
-      "suiteIds": ["unit.drydock", "static.core"],
+      "suiteIds": [
+        "unit.drydock",
+        "static.core"
+      ],
       "contractIds": [
         "drydock-authoring-contracts",
         "drydock-scenario-contract",
@@ -248,7 +514,10 @@
     },
     {
       "path": "tests/fixtures/drydock/**",
-      "suiteIds": ["unit.drydock", "static.core"],
+      "suiteIds": [
+        "unit.drydock",
+        "static.core"
+      ],
       "contractIds": [
         "drydock-authoring-contracts",
         "drydock-scenario-contract",
@@ -268,22 +537,31 @@
     },
     {
       "path": "Development_Docs/document-index.json",
-      "suiteIds": ["static.core"],
+      "suiteIds": [
+        "static.core"
+      ],
       "contractIds": []
     },
     {
       "path": "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
-      "suiteIds": ["static.core"],
+      "suiteIds": [
+        "static.core"
+      ],
       "contractIds": []
     },
     {
       "path": "scripts/generate-document-index.mjs",
-      "suiteIds": ["static.core"],
+      "suiteIds": [
+        "static.core"
+      ],
       "contractIds": []
     },
     {
       "path": "src/tideglass/**",
-      "suiteIds": ["unit.tideglass", "static.core"],
+      "suiteIds": [
+        "unit.tideglass",
+        "static.core"
+      ],
       "contractIds": [
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",
@@ -300,7 +578,10 @@
     },
     {
       "path": "scripts/tideglass/**",
-      "suiteIds": ["unit.tideglass", "static.core"],
+      "suiteIds": [
+        "unit.tideglass",
+        "static.core"
+      ],
       "contractIds": [
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",
@@ -317,7 +598,9 @@
     },
     {
       "path": "tests/tideglass/**",
-      "suiteIds": ["unit.tideglass"],
+      "suiteIds": [
+        "unit.tideglass"
+      ],
       "contractIds": [
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",
@@ -334,7 +617,10 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Tideglass/**",
-      "suiteIds": ["unit.tideglass", "static.core"],
+      "suiteIds": [
+        "unit.tideglass",
+        "static.core"
+      ],
       "contractIds": [
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",
@@ -351,8 +637,14 @@
     },
     {
       "path": "vitest.config.ts",
-      "suiteIds": ["unit.tideglass", "unit.sounding-line", "static.core"],
-      "contractIds": ["tideglass-semantic-determinism"]
+      "suiteIds": [
+        "unit.tideglass",
+        "unit.sounding-line",
+        "static.core"
+      ],
+      "contractIds": [
+        "tideglass-semantic-determinism"
+      ]
     },
     {
       "path": "package.json",
@@ -414,7 +706,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/**",
-      "suiteIds": ["unit.homeport", "static.core", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "static.core",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.route-inventory.complete",
         "homeport.session-inventory.complete",
@@ -556,7 +853,12 @@
     },
     {
       "path": "scripts/homeport/**",
-      "suiteIds": ["unit.homeport", "static.core", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "static.core",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.route-inventory.complete",
         "homeport.session-inventory.complete",
@@ -698,7 +1000,9 @@
     },
     {
       "path": "tests/homeport/**",
-      "suiteIds": ["unit.homeport"],
+      "suiteIds": [
+        "unit.homeport"
+      ],
       "contractIds": [
         "homeport.route-inventory.complete",
         "homeport.session-inventory.complete",
@@ -749,18 +1053,36 @@
     },
     {
       "path": "scripts/sounding-line/**",
-      "suiteIds": ["unit.sounding-line", "static.core"],
-      "contractIds": ["authentication-authorization"]
+      "suiteIds": [
+        "unit.sounding-line",
+        "static.core"
+      ],
+      "contractIds": [
+        "authentication-authorization"
+      ]
     },
     {
       "path": "testing/**",
-      "suiteIds": ["unit.sounding-line", "retirement.matrix-proof", "static.core"],
-      "contractIds": ["journal-ready-state"]
+      "suiteIds": [
+        "unit.sounding-line",
+        "retirement.matrix-proof",
+        "static.core"
+      ],
+      "contractIds": [
+        "journal-ready-state"
+      ]
     },
     {
       "path": "src/private-content/**",
-      "suiteIds": ["unit.private-content", "component.private-operations", "browser.private-operations"],
-      "contractIds": ["sealed-hold-private-delivery", "public-privacy-projection"]
+      "suiteIds": [
+        "unit.private-content",
+        "component.private-operations",
+        "browser.private-operations"
+      ],
+      "contractIds": [
+        "sealed-hold-private-delivery",
+        "public-privacy-projection"
+      ]
     },
     {
       "path": "src/community/**",
@@ -829,18 +1151,39 @@
     },
     {
       "path": "src/wayfarer/**",
-      "suiteIds": ["unit.wayfarer", "component.passport", "browser.passport", "browser.artifacts"],
-      "contractIds": ["wayfarer-history-projection", "artifact-grant-projection"]
+      "suiteIds": [
+        "unit.wayfarer",
+        "component.passport",
+        "browser.passport",
+        "browser.artifacts"
+      ],
+      "contractIds": [
+        "wayfarer-history-projection",
+        "artifact-grant-projection"
+      ]
     },
     {
       "path": "src/animation/**",
-      "suiteIds": ["unit.animation", "component.animation", "browser.animation-lifecycle", "browser.player-journal"],
-      "contractIds": ["lanternwake-presentation-receipt"]
+      "suiteIds": [
+        "unit.animation",
+        "component.animation",
+        "browser.animation-lifecycle",
+        "browser.player-journal"
+      ],
+      "contractIds": [
+        "lanternwake-presentation-receipt"
+      ]
     },
     {
       "path": "src/components/player/journal/**",
-      "suiteIds": ["unit.journal", "component.journal", "browser.player-journal"],
-      "contractIds": ["journal-ready-state"]
+      "suiteIds": [
+        "unit.journal",
+        "component.journal",
+        "browser.player-journal"
+      ],
+      "contractIds": [
+        "journal-ready-state"
+      ]
     },
     {
       "path": "src/chronicle/**",
@@ -862,7 +1205,13 @@
     },
     {
       "path": "src/navigation/**",
-      "suiteIds": ["unit.admiralty", "browser.admiralty", "unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.admiralty",
+        "browser.admiralty",
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "admiralty.phase2.authorization-partition",
         "homeport.route.inventory-complete",
@@ -909,17 +1258,33 @@
     },
     {
       "path": "prisma/**",
-      "suiteIds": ["database.sqlite", "migration.mysql", "build.production"],
-      "contractIds": ["migration-parity"]
+      "suiteIds": [
+        "database.sqlite",
+        "migration.mysql",
+        "build.production"
+      ],
+      "contractIds": [
+        "migration-parity"
+      ]
     },
     {
       "path": "tests/e2e/**",
-      "suiteIds": ["browser.cross-project", "browser.accessibility", "browser.responsive"],
-      "contractIds": ["authentication-authorization"]
+      "suiteIds": [
+        "browser.cross-project",
+        "browser.accessibility",
+        "browser.responsive"
+      ],
+      "contractIds": [
+        "authentication-authorization"
+      ]
     },
     {
       "path": "src/homeport/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.personal-harbor.ia",
         "homeport.personal-harbor.section-registry",
@@ -964,7 +1329,11 @@
     },
     {
       "path": "src/components/homeport/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.personal-harbor.ia",
         "homeport.personal-harbor.section-registry",
@@ -1009,7 +1378,11 @@
     },
     {
       "path": "src/app/account/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.personal-harbor.ia",
         "homeport.personal-harbor.section-registry",
@@ -1054,7 +1427,11 @@
     },
     {
       "path": "src/app/passport/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.personal-harbor.ia",
         "homeport.personal-harbor.section-registry",
@@ -1099,7 +1476,11 @@
     },
     {
       "path": "src/app/profile/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.personal-harbor.ia",
         "homeport.personal-harbor.section-registry",
@@ -1144,7 +1525,11 @@
     },
     {
       "path": "src/app/api/account/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.personal-harbor.ia",
         "homeport.personal-harbor.section-registry",
@@ -1189,7 +1574,11 @@
     },
     {
       "path": "src/app/api/passport/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.personal-harbor.ia",
         "homeport.personal-harbor.section-registry",
@@ -1234,7 +1623,11 @@
     },
     {
       "path": "src/styles/personal-harbor.css",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.personal-harbor.ia",
         "homeport.personal-harbor.section-registry",
@@ -1279,7 +1672,9 @@
     },
     {
       "path": "tests/e2e/homeport-phase3.spec.ts",
-      "suiteIds": ["browser.homeport"],
+      "suiteIds": [
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.personal-harbor.ia",
         "homeport.personal-harbor.section-registry",
@@ -1324,7 +1719,9 @@
     },
     {
       "path": "playwright.homeport-phase3.config.ts",
-      "suiteIds": ["browser.homeport"],
+      "suiteIds": [
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.personal-harbor.ia",
         "homeport.personal-harbor.section-registry",
@@ -1369,7 +1766,11 @@
     },
     {
       "path": "src/components/community/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.community.harbor-home",
         "homeport.community.content-first-default",
@@ -1426,7 +1827,11 @@
     },
     {
       "path": "src/app/community/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.community.harbor-home",
         "homeport.community.content-first-default",
@@ -1483,7 +1888,11 @@
     },
     {
       "path": "src/app/api/community/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.community.harbor-home",
         "homeport.community.content-first-default",
@@ -1540,7 +1949,11 @@
     },
     {
       "path": "tests/e2e/homeport-phase4.spec.ts",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.community.harbor-home",
         "homeport.community.content-first-default",
@@ -1597,7 +2010,11 @@
     },
     {
       "path": "playwright.homeport-phase4.config.ts",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.community.harbor-home",
         "homeport.community.content-first-default",
@@ -1654,7 +2071,11 @@
     },
     {
       "path": "src/components/tales/TaleStart.tsx",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -1700,7 +2121,11 @@
     },
     {
       "path": "src/components/community/PublicCommunitySection.tsx",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -1746,7 +2171,11 @@
     },
     {
       "path": "src/app/community/voyage-logs/media/page.tsx",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -1792,7 +2221,11 @@
     },
     {
       "path": "src/app/profile/[handle]/page.tsx",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -1838,7 +2271,11 @@
     },
     {
       "path": "src/app/studio/page.tsx",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -1884,7 +2321,11 @@
     },
     {
       "path": "src/app/quartermaster/page.tsx",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -1930,7 +2371,11 @@
     },
     {
       "path": "tests/homeport/phase5-*.test.mjs",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -1976,7 +2421,11 @@
     },
     {
       "path": "tests/e2e/homeport-phase5.spec.ts",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -2022,7 +2471,11 @@
     },
     {
       "path": "playwright.homeport-phase5.config.ts",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -2068,7 +2521,11 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_6_*",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.surface.catalog-complete",
         "homeport.surface.source-parity",
@@ -2129,7 +2586,11 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.surface.catalog-complete",
         "homeport.surface.source-parity",
@@ -2190,7 +2651,11 @@
     },
     {
       "path": "scripts/homeport/phase6-*.mjs",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.surface.catalog-complete",
         "homeport.surface.source-parity",
@@ -2251,7 +2716,11 @@
     },
     {
       "path": "scripts/homeport/apply-phase6-inventory-updates.mjs",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.surface.catalog-complete",
         "homeport.surface.source-parity",
@@ -2312,7 +2781,11 @@
     },
     {
       "path": "scripts/homeport/finalize-phase6-visual-review.mjs",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.surface.catalog-complete",
         "homeport.surface.source-parity",
@@ -2373,7 +2846,11 @@
     },
     {
       "path": "scripts/homeport/run-phase6-e2e.mjs",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.surface.catalog-complete",
         "homeport.surface.source-parity",
@@ -2434,7 +2911,11 @@
     },
     {
       "path": "scripts/homeport/update-phase6-sounding-line-policy.mjs",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.surface.catalog-complete",
         "homeport.surface.source-parity",
@@ -2495,7 +2976,11 @@
     },
     {
       "path": "tests/homeport/phase6-*.test.mjs",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.surface.catalog-complete",
         "homeport.surface.source-parity",
@@ -2556,7 +3041,11 @@
     },
     {
       "path": "tests/e2e/homeport-phase6.spec.ts",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.surface.catalog-complete",
         "homeport.surface.source-parity",
@@ -2617,7 +3106,11 @@
     },
     {
       "path": "tests/e2e/homeport-phase6.setup.ts",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.surface.catalog-complete",
         "homeport.surface.source-parity",
@@ -2678,7 +3171,11 @@
     },
     {
       "path": "playwright.homeport-phase6.config.ts",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.surface.catalog-complete",
         "homeport.surface.source-parity",
@@ -2739,7 +3236,11 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_*",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.phase7.fixture.integrated",
         "homeport.phase7.fixture.immutable-seed",
@@ -2793,7 +3294,11 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.phase7.fixture.integrated",
         "homeport.phase7.fixture.immutable-seed",
@@ -2847,7 +3352,11 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.phase7.fixture.integrated",
         "homeport.phase7.fixture.immutable-seed",
@@ -2901,7 +3410,11 @@
     },
     {
       "path": "scripts/homeport/*phase7*.mjs",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.phase7.fixture.integrated",
         "homeport.phase7.fixture.immutable-seed",
@@ -2955,7 +3468,11 @@
     },
     {
       "path": "tests/homeport/phase7-*.test.mjs",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.phase7.fixture.integrated",
         "homeport.phase7.fixture.immutable-seed",
@@ -3009,7 +3526,11 @@
     },
     {
       "path": "tests/e2e/homeport-phase7.spec.ts",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.phase7.fixture.integrated",
         "homeport.phase7.fixture.immutable-seed",
@@ -3063,7 +3584,11 @@
     },
     {
       "path": "playwright.homeport-phase7.config.ts",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.phase7.fixture.integrated",
         "homeport.phase7.fixture.immutable-seed",
@@ -3117,7 +3642,11 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_1_*",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round1.feedback-ledger",
         "homeport.owner-correction.round1.chronicle-preview",
@@ -3166,7 +3695,11 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_*",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round1.feedback-ledger",
         "homeport.owner-correction.round1.chronicle-preview",
@@ -3215,7 +3748,11 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round1.feedback-ledger",
         "homeport.owner-correction.round1.chronicle-preview",
@@ -3264,7 +3801,11 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round1/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round1.feedback-ledger",
         "homeport.owner-correction.round1.chronicle-preview",
@@ -3313,7 +3854,11 @@
     },
     {
       "path": "scripts/homeport/*phase7-owner-correction-round1*.mjs",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round1.feedback-ledger",
         "homeport.owner-correction.round1.chronicle-preview",
@@ -3362,7 +3907,11 @@
     },
     {
       "path": "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round1.feedback-ledger",
         "homeport.owner-correction.round1.chronicle-preview",
@@ -3411,7 +3960,11 @@
     },
     {
       "path": "playwright.homeport-phase7-owner-correction-round1.config.ts",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round1.feedback-ledger",
         "homeport.owner-correction.round1.chronicle-preview",
@@ -3460,7 +4013,11 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_2_*",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round2.feedback-ledger",
         "homeport.owner-correction.round2.runtime-fixture-parity",
@@ -3508,7 +4065,11 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_Feedback_Round_2_*",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round2.feedback-ledger",
         "homeport.owner-correction.round2.runtime-fixture-parity",
@@ -3556,7 +4117,11 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round2.feedback-ledger",
         "homeport.owner-correction.round2.runtime-fixture-parity",
@@ -3604,7 +4169,11 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round2/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round2.feedback-ledger",
         "homeport.owner-correction.round2.runtime-fixture-parity",
@@ -3652,7 +4221,11 @@
     },
     {
       "path": "Experience_Images/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round2.feedback-ledger",
         "homeport.owner-correction.round2.runtime-fixture-parity",
@@ -3750,7 +4323,11 @@
     },
     {
       "path": "scripts/homeport/*phase7-owner-correction-round2*.mjs",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round2.feedback-ledger",
         "homeport.owner-correction.round2.runtime-fixture-parity",
@@ -3798,7 +4375,11 @@
     },
     {
       "path": "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round2.feedback-ledger",
         "homeport.owner-correction.round2.runtime-fixture-parity",
@@ -3846,7 +4427,11 @@
     },
     {
       "path": "playwright.homeport-phase7-owner-correction-round2.config.ts",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round2.feedback-ledger",
         "homeport.owner-correction.round2.runtime-fixture-parity",
@@ -3894,7 +4479,11 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_*",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round3.feedback-ledger",
         "homeport.owner-correction.round3.profile-image-selection",
@@ -3950,7 +4539,11 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_Feedback_Round_3_*",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round3.feedback-ledger",
         "homeport.owner-correction.round3.profile-image-selection",
@@ -4006,7 +4599,11 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round3.feedback-ledger",
         "homeport.owner-correction.round3.profile-image-selection",
@@ -4062,7 +4659,11 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round3/**",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round3.feedback-ledger",
         "homeport.owner-correction.round3.profile-image-selection",
@@ -4118,7 +4719,11 @@
     },
     {
       "path": "scripts/homeport/*phase7-owner-correction-round3*.mjs",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round3.feedback-ledger",
         "homeport.owner-correction.round3.profile-image-selection",
@@ -4174,7 +4779,11 @@
     },
     {
       "path": "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round3.feedback-ledger",
         "homeport.owner-correction.round3.profile-image-selection",
@@ -4230,7 +4839,11 @@
     },
     {
       "path": "playwright.homeport-phase7-owner-correction-round3.config.ts",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
       "contractIds": [
         "homeport.owner-correction.round3.feedback-ledger",
         "homeport.owner-correction.round3.profile-image-selection",
@@ -4286,7 +4899,12 @@
     },
     {
       "path": "src/admiralty/**",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"],
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ],
       "contractIds": [
         "admiralty.phase1.identity",
         "admiralty.phase1.authorization",
@@ -4308,7 +4926,10 @@
     },
     {
       "path": "src/components/admiralty/**",
-      "suiteIds": ["component.admiralty", "browser.admiralty"],
+      "suiteIds": [
+        "component.admiralty",
+        "browser.admiralty"
+      ],
       "contractIds": [
         "admiralty.phase2.authorization-partition",
         "admiralty.phase2.account-dossier-support",
@@ -4320,7 +4941,10 @@
     },
     {
       "path": "src/app/admin/**",
-      "suiteIds": ["component.admiralty", "browser.admiralty"],
+      "suiteIds": [
+        "component.admiralty",
+        "browser.admiralty"
+      ],
       "contractIds": [
         "admiralty.phase2.authorization-partition",
         "admiralty.phase2.read-projection-redaction",
@@ -4341,7 +4965,12 @@
     },
     {
       "path": "src/app/api/admin/**",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"],
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ],
       "contractIds": [
         "admiralty.phase2.authorization-partition",
         "admiralty.phase2.read-projection-redaction",
@@ -4362,7 +4991,12 @@
     },
     {
       "path": "src/app/api/account/support/**",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"],
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ],
       "contractIds": [
         "admiralty.phase1.support-access",
         "admiralty.phase1.audit",
@@ -4371,7 +5005,12 @@
     },
     {
       "path": "scripts/admiralty/**",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"],
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ],
       "contractIds": [
         "admiralty.phase1.identity",
         "admiralty.phase1.authorization",
@@ -4393,7 +5032,9 @@
     },
     {
       "path": "tests/e2e/admiralty-phase1.spec.ts",
-      "suiteIds": ["browser.admiralty"],
+      "suiteIds": [
+        "browser.admiralty"
+      ],
       "contractIds": [
         "admiralty.phase1.identity",
         "admiralty.phase1.authorization",
@@ -4405,7 +5046,9 @@
     },
     {
       "path": "playwright.admiralty-phase1.config.ts",
-      "suiteIds": ["browser.admiralty"],
+      "suiteIds": [
+        "browser.admiralty"
+      ],
       "contractIds": [
         "admiralty.phase1.identity",
         "admiralty.phase1.authorization",
@@ -4417,42 +5060,88 @@
     },
     {
       "path": "prisma/migrations/20260809120000_admiralty_phase1_foundation/**",
-      "suiteIds": ["unit.admiralty"],
-      "contractIds": ["admiralty.phase1.migration"]
+      "suiteIds": [
+        "unit.admiralty"
+      ],
+      "contractIds": [
+        "admiralty.phase1.migration"
+      ]
     },
     {
       "path": "prisma/mysql-migrations/0052_admiralty_phase1_foundation/**",
-      "suiteIds": ["unit.admiralty"],
-      "contractIds": ["admiralty.phase1.migration"]
+      "suiteIds": [
+        "unit.admiralty"
+      ],
+      "contractIds": [
+        "admiralty.phase1.migration"
+      ]
     },
     {
       "path": "src/app/api/chronicles/**",
-      "suiteIds": ["unit.tideglass", "static.core"],
-      "contractIds": ["tideglass-api-security", "tideglass-safe-projection", "tideglass-creator-annotations"]
+      "suiteIds": [
+        "unit.tideglass",
+        "static.core"
+      ],
+      "contractIds": [
+        "tideglass-api-security",
+        "tideglass-safe-projection",
+        "tideglass-creator-annotations"
+      ]
     },
     {
       "path": "prisma/schema.sqlite.prisma",
-      "suiteIds": ["unit.tideglass", "database.sqlite", "build.production"],
-      "contractIds": ["tideglass-creator-annotations", "tideglass-migration-parity", "migration-parity"]
+      "suiteIds": [
+        "unit.tideglass",
+        "database.sqlite",
+        "build.production"
+      ],
+      "contractIds": [
+        "tideglass-creator-annotations",
+        "tideglass-migration-parity",
+        "migration-parity"
+      ]
     },
     {
       "path": "prisma/schema.prisma",
-      "suiteIds": ["unit.tideglass", "migration.mysql", "build.production"],
-      "contractIds": ["tideglass-creator-annotations", "tideglass-migration-parity", "migration-parity"]
+      "suiteIds": [
+        "unit.tideglass",
+        "migration.mysql",
+        "build.production"
+      ],
+      "contractIds": [
+        "tideglass-creator-annotations",
+        "tideglass-migration-parity",
+        "migration-parity"
+      ]
     },
     {
       "path": "prisma/migrations/20260809130000_tideglass_phase2_creator_annotations/**",
-      "suiteIds": ["unit.tideglass", "database.sqlite"],
-      "contractIds": ["tideglass-creator-annotations", "tideglass-migration-parity"]
+      "suiteIds": [
+        "unit.tideglass",
+        "database.sqlite"
+      ],
+      "contractIds": [
+        "tideglass-creator-annotations",
+        "tideglass-migration-parity"
+      ]
     },
     {
       "path": "prisma/mysql-migrations/0053_tideglass_phase2_creator_annotations/**",
-      "suiteIds": ["unit.tideglass", "migration.mysql"],
-      "contractIds": ["tideglass-creator-annotations", "tideglass-migration-parity"]
+      "suiteIds": [
+        "unit.tideglass",
+        "migration.mysql"
+      ],
+      "contractIds": [
+        "tideglass-creator-annotations",
+        "tideglass-migration-parity"
+      ]
     },
     {
       "path": "src/admiralty/ports/**",
-      "suiteIds": ["service.admiralty", "browser.admiralty"],
+      "suiteIds": [
+        "service.admiralty",
+        "browser.admiralty"
+      ],
       "contractIds": [
         "admiralty.phase2.read-projection-redaction",
         "admiralty.phase2.account-dossier-support",
@@ -4465,7 +5154,10 @@
     },
     {
       "path": "src/admiralty/read-models*",
-      "suiteIds": ["service.admiralty", "browser.admiralty"],
+      "suiteIds": [
+        "service.admiralty",
+        "browser.admiralty"
+      ],
       "contractIds": [
         "admiralty.phase2.read-projection-redaction",
         "admiralty.phase2.account-dossier-support",
@@ -4478,12 +5170,19 @@
     },
     {
       "path": "src/homeport/current-user*",
-      "suiteIds": ["unit.admiralty", "browser.admiralty"],
-      "contractIds": ["admiralty.phase2.authorization-partition"]
+      "suiteIds": [
+        "unit.admiralty",
+        "browser.admiralty"
+      ],
+      "contractIds": [
+        "admiralty.phase2.authorization-partition"
+      ]
     },
     {
       "path": "tests/e2e/admiralty-phase2.spec.ts",
-      "suiteIds": ["browser.admiralty"],
+      "suiteIds": [
+        "browser.admiralty"
+      ],
       "contractIds": [
         "admiralty.phase2.authorization-partition",
         "admiralty.phase2.read-projection-redaction",
@@ -4504,7 +5203,9 @@
     },
     {
       "path": "playwright.admiralty-phase2.config.ts",
-      "suiteIds": ["browser.admiralty"],
+      "suiteIds": [
+        "browser.admiralty"
+      ],
       "contractIds": [
         "admiralty.phase2.authorization-partition",
         "admiralty.phase2.read-projection-redaction",
@@ -4525,7 +5226,10 @@
     },
     {
       "path": "Development_Docs/Projects/Project Wakebook/**",
-      "suiteIds": ["unit.wakebook", "static.core"],
+      "suiteIds": [
+        "unit.wakebook",
+        "static.core"
+      ],
       "contractIds": [
         "wakebook.history.version-pinning",
         "wakebook.history.owner-privacy",
@@ -4543,7 +5247,10 @@
     },
     {
       "path": "Development_Docs/Project_Wakebook_Phase_1_*.md",
-      "suiteIds": ["unit.wakebook", "static.core"],
+      "suiteIds": [
+        "unit.wakebook",
+        "static.core"
+      ],
       "contractIds": [
         "wakebook.history.version-pinning",
         "wakebook.history.owner-privacy",
@@ -4560,20 +5267,12 @@
       ]
     },
     {
-      "path": "Development_Docs/Project_Wakebook_Phase_2_*.md",
-      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook", "static.core"],
-      "contractIds": [
-        "wakebook.detail.historical-provenance",
-        "wakebook.remembrance.owner-integrity",
-        "wakebook.memory-media.private-delivery",
-        "wakebook.keepsake.consent-revocation",
-        "wakebook.detail.accessibility-mobile",
-        "wakebook.detail.cross-project-projection"
-      ]
-    },
-    {
       "path": "src/wakebook/**",
-      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"],
+      "suiteIds": [
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook"
+      ],
       "contractIds": [
         "wakebook.history.version-pinning",
         "wakebook.history.owner-privacy",
@@ -4595,7 +5294,10 @@
     },
     {
       "path": "src/components/wakebook/**",
-      "suiteIds": ["component.wakebook", "browser.wakebook"],
+      "suiteIds": [
+        "component.wakebook",
+        "browser.wakebook"
+      ],
       "contractIds": [
         "wakebook.timing.quality",
         "wakebook.artifact-context",
@@ -4612,7 +5314,10 @@
     },
     {
       "path": "src/app/api/passport/voyages/**",
-      "suiteIds": ["unit.wakebook", "browser.wakebook"],
+      "suiteIds": [
+        "unit.wakebook",
+        "browser.wakebook"
+      ],
       "contractIds": [
         "wakebook.history.version-pinning",
         "wakebook.history.owner-privacy",
@@ -4626,12 +5331,20 @@
     },
     {
       "path": "src/app/passport/history/**",
-      "suiteIds": ["component.wakebook", "browser.wakebook"],
-      "contractIds": ["wakebook.navigation.reachability", "wakebook.history.owner-privacy"]
+      "suiteIds": [
+        "component.wakebook",
+        "browser.wakebook"
+      ],
+      "contractIds": [
+        "wakebook.navigation.reachability",
+        "wakebook.history.owner-privacy"
+      ]
     },
     {
       "path": "tests/e2e/wakebook-phase1.spec.ts",
-      "suiteIds": ["browser.wakebook"],
+      "suiteIds": [
+        "browser.wakebook"
+      ],
       "contractIds": [
         "wakebook.history.version-pinning",
         "wakebook.history.owner-privacy",
@@ -4645,1824 +5358,3692 @@
         "wakebook.archive.partial-history",
         "wakebook.archive.summary-redaction"
       ]
+    },
+    {
+      "path": "Development_Docs/Project_Wakebook_Phase_2_*.md",
+      "suiteIds": [
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook",
+        "static.core"
+      ],
+      "contractIds": [
+        "wakebook.detail.historical-provenance",
+        "wakebook.remembrance.owner-integrity",
+        "wakebook.memory-media.private-delivery",
+        "wakebook.keepsake.consent-revocation",
+        "wakebook.detail.accessibility-mobile",
+        "wakebook.detail.cross-project-projection"
+      ]
     }
   ],
   "contractMappings": [
     {
       "contractId": "helm.authority-membership.independent",
-      "suiteIds": ["unit.helm", "browser.helm"]
+      "suiteIds": [
+        "unit.helm",
+        "browser.helm"
+      ]
     },
     {
       "contractId": "helm.creation.default-captain-only",
-      "suiteIds": ["unit.helm", "component.helm", "browser.helm"]
+      "suiteIds": [
+        "unit.helm",
+        "component.helm",
+        "browser.helm"
+      ]
     },
     {
       "contractId": "helm.participation.lifecycle",
-      "suiteIds": ["unit.helm", "component.helm", "browser.helm"]
+      "suiteIds": [
+        "unit.helm",
+        "component.helm",
+        "browser.helm"
+      ]
     },
     {
       "contractId": "helm.player-projection.firewall",
-      "suiteIds": ["unit.helm", "browser.helm"]
+      "suiteIds": [
+        "unit.helm",
+        "browser.helm"
+      ]
     },
     {
       "contractId": "helm.history.membership-derived",
-      "suiteIds": ["unit.helm", "browser.helm"]
+      "suiteIds": [
+        "unit.helm",
+        "browser.helm"
+      ]
     },
     {
       "contractId": "helm.artifacts.event-time-membership",
-      "suiteIds": ["unit.helm", "browser.helm"]
+      "suiteIds": [
+        "unit.helm",
+        "browser.helm"
+      ]
     },
     {
       "contractId": "helm.security.resource-authorization",
-      "suiteIds": ["unit.helm", "browser.helm"]
+      "suiteIds": [
+        "unit.helm",
+        "browser.helm"
+      ]
     },
     {
       "contractId": "helm.accessibility.responsive",
-      "suiteIds": ["component.helm", "browser.helm"]
+      "suiteIds": [
+        "component.helm",
+        "browser.helm"
+      ]
     },
     {
       "contractId": "authentication-authorization",
-      "suiteIds": ["unit.auth", "component.auth", "browser.auth", "browser.cross-project"]
+      "suiteIds": [
+        "unit.auth",
+        "component.auth",
+        "browser.auth",
+        "browser.cross-project"
+      ]
     },
     {
       "contractId": "journal-ready-state",
-      "suiteIds": ["unit.journal", "component.journal", "browser.player-journal", "browser.accessibility"]
+      "suiteIds": [
+        "unit.journal",
+        "component.journal",
+        "browser.player-journal",
+        "browser.accessibility"
+      ]
     },
     {
       "contractId": "migration-parity",
-      "suiteIds": ["database.sqlite", "migration.mysql", "build.production"]
+      "suiteIds": [
+        "database.sqlite",
+        "migration.mysql",
+        "build.production"
+      ]
     },
     {
       "contractId": "tideglass-exact-edition-pair",
-      "suiteIds": ["unit.tideglass", "unit.one-voyage"]
+      "suiteIds": [
+        "unit.tideglass",
+        "unit.one-voyage"
+      ]
     },
     {
       "contractId": "tideglass-semantic-determinism",
-      "suiteIds": ["unit.tideglass"]
+      "suiteIds": [
+        "unit.tideglass"
+      ]
     },
     {
       "contractId": "tideglass-safe-projection",
-      "suiteIds": ["unit.tideglass", "unit.wayfarer"]
+      "suiteIds": [
+        "unit.tideglass",
+        "unit.wayfarer"
+      ]
     },
     {
       "contractId": "tideglass-read-only-invariance",
-      "suiteIds": ["unit.tideglass", "unit.one-voyage", "unit.wayfarer", "unit.community"]
+      "suiteIds": [
+        "unit.tideglass",
+        "unit.one-voyage",
+        "unit.wayfarer",
+        "unit.community"
+      ]
     },
     {
       "contractId": "sealed-hold-private-delivery",
-      "suiteIds": ["unit.private-content", "component.private-operations", "browser.private-operations"]
+      "suiteIds": [
+        "unit.private-content",
+        "component.private-operations",
+        "browser.private-operations"
+      ]
     },
     {
       "contractId": "wayfarer-history-projection",
-      "suiteIds": ["unit.wayfarer", "component.passport", "browser.passport"]
+      "suiteIds": [
+        "unit.wayfarer",
+        "component.passport",
+        "browser.passport"
+      ]
     },
     {
       "contractId": "community-public-projection",
-      "suiteIds": ["unit.community", "component.community", "browser.community"]
+      "suiteIds": [
+        "unit.community",
+        "component.community",
+        "browser.community"
+      ]
     },
     {
       "contractId": "homeport.route-inventory.complete",
-      "suiteIds": ["unit.homeport"]
+      "suiteIds": [
+        "unit.homeport"
+      ]
     },
     {
       "contractId": "homeport.session-inventory.complete",
-      "suiteIds": ["unit.homeport"]
+      "suiteIds": [
+        "unit.homeport"
+      ]
     },
     {
       "contractId": "homeport.screen-catalog.complete",
-      "suiteIds": ["unit.homeport"]
+      "suiteIds": [
+        "unit.homeport"
+      ]
     },
     {
       "contractId": "homeport.journey-catalog.complete",
-      "suiteIds": ["unit.homeport"]
+      "suiteIds": [
+        "unit.homeport"
+      ]
     },
     {
       "contractId": "homeport.evidence-manifest.complete",
-      "suiteIds": ["unit.homeport"]
+      "suiteIds": [
+        "unit.homeport"
+      ]
     },
     {
       "contractId": "homeport.nonconformity-ledger.complete",
-      "suiteIds": ["unit.homeport"]
+      "suiteIds": [
+        "unit.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.harbor-home",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.content-first-default",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.default-not-no-results",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.district-registry",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.district-navigation",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.mobile-district-parity",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.public-projection",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.no-private-leak",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.lifecycle-eligibility",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.quarantine",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.card-base",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.card-destinations",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.card-fallback",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.card-accessibility",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.shelf-strategy",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.editorial-labeling",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.search",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.search-url-state",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.search-stale-request",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.compact-filters",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.advanced-filters",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.no-results",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.empty-state",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.dependency-unavailable",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.partial-media-failure",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.chronicles",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.artifacts",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.templates",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.maps",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.audio",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.creators",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.creator-profile",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.collections",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.guides",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.voyage-logs",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.saved-state",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.saved-cross-surface",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.follow-state",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.social-auth-return",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.detail",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.detail-parent",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.open-install-remix",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.mutation-feedback",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.restricted-account",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.keyboard",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.zoom",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.reduced-motion",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.phase1-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.phase2-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.phase3-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.community.artifact-idempotency",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.inventory-complete",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.source-parity",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.classification-exclusive",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.reachability-graph",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.user-navigable-entry",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.dynamic-source",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.dynamic-invalid-id",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.dynamic-private-denial",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.tokenized-safe",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.tokenized-not-navigation",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.compatibility-disposition",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.compatibility-no-competing-ui",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.redirect-no-loop",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.redirect-target-valid",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.redirect-query-safe",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.parent-complete",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.parent-cycle-free",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.no-dead-end",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.empty-onward",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.error-recovery",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.permission-recovery",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.desktop-mobile-parity",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.no-pointer-only-entry",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.keyboard-reachability",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.compact-exit",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.immersive-exit",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.deep-link-after-natural",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.no-direct-url-only",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.placeholder-target-rejected",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.deprecated-disposition",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.development-exclusion",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.active-label-consistency",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.graph-idempotency",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.inventory-drift",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.browser-receipt-complete",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.source-bound-evidence",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.phase1-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.phase2-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.phase3-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.route.phase4-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.surface.catalog-complete",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.surface.source-parity",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.surface.criticality",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.surface.visual-maturity",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.surface.critical-desktop-evidence",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.surface.critical-mobile-evidence",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.surface.zoom-evidence",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.surface.human-visual-review",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.surface.source-bound-evidence",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.surface.raw-implementation-prohibited",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.surface.component-family-consistency",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.state.applicability",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.state.loading-truthful",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.state.empty-truthful",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.state.no-results-truthful",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.state.error-recovery",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.state.dependency-unavailable",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.state.offline-degraded",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.state.permission-explicit",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.state.session-expired",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.state.account-restricted",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.state.mutation-pending",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.state.mutation-success",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.state.mutation-failure",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.state.stale-conflict",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.state.archived-removed",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.state.tokenized",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.responsive.desktop",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.responsive.tablet",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.responsive.mobile",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.responsive.narrow-mobile",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.responsive.zoom",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.responsive.no-horizontal-overflow",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.accessibility.semantic",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.accessibility.keyboard",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.accessibility.touch",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.accessibility.focus",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.accessibility.live-region",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.accessibility.automated-scan",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.motion.authority",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.motion.reduced-motion",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.motion.route-lifecycle",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.motion.no-false-success",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.media.fallback",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.media.scan-state",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.media.no-object-key",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.mutation.feedback",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.mutation.no-duplicate",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.mutation.authoritative-result",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.surface.phase1-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.surface.phase2-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.surface.phase3-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.surface.phase4-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.surface.phase5-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.surface.artifact-idempotency",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.fixture.integrated",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.fixture.immutable-seed",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.fixture.clone-isolation",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.fixture.credential-boundary",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.fixture.reset",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.journey-a",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.journey-b",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.journey-c",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.journey-d",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.journey-e",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.journey-f",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.journey-g",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.journey-h",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.journey-i",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.journey-j",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.journey-k",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.journey-l",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.journey-m",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.journey-n",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.journey-o",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.evidence-source-binding",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.evidence-complete",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.evidence-checksum",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.evidence-human-visual-review",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.viewport.desktop",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.viewport.mobile",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.motion.reduced",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.accessibility.keyboard-focus",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.account.canonical-lifecycle",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.account.cross-workspace-session",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.profile.persistence",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.passport.private-authorization",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.community.saved-reconciliation",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.recovery.tokens",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.session.expiry",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.permission.explicit",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.mobile.parity",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.multitab.invalidation",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.dependency.failure-recovery",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.rehearsal.final",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.walkthrough.package",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.walkthrough.runtime-health",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.owner-decision.pending",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.control-plane.updated",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.feature-catalog.ft-b007",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.privacy.synthetic-only",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.database.canonical-invariant",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.phase7.git.branch-parity",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.feedback-ledger",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.chronicle-preview",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.preview-no-start-mutation",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.player-name-default",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.chronicle-alias",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.workspaces",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.capability-unification",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.active-chronicle-lock",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.profile-destination",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.claiming",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.email-registration",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.email-verification",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.email-change",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.email-recovery",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.linked-identities",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.provider-security",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.export",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.deactivation",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.deletion",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.signout-navigation",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.display-name-authority",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.personal-harbor-hierarchy",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.no-current-area-banner",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.preference-effects",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.delayed-loading",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.route-transitions",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.account-menu-motion",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.community-compact-search",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.community-full-search",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.community-reviews",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.home-motion",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.role-card-first-paint",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.mobile",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.security",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.privacy",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.phase1-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.phase2-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.phase3-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.phase4-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.phase5-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.phase6-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.phase7-a-o-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round1.artifact-idempotency",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.personal-harbor.ia",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.personal-harbor.section-registry",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.personal-harbor.mobile-parity",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.personal-harbor.deep-links",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.personal-harbor.unsaved-changes",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.personal-harbor.mutation-feedback",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.personal-harbor.stale-conflict",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.profile.overview",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.profile.public-projection",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.profile.owner-edit",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.profile.media-state",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.profile.no-private-leak",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.preferences.typed",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.accessibility.preference-consumption",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.notifications.feedback",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.privacy.server-enforced",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.linked-identities.safe",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.linked-identities.no-lockout",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.passport.product-surface",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.passport.no-test-controls",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.passport.session-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.history.owner-only",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.history.version-pinned",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.history.empty-state",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.memories.owner-authorized",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.keepsake.consent",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.artifacts.owner-only",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.artifacts.provenance",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.artifacts.empty-state",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.saved-content.owner-only",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.saved-content.cross-surface",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.security.sensitive-reauth",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.sessions.list-safe",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.sessions.revoke",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.sessions.signout-all",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.account-data.truthful-availability",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.personal-harbor.phase1-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.personal-harbor.phase2-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.personal-harbor.artifact-idempotency",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.feedback-ledger",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.runtime-fixture-parity",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.sera-capabilities",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.role-card-position",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.account-menu-motion",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.lantern-pivot",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.lantern-symmetry",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.star-twinkle-visible",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.fog-motion",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.dark-theme-restored",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.light-theme-complete",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.system-theme",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.theme-no-flash",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.theme-cross-tab",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.text-contrast",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.no-empty-current-area",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.community-loading-fast",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.community-loading-delayed",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.community-error-real",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.community-retry",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.public-profile-community-identity",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.review-profile-setup-return",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.save-aggregate",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.rating-aggregate",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.review-completion-eligibility",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.review-passport-entry",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.chronicle-preview-expanded",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.synthetic-email-truth",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.experience-images-complete",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.experience-images-source-bound",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.experience-images-private-safe",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.mobile",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.accessibility",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.phase1-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.phase2-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.phase3-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.phase4-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.phase5-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.phase6-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.phase7-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.round1-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round2.artifact-idempotency",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.feedback-ledger",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.profile-image-selection",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.avatar-crop",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.banner-crop",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.crop-keyboard",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.crop-touch",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.media-validation",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.media-atomic-replacement",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.profile-image-propagation",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.account-trigger-avatar",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.profile-overview-identity",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.profile-prompt-not-score",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.registration-verification-screen",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.verification-code-security",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.verification-resend",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.email-provider-contract",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.resend-adapter",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.synthetic-email",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.email-live-evidence",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.dark-default",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.no-theme-flash",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.light-deferred",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.workspace-entry",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.new-account-capabilities",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.existing-account-reconciliation",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.resource-authority-separated",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.active-chronicle-lock",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.no-false-chronicle-lock",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.captain-empty",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.creator-empty",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.route-crossfade",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.no-background-blink",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.route-layer-interaction",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.loading-threshold",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.account-menu-visible-motion",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.account-menu-focus",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.mobile",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.zoom",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.accessibility",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.phase1-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.phase2-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.phase3-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.phase4-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.phase5-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.phase6-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.phase7-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.round1-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.round2-regression",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.artifact-idempotency",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.auth.identifier.username",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.auth.identifier.email",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.auth.unverified-signin",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.auth.registration.atomic",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.auth.registration.username-conflict",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.auth.registration.email-handoff",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.auth.password-strength",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.auth.password-confirmation",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.auth.registration-verification",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.auth.resend-delivery",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.auth.partial-account-repair",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.transition.navigation-generation",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.transition.delayed-loading-cancel",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.transition.no-late-spinner",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.transition.no-route-resurrection",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.transition.direct-crossfade",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.transition.auth-routes",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.transition.interruption",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.transition.back-forward",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.transition.reduced-motion",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "homeport.owner-correction.round3.postmark-webhooks",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+      "suiteIds": [
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ]
     },
     {
       "contractId": "admiralty.phase1.identity",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ]
     },
     {
       "contractId": "admiralty.phase1.authorization",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ]
     },
     {
       "contractId": "admiralty.phase1.assurance",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ]
     },
     {
       "contractId": "admiralty.phase1.support-access",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ]
     },
     {
       "contractId": "admiralty.phase1.audit",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ]
     },
     {
       "contractId": "admiralty.phase1.registry",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ]
     },
     {
       "contractId": "admiralty.phase1.migration",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ]
     },
     {
       "contractId": "admiralty.phase1.responsive-consent",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ]
     },
     {
       "contractId": "bridgewatch.mission-control",
-      "suiteIds": ["unit.bridgewatch", "unit.sounding-line"]
+      "suiteIds": [
+        "unit.bridgewatch",
+        "unit.sounding-line"
+      ]
     },
     {
       "contractId": "tideglass-change-classification",
-      "suiteIds": ["unit.tideglass"]
+      "suiteIds": [
+        "unit.tideglass"
+      ]
     },
     {
       "contractId": "tideglass-compatibility-deltas",
-      "suiteIds": ["unit.tideglass"]
+      "suiteIds": [
+        "unit.tideglass"
+      ]
     },
     {
       "contractId": "tideglass-deterministic-summary",
-      "suiteIds": ["unit.tideglass"]
+      "suiteIds": [
+        "unit.tideglass"
+      ]
     },
     {
       "contractId": "tideglass-creator-annotations",
-      "suiteIds": ["unit.tideglass"]
+      "suiteIds": [
+        "unit.tideglass"
+      ]
     },
     {
       "contractId": "tideglass-rebuildable-cache",
-      "suiteIds": ["unit.tideglass"]
+      "suiteIds": [
+        "unit.tideglass"
+      ]
     },
     {
       "contractId": "tideglass-api-security",
-      "suiteIds": ["unit.tideglass"]
+      "suiteIds": [
+        "unit.tideglass"
+      ]
     },
     {
       "contractId": "tideglass-migration-parity",
-      "suiteIds": ["unit.tideglass", "database.sqlite", "migration.mysql"]
+      "suiteIds": [
+        "unit.tideglass",
+        "database.sqlite",
+        "migration.mysql"
+      ]
     },
     {
       "contractId": "admiralty.phase2.authorization-partition",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ]
     },
     {
       "contractId": "admiralty.phase2.read-projection-redaction",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ]
     },
     {
       "contractId": "admiralty.phase2.account-dossier-support",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ]
     },
     {
       "contractId": "admiralty.phase2.chronicle-voyage-inspection",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ]
     },
     {
       "contractId": "admiralty.phase2.community-operations-providers",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ]
     },
     {
       "contractId": "admiralty.phase2.audit-investigation",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ]
     },
     {
       "contractId": "admiralty.phase2.registry-activation",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ]
     },
     {
       "contractId": "admiralty.phase2.responsive-accessibility",
-      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": [
+        "unit.admiralty",
+        "service.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
+      ]
     },
     {
       "contractId": "wakebook.history.version-pinning",
-      "suiteIds": ["unit.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "unit.wakebook",
+        "browser.wakebook"
+      ]
     },
     {
       "contractId": "wakebook.history.owner-privacy",
-      "suiteIds": ["unit.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "unit.wakebook",
+        "browser.wakebook"
+      ]
     },
     {
       "contractId": "wakebook.history.historical-stability",
-      "suiteIds": ["unit.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "unit.wakebook",
+        "browser.wakebook"
+      ]
     },
     {
       "contractId": "wakebook.timing.quality",
-      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook"
+      ]
     },
     {
       "contractId": "wakebook.artifact-context",
-      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook"
+      ]
     },
     {
       "contractId": "wakebook.navigation.reachability",
-      "suiteIds": ["component.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "component.wakebook",
+        "browser.wakebook"
+      ]
     },
     {
       "contractId": "wakebook.archive.pagination",
-      "suiteIds": ["unit.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "unit.wakebook",
+        "browser.wakebook"
+      ]
     },
     {
       "contractId": "wakebook.archive.year-grouping",
-      "suiteIds": ["unit.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "unit.wakebook",
+        "browser.wakebook"
+      ]
     },
     {
       "contractId": "wakebook.archive.filters",
-      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook"
+      ]
     },
     {
       "contractId": "wakebook.archive.invitation-separation",
-      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook"
+      ]
     },
     {
       "contractId": "wakebook.archive.partial-history",
-      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook"
+      ]
     },
     {
       "contractId": "wakebook.archive.summary-redaction",
-      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook"
+      ]
+    },
+    {
+      "contractId": "invitation-acceptance",
+      "suiteIds": [
+        "unit.one-voyage",
+        "component.captain",
+        "component.studio",
+        "browser.invitations",
+        "browser.captain",
+        "browser.studio"
+      ]
+    },
+    {
+      "contractId": "player-session-restoration",
+      "suiteIds": [
+        "component.player-shell",
+        "browser.player-library"
+      ]
+    },
+    {
+      "contractId": "drydock-progression",
+      "suiteIds": [
+        "unit.drydock"
+      ]
+    },
+    {
+      "contractId": "drydock-authoring-contracts",
+      "suiteIds": [
+        "unit.drydock"
+      ]
+    },
+    {
+      "contractId": "artifact-grant-projection",
+      "suiteIds": [
+        "component.artifacts",
+        "browser.artifacts"
+      ]
+    },
+    {
+      "contractId": "lanternwake-presentation-receipt",
+      "suiteIds": [
+        "unit.animation",
+        "component.animation",
+        "browser.animation-lifecycle"
+      ]
+    },
+    {
+      "contractId": "deepwater.capability-realization-integrity",
+      "suiteIds": [
+        "unit.deepwater"
+      ]
+    },
+    {
+      "contractId": "public-privacy-projection",
+      "suiteIds": [
+        "unit.private-content",
+        "build.production"
+      ]
     },
     {
       "contractId": "wakebook.detail.historical-provenance",
-      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook"
+      ]
     },
     {
       "contractId": "wakebook.remembrance.owner-integrity",
-      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook"
+      ]
     },
     {
       "contractId": "wakebook.memory-media.private-delivery",
-      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook"
+      ]
     },
     {
       "contractId": "wakebook.keepsake.consent-revocation",
-      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook"
+      ]
     },
     {
       "contractId": "wakebook.detail.accessibility-mobile",
-      "suiteIds": ["component.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "component.wakebook",
+        "browser.wakebook"
+      ]
     },
     {
       "contractId": "wakebook.detail.cross-project-projection",
-      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+      "suiteIds": [
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook"
+      ]
     }
   ],
   "impactClasses": [

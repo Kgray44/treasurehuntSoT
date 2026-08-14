@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "authorityBoundary": "SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE",
+  "status": "OPEN_FAIL_CLOSED_MAPPING_DEBT",
+  "classificationRule": "An unresolved contract expands shadow impact selection and can never permit omission.",
+  "entries": [
+    {
+      "contractId": "drydock-scenario-contract",
+      "owner": "drydock",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "drydock-simulation-determinism",
+      "owner": "drydock",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "drydock-virtual-time",
+      "owner": "drydock",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "drydock-fault-contract",
+      "owner": "drydock",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "drydock-trace-privacy",
+      "owner": "drydock",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "drydock-coverage-contract",
+      "owner": "drydock",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "drydock-runtime-adapter",
+      "owner": "drydock",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "drydock-runtime-differential",
+      "owner": "drydock",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "drydock-no-live-mutation",
+      "owner": "drydock",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "drydock-durable-run",
+      "owner": "drydock",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "drydock-scenario-authorization",
+      "owner": "drydock",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "drydock-studio-scenario-lab",
+      "owner": "drydock",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "drydock-performance",
+      "owner": "drydock",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "completion-provider",
+      "owner": "landfall",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "community-moderation-integrity",
+      "owner": "harborlight",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "community-trusted-scan-receipt",
+      "owner": "harborlight",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "community-operational-leases",
+      "owner": "harborlight",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "community-migration-integrity",
+      "owner": "harborlight",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    },
+    {
+      "contractId": "helm.member-presence-synchronization",
+      "owner": "project-helm",
+      "classification": "NO_CURRENT_TEST_PROTECTOR",
+      "risk": "critical",
+      "reason": "No governed suite declares this contract."
+    }
+  ]
+}
