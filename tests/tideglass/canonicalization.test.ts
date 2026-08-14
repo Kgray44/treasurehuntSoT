@@ -205,6 +205,20 @@ describe("Tideglass contracts and canonicalization", () => {
     expect(second.comparisonId).not.toBe(first.comparisonId);
   });
 
+  it("changes the deterministic comparison identity when an anchored edition checksum changes", () => {
+    const snapshot = baseSnapshot();
+    const first = compareSemanticSnapshots(
+      semantic(snapshot, "edition-source", "source-checksum-a"),
+      semantic(snapshot, "edition-target", "target-checksum"),
+    );
+    const second = compareSemanticSnapshots(
+      semantic(snapshot, "edition-source", "source-checksum-b"),
+      semantic(snapshot, "edition-target", "target-checksum"),
+    );
+    expect(second.comparisonId).not.toBe(first.comparisonId);
+    expect(second.deterministicDigest).not.toBe(first.deterministicDigest);
+  });
+
   it("F26 keeps canonical output byte-stable under shuffled property and set-like input order", () => {
     const source = baseSnapshot();
     const target = clone(source);
