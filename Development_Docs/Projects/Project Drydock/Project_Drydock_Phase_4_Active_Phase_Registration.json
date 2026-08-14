@@ -5,7 +5,7 @@
   "phase": 4,
   "phaseName": "Clear for Launch",
   "phaseId": "project-drydock-phase-4-clear-for-launch",
-  "state": "IMPLEMENTATION_ACTIVE",
+  "state": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
   "branch": "codex/project-drydock-phase4-clear-for-launch",
   "worktree": {
     "ownership": "TASK_OWNED",

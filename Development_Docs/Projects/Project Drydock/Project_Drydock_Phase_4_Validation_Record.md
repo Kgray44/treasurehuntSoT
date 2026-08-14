@@ -26,4 +26,6 @@ This record is development and local-qualification evidence only. It is not a So
 | `npm run test:raw:build` | PASS | non-authoritative production build; one unrelated Community/Sealed Hold tracing warning remained non-failing |
 | `npm run drydock:browser` | PASS - 1 Chromium journey | task-owned SQLite migration rehearsal, authenticated Studio creation, Launch Gate, Compatibility, Sea Trials, 390 px keyboard behavior, and zero serious/critical Axe findings |
 
-Current local qualification still requires one frozen-candidate rebound after these records and generator outputs are finalized. The v1.4 post-cutover browser-fixture closure, live MySQL, and connected external/provider proof remain separate external conditions and are not represented as passed.
+The frozen source checkpoint `896817e315e5e4300569e996281da2f3601bd3d8` passed the complete focused rebound. The final browser synchronization correction adds an explicit Sea Trials route wait and was then covered by the passing isolated browser proof, lint, Drydock validation, documentation validation, and Feature Catalog validation. This phase is locally `READY_FOR_V14_MAINLINE_ACCEPTANCE`; it is not accepted.
+
+The v1.4 post-cutover browser-fixture closure, live MySQL, and connected external/provider proof remain separate external conditions and are not represented as passed. No Sounding Line Mainline Decision or protected merge may be dispatched until the independent post-cutover closure is confirmed green.

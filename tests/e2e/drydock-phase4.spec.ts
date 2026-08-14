@@ -33,6 +33,7 @@ test("Drydock Phase 4 exposes current launch and compatibility decisions without
   await page.getByRole("button", { name: "Create and open Chronicle" }).click();
   await expect(page).toHaveURL(/\/studio\/tales\/(?!new(?:\/|$))[^/]+\/?$/u, { timeout: 30_000 });
   await page.getByRole("navigation", { name: "Chronicle authoring sections" }).getByRole("link", { name: "Sea Trials" }).click();
+  await expect(page).toHaveURL(/\/studio\/tales\/[^/]+\/trials$/u, { timeout: 30_000 });
   await expect(page.getByRole("heading", { name: "Launch Gate" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Compatibility" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Sea Trials" })).toBeVisible({ timeout: 30_000 });
