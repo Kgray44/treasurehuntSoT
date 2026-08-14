@@ -55,7 +55,9 @@ code.
 ## Hosted mechanism
 
 `.github/workflows/sounding-line-candidate-qualification.yml` executes only
-from protected main. It separately checks out `main` as `authority` and the
+as protected authority when dispatched from `main`; a branch-ref dispatch is
+explicitly labeled nonauthoritative shadow evidence for pre-activation hosted
+proof. It separately checks out `main` as `authority` and the
 exact candidate SHA as `candidate`, verifies both commit/tree identities,
 derives the candidate diff, runs trusted modules with candidate contents as
 their working directory, and uploads a sealed plan/finalization artifact. It

@@ -26,10 +26,17 @@ jobs:
     name: Sounding Line / Mainline Decision
     runs-on: ubuntu-latest
     steps:
-      - name: Require protected-main workflow authority
+      - name: Record protected-main authority boundary
         shell: bash
         run: |
-          [[ "${{ github.ref }}" == "refs/heads/main" ]] || { echo TRUSTED_WORKFLOW_MUST_RUN_FROM_MAIN; exit 1; }
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "SOUNDING_LINE_EXECUTION=PROTECTED_MAIN_AUTHORITY" >> "$GITHUB_ENV"
+          else
+            # A branch-ref dispatch is permitted solely to exercise the hosted
+            # mechanism before activation. Its workflow check is shadow evidence,
+            # never the branch-protection authority.
+            echo "SOUNDING_LINE_EXECUTION=NONAUTHORITATIVE_SHADOW" >> "$GITHUB_ENV"
+          fi
       - name: Check out trusted protected-main authority
         uses: actions/checkout@v4
         with:
