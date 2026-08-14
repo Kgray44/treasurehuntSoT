@@ -235,6 +235,21 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
   assert.match(authoritative, /authorityMode=\$\(if \(\$authorityMode -eq 'v13-cutover'\)/u);
   assert.match(authoritative, /candidate_sha:[\s\S]*?required: true[\s\S]*?type: string/u);
   assert.match(authoritative, /SOUNDING_LINE_FROZEN_CANDIDATE_SHA_MISMATCH/u);
+  assert.match(
+    authoritative,
+    /if \(\$prNumber -and -not \$baseSha\) \{ throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_BASE_REQUIRED" \}/u,
+    "CURRENT_PROTECTED_MAIN_MAY_BIND_A_BASE_WITHOUT_A_PR_ENVELOPE",
+  );
+  assert.doesNotMatch(
+    authoritative,
+    /SOUNDING_LINE_ACCEPTANCE_ENVELOPE_IDENTITY_PAIR_REQUIRED/u,
+    "CURRENT_PROTECTED_MAIN_BASE_MUST_NOT_BE_REJECTED_FOR_LACK_OF_PR",
+  );
+  assert.match(
+    authoritative,
+    /if \(\$authorityMode -eq 'v13-cutover' -and \(-not \$prNumber -or -not \$baseSha\)\) \{ throw "SOUNDING_LINE_V13_CUTOVER_ACCEPTANCE_ENVELOPE_REQUIRED" \}/u,
+    "V13_CUTOVER_ENVELOPE_REMAINS_REQUIRED",
+  );
   assert.match(authoritative, /sourceSha:process\.env\.GITHUB_SHA/u);
   assert.match(
     authoritative,

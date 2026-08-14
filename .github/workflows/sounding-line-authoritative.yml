@@ -88,7 +88,10 @@ jobs:
           if ($candidateSha -ne $dispatchedSha) { throw "SOUNDING_LINE_FROZEN_CANDIDATE_SHA_MISMATCH" }
           $prNumber = $env:SOUNDING_LINE_PR_NUMBER
           $baseSha = $env:SOUNDING_LINE_BASE_SHA
-          if (($prNumber -and -not $baseSha) -or (-not $prNumber -and $baseSha)) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_IDENTITY_PAIR_REQUIRED" }
+          # CURRENT protected-main verification deliberately has no PR envelope, but
+          # still binds its qualified base. A PR envelope, when supplied, must bind
+          # its base; v13 cutover continues to require both values below.
+          if ($prNumber -and -not $baseSha) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_BASE_REQUIRED" }
           if ($authorityMode -eq 'v13-cutover' -and (-not $prNumber -or -not $baseSha)) { throw "SOUNDING_LINE_V13_CUTOVER_ACCEPTANCE_ENVELOPE_REQUIRED" }
           if ($prNumber -and ($prNumber -notmatch '^[1-9][0-9]*$')) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_PR_INVALID" }
           if ($baseSha -and ($baseSha -notmatch '^[0-9a-f]{40}$')) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_BASE_SHA_INVALID" }
