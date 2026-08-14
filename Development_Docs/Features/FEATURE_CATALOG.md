@@ -959,33 +959,47 @@ A private, standalone, read-only development mission-control dashboard projects 
 ## FT-035 - Bridgewatch Governed Signal Projection
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Bridgewatch Phase 2
+**Program or subsystem:** Project Bridgewatch Phases 2-3
 
-A private Bridgewatch extension that projects explicit Project Registry and Sounding Line observer evidence into durable local operational state while keeping test, release, merge, and project-completion authority outside the dashboard.
+A private Bridgewatch extension that projects explicit Project Registry, Sounding Line, and GitHub observer evidence into durable current and historical operational state and is available to canonically authorized Voyagewright operators through a same-host /bridgewatch gateway, while keeping test, release, merge, and project-completion authority outside the dashboard.
 
 ### Important subfeatures
 
 - Read-only Sounding Line runtime projection with explicit lifecycle normalization
 - Durable SQLite worker, test-node, and test-run history with idempotent migrations
 - Opt-in bearer-authenticated activity telemetry with rate, skew, stale-state, and credential-redaction controls
-- Lifecycle tabs, project biography, worker/test summaries, responsive layout, and reduced-motion support
+- Normalized meaningful events, digest-deduplicated snapshots, daily rollups, and durable-history retention guards
+- Bounded since-last-check history, completed-project archive, project/program trends, and chronological phase evidence
+- GitHub-authoritative branch ahead/behind and aging context with stale-work attention that never changes governed progress
+- Lifecycle tabs, project biography, worker/test summaries, responsive phone and wide control-room layouts, and reduced-motion support
+- Canonical PLATFORM_OBSERVE authorization with a same-host, allowlisted GET/HEAD gateway for local and deployed private access
+- Independent loopback service deployment with safe gateway failure and machine telemetry excluded from the browser mount
 
 ### Primary surfaces
 
-`bridgewatch`, `POST /api/telemetry/heartbeat`, `GET /api/history`, `GET /api/tests`
+`bridgewatch`, `/bridgewatch`, `POST /api/telemetry/heartbeat`, `GET /api/history`, `GET /api/trends`, `GET /api/archive`, `GET /api/branches`, `GET /api/tests`
 
 ### Meaningful limitations
 
 - Bridgewatch remains an observer and cannot create, approve, merge, retry, or authorize work.
-- Mainline integration does not claim a private deployment, provider proof, or owner-acceptance record.
+- Mainline integration does not claim a live private deployment, provider proof, or owner-acceptance record.
+- Bridgewatch does not infer completion, ETA, risk, or percentage progress from activity, branch commits, or test counts.
 
 ### Evidence
 
-- commit: `9b950a5fd603be27c813f9298b0b14888fbce6cf`
+- commit: `dead22dc26aeec2b722625aa9a68dc5688111fca`
+- commit: `6212bd1ab9ed23abd52f98154b55d846267a1133`
 - path: `bridgewatch/lib/store.ts`
 - path: `bridgewatch/src/sounding-line.ts`
+- path: `bridgewatch/src/history.ts`
 - test: `bridgewatch/test/sounding-line.test.ts`
+- test: `bridgewatch/test/history.test.ts`
+- test: `src/admiralty/bridgewatch-gateway.test.ts`
+- test: `tests/e2e/admiralty-phase2.spec.ts`
+- path: `deploy/nginx.conf`
+- completion-record: `Development_Docs/Project_Bridgewatch_Homeport_Gateway_Validation_Record.md`
 - completion-record: `Development_Docs/Project_Bridgewatch_Phase_2_Completion_Receipt.md`
+- completion-record: `Development_Docs/Project_Bridgewatch_Completion_Receipt.md`
 
 ---
 

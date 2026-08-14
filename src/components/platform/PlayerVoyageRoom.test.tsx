@@ -1,4 +1,4 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
 import { useEffect, useMemo } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { AnimationAuthorityContext } from "@/animation/hosts/SceneHostContext";
@@ -79,6 +79,7 @@ function renderRoom(onRouteHandoff?: (destination: string) => void | Promise<voi
 
 describe("PlayerVoyageRoom", () => {
   afterEach(() => {
+    vi.useRealTimers();
     cleanup();
     sessionStorage.clear();
     FakeEventSource.current = null;
@@ -270,6 +271,32 @@ describe("PlayerVoyageRoom", () => {
     await screen.findByRole("heading", { name: "The Moonlit Key" });
 
     FakeEventSource.current?.emit("heartbeat");
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1/journal"));
+  });
+
+  it("keeps authoritative launch polling active while the waiting room is backgrounded", async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    const handoff = vi.fn();
+    const active = {
+      ...voyage,
+      status: "ACTIVE",
+      state: "IN_PROGRESS",
+      canEnter: true,
+      runtimeHref: "/player/playthroughs/voyage-1/journal",
+    };
+    vi.spyOn(document, "hidden", "get").mockReturnValue(true);
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, body()))
+      .mockResolvedValueOnce(response(200, body(active)));
+    vi.stubGlobal("EventSource", FakeEventSource);
+    vi.stubGlobal("fetch", fetchMock);
+    renderRoom(handoff);
+    await screen.findByRole("heading", { name: "The Moonlit Key" });
+
+    await act(async () => vi.advanceTimersByTimeAsync(5_000));
 
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
     await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1/journal"));

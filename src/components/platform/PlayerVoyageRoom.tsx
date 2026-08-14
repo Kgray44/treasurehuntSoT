@@ -219,7 +219,7 @@ export function PlayerVoyageRoom({
       void load(nextConnection);
     };
     const timer = window.setInterval(() => {
-      if (document.hidden || connectionRef.current === "revoked") return;
+      if (connectionRef.current === "revoked") return;
       const nextConnection = connectionRef.current === "live" ? "live" : "polling";
       if (nextConnection === "polling") setConnection("polling");
       void load(nextConnection);

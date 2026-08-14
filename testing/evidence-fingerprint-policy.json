@@ -1,0 +1,29 @@
+{
+  "version": "1.4",
+  "status": "candidate-pending-protected-mainline-acceptance",
+  "canonicalization": {
+    "version": "1.4",
+    "algorithm": "SHA-256",
+    "serialization": "canonical-json-sorted-keys"
+  },
+  "requiredFamilies": [
+    "suite-and-test-definition",
+    "protected-contract-closure",
+    "source-and-qualified-base-tree",
+    "schema-migration-seed-fixture",
+    "package-runtime-toolchain",
+    "browser-provider-environment",
+    "policy-resource-cleanup",
+    "prepared-artifact-identities"
+  ],
+  "closureConfidence": {
+    "preservationEligible": ["EXACT", "BOUNDED"],
+    "conservativeExpansionRequired": ["COARSE", "UNKNOWN"]
+  },
+  "dispositions": ["FRESH", "PRESERVED", "REBOUND", "INVALIDATED", "SUPERSEDED", "CONSERVATIVE_FALLBACK"],
+  "expiry": {
+    "staleEvidence": "RUN_FRESH",
+    "policyOrAuthorityMismatch": "INVALIDATE",
+    "missingImmutableIdentity": "CONSERVATIVE_FALLBACK"
+  }
+}

@@ -16,6 +16,7 @@ const navigation: readonly (AdminNavItem & { any: readonly AdmiraltyCapabilityId
   { href: "/admin/releases", label: "Releases", shortLabel: "Releases", any: ["RELEASE_OBSERVE"] },
   { href: "/admin/audit", label: "Audit", shortLabel: "Audit", any: ["AUDIT_OBSERVE"] },
   { href: "/admin/investigate", label: "Investigate", shortLabel: "Investigate", any: ["PLATFORM_OBSERVE"] },
+  { href: "/bridgewatch", label: "Bridgewatch", shortLabel: "Bridgewatch", any: ["PLATFORM_OBSERVE"] },
 ];
 
 export function AdmiraltyShell({

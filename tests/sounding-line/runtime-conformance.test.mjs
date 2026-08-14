@@ -9,6 +9,11 @@ import { selectFocusedSuite } from "../../scripts/sounding-line/focused-selectio
 import { CONFORMANCE_CODES, deriveWorkerPreparation } from "../../scripts/sounding-line/worker-preparation.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+const correctiveV13Candidate = {
+  authorityMode: "V13_CUTOVER",
+  githubRef: "refs/heads/codex/sounding-line-v14-corrective-activation",
+  qualifiedBaseSha: "1ebc702d57de63d74c9f80d82a11051446e7b12e",
+};
 
 function workflowTriggers(source) {
   const lines = source.split(/\r?\n/u);
@@ -57,7 +62,16 @@ function isHeavyweightRepositoryClosure(source) {
 test("effective authority and the development/finalization boundary are discoverable and policy-owned", async () => {
   const authority = JSON.parse(await readFile(path.join(root, "testing", "sounding-line-authority.json"), "utf8"));
   assert.equal(authority.authority, "SOUNDING_LINE");
-  assert.deepEqual(authority.effectiveAmendments, { partI: "1.2", partII: "1.2", partIII: "1.3" });
+  assert.equal(authority.currentAuthorityVersion, "1.4");
+  assert.deepEqual(authority.effectiveAmendments, { partI: "1.2", partII: "1.2", partIII: "1.3", crossPart: "1.4" });
+  assert.equal(authority.pendingV14, undefined);
+  assert.deepEqual(authority.effectiveV14, {
+    documentId: "CS-SL-XP-001 v1.4-R1",
+    documentSha256: "4D9DE559A24A7A2A8427171EAB679CCD423A1E9BE94FA104CF10B3D14AA31211",
+    activation: "OWNER_AUTHORIZED_CORRECTIVE_PROTECTED_MAINLINE_MERGE",
+    historicalAtomicCutoverRequirement: "NOT_SATISFIED_HISTORICALLY",
+    protectedHistory: "PRESERVED",
+  });
   assert.equal(authority.requiredProtectedAuthorityCheck, "Sounding Line / Mainline Decision");
   assert.equal(authority.runtimeConformance.required, true);
   assert.deepEqual(authority.developmentValidation, {
@@ -85,7 +99,7 @@ test("active agent guidance requires the testing workflow contract", async () =>
 
 test("focused selection accepts every sealed node and rejects unknown suites", async () => {
   for (const gateId of ["mainline", "release-candidate"]) {
-    const plan = await buildPlan({ root, gateId, sourceSha: "focused-selection-test" });
+    const plan = await buildPlan({ root, gateId, sourceSha: "focused-selection-test", ...correctiveV13Candidate });
     for (const node of plan.nodes) assert.equal(selectFocusedSuite(plan, node.id).suiteId, node.id);
   }
   const projectPlan = {
@@ -220,7 +234,7 @@ test("conformance fails closed for missing adapter resources and undeclared brow
 });
 
 test("hosted planning serializes only actual shared resources while retaining dependencies", async () => {
-  const plan = await buildPlan({ root, gateId: "mainline", sourceSha: "conformance-test" });
+  const plan = await buildPlan({ root, gateId: "mainline", sourceSha: "conformance-test", ...correctiveV13Candidate });
   assert.equal(plan.runtimeConformanceRequired, true);
   assert.equal(plan.nodes.find((node) => node.id === "database.sqlite").execution.mode, "parallel");
   assert.equal(plan.nodes.find((node) => node.id === "build.production").execution.mode, "parallel");

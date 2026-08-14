@@ -4,6 +4,7 @@
  * entry point for Phase 2's separately allowlisted local adapters.
  */
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
@@ -12,6 +13,7 @@ import * as runtime from "./runtime.mjs";
 import * as phase3 from "./phase3.mjs";
 import * as phase4 from "./phase4.mjs";
 import { resolveAdapter, resolvePlaywrightAdapter, resolveVitestAdapter } from "./adapters.mjs";
+import { validateHostedWaveCapacity, validateHostedWorkflowCapacity } from "./hosted-wave-capacity.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const policyRoot = path.join(repoRoot, "testing");
@@ -31,6 +33,9 @@ const registryFiles = [
   "retired-suites.json",
   "browser-capabilities.json",
   "sounding-line-authority.json",
+  "evidence-fingerprint-policy.json",
+  "prepared-artifacts.json",
+  "mainline-train-policy.json",
 ];
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
@@ -112,6 +117,10 @@ function validatePolicy(policy) {
     authorityIndex,
     [
       "authority",
+      "currentAuthorityVersion",
+      "pendingV14",
+      "effectiveV14",
+      "correctiveActivation",
       "effectiveAmendments",
       "requiredProtectedAuthorityCheck",
       "runtimeConformance",
@@ -119,14 +128,52 @@ function validatePolicy(policy) {
       "developmentValidation",
       "protectedMergeBinding",
       "futureProjectInheritance",
+      "hostedExecutionCapacity",
     ],
     "sounding-line-authority",
     errors,
   );
   if (authorityIndex.authority !== "SOUNDING_LINE") errors.push("sounding-line-authority: authority mismatch");
+  if (authorityIndex.currentAuthorityVersion !== "1.3" && authorityIndex.currentAuthorityVersion !== "1.4")
+    errors.push("sounding-line-authority: current authority version mismatch");
+  const v14DocumentMatches = (record) =>
+    record?.documentId === "CS-SL-XP-001 v1.4-R1" &&
+    record?.documentSha256 === "4D9DE559A24A7A2A8427171EAB679CCD423A1E9BE94FA104CF10B3D14AA31211";
+  if (authorityIndex.currentAuthorityVersion === "1.3") {
+    if (
+      !v14DocumentMatches(authorityIndex.pendingV14) ||
+      authorityIndex.pendingV14?.activation !== "PROTECTED_MAINLINE_MERGE_ONLY"
+    )
+      errors.push("sounding-line-authority: v1.4 pending amendment mismatch");
+    if (authorityIndex.effectiveV14 !== undefined || authorityIndex.correctiveActivation !== undefined)
+      errors.push("sounding-line-authority: inactive v1.4 cannot carry corrective activation fields");
+  }
+  if (authorityIndex.currentAuthorityVersion === "1.4") {
+    if (
+      !v14DocumentMatches(authorityIndex.effectiveV14) ||
+      authorityIndex.effectiveV14?.activation !== "OWNER_AUTHORIZED_CORRECTIVE_PROTECTED_MAINLINE_MERGE" ||
+      authorityIndex.effectiveV14?.historicalAtomicCutoverRequirement !== "NOT_SATISFIED_HISTORICALLY" ||
+      authorityIndex.effectiveV14?.protectedHistory !== "PRESERVED"
+    )
+      errors.push("sounding-line-authority: effective v1.4 corrective activation mismatch");
+    if (
+      authorityIndex.pendingV14 !== undefined ||
+      authorityIndex.correctiveActivation?.baseAuthorityVersion !== "1.3" ||
+      authorityIndex.correctiveActivation?.candidateValidation !== "V13_CUTOVER_NON_MAIN_REF_ONLY" ||
+      authorityIndex.correctiveActivation?.qualifiedBaseSha !== "1ebc702d57de63d74c9f80d82a11051446e7b12e" ||
+      authorityIndex.correctiveActivation?.candidateRef !==
+        "refs/heads/codex/sounding-line-v14-corrective-activation" ||
+      authorityIndex.correctiveActivation?.evidenceRequirements !== "NOT_WAIVED"
+    )
+      errors.push("sounding-line-authority: corrective v1.4 transition mismatch");
+  }
   for (const [part, version] of Object.entries({ partI: "1.2", partII: "1.2", partIII: "1.3" }))
     if (authorityIndex.effectiveAmendments?.[part] !== version)
       errors.push(`sounding-line-authority: ${part} must be ${version}`);
+  if (authorityIndex.currentAuthorityVersion === "1.4" && authorityIndex.effectiveAmendments?.crossPart !== "1.4")
+    errors.push("sounding-line-authority: crossPart must be 1.4 after activation");
+  if (authorityIndex.currentAuthorityVersion === "1.3" && authorityIndex.effectiveAmendments?.crossPart !== undefined)
+    errors.push("sounding-line-authority: crossPart must remain absent before activation");
   if (authorityIndex.requiredProtectedAuthorityCheck !== "Sounding Line / Mainline Decision")
     errors.push("sounding-line-authority: protected check mismatch");
   const protectedBinding = authorityIndex.protectedMergeBinding;
@@ -168,6 +215,26 @@ function validatePolicy(policy) {
     errors.push("sounding-line-authority: development/finalization boundary mismatch");
   if (authorityIndex.futureProjectInheritance !== true)
     errors.push("sounding-line-authority: future-project inheritance must be enabled");
+  const hostedCapacity = validateHostedWaveCapacity({
+    capacity: authorityIndex.hostedExecutionCapacity,
+    suites: suites.suites,
+  });
+  errors.push(...hostedCapacity.errors.map((error) => `sounding-line-authority: ${error}`));
+  try {
+    const workflow = readFileSync(
+      path.join(repoRoot, ".github", "workflows", "sounding-line-authoritative.yml"),
+      "utf8",
+    );
+    const workflowCapacity = validateHostedWorkflowCapacity({
+      capacity: authorityIndex.hostedExecutionCapacity,
+      workflow,
+    });
+    errors.push(...workflowCapacity.errors.map((error) => `sounding-line-authority: ${error}`));
+  } catch (error) {
+    errors.push(
+      `sounding-line-authority: HOSTED_WAVE_CAPACITY_WORKFLOW_UNREADABLE:${error instanceof Error ? (error.code ?? "unknown") : "unknown"}`,
+    );
+  }
   const ids = (items, label) => {
     const seen = new Set();
     for (const item of items) {
