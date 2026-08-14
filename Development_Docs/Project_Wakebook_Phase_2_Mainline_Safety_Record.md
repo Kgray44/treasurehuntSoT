@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Mainline Safety Record
 audience: product-engineering
-status: candidate-qualified
+status: ready-for-v14-mainline-acceptance
 canonical_for: project-wakebook-phase-2-mainline-safety-record
 last_reviewed: 2026-08-13
 ---
@@ -20,10 +20,16 @@ Rollback removes Wakebook-owned UI, DTO, routes, and tests without modifying
 historical records, annotations, consent, artifacts, achievements, or protected
 media source objects.
 
-Current-main reconciliation was completed before candidate freeze at
-`origin/main` `72075eb551ec39bdb59bd7d78fd900f2eaf73a88`. Incoming accepted
-changes were Bridgewatch documentation, registry, and its independent
-application seam; no Wakebook, Wayfarer, Tideglass, Helm, Sealed Hold,
-artifact, achievement, Personal Harbor, navigation, or Prisma source seam was
-overwritten. The merged generated registry was regenerated and validated with
-the final candidate evidence.
+Sounding Line v1.4 reconciliation was completed at protected main
+`268932d630ee0ea1721d0072da4041f7209b7464`. Incoming accepted changes updated
+Sounding Line authority/infrastructure, Bridgewatch, and shared navigation;
+they did not alter Wakebook, Wayfarer, Tideglass, Helm, Sealed Hold, artifact,
+achievement, Personal Harbor, Prisma, or Phase 2 route/component source seams.
+The generated Feature Catalog, active registry, and impact map were rebuilt
+from the merged source and policy validation passed.
+
+The pre-cutover focused evidence is preserved as bounded legacy evidence and
+the directly affected Wakebook test, browser, schema, policy, and registry
+identities were rebound. This is not authority evidence. The candidate must
+wait for the independent v1.4 post-cutover hosted browser-fixture closure
+before any Mainline Decision or protected merge.

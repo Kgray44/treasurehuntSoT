@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Test Plan
 audience: product-engineering
-status: candidate-qualified
+status: ready-for-v14-mainline-acceptance
 canonical_for: project-wakebook-phase-2-test-plan
 last_reviewed: 2026-08-13
 ---
@@ -38,3 +38,11 @@ non-delivery. No real Chronicle, account, or private media was used.
 The synthetic corpus will cover a complete solo Voyage, multi-crew/consent
 state, partial legacy history, protected media, historical stability, and a
 foreign account. No real Chronicle or private media is used.
+
+After Sounding Line v1.4 became effective, the candidate was reconciled with
+protected main `268932d630ee0ea1721d0072da4041f7209b7464`. The prior focused
+candidate evidence remains bounded legacy evidence, and the affected local
+Vitest, TypeScript, Prisma, policy/registry, and dedicated browser evidence
+was rebound against the reconciled candidate. The phase now waits only for the
+independent v1.4 post-cutover hosted browser-fixture closure before a frozen
+candidate may enter Mainline Decision.

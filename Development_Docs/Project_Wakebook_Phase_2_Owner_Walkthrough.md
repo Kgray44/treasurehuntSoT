@@ -1,17 +1,18 @@
 ---
 title: Project Wakebook Phase 2 Owner Walkthrough
 audience: product-owner
-status: ready-for-owner-walkthrough
+status: ready-for-v14-mainline-acceptance
 canonical_for: project-wakebook-phase-2-owner-walkthrough
 last_reviewed: 2026-08-13
 ---
 
 # Project Wakebook Phase 2 owner walkthrough
 
-This walkthrough is ready for owner review. Phase 2 implementation candidate
-`823c9f726d778f59aa6df5dc5f2f383b7c22b5ba` is qualified on an isolated local
-runtime and reconciled with current mainline, but is not yet product accepted
-or merged.
+This walkthrough is ready for owner review once the independent Sounding Line
+v1.4 post-cutover hosted browser-fixture closure is green. Phase 2
+implementation candidate `beb86ca66c5e4d648d0df2565c2d197831f2174e` is
+qualified on an isolated local runtime and reconciled with current mainline,
+but is not yet product accepted or merged.
 
 1. Sign in with the owner account and open **Chronicle Passport**.
 2. Use the visible **History** control, open **Your Voyages**, and choose a
@@ -33,5 +34,6 @@ or merged.
 8. Repeat the page at a narrow viewport, with keyboard navigation, reduced
    motion, and effective 200% zoom. Content must remain readable and usable.
 
-Owner acceptance is the next authority step. This document does not authorize
-a protected merge or start Phase 3.
+The next authority step is held for the independent v1.4 closure, then a
+source-bound Mainline Decision. This document does not authorize a protected
+merge, owner acceptance, or Phase 3.
