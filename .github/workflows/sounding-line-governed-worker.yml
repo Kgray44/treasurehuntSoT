@@ -24,6 +24,19 @@ jobs:
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          # workflow_call otherwise resolves the mutable default-branch ref.
+          # Each worker must execute the same frozen candidate that the plan
+          # sealed, including when protected main advances while workers start.
+          ref: ${{ github.event.inputs.candidate_sha }}
+          fetch-depth: 0
+      - name: Verify sealed candidate checkout
+        shell: pwsh
+        env:
+          SOUNDING_LINE_CANDIDATE_SHA: ${{ github.event.inputs.candidate_sha }}
+        run: |
+          if ($env:SOUNDING_LINE_CANDIDATE_SHA -notmatch '^[0-9a-f]{40}$') { throw 'GOVERNED_WORKER_CANDIDATE_SHA_INVALID' }
+          if ((git rev-parse HEAD).Trim() -ne $env:SOUNDING_LINE_CANDIDATE_SHA) { throw 'GOVERNED_WORKER_CANDIDATE_CHECKOUT_MISMATCH' }
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc, cache: npm }
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093

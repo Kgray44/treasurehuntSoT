@@ -40,6 +40,29 @@ export function validateRegistryIdentity(cases) {
   return { semanticOwners, runtimeOwners, aliases };
 }
 
+// Generated IDs may include runtime discovery details such as a source line.
+// Preserve every unambiguous prior representation under the unchanged
+// semantic identity so historical ledgers keep resolving after regeneration.
+export function carryForwardHistoricalAliases(cases, previousCases = []) {
+  const previous = validateRegistryIdentity(previousCases);
+  const errors = [];
+  for (const entry of cases ?? []) {
+    const prior = previous.semanticOwners.get(entry.semanticId);
+    if (!prior) continue;
+    const aliases = new Set([...(entry.historicalAliases ?? []), ...(prior.historicalAliases ?? [])]);
+    if (prior.id !== entry.id) aliases.add(prior.id);
+    aliases.delete(entry.id);
+    entry.historicalAliases = [...aliases].sort();
+  }
+  try {
+    validateRegistryIdentity(cases);
+  } catch (error) {
+    errors.push(String(error.message ?? error));
+  }
+  if (errors.length) throw new Error(errors.join("\n"));
+  return cases;
+}
+
 export function resolveHistoricalTestIdentity(identity, cases) {
   const { semanticOwners, runtimeOwners, aliases } = validateRegistryIdentity(cases);
   const matches = [runtimeOwners.get(identity), semanticOwners.get(identity), aliases.get(identity)].filter(Boolean);

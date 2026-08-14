@@ -40,7 +40,6 @@ const registry = JSON.parse(
 const suites = new Set(
   JSON.parse(await readFile(path.join(root, "testing", "suites.json"), "utf8")).suites.map((suite) => suite.id),
 );
-const testIds = new Set(registry.cases.map((entry) => entry.id));
 try {
   validateRegistryIdentity(registry.cases);
 } catch (error) {
@@ -68,11 +67,19 @@ for (const [index, row] of rows.entries()) {
     if (row.canonicalReplacementTestIds.length !== row.canonicalReplacementSemanticIds.length)
       errors.push(`P34 ledger row ${index + 1} has mismatched generated and semantic replacements`);
     for (const [replacementIndex, testId] of (row.canonicalReplacementTestIds ?? []).entries()) {
-      if (!testIds.has(testId)) errors.push(`P34 ledger row ${index + 1} references absent replacement test ${testId}`);
       try {
         const resolved = resolveHistoricalTestIdentity(testId, registry.cases);
+        if (resolved.id !== testId)
+          errors.push(`P34 ledger row ${index + 1} canonical replacement is not the active generated ID ${testId}`);
         if (resolved.semanticId !== row.canonicalReplacementSemanticIds?.[replacementIndex])
           errors.push(`P34 ledger row ${index + 1} semantic replacement does not resolve ${testId}`);
+      } catch (error) {
+        errors.push(String(error.message ?? error));
+      }
+    }
+    for (const historicalId of row.canonicalReplacementHistoricalTestIds ?? []) {
+      try {
+        resolveHistoricalTestIdentity(historicalId, registry.cases);
       } catch (error) {
         errors.push(String(error.message ?? error));
       }

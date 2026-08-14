@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  carryForwardHistoricalAliases,
   resolveHistoricalTestIdentity,
   semanticTestId,
   validateRegistryIdentity,
@@ -17,6 +18,15 @@ test("stable semantic identity ignores harmless generated runtime representation
   const after = caseFor("sl-test-22222222222222222222");
   assert.equal(before.semanticId, after.semanticId);
   assert.equal(resolveHistoricalTestIdentity(after.semanticId, [after]).id, after.id);
+});
+
+test("regeneration carries a prior generated ID forward without treating it as durable authority", () => {
+  const before = caseFor("sl-test-11111111111111111111");
+  const after = caseFor("sl-test-22222222222222222222");
+  carryForwardHistoricalAliases([after], [before]);
+  assert.deepEqual(after.historicalAliases, [before.id]);
+  assert.equal(resolveHistoricalTestIdentity(before.id, [after]).id, after.id);
+  assert.equal(resolveHistoricalTestIdentity(after.id, [after]).semanticId, before.semanticId);
 });
 
 test("duplicate semantic identity and ambiguous historical aliases fail closed", () => {
