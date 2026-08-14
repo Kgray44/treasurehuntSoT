@@ -3,7 +3,7 @@ title: Sounding Line Effective Authority
 audience: engineering
 status: current-on-protected-mainline-acceptance
 canonical_for: sounding-line-effective-authority-human-index
-last_reviewed: 2026-08-11
+last_reviewed: 2026-08-13
 machine_source: testing/sounding-line-authority.json
 ---
 
@@ -12,6 +12,10 @@ machine_source: testing/sounding-line-authority.json
 `testing/sounding-line-authority.json` is the sole machine-readable authority
 source. This document is a discoverability projection and must agree with that
 source; it does not independently define policy.
+
+Project Sounding Line Version 1.4 is the effective repository-wide verification authority on protected main. The v1.4 cross-part amendment is additive to the Part I/II Version 1.2 and Part III Version 1.3 amendments; those part amendments remain effective as listed in the machine-readable index.
+
+The Version 1.4 activation is a corrective, owner-authorized protected merge following PR #90. PR #90 integrated the accepted implementation tree but did not flip the authority version. Accordingly, the ratified atomic-one-merge activation requirement is recorded as **not satisfied historically**; protected history is preserved and the evidence requirements are not waived. The permanent deviation and corrective-activation record is `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_v1.4_Corrective_Authority_Activation_Record.md`.
 
 Project Sounding Line is the effective repository-wide verification authority.
 Its Part I, Part II, and Part III Version 1.0 baselines, Version 1.1 amendments,
@@ -32,6 +36,10 @@ repair before requalification. Focused execution never emits `RELEASE_GO` and
 never substitutes for the Mainline Decision. This boundary is already governed
 by Part III Version 1.2 Sections 6 and 8 and is operationalized by
 `.agents/testing-workflow.md`; no additional broad amendment is required.
+
+## Corrective activation boundary
+
+The corrective candidate declares the exact authority index that becomes effective only when that tree lands on protected main. Before that merge, it may be accepted only through an explicit `V13_CUTOVER` plan on the recorded corrective ref and exact recorded v1.3 base. The exception is identity-bound and unavailable on every other ref; `CURRENT` v1.4 execution remains protected-main-only. This prevents v1.4 from authorizing its own activation while leaving no mixed-version execution path after activation.
 
 ## Protected merge binding
 

@@ -11,11 +11,23 @@ const digest = (value) =>
 const json = async (root, file) => JSON.parse(await readFile(path.join(root, "testing", file), "utf8"));
 const hostedSharedResources = new Set(["restart-host", "external-provider"]);
 
-export function resolvePlanAuthority({ authorityIndex, gateId, authorityMode, githubRef }) {
+export function resolvePlanAuthority({ authorityIndex, gateId, authorityMode, githubRef, qualifiedBaseSha }) {
   if (authorityMode !== "CURRENT" && authorityMode !== "V13_CUTOVER")
     throw new Error(`UNKNOWN_AUTHORITY_MODE:${authorityMode}`);
   if (authorityMode === "V13_CUTOVER") {
-    if (authorityIndex.currentAuthorityVersion === "1.4") throw new Error("V13_CUTOVER_FORBIDDEN_AFTER_V14_ACTIVATION");
+    if (authorityIndex.currentAuthorityVersion === "1.4") {
+      // A corrective candidate must carry the authority state it will make
+      // effective on protected main, but that candidate is accepted only by
+      // the current v1.3 authority. The exception is unavailable on main.
+      if (
+        authorityIndex.correctiveActivation?.baseAuthorityVersion !== "1.3" ||
+        authorityIndex.correctiveActivation?.candidateValidation !== "V13_CUTOVER_NON_MAIN_REF_ONLY" ||
+        !githubRef ||
+        githubRef !== authorityIndex.correctiveActivation?.candidateRef ||
+        qualifiedBaseSha !== authorityIndex.correctiveActivation?.qualifiedBaseSha
+      )
+        throw new Error("V13_CUTOVER_FORBIDDEN_AFTER_V14_ACTIVATION");
+    }
     return "V13_CUTOVER";
   }
   if (authorityIndex.currentAuthorityVersion === "1.4") {
@@ -92,7 +104,13 @@ export async function buildPlan({
     authorityIndex.effectiveAmendments?.partIII !== "1.3"
   )
     throw new Error("AUTHORITY_INDEX_MISMATCH");
-  const resolvedAuthority = resolvePlanAuthority({ authorityIndex, gateId, authorityMode, githubRef });
+  const resolvedAuthority = resolvePlanAuthority({
+    authorityIndex,
+    gateId,
+    authorityMode,
+    githubRef,
+    qualifiedBaseSha,
+  });
   if (resolvedAuthority === "V14_CURRENT") {
     return buildV14HostedPlan({
       root,

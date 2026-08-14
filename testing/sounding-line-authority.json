@@ -1,15 +1,25 @@
 {
   "authority": "SOUNDING_LINE",
-  "currentAuthorityVersion": "1.3",
-  "pendingV14": {
+  "currentAuthorityVersion": "1.4",
+  "effectiveV14": {
     "documentId": "CS-SL-XP-001 v1.4-R1",
     "documentSha256": "4D9DE559A24A7A2A8427171EAB679CCD423A1E9BE94FA104CF10B3D14AA31211",
-    "activation": "PROTECTED_MAINLINE_MERGE_ONLY"
+    "activation": "OWNER_AUTHORIZED_CORRECTIVE_PROTECTED_MAINLINE_MERGE",
+    "historicalAtomicCutoverRequirement": "NOT_SATISFIED_HISTORICALLY",
+    "protectedHistory": "PRESERVED"
+  },
+  "correctiveActivation": {
+    "baseAuthorityVersion": "1.3",
+    "candidateValidation": "V13_CUTOVER_NON_MAIN_REF_ONLY",
+    "qualifiedBaseSha": "1ebc702d57de63d74c9f80d82a11051446e7b12e",
+    "candidateRef": "refs/heads/codex/sounding-line-v14-corrective-activation",
+    "evidenceRequirements": "NOT_WAIVED"
   },
   "effectiveAmendments": {
     "partI": "1.2",
     "partII": "1.2",
-    "partIII": "1.3"
+    "partIII": "1.3",
+    "crossPart": "1.4"
   },
   "requiredProtectedAuthorityCheck": "Sounding Line / Mainline Decision",
   "runtimeConformance": {

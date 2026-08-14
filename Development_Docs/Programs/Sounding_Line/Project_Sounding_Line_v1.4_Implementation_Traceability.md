@@ -74,3 +74,7 @@ Prepared-layer transport decision criteria are artifact size/compression, restor
 | SH-002                 | self-hosted trust adapter   | portable manifest seam              | Verify boot attestation, scrub, ownership and stale-state/tamper denial.                                    | self-hosted negatives        | Prompt 5                    | approved self-hosted environment |
 
 Prompt 5 is the only activation prompt. It must retain one protected check, preserve current authority until accepted, perform one atomic merge, then self-verify actual integrated main. Option C is compatible but not implemented by Prompt 2.
+
+## Corrective activation disposition (2026-08-13)
+
+PR #90 integrated the qualified v1.4 implementation candidate and matched its accepted tree, but its landed authority index remained Version 1.3. The intended atomic-one-merge activation is therefore a historical deviation and is not recharacterized as satisfied. The owner authorized one narrow corrective protected merge under current Version 1.3 authority. This correction changes only authority/documentation controls, preserves protected history, retains all evidence requirements, and limits its frozen-candidate acceptance to `V13_CUTOVER` on the corrective non-main ref. See `Project_Sounding_Line_v1.4_Corrective_Authority_Activation_Record.md`.

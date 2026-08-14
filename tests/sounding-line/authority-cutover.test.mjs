@@ -6,17 +6,22 @@ import test from "node:test";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { finalize } from "../../scripts/sounding-line/finalizer.mjs";
-import { buildPlan } from "../../scripts/sounding-line/planner.mjs";
+import { buildPlan, resolvePlanAuthority } from "../../scripts/sounding-line/planner.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const execute = promisify(execFile);
+const correctiveV13Candidate = {
+  authorityMode: "V13_CUTOVER",
+  githubRef: "refs/heads/codex/sounding-line-v14-corrective-activation",
+  qualifiedBaseSha: "1ebc702d57de63d74c9f80d82a11051446e7b12e",
+};
 
 test("planner is deterministic and rejects archived P34 suites", async () => {
-  const first = await buildPlan({ root, gateId: "local-change", sourceSha: "test-sha" });
-  const second = await buildPlan({ root, gateId: "local-change", sourceSha: "test-sha" });
+  const first = await buildPlan({ root, gateId: "local-change", sourceSha: "test-sha", ...correctiveV13Candidate });
+  const second = await buildPlan({ root, gateId: "local-change", sourceSha: "test-sha", ...correctiveV13Candidate });
   assert.equal(first.planDigest, second.planDigest);
   assert.ok(first.nodes.every((node) => !node.id.toLowerCase().includes("p34")));
-  const mainline = await buildPlan({ root, gateId: "mainline", sourceSha: "test-sha" });
+  const mainline = await buildPlan({ root, gateId: "mainline", sourceSha: "test-sha", ...correctiveV13Candidate });
   assert.ok(mainline.nodes.some((node) => node.id === "build.production"));
   assert.ok(mainline.nodes.some((node) => node.id === "browser.access-sentinel"));
   for (const node of mainline.nodes)
@@ -30,7 +35,12 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
       (node) => !["browser.auth", "browser.player-journal", "compatibility.browser"].includes(node.id),
     ),
   );
-  const releaseCandidate = await buildPlan({ root, gateId: "release-candidate", sourceSha: "test-sha" });
+  const releaseCandidate = await buildPlan({
+    root,
+    gateId: "release-candidate",
+    sourceSha: "test-sha",
+    ...correctiveV13Candidate,
+  });
   const requiredBrowserSuites = [
     "browser.access-sentinel",
     "browser.auth",
@@ -60,16 +70,68 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
   assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.navigation").length, 2);
 });
 
-test("a pending v1.4 candidate remains on the broad v1.3 plan only when explicitly dispatched for cutover", async () => {
+test("a corrective v1.4 candidate remains on the broad v1.3 plan only when explicitly dispatched for cutover", async () => {
   const plan = await buildPlan({
     root,
     gateId: "mainline",
     sourceSha: "test-sha",
-    qualifiedBaseSha: "0055d012a121a8950b7fa70d371d5eafc6223d10",
+    qualifiedBaseSha: "1ebc702d57de63d74c9f80d82a11051446e7b12e",
     authorityMode: "V13_CUTOVER",
+    githubRef: "refs/heads/codex/sounding-line-v14-corrective-activation",
   });
   assert.equal(plan.version, 2);
   assert.equal(plan.nodes.length, 38);
+});
+
+test("corrective activation preserves v1.3 candidate authority and enables v1.4 only on protected main", async () => {
+  const authorityIndex = JSON.parse(await readFile(path.join(root, "testing", "sounding-line-authority.json"), "utf8"));
+  const candidateRef = "refs/heads/codex/sounding-line-v14-corrective-activation";
+  assert.equal(
+    resolvePlanAuthority({
+      authorityIndex,
+      gateId: "mainline",
+      authorityMode: "V13_CUTOVER",
+      githubRef: candidateRef,
+      qualifiedBaseSha: "1ebc702d57de63d74c9f80d82a11051446e7b12e",
+    }),
+    "V13_CUTOVER",
+  );
+  assert.throws(
+    () =>
+      resolvePlanAuthority({
+        authorityIndex,
+        gateId: "mainline",
+        authorityMode: "V13_CUTOVER",
+        githubRef: "refs/heads/main",
+        qualifiedBaseSha: "1ebc702d57de63d74c9f80d82a11051446e7b12e",
+      }),
+    /V13_CUTOVER_FORBIDDEN_AFTER_V14_ACTIVATION/u,
+  );
+  assert.throws(
+    () =>
+      resolvePlanAuthority({
+        authorityIndex,
+        gateId: "mainline",
+        authorityMode: "V13_CUTOVER",
+        githubRef: candidateRef,
+        qualifiedBaseSha: "0055d012a121a8950b7fa70d371d5eafc6223d10",
+      }),
+    /V13_CUTOVER_FORBIDDEN_AFTER_V14_ACTIVATION/u,
+  );
+  assert.throws(
+    () =>
+      resolvePlanAuthority({ authorityIndex, gateId: "mainline", authorityMode: "CURRENT", githubRef: candidateRef }),
+    /V14_CURRENT_AUTHORITY_REQUIRES_PROTECTED_MAIN/u,
+  );
+  assert.equal(
+    resolvePlanAuthority({
+      authorityIndex,
+      gateId: "mainline",
+      authorityMode: "CURRENT",
+      githubRef: "refs/heads/main",
+    }),
+    "V14_CURRENT",
+  );
 });
 
 test("only the finalizer produces an accepted decision from source-bound clean receipts", () => {
