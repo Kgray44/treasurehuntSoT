@@ -15,7 +15,9 @@
     "test:watch": "vitest",
     "validate": "npm run typecheck && npm run test",
     "refresh": "tsx lib/cli.ts refresh",
-    "prune-cache": "tsx src/cli.ts prune-cache",
+    "history:inspect": "tsx lib/maintenance.ts inspect",
+    "history:prune": "tsx lib/maintenance.ts prune --apply",
+    "history:backup": "tsx lib/maintenance.ts backup",
     "report-heartbeat": "tsx lib/reporter.ts"
   },
   "dependencies": {

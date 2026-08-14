@@ -31,6 +31,7 @@ export interface PhaseRecord {
   scope: string;
   state: PhaseState;
   milestones: MilestoneRecord[];
+  plannedAt?: string;
   startedAt?: string;
   acceptedAt?: string;
   mergedAt?: string;
@@ -43,6 +44,8 @@ export interface PhaseRecord {
   completionReceipt?: string;
   limitations?: string[];
   externalPending?: string[];
+  /** Prior governed names retained when a source explicitly renames this phase. */
+  historicalNames?: string[];
 }
 
 export interface ProjectRecord {
@@ -59,6 +62,8 @@ export interface ProjectRecord {
   completionReceipt?: string;
   finalMainSha?: string;
   finalDecision?: string;
+  /** Prior governed names retained when a source explicitly renames this project. */
+  historicalNames?: string[];
 }
 
 export interface ProgressView {

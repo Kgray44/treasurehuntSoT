@@ -13,7 +13,7 @@ import {
 } from "./adapters.mjs";
 import { finalize } from "./finalizer.mjs";
 import { buildPlan } from "./planner.mjs";
-import { deriveWorkerPreparation } from "./worker-preparation.mjs";
+import { deriveV14WorkerPreparation, deriveWorkerPreparation } from "./worker-preparation.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const configuredBaselineDatabase = process.env.SOUNDING_LINE_BASELINE_DATABASE;
@@ -126,7 +126,14 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
   const runtimeRoot = path.join(root, "artifacts", "sounding-line", "runs", process.env.GITHUB_RUN_ID ?? "local");
   for (const node of plan.nodes.filter((node) => !suiteId || node.id === suiteId)) {
     const suite = suiteMap.get(node.id);
-    const preparation = deriveWorkerPreparation(node);
+    const preparation =
+      plan.authorityVersion === "1.4"
+        ? deriveV14WorkerPreparation({
+            plan,
+            node,
+            runId: process.env.GITHUB_RUN_ID ?? "local",
+          })
+        : deriveWorkerPreparation(node);
     if (preparation.runtimeConformance.result !== "PASSED")
       throw new Error(
         `RUNTIME_CONFORMANCE_FAILED:${preparation.runtimeConformance.violations.map((entry) => entry.code).join(",")}`,

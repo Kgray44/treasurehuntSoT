@@ -1,0 +1,26 @@
+{
+  "version": "1.4",
+  "authorityBoundary": "SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE",
+  "compatibility": [
+    {
+      "v13AuthorityIdentity": "SOUNDING_LINE_V13",
+      "v14AuthorityIdentity": "SOUNDING_LINE_V14_SHADOW",
+      "suiteIdentity": "governed-suite-id-and-test-definition-digest",
+      "testDefinitionCompatibility": "exact immutable digest required",
+      "policyCompatibility": "exact immutable policy digest required",
+      "knownSchemaDifferences": "v1.4 adds semantic/tree/producer identity and never infers them",
+      "requiredReconstructedInputs": [
+        "candidate/base/tree identities",
+        "suite definition digest",
+        "policy and inventory digests",
+        "semantic fingerprint inputs",
+        "trusted producer identity"
+      ],
+      "prohibitedAssumptions": [
+        "historically green means current",
+        "missing tree identity is equivalent",
+        "v1.3 receipt silently promotes to v1.4"
+      ]
+    }
+  ]
+}
