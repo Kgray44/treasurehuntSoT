@@ -21,6 +21,8 @@ jobs:
     name: Sounding Line / Verification maintenance qualification
     runs-on: windows-latest
     timeout-minutes: 25
+    env:
+      MAINTENANCE_TEMP: ${{ runner.temp }}/sounding-line-maintenance-${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with: { ref: "${{ inputs.candidate_sha }}", fetch-depth: 0 }
@@ -36,15 +38,19 @@ jobs:
           $protected = (git ls-remote origin refs/heads/main).Split("`t")[0]
           if ($protected -ne $env:BASE_SHA) { throw 'MAINTENANCE_TRUSTED_MAIN_STALE' }
           if ((git rev-parse HEAD).Trim() -ne $env:CANDIDATE_SHA) { throw 'MAINTENANCE_CANDIDATE_SHA_MISMATCH' }
-          git show "$env:BASE_SHA`:testing/verification-maintenance-policy.json" > trusted-maintenance-policy.json
-          git show "$env:BASE_SHA`:scripts/sounding-line/verification-maintenance.mjs" > trusted-verification-maintenance.mjs
+          New-Item -ItemType Directory -Force -Path $env:MAINTENANCE_TEMP | Out-Null
+          $policyFile = Join-Path $env:MAINTENANCE_TEMP 'trusted-maintenance-policy.json'
+          $verifierFile = Join-Path $env:MAINTENANCE_TEMP 'trusted-verification-maintenance.mjs'
+          $pathsFile = Join-Path $env:MAINTENANCE_TEMP 'maintenance-changed-paths.json'
+          $planFile = Join-Path $env:MAINTENANCE_TEMP 'maintenance-plan.json'
+          $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
+          [System.IO.File]::WriteAllText($policyFile, ((git show "$env:BASE_SHA`:testing/verification-maintenance-policy.json") -join "`n"), $utf8NoBom)
+          [System.IO.File]::WriteAllText($verifierFile, ((git show "$env:BASE_SHA`:scripts/sounding-line/verification-maintenance.mjs") -join "`n"), $utf8NoBom)
           $paths = @(git diff --name-only --no-renames --no-ext-diff "$env:BASE_SHA" "$env:CANDIDATE_SHA" | Sort-Object)
-          # This temporary proof input is in the checkout while static
-          # qualification runs, so emit repository-format JSON rather than an
-          # intentionally compact one-line artifact.
-          $paths | ConvertTo-Json | Set-Content maintenance-changed-paths.json
+          $pathsJson = ConvertTo-Json -InputObject $paths -Compress
+          [System.IO.File]::WriteAllText($pathsFile, $pathsJson, $utf8NoBom)
           $tree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
-          node trusted-verification-maintenance.mjs plan --policy trusted-maintenance-policy.json --paths maintenance-changed-paths.json --trusted-main-sha $env:BASE_SHA --candidate-sha $env:CANDIDATE_SHA --candidate-tree $tree --base-sha $env:BASE_SHA --out maintenance-plan.json
+          node $verifierFile plan --policy $policyFile --paths $pathsFile --trusted-main-sha $env:BASE_SHA --candidate-sha $env:CANDIDATE_SHA --candidate-tree $tree --base-sha $env:BASE_SHA --out $planFile
       - run: npm ci
       - run: npm run test:policy
       - run: npm run db:generate
@@ -77,14 +83,27 @@ jobs:
         env:
           CANDIDATE_SHA: ${{ inputs.candidate_sha }}
         run: |
+          $planFile = Join-Path $env:MAINTENANCE_TEMP 'maintenance-plan.json'
+          $verifierFile = Join-Path $env:MAINTENANCE_TEMP 'trusted-verification-maintenance.mjs'
+          $evidenceFile = Join-Path $env:MAINTENANCE_TEMP 'maintenance-evidence.json'
+          $finalizationFile = Join-Path $env:MAINTENANCE_TEMP 'maintenance-finalization.json'
           $ids = @('FOCUSED_REGRESSION','AFFECTED_SOUNDING_LINE_TESTS','POLICY','GENERATED_ARTIFACTS','STATIC','PRIVACY','DOCUMENTATION','IDEMPOTENT_REGENERATION','CLEANUP')
-          @($ids | ForEach-Object { @{ id = $_; result = 'PASSED'; candidateSha = $env:CANDIDATE_SHA } }) | ConvertTo-Json | Set-Content maintenance-evidence.json
-          node trusted-verification-maintenance.mjs finalize --plan maintenance-plan.json --evidence maintenance-evidence.json --candidate-sha $env:CANDIDATE_SHA --trusted-main-sha ${{ inputs.base_sha }} --out maintenance-finalization.json
+          $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
+          $evidenceJson = ConvertTo-Json -InputObject @($ids | ForEach-Object { @{ id = $_; result = 'PASSED'; candidateSha = $env:CANDIDATE_SHA } }) -Compress
+          [System.IO.File]::WriteAllText($evidenceFile, $evidenceJson, $utf8NoBom)
+          node $verifierFile finalize --plan $planFile --evidence $evidenceFile --candidate-sha $env:CANDIDATE_SHA --trusted-main-sha ${{ inputs.base_sha }} --out $finalizationFile
       - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
           name: sounding-line-maintenance-qualification
           path: |
-            maintenance-plan.json
-            maintenance-evidence.json
-            maintenance-finalization.json
+            ${{ env.MAINTENANCE_TEMP }}/maintenance-plan.json
+            ${{ env.MAINTENANCE_TEMP }}/maintenance-evidence.json
+            ${{ env.MAINTENANCE_TEMP }}/maintenance-finalization.json
           retention-days: 14
+      - name: Clean maintenance temporary artifacts
+        if: always()
+        shell: pwsh
+        run: |
+          if (Test-Path -LiteralPath $env:MAINTENANCE_TEMP) {
+            Remove-Item -LiteralPath $env:MAINTENANCE_TEMP -Recurse -Force
+          }

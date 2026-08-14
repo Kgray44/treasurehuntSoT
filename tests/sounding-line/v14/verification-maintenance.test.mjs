@@ -68,6 +68,19 @@ test("product, mixed, unknown, and authority-changing candidates fail closed", (
   );
 });
 
+test("the verification-maintenance workflow remains an authority-changing candidate path", async () => {
+  const trustedPolicy = JSON.parse(
+    await readFile(new URL("../../../testing/verification-maintenance-policy.json", import.meta.url), "utf8"),
+  );
+  assert.equal(
+    classifyVerificationMaintenance({
+      trustedPolicy,
+      changedPaths: [".github/workflows/sounding-line-verification-maintenance.yml"],
+    }).classification,
+    "MAINTENANCE_AUTHORITY_CHANGE_REJECTED",
+  );
+});
+
 test("trusted main, frozen candidate, and landed tree are all bound", () => {
   const plan = planFor();
   assert.match(
@@ -140,11 +153,19 @@ test("known v1.4 repair classes remain maintenance while unknown ownership rejec
   );
 });
 
-test("maintenance qualification writes a static-safe temporary changed-path proof", async () => {
+test("maintenance qualification keeps the static-safe changed-path proof outside the checkout", async () => {
   const workflow = await readFile(
     new URL("../../../.github/workflows/sounding-line-verification-maintenance.yml", import.meta.url),
     "utf8",
   );
-  assert.match(workflow, /\$paths \| ConvertTo-Json \| Set-Content maintenance-changed-paths\.json/u);
-  assert.doesNotMatch(workflow, /ConvertTo-Json -Compress \| Set-Content -NoNewline maintenance-changed-paths\.json/u);
+  assert.match(
+    workflow,
+    /MAINTENANCE_TEMP: \$\{\{ runner\.temp \}\}\/sounding-line-maintenance-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/u,
+  );
+  assert.match(workflow, /\$pathsFile = Join-Path \$env:MAINTENANCE_TEMP 'maintenance-changed-paths\.json'/u);
+  assert.match(workflow, /\$pathsJson = ConvertTo-Json -InputObject \$paths -Compress/u);
+  assert.match(workflow, /\[System\.IO\.File\]::WriteAllText\(\$pathsFile, \$pathsJson, \$utf8NoBom\)/u);
+  assert.match(workflow, /--paths \$pathsFile/u);
+  assert.doesNotMatch(workflow, /Set-Content maintenance-changed-paths\.json/u);
+  assert.match(workflow, /Remove-Item -LiteralPath \$env:MAINTENANCE_TEMP -Recurse -Force/u);
 });
