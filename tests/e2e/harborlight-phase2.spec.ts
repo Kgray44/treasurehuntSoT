@@ -26,7 +26,25 @@ test("Harborlight Studio access and Exchange package installation are isolated a
   const gm = await db.gameMasterUser.create({
     data: { username, passwordHash: await bcrypt.hash(password, 10), role: "CAPTAIN_CREATOR" },
   });
-  const account = await db.userAccount.create({ data: { status: "ACTIVE", legacyGameMasterId: gm.id } });
+  const activatedAt = new Date();
+  const account = await db.userAccount.create({
+    data: {
+      status: "ACTIVE",
+      legacyGameMasterId: gm.id,
+      claimedAt: activatedAt,
+      ordinaryWorkspaceEntryAt: activatedAt,
+    },
+  });
+  await db.accountEmail.create({
+    data: {
+      accountId: account.id,
+      normalizedEmail: `${username}@example.test`,
+      displayEmail: `${username}@example.test`,
+      verificationState: "VERIFIED",
+      verifiedAt: activatedAt,
+      isPrimary: true,
+    },
+  });
   await db.playerProfile.create({
     data: {
       accountId: account.id,
@@ -186,7 +204,25 @@ async function createSyntheticCreator(browser: import("@playwright/test").Browse
   const gm = await db.gameMasterUser.create({
     data: { username: creatorUsername, passwordHash: await bcrypt.hash(creatorPassword, 10), role: "CAPTAIN_CREATOR" },
   });
-  const account = await db.userAccount.create({ data: { status: "ACTIVE", legacyGameMasterId: gm.id } });
+  const activatedAt = new Date();
+  const account = await db.userAccount.create({
+    data: {
+      status: "ACTIVE",
+      legacyGameMasterId: gm.id,
+      claimedAt: activatedAt,
+      ordinaryWorkspaceEntryAt: activatedAt,
+    },
+  });
+  await db.accountEmail.create({
+    data: {
+      accountId: account.id,
+      normalizedEmail: `${creatorUsername}@example.test`,
+      displayEmail: `${creatorUsername}@example.test`,
+      verificationState: "VERIFIED",
+      verifiedAt: activatedAt,
+      isPrimary: true,
+    },
+  });
   await db.playerProfile.create({
     data: { accountId: account.id, displayName: `Synthetic ${label} Creator`, status: "ACTIVE", claimedAt: new Date() },
   });

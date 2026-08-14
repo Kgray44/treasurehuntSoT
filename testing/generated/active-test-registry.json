@@ -135972,9 +135972,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-02e7db34b1f45fe6edfb",
+      "id": "sl-test-9ca2e71271df3fb4829a",
       "title": "Wayfarer Phase 4 projects only receipt-authorized artifacts and protects private cabinet data",
-      "line": 128,
+      "line": 150,
       "file": "tests/e2e/wayfarer-phase4.spec.ts",
       "project": "chromium",
       "suiteId": "browser.artifacts",
@@ -154316,9 +154316,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-100027a5c53064e41085",
+      "id": "sl-test-b635ae7516e567a2ddb5",
       "title": "Wayfarer Phase 4 projects only receipt-authorized artifacts and protects private cabinet data",
-      "line": 128,
+      "line": 150,
       "file": "tests/e2e/wayfarer-phase4.spec.ts",
       "project": "wayfarer-phase4",
       "suiteId": "browser.artifacts",
@@ -154452,9 +154452,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-fd809d279ddcbba964bb",
+      "id": "sl-test-f681554e4ba606257f9f",
       "title": "H2: hash-attested synthetic 2D artifact publication persists its immutable package",
-      "line": 247,
+      "line": 283,
       "file": "tests/e2e/harborlight-phase2.spec.ts",
       "project": "harborlight-phase2",
       "suiteId": "browser.artifacts",
@@ -154493,9 +154493,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-ee8e7b239bf0917fd4aa",
+      "id": "sl-test-7422b713654ecb80facb",
       "title": "H3: hash-attested GLB publication accepts only the exact embedded fixture and preserves fallback metadata",
-      "line": 473,
+      "line": 509,
       "file": "tests/e2e/harborlight-phase2.spec.ts",
       "project": "harborlight-phase2",
       "suiteId": "browser.community",
@@ -179028,9 +179028,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-f5d1b3c06d31c9f8f16a",
+      "id": "sl-test-7cf655b82d3e71a172d6",
       "title": "Wayfarer Phase 4 projects only receipt-authorized artifacts and protects private cabinet data",
-      "line": 128,
+      "line": 150,
       "file": "tests/e2e/wayfarer-phase4.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.artifacts",
