@@ -114,11 +114,37 @@ jobs:
             record-only-acceptance-envelope.json
           retention-days: 14
 
+  maintenance-preflight:
+    name: Sounding Line / Verification-maintenance classification
+    runs-on: windows-latest
+    timeout-minutes: 10
+    outputs:
+      maintenance: ${{ steps.classification.outputs.maintenance }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: "${{ github.sha }}", fetch-depth: 0 }
+      - id: classification
+        shell: pwsh
+        env:
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          try {
+            git show "$env:BASE_SHA`:testing/verification-maintenance-policy.json" > trusted-maintenance-policy.json
+            git show "$env:BASE_SHA`:scripts/sounding-line/verification-maintenance.mjs" > trusted-verification-maintenance.mjs
+            $paths = @(git diff --name-only --no-renames --no-ext-diff "$env:BASE_SHA" "$env:CANDIDATE_SHA" | Sort-Object)
+            $paths | ConvertTo-Json -Compress | Set-Content -NoNewline maintenance-changed-paths.json
+            $tree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
+            node trusted-verification-maintenance.mjs plan --policy trusted-maintenance-policy.json --paths maintenance-changed-paths.json --trusted-main-sha $env:BASE_SHA --candidate-sha $env:CANDIDATE_SHA --candidate-tree $tree --base-sha $env:BASE_SHA --out maintenance-preflight.json
+            if ($LASTEXITCODE -eq 0) { 'maintenance=true' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8; exit 0 }
+          } catch { }
+          'maintenance=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
   bind:
     # The name is intentionally the unchanged protected branch context.
     name: Sounding Line / Mainline Decision
-    needs: [record-only-preflight, record-only-evidence]
-    if: ${{ always() && needs.record-only-preflight.result == 'success' }}
+    needs: [record-only-preflight, record-only-evidence, maintenance-preflight]
+    if: ${{ always() && needs.record-only-preflight.result == 'success' && needs.maintenance-preflight.result == 'success' && needs.maintenance-preflight.outputs.maintenance != 'true' }}
     runs-on: windows-latest
     timeout-minutes: 10
     steps:
@@ -208,3 +234,51 @@ jobs:
           )
           if ($env:LEGACY -ne 'true') { $args += @('--envelope', 'accepted-envelope/sounding-line-acceptance-envelope.json') }
           node @args
+
+  bind-maintenance:
+    name: Sounding Line / Mainline Decision
+    needs: [record-only-preflight, maintenance-preflight]
+    if: ${{ always() && needs.record-only-preflight.result == 'success' && needs.record-only-preflight.outputs.recordOnly != 'true' && needs.maintenance-preflight.outputs.maintenance == 'true' }}
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: "${{ github.sha }}", fetch-depth: 0 }
+      - id: authority
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          $runs = (Invoke-RestMethod -Headers @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' } -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&head_sha=$env:CANDIDATE_SHA&per_page=100").workflow_runs | Where-Object { $_.name -eq 'Sounding Line verification maintenance' -and $_.status -eq 'completed' -and $_.conclusion -eq 'success' }
+          if (@($runs).Count -ne 1) { throw 'SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE' }
+          "run-id=$(@($runs)[0].id)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sounding-line-maintenance-qualification
+          path: accepted-maintenance
+          run-id: ${{ steps.authority.outputs.run-id }}
+          github-token: ${{ github.token }}
+      - name: Bind trusted maintenance evidence to merge identity
+        shell: pwsh
+        env:
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          MERGE_SHA: ${{ github.sha }}
+        run: |
+          git show "$env:BASE_SHA`:scripts/sounding-line/maintenance-protected-binding.mjs" > trusted-maintenance-binding.mjs
+          $parents = @((git show -s --format=%P $env:MERGE_SHA).Split(' ', [System.StringSplitOptions]::RemoveEmptyEntries)) | ConvertTo-Json -Compress
+          $tree = (git show -s --format=%T $env:MERGE_SHA).Trim()
+          $script = @"
+          import { readFile } from 'node:fs/promises';
+          import { qualifyMaintenanceProtectedMerge } from './trusted-maintenance-binding.mjs';
+          const plan = JSON.parse(await readFile('accepted-maintenance/maintenance-plan.json', 'utf8'));
+          const finalization = JSON.parse(await readFile('accepted-maintenance/maintenance-finalization.json', 'utf8'));
+          const result = qualifyMaintenanceProtectedMerge({ plan, finalization, candidateSha: process.env.CANDIDATE_SHA, currentBaseSha: process.env.BASE_SHA, mergeSha: process.env.MERGE_SHA, mergeTree: process.env.MERGE_TREE, mergeParents: JSON.parse(process.env.MERGE_PARENTS) });
+          console.log(JSON.stringify(result, null, 2)); process.exitCode = result.decision === 'BINDING_PASS' ? 0 : 1;
+          "@
+          $script | Set-Content maintenance-bind.mjs
+          $env:MERGE_TREE = $tree
+          $env:MERGE_PARENTS = $parents
+          node maintenance-bind.mjs

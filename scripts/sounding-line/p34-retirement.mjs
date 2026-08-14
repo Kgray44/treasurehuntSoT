@@ -1,6 +1,7 @@
 /* Fail-closed validation for the retired P34 historical matrix. */
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { resolveHistoricalTestIdentity, validateRegistryIdentity } from "./test-identity.mjs";
 
 const root = process.cwd();
 const retirement = JSON.parse(await readFile(path.join(root, "testing", "retired-suites.json"), "utf8"));
@@ -40,6 +41,11 @@ const suites = new Set(
   JSON.parse(await readFile(path.join(root, "testing", "suites.json"), "utf8")).suites.map((suite) => suite.id),
 );
 const testIds = new Set(registry.cases.map((entry) => entry.id));
+try {
+  validateRegistryIdentity(registry.cases);
+} catch (error) {
+  errors.push(String(error.message ?? error));
+}
 const historicalIds = new Set();
 for (const [index, row] of rows.entries()) {
   if (!allowed.has(row.classification))
@@ -51,14 +57,26 @@ for (const [index, row] of rows.entries()) {
   historicalIds.add(row.historicalCaseId);
   if (
     ["CURRENT_CONTRACT_MIGRATED", "REPLACED_CANONICAL"].includes(row.classification) &&
-    (!row.canonicalReplacementSuite || !row.canonicalReplacementTestIds?.length)
+    (!row.canonicalReplacementSuite ||
+      !row.canonicalReplacementTestIds?.length ||
+      !row.canonicalReplacementSemanticIds?.length)
   )
     errors.push(`P34 ledger row ${index + 1} lacks canonical replacement evidence`);
   if (["CURRENT_CONTRACT_MIGRATED", "REPLACED_CANONICAL"].includes(row.classification)) {
     if (!suites.has(row.canonicalReplacementSuite))
       errors.push(`P34 ledger row ${index + 1} references absent replacement suite`);
-    for (const testId of row.canonicalReplacementTestIds ?? [])
+    if (row.canonicalReplacementTestIds.length !== row.canonicalReplacementSemanticIds.length)
+      errors.push(`P34 ledger row ${index + 1} has mismatched generated and semantic replacements`);
+    for (const [replacementIndex, testId] of (row.canonicalReplacementTestIds ?? []).entries()) {
       if (!testIds.has(testId)) errors.push(`P34 ledger row ${index + 1} references absent replacement test ${testId}`);
+      try {
+        const resolved = resolveHistoricalTestIdentity(testId, registry.cases);
+        if (resolved.semanticId !== row.canonicalReplacementSemanticIds?.[replacementIndex])
+          errors.push(`P34 ledger row ${index + 1} semantic replacement does not resolve ${testId}`);
+      } catch (error) {
+        errors.push(String(error.message ?? error));
+      }
+    }
     if (!row.coverageExplanation || !row.consolidationJustification)
       errors.push(`P34 ledger row ${index + 1} lacks semantic coverage evidence`);
   }

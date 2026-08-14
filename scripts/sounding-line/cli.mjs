@@ -36,6 +36,7 @@ const registryFiles = [
   "evidence-fingerprint-policy.json",
   "prepared-artifacts.json",
   "mainline-train-policy.json",
+  "verification-maintenance-policy.json",
 ];
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
@@ -103,6 +104,7 @@ function validatePolicy(policy) {
     activeTests,
     manifest,
     "sounding-line-authority": authorityIndex,
+    "verification-maintenance-policy": maintenancePolicy,
   } = policy;
   assertKeys(
     manifest,
@@ -124,6 +126,7 @@ function validatePolicy(policy) {
       "effectiveAmendments",
       "requiredProtectedAuthorityCheck",
       "runtimeConformance",
+      "verificationMaintenance",
       "governingPolicies",
       "developmentValidation",
       "protectedMergeBinding",
@@ -193,6 +196,30 @@ function validatePolicy(policy) {
     authorityIndex.runtimeConformance?.failureMode !== "FAIL_CLOSED"
   )
     errors.push("sounding-line-authority: runtime conformance must fail closed");
+  const maintenance = authorityIndex.verificationMaintenance;
+  if (
+    maintenance?.version !== "1.4.1" ||
+    maintenance?.policy !== "testing/verification-maintenance-policy.json" ||
+    maintenance?.trustedMainPolicy !== "REQUIRED" ||
+    maintenance?.disposition !== "MAINTENANCE_GO" ||
+    maintenance?.releaseAuthority !== "NONE" ||
+    maintenance?.ordinaryProductAuthority !== "RELEASE_GO_ONLY" ||
+    maintenance?.antiSelfAuthorization !== "FAIL_CLOSED" ||
+    maintenance?.protectedBinding !== "EXACT_CANDIDATE_BASE_AND_LANDED_TREE"
+  )
+    errors.push("sounding-line-authority: verification maintenance policy mismatch");
+  if (
+    maintenancePolicy?.authority !== "SOUNDING_LINE_VERIFICATION_MAINTENANCE" ||
+    maintenancePolicy?.trustedMainOnly !== true ||
+    maintenancePolicy?.protectedContext !== authorityIndex.requiredProtectedAuthorityCheck ||
+    !Array.isArray(maintenancePolicy?.eligiblePathGlobs) ||
+    !maintenancePolicy.eligiblePathGlobs.length ||
+    !Array.isArray(maintenancePolicy?.authorityChangePathGlobs) ||
+    !maintenancePolicy.authorityChangePathGlobs.length ||
+    !Array.isArray(maintenancePolicy?.requiredEvidence) ||
+    !maintenancePolicy.requiredEvidence.length
+  )
+    errors.push("verification-maintenance-policy: fail-closed contract mismatch");
   if (authorityIndex.governingPolicies?.proofMinimization !== "MINIMUM_SUFFICIENT_EVIDENCE")
     errors.push("sounding-line-authority: proof minimization mismatch");
   if (authorityIndex.governingPolicies?.semanticInvalidation !== "EVIDENCE_PRESERVATION_REQUIRED")
@@ -266,14 +293,30 @@ function validatePolicy(policy) {
         errors.push(`gate ${gate.id}: active P34 reference`);
   }
   const activeIds = new Set();
+  const semanticIds = new Set();
+  const historicalAliases = new Set();
   for (const definition of activeTests.cases ?? []) {
     for (const field of testDefinitionSchema.required ?? [])
       if (definition[field] === undefined || definition[field] === null || definition[field] === "")
         errors.push(`test definition ${definition.id ?? "missing"}: missing ${field}`);
     if (!/^sl-test-[a-f0-9]{20}$/u.test(definition.id ?? ""))
-      errors.push(`test definition: invalid stable id ${definition.id ?? "missing"}`);
-    if (activeIds.has(definition.id)) errors.push(`test definition: duplicate stable id ${definition.id}`);
+      errors.push(`test definition: invalid generated id ${definition.id ?? "missing"}`);
+    if (activeIds.has(definition.id)) errors.push(`test definition: duplicate generated id ${definition.id}`);
     activeIds.add(definition.id);
+    if (!/^sl-semantic-[a-f0-9]{20}$/u.test(definition.semanticId ?? ""))
+      errors.push(`test definition: invalid semantic id ${definition.semanticId ?? "missing"}`);
+    if (semanticIds.has(definition.semanticId))
+      errors.push(`test definition: duplicate semantic id ${definition.semanticId}`);
+    semanticIds.add(definition.semanticId);
+    for (const alias of definition.historicalAliases ?? []) {
+      if (!/^sl-test-[a-f0-9]{20}$/u.test(alias))
+        errors.push(`test definition ${definition.id}: invalid historical alias ${alias}`);
+      if (alias === definition.id || activeIds.has(alias))
+        errors.push(`test definition ${definition.id}: historical alias collides with active id ${alias}`);
+      if (historicalAliases.has(alias))
+        errors.push(`test definition ${definition.id}: ambiguous historical alias ${alias}`);
+      historicalAliases.add(alias);
+    }
     if (!suiteIds.has(definition.suiteId))
       errors.push(`test definition ${definition.id}: unknown suite ${definition.suiteId}`);
     if (!ownerIds.has(definition.owner))
@@ -328,6 +371,8 @@ function validatePolicy(policy) {
       if (typeof definition[field] !== "string" || !definition[field])
         errors.push(`test definition ${definition.id}: missing ${field}`);
   }
+  for (const alias of historicalAliases)
+    if (activeIds.has(alias)) errors.push(`test definition: historical alias collides with active id ${alias}`);
   for (const owner of ownership.owners) {
     assertKeys(owner, ["id", "project", "sourcePaths", "testPaths", "contractIds"], `owner ${owner.id}`, errors);
     for (const value of [...owner.sourcePaths, ...owner.testPaths])

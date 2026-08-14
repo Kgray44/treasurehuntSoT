@@ -1,0 +1,44 @@
+{
+  "version": "1.0.0",
+  "authority": "SOUNDING_LINE_VERIFICATION_MAINTENANCE",
+  "trustedMainOnly": true,
+  "protectedContext": "Sounding Line / Mainline Decision",
+  "eligiblePathGlobs": [
+    "tests/sounding-line/**",
+    "tests/e2e/**",
+    "testing/generated/**",
+    "testing/retired-suites.json",
+    "testing/test-definition-schema.json",
+    "Development_Docs/Programs/Sounding_Line/**",
+    "scripts/sounding-line/test-identity.mjs",
+    "scripts/sounding-line/test-registry.mjs",
+    "scripts/sounding-line/p34-retirement.mjs",
+    "scripts/sounding-line/reconcile-p34-stable-identities.mjs",
+    "scripts/sounding-line/worker-preparation.mjs",
+    ".github/workflows/sounding-line-governed-worker.yml"
+  ],
+  "authorityChangePathGlobs": [
+    "testing/verification-maintenance-policy.json",
+    "testing/sounding-line-authority.json",
+    "scripts/sounding-line/verification-maintenance.mjs",
+    "scripts/sounding-line/maintenance-protected-binding.mjs",
+    "scripts/sounding-line/planner.mjs",
+    "scripts/sounding-line/finalizer.mjs",
+    "scripts/sounding-line/finalize-ci.mjs",
+    "scripts/sounding-line/protected-merge-binding*.mjs",
+    ".github/workflows/sounding-line-authoritative.yml",
+    ".github/workflows/sounding-line-protected-merge-binding.yml",
+    ".github/workflows/sounding-line-verification-maintenance.yml"
+  ],
+  "requiredEvidence": [
+    "FOCUSED_REGRESSION",
+    "AFFECTED_SOUNDING_LINE_TESTS",
+    "POLICY",
+    "GENERATED_ARTIFACTS",
+    "STATIC",
+    "PRIVACY",
+    "DOCUMENTATION",
+    "IDEMPOTENT_REGENERATION",
+    "CLEANUP"
+  ]
+}

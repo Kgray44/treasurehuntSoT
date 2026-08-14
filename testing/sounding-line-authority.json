@@ -27,6 +27,16 @@
     "suiteId": "unit.sounding-line",
     "failureMode": "FAIL_CLOSED"
   },
+  "verificationMaintenance": {
+    "version": "1.4.1",
+    "policy": "testing/verification-maintenance-policy.json",
+    "trustedMainPolicy": "REQUIRED",
+    "disposition": "MAINTENANCE_GO",
+    "releaseAuthority": "NONE",
+    "ordinaryProductAuthority": "RELEASE_GO_ONLY",
+    "antiSelfAuthorization": "FAIL_CLOSED",
+    "protectedBinding": "EXACT_CANDIDATE_BASE_AND_LANDED_TREE"
+  },
   "hostedExecutionCapacity": {
     "maximumWave": 5,
     "minimumHeadroom": 2,

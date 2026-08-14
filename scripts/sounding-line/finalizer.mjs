@@ -4,6 +4,21 @@ import { createHash } from "node:crypto";
 const digest = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
 
 export function finalize({ plan, receipts, runtimeConformance = [] }) {
+  if (plan?.authority && plan.authority !== "SOUNDING_LINE")
+    return {
+      authority: "SOUNDING_LINE_FINALIZER",
+      decision: "EVIDENCE_INVALID",
+      gate: plan?.gate ?? null,
+      planDigest: plan?.planDigest ?? null,
+      receipts: receipts ?? [],
+      missingMandatorySuites: [],
+      duplicateSuiteReceipts: [],
+      unknownSuiteReceipts: [],
+      invalidEvidence: ["ORDINARY_RELEASE_CANNOT_CONSUME_MAINTENANCE_EVIDENCE"],
+      missingRuntimeConformance: [],
+      invalidRuntimeConformance: [],
+      evidenceDigest: digest(receipts ?? []),
+    };
   const mandatory = new Set(plan.nodes.map((node) => node.id));
   const duplicates = [
     ...new Set(receipts.map((receipt) => receipt.suiteId).filter((id, index, ids) => ids.indexOf(id) !== index)),

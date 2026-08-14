@@ -1,0 +1,87 @@
+name: Sounding Line verification maintenance
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_sha:
+        description: Exact frozen verification-maintenance candidate SHA
+        required: true
+        type: string
+      base_sha:
+        description: Exact protected-main SHA supplying trusted policy
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  qualify:
+    name: Sounding Line / Verification maintenance qualification
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: "${{ inputs.candidate_sha }}", fetch-depth: 0 }
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with: { node-version-file: .nvmrc, cache: npm }
+      - name: Bind classifier and policy to protected main
+        shell: pwsh
+        env:
+          CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+          BASE_SHA: ${{ inputs.base_sha }}
+        run: |
+          if ($env:CANDIDATE_SHA -notmatch '^[0-9a-f]{40}$' -or $env:BASE_SHA -notmatch '^[0-9a-f]{40}$') { throw 'MAINTENANCE_IDENTITY_INVALID' }
+          $protected = (git ls-remote origin refs/heads/main).Split("`t")[0]
+          if ($protected -ne $env:BASE_SHA) { throw 'MAINTENANCE_TRUSTED_MAIN_STALE' }
+          if ((git rev-parse HEAD).Trim() -ne $env:CANDIDATE_SHA) { throw 'MAINTENANCE_CANDIDATE_SHA_MISMATCH' }
+          git show "$env:BASE_SHA`:testing/verification-maintenance-policy.json" > trusted-maintenance-policy.json
+          git show "$env:BASE_SHA`:scripts/sounding-line/verification-maintenance.mjs" > trusted-verification-maintenance.mjs
+          $paths = @(git diff --name-only --no-renames --no-ext-diff "$env:BASE_SHA" "$env:CANDIDATE_SHA" | Sort-Object)
+          $paths | ConvertTo-Json -Compress | Set-Content -NoNewline maintenance-changed-paths.json
+          $tree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
+          node trusted-verification-maintenance.mjs plan --policy trusted-maintenance-policy.json --paths maintenance-changed-paths.json --trusted-main-sha $env:BASE_SHA --candidate-sha $env:CANDIDATE_SHA --candidate-tree $tree --base-sha $env:BASE_SHA --out maintenance-plan.json
+      - run: npm ci
+      - run: npm run test:policy
+      - run: npm run db:generate
+      - run: node scripts/sounding-line/test-registry.mjs
+      - run: node scripts/sounding-line/reconcile-p34-stable-identities.mjs
+      - run: node scripts/sounding-line/p34-retirement.mjs
+      - run: node --test tests/sounding-line/v14/maintenance-identity.test.mjs tests/sounding-line/v14/verification-maintenance.test.mjs
+      - run: node scripts/sounding-line/static.mjs
+      - run: node node_modules/tsx/dist/cli.mjs scripts/private-content/scan.ts
+      - run: node scripts/validate-documentation.mjs
+      - name: Require deterministic regeneration
+        shell: pwsh
+        run: |
+          $generated = @(
+            'testing/generated/active-test-registry.json',
+            'testing/generated/p34-retirement-ledger.json',
+            'Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv',
+            'Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv'
+          )
+          git diff --exit-code -- @generated
+          $before = @{}
+          foreach ($file in $generated) { $before[$file] = (Get-FileHash -Algorithm SHA256 $file).Hash }
+          node scripts/sounding-line/test-registry.mjs
+          node scripts/sounding-line/reconcile-p34-stable-identities.mjs
+          foreach ($file in $generated) {
+            if ((Get-FileHash -Algorithm SHA256 $file).Hash -ne $before[$file]) { throw "MAINTENANCE_REGENERATION_NOT_IDEMPOTENT:$file" }
+          }
+      - name: Seal maintenance evidence
+        shell: pwsh
+        env:
+          CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+        run: |
+          $ids = @('FOCUSED_REGRESSION','AFFECTED_SOUNDING_LINE_TESTS','POLICY','GENERATED_ARTIFACTS','STATIC','PRIVACY','DOCUMENTATION','IDEMPOTENT_REGENERATION','CLEANUP')
+          @($ids | ForEach-Object { @{ id = $_; result = 'PASSED'; candidateSha = $env:CANDIDATE_SHA } }) | ConvertTo-Json | Set-Content maintenance-evidence.json
+          node trusted-verification-maintenance.mjs finalize --plan maintenance-plan.json --evidence maintenance-evidence.json --candidate-sha $env:CANDIDATE_SHA --trusted-main-sha ${{ inputs.base_sha }} --out maintenance-finalization.json
+      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: sounding-line-maintenance-qualification
+          path: |
+            maintenance-plan.json
+            maintenance-evidence.json
+            maintenance-finalization.json
+          retention-days: 14

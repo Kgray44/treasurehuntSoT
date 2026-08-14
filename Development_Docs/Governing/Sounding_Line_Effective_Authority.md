@@ -13,7 +13,7 @@ machine_source: testing/sounding-line-authority.json
 source. This document is a discoverability projection and must agree with that
 source; it does not independently define policy.
 
-Project Sounding Line Version 1.4 is the effective repository-wide verification authority on protected main. The v1.4 cross-part amendment is additive to the Part I/II Version 1.2 and Part III Version 1.3 amendments; those part amendments remain effective as listed in the machine-readable index.
+Project Sounding Line Version 1.4 is the effective repository-wide verification authority on protected main. Its v1.4.1 maintenance correction provides a trusted-main-bound `VERIFICATION_MAINTENANCE` qualification path only; `MAINTENANCE_GO` is not `RELEASE_GO` and cannot authorize product work. The v1.4 cross-part amendment is additive to the Part I/II Version 1.2 and Part III Version 1.3 amendments; those part amendments remain effective as listed in the machine-readable index.
 
 The Version 1.4 activation is a corrective, owner-authorized protected merge following PR #90. PR #90 integrated the accepted implementation tree but did not flip the authority version. Accordingly, the ratified atomic-one-merge activation requirement is recorded as **not satisfied historically**; protected history is preserved and the evidence requirements are not waived. The permanent deviation and corrective-activation record is `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_v1.4_Corrective_Authority_Activation_Record.md`.
 
