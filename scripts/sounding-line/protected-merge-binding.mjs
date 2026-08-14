@@ -28,6 +28,11 @@ function validateFinalizedEvidence({ plan, finalization, qualified }) {
   if (!plan || planDigest !== digest(unsignedPlan)) errors.push("SEALED_PLAN_DIGEST_MISMATCH");
   if (!finalization || finalization.authority !== "SOUNDING_LINE_FINALIZER") errors.push("FINALIZER_AUTHORITY_INVALID");
   if (finalization?.decision !== "RELEASE_GO") errors.push("FINALIZER_RELEASE_GO_REQUIRED");
+  if (
+    plan?.authorityVersion === "1.4" &&
+    (plan?.authorityBoundary !== "V14_CANDIDATE_QUALIFICATION" || plan?.authorityMode !== "V14_CANDIDATE")
+  )
+    errors.push("QUALIFIED_AUTHORITY_BOUNDARY_INVALID");
   if (plan?.sourceSha !== qualified.candidateSha) errors.push("QUALIFIED_CANDIDATE_SOURCE_MISMATCH");
   if (plan?.gate !== "mainline" || finalization?.gate !== "mainline") errors.push("QUALIFIED_MAINLINE_GATE_REQUIRED");
   if (plan?.planDigest !== finalization?.planDigest || plan?.planDigest !== qualified.planDigest)
@@ -202,11 +207,11 @@ export function qualifyProtectedMerge({
     : treeEquivalentPredictedBase
       ? { status: "TREE_EQUIVALENT_PREDICTED_BASE", preserved: ["EXACT_BASE_TREE"], rejected: [] }
       : classifyBaseAdvance({
-        qualifiedBaseSha: qualified?.qualifiedBaseSha,
-        currentBaseSha,
-        changedPaths,
-        semanticPolicy: binding?.semanticCarryForward ?? {},
-      });
+          qualifiedBaseSha: qualified?.qualifiedBaseSha,
+          currentBaseSha,
+          changedPaths,
+          semanticPolicy: binding?.semanticCarryForward ?? {},
+        });
   if (carryForward.status === "RECONCILIATION_REQUIRED" || carryForward.status === "FAIL_CLOSED")
     errors.push("BASE_ADVANCE_RECONCILIATION_REQUIRED");
   return {

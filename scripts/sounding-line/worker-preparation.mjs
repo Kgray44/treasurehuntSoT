@@ -112,7 +112,9 @@ export function deriveWorkerPreparation(node) {
 export function deriveV14WorkerPreparation({ plan, node, restoreResults = [], runId, mutableResources = [] }) {
   if (
     plan?.authorityVersion !== "1.4" ||
-    !["SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE", "CURRENT_AUTHORITATIVE_V14"].includes(plan?.authorityBoundary)
+    !["SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE", "CURRENT_AUTHORITATIVE_V14", "V14_CANDIDATE_QUALIFICATION"].includes(
+      plan?.authorityBoundary,
+    )
   )
     throw new Error("V14_WORKER_AUTHORITY_BOUNDARY_REQUIRED");
   if (!plan?.nodes?.some((entry) => entry.id === node?.id)) throw new Error("V14_WORKER_PLAN_NODE_INVALID");
@@ -123,6 +125,7 @@ export function deriveV14WorkerPreparation({ plan, node, restoreResults = [], ru
     restoreResults,
     runId,
     mutableResources,
+    authorityBoundary: plan.authorityBoundary,
   });
   return {
     ...prepared,
