@@ -252,6 +252,71 @@ test("ordinary denial and responsive accessible Chartroom surfaces remain truthf
   await admin.context.close();
 });
 
+test("privileged users bring the standalone Bridgewatch watch home without exposing telemetry", async ({ browser }) => {
+  const anonymousContext = await browser.newContext();
+  const anonymousPage = await anonymousContext.newPage();
+  expect((await anonymousPage.goto("/bridgewatch"))?.status()).toBe(404);
+  await expect(anonymousPage.locator("body")).not.toContainText("BRIDGEWATCH");
+  await anonymousContext.close();
+
+  const ordinary = await signedInPage(browser, "ORDINARY_USER", "/");
+  await expect(ordinary.page.getByRole("link", { name: "Bridgewatch", exact: true })).toHaveCount(0);
+  expect((await ordinary.page.goto("/bridgewatch"))?.status()).toBe(404);
+  await expect(ordinary.page.locator("body")).not.toContainText("BRIDGEWATCH");
+  await ordinary.context.close();
+
+  const admin = await signedInPage(browser, "ADMINISTRATOR", "/admin");
+  const entry = admin.page.locator('nav[aria-label="Admiralty navigation"] a[href="/bridgewatch"]');
+  await expect(entry).toBeVisible();
+  await entry.click();
+  await admin.page.waitForURL((url) => url.pathname === "/bridgewatch");
+  await expect(admin.page.getByRole("heading", { name: "BRIDGEWATCH" })).toBeVisible();
+  await expect(admin.page.getByRole("link", { name: "Return to Admiralty" })).toBeVisible();
+
+  const browserFetch = (path: string, method = "GET") =>
+    admin.page.evaluate(
+      async ({ path, method }) => {
+        const response = await fetch(path, {
+          method,
+          headers: method === "POST" ? { "Content-Type": "application/json" } : undefined,
+          body: method === "POST" ? JSON.stringify({ state: "WORKING" }) : undefined,
+        });
+        return {
+          status: response.status,
+          contentType: response.headers.get("content-type"),
+          body: await response.text(),
+        };
+      },
+      { path, method },
+    );
+  const css = await browserFetch("/bridgewatch/style.css");
+  expect(css.status).toBe(200);
+  expect(css.contentType).toContain("text/css");
+  expect((await browserFetch("/bridgewatch/app.js")).status).toBe(200);
+  const summary = await browserFetch("/bridgewatch/api/summary");
+  expect(summary.status).toBe(200);
+  expect(JSON.parse(summary.body).mode).toBe("READ_ONLY");
+  expect((await browserFetch("/bridgewatch/api/telemetry/heartbeat")).status).toBe(404);
+  expect((await browserFetch("/bridgewatch/api/telemetry/heartbeat", "POST")).status).toBe(405);
+  const html = await admin.page.content();
+  expect(html).not.toContain("127.0.0.1");
+  expect(html).not.toContain("BRIDGEWATCH_TELEMETRY_TOKEN");
+  expect(html).not.toContain("BRIDGEWATCH_GITHUB_TOKEN");
+  await assertNoSeriousAxeViolations(admin.page);
+  await capture(admin.page, "ADM2-EV-N-BRIDGEWATCH-DESKTOP");
+
+  await admin.page.setViewportSize({ width: 390, height: 844 });
+  await admin.page.reload();
+  await expect(admin.page.getByRole("heading", { name: "BRIDGEWATCH" })).toBeVisible();
+  const width = await admin.page.evaluate(() => ({
+    client: document.documentElement.clientWidth,
+    scroll: document.documentElement.scrollWidth,
+  }));
+  expect(width.scroll).toBeLessThanOrEqual(width.client);
+  await capture(admin.page, "ADM2-EV-O-BRIDGEWATCH-MOBILE");
+  await admin.context.close();
+});
+
 async function signedInPage(browser: Browser, key: string, returnTo: string) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
