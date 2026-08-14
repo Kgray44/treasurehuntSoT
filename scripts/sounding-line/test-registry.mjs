@@ -6,9 +6,17 @@ import path from "node:path";
 import { format, resolveConfig } from "prettier";
 import ts from "typescript";
 import { promisify } from "node:util";
-import { semanticTestId, validateRegistryIdentity } from "./test-identity.mjs";
+import { carryForwardHistoricalAliases, semanticTestId, validateRegistryIdentity } from "./test-identity.mjs";
 
 const root = process.cwd();
+const registryPath = path.join(root, "testing", "generated", "active-test-registry.json");
+const previousRegistry = await fs
+  .readFile(registryPath, "utf8")
+  .then(JSON.parse)
+  .catch((error) => {
+    if (error.code === "ENOENT") return { cases: [] };
+    throw error;
+  });
 const ignored = new Set(["node_modules", ".git", ".next", "coverage", "artifacts", "dist"]);
 const homeportContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
   .contracts.map((contract) => contract.id)
@@ -417,9 +425,9 @@ for (const absolute of sources.flat()) {
     });
 }
 cases.push(...(await discoverPlaywright()));
+carryForwardHistoricalAliases(cases, previousRegistry.cases ?? []);
 validateRegistryIdentity(cases);
 await fs.mkdir(path.join(root, "testing", "generated"), { recursive: true });
-const registryPath = path.join(root, "testing", "generated", "active-test-registry.json");
 const prettierConfig = (await resolveConfig(registryPath)) ?? {};
 await fs.writeFile(
   registryPath,

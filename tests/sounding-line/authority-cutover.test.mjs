@@ -316,6 +316,8 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   assert.doesNotMatch(worker, /SOUNDING_LINE_SUITE -like 'browser\.\*'/u);
   assert.doesNotMatch(worker, /playwright install chromium webkit/u);
   assert.match(worker, /inputs\.gate/u);
+  assert.match(worker, /ref: \$\{\{ github\.event\.inputs\.candidate_sha \}\}/u);
+  assert.match(worker, /GOVERNED_WORKER_CANDIDATE_CHECKOUT_MISMATCH/u);
   assert.match(worker, /timeout-minutes: 120/u);
   assert.match(adapters, /taskkill", \["\/pid", String\(child\.pid\), "\/T", "\/F"\]/u);
   assert.match(adapters, /\(\?:spec\|setup\)\\\.ts/u);

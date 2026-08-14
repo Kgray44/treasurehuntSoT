@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 import {
   classifyVerificationMaintenance,
@@ -137,4 +138,13 @@ test("known v1.4 repair classes remain maintenance while unknown ownership rejec
       .classification,
     /SCOPE_REJECTED/,
   );
+});
+
+test("maintenance qualification writes a static-safe temporary changed-path proof", async () => {
+  const workflow = await readFile(
+    new URL("../../../.github/workflows/sounding-line-verification-maintenance.yml", import.meta.url),
+    "utf8",
+  );
+  assert.match(workflow, /\$paths \| ConvertTo-Json \| Set-Content maintenance-changed-paths\.json/u);
+  assert.doesNotMatch(workflow, /ConvertTo-Json -Compress \| Set-Content -NoNewline maintenance-changed-paths\.json/u);
 });

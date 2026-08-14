@@ -1,6 +1,7 @@
 /* Project every P34 replacement onto durable semantic test identity. */
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { format, resolveConfig } from "prettier";
 import { resolveHistoricalTestIdentity } from "./test-identity.mjs";
 
 const root = process.cwd();
@@ -10,9 +11,17 @@ const ledger = await json(ledgerPath);
 const registry = await json("testing/generated/active-test-registry.json");
 for (const row of ledger.rows ?? []) {
   if (!["CURRENT_CONTRACT_MIGRATED", "REPLACED_CANONICAL"].includes(row.classification)) continue;
-  row.canonicalReplacementSemanticIds = (row.canonicalReplacementTestIds ?? []).map(
-    (identity) => resolveHistoricalTestIdentity(identity, registry.cases).semanticId,
+  const resolved = (row.canonicalReplacementTestIds ?? []).map((identity) =>
+    resolveHistoricalTestIdentity(identity, registry.cases),
   );
+  const historical = new Set(row.canonicalReplacementHistoricalTestIds ?? []);
+  for (const [index, identity] of (row.canonicalReplacementTestIds ?? []).entries()) {
+    if (identity !== resolved[index].id) historical.add(identity);
+  }
+  if (historical.size) row.canonicalReplacementHistoricalTestIds = [...historical].sort();
+  else delete row.canonicalReplacementHistoricalTestIds;
+  row.canonicalReplacementTestIds = resolved.map((entry) => entry.id);
+  row.canonicalReplacementSemanticIds = resolved.map((entry) => entry.semanticId);
 }
 ledger.version = 3;
 ledger.semanticMigration = {
@@ -22,7 +31,11 @@ ledger.semanticMigration = {
   historicalResolution: "generated ID, semantic ID, or unambiguous historical alias",
   replacementCycles: "FORBIDDEN",
 };
-await writeFile(path.join(root, ledgerPath), `${JSON.stringify(ledger, null, 2)}\n`);
+const prettierConfig = (await resolveConfig(path.join(root, ledgerPath))) ?? {};
+await writeFile(
+  path.join(root, ledgerPath),
+  await format(JSON.stringify(ledger), { ...prettierConfig, parser: "json" }),
+);
 
 const columns = [
   ["historicalCaseId", "historical_case_id"],
@@ -36,6 +49,7 @@ const columns = [
   ["classification", "classification"],
   ["canonicalReplacementSuite", "canonical_replacement_suite"],
   ["canonicalReplacementTestIds", "canonical_replacement_test_ids"],
+  ["canonicalReplacementHistoricalTestIds", "canonical_replacement_historical_test_ids"],
   ["canonicalReplacementSemanticIds", "canonical_replacement_semantic_ids"],
   ["currentSourceFiles", "current_source_files"],
   ["currentContractIds", "current_contract_ids"],
