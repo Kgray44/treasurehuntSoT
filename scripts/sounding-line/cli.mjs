@@ -4,6 +4,7 @@
  * entry point for Phase 2's separately allowlisted local adapters.
  */
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
@@ -12,6 +13,7 @@ import * as runtime from "./runtime.mjs";
 import * as phase3 from "./phase3.mjs";
 import * as phase4 from "./phase4.mjs";
 import { resolveAdapter, resolvePlaywrightAdapter, resolveVitestAdapter } from "./adapters.mjs";
+import { validateHostedWaveCapacity, validateHostedWorkflowCapacity } from "./hosted-wave-capacity.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const policyRoot = path.join(repoRoot, "testing");
@@ -126,6 +128,7 @@ function validatePolicy(policy) {
       "developmentValidation",
       "protectedMergeBinding",
       "futureProjectInheritance",
+      "hostedExecutionCapacity",
     ],
     "sounding-line-authority",
     errors,
@@ -212,6 +215,26 @@ function validatePolicy(policy) {
     errors.push("sounding-line-authority: development/finalization boundary mismatch");
   if (authorityIndex.futureProjectInheritance !== true)
     errors.push("sounding-line-authority: future-project inheritance must be enabled");
+  const hostedCapacity = validateHostedWaveCapacity({
+    capacity: authorityIndex.hostedExecutionCapacity,
+    suites: suites.suites,
+  });
+  errors.push(...hostedCapacity.errors.map((error) => `sounding-line-authority: ${error}`));
+  try {
+    const workflow = readFileSync(
+      path.join(repoRoot, ".github", "workflows", "sounding-line-authoritative.yml"),
+      "utf8",
+    );
+    const workflowCapacity = validateHostedWorkflowCapacity({
+      capacity: authorityIndex.hostedExecutionCapacity,
+      workflow,
+    });
+    errors.push(...workflowCapacity.errors.map((error) => `sounding-line-authority: ${error}`));
+  } catch (error) {
+    errors.push(
+      `sounding-line-authority: HOSTED_WAVE_CAPACITY_WORKFLOW_UNREADABLE:${error instanceof Error ? (error.code ?? "unknown") : "unknown"}`,
+    );
+  }
   const ids = (items, label) => {
     const seen = new Set();
     for (const item of items) {

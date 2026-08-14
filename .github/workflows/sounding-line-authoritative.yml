@@ -51,12 +51,21 @@ jobs:
       parallel0: ${{ steps.matrix.outputs.parallel0 }}
       parallel1: ${{ steps.matrix.outputs.parallel1 }}
       parallel2: ${{ steps.matrix.outputs.parallel2 }}
+      parallel3: ${{ steps.matrix.outputs.parallel3 }}
+      parallel4: ${{ steps.matrix.outputs.parallel4 }}
+      parallel5: ${{ steps.matrix.outputs.parallel5 }}
       exclusive0: ${{ steps.matrix.outputs.exclusive0 }}
       exclusive1: ${{ steps.matrix.outputs.exclusive1 }}
       exclusive2: ${{ steps.matrix.outputs.exclusive2 }}
+      exclusive3: ${{ steps.matrix.outputs.exclusive3 }}
+      exclusive4: ${{ steps.matrix.outputs.exclusive4 }}
+      exclusive5: ${{ steps.matrix.outputs.exclusive5 }}
       exclusive0Present: ${{ steps.matrix.outputs.exclusive0Present }}
       exclusive1Present: ${{ steps.matrix.outputs.exclusive1Present }}
       exclusive2Present: ${{ steps.matrix.outputs.exclusive2Present }}
+      exclusive3Present: ${{ steps.matrix.outputs.exclusive3Present }}
+      exclusive4Present: ${{ steps.matrix.outputs.exclusive4Present }}
+      exclusive5Present: ${{ steps.matrix.outputs.exclusive5Present }}
     steps:
       - id: gate
         shell: pwsh
@@ -146,8 +155,12 @@ jobs:
         shell: pwsh
         run: |
           $plan = Get-Content -Raw sounding-line-plan.json | ConvertFrom-Json
-          if (($plan.nodes | Measure-Object -Property { $_.execution.wave } -Maximum).Maximum -gt 2) { throw "HOSTED_EXECUTION_WAVE_LIMIT_EXCEEDED" }
-          foreach ($wave in 0..2) {
+          $authority = Get-Content -Raw 'testing/sounding-line-authority.json' | ConvertFrom-Json
+          $maximumWave = [int]$authority.hostedExecutionCapacity.maximumWave
+          if ($maximumWave -lt 0) { throw "HOSTED_EXECUTION_WAVE_CAPACITY_INVALID" }
+          $planMaximumWave = ($plan.nodes | Measure-Object -Property { $_.execution.wave } -Maximum).Maximum
+          if ($planMaximumWave -gt $maximumWave) { throw "HOSTED_EXECUTION_WAVE_CAPACITY_EXCEEDED" }
+          foreach ($wave in 0..$maximumWave) {
             foreach ($mode in @('parallel', 'exclusive')) {
               $nodes = @($plan.nodes | Where-Object { $_.execution.wave -eq $wave -and $_.execution.mode -eq $mode } | ForEach-Object { @{ suiteId = $_.id } })
               $matrix = @{ include = $nodes } | ConvertTo-Json -Compress
@@ -206,12 +219,16 @@ jobs:
           PLAN_RESULT: ${{ needs.plan.result }}
           PARALLEL_RESULT: ${{ needs.governed-parallel-wave-0.result }}
           EXCLUSIVE_RESULT: ${{ needs.governed-exclusive-wave-0.result }}
+          PARALLEL_MATRIX: ${{ needs.plan.outputs.parallel0 }}
           EXCLUSIVE_MATRIX: ${{ needs.plan.outputs.exclusive0 }}
         run: |
+          $parallelMatrix = $env:PARALLEL_MATRIX | ConvertFrom-Json
           $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
+          $parallelIntentionallyEmpty = $null -ne $parallelMatrix.include -and @($parallelMatrix.include).Count -eq 0
           $exclusiveIntentionallyEmpty = $null -ne $exclusiveMatrix.include -and @($exclusiveMatrix.include).Count -eq 0
+          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success' -or ($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -in @('failure', 'skipped'))
           $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -in @('failure', 'skipped'))
-          if ($env:PLAN_RESULT -ne 'success' -or $env:PARALLEL_RESULT -ne 'success' -or -not $exclusiveAccepted) {
+          if ($env:PLAN_RESULT -ne 'success' -or -not $parallelAccepted -or -not $exclusiveAccepted) {
             throw 'SOUNDING_LINE_WAVE_0_PREREQUISITES_INVALID'
           }
 
@@ -251,12 +268,16 @@ jobs:
           PLAN_RESULT: ${{ needs.plan.result }}
           PARALLEL_RESULT: ${{ needs.governed-parallel-wave-1.result }}
           EXCLUSIVE_RESULT: ${{ needs.governed-exclusive-wave-1.result }}
+          PARALLEL_MATRIX: ${{ needs.plan.outputs.parallel1 }}
           EXCLUSIVE_MATRIX: ${{ needs.plan.outputs.exclusive1 }}
         run: |
+          $parallelMatrix = $env:PARALLEL_MATRIX | ConvertFrom-Json
           $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
+          $parallelIntentionallyEmpty = $null -ne $parallelMatrix.include -and @($parallelMatrix.include).Count -eq 0
           $exclusiveIntentionallyEmpty = $null -ne $exclusiveMatrix.include -and @($exclusiveMatrix.include).Count -eq 0
+          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success' -or ($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -in @('failure', 'skipped'))
           $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -in @('failure', 'skipped'))
-          if ($env:PLAN_RESULT -ne 'success' -or $env:PARALLEL_RESULT -ne 'success' -or -not $exclusiveAccepted) {
+          if ($env:PLAN_RESULT -ne 'success' -or -not $parallelAccepted -or -not $exclusiveAccepted) {
             throw 'SOUNDING_LINE_WAVE_1_PREREQUISITES_INVALID'
           }
 
@@ -285,6 +306,177 @@ jobs:
       suite: ${{ matrix.suiteId }}
       gate: ${{ needs.plan.outputs.gate }}
 
+  wave-2-complete:
+    name: Sounding Line / Wave 2 barrier
+    needs: [plan, governed-parallel-wave-2, governed-exclusive-wave-2]
+    if: always()
+    runs-on: windows-latest
+    steps:
+      - shell: pwsh
+        env:
+          PLAN_RESULT: ${{ needs.plan.result }}
+          PARALLEL_RESULT: ${{ needs.governed-parallel-wave-2.result }}
+          EXCLUSIVE_RESULT: ${{ needs.governed-exclusive-wave-2.result }}
+          PARALLEL_MATRIX: ${{ needs.plan.outputs.parallel2 }}
+          EXCLUSIVE_MATRIX: ${{ needs.plan.outputs.exclusive2 }}
+        run: |
+          $parallelMatrix = $env:PARALLEL_MATRIX | ConvertFrom-Json
+          $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
+          $parallelIntentionallyEmpty = $null -ne $parallelMatrix.include -and @($parallelMatrix.include).Count -eq 0
+          $exclusiveIntentionallyEmpty = $null -ne $exclusiveMatrix.include -and @($exclusiveMatrix.include).Count -eq 0
+          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success' -or ($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -in @('failure', 'skipped'))
+          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -in @('failure', 'skipped'))
+          if ($env:PLAN_RESULT -ne 'success' -or -not $parallelAccepted -or -not $exclusiveAccepted) {
+            throw 'SOUNDING_LINE_WAVE_2_PREREQUISITES_INVALID'
+          }
+
+  governed-parallel-wave-3:
+    name: Sounding Line / Parallel wave 3
+    needs: [plan, wave-2-complete]
+    if: ${{ always() && needs.plan.result == 'success' && needs.wave-2-complete.result == 'success' }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.parallel3) }}
+    uses: ./.github/workflows/sounding-line-governed-worker.yml
+    with:
+      suite: ${{ matrix.suiteId }}
+      gate: ${{ needs.plan.outputs.gate }}
+
+  governed-exclusive-wave-3:
+    name: Sounding Line / Exclusive wave 3
+    needs: [plan, wave-2-complete]
+    if: ${{ always() && needs.plan.outputs.exclusive3Present == 'true' && needs.plan.result == 'success' && needs.wave-2-complete.result == 'success' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix: ${{ fromJSON(needs.plan.outputs.exclusive3) }}
+    uses: ./.github/workflows/sounding-line-governed-worker.yml
+    with:
+      suite: ${{ matrix.suiteId }}
+      gate: ${{ needs.plan.outputs.gate }}
+
+  wave-3-complete:
+    name: Sounding Line / Wave 3 barrier
+    needs: [plan, governed-parallel-wave-3, governed-exclusive-wave-3]
+    if: always()
+    runs-on: windows-latest
+    steps:
+      - shell: pwsh
+        env:
+          PLAN_RESULT: ${{ needs.plan.result }}
+          PARALLEL_RESULT: ${{ needs.governed-parallel-wave-3.result }}
+          EXCLUSIVE_RESULT: ${{ needs.governed-exclusive-wave-3.result }}
+          PARALLEL_MATRIX: ${{ needs.plan.outputs.parallel3 }}
+          EXCLUSIVE_MATRIX: ${{ needs.plan.outputs.exclusive3 }}
+        run: |
+          $parallelMatrix = $env:PARALLEL_MATRIX | ConvertFrom-Json
+          $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
+          $parallelIntentionallyEmpty = $null -ne $parallelMatrix.include -and @($parallelMatrix.include).Count -eq 0
+          $exclusiveIntentionallyEmpty = $null -ne $exclusiveMatrix.include -and @($exclusiveMatrix.include).Count -eq 0
+          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success' -or ($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -in @('failure', 'skipped'))
+          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -in @('failure', 'skipped'))
+          if ($env:PLAN_RESULT -ne 'success' -or -not $parallelAccepted -or -not $exclusiveAccepted) {
+            throw 'SOUNDING_LINE_WAVE_3_PREREQUISITES_INVALID'
+          }
+
+  governed-parallel-wave-4:
+    name: Sounding Line / Parallel wave 4
+    needs: [plan, wave-3-complete]
+    if: ${{ always() && needs.plan.result == 'success' && needs.wave-3-complete.result == 'success' }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.parallel4) }}
+    uses: ./.github/workflows/sounding-line-governed-worker.yml
+    with:
+      suite: ${{ matrix.suiteId }}
+      gate: ${{ needs.plan.outputs.gate }}
+
+  governed-exclusive-wave-4:
+    name: Sounding Line / Exclusive wave 4
+    needs: [plan, wave-3-complete]
+    if: ${{ always() && needs.plan.outputs.exclusive4Present == 'true' && needs.plan.result == 'success' && needs.wave-3-complete.result == 'success' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix: ${{ fromJSON(needs.plan.outputs.exclusive4) }}
+    uses: ./.github/workflows/sounding-line-governed-worker.yml
+    with:
+      suite: ${{ matrix.suiteId }}
+      gate: ${{ needs.plan.outputs.gate }}
+
+  wave-4-complete:
+    name: Sounding Line / Wave 4 barrier
+    needs: [plan, governed-parallel-wave-4, governed-exclusive-wave-4]
+    if: always()
+    runs-on: windows-latest
+    steps:
+      - shell: pwsh
+        env:
+          PLAN_RESULT: ${{ needs.plan.result }}
+          PARALLEL_RESULT: ${{ needs.governed-parallel-wave-4.result }}
+          EXCLUSIVE_RESULT: ${{ needs.governed-exclusive-wave-4.result }}
+          PARALLEL_MATRIX: ${{ needs.plan.outputs.parallel4 }}
+          EXCLUSIVE_MATRIX: ${{ needs.plan.outputs.exclusive4 }}
+        run: |
+          $parallelMatrix = $env:PARALLEL_MATRIX | ConvertFrom-Json
+          $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
+          $parallelIntentionallyEmpty = $null -ne $parallelMatrix.include -and @($parallelMatrix.include).Count -eq 0
+          $exclusiveIntentionallyEmpty = $null -ne $exclusiveMatrix.include -and @($exclusiveMatrix.include).Count -eq 0
+          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success' -or ($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -in @('failure', 'skipped'))
+          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -in @('failure', 'skipped'))
+          if ($env:PLAN_RESULT -ne 'success' -or -not $parallelAccepted -or -not $exclusiveAccepted) {
+            throw 'SOUNDING_LINE_WAVE_4_PREREQUISITES_INVALID'
+          }
+
+  governed-parallel-wave-5:
+    name: Sounding Line / Parallel wave 5
+    needs: [plan, wave-4-complete]
+    if: ${{ always() && needs.plan.result == 'success' && needs.wave-4-complete.result == 'success' }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.parallel5) }}
+    uses: ./.github/workflows/sounding-line-governed-worker.yml
+    with:
+      suite: ${{ matrix.suiteId }}
+      gate: ${{ needs.plan.outputs.gate }}
+
+  governed-exclusive-wave-5:
+    name: Sounding Line / Exclusive wave 5
+    needs: [plan, wave-4-complete]
+    if: ${{ always() && needs.plan.outputs.exclusive5Present == 'true' && needs.plan.result == 'success' && needs.wave-4-complete.result == 'success' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix: ${{ fromJSON(needs.plan.outputs.exclusive5) }}
+    uses: ./.github/workflows/sounding-line-governed-worker.yml
+    with:
+      suite: ${{ matrix.suiteId }}
+      gate: ${{ needs.plan.outputs.gate }}
+
+  wave-5-complete:
+    name: Sounding Line / Wave 5 barrier
+    needs: [plan, governed-parallel-wave-5, governed-exclusive-wave-5]
+    if: always()
+    runs-on: windows-latest
+    steps:
+      - shell: pwsh
+        env:
+          PLAN_RESULT: ${{ needs.plan.result }}
+          PARALLEL_RESULT: ${{ needs.governed-parallel-wave-5.result }}
+          EXCLUSIVE_RESULT: ${{ needs.governed-exclusive-wave-5.result }}
+          PARALLEL_MATRIX: ${{ needs.plan.outputs.parallel5 }}
+          EXCLUSIVE_MATRIX: ${{ needs.plan.outputs.exclusive5 }}
+        run: |
+          $parallelMatrix = $env:PARALLEL_MATRIX | ConvertFrom-Json
+          $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
+          $parallelIntentionallyEmpty = $null -ne $parallelMatrix.include -and @($parallelMatrix.include).Count -eq 0
+          $exclusiveIntentionallyEmpty = $null -ne $exclusiveMatrix.include -and @($exclusiveMatrix.include).Count -eq 0
+          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success' -or ($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -in @('failure', 'skipped'))
+          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -in @('failure', 'skipped'))
+          if ($env:PLAN_RESULT -ne 'success' -or -not $parallelAccepted -or -not $exclusiveAccepted) {
+            throw 'SOUNDING_LINE_WAVE_5_PREREQUISITES_INVALID'
+          }
+
   finalizer:
     name: Sounding Line / ${{ needs.plan.outputs.gate == 'release-candidate' && 'Release Candidate Decision' || 'Mainline Decision' }}
     needs:
@@ -298,6 +490,16 @@ jobs:
         wave-1-complete,
         governed-parallel-wave-2,
         governed-exclusive-wave-2,
+        wave-2-complete,
+        governed-parallel-wave-3,
+        governed-exclusive-wave-3,
+        wave-3-complete,
+        governed-parallel-wave-4,
+        governed-exclusive-wave-4,
+        wave-4-complete,
+        governed-parallel-wave-5,
+        governed-exclusive-wave-5,
+        wave-5-complete,
       ]
     if: always()
     runs-on: windows-latest
