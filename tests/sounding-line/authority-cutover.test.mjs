@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { readFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import os from "node:os";
 import { promisify } from "node:util";
 import test from "node:test";
 import path from "node:path";
@@ -158,9 +159,7 @@ test("corrective activation preserves v1.3 candidate authority and enables v1.4 
 test("ordinary V14_CANDIDATE planning uses the impact-selected v1.4 mainline path without claiming CURRENT", async () => {
   const sourceSha = (await execute("git", ["rev-parse", "HEAD"], { cwd: root })).stdout.trim();
   const qualifiedBaseSha = (await execute("git", ["rev-parse", "HEAD^"], { cwd: root })).stdout.trim();
-  const authorityIndex = JSON.parse(
-    await readFile(path.join(root, "testing", "sounding-line-authority.json"), "utf8"),
-  );
+  const authorityIndex = JSON.parse(await readFile(path.join(root, "testing", "sounding-line-authority.json"), "utf8"));
   const plan = await buildPlan({
     root,
     gateId: "mainline",
@@ -266,6 +265,89 @@ test("only the finalizer produces an accepted decision from source-bound clean r
     ],
   });
   assert.equal(duplicate.decision, "EVIDENCE_INVALID");
+  const shadow = finalize({
+    plan: {
+      ...plan,
+      authorityVersion: "1.4",
+      authorityBoundary: "SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE",
+    },
+    receipts: accepted.receipts,
+  });
+  assert.equal(shadow.decision, "EVIDENCE_INVALID");
+  assert.deepEqual(shadow.invalidEvidence, ["ORDINARY_RELEASE_AUTHORITY_BOUNDARY_INVALID"]);
+});
+
+test("v1.4 acceptance envelopes seal only the exact candidate-qualification boundary", async (t) => {
+  const workspace = await mkdtemp(path.join(os.tmpdir(), "sounding-line-envelope-"));
+  t.after(() => rm(workspace, { recursive: true, force: true }));
+  const planPath = path.join(workspace, "plan.json");
+  const finalizationPath = path.join(workspace, "finalization.json");
+  const outputPath = path.join(workspace, "envelope.json");
+  const plan = {
+    authorityVersion: "1.4",
+    authorityMode: "V14_CANDIDATE",
+    authorityBoundary: "V14_CANDIDATE_QUALIFICATION",
+    sourceSha: "a".repeat(40),
+    qualifiedBaseTreeSha: "b".repeat(40),
+    planDigest: "plan",
+  };
+  const finalization = {
+    authority: "SOUNDING_LINE_FINALIZER",
+    decision: "RELEASE_GO",
+    planDigest: "plan",
+    receipts: [],
+  };
+  await Promise.all([
+    writeFile(planPath, `${JSON.stringify(plan)}\n`, "utf8"),
+    writeFile(finalizationPath, `${JSON.stringify(finalization)}\n`, "utf8"),
+  ]);
+  await execute(
+    process.execPath,
+    [
+      "scripts/sounding-line/create-acceptance-envelope.mjs",
+      "--plan",
+      planPath,
+      "--finalization",
+      finalizationPath,
+      "--pr-number",
+      "113",
+      "--base-sha",
+      "c".repeat(40),
+      "--run-id",
+      "1",
+      "--out",
+      outputPath,
+    ],
+    { cwd: root },
+  );
+  assert.equal(JSON.parse(await readFile(outputPath, "utf8")).candidateSha, plan.sourceSha);
+  await writeFile(
+    planPath,
+    `${JSON.stringify({ ...plan, authorityBoundary: "SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE" })}\n`,
+    "utf8",
+  );
+  await assert.rejects(
+    execute(
+      process.execPath,
+      [
+        "scripts/sounding-line/create-acceptance-envelope.mjs",
+        "--plan",
+        planPath,
+        "--finalization",
+        finalizationPath,
+        "--pr-number",
+        "113",
+        "--base-sha",
+        "c".repeat(40),
+        "--run-id",
+        "1",
+        "--out",
+        outputPath,
+      ],
+      { cwd: root },
+    ),
+    /ACCEPTANCE_ENVELOPE_V14_CANDIDATE_BOUNDARY_REQUIRED/u,
+  );
 });
 
 test("focused suite execution is evidence-only and cannot invoke authority", async () => {
@@ -292,7 +374,10 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
   assert.match(authoritative, /authorityMode=\$\(if \(\$authorityMode -eq 'v13-cutover'\)/u);
   assert.match(authoritative, /candidate_sha:[\s\S]*?required: true[\s\S]*?type: string/u);
   assert.match(authoritative, /candidate_ref:[\s\S]*?type: string/u);
-  assert.match(authoritative, /group: sounding-line-authoritative-\$\{\{ github\.workflow \}\}-\$\{\{ inputs\.candidate_sha \}\}/u);
+  assert.match(
+    authoritative,
+    /group: sounding-line-authoritative-\$\{\{ github\.workflow \}\}-\$\{\{ inputs\.candidate_sha \}\}/u,
+  );
   assert.match(authoritative, /SOUNDING_LINE_FROZEN_CANDIDATE_SHA_MISMATCH/u);
   assert.match(authoritative, /SOUNDING_LINE_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED/u);
   assert.match(authoritative, /SOUNDING_LINE_CANDIDATE_REF_HEAD_MISMATCH/u);

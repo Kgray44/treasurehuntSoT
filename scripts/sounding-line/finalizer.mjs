@@ -4,6 +4,24 @@ import { createHash } from "node:crypto";
 const digest = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
 
 export function finalize({ plan, receipts, runtimeConformance = [] }) {
+  if (
+    plan?.authorityVersion === "1.4" &&
+    !["CURRENT_AUTHORITATIVE_V14", "V14_CANDIDATE_QUALIFICATION"].includes(plan?.authorityBoundary)
+  )
+    return {
+      authority: "SOUNDING_LINE_FINALIZER",
+      decision: "EVIDENCE_INVALID",
+      gate: plan?.gate ?? null,
+      planDigest: plan?.planDigest ?? null,
+      receipts: receipts ?? [],
+      missingMandatorySuites: [],
+      duplicateSuiteReceipts: [],
+      unknownSuiteReceipts: [],
+      invalidEvidence: ["ORDINARY_RELEASE_AUTHORITY_BOUNDARY_INVALID"],
+      missingRuntimeConformance: [],
+      invalidRuntimeConformance: [],
+      evidenceDigest: digest(receipts ?? []),
+    };
   if (plan?.authority && plan.authority !== "SOUNDING_LINE")
     return {
       authority: "SOUNDING_LINE_FINALIZER",

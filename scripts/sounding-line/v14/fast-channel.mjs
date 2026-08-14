@@ -618,8 +618,19 @@ export class FileLayerTransport {
   }
 }
 
-export function prepareV14Worker({ planNode, layers = [], restoreResults = [], runId, mutableResources = [] }) {
+export function prepareV14Worker({
+  planNode,
+  layers = [],
+  restoreResults = [],
+  runId,
+  mutableResources = [],
+  authorityBoundary = V14_AUTHORITY_BOUNDARY,
+}) {
   assert(planNode?.id && runId, "MISSING_IDENTITY");
+  assert(
+    [V14_AUTHORITY_BOUNDARY, "CURRENT_AUTHORITATIVE_V14", "V14_CANDIDATE_QUALIFICATION"].includes(authorityBoundary),
+    "V14_WORKER_AUTHORITY_BOUNDARY_REQUIRED",
+  );
   const required = new Set(layers.map((layer) => layer.identity));
   const restored = new Set(
     restoreResults.filter((result) => result.hit).map((result) => result.manifest.identityDigest),
@@ -627,7 +638,7 @@ export function prepareV14Worker({ planNode, layers = [], restoreResults = [], r
   return sealedRecord("worker-preparation", {
     suiteId: planNode.id,
     runId,
-    authorityBoundary: V14_AUTHORITY_BOUNDARY,
+    authorityBoundary,
     layerResults: layers.map((layer) => ({
       identity: layer.identity,
       hit: restored.has(layer.identity),

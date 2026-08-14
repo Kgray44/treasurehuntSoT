@@ -304,6 +304,22 @@ test("v1.3 worker preparation is unchanged and v1.4 preparation is explicitly ve
     }).runtimeConformance.result,
     "PASSED",
   );
+  const candidatePreparation = deriveV14WorkerPreparation({
+    plan: { ...plan, authorityBoundary: "V14_CANDIDATE_QUALIFICATION" },
+    node: plan.nodes[0],
+    runId: "run-1",
+  });
+  assert.equal(candidatePreparation.authorityBoundary, "V14_CANDIDATE_QUALIFICATION");
+  assert.equal(candidatePreparation.runtimeConformance.result, "PASSED");
+  assert.throws(
+    () =>
+      deriveV14WorkerPreparation({
+        plan: { ...plan, authorityBoundary: "UNRECOGNIZED_AUTHORITY_BOUNDARY" },
+        node: plan.nodes[0],
+        runId: "run-1",
+      }),
+    /V14_WORKER_AUTHORITY_BOUNDARY_REQUIRED/u,
+  );
 });
 
 test("future self-hosted consumers fail closed without approved identity, attestation, run ownership, and scrub proof", () => {

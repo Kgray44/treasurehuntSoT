@@ -89,6 +89,26 @@ function bind(overrides = {}) {
   });
 }
 
+function bindV14(boundary) {
+  const base = fixture();
+  const { planDigest, ...unsignedPlan } = base.plan;
+  base.plan = {
+    ...unsignedPlan,
+    authorityVersion: "1.4",
+    authorityMode: "V14_CANDIDATE",
+    authorityBoundary: boundary,
+  };
+  base.plan.planDigest = digest(base.plan);
+  base.finalization.planDigest = base.plan.planDigest;
+  for (const receipt of base.finalization.receipts) receipt.planDigest = base.plan.planDigest;
+  base.finalization.evidenceDigest = digest(base.finalization.receipts);
+  Object.assign(base.qualified, {
+    planDigest: base.plan.planDigest,
+    evidenceDigest: base.finalization.evidenceDigest,
+  });
+  return bind(base);
+}
+
 test("exact qualified head + base + sealed evidence bind to the synthetic merge", () => {
   const result = bind();
   assert.equal(result.decision, "BINDING_PASS");
@@ -112,6 +132,13 @@ test("protected merge binding fails closed for changed head, missing release, di
   dirtyCleanup.finalization.receipts[0].cleanupState = "DIRTY";
   dirtyCleanup.finalization.evidenceDigest = digest(dirtyCleanup.finalization.receipts);
   assert.equal(bind(dirtyCleanup).decision, "BINDING_NO_GO");
+});
+
+test("v1.4 protected binding consumes only an exact candidate-qualification boundary", () => {
+  assert.equal(bindV14("V14_CANDIDATE_QUALIFICATION").decision, "BINDING_PASS");
+  const rejected = bindV14("SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE");
+  assert.equal(rejected.decision, "BINDING_NO_GO");
+  assert.ok(rejected.errors.includes("QUALIFIED_AUTHORITY_BOUNDARY_INVALID"));
 });
 
 test("semantic carry-forward preserves only declared unrelated base advances", () => {
