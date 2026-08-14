@@ -72,10 +72,18 @@ export async function buildV14HostedPlan({
     semanticPlanDigest: semanticPlan.digest,
     runtimeConformanceRequired: authorityIndex.runtimeConformance?.required === true,
     runtimeConformanceSuiteId: authorityIndex.runtimeConformance?.suiteId ?? null,
-    nodes: semanticPlan.nodes.map((node) => ({
-      ...node,
-      testIds: registry.cases.filter((entry) => entry.suiteId === node.id).map((entry) => entry.id),
-    })),
+    nodes: semanticPlan.nodes.map((node) => {
+      const cases = registry.cases.filter((entry) => entry.suiteId === node.id);
+      return {
+        ...node,
+        // Browser engines are execution resources, not merely suite metadata.
+        // The sealed node must therefore retain every engine declared by its
+        // exact registry-selected cases, or hosted preparation could omit a
+        // browser that the isolated adapter will execute.
+        resources: [...new Set([...node.resources, ...cases.flatMap((entry) => entry.resources ?? [])])].sort(),
+        testIds: cases.map((entry) => entry.id),
+      };
+    }),
   };
   return { ...plan, planDigest: digest(plan) };
 }

@@ -222,6 +222,30 @@ function tideglassContractsFor(file) {
   return phase1.filter((contractId) => tideglassContracts.includes(contractId));
 }
 
+const chromiumProjects = new Set([
+  "admiralty-phase1",
+  "chromium",
+  "harborlight-phase2",
+  "harborlight-phase3",
+  "harborlight-phase4",
+  "helm-phase1",
+  "homeport-phase1",
+  "homeport-phase2",
+  "homeport-phase4",
+  "phase3-readonly-setup",
+  "sounding-line-access-sentinel",
+  "wakebook-phase1",
+  "wayfarer-phase2",
+  "wayfarer-phase3",
+  "wayfarer-phase4",
+]);
+
+function browserResourceForProject(project) {
+  if (project === "webkit-mobile") return "browser-webkit";
+  if (chromiumProjects.has(project)) return "browser-chromium";
+  throw new Error(`UNKNOWN_PLAYWRIGHT_PROJECT_ENGINE:${project}`);
+}
+
 function metadata(file, family, browser = null) {
   const privateOrCommunity =
     /admiralty|drydock|deepwater|wakebook|homeport|private-content|community|wayfarer|passport|invitation|session/u.test(
@@ -247,7 +271,7 @@ function metadata(file, family, browser = null) {
     browserOwnership: browser ? "task-owned Playwright context and state" : "not applicable",
     portOwnership: browser ? "task-owned allowlisted local application port" : "not applicable",
     resources: browser
-      ? ["application-port", "sqlite-clone", "browser-chromium", "trace-root"]
+      ? ["application-port", "sqlite-clone", browserResourceForProject(browser.project), "trace-root"]
       : ["node-slot", "vitest-worker-pool"],
     parallelSafety: browser ? "ISOLATED_MUTABLE_PARALLEL" : "READ_ONLY_PARALLEL",
     browserRequirements: browser ? [browser.project] : ["NOT_APPLICABLE"],
