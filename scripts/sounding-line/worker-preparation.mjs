@@ -98,6 +98,7 @@ export function deriveWorkerPreparation(node) {
       applicationRuntime: declared.has("application-port"),
       productionBuild: declared.has("production-build-directory"),
     },
+    preparationOwner: node.adapter === "playwright-family" ? "ISOLATED_BROWSER_RUNTIME" : "GOVERNED_WORKER",
     runtimeConformance: {
       result: violations.length ? "FAILED" : "PASSED",
       violations,
@@ -130,6 +131,7 @@ export function deriveV14WorkerPreparation({ plan, node, restoreResults = [], ru
   return {
     ...prepared,
     actions: resourceConformance.actions,
+    preparationOwner: resourceConformance.preparationOwner,
     runtimeConformance: resourceConformance.runtimeConformance,
   };
 }

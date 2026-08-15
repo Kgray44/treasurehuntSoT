@@ -15,6 +15,8 @@ param(
     [string]$BrowserArgsBase64 = "",
     [string]$BrowserSelectionsBase64 = "",
     [string]$ExpectMutation = "true",
+    [string]$SkipLegacyProjectionFixture = "false",
+    [int]$BrowserWorkers = 1,
     [string]$BrowserGrep = "",
     [switch]$SkipProductionPerformance,
     [string]$SoundingLineLane = "",
@@ -59,6 +61,8 @@ if ($BrowserSelectionsBase64) {
     }
 }
 if ($ExpectMutation -notin @("true", "false")) { throw "ExpectMutation must be true or false." }
+if ($SkipLegacyProjectionFixture -notin @("true", "false")) { throw "SkipLegacyProjectionFixture must be true or false." }
+if ($BrowserWorkers -lt 1 -or $BrowserWorkers -gt 3) { throw "BrowserWorkers must be between 1 and 3." }
 if (-not $SoundingLineLane) {
     throw "This internal runtime only supports named Sounding Line browser lanes."
 }
@@ -120,6 +124,12 @@ if ($isSoundingLineLane) {
                 throw "browser-family BrowserArgs must be a governed Playwright project or e2e spec path."
             }
         }
+    }
+    if ($BrowserWorkers -gt 1 -and ($SoundingLineLane -ne "browser-family" -or $SkipLegacyProjectionFixture -ne "true" -or $ExpectMutation -ne "false")) {
+        throw "Parallel browser execution is limited to the read-only browser-family sentinel fixture."
+    }
+    if ($BrowserWorkers -gt 1 -and $BrowserSelections.Count -gt 0 -and (($BrowserSelections | ForEach-Object { [int]$_.caseCount } | Measure-Object -Sum).Sum -lt $BrowserWorkers)) {
+        throw "BrowserWorkers cannot exceed the governed browser case count."
     }
     if (($SoundingLineLane -eq "browser-family" -and $SoundingLinePort -ne 3100) -or
         ($SoundingLineLane -ne "browser-family" -and ($SoundingLinePort -lt 3101 -or $SoundingLinePort -gt 3199))) {
@@ -839,14 +849,16 @@ try {
         # selected browser family the same seeded One Voyage contract as the
         # full governed runtime.
         Invoke-ValidationStep -Name "Seeding focused browser development fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts")
-        # Focused browser families still require canonical migration provenance
-        # and the migrated Voyage fixture. Prepare both only in the disposable
-        # copy before the owned server starts; this is fixture setup, not authority.
-        Invoke-ValidationStep -Name "Migrating focused browser legacy compatibility projection" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/migrate-legacy-companion.ts")
-        Invoke-ValidationStep -Name "Verifying focused browser legacy compatibility projection" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/migrate-legacy-companion.ts", "--verify")
-        Invoke-ValidationStep -Name "Preparing focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--prepare")
-        Invoke-ValidationStep -Name "Seeding focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
-        Invoke-ValidationStep -Name "Verifying focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--verify")
+        if ($SkipLegacyProjectionFixture -ne "true") {
+            # Focused browser families normally require canonical migration provenance
+            # and the migrated Voyage fixture. The read-only access sentinel has its
+            # own exact fixture contract and may bypass this unrelated projection.
+            Invoke-ValidationStep -Name "Migrating focused browser legacy compatibility projection" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/migrate-legacy-companion.ts")
+            Invoke-ValidationStep -Name "Verifying focused browser legacy compatibility projection" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/migrate-legacy-companion.ts", "--verify")
+            Invoke-ValidationStep -Name "Preparing focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--prepare")
+            Invoke-ValidationStep -Name "Seeding focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
+            Invoke-ValidationStep -Name "Verifying focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--verify")
+        }
     }
 
     if (-not $SkipBrowser) {
@@ -857,6 +869,7 @@ try {
             foreach ($selection in $BrowserSelections) {
                 Assert-BrowserSelectionDiscovery -Selection $selection
                 $browserCommand = @("node_modules/@playwright/test/cli.js", "test", "--project=$($selection.project)", "--grep", [string]$selection.grep) + @($selection.files | ForEach-Object { ([string]$_).Replace('\', '/') })
+                if ($BrowserWorkers -gt 1) { $browserCommand += @("--workers=$BrowserWorkers", "--fully-parallel") }
                 if ($isSoundingLineLane) { $browserCommand += "--global-timeout=$browserGlobalTimeoutMs" }
                 try {
                     Invoke-ValidationStep -Name "Running exact governed browser acceptance tests for $($selection.project)" -Arguments $browserCommand
