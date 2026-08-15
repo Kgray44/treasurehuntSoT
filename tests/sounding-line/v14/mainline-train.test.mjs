@@ -27,7 +27,10 @@ import {
   verifyTrain,
   withdrawTrainCandidate,
 } from "../../../scripts/sounding-line/v14/mainline-train.mjs";
-import { prepareMainlineTrain } from "../../../scripts/sounding-line/v14/mainline-train-prepare.mjs";
+import {
+  movePreparedNodeModules,
+  prepareMainlineTrain,
+} from "../../../scripts/sounding-line/v14/mainline-train-prepare.mjs";
 import { mergeTrainQualifications } from "../../../scripts/sounding-line/v14/merge-train-qualifications.mjs";
 
 const sha = (letter) => (({ m: "a", n: "b", z: "c", q: "d", r: "e", x: "f" })[letter] ?? letter).repeat(40);
@@ -61,6 +64,39 @@ const train = (candidates = [candidate("A", "a"), candidate("B", "b"), candidate
     createdAt: at,
   });
 const planned = (candidates) => planMainlineTrain(train(candidates), { integrate: integrator, timestamp: at });
+
+test("prepared train layers copy only when a hosted cross-volume move is impossible", async () => {
+  const calls = [];
+  await movePreparedNodeModules({
+    source: "C:/runner-temp/pr-126/node_modules",
+    destination: "D:/workspace/train-prepared/node_modules",
+    renameFn: async () => {
+      const error = new Error("cross-device link");
+      error.code = "EXDEV";
+      throw error;
+    },
+    copyFn: async (source, destination, options) => calls.push({ source, destination, options }),
+  });
+  assert.deepEqual(calls, [
+    {
+      source: "C:/runner-temp/pr-126/node_modules",
+      destination: "D:/workspace/train-prepared/node_modules",
+      options: { recursive: true, errorOnExist: true, preserveTimestamps: true, verbatimSymlinks: true },
+    },
+  ]);
+  await assert.rejects(
+    movePreparedNodeModules({
+      source: "source",
+      destination: "destination",
+      renameFn: async () => {
+        const error = new Error("permission denied");
+        error.code = "EACCES";
+        throw error;
+      },
+    }),
+    /permission denied/u,
+  );
+});
 
 test("train command-line entrypoints execute when invoked through a relative hosted path", async () => {
   for (const script of [
