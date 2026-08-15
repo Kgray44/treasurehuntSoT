@@ -94,7 +94,7 @@ jobs:
           # Each worker must execute the same frozen candidate that the plan
           # sealed, including when protected main advances while workers start.
           ref: ${{ inputs.candidate_sha }}
-          fetch-depth: 0
+          fetch-depth: 1
       - name: Restore sealed predicted integration commit
         if: ${{ !inputs.empty_wave && inputs.integration_artifact != '' }}
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
@@ -132,39 +132,32 @@ jobs:
           if ((git rev-parse HEAD).Trim() -ne $execution) { throw 'GOVERNED_WORKER_CANDIDATE_CHECKOUT_MISMATCH' }
       - if: ${{ !inputs.empty_wave }}
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with: { node-version-file: .nvmrc, cache: npm }
-      - if: ${{ !inputs.empty_wave }}
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with: { node-version-file: .nvmrc }
+      - id: dependency-identity
+        if: ${{ !inputs.empty_wave }}
+        shell: pwsh
+        run: |
+          $identity = node scripts/sounding-line/v14/prepared-layer-artifact.mjs cache-key | ConvertFrom-Json
+          "key=$($identity.key)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - id: dependency-cache-restore
+        if: ${{ !inputs.empty_wave }}
+        uses: actions/cache/restore@5a3ec84eff668545956fd18022155c47e93e2684
         with:
-          name: ${{ inputs.prepared_artifact }}
-          path: ${{ runner.temp }}/sounding-line-prepared-dependency
-      - name: Restore verified immutable dependency layer with timing
+          path: |
+            node_modules
+            sounding-line-dependency-cache/dependency-manifest.json
+          key: ${{ steps.dependency-identity.outputs.key }}
+      - name: Restore verified digest-keyed dependency cache with timing
         if: ${{ !inputs.empty_wave }}
         shell: pwsh
         env:
-          SOUNDING_LINE_PREPARED_PATH: ${{ inputs.prepared_path }}
-          SOUNDING_LINE_PREPARED_PRODUCER: ${{ inputs.prepared_producer }}
+          SOUNDING_LINE_PREPARED_CACHE_KEY: ${{ steps.dependency-identity.outputs.key }}
+          CACHE_HIT: ${{ steps.dependency-cache-restore.outputs.cache-hit }}
         run: |
           $startedAt = [DateTimeOffset]::UtcNow
-          $layerRoot = Join-Path $env:RUNNER_TEMP 'sounding-line-prepared-dependency'
-          if ($env:SOUNDING_LINE_PREPARED_PATH) { $layerRoot = Join-Path $layerRoot $env:SOUNDING_LINE_PREPARED_PATH }
-          & node scripts/sounding-line/v14/prepared-layer-artifact.mjs verify --source "$layerRoot/node_modules" --manifest "$layerRoot/dependency-manifest.json"
+          if ($env:CACHE_HIT -ne 'true') { throw 'GOVERNED_DEPENDENCY_CACHE_MISS' }
+          & node scripts/sounding-line/v14/prepared-layer-artifact.mjs verify --source node_modules --manifest sounding-line-dependency-cache/dependency-manifest.json
           $exitCode = $LASTEXITCODE
-          if ($exitCode -eq 0) {
-            Copy-Item -LiteralPath "$layerRoot/node_modules" -Destination 'node_modules' -Recurse
-            & node scripts/sounding-line/v14/prepared-layer-artifact.mjs verify --source 'node_modules' --manifest "$layerRoot/dependency-manifest.json"
-            $exitCode = $LASTEXITCODE
-            if ($exitCode -eq 0) {
-              # This workspace source link is deliberately excluded from the
-              # immutable dependency layer. Recreate it from this sealed
-              # checkout only after the transferred bytes have rehashed.
-              $workspaceScope = 'node_modules/@forever-treasure'
-              $workspaceLink = Join-Path $workspaceScope 'bridgewatch'
-              if (Test-Path -LiteralPath $workspaceLink) { throw 'GOVERNED_WORKSPACE_LINK_ALREADY_PRESENT' }
-              New-Item -ItemType Directory -Path $workspaceScope -Force | Out-Null
-              New-Item -ItemType Junction -Path $workspaceLink -Target (Join-Path $PWD 'bridgewatch') | Out-Null
-            }
-          }
           $finishedAt = [DateTimeOffset]::UtcNow
           [ordered]@{
             version = 1
@@ -204,16 +197,17 @@ jobs:
             $timings[$Name] = [int]$watch.ElapsedMilliseconds
             if ($exitCode -ne 0) { throw "GOVERNED_RESOURCE_PREPARATION_FAILED:$Name" }
           }
-          if ($preparation.actions.prismaGenerate) {
+          $isolatedBrowserRuntimeOwnsDatabase = $preparation.preparationOwner -eq 'ISOLATED_BROWSER_RUNTIME'
+          if ($preparation.actions.prismaGenerate -and -not $isolatedBrowserRuntimeOwnsDatabase) {
             Invoke-TimedPreparation 'clientGenerateMs' { & npm run db:generate }
           }
-          if ($preparation.actions.databaseMigration -or $preparation.actions.databaseSeed) {
+          if (($preparation.actions.databaseMigration -or $preparation.actions.databaseSeed) -and -not $isolatedBrowserRuntimeOwnsDatabase) {
             $env:DATABASE_URL = 'file:./dev.db'
           }
-          if ($preparation.actions.databaseMigration) {
+          if ($preparation.actions.databaseMigration -and -not $isolatedBrowserRuntimeOwnsDatabase) {
             Invoke-TimedPreparation 'databaseMigrationMs' { & npx prisma migrate deploy --schema prisma/schema.sqlite.prisma }
           }
-          if ($preparation.actions.databaseSeed) {
+          if ($preparation.actions.databaseSeed -and -not $isolatedBrowserRuntimeOwnsDatabase) {
             Invoke-TimedPreparation 'databaseSeedMs' { & npm run db:seed }
           }
           $engines = @($preparation.actions.browserEngines)

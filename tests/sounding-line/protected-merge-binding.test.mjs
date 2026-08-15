@@ -214,4 +214,11 @@ test("workflow topology retains explicit heavyweight authority and the exact pro
   assert.match(bridge, /record-only-closure\.mjs/u);
   assert.match(bridge, /Finalize record-only decision/u);
   assert.match(bridge, /sounding-line-mainline-train\.yml/u);
+  assert.match(bridge, /MAINTENANCE_SCOPE_REJECTED/u);
+  assert.match(bridge, /ConvertTo-Json -InputObject \$paths -Compress/u);
+  assert.doesNotMatch(bridge, /\$paths \| ConvertTo-Json -Compress/u);
+  assert.match(bridge, /\$ordinaryScopeOnly = \$preflight\.classification\.classification -eq 'MAINTENANCE_SCOPE_REJECTED'/u);
+  assert.match(bridge, /'maintenance=false'[\s\S]*?exit 0/u);
+  assert.match(bridge, /SOUNDING_LINE_MAINTENANCE_TRUSTED_POLICY_UNAVAILABLE/u);
+  assert.match(bridge, /SOUNDING_LINE_MAINTENANCE_PREFLIGHT_REJECTED/u);
 });
