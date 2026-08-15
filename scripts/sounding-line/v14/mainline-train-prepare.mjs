@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* Build per-car sealed execution inputs from one admitted live train. */
 import { execFile } from "node:child_process";
-import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import process from "node:process";
@@ -21,6 +21,19 @@ const value = (args, flag) => {
   return result;
 };
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
+export async function movePreparedNodeModules({ source, destination, renameFn = rename, copyFn = cp }) {
+  try {
+    await renameFn(source, destination);
+  } catch (error) {
+    if (error?.code !== "EXDEV") throw error;
+    await copyFn(source, destination, {
+      recursive: true,
+      errorOnExist: true,
+      preserveTimestamps: true,
+      verbatimSymlinks: true,
+    });
+  }
+}
 const defaultPrepareLayer = async ({ worktree, destination, producer, expiresAt }) => {
   await execute(npmCommand, ["ci"], { cwd: worktree, shell: process.platform === "win32" });
   const manifest = await createDependencyLayerManifest({
@@ -31,7 +44,10 @@ const defaultPrepareLayer = async ({ worktree, destination, producer, expiresAt 
   });
   await mkdir(destination, { recursive: true });
   await writeFile(path.join(destination, "dependency-manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
-  await rename(path.join(worktree, "node_modules"), path.join(destination, "node_modules"));
+  await movePreparedNodeModules({
+    source: path.join(worktree, "node_modules"),
+    destination: path.join(destination, "node_modules"),
+  });
 };
 
 export async function prepareMainlineTrain({
