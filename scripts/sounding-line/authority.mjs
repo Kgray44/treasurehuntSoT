@@ -83,7 +83,13 @@ function suiteAdapter(suite, registry) {
       exactSelections,
       baselineDatabase,
       suite.id !== "browser.access-sentinel",
-      suite.id === "browser.access-sentinel" ? { skipLegacyProjectionFixture: true, browserWorkers: 3 } : undefined,
+      suite.id === "browser.access-sentinel"
+        ? {
+            skipLegacyProjectionFixture: true,
+            parallelSafe: suite.parallelSafe === true,
+            browserWorkers: suite.parallelSafe ? 3 : 1,
+          }
+        : undefined,
     );
   }
   if (suite.adapter === "powershell-family")
