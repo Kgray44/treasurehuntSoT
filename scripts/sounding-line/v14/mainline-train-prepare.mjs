@@ -42,13 +42,14 @@ export async function prepareMainlineTrain({
   dependencyLayerInputsFn = dependencyLayerInputs,
   prepareLayerFn = defaultPrepareLayer,
 }) {
-  if (!verifyTrain(state.train).valid || state.predicted?.status !== "READY") throw new Error("TRAIN_PREPARE_STATE_INVALID");
+  if (!verifyTrain(state.train).valid || state.predicted?.status !== "READY")
+    throw new Error("TRAIN_PREPARE_STATE_INVALID");
   if (state.train.cars.length !== state.predicted.cars.length) throw new Error("TRAIN_PREPARE_CAR_COUNT_MISMATCH");
   await mkdir(out, { recursive: true });
   const root =
     temporaryRoot ??
-    (await mkdir(path.join(os.tmpdir(), `sounding-line-train-${process.pid}`), { recursive: true }).then(
-      () => path.join(os.tmpdir(), `sounding-line-train-${process.pid}`),
+    (await mkdir(path.join(os.tmpdir(), `sounding-line-train-${process.pid}`), { recursive: true }).then(() =>
+      path.join(os.tmpdir(), `sounding-line-train-${process.pid}`),
     ));
   try {
     const matrix = [];
@@ -56,93 +57,108 @@ export async function prepareMainlineTrain({
     const producer = `mainline-train:${process.env.GITHUB_RUN_ID ?? state.train.trainId}`;
     const expiresAt = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
     const preparedLayers = new Set();
-  for (let position = 0; position < state.train.cars.length; position += 1) {
-    const car = state.train.cars[position];
-    const predicted = state.predicted.cars[position];
-    if (
-      car.candidateHeadCommitSha !== predicted.sourceHeadSha ||
-      car.predictedParentCommitSha !== predicted.predictedParentCommitSha ||
-      car.predictedIntegrationTreeSha !== predicted.predictedIntegrationTreeSha
-    )
-      throw new Error("TRAIN_PREPARE_IDENTITY_MISMATCH");
-    const directory = path.join(out, car.candidateId);
-    const worktree = path.join(root, car.candidateId);
-    await mkdir(directory, { recursive: true });
-    await execute("git", ["-C", repoPath, "worktree", "add", "--detach", worktree, predicted.resultingIntegrationSha]);
-    try {
-      const plan = await buildPlanFn({
-        root: worktree,
-        gateId: "mainline",
-        sourceSha: car.candidateHeadCommitSha,
-        qualifiedBaseSha: car.predictedParentCommitSha,
-        authorityMode: "V14_CANDIDATE",
-        githubRef: "refs/heads/main",
-        predictedIdentity: {
-          predictedParentCommitSha: car.predictedParentCommitSha,
-          predictedParentTreeSha: car.predictedParentTreeSha,
-          predictedIntegrationTreeSha: car.predictedIntegrationTreeSha,
-        },
-      });
+    for (let position = 0; position < state.train.cars.length; position += 1) {
+      const car = state.train.cars[position];
+      const predicted = state.predicted.cars[position];
       if (
-        plan.authorityBoundary !== "V14_CANDIDATE_QUALIFICATION" ||
-        plan.predictedIntegrationTreeSha !== car.predictedIntegrationTreeSha
+        car.candidateHeadCommitSha !== predicted.sourceHeadSha ||
+        car.predictedParentCommitSha !== predicted.predictedParentCommitSha ||
+        car.predictedIntegrationTreeSha !== predicted.predictedIntegrationTreeSha
       )
-        throw new Error("TRAIN_PREPARE_PLAN_IDENTITY_MISMATCH");
-      const preparedLayerKey = digest(await dependencyLayerInputsFn(worktree));
-      const preparedPath = preparedLayerKey;
-      if (!preparedLayers.has(preparedLayerKey)) {
-        await prepareLayerFn({
-          worktree,
-          destination: path.join(out, "dependencies", preparedPath),
-          producer,
-          expiresAt,
-          preparedLayerKey,
-        });
-        preparedLayers.add(preparedLayerKey);
-      }
-      cars.push({
-        candidateId: car.candidateId,
-        position,
-        candidateSha: car.candidateHeadCommitSha,
-        prNumber: car.candidatePrIdentity?.number,
-        qualifiedBaseSha: car.predictedParentCommitSha,
-        planPath: `${car.candidateId}/sounding-line-plan.json`,
-        finalizationArtifact: `sounding-line-train-finalization-${car.candidateId}`,
-        qualificationArtifact: `sounding-line-train-qualified-${car.candidateId}`,
-        acceptanceArtifact: `sounding-line-train-acceptance-envelope-${car.candidateId}`,
-      });
-      await writeFile(path.join(directory, "sounding-line-plan.json"), `${JSON.stringify(plan, null, 2)}\n`, "utf8");
-      // Synthetic integration commits are intentionally unreachable from any
-      // branch. Pin the exact object under an internal deterministic ref long
-      // enough for Git to serialize it, then remove that local transport ref.
-      const bundleRef = `refs/sounding-line/train/${position}-${car.candidateHeadCommitSha}`;
-      await execute("git", ["-C", repoPath, "update-ref", bundleRef, predicted.resultingIntegrationSha]);
+        throw new Error("TRAIN_PREPARE_IDENTITY_MISMATCH");
+      const directory = path.join(out, car.candidateId);
+      const worktree = path.join(root, car.candidateId);
+      await mkdir(directory, { recursive: true });
+      await execute("git", [
+        "-C",
+        repoPath,
+        "worktree",
+        "add",
+        "--detach",
+        worktree,
+        predicted.resultingIntegrationSha,
+      ]);
       try {
-        await execute("git", ["-C", repoPath, "bundle", "create", path.join(directory, "integration.bundle"), bundleRef]);
-      } finally {
-        await execute("git", ["-C", repoPath, "update-ref", "-d", bundleRef]).catch(() => undefined);
-      }
-      for (const node of plan.nodes)
-        matrix.push({
-          carId: car.candidateId,
-          suiteId: node.id,
-          candidateSha: car.candidateHeadCommitSha,
-          executionSha: predicted.resultingIntegrationSha,
-          planArtifact: `sounding-line-train-plan-${car.candidateId}`,
-          integrationArtifact: `sounding-line-train-integration-${car.candidateId}`,
-          preparedArtifact: "sounding-line-train-prepared-dependency",
-          preparedPath,
-          preparedProducer: producer,
-          planPath: `${car.candidateId}/sounding-line-plan.json`,
-          integrationBundlePath: `${car.candidateId}/integration.bundle`,
-          receiptArtifact: `sounding-line-train-worker-${car.candidateId}-${node.id}`,
-          wave: node.execution.wave,
-          mode: node.execution.mode,
+        const plan = await buildPlanFn({
+          root: worktree,
+          gateId: "mainline",
+          sourceSha: car.candidateHeadCommitSha,
+          qualifiedBaseSha: car.predictedParentCommitSha,
+          authorityMode: "V14_CANDIDATE",
+          githubRef: "refs/heads/main",
+          predictedIdentity: {
+            predictedParentCommitSha: car.predictedParentCommitSha,
+            predictedParentTreeSha: car.predictedParentTreeSha,
+            predictedIntegrationTreeSha: car.predictedIntegrationTreeSha,
+          },
         });
-    } finally {
-      await execute("git", ["-C", repoPath, "worktree", "remove", "--force", worktree]).catch(() => undefined);
+        if (
+          plan.authorityBoundary !== "V14_CANDIDATE_QUALIFICATION" ||
+          plan.predictedIntegrationTreeSha !== car.predictedIntegrationTreeSha
+        )
+          throw new Error("TRAIN_PREPARE_PLAN_IDENTITY_MISMATCH");
+        const preparedLayerKey = digest(await dependencyLayerInputsFn(worktree));
+        const preparedPath = preparedLayerKey;
+        if (!preparedLayers.has(preparedLayerKey)) {
+          await prepareLayerFn({
+            worktree,
+            destination: path.join(out, "dependencies", preparedPath),
+            producer,
+            expiresAt,
+            preparedLayerKey,
+          });
+          preparedLayers.add(preparedLayerKey);
+        }
+        cars.push({
+          candidateId: car.candidateId,
+          position,
+          candidateSha: car.candidateHeadCommitSha,
+          prNumber: car.candidatePrIdentity?.number,
+          qualifiedBaseSha: car.predictedParentCommitSha,
+          planPath: `${car.candidateId}/sounding-line-plan.json`,
+          finalizationArtifact: `sounding-line-train-finalization-${car.candidateId}`,
+          qualificationArtifact: `sounding-line-train-qualified-${car.candidateId}`,
+          acceptanceArtifact: `sounding-line-train-acceptance-envelope-${car.candidateId}`,
+        });
+        await writeFile(path.join(directory, "sounding-line-plan.json"), `${JSON.stringify(plan, null, 2)}\n`, "utf8");
+        // Synthetic integration commits are intentionally unreachable from any
+        // branch. Pin the exact object under an internal deterministic ref long
+        // enough for Git to serialize it, then remove that local transport ref.
+        const bundleRef = `refs/sounding-line/train/${position}-${car.candidateHeadCommitSha}`;
+        await execute("git", ["-C", repoPath, "update-ref", bundleRef, predicted.resultingIntegrationSha]);
+        try {
+          await execute("git", [
+            "-C",
+            repoPath,
+            "bundle",
+            "create",
+            path.join(directory, "integration.bundle"),
+            bundleRef,
+          ]);
+        } finally {
+          await execute("git", ["-C", repoPath, "update-ref", "-d", bundleRef]).catch(() => undefined);
+        }
+        for (const node of plan.nodes)
+          matrix.push({
+            carId: car.candidateId,
+            suiteId: node.id,
+            candidateSha: car.candidateHeadCommitSha,
+            executionSha: predicted.resultingIntegrationSha,
+            planArtifact: `sounding-line-train-plan-${car.candidateId}`,
+            integrationArtifact: `sounding-line-train-integration-${car.candidateId}`,
+            preparedArtifact: "sounding-line-train-prepared-dependency",
+            preparedPath,
+            preparedProducer: producer,
+            planPath: `${car.candidateId}/sounding-line-plan.json`,
+            integrationBundlePath: `${car.candidateId}/integration.bundle`,
+            receiptArtifact: `sounding-line-train-worker-${car.candidateId}-${node.id}`,
+            wave: node.execution.wave,
+            mode: node.execution.mode,
+          });
+      } finally {
+        await execute("git", ["-C", repoPath, "worktree", "remove", "--force", worktree]).catch(() => undefined);
+      }
     }
-  }
     await writeFile(path.join(out, "worker-matrix.json"), `${JSON.stringify({ include: matrix }, null, 2)}\n`, "utf8");
     await writeFile(path.join(out, "car-matrix.json"), `${JSON.stringify({ include: cars }, null, 2)}\n`, "utf8");
     return { include: matrix, cars };

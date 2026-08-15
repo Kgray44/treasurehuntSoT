@@ -52,7 +52,7 @@ export async function buildSyntheticIntegrationTree({
     } catch (error) {
       return {
         status: "CONFLICT",
-      authorityBoundary,
+        authorityBoundary,
         failedCandidateSha: candidateSha,
         parentIntegrationSha: parentSha,
         cars,

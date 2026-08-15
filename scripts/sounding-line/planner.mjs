@@ -72,8 +72,7 @@ export async function buildV14HostedPlan({
     version: 14,
     authority: "SOUNDING_LINE",
     authorityVersion: "1.4",
-    authorityBoundary:
-      authorityMode === "V14_CANDIDATE" ? "V14_CANDIDATE_QUALIFICATION" : "CURRENT_AUTHORITATIVE_V14",
+    authorityBoundary: authorityMode === "V14_CANDIDATE" ? "V14_CANDIDATE_QUALIFICATION" : "CURRENT_AUTHORITATIVE_V14",
     authorityMode,
     sourceSha,
     qualifiedBaseSha,

@@ -76,9 +76,9 @@ export async function verifyDependencyLayer({ root, sourceDirectory, manifest })
   ]);
   const integrity = verifyPreparedLayerManifest(manifest, contentManifest);
   if (!integrity.valid) throw new Error(`PREPARED_LAYER_REJECTED:${integrity.reason}`);
-  const expectedProducer = process.env.SOUNDING_LINE_PREPARED_PRODUCER || (process.env.GITHUB_RUN_ID
-    ? `protected-authoritative-workflow:${process.env.GITHUB_RUN_ID}`
-    : manifest.producer);
+  const expectedProducer =
+    process.env.SOUNDING_LINE_PREPARED_PRODUCER ||
+    (process.env.GITHUB_RUN_ID ? `protected-authoritative-workflow:${process.env.GITHUB_RUN_ID}` : manifest.producer);
   const consumption = validateLayerConsumption(manifest, {
     trustedProducers: [expectedProducer],
     platform: { os: process.platform, architecture: process.arch },
