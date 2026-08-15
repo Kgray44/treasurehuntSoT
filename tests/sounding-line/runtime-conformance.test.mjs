@@ -233,6 +233,23 @@ test("resource-aware preparation eliminates universal database and browser setup
   assert.match(authoritativeWorkflow, /actions\/cache\/save/u);
   assert.match(authoritativeWorkflow, /dependency-cache-restore\.outputs\.cache-hit != 'true'/u);
   assert.match(authoritativeWorkflow, /with: \{ ref: "\$\{\{ inputs\.candidate_sha \}\}", fetch-depth: 0 \}/u);
+  const isolatedRuntime = await readFile(
+    path.join(root, "scripts", "sounding-line", "isolated-validation-runtime.ps1"),
+    "utf8",
+  );
+  assert.match(isolatedRuntime, /\$hostedRuntimeGeneratedBaseline = \$false/u);
+  assert.match(isolatedRuntime, /\$env:GITHUB_ACTIONS -ne "true"/u);
+  assert.match(isolatedRuntime, /\$baselineSource = "hosted-runtime-generated"/u);
+  assert.match(isolatedRuntime, /Join-Path \$runtimeRoot "prisma\\validation\.db"/u);
+  const isolationHelper = await readFile(path.join(root, "scripts", "prepare-validation-isolation.ts"), "utf8");
+  assert.match(isolationHelper, /"hosted-runtime-generated"/u);
+  const maintenancePolicy = JSON.parse(
+    await readFile(path.join(root, "testing", "verification-maintenance-policy.json"), "utf8"),
+  );
+  assert.ok(
+    maintenancePolicy.authorityChangePathGlobs.includes("scripts/sounding-line/isolated-validation-runtime.ps1"),
+  );
+  assert.ok(maintenancePolicy.authorityChangePathGlobs.includes("scripts/prepare-validation-isolation.ts"));
 });
 
 test("conformance fails closed for missing adapter resources and undeclared browser engines", () => {
