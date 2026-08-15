@@ -43,7 +43,15 @@
     "gate": "mainline",
     "releaseDisposition": "RELEASE_GO",
     "currentClaim": "FORBIDDEN",
-    "protectedBinding": "REQUIRED"
+    "protectedBinding": "REQUIRED",
+    "minimumSufficientEvidence": {
+      "selectionMode": "EXACT_SEMANTIC_IMPACT_WITH_REQUIRED_SENTINELS",
+      "requiredSafetySentinelSuiteIds": ["browser.access-sentinel"],
+      "unmappedDisposition": "CONSERVATIVE_FALLBACK",
+      "exhaustiveGateIds": ["release-candidate"],
+      "performanceObjectiveMs": 600000,
+      "performanceCeilingMs": 900000
+    }
   },
   "hostedExecutionCapacity": {
     "maximumWave": 5,

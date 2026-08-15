@@ -348,10 +348,12 @@ export function selectV14Mainline({
   impact = {},
   requiredSuiteIds = [],
   conditionalSuiteIds = [],
+  ledgerSuiteIds = conditionalSuiteIds,
   recordOnly = false,
   identity = {},
   policyDigest = null,
   inventoryDigest = null,
+  selectionContract = null,
 }) {
   const selectedByFloor = new Map();
   const rules = recordOnly
@@ -379,28 +381,6 @@ export function selectV14Mainline({
   const candidates = unknown
     ? new Set(suites.map((suite) => suite.id))
     : new Set([...requiredSuiteIds, ...directlyAffected, ...selectedByFloor.keys()]);
-  const ledger = suites
-    .filter((suite) => conditionalSuiteIds.includes(suite.id))
-    .map((suite) => ({
-      suiteId: suite.id,
-      selected: candidates.has(suite.id),
-      selectionReason: unknown
-        ? "CONSERVATIVE_FALLBACK"
-        : selectedByFloor.has(suite.id)
-          ? `RISK_FLOOR:${selectedByFloor.get(suite.id)}`
-          : directlyAffected.has(suite.id)
-            ? "SEMANTIC_IMPACT"
-            : "SEMANTICALLY_UNCHANGED",
-      affectedContracts: sorted(changedContracts),
-      affectedPaths: sorted(changedPaths),
-      closureConfidence: unknown ? "UNKNOWN" : "EXACT",
-      evidenceDisposition: candidates.has(suite.id) ? (unknown ? "CONSERVATIVE_FALLBACK" : "FRESH") : "PRESERVED",
-      debt: unknown
-        ? mappingDebt
-            .filter((debt) => changedContracts.includes(debt.contractId))
-            .map((debt) => ({ id: debt.contractId, owner: debt.owner }))
-        : [],
-    }));
   const suiteById = new Map(suites.map((suite) => [suite.id, suite]));
   const visiting = new Set();
   const includeDependencies = (suiteId) => {
@@ -416,6 +396,41 @@ export function selectV14Mainline({
   };
   for (const suiteId of [...candidates]) includeDependencies(suiteId);
   const selectedSuiteIds = sorted([...candidates]);
+  const requiredSentinels = new Set(requiredSuiteIds);
+  const ledger = suites
+    .filter((suite) => ledgerSuiteIds.includes(suite.id))
+    .map((suite) => {
+      const selected = candidates.has(suite.id);
+      const selectionReason = unknown
+        ? "CONSERVATIVE_FALLBACK"
+        : directlyAffected.has(suite.id)
+          ? "DIRECT_IMPACT"
+          : selectedByFloor.has(suite.id)
+            ? `RISK_FLOOR:${selectedByFloor.get(suite.id)}`
+            : requiredSentinels.has(suite.id)
+              ? "REQUIRED_SENTINEL"
+              : selected
+                ? "DEPENDENCY"
+                : "SEMANTICALLY_UNCHANGED";
+      return {
+        suiteId: suite.id,
+        selected,
+        selectionReason,
+        affectedContracts: sorted(changedContracts),
+        affectedPaths: sorted(changedPaths),
+        closureConfidence: unknown ? "UNKNOWN" : "EXACT",
+        // PRESERVED means the sealed exact semantic interval proves that this
+        // obligation is unchanged. It never imports an unsealed receipt; a
+        // later receipt derivation must still validate its fingerprints.
+        evidenceDisposition: selected ? (unknown ? "CONSERVATIVE_FALLBACK" : "FRESH") : "PRESERVED",
+        preservationBasis: selected ? "CURRENT_EXECUTION" : "EXACT_SEMANTIC_INTERVAL",
+        debt: unknown
+          ? mappingDebt
+              .filter((debt) => changedContracts.includes(debt.contractId))
+              .map((debt) => ({ id: debt.contractId, owner: debt.owner }))
+          : [],
+      };
+    });
   const nodes = suites
     .filter((suite) => candidates.has(suite.id))
     .map((suite) => ({
@@ -444,6 +459,7 @@ export function selectV14Mainline({
     ...identity,
     policyDigest,
     inventoryDigest,
+    selectionContract,
     changedInterval: {
       changedPaths: sorted(changedPaths),
       changedContracts: sorted(changedContracts),
@@ -453,6 +469,10 @@ export function selectV14Mainline({
     selectedSuiteIds,
     nodes,
     ledger,
+    evidenceDispositionCounts: ledger.reduce(
+      (counts, entry) => ({ ...counts, [entry.evidenceDisposition]: (counts[entry.evidenceDisposition] ?? 0) + 1 }),
+      {},
+    ),
     fallback: unknown
       ? { disposition: "CONSERVATIVE_FALLBACK", failure: mappingDebt.length ? "MAPPING_DEBT" : "UNKNOWN_IMPACT" }
       : null,
