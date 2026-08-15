@@ -109,6 +109,38 @@ test("risk floors and unknown mapping produce sealed, explained plans without si
   assert.ok(V14_RISK_FLOORS.some((entry) => entry.id === "persistence"));
 });
 
+test("exact Tideglass impact uses only direct work and the mandatory sentinel in the earliest wave", () => {
+  const suites = [
+    { id: "unit.tideglass", dependencies: [], domains: ["tideglass"] },
+    { id: "unit.one-voyage", dependencies: [], domains: ["one-voyage"] },
+    { id: "browser.access-sentinel", dependencies: [], domains: ["authorization"] },
+    { id: "browser.helm", dependencies: ["unit.helm"], domains: ["helm"] },
+    { id: "unit.helm", dependencies: [], domains: ["helm"] },
+  ];
+  const plan = selectV14Mainline({
+    changedPaths: ["tests/tideglass/canonicalization.test.ts"],
+    suites,
+    requiredSuiteIds: ["browser.access-sentinel"],
+    ledgerSuiteIds: suites.map((suite) => suite.id),
+    impact: { pathMappings: [{ path: "tests/tideglass/**", suiteIds: ["unit.tideglass"] }], contractMappings: [] },
+    selectionContract: { selectionMode: "EXACT_SEMANTIC_IMPACT_WITH_REQUIRED_SENTINELS" },
+  });
+  assert.deepEqual(plan.selectedSuiteIds, ["browser.access-sentinel", "unit.tideglass"]);
+  assert.equal(
+    plan.nodes.every((node) => node.execution.wave === 0),
+    true,
+  );
+  assert.equal(plan.ledger.find((entry) => entry.suiteId === "unit.tideglass").selectionReason, "DIRECT_IMPACT");
+  assert.equal(
+    plan.ledger.find((entry) => entry.suiteId === "browser.access-sentinel").selectionReason,
+    "REQUIRED_SENTINEL",
+  );
+  const helm = plan.ledger.find((entry) => entry.suiteId === "browser.helm");
+  assert.equal(helm.evidenceDisposition, "PRESERVED");
+  assert.equal(helm.preservationBasis, "EXACT_SEMANTIC_INTERVAL");
+  assert.deepEqual(plan.evidenceDispositionCounts, { FRESH: 2, PRESERVED: 3 });
+});
+
 test("release closure, typed recovery, and legacy adoption fail closed", () => {
   const failed = closeReleaseCandidate({
     mandatoryObligationIds: ["a", "b"],

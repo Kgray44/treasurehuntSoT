@@ -22,20 +22,39 @@ export async function generateV14FastChannelPlan({
   gateId = "mainline",
   predictedIdentity = {},
 }) {
-  const [gates, suites, impact, debt, contracts, ownership, fingerprintPolicy, preparedArtifacts, trainPolicy] =
-    await Promise.all([
-      json(root, "release-gates.json"),
-      json(root, "suites.json"),
-      json(root, "impact-map.json"),
-      json(root, "v14/contract-map-debt.json"),
-      json(root, "contracts.json"),
-      json(root, "ownership.json"),
-      json(root, "evidence-fingerprint-policy.json"),
-      json(root, "prepared-artifacts.json"),
-      json(root, "mainline-train-policy.json"),
-    ]);
+  const [
+    gates,
+    suites,
+    impact,
+    debt,
+    contracts,
+    ownership,
+    fingerprintPolicy,
+    preparedArtifacts,
+    trainPolicy,
+    authority,
+  ] = await Promise.all([
+    json(root, "release-gates.json"),
+    json(root, "suites.json"),
+    json(root, "impact-map.json"),
+    json(root, "v14/contract-map-debt.json"),
+    json(root, "contracts.json"),
+    json(root, "ownership.json"),
+    json(root, "evidence-fingerprint-policy.json"),
+    json(root, "prepared-artifacts.json"),
+    json(root, "mainline-train-policy.json"),
+    json(root, "sounding-line-authority.json"),
+  ]);
   const gate = gates.gates.find((entry) => entry.id === gateId);
   if (!gate) throw new Error(`UNKNOWN_GATE:${gateId}`);
+  const selection = authority.ordinaryCandidateQualification?.minimumSufficientEvidence;
+  if (!selection || selection.selectionMode !== "EXACT_SEMANTIC_IMPACT_WITH_REQUIRED_SENTINELS")
+    throw new Error("V14_MSES_SELECTION_POLICY_INVALID");
+  if (!Array.isArray(selection.requiredSafetySentinelSuiteIds) || !selection.requiredSafetySentinelSuiteIds.length)
+    throw new Error("V14_MSES_SENTINEL_POLICY_INVALID");
+  if (!Array.isArray(selection.exhaustiveGateIds) || !selection.exhaustiveGateIds.includes("release-candidate"))
+    throw new Error("V14_MSES_EXHAUSTIVE_POLICY_INVALID");
+  const exhaustive = selection.exhaustiveGateIds.includes(gateId);
   const changedPaths = (await git(root, "diff", "--name-only", baseSha, candidateSha)).split(/\r?\n/u).filter(Boolean);
   const [candidateTreeSha, qualifiedBaseTreeSha] = await Promise.all([
     git(root, "rev-parse", `${candidateSha}^{tree}`),
@@ -44,8 +63,16 @@ export async function generateV14FastChannelPlan({
   return selectV14Mainline({
     changedPaths,
     suites: suites.suites,
-    requiredSuiteIds: gate.requiredSuites ?? [],
-    conditionalSuiteIds: gate.conditionalSuites ?? [],
+    // Mainline candidates use exact semantic impact plus the authority-owned
+    // safety sentinel set. The historical required-suite matrix remains the
+    // exhaustive release-candidate contract; it is not a hidden mainline
+    // freshness floor.
+    requiredSuiteIds: exhaustive
+      ? [...(gate.requiredSuites ?? []), ...(gate.conditionalSuites ?? [])]
+      : selection.requiredSafetySentinelSuiteIds,
+    ledgerSuiteIds: exhaustive
+      ? [...new Set([...(gate.requiredSuites ?? []), ...(gate.conditionalSuites ?? [])])]
+      : (gate.requiredSuites ?? []),
     impact,
     mappingDebt: debt.entries,
     identity: {
@@ -64,6 +91,13 @@ export async function generateV14FastChannelPlan({
     },
     policyDigest: digest(gates),
     inventoryDigest: digest({ contracts, ownership, suites }),
+    selectionContract: {
+      selectionMode: selection.selectionMode,
+      requiredSafetySentinelSuiteIds: selection.requiredSafetySentinelSuiteIds,
+      exhaustive,
+      performanceObjectiveMs: selection.performanceObjectiveMs,
+      performanceCeilingMs: selection.performanceCeilingMs,
+    },
   });
 }
 

@@ -88,6 +88,11 @@ export async function buildV14HostedPlan({
     inventoryDigest: digest(registry),
     authorityDigest: digest(authorityIndex),
     semanticPlanDigest: semanticPlan.digest,
+    selectionContract: semanticPlan.selectionContract,
+    changedInterval: semanticPlan.changedInterval,
+    selectionLedger: semanticPlan.ledger,
+    evidenceDispositionCounts: semanticPlan.evidenceDispositionCounts,
+    semanticFallback: semanticPlan.fallback,
     runtimeConformanceRequired: authorityIndex.runtimeConformance?.required === true,
     runtimeConformanceSuiteId: authorityIndex.runtimeConformance?.suiteId ?? null,
     nodes: semanticPlan.nodes.map((node) => {

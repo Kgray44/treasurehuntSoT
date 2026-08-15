@@ -54,18 +54,20 @@ test("hosted workflow capacity is contract-bound through every wave and evidence
   assert.match(workflow, /HOSTED_EXECUTION_WAVE_CAPACITY_EXCEEDED/u);
 });
 
-test("empty exclusive matrices use an explicit success marker rather than a skipped caller", async () => {
+test("empty hosted matrices use an explicit success marker rather than a skipped caller", async () => {
   const workflow = await readFile(path.join(root, ".github", "workflows", "sounding-line-authoritative.yml"), "utf8");
   for (let wave = 0; wave <= authority.hostedExecutionCapacity.maximumWave; wave += 1) {
-    const segment = workflow.match(
-      new RegExp(`governed-exclusive-wave-${wave}:([\\s\\S]*?)(?=\\n  [A-Za-z0-9_-]+:|$)`, "u"),
-    );
-    assert.ok(segment, `exclusive caller missing for wave ${wave}`);
-    assert.ok(segment[1].includes(`matrix: \${{ fromJSON(needs.plan.outputs.exclusive${wave}) }}`));
-    assert.doesNotMatch(segment[1], /\n    if:/u);
-    assert.match(segment[1], /empty_wave: \$\{\{ matrix\.emptyWave \}\}/u);
+    for (const mode of ["parallel", "exclusive"]) {
+      const segment = workflow.match(
+        new RegExp(`governed-${mode}-wave-${wave}:([\\s\\S]*?)(?=\\n  [A-Za-z0-9_-]+:|$)`, "u"),
+      );
+      assert.ok(segment, `${mode} caller missing for wave ${wave}`);
+      assert.ok(segment[1].includes(`matrix: \${{ fromJSON(needs.plan.outputs.${mode}${wave}) }}`));
+      if (mode === "exclusive") assert.doesNotMatch(segment[1], /\n    if:/u);
+      assert.match(segment[1], /empty_wave: \$\{\{ matrix\.emptyWave \}\}/u);
+    }
   }
-  assert.match(workflow, /__SOUNDING_LINE_EMPTY_EXCLUSIVE_WAVE__/u);
+  assert.match(workflow, /__SOUNDING_LINE_EMPTY_WAVE__/u);
 });
 
 test("policy capacity qualification fails closed before hosted activation loses a deeper graph", () => {
