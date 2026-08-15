@@ -345,10 +345,7 @@ export function planMainlineTrain(train, { integrate, timestamp }) {
  * Planning alone is never a qualification claim: the finalizer's RELEASE_GO
  * and the exact candidate/base/tree identities are all required first.
  */
-export function qualifyTrainCar(
-  train,
-  { candidateId, plan, finalization, evidenceClosureIdentity, timestamp },
-) {
+export function qualifyTrainCar(train, { candidateId, plan, finalization, evidenceClosureIdentity, timestamp }) {
   if (!verifyTrain(train).valid) throw new Error("TAMPERED_STATE");
   normalizeTimestamp(timestamp, "TRAIN_UPDATE_TIMESTAMP_REQUIRED");
   const next = clone(train);
@@ -538,7 +535,8 @@ export function reconcileExternalMain(
     // The changed physical commit identity is recorded as a tree-equivalent
     // rebind; protected binding still independently checks that carry-forward.
     next.headPosition = next.cars.findIndex((car) => car.state !== "LANDED");
-    next.status = next.headPosition < 0 ? "LANDED" : next.cars.some((car) => car.state === "PLANNING") ? "PLANNING" : "QUALIFIED";
+    next.status =
+      next.headPosition < 0 ? "LANDED" : next.cars.some((car) => car.state === "PLANNING") ? "PLANNING" : "QUALIFIED";
     next.audit.push({
       kind: "PREDICTED_PREFIX_REBOUND",
       matchedPosition: matching,
@@ -635,12 +633,16 @@ export function landTrainHead(
     return { train: sealTrain(next), comparison };
   }
   let reconciled = reconcileExternalMain(landing, {
-      actualMainCommitSha: actualLandedCommitSha,
-      actualMainTreeSha: actualLandedTreeSha,
-      timestamp,
-      integrate,
-    });
-  if (comparison.result === "MATCH" && reconciled.headPosition >= 0 && reconciled.cars[reconciled.headPosition]?.state === "QUALIFIED")
+    actualMainCommitSha: actualLandedCommitSha,
+    actualMainTreeSha: actualLandedTreeSha,
+    timestamp,
+    integrate,
+  });
+  if (
+    comparison.result === "MATCH" &&
+    reconciled.headPosition >= 0 &&
+    reconciled.cars[reconciled.headPosition]?.state === "QUALIFIED"
+  )
     reconciled = transitionTrainCar(reconciled, { position: reconciled.headPosition, to: "HEAD_READY", timestamp });
   return { train: reconciled, comparison };
 }
