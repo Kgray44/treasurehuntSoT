@@ -8,7 +8,7 @@ on:
         required: true
         type: string
       empty_wave:
-        description: Explicit empty exclusive-wave marker; never represents governed test evidence
+        description: Explicit empty-wave marker; never represents governed test evidence
         required: false
         default: false
         type: boolean
@@ -77,16 +77,16 @@ jobs:
     # governed budget; retain setup, cleanup, and receipt-upload headroom.
     timeout-minutes: 120
     steps:
-      - name: Complete explicit empty exclusive wave without evidence
+      - name: Complete explicit empty wave without evidence
         if: ${{ inputs.empty_wave }}
         shell: pwsh
         env:
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
         run: |
-          if ($env:SOUNDING_LINE_SUITE -ne '__SOUNDING_LINE_EMPTY_EXCLUSIVE_WAVE__') {
-            throw 'GOVERNED_EMPTY_EXCLUSIVE_WAVE_MARKER_INVALID'
+          if ($env:SOUNDING_LINE_SUITE -ne '__SOUNDING_LINE_EMPTY_WAVE__') {
+            throw 'GOVERNED_EMPTY_WAVE_MARKER_INVALID'
           }
-          'SOUNDING_LINE_EMPTY_EXCLUSIVE_WAVE_COMPLETED'
+          'SOUNDING_LINE_EMPTY_WAVE_COMPLETED'
       - if: ${{ !inputs.empty_wave }}
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
