@@ -34,6 +34,19 @@ export async function movePreparedNodeModules({ source, destination, renameFn = 
     });
   }
 }
+
+export function freshTrainWorkerNodes(plan, candidateId) {
+  if (!Array.isArray(plan?.selectionLedger)) throw new Error(`TRAIN_SELECTION_LEDGER_REQUIRED:${candidateId}`);
+  const ledgerBySuite = new Map(plan.selectionLedger.map((entry) => [entry.suiteId, entry]));
+  return plan.nodes.map((node) => {
+    const disposition = ledgerBySuite.get(node.id);
+    if (!disposition) throw new Error(`TRAIN_PLAN_NODE_UNDECLARED:${candidateId}:${node.id}`);
+    if (!disposition.selected || disposition.evidenceDisposition !== "FRESH")
+      throw new Error(`TRAIN_PLAN_NODE_NOT_FRESH:${candidateId}:${node.id}`);
+    return node;
+  });
+}
+
 const defaultPrepareLayer = async ({ worktree, destination, producer, expiresAt }) => {
   await execute(npmCommand, ["ci"], { cwd: worktree, shell: process.platform === "win32" });
   const manifest = await createDependencyLayerManifest({
@@ -114,6 +127,11 @@ export async function prepareMainlineTrain({
           plan.predictedIntegrationTreeSha !== car.predictedIntegrationTreeSha
         )
           throw new Error("TRAIN_PREPARE_PLAN_IDENTITY_MISMATCH");
+        // The planner's sealed selection ledger is the authoritative worker
+        // boundary. Preflight it before constructing the dependency layer so
+        // a malformed plan cannot spend hosted preparation time before it is
+        // rejected, and no preserved or undeclared obligation reaches a matrix.
+        const workerNodes = freshTrainWorkerNodes(plan, car.candidateId);
         const preparedLayerKey = digest(await dependencyLayerInputsFn(worktree));
         const preparedPath = preparedLayerKey;
         if (!preparedLayers.has(preparedLayerKey)) {
@@ -155,11 +173,7 @@ export async function prepareMainlineTrain({
         } finally {
           await execute("git", ["-C", repoPath, "update-ref", "-d", bundleRef]).catch(() => undefined);
         }
-        const ledgerBySuite = new Map((plan.ledger ?? []).map((entry) => [entry.suiteId, entry]));
-        for (const node of plan.nodes) {
-          const disposition = ledgerBySuite.get(node.id);
-          if (!disposition || !disposition.selected || disposition.evidenceDisposition !== "FRESH")
-            throw new Error(`TRAIN_PLAN_NODE_NOT_FRESH:${car.candidateId}:${node.id}`);
+        for (const node of workerNodes) {
           matrix.push({
             carId: car.candidateId,
             suiteId: node.id,

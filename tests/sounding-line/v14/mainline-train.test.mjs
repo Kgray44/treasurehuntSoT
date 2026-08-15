@@ -28,6 +28,7 @@ import {
   withdrawTrainCandidate,
 } from "../../../scripts/sounding-line/v14/mainline-train.mjs";
 import {
+  freshTrainWorkerNodes,
   movePreparedNodeModules,
   prepareMainlineTrain,
 } from "../../../scripts/sounding-line/v14/mainline-train-prepare.mjs";
@@ -336,7 +337,7 @@ test("per-car preparation seals plans and bundles the exact unreachable predicte
         predictedIntegrationTreeSha: predictedIdentity.predictedIntegrationTreeSha,
         planDigest: "prepared-plan-a",
         nodes: [{ id: "unit", execution: { wave: 0, mode: "parallel" } }],
-        ledger: [{ suiteId: "unit", selected: true, evidenceDisposition: "FRESH" }],
+        selectionLedger: [{ suiteId: "unit", selected: true, evidenceDisposition: "FRESH" }],
       }),
       dependencyLayerInputsFn: async () => ({ packageLockDigest: "fixture" }),
       prepareLayerFn: async ({ destination }) => {
@@ -355,7 +356,7 @@ test("per-car preparation seals plans and bundles the exact unreachable predicte
   }
 });
 
-test("train preparation fails closed when an executable node is absent from, preserved by, or unselected in its sealed ledger", async () => {
+test("train preparation reads the planner selection ledger and fails closed before dependency preparation", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "sl14-train-ledger-"));
   const out = path.join(root, "prepared");
   try {
@@ -383,31 +384,58 @@ test("train preparation fails closed when an executable node is absent from, pre
       candidates: [candidate("L", "l", { headCommitSha: head, headTreeSha: headTree, admissionOrdinal: 1 })],
       createdAt: at,
     });
-    await assert.rejects(
-      prepareMainlineTrain({
-        state: admitted,
-        out,
-        repoPath: root,
-        temporaryRoot: path.join(root, "temporary-worktrees"),
-        buildPlanFn: async ({ sourceSha, qualifiedBaseSha, predictedIdentity }) => ({
-          authorityBoundary: "V14_CANDIDATE_QUALIFICATION",
-          authorityMode: "V14_CANDIDATE",
-          gate: "mainline",
-          sourceSha,
-          qualifiedBaseSha,
-          qualifiedBaseTreeSha: predictedIdentity.predictedParentTreeSha,
-          predictedIntegrationTreeSha: predictedIdentity.predictedIntegrationTreeSha,
-          planDigest: "prepared-plan-ledger",
-          nodes: [{ id: "preserved", execution: { wave: 0, mode: "parallel" } }],
-          ledger: [{ suiteId: "preserved", selected: false, evidenceDisposition: "PRESERVED" }],
+    const plan =
+      ({ selectionLedger }) =>
+      async ({ sourceSha, qualifiedBaseSha, predictedIdentity }) => ({
+        authorityBoundary: "V14_CANDIDATE_QUALIFICATION",
+        authorityMode: "V14_CANDIDATE",
+        gate: "mainline",
+        sourceSha,
+        qualifiedBaseSha,
+        qualifiedBaseTreeSha: predictedIdentity.predictedParentTreeSha,
+        predictedIntegrationTreeSha: predictedIdentity.predictedIntegrationTreeSha,
+        planDigest: "prepared-plan-ledger",
+        nodes: [{ id: "preserved", execution: { wave: 0, mode: "parallel" } }],
+        selectionLedger,
+      });
+    for (const [selectionLedger, expected] of [
+      [undefined, /TRAIN_SELECTION_LEDGER_REQUIRED:L/],
+      [[], /TRAIN_PLAN_NODE_UNDECLARED:L:preserved/],
+      [
+        [{ suiteId: "preserved", selected: false, evidenceDisposition: "PRESERVED" }],
+        /TRAIN_PLAN_NODE_NOT_FRESH:L:preserved/,
+      ],
+      [
+        [{ suiteId: "preserved", selected: false, evidenceDisposition: "FRESH" }],
+        /TRAIN_PLAN_NODE_NOT_FRESH:L:preserved/,
+      ],
+    ]) {
+      let prepared = false;
+      await assert.rejects(
+        prepareMainlineTrain({
+          state: admitted,
+          out,
+          repoPath: root,
+          temporaryRoot: path.join(root, "temporary-worktrees"),
+          buildPlanFn: plan({ selectionLedger }),
+          dependencyLayerInputsFn: async () => ({ packageLockDigest: "fixture" }),
+          prepareLayerFn: async () => {
+            prepared = true;
+          },
         }),
-        dependencyLayerInputsFn: async () => ({ packageLockDigest: "fixture" }),
-        prepareLayerFn: async ({ destination }) => {
-          await mkdir(path.join(destination, "node_modules"), { recursive: true });
-          await writeFile(path.join(destination, "dependency-manifest.json"), "{}\n");
+        expected,
+      );
+      assert.equal(prepared, false);
+    }
+    assert.deepEqual(
+      freshTrainWorkerNodes(
+        {
+          nodes: [{ id: "fresh", execution: { wave: 0, mode: "parallel" } }],
+          selectionLedger: [{ suiteId: "fresh", selected: true, evidenceDisposition: "FRESH" }],
         },
-      }),
-      /TRAIN_PLAN_NODE_NOT_FRESH:L:preserved/,
+        "L",
+      ).map((node) => node.id),
+      ["fresh"],
     );
   } finally {
     await rm(root, { recursive: true, force: true });
