@@ -297,11 +297,11 @@ function Copy-ForeverDependencySeed {
     Enable-ForeverValidationRuntimeCompression -RuntimeRoot $runtimeModules
     # Copy the already installed, lockfile-matched dependency tree rather than
     # repeating npm ci. A physical copy retains Next's runtime-local .next
-    # behavior and Prisma's generated-client isolation. pnpm exposes packages
-    # through an in-tree junction graph: dereferencing it makes duplicate
-    # physical copies of the same packages and can consume a browser suite's
-    # entire governed budget. Copy the physical store once, then recreate only
-    # its in-tree junctions with runtime-local targets.
+    # behavior and Prisma's generated-client isolation. Package workspaces
+    # expose packages through in-tree directory links: dereferencing them makes
+    # duplicate physical copies of the same packages and can consume a browser
+    # suite's entire governed budget. Copy the physical store once, then
+    # recreate only its in-tree directory links with runtime-local targets.
     & robocopy $seedModules $runtimeModules /E /XJ /COPY:DAT /DCOPY:DAT /R:1 /W:1 /MT:32 | Out-Null
     if ($LASTEXITCODE -gt 7) { throw "Unable to copy Sounding Line dependency seed (robocopy exit $LASTEXITCODE)." }
     $seedPrefix = $seedModules.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
@@ -330,8 +330,12 @@ function Copy-ForeverDependencySeed {
         }
         if ($isNestedInRetainedJunction) { continue }
         $sourceJunction = Get-Item -LiteralPath $resolvedSourceJunction -Force
-        if (-not $sourceJunction.PSIsContainer -or $sourceJunction.LinkType -ne "Junction") {
-            throw "Sounding Line dependency link is not an in-tree directory junction."
+        # npm creates Windows workspace links as junctions. The GitHub cache
+        # transport may restore that same directory link as a symbolic link;
+        # accept only those two directory-link representations and retain the
+        # target-containment checks below before recreating a runtime junction.
+        if (-not $sourceJunction.PSIsContainer -or $sourceJunction.LinkType -notin @("Junction", "SymbolicLink")) {
+            throw "Sounding Line dependency link is not a supported in-tree directory link."
         }
         $junctionTargets = @($sourceJunction.Target)
         if ($junctionTargets.Count -ne 1) { throw "Sounding Line dependency junction must have exactly one target." }

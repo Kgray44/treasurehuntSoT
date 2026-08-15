@@ -554,9 +554,11 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
   assert.match(common, /function Copy-ForeverDependencySeed/u);
   assert.match(common, /robocopy \$seedModules \$runtimeModules \/E \/XJ \/COPY:DAT/u);
   assert.match(common, /dir \/a:l \/s \/b/u);
+  assert.match(common, /@\("Junction", "SymbolicLink"\)/u);
   assert.match(common, /New-Item -ItemType Junction/u);
   assert.match(common, /retainedSourceJunctions/u);
   assert.match(common, /TrimEnd\(\[char\]92, \[char\]47\)/u);
+  assert.match(common, /target escaped the seed root/u);
   assert.match(common, /rmdir \/s \/q/u);
   assert.match(common, /junction target escaped the seed root/u);
   assert.match(common, /lockfile does not match the isolated runtime/u);
