@@ -272,8 +272,9 @@ test("empty exclusive matrices retain dependency-ready hosted work through a no-
   assert.match(workflow, /__SOUNDING_LINE_EMPTY_EXCLUSIVE_WAVE__/u);
   const worker = await readFile(path.join(root, ".github", "workflows", "sounding-line-governed-worker.yml"), "utf8");
   assert.match(worker, /empty_wave:/u);
-  assert.match(worker, /empty-exclusive-wave:[\s\S]*?SOUNDING_LINE_EMPTY_EXCLUSIVE_WAVE_COMPLETED/u);
-  assert.match(worker, /execute:[\s\S]*?if: \$\{\{ !inputs\.empty_wave \}\}/u);
+  assert.doesNotMatch(worker, /empty-exclusive-wave:/u);
+  assert.match(worker, /Complete explicit empty exclusive wave without evidence[\s\S]*?SOUNDING_LINE_EMPTY_EXCLUSIVE_WAVE_COMPLETED/u);
+  assert.match(worker, /execute:[\s\S]*?Complete explicit empty exclusive wave without evidence/u);
 });
 
 test("finalizer rejects missing or invalid runtime-conformance evidence", () => {
