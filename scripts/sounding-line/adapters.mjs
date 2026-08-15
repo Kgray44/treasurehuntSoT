@@ -225,9 +225,12 @@ export function resolveIsolatedBrowserFamilyAdapter(selections, baselineDatabase
   if (typeof expectMutation !== "boolean")
     throw new Error("Isolated browser adapter mutation expectation must be boolean");
   const skipLegacyProjectionFixture = options.skipLegacyProjectionFixture === true;
+  const parallelSafe = options.parallelSafe === true;
   const browserWorkers = options.browserWorkers ?? 1;
   if (!Number.isInteger(browserWorkers) || browserWorkers < 1 || browserWorkers > 3)
     throw new Error("Isolated browser adapter worker count must be between one and three");
+  if (browserWorkers > 1 && !parallelSafe)
+    throw new Error("Isolated browser adapter parallel workers require a parallel-safe suite");
   const normalizedSelections = selections.map((selection) => ({
     project: selection?.project,
     files: Array.isArray(selection?.files)

@@ -73,7 +73,7 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
   assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.navigation").length, 2);
 });
 
-test("access sentinel parallelism is limited to its exact read-only governed fixture", async () => {
+test("access sentinel parallelism requires an explicit parallel-safe suite contract", async () => {
   const adapter = resolveIsolatedBrowserFamilyAdapter(
     [
       {
@@ -85,11 +85,28 @@ test("access sentinel parallelism is limited to its exact read-only governed fix
     ],
     path.join(root, "prisma", "dev.db"),
     false,
-    { skipLegacyProjectionFixture: true, browserWorkers: 3 },
+    { skipLegacyProjectionFixture: true, parallelSafe: true, browserWorkers: 3 },
   );
   assert.ok(adapter.command.includes("-SkipLegacyProjectionFixture"));
   assert.ok(adapter.command.includes("-BrowserWorkers"));
   assert.ok(adapter.command.includes("3"));
+  assert.throws(
+    () =>
+      resolveIsolatedBrowserFamilyAdapter(
+        [
+          {
+            project: "sounding-line-access-sentinel",
+            files: ["tests/e2e/access-gates.spec.ts"],
+            grep: "access gate",
+            caseCount: 3,
+          },
+        ],
+        path.join(root, "prisma", "dev.db"),
+        false,
+        { skipLegacyProjectionFixture: true, parallelSafe: false, browserWorkers: 3 },
+      ),
+    /parallel workers require a parallel-safe suite/u,
+  );
   assert.throws(
     () =>
       resolveIsolatedBrowserFamilyAdapter(
@@ -115,6 +132,11 @@ test("access sentinel parallelism is limited to its exact read-only governed fix
   assert.match(runtime, /if \(\$SkipLegacyProjectionFixture -ne "true"\)/u);
   assert.match(runtime, /--workers=\$BrowserWorkers/u);
   assert.match(runtime, /--fully-parallel/u);
+  const suites = JSON.parse(await readFile(path.join(root, "testing", "suites.json"), "utf8"));
+  assert.equal(suites.suites.find((suite) => suite.id === "browser.access-sentinel")?.parallelSafe, false);
+  const authority = await readFile(path.join(root, "scripts", "sounding-line", "authority.mjs"), "utf8");
+  assert.match(authority, /parallelSafe: suite\.parallelSafe === true/u);
+  assert.match(authority, /browserWorkers: suite\.parallelSafe \? 3 : 1/u);
 });
 
 test("a corrective v1.4 candidate remains on the broad v1.3 plan only when explicitly dispatched for cutover", async () => {
