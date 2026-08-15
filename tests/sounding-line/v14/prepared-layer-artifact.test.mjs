@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
+import { execFile } from "node:child_process";
 import { mkdtemp, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
+import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 import {
   createDependencyLayerManifest,
@@ -11,6 +13,7 @@ import {
 } from "../../../scripts/sounding-line/v14/prepared-layer-artifact.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
+const exec = promisify(execFile);
 
 test("workflow dependency layers bind source inputs and rehash every transferred byte", async () => {
   const fixture = await mkdtemp(path.join(os.tmpdir(), "sounding-line-layer-"));
@@ -82,4 +85,18 @@ test("dependency cache identity is stable when warm and deterministically rotate
     if (previous === undefined) delete process.env.SOUNDING_LINE_NPM_VERSION;
     else process.env.SOUNDING_LINE_NPM_VERSION = previous;
   }
+});
+
+test("cache-key resolves without a dependency manifest because it runs before cache restore and publication", async () => {
+  const { stdout } = await exec(
+    process.execPath,
+    ["scripts/sounding-line/v14/prepared-layer-artifact.mjs", "cache-key"],
+    {
+      cwd: root,
+      env: { ...process.env, SOUNDING_LINE_NPM_VERSION: "test-npm" },
+    },
+  );
+  const cache = JSON.parse(stdout);
+  assert.match(cache.key, /^sounding-line-dependency-v1-[0-9a-f]{64}$/u);
+  assert.match(cache.producer, /^protected-authoritative-workflow:dependency-cache:[0-9a-f]{64}$/u);
 });
