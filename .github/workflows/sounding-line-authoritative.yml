@@ -204,7 +204,16 @@ jobs:
           if ($planMaximumWave -gt $maximumWave) { throw "HOSTED_EXECUTION_WAVE_CAPACITY_EXCEEDED" }
           foreach ($wave in 0..$maximumWave) {
             foreach ($mode in @('parallel', 'exclusive')) {
-              $nodes = @($plan.nodes | Where-Object { $_.execution.wave -eq $wave -and $_.execution.mode -eq $mode } | ForEach-Object { @{ suiteId = $_.id } })
+              $nodes = @($plan.nodes | Where-Object { $_.execution.wave -eq $wave -and $_.execution.mode -eq $mode } | ForEach-Object { @{ suiteId = $_.id; emptyWave = $false } })
+              # GitHub marks a caller that expands an empty reusable-workflow matrix as
+              # skipped, which makes the enclosing authority run fail even when every
+              # governed receipt and finalizer decision is clean. Represent an empty
+              # exclusive lane by one explicit no-op worker instead. The reusable
+              # worker emits no receipt for that marker, so no governed suite is
+              # invented and the finalizer still closes only real plan evidence.
+              if ($mode -eq 'exclusive' -and $nodes.Count -eq 0) {
+                $nodes = @(@{ suiteId = '__SOUNDING_LINE_EMPTY_EXCLUSIVE_WAVE__'; emptyWave = $true })
+              }
               $matrix = @{ include = $nodes } | ConvertTo-Json -Compress
               "$mode$wave=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
               if ($mode -eq 'exclusive') {
@@ -248,6 +257,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
 
@@ -298,6 +308,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
 
@@ -348,6 +359,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
 
@@ -398,6 +410,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
 
@@ -448,6 +461,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
 
@@ -498,6 +512,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
 
