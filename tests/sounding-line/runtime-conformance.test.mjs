@@ -243,7 +243,7 @@ test("hosted planning serializes only actual shared resources while retaining de
       assert.ok(plan.nodes.find((candidate) => candidate.id === dependency).execution.wave < node.execution.wave);
 });
 
-test("empty exclusive matrices retain dependency-ready hosted work without skipped callers", async () => {
+test("empty exclusive matrices retain dependency-ready hosted work through a no-evidence success marker", async () => {
   const workflow = await readFile(path.join(root, ".github", "workflows", "sounding-line-authoritative.yml"), "utf8");
   assert.match(
     workflow,
@@ -269,6 +269,11 @@ test("empty exclusive matrices retain dependency-ready hosted work without skipp
   );
   assert.doesNotMatch(workflow, /exclusive[0-5]Present == 'true'/u);
   assert.doesNotMatch(workflow, /needs\.\*\.result/u);
+  assert.match(workflow, /__SOUNDING_LINE_EMPTY_EXCLUSIVE_WAVE__/u);
+  const worker = await readFile(path.join(root, ".github", "workflows", "sounding-line-governed-worker.yml"), "utf8");
+  assert.match(worker, /empty_wave:/u);
+  assert.match(worker, /empty-exclusive-wave:[\s\S]*?SOUNDING_LINE_EMPTY_EXCLUSIVE_WAVE_COMPLETED/u);
+  assert.match(worker, /execute:[\s\S]*?if: \$\{\{ !inputs\.empty_wave \}\}/u);
 });
 
 test("finalizer rejects missing or invalid runtime-conformance evidence", () => {
