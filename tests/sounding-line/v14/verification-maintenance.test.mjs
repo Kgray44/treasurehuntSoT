@@ -153,6 +153,18 @@ test("known v1.4 repair classes remain maintenance while unknown ownership rejec
   );
 });
 
+test("trusted policy classifies the dependency-seed runtime seam as verification maintenance", async () => {
+  const trustedPolicy = JSON.parse(
+    await readFile(new URL("../../../testing/verification-maintenance-policy.json", import.meta.url), "utf8"),
+  );
+  const classification = classifyVerificationMaintenance({
+    trustedPolicy,
+    changedPaths: ["scripts/dev-common.ps1", "tests/sounding-line/authority-cutover.test.mjs"],
+  });
+  assert.equal(classification.classification, "VERIFICATION_MAINTENANCE");
+  assert.deepEqual(classification.errors, []);
+});
+
 test("maintenance qualification keeps the static-safe changed-path proof outside the checkout", async () => {
   const workflow = await readFile(
     new URL("../../../.github/workflows/sounding-line-verification-maintenance.yml", import.meta.url),

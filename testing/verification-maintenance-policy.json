@@ -15,6 +15,7 @@
     "scripts/sounding-line/p34-retirement.mjs",
     "scripts/sounding-line/reconcile-p34-stable-identities.mjs",
     "scripts/sounding-line/worker-preparation.mjs",
+    "scripts/dev-common.ps1",
     ".github/workflows/sounding-line-governed-worker.yml"
   ],
   "authorityChangePathGlobs": [
