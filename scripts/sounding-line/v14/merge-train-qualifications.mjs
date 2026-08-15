@@ -3,6 +3,7 @@
 import { readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 import { sealTrain, verifyTrain } from "./mainline-train.mjs";
 
 const args = process.argv.slice(2);
@@ -43,7 +44,7 @@ export function mergeTrainQualifications({ base, states, timestamp = new Date().
   return sealTrain(merged);
 }
 
-if (process.argv[1] && import.meta.url === new URL(process.argv[1], "file:").href) {
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const base = await json(path.resolve(value("--base")));
   const root = path.resolve(value("--states"));
   const files = await readdir(root, { recursive: true });

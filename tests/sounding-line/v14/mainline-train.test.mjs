@@ -62,6 +62,18 @@ const train = (candidates = [candidate("A", "a"), candidate("B", "b"), candidate
   });
 const planned = (candidates) => planMainlineTrain(train(candidates), { integrate: integrator, timestamp: at });
 
+test("train command-line entrypoints execute when invoked through a relative hosted path", async () => {
+  for (const script of [
+    "scripts/sounding-line/v14/mainline-train-prepare.mjs",
+    "scripts/sounding-line/v14/merge-train-qualifications.mjs",
+  ]) {
+    await assert.rejects(
+      execute(process.execPath, [script, "--train", "missing-train-input.json", "--repo", ".", "--out", "unused.json"]),
+      /ENOENT|TRAIN_QUALIFICATION_MERGE_BASE_REQUIRED/u,
+    );
+  }
+});
+
 test("deterministic ordering, frozen identity, and narrow record-only admission fail closed", () => {
   const input = [candidate("B", "b", { admissionOrdinal: 2 }), candidate("A", "a", { admissionOrdinal: 1 })];
   assert.deepEqual(

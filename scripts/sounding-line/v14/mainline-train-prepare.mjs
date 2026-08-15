@@ -5,6 +5,7 @@ import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 import { buildPlan } from "../planner.mjs";
 import { verifyTrain } from "./mainline-train.mjs";
@@ -15,7 +16,7 @@ const execute = promisify(execFile);
 const git = async (cwd, ...args) => (await execute("git", args, { cwd })).stdout.trim();
 const value = (args, flag) => {
   const index = args.indexOf(flag);
-  const result = index < 0 ? undefined : process.argv[index + 1];
+  const result = index < 0 ? undefined : args[index + 1];
   if (!result) throw new Error(`TRAIN_PREPARE_${flag.slice(2).toUpperCase()}_REQUIRED`);
   return result;
 };
@@ -167,7 +168,7 @@ export async function prepareMainlineTrain({
   }
 }
 
-if (process.argv[1] && import.meta.url === new URL(process.argv[1], "file:").href) {
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   const state = JSON.parse(await readFile(path.resolve(value(args, "--train")), "utf8"));
   await prepareMainlineTrain({
