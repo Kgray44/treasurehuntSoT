@@ -4,7 +4,9 @@
 # .DESCRIPTION
 # When a dedicated worktree has no canonical prisma/dev.db, provide an
 # existing absolute baseline path. The baseline is fingerprinted before and
-# after the run and is never used as the mutable validation database.
+# after the run and is never used as the mutable validation database. Hosted
+# Sounding Line workers instead bind the freshly seeded task-owned validation
+# database as their immutable witness before cloning it for browser execution.
 param(
     [switch]$SkipBrowserInstall,
     [string]$BaselineDatabasePath,
@@ -195,18 +197,30 @@ if ($BrowserTestPath) {
         default { throw "BrowserTestPath must identify a governed Harborlight browser suite." }
     }
 }
+$hostedRuntimeGeneratedBaseline = $false
 if ($BaselineDatabasePath) {
     if (-not ($BaselineDatabasePath -match '^[A-Za-z]:[\\/]' -or $BaselineDatabasePath.StartsWith('\\'))) {
         throw "BaselineDatabasePath must be an absolute database file path."
     }
     $canonicalDatabase = [System.IO.Path]::GetFullPath($BaselineDatabasePath)
     if (-not (Test-Path -LiteralPath $canonicalDatabase)) {
-        throw "BaselineDatabasePath must identify an existing database file."
+        if ($env:GITHUB_ACTIONS -ne "true") {
+            throw "BaselineDatabasePath must identify an existing database file."
+        }
+        # A hosted worker has no user-owned development database in its clean
+        # checkout. Initialize-ForeverRuntime creates the candidate-bound,
+        # migrated and seeded validation database below; that owned seed then
+        # becomes the immutable witness for the nonce-bound isolated copy.
+        $canonicalDatabase = $null
+        $baselineSource = "hosted-runtime-generated"
+        $hostedRuntimeGeneratedBaseline = $true
     }
-    if ((Get-Item -LiteralPath $canonicalDatabase).PSIsContainer) {
+    elseif ((Get-Item -LiteralPath $canonicalDatabase).PSIsContainer) {
         throw "BaselineDatabasePath must identify a file, not a directory."
     }
-    $baselineSource = "explicit-external"
+    else {
+        $baselineSource = "explicit-external"
+    }
 } else {
     $canonicalDatabase = Get-ForeverCanonicalDatabase
     $baselineSource = "auto-discovered"
@@ -239,6 +253,12 @@ function Get-CanonicalDatabaseFamilyFingerprint {
     }
 }
 
+$runtimeRoot = $null
+if ($hostedRuntimeGeneratedBaseline) {
+    $runtimeRoot = Initialize-ForeverRuntime -Mode validation -ResetDatabase
+    $canonicalDatabase = Join-Path $runtimeRoot "prisma\validation.db"
+}
+
 $canonicalSamples = @(1..3 | ForEach-Object {
     $sample = Get-CanonicalDatabaseFamilyFingerprint
     if ($_ -lt 3) { Start-Sleep -Milliseconds 500 }
@@ -256,7 +276,9 @@ $canonicalMtimeIso = [string]$canonicalMainFingerprint.mtimeIso
 $canonicalFamilyJson = [string]($canonicalSamples[0].members | ConvertTo-Json -Compress)
 $canonicalFamilyBase64 = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($canonicalFamilyJson))
 
-$runtimeRoot = Initialize-ForeverRuntime -Mode validation -ResetDatabase
+if (-not $runtimeRoot) {
+    $runtimeRoot = Initialize-ForeverRuntime -Mode validation -ResetDatabase
+}
 $resolvedRuntime = [System.IO.Path]::GetFullPath($runtimeRoot)
 $runtimePrefix = $resolvedRuntime.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
 
