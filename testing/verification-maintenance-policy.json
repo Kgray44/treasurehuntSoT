@@ -27,6 +27,8 @@
     "scripts/sounding-line/finalizer.mjs",
     "scripts/sounding-line/finalize-ci.mjs",
     "scripts/sounding-line/protected-merge-binding*.mjs",
+    "scripts/sounding-line/isolated-validation-runtime.ps1",
+    "scripts/prepare-validation-isolation.ts",
     ".github/workflows/sounding-line-authoritative.yml",
     ".github/workflows/sounding-line-protected-merge-binding.yml",
     ".github/workflows/sounding-line-verification-maintenance.yml",
