@@ -64,7 +64,10 @@ test("empty hosted matrices use an explicit success marker rather than a skipped
       assert.ok(segment, `${mode} caller missing for wave ${wave}`);
       assert.ok(segment[1].includes(`matrix: \${{ fromJSON(needs.plan.outputs.${mode}${wave}) }}`));
       if (wave > 0)
-        assert.match(segment[1], new RegExp(`fromJSON\\(needs\\.plan\\.outputs\\.activeMaximumWave\\) >= ${wave}`, "u"));
+        assert.match(
+          segment[1],
+          new RegExp(`fromJSON\\(needs\\.plan\\.outputs\\.activeMaximumWave\\) >= ${wave}`, "u"),
+        );
       assert.match(segment[1], /empty_wave: \$\{\{ matrix\.emptyWave \}\}/u);
     }
   }
@@ -80,7 +83,13 @@ test("dormant hosted waves are skipped only after the sealed active depth, while
     for (const job of [`governed-parallel-wave-${wave}`, `governed-exclusive-wave-${wave}`, `wave-${wave}-complete`]) {
       const segment = workflow.match(new RegExp(`${job}:([\\s\\S]*?)(?=\\n  [A-Za-z0-9_-]+:|$)`, "u"));
       assert.ok(segment, `${job} missing`);
-      assert.match(segment[1], new RegExp(`needs\\.wave-${predecessor}-complete\\.result == 'success'[\\s\\S]*?activeMaximumWave\\) >= ${wave}`, "u"));
+      assert.match(
+        segment[1],
+        new RegExp(
+          `needs\\.wave-${predecessor}-complete\\.result == 'success'[\\s\\S]*?activeMaximumWave\\) >= ${wave}`,
+          "u",
+        ),
+      );
     }
   }
 });

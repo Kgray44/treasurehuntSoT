@@ -94,10 +94,7 @@ export function validateHostedWorkflowCapacity({ capacity, workflow }) {
     if (!parallel.test(workflow)) errors.push(`HOSTED_WAVE_CAPACITY_PARALLEL_JOB_MISSING:${wave}`);
     if (!exclusive.test(workflow)) errors.push(`HOSTED_WAVE_CAPACITY_EXCLUSIVE_JOB_MISSING:${wave}`);
     if (!barrier.test(workflow)) errors.push(`HOSTED_WAVE_CAPACITY_BARRIER_MISSING:${wave}`);
-    if (
-      wave > 0 &&
-      !workflow.includes(`fromJSON(needs.plan.outputs.activeMaximumWave) >= ${wave}`)
-    )
+    if (wave > 0 && !workflow.includes(`fromJSON(needs.plan.outputs.activeMaximumWave) >= ${wave}`))
       errors.push(`HOSTED_WAVE_CAPACITY_DORMANT_WAVE_GUARD_MISSING:${wave}`);
     if (
       !new RegExp(

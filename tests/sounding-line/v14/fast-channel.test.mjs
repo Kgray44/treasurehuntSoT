@@ -141,6 +141,55 @@ test("exact Tideglass impact uses only direct work and the mandatory sentinel in
   assert.deepEqual(plan.evidenceDispositionCounts, { FRESH: 2, PRESERVED: 3 });
 });
 
+test("a mapped non-accessibility source change preserves the broad accessibility family while unknown source fails closed", () => {
+  const suites = [
+    { id: "static.core", domains: ["static"] },
+    { id: "unit.drydock", domains: ["drydock"] },
+    { id: "browser.accessibility", domains: ["accessibility"] },
+  ];
+  const mapped = selectV14Mainline({
+    changedPaths: ["src/drydock/variables.ts"],
+    suites,
+    ledgerSuiteIds: suites.map((suite) => suite.id),
+    impact: {
+      pathMappings: [{ path: "src/drydock/**", suiteIds: ["unit.drydock", "static.core"] }],
+      contractMappings: [],
+    },
+  });
+  assert.equal(
+    mapped.nodes.some((node) => node.id === "browser.accessibility"),
+    false,
+  );
+  assert.deepEqual(
+    mapped.ledger.find((entry) => entry.suiteId === "browser.accessibility"),
+    {
+      suiteId: "browser.accessibility",
+      selected: false,
+      selectionReason: "SEMANTICALLY_UNCHANGED",
+      affectedContracts: [],
+      affectedPaths: ["src/drydock/variables.ts"],
+      closureConfidence: "EXACT",
+      evidenceDisposition: "PRESERVED",
+      preservationBasis: "EXACT_SEMANTIC_INTERVAL",
+      debt: [],
+    },
+  );
+  const unknown = selectV14Mainline({
+    changedPaths: ["src/unmapped/new.ts"],
+    suites,
+    ledgerSuiteIds: suites.map((suite) => suite.id),
+    impact: { pathMappings: [], contractMappings: [] },
+  });
+  assert.equal(
+    unknown.nodes.some((node) => node.id === "browser.accessibility"),
+    true,
+  );
+  assert.equal(
+    unknown.ledger.find((entry) => entry.suiteId === "browser.accessibility").evidenceDisposition,
+    "CONSERVATIVE_FALLBACK",
+  );
+});
+
 test("release closure, typed recovery, and legacy adoption fail closed", () => {
   const failed = closeReleaseCandidate({
     mandatoryObligationIds: ["a", "b"],
