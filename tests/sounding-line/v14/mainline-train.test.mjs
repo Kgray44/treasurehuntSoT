@@ -105,7 +105,14 @@ test("only an exact V14_CANDIDATE RELEASE_GO qualifies a planned car and permits
     semanticPlanDigest: "mses-a",
   };
   assert.throws(
-    () => qualifyTrainCar(state, { candidateId: "A", plan, finalization: { decision: "RELEASE_NO_GO" }, evidenceClosureIdentity: "evidence-a", timestamp: at }),
+    () =>
+      qualifyTrainCar(state, {
+        candidateId: "A",
+        plan,
+        finalization: { decision: "RELEASE_NO_GO" },
+        evidenceClosureIdentity: "evidence-a",
+        timestamp: at,
+      }),
     /QUALIFICATION_IDENTITY_MISMATCH/,
   );
   const qualified = qualifyTrainCar(state, {
@@ -209,7 +216,10 @@ test("live admission derives ordered predicted trees from real immutable Git hea
       createdAt: at,
     });
     assert.equal(result.predicted.authorityBoundary, V14_TRAIN_AUTHORITY_BOUNDARY);
-    assert.equal(result.train.cars[0].predictedIntegrationTreeSha, result.predicted.cars[0].predictedIntegrationTreeSha);
+    assert.equal(
+      result.train.cars[0].predictedIntegrationTreeSha,
+      result.predicted.cars[0].predictedIntegrationTreeSha,
+    );
     assert.equal(result.train.cars[1].predictedParentTreeSha, result.train.cars[0].predictedIntegrationTreeSha);
     assert.ok(result.train.cars.every((car) => car.state === "PLANNING"));
     await assert.rejects(

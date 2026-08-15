@@ -221,8 +221,13 @@ jobs:
           SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-plan/${{ inputs.plan_path }}
           SOUNDING_LINE_GATE: ${{ inputs.gate }}
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
+          SOUNDING_LINE_SEALED_SOURCE_SHA: ${{ inputs.candidate_sha }}
         shell: pwsh
-        run: node scripts/sounding-line/authority.mjs "$env:SOUNDING_LINE_GATE" --execute-only --plan-in "$env:SOUNDING_LINE_PLAN" --suite "$env:SOUNDING_LINE_SUITE" --receipt-out sounding-line-worker-evidence.json
+        run: |
+          # Reusable workflows inherit the trusted-main dispatch SHA. The sealed
+          # plan is instead source-bound to the exact frozen candidate identity.
+          $env:GITHUB_SHA = $env:SOUNDING_LINE_SEALED_SOURCE_SHA
+          node scripts/sounding-line/authority.mjs "$env:SOUNDING_LINE_GATE" --execute-only --plan-in "$env:SOUNDING_LINE_PLAN" --suite "$env:SOUNDING_LINE_SUITE" --receipt-out sounding-line-worker-evidence.json
       - name: Bind setup and execution timing to worker evidence
         if: always()
         shell: pwsh

@@ -234,7 +234,9 @@ function validatePolicy(policy) {
   if (
     !Array.isArray(maintenancePolicy?.ordinaryCandidateEligiblePathGlobs) ||
     !maintenancePolicy.ordinaryCandidateEligiblePathGlobs.length ||
-    maintenancePolicy.ordinaryCandidateEligiblePathGlobs.some((entry) => maintenancePolicy.authorityChangePathGlobs.includes(entry))
+    maintenancePolicy.ordinaryCandidateEligiblePathGlobs.some((entry) =>
+      maintenancePolicy.authorityChangePathGlobs.includes(entry),
+    )
   )
     errors.push("verification-maintenance-policy: ordinary candidate boundary mismatch");
   if (authorityIndex.governingPolicies?.proofMinimization !== "MINIMUM_SUFFICIENT_EVIDENCE")
