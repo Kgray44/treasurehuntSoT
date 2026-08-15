@@ -129,16 +129,30 @@ jobs:
           CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
-          try {
-            git show "$env:BASE_SHA`:testing/verification-maintenance-policy.json" > trusted-maintenance-policy.json
-            git show "$env:BASE_SHA`:scripts/sounding-line/verification-maintenance.mjs" > trusted-verification-maintenance.mjs
-            $paths = @(git diff --name-only --no-renames --no-ext-diff "$env:BASE_SHA" "$env:CANDIDATE_SHA" | Sort-Object)
-            $paths | ConvertTo-Json -Compress | Set-Content -NoNewline maintenance-changed-paths.json
-            $tree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
-            node trusted-verification-maintenance.mjs plan --policy trusted-maintenance-policy.json --paths maintenance-changed-paths.json --trusted-main-sha $env:BASE_SHA --candidate-sha $env:CANDIDATE_SHA --candidate-tree $tree --base-sha $env:BASE_SHA --out maintenance-preflight.json
-            if ($LASTEXITCODE -eq 0) { 'maintenance=true' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8; exit 0 }
-          } catch { }
-          'maintenance=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          $ErrorActionPreference = 'Stop'
+          git show "$env:BASE_SHA`:testing/verification-maintenance-policy.json" > trusted-maintenance-policy.json
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_MAINTENANCE_TRUSTED_POLICY_UNAVAILABLE' }
+          git show "$env:BASE_SHA`:scripts/sounding-line/verification-maintenance.mjs" > trusted-verification-maintenance.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_MAINTENANCE_TRUSTED_CLASSIFIER_UNAVAILABLE' }
+          $paths = @(git diff --name-only --no-renames --no-ext-diff "$env:BASE_SHA" "$env:CANDIDATE_SHA" | Sort-Object)
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_MAINTENANCE_CHANGED_PATHS_UNAVAILABLE' }
+          ConvertTo-Json -InputObject $paths -Compress | Set-Content -NoNewline maintenance-changed-paths.json
+          $tree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_MAINTENANCE_CANDIDATE_TREE_UNAVAILABLE' }
+          node trusted-verification-maintenance.mjs plan --policy trusted-maintenance-policy.json --paths maintenance-changed-paths.json --trusted-main-sha $env:BASE_SHA --candidate-sha $env:CANDIDATE_SHA --candidate-tree $tree --base-sha $env:BASE_SHA --out maintenance-preflight.json
+          $classificationExitCode = $LASTEXITCODE
+          if ($classificationExitCode -eq 0) {
+            'maintenance=true' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            exit 0
+          }
+          $preflight = Get-Content -Raw maintenance-preflight.json | ConvertFrom-Json
+          $errors = @($preflight.errors)
+          $ordinaryScopeOnly = $preflight.classification.classification -eq 'MAINTENANCE_SCOPE_REJECTED' -and $errors.Count -gt 0 -and @($errors | Where-Object { $_ -notmatch '^MAINTENANCE_SCOPE_REJECTED:' }).Count -eq 0
+          if ($ordinaryScopeOnly) {
+            'maintenance=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            exit 0
+          }
+          throw "SOUNDING_LINE_MAINTENANCE_PREFLIGHT_REJECTED:$($errors -join ',')"
 
   bind:
     # The name is intentionally the unchanged protected branch context.

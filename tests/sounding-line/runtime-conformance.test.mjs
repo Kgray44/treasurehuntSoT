@@ -191,6 +191,7 @@ test("resource-aware preparation eliminates universal database and browser setup
     resources: ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
   });
   assert.deepEqual(chromium.actions.browserEngines, ["chromium"]);
+  assert.equal(chromium.preparationOwner, "ISOLATED_BROWSER_RUNTIME");
   const webkit = deriveWorkerPreparation({
     id: "browser.webkit-only",
     adapter: "playwright-family",
@@ -214,6 +215,24 @@ test("resource-aware preparation eliminates universal database and browser setup
   const admiralty = suites.find((suite) => suite.id === "browser.admiralty");
   assert.equal(deriveWorkerPreparation(admiralty).runtimeConformance.result, "PASSED");
   assert.deepEqual(deriveWorkerPreparation(admiralty).actions.browserEngines, ["chromium"]);
+
+  const workerWorkflow = await readFile(
+    path.join(root, ".github", "workflows", "sounding-line-governed-worker.yml"),
+    "utf8",
+  );
+  assert.match(workerWorkflow, /fetch-depth: 1/u);
+  assert.match(workerWorkflow, /ISOLATED_BROWSER_RUNTIME/u);
+  assert.match(workerWorkflow, /GOVERNED_DEPENDENCY_CACHE_MISS/u);
+  assert.match(workerWorkflow, /prepared-layer-artifact\.mjs verify/u);
+  assert.match(workerWorkflow, /fetch-depth: 1/u);
+  const authoritativeWorkflow = await readFile(
+    path.join(root, ".github", "workflows", "sounding-line-authoritative.yml"),
+    "utf8",
+  );
+  assert.match(authoritativeWorkflow, /actions\/cache\/restore/u);
+  assert.match(authoritativeWorkflow, /actions\/cache\/save/u);
+  assert.match(authoritativeWorkflow, /dependency-cache-restore\.outputs\.cache-hit != 'true'/u);
+  assert.match(authoritativeWorkflow, /with: \{ ref: "\$\{\{ inputs\.candidate_sha \}\}", fetch-depth: 0 \}/u);
 });
 
 test("conformance fails closed for missing adapter resources and undeclared browser engines", () => {

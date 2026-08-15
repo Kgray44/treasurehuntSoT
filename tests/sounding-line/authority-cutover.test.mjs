@@ -7,6 +7,7 @@ import test from "node:test";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { finalize } from "../../scripts/sounding-line/finalizer.mjs";
+import { resolveIsolatedBrowserFamilyAdapter } from "../../scripts/sounding-line/adapters.mjs";
 import { buildPlan, resolvePlanAuthority } from "../../scripts/sounding-line/planner.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
@@ -67,8 +68,53 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
   const sentinelCases = registry.cases.filter((entry) => entry.suiteId === "browser.access-sentinel");
   assert.equal(sentinelCases.length, 3);
   assert.ok(sentinelCases.every((entry) => entry.project === "sounding-line-access-sentinel"));
+  assert.ok(sentinelCases.every((entry) => entry.parallelSafety === "ISOLATED_MUTABLE_PARALLEL"));
   assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.auth").length, 8);
   assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.navigation").length, 2);
+});
+
+test("access sentinel parallelism is limited to its exact read-only governed fixture", async () => {
+  const adapter = resolveIsolatedBrowserFamilyAdapter(
+    [
+      {
+        project: "sounding-line-access-sentinel",
+        files: ["tests/e2e/access-gates.spec.ts"],
+        grep: "access gate",
+        caseCount: 3,
+      },
+    ],
+    path.join(root, "prisma", "dev.db"),
+    false,
+    { skipLegacyProjectionFixture: true, browserWorkers: 3 },
+  );
+  assert.ok(adapter.command.includes("-SkipLegacyProjectionFixture"));
+  assert.ok(adapter.command.includes("-BrowserWorkers"));
+  assert.ok(adapter.command.includes("3"));
+  assert.throws(
+    () =>
+      resolveIsolatedBrowserFamilyAdapter(
+        [
+          {
+            project: "sounding-line-access-sentinel",
+            files: ["tests/e2e/access-gates.spec.ts"],
+            grep: "access gate",
+            caseCount: 3,
+          },
+        ],
+        path.join(root, "prisma", "dev.db"),
+        false,
+        { skipLegacyProjectionFixture: true, browserWorkers: 4 },
+      ),
+    /between one and three/u,
+  );
+  const runtime = await readFile(
+    path.join(root, "scripts", "sounding-line", "isolated-validation-runtime.ps1"),
+    "utf8",
+  );
+  assert.match(runtime, /Parallel browser execution is limited to the read-only browser-family sentinel fixture/u);
+  assert.match(runtime, /if \(\$SkipLegacyProjectionFixture -ne "true"\)/u);
+  assert.match(runtime, /--workers=\$BrowserWorkers/u);
+  assert.match(runtime, /--fully-parallel/u);
 });
 
 test("a corrective v1.4 candidate remains on the broad v1.3 plan only when explicitly dispatched for cutover", async () => {

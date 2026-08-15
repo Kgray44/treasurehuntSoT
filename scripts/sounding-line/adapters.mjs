@@ -217,13 +217,17 @@ export function resolvePlaywrightFamilyAdapter(project, specs) {
   };
 }
 
-export function resolveIsolatedBrowserFamilyAdapter(selections, baselineDatabase, expectMutation = true) {
+export function resolveIsolatedBrowserFamilyAdapter(selections, baselineDatabase, expectMutation = true, options = {}) {
   if (!Array.isArray(selections) || !selections.length)
     throw new Error("Isolated browser adapter requires non-empty exact browser selections");
   if (typeof baselineDatabase !== "string" || !path.isAbsolute(baselineDatabase))
     throw new Error("Isolated browser adapter requires an absolute trusted baseline database");
   if (typeof expectMutation !== "boolean")
     throw new Error("Isolated browser adapter mutation expectation must be boolean");
+  const skipLegacyProjectionFixture = options.skipLegacyProjectionFixture === true;
+  const browserWorkers = options.browserWorkers ?? 1;
+  if (!Number.isInteger(browserWorkers) || browserWorkers < 1 || browserWorkers > 3)
+    throw new Error("Isolated browser adapter worker count must be between one and three");
   const normalizedSelections = selections.map((selection) => ({
     project: selection?.project,
     files: Array.isArray(selection?.files)
@@ -267,6 +271,10 @@ export function resolveIsolatedBrowserFamilyAdapter(selections, baselineDatabase
       browserSelectionsBase64,
       "-ExpectMutation",
       String(expectMutation),
+      "-SkipLegacyProjectionFixture",
+      String(skipLegacyProjectionFixture),
+      "-BrowserWorkers",
+      String(browserWorkers),
     ],
     resources: ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
     mode: "SERIAL_WITHIN_FAMILY",

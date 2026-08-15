@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* Build and verify the workflow-scoped immutable dependency layer. */
+/* Build and verify the digest-keyed immutable dependency layer. */
 import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
 import { readFile, writeFile } from "node:fs/promises";
@@ -48,6 +48,25 @@ export async function dependencyLayerInputs(root) {
   };
 }
 
+export async function dependencyLayerCacheIdentity(root) {
+  const [sourceInputs, policy] = await Promise.all([
+    dependencyLayerInputs(root),
+    readFile(path.join(root, "testing", "prepared-artifacts.json"), "utf8"),
+  ]);
+  const policyDigest = digest(JSON.parse(policy));
+  const identityDigest = digest({
+    version: 1,
+    layerType: "dependency",
+    sourceInputs,
+    platform: { os: process.platform, architecture: process.arch },
+    policyDigest,
+  });
+  return {
+    key: `sounding-line-dependency-v1-${identityDigest}`,
+    producer: `protected-authoritative-workflow:dependency-cache:${identityDigest}`,
+  };
+}
+
 export async function createDependencyLayerManifest({ root, sourceDirectory, producer, expiresAt }) {
   const [sourceInputs, contentManifest, policy] = await Promise.all([
     dependencyLayerInputs(root),
@@ -76,8 +95,11 @@ export async function verifyDependencyLayer({ root, sourceDirectory, manifest })
   ]);
   const integrity = verifyPreparedLayerManifest(manifest, contentManifest);
   if (!integrity.valid) throw new Error(`PREPARED_LAYER_REJECTED:${integrity.reason}`);
+  const cacheIdentity = process.env.SOUNDING_LINE_PREPARED_CACHE_KEY ? await dependencyLayerCacheIdentity(root) : null;
+  if (cacheIdentity && process.env.SOUNDING_LINE_PREPARED_CACHE_KEY !== cacheIdentity.key)
+    throw new Error("PREPARED_LAYER_CACHE_KEY_MISMATCH");
   const expectedProducer =
-    process.env.SOUNDING_LINE_PREPARED_PRODUCER ||
+    (cacheIdentity ? cacheIdentity.producer : process.env.SOUNDING_LINE_PREPARED_PRODUCER) ||
     (process.env.GITHUB_RUN_ID ? `protected-authoritative-workflow:${process.env.GITHUB_RUN_ID}` : manifest.producer);
   const consumption = validateLayerConsumption(manifest, {
     trustedProducers: [expectedProducer],
@@ -123,6 +145,10 @@ async function main() {
   if (command === "verify") {
     const manifest = JSON.parse(await readFile(path.resolve(root, manifestPath), "utf8"));
     process.stdout.write(`${JSON.stringify(await verifyDependencyLayer({ root, sourceDirectory, manifest }))}\n`);
+    return;
+  }
+  if (command === "cache-key") {
+    process.stdout.write(`${JSON.stringify(await dependencyLayerCacheIdentity(root))}\n`);
     return;
   }
   throw new Error("PREPARED_LAYER_COMMAND_INVALID");

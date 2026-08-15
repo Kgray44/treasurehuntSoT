@@ -63,11 +63,26 @@ test("empty hosted matrices use an explicit success marker rather than a skipped
       );
       assert.ok(segment, `${mode} caller missing for wave ${wave}`);
       assert.ok(segment[1].includes(`matrix: \${{ fromJSON(needs.plan.outputs.${mode}${wave}) }}`));
-      if (mode === "exclusive") assert.doesNotMatch(segment[1], /\n    if:/u);
+      if (wave > 0)
+        assert.match(segment[1], new RegExp(`fromJSON\\(needs\\.plan\\.outputs\\.activeMaximumWave\\) >= ${wave}`, "u"));
       assert.match(segment[1], /empty_wave: \$\{\{ matrix\.emptyWave \}\}/u);
     }
   }
   assert.match(workflow, /__SOUNDING_LINE_EMPTY_WAVE__/u);
+});
+
+test("dormant hosted waves are skipped only after the sealed active depth, while active wave barriers remain required", async () => {
+  const workflow = await readFile(path.join(root, ".github", "workflows", "sounding-line-authoritative.yml"), "utf8");
+  assert.match(workflow, /activeMaximumWave: \$\{\{ steps\.matrix\.outputs\.activeMaximumWave \}\}/u);
+  assert.match(workflow, /"activeMaximumWave=\$planMaximumWave" \| Out-File -FilePath \$env:GITHUB_OUTPUT/u);
+  for (let wave = 1; wave <= authority.hostedExecutionCapacity.maximumWave; wave += 1) {
+    const predecessor = wave - 1;
+    for (const job of [`governed-parallel-wave-${wave}`, `governed-exclusive-wave-${wave}`, `wave-${wave}-complete`]) {
+      const segment = workflow.match(new RegExp(`${job}:([\\s\\S]*?)(?=\\n  [A-Za-z0-9_-]+:|$)`, "u"));
+      assert.ok(segment, `${job} missing`);
+      assert.match(segment[1], new RegExp(`needs\\.wave-${predecessor}-complete\\.result == 'success'[\\s\\S]*?activeMaximumWave\\) >= ${wave}`, "u"));
+    }
+  }
 });
 
 test("policy capacity qualification fails closed before hosted activation loses a deeper graph", () => {
