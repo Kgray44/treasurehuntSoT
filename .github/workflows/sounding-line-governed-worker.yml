@@ -70,12 +70,16 @@ permissions:
   contents: read
 
 jobs:
-  empty-exclusive-wave:
-    name: Sounding Line / Empty exclusive wave
-    if: ${{ inputs.empty_wave }}
+  execute:
+    name: Sounding Line / Governed worker
     runs-on: windows-latest
+    # The serial two-browser accessibility family has a measured 105-minute
+    # governed budget; retain setup, cleanup, and receipt-upload headroom.
+    timeout-minutes: 120
     steps:
-      - shell: pwsh
+      - name: Complete explicit empty exclusive wave without evidence
+        if: ${{ inputs.empty_wave }}
+        shell: pwsh
         env:
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
         run: |
@@ -83,16 +87,8 @@ jobs:
             throw 'GOVERNED_EMPTY_EXCLUSIVE_WAVE_MARKER_INVALID'
           }
           'SOUNDING_LINE_EMPTY_EXCLUSIVE_WAVE_COMPLETED'
-
-  execute:
-    name: Sounding Line / Governed worker
-    if: ${{ !inputs.empty_wave }}
-    runs-on: windows-latest
-    # The serial two-browser accessibility family has a measured 105-minute
-    # governed budget; retain setup, cleanup, and receipt-upload headroom.
-    timeout-minutes: 120
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - if: ${{ !inputs.empty_wave }}
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           # workflow_call otherwise resolves the mutable default-branch ref.
           # Each worker must execute the same frozen candidate that the plan
@@ -100,12 +96,13 @@ jobs:
           ref: ${{ inputs.candidate_sha }}
           fetch-depth: 0
       - name: Restore sealed predicted integration commit
-        if: ${{ inputs.integration_artifact != '' }}
+        if: ${{ !inputs.empty_wave && inputs.integration_artifact != '' }}
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: ${{ inputs.integration_artifact }}
           path: ${{ runner.temp }}/sounding-line-integration
       - name: Checkout sealed execution identity
+        if: ${{ !inputs.empty_wave }}
         shell: pwsh
         env:
           SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
@@ -124,6 +121,7 @@ jobs:
           git checkout --detach $execution
           if ($LASTEXITCODE -ne 0 -or (git rev-parse HEAD).Trim() -ne $execution) { throw 'GOVERNED_WORKER_EXECUTION_CHECKOUT_MISMATCH' }
       - name: Verify sealed candidate checkout
+        if: ${{ !inputs.empty_wave }}
         shell: pwsh
         env:
           SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
@@ -132,13 +130,16 @@ jobs:
           if ($env:SOUNDING_LINE_CANDIDATE_SHA -notmatch '^[0-9a-f]{40}$') { throw 'GOVERNED_WORKER_CANDIDATE_SHA_INVALID' }
           $execution = if ($env:SOUNDING_LINE_EXECUTION_SHA) { $env:SOUNDING_LINE_EXECUTION_SHA } else { $env:SOUNDING_LINE_CANDIDATE_SHA }
           if ((git rev-parse HEAD).Trim() -ne $execution) { throw 'GOVERNED_WORKER_CANDIDATE_CHECKOUT_MISMATCH' }
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - if: ${{ !inputs.empty_wave }}
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc, cache: npm }
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      - if: ${{ !inputs.empty_wave }}
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: ${{ inputs.prepared_artifact }}
           path: ${{ runner.temp }}/sounding-line-prepared-dependency
       - name: Restore verified immutable dependency layer with timing
+        if: ${{ !inputs.empty_wave }}
         shell: pwsh
         env:
           SOUNDING_LINE_PREPARED_PATH: ${{ inputs.prepared_path }}
@@ -174,11 +175,13 @@ jobs:
             dependencyRestoreMs = [int](($finishedAt - $startedAt).TotalMilliseconds)
           } | ConvertTo-Json | Set-Content -LiteralPath 'sounding-line-worker-throughput.json' -Encoding utf8
           if ($exitCode -ne 0) { throw 'GOVERNED_DEPENDENCY_LAYER_RESTORE_FAILED' }
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      - if: ${{ !inputs.empty_wave }}
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: ${{ inputs.plan_artifact }}
           path: ${{ runner.temp }}/sounding-line-plan
       - name: Prepare only sealed-node resources
+        if: ${{ !inputs.empty_wave }}
         shell: pwsh
         env:
           SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-plan/${{ inputs.plan_path }}
@@ -237,7 +240,8 @@ jobs:
             serverReadyMs = 0
             preparation = $preparation
           } | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath 'sounding-line-worker-throughput.json' -Encoding utf8
-      - env:
+      - if: ${{ !inputs.empty_wave }}
+        env:
           SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-plan/${{ inputs.plan_path }}
           SOUNDING_LINE_GATE: ${{ inputs.gate }}
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
@@ -249,7 +253,7 @@ jobs:
           $env:GITHUB_SHA = $env:SOUNDING_LINE_SEALED_SOURCE_SHA
           node scripts/sounding-line/authority.mjs "$env:SOUNDING_LINE_GATE" --execute-only --plan-in "$env:SOUNDING_LINE_PLAN" --suite "$env:SOUNDING_LINE_SUITE" --receipt-out sounding-line-worker-evidence.json
       - name: Bind setup and execution timing to worker evidence
-        if: always()
+        if: ${{ !inputs.empty_wave && always() }}
         shell: pwsh
         run: |
           if ((Test-Path -LiteralPath sounding-line-worker-evidence.json -PathType Leaf) -and (Test-Path -LiteralPath sounding-line-worker-throughput.json -PathType Leaf)) {
@@ -263,7 +267,7 @@ jobs:
             $evidence | Add-Member -NotePropertyName throughput -NotePropertyValue $throughput -Force
             $evidence | ConvertTo-Json -Depth 16 | Set-Content -LiteralPath sounding-line-worker-evidence.json -Encoding utf8
           }
-      - if: always()
+      - if: ${{ !inputs.empty_wave && always() }}
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
           name: "${{ inputs.receipt_artifact || format('sounding-line-worker-evidence-{0}', inputs.suite) }}"
@@ -272,7 +276,7 @@ jobs:
             sounding-line-worker-throughput.json
             sounding-line-worker-preparation.json
           retention-days: 14
-      - if: always()
+      - if: ${{ !inputs.empty_wave && always() }}
         name: Verify governed worker receipt
         shell: pwsh
         env:
