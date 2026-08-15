@@ -219,6 +219,21 @@ function validatePolicy(policy) {
     ordinaryCandidate?.protectedBinding !== "REQUIRED"
   )
     errors.push("sounding-line-authority: ordinary candidate qualification mismatch");
+  const mses = ordinaryCandidate?.minimumSufficientEvidence;
+  if (
+    mses?.selectionMode !== "EXACT_SEMANTIC_IMPACT_WITH_REQUIRED_SENTINELS" ||
+    !Array.isArray(mses?.requiredSafetySentinelSuiteIds) ||
+    !mses.requiredSafetySentinelSuiteIds.length ||
+    !mses.requiredSafetySentinelSuiteIds.every((suiteId) => suites.suites.some((suite) => suite.id === suiteId)) ||
+    mses?.unmappedDisposition !== "CONSERVATIVE_FALLBACK" ||
+    !Array.isArray(mses?.exhaustiveGateIds) ||
+    !mses.exhaustiveGateIds.includes("release-candidate") ||
+    !Number.isInteger(mses?.performanceObjectiveMs) ||
+    !Number.isInteger(mses?.performanceCeilingMs) ||
+    mses.performanceObjectiveMs > mses.performanceCeilingMs ||
+    mses.performanceCeilingMs > 900000
+  )
+    errors.push("sounding-line-authority: minimum sufficient evidence performance contract mismatch");
   if (
     maintenancePolicy?.authority !== "SOUNDING_LINE_VERIFICATION_MAINTENANCE" ||
     maintenancePolicy?.trustedMainOnly !== true ||

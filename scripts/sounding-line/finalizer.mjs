@@ -37,6 +37,35 @@ export function finalize({ plan, receipts, runtimeConformance = [] }) {
       invalidRuntimeConformance: [],
       evidenceDigest: digest(receipts ?? []),
     };
+  const selectionEvidenceErrors = [];
+  if (plan?.authorityVersion === "1.4" && Array.isArray(plan.selectionLedger)) {
+    const selectedFromLedger = new Set(
+      plan.selectionLedger.filter((entry) => entry.selected).map((entry) => entry.suiteId),
+    );
+    const selectedFromPlan = new Set(plan.nodes.map((node) => node.id));
+    if (
+      selectedFromLedger.size !== selectedFromPlan.size ||
+      [...selectedFromLedger].some((suiteId) => !selectedFromPlan.has(suiteId))
+    )
+      selectionEvidenceErrors.push("MSES_SELECTED_NODE_MISMATCH");
+    for (const entry of plan.selectionLedger) {
+      if (entry.selected && !["FRESH", "CONSERVATIVE_FALLBACK"].includes(entry.evidenceDisposition))
+        selectionEvidenceErrors.push(`MSES_SELECTED_DISPOSITION_INVALID:${entry.suiteId}`);
+      if (
+        !entry.selected &&
+        (entry.evidenceDisposition !== "PRESERVED" ||
+          entry.closureConfidence !== "EXACT" ||
+          entry.preservationBasis !== "EXACT_SEMANTIC_INTERVAL")
+      )
+        selectionEvidenceErrors.push(`MSES_PRESERVATION_INVALID:${entry.suiteId}`);
+    }
+    const observedCounts = plan.selectionLedger.reduce(
+      (counts, entry) => ({ ...counts, [entry.evidenceDisposition]: (counts[entry.evidenceDisposition] ?? 0) + 1 }),
+      {},
+    );
+    if (JSON.stringify(observedCounts) !== JSON.stringify(plan.evidenceDispositionCounts ?? {}))
+      selectionEvidenceErrors.push("MSES_DISPOSITION_COUNT_MISMATCH");
+  }
   const mandatory = new Set(plan.nodes.map((node) => node.id));
   const duplicates = [
     ...new Set(receipts.map((receipt) => receipt.suiteId).filter((id, index, ids) => ids.indexOf(id) !== index)),
@@ -72,6 +101,7 @@ export function finalize({ plan, receipts, runtimeConformance = [] }) {
   const decision =
     missing.length ||
     invalid.length ||
+    selectionEvidenceErrors.length ||
     duplicates.length ||
     unknown.length ||
     missingConformance.length ||
@@ -90,6 +120,7 @@ export function finalize({ plan, receipts, runtimeConformance = [] }) {
     duplicateSuiteReceipts: duplicates,
     unknownSuiteReceipts: unknown.map((receipt) => receipt.suiteId),
     invalidEvidence: invalid.map((receipt) => receipt.suiteId),
+    selectionEvidenceErrors,
     missingRuntimeConformance: missingConformance,
     invalidRuntimeConformance: invalidConformance.map((receipt) => receipt.suiteId),
     evidenceDigest: digest(receipts),

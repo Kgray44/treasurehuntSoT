@@ -35,6 +35,9 @@ test("v1.4 hosted plan carries the semantic plan and worker-compatible dependenc
   assert.equal(plan.authorityBoundary, "CURRENT_AUTHORITATIVE_V14");
   assert.equal(plan.semanticPlanDigest.length, 64);
   assert.equal(plan.planDigest.length, 64);
+  assert.equal(plan.selectionContract.selectionMode, "EXACT_SEMANTIC_IMPACT_WITH_REQUIRED_SENTINELS");
+  assert.ok(Array.isArray(plan.selectionLedger));
+  assert.ok(plan.evidenceDispositionCounts.FRESH >= 1);
   assert.ok(plan.nodes.every((node) => Array.isArray(node.testIds)));
   for (const node of plan.nodes)
     for (const dependency of node.dependencies)

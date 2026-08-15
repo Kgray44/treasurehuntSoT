@@ -3,7 +3,7 @@ title: Sounding Line Effective Authority
 audience: engineering
 status: current-on-protected-mainline-acceptance
 canonical_for: sounding-line-effective-authority-human-index
-last_reviewed: 2026-08-13
+last_reviewed: 2026-08-15
 machine_source: testing/sounding-line-authority.json
 ---
 
@@ -36,6 +36,28 @@ repair before requalification. Focused execution never emits `RELEASE_GO` and
 never substitutes for the Mainline Decision. This boundary is already governed
 by Part III Version 1.2 Sections 6 and 8 and is operationalized by
 `.agents/testing-workflow.md`; no additional broad amendment is required.
+
+## Minimum sufficient ordinary-mainline evidence
+
+For a v1.4 ordinary mainline candidate, the machine-readable authority requires
+**exact semantic impact plus the `browser.access-sentinel` safety sentinel**.
+An unmapped, ambiguous, or debt-bearing change expands conservatively; it is
+never silently omitted. The legacy mainline matrix remains the ledger of
+governed obligations, while `release-candidate` remains exhaustive.
+
+The sealed mainline plan records every ledger obligation as `FRESH`,
+`PRESERVED`, `REBOUND`, `INVALIDATED`, or `CONSERVATIVE_FALLBACK`; a preserved
+entry requires an exact semantic interval, and receipt derivation still checks
+the governing evidence fingerprints before it can claim a rebind. The
+finalizer checks that the selected fresh obligations and the sealed ledger
+agree. This separates minimum sufficient evidence from a hidden all-suite
+freshness floor without weakening fail-closed mapping behavior.
+
+The ordinary-mainline performance contract is a 10-minute objective and a
+15-minute ceiling. The planner must therefore place independent selected
+obligations in their earliest safe wave and avoid spawning workers for
+semantically preserved obligations. These limits do not replace any test
+budget, timeout, receipt, cleanup, or protected-binding requirement.
 
 ## Corrective activation boundary
 

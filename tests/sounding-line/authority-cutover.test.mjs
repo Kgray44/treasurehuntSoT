@@ -277,6 +277,58 @@ test("only the finalizer produces an accepted decision from source-bound clean r
   assert.deepEqual(shadow.invalidEvidence, ["ORDINARY_RELEASE_AUTHORITY_BOUNDARY_INVALID"]);
 });
 
+test("v1.4 finalization binds fresh receipts to the sealed MSES ledger", () => {
+  const plan = {
+    authority: "SOUNDING_LINE",
+    authorityVersion: "1.4",
+    authorityBoundary: "V14_CANDIDATE_QUALIFICATION",
+    sourceSha: "abc",
+    policyDigest: "policy",
+    inventoryDigest: "inventory",
+    planDigest: "plan",
+    gate: "mainline",
+    nodes: [{ id: "unit.tideglass" }],
+    selectionLedger: [
+      {
+        suiteId: "unit.tideglass",
+        selected: true,
+        evidenceDisposition: "FRESH",
+        closureConfidence: "EXACT",
+        preservationBasis: "CURRENT_EXECUTION",
+      },
+      {
+        suiteId: "browser.helm",
+        selected: false,
+        evidenceDisposition: "PRESERVED",
+        closureConfidence: "EXACT",
+        preservationBasis: "EXACT_SEMANTIC_INTERVAL",
+      },
+    ],
+    evidenceDispositionCounts: { FRESH: 1, PRESERVED: 1 },
+  };
+  const receipts = [
+    {
+      suiteId: "unit.tideglass",
+      sourceSha: "abc",
+      policyDigest: "policy",
+      inventoryDigest: "inventory",
+      planDigest: "plan",
+      gate: "mainline",
+      cleanupState: "CLEAN",
+      exitCode: 0,
+      timedOut: false,
+      result: "PASSED",
+    },
+  ];
+  assert.equal(finalize({ plan, receipts }).decision, "RELEASE_GO");
+  const invalid = finalize({
+    plan: { ...plan, evidenceDispositionCounts: { FRESH: 2 } },
+    receipts,
+  });
+  assert.equal(invalid.decision, "EVIDENCE_INVALID");
+  assert.deepEqual(invalid.selectionEvidenceErrors, ["MSES_DISPOSITION_COUNT_MISMATCH"]);
+});
+
 test("v1.4 acceptance envelopes seal only the exact candidate-qualification boundary", async (t) => {
   const workspace = await mkdtemp(path.join(os.tmpdir(), "sounding-line-envelope-"));
   t.after(() => rm(workspace, { recursive: true, force: true }));
