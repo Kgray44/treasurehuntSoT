@@ -243,22 +243,31 @@ test("hosted planning serializes only actual shared resources while retaining de
       assert.ok(plan.nodes.find((candidate) => candidate.id === dependency).execution.wave < node.execution.wave);
 });
 
-test("empty exclusive waves cannot suppress dependency-ready hosted work", async () => {
+test("empty exclusive matrices retain dependency-ready hosted work without skipped callers", async () => {
   const workflow = await readFile(path.join(root, ".github", "workflows", "sounding-line-authoritative.yml"), "utf8");
   assert.match(
     workflow,
     /wave-0-complete:[\s\S]*?EXCLUSIVE_MATRIX:[\s\S]*?exclusiveIntentionallyEmpty[\s\S]*?SOUNDING_LINE_WAVE_0_PREREQUISITES_INVALID/u,
   );
-  assert.match(workflow, /exclusive0Present: \$\{\{ steps\.matrix\.outputs\.exclusive0Present \}\}/u);
-  assert.match(workflow, /governed-exclusive-wave-0:[\s\S]*?exclusive0Present == 'true'/u);
+  assert.match(
+    workflow,
+    /governed-exclusive-wave-0:[\s\S]*?matrix: \$\{\{ fromJSON\(needs\.plan\.outputs\.exclusive0\) \}\}/u,
+  );
   assert.match(workflow, /governed-parallel-wave-1:[\s\S]*?needs: \[plan, wave-0-complete\]/u);
   assert.match(
     workflow,
     /wave-1-complete:[\s\S]*?EXCLUSIVE_MATRIX:[\s\S]*?exclusiveIntentionallyEmpty[\s\S]*?SOUNDING_LINE_WAVE_1_PREREQUISITES_INVALID/u,
   );
-  assert.match(workflow, /governed-exclusive-wave-1:[\s\S]*?exclusive1Present == 'true'/u);
+  assert.match(
+    workflow,
+    /governed-exclusive-wave-1:[\s\S]*?matrix: \$\{\{ fromJSON\(needs\.plan\.outputs\.exclusive1\) \}\}/u,
+  );
   assert.match(workflow, /governed-parallel-wave-2:[\s\S]*?needs: \[plan, wave-1-complete\]/u);
-  assert.match(workflow, /governed-exclusive-wave-2:[\s\S]*?exclusive2Present == 'true'/u);
+  assert.match(
+    workflow,
+    /governed-exclusive-wave-2:[\s\S]*?matrix: \$\{\{ fromJSON\(needs\.plan\.outputs\.exclusive2\) \}\}/u,
+  );
+  assert.doesNotMatch(workflow, /exclusive[0-5]Present == 'true'/u);
   assert.doesNotMatch(workflow, /needs\.\*\.result/u);
 });
 
