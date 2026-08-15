@@ -130,8 +130,8 @@ async function main() {
   const root = path.resolve(valueFor(args, "--root") ?? process.cwd());
   const sourceDirectory = path.resolve(root, valueFor(args, "--source") ?? "node_modules");
   const manifestPath = valueFor(args, "--manifest");
-  if (!manifestPath) throw new Error("PREPARED_LAYER_MANIFEST_PATH_REQUIRED");
   if (command === "publish") {
+    if (!manifestPath) throw new Error("PREPARED_LAYER_MANIFEST_PATH_REQUIRED");
     const producer = valueFor(args, "--producer");
     const expiresAt = valueFor(args, "--expires-at");
     if (!producer || !expiresAt) throw new Error("PREPARED_LAYER_PUBLISH_IDENTITY_REQUIRED");
@@ -143,6 +143,7 @@ async function main() {
     return;
   }
   if (command === "verify") {
+    if (!manifestPath) throw new Error("PREPARED_LAYER_MANIFEST_PATH_REQUIRED");
     const manifest = JSON.parse(await readFile(path.resolve(root, manifestPath), "utf8"));
     process.stdout.write(`${JSON.stringify(await verifyDependencyLayer({ root, sourceDirectory, manifest }))}\n`);
     return;
