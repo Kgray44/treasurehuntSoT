@@ -54,6 +54,18 @@ test("hosted workflow capacity is contract-bound through every wave and evidence
   assert.match(workflow, /HOSTED_EXECUTION_WAVE_CAPACITY_EXCEEDED/u);
 });
 
+test("empty exclusive matrices do not create skipped reusable-workflow callers", async () => {
+  const workflow = await readFile(path.join(root, ".github", "workflows", "sounding-line-authoritative.yml"), "utf8");
+  for (let wave = 0; wave <= authority.hostedExecutionCapacity.maximumWave; wave += 1) {
+    const segment = workflow.match(
+      new RegExp(`governed-exclusive-wave-${wave}:([\\s\\S]*?)(?=\\n  [A-Za-z0-9_-]+:|$)`, "u"),
+    );
+    assert.ok(segment, `exclusive caller missing for wave ${wave}`);
+    assert.ok(segment[1].includes(`matrix: \${{ fromJSON(needs.plan.outputs.exclusive${wave}) }}`));
+    assert.doesNotMatch(segment[1], /\n    if:/u);
+  }
+});
+
 test("policy capacity qualification fails closed before hosted activation loses a deeper graph", () => {
   const deeper = [
     { id: "root", dependencies: [] },
