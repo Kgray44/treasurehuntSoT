@@ -241,7 +241,6 @@ jobs:
   governed-exclusive-wave-0:
     name: Sounding Line / Exclusive wave 0
     needs: plan
-    if: ${{ needs.plan.outputs.exclusive0Present == 'true' }}
     strategy:
       fail-fast: false
       max-parallel: 1
@@ -292,7 +291,6 @@ jobs:
   governed-exclusive-wave-1:
     name: Sounding Line / Exclusive wave 1
     needs: [plan, wave-0-complete]
-    if: ${{ always() && needs.plan.outputs.exclusive1Present == 'true' && needs.plan.result == 'success' && needs.wave-0-complete.result == 'success' }}
     strategy:
       fail-fast: false
       max-parallel: 1
@@ -343,7 +341,6 @@ jobs:
   governed-exclusive-wave-2:
     name: Sounding Line / Exclusive wave 2
     needs: [plan, wave-1-complete]
-    if: ${{ always() && needs.plan.outputs.exclusive2Present == 'true' && needs.plan.result == 'success' && needs.wave-1-complete.result == 'success' }}
     strategy:
       fail-fast: false
       max-parallel: 1
@@ -394,7 +391,6 @@ jobs:
   governed-exclusive-wave-3:
     name: Sounding Line / Exclusive wave 3
     needs: [plan, wave-2-complete]
-    if: ${{ always() && needs.plan.outputs.exclusive3Present == 'true' && needs.plan.result == 'success' && needs.wave-2-complete.result == 'success' }}
     strategy:
       fail-fast: false
       max-parallel: 1
@@ -445,7 +441,6 @@ jobs:
   governed-exclusive-wave-4:
     name: Sounding Line / Exclusive wave 4
     needs: [plan, wave-3-complete]
-    if: ${{ always() && needs.plan.outputs.exclusive4Present == 'true' && needs.plan.result == 'success' && needs.wave-3-complete.result == 'success' }}
     strategy:
       fail-fast: false
       max-parallel: 1
@@ -496,7 +491,6 @@ jobs:
   governed-exclusive-wave-5:
     name: Sounding Line / Exclusive wave 5
     needs: [plan, wave-4-complete]
-    if: ${{ always() && needs.plan.outputs.exclusive5Present == 'true' && needs.plan.result == 'success' && needs.wave-4-complete.result == 'success' }}
     strategy:
       fail-fast: false
       max-parallel: 1
