@@ -70,9 +70,11 @@ export async function generateV14FastChannelPlan({
     requiredSuiteIds: exhaustive
       ? [...(gate.requiredSuites ?? []), ...(gate.conditionalSuites ?? [])]
       : selection.requiredSafetySentinelSuiteIds,
-    ledgerSuiteIds: exhaustive
-      ? [...new Set([...(gate.requiredSuites ?? []), ...(gate.conditionalSuites ?? [])])]
-      : (gate.requiredSuites ?? []),
+    // The ledger is the complete evidence-disposition contract. It must cover
+    // every executable node as well as preserved obligations; a partial gate
+    // list could otherwise let a risk-floor node bypass its own FRESH/
+    // PRESERVED declaration when a train builds worker matrices.
+    ledgerSuiteIds: suites.suites.map((suite) => suite.id),
     impact,
     mappingDebt: debt.entries,
     identity: {

@@ -85,7 +85,17 @@ export const V14_RISK_FLOORS = Object.freeze([
     domains: ["build"],
     suiteKinds: ["build", "static"],
   },
-  { id: "accessibility", paths: ["src/**"], domains: ["accessibility"], suiteKinds: ["accessibility", "static"] },
+  {
+    id: "accessibility",
+    // A generic source edit is not itself an accessibility change. Exact
+    // impact mappings remain authoritative for product-owned accessibility
+    // coverage; this floor reserves broad browser coverage for source paths
+    // that explicitly own accessibility semantics. Unmapped paths still take
+    // the conservative full-plan fallback below.
+    paths: ["src/**/accessibility/**", "src/**/a11y/**", "src/**/aria/**", "src/**/responsive/**"],
+    domains: ["accessibility"],
+    suiteKinds: ["accessibility", "static"],
+  },
 ]);
 
 const validSha = (value) => typeof value === "string" && /^[0-9a-f]{40}$/u.test(value);

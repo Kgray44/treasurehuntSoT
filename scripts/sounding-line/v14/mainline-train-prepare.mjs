@@ -155,7 +155,11 @@ export async function prepareMainlineTrain({
         } finally {
           await execute("git", ["-C", repoPath, "update-ref", "-d", bundleRef]).catch(() => undefined);
         }
-        for (const node of plan.nodes)
+        const ledgerBySuite = new Map((plan.ledger ?? []).map((entry) => [entry.suiteId, entry]));
+        for (const node of plan.nodes) {
+          const disposition = ledgerBySuite.get(node.id);
+          if (!disposition || !disposition.selected || disposition.evidenceDisposition !== "FRESH")
+            throw new Error(`TRAIN_PLAN_NODE_NOT_FRESH:${car.candidateId}:${node.id}`);
           matrix.push({
             carId: car.candidateId,
             suiteId: node.id,
@@ -172,6 +176,7 @@ export async function prepareMainlineTrain({
             wave: node.execution.wave,
             mode: node.execution.mode,
           });
+        }
       } finally {
         await execute("git", ["-C", repoPath, "worktree", "remove", "--force", worktree]).catch(() => undefined);
       }
