@@ -7,6 +7,11 @@ on:
         description: Sealed-plan suite identifier
         required: true
         type: string
+      empty_wave:
+        description: Explicit empty exclusive-wave marker; never represents governed test evidence
+        required: false
+        default: false
+        type: boolean
       gate:
         description: Sealed-plan gate identifier
         required: true
@@ -65,8 +70,23 @@ permissions:
   contents: read
 
 jobs:
+  empty-exclusive-wave:
+    name: Sounding Line / Empty exclusive wave
+    if: ${{ inputs.empty_wave }}
+    runs-on: windows-latest
+    steps:
+      - shell: pwsh
+        env:
+          SOUNDING_LINE_SUITE: ${{ inputs.suite }}
+        run: |
+          if ($env:SOUNDING_LINE_SUITE -ne '__SOUNDING_LINE_EMPTY_EXCLUSIVE_WAVE__') {
+            throw 'GOVERNED_EMPTY_EXCLUSIVE_WAVE_MARKER_INVALID'
+          }
+          'SOUNDING_LINE_EMPTY_EXCLUSIVE_WAVE_COMPLETED'
+
   execute:
     name: Sounding Line / Governed worker
+    if: ${{ !inputs.empty_wave }}
     runs-on: windows-latest
     # The serial two-browser accessibility family has a measured 105-minute
     # governed budget; retain setup, cleanup, and receipt-upload headroom.
