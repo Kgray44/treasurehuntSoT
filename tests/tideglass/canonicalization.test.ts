@@ -32,6 +32,11 @@ describe("Tideglass contracts and canonicalization", () => {
     );
   });
 
+  it("canonicalizes nested object order independently of insertion order", () => {
+    const value = { expedition: { crew: { navigator: "Merrick", quartermaster: "Larinna" } }, voyage: 14 };
+    expect(canonicalJson(reverseObjectOrder(value))).toBe(canonicalJson(value));
+  });
+
   it("F01 normalizes object/property ordering to identical semantics", () => {
     const original = baseSnapshot();
     const reordered = reverseObjectOrder(original);
