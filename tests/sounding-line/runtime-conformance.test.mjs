@@ -230,6 +230,16 @@ test("resource-aware preparation eliminates universal database and browser setup
   assert.match(workerWorkflow, /GOVERNED_BROWSER_LAYER_CACHE_MISS/u);
   assert.match(workerWorkflow, /GOVERNED_SQLITE_BASELINE_CACHE_MISS/u);
   assert.match(workerWorkflow, /SOUNDING_LINE_CERTIFIED_BASELINE/u);
+  assert.match(
+    workerWorkflow,
+    /SOUNDING_LINE_BASELINE_DATABASE:\s*\$\{\{ inputs\.requires_browser && format\('\{0\}\/sounding-line-sqlite-baseline\/validation\.db', github\.workspace\) \|\| '' \}\}/u,
+    "CERTIFIED_BASELINE_MUST_NOT_LEAK_TO_NON_BROWSER_WORKERS",
+  );
+  assert.doesNotMatch(
+    workerWorkflow,
+    /SOUNDING_LINE_BASELINE_DATABASE:\s*\$\{\{ github\.workspace \}\}\/sounding-line-sqlite-baseline\/validation\.db/u,
+    "NON_BROWSER_WORKERS_MUST_NOT_RECEIVE_AN_UNRESTORED_BASELINE_PATH",
+  );
   assert.match(workerWorkflow, /prepared-layer-artifact\.mjs verify/u);
   assert.match(workerWorkflow, /Restore sealed plan and predicted integration transport/u);
   const authoritativeWorkflow = await readFile(
