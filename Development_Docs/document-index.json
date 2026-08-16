@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-08-15",
+  "generated_at": "2026-08-16",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -592,6 +592,12 @@
     },
     {
       "path": "Development_Docs/Governing/Project_Sounding_Line_Part_III_Repository_Policy_Codex_Governance_and_Release_Assurance_Governing_Document.pdf",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Sounding_Line_v1.4_Performance_and_Efficiency_Governing_Addendum.md",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
