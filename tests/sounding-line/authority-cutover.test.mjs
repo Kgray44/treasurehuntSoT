@@ -650,10 +650,12 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   assert.match(advanceWorkflow, /Compare actual protected-main tree/u);
   assert.match(advanceWorkflow, /Reconcile retained suffix head/u);
   assert.match(advanceWorkflow, /TRAIN_SUFFIX_REBIND_NOT_COMPLETED/u);
-  assert.match(advanceWorkflow, /TRAIN_NEXT_HEAD_MERGE_IDENTITY_NOT_CONVERGED/u);
+  assert.match(advanceWorkflow, /TRAIN_NEXT_HEAD_MERGE_IDENTITY_NOT_STABLE/u);
   assert.match(advanceWorkflow, /\$mergeParents -contains \$base/u);
   assert.match(advanceWorkflow, /\$mergeParents -contains \$head/u);
   assert.match(advanceWorkflow, /\$mergeTree -eq \$headTree/u);
+  assert.match(advanceWorkflow, /\$confirmedMerge -eq \$merge/u);
+  assert.match(advanceWorkflow, /\$confirmedHead -eq \$head/u);
   assert.match(advanceWorkflow, /--rebound-candidate-sha/u);
   assert.match(advanceWorkflow, /Bind retained next head/u);
   assert.match(trainWorkflow, /TRAIN_LIVE_BOUNDARY_REQUIRED/u);
