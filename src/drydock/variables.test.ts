@@ -23,7 +23,7 @@ describe("Drydock typed variables", () => {
   it("governs operations by type and rejects invalid declarations", () => {
     expect(permittedOperations({ kind: "BOOLEAN" })).toEqual(["assign", "toggle"]);
     expect(permittedOperations({ kind: "INTEGER" })).toContain("increment");
-    expect(permittedOperations({ kind: "STRING_SET" })).toEqual(["add", "remove", "contains", "count"]);
+    expect(permittedOperations({ kind: "STRING_SET" })).toEqual(["assign", "add", "remove", "contains", "count"]);
     const registry = createVariableRegistry([flag, { ...flag, id: "var-other" }]);
     expect(registry.issues.some((issue) => issue.code === "DRYDOCK_VARIABLE_DUPLICATE")).toBe(true);
     expect(
@@ -45,6 +45,18 @@ describe("Drydock typed variables", () => {
     };
     expect(applyVariableOperation(score, 2, "increment", 3)).toBe(5);
     expect(() => applyVariableOperation(score, 2, "toggle")).toThrow("DRYDOCK_VARIABLE_OPERATION_NOT_PERMITTED");
+  });
+
+  it("canonicalizes assigned string sets before persisting deterministic scenario state", () => {
+    const tags: DrydockVariableDeclaration = {
+      ...flag,
+      id: "var-tags",
+      name: "tags",
+      type: { kind: "STRING_SET" },
+      defaultValue: [],
+      allowedOperations: ["assign", "add", "remove", "contains", "count"],
+    };
+    expect(applyVariableOperation(tags, [], "assign", ["north", "east", "north"])).toEqual(["east", "north"]);
   });
 
   it("validates every core type and its query or mutation operations", () => {
