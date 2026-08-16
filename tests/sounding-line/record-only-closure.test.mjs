@@ -9,9 +9,12 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 import {
   classifyRecordOnlyDiff,
+  hasSuccessfulProtectedContext,
+  recordReferences,
   RECORD_ONLY_EVIDENCE_IDS,
   RECORD_ONLY_PROTECTED_CONTEXT,
   RECORD_ONLY_SUITE_ID,
+  validateReferencedAuthorityRun,
   validatePriorImplementationAuthority,
 } from "../../scripts/sounding-line/record-only-closure.mjs";
 import {
@@ -26,7 +29,64 @@ const candidate = "a".repeat(40);
 const base = "b".repeat(40);
 const merge = "c".repeat(40);
 const implementationCandidate = "d".repeat(40);
+const implementationBase = "f".repeat(40);
 const implementationMerge = "e".repeat(40);
+
+test("record-only prior authority accepts one normal protected decision and a protected-main dispatch", () => {
+  const pull = {
+    merged: true,
+    head: { sha: implementationCandidate },
+    base: { sha: implementationBase },
+    merge_commit_sha: implementationMerge,
+  };
+  const run = {
+    name: "Sounding Line authoritative",
+    event: "workflow_dispatch",
+    status: "completed",
+    conclusion: "success",
+    head_sha: implementationBase,
+  };
+  assert.deepEqual(validateReferencedAuthorityRun({ pull, run }), []);
+  assert.equal(
+    hasSuccessfulProtectedContext({
+      check_runs: [
+        { name: RECORD_ONLY_PROTECTED_CONTEXT, status: "completed", conclusion: "skipped" },
+        { name: RECORD_ONLY_PROTECTED_CONTEXT, status: "completed", conclusion: "success" },
+      ],
+    }),
+    true,
+  );
+});
+
+test("record-only prior authority rejects a run not dispatched from the implementation base", () => {
+  const pull = {
+    merged: true,
+    head: { sha: implementationCandidate },
+    base: { sha: implementationBase },
+    merge_commit_sha: implementationMerge,
+  };
+  const run = {
+    name: "Sounding Line authoritative",
+    event: "workflow_dispatch",
+    status: "completed",
+    conclusion: "success",
+    head_sha: implementationCandidate,
+  };
+  assert.match(validateReferencedAuthorityRun({ pull, run }).join("\n"), /PRIOR_IMPLEMENTATION_AUTHORITY_RUN_INVALID/u);
+  assert.equal(
+    hasSuccessfulProtectedContext({
+      check_runs: [{ name: RECORD_ONLY_PROTECTED_CONTEXT, status: "completed", conclusion: "skipped" }],
+    }),
+    false,
+  );
+});
+
+test("record-only references accept the canonical documented authoritative run form", () => {
+  assert.deepEqual(recordReferences("PR #113 closed under run `31904810987`; details: actions/runs/31904760712"), {
+    pullRequests: [113],
+    runs: [31904810987, 31904760712],
+  });
+});
 
 function priorAuthorityFixture(valid = true) {
   const authority = {
