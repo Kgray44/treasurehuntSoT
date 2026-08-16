@@ -321,6 +321,10 @@ test("empty hosted matrices retain dependency-ready work through a no-evidence s
   assert.doesNotMatch(workflow, /exclusive[0-5]Present == 'true'/u);
   assert.doesNotMatch(workflow, /needs\.\*\.result/u);
   assert.match(workflow, /__SOUNDING_LINE_EMPTY_WAVE__/u);
+  assert.match(
+    workflow,
+    /parallelMarkers[\s\S]*?exclusiveMarkers[\s\S]*?SOUNDING_LINE_EMPTY_MARKER_INVALID[\s\S]*?parallelIntentionallyEmpty = \$parallelMarkers\.Count -eq 1/u,
+  );
   const worker = await readFile(path.join(root, ".github", "workflows", "sounding-line-governed-worker.yml"), "utf8");
   assert.match(worker, /empty_wave:/u);
   assert.doesNotMatch(worker, /empty-exclusive-wave:/u);
