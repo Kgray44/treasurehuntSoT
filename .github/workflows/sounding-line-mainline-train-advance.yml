@@ -44,6 +44,8 @@ jobs:
           if (-not $pr.merged_at -or $pr.base.ref -ne 'main') { throw 'TRAIN_ADVANCE_MERGED_MAIN_PR_REQUIRED' }
           "pr-number=$($pr.number)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           "candidate-sha=$($pr.head.sha)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          if ($pr.merge_commit_sha -notmatch '^[0-9a-f]{40}$') { throw 'TRAIN_ADVANCE_LANDED_COMMIT_INVALID' }
+          "landed-sha=$($pr.merge_commit_sha)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - id: train
         name: Locate exactly one sealed head-ready train for this merged candidate
         shell: pwsh
@@ -54,13 +56,20 @@ jobs:
           CANDIDATE_SHA: ${{ steps.merged.outputs.candidate-sha }}
         run: |
           $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = "application/vnd.github+json"; 'X-GitHub-Api-Version' = '2022-11-28' }
+          if ($env:CANDIDATE_SHA -notmatch '^[0-9a-f]{40}$') { throw 'TRAIN_ADVANCE_CANDIDATE_SHA_INVALID' }
+          $candidateCommit = Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/git/commits/$env:CANDIDATE_SHA"
+          $candidateTree = $candidateCommit.tree.sha
+          if ($candidateTree -notmatch '^[0-9a-f]{40}$') { throw 'TRAIN_ADVANCE_CANDIDATE_TREE_INVALID' }
           $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&per_page=100").workflow_runs |
             Where-Object { $_.name -eq 'Sounding Line mainline train' -and $_.path -eq '.github/workflows/sounding-line-mainline-train.yml' -and (($_.status -eq 'completed' -and $_.conclusion -eq 'success') -or $_.status -eq 'in_progress') }
           $matches = @()
           foreach ($run in $runs) {
             try {
               $artifacts = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs/$($run.id)/artifacts?per_page=100").artifacts
-              $envelopes = @($artifacts | Where-Object { -not $_.expired -and $_.name -like 'sounding-line-train-acceptance-envelope-*' })
+              # Select the exact PR envelope before invoking the strict
+              # lineage CLI. Historical envelopes are expected to reject this
+              # candidate and must never influence the live lookup.
+              $envelopes = @($artifacts | Where-Object { -not $_.expired -and $_.name -eq "sounding-line-train-acceptance-envelope-pr-$($env:PR_NUMBER)" })
               $completeLive = @($artifacts | Where-Object { -not $_.expired -and $_.name -like 'sounding-line-mainline-train-live-*' })
               $headLive = @($artifacts | Where-Object { -not $_.expired -and $_.name -like 'sounding-line-mainline-train-head-live-*' })
               $live = if ($completeLive.Count -eq 1) { $completeLive } elseif ($completeLive.Count -eq 0 -and $headLive.Count -eq 1) { $headLive } else { @() }
@@ -71,10 +80,8 @@ jobs:
                 New-Item -ItemType Directory -Force -Path $directory | Out-Null
                 Invoke-WebRequest -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/artifacts/$($artifact.id)/zip" -OutFile $zip
                 Expand-Archive -LiteralPath $zip -DestinationPath $directory -Force
-                $envelope = Get-Content -Raw (Join-Path $directory 'sounding-line-acceptance-envelope.json') | ConvertFrom-Json
-                if ($envelope.prNumber -eq [int]$env:PR_NUMBER -and $envelope.candidateSha -eq $env:CANDIDATE_SHA) {
-                  $matches += @{ runId = $run.id; liveArtifact = $live[0].name }
-                }
+                $lineage = node scripts/sounding-line/v14/train-advance-lineage.mjs --envelope (Join-Path $directory 'sounding-line-acceptance-envelope.json') --plan (Join-Path $directory 'sounding-line-plan.json') --pr-number $env:PR_NUMBER --candidate-sha $env:CANDIDATE_SHA --candidate-tree-sha $candidateTree | ConvertFrom-Json
+                if ($LASTEXITCODE -eq 0 -and $lineage.valid -eq $true) { $matches += @{ runId = $run.id; liveArtifact = $live[0].name; disposition = $lineage.disposition } }
               }
             } catch { }
           }
@@ -91,20 +98,89 @@ jobs:
           run-id: ${{ steps.train.outputs.run-id }}
           github-token: ${{ github.token }}
       - if: ${{ steps.train.outputs.found == 'true' }}
+        id: state
+        name: Select the exact persisted head-ready state for the merged train car
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ steps.merged.outputs.pr-number }}
+          CANDIDATE_SHA: ${{ steps.merged.outputs.candidate-sha }}
+        run: |
+          $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = "application/vnd.github+json"; 'X-GitHub-Api-Version' = '2022-11-28' }
+          $source = Get-Content -Raw train-state/mainline-train-head-ready.json | ConvertFrom-Json
+          # Live train artifacts contain the sealed state directly; persisted
+          # advance artifacts wrap the same state under `train`.  Both forms
+          # are intentionally accepted only after the strict Node contract
+          # below verifies their digest and exact current head.
+          $sourceTrain = if ($source.train) { $source.train } else { $source }
+          $trainId = $sourceTrain.trainId
+          if (-not $trainId) { throw 'TRAIN_ADVANCE_SOURCE_TRAIN_ID_REQUIRED' }
+          $candidateTree = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/git/commits/$env:CANDIDATE_SHA").tree.sha
+          if ($candidateTree -notmatch '^[0-9a-f]{40}$') { throw 'TRAIN_ADVANCE_CANDIDATE_TREE_INVALID' }
+          $direct = node scripts/sounding-line/v14/train-advance-state-lineage.mjs --state train-state/mainline-train-head-ready.json --train-id $trainId --pr-number $env:PR_NUMBER --candidate-sha $env:CANDIDATE_SHA --candidate-tree-sha $candidateTree | ConvertFrom-Json
+          if ($LASTEXITCODE -eq 0 -and $direct.valid -eq $true) {
+            "source-run-id=${{ steps.train.outputs.run-id }}" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            "source-artifact=${{ steps.train.outputs.live-artifact }}" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            exit 0
+          }
+          # A later merged car can advance only from the immediately preceding
+          # sealed state.  Look up that one immutable artifact by its exact
+          # predecessor PR name; scanning historical Action runs is both
+          # needlessly slow and could make a recovery ambiguous.
+          $targetIndex = -1
+          for ($index = 0; $index -lt @($sourceTrain.cars).Count; $index += 1) {
+            if ($sourceTrain.cars[$index].candidatePrIdentity.number -eq [int]$env:PR_NUMBER) { $targetIndex = $index; break }
+          }
+          if ($targetIndex -le 0) { throw 'TRAIN_ADVANCE_PREDECESSOR_STATE_REQUIRED' }
+          $predecessorPr = $sourceTrain.cars[$targetIndex - 1].candidatePrIdentity.number
+          if ($predecessorPr -notmatch '^[1-9][0-9]*$') { throw 'TRAIN_ADVANCE_PREDECESSOR_PR_INVALID' }
+          $artifactName = "sounding-line-mainline-train-advance-$predecessorPr"
+          $artifacts = @((Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/artifacts?name=$artifactName&per_page=100").artifacts |
+            Where-Object { -not $_.expired -and $_.name -eq $artifactName })
+          if ($artifacts.Count -ne 1) { throw 'TRAIN_ADVANCE_PREDECESSOR_STATE_NOT_UNIQUE' }
+          $artifact = $artifacts[0]
+          $run = Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs/$($artifact.workflow_run.id)"
+          if ($run.status -ne 'completed' -or $run.conclusion -ne 'success') { throw 'TRAIN_ADVANCE_PREDECESSOR_RUN_NOT_SUCCESSFUL' }
+          $directory = Join-Path $env:RUNNER_TEMP "sounding-line-train-advance-state-$($artifact.id)"
+          $zip = "$directory.zip"
+          New-Item -ItemType Directory -Force -Path $directory | Out-Null
+          Invoke-WebRequest -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/artifacts/$($artifact.id)/zip" -OutFile $zip
+          Expand-Archive -LiteralPath $zip -DestinationPath $directory -Force
+          $statePath = Join-Path $directory 'mainline-train-advanced.json'
+          if (-not (Test-Path -LiteralPath $statePath)) { throw 'TRAIN_ADVANCE_PREDECESSOR_STATE_MISSING' }
+          $persisted = node scripts/sounding-line/v14/train-advance-state-lineage.mjs --state $statePath --train-id $trainId --pr-number $env:PR_NUMBER --candidate-sha $env:CANDIDATE_SHA --candidate-tree-sha $candidateTree | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0 -or $persisted.valid -ne $true) { throw 'TRAIN_ADVANCE_PREDECESSOR_STATE_INVALID' }
+          Copy-Item -LiteralPath $statePath -Destination 'train-state/mainline-train-head-ready.json' -Force
+          "source-run-id=$($artifact.workflow_run.id)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "source-artifact=$artifactName" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - if: ${{ steps.train.outputs.found == 'true' }}
         id: advanced
         name: Compare actual protected-main tree and advance only the exact predicted prefix
         shell: pwsh
         run: |
-          $commit = (git rev-parse HEAD).Trim()
-          $tree = (git rev-parse "HEAD^{tree}").Trim()
+          $commit = '${{ steps.merged.outputs.landed-sha }}'
+          git cat-file -e "$commit`^{commit}"
+          if ($LASTEXITCODE -ne 0) { throw 'TRAIN_ADVANCE_LANDED_COMMIT_UNAVAILABLE' }
+          git merge-base --is-ancestor $commit HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'TRAIN_ADVANCE_LANDED_COMMIT_NOT_ON_PROTECTED_MAIN' }
+          $tree = (git rev-parse "$commit`^{tree}").Trim()
           node scripts/sounding-line/v14/mainline-train-cli.mjs land --state train-state/mainline-train-head-ready.json --commit $commit --tree $tree --merge-strategy github-protected-merge-commit --out mainline-train-advanced.json
           $advance = Get-Content -Raw mainline-train-advanced.json | ConvertFrom-Json
           $next = if ($advance.train.headPosition -ge 0) { $advance.train.cars[$advance.train.headPosition] } else { $null }
-          if ($next -and $next.state -eq 'HEAD_READY') {
+          $currentTree = (git rev-parse "HEAD^{tree}").Trim()
+          if ($next -and $next.state -eq 'HEAD_READY' -and $next.predictedParentTreeSha -eq $currentTree) {
             'next-ready=true' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
             "next-pr=$($next.candidatePrIdentity.number)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
             "next-candidate=$($next.candidateHeadCommitSha)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
             "next-artifact=sounding-line-train-acceptance-envelope-$($next.candidateId)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          } elseif ($next -and $next.state -eq 'HEAD_READY') {
+            # The historical prefix is exact, but protected main subsequently
+            # advanced outside that prefix.  Do not pretend the old envelope
+            # binds the new base: retain the state and require one bounded
+            # ordinary suffix qualification.
+            'next-ready=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            'next-requalification-required=true' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           } else { 'next-ready=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8 }
       - if: ${{ steps.advanced.outputs.next-ready == 'true' }}
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
