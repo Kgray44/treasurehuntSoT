@@ -315,6 +315,9 @@ describe("Bridgewatch read-only API", () => {
       const phase = await app.inject({ method: "GET", url: "/api/projects/bridgewatch/phases/3" });
       expect(phase.statusCode).toBe(200);
       expect(phase.json()).toMatchObject({ projectId: "bridgewatch", phase: { ordinal: 3, name: "Keep the Watch" } });
+      expect(phase.json().tasks).toEqual(expect.any(Array));
+      const project = await app.inject({ method: "GET", url: "/api/projects/bridgewatch" });
+      expect(project.json()).toMatchObject({ id: "bridgewatch", history: expect.any(Array), evidence: expect.any(Array) });
       expect((await app.inject({ method: "POST", url: "/api/projects/bridgewatch/versions/v1.2" })).statusCode).toBe(
         404,
       );

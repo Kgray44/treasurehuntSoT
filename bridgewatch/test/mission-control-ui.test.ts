@@ -34,4 +34,15 @@ describe("v1.2 mission-control navigation", () => {
     expect(css).toContain("prefers-reduced-motion");
     expect(css).toContain("focus-visible");
   });
+
+  it("offers bounded client-side search or filtering for every requested observation collection", () => {
+    expect(app).toContain("function filteredTable");
+    expect(app).toContain("Search projects");
+    expect(app).toContain("Search versions");
+    expect(app).toContain("Search phases");
+    expect(app).toContain("Search PRs");
+    expect(app).toContain("Search branches");
+    expect(app).toContain("Search retained history");
+    expect(app).toContain('"Open", "Historical", "All"');
+  });
 });

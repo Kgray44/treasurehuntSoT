@@ -20,6 +20,14 @@ select,
 input {
   font: inherit;
 }
+input[type="search"] {
+  min-width: min(100%, 20rem);
+  background: #071017;
+  border: 1px solid #396071;
+  border-radius: 0.25rem;
+  color: inherit;
+  padding: 0.55rem 0.7rem;
+}
 button,
 select {
   background: #102735;
@@ -105,6 +113,13 @@ footer {
 }
 .section-heading {
   margin-bottom: 0.8rem;
+}
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.65rem;
 }
 .section {
   margin: 0 0 1.7rem;

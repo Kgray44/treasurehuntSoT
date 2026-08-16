@@ -15,40 +15,45 @@ Phase 1–3 accepted records remain historical authority. `COMPLETE` below means
 implemented and covered by the named local source/tests on the v1.2 branch; it
 does not mean protected-main integration, a live provider, or deployment.
 
+The owner-issue ledger uses only the three terminal labels required by the
+brief. `NOT_SUPPORTED_BY_AVAILABLE_EVIDENCE` is not a product excuse: it names
+the precise unavailable historical source and requires the UI to report the
+field as `NOT_RECORDED` or `UNMEASURED`, never to fabricate it.
+
 ## Owner issue ledger
 
-| #   | Required capability                                                                             | Audit result                                                                                                                                       |
-| --- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Discover projects and programs from bounded repository evidence.                                | `COMPLETE` — `bridgewatch/src/repository-evidence.ts` and `bridgewatch/src/discovery.ts` read only indexed documents and fixed Git refs.           |
-| 2   | Do not use a new static project/version constant as truth.                                      | `COMPLETE` — the static registry is reconciled bootstrap history; `v1.2` is discovered from branch/document evidence.                              |
-| 3   | Infer project/version lifecycle from project-bound documents, branches, and PRs.                | `COMPLETE` — pure discovery/reconciliation tests cover governing, branch, and PR evidence.                                                         |
-| 4   | Associate PRs with projects, versions, and phases where evidence supports it.                   | `COMPLETE` — `/api/pull-requests/:number` emits explicit associations and unclassified absence.                                                    |
-| 5   | Distinguish document revisions from project versions.                                           | `COMPLETE` — discovery tests reject a revision/dependency number as a version.                                                                     |
-| 6   | Preserve ambiguous candidates as unclassified activity.                                         | `COMPLETE` — discovery persists bounded ambiguous branch/PR evidence rather than promoting it.                                                     |
-| 7   | Migrate existing Bridgewatch history without reset or loss.                                     | `COMPLETE` — additive migration 4 follows migrations 1–3; migration tests open prior schema history.                                               |
-| 8   | Use normalized relational rows for durable observation entities/relations.                      | `COMPLETE` — migration 4 adds discovered project/version/phase/evidence, observed PR/branch, unclassified activity, and source-observation tables. |
-| 9   | Keep pre-migration data usable and accepted evidence non-prunable.                              | `COMPLETE` — retained registry, project history, event, snapshot, and completion paths remain compatible.                                          |
-| 10  | Report source configuration, reachability, freshness, cache, retry, auth, and rate-limit state. | `COMPLETE` — source observation projection and GitHub collector expose safe operational fields.                                                    |
-| 11  | Treat ProjectVersion as a first-class entity.                                                   | `COMPLETE` — domain, discovery, persistence, history events, and version profile endpoints are separate from phases.                               |
-| 12  | Do not treat Phase as a synonym for Version.                                                    | `COMPLETE` — version/phase profile routes and historical-document tests preserve the distinction.                                                  |
-| 13  | Render explicit status labels instead of invented truth.                                        | `COMPLETE` — UI uses source/project lifecycle text and `UNMEASURED` fallbacks.                                                                     |
-| 14  | Reconcile historical records deterministically and idempotently.                                | `COMPLETE` — reconciliation preserves accepted Phase 1–3 facts and tests provisional discovery.                                                    |
-| 15  | Preserve accepted, merge, mainline, receipt, and final-decision evidence immutably.             | `COMPLETE` — retained project/phase histories remain source-owned and mutation-free.                                                               |
-| 16  | Provide Overview, Program, Projects, Operations, GitHub, Attention, History, and Sources views. | `COMPLETE` — named hash stations are rendered by `bridgewatch/public/app.js`.                                                                      |
-| 17  | Give a selected project complete status, version, phase, history, and evidence detail.          | `COMPLETE` — project, version, and phase GET profiles are independently tested.                                                                    |
-| 18  | Keep dense views responsive, keyboard-focusable, reduced-motion aware, and phone-safe.          | `COMPLETE` — station CSS covers wrapping, focus visibility, responsive grids, and reduced motion.                                                  |
-| 19  | Offer read-only deep actions for projects, versions, phases, PRs, branches, sources, and runs.  | `COMPLETE` — hash routes lead only to bounded GET profiles.                                                                                        |
-| 20  | Exclude write/control buttons from the dashboard.                                               | `COMPLETE` — UI has no lifecycle, GitHub, worker, Sounding Line, or deployment mutation path.                                                      |
-| 21  | Keep Overview compact and suppress polling noise in recent changes.                             | `COMPLETE` — `conciseRecentChanges` tests prioritize governed events and hide source/branch churn.                                                 |
-| 22  | Compare arbitrary bounded From/To windows with exact or coarse fidelity.                        | `COMPLETE` — `/api/compare` distinguishes `EXACT`, `ROLLUP`, and `COARSE` evidence.                                                                |
-| 23  | Expose deep profile endpoints for PRs, branches, sources, and Sounding Line runs.               | `COMPLETE` — server integration tests cover each GET resource and reject POST.                                                                     |
-| 24  | Keep `/bridgewatch` capability-gated and proxy only allowlisted GET/HEAD routes.                | `COMPLETE` — gateway/NGINX tests cover mounted routes, header stripping, and negative paths.                                                       |
-| 25  | Refresh the dashboard from live bounded APIs while retaining static no-dependency delivery.     | `COMPLETE` — route rendering requests only the standalone Fastify GET API.                                                                         |
-| 26  | Break source health down by GitHub, project truth, Sounding Line, and reporter.                 | `COMPLETE` — summary and source profiles expose the four distinct source rows.                                                                     |
-| 27  | Show current and historical GitHub PR observation without mutating GitHub.                      | `COMPLETE` — collector requests `state=all`; list filters and profiles are GET-only.                                                               |
-| 28  | Support browser navigation, Back/Forward, keyboard focus, and mobile layout.                    | `COMPLETE` — hashchange navigation and accessible station links are covered by focused UI tests.                                                   |
-| 29  | Preserve last-known-good data and make source failures visible.                                 | `COMPLETE` — collector degradation records cache age/retry/detail instead of blanking projections.                                                 |
-| 30  | Provide Windows start/status/restart/stop with strict process ownership proof.                  | `COMPLETE` — `bridgewatch/scripts/bridgewatch-lifecycle.ps1` records/validates only its own PID and checks `/healthz`.                             |
+| # | Owner-identified acceptance item | Terminal result |
+| --- | --- | --- |
+| 1 | Replace giant page with stations/tabs/pages. | `COMPLETE` — the eight named stations are hash-routed Mission Control views. |
+| 2 | Standalone highly detailed project profiles. | `COMPLETE` — project profiles retain status, phases, versions, evidence, history, workers, tests, PRs, and branches. |
+| 3 | Slightly improve readability without changing the aesthetic drastically. | `COMPLETE` — dark monospace visual language remains, with responsive grids, table wrapping, focus, and reduced-motion treatment. |
+| 4 | Automatic project discovery. | `COMPLETE` — bounded repository, GitHub, and retained observations are reconciled deterministically. |
+| 5 | Governing-document project discovery. | `COMPLETE` — indexed governing titles/frontmatter establish project identity. |
+| 6 | Governing-document phase-count discovery. | `COMPLETE` — explicit phase titles/sections establish a declared denominator without prose inference. |
+| 7 | Automatic version discovery. | `COMPLETE` — document, branch, and PR evidence produces first-class `ProjectVersion` records. |
+| 8 | Bridgewatch v1.2 self-discovery. | `COMPLETE` — the v1.2 governing/design evidence and branch are discovered as `IN_DEVELOPMENT`, not a registry constant. |
+| 9 | Version display on project cards/profile. | `COMPLETE` — project rows and independent version profiles display observed version identities/lifecycle. |
+| 10 | Arbitrary From/To historical comparison. | `COMPLETE` — bounded `/api/compare` and History controls preserve `EXACT`, `ROLLUP`, or `COARSE` fidelity. |
+| 11 | Fix useless `Progress: UNMEASURED`. | `COMPLETE` — project cards show an explicit measured phase numerator/denominator or `NOT_RECORDED`, not a misleading progress label. |
+| 12 | Fix `Main: UNMEASURED` where reconstructable. | `COMPLETE` — accepted final-main SHAs are backfilled from completion records; unsupported records render `NOT_RECORDED`. |
+| 13 | Separate status badge and phase progress on cards. | `COMPLETE` — project state and phase progress are independent card/table columns. |
+| 14 | Richer Branch section. | `COMPLETE` — searchable branch view and deep profile include association, divergence, activity, attention, and evidence. |
+| 15 | Open + historical PR views. | `COMPLETE` — the PR station provides Open, Historical, and All filters over GET-only observations. |
+| 16 | Standalone PR profiles. | `COMPLETE` — independent GET profile includes available metadata, associations, checks, history, evidence, and safe GitHub link. |
+| 17 | Project association on PRs. | `COMPLETE` — explicit evidence-based project/version associations are returned; uncertain records remain unclassified. |
+| 18 | GitHub `STALE` diagnostics/repair. | `COMPLETE` — source profiles state configuration, reachability, cache age, retry, auth class, rate limit, and sanitized failure detail. |
+| 19 | Reporter `UNMEASURED` diagnostics/repair. | `COMPLETE` — reporter source states distinguish `NOT_CONFIGURED`, no active telemetry, retained telemetry, and stale telemetry. |
+| 20 | Prettier Program History. | `COMPLETE` — bounded rich event rows carry entity/type badges, timestamps, evidence context, and client filtering. |
+| 21 | Prettier All-Time Accepted History. | `COMPLETE` — Program’s accepted timeline is distinct from live discovery and renders retained governed transitions. |
+| 22 | Distinguish no active workers from missing history. | `COMPLETE` — active worker count and retained worker/task records are independently reported. |
+| 23 | Phase-level tasks/workers. | `COMPLETE` — phase profile projects telemetry into retained task records with worker, branch, timing, result, and evidence. |
+| 24 | Phase-level Sounding Line runs. | `COMPLETE` — phase profiles show retained runs whose source SHA exactly matches accepted/integrated phase identity. |
+| 25 | Phase-level detailed tests. | `COMPLETE` — retained node data supplies suite, counts, failures, blocks, retries, root failures, and resources; unsupported fields remain `UNMEASURED`. |
+| 26 | Backfill `Not recorded`/`UNMEASURED` fields. | `NOT_SUPPORTED_BY_AVAILABLE_EVIDENCE` — legacy receipts do not retain every task/test/provider field; recoverable main and lifecycle facts are backfilled, all other absent facts remain explicit. |
+| 27 | Highly detailed repository Program page. | `COMPLETE` — program counts, observed main, discovery, accepted timeline, and a bounded history window are all independent read-only views. |
+| 28 | Program page historical window filtering. | `COMPLETE` — Program exposes bounded From/To GET history with client-side retained-event filtering. |
+| 29 | Project/version/phase evidence provenance. | `COMPLETE` — governing references and discovery evidence survive reconciliation and profile display. |
+| 30 | Current Sounding Line v1.4 train awareness. | `COMPLETE` — v1.4 authority/candidate/tree/freshness/finalizer fields and retained train cars are projected when runtime evidence provides them. |
 
 ## Deliberate non-claims
 

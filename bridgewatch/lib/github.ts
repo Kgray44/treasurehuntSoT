@@ -1,7 +1,7 @@
 import type { Config } from "../src/config.js";
 import type { BranchHealth, GithubHistorySnapshot, GithubPullRequestHistory } from "../src/history.js";
 import { projectRegistry } from "../src/registry.js";
-import { BridgewatchStore } from "./store.js";
+import type { BridgewatchStore } from "./store.js";
 
 export interface WorkflowRun {
   id: number | null;
@@ -51,14 +51,26 @@ function pullFrom(value: unknown, checks?: GitHubRecord): GithubPullRequestHisto
   const state = text(raw.state)?.toUpperCase();
   const mergedAt = text(raw.merged_at);
   const head = raw.head && typeof raw.head === "object" ? (raw.head as GitHubRecord) : {};
+  const base = raw.base && typeof raw.base === "object" ? (raw.base as GitHubRecord) : {};
+  const author = raw.user && typeof raw.user === "object" ? (raw.user as GitHubRecord) : {};
   return {
     number,
     title: text(raw.title) ?? `Pull request #${number}`,
     url: url(raw.html_url) ?? "",
     state: mergedAt ? "MERGED" : state === "CLOSED" ? "CLOSED" : "OPEN",
+    draft: typeof raw.draft === "boolean" ? raw.draft : null,
+    author: text(author.login),
     createdAt: text(raw.created_at),
+    closedAt: text(raw.closed_at),
     headRef: text(head.ref),
     headSha: text(head.sha),
+    baseRef: text(base.ref),
+    baseSha: text(base.sha),
+    mergeSha: text(raw.merge_commit_sha),
+    commitCount: typeof raw.commits === "number" ? count(raw.commits) : null,
+    changedFiles: typeof raw.changed_files === "number" ? count(raw.changed_files) : null,
+    additions: typeof raw.additions === "number" ? count(raw.additions) : null,
+    deletions: typeof raw.deletions === "number" ? count(raw.deletions) : null,
     updatedAt: text(raw.updated_at),
     mergedAt,
     checkState: checkState(checks),
@@ -96,11 +108,18 @@ function safeCacheValue(key: string, value: unknown): unknown {
         state: text(raw.state),
         merged_at: text(raw.merged_at),
         closed_at: text(raw.closed_at),
+        draft: typeof raw.draft === "boolean" ? raw.draft : null,
+        user: { login: text((raw.user as GitHubRecord | undefined)?.login) },
         updated_at: text(raw.updated_at),
         html_url: url(raw.html_url),
         head: { ref: text(head.ref), sha: text(head.sha) },
-        base: { ref: text(base.ref) },
+        base: { ref: text(base.ref), sha: text(base.sha) },
         created_at: text(raw.created_at),
+        merge_commit_sha: text(raw.merge_commit_sha),
+        commits: typeof raw.commits === "number" ? count(raw.commits) : null,
+        changed_files: typeof raw.changed_files === "number" ? count(raw.changed_files) : null,
+        additions: typeof raw.additions === "number" ? count(raw.additions) : null,
+        deletions: typeof raw.deletions === "number" ? count(raw.deletions) : null,
         mergeable_state: text(raw.mergeable_state),
       };
     });
@@ -169,11 +188,21 @@ function snapshotFromCache(value: unknown, observedAt: string): Snapshot | null 
         title: text(existing.title) ?? `Pull request #${number}`,
         url: url(existing.url) ?? "",
         state: state as GithubPullRequestHistory["state"],
+        draft: typeof existing.draft === "boolean" ? existing.draft : null,
+        author: text(existing.author),
         updatedAt: text(existing.updatedAt),
         createdAt: text(existing.createdAt),
+        closedAt: text(existing.closedAt),
         mergedAt: text(existing.mergedAt),
         headRef: text(existing.headRef),
         headSha: text(existing.headSha),
+        baseRef: text(existing.baseRef),
+        baseSha: text(existing.baseSha),
+        mergeSha: text(existing.mergeSha),
+        commitCount: typeof existing.commitCount === "number" ? count(existing.commitCount) : null,
+        changedFiles: typeof existing.changedFiles === "number" ? count(existing.changedFiles) : null,
+        additions: typeof existing.additions === "number" ? count(existing.additions) : null,
+        deletions: typeof existing.deletions === "number" ? count(existing.deletions) : null,
         checkState: text(existing.checkState),
         mergeableState: text(existing.mergeableState),
       } satisfies GithubPullRequestHistory;

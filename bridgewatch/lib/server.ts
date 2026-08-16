@@ -5,7 +5,7 @@ import { join, resolve } from "node:path";
 import { timingSafeEqual } from "node:crypto";
 import { loadConfig } from "../src/config.js";
 import { projectRegistry } from "../src/registry.js";
-import { projectProgress, type ProjectRecord } from "../src/domain.js";
+import { projectProgress, type ProjectRecord, type TaskRecord } from "../src/domain.js";
 import { discoverObservations } from "../src/discovery.js";
 import { reconcileProjectRecords } from "../src/reconciliation.js";
 import { RepositoryEvidenceCollector } from "../src/repository-evidence.js";
@@ -285,6 +285,12 @@ export function buildServer() {
         ...project,
         milestonePercent: projectProgress(project).percent,
         milestoneState: projectProgress(project).state,
+        phaseProgress: (() => {
+          const total = project.declaredPhaseCount ?? project.phases.length;
+          const completed = project.phases.filter((phase) => ["COMPLETE", "MERGED"].includes(phase.state)).length;
+          return total ? { state: "MEASURED", completed, total } : { state: "NOT_RECORDED", completed: null, total: null };
+        })(),
+        mainSha: project.finalMainSha ?? null,
       })),
       github: snapshot,
       branches,
@@ -431,11 +437,26 @@ export function buildServer() {
       .filter(
         (run) => run.value.sourceSha === phase.acceptedHeadSha || run.value.sourceSha === phase.integratedMainSha,
       );
+    const tasks: TaskRecord[] = workers.map((worker) => ({
+      id: `${worker.workerId}:${worker.startedAt}`,
+      title: worker.task,
+      projectId: project.id,
+      phaseId: phase.id,
+      workerId: worker.workerId,
+      branch: worker.branch,
+      startedAt: worker.startedAt,
+      heartbeatAt: worker.heartbeatAt,
+      finishedAt: worker.state === "FINISHED" ? worker.heartbeatAt : undefined,
+      result: worker.effectiveState ?? worker.state,
+      sourceSha: worker.sourceSha,
+      evidence: [`telemetry:${worker.workerId}:${worker.heartbeatAt}`],
+    }));
     return {
       projectId: project.id,
       project: { id: project.id, name: project.name, state: project.state },
       phase,
       workers,
+      tasks,
       tests,
       history: store.projectHistory(project.id).filter((event) => event.phaseId === phase.id),
       evidence: [phase.completionReceipt, ...project.governingReferences].filter(Boolean),
@@ -444,7 +465,25 @@ export function buildServer() {
   app.get<{ Params: { id: string } }>("/api/projects/:id", async (request, reply) => {
     const project = summary().projects.find((entry) => entry.id === request.params.id);
     if (!project) return reply.code(404).send({ error: "Unknown project" });
-    return project;
+    const snapshot = collector.cached();
+    const branches = annotateBranches(snapshot?.branches ?? [], store.projects(), config).filter(
+      (branch) => branch.projectId === project.id,
+    );
+    const pullRequests = (snapshot?.pullRequests ?? []).filter((pull) =>
+      associationsFor(`${pull.title} ${pull.headRef ?? ""}`, store.projects(), pull.number).projectIds.includes(project.id),
+    );
+    const phaseShas = new Set(
+      project.phases.flatMap((phase) => [phase.acceptedHeadSha, phase.integratedMainSha]).filter(Boolean),
+    );
+    return {
+      ...project,
+      branches,
+      pullRequests,
+      workers: summary().workers.filter((worker) => worker.project === project.id),
+      tests: store.recentTestRuns().filter((run) => run.value.sourceSha && phaseShas.has(run.value.sourceSha)),
+      history: store.projectHistory(project.id),
+      evidence: project.governingReferences,
+    };
   });
   app.get<{ Querystring: HistoryParameters }>("/api/history", async (request, reply) =>
     sendHistory(request.query, reply),

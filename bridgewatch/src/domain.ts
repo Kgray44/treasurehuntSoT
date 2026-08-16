@@ -57,6 +57,26 @@ export interface MilestoneRecord {
   acceptedAt?: string;
 }
 
+/**
+ * A task is a retained unit of observed work, not a command or assignment.
+ * Telemetry may supply it through a worker heartbeat; absent telemetry remains
+ * explicitly unmeasured rather than inferred from a phase state.
+ */
+export interface TaskRecord {
+  id: string;
+  title: string;
+  projectId: string;
+  phaseId: string;
+  workerId?: string;
+  branch?: string;
+  startedAt?: string;
+  heartbeatAt?: string;
+  finishedAt?: string;
+  result?: string;
+  sourceSha?: string;
+  evidence: string[];
+}
+
 export interface PhaseRecord {
   id: string;
   ordinal: number;

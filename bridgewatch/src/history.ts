@@ -62,11 +62,21 @@ export interface GithubPullRequestHistory {
   title: string;
   url: string;
   state: "OPEN" | "MERGED" | "CLOSED" | "UNKNOWN";
+  draft?: boolean | null;
+  author?: string | null;
   updatedAt: string | null;
   createdAt: string | null;
+  closedAt?: string | null;
   mergedAt: string | null;
   headRef: string | null;
   headSha: string | null;
+  baseRef?: string | null;
+  baseSha?: string | null;
+  mergeSha?: string | null;
+  commitCount?: number | null;
+  changedFiles?: number | null;
+  additions?: number | null;
+  deletions?: number | null;
   checkState: string | null;
   mergeableState: string | null;
 }
