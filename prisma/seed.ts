@@ -131,6 +131,7 @@ async function main() {
   const gmUsername = process.env.GM_USERNAME ?? "kato";
   const gmPassword = process.env.GM_PASSWORD ?? "development-captain-only";
   const accessCode = process.env.PLAYER_ACCESS_CODE ?? "development-moonwake";
+  const now = new Date();
   const user = await db.gameMasterUser.upsert({
     where: { username: gmUsername },
     update: { passwordHash: await bcrypt.hash(gmPassword, 12) },
@@ -141,8 +142,36 @@ async function main() {
   // coherent across that boundary instead of re-enabling legacy sessions.
   const canonicalStaff = await db.userAccount.upsert({
     where: { legacyGameMasterId: user.id },
-    update: { status: "ACTIVE", lastSeenAt: new Date() },
-    create: { legacyGameMasterId: user.id, status: "ACTIVE", claimedAt: new Date(), lastSeenAt: new Date() },
+    update: { status: "ACTIVE", claimedAt: now, ordinaryWorkspaceEntryAt: now, lastSeenAt: now },
+    create: {
+      legacyGameMasterId: user.id,
+      status: "ACTIVE",
+      claimedAt: now,
+      ordinaryWorkspaceEntryAt: now,
+      lastSeenAt: now,
+    },
+  });
+  const staffEmail = `development-captain-${user.id}@example.test`;
+  await db.accountEmail.upsert({
+    where: { accountId_isPrimary: { accountId: canonicalStaff.id, isPrimary: true } },
+    update: { verificationState: "VERIFIED", verifiedAt: now },
+    create: {
+      accountId: canonicalStaff.id,
+      normalizedEmail: staffEmail,
+      displayEmail: staffEmail,
+      verificationState: "VERIFIED",
+      verifiedAt: now,
+    },
+  });
+  await db.playerProfile.upsert({
+    where: { accountId: canonicalStaff.id },
+    update: { displayName: "Development Captain", status: "ACTIVE", claimedAt: now },
+    create: {
+      accountId: canonicalStaff.id,
+      displayName: "Development Captain",
+      status: "ACTIVE",
+      claimedAt: now,
+    },
   });
   for (const role of ["CAPTAIN", "CREATOR", "PUBLISHER"]) {
     const existing = await db.accountRoleAssignment.findFirst({

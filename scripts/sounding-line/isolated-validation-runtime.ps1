@@ -4,7 +4,9 @@
 # .DESCRIPTION
 # When a dedicated worktree has no canonical prisma/dev.db, provide an
 # existing absolute baseline path. The baseline is fingerprinted before and
-# after the run and is never used as the mutable validation database.
+# after the run and is never used as the mutable validation database. Hosted
+# Sounding Line workers instead bind the freshly seeded task-owned validation
+# database as their immutable witness before cloning it for browser execution.
 param(
     [switch]$SkipBrowserInstall,
     [string]$BaselineDatabasePath,
@@ -15,8 +17,11 @@ param(
     [string]$BrowserArgsBase64 = "",
     [string]$BrowserSelectionsBase64 = "",
     [string]$ExpectMutation = "true",
+    [string]$SkipLegacyProjectionFixture = "false",
+    [int]$BrowserWorkers = 1,
     [string]$BrowserGrep = "",
     [switch]$SkipProductionPerformance,
+    [switch]$CertifiedBaseline,
     [string]$SoundingLineLane = "",
     [int]$SoundingLinePort = 0
 )
@@ -59,6 +64,8 @@ if ($BrowserSelectionsBase64) {
     }
 }
 if ($ExpectMutation -notin @("true", "false")) { throw "ExpectMutation must be true or false." }
+if ($SkipLegacyProjectionFixture -notin @("true", "false")) { throw "SkipLegacyProjectionFixture must be true or false." }
+if ($BrowserWorkers -lt 1 -or $BrowserWorkers -gt 3) { throw "BrowserWorkers must be between 1 and 3." }
 if (-not $SoundingLineLane) {
     throw "This internal runtime only supports named Sounding Line browser lanes."
 }
@@ -121,6 +128,12 @@ if ($isSoundingLineLane) {
             }
         }
     }
+    if ($BrowserWorkers -gt 1 -and ($SoundingLineLane -ne "browser-family" -or $SkipLegacyProjectionFixture -ne "true" -or $ExpectMutation -ne "false")) {
+        throw "Parallel browser execution is limited to the read-only browser-family sentinel fixture."
+    }
+    if ($BrowserWorkers -gt 1 -and $BrowserSelections.Count -gt 0 -and (($BrowserSelections | ForEach-Object { [int]$_.caseCount } | Measure-Object -Sum).Sum -lt $BrowserWorkers)) {
+        throw "BrowserWorkers cannot exceed the governed browser case count."
+    }
     if (($SoundingLineLane -eq "browser-family" -and $SoundingLinePort -ne 3100) -or
         ($SoundingLineLane -ne "browser-family" -and ($SoundingLinePort -lt 3101 -or $SoundingLinePort -gt 3199))) {
         throw "browser-family must own loopback port 3100; named Harborlight lanes must own ports 3101 through 3199."
@@ -141,6 +154,9 @@ $validationServerPort = if ($isSoundingLineLane) { $SoundingLinePort } else { 31
 
 if ($BrowserOnly -and $SkipBrowser) {
     throw "BrowserOnly and SkipBrowser cannot be used together."
+}
+if ($CertifiedBaseline -and -not $BaselineDatabasePath) {
+    throw "CertifiedBaseline requires an explicit immutable baseline database."
 }
 if ($SkipBrowser -and ($BrowserTestPath -or $BrowserGrep -or $BrowserArgs.Count -gt 0 -or $BrowserSelections.Count -gt 0)) {
     throw "SkipBrowser cannot be combined with targeted browser selection."
@@ -185,18 +201,30 @@ if ($BrowserTestPath) {
         default { throw "BrowserTestPath must identify a governed Harborlight browser suite." }
     }
 }
+$hostedRuntimeGeneratedBaseline = $false
 if ($BaselineDatabasePath) {
     if (-not ($BaselineDatabasePath -match '^[A-Za-z]:[\\/]' -or $BaselineDatabasePath.StartsWith('\\'))) {
         throw "BaselineDatabasePath must be an absolute database file path."
     }
     $canonicalDatabase = [System.IO.Path]::GetFullPath($BaselineDatabasePath)
     if (-not (Test-Path -LiteralPath $canonicalDatabase)) {
-        throw "BaselineDatabasePath must identify an existing database file."
+        if ($env:GITHUB_ACTIONS -ne "true") {
+            throw "BaselineDatabasePath must identify an existing database file."
+        }
+        # A hosted worker has no user-owned development database in its clean
+        # checkout. Initialize-ForeverRuntime creates the candidate-bound,
+        # migrated and seeded validation database below; that owned seed then
+        # becomes the immutable witness for the nonce-bound isolated copy.
+        $canonicalDatabase = $null
+        $baselineSource = "hosted-runtime-generated"
+        $hostedRuntimeGeneratedBaseline = $true
     }
-    if ((Get-Item -LiteralPath $canonicalDatabase).PSIsContainer) {
+    elseif ((Get-Item -LiteralPath $canonicalDatabase).PSIsContainer) {
         throw "BaselineDatabasePath must identify a file, not a directory."
     }
-    $baselineSource = "explicit-external"
+    else {
+        $baselineSource = "explicit-external"
+    }
 } else {
     $canonicalDatabase = Get-ForeverCanonicalDatabase
     $baselineSource = "auto-discovered"
@@ -229,6 +257,12 @@ function Get-CanonicalDatabaseFamilyFingerprint {
     }
 }
 
+$runtimeRoot = $null
+if ($hostedRuntimeGeneratedBaseline) {
+    $runtimeRoot = Initialize-ForeverRuntime -Mode validation -ResetDatabase
+    $canonicalDatabase = Join-Path $runtimeRoot "prisma\validation.db"
+}
+
 $canonicalSamples = @(1..3 | ForEach-Object {
     $sample = Get-CanonicalDatabaseFamilyFingerprint
     if ($_ -lt 3) { Start-Sleep -Milliseconds 500 }
@@ -246,7 +280,13 @@ $canonicalMtimeIso = [string]$canonicalMainFingerprint.mtimeIso
 $canonicalFamilyJson = [string]($canonicalSamples[0].members | ConvertTo-Json -Compress)
 $canonicalFamilyBase64 = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($canonicalFamilyJson))
 
-$runtimeRoot = Initialize-ForeverRuntime -Mode validation -ResetDatabase
+if (-not $runtimeRoot) {
+    if ($CertifiedBaseline) {
+        $runtimeRoot = Initialize-ForeverRuntime -Mode validation -ResetDatabase -CertifiedBaselinePath $canonicalDatabase
+    } else {
+        $runtimeRoot = Initialize-ForeverRuntime -Mode validation -ResetDatabase
+    }
+}
 $resolvedRuntime = [System.IO.Path]::GetFullPath($runtimeRoot)
 $runtimePrefix = $resolvedRuntime.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
 
@@ -839,14 +879,16 @@ try {
         # selected browser family the same seeded One Voyage contract as the
         # full governed runtime.
         Invoke-ValidationStep -Name "Seeding focused browser development fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts")
-        # Focused browser families still require canonical migration provenance
-        # and the migrated Voyage fixture. Prepare both only in the disposable
-        # copy before the owned server starts; this is fixture setup, not authority.
-        Invoke-ValidationStep -Name "Migrating focused browser legacy compatibility projection" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/migrate-legacy-companion.ts")
-        Invoke-ValidationStep -Name "Verifying focused browser legacy compatibility projection" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/migrate-legacy-companion.ts", "--verify")
-        Invoke-ValidationStep -Name "Preparing focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--prepare")
-        Invoke-ValidationStep -Name "Seeding focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
-        Invoke-ValidationStep -Name "Verifying focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--verify")
+        if ($SkipLegacyProjectionFixture -ne "true") {
+            # Focused browser families normally require canonical migration provenance
+            # and the migrated Voyage fixture. The read-only access sentinel has its
+            # own exact fixture contract and may bypass this unrelated projection.
+            Invoke-ValidationStep -Name "Migrating focused browser legacy compatibility projection" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/migrate-legacy-companion.ts")
+            Invoke-ValidationStep -Name "Verifying focused browser legacy compatibility projection" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/migrate-legacy-companion.ts", "--verify")
+            Invoke-ValidationStep -Name "Preparing focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--prepare")
+            Invoke-ValidationStep -Name "Seeding focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
+            Invoke-ValidationStep -Name "Verifying focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--verify")
+        }
     }
 
     if (-not $SkipBrowser) {
@@ -857,6 +899,7 @@ try {
             foreach ($selection in $BrowserSelections) {
                 Assert-BrowserSelectionDiscovery -Selection $selection
                 $browserCommand = @("node_modules/@playwright/test/cli.js", "test", "--project=$($selection.project)", "--grep", [string]$selection.grep) + @($selection.files | ForEach-Object { ([string]$_).Replace('\', '/') })
+                if ($BrowserWorkers -gt 1) { $browserCommand += @("--workers=$BrowserWorkers", "--fully-parallel") }
                 if ($isSoundingLineLane) { $browserCommand += "--global-timeout=$browserGlobalTimeoutMs" }
                 try {
                     Invoke-ValidationStep -Name "Running exact governed browser acceptance tests for $($selection.project)" -Arguments $browserCommand

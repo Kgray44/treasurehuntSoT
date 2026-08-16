@@ -26,6 +26,17 @@ function semantic(snapshot: unknown, id: string, checksum = id, schemaVersion: n
 }
 
 describe("Tideglass contracts and canonicalization", () => {
+  it("keeps receipt canonical JSON explicit about nulls while eliding undefined values", () => {
+    expect(canonicalJson({ z: undefined, a: { retained: null, negativeZero: -0 } })).toBe(
+      '{"a":{"negativeZero":0,"retained":null}}',
+    );
+  });
+
+  it("canonicalizes nested object order independently of insertion order", () => {
+    const value = { expedition: { crew: { navigator: "Merrick", quartermaster: "Larinna" } }, voyage: 14 };
+    expect(canonicalJson(reverseObjectOrder(value))).toBe(canonicalJson(value));
+  });
+
   it("F01 normalizes object/property ordering to identical semantics", () => {
     const original = baseSnapshot();
     const reordered = reverseObjectOrder(original);
@@ -199,6 +210,20 @@ describe("Tideglass contracts and canonicalization", () => {
     expect(second.comparisonId).not.toBe(first.comparisonId);
   });
 
+  it("changes the deterministic comparison identity when an anchored edition checksum changes", () => {
+    const snapshot = baseSnapshot();
+    const first = compareSemanticSnapshots(
+      semantic(snapshot, "edition-source", "source-checksum-a"),
+      semantic(snapshot, "edition-target", "target-checksum"),
+    );
+    const second = compareSemanticSnapshots(
+      semantic(snapshot, "edition-source", "source-checksum-b"),
+      semantic(snapshot, "edition-target", "target-checksum"),
+    );
+    expect(second.comparisonId).not.toBe(first.comparisonId);
+    expect(second.deterministicDigest).not.toBe(first.deterministicDigest);
+  });
+
   it("F26 keeps canonical output byte-stable under shuffled property and set-like input order", () => {
     const source = baseSnapshot();
     const target = clone(source);
@@ -214,5 +239,16 @@ describe("Tideglass contracts and canonicalization", () => {
     );
     expect(second.deterministicDigest).toBe(first.deterministicDigest);
     expect(canonicalJson(second)).toBe(canonicalJson(first));
+  });
+
+  it("changes the deterministic comparison digest when authored story content changes", () => {
+    const source = baseSnapshot();
+    const target = clone(source);
+    (target.chapters[0].blocks[0].configuration as Record<string, unknown>).body =
+      "A different synthetic authored passage.";
+    const original = compareSemanticSnapshots(semantic(source, "edition-a"), semantic(source, "edition-b"));
+    const changed = compareSemanticSnapshots(semantic(source, "edition-a"), semantic(target, "edition-b"));
+    expect(changed.deterministicDigest).not.toBe(original.deterministicDigest);
+    expect(changed.changes.some((change) => change.category === "STORY_CONTENT")).toBe(true);
   });
 });
