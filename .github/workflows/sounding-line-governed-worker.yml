@@ -348,15 +348,28 @@ jobs:
         shell: pwsh
         env:
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
+          SOUNDING_LINE_SUITES_JSON: ${{ inputs.suites_json }}
         run: |
           if (-not (Test-Path -LiteralPath sounding-line-worker-evidence.json -PathType Leaf)) {
             throw "GOVERNED_WORKER_RECEIPT_MISSING"
           }
           $evidence = Get-Content -Raw sounding-line-worker-evidence.json | ConvertFrom-Json
           $receipts = @($evidence.receipts)
-          if ($receipts.Count -ne 1 -or $receipts[0].suiteId -ne $env:SOUNDING_LINE_SUITE) {
-            throw "GOVERNED_WORKER_RECEIPT_BOUNDARY_INVALID"
+          $expectedSuites = if ($env:SOUNDING_LINE_SUITES_JSON) {
+            @($env:SOUNDING_LINE_SUITES_JSON | ConvertFrom-Json)
+          } else {
+            @($env:SOUNDING_LINE_SUITE)
           }
-          if ($receipts[0].result -ne 'PASSED' -or [int]$receipts[0].exitCode -ne 0 -or $receipts[0].cleanupState -ne 'CLEAN') {
+          $actualSuites = @($receipts | ForEach-Object { $_.suiteId })
+          $expectedBoundary = @($expectedSuites | Sort-Object) -join "`n"
+          $actualBoundary = @($actualSuites | Sort-Object) -join "`n"
+          if (
+            $expectedSuites.Count -eq 0 -or
+            $expectedSuites.Count -ne $receipts.Count -or
+            $expectedBoundary -ne $actualBoundary
+          ) {
+            throw "GOVERNED_WORKER_RECEIPT_BATCH_BOUNDARY_INVALID"
+          }
+          if (@($receipts | Where-Object { $_.result -ne 'PASSED' -or [int]$_.exitCode -ne 0 -or $_.cleanupState -ne 'CLEAN' }).Count -gt 0) {
             throw "GOVERNED_WORKER_RECEIPT_FAILED"
           }
