@@ -205,6 +205,14 @@ test("stable serialization canonicalizes nested key order for governance evidenc
   assert.equal(second, first);
 });
 
+test("semantic evidence digest changes when a governed evidence reference changes", () => {
+  const candidate = model();
+  const firstReference = candidate.ledger.capabilities[0].evidence.references[0];
+  const originalDigest = semanticDigest(candidate);
+  firstReference.reference = `${firstReference.reference}#current-proof`;
+  assert.notEqual(semanticDigest(candidate), originalDigest);
+});
+
 test("Phase 3 rebuild preserves the accepted Phase 2 finding baseline", async () => {
   assert.equal(baseline.metrics.findings.startingOpen, 20);
   const acceptedPhase2Finding = baseline.phase2.findingsDocument.findings.find(
