@@ -64,7 +64,10 @@ jobs:
           foreach ($run in $runs) {
             try {
               $artifacts = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs/$($run.id)/artifacts?per_page=100").artifacts
-              $envelopes = @($artifacts | Where-Object { -not $_.expired -and $_.name -like 'sounding-line-train-acceptance-envelope-*' })
+              # Select the exact PR envelope before invoking the strict
+              # lineage CLI. Historical envelopes are expected to reject this
+              # candidate and must never influence the live lookup.
+              $envelopes = @($artifacts | Where-Object { -not $_.expired -and $_.name -eq "sounding-line-train-acceptance-envelope-pr-$($env:PR_NUMBER)" })
               $completeLive = @($artifacts | Where-Object { -not $_.expired -and $_.name -like 'sounding-line-mainline-train-live-*' })
               $headLive = @($artifacts | Where-Object { -not $_.expired -and $_.name -like 'sounding-line-mainline-train-head-live-*' })
               $live = if ($completeLive.Count -eq 1) { $completeLive } elseif ($completeLive.Count -eq 0 -and $headLive.Count -eq 1) { $headLive } else { @() }
