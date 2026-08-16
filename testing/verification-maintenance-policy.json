@@ -51,7 +51,15 @@
     "package-lock.json",
     "next.config.*",
     "playwright*.config.*",
-    "Development_Docs/Projects/**"
+    "Development_Docs/Projects/**",
+    "bridgewatch/**",
+    "deploy/nginx.conf",
+    "scripts/sounding-line/status-projection.mjs",
+    "Development_Docs/Project_Bridgewatch_*.md",
+    "Development_Docs/INDEX.md",
+    "Development_Docs/README.md",
+    "Development_Docs/document-index.json",
+    "CHANGELOG.md"
   ],
   "requiredEvidence": [
     "FOCUSED_REGRESSION",
