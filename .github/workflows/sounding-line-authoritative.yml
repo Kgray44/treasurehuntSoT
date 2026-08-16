@@ -398,7 +398,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
-      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
@@ -415,7 +415,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
-      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
@@ -456,7 +456,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
-      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
@@ -474,7 +474,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
-      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
@@ -515,7 +515,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
-      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
@@ -533,7 +533,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
-      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
@@ -574,7 +574,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
-      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
@@ -592,7 +592,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
-      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
@@ -633,7 +633,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
-      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
@@ -651,7 +651,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
-      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
@@ -692,7 +692,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
-      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
@@ -710,7 +710,7 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
-      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
