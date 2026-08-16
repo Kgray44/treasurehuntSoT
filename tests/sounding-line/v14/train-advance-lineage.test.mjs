@@ -47,6 +47,7 @@ test("hosted advance uses the sealed lineage contract instead of a raw candidate
   assert.match(workflow, /sounding-line-train-acceptance-envelope-pr-\$\(\$env:PR_NUMBER\)/u);
   assert.doesNotMatch(workflow, /envelope\.candidateSha -eq \$env:CANDIDATE_SHA/u);
   assert.match(workflow, /train-advance-state-lineage\.mjs/u);
+  assert.match(workflow, /\$sourceTrain = if \(\$source\.train\)/u);
   assert.match(workflow, /TRAIN_ADVANCE_LANDED_COMMIT_NOT_ON_PROTECTED_MAIN/u);
   assert.match(workflow, /next-requalification-required=true/u);
 });
