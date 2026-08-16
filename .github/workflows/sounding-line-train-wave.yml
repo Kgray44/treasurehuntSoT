@@ -1,0 +1,76 @@
+name: Sounding Line train qualification wave
+
+on:
+  workflow_call:
+    inputs:
+      parallel_matrix:
+        required: true
+        type: string
+      parallel_present:
+        required: true
+        type: string
+      exclusive_matrix:
+        required: true
+        type: string
+      exclusive_present:
+        required: true
+        type: string
+
+jobs:
+  parallel:
+    if: ${{ inputs.parallel_present == 'true' }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(inputs.parallel_matrix) }}
+    uses: ./.github/workflows/sounding-line-governed-worker.yml
+    with:
+      suite: ${{ matrix.suiteId }}
+      suites_json: ${{ matrix.suiteIdsJson }}
+      requires_browser: ${{ matrix.requiresBrowser }}
+      browser_engine: ${{ matrix.browserEngine }}
+      gate: mainline
+      candidate_sha: ${{ matrix.candidateSha }}
+      plan_artifact: sounding-line-train-prepared
+      plan_path: ${{ matrix.planPath }}
+      execution_sha: ${{ matrix.executionSha }}
+      integration_artifact: sounding-line-train-prepared
+      integration_bundle_path: ${{ matrix.integrationBundlePath }}
+      integration_base_sha: ${{ matrix.integrationBaseSha }}
+      receipt_artifact: ${{ matrix.receiptArtifact }}
+
+  exclusive:
+    if: ${{ inputs.exclusive_present == 'true' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix: ${{ fromJSON(inputs.exclusive_matrix) }}
+    uses: ./.github/workflows/sounding-line-governed-worker.yml
+    with:
+      suite: ${{ matrix.suiteId }}
+      suites_json: ${{ matrix.suiteIdsJson }}
+      requires_browser: ${{ matrix.requiresBrowser }}
+      browser_engine: ${{ matrix.browserEngine }}
+      gate: mainline
+      candidate_sha: ${{ matrix.candidateSha }}
+      plan_artifact: sounding-line-train-prepared
+      plan_path: ${{ matrix.planPath }}
+      execution_sha: ${{ matrix.executionSha }}
+      integration_artifact: sounding-line-train-prepared
+      integration_bundle_path: ${{ matrix.integrationBundlePath }}
+      integration_base_sha: ${{ matrix.integrationBaseSha }}
+      receipt_artifact: ${{ matrix.receiptArtifact }}
+
+  complete:
+    needs: [parallel, exclusive]
+    if: always()
+    runs-on: windows-latest
+    steps:
+      - shell: pwsh
+        env:
+          PARALLEL_PRESENT: ${{ inputs.parallel_present }}
+          EXCLUSIVE_PRESENT: ${{ inputs.exclusive_present }}
+          PARALLEL_RESULT: ${{ needs.parallel.result }}
+          EXCLUSIVE_RESULT: ${{ needs.exclusive.result }}
+        run: |
+          if ($env:PARALLEL_PRESENT -eq 'true' -and $env:PARALLEL_RESULT -ne 'success') { throw 'TRAIN_PARALLEL_WAVE_FAILED' }
+          if ($env:EXCLUSIVE_PRESENT -eq 'true' -and $env:EXCLUSIVE_RESULT -ne 'success') { throw 'TRAIN_EXCLUSIVE_WAVE_FAILED' }

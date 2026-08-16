@@ -160,7 +160,8 @@ test("heavyweight repository closure and finalization workflows require explicit
     if (!isHeavyweightRepositoryClosure(source)) continue;
     heavyweightCount += 1;
     const triggers = workflowTriggers(source);
-    if (!/\bworkflow_dispatch\b/u.test(triggers)) violations.push(`${file}:EXPLICIT_DISPATCH_MISSING`);
+    if (!/\bworkflow_dispatch\b|\bworkflow_call\b/u.test(triggers))
+      violations.push(`${file}:EXPLICIT_DISPATCH_MISSING`);
     if (hasOrdinaryDevelopmentTrigger(triggers)) violations.push(`${file}:ORDINARY_DEVELOPMENT_TRIGGER_FORBIDDEN`);
   }
 
@@ -191,6 +192,7 @@ test("resource-aware preparation eliminates universal database and browser setup
     resources: ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
   });
   assert.deepEqual(chromium.actions.browserEngines, ["chromium"]);
+  assert.equal(chromium.preparationOwner, "ISOLATED_BROWSER_RUNTIME");
   const webkit = deriveWorkerPreparation({
     id: "browser.webkit-only",
     adapter: "playwright-family",
@@ -214,6 +216,68 @@ test("resource-aware preparation eliminates universal database and browser setup
   const admiralty = suites.find((suite) => suite.id === "browser.admiralty");
   assert.equal(deriveWorkerPreparation(admiralty).runtimeConformance.result, "PASSED");
   assert.deepEqual(deriveWorkerPreparation(admiralty).actions.browserEngines, ["chromium"]);
+
+  const workerWorkflow = await readFile(
+    path.join(root, ".github", "workflows", "sounding-line-governed-worker.yml"),
+    "utf8",
+  );
+  assert.match(workerWorkflow, /fetch-depth: 2/u);
+  assert.match(workerWorkflow, /integration_base_sha:/u);
+  assert.match(workerWorkflow, /GOVERNED_INTEGRATION_BASE_FETCH_FAILED/u);
+  assert.match(workerWorkflow, /git fetch --no-tags --depth=1 origin \$integrationBase/u);
+  assert.match(workerWorkflow, /ISOLATED_BROWSER_RUNTIME/u);
+  assert.match(workerWorkflow, /GOVERNED_DEPENDENCY_CACHE_MISS/u);
+  assert.match(workerWorkflow, /GOVERNED_BROWSER_LAYER_CACHE_MISS/u);
+  assert.match(workerWorkflow, /GOVERNED_SQLITE_BASELINE_CACHE_MISS/u);
+  assert.match(workerWorkflow, /SOUNDING_LINE_CERTIFIED_BASELINE/u);
+  assert.match(
+    workerWorkflow,
+    /SOUNDING_LINE_BASELINE_DATABASE:\s*\$\{\{ inputs\.requires_browser && format\('\{0\}\/sounding-line-sqlite-baseline\/validation\.db', github\.workspace\) \|\| '' \}\}/u,
+    "CERTIFIED_BASELINE_MUST_NOT_LEAK_TO_NON_BROWSER_WORKERS",
+  );
+  assert.doesNotMatch(
+    workerWorkflow,
+    /SOUNDING_LINE_BASELINE_DATABASE:\s*\$\{\{ github\.workspace \}\}\/sounding-line-sqlite-baseline\/validation\.db/u,
+    "NON_BROWSER_WORKERS_MUST_NOT_RECEIVE_AN_UNRESTORED_BASELINE_PATH",
+  );
+  assert.match(workerWorkflow, /prepared-layer-artifact\.mjs verify/u);
+  assert.match(workerWorkflow, /Restore sealed plan and predicted integration transport/u);
+  const authoritativeWorkflow = await readFile(
+    path.join(root, ".github", "workflows", "sounding-line-authoritative.yml"),
+    "utf8",
+  );
+  assert.match(authoritativeWorkflow, /actions\/cache\/restore/u);
+  assert.match(authoritativeWorkflow, /actions\/cache\/save/u);
+  assert.match(authoritativeWorkflow, /browser-layer-artifact\.mjs verify/u);
+  assert.match(authoritativeWorkflow, /sqlite-baseline-artifact\.mjs verify/u);
+  assert.match(authoritativeWorkflow, /dependency-cache-restore\.outputs\.cache-hit != 'true'/u);
+  assert.match(authoritativeWorkflow, /with: \{ ref: "\$\{\{ inputs\.candidate_sha \}\}", fetch-depth: 0 \}/u);
+  const isolatedRuntime = await readFile(
+    path.join(root, "scripts", "sounding-line", "isolated-validation-runtime.ps1"),
+    "utf8",
+  );
+  assert.match(isolatedRuntime, /\$hostedRuntimeGeneratedBaseline = \$false/u);
+  assert.match(isolatedRuntime, /\$env:GITHUB_ACTIONS -ne "true"/u);
+  assert.match(isolatedRuntime, /\$baselineSource = "hosted-runtime-generated"/u);
+  assert.match(isolatedRuntime, /Join-Path \$runtimeRoot "prisma\\validation\.db"/u);
+  assert.match(isolatedRuntime, /\[switch\]\$CertifiedBaseline/u);
+  assert.match(isolatedRuntime, /CertifiedBaselinePath \$canonicalDatabase/u);
+  const baselineProducer = await readFile(
+    path.join(root, "scripts", "sounding-line", "build-certified-sqlite-baseline.ps1"),
+    "utf8",
+  );
+  assert.match(baselineProducer, /FOREVER_DEPENDENCY_SEED_ROOT/u);
+  assert.match(baselineProducer, /prisma\/seed\.ts/u);
+  assert.match(baselineProducer, /Clear-ForeverValidationRuntime/u);
+  const isolationHelper = await readFile(path.join(root, "scripts", "prepare-validation-isolation.ts"), "utf8");
+  assert.match(isolationHelper, /"hosted-runtime-generated"/u);
+  const maintenancePolicy = JSON.parse(
+    await readFile(path.join(root, "testing", "verification-maintenance-policy.json"), "utf8"),
+  );
+  assert.ok(
+    maintenancePolicy.authorityChangePathGlobs.includes("scripts/sounding-line/isolated-validation-runtime.ps1"),
+  );
+  assert.ok(maintenancePolicy.authorityChangePathGlobs.includes("scripts/prepare-validation-isolation.ts"));
 });
 
 test("conformance fails closed for missing adapter resources and undeclared browser engines", () => {
@@ -243,23 +307,42 @@ test("hosted planning serializes only actual shared resources while retaining de
       assert.ok(plan.nodes.find((candidate) => candidate.id === dependency).execution.wave < node.execution.wave);
 });
 
-test("empty exclusive waves cannot suppress dependency-ready hosted work", async () => {
+test("empty hosted matrices retain dependency-ready work through a no-evidence success marker", async () => {
   const workflow = await readFile(path.join(root, ".github", "workflows", "sounding-line-authoritative.yml"), "utf8");
   assert.match(
     workflow,
     /wave-0-complete:[\s\S]*?EXCLUSIVE_MATRIX:[\s\S]*?exclusiveIntentionallyEmpty[\s\S]*?SOUNDING_LINE_WAVE_0_PREREQUISITES_INVALID/u,
   );
-  assert.match(workflow, /exclusive0Present: \$\{\{ steps\.matrix\.outputs\.exclusive0Present \}\}/u);
-  assert.match(workflow, /governed-exclusive-wave-0:[\s\S]*?exclusive0Present == 'true'/u);
+  assert.match(
+    workflow,
+    /governed-exclusive-wave-0:[\s\S]*?matrix: \$\{\{ fromJSON\(needs\.plan\.outputs\.exclusive0\) \}\}/u,
+  );
   assert.match(workflow, /governed-parallel-wave-1:[\s\S]*?needs: \[plan, wave-0-complete\]/u);
   assert.match(
     workflow,
     /wave-1-complete:[\s\S]*?EXCLUSIVE_MATRIX:[\s\S]*?exclusiveIntentionallyEmpty[\s\S]*?SOUNDING_LINE_WAVE_1_PREREQUISITES_INVALID/u,
   );
-  assert.match(workflow, /governed-exclusive-wave-1:[\s\S]*?exclusive1Present == 'true'/u);
+  assert.match(
+    workflow,
+    /governed-exclusive-wave-1:[\s\S]*?matrix: \$\{\{ fromJSON\(needs\.plan\.outputs\.exclusive1\) \}\}/u,
+  );
   assert.match(workflow, /governed-parallel-wave-2:[\s\S]*?needs: \[plan, wave-1-complete\]/u);
-  assert.match(workflow, /governed-exclusive-wave-2:[\s\S]*?exclusive2Present == 'true'/u);
+  assert.match(
+    workflow,
+    /governed-exclusive-wave-2:[\s\S]*?matrix: \$\{\{ fromJSON\(needs\.plan\.outputs\.exclusive2\) \}\}/u,
+  );
+  assert.doesNotMatch(workflow, /exclusive[0-5]Present == 'true'/u);
   assert.doesNotMatch(workflow, /needs\.\*\.result/u);
+  assert.match(workflow, /__SOUNDING_LINE_EMPTY_WAVE__/u);
+  assert.match(
+    workflow,
+    /parallelMarkers[\s\S]*?exclusiveMarkers[\s\S]*?SOUNDING_LINE_EMPTY_MARKER_INVALID[\s\S]*?parallelIntentionallyEmpty = \$parallelMarkers\.Count -eq 1/u,
+  );
+  const worker = await readFile(path.join(root, ".github", "workflows", "sounding-line-governed-worker.yml"), "utf8");
+  assert.match(worker, /empty_wave:/u);
+  assert.doesNotMatch(worker, /empty-exclusive-wave:/u);
+  assert.match(worker, /Complete explicit empty wave without evidence[\s\S]*?SOUNDING_LINE_EMPTY_WAVE_COMPLETED/u);
+  assert.match(worker, /execute:[\s\S]*?Complete explicit empty wave without evidence/u);
 });
 
 test("finalizer rejects missing or invalid runtime-conformance evidence", () => {

@@ -40,6 +40,7 @@ export async function buildSyntheticIntegrationTree({
   mergeStrategyIdentity = "git-merge-tree-write-tree",
   planDigest = "shadow-plan",
   msesDigest = "shadow-mses",
+  authorityBoundary = V14_AUTHORITY_BOUNDARY,
 }) {
   let parentSha = baseSha;
   const base = await inspectGitTree(repoPath, baseSha);
@@ -51,7 +52,7 @@ export async function buildSyntheticIntegrationTree({
     } catch (error) {
       return {
         status: "CONFLICT",
-        authorityBoundary: V14_AUTHORITY_BOUNDARY,
+        authorityBoundary,
         failedCandidateSha: candidateSha,
         parentIntegrationSha: parentSha,
         cars,
@@ -61,7 +62,7 @@ export async function buildSyntheticIntegrationTree({
     const candidate = await inspectGitTree(repoPath, candidateSha);
     const syntheticCommitSha = await git(
       repoPath,
-      ["commit-tree", treeSha, "-p", parentSha, "-m", "Sounding Line v1.4 shadow integration"],
+      ["commit-tree", treeSha, "-p", parentSha, "-m", "Sounding Line v1.4 predicted integration"],
       commitEnvironment,
     );
     const identity = createTreeIdentity({
@@ -98,7 +99,7 @@ export async function buildSyntheticIntegrationTree({
   }
   return {
     status: "READY",
-    authorityBoundary: V14_AUTHORITY_BOUNDARY,
+    authorityBoundary,
     trainId,
     policyDigest,
     mergeStrategyIdentity,

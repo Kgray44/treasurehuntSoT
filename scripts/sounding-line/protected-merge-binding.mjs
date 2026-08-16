@@ -22,12 +22,17 @@ const glob = (pattern) =>
 
 const matchesAny = (path, patterns = []) => patterns.some((pattern) => glob(pattern).test(path));
 
-function validateFinalizedEvidence({ plan, finalization, qualified }) {
+export function validateFinalizedEvidence({ plan, finalization, qualified }) {
   const errors = [];
   const { planDigest, ...unsignedPlan } = plan ?? {};
   if (!plan || planDigest !== digest(unsignedPlan)) errors.push("SEALED_PLAN_DIGEST_MISMATCH");
   if (!finalization || finalization.authority !== "SOUNDING_LINE_FINALIZER") errors.push("FINALIZER_AUTHORITY_INVALID");
   if (finalization?.decision !== "RELEASE_GO") errors.push("FINALIZER_RELEASE_GO_REQUIRED");
+  if (
+    plan?.authorityVersion === "1.4" &&
+    (plan?.authorityBoundary !== "V14_CANDIDATE_QUALIFICATION" || plan?.authorityMode !== "V14_CANDIDATE")
+  )
+    errors.push("QUALIFIED_AUTHORITY_BOUNDARY_INVALID");
   if (plan?.sourceSha !== qualified.candidateSha) errors.push("QUALIFIED_CANDIDATE_SOURCE_MISMATCH");
   if (plan?.gate !== "mainline" || finalization?.gate !== "mainline") errors.push("QUALIFIED_MAINLINE_GATE_REQUIRED");
   if (plan?.planDigest !== finalization?.planDigest || plan?.planDigest !== qualified.planDigest)
@@ -63,11 +68,78 @@ function validateFinalizedEvidence({ plan, finalization, qualified }) {
   return errors;
 }
 
+/**
+ * A landed train prefix may be represented by GitHub with a different commit
+ * identity but the exact predicted tree.  GitHub's update-branch operation
+ * produces a new suffix head; this narrowly validates that mechanical rebind
+ * without treating the new commit as fresh candidate authority.
+ */
+export function qualifyTrainSuffixRebind({
+  authority,
+  qualified,
+  plan,
+  finalization,
+  prNumber,
+  currentBaseSha,
+  currentBaseTree,
+  rebasedCandidateSha,
+  rebasedCandidateTree,
+  rebasedCandidateParents,
+  mergeSha,
+  mergeTree,
+  mergeParents,
+  authorityRunId,
+}) {
+  const errors = [];
+  const binding = authority?.protectedMergeBinding;
+  if (!binding?.enabled || binding.requiredContext !== PROTECTED_MAINLINE_CONTEXT)
+    errors.push("PROTECTED_BINDING_POLICY_INVALID");
+  if (![currentBaseSha, currentBaseTree, rebasedCandidateSha, rebasedCandidateTree, mergeSha, mergeTree].every(sha))
+    errors.push("TRAIN_SUFFIX_REBIND_IDENTITY_INVALID");
+  if (!qualified || qualified.prNumber !== Number(prNumber) || qualified.authoritativeRunId !== Number(authorityRunId))
+    errors.push("TRAIN_SUFFIX_REBIND_QUALIFIED_IDENTITY_INVALID");
+  if (qualified?.qualifiedBaseTreeSha !== currentBaseTree || plan?.qualifiedBaseTreeSha !== currentBaseTree)
+    errors.push("TRAIN_SUFFIX_REBIND_BASE_TREE_MISMATCH");
+  if (rebasedCandidateTree !== plan?.predictedIntegrationTreeSha || mergeTree !== plan?.predictedIntegrationTreeSha)
+    errors.push("TRAIN_SUFFIX_REBIND_PREDICTED_TREE_MISMATCH");
+  if (
+    !Array.isArray(rebasedCandidateParents) ||
+    rebasedCandidateParents.length !== 2 ||
+    !rebasedCandidateParents.includes(currentBaseSha) ||
+    !rebasedCandidateParents.includes(qualified?.candidateSha)
+  )
+    errors.push("TRAIN_SUFFIX_REBIND_CANDIDATE_COMPOSITION_INVALID");
+  if (
+    !Array.isArray(mergeParents) ||
+    mergeParents.length !== 2 ||
+    !mergeParents.includes(currentBaseSha) ||
+    !mergeParents.includes(rebasedCandidateSha)
+  )
+    errors.push("TRAIN_SUFFIX_REBIND_MERGE_COMPOSITION_INVALID");
+  errors.push(...validateFinalizedEvidence({ plan, finalization, qualified: qualified ?? {} }));
+  return {
+    authority: "SOUNDING_LINE_TRAIN_SUFFIX_REBIND",
+    decision: errors.length ? "BINDING_NO_GO" : "BINDING_PASS",
+    protectedContext: PROTECTED_MAINLINE_CONTEXT,
+    prNumber: Number(prNumber),
+    originalCandidateSha: qualified?.candidateSha ?? null,
+    rebasedCandidateSha,
+    currentBaseSha,
+    currentBaseTree,
+    mergeSha,
+    mergeTree,
+    authoritativeRunId: Number(authorityRunId),
+    carryForward: { status: "TRAIN_PREDICTED_PREFIX_REBIND", preserved: ["EXACT_PREDICTED_TREE"], rejected: [] },
+    errors: [...new Set(errors)].sort(),
+  };
+}
+
 function validateRecordOnlyPlan({
   plan,
   qualified,
   candidateSha,
   currentBaseSha,
+  currentBaseTree,
   mergeSha,
   recordOnlyChangedPaths,
   recordOnlyAncestryValid,
@@ -153,6 +225,7 @@ export function qualifyProtectedMerge({
   prNumber,
   candidateSha,
   currentBaseSha,
+  currentBaseTree,
   mergeSha,
   mergeParents,
   changedPaths,
@@ -171,7 +244,10 @@ export function qualifyProtectedMerge({
   if (!qualified || qualified.authoritativeRunId !== Number(authorityRunId)) errors.push("QUALIFIED_RUN_MISMATCH");
   const recordOnly = plan?.recordOnly?.mode === "FAIL_CLOSED_RECORD_ONLY";
   if (!sha(qualified?.qualifiedBaseSha)) errors.push("QUALIFIED_BASE_SHA_INVALID");
-  if (!recordOnly && baseAncestryValid !== true) errors.push("QUALIFIED_BASE_ANCESTRY_INVALID");
+  const treeEquivalentPredictedBase =
+    sha(qualified?.qualifiedBaseTreeSha) && qualified.qualifiedBaseTreeSha === currentBaseTree;
+  if (!recordOnly && baseAncestryValid !== true && !treeEquivalentPredictedBase)
+    errors.push("QUALIFIED_BASE_ANCESTRY_INVALID");
   if (!Array.isArray(mergeParents) || mergeParents.length !== 2) errors.push("SYNTHETIC_MERGE_PARENT_COUNT_INVALID");
   else if (!mergeParents.includes(candidateSha) || !mergeParents.includes(currentBaseSha))
     errors.push("SYNTHETIC_MERGE_COMPOSITION_INVALID");
@@ -194,12 +270,14 @@ export function qualifyProtectedMerge({
         preserved: plan.recordOnly.changedPaths,
         rejected: [],
       }
-    : classifyBaseAdvance({
-        qualifiedBaseSha: qualified?.qualifiedBaseSha,
-        currentBaseSha,
-        changedPaths,
-        semanticPolicy: binding?.semanticCarryForward ?? {},
-      });
+    : treeEquivalentPredictedBase
+      ? { status: "TREE_EQUIVALENT_PREDICTED_BASE", preserved: ["EXACT_BASE_TREE"], rejected: [] }
+      : classifyBaseAdvance({
+          qualifiedBaseSha: qualified?.qualifiedBaseSha,
+          currentBaseSha,
+          changedPaths,
+          semanticPolicy: binding?.semanticCarryForward ?? {},
+        });
   if (carryForward.status === "RECONCILIATION_REQUIRED" || carryForward.status === "FAIL_CLOSED")
     errors.push("BASE_ADVANCE_RECONCILIATION_REQUIRED");
   return {
@@ -211,6 +289,7 @@ export function qualifyProtectedMerge({
     currentBaseSha,
     mergeSha,
     qualifiedBaseSha: qualified?.qualifiedBaseSha ?? null,
+    qualifiedBaseTreeSha: qualified?.qualifiedBaseTreeSha ?? null,
     authoritativeRunId: Number(authorityRunId),
     carryForward,
     errors: [...new Set(errors)].sort(),

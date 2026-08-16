@@ -546,7 +546,11 @@ test.describe("Project Lanternwake Phase 3 accessibility and six required viewpo
         // request-context warmup has a distinct connection pool and can reset
         // during Next's route compilation without representing a user-visible
         // contract failure. The assertions below own route readiness.
-        await page.goto(`${path}?section=${flow.section}`, { waitUntil: "commit", timeout: 15_000 });
+        // The visible redirect route and its destination can each compile on a
+        // fresh validation server. Keep this bounded, but allow the complete
+        // cold user-visible route chain rather than failing before the
+        // readiness contract below can be evaluated.
+        await page.goto(`${path}?section=${flow.section}`, { waitUntil: "commit", timeout: 30_000 });
         await openReadableJournal(page, slug, flow.kind === "reentry", flow.eventType);
 
         if (flow.kind === "replay") {

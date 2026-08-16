@@ -30,6 +30,14 @@ describe("Tideglass service authorization, integrity, and projection boundaries"
     expect(result).toMatchObject({ ok: false, code: "CROSS_CHRONICLE_COMPARISON" });
   });
 
+  it("does not authorize a target when the exact source edition is absent", async () => {
+    const target = edition("edition-b", baseSnapshot());
+    const repository = new FixtureRepository([target]);
+    const result = await compareExactEditions(repository, principal, request());
+    expect(result).toMatchObject({ ok: false, code: "EDITION_NOT_FOUND" });
+    expect(repository.authorizationCalls).toEqual([]);
+  });
+
   it("F25 fails closed when a historical target edition is unauthorized", async () => {
     const source = edition("edition-a", baseSnapshot());
     const target = edition("edition-b", baseSnapshot());
