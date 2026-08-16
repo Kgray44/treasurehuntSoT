@@ -75,6 +75,11 @@ on:
         required: false
         default: integration.bundle
         type: string
+      integration_base_sha:
+        description: Exact immutable train-main object required by a compact predicted-integration bundle
+        required: false
+        default: ""
+        type: string
       receipt_artifact:
         description: Optional unique artifact name for this logical worker receipt
         required: false
@@ -109,9 +114,9 @@ jobs:
           # Each worker must execute the same frozen candidate that the plan
           # sealed, including when protected main advances while workers start.
           ref: ${{ inputs.candidate_sha }}
-          # A compact synthetic bundle advertises this exact trusted base as a
-          # prerequisite. Retain both candidate and parent for fail-closed
-          # transport validation without fetching unrelated repository history.
+          # Retain the candidate and its immediate parent. A train bundle may
+          # require the admitted immutable main object separately, so the
+          # checkout is deliberately shallow and never broadens to all history.
           fetch-depth: 2
       - name: Restore sealed plan and predicted integration transport
         if: ${{ !inputs.empty_wave }}
@@ -127,10 +132,20 @@ jobs:
           SOUNDING_LINE_EXECUTION_SHA: ${{ inputs.execution_sha }}
           SOUNDING_LINE_INTEGRATION_ARTIFACT: ${{ inputs.integration_artifact }}
           SOUNDING_LINE_INTEGRATION_BUNDLE_PATH: ${{ inputs.integration_bundle_path }}
+          SOUNDING_LINE_INTEGRATION_BASE_SHA: ${{ inputs.integration_base_sha }}
         run: |
           $execution = if ($env:SOUNDING_LINE_EXECUTION_SHA) { $env:SOUNDING_LINE_EXECUTION_SHA } else { $env:SOUNDING_LINE_CANDIDATE_SHA }
           if ($execution -notmatch '^[0-9a-f]{40}$') { throw 'GOVERNED_WORKER_EXECUTION_SHA_INVALID' }
           if ($env:SOUNDING_LINE_INTEGRATION_ARTIFACT) {
+            $integrationBase = $env:SOUNDING_LINE_INTEGRATION_BASE_SHA
+            if ($integrationBase -notmatch '^[0-9a-f]{40}$') { throw 'GOVERNED_INTEGRATION_BASE_SHA_INVALID' }
+            # The bundle transport is intentionally thin. Fetch only the exact
+            # immutable main prerequisite sealed into the train matrix; never
+            # substitute mutable main or broaden this worker to full history.
+            git fetch --no-tags --depth=1 origin $integrationBase
+            if ($LASTEXITCODE -ne 0) { throw 'GOVERNED_INTEGRATION_BASE_FETCH_FAILED' }
+            git cat-file -e "$integrationBase^{commit}"
+            if ($LASTEXITCODE -ne 0) { throw 'GOVERNED_INTEGRATION_BASE_MISSING' }
             $bundle = Join-Path (Join-Path $env:RUNNER_TEMP 'sounding-line-transport') $env:SOUNDING_LINE_INTEGRATION_BUNDLE_PATH
             if (-not (Test-Path -LiteralPath $bundle -PathType Leaf)) { throw 'GOVERNED_INTEGRATION_BUNDLE_MISSING' }
             git fetch $bundle $execution

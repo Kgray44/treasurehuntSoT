@@ -35,6 +35,7 @@ jobs:
       execution_sha: ${{ matrix.executionSha }}
       integration_artifact: sounding-line-train-prepared
       integration_bundle_path: ${{ matrix.integrationBundlePath }}
+      integration_base_sha: ${{ matrix.integrationBaseSha }}
       receipt_artifact: ${{ matrix.receiptArtifact }}
 
   exclusive:
@@ -56,6 +57,7 @@ jobs:
       execution_sha: ${{ matrix.executionSha }}
       integration_artifact: sounding-line-train-prepared
       integration_bundle_path: ${{ matrix.integrationBundlePath }}
+      integration_base_sha: ${{ matrix.integrationBaseSha }}
       receipt_artifact: ${{ matrix.receiptArtifact }}
 
   complete:
