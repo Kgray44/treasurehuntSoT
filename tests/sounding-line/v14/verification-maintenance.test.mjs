@@ -6,6 +6,7 @@ import {
   createMaintenancePlan,
   finalizeMaintenance,
 } from "../../../scripts/sounding-line/verification-maintenance.mjs";
+import { buildStaticCommandPlan } from "../../../scripts/sounding-line/static.mjs";
 
 const sha = (character) => character.repeat(40);
 const policy = {
@@ -179,9 +180,34 @@ test("maintenance qualification keeps the static-safe changed-path proof outside
   assert.match(workflow, /\$pathsJson = ConvertTo-Json -InputObject \$paths -Compress/u);
   assert.match(workflow, /\[System\.IO\.File\]::WriteAllText\(\$pathsFile, \$pathsJson, \$utf8NoBom\)/u);
   assert.match(workflow, /--paths \$pathsFile/u);
+  assert.match(
+    workflow,
+    /static\.mjs --paths \$\{\{ steps\.trusted-maintenance\.outputs\.maintenance_temp \}\}\/maintenance-changed-paths\.json/u,
+  );
   assert.doesNotMatch(workflow, /Set-Content maintenance-changed-paths\.json/u);
   assert.match(workflow, /\$\{\{ steps\.trusted-maintenance\.outputs\.maintenance_temp \}\}\/maintenance-plan\.json/u);
   assert.match(workflow, /Remove-Item -LiteralPath \$maintenanceTemp -Recurse -Force/u);
+});
+
+test("maintenance static proof scopes formatter and lint to declared changed paths while retaining type safety", async () => {
+  const plan = await buildStaticCommandPlan({
+    root: process.cwd(),
+    changedPaths: [
+      "tests/sounding-line/v14/verification-maintenance.test.mjs",
+      "testing/generated/p34-retirement-ledger.json",
+    ],
+    fileInfo: async (file) => ({ inferredParser: file.endsWith(".mjs") ? "babel" : null }),
+  });
+  assert.equal(plan.scoped, true);
+  assert.deepEqual(plan.formatterPaths, ["tests/sounding-line/v14/verification-maintenance.test.mjs"]);
+  assert.deepEqual(plan.lintPaths, ["tests/sounding-line/v14/verification-maintenance.test.mjs"]);
+  assert.deepEqual(plan.commands[0].slice(2), ["--check", "tests/sounding-line/v14/verification-maintenance.test.mjs"]);
+  assert.deepEqual(plan.commands[1].slice(2), ["tests/sounding-line/v14/verification-maintenance.test.mjs"]);
+  assert.deepEqual(plan.commands[2].slice(2), ["--noEmit"]);
+  await assert.rejects(
+    buildStaticCommandPlan({ root: process.cwd(), changedPaths: ["../outside.ts"] }),
+    /STATIC_CHANGED_PATHS_INVALID/u,
+  );
 });
 
 test("routine maintenance keeps every sealed qualification artifact runner-owned", async () => {

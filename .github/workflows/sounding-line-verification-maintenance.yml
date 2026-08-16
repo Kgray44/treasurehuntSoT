@@ -59,7 +59,7 @@ jobs:
       - run: node scripts/sounding-line/reconcile-p34-stable-identities.mjs
       - run: node scripts/sounding-line/p34-retirement.mjs
       - run: node --test tests/sounding-line/v14/maintenance-identity.test.mjs tests/sounding-line/v14/verification-maintenance.test.mjs
-      - run: node scripts/sounding-line/static.mjs
+      - run: node scripts/sounding-line/static.mjs --paths ${{ steps.trusted-maintenance.outputs.maintenance_temp }}/maintenance-changed-paths.json
       - run: node node_modules/tsx/dist/cli.mjs scripts/private-content/scan.ts
       - run: node scripts/validate-documentation.mjs
       - name: Require deterministic regeneration
