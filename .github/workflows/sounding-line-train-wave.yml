@@ -25,6 +25,9 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      requires_browser: ${{ matrix.requiresBrowser }}
+      browser_engine: ${{ matrix.browserEngine }}
       gate: mainline
       candidate_sha: ${{ matrix.candidateSha }}
       plan_artifact: sounding-line-train-prepared
@@ -43,6 +46,9 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      requires_browser: ${{ matrix.requiresBrowser }}
+      browser_engine: ${{ matrix.browserEngine }}
       gate: mainline
       candidate_sha: ${{ matrix.candidateSha }}
       plan_artifact: sounding-line-train-prepared

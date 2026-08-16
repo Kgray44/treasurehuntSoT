@@ -53,11 +53,60 @@ jobs:
       exclusive3Present: ${{ steps.matrix.outputs.exclusive3Present }}
       exclusive4Present: ${{ steps.matrix.outputs.exclusive4Present }}
       exclusive5Present: ${{ steps.matrix.outputs.exclusive5Present }}
+      finalization0: ${{ steps.matrix.outputs.finalization0 }}
+      finalization1: ${{ steps.matrix.outputs.finalization1 }}
+      finalization2: ${{ steps.matrix.outputs.finalization2 }}
+      finalization3: ${{ steps.matrix.outputs.finalization3 }}
+      finalization4: ${{ steps.matrix.outputs.finalization4 }}
+      finalization5: ${{ steps.matrix.outputs.finalization5 }}
+      finalization0Present: ${{ steps.matrix.outputs.finalization0Present }}
+      finalization1Present: ${{ steps.matrix.outputs.finalization1Present }}
+      finalization2Present: ${{ steps.matrix.outputs.finalization2Present }}
+      finalization3Present: ${{ steps.matrix.outputs.finalization3Present }}
+      finalization4Present: ${{ steps.matrix.outputs.finalization4Present }}
+      finalization5Present: ${{ steps.matrix.outputs.finalization5Present }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with: { ref: "${{ github.sha }}", fetch-depth: 0 }
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc }
+      - id: dependency-identity
+        shell: pwsh
+        run: |
+          $identity = node scripts/sounding-line/v14/prepared-layer-artifact.mjs cache-key | ConvertFrom-Json
+          "key=$($identity.key)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "producer=$($identity.producer)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - id: dependency-cache-restore
+        uses: actions/cache/restore@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            node_modules
+            sounding-line-dependency-cache/dependency-manifest.json
+          key: ${{ steps.dependency-identity.outputs.key }}
+      - if: ${{ steps.dependency-cache-restore.outputs.cache-hit != 'true' }}
+        run: npm ci
+      - name: Seal or verify shared digest-keyed dependency cache
+        shell: pwsh
+        env:
+          CACHE_HIT: ${{ steps.dependency-cache-restore.outputs.cache-hit }}
+          SOUNDING_LINE_PREPARED_CACHE_KEY: ${{ steps.dependency-identity.outputs.key }}
+          SOUNDING_LINE_DEPENDENCY_PRODUCER: ${{ steps.dependency-identity.outputs.producer }}
+        run: |
+          $manifest = 'sounding-line-dependency-cache/dependency-manifest.json'
+          if ($env:CACHE_HIT -ne 'true') {
+            New-Item -ItemType Directory -Path 'sounding-line-dependency-cache' -Force | Out-Null
+            $expiry = ([DateTimeOffset]::UtcNow).AddDays(14).ToString('o')
+            node scripts/sounding-line/v14/prepared-layer-artifact.mjs publish --source node_modules --manifest $manifest --producer $env:SOUNDING_LINE_DEPENDENCY_PRODUCER --expires-at $expiry
+          }
+          node scripts/sounding-line/v14/prepared-layer-artifact.mjs verify --source node_modules --manifest $manifest
+          if ($LASTEXITCODE -ne 0) { throw 'TRAIN_DEPENDENCY_CACHE_VERIFY_FAILED' }
+      - if: ${{ steps.dependency-cache-restore.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            node_modules
+            sounding-line-dependency-cache/dependency-manifest.json
+          key: ${{ steps.dependency-identity.outputs.key }}
       - name: Discover and freeze ordinary candidates
         shell: pwsh
         env:
@@ -108,6 +157,134 @@ jobs:
         run: node scripts/sounding-line/v14/mainline-train-cli.mjs admit --input train-input.json --out mainline-train.json
       - name: Prepare sealed per-car qualification inputs
         run: node scripts/sounding-line/v14/mainline-train-prepare.mjs --train mainline-train.json --repo . --out train-prepared
+      - id: browser-requirements
+        shell: pwsh
+        run: |
+          $workers = (Get-Content -Raw train-prepared/worker-matrix.json | ConvertFrom-Json).include
+          $engines = @($workers | Where-Object { $_.requiresBrowser } | ForEach-Object { $_.browserEngine } | Sort-Object -Unique)
+          if (@($engines | Where-Object { $_ -notin @('chromium', 'webkit') }).Count -gt 0) { throw 'TRAIN_BROWSER_ENGINE_UNDECLARED' }
+          "chromium=$(if ($engines -contains 'chromium') { 'true' } else { 'false' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "webkit=$(if ($engines -contains 'webkit') { 'true' } else { 'false' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "required=$(if ($engines.Count -gt 0) { 'true' } else { 'false' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - id: chromium-layer-identity
+        if: ${{ steps.browser-requirements.outputs.chromium == 'true' }}
+        shell: pwsh
+        run: |
+          $identity = node scripts/sounding-line/v14/browser-layer-artifact.mjs cache-key --engines-json '["chromium"]' | ConvertFrom-Json
+          "key=$($identity.key)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "producer=$($identity.producer)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - id: chromium-layer-restore
+        if: ${{ steps.browser-requirements.outputs.chromium == 'true' }}
+        uses: actions/cache/restore@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            sounding-line-browser-cache/chromium
+            sounding-line-browser-cache/chromium-manifest.json
+          key: ${{ steps.chromium-layer-identity.outputs.key }}
+      - name: Seal or verify shared Chromium browser layer
+        if: ${{ steps.browser-requirements.outputs.chromium == 'true' }}
+        shell: pwsh
+        env:
+          CACHE_HIT: ${{ steps.chromium-layer-restore.outputs.cache-hit }}
+          SOUNDING_LINE_BROWSER_CACHE_KEY: ${{ steps.chromium-layer-identity.outputs.key }}
+          SOUNDING_LINE_BROWSER_PRODUCER: ${{ steps.chromium-layer-identity.outputs.producer }}
+          PLAYWRIGHT_BROWSERS_PATH: sounding-line-browser-cache/chromium
+        run: |
+          $manifest = 'sounding-line-browser-cache/chromium-manifest.json'
+          if ($env:CACHE_HIT -ne 'true') {
+            npx playwright install chromium
+            if ($LASTEXITCODE -ne 0) { throw 'TRAIN_BROWSER_LAYER_BUILD_FAILED:chromium' }
+            $expiry = ([DateTimeOffset]::UtcNow).AddDays(14).ToString('o')
+            node scripts/sounding-line/v14/browser-layer-artifact.mjs publish --engines-json '["chromium"]' --source sounding-line-browser-cache/chromium --manifest $manifest --producer $env:SOUNDING_LINE_BROWSER_PRODUCER --expires-at $expiry
+          }
+          node scripts/sounding-line/v14/browser-layer-artifact.mjs verify --engines-json '["chromium"]' --source sounding-line-browser-cache/chromium --manifest $manifest
+          if ($LASTEXITCODE -ne 0) { throw 'TRAIN_BROWSER_LAYER_VERIFY_FAILED:chromium' }
+      - if: ${{ steps.browser-requirements.outputs.chromium == 'true' && steps.chromium-layer-restore.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            sounding-line-browser-cache/chromium
+            sounding-line-browser-cache/chromium-manifest.json
+          key: ${{ steps.chromium-layer-identity.outputs.key }}
+      - id: webkit-layer-identity
+        if: ${{ steps.browser-requirements.outputs.webkit == 'true' }}
+        shell: pwsh
+        run: |
+          $identity = node scripts/sounding-line/v14/browser-layer-artifact.mjs cache-key --engines-json '["webkit"]' | ConvertFrom-Json
+          "key=$($identity.key)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "producer=$($identity.producer)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - id: webkit-layer-restore
+        if: ${{ steps.browser-requirements.outputs.webkit == 'true' }}
+        uses: actions/cache/restore@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            sounding-line-browser-cache/webkit
+            sounding-line-browser-cache/webkit-manifest.json
+          key: ${{ steps.webkit-layer-identity.outputs.key }}
+      - name: Seal or verify shared WebKit browser layer
+        if: ${{ steps.browser-requirements.outputs.webkit == 'true' }}
+        shell: pwsh
+        env:
+          CACHE_HIT: ${{ steps.webkit-layer-restore.outputs.cache-hit }}
+          SOUNDING_LINE_BROWSER_CACHE_KEY: ${{ steps.webkit-layer-identity.outputs.key }}
+          SOUNDING_LINE_BROWSER_PRODUCER: ${{ steps.webkit-layer-identity.outputs.producer }}
+          PLAYWRIGHT_BROWSERS_PATH: sounding-line-browser-cache/webkit
+        run: |
+          $manifest = 'sounding-line-browser-cache/webkit-manifest.json'
+          if ($env:CACHE_HIT -ne 'true') {
+            npx playwright install webkit
+            if ($LASTEXITCODE -ne 0) { throw 'TRAIN_BROWSER_LAYER_BUILD_FAILED:webkit' }
+            $expiry = ([DateTimeOffset]::UtcNow).AddDays(14).ToString('o')
+            node scripts/sounding-line/v14/browser-layer-artifact.mjs publish --engines-json '["webkit"]' --source sounding-line-browser-cache/webkit --manifest $manifest --producer $env:SOUNDING_LINE_BROWSER_PRODUCER --expires-at $expiry
+          }
+          node scripts/sounding-line/v14/browser-layer-artifact.mjs verify --engines-json '["webkit"]' --source sounding-line-browser-cache/webkit --manifest $manifest
+          if ($LASTEXITCODE -ne 0) { throw 'TRAIN_BROWSER_LAYER_VERIFY_FAILED:webkit' }
+      - if: ${{ steps.browser-requirements.outputs.webkit == 'true' && steps.webkit-layer-restore.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            sounding-line-browser-cache/webkit
+            sounding-line-browser-cache/webkit-manifest.json
+          key: ${{ steps.webkit-layer-identity.outputs.key }}
+      - id: sqlite-baseline-identity
+        if: ${{ steps.browser-requirements.outputs.required == 'true' }}
+        shell: pwsh
+        run: |
+          $identity = node scripts/sounding-line/v14/sqlite-baseline-artifact.mjs cache-key | ConvertFrom-Json
+          "key=$($identity.key)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "producer=$($identity.producer)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - id: sqlite-baseline-restore
+        if: ${{ steps.browser-requirements.outputs.required == 'true' }}
+        uses: actions/cache/restore@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            sounding-line-sqlite-baseline
+            sounding-line-sqlite-baseline-manifest.json
+          key: ${{ steps.sqlite-baseline-identity.outputs.key }}
+      - name: Seal or verify shared certified SQLite baseline
+        if: ${{ steps.browser-requirements.outputs.required == 'true' }}
+        shell: pwsh
+        env:
+          CACHE_HIT: ${{ steps.sqlite-baseline-restore.outputs.cache-hit }}
+          SOUNDING_LINE_SQLITE_BASELINE_CACHE_KEY: ${{ steps.sqlite-baseline-identity.outputs.key }}
+          SOUNDING_LINE_SQLITE_BASELINE_PRODUCER: ${{ steps.sqlite-baseline-identity.outputs.producer }}
+        run: |
+          $manifest = 'sounding-line-sqlite-baseline-manifest.json'
+          if ($env:CACHE_HIT -ne 'true') {
+            powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/sounding-line/build-certified-sqlite-baseline.ps1 -OutDirectory (Join-Path $PWD 'sounding-line-sqlite-baseline')
+            if ($LASTEXITCODE -ne 0) { throw 'TRAIN_SQLITE_BASELINE_BUILD_FAILED' }
+            $expiry = ([DateTimeOffset]::UtcNow).AddDays(14).ToString('o')
+            node scripts/sounding-line/v14/sqlite-baseline-artifact.mjs publish --source sounding-line-sqlite-baseline --manifest $manifest --producer $env:SOUNDING_LINE_SQLITE_BASELINE_PRODUCER --expires-at $expiry
+          }
+          node scripts/sounding-line/v14/sqlite-baseline-artifact.mjs verify --source sounding-line-sqlite-baseline --manifest $manifest
+          if ($LASTEXITCODE -ne 0) { throw 'TRAIN_SQLITE_BASELINE_VERIFY_FAILED' }
+      - if: ${{ steps.browser-requirements.outputs.required == 'true' && steps.sqlite-baseline-restore.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            sounding-line-sqlite-baseline
+            sounding-line-sqlite-baseline-manifest.json
+          key: ${{ steps.sqlite-baseline-identity.outputs.key }}
       - name: Verify live train state
         shell: pwsh
         run: |
@@ -119,7 +296,8 @@ jobs:
         shell: pwsh
         run: |
           $workers = (Get-Content -Raw train-prepared/worker-matrix.json | ConvertFrom-Json).include
-          $cars = (Get-Content -Raw train-prepared/car-matrix.json | ConvertFrom-Json) | ConvertTo-Json -Compress -Depth 16
+          $carMatrix = Get-Content -Raw train-prepared/car-matrix.json | ConvertFrom-Json
+          $cars = $carMatrix | ConvertTo-Json -Compress -Depth 16
           $authority = Get-Content -Raw testing/sounding-line-authority.json | ConvertFrom-Json
           $maximumWave = [int]$authority.hostedExecutionCapacity.maximumWave
           if ($maximumWave -ne 5) { throw 'TRAIN_WORKFLOW_WAVE_LAYOUT_STALE' }
@@ -130,6 +308,10 @@ jobs:
               "$mode$wave=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
               "$mode$wave`Present=$(if ($nodes.Count -gt 0) { 'true' } else { 'false' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
             }
+            $finalization = @($carMatrix.include | Where-Object { [int]$_.activeMaximumWave -eq $wave })
+            $finalizationMatrix = @{ include = $finalization } | ConvertTo-Json -Compress -Depth 16
+            "finalization$wave=$finalizationMatrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            "finalization$wave`Present=$(if ($finalization.Count -gt 0) { 'true' } else { 'false' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           }
           "cars=$cars" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
@@ -202,8 +384,57 @@ jobs:
       exclusive_matrix: ${{ needs.admit.outputs.exclusive5 }}
       exclusive_present: ${{ needs.admit.outputs.exclusive5Present }}
 
+  finalize-cars-wave-0:
+    needs: [admit, wave-0]
+    uses: ./.github/workflows/sounding-line-train-finalize-cars.yml
+    with:
+      train_id: ${{ inputs.train_id }}
+      cars: ${{ needs.admit.outputs.finalization0 }}
+      present: ${{ needs.admit.outputs.finalization0Present }}
+
+  finalize-cars-wave-1:
+    needs: [admit, wave-1]
+    uses: ./.github/workflows/sounding-line-train-finalize-cars.yml
+    with:
+      train_id: ${{ inputs.train_id }}
+      cars: ${{ needs.admit.outputs.finalization1 }}
+      present: ${{ needs.admit.outputs.finalization1Present }}
+
+  finalize-cars-wave-2:
+    needs: [admit, wave-2]
+    uses: ./.github/workflows/sounding-line-train-finalize-cars.yml
+    with:
+      train_id: ${{ inputs.train_id }}
+      cars: ${{ needs.admit.outputs.finalization2 }}
+      present: ${{ needs.admit.outputs.finalization2Present }}
+
+  finalize-cars-wave-3:
+    needs: [admit, wave-3]
+    uses: ./.github/workflows/sounding-line-train-finalize-cars.yml
+    with:
+      train_id: ${{ inputs.train_id }}
+      cars: ${{ needs.admit.outputs.finalization3 }}
+      present: ${{ needs.admit.outputs.finalization3Present }}
+
+  finalize-cars-wave-4:
+    needs: [admit, wave-4]
+    uses: ./.github/workflows/sounding-line-train-finalize-cars.yml
+    with:
+      train_id: ${{ inputs.train_id }}
+      cars: ${{ needs.admit.outputs.finalization4 }}
+      present: ${{ needs.admit.outputs.finalization4Present }}
+
+  finalize-cars-wave-5:
+    needs: [admit, wave-5]
+    uses: ./.github/workflows/sounding-line-train-finalize-cars.yml
+    with:
+      train_id: ${{ inputs.train_id }}
+      cars: ${{ needs.admit.outputs.finalization5 }}
+      present: ${{ needs.admit.outputs.finalization5Present }}
+
   finalize-cars:
     name: Sounding Line / Train car finalizer
+    if: ${{ false }}
     needs: [admit, wave-5]
     strategy:
       fail-fast: false
@@ -289,7 +520,16 @@ jobs:
 
   merge-qualifications:
     name: Sounding Line / Merge sealed train qualifications
-    needs: [admit, finalize-cars]
+    needs:
+      [
+        admit,
+        finalize-cars-wave-0,
+        finalize-cars-wave-1,
+        finalize-cars-wave-2,
+        finalize-cars-wave-3,
+        finalize-cars-wave-4,
+        finalize-cars-wave-5,
+      ]
     runs-on: windows-latest
     timeout-minutes: 5
     steps:

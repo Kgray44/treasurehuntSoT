@@ -226,6 +226,7 @@ export function resolveIsolatedBrowserFamilyAdapter(selections, baselineDatabase
     throw new Error("Isolated browser adapter mutation expectation must be boolean");
   const skipLegacyProjectionFixture = options.skipLegacyProjectionFixture === true;
   const parallelSafe = options.parallelSafe === true;
+  const certifiedBaseline = options.certifiedBaseline === true;
   const browserWorkers = options.browserWorkers ?? 1;
   if (!Number.isInteger(browserWorkers) || browserWorkers < 1 || browserWorkers > 3)
     throw new Error("Isolated browser adapter worker count must be between one and three");
@@ -265,6 +266,7 @@ export function resolveIsolatedBrowserFamilyAdapter(selections, baselineDatabase
       "-SkipBrowserInstall",
       "-BaselineDatabasePath",
       baselineDatabase,
+      ...(certifiedBaseline ? ["-CertifiedBaseline"] : []),
       "-BrowserOnly",
       "-SoundingLineLane",
       "browser-family",

@@ -55,13 +55,15 @@ jobs:
         run: |
           $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = "application/vnd.github+json"; 'X-GitHub-Api-Version' = '2022-11-28' }
           $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&per_page=100").workflow_runs |
-            Where-Object { $_.name -eq 'Sounding Line mainline train' -and $_.path -eq '.github/workflows/sounding-line-mainline-train.yml' -and $_.status -eq 'completed' -and $_.conclusion -eq 'success' }
+            Where-Object { $_.name -eq 'Sounding Line mainline train' -and $_.path -eq '.github/workflows/sounding-line-mainline-train.yml' -and (($_.status -eq 'completed' -and $_.conclusion -eq 'success') -or $_.status -eq 'in_progress') }
           $matches = @()
           foreach ($run in $runs) {
             try {
               $artifacts = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs/$($run.id)/artifacts?per_page=100").artifacts
               $envelopes = @($artifacts | Where-Object { -not $_.expired -and $_.name -like 'sounding-line-train-acceptance-envelope-*' })
-              $live = @($artifacts | Where-Object { -not $_.expired -and $_.name -like 'sounding-line-mainline-train-live-*' })
+              $completeLive = @($artifacts | Where-Object { -not $_.expired -and $_.name -like 'sounding-line-mainline-train-live-*' })
+              $headLive = @($artifacts | Where-Object { -not $_.expired -and $_.name -like 'sounding-line-mainline-train-head-live-*' })
+              $live = if ($completeLive.Count -eq 1) { $completeLive } elseif ($completeLive.Count -eq 0 -and $headLive.Count -eq 1) { $headLive } else { @() }
               if ($live.Count -ne 1) { continue }
               foreach ($artifact in $envelopes) {
                 $directory = Join-Path $env:RUNNER_TEMP "sounding-line-train-envelope-$($run.id)-$($artifact.id)"

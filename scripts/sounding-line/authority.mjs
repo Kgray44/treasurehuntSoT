@@ -14,6 +14,7 @@ import {
 import { finalize } from "./finalizer.mjs";
 import { buildPlan } from "./planner.mjs";
 import { deriveV14WorkerPreparation, deriveWorkerPreparation } from "./worker-preparation.mjs";
+import { canBatchPhysicalWorker } from "./v14/physical-worker-batching.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const configuredBaselineDatabase = process.env.SOUNDING_LINE_BASELINE_DATABASE;
@@ -32,6 +33,7 @@ const readJson = async (file) => {
 };
 
 function suiteAdapter(suite, registry) {
+  const certifiedBaseline = process.env.SOUNDING_LINE_CERTIFIED_BASELINE === "1";
   const definitions = registry.cases.filter((entry) => entry.suiteId === suite.id);
   if (["vitest-family", "node-test-browser-family"].includes(suite.adapter)) {
     const files = [
@@ -88,6 +90,7 @@ function suiteAdapter(suite, registry) {
             skipLegacyProjectionFixture: true,
             parallelSafe: suite.parallelSafe === true,
             browserWorkers: suite.parallelSafe ? 3 : 1,
+            certifiedBaseline,
           }
         : undefined,
     );
@@ -119,10 +122,23 @@ async function loadSealedPlan(gateId, { serial, planPath } = {}) {
   return plan;
 }
 
-async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, planPath } = {}) {
+async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, suiteIds, planPath } = {}) {
   const plan = await loadSealedPlan(gateId, { serial, planPath });
-  if (suiteId && !plan.nodes.some((node) => node.id === suiteId))
-    throw new Error(`SUITE_NOT_SELECTED_BY_PLAN:${suiteId}`);
+  const selectedSuiteIds = suiteIds ?? (suiteId ? [suiteId] : null);
+  if (
+    selectedSuiteIds &&
+    (!Array.isArray(selectedSuiteIds) ||
+      !selectedSuiteIds.length ||
+      new Set(selectedSuiteIds).size !== selectedSuiteIds.length)
+  )
+    throw new Error("SUITE_BATCH_INVALID");
+  if (selectedSuiteIds && selectedSuiteIds.some((id) => !plan.nodes.some((node) => node.id === id)))
+    throw new Error("SUITE_BATCH_NOT_SELECTED_BY_PLAN");
+  if (selectedSuiteIds?.length > 1) {
+    const batchNodes = plan.nodes.filter((node) => selectedSuiteIds.includes(node.id));
+    if (!batchNodes.every(canBatchPhysicalWorker) || new Set(batchNodes.map((node) => node.execution.wave)).size !== 1)
+      throw new Error("SUITE_BATCH_RESOURCE_CONFLICT");
+  }
   const [suites, registry] = await Promise.all([
     readJson(path.join(root, "testing", "suites.json")),
     readJson(path.join(root, "testing", "generated", "active-test-registry.json")),
@@ -131,7 +147,7 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
   const receipts = [];
   const runtimeConformance = [];
   const runtimeRoot = path.join(root, "artifacts", "sounding-line", "runs", process.env.GITHUB_RUN_ID ?? "local");
-  for (const node of plan.nodes.filter((node) => !suiteId || node.id === suiteId)) {
+  for (const node of plan.nodes.filter((node) => !selectedSuiteIds || selectedSuiteIds.includes(node.id))) {
     const suite = suiteMap.get(node.id);
     const preparation =
       plan.authorityVersion === "1.4"
@@ -236,14 +252,19 @@ if (receiptIndex >= 0 && !receiptPath) throw new Error("RECEIPT_OUTPUT_PATH_REQU
 const suiteIndex = process.argv.indexOf("--suite");
 const suiteId = suiteIndex >= 0 ? process.argv[suiteIndex + 1] : undefined;
 if (suiteIndex >= 0 && !suiteId) throw new Error("SUITE_ID_REQUIRED");
+const suitesIndex = process.argv.indexOf("--suites-json");
+const suiteIds = suitesIndex >= 0 ? JSON.parse(process.argv[suitesIndex + 1] ?? "") : undefined;
+if (suiteId && suiteIds) throw new Error("SUITE_AND_BATCH_ARE_MUTUALLY_EXCLUSIVE");
 const planInputIndex = process.argv.indexOf("--plan-in");
 const planPath = planInputIndex >= 0 ? process.argv[planInputIndex + 1] : undefined;
 if (planInputIndex >= 0 && !planPath) throw new Error("SEALED_PLAN_PATH_REQUIRED");
-if (suiteId && !process.argv.includes("--execute-only")) throw new Error("FOCUSED_SUITE_EXECUTION_IS_NONAUTHORITATIVE");
+if ((suiteId || suiteIds) && !process.argv.includes("--execute-only"))
+  throw new Error("FOCUSED_SUITE_EXECUTION_IS_NONAUTHORITATIVE");
 await run(command, {
   serial: process.argv.includes("--serial"),
   executeOnly: process.argv.includes("--execute-only"),
   receiptPath,
   suiteId,
+  suiteIds,
   planPath,
 });

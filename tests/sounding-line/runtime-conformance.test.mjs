@@ -160,7 +160,8 @@ test("heavyweight repository closure and finalization workflows require explicit
     if (!isHeavyweightRepositoryClosure(source)) continue;
     heavyweightCount += 1;
     const triggers = workflowTriggers(source);
-    if (!/\bworkflow_dispatch\b/u.test(triggers)) violations.push(`${file}:EXPLICIT_DISPATCH_MISSING`);
+    if (!/\bworkflow_dispatch\b|\bworkflow_call\b/u.test(triggers))
+      violations.push(`${file}:EXPLICIT_DISPATCH_MISSING`);
     if (hasOrdinaryDevelopmentTrigger(triggers)) violations.push(`${file}:ORDINARY_DEVELOPMENT_TRIGGER_FORBIDDEN`);
   }
 
@@ -223,6 +224,9 @@ test("resource-aware preparation eliminates universal database and browser setup
   assert.match(workerWorkflow, /fetch-depth: 2/u);
   assert.match(workerWorkflow, /ISOLATED_BROWSER_RUNTIME/u);
   assert.match(workerWorkflow, /GOVERNED_DEPENDENCY_CACHE_MISS/u);
+  assert.match(workerWorkflow, /GOVERNED_BROWSER_LAYER_CACHE_MISS/u);
+  assert.match(workerWorkflow, /GOVERNED_SQLITE_BASELINE_CACHE_MISS/u);
+  assert.match(workerWorkflow, /SOUNDING_LINE_CERTIFIED_BASELINE/u);
   assert.match(workerWorkflow, /prepared-layer-artifact\.mjs verify/u);
   assert.match(workerWorkflow, /Restore sealed plan and predicted integration transport/u);
   const authoritativeWorkflow = await readFile(
@@ -231,6 +235,8 @@ test("resource-aware preparation eliminates universal database and browser setup
   );
   assert.match(authoritativeWorkflow, /actions\/cache\/restore/u);
   assert.match(authoritativeWorkflow, /actions\/cache\/save/u);
+  assert.match(authoritativeWorkflow, /browser-layer-artifact\.mjs verify/u);
+  assert.match(authoritativeWorkflow, /sqlite-baseline-artifact\.mjs verify/u);
   assert.match(authoritativeWorkflow, /dependency-cache-restore\.outputs\.cache-hit != 'true'/u);
   assert.match(authoritativeWorkflow, /with: \{ ref: "\$\{\{ inputs\.candidate_sha \}\}", fetch-depth: 0 \}/u);
   const isolatedRuntime = await readFile(
@@ -241,6 +247,15 @@ test("resource-aware preparation eliminates universal database and browser setup
   assert.match(isolatedRuntime, /\$env:GITHUB_ACTIONS -ne "true"/u);
   assert.match(isolatedRuntime, /\$baselineSource = "hosted-runtime-generated"/u);
   assert.match(isolatedRuntime, /Join-Path \$runtimeRoot "prisma\\validation\.db"/u);
+  assert.match(isolatedRuntime, /\[switch\]\$CertifiedBaseline/u);
+  assert.match(isolatedRuntime, /CertifiedBaselinePath \$canonicalDatabase/u);
+  const baselineProducer = await readFile(
+    path.join(root, "scripts", "sounding-line", "build-certified-sqlite-baseline.ps1"),
+    "utf8",
+  );
+  assert.match(baselineProducer, /FOREVER_DEPENDENCY_SEED_ROOT/u);
+  assert.match(baselineProducer, /prisma\/seed\.ts/u);
+  assert.match(baselineProducer, /Clear-ForeverValidationRuntime/u);
   const isolationHelper = await readFile(path.join(root, "scripts", "prepare-validation-isolation.ts"), "utf8");
   assert.match(isolationHelper, /"hosted-runtime-generated"/u);
   const maintenancePolicy = JSON.parse(
