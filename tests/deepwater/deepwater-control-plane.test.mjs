@@ -199,6 +199,12 @@ test("same accepted inputs generate stable semantic output", async () => {
   );
 });
 
+test("stable serialization canonicalizes nested key order for governance evidence", () => {
+  const first = stableStringify({ evidence: { target: "main", source: "candidate" }, capabilityId: "DW-CAP-EXAMPLE" });
+  const second = stableStringify({ capabilityId: "DW-CAP-EXAMPLE", evidence: { source: "candidate", target: "main" } });
+  assert.equal(second, first);
+});
+
 test("Phase 3 rebuild preserves the accepted Phase 2 finding baseline", async () => {
   assert.equal(baseline.metrics.findings.startingOpen, 20);
   const acceptedPhase2Finding = baseline.phase2.findingsDocument.findings.find(
