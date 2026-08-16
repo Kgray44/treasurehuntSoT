@@ -38,6 +38,29 @@ export function classifyVerificationMaintenance({ trustedPolicy, changedPaths })
   };
 }
 
+export function classifyOrdinaryCandidate({ trustedPolicy, changedPaths }) {
+  const errors = [];
+  if (trustedPolicy?.authority !== "SOUNDING_LINE_VERIFICATION_MAINTENANCE" || trustedPolicy?.trustedMainOnly !== true)
+    errors.push("ORDINARY_CANDIDATE_TRUSTED_POLICY_INVALID");
+  const paths = [...new Set(changedPaths ?? [])].sort();
+  if (!paths.length) errors.push("ORDINARY_CANDIDATE_EMPTY_DIFF_REJECTED");
+  for (const file of paths) {
+    if (matchesAny(file, trustedPolicy?.authorityChangePathGlobs ?? []))
+      errors.push(`ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED:${file}`);
+    else if (!matchesAny(file, trustedPolicy?.ordinaryCandidateEligiblePathGlobs ?? []))
+      errors.push(`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${file}`);
+  }
+  return {
+    classification: errors.length
+      ? errors.some((value) => value.startsWith("ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED"))
+        ? "ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED"
+        : "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED"
+      : "ORDINARY_CANDIDATE",
+    changedPaths: paths,
+    errors: [...new Set(errors)].sort(),
+  };
+}
+
 export function createMaintenancePlan({
   trustedPolicy,
   trustedMainSha,
@@ -117,6 +140,23 @@ if (process.argv[1]?.endsWith("verification-maintenance.mjs") && process.argv[2]
   });
   await writeFile(options.out, `${JSON.stringify(result, null, 2)}\n`);
   process.stdout.write(`${result.classification.classification}\n`);
+  process.exitCode = result.errors.length ? 1 : 0;
+}
+if (process.argv[1]?.endsWith("verification-maintenance.mjs") && process.argv[2] === "ordinary") {
+  const options = Object.fromEntries(
+    process.argv
+      .slice(3)
+      .map((value, index, values) => (value.startsWith("--") ? [value.slice(2), values[index + 1]] : []))
+      .filter(([key]) => key),
+  );
+  const policy = JSON.parse(await readFile(options.policy, "utf8"));
+  const parsedPaths = JSON.parse(await readFile(options.paths, "utf8"));
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: policy,
+    changedPaths: Array.isArray(parsedPaths) ? parsedPaths : [parsedPaths],
+  });
+  await writeFile(options.out, `${JSON.stringify(result, null, 2)}\n`);
+  process.stdout.write(`${result.classification}\n`);
   process.exitCode = result.errors.length ? 1 : 0;
 }
 if (process.argv[1]?.endsWith("verification-maintenance.mjs") && process.argv[2] === "finalize") {

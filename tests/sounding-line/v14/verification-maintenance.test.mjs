@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import {
+  classifyOrdinaryCandidate,
   classifyVerificationMaintenance,
   createMaintenancePlan,
   finalizeMaintenance,
@@ -164,6 +165,100 @@ test("trusted policy classifies the dependency-seed runtime seam as verification
   });
   assert.equal(classification.classification, "VERIFICATION_MAINTENANCE");
   assert.deepEqual(classification.errors, []);
+});
+
+const readOrdinaryCandidatePolicy = async () =>
+  JSON.parse(await readFile(new URL("../../../testing/verification-maintenance-policy.json", import.meta.url), "utf8"));
+
+test("ordinary Bridgewatch workspace source is eligible", async () => {
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: await readOrdinaryCandidatePolicy(),
+    changedPaths: ["bridgewatch/src/discovery.ts", "bridgewatch/lib/server.ts", "bridgewatch/public/app.js"],
+  });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(result.errors, []);
+});
+
+test("ordinary Bridgewatch workspace tests are eligible", async () => {
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: await readOrdinaryCandidatePolicy(),
+    changedPaths: ["bridgewatch/test/discovery.test.ts", "bridgewatch/test/server.test.ts"],
+  });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(result.errors, []);
+});
+
+test("only bounded Bridgewatch integration, projection, and records are eligible", async () => {
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: await readOrdinaryCandidatePolicy(),
+    changedPaths: [
+      "CHANGELOG.md",
+      "Development_Docs/INDEX.md",
+      "Development_Docs/Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md",
+      "Development_Docs/Project_Bridgewatch_v1.2_Validation_Record.md",
+      "Development_Docs/README.md",
+      "Development_Docs/document-index.json",
+      "deploy/nginx.conf",
+      "scripts/sounding-line/status-projection.mjs",
+      "src/admiralty/bridgewatch-gateway.ts",
+    ],
+  });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(result.errors, []);
+});
+
+test("ordinary candidates still reject actual Sounding Line authority files", async () => {
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: await readOrdinaryCandidatePolicy(),
+    changedPaths: ["scripts/sounding-line/planner.mjs"],
+  });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED");
+  assert.deepEqual(result.errors, ["ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED:scripts/sounding-line/planner.mjs"]);
+});
+
+test("ordinary candidates reject arbitrary deploy and Sounding Line scripts", async () => {
+  const policy = await readOrdinaryCandidatePolicy();
+  for (const changedPath of ["deploy/unrelated.conf", "scripts/sounding-line/unrelated-adapter.mjs"]) {
+    const result = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: [changedPath] });
+    assert.equal(result.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
+    assert.deepEqual(result.errors, [`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${changedPath}`]);
+  }
+});
+
+test("mixed Bridgewatch and authority-changing diffs remain rejected", async () => {
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: await readOrdinaryCandidatePolicy(),
+    changedPaths: ["bridgewatch/src/discovery.ts", "testing/verification-maintenance-policy.json"],
+  });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED");
+  assert.deepEqual(result.errors, [
+    "ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED:testing/verification-maintenance-policy.json",
+  ]);
+});
+
+test("ordinary candidates fail closed for unknown paths", async () => {
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: await readOrdinaryCandidatePolicy(),
+    changedPaths: ["unowned/bridgewatch-lookalike.ts"],
+  });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
+  assert.deepEqual(result.errors, ["ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:unowned/bridgewatch-lookalike.ts"]);
+});
+
+test("candidate authority invokes the trusted ordinary classifier rather than inline glob logic", async () => {
+  const workflow = await readFile(
+    new URL("../../../.github/workflows/sounding-line-authoritative.yml", import.meta.url),
+    "utf8",
+  );
+  assert.match(
+    workflow,
+    /git show "\$env:SOUNDING_LINE_BASE_SHA`:scripts\/sounding-line\/verification-maintenance\.mjs" > trusted-verification-maintenance\.mjs/u,
+  );
+  assert.match(
+    workflow,
+    /node trusted-verification-maintenance\.mjs ordinary --policy trusted-maintenance-policy\.json --paths ordinary-candidate-changed-paths\.json --out ordinary-candidate-classification\.json/u,
+  );
+  assert.doesNotMatch(workflow, /function Test-TrustedGlob/u);
 });
 
 test("maintenance qualification keeps the static-safe changed-path proof outside the checkout", async () => {
