@@ -14,7 +14,9 @@ on:
 permissions:
   actions: read
   checks: write
-  contents: read
+  # GitHub's update-branch endpoint writes the same-repository suffix ref.
+  # The step is still bounded below to one exact sealed train suffix.
+  contents: write
   pull-requests: write
 
 jobs:
