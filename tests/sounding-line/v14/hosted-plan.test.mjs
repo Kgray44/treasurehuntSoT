@@ -6,6 +6,10 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { buildV14HostedPlan, resolvePlanAuthority } from "../../../scripts/sounding-line/planner.mjs";
+import {
+  batchPhysicalWorkers,
+  validatePhysicalWorkerMatrix,
+} from "../../../scripts/sounding-line/v14/physical-worker-batching.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 const execute = promisify(execFile);
@@ -50,7 +54,32 @@ test("v1.4 hosted plan carries the semantic plan and worker-compatible dependenc
     );
     for (const engine of selectedEngines)
       assert.ok(node.resources.includes(engine), `hosted node ${node.id} omits ${engine}`);
+    const partitions = node.browserPartitions ?? [];
+    assert.ok(partitions.length >= 1, `hosted browser node ${node.id} has no physical partition`);
+    assert.deepEqual(
+      partitions.flatMap((partition) => partition.testIds).sort(),
+      node.testIds.slice().sort(),
+      `hosted browser node ${node.id} partitions every selected case exactly once`,
+    );
+    for (const partition of partitions) {
+      assert.ok(["chromium", "webkit"].includes(partition.browserEngine));
+      assert.ok(partition.testIds.length > 0);
+    }
   }
+  const physical = [];
+  for (const [key, nodes] of Object.entries(
+    Object.groupBy(plan.nodes, (node) => `${node.execution.wave}:${node.execution.mode}`),
+  )) {
+    const [wave, mode] = key.split(":");
+    physical.push(...batchPhysicalWorkers(nodes, { wave: Number(wave), mode }));
+  }
+  assert.ok(physical.length >= plan.nodes.length);
+  assert.ok(physical.every((batch) => batch && batch.emptyWave === false));
+  assert.deepEqual(
+    [...new Set(physical.flatMap((batch) => batch.suiteIds))].sort(),
+    plan.nodes.map((node) => node.id).sort(),
+  );
+  assert.doesNotThrow(() => validatePhysicalWorkerMatrix({ include: physical }));
 });
 
 test("v1.4 current authority is restricted to protected main while v1.3 cutover remains pre-activation only", () => {

@@ -22,6 +22,11 @@ on:
         required: false
         type: string
         default: ""
+      browser_test_ids_by_suite_json:
+        description: Exact sealed browser case selection map for this physical worker
+        required: false
+        type: string
+        default: ""
       empty_wave:
         description: Explicit empty-wave marker; never represents governed test evidence
         required: false
@@ -263,6 +268,7 @@ jobs:
         env:
           SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-transport/${{ inputs.plan_path }}
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
+          SOUNDING_LINE_BROWSER_ENGINE: ${{ inputs.browser_engine }}
           PLAYWRIGHT_BROWSERS_PATH: sounding-line-browser-cache/${{ inputs.browser_engine }}
         run: |
           $setupStartedAt = [DateTimeOffset]::UtcNow
@@ -270,7 +276,8 @@ jobs:
           $previousThroughput = if (Test-Path -LiteralPath 'sounding-line-worker-throughput.json' -PathType Leaf) {
             Get-Content -Raw 'sounding-line-worker-throughput.json' | ConvertFrom-Json
           } else { $null }
-          & node scripts/sounding-line/worker-preparation.mjs --plan "$env:SOUNDING_LINE_PLAN" --suite "$env:SOUNDING_LINE_SUITE" --out $preparationPath
+          $browserEngineArguments = if ($env:SOUNDING_LINE_BROWSER_ENGINE) { @('--browser-engine', $env:SOUNDING_LINE_BROWSER_ENGINE) } else { @() }
+          & node scripts/sounding-line/worker-preparation.mjs --plan "$env:SOUNDING_LINE_PLAN" --suite "$env:SOUNDING_LINE_SUITE" --out $preparationPath @browserEngineArguments
           if ($LASTEXITCODE -ne 0) { throw "GOVERNED_WORKER_PREPARATION_FAILED" }
           $preparation = Get-Content -Raw $preparationPath | ConvertFrom-Json
           $timings = [ordered]@{ clientGenerateMs = 0; databaseMigrationMs = 0; databaseSeedMs = 0; browserRestoreMs = 0 }
@@ -323,6 +330,8 @@ jobs:
           SOUNDING_LINE_GATE: ${{ inputs.gate }}
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
           SOUNDING_LINE_SUITES_JSON: ${{ inputs.suites_json }}
+          SOUNDING_LINE_BROWSER_TEST_IDS_BY_SUITE_JSON: ${{ inputs.browser_test_ids_by_suite_json }}
+          SOUNDING_LINE_BROWSER_ENGINE: ${{ inputs.browser_engine }}
           SOUNDING_LINE_SEALED_SOURCE_SHA: ${{ inputs.candidate_sha }}
           SOUNDING_LINE_CERTIFIED_BASELINE: ${{ inputs.requires_browser && '1' || '0' }}
           # Only browser workers restore a certified baseline. Non-browser
@@ -337,7 +346,12 @@ jobs:
           # plan is instead source-bound to the exact frozen candidate identity.
           $env:GITHUB_SHA = $env:SOUNDING_LINE_SEALED_SOURCE_SHA
           $suiteArguments = if ($env:SOUNDING_LINE_SUITES_JSON) { @('--suites-json', $env:SOUNDING_LINE_SUITES_JSON) } else { @('--suite', $env:SOUNDING_LINE_SUITE) }
-          node scripts/sounding-line/authority.mjs "$env:SOUNDING_LINE_GATE" --execute-only --plan-in "$env:SOUNDING_LINE_PLAN" @suiteArguments --receipt-out sounding-line-worker-evidence.json
+          $browserPartitionArguments = @()
+          if ($env:SOUNDING_LINE_BROWSER_TEST_IDS_BY_SUITE_JSON) {
+            $browserPartitionArguments += @('--browser-test-ids-by-suite-json', $env:SOUNDING_LINE_BROWSER_TEST_IDS_BY_SUITE_JSON)
+          }
+          if ($env:SOUNDING_LINE_BROWSER_ENGINE) { $browserPartitionArguments += @('--browser-engine', $env:SOUNDING_LINE_BROWSER_ENGINE) }
+          node scripts/sounding-line/authority.mjs "$env:SOUNDING_LINE_GATE" --execute-only --plan-in "$env:SOUNDING_LINE_PLAN" @suiteArguments @browserPartitionArguments --receipt-out sounding-line-worker-evidence.json
       - name: Bind setup and execution timing to worker evidence
         if: ${{ !inputs.empty_wave && always() }}
         shell: pwsh
@@ -356,7 +370,7 @@ jobs:
       - if: ${{ !inputs.empty_wave && always() }}
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
-          name: "${{ inputs.receipt_artifact || format('sounding-line-worker-evidence-{0}', inputs.suite) }}"
+          name: "${{ inputs.receipt_artifact || format('sounding-line-worker-evidence-{0}-{1}', inputs.suite, inputs.browser_engine) }}"
           path: |
             sounding-line-worker-evidence.json
             sounding-line-worker-throughput.json
