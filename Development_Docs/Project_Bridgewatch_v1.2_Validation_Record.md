@@ -37,4 +37,6 @@ reopens the accepted Phase 1–3 program nor authorizes a Bridgewatch Phase 4.
 The validation does not claim a protected-main merge, production listener,
 live GitHub provider success, owner acceptance, deployment, or a Sounding Line
 release decision. Those claims require a new exact-candidate authoritative
-envelope and successful protected-main binding.
+envelope and successful protected-main binding. Because this amendment changes
+product behavior, it is not an ordinary V14 verification-maintenance candidate;
+the protected qualification must use the explicit release-candidate path.
