@@ -6,8 +6,17 @@ import path from "node:path";
 import { format, resolveConfig } from "prettier";
 import ts from "typescript";
 import { promisify } from "node:util";
+import { carryForwardHistoricalAliases, semanticTestId, validateRegistryIdentity } from "./test-identity.mjs";
 
 const root = process.cwd();
+const registryPath = path.join(root, "testing", "generated", "active-test-registry.json");
+const previousRegistry = await fs
+  .readFile(registryPath, "utf8")
+  .then(JSON.parse)
+  .catch((error) => {
+    if (error.code === "ENOENT") return { cases: [] };
+    throw error;
+  });
 const ignored = new Set(["node_modules", ".git", ".next", "coverage", "artifacts", "dist"]);
 const homeportContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
   .contracts.map((contract) => contract.id)
@@ -222,6 +231,30 @@ function tideglassContractsFor(file) {
   return phase1.filter((contractId) => tideglassContracts.includes(contractId));
 }
 
+const chromiumProjects = new Set([
+  "admiralty-phase1",
+  "chromium",
+  "harborlight-phase2",
+  "harborlight-phase3",
+  "harborlight-phase4",
+  "helm-phase1",
+  "homeport-phase1",
+  "homeport-phase2",
+  "homeport-phase4",
+  "phase3-readonly-setup",
+  "sounding-line-access-sentinel",
+  "wakebook-phase1",
+  "wayfarer-phase2",
+  "wayfarer-phase3",
+  "wayfarer-phase4",
+]);
+
+function browserResourceForProject(project) {
+  if (project === "webkit-mobile") return "browser-webkit";
+  if (chromiumProjects.has(project)) return "browser-chromium";
+  throw new Error(`UNKNOWN_PLAYWRIGHT_PROJECT_ENGINE:${project}`);
+}
+
 function metadata(file, family, browser = null) {
   const privateOrCommunity =
     /admiralty|drydock|deepwater|wakebook|homeport|private-content|community|wayfarer|passport|invitation|session/u.test(
@@ -247,7 +280,7 @@ function metadata(file, family, browser = null) {
     browserOwnership: browser ? "task-owned Playwright context and state" : "not applicable",
     portOwnership: browser ? "task-owned allowlisted local application port" : "not applicable",
     resources: browser
-      ? ["application-port", "sqlite-clone", "browser-chromium", "trace-root"]
+      ? ["application-port", "sqlite-clone", browserResourceForProject(browser.project), "trace-root"]
       : ["node-slot", "vitest-worker-pool"],
     parallelSafety: browser ? "ISOLATED_MUTABLE_PARALLEL" : "READ_ONLY_PARALLEL",
     browserRequirements: browser ? [browser.project] : ["NOT_APPLICABLE"],
@@ -295,6 +328,7 @@ async function discoverPlaywright() {
     const suiteId = browserFamily(project, file, title);
     cases.push({
       id: `sl-test-${hash(`${project}:${file}:${line}:${title}`)}`,
+      semanticId: semanticTestId({ project, suiteId, file, title }),
       title,
       line: Number(line),
       file,
@@ -342,6 +376,7 @@ function collect(source, relative) {
         const caseTitle = ts.isStringLiteralLike(title) ? title.text : title.getText(source);
         cases.push({
           id: `sl-test-${hash(`${relative}:${caseTitle}`)}`,
+          semanticId: semanticTestId({ suiteId: "unclassified", file: relative, title: caseTitle }),
           title: caseTitle,
           line: source.getLineAndCharacterOfPosition(node.getStart(source)).line + 1,
         });
@@ -370,25 +405,33 @@ for (const absolute of sources.flat()) {
     ? [
         {
           id: `sl-test-${hash(`${file}:powershell-validation`)}`,
+          semanticId: semanticTestId({
+            suiteId: "validation.powershell",
+            file,
+            title: `${path.basename(file)} governed PowerShell validation`,
+          }),
           title: `${path.basename(file)} governed PowerShell validation`,
           line: 1,
         },
       ]
     : collect(source, file);
-  for (const test of discovered) cases.push({ ...test, file, suiteId, ...metadata(file, suiteId) });
+  for (const test of discovered)
+    cases.push({
+      ...test,
+      semanticId: semanticTestId({ suiteId, file, title: test.title }),
+      file,
+      suiteId,
+      ...metadata(file, suiteId),
+    });
 }
 cases.push(...(await discoverPlaywright()));
-const ids = new Set();
-for (const entry of cases) {
-  if (ids.has(entry.id)) throw new Error(`DUPLICATE_TEST_ID:${entry.id}`);
-  ids.add(entry.id);
-}
+carryForwardHistoricalAliases(cases, previousRegistry.cases ?? []);
+validateRegistryIdentity(cases);
 await fs.mkdir(path.join(root, "testing", "generated"), { recursive: true });
-const registryPath = path.join(root, "testing", "generated", "active-test-registry.json");
 const prettierConfig = (await resolveConfig(registryPath)) ?? {};
 await fs.writeFile(
   registryPath,
-  await format(JSON.stringify({ version: 2, schemaVersion: "2.0.0", generated: true, cases }), {
+  await format(JSON.stringify({ version: 3, schemaVersion: "3.0.0", generated: true, cases }), {
     ...prettierConfig,
     parser: "json",
   }),

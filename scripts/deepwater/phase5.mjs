@@ -85,6 +85,7 @@ async function soundingLinePolicyDigest(root) {
     "evidence-fingerprint-policy.json",
     "prepared-artifacts.json",
     "mainline-train-policy.json",
+    "verification-maintenance-policy.json",
   ];
   const policy = { manifest: await readJson(root, "testing/policy-manifest.json") };
   for (const file of files.slice(1)) policy[file.replace(/\.json$/u, "")] = await readJson(root, `testing/${file}`);

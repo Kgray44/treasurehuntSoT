@@ -29,6 +29,8 @@ const phase5 = await buildPhase5Governance(root, artifacts);
 if (command === "audit") {
   await writeArtifacts(root, artifacts);
   await writePhase5Artifacts(root, phase5);
+  const settledPhase5 = await buildPhase5Governance(root, artifacts);
+  await writePhase5Artifacts(root, settledPhase5);
   process.stdout.write(
     `${JSON.stringify({
       decision: "DEEPWATER_AUDIT_GENERATED",
@@ -44,14 +46,16 @@ if (command === "audit") {
       registeredSlices: artifacts.slicesDocument.slices.length,
       phase4ProofCapabilities: artifacts.phase4ProofMatrix.capabilities.length,
       phase4RuntimeEvidenceStatus: artifacts.phase4ProofMatrix.runtimeEvidenceStatus,
-      phase5DeltaCount: phase5.delta.deltas.length,
-      phase5SemanticDigest: phase5SemanticDigest(phase5),
+      phase5DeltaCount: settledPhase5.delta.deltas.length,
+      phase5SemanticDigest: phase5SemanticDigest(settledPhase5),
       semanticDigest: semanticDigest(artifacts),
     })}\n`,
   );
 } else if (command === "report") {
   await writeArtifacts(root, artifacts);
   await writePhase5Artifacts(root, phase5);
+  const settledPhase5 = await buildPhase5Governance(root, artifacts);
+  await writePhase5Artifacts(root, settledPhase5);
   process.stdout.write(
     `${JSON.stringify({
       decision: "DEEPWATER_REPORTS_GENERATED",

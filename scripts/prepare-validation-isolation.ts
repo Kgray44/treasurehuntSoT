@@ -40,7 +40,7 @@ type IsolationReport = {
   version: 2;
   status: string;
   preparedAt: string;
-  baselineSource: "auto-discovered" | "explicit-external";
+  baselineSource: "auto-discovered" | "explicit-external" | "hosted-runtime-generated";
   canonicalDatabase: Fingerprint;
   canonicalDatabaseFamily: FileFamilyFingerprint[];
   seedDatabase: Omit<Fingerprint, "path">;
@@ -333,7 +333,9 @@ async function readReport(reportPath: string): Promise<IsolationReport> {
   const parsed = JSON.parse(await readFile(reportPath, "utf8")) as Partial<IsolationReport>;
   if (
     parsed.version !== 2 ||
-    (parsed.baselineSource !== "auto-discovered" && parsed.baselineSource !== "explicit-external") ||
+    (parsed.baselineSource !== "auto-discovered" &&
+      parsed.baselineSource !== "explicit-external" &&
+      parsed.baselineSource !== "hosted-runtime-generated") ||
     !parsed.canonicalDatabase ||
     !Array.isArray(parsed.canonicalDatabaseFamily) ||
     parsed.canonicalDatabaseFamily.length !== CANONICAL_DATABASE_SUFFIXES.length ||
@@ -364,7 +366,11 @@ async function prepare(args: ReturnType<typeof parseArguments>) {
   const expectedCanonicalSize = Number(args.required("canonical-size"));
   const expectedCanonicalMtimeIso = args.required("canonical-mtime-iso");
   const baselineSource = args.required("baseline-source");
-  if (baselineSource !== "auto-discovered" && baselineSource !== "explicit-external") {
+  if (
+    baselineSource !== "auto-discovered" &&
+    baselineSource !== "explicit-external" &&
+    baselineSource !== "hosted-runtime-generated"
+  ) {
     throw new Error("Baseline source is invalid.");
   }
 

@@ -3,12 +3,12 @@ title: Project Deepwater Phase 5 Governance Report
 audience: product-engineering
 status: current
 canonical_for: project-deepwater-phase-5-governance-report
-last_reviewed: 2026-08-14
+last_reviewed: 2026-08-16
 ---
 
 # Project Deepwater Phase 5 governance report
 
-Phase 5 is explicitly owner-authorized from accepted current main `268932d630ee0ea1721d0072da4041f7209b7464`. Phase 1-4 remain immutable, source-bound historical evidence.
+Phase 5 is explicitly owner-authorized from accepted current main `71ce1c4db306fab1e470c8ad6f486807e3353c6f`. Phase 1-4 remain immutable, source-bound historical evidence.
 
 - Capabilities: 58
 - Feature Catalog entries: 43
@@ -17,6 +17,6 @@ Phase 5 is explicitly owner-authorized from accepted current main `268932d630ee0
 - Release authority: Sounding Line only
 - Local candidate state: READY_FOR_V14_MAINLINE_ACCEPTANCE
 
-The pre-cutover focused evidence is retained as non-authoritative semantic history and has been rebound through the current policy identity `ffe5734091a96b34ca6ecbc077cc46ff99f74ace22ec50a671ed453abd0c509e`. Sounding Line v1.4 is active, but its independent hosted browser-fixture post-cutover self-verification remains open. This phase must not dispatch an authoritative decision or merge until that closure is confirmed green.
+The pre-cutover focused evidence is retained as non-authoritative semantic history and has been rebound through the current policy identity `08797fa3b97651d7ea285e49896f07c09893f332d2383bf29a5d8453133dab15`. The v1.4 fleet pause is cleared. This branch is locally qualified for one frozen-candidate Mainline Decision and required protected binding.
 
 The guard validates catalog mappings, capability maturity, route/screen/journey references, evidence freshness, finding closures, restricted audiences, impact declarations, and truthful completion language without owning product behavior.

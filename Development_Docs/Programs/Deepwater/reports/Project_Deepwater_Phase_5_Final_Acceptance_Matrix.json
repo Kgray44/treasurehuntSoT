@@ -2,24 +2,24 @@
   "schemaVersion": "1.0.0",
   "project": "Project Deepwater",
   "phase": "Phase 5 - Keep the Soundings",
-  "sourceSha": "268932d630ee0ea1721d0072da4041f7209b7464",
+  "sourceSha": "71ce1c4db306fab1e470c8ad6f486807e3353c6f",
   "state": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
   "checks": [
     { "id": "P5-AUTHORIZATION", "state": "PASSED", "evidence": "Explicit owner prompt, 2026-08-13" },
     {
       "id": "P5-CURRENT-BASELINE",
       "state": "PASSED",
-      "evidence": "Project_Deepwater_Phase_5_Drift_Baseline.json, rebound to origin/main 268932d630ee0ea1721d0072da4041f7209b7464"
+      "evidence": "Project_Deepwater_Phase_5_Drift_Baseline.json, rebound to origin/main 71ce1c4db306fab1e470c8ad6f486807e3353c6f"
     },
     {
       "id": "P5-DETERMINISTIC-DELTA",
       "state": "PASSED",
-      "evidence": "deepwater:drift semantic digest 5da4d243b4e1072efafebf3fb6f1c88e1995aea9fe8f50e99634ddb5674c61e1"
+      "evidence": "deepwater:drift semantic digest 07e59e464106d5e1b1ea0da0ff3fcaca06ee50ad35e9d30cbc0163561caee320"
     },
     {
       "id": "P5-REGRESSION-MUTATIONS",
       "state": "PASSED",
-      "evidence": "11 resumed Phase 5 mutations passed; 76 pre-cutover focused tests preserved as semantic history"
+      "evidence": "80 reconciled Deepwater control-plane tests passed; 76 pre-cutover focused tests preserved as semantic history"
     },
     {
       "id": "P5-FEATURE-CATALOG-GUARD",
@@ -29,7 +29,7 @@
     {
       "id": "P5-SOUNDING-LINE-POLICY",
       "state": "PASSED",
-      "evidence": "scripts/sounding-line/cli.mjs validate-policy; v1.4 policy digest ffe5734091a96b34ca6ecbc077cc46ff99f74ace22ec50a671ed453abd0c509e"
+      "evidence": "scripts/sounding-line/cli.mjs validate-policy; v1.4 policy digest 08797fa3b97651d7ea285e49896f07c09893f332d2383bf29a5d8453133dab15"
     },
     {
       "id": "P5-HOMEPORT-INVENTORY",
@@ -43,10 +43,10 @@
     },
     {
       "id": "P5-V14-POSTCUTOVER-CLOSURE",
-      "state": "BLOCKED_EXTERNAL_V14_CLOSURE",
-      "evidence": "Independent hosted browser-fixture post-cutover self-verification remains open; no authoritative decision may be dispatched."
+      "state": "PASSED_PAUSE_CLEARED",
+      "evidence": "Owner-directed resumption confirms the Sounding Line v1.4 fleet pause is over; ordinary candidate qualification uses the active v1.4 path."
     },
-    { "id": "P5-SOUNDING-LINE-DECISION", "state": "HELD_PENDING_V14_POSTCUTOVER_CLOSURE", "evidence": null },
+    { "id": "P5-SOUNDING-LINE-DECISION", "state": "PENDING_FROZEN_CANDIDATE", "evidence": null },
     { "id": "P5-PROTECTED-MERGE", "state": "PENDING_QUALIFICATION", "evidence": null },
     { "id": "P5-EXACT-MAIN-PROOF", "state": "PENDING_QUALIFICATION", "evidence": null }
   ]

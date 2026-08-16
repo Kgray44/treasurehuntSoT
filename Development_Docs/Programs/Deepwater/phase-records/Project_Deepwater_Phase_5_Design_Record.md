@@ -3,7 +3,7 @@ title: Project Deepwater Phase 5 Design Record
 audience: product-engineering
 status: current
 canonical_for: project-deepwater-phase-5-design-record
-last_reviewed: 2026-08-13
+last_reviewed: 2026-08-16
 ---
 
 # Project Deepwater Phase 5 - Keep the Soundings
@@ -13,6 +13,8 @@ last_reviewed: 2026-08-13
 The owner explicitly authorized Phase 5 on 2026-08-13. Phase 4 remains immutable historical evidence: qualified candidate `10f505d2188f0c51e356ad935503e5236df62256`, protected implementation merge `9e9d629085cb1551b1a3959c31b0b460c37724a9`, and record-only closure merge `582f32a35d918ae892bd2feae766c00043038f39`. The preserved pre-cutover Phase 5 checkpoint is `95497c3d32e76d81723500235821829bd3af58a2`, originally based on accepted `origin/main` `60b89841986e66fbc2c0828489d38002a1617506`.
 
 On 2026-08-14, the original owned branch was reconciled onto accepted `origin/main` `268932d630ee0ea1721d0072da4041f7209b7464`, with no replacement worktree or branch. The preserved checkpoint is semantic history, not a v1.4 authority receipt. Its focused evidence is retained and explicitly rebound through the active v1.4 policy identity `ffe5734091a96b34ca6ecbc077cc46ff99f74ace22ec50a671ed453abd0c509e`.
+
+On 2026-08-16, the same branch merged accepted `origin/main` `71ce1c4db306fab1e470c8ad6f486807e3353c6f` without rewriting published task history. The v1.4 fleet pause is cleared. The reconciliation adds the current `verification-maintenance-policy.json` to the policy identity and settles generated Phase 5 artifacts against the newly written baseline so audit output is immediately self-validating.
 
 Phase 5 owns governance metadata, deterministic audit tooling, policy, validation, and closure records. It does not own product business logic, Prisma schema, live business state, Feature Catalog business facts, or release authority. Sounding Line remains the sole decision emitter.
 
@@ -36,4 +38,4 @@ Backend-source additions or removals fail closed as `UNMAPPED_BACKEND_SURFACE` u
 
 ## Integration and acceptance
 
-Deepwater remains an impact-selected Sounding Line evidence family. Phase 5 qualification includes its focused tests, structural validation, Feature Catalog validation, documentation validation, affected Homeport inventory checks, and Sounding Line policy checks. Local qualification is `READY_FOR_V14_MAINLINE_ACCEPTANCE`; it is held from authoritative dispatch and protected merge until the independent Sounding Line v1.4 hosted browser-fixture post-cutover closure is green. A frozen candidate must then receive one explicit Sounding Line Mainline Decision and protected merge binding. A separate record-only closure, if eligible under current policy, is limited to source-bound records and indexes.
+Deepwater remains an impact-selected Sounding Line evidence family. Phase 5 qualification includes its focused tests, structural validation, Feature Catalog validation, documentation validation, affected Homeport inventory checks, and Sounding Line policy checks. Local qualification is `READY_FOR_V14_MAINLINE_ACCEPTANCE`; the cleared pause permits one explicit v1.4 frozen-candidate Mainline Decision followed by protected binding. A separate record-only closure, if eligible under current policy, is limited to source-bound records and indexes.

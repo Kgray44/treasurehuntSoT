@@ -2,19 +2,21 @@
   "schemaVersion": "1.0.0",
   "project": "Project Deepwater",
   "phase": "Phase 5 - Keep the Soundings",
-  "auditDate": "2026-08-14",
+  "auditDate": "2026-08-16",
   "phase5Authorized": true,
   "authorization": {
     "ownerPrompt": "Project Deepwater Phase 5: Keep the Soundings explicit owner authorization, 2026-08-13",
     "scope": "Continuous governance, Feature Catalog integration, regression prevention, drift detection, and program closure."
   },
-  "baseOriginMainSha": "268932d630ee0ea1721d0072da4041f7209b7464",
-  "soundingLinePolicyDigest": "ffe5734091a96b34ca6ecbc077cc46ff99f74ace22ec50a671ed453abd0c509e",
+  "baseOriginMainSha": "71ce1c4db306fab1e470c8ad6f486807e3353c6f",
+  "soundingLinePolicyDigest": "08797fa3b97651d7ea285e49896f07c09893f332d2383bf29a5d8453133dab15",
   "v14Reconciliation": {
     "pausedCheckpoint": "95497c3d32e76d81723500235821829bd3af58a2",
     "preCutoverBaseOriginMainSha": "60b89841986e66fbc2c0828489d38002a1617506",
     "preCutoverPolicyDigest": "b2f365b10769b09c92e93226ec6633c673cc4be1e6eb0821e49c4c45c9ca7d99",
     "reboundPolicyDigest": "ffe5734091a96b34ca6ecbc077cc46ff99f74ace22ec50a671ed453abd0c509e",
+    "currentProtectedMainSha": "71ce1c4db306fab1e470c8ad6f486807e3353c6f",
+    "currentPolicyDigest": "08797fa3b97651d7ea285e49896f07c09893f332d2383bf29a5d8453133dab15",
     "legacyFocusedEvidence": {
       "controlPlaneTests": 76,
       "status": "PRESERVED_SEMANTIC_REBOUND_REQUIRED",
@@ -33,9 +35,9 @@
   },
   "localQualification": {
     "state": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
-    "mainlineState": "HOLD_V14_POSTCUTOVER_CLOSURE",
-    "acceptanceLane": "SOUNDING_LINE_V14_MAINLINE_DECISION_REQUIRED_AFTER_POST_CUTOVER_CLOSURE",
-    "holdReason": "Sounding Line v1.4 is active, but its independent hosted browser-fixture post-cutover self-verification remains open. This phase must not dispatch an authoritative decision or merge until that closure is confirmed green."
+    "mainlineState": "PENDING_FROZEN_CANDIDATE_MAINLINE_DECISION",
+    "acceptanceLane": "SOUNDING_LINE_V14_CANDIDATE_MAINLINE_DECISION",
+    "holdReason": "The v1.4 fleet pause is cleared. This branch is locally qualified for one frozen-candidate Mainline Decision and required protected binding."
   },
   "phase4Authority": {
     "qualifiedCandidate": "10f505d2188f0c51e356ad935503e5236df62256",

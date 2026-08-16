@@ -1,21 +1,21 @@
 ---
 title: Project Deepwater Program Completion Receipt
 audience: product-engineering
-status: locally-qualified-mainline-hold
+status: candidate-qualified
 canonical_for: project-deepwater-program-completion-receipt
-last_reviewed: 2026-08-14
+last_reviewed: 2026-08-16
 ---
 
 # Project Deepwater program completion receipt
 
-This is a locally-qualified, mainline-held receipt only. It records the Phase 5 governance baseline and does not declare Project Deepwater complete.
+This is a locally-qualified candidate receipt only. It records the Phase 5 governance baseline and does not declare Project Deepwater complete.
 
 - Preserved pre-cutover checkpoint: `95497c3d32e76d81723500235821829bd3af58a2`
-- Phase 5 resumed base: `268932d630ee0ea1721d0072da4041f7209b7464`
+- Phase 5 reconciled base: `71ce1c4db306fab1e470c8ad6f486807e3353c6f`
 - Phase 4 protected merge: `9e9d629085cb1551b1a3959c31b0b460c37724a9`
 - Capability baseline: 58
-- Sounding Line v1.4 policy identity: `ffe5734091a96b34ca6ecbc077cc46ff99f74ace22ec50a671ed453abd0c509e`
-- Sounding Line decision: held pending independent v1.4 post-cutover hosted browser-fixture closure
+- Sounding Line v1.4 policy identity: `08797fa3b97651d7ea285e49896f07c09893f332d2383bf29a5d8453133dab15`
+- Sounding Line decision: pending frozen-candidate v1.4 Mainline Decision
 - Protected merge: pending
 - Exact-main proof: pending
 
