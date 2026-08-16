@@ -146,17 +146,6 @@ jobs:
           name: sounding-line-train-prepared
           path: |
             train-prepared
-            !train-prepared/dependencies/**
-          retention-days: 14
-      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
-        with:
-          name: sounding-line-train-prepared-dependency
-          path: |
-            train-prepared/dependencies
-            !train-prepared/dependencies/**/.prisma/**
-            !train-prepared/dependencies/**/@forever-treasure/bridgewatch/**
-          if-no-files-found: error
-          include-hidden-files: true
           retention-days: 14
 
   wave-0:

@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import {
   PROTECTED_MAINLINE_CONTEXT,
   qualifyProtectedMerge,
+  qualifyTrainSuffixRebind,
 } from "../../scripts/sounding-line/protected-merge-binding.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
@@ -192,6 +193,56 @@ test("synthetic composition is exact and the bridge never becomes candidate auth
   const absentEvidence = bind({ finalization: null });
   assert.equal(absentEvidence.decision, "BINDING_NO_GO");
   for (const result of [wrongParents, absentEvidence]) assert.notEqual(result.decision, "RELEASE_GO");
+});
+
+test("train suffix rebinding preserves only an exact predicted-tree mechanical update", () => {
+  const base = fixture();
+  const predictedTree = "e".repeat(40);
+  base.plan.predictedIntegrationTreeSha = predictedTree;
+  base.plan.qualifiedBaseTreeSha = "f".repeat(40);
+  const { planDigest, ...unsignedPlan } = base.plan;
+  base.plan.planDigest = digest(unsignedPlan);
+  base.finalization.planDigest = base.plan.planDigest;
+  for (const receipt of base.finalization.receipts) receipt.planDigest = base.plan.planDigest;
+  base.finalization.evidenceDigest = digest(base.finalization.receipts);
+  Object.assign(base.qualified, { planDigest: base.plan.planDigest, evidenceDigest: base.finalization.evidenceDigest });
+  base.qualified.qualifiedBaseTreeSha = "f".repeat(40);
+  const rebound = "1".repeat(40);
+  const pass = qualifyTrainSuffixRebind({
+    authority: base.authority,
+    qualified: base.qualified,
+    plan: base.plan,
+    finalization: base.finalization,
+    prNumber: 35,
+    currentBaseSha: currentBase,
+    currentBaseTree: "f".repeat(40),
+    rebasedCandidateSha: rebound,
+    rebasedCandidateTree: predictedTree,
+    rebasedCandidateParents: [candidate, currentBase],
+    mergeSha: merge,
+    mergeTree: predictedTree,
+    mergeParents: [currentBase, rebound],
+    authorityRunId: 31555993275,
+  });
+  assert.equal(pass.decision, "BINDING_PASS");
+  const noGo = qualifyTrainSuffixRebind({
+    authority: base.authority,
+    qualified: base.qualified,
+    plan: base.plan,
+    finalization: base.finalization,
+    prNumber: 35,
+    currentBaseSha: currentBase,
+    currentBaseTree: "f".repeat(40),
+    rebasedCandidateSha: rebound,
+    rebasedCandidateTree: predictedTree,
+    rebasedCandidateParents: [candidate, currentBase],
+    mergeSha: merge,
+    mergeTree: "2".repeat(40),
+    mergeParents: [currentBase, rebound],
+    authorityRunId: 31555993275,
+  });
+  assert.equal(noGo.decision, "BINDING_NO_GO");
+  assert.ok(noGo.errors.includes("TRAIN_SUFFIX_REBIND_PREDICTED_TREE_MISMATCH"));
 });
 
 test("workflow topology retains explicit heavyweight authority and the exact protected context", async () => {

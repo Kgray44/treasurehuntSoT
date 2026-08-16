@@ -94,13 +94,16 @@ jobs:
           # Each worker must execute the same frozen candidate that the plan
           # sealed, including when protected main advances while workers start.
           ref: ${{ inputs.candidate_sha }}
-          fetch-depth: 1
-      - name: Restore sealed predicted integration commit
-        if: ${{ !inputs.empty_wave && inputs.integration_artifact != '' }}
+          # A compact synthetic bundle advertises this exact trusted base as a
+          # prerequisite. Retain both candidate and parent for fail-closed
+          # transport validation without fetching unrelated repository history.
+          fetch-depth: 2
+      - name: Restore sealed plan and predicted integration transport
+        if: ${{ !inputs.empty_wave }}
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: ${{ inputs.integration_artifact }}
-          path: ${{ runner.temp }}/sounding-line-integration
+          name: ${{ inputs.plan_artifact }}
+          path: ${{ runner.temp }}/sounding-line-transport
       - name: Checkout sealed execution identity
         if: ${{ !inputs.empty_wave }}
         shell: pwsh
@@ -113,7 +116,7 @@ jobs:
           $execution = if ($env:SOUNDING_LINE_EXECUTION_SHA) { $env:SOUNDING_LINE_EXECUTION_SHA } else { $env:SOUNDING_LINE_CANDIDATE_SHA }
           if ($execution -notmatch '^[0-9a-f]{40}$') { throw 'GOVERNED_WORKER_EXECUTION_SHA_INVALID' }
           if ($env:SOUNDING_LINE_INTEGRATION_ARTIFACT) {
-            $bundle = Join-Path (Join-Path $env:RUNNER_TEMP 'sounding-line-integration') $env:SOUNDING_LINE_INTEGRATION_BUNDLE_PATH
+            $bundle = Join-Path (Join-Path $env:RUNNER_TEMP 'sounding-line-transport') $env:SOUNDING_LINE_INTEGRATION_BUNDLE_PATH
             if (-not (Test-Path -LiteralPath $bundle -PathType Leaf)) { throw 'GOVERNED_INTEGRATION_BUNDLE_MISSING' }
             git fetch $bundle $execution
             if ($LASTEXITCODE -ne 0) { throw 'GOVERNED_INTEGRATION_BUNDLE_FETCH_FAILED' }
@@ -168,16 +171,11 @@ jobs:
             dependencyRestoreMs = [int](($finishedAt - $startedAt).TotalMilliseconds)
           } | ConvertTo-Json | Set-Content -LiteralPath 'sounding-line-worker-throughput.json' -Encoding utf8
           if ($exitCode -ne 0) { throw 'GOVERNED_DEPENDENCY_LAYER_RESTORE_FAILED' }
-      - if: ${{ !inputs.empty_wave }}
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
-        with:
-          name: ${{ inputs.plan_artifact }}
-          path: ${{ runner.temp }}/sounding-line-plan
       - name: Prepare only sealed-node resources
         if: ${{ !inputs.empty_wave }}
         shell: pwsh
         env:
-          SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-plan/${{ inputs.plan_path }}
+          SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-transport/${{ inputs.plan_path }}
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
         run: |
           $setupStartedAt = [DateTimeOffset]::UtcNow
@@ -236,7 +234,7 @@ jobs:
           } | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath 'sounding-line-worker-throughput.json' -Encoding utf8
       - if: ${{ !inputs.empty_wave }}
         env:
-          SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-plan/${{ inputs.plan_path }}
+          SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-transport/${{ inputs.plan_path }}
           SOUNDING_LINE_GATE: ${{ inputs.gate }}
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
           SOUNDING_LINE_SEALED_SOURCE_SHA: ${{ inputs.candidate_sha }}

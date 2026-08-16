@@ -1,6 +1,12 @@
 name: Sounding Line mainline train advance
 
 on:
+  workflow_dispatch:
+    inputs:
+      merged_pr:
+        description: Exact already-merged train-head PR to recover
+        required: true
+        type: string
   pull_request:
     branches: [main]
     types: [closed]
@@ -9,11 +15,11 @@ permissions:
   actions: read
   checks: write
   contents: read
-  pull-requests: read
+  pull-requests: write
 
 jobs:
   advance:
-    if: ${{ github.event.pull_request.merged == true }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true }}
     name: Sounding Line / Advance landed train head
     runs-on: windows-latest
     timeout-minutes: 10
@@ -22,14 +28,28 @@ jobs:
         with: { ref: main, fetch-depth: 0 }
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc }
+      - id: merged
+        name: Resolve the exact merged train head from GitHub truth
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event_name == 'workflow_dispatch' && inputs.merged_pr || github.event.pull_request.number }}
+        run: |
+          if ($env:PR_NUMBER -notmatch '^[1-9][0-9]*$') { throw 'TRAIN_ADVANCE_PR_NUMBER_INVALID' }
+          $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' }
+          $pr = Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/pulls/$env:PR_NUMBER"
+          if (-not $pr.merged_at -or $pr.base.ref -ne 'main') { throw 'TRAIN_ADVANCE_MERGED_MAIN_PR_REQUIRED' }
+          "pr-number=$($pr.number)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "candidate-sha=$($pr.head.sha)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - id: train
         name: Locate exactly one sealed head-ready train for this merged candidate
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ steps.merged.outputs.pr-number }}
+          CANDIDATE_SHA: ${{ steps.merged.outputs.candidate-sha }}
         run: |
           $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = "application/vnd.github+json"; 'X-GitHub-Api-Version' = '2022-11-28' }
           $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&per_page=100").workflow_runs |
@@ -90,7 +110,8 @@ jobs:
           run-id: ${{ steps.train.outputs.run-id }}
           github-token: ${{ github.token }}
       - if: ${{ steps.advanced.outputs.next-ready == 'true' }}
-        name: Bind retained next head to its now-current protected merge identity
+        id: rebind
+        name: Reconcile retained suffix head to the exact landed predicted prefix
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
@@ -99,17 +120,45 @@ jobs:
           CANDIDATE_SHA: ${{ steps.advanced.outputs.next-candidate }}
           AUTHORITY_RUN_ID: ${{ steps.train.outputs.run-id }}
         run: |
+          $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' }
+          $before = Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/pulls/$env:PR_NUMBER"
+          if ($before.head.sha -ne $env:CANDIDATE_SHA) { throw 'TRAIN_SUFFIX_ORIGINAL_HEAD_DRIFT' }
+          $request = @{ expected_head_sha = $env:CANDIDATE_SHA } | ConvertTo-Json
+          Invoke-RestMethod -Method Put -Headers $headers -ContentType 'application/json' -Body $request -Uri "https://api.github.com/repos/$env:REPOSITORY/pulls/$env:PR_NUMBER/update-branch" | Out-Null
+          $after = $null
+          foreach ($attempt in 1..30) {
+            Start-Sleep -Seconds 2
+            $after = Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/pulls/$env:PR_NUMBER"
+            if ($after.base.sha -eq (git rev-parse origin/main).Trim() -and $after.head.sha -ne $env:CANDIDATE_SHA) { break }
+          }
+          if (-not $after -or $after.base.sha -ne (git rev-parse origin/main).Trim() -or $after.head.sha -eq $env:CANDIDATE_SHA) { throw 'TRAIN_SUFFIX_REBIND_NOT_COMPLETED' }
+          "rebound-candidate=$($after.head.sha)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - if: ${{ steps.advanced.outputs.next-ready == 'true' }}
+        name: Bind retained next head to its now-current protected merge identity
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ steps.advanced.outputs.next-pr }}
+          CANDIDATE_SHA: ${{ steps.advanced.outputs.next-candidate }}
+          REBOUND_CANDIDATE_SHA: ${{ steps.rebind.outputs.rebound-candidate }}
+          AUTHORITY_RUN_ID: ${{ steps.train.outputs.run-id }}
+        run: |
           git fetch origin main "refs/pull/$env:PR_NUMBER/merge:refs/remotes/origin/sounding-line-train-next-merge"
+          if ($LASTEXITCODE -ne 0) { throw 'TRAIN_NEXT_HEAD_MERGE_IDENTITY_UNAVAILABLE' }
+          git fetch origin "refs/pull/$env:PR_NUMBER/head:refs/remotes/origin/sounding-line-train-next-head"
           if ($LASTEXITCODE -ne 0) { throw 'TRAIN_NEXT_HEAD_MERGE_IDENTITY_UNAVAILABLE' }
           $base = (git rev-parse origin/main).Trim()
           $merge = (git rev-parse origin/sounding-line-train-next-merge).Trim()
-          node scripts/sounding-line/protected-merge-binding-ci.mjs --authority testing/sounding-line-authority.json --finalization next-acceptance/sounding-line-finalization.json --plan next-acceptance/sounding-line-plan.json --envelope next-acceptance/sounding-line-acceptance-envelope.json --pr-number $env:PR_NUMBER --candidate-sha $env:CANDIDATE_SHA --base-sha $base --merge-sha $merge --authority-run-id $env:AUTHORITY_RUN_ID
+          $head = (git rev-parse origin/sounding-line-train-next-head).Trim()
+          if ($head -ne $env:REBOUND_CANDIDATE_SHA) { throw 'TRAIN_SUFFIX_REBIND_HEAD_MISMATCH' }
+          node scripts/sounding-line/protected-merge-binding-ci.mjs --authority testing/sounding-line-authority.json --finalization next-acceptance/sounding-line-finalization.json --plan next-acceptance/sounding-line-plan.json --envelope next-acceptance/sounding-line-acceptance-envelope.json --pr-number $env:PR_NUMBER --candidate-sha $env:CANDIDATE_SHA --rebound-candidate-sha $head --base-sha $base --merge-sha $merge --authority-run-id $env:AUTHORITY_RUN_ID
           if ($LASTEXITCODE -ne 0) { throw 'TRAIN_NEXT_HEAD_PROTECTED_BINDING_NO_GO' }
           $body = @{ name = 'Sounding Line / Mainline Decision'; head_sha = $merge; status = 'completed'; conclusion = 'success'; output = @{ title = 'Retained train head bound'; summary = 'Exact tree-equivalent predicted-base evidence rebound to the current protected merge identity.' } } | ConvertTo-Json -Depth 8
           Invoke-RestMethod -Method Post -Headers @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' } -Uri "https://api.github.com/repos/$env:REPOSITORY/check-runs" -ContentType 'application/json' -Body $body | Out-Null
       - if: ${{ steps.train.outputs.found == 'true' }}
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
-          name: sounding-line-mainline-train-advance-${{ github.event.pull_request.number }}
+          name: sounding-line-mainline-train-advance-${{ steps.merged.outputs.pr-number }}
           path: mainline-train-advanced.json
           retention-days: 14

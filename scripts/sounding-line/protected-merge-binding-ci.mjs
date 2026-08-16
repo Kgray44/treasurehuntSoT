@@ -3,7 +3,7 @@ import { execFile } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import process from "node:process";
 import { promisify } from "node:util";
-import { qualifyProtectedMerge } from "./protected-merge-binding.mjs";
+import { qualifyProtectedMerge, qualifyTrainSuffixRebind } from "./protected-merge-binding.mjs";
 
 const execute = promisify(execFile);
 const value = (name, optional = false) => {
@@ -28,6 +28,7 @@ const candidateSha = value("--candidate-sha");
 const currentBaseSha = value("--base-sha");
 const mergeSha = value("--merge-sha");
 const authorityRunId = Number(value("--authority-run-id"));
+const reboundCandidateSha = value("--rebound-candidate-sha", true);
 const legacy = authority.protectedMergeBinding?.legacyQualifiedCandidates?.find(
   (entry) =>
     entry.prNumber === prNumber && entry.candidateSha === candidateSha && entry.authoritativeRunId === authorityRunId,
@@ -45,6 +46,7 @@ if (envelope) {
     throw new Error("QUALIFIED_ACCEPTANCE_ENVELOPE_INVALID");
 }
 await git("cat-file", "-e", `${candidateSha}^{commit}`);
+if (reboundCandidateSha) await git("cat-file", "-e", `${reboundCandidateSha}^{commit}`);
 await git("cat-file", "-e", `${currentBaseSha}^{commit}`);
 await git("cat-file", "-e", `${mergeSha}^{commit}`);
 const mergeParents = (await git("show", "-s", "--format=%P", mergeSha)).split(/\s+/u).filter(Boolean);
@@ -85,22 +87,41 @@ const recordOnlyAncestryValid = plan.recordOnly
       candidateSha,
     )
   : undefined;
-const result = qualifyProtectedMerge({
-  authority,
-  qualified,
-  plan,
-  finalization,
-  prNumber,
-  candidateSha,
-  currentBaseSha,
-  currentBaseTree,
-  mergeSha,
-  mergeParents,
-  changedPaths,
-  baseAncestryValid,
-  authorityRunId,
-  recordOnlyChangedPaths,
-  recordOnlyAncestryValid,
-});
+const result = reboundCandidateSha
+  ? qualifyTrainSuffixRebind({
+      authority,
+      qualified,
+      plan,
+      finalization,
+      prNumber,
+      currentBaseSha,
+      currentBaseTree,
+      rebasedCandidateSha: reboundCandidateSha,
+      rebasedCandidateTree: await git("rev-parse", `${reboundCandidateSha}^{tree}`),
+      rebasedCandidateParents: (await git("show", "-s", "--format=%P", reboundCandidateSha))
+        .split(/\s+/u)
+        .filter(Boolean),
+      mergeSha,
+      mergeTree: await git("rev-parse", `${mergeSha}^{tree}`),
+      mergeParents,
+      authorityRunId,
+    })
+  : qualifyProtectedMerge({
+      authority,
+      qualified,
+      plan,
+      finalization,
+      prNumber,
+      candidateSha,
+      currentBaseSha,
+      currentBaseTree,
+      mergeSha,
+      mergeParents,
+      changedPaths,
+      baseAncestryValid,
+      authorityRunId,
+      recordOnlyChangedPaths,
+      recordOnlyAncestryValid,
+    });
 process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
 process.exitCode = result.decision === "BINDING_PASS" ? 0 : 1;

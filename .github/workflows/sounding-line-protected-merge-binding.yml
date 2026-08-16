@@ -196,6 +196,7 @@ jobs:
               )
             }
           $matches = @()
+          $trainRebindMatches = @()
           foreach ($run in $runs) {
             try {
               $artifacts = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs/$($run.id)/artifacts?per_page=100").artifacts |
@@ -219,17 +220,28 @@ jobs:
                 if ($envelope.prNumber -eq [int]$env:PR_NUMBER -and $envelope.candidateSha -eq $env:CANDIDATE_SHA) {
                   $matches += @{ run = $run; artifact = $artifact.name }
                 }
+                if ($envelope.prNumber -eq [int]$env:PR_NUMBER -and $artifact.name -like 'sounding-line-train-acceptance-envelope-*') {
+                  $trainRebindMatches += @{ run = $run; artifact = $artifact.name; originalCandidate = $envelope.candidateSha }
+                }
               }
             } catch { }
           }
-          if (@($matches).Count -ne 1) { throw "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE" }
-          $match = @($matches)[0]
+          if (@($matches).Count -gt 1) { throw "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE" }
+          $trainRebind = $false
+          if (@($matches).Count -eq 1) {
+            $match = @($matches)[0]
+          } elseif (@($trainRebindMatches).Count -eq 1) {
+            $match = @($trainRebindMatches)[0]
+            $trainRebind = $true
+            "original-candidate=$($match.originalCandidate)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          } else { throw "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE" }
           "run-id=$($match.run.id)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           $finalizationArtifact = if ($match.artifact -eq 'sounding-line-acceptance-envelope') { 'sounding-line-finalization' } else { $match.artifact }
           $planArtifact = if ($match.artifact -eq 'sounding-line-acceptance-envelope') { 'sounding-line-plan' } else { $match.artifact }
           "finalization-artifact=$finalizationArtifact" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           "plan-artifact=$planArtifact" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           "envelope-artifact=$($match.artifact)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "train-rebind=$trainRebind" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           "legacy=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - name: Download sealed finalization
         if: ${{ needs.record-only-preflight.outputs.recordOnly != 'true' }}
@@ -274,10 +286,12 @@ jobs:
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+          ORIGINAL_CANDIDATE_SHA: ${{ steps.authority.outputs.original-candidate }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           MERGE_SHA: ${{ github.sha }}
           AUTHORITY_RUN_ID: ${{ needs.record-only-preflight.outputs.recordOnly == 'true' && github.run_id || steps.authority.outputs.run-id }}
           LEGACY: ${{ needs.record-only-preflight.outputs.recordOnly == 'true' && 'false' || steps.authority.outputs.legacy }}
+          TRAIN_REBIND: ${{ steps.authority.outputs.train-rebind }}
         run: |
           $args = @(
             'scripts/sounding-line/protected-merge-binding-ci.mjs',
@@ -285,11 +299,12 @@ jobs:
             '--finalization', 'accepted-finalization/sounding-line-finalization.json',
             '--plan', 'accepted-plan/sounding-line-plan.json',
             '--pr-number', $env:PR_NUMBER,
-            '--candidate-sha', $env:CANDIDATE_SHA,
+            '--candidate-sha', $(if ($env:TRAIN_REBIND -eq 'true') { $env:ORIGINAL_CANDIDATE_SHA } else { $env:CANDIDATE_SHA }),
             '--base-sha', $env:BASE_SHA,
             '--merge-sha', $env:MERGE_SHA,
             '--authority-run-id', $env:AUTHORITY_RUN_ID
           )
+          if ($env:TRAIN_REBIND -eq 'true') { $args += @('--rebound-candidate-sha', $env:CANDIDATE_SHA) }
           if ($env:LEGACY -ne 'true') { $args += @('--envelope', 'accepted-envelope/sounding-line-acceptance-envelope.json') }
           node @args
 
