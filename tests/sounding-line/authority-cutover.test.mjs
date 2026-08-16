@@ -1,11 +1,13 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { readFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import os from "node:os";
 import { promisify } from "node:util";
 import test from "node:test";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { finalize } from "../../scripts/sounding-line/finalizer.mjs";
+import { resolveIsolatedBrowserFamilyAdapter } from "../../scripts/sounding-line/adapters.mjs";
 import { buildPlan, resolvePlanAuthority } from "../../scripts/sounding-line/planner.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
@@ -66,8 +68,90 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
   const sentinelCases = registry.cases.filter((entry) => entry.suiteId === "browser.access-sentinel");
   assert.equal(sentinelCases.length, 3);
   assert.ok(sentinelCases.every((entry) => entry.project === "sounding-line-access-sentinel"));
+  assert.ok(sentinelCases.every((entry) => entry.parallelSafety === "ISOLATED_MUTABLE_PARALLEL"));
   assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.auth").length, 8);
   assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.navigation").length, 2);
+});
+
+test("access sentinel parallelism requires an explicit parallel-safe suite contract", async () => {
+  const adapter = resolveIsolatedBrowserFamilyAdapter(
+    [
+      {
+        project: "sounding-line-access-sentinel",
+        files: ["tests/e2e/access-gates.spec.ts"],
+        grep: "access gate",
+        caseCount: 3,
+      },
+    ],
+    path.join(root, "prisma", "dev.db"),
+    false,
+    { skipLegacyProjectionFixture: true, parallelSafe: true, browserWorkers: 3 },
+  );
+  assert.ok(adapter.command.includes("-SkipLegacyProjectionFixture"));
+  assert.ok(adapter.command.includes("-BrowserWorkers"));
+  assert.ok(adapter.command.includes("3"));
+  const certified = resolveIsolatedBrowserFamilyAdapter(
+    [
+      {
+        project: "sounding-line-access-sentinel",
+        files: ["tests/e2e/access-gates.spec.ts"],
+        grep: "access gate",
+        caseCount: 3,
+      },
+    ],
+    path.join(root, "prisma", "dev.db"),
+    false,
+    { skipLegacyProjectionFixture: true, certifiedBaseline: true, parallelSafe: false, browserWorkers: 1 },
+  );
+  assert.ok(certified.command.includes("-CertifiedBaseline"));
+  assert.ok(certified.command.includes("1"));
+  assert.throws(
+    () =>
+      resolveIsolatedBrowserFamilyAdapter(
+        [
+          {
+            project: "sounding-line-access-sentinel",
+            files: ["tests/e2e/access-gates.spec.ts"],
+            grep: "access gate",
+            caseCount: 3,
+          },
+        ],
+        path.join(root, "prisma", "dev.db"),
+        false,
+        { skipLegacyProjectionFixture: true, parallelSafe: false, browserWorkers: 3 },
+      ),
+    /parallel workers require a parallel-safe suite/u,
+  );
+  assert.throws(
+    () =>
+      resolveIsolatedBrowserFamilyAdapter(
+        [
+          {
+            project: "sounding-line-access-sentinel",
+            files: ["tests/e2e/access-gates.spec.ts"],
+            grep: "access gate",
+            caseCount: 3,
+          },
+        ],
+        path.join(root, "prisma", "dev.db"),
+        false,
+        { skipLegacyProjectionFixture: true, browserWorkers: 4 },
+      ),
+    /between one and three/u,
+  );
+  const runtime = await readFile(
+    path.join(root, "scripts", "sounding-line", "isolated-validation-runtime.ps1"),
+    "utf8",
+  );
+  assert.match(runtime, /Parallel browser execution is limited to the read-only browser-family sentinel fixture/u);
+  assert.match(runtime, /if \(\$SkipLegacyProjectionFixture -ne "true"\)/u);
+  assert.match(runtime, /--workers=\$BrowserWorkers/u);
+  assert.match(runtime, /--fully-parallel/u);
+  const suites = JSON.parse(await readFile(path.join(root, "testing", "suites.json"), "utf8"));
+  assert.equal(suites.suites.find((suite) => suite.id === "browser.access-sentinel")?.parallelSafe, false);
+  const authority = await readFile(path.join(root, "scripts", "sounding-line", "authority.mjs"), "utf8");
+  assert.match(authority, /parallelSafe: suite\.parallelSafe === true/u);
+  assert.match(authority, /browserWorkers: suite\.parallelSafe \? 3 : 1/u);
 });
 
 test("a corrective v1.4 candidate remains on the broad v1.3 plan only when explicitly dispatched for cutover", async () => {
@@ -131,6 +215,61 @@ test("corrective activation preserves v1.3 candidate authority and enables v1.4 
       githubRef: "refs/heads/main",
     }),
     "V14_CURRENT",
+  );
+  assert.equal(
+    resolvePlanAuthority({
+      authorityIndex,
+      gateId: "mainline",
+      authorityMode: "V14_CANDIDATE",
+      githubRef: "refs/heads/main",
+      qualifiedBaseSha: "b173b34fdce46c1a6d029c9955e946a1d5156b63",
+    }),
+    "V14_CANDIDATE",
+  );
+  assert.throws(
+    () =>
+      resolvePlanAuthority({
+        authorityIndex,
+        gateId: "mainline",
+        authorityMode: "V14_CANDIDATE",
+        githubRef: candidateRef,
+        qualifiedBaseSha: "b173b34fdce46c1a6d029c9955e946a1d5156b63",
+      }),
+    /V14_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED/u,
+  );
+});
+
+test("ordinary V14_CANDIDATE planning uses the impact-selected v1.4 mainline path without claiming CURRENT", async () => {
+  const sourceSha = (await execute("git", ["rev-parse", "HEAD"], { cwd: root })).stdout.trim();
+  const qualifiedBaseSha = (await execute("git", ["rev-parse", "HEAD^"], { cwd: root })).stdout.trim();
+  const authorityIndex = JSON.parse(await readFile(path.join(root, "testing", "sounding-line-authority.json"), "utf8"));
+  const plan = await buildPlan({
+    root,
+    gateId: "mainline",
+    sourceSha,
+    qualifiedBaseSha,
+    authorityMode: "V14_CANDIDATE",
+    githubRef: "refs/heads/main",
+  });
+  assert.equal(plan.version, 14);
+  assert.equal(plan.authorityMode, "V14_CANDIDATE");
+  assert.equal(plan.authorityBoundary, "V14_CANDIDATE_QUALIFICATION");
+  assert.equal(plan.sourceSha, sourceSha);
+  assert.equal(plan.qualifiedBaseSha, qualifiedBaseSha);
+  assert.match(plan.candidateTreeSha, /^[0-9a-f]{40}$/u);
+  assert.match(plan.qualifiedBaseTreeSha, /^[0-9a-f]{40}$/u);
+  assert.match(plan.predictedIntegrationTreeSha, /^[0-9a-f]{40}$/u);
+  assert.ok(plan.semanticPlanDigest);
+  assert.throws(
+    () =>
+      resolvePlanAuthority({
+        authorityIndex,
+        gateId: "mainline",
+        authorityMode: "V14_CANDIDATE",
+        githubRef: "refs/heads/ordinary-feature",
+        qualifiedBaseSha,
+      }),
+    /V14_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED/u,
   );
 });
 
@@ -209,6 +348,141 @@ test("only the finalizer produces an accepted decision from source-bound clean r
     ],
   });
   assert.equal(duplicate.decision, "EVIDENCE_INVALID");
+  const shadow = finalize({
+    plan: {
+      ...plan,
+      authorityVersion: "1.4",
+      authorityBoundary: "SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE",
+    },
+    receipts: accepted.receipts,
+  });
+  assert.equal(shadow.decision, "EVIDENCE_INVALID");
+  assert.deepEqual(shadow.invalidEvidence, ["ORDINARY_RELEASE_AUTHORITY_BOUNDARY_INVALID"]);
+});
+
+test("v1.4 finalization binds fresh receipts to the sealed MSES ledger", () => {
+  const plan = {
+    authority: "SOUNDING_LINE",
+    authorityVersion: "1.4",
+    authorityBoundary: "V14_CANDIDATE_QUALIFICATION",
+    sourceSha: "abc",
+    policyDigest: "policy",
+    inventoryDigest: "inventory",
+    planDigest: "plan",
+    gate: "mainline",
+    nodes: [{ id: "unit.tideglass" }],
+    selectionLedger: [
+      {
+        suiteId: "unit.tideglass",
+        selected: true,
+        evidenceDisposition: "FRESH",
+        closureConfidence: "EXACT",
+        preservationBasis: "CURRENT_EXECUTION",
+      },
+      {
+        suiteId: "browser.helm",
+        selected: false,
+        evidenceDisposition: "PRESERVED",
+        closureConfidence: "EXACT",
+        preservationBasis: "EXACT_SEMANTIC_INTERVAL",
+      },
+    ],
+    evidenceDispositionCounts: { FRESH: 1, PRESERVED: 1 },
+  };
+  const receipts = [
+    {
+      suiteId: "unit.tideglass",
+      sourceSha: "abc",
+      policyDigest: "policy",
+      inventoryDigest: "inventory",
+      planDigest: "plan",
+      gate: "mainline",
+      cleanupState: "CLEAN",
+      exitCode: 0,
+      timedOut: false,
+      result: "PASSED",
+    },
+  ];
+  assert.equal(finalize({ plan, receipts }).decision, "RELEASE_GO");
+  const invalid = finalize({
+    plan: { ...plan, evidenceDispositionCounts: { FRESH: 2 } },
+    receipts,
+  });
+  assert.equal(invalid.decision, "EVIDENCE_INVALID");
+  assert.deepEqual(invalid.selectionEvidenceErrors, ["MSES_DISPOSITION_COUNT_MISMATCH"]);
+});
+
+test("v1.4 acceptance envelopes seal only the exact candidate-qualification boundary", async (t) => {
+  const workspace = await mkdtemp(path.join(os.tmpdir(), "sounding-line-envelope-"));
+  t.after(() => rm(workspace, { recursive: true, force: true }));
+  const planPath = path.join(workspace, "plan.json");
+  const finalizationPath = path.join(workspace, "finalization.json");
+  const outputPath = path.join(workspace, "envelope.json");
+  const plan = {
+    authorityVersion: "1.4",
+    authorityMode: "V14_CANDIDATE",
+    authorityBoundary: "V14_CANDIDATE_QUALIFICATION",
+    sourceSha: "a".repeat(40),
+    qualifiedBaseTreeSha: "b".repeat(40),
+    planDigest: "plan",
+  };
+  const finalization = {
+    authority: "SOUNDING_LINE_FINALIZER",
+    decision: "RELEASE_GO",
+    planDigest: "plan",
+    receipts: [],
+  };
+  await Promise.all([
+    writeFile(planPath, `${JSON.stringify(plan)}\n`, "utf8"),
+    writeFile(finalizationPath, `${JSON.stringify(finalization)}\n`, "utf8"),
+  ]);
+  await execute(
+    process.execPath,
+    [
+      "scripts/sounding-line/create-acceptance-envelope.mjs",
+      "--plan",
+      planPath,
+      "--finalization",
+      finalizationPath,
+      "--pr-number",
+      "113",
+      "--base-sha",
+      "c".repeat(40),
+      "--run-id",
+      "1",
+      "--out",
+      outputPath,
+    ],
+    { cwd: root },
+  );
+  assert.equal(JSON.parse(await readFile(outputPath, "utf8")).candidateSha, plan.sourceSha);
+  await writeFile(
+    planPath,
+    `${JSON.stringify({ ...plan, authorityBoundary: "SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE" })}\n`,
+    "utf8",
+  );
+  await assert.rejects(
+    execute(
+      process.execPath,
+      [
+        "scripts/sounding-line/create-acceptance-envelope.mjs",
+        "--plan",
+        planPath,
+        "--finalization",
+        finalizationPath,
+        "--pr-number",
+        "113",
+        "--base-sha",
+        "c".repeat(40),
+        "--run-id",
+        "1",
+        "--out",
+        outputPath,
+      ],
+      { cwd: root },
+    ),
+    /ACCEPTANCE_ENVELOPE_V14_CANDIDATE_BOUNDARY_REQUIRED/u,
+  );
 });
 
 test("focused suite execution is evidence-only and cannot invoke authority", async () => {
@@ -229,13 +503,37 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
   assert.doesNotMatch(authoritative, /^\s{2}(?:pull_request|push):/mu, "AUTHORITATIVE_DEBUG_TRIGGER_FORBIDDEN");
   assert.match(authoritative, /workflow_dispatch:\s*\n\s+inputs:\s*\n\s+gate:/u);
   assert.match(authoritative, /options: \[mainline, release-candidate\]/u);
-  assert.match(authoritative, /authority_mode:[\s\S]*?options: \[current, v13-cutover\]/u);
+  assert.match(authoritative, /authority_mode:[\s\S]*?options: \[current, candidate, v13-cutover\]/u);
   assert.match(authoritative, /SOUNDING_LINE_V13_CUTOVER_MAINLINE_ONLY/u);
   assert.match(authoritative, /SOUNDING_LINE_AUTHORITY_MODE_INVALID/u);
   assert.match(authoritative, /authorityMode=\$\(if \(\$authorityMode -eq 'v13-cutover'\)/u);
   assert.match(authoritative, /candidate_sha:[\s\S]*?required: true[\s\S]*?type: string/u);
+  assert.match(authoritative, /candidate_ref:[\s\S]*?type: string/u);
+  assert.match(
+    authoritative,
+    /group: sounding-line-authoritative-\$\{\{ github\.workflow \}\}-\$\{\{ inputs\.candidate_sha \}\}/u,
+  );
   assert.match(authoritative, /SOUNDING_LINE_FROZEN_CANDIDATE_SHA_MISMATCH/u);
-  assert.match(authoritative, /sourceSha:process\.env\.GITHUB_SHA/u);
+  assert.match(authoritative, /SOUNDING_LINE_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED/u);
+  assert.match(authoritative, /SOUNDING_LINE_CANDIDATE_REF_HEAD_MISMATCH/u);
+  assert.match(authoritative, /SOUNDING_LINE_ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED/u);
+  assert.match(authoritative, /SOUNDING_LINE_ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED/u);
+  assert.match(
+    authoritative,
+    /if \(\$prNumber -and -not \$baseSha\) \{ throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_BASE_REQUIRED" \}/u,
+    "CURRENT_PROTECTED_MAIN_MAY_BIND_A_BASE_WITHOUT_A_PR_ENVELOPE",
+  );
+  assert.doesNotMatch(
+    authoritative,
+    /SOUNDING_LINE_ACCEPTANCE_ENVELOPE_IDENTITY_PAIR_REQUIRED/u,
+    "CURRENT_PROTECTED_MAIN_BASE_MUST_NOT_BE_REJECTED_FOR_LACK_OF_PR",
+  );
+  assert.match(
+    authoritative,
+    /if \(\$authorityMode -eq 'v13-cutover' -and \(-not \$prNumber -or -not \$baseSha\)\) \{ throw "SOUNDING_LINE_V13_CUTOVER_ACCEPTANCE_ENVELOPE_REQUIRED" \}/u,
+    "V13_CUTOVER_ENVELOPE_REMAINS_REQUIRED",
+  );
+  assert.match(authoritative, /sourceSha:process\.env\.SOUNDING_LINE_CANDIDATE_SHA/u);
   assert.match(
     authoritative,
     /SOUNDING_LINE_GATE: \$\{\{ steps\.gate\.outputs\.value \}\}\s*\n\s*SOUNDING_LINE_BASE_SHA: \$\{\{ steps\.base\.outputs\.value \}\}/u,
@@ -245,12 +543,23 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
   assert.match(authoritative, /authorityMode:process\.env\.SOUNDING_LINE_AUTHORITY_MODE/u);
   const planner = await readFile(path.join(root, "scripts", "sounding-line", "planner.mjs"), "utf8");
   assert.match(planner, /V14_CURRENT_AUTHORITY_REQUIRES_PROTECTED_MAIN/u);
+  assert.match(planner, /V14_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED/u);
   assert.match(authoritative, /Sounding Line \/ \$\{\{ needs\.plan\.outputs\.gate/u);
   assert.match(authoritative, /gate: \$\{\{ needs\.plan\.outputs\.gate \}\}/u);
   assert.match(focused, /type: string/u);
   assert.match(focused, /focused-selection\.mjs/u);
   assert.match(focused, /uses: \.\/\.github\/workflows\/sounding-line-governed-worker\.yml/u);
   assert.doesNotMatch(focused, /finalize-ci\.mjs|finalizer\.mjs|Sounding Line \/ Mainline Decision|RELEASE_GO/u);
+  const binding = await readFile(
+    path.join(root, ".github", "workflows", "sounding-line-protected-merge-binding.yml"),
+    "utf8",
+  );
+  assert.match(binding, /V14_CANDIDATE is deliberately dispatched from trusted main/u);
+  assert.match(binding, /sounding-line-acceptance-envelope/u);
+  assert.match(binding, /sounding-line-train-acceptance-envelope/u);
+  assert.match(binding, /sounding-line-mainline-train\.yml/u);
+  assert.match(binding, /envelope\.candidateSha -eq \$env:CANDIDATE_SHA/u);
+  assert.match(binding, /qualified-base to[\s\S]*?current-base interval itself/u);
 });
 
 test("BrowserOnly Harborlight lanes do not repeat independent broad gates", async () => {
@@ -282,12 +591,16 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
   assert.match(common, /function Copy-ForeverDependencySeed/u);
   assert.match(common, /robocopy \$seedModules \$runtimeModules \/E \/XJ \/COPY:DAT/u);
   assert.match(common, /dir \/a:l \/s \/b/u);
+  assert.match(common, /@\("Junction", "SymbolicLink"\)/u);
   assert.match(common, /New-Item -ItemType Junction/u);
   assert.match(common, /retainedSourceJunctions/u);
   assert.match(common, /TrimEnd\(\[char\]92, \[char\]47\)/u);
+  assert.match(common, /target escaped the seed root/u);
   assert.match(common, /rmdir \/s \/q/u);
   assert.match(common, /junction target escaped the seed root/u);
   assert.match(common, /lockfile does not match the isolated runtime/u);
+  assert.match(common, /@prisma\\engines\\package\.json/u);
+  assert.match(common, /Sounding Line dependency seed copy is incomplete: \$marker/u);
   assert.match(common, /A physical copy retains Next's runtime-local \.next/u);
 });
 
@@ -301,7 +614,7 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   const worker = await readFile(path.join(root, ".github", "workflows", "sounding-line-governed-worker.yml"), "utf8");
   const adapters = await readFile(path.join(root, "scripts", "sounding-line", "adapters.mjs"), "utf8");
   assert.doesNotMatch(worker, /continue-on-error:\s*true\s*\n\s*run: node scripts\/sounding-line\/authority/u);
-  assert.match(worker, /path: \$\{\{ runner\.temp \}\}\/sounding-line-plan/u);
+  assert.match(worker, /path: \$\{\{ runner\.temp \}\}\/sounding-line-transport/u);
   assert.match(worker, /--plan-in "\$env:SOUNDING_LINE_PLAN"/u);
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_MISSING/u);
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_FAILED/u);
@@ -316,6 +629,54 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   assert.doesNotMatch(worker, /SOUNDING_LINE_SUITE -like 'browser\.\*'/u);
   assert.doesNotMatch(worker, /playwright install chromium webkit/u);
   assert.match(worker, /inputs\.gate/u);
+  assert.match(worker, /ref: \$\{\{ inputs\.candidate_sha \}\}/u);
+  assert.match(worker, /plan_artifact:[\s\S]*?default: sounding-line-plan/u);
+  assert.match(worker, /prepared_artifact:[\s\S]*?default: sounding-line-prepared-dependency/u);
+  assert.match(worker, /prepared_path:[\s\S]*?Relative prepared dependency-layer path/u);
+  assert.match(worker, /receipt_artifact:[\s\S]*?unique artifact name/u);
+  assert.match(worker, /execution_sha:[\s\S]*?sealed predicted integration commit/u);
+  assert.match(worker, /GOVERNED_INTEGRATION_BUNDLE_FETCH_FAILED/u);
+  assert.match(worker, /GOVERNED_WORKER_EXECUTION_CHECKOUT_MISMATCH/u);
+  assert.match(worker, /SOUNDING_LINE_SEALED_SOURCE_SHA: \$\{\{ inputs\.candidate_sha \}\}/u);
+  assert.match(worker, /\$env:GITHUB_SHA = \$env:SOUNDING_LINE_SEALED_SOURCE_SHA/u);
+  const trainWorkflow = await readFile(
+    path.join(root, ".github", "workflows", "sounding-line-mainline-train.yml"),
+    "utf8",
+  );
+  assert.match(trainWorkflow, /name: Sounding Line mainline train/u);
+  assert.match(trainWorkflow, /TRAIN_CANDIDATE_REF_HEAD_MISMATCH/u);
+  assert.match(trainWorkflow, /issues\?state=open/u);
+  assert.match(trainWorkflow, /Where-Object \{ \$null -ne \$_\.pull_request \}/u);
+  assert.match(trainWorkflow, /mainline-train-cli\.mjs admit/u);
+  assert.match(trainWorkflow, /mainline-train-prepare\.mjs/u);
+  assert.match(trainWorkflow, /sounding-line-train-wave\.yml/u);
+  assert.match(trainWorkflow, /Finalize exact predicted-tree candidate evidence/u);
+  assert.match(trainWorkflow, /merge-train-qualifications\.mjs/u);
+  assert.match(trainWorkflow, /--state train-state\/mainline-train\.json/u);
+  assert.match(trainWorkflow, /--base train-state\/mainline-train\.json/u);
+  assert.doesNotMatch(trainWorkflow, /\$admission\.train \| ConvertTo-Json/u);
+  assert.match(trainWorkflow, /Bind the first train head to its current protected merge identity/u);
+  const advanceWorkflow = await readFile(
+    path.join(root, ".github", "workflows", "sounding-line-mainline-train-advance.yml"),
+    "utf8",
+  );
+  assert.match(advanceWorkflow, /types: \[closed\]/u);
+  assert.match(advanceWorkflow, /workflow_dispatch:/u);
+  assert.match(advanceWorkflow, /contents: write/u);
+  assert.match(advanceWorkflow, /pull-requests: write/u);
+  assert.match(advanceWorkflow, /Compare actual protected-main tree/u);
+  assert.match(advanceWorkflow, /Reconcile retained suffix head/u);
+  assert.match(advanceWorkflow, /TRAIN_SUFFIX_REBIND_NOT_COMPLETED/u);
+  assert.match(advanceWorkflow, /TRAIN_NEXT_HEAD_MERGE_IDENTITY_NOT_STABLE/u);
+  assert.match(advanceWorkflow, /\$mergeParents -contains \$base/u);
+  assert.match(advanceWorkflow, /\$mergeParents -contains \$head/u);
+  assert.match(advanceWorkflow, /\$mergeTree -eq \$headTree/u);
+  assert.match(advanceWorkflow, /\$confirmedMerge -eq \$merge/u);
+  assert.match(advanceWorkflow, /\$confirmedHead -eq \$head/u);
+  assert.match(advanceWorkflow, /--rebound-candidate-sha/u);
+  assert.match(advanceWorkflow, /Bind retained next head/u);
+  assert.match(trainWorkflow, /TRAIN_LIVE_BOUNDARY_REQUIRED/u);
+  assert.match(worker, /GOVERNED_WORKER_CANDIDATE_CHECKOUT_MISMATCH/u);
   assert.match(worker, /timeout-minutes: 120/u);
   assert.match(adapters, /taskkill", \["\/pid", String\(child\.pid\), "\/T", "\/F"\]/u);
   assert.match(adapters, /\(\?:spec\|setup\)\\\.ts/u);

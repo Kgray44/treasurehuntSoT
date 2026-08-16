@@ -285,7 +285,18 @@ function Copy-ForeverDependencySeed {
     $seedModules = Join-Path $resolvedSeed "node_modules"
     $runtimeModules = Join-Path $resolvedRuntime "node_modules"
     if (-not (Test-Path -LiteralPath $seedModules -PathType Container)) { throw "Sounding Line dependency seed is missing node_modules." }
-    if (-not (Test-Path -LiteralPath (Join-Path $seedModules "next\package.json") -PathType Leaf)) { throw "Sounding Line dependency seed is incomplete." }
+    $requiredDependencyMarkers = @(
+        "next\package.json",
+        "prisma\package.json",
+        "@prisma\engines\package.json",
+        "@prisma\client\package.json",
+        "tsx\dist\cli.mjs"
+    )
+    foreach ($marker in $requiredDependencyMarkers) {
+        if (-not (Test-Path -LiteralPath (Join-Path $seedModules $marker) -PathType Leaf)) {
+            throw "Sounding Line dependency seed is incomplete: $marker"
+        }
+    }
     if ((Get-FileHash -Algorithm SHA256 -LiteralPath $runtimeLock).Hash -ne (Get-FileHash -Algorithm SHA256 -LiteralPath $seedLock).Hash) {
         throw "Sounding Line dependency seed lockfile does not match the isolated runtime."
     }
@@ -297,11 +308,11 @@ function Copy-ForeverDependencySeed {
     Enable-ForeverValidationRuntimeCompression -RuntimeRoot $runtimeModules
     # Copy the already installed, lockfile-matched dependency tree rather than
     # repeating npm ci. A physical copy retains Next's runtime-local .next
-    # behavior and Prisma's generated-client isolation. pnpm exposes packages
-    # through an in-tree junction graph: dereferencing it makes duplicate
-    # physical copies of the same packages and can consume a browser suite's
-    # entire governed budget. Copy the physical store once, then recreate only
-    # its in-tree junctions with runtime-local targets.
+    # behavior and Prisma's generated-client isolation. Package workspaces
+    # expose packages through in-tree directory links: dereferencing them makes
+    # duplicate physical copies of the same packages and can consume a browser
+    # suite's entire governed budget. Copy the physical store once, then
+    # recreate only its in-tree directory links with runtime-local targets.
     & robocopy $seedModules $runtimeModules /E /XJ /COPY:DAT /DCOPY:DAT /R:1 /W:1 /MT:32 | Out-Null
     if ($LASTEXITCODE -gt 7) { throw "Unable to copy Sounding Line dependency seed (robocopy exit $LASTEXITCODE)." }
     $seedPrefix = $seedModules.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
@@ -330,8 +341,12 @@ function Copy-ForeverDependencySeed {
         }
         if ($isNestedInRetainedJunction) { continue }
         $sourceJunction = Get-Item -LiteralPath $resolvedSourceJunction -Force
-        if (-not $sourceJunction.PSIsContainer -or $sourceJunction.LinkType -ne "Junction") {
-            throw "Sounding Line dependency link is not an in-tree directory junction."
+        # npm creates Windows workspace links as junctions. The GitHub cache
+        # transport may restore that same directory link as a symbolic link;
+        # accept only those two directory-link representations and retain the
+        # target-containment checks below before recreating a runtime junction.
+        if (-not $sourceJunction.PSIsContainer -or $sourceJunction.LinkType -notin @("Junction", "SymbolicLink")) {
+            throw "Sounding Line dependency link is not a supported in-tree directory link."
         }
         $junctionTargets = @($sourceJunction.Target)
         if ($junctionTargets.Count -ne 1) { throw "Sounding Line dependency junction must have exactly one target." }
@@ -362,8 +377,10 @@ function Copy-ForeverDependencySeed {
         New-Item -ItemType Junction -Path $runtimeJunction -Target $runtimeTarget -ErrorAction Stop | Out-Null
         $retainedSourceJunctions.Add($resolvedSourceJunction)
     }
-    if (-not (Test-Path -LiteralPath (Join-Path $runtimeModules "next\package.json") -PathType Leaf)) {
-        throw "Sounding Line dependency seed copy is incomplete."
+    foreach ($marker in $requiredDependencyMarkers) {
+        if (-not (Test-Path -LiteralPath (Join-Path $runtimeModules $marker) -PathType Leaf)) {
+            throw "Sounding Line dependency seed copy is incomplete: $marker"
+        }
     }
     Set-Content -LiteralPath (Join-Path $resolvedRuntime ".forever-dependency-seed.json") -Encoding UTF8 -Value (@{
         seedRoot = $resolvedSeed
@@ -402,7 +419,11 @@ function Invoke-ForeverNode {
 }
 
 function Initialize-ForeverRuntime {
-    param([ValidateSet("development", "validation")][string]$Mode = "development", [switch]$ResetDatabase)
+    param(
+        [ValidateSet("development", "validation")][string]$Mode = "development",
+        [switch]$ResetDatabase,
+        [string]$CertifiedBaselinePath
+    )
     $runtimeRoot = $null
     try {
         $environmentPath = Ensure-ForeverEnvironment
@@ -410,13 +431,28 @@ function Initialize-ForeverRuntime {
         Install-ForeverDependencies -RuntimeRoot $runtimeRoot
         $runtimeEnvironment = Join-Path $runtimeRoot ".env"
         Import-ForeverEnvironment -Path $runtimeEnvironment
+        if ($CertifiedBaselinePath -and $Mode -ne "validation") {
+            throw "CertifiedBaselinePath is limited to the validation runtime."
+        }
+        if ($CertifiedBaselinePath -and -not [System.IO.Path]::IsPathRooted($CertifiedBaselinePath)) {
+            throw "CertifiedBaselinePath must be an absolute file path."
+        }
+        if ($CertifiedBaselinePath -and -not (Test-Path -LiteralPath $CertifiedBaselinePath -PathType Leaf)) {
+            throw "CertifiedBaselinePath must identify an existing immutable database file."
+        }
         if ($Mode -eq "validation") { $env:DATABASE_URL = "file:./validation.db" }
         $databaseName = if ($Mode -eq "validation") { "validation.db" } else { "dev.db" }
         $databasePath = Join-Path $runtimeRoot "prisma\$databaseName"
-        if ($ResetDatabase -and (Test-Path $databasePath)) { Remove-Item -LiteralPath $databasePath -Force }
-        if (-not (Test-Path $databasePath)) { New-Item -ItemType File -Path $databasePath | Out-Null }
+        if (($ResetDatabase -or $CertifiedBaselinePath) -and (Test-Path $databasePath)) { Remove-Item -LiteralPath $databasePath -Force }
+        if ($CertifiedBaselinePath) {
+            Copy-Item -LiteralPath $CertifiedBaselinePath -Destination $databasePath -ErrorAction Stop
+        } elseif (-not (Test-Path $databasePath)) { New-Item -ItemType File -Path $databasePath | Out-Null }
         Write-Host "Generating the database client..." -ForegroundColor Cyan
         Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments @("node_modules/prisma/build/index.js", "generate", "--schema", "prisma/schema.sqlite.prisma")
+        if ($CertifiedBaselinePath) {
+            Write-Host "Using verified immutable validation baseline..." -ForegroundColor Cyan
+            return $runtimeRoot
+        }
         Write-Host "Applying database migrations..." -ForegroundColor Cyan
         Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments @("node_modules/prisma/build/index.js", "migrate", "deploy", "--schema", "prisma/schema.sqlite.prisma")
         if ($Mode -eq "development") {

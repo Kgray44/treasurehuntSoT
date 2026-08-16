@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import {
   PROTECTED_MAINLINE_CONTEXT,
   qualifyProtectedMerge,
+  qualifyTrainSuffixRebind,
 } from "../../scripts/sounding-line/protected-merge-binding.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
@@ -89,6 +90,26 @@ function bind(overrides = {}) {
   });
 }
 
+function bindV14(boundary) {
+  const base = fixture();
+  const { planDigest, ...unsignedPlan } = base.plan;
+  base.plan = {
+    ...unsignedPlan,
+    authorityVersion: "1.4",
+    authorityMode: "V14_CANDIDATE",
+    authorityBoundary: boundary,
+  };
+  base.plan.planDigest = digest(base.plan);
+  base.finalization.planDigest = base.plan.planDigest;
+  for (const receipt of base.finalization.receipts) receipt.planDigest = base.plan.planDigest;
+  base.finalization.evidenceDigest = digest(base.finalization.receipts);
+  Object.assign(base.qualified, {
+    planDigest: base.plan.planDigest,
+    evidenceDigest: base.finalization.evidenceDigest,
+  });
+  return bind(base);
+}
+
 test("exact qualified head + base + sealed evidence bind to the synthetic merge", () => {
   const result = bind();
   assert.equal(result.decision, "BINDING_PASS");
@@ -114,6 +135,13 @@ test("protected merge binding fails closed for changed head, missing release, di
   assert.equal(bind(dirtyCleanup).decision, "BINDING_NO_GO");
 });
 
+test("v1.4 protected binding consumes only an exact candidate-qualification boundary", () => {
+  assert.equal(bindV14("V14_CANDIDATE_QUALIFICATION").decision, "BINDING_PASS");
+  const rejected = bindV14("SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE");
+  assert.equal(rejected.decision, "BINDING_NO_GO");
+  assert.ok(rejected.errors.includes("QUALIFIED_AUTHORITY_BOUNDARY_INVALID"));
+});
+
 test("semantic carry-forward preserves only declared unrelated base advances", () => {
   const pass = bind({
     currentBaseSha: currentBase,
@@ -134,12 +162,87 @@ test("semantic carry-forward preserves only declared unrelated base advances", (
   assert.deepEqual(rejected.carryForward.rejected, ["src/helm/membership.ts"]);
 });
 
+test("an unreachable predicted base may rebind only to its exact protected-base tree", () => {
+  const tree = "e".repeat(40);
+  const rebound = fixture();
+  rebound.qualified.qualifiedBaseTreeSha = tree;
+  const pass = bind({
+    ...rebound,
+    currentBaseSha: currentBase,
+    currentBaseTree: tree,
+    mergeParents: [currentBase, candidate],
+    changedPaths: [],
+    baseAncestryValid: false,
+  });
+  assert.equal(pass.decision, "BINDING_PASS");
+  assert.equal(pass.carryForward.status, "TREE_EQUIVALENT_PREDICTED_BASE");
+  const reject = bind({
+    ...rebound,
+    currentBaseSha: currentBase,
+    currentBaseTree: "f".repeat(40),
+    mergeParents: [currentBase, candidate],
+    changedPaths: undefined,
+    baseAncestryValid: false,
+  });
+  assert.equal(reject.decision, "BINDING_NO_GO");
+});
+
 test("synthetic composition is exact and the bridge never becomes candidate authority", () => {
   const wrongParents = bind({ mergeParents: [qualifiedBase, "f".repeat(40)] });
   assert.equal(wrongParents.decision, "BINDING_NO_GO");
   const absentEvidence = bind({ finalization: null });
   assert.equal(absentEvidence.decision, "BINDING_NO_GO");
   for (const result of [wrongParents, absentEvidence]) assert.notEqual(result.decision, "RELEASE_GO");
+});
+
+test("train suffix rebinding preserves only an exact predicted-tree mechanical update", () => {
+  const base = fixture();
+  const predictedTree = "e".repeat(40);
+  base.plan.predictedIntegrationTreeSha = predictedTree;
+  base.plan.qualifiedBaseTreeSha = "f".repeat(40);
+  const { planDigest, ...unsignedPlan } = base.plan;
+  base.plan.planDigest = digest(unsignedPlan);
+  base.finalization.planDigest = base.plan.planDigest;
+  for (const receipt of base.finalization.receipts) receipt.planDigest = base.plan.planDigest;
+  base.finalization.evidenceDigest = digest(base.finalization.receipts);
+  Object.assign(base.qualified, { planDigest: base.plan.planDigest, evidenceDigest: base.finalization.evidenceDigest });
+  base.qualified.qualifiedBaseTreeSha = "f".repeat(40);
+  const rebound = "1".repeat(40);
+  const pass = qualifyTrainSuffixRebind({
+    authority: base.authority,
+    qualified: base.qualified,
+    plan: base.plan,
+    finalization: base.finalization,
+    prNumber: 35,
+    currentBaseSha: currentBase,
+    currentBaseTree: "f".repeat(40),
+    rebasedCandidateSha: rebound,
+    rebasedCandidateTree: predictedTree,
+    rebasedCandidateParents: [candidate, currentBase],
+    mergeSha: merge,
+    mergeTree: predictedTree,
+    mergeParents: [currentBase, rebound],
+    authorityRunId: 31555993275,
+  });
+  assert.equal(pass.decision, "BINDING_PASS");
+  const noGo = qualifyTrainSuffixRebind({
+    authority: base.authority,
+    qualified: base.qualified,
+    plan: base.plan,
+    finalization: base.finalization,
+    prNumber: 35,
+    currentBaseSha: currentBase,
+    currentBaseTree: "f".repeat(40),
+    rebasedCandidateSha: rebound,
+    rebasedCandidateTree: predictedTree,
+    rebasedCandidateParents: [candidate, currentBase],
+    mergeSha: merge,
+    mergeTree: "2".repeat(40),
+    mergeParents: [currentBase, rebound],
+    authorityRunId: 31555993275,
+  });
+  assert.equal(noGo.decision, "BINDING_NO_GO");
+  assert.ok(noGo.errors.includes("TRAIN_SUFFIX_REBIND_PREDICTED_TREE_MISMATCH"));
 });
 
 test("workflow topology retains explicit heavyweight authority and the exact protected context", async () => {
@@ -161,4 +264,15 @@ test("workflow topology retains explicit heavyweight authority and the exact pro
   assert.match(bridge, /sounding-line-plan/u);
   assert.match(bridge, /record-only-closure\.mjs/u);
   assert.match(bridge, /Finalize record-only decision/u);
+  assert.match(bridge, /sounding-line-mainline-train\.yml/u);
+  assert.match(bridge, /MAINTENANCE_SCOPE_REJECTED/u);
+  assert.match(bridge, /ConvertTo-Json -InputObject \$paths -Compress/u);
+  assert.doesNotMatch(bridge, /\$paths \| ConvertTo-Json -Compress/u);
+  assert.match(
+    bridge,
+    /\$ordinaryScopeOnly = \$preflight\.classification\.classification -eq 'MAINTENANCE_SCOPE_REJECTED'/u,
+  );
+  assert.match(bridge, /'maintenance=false'[\s\S]*?exit 0/u);
+  assert.match(bridge, /SOUNDING_LINE_MAINTENANCE_TRUSTED_POLICY_UNAVAILABLE/u);
+  assert.match(bridge, /SOUNDING_LINE_MAINTENANCE_PREFLIGHT_REJECTED/u);
 });

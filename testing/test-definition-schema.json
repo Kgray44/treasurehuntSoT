@@ -1,7 +1,8 @@
 {
-  "version": "2.0.0",
+  "version": "3.0.0",
   "required": [
     "id",
+    "semanticId",
     "suiteId",
     "title",
     "owner",
@@ -44,5 +45,5 @@
     "parallelSafety": ["READ_ONLY_PARALLEL", "ISOLATED_MUTABLE_PARALLEL", "CAPACITY_LIMITED", "SERIAL_EXCEPTION"],
     "retryPolicy": ["NONE", "INFRASTRUCTURE_ONLY", "GOVERNED_FLAKE_PROBE"]
   },
-  "identity": "Stable IDs are derived from governed source identity. A changed stable identity must retain the former ID in historicalAliases with an explicit migration record."
+  "identity": "semanticId is the durable governed contract identity. id is a generated runtime representation and historical aliases resolve only to one semanticId. A changed semantic identity requires an explicit migration record."
 }

@@ -3,7 +3,7 @@ title: Sounding Line Effective Authority
 audience: engineering
 status: current-on-protected-mainline-acceptance
 canonical_for: sounding-line-effective-authority-human-index
-last_reviewed: 2026-08-13
+last_reviewed: 2026-08-15
 machine_source: testing/sounding-line-authority.json
 ---
 
@@ -13,7 +13,7 @@ machine_source: testing/sounding-line-authority.json
 source. This document is a discoverability projection and must agree with that
 source; it does not independently define policy.
 
-Project Sounding Line Version 1.4 is the effective repository-wide verification authority on protected main. The v1.4 cross-part amendment is additive to the Part I/II Version 1.2 and Part III Version 1.3 amendments; those part amendments remain effective as listed in the machine-readable index.
+Project Sounding Line Version 1.4 is the effective repository-wide verification authority on protected main. Its v1.4.1 maintenance correction provides a trusted-main-bound `VERIFICATION_MAINTENANCE` qualification path only; `MAINTENANCE_GO` is not `RELEASE_GO` and cannot authorize product work. The v1.4 cross-part amendment is additive to the Part I/II Version 1.2 and Part III Version 1.3 amendments; those part amendments remain effective as listed in the machine-readable index.
 
 The Version 1.4 activation is a corrective, owner-authorized protected merge following PR #90. PR #90 integrated the accepted implementation tree but did not flip the authority version. Accordingly, the ratified atomic-one-merge activation requirement is recorded as **not satisfied historically**; protected history is preserved and the evidence requirements are not waived. The permanent deviation and corrective-activation record is `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_v1.4_Corrective_Authority_Activation_Record.md`.
 
@@ -36,6 +36,28 @@ repair before requalification. Focused execution never emits `RELEASE_GO` and
 never substitutes for the Mainline Decision. This boundary is already governed
 by Part III Version 1.2 Sections 6 and 8 and is operationalized by
 `.agents/testing-workflow.md`; no additional broad amendment is required.
+
+## Minimum sufficient ordinary-mainline evidence
+
+For a v1.4 ordinary mainline candidate, the machine-readable authority requires
+**exact semantic impact plus the `browser.access-sentinel` safety sentinel**.
+An unmapped, ambiguous, or debt-bearing change expands conservatively; it is
+never silently omitted. The legacy mainline matrix remains the ledger of
+governed obligations, while `release-candidate` remains exhaustive.
+
+The sealed mainline plan records every ledger obligation as `FRESH`,
+`PRESERVED`, `REBOUND`, `INVALIDATED`, or `CONSERVATIVE_FALLBACK`; a preserved
+entry requires an exact semantic interval, and receipt derivation still checks
+the governing evidence fingerprints before it can claim a rebind. The
+finalizer checks that the selected fresh obligations and the sealed ledger
+agree. This separates minimum sufficient evidence from a hidden all-suite
+freshness floor without weakening fail-closed mapping behavior.
+
+The ordinary-mainline performance contract is a 10-minute objective and a
+15-minute ceiling. The planner must therefore place independent selected
+obligations in their earliest safe wave and avoid spawning workers for
+semantically preserved obligations. These limits do not replace any test
+budget, timeout, receipt, cleanup, or protected-binding requirement.
 
 ## Corrective activation boundary
 

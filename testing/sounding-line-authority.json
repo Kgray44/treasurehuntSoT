@@ -27,6 +27,32 @@
     "suiteId": "unit.sounding-line",
     "failureMode": "FAIL_CLOSED"
   },
+  "verificationMaintenance": {
+    "version": "1.4.1",
+    "policy": "testing/verification-maintenance-policy.json",
+    "trustedMainPolicy": "REQUIRED",
+    "disposition": "MAINTENANCE_GO",
+    "releaseAuthority": "NONE",
+    "ordinaryProductAuthority": "RELEASE_GO_ONLY",
+    "antiSelfAuthorization": "FAIL_CLOSED",
+    "protectedBinding": "EXACT_CANDIDATE_BASE_AND_LANDED_TREE"
+  },
+  "ordinaryCandidateQualification": {
+    "mode": "V14_CANDIDATE",
+    "trustedWorkflowRef": "refs/heads/main",
+    "gate": "mainline",
+    "releaseDisposition": "RELEASE_GO",
+    "currentClaim": "FORBIDDEN",
+    "protectedBinding": "REQUIRED",
+    "minimumSufficientEvidence": {
+      "selectionMode": "EXACT_SEMANTIC_IMPACT_WITH_REQUIRED_SENTINELS",
+      "requiredSafetySentinelSuiteIds": ["browser.access-sentinel"],
+      "unmappedDisposition": "CONSERVATIVE_FALLBACK",
+      "exhaustiveGateIds": ["release-candidate"],
+      "performanceObjectiveMs": 600000,
+      "performanceCeilingMs": 900000
+    }
+  },
   "hostedExecutionCapacity": {
     "maximumWave": 5,
     "minimumHeadroom": 2,

@@ -206,4 +206,11 @@ describe("Drydock block contract registry", () => {
     expect(frozenBlocks.map((block) => block.blockType).sort()).toEqual([...drydockBlockTypeIds].sort());
     expect(canonicalJson(fixture)).not.toContain("creatorNotes");
   });
+
+  it("serializes the registered block contract surface deterministically", () => {
+    const first = canonicalJson(serializeDrydockBlockContractRegistry());
+    const second = canonicalJson(serializeDrydockBlockContractRegistry());
+    expect(second).toBe(first);
+    expect(JSON.parse(first)).toHaveLength(drydockBlockTypeIds.length);
+  });
 });
