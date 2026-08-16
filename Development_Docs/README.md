@@ -43,7 +43,9 @@ accepted evidence. The post-completion [v1.2 Mission Control amendment](Project_
 is in implementation on its dedicated branch; it adds a version-aware observer
 and does not start, rename, or replace a Bridgewatch Phase 4. Its
 [data-fidelity audit](Project_Bridgewatch_v1.2_Data_Fidelity_and_Capability_Audit.md)
-tracks the current implementation boundary.
+tracks the current implementation boundary, and its
+[local validation record](Project_Bridgewatch_v1.2_Validation_Record.md)
+records only task-owned branch evidence pending protected integration.
 
 ## Project Deepwater
 
