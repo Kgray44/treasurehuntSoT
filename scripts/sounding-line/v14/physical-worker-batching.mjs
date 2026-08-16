@@ -48,6 +48,10 @@ export function batchPhysicalWorkers(nodes, shared = {}) {
       ...shared,
       suiteId: suiteIds[0],
       suiteIds,
+      // GitHub's reusable-workflow matrix coerces nested arrays into scalar
+      // values. Carry the exact array as an already-serialized string so the
+      // worker receives the same fail-closed contract the authority parses.
+      suiteIdsJson: JSON.stringify(suiteIds),
       requiresBrowser: pending.some(requiresBrowser),
       browserEngine: browserEngineFor(pending),
       batchId: `node-${digest({ shared, suiteIds }).slice(0, 16)}`,
@@ -62,6 +66,7 @@ export function batchPhysicalWorkers(nodes, shared = {}) {
         ...shared,
         suiteId: node.id,
         suiteIds: [node.id],
+        suiteIdsJson: JSON.stringify([node.id]),
         requiresBrowser: requiresBrowser(node),
         browserEngine: browserEngineFor([node]),
         batchId: `node-${node.id}`,
