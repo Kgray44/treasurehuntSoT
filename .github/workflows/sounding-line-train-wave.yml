@@ -28,6 +28,7 @@ jobs:
       suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
+      browser_test_ids_by_suite_json: ${{ matrix.browserTestIdsBySuiteJson }}
       gate: mainline
       candidate_sha: ${{ matrix.candidateSha }}
       plan_artifact: sounding-line-train-prepared
@@ -50,6 +51,7 @@ jobs:
       suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
+      browser_test_ids_by_suite_json: ${{ matrix.browserTestIdsBySuiteJson }}
       gate: mainline
       candidate_sha: ${{ matrix.candidateSha }}
       plan_artifact: sounding-line-train-prepared
