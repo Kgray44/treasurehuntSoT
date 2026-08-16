@@ -1,6 +1,6 @@
 import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
-import { backup, DatabaseSync } from "node:sqlite";
+import { backup, DatabaseSync, type StatementSync } from "node:sqlite";
 import type { MilestoneRecord, PhaseRecord, ProjectRecord } from "../src/domain.js";
 import {
   deriveEvents,
@@ -9,10 +9,19 @@ import {
   type BridgewatchEventKind,
   type BridgewatchHistoricalEvent,
   type BridgewatchProgramSnapshot,
+  type BranchHealth,
   type DailyRollup,
+  type GithubPullRequestHistory,
 } from "../src/history.js";
 import type { SoundingLineProjection } from "../src/sounding-line.js";
 import type { Heartbeat } from "../src/telemetry.js";
+import type {
+  DiscoveredPhase,
+  DiscoveredProject,
+  DiscoveredVersion,
+  DiscoveryEvidence,
+  DiscoveryResult,
+} from "../src/discovery.js";
 
 const migrations = [
   {
@@ -115,6 +124,87 @@ const migrations = [
       CREATE INDEX IF NOT EXISTS daily_rollups_day_idx ON daily_rollups(day DESC);
       `,
   },
+  {
+    version: 4,
+    sql: `
+      CREATE TABLE IF NOT EXISTS discovered_projects (
+        project_id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        confidence TEXT NOT NULL,
+        phase_count INTEGER,
+        observed_at TEXT NOT NULL
+      );
+      CREATE TABLE IF NOT EXISTS discovered_versions (
+        project_id TEXT NOT NULL,
+        identity TEXT NOT NULL,
+        lifecycle TEXT NOT NULL,
+        confidence TEXT NOT NULL,
+        observed_at TEXT NOT NULL,
+        PRIMARY KEY(project_id, identity)
+      );
+      CREATE INDEX IF NOT EXISTS discovered_versions_project_idx ON discovered_versions(project_id, identity);
+      CREATE TABLE IF NOT EXISTS discovered_phases (
+        project_id TEXT NOT NULL,
+        ordinal INTEGER NOT NULL,
+        name TEXT NOT NULL,
+        confidence TEXT NOT NULL,
+        observed_at TEXT NOT NULL,
+        PRIMARY KEY(project_id, ordinal)
+      );
+      CREATE INDEX IF NOT EXISTS discovered_phases_project_idx ON discovered_phases(project_id, ordinal);
+      CREATE TABLE IF NOT EXISTS discovery_evidence (
+        entity_type TEXT NOT NULL,
+        entity_id TEXT NOT NULL,
+        source_kind TEXT NOT NULL,
+        reference TEXT NOT NULL,
+        confidence TEXT NOT NULL,
+        observed_at TEXT NOT NULL,
+        PRIMARY KEY(entity_type, entity_id, source_kind, reference)
+      );
+      CREATE INDEX IF NOT EXISTS discovery_evidence_entity_idx ON discovery_evidence(entity_type, entity_id);
+      CREATE TABLE IF NOT EXISTS observed_pull_requests (
+        pull_request_number INTEGER PRIMARY KEY,
+        title TEXT NOT NULL,
+        state TEXT NOT NULL,
+        head_ref TEXT,
+        head_sha TEXT,
+        updated_at TEXT,
+        observed_at TEXT NOT NULL,
+        value_json TEXT NOT NULL
+      );
+      CREATE INDEX IF NOT EXISTS observed_pull_requests_updated_idx ON observed_pull_requests(updated_at DESC);
+      CREATE TABLE IF NOT EXISTS observed_branches (
+        branch_name TEXT PRIMARY KEY,
+        head_sha TEXT,
+        default_sha TEXT,
+        pull_request_number INTEGER,
+        observed_at TEXT NOT NULL,
+        value_json TEXT NOT NULL
+      );
+      CREATE INDEX IF NOT EXISTS observed_branches_pull_request_idx ON observed_branches(pull_request_number);
+      CREATE TABLE IF NOT EXISTS unclassified_activity (
+        source_kind TEXT NOT NULL,
+        reference TEXT NOT NULL,
+        confidence TEXT NOT NULL,
+        observed_at TEXT NOT NULL,
+        PRIMARY KEY(source_kind, reference)
+      );
+      CREATE TABLE IF NOT EXISTS source_observations (
+        source_name TEXT PRIMARY KEY,
+        state TEXT NOT NULL,
+        configured INTEGER NOT NULL,
+        reachable INTEGER,
+        last_attempt_at TEXT,
+        last_success_at TEXT,
+        next_retry_at TEXT,
+        detail TEXT,
+        cache_age_ms INTEGER,
+        rate_limit_remaining INTEGER,
+        authentication_state TEXT NOT NULL DEFAULT 'UNKNOWN',
+        observed_at TEXT NOT NULL
+      );
+      `,
+  },
 ] as const;
 
 const prunableTables = new Set(["events", "snapshots", "daily_rollups", "workers", "test_nodes"]);
@@ -161,11 +251,25 @@ function retainPhase(current: PhaseRecord, prior: PhaseRecord | undefined): Phas
   };
 }
 
+function isDurableAcceptedPhase(phase: PhaseRecord): boolean {
+  return Boolean(
+    phase.state === "COMPLETE" ||
+      phase.state === "MERGED" ||
+      phase.acceptedAt ||
+      phase.mergedAt ||
+      phase.completedAt ||
+      phase.integratedMainSha ||
+      phase.completionReceipt ||
+      phase.finalDecision,
+  );
+}
+
 function retainProject(current: ProjectRecord, prior: ProjectRecord | undefined): ProjectRecord {
   if (!prior) return current;
   const priorPhases = new Map(prior.phases.map((phase) => [phase.id, phase]));
   const phases = current.phases.map((phase) => retainPhase(phase, priorPhases.get(phase.id)));
-  for (const phase of prior.phases) if (!current.phases.some((entry) => entry.id === phase.id)) phases.push(phase);
+  for (const phase of prior.phases)
+    if (!current.phases.some((entry) => entry.id === phase.id) && isDurableAcceptedPhase(phase)) phases.push(phase);
   return {
     ...current,
     phases: phases.sort((left, right) => left.ordinal - right.ordinal),
@@ -208,6 +312,22 @@ export interface RetentionResult extends RetentionInspection {
   deleted: Record<string, number>;
   integrity: string;
   compacted: boolean;
+}
+
+export type SourceHealthState = "HEALTHY" | "STALE" | "DEGRADED" | "UNAVAILABLE" | "NOT_CONFIGURED" | "NOT_APPLICABLE";
+
+export interface SourceObservation {
+  name: string;
+  state: SourceHealthState;
+  configured: boolean;
+  reachable: boolean | null;
+  lastAttemptAt: string | null;
+  lastSuccessAt: string | null;
+  nextRetryAt: string | null;
+  detail: string | null;
+  cacheAgeMs: number | null;
+  rateLimitRemaining?: number | null;
+  authenticationState: "TOKEN_CONFIGURED" | "ANONYMOUS" | "NOT_APPLICABLE" | "UNKNOWN";
 }
 
 export class BridgewatchStore {
@@ -264,8 +384,23 @@ export class BridgewatchStore {
   }
 
   replaceProjectRegistry(projects: readonly ProjectRecord[], observedAt = new Date().toISOString()): void {
+    // Keep accepted fields for project identities that are still in the current
+    // reconciliation, but do not leave a project visible merely because an older
+    // discovery pass invented it.
+    const priorProjects = new Map(
+      this.db
+        .prepare("SELECT project_id, value_json FROM project_history")
+        .all()
+        .map((row) => {
+          const value = row as { project_id: string; value_json: string };
+          return [value.project_id, JSON.parse(value.value_json) as ProjectRecord] as const;
+        }),
+    );
     this.db.exec("BEGIN");
     try {
+      this.db.exec(
+        "DELETE FROM milestone_history; DELETE FROM phase_history; DELETE FROM completion_records; DELETE FROM project_history;",
+      );
       const project = this.db.prepare(
         "INSERT INTO project_history (project_id, value_json, updated_at) VALUES (?, ?, ?) ON CONFLICT(project_id) DO UPDATE SET value_json=excluded.value_json, updated_at=excluded.updated_at",
       );
@@ -276,10 +411,7 @@ export class BridgewatchStore {
         "INSERT INTO milestone_history (milestone_id, phase_id, value_json, accepted_at) VALUES (?, ?, ?, ?) ON CONFLICT(milestone_id) DO UPDATE SET phase_id=excluded.phase_id, value_json=excluded.value_json, accepted_at=excluded.accepted_at",
       );
       for (const entry of projects) {
-        const prior = this.db.prepare("SELECT value_json FROM project_history WHERE project_id = ?").get(entry.id) as
-          | { value_json: string }
-          | undefined;
-        const retained = retainProject(entry, prior ? (JSON.parse(prior.value_json) as ProjectRecord) : undefined);
+        const retained = retainProject(entry, priorProjects.get(entry.id));
         project.run(retained.id, JSON.stringify(retained), observedAt);
         for (const phaseRecord of retained.phases) {
           phase.run(
@@ -323,6 +455,224 @@ export class BridgewatchStore {
       .prepare("SELECT value_json FROM project_history ORDER BY project_id")
       .all()
       .map((row) => JSON.parse((row as { value_json: string }).value_json) as ProjectRecord);
+  }
+
+  replaceDiscovery(discovery: DiscoveryResult, observedAt = new Date().toISOString()): void {
+    this.db.exec("BEGIN");
+    try {
+      // These tables are the current repository-discovery projection. Historical
+      // transitions are retained separately in normalized events; stale current
+      // discoveries must not remain visible after a successful reconciliation.
+      this.db.exec(
+        "DELETE FROM discovery_evidence; DELETE FROM discovered_versions; DELETE FROM discovered_phases; DELETE FROM discovered_projects; DELETE FROM unclassified_activity;",
+      );
+      const project = this.db.prepare(
+        "INSERT INTO discovered_projects (project_id, name, confidence, phase_count, observed_at) VALUES (?, ?, ?, ?, ?) ON CONFLICT(project_id) DO UPDATE SET name=excluded.name, confidence=excluded.confidence, phase_count=excluded.phase_count, observed_at=excluded.observed_at",
+      );
+      const version = this.db.prepare(
+        "INSERT INTO discovered_versions (project_id, identity, lifecycle, confidence, observed_at) VALUES (?, ?, ?, ?, ?) ON CONFLICT(project_id, identity) DO UPDATE SET lifecycle=excluded.lifecycle, confidence=excluded.confidence, observed_at=excluded.observed_at",
+      );
+      const phase = this.db.prepare(
+        "INSERT INTO discovered_phases (project_id, ordinal, name, confidence, observed_at) VALUES (?, ?, ?, ?, ?) ON CONFLICT(project_id, ordinal) DO UPDATE SET name=excluded.name, confidence=excluded.confidence, observed_at=excluded.observed_at",
+      );
+      const evidence = this.db.prepare(
+        "INSERT INTO discovery_evidence (entity_type, entity_id, source_kind, reference, confidence, observed_at) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(entity_type, entity_id, source_kind, reference) DO UPDATE SET confidence=excluded.confidence, observed_at=excluded.observed_at",
+      );
+      for (const entry of discovery.projects) {
+        project.run(entry.id, entry.name, entry.confidence, entry.phaseCount, observedAt);
+        this.writeDiscoveryEvidence(evidence, "project", entry.id, entry.evidence, observedAt);
+        for (const item of entry.versions) {
+          version.run(entry.id, item.identity, item.lifecycle, item.confidence, observedAt);
+          this.writeDiscoveryEvidence(evidence, "version", `${entry.id}:${item.identity}`, item.evidence, observedAt);
+        }
+        for (const item of entry.phases) {
+          phase.run(entry.id, item.ordinal, item.name, item.confidence, observedAt);
+          this.writeDiscoveryEvidence(evidence, "phase", `${entry.id}:${item.ordinal}`, item.evidence, observedAt);
+        }
+      }
+      const unclassified = this.db.prepare(
+        "INSERT INTO unclassified_activity (source_kind, reference, confidence, observed_at) VALUES (?, ?, ?, ?) ON CONFLICT(source_kind, reference) DO UPDATE SET confidence=excluded.confidence, observed_at=excluded.observed_at",
+      );
+      for (const item of discovery.unclassified)
+        unclassified.run(item.kind, item.reference, item.confidence, observedAt);
+      this.db.exec("COMMIT");
+    } catch (error) {
+      this.db.exec("ROLLBACK");
+      throw error;
+    }
+  }
+
+  discoveredProjects(): DiscoveredProject[] {
+    const projects = this.db
+      .prepare("SELECT project_id, name, confidence, phase_count FROM discovered_projects ORDER BY name")
+      .all() as Array<{
+      project_id: string;
+      name: string;
+      confidence: DiscoveredProject["confidence"];
+      phase_count: number | null;
+    }>;
+    const versions = this.db
+      .prepare(
+        "SELECT project_id, identity, lifecycle, confidence FROM discovered_versions ORDER BY project_id, identity",
+      )
+      .all() as Array<{
+      project_id: string;
+      identity: string;
+      lifecycle: DiscoveredVersion["lifecycle"];
+      confidence: DiscoveredVersion["confidence"];
+    }>;
+    const phases = this.db
+      .prepare("SELECT project_id, ordinal, name, confidence FROM discovered_phases ORDER BY project_id, ordinal")
+      .all() as Array<{ project_id: string; ordinal: number; name: string; confidence: DiscoveredPhase["confidence"] }>;
+    return projects.map((entry) => ({
+      id: entry.project_id,
+      name: entry.name,
+      confidence: entry.confidence,
+      phaseCount: entry.phase_count,
+      evidence: this.discoveryEvidence("project", entry.project_id),
+      versions: versions
+        .filter((version) => version.project_id === entry.project_id)
+        .map((version) => ({
+          identity: version.identity,
+          lifecycle: version.lifecycle,
+          confidence: version.confidence,
+          evidence: this.discoveryEvidence("version", `${entry.project_id}:${version.identity}`),
+        })),
+      phases: phases
+        .filter((phase) => phase.project_id === entry.project_id)
+        .map((phase) => ({
+          ordinal: phase.ordinal,
+          name: phase.name,
+          confidence: phase.confidence,
+          evidence: this.discoveryEvidence("phase", `${entry.project_id}:${phase.ordinal}`),
+        })),
+    }));
+  }
+
+  discoveryEvidence(entityType: string, entityId: string): DiscoveryEvidence[] {
+    return this.db
+      .prepare(
+        "SELECT source_kind, reference, confidence FROM discovery_evidence WHERE entity_type = ? AND entity_id = ? ORDER BY source_kind, reference",
+      )
+      .all(entityType, entityId)
+      .map((row) => {
+        const evidence = row as {
+          source_kind: DiscoveryEvidence["kind"];
+          reference: string;
+          confidence: DiscoveryEvidence["confidence"];
+        };
+        return { kind: evidence.source_kind, reference: evidence.reference, confidence: evidence.confidence };
+      });
+  }
+
+  upsertSourceObservation(observation: SourceObservation): void {
+    if (!/^[a-z0-9-]{1,80}$/iu.test(observation.name)) throw new Error("Invalid Bridgewatch source name");
+    if (observation.detail && observation.detail.length > 1_000)
+      throw new Error("Bridgewatch source detail exceeds limit");
+    this.db
+      .prepare(
+        "INSERT INTO source_observations (source_name, state, configured, reachable, last_attempt_at, last_success_at, next_retry_at, detail, cache_age_ms, rate_limit_remaining, authentication_state, observed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(source_name) DO UPDATE SET state=excluded.state, configured=excluded.configured, reachable=excluded.reachable, last_attempt_at=excluded.last_attempt_at, last_success_at=excluded.last_success_at, next_retry_at=excluded.next_retry_at, detail=excluded.detail, cache_age_ms=excluded.cache_age_ms, rate_limit_remaining=excluded.rate_limit_remaining, authentication_state=excluded.authentication_state, observed_at=excluded.observed_at",
+      )
+      .run(
+        observation.name,
+        observation.state,
+        Number(observation.configured),
+        observation.reachable === null ? null : Number(observation.reachable),
+        observation.lastAttemptAt,
+        observation.lastSuccessAt,
+        observation.nextRetryAt,
+        observation.detail,
+        observation.cacheAgeMs,
+        observation.rateLimitRemaining ?? null,
+        observation.authenticationState,
+        new Date().toISOString(),
+      );
+  }
+
+  sourceObservations(): SourceObservation[] {
+    return this.db
+      .prepare(
+        "SELECT source_name, state, configured, reachable, last_attempt_at, last_success_at, next_retry_at, detail, cache_age_ms, rate_limit_remaining, authentication_state FROM source_observations ORDER BY source_name",
+      )
+      .all()
+      .map((row) => {
+        const source = row as {
+          source_name: string;
+          state: SourceHealthState;
+          configured: number;
+          reachable: number | null;
+          last_attempt_at: string | null;
+          last_success_at: string | null;
+          next_retry_at: string | null;
+          detail: string | null;
+          cache_age_ms: number | null;
+          rate_limit_remaining: number | null;
+          authentication_state: SourceObservation["authenticationState"];
+        };
+        return {
+          name: source.source_name,
+          state: source.state,
+          configured: Boolean(source.configured),
+          reachable: source.reachable === null ? null : Boolean(source.reachable),
+          lastAttemptAt: source.last_attempt_at,
+          lastSuccessAt: source.last_success_at,
+          nextRetryAt: source.next_retry_at,
+          detail: source.detail,
+          cacheAgeMs: source.cache_age_ms,
+          rateLimitRemaining: source.rate_limit_remaining,
+          authenticationState: source.authentication_state,
+        };
+      });
+  }
+
+  replaceGithubObservations(
+    value: { pullRequests: readonly GithubPullRequestHistory[]; branches: readonly BranchHealth[] },
+    observedAt: string,
+  ): void {
+    this.db.exec("BEGIN");
+    try {
+      const pull = this.db.prepare(
+        "INSERT INTO observed_pull_requests (pull_request_number, title, state, head_ref, head_sha, updated_at, observed_at, value_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(pull_request_number) DO UPDATE SET title=excluded.title, state=excluded.state, head_ref=excluded.head_ref, head_sha=excluded.head_sha, updated_at=excluded.updated_at, observed_at=excluded.observed_at, value_json=excluded.value_json",
+      );
+      for (const item of value.pullRequests)
+        pull.run(
+          item.number,
+          item.title,
+          item.state,
+          item.headRef,
+          item.headSha,
+          item.updatedAt,
+          observedAt,
+          JSON.stringify(item),
+        );
+      const branch = this.db.prepare(
+        "INSERT INTO observed_branches (branch_name, head_sha, default_sha, pull_request_number, observed_at, value_json) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(branch_name) DO UPDATE SET head_sha=excluded.head_sha, default_sha=excluded.default_sha, pull_request_number=excluded.pull_request_number, observed_at=excluded.observed_at, value_json=excluded.value_json",
+      );
+      for (const item of value.branches)
+        branch.run(item.name, item.headSha, item.defaultSha, item.pullRequestNumber, observedAt, JSON.stringify(item));
+      this.db.exec("COMMIT");
+    } catch (error) {
+      this.db.exec("ROLLBACK");
+      throw error;
+    }
+  }
+
+  observedPullRequests(limit = 100): GithubPullRequestHistory[] {
+    if (!Number.isInteger(limit) || limit < 1 || limit > 100) throw new Error("Invalid Bridgewatch pull-request limit");
+    return this.db
+      .prepare(
+        "SELECT value_json FROM observed_pull_requests ORDER BY updated_at DESC, pull_request_number DESC LIMIT ?",
+      )
+      .all(limit)
+      .map((row) => JSON.parse((row as { value_json: string }).value_json) as GithubPullRequestHistory);
+  }
+
+  observedBranches(limit = 100): BranchHealth[] {
+    if (!Number.isInteger(limit) || limit < 1 || limit > 100) throw new Error("Invalid Bridgewatch branch limit");
+    return this.db
+      .prepare("SELECT value_json FROM observed_branches ORDER BY observed_at DESC, branch_name ASC LIMIT ?")
+      .all(limit)
+      .map((row) => JSON.parse((row as { value_json: string }).value_json) as BranchHealth);
   }
 
   replaceTestProjection(projection: SoundingLineProjection): void {
@@ -468,6 +818,19 @@ export class BridgewatchStore {
       .map((row) => JSON.parse((row as { value_json: string }).value_json) as DailyRollup);
   }
 
+  dailyRollupsBetween(from: string, to: string): DailyRollup[] {
+    const fromDay = from.slice(0, 10);
+    const toDay = to.slice(0, 10);
+    if (!/^\d{4}-\d{2}-\d{2}$/u.test(fromDay) || !/^\d{4}-\d{2}-\d{2}$/u.test(toDay) || fromDay > toDay)
+      throw new Error("Invalid Bridgewatch rollup window");
+    return this.db
+      .prepare(
+        "SELECT value_json FROM daily_rollups WHERE scope = 'program' AND day >= ? AND day <= ? ORDER BY day ASC",
+      )
+      .all(fromDay, toDay)
+      .map((row) => JSON.parse((row as { value_json: string }).value_json) as DailyRollup);
+  }
+
   snapshotCount(): number {
     return Number((this.db.prepare("SELECT COUNT(*) AS count FROM snapshots").get() as { count: number }).count);
   }
@@ -600,6 +963,17 @@ export class BridgewatchStore {
       summary: row.summary!,
       evidenceRefs: JSON.parse(row.evidence_refs_json ?? "[]") as string[],
     };
+  }
+
+  private writeDiscoveryEvidence(
+    statement: StatementSync,
+    entityType: string,
+    entityId: string,
+    evidence: readonly DiscoveryEvidence[],
+    observedAt: string,
+  ): void {
+    for (const item of evidence)
+      statement.run(entityType, entityId, item.kind, item.reference, item.confidence, observedAt);
   }
 
   private eventDaysBefore(cutoff: string): string[] {

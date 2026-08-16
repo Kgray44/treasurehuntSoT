@@ -97,6 +97,31 @@ function accepted(capturedAt = "2026-08-02T00:00:00.000Z"): BridgewatchProgramSn
 }
 
 describe("Phase 3 normalized historical events", () => {
+  it("records first-class version discovery separately from governed phase history", () => {
+    const before = initial();
+    const after = structuredClone(before);
+    after.capturedAt = "2026-08-01T01:00:00.000Z";
+    after.projects[0]!.versions = [
+      {
+        id: "watch:v1.2",
+        identity: "v1.2",
+        lifecycle: "IN_DEVELOPMENT",
+        confidence: "AUTHORITATIVE",
+        evidence: [
+          {
+            kind: "GOVERNING_DOCUMENT",
+            reference: "Development_Docs/Project_Watch_v1.2.md",
+            confidence: "AUTHORITATIVE",
+          },
+        ],
+      },
+    ];
+
+    expect(deriveEvents(before, after)).toContainEqual(
+      expect.objectContaining({ kind: "VERSION_DISCOVERED", entityId: "watch:v1.2", projectId: "watch" }),
+    );
+  });
+
   it("emits deterministic governed transitions once and preserves source clock skew", () => {
     const before = initial();
     const after = accepted();
@@ -365,7 +390,7 @@ describe("Phase 3 history persistence", () => {
     const directory = mkdtempSync(join(tmpdir(), "bridgewatch-backup-"));
     const source = new BridgewatchStore(join(directory, "source.sqlite"));
     try {
-      expect(source.migrationVersions()).toEqual([1, 2, 3]);
+      expect(source.migrationVersions()).toEqual([1, 2, 3, 4]);
       expect(() => assertHistoryPruneTarget("project_history")).toThrow("durable-history guard");
       expect(() => assertHistoryPruneTarget("events")).not.toThrow();
       const before = initial();
@@ -410,7 +435,7 @@ describe("Phase 3 history persistence", () => {
         expect(restored.history({ since: "2026-01-01T00:00:00.000Z", limit: 100 }).events).not.toHaveLength(0);
         expect(restored.snapshotCount()).toBe(source.snapshotCount());
         expect(restored.dailyRollups()).toEqual(source.dailyRollups());
-        expect(restored.migrationVersions()).toEqual([1, 2, 3]);
+        expect(restored.migrationVersions()).toEqual([1, 2, 3, 4]);
       } finally {
         restored.close();
       }

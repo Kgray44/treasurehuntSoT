@@ -1,11 +1,15 @@
 import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
 import { fileURLToPath } from "node:url";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { timingSafeEqual } from "node:crypto";
 import { loadConfig } from "../src/config.js";
 import { projectRegistry } from "../src/registry.js";
 import { projectProgress, type ProjectRecord } from "../src/domain.js";
+import { discoverObservations } from "../src/discovery.js";
+import { reconcileProjectRecords } from "../src/reconciliation.js";
+import { RepositoryEvidenceCollector } from "../src/repository-evidence.js";
+import { compareProgramHistory, summarizeRollups } from "../src/comparison.js";
 import { type BridgewatchEventKind, type BridgewatchProgramSnapshot } from "../src/history.js";
 import { SoundingLineCollector, testTotals } from "../src/sounding-line.js";
 import { authorizeTelemetry, parseHeartbeat, workerState } from "../src/telemetry.js";
@@ -21,6 +25,14 @@ type HistoryParameters = {
   limit?: string;
   cursor?: string;
 };
+
+type ComparisonParameters = {
+  from?: string;
+  to?: string;
+};
+
+type PullRequestParameters = { state?: string };
+type BranchProfileParameters = { name?: string };
 
 const twelveHours = 12 * 60 * 60 * 1_000;
 const eventKinds = new Set<BridgewatchEventKind>([
@@ -53,6 +65,10 @@ export function buildServer() {
     bodyLimit: config.BRIDGEWATCH_TELEMETRY_MAX_BODY_BYTES,
   });
   const soundingLine = new SoundingLineCollector(config, store);
+  const repositoryEvidence = new RepositoryEvidenceCollector(
+    resolve(process.cwd(), ".."),
+    config.BRIDGEWATCH_REQUEST_TIMEOUT_MS,
+  );
   const telemetryWindows = new Map<string, { startedAt: number; count: number }>();
   let historyWarning: string | null = null;
   store.replaceProjectRegistry(projectRegistry);
@@ -76,8 +92,29 @@ export function buildServer() {
     }
   };
   const refreshSources = async () => {
-    store.replaceProjectRegistry(projectRegistry);
     await Promise.all([collector.refresh(), soundingLine.refresh()]);
+    const repository = await repositoryEvidence.refresh();
+    const snapshot = collector.cached();
+    if (repository.documentsAvailable && repository.branchesAvailable) {
+      const discoveredAt = new Date().toISOString();
+      const discovery = discoverObservations({
+        observedAt: discoveredAt,
+        knownProjects: projectRegistry.map((project) => ({ id: project.id, name: project.name })),
+        documents: repository.documents,
+        branches: [
+          ...repository.branches,
+          ...(snapshot?.branches ?? []).map((branch) => ({ name: branch.name, headSha: branch.headSha })),
+        ],
+        pullRequests: (snapshot?.pullRequests ?? []).map((pull) => ({
+          number: pull.number,
+          title: pull.title,
+          state: pull.state,
+          headRef: pull.headRef,
+        })),
+      });
+      store.replaceDiscovery(discovery, discoveredAt);
+      store.replaceProjectRegistry(reconcileProjectRecords(projectRegistry, discovery));
+    }
     persistHistory();
   };
   const refreshSoundingLine = async () => {
@@ -122,15 +159,79 @@ export function buildServer() {
       .map((worker) => ({ ...worker, effectiveState: workerState(worker, config.BRIDGEWATCH_TELEMETRY_STALE_MS) }));
     const totals = testTotals(soundingLineProjection);
     const observedAt = snapshot?.observedAt ?? null;
-    const githubState = sourceState(observedAt, 60_000);
+    const githubHealth = store.sourceObservations().find((source) => source.name === "github") ?? {
+      name: "github",
+      state: sourceState(observedAt, 60_000),
+      configured: Boolean(config.BRIDGEWATCH_GITHUB_TOKEN),
+      reachable: snapshot ? true : null,
+      lastAttemptAt: null,
+      lastSuccessAt: observedAt,
+      nextRetryAt: null,
+      detail: snapshot ? null : "GitHub has not been collected yet.",
+      cacheAgeMs: observedAt ? Math.max(0, Date.now() - Date.parse(observedAt)) : null,
+      authenticationState: config.BRIDGEWATCH_GITHUB_TOKEN ? "TOKEN_CONFIGURED" : "ANONYMOUS",
+    };
     const reporterObservedAt = workers.length
       ? workers.reduce(
           (latest, worker) => (Date.parse(worker.heartbeatAt) > Date.parse(latest) ? worker.heartbeatAt : latest),
           workers[0]!.heartbeatAt,
         )
       : null;
-    const reporterState =
-      workers.length === 0 ? "UNMEASURED" : sourceState(reporterObservedAt, config.BRIDGEWATCH_TELEMETRY_STALE_MS);
+    const reporterHealth = !config.BRIDGEWATCH_TELEMETRY_TOKEN
+      ? {
+          name: "reporter",
+          state: "NOT_CONFIGURED" as const,
+          configured: false,
+          reachable: null,
+          lastAttemptAt: null,
+          lastSuccessAt: null,
+          nextRetryAt: null,
+          detail: "Set BRIDGEWATCH_TELEMETRY_TOKEN and use npm run report-heartbeat to enable activity reporting.",
+          cacheAgeMs: null,
+          authenticationState: "NOT_APPLICABLE" as const,
+        }
+      : {
+          name: "reporter",
+          state: workers.length ? sourceState(reporterObservedAt, config.BRIDGEWATCH_TELEMETRY_STALE_MS) : "HEALTHY",
+          configured: true,
+          reachable: true,
+          lastAttemptAt: reporterObservedAt,
+          lastSuccessAt: reporterObservedAt,
+          nextRetryAt: null,
+          detail: workers.length ? null : "No active worker telemetry is currently retained.",
+          cacheAgeMs: reporterObservedAt ? Math.max(0, Date.now() - Date.parse(reporterObservedAt)) : null,
+          authenticationState: "NOT_APPLICABLE" as const,
+        };
+    const sources = [
+      githubHealth,
+      {
+        name: "project-truth",
+        state: "HEALTHY" as const,
+        configured: true,
+        reachable: true,
+        lastAttemptAt: null,
+        lastSuccessAt: new Date().toISOString(),
+        nextRetryAt: null,
+        detail: null,
+        cacheAgeMs: 0,
+        authenticationState: "NOT_APPLICABLE" as const,
+      },
+      {
+        name: "sounding-line",
+        state: sourceState(soundingLineProjection?.observedAt ?? null, 10_000),
+        configured: true,
+        reachable: soundingLineProjection ? true : null,
+        lastAttemptAt: null,
+        lastSuccessAt: soundingLineProjection?.observedAt ?? null,
+        nextRetryAt: null,
+        detail: soundingLineProjection ? null : "No Sounding Line projection is currently available.",
+        cacheAgeMs: soundingLineProjection?.observedAt
+          ? Math.max(0, Date.now() - Date.parse(soundingLineProjection.observedAt))
+          : null,
+        authenticationState: "NOT_APPLICABLE" as const,
+      },
+      reporterHealth,
+    ];
     const branches = annotateBranches(snapshot?.branches ?? [], projects, config);
     const attention = [
       ...(snapshot
@@ -178,7 +279,7 @@ export function buildServer() {
     return {
       generatedAt: new Date().toISOString(),
       mode: "READ_ONLY",
-      source: { name: "github", state: githubState, observedAt },
+      source: { name: "github", state: githubHealth.state, observedAt },
       program: programTotals(projects, snapshot?.openPullRequests.length ?? 0, workers, totals),
       projects: projects.map((project) => ({
         ...project,
@@ -191,16 +292,7 @@ export function buildServer() {
       workers,
       tests: { projection: soundingLineProjection, totals, history: store.recentTestRuns() },
       attention,
-      sources: [
-        { name: "github", state: githubState, observedAt },
-        { name: "project-truth", state: "FRESH", observedAt: new Date().toISOString() },
-        {
-          name: "sounding-line",
-          state: sourceState(soundingLineProjection?.observedAt ?? null, 10_000),
-          observedAt: soundingLineProjection?.observedAt ?? null,
-        },
-        { name: "reporter", state: reporterState, observedAt: reporterObservedAt },
-      ],
+      sources,
     };
   };
 
@@ -246,6 +338,41 @@ export function buildServer() {
       return reply.code(400).send({ error: error instanceof Error ? error.message : "Invalid history query" });
     }
   };
+  const sendComparison = (
+    query: ComparisonParameters,
+    reply: { code: (code: number) => { send: (body: unknown) => unknown } },
+  ) => {
+    try {
+      const now = Date.now();
+      const fromMs = Date.parse(query.from ?? "");
+      const toMs = query.to ? Date.parse(query.to) : now;
+      if (!Number.isFinite(fromMs) || !Number.isFinite(toMs) || fromMs > toMs || toMs > now + 60_000)
+        throw new Error("Invalid comparison window");
+      if (
+        toMs - fromMs >
+        Math.max(config.BRIDGEWATCH_HISTORY_MAX_RANGE_HOURS, config.BRIDGEWATCH_ROLLUP_RETENTION_DAYS * 24) * 3_600_000
+      )
+        throw new Error("Comparison range exceeds Bridgewatch bounds");
+      const page = store.history({
+        since: new Date(fromMs).toISOString(),
+        until: new Date(toMs).toISOString(),
+        limit: config.BRIDGEWATCH_HISTORY_PAGE_SIZE,
+      });
+      const rollups = store.dailyRollupsBetween(new Date(fromMs).toISOString(), new Date(toMs).toISOString());
+      const fidelity = page.nextCursor ? "COARSE" : page.events.length || !rollups.length ? "EXACT" : "ROLLUP";
+      const comparison = compareProgramHistory(
+        page.events,
+        new Date(fromMs).toISOString(),
+        new Date(toMs).toISOString(),
+        fidelity,
+      );
+      return rollups.length && fidelity !== "EXACT"
+        ? { ...comparison, rollups, coarse: summarizeRollups(rollups) }
+        : comparison;
+    } catch (error) {
+      return reply.code(400).send({ error: error instanceof Error ? error.message : "Invalid comparison query" });
+    }
+  };
 
   app.get("/healthz", async () => ({ status: "ok", mode: "READ_ONLY" }));
   app.get("/readyz", async (_request, reply) => {
@@ -254,7 +381,66 @@ export function buildServer() {
     return { ready, source: ready ? "cached" : "not-collected" };
   });
   app.get("/api/summary", async () => summary());
+  app.get("/api/program", async () => ({
+    summary: summary().program,
+    currentMain: collector.cached()?.headSha ?? null,
+    discoveredProjects: store.discoveredProjects(),
+    acceptedHistory: programTrends(store.projects()).acceptedTimeline,
+  }));
   app.get("/api/projects", async () => summary().projects);
+  app.get<{ Params: { id: string } }>("/api/projects/:id/versions", async (request, reply) => {
+    const project = store.projects().find((entry) => entry.id === request.params.id);
+    if (!project) return reply.code(404).send({ error: "Unknown project" });
+    return project.versions ?? [];
+  });
+  app.get<{ Params: { id: string; version: string } }>(
+    "/api/projects/:id/versions/:version",
+    async (request, reply) => {
+      const project = store.projects().find((entry) => entry.id === request.params.id);
+      if (!project) return reply.code(404).send({ error: "Unknown project" });
+      const version = project.versions?.find((entry) => entry.identity === request.params.version);
+      if (!version) return reply.code(404).send({ error: "Unknown project version" });
+      const snapshot = collector.cached();
+      return {
+        projectId: project.id,
+        project: { id: project.id, name: project.name, state: project.state },
+        version,
+        phases: project.phases.filter((phase) => phase.integratedMainSha === version.integratedMainSha),
+        branches: (snapshot?.branches ?? []).filter((branch) =>
+          versionMatches(branch.name, project.id, version.identity),
+        ),
+        pullRequests: (snapshot?.pullRequests ?? []).filter((pull) =>
+          versionMatches(`${pull.title} ${pull.headRef ?? ""}`, project.id, version.identity),
+        ),
+        history: store.projectHistory(project.id),
+        evidence: version.evidence,
+      };
+    },
+  );
+  app.get<{ Params: { id: string; ordinal: string } }>("/api/projects/:id/phases/:ordinal", async (request, reply) => {
+    const project = store.projects().find((entry) => entry.id === request.params.id);
+    const ordinal = Number(request.params.ordinal);
+    if (!project || !Number.isInteger(ordinal)) return reply.code(404).send({ error: "Unknown project phase" });
+    const phase = project.phases.find((entry) => entry.ordinal === ordinal);
+    if (!phase) return reply.code(404).send({ error: "Unknown project phase" });
+    const workers = summary().workers.filter(
+      (worker) => worker.project === project.id && worker.phase === String(phase.ordinal),
+    );
+    const tests = store
+      .recentTestRuns()
+      .filter(
+        (run) => run.value.sourceSha === phase.acceptedHeadSha || run.value.sourceSha === phase.integratedMainSha,
+      );
+    return {
+      projectId: project.id,
+      project: { id: project.id, name: project.name, state: project.state },
+      phase,
+      workers,
+      tests,
+      history: store.projectHistory(project.id).filter((event) => event.phaseId === phase.id),
+      evidence: [phase.completionReceipt, ...project.governingReferences].filter(Boolean),
+    };
+  });
   app.get<{ Params: { id: string } }>("/api/projects/:id", async (request, reply) => {
     const project = summary().projects.find((entry) => entry.id === request.params.id);
     if (!project) return reply.code(404).send({ error: "Unknown project" });
@@ -262,6 +448,9 @@ export function buildServer() {
   });
   app.get<{ Querystring: HistoryParameters }>("/api/history", async (request, reply) =>
     sendHistory(request.query, reply),
+  );
+  app.get<{ Querystring: ComparisonParameters }>("/api/compare", async (request, reply) =>
+    sendComparison(request.query, reply),
   );
   app.get<{ Params: { id: string }; Querystring: HistoryParameters }>(
     "/api/projects/:id/history",
@@ -291,8 +480,50 @@ export function buildServer() {
       return reply.code(400).send({ error: "Archive order must be chronological or name" });
     return archive(store.projects(), request.query.order === "name" ? "name" : "chronological");
   });
+  app.get<{ Querystring: PullRequestParameters }>("/api/pull-requests", async (request, reply) => {
+    const state = (request.query.state ?? "ALL").toUpperCase();
+    if (!["ALL", "OPEN", "HISTORICAL", "MERGED", "CLOSED"].includes(state))
+      return reply.code(400).send({ error: "Pull-request state must be ALL, OPEN, HISTORICAL, MERGED, or CLOSED" });
+    const pulls = collector.cached()?.pullRequests ?? [];
+    return pulls.filter(
+      (pull) => state === "ALL" || (state === "HISTORICAL" ? pull.state !== "OPEN" : pull.state === state),
+    );
+  });
+  app.get<{ Params: { number: string } }>("/api/pull-requests/:number", async (request, reply) => {
+    const number = Number(request.params.number);
+    if (!Number.isInteger(number) || number < 1) return reply.code(404).send({ error: "Unknown pull request" });
+    const pullRequest = (collector.cached()?.pullRequests ?? []).find((entry) => entry.number === number);
+    if (!pullRequest) return reply.code(404).send({ error: "Unknown pull request" });
+    return {
+      pullRequest,
+      associations: associationsFor(`${pullRequest.title} ${pullRequest.headRef ?? ""}`, store.projects(), number),
+      history: store
+        .history({ since: "1970-01-01T00:00:00.000Z", limit: 100 })
+        .events.filter((event) => event.entityType === "pull-request" && event.entityId === String(number)),
+      evidence: [`github:${config.BRIDGEWATCH_REPOSITORY}:pull:${number}`],
+    };
+  });
   app.get("/api/branches", async () => annotateBranches(collector.cached()?.branches ?? [], store.projects(), config));
-  app.get("/api/pull-requests", async () => collector.cached()?.openPullRequests ?? []);
+  app.get<{ Querystring: BranchProfileParameters }>("/api/branches/profile", async (request, reply) => {
+    const name = request.query.name;
+    if (!name) return reply.code(400).send({ error: "Branch name is required" });
+    const branch = annotateBranches(collector.cached()?.branches ?? [], store.projects(), config).find(
+      (entry) => entry.name === name,
+    );
+    if (!branch) return reply.code(404).send({ error: "Unknown branch" });
+    const pullRequest = (collector.cached()?.pullRequests ?? []).find(
+      (entry) => entry.number === branch.pullRequestNumber,
+    );
+    return {
+      branch,
+      pullRequest: pullRequest ?? null,
+      associations: associationsFor(branch.name, store.projects(), branch.pullRequestNumber ?? undefined),
+      history: store
+        .history({ since: "1970-01-01T00:00:00.000Z", limit: 100 })
+        .events.filter((event) => event.entityType === "branch" && event.entityId === name),
+      evidence: [`github:${config.BRIDGEWATCH_REPOSITORY}:branch:${name}`],
+    };
+  });
   app.get("/api/actions", async () => collector.cached()?.workflows ?? []);
   app.get("/api/workers", async () => summary().workers);
   app.get("/api/tests", async () => summary().tests);
@@ -303,6 +534,29 @@ export function buildServer() {
     return summary().workers.filter((worker) => !since || Date.parse(worker.heartbeatAt) >= Date.parse(since));
   });
   app.get("/api/sources", async () => summary().sources);
+  app.get<{ Params: { name: string } }>("/api/sources/:name", async (request, reply) => {
+    const source = summary().sources.find((entry) => entry.name === request.params.name);
+    if (!source) return reply.code(404).send({ error: "Unknown source" });
+    return {
+      source,
+      recentEvents: store
+        .history({ since: "1970-01-01T00:00:00.000Z", limit: 100 })
+        .events.filter((event) => event.source === request.params.name || event.entityId === request.params.name),
+    };
+  });
+  app.get("/api/sounding-line/runs", async () => store.recentTestRuns());
+  app.get<{ Params: { id: string } }>("/api/sounding-line/runs/:id", async (request, reply) => {
+    const run = store.recentTestRuns(100).find((entry) => entry.id === request.params.id);
+    if (!run) return reply.code(404).send({ error: "Unknown Sounding Line run" });
+    return {
+      run,
+      associations: associationsFor(run.value.sourceSha ?? "", store.projects()),
+      history: store
+        .history({ since: "1970-01-01T00:00:00.000Z", limit: 100 })
+        .events.filter((event) => event.entityType === "sounding-line-run" && event.entityId === run.id),
+      evidence: [`sounding-line:${run.id}`],
+    };
+  });
 
   const acceptsTelemetry = (
     request: { headers: { authorization?: string }; query: Record<string, unknown>; ip: string },
@@ -354,7 +608,7 @@ export function buildServer() {
 
 function sourceState(observedAt: string | null, staleAfterMs: number) {
   if (!observedAt) return "UNAVAILABLE";
-  return Date.now() - Date.parse(observedAt) > staleAfterMs ? "STALE" : "FRESH";
+  return Date.now() - Date.parse(observedAt) > staleAfterMs ? "STALE" : "HEALTHY";
 }
 
 function sinceHours(hours: number) {
@@ -375,6 +629,36 @@ function rootAttention(projection: ReturnType<SoundingLineCollector["cached"]>) 
     code: "ROOT_FAILURE",
     message: `${id}: 1 root failure${blocked ? `; ${blocked} blocked dependents` : ""}.`,
   }));
+}
+
+function versionMatches(value: string, projectId: string, version: string): boolean {
+  const normalized = value.toLowerCase();
+  return normalized.includes(projectId.toLowerCase()) && normalized.includes(version.toLowerCase());
+}
+
+function associationsFor(value: string, projects: ProjectRecord[], pullRequestNumber?: number) {
+  const normalized = value.toLowerCase();
+  const matched = projects.filter(
+    (project) => normalized.includes(project.id.toLowerCase()) || normalized.includes(project.name.toLowerCase()),
+  );
+  return {
+    projectIds: matched.map((project) => project.id).sort(),
+    versionIds: matched
+      .flatMap((project) =>
+        (project.versions ?? [])
+          .filter((version) => versionMatches(value, project.id, version.identity))
+          .map((version) => `${project.id}:${version.identity}`),
+      )
+      .sort(),
+    phaseIds: projects
+      .flatMap((project) => project.phases)
+      .filter(
+        (phase) =>
+          phase.branch === value || (pullRequestNumber !== undefined && phase.pullRequest === pullRequestNumber),
+      )
+      .map((phase) => phase.id)
+      .sort(),
+  };
 }
 
 export function annotateBranches(

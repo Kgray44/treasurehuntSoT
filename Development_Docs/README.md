@@ -3,7 +3,7 @@ title: Engineering records
 audience: engineering
 status: current
 canonical_for: engineering-records-index
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-16
 ---
 
 # Engineering records
@@ -31,7 +31,7 @@ also passed. See the [OAuth validation and completion record](Validation/Voyagew
 
 ## Project Bridgewatch
 
-Project Bridgewatch is complete. Phase 1 _Raise the Board_,
+Project Bridgewatch's original program is complete. Phase 1 _Raise the Board_,
 [Phase 2: Wire the Signals](Project_Bridgewatch_Phase_2_Completion_Receipt.md),
 and [Phase 3: Keep the Watch](Project_Bridgewatch_Phase_3_Completion_Receipt.md)
 are accepted in protected main. Phase 3 adds normalized meaningful history,
@@ -39,7 +39,11 @@ snapshots, bounded trend/archive/branch views, browser-local since-last-visit
 display state, retention, and deployment/backup guidance while preserving the
 private, read-only observer boundary. The final program receipt and Phase 3
 integration, validation, performance, and deployment records retain the exact
-accepted evidence and optional future extensions without starting a Phase 4.
+accepted evidence. The post-completion [v1.2 Mission Control amendment](Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md)
+is in implementation on its dedicated branch; it adds a version-aware observer
+and does not start, rename, or replace a Bridgewatch Phase 4. Its
+[data-fidelity audit](Project_Bridgewatch_v1.2_Data_Fidelity_and_Capability_Audit.md)
+tracks the current implementation boundary.
 
 ## Project Deepwater
 

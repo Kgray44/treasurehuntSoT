@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { describe, expect, it } from "vitest";
 import { BridgewatchStore } from "../lib/store.js";
+import { discoverObservations } from "../src/discovery.js";
 import type { ProjectRecord } from "../src/domain.js";
 import { normalizeSoundingLineProjection } from "../src/sounding-line.js";
 
@@ -18,6 +19,29 @@ describe("BridgewatchStore", () => {
         observedAt: "2026-08-10T00:00:00.000Z",
         error: null,
       });
+    } finally {
+      store.close();
+    }
+  });
+
+  it("retains actionable source-health observations without persisting a secret", () => {
+    const store = new BridgewatchStore(join(mkdtempSync(join(tmpdir(), "bridgewatch-source-")), "cache.sqlite"));
+    try {
+      store.upsertSourceObservation({
+        name: "github",
+        state: "DEGRADED",
+        configured: true,
+        reachable: false,
+        lastAttemptAt: "2026-08-16T20:00:00.000Z",
+        lastSuccessAt: "2026-08-16T19:00:00.000Z",
+        nextRetryAt: "2026-08-16T20:01:00.000Z",
+        detail: "GitHub GET failed: 503",
+        cacheAgeMs: 60_000,
+        authenticationState: "TOKEN_CONFIGURED",
+      });
+      expect(store.sourceObservations()).toEqual([
+        expect.objectContaining({ name: "github", state: "DEGRADED", authenticationState: "TOKEN_CONFIGURED" }),
+      ]);
     } finally {
       store.close();
     }
@@ -59,7 +83,7 @@ describe("Phase 2 durable history migration", () => {
     try {
       upgraded.replaceProjectRegistry([project]);
       upgraded.replaceProjectRegistry([project]);
-      expect(upgraded.migrationVersions()).toEqual([1, 2, 3]);
+      expect(upgraded.migrationVersions()).toEqual([1, 2, 3, 4]);
       expect(upgraded.get<{ headSha: string }>("github:snapshot")?.value).toEqual({ headSha: "phase-1" });
       expect(upgraded.projects()).toEqual([project]);
     } finally {
@@ -111,12 +135,12 @@ describe("Phase 2 durable history migration", () => {
 
     const upgraded = new BridgewatchStore(file);
     try {
-      expect(upgraded.migrationVersions()).toEqual([1, 2, 3]);
+      expect(upgraded.migrationVersions()).toEqual([1, 2, 3, 4]);
       expect(upgraded.projects()).toEqual([project]);
       expect(upgraded.workers()).toHaveLength(1);
       expect(upgraded.recentTestRuns()).toHaveLength(1);
       expect(upgraded.history({ since: "2026-01-01T00:00:00.000Z", limit: 1 }).events).toEqual([]);
-      expect(upgraded.migrationVersions()).toEqual([1, 2, 3]);
+      expect(upgraded.migrationVersions()).toEqual([1, 2, 3, 4]);
     } finally {
       upgraded.close();
     }
@@ -147,6 +171,59 @@ describe("Phase 2 durable history migration", () => {
         integratedMainSha: "abc",
       });
       expect(retained.phases[0]!.milestones).toEqual(project.phases[0]!.milestones);
+    } finally {
+      store.close();
+    }
+  });
+
+  it("replaces stale current project projections while retaining current accepted evidence", () => {
+    const store = new BridgewatchStore(
+      join(mkdtempSync(join(tmpdir(), "bridgewatch-project-replace-")), "cache.sqlite"),
+    );
+    try {
+      const staleDiscovery = structuredClone(project);
+      staleDiscovery.phases.push({
+        id: "archive-p2",
+        ordinal: 2,
+        name: "Invented pending phase",
+        scope: "Stale discovery only",
+        state: "PLANNED",
+        milestones: [],
+      });
+      store.replaceProjectRegistry([staleDiscovery, { ...project, id: "invented", name: "Invented project" }]);
+      store.replaceProjectRegistry([project]);
+
+      expect(store.projects()).toEqual([project]);
+    } finally {
+      store.close();
+    }
+  });
+
+  it("persists normalized discovery evidence idempotently without replacing retained project history", () => {
+    const store = new BridgewatchStore(join(mkdtempSync(join(tmpdir(), "bridgewatch-discovery-")), "cache.sqlite"));
+    try {
+      store.replaceProjectRegistry([project]);
+      const discovery = discoverObservations({
+        observedAt: "2026-08-16T20:00:00.000Z",
+        documents: [
+          {
+            path: "Development_Docs/Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md",
+            text: "# Project Bridgewatch v1.2\n\n## Phase 1: Raise the Board",
+          },
+        ],
+        branches: [{ name: "codex/project-bridgewatch-v1.2-mission-control", headSha: "abcdef1" }],
+        pullRequests: [],
+      });
+
+      store.replaceDiscovery(discovery, "2026-08-16T20:00:00.000Z");
+      store.replaceDiscovery(discovery, "2026-08-16T20:00:00.000Z");
+
+      expect(store.discoveredProjects()).toEqual(discovery.projects);
+      expect(store.discoveryEvidence("version", "bridgewatch:v1.2")).toHaveLength(2);
+      expect(store.projects()).toEqual([project]);
+      store.replaceDiscovery({ projects: [], unclassified: [] }, "2026-08-16T20:01:00.000Z");
+      expect(store.discoveredProjects()).toEqual([]);
+      expect(store.projects()).toEqual([project]);
     } finally {
       store.close();
     }

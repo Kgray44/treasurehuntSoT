@@ -1,3 +1,11 @@
+---
+title: Engineering record index
+audience: engineering
+status: current
+canonical_for: engineering-record-index
+last_reviewed: 2026-08-16
+---
+
 # Engineering-record index
 
 - `Governing/`: accepted policies and foundational specifications.
@@ -17,6 +25,8 @@
   closure records.
 - `Project_Bridgewatch_Completion_Receipt.md`: final program receipt; it is
   authoritative only after protected-main acceptance is recorded.
+- `Project_Bridgewatch_v1.2_*.md`: post-completion Mission Control amendment
+  design and data-fidelity audit; this is a version increment, not Phase 4.
 - `Archive/`: superseded, prompt, and legacy material.
 
 Use [document-index.json](document-index.json) for complete path-level classification.

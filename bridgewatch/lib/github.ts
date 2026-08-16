@@ -213,6 +213,8 @@ function snapshotFromCache(value: unknown, observedAt: string): Snapshot | null 
 }
 
 export class GithubCollector {
+  private rateLimitRemaining: number | null = null;
+
   constructor(
     private readonly config: Config,
     private readonly store: BridgewatchStore,
@@ -226,6 +228,8 @@ export class GithubCollector {
 
   async refresh(): Promise<Snapshot | null> {
     const base = `${this.config.BRIDGEWATCH_GITHUB_API}/repos/${this.config.BRIDGEWATCH_REPOSITORY}`;
+    const attemptedAt = new Date().toISOString();
+    this.rateLimitRemaining = null;
     try {
       const [repo, pulls, runs] = await Promise.all([
         this.get<GitHubRecord>("repo", base),
@@ -272,9 +276,40 @@ export class GithubCollector {
         observedAt: new Date().toISOString(),
       };
       this.store.put("github:snapshot", snapshot, null, snapshot.observedAt);
+      this.store.replaceGithubObservations(snapshot, snapshot.observedAt);
+      this.store.upsertSourceObservation({
+        name: "github",
+        state: "HEALTHY",
+        configured: Boolean(this.config.BRIDGEWATCH_GITHUB_TOKEN),
+        reachable: true,
+        lastAttemptAt: attemptedAt,
+        lastSuccessAt: snapshot.observedAt,
+        nextRetryAt: null,
+        detail: null,
+        cacheAgeMs: 0,
+        rateLimitRemaining: this.rateLimitRemaining,
+        authenticationState: this.config.BRIDGEWATCH_GITHUB_TOKEN ? "TOKEN_CONFIGURED" : "ANONYMOUS",
+      });
       return snapshot;
-    } catch {
-      return this.cached();
+    } catch (error) {
+      const cached = this.cached();
+      const detail =
+        error instanceof Error ? error.message.replace(/[\r\n]+/gu, " ").slice(0, 500) : "GitHub refresh failed";
+      const cacheAgeMs = cached ? Math.max(0, Date.now() - Date.parse(cached.observedAt)) : null;
+      this.store.upsertSourceObservation({
+        name: "github",
+        state: cached ? "DEGRADED" : "UNAVAILABLE",
+        configured: Boolean(this.config.BRIDGEWATCH_GITHUB_TOKEN),
+        reachable: false,
+        lastAttemptAt: attemptedAt,
+        lastSuccessAt: cached?.observedAt ?? null,
+        nextRetryAt: new Date(Date.now() + this.config.BRIDGEWATCH_SNAPSHOT_INTERVAL_MS).toISOString(),
+        detail,
+        cacheAgeMs,
+        rateLimitRemaining: this.rateLimitRemaining,
+        authenticationState: this.config.BRIDGEWATCH_GITHUB_TOKEN ? "TOKEN_CONFIGURED" : "ANONYMOUS",
+      });
+      return cached;
     }
   }
 
@@ -359,6 +394,8 @@ export class GithubCollector {
       if (this.config.BRIDGEWATCH_GITHUB_TOKEN)
         headers.Authorization = `Bearer ${this.config.BRIDGEWATCH_GITHUB_TOKEN}`;
       const response = await fetch(target, { method: "GET", headers, signal: controller.signal });
+      const remaining = Number(response.headers.get("x-ratelimit-remaining"));
+      if (Number.isInteger(remaining) && remaining >= 0) this.rateLimitRemaining = remaining;
       if (response.status === 304 && prior) return prior.value;
       if (!response.ok) throw new Error(`GitHub GET failed: ${response.status}`);
       const value = safeCacheValue(key, await response.json()) as T;
