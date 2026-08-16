@@ -376,7 +376,16 @@ jobs:
               # worker emits no receipt for that marker, so no governed suite is
               # invented and the finalizer still closes only real plan evidence.
               if ($nodes.Count -eq 0) {
-                $nodes = @(@{ suiteId = '__SOUNDING_LINE_EMPTY_WAVE__'; emptyWave = $true })
+                # A matrix entry is still a reusable-workflow call. Supply every
+                # typed worker input so GitHub never rejects the no-evidence marker
+                # before the worker can report its explicit success.
+                $nodes = @(@{
+                  suiteId = '__SOUNDING_LINE_EMPTY_WAVE__'
+                  suiteIdsJson = '[]'
+                  requiresBrowser = $false
+                  browserEngine = ''
+                  emptyWave = $true
+                })
               }
               $matrix = @{ include = $nodes } | ConvertTo-Json -Compress
               "$mode$wave=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
@@ -438,10 +447,20 @@ jobs:
         run: |
           $parallelMatrix = $env:PARALLEL_MATRIX | ConvertFrom-Json
           $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
-          $parallelIntentionallyEmpty = $null -ne $parallelMatrix.include -and @($parallelMatrix.include).Count -eq 0
-          $exclusiveIntentionallyEmpty = $null -ne $exclusiveMatrix.include -and @($exclusiveMatrix.include).Count -eq 0
-          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success' -or ($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -in @('failure', 'skipped'))
-          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -in @('failure', 'skipped'))
+          $parallelNodes = @($parallelMatrix.include)
+          $exclusiveNodes = @($exclusiveMatrix.include)
+          $parallelMarkers = @($parallelNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
+          $exclusiveMarkers = @($exclusiveNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
+          if (($parallelMarkers.Count -gt 0 -and ($parallelMarkers.Count -ne 1 -or $parallelMarkers.Count -ne $parallelNodes.Count)) -or ($exclusiveMarkers.Count -gt 0 -and ($exclusiveMarkers.Count -ne 1 -or $exclusiveMarkers.Count -ne $exclusiveNodes.Count))) {
+            throw 'SOUNDING_LINE_EMPTY_MARKER_INVALID'
+          }
+          $parallelIntentionallyEmpty = $parallelMarkers.Count -eq 1
+          $exclusiveIntentionallyEmpty = $exclusiveMarkers.Count -eq 1
+          if (($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -ne 'success') -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -ne 'success')) {
+            throw 'SOUNDING_LINE_EMPTY_MARKER_COMPLETION_INVALID'
+          }
+          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success'
+          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success'
           if ($env:PLAN_RESULT -ne 'success' -or -not $parallelAccepted -or -not $exclusiveAccepted) {
             throw 'SOUNDING_LINE_WAVE_0_PREREQUISITES_INVALID'
           }
@@ -497,10 +516,20 @@ jobs:
         run: |
           $parallelMatrix = $env:PARALLEL_MATRIX | ConvertFrom-Json
           $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
-          $parallelIntentionallyEmpty = $null -ne $parallelMatrix.include -and @($parallelMatrix.include).Count -eq 0
-          $exclusiveIntentionallyEmpty = $null -ne $exclusiveMatrix.include -and @($exclusiveMatrix.include).Count -eq 0
-          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success' -or ($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -in @('failure', 'skipped'))
-          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -in @('failure', 'skipped'))
+          $parallelNodes = @($parallelMatrix.include)
+          $exclusiveNodes = @($exclusiveMatrix.include)
+          $parallelMarkers = @($parallelNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
+          $exclusiveMarkers = @($exclusiveNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
+          if (($parallelMarkers.Count -gt 0 -and ($parallelMarkers.Count -ne 1 -or $parallelMarkers.Count -ne $parallelNodes.Count)) -or ($exclusiveMarkers.Count -gt 0 -and ($exclusiveMarkers.Count -ne 1 -or $exclusiveMarkers.Count -ne $exclusiveNodes.Count))) {
+            throw 'SOUNDING_LINE_EMPTY_MARKER_INVALID'
+          }
+          $parallelIntentionallyEmpty = $parallelMarkers.Count -eq 1
+          $exclusiveIntentionallyEmpty = $exclusiveMarkers.Count -eq 1
+          if (($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -ne 'success') -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -ne 'success')) {
+            throw 'SOUNDING_LINE_EMPTY_MARKER_COMPLETION_INVALID'
+          }
+          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success'
+          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success'
           if ($env:PLAN_RESULT -ne 'success' -or -not $parallelAccepted -or -not $exclusiveAccepted) {
             throw 'SOUNDING_LINE_WAVE_1_PREREQUISITES_INVALID'
           }
@@ -556,10 +585,20 @@ jobs:
         run: |
           $parallelMatrix = $env:PARALLEL_MATRIX | ConvertFrom-Json
           $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
-          $parallelIntentionallyEmpty = $null -ne $parallelMatrix.include -and @($parallelMatrix.include).Count -eq 0
-          $exclusiveIntentionallyEmpty = $null -ne $exclusiveMatrix.include -and @($exclusiveMatrix.include).Count -eq 0
-          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success' -or ($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -in @('failure', 'skipped'))
-          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -in @('failure', 'skipped'))
+          $parallelNodes = @($parallelMatrix.include)
+          $exclusiveNodes = @($exclusiveMatrix.include)
+          $parallelMarkers = @($parallelNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
+          $exclusiveMarkers = @($exclusiveNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
+          if (($parallelMarkers.Count -gt 0 -and ($parallelMarkers.Count -ne 1 -or $parallelMarkers.Count -ne $parallelNodes.Count)) -or ($exclusiveMarkers.Count -gt 0 -and ($exclusiveMarkers.Count -ne 1 -or $exclusiveMarkers.Count -ne $exclusiveNodes.Count))) {
+            throw 'SOUNDING_LINE_EMPTY_MARKER_INVALID'
+          }
+          $parallelIntentionallyEmpty = $parallelMarkers.Count -eq 1
+          $exclusiveIntentionallyEmpty = $exclusiveMarkers.Count -eq 1
+          if (($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -ne 'success') -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -ne 'success')) {
+            throw 'SOUNDING_LINE_EMPTY_MARKER_COMPLETION_INVALID'
+          }
+          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success'
+          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success'
           if ($env:PLAN_RESULT -ne 'success' -or -not $parallelAccepted -or -not $exclusiveAccepted) {
             throw 'SOUNDING_LINE_WAVE_2_PREREQUISITES_INVALID'
           }
@@ -615,10 +654,20 @@ jobs:
         run: |
           $parallelMatrix = $env:PARALLEL_MATRIX | ConvertFrom-Json
           $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
-          $parallelIntentionallyEmpty = $null -ne $parallelMatrix.include -and @($parallelMatrix.include).Count -eq 0
-          $exclusiveIntentionallyEmpty = $null -ne $exclusiveMatrix.include -and @($exclusiveMatrix.include).Count -eq 0
-          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success' -or ($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -in @('failure', 'skipped'))
-          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -in @('failure', 'skipped'))
+          $parallelNodes = @($parallelMatrix.include)
+          $exclusiveNodes = @($exclusiveMatrix.include)
+          $parallelMarkers = @($parallelNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
+          $exclusiveMarkers = @($exclusiveNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
+          if (($parallelMarkers.Count -gt 0 -and ($parallelMarkers.Count -ne 1 -or $parallelMarkers.Count -ne $parallelNodes.Count)) -or ($exclusiveMarkers.Count -gt 0 -and ($exclusiveMarkers.Count -ne 1 -or $exclusiveMarkers.Count -ne $exclusiveNodes.Count))) {
+            throw 'SOUNDING_LINE_EMPTY_MARKER_INVALID'
+          }
+          $parallelIntentionallyEmpty = $parallelMarkers.Count -eq 1
+          $exclusiveIntentionallyEmpty = $exclusiveMarkers.Count -eq 1
+          if (($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -ne 'success') -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -ne 'success')) {
+            throw 'SOUNDING_LINE_EMPTY_MARKER_COMPLETION_INVALID'
+          }
+          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success'
+          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success'
           if ($env:PLAN_RESULT -ne 'success' -or -not $parallelAccepted -or -not $exclusiveAccepted) {
             throw 'SOUNDING_LINE_WAVE_3_PREREQUISITES_INVALID'
           }
@@ -674,10 +723,20 @@ jobs:
         run: |
           $parallelMatrix = $env:PARALLEL_MATRIX | ConvertFrom-Json
           $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
-          $parallelIntentionallyEmpty = $null -ne $parallelMatrix.include -and @($parallelMatrix.include).Count -eq 0
-          $exclusiveIntentionallyEmpty = $null -ne $exclusiveMatrix.include -and @($exclusiveMatrix.include).Count -eq 0
-          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success' -or ($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -in @('failure', 'skipped'))
-          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -in @('failure', 'skipped'))
+          $parallelNodes = @($parallelMatrix.include)
+          $exclusiveNodes = @($exclusiveMatrix.include)
+          $parallelMarkers = @($parallelNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
+          $exclusiveMarkers = @($exclusiveNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
+          if (($parallelMarkers.Count -gt 0 -and ($parallelMarkers.Count -ne 1 -or $parallelMarkers.Count -ne $parallelNodes.Count)) -or ($exclusiveMarkers.Count -gt 0 -and ($exclusiveMarkers.Count -ne 1 -or $exclusiveMarkers.Count -ne $exclusiveNodes.Count))) {
+            throw 'SOUNDING_LINE_EMPTY_MARKER_INVALID'
+          }
+          $parallelIntentionallyEmpty = $parallelMarkers.Count -eq 1
+          $exclusiveIntentionallyEmpty = $exclusiveMarkers.Count -eq 1
+          if (($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -ne 'success') -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -ne 'success')) {
+            throw 'SOUNDING_LINE_EMPTY_MARKER_COMPLETION_INVALID'
+          }
+          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success'
+          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success'
           if ($env:PLAN_RESULT -ne 'success' -or -not $parallelAccepted -or -not $exclusiveAccepted) {
             throw 'SOUNDING_LINE_WAVE_4_PREREQUISITES_INVALID'
           }
@@ -733,10 +792,20 @@ jobs:
         run: |
           $parallelMatrix = $env:PARALLEL_MATRIX | ConvertFrom-Json
           $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
-          $parallelIntentionallyEmpty = $null -ne $parallelMatrix.include -and @($parallelMatrix.include).Count -eq 0
-          $exclusiveIntentionallyEmpty = $null -ne $exclusiveMatrix.include -and @($exclusiveMatrix.include).Count -eq 0
-          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success' -or ($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -in @('failure', 'skipped'))
-          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success' -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -in @('failure', 'skipped'))
+          $parallelNodes = @($parallelMatrix.include)
+          $exclusiveNodes = @($exclusiveMatrix.include)
+          $parallelMarkers = @($parallelNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
+          $exclusiveMarkers = @($exclusiveNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
+          if (($parallelMarkers.Count -gt 0 -and ($parallelMarkers.Count -ne 1 -or $parallelMarkers.Count -ne $parallelNodes.Count)) -or ($exclusiveMarkers.Count -gt 0 -and ($exclusiveMarkers.Count -ne 1 -or $exclusiveMarkers.Count -ne $exclusiveNodes.Count))) {
+            throw 'SOUNDING_LINE_EMPTY_MARKER_INVALID'
+          }
+          $parallelIntentionallyEmpty = $parallelMarkers.Count -eq 1
+          $exclusiveIntentionallyEmpty = $exclusiveMarkers.Count -eq 1
+          if (($parallelIntentionallyEmpty -and $env:PARALLEL_RESULT -ne 'success') -or ($exclusiveIntentionallyEmpty -and $env:EXCLUSIVE_RESULT -ne 'success')) {
+            throw 'SOUNDING_LINE_EMPTY_MARKER_COMPLETION_INVALID'
+          }
+          $parallelAccepted = $env:PARALLEL_RESULT -eq 'success'
+          $exclusiveAccepted = $env:EXCLUSIVE_RESULT -eq 'success'
           if ($env:PLAN_RESULT -ne 'success' -or -not $parallelAccepted -or -not $exclusiveAccepted) {
             throw 'SOUNDING_LINE_WAVE_5_PREREQUISITES_INVALID'
           }
@@ -773,6 +842,25 @@ jobs:
         with: { ref: "${{ github.sha }}", fetch-depth: 0 }
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc, cache: npm }
+      - name: Verify active-wave closure before finalization
+        shell: pwsh
+        env:
+          PLAN_RESULT: ${{ needs.plan.result }}
+          ACTIVE_MAXIMUM_WAVE: ${{ needs.plan.outputs.activeMaximumWave }}
+          WAVE_0_RESULT: ${{ needs.wave-0-complete.result }}
+          WAVE_1_RESULT: ${{ needs.wave-1-complete.result }}
+          WAVE_2_RESULT: ${{ needs.wave-2-complete.result }}
+          WAVE_3_RESULT: ${{ needs.wave-3-complete.result }}
+          WAVE_4_RESULT: ${{ needs.wave-4-complete.result }}
+          WAVE_5_RESULT: ${{ needs.wave-5-complete.result }}
+        run: |
+          if ($env:PLAN_RESULT -ne 'success') { throw 'SOUNDING_LINE_FINALIZER_PLAN_PREREQUISITES_INVALID' }
+          $maximumWave = [int]$env:ACTIVE_MAXIMUM_WAVE
+          if ($maximumWave -lt 0 -or $maximumWave -gt 5) { throw 'SOUNDING_LINE_FINALIZER_ACTIVE_WAVE_INVALID' }
+          $barriers = @($env:WAVE_0_RESULT, $env:WAVE_1_RESULT, $env:WAVE_2_RESULT, $env:WAVE_3_RESULT, $env:WAVE_4_RESULT, $env:WAVE_5_RESULT)
+          for ($wave = 0; $wave -le $maximumWave; $wave += 1) {
+            if ($barriers[$wave] -ne 'success') { throw "SOUNDING_LINE_FINALIZER_WAVE_$wave`_PREREQUISITES_INVALID" }
+          }
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with: { name: sounding-line-plan, path: sounding-line-plan }
       - continue-on-error: true
