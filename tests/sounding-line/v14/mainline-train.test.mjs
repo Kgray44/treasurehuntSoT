@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, stat, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -346,11 +346,14 @@ test("per-car preparation seals plans and bundles the exact unreachable predicte
       },
     });
     assert.equal(matrix.include.length, 1);
-    await mkdir(receiver);
-    await git(receiver, "init");
+    await execute("git", ["clone", "--no-checkout", root, receiver]);
+    // Hosted workers receive the frozen candidate and its immediate trusted
+    // base before fetching the compact predicted-integration transport.
+    await git(receiver, "fetch", "--depth", "2", "origin", "candidate-a");
     const predicted = admitted.predicted.cars[0].resultingIntegrationSha;
     await git(receiver, "fetch", path.join(out, "A", "integration.bundle"), predicted);
     assert.equal(await git(receiver, "rev-parse", "FETCH_HEAD"), predicted);
+    assert.ok((await stat(path.join(out, "A", "integration.bundle"))).size > 0);
   } finally {
     await rm(root, { recursive: true, force: true });
   }

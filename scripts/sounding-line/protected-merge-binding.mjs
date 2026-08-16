@@ -22,7 +22,7 @@ const glob = (pattern) =>
 
 const matchesAny = (path, patterns = []) => patterns.some((pattern) => glob(pattern).test(path));
 
-function validateFinalizedEvidence({ plan, finalization, qualified }) {
+export function validateFinalizedEvidence({ plan, finalization, qualified }) {
   const errors = [];
   const { planDigest, ...unsignedPlan } = plan ?? {};
   if (!plan || planDigest !== digest(unsignedPlan)) errors.push("SEALED_PLAN_DIGEST_MISMATCH");
@@ -66,6 +66,72 @@ function validateFinalizedEvidence({ plan, finalization, qualified }) {
       errors.push(`MANDATORY_RECEIPT_INVALID:${receipt.suiteId}`);
   }
   return errors;
+}
+
+/**
+ * A landed train prefix may be represented by GitHub with a different commit
+ * identity but the exact predicted tree.  GitHub's update-branch operation
+ * produces a new suffix head; this narrowly validates that mechanical rebind
+ * without treating the new commit as fresh candidate authority.
+ */
+export function qualifyTrainSuffixRebind({
+  authority,
+  qualified,
+  plan,
+  finalization,
+  prNumber,
+  currentBaseSha,
+  currentBaseTree,
+  rebasedCandidateSha,
+  rebasedCandidateTree,
+  rebasedCandidateParents,
+  mergeSha,
+  mergeTree,
+  mergeParents,
+  authorityRunId,
+}) {
+  const errors = [];
+  const binding = authority?.protectedMergeBinding;
+  if (!binding?.enabled || binding.requiredContext !== PROTECTED_MAINLINE_CONTEXT)
+    errors.push("PROTECTED_BINDING_POLICY_INVALID");
+  if (![currentBaseSha, currentBaseTree, rebasedCandidateSha, rebasedCandidateTree, mergeSha, mergeTree].every(sha))
+    errors.push("TRAIN_SUFFIX_REBIND_IDENTITY_INVALID");
+  if (!qualified || qualified.prNumber !== Number(prNumber) || qualified.authoritativeRunId !== Number(authorityRunId))
+    errors.push("TRAIN_SUFFIX_REBIND_QUALIFIED_IDENTITY_INVALID");
+  if (qualified?.qualifiedBaseTreeSha !== currentBaseTree || plan?.qualifiedBaseTreeSha !== currentBaseTree)
+    errors.push("TRAIN_SUFFIX_REBIND_BASE_TREE_MISMATCH");
+  if (rebasedCandidateTree !== plan?.predictedIntegrationTreeSha || mergeTree !== plan?.predictedIntegrationTreeSha)
+    errors.push("TRAIN_SUFFIX_REBIND_PREDICTED_TREE_MISMATCH");
+  if (
+    !Array.isArray(rebasedCandidateParents) ||
+    rebasedCandidateParents.length !== 2 ||
+    !rebasedCandidateParents.includes(currentBaseSha) ||
+    !rebasedCandidateParents.includes(qualified?.candidateSha)
+  )
+    errors.push("TRAIN_SUFFIX_REBIND_CANDIDATE_COMPOSITION_INVALID");
+  if (
+    !Array.isArray(mergeParents) ||
+    mergeParents.length !== 2 ||
+    !mergeParents.includes(currentBaseSha) ||
+    !mergeParents.includes(rebasedCandidateSha)
+  )
+    errors.push("TRAIN_SUFFIX_REBIND_MERGE_COMPOSITION_INVALID");
+  errors.push(...validateFinalizedEvidence({ plan, finalization, qualified: qualified ?? {} }));
+  return {
+    authority: "SOUNDING_LINE_TRAIN_SUFFIX_REBIND",
+    decision: errors.length ? "BINDING_NO_GO" : "BINDING_PASS",
+    protectedContext: PROTECTED_MAINLINE_CONTEXT,
+    prNumber: Number(prNumber),
+    originalCandidateSha: qualified?.candidateSha ?? null,
+    rebasedCandidateSha,
+    currentBaseSha,
+    currentBaseTree,
+    mergeSha,
+    mergeTree,
+    authoritativeRunId: Number(authorityRunId),
+    carryForward: { status: "TRAIN_PREDICTED_PREFIX_REBIND", preserved: ["EXACT_PREDICTED_TREE"], rejected: [] },
+    errors: [...new Set(errors)].sort(),
+  };
 }
 
 function validateRecordOnlyPlan({

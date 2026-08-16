@@ -597,7 +597,7 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   const worker = await readFile(path.join(root, ".github", "workflows", "sounding-line-governed-worker.yml"), "utf8");
   const adapters = await readFile(path.join(root, "scripts", "sounding-line", "adapters.mjs"), "utf8");
   assert.doesNotMatch(worker, /continue-on-error:\s*true\s*\n\s*run: node scripts\/sounding-line\/authority/u);
-  assert.match(worker, /path: \$\{\{ runner\.temp \}\}\/sounding-line-plan/u);
+  assert.match(worker, /path: \$\{\{ runner\.temp \}\}\/sounding-line-transport/u);
   assert.match(worker, /--plan-in "\$env:SOUNDING_LINE_PLAN"/u);
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_MISSING/u);
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_FAILED/u);
@@ -641,7 +641,12 @@ test("governed workers consume the sealed plan and fail closed on missing receip
     "utf8",
   );
   assert.match(advanceWorkflow, /types: \[closed\]/u);
+  assert.match(advanceWorkflow, /workflow_dispatch:/u);
+  assert.match(advanceWorkflow, /pull-requests: write/u);
   assert.match(advanceWorkflow, /Compare actual protected-main tree/u);
+  assert.match(advanceWorkflow, /Reconcile retained suffix head/u);
+  assert.match(advanceWorkflow, /TRAIN_SUFFIX_REBIND_NOT_COMPLETED/u);
+  assert.match(advanceWorkflow, /--rebound-candidate-sha/u);
   assert.match(advanceWorkflow, /Bind retained next head/u);
   assert.match(trainWorkflow, /TRAIN_LIVE_BOUNDARY_REQUIRED/u);
   assert.match(worker, /GOVERNED_WORKER_CANDIDATE_CHECKOUT_MISMATCH/u);

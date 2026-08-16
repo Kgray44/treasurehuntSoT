@@ -29,9 +29,6 @@ jobs:
       candidate_sha: ${{ matrix.candidateSha }}
       plan_artifact: sounding-line-train-prepared
       plan_path: ${{ matrix.planPath }}
-      prepared_artifact: ${{ matrix.preparedArtifact }}
-      prepared_path: ${{ matrix.preparedPath }}
-      prepared_producer: ${{ matrix.preparedProducer }}
       execution_sha: ${{ matrix.executionSha }}
       integration_artifact: sounding-line-train-prepared
       integration_bundle_path: ${{ matrix.integrationBundlePath }}
@@ -50,9 +47,6 @@ jobs:
       candidate_sha: ${{ matrix.candidateSha }}
       plan_artifact: sounding-line-train-prepared
       plan_path: ${{ matrix.planPath }}
-      prepared_artifact: ${{ matrix.preparedArtifact }}
-      prepared_path: ${{ matrix.preparedPath }}
-      prepared_producer: ${{ matrix.preparedProducer }}
       execution_sha: ${{ matrix.executionSha }}
       integration_artifact: sounding-line-train-prepared
       integration_bundle_path: ${{ matrix.integrationBundlePath }}

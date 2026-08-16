@@ -9,8 +9,6 @@ import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 import { buildPlan } from "../planner.mjs";
 import { verifyTrain } from "./mainline-train.mjs";
-import { createDependencyLayerManifest, dependencyLayerInputs } from "./prepared-layer-artifact.mjs";
-import { digest } from "./foundation.mjs";
 
 const execute = promisify(execFile);
 const git = async (cwd, ...args) => (await execute("git", args, { cwd })).stdout.trim();
@@ -20,7 +18,6 @@ const value = (args, flag) => {
   if (!result) throw new Error(`TRAIN_PREPARE_${flag.slice(2).toUpperCase()}_REQUIRED`);
   return result;
 };
-const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 export async function movePreparedNodeModules({ source, destination, renameFn = rename, copyFn = cp }) {
   try {
     await renameFn(source, destination);
@@ -47,30 +44,12 @@ export function freshTrainWorkerNodes(plan, candidateId) {
   });
 }
 
-const defaultPrepareLayer = async ({ worktree, destination, producer, expiresAt }) => {
-  await execute(npmCommand, ["ci"], { cwd: worktree, shell: process.platform === "win32" });
-  const manifest = await createDependencyLayerManifest({
-    root: worktree,
-    sourceDirectory: path.join(worktree, "node_modules"),
-    producer,
-    expiresAt,
-  });
-  await mkdir(destination, { recursive: true });
-  await writeFile(path.join(destination, "dependency-manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
-  await movePreparedNodeModules({
-    source: path.join(worktree, "node_modules"),
-    destination: path.join(destination, "node_modules"),
-  });
-};
-
 export async function prepareMainlineTrain({
   state,
   out,
   repoPath,
   temporaryRoot = undefined,
   buildPlanFn = buildPlan,
-  dependencyLayerInputsFn = dependencyLayerInputs,
-  prepareLayerFn = defaultPrepareLayer,
 }) {
   if (!verifyTrain(state.train).valid || state.predicted?.status !== "READY")
     throw new Error("TRAIN_PREPARE_STATE_INVALID");
@@ -84,9 +63,6 @@ export async function prepareMainlineTrain({
   try {
     const matrix = [];
     const cars = [];
-    const producer = `mainline-train:${process.env.GITHUB_RUN_ID ?? state.train.trainId}`;
-    const expiresAt = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
-    const preparedLayers = new Set();
     for (let position = 0; position < state.train.cars.length; position += 1) {
       const car = state.train.cars[position];
       const predicted = state.predicted.cars[position];
@@ -132,18 +108,6 @@ export async function prepareMainlineTrain({
         // a malformed plan cannot spend hosted preparation time before it is
         // rejected, and no preserved or undeclared obligation reaches a matrix.
         const workerNodes = freshTrainWorkerNodes(plan, car.candidateId);
-        const preparedLayerKey = digest(await dependencyLayerInputsFn(worktree));
-        const preparedPath = preparedLayerKey;
-        if (!preparedLayers.has(preparedLayerKey)) {
-          await prepareLayerFn({
-            worktree,
-            destination: path.join(out, "dependencies", preparedPath),
-            producer,
-            expiresAt,
-            preparedLayerKey,
-          });
-          preparedLayers.add(preparedLayerKey);
-        }
         cars.push({
           candidateId: car.candidateId,
           position,
@@ -157,8 +121,10 @@ export async function prepareMainlineTrain({
         });
         await writeFile(path.join(directory, "sounding-line-plan.json"), `${JSON.stringify(plan, null, 2)}\n`, "utf8");
         // Synthetic integration commits are intentionally unreachable from any
-        // branch. Pin the exact object under an internal deterministic ref long
-        // enough for Git to serialize it, then remove that local transport ref.
+        // branch. The candidate checkout already contains the trusted base, so
+        // ship only the synthetic integration delta, never repository history.
+        // Git records the candidate/base as bundle prerequisites and rejects a
+        // worker that cannot prove it has the exact prerequisite objects.
         const bundleRef = `refs/sounding-line/train/${position}-${car.candidateHeadCommitSha}`;
         await execute("git", ["-C", repoPath, "update-ref", bundleRef, predicted.resultingIntegrationSha]);
         try {
@@ -169,6 +135,7 @@ export async function prepareMainlineTrain({
             "create",
             path.join(directory, "integration.bundle"),
             bundleRef,
+            `^${car.candidateHeadCommitSha}`,
           ]);
         } finally {
           await execute("git", ["-C", repoPath, "update-ref", "-d", bundleRef]).catch(() => undefined);
@@ -181,9 +148,6 @@ export async function prepareMainlineTrain({
             executionSha: predicted.resultingIntegrationSha,
             planArtifact: `sounding-line-train-plan-${car.candidateId}`,
             integrationArtifact: `sounding-line-train-integration-${car.candidateId}`,
-            preparedArtifact: "sounding-line-train-prepared-dependency",
-            preparedPath,
-            preparedProducer: producer,
             planPath: `${car.candidateId}/sounding-line-plan.json`,
             integrationBundlePath: `${car.candidateId}/integration.bundle`,
             receiptArtifact: `sounding-line-train-worker-${car.candidateId}-${node.id}`,

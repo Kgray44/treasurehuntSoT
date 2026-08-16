@@ -220,11 +220,11 @@ test("resource-aware preparation eliminates universal database and browser setup
     path.join(root, ".github", "workflows", "sounding-line-governed-worker.yml"),
     "utf8",
   );
-  assert.match(workerWorkflow, /fetch-depth: 1/u);
+  assert.match(workerWorkflow, /fetch-depth: 2/u);
   assert.match(workerWorkflow, /ISOLATED_BROWSER_RUNTIME/u);
   assert.match(workerWorkflow, /GOVERNED_DEPENDENCY_CACHE_MISS/u);
   assert.match(workerWorkflow, /prepared-layer-artifact\.mjs verify/u);
-  assert.match(workerWorkflow, /fetch-depth: 1/u);
+  assert.match(workerWorkflow, /Restore sealed plan and predicted integration transport/u);
   const authoritativeWorkflow = await readFile(
     path.join(root, ".github", "workflows", "sounding-line-authoritative.yml"),
     "utf8",
