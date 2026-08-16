@@ -325,7 +325,11 @@ jobs:
           SOUNDING_LINE_SUITES_JSON: ${{ inputs.suites_json }}
           SOUNDING_LINE_SEALED_SOURCE_SHA: ${{ inputs.candidate_sha }}
           SOUNDING_LINE_CERTIFIED_BASELINE: ${{ inputs.requires_browser && '1' || '0' }}
-          SOUNDING_LINE_BASELINE_DATABASE: ${{ github.workspace }}/sounding-line-sqlite-baseline/validation.db
+          # Only browser workers restore a certified baseline. Non-browser
+          # SQLite suites create their own sealed task database during worker
+          # preparation, so handing them an absent browser baseline would make
+          # the authority adapter fail before their governed test can run.
+          SOUNDING_LINE_BASELINE_DATABASE: ${{ inputs.requires_browser && format('{0}/sounding-line-sqlite-baseline/validation.db', github.workspace) || '' }}
           PLAYWRIGHT_BROWSERS_PATH: sounding-line-browser-cache/${{ inputs.browser_engine }}
         shell: pwsh
         run: |
