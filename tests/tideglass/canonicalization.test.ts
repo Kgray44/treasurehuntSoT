@@ -235,4 +235,15 @@ describe("Tideglass contracts and canonicalization", () => {
     expect(second.deterministicDigest).toBe(first.deterministicDigest);
     expect(canonicalJson(second)).toBe(canonicalJson(first));
   });
+
+  it("changes the deterministic comparison digest when authored story content changes", () => {
+    const source = baseSnapshot();
+    const target = clone(source);
+    (target.chapters[0].blocks[0].configuration as Record<string, unknown>).body =
+      "A different synthetic authored passage.";
+    const original = compareSemanticSnapshots(semantic(source, "edition-a"), semantic(source, "edition-b"));
+    const changed = compareSemanticSnapshots(semantic(source, "edition-a"), semantic(target, "edition-b"));
+    expect(changed.deterministicDigest).not.toBe(original.deterministicDigest);
+    expect(changed.changes.some((change) => change.category === "STORY_CONTENT")).toBe(true);
+  });
 });
