@@ -227,6 +227,133 @@ jobs:
           SOUNDING_LINE_AUTHORITY_MODE: ${{ steps.gate.outputs.authorityMode }}
           SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
         run: node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:process.env.SOUNDING_LINE_GATE,serial:false,sourceSha:process.env.SOUNDING_LINE_CANDIDATE_SHA,qualifiedBaseSha:process.env.SOUNDING_LINE_BASE_SHA,authorityMode:process.env.SOUNDING_LINE_AUTHORITY_MODE}),null,2)))" > sounding-line-plan.json
+      - id: browser-requirements
+        shell: pwsh
+        run: |
+          $plan = Get-Content -Raw sounding-line-plan.json | ConvertFrom-Json
+          $resources = @($plan.nodes | ForEach-Object { @($_.resources) } | Where-Object { $_ -match '^browser-(chromium|webkit)$' })
+          "chromium=$(if ($resources -contains 'browser-chromium') { 'true' } else { 'false' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "webkit=$(if ($resources -contains 'browser-webkit') { 'true' } else { 'false' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "required=$(if ($resources.Count -gt 0) { 'true' } else { 'false' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - id: chromium-layer-identity
+        if: ${{ steps.browser-requirements.outputs.chromium == 'true' }}
+        shell: pwsh
+        run: |
+          $identity = node scripts/sounding-line/v14/browser-layer-artifact.mjs cache-key --engines-json '["chromium"]' | ConvertFrom-Json
+          "key=$($identity.key)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "producer=$($identity.producer)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - id: chromium-layer-restore
+        if: ${{ steps.browser-requirements.outputs.chromium == 'true' }}
+        uses: actions/cache/restore@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            sounding-line-browser-cache/chromium
+            sounding-line-browser-cache/chromium-manifest.json
+          key: ${{ steps.chromium-layer-identity.outputs.key }}
+      - name: Seal or verify Chromium browser layer
+        if: ${{ steps.browser-requirements.outputs.chromium == 'true' }}
+        shell: pwsh
+        env:
+          CACHE_HIT: ${{ steps.chromium-layer-restore.outputs.cache-hit }}
+          SOUNDING_LINE_BROWSER_CACHE_KEY: ${{ steps.chromium-layer-identity.outputs.key }}
+          SOUNDING_LINE_BROWSER_PRODUCER: ${{ steps.chromium-layer-identity.outputs.producer }}
+          PLAYWRIGHT_BROWSERS_PATH: sounding-line-browser-cache/chromium
+        run: |
+          $manifest = 'sounding-line-browser-cache/chromium-manifest.json'
+          if ($env:CACHE_HIT -ne 'true') {
+            npx playwright install chromium
+            if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_BROWSER_LAYER_BUILD_FAILED:chromium' }
+            $expiry = ([DateTimeOffset]::UtcNow).AddDays(14).ToString('o')
+            node scripts/sounding-line/v14/browser-layer-artifact.mjs publish --engines-json '["chromium"]' --source sounding-line-browser-cache/chromium --manifest $manifest --producer $env:SOUNDING_LINE_BROWSER_PRODUCER --expires-at $expiry
+          }
+          node scripts/sounding-line/v14/browser-layer-artifact.mjs verify --engines-json '["chromium"]' --source sounding-line-browser-cache/chromium --manifest $manifest
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_BROWSER_LAYER_VERIFY_FAILED:chromium' }
+      - if: ${{ steps.browser-requirements.outputs.chromium == 'true' && steps.chromium-layer-restore.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            sounding-line-browser-cache/chromium
+            sounding-line-browser-cache/chromium-manifest.json
+          key: ${{ steps.chromium-layer-identity.outputs.key }}
+      - id: webkit-layer-identity
+        if: ${{ steps.browser-requirements.outputs.webkit == 'true' }}
+        shell: pwsh
+        run: |
+          $identity = node scripts/sounding-line/v14/browser-layer-artifact.mjs cache-key --engines-json '["webkit"]' | ConvertFrom-Json
+          "key=$($identity.key)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "producer=$($identity.producer)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - id: webkit-layer-restore
+        if: ${{ steps.browser-requirements.outputs.webkit == 'true' }}
+        uses: actions/cache/restore@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            sounding-line-browser-cache/webkit
+            sounding-line-browser-cache/webkit-manifest.json
+          key: ${{ steps.webkit-layer-identity.outputs.key }}
+      - name: Seal or verify WebKit browser layer
+        if: ${{ steps.browser-requirements.outputs.webkit == 'true' }}
+        shell: pwsh
+        env:
+          CACHE_HIT: ${{ steps.webkit-layer-restore.outputs.cache-hit }}
+          SOUNDING_LINE_BROWSER_CACHE_KEY: ${{ steps.webkit-layer-identity.outputs.key }}
+          SOUNDING_LINE_BROWSER_PRODUCER: ${{ steps.webkit-layer-identity.outputs.producer }}
+          PLAYWRIGHT_BROWSERS_PATH: sounding-line-browser-cache/webkit
+        run: |
+          $manifest = 'sounding-line-browser-cache/webkit-manifest.json'
+          if ($env:CACHE_HIT -ne 'true') {
+            npx playwright install webkit
+            if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_BROWSER_LAYER_BUILD_FAILED:webkit' }
+            $expiry = ([DateTimeOffset]::UtcNow).AddDays(14).ToString('o')
+            node scripts/sounding-line/v14/browser-layer-artifact.mjs publish --engines-json '["webkit"]' --source sounding-line-browser-cache/webkit --manifest $manifest --producer $env:SOUNDING_LINE_BROWSER_PRODUCER --expires-at $expiry
+          }
+          node scripts/sounding-line/v14/browser-layer-artifact.mjs verify --engines-json '["webkit"]' --source sounding-line-browser-cache/webkit --manifest $manifest
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_BROWSER_LAYER_VERIFY_FAILED:webkit' }
+      - if: ${{ steps.browser-requirements.outputs.webkit == 'true' && steps.webkit-layer-restore.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            sounding-line-browser-cache/webkit
+            sounding-line-browser-cache/webkit-manifest.json
+          key: ${{ steps.webkit-layer-identity.outputs.key }}
+      - id: sqlite-baseline-identity
+        if: ${{ steps.browser-requirements.outputs.required == 'true' }}
+        shell: pwsh
+        run: |
+          $identity = node scripts/sounding-line/v14/sqlite-baseline-artifact.mjs cache-key | ConvertFrom-Json
+          "key=$($identity.key)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "producer=$($identity.producer)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - id: sqlite-baseline-restore
+        if: ${{ steps.browser-requirements.outputs.required == 'true' }}
+        uses: actions/cache/restore@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            sounding-line-sqlite-baseline
+            sounding-line-sqlite-baseline-manifest.json
+          key: ${{ steps.sqlite-baseline-identity.outputs.key }}
+      - name: Seal or verify certified SQLite baseline
+        if: ${{ steps.browser-requirements.outputs.required == 'true' }}
+        shell: pwsh
+        env:
+          CACHE_HIT: ${{ steps.sqlite-baseline-restore.outputs.cache-hit }}
+          SOUNDING_LINE_SQLITE_BASELINE_CACHE_KEY: ${{ steps.sqlite-baseline-identity.outputs.key }}
+          SOUNDING_LINE_SQLITE_BASELINE_PRODUCER: ${{ steps.sqlite-baseline-identity.outputs.producer }}
+        run: |
+          $manifest = 'sounding-line-sqlite-baseline-manifest.json'
+          if ($env:CACHE_HIT -ne 'true') {
+            powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/sounding-line/build-certified-sqlite-baseline.ps1 -OutDirectory (Join-Path $PWD 'sounding-line-sqlite-baseline')
+            if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_SQLITE_BASELINE_BUILD_FAILED' }
+            $expiry = ([DateTimeOffset]::UtcNow).AddDays(14).ToString('o')
+            node scripts/sounding-line/v14/sqlite-baseline-artifact.mjs publish --source sounding-line-sqlite-baseline --manifest $manifest --producer $env:SOUNDING_LINE_SQLITE_BASELINE_PRODUCER --expires-at $expiry
+          }
+          node scripts/sounding-line/v14/sqlite-baseline-artifact.mjs verify --source sounding-line-sqlite-baseline --manifest $manifest
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_SQLITE_BASELINE_VERIFY_FAILED' }
+      - if: ${{ steps.browser-requirements.outputs.required == 'true' && steps.sqlite-baseline-restore.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            sounding-line-sqlite-baseline
+            sounding-line-sqlite-baseline-manifest.json
+          key: ${{ steps.sqlite-baseline-identity.outputs.key }}
       - id: matrix
         shell: pwsh
         run: |
@@ -241,7 +368,7 @@ jobs:
           "activeMaximumWave=$planMaximumWave" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           foreach ($wave in 0..$maximumWave) {
             foreach ($mode in @('parallel', 'exclusive')) {
-              $nodes = @($plan.nodes | Where-Object { $_.execution.wave -eq $wave -and $_.execution.mode -eq $mode } | ForEach-Object { @{ suiteId = $_.id; emptyWave = $false } })
+              $nodes = @((node scripts/sounding-line/v14/physical-worker-batching.mjs --plan sounding-line-plan.json --wave $wave --mode $mode | ConvertFrom-Json).include)
               # GitHub marks a caller that expands an empty reusable-workflow matrix as
               # skipped, which makes the enclosing authority run fail even when every
               # governed receipt and finalizer decision is clean. Represent an empty
@@ -271,6 +398,9 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      requires_browser: ${{ matrix.requiresBrowser }}
+      browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
@@ -285,6 +415,9 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      requires_browser: ${{ matrix.requiresBrowser }}
+      browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
@@ -323,6 +456,9 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      requires_browser: ${{ matrix.requiresBrowser }}
+      browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
@@ -338,6 +474,9 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      requires_browser: ${{ matrix.requiresBrowser }}
+      browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
@@ -376,6 +515,9 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      requires_browser: ${{ matrix.requiresBrowser }}
+      browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
@@ -391,6 +533,9 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      requires_browser: ${{ matrix.requiresBrowser }}
+      browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
@@ -429,6 +574,9 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      requires_browser: ${{ matrix.requiresBrowser }}
+      browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
@@ -444,6 +592,9 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      requires_browser: ${{ matrix.requiresBrowser }}
+      browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
@@ -482,6 +633,9 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      requires_browser: ${{ matrix.requiresBrowser }}
+      browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
@@ -497,6 +651,9 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      requires_browser: ${{ matrix.requiresBrowser }}
+      browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
@@ -535,6 +692,9 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      requires_browser: ${{ matrix.requiresBrowser }}
+      browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
@@ -550,6 +710,9 @@ jobs:
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ matrix.suiteId }}
+      suites_json: ${{ toJSON(matrix.suiteIds) }}
+      requires_browser: ${{ matrix.requiresBrowser }}
+      browser_engine: ${{ matrix.browserEngine }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}

@@ -8,6 +8,7 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 import { buildPlan } from "../planner.mjs";
+import { batchPhysicalWorkers } from "./physical-worker-batching.mjs";
 import { verifyTrain } from "./mainline-train.mjs";
 
 const execute = promisify(execFile);
@@ -44,12 +45,35 @@ export function freshTrainWorkerNodes(plan, candidateId) {
   });
 }
 
+/**
+ * Keep each predicted-car preparation isolated, while admitting bounded
+ * parallelism for independent synthetic worktrees. The stable caller order is
+ * restored after completion so concurrent preparation cannot affect train
+ * order, matrix order, or bundle identities.
+ */
+export async function mapBounded(items, limit, mapper) {
+  if (!Number.isInteger(limit) || limit < 1) throw new Error("TRAIN_PREPARE_CONCURRENCY_INVALID");
+  const output = new Array(items.length);
+  let cursor = 0;
+  const worker = async () => {
+    while (true) {
+      const index = cursor;
+      cursor += 1;
+      if (index >= items.length) return;
+      output[index] = await mapper(items[index], index);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+  return output;
+}
+
 export async function prepareMainlineTrain({
   state,
   out,
   repoPath,
   temporaryRoot = undefined,
   buildPlanFn = buildPlan,
+  preparationConcurrency = 3,
 }) {
   if (!verifyTrain(state.train).valid || state.predicted?.status !== "READY")
     throw new Error("TRAIN_PREPARE_STATE_INVALID");
@@ -61,10 +85,7 @@ export async function prepareMainlineTrain({
       path.join(os.tmpdir(), `sounding-line-train-${process.pid}`),
     ));
   try {
-    const matrix = [];
-    const cars = [];
-    for (let position = 0; position < state.train.cars.length; position += 1) {
-      const car = state.train.cars[position];
+    const preparedCars = await mapBounded(state.train.cars, preparationConcurrency, async (car, position) => {
       const predicted = state.predicted.cars[position];
       if (
         car.candidateHeadCommitSha !== predicted.sourceHeadSha ||
@@ -108,7 +129,8 @@ export async function prepareMainlineTrain({
         // a malformed plan cannot spend hosted preparation time before it is
         // rejected, and no preserved or undeclared obligation reaches a matrix.
         const workerNodes = freshTrainWorkerNodes(plan, car.candidateId);
-        cars.push({
+        const activeMaximumWave = Math.max(...workerNodes.map((node) => node.execution.wave));
+        const preparedCar = {
           candidateId: car.candidateId,
           position,
           candidateSha: car.candidateHeadCommitSha,
@@ -118,7 +140,8 @@ export async function prepareMainlineTrain({
           finalizationArtifact: `sounding-line-train-finalization-${car.candidateId}`,
           qualificationArtifact: `sounding-line-train-qualified-${car.candidateId}`,
           acceptanceArtifact: `sounding-line-train-acceptance-envelope-${car.candidateId}`,
-        });
+          activeMaximumWave,
+        };
         await writeFile(path.join(directory, "sounding-line-plan.json"), `${JSON.stringify(plan, null, 2)}\n`, "utf8");
         // Synthetic integration commits are intentionally unreachable from any
         // branch. The candidate checkout already contains the trusted base, so
@@ -140,25 +163,37 @@ export async function prepareMainlineTrain({
         } finally {
           await execute("git", ["-C", repoPath, "update-ref", "-d", bundleRef]).catch(() => undefined);
         }
+        const workerMatrix = [];
+        const groups = new Map();
         for (const node of workerNodes) {
-          matrix.push({
+          const key = `${node.execution.wave}:${node.execution.mode}`;
+          groups.set(key, [...(groups.get(key) ?? []), node]);
+        }
+        for (const [key, grouped] of [...groups.entries()].sort(([left], [right]) => left.localeCompare(right))) {
+          const [wave, mode] = key.split(":");
+          for (const batch of batchPhysicalWorkers(grouped, {
             carId: car.candidateId,
-            suiteId: node.id,
             candidateSha: car.candidateHeadCommitSha,
             executionSha: predicted.resultingIntegrationSha,
             planArtifact: `sounding-line-train-plan-${car.candidateId}`,
             integrationArtifact: `sounding-line-train-integration-${car.candidateId}`,
             planPath: `${car.candidateId}/sounding-line-plan.json`,
             integrationBundlePath: `${car.candidateId}/integration.bundle`,
-            receiptArtifact: `sounding-line-train-worker-${car.candidateId}-${node.id}`,
-            wave: node.execution.wave,
-            mode: node.execution.mode,
-          });
+            wave: Number(wave),
+            mode,
+          }))
+            workerMatrix.push({
+              ...batch,
+              receiptArtifact: `sounding-line-train-worker-${car.candidateId}-${batch.batchId}`,
+            });
         }
+        return { car: preparedCar, matrix: workerMatrix };
       } finally {
         await execute("git", ["-C", repoPath, "worktree", "remove", "--force", worktree]).catch(() => undefined);
       }
-    }
+    });
+    const cars = preparedCars.map((entry) => entry.car);
+    const matrix = preparedCars.flatMap((entry) => entry.matrix);
     await writeFile(path.join(out, "worker-matrix.json"), `${JSON.stringify({ include: matrix }, null, 2)}\n`, "utf8");
     await writeFile(path.join(out, "car-matrix.json"), `${JSON.stringify({ include: cars }, null, 2)}\n`, "utf8");
     return { include: matrix, cars };

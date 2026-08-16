@@ -29,10 +29,13 @@ import {
 } from "../../../scripts/sounding-line/v14/mainline-train.mjs";
 import {
   freshTrainWorkerNodes,
+  mapBounded,
   movePreparedNodeModules,
   prepareMainlineTrain,
 } from "../../../scripts/sounding-line/v14/mainline-train-prepare.mjs";
 import { mergeTrainQualifications } from "../../../scripts/sounding-line/v14/merge-train-qualifications.mjs";
+
+const root = process.cwd();
 
 const sha = (letter) => (({ m: "a", n: "b", z: "c", q: "d", r: "e", x: "f" })[letter] ?? letter).repeat(40);
 const execute = promisify(execFile);
@@ -65,6 +68,24 @@ const train = (candidates = [candidate("A", "a"), candidate("B", "b"), candidate
     createdAt: at,
   });
 const planned = (candidates) => planMainlineTrain(train(candidates), { integrate: integrator, timestamp: at });
+
+test("bounded train preparation runs independent work without changing frozen order", async () => {
+  const starts = [];
+  let active = 0;
+  let peak = 0;
+  const result = await mapBounded(["A", "B", "C"], 2, async (id, index) => {
+    starts.push(id);
+    active += 1;
+    peak = Math.max(peak, active);
+    await new Promise((resolve) => setTimeout(resolve, index === 0 ? 20 : 5));
+    active -= 1;
+    return `${id}:${index}`;
+  });
+  assert.equal(peak, 2);
+  assert.deepEqual(result, ["A:0", "B:1", "C:2"]);
+  assert.deepEqual(starts.slice(0, 2), ["A", "B"]);
+  await assert.rejects(() => mapBounded(["A"], 0, async () => "A"), /TRAIN_PREPARE_CONCURRENCY_INVALID/u);
+});
 
 test("prepared train layers copy only when a hosted cross-volume move is impossible", async () => {
   const calls = [];
@@ -395,6 +416,7 @@ test("per-car preparation seals plans and bundles the exact unreachable predicte
       },
     });
     assert.equal(matrix.include.length, 1);
+    assert.equal(matrix.cars[0].activeMaximumWave, 0);
     await execute("git", ["clone", "--no-checkout", root, receiver]);
     // Hosted workers receive the frozen candidate and its immediate trusted
     // base before fetching the compact predicted-integration transport.
@@ -492,6 +514,22 @@ test("train preparation reads the planner selection ledger and fails closed befo
   } finally {
     await rm(root, { recursive: true, force: true });
   }
+});
+
+test("hosted train finalization is partitioned by each car's active dependency depth", async () => {
+  const workflow = await readFile(path.join(root, ".github", "workflows", "sounding-line-mainline-train.yml"), "utf8");
+  const finalizer = await readFile(
+    path.join(root, ".github", "workflows", "sounding-line-train-finalize-cars.yml"),
+    "utf8",
+  );
+  assert.match(workflow, /finalization\$wave/u);
+  assert.match(workflow, /finalize-cars-wave-0:[\s\S]*?needs: \[admit, wave-0\]/u);
+  assert.match(workflow, /finalize-cars-wave-5:[\s\S]*?needs: \[admit, wave-5\]/u);
+  assert.match(workflow, /merge-qualifications:[\s\S]*?finalize-cars-wave-0/u);
+  assert.match(finalizer, /matrix\.position == 0/u);
+  assert.match(finalizer, /Make a qualified head independently landing-ready/u);
+  assert.match(finalizer, /sounding-line-mainline-train-head-live/u);
+  assert.match(finalizer, /TRAIN_PER_CAR_FINALIZATION_FAILED/u);
 });
 
 test("landed equality accepts different commits with equal trees and hard-brakes all mismatch forms", () => {

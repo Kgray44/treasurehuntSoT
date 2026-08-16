@@ -90,6 +90,21 @@ test("access sentinel parallelism requires an explicit parallel-safe suite contr
   assert.ok(adapter.command.includes("-SkipLegacyProjectionFixture"));
   assert.ok(adapter.command.includes("-BrowserWorkers"));
   assert.ok(adapter.command.includes("3"));
+  const certified = resolveIsolatedBrowserFamilyAdapter(
+    [
+      {
+        project: "sounding-line-access-sentinel",
+        files: ["tests/e2e/access-gates.spec.ts"],
+        grep: "access gate",
+        caseCount: 3,
+      },
+    ],
+    path.join(root, "prisma", "dev.db"),
+    false,
+    { skipLegacyProjectionFixture: true, certifiedBaseline: true, parallelSafe: false, browserWorkers: 1 },
+  );
+  assert.ok(certified.command.includes("-CertifiedBaseline"));
+  assert.ok(certified.command.includes("1"));
   assert.throws(
     () =>
       resolveIsolatedBrowserFamilyAdapter(
@@ -584,6 +599,8 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
   assert.match(common, /rmdir \/s \/q/u);
   assert.match(common, /junction target escaped the seed root/u);
   assert.match(common, /lockfile does not match the isolated runtime/u);
+  assert.match(common, /@prisma\\engines\\package\.json/u);
+  assert.match(common, /Sounding Line dependency seed copy is incomplete: \$marker/u);
   assert.match(common, /A physical copy retains Next's runtime-local \.next/u);
 });
 

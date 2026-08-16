@@ -21,6 +21,7 @@ param(
     [int]$BrowserWorkers = 1,
     [string]$BrowserGrep = "",
     [switch]$SkipProductionPerformance,
+    [switch]$CertifiedBaseline,
     [string]$SoundingLineLane = "",
     [int]$SoundingLinePort = 0
 )
@@ -154,6 +155,9 @@ $validationServerPort = if ($isSoundingLineLane) { $SoundingLinePort } else { 31
 if ($BrowserOnly -and $SkipBrowser) {
     throw "BrowserOnly and SkipBrowser cannot be used together."
 }
+if ($CertifiedBaseline -and -not $BaselineDatabasePath) {
+    throw "CertifiedBaseline requires an explicit immutable baseline database."
+}
 if ($SkipBrowser -and ($BrowserTestPath -or $BrowserGrep -or $BrowserArgs.Count -gt 0 -or $BrowserSelections.Count -gt 0)) {
     throw "SkipBrowser cannot be combined with targeted browser selection."
 }
@@ -277,7 +281,11 @@ $canonicalFamilyJson = [string]($canonicalSamples[0].members | ConvertTo-Json -C
 $canonicalFamilyBase64 = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($canonicalFamilyJson))
 
 if (-not $runtimeRoot) {
-    $runtimeRoot = Initialize-ForeverRuntime -Mode validation -ResetDatabase
+    if ($CertifiedBaseline) {
+        $runtimeRoot = Initialize-ForeverRuntime -Mode validation -ResetDatabase -CertifiedBaselinePath $canonicalDatabase
+    } else {
+        $runtimeRoot = Initialize-ForeverRuntime -Mode validation -ResetDatabase
+    }
 }
 $resolvedRuntime = [System.IO.Path]::GetFullPath($runtimeRoot)
 $runtimePrefix = $resolvedRuntime.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar

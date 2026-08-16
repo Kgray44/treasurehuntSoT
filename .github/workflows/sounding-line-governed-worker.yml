@@ -7,6 +7,21 @@ on:
         description: Sealed-plan suite identifier
         required: true
         type: string
+      suites_json:
+        description: Exact JSON array of compatible logical suite identifiers for one physical worker
+        required: false
+        type: string
+        default: ""
+      requires_browser:
+        description: Sealed matrix declares a browser layer requirement
+        required: false
+        type: boolean
+        default: false
+      browser_engine:
+        description: Exact sealed browser engine required by this physical worker
+        required: false
+        type: string
+        default: ""
       empty_wave:
         description: Explicit empty-wave marker; never represents governed test evidence
         required: false
@@ -171,12 +186,69 @@ jobs:
             dependencyRestoreMs = [int](($finishedAt - $startedAt).TotalMilliseconds)
           } | ConvertTo-Json | Set-Content -LiteralPath 'sounding-line-worker-throughput.json' -Encoding utf8
           if ($exitCode -ne 0) { throw 'GOVERNED_DEPENDENCY_LAYER_RESTORE_FAILED' }
+      - id: browser-identity
+        if: ${{ !inputs.empty_wave && inputs.requires_browser }}
+        shell: pwsh
+        env:
+          SOUNDING_LINE_BROWSER_ENGINE: ${{ inputs.browser_engine }}
+        run: |
+          if ($env:SOUNDING_LINE_BROWSER_ENGINE -notin @('chromium', 'webkit')) { throw 'GOVERNED_BROWSER_ENGINE_INVALID' }
+          $enginesJson = '["{0}"]' -f $env:SOUNDING_LINE_BROWSER_ENGINE
+          $identity = node scripts/sounding-line/v14/browser-layer-artifact.mjs cache-key --engines-json $enginesJson | ConvertFrom-Json
+          "key=$($identity.key)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - id: browser-cache-restore
+        if: ${{ !inputs.empty_wave && inputs.requires_browser }}
+        uses: actions/cache/restore@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            sounding-line-browser-cache/${{ inputs.browser_engine }}
+            sounding-line-browser-cache/${{ inputs.browser_engine }}-manifest.json
+          key: ${{ steps.browser-identity.outputs.key }}
+      - name: Restore verified immutable browser layer
+        if: ${{ !inputs.empty_wave && inputs.requires_browser }}
+        shell: pwsh
+        env:
+          SOUNDING_LINE_BROWSER_CACHE_KEY: ${{ steps.browser-identity.outputs.key }}
+          CACHE_HIT: ${{ steps.browser-cache-restore.outputs.cache-hit }}
+          SOUNDING_LINE_BROWSER_ENGINE: ${{ inputs.browser_engine }}
+        run: |
+          if ($env:CACHE_HIT -ne 'true') { throw 'GOVERNED_BROWSER_LAYER_CACHE_MISS' }
+          $source = "sounding-line-browser-cache/$env:SOUNDING_LINE_BROWSER_ENGINE"
+          $manifest = "sounding-line-browser-cache/$env:SOUNDING_LINE_BROWSER_ENGINE-manifest.json"
+          $enginesJson = '["{0}"]' -f $env:SOUNDING_LINE_BROWSER_ENGINE
+          node scripts/sounding-line/v14/browser-layer-artifact.mjs verify --engines-json $enginesJson --source $source --manifest $manifest
+          if ($LASTEXITCODE -ne 0) { throw 'GOVERNED_BROWSER_LAYER_RESTORE_FAILED' }
+      - id: sqlite-baseline-identity
+        if: ${{ !inputs.empty_wave && inputs.requires_browser }}
+        shell: pwsh
+        run: |
+          $identity = node scripts/sounding-line/v14/sqlite-baseline-artifact.mjs cache-key | ConvertFrom-Json
+          "key=$($identity.key)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - id: sqlite-baseline-cache-restore
+        if: ${{ !inputs.empty_wave && inputs.requires_browser }}
+        uses: actions/cache/restore@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            sounding-line-sqlite-baseline
+            sounding-line-sqlite-baseline-manifest.json
+          key: ${{ steps.sqlite-baseline-identity.outputs.key }}
+      - name: Restore verified certified SQLite baseline
+        if: ${{ !inputs.empty_wave && inputs.requires_browser }}
+        shell: pwsh
+        env:
+          SOUNDING_LINE_SQLITE_BASELINE_CACHE_KEY: ${{ steps.sqlite-baseline-identity.outputs.key }}
+          CACHE_HIT: ${{ steps.sqlite-baseline-cache-restore.outputs.cache-hit }}
+        run: |
+          if ($env:CACHE_HIT -ne 'true') { throw 'GOVERNED_SQLITE_BASELINE_CACHE_MISS' }
+          node scripts/sounding-line/v14/sqlite-baseline-artifact.mjs verify --source sounding-line-sqlite-baseline --manifest sounding-line-sqlite-baseline-manifest.json
+          if ($LASTEXITCODE -ne 0) { throw 'GOVERNED_SQLITE_BASELINE_RESTORE_FAILED' }
       - name: Prepare only sealed-node resources
         if: ${{ !inputs.empty_wave }}
         shell: pwsh
         env:
           SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-transport/${{ inputs.plan_path }}
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
+          PLAYWRIGHT_BROWSERS_PATH: sounding-line-browser-cache/${{ inputs.browser_engine }}
         run: |
           $setupStartedAt = [DateTimeOffset]::UtcNow
           $preparationPath = 'sounding-line-worker-preparation.json'
@@ -209,9 +281,7 @@ jobs:
             Invoke-TimedPreparation 'databaseSeedMs' { & npm run db:seed }
           }
           $engines = @($preparation.actions.browserEngines)
-          if ($engines.Count -gt 0) {
-            Invoke-TimedPreparation 'browserRestoreMs' { & npx playwright install @engines }
-          }
+          if ($engines.Count -gt 0 -and -not $env:PLAYWRIGHT_BROWSERS_PATH) { throw 'GOVERNED_BROWSER_LAYER_PATH_REQUIRED' }
           $setupFinishedAt = [DateTimeOffset]::UtcNow
           [ordered]@{
             version = 1
@@ -237,13 +307,18 @@ jobs:
           SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-transport/${{ inputs.plan_path }}
           SOUNDING_LINE_GATE: ${{ inputs.gate }}
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
+          SOUNDING_LINE_SUITES_JSON: ${{ inputs.suites_json }}
           SOUNDING_LINE_SEALED_SOURCE_SHA: ${{ inputs.candidate_sha }}
+          SOUNDING_LINE_CERTIFIED_BASELINE: ${{ inputs.requires_browser && '1' || '0' }}
+          SOUNDING_LINE_BASELINE_DATABASE: ${{ github.workspace }}/sounding-line-sqlite-baseline/validation.db
+          PLAYWRIGHT_BROWSERS_PATH: sounding-line-browser-cache/${{ inputs.browser_engine }}
         shell: pwsh
         run: |
           # Reusable workflows inherit the trusted-main dispatch SHA. The sealed
           # plan is instead source-bound to the exact frozen candidate identity.
           $env:GITHUB_SHA = $env:SOUNDING_LINE_SEALED_SOURCE_SHA
-          node scripts/sounding-line/authority.mjs "$env:SOUNDING_LINE_GATE" --execute-only --plan-in "$env:SOUNDING_LINE_PLAN" --suite "$env:SOUNDING_LINE_SUITE" --receipt-out sounding-line-worker-evidence.json
+          $suiteArguments = if ($env:SOUNDING_LINE_SUITES_JSON) { @('--suites-json', $env:SOUNDING_LINE_SUITES_JSON) } else { @('--suite', $env:SOUNDING_LINE_SUITE) }
+          node scripts/sounding-line/authority.mjs "$env:SOUNDING_LINE_GATE" --execute-only --plan-in "$env:SOUNDING_LINE_PLAN" @suiteArguments --receipt-out sounding-line-worker-evidence.json
       - name: Bind setup and execution timing to worker evidence
         if: ${{ !inputs.empty_wave && always() }}
         shell: pwsh
