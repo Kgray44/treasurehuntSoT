@@ -252,6 +252,40 @@ test("true documentation and catalog closure is record-only eligible and binds w
   );
 });
 
+test("record-only evidence can seal the shared qualified-base acceptance envelope", async (t) => {
+  const fixture = recordOnlyBindingFixture();
+  const workspace = await mkdtemp(path.join(tmpdir(), "sounding-line-record-only-envelope-"));
+  t.after(() => rm(workspace, { recursive: true, force: true }));
+  const planPath = path.join(workspace, "plan.json");
+  const finalizationPath = path.join(workspace, "finalization.json");
+  const outputPath = path.join(workspace, "envelope.json");
+  const plan = { ...fixture.plan, qualifiedBaseTreeSha: base };
+  await Promise.all([
+    writeFile(planPath, `${JSON.stringify(plan)}\n`, "utf8"),
+    writeFile(finalizationPath, `${JSON.stringify(fixture.finalization)}\n`, "utf8"),
+  ]);
+  await execFileAsync(
+    process.execPath,
+    [
+      "scripts/sounding-line/create-acceptance-envelope.mjs",
+      "--plan",
+      planPath,
+      "--finalization",
+      finalizationPath,
+      "--pr-number",
+      "99",
+      "--base-sha",
+      base,
+      "--run-id",
+      "999",
+      "--out",
+      outputPath,
+    ],
+    { cwd: root },
+  );
+  assert.equal(JSON.parse(await readFile(outputPath, "utf8")).qualifiedBaseTreeSha, base);
+});
+
 test("record-only classification refuses a product source file", () => {
   const result = classifyRecordOnlyDiff([{ status: "A", path: "src/app/captain/page.tsx" }]);
   assert.equal(result.eligible, false);
