@@ -59,6 +59,20 @@ describe("Drydock typed variables", () => {
     expect(applyVariableOperation(tags, [], "assign", ["north", "east", "north"])).toEqual(["east", "north"]);
   });
 
+  it("rejects non-finite numeric operands before they reach deterministic scenario state", () => {
+    const temperature: DrydockVariableDeclaration = {
+      ...flag,
+      id: "var-temperature",
+      name: "temperature",
+      type: { kind: "NUMBER" },
+      defaultValue: 20,
+      allowedOperations: ["assign", "increment", "decrement", "min", "max"],
+    };
+    expect(() => applyVariableOperation(temperature, 20, "assign", Number.POSITIVE_INFINITY)).toThrow(
+      "DRYDOCK_VARIABLE_OPERAND_TYPE",
+    );
+  });
+
   it("validates every core type and its query or mutation operations", () => {
     const declarations: DrydockVariableDeclaration[] = [
       flag,
