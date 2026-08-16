@@ -235,11 +235,9 @@ jobs:
       - name: Bind finalization to the planned car without landing it
         shell: pwsh
         run: |
-          $admission = Get-Content -Raw train-state/mainline-train.json | ConvertFrom-Json
-          $admission.train | ConvertTo-Json -Depth 24 | Set-Content -LiteralPath mainline-train.json -Encoding utf8
           $finalization = Get-Content -Raw sounding-line-finalization.json | ConvertFrom-Json
           if ($finalization.decision -ne 'RELEASE_GO' -or -not $finalization.evidenceDigest) { throw 'TRAIN_CAR_RELEASE_GO_REQUIRED' }
-          node scripts/sounding-line/v14/mainline-train-cli.mjs qualify --state mainline-train.json --plan train-prepared/${{ matrix.planPath }} --finalization sounding-line-finalization.json --candidate-id ${{ matrix.candidateId }} --evidence-closure $finalization.evidenceDigest --out mainline-train-qualified.json
+          node scripts/sounding-line/v14/mainline-train-cli.mjs qualify --state train-state/mainline-train.json --plan train-prepared/${{ matrix.planPath }} --finalization sounding-line-finalization.json --candidate-id ${{ matrix.candidateId }} --evidence-closure $finalization.evidenceDigest --out mainline-train-qualified.json
       - name: Seal exact protected-binding envelope
         env:
           SOUNDING_LINE_PR_NUMBER: ${{ matrix.prNumber }}
@@ -311,9 +309,7 @@ jobs:
       - name: Seal all car qualifications and prepare only the head for normal protected landing
         shell: pwsh
         run: |
-          $admission = Get-Content -Raw train-state/mainline-train.json | ConvertFrom-Json
-          $admission.train | ConvertTo-Json -Depth 24 | Set-Content -LiteralPath mainline-train.json -Encoding utf8
-          node scripts/sounding-line/v14/merge-train-qualifications.mjs --base mainline-train.json --states qualifications --out mainline-train-qualified.json
+          node scripts/sounding-line/v14/merge-train-qualifications.mjs --base train-state/mainline-train.json --states qualifications --out mainline-train-qualified.json
           $qualified = Get-Content -Raw mainline-train-qualified.json | ConvertFrom-Json
           $head = $qualified.cars[$qualified.headPosition]
           node scripts/sounding-line/v14/mainline-train-cli.mjs head-ready --state mainline-train-qualified.json --candidate-id $head.candidateId --out mainline-train-head-ready.json

@@ -635,6 +635,9 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   assert.match(trainWorkflow, /sounding-line-train-wave\.yml/u);
   assert.match(trainWorkflow, /Finalize exact predicted-tree candidate evidence/u);
   assert.match(trainWorkflow, /merge-train-qualifications\.mjs/u);
+  assert.match(trainWorkflow, /--state train-state\/mainline-train\.json/u);
+  assert.match(trainWorkflow, /--base train-state\/mainline-train\.json/u);
+  assert.doesNotMatch(trainWorkflow, /\$admission\.train \| ConvertTo-Json/u);
   assert.match(trainWorkflow, /Bind the first train head to its current protected merge identity/u);
   const advanceWorkflow = await readFile(
     path.join(root, ".github", "workflows", "sounding-line-mainline-train-advance.yml"),
