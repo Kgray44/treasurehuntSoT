@@ -149,7 +149,7 @@ jobs:
           # GitHub updates the PR head before its synthetic merge ref is always
           # recomputed. Bind only after the complete merge identity converges;
           # otherwise a stale merge ref could compose the prior suffix head.
-          $ready = $false
+          $bound = $false
           $base = $null
           $head = $null
           $merge = $null
@@ -170,14 +170,24 @@ jobs:
               $mergeParents -contains $base -and
               $mergeParents -contains $head -and
               $mergeTree -eq $headTree
-            ) { $ready = $true; break }
+            ) {
+              node scripts/sounding-line/protected-merge-binding-ci.mjs --authority testing/sounding-line-authority.json --finalization next-acceptance/sounding-line-finalization.json --plan next-acceptance/sounding-line-plan.json --envelope next-acceptance/sounding-line-acceptance-envelope.json --pr-number $env:PR_NUMBER --candidate-sha $env:CANDIDATE_SHA --rebound-candidate-sha $head --base-sha $base --merge-sha $merge --authority-run-id $env:AUTHORITY_RUN_ID
+              if ($LASTEXITCODE -ne 0) { throw 'TRAIN_NEXT_HEAD_PROTECTED_BINDING_NO_GO' }
+              $body = @{ name = 'Sounding Line / Mainline Decision'; head_sha = $merge; status = 'completed'; conclusion = 'success'; output = @{ title = 'Retained train head bound'; summary = 'Exact tree-equivalent predicted-base evidence rebound to the current protected merge identity.' } } | ConvertTo-Json -Depth 8
+              Invoke-RestMethod -Method Post -Headers @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' } -Uri "https://api.github.com/repos/$env:REPOSITORY/check-runs" -ContentType 'application/json' -Body $body | Out-Null
+              git fetch origin "+refs/pull/$env:PR_NUMBER/merge:refs/remotes/origin/sounding-line-train-next-merge"
+              if ($LASTEXITCODE -eq 0) {
+                git fetch origin "+refs/pull/$env:PR_NUMBER/head:refs/remotes/origin/sounding-line-train-next-head"
+                if ($LASTEXITCODE -eq 0) {
+                  $confirmedMerge = (git rev-parse origin/sounding-line-train-next-merge).Trim()
+                  $confirmedHead = (git rev-parse origin/sounding-line-train-next-head).Trim()
+                  if ($confirmedMerge -eq $merge -and $confirmedHead -eq $head) { $bound = $true; break }
+                }
+              }
+            }
             Start-Sleep -Seconds 2
           }
-          if (-not $ready) { throw 'TRAIN_NEXT_HEAD_MERGE_IDENTITY_NOT_CONVERGED' }
-          node scripts/sounding-line/protected-merge-binding-ci.mjs --authority testing/sounding-line-authority.json --finalization next-acceptance/sounding-line-finalization.json --plan next-acceptance/sounding-line-plan.json --envelope next-acceptance/sounding-line-acceptance-envelope.json --pr-number $env:PR_NUMBER --candidate-sha $env:CANDIDATE_SHA --rebound-candidate-sha $head --base-sha $base --merge-sha $merge --authority-run-id $env:AUTHORITY_RUN_ID
-          if ($LASTEXITCODE -ne 0) { throw 'TRAIN_NEXT_HEAD_PROTECTED_BINDING_NO_GO' }
-          $body = @{ name = 'Sounding Line / Mainline Decision'; head_sha = $merge; status = 'completed'; conclusion = 'success'; output = @{ title = 'Retained train head bound'; summary = 'Exact tree-equivalent predicted-base evidence rebound to the current protected merge identity.' } } | ConvertTo-Json -Depth 8
-          Invoke-RestMethod -Method Post -Headers @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' } -Uri "https://api.github.com/repos/$env:REPOSITORY/check-runs" -ContentType 'application/json' -Body $body | Out-Null
+          if (-not $bound) { throw 'TRAIN_NEXT_HEAD_MERGE_IDENTITY_NOT_STABLE' }
       - if: ${{ steps.train.outputs.found == 'true' }}
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
