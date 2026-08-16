@@ -642,6 +642,7 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   );
   assert.match(advanceWorkflow, /types: \[closed\]/u);
   assert.match(advanceWorkflow, /workflow_dispatch:/u);
+  assert.match(advanceWorkflow, /contents: write/u);
   assert.match(advanceWorkflow, /pull-requests: write/u);
   assert.match(advanceWorkflow, /Compare actual protected-main tree/u);
   assert.match(advanceWorkflow, /Reconcile retained suffix head/u);
