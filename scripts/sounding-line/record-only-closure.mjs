@@ -378,6 +378,7 @@ export async function createRecordOnlyEvidence({
     readJson(path.join(root, "testing", "generated", "active-test-registry.json")),
     readJson(path.join(root, "testing", "sounding-line-authority.json")),
   ]);
+  const qualifiedBaseTreeSha = await git(root, "rev-parse", preflight.currentBaseSha + "^{tree}");
   const recordOnly = {
     version: 1,
     mode: "FAIL_CLOSED_RECORD_ONLY",
@@ -401,6 +402,7 @@ export async function createRecordOnlyEvidence({
     sourceSha: preflight.candidateSha,
     gate: "mainline",
     serial: true,
+    qualifiedBaseTreeSha,
     policyDigest: digest(policy),
     inventoryDigest: digest(inventory),
     authorityDigest: digest(authority),
