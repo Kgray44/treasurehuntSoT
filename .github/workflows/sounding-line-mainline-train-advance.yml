@@ -118,30 +118,42 @@ jobs:
           if (-not $trainId) { throw 'TRAIN_ADVANCE_SOURCE_TRAIN_ID_REQUIRED' }
           $candidateTree = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/git/commits/$env:CANDIDATE_SHA").tree.sha
           if ($candidateTree -notmatch '^[0-9a-f]{40}$') { throw 'TRAIN_ADVANCE_CANDIDATE_TREE_INVALID' }
-          $matches = @()
           $direct = node scripts/sounding-line/v14/train-advance-state-lineage.mjs --state train-state/mainline-train-head-ready.json --train-id $trainId --pr-number $env:PR_NUMBER --candidate-sha $env:CANDIDATE_SHA --candidate-tree-sha $candidateTree | ConvertFrom-Json
-          if ($LASTEXITCODE -eq 0 -and $direct.valid -eq $true) { $matches += @{ path = 'train-state/mainline-train-head-ready.json'; runId = '${{ steps.train.outputs.run-id }}'; artifact = '${{ steps.train.outputs.live-artifact }}' } }
-          $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/workflows/sounding-line-mainline-train-advance.yml/runs?status=completed&per_page=100").workflow_runs |
-            Where-Object { $_.conclusion -eq 'success' }
-          foreach ($run in $runs) {
-            $artifacts = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs/$($run.id)/artifacts?per_page=100").artifacts |
-              Where-Object { -not $_.expired -and $_.name -like 'sounding-line-mainline-train-advance-*' }
-            foreach ($artifact in $artifacts) {
-              $directory = Join-Path $env:RUNNER_TEMP "sounding-line-train-advance-state-$($run.id)-$($artifact.id)"
-              $zip = "$directory.zip"
-              New-Item -ItemType Directory -Force -Path $directory | Out-Null
-              Invoke-WebRequest -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/artifacts/$($artifact.id)/zip" -OutFile $zip
-              Expand-Archive -LiteralPath $zip -DestinationPath $directory -Force
-              $statePath = Join-Path $directory 'mainline-train-advanced.json'
-              if (-not (Test-Path -LiteralPath $statePath)) { continue }
-              $candidate = node scripts/sounding-line/v14/train-advance-state-lineage.mjs --state $statePath --train-id $trainId --pr-number $env:PR_NUMBER --candidate-sha $env:CANDIDATE_SHA --candidate-tree-sha $candidateTree | ConvertFrom-Json
-              if ($LASTEXITCODE -eq 0 -and $candidate.valid -eq $true) { $matches += @{ path = $statePath; runId = $run.id; artifact = $artifact.name } }
-            }
+          if ($LASTEXITCODE -eq 0 -and $direct.valid -eq $true) {
+            "source-run-id=${{ steps.train.outputs.run-id }}" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            "source-artifact=${{ steps.train.outputs.live-artifact }}" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            exit 0
           }
-          if ($matches.Count -ne 1) { throw 'TRAIN_ADVANCE_PERSISTED_STATE_NOT_UNIQUE' }
-          if ($matches[0].path -ne 'train-state/mainline-train-head-ready.json') { Copy-Item -LiteralPath $matches[0].path -Destination 'train-state/mainline-train-head-ready.json' -Force }
-          "source-run-id=$($matches[0].runId)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-          "source-artifact=$($matches[0].artifact)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          # A later merged car can advance only from the immediately preceding
+          # sealed state.  Look up that one immutable artifact by its exact
+          # predecessor PR name; scanning historical Action runs is both
+          # needlessly slow and could make a recovery ambiguous.
+          $targetIndex = -1
+          for ($index = 0; $index -lt @($sourceTrain.cars).Count; $index += 1) {
+            if ($sourceTrain.cars[$index].candidatePrIdentity.number -eq [int]$env:PR_NUMBER) { $targetIndex = $index; break }
+          }
+          if ($targetIndex -le 0) { throw 'TRAIN_ADVANCE_PREDECESSOR_STATE_REQUIRED' }
+          $predecessorPr = $sourceTrain.cars[$targetIndex - 1].candidatePrIdentity.number
+          if ($predecessorPr -notmatch '^[1-9][0-9]*$') { throw 'TRAIN_ADVANCE_PREDECESSOR_PR_INVALID' }
+          $artifactName = "sounding-line-mainline-train-advance-$predecessorPr"
+          $artifacts = @((Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/artifacts?name=$artifactName&per_page=100").artifacts |
+            Where-Object { -not $_.expired -and $_.name -eq $artifactName })
+          if ($artifacts.Count -ne 1) { throw 'TRAIN_ADVANCE_PREDECESSOR_STATE_NOT_UNIQUE' }
+          $artifact = $artifacts[0]
+          $run = Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs/$($artifact.workflow_run.id)"
+          if ($run.status -ne 'completed' -or $run.conclusion -ne 'success') { throw 'TRAIN_ADVANCE_PREDECESSOR_RUN_NOT_SUCCESSFUL' }
+          $directory = Join-Path $env:RUNNER_TEMP "sounding-line-train-advance-state-$($artifact.id)"
+          $zip = "$directory.zip"
+          New-Item -ItemType Directory -Force -Path $directory | Out-Null
+          Invoke-WebRequest -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/artifacts/$($artifact.id)/zip" -OutFile $zip
+          Expand-Archive -LiteralPath $zip -DestinationPath $directory -Force
+          $statePath = Join-Path $directory 'mainline-train-advanced.json'
+          if (-not (Test-Path -LiteralPath $statePath)) { throw 'TRAIN_ADVANCE_PREDECESSOR_STATE_MISSING' }
+          $persisted = node scripts/sounding-line/v14/train-advance-state-lineage.mjs --state $statePath --train-id $trainId --pr-number $env:PR_NUMBER --candidate-sha $env:CANDIDATE_SHA --candidate-tree-sha $candidateTree | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0 -or $persisted.valid -ne $true) { throw 'TRAIN_ADVANCE_PREDECESSOR_STATE_INVALID' }
+          Copy-Item -LiteralPath $statePath -Destination 'train-state/mainline-train-head-ready.json' -Force
+          "source-run-id=$($artifact.workflow_run.id)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "source-artifact=$artifactName" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - if: ${{ steps.train.outputs.found == 'true' }}
         id: advanced
         name: Compare actual protected-main tree and advance only the exact predicted prefix
