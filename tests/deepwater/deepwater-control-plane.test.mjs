@@ -213,6 +213,14 @@ test("semantic evidence digest changes when a governed evidence reference change
   assert.notEqual(semanticDigest(candidate), originalDigest);
 });
 
+test("semantic evidence digest is stable when nested object keys are reordered", () => {
+  const first = model();
+  const second = model();
+  const reference = second.ledger.capabilities[0].evidence.references[0];
+  second.ledger.capabilities[0].evidence.references[0] = Object.fromEntries(Object.entries(reference).reverse());
+  assert.equal(semanticDigest(second), semanticDigest(first));
+});
+
 test("Phase 3 rebuild preserves the accepted Phase 2 finding baseline", async () => {
   assert.equal(baseline.metrics.findings.startingOpen, 20);
   const acceptedPhase2Finding = baseline.phase2.findingsDocument.findings.find(
