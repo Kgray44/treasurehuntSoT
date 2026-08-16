@@ -2,14 +2,14 @@
   "schemaVersion": "1.0.0",
   "project": "Project Deepwater",
   "phase": "Phase 5 - Keep the Soundings",
-  "sourceSha": "71ce1c4db306fab1e470c8ad6f486807e3353c6f",
+  "sourceSha": "3df555a05efee98270dd69bcae32a7e34c814c12",
   "state": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
   "checks": [
     { "id": "P5-AUTHORIZATION", "state": "PASSED", "evidence": "Explicit owner prompt, 2026-08-13" },
     {
       "id": "P5-CURRENT-BASELINE",
       "state": "PASSED",
-      "evidence": "Project_Deepwater_Phase_5_Drift_Baseline.json, rebound to origin/main 71ce1c4db306fab1e470c8ad6f486807e3353c6f"
+      "evidence": "Project_Deepwater_Phase_5_Drift_Baseline.json, rebound to origin/main 3df555a05efee98270dd69bcae32a7e34c814c12"
     },
     {
       "id": "P5-DETERMINISTIC-DELTA",

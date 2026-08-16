@@ -11,7 +11,7 @@ last_reviewed: 2026-08-16
 This is a locally-qualified candidate receipt only. It records the Phase 5 governance baseline and does not declare Project Deepwater complete.
 
 - Preserved pre-cutover checkpoint: `95497c3d32e76d81723500235821829bd3af58a2`
-- Phase 5 reconciled base: `71ce1c4db306fab1e470c8ad6f486807e3353c6f`
+- Phase 5 reconciled base: `3df555a05efee98270dd69bcae32a7e34c814c12`
 - Phase 4 protected merge: `9e9d629085cb1551b1a3959c31b0b460c37724a9`
 - Capability baseline: 58
 - Sounding Line v1.4 policy identity: `08797fa3b97651d7ea285e49896f07c09893f332d2383bf29a5d8453133dab15`

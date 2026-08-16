@@ -1,6 +1,6 @@
 {
   "acceptanceLane": "SOUNDING_LINE_V14_CANDIDATE_MAINLINE_DECISION",
-  "baseSourceSha": "71ce1c4db306fab1e470c8ad6f486807e3353c6f",
+  "baseSourceSha": "3df555a05efee98270dd69bcae32a7e34c814c12",
   "featureCatalogImpact": "NO_CHANGE_REQUIRED",
   "limitations": [
     "Phase 5 does not self-issue release authority or owner product acceptance.",

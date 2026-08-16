@@ -14,7 +14,7 @@ The owner explicitly authorized Phase 5 on 2026-08-13. Phase 4 remains immutable
 
 On 2026-08-14, the original owned branch was reconciled onto accepted `origin/main` `268932d630ee0ea1721d0072da4041f7209b7464`, with no replacement worktree or branch. The preserved checkpoint is semantic history, not a v1.4 authority receipt. Its focused evidence is retained and explicitly rebound through the active v1.4 policy identity `ffe5734091a96b34ca6ecbc077cc46ff99f74ace22ec50a671ed453abd0c509e`.
 
-On 2026-08-16, the same branch merged accepted `origin/main` `71ce1c4db306fab1e470c8ad6f486807e3353c6f` without rewriting published task history. The v1.4 fleet pause is cleared. The reconciliation adds the current `verification-maintenance-policy.json` to the policy identity and settles generated Phase 5 artifacts against the newly written baseline so audit output is immediately self-validating.
+On 2026-08-16, the same branch merged accepted `origin/main` `3df555a05efee98270dd69bcae32a7e34c814c12` without rewriting published task history. The v1.4 fleet pause is cleared. The reconciliation adds the current `verification-maintenance-policy.json` to the policy identity and settles generated Phase 5 artifacts against the newly written baseline so audit output is immediately self-validating.
 
 Phase 5 owns governance metadata, deterministic audit tooling, policy, validation, and closure records. It does not own product business logic, Prisma schema, live business state, Feature Catalog business facts, or release authority. Sounding Line remains the sole decision emitter.
 

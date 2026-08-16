@@ -8,7 +8,7 @@ last_reviewed: 2026-08-16
 
 # Project Deepwater Phase 5 governance report
 
-Phase 5 is explicitly owner-authorized from accepted current main `71ce1c4db306fab1e470c8ad6f486807e3353c6f`. Phase 1-4 remain immutable, source-bound historical evidence.
+Phase 5 is explicitly owner-authorized from accepted current main `3df555a05efee98270dd69bcae32a7e34c814c12`. Phase 1-4 remain immutable, source-bound historical evidence.
 
 - Capabilities: 58
 - Feature Catalog entries: 43
