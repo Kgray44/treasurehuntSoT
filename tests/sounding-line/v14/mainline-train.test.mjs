@@ -310,7 +310,17 @@ test("live admission derives ordered predicted trees from real immutable Git hea
     await git(root, "checkout", "-b", "candidate-a");
     await writeFile(path.join(root, "a.txt"), "a\n");
     await git(root, "add", ".");
-    await git(root, "commit", "-m", "a");
+    await git(root, "commit", "-m", "a-first");
+    // A real ordinary car can contain more than one commit. Keep its trusted
+    // main parent outside the worker's shallow depth-two checkout to prove
+    // that the sealed prerequisite fetch, rather than incidental history,
+    // makes the compact integration bundle transport valid.
+    await writeFile(path.join(root, "a.txt"), "a-second\n");
+    await git(root, "add", ".");
+    await git(root, "commit", "-m", "a-second");
+    await writeFile(path.join(root, "a.txt"), "a-third\n");
+    await git(root, "add", ".");
+    await git(root, "commit", "-m", "a-third");
     const a = await git(root, "rev-parse", "HEAD");
     const aTree = await git(root, "rev-parse", "HEAD^{tree}");
     await git(root, "checkout", base);
@@ -416,12 +426,23 @@ test("per-car preparation seals plans and bundles the exact unreachable predicte
       },
     });
     assert.equal(matrix.include.length, 1);
+    assert.equal(matrix.include[0].integrationBaseSha, base);
     assert.equal(matrix.cars[0].activeMaximumWave, 0);
-    await execute("git", ["clone", "--no-checkout", root, receiver]);
-    // Hosted workers receive the frozen candidate and its immediate trusted
-    // base before fetching the compact predicted-integration transport.
+    // A local-path clone may hard-link the complete object database and would
+    // hide a hosted shallow-checkout failure. Start an empty repository and
+    // fetch only the sealed candidate through file transport, exactly as the
+    // hosted checkout's bounded object boundary requires.
+    const fileRemote = `file:///${root.replace(/\\/gu, "/")}`;
+    await execute("git", ["init", receiver]);
+    await git(receiver, "remote", "add", "origin", fileRemote);
     await git(receiver, "fetch", "--depth", "2", "origin", "candidate-a");
+    // The matrix carries the immutable admitted-main prerequisite explicitly.
+    // Some local Git transports retain extra objects despite a shallow graph,
+    // but the hosted worker must always fetch this exact sealed object before
+    // it accepts the compact integration bundle.
     const predicted = admitted.predicted.cars[0].resultingIntegrationSha;
+    await git(receiver, "fetch", "--depth", "1", "origin", base);
+    await git(receiver, "cat-file", "-e", `${base}^{commit}`);
     await git(receiver, "fetch", path.join(out, "A", "integration.bundle"), predicted);
     assert.equal(await git(receiver, "rev-parse", "FETCH_HEAD"), predicted);
     assert.ok((await stat(path.join(out, "A", "integration.bundle"))).size > 0);
@@ -518,6 +539,7 @@ test("train preparation reads the planner selection ledger and fails closed befo
 
 test("hosted train finalization is partitioned by each car's active dependency depth", async () => {
   const workflow = await readFile(path.join(root, ".github", "workflows", "sounding-line-mainline-train.yml"), "utf8");
+  const wave = await readFile(path.join(root, ".github", "workflows", "sounding-line-train-wave.yml"), "utf8");
   const finalizer = await readFile(
     path.join(root, ".github", "workflows", "sounding-line-train-finalize-cars.yml"),
     "utf8",
@@ -530,6 +552,7 @@ test("hosted train finalization is partitioned by each car's active dependency d
   assert.match(finalizer, /Make a qualified head independently landing-ready/u);
   assert.match(finalizer, /sounding-line-mainline-train-head-live/u);
   assert.match(finalizer, /TRAIN_PER_CAR_FINALIZATION_FAILED/u);
+  assert.match(wave, /integration_base_sha: \$\{\{ matrix\.integrationBaseSha \}\}/u);
 });
 
 test("landed equality accepts different commits with equal trees and hard-brakes all mismatch forms", () => {

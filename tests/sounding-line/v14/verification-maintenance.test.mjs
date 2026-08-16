@@ -189,7 +189,7 @@ test("maintenance qualification keeps the static-safe changed-path proof outside
   assert.match(workflow, /Remove-Item -LiteralPath \$maintenanceTemp -Recurse -Force/u);
 });
 
-test("maintenance static proof scopes formatter and lint to declared changed paths while retaining type safety", async () => {
+test("maintenance static proof scopes formatter, lint, and TypeScript closure to declared paths", async () => {
   const plan = await buildStaticCommandPlan({
     root: process.cwd(),
     changedPaths: [
@@ -203,7 +203,21 @@ test("maintenance static proof scopes formatter and lint to declared changed pat
   assert.deepEqual(plan.lintPaths, ["tests/sounding-line/v14/verification-maintenance.test.mjs"]);
   assert.deepEqual(plan.commands[0].slice(2), ["--check", "tests/sounding-line/v14/verification-maintenance.test.mjs"]);
   assert.deepEqual(plan.commands[1].slice(2), ["tests/sounding-line/v14/verification-maintenance.test.mjs"]);
-  assert.deepEqual(plan.commands[2].slice(2), ["--noEmit"]);
+  assert.equal(
+    plan.commands.some((command) => command.includes("node_modules/typescript/bin/tsc")),
+    false,
+  );
+  const typedPlan = await buildStaticCommandPlan({
+    root: process.cwd(),
+    changedPaths: ["src/tideglass/core.ts"],
+    fileInfo: async () => ({ inferredParser: "typescript" }),
+  });
+  assert.deepEqual(typedPlan.typecheckPaths, ["src/tideglass/core.ts"]);
+  assert.deepEqual(typedPlan.commands[2].slice(1, 3), ["scripts/sounding-line/scoped-typecheck.mjs", "--paths-base64"]);
+  assert.equal(
+    Buffer.from(typedPlan.commands[2][3], "base64").toString("utf8"),
+    JSON.stringify(["src/tideglass/core.ts"]),
+  );
   await assert.rejects(
     buildStaticCommandPlan({ root: process.cwd(), changedPaths: ["../outside.ts"] }),
     /STATIC_CHANGED_PATHS_INVALID/u,

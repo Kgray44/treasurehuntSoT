@@ -222,6 +222,9 @@ test("resource-aware preparation eliminates universal database and browser setup
     "utf8",
   );
   assert.match(workerWorkflow, /fetch-depth: 2/u);
+  assert.match(workerWorkflow, /integration_base_sha:/u);
+  assert.match(workerWorkflow, /GOVERNED_INTEGRATION_BASE_FETCH_FAILED/u);
+  assert.match(workerWorkflow, /git fetch --no-tags --depth=1 origin \$integrationBase/u);
   assert.match(workerWorkflow, /ISOLATED_BROWSER_RUNTIME/u);
   assert.match(workerWorkflow, /GOVERNED_DEPENDENCY_CACHE_MISS/u);
   assert.match(workerWorkflow, /GOVERNED_BROWSER_LAYER_CACHE_MISS/u);

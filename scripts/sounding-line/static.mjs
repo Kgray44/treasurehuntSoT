@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import prettier from "prettier";
 
 const lintableExtensions = new Set([".js", ".cjs", ".mjs", ".ts", ".tsx"]);
+const typecheckableExtensions = new Set([".ts", ".tsx"]);
 
 function fail(code) {
   throw new Error(code);
@@ -52,6 +53,9 @@ export async function buildStaticCommandPlan({ root, changedPaths, fileInfo = pr
   const lintPaths = resolved
     .filter((target) => lintableExtensions.has(path.extname(target.candidate)))
     .map((target) => target.candidate);
+  const typecheckPaths = resolved
+    .filter((target) => typecheckableExtensions.has(path.extname(target.candidate)))
+    .map((target) => target.candidate);
   const commands = [];
   if (formatterPaths.length > 0) {
     commands.push([process.execPath, "node_modules/prettier/bin/prettier.cjs", "--check", ...formatterPaths]);
@@ -59,12 +63,19 @@ export async function buildStaticCommandPlan({ root, changedPaths, fileInfo = pr
   if (lintPaths.length > 0) {
     commands.push([process.execPath, "node_modules/eslint/bin/eslint.js", ...lintPaths]);
   }
+  if (!scoped) commands.push([process.execPath, "node_modules/typescript/bin/tsc", "--noEmit"]);
+  else if (typecheckPaths.length > 0)
+    commands.push([
+      process.execPath,
+      "scripts/sounding-line/scoped-typecheck.mjs",
+      "--paths-base64",
+      Buffer.from(JSON.stringify(typecheckPaths), "utf8").toString("base64"),
+    ]);
   commands.push(
-    [process.execPath, "node_modules/typescript/bin/tsc", "--noEmit"],
     [process.execPath, "node_modules/tsx/dist/cli.mjs", "scripts/validate-user-facing-language.ts"],
     [process.execPath, "node_modules/tsx/dist/cli.mjs", "scripts/validate-project-one-voyage.ts"],
   );
-  return { commands, formatterPaths, lintPaths, scoped };
+  return { commands, formatterPaths, lintPaths, typecheckPaths, scoped };
 }
 
 async function main() {
@@ -85,6 +96,7 @@ async function main() {
       scope: plan.scoped ? "CHANGED_PATHS" : "REPOSITORY",
       formatterPaths: plan.formatterPaths,
       lintPaths: plan.lintPaths,
+      typecheckPaths: plan.typecheckPaths,
     }),
   );
   for (const [file, ...args] of plan.commands) {

@@ -12,7 +12,6 @@ import { batchPhysicalWorkers } from "./physical-worker-batching.mjs";
 import { verifyTrain } from "./mainline-train.mjs";
 
 const execute = promisify(execFile);
-const git = async (cwd, ...args) => (await execute("git", args, { cwd })).stdout.trim();
 const value = (args, flag) => {
   const index = args.indexOf(flag);
   const result = index < 0 ? undefined : args[index + 1];
@@ -175,6 +174,12 @@ export async function prepareMainlineTrain({
             carId: car.candidateId,
             candidateSha: car.candidateHeadCommitSha,
             executionSha: predicted.resultingIntegrationSha,
+            // The compact integration bundle excludes every object reachable
+            // from the candidate. Its only trusted remote prerequisite is the
+            // immutable main snapshot from which this train was admitted.
+            // Carry that object explicitly instead of assuming a two-commit
+            // checkout contains it: an ordinary PR may have any commit depth.
+            integrationBaseSha: state.train.actualMainCommitSha,
             planArtifact: `sounding-line-train-plan-${car.candidateId}`,
             integrationArtifact: `sounding-line-train-integration-${car.candidateId}`,
             planPath: `${car.candidateId}/sounding-line-plan.json`,
