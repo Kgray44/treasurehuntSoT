@@ -23,6 +23,10 @@ const json = async (file) => JSON.parse(await readFile(path.resolve(file), "utf8
 const write = async (file, valueToWrite) =>
   writeFile(path.resolve(file), `${JSON.stringify(valueToWrite, null, 2)}\n`, "utf8");
 const timestamp = () => new Date().toISOString();
+// Admission artifacts carry the sealed train alongside immutable prediction
+// evidence. Consumers must use that exact nested train record, never a
+// deserialized/re-serialized projection that would change its digest.
+const sealedTrain = (state) => state?.train ?? state;
 
 if (command === "admit") {
   const input = await json(value("--input"));
@@ -39,7 +43,7 @@ if (command === "admit") {
   });
   await write(value("--out"), result);
 } else if (command === "qualify") {
-  const state = await json(value("--state"));
+  const state = sealedTrain(await json(value("--state")));
   if (!verifyTrain(state).valid) throw new Error("TRAIN_CLI_TAMPERED_STATE");
   const plan = await json(value("--plan"));
   const finalization = await json(value("--finalization"));
@@ -52,7 +56,7 @@ if (command === "admit") {
   });
   await write(value("--out"), train);
 } else if (command === "head-ready") {
-  const state = await json(value("--state"));
+  const state = sealedTrain(await json(value("--state")));
   if (!verifyTrain(state).valid) throw new Error("TRAIN_CLI_TAMPERED_STATE");
   const position = state.cars.findIndex((car) => car.candidateId === value("--candidate-id"));
   if (position !== state.headPosition) throw new Error("TRAIN_CLI_HEAD_CANDIDATE_REQUIRED");
@@ -61,7 +65,7 @@ if (command === "admit") {
     transitionTrainCar(state, { position, to: "HEAD_READY", timestamp: value("--timestamp", true) ?? timestamp() }),
   );
 } else if (command === "land") {
-  const state = await json(value("--state"));
+  const state = sealedTrain(await json(value("--state")));
   if (!verifyTrain(state).valid) throw new Error("TRAIN_CLI_TAMPERED_STATE");
   const result = landTrainHead(state, {
     actualLandedCommitSha: value("--commit"),

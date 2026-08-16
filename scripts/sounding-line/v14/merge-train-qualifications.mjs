@@ -14,8 +14,10 @@ const value = (flag) => {
   return result;
 };
 const json = async (file) => JSON.parse(await readFile(file, "utf8"));
+const sealedTrain = (state) => state?.train ?? state;
 
 export function mergeTrainQualifications({ base, states, timestamp = new Date().toISOString() }) {
+  base = sealedTrain(base);
   if (!verifyTrain(base).valid) throw new Error("TRAIN_QUALIFICATION_MERGE_BASE_INVALID");
   if (states.length === 0) throw new Error("TRAIN_QUALIFICATION_MERGE_EMPTY");
   const merged = JSON.parse(JSON.stringify(base));
