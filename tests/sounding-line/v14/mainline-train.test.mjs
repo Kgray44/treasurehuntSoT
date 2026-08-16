@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { mkdir, mkdtemp, rm, stat, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -205,7 +205,11 @@ test("independently finalized cars merge into one complete head-ready train with
       evidenceClosureIdentity: `evidence-${car.candidateId}`,
       timestamp: at,
     });
-  const merged = mergeTrainQualifications({ base: state, states: state.cars.map(qualify), timestamp: at });
+  const merged = mergeTrainQualifications({
+    base: { train: state, predicted: { status: "READY", immutable: true } },
+    states: state.cars.map(qualify),
+    timestamp: at,
+  });
   assert.ok(verifyTrain(merged).valid);
   assert.equal(merged.status, "QUALIFIED");
   assert.ok(merged.cars.every((car) => car.state === "QUALIFIED"));
@@ -225,6 +229,51 @@ test("independently finalized cars merge into one complete head-ready train with
   assert.equal(advanced.train.cars[2].state, "QUALIFIED");
   assert.equal(advanced.train.replans.length, 0);
   assert.ok(advanced.train.audit.some((entry) => entry.kind === "PREDICTED_PREFIX_REBOUND"));
+});
+
+test("qualification CLI consumes an unchanged sealed admission artifact", async (t) => {
+  const workspace = await mkdtemp(path.join(os.tmpdir(), "sl14-train-cli-envelope-"));
+  t.after(() => rm(workspace, { recursive: true, force: true }));
+  const state = planned([candidate("A", "a")]);
+  const car = state.cars[0];
+  const plan = {
+    authorityBoundary: "V14_CANDIDATE_QUALIFICATION",
+    authorityMode: "V14_CANDIDATE",
+    gate: "mainline",
+    sourceSha: car.candidateHeadCommitSha,
+    qualifiedBaseSha: car.predictedParentCommitSha,
+    qualifiedBaseTreeSha: car.predictedParentTreeSha,
+    predictedIntegrationTreeSha: car.predictedIntegrationTreeSha,
+    planDigest: "sealed-envelope-plan",
+  };
+  const envelope = path.join(workspace, "mainline-train.json");
+  const planPath = path.join(workspace, "plan.json");
+  const finalizationPath = path.join(workspace, "finalization.json");
+  const output = path.join(workspace, "qualified.json");
+  await Promise.all([
+    writeFile(envelope, `${JSON.stringify({ train: state, predicted: { status: "READY" } })}\n`),
+    writeFile(planPath, `${JSON.stringify(plan)}\n`),
+    writeFile(finalizationPath, `${JSON.stringify({ decision: "RELEASE_GO", planDigest: plan.planDigest })}\n`),
+  ]);
+  await execute(process.execPath, [
+    "scripts/sounding-line/v14/mainline-train-cli.mjs",
+    "qualify",
+    "--state",
+    envelope,
+    "--plan",
+    planPath,
+    "--finalization",
+    finalizationPath,
+    "--candidate-id",
+    "A",
+    "--evidence-closure",
+    "sealed-envelope-evidence",
+    "--out",
+    output,
+  ]);
+  const qualified = JSON.parse(await readFile(output, "utf8"));
+  assert.ok(verifyTrain(qualified).valid);
+  assert.equal(qualified.cars[0].state, "QUALIFIED");
 });
 
 test("live admission derives ordered predicted trees from real immutable Git heads", async () => {
