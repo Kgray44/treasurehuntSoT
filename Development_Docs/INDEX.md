@@ -3,7 +3,7 @@ title: Engineering record index
 audience: engineering
 status: current
 canonical_for: engineering-record-index
-last_reviewed: 2026-08-16
+last_reviewed: 2026-08-17
 ---
 
 # Engineering-record index
@@ -26,8 +26,8 @@ last_reviewed: 2026-08-16
 - `Project_Bridgewatch_Completion_Receipt.md`: final program receipt; it is
   authoritative only after protected-main acceptance is recorded.
 - `Project_Bridgewatch_v1.2_*.md`: post-completion Mission Control amendment
-  design, data-fidelity audit, and local validation record; this is a version
-  increment, not Phase 4.
+  design, data-fidelity audit, local validation, and protected-integration
+  receipt; this is a version increment, not Phase 4.
 - `Archive/`: superseded, prompt, and legacy material.
 
 Use [document-index.json](document-index.json) for complete path-level classification.
