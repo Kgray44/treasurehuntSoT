@@ -69,6 +69,7 @@
     "agent-context-profiles.json",
     "scripts/agent-context/**",
     "scripts/generate-document-index.mjs",
+    "testing/generated/active-test-registry.json",
     "tests/agent-context/**",
     "Development_Docs/Programs/Project_Trim/**",
     "Development_Docs/Governing/Project_Trim_*.pdf",
