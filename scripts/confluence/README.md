@@ -7,6 +7,7 @@ All operations require `CONFLUENCE_ARCHIVE_PATH` (or `--archive`) to name a loca
 ```text
 npm run confluence:collect -- --week 2026-W34
 npm run confluence:status -- --week 2026-W34
+npm run confluence:validate-master -- --week 2026-W34
 npm run confluence:replay -- --last-7-days
 npm run confluence:resume -- --run <run-id>
 npm run confluence:deliver -- --week 2026-W34

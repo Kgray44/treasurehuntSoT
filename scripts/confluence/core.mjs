@@ -390,6 +390,58 @@ export async function validateDesign({ archiveRoot, metadataPath }) {
   return { status: "DESIGN_VALID", designTokenDigest: digest(tokens), metadataDigest: digest(metadata) };
 }
 
+export async function inspectPdf(pdfPath) {
+  const bytes = await readFile(pdfPath);
+  if (!bytes.subarray(0, 5).equals(Buffer.from("%PDF-"))) throw new Error("CONFLUENCE_PDF_INVALID_HEADER");
+  const text = bytes.toString("latin1");
+  const match = text.match(/\/MediaBox\s*\[\s*0\s+0\s+([\d.]+)\s+([\d.]+)\s*\]/);
+  if (!match) throw new Error("CONFLUENCE_PDF_MEDIABOX_MISSING");
+  const width = Number(match[1]),
+    height = Number(match[2]);
+  if (Math.abs(width - 595.3) > 2 || Math.abs(height - 841.9) > 2) throw new Error("CONFLUENCE_PDF_NOT_A4");
+  return { width, height, pageCount: (text.match(/\/Type\s*\/Page(?!s)/g) ?? []).length };
+}
+
+export async function inspectDocx(docxPath) {
+  const header = (await readFile(docxPath)).subarray(0, 2);
+  if (!header.equals(Buffer.from("PK"))) throw new Error("CONFLUENCE_DOCX_INVALID_ZIP");
+  const script = [
+    "$ErrorActionPreference = 'Stop'",
+    "Add-Type -AssemblyName System.IO.Compression.FileSystem",
+    "$zip = [System.IO.Compression.ZipFile]::OpenRead($env:CONFLUENCE_DOCX_INSPECT_PATH)",
+    "try {",
+    "  $document = ([System.IO.StreamReader]::new($zip.GetEntry('word/document.xml').Open())).ReadToEnd()",
+    "  $styles = ([System.IO.StreamReader]::new($zip.GetEntry('word/styles.xml').Open())).ReadToEnd()",
+    "  [pscustomobject]@{a4=($document -match 'w:w=\"11906\"' -and $document -match 'w:h=\"16838\"'); margins=($document -match 'w:left=\"340\"' -and $document -match 'w:right=\"340\"' -and $document -match 'w:top=\"340\"' -and $document -match 'w:bottom=\"340\"'); headings=($styles -match 'Heading'); tableHeaders=($document -match 'w:tblHeader'); altText=($document -match 'descr=') } | ConvertTo-Json -Compress",
+    "} finally { $zip.Dispose() }",
+  ].join("; ");
+  const output = execFileSync("powershell", ["-NoProfile", "-Command", script], {
+    encoding: "utf8",
+    env: { ...process.env, CONFLUENCE_DOCX_INSPECT_PATH: docxPath },
+  }).trim();
+  const details = JSON.parse(output);
+  if (!details.a4) throw new Error("CONFLUENCE_DOCX_NOT_A4");
+  if (!details.margins) throw new Error("CONFLUENCE_DOCX_MARGIN_DRIFT");
+  if (!details.headings) throw new Error("CONFLUENCE_DOCX_HEADING_STYLES_MISSING");
+  return details;
+}
+
+export async function validateMasterArtifacts({ archiveRoot, weekId }) {
+  assertWeekId(weekId);
+  const year = weekId.slice(0, 4);
+  const source = join(archiveRoot, "journals", year, weekId);
+  const metadataPath = join(source, "journal-metadata.json");
+  const metadata = await readJson(metadataPath);
+  await validateDesign({ archiveRoot, metadataPath });
+  const [docxPath, pdfPath] = [join(source, "master.docx"), join(source, "master.pdf")];
+  if (!(await exists(docxPath)) || !(await exists(pdfPath))) throw new Error("CONFLUENCE_MASTER_ARTIFACT_MISSING");
+  const [docx, pdf] = await Promise.all([inspectDocx(docxPath), inspectPdf(pdfPath)]);
+  const [docxDigest, pdfDigest] = await Promise.all([readFile(docxPath).then(digest), readFile(pdfPath).then(digest)]);
+  if (metadata.docxDigest && metadata.docxDigest !== docxDigest) throw new Error("CONFLUENCE_DOCX_DIGEST_MISMATCH");
+  if (metadata.pdfDigest && metadata.pdfDigest !== pdfDigest) throw new Error("CONFLUENCE_PDF_DIGEST_MISMATCH");
+  return { status: "MASTER_ARTIFACTS_VALID", docx, pdf, docxDigest, pdfDigest };
+}
+
 export async function validateArchiveLayout(archiveRoot) {
   const schemaNames = [
     "human-daily",
@@ -429,8 +481,14 @@ export async function validatePublicMetadata(metadata) {
   return true;
 }
 
-export async function deliverExact({ archiveRoot, publicRoot, weekId, dryRun = false }) {
-  await verifyArchivePrivacy(archiveRoot, { allowRecordedAttestation: false });
+export async function deliverExact({
+  archiveRoot,
+  publicRoot,
+  weekId,
+  dryRun = false,
+  privacyVerifier = verifyArchivePrivacy,
+}) {
+  await privacyVerifier(archiveRoot, { allowRecordedAttestation: false });
   assertWeekId(weekId);
   const year = weekId.slice(0, 4);
   const source = join(archiveRoot, "journals", year, weekId);
@@ -439,7 +497,7 @@ export async function deliverExact({ archiveRoot, publicRoot, weekId, dryRun = f
   if (safety.status !== "SAFE_TO_MIRROR_EXACT")
     throw new Error(`CONFLUENCE_PUBLICATION_${safety.status ?? "BLOCKED_MISSING_ASSESSMENT"}`);
   const metadata = await readJson(join(source, "journal-metadata.json"));
-  await validateDesign({ archiveRoot, metadataPath: join(source, "journal-metadata.json") });
+  const artifactValidation = await validateMasterArtifacts({ archiveRoot, weekId });
   const docx = join(source, "master.docx"),
     pdf = join(source, "master.pdf");
   if (!(await exists(docx)) || !(await exists(pdf))) throw new Error("CONFLUENCE_MASTER_ARTIFACT_MISSING");
@@ -451,8 +509,8 @@ export async function deliverExact({ archiveRoot, publicRoot, weekId, dryRun = f
     subtitle: metadata.subtitle,
     publicationDate: now(),
     designVersion: metadata.designVersion,
-    docxDigest: digest(await readFile(docx)),
-    pdfDigest: digest(await readFile(pdf)),
+    docxDigest: artifactValidation.docxDigest,
+    pdfDigest: artifactValidation.pdfDigest,
     sourceEditionDigest: digest(metadata),
     publicationStatus: "SAFE_TO_MIRROR_EXACT",
   };
