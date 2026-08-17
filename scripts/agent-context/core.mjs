@@ -67,9 +67,13 @@ function classify(input) {
   return "product-phase";
 }
 function sourceIdentity(root) {
-  const [head, headTreeSha, originMainSha] = (
-    git(root, ["rev-parse", "HEAD", "HEAD^{tree}", "origin/main"], "\n\n") ?? "\n\n"
-  ).split(/\r?\n/);
+  // A shallow or detached governed-worker checkout can intentionally omit
+  // `origin/main`. Resolve each identity independently so that absence does
+  // not erase the candidate head/tree identity from an otherwise useful
+  // packet.
+  const head = git(root, ["rev-parse", "HEAD"]);
+  const headTreeSha = git(root, ["rev-parse", "HEAD^{tree}"]);
+  const originMainSha = git(root, ["rev-parse", "origin/main"]);
   return {
     originMainSha: originMainSha || null,
     baseSha: originMainSha || head || null,

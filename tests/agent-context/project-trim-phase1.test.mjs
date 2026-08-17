@@ -33,7 +33,8 @@ test("bounded implementation composes existing ownership, contracts, suites, and
   assert.ok(packet.ownership.owners.length > 0);
   assert.ok(packet.ownership.contracts.length > 0);
   assert.ok(packet.verificationSlice.some((entry) => entry.id));
-  assert.equal(packet.sourceIdentity.originMainSha.length, 40);
+  assert.equal(packet.sourceIdentity.headSha.length, 40);
+  assert.equal(packet.sourceIdentity.headTreeSha.length, 40);
 });
 
 test("profiles are heuristics and do not create competing canonical registries", () => {
