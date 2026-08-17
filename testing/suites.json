@@ -783,6 +783,24 @@
       "adapter": "playwright-family"
     },
     {
+      "id": "validation.documentation",
+      "name": "Governed documentation validation",
+      "tier": 3,
+      "owner": "platform-foundation",
+      "command": "governed adapter: docs",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 30000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot"],
+      "dependencies": [],
+      "contracts": [],
+      "affectedPaths": ["CHANGELOG.md", "Development_Docs/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "governed-documentation-adapter",
+      "adapter": "docs"
+    },
+    {
       "id": "validation.powershell",
       "name": "Governed PowerShell validation scripts",
       "tier": 3,
@@ -2555,8 +2573,7 @@
       "contracts": ["bridgewatch.mission-control"],
       "affectedPaths": [
         "bridgewatch/**",
-        "scripts/sounding-line/status-projection.mjs",
-        "Development_Docs/Project_Bridgewatch_Phase_2_*.md"
+        "scripts/sounding-line/status-projection.mjs"
       ],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-2-branch-complete",

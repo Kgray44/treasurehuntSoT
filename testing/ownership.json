@@ -410,8 +410,7 @@
         "deploy/forever-treasure-bridgewatch.service",
         "scripts/bridgewatch/**",
         "scripts/sounding-line/status-projection.mjs",
-        "Development_Docs/Project_Bridgewatch_Phase_2_*.md",
-        "Development_Docs/Project_Bridgewatch_Homeport_Gateway_*.md"
+        "Development_Docs/Project_Bridgewatch_*.md"
       ],
       "testPaths": [
         "bridgewatch/test/**/*.test.*",

@@ -22,6 +22,42 @@ const readJson = async (file, fallback = null) => {
   }
 };
 const nodeState = (node) => node?.state ?? node?.status ?? "UNKNOWN";
+const safeStrings = (value) =>
+  Array.isArray(value) ? value.filter((candidate) => typeof candidate === "string") : [];
+const projectSemanticFallback = (fallback) => {
+  if (!fallback || typeof fallback !== "object" || Array.isArray(fallback)) return null;
+  const reasons = Array.isArray(fallback.reasons)
+    ? fallback.reasons
+        .filter((reason) => reason && typeof reason === "object" && !Array.isArray(reason))
+        .map((reason) => ({
+          ...(typeof reason.code === "string" ? { code: reason.code } : {}),
+          ...(safeStrings(reason.paths).length ? { paths: safeStrings(reason.paths) } : {}),
+          ...(safeStrings(reason.contractIds).length ? { contractIds: safeStrings(reason.contractIds) } : {}),
+          ...(Array.isArray(reason.debts)
+            ? {
+                debts: reason.debts
+                  .filter((entry) => entry && typeof entry === "object" && !Array.isArray(entry))
+                  .map((entry) => ({
+                    ...(typeof entry.contractId === "string" ? { contractId: entry.contractId } : {}),
+                    ...(typeof entry.owner === "string" ? { owner: entry.owner } : {}),
+                    ...(typeof entry.classification === "string" ? { classification: entry.classification } : {}),
+                    ...(typeof entry.risk === "string" ? { risk: entry.risk } : {}),
+                    ...(typeof entry.reason === "string" ? { reason: entry.reason } : {}),
+                  })),
+              }
+            : {}),
+        }))
+    : [];
+  return {
+    ...(typeof fallback.disposition === "string" ? { disposition: fallback.disposition } : {}),
+    ...(typeof fallback.failure === "string" ? { failure: fallback.failure } : {}),
+    reasons,
+  };
+};
+const legacySemanticFallback = (fallback, details) => {
+  if (typeof fallback === "string") return fallback;
+  return typeof details?.failure === "string" ? details.failure : null;
+};
 
 export async function projectStatus(base = runtimeRoot) {
   const leases = await readJson(path.join(base, "broker-leases.json"), { version: 1, leases: [] });
@@ -43,6 +79,7 @@ export async function projectStatus(base = runtimeRoot) {
       readJson(path.join(root, "sounding-line-finalization.json"), null),
     ]);
     if (!marker) continue;
+    const semanticFallbackDetails = projectSemanticFallback(plan?.semanticFallback);
     const nodes = (plan?.nodes ?? []).map((node) => ({
       id: String(node.id ?? node.suiteId ?? "unknown"),
       suiteId: String(node.suiteId ?? node.id ?? "unknown"),
@@ -61,6 +98,9 @@ export async function projectStatus(base = runtimeRoot) {
       createdAt: marker.createdAt ?? null,
       cleanupState: receipts.some((receipt) => receipt.name.includes("cleanup")) ? "CLEAN" : "UNKNOWN",
       finalDecision: finalization?.decision ?? null,
+      // Keep the v1 scalar contract while exposing additive, structured diagnostics.
+      semanticFallback: legacySemanticFallback(plan?.semanticFallback, semanticFallbackDetails),
+      semanticFallbackDetails,
       nodes,
     });
   }

@@ -74,7 +74,29 @@ describe("Sounding Line status projection", () => {
     );
     writeFileSync(
       join(root, "sl-fixture", "plans", "sealed-plan.json"),
-      JSON.stringify({ sourceSha: "abc", gate: "mainline", nodes: [] }),
+      JSON.stringify({
+        sourceSha: "abc",
+        gate: "mainline",
+        semanticFallback: {
+          disposition: "CONSERVATIVE_FALLBACK",
+          failure: "MAPPING_DEBT",
+          reasons: [
+            {
+              code: "MAPPING_DEBT",
+              debts: [
+                {
+                  contractId: "bridgewatch.mounted-route",
+                  owner: "bridgewatch",
+                  classification: "NO_CURRENT_TEST_PROTECTOR",
+                  risk: "critical",
+                  reason: "No governed suite declares this contract.",
+                },
+              ],
+            },
+          ],
+        },
+        nodes: [],
+      }),
     );
     const store = new BridgewatchStore(join(root, "bridgewatch.sqlite"));
     try {
@@ -84,7 +106,25 @@ describe("Sounding Line status projection", () => {
       );
       await expect(collector.refresh()).resolves.toMatchObject({
         source: "SOUNDING_LINE_RUNTIME",
-        plans: [{ id: "sl-fixture" }],
+        plans: [
+          {
+            id: "sl-fixture",
+            semanticFallback: "MAPPING_DEBT",
+            semanticFallbackDetails: {
+              reasons: [
+                {
+                  code: "MAPPING_DEBT",
+                  debts: [
+                    {
+                      contractId: "bridgewatch.mounted-route",
+                      reason: "No governed suite declares this contract.",
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        ],
       });
     } finally {
       store.close();

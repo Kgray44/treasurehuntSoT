@@ -47,6 +47,37 @@ const projectionSchema = z
           createdAt: z.string().nullable(),
           cleanupState: z.enum(["CLEAN", "PENDING", "FAILED", "UNKNOWN"]),
           finalDecision: z.string().nullable(),
+          semanticFallback: z.string().nullable().optional(),
+          semanticFallbackDetails: z
+            .object({
+              disposition: z.string().optional(),
+              failure: z.string().optional(),
+              reasons: z.array(
+                z
+                  .object({
+                    code: z.string().optional(),
+                    paths: z.array(z.string()).optional(),
+                    contractIds: z.array(z.string()).optional(),
+                    debts: z
+                      .array(
+                        z
+                          .object({
+                            contractId: z.string().optional(),
+                            owner: z.string().optional(),
+                            classification: z.string().optional(),
+                            risk: z.string().optional(),
+                            reason: z.string().optional(),
+                          })
+                          .strict(),
+                      )
+                      .optional(),
+                  })
+                  .strict(),
+              ),
+            })
+            .strict()
+            .nullable()
+            .optional(),
           nodes: z.array(
             z
               .object({
