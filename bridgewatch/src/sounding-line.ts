@@ -45,6 +45,30 @@ const projectionSchema = z
           gate: z.string(),
           state: z.string(),
           createdAt: z.string().nullable(),
+          authorityVersion: z.string().nullable().optional(),
+          authorityBoundary: z.string().nullable().optional(),
+          authorityMode: z.string().nullable().optional(),
+          qualifiedBaseSha: z.string().nullable().optional(),
+          candidateTreeSha: z.string().nullable().optional(),
+          predictedIntegrationTreeSha: z.string().nullable().optional(),
+          planDigest: z.string().nullable().optional(),
+          trainId: z.string().nullable().optional(),
+          trainCars: z
+            .array(
+              z
+                .object({
+                  id: z.string(),
+                  state: z.string().nullable(),
+                  candidateSha: z.string().nullable(),
+                  candidateTreeSha: z.string().nullable(),
+                  predictedIntegrationTreeSha: z.string().nullable(),
+                })
+                .strict(),
+            )
+            .optional(),
+          evidenceDispositionCounts: z.record(z.string(), z.number().int().nonnegative()).optional(),
+          finalizerAuthority: z.string().nullable().optional(),
+          evidenceDigest: z.string().nullable().optional(),
           cleanupState: z.enum(["CLEAN", "PENDING", "FAILED", "UNKNOWN"]),
           finalDecision: z.string().nullable(),
           semanticFallback: z.string().nullable().optional(),
@@ -89,6 +113,9 @@ const projectionSchema = z
                 completedAt: z.string().nullable(),
                 attempt: z.number().int().positive(),
                 rootFailureId: z.string().nullable(),
+                wave: z.number().int().nonnegative().nullable().optional(),
+                evidenceDisposition: z.string().nullable().optional(),
+                resources: z.array(z.string()).optional(),
               })
               .strict(),
           ),

@@ -22,8 +22,24 @@ const readJson = async (file, fallback = null) => {
   }
 };
 const nodeState = (node) => node?.state ?? node?.status ?? "UNKNOWN";
-const safeStrings = (value) =>
-  Array.isArray(value) ? value.filter((candidate) => typeof candidate === "string") : [];
+const text = (value) => (typeof value === "string" && value ? value : null);
+const countMap = (value) =>
+  value && typeof value === "object"
+    ? Object.fromEntries(Object.entries(value).filter(([, count]) => Number.isInteger(count) && count >= 0))
+    : {};
+const trainCars = (plan) => {
+  const cars = Array.isArray(plan?.train?.cars) ? plan.train.cars : Array.isArray(plan?.cars) ? plan.cars : [];
+  return cars
+    .filter((car) => car && typeof car === "object")
+    .map((car, index) => ({
+      id: String(car.carId ?? car.candidateId ?? index),
+      state: text(car.state),
+      candidateSha: text(car.candidateHeadCommitSha ?? car.candidateSha),
+      candidateTreeSha: text(car.candidateHeadTreeSha ?? car.candidateTreeSha),
+      predictedIntegrationTreeSha: text(car.predictedIntegrationTreeSha),
+    }));
+};
+const safeStrings = (value) => (Array.isArray(value) ? value.filter((candidate) => typeof candidate === "string") : []);
 const projectSemanticFallback = (fallback) => {
   if (!fallback || typeof fallback !== "object" || Array.isArray(fallback)) return null;
   const reasons = Array.isArray(fallback.reasons)
@@ -89,6 +105,9 @@ export async function projectStatus(base = runtimeRoot) {
       completedAt: node.completedAt ?? null,
       attempt: Number.isInteger(node.attempt) ? node.attempt : 1,
       rootFailureId: node.rootFailureId ?? null,
+      wave: Number.isInteger(node?.execution?.wave) ? node.execution.wave : null,
+      evidenceDisposition: text(node.evidenceDisposition),
+      resources: Array.isArray(node.resources) ? node.resources.filter((resource) => typeof resource === "string") : [],
     }));
     plans.push({
       id: marker.runId,
@@ -96,6 +115,18 @@ export async function projectStatus(base = runtimeRoot) {
       gate: plan?.gate ?? plan?.scope ?? "UNKNOWN",
       state: marker.state ?? "UNKNOWN",
       createdAt: marker.createdAt ?? null,
+      authorityVersion: text(plan?.authorityVersion),
+      authorityBoundary: text(plan?.authorityBoundary),
+      authorityMode: text(plan?.authorityMode),
+      qualifiedBaseSha: text(plan?.qualifiedBaseSha),
+      candidateTreeSha: text(plan?.candidateTreeSha),
+      predictedIntegrationTreeSha: text(plan?.predictedIntegrationTreeSha),
+      planDigest: text(plan?.planDigest),
+      trainId: text(plan?.trainId ?? plan?.train?.trainId),
+      trainCars: trainCars(plan),
+      evidenceDispositionCounts: countMap(plan?.evidenceDispositionCounts),
+      finalizerAuthority: text(finalization?.authority),
+      evidenceDigest: text(finalization?.evidenceDigest),
       cleanupState: receipts.some((receipt) => receipt.name.includes("cleanup")) ? "CLEAN" : "UNKNOWN",
       finalDecision: finalization?.decision ?? null,
       // Keep the v1 scalar contract while exposing additive, structured diagnostics.

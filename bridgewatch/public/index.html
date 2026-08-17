@@ -7,157 +7,32 @@
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
-    <main>
+    <main class="shell">
       <header class="masthead">
         <p class="eyebrow">PRIVATE / READ ONLY / KEEP THE WATCH</p>
-        <h1>BRIDGEWATCH</h1>
-        <a href="/admin">Return to Admiralty</a>
-        <p id="meta" class="meta">Loading governed observation state...</p>
+        <div class="masthead-row">
+          <div>
+            <h1>BRIDGEWATCH</h1>
+            <p id="meta" class="meta">Loading governed observation state...</p>
+          </div>
+          <a class="admin-link" href="/admin">Return to Admiralty</a>
+        </div>
       </header>
 
-      <section aria-labelledby="program-heading">
-        <div class="section-heading">
-          <h2 id="program-heading">Program summary</h2>
-          <p>Counts, never a fabricated global percentage.</p>
-        </div>
-        <div id="program" class="metrics" aria-live="polite"></div>
-      </section>
+      <nav class="station-nav" aria-label="Mission control stations">
+        <a href="#/" data-station="overview">Overview</a>
+        <a href="#/program" data-station="program">Program</a>
+        <a href="#/projects" data-station="projects">Projects</a>
+        <a href="#/operations" data-station="operations">Operations</a>
+        <a href="#/github" data-station="github">GitHub</a>
+        <a href="#/attention" data-station="attention">Attention</a>
+        <a href="#/history" data-station="history">History</a>
+        <a href="#/sources" data-station="sources">Sources</a>
+      </nav>
 
-      <section aria-labelledby="attention-heading">
-        <div class="section-heading">
-          <h2 id="attention-heading">Attention required</h2>
-          <p>Root conditions are deliberately deduplicated.</p>
-        </div>
-        <div id="attention" class="attention" aria-live="polite"></div>
-      </section>
-
-      <section aria-labelledby="last-check-heading">
-        <div class="section-heading">
-          <h2 id="last-check-heading">Since last check</h2>
-          <p id="last-check-meta">Meaningful governed changes only.</p>
-        </div>
-        <div id="last-check" class="list" aria-live="polite"></div>
-        <div class="history-actions" aria-label="History interval">
-          <button type="button" data-history-window="visit">Since last visit</button>
-          <button type="button" data-history-window="12">Last 12 hours</button>
-        </div>
-      </section>
-
-      <section aria-labelledby="projects-heading">
-        <div class="section-heading">
-          <h2 id="projects-heading">Project workspace</h2>
-          <p>Durable registry and accepted history.</p>
-        </div>
-        <div class="tabs" role="tablist" aria-label="Project lifecycle views">
-          <button
-            type="button"
-            role="tab"
-            aria-selected="true"
-            aria-controls="projects"
-            id="tab-active"
-            data-tab="ACTIVE"
-          >
-            Active
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected="false"
-            aria-controls="projects"
-            id="tab-completed"
-            data-tab="COMPLETED"
-          >
-            Completed
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected="false"
-            aria-controls="projects"
-            id="tab-planned"
-            data-tab="PLANNED"
-          >
-            Planned
-          </button>
-          <button type="button" role="tab" aria-selected="false" aria-controls="projects" id="tab-all" data-tab="ALL">
-            All
-          </button>
-        </div>
-        <div id="projects" class="grid" role="tabpanel" aria-labelledby="tab-active"></div>
-        <div id="project-detail" class="detail" aria-live="polite"></div>
-      </section>
-
-      <section aria-labelledby="operations-heading">
-        <div class="section-heading">
-          <h2 id="operations-heading">Active workers and tests</h2>
-          <p>Activity is separate from project lifecycle authority.</p>
-        </div>
-        <div class="operations">
-          <div>
-            <h3>Workers</h3>
-            <div id="workers" class="list"></div>
-          </div>
-          <div>
-            <h3>Sounding Line</h3>
-            <div id="tests" class="list"></div>
-          </div>
-        </div>
-      </section>
-
-      <section aria-labelledby="branches-heading">
-        <div class="section-heading">
-          <h2 id="branches-heading">Branch health</h2>
-          <p>Ahead, behind, association, and age are context—not progress.</p>
-        </div>
-        <div id="branches" class="list"></div>
-      </section>
-
-      <section aria-labelledby="pulls-heading">
-        <div class="section-heading">
-          <h2 id="pulls-heading">Open pull requests</h2>
-          <p>Observed GitHub state only.</p>
-        </div>
-        <div id="pulls" class="list"></div>
-      </section>
-
-      <section aria-labelledby="sources-heading">
-        <div class="section-heading">
-          <h2 id="sources-heading">Source freshness</h2>
-          <p>One source does not stand in for another.</p>
-        </div>
-        <div id="sources" class="list"></div>
-      </section>
-
-      <section aria-labelledby="archive-heading">
-        <div class="section-heading">
-          <h2 id="archive-heading">Completed project archive</h2>
-          <p>Durable accepted engineering records.</p>
-        </div>
-        <div class="history-actions" aria-label="Completed project archive order">
-          <button type="button" data-archive-order="chronological">Chronological</button>
-          <button type="button" data-archive-order="name">Project name</button>
-        </div>
-        <div id="archive" class="archive" aria-live="polite"></div>
-      </section>
-
-      <section aria-labelledby="history-heading">
-        <div class="section-heading">
-          <h2 id="history-heading">Program history</h2>
-          <p>Bounded recent evidence with a durable accepted timeline.</p>
-        </div>
-        <div id="history" class="history" aria-live="polite"></div>
-      </section>
-
-      <section aria-labelledby="trends-heading">
-        <div class="section-heading">
-          <h2 id="trends-heading">All-time accepted history</h2>
-          <p>Accepted project and phase chronology only; no completion prediction.</p>
-        </div>
-        <div id="trends" class="history" aria-live="polite"></div>
-      </section>
+      <section id="route" class="station" aria-live="polite"></section>
       <footer>
-        Bridgewatch observes GitHub, governed project records, Sounding Line, and activity telemetry. It cannot change
-        any of them. UNMEASURED is not zero.
+        Bridgewatch records observed evidence; it does not manage projects, workers, merges, or deployments.
       </footer>
     </main>
     <script src="/app.js" defer></script>
