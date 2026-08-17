@@ -38,6 +38,7 @@ const trainCars = (plan) => {
       candidateTreeSha: text(car.candidateHeadTreeSha ?? car.candidateTreeSha),
       predictedIntegrationTreeSha: text(car.predictedIntegrationTreeSha),
     }));
+};
 const safeStrings = (value) =>
   Array.isArray(value) ? value.filter((candidate) => typeof candidate === "string") : [];
 const projectSemanticFallback = (fallback) => {
