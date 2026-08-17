@@ -91,6 +91,20 @@ test("authority workflows remain authority-changing while unrelated workflows st
   assert.equal(
     classifyVerificationMaintenance({
       trustedPolicy,
+      changedPaths: ["scripts/sounding-line/finalization-evidence.mjs"],
+    }).classification,
+    "MAINTENANCE_AUTHORITY_CHANGE_REJECTED",
+  );
+  assert.equal(
+    classifyVerificationMaintenance({
+      trustedPolicy,
+      changedPaths: ["scripts/sounding-line/record-only-closure.mjs"],
+    }).classification,
+    "MAINTENANCE_AUTHORITY_CHANGE_REJECTED",
+  );
+  assert.equal(
+    classifyVerificationMaintenance({
+      trustedPolicy,
       changedPaths: [".github/workflows/unrelated.yml"],
     }).classification,
     "MAINTENANCE_SCOPE_REJECTED",

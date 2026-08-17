@@ -1,9 +1,14 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import test from "node:test";
 import { finalize } from "../../../scripts/sounding-line/finalizer.mjs";
 
+const digest = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
+
 const plan = {
   authority: "SOUNDING_LINE",
+  authorityVersion: "1.4",
+  authorityBoundary: "V14_CANDIDATE_QUALIFICATION",
   sourceSha: "source",
   policyDigest: "policy",
   inventoryDigest: "inventory",
@@ -52,6 +57,18 @@ test("complementary physical browser receipts close as the original one logical 
   assert.deepEqual(
     result.receipts[0].browserPartitions.map((entry) => entry.browserEngine),
     ["chromium", "webkit"],
+  );
+  assert.deepEqual(result.physicalReceipts, [receipt("chromium", ["case-c"]), receipt("webkit", ["case-w"])]);
+  assert.deepEqual(result.runtimeConformance, []);
+  assert.deepEqual(result.physicalRuntimeConformance, []);
+  assert.equal(
+    result.evidenceDigest,
+    digest({
+      receipts: result.receipts,
+      physicalReceipts: result.physicalReceipts,
+      runtimeConformance: result.runtimeConformance,
+      physicalRuntimeConformance: result.physicalRuntimeConformance,
+    }),
   );
 });
 
