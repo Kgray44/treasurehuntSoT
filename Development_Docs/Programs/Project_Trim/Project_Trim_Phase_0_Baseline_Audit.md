@@ -63,12 +63,12 @@ claim that a particular historical task opened every named file.
 
 ## 5. Representative task sample
 
-| Increment | Class | Direct evidence | Context implication |
-| --- | --- | --- | --- |
-| `a3db613d2` Hosted Sounding Line wave capacity | authority/infrastructure | 6 changed files; 2,023 additions and 23 deletions | Needs narrow authority, workflow, generated registry, source, and test closure. |
-| `eaaf46dac` Studio validation-field focus repair | focused repair | 1 changed source file; 21 additions and 13 deletions | A small behavioral repair should start from its component, direct test, and narrow authority slice, not a program-history sweep. |
-| `8742f7357` corrective-attestation formatting fix | documentation/governance repair | 1 changed record; 6 additions and 3 deletions | Record-only work needs current policy and exact record identity, not product-source archaeology. |
-| `10f505d21` Deepwater Phase 4 candidate freeze | continuation/closure | 14 changed files; 100 additions and 68 deletions; accepted integration record retained | Closure spans status, evidence, proof, catalog, and document index; an accepted capsule would avoid rediscovering its settled plateau. |
+| Increment                                         | Class                           | Direct evidence                                                                        | Context implication                                                                                                                    |
+| ------------------------------------------------- | ------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `a3db613d2` Hosted Sounding Line wave capacity    | authority/infrastructure        | 6 changed files; 2,023 additions and 23 deletions                                      | Needs narrow authority, workflow, generated registry, source, and test closure.                                                        |
+| `eaaf46dac` Studio validation-field focus repair  | focused repair                  | 1 changed source file; 21 additions and 13 deletions                                   | A small behavioral repair should start from its component, direct test, and narrow authority slice, not a program-history sweep.       |
+| `8742f7357` corrective-attestation formatting fix | documentation/governance repair | 1 changed record; 6 additions and 3 deletions                                          | Record-only work needs current policy and exact record identity, not product-source archaeology.                                       |
+| `10f505d21` Deepwater Phase 4 candidate freeze    | continuation/closure            | 14 changed files; 100 additions and 68 deletions; accepted integration record retained | Closure spans status, evidence, proof, catalog, and document index; an accepted capsule would avoid rediscovering its settled plateau. |
 
 ## 6. Token and context evidence
 
@@ -154,26 +154,26 @@ response sizes are unavailable.
 
 ## 14. Existing reusable repository infrastructure
 
-| Source | Classification | Project Trim use |
-| --- | --- | --- |
-| `testing/ownership.json` (16 owners) | READY_TO_REUSE | owner and project boundary slice |
-| `testing/contracts.json` (475 contracts) | READY_TO_REUSE | canonical contract closure |
-| `testing/impact-map.json` (156 paths, 456 contract mappings) | PARTIAL | changed-path closure; surface unmapped paths/debt |
-| `testing/suites.json` (61 suites) and `release-gates.json` (7 gates) | READY_TO_REUSE | relevant validation closure |
-| `testing/resources.json` (19 resources) | READY_TO_REUSE | task-owned resource boundary |
-| `testing/sounding-line-authority.json` | READY_TO_REUSE | authority/version/policy slice |
-| `testing/validation-debt.json` (2 entries) | READY_TO_REUSE | known validation risk marker |
-| `Development_Docs/document-index.json` (1,049 records) | COARSE | document location/type; needs task/status relevance edges |
-| program phase status, evidence, and integration records | PARTIAL | accepted plateau capsules; requires normalized identity/status locator |
-| Git commit/tree/blob identities | READY_TO_REUSE | unchanged-read and main-delta identity |
-| Feature Catalog fragments | PARTIAL | completed feature ownership/status; not a generic task router |
+| Source                                                               | Classification | Project Trim use                                                       |
+| -------------------------------------------------------------------- | -------------- | ---------------------------------------------------------------------- |
+| `testing/ownership.json` (16 owners)                                 | READY_TO_REUSE | owner and project boundary slice                                       |
+| `testing/contracts.json` (475 contracts)                             | READY_TO_REUSE | canonical contract closure                                             |
+| `testing/impact-map.json` (156 paths, 456 contract mappings)         | PARTIAL        | changed-path closure; surface unmapped paths/debt                      |
+| `testing/suites.json` (61 suites) and `release-gates.json` (7 gates) | READY_TO_REUSE | relevant validation closure                                            |
+| `testing/resources.json` (19 resources)                              | READY_TO_REUSE | task-owned resource boundary                                           |
+| `testing/sounding-line-authority.json`                               | READY_TO_REUSE | authority/version/policy slice                                         |
+| `testing/validation-debt.json` (2 entries)                           | READY_TO_REUSE | known validation risk marker                                           |
+| `Development_Docs/document-index.json` (1,049 records)               | COARSE         | document location/type; needs task/status relevance edges              |
+| program phase status, evidence, and integration records              | PARTIAL        | accepted plateau capsules; requires normalized identity/status locator |
+| Git commit/tree/blob identities                                      | READY_TO_REUSE | unchanged-read and main-delta identity                                 |
+| Feature Catalog fragments                                            | PARTIAL        | completed feature ownership/status; not a generic task router          |
 
 ## 15. Minimum Sufficient Context Packet feasibility example
 
 Worked example: `eaaf46dac`, the Studio validation-field focus repair.
 
-| Current likely context path (ESTIMATE) | Proposed initial packet |
-| --- | --- |
+| Current likely context path (ESTIMATE)                                                                                                                                                                 | Proposed initial packet                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Read permanent instructions; locate the component and direct test; search for Studio ownership/contract material; check authority; investigate remount/focus behavior; then choose focused validation. | **Identity:** commit/base and changed path. **Scope:** defer focus one paint for remounted inspector fields. **Authority:** testing workflow plus v1.4 focused-repair rule. **Source roots:** `src/components/studio/TaleEditor.tsx`, its direct test, and inspector-field producer if needed. **Mappings:** no direct inspected impact-map entry; mark expansion required. **Tests:** direct component test first, then mapped/fallback closure. **Boundary:** no schema, migration, or cross-product change is indicated by the diff. **Risk:** asynchronous focus timing and cleanup. **Completion contract:** direct regression proof, then governed candidate qualification as applicable. |
 
 The proposed packet starts with about 5–8 pointers rather than a program-wide
