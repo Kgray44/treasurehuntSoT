@@ -8,7 +8,7 @@ last_reviewed: 2026-08-14
 
 # Project Trim Phase 1 validation record
 
-Focused qualification is `node --test tests/agent-context/project-trim-phase1.test.mjs`, exercised through `npm run agent-context:test`. It proves profile selection and soft bounds; current registry composition; no duplicate canonical registry; partial/unmapped conservative fallback; authority-conflict staleness; both execution profiles and hard-boundary distinction; basic expansion/read repeat accounting; exact, reconstructed, calibrated, coarse, and unavailable token-accounting states; estimate labelling; secret redaction; and retained Sounding Line authority pointer.
+Focused qualification is `node --test tests/agent-context/project-trim-phase1.test.mjs`. It proves profile selection and soft bounds; current registry composition; no duplicate canonical registry; partial/unmapped conservative fallback; authority-conflict staleness; both execution profiles and hard-boundary distinction; basic expansion/read repeat accounting; exact, reconstructed, calibrated, coarse, and unavailable token-accounting states; estimate labelling; secret redaction; and retained Sounding Line authority pointer.
 
 Documentation validation must include the current generated document index, the exact governing PDF checksum, and the standard repository documentation validator. This implementation adds no product behavior and does not alter Sounding Line release authority or paths.
 
