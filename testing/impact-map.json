@@ -4717,6 +4717,12 @@
       "path": "Development_Docs/Governing/Project_Trim_*.pdf",
       "suiteIds": ["unit.agent-context", "static.core", "validation.documentation"],
       "contractIds": ["project-trim.minimum-sufficient-context"]
+    },
+    {
+      "path": "testing/generated/active-test-registry.json",
+      "exclusive": true,
+      "suiteIds": ["unit.sounding-line", "static.core"],
+      "contractIds": []
     }
   ],
   "contractMappings": [
