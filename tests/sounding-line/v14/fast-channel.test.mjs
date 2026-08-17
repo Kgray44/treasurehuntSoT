@@ -294,6 +294,7 @@ test("Project Trim Phase 1 selects its governed minimum sufficient evidence with
     "scripts/agent-context/record-ledger.mjs",
     "scripts/agent-context/record-usage.mjs",
     "scripts/generate-document-index.mjs",
+    "testing/generated/active-test-registry.json",
     "tests/agent-context/project-trim-phase1.test.mjs",
     "tests/fixtures/agent-context/bounded-product.json",
     "tests/fixtures/agent-context/documentation-only.json",
@@ -314,6 +315,7 @@ test("Project Trim Phase 1 selects its governed minimum sufficient evidence with
     "static.core",
     "unit.agent-context",
     "unit.feature-catalog",
+    "unit.sounding-line",
     "validation.documentation",
   ]);
   assert.equal(plan.ledger.find((entry) => entry.suiteId === "unit.agent-context").selectionReason, "DIRECT_IMPACT");
@@ -321,7 +323,13 @@ test("Project Trim Phase 1 selects its governed minimum sufficient evidence with
     plan.ledger.find((entry) => entry.suiteId === "browser.access-sentinel").selectionReason,
     "REQUIRED_SENTINEL",
   );
-  for (const suiteId of ["unit.tideglass", "unit.animation", "browser.accessibility", "browser.animation-lifecycle"])
+  for (const suiteId of [
+    "unit.tideglass",
+    "unit.animation",
+    "browser.accessibility",
+    "browser.animation-lifecycle",
+    "retirement.matrix-proof",
+  ])
     assert.equal(plan.ledger.find((entry) => entry.suiteId === suiteId).evidenceDisposition, "PRESERVED", suiteId);
 
   const known = selectV14Mainline({
