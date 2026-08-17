@@ -58,6 +58,9 @@ const tideglassContracts = JSON.parse(await fs.readFile(path.join(root, "testing
 const drydockContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
   .contracts.map((contract) => contract.id)
   .filter((contractId) => contractId.startsWith("drydock-"));
+const projectTrimContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
+  .contracts.map((contract) => contract.id)
+  .filter((contractId) => contractId.startsWith("project-trim."));
 
 function isHelmFile(file) {
   return (
@@ -87,7 +90,16 @@ function isBridgewatchFile(file) {
   return file.startsWith("bridgewatch/") || file === "scripts/sounding-line/status-projection.mjs";
 }
 
+function isProjectTrimFile(file) {
+  return (
+    file.startsWith("scripts/agent-context/") ||
+    file.startsWith("tests/agent-context/") ||
+    file.startsWith("tests/fixtures/agent-context/")
+  );
+}
+
 function ownerFor(file) {
+  if (isProjectTrimFile(file)) return "project-trim";
   if (isBridgewatchFile(file)) return "bridgewatch";
   if (file.includes("wakebook") || file.includes("api/passport/voyages")) return "project-wakebook";
   if (isHelmFile(file)) return "project-helm";
@@ -106,6 +118,7 @@ function ownerFor(file) {
 }
 
 function unitFamily(file) {
+  if (isProjectTrimFile(file)) return "unit.agent-context";
   if (isBridgewatchFile(file)) return "unit.bridgewatch";
   if (file.startsWith("src/wakebook/") || file.includes("api/passport/voyages")) return "unit.wakebook";
   if (isHelmFile(file)) return "unit.helm";
@@ -187,6 +200,7 @@ function browserFamily(project, file, title) {
 }
 
 function contractFor(file, family) {
+  if (isProjectTrimFile(file) || family === "unit.agent-context") return projectTrimContracts;
   if (isBridgewatchFile(file) || family === "unit.bridgewatch") return ["bridgewatch.mission-control"];
   if (file.includes("wakebook") || family.includes("wakebook")) return wakebookContracts;
   if (isHelmFile(file) || family === "unit.helm" || family === "component.helm" || family === "browser.helm")

@@ -4672,6 +4672,51 @@
         "wakebook.archive.partial-history",
         "wakebook.archive.summary-redaction"
       ]
+    },
+    {
+      "path": ".gitignore",
+      "suiteIds": ["static.core"],
+      "contractIds": []
+    },
+    {
+      "path": ".agents/context-workflow.md",
+      "suiteIds": ["unit.agent-context", "static.core"],
+      "contractIds": ["project-trim.minimum-sufficient-context"]
+    },
+    {
+      "path": "AGENTS.md",
+      "suiteIds": ["unit.agent-context", "static.core"],
+      "contractIds": ["project-trim.minimum-sufficient-context"]
+    },
+    {
+      "path": "agent-context-profiles.json",
+      "suiteIds": ["unit.agent-context", "static.core"],
+      "contractIds": ["project-trim.minimum-sufficient-context"]
+    },
+    {
+      "path": "scripts/agent-context/**",
+      "suiteIds": ["unit.agent-context", "static.core"],
+      "contractIds": ["project-trim.minimum-sufficient-context"]
+    },
+    {
+      "path": "tests/agent-context/**",
+      "suiteIds": ["unit.agent-context", "static.core"],
+      "contractIds": ["project-trim.minimum-sufficient-context"]
+    },
+    {
+      "path": "tests/fixtures/agent-context/**",
+      "suiteIds": ["unit.agent-context", "static.core"],
+      "contractIds": ["project-trim.minimum-sufficient-context"]
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/**",
+      "suiteIds": ["static.core", "validation.documentation"],
+      "contractIds": []
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Trim_*.pdf",
+      "suiteIds": ["unit.agent-context", "static.core", "validation.documentation"],
+      "contractIds": ["project-trim.minimum-sufficient-context"]
     }
   ],
   "contractMappings": [
@@ -6501,6 +6546,10 @@
     {
       "contractId": "deepwater.capability-realization-integrity",
       "suiteIds": ["unit.deepwater"]
+    },
+    {
+      "contractId": "project-trim.minimum-sufficient-context",
+      "suiteIds": ["unit.agent-context"]
     },
     {
       "contractId": "public-privacy-projection",
