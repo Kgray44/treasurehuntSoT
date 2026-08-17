@@ -318,12 +318,22 @@ export async function collectEngineering({ archiveRoot, repositoryRoot, period, 
   };
   validateRecord(manifest, "source-manifest");
   const existing = await readJson(join(destination, "engineering.json"));
+  const indexEntry = {
+    id: `engineering:${weekId}:${engineering.sourceDigest}`,
+    recordType: "engineering-weekly",
+    weekId,
+    path: relative(archiveRoot, join(destination, "engineering.json")).replaceAll("\\", "/"),
+    sourceDigest: engineering.sourceDigest,
+    manifestDigest: digest(manifest),
+  };
   if (
     existing &&
     existing.sourceDigest === engineering.sourceDigest &&
     JSON.stringify(existing.period) === JSON.stringify(period)
-  )
+  ) {
+    if (!dryRun) await updateEvidenceIndex(archiveRoot, indexEntry);
     return { status: "IDEMPOTENT", weekId, destination, digest: digest(existing) };
+  }
   if (existing) {
     const revisionsRoot = join(destination, "revisions");
     if (await exists(revisionsRoot)) {
@@ -334,6 +344,11 @@ export async function collectEngineering({ archiveRoot, repositoryRoot, period, 
           candidate?.sourceDigest === engineering.sourceDigest &&
           JSON.stringify(candidate.period) === JSON.stringify(period)
         ) {
+          if (!dryRun)
+            await updateEvidenceIndex(archiveRoot, {
+              ...indexEntry,
+              path: relative(archiveRoot, join(revision, "engineering.json")).replaceAll("\\", "/"),
+            });
           return { status: "IDEMPOTENT", weekId, destination: revision, digest: digest(candidate) };
         }
       }
@@ -346,6 +361,10 @@ export async function collectEngineering({ archiveRoot, repositoryRoot, period, 
     if (!dryRun) {
       await writeJson(join(revision, "engineering.json"), engineering);
       await writeJson(join(revision, "source-manifest.json"), manifest);
+      await updateEvidenceIndex(archiveRoot, {
+        ...indexEntry,
+        path: relative(archiveRoot, join(revision, "engineering.json")).replaceAll("\\", "/"),
+      });
     }
     return { status: "REVISION_CREATED", weekId, destination: revision, digest: digest(engineering) };
   }
@@ -356,6 +375,7 @@ export async function collectEngineering({ archiveRoot, repositoryRoot, period, 
       `# Engineering evidence - ${weekId}\n\nThis factual digest is not a journal.\n\n- Coverage: ${engineering.coverage}\n- Git commits: ${commits.length}\n- Main start: ${mainStartSha}\n- Main end: ${mainEndSha}\n- GitHub-only metrics: UNAVAILABLE_FROM_CURRENT_EVIDENCE\n`,
     );
     await writeJson(join(destination, "source-manifest.json"), manifest);
+    await updateEvidenceIndex(archiveRoot, indexEntry);
   }
   return { status: dryRun ? "DRY_RUN" : "COLLECTED", weekId, destination, digest: digest(engineering) };
 }
@@ -569,11 +589,16 @@ export async function replay({ archiveRoot, publicRoot, repositoryRoot, period, 
 }
 
 export async function updateEvidenceIndex(archiveRoot, entry) {
+  if (!entry?.id || !entry?.recordType || !entry?.weekId || !entry?.path)
+    throw new Error("CONFLUENCE_EVIDENCE_INDEX_ENTRY_INCOMPLETE");
+  if (entry.recordType === "engineering-weekly" && !/^[a-f0-9]{64}$/.test(entry.sourceDigest ?? ""))
+    throw new Error("CONFLUENCE_EVIDENCE_INDEX_SOURCE_DIGEST_REQUIRED");
   const path = join(archiveRoot, "indexes", "evidence-index.json");
   const current = await readJson(path, { schemaVersion: CONFLUENCE_VERSION, entries: [] });
   const entries = [...current.entries.filter((candidate) => candidate.id !== entry.id), entry].sort((a, b) =>
     a.id.localeCompare(b.id),
   );
+  if (JSON.stringify(current.entries) === JSON.stringify(entries)) return entries;
   await writeJson(path, { ...current, entries, updatedAt: now() });
   return entries;
 }

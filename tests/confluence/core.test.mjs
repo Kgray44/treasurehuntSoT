@@ -14,6 +14,7 @@ import {
   inspectDocx,
   inspectPdf,
   periodForWeek,
+  updateEvidenceIndex,
   validatePublicMetadata,
   validateRecord,
 } from "../../scripts/confluence/core.mjs";
@@ -80,6 +81,31 @@ test("design token baseline remains complete and immutable", async () => {
     await writeFile(join(root, "tokens.json"), JSON.stringify(DESIGN_TOKENS));
     assert.equal(JSON.parse(await readFile(join(root, "tokens.json"), "utf8"))["glyph.section_separator"], "◆");
     assert.equal(Object.keys(DESIGN_TOKENS).length, 29);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("evidence index records only deterministic private-archive locators", async () => {
+  const root = await mkdtemp(join(tmpdir(), "confluence-index-"));
+  try {
+    const entry = {
+      id: `engineering:2026-W34:${"a".repeat(64)}`,
+      recordType: "engineering-weekly",
+      weekId: "2026-W34",
+      path: "engineering/weekly/2026/2026-W34/engineering.json",
+      sourceDigest: "a".repeat(64),
+      manifestDigest: "b".repeat(64),
+    };
+    assert.deepEqual(await updateEvidenceIndex(root, entry), [entry]);
+    const first = JSON.parse(await readFile(join(root, "indexes", "evidence-index.json"), "utf8"));
+    assert.deepEqual(await updateEvidenceIndex(root, entry), [entry]);
+    const second = JSON.parse(await readFile(join(root, "indexes", "evidence-index.json"), "utf8"));
+    assert.deepEqual(second, first, "an unchanged index does not churn timestamps on an idempotent replay");
+    await assert.rejects(
+      () => updateEvidenceIndex(root, { ...entry, id: "engineering:2026-W34:missing", sourceDigest: undefined }),
+      /CONFLUENCE_EVIDENCE_INDEX_SOURCE_DIGEST_REQUIRED/,
+    );
   } finally {
     await rm(root, { recursive: true, force: true });
   }
