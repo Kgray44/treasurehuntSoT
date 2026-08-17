@@ -238,6 +238,30 @@ jobs:
           $enginesJson = '["{0}"]' -f $env:SOUNDING_LINE_BROWSER_ENGINE
           node scripts/sounding-line/v14/browser-layer-artifact.mjs verify --engines-json $enginesJson --source $source --manifest $manifest
           if ($LASTEXITCODE -ne 0) { throw 'GOVERNED_BROWSER_LAYER_RESTORE_FAILED' }
+      - id: chromium-setup-browser-identity
+        if: ${{ !inputs.empty_wave && inputs.requires_browser && inputs.browser_engine == 'webkit' }}
+        shell: pwsh
+        run: |
+          $identity = node scripts/sounding-line/v14/browser-layer-artifact.mjs cache-key --engines-json '["chromium"]' | ConvertFrom-Json
+          "key=$($identity.key)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - id: chromium-setup-browser-cache-restore
+        if: ${{ !inputs.empty_wave && inputs.requires_browser && inputs.browser_engine == 'webkit' }}
+        uses: actions/cache/restore@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            sounding-line-browser-cache/chromium
+            sounding-line-browser-cache/chromium-manifest.json
+          key: ${{ steps.chromium-setup-browser-identity.outputs.key }}
+      - name: Restore verified immutable Chromium setup layer
+        if: ${{ !inputs.empty_wave && inputs.requires_browser && inputs.browser_engine == 'webkit' }}
+        shell: pwsh
+        env:
+          SOUNDING_LINE_CHROMIUM_SETUP_CACHE_KEY: ${{ steps.chromium-setup-browser-identity.outputs.key }}
+          CACHE_HIT: ${{ steps.chromium-setup-browser-cache-restore.outputs.cache-hit }}
+        run: |
+          if ($env:CACHE_HIT -ne 'true') { throw 'GOVERNED_CHROMIUM_SETUP_LAYER_CACHE_MISS' }
+          node scripts/sounding-line/v14/browser-layer-artifact.mjs verify --engines-json '["chromium"]' --source sounding-line-browser-cache/chromium --manifest sounding-line-browser-cache/chromium-manifest.json
+          if ($LASTEXITCODE -ne 0) { throw 'GOVERNED_CHROMIUM_SETUP_LAYER_RESTORE_FAILED' }
       - id: sqlite-baseline-identity
         if: ${{ !inputs.empty_wave && inputs.requires_browser }}
         shell: pwsh
@@ -269,6 +293,7 @@ jobs:
           SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-transport/${{ inputs.plan_path }}
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
           SOUNDING_LINE_BROWSER_ENGINE: ${{ inputs.browser_engine }}
+          SOUNDING_LINE_CHROMIUM_SETUP_BROWSERS_PATH: ${{ inputs.browser_engine == 'webkit' && 'sounding-line-browser-cache/chromium' || '' }}
           PLAYWRIGHT_BROWSERS_PATH: sounding-line-browser-cache/${{ inputs.browser_engine }}
         run: |
           $setupStartedAt = [DateTimeOffset]::UtcNow
@@ -332,6 +357,7 @@ jobs:
           SOUNDING_LINE_SUITES_JSON: ${{ inputs.suites_json }}
           SOUNDING_LINE_BROWSER_TEST_IDS_BY_SUITE_JSON: ${{ inputs.browser_test_ids_by_suite_json }}
           SOUNDING_LINE_BROWSER_ENGINE: ${{ inputs.browser_engine }}
+          SOUNDING_LINE_CHROMIUM_SETUP_BROWSERS_PATH: ${{ inputs.browser_engine == 'webkit' && 'sounding-line-browser-cache/chromium' || '' }}
           SOUNDING_LINE_SEALED_SOURCE_SHA: ${{ inputs.candidate_sha }}
           SOUNDING_LINE_CERTIFIED_BASELINE: ${{ inputs.requires_browser && '1' || '0' }}
           # Only browser workers restore a certified baseline. Non-browser
