@@ -374,14 +374,14 @@ jobs:
           foreach ($wave in 0..$maximumWave) {
             foreach ($mode in @('parallel', 'exclusive')) {
               $rawMatrix = & node scripts/sounding-line/v14/physical-worker-batching.mjs --plan sounding-line-plan.json --wave $wave --mode $mode
-              if ($LASTEXITCODE -ne 0) { throw "PHYSICAL_BATCH_MATRIX_INVALID:$mode:$wave" }
-              try { $physicalMatrix = $rawMatrix | ConvertFrom-Json } catch { throw "PHYSICAL_BATCH_MATRIX_INVALID:$mode:$wave" }
-              if ($null -eq $physicalMatrix -or $null -eq $physicalMatrix.include) { throw "PHYSICAL_BATCH_MATRIX_INVALID:$mode:$wave" }
+              if ($LASTEXITCODE -ne 0) { throw ("PHYSICAL_BATCH_MATRIX_INVALID:{0}:{1}" -f $mode, $wave) }
+              try { $physicalMatrix = $rawMatrix | ConvertFrom-Json } catch { throw ("PHYSICAL_BATCH_MATRIX_INVALID:{0}:{1}" -f $mode, $wave) }
+              if ($null -eq $physicalMatrix -or $null -eq $physicalMatrix.include) { throw ("PHYSICAL_BATCH_MATRIX_INVALID:{0}:{1}" -f $mode, $wave) }
               $validatedRawMatrix = $physicalMatrix | ConvertTo-Json -Compress -Depth 16 | & node scripts/sounding-line/v14/physical-worker-batching.mjs --validate-matrix-stdin
-              if ($LASTEXITCODE -ne 0) { throw "PHYSICAL_BATCH_MATRIX_INVALID:$mode:$wave" }
-              try { $validatedMatrix = $validatedRawMatrix | ConvertFrom-Json } catch { throw "PHYSICAL_BATCH_MATRIX_INVALID:$mode:$wave" }
+              if ($LASTEXITCODE -ne 0) { throw ("PHYSICAL_BATCH_MATRIX_INVALID:{0}:{1}" -f $mode, $wave) }
+              try { $validatedMatrix = $validatedRawMatrix | ConvertFrom-Json } catch { throw ("PHYSICAL_BATCH_MATRIX_INVALID:{0}:{1}" -f $mode, $wave) }
               $nodes = @($validatedMatrix.include)
-              if (@($nodes | Where-Object { $null -eq $_ }).Count -ne 0) { throw "PHYSICAL_BATCH_MATRIX_INVALID:$mode:$wave" }
+              if (@($nodes | Where-Object { $null -eq $_ }).Count -ne 0) { throw ("PHYSICAL_BATCH_MATRIX_INVALID:{0}:{1}" -f $mode, $wave) }
               # GitHub marks a caller that expands an empty reusable-workflow matrix as
               # skipped, which makes the enclosing authority run fail even when every
               # governed receipt and finalizer decision is clean. Represent an empty
