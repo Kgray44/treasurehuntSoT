@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -30,6 +30,8 @@ import {
 const sha = (letter) => letter.repeat(40);
 const fingerprint = (value = "fingerprint") => ({ fingerprintDigest: value });
 const identity = { candidateSha: sha("a"), gate: "mainline", policyDigest: "policy", fingerprintDigest: "fingerprint" };
+const testingJson = async (name) =>
+  JSON.parse(await readFile(new URL(`../../../testing/${name}`, import.meta.url), "utf8"));
 const receipt = (id, overrides = {}) => ({
   id,
   obligationId: "unit.example",
@@ -107,6 +109,270 @@ test("risk floors and unknown mapping produce sealed, explained plans without si
   assert.ok(unknown.ledger.every((entry) => entry.selected));
   assert.equal(unknown.ledger[0].debt[0].owner, "owner-a");
   assert.ok(V14_RISK_FLOORS.some((entry) => entry.id === "persistence"));
+});
+
+test("Bridgewatch v1.2 uses its complete mapped impact surface without fresh-selecting unrelated product families", async () => {
+  const [suiteInventory, impact] = await Promise.all([testingJson("suites.json"), testingJson("impact-map.json")]);
+  const changedPaths = [
+    "CHANGELOG.md",
+    "Development_Docs/INDEX.md",
+    "Development_Docs/Project_Bridgewatch_Phase_3_Deployment_Runbook.md",
+    "Development_Docs/Project_Bridgewatch_v1.2_Data_Fidelity_and_Capability_Audit.md",
+    "Development_Docs/Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md",
+    "Development_Docs/Project_Bridgewatch_v1.2_Validation_Record.md",
+    "Development_Docs/README.md",
+    "Development_Docs/document-index.json",
+    "bridgewatch/.env.example",
+    "bridgewatch/.gitignore",
+    "bridgewatch/README.md",
+    "bridgewatch/lib/github.ts",
+    "bridgewatch/lib/server.ts",
+    "bridgewatch/lib/store.ts",
+    "bridgewatch/package.json",
+    "bridgewatch/public/app.js",
+    "bridgewatch/public/index.html",
+    "bridgewatch/public/style.css",
+    "bridgewatch/scripts/bridgewatch-lifecycle.ps1",
+    "bridgewatch/src/comparison.ts",
+    "bridgewatch/src/discovery.ts",
+    "bridgewatch/src/domain.ts",
+    "bridgewatch/src/history.ts",
+    "bridgewatch/src/reconciliation.ts",
+    "bridgewatch/src/repository-evidence.ts",
+    "bridgewatch/src/sounding-line.ts",
+    "bridgewatch/test/comparison.test.ts",
+    "bridgewatch/test/discovery.test.ts",
+    "bridgewatch/test/github.test.ts",
+    "bridgewatch/test/history.test.ts",
+    "bridgewatch/test/mission-control-ui.test.ts",
+    "bridgewatch/test/reconciliation.test.ts",
+    "bridgewatch/test/repository-evidence.test.ts",
+    "bridgewatch/test/server.test.ts",
+    "bridgewatch/test/sounding-line-projection.test.ts",
+    "bridgewatch/test/store.test.ts",
+    "deploy/nginx.conf",
+    "scripts/sounding-line/status-projection.mjs",
+    "src/admiralty/bridgewatch-gateway.test.ts",
+    "src/admiralty/bridgewatch-gateway.ts",
+  ];
+  const plan = selectV14Mainline({
+    changedPaths,
+    suites: suiteInventory.suites,
+    requiredSuiteIds: ["browser.access-sentinel"],
+    ledgerSuiteIds: suiteInventory.suites.map((suite) => suite.id),
+    impact,
+    selectionContract: { selectionMode: "EXACT_SEMANTIC_IMPACT_WITH_REQUIRED_SENTINELS" },
+  });
+
+  assert.equal(plan.fallback, null);
+  assert.deepEqual(plan.selectedSuiteIds, [
+    "browser.access-sentinel",
+    "browser.admiralty",
+    "build.production",
+    "component.admiralty",
+    "database.sqlite",
+    "service.admiralty",
+    "static.core",
+    "unit.admiralty",
+    "unit.bridgewatch",
+    "unit.platform-foundation",
+    "unit.sounding-line",
+    "validation.documentation",
+  ]);
+  for (const suiteId of [
+    "unit.bridgewatch",
+    "unit.sounding-line",
+    "unit.admiralty",
+    "browser.admiralty",
+    "component.admiralty",
+    "service.admiralty",
+    "unit.platform-foundation",
+    "database.sqlite",
+    "build.production",
+    "static.core",
+    "validation.documentation",
+    "browser.access-sentinel",
+  ])
+    assert.equal(plan.ledger.find((entry) => entry.suiteId === suiteId).evidenceDisposition, "FRESH", suiteId);
+  assert.equal(plan.ledger.find((entry) => entry.suiteId === "browser.admiralty").selectionReason, "DIRECT_IMPACT");
+  assert.equal(plan.ledger.find((entry) => entry.suiteId === "unit.admiralty").selectionReason, "DIRECT_IMPACT");
+  assert.equal(plan.ledger.find((entry) => entry.suiteId === "component.admiralty").selectionReason, "DEPENDENCY");
+  assert.equal(plan.ledger.find((entry) => entry.suiteId === "service.admiralty").selectionReason, "DEPENDENCY");
+  for (const suiteId of [
+    "browser.captain",
+    "component.captain",
+    "browser.studio",
+    "component.studio",
+    "browser.helm",
+    "component.helm",
+    "unit.helm",
+    "unit.wayfarer",
+    "browser.passport",
+    "component.passport",
+    "browser.artifacts",
+    "component.artifacts",
+    "browser.wakebook",
+    "component.wakebook",
+    "unit.wakebook",
+    "browser.community",
+    "component.community",
+    "unit.community",
+    "browser.player-journal",
+    "unit.journal",
+  ]) {
+    const entry = plan.ledger.find((candidate) => candidate.suiteId === suiteId);
+    assert.equal(entry.evidenceDisposition, "PRESERVED", suiteId);
+    assert.equal(entry.selectionReason, "SEMANTICALLY_UNCHANGED", suiteId);
+  }
+});
+
+test("Bridgewatch documentation remains documentation evidence while UI changes select the bounded mounted-route browser proof", async () => {
+  const [suiteInventory, impact] = await Promise.all([testingJson("suites.json"), testingJson("impact-map.json")]);
+  const select = (changedPaths) =>
+    selectV14Mainline({
+      changedPaths,
+      suites: suiteInventory.suites,
+      requiredSuiteIds: ["browser.access-sentinel"],
+      ledgerSuiteIds: suiteInventory.suites.map((suite) => suite.id),
+      impact,
+    });
+  for (const changedPath of [
+    "CHANGELOG.md",
+    "Development_Docs/INDEX.md",
+    "Development_Docs/README.md",
+    "Development_Docs/document-index.json",
+    "Development_Docs/Project_Bridgewatch_v1.2_Validation_Record.md",
+  ]) {
+    const document = select([changedPath]);
+    assert.equal(document.fallback, null, changedPath);
+    assert.deepEqual(
+      document.selectedSuiteIds,
+      ["browser.access-sentinel", "static.core", "validation.documentation"],
+      changedPath,
+    );
+  }
+  const documentation = select(["Development_Docs/Project_Bridgewatch_v1.2_Validation_Record.md"]);
+  assert.equal(documentation.ledger.find((entry) => entry.suiteId === "unit.bridgewatch").evidenceDisposition, "PRESERVED");
+  assert.equal(documentation.ledger.find((entry) => entry.suiteId === "browser.admiralty").evidenceDisposition, "PRESERVED");
+
+  const ui = select(["bridgewatch/public/app.js"]);
+  assert.equal(ui.fallback, null);
+  assert.equal(ui.ledger.find((entry) => entry.suiteId === "browser.admiralty").selectionReason, "DIRECT_IMPACT");
+  assert.equal(ui.ledger.find((entry) => entry.suiteId === "unit.bridgewatch").selectionReason, "DIRECT_IMPACT");
+  assert.equal(ui.ledger.find((entry) => entry.suiteId === "component.admiralty").selectionReason, "DEPENDENCY");
+  assert.equal(ui.ledger.find((entry) => entry.suiteId === "browser.captain").evidenceDisposition, "PRESERVED");
+});
+
+test("Bridgewatch discovery, reconciliation, history, collector, store, UI, and projection tests all retain the Bridgewatch obligation", async () => {
+  const [suiteInventory, impact] = await Promise.all([testingJson("suites.json"), testingJson("impact-map.json")]);
+  for (const changedPath of [
+    "bridgewatch/test/discovery.test.ts",
+    "bridgewatch/test/reconciliation.test.ts",
+    "bridgewatch/test/history.test.ts",
+    "bridgewatch/test/github.test.ts",
+    "bridgewatch/test/store.test.ts",
+    "bridgewatch/test/mission-control-ui.test.ts",
+    "bridgewatch/test/sounding-line-projection.test.ts",
+  ]) {
+    const plan = selectV14Mainline({
+      changedPaths: [changedPath],
+      suites: suiteInventory.suites,
+      ledgerSuiteIds: suiteInventory.suites.map((suite) => suite.id),
+      impact,
+    });
+    assert.equal(plan.fallback, null, changedPath);
+    assert.equal(plan.ledger.find((entry) => entry.suiteId === "unit.bridgewatch").selectionReason, "DIRECT_IMPACT", changedPath);
+  }
+});
+
+test("conservative fallback reports only exact unmapped inputs and active debt on every selected ledger entry", () => {
+  const suites = [
+    { id: "unit.bridgewatch", dependencies: [], domains: ["bridgewatch"] },
+    { id: "unit.shared-consumer", dependencies: ["unit.bridgewatch"], domains: ["shared"] },
+    { id: "unit.unrelated", dependencies: [], domains: ["unrelated"] },
+  ];
+  const mapped = selectV14Mainline({
+    changedPaths: ["bridgewatch/src/store.ts"],
+    suites,
+    ledgerSuiteIds: suites.map((suite) => suite.id),
+    impact: {
+      pathMappings: [
+        { path: "bridgewatch/**", suiteIds: ["unit.bridgewatch"] },
+        { path: "src/shared/bridgewatch-contract.ts", suiteIds: ["unit.shared-consumer"] },
+      ],
+      contractMappings: [],
+    },
+    mappingDebt: [{ contractId: "unrelated-contract", owner: "another-project" }],
+  });
+  assert.equal(mapped.fallback, null);
+  assert.equal(mapped.ledger.find((entry) => entry.suiteId === "unit.bridgewatch").selectionReason, "DIRECT_IMPACT");
+  assert.equal(mapped.ledger.find((entry) => entry.suiteId === "unit.unrelated").evidenceDisposition, "PRESERVED");
+
+  const sharedContract = selectV14Mainline({
+    changedPaths: ["bridgewatch/src/shared-contract.ts"],
+    changedContracts: ["bridgewatch.shared-mounted-route"],
+    suites,
+    ledgerSuiteIds: suites.map((suite) => suite.id),
+    impact: {
+      pathMappings: [{ path: "bridgewatch/**", suiteIds: ["unit.bridgewatch"] }],
+      contractMappings: [{ contractId: "bridgewatch.shared-mounted-route", suiteIds: ["unit.shared-consumer"] }],
+    },
+  });
+  assert.equal(sharedContract.fallback, null);
+  assert.equal(
+    sharedContract.ledger.find((entry) => entry.suiteId === "unit.shared-consumer").selectionReason,
+    "DIRECT_IMPACT",
+  );
+  assert.equal(
+    sharedContract.ledger.find((entry) => entry.suiteId === "unit.bridgewatch").selectionReason,
+    "DIRECT_IMPACT",
+  );
+
+  const pathFallbackWithUnrelatedDebt = selectV14Mainline({
+    changedPaths: ["unknown/new.ts"],
+    suites,
+    ledgerSuiteIds: suites.map((suite) => suite.id),
+    impact: { pathMappings: [], contractMappings: [] },
+    mappingDebt: [{ contractId: "unrelated-contract", owner: "another-project", reason: "Unrelated debt" }],
+  });
+  assert.deepEqual(pathFallbackWithUnrelatedDebt.fallback, {
+    disposition: "CONSERVATIVE_FALLBACK",
+    failure: "UNKNOWN_IMPACT",
+    reasons: [{ code: "UNMAPPED_CHANGED_PATH", paths: ["unknown/new.ts"] }],
+  });
+  assert.deepEqual(pathFallbackWithUnrelatedDebt.ledger[0].debt, []);
+
+  const fallback = selectV14Mainline({
+    changedPaths: ["bridgewatch/src/store.ts", "unknown/new.ts"],
+    changedContracts: ["known-contract", "unknown-contract", "debt-contract"],
+    suites,
+    ledgerSuiteIds: suites.map((suite) => suite.id),
+    impact: {
+      pathMappings: [{ path: "bridgewatch/**", suiteIds: ["unit.bridgewatch"] }],
+      contractMappings: [{ contractId: "known-contract", suiteIds: ["unit.bridgewatch"] }],
+    },
+    mappingDebt: [
+      { contractId: "debt-contract", owner: "bridgewatch", reason: "No current test protector" },
+      { contractId: "unrelated-contract", owner: "another-project", reason: "Unrelated debt" },
+    ],
+  });
+  assert.deepEqual(fallback.fallback, {
+    disposition: "CONSERVATIVE_FALLBACK",
+    failure: "UNKNOWN_IMPACT",
+    reasons: [
+      {
+        code: "MAPPING_DEBT",
+        debts: [{ contractId: "debt-contract", owner: "bridgewatch", reason: "No current test protector" }],
+      },
+      { code: "UNMAPPED_CHANGED_CONTRACT", contractIds: ["debt-contract", "unknown-contract"] },
+      { code: "UNMAPPED_CHANGED_PATH", paths: ["unknown/new.ts"] },
+    ],
+  });
+  for (const entry of fallback.ledger) {
+    assert.equal(entry.evidenceDisposition, "CONSERVATIVE_FALLBACK");
+    assert.deepEqual(entry.fallbackReasons, fallback.fallback.reasons);
+    assert.deepEqual(entry.debt, [{ id: "debt-contract", owner: "bridgewatch" }]);
+  }
 });
 
 test("exact Tideglass impact uses only direct work and the mandatory sentinel in the earliest wave", () => {

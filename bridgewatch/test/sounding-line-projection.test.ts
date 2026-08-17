@@ -40,6 +40,25 @@ describe("Sounding Line read-only status projection", () => {
       JSON.stringify({
         sourceSha: "abc",
         gate: "mainline",
+        semanticFallback: {
+          disposition: "CONSERVATIVE_FALLBACK",
+          failure: "UNKNOWN_IMPACT",
+          reasons: [
+            { code: "UNMAPPED_CHANGED_PATH", paths: ["bridgewatch/unmapped.ts"] },
+            {
+              code: "MAPPING_DEBT",
+              debts: [
+                {
+                  contractId: "bridgewatch.mounted-route",
+                  owner: "bridgewatch",
+                  classification: "NO_CURRENT_TEST_PROTECTOR",
+                  risk: "critical",
+                  reason: "No governed suite declares this contract.",
+                },
+              ],
+            },
+          ],
+        },
         nodes: [
           {
             id: "unit.bridgewatch",
@@ -63,6 +82,26 @@ describe("Sounding Line read-only status projection", () => {
       gate: "mainline",
       cleanupState: "CLEAN",
       finalDecision: "RELEASE_GO_WITH_EXTERNAL_PENDING",
+      semanticFallback: "UNKNOWN_IMPACT",
+      semanticFallbackDetails: {
+        disposition: "CONSERVATIVE_FALLBACK",
+        failure: "UNKNOWN_IMPACT",
+        reasons: [
+          { code: "UNMAPPED_CHANGED_PATH", paths: ["bridgewatch/unmapped.ts"] },
+          {
+            code: "MAPPING_DEBT",
+            debts: [
+              {
+                contractId: "bridgewatch.mounted-route",
+                owner: "bridgewatch",
+                classification: "NO_CURRENT_TEST_PROTECTOR",
+                risk: "critical",
+                reason: "No governed suite declares this contract.",
+              },
+            ],
+          },
+        ],
+      },
     });
     expect(result.workers[0]).toMatchObject({ lane: "browser-chromium", state: "RUNNING" });
   });
