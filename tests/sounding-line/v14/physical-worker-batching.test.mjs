@@ -149,6 +149,8 @@ test("normal-authority matrix construction and Wave 0 barrier fail closed on mal
   assert.match(workflow, /PHYSICAL_BATCH_MATRIX_INVALID/u);
   assert.match(workflow, /SOUNDING_LINE_WAVE_MATRIX_INVALID/u);
   assert.match(workflow, /\$LASTEXITCODE -ne 0/u);
+  assert.match(workflow, /throw \("PHYSICAL_BATCH_MATRIX_INVALID:\{0\}:\{1\}" -f \$mode, \$wave\)/u);
+  assert.doesNotMatch(workflow, /PHYSICAL_BATCH_MATRIX_INVALID:\$mode:/u);
   assert.match(workflow, /browser_test_ids_by_suite_json: \$\{\{ matrix\.browserTestIdsBySuiteJson \}\}/u);
   assert.match(workflow, /suiteId = '__SOUNDING_LINE_EMPTY_WAVE__'/u);
   assert.doesNotMatch(workflow, /\{"include":\[null\]\}/u);
