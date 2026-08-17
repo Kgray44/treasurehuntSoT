@@ -716,18 +716,28 @@ export class BridgewatchStore {
 
   recordHistory(
     snapshot: BridgewatchProgramSnapshot,
-    { storeSnapshot = true }: { storeSnapshot?: boolean } = {},
+    {
+      storeSnapshot = true,
+      prior: suppliedPrior,
+    }: { storeSnapshot?: boolean; prior?: BridgewatchProgramSnapshot | null } = {},
   ): {
     events: BridgewatchHistoricalEvent[];
     snapshotStored: boolean;
   } {
-    const prior = this.get<BridgewatchProgramSnapshot>("history:current-normalized")?.value ?? null;
+    const prior =
+      suppliedPrior === undefined
+        ? (this.get<BridgewatchProgramSnapshot>("history:current-normalized")?.value ?? null)
+        : suppliedPrior;
     const events = deriveEvents(prior, snapshot);
-    const digest = snapshotDigest(snapshot);
-    const latest = this.db
-      .prepare("SELECT normalized_digest FROM snapshots ORDER BY snapshot_id DESC LIMIT 1")
-      .get() as { normalized_digest: string } | undefined;
-    const snapshotStored = storeSnapshot && latest?.normalized_digest !== digest;
+    let digest: string | null = null;
+    let snapshotStored = false;
+    if (storeSnapshot) {
+      digest = snapshotDigest(snapshot);
+      const latest = this.db
+        .prepare("SELECT normalized_digest FROM snapshots ORDER BY snapshot_id DESC LIMIT 1")
+        .get() as { normalized_digest: string } | undefined;
+      snapshotStored = latest?.normalized_digest !== digest;
+    }
     this.db.exec("BEGIN");
     try {
       const insert = this.db.prepare(

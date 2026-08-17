@@ -319,6 +319,24 @@ describe("Phase 3 normalized historical events", () => {
 });
 
 describe("Phase 3 history persistence", () => {
+  it("derives the same durable events from a caller-retained normalized snapshot", () => {
+    const store = new BridgewatchStore(
+      join(mkdtempSync(join(tmpdir(), "bridgewatch-history-cache-")), "history.sqlite"),
+    );
+    try {
+      const before = initial();
+      const after = accepted();
+      store.recordHistory(before);
+      const result = store.recordHistory(after, { prior: before });
+      expect(result.events).not.toHaveLength(0);
+      expect(store.history({ since: "2026-01-01T00:00:00.000Z", limit: 100 }).events).toEqual(
+        expect.arrayContaining([expect.objectContaining({ kind: "PROJECT_STATE_CHANGED" })]),
+      );
+    } finally {
+      store.close();
+    }
+  });
+
   it("deduplicates snapshots, rolls up before pruning, and protects durable history", () => {
     const store = new BridgewatchStore(join(mkdtempSync(join(tmpdir(), "bridgewatch-history-")), "history.sqlite"));
     try {

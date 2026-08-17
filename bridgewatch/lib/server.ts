@@ -71,6 +71,7 @@ export function buildServer() {
   );
   const telemetryWindows = new Map<string, { startedAt: number; count: number }>();
   let historyWarning: string | null = null;
+  let currentHistory: BridgewatchProgramSnapshot | null | undefined;
   store.replaceProjectRegistry(projectRegistry);
 
   const observation = (): BridgewatchProgramSnapshot => ({
@@ -85,7 +86,12 @@ export function buildServer() {
   });
   const persistHistory = (storeSnapshot = true) => {
     try {
-      store.recordHistory(observation(), { storeSnapshot });
+      const snapshot = observation();
+      store.recordHistory(
+        snapshot,
+        currentHistory === undefined ? { storeSnapshot } : { storeSnapshot, prior: currentHistory },
+      );
+      currentHistory = snapshot;
       historyWarning = null;
     } catch {
       historyWarning = "Historical persistence is unavailable; current source projections remain available.";
