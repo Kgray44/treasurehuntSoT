@@ -40,6 +40,11 @@ on:
         description: Exact sealed source identity represented by the plan
         required: true
         type: string
+      candidate_ref:
+        description: Exact sealed local candidate branch ref for v1.4 candidate qualification
+        required: false
+        default: ""
+        type: string
       plan_artifact:
         description: Sealed plan artifact for this qualified candidate
         required: false
@@ -168,6 +173,33 @@ jobs:
           if ($env:SOUNDING_LINE_CANDIDATE_SHA -notmatch '^[0-9a-f]{40}$') { throw 'GOVERNED_WORKER_CANDIDATE_SHA_INVALID' }
           $execution = if ($env:SOUNDING_LINE_EXECUTION_SHA) { $env:SOUNDING_LINE_EXECUTION_SHA } else { $env:SOUNDING_LINE_CANDIDATE_SHA }
           if ((git rev-parse HEAD).Trim() -ne $execution) { throw 'GOVERNED_WORKER_CANDIDATE_CHECKOUT_MISMATCH' }
+      - name: Validate sealed candidate ref and materialize local discovery ref
+        if: ${{ !inputs.empty_wave }}
+        shell: pwsh
+        env:
+          SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-transport/${{ inputs.plan_path }}
+          SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+          SOUNDING_LINE_CANDIDATE_REF: ${{ inputs.candidate_ref }}
+          SOUNDING_LINE_EXECUTION_SHA: ${{ inputs.execution_sha }}
+        run: |
+          if ($env:SOUNDING_LINE_CANDIDATE_SHA -notmatch '^[0-9a-f]{40}$') { throw 'GOVERNED_WORKER_CANDIDATE_SHA_INVALID' }
+          if (-not (Test-Path -LiteralPath $env:SOUNDING_LINE_PLAN -PathType Leaf)) { throw 'GOVERNED_WORKER_PLAN_MISSING' }
+          try { $plan = Get-Content -Raw $env:SOUNDING_LINE_PLAN | ConvertFrom-Json } catch { throw 'GOVERNED_WORKER_PLAN_UNREADABLE' }
+          $candidateRef = $env:SOUNDING_LINE_CANDIDATE_REF
+          if ($plan.authorityMode -eq 'V14_CANDIDATE') {
+            if ($candidateRef -notmatch '^refs/heads/[A-Za-z0-9._/-]+$') { throw 'GOVERNED_WORKER_CANDIDATE_REF_INVALID' }
+            if ($plan.candidateRef -ne $candidateRef) { throw 'GOVERNED_WORKER_CANDIDATE_REF_PLAN_MISMATCH' }
+            if ($plan.sourceSha -ne $env:SOUNDING_LINE_CANDIDATE_SHA) { throw 'GOVERNED_WORKER_PLAN_SOURCE_SHA_MISMATCH' }
+            $execution = if ($env:SOUNDING_LINE_EXECUTION_SHA) { $env:SOUNDING_LINE_EXECUTION_SHA } else { $env:SOUNDING_LINE_CANDIDATE_SHA }
+            if ((git rev-parse HEAD).Trim() -ne $execution) { throw 'GOVERNED_WORKER_CANDIDATE_SOURCE_HEAD_MISMATCH' }
+            if ((git rev-parse "$env:SOUNDING_LINE_CANDIDATE_SHA^{commit}").Trim() -ne $env:SOUNDING_LINE_CANDIDATE_SHA) { throw 'GOVERNED_WORKER_CANDIDATE_SOURCE_OBJECT_MISMATCH' }
+            git update-ref --no-deref $candidateRef $env:SOUNDING_LINE_CANDIDATE_SHA
+            if ($LASTEXITCODE -ne 0 -or (git rev-parse "$candidateRef^{commit}").Trim() -ne $env:SOUNDING_LINE_CANDIDATE_SHA) {
+              throw 'GOVERNED_WORKER_CANDIDATE_REF_MATERIALIZATION_MISMATCH'
+            }
+          } elseif ($candidateRef -or $null -ne $plan.candidateRef) {
+            throw 'GOVERNED_WORKER_CANDIDATE_REF_UNEXPECTED'
+          }
       - if: ${{ !inputs.empty_wave }}
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc }

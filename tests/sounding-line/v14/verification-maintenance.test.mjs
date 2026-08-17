@@ -70,7 +70,7 @@ test("product, mixed, unknown, and authority-changing candidates fail closed", (
   );
 });
 
-test("the verification-maintenance workflow remains an authority-changing candidate path", async () => {
+test("authority workflows remain authority-changing while unrelated workflows stay out of maintenance scope", async () => {
   const trustedPolicy = JSON.parse(
     await readFile(new URL("../../../testing/verification-maintenance-policy.json", import.meta.url), "utf8"),
   );
@@ -80,6 +80,20 @@ test("the verification-maintenance workflow remains an authority-changing candid
       changedPaths: [".github/workflows/sounding-line-verification-maintenance.yml"],
     }).classification,
     "MAINTENANCE_AUTHORITY_CHANGE_REJECTED",
+  );
+  assert.equal(
+    classifyVerificationMaintenance({
+      trustedPolicy,
+      changedPaths: [".github/workflows/sounding-line-train-wave.yml"],
+    }).classification,
+    "MAINTENANCE_AUTHORITY_CHANGE_REJECTED",
+  );
+  assert.equal(
+    classifyVerificationMaintenance({
+      trustedPolicy,
+      changedPaths: [".github/workflows/unrelated.yml"],
+    }).classification,
+    "MAINTENANCE_SCOPE_REJECTED",
   );
 });
 

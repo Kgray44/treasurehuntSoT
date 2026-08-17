@@ -11,6 +11,7 @@ const digest = (value) =>
 const json = async (root, file) => JSON.parse(await readFile(path.join(root, "testing", file), "utf8"));
 const hostedSharedResources = new Set(["restart-host", "external-provider"]);
 const supportedBrowserEngines = new Set(["chromium", "webkit"]);
+const candidateRefPattern = /^refs\/heads\/[A-Za-z0-9._/-]+$/u;
 
 function browserPartitionsFor(node, cases) {
   if (node.adapter !== "playwright-family") return [];
@@ -80,9 +81,16 @@ export async function buildV14HostedPlan({
   registry,
   authorityIndex,
   authorityMode,
+  candidateRef = null,
   predictedIdentity,
 }) {
   if (!qualifiedBaseSha || !/^[0-9a-f]{40}$/u.test(qualifiedBaseSha)) throw new Error("V14_QUALIFIED_BASE_REQUIRED");
+  if (authorityMode === "V14_CANDIDATE") {
+    if (!candidateRef) throw new Error("V14_CANDIDATE_REF_REQUIRED");
+    if (!candidateRefPattern.test(candidateRef)) throw new Error("V14_CANDIDATE_REF_INVALID");
+  } else if (candidateRef !== null && candidateRef !== undefined && candidateRef !== "") {
+    throw new Error("V14_NON_CANDIDATE_REF_FORBIDDEN");
+  }
   const semanticPlan = await generateV14FastChannelPlan({
     root,
     baseSha: qualifiedBaseSha,
@@ -96,6 +104,7 @@ export async function buildV14HostedPlan({
     authorityVersion: "1.4",
     authorityBoundary: authorityMode === "V14_CANDIDATE" ? "V14_CANDIDATE_QUALIFICATION" : "CURRENT_AUTHORITATIVE_V14",
     authorityMode,
+    candidateRef: authorityMode === "V14_CANDIDATE" ? candidateRef : null,
     sourceSha,
     qualifiedBaseSha,
     candidateTreeSha: semanticPlan.candidateTreeSha,
@@ -148,6 +157,7 @@ export async function buildPlan({
   qualifiedBaseSha = process.env.SOUNDING_LINE_BASE_SHA,
   authorityMode = process.env.SOUNDING_LINE_AUTHORITY_MODE ?? "CURRENT",
   githubRef = process.env.GITHUB_REF,
+  candidateRef = process.env.SOUNDING_LINE_CANDIDATE_REF,
   predictedIdentity = undefined,
 }) {
   const [manifest, suitesFile, gatesFile, registry, authorityIndex] = await Promise.all([
@@ -183,6 +193,7 @@ export async function buildPlan({
       registry,
       authorityIndex,
       authorityMode: resolvedAuthority,
+      candidateRef,
       predictedIdentity,
     });
   }
