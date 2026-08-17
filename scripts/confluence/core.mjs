@@ -331,7 +331,10 @@ export async function collectEngineering({ archiveRoot, repositoryRoot, period, 
     existing.sourceDigest === engineering.sourceDigest &&
     JSON.stringify(existing.period) === JSON.stringify(period)
   ) {
-    if (!dryRun) await updateEvidenceIndex(archiveRoot, indexEntry);
+    if (!dryRun) {
+      const storedManifest = await readJson(join(destination, "source-manifest.json"));
+      await updateEvidenceIndex(archiveRoot, { ...indexEntry, manifestDigest: digest(storedManifest) });
+    }
     return { status: "IDEMPOTENT", weekId, destination, digest: digest(existing) };
   }
   if (existing) {
@@ -344,11 +347,14 @@ export async function collectEngineering({ archiveRoot, repositoryRoot, period, 
           candidate?.sourceDigest === engineering.sourceDigest &&
           JSON.stringify(candidate.period) === JSON.stringify(period)
         ) {
-          if (!dryRun)
+          if (!dryRun) {
+            const storedManifest = await readJson(join(revision, "source-manifest.json"));
             await updateEvidenceIndex(archiveRoot, {
               ...indexEntry,
               path: relative(archiveRoot, join(revision, "engineering.json")).replaceAll("\\", "/"),
+              manifestDigest: digest(storedManifest),
             });
+          }
           return { status: "IDEMPOTENT", weekId, destination: revision, digest: digest(candidate) };
         }
       }
@@ -384,20 +390,47 @@ export async function statusForWeek({ archiveRoot, publicRoot, weekId }) {
   assertWeekId(weekId);
   const year = weekId.slice(0, 4);
   const engineering = join(archiveWeekDirectory(archiveRoot, weekId), "engineering.json");
-  const human = join(archiveRoot, "human", "weekly", year, weekId, "human.json");
+  const human = await humanEvidenceForWeek(archiveRoot, weekId);
   const journal = join(archiveRoot, "journals", year, weekId, "journal-metadata.json");
   const safety = join(archiveRoot, "journals", year, weekId, "publish-safety.json");
   const publicMetadata = join(publicRoot, "Developer_Journals", year, weekId, "metadata.json");
   return {
     weekId,
-    HUMAN_EVIDENCE_READY: await exists(human),
+    HUMAN_EVIDENCE_READY: Boolean(human),
     ENGINEERING_EVIDENCE_READY: await exists(engineering),
     DESIGN_AUTHORITY_READY: await exists(join(archiveRoot, "references", "journal-design-tokens.json")),
     MASTER_READY: await exists(journal),
     PUBLISH_SAFETY_READY: await exists(safety),
     PUBLIC_DELIVERY_READY: await exists(publicMetadata),
-    readiness: (await exists(human)) && (await exists(engineering)) ? "READY_FOR_SYNTHESIS" : "WAITING_FOR_EVIDENCE",
+    readiness: human && (await exists(engineering)) ? "READY_FOR_SYNTHESIS" : "WAITING_FOR_EVIDENCE",
   };
+}
+
+export async function humanEvidenceForWeek(archiveRoot, weekId) {
+  assertWeekId(weekId);
+  const year = weekId.slice(0, 4);
+  const root = join(archiveRoot, "human", "weekly", year, weekId);
+  const canonical = join(root, "human.json");
+  if (await exists(canonical)) {
+    const record = await readJson(canonical);
+    validateRecord(record, "human-weekly");
+    if (record.weekId !== weekId || record.timezone !== TIMEZONE)
+      throw new Error("CONFLUENCE_HUMAN_EVIDENCE_PERIOD_MISMATCH");
+    return { path: canonical, format: "confluence-human-weekly-v1", digest: digest(record) };
+  }
+  const source = join(root, "human-evidence.json");
+  if (!(await exists(source))) return undefined;
+  const record = await readJson(source);
+  if (
+    record?.schema_version !== CONFLUENCE_VERSION ||
+    !["human_weekly_evidence", "weekly_human_evidence"].includes(record?.record_type) ||
+    record?.week?.iso_week !== weekId ||
+    record?.week?.timezone !== TIMEZONE ||
+    !record?.coverage ||
+    !record?.evidence_policy
+  )
+    throw new Error("CONFLUENCE_HUMAN_EVIDENCE_SOURCE_INVALID");
+  return { path: source, format: "confluence-human-source-weekly-v1", digest: digest(record) };
 }
 
 export async function validateDesign({ archiveRoot, metadataPath }) {
@@ -567,8 +600,8 @@ export async function replay({ archiveRoot, publicRoot, repositoryRoot, period, 
   await transition("COLLECTING_ENGINEERING");
   const collection = await collectEngineering({ archiveRoot, repositoryRoot, period });
   state.engineering = collection;
-  const humanPath = join(archiveRoot, "human", "weekly", period.weekId.slice(0, 4), period.weekId, "human.json");
-  if (!(await exists(humanPath))) {
+  const humanEvidence = await humanEvidenceForWeek(archiveRoot, period.weekId);
+  if (!humanEvidence) {
     await writeJson(join(archiveRoot, "requests", "human-replay", `${runId}.json`), {
       runId,
       period,
