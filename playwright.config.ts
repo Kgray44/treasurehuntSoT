@@ -75,7 +75,9 @@ export default defineConfig({
       testMatch: phase3ReadOnlySetupSpec,
       use: {
         ...devices[phase3ReadOnlySetup.deviceName],
-        ...(phase3ReadOnlySetup.executablePath ? { executablePath: phase3ReadOnlySetup.executablePath } : {}),
+        ...(phase3ReadOnlySetup.executablePath
+          ? { launchOptions: { executablePath: phase3ReadOnlySetup.executablePath } }
+          : {}),
       },
     },
     {
