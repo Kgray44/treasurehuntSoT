@@ -495,7 +495,7 @@ function validatePolicy(policy) {
     bySuite.set(definition.suiteId, (bySuite.get(definition.suiteId) ?? 0) + 1);
   for (const suite of suites.suites)
     if (
-      ["vitest-family", "node-test-browser-family", "playwright-family"].includes(suite.adapter) &&
+      ["vitest-family", "vitest-family-serial", "node-test-browser-family", "playwright-family"].includes(suite.adapter) &&
       !bySuite.get(suite.id)
     )
       errors.push(`suite ${suite.id}: empty active family`);

@@ -2577,7 +2577,7 @@
       ],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-2-branch-complete",
-      "adapter": "vitest-family"
+      "adapter": "vitest-family-serial"
     },
     {
       "id": "unit.wakebook",

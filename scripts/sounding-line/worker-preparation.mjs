@@ -47,7 +47,8 @@ export const CONFORMANCE_CODES = Object.freeze({
 });
 
 export function adapterRequirements(node) {
-  if (node.adapter === "vitest-family") return ["node-slot", "vitest-worker-pool"];
+  if (["vitest-family", "vitest-family-serial"].includes(node.adapter))
+    return ["node-slot", "vitest-worker-pool"];
   if (node.adapter === "node-test-browser-family") return ["node-slot", "application-port", "browser-chromium"];
   if (node.adapter === "playwright-family")
     return [

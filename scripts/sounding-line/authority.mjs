@@ -50,7 +50,7 @@ function suiteAdapter(suite, registry, browserTestIds = undefined) {
       : availableDefinitions.filter((entry) => selectedTestIds.has(entry.id));
   if (browserTestIds !== undefined && definitions.length !== browserTestIds.length)
     throw new Error(`BROWSER_PARTITION_CASE_SELECTION_INVALID:${suite.id}`);
-  if (["vitest-family", "node-test-browser-family"].includes(suite.adapter)) {
+  if (["vitest-family", "vitest-family-serial", "node-test-browser-family"].includes(suite.adapter)) {
     const files = [
       ...new Set(
         definitions.map((entry) => entry.file).filter((file) => /\.(?:test|spec)\.(?:ts|tsx|mjs|js)$/u.test(file)),
@@ -67,7 +67,7 @@ function suiteAdapter(suite, registry, browserTestIds = undefined) {
             : ["node-slot"],
         mode: "CERTIFIED",
       };
-    return resolveVitestAdapter(files);
+    return resolveVitestAdapter(files, { serialWithinFamily: suite.adapter === "vitest-family-serial" });
   }
   if (suite.adapter === "playwright-family") {
     const selections = new Map();
