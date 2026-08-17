@@ -22,6 +22,21 @@ test("a WebKit batch retains Chromium-only Phase 3 setup through a sealed sideca
   }
 });
 
+test("the Chromium setup sidecar accepts the Playwright headless-shell cache layout", async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "sounding-line-chromium-headless-shell-"));
+  const executable = path.join(root, "chromium_headless_shell-1194", "chrome-win", "headless_shell.exe");
+  try {
+    await mkdir(path.dirname(executable), { recursive: true });
+    await writeFile(executable, "sealed Chromium headless shell\n");
+    assert.deepEqual(phase3ReadOnlySetupUseForEngine("webkit", root), {
+      deviceName: "Desktop Chrome",
+      executablePath: executable,
+    });
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
 test("the shared Phase 3 setup rejects an unknown sealed browser engine", () => {
   assert.throws(() => phase3ReadOnlySetupUseForEngine("firefox"), /SOUNDING_LINE_BROWSER_ENGINE_INVALID/);
 });

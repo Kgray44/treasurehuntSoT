@@ -9,10 +9,21 @@ function chromiumSetupExecutable(chromiumSetupBrowsersPath) {
     throw new Error("SOUNDING_LINE_CHROMIUM_SETUP_EXECUTABLE_MISSING");
   }
 
-  for (const directory of browserDirectories) {
-    if (!directory.isDirectory() || !directory.name.startsWith("chromium-")) continue;
-    const executablePath = path.join(chromiumSetupBrowsersPath, directory.name, "chrome-win", "chrome.exe");
-    if (existsSync(executablePath)) return executablePath;
+  const executableLayouts = [
+    { directoryPrefix: "chromium-", executableName: "chrome.exe" },
+    { directoryPrefix: "chromium_headless_shell-", executableName: "headless_shell.exe" },
+  ];
+  for (const layout of executableLayouts) {
+    for (const directory of browserDirectories) {
+      if (!directory.isDirectory() || !directory.name.startsWith(layout.directoryPrefix)) continue;
+      const executablePath = path.join(
+        chromiumSetupBrowsersPath,
+        directory.name,
+        "chrome-win",
+        layout.executableName,
+      );
+      if (existsSync(executablePath)) return executablePath;
+    }
   }
   throw new Error("SOUNDING_LINE_CHROMIUM_SETUP_EXECUTABLE_MISSING");
 }
