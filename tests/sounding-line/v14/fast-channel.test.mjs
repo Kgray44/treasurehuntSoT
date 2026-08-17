@@ -252,8 +252,14 @@ test("Bridgewatch documentation remains documentation evidence while UI changes 
     );
   }
   const documentation = select(["Development_Docs/Project_Bridgewatch_v1.2_Validation_Record.md"]);
-  assert.equal(documentation.ledger.find((entry) => entry.suiteId === "unit.bridgewatch").evidenceDisposition, "PRESERVED");
-  assert.equal(documentation.ledger.find((entry) => entry.suiteId === "browser.admiralty").evidenceDisposition, "PRESERVED");
+  assert.equal(
+    documentation.ledger.find((entry) => entry.suiteId === "unit.bridgewatch").evidenceDisposition,
+    "PRESERVED",
+  );
+  assert.equal(
+    documentation.ledger.find((entry) => entry.suiteId === "browser.admiralty").evidenceDisposition,
+    "PRESERVED",
+  );
 
   const ui = select(["bridgewatch/public/app.js"]);
   assert.equal(ui.fallback, null);
@@ -261,6 +267,87 @@ test("Bridgewatch documentation remains documentation evidence while UI changes 
   assert.equal(ui.ledger.find((entry) => entry.suiteId === "unit.bridgewatch").selectionReason, "DIRECT_IMPACT");
   assert.equal(ui.ledger.find((entry) => entry.suiteId === "component.admiralty").selectionReason, "DEPENDENCY");
   assert.equal(ui.ledger.find((entry) => entry.suiteId === "browser.captain").evidenceDisposition, "PRESERVED");
+});
+
+test("Project Trim Phase 1 selects its governed minimum sufficient evidence without broad browser fallback", async () => {
+  const [suiteInventory, impact] = await Promise.all([testingJson("suites.json"), testingJson("impact-map.json")]);
+  const projectTrimPhaseOnePaths = [
+    ".agents/context-workflow.md",
+    ".gitignore",
+    "AGENTS.md",
+    "agent-context-profiles.json",
+    "Development_Docs/document-index.json",
+    "Development_Docs/Features/FEATURE_CATALOG.md",
+    "Development_Docs/Governing/Project_Trim_Codex_Context_and_Inference_Efficiency_Governing_Document_v1.0-R1.pdf",
+    "Development_Docs/INDEX.md",
+    "Development_Docs/Programs/Project_Trim/Project_Trim_Context_Profile_and_Schema.md",
+    "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_0_Baseline_Audit.md",
+    "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_0_Governing_Input.md",
+    "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_0_Measurement_Data.json",
+    "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_1_Benchmark_and_Dogfood_Record.md",
+    "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_1_Design_and_Implementation_Record.md",
+    "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_1_Validation_Record.md",
+    "Development_Docs/Programs/Project_Trim/Project_Trim_Token_Calibration_and_Estimator_v1.md",
+    "scripts/agent-context/build-context.mjs",
+    "scripts/agent-context/core.mjs",
+    "scripts/agent-context/preflight.mjs",
+    "scripts/agent-context/record-ledger.mjs",
+    "scripts/agent-context/record-usage.mjs",
+    "scripts/generate-document-index.mjs",
+    "tests/agent-context/project-trim-phase1.test.mjs",
+    "tests/fixtures/agent-context/bounded-product.json",
+    "tests/fixtures/agent-context/documentation-only.json",
+    "tests/fixtures/agent-context/focused-repair.json",
+    "tests/fixtures/agent-context/release-closure.json",
+  ];
+  const plan = selectV14Mainline({
+    changedPaths: projectTrimPhaseOnePaths,
+    suites: suiteInventory.suites,
+    requiredSuiteIds: ["browser.access-sentinel"],
+    ledgerSuiteIds: suiteInventory.suites.map((suite) => suite.id),
+    impact,
+  });
+
+  assert.equal(plan.fallback, null);
+  assert.deepEqual(plan.selectedSuiteIds, [
+    "browser.access-sentinel",
+    "static.core",
+    "unit.agent-context",
+    "unit.feature-catalog",
+    "validation.documentation",
+  ]);
+  assert.equal(plan.ledger.find((entry) => entry.suiteId === "unit.agent-context").selectionReason, "DIRECT_IMPACT");
+  assert.equal(
+    plan.ledger.find((entry) => entry.suiteId === "browser.access-sentinel").selectionReason,
+    "REQUIRED_SENTINEL",
+  );
+  for (const suiteId of ["unit.tideglass", "unit.animation", "browser.accessibility", "browser.animation-lifecycle"])
+    assert.equal(plan.ledger.find((entry) => entry.suiteId === suiteId).evidenceDisposition, "PRESERVED", suiteId);
+
+  const known = selectV14Mainline({
+    changedPaths: ["scripts/agent-context/future-profile.mjs"],
+    suites: suiteInventory.suites,
+    requiredSuiteIds: ["browser.access-sentinel"],
+    ledgerSuiteIds: suiteInventory.suites.map((suite) => suite.id),
+    impact,
+  });
+  assert.equal(known.fallback, null);
+  assert.equal(known.ledger.find((entry) => entry.suiteId === "unit.agent-context").selectionReason, "DIRECT_IMPACT");
+
+  for (const unknownPath of [
+    "scripts/agent-contextual/unmapped.mjs",
+    "Development_Docs/Programs/Project_Trim_Experimental/unmapped.md",
+    "src/unmapped-project-trim-seam.ts",
+  ]) {
+    const unknown = selectV14Mainline({
+      changedPaths: [unknownPath],
+      suites: suiteInventory.suites,
+      requiredSuiteIds: ["browser.access-sentinel"],
+      ledgerSuiteIds: suiteInventory.suites.map((suite) => suite.id),
+      impact,
+    });
+    assert.equal(unknown.fallback?.disposition, "CONSERVATIVE_FALLBACK", unknownPath);
+  }
 });
 
 test("Bridgewatch discovery, reconciliation, history, collector, store, UI, and projection tests all retain the Bridgewatch obligation", async () => {
@@ -281,7 +368,11 @@ test("Bridgewatch discovery, reconciliation, history, collector, store, UI, and 
       impact,
     });
     assert.equal(plan.fallback, null, changedPath);
-    assert.equal(plan.ledger.find((entry) => entry.suiteId === "unit.bridgewatch").selectionReason, "DIRECT_IMPACT", changedPath);
+    assert.equal(
+      plan.ledger.find((entry) => entry.suiteId === "unit.bridgewatch").selectionReason,
+      "DIRECT_IMPACT",
+      changedPath,
+    );
   }
 });
 
