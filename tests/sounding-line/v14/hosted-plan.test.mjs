@@ -82,6 +82,90 @@ test("v1.4 hosted plan carries the semantic plan and worker-compatible dependenc
   assert.doesNotThrow(() => validatePhysicalWorkerMatrix({ include: physical }));
 });
 
+test("v1.4 candidate plans seal only a valid candidate branch ref into their digest", async () => {
+  const sourceSha = (await execute("git", ["-C", root, "rev-parse", "HEAD"])).stdout.trim();
+  const [manifest, registry, authorityIndex] = await Promise.all([
+    json("policy-manifest.json"),
+    json("generated/active-test-registry.json"),
+    json("sounding-line-authority.json"),
+  ]);
+  const candidateRef = "refs/heads/codex/sounding-line-v14-candidate-ref";
+  const candidate = await buildV14HostedPlan({
+    root,
+    gateId: "mainline",
+    serial: false,
+    sourceSha,
+    qualifiedBaseSha: sourceSha,
+    manifest,
+    registry,
+    authorityIndex,
+    authorityMode: "V14_CANDIDATE",
+    candidateRef,
+  });
+  const current = await buildV14HostedPlan({
+    root,
+    gateId: "mainline",
+    serial: false,
+    sourceSha,
+    qualifiedBaseSha: sourceSha,
+    manifest,
+    registry,
+    authorityIndex,
+    authorityMode: "V14_CURRENT",
+  });
+
+  assert.equal(candidate.candidateRef, candidateRef);
+  assert.equal(current.candidateRef, null);
+  assert.notEqual(candidate.planDigest, current.planDigest);
+  await assert.rejects(
+    () =>
+      buildV14HostedPlan({
+        root,
+        gateId: "mainline",
+        serial: false,
+        sourceSha,
+        qualifiedBaseSha: sourceSha,
+        manifest,
+        registry,
+        authorityIndex,
+        authorityMode: "V14_CANDIDATE",
+      }),
+    /V14_CANDIDATE_REF_REQUIRED/u,
+  );
+  await assert.rejects(
+    () =>
+      buildV14HostedPlan({
+        root,
+        gateId: "mainline",
+        serial: false,
+        sourceSha,
+        qualifiedBaseSha: sourceSha,
+        manifest,
+        registry,
+        authorityIndex,
+        authorityMode: "V14_CANDIDATE",
+        candidateRef: "refs/remotes/origin/candidate",
+      }),
+    /V14_CANDIDATE_REF_INVALID/u,
+  );
+  await assert.rejects(
+    () =>
+      buildV14HostedPlan({
+        root,
+        gateId: "mainline",
+        serial: false,
+        sourceSha,
+        qualifiedBaseSha: sourceSha,
+        manifest,
+        registry,
+        authorityIndex,
+        authorityMode: "V14_CURRENT",
+        candidateRef,
+      }),
+    /V14_NON_CANDIDATE_REF_FORBIDDEN/u,
+  );
+});
+
 test("v1.4 current authority is restricted to protected main while v1.3 cutover remains pre-activation only", () => {
   const v14Authority = { currentAuthorityVersion: "1.4" };
   assert.throws(

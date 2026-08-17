@@ -31,6 +31,7 @@
     "scripts/sounding-line/isolated-validation-runtime.ps1",
     "scripts/prepare-validation-isolation.ts",
     ".github/workflows/sounding-line-authoritative.yml",
+    ".github/workflows/sounding-line-train-wave.yml",
     ".github/workflows/sounding-line-protected-merge-binding.yml",
     ".github/workflows/sounding-line-verification-maintenance.yml",
     "scripts/sounding-line/v14/**",

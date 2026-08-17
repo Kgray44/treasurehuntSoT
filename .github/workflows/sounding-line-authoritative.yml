@@ -231,7 +231,8 @@ jobs:
           SOUNDING_LINE_BASE_SHA: ${{ steps.base.outputs.value }}
           SOUNDING_LINE_AUTHORITY_MODE: ${{ steps.gate.outputs.authorityMode }}
           SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
-        run: node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:process.env.SOUNDING_LINE_GATE,serial:false,sourceSha:process.env.SOUNDING_LINE_CANDIDATE_SHA,qualifiedBaseSha:process.env.SOUNDING_LINE_BASE_SHA,authorityMode:process.env.SOUNDING_LINE_AUTHORITY_MODE}),null,2)))" > sounding-line-plan.json
+          SOUNDING_LINE_CANDIDATE_REF: ${{ inputs.candidate_ref }}
+        run: node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:process.env.SOUNDING_LINE_GATE,serial:false,sourceSha:process.env.SOUNDING_LINE_CANDIDATE_SHA,qualifiedBaseSha:process.env.SOUNDING_LINE_BASE_SHA,authorityMode:process.env.SOUNDING_LINE_AUTHORITY_MODE,candidateRef:process.env.SOUNDING_LINE_CANDIDATE_REF}),null,2)))" > sounding-line-plan.json
       - id: browser-requirements
         shell: pwsh
         run: |
@@ -427,6 +428,7 @@ jobs:
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   governed-exclusive-wave-0:
     name: Sounding Line / Exclusive wave 0
@@ -445,6 +447,7 @@ jobs:
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   wave-0-complete:
     name: Sounding Line / Wave 0 barrier
@@ -498,6 +501,7 @@ jobs:
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   governed-exclusive-wave-1:
     name: Sounding Line / Exclusive wave 1
@@ -517,6 +521,7 @@ jobs:
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   wave-1-complete:
     name: Sounding Line / Wave 1 barrier
@@ -570,6 +575,7 @@ jobs:
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   governed-exclusive-wave-2:
     name: Sounding Line / Exclusive wave 2
@@ -589,6 +595,7 @@ jobs:
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   wave-2-complete:
     name: Sounding Line / Wave 2 barrier
@@ -642,6 +649,7 @@ jobs:
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   governed-exclusive-wave-3:
     name: Sounding Line / Exclusive wave 3
@@ -661,6 +669,7 @@ jobs:
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   wave-3-complete:
     name: Sounding Line / Wave 3 barrier
@@ -714,6 +723,7 @@ jobs:
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   governed-exclusive-wave-4:
     name: Sounding Line / Exclusive wave 4
@@ -733,6 +743,7 @@ jobs:
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   wave-4-complete:
     name: Sounding Line / Wave 4 barrier
@@ -786,6 +797,7 @@ jobs:
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   governed-exclusive-wave-5:
     name: Sounding Line / Exclusive wave 5
@@ -805,6 +817,7 @@ jobs:
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   wave-5-complete:
     name: Sounding Line / Wave 5 barrier

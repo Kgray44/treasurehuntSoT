@@ -31,6 +31,7 @@ jobs:
       browser_test_ids_by_suite_json: ${{ matrix.browserTestIdsBySuiteJson }}
       gate: mainline
       candidate_sha: ${{ matrix.candidateSha }}
+      candidate_ref: ${{ matrix.candidateRef }}
       plan_artifact: sounding-line-train-prepared
       plan_path: ${{ matrix.planPath }}
       execution_sha: ${{ matrix.executionSha }}
@@ -54,6 +55,7 @@ jobs:
       browser_test_ids_by_suite_json: ${{ matrix.browserTestIdsBySuiteJson }}
       gate: mainline
       candidate_sha: ${{ matrix.candidateSha }}
+      candidate_ref: ${{ matrix.candidateRef }}
       plan_artifact: sounding-line-train-prepared
       plan_path: ${{ matrix.planPath }}
       execution_sha: ${{ matrix.executionSha }}
