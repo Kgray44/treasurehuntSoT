@@ -17,6 +17,18 @@ async function waitForRunState(id, root, expected, timeoutMs = 3000) {
   assert.fail(`controller run ${id} did not reach ${expected}; last state was ${lastState}`);
 }
 
+async function waitForRunLogMessage(id, root, expected, timeoutMs = 10_000) {
+  const deadline = Date.now() + timeoutMs;
+  let lastLines = [];
+  do {
+    const observed = await phase3.followRunLog(id, { root });
+    lastLines = observed.lines;
+    if (lastLines.some((line) => line.endsWith(expected))) return;
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  } while (Date.now() < deadline);
+  assert.fail(`controller run ${id} did not emit ${expected}; last log was ${lastLines.at(-1) ?? "empty"}`);
+}
+
 async function withStore(fn) {
   const root = await mkdtemp(path.join(os.tmpdir(), "sounding-line-phase3-"));
   let store;
@@ -359,7 +371,8 @@ test("detached controller survives the client launch, handles cooperative cancel
     const input = { root, sourceWatermark: "s", policyDigest: "p", planDigest: "d", purpose: "controller-test" };
     const started = await phase3.launchController(input);
     assert.equal(started.controllerStarted, true);
-    assert.equal((await waitForRunState(started.run.id, root, "RUNNING")).state, "RUNNING");
+    assert.equal(started.run.state, "RUNNING");
+    await waitForRunLogMessage(started.run.id, root, "DETACHED_CONTROLLER_HEARTBEAT_LOOP_ACTIVE");
     await phase3.cancelRun(started.run.id, root);
     assert.equal((await waitForRunState(started.run.id, root, "COMPLETED")).state, "COMPLETED");
     const orphan = await phase3.startRun({ ...input, purpose: "orphan-test" });
