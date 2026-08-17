@@ -369,6 +369,93 @@ test("Project Trim admission cannot self-authorize a policy change", async () =>
   ]);
 });
 
+const projectConfluenceC2C7Paths = [
+  ".agents/confluence-workers.md",
+  "Developer_Journals/README.md",
+  "Development_Docs/Features/FEATURE_CATALOG.md",
+  "Development_Docs/Governing/Project_Confluence_Governing_Document_v1.0.pdf",
+  "Development_Docs/Governing/Project_Confluence_Journal_Design_Specification_v1.0.pdf",
+  "Development_Docs/Project_Confluence_C2_C7_Design_and_Implementation_Record.md",
+  "Development_Docs/Project_Confluence_Integration_Manifest.md",
+  "Development_Docs/Project_Confluence_Operations_Runbook.md",
+  "Development_Docs/Project_Confluence_Replay_Guide.md",
+  "Development_Docs/Project_Confluence_Test_and_Validation_Record.md",
+  "Development_Docs/document-index.json",
+  "package.json",
+  "scripts/confluence/README.md",
+  "scripts/confluence/cli.mjs",
+  "scripts/confluence/core.mjs",
+  "tests/confluence/core.test.mjs",
+];
+
+test("the complete Project Confluence C2-C7 candidate is ordinary-admissible", async () => {
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: await readOrdinaryCandidatePolicy(),
+    changedPaths: projectConfluenceC2C7Paths,
+  });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(result.errors, []);
+});
+
+test("Project Confluence admission recognizes only its owned and deterministic path families", async () => {
+  const policy = await readOrdinaryCandidatePolicy();
+  const recognized = [
+    ".agents/confluence-workers.md",
+    "Developer_Journals/2026/2026-W34/Voyagewright_Developer_Journal_2026-W34.pdf",
+    "Developer_Journals/2026/2026-W34/Voyagewright_Developer_Journal_2026-W34.docx",
+    "Developer_Journals/2026/2026-W34/metadata.json",
+    "Development_Docs/Project_Confluence_Future_Validation_Record.md",
+    "Development_Docs/Governing/Project_Confluence_Future_Governing_Baseline.pdf",
+    "scripts/confluence/future-maintenance.mjs",
+    "tests/confluence/future-maintenance.test.mjs",
+  ];
+  for (const changedPath of recognized) {
+    const result = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: [changedPath] });
+    assert.equal(result.classification, "ORDINARY_CANDIDATE", changedPath);
+    assert.deepEqual(result.errors, [], changedPath);
+  }
+  for (const changedPath of [
+    ".agents/confluence-workers-lookalike.md",
+    "Developer_Journals_Archive/2026/2026-W34/metadata.json",
+    "Development_Docs/Project_ConfluenceX_Validation_Record.md",
+    "Development_Docs/Governing/Project_ConfluenceX_Governing_Baseline.pdf",
+    "scripts/confluential/future-maintenance.mjs",
+    "test/confluence/future-maintenance.test.mjs",
+  ]) {
+    const result = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: [changedPath] });
+    assert.equal(result.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED", changedPath);
+    assert.deepEqual(result.errors, [`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${changedPath}`], changedPath);
+  }
+});
+
+test("Project Confluence admission preserves semantic impact, required sentinels, and exhaustive release scope", async () => {
+  const [authority, planner] = await Promise.all([
+    readOrdinaryCandidatePolicy().then(async () =>
+      JSON.parse(await readFile(new URL("../../../testing/sounding-line-authority.json", import.meta.url), "utf8")),
+    ),
+    readFile(new URL("../../../scripts/sounding-line/planner.mjs", import.meta.url), "utf8"),
+  ]);
+  const minimumEvidence = authority.ordinaryCandidateQualification.minimumSufficientEvidence;
+  assert.equal(minimumEvidence.selectionMode, "EXACT_SEMANTIC_IMPACT_WITH_REQUIRED_SENTINELS");
+  assert.deepEqual(minimumEvidence.requiredSafetySentinelSuiteIds, ["browser.access-sentinel"]);
+  assert.equal(minimumEvidence.unmappedDisposition, "CONSERVATIVE_FALLBACK");
+  assert.deepEqual(minimumEvidence.exhaustiveGateIds, ["release-candidate"]);
+  assert.match(planner, /generateV14FastChannelPlan/u);
+  assert.match(planner, /semanticPlanDigest: semanticPlan\.digest/u);
+  assert.match(planner, /selectionContract: semanticPlan\.selectionContract/u);
+});
+
+test("Project Confluence cannot self-authorize an admission or authority-policy change", async () => {
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: await readOrdinaryCandidatePolicy(),
+    changedPaths: ["scripts/confluence/core.mjs", "testing/verification-maintenance-policy.json"],
+  });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED");
+  assert.deepEqual(result.errors, [
+    "ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED:testing/verification-maintenance-policy.json",
+  ]);
+});
+
 test("candidate authority invokes the trusted ordinary classifier rather than inline glob logic", async () => {
   const workflow = await readFile(
     new URL("../../../.github/workflows/sounding-line-authoritative.yml", import.meta.url),

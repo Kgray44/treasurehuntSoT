@@ -72,7 +72,13 @@
     "tests/agent-context/**",
     "Development_Docs/Programs/Project_Trim/**",
     "Development_Docs/Governing/Project_Trim_*.pdf",
-    "Development_Docs/Features/FEATURE_CATALOG.md"
+    "Development_Docs/Features/FEATURE_CATALOG.md",
+    ".agents/confluence-workers.md",
+    "Developer_Journals/**",
+    "Development_Docs/Project_Confluence_*.md",
+    "Development_Docs/Governing/Project_Confluence_*.pdf",
+    "scripts/confluence/**",
+    "tests/confluence/**"
   ],
   "requiredEvidence": [
     "FOCUSED_REGRESSION",
