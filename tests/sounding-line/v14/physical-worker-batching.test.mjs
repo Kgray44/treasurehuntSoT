@@ -44,8 +44,10 @@ test("pure Node obligations share one physical worker but preserve logical recei
 test("database, browser, and exclusive work never batch", () => {
   const browser = node("browser.access", "playwright-family", ["application-port", "sqlite-clone", "browser-chromium"]);
   const exclusive = { ...node("external"), execution: { mode: "exclusive" } };
+  const serialVitest = node("unit.bridgewatch", "vitest-family-serial", ["node-slot", "vitest-worker-pool"]);
   assert.equal(canBatchPhysicalWorker(browser), false);
   assert.equal(canBatchPhysicalWorker(exclusive), false);
+  assert.equal(canBatchPhysicalWorker(serialVitest), false);
   assert.equal(batchPhysicalWorkers([node("unit.a"), browser, exclusive]).length, 3);
 });
 
