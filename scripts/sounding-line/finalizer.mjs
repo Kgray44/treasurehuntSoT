@@ -1,5 +1,6 @@
 /* The only module permitted to emit a Sounding Line release decision. */
 import { createHash } from "node:crypto";
+import { finalizationEvidenceDigest } from "./finalization-evidence.mjs";
 
 const digest = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
 const orderedStrings = (values) => [...values].sort((left, right) => left.localeCompare(right));
@@ -256,6 +257,8 @@ export function finalize({ plan, receipts, runtimeConformance = [] }) {
     planDigest: plan.planDigest,
     receipts,
     physicalReceipts,
+    runtimeConformance,
+    physicalRuntimeConformance,
     missingMandatorySuites: missing,
     duplicateSuiteReceipts: duplicates,
     unknownSuiteReceipts: unknown.map((receipt) => receipt.suiteId),
@@ -264,6 +267,9 @@ export function finalize({ plan, receipts, runtimeConformance = [] }) {
     selectionEvidenceErrors,
     missingRuntimeConformance: missingConformance,
     invalidRuntimeConformance: invalidConformance.map((receipt) => receipt.suiteId),
-    evidenceDigest: digest({ receipts, physicalReceipts, runtimeConformance, physicalRuntimeConformance }),
+    evidenceDigest: finalizationEvidenceDigest({
+      authorityVersion: plan?.authorityVersion,
+      finalization: { receipts, physicalReceipts, runtimeConformance, physicalRuntimeConformance },
+    }),
   };
 }

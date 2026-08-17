@@ -11,6 +11,7 @@ import path from "node:path";
 import process from "node:process";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
+import { finalizationEvidenceDigest } from "./finalization-evidence.mjs";
 
 export const RECORD_ONLY_SUITE_ID = "record-only.closure";
 export const RECORD_ONLY_PROTECTED_CONTEXT = "Sounding Line / Mainline Decision";
@@ -238,7 +239,12 @@ export function validatePriorImplementationAuthority({ authority, plan, finaliza
     )
       errors.push("PRIOR_IMPLEMENTATION_RECEIPT_INVALID:" + String(receipt.suiteId ?? "missing"));
   }
-  if (finalization?.evidenceDigest !== digest(receipts)) errors.push("PRIOR_IMPLEMENTATION_EVIDENCE_DIGEST_INVALID");
+  const expectedEvidenceDigest = finalizationEvidenceDigest({
+    authorityVersion: plan?.authorityVersion,
+    finalization,
+  });
+  if (!expectedEvidenceDigest || finalization?.evidenceDigest !== expectedEvidenceDigest)
+    errors.push("PRIOR_IMPLEMENTATION_EVIDENCE_DIGEST_INVALID");
   for (const field of [
     "missingMandatorySuites",
     "duplicateSuiteReceipts",
