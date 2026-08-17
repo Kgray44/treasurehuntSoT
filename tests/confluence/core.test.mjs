@@ -10,6 +10,7 @@ import {
   assertWeekId,
   deliverExact,
   digest,
+  humanEvidenceForWeek,
   inside,
   inspectDocx,
   inspectPdf,
@@ -53,6 +54,29 @@ test("allows forward-compatible human records but keeps their required core", ()
     ),
     true,
   );
+});
+
+test("recognizes a validated human evidence source without rewriting it", async () => {
+  const root = await mkdtemp(join(tmpdir(), "confluence-human-source-"));
+  try {
+    const directory = join(root, "human", "weekly", "2026", "2026-W34");
+    await mkdir(directory, { recursive: true });
+    const source = {
+      schema_version: "1.0",
+      record_type: "weekly_human_evidence",
+      week: { iso_week: "2026-W34", timezone: "America/New_York" },
+      coverage: { overall_confidence: "partial" },
+      evidence_policy: { method: "human-only" },
+    };
+    await writeFile(join(directory, "human-evidence.json"), JSON.stringify(source));
+    const located = await humanEvidenceForWeek(root, "2026-W34");
+    assert.equal(located.format, "confluence-human-source-weekly-v1");
+    assert.equal(located.path, join(directory, "human-evidence.json"));
+    await writeFile(join(directory, "human-evidence.json"), JSON.stringify({ ...source, week: {} }));
+    await assert.rejects(() => humanEvidenceForWeek(root, "2026-W34"), /CONFLUENCE_HUMAN_EVIDENCE_SOURCE_INVALID/);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
 });
 
 test("public metadata refuses every private evidence field", async () => {
