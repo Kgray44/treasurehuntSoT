@@ -41,14 +41,14 @@ test("the shared Phase 3 setup rejects an unknown sealed browser engine", () => 
   assert.throws(() => phase3ReadOnlySetupUseForEngine("firefox"), /SOUNDING_LINE_BROWSER_ENGINE_INVALID/);
 });
 
-test("the Playwright configuration and governed worker bind the Chromium setup sidecar explicitly", async () => {
+test("the Playwright configuration launches the Chromium setup sidecar through Playwright launch options", async () => {
   const config = await readFile("playwright.config.ts", "utf8");
   const worker = await readFile(".github/workflows/sounding-line-governed-worker.yml", "utf8");
   assert.match(
     config,
     /phase3ReadOnlySetupUseForEngine\(\s*process\.env\.SOUNDING_LINE_BROWSER_ENGINE,\s*process\.env\.SOUNDING_LINE_CHROMIUM_SETUP_BROWSERS_PATH/u,
   );
-  assert.match(config, /executablePath: phase3ReadOnlySetup\.executablePath/u);
+  assert.match(config, /launchOptions:\s*\{\s*executablePath: phase3ReadOnlySetup\.executablePath\s*\}/u);
   assert.match(worker, /id: chromium-setup-browser-identity/u);
   assert.match(worker, /SOUNDING_LINE_CHROMIUM_SETUP_BROWSERS_PATH/u);
   assert.match(worker, /GOVERNED_CHROMIUM_SETUP_LAYER_RESTORE_FAILED/u);
