@@ -714,7 +714,10 @@ export class BridgewatchStore {
       });
   }
 
-  recordHistory(snapshot: BridgewatchProgramSnapshot): {
+  recordHistory(
+    snapshot: BridgewatchProgramSnapshot,
+    { storeSnapshot = true }: { storeSnapshot?: boolean } = {},
+  ): {
     events: BridgewatchHistoricalEvent[];
     snapshotStored: boolean;
   } {
@@ -724,7 +727,7 @@ export class BridgewatchStore {
     const latest = this.db
       .prepare("SELECT normalized_digest FROM snapshots ORDER BY snapshot_id DESC LIMIT 1")
       .get() as { normalized_digest: string } | undefined;
-    const snapshotStored = latest?.normalized_digest !== digest;
+    const snapshotStored = storeSnapshot && latest?.normalized_digest !== digest;
     this.db.exec("BEGIN");
     try {
       const insert = this.db.prepare(

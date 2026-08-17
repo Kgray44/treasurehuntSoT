@@ -67,7 +67,6 @@ const projectionSchema = z
             )
             .optional(),
           evidenceDispositionCounts: z.record(z.string(), z.number().int().nonnegative()).optional(),
-          semanticFallback: z.string().nullable().optional(),
           finalizerAuthority: z.string().nullable().optional(),
           evidenceDigest: z.string().nullable().optional(),
           cleanupState: z.enum(["CLEAN", "PENDING", "FAILED", "UNKNOWN"]),

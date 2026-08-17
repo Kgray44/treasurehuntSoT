@@ -83,9 +83,9 @@ export function buildServer() {
       .map((worker) => ({ ...worker, effectiveState: workerState(worker, config.BRIDGEWATCH_TELEMETRY_STALE_MS) })),
     soundingLine: soundingLine.cached(),
   });
-  const persistHistory = () => {
+  const persistHistory = (storeSnapshot = true) => {
     try {
-      store.recordHistory(observation());
+      store.recordHistory(observation(), { storeSnapshot });
       historyWarning = null;
     } catch {
       historyWarning = "Historical persistence is unavailable; current source projections remain available.";
@@ -288,7 +288,9 @@ export function buildServer() {
         phaseProgress: (() => {
           const total = project.declaredPhaseCount ?? project.phases.length;
           const completed = project.phases.filter((phase) => ["COMPLETE", "MERGED"].includes(phase.state)).length;
-          return total ? { state: "MEASURED", completed, total } : { state: "NOT_RECORDED", completed: null, total: null };
+          return total
+            ? { state: "MEASURED", completed, total }
+            : { state: "NOT_RECORDED", completed: null, total: null };
         })(),
         mainSha: project.finalMainSha ?? null,
       })),
@@ -470,7 +472,9 @@ export function buildServer() {
       (branch) => branch.projectId === project.id,
     );
     const pullRequests = (snapshot?.pullRequests ?? []).filter((pull) =>
-      associationsFor(`${pull.title} ${pull.headRef ?? ""}`, store.projects(), pull.number).projectIds.includes(project.id),
+      associationsFor(`${pull.title} ${pull.headRef ?? ""}`, store.projects(), pull.number).projectIds.includes(
+        project.id,
+      ),
     );
     const phaseShas = new Set(
       project.phases.flatMap((phase) => [phase.acceptedHeadSha, phase.integratedMainSha]).filter(Boolean),
@@ -621,7 +625,7 @@ export function buildServer() {
       try {
         const worker = parseHeartbeat(request.body);
         store.upsertWorker(worker);
-        persistHistory();
+        persistHistory(false);
         return reply.code(202).send({ accepted: true, workerId: worker.workerId, activityOnly: true });
       } catch (error) {
         return reply.code(400).send({ error: error instanceof Error ? error.message : "Invalid telemetry" });
@@ -634,7 +638,7 @@ export function buildServer() {
     try {
       const worker = parseHeartbeat({ ...(request.body as object), state: "FINISHED" });
       store.upsertWorker(worker, true);
-      persistHistory();
+      persistHistory(false);
       return reply.code(202).send({ accepted: true, workerId: worker.workerId, activityOnly: true });
     } catch (error) {
       return reply.code(400).send({ error: error instanceof Error ? error.message : "Invalid telemetry" });

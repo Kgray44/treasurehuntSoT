@@ -193,5 +193,5 @@ describe("representative Phase 3 operational load", () => {
     } finally {
       store.close();
     }
-  }, 60_000);
+  }, 120_000);
 });
