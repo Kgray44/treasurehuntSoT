@@ -1,13 +1,18 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import test from "node:test";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
   DESIGN_TOKENS,
   PRIVATE_METADATA_FIELDS,
   assertWeekId,
+  deliverExact,
+  digest,
   inside,
+  inspectDocx,
+  inspectPdf,
   periodForWeek,
   validatePublicMetadata,
   validateRecord,
@@ -75,6 +80,88 @@ test("design token baseline remains complete and immutable", async () => {
     await writeFile(join(root, "tokens.json"), JSON.stringify(DESIGN_TOKENS));
     assert.equal(JSON.parse(await readFile(join(root, "tokens.json"), "utf8"))["glyph.section_separator"], "◆");
     assert.equal(Object.keys(DESIGN_TOKENS).length, 29);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("validates A4 PDF and DOCX structural invariants", async () => {
+  const root = await mkdtemp(join(tmpdir(), "confluence-documents-"));
+  try {
+    const pdf = join(root, "master.pdf");
+    await writeFile(pdf, "%PDF-1.7\n1 0 obj<</Type /Page /MediaBox [0 0 595.3 841.9]>>endobj\n%%EOF");
+    assert.equal((await inspectPdf(pdf)).pageCount, 1);
+    await assert.rejects(async () => inspectPdf(join(root, "missing.pdf")));
+
+    const source = join(root, "docx-source");
+    await mkdir(join(source, "word"), { recursive: true });
+    await writeFile(
+      join(source, "word", "document.xml"),
+      '<w:document xmlns:w="x"><w:body><w:p><w:pPr><w:pStyle w:val="Heading1"/></w:pPr></w:p><w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:left="340" w:right="340" w:top="340" w:bottom="340"/></w:sectPr></w:body></w:document>',
+    );
+    await writeFile(
+      join(source, "word", "styles.xml"),
+      '<w:styles xmlns:w="x"><w:style w:styleId="Heading1"/></w:styles>',
+    );
+    const docx = join(root, "master.docx");
+    execFileSync(
+      "powershell",
+      [
+        "-NoProfile",
+        "-Command",
+        "Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip = [System.IO.Compression.ZipFile]::Open($env:CONFLUENCE_TEST_DOCX, [System.IO.Compression.ZipArchiveMode]::Create); try { Get-ChildItem -LiteralPath $env:CONFLUENCE_TEST_SOURCE -Recurse -File | ForEach-Object { [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $_.FullName, $_.FullName.Substring($env:CONFLUENCE_TEST_SOURCE.Length + 1).Replace('\\', '/')) } } finally { $zip.Dispose() }",
+      ],
+      { env: { ...process.env, CONFLUENCE_TEST_SOURCE: source, CONFLUENCE_TEST_DOCX: docx } },
+    );
+    const details = await inspectDocx(docx);
+    assert.equal(details.a4, true);
+    assert.equal(details.margins, true);
+    assert.equal(details.headings, true);
+
+    const archive = join(root, "archive");
+    const journal = join(archive, "journals", "2026", "2026-W34");
+    const publicRoot = join(root, "public");
+    await mkdir(join(archive, "references"), { recursive: true });
+    await mkdir(journal, { recursive: true });
+    await writeFile(join(archive, "references", "journal-design-tokens.json"), JSON.stringify(DESIGN_TOKENS));
+    const docxBytes = await readFile(docx);
+    const pdfBytes = await readFile(pdf);
+    await writeFile(join(journal, "master.docx"), docxBytes);
+    await writeFile(join(journal, "master.pdf"), pdfBytes);
+    await writeFile(
+      join(journal, "journal-metadata.json"),
+      JSON.stringify({
+        weekId: "2026-W34",
+        period: { start: "2026-08-17T00:00:00-04:00", end: "2026-08-24T00:00:00-04:00" },
+        authoringActor: "ChatGPT",
+        designVersion: "1.0",
+        docxDigest: digest(docxBytes),
+        pdfDigest: digest(pdfBytes),
+      }),
+    );
+    await writeFile(
+      join(journal, "publish-safety.json"),
+      JSON.stringify({ weekId: "2026-W34", status: "SAFE_TO_MIRROR_EXACT", assessedAt: new Date().toISOString() }),
+    );
+    const delivery = await deliverExact({
+      archiveRoot: archive,
+      publicRoot,
+      weekId: "2026-W34",
+      privacyVerifier: async () => ({ visibility: "PRIVATE" }),
+    });
+    assert.equal(delivery.status, "DELIVERED_EXACT");
+    assert.deepEqual(
+      await readFile(
+        join(publicRoot, "Developer_Journals", "2026", "2026-W34", "Voyagewright_Developer_Journal_2026-W34.docx"),
+      ),
+      docxBytes,
+    );
+    assert.deepEqual(
+      await readFile(
+        join(publicRoot, "Developer_Journals", "2026", "2026-W34", "Voyagewright_Developer_Journal_2026-W34.pdf"),
+      ),
+      pdfBytes,
+    );
   } finally {
     await rm(root, { recursive: true, force: true });
   }

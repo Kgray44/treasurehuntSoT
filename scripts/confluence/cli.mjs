@@ -9,6 +9,7 @@ import {
   statusForWeek,
   validateArchiveLayout,
   validateDesign,
+  validateMasterArtifacts,
   verifyArchivePrivacy,
 } from "./core.mjs";
 
@@ -47,6 +48,7 @@ if (command === "collect") {
 } else if (command === "status") result = await statusForWeek({ archiveRoot, publicRoot, weekId: period.weekId });
 else if (command === "validate-design")
   result = await validateDesign({ archiveRoot, metadataPath: resolve(args.metadata) });
+else if (command === "validate-master") result = await validateMasterArtifacts({ archiveRoot, weekId: period.weekId });
 else if (command === "deliver") {
   const release = await acquireArchiveLock(archiveRoot, `delivery-${period.weekId}`);
   try {

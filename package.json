@@ -98,6 +98,7 @@
     "confluence:collect": "node scripts/confluence/cli.mjs collect",
     "confluence:status": "node scripts/confluence/cli.mjs status",
     "confluence:validate-design": "node scripts/confluence/cli.mjs validate-design",
+    "confluence:validate-master": "node scripts/confluence/cli.mjs validate-master",
     "confluence:deliver": "node scripts/confluence/cli.mjs deliver",
     "confluence:replay": "node scripts/confluence/cli.mjs replay",
     "confluence:resume": "node scripts/confluence/cli.mjs replay",
