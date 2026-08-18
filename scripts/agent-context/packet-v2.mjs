@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
+import { createLogbook } from "./logbook.mjs";
 
 export const PACKET_SCHEMA_VERSION = "2.0";
 export const GENERATOR_VERSION = "project-trim-mscp-2.0.0";
@@ -664,6 +665,31 @@ function ownershipSlice(closure) {
 }
 
 function priorPlateau(root, input) {
+  const discoveredPath =
+    input.acceptedCapsulePath ??
+    (input.project === "Project Trim" && /^Phase 3(?:\b|\s)/u.test(input.increment ?? "")
+      ? "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Accepted_Capsule.json"
+      : null);
+  if (discoveredPath && existsSync(path.join(root, discoveredPath))) {
+    const capsule = readJson(root, discoveredPath, null);
+    if (capsule?.state === "ACCEPTED" && capsule.acceptedMainSha && capsule.acceptedTreeSha)
+      return {
+        status: "ACCEPTED_CAPSULE_BOUND",
+        pointer: fileIdentity(root, discoveredPath),
+        acceptedMainSha: capsule.acceptedMainSha,
+        acceptedTreeSha: capsule.acceptedTreeSha,
+        capsuleDigest: capsule.integrity?.semanticDigest ?? null,
+        currentLimitations: capsule.knownLimitations ?? [],
+        confidence: "EXACT",
+      };
+    return {
+      status: "CAPSULE_INVALID_REQUIRES_EXACT_REVIEW",
+      pointer: fileIdentity(root, discoveredPath),
+      acceptedMainSha: null,
+      currentLimitations: ["Accepted capsule is missing an accepted main/tree identity."],
+      confidence: "UNKNOWN",
+    };
+  }
   if (!input.priorAcceptedStatusPath)
     return {
       status: "NOT_SUPPLIED",
@@ -933,16 +959,8 @@ export function buildPacket(root, rawInput = {}) {
     semanticDigest: null,
   };
   packet.integrity.semanticDigest = sha256(canonicalJson(materialPacket(packet)));
-  packet.ledgerTemplate = {
-    schemaVersion: "1.1",
-    taskId: packet.task.id,
-    packetIdentity: packet.integrity.semanticDigest,
-    reads: [],
-    searches: [],
-    expansions: [],
-    usage: null,
-    privacy: { prohibited: ["secrets", "credentials", "private content", "full prompts", "raw logs"] },
-  };
+  packet.ledgerTemplate = createLogbook(packet.task.id, packet.integrity.semanticDigest);
+  packet.ledgerTemplate.usage = null;
   const validation = validatePacket(packet);
   if (validation.errors.length) throw new Error(`INVALID_CONTEXT_PACKET:${validation.errors.join("|")}`);
   packet.validation = validation;
