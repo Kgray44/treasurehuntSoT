@@ -592,6 +592,10 @@ export async function restorePublishedVersionToDraft(taleId: string, versionId: 
           blocks: chapter.blocks.map((block) => ({
             ...block,
             id: blockIds.get(block.id)!,
+            connections: block.connections.map((connection) => ({
+              ...connection,
+              targetBlockId: blockIds.get(connection.targetBlockId) ?? connection.targetBlockId,
+            })),
             configuration: {
               ...block.configuration,
               successTargetBlockId: remapTarget(block.configuration.successTargetBlockId),
@@ -661,6 +665,10 @@ export async function forkPublishedVersion(taleId: string, versionId: string, cr
         blocks: chapter.blocks.map((block) => ({
           ...block,
           id: blockIds.get(block.id)!,
+          connections: block.connections.map((connection) => ({
+            ...connection,
+            targetBlockId: blockIds.get(connection.targetBlockId) ?? connection.targetBlockId,
+          })),
           configuration: {
             ...block.configuration,
             successTargetBlockId: remap(block.configuration.successTargetBlockId),

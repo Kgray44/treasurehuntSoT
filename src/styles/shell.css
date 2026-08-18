@@ -787,6 +787,13 @@
   }
 }
 
+@media (max-width: 460px) {
+  .product-shell-header {
+    gap: 0.2rem;
+    padding-inline: 0.3rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .skip-link,
   .product-navigation-active-plate,
