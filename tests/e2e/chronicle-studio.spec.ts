@@ -1,4 +1,5 @@
 import { expect, test, type APIRequestContext, type Page } from "@playwright/test";
+import bcrypt from "bcryptjs";
 import sharp from "sharp";
 import { db } from "../../src/lib/db";
 
@@ -31,6 +32,16 @@ async function createStudioCaptain() {
     data: { verificationState: "VERIFIED", verifiedAt: activatedAt },
   });
   expect(verifiedEmails.count, "The governed development fixture must include a primary Captain email.").toBe(1);
+  const primaryEmail = await db.accountEmail.findFirst({
+    where: { accountId: account.id, isPrimary: true },
+    select: { displayEmail: true },
+  });
+  expect(primaryEmail, "The governed development fixture must include a readable primary Captain email.").toBeTruthy();
+  await db.accountCredential.upsert({
+    where: { accountId: account.id },
+    update: { passwordHash: await bcrypt.hash(password, 4), changedAt: activatedAt },
+    create: { accountId: account.id, passwordHash: await bcrypt.hash(password, 4) },
+  });
   await db.playerProfile.upsert({
     where: { accountId: account.id },
     create: {
@@ -51,7 +62,44 @@ async function createStudioCaptain() {
     where: { taleId: sourceTale!.id },
     data: { createdBy: account.id, createdByAccountId: account.id },
   });
-  return { username, password };
+  return { username, password, accountId: account.id, accountLogin: primaryEmail!.displayEmail };
+}
+
+async function createOrdinaryPlayer(browser: import("@playwright/test").Browser) {
+  const context = await browser.newContext();
+  const suffix = crypto.randomUUID();
+  const email = `studio-player-${suffix}@example.test`;
+  const password = "Cobalt-tide-lantern-2026!";
+  const registration = await context.request.post("/api/auth/register", {
+    data: {
+      displayName: "Synthetic Studio Player",
+      email,
+      password,
+      confirmPassword: password,
+    },
+  });
+  expect(registration.status(), await registration.text()).toBe(201);
+  const registered = (await registration.json()) as { player: { id: string } };
+  const profile = await db.playerProfile.findUniqueOrThrow({
+    where: { id: registered.player.id },
+    select: { accountId: true },
+  });
+  expect(profile.accountId, "The registered Studio player must be linked to an account.").toBeTruthy();
+  const activatedAt = new Date();
+  await db.$transaction([
+    db.userAccount.update({
+      where: { id: profile.accountId! },
+      data: { status: "ACTIVE", claimedAt: activatedAt, ordinaryWorkspaceEntryAt: activatedAt },
+    }),
+    db.accountEmail.updateMany({
+      where: { accountId: profile.accountId!, isPrimary: true },
+      data: { verificationState: "VERIFIED", verifiedAt: activatedAt },
+    }),
+  ]);
+  const signIn = await context.request.post("/api/auth/sign-in", { data: { login: email, password } });
+  expect(signIn.status(), await signIn.text()).toBe(200);
+  const signedIn = (await signIn.json()) as { csrfToken: string };
+  return { context, csrfToken: signedIn.csrfToken };
 }
 
 async function current(request: APIRequestContext, sessionId: string) {
@@ -66,18 +114,8 @@ async function current(request: APIRequestContext, sessionId: string) {
 }
 
 async function dragLibraryBlock(page: Page, name: string) {
-  const source = page.locator(".block-library article").filter({ has: page.getByText(name, { exact: true }) });
-  const target = page.locator(".timeline-drop").last();
-  await target.scrollIntoViewIfNeeded();
-  await source.scrollIntoViewIfNeeded();
-  const [sourceBox, targetBox] = await Promise.all([source.boundingBox(), target.boundingBox()]);
-  expect(sourceBox).toBeTruthy();
-  expect(targetBox).toBeTruthy();
   const before = await page.locator(".timeline-block").count();
-  await page.mouse.move(sourceBox!.x + sourceBox!.width / 2, sourceBox!.y + sourceBox!.height / 2);
-  await page.mouse.down();
-  await page.mouse.move(targetBox!.x + targetBox!.width / 2, targetBox!.y + targetBox!.height / 2, { steps: 12 });
-  await page.mouse.up();
+  await page.getByRole("button", { name: `Add ${name} to first chapter` }).click();
   await expect(page.locator(".timeline-block")).toHaveCount(before + 1);
 }
 
@@ -129,9 +167,13 @@ test("published Studio tale completes through player, Captain, and helper contra
   state = await current(player, sessionId);
   expect(state.block?.blockType).toBe("captainApproval");
   expect(state.pendingVerification?.providerType).toBe("captainManual");
+  await db.taleSession.update({
+    where: { id: sessionId },
+    data: { captainId: credentials.accountId, captainAccountId: credentials.accountId },
+  });
 
-  const loginResponse = await captain.post("/api/gm/login", {
-    data: credentials,
+  const loginResponse = await captain.post("/api/auth/sign-in", {
+    data: { login: credentials.accountLogin, password: credentials.password },
   });
   expect(loginResponse.ok()).toBeTruthy();
   const { csrfToken } = (await loginResponse.json()) as { csrfToken: string };
@@ -273,7 +315,7 @@ test("Studio editor exposes searchable authoring tools and responsive isolated p
   expect(await restored.json()).toMatchObject({ basedOnPublishedVersionId: version.id, revisionNumber: 2 });
 });
 
-test("creator authors, aligns, publishes, plays, and reviews a media-rich tale", async ({ page }) => {
+test("creator authors, aligns, publishes, plays, and reviews a media-rich tale", async ({ page, browser }) => {
   const credentials = await createStudioCaptain();
   const login = await page.request.post("/api/gm/login", {
     data: credentials,
@@ -379,6 +421,7 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
       holdAfter: 0,
       caption: "Moon ink reveals the route.",
       alignment: { x: 0, y: 0, scale: 1, rotation: 0, opacity: 50, focalX: 50, focalY: 50 },
+      nonMotionMeaning: "The completed moon chart remains visible as a readable route without motion.",
       completionMode: "playerConfirmation",
     },
     artifactReveal: {
@@ -388,6 +431,17 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
       loreTitle: "Moon Compass",
       loreDescription: "The needle remembers the route home.",
       addToCollection: true,
+      recipientPolicy: "CREW_COLLECTION_ONLY",
+      selectedRecipientProfileIds: [],
+      requiredCrewRole: null,
+      discoveringMembershipId: null,
+      personalGrantState: "COLLECTED",
+      custodyKind: "PERSONAL",
+      assemblyDefinitionId: null,
+      componentRole: null,
+      receiptState: "ACTIVE",
+      correctionOfGrantId: null,
+      correctionReason: null,
       revealAnimation: "lantern",
       completionMode: "playerConfirmation",
     },
@@ -396,6 +450,7 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
       caption: "The completed moon chart.",
       altText: "A moonlit route drawn in blue ink",
       displayMode: "journalFrame",
+      objectFit: "cover",
       focalX: 50,
       focalY: 50,
       completionMode: "playerConfirmation",
@@ -425,10 +480,18 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
       chapters: detail.draft.chapters.map((chapter) => ({
         ...chapter,
         estimatedDuration: 12,
-        blocks: chapter.blocks.map((block) => ({
+        blocks: chapter.blocks.map((block, index, blocks) => ({
           ...block,
           title: block.blockType === "imageTransformation" ? "Moon Ink Transformation" : block.title,
           configuration: configurations[block.blockType],
+          completion:
+            block.blockType === "arrivalCheck"
+              ? { ...(block.completion ?? {}), mode: "playerConfirmation", fallbackMode: "playerConfirmation" }
+              : block.completion,
+          connections:
+            index < blocks.length - 1
+              ? [{ targetBlockId: blocks[index + 1].id, connectionType: "DEFAULT", orderIndex: 0 }]
+              : [],
         })),
       })),
     },
@@ -437,6 +500,8 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
 
   await page.reload();
   await page.locator(".timeline-block").filter({ hasText: "Moon Ink Transformation" }).click();
+  await page.getByRole("combobox", { name: "Authoring level" }).selectOption("ENGINEERING");
+  await page.getByRole("button", { name: "Presentation" }).click();
   const opacity = page.locator('.alignment-editor input[type="range"]').first();
   await opacity.fill("68");
   await expect(page.locator(".save-state")).toContainText("Saved at", { timeout: 15_000 });
@@ -445,30 +510,23 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
   await page.getByRole("button", { name: "Replay Passage" }).click();
   await page.getByRole("button", { name: "Close Passage preview" }).click();
 
-  let publishDialogs = 0;
-  const publishDialogHandler = (dialog: import("@playwright/test").Dialog) => {
-    publishDialogs += 1;
-    if (dialog.type() === "prompt") return dialog.accept("Media-rich Playwright authoring proof");
-    expect(dialog.type()).toBe("confirm");
-    return dialog.accept();
-  };
-  page.on("dialog", publishDialogHandler);
-  try {
-    const publishResponse = page.waitForResponse(
-      (response) =>
-        response.request().method() === "POST" && response.url().endsWith(`/api/studio/tales/${taleId}/publish`),
-    );
-    await page.getByRole("button", { name: "Publish Chronicle" }).click();
-    const response = await publishResponse;
-    expect(response.status(), await response.text()).toBe(200);
-    await expect(page.locator(".save-state")).toContainText(/Published as Version/, { timeout: 30_000 });
-    expect(publishDialogs).toBe(2);
-  } finally {
-    page.off("dialog", publishDialogHandler);
-  }
+  const publishResponse = page.waitForResponse(
+    (response) =>
+      response.request().method() === "POST" && response.url().endsWith(`/api/studio/tales/${taleId}/publish`),
+  );
+  await page.getByRole("button", { name: "Publish Chronicle" }).click();
+  const publishDialog = page.getByRole("dialog", { name: "Publish a new immutable Version?" });
+  await publishDialog.getByLabel("Release notes").fill("Media-rich Playwright authoring proof");
+  await publishDialog.getByRole("button", { name: "Publish Version" }).click();
+  const response = await publishResponse;
+  expect(response.status(), await response.text()).toBe(200);
+  await expect(page.locator(".save-state")).toContainText(/Published as Version/, { timeout: 30_000 });
 
-  const start = await page.request.post(`/api/tales/${taleSlug}/start`, {
-    data: { ownerLabel: "Moon Chart Crew" },
+  const playerSession = await createOrdinaryPlayer(browser);
+  const player = playerSession.context.request;
+  const start = await player.post(`/api/tales/${taleSlug}/start`, {
+    headers: { "x-csrf-token": playerSession.csrfToken },
+    data: {},
   });
   expect(start.status(), await start.text()).toBe(201);
   const { sessionId } = (await start.json()) as { sessionId: string };
@@ -480,17 +538,20 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
     "confirmation",
     "taleComplete",
   ]) {
-    const state = await current(page.request, sessionId);
+    const state = await current(player, sessionId);
     expect(state.block?.blockType).toBe(expectedType);
     if (expectedType === "image") expect(state.inventory).toContain(artifactId);
-    const advance = await page.request.post(`/api/play/sessions/${sessionId}`, {
+    const advance = await player.post(`/api/play/sessions/${sessionId}`, {
+      headers: { "x-csrf-token": playerSession.csrfToken },
       data: { action: "confirm", idempotencyKey: unique(`media-${expectedType}`) },
     });
-    expect(advance.ok()).toBeTruthy();
+    expect(advance.ok(), `${advance.status()}: ${await advance.text()}`).toBeTruthy();
   }
-  expect((await current(page.request, sessionId)).session.status).toBe("COMPLETED");
-  await page.goto(`/play/${taleSlug}/history`);
-  await expect(page.getByRole("heading", { name: "Playwright Moon Chart" })).toBeVisible();
-  await expect(page.getByText(/^Completed /)).toBeVisible();
-  await expect(page.getByRole("listitem").filter({ hasText: "artifact Granted" })).toBeVisible();
+  expect((await current(player, sessionId)).session.status).toBe("COMPLETED");
+  const playerPage = await playerSession.context.newPage();
+  await playerPage.goto(`/play/${taleSlug}/history`);
+  await expect(playerPage.getByRole("heading", { name: "Playwright Moon Chart" })).toBeVisible();
+  await expect(playerPage.getByText(/^Completed /)).toBeVisible();
+  await expect(playerPage.getByRole("listitem").filter({ hasText: "artifact Granted" })).toBeVisible();
+  await playerSession.context.close();
 });
