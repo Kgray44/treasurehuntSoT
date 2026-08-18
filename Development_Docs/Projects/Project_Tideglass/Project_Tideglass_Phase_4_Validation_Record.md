@@ -131,3 +131,23 @@ permitted until a separate Sounding Line owner correction lands on protected
 main to classify these paths. The candidate's focused, static, and browser
 qualification evidence remains preserved for semantic rebound after that
 external correction.
+
+## Admission-correction reconciliation
+
+Protected main advanced to `c568e5aa15df4d8b682e328d97fa1a78b7b5760a`,
+including the accepted product-verification-registration and project-discovery
+admission work. The preserved Phase 4 branch merged that base in
+`e59a51750b226c1211387c75bed0a7f94e54f382`; no Phase 4 product, Prisma, or
+dependency contract changed in that mainline delta. Existing focused and browser
+evidence is therefore preserved pending semantic rebound to a new candidate.
+
+Before any fresh authority attempt, the exact trusted-base ordinary classifier
+was reproduced locally against the reconciled candidate. It still returned
+`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED` for exactly `README.md` and
+`scripts/tideglass/seed-phase3-fixture.mjs`. The earlier Ledgerlight matrix is
+no longer part of the diff. This is a current authority-admission contradiction,
+not a Phase 4 test failure: the trusted workflow extracts the same classifier
+and produces the same two errors before workers or finalizers run. No fresh
+Mainline Decision was dispatched, because it would knowingly repeat that
+pre-worker rejection. A further trusted-main admission change or an approved
+alternate classifier is required before Phase 4 can refreeze a candidate.

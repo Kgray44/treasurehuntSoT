@@ -20,3 +20,10 @@ execution by the trusted ordinary-candidate scope classifier. It produced no
 `RELEASE_GO`, finalizer receipt, or protected-merge authority. The exact
 classification and required external Sounding Line policy correction are
 recorded in the Phase 4 Validation Record.
+
+After protected main advanced to `c568e5aa15df4d8b682e328d97fa1a78b7b5760a`,
+the branch was reconciled as `e59a51750b226c1211387c75bed0a7f94e54f382` and
+the exact trusted-base classifier was reproduced. It still rejects the current
+candidate before worker execution for `README.md` and
+`scripts/tideglass/seed-phase3-fixture.mjs`; consequently this receipt remains
+unissued and no second authority run has been made.
