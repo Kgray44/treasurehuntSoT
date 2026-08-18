@@ -90,11 +90,11 @@ jobs:
       - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
           name: sounding-line-authority-maintenance-qualification
-          path: |
-            ${{ steps.trusted-authority-maintenance.outputs.temp }}/authority-maintenance-plan.json
-            ${{ steps.trusted-authority-maintenance.outputs.temp }}/authority-maintenance-evidence.json
-            ${{ steps.trusted-authority-maintenance.outputs.temp }}/authority-maintenance-finalization.json
-            ${{ steps.trusted-authority-maintenance.outputs.temp }}/old-vs-new-authority.json
+          # Keep the plan and finalization beside their evidence.  A
+          # multi-path upload on the Windows runner silently omitted those two
+          # sealed receipts, leaving the protected binding unable to select
+          # otherwise valid authority.
+          path: ${{ steps.trusted-authority-maintenance.outputs.temp }}
           retention-days: 14
       - name: Clean authority-maintenance temporary artifacts
         if: always()
