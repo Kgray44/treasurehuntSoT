@@ -33,9 +33,13 @@ const helmPresenceContracts = helmContracts.filter(
 const helmBaseContracts = helmContracts.filter((contractId) => contractId !== "helm.member-presence-synchronization");
 const hash = (text) => createHash("sha256").update(text).digest("hex").slice(0, 20);
 const execFileAsync = promisify(execFile);
-await execFileAsync(process.execPath, ["node_modules/prisma/build/index.js", "generate", "--schema", "prisma/schema.sqlite.prisma"], {
-  cwd: root,
-});
+await execFileAsync(
+  process.execPath,
+  ["node_modules/prisma/build/index.js", "generate", "--schema", "prisma/schema.sqlite.prisma"],
+  {
+    cwd: root,
+  },
+);
 const normal = (value) => value.replaceAll("\\", "/");
 const admiraltyContracts = [
   "admiralty.phase1.identity",
