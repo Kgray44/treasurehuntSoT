@@ -61,7 +61,11 @@ test("Journeys A-J: visible entry, accepted Journey Detail history, creator deta
   await expect(globalNavigation.getByRole("link", { name: "Explore Chronicles", exact: true })).toBeVisible();
   await globalNavigation.getByRole("link", { name: "Explore Chronicles", exact: true }).click();
   await expect(anonymous.page.getByRole("heading", { name: "Choose a Chronicle", exact: true })).toBeVisible();
-  await anonymous.page.getByRole("link", { name: "Preview Chronicle", exact: true }).click();
+  const tideglassPreview = anonymous.page.locator(`a[href="/chronicles/${credentials.chronicle.slug}"]`, {
+    hasText: "Preview Chronicle",
+  });
+  await expect(tideglassPreview).toHaveCount(1);
+  await tideglassPreview.click();
   await expect(
     anonymous.page.getByRole("heading", { name: "The Tideglass Passage Fixture", exact: true }),
   ).toBeVisible();
