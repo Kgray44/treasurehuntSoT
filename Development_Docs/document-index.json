@@ -1629,6 +1629,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_3_Architecture_and_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_3_Benchmark_Data.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_3_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Token_Calibration_and_Estimator_v1.md",
       "record_type": "program-record",
       "status": "preserved",

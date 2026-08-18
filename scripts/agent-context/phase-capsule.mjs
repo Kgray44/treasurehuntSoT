@@ -4,7 +4,7 @@ import { buildAcceptedCapsule, buildProvisionalCapsule, canonicalJson, validateC
 
 function option(name) {
   const index = process.argv.indexOf(name);
-  return index === -1 ? null : process.argv[index + 1] ?? null;
+  return index === -1 ? null : (process.argv[index + 1] ?? null);
 }
 
 const inputPath = option("--input");
@@ -17,4 +17,6 @@ const validation = validateCapsule(capsule);
 if (!validation.valid) throw new Error(`INVALID_CAPSULE:${validation.errors.join("|")}`);
 mkdirSync(path.dirname(outputPath), { recursive: true });
 writeFileSync(outputPath, `${canonicalJson(capsule)}\n`, "utf8");
-process.stdout.write(`${JSON.stringify({ output: outputPath, state: capsule.state, digest: capsule.integrity.semanticDigest })}\n`);
+process.stdout.write(
+  `${JSON.stringify({ output: outputPath, state: capsule.state, digest: capsule.integrity.semanticDigest })}\n`,
+);

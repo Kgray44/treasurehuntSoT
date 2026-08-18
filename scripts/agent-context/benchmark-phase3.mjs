@@ -48,7 +48,8 @@ const output = {
   benchmark: "CARRY_THE_LOGBOOK_STARTUP_AND_REUSE",
   method: {
     runner: "scripts/agent-context/benchmark-phase3.mjs",
-    comparison: "Phase 2 packet startup with an ordinary prior-status pointer versus Phase 3 packet startup with its retained accepted capsule, plus deterministic read-reuse decisions.",
+    comparison:
+      "Phase 2 packet startup with an ordinary prior-status pointer versus Phase 3 packet startup with its retained accepted capsule, plus deterministic read-reuse decisions.",
     evidence: {
       packetBytes: "EXACT_UTF8_BYTES",
       sourcePointers: "EXACT_PACKET_FIELDS",

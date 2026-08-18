@@ -14,19 +14,19 @@
     }
   },
   "phase2Baseline": {
-    "semanticDigest": "f3eb10df7c23299a71734eaddec60fea8885333cd321b217fc578614baa3cf25",
+    "semanticDigest": "ba9d3d538221d086b191b44dc0766e108501b580afbe1cc363f301b88e230ca2",
     "priorPlateauStatus": "POINTER_BOUND",
-    "packetBytes": 32778,
+    "packetBytes": 32507,
     "sourcePointers": 11,
-    "warmGenerationMedianMs": 2179.69
+    "warmGenerationMedianMs": 202.95
   },
   "phase3": {
-    "semanticDigest": "7a6a07c780d47875eac420ab6e2c3245ff383b4005eb790990707fe206ce23de",
+    "semanticDigest": "bc2c1541acd63025c78b2b5c18dfe2b813cf6b8101ce2f33f040447bcd9f9042",
     "priorPlateauStatus": "ACCEPTED_CAPSULE_BOUND",
     "acceptedMainSha": "d3c06e076fda99f7c18baa28e66847f4e79697fa",
-    "packetBytes": 33076,
+    "packetBytes": 32805,
     "sourcePointers": 11,
-    "warmGenerationMedianMs": 2087.6,
+    "warmGenerationMedianMs": 186.62,
     "reuse": {
       "unchanged": "UNCHANGED_SUMMARY_SUFFICIENT",
       "changedIdentity": "SOURCE_IDENTITY_CHANGED"

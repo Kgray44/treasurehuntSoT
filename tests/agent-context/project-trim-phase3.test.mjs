@@ -34,7 +34,11 @@ function phase2Input() {
 
 test("accepted capsules bind immutable protected-main identity while provisional capsules cannot claim it", () => {
   const accepted = buildAcceptedCapsule(phase2Input());
-  const provisional = buildProvisionalCapsule({ project: "Project Trim", increment: "Phase 3", candidateSha: "d".repeat(40) });
+  const provisional = buildProvisionalCapsule({
+    project: "Project Trim",
+    increment: "Phase 3",
+    candidateSha: "d".repeat(40),
+  });
   assert.equal(accepted.state, "ACCEPTED");
   assert.equal(accepted.integrity.acceptedIdentity.mainSha, "a".repeat(40));
   assert.equal(validateCapsule(accepted).valid, true);
@@ -59,7 +63,13 @@ test("phase 3 startup discovers the retained Phase 2 accepted capsule and seeds 
   assert.equal(packet.priorPlateau.acceptedMainSha, "d3c06e076fda99f7c18baa28e66847f4e79697fa");
   assert.equal(packet.ledgerTemplate.schemaVersion, "1.0");
   assert.equal(packet.ledgerTemplate.packetDigest, packet.integrity.semanticDigest);
-  assert.deepEqual(packet.ledgerTemplate.privacy.prohibited, ["secrets", "credentials", "private content", "raw prompts", "raw logs"]);
+  assert.deepEqual(packet.ledgerTemplate.privacy.prohibited, [
+    "secrets",
+    "credentials",
+    "private content",
+    "raw prompts",
+    "raw logs",
+  ]);
 });
 
 test("read and search ledgers reuse only unchanged complete, non-sensitive knowledge", () => {
@@ -74,22 +84,55 @@ test("read and search ledgers reuse only unchanged complete, non-sensitive knowl
   });
   assert.equal(readReuseDecision(logbook, { path: "authority.md", blobSha: "one" }).reuse, true);
   assert.equal(readReuseDecision(logbook, { path: "authority.md", blobSha: "two" }).reason, "SOURCE_IDENTITY_CHANGED");
-  assert.equal(readReuseDecision(logbook, { path: "authority.md", blobSha: "one", exactTextNeeded: true }).reason, "EXACT_TEXT_ESCALATION");
-  assert.equal(readReuseDecision(logbook, { path: "authority.md", blobSha: "one", securityReverification: true }).reason, "SECURITY_REVERIFICATION");
-  recordSearch(logbook, { intent: "owner of logbook", resultDigest: "owner-result", paths: ["scripts/agent-context/logbook.mjs"], resolvedOwners: ["project-trim"] });
+  assert.equal(
+    readReuseDecision(logbook, { path: "authority.md", blobSha: "one", exactTextNeeded: true }).reason,
+    "EXACT_TEXT_ESCALATION",
+  );
+  assert.equal(
+    readReuseDecision(logbook, { path: "authority.md", blobSha: "one", securityReverification: true }).reason,
+    "SECURITY_REVERIFICATION",
+  );
+  recordSearch(logbook, {
+    intent: "owner of logbook",
+    resultDigest: "owner-result",
+    paths: ["scripts/agent-context/logbook.mjs"],
+    resolvedOwners: ["project-trim"],
+  });
   assert.equal(searchReuseDecision(logbook, { intent: "owner of logbook" }).reuse, true);
-  assert.equal(searchReuseDecision(logbook, { intent: "owner of logbook", relevantOwnershipChange: true }).reuse, false);
+  assert.equal(
+    searchReuseDecision(logbook, { intent: "owner of logbook", relevantOwnershipChange: true }).reuse,
+    false,
+  );
 });
 
 test("partial knowledge and scope-changing expansion fail closed, while bounded expansion stays visible", () => {
   const logbook = createLogbook("phase3-expansion");
-  recordRead(logbook, { path: "partial.md", blobSha: "one", reason: "partial review", summary: "Only section one.", coverage: "PARTIAL" });
-  assert.equal(readReuseDecision(logbook, { path: "partial.md", blobSha: "one", requiredCoverage: "COMPLETE" }).reason, "PARTIAL_COVERAGE");
+  recordRead(logbook, {
+    path: "partial.md",
+    blobSha: "one",
+    reason: "partial review",
+    summary: "Only section one.",
+    coverage: "PARTIAL",
+  });
+  assert.equal(
+    readReuseDecision(logbook, { path: "partial.md", blobSha: "one", requiredCoverage: "COMPLETE" }).reason,
+    "PARTIAL_COVERAGE",
+  );
   assert.throws(
-    () => recordExpansion(logbook, { reasonClass: "SOURCE", question: "Would this alter product scope?", scopeChanged: true }),
+    () =>
+      recordExpansion(logbook, {
+        reasonClass: "SOURCE",
+        question: "Would this alter product scope?",
+        scopeChanged: true,
+      }),
     /CONTEXT_EXPANSION_IS_NOT_SCOPE_EXPANSION/u,
   );
-  const expansion = recordExpansion(logbook, { reasonClass: "HISTORY", question: "Which accepted identity precedes this work?", sourcesAdded: [".agents/handoffs/project-trim-phase-2.accepted.json"], resolution: "RESOLVED" });
+  const expansion = recordExpansion(logbook, {
+    reasonClass: "HISTORY",
+    question: "Which accepted identity precedes this work?",
+    sourcesAdded: [".agents/handoffs/project-trim-phase-2.accepted.json"],
+    resolution: "RESOLVED",
+  });
   assert.equal(expansion.reasonClass, "HISTORY");
 });
 
@@ -108,11 +151,46 @@ test("independent workstream slices and distilled returns keep parent authority 
   });
   assert.equal(slice.identity.workstreamId, "capsule-review");
   assert.throws(
-    () => buildWorkstreamSlice({ independent: true, overlappingMutableFiles: ["shared.mjs"], mutableFiles: ["shared.mjs"], parentTaskId: "phase3", workstreamId: "unsafe", question: "x", expectedOutcome: "y" }),
+    () =>
+      buildWorkstreamSlice({
+        independent: true,
+        overlappingMutableFiles: ["shared.mjs"],
+        mutableFiles: ["shared.mjs"],
+        parentTaskId: "phase3",
+        workstreamId: "unsafe",
+        question: "x",
+        expectedOutcome: "y",
+      }),
     /DELEGATION_REJECTED/u,
   );
-  assert.equal(validateDistilledReturn({ status: "COMPLETE", findings: [], filesTouched: [], contracts: [], evidence: [], sourceIdentities: [], expansions: [], blockers: [], parentAction: "None" }).valid, true);
-  assert.equal(validateDistilledReturn({ status: "FAILED", findings: [], filesTouched: [], contracts: [], evidence: [], sourceIdentities: [], expansions: [], blockers: [], parentAction: "Escalate" }).valid, false);
+  assert.equal(
+    validateDistilledReturn({
+      status: "COMPLETE",
+      findings: [],
+      filesTouched: [],
+      contracts: [],
+      evidence: [],
+      sourceIdentities: [],
+      expansions: [],
+      blockers: [],
+      parentAction: "None",
+    }).valid,
+    true,
+  );
+  assert.equal(
+    validateDistilledReturn({
+      status: "FAILED",
+      findings: [],
+      filesTouched: [],
+      contracts: [],
+      evidence: [],
+      sourceIdentities: [],
+      expansions: [],
+      blockers: [],
+      parentAction: "Escalate",
+    }).valid,
+    false,
+  );
 });
 
 test("capsule and ledger CLIs produce canonical, redacted task-local artifacts", () => {
@@ -122,9 +200,37 @@ test("capsule and ledger CLIs produce canonical, redacted task-local artifacts",
     const capsule = path.join(directory, "capsule.json");
     const ledger = path.join(directory, "ledger.json");
     writeFileSync(input, JSON.stringify(phase2Input()));
-    execFileSync(node, [path.join(root, "scripts/agent-context/phase-capsule.mjs"), "--input", input, "--out", capsule]);
-    execFileSync(node, [path.join(root, "scripts/agent-context/logbook-cli.mjs"), "--command", "init", "--ledger", ledger, "--task-id", "phase3-cli"]);
-    execFileSync(node, [path.join(root, "scripts/agent-context/logbook-cli.mjs"), "--command", "record-read", "--ledger", ledger, "--entry", JSON.stringify({ path: "safe.md", blobSha: "identity", reason: "test", summary: "safe", privateToken: "ghp_abcdefghijklmnopqrstuvwxyz012345678901234567890" })]);
+    execFileSync(node, [
+      path.join(root, "scripts/agent-context/phase-capsule.mjs"),
+      "--input",
+      input,
+      "--out",
+      capsule,
+    ]);
+    execFileSync(node, [
+      path.join(root, "scripts/agent-context/logbook-cli.mjs"),
+      "--command",
+      "init",
+      "--ledger",
+      ledger,
+      "--task-id",
+      "phase3-cli",
+    ]);
+    execFileSync(node, [
+      path.join(root, "scripts/agent-context/logbook-cli.mjs"),
+      "--command",
+      "record-read",
+      "--ledger",
+      ledger,
+      "--entry",
+      JSON.stringify({
+        path: "safe.md",
+        blobSha: "identity",
+        reason: "test",
+        summary: "safe",
+        privateToken: "ghp_abcdefghijklmnopqrstuvwxyz012345678901234567890",
+      }),
+    ]);
     assert.equal(JSON.parse(readFileSync(capsule, "utf8")).state, "ACCEPTED");
     assert.doesNotMatch(readFileSync(ledger, "utf8"), /ghp_/u);
   } finally {

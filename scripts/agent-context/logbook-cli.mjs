@@ -12,7 +12,7 @@ import {
 
 function option(name) {
   const index = process.argv.indexOf(name);
-  return index === -1 ? null : process.argv[index + 1] ?? null;
+  return index === -1 ? null : (process.argv[index + 1] ?? null);
 }
 function jsonOption(name) {
   const value = option(name);
@@ -22,7 +22,10 @@ function jsonOption(name) {
 const command = option("--command");
 const ledgerPath = option("--ledger");
 const entry = jsonOption("--entry");
-if (!command || !ledgerPath) throw new Error("USAGE: logbook-cli.mjs --command <init|record-read|record-search|record-expansion|read-decision|search-decision> --ledger <json> [--entry <json>]");
+if (!command || !ledgerPath)
+  throw new Error(
+    "USAGE: logbook-cli.mjs --command <init|record-read|record-search|record-expansion|read-decision|search-decision> --ledger <json> [--entry <json>]",
+  );
 const current = existsSync(ledgerPath)
   ? JSON.parse(readFileSync(ledgerPath, "utf8"))
   : createLogbook(option("--task-id") ?? "unidentified-task", option("--packet-digest"));

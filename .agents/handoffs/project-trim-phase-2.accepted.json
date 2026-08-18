@@ -1,1 +1,78 @@
-{"acceptedMainSha":"d3c06e076fda99f7c18baa28e66847f4e79697fa","acceptedTreeSha":"d9c0c0aff8bc623f1aaab3cc40c21043dd13c2c2","closureDate":"2026-08-17","contractsChanged":["project-trim.minimum-sufficient-context"],"dataState":{"backfills":[],"compatibility":["No product data migration or runtime data contract was introduced by the accepted Phase 2 packet work."],"migrations":[]},"futureDependencies":{"mayConsume":["Phase 3 may consume this accepted capsule as its prior plateau."],"mustNotAssume":["A packet or local ledger cannot authorize RELEASE_GO or a protected merge."]},"generatorVersion":"project-trim-logbook-1.0.0","governingRequirements":["Project Trim v1.0-R1 Sections 7-16; Phase 2 minimum-sufficient packet plateau","Sounding Line remains the sole RELEASE_GO and protected-merge authority"],"increment":"Phase 2 - Pack the Chart","integrity":{"acceptedIdentity":{"mainSha":"d3c06e076fda99f7c18baa28e66847f4e79697fa","treeSha":"d9c0c0aff8bc623f1aaab3cc40c21043dd13c2c2"},"semanticDigest":"fdcba5fafa6f25936517839326f616a56e0c652a6d77159de238f15907658bee","sourceRecords":[{"blobSha":"9d427781ba5fcc7f8e7fe3461903910d804a9cd7","path":"Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Architecture_and_Implementation_Record.md"},{"blobSha":"afd7eb02c4575a2a68d4fc22762fcfcc173ed362","path":"Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Validation_Record.md"},{"blobSha":"4682671390fba22034bf4c5143b27d5abf6d8436","path":"Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Benchmark_Data.json"},{"blobSha":"ea973a5386565d32d047b6e59d3b0d325482c64f","path":"scripts/agent-context/packet-v2.mjs"},{"blobSha":"df1c1e5952747d65f704534f76a6971611e5a3ba","path":"tests/agent-context/project-trim-phase2.test.mjs"}]},"knownLimitations":["Accepted Phase Capsules, durable read/search reuse, and subagent workstream packets were excluded from Phase 2.","Packet dependency discovery is bounded and direct-import based."],"nextPhaseHints":{"authority":["Project Trim v1.0-R1 Sections 17-19 and 24-28"],"contracts":["project-trim.minimum-sufficient-context"],"files":["scripts/agent-context/logbook.mjs","scripts/agent-context/phase-capsule.mjs"],"tests":["tests/agent-context/project-trim-phase3.test.mjs"]},"project":"Project Trim","runtimeState":{"activeBehavior":["build-context.mjs emits source-bound packet JSON and Markdown from packet-v2.mjs"],"adapters":["packet-v2.mjs","agent-context-profiles.json"],"fallbacks":["Unknown mappings require conservative targeted expansion."],"featureFlags":[]},"schemaVersion":"1.0","sourceOwnership":{"consumers":["repository agents and governed validation workflows"],"producers":["project-trim"],"seams":["testing ownership, impact, suites, resources, and Sounding Line authority registries"]},"state":"ACCEPTED","verification":{"evidenceIds":["PR #185","V14 run 32090324240","binding run 32090751963"],"limitations":["Recorded benchmark does not claim end-to-end task-token savings."],"suites":["unit.agent-context","semantic registration","Sounding Line governed qualification"]}}
+{
+  "acceptedMainSha": "d3c06e076fda99f7c18baa28e66847f4e79697fa",
+  "acceptedTreeSha": "d9c0c0aff8bc623f1aaab3cc40c21043dd13c2c2",
+  "closureDate": "2026-08-17",
+  "contractsChanged": ["project-trim.minimum-sufficient-context"],
+  "dataState": {
+    "backfills": [],
+    "compatibility": [
+      "No product data migration or runtime data contract was introduced by the accepted Phase 2 packet work."
+    ],
+    "migrations": []
+  },
+  "futureDependencies": {
+    "mayConsume": ["Phase 3 may consume this accepted capsule as its prior plateau."],
+    "mustNotAssume": ["A packet or local ledger cannot authorize RELEASE_GO or a protected merge."]
+  },
+  "generatorVersion": "project-trim-logbook-1.0.0",
+  "governingRequirements": [
+    "Project Trim v1.0-R1 Sections 7-16; Phase 2 minimum-sufficient packet plateau",
+    "Sounding Line remains the sole RELEASE_GO and protected-merge authority"
+  ],
+  "increment": "Phase 2 - Pack the Chart",
+  "integrity": {
+    "acceptedIdentity": {
+      "mainSha": "d3c06e076fda99f7c18baa28e66847f4e79697fa",
+      "treeSha": "d9c0c0aff8bc623f1aaab3cc40c21043dd13c2c2"
+    },
+    "semanticDigest": "fdcba5fafa6f25936517839326f616a56e0c652a6d77159de238f15907658bee",
+    "sourceRecords": [
+      {
+        "blobSha": "9d427781ba5fcc7f8e7fe3461903910d804a9cd7",
+        "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Architecture_and_Implementation_Record.md"
+      },
+      {
+        "blobSha": "afd7eb02c4575a2a68d4fc22762fcfcc173ed362",
+        "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Validation_Record.md"
+      },
+      {
+        "blobSha": "4682671390fba22034bf4c5143b27d5abf6d8436",
+        "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Benchmark_Data.json"
+      },
+      { "blobSha": "ea973a5386565d32d047b6e59d3b0d325482c64f", "path": "scripts/agent-context/packet-v2.mjs" },
+      {
+        "blobSha": "df1c1e5952747d65f704534f76a6971611e5a3ba",
+        "path": "tests/agent-context/project-trim-phase2.test.mjs"
+      }
+    ]
+  },
+  "knownLimitations": [
+    "Accepted Phase Capsules, durable read/search reuse, and subagent workstream packets were excluded from Phase 2.",
+    "Packet dependency discovery is bounded and direct-import based."
+  ],
+  "nextPhaseHints": {
+    "authority": ["Project Trim v1.0-R1 Sections 17-19 and 24-28"],
+    "contracts": ["project-trim.minimum-sufficient-context"],
+    "files": ["scripts/agent-context/logbook.mjs", "scripts/agent-context/phase-capsule.mjs"],
+    "tests": ["tests/agent-context/project-trim-phase3.test.mjs"]
+  },
+  "project": "Project Trim",
+  "runtimeState": {
+    "activeBehavior": ["build-context.mjs emits source-bound packet JSON and Markdown from packet-v2.mjs"],
+    "adapters": ["packet-v2.mjs", "agent-context-profiles.json"],
+    "fallbacks": ["Unknown mappings require conservative targeted expansion."],
+    "featureFlags": []
+  },
+  "schemaVersion": "1.0",
+  "sourceOwnership": {
+    "consumers": ["repository agents and governed validation workflows"],
+    "producers": ["project-trim"],
+    "seams": ["testing ownership, impact, suites, resources, and Sounding Line authority registries"]
+  },
+  "state": "ACCEPTED",
+  "verification": {
+    "evidenceIds": ["PR #185", "V14 run 32090324240", "binding run 32090751963"],
+    "limitations": ["Recorded benchmark does not claim end-to-end task-token savings."],
+    "suites": ["unit.agent-context", "semantic registration", "Sounding Line governed qualification"]
+  }
+}
