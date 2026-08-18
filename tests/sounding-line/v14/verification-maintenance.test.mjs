@@ -273,6 +273,31 @@ test("ordinary candidates fail closed for unknown paths", async () => {
   assert.deepEqual(result.errors, ["ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:unowned/bridgewatch-lookalike.ts"]);
 });
 
+test("canonical Deepwater governance and tooling paths are ordinary-admissible without broadening lookalikes", async () => {
+  const policy = await readOrdinaryCandidatePolicy();
+  const admitted = [
+    ".agents/deepwater-capability-impact.md",
+    "Development_Docs/Programs/Deepwater/phase-records/Project_Deepwater_Phase_5_Design_Record.md",
+    "scripts/deepwater/phase5.mjs",
+  ];
+  assert.equal(
+    classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: admitted }).classification,
+    "ORDINARY_CANDIDATE",
+  );
+  for (const path of [
+    ".agents/deepwater-capability-impact-evil.md",
+    "Development_Docs/Programs/DeepwaterEvil/record.md",
+    "scripts/deepwater-unauthorized/phase5.mjs",
+    ".agents/unrelated.md",
+    "scripts/unrelated/phase5.mjs",
+    "testing/impact-map.json",
+  ])
+    assert.notEqual(
+      classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: [path] }).classification,
+      "ORDINARY_CANDIDATE",
+    );
+});
+
 const projectTrimPhaseOnePaths = [
   ".agents/context-workflow.md",
   ".gitignore",

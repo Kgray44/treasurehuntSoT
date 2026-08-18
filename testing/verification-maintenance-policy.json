@@ -76,7 +76,10 @@
     "Development_Docs/Project_Confluence_*.md",
     "Development_Docs/Governing/Project_Confluence_*.pdf",
     "scripts/confluence/**",
-    "tests/confluence/**"
+    "tests/confluence/**",
+    ".agents/deepwater-capability-impact.md",
+    "Development_Docs/Programs/Deepwater/**",
+    "scripts/deepwater/**"
   ],
   "ordinaryCandidateProductVerificationRegistration": {
     "classification": "PRODUCT_WITH_VERIFICATION_REGISTRATION",
