@@ -204,11 +204,28 @@ test("Project DefinitelyNormal cannot escape the authority firewall", () => {
   assert.deepEqual(result.errors, ["ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED:scripts/sounding-line/finalizer.mjs"]);
 });
 
-test("structural admission permits correlated new project scripts but not a scripts-wide bypass", () => {
+test("structural admission permits correlated project scripts and supplements but not broad bypasses", () => {
   const accepted = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: asterismPaths });
   assert.equal(accepted.classification, "ORDINARY_CANDIDATE");
+  const supplements = classifyOrdinaryCandidate({
+    trustedPolicy: policy,
+    changedPaths: [
+      ...asterismPaths,
+      "README.md",
+      "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+    ],
+  });
+  assert.equal(supplements.classification, "ORDINARY_CANDIDATE");
   const rejected = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: ["scripts/asterism/check.mjs"] });
   assert.equal(rejected.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
+  const unprovenSupplement = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: ["README.md"] });
+  assert.equal(unprovenSupplement.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
+  const multipleProjects = classifyOrdinaryCandidate({
+    trustedPolicy: policy,
+    changedPaths: [...asterismPaths, "src/orbit/route.ts", "tests/orbit/route.test.ts", "README.md"],
+  });
+  assert.equal(multipleProjects.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
+  assert.deepEqual(multipleProjects.errors, ["ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:README.md"]);
 });
 
 test("structural admission rejects a prospective project that collides with a trusted project root", () => {
