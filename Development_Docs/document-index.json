@@ -687,6 +687,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Deepwater/deepwater-capability-impact.schema.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Deepwater/deepwater-findings.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -718,6 +724,18 @@
     },
     {
       "path": "Development_Docs/Programs/Deepwater/deepwater-phase4-config.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/deepwater-phase5-config.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/deepwater-phase5-config.schema.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -814,6 +832,24 @@
     },
     {
       "path": "Development_Docs/Programs/Deepwater/phase-records/Project_Deepwater_Phase_4_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/phase-records/Project_Deepwater_Phase_5_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/phase-records/Project_Deepwater_Phase_5_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/Project_Deepwater_Program_Completion_Receipt.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -981,7 +1017,43 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Delta_Report.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Delta_Report.schema.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Drift_Baseline.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Drift_Baseline.schema.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Final_Acceptance_Matrix.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Governance_Queue.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Governance_Report.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
