@@ -273,6 +273,22 @@ test("ordinary candidates fail closed for unknown paths", async () => {
   assert.deepEqual(result.errors, ["ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:unowned/bridgewatch-lookalike.ts"]);
 });
 
+test("structurally proven project supplements admit the Tideglass surface without a named policy rule", async () => {
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: await readOrdinaryCandidatePolicy(),
+    changedPaths: [
+      "src/tideglass/core.ts",
+      "tests/tideglass/canonicalization.test.ts",
+      "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_4_Validation_Record.md",
+      "scripts/tideglass/seed-phase3-fixture.mjs",
+      "README.md",
+      "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+    ],
+  });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(result.errors, []);
+});
+
 test("canonical Deepwater governance and tooling paths are ordinary-admissible without broadening lookalikes", async () => {
   const policy = await readOrdinaryCandidatePolicy();
   const admitted = [
@@ -720,6 +736,55 @@ test("generic product verification registration admits a bounded owned product s
   assert.deepEqual(result.errors, []);
 });
 
+test("registration-only evidence against an existing trusted contract admits with a unique trusted owner", () => {
+  const fixture = registrationFixture();
+  fixture.candidateRegistries.contracts = clone(fixture.trustedRegistries.contracts);
+  fixture.candidateRegistries.suites.suites[0].contracts = ["aurora.base"];
+  fixture.candidateRegistries.suites.suites[1].contracts = ["aurora.base"];
+  fixture.candidateRegistries.impactMap.pathMappings[0].contractIds = ["aurora.base"];
+  fixture.candidateRegistries.impactMap.contractMappings = [
+    { contractId: "aurora.base", suiteIds: ["unit.aurora", "browser.aurora"] },
+  ];
+  fixture.candidateRegistries.activeTestRegistry.cases.at(-1).contracts = ["aurora.base"];
+  const result = classifyProductRegistration(fixture);
+  assert.equal(result.classification, "PRODUCT_WITH_VERIFICATION_REGISTRATION");
+  assert.equal(result.registration.ownerId, "project-aurora");
+});
+
+test("registration-only admission fails closed for conflicting owners, foreign evidence, removed suites, and unowned contracts", () => {
+  const fixture = registrationFixture();
+  fixture.candidateRegistries.contracts = clone(fixture.trustedRegistries.contracts);
+  fixture.candidateRegistries.suites.suites[0].contracts = ["aurora.base"];
+  fixture.candidateRegistries.suites.suites[1].contracts = ["other.base"];
+  fixture.candidateRegistries.impactMap.pathMappings[0].contractIds = ["aurora.base"];
+  fixture.candidateRegistries.impactMap.contractMappings = [
+    { contractId: "aurora.base", suiteIds: ["unit.aurora", "browser.aurora"] },
+  ];
+  fixture.candidateRegistries.activeTestRegistry.cases.at(-1).contracts = ["other.base"];
+  const unowned = classifyProductRegistration(fixture);
+  assert.ok(
+    unowned.errors.some(
+      (entry) => entry.includes("SUITE_CONTRACT_INVALID") || entry.includes("REGISTRY_OWNER_INVALID"),
+    ),
+  );
+
+  const removed = registrationFixture();
+  removed.candidateRegistries.suites.suites = [];
+  assert.ok(classifyProductRegistration(removed).errors.some((entry) => entry.includes("SUITE_REMOVED")));
+
+  const conflict = registrationFixture();
+  conflict.trustedRegistries.ownership.owners.push({
+    id: "project-nebula",
+    sourcePaths: ["src/nebula/**"],
+    testPaths: [],
+    contractIds: ["nebula.base"],
+  });
+  conflict.candidateRegistries.ownership = clone(conflict.trustedRegistries.ownership);
+  conflict.candidateRegistries.contracts = clone(conflict.trustedRegistries.contracts);
+  const result = classifyProductRegistration({ ...conflict, changedPaths: [...productPaths, "src/nebula/detail.ts"] });
+  assert.ok(result.errors.includes("PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_OWNER_CONFLICT"));
+});
+
 test("product registration requires a real owned product source change", () => {
   const result = classifyProductRegistration({
     changedPaths: productPaths.filter((file) => !file.startsWith("src/aurora/")),
@@ -885,6 +950,7 @@ test("unknown paths and empty diffs remain fail-closed outside the registration 
 test("a trusted discovery descriptor can supply the same bounded ownership semantics", () => {
   const fixture = registrationFixture();
   fixture.trustedRegistries.ownership.owners = [];
+  fixture.candidateRegistries.ownership = clone(fixture.trustedRegistries.ownership);
   const result = classifyProductRegistration({
     ...fixture,
     trustedProjectDescriptor: {

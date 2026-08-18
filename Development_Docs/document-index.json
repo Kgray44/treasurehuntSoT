@@ -1641,6 +1641,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Context_Budget_and_Usage_Worksheet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Context_Profile_and_Schema.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -1731,7 +1737,49 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_4_Accepted_Capsule.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_4_Architecture_and_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_4_Benchmark_Data.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_4_Dogfood_Telemetry.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_4_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Rollout_Readiness.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Token_Calibration_and_Estimator_v1.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_v1.0-R1_Completion_Receipt.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -2607,6 +2655,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Acceptance_Unblock_Impact_Declaration.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Active_Authority_Lineage_Maintenance_Repair.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Bounded_Mixed_Browser_Batching_Repair_Plan.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -2620,6 +2680,30 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Product_Verification_Registration_Admission_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4.2_Authority_Maintenance_Lane_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4.2_Bootstrap_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4.2_Shipwright_Owner_Materialization_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4.2_Trusted_Project_and_Registration_Admission_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

@@ -1,0 +1,37 @@
+{
+  "version": "1.0.0",
+  "authority": "SOUNDING_LINE_TRUSTED_MAIN_PROJECT_DISCOVERY",
+  "sourceBound": true,
+  "projects": [
+    {
+      "id": "project-shipwright",
+      "displayName": "Project Shipwright",
+      "aliases": ["Shipwright", "Project Shipwright"],
+      "documentationRoot": "Development_Docs/Projects/Project Shipwright",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_1_Design_Record.md",
+        "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_1_Implementation_Record.md",
+        "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_2_Completion_Receipt.md",
+        "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_2_Design_Record.md",
+        "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_2_Implementation_Record.md",
+        "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_2_Mainline_Safety_Manifest.md",
+        "Development_Docs/Features/branch-complete/project-shipwright-phase2.json"
+      ],
+      "sourcePaths": [
+        "src/app/api/studio/**",
+        "src/app/studio/**",
+        "src/components/studio/**",
+        "src/studio/authoring/**",
+        "src/styles/studio.css",
+        "scripts/shipwright/**"
+      ],
+      "testPaths": [
+        "src/components/studio/TaleEditor.test.tsx",
+        "src/studio/authoring/**/*.test.*",
+        "tests/e2e/project-shipwright-phase2.spec.ts"
+      ],
+      "contractIds": [],
+      "supportingOwnerIds": ["drydock", "one-voyage", "platform-foundation", "tideglass"]
+    }
+  ]
+}

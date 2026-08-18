@@ -3,7 +3,12 @@ import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
 import { readFile, writeFile } from "node:fs/promises";
 import { promisify } from "node:util";
-import { discoverProjects, structurallyAdmitsProjectPath } from "./project-discovery.mjs";
+import {
+  createTrustedMainProjectDiscoveryRegistry,
+  discoverProjects,
+  structurallyAdmitsProjectPath,
+  validateTrustedMainProjectDiscoveryRegistry,
+} from "./project-discovery.mjs";
 
 const digest = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
 const sha = (value) => typeof value === "string" && /^[0-9a-f]{40}$/u.test(value);
@@ -37,18 +42,75 @@ const onlyExtends = (before, after, fields) => {
 };
 const gitShow = async (sha, file) =>
   (await execute("git", ["show", `${sha}:${file}`], { maxBuffer: 16 * 1024 * 1024 })).stdout;
+const gitTreePaths = async (sha) =>
+  (await execute("git", ["ls-tree", "-r", "--name-only", sha], { maxBuffer: 16 * 1024 * 1024 })).stdout
+    .split(/\r?\n/u)
+    .filter(Boolean);
+const gitTree = async (sha) => (await execute("git", ["rev-parse", `${sha}^{tree}`])).stdout.trim();
 
 const registrationInputs = (trustedPolicy) => trustedPolicy?.ordinaryCandidateProductVerificationRegistration ?? null;
 const registrationPaths = (trustedPolicy) => registrationInputs(trustedPolicy)?.pathGlobs ?? [];
 const registrationTriggers = (trustedPolicy) => registrationInputs(trustedPolicy)?.semanticPathGlobs ?? [];
-const candidateOwner = ({ trustedRegistries, trustedProjectDescriptor, productPaths }) => {
-  const owners = [
-    ...(trustedRegistries?.ownership?.owners ?? []),
+const productSourcePaths = (paths) =>
+  (paths ?? []).filter((file) => /^(?:src|prisma|public|scripts)\//u.test(file) && !/\.test\.[^/]+$/u.test(file));
+const uniqueOwners = (owners) => [
+  ...new Map((owners ?? []).filter((owner) => owner?.id).map((owner) => [owner.id, owner])).values(),
+];
+
+function resolveTrustedPrimaryOwner({
+  trustedRegistries,
+  trustedProjectDescriptors,
+  trustedProjectDescriptor,
+  productPaths,
+  expectedPrimaryId = null,
+}) {
+  const errors = [];
+  const registryOwners = uniqueOwners(trustedRegistries?.ownership?.owners);
+  const descriptors = uniqueOwners([
+    ...(trustedProjectDescriptors ?? []),
     ...(trustedProjectDescriptor ? [trustedProjectDescriptor] : []),
-  ];
-  const matches = owners.filter((owner) => productPaths.some((file) => matchesAny(file, owner?.sourcePaths ?? [])));
-  return [...new Map(matches.map((owner) => [owner.id, owner])).values()];
-};
+  ]);
+  const realProductPaths = productSourcePaths(productPaths);
+  const descriptorMatches = descriptors.filter((owner) =>
+    realProductPaths.some((file) => matchesAny(file, owner?.sourcePaths ?? [])),
+  );
+  const registryMatches = registryOwners.filter((owner) =>
+    realProductPaths.some((file) => matchesAny(file, owner?.sourcePaths ?? [])),
+  );
+  if (!realProductPaths.length) errors.push("PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_SOURCE_REQUIRED");
+  if (descriptorMatches.length > 1) errors.push("PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_OWNER_CONFLICT");
+  if (descriptorMatches.length === 1) {
+    const owner = descriptorMatches[0];
+    const supportingOwnerIds = new Set(owner.supportingOwnerIds ?? []);
+    const foreign = registryMatches.filter(
+      (candidate) => candidate.id !== owner.id && !supportingOwnerIds.has(candidate.id),
+    );
+    if (foreign.length) errors.push("PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_OWNER_CONFLICT");
+    const supportingOwners = registryOwners.filter((candidate) => supportingOwnerIds.has(candidate.id));
+    if (supportingOwners.length !== supportingOwnerIds.size)
+      errors.push("PRODUCT_VERIFICATION_REGISTRATION_SUPPORTING_OWNER_UNRESOLVED");
+    return { owner, supportingOwners, errors, realProductPaths };
+  }
+  if (expectedPrimaryId) {
+    const owner = registryMatches.find((candidate) => candidate.id === expectedPrimaryId);
+    if (owner)
+      return {
+        owner,
+        supportingOwners: registryMatches.filter((candidate) => candidate.id !== owner.id),
+        errors,
+        realProductPaths,
+      };
+  }
+  if (registryMatches.length !== 1) {
+    errors.push(
+      registryMatches.length > 1
+        ? "PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_OWNER_CONFLICT"
+        : "PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_OWNER_UNRESOLVED",
+    );
+    return { owner: null, supportingOwners: [], errors, realProductPaths };
+  }
+  return { owner: registryMatches[0], supportingOwners: [], errors, realProductPaths };
+}
 
 function verifyRegistrationSnapshots({
   trustedRegistries,
@@ -58,9 +120,15 @@ function verifyRegistrationSnapshots({
   sharedVerificationSuiteIds,
   errors,
 }) {
+  if (!same(trustedRegistries?.ownership, candidateRegistries?.ownership))
+    errors.push("PRODUCT_VERIFICATION_REGISTRATION_OWNERSHIP_MUTATION");
+  if (!same(trustedRegistries?.trustedProjectDiscovery, candidateRegistries?.trustedProjectDiscovery))
+    errors.push("PRODUCT_VERIFICATION_REGISTRATION_TRUSTED_DISCOVERY_MUTATION");
   const trustedContracts = by(trustedRegistries?.contracts?.contracts, "id");
   const candidateContracts = by(candidateRegistries?.contracts?.contracts, "id");
   const ownedContracts = new Set(owner.contractIds ?? []);
+  const supportingContractIds = new Set(supportingOwners.flatMap((entry) => entry.contractIds ?? []));
+  const permittedContractIds = () => new Set([...ownedContracts, ...supportingContractIds]);
   for (const [id, contract] of trustedContracts) {
     if (!candidateContracts.has(id) || !same(contract, candidateContracts.get(id)))
       errors.push(`PRODUCT_VERIFICATION_REGISTRATION_CONTRACT_MUTATION:${id}`);
@@ -89,7 +157,7 @@ function verifyRegistrationSnapshots({
     if (suite?.owner === owner.id) ownedSuites.add(id);
     if (
       (!trustedSuites.has(id) || suite?.owner === owner.id) &&
-      (!Array.isArray(suite?.contracts) || suite.contracts.some((id) => !ownedContracts.has(id)))
+      (!Array.isArray(suite?.contracts) || suite.contracts.some((id) => !permittedContractIds().has(id)))
     )
       errors.push(`PRODUCT_VERIFICATION_REGISTRATION_SUITE_CONTRACT_INVALID:${id}`);
   }
@@ -108,7 +176,7 @@ function verifyRegistrationSnapshots({
       const suites = entry?.suiteIds ?? [];
       if (
         (!trusted.has(id) || !same(trusted.get(id), entry)) &&
-        (contracts.some((contractId) => !ownedContracts.has(contractId)) ||
+        (contracts.some((contractId) => !permittedContractIds().has(contractId)) ||
           suites.some((suiteId) => !ownedSuites.has(suiteId) && !sharedVerificationSuiteIds.includes(suiteId)))
       )
         errors.push(`PRODUCT_VERIFICATION_REGISTRATION_IMPACT_OWNER_INVALID:${field}:${id}`);
@@ -149,7 +217,7 @@ function verifyRegistrationSnapshots({
     if (
       (entry?.owner !== owner.id && !allowedCrossProjectCase) ||
       (entry?.owner === owner.id &&
-        (!ownedSuites.has(entry?.suiteId) || (entry?.contracts ?? []).some((id) => !ownedContracts.has(id))))
+        (!ownedSuites.has(entry?.suiteId) || (entry?.contracts ?? []).some((id) => !permittedContractIds().has(id))))
     )
       errors.push(`PRODUCT_VERIFICATION_REGISTRATION_REGISTRY_OWNER_INVALID:${semanticId}`);
     for (const project of entry?.browserRequirements ?? [])
@@ -168,6 +236,7 @@ export function classifyProductVerificationRegistration({
   trustedRegistries,
   candidateRegistries,
   trustedProjectDescriptor,
+  trustedProjectDescriptors = [],
 }) {
   const errors = [];
   const configuration = registrationInputs(trustedPolicy);
@@ -182,7 +251,6 @@ export function classifyProductVerificationRegistration({
   const productPaths = (changedPaths ?? []).filter(
     (file) => !metadata.includes(file) && !matchesAny(file, configuration?.ancillaryPathGlobs ?? []),
   );
-  const owners = candidateOwner({ trustedRegistries, trustedProjectDescriptor, productPaths });
   const trustedContracts = by(trustedRegistries?.contracts?.contracts, "id");
   const newAuthorities = new Set(
     (candidateRegistries?.contracts?.contracts ?? [])
@@ -190,15 +258,26 @@ export function classifyProductVerificationRegistration({
       .map((contract) => contract?.authority)
       .filter(Boolean),
   );
-  if (newAuthorities.size !== 1) errors.push("PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_OWNER_AMBIGUOUS");
-  const owner = owners.find((entry) => entry.id === [...newAuthorities][0]);
-  if (!owner) errors.push("PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_OWNER_UNRESOLVED");
+  const ownerResolution = resolveTrustedPrimaryOwner({
+    trustedRegistries,
+    trustedProjectDescriptors,
+    trustedProjectDescriptor,
+    productPaths,
+    expectedPrimaryId: newAuthorities.size === 1 ? [...newAuthorities][0] : null,
+  });
+  errors.push(...ownerResolution.errors);
+  if (newAuthorities.size > 1) errors.push("PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_OWNER_AMBIGUOUS");
+  const owner = ownerResolution.owner;
+  if (newAuthorities.size === 1 && owner && owner.id !== [...newAuthorities][0])
+    errors.push("PRODUCT_VERIFICATION_REGISTRATION_NEW_CONTRACT_OWNER_MISMATCH");
+  if (!owner && !errors.includes("PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_OWNER_UNRESOLVED"))
+    errors.push("PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_OWNER_UNRESOLVED");
   if (owner && trustedRegistries && candidateRegistries) {
     const { newBrowserProjects } = verifyRegistrationSnapshots({
       trustedRegistries,
       candidateRegistries,
       owner,
-      supportingOwners: owners.filter((entry) => entry.id !== owner.id),
+      supportingOwners: ownerResolution.supportingOwners,
       sharedVerificationSuiteIds: configuration.sharedVerificationSuiteIds ?? [],
       errors,
     });
@@ -220,6 +299,7 @@ export function classifyProductVerificationRegistration({
       : "PRODUCT_WITH_VERIFICATION_REGISTRATION",
     errors: [...new Set(errors)].sort(),
     ownerId: owner?.id ?? null,
+    primaryProductSourcePaths: ownerResolution.realProductPaths,
     metadataPaths: metadata,
   };
 }
@@ -253,6 +333,7 @@ export function classifyOrdinaryCandidate({
   trustedRegistries = null,
   candidateRegistries = null,
   trustedProjectDescriptor = null,
+  trustedProjectDescriptors = [],
 }) {
   const errors = [];
   if (trustedPolicy?.authority !== "SOUNDING_LINE_VERIFICATION_MAINTENANCE" || trustedPolicy?.trustedMainOnly !== true)
@@ -273,7 +354,7 @@ export function classifyOrdinaryCandidate({
           ? [...registrationPaths(trustedPolicy), ...(registrationInputs(trustedPolicy)?.ancillaryPathGlobs ?? [])]
           : []),
       ]) &&
-      (!structurallyAdmitsProjectPath(file, projectDiscovery) ||
+      (!structurallyAdmitsProjectPath(file, projectDiscovery, paths) ||
         structurallyCollidesWithTrustedScope(file, trustedPolicy))
     )
       errors.push(`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${file}`);
@@ -285,6 +366,7 @@ export function classifyOrdinaryCandidate({
         trustedRegistries,
         candidateRegistries,
         trustedProjectDescriptor,
+        trustedProjectDescriptors,
       })
     : null;
   errors.push(...(registration?.errors ?? []));
@@ -311,11 +393,12 @@ const registrationFiles = [
   ["fileDispositions", "testing/file-dispositions.json", "json"],
   ["activeTestRegistry", "testing/generated/active-test-registry.json", "json"],
   ["ownership", "testing/ownership.json", "json"],
+  ["trustedProjectDiscovery", "testing/trusted-project-discovery.json", "json"],
   ["playwrightConfig", "playwright.config.ts", "text"],
   ["testRegistrySource", "scripts/sounding-line/test-registry.mjs", "text"],
 ];
 
-async function registrationSnapshot({ baseSha, candidateSha, candidateRoot }) {
+async function registrationSnapshot({ baseSha, candidateSha, candidateRoot, changedPaths = [] }) {
   const readCandidate = async (file) => {
     if (candidateSha) return gitShow(candidateSha, file);
     return readFile(new URL(`../${file}`, `file://${candidateRoot.replace(/\\/gu, "/")}/`), "utf8");
@@ -327,7 +410,22 @@ async function registrationSnapshot({ baseSha, candidateSha, candidateRoot }) {
         return [key, format === "json" ? JSON.parse(text) : text];
       }),
     );
-    return Object.fromEntries(entries);
+    const result = Object.fromEntries(entries);
+    const configPaths = [
+      "playwright.config.ts",
+      ...(changedPaths ?? []).filter((file) => matchesAny(file, ["playwright*.config.*"])),
+    ];
+    const configSources = await Promise.all(
+      [...new Set(configPaths)].sort().map(async (file) => {
+        try {
+          return candidate ? await readCandidate(file) : await gitShow(shaValue, file);
+        } catch {
+          return "";
+        }
+      }),
+    );
+    result.playwrightConfig = configSources.filter(Boolean).join("\n");
+    return result;
   };
   return { trustedRegistries: await snapshot(baseSha, false), candidateRegistries: await snapshot(candidateSha, true) };
 }
@@ -435,7 +533,26 @@ if (process.argv[1]?.endsWith("verification-maintenance.mjs") && process.argv[2]
           baseSha: options["trusted-base-sha"],
           candidateSha: options["candidate-sha"],
           candidateRoot: options["candidate-root"] ?? process.cwd(),
+          changedPaths: Array.isArray(parsedPaths) ? parsedPaths : [parsedPaths],
         });
+        const [trustedMainTreeSha, trustedTreePaths] = await Promise.all([
+          gitTree(options["trusted-base-sha"]),
+          gitTreePaths(options["trusted-base-sha"]),
+        ]);
+        const trustedDiscovery = createTrustedMainProjectDiscoveryRegistry({
+          trustedMainSha: options["trusted-base-sha"],
+          trustedMainTreeSha,
+          trustedTreePaths,
+          sourceRegistry: snapshots.trustedRegistries.trustedProjectDiscovery,
+          owners: snapshots.trustedRegistries.ownership?.owners,
+        });
+        const discoveryValidity = validateTrustedMainProjectDiscoveryRegistry({
+          registry: trustedDiscovery,
+          trustedMainSha: options["trusted-base-sha"],
+          trustedMainTreeSha,
+        });
+        if (!discoveryValidity.valid) snapshots.snapshotError = discoveryValidity.code;
+        else snapshots.trustedProjectDescriptors = trustedDiscovery.descriptors;
       } catch {
         snapshots = { snapshotError: "PRODUCT_VERIFICATION_REGISTRATION_SNAPSHOTS_UNAVAILABLE" };
       }

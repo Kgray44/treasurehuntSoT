@@ -20,6 +20,11 @@
   ],
   "authorityChangePathGlobs": [
     "testing/verification-maintenance-policy.json",
+    "testing/authority-maintenance-policy.json",
+    "testing/trusted-project-discovery.json",
+    "scripts/sounding-line/authority-maintenance.mjs",
+    "scripts/sounding-line/authority-maintenance-protected-binding.mjs",
+    "scripts/sounding-line/authority-maintenance-selection.mjs",
     "testing/sounding-line-authority.json",
     "scripts/sounding-line/verification-maintenance.mjs",
     "scripts/sounding-line/maintenance-protected-binding.mjs",
@@ -36,6 +41,7 @@
     ".github/workflows/sounding-line-train-wave.yml",
     ".github/workflows/sounding-line-protected-merge-binding.yml",
     ".github/workflows/sounding-line-verification-maintenance.yml",
+    ".github/workflows/sounding-line-authority-maintenance.yml",
     "scripts/sounding-line/v14/**",
     "scripts/sounding-line/v14-fast-channel.mjs",
     "testing/mainline-train-policy.json",
@@ -106,8 +112,11 @@
       "Development_Docs/Features/FEATURE_CATALOG.md",
       "Development_Docs/Features/catalog/**",
       "Development_Docs/document-index.json",
+      "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv",
+      "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv",
       "scripts/generate-document-index.mjs",
-      "scripts/features/**"
+      "scripts/features/**",
+      "testing/generated/p34-retirement-ledger.json"
     ],
     "playwrightConfigPathGlobs": ["playwright*.config.*"],
     "testRegistrySourcePathGlobs": ["scripts/sounding-line/test-registry.mjs"],

@@ -5,10 +5,12 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   createProjectDiscoveryRegistry,
+  createTrustedMainProjectDiscoveryRegistry,
   discoverProjects,
   projectDiscoverySummary,
   structurallyAdmitsProjectPath,
   validateProjectDiscoveryRegistry,
+  validateTrustedMainProjectDiscoveryRegistry,
 } from "../../../scripts/sounding-line/project-discovery.mjs";
 import { classifyOrdinaryCandidate } from "../../../scripts/sounding-line/verification-maintenance.mjs";
 import { selectV14Mainline } from "../../../scripts/sounding-line/v14/fast-channel.mjs";
@@ -138,6 +140,58 @@ test("derived registry is deterministic, trusted-main-bound, stale-detectable, a
   );
 });
 
+test("trusted-main project records promote an accepted project deterministically without a name special case", () => {
+  const sourceRegistry = {
+    projects: [
+      {
+        id: "project-shipwright",
+        displayName: "Project Shipwright",
+        aliases: ["Shipwright", "Project Shipwright"],
+        documentationRoot: "Development_Docs/Projects/Project Shipwright",
+        evidencePaths: [
+          "Development_Docs/Projects/Project Shipwright/Phase_2_Completion.md",
+          "Development_Docs/Features/branch-complete/project-shipwright-phase2.json",
+        ],
+        sourcePaths: ["src/components/studio/**", "src/studio/authoring/**"],
+        testPaths: ["tests/e2e/project-shipwright-phase2.spec.ts"],
+        supportingOwnerIds: ["drydock"],
+      },
+    ],
+  };
+  const trustedTreePaths = [
+    ...sourceRegistry.projects[0].evidencePaths,
+    "src/components/studio/TaleEditor.tsx",
+    "src/studio/authoring/adapters.ts",
+    "tests/e2e/project-shipwright-phase2.spec.ts",
+  ];
+  const input = {
+    trustedMainSha: sha("a"),
+    trustedMainTreeSha: sha("b"),
+    trustedTreePaths,
+    sourceRegistry,
+    owners: [{ id: "drydock", contractIds: ["drydock-authoring-contracts"] }],
+  };
+  const first = createTrustedMainProjectDiscoveryRegistry(input);
+  const second = createTrustedMainProjectDiscoveryRegistry(input);
+  assert.deepEqual(first, second);
+  assert.equal(first.errors.length, 0);
+  assert.equal(first.descriptors[0].id, "project-shipwright");
+  assert.deepEqual(first.descriptors[0].aliases, ["Project Shipwright", "project-shipwright", "Shipwright"]);
+  assert.equal(
+    validateTrustedMainProjectDiscoveryRegistry({
+      registry: first,
+      trustedMainSha: sha("a"),
+      trustedMainTreeSha: sha("b"),
+    }).valid,
+    true,
+  );
+  const forged = createTrustedMainProjectDiscoveryRegistry({
+    ...input,
+    sourceRegistry: { projects: [{ ...sourceRegistry.projects[0], sourcePaths: ["scripts/**"] }] },
+  });
+  assert.match(forged.errors.join("\n"), /PROJECT_DISCOVERY_SOURCE_SCOPE_INVALID/);
+});
+
 test("Project DefinitelyNormal cannot escape the authority firewall", () => {
   const result = classifyOrdinaryCandidate({
     trustedPolicy: policy,
@@ -150,11 +204,28 @@ test("Project DefinitelyNormal cannot escape the authority firewall", () => {
   assert.deepEqual(result.errors, ["ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED:scripts/sounding-line/finalizer.mjs"]);
 });
 
-test("structural admission permits correlated new project scripts but not a scripts-wide bypass", () => {
+test("structural admission permits correlated project scripts and supplements but not broad bypasses", () => {
   const accepted = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: asterismPaths });
   assert.equal(accepted.classification, "ORDINARY_CANDIDATE");
+  const supplements = classifyOrdinaryCandidate({
+    trustedPolicy: policy,
+    changedPaths: [
+      ...asterismPaths,
+      "README.md",
+      "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+    ],
+  });
+  assert.equal(supplements.classification, "ORDINARY_CANDIDATE");
   const rejected = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: ["scripts/asterism/check.mjs"] });
   assert.equal(rejected.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
+  const unprovenSupplement = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: ["README.md"] });
+  assert.equal(unprovenSupplement.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
+  const multipleProjects = classifyOrdinaryCandidate({
+    trustedPolicy: policy,
+    changedPaths: [...asterismPaths, "src/orbit/route.ts", "tests/orbit/route.test.ts", "README.md"],
+  });
+  assert.equal(multipleProjects.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
+  assert.deepEqual(multipleProjects.errors, ["ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:README.md"]);
 });
 
 test("structural admission rejects a prospective project that collides with a trusted project root", () => {
@@ -218,4 +289,120 @@ test("ambiguity, missing tests, migration, security, and multiple projects remai
   });
   assert.equal(docsOnly.state, "PROVISIONAL_CONSERVATIVE");
   assert.deepEqual(docsOnly.observedTestRoots, []);
+});
+
+const productSuites = [
+  { id: "browser.access-sentinel", domains: ["authorization"] },
+  { id: "unit.wakebook", owner: "project-wakebook" },
+  { id: "browser.wakebook", owner: "project-wakebook" },
+  { id: "unit.tideglass", owner: "tideglass" },
+  { id: "browser.tideglass", owner: "tideglass" },
+  { id: "unit.lanternwake", owner: "lanternwake" },
+  { id: "browser.lanternwake", owner: "lanternwake" },
+  { id: "unit.feature-catalog", affectedPaths: ["scripts/features/**", "Development_Docs/Features/**"] },
+  { id: "static.core" },
+].map((entry) => ({ ...entry, trusted: true }));
+const productContracts = [
+  { id: "wakebook.history", trusted: true },
+  { id: "tideglass.editions", trusted: true },
+  { id: "lanternwake.viewport", trusted: true },
+];
+const productOwners = [
+  {
+    id: "project-wakebook",
+    project: "project-wakebook",
+    sourcePaths: ["src/wakebook/**"],
+    testPaths: ["tests/e2e/wakebook-*.spec.ts"],
+    contractIds: ["wakebook.history"],
+  },
+  {
+    id: "tideglass",
+    project: "project-tideglass",
+    sourcePaths: ["scripts/tideglass/**"],
+    testPaths: ["tests/e2e/tideglass-*.spec.ts"],
+    contractIds: ["tideglass.editions"],
+  },
+  {
+    id: "lanternwake",
+    project: "lanternwake",
+    sourcePaths: ["src/animation/**"],
+    testPaths: ["tests/e2e/lanternwake-*.spec.ts"],
+    contractIds: ["lanternwake.viewport"],
+  },
+].map((entry) => ({ ...entry, trusted: true }));
+const productCatalog = [
+  { id: "catalog-wakebook", title: "Project Wakebook", trusted: true },
+  { id: "catalog-tideglass", title: "Project Tideglass", trusted: true },
+  { id: "catalog-lanternwake", title: "Project Lanternwake", trusted: true },
+];
+const productPlan = ({ changedPaths, descriptors, owners = productOwners }) =>
+  selectV14Mainline({
+    changedPaths,
+    suites: productSuites,
+    requiredSuiteIds: ["browser.access-sentinel"],
+    ledgerSuiteIds: productSuites.map((suite) => suite.id),
+    impact: { pathMappings: [], contractMappings: [] },
+    projectDiscovery:
+      descriptors ??
+      discoverProjects({
+        candidatePaths: changedPaths,
+        suites: productSuites,
+        contracts: productContracts,
+        owners,
+        featureCatalog: productCatalog,
+      }),
+  });
+
+test("trusted owner shapes, project fragments, and catalog fragments select only their known product evidence", () => {
+  const wakebookPaths = [
+    "src/wakebook/archive-query.ts",
+    "Development_Docs/Project_Wakebook_Phase_2_Test_Plan.md",
+    "Development_Docs/Features/catalog/wakebook.json",
+  ];
+  const [wakebook] = discoverProjects({
+    candidatePaths: wakebookPaths,
+    suites: productSuites,
+    contracts: productContracts,
+    owners: productOwners,
+    featureCatalog: productCatalog,
+  });
+  assert.equal(wakebook.state, "TRUSTED_DISCOVERED");
+  assert.equal(wakebook.mayNarrowEvidence, true);
+  const plan = productPlan({ changedPaths: wakebookPaths, descriptors: [wakebook] });
+  assert.equal(plan.fallback, null);
+  assert.ok(plan.selectedSuiteIds.includes("unit.wakebook"));
+  assert.ok(plan.selectedSuiteIds.includes("browser.wakebook"));
+  assert.ok(!plan.selectedSuiteIds.includes("browser.tideglass"));
+  assert.ok(!plan.selectedSuiteIds.includes("browser.lanternwake"));
+});
+
+test("generated validation is bounded, while Tideglass and Lanternwake keep their own browser families", () => {
+  const global = productPlan({ changedPaths: ["scripts/features/feature-catalog.test.ts"] });
+  assert.equal(global.fallback, null);
+  assert.deepEqual(global.selectedSuiteIds, ["browser.access-sentinel", "unit.feature-catalog"]);
+  const tideglass = productPlan({ changedPaths: ["scripts/tideglass/seed-phase3-fixture.mjs"] });
+  const lanternwake = productPlan({ changedPaths: ["tests/e2e/lanternwake-phase2.spec.ts"] });
+  assert.ok(tideglass.selectedSuiteIds.includes("browser.tideglass"));
+  assert.ok(!tideglass.selectedSuiteIds.includes("browser.lanternwake"));
+  assert.ok(lanternwake.selectedSuiteIds.includes("browser.lanternwake"));
+  assert.ok(!lanternwake.selectedSuiteIds.includes("browser.tideglass"));
+});
+
+test("unknown product, unknown owner, authority-sensitive, and cross-project intervals remain fail-closed or exact", () => {
+  for (const input of [
+    productPlan({ changedPaths: ["src/unmapped/new.ts"] }),
+    productPlan({ changedPaths: ["src/wakebook/archive-query.ts"], owners: [] }),
+    productPlan({ changedPaths: ["testing/sounding-line-authority.json"] }),
+  ]) {
+    assert.equal(input.fallback?.disposition, "CONSERVATIVE_FALLBACK");
+  }
+  const crossProject = productPlan({
+    changedPaths: ["scripts/tideglass/seed-phase3-fixture.mjs", "tests/e2e/lanternwake-phase2.spec.ts"],
+  });
+  assert.equal(crossProject.fallback, null);
+  assert.ok(crossProject.selectedSuiteIds.includes("browser.tideglass"));
+  assert.ok(crossProject.selectedSuiteIds.includes("browser.lanternwake"));
+  const candidate = productPlan({ changedPaths: ["src/wakebook/archive-query.ts"] });
+  const train = productPlan({ changedPaths: ["src/wakebook/archive-query.ts"] });
+  assert.deepEqual(candidate.selectedSuiteIds, train.selectedSuiteIds);
 });
