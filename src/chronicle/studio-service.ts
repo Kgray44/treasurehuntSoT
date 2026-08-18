@@ -592,6 +592,10 @@ export async function restorePublishedVersionToDraft(taleId: string, versionId: 
           blocks: chapter.blocks.map((block) => ({
             ...block,
             id: blockIds.get(block.id)!,
+            connections: block.connections.map((connection) => ({
+              ...connection,
+              targetBlockId: remapTarget(connection.targetBlockId),
+            })),
             configuration: {
               ...block.configuration,
               successTargetBlockId: remapTarget(block.configuration.successTargetBlockId),
