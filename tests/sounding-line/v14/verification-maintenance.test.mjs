@@ -273,6 +273,31 @@ test("ordinary candidates fail closed for unknown paths", async () => {
   assert.deepEqual(result.errors, ["ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:unowned/bridgewatch-lookalike.ts"]);
 });
 
+test("canonical Deepwater governance and tooling paths are ordinary-admissible without broadening lookalikes", async () => {
+  const policy = await readOrdinaryCandidatePolicy();
+  const admitted = [
+    ".agents/deepwater-capability-impact.md",
+    "Development_Docs/Programs/Deepwater/phase-records/Project_Deepwater_Phase_5_Design_Record.md",
+    "scripts/deepwater/phase5.mjs",
+  ];
+  assert.equal(
+    classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: admitted }).classification,
+    "ORDINARY_CANDIDATE",
+  );
+  for (const path of [
+    ".agents/deepwater-capability-impact-evil.md",
+    "Development_Docs/Programs/DeepwaterEvil/record.md",
+    "scripts/deepwater-unauthorized/phase5.mjs",
+    ".agents/unrelated.md",
+    "scripts/unrelated/phase5.mjs",
+    "testing/impact-map.json",
+  ])
+    assert.notEqual(
+      classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: [path] }).classification,
+      "ORDINARY_CANDIDATE",
+    );
+});
+
 const projectTrimPhaseOnePaths = [
   ".agents/context-workflow.md",
   ".gitignore",
@@ -469,7 +494,7 @@ test("candidate authority invokes the trusted ordinary classifier rather than in
   );
   assert.match(
     workflow,
-    /node trusted-verification-maintenance\.mjs ordinary --policy trusted-maintenance-policy\.json --paths ordinary-candidate-changed-paths\.json --out ordinary-candidate-classification\.json/u,
+    /node trusted-verification-maintenance\.mjs ordinary --policy trusted-maintenance-policy\.json --paths ordinary-candidate-changed-paths\.json --trusted-base-sha \$env:SOUNDING_LINE_BASE_SHA --candidate-sha \$env:SOUNDING_LINE_CANDIDATE_SHA --out ordinary-candidate-classification\.json/u,
   );
   assert.doesNotMatch(workflow, /function Test-TrustedGlob/u);
 });
@@ -549,4 +574,327 @@ test("routine maintenance keeps every sealed qualification artifact runner-owned
   }
   assert.doesNotMatch(workflow, /--out maintenance-plan\.json/u);
   assert.doesNotMatch(workflow, /--out maintenance-finalization\.json/u);
+});
+
+const clone = (value) => JSON.parse(JSON.stringify(value));
+const productRegistrationPolicy = {
+  ...policy,
+  ordinaryCandidateEligiblePathGlobs: ["src/**", "tests/**"],
+  ordinaryCandidateProductVerificationRegistration: {
+    classification: "PRODUCT_WITH_VERIFICATION_REGISTRATION",
+    pathGlobs: [
+      "testing/contracts.json",
+      "testing/impact-map.json",
+      "testing/suites.json",
+      "testing/file-dispositions.json",
+      "testing/generated/active-test-registry.json",
+      "playwright*.config.*",
+      "scripts/sounding-line/test-registry.mjs",
+    ],
+    semanticPathGlobs: [
+      "testing/contracts.json",
+      "testing/impact-map.json",
+      "testing/suites.json",
+      "testing/file-dispositions.json",
+      "playwright*.config.*",
+      "scripts/sounding-line/test-registry.mjs",
+    ],
+    ancillaryPathGlobs: ["Development_Docs/Project_*.md", "Development_Docs/Features/catalog/**"],
+    playwrightConfigPathGlobs: ["playwright*.config.*"],
+    testRegistrySourcePathGlobs: ["scripts/sounding-line/test-registry.mjs"],
+    semanticOwnership: "TRUSTED_OWNERSHIP_OR_TRUSTED_DISCOVERY_DESCRIPTOR",
+    monotonicity: "NO_FOREIGN_MUTATION_OR_REMOVAL",
+  },
+};
+const registrationFixture = () => {
+  const trustedRegistries = {
+    ownership: {
+      owners: [
+        {
+          id: "project-aurora",
+          sourcePaths: ["src/aurora/**"],
+          testPaths: ["tests/aurora/**"],
+          contractIds: ["aurora.base"],
+        },
+      ],
+    },
+    contracts: {
+      contracts: [{ id: "aurora.base", authority: "project-aurora", owners: ["project-aurora"], critical: true }],
+    },
+    suites: { suites: [{ id: "unit.aurora", owner: "project-aurora", contracts: ["aurora.base"], tier: 1 }] },
+    impactMap: {
+      pathMappings: [{ path: "src/aurora/**", suiteIds: ["unit.aurora"], contractIds: ["aurora.base"] }],
+      contractMappings: [{ contractId: "aurora.base", suiteIds: ["unit.aurora"] }],
+    },
+    fileDispositions: { rules: [{ match: "src/other/**", owner: "project-other", suiteId: "unit.other" }] },
+    activeTestRegistry: {
+      generated: true,
+      cases: [
+        {
+          semanticId: "other-stable",
+          id: "other-id",
+          owner: "project-other",
+          suiteId: "unit.other",
+          contracts: ["other.base"],
+          browserRequirements: ["NOT_APPLICABLE"],
+        },
+      ],
+    },
+    playwrightConfig: 'projects: [{ name: "chromium" }]',
+    testRegistrySource: "trusted generator source",
+  };
+  const candidateRegistries = clone(trustedRegistries);
+  candidateRegistries.contracts.contracts.push({
+    id: "aurora.detail",
+    authority: "project-aurora",
+    owners: ["project-aurora"],
+    critical: true,
+  });
+  candidateRegistries.suites.suites[0].contracts.push("aurora.detail");
+  candidateRegistries.suites.suites.push({
+    id: "browser.aurora",
+    owner: "project-aurora",
+    contracts: ["aurora.detail"],
+    tier: 4,
+  });
+  candidateRegistries.impactMap.pathMappings[0].suiteIds.push("browser.aurora");
+  candidateRegistries.impactMap.pathMappings[0].contractIds.push("aurora.detail");
+  candidateRegistries.impactMap.contractMappings.push({
+    contractId: "aurora.detail",
+    suiteIds: ["unit.aurora", "browser.aurora"],
+  });
+  candidateRegistries.fileDispositions.rules.push({
+    match: "tests/aurora-phase2.spec.ts",
+    owner: "project-aurora",
+    suiteId: "browser.aurora",
+  });
+  candidateRegistries.activeTestRegistry.cases.push({
+    semanticId: "aurora-detail",
+    id: "aurora-id",
+    owner: "project-aurora",
+    suiteId: "browser.aurora",
+    contracts: ["aurora.detail"],
+    browserRequirements: ["aurora-chromium"],
+  });
+  candidateRegistries.playwrightConfig = 'projects: [{ name: "chromium" }, { name: "aurora-chromium" }]';
+  candidateRegistries.testRegistrySource = "candidate generator source";
+  return { trustedRegistries, candidateRegistries };
+};
+const productPaths = [
+  "src/aurora/detail.ts",
+  "tests/aurora/detail.test.ts",
+  "testing/contracts.json",
+  "testing/impact-map.json",
+  "testing/suites.json",
+  "testing/file-dispositions.json",
+  "testing/generated/active-test-registry.json",
+  "playwright.config.ts",
+  "scripts/sounding-line/test-registry.mjs",
+  "Development_Docs/Project_Aurora_Phase_2.md",
+  "Development_Docs/Features/catalog/aurora.json",
+];
+const classifyProductRegistration = (overrides = {}) => {
+  const fixture = registrationFixture();
+  return classifyOrdinaryCandidate({
+    trustedPolicy: productRegistrationPolicy,
+    changedPaths: productPaths,
+    ...fixture,
+    ...overrides,
+  });
+};
+
+test("generic product verification registration admits a bounded owned product shape", () => {
+  const result = classifyProductRegistration();
+  assert.equal(result.classification, "PRODUCT_WITH_VERIFICATION_REGISTRATION");
+  assert.equal(result.registration.ownerId, "project-aurora");
+  assert.deepEqual(result.errors, []);
+});
+
+test("product registration requires a real owned product source change", () => {
+  const result = classifyProductRegistration({
+    changedPaths: productPaths.filter((file) => !file.startsWith("src/aurora/")),
+  });
+  assert.equal(result.classification, "PRODUCT_VERIFICATION_REGISTRATION_REJECTED");
+  assert.ok(result.errors.includes("PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_OWNER_UNRESOLVED"));
+});
+
+test("product registration does not admit authority-changing files", () => {
+  const result = classifyProductRegistration({
+    changedPaths: [...productPaths, "testing/verification-maintenance-policy.json"],
+  });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED");
+});
+
+test("product registration rejects mutations to existing contracts", () => {
+  const fixture = registrationFixture();
+  fixture.candidateRegistries.contracts.contracts[0].critical = false;
+  const result = classifyProductRegistration(fixture);
+  assert.ok(result.errors.includes("PRODUCT_VERIFICATION_REGISTRATION_CONTRACT_MUTATION:aurora.base"));
+});
+
+test("product registration permits only owned monotonic suite extensions", () => {
+  const fixture = registrationFixture();
+  fixture.candidateRegistries.suites.suites[0].tier = 4;
+  const result = classifyProductRegistration(fixture);
+  assert.ok(result.errors.includes("PRODUCT_VERIFICATION_REGISTRATION_SUITE_MUTATION:unit.aurora"));
+});
+
+test("product registration permits an owned suite to add only its affected test paths", () => {
+  const fixture = registrationFixture();
+  fixture.trustedRegistries.suites.suites[0].affectedPaths = ["src/aurora/**"];
+  fixture.candidateRegistries.suites.suites[0].affectedPaths = ["src/aurora/**", "tests/aurora/detail.test.ts"];
+  const result = classifyProductRegistration(fixture);
+  assert.equal(result.classification, "PRODUCT_WITH_VERIFICATION_REGISTRATION");
+});
+
+test("product registration permits only explicitly governed shared documentation suites", () => {
+  const fixture = registrationFixture();
+  fixture.candidateRegistries.impactMap.pathMappings.push({
+    path: "Development_Docs/Project_Aurora_Phase_2.md",
+    suiteIds: ["unit.aurora", "static.core"],
+    contractIds: ["aurora.detail"],
+  });
+  const allowed = classifyProductRegistration({
+    ...fixture,
+    trustedPolicy: {
+      ...productRegistrationPolicy,
+      ordinaryCandidateProductVerificationRegistration: {
+        ...productRegistrationPolicy.ordinaryCandidateProductVerificationRegistration,
+        sharedVerificationSuiteIds: ["static.core"],
+      },
+    },
+  });
+  assert.equal(allowed.classification, "PRODUCT_WITH_VERIFICATION_REGISTRATION");
+  const denied = classifyProductRegistration(fixture);
+  assert.ok(
+    denied.errors.includes(
+      "PRODUCT_VERIFICATION_REGISTRATION_IMPACT_OWNER_INVALID:pathMappings:Development_Docs/Project_Aurora_Phase_2.md",
+    ),
+  );
+});
+
+test("product registration permits a changed trusted cross-project source to add only its own evidence", () => {
+  const fixture = registrationFixture();
+  fixture.trustedRegistries.ownership.owners.push({
+    id: "project-wayfinder",
+    sourcePaths: ["src/wayfinder/**"],
+    testPaths: [],
+    contractIds: ["wayfinder.history"],
+  });
+  fixture.trustedRegistries.suites.suites.push({
+    id: "unit.wayfinder",
+    owner: "project-wayfinder",
+    contracts: ["wayfinder.history"],
+    tier: 1,
+  });
+  fixture.candidateRegistries.ownership = clone(fixture.trustedRegistries.ownership);
+  fixture.candidateRegistries.suites.suites.push({
+    id: "unit.wayfinder",
+    owner: "project-wayfinder",
+    contracts: ["wayfinder.history"],
+    tier: 1,
+  });
+  fixture.candidateRegistries.activeTestRegistry.cases.push({
+    semanticId: "wayfinder-proof",
+    id: "wayfinder-id",
+    owner: "project-wayfinder",
+    suiteId: "unit.wayfinder",
+    contracts: ["wayfinder.history"],
+    browserRequirements: ["NOT_APPLICABLE"],
+  });
+  const result = classifyProductRegistration({
+    ...fixture,
+    changedPaths: [...productPaths, "src/wayfinder/projection.ts"],
+  });
+  assert.equal(result.classification, "PRODUCT_WITH_VERIFICATION_REGISTRATION");
+});
+
+test("product registration rejects impact-map removal or foreign impact coverage", () => {
+  const fixture = registrationFixture();
+  fixture.candidateRegistries.impactMap.pathMappings = [];
+  const result = classifyProductRegistration(fixture);
+  assert.ok(result.errors.includes("PRODUCT_VERIFICATION_REGISTRATION_IMPACT_REMOVED:pathMappings:src/aurora/**"));
+});
+
+test("product registration rejects foreign generated-registry mutation", () => {
+  const fixture = registrationFixture();
+  fixture.candidateRegistries.activeTestRegistry.cases[0].suiteId = "browser.aurora";
+  const result = classifyProductRegistration(fixture);
+  assert.ok(result.errors.includes("PRODUCT_VERIFICATION_REGISTRATION_REGISTRY_MUTATION:other-stable"));
+});
+
+test("product registration rejects a generated case owned by another project", () => {
+  const fixture = registrationFixture();
+  fixture.candidateRegistries.activeTestRegistry.cases.at(-1).owner = "project-other";
+  const result = classifyProductRegistration(fixture);
+  assert.ok(result.errors.includes("PRODUCT_VERIFICATION_REGISTRATION_REGISTRY_OWNER_INVALID:aurora-detail"));
+});
+
+test("product registration binds a new Playwright project to an owned browser case", () => {
+  const fixture = registrationFixture();
+  fixture.candidateRegistries.activeTestRegistry.cases.at(-1).browserRequirements = ["NOT_APPLICABLE"];
+  const result = classifyProductRegistration(fixture);
+  assert.ok(result.errors.includes("PRODUCT_VERIFICATION_REGISTRATION_PLAYWRIGHT_PROJECT_UNBOUND"));
+});
+
+test("product registration requires a corresponding test-registry source change", () => {
+  const fixture = registrationFixture();
+  fixture.candidateRegistries.testRegistrySource = fixture.trustedRegistries.testRegistrySource;
+  const result = classifyProductRegistration(fixture);
+  assert.ok(result.errors.includes("PRODUCT_VERIFICATION_REGISTRATION_TEST_REGISTRY_SOURCE_UNCHANGED"));
+});
+
+test("product registration rejects a foreign file-disposition addition", () => {
+  const fixture = registrationFixture();
+  fixture.candidateRegistries.fileDispositions.rules.at(-1).owner = "project-other";
+  const result = classifyProductRegistration(fixture);
+  assert.ok(
+    result.errors.includes("PRODUCT_VERIFICATION_REGISTRATION_DISPOSITION_OWNER_INVALID:tests/aurora-phase2.spec.ts"),
+  );
+});
+
+test("ordinary product candidates keep their existing non-registration classification", () => {
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: productRegistrationPolicy,
+    changedPaths: ["src/aurora/detail.ts"],
+  });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(result.errors, []);
+});
+
+test("unknown paths and empty diffs remain fail-closed outside the registration category", () => {
+  const unknown = classifyOrdinaryCandidate({
+    trustedPolicy: productRegistrationPolicy,
+    changedPaths: ["unowned/aurora.ts"],
+  });
+  const empty = classifyOrdinaryCandidate({ trustedPolicy: productRegistrationPolicy, changedPaths: [] });
+  assert.equal(unknown.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
+  assert.equal(empty.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
+});
+
+test("a trusted discovery descriptor can supply the same bounded ownership semantics", () => {
+  const fixture = registrationFixture();
+  fixture.trustedRegistries.ownership.owners = [];
+  const result = classifyProductRegistration({
+    ...fixture,
+    trustedProjectDescriptor: {
+      id: "project-aurora",
+      sourcePaths: ["src/aurora/**"],
+      testPaths: [],
+      contractIds: ["aurora.base"],
+    },
+  });
+  assert.equal(result.classification, "PRODUCT_WITH_VERIFICATION_REGISTRATION");
+});
+
+test("candidate and train admission share the same trusted classifier entrypoint", async () => {
+  const workflow = await readFile(
+    new URL("../../../.github/workflows/sounding-line-mainline-train.yml", import.meta.url),
+    "utf8",
+  );
+  assert.match(
+    workflow,
+    /verification-maintenance\.mjs ordinary --policy testing\/verification-maintenance-policy\.json/u,
+  );
+  assert.doesNotMatch(workflow, /function Test-TrustedGlob/u);
 });
