@@ -85,7 +85,10 @@ test("empty hosted matrices use an explicit success marker rather than a skipped
   assert.equal(markerGuards.length, authority.hostedExecutionCapacity.maximumWave + 1);
   const completionGuards = workflow.match(/SOUNDING_LINE_EMPTY_MARKER_COMPLETION_INVALID/g) ?? [];
   assert.equal(completionGuards.length, authority.hostedExecutionCapacity.maximumWave + 1);
-  assert.doesNotMatch(workflow, /PARALLEL_RESULT -in @\('failure', 'skipped'\)|EXCLUSIVE_RESULT -in @\('failure', 'skipped'\)/u);
+  assert.doesNotMatch(
+    workflow,
+    /PARALLEL_RESULT -in @\('failure', 'skipped'\)|EXCLUSIVE_RESULT -in @\('failure', 'skipped'\)/u,
+  );
 });
 
 test("dormant hosted waves are skipped only after the sealed active depth, while active wave barriers remain required", async () => {
