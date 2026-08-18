@@ -214,7 +214,7 @@ test("v1.4 current authority is restricted to protected main while v1.3 cutover 
       gateId: "mainline",
       authorityMode: "V14_OWNER_BOOTSTRAP",
       githubRef: "refs/heads/codex/one-shot-bootstrap",
-      qualifiedBaseSha: sha("b"),
+      qualifiedBaseSha: "b".repeat(40),
     }),
     "V14_CANDIDATE",
   );
@@ -224,7 +224,7 @@ test("v1.4 current authority is restricted to protected main while v1.3 cutover 
       gateId: "mainline",
       authorityMode: "V14_OWNER_AUTHORIZED",
       githubRef: "refs/heads/main",
-      qualifiedBaseSha: sha("c"),
+      qualifiedBaseSha: "c".repeat(40),
     }),
     "V14_CANDIDATE",
   );
@@ -235,7 +235,7 @@ test("v1.4 current authority is restricted to protected main while v1.3 cutover 
         gateId: "mainline",
         authorityMode: "V14_OWNER_AUTHORIZED",
         githubRef: "refs/heads/codex/untrusted",
-        qualifiedBaseSha: sha("d"),
+        qualifiedBaseSha: "d".repeat(40),
       }),
     /V14_OWNER_AUTHORIZED_TRUSTED_MAIN_WORKFLOW_REQUIRED/u,
   );

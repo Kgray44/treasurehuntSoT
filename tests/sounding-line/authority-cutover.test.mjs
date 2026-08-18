@@ -505,7 +505,10 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
   assert.doesNotMatch(authoritative, /^\s{2}(?:pull_request|push):/mu, "AUTHORITATIVE_DEBUG_TRIGGER_FORBIDDEN");
   assert.match(authoritative, /workflow_dispatch:\s*\n\s+inputs:\s*\n\s+gate:/u);
   assert.match(authoritative, /options: \[mainline, release-candidate\]/u);
-  assert.match(authoritative, /authority_mode:[\s\S]*?options: \[current, candidate, v13-cutover\]/u);
+  assert.match(
+    authoritative,
+    /authority_mode:[\s\S]*?options: \[current, candidate, v13-cutover, owner-bootstrap, owner-authorized\]/u,
+  );
   assert.match(authoritative, /SOUNDING_LINE_V13_CUTOVER_MAINLINE_ONLY/u);
   assert.match(authoritative, /SOUNDING_LINE_AUTHORITY_MODE_INVALID/u);
   assert.match(authoritative, /authorityMode=\$\(if \(\$authorityMode -eq 'v13-cutover'\)/u);
@@ -517,6 +520,9 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
   );
   assert.match(authoritative, /SOUNDING_LINE_FROZEN_CANDIDATE_SHA_MISMATCH/u);
   assert.match(authoritative, /SOUNDING_LINE_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED/u);
+  assert.match(authoritative, /SOUNDING_LINE_OWNER_BOOTSTRAP_PR_REJECTED/u);
+  assert.match(authoritative, /SOUNDING_LINE_OWNER_AUTHORIZATION_TARGET_REJECTED/u);
+  assert.match(authoritative, /SOUNDING_LINE_OWNER_AUTHORIZATION_RECEIPT_NOT_OWNER_AUTHORED/u);
   assert.match(authoritative, /SOUNDING_LINE_CANDIDATE_REF_HEAD_MISMATCH/u);
   assert.match(authoritative, /SOUNDING_LINE_ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED/u);
   assert.match(authoritative, /SOUNDING_LINE_ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED/u);
