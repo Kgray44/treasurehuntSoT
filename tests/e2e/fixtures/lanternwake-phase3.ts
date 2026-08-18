@@ -21,6 +21,9 @@ import {
   LEGACY_COMPANION_MIGRATION_VERSION,
   migrateLegacyCompanion,
 } from "../../../src/chronicle/legacy-companion-migration";
+import { type CanonicalCaptainActor } from "../../../src/chronicle/captain-authorization";
+import { assignCaptainAuthority } from "../../../src/helm/captain-participation";
+import { workspaceCapabilityOverview } from "../../../src/homeport/workspace-capabilities";
 import { db } from "../../../src/lib/db";
 import { createAccountSession, ensureGuestAccountForProfile } from "../../../src/wayfarer/accounts";
 
@@ -609,7 +612,12 @@ async function cleanupPhase3FixtureRecords(identity: Phase3FixtureCleanupIdentit
   if (failures.length > 0) throw new AggregateError(failures, "Phase 3 fixture cleanup was incomplete.");
 }
 
-async function createCaseFixture(captain: APIRequestContext, caseId: string, eventType: Phase3EventType) {
+async function createCaseFixture(
+  captain: APIRequestContext,
+  captainActor: CanonicalCaptainActor,
+  caseId: string,
+  eventType: Phase3EventType,
+) {
   fileDatabasePath();
   const token = randomUUID().replaceAll("-", "").slice(0, 12);
   const canonicalCaseId = caseId
@@ -768,6 +776,14 @@ async function createCaseFixture(captain: APIRequestContext, caseId: string, eve
       throw new Error(
         `Phase 3 fixture migration failed: ${[...migration.failures, ...migration.checksumMismatches].join("; ")}`,
       );
+    const resolved = await resolveLegacyCampaign(slug);
+    if (!resolved) throw new Error(`Phase 3 fixture ${slug} must resolve to a canonical TaleSession after migration.`);
+    await assignCaptainAuthority({
+      voyageId: resolved.sessionId,
+      captain: captainActor,
+      authorizedByAccountId: captainActor.accountId,
+      correlationId: `phase3-fixture-captain-${identity.campaignId}`,
+    });
     if (eventType === "STATE_REVERTED") {
       const precursor = await publishCommand(captain, fixture, "PLAYER_LOG_ENTRY_ADDED");
       await db.viewedCeremony.create({
@@ -842,7 +858,7 @@ export function readPreseededPhase3BaseFixture(): Phase3CaseFixture {
   return Object.freeze({ ...manifest.base, accessCode: "", preseeded: true });
 }
 
-type Phase3Captain = Readonly<{ context: APIRequestContext; csrfToken: string }>;
+type Phase3Captain = Readonly<{ context: APIRequestContext; csrfToken: string; actor: CanonicalCaptainActor }>;
 
 async function releasePhase3CaptainSession(
   context: APIRequestContext | null,
@@ -931,14 +947,34 @@ export const phase3Test = baseTest.extend<Phase3TestFixtures, Phase3WorkerFixtur
         });
         const body = (await response.json().catch(() => null)) as { csrfToken?: string; error?: string } | null;
         const storageState = await bootstrap.storageState();
-        const sessionCookie = storageState.cookies.find((cookie) => cookie.name === "forever_gm");
+        const sessionCookie = storageState.cookies.find((cookie) => cookie.name === "wayfarer_account");
+        const retiredSessionCookie = storageState.cookies.find((cookie) => cookie.name === "forever_gm");
         if (sessionCookie?.value) {
           sessionHash = createHash("sha256").update(sessionCookie.value).digest("hex");
         }
         expect(response.status(), `CAPTAIN login failed: ${JSON.stringify(body)}`).toBe(200);
         expect(body?.csrfToken).toMatch(/\S/u);
         csrfToken = body!.csrfToken!;
-        expect(sessionCookie?.value, "CAPTAIN login must return its exact session cookie.").toMatch(/\S/u);
+        expect(sessionCookie?.value, "CAPTAIN login must return the canonical Wayfarer session cookie.").toMatch(/\S/u);
+        expect(sessionCookie?.path, "CAPTAIN session must be available to the complete application.").toBe("/");
+        expect(sessionCookie?.httpOnly, "CAPTAIN session must remain unreadable to browser scripts.").toBe(true);
+        expect(sessionCookie?.sameSite, "CAPTAIN session must retain the canonical CSRF boundary.").toBe("Lax");
+        expect(
+          sessionCookie?.secure,
+          "Task-owned HTTP validation must not claim a production-only Secure cookie.",
+        ).toBe(false);
+        expect(retiredSessionCookie, "CAPTAIN login must not resurrect the retired staff cookie.").toBeUndefined();
+        if (!sessionHash) throw new Error("CAPTAIN login must provide a hashable canonical Wayfarer session cookie.");
+        const accountSession = await db.accountSession.findUnique({
+          where: { tokenHash: sessionHash },
+          select: { accountId: true, account: { select: { legacyGameMasterId: true } } },
+        });
+        if (!accountSession) throw new Error("CAPTAIN login must create a canonical Wayfarer account session.");
+        const workspace = await workspaceCapabilityOverview(accountSession.accountId);
+        expect(
+          workspace.workspaces.find((item) => item.id === "CAPTAIN")?.state,
+          "CAPTAIN login must establish an active canonical Captain workspace.",
+        ).toBe("ACTIVE");
         context = await playwrightRequest.newContext({
           baseURL: phase3BaseURL,
           storageState,
@@ -946,7 +982,11 @@ export const phase3Test = baseTest.extend<Phase3TestFixtures, Phase3WorkerFixtur
         });
         const capability = await context.get("/api/gm/status");
         expect(capability.status(), "Phase 3 fixture requires an authenticated CAPTAIN capability.").toBe(200);
-        await provide({ context, csrfToken });
+        await provide({
+          context,
+          csrfToken,
+          actor: { accountId: accountSession.accountId, legacyGameMasterId: accountSession.account.legacyGameMasterId },
+        });
       } catch (error) {
         primaryFailure = error;
       }
@@ -994,7 +1034,7 @@ export const phase3Test = baseTest.extend<Phase3TestFixtures, Phase3WorkerFixtur
       proveIsolation,
       async createCase(caseId, eventType) {
         await requireMutationAuthority();
-        const fixture = await createCaseFixture(phase3Captain.context, caseId, eventType);
+        const fixture = await createCaseFixture(phase3Captain.context, phase3Captain.actor, caseId, eventType);
         owned.push(fixture);
         return fixture;
       },

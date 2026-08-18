@@ -98,12 +98,13 @@ function parseNameStatus(output) {
   });
 }
 
-function recordReferences(text) {
+export function recordReferences(text) {
   const pullRequests = [];
   const runs = [];
   for (const match of text.matchAll(/(?:pull request|protected pr|\bpr)\s*#?\s*([1-9][0-9]*)/giu))
     pullRequests.push(Number(match[1]));
-  for (const match of text.matchAll(/actions\/runs\/([1-9][0-9]*)/giu)) runs.push(Number(match[1]));
+  for (const match of text.matchAll(/(?:actions\/runs\/|\b(?:workflow\s+)?run\s*`?)([1-9][0-9]*)/giu))
+    runs.push(Number(match[1]));
   return { pullRequests, runs };
 }
 
@@ -133,11 +134,35 @@ async function githubJson(url, token) {
   return response.json();
 }
 
-function successfulProtectedContextCount(checkRuns) {
-  return (checkRuns.check_runs ?? []).filter(
-    (check) =>
-      check?.name === RECORD_ONLY_PROTECTED_CONTEXT && check?.status === "completed" && check?.conclusion === "success",
-  ).length;
+export function hasSuccessfulProtectedContext(checkRuns) {
+  return (
+    (checkRuns.check_runs ?? []).filter(
+      (check) =>
+        check?.name === RECORD_ONLY_PROTECTED_CONTEXT &&
+        check?.status === "completed" &&
+        check?.conclusion === "success",
+    ).length >= 1
+  );
+}
+
+export function validateReferencedAuthorityRun({ pull, run }) {
+  const errors = [];
+  const implementationCandidateSha = pull?.head?.sha;
+  const implementationBaseSha = pull?.base?.sha;
+  const implementationMergeSha = pull?.merge_commit_sha;
+  if (pull?.merged !== true) errors.push("PRIOR_IMPLEMENTATION_PR_NOT_MERGED");
+  if (!shaPattern.test(implementationCandidateSha ?? "")) errors.push("PRIOR_IMPLEMENTATION_HEAD_INVALID");
+  if (!shaPattern.test(implementationBaseSha ?? "")) errors.push("PRIOR_IMPLEMENTATION_BASE_INVALID");
+  if (!shaPattern.test(implementationMergeSha ?? "")) errors.push("PRIOR_IMPLEMENTATION_MERGE_INVALID");
+  if (
+    run?.name !== "Sounding Line authoritative" ||
+    run?.event !== "workflow_dispatch" ||
+    run?.status !== "completed" ||
+    run?.conclusion !== "success" ||
+    run?.head_sha !== implementationBaseSha
+  )
+    errors.push("PRIOR_IMPLEMENTATION_AUTHORITY_RUN_INVALID");
+  return stable(errors);
 }
 
 async function inspectReferencedAuthority({ root, repository, candidateSha, prNumber, runId, token }) {
@@ -146,17 +171,7 @@ async function inspectReferencedAuthority({ root, repository, candidateSha, prNu
   const run = await githubJson("https://api.github.com/repos/" + repository + "/actions/runs/" + runId, token);
   const implementationCandidateSha = pull?.head?.sha;
   const implementationMergeSha = pull?.merge_commit_sha;
-  if (pull?.merged !== true) errors.push("PRIOR_IMPLEMENTATION_PR_NOT_MERGED");
-  if (!shaPattern.test(implementationCandidateSha ?? "")) errors.push("PRIOR_IMPLEMENTATION_HEAD_INVALID");
-  if (!shaPattern.test(implementationMergeSha ?? "")) errors.push("PRIOR_IMPLEMENTATION_MERGE_INVALID");
-  if (
-    run?.name !== "Sounding Line authoritative" ||
-    run?.event !== "workflow_dispatch" ||
-    run?.status !== "completed" ||
-    run?.conclusion !== "success" ||
-    run?.head_sha !== implementationCandidateSha
-  )
-    errors.push("PRIOR_IMPLEMENTATION_AUTHORITY_RUN_INVALID");
+  errors.push(...validateReferencedAuthorityRun({ pull, run }));
   if (!errors.length) {
     const parents = (await git(root, "show", "-s", "--format=%P", implementationMergeSha))
       .split(/\s+/u)
@@ -173,7 +188,7 @@ async function inspectReferencedAuthority({ root, repository, candidateSha, prNu
         "/check-runs?per_page=100",
       token,
     );
-    if (successfulProtectedContextCount(checks) < 2) errors.push("PRIOR_IMPLEMENTATION_PROTECTED_CONTEXT_INVALID");
+    if (!hasSuccessfulProtectedContext(checks)) errors.push("PRIOR_IMPLEMENTATION_PROTECTED_CONTEXT_INVALID");
   }
   return {
     valid: errors.length === 0,
@@ -363,6 +378,7 @@ export async function createRecordOnlyEvidence({
     readJson(path.join(root, "testing", "generated", "active-test-registry.json")),
     readJson(path.join(root, "testing", "sounding-line-authority.json")),
   ]);
+  const qualifiedBaseTreeSha = await git(root, "rev-parse", preflight.currentBaseSha + "^{tree}");
   const recordOnly = {
     version: 1,
     mode: "FAIL_CLOSED_RECORD_ONLY",
@@ -386,6 +402,7 @@ export async function createRecordOnlyEvidence({
     sourceSha: preflight.candidateSha,
     gate: "mainline",
     serial: true,
+    qualifiedBaseTreeSha,
     policyDigest: digest(policy),
     inventoryDigest: digest(inventory),
     authorityDigest: digest(authority),

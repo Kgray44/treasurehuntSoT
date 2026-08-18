@@ -109,6 +109,87 @@ test("risk floors and unknown mapping produce sealed, explained plans without si
   assert.ok(V14_RISK_FLOORS.some((entry) => entry.id === "persistence"));
 });
 
+test("exact Tideglass impact uses only direct work and the mandatory sentinel in the earliest wave", () => {
+  const suites = [
+    { id: "unit.tideglass", dependencies: [], domains: ["tideglass"] },
+    { id: "unit.one-voyage", dependencies: [], domains: ["one-voyage"] },
+    { id: "browser.access-sentinel", dependencies: [], domains: ["authorization"] },
+    { id: "browser.helm", dependencies: ["unit.helm"], domains: ["helm"] },
+    { id: "unit.helm", dependencies: [], domains: ["helm"] },
+  ];
+  const plan = selectV14Mainline({
+    changedPaths: ["tests/tideglass/canonicalization.test.ts"],
+    suites,
+    requiredSuiteIds: ["browser.access-sentinel"],
+    ledgerSuiteIds: suites.map((suite) => suite.id),
+    impact: { pathMappings: [{ path: "tests/tideglass/**", suiteIds: ["unit.tideglass"] }], contractMappings: [] },
+    selectionContract: { selectionMode: "EXACT_SEMANTIC_IMPACT_WITH_REQUIRED_SENTINELS" },
+  });
+  assert.deepEqual(plan.selectedSuiteIds, ["browser.access-sentinel", "unit.tideglass"]);
+  assert.equal(
+    plan.nodes.every((node) => node.execution.wave === 0),
+    true,
+  );
+  assert.equal(plan.ledger.find((entry) => entry.suiteId === "unit.tideglass").selectionReason, "DIRECT_IMPACT");
+  assert.equal(
+    plan.ledger.find((entry) => entry.suiteId === "browser.access-sentinel").selectionReason,
+    "REQUIRED_SENTINEL",
+  );
+  const helm = plan.ledger.find((entry) => entry.suiteId === "browser.helm");
+  assert.equal(helm.evidenceDisposition, "PRESERVED");
+  assert.equal(helm.preservationBasis, "EXACT_SEMANTIC_INTERVAL");
+  assert.deepEqual(plan.evidenceDispositionCounts, { FRESH: 2, PRESERVED: 3 });
+});
+
+test("a mapped non-accessibility source change preserves the broad accessibility family while unknown source fails closed", () => {
+  const suites = [
+    { id: "static.core", domains: ["static"] },
+    { id: "unit.drydock", domains: ["drydock"] },
+    { id: "browser.accessibility", domains: ["accessibility"] },
+  ];
+  const mapped = selectV14Mainline({
+    changedPaths: ["src/drydock/variables.ts"],
+    suites,
+    ledgerSuiteIds: suites.map((suite) => suite.id),
+    impact: {
+      pathMappings: [{ path: "src/drydock/**", suiteIds: ["unit.drydock", "static.core"] }],
+      contractMappings: [],
+    },
+  });
+  assert.equal(
+    mapped.nodes.some((node) => node.id === "browser.accessibility"),
+    false,
+  );
+  assert.deepEqual(
+    mapped.ledger.find((entry) => entry.suiteId === "browser.accessibility"),
+    {
+      suiteId: "browser.accessibility",
+      selected: false,
+      selectionReason: "SEMANTICALLY_UNCHANGED",
+      affectedContracts: [],
+      affectedPaths: ["src/drydock/variables.ts"],
+      closureConfidence: "EXACT",
+      evidenceDisposition: "PRESERVED",
+      preservationBasis: "EXACT_SEMANTIC_INTERVAL",
+      debt: [],
+    },
+  );
+  const unknown = selectV14Mainline({
+    changedPaths: ["src/unmapped/new.ts"],
+    suites,
+    ledgerSuiteIds: suites.map((suite) => suite.id),
+    impact: { pathMappings: [], contractMappings: [] },
+  });
+  assert.equal(
+    unknown.nodes.some((node) => node.id === "browser.accessibility"),
+    true,
+  );
+  assert.equal(
+    unknown.ledger.find((entry) => entry.suiteId === "browser.accessibility").evidenceDisposition,
+    "CONSERVATIVE_FALLBACK",
+  );
+});
+
 test("release closure, typed recovery, and legacy adoption fail closed", () => {
   const failed = closeReleaseCandidate({
     mandatoryObligationIds: ["a", "b"],
@@ -303,6 +384,22 @@ test("v1.3 worker preparation is unchanged and v1.4 preparation is explicitly ve
       runId: "run-1",
     }).runtimeConformance.result,
     "PASSED",
+  );
+  const candidatePreparation = deriveV14WorkerPreparation({
+    plan: { ...plan, authorityBoundary: "V14_CANDIDATE_QUALIFICATION" },
+    node: plan.nodes[0],
+    runId: "run-1",
+  });
+  assert.equal(candidatePreparation.authorityBoundary, "V14_CANDIDATE_QUALIFICATION");
+  assert.equal(candidatePreparation.runtimeConformance.result, "PASSED");
+  assert.throws(
+    () =>
+      deriveV14WorkerPreparation({
+        plan: { ...plan, authorityBoundary: "UNRECOGNIZED_AUTHORITY_BOUNDARY" },
+        node: plan.nodes[0],
+        runId: "run-1",
+      }),
+    /V14_WORKER_AUTHORITY_BOUNDARY_REQUIRED/u,
   );
 });
 

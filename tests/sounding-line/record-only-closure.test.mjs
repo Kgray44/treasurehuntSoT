@@ -9,9 +9,12 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 import {
   classifyRecordOnlyDiff,
+  hasSuccessfulProtectedContext,
+  recordReferences,
   RECORD_ONLY_EVIDENCE_IDS,
   RECORD_ONLY_PROTECTED_CONTEXT,
   RECORD_ONLY_SUITE_ID,
+  validateReferencedAuthorityRun,
   validatePriorImplementationAuthority,
 } from "../../scripts/sounding-line/record-only-closure.mjs";
 import {
@@ -26,7 +29,64 @@ const candidate = "a".repeat(40);
 const base = "b".repeat(40);
 const merge = "c".repeat(40);
 const implementationCandidate = "d".repeat(40);
+const implementationBase = "f".repeat(40);
 const implementationMerge = "e".repeat(40);
+
+test("record-only prior authority accepts one normal protected decision and a protected-main dispatch", () => {
+  const pull = {
+    merged: true,
+    head: { sha: implementationCandidate },
+    base: { sha: implementationBase },
+    merge_commit_sha: implementationMerge,
+  };
+  const run = {
+    name: "Sounding Line authoritative",
+    event: "workflow_dispatch",
+    status: "completed",
+    conclusion: "success",
+    head_sha: implementationBase,
+  };
+  assert.deepEqual(validateReferencedAuthorityRun({ pull, run }), []);
+  assert.equal(
+    hasSuccessfulProtectedContext({
+      check_runs: [
+        { name: RECORD_ONLY_PROTECTED_CONTEXT, status: "completed", conclusion: "skipped" },
+        { name: RECORD_ONLY_PROTECTED_CONTEXT, status: "completed", conclusion: "success" },
+      ],
+    }),
+    true,
+  );
+});
+
+test("record-only prior authority rejects a run not dispatched from the implementation base", () => {
+  const pull = {
+    merged: true,
+    head: { sha: implementationCandidate },
+    base: { sha: implementationBase },
+    merge_commit_sha: implementationMerge,
+  };
+  const run = {
+    name: "Sounding Line authoritative",
+    event: "workflow_dispatch",
+    status: "completed",
+    conclusion: "success",
+    head_sha: implementationCandidate,
+  };
+  assert.match(validateReferencedAuthorityRun({ pull, run }).join("\n"), /PRIOR_IMPLEMENTATION_AUTHORITY_RUN_INVALID/u);
+  assert.equal(
+    hasSuccessfulProtectedContext({
+      check_runs: [{ name: RECORD_ONLY_PROTECTED_CONTEXT, status: "completed", conclusion: "skipped" }],
+    }),
+    false,
+  );
+});
+
+test("record-only references accept the canonical documented authoritative run form", () => {
+  assert.deepEqual(recordReferences("PR #113 closed under run `31904810987`; details: actions/runs/31904760712"), {
+    pullRequests: [113],
+    runs: [31904810987, 31904760712],
+  });
+});
 
 function priorAuthorityFixture(valid = true) {
   const authority = {
@@ -190,6 +250,40 @@ test("true documentation and catalog closure is record-only eligible and binds w
     fixture.plan.recordOnly.evidence.map((entry) => entry.id),
     RECORD_ONLY_EVIDENCE_IDS,
   );
+});
+
+test("record-only evidence can seal the shared qualified-base acceptance envelope", async (t) => {
+  const fixture = recordOnlyBindingFixture();
+  const workspace = await mkdtemp(path.join(tmpdir(), "sounding-line-record-only-envelope-"));
+  t.after(() => rm(workspace, { recursive: true, force: true }));
+  const planPath = path.join(workspace, "plan.json");
+  const finalizationPath = path.join(workspace, "finalization.json");
+  const outputPath = path.join(workspace, "envelope.json");
+  const plan = { ...fixture.plan, qualifiedBaseTreeSha: base };
+  await Promise.all([
+    writeFile(planPath, `${JSON.stringify(plan)}\n`, "utf8"),
+    writeFile(finalizationPath, `${JSON.stringify(fixture.finalization)}\n`, "utf8"),
+  ]);
+  await execFileAsync(
+    process.execPath,
+    [
+      "scripts/sounding-line/create-acceptance-envelope.mjs",
+      "--plan",
+      planPath,
+      "--finalization",
+      finalizationPath,
+      "--pr-number",
+      "99",
+      "--base-sha",
+      base,
+      "--run-id",
+      "999",
+      "--out",
+      outputPath,
+    ],
+    { cwd: root },
+  );
+  assert.equal(JSON.parse(await readFile(outputPath, "utf8")).qualifiedBaseTreeSha, base);
 });
 
 test("record-only classification refuses a product source file", () => {

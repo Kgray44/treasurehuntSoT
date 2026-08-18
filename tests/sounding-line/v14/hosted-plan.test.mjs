@@ -13,6 +13,10 @@ const json = async (file) => JSON.parse(await readFile(path.join(root, "testing"
 
 test("v1.4 hosted plan carries the semantic plan and worker-compatible dependency waves", async () => {
   const sourceSha = (await execute("git", ["-C", root, "rev-parse", "HEAD"])).stdout.trim();
+  // Governed workers intentionally check out only the sealed source commit.
+  // A self-test must not require an unsealed parent merely to build its
+  // deterministic semantic plan fixture.
+  const qualifiedBaseSha = sourceSha;
   const [manifest, registry, authorityIndex] = await Promise.all([
     json("policy-manifest.json"),
     json("generated/active-test-registry.json"),
@@ -23,7 +27,7 @@ test("v1.4 hosted plan carries the semantic plan and worker-compatible dependenc
     gateId: "mainline",
     serial: false,
     sourceSha,
-    qualifiedBaseSha: "0055d012a121a8950b7fa70d371d5eafc6223d10",
+    qualifiedBaseSha,
     manifest,
     registry,
     authorityIndex,
@@ -31,10 +35,22 @@ test("v1.4 hosted plan carries the semantic plan and worker-compatible dependenc
   assert.equal(plan.authorityBoundary, "CURRENT_AUTHORITATIVE_V14");
   assert.equal(plan.semanticPlanDigest.length, 64);
   assert.equal(plan.planDigest.length, 64);
+  assert.equal(plan.selectionContract.selectionMode, "EXACT_SEMANTIC_IMPACT_WITH_REQUIRED_SENTINELS");
+  assert.ok(Array.isArray(plan.selectionLedger));
+  assert.ok(plan.evidenceDispositionCounts.FRESH >= 1);
   assert.ok(plan.nodes.every((node) => Array.isArray(node.testIds)));
   for (const node of plan.nodes)
     for (const dependency of node.dependencies)
       assert.ok(plan.nodes.find((candidate) => candidate.id === dependency).execution.wave < node.execution.wave);
+  for (const node of plan.nodes.filter((candidate) => candidate.adapter === "playwright-family")) {
+    const selectedEngines = new Set(
+      registry.cases
+        .filter((entry) => entry.suiteId === node.id)
+        .flatMap((entry) => entry.resources.filter((resource) => resource.startsWith("browser-"))),
+    );
+    for (const engine of selectedEngines)
+      assert.ok(node.resources.includes(engine), `hosted node ${node.id} omits ${engine}`);
+  }
 });
 
 test("v1.4 current authority is restricted to protected main while v1.3 cutover remains pre-activation only", () => {
