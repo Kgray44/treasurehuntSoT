@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Owner Walkthrough
 audience: product-owner
-status: candidate-qualification-in-progress
+status: blocked-v14-policy-admission
 canonical_for: project-wakebook-phase-2-owner-walkthrough
 last_reviewed: 2026-08-18
 ---
@@ -34,5 +34,8 @@ but it is neither product accepted nor merged.
 8. Repeat the page at a narrow viewport, with keyboard navigation, reduced
    motion, and effective 200% zoom. Content must remain readable and usable.
 
-The next step is a frozen-candidate protected authority/train run. This
-document does not authorize a protected merge, owner acceptance, or Phase 3.
+The frozen-candidate protected authority run has been attempted and was
+fail-closed by current trusted-main policy before browser workers ran. The next
+step is an accepted Sounding Line policy admission outside this Phase 2 branch.
+This document does not authorize a protected merge, owner acceptance, or Phase
+3.

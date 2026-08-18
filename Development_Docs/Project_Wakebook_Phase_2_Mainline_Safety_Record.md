@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Mainline Safety Record
 audience: product-engineering
-status: candidate-qualification-in-progress
+status: blocked-v14-policy-admission
 canonical_for: project-wakebook-phase-2-mainline-safety-record
 last_reviewed: 2026-08-18
 ---
@@ -37,3 +37,10 @@ task-owned fixture. The v1.4 focused-hosted workflow rejects branch execution
 before workers by design. A frozen candidate must therefore use the protected
 authority/train path for source-bound browser evidence; no protected merge is
 allowed without its exact `RELEASE_GO`.
+
+The source-bound v1.4 authority attempt for the frozen PR #197 candidate
+failed before workers because trusted-main policy classifies Phase 2's required
+contracts, impact mapping, and suite registration as authority-changing and
+its records/catalog/test registration as unlisted. This is a safe fail-closed
+result: this branch cannot alter the policy that rejects it. No `RELEASE_GO`,
+protected merge, or owner acceptance is claimed.

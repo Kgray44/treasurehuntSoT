@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Validation Record
 audience: product-engineering
-status: candidate-qualification-in-progress
+status: blocked-v14-policy-admission
 canonical_for: project-wakebook-phase-2-validation-record
 last_reviewed: 2026-08-18
 ---
@@ -37,3 +37,22 @@ browser safety scope through the v1.4 protected-main authority/train path. It
 must be attempted only after the documentation candidate is frozen, and a
 `RELEASE_GO` is required before protected merge. This record does not claim
 local safety-browser proof or owner acceptance.
+
+## v1.4 admission result
+
+The frozen candidate `e03629b8a01611ff87cb79023410fd05b8219b5b` was bound to
+PR #197 and base `fc39942a1d8fe57fc13f35cae01445e704b94c45`. Hosted
+authoritative run [32139704608](https://github.com/Kgray44/treasurehuntSoT/actions/runs/32139704608)
+failed before dependency setup, planning, worker dispatch, browser execution,
+or finalization. The trusted classifier rejected `testing/contracts.json`,
+`testing/impact-map.json`, and `testing/suites.json` as authority-changing,
+and rejected the Phase 2 records/catalog/test registration as unlisted ordinary
+candidate paths. The current mainline-train admission uses the same trusted
+classifier and path set, so it cannot provide different evidence for this
+source. The automatically triggered protected-merge-binding check likewise
+skipped Mainline Decision. No `RELEASE_GO` exists.
+
+Admitting this product candidate requires an accepted protected-main Sounding
+Line policy change by its canonical owner. Making that policy change on the
+Wakebook branch would itself be rejected as an authority change, so it is not a
+safe in-scope repair. The branch and PR remain preserved for that admission.
