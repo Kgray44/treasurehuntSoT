@@ -18,6 +18,18 @@ const canonical = (value) => {
   return value;
 };
 const sorted = (values) => [...new Set([...values].filter(Boolean))].sort((left, right) => left.localeCompare(right));
+const glob = (pattern) =>
+  new RegExp(
+    `^${String(pattern)
+      .replace(/[|\\{}()[\]^$+?.]/gu, "\\$&")
+      .replace(/\*\*\//gu, "::DOUBLE_STAR_SLASH::")
+      .replace(/\*\*/gu, "::DOUBLE_STAR::")
+      .replace(/\*/gu, "[^/]*")
+      .replace(/::DOUBLE_STAR_SLASH::/gu, "(?:.*/)?")
+      .replace(/::DOUBLE_STAR::/gu, ".*")}$`,
+    "u",
+  );
+const matchesAny = (file, patterns) => (patterns ?? []).some((pattern) => glob(pattern).test(file));
 const normalized = (value) =>
   String(value ?? "")
     .replace(/^project[ _-]*/iu, "")
@@ -56,6 +68,14 @@ const globalGeneratedPath = (file) =>
   file === "playwright.config.ts" ||
   file.startsWith("scripts/features/") ||
   file === "testing/generated/active-test-registry.json";
+const broadOwnershipRoots = new Set([
+  "src/**",
+  "src/components/**",
+  "src/app/**",
+  "scripts/**",
+  "tests/**",
+  "prisma/**",
+]);
 
 function pathIdentity(file) {
   const source = String(file).replaceAll("\\", "/");
@@ -84,16 +104,6 @@ function pathIdentity(file) {
   return null;
 }
 
-const glob = (pattern) =>
-  new RegExp(
-    `^${String(pattern)
-      .replace(/[|\\{}()[\]^$+?.]/gu, "\\$&")
-      .replaceAll("**", "::DOUBLE_STAR::")
-      .replaceAll("*", "[^/]*")
-      .replaceAll("::DOUBLE_STAR::", ".*")}$`,
-    "u",
-  );
-const matches = (file, patterns = []) => patterns.some((pattern) => glob(pattern).test(file));
 const projectForOwner = (owner) => normalized(owner?.project ?? owner?.id);
 const specificity = (pattern) => String(pattern).replaceAll("*", "").length;
 const mostSpecificOwnersForPaths = (paths, owners) => {
@@ -364,6 +374,98 @@ export function createProjectDiscoveryRegistry({ trustedMainSha, trustedMainTree
       .sort((left, right) => left.projectId.localeCompare(right.projectId)),
   };
   return { ...unsigned, registryDigest: digest(unsigned) };
+}
+
+// A trusted-main registry is intentionally data-driven. A project can only be
+// promoted by a record already present on protected main whose bounded evidence
+// and source/test relationships resolve against that same tree. Candidate paths
+// never enter this function, so they cannot establish ownership for themselves.
+export function createTrustedMainProjectDiscoveryRegistry({
+  trustedMainSha,
+  trustedMainTreeSha,
+  trustedTreePaths = [],
+  sourceRegistry = {},
+  owners = [],
+} = {}) {
+  const treePaths = new Set((trustedTreePaths ?? []).map((entry) => String(entry).replaceAll("\\", "/")));
+  const ownerIds = new Set((owners ?? []).map((entry) => entry?.id).filter(Boolean));
+  const errors = [];
+  const descriptors = [];
+  for (const record of sourceRegistry?.projects ?? []) {
+    const id = String(record?.id ?? "");
+    const documentationRoot = String(record?.documentationRoot ?? "")
+      .replaceAll("\\", "/")
+      .replace(/\/$/u, "");
+    const evidencePaths = sorted(record?.evidencePaths ?? []);
+    const sourcePaths = sorted(record?.sourcePaths ?? []);
+    const testPaths = sorted(record?.testPaths ?? []);
+    const supportingOwnerIds = sorted(record?.supportingOwnerIds ?? []);
+    const recordErrors = [];
+    if (!/^project-[a-z0-9-]+$/u.test(id)) recordErrors.push("PROJECT_DISCOVERY_TRUSTED_ID_INVALID");
+    if (!documentationRoot.startsWith("Development_Docs/Projects/Project "))
+      recordErrors.push("PROJECT_DISCOVERY_DOCUMENTATION_ROOT_INVALID");
+    if (!evidencePaths.length || evidencePaths.some((entry) => !treePaths.has(entry)))
+      recordErrors.push("PROJECT_DISCOVERY_EVIDENCE_NOT_ON_TRUSTED_MAIN");
+    if (!documentationRoot || ![...treePaths].some((entry) => entry.startsWith(`${documentationRoot}/`)))
+      recordErrors.push("PROJECT_DISCOVERY_DOCUMENTATION_ROOT_NOT_ON_TRUSTED_MAIN");
+    if (!sourcePaths.length || sourcePaths.some((entry) => broadOwnershipRoots.has(entry)))
+      recordErrors.push("PROJECT_DISCOVERY_SOURCE_SCOPE_INVALID");
+    if (
+      [...sourcePaths, ...testPaths].some(
+        (entry) => !entry || ![...treePaths].some((treePath) => matchesAny(treePath, [entry])),
+      )
+    )
+      recordErrors.push("PROJECT_DISCOVERY_RELATIONSHIP_NOT_ON_TRUSTED_MAIN");
+    if (supportingOwnerIds.some((ownerId) => !ownerIds.has(ownerId)))
+      recordErrors.push("PROJECT_DISCOVERY_SUPPORTING_OWNER_UNRESOLVED");
+    if (recordErrors.length) {
+      errors.push(...recordErrors.map((code) => `${code}:${id || "UNKNOWN"}`));
+      continue;
+    }
+    const unsigned = {
+      schemaVersion: PROJECT_DISCOVERY_SCHEMA_VERSION,
+      projectId: id,
+      id,
+      displayName: String(record.displayName ?? id),
+      aliases: sorted([id, ...(record.aliases ?? [])]),
+      documentationRoot,
+      sourcePaths,
+      testPaths,
+      contractIds: sorted(record.contractIds ?? []),
+      supportingOwnerIds,
+      evidencePaths,
+      state: "TRUSTED_DISCOVERED",
+      confidence: "HIGH",
+      trustedMainSha: trustedMainSha ?? null,
+      trustedMainTreeSha: trustedMainTreeSha ?? null,
+      mayBroadenEvidence: true,
+      mayNarrowEvidence: true,
+    };
+    descriptors.push({ ...unsigned, descriptorDigest: digest(unsigned) });
+  }
+  const unsigned = {
+    schemaVersion: PROJECT_DISCOVERY_SCHEMA_VERSION,
+    authority: "SOUNDING_LINE_TRUSTED_MAIN_PROJECT_DISCOVERY",
+    trustedMainSha: trustedMainSha ?? null,
+    trustedMainTreeSha: trustedMainTreeSha ?? null,
+    descriptors: descriptors.sort((left, right) => left.id.localeCompare(right.id)),
+  };
+  return { ...unsigned, registryDigest: digest(unsigned), errors: [...new Set(errors)].sort() };
+}
+
+export function validateTrustedMainProjectDiscoveryRegistry({ registry, trustedMainSha, trustedMainTreeSha }) {
+  const { registryDigest, ...unsigned } = registry ?? {};
+  delete unsigned.errors;
+  if (!registry || registry.authority !== "SOUNDING_LINE_TRUSTED_MAIN_PROJECT_DISCOVERY")
+    return { valid: false, code: "PROJECT_DISCOVERY_TRUSTED_REGISTRY_SCHEMA_INVALID" };
+  if (registryDigest !== digest(unsigned))
+    return { valid: false, code: "PROJECT_DISCOVERY_TRUSTED_REGISTRY_DIGEST_MISMATCH" };
+  if (registry.errors?.length) return { valid: false, code: "PROJECT_DISCOVERY_TRUSTED_REGISTRY_EVIDENCE_INVALID" };
+  if (registry.trustedMainSha !== trustedMainSha || registry.trustedMainTreeSha !== trustedMainTreeSha)
+    return { valid: false, code: "PROJECT_DISCOVERY_TRUSTED_REGISTRY_STALE" };
+  if (!registry.descriptors.every((entry) => entry.state === "TRUSTED_DISCOVERED" && entry.mayNarrowEvidence))
+    return { valid: false, code: "PROJECT_DISCOVERY_TRUSTED_REGISTRY_UNTRUSTED_DESCRIPTOR" };
+  return { valid: true, code: "PROJECT_DISCOVERY_TRUSTED_REGISTRY_VALID" };
 }
 
 export function validateProjectDiscoveryRegistry({ registry, trustedMainSha, trustedMainTreeSha }) {

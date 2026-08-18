@@ -5,10 +5,12 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   createProjectDiscoveryRegistry,
+  createTrustedMainProjectDiscoveryRegistry,
   discoverProjects,
   projectDiscoverySummary,
   structurallyAdmitsProjectPath,
   validateProjectDiscoveryRegistry,
+  validateTrustedMainProjectDiscoveryRegistry,
 } from "../../../scripts/sounding-line/project-discovery.mjs";
 import { classifyOrdinaryCandidate } from "../../../scripts/sounding-line/verification-maintenance.mjs";
 import { selectV14Mainline } from "../../../scripts/sounding-line/v14/fast-channel.mjs";
@@ -136,6 +138,58 @@ test("derived registry is deterministic, trusted-main-bound, stale-detectable, a
     }).code,
     "PROJECT_DISCOVERY_REGISTRY_DIGEST_MISMATCH",
   );
+});
+
+test("trusted-main project records promote an accepted project deterministically without a name special case", () => {
+  const sourceRegistry = {
+    projects: [
+      {
+        id: "project-shipwright",
+        displayName: "Project Shipwright",
+        aliases: ["Shipwright", "Project Shipwright"],
+        documentationRoot: "Development_Docs/Projects/Project Shipwright",
+        evidencePaths: [
+          "Development_Docs/Projects/Project Shipwright/Phase_2_Completion.md",
+          "Development_Docs/Features/branch-complete/project-shipwright-phase2.json",
+        ],
+        sourcePaths: ["src/components/studio/**", "src/studio/authoring/**"],
+        testPaths: ["tests/e2e/project-shipwright-phase2.spec.ts"],
+        supportingOwnerIds: ["drydock"],
+      },
+    ],
+  };
+  const trustedTreePaths = [
+    ...sourceRegistry.projects[0].evidencePaths,
+    "src/components/studio/TaleEditor.tsx",
+    "src/studio/authoring/adapters.ts",
+    "tests/e2e/project-shipwright-phase2.spec.ts",
+  ];
+  const input = {
+    trustedMainSha: sha("a"),
+    trustedMainTreeSha: sha("b"),
+    trustedTreePaths,
+    sourceRegistry,
+    owners: [{ id: "drydock", contractIds: ["drydock-authoring-contracts"] }],
+  };
+  const first = createTrustedMainProjectDiscoveryRegistry(input);
+  const second = createTrustedMainProjectDiscoveryRegistry(input);
+  assert.deepEqual(first, second);
+  assert.equal(first.errors.length, 0);
+  assert.equal(first.descriptors[0].id, "project-shipwright");
+  assert.deepEqual(first.descriptors[0].aliases, ["Project Shipwright", "project-shipwright", "Shipwright"]);
+  assert.equal(
+    validateTrustedMainProjectDiscoveryRegistry({
+      registry: first,
+      trustedMainSha: sha("a"),
+      trustedMainTreeSha: sha("b"),
+    }).valid,
+    true,
+  );
+  const forged = createTrustedMainProjectDiscoveryRegistry({
+    ...input,
+    sourceRegistry: { projects: [{ ...sourceRegistry.projects[0], sourcePaths: ["scripts/**"] }] },
+  });
+  assert.match(forged.errors.join("\n"), /PROJECT_DISCOVERY_SOURCE_SCOPE_INVALID/);
 });
 
 test("Project DefinitelyNormal cannot escape the authority firewall", () => {
