@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "project": "Project Drydock",
   "phase": 4,
-  "status": "QUALIFICATION_IN_PROGRESS_NOT_ACCEPTED",
+  "status": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
   "governingSource": "Project Drydock Phase 4: Clear for Launch",
   "acceptedCommit": null,
   "mandatoryFamilies": [
@@ -18,12 +18,12 @@
     { "id": "DD-F-BROWSER-ACCESSIBILITY", "implementation": "src/components/studio/DrydockLaunchGate.tsx", "tests": ["task-owned authenticated local browser journey", "src/components/studio/DrydockLaunchGate.test.tsx"], "suite": "component.studio", "status": "LOCAL_BROWSER_AXE_PROOF" }
   ],
   "closureInvariants": {
-    "unmappedMandatoryFamilies": "NOT_YET_EVALUATED_AT_FINAL_CLOSURE",
+    "unmappedMandatoryFamilies": "NONE_IN_LOCAL_QUALIFICATION",
     "unexplainedRuntimeDifferences": "NO_KNOWN_LOCAL_DIFFERENCES",
     "unsupportedCurrentBlockTypes": 0,
-    "syntheticCorpusUnresolvedBlockers": "NOT_YET_FINALIZED",
+    "syntheticCorpusUnresolvedBlockers": "NONE_IN_LOCAL_QUALIFICATION",
     "unknownMandatoryCompatibilityRows": 0,
     "knownPublicationBypasses": 0,
-    "unregisteredAuthoritativeFamilies": "NOT_YET_FINALIZED"
+    "unregisteredAuthoritativeFamilies": "NONE_IN_LOCAL_QUALIFICATION"
   }
 }

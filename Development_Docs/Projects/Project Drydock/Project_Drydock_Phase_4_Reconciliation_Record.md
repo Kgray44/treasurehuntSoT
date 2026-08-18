@@ -14,10 +14,12 @@ The resumed branch merged that protected-main state without rebasing or rewritin
 
 The intervening Sounding Line paths are testing infrastructure and authority policy. They require v1.4 evidence rebound and final candidate qualification, but do not supersede the Phase 4 readiness, publishing-evidence, compatibility, migration, or Studio contracts. Current main introduced no Prisma or package-lock change, and no current Drydock implementation was discarded.
 
-No synthetic merge, protected-main claim, authoritative Mainline Decision, or protected merge has been made. The resulting candidate remains held until the independent Sounding Line v1.4 post-cutover browser-fixture closure is confirmed green.
+No synthetic merge, protected-main claim, authoritative Mainline Decision, or protected merge has been made. The independent Sounding Line v1.4 post-cutover browser-fixture closure is no longer a development pause; governed acceptance remains a distinct final step.
 
 ## Current protected-main rebound
 
 Protected main subsequently advanced through the active v1.4.1 maintenance and mainline-train work to `8c7c3589955f94fcc8a400a81e4f61565d0d4521`. Phase 4 has not been accepted or superseded: its code, migrations, browser harness, and project records are branch-only additions, rather than paths removed by main. The branch merged that protected state in `3f387af0f8a599707a5a464a0c3215b7a21e31c6`, retaining Phase 4 while adopting the current shared authority, package, schema-adjacent, and generated-record contracts.
 
 The current v1.4 registry requires durable `semanticId` values. The pre-v1.4.1 Phase 4 registry rows were reconciled by exact generated-ID matching only; an unmatched legacy row now fails closed. This repair is covered by the focused maintenance-identity test and current policy validation. No authoritative decision or protected merge has yet been requested.
+
+Protected main advanced again to `fc39942a1d8fe57fc13f35cae01445e704b94c45`, carrying only Sounding Line Captain-entry fixture, retirement-ledger, and generated-registry maintenance. Phase 4 merged that state at `c4384024f038646e03d3bc0203443060df0f0c2f`; generation reconfirmed 2,418 governed test definitions across 57 owned families, and the Feature Catalog provenance was refreshed. The Drydock source, migrations, shared contracts, and package/toolchain inputs were unchanged by this final delta.
