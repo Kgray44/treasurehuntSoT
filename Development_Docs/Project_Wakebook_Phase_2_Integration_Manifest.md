@@ -16,8 +16,9 @@ last_reviewed: 2026-08-18
 | Mainline reconciliation | Project Trim context tooling and generated control-plane work retained              |
 | Reconciliation source   | `5461eb67a4bf10f6cbe7d7bac242884383ebfd17`                                          |
 | Legacy evidence         | Preserved only where exact semantic inputs remain unchanged; direct scope rebounded |
-| Phase state             | `CANDIDATE_QUALIFIED_PENDING_MAINLINE_DECISION`                                     |
-| Protected merge         | Prohibited until frozen-source hosted authority returns `RELEASE_GO`                |
+| Frozen candidate        | `3c4926adf4ade4fb2628d98601a3426171394ac6`                                          |
+| Phase state             | `READY_FOR_V14_MAINLINE_ACCEPTANCE`                                                  |
+| Protected merge         | Prohibited: authority run `32160955382` issued no `RELEASE_GO`                      |
 
 The current-main interval added accepted Project Trim context tooling and its
 generated catalog, registry, and documentation-index updates. It did not modify
@@ -53,5 +54,12 @@ schema-engine error, but Prisma's supported `db execute` applied each of the
 59 checked-in migration SQL files to that database; the scenario then created
 only its own synthetic accounts and Voyage data. The prior hosted startup
 failures remain infrastructure history, not a substitute for this local proof.
-The frozen candidate still requires one source-bound v1.4 Mainline Decision and
-`RELEASE_GO` before protected merge.
+Authoritative run `32160955382` was dispatched once for frozen candidate
+`3c4926adf4ade4fb2628d98601a3426171394ac6`, current base, and PR #197. Its
+sealed plan expanded under `PROJECT_DISCOVERY_CONSERVATIVE`, did not select
+`browser.wakebook`, and Wave 0 failed in non-Wakebook browser suites
+(Lanternwake mobile zoom and the missing `TIDEGLASS_PHASE3_TASK_ROOT`). The
+finalizer returned `SOUNDING_LINE_FINALIZER_WAVE_0_PREREQUISITES_INVALID`, with
+no finalization artifact and no `RELEASE_GO`. This external v1.4 browser-matrix
+hold is the sole remaining integration condition; a new authority decision is
+required only after that shared closure is green.

@@ -9,8 +9,8 @@ last_reviewed: 2026-08-18
 # Project Wakebook Phase 2 owner walkthrough
 
 This walkthrough is prepared for owner review after the frozen Phase 2
-candidate receives its source-bound v1.4 protected authority decision and
-protected integration. The current browser-qualified implementation source
+candidate receives a successful source-bound v1.4 protected authority decision
+and protected integration. The current browser-qualified implementation source
 `ecc3f9841980e9cb389a95d8ab83ab6fa8d5b940` includes protected main
 `a6c1f441d3628bd828bd7a1c3cd77d419a0701c6`, but it is neither product
 accepted nor merged.
@@ -42,6 +42,10 @@ pre-reconciliation authority run `32154971683` expanded under `UNKNOWN_IMPACT`.
 Neither is adopted as a Wakebook browser receipt. The local 2/2 Chromium
 qualification on source `ecc3f9841980e9cb389a95d8ab83ab6fa8d5b940` now covers
 the walkthrough safety scope, including consent revocation and owner-safe media.
-The final frozen candidate still requires one source-bound v1.4 Mainline
-Decision and `RELEASE_GO`. This document does not authorize a protected merge,
-owner acceptance, or Phase 3.
+Authoritative run `32160955382` was dispatched once for frozen candidate
+`3c4926adf4ade4fb2628d98601a3426171394ac6`, but its conservative cross-project
+browser plan did not select `browser.wakebook` and failed on non-Wakebook
+Lanternwake/Tideglass browser prerequisites. It issued no `RELEASE_GO`. The
+walkthrough remains prepared but cannot begin until the shared v1.4
+browser-matrix closure permits a fresh successful authority decision. This
+document does not authorize a protected merge, owner acceptance, or Phase 3.

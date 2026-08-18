@@ -39,7 +39,7 @@ checked-in SQLite migration files to a fresh task-owned C: database, however;
 the unmodified `wakebook-phase2` project then passed both registered Chromium
 journeys. No canonical data or another task's database was used.
 
-PR #205 resolved the original admission issue. The preserved PR #197 candidate
+PR #205 resolved the original admission issue. The frozen PR #197 candidate
 classifies read-only as `PRODUCT_WITH_VERIFICATION_REGISTRATION`, owned by
 `project-wakebook`, with zero errors. Authority run `32154971683` was bound to
 the prior candidate/base and broadened under `UNKNOWN_IMPACT`; it is not adopted
@@ -47,6 +47,11 @@ as a Phase 2 safety receipt. It completed with 69 jobs (33 success, 21 failure,
 15 skipped) and no `browser.wakebook` worker. The exact focused hosted workflow
 also failed before jobs on the earlier candidate. Local source
 `ecc3f9841980e9cb389a95d8ab83ab6fa8d5b940` now supplies the required 2/2
-browser safety proof. One final frozen-source v1.4 Mainline Decision remains
-required for `RELEASE_GO`; no protected merge or owner acceptance is claimed
-before it succeeds.
+browser safety proof. Authoritative run `32160955382` then bound frozen
+candidate `3c4926adf4ade4fb2628d98601a3426171394ac6` to this base, but its
+sealed plan used `PROJECT_DISCOVERY_CONSERVATIVE` and Wave 0 failed in
+non-Wakebook browser suites (Lanternwake mobile zoom and missing Tideglass task
+root). The plan did not select `browser.wakebook`; no `RELEASE_GO` or
+finalization artifact exists. The phase is `READY_FOR_V14_MAINLINE_ACCEPTANCE`:
+locally complete, blocked only on the shared v1.4 browser-matrix closure and a
+fresh authority decision. No protected merge or owner acceptance is claimed.

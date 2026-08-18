@@ -8,18 +8,15 @@ last_reviewed: 2026-08-18
 
 # Project Wakebook Phase 2 validation record
 
-Phase 2 implementation is reconciled with current protected main. The current
-reconciliation source is `5461eb67a4bf10f6cbe7d7bac242884383ebfd17`, and the
-browser-qualified test-fixture source is `ecc3f9841980e9cb389a95d8ab83ab6fa8d5b940`.
-The reconciliation source's first parent contains the preserved Phase 2 work and
-its second parent is
-protected main `a6c1f441d3628bd828bd7a1c3cd77d419a0701c6`. A final candidate
-remains to be frozen; no release, protected merge, owner acceptance, or Phase 3
-work is claimed.
+Phase 2 implementation is reconciled with protected main
+`a6c1f441d3628bd828bd7a1c3cd77d419a0701c6`. Frozen candidate
+`3c4926adf4ade4fb2628d98601a3426171394ac6` includes the browser-qualified
+test-fixture source `ecc3f9841980e9cb389a95d8ab83ab6fa8d5b940`. No release,
+protected merge, owner acceptance, or Phase 3 work is claimed.
 
 | Evidence                | Result                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Source and runtime      | Reconciliation source `5461eb67a4bf10f6cbe7d7bac242884383ebfd17`; local browser source `ecc3f9841980e9cb389a95d8ab83ab6fa8d5b940`; all local work used synthetic task-owned SQLite fixtures only. The canonical development database was never used.                                                                                                                                                                                                                                                                                                                                                      |
+| Source and runtime      | Frozen candidate `3c4926adf4ade4fb2628d98601a3426171394ac6`; reconciliation source `5461eb67a4bf10f6cbe7d7bac242884383ebfd17`; local browser source `ecc3f9841980e9cb389a95d8ab83ab6fa8d5b940`; all local work used synthetic task-owned SQLite fixtures only. The canonical development database was never used.                                                                                                                                                                                                                                                                                                                          |
 | Prisma diagnosis        | Node `v24.19.0`, Prisma CLI/client `6.19.3`, schema `prisma/schema.sqlite.prisma`, and Windows x64 schema engine `c2990dca591cba766e3b7ef5d9e8a84796e47ab7`. Engine launch and `prisma generate` passed; `prisma validate` passed with sanitized task-owned URLs. Fresh `migrate deploy` still fails identically for short C: and Y: paths with blank `Schema engine error`, while schema-engine CLI SQLite create/connect and Prisma `db execute` both succeed. The task-owned browser fixture used `db execute` to apply all 59 checked-in migration SQL files; no canonical database was touched.      |
 | Focused contracts       | PASS: eight focused Vitest files, 27 tests. Coverage includes rich detail projection, unavailable-choice truthfulness, media state non-delivery, remembrance validation, component path, protected-media binding, and protected-media delivery. Scoped Wakebook TypeScript, targeted lint, and targeted formatting passed; broad repository TypeScript is separately blocked by missing Bridgewatch dependencies.                                                                                                                                                                                         |
 | Visible browser journey | PASS: registered Playwright project `wakebook-phase2`, Chromium desktop 1440x1000, fresh Y: fixture `wakebook-phase2-v14-final-visible.db`, all 59 migrations, 1/1 journey. It begins from visible Chronicle Passport, History, and Voyage controls.                                                                                                                                                                                                                                                                                                                                                      |
@@ -34,9 +31,10 @@ focused evidence remain bounded legacy evidence. Current policy/registry proof
 now passes with 2,419 cases across 57 families, 63 suites, and policy digest
 `db91bb4bb1415e46d3687bd353541676744a15d3b43da02430563565bc27c88a`.
 
-The required browser safety scope is locally qualified. One source-bound v1.4
-candidate Mainline Decision remains required for `RELEASE_GO` before protected
-merge. This record does not claim owner acceptance.
+The required browser safety scope is locally qualified. A source-bound v1.4
+candidate Mainline Decision was attempted for the frozen candidate, but no
+`RELEASE_GO` was issued; protected merge remains prohibited. This record does
+not claim owner acceptance.
 
 ## v1.4 admission result
 
@@ -49,11 +47,22 @@ run `32154971683` was bound to the prior candidate/base and broadened under
 `UNKNOWN_IMPACT` because three support paths were unmapped; it is not a
 Wakebook browser receipt or a release decision. No `RELEASE_GO` exists yet.
 
-## Browser qualification closure
+## Browser qualification and authority hold
 
 The current direct product/contract, policy, registry, catalog, privacy,
 documentation, and browser evidence is green. The earlier hosted startup
 failures and the local `migrate deploy` engine defect remain recorded, but the
 supported raw migration execution path supplied a fresh isolated fixture and
-the full unmodified Wakebook browser scenario passed. The phase is now
-candidate-qualified pending its one authoritative Mainline Decision.
+the full unmodified Wakebook browser scenario passed.
+
+Authoritative run `32160955382` was dispatched once for candidate
+`3c4926adf4ade4fb2628d98601a3426171394ac6`, base
+`a6c1f441d3628bd828bd7a1c3cd77d419a0701c6`, and PR #197. Its sealed plan
+fell back under `PROJECT_DISCOVERY_CONSERVATIVE`, selecting cross-project
+browser suites but not `browser.wakebook`. Wave 0 failed on external suites,
+including Lanternwake WebKit mobile zoom overflow and Tideglass's missing
+`TIDEGLASS_PHASE3_TASK_ROOT`; the finalizer rejected Wave 0 prerequisites and
+issued no finalization artifact or `RELEASE_GO`. This is not Wakebook product
+failure or browser evidence. The phase is locally complete and
+`READY_FOR_V14_MAINLINE_ACCEPTANCE`, pending resolution of the shared v1.4
+browser-matrix hold and a later, fresh authoritative decision.
