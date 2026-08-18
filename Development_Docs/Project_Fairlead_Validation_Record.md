@@ -28,13 +28,13 @@ last_reviewed: 2026-08-18
 
 ## Candidate qualification status
 
-The implementation amendments are undergoing current candidate qualification.
-They will be frozen only after the governed records and all focused Fairlead
-evidence are regenerated. A Sounding Line Mainline Decision remains ineligible
-while required whole-repository Feature Catalog, Deepwater, and authority-cutover
-baseline gates are failing for unrelated owners. Mainline Decision is not a
-development debugger and will not be dispatched until those baseline failures
-are resolved and the exact final candidate SHA is requalified.
+The implementation candidate is frozen locally after reconciliation to current
+protected `origin/main` (`aaab92a8…`) and regeneration of the governed records.
+A Sounding Line Mainline Decision remains ineligible while required
+whole-repository Feature Catalog, Deepwater, and authority-cutover baseline
+gates are failing for unrelated owners. Mainline Decision is not a development
+debugger and will not be dispatched until those baseline failures are resolved
+and the exact final candidate SHA is requalified.
 
 ## External state
 
