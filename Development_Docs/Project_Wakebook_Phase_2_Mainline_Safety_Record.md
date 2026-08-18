@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Mainline Safety Record
 audience: product-engineering
-status: candidate-qualification-in-progress
+status: qualification-blocked-external
 canonical_for: project-wakebook-phase-2-mainline-safety-record
 last_reviewed: 2026-08-18
 ---
@@ -41,7 +41,9 @@ PR #205 resolved the original admission issue. The preserved PR #197 candidate
 classifies read-only as `PRODUCT_WITH_VERIFICATION_REGISTRATION`, owned by
 `project-wakebook`, with zero errors. Authority run `32154971683` was bound to
 the prior candidate/base and broadened under `UNKNOWN_IMPACT`; it is not adopted
-as a Phase 2 safety receipt. One final frozen-source v1.4 Mainline Decision for
-this reconciled candidate remains required for hosted browser evidence and
-`RELEASE_GO`; no protected merge or owner acceptance is claimed before it
-succeeds.
+as a Phase 2 safety receipt. It completed with 69 jobs (33 success, 21 failure,
+15 skipped) and no `browser.wakebook` worker. The exact focused hosted workflow
+then failed before any job on current candidate `9ca51c05216aac8f2f989b5bb6f8d42fb93fe63e`
+in runs `32159196719` and `32159273263`. One final frozen-source v1.4 Mainline
+Decision remains required after that hosted fixture defect is repaired; no
+protected merge or owner acceptance is claimed before it succeeds.

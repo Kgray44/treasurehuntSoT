@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Test Plan
 audience: product-engineering
-status: candidate-qualification-in-progress
+status: qualification-blocked-external
 canonical_for: project-wakebook-phase-2-test-plan
 last_reviewed: 2026-08-18
 ---
@@ -58,3 +58,12 @@ against the superseded prior candidate/base broadened under `UNKNOWN_IMPACT` and
 is not adopted as browser proof. The next valid hosted path is one
 frozen-source Mainline Decision after candidate records are finalized; it must
 provide the safety-browser receipt and `RELEASE_GO` before merge.
+
+After the final current-main reconciliation, exact focused attempts
+`32159196719` and `32159273263` ran against candidate
+`9ca51c05216aac8f2f989b5bb6f8d42fb93fe63e` with suite `browser.wakebook`,
+project `wakebook-phase2`, and gate `mainline`. Both ended as GitHub
+`startup_failure` before creating a job, worker, browser, trace, or finalizer.
+This repeated hosted fixture failure, together with the documented local Prisma
+failure, blocks only the required source-bound browser proof; it does not make
+the direct focused coverage a browser pass.

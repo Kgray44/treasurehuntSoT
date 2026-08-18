@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Owner Walkthrough
 audience: product-owner
-status: candidate-qualification-in-progress
+status: qualification-blocked-external
 canonical_for: project-wakebook-phase-2-owner-walkthrough
 last_reviewed: 2026-08-18
 ---
@@ -41,5 +41,8 @@ hosted suite is `browser.wakebook` / `wakebook-phase2`; its latest dispatch
 pre-reconciliation authority run `32154971683` expanded under `UNKNOWN_IMPACT`
 and cannot be adopted as a Wakebook browser receipt. The final frozen candidate
 therefore still requires one source-bound v1.4 Mainline Decision for browser
-proof and `RELEASE_GO`. This document does not authorize a protected merge,
-owner acceptance, or Phase 3.
+proof and `RELEASE_GO`. Current candidate `9ca51c05216aac8f2f989b5bb6f8d42fb93fe63e`
+has two exact focused hosted attempts (`32159196719`, `32159273263`), both
+GitHub `startup_failure` with zero jobs. Owner walkthrough is not scheduled
+until that external fixture failure is repaired and source-bound proof exists.
+This document does not authorize a protected merge, owner acceptance, or Phase 3.

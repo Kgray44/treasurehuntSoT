@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Integration Manifest
 audience: product-engineering
-status: candidate-qualification-in-progress
+status: qualification-blocked-external
 canonical_for: project-wakebook-phase-2-integration-manifest
 last_reviewed: 2026-08-18
 ---
@@ -16,7 +16,7 @@ last_reviewed: 2026-08-18
 | Mainline reconciliation | Project Trim context tooling and generated control-plane work retained              |
 | Reconciliation source   | `5461eb67a4bf10f6cbe7d7bac242884383ebfd17`                                          |
 | Legacy evidence         | Preserved only where exact semantic inputs remain unchanged; direct scope rebounded |
-| Phase state             | `CANDIDATE_QUALIFICATION_IN_PROGRESS`                                               |
+| Phase state             | `QUALIFICATION_BLOCKED_EXTERNAL`                                                    |
 | Protected merge         | Prohibited until frozen-source hosted authority returns `RELEASE_GO`                |
 
 The current-main interval added accepted Project Trim context tooling and its
@@ -44,3 +44,11 @@ conservatively because `Development_Docs/Features/catalog/wakebook.json`,
 `playwright.config.ts`, and `scripts/features/feature-catalog.test.ts` were
 unmapped, expanding into unrelated suites. It is not a Wakebook browser receipt
 and cannot authorize this reconciled candidate.
+
+The resulting reconciled product candidate
+`9ca51c05216aac8f2f989b5bb6f8d42fb93fe63e` was pushed with branch parity. Its
+two exact focused hosted attempts, `32159196719` and `32159273263`, each ended
+as GitHub `startup_failure` in two seconds with zero jobs. They used
+`browser.wakebook`, project `wakebook-phase2`, and gate `mainline`; neither
+started a worker, browser, or finalizer. The candidate remains unmerged while
+that governed browser fixture infrastructure is repaired.
