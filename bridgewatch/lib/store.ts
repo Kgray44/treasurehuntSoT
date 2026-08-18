@@ -205,6 +205,16 @@ const migrations = [
       );
       `,
   },
+  {
+    version: 5,
+    sql: `
+      ALTER TABLE source_observations ADD COLUMN rate_limit_limit INTEGER;
+      ALTER TABLE source_observations ADD COLUMN rate_limit_reset_at TEXT;
+      ALTER TABLE source_observations ADD COLUMN rate_mode TEXT;
+      ALTER TABLE source_observations ADD COLUMN credential_source TEXT;
+      ALTER TABLE source_observations ADD COLUMN app_installation_health TEXT;
+      `,
+  },
 ] as const;
 
 const prunableTables = new Set(["events", "snapshots", "daily_rollups", "workers", "test_nodes"]);
@@ -327,6 +337,11 @@ export interface SourceObservation {
   detail: string | null;
   cacheAgeMs: number | null;
   rateLimitRemaining?: number | null;
+  rateLimitLimit?: number | null;
+  rateLimitResetAt?: string | null;
+  rateMode?: "NORMAL" | "CONSERVATION" | "CRITICAL" | "EXHAUSTED" | "UNKNOWN" | null;
+  credentialSource?: "GITHUB_APP_INSTALLATION" | "USER_TOKEN" | "ANONYMOUS" | "NOT_APPLICABLE" | null;
+  appInstallationHealth?: "ACTIVE" | "CONFIGURED" | "NOT_CONFIGURED" | "UNKNOWN" | null;
   authenticationState: "TOKEN_CONFIGURED" | "ANONYMOUS" | "NOT_APPLICABLE" | "UNKNOWN";
 }
 
@@ -571,7 +586,7 @@ export class BridgewatchStore {
       throw new Error("Bridgewatch source detail exceeds limit");
     this.db
       .prepare(
-        "INSERT INTO source_observations (source_name, state, configured, reachable, last_attempt_at, last_success_at, next_retry_at, detail, cache_age_ms, rate_limit_remaining, authentication_state, observed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(source_name) DO UPDATE SET state=excluded.state, configured=excluded.configured, reachable=excluded.reachable, last_attempt_at=excluded.last_attempt_at, last_success_at=excluded.last_success_at, next_retry_at=excluded.next_retry_at, detail=excluded.detail, cache_age_ms=excluded.cache_age_ms, rate_limit_remaining=excluded.rate_limit_remaining, authentication_state=excluded.authentication_state, observed_at=excluded.observed_at",
+        "INSERT INTO source_observations (source_name, state, configured, reachable, last_attempt_at, last_success_at, next_retry_at, detail, cache_age_ms, rate_limit_remaining, rate_limit_limit, rate_limit_reset_at, rate_mode, credential_source, app_installation_health, authentication_state, observed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(source_name) DO UPDATE SET state=excluded.state, configured=excluded.configured, reachable=excluded.reachable, last_attempt_at=excluded.last_attempt_at, last_success_at=excluded.last_success_at, next_retry_at=excluded.next_retry_at, detail=excluded.detail, cache_age_ms=excluded.cache_age_ms, rate_limit_remaining=excluded.rate_limit_remaining, rate_limit_limit=excluded.rate_limit_limit, rate_limit_reset_at=excluded.rate_limit_reset_at, rate_mode=excluded.rate_mode, credential_source=excluded.credential_source, app_installation_health=excluded.app_installation_health, authentication_state=excluded.authentication_state, observed_at=excluded.observed_at",
       )
       .run(
         observation.name,
@@ -584,6 +599,11 @@ export class BridgewatchStore {
         observation.detail,
         observation.cacheAgeMs,
         observation.rateLimitRemaining ?? null,
+        observation.rateLimitLimit ?? null,
+        observation.rateLimitResetAt ?? null,
+        observation.rateMode ?? null,
+        observation.credentialSource ?? null,
+        observation.appInstallationHealth ?? null,
         observation.authenticationState,
         new Date().toISOString(),
       );
@@ -592,7 +612,7 @@ export class BridgewatchStore {
   sourceObservations(): SourceObservation[] {
     return this.db
       .prepare(
-        "SELECT source_name, state, configured, reachable, last_attempt_at, last_success_at, next_retry_at, detail, cache_age_ms, rate_limit_remaining, authentication_state FROM source_observations ORDER BY source_name",
+        "SELECT source_name, state, configured, reachable, last_attempt_at, last_success_at, next_retry_at, detail, cache_age_ms, rate_limit_remaining, rate_limit_limit, rate_limit_reset_at, rate_mode, credential_source, app_installation_health, authentication_state FROM source_observations ORDER BY source_name",
       )
       .all()
       .map((row) => {
@@ -607,6 +627,11 @@ export class BridgewatchStore {
           detail: string | null;
           cache_age_ms: number | null;
           rate_limit_remaining: number | null;
+          rate_limit_limit: number | null;
+          rate_limit_reset_at: string | null;
+          rate_mode: SourceObservation["rateMode"];
+          credential_source: SourceObservation["credentialSource"];
+          app_installation_health: SourceObservation["appInstallationHealth"];
           authentication_state: SourceObservation["authenticationState"];
         };
         return {
@@ -620,6 +645,11 @@ export class BridgewatchStore {
           detail: source.detail,
           cacheAgeMs: source.cache_age_ms,
           rateLimitRemaining: source.rate_limit_remaining,
+          rateLimitLimit: source.rate_limit_limit,
+          rateLimitResetAt: source.rate_limit_reset_at,
+          rateMode: source.rate_mode,
+          credentialSource: source.credential_source,
+          appInstallationHealth: source.app_installation_health,
           authenticationState: source.authentication_state,
         };
       });

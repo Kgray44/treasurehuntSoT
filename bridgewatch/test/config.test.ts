@@ -56,4 +56,16 @@ describe("loadConfig", () => {
       }).BRIDGEWATCH_BRANCH_BEHIND_THRESHOLD,
     ).toBe(12);
   });
+
+  it("accepts an optional external GitHub App read configuration without requiring an App for local development", () => {
+    const configured = loadConfig({
+      BRIDGEWATCH_REPOSITORY: "owner/repository",
+      BRIDGEWATCH_GITHUB_APP_ID: "12345",
+      BRIDGEWATCH_GITHUB_APP_INSTALLATION_ID: "67890",
+      BRIDGEWATCH_GITHUB_APP_PRIVATE_KEY_PATH: "C:\\secure\\fixture-app.pem",
+    });
+    expect(configured.BRIDGEWATCH_GITHUB_APP_ID).toBe("12345");
+    expect(configured.BRIDGEWATCH_GITHUB_APP_INSTALLATION_ID).toBe("67890");
+    expect(configured.BRIDGEWATCH_GITHUB_APP_PRIVATE_KEY_PATH).toContain("fixture-app.pem");
+  });
 });

@@ -1,0 +1,26 @@
+---
+title: Project Fairlead GitHub Interaction Inventory
+audience: engineering
+status: current
+canonical_for: project-fairlead-github-interaction-inventory
+last_reviewed: 2026-08-18
+---
+
+# Project Fairlead GitHub Interaction Inventory
+
+This inventory covers active executable consumers only. Historical chats,
+archival evidence, and documentation examples are intentionally excluded.
+
+| Consumer                             | Active file                                                                                    | Operation                                               | Current transport / credential                                                    | Cache and polling                                                                   | N+1 risk                                 | Fairlead disposition                                                  |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------- | --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------- | --------------------------------------------------------------------- |
+| Bridgewatch collector                | `bridgewatch/lib/github.ts`                                                                    | Repository, PR, branch, check, and workflow observation | Shared client; App installation read when configured, otherwise user or anonymous | Shared conditional cache, ETag, local historical fallback; adaptive caller interval | Open-PR checks were N+1                  | Migrated; one GraphQL pull/check batch with conditional REST fallback |
+| Bridgewatch configuration            | `bridgewatch/src/config.ts`                                                                    | HTTPS endpoint and credential source selection          | Configuration only                                                                | No request                                                                          | None                                     | App ID, installation ID, and external private-key path supported      |
+| Sounding Line record-only closure    | `scripts/sounding-line/record-only-closure.mjs`                                                | Prior PR/run/check authority inspection                 | Shared conditional REST / user token                                              | Shared cache and pool rate state                                                    | Bounded three reads                      | Migrated without changing fail-closed authority checks                |
+| Sounding Line authoritative workflow | `.github/workflows/sounding-line-authoritative.yml`                                            | Candidate PR identity                                   | REST / `${{ github.token }}`                                                      | One required hosted request                                                         | None                                     | Retained as explicit hosted-token exception                           |
+| Protected merge binding              | `.github/workflows/sounding-line-protected-merge-binding.yml`                                  | Artifact, run, and authority binding                    | REST / `${{ github.token }}`                                                      | Bounded workflow-local reads                                                        | Existing workflow-specific bounded loops | Retained as explicit hosted-token exception                           |
+| Mainline train workflows             | `.github/workflows/sounding-line-mainline-train*.yml`, `sounding-line-train-finalize-cars.yml` | Train PR inspection, updates, check publication         | REST / `${{ github.token }}`                                                      | Hosted and bounded                                                                  | Workflow-specific                        | Retained; mutations remain hosted-token governed                      |
+| OAuth provider adapter               | `src/wayfarer/oauth.ts`                                                                        | End-user GitHub identity and verified email             | GitHub OAuth access token                                                         | Provider-specific                                                                   | Two identity endpoints                   | Explicit non-repository-automation exception                          |
+| Interaction CLI                      | `scripts/github-interaction/cli.mjs`                                                           | Status, refs, PR/run inspection, watches, dispatch      | Git, cache, GraphQL/REST, user mutation                                           | Shared cache, locks, adaptive watch intervals                                       | Coalesced                                | Canonical local entry point                                           |
+
+`scripts/sync_codex_chats.py` contains token-redaction patterns but does not
+contact GitHub, so it is not a GitHub consumer.

@@ -894,15 +894,22 @@ function programTotals(
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const { app, config, refreshSources, refreshSoundingLine } = buildServer();
+  const { app, config, collector, refreshSources, refreshSoundingLine } = buildServer();
   await refreshSources();
-  const sourceTimer = setInterval(() => void refreshSources(), config.BRIDGEWATCH_SNAPSHOT_INTERVAL_MS);
+  let sourceTimer: NodeJS.Timeout | null = null;
+  const scheduleSourceRefresh = () => {
+    sourceTimer = setTimeout(async () => {
+      await refreshSources();
+      scheduleSourceRefresh();
+    }, collector.recommendedRefreshInterval());
+  };
+  scheduleSourceRefresh();
   const soundingLineTimer = setInterval(
     () => void refreshSoundingLine(),
     config.BRIDGEWATCH_SOUNDING_LINE_POLL_INTERVAL_MS,
   );
   app.addHook("onClose", async () => {
-    clearInterval(sourceTimer);
+    if (sourceTimer) clearTimeout(sourceTimer);
     clearInterval(soundingLineTimer);
   });
   await app.listen({ host: config.BRIDGEWATCH_HOST, port: config.BRIDGEWATCH_PORT });

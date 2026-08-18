@@ -161,7 +161,7 @@ proof remain separately governed external validation.
 
 ## Repository workflow
 
-`main` is canonical. At task start: fetch, inspect status/remotes, and pull with rebase when clean. At task end: validate, review the complete diff, commit intentionally, fetch/rebase if needed, push without force, and verify local `HEAD` equals `origin/main`. See the [automation workspace](.agents/README.md).
+`main` is canonical. At task start: fetch, inspect status/remotes, and pull with rebase when clean. At task end: validate, review the complete diff, commit intentionally, fetch/rebase if needed, push without force, and verify local `HEAD` equals `origin/main`. See the [automation workspace](.agents/README.md). GitHub observation and quota decisions follow the repository [GitHub interaction guidance](.agents/github-interaction.md).
 
 ## Important limitations
 

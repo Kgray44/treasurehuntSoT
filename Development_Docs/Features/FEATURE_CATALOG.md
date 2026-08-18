@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `02dcb963cdbd7b018aa68313d35a2f569a0f5764`
+Audited source commit: `8586ea351a5adf2c6e08c5d0b9314ade18becf28`
 
 ## Status vocabulary
 
@@ -895,7 +895,7 @@ Audience-separated current documentation, indexed engineering records, and a fra
 **Status:** MAINLINE
 **Program or subsystem:** Sounding Line Phases 1-4
 
-A nonauthoritative, provider-neutral local verification control plane provides sealed plans, reviewed adapters, marker-verified resource leases, durable history, fail-closed worker and evidence controls, isolated SQLite/browser state, narrowly certified Harborlight moderator browser lanes, and a strictly record-only protected-mainline closure route without weakening release authority.
+A nonauthoritative, provider-neutral local verification control plane provides sealed plans, reviewed adapters, marker-verified resource leases, durable history, fail-closed worker and evidence controls, isolated SQLite/browser state, governed GitHub interaction routing, narrowly certified Harborlight moderator browser lanes, and a strictly record-only protected-mainline closure route without weakening release authority.
 
 ### Important subfeatures
 
@@ -908,6 +908,7 @@ A nonauthoritative, provider-neutral local verification control plane provides s
 - Two isolated Harborlight Phase 4 browser lanes
 - Explicit emergency-serial legacy release authority
 - Fail-closed record-only protected-mainline closure evidence
+- Git-first, shared-cache, per-credential-pool GitHub authority inspection with exhausted-pool deferral
 
 ### Primary surfaces
 
@@ -919,6 +920,7 @@ A nonauthoritative, provider-neutral local verification control plane provides s
 - path: `scripts/sounding-line/adapters.mjs`
 - path: `scripts/sounding-line/phase3.mjs`
 - path: `scripts/sounding-line/phase4.mjs`
+- path: `scripts/github-interaction/index.mjs`
 - completion-record: `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Final_Program_Closeout_Receipt.md`
 
 ---
@@ -934,6 +936,7 @@ A private, standalone, read-only development mission-control dashboard projects 
 
 - Loopback-first Fastify service with a static dashboard
 - Server-side read-only GitHub collection with conditional cache retention
+- Shared credential-pool quota coordination, GraphQL PR-check batching, and optional read-only GitHub App authentication
 - SQLite-backed local operational cache without token persistence
 - Explicit measured versus unmeasured milestone progress
 - Read-only API routes, security headers, and no dashboard controls
@@ -1602,4 +1605,4 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `02dcb963cdbd7b018aa68313d35a2f569a0f5764`
+Generation source commit: `8586ea351a5adf2c6e08c5d0b9314ade18becf28`
