@@ -622,6 +622,10 @@ test("validation runtime restores only declared product document dependencies", 
   const common = await readFile(path.join(root, "scripts", "dev-common.ps1"), "utf8");
   assert.match(common, /Development_Docs"\),\s*\(Join-Path \$script:ProjectRoot "Codex_Chats"\)/u);
   assert.match(common, /\$runtimeDocumentDependencies = @\(/u);
+  assert.match(common, /Project_Admiralty_Phase_1_Capability_Registry\.json/u);
+  assert.match(common, /Project_Admiralty_Phase_2_Capability_Activation_Registry\.json/u);
+  assert.match(common, /Project_Admiralty_Phase_2_Role_Capability_Registry\.json/u);
+  assert.match(common, /Project_Homeport_Phase_4_District_Registry\.json/u);
   assert.match(common, /Project_Tideglass_Phase_2_Change_Code_Registry\.json/u);
   assert.match(common, /Project_Tideglass_Phase_2_Projection_Policy\.json/u);
   assert.match(common, /Required validation runtime document dependency is missing: \$relativePath/u);
