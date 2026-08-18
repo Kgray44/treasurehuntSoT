@@ -377,6 +377,20 @@ test("authority-maintenance preflight routing is trusted-policy driven and boots
   assert.doesNotMatch(workflow, /\$isAuthorityCandidate = \$paths \| Where-Object \{ \$_ -in @\('/);
 });
 
+test("the protected binding treats only authority-plus-scope maintenance rejection as expected", async () => {
+  const workflow = await readFile(
+    path.join(root, ".github", "workflows", "sounding-line-protected-merge-binding.yml"),
+    "utf8",
+  );
+  assert.match(workflow, /\$authorityAndScopeOnly = \$errors\.Count -gt 0/);
+  assert.match(workflow, /\^\(MAINTENANCE_AUTHORITY_CHANGE_REJECTED\|MAINTENANCE_SCOPE_REJECTED\):/);
+  assert.match(workflow, /\^MAINTENANCE_AUTHORITY_CHANGE_REJECTED:/);
+  assert.match(workflow, /\.github\/workflows\/sounding-line-protected-merge-binding\.yml/);
+  const authorityBinding = workflow.slice(workflow.indexOf("bind-authority-maintenance:"));
+  assert.match(authorityBinding, /actions\/runs\?event=workflow_dispatch&per_page=100/);
+  assert.doesNotMatch(authorityBinding, /head_sha=\$env:BASE_SHA/);
+});
+
 test("a renamed trusted authority classifier still emits the sealed plan and finalization", async () => {
   const directory = await mkdtemp(path.join(tmpdir(), "sounding-line-authority-maintenance-"));
   try {
