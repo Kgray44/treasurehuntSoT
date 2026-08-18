@@ -3,7 +3,7 @@ title: Project Drydock Phase 4 Test Plan
 audience: engineering
 status: v1.4-reconciled-qualification
 canonical_for: project-drydock-phase-4-test-plan
-last_reviewed: 2026-08-14
+last_reviewed: 2026-08-18
 ---
 
 # Project Drydock Phase 4 Test Plan
@@ -24,8 +24,8 @@ This plan separates local qualification from protected-main acceptance. Sounding
 1. Regenerate source-owned catalog, document-index, and Sounding Line test-registry outputs.
 2. Freeze one exact branch head and rerun the impacted project evidence against that source identity.
 3. Record the candidate SHA, remote parity, and preserved v1.4 rebound evidence.
-4. Do not dispatch Sounding Line Mainline Decision or merge until the independent v1.4 post-cutover browser-fixture closure is green.
+4. Re-fetch protected main, reconcile only newly relevant paths, and dispatch Sounding Line Mainline Decision only for the resulting frozen exact candidate.
 
 ## External boundaries
 
-Live MySQL and connected provider proof are distinct from the isolated SQLite and contract-adapter evidence. They remain explicitly unpassed until an isolated policy-approved service or provider proof is available.
+Live MySQL and connected provider proof are distinct from the isolated SQLite and contract-adapter evidence. They remain explicitly unpassed until an isolated policy-approved service or provider proof is available. They do not permit a false local pass or substitute for the governed Mainline Decision.

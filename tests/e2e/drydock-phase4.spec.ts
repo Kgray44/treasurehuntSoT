@@ -43,6 +43,11 @@ test("Drydock Phase 4 exposes current launch and compatibility decisions without
   await expect(page.getByRole("heading", { name: "Launch Gate" })).toBeVisible();
   await page.keyboard.press("Tab");
   expect(await page.evaluate(() => document.activeElement?.tagName)).not.toBe("BODY");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect
+    .poll(() => page.evaluate(() => matchMedia("(prefers-reduced-motion: reduce)").matches))
+    .toBe(true);
+  await expect(page.getByRole("heading", { name: "Launch Gate" })).toBeVisible();
   const axe = await new AxeBuilder({ page }).exclude("nextjs-portal").analyze();
   expect(axe.violations.filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))).toEqual([]);
   await context.close();

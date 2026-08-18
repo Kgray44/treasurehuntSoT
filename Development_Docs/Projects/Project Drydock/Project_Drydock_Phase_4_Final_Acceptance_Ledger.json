@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "project": "Project Drydock",
   "phase": 4,
-  "status": "READY_FOR_V14_MAINLINE_ACCEPTANCE_NOT_ACCEPTED",
+  "status": "QUALIFICATION_IN_PROGRESS_NOT_ACCEPTED",
   "governingSource": "Project Drydock Phase 4: Clear for Launch",
   "acceptedCommit": null,
   "mandatoryFamilies": [
