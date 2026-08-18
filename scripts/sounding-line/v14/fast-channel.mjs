@@ -364,6 +364,8 @@ export function selectV14Mainline({
   policyDigest = null,
   inventoryDigest = null,
   selectionContract = null,
+  projectDiscovery = [],
+  projectDiscoverySummary = [],
 }) {
   const selectedByFloor = new Map();
   const rules = recordOnly
@@ -377,18 +379,30 @@ export function selectV14Mainline({
         )
       )
         selectedByFloor.set(suite.id, rule.id);
+  const trustedDiscoveryMappings = projectDiscovery
+    .filter((descriptor) => descriptor.state === "TRUSTED_DISCOVERED" && descriptor.mayNarrowEvidence)
+    .flatMap((descriptor) =>
+      [
+        ...(descriptor.observedSourceRoots ?? []),
+        ...(descriptor.observedTestRoots ?? []),
+        ...(descriptor.observedScriptRoots ?? []),
+        ...(descriptor.observedDocumentationRoots ?? []),
+        ...(descriptor.observedMigrationRoots ?? []),
+      ].map((root) => ({ root, suiteIds: descriptor.probableSuiteIds ?? [] })),
+    );
   const mappingsForChangedPath = (changed) => {
     const matching = (impact.pathMappings ?? []).filter((mapping) => matches(changed, [mapping.path]));
+    const discovered = trustedDiscoveryMappings
+      .filter((mapping) => changed === mapping.root || changed.startsWith(`${mapping.root}/`))
+      .map((mapping) => ({ path: mapping.root, suiteIds: mapping.suiteIds }));
     // An authority-reviewed exact mapping may deliberately model a bounded
     // seam inside a broader owner glob. In that case, the exact mapping is
     // the complete direct impact declaration; dependency closure still adds
     // every suite required by the selected direct evidence.
     const exclusive = matching.filter((mapping) => mapping.exclusive === true);
-    return exclusive.length ? exclusive : matching;
+    return exclusive.length ? exclusive : [...matching, ...discovered];
   };
-  const unmappedChangedPaths = sorted(
-    changedPaths.filter((changed) => mappingsForChangedPath(changed).length === 0),
-  );
+  const unmappedChangedPaths = sorted(changedPaths.filter((changed) => mappingsForChangedPath(changed).length === 0));
   const unmappedChangedContracts = sorted(
     changedContracts.filter((id) => !impact.contractMappings?.some((mapping) => mapping.contractId === id)),
   );
@@ -396,7 +410,16 @@ export function selectV14Mainline({
     .filter((debt) => changedContracts.includes(debt.contractId))
     .map((debt) => canonicalize(debt))
     .sort((left, right) => canonicalJson(left).localeCompare(canonicalJson(right)));
+  const provisionalDiscovery = projectDiscovery.filter((descriptor) => !descriptor.mayNarrowEvidence);
   const fallbackReasons = [
+    ...(provisionalDiscovery.length
+      ? [
+          {
+            code: "PROJECT_DISCOVERY_CONSERVATIVE",
+            projectIds: sorted(provisionalDiscovery.map((descriptor) => descriptor.projectId)),
+          },
+        ]
+      : []),
     ...(unmappedChangedPaths.length ? [{ code: "UNMAPPED_CHANGED_PATH", paths: unmappedChangedPaths }] : []),
     ...(unmappedChangedContracts.length
       ? [{ code: "UNMAPPED_CHANGED_CONTRACT", contractIds: unmappedChangedContracts }]
@@ -501,6 +524,16 @@ export function selectV14Mainline({
     policyDigest,
     inventoryDigest,
     selectionContract,
+    projectDiscovery: projectDiscoverySummary.length
+      ? projectDiscoverySummary
+      : projectDiscovery.map((descriptor) => ({
+          projectId: descriptor.projectId,
+          state: descriptor.state,
+          confidence: descriptor.confidence,
+          candidateTimeAuthority: descriptor.mayNarrowEvidence
+            ? "MAY_BROADEN_AND_NARROW"
+            : "MAY_BROADEN_MAY_NOT_NARROW",
+        })),
     changedInterval: {
       changedPaths: sorted(changedPaths),
       changedContracts: sorted(changedContracts),
