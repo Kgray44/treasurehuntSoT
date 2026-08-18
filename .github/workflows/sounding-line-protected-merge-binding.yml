@@ -150,12 +150,12 @@ jobs:
           $preflight = Get-Content -Raw maintenance-preflight.json | ConvertFrom-Json
           $errors = @($preflight.errors)
           $ordinaryScopeOnly = $preflight.classification.classification -eq 'MAINTENANCE_SCOPE_REJECTED' -and $errors.Count -gt 0 -and @($errors | Where-Object { $_ -notmatch '^MAINTENANCE_SCOPE_REJECTED:' }).Count -eq 0
-          # An authority-maintenance candidate is deliberately outside the
-          # verification-maintenance lane.  Both authority-change and ordinary
-          # scope rejections are expected here; the separate trusted authority
-          # preflight remains the sole admission decision for that lane.
-          $authorityScopeOnly = $preflight.classification.classification -eq 'MAINTENANCE_AUTHORITY_CHANGE_REJECTED' -and $errors.Count -gt 0 -and @($errors | Where-Object { $_ -notmatch '^MAINTENANCE_(AUTHORITY_CHANGE|SCOPE)_REJECTED:' }).Count -eq 0
-          if ($ordinaryScopeOnly -or $authorityScopeOnly) {
+          # An authority-maintenance candidate is expected to be outside the
+          # verification-maintenance lane. Its authority rejection may be
+          # accompanied only by maintenance-scope rejections for the same
+          # authority paths; any other rejection remains fail-closed.
+          $authorityAndScopeOnly = $errors.Count -gt 0 -and @($errors | Where-Object { $_ -notmatch '^(MAINTENANCE_AUTHORITY_CHANGE_REJECTED|MAINTENANCE_SCOPE_REJECTED):' }).Count -eq 0 -and @($errors | Where-Object { $_ -match '^MAINTENANCE_AUTHORITY_CHANGE_REJECTED:' }).Count -gt 0
+          if ($ordinaryScopeOnly -or $authorityAndScopeOnly) {
             'maintenance=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
             exit 0
           }
@@ -180,7 +180,7 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $paths = @(git diff --name-only --no-renames --no-ext-diff "$env:BASE_SHA" "$env:CANDIDATE_SHA" | Sort-Object)
-          $isAuthorityCandidate = $paths | Where-Object { $_ -in @('testing/authority-maintenance-policy.json','scripts/sounding-line/authority-maintenance.mjs','scripts/sounding-line/authority-maintenance-protected-binding.mjs','scripts/sounding-line/authority-maintenance-selection.mjs','.github/workflows/sounding-line-authority-maintenance.yml') }
+          $isAuthorityCandidate = $paths | Where-Object { $_ -in @('testing/authority-maintenance-policy.json','scripts/sounding-line/authority-maintenance.mjs','scripts/sounding-line/authority-maintenance-protected-binding.mjs','scripts/sounding-line/authority-maintenance-selection.mjs','.github/workflows/sounding-line-authority-maintenance.yml','.github/workflows/sounding-line-protected-merge-binding.yml') }
           if (-not $isAuthorityCandidate) { 'authorityMaintenance=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8; exit 0 }
           git show "$env:BASE_SHA`:testing/authority-maintenance-policy.json" > trusted-authority-maintenance-policy.json
           if ($LASTEXITCODE -ne 0) { throw 'AUTHORITY_MAINTENANCE_TRUSTED_POLICY_UNAVAILABLE' }
@@ -433,7 +433,10 @@ jobs:
           git show "$env:BASE_SHA`:scripts/sounding-line/authority-maintenance-selection.mjs" > trusted-authority-maintenance-selection.mjs
           $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' }
           $candidateTree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
-          $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&head_sha=$env:BASE_SHA&per_page=100").workflow_runs
+          # Candidate-ref dispatches are valid only when their sealed artifact
+          # proves this exact candidate, tree, and protected base. Do not
+          # discard them by workflow-run head before that trusted selection.
+          $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&per_page=100").workflow_runs
           $sealed = @()
           foreach ($run in $runs) {
             if ($run.name -ne 'Sounding Line authority maintenance' -or $run.path -ne '.github/workflows/sounding-line-authority-maintenance.yml' -or $run.status -ne 'completed' -or $run.conclusion -ne 'success') { continue }
