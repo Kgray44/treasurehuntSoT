@@ -109,6 +109,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
   const navigationDrawerRef = useRef<HTMLDivElement>(null);
   const accountDisclosureRef = useRef<HTMLDivElement>(null);
   const mainContentRef = useRef<HTMLDivElement>(null);
+  const previousPathnameRef = useRef(pathname);
   const accountHeadingPrefix = useId();
   const compact = route.shellMode === "COMPACT" || route.shellMode === "IMMERSIVE";
   const ordinaryNavigation = ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD"].includes(route.shellMode);
@@ -144,6 +145,9 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // A browser history or non-link route change must close any modal shell navigation before focus handoff.
+    // The initial passive effect must not race an immediately opened menu.
+    if (previousPathnameRef.current === pathname) return;
+    previousPathnameRef.current = pathname;
     // eslint-disable-next-line react-hooks/set-state-in-effect
     closeAll();
   }, [closeAll, pathname]);
