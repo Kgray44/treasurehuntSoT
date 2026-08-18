@@ -17,6 +17,9 @@ const previousRegistry = await fs
     if (error.code === "ENOENT") return { cases: [] };
     throw error;
   });
+const p34RetirementLedger = await fs
+  .readFile(path.join(root, "testing", "generated", "p34-retirement-ledger.json"), "utf8")
+  .then(JSON.parse);
 const ignored = new Set(["node_modules", ".git", ".next", "coverage", "artifacts", "dist"]);
 const homeportContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
   .contracts.map((contract) => contract.id)
@@ -41,6 +44,36 @@ await execFileAsync(
   },
 );
 const normal = (value) => value.replaceAll("\\", "/");
+
+// P34 is an archived historical matrix. Its durable semantic replacements
+// remain authoritative historical aliases when runtime test identities move.
+// The ledger is generated and validates that every alias remains unambiguous;
+// fail closed here if it cannot be carried into the active registry.
+const carryForwardP34HistoricalAliases = (cases) => {
+  const bySemanticId = new Map(cases.map((entry) => [entry.semanticId, entry]));
+  const owners = new Map();
+  for (const entry of cases) {
+    owners.set(entry.id, entry.semanticId);
+    for (const alias of entry.historicalAliases ?? []) owners.set(alias, entry.semanticId);
+  }
+  for (const row of p34RetirementLedger.rows ?? []) {
+    const historicalAliases = row.canonicalReplacementHistoricalTestIds ?? [];
+    if (!historicalAliases.length) continue;
+    const semanticIds = [...new Set(row.canonicalReplacementSemanticIds ?? [])];
+    if (semanticIds.length !== 1)
+      throw new Error(`P34_HISTORICAL_ALIAS_SEMANTIC_AMBIGUOUS:${row.historicalCaseId ?? "missing"}`);
+    const entry = bySemanticId.get(semanticIds[0]);
+    if (!entry) throw new Error(`P34_HISTORICAL_ALIAS_TARGET_UNRESOLVED:${semanticIds[0]}`);
+    const aliases = new Set(entry.historicalAliases ?? []);
+    for (const alias of historicalAliases) {
+      const owner = owners.get(alias);
+      if (owner && owner !== entry.semanticId)
+        throw new Error(`P34_HISTORICAL_ALIAS_OWNER_AMBIGUOUS:${alias}`);
+      if (alias !== entry.id) aliases.add(alias);
+    }
+    entry.historicalAliases = [...aliases].sort();
+  }
+};
 
 // Playwright discovery imports the application test graph. A fresh `npm ci`
 // intentionally leaves Prisma's generated client as a placeholder, so make
@@ -467,6 +500,7 @@ for (const absolute of sources.flat()) {
 await ensurePrismaClient();
 cases.push(...(await discoverPlaywright()));
 carryForwardHistoricalAliases(cases, previousRegistry.cases ?? []);
+carryForwardP34HistoricalAliases(cases);
 validateRegistryIdentity(cases);
 await fs.mkdir(path.join(root, "testing", "generated"), { recursive: true });
 const prettierConfig = (await resolveConfig(registryPath)) ?? {};
