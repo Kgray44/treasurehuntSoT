@@ -18,5 +18,5 @@ canonical_for: project-tideglass-phase-4-integration-manifest
 | Helm              | Captain Library -> `GET /api/captain/tideglass/preflight` -> exact selected-to-recommended Tideglass pair                 | Implemented; requires active Captain workspace, verifies public-or-own Chronicle scope, returns CAPTAIN_SAFE category/count summary only, and never changes Voyage state |
 
 This manifest is deliberately not a completion receipt. It records exact seams,
-including the read-only Helm preflight; owner acceptance and protected integration
-remain separate gates.
+including the read-only Helm preflight. Owner acceptance is recorded; protected
+integration remains a separate gate.

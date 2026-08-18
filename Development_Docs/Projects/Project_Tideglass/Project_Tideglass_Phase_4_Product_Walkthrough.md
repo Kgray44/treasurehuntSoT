@@ -1,14 +1,17 @@
 ---
 title: Project Tideglass Phase 4 Product Walkthrough
 audience: product-owner
-status: PENDING_OWNER_DECISION
+status: OWNER_ACCEPTED
 canonical_for: project-tideglass-phase-4-product-walkthrough
-last_reviewed: 2026-08-13
+last_reviewed: 2026-08-16
 ---
 
 # Project Tideglass Phase 4 product walkthrough: Fix the Bearings
 
 Status: `TIDEGLASS PHASE 4 — READY FOR OWNER WALKTHROUGH`.
+
+Current disposition (2026-08-16): `OWNER_ACCEPTED; FINAL CURRENT-MAIN
+QUALIFICATION IN PROGRESS`.
 
 This is a source-bound, local synthetic walkthrough package for the frozen
 candidate `32652761bb41046a417f4223aeea0b0c1fcebad0`. It is not an owner
@@ -60,7 +63,7 @@ surfaces are `TG4-EV-I-HELM-CAPTAIN-PREFLIGHT`,
 
 ## Decision boundary
 
-Record only the owner's actual decision in
-`Project_Tideglass_Phase_4_Owner_Decision_Record.md`. An acceptance unlocks
-current-main reconciliation and one exact-SHA Sounding Line Mainline Decision;
-it does not itself authorize a merge.
+The owner recorded `OWNER_ACCEPTED` on 2026-08-16 in
+`Project_Tideglass_Phase_4_Owner_Decision_Record.md`. The accepted scope now
+requires one qualified exact-SHA Sounding Line Mainline Decision and protected
+binding; owner acceptance itself does not authorize a merge.

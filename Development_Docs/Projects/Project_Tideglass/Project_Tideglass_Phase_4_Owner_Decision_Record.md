@@ -1,22 +1,22 @@
 ---
 title: Project Tideglass Phase 4 Owner Decision Record
 audience: product-owner-engineering
-status: PENDING_OWNER_DECISION
+status: OWNER_ACCEPTED
 canonical_for: project-tideglass-phase-4-owner-decision
-last_reviewed: 2026-08-13
+last_reviewed: 2026-08-16
 ---
 
 # Project Tideglass Phase 4 owner decision record
 
 ## Decision
 
-Owner decision: `PENDING_OWNER_DECISION`.
+Owner decision: `OWNER_ACCEPTED`.
 
-Owner name: _not recorded_.
+Owner name: Project owner (direct authorization).
 
-Decision date: _not recorded_.
+Decision date: 2026-08-16.
 
-Reviewed candidate: `32652761bb41046a417f4223aeea0b0c1fcebad0`.
+Reviewed candidate: `b825fe34812f3c48efc0811bae01f2e6184495be`.
 
 Walkthrough package:
 `Project_Tideglass_Phase_4_Product_Walkthrough.md`.
@@ -25,9 +25,9 @@ Automated browser evidence: local synthetic fixture
 `tideglass-phase4-v2`, checksum
 `ee5a9368c85126bdae3c7678980f59942204a7a32b0aaf3ccd2bdbc1efcdc3e3`.
 
-The pending state is intentional. Automated tests, screenshots, a healthy local
-runtime, or future Sounding Line results cannot infer or replace the owner's
-decision.
+The owner directly authorized continuation and finalization of the preserved
+Phase 4 scope on 2026-08-16 after its current-main reconciliation. This is an
+explicit owner decision, not an inference from automated evidence.
 
 ## Available outcomes
 
@@ -37,6 +37,7 @@ decision.
 - `OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS` — the owner returns reproducible
   findings, affected walkthrough step(s), and expected correction.
 
-Until an owner records one of those outcomes, no authoritative Mainline Decision,
-protected merge, `ACCEPTED_MAINLINE` claim, Feature Catalog publication from
-accepted main, or Project Tideglass completion receipt is authorized.
+This decision permits exactly one qualified, exact-SHA Sounding Line v1.4
+Mainline Decision. It does not itself issue `RELEASE_GO`, authorize a protected
+merge, publish the Feature Catalog from accepted main, or issue the Project
+Tideglass completion receipt.

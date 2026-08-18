@@ -103,5 +103,7 @@ with the same checksum. The new manifest is
 The build retained the known non-failing Turbopack NFT warning from
 `next.config.ts` through Community voyage-log media routing; Phase 4 did not
 introduce or suppress that warning. This local rebound remains qualification
-evidence only and is held for a future exact-candidate v1.4 decision after the
-owner decision and separate v1.4 post-cutover closure are both green.
+evidence only and is held for the next exact-candidate v1.4 decision. The owner
+recorded `OWNER_ACCEPTED` on 2026-08-16 and Sounding Line v1.4 is active on
+protected main; final current-main qualification and one exact decision remain
+required before protected integration.

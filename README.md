@@ -33,9 +33,9 @@ Project Homeport Phases 1-7 are now on main and bind the complete page
 surface to a permission-aware reachability graph, complete its critical/high
 states and responsive presentation, and prove A-through-O integrated journeys
 against one immutable synthetic fixture family. The final owner walkthrough
-package and owned local runtime remain available. Owner Decision remains
-`PENDING_OWNER_DECISION`; mainline integration is not deployment, owner
-acceptance, or product acceptance. Live-provider evidence includes the
+package and owned local runtime remain available. The owner recorded
+`OWNER_ACCEPTED` on 2026-08-16; final mainline qualification and protected
+integration remain separate from deployment and product acceptance. Live-provider evidence includes the
 disposable Resend registration-verification path and owner-observed real Google
 and GitHub staging acceptance described below; neither is production deployment
 proof.
