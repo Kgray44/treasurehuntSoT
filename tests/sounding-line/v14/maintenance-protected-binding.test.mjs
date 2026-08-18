@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 import {
   createMaintenancePlan,
   finalizeMaintenance,
@@ -16,6 +19,7 @@ import { qualifyAuthorityMaintenanceProtectedMerge } from "../../../scripts/soun
 import { selectSealedAuthorityMaintenance } from "../../../scripts/sounding-line/authority-maintenance-selection.mjs";
 
 const sha = (character) => character.repeat(40);
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 const policy = {
   authority: "SOUNDING_LINE_VERIFICATION_MAINTENANCE",
   trustedMainOnly: true,
@@ -214,5 +218,16 @@ test("authority maintenance is a distinct owner-authorized, exact-identity lane"
       mergeParents: [sha("a"), sha("b")],
     }).decision,
     "BINDING_PASS",
+  );
+});
+
+test("authority-maintenance generates Prisma before focused discovery tests", async () => {
+  const workflow = await readFile(
+    path.join(root, ".github", "workflows", "sounding-line-authority-maintenance.yml"),
+    "utf8",
+  );
+  assert.match(
+    workflow,
+    /- run: npm ci(?:\s+#.*\n)+\s*- run: npm run db:generate\s+- run: npm run test:policy\s+- run: node --test/u,
   );
 });

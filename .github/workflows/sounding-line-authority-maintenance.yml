@@ -59,6 +59,9 @@ jobs:
           $tree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
           node (Join-Path $temp 'trusted-classifier.mjs') plan --policy (Join-Path $temp 'trusted-policy.json') --paths (Join-Path $temp 'changed-paths.json') --trusted-main-sha $env:BASE_SHA --candidate-sha $env:CANDIDATE_SHA --candidate-tree $tree --base-sha $env:BASE_SHA --owner-authorized true --out (Join-Path $temp 'authority-maintenance-plan.json')
       - run: npm ci
+      # Project discovery imports repository test modules. Generate the Prisma
+      # client before the focused suite, as the ordinary authoritative lane does.
+      - run: npm run db:generate
       - run: npm run test:policy
       - run: node --test tests/sounding-line/v14/project-discovery.test.mjs tests/sounding-line/v14/verification-maintenance.test.mjs tests/sounding-line/v14/maintenance-protected-binding.test.mjs tests/sounding-line/v14/mainline-train.test.mjs
       - run: node scripts/sounding-line/test-registry.mjs
