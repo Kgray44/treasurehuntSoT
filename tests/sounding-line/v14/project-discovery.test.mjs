@@ -46,6 +46,7 @@ test("Project Asterism first candidate is provisional, explainable, and can only
   assert.equal(descriptor.confidence, "HIGH");
   assert.equal(descriptor.mayBroadenEvidence, true);
   assert.equal(descriptor.mayNarrowEvidence, false);
+  assert.equal(descriptor.evidence.find((entry) => entry.kind === "feature-catalog")?.trusted, false);
   assert.deepEqual(descriptor.probableSuiteIds, ["unit.asterism"]);
   assert.deepEqual(descriptor.probableContractIds, ["asterism.constellation"]);
   assert.equal(structurallyAdmitsProjectPath("scripts/asterism/check.mjs", [descriptor]), true);

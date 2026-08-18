@@ -1,6 +1,6 @@
 /* Create a sealed, nonauthoritative v1.4 fast-channel plan from real Git identities. */
 import { execFile } from "node:child_process";
-import { readFile, readdir, writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
@@ -15,11 +15,13 @@ const valueFor = (args, flag) => {
 };
 const git = async (root, ...args) => (await exec("git", ["-C", root, ...args])).stdout.trim();
 const json = async (root, name) => JSON.parse(await readFile(path.join(root, "testing", name), "utf8"));
-const featureCatalog = async (root) => {
-  const directory = path.join(root, "Development_Docs", "Features", "catalog");
-  const files = (await readdir(directory)).filter((name) => name.endsWith(".json")).sort();
+const featureCatalog = async (root, trustedBaseSha) => {
+  const catalogRoot = "Development_Docs/Features/catalog";
+  const files = (await git(root, "ls-tree", "-r", "--name-only", trustedBaseSha, "--", catalogRoot))
+    .split(/\r?\n/u)
+    .filter((name) => name.endsWith(".json"));
   return (
-    await Promise.all(files.map(async (name) => JSON.parse(await readFile(path.join(directory, name), "utf8"))))
+    await Promise.all(files.map(async (name) => JSON.parse(await git(root, "show", `${trustedBaseSha}:${name}`))))
   ).flat();
 };
 
@@ -53,7 +55,9 @@ export async function generateV14FastChannelPlan({
     json(root, "prepared-artifacts.json"),
     json(root, "mainline-train-policy.json"),
     json(root, "sounding-line-authority.json"),
-    featureCatalog(root),
+    // Catalog records are optional corroboration, never candidate evidence.
+    // Load them from the qualified base tree rather than this checkout.
+    featureCatalog(root, baseSha),
   ]);
   const gate = gates.gates.find((entry) => entry.id === gateId);
   if (!gate) throw new Error(`UNKNOWN_GATE:${gateId}`);
