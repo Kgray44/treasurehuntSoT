@@ -626,6 +626,7 @@ async function main() {
       status: "PUBLISHED",
       visibility: "PUBLIC",
       creatorId: user.id,
+      creatorAccountId: canonicalStaff.id,
       playerCountMin: 1,
       playerCountMax: 4,
       estimatedDuration: 25,
