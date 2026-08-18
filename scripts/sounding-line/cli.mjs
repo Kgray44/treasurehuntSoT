@@ -37,6 +37,8 @@ const registryFiles = [
   "prepared-artifacts.json",
   "mainline-train-policy.json",
   "verification-maintenance-policy.json",
+  "authority-maintenance-policy.json",
+  "trusted-project-discovery.json",
 ];
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
@@ -105,6 +107,8 @@ function validatePolicy(policy) {
     manifest,
     "sounding-line-authority": authorityIndex,
     "verification-maintenance-policy": maintenancePolicy,
+    "authority-maintenance-policy": authorityMaintenancePolicy,
+    "trusted-project-discovery": trustedProjectDiscovery,
   } = policy;
   assertKeys(
     manifest,
@@ -127,6 +131,7 @@ function validatePolicy(policy) {
       "requiredProtectedAuthorityCheck",
       "runtimeConformance",
       "verificationMaintenance",
+      "authorityMaintenance",
       "ordinaryCandidateQualification",
       "governingPolicies",
       "developmentValidation",
@@ -209,6 +214,19 @@ function validatePolicy(policy) {
     maintenance?.protectedBinding !== "EXACT_CANDIDATE_BASE_AND_LANDED_TREE"
   )
     errors.push("sounding-line-authority: verification maintenance policy mismatch");
+  const authorityMaintenance = authorityIndex.authorityMaintenance;
+  if (
+    authorityMaintenance?.version !== "1.4.2" ||
+    authorityMaintenance?.policy !== "testing/authority-maintenance-policy.json" ||
+    authorityMaintenance?.disposition !== "AUTHORITY_MAINTENANCE_GO" ||
+    authorityMaintenance?.releaseAuthority !== "NONE" ||
+    authorityMaintenance?.trigger !== "WORKFLOW_DISPATCH_ONLY" ||
+    authorityMaintenance?.trustedMainPolicy !== "REQUIRED" ||
+    authorityMaintenance?.ownerAuthorization !== "REPOSITORY_OWNER_WORKFLOW_DISPATCH" ||
+    authorityMaintenance?.antiSelfAuthorization !== "TRUSTED_BASE_CLASSIFIER_AND_POLICY_REQUIRED" ||
+    authorityMaintenance?.protectedBinding !== "EXACT_CANDIDATE_BASE_AND_LANDED_TREE"
+  )
+    errors.push("sounding-line-authority: authority maintenance policy mismatch");
   const ordinaryCandidate = authorityIndex.ordinaryCandidateQualification;
   if (
     ordinaryCandidate?.mode !== "V14_CANDIDATE" ||
@@ -246,6 +264,32 @@ function validatePolicy(policy) {
     !maintenancePolicy.requiredEvidence.length
   )
     errors.push("verification-maintenance-policy: fail-closed contract mismatch");
+  if (
+    authorityMaintenancePolicy?.authority !== "SOUNDING_LINE_AUTHORITY_MAINTENANCE" ||
+    authorityMaintenancePolicy?.disposition !== "AUTHORITY_MAINTENANCE_GO" ||
+    authorityMaintenancePolicy?.workflowDispatchOnly !== true ||
+    authorityMaintenancePolicy?.trustedMainOnly !== true ||
+    authorityMaintenancePolicy?.ownerAuthorization !== "REPOSITORY_OWNER_WORKFLOW_DISPATCH" ||
+    !Array.isArray(authorityMaintenancePolicy?.eligiblePathGlobs) ||
+    !authorityMaintenancePolicy.eligiblePathGlobs.length ||
+    !Array.isArray(authorityMaintenancePolicy?.requiredEvidence) ||
+    !authorityMaintenancePolicy.requiredEvidence.includes("ANTI_SELF_AUTHORIZATION")
+  )
+    errors.push("authority-maintenance-policy: fail-closed contract mismatch");
+  if (
+    trustedProjectDiscovery?.authority !== "SOUNDING_LINE_TRUSTED_MAIN_PROJECT_DISCOVERY" ||
+    trustedProjectDiscovery?.sourceBound !== true ||
+    !Array.isArray(trustedProjectDiscovery?.projects) ||
+    trustedProjectDiscovery.projects.some(
+      (entry) =>
+        !/^project-[a-z0-9-]+$/u.test(entry?.id ?? "") ||
+        !Array.isArray(entry?.evidencePaths) ||
+        !entry.evidencePaths.length ||
+        !Array.isArray(entry?.sourcePaths) ||
+        !entry.sourcePaths.length,
+    )
+  )
+    errors.push("trusted-project-discovery: fail-closed contract mismatch");
   if (
     !Array.isArray(maintenancePolicy?.ordinaryCandidateEligiblePathGlobs) ||
     !maintenancePolicy.ordinaryCandidateEligiblePathGlobs.length ||

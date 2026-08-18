@@ -687,6 +687,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Deepwater/deepwater-capability-impact.schema.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Deepwater/deepwater-findings.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -718,6 +724,18 @@
     },
     {
       "path": "Development_Docs/Programs/Deepwater/deepwater-phase4-config.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/deepwater-phase5-config.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/deepwater-phase5-config.schema.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -814,6 +832,24 @@
     },
     {
       "path": "Development_Docs/Programs/Deepwater/phase-records/Project_Deepwater_Phase_4_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/phase-records/Project_Deepwater_Phase_5_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/phase-records/Project_Deepwater_Phase_5_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/Project_Deepwater_Program_Completion_Receipt.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -981,7 +1017,43 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Delta_Report.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Delta_Report.schema.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Drift_Baseline.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Drift_Baseline.schema.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Final_Acceptance_Matrix.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Governance_Queue.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Governance_Report.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -1569,6 +1641,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Context_Budget_and_Usage_Worksheet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Context_Profile_and_Schema.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -1635,6 +1713,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_3_Accepted_Capsule.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_3_Architecture_and_Implementation_Record.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -1653,7 +1737,49 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_4_Accepted_Capsule.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_4_Architecture_and_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_4_Benchmark_Data.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_4_Dogfood_Telemetry.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_4_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Rollout_Readiness.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Token_Calibration_and_Estimator_v1.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_v1.0-R1_Completion_Receipt.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -2542,6 +2668,24 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Product_Verification_Registration_Admission_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4.2_Authority_Maintenance_Lane_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4.2_Bootstrap_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4.2_Trusted_Project_and_Registration_Admission_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
