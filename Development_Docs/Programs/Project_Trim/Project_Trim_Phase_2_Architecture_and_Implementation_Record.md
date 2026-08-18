@@ -12,7 +12,7 @@ last_reviewed: 2026-08-18
 
 Phase 2 implements the `Pack the Chart` plateau in the Project Trim v1.0-R1 governing baseline. Project Trim controls agent context only. Current repository source and governing documents remain authoritative for their owned behavior, and Sounding Line remains the sole verification, `RELEASE_GO`, and protected-merge authority. The packet cannot expand product scope, authorize a merge, or replace exact authority text.
 
-Phase 3 has not begun. Accepted Phase Capsules, persistent read/search-ledger optimization, and subagent context slicing remain excluded.
+At the accepted Phase 2 closure, Phase 3 had not begun. Accepted Phase Capsules, persistent read/search-ledger optimization, and subagent context slicing were excluded from this Phase 2 increment.
 
 ## Packet contract
 
