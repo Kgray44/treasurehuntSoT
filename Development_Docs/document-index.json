@@ -555,6 +555,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Project_Fairlead_GitHub_Interaction_and_Quota_Control_Plane_Governing_Document_v1.0.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Project_Phase_2_Mainline_Convergence_Record.md",
       "record_type": "governing-record",
       "status": "preserved",
@@ -2650,6 +2656,12 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_v1.4.1_Proof_Input_Authority_Correction_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Acceptance_Unblock_Impact_Declaration.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

@@ -312,9 +312,12 @@ test("Project Trim Phase 1 selects its governed minimum sufficient evidence with
   assert.equal(plan.fallback, null);
   assert.deepEqual(plan.selectedSuiteIds, [
     "browser.access-sentinel",
+    "build.production",
+    "database.sqlite",
     "static.core",
     "unit.agent-context",
     "unit.feature-catalog",
+    "unit.platform-foundation",
     "unit.sounding-line",
     "validation.documentation",
   ]);

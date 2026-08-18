@@ -58,8 +58,16 @@ const ignoredRoots = new Set([
   "e2e",
   "sounding-line",
   "agent-context",
+  // Feature generation is a shared validation concern, not a product root.
+  // A generated catalog fragment names its own product below; the generator
+  // implementation itself must never invent a provisional "features" project.
+  "features",
 ]);
 const protectedProjectNames = new Set(["sounding-line", "agent-context"]);
+const globalGeneratedPath = (file) =>
+  file === "playwright.config.ts" ||
+  file.startsWith("scripts/features/") ||
+  file === "testing/generated/active-test-registry.json";
 const broadOwnershipRoots = new Set([
   "src/**",
   "src/components/**",
@@ -74,6 +82,8 @@ const same = (left, right) => JSON.stringify(canonical(left)) === JSON.stringify
 function pathIdentity(file) {
   const source = String(file).replaceAll("\\", "/");
   const matchers = [
+    [/^Development_Docs\/Features\/catalog\/([^/]+)\.json$/u, "feature-catalog-fragment", "catalog"],
+    [/^Development_Docs\/Project_(.+?)_Phase_[0-9]+(?:_|\.)/u, "project-fragment", "documentation"],
     [/^Development_Docs\/(?:Projects|Programs)\/([^/]+)/u, "project-document", "documentation"],
     [/^Development_Docs\/Governing\/Project[_ -]?([^/]+?)\.pdf$/u, "project-document", "documentation"],
     [/^src\/([^/]+)/u, "source-root", "source"],
@@ -85,11 +95,37 @@ function pathIdentity(file) {
     const match = source.match(expression);
     if (!match) continue;
     const projectId = normalized(match[1]);
-    if (!projectId || ignoredRoots.has(projectId) || protectedProjectNames.has(projectId)) continue;
+    if (
+      !projectId ||
+      protectedProjectNames.has(projectId) ||
+      (ignoredRoots.has(projectId) && rootType !== "catalog" && kind !== "project-fragment")
+    )
+      continue;
     return { projectId, alias: match[1], kind, rootType, source };
   }
   return null;
 }
+
+const projectForOwner = (owner) => normalized(owner?.project ?? owner?.id);
+const specificity = (pattern) => String(pattern).replaceAll("*", "").length;
+const mostSpecificOwnersForPaths = (paths, owners) => {
+  const matched = (paths ?? []).flatMap((file) => {
+    const matchesByOwner = (owners ?? [])
+      .map((owner) => ({
+        owner,
+        score: Math.max(
+          -1,
+          ...[...(owner?.sourcePaths ?? []), ...(owner?.testPaths ?? [])]
+            .filter((pattern) => glob(pattern).test(file))
+            .map(specificity),
+        ),
+      }))
+      .filter((entry) => entry.score >= 0);
+    const highest = Math.max(-1, ...matchesByOwner.map((entry) => entry.score));
+    return matchesByOwner.filter((entry) => entry.score === highest).map((entry) => entry.owner);
+  });
+  return [...new Map(matched.map((owner) => [owner.id, owner])).values()];
+};
 
 export function structuralProjectPath(file) {
   const identity = pathIdentity(file);
@@ -110,7 +146,7 @@ function descriptorFor({
   featureCatalog,
 }) {
   const evidence = [];
-  const roots = { source: [], test: [], script: [], documentation: [], migration: [] };
+  const roots = { source: [], test: [], script: [], documentation: [], migration: [], catalog: [] };
   const aliases = new Set([projectId]);
   const add = (file, trusted) => {
     const identity = pathIdentity(file);
@@ -121,18 +157,19 @@ function descriptorFor({
     )
       return;
     aliases.add(normalized(identity.alias));
-    const root = identity.source
-      .split("/")
-      .slice(0, identity.rootType === "documentation" ? 3 : 2)
-      .join("/");
+    const root =
+      identity.rootType === "catalog" || identity.kind === "project-fragment"
+        ? identity.source
+        : identity.source
+            .split("/")
+            .slice(0, identity.rootType === "documentation" ? 3 : 2)
+            .join("/");
     roots[identity.rootType].push(root);
     evidence.push({ kind: identity.kind, source: identity.source, trusted });
   };
   for (const file of trustedPaths) add(file, true);
   for (const file of candidatePaths) add(file, false);
-  const uniqueEvidence = Object.values(
-    evidence.reduce((byKey, entry) => ({ ...byKey, [`${entry.kind}\0${entry.source}\0${entry.trusted}`]: entry }), {}),
-  ).sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)));
+  let uniqueEvidence;
   const names = [projectId, ...aliases];
   const containsName = (value) =>
     names.some((name) =>
@@ -140,28 +177,83 @@ function descriptorFor({
         .toLowerCase()
         .includes(name),
     );
-  const probableSuiteIds = sorted((suites ?? []).filter((entry) => containsName(entry.id)).map((entry) => entry.id));
+  const ownerHints = (owners ?? []).filter(
+    (entry) => projectForOwner(entry) === projectId || containsName(entry.id ?? entry.owner),
+  );
+  const ownerIds = new Set(ownerHints.map((entry) => entry.id));
+  const addOwnerShapeEvidence = (file, trusted) => {
+    const matchingOwners = mostSpecificOwnersForPaths([file], owners).filter(
+      (owner) => projectForOwner(owner) === projectId && ownerHints.includes(owner),
+    );
+    if (!matchingOwners.length) return;
+    const source = String(file).replaceAll("\\", "/");
+    const rootType = source.startsWith("src/")
+      ? "source"
+      : source.startsWith("tests/")
+        ? "test"
+        : source.startsWith("scripts/")
+          ? "script"
+          : source.startsWith("Development_Docs/")
+            ? "documentation"
+            : null;
+    if (!rootType) return;
+    const root = rootType === "documentation" ? source : source.split("/").slice(0, 2).join("/");
+    roots[rootType].push(root);
+    evidence.push({
+      kind: "trusted-owner-shape",
+      source: `owner:${matchingOwners
+        .map((owner) => owner.id)
+        .sort()
+        .join(",")}:${source}`,
+      trusted: trusted && matchingOwners.every((owner) => owner.trusted === true),
+    });
+  };
+  for (const file of trustedPaths) addOwnerShapeEvidence(file, true);
+  for (const file of candidatePaths) addOwnerShapeEvidence(file, false);
+  uniqueEvidence = Object.values(
+    evidence.reduce((byKey, entry) => ({ ...byKey, [`${entry.kind}\0${entry.source}\0${entry.trusted}`]: entry }), {}),
+  ).sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)));
+  const probableSuiteIds = sorted(
+    (suites ?? []).filter((entry) => containsName(entry.id) || ownerIds.has(entry.owner)).map((entry) => entry.id),
+  );
   const probableContractIds = sorted(
-    (contracts ?? []).filter((entry) => containsName(entry.id)).map((entry) => entry.id),
+    (contracts ?? [])
+      .filter((entry) => containsName(entry.id) || ownerHints.some((owner) => owner.contractIds?.includes(entry.id)))
+      .map((entry) => entry.id),
   );
-  const probableAdjacentOwners = sorted(
-    (owners ?? []).filter((entry) => containsName(entry.id ?? entry.owner)).map((entry) => entry.id ?? entry.owner),
-  );
+  const probableAdjacentOwners = sorted(ownerHints.map((entry) => entry.id ?? entry.owner));
   const catalogRecords = (featureCatalog ?? []).filter((entry) =>
     containsName(typeof entry === "string" ? entry : JSON.stringify(entry)),
   );
-  const relationshipTrusted = trustedPaths.length > 0;
+  const trustedRelationship = uniqueEvidence.some(
+    (entry) =>
+      entry.trusted && ["source-root", "test-root", "project-document", "project-fragment"].includes(entry.kind),
+  );
+  const trustedOwners = ownerHints.filter((entry) => entry.trusted === true);
+  const trustedOwnerIds = new Set(trustedOwners.map((entry) => entry.id));
   for (const id of probableSuiteIds)
-    uniqueEvidence.push({ kind: "test-registry", source: `suite:${id}`, trusted: relationshipTrusted });
+    uniqueEvidence.push({
+      kind: "test-registry",
+      source: `suite:${id}`,
+      trusted: trustedRelationship || (suites ?? []).some((entry) => entry.id === id && entry.trusted === true),
+    });
   for (const id of probableContractIds)
-    uniqueEvidence.push({ kind: "contract", source: `contract:${id}`, trusted: relationshipTrusted });
+    uniqueEvidence.push({
+      kind: "contract",
+      source: `contract:${id}`,
+      trusted: trustedRelationship || (contracts ?? []).some((entry) => entry.id === id && entry.trusted === true),
+    });
   for (const id of probableAdjacentOwners)
-    uniqueEvidence.push({ kind: "ownership-neighbor", source: `owner:${id}`, trusted: relationshipTrusted });
+    uniqueEvidence.push({
+      kind: "ownership-neighbor",
+      source: `owner:${id}`,
+      trusted: trustedRelationship || trustedOwnerIds.has(id),
+    });
   for (const entry of catalogRecords)
     uniqueEvidence.push({
       kind: "feature-catalog",
       source: `catalog:${typeof entry === "string" ? entry : (entry.id ?? entry.title ?? entry.name ?? "record")}`,
-      trusted: entry?.trusted === true || relationshipTrusted,
+      trusted: trustedRelationship || entry?.trusted === true,
     });
   uniqueEvidence.sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)));
   const trustedKinds = new Set(uniqueEvidence.filter((entry) => entry.trusted).map((entry) => entry.kind));
@@ -197,6 +289,7 @@ function descriptorFor({
     observedScriptRoots: sorted(roots.script),
     observedDocumentationRoots: sorted(roots.documentation),
     observedMigrationRoots: sorted(roots.migration),
+    observedCatalogRoots: sorted(roots.catalog),
     probableContractIds,
     probableSuiteIds,
     probableAdjacentOwners,
@@ -222,7 +315,14 @@ export function discoverProjects({
 } = {}) {
   const candidate = sorted(candidatePaths.map((file) => String(file).replaceAll("\\", "/")));
   const trusted = sorted(trustedPaths.map((file) => String(file).replaceAll("\\", "/")));
-  const identities = candidate.map(pathIdentity).filter(Boolean);
+  const projectCandidatePaths = candidate.filter((file) => !globalGeneratedPath(file));
+  const identities = projectCandidatePaths.map(pathIdentity).filter(Boolean);
+  const ownerProjects = mostSpecificOwnersForPaths(projectCandidatePaths, owners)
+    // An ownership shell without a contract or executable suite is useful
+    // admission metadata, but it is not enough to narrow a test plan.
+    .filter((owner) => (owner.contractIds?.length ?? 0) > 0 || (suites ?? []).some((suite) => suite.owner === owner.id))
+    .map(projectForOwner)
+    .filter(Boolean);
   const ids = sorted(
     identities
       .filter(
@@ -234,7 +334,8 @@ export function discoverProjects({
             )
           ),
       )
-      .map((entry) => entry.projectId),
+      .map((entry) => entry.projectId)
+      .concat(ownerProjects),
   );
   return ids.map((projectId) =>
     descriptorFor({
@@ -251,16 +352,60 @@ export function discoverProjects({
   );
 }
 
-export function structurallyAdmitsProjectPath(file, descriptors = []) {
+function stronglyProvenProjectIds(candidatePaths = []) {
+  const roots = { documentation: new Set(), source: new Set(), test: new Set() };
+  for (const candidate of candidatePaths) {
+    const source = String(candidate).replaceAll("\\", "/");
+    const matchers = [
+      [/^Development_Docs\/Projects\/Project_([^/]+)\//u, "documentation"],
+      [/^src\/([^/]+)\//u, "source"],
+      [/^tests\/([^/]+)\//u, "test"],
+    ];
+    for (const [expression, kind] of matchers) {
+      const match = source.match(expression);
+      if (match) roots[kind].add(normalized(match[1]));
+    }
+  }
+  return [...roots.documentation]
+    .filter((projectId) => roots.source.has(projectId) && roots.test.has(projectId))
+    .sort((left, right) => left.localeCompare(right));
+}
+
+export function structurallyAdmitsProjectPath(file, descriptors = [], candidatePaths = []) {
   const identity = structuralProjectPath(file);
-  if (!identity) return false;
+  const provenProjectIds = stronglyProvenProjectIds(candidatePaths);
+  if (!identity) {
+    const isProjectSupplement =
+      file === "README.md" ||
+      /^Development_Docs\/Project_[^/]+_Documentation_Migration_Matrix\.csv$/u.test(String(file));
+    if (isProjectSupplement) {
+      if (descriptors.length === 1) {
+        const [descriptor] = descriptors;
+        // Root-level project supplements have no reliable path-derived project id.
+        // Admit them only when the same candidate proves one non-ambiguous project
+        // across source, tests, and project documentation. This can broaden
+        // admission, but never changes authority or narrows required evidence.
+        if (
+          descriptor.state !== "AMBIGUOUS" &&
+          descriptor.observedSourceRoots.length &&
+          descriptor.observedTestRoots.length &&
+          descriptor.observedDocumentationRoots.length
+        )
+          return true;
+      }
+      return descriptors.length === 0 && provenProjectIds.length === 1;
+    }
+    const script = String(file).match(/^scripts\/([^/]+)\//u);
+    return Boolean(script && provenProjectIds.includes(normalized(script[1])));
+  }
   if (identity.rootType !== "script") return true;
   const descriptor = descriptors.find((entry) => entry.projectId === identity.projectId);
   return Boolean(
-    descriptor &&
+    (descriptor &&
       (descriptor.observedSourceRoots.length ||
         descriptor.observedTestRoots.length ||
-        descriptor.observedDocumentationRoots.length),
+        descriptor.observedDocumentationRoots.length)) ||
+      provenProjectIds.includes(identity.projectId),
   );
 }
 
@@ -404,7 +549,6 @@ export function materializeTrustedProjectOwners({ sourceRegistry = {}, owners = 
     errors: [...new Set(errors)].sort(),
   };
 }
-
 export function validateTrustedMainProjectDiscoveryRegistry({ registry, trustedMainSha, trustedMainTreeSha }) {
   const { registryDigest, ...unsigned } = registry ?? {};
   delete unsigned.errors;

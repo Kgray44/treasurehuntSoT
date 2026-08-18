@@ -387,6 +387,7 @@ test("authority-maintenance preflight routing is trusted-policy driven and boots
   const authorityPolicy = JSON.parse(
     await readFile(path.join(root, "testing", "authority-maintenance-policy.json"), "utf8"),
   );
+  assert.ok(authorityPolicy.bindingPreflightPaths.includes("testing/verification-maintenance-policy.json"));
   assert.ok(authorityPolicy.bindingPreflightPaths.includes("scripts/sounding-line/project-discovery.mjs"));
   assert.ok(
     authorityPolicy.bindingPreflightPaths.includes(".github/workflows/sounding-line-protected-merge-binding.yml"),

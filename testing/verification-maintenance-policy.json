@@ -62,6 +62,7 @@
     "deploy/nginx.conf",
     "scripts/sounding-line/status-projection.mjs",
     "Development_Docs/Project_Bridgewatch_*.md",
+    "Development_Docs/Project_Bridgewatch_v2_Source_Health_Matrix.json",
     "Development_Docs/INDEX.md",
     "Development_Docs/README.md",
     "Development_Docs/document-index.json",
