@@ -5,21 +5,21 @@
   "phase": 4,
   "phaseName": "Clear for Launch",
   "phaseId": "project-drydock-phase-4-clear-for-launch",
-  "state": "BLOCKED_BY_SHARED_SOUNDING_LINE_ADMISSION_REPAIR",
+  "state": "LOCALLY_QUALIFIED_PENDING_SHARED_SOUNDING_LINE_FINALIZATION",
   "branch": "codex/project-drydock-phase4-clear-for-launch",
   "worktree": {
     "ownership": "TASK_OWNED",
     "path": "C:\\Users\\kgray\\AppData\\Local\\ForeverTreasureCompanion\\treasurehuntSoT-drydock-phase4"
   },
   "baseSha": "60b89841986e66fbc2c0828489d38002a1617506",
-  "currentQualifiedBaseSha": "e4a1f4e394a17b98e250799c61ba16035495c539",
-  "currentCandidateSha": "a80fc9d53c6204b7bfe38f2f6818fa3726f8580f",
+  "currentQualifiedBaseSha": "aaab92a81d52c03af5f2c4d4d2fc915b7b6181b3",
+  "currentCandidateSha": "44934d82e140d2a0ddcb53f90d6ab3beb07ff60d",
   "acceptanceAdmission": {
-    "state": "BLOCKED_BY_V14_ORDINARY_CANDIDATE_ADMISSION",
+    "state": "PRIMARY_OWNER_RESOLVED_PENDING_CATALOG_LIFECYCLE_AND_BROWSER_FIXTURE_REPAIRS",
     "localQualification": "COMPLETE",
-    "authoritativeRun": "32171129171",
-    "invariant": "PRODUCT_VERIFICATION_REGISTRATION_REJECTED",
-    "detail": "At protected main e4a1f4e394a17b98e250799c61ba16035495c539, trusted discovery resolves the cross-owned Phase 4 product diff to project-shipwright before considering the sole new drydock contract authority. Drydock is a trusted supporting owner and owns the Drydock/Chronicle paths, but current selection does not use that fact. No RELEASE_GO or acceptance envelope exists."
+    "authoritativeRun": null,
+    "invariant": "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:branch-complete catalog-promotion lifecycle",
+    "detail": "At protected main aaab92a81d52c03af5f2c4d4d2fc915b7b6181b3, PR #269's trusted primary/supporting resolver classifies the Phase 4 registration with primary owner drydock and no registration errors. The remaining candidate admission gate is a generic fail-closed lifecycle gap: authoritative changed-path collection uses --no-renames, so a schema-valid same-identity promotion from Features/branch-complete to Features/catalog exposes the removed legacy path and is rejected. PR #270 separately remains in its browser-fixture binding lane with SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE. No RELEASE_GO or Drydock acceptance envelope exists."
   },
   "deepwaterCapabilityImpact": {
     "disposition": "EVIDENCE_ONLY",
@@ -33,7 +33,7 @@
       "apis": []
     },
     "expectedTerminalRungEffect": "NONE",
-    "evidenceRequiringRefresh": ["Development_Docs/Features/branch-complete/project-drydock-phase3.json"],
+    "evidenceRequiringRefresh": ["Development_Docs/Features/catalog/project-drydock-phase3.json"],
     "rationale": "This corrects FT-036 from stale branch-complete metadata to the already accepted PR #52 mainline integration. It changes no Drydock source, route, UI, API, journey, or capability realization."
   },
   "governingDocument": "Development_Docs/Projects/Project Drydock/Project_Drydock_Governing_Document.pdf",
