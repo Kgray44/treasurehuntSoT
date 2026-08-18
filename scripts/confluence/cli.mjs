@@ -46,9 +46,11 @@ if (command === "collect") {
     await release();
   }
 } else if (command === "status") result = await statusForWeek({ archiveRoot, publicRoot, weekId: period.weekId });
-else if (command === "validate-design")
+else if (command === "validate-design") {
+  if (typeof args.metadata !== "string" || !args.metadata.trim()) throw new Error("CONFLUENCE_METADATA_PATH_REQUIRED");
   result = await validateDesign({ archiveRoot, metadataPath: resolve(args.metadata) });
-else if (command === "validate-master") result = await validateMasterArtifacts({ archiveRoot, weekId: period.weekId });
+} else if (command === "validate-master")
+  result = await validateMasterArtifacts({ archiveRoot, weekId: period.weekId });
 else if (command === "deliver") {
   const release = await acquireArchiveLock(archiveRoot, `delivery-${period.weekId}`);
   try {
