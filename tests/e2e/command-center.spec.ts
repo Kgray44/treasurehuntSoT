@@ -31,10 +31,13 @@ async function capture(page: Page, name: string) {
 
 async function enterCaptainConsole(page: Page) {
   await page.goto("/captain/sign-in");
-  await expect(page.getByRole("heading", { name: "Enter Captain's Console" })).toBeVisible();
-  await page.getByLabel("Username").fill(process.env.GM_USERNAME!);
-  await page.getByLabel("Password").fill(process.env.GM_PASSWORD!);
-  await page.getByRole("button", { name: "Enter Captain's Console" }).click();
+  await expect(page.getByRole("heading", { name: "Open the Captain's Console" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Continue to account sign-in" })).toBeVisible();
+  const login = await page.request.post("/api/gm/login", {
+    data: { username: process.env.GM_USERNAME, password: process.env.GM_PASSWORD },
+  });
+  expect(login.status(), await login.text()).toBe(200);
+  await page.goto("/captain/library");
   await expect(page).toHaveURL(/\/captain\/library(?:\?.*)?$/u);
   await expect(page.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible();
 }
