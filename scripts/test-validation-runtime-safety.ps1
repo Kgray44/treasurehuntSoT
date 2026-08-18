@@ -50,6 +50,38 @@ try {
     $sibling = Join-Path $testParent "sibling-sentinel"
     New-Item -ItemType Directory -Path $sibling | Out-Null
     Set-Content -LiteralPath (Join-Path $sibling "must-survive.txt") -Value "safe" -Encoding ASCII
+    $artifacts = Join-Path $runtime "artifacts"
+    New-Item -ItemType Directory -Path $artifacts | Out-Null
+    Set-Content -LiteralPath (Join-Path $artifacts "must-survive.txt") -Value "evidence" -Encoding ASCII
+    foreach ($transientName in @("node_modules", ".next", ".next-admiralty-phase2")) {
+        $transient = Join-Path $runtime $transientName
+        New-Item -ItemType Directory -Path $transient | Out-Null
+        Set-Content -LiteralPath (Join-Path $transient "regenerable.txt") -Value "safe-to-regenerate" -Encoding ASCII
+    }
+    Clear-ForeverValidationRuntimeTransientState -RuntimeRoot $runtime
+    foreach ($transientName in @("node_modules", ".next", ".next-admiralty-phase2")) {
+        if (Test-Path -LiteralPath (Join-Path $runtime $transientName)) {
+            throw "Owned transient runtime state survived cleanup: $transientName"
+        }
+    }
+    if (-not (Test-Path -LiteralPath (Join-Path $runtime ".forever-validation-run.json"))) {
+        throw "Transient cleanup removed the ownership marker."
+    }
+    if (-not (Test-Path -LiteralPath (Join-Path $artifacts "must-survive.txt"))) {
+        throw "Transient cleanup removed durable validation evidence."
+    }
+    $reparseTarget = Join-Path $runtime "node_modules"
+    New-Item -ItemType Junction -Path $reparseTarget -Target $sibling -ErrorAction Stop | Out-Null
+    Assert-Throws -Label "transient reparse-point target" -Action {
+        Clear-ForeverValidationRuntimeTransientState -RuntimeRoot $runtime
+    }
+    if (-not (Test-Path -LiteralPath (Join-Path $sibling "must-survive.txt"))) {
+        throw "Transient cleanup traversed a reparse-point target."
+    }
+    & cmd.exe /d /c "rmdir `"$reparseTarget`""
+    if ($LASTEXITCODE -ne 0 -or (Test-Path -LiteralPath $reparseTarget)) {
+        throw "Test cleanup could not remove the owned reparse-point fixture."
+    }
     Clear-ForeverValidationRuntime -RuntimeRoot $runtime
     if (Test-Path -LiteralPath $runtime) { throw "Owned runtime survived cleanup." }
     if (-not (Test-Path -LiteralPath (Join-Path $sibling "must-survive.txt"))) {
