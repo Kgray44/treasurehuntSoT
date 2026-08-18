@@ -56,7 +56,7 @@ test("canonical Chronicle invitation journey keeps Player and Captain boundaries
   test.setTimeout(180_000);
   const suffix = randomUUID().slice(0, 8);
   const captainEmail = `homeport-acceptance-captain-${suffix}@example.invalid`;
-  const captainPassword = "Homeport-acceptance-passphrase-2026";
+  const captainPassword = "Cobalt-starboard-orbit-2026!";
   const captainAccount = await registerAccount({
     email: captainEmail,
     password: captainPassword,
@@ -65,10 +65,22 @@ test("canonical Chronicle invitation journey keeps Player and Captain boundaries
   const gameMaster = await db.gameMasterUser.create({
     data: { username: `homeport-acceptance-${suffix}`, passwordHash: await hash(captainPassword, 4) },
   });
-  await db.userAccount.update({
-    where: { id: captainAccount.account.id },
-    data: { status: "ACTIVE", legacyGameMasterId: gameMaster.id },
-  });
+  const activatedAt = new Date();
+  await Promise.all([
+    db.userAccount.update({
+      where: { id: captainAccount.account.id },
+      data: {
+        status: "ACTIVE",
+        legacyGameMasterId: gameMaster.id,
+        claimedAt: activatedAt,
+        ordinaryWorkspaceEntryAt: activatedAt,
+      },
+    }),
+    db.accountEmail.updateMany({
+      where: { accountId: captainAccount.account.id, isPrimary: true },
+      data: { verificationState: "VERIFIED", verifiedAt: activatedAt },
+    }),
+  ]);
   await db.accountRoleAssignment.create({ data: { accountId: captainAccount.account.id, role: "CAPTAIN" } });
   const captainContext = await browser.newContext();
   const playerContext = await browser.newContext();

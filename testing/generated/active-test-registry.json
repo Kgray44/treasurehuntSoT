@@ -101489,7 +101489,7 @@
       "id": "sl-test-5b136a33446121196f86",
       "semanticId": "sl-semantic-8552f6a3ed1bdfdc20a7",
       "title": "concurrent Harborlight lanes may share only their validation-run parent",
-      "line": 615,
+      "line": 616,
       "file": "tests/sounding-line/authority-cutover.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -101530,7 +101530,7 @@
       "id": "sl-test-9c0ad870fb88e342284f",
       "semanticId": "sl-semantic-79b8b06965af8207cf4e",
       "title": "validation runtime restores only declared product document dependencies",
-      "line": 621,
+      "line": 622,
       "file": "tests/sounding-line/authority-cutover.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -101571,7 +101571,7 @@
       "id": "sl-test-9586abcf1c6209260ed8",
       "semanticId": "sl-semantic-9064efabd74f5f4a61b3",
       "title": "governed workers consume the sealed plan and fail closed on missing receipts",
-      "line": 631,
+      "line": 636,
       "file": "tests/sounding-line/authority-cutover.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -101612,7 +101612,7 @@
       "id": "sl-test-41e176d38988253670ff",
       "semanticId": "sl-semantic-e50dac4ba65bb4e5be62",
       "title": "public repository commands route through Sounding Line",
-      "line": 712,
+      "line": 717,
       "file": "tests/sounding-line/authority-cutover.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -144407,10 +144407,10 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-b7ae5abdbda78652ffe6",
+      "id": "sl-test-73ac048137a3dc6bed2f",
       "semanticId": "sl-semantic-f4ff021284cd858aa6c6",
       "title": "Wayfarer Phase 3 authenticated Passport history is private, pinned, consent-filtered, and read-only",
-      "line": 209,
+      "line": 232,
       "file": "tests/e2e/wayfarer-phase3.spec.ts",
       "project": "chromium",
       "suiteId": "browser.passport",
@@ -144445,7 +144445,7 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-2f42aabcbf3674fff186", "sl-test-b7ae5abdbda78652ffe6"],
       "currentStatus": "ACTIVE"
     },
     {
@@ -162803,10 +162803,10 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-0e422eae479283570b55",
+      "id": "sl-test-851f630497e88aa5b619",
       "semanticId": "sl-semantic-b2eab87792c6ceb33605",
       "title": "Wayfarer Phase 3 authenticated Passport history is private, pinned, consent-filtered, and read-only",
-      "line": 209,
+      "line": 232,
       "file": "tests/e2e/wayfarer-phase3.spec.ts",
       "project": "wayfarer-phase3",
       "suiteId": "browser.passport",
@@ -162841,7 +162841,7 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-0e422eae479283570b55", "sl-test-d2b505cf5569574729bf"],
       "currentStatus": "ACTIVE"
     },
     {
@@ -187711,10 +187711,10 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-c57abb38fe812ceaf515",
+      "id": "sl-test-cc6d2293fa9280877f8b",
       "semanticId": "sl-semantic-1be7518bb50cf7a470b9",
       "title": "Wayfarer Phase 3 authenticated Passport history is private, pinned, consent-filtered, and read-only",
-      "line": 209,
+      "line": 232,
       "file": "tests/e2e/wayfarer-phase3.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.passport",
@@ -187749,7 +187749,7 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-1c2f5e4176bdbdd571a3", "sl-test-c57abb38fe812ceaf515"],
       "currentStatus": "ACTIVE"
     },
     {
