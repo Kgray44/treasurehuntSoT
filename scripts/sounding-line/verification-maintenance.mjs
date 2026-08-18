@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
 import { readFile, writeFile } from "node:fs/promises";
 import { promisify } from "node:util";
+import { discoverProjects, structurallyAdmitsProjectPath } from "./project-discovery.mjs";
 
 const digest = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
 const sha = (value) => typeof value === "string" && /^[0-9a-f]{40}$/u.test(value);
@@ -249,6 +250,9 @@ export function classifyOrdinaryCandidate({
   if (trustedPolicy?.authority !== "SOUNDING_LINE_VERIFICATION_MAINTENANCE" || trustedPolicy?.trustedMainOnly !== true)
     errors.push("ORDINARY_CANDIDATE_TRUSTED_POLICY_INVALID");
   const paths = [...new Set(changedPaths ?? [])].sort();
+  // This is an admission hint only. It is deliberately built from the path
+  // interval rather than candidate-owned maps, so it cannot narrow evidence.
+  const projectDiscovery = discoverProjects({ candidatePaths: paths });
   if (!paths.length) errors.push("ORDINARY_CANDIDATE_EMPTY_DIFF_REJECTED");
   const hasRegistration = paths.some((file) => matchesAny(file, registrationTriggers(trustedPolicy)));
   for (const file of paths) {
@@ -260,7 +264,8 @@ export function classifyOrdinaryCandidate({
         ...(hasRegistration
           ? [...registrationPaths(trustedPolicy), ...(registrationInputs(trustedPolicy)?.ancillaryPathGlobs ?? [])]
           : []),
-      ])
+      ]) &&
+      !structurallyAdmitsProjectPath(file, projectDiscovery)
     )
       errors.push(`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${file}`);
   }
@@ -285,6 +290,8 @@ export function classifyOrdinaryCandidate({
     changedPaths: paths,
     errors: [...new Set(errors)].sort(),
     registration,
+    registration,
+    projectDiscovery,
   };
 }
 
