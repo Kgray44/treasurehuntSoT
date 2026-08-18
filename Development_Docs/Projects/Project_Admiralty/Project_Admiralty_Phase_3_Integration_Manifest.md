@@ -30,10 +30,10 @@ qualification includes preview, assurance, confirmation, durable receipts,
 CSRF denial, ordinary-user command-center denial, redaction, and accessibility
 checks. Reconciliation adopted the current Sounding Line v1.4 authority and
 Bridgewatch contracts without source conflict. The current owner/command suite,
-Phase 2 validator, and Phase 3 migration rehearsal pass. The current local
-Chromium runner completed its first journey, but its second journey was
-interrupted by host `ENOSPC` while writing disposable browser artifacts; this
-is recorded as an environmental qualification gap, not a passing browser claim.
+Phase 2 validator, and Phase 3 migration rehearsal pass. With recovered host
+capacity, the relocated Phase 3 production runner completed both Chromium
+journeys (2/2) against a disposable synthetic fixture. The earlier `ENOSPC`
+interruption remains historical only and is not the current browser result.
 
 The paused v1.3-era focused evidence is preserved as
 `PRESERVED_NONAUTHORITATIVE_PENDING_V14_SEMANTIC_ADOPTION`. It is not a v1.4
@@ -56,6 +56,8 @@ exercise blocked command families. A future owner command contract may unblock
 only its named family; it must not be inferred from a table, worker, seed
 script, or bootstrap reconciler.
 
-No Sounding Line v1.4 Mainline Decision or protected-main binding has been
-requested or run. The fleet-wide post-cutover hold is over; one trusted-main
-candidate authority dispatch may occur only after this candidate is frozen.
+One trusted-main candidate dispatch (run `32139698315`) rejected before product
+tests because the prior candidate placed new test helpers outside the
+ordinary-candidate path surface. No Mainline Decision, protected-main binding,
+`RELEASE_GO`, or merge exists. The repaired candidate may be dispatched only
+after it is frozen and requalified at its exact SHA.

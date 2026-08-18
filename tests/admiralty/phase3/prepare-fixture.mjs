@@ -22,7 +22,7 @@ if (!existsSync(databasePath) || !existsSync(credentialPath)) throw new Error("A
 
 const privateHandoff = JSON.parse(await readFile(credentialPath, "utf8"));
 try {
-  run("scripts/admiralty/seed-phase3-fixture.mjs", {
+  run("tests/admiralty/phase3/seed-fixture.mjs", {
     ...process.env,
     ADMIRALTY_PHASE2_TASK_ROOT: taskRoot,
     ADMIRALTY_PHASE2_SYNTHETIC_PASSWORD: privateHandoff.password,

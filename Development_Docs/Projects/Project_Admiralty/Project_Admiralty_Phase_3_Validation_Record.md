@@ -19,8 +19,8 @@ authorization.
 | Phase 2 regression validator                                   | Passing               | Current `scripts/admiralty/validate-phase2.ts` run reported 15 routes, 92 capability floor, 62 Phase 1/2 implementations, no schema change, and the Phase 1 Support Access-only mutation boundary.                                                                                                                                                      |
 | Phase 3 owned TypeScript diagnostics                           | Passing               | No diagnostics matched the Phase 3-owned Admiralty, Wayfarer command, or Community command paths.                                                                                                                                                                                                                                                       |
 | Current-source production build and Phase 2 browser regression | Preserved evidence    | The prior reconciled build and 4 Chromium journeys remain recorded. The current reconciliation changed no Phase 2 source, but `ENOSPC` prevents another local production-build fixture on this host. This is not a fresh current-source claim.                                                                                                          |
-| Browser, accessibility, and owner-runtime journeys             | Environmental gap     | The current Phase 3 local runner passed journey 1 (account commands). Journey 2 was interrupted before a result when the host disk filled while writing disposable browser artifacts. Prior 2/2 evidence is preserved but not promoted; current candidate browser proof remains for governed authority.                                                 |
-| Sounding Line v1.4 reconciliation                              | Candidate preparation | Paused checkpoint `56caa166a5ab6171f4d9d7e4b0ed544a92f541d5` was reconciled through current protected main `fc39942a1d8fe57fc13f35cae01445e704b94c45` at `ef204d2bb0a2da7bc1c87a360fc3b9a2c8441205`. Prior focused evidence is preserved as non-authoritative legacy evidence pending v1.4 semantic adoption. No Mainline Decision has been dispatched. |
+| Browser, accessibility, and owner-runtime journeys             | Passing               | The relocated Phase 3 runner completed a production build and both Chromium journeys (2/2): governed account commands and independent-reviewer Community moderation. It exercised preview, assurance, confirmation, durable receipts, denial, redaction, and accessibility controls against a disposable synthetic fixture.                                      |
+| Sounding Line v1.4 reconciliation                              | Candidate preparation | Paused checkpoint `56caa166a5ab6171f4d9d7e4b0ed544a92f541d5` was reconciled through current protected main `fc39942a1d8fe57fc13f35cae01445e704b94c45` at `ef204d2bb0a2da7bc1c87a360fc3b9a2c8441205`. Candidate `53b344aa22cc89a4427db87e0441a7e1ea663bba` received one trusted-main dispatch (run `32139698315`), which rejected pre-test because its new test helpers were outside the ordinary-candidate path surface. The helpers now live under `tests/admiralty/phase3`; the unrelated Ledgerlight churn and generated `tsconfig` includes were removed, and the current diff passes the same classifier locally. Prior focused evidence remains preserved as non-authoritative legacy evidence pending v1.4 semantic adoption. |
 | Job/configuration/role mutation qualification                  | Blocked               | No canonical owner command contract exists; absence is recorded as blocked, not passing.                                                                                                                                                                                                                                                                |
 
 ## Historical pre-cutover result
@@ -35,7 +35,8 @@ protected integration may be created from this record.
 ## v1.4 disposition
 
 **V14_CANDIDATE_QUALIFICATION_IN_PROGRESS — NOT ACCEPTED OR
-RELEASE-AUTHORIZED.** The fleet-wide post-cutover hold is over. This candidate
-will be frozen after the final documentation refresh, then submitted once
-through the trusted-main v1.4 candidate authority path. No completion receipt
-or protected integration exists yet.
+RELEASE-AUTHORIZED.** The fleet-wide post-cutover hold is over. The first
+trusted-main dispatch rejected its candidate boundary before any product test;
+the repaired candidate must be frozen, requalified at its exact SHA, and then
+submitted once through the trusted-main v1.4 candidate authority path. No
+completion receipt or protected integration exists yet.

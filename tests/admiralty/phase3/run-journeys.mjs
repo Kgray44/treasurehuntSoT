@@ -17,7 +17,7 @@ const originalTsconfig = await readFile(tsconfigPath, "utf8");
 
 try {
   run("node_modules/prisma/build/index.js", ["generate", "--schema", "prisma/schema.sqlite.prisma"], baseEnv);
-  run("scripts/admiralty/prepare-phase3-fixture.mjs", [], baseEnv);
+  run("tests/admiralty/phase3/prepare-fixture.mjs", [], baseEnv);
   if (!existsSync(databasePath)) throw new Error(`ADMIRALTY_DATABASE_MISSING:${databasePath}`);
   const env = {
     ...baseEnv,
