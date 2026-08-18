@@ -618,6 +618,16 @@ test("concurrent Harborlight lanes may share only their validation-run parent", 
   assert.match(common, /Validation runtime destination already exists and is not owned by this new run/u);
 });
 
+test("validation runtime restores only declared product document dependencies", async () => {
+  const common = await readFile(path.join(root, "scripts", "dev-common.ps1"), "utf8");
+  assert.match(common, /Development_Docs"\),\s*\(Join-Path \$script:ProjectRoot "Codex_Chats"\)/u);
+  assert.match(common, /\$runtimeDocumentDependencies = @\(/u);
+  assert.match(common, /Project_Tideglass_Phase_2_Change_Code_Registry\.json/u);
+  assert.match(common, /Project_Tideglass_Phase_2_Projection_Policy\.json/u);
+  assert.match(common, /Required validation runtime document dependency is missing: \$relativePath/u);
+  assert.match(common, /Copy-Item -LiteralPath \$source -Destination \$destination -Force -ErrorAction Stop/u);
+});
+
 test("governed workers consume the sealed plan and fail closed on missing receipts", async () => {
   const worker = await readFile(path.join(root, ".github", "workflows", "sounding-line-governed-worker.yml"), "utf8");
   const adapters = await readFile(path.join(root, "scripts", "sounding-line", "adapters.mjs"), "utf8");
