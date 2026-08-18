@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   createProjectDiscoveryRegistry,
   discoverProjects,
@@ -11,6 +14,7 @@ import { classifyOrdinaryCandidate } from "../../../scripts/sounding-line/verifi
 import { selectV14Mainline } from "../../../scripts/sounding-line/v14/fast-channel.mjs";
 
 const sha = (letter) => letter.repeat(40);
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 const asterismPaths = [
   "Development_Docs/Projects/Project_Asterism/Design.md",
   "src/asterism/constellation.ts",
@@ -32,7 +36,13 @@ const policy = {
   authorityChangePathGlobs: ["scripts/sounding-line/**", "testing/impact-map.json"],
 };
 
-test("Project Asterism first candidate is provisional, explainable, and can only broaden", () => {
+test("Project Asterism first candidate is provisional, explainable, and can only broaden", async () => {
+  const canonicalSources = await Promise.all(
+    ["ownership.json", "impact-map.json", "verification-maintenance-policy.json"].map(async (name) =>
+      readFile(path.join(root, "testing", name), "utf8"),
+    ),
+  );
+  for (const source of canonicalSources) assert.doesNotMatch(source, /asterism/iu);
   const [descriptor] = discoverProjects({
     candidatePaths: asterismPaths,
     trustedMainSha: sha("a"),
