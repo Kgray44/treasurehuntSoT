@@ -24,9 +24,9 @@ export function harborSharingMetadata(input: {
   if (input.visibility === "UNLISTED")
     return {
       // Exact-link content is deliberately absent from every crawler cache as
-      // well as from discovery. Use the explicit directive because Next's
-      // `nocache` shorthand is not an equivalent noarchive instruction.
-      robots: "noindex, nofollow, noarchive",
+      // well as from discovery. Keep the explicit noarchive directive because
+      // Next's `nocache` shorthand is not an equivalent instruction.
+      robots: { index: false, follow: false, noarchive: true },
       title: safeText(input.title, 140) ?? "Unlisted Community Harbor entry",
     };
   const title = safeText(input.title, 140) ?? "Community Harbor";
