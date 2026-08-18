@@ -16,7 +16,7 @@ Phase 4 is not started. This increment does not add continuous learning, retenti
 
 ## Accepted capsule and startup
 
-`.agents/handoffs/project-trim-phase-2.accepted.json` is the retained canonical Phase 2 capsule. It binds the accepted protected-main commit `d3c06e076fda99f7c18baa28e66847f4e79697fa` and tree `d9c0c0aff8bc623f1aaab3cc40c21043dd13c2c2`; it is a historical record, not a mutable current-state summary. `scripts/agent-context/phase-capsule.mjs` produces canonical accepted or explicitly provisional capsules, while `packet-v2.mjs` discovers the retained capsule for Project Trim Phase 3 startup and preserves its identity in the prior-plateau slice.
+`Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Accepted_Capsule.json` is the retained canonical Phase 2 capsule. It binds the accepted protected-main commit `d3c06e076fda99f7c18baa28e66847f4e79697fa` and tree `d9c0c0aff8bc623f1aaab3cc40c21043dd13c2c2`; it is a historical record, not a mutable current-state summary. `scripts/agent-context/phase-capsule.mjs` produces canonical accepted or explicitly provisional capsules, while `packet-v2.mjs` discovers the retained capsule for Project Trim Phase 3 startup and preserves its identity in the prior-plateau slice.
 
 ## Logbook contracts
 

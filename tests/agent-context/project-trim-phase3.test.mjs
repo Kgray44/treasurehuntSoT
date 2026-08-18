@@ -130,7 +130,7 @@ test("partial knowledge and scope-changing expansion fail closed, while bounded 
   const expansion = recordExpansion(logbook, {
     reasonClass: "HISTORY",
     question: "Which accepted identity precedes this work?",
-    sourcesAdded: [".agents/handoffs/project-trim-phase-2.accepted.json"],
+    sourcesAdded: ["Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Accepted_Capsule.json"],
     resolution: "RESOLVED",
   });
   assert.equal(expansion.reasonClass, "HISTORY");
@@ -145,7 +145,7 @@ test("independent workstream slices and distilled returns keep parent authority 
     expectedOutcome: "Report identity validity.",
     ownedContracts: ["project-trim.minimum-sufficient-context"],
     authority: ["Project Trim v1.0-R1 Section 17"],
-    sources: [".agents/handoffs/project-trim-phase-2.accepted.json"],
+    sources: ["Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Accepted_Capsule.json"],
     tests: ["tests/agent-context/project-trim-phase3.test.mjs"],
     editingAuthority: "READ_ONLY",
   });

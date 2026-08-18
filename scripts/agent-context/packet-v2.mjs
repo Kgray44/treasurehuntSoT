@@ -668,7 +668,7 @@ function priorPlateau(root, input) {
   const discoveredPath =
     input.acceptedCapsulePath ??
     (input.project === "Project Trim" && /^Phase 3(?:\b|\s)/u.test(input.increment ?? "")
-      ? ".agents/handoffs/project-trim-phase-2.accepted.json"
+      ? "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Accepted_Capsule.json"
       : null);
   if (discoveredPath && existsSync(path.join(root, discoveredPath))) {
     const capsule = readJson(root, discoveredPath, null);
