@@ -166,6 +166,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_ORDINARY_CANDIDATE_TRUSTED_POLICY_UNAVAILABLE' }
           git show "$env:SOUNDING_LINE_BASE_SHA`:scripts/sounding-line/verification-maintenance.mjs" > trusted-verification-maintenance.mjs
           if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_ORDINARY_CANDIDATE_TRUSTED_CLASSIFIER_UNAVAILABLE' }
+          git show "$env:SOUNDING_LINE_BASE_SHA`:scripts/sounding-line/project-discovery.mjs" > project-discovery.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_ORDINARY_CANDIDATE_TRUSTED_PROJECT_DISCOVERY_UNAVAILABLE' }
           $changed = @(git diff --name-only --no-renames --no-ext-diff $env:SOUNDING_LINE_BASE_SHA $env:SOUNDING_LINE_CANDIDATE_SHA | Sort-Object)
           if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_ORDINARY_CANDIDATE_CHANGED_PATHS_UNAVAILABLE' }
           ConvertTo-Json -InputObject $changed -Compress | Set-Content -NoNewline ordinary-candidate-changed-paths.json
