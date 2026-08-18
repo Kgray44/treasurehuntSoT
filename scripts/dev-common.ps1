@@ -246,7 +246,10 @@ function Sync-ForeverRuntime {
             (Join-Path $script:ProjectRoot "Codex_Chats")
         )
     }
-    & robocopy $script:ProjectRoot $resolvedRuntime /E /XD $excludedDirectories /XF .git *.db *.db-journal *.log .forever-dev.json .forever-lock.sha | Out-Null
+    # The validation runtime records ownership before this source mirror begins.
+    # Its live event receipt must remain runtime-local; attempting to inspect it
+    # during robocopy can race the event writer and abort the dependency seed.
+    & robocopy $script:ProjectRoot $resolvedRuntime /E /XD $excludedDirectories /XF .git *.db *.db-journal *.log .forever-dev.json .forever-lock.sha .forever-validation-events.jsonl | Out-Null
     if ($LASTEXITCODE -gt 7) { throw "Unable to synchronize the local runtime mirror (robocopy exit $LASTEXITCODE)." }
     if ($Mode -eq "validation") {
         # Runtime product modules may depend on a small, reviewed set of
