@@ -14,6 +14,7 @@ import * as phase3 from "./phase3.mjs";
 import * as phase4 from "./phase4.mjs";
 import { resolveAdapter, resolvePlaywrightAdapter, resolveVitestAdapter } from "./adapters.mjs";
 import { validateHostedWaveCapacity, validateHostedWorkflowCapacity } from "./hosted-wave-capacity.mjs";
+import { materializeTrustedProjectOwners } from "./project-discovery.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const policyRoot = path.join(repoRoot, "testing");
@@ -366,7 +367,13 @@ function validatePolicy(policy) {
     }
     return seen;
   };
-  const ownerIds = ids(ownership.owners, "owners");
+  const trustedOwnerMaterialization = materializeTrustedProjectOwners({
+    sourceRegistry: trustedProjectDiscovery,
+    owners: ownership.owners,
+  });
+  errors.push(...trustedOwnerMaterialization.errors);
+  const effectiveOwners = trustedOwnerMaterialization.owners;
+  const ownerIds = ids(effectiveOwners, "owners");
   const contractIds = ids(contracts.contracts, "contracts");
   const resourceIds = ids(resources.resources, "resources");
   const suiteIds = ids(suites.suites, "suites");
@@ -468,7 +475,7 @@ function validatePolicy(policy) {
   }
   for (const alias of historicalAliases)
     if (activeIds.has(alias)) errors.push(`test definition: historical alias collides with active id ${alias}`);
-  for (const owner of ownership.owners) {
+  for (const owner of effectiveOwners) {
     assertKeys(owner, ["id", "project", "sourcePaths", "testPaths", "contractIds"], `owner ${owner.id}`, errors);
     for (const value of [...owner.sourcePaths, ...owner.testPaths])
       if (!isSafePath(value)) errors.push(`owner ${owner.id}: unsafe path ${value}`);
@@ -620,7 +627,7 @@ function validatePolicy(policy) {
     counts: {
       suites: suites.suites.length,
       contracts: contracts.contracts.length,
-      owners: ownership.owners.length,
+      owners: effectiveOwners.length,
       resources: resources.resources.length,
       gates: gates.gates.length,
       quarantine: quarantine.entries.length,
