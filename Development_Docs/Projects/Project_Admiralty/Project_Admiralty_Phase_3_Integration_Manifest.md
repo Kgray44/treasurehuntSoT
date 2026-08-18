@@ -12,8 +12,8 @@ last_reviewed: 2026-08-18
 
 - Working branch: `codex/project-admiralty-phase3-mainline-reconcile`
 - Paused checkpoint: `56caa166a5ab6171f4d9d7e4b0ed544a92f541d5`
-- Reconciled mainline base: `fc39942a1d8fe57fc13f35cae01445e704b94c45`
-- Latest reconciliation merge: `ef204d2bb0a2da7bc1c87a360fc3b9a2c8441205`
+- Reconciled mainline base: `f67dc4c28fa091cf86de57bfdb6a4ec1438076f4`
+- Latest reconciliation merge: `b46c750d1db026ce791df4798b90b4a8c740e579`
 - Phase 2 baseline: accepted Project Admiralty Phase 2 read-only control plane.
 - In scope: owner-backed account/security and Community moderation command
   seams, role partitions, command evidence, and safe operator projections.
@@ -30,7 +30,10 @@ qualification includes preview, assurance, confirmation, durable receipts,
 CSRF denial, ordinary-user command-center denial, redaction, and accessibility
 checks. Reconciliation adopted the current Sounding Line v1.4 authority and
 Bridgewatch contracts without source conflict. The current owner/command suite,
-Phase 2 validator, and Phase 3 migration rehearsal pass. With recovered host
+Phase 2 validator, and Phase 3 migration rehearsal pass. The later protected-main
+delta is confined to Sounding Line/Lanternwake browser-baseline fixtures and has
+no Phase 3 product overlap; existing Phase 3 focused proof therefore remains
+semantically applicable. With recovered host
 capacity, the relocated Phase 3 production runner completed both Chromium
 journeys (2/2) against a disposable synthetic fixture. The earlier `ENOSPC`
 interruption remains historical only and is not the current browser result.
