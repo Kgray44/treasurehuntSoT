@@ -69,7 +69,7 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
   assert.equal(sentinelCases.length, 3);
   assert.ok(sentinelCases.every((entry) => entry.project === "sounding-line-access-sentinel"));
   assert.ok(sentinelCases.every((entry) => entry.parallelSafety === "ISOLATED_MUTABLE_PARALLEL"));
-  assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.auth").length, 8);
+  assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.auth").length, 12);
   assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.navigation").length, 2);
 });
 
@@ -627,6 +627,7 @@ test("validation runtime restores only declared product document dependencies", 
   assert.match(common, /Project_Admiralty_Phase_2_Capability_Activation_Registry\.json/u);
   assert.match(common, /Project_Admiralty_Phase_2_Role_Capability_Registry\.json/u);
   assert.match(common, /Project_Homeport_Phase_4_District_Registry\.json/u);
+  assert.match(common, /Project_Lanternwake_Canonical_Event_Matrix_Mapping\.csv/u);
   assert.match(common, /Project_Tideglass_Phase_2_Change_Code_Registry\.json/u);
   assert.match(common, /Project_Tideglass_Phase_2_Projection_Policy\.json/u);
   assert.match(common, /Required validation runtime document dependency is missing: \$relativePath/u);

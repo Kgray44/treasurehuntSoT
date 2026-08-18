@@ -254,6 +254,23 @@ function validatePolicy(policy) {
     )
   )
     errors.push("verification-maintenance-policy: ordinary candidate boundary mismatch");
+  const registration = maintenancePolicy?.ordinaryCandidateProductVerificationRegistration;
+  if (
+    registration?.classification !== "PRODUCT_WITH_VERIFICATION_REGISTRATION" ||
+    registration?.semanticOwnership !== "TRUSTED_OWNERSHIP_OR_TRUSTED_DISCOVERY_DESCRIPTOR" ||
+    registration?.monotonicity !== "NO_FOREIGN_MUTATION_OR_REMOVAL" ||
+    !Array.isArray(registration?.pathGlobs) ||
+    !registration.pathGlobs.length ||
+    !Array.isArray(registration?.semanticPathGlobs) ||
+    !registration.semanticPathGlobs.length ||
+    registration.semanticPathGlobs.some((entry) => !registration.pathGlobs.includes(entry)) ||
+    !Array.isArray(registration?.ancillaryPathGlobs) ||
+    !Array.isArray(registration?.playwrightConfigPathGlobs) ||
+    !Array.isArray(registration?.testRegistrySourcePathGlobs) ||
+    !Array.isArray(registration?.sharedVerificationSuiteIds) ||
+    registration.pathGlobs.some((entry) => maintenancePolicy.authorityChangePathGlobs.includes(entry))
+  )
+    errors.push("verification-maintenance-policy: product verification registration boundary mismatch");
   if (authorityIndex.governingPolicies?.proofMinimization !== "MINIMUM_SUFFICIENT_EVIDENCE")
     errors.push("sounding-line-authority: proof minimization mismatch");
   if (authorityIndex.governingPolicies?.semanticInvalidation !== "EVIDENCE_PRESERVATION_REQUIRED")
@@ -495,7 +512,9 @@ function validatePolicy(policy) {
     bySuite.set(definition.suiteId, (bySuite.get(definition.suiteId) ?? 0) + 1);
   for (const suite of suites.suites)
     if (
-      ["vitest-family", "vitest-family-serial", "node-test-browser-family", "playwright-family"].includes(suite.adapter) &&
+      ["vitest-family", "vitest-family-serial", "node-test-browser-family", "playwright-family"].includes(
+        suite.adapter,
+      ) &&
       !bySuite.get(suite.id)
     )
       errors.push(`suite ${suite.id}: empty active family`);

@@ -160,7 +160,7 @@ test("Wayfarer Phase 4 projects only receipt-authorized artifacts and protects p
   };
   const ownerPage = await owner.context.newPage();
   await ownerPage.goto("/passport/artifacts");
-  await expect(ownerPage.getByRole("heading", { name: "Artifact Cabinet" })).toBeVisible();
+  await expect(ownerPage.getByRole("heading", { name: "Artifact Cabinet", exact: true })).toBeVisible();
   await expect(ownerPage.getByText("Synthetic Compass")).toBeVisible();
   expect(
     (await new AxeBuilder({ page: ownerPage }).analyze()).violations.filter((item) =>
