@@ -13,6 +13,8 @@
     "scripts/sounding-line/project-discovery.mjs",
     "scripts/sounding-line/v14-fast-channel.mjs",
     "scripts/sounding-line/v14/fast-channel.mjs",
+    "scripts/sounding-line/isolated-validation-runtime.ps1",
+    "scripts/tideglass/seed-phase3-fixture.mjs",
     ".github/workflows/sounding-line-authority-maintenance.yml",
     ".github/workflows/sounding-line-protected-merge-binding.yml"
   ],
@@ -32,6 +34,8 @@
     "scripts/sounding-line/verification-maintenance.mjs",
     "scripts/sounding-line/v14-fast-channel.mjs",
     "scripts/sounding-line/v14/fast-channel.mjs",
+    "scripts/sounding-line/isolated-validation-runtime.ps1",
+    "scripts/tideglass/seed-phase3-fixture.mjs",
     ".github/workflows/sounding-line-authority-maintenance.yml",
     ".github/workflows/sounding-line-protected-merge-binding.yml",
     "tests/sounding-line/**",
