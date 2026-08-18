@@ -39,10 +39,7 @@
     "scripts/sounding-line/v14/**",
     "scripts/sounding-line/v14-fast-channel.mjs",
     "testing/mainline-train-policy.json",
-    "testing/impact-map.json",
-    "testing/contracts.json",
     "testing/ownership.json",
-    "testing/suites.json",
     "testing/resources.json"
   ],
   "ordinaryCandidateEligiblePathGlobs": [
@@ -81,6 +78,40 @@
     "scripts/confluence/**",
     "tests/confluence/**"
   ],
+  "ordinaryCandidateProductVerificationRegistration": {
+    "classification": "PRODUCT_WITH_VERIFICATION_REGISTRATION",
+    "pathGlobs": [
+      "testing/contracts.json",
+      "testing/impact-map.json",
+      "testing/suites.json",
+      "testing/file-dispositions.json",
+      "testing/generated/active-test-registry.json",
+      "playwright*.config.*",
+      "scripts/sounding-line/test-registry.mjs"
+    ],
+    "semanticPathGlobs": [
+      "testing/contracts.json",
+      "testing/impact-map.json",
+      "testing/suites.json",
+      "testing/file-dispositions.json",
+      "playwright*.config.*",
+      "scripts/sounding-line/test-registry.mjs"
+    ],
+    "ancillaryPathGlobs": [
+      "Development_Docs/Project_*",
+      "Development_Docs/Projects/**",
+      "Development_Docs/Features/FEATURE_CATALOG.md",
+      "Development_Docs/Features/catalog/**",
+      "Development_Docs/document-index.json",
+      "scripts/generate-document-index.mjs",
+      "scripts/features/**"
+    ],
+    "playwrightConfigPathGlobs": ["playwright*.config.*"],
+    "testRegistrySourcePathGlobs": ["scripts/sounding-line/test-registry.mjs"],
+    "sharedVerificationSuiteIds": ["static.core", "validation.documentation", "unit.feature-catalog"],
+    "semanticOwnership": "TRUSTED_OWNERSHIP_OR_TRUSTED_DISCOVERY_DESCRIPTOR",
+    "monotonicity": "NO_FOREIGN_MUTATION_OR_REMOVAL"
+  },
   "requiredEvidence": [
     "FOCUSED_REGRESSION",
     "AFFECTED_SOUNDING_LINE_TESTS",
