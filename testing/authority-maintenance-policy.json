@@ -7,9 +7,11 @@
   "ownerAuthorization": "REPOSITORY_OWNER_WORKFLOW_DISPATCH",
   "bindingPreflightPaths": [
     "testing/authority-maintenance-policy.json",
+    "testing/verification-maintenance-policy.json",
     "scripts/sounding-line/authority-maintenance.mjs",
     "scripts/sounding-line/authority-maintenance-protected-binding.mjs",
     "scripts/sounding-line/authority-maintenance-selection.mjs",
+    "scripts/sounding-line/adapters.mjs",
     "scripts/sounding-line/project-discovery.mjs",
     "scripts/sounding-line/v14-fast-channel.mjs",
     "scripts/sounding-line/v14/fast-channel.mjs",
