@@ -1,6 +1,6 @@
 {
   "acceptanceLane": "SOUNDING_LINE_V14_CANDIDATE_MAINLINE_DECISION",
-  "baseSourceSha": "8c7c3589955f94fcc8a400a81e4f61565d0d4521",
+  "baseSourceSha": "fc39942a1d8fe57fc13f35cae01445e704b94c45",
   "featureCatalogImpact": "NO_CHANGE_REQUIRED",
   "limitations": [
     "Phase 5 does not self-issue release authority or owner product acceptance.",
@@ -13,7 +13,7 @@
   "project": "Project Deepwater",
   "schemaImpact": "NONE",
   "schemaVersion": "1.0.0",
-  "soundingLinePolicyDigest": "215ccf10a6209e73b6d81c6c08b35acb24095c624a1118ea0ecfcac8de76a283",
+  "soundingLinePolicyDigest": "fd15bc27c20b586f1439591080629995fe5d79b27aae1523f5b0e7d9bfb15ceb",
   "state": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
   "validation": "LOCAL_CONTROL_PLANE_QUALIFIED"
 }

@@ -11,11 +11,11 @@
       "owner": "Sounding Line policy owner",
       "retryTrigger": "Protected main contains the accepted admission and required registration coverage.",
       "severity": "HIGH",
-      "source": "testing/verification-maintenance-policy.json at protected origin/main 8c7c3589955f94fcc8a400a81e4f61565d0d4521",
+      "source": "testing/verification-maintenance-policy.json at protected origin/main fc39942a1d8fe57fc13f35cae01445e704b94c45",
       "status": "OPEN_EXTERNAL_POLICY_ADMISSION"
     }
   ],
   "rationale": "Phase 5 is explicitly owner-authorized as a governance institutionalization phase. Any discovered external blocker remains visible with its owner and closure lifecycle.",
   "schemaVersion": "1.0.0",
-  "sourceSha": "8c7c3589955f94fcc8a400a81e4f61565d0d4521"
+  "sourceSha": "fc39942a1d8fe57fc13f35cae01445e704b94c45"
 }

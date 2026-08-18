@@ -11,7 +11,7 @@ last_reviewed: 2026-08-18
 ## Recovered checkpoint and resumed candidate evidence
 
 - Preserved checkpoint: `95497c3d32e76d81723500235821829bd3af58a2`; original base: `60b89841986e66fbc2c0828489d38002a1617506`.
-- Resumed accepted-main bases: `3df555a05efee98270dd69bcae32a7e34c814c12`, then `8c7c3589955f94fcc8a400a81e4f61565d0d4521`; the original published branch merged current protected main without replacement history.
+- Resumed accepted-main bases: `3df555a05efee98270dd69bcae32a7e34c814c12`, then `8c7c3589955f94fcc8a400a81e4f61565d0d4521`, and `fc39942a1d8fe57fc13f35cae01445e704b94c45`; the original published branch merged current protected main without replacement history.
 - Deepwater control plane: 76 pre-cutover focused tests were preserved as semantic evidence. On the reconciled current-main candidate, 80 Deepwater control-plane tests passed and structural validation passed with semantic digest `07e59e464106d5e1b1ea0da0ff3fcaca06ee50ad35e9d30cbc0163561caee320`.
 - Deterministic drift: current-source re-evaluation reports zero unreviewed deltas after the explicit Bridgewatch backend-surface adoption.
 - Current baseline: 58 Deepwater capabilities and 43 Phase 3 accepted Feature Catalog mappings reconciled. The source-owned full catalog generator and validator cover 48 catalog entries.

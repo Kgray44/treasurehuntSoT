@@ -2,19 +2,19 @@
   "schemaVersion": "1.0.0",
   "project": "Project Deepwater",
   "phase": "Phase 5 - Keep the Soundings",
-  "sourceSha": "8c7c3589955f94fcc8a400a81e4f61565d0d4521",
+  "sourceSha": "fc39942a1d8fe57fc13f35cae01445e704b94c45",
   "state": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
   "checks": [
     { "id": "P5-AUTHORIZATION", "state": "PASSED", "evidence": "Explicit owner prompt, 2026-08-13" },
     {
       "id": "P5-CURRENT-BASELINE",
       "state": "PASSED",
-      "evidence": "Project_Deepwater_Phase_5_Drift_Baseline.json, rebound to origin/main 8c7c3589955f94fcc8a400a81e4f61565d0d4521"
+      "evidence": "Project_Deepwater_Phase_5_Drift_Baseline.json, rebound to origin/main fc39942a1d8fe57fc13f35cae01445e704b94c45"
     },
     {
       "id": "P5-DETERMINISTIC-DELTA",
       "state": "PASSED",
-      "evidence": "deepwater audit and validate passed with Phase 5 semantic digest 20d20649f1cc5010f989e40834edf2504634a4dacda4c18ab378efee56611115"
+      "evidence": "deepwater audit and validate passed with Phase 5 semantic digest d57cd0fbf861ae7e8444cc12fd23227dbe398b63e2a3ea540d64724738922305"
     },
     {
       "id": "P5-REGRESSION-MUTATIONS",
@@ -24,12 +24,12 @@
     {
       "id": "P5-FEATURE-CATALOG-GUARD",
       "state": "PASSED",
-      "evidence": "Source-owned catalog build and validator passed with 48 entries against origin/main 8c7c3589955f94fcc8a400a81e4f61565d0d4521"
+      "evidence": "Source-owned catalog build and validator passed with 48 entries against origin/main fc39942a1d8fe57fc13f35cae01445e704b94c45"
     },
     {
       "id": "P5-SOUNDING-LINE-POLICY",
       "state": "PASSED",
-      "evidence": "scripts/sounding-line/cli.mjs validate-policy passed with candidate policy digest 215ccf10a6209e73b6d81c6c08b35acb24095c624a1118ea0ecfcac8de76a283"
+      "evidence": "scripts/sounding-line/cli.mjs validate-policy passed with candidate policy digest fd15bc27c20b586f1439591080629995fe5d79b27aae1523f5b0e7d9bfb15ceb"
     },
     {
       "id": "P5-HOMEPORT-INVENTORY",
