@@ -86,6 +86,7 @@
     "admiralty:walkthrough:reset": "node scripts/admiralty/phase2-walkthrough-runtime.mjs reset",
     "admiralty:walkthrough:stop": "node scripts/admiralty/phase2-walkthrough-runtime.mjs stop",
     "features:sync": "tsx scripts/features/build-feature-catalog.ts",
+    "project-trim:phase4:benchmark": "node scripts/agent-context/benchmark-phase4.mjs",
     "features:validate": "tsx scripts/features/validate-feature-catalog.ts",
     "features:test": "vitest run scripts/features/feature-catalog.test.ts",
     "deepwater:audit": "node scripts/deepwater/cli.mjs audit",

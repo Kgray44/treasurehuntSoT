@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0",
+  "program": "PROJECT_TRIM_PHASE_4",
+  "evaluatedAtProtectedMain": "a6c1f441d3628bd828bd7a1c3cd77d419a0701c6",
+  "rule": "New READY tasks default to Project Trim. PARTIAL tasks use conservative expansion, LEGACY tasks may retain larger context, and SENSITIVE tasks require specialized handling.",
+  "families": [
+    {
+      "id": "project-trim",
+      "readiness": "READY",
+      "evidence": ["source-bound packets", "accepted capsules", "owned test family", "current impact mapping"],
+      "default": "PROJECT_TRIM"
+    },
+    {
+      "id": "bridgewatch",
+      "readiness": "PARTIAL",
+      "evidence": [
+        "structured repository records",
+        "private loopback runtime and deployment inputs remain outside generic packets"
+      ],
+      "default": "PROJECT_TRIM_WITH_CONSERVATIVE_OPERATIONS_EXPANSION"
+    },
+    {
+      "id": "project-homeport",
+      "readiness": "SENSITIVE",
+      "evidence": ["account, authorization, and private-content boundaries require specialized source handling"],
+      "default": "PROJECT_TRIM_WITH_SPECIALIZED_SECURITY_HANDLING"
+    },
+    {
+      "id": "historical-unmapped-work",
+      "readiness": "LEGACY",
+      "evidence": ["insufficient structured ownership, source, or verification truth for a bounded startup"],
+      "default": "LEGACY_CONTEXT_WITH_FUTURE_MAPPING_CANDIDATE"
+    }
+  ],
+  "flagDayMigration": false
+}
