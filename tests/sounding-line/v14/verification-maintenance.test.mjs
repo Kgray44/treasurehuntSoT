@@ -224,6 +224,7 @@ test("only bounded Bridgewatch integration, projection, and records are eligible
       "Development_Docs/INDEX.md",
       "Development_Docs/Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md",
       "Development_Docs/Project_Bridgewatch_v1.2_Validation_Record.md",
+      "Development_Docs/Project_Bridgewatch_v2_Source_Health_Matrix.json",
       "Development_Docs/README.md",
       "Development_Docs/document-index.json",
       "deploy/nginx.conf",
