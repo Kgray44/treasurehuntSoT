@@ -596,6 +596,7 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
   assert.match(authority, /FOREVER_DEPENDENCY_SEED_ROOT: root/u);
   assert.match(authority, /SOUNDING_LINE_SUITE_HARD_BUDGET_MS: String\(suite\.hardBudgetMs\)/u);
   const common = await readFile(path.join(root, "scripts", "dev-common.ps1"), "utf8");
+  assert.match(common, /\.forever-validation-events\.jsonl/u);
   assert.match(common, /function Copy-ForeverDependencySeed/u);
   assert.match(common, /robocopy \$seedModules \$runtimeModules \/E \/XJ \/COPY:DAT/u);
   assert.match(common, /dir \/a:l \/s \/b/u);
