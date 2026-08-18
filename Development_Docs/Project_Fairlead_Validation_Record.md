@@ -24,14 +24,14 @@ last_reviewed: 2026-08-18
 | Feature Catalog                   | Blocked by unrelated baseline | `features:sync` succeeded, but `features:validate` fails because existing `FT-036` references unresolved `codex/project-drydock-phase3-run-sea-trials`. Fairlead changes only FT-033/FT-034 and cannot repair another project's branch record.                                                                                                              |
 | Diff whitespace                   | Passed                        | `git diff --check`                                                                                                                                                                                                                                                                                                                                          |
 
-## Pending candidate qualification
+## Candidate qualification status
 
-The candidate is not frozen. Before authoritative Sounding Line acceptance it
-must be reconciled to current protected `origin/main`, run the current
-registry-selected qualification including documentation, catalog, Deepwater,
-privacy/secret, and affected Sounding Line/Bridgewatch checks, and record the
-exact candidate SHA. Mainline Decision will be dispatched once for that frozen
-candidate; it is not a development debugger.
+The implementation candidate is frozen locally after reconciliation to current
+protected `origin/main`. It is not eligible for a Sounding Line Mainline
+Decision because the required whole-repository Feature Catalog and Deepwater
+baseline gates remain failing for unrelated owners. Mainline Decision is not a
+development debugger and will not be dispatched until those baseline failures
+are resolved and the exact final candidate SHA is requalified.
 
 ## External state
 
