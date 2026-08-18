@@ -3,7 +3,7 @@ title: Engineering record index
 audience: engineering
 status: current
 canonical_for: engineering-record-index
-last_reviewed: 2026-08-17
+last_reviewed: 2026-08-18
 ---
 
 # Engineering-record index
@@ -35,6 +35,10 @@ Use [document-index.json](document-index.json) for complete path-level classific
 ## Project Trim
 
 - [Project Trim governing baseline v1.0-R1](Governing/Project_Trim_Codex_Context_and_Inference_Efficiency_Governing_Document_v1.0-R1.pdf) is the current Project Trim governing baseline. Phase 0 records under `Programs/Project_Trim/` are preserved program evidence, not governing authority.
+
+## Project Fairlead
+
+- [Project Fairlead governing baseline v1.0](Governing/Project_Fairlead_GitHub_Interaction_and_Quota_Control_Plane_Governing_Document_v1.0.md) defines the repository-wide GitHub interaction and quota control plane: Git-first routing, REST/GraphQL selection, shared rate-state coordination, conditional caching, request coalescing, adaptive polling, GitHub App authentication, Bridgewatch and Sounding Line integration, degraded-operation behavior, and permanent automation governance.
 
 ## Project Sounding Line amendments
 
