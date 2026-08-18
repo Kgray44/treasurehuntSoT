@@ -18,7 +18,9 @@ test("fixture bootstrap admits only the exact validation-runtime maintenance cla
 
   assert.equal(policy.version, "1.0.3");
   assert.deepEqual(
-    policy.bindingPreflightPaths.filter((entry) => entry.includes("isolated-validation") || entry.includes("tideglass")),
+    policy.bindingPreflightPaths.filter(
+      (entry) => entry.includes("isolated-validation") || entry.includes("tideglass"),
+    ),
     ["scripts/sounding-line/isolated-validation-runtime.ps1", "scripts/tideglass/seed-phase3-fixture.mjs"],
   );
   assert.equal(policy.bindingPreflightPaths.includes("scripts/tideglass/unrelated-bootstrap.mjs"), false);
