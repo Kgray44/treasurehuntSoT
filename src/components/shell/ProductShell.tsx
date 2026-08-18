@@ -217,11 +217,6 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
       queueMicrotask(() => navigationDrawerRef.current?.querySelector<HTMLAnchorElement>("a")?.focus());
   }, [navigationOpen]);
 
-  useEffect(() => {
-    if (accountOpen)
-      queueMicrotask(() => accountDisclosureRef.current?.querySelector<HTMLElement>("a, button")?.focus());
-  }, [accountOpen]);
-
   useLayoutEffect(() => {
     if (!accountOpen) return;
     const panel = accountDisclosureRef.current;
@@ -250,6 +245,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
     group,
     items: projection.accountItems.filter((item) => item.accountGroup === group),
   }));
+  const firstAccountGroup = accountGroups.find(({ items }) => items.length);
 
   async function resendVerification() {
     if (currentUser.status !== "authenticated") return;
@@ -353,7 +349,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
               aria-expanded={accountOpen}
               aria-controls="shell-account-disclosure"
               onClick={() => {
-                setAccountOpen((open) => !open);
+                setAccountOpen(!accountOpen);
                 setNavigationOpen(false);
               }}
             >
@@ -466,7 +462,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                           >
                             <h2 id={headingId}>{accountGroupLabels[group]}</h2>
                             <nav aria-label={accountGroupLabels[group]}>
-                              {items.map((item) => {
+                              {items.map((item, index) => {
                                 if (item.action === "sign-out")
                                   return (
                                     <div key={item.id} className="account-sign-out" data-navigation-id={item.id}>
@@ -481,6 +477,11 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                                 return (
                                   <Link
                                     key={item.id}
+                                    ref={
+                                      firstAccountGroup?.group === group && index === 0
+                                        ? (node) => node?.focus()
+                                        : undefined
+                                    }
                                     href={item.href}
                                     data-navigation-id={item.id}
                                     aria-current={current ? "page" : undefined}
