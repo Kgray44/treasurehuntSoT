@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Integration Manifest
 audience: product-engineering
-status: qualification-blocked-external-catalog
+status: candidate-qualified-pending-authority
 canonical_for: project-wakebook-phase-2-integration-manifest
 last_reviewed: 2026-08-18
 ---
@@ -69,8 +69,8 @@ new authority decision is required only after that shared closure is green.
 
 ## Current reconciliation supersession
 
-Protected main `bef72d4ca3806330e10a36cdd39316921e26e733` is merged by
-pre-record source `00034e64f4878971e78b718e9fa7e128abf2da76`. Its Fairlead
+Protected main `1a49669a98f789b762285ac0ed5fa8e63636d9fb` is merged by
+pre-record source `de2e9237d2f314f9e1b3d4f778b66c7a69d8c2be`. Its Fairlead
 documentation and Sounding Line registry/planner updates do not change a
 Wakebook product seam. The generated documentation index was rebuilt, and the
 required Phase 2 capability-impact JSON now has the same narrow Wakebook
@@ -83,3 +83,12 @@ external Feature Catalog failure FT-036: its Drydock branch
 `codex/project-drydock-phase3-run-sea-trials` no longer resolves. Freeze,
 authority, protected merge, and owner walkthrough remain prohibited until
 accepted mainline repairs that foreign record.
+
+## FT-036 resolution
+
+The FT-036 branch-complete state was stale: Drydock PR #52 was already merged
+to protected main. Its fragment is promoted to `MAINLINE`, with obsolete branch
+metadata removed, and Feature Catalog validation now passes all 49 entries.
+The active Phase 2 state is `CANDIDATE_QUALIFIED_PENDING_FREEZE`; the next
+commit freezes the candidate, after which exactly one source-bound Mainline
+Decision may be dispatched.

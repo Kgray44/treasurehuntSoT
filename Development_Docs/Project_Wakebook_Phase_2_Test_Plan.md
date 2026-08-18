@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Test Plan
 audience: product-engineering
-status: qualification-blocked-external-catalog
+status: candidate-qualified-pending-authority
 canonical_for: project-wakebook-phase-2-test-plan
 last_reviewed: 2026-08-18
 ---
@@ -72,8 +72,8 @@ Decision after this documentation candidate is finalized.
 
 ## Current reconciliation qualification
 
-At source `00034e64f4878971e78b718e9fa7e128abf2da76` over protected main
-`bef72d4ca3806330e10a36cdd39316921e26e733`, a narrow impact-map entry for the
+At source `de2e9237d2f314f9e1b3d4f778b66c7a69d8c2be` over protected main
+`1a49669a98f789b762285ac0ed5fa8e63636d9fb`, a narrow impact-map entry for the
 required Phase 2 capability-impact JSON removes the false unknown-path fallback.
 The exact plan digest is
 `4835792a85e04856efe24e3662b21e10469e0e6074b7e14bcb9ac9900273e579` and
@@ -94,3 +94,11 @@ and historical invariance.
 FT-036 because its Drydock branch reference no longer resolves. That external
 catalog defect must be repaired on accepted mainline before Phase 2 can freeze
 a candidate or request a Mainline Decision.
+
+## FT-036 resolution
+
+The previous catalog hold is resolved: Drydock PR #52 was already merged to
+protected main, so FT-036 is now a `MAINLINE` fragment with obsolete branch
+metadata removed. `features:validate` passes all 49 entries, and its focused
+unit suite passes 9/9. The candidate is ready for freeze and one source-bound
+Mainline Decision.

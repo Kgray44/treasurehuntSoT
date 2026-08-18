@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Mainline Safety Record
 audience: product-engineering
-status: qualification-blocked-external-catalog
+status: candidate-qualified-pending-authority
 canonical_for: project-wakebook-phase-2-mainline-safety-record
 last_reviewed: 2026-08-18
 ---
@@ -61,8 +61,8 @@ acceptance is claimed.
 
 ## Current reconciliation supersession
 
-Protected main is now `bef72d4ca3806330e10a36cdd39316921e26e733`, merged by
-pre-record source `00034e64f4878971e78b718e9fa7e128abf2da76`. The new mainline
+Protected main is now `1a49669a98f789b762285ac0ed5fa8e63636d9fb`, merged by
+pre-record source `de2e9237d2f314f9e1b3d4f778b66c7a69d8c2be`. The new mainline
 interval changes Fairlead documentation and Sounding Line registry/planner
 maintenance only; it does not change Wakebook, Wayfarer, Helm, Tideglass,
 Sealed Hold, artifact, achievement, navigation, Prisma, or Playwright product
@@ -74,3 +74,17 @@ Candidate freeze and protected authority remain prohibited because
 branch `codex/project-drydock-phase3-run-sea-trials` is unavailable. Altering
 that foreign capability claim would violate canonical ownership. No protected
 merge or owner acceptance is claimed.
+
+## FT-036 resolution
+
+Drydock PR #52 is a merged protected-main PR, so its stale FT-036 fragment is
+truthfully promoted from `BRANCH_COMPLETE_NOT_MERGED` to `MAINLINE` with no
+branch metadata. Feature Catalog validation now passes. The smallest detached
+GitHub PR proof was also made bounded: it checks the candidate commit's
+ancestry directly, which fails closed when that commit is unavailable or not in
+`HEAD`. Its focused suite passes 9/9.
+
+With the current 36/36 Wakebook focused contracts, 2/2 task-owned browser
+journey, static, documentation, privacy, policy, registry, and catalog proof,
+the phase is ready to freeze one candidate and request a single Mainline
+Decision. No protected merge or owner acceptance is yet claimed.

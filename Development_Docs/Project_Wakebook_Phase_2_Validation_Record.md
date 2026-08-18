@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Validation Record
 audience: product-engineering
-status: qualification-blocked-external-catalog
+status: candidate-qualified-pending-authority
 canonical_for: project-wakebook-phase-2-validation-record
 last_reviewed: 2026-08-18
 ---
@@ -73,8 +73,8 @@ browser-matrix hold and a later, fresh authoritative decision.
 ## Current v1.4.2 reconciliation
 
 This section supersedes the earlier shared-browser-matrix hold. Protected main
-is `bef72d4ca3806330e10a36cdd39316921e26e733`; pre-record source
-`00034e64f4878971e78b718e9fa7e128abf2da76` contains that mainline plus the
+is `1a49669a98f789b762285ac0ed5fa8e63636d9fb`; pre-record source
+`de2e9237d2f314f9e1b3d4f778b66c7a69d8c2be` contains that mainline plus the
 narrow mapping for the required Phase 2 capability-impact JSON. The current
 non-authoritative plan is exact (digest
 `4835792a85e04856efe24e3662b21e10469e0e6074b7e14bcb9ac9900273e579`) and
@@ -96,3 +96,16 @@ Drydock branch `codex/project-drydock-phase3-run-sea-trials` no longer resolves.
 Wakebook cannot alter that foreign capability claim. This external catalog
 defect prevents candidate freeze and a Mainline Decision; it is not a Wakebook
 product, privacy, migration, or browser failure.
+
+## FT-036 resolution and candidate readiness
+
+Read-only GitHub evidence confirmed that Drydock PR #52 was already merged to
+protected main while FT-036 retained its obsolete branch-complete state. The
+fragment is therefore promoted in place to `MAINLINE`, with its branch metadata
+removed; Feature Catalog validation now passes all 49 entries and its focused
+unit suite passes 9/9. The detached-GitHub-PR catalog proof now performs its
+required contained-commit ancestry check without redundant missing-ref probes,
+and remains fail-closed for an unknown or non-ancestor commit.
+
+All current pre-freeze qualification is green. The next commit is the sole
+candidate freeze, followed by one explicit source-bound Mainline Decision.

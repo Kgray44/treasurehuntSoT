@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `bef72d4ca3806330e10a36cdd39316921e26e733`
+Audited source commit: `1a49669a98f789b762285ac0ed5fa8e63636d9fb`
 
 ## Status vocabulary
 
@@ -1003,6 +1003,44 @@ A private Bridgewatch extension that projects explicit Project Registry, Soundin
 
 ---
 
+## FT-036 - Drydock Deterministic Sea Trials
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Drydock Phase 3
+
+Creators can persist revisioned synthetic Sea Trial scenarios and suites, deterministically execute the canonical One Voyage transition adapter with virtual time, seeded randomness, bounded faults, safe traces, coverage, and semantic comparison, and inspect the resulting private Studio evidence without mutating a live Voyage.
+
+### Important subfeatures
+
+- Strict versioned Scenario and Scenario Suite contracts
+- Revisioned owned Scenario persistence and frozen run source
+- Deterministic virtual clock, seeded randomness, bounded faults, and assertions
+- Canonical One Voyage transition adapter differential proof
+- Safe trace, state-diff, replay, coverage, and suggestion projections
+- Private Creator Studio Scenario Lab and CSRF-protected owned APIs
+- Additive SQLite and static MySQL migration parity
+
+### Primary surfaces
+
+`/studio/tales/[taleId]/trials`, `/api/studio/tales/[taleId]/scenarios`, `/api/studio/tales/[taleId]/simulation-runs`, `npm run drydock:cli`
+
+### Meaningful limitations
+
+- Protected-main source integration was accepted through PR #52; deployment and owner acceptance remain separate from source integration.
+- Sea Trials use synthetic bounded inputs and never mutate a live Tale Session, provider, asset, or Player state.
+- Live provider, production MySQL, physical-device, and external assistive-technology proof remain outside this phase.
+- Immutable publishing evidence and Phase 4 integration remain out of scope.
+
+### Evidence
+
+- path: `src/drydock/simulation/engine.ts`
+- path: `src/drydock/simulation-store.ts`
+- path: `src/components/studio/DrydockScenarioLab.tsx`
+- test: `src/drydock`
+- test: `src/app/api/studio/tales/[taleId]/scenarios`
+
+---
+
 ## FT-037 - Shipwright Contract-Aware Creator Studio Authoring
 
 **Status:** MAINLINE
@@ -1551,44 +1589,6 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 # Completed Branch Features Not Yet Available on Main
 
-## FT-036 - Drydock Deterministic Sea Trials
-
-**Status:** BRANCH COMPLETE NOT MERGED
-**Program or subsystem:** Project Drydock Phase 3
-
-Creators can persist revisioned synthetic Sea Trial scenarios and suites, deterministically execute the canonical One Voyage transition adapter with virtual time, seeded randomness, bounded faults, safe traces, coverage, and semantic comparison, and inspect the resulting private Studio evidence without mutating a live Voyage.
-
-### Important subfeatures
-
-- Strict versioned Scenario and Scenario Suite contracts
-- Revisioned owned Scenario persistence and frozen run source
-- Deterministic virtual clock, seeded randomness, bounded faults, and assertions
-- Canonical One Voyage transition adapter differential proof
-- Safe trace, state-diff, replay, coverage, and suggestion projections
-- Private Creator Studio Scenario Lab and CSRF-protected owned APIs
-- Additive SQLite and static MySQL migration parity
-
-### Primary surfaces
-
-`/studio/tales/[taleId]/trials`, `/api/studio/tales/[taleId]/scenarios`, `/api/studio/tales/[taleId]/simulation-runs`, `npm run drydock:cli`
-
-### Meaningful limitations
-
-- Branch-complete local qualification is not protected-main availability, deployment, or owner acceptance.
-- Sea Trials use synthetic bounded inputs and never mutate a live Tale Session, provider, asset, or Player state.
-- Live provider, production MySQL, physical-device, and external assistive-technology proof remain outside this phase.
-- Immutable publishing evidence and Phase 4 integration remain out of scope.
-
-### Evidence
-
-- path: `src/drydock/simulation/engine.ts`
-- path: `src/drydock/simulation-store.ts`
-- path: `src/components/studio/DrydockScenarioLab.tsx`
-- test: `src/drydock`
-- test: `src/app/api/studio/tales/[taleId]/scenarios`
-
----
-
 ## FT-B012 - Owner-Safe Historical Voyage Remembrance
 
 **Status:** BRANCH COMPLETE NOT MERGED
@@ -1639,4 +1639,4 @@ Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `bef72d4ca3806330e10a36cdd39316921e26e733`
+Generation source commit: `1a49669a98f789b762285ac0ed5fa8e63636d9fb`

@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Owner Walkthrough
 audience: product-owner
-status: qualification-blocked-external-catalog
+status: candidate-qualified-pending-authority
 canonical_for: project-wakebook-phase-2-owner-walkthrough
 last_reviewed: 2026-08-18
 ---
@@ -57,8 +57,17 @@ document does not authorize a protected merge, owner acceptance, or Phase 3.
 The historical browser-matrix hold is superseded: the current exact plan
 includes `browser.wakebook`, and a fresh local 2/2 Chromium run passed the
 walkthrough safety scope on reconciled source
-`00034e64f4878971e78b718e9fa7e128abf2da76`. Owner review is still not open.
+`de2e9237d2f314f9e1b3d4f778b66c7a69d8c2be`. Owner review is still not open.
 `features:validate` currently fails on FT-036 because its foreign Drydock branch
 `codex/project-drydock-phase3-run-sea-trials` is unavailable. Wakebook cannot
 repair that canonical record; after it is repaired on accepted mainline, this
 candidate must be refreshed, authorized, integrated, and then presented here.
+
+## Current availability
+
+FT-036 has been truthfully promoted to `MAINLINE` after confirmation that
+Drydock PR #52 was already merged. Feature Catalog validation is green, and
+the Phase 2 candidate can now be frozen and sent through one source-bound
+Mainline Decision. This walkthrough remains prepared, but owner review begins
+only after protected integration; it does not authorize a merge, acceptance, or
+Phase 3.
