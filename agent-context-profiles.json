@@ -1,6 +1,14 @@
 {
-  "schemaVersion": "1.0",
-  "program": "PROJECT_TRIM_PHASE_1",
+  "schemaVersion": "2.0",
+  "program": "PROJECT_TRIM_PHASE_2",
+  "packetContract": {
+    "schemaVersion": "2.0",
+    "confidenceVocabulary": ["EXACT", "BOUNDED", "COARSE", "UNKNOWN"],
+    "stalenessStates": ["FRESH", "PARTIALLY_STALE", "STALE", "CONFLICTED", "UNKNOWN"],
+    "requiredSlices": ["authority", "ownership", "source", "schema-data", "verification", "dependency", "main-delta"],
+    "targetedRegeneration": true,
+    "unknownRule": "CONSERVATIVE_TARGETED_EXPANSION"
+  },
   "profiles": {
     "product-phase": {
       "initialContextEmphasis": ["scope", "ownership", "contracts", "source", "verification", "main-delta"],
