@@ -21,6 +21,21 @@
     "invariant": "PRODUCT_VERIFICATION_REGISTRATION_REJECTED",
     "detail": "At protected main e4a1f4e394a17b98e250799c61ba16035495c539, trusted discovery resolves the cross-owned Phase 4 product diff to project-shipwright before considering the sole new drydock contract authority. Drydock is a trusted supporting owner and owns the Drydock/Chronicle paths, but current selection does not use that fact. No RELEASE_GO or acceptance envelope exists."
   },
+  "deepwaterCapabilityImpact": {
+    "disposition": "EVIDENCE_ONLY",
+    "affectedCapabilityIds": ["DW-CAP-DRYDOCK-DETERMINISTIC-SEA-TRIALS"],
+    "affectedFeatureCatalogIds": ["FT-036"],
+    "potentialLayerImpact": ["DISCOVERABILITY"],
+    "affectedSurfaces": {
+      "routes": [],
+      "screens": [],
+      "journeys": [],
+      "apis": []
+    },
+    "expectedTerminalRungEffect": "NONE",
+    "evidenceRequiringRefresh": ["Development_Docs/Features/branch-complete/project-drydock-phase3.json"],
+    "rationale": "This corrects FT-036 from stale branch-complete metadata to the already accepted PR #52 mainline integration. It changes no Drydock source, route, UI, API, journey, or capability realization."
+  },
   "governingDocument": "Development_Docs/Projects/Project Drydock/Project_Drydock_Governing_Document.pdf",
   "hardDependencies": [
     { "phase": 1, "state": "ACCEPTED_MAINLINE", "mergeSha": "468530645e983412e5f4c1aaa103915be77c9c07" },
