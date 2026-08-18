@@ -1,0 +1,379 @@
+{
+  "schemaVersion": "1.0",
+  "program": "PROJECT_TRIM_PHASE_4",
+  "benchmark": "TRIM_THE_SAILS_PROMPT_COMPACTION_AND_CALIBRATION",
+  "method": {
+    "promptCompaction": "Deterministic representative fixtures compare an intentionally verbose legacy form against the canonical short contract. Packet, capsule, and permanent guidance remain external governed context rather than copied into the short contract.",
+    "tokenComparison": "UNAVAILABLE_WITHOUT_VALID_COMPARABLE_END_TO_END_TASK_REPLAY",
+    "correctness": "Contract fixture equivalence verifies retained unique scope, authority, non-goals, and completion requirements; it is not a product-work replay."
+  },
+  "promptCompaction": [
+    {
+      "id": "focused-repair",
+      "taskClass": "bug-repair",
+      "comparison": {
+        "schemaVersion": "1.0",
+        "legacy": {
+          "promptBytes": 545,
+          "words": 74,
+          "estimatedTokens": 137
+        },
+        "compact": {
+          "schemaVersion": "1.0",
+          "promptBytes": 96,
+          "words": 14,
+          "estimatedTokens": 24,
+          "duplicatedPermanentContent": [],
+          "uniqueRequirementsRetained": true,
+          "authorityRequirementsRetained": true,
+          "nonGoalsRetained": true,
+          "completionRequirementsRetained": true,
+          "bloatWarning": false,
+          "hardCharacterLimit": null
+        },
+        "promptByteReductionPercent": 82.4,
+        "equivalence": {
+          "uniqueRequirementsRetained": true,
+          "authorityRequirementsRetained": true,
+          "nonGoalsRetained": true,
+          "completionRequirementsRetained": true,
+          "result": "PASS"
+        }
+      },
+      "evidenceQuality": "DETERMINISTIC_CONTRACT_FIXTURE"
+    },
+    {
+      "id": "ordinary-implementation",
+      "taskClass": "product-phase",
+      "comparison": {
+        "schemaVersion": "1.0",
+        "legacy": {
+          "promptBytes": 554,
+          "words": 74,
+          "estimatedTokens": 139
+        },
+        "compact": {
+          "schemaVersion": "1.0",
+          "promptBytes": 105,
+          "words": 14,
+          "estimatedTokens": 27,
+          "duplicatedPermanentContent": [],
+          "uniqueRequirementsRetained": true,
+          "authorityRequirementsRetained": true,
+          "nonGoalsRetained": true,
+          "completionRequirementsRetained": true,
+          "bloatWarning": false,
+          "hardCharacterLimit": null
+        },
+        "promptByteReductionPercent": 81,
+        "equivalence": {
+          "uniqueRequirementsRetained": true,
+          "authorityRequirementsRetained": true,
+          "nonGoalsRetained": true,
+          "completionRequirementsRetained": true,
+          "result": "PASS"
+        }
+      },
+      "evidenceQuality": "DETERMINISTIC_CONTRACT_FIXTURE"
+    },
+    {
+      "id": "continuation",
+      "taskClass": "tight-continuation",
+      "comparison": {
+        "schemaVersion": "1.0",
+        "legacy": {
+          "promptBytes": 554,
+          "words": 75,
+          "estimatedTokens": 139
+        },
+        "compact": {
+          "schemaVersion": "1.0",
+          "promptBytes": 105,
+          "words": 15,
+          "estimatedTokens": 27,
+          "duplicatedPermanentContent": [],
+          "uniqueRequirementsRetained": true,
+          "authorityRequirementsRetained": true,
+          "nonGoalsRetained": true,
+          "completionRequirementsRetained": true,
+          "bloatWarning": false,
+          "hardCharacterLimit": null
+        },
+        "promptByteReductionPercent": 81,
+        "equivalence": {
+          "uniqueRequirementsRetained": true,
+          "authorityRequirementsRetained": true,
+          "nonGoalsRetained": true,
+          "completionRequirementsRetained": true,
+          "result": "PASS"
+        }
+      },
+      "evidenceQuality": "DETERMINISTIC_CONTRACT_FIXTURE"
+    },
+    {
+      "id": "infrastructure",
+      "taskClass": "integration",
+      "comparison": {
+        "schemaVersion": "1.0",
+        "legacy": {
+          "promptBytes": 552,
+          "words": 73,
+          "estimatedTokens": 138
+        },
+        "compact": {
+          "schemaVersion": "1.0",
+          "promptBytes": 103,
+          "words": 13,
+          "estimatedTokens": 26,
+          "duplicatedPermanentContent": [],
+          "uniqueRequirementsRetained": true,
+          "authorityRequirementsRetained": true,
+          "nonGoalsRetained": true,
+          "completionRequirementsRetained": true,
+          "bloatWarning": false,
+          "hardCharacterLimit": null
+        },
+        "promptByteReductionPercent": 81.3,
+        "equivalence": {
+          "uniqueRequirementsRetained": true,
+          "authorityRequirementsRetained": true,
+          "nonGoalsRetained": true,
+          "completionRequirementsRetained": true,
+          "result": "PASS"
+        }
+      },
+      "evidenceQuality": "DETERMINISTIC_CONTRACT_FIXTURE"
+    },
+    {
+      "id": "documentation-record",
+      "taskClass": "documentation-only",
+      "comparison": {
+        "schemaVersion": "1.0",
+        "legacy": {
+          "promptBytes": 544,
+          "words": 73,
+          "estimatedTokens": 136
+        },
+        "compact": {
+          "schemaVersion": "1.0",
+          "promptBytes": 95,
+          "words": 13,
+          "estimatedTokens": 24,
+          "duplicatedPermanentContent": [],
+          "uniqueRequirementsRetained": true,
+          "authorityRequirementsRetained": true,
+          "nonGoalsRetained": true,
+          "completionRequirementsRetained": true,
+          "bloatWarning": false,
+          "hardCharacterLimit": null
+        },
+        "promptByteReductionPercent": 82.5,
+        "equivalence": {
+          "uniqueRequirementsRetained": true,
+          "authorityRequirementsRetained": true,
+          "nonGoalsRetained": true,
+          "completionRequirementsRetained": true,
+          "result": "PASS"
+        }
+      },
+      "evidenceQuality": "DETERMINISTIC_CONTRACT_FIXTURE"
+    },
+    {
+      "id": "release-closure",
+      "taskClass": "release-closure",
+      "comparison": {
+        "schemaVersion": "1.0",
+        "legacy": {
+          "promptBytes": 557,
+          "words": 75,
+          "estimatedTokens": 140
+        },
+        "compact": {
+          "schemaVersion": "1.0",
+          "promptBytes": 108,
+          "words": 15,
+          "estimatedTokens": 27,
+          "duplicatedPermanentContent": [],
+          "uniqueRequirementsRetained": true,
+          "authorityRequirementsRetained": true,
+          "nonGoalsRetained": true,
+          "completionRequirementsRetained": true,
+          "bloatWarning": false,
+          "hardCharacterLimit": null
+        },
+        "promptByteReductionPercent": 80.6,
+        "equivalence": {
+          "uniqueRequirementsRetained": true,
+          "authorityRequirementsRetained": true,
+          "nonGoalsRetained": true,
+          "completionRequirementsRetained": true,
+          "result": "PASS"
+        }
+      },
+      "evidenceQuality": "DETERMINISTIC_CONTRACT_FIXTURE"
+    }
+  ],
+  "calibration": {
+    "exactCorpus": {
+      "count": 7,
+      "totalExactTokens": 9883558,
+      "source": "Project Trim v1.0-R1 Appendix I",
+      "samples": [
+        {
+          "id": "E1",
+          "taskClass": "DENSE_CONTINUATION",
+          "exactTokens": 81156,
+          "durationMinutes": 4.033333333333333
+        },
+        {
+          "id": "E2",
+          "taskClass": "DENSE_CONTINUATION",
+          "exactTokens": 187806,
+          "durationMinutes": 8.216666666666667
+        },
+        {
+          "id": "E3",
+          "taskClass": "WAIT_MONITOR_HEAVY",
+          "exactTokens": 136326,
+          "durationMinutes": 25.566666666666666
+        },
+        {
+          "id": "E4",
+          "taskClass": "MIXED_ENGINEERING",
+          "exactTokens": 619819,
+          "durationMinutes": 57.93333333333333
+        },
+        {
+          "id": "E5",
+          "taskClass": "MIXED_ENGINEERING",
+          "exactTokens": 1050704,
+          "durationMinutes": 119
+        },
+        {
+          "id": "E6",
+          "taskClass": "MIXED_ENGINEERING",
+          "exactTokens": 1957467,
+          "durationMinutes": 218
+        },
+        {
+          "id": "E7",
+          "taskClass": "MIXED_ENGINEERING",
+          "exactTokens": 5850280,
+          "durationMinutes": 550
+        }
+      ]
+    },
+    "leaveOneOut": {
+      "schemaVersion": "1.0",
+      "estimatorVersion": "project-trim-usage-estimator-1.0",
+      "method": "LEAVE_ONE_OUT_REGIME_PEERS_WITH_GOVERNING_SPARSE_FALLBACK",
+      "sampleCount": 7,
+      "results": [
+        {
+          "id": "E1",
+          "exactTokens": 81156,
+          "estimate": 92200,
+          "absoluteResidual": 11044,
+          "percentageResidual": 13.6,
+          "rangeCovered": true,
+          "heldOut": true,
+          "taskClass": "DENSE_CONTINUATION",
+          "calibrationBasis": "SAME_REGIME_PEERS_EXCLUDING_HELD_OUT_SAMPLE"
+        },
+        {
+          "id": "E2",
+          "exactTokens": 187806,
+          "estimate": 165300,
+          "absoluteResidual": 22506,
+          "percentageResidual": 12,
+          "rangeCovered": true,
+          "heldOut": true,
+          "taskClass": "DENSE_CONTINUATION",
+          "calibrationBasis": "SAME_REGIME_PEERS_EXCLUDING_HELD_OUT_SAMPLE"
+        },
+        {
+          "id": "E3",
+          "exactTokens": 136326,
+          "estimate": 153400,
+          "absoluteResidual": 17074,
+          "percentageResidual": 12.5,
+          "rangeCovered": true,
+          "heldOut": true,
+          "taskClass": "WAIT_MONITOR_HEAVY",
+          "calibrationBasis": "GOVERNING_SPARSE_REGIME_FALLBACK"
+        },
+        {
+          "id": "E4",
+          "exactTokens": 619819,
+          "estimate": 520200,
+          "absoluteResidual": 99619,
+          "percentageResidual": 16.1,
+          "rangeCovered": true,
+          "heldOut": true,
+          "taskClass": "MIXED_ENGINEERING",
+          "calibrationBasis": "SAME_REGIME_PEERS_EXCLUDING_HELD_OUT_SAMPLE"
+        },
+        {
+          "id": "E5",
+          "exactTokens": 1050704,
+          "estimate": 1265800,
+          "absoluteResidual": 215096,
+          "percentageResidual": 20.5,
+          "rangeCovered": true,
+          "heldOut": true,
+          "taskClass": "MIXED_ENGINEERING",
+          "calibrationBasis": "SAME_REGIME_PEERS_EXCLUDING_HELD_OUT_SAMPLE"
+        },
+        {
+          "id": "E6",
+          "exactTokens": 1957467,
+          "estimate": 2318800,
+          "absoluteResidual": 361333,
+          "percentageResidual": 18.5,
+          "rangeCovered": true,
+          "heldOut": true,
+          "taskClass": "MIXED_ENGINEERING",
+          "calibrationBasis": "SAME_REGIME_PEERS_EXCLUDING_HELD_OUT_SAMPLE"
+        },
+        {
+          "id": "E7",
+          "exactTokens": 5850280,
+          "estimate": 4938600,
+          "absoluteResidual": 911680,
+          "percentageResidual": 15.6,
+          "rangeCovered": true,
+          "heldOut": true,
+          "taskClass": "MIXED_ENGINEERING",
+          "calibrationBasis": "SAME_REGIME_PEERS_EXCLUDING_HELD_OUT_SAMPLE"
+        }
+      ],
+      "medianAbsoluteResidual": 99619,
+      "rangeCoveragePercent": 100,
+      "poorFitClasses": []
+    }
+  },
+  "optionalIntegrations": {
+    "bridgewatch": {
+      "disposition": "EVALUATED_NOT_ADOPTED",
+      "reason": "Current Bridgewatch telemetry is a private authenticated service heartbeat seam; generic Project Trim task records would add a credentialed delivery dependency without improving release authority."
+    },
+    "skills": {
+      "disposition": "EVALUATED_PLATFORM_CONTROL_UNAVAILABLE",
+      "reason": "Progressive-disclosure workflow packages may consume packets and capsules but must not duplicate governing or release authority."
+    },
+    "modelRouting": {
+      "disposition": "EVALUATED_PLATFORM_CONTROL_UNAVAILABLE",
+      "highRiskDefault": "STRONGEST_VALIDATED_CONFIGURATION",
+      "ordinaryDefault": "STRONG_DEFAULT",
+      "reason": "No task is silently downgraded; efficient routing requires representative evidence."
+    }
+  },
+  "programTokenReductionTarget": {
+    "target": "40-60_PERCENT_FOR_SUITABLE_ORDINARY_TASKS",
+    "disposition": "NOT_YET_DEFENSIBLY_MEASURABLE",
+    "reason": "No comparable end-to-end ordinary-task token replay is available; prompt bytes and fixture equivalence are direct proxies, not token savings."
+  },
+  "integrity": {
+    "semanticDigest": "de24535c7ba5fbb44241c8b66fe6f4d581191b3278c81a7a5be9268276ce50bc"
+  }
+}

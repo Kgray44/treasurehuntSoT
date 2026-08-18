@@ -74,3 +74,19 @@ Record official exposed goal totals as `EXACT`. Otherwise use
 that order of evidence. Missing accounting is never zero. Estimates are not
 official billing: retain their point/range, activity regime, confidence,
 provenance, and estimator version.
+
+## Phase 4 default measurement
+
+For new READY Project Trim tasks, use the short task contract from
+`scripts/agent-context/trim-phase4.mjs`: keep only unique scope, unique
+non-goals, special authorization when needed, deliverables, and the selected
+execution profile. Permanent rules remain here and in current authority; short
+is the default, not a hard size limit.
+
+Record the privacy-safe Context Budget and Usage Worksheet when evidence is
+available. Budgets are advisory diagnostics, never release authority or a
+token kill switch. The Phase 4 telemetry contract excludes raw prompts,
+transcripts, secrets, and credentials; it records `UNAVAILABLE` rather than
+zero when no defensible usage range exists. Review drift warnings, but continue
+necessary in-scope work and preserve Sounding Line as the sole `RELEASE_GO`
+authority.
