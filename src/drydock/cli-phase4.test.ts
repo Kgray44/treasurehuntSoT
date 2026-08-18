@@ -11,7 +11,7 @@ const write = (name: string, value: unknown) => {
   const root = roots[0] ?? (roots[0] = mkdtempSync(join(tmpdir(), "drydock-cli-phase4-")));
   const file = join(root, name); writeFileSync(file, JSON.stringify(value)); return file;
 };
-const run = (...args: string[]) => execFileSync(process.execPath, ["--import", "tsx", "scripts/drydock/cli.ts", ...args], { cwd: resolve(__dirname, "../.."), encoding: "utf8" });
+const run = (...args: string[]) => execFileSync(process.execPath, ["--import", "tsx", "src/drydock/phase4-cli.ts", ...args], { cwd: resolve(__dirname, "../.."), encoding: "utf8" });
 
 const snapshot = { schemaVersion: 1, tale: { id: "tale", slug: "tale", title: "Tale", subtitle: null, shortDescription: null, longDescription: null, coverAssetId: null, theme: "CARTOGRAPHERS_TABLE", visibility: "PRIVATE", playerCountMin: 1, playerCountMax: 1, estimatedDuration: null, contentWarnings: null }, chapters: [], assets: [], locations: [], artifacts: [], publishedAt: "2026-08-13T00:00:00.000Z" };
 

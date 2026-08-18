@@ -6,12 +6,7 @@ import path from "node:path";
 import { format, resolveConfig } from "prettier";
 import ts from "typescript";
 import { promisify } from "node:util";
-import {
-  carryForwardHistoricalAliases,
-  reconcileLegacySemanticIds,
-  semanticTestId,
-  validateRegistryIdentity,
-} from "./test-identity.mjs";
+import { carryForwardHistoricalAliases, semanticTestId, validateRegistryIdentity } from "./test-identity.mjs";
 
 const root = process.cwd();
 const registryPath = path.join(root, "testing", "generated", "active-test-registry.json");
@@ -444,7 +439,7 @@ for (const absolute of sources.flat()) {
     });
 }
 cases.push(...(await discoverPlaywright()));
-carryForwardHistoricalAliases(cases, reconcileLegacySemanticIds(cases, previousRegistry.cases ?? []));
+carryForwardHistoricalAliases(cases, previousRegistry.cases ?? []);
 validateRegistryIdentity(cases);
 await fs.mkdir(path.join(root, "testing", "generated"), { recursive: true });
 const prettierConfig = (await resolveConfig(registryPath)) ?? {};

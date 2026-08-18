@@ -19,7 +19,6 @@ const eslintConfig = defineConfig([
     ".admiralty-phase1-build/**",
     ".next-admiralty-phase2*/**",
     ".next-shipwright-phase2*/**",
-    ".next-drydock-phase4-browser/**",
     "next-env.d.ts",
   ]),
 ]);

@@ -15,8 +15,7 @@ for (const target of [databasePath, `${databasePath}-wal`, `${databasePath}-shm`
 const port = await availablePort();
 const sourceSha = output("git", ["rev-parse", "HEAD"]);
 const env = { ...process.env, DRYDOCK_PHASE4_TASK_ROOT: taskRoot, DRYDOCK_PHASE4_PORT: String(port), DRYDOCK_PHASE4_REHEARSAL_DB: databasePath, DATABASE_URL: sqliteUrl(databasePath), NEXT_DIST_DIR: ".next-drydock-phase4-browser", VOYAGEWRIGHT_BUILD_SHA: sourceSha };
-
-run("scripts/drydock/rehearse-phase4-migrations.mjs", [], env);
+run("src/drydock/rehearse-phase4-migrations.mjs", [], env);
 run("node_modules/@playwright/test/cli.js", ["test", "-c", "playwright.drydock-phase4.config.ts"], env);
 process.stdout.write(`${JSON.stringify({ status: "DRYDOCK_PHASE4_LOCAL_BROWSER_AXE_PASSED", sourceSha, taskRoot, port, database: "TASK_OWNED_REHEARSED_SQLITE" })}\n`);
 

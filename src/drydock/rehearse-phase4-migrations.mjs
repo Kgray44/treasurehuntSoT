@@ -16,23 +16,22 @@ const tableExists = (name) => Boolean(database.prepare("SELECT name FROM sqlite_
 
 try {
   database.exec("PRAGMA foreign_keys = ON;");
-  const migrations = (await readdir(sqliteRoot, { withFileTypes: true }))
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => entry.name)
-    .sort();
+  const migrations = (await readdir(sqliteRoot, { withFileTypes: true })).filter((entry) => entry.isDirectory()).map((entry) => entry.name).sort();
   const apply = async (name) => {
-    try { database.exec(await readFile(join(sqliteRoot, name, "migration.sql"), "utf8")); applied.push(name); }
-    catch (cause) { throw new Error(`DRYDOCK_PHASE4_MIGRATION_REHEARSAL_FAILED:${name}:${cause instanceof Error ? cause.message : String(cause)}`); }
+    try {
+      database.exec(await readFile(join(sqliteRoot, name, "migration.sql"), "utf8"));
+      applied.push(name);
+    } catch (cause) {
+      throw new Error(`DRYDOCK_PHASE4_MIGRATION_REHEARSAL_FAILED:${name}:${cause instanceof Error ? cause.message : String(cause)}`);
+    }
   };
   for (const name of migrations.filter((name) => name < "20260813100000_drydock_phase4_readiness_evidence")) await apply(name);
-  // Representative Phase 3 rows must survive the additive Phase 4 migrations.
   database.prepare('INSERT INTO "Chronicle" ("id", "slug", "title", "creatorId", "updatedAt") VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)').run("phase4-chronicle", "phase4-chronicle", "Phase 4 rehearsal", "phase4-creator");
   database.prepare('INSERT INTO "TaleDraft" ("id", "taleId", "revisionNumber", "createdBy", "updatedAt") VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)').run("phase4-draft", "phase4-chronicle", 1, "phase4-creator");
   database.prepare('INSERT INTO "DrydockScenarioSuite" ("id", "draftId", "suiteId", "title", "sourceChecksum", "updatedAt") VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)').run("phase4-suite", "phase4-draft", "phase4-suite", "Phase 3 representative Suite", "a".repeat(64));
   for (const name of migrations.filter((name) => name >= "20260813100000_drydock_phase4_readiness_evidence")) await apply(name);
   const representative = database.prepare('SELECT "suiteId", "sourceChecksum", "revision" FROM "DrydockScenarioSuite" WHERE "id" = ?').get("phase4-suite");
-  if (!representative || representative.suiteId !== "phase4-suite" || representative.sourceChecksum !== "a".repeat(64) || representative.revision !== 1)
-    throw new Error("DRYDOCK_PHASE4_REPRESENTATIVE_PHASE3_DATA_NOT_PRESERVED");
+  if (!representative || representative.suiteId !== "phase4-suite" || representative.sourceChecksum !== "a".repeat(64) || representative.revision !== 1) throw new Error("DRYDOCK_PHASE4_REPRESENTATIVE_PHASE3_DATA_NOT_PRESERVED");
   for (const table of ["DrydockCompatibilityRun", "DrydockExternalEvidenceReference", "DrydockPublishingEvidence", "DrydockScenarioSuiteEvidence"])
     if (!tableExists(table)) throw new Error(`DRYDOCK_PHASE4_MIGRATION_TABLE_MISSING:${table}`);
   const suiteColumns = database.prepare('PRAGMA table_info("DrydockScenarioSuite");').all().map((column) => column.name);
@@ -48,4 +47,7 @@ try {
     for (const fragment of fragments) if (!sql.includes(fragment)) throw new Error(`DRYDOCK_PHASE4_MYSQL_PARITY_MISSING:${name}:${fragment}`);
   }
   process.stdout.write(`${JSON.stringify({ valid: true, appliedMigrationCount: applied.length, finalMigration: applied.at(-1), phase3RepresentativeData: "VERIFIED", phase4Tables: 4, suiteRevision: "VERIFIED", publishIdempotency: "VERIFIED", mysqlParity: "STATIC_VERIFIED" })}\n`);
-} finally { database.close(); if (!requestedDatabase) await rm(temporaryRoot, { recursive: true, force: true }); }
+} finally {
+  database.close();
+  if (!requestedDatabase) await rm(temporaryRoot, { recursive: true, force: true });
+}

@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   carryForwardHistoricalAliases,
-  reconcileLegacySemanticIds,
   resolveHistoricalTestIdentity,
   semanticTestId,
   validateRegistryIdentity,
@@ -28,16 +27,6 @@ test("regeneration carries a prior generated ID forward without treating it as d
   assert.deepEqual(after.historicalAliases, [before.id]);
   assert.equal(resolveHistoricalTestIdentity(before.id, [after]).id, after.id);
   assert.equal(resolveHistoricalTestIdentity(after.id, [after]).semanticId, before.semanticId);
-});
-
-test("legacy registry rows gain a semantic identity only from an exact current generated ID", () => {
-  const current = caseFor("sl-test-11111111111111111111");
-  const [reconciled] = reconcileLegacySemanticIds([current], [{ ...current, semanticId: undefined }]);
-  assert.equal(reconciled.semanticId, current.semanticId);
-  assert.throws(
-    () => reconcileLegacySemanticIds([current], [{ ...current, id: "sl-test-22222222222222222222", semanticId: undefined }]),
-    /LEGACY_SEMANTIC_MIGRATION_UNRESOLVED:sl-test-22222222222222222222/,
-  );
 });
 
 test("duplicate semantic identity and ambiguous historical aliases fail closed", () => {
