@@ -569,8 +569,10 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
   assert.match(binding, /trusted-active-authority-selection\.mjs/u);
   assert.match(binding, /active-authority-candidates\.json/u);
   assert.match(binding, /qualified-base to[\s\S]*?current-base interval itself/u);
-  assert.match(binding, /MAINTENANCE_\(AUTHORITY_CHANGE\|SCOPE\)_REJECTED/u);
-  assert.match(binding, /separate trusted authority[\s\S]*?sole admission decision/u);
+  assert.match(binding, /MAINTENANCE_(AUTHORITY_CHANGE|SCOPE)_REJECTED/u);
+  assert.match(binding, /trusted policy, not a hand-maintained list of authority files/u);
+  assert.match(binding, /trusted-authority-maintenance-selection\.mjs/u);
+  assert.match(binding, /SEALED_AUTHORITY_MAINTENANCE_AUTHORITY_NOT_UNIQUE/u);
 });
 
 test("BrowserOnly Harborlight lanes do not repeat independent broad gates", async () => {
