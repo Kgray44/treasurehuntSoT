@@ -56,6 +56,24 @@ const productSourcePaths = (paths) =>
 const uniqueOwners = (owners) => [
   ...new Map((owners ?? []).filter((owner) => owner?.id).map((owner) => [owner.id, owner])).values(),
 ];
+const mergedTrustedOwners = ({ registryOwners, descriptors }) => {
+  const owners = new Map();
+  for (const owner of registryOwners) owners.set(owner.id, { ...owner });
+  for (const descriptor of descriptors) {
+    const existing = owners.get(descriptor.id) ?? {};
+    owners.set(descriptor.id, {
+      ...existing,
+      ...descriptor,
+      sourcePaths: [...new Set([...(existing.sourcePaths ?? []), ...(descriptor.sourcePaths ?? [])])],
+      testPaths: [...new Set([...(existing.testPaths ?? []), ...(descriptor.testPaths ?? [])])],
+      contractIds: [...new Set([...(existing.contractIds ?? []), ...(descriptor.contractIds ?? [])])],
+      supportingOwnerIds: [
+        ...new Set([...(existing.supportingOwnerIds ?? []), ...(descriptor.supportingOwnerIds ?? [])]),
+      ],
+    });
+  }
+  return [...owners.values()];
+};
 
 function resolveTrustedPrimaryOwner({
   trustedRegistries,
@@ -70,6 +88,7 @@ function resolveTrustedPrimaryOwner({
     ...(trustedProjectDescriptors ?? []),
     ...(trustedProjectDescriptor ? [trustedProjectDescriptor] : []),
   ]);
+  const trustedOwners = mergedTrustedOwners({ registryOwners, descriptors });
   const realProductPaths = productSourcePaths(productPaths);
   const descriptorMatches = descriptors.filter((owner) =>
     realProductPaths.some((file) => matchesAny(file, owner?.sourcePaths ?? [])),
@@ -77,7 +96,36 @@ function resolveTrustedPrimaryOwner({
   const registryMatches = registryOwners.filter((owner) =>
     realProductPaths.some((file) => matchesAny(file, owner?.sourcePaths ?? [])),
   );
-  if (!realProductPaths.length) errors.push("PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_SOURCE_REQUIRED");
+  if (!realProductPaths.length) {
+    errors.push(
+      "PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_SOURCE_REQUIRED",
+      "PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_OWNER_UNRESOLVED",
+    );
+    return { owner: null, supportingOwners: [], errors, realProductPaths };
+  }
+  if (expectedPrimaryId) {
+    const owner = trustedOwners.find((candidate) => candidate.id === expectedPrimaryId);
+    const hasTrustedContractAuthority = (trustedRegistries?.contracts?.contracts ?? []).some(
+      (contract) => contract?.authority === expectedPrimaryId && contract?.owners?.includes(expectedPrimaryId),
+    );
+    if (!owner || !hasTrustedContractAuthority) {
+      errors.push("PRODUCT_VERIFICATION_REGISTRATION_NEW_CONTRACT_AUTHORITY_UNTRUSTED");
+      return { owner: null, supportingOwners: [], errors, realProductPaths };
+    }
+    for (const file of realProductPaths) {
+      if (!trustedOwners.some((candidate) => matchesAny(file, candidate?.sourcePaths ?? [])))
+        errors.push(`PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_PATH_UNMAPPED:${file}`);
+    }
+    for (const descriptor of descriptorMatches) {
+      if (descriptor.id !== owner.id && !(descriptor.supportingOwnerIds ?? []).includes(owner.id))
+        errors.push(`PRODUCT_VERIFICATION_REGISTRATION_SUPPORTING_OWNER_REQUIRED:${descriptor.id}`);
+    }
+    const supportingOwners = trustedOwners.filter(
+      (candidate) =>
+        candidate.id !== owner.id && realProductPaths.some((file) => matchesAny(file, candidate?.sourcePaths ?? [])),
+    );
+    return { owner, supportingOwners, errors, realProductPaths };
+  }
   if (descriptorMatches.length > 1) errors.push("PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_OWNER_CONFLICT");
   if (descriptorMatches.length === 1) {
     const owner = descriptorMatches[0];
@@ -90,16 +138,6 @@ function resolveTrustedPrimaryOwner({
     if (supportingOwners.length !== supportingOwnerIds.size)
       errors.push("PRODUCT_VERIFICATION_REGISTRATION_SUPPORTING_OWNER_UNRESOLVED");
     return { owner, supportingOwners, errors, realProductPaths };
-  }
-  if (expectedPrimaryId) {
-    const owner = registryMatches.find((candidate) => candidate.id === expectedPrimaryId);
-    if (owner)
-      return {
-        owner,
-        supportingOwners: registryMatches.filter((candidate) => candidate.id !== owner.id),
-        errors,
-        realProductPaths,
-      };
   }
   if (registryMatches.length !== 1) {
     errors.push(
