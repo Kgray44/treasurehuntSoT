@@ -46,11 +46,12 @@ async function register(browser: import("@playwright/test").Browser, label: stri
 }
 
 async function seedDetail(ownerId: string, crewId: string) {
-  const taleId = `wakebook-phase2-tale-${suffix}`;
-  const chapterId = `wakebook-phase2-chapter-${suffix}`;
-  const blockId = `wakebook-phase2-block-${suffix}`;
+  const detailSuffix = randomUUID().replaceAll("-", "").slice(0, 16);
+  const taleId = `wakebook-phase2-tale-${detailSuffix}`;
+  const chapterId = `wakebook-phase2-chapter-${detailSuffix}`;
+  const blockId = `wakebook-phase2-block-${detailSuffix}`;
   const chronicle = await db.chronicle.create({
-    data: { id: taleId, slug: `wakebook-phase2-${suffix}`, title: "The Remembered Beacon", creatorId: ownerId },
+    data: { id: taleId, slug: `wakebook-phase2-${detailSuffix}`, title: "The Remembered Beacon", creatorId: ownerId },
   });
   const snapshot = {
     schemaVersion: 1,
@@ -115,9 +116,9 @@ async function seedDetail(ownerId: string, crewId: string) {
   });
   const record = await db.playerChronicleRecord.create({
     data: {
-      id: `wakebook-phase2-record-${suffix}`,
+      id: `wakebook-phase2-record-${detailSuffix}`,
       playerProfileId: ownerId,
-      sourcePlaythroughId: `wakebook-phase2-playthrough-${suffix}`,
+      sourcePlaythroughId: `wakebook-phase2-playthrough-${detailSuffix}`,
       publishedVersionId: version.id,
       publishedVersionChecksum: checksum,
       chronicleTitleSnapshot: chronicle.title,
@@ -166,14 +167,14 @@ async function seedDetail(ownerId: string, crewId: string) {
         },
       ]),
       artifactSummary: "[]",
-      sourceFingerprint: `wakebook-phase2-fingerprint-${suffix}`,
+      sourceFingerprint: `wakebook-phase2-fingerprint-${detailSuffix}`,
     },
   });
   await db.playerChronicleParticipantSnapshot.createMany({
     data: [
       {
         historyRecordId: record.id,
-        sourceMembershipId: `wakebook-phase2-owner-${suffix}`,
+        sourceMembershipId: `wakebook-phase2-owner-${detailSuffix}`,
         participantProfileId: ownerId,
         displayNameSnapshot: "Wakebook Owner",
         participationRole: "CAPTAIN",
@@ -183,7 +184,7 @@ async function seedDetail(ownerId: string, crewId: string) {
       },
       {
         historyRecordId: record.id,
-        sourceMembershipId: `wakebook-phase2-crew-${suffix}`,
+        sourceMembershipId: `wakebook-phase2-crew-${detailSuffix}`,
         participantProfileId: crewId,
         displayNameSnapshot: "Wakebook Crew",
         participationRole: "PLAYER",
@@ -195,7 +196,7 @@ async function seedDetail(ownerId: string, crewId: string) {
   });
   const definition = await db.achievementDefinition.create({
     data: {
-      key: `wakebook-phase2-achievement-${suffix}`,
+      key: `wakebook-phase2-achievement-${detailSuffix}`,
       definitionVersion: 1,
       titleSnapshot: "Beacon Keeper",
       descriptionSnapshot: "Recorded when the beacon was lit.",
@@ -208,7 +209,7 @@ async function seedDetail(ownerId: string, crewId: string) {
       achievementDefinitionId: definition.id,
       definitionVersion: 1,
       evidenceSnapshot: JSON.stringify({ sourcePlaythroughId: record.sourcePlaythroughId }),
-      sourceFingerprint: `wakebook-phase2-achievement-fingerprint-${suffix}`,
+      sourceFingerprint: `wakebook-phase2-achievement-fingerprint-${detailSuffix}`,
       earnedAt: record.completedAt,
     },
   });
@@ -216,17 +217,17 @@ async function seedDetail(ownerId: string, crewId: string) {
     data: {
       playerProfileId: ownerId,
       sourcePlaythroughId: record.sourcePlaythroughId,
-      sourceGrantEventId: `wakebook-phase2-grant-${suffix}`,
+      sourceGrantEventId: `wakebook-phase2-grant-${detailSuffix}`,
       sourceGrantSequence: 2,
       sourceBlockId: blockId,
       publishedVersionId: version.id,
       publishedVersionChecksum: checksum,
       chronicleTitleSnapshot: chronicle.title,
-      artifactDefinitionId: `wakebook-phase2-artifact-${suffix}`,
+      artifactDefinitionId: `wakebook-phase2-artifact-${detailSuffix}`,
       artifactNameSnapshot: "The Harbor Lantern",
       recipientPolicy: "ALL_ACTIVE_PLAYERS",
       ownershipState: "OWNED",
-      sourceFingerprint: `wakebook-phase2-artifact-fingerprint-${suffix}`,
+      sourceFingerprint: `wakebook-phase2-artifact-fingerprint-${detailSuffix}`,
       grantedAt: record.completedAt,
     },
   });
@@ -235,12 +236,12 @@ async function seedDetail(ownerId: string, crewId: string) {
       playerProfileId: ownerId,
       sourcePlaythroughId: record.sourcePlaythroughId,
       publishedVersionId: version.id,
-      assemblyKeySnapshot: `beacon-assembly-${suffix}`,
+      assemblyKeySnapshot: `beacon-assembly-${detailSuffix}`,
       assembledArtifactName: "Restored Beacon",
       recipeSnapshot: "{}",
       status: "COMPLETED",
       completedAt: record.completedAt,
-      sourceFingerprint: `wakebook-phase2-assembly-fingerprint-${suffix}`,
+      sourceFingerprint: `wakebook-phase2-assembly-fingerprint-${detailSuffix}`,
     },
   });
   return {
