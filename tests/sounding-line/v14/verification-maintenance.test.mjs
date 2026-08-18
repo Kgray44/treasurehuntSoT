@@ -273,6 +273,22 @@ test("ordinary candidates fail closed for unknown paths", async () => {
   assert.deepEqual(result.errors, ["ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:unowned/bridgewatch-lookalike.ts"]);
 });
 
+test("structurally proven project supplements admit the Tideglass surface without a named policy rule", async () => {
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: await readOrdinaryCandidatePolicy(),
+    changedPaths: [
+      "src/tideglass/core.ts",
+      "tests/tideglass/canonicalization.test.ts",
+      "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_4_Validation_Record.md",
+      "scripts/tideglass/seed-phase3-fixture.mjs",
+      "README.md",
+      "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+    ],
+  });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(result.errors, []);
+});
+
 test("canonical Deepwater governance and tooling paths are ordinary-admissible without broadening lookalikes", async () => {
   const policy = await readOrdinaryCandidatePolicy();
   const admitted = [
