@@ -63,6 +63,27 @@ export function carryForwardHistoricalAliases(cases, previousCases = []) {
   return cases;
 }
 
+// v1.4.1 introduced semantic identities after some already-generated registry
+// rows existed. A paused product branch may therefore contribute a legacy row
+// with its stable generated ID but no semanticId. Rebind only an exact current
+// generated ID; any missing correspondence remains a fail-closed migration
+// error rather than being silently discarded.
+export function reconcileLegacySemanticIds(cases, previousCases = []) {
+  const currentById = new Map((cases ?? []).map((entry) => [entry.id, entry]));
+  const errors = [];
+  const reconciled = (previousCases ?? []).map((entry) => {
+    if (/^sl-semantic-[0-9a-f]{20}$/u.test(entry.semanticId ?? "")) return entry;
+    const current = currentById.get(entry.id);
+    if (!current || !/^sl-semantic-[0-9a-f]{20}$/u.test(current.semanticId ?? "")) {
+      errors.push(`LEGACY_SEMANTIC_MIGRATION_UNRESOLVED:${entry.id ?? "missing"}`);
+      return entry;
+    }
+    return { ...entry, semanticId: current.semanticId };
+  });
+  if (errors.length) throw new Error([...new Set(errors)].sort().join("\n"));
+  return reconciled;
+}
+
 export function resolveHistoricalTestIdentity(identity, cases) {
   const { semanticOwners, runtimeOwners, aliases } = validateRegistryIdentity(cases);
   const matches = [runtimeOwners.get(identity), semanticOwners.get(identity), aliases.get(identity)].filter(Boolean);
