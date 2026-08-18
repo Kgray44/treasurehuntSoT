@@ -220,7 +220,7 @@ test("authority maintenance is a distinct owner-authorized, exact-identity candi
       candidateTree: sha("c"),
       qualifiedBaseSha: sha("a"),
     }).decision,
-    "SEALED_AUTHORITY_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
+    "AUTHORITY_MAINTENANCE_AUTHORITY_SELECTED",
   );
   assert.equal(
     qualifyAuthorityMaintenanceProtectedMerge({

@@ -148,7 +148,9 @@ export function selectSealedAuthorityMaintenance({ runs, candidateSha, candidate
       run?.event === "workflow_dispatch" &&
       run?.status === "completed" &&
       run?.conclusion === "success" &&
-      run?.headSha === candidateSha &&
+      // Authority-maintenance dispatches execute from trusted main. Their
+      // workflow-run head is therefore main, while the sealed plan—not the
+      // dispatcher head—binds the exact candidate, tree, and qualified base.
       plan?.authority === "SOUNDING_LINE_AUTHORITY_MAINTENANCE" &&
       plan?.disposition === "AUTHORITY_MAINTENANCE_GO" &&
       plan?.candidateSha === candidateSha &&
