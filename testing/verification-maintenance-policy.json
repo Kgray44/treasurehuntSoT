@@ -119,6 +119,7 @@
       "scripts/features/**",
       "testing/generated/p34-retirement-ledger.json"
     ],
+    "sourceBoundFeatureCatalogReconciliationPathGlobs": ["Development_Docs/Features/branch-complete/*.json"],
     "playwrightConfigPathGlobs": ["playwright*.config.*"],
     "testRegistrySourcePathGlobs": ["scripts/sounding-line/test-registry.mjs"],
     "sharedVerificationSuiteIds": ["static.core", "validation.documentation", "unit.feature-catalog"],

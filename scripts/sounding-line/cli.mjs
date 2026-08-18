@@ -310,6 +310,11 @@ function validatePolicy(policy) {
     !registration.semanticPathGlobs.length ||
     registration.semanticPathGlobs.some((entry) => !registration.pathGlobs.includes(entry)) ||
     !Array.isArray(registration?.ancillaryPathGlobs) ||
+    !Array.isArray(registration?.sourceBoundFeatureCatalogReconciliationPathGlobs) ||
+    !registration.sourceBoundFeatureCatalogReconciliationPathGlobs.length ||
+    registration.sourceBoundFeatureCatalogReconciliationPathGlobs.some(
+      (entry) => entry !== "Development_Docs/Features/branch-complete/*.json",
+    ) ||
     !Array.isArray(registration?.playwrightConfigPathGlobs) ||
     !Array.isArray(registration?.testRegistrySourcePathGlobs) ||
     !Array.isArray(registration?.sharedVerificationSuiteIds) ||
