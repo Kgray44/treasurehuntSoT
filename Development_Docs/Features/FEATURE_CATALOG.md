@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `02dcb963cdbd7b018aa68313d35a2f569a0f5764`
+Audited source commit: `69d5fc42bddead88be457f2b8a3da8b56926abc6`
 
 ## Status vocabulary
 
@@ -959,7 +959,7 @@ A private, standalone, read-only development mission-control dashboard projects 
 ## FT-035 - Bridgewatch Governed Signal Projection
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Bridgewatch Phases 2-3
+**Program or subsystem:** Project Bridgewatch v1.2 and v2.0 Phase 1
 
 A private Bridgewatch extension that projects explicit Project Registry, Sounding Line, and GitHub observer evidence into durable current and historical operational state and is available to canonically authorized Voyagewright operators through a same-host /bridgewatch gateway, while keeping test, release, merge, and project-completion authority outside the dashboard.
 
@@ -974,6 +974,7 @@ A private Bridgewatch extension that projects explicit Project Registry, Soundin
 - Lifecycle tabs, project biography, worker/test summaries, responsive phone and wide control-room layouts, and reduced-motion support
 - Canonical PLATFORM_OBSERVE authorization with a same-host, allowlisted GET/HEAD gateway for local and deployed private access
 - Independent loopback service deployment with safe gateway failure and machine telemetry excluded from the browser mount
+- Sources & Data Quality station with source identity, authority, schema, timestamps, count reconciliation, coverage, explicit failure classification, repairability, and retained-stale-data disclosure
 
 ### Primary surfaces
 
@@ -984,6 +985,7 @@ A private Bridgewatch extension that projects explicit Project Registry, Soundin
 - Bridgewatch remains an observer and cannot create, approve, merge, retry, or authorize work.
 - Mainline integration does not claim a live private deployment, provider proof, or owner-acceptance record.
 - Bridgewatch does not infer completion, ETA, risk, or percentage progress from activity, branch commits, or test counts.
+- Project Bridgewatch v2.0 Phase 1 does not begin v2.0 Phase 2 queue/reporter expansion or Phase 3 deployment work.
 
 ### Evidence
 
@@ -1602,4 +1604,4 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `02dcb963cdbd7b018aa68313d35a2f569a0f5764`
+Generation source commit: `69d5fc42bddead88be457f2b8a3da8b56926abc6`

@@ -27,8 +27,9 @@ dashboard. It does not belong to the public Next.js application.
 - The only POST routes are machine-only activity telemetry endpoints. They use
   a dedicated Bridgewatch token, cannot change lifecycle/milestone/finalizer
   truth, and retain no prompts, logs, commands, secrets, or private content.
-- GitHub and accepted repository records remain authoritative. A missing
-  denominator displays `UNMEASURED`; a cached green check is not a release Go.
+- GitHub and accepted repository records remain authoritative. Ordinary missing
+  display fields read `NOT_RECORDED`; source coverage and limitations appear in
+  **Sources & Data Quality**. A cached green check is not a release Go.
 
 ## Run privately
 
@@ -102,8 +103,10 @@ GitHub snapshot is cached. `GET /api/summary`, `/api/projects`,
 `/api/activity?since=...`, and `/api/sources` are human read-only observation
 endpoints. `/api/history` is bounded, filters normalized meaningful events,
 and defaults to the last 12 hours; `/api/activity` remains worker activity.
-Startup refreshes GitHub and the source-owned Sounding Line projection; a
-source failure retains a cached state and never blanks the board.
+The loopback listener starts before its bounded source refresh so slow
+network-backed Git metadata cannot cause a false managed-start failure. A
+source failure retains a cached state and never blanks the board. The default
+bounded read timeout is 30 seconds and remains private-host configurable.
 
 v1.2 adds `GET /api/program`, version and phase profiles below
 `/api/projects/:id`, retained PR/branch/Sounding Line profiles,

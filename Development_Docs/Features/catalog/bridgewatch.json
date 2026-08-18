@@ -30,7 +30,7 @@
     "title": "Bridgewatch Governed Signal Projection",
     "summary": "A private Bridgewatch extension that projects explicit Project Registry, Sounding Line, and GitHub observer evidence into durable current and historical operational state and is available to canonically authorized Voyagewright operators through a same-host /bridgewatch gateway, while keeping test, release, merge, and project-completion authority outside the dashboard.",
     "status": "MAINLINE",
-    "program": "Project Bridgewatch Phases 2-3",
+    "program": "Project Bridgewatch v1.2 and v2.0 Phase 1",
     "surfaces": [
       "bridgewatch",
       "/bridgewatch",
@@ -50,12 +50,14 @@
       "GitHub-authoritative branch ahead/behind and aging context with stale-work attention that never changes governed progress",
       "Lifecycle tabs, project biography, worker/test summaries, responsive phone and wide control-room layouts, and reduced-motion support",
       "Canonical PLATFORM_OBSERVE authorization with a same-host, allowlisted GET/HEAD gateway for local and deployed private access",
-      "Independent loopback service deployment with safe gateway failure and machine telemetry excluded from the browser mount"
+      "Independent loopback service deployment with safe gateway failure and machine telemetry excluded from the browser mount",
+      "Sources & Data Quality station with source identity, authority, schema, timestamps, count reconciliation, coverage, explicit failure classification, repairability, and retained-stale-data disclosure"
     ],
     "limitations": [
       "Bridgewatch remains an observer and cannot create, approve, merge, retry, or authorize work.",
       "Mainline integration does not claim a live private deployment, provider proof, or owner-acceptance record.",
-      "Bridgewatch does not infer completion, ETA, risk, or percentage progress from activity, branch commits, or test counts."
+      "Bridgewatch does not infer completion, ETA, risk, or percentage progress from activity, branch commits, or test counts.",
+      "Project Bridgewatch v2.0 Phase 1 does not begin v2.0 Phase 2 queue/reporter expansion or Phase 3 deployment work."
     ],
     "evidence": [
       { "kind": "commit", "value": "dead22dc26aeec2b722625aa9a68dc5688111fca" },

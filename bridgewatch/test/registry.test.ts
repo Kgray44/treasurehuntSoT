@@ -2,9 +2,16 @@ import { describe, expect, it } from "vitest";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { projectProgress } from "../src/domain.js";
-import { projectRegistry } from "../src/registry.js";
+import { projectRegistry, registryForRepository } from "../src/registry.js";
 
 describe("source-indexed Project Registry", () => {
+  it("binds retained project evidence to the exact configured repository", () => {
+    expect(registryForRepository("Kgray44/treasurehuntSoT")).toEqual(
+      expect.arrayContaining([expect.objectContaining({ repository: "Kgray44/treasurehuntSoT" })]),
+    );
+    expect(registryForRepository("Kgray44/treasurehuntSoT").every((project) => project.repository === "Kgray44/treasurehuntSoT")).toBe(true);
+  });
+
   it("keeps every discovered project durable and does not turn evidence records into progress", () => {
     expect(projectRegistry.map((project) => project.id)).toContain("bridgewatch");
     expect(projectRegistry.map((project) => project.id)).toContain("sounding-line");

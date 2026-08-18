@@ -1,10 +1,14 @@
-const text = (value) => (value === null || value === undefined || value === "" ? "UNMEASURED" : String(value));
-const short = (value) => (value ? String(value).slice(0, 12) : "UNMEASURED");
+const text = (value) => (value === null || value === undefined || value === "" ? "NOT_RECORDED" : String(value));
+const short = (value) => (value ? String(value).slice(0, 12) : "NOT_RECORDED");
 let routeHost;
 const dateText = (value) =>
   value
     ? new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "medium" }).format(new Date(value))
-    : "UNMEASURED";
+    : "NOT_RECORDED";
+const sourceDateText = (value) =>
+  value
+    ? new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "medium" }).format(new Date(value))
+    : "NOT_RECORDED";
 const apiUrl = (path) => {
   const base = window.location.pathname.startsWith("/bridgewatch") ? "/bridgewatch/" : "/";
   return new URL(`${base}${String(path).replace(/^\/+/, "")}`, window.location.origin);
@@ -40,7 +44,7 @@ const detail = (entries, className = "detail") => {
   return card;
 };
 const stateClass = (value) =>
-  /FAIL|BLOCK|UNAVAILABLE|DEGRADED|STALE|ERROR/u.test(text(value))
+  /FAIL|BLOCK|UNAVAILABLE|DEGRADED|STALE|ERROR|NOT_CONFIGURED|OBSERVATION_FAILED|HISTORICAL_EVIDENCE_UNAVAILABLE/u.test(text(value))
     ? "bad"
     : /ACCEPT|HEALTHY|COMPLETE|PASS|MAINLINE/u.test(text(value))
       ? "good"
@@ -55,7 +59,7 @@ const linkButton = (label, hash) => {
   return button;
 };
 const externalLink = (label, href) => {
-  if (!href || !/^https:\/\//iu.test(href)) return element("span", "quiet", "UNMEASURED");
+  if (!href || !/^https:\/\//iu.test(href)) return element("span", "quiet", "NOT_RECORDED");
   const link = document.createElement("a");
   link.href = href;
   link.target = "_blank";
@@ -165,7 +169,7 @@ const searchText = (value) =>
   Array.isArray(value) ? value.map(searchText).join(" ") : value === null || value === undefined ? "" : String(value);
 const nodeCount = (nodes, states) => (nodes ?? []).filter((node) => states.includes(node.state)).length;
 const nodeSummary = (nodes) => ({
-  suites: [...new Set((nodes ?? []).map((node) => node.suiteId))].join(", ") || "UNMEASURED",
+  suites: [...new Set((nodes ?? []).map((node) => node.suiteId))].join(", ") || "NOT_RECORDED",
   total: nodes?.length ?? 0,
   passed: nodeCount(nodes, ["PASSED", "PASSED_AFTER_RETRY"]),
   failed: nodeCount(nodes, ["FAILED"]),
@@ -173,7 +177,7 @@ const nodeSummary = (nodes) => ({
   blocked: nodeCount(nodes, ["BLOCKED"]),
   retries: (nodes ?? []).filter((node) => node.state === "PASSED_AFTER_RETRY" || node.attempt > 1).length,
   roots: new Set((nodes ?? []).filter((node) => node.rootFailureId).map((node) => node.rootFailureId)).size,
-  resources: [...new Set((nodes ?? []).flatMap((node) => node.resources ?? []))].join(", ") || "UNMEASURED",
+  resources: [...new Set((nodes ?? []).flatMap((node) => node.resources ?? []))].join(", ") || "NOT_RECORDED",
 });
 function filteredTable({ records, headers, row, matches, placeholder, emptyMessage }) {
   const host = element("div", "filterable-table");
@@ -258,7 +262,7 @@ async function renderProgram() {
     linkButton(project.name, `#/projects/${encodeURIComponent(project.id)}`),
     project.state ?? "OBSERVED",
     project.confidence,
-    project.phaseCount ?? "UNMEASURED",
+    project.phaseCount ?? "NOT_RECORDED",
   ]);
   discovered.append(
     rows.length
@@ -306,8 +310,8 @@ async function renderProgram() {
           row: (event) => [
             dateText(event.occurredAt ?? event.observedAt),
             event.kind ?? "OBSERVED",
-            `${event.entityType ?? "Observation"}: ${event.entityId ?? "UNMEASURED"}`,
-            event.summary ?? "UNMEASURED",
+            `${event.entityType ?? "Observation"}: ${event.entityId ?? "NOT_RECORDED"}`,
+            event.summary ?? "NOT_RECORDED",
           ],
           matches: (event) => searchText([event.kind, event.entityType, event.entityId, event.projectId, event.phaseId, event.summary]),
           placeholder: "Search retained history",
@@ -342,7 +346,7 @@ async function renderProjects() {
           ? `${project.phaseProgress.completed}/${project.phaseProgress.total}`
           : "NOT_RECORDED",
         (project.versions ?? []).map((version) => version.identity).join(", ") || "NOT_RECORDED",
-        short(project.mainSha ?? project.finalMainSha) === "UNMEASURED" ? "NOT_RECORDED" : short(project.mainSha ?? project.finalMainSha),
+        short(project.mainSha ?? project.finalMainSha),
         project.discoveryConfidence ?? "RETAINED",
       ],
       matches: (project) =>
@@ -381,7 +385,7 @@ async function renderProjectProfile(id) {
         linkButton(`Phase ${phase.ordinal}`, `#/projects/${encodeURIComponent(id)}/phases/${phase.ordinal}`),
         phase.state,
         short(phase.integratedMainSha ?? phase.acceptedHeadSha),
-        phase.completionReceipt ?? "UNMEASURED",
+        phase.completionReceipt ?? "NOT_RECORDED",
       ],
       matches: (phase) =>
         searchText([phase.ordinal, phase.name, phase.state, phase.acceptedHeadSha, phase.integratedMainSha, phase.completionReceipt]),
@@ -405,7 +409,7 @@ async function renderProjectProfile(id) {
         ),
         version.lifecycle,
         version.confidence,
-        version.summary ?? "UNMEASURED",
+        version.summary ?? "NOT_RECORDED",
       ],
       matches: (version) =>
         searchText([version.identity, version.lifecycle, version.confidence, version.summary, version.evidence]),
@@ -503,12 +507,12 @@ async function renderPhaseProfile(id, ordinal) {
           ["Task", "Worker", "State", "Branch", "Started", "Heartbeat", "Result"],
           data.tasks.map((task) => [
             task.title,
-            task.workerId ?? "UNMEASURED",
-            task.result ?? "UNMEASURED",
-            task.branch ?? "UNMEASURED",
+            task.workerId ?? "NOT_RECORDED",
+            task.result ?? "NOT_RECORDED",
+            task.branch ?? "NOT_RECORDED",
             dateText(task.startedAt),
             dateText(task.heartbeatAt),
-            task.result ?? "UNMEASURED",
+            task.result ?? "NOT_RECORDED",
           ]),
         )
       : empty("No task or worker evidence is retained for this phase."),
@@ -596,7 +600,7 @@ async function renderOperations() {
           ["Run", "Decision", "Observed"],
           runs.map((run) => [
             linkButton(run.id, `#/operations/runs/${encodeURIComponent(run.id)}`),
-            run.value?.finalDecision ?? "UNMEASURED",
+            run.value?.finalDecision ?? "NOT_RECORDED",
             dateText(run.observedAt),
           ]),
         )
@@ -647,11 +651,11 @@ async function renderSoundingLineProfile(id) {
           data.run.value.nodes.map((test) => [
             test.suiteId,
             test.state,
-            test.wave ?? "UNMEASURED",
+            test.wave ?? "NOT_RECORDED",
             test.attempt,
-            test.evidenceDisposition ?? "UNMEASURED",
-            (test.resources ?? []).join(", ") || "UNMEASURED",
-            test.rootFailureId ?? "UNMEASURED",
+            test.evidenceDisposition ?? "NOT_RECORDED",
+            (test.resources ?? []).join(", ") || "NOT_RECORDED",
+            test.rootFailureId ?? "NOT_RECORDED",
           ]),
         )
       : empty("No selected-suite detail is retained for this run."),
@@ -667,10 +671,10 @@ async function renderSoundingLineProfile(id) {
           ["Car", "State", "Candidate", "Candidate tree", "Predicted integration tree"],
           data.run.value.trainCars.map((car) => [
             car.id,
-            car.state ?? "UNMEASURED",
-            car.candidateSha ?? "UNMEASURED",
-            car.candidateTreeSha ?? "UNMEASURED",
-            car.predictedIntegrationTreeSha ?? "UNMEASURED",
+            car.state ?? "NOT_RECORDED",
+            car.candidateSha ?? "NOT_RECORDED",
+            car.candidateTreeSha ?? "NOT_RECORDED",
+            car.predictedIntegrationTreeSha ?? "NOT_RECORDED",
           ]),
         )
       : empty("No train-car detail is retained for this run."),
@@ -699,7 +703,7 @@ async function renderGithub() {
       row: (branch) => [
         linkButton(branch.name, `#/github/branches?name=${encodeURIComponent(branch.name)}`),
         branch.project?.name ?? branch.projectId ?? "UNCLASSIFIED",
-        branch.health ?? branch.state ?? "UNMEASURED",
+        branch.health ?? branch.state ?? "NOT_RECORDED",
         short(branch.headSha ?? branch.sha),
       ],
       matches: (branch) =>
@@ -796,7 +800,7 @@ async function renderPullRequestProfile(number) {
       ["Additions", data.pullRequest.additions],
       ["Deletions", data.pullRequest.deletions],
       ["Projects", (data.associations?.projectIds ?? []).join(", ") || "UNCLASSIFIED"],
-      ["Versions", (data.associations?.versionIds ?? []).join(", ") || "UNMEASURED"],
+      ["Versions", (data.associations?.versionIds ?? []).join(", ") || "NOT_RECORDED"],
       ["Evidence", (data.evidence ?? []).join("; ")],
     ]),
   );
@@ -824,7 +828,7 @@ async function renderBranchProfile(query) {
       ["Behind", data.branch.behind],
       ["Last activity", dateText(data.branch.lastActivityAt)],
       ["Attention", data.branch.message],
-      ["Pull request", data.pullRequest ? `#${data.pullRequest.number}` : "UNMEASURED"],
+      ["Pull request", data.pullRequest ? `#${data.pullRequest.number}` : "NOT_RECORDED"],
       ["Projects", (data.associations?.projectIds ?? []).join(", ") || "UNCLASSIFIED"],
       ["Evidence", (data.evidence ?? []).join("; ")],
     ]),
@@ -868,8 +872,8 @@ async function renderHistory() {
     row: (event) => [
       dateText(event.occurredAt ?? event.observedAt),
       event.kind ?? "OBSERVED",
-      `${event.entityType ?? "Observation"}: ${event.entityId ?? "UNMEASURED"}`,
-      event.summary ?? "UNMEASURED",
+      `${event.entityType ?? "Observation"}: ${event.entityId ?? "NOT_RECORDED"}`,
+      event.summary ?? "NOT_RECORDED",
     ],
     matches: (event) => searchText([event.kind, event.entityType, event.entityId, event.projectId, event.phaseId, event.summary]),
     placeholder: "Search retained history",
@@ -921,18 +925,26 @@ async function renderSources() {
   const sources = await refreshSources();
   const node = document.createDocumentFragment();
   const sourceSection = section(
-    "Source health",
-    "Freshness, authorization state, cache age, retry timing, and degradation are explicit.",
+    "Sources & Data Quality",
+    "Acquisition health and observation coverage are separate: a reachable source can still have bounded or unavailable evidence.",
   );
   const rows = sources.map((source) => [
     linkButton(source.name, `#/sources/${encodeURIComponent(source.name)}`),
-    source.state,
+    tag(source.state),
+    tag(source.coverage?.state ?? "NOT_RECORDED"),
     source.configured ? "CONFIGURED" : "NOT CONFIGURED",
-    source.reachable === null ? "UNMEASURED" : String(source.reachable),
-    dateText(source.lastSuccessAt),
-    source.detail ?? "",
+    source.reachable === null ? "NOT_RECORDED" : String(source.reachable),
+    sourceDateText(source.lastSuccessAt),
+    source.records?.retained ?? "NOT_RECORDED",
+    source.records?.displayed ?? "NOT_RECORDED",
+    source.failure?.classification ?? source.detail ?? source.coverage?.limitation ?? "NONE",
   ]);
-  sourceSection.append(table(["Source", "State", "Setup", "Reachable", "Last success", "Detail"], rows));
+  sourceSection.append(
+    table(
+      ["Source", "Health", "Coverage", "Setup", "Reachable", "Last success", "Retained", "Displayed", "Diagnostic"],
+      rows,
+    ),
+  );
   node.append(sourceSection);
   return node;
 }
@@ -940,21 +952,40 @@ async function renderSourceProfile(name) {
   const data = await request(`api/sources/${encodeURIComponent(name)}`);
   const node = document.createDocumentFragment();
   const profile = section(
-    `${data.source.name} source profile`,
-    "Source configuration, freshness, reachable state, cached evidence, and retry timing are explicit.",
+    `${data.source.name} data-quality profile`,
+    "This source record distinguishes source absence, connector loss, retained stale data, and unsupported history.",
   );
   profile.append(
     detail([
+      ["Source ID", data.source.sourceId],
+      ["Expected", data.source.expected],
       ["State", data.source.state],
+      ["Coverage", data.source.coverage?.state],
+      ["Coverage summary", data.source.coverage?.summary],
+      ["Coverage limitation", data.source.coverage?.limitation],
       ["Configured", data.source.configured],
+      ["Configuration source", data.source.configurationSource],
+      ["Authority level", data.source.authorityLevel],
       ["Authentication", data.source.authenticationState],
       ["Reachable", data.source.reachable],
-      ["Last attempt", dateText(data.source.lastAttemptAt)],
-      ["Last success", dateText(data.source.lastSuccessAt)],
-      ["Next retry", dateText(data.source.nextRetryAt)],
+      ["Last attempt", sourceDateText(data.source.lastAttemptAt)],
+      ["Last success", sourceDateText(data.source.lastSuccessAt)],
+      ["Last source occurrence", sourceDateText(data.source.sourceOccurrenceAt)],
+      ["Bridgewatch observed", sourceDateText(data.source.bridgewatchObservedAt)],
+      ["Next retry", sourceDateText(data.source.nextRetryAt)],
       ["Cache age (ms)", data.source.cacheAgeMs],
+      ["Serving retained stale data", data.source.servingRetainedStaleData],
       ["Rate-limit remaining", data.source.rateLimitRemaining],
-      ["Detail", data.source.detail],
+      ["Schema / contract", data.source.schemaVersion],
+      ["Records received", data.source.records?.received],
+      ["Records retained", data.source.records?.retained],
+      ["Records exposed", data.source.records?.exposed],
+      ["Records displayed", data.source.records?.displayed],
+      ["Supported capabilities", data.source.capabilityClasses?.supported?.join(", ") || "NONE"],
+      ["Missing capabilities", data.source.capabilityClasses?.missing?.join(", ") || "NONE"],
+      ["Failure classification", data.source.failure?.classification ?? "NONE"],
+      ["Sanitized diagnostic", data.source.failure?.diagnostic ?? data.source.detail ?? "NONE"],
+      ["Repairability", data.source.repairability],
     ]),
   );
   node.append(profile);
@@ -1012,7 +1043,7 @@ const refreshBoard = async () => {
   try {
     snapshot = await request("api/summary");
     document.querySelector("#meta").textContent =
-      `${snapshot.mode ?? "PRIVATE"} / GitHub ${snapshot.source?.state ?? "UNMEASURED"} / ${dateText(snapshot.source?.observedAt)}`;
+      `${snapshot.mode ?? "PRIVATE"} / GitHub ${snapshot.source?.state ?? "NOT_RECORDED"} / ${dateText(snapshot.source?.observedAt)}`;
   } catch {
     document.querySelector("#meta").textContent = "Dashboard unavailable; no observation claim is made.";
   }

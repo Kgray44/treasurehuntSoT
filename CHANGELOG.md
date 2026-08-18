@@ -12,6 +12,15 @@ last_reviewed: 2026-08-16
 
 ### Changed
 
+- Expanded Project Bridgewatch v2.0 Phase 1, **Open the Instruments**, into a
+  first-class Sources & Data Quality station. The private read-only observer
+  now reconciles configured repository identity across collector, registry,
+  SQLite, API, and UI; exposes source authority/schema/freshness/count/coverage
+  and retained-stale-data facts; and explicitly distinguishes unavailable
+  historical evidence and unconfigured sources. This is local candidate
+  evidence only, not protected integration, deployment, owner acceptance, a
+  release decision, or work on v2.0 Phases 2–3.
+
 - Expanded Project Bridgewatch on its dedicated v1.2 implementation branch
   into a version-aware, hash-routed private Mission Control with bounded
   repository discovery, retained source-health, first-class version/PR/branch/

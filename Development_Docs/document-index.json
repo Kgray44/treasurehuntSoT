@@ -2931,6 +2931,30 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Project_Bridgewatch_v2_Phase_1_Completion_Receipt.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_v2_Phase_1_Design_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_v2_Phase_1_Validation_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_v2_Source_Health_Matrix.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
       "record_type": "archive-index",
       "status": "preserved",

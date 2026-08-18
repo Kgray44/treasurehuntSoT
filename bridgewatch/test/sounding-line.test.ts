@@ -130,4 +130,30 @@ describe("Sounding Line status projection", () => {
       store.close();
     }
   });
+
+  it("classifies an unavailable projection without discarding a retained snapshot", async () => {
+    const root = mkdtempSync(join(tmpdir(), "bridgewatch-sounding-line-unavailable-"));
+    const store = new BridgewatchStore(join(root, "bridgewatch.sqlite"));
+    try {
+      const retained = normalizeSoundingLineProjection({
+        schemaVersion: 1,
+        observedAt: "2026-08-12T00:00:00.000Z",
+        source: "SOUNDING_LINE_RUNTIME",
+        leases: 0,
+        workers: [],
+        plans: [],
+      });
+      store.put("sounding-line:projection", retained, null, retained.observedAt);
+      const invalidRoot = join(root, "not-a-runtime-directory");
+      writeFileSync(invalidRoot, "not a directory");
+      const collector = new SoundingLineCollector(
+        { BRIDGEWATCH_REQUEST_TIMEOUT_MS: 200, BRIDGEWATCH_SOUNDING_LINE_PROJECTION_PATH: invalidRoot } as never,
+        store,
+      );
+      await expect(collector.refresh()).resolves.toEqual(retained);
+      expect(collector.status()).toMatchObject({ failure: "SOURCE_UNREACHABLE", lastSuccessAt: retained.observedAt });
+    } finally {
+      store.close();
+    }
+  });
 });

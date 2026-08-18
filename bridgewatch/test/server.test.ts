@@ -1,15 +1,36 @@
 import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import type { BridgewatchProgramSnapshot } from "../src/history.js";
+import type { ProjectRecord } from "../src/domain.js";
 
 const priorEnv = { ...process.env };
 
 afterEach(() => {
+  vi.unstubAllGlobals();
   for (const key of Object.keys(process.env)) if (!(key in priorEnv)) delete process.env[key];
   Object.assign(process.env, priorEnv);
 });
+
+const seedBridgewatchVersion = (store: {
+  projects: () => ProjectRecord[];
+  replaceProjectRegistry: (projects: ProjectRecord[]) => void;
+}) => {
+  const projects = store.projects();
+  const project = projects.find((entry) => entry.id === "bridgewatch");
+  if (!project) throw new Error("Bridgewatch registry fixture is missing");
+  project.versions = [
+    {
+      id: "bridgewatch:v1.2",
+      identity: "v1.2",
+      lifecycle: "IN_DEVELOPMENT",
+      confidence: "AUTHORITATIVE",
+      evidence: [],
+    },
+  ];
+  store.replaceProjectRegistry(projects);
+};
 
 describe("Bridgewatch read-only API", () => {
   it("serves GET-only health and truthful unavailable-source state", async () => {
@@ -27,6 +48,16 @@ describe("Bridgewatch read-only API", () => {
           .json()
           .find((entry: { name: string }) => entry.name === "reporter").state,
       ).toBe("HEALTHY");
+      const sourceProfiles = (await app.inject({ method: "GET", url: "/api/sources" })).json();
+      expect(sourceProfiles.find((entry: { name: string }) => entry.name === "github")).toMatchObject({
+        sourceId: "github-repository-api",
+        configured: true,
+        coverage: { state: "NO_CURRENT_OBSERVATION" },
+      });
+      expect(sourceProfiles.find((entry: { name: string }) => entry.name === "reporter")).toMatchObject({
+        coverage: { state: "SOURCE_RETURNED_NO_DATA" },
+        repairability: "NOT_APPLICABLE",
+      });
       expect(summary.headers["content-security-policy"]).toContain("default-src 'self'");
       const dashboard = await app.inject({ method: "GET", url: "/" });
       expect(dashboard.statusCode).toBe(200);
@@ -128,6 +159,54 @@ describe("Bridgewatch read-only API", () => {
     }
   });
 
+  it("reports degraded GitHub acquisition while preserving retained observation coverage", async () => {
+    process.env.BRIDGEWATCH_REPOSITORY = "owner/repository";
+    process.env.BRIDGEWATCH_DB_PATH = join(mkdtempSync(join(tmpdir(), "bridgewatch-test-")), "cache.sqlite");
+    const { buildServer } = await import("../lib/server.js");
+    const { app, store } = buildServer();
+    try {
+      const observedAt = new Date().toISOString();
+      store.put(
+        "github:snapshot",
+        {
+          repository: "owner/repository",
+          defaultBranch: "main",
+          headSha: "cached-main",
+          observedAt,
+          pullRequests: [],
+          branches: [],
+          workflows: [],
+        },
+        null,
+        observedAt,
+      );
+      store.upsertSourceObservation({
+        name: "github",
+        state: "DEGRADED",
+        configured: true,
+        reachable: false,
+        lastAttemptAt: observedAt,
+        lastSuccessAt: observedAt,
+        nextRetryAt: new Date(Date.now() + 60_000).toISOString(),
+        detail: "GitHub GET failed: 503",
+        cacheAgeMs: 0,
+        authenticationState: "ANONYMOUS",
+      });
+      const github = (await app.inject({ method: "GET", url: "/api/sources" })).json().find(
+        (entry: { name: string }) => entry.name === "github",
+      );
+      expect(github).toMatchObject({
+        state: "DEGRADED",
+        servingRetainedStaleData: true,
+        coverage: { state: "BOUNDED_CURRENT" },
+        failure: { classification: "SOURCE_UNREACHABLE" },
+      });
+      expect((await app.inject({ method: "GET", url: "/api/summary" })).json().github.headSha).toBe("cached-main");
+    } finally {
+      await app.close();
+    }
+  });
+
   it("keeps program history bounded, filtered, and GET-only without changing activity API semantics", async () => {
     process.env.BRIDGEWATCH_REPOSITORY = "owner/repository";
     process.env.BRIDGEWATCH_DB_PATH = join(mkdtempSync(join(tmpdir(), "bridgewatch-test-")), "cache.sqlite");
@@ -217,9 +296,9 @@ describe("Bridgewatch read-only API", () => {
     process.env.BRIDGEWATCH_REPOSITORY = "owner/repository";
     process.env.BRIDGEWATCH_DB_PATH = join(mkdtempSync(join(tmpdir(), "bridgewatch-test-")), "cache.sqlite");
     const { buildServer } = await import("../lib/server.js");
-    const { app, refreshSources } = buildServer();
+    const { app, store } = buildServer();
     try {
-      await refreshSources();
+      seedBridgewatchVersion(store);
       const response = await app.inject({ method: "GET", url: "/api/projects/bridgewatch" });
       expect(response.statusCode).toBe(200);
       expect(response.json().versions).toContainEqual(
@@ -303,9 +382,9 @@ describe("Bridgewatch read-only API", () => {
     process.env.BRIDGEWATCH_REPOSITORY = "owner/repository";
     process.env.BRIDGEWATCH_DB_PATH = join(mkdtempSync(join(tmpdir(), "bridgewatch-test-")), "cache.sqlite");
     const { buildServer } = await import("../lib/server.js");
-    const { app, refreshSources } = buildServer();
+    const { app, store } = buildServer();
     try {
-      await refreshSources();
+      seedBridgewatchVersion(store);
       const versions = await app.inject({ method: "GET", url: "/api/projects/bridgewatch/versions" });
       expect(versions.statusCode).toBe(200);
       expect(versions.json()).toContainEqual(expect.objectContaining({ identity: "v1.2" }));

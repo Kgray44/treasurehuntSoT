@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "program": "PROJECT_BRIDGEWATCH_V2_PHASE_1",
+  "repository": "Kgray44/treasurehuntSoT",
+  "recordedAt": "2026-08-18",
+  "scope": "local task-owned Bridgewatch observation; not deployment or release authority",
+  "sources": [
+    {"id":"github-repository-api","authority":"AUTHORITATIVE_CURRENT_REMOTE","configuration":"BRIDGEWATCH_REPOSITORY","coverage":"BOUNDED_CURRENT","failureCause":"SOURCE_UNREACHABLE when anonymous GitHub quota is exhausted; retained bounded cache remains visible","repairability":"AUTOMATIC_RETRY or configure a private server-side token","supported":["repository","branches","pull-requests","workflows","check-state"],"missing":["unbounded-history","provider-job-logs"]},
+    {"id":"local-repository-evidence","authority":"AUTHORITATIVE_GOVERNING_AND_REGISTRY","configuration":"Bridgewatch repository root","coverage":"PARTIAL_COVERAGE","failureCause":"Network-backed Git metadata can exceed the previous 8-second bound; Phase 1 uses a bounded 30-second read and reports any later failure","repairability":"AUTOMATIC_RETRY","supported":["governing-document-discovery","project-registry","phase-version-evidence","local-git-refs"],"missing":["unindexed-private-records","full-historical-universe"]},
+    {"id":"sounding-line-runtime-projection","authority":"AUTHORITATIVE_RUNTIME_PROJECTION","configuration":"repository-owned status-projection adapter","coverage":"HISTORICAL_EVIDENCE_UNAVAILABLE","failureCause":"Three retained legacy UNKNOWN plan markers have no current plan identity or node evidence","repairability":"SOURCE_OWNER_REQUIRED","supported":["runtime-plans","nodes","leases","final-decisions-when-projected"],"missing":["current-plan-identity","current-node-evidence"]},
+    {"id":"reporter-telemetry","authority":"OPTIONAL_ACTIVITY_TELEMETRY","configuration":"BRIDGEWATCH_TELEMETRY_TOKEN","coverage":"SOURCE_NOT_CONFIGURED","failureCause":"No optional reporter token is configured","repairability":"CONFIGURATION_REQUIRED","supported":["worker-activity-when-configured"],"missing":["current-worker-evidence"]}
+  ],
+  "reconciliation":{"runtimeRepository":"Kgray44/treasurehuntSoT","legacyRepositoryLiteral":"forever-treasure/forever-treasure-companion","resolution":"registryForRepository binds every retained project record to the runtime repository before discovery, storage, API projection, and UI rendering"},
+  "phaseBoundary":"Project Bridgewatch v2.0 Phases 2 and 3 are not started."
+}

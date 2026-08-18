@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { join, resolve } from "node:path";
 import { timingSafeEqual } from "node:crypto";
 import { loadConfig } from "../src/config.js";
-import { projectRegistry } from "../src/registry.js";
+import { registryForRepository } from "../src/registry.js";
 import { projectProgress, type ProjectRecord, type TaskRecord } from "../src/domain.js";
 import { discoverObservations } from "../src/discovery.js";
 import { reconcileProjectRecords } from "../src/reconciliation.js";
@@ -34,6 +34,33 @@ type ComparisonParameters = {
 type PullRequestParameters = { state?: string };
 type BranchProfileParameters = { name?: string };
 
+type SourceProfile = {
+  name: string;
+  state: string;
+  configured: boolean;
+  reachable: boolean | null;
+  lastAttemptAt: string | null;
+  lastSuccessAt: string | null;
+  nextRetryAt: string | null;
+  detail: string | null;
+  cacheAgeMs: number | null;
+  rateLimitRemaining?: number | null;
+  authenticationState: string;
+  sourceId: string;
+  expected: boolean;
+  configurationSource: string;
+  authorityLevel: string;
+  schemaVersion: string;
+  sourceOccurrenceAt: string | null;
+  bridgewatchObservedAt: string;
+  records: { received: number | null; retained: number; exposed: number; displayed: number };
+  capabilityClasses: { supported: string[]; missing: string[] };
+  coverage: { state: string; summary: string; limitation: string | null };
+  failure: { classification: string; diagnostic: string } | null;
+  repairability: "AUTOMATIC_RETRY" | "CONFIGURATION_REQUIRED" | "SOURCE_OWNER_REQUIRED" | "NOT_APPLICABLE";
+  servingRetainedStaleData: boolean;
+};
+
 const twelveHours = 12 * 60 * 60 * 1_000;
 const eventKinds = new Set<BridgewatchEventKind>([
   "PROJECT_STATE_CHANGED",
@@ -60,6 +87,7 @@ export function buildServer() {
   const config = loadConfig();
   const store = new BridgewatchStore(config.dbPath);
   const collector = new GithubCollector(config, store);
+  const projectRegistry = registryForRepository(config.BRIDGEWATCH_REPOSITORY);
   const app = Fastify({
     logger: process.env.NODE_ENV === "test" ? false : { redact: ["req.headers.authorization", "req.url"] },
     bodyLimit: config.BRIDGEWATCH_TELEMETRY_MAX_BODY_BYTES,
@@ -72,6 +100,11 @@ export function buildServer() {
   const telemetryWindows = new Map<string, { startedAt: number; count: number }>();
   let historyWarning: string | null = null;
   let currentHistory: BridgewatchProgramSnapshot | null | undefined;
+  let projectTruthCollection: {
+    documentCount: number | null;
+    branchCount: number | null;
+    lastSuccessfulCollectionAt: string | null;
+  } = { documentCount: null, branchCount: null, lastSuccessfulCollectionAt: null };
   store.replaceProjectRegistry(projectRegistry);
 
   const observation = (): BridgewatchProgramSnapshot => ({
@@ -101,7 +134,36 @@ export function buildServer() {
     await Promise.all([collector.refresh(), soundingLine.refresh()]);
     const repository = await repositoryEvidence.refresh();
     const snapshot = collector.cached();
-    if (repository.documentsAvailable && repository.branchesAvailable) {
+    const attemptedAt = new Date().toISOString();
+    const projectTruthAvailable = repository.documentsAvailable && repository.branchesAvailable;
+    const priorProjectTruth = store.sourceObservations().find((source) => source.name === "project-truth");
+    if (projectTruthAvailable) {
+      projectTruthCollection = {
+        documentCount: repository.documentCount,
+        branchCount: repository.branchCount,
+        lastSuccessfulCollectionAt: attemptedAt,
+      };
+    }
+    const retainedSuccessAt = projectTruthCollection.lastSuccessfulCollectionAt ?? priorProjectTruth?.lastSuccessAt ?? null;
+    store.upsertSourceObservation({
+      name: "project-truth",
+      state: projectTruthAvailable ? "HEALTHY" : "DEGRADED",
+      configured: true,
+      reachable: projectTruthAvailable,
+      lastAttemptAt: attemptedAt,
+      lastSuccessAt: retainedSuccessAt,
+      nextRetryAt:
+        projectTruthAvailable
+          ? null
+          : new Date(Date.now() + config.BRIDGEWATCH_SNAPSHOT_INTERVAL_MS).toISOString(),
+      detail:
+        projectTruthAvailable
+          ? null
+          : "Repository documentation or local-ref discovery could not be read; retained project records remain available.",
+      cacheAgeMs: retainedSuccessAt ? Math.max(0, Date.now() - Date.parse(retainedSuccessAt)) : null,
+      authenticationState: "NOT_APPLICABLE",
+    });
+    if (projectTruthAvailable) {
       const discoveredAt = new Date().toISOString();
       const discovery = discoverObservations({
         observedAt: discoveredAt,
@@ -164,11 +226,12 @@ export function buildServer() {
       .workers()
       .map((worker) => ({ ...worker, effectiveState: workerState(worker, config.BRIDGEWATCH_TELEMETRY_STALE_MS) }));
     const totals = testTotals(soundingLineProjection);
+    const counts = store.observationCounts();
     const observedAt = snapshot?.observedAt ?? null;
     const githubHealth = store.sourceObservations().find((source) => source.name === "github") ?? {
       name: "github",
       state: sourceState(observedAt, 60_000),
-      configured: Boolean(config.BRIDGEWATCH_GITHUB_TOKEN),
+      configured: Boolean(config.BRIDGEWATCH_REPOSITORY),
       reachable: snapshot ? true : null,
       lastAttemptAt: null,
       lastSuccessAt: observedAt,
@@ -208,35 +271,201 @@ export function buildServer() {
           cacheAgeMs: reporterObservedAt ? Math.max(0, Date.now() - Date.parse(reporterObservedAt)) : null,
           authenticationState: "NOT_APPLICABLE" as const,
         };
-    const sources = [
-      githubHealth,
-      {
-        name: "project-truth",
-        state: "HEALTHY" as const,
-        configured: true,
-        reachable: true,
-        lastAttemptAt: null,
-        lastSuccessAt: new Date().toISOString(),
-        nextRetryAt: null,
-        detail: null,
-        cacheAgeMs: 0,
-        authenticationState: "NOT_APPLICABLE" as const,
-      },
-      {
-        name: "sounding-line",
-        state: sourceState(soundingLineProjection?.observedAt ?? null, 10_000),
-        configured: true,
-        reachable: soundingLineProjection ? true : null,
-        lastAttemptAt: null,
-        lastSuccessAt: soundingLineProjection?.observedAt ?? null,
-        nextRetryAt: null,
-        detail: soundingLineProjection ? null : "No Sounding Line projection is currently available.",
-        cacheAgeMs: soundingLineProjection?.observedAt
-          ? Math.max(0, Date.now() - Date.parse(soundingLineProjection.observedAt))
+    const projectTruthHealth = store.sourceObservations().find((source) => source.name === "project-truth") ?? {
+      name: "project-truth",
+      state: "UNAVAILABLE" as const,
+      configured: true,
+      reachable: null,
+      lastAttemptAt: null,
+      lastSuccessAt: null,
+      nextRetryAt: null,
+      detail: "Local repository evidence has not been collected yet.",
+      cacheAgeMs: null,
+      authenticationState: "NOT_APPLICABLE" as const,
+    };
+    const soundingStatus = soundingLine.status();
+    const soundingUnknownOnly = Boolean(
+      soundingLineProjection?.plans.length &&
+        soundingLineProjection.plans.every((plan) => !plan.sourceSha && plan.state === "UNKNOWN" && !plan.nodes.length),
+    );
+    const soundingHealth = {
+      name: "sounding-line",
+      state: soundingStatus.failure
+        ? soundingLineProjection
+          ? "DEGRADED"
+          : "UNAVAILABLE"
+        : sourceState(soundingLineProjection?.observedAt ?? null, 10_000),
+      configured: true,
+      reachable: soundingStatus.failure ? false : soundingLineProjection ? true : null,
+      lastAttemptAt: soundingStatus.lastAttemptAt,
+      lastSuccessAt: soundingStatus.lastSuccessAt,
+      nextRetryAt: soundingStatus.failure
+        ? new Date(Date.now() + config.BRIDGEWATCH_SOUNDING_LINE_POLL_INTERVAL_MS).toISOString()
+        : null,
+      detail: soundingStatus.diagnostic,
+      cacheAgeMs: soundingLineProjection?.observedAt
+        ? Math.max(0, Date.now() - Date.parse(soundingLineProjection.observedAt))
+        : null,
+      authenticationState: "NOT_APPLICABLE" as const,
+    };
+    const profile = (
+      source: Omit<
+        SourceProfile,
+        | "sourceId"
+        | "expected"
+        | "configurationSource"
+        | "authorityLevel"
+        | "schemaVersion"
+        | "sourceOccurrenceAt"
+        | "bridgewatchObservedAt"
+        | "records"
+        | "capabilityClasses"
+        | "coverage"
+        | "failure"
+        | "repairability"
+        | "servingRetainedStaleData"
+      >,
+      detail: Pick<
+        SourceProfile,
+        | "sourceId"
+        | "expected"
+        | "configurationSource"
+        | "authorityLevel"
+        | "schemaVersion"
+        | "sourceOccurrenceAt"
+        | "bridgewatchObservedAt"
+        | "records"
+        | "capabilityClasses"
+        | "coverage"
+        | "failure"
+        | "repairability"
+        | "servingRetainedStaleData"
+      >,
+    ): SourceProfile => ({ ...source, ...detail });
+    const sources: SourceProfile[] = [
+      profile(githubHealth, {
+        sourceId: "github-repository-api",
+        expected: true,
+        configurationSource: "BRIDGEWATCH_REPOSITORY",
+        authorityLevel: "AUTHORITATIVE_CURRENT_REMOTE",
+        schemaVersion: "github-rest-v3-normalized-1",
+        sourceOccurrenceAt: snapshot?.observedAt ?? null,
+        bridgewatchObservedAt: new Date().toISOString(),
+        records: {
+          received: snapshot ? snapshot.pullRequests.length + snapshot.branches.length + snapshot.workflows.length : null,
+          retained: counts.pullRequests + counts.branches,
+          exposed: (snapshot?.pullRequests.length ?? 0) + (snapshot?.branches.length ?? 0) + (snapshot?.workflows.length ?? 0),
+          displayed: (snapshot?.pullRequests.length ?? 0) + (snapshot?.branches.length ?? 0),
+        },
+        capabilityClasses: {
+          supported: ["repository", "branches", "pull-requests", "workflows", "check-state"],
+          missing: ["unbounded-history", "provider-job-logs"],
+        },
+        coverage: {
+          state: snapshot ? "BOUNDED_CURRENT" : "NO_CURRENT_OBSERVATION",
+          summary: snapshot ? "Bounded current repository data is observed." : "No current GitHub observation is available.",
+          limitation: "GitHub collection is bounded by configured branch and pull-request limits.",
+        },
+        failure: githubHealth.detail ? { classification: "SOURCE_UNREACHABLE", diagnostic: githubHealth.detail } : null,
+        repairability: githubHealth.detail ? "AUTOMATIC_RETRY" : "NOT_APPLICABLE",
+        servingRetainedStaleData: githubHealth.state === "DEGRADED" && Boolean(snapshot),
+      }),
+      profile(projectTruthHealth, {
+        sourceId: "local-repository-evidence",
+        expected: true,
+        configurationSource: "Bridgewatch repository root",
+        authorityLevel: "AUTHORITATIVE_GOVERNING_AND_REGISTRY",
+        schemaVersion: "document-index-and-git-ref-1",
+        sourceOccurrenceAt: projectTruthHealth.lastSuccessAt,
+        bridgewatchObservedAt: new Date().toISOString(),
+        records: {
+          received:
+            projectTruthCollection.documentCount === null || projectTruthCollection.branchCount === null
+              ? null
+              : projectTruthCollection.documentCount + projectTruthCollection.branchCount,
+          retained: counts.projects,
+          exposed: projects.length,
+          displayed: projects.length,
+        },
+        capabilityClasses: {
+          supported: ["governing-document-discovery", "project-registry", "phase-version-evidence", "local-git-refs"],
+          missing: ["unindexed-private-records", "full-historical-universe"],
+        },
+        coverage: {
+          state: projectTruthHealth.reachable ? "PARTIAL_COVERAGE" : "OBSERVATION_FAILED",
+          summary: projectTruthHealth.reachable
+            ? "Indexed current records are reconciled; non-indexed and unavailable historical evidence is not inferred."
+            : "Repository evidence could not be read during the latest attempt.",
+          limitation: "Only bounded indexed documents and fixed read-only refs are consumed.",
+        },
+        failure: projectTruthHealth.detail
+          ? { classification: "SOURCE_UNREACHABLE", diagnostic: projectTruthHealth.detail }
           : null,
-        authenticationState: "NOT_APPLICABLE" as const,
-      },
-      reporterHealth,
+        repairability: projectTruthHealth.detail ? "AUTOMATIC_RETRY" : "NOT_APPLICABLE",
+        servingRetainedStaleData: projectTruthHealth.state === "DEGRADED" && counts.projects > 0,
+      }),
+      profile(soundingHealth, {
+        sourceId: "sounding-line-runtime-projection",
+        expected: true,
+        configurationSource: "repository-owned status-projection adapter",
+        authorityLevel: "AUTHORITATIVE_RUNTIME_PROJECTION",
+        schemaVersion: "sounding-line-runtime-v1",
+        sourceOccurrenceAt: soundingLineProjection?.observedAt ?? null,
+        bridgewatchObservedAt: new Date().toISOString(),
+        records: { received: soundingLineProjection?.plans.length ?? null, retained: counts.runs, exposed: counts.runs, displayed: counts.runs },
+        capabilityClasses: {
+          supported: ["runtime-plans", "nodes", "leases", "final-decisions-when-projected"],
+          missing: soundingUnknownOnly ? ["current-plan-identity", "current-node-evidence"] : ["historical-unrecorded-provider-logs"],
+        },
+        coverage: {
+          state: soundingUnknownOnly ? "HISTORICAL_EVIDENCE_UNAVAILABLE" : soundingLineProjection ? "BOUNDED_CURRENT" : "NO_CURRENT_OBSERVATION",
+          summary: soundingUnknownOnly
+            ? "Only retained unknown legacy plan markers are available; current plan identity and nodes were not recorded."
+            : soundingLineProjection
+              ? "Available runtime projection is retained without inferring absent evidence."
+              : "No Sounding Line projection is currently available.",
+          limitation: "Bridgewatch cannot reconstruct plan or node evidence that the projection never retained.",
+        },
+        failure: soundingStatus.failure
+          ? { classification: soundingStatus.failure, diagnostic: soundingStatus.diagnostic ?? "Projection unavailable" }
+          : null,
+        repairability: soundingStatus.failure ? "AUTOMATIC_RETRY" : "NOT_APPLICABLE",
+        servingRetainedStaleData: soundingHealth.state === "DEGRADED" && Boolean(soundingLineProjection),
+      }),
+      profile(reporterHealth, {
+        sourceId: "bridgewatch-activity-telemetry",
+        expected: true,
+        configurationSource: "BRIDGEWATCH_TELEMETRY_TOKEN",
+        authorityLevel: "PROVISIONAL_ACTIVITY_ONLY",
+        schemaVersion: "telemetry-heartbeat-v1",
+        sourceOccurrenceAt: reporterObservedAt,
+        bridgewatchObservedAt: new Date().toISOString(),
+        records: { received: workers.length, retained: counts.workers, exposed: workers.length, displayed: workers.length },
+        capabilityClasses: {
+          supported: config.BRIDGEWATCH_TELEMETRY_TOKEN ? ["worker-heartbeats", "retained-activity"] : [],
+          missing: config.BRIDGEWATCH_TELEMETRY_TOKEN ? ["project-lifecycle-authority"] : ["worker-heartbeats"],
+        },
+        coverage: {
+          state: !config.BRIDGEWATCH_TELEMETRY_TOKEN
+            ? "SOURCE_NOT_CONFIGURED"
+            : workers.length
+              ? "BOUNDED_CURRENT"
+              : counts.workers
+                ? "RETAINED_HISTORY_NO_ACTIVE_WORKER"
+                : "SOURCE_RETURNED_NO_DATA",
+          summary: !config.BRIDGEWATCH_TELEMETRY_TOKEN
+            ? "Activity telemetry is not configured."
+            : workers.length
+              ? "Current reporter activity is retained."
+              : counts.workers
+                ? "No active worker is reported; retained worker history remains available."
+                : "Reporter is configured but no activity has been received.",
+          limitation: "Reporter telemetry never establishes lifecycle, release, or project-completion truth.",
+        },
+        failure: null,
+        repairability: !config.BRIDGEWATCH_TELEMETRY_TOKEN ? "CONFIGURATION_REQUIRED" : "NOT_APPLICABLE",
+        servingRetainedStaleData: reporterHealth.state === "STALE" && counts.workers > 0,
+      }),
     ];
     const branches = annotateBranches(snapshot?.branches ?? [], projects, config);
     const attention = [
@@ -895,7 +1124,6 @@ function programTotals(
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const { app, config, refreshSources, refreshSoundingLine } = buildServer();
-  await refreshSources();
   const sourceTimer = setInterval(() => void refreshSources(), config.BRIDGEWATCH_SNAPSHOT_INTERVAL_MS);
   const soundingLineTimer = setInterval(
     () => void refreshSoundingLine(),
@@ -906,4 +1134,9 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     clearInterval(soundingLineTimer);
   });
   await app.listen({ host: config.BRIDGEWATCH_HOST, port: config.BRIDGEWATCH_PORT });
+  // Listening is a local lifecycle guarantee, not evidence that every remote or
+  // worktree source is immediately available. Start bounded collection after
+  // loopback readiness so a slow read-only source cannot cause a false startup
+  // failure in the managed health check.
+  void refreshSources();
 }

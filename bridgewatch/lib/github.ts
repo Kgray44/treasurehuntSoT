@@ -309,7 +309,10 @@ export class GithubCollector {
       this.store.upsertSourceObservation({
         name: "github",
         state: "HEALTHY",
-        configured: Boolean(this.config.BRIDGEWATCH_GITHUB_TOKEN),
+        // Repository selection is required configuration. Authentication is a
+        // separate capability because public repositories can be observed
+        // anonymously with reduced rate-limit headroom.
+        configured: Boolean(this.config.BRIDGEWATCH_REPOSITORY),
         reachable: true,
         lastAttemptAt: attemptedAt,
         lastSuccessAt: snapshot.observedAt,
@@ -328,7 +331,7 @@ export class GithubCollector {
       this.store.upsertSourceObservation({
         name: "github",
         state: cached ? "DEGRADED" : "UNAVAILABLE",
-        configured: Boolean(this.config.BRIDGEWATCH_GITHUB_TOKEN),
+        configured: Boolean(this.config.BRIDGEWATCH_REPOSITORY),
         reachable: false,
         lastAttemptAt: attemptedAt,
         lastSuccessAt: cached?.observedAt ?? null,

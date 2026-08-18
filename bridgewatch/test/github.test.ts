@@ -66,7 +66,7 @@ describe("GitHub normalized collection", () => {
         expect.objectContaining({
           name: "github",
           state: "HEALTHY",
-          configured: false,
+          configured: true,
           reachable: true,
           authenticationState: "ANONYMOUS",
           rateLimitRemaining: 42,

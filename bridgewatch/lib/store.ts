@@ -314,7 +314,14 @@ export interface RetentionResult extends RetentionInspection {
   compacted: boolean;
 }
 
-export type SourceHealthState = "HEALTHY" | "STALE" | "DEGRADED" | "UNAVAILABLE" | "NOT_CONFIGURED" | "NOT_APPLICABLE";
+export type SourceHealthState =
+  | "HEALTHY"
+  | "STALE"
+  | "DEGRADED"
+  | "UNAVAILABLE"
+  | "NOT_CONFIGURED"
+  | "NOT_APPLICABLE"
+  | "PARTIAL_COVERAGE";
 
 export interface SourceObservation {
   name: string;
@@ -623,6 +630,18 @@ export class BridgewatchStore {
           authenticationState: source.authentication_state,
         };
       });
+  }
+
+  observationCounts(): { pullRequests: number; branches: number; projects: number; runs: number; workers: number } {
+    const count = (table: string) =>
+      Number((this.db.prepare(`SELECT COUNT(*) AS count FROM ${table}`).get() as { count: number }).count);
+    return {
+      pullRequests: count("observed_pull_requests"),
+      branches: count("observed_branches"),
+      projects: count("project_history"),
+      runs: count("test_runs"),
+      workers: count("workers"),
+    };
   }
 
   replaceGithubObservations(
