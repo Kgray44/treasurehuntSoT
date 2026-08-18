@@ -72,8 +72,8 @@ Decision after this documentation candidate is finalized.
 
 ## Current reconciliation qualification
 
-At source `de2e9237d2f314f9e1b3d4f778b66c7a69d8c2be` over protected main
-`1a49669a98f789b762285ac0ed5fa8e63636d9fb`, a narrow impact-map entry for the
+At source `d594160c5744333a76495341818f676f2690878f` over protected main
+`df0360044cf0e0612af8e77751cfd7241c57ae1c`, a narrow impact-map entry for the
 required Phase 2 capability-impact JSON removes the false unknown-path fallback.
 The exact plan digest is
 `4835792a85e04856efe24e3662b21e10469e0e6074b7e14bcb9ac9900273e579` and

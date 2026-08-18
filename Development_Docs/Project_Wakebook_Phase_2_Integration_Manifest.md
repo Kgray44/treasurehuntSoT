@@ -69,8 +69,8 @@ new authority decision is required only after that shared closure is green.
 
 ## Current reconciliation supersession
 
-Protected main `1a49669a98f789b762285ac0ed5fa8e63636d9fb` is merged by
-pre-record source `de2e9237d2f314f9e1b3d4f778b66c7a69d8c2be`. Its Fairlead
+Protected main `df0360044cf0e0612af8e77751cfd7241c57ae1c` is merged by
+pre-record source `d594160c5744333a76495341818f676f2690878f`. Its Fairlead
 documentation and Sounding Line registry/planner updates do not change a
 Wakebook product seam. The generated documentation index was rebuilt, and the
 required Phase 2 capability-impact JSON now has the same narrow Wakebook

@@ -61,8 +61,8 @@ acceptance is claimed.
 
 ## Current reconciliation supersession
 
-Protected main is now `1a49669a98f789b762285ac0ed5fa8e63636d9fb`, merged by
-pre-record source `de2e9237d2f314f9e1b3d4f778b66c7a69d8c2be`. The new mainline
+Protected main is now `df0360044cf0e0612af8e77751cfd7241c57ae1c`, merged by
+pre-record source `d594160c5744333a76495341818f676f2690878f`. The new mainline
 interval changes Fairlead documentation and Sounding Line registry/planner
 maintenance only; it does not change Wakebook, Wayfarer, Helm, Tideglass,
 Sealed Hold, artifact, achievement, navigation, Prisma, or Playwright product

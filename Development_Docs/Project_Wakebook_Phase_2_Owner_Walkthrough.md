@@ -57,7 +57,7 @@ document does not authorize a protected merge, owner acceptance, or Phase 3.
 The historical browser-matrix hold is superseded: the current exact plan
 includes `browser.wakebook`, and a fresh local 2/2 Chromium run passed the
 walkthrough safety scope on reconciled source
-`de2e9237d2f314f9e1b3d4f778b66c7a69d8c2be`. Owner review is still not open.
+`d594160c5744333a76495341818f676f2690878f`. Owner review is still not open.
 `features:validate` currently fails on FT-036 because its foreign Drydock branch
 `codex/project-drydock-phase3-run-sea-trials` is unavailable. Wakebook cannot
 repair that canonical record; after it is repaired on accepted mainline, this
