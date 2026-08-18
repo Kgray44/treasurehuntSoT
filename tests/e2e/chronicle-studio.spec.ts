@@ -1,9 +1,58 @@
 import { expect, test, type APIRequestContext, type Page } from "@playwright/test";
 import sharp from "sharp";
+import { db } from "../../src/lib/db";
 
 test.skip(({ browserName }) => browserName !== "chromium", "The version-pinned mutation workflow runs once.");
 
 const unique = (label: string) => `${label}-${crypto.randomUUID()}`;
+
+async function createStudioCaptain() {
+  const username = process.env.GM_USERNAME ?? "kato";
+  const password = process.env.GM_PASSWORD ?? "development-captain-only";
+  const activatedAt = new Date();
+  const gm = await db.gameMasterUser.findUnique({ where: { username } });
+  expect(gm, "The governed development fixture must include the Studio Captain.").toBeTruthy();
+  const account = await db.userAccount.upsert({
+    where: { legacyGameMasterId: gm!.id },
+    update: {
+      status: "ACTIVE",
+      claimedAt: activatedAt,
+      ordinaryWorkspaceEntryAt: activatedAt,
+    },
+    create: {
+      status: "ACTIVE",
+      legacyGameMasterId: gm!.id,
+      claimedAt: activatedAt,
+      ordinaryWorkspaceEntryAt: activatedAt,
+    },
+  });
+  const verifiedEmails = await db.accountEmail.updateMany({
+    where: { accountId: account.id, isPrimary: true },
+    data: { verificationState: "VERIFIED", verifiedAt: activatedAt },
+  });
+  expect(verifiedEmails.count, "The governed development fixture must include a primary Captain email.").toBe(1);
+  await db.playerProfile.upsert({
+    where: { accountId: account.id },
+    create: {
+      accountId: account.id,
+      displayName: "Synthetic Studio Captain",
+      status: "ACTIVE",
+      claimedAt: activatedAt,
+    },
+    update: { status: "ACTIVE", claimedAt: activatedAt },
+  });
+  const sourceTale = await db.chronicle.findUnique({ where: { slug: "development-studio-voyage" } });
+  expect(sourceTale, "The governed development fixture must include the Studio Chronicle.").toBeTruthy();
+  await db.chronicle.update({
+    where: { id: sourceTale!.id },
+    data: { creatorId: account.id, creatorAccountId: account.id },
+  });
+  await db.taleDraft.updateMany({
+    where: { taleId: sourceTale!.id },
+    data: { createdBy: account.id, createdByAccountId: account.id },
+  });
+  return { username, password };
+}
 
 async function current(request: APIRequestContext, sessionId: string) {
   const response = await request.get(`/api/play/sessions/${sessionId}`);
@@ -33,6 +82,7 @@ async function dragLibraryBlock(page: Page, name: string) {
 }
 
 test("published Studio tale completes through player, Captain, and helper contracts", async ({ browser }) => {
+  const credentials = await createStudioCaptain();
   const playerContext = await browser.newContext();
   const captainContext = await browser.newContext();
   const strangerContext = await browser.newContext();
@@ -81,7 +131,7 @@ test("published Studio tale completes through player, Captain, and helper contra
   expect(state.pendingVerification?.providerType).toBe("captainManual");
 
   const loginResponse = await captain.post("/api/gm/login", {
-    data: { username: process.env.GM_USERNAME, password: process.env.GM_PASSWORD },
+    data: credentials,
   });
   expect(loginResponse.ok()).toBeTruthy();
   const { csrfToken } = (await loginResponse.json()) as { csrfToken: string };
@@ -167,8 +217,9 @@ test("published Studio tale completes through player, Captain, and helper contra
 });
 
 test("Studio editor exposes searchable authoring tools and responsive isolated preview", async ({ page }) => {
+  const credentials = await createStudioCaptain();
   const login = await page.request.post("/api/gm/login", {
-    data: { username: process.env.GM_USERNAME, password: process.env.GM_PASSWORD },
+    data: credentials,
   });
   expect(login.ok()).toBeTruthy();
   const { csrfToken } = (await login.json()) as { csrfToken: string };
@@ -218,13 +269,14 @@ test("Studio editor exposes searchable authoring tools and responsive isolated p
     headers: { "x-csrf-token": csrfToken },
     data: { action: "restore" },
   });
-  expect(restored.ok()).toBeTruthy();
+  expect(restored.ok(), `${restored.status()}: ${await restored.text()}`).toBeTruthy();
   expect(await restored.json()).toMatchObject({ basedOnPublishedVersionId: version.id, revisionNumber: 2 });
 });
 
 test("creator authors, aligns, publishes, plays, and reviews a media-rich tale", async ({ page }) => {
+  const credentials = await createStudioCaptain();
   const login = await page.request.post("/api/gm/login", {
-    data: { username: process.env.GM_USERNAME, password: process.env.GM_PASSWORD },
+    data: credentials,
   });
   expect(login.ok()).toBeTruthy();
   const { csrfToken } = (await login.json()) as { csrfToken: string };
