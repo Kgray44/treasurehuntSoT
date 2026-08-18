@@ -180,8 +180,10 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $paths = @(git diff --name-only --no-renames --no-ext-diff "$env:BASE_SHA" "$env:CANDIDATE_SHA" | Sort-Object)
-          $isAuthorityCandidate = $paths | Where-Object { $_ -in @('testing/authority-maintenance-policy.json','scripts/sounding-line/authority-maintenance.mjs','scripts/sounding-line/authority-maintenance-protected-binding.mjs','scripts/sounding-line/authority-maintenance-selection.mjs','.github/workflows/sounding-line-authority-maintenance.yml') }
-          if (-not $isAuthorityCandidate) { 'authorityMaintenance=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8; exit 0 }
+          # The trusted policy, not a hand-maintained list of authority files,
+          # determines whether this exact candidate is authority maintenance.
+          # This keeps protected-main discovery and registration maintenance
+          # bindable without treating candidate-supplied ownership as trust.
           git show "$env:BASE_SHA`:testing/authority-maintenance-policy.json" > trusted-authority-maintenance-policy.json
           if ($LASTEXITCODE -ne 0) { throw 'AUTHORITY_MAINTENANCE_TRUSTED_POLICY_UNAVAILABLE' }
           git show "$env:BASE_SHA`:scripts/sounding-line/authority-maintenance.mjs" > trusted-authority-maintenance.mjs
@@ -189,8 +191,18 @@ jobs:
           ConvertTo-Json -InputObject $paths -Compress | Set-Content -NoNewline authority-maintenance-changed-paths.json
           $tree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
           node trusted-authority-maintenance.mjs plan --policy trusted-authority-maintenance-policy.json --paths authority-maintenance-changed-paths.json --trusted-main-sha $env:BASE_SHA --candidate-sha $env:CANDIDATE_SHA --candidate-tree $tree --base-sha $env:BASE_SHA --owner-authorized true --out authority-maintenance-preflight.json
-          if ($LASTEXITCODE -ne 0) { throw 'AUTHORITY_MAINTENANCE_PREFLIGHT_REJECTED' }
-          'authorityMaintenance=true' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          if ($LASTEXITCODE -eq 0) {
+            'authorityMaintenance=true' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            exit 0
+          }
+          $preflight = Get-Content -Raw authority-maintenance-preflight.json | ConvertFrom-Json
+          $errors = @($preflight.errors)
+          $scopeOnly = $preflight.classification.classification -eq 'AUTHORITY_MAINTENANCE_REJECTED' -and $errors.Count -gt 0 -and @($errors | Where-Object { $_ -notmatch '^AUTHORITY_MAINTENANCE_SCOPE_REJECTED:' }).Count -eq 0
+          if ($scopeOnly) {
+            'authorityMaintenance=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            exit 0
+          }
+          throw "AUTHORITY_MAINTENANCE_PREFLIGHT_REJECTED:$($errors -join ',')"
 
   bind:
     # The name is intentionally the unchanged protected branch context.

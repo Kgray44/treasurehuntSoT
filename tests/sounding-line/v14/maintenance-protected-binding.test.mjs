@@ -226,6 +226,16 @@ test("authority maintenance is a distinct owner-authorized, exact-identity lane"
   );
 });
 
+test("protected binding derives authority-maintenance eligibility from the trusted policy", async () => {
+  const workflow = await readFile(
+    new URL("../../../.github/workflows/sounding-line-protected-merge-binding.yml", import.meta.url),
+    "utf8",
+  );
+  assert.match(workflow, /The trusted policy, not a hand-maintained list of authority files/u);
+  assert.match(workflow, /AUTHORITY_MAINTENANCE_SCOPE_REJECTED/u);
+  assert.doesNotMatch(workflow, /\$isAuthorityCandidate/u);
+});
+
 const activeEnvelope = (overrides = {}) => ({
   version: 1,
   authority: "SOUNDING_LINE_ACCEPTANCE_ENVELOPE",
