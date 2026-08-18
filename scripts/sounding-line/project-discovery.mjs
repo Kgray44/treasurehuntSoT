@@ -363,10 +363,12 @@ export function materializeTrustedProjectOwners({ sourceRegistry = {}, owners = 
   const materialized = [];
   const errors = [];
   const byId = new Map((owners ?? []).map((owner) => [owner?.id, owner]));
-  const knownOwnerIds = new Set([
-    ...(owners ?? []).map((owner) => owner?.id),
-    ...(sourceRegistry?.projects ?? []).map((record) => record?.id),
-  ].filter(Boolean));
+  const knownOwnerIds = new Set(
+    [
+      ...(owners ?? []).map((owner) => owner?.id),
+      ...(sourceRegistry?.projects ?? []).map((record) => record?.id),
+    ].filter(Boolean),
+  );
   for (const record of sourceRegistry?.projects ?? []) {
     const id = String(record?.id ?? "");
     const sourcePaths = sorted(record?.sourcePaths ?? []);

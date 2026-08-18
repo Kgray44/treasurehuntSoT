@@ -227,26 +227,33 @@ test("protected Shipwright discovery materializes one bounded static owner witho
     },
   ]);
   assert.equal(first.owners.filter((entry) => entry.id === record.id).length, 1);
-  assert.equal(first.owners.some((entry) => entry.id === "project-definitely-normal"), false);
+  assert.equal(
+    first.owners.some((entry) => entry.id === "project-definitely-normal"),
+    false,
+  );
 });
 
 test("trusted project-owner materialization fails closed on a conflicting static identity", () => {
   const result = materializeTrustedProjectOwners({
     sourceRegistry: {
-      projects: [{
-        id: "project-example",
-        sourcePaths: ["src/example/**"],
-        testPaths: ["tests/example/**"],
-        contractIds: [],
-      }],
+      projects: [
+        {
+          id: "project-example",
+          sourcePaths: ["src/example/**"],
+          testPaths: ["tests/example/**"],
+          contractIds: [],
+        },
+      ],
     },
-    owners: [{
-      id: "project-example",
-      project: "project-example",
-      sourcePaths: ["src/other/**"],
-      testPaths: [],
-      contractIds: [],
-    }],
+    owners: [
+      {
+        id: "project-example",
+        project: "project-example",
+        sourcePaths: ["src/other/**"],
+        testPaths: [],
+        contractIds: [],
+      },
+    ],
   });
 
   assert.deepEqual(result.materialized, []);
