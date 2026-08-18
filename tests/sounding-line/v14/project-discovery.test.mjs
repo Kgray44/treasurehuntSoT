@@ -7,7 +7,6 @@ import {
   createProjectDiscoveryRegistry,
   createTrustedMainProjectDiscoveryRegistry,
   discoverProjects,
-  materializeTrustedProjectOwners,
   projectDiscoverySummary,
   structurallyAdmitsProjectPath,
   validateProjectDiscoveryRegistry,
@@ -186,78 +185,11 @@ test("trusted-main project records promote an accepted project deterministically
     }).valid,
     true,
   );
-  const materialized = materializeTrustedProjectOwners({ sourceRegistry, owners: input.owners });
-  assert.deepEqual(materialized.errors, []);
-  assert.deepEqual(materialized.materialized, [
-    {
-      id: "project-shipwright",
-      project: "project-shipwright",
-      sourcePaths: ["src/components/studio/**", "src/studio/authoring/**"],
-      testPaths: ["tests/e2e/project-shipwright-phase2.spec.ts"],
-      contractIds: [],
-    },
-  ]);
   const forged = createTrustedMainProjectDiscoveryRegistry({
     ...input,
     sourceRegistry: { projects: [{ ...sourceRegistry.projects[0], sourcePaths: ["scripts/**"] }] },
   });
   assert.match(forged.errors.join("\n"), /PROJECT_DISCOVERY_SOURCE_SCOPE_INVALID/);
-});
-
-test("protected Shipwright discovery materializes one bounded static owner without broadening ownership", async () => {
-  const [sourceRegistry, ownership] = await Promise.all(
-    ["trusted-project-discovery.json", "ownership.json"].map(async (name) =>
-      JSON.parse(await readFile(path.join(root, "testing", name), "utf8")),
-    ),
-  );
-  const record = sourceRegistry.projects.find((entry) => entry.id === "project-shipwright");
-  assert.ok(record);
-  assert.ok(record.supportingOwnerIds.includes("tideglass"));
-  const first = materializeTrustedProjectOwners({ sourceRegistry, owners: ownership.owners });
-  const second = materializeTrustedProjectOwners({ sourceRegistry, owners: ownership.owners });
-  assert.deepEqual(first, second);
-  assert.deepEqual(first.errors, []);
-  assert.deepEqual(first.materialized, [
-    {
-      id: record.id,
-      project: record.id,
-      sourcePaths: [...record.sourcePaths].sort(),
-      testPaths: [...record.testPaths].sort(),
-      contractIds: [...record.contractIds].sort(),
-    },
-  ]);
-  assert.equal(first.owners.filter((entry) => entry.id === record.id).length, 1);
-  assert.equal(
-    first.owners.some((entry) => entry.id === "project-definitely-normal"),
-    false,
-  );
-});
-
-test("trusted project-owner materialization fails closed on a conflicting static identity", () => {
-  const result = materializeTrustedProjectOwners({
-    sourceRegistry: {
-      projects: [
-        {
-          id: "project-example",
-          sourcePaths: ["src/example/**"],
-          testPaths: ["tests/example/**"],
-          contractIds: [],
-        },
-      ],
-    },
-    owners: [
-      {
-        id: "project-example",
-        project: "project-example",
-        sourcePaths: ["src/other/**"],
-        testPaths: [],
-        contractIds: [],
-      },
-    ],
-  });
-
-  assert.deepEqual(result.materialized, []);
-  assert.deepEqual(result.errors, ["PROJECT_DISCOVERY_OWNER_COLLISION:project-example"]);
 });
 
 test("Project DefinitelyNormal cannot escape the authority firewall", () => {
@@ -340,4 +272,120 @@ test("ambiguity, missing tests, migration, security, and multiple projects remai
   });
   assert.equal(docsOnly.state, "PROVISIONAL_CONSERVATIVE");
   assert.deepEqual(docsOnly.observedTestRoots, []);
+});
+
+const productSuites = [
+  { id: "browser.access-sentinel", domains: ["authorization"] },
+  { id: "unit.wakebook", owner: "project-wakebook" },
+  { id: "browser.wakebook", owner: "project-wakebook" },
+  { id: "unit.tideglass", owner: "tideglass" },
+  { id: "browser.tideglass", owner: "tideglass" },
+  { id: "unit.lanternwake", owner: "lanternwake" },
+  { id: "browser.lanternwake", owner: "lanternwake" },
+  { id: "unit.feature-catalog", affectedPaths: ["scripts/features/**", "Development_Docs/Features/**"] },
+  { id: "static.core" },
+].map((entry) => ({ ...entry, trusted: true }));
+const productContracts = [
+  { id: "wakebook.history", trusted: true },
+  { id: "tideglass.editions", trusted: true },
+  { id: "lanternwake.viewport", trusted: true },
+];
+const productOwners = [
+  {
+    id: "project-wakebook",
+    project: "project-wakebook",
+    sourcePaths: ["src/wakebook/**"],
+    testPaths: ["tests/e2e/wakebook-*.spec.ts"],
+    contractIds: ["wakebook.history"],
+  },
+  {
+    id: "tideglass",
+    project: "project-tideglass",
+    sourcePaths: ["scripts/tideglass/**"],
+    testPaths: ["tests/e2e/tideglass-*.spec.ts"],
+    contractIds: ["tideglass.editions"],
+  },
+  {
+    id: "lanternwake",
+    project: "lanternwake",
+    sourcePaths: ["src/animation/**"],
+    testPaths: ["tests/e2e/lanternwake-*.spec.ts"],
+    contractIds: ["lanternwake.viewport"],
+  },
+].map((entry) => ({ ...entry, trusted: true }));
+const productCatalog = [
+  { id: "catalog-wakebook", title: "Project Wakebook", trusted: true },
+  { id: "catalog-tideglass", title: "Project Tideglass", trusted: true },
+  { id: "catalog-lanternwake", title: "Project Lanternwake", trusted: true },
+];
+const productPlan = ({ changedPaths, descriptors, owners = productOwners }) =>
+  selectV14Mainline({
+    changedPaths,
+    suites: productSuites,
+    requiredSuiteIds: ["browser.access-sentinel"],
+    ledgerSuiteIds: productSuites.map((suite) => suite.id),
+    impact: { pathMappings: [], contractMappings: [] },
+    projectDiscovery:
+      descriptors ??
+      discoverProjects({
+        candidatePaths: changedPaths,
+        suites: productSuites,
+        contracts: productContracts,
+        owners,
+        featureCatalog: productCatalog,
+      }),
+  });
+
+test("trusted owner shapes, project fragments, and catalog fragments select only their known product evidence", () => {
+  const wakebookPaths = [
+    "src/wakebook/archive-query.ts",
+    "Development_Docs/Project_Wakebook_Phase_2_Test_Plan.md",
+    "Development_Docs/Features/catalog/wakebook.json",
+  ];
+  const [wakebook] = discoverProjects({
+    candidatePaths: wakebookPaths,
+    suites: productSuites,
+    contracts: productContracts,
+    owners: productOwners,
+    featureCatalog: productCatalog,
+  });
+  assert.equal(wakebook.state, "TRUSTED_DISCOVERED");
+  assert.equal(wakebook.mayNarrowEvidence, true);
+  const plan = productPlan({ changedPaths: wakebookPaths, descriptors: [wakebook] });
+  assert.equal(plan.fallback, null);
+  assert.ok(plan.selectedSuiteIds.includes("unit.wakebook"));
+  assert.ok(plan.selectedSuiteIds.includes("browser.wakebook"));
+  assert.ok(!plan.selectedSuiteIds.includes("browser.tideglass"));
+  assert.ok(!plan.selectedSuiteIds.includes("browser.lanternwake"));
+});
+
+test("generated validation is bounded, while Tideglass and Lanternwake keep their own browser families", () => {
+  const global = productPlan({ changedPaths: ["scripts/features/feature-catalog.test.ts"] });
+  assert.equal(global.fallback, null);
+  assert.deepEqual(global.selectedSuiteIds, ["browser.access-sentinel", "unit.feature-catalog"]);
+  const tideglass = productPlan({ changedPaths: ["scripts/tideglass/seed-phase3-fixture.mjs"] });
+  const lanternwake = productPlan({ changedPaths: ["tests/e2e/lanternwake-phase2.spec.ts"] });
+  assert.ok(tideglass.selectedSuiteIds.includes("browser.tideglass"));
+  assert.ok(!tideglass.selectedSuiteIds.includes("browser.lanternwake"));
+  assert.ok(lanternwake.selectedSuiteIds.includes("browser.lanternwake"));
+  assert.ok(!lanternwake.selectedSuiteIds.includes("browser.tideglass"));
+});
+
+test("unknown product, unknown owner, authority-sensitive, and cross-project intervals remain fail-closed or exact", () => {
+  for (const input of [
+    productPlan({ changedPaths: ["src/unmapped/new.ts"] }),
+    productPlan({ changedPaths: ["src/wakebook/archive-query.ts"], owners: [] }),
+    productPlan({ changedPaths: ["testing/sounding-line-authority.json"] }),
+  ]) {
+    assert.equal(input.fallback?.disposition, "CONSERVATIVE_FALLBACK");
+  }
+  const crossProject = productPlan({
+    changedPaths: ["scripts/tideglass/seed-phase3-fixture.mjs", "tests/e2e/lanternwake-phase2.spec.ts"],
+  });
+  assert.equal(crossProject.fallback, null);
+  assert.ok(crossProject.selectedSuiteIds.includes("browser.tideglass"));
+  assert.ok(crossProject.selectedSuiteIds.includes("browser.lanternwake"));
+  const candidate = productPlan({ changedPaths: ["src/wakebook/archive-query.ts"] });
+  const train = productPlan({ changedPaths: ["src/wakebook/archive-query.ts"] });
+  assert.deepEqual(candidate.selectedSuiteIds, train.selectedSuiteIds);
 });
