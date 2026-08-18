@@ -2,8 +2,20 @@
   "phase": "Phase 5",
   "phase5Authorized": true,
   "project": "Project Deepwater",
-  "queue": [],
+  "queue": [
+    {
+      "closureRequirement": "An owner-authorized Sounding Line maintenance candidate must land protected-main policy and registration coverage for the exact Phase 5 paths. Phase 5 must then merge that accepted main, rerun invalidated focused evidence, freeze a new candidate, and request one v1.4 Mainline Decision.",
+      "evidence": "Sounding Line authoritative run 31969567104 rejected the prior frozen candidate before test execution with SOUNDING_LINE_ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED:testing/impact-map.json. The trusted policy additionally classifies the existing Deepwater scripts, program records, and impact declaration as unknown ordinary-candidate scope.",
+      "findingId": "DW-P5-EXTERNAL-SOUNDING-LINE-ORDINARY-ADMISSION-001",
+      "kind": "GOVERNANCE_ADMISSION",
+      "owner": "Sounding Line policy owner",
+      "retryTrigger": "Protected main contains the accepted admission and required registration coverage.",
+      "severity": "HIGH",
+      "source": "testing/verification-maintenance-policy.json at protected origin/main 8c7c3589955f94fcc8a400a81e4f61565d0d4521",
+      "status": "OPEN_EXTERNAL_POLICY_ADMISSION"
+    }
+  ],
   "rationale": "Phase 5 is explicitly owner-authorized as a governance institutionalization phase. Any discovered external blocker remains visible with its owner and closure lifecycle.",
   "schemaVersion": "1.0.0",
-  "sourceSha": "3df555a05efee98270dd69bcae32a7e34c814c12"
+  "sourceSha": "8c7c3589955f94fcc8a400a81e4f61565d0d4521"
 }

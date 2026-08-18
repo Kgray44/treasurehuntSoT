@@ -1,19 +1,19 @@
 {
   "acceptanceLane": "SOUNDING_LINE_V14_CANDIDATE_MAINLINE_DECISION",
-  "baseSourceSha": "3df555a05efee98270dd69bcae32a7e34c814c12",
+  "baseSourceSha": "8c7c3589955f94fcc8a400a81e4f61565d0d4521",
   "featureCatalogImpact": "NO_CHANGE_REQUIRED",
   "limitations": [
     "Phase 5 does not self-issue release authority or owner product acceptance.",
-    "The v1.4 fleet pause is cleared. This branch is locally qualified for one frozen-candidate Mainline Decision and required protected binding."
+    "The v1.4 fleet pause is cleared. Local Phase 5 qualification is complete, but protected-main ordinary-candidate admission must first accept the existing Deepwater governance paths and impact-map registration through an owner-authorized Sounding Line maintenance change."
   ],
-  "mainlineState": "PENDING_FROZEN_CANDIDATE_MAINLINE_DECISION",
+  "mainlineState": "BLOCKED_PENDING_OWNER_AUTHORIZED_ORDINARY_ADMISSION",
   "ownerDecision": "NOT_APPLICABLE",
   "phase": "Phase 5 - Keep the Soundings",
   "productSourceImpact": "NONE",
   "project": "Project Deepwater",
   "schemaImpact": "NONE",
   "schemaVersion": "1.0.0",
-  "soundingLinePolicyDigest": "08797fa3b97651d7ea285e49896f07c09893f332d2383bf29a5d8453133dab15",
+  "soundingLinePolicyDigest": "215ccf10a6209e73b6d81c6c08b35acb24095c624a1118ea0ecfcac8de76a283",
   "state": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
   "validation": "LOCAL_CONTROL_PLANE_QUALIFIED"
 }
