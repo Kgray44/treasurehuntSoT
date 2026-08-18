@@ -144407,10 +144407,10 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-2f42aabcbf3674fff186",
+      "id": "sl-test-73ac048137a3dc6bed2f",
       "semanticId": "sl-semantic-f4ff021284cd858aa6c6",
       "title": "Wayfarer Phase 3 authenticated Passport history is private, pinned, consent-filtered, and read-only",
-      "line": 230,
+      "line": 232,
       "file": "tests/e2e/wayfarer-phase3.spec.ts",
       "project": "chromium",
       "suiteId": "browser.passport",
@@ -144445,7 +144445,7 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": ["sl-test-b7ae5abdbda78652ffe6"],
+      "historicalAliases": ["sl-test-2f42aabcbf3674fff186", "sl-test-b7ae5abdbda78652ffe6"],
       "currentStatus": "ACTIVE"
     },
     {
@@ -162803,10 +162803,10 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-d2b505cf5569574729bf",
+      "id": "sl-test-851f630497e88aa5b619",
       "semanticId": "sl-semantic-b2eab87792c6ceb33605",
       "title": "Wayfarer Phase 3 authenticated Passport history is private, pinned, consent-filtered, and read-only",
-      "line": 230,
+      "line": 232,
       "file": "tests/e2e/wayfarer-phase3.spec.ts",
       "project": "wayfarer-phase3",
       "suiteId": "browser.passport",
@@ -162841,7 +162841,7 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": ["sl-test-0e422eae479283570b55"],
+      "historicalAliases": ["sl-test-0e422eae479283570b55", "sl-test-d2b505cf5569574729bf"],
       "currentStatus": "ACTIVE"
     },
     {
@@ -187711,10 +187711,10 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-1c2f5e4176bdbdd571a3",
+      "id": "sl-test-cc6d2293fa9280877f8b",
       "semanticId": "sl-semantic-1be7518bb50cf7a470b9",
       "title": "Wayfarer Phase 3 authenticated Passport history is private, pinned, consent-filtered, and read-only",
-      "line": 230,
+      "line": 232,
       "file": "tests/e2e/wayfarer-phase3.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.passport",
@@ -187749,7 +187749,7 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": ["sl-test-c57abb38fe812ceaf515"],
+      "historicalAliases": ["sl-test-1c2f5e4176bdbdd571a3", "sl-test-c57abb38fe812ceaf515"],
       "currentStatus": "ACTIVE"
     },
     {

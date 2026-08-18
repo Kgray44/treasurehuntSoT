@@ -28,14 +28,16 @@ async function register(browser: import("@playwright/test").Browser, label: stri
     where: { id: body.player.id },
     select: { accountId: true },
   });
+  expect(profile.accountId, "Registration must create an account-rooted Player profile.").toBeTruthy();
+  const accountId = profile.accountId!;
   const verifiedAt = new Date();
   await Promise.all([
     db.userAccount.update({
-      where: { id: profile.accountId },
+      where: { id: accountId },
       data: { status: "ACTIVE", claimedAt: verifiedAt, ordinaryWorkspaceEntryAt: verifiedAt },
     }),
     db.accountEmail.updateMany({
-      where: { accountId: profile.accountId, isPrimary: true },
+      where: { accountId, isPrimary: true },
       data: { verificationState: "VERIFIED", verifiedAt },
     }),
   ]);
