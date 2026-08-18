@@ -213,6 +213,11 @@
       "contractIds": []
     },
     {
+      "path": ".agents/deepwater-capability-impact.md",
+      "suiteIds": ["unit.deepwater", "static.core"],
+      "contractIds": ["deepwater.capability-realization-integrity"]
+    },
+    {
       "path": "Development_Docs/README.md",
       "suiteIds": ["static.core", "validation.documentation"],
       "contractIds": []
