@@ -25,6 +25,7 @@ import {
 
 const sha = (character) => character.repeat(40);
 const execFileAsync = promisify(execFile);
+const root = path.resolve();
 const policy = {
   authority: "SOUNDING_LINE_VERIFICATION_MAINTENANCE",
   trustedMainOnly: true,
@@ -357,6 +358,23 @@ test("active authority selection fails closed when no valid current authority re
     selectActive([directCandidate(101, { run: { event: "push" } })]).decision,
     "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE",
   );
+});
+
+test("authority-maintenance preflight routing is trusted-policy driven and bootstraps policy updates", async () => {
+  const workflow = await readFile(
+    path.join(root, ".github", "workflows", "sounding-line-protected-merge-binding.yml"),
+    "utf8",
+  );
+  const authorityPolicy = JSON.parse(
+    await readFile(path.join(root, "testing", "authority-maintenance-policy.json"), "utf8"),
+  );
+  assert.ok(authorityPolicy.bindingPreflightPaths.includes("scripts/sounding-line/project-discovery.mjs"));
+  assert.ok(
+    authorityPolicy.bindingPreflightPaths.includes(".github/workflows/sounding-line-protected-merge-binding.yml"),
+  );
+  assert.match(workflow, /\$authorityBindingPaths = @\(\$trustedPolicy\.bindingPreflightPaths\)/);
+  assert.match(workflow, /\$legacyAuthorityBindingPaths = @\(/);
+  assert.doesNotMatch(workflow, /\$isAuthorityCandidate = \$paths \| Where-Object \{ \$_ -in @\('/);
 });
 
 test("a renamed trusted authority classifier still emits the sealed plan and finalization", async () => {
