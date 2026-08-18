@@ -152,7 +152,7 @@ test("maintenance authority selection fails closed for invalid identity, disposi
   assert.equal(select([trustedRun(), trustedRun({ id: 43 })]).decision, "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE");
 });
 
-test("authority maintenance is a distinct owner-authorized, exact-identity lane", () => {
+test("authority maintenance is a distinct owner-authorized, exact-identity candidate-ref lane", () => {
   const authorityPolicy = {
     authority: "SOUNDING_LINE_AUTHORITY_MAINTENANCE",
     disposition: "AUTHORITY_MAINTENANCE_GO",
@@ -200,7 +200,7 @@ test("authority maintenance is a distinct owner-authorized, exact-identity lane"
     event: "workflow_dispatch",
     status: "completed",
     conclusion: "success",
-    headSha: sha("a"),
+    headSha: sha("b"),
     plan: authorityPlan,
     finalization: authorityFinalization,
   };
@@ -212,6 +212,15 @@ test("authority maintenance is a distinct owner-authorized, exact-identity lane"
       qualifiedBaseSha: sha("a"),
     }).decision,
     "AUTHORITY_MAINTENANCE_AUTHORITY_SELECTED",
+  );
+  assert.equal(
+    selectSealedAuthorityMaintenance({
+      runs: [{ ...run, headSha: sha("a") }],
+      candidateSha: sha("b"),
+      candidateTree: sha("c"),
+      qualifiedBaseSha: sha("a"),
+    }).decision,
+    "SEALED_AUTHORITY_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
   );
   assert.equal(
     qualifyAuthorityMaintenanceProtectedMerge({
