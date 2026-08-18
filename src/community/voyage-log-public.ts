@@ -16,6 +16,11 @@ export type PublicVoyageLog = Readonly<{
   verifiedCompletion: true;
 }>;
 
+export type VoyageLogSharingMetadata = Readonly<{
+  visibility: "COMMUNITY" | "UNLISTED";
+  log: PublicVoyageLog;
+}>;
+
 const publicFields = {
   id: true,
   slug: true,
@@ -169,6 +174,28 @@ async function readSharedVoyageLogs(
 
 export async function readPublicVoyageLogs(slug?: string): Promise<readonly PublicVoyageLog[]> {
   return readSharedVoyageLogs(slug, "COMMUNITY");
+}
+
+/**
+ * Metadata generation may disclose only the same fully consented projection as
+ * a public page. Exact-link records retain their UNLISTED visibility so the
+ * caller can issue the required crawler directive without reading private rows.
+ */
+export async function readVoyageLogSharingMetadata(slug: string): Promise<VoyageLogSharingMetadata | null> {
+  const record = await db.communityVoyageLog.findUnique({
+    where: { slug },
+    select: { visibility: true, lifecycleState: true, publishedAt: true, verifiedCompletion: true },
+  });
+  if (
+    !record ||
+    record.lifecycleState !== "PUBLISHED" ||
+    !record.publishedAt ||
+    !record.verifiedCompletion ||
+    (record.visibility !== "COMMUNITY" && record.visibility !== "UNLISTED")
+  )
+    return null;
+  const log = await readVoyageLogForViewer(slug);
+  return log ? { visibility: record.visibility, log } : null;
 }
 
 /** Exact-link unlisted access and crew access share the same consent/restriction projection as Community. */
