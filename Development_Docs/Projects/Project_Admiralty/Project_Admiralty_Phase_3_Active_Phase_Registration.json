@@ -3,16 +3,16 @@
   "project": "Project Admiralty",
   "phase": "3",
   "phaseName": "Take the Watch",
-  "status": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
+  "status": "V14_CANDIDATE_QUALIFICATION_IN_PROGRESS",
   "authorization": "OWNER_PROMPT_2026-08-13",
   "branch": "codex/project-admiralty-phase3-mainline-reconcile",
   "worktree": "C:\\Users\\kgray\\AppData\\Local\\ForeverTreasureCompanion\\treasurehuntSoT-admiralty-phase3-mainline-reconcile",
   "baseRef": "origin/main",
-  "baseSha": "268932d630ee0ea1721d0072da4041f7209b7464",
+  "baseSha": "fc39942a1d8fe57fc13f35cae01445e704b94c45",
   "pausedCheckpointSha": "56caa166a5ab6171f4d9d7e4b0ed544a92f541d5",
-  "v14ReconciliationSha": "32f45c88665f8597bc642917ca523ca87d650566",
+  "v14ReconciliationSha": "ef204d2bb0a2da7bc1c87a360fc3b9a2c8441205",
   "legacyEvidenceDisposition": "PRESERVED_NONAUTHORITATIVE_PENDING_V14_SEMANTIC_ADOPTION",
-  "mainlineHold": "Sounding Line v1.4 post-cutover hosted browser-fixture closure remains external and must be green before authoritative Mainline Decision or merge.",
+  "mainlineHold": "No fleet-wide pause remains. Freeze and qualify the current candidate before one trusted-main Sounding Line v1.4 candidate authority dispatch.",
   "phase2Status": "ACCEPTED_MAINLINE",
   "phase2AcceptedMainSha": "4edc8de5e30e9748700c19b466061f9b9a97f268",
   "concurrencyClass": "B_WITH_CLASS_C_OWNER_BOUNDARIES",
@@ -43,5 +43,5 @@
     "break-glass authority and secret access"
   ],
   "registeredAt": "2026-08-13",
-  "reconciledAt": "2026-08-14"
+  "reconciledAt": "2026-08-18"
 }

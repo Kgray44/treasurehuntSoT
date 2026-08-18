@@ -3,7 +3,7 @@ title: Project Admiralty Phase 3 Integration Manifest
 audience: product-owner-engineering-security-quality
 status: in-progress
 canonical_for: project-admiralty-phase-3-integration-manifest
-last_reviewed: 2026-08-14
+last_reviewed: 2026-08-18
 ---
 
 # Project Admiralty Phase 3 integration manifest
@@ -12,8 +12,8 @@ last_reviewed: 2026-08-14
 
 - Working branch: `codex/project-admiralty-phase3-mainline-reconcile`
 - Paused checkpoint: `56caa166a5ab6171f4d9d7e4b0ed544a92f541d5`
-- Reconciled mainline base: `268932d630ee0ea1721d0072da4041f7209b7464`
-- Reconciliation merge: `32f45c88665f8597bc642917ca523ca87d650566`
+- Reconciled mainline base: `fc39942a1d8fe57fc13f35cae01445e704b94c45`
+- Latest reconciliation merge: `ef204d2bb0a2da7bc1c87a360fc3b9a2c8441205`
 - Phase 2 baseline: accepted Project Admiralty Phase 2 read-only control plane.
 - In scope: owner-backed account/security and Community moderation command
   seams, role partitions, command evidence, and safe operator projections.
@@ -22,16 +22,18 @@ last_reviewed: 2026-08-14
 
 ## Current integration state
 
-The integration is **ready for Sounding Line v1.4 Mainline acceptance but has
-no protected-main authority**. Session revocation, active-account suspension, and selected
+The integration is **in current v1.4 candidate qualification and has no
+protected-main authority**. Session revocation, active-account suspension, and selected
 case-attached Community moderation actions have controlled server routes and
 human-facing dossier/listing panels. Their local synthetic browser
 qualification includes preview, assurance, confirmation, durable receipts,
 CSRF denial, ordinary-user command-center denial, redaction, and accessibility
 checks. Reconciliation adopted the current Sounding Line v1.4 authority and
-Bridgewatch contracts without source conflict; current-source local production
-build and the Phase 2 and Phase 3 browser journeys pass on the disposable
-synthetic fixtures.
+Bridgewatch contracts without source conflict. The current owner/command suite,
+Phase 2 validator, and Phase 3 migration rehearsal pass. The current local
+Chromium runner completed its first journey, but its second journey was
+interrupted by host `ENOSPC` while writing disposable browser artifacts; this
+is recorded as an environmental qualification gap, not a passing browser claim.
 
 The paused v1.3-era focused evidence is preserved as
 `PRESERVED_NONAUTHORITATIVE_PENDING_V14_SEMANTIC_ADOPTION`. It is not a v1.4
@@ -55,5 +57,5 @@ only its named family; it must not be inferred from a table, worker, seed
 script, or bootstrap reconciler.
 
 No Sounding Line v1.4 Mainline Decision or protected-main binding has been
-requested or run. Both remain held until the independent v1.4 post-cutover
-hosted browser-fixture closure is green.
+requested or run. The fleet-wide post-cutover hold is over; one trusted-main
+candidate authority dispatch may occur only after this candidate is frozen.
