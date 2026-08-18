@@ -484,10 +484,10 @@ test("Project Confluence cannot self-authorize an admission or authority-policy 
 });
 
 test("candidate authority invokes the trusted ordinary classifier rather than inline glob logic", async () => {
-  const workflow = await readFile(
-    new URL("../../../.github/workflows/sounding-line-authoritative.yml", import.meta.url),
-    "utf8",
-  );
+  const [workflow, protectedBinding] = await Promise.all([
+    readFile(new URL("../../../.github/workflows/sounding-line-authoritative.yml", import.meta.url), "utf8"),
+    readFile(new URL("../../../.github/workflows/sounding-line-protected-merge-binding.yml", import.meta.url), "utf8"),
+  ]);
   assert.match(
     workflow,
     /git show "\$env:SOUNDING_LINE_BASE_SHA`:scripts\/sounding-line\/verification-maintenance\.mjs" > trusted-verification-maintenance\.mjs/u,
@@ -495,6 +495,14 @@ test("candidate authority invokes the trusted ordinary classifier rather than in
   assert.match(
     workflow,
     /node trusted-verification-maintenance\.mjs ordinary --policy trusted-maintenance-policy\.json --paths ordinary-candidate-changed-paths\.json --trusted-base-sha \$env:SOUNDING_LINE_BASE_SHA --candidate-sha \$env:SOUNDING_LINE_CANDIDATE_SHA --out ordinary-candidate-classification\.json/u,
+  );
+  assert.match(
+    workflow,
+    /git show "\$env:SOUNDING_LINE_BASE_SHA`:scripts\/sounding-line\/project-discovery\.mjs" > project-discovery\.mjs/u,
+  );
+  assert.match(
+    protectedBinding,
+    /git show "\$env:BASE_SHA`:scripts\/sounding-line\/project-discovery\.mjs" > project-discovery\.mjs/u,
   );
   assert.doesNotMatch(workflow, /function Test-TrustedGlob/u);
 });
@@ -510,6 +518,8 @@ test("maintenance qualification keeps the static-safe changed-path proof outside
     /\$maintenanceTemp = Join-Path \$env:RUNNER_TEMP "sounding-line-maintenance-\$env:GITHUB_RUN_ID-\$env:GITHUB_RUN_ATTEMPT"/u,
   );
   assert.match(workflow, /\$pathsFile = Join-Path \$maintenanceTemp 'maintenance-changed-paths\.json'/u);
+  assert.match(workflow, /\$projectDiscoveryFile = Join-Path \$maintenanceTemp 'project-discovery\.mjs'/u);
+  assert.match(workflow, /MAINTENANCE_TRUSTED_PROJECT_DISCOVERY_UNAVAILABLE/u);
   assert.match(workflow, /\$pathsJson = ConvertTo-Json -InputObject \$paths -Compress/u);
   assert.match(workflow, /\[System\.IO\.File\]::WriteAllText\(\$pathsFile, \$pathsJson, \$utf8NoBom\)/u);
   assert.match(workflow, /--paths \$pathsFile/u);

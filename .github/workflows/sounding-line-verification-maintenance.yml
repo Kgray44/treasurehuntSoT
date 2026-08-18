@@ -42,11 +42,15 @@ jobs:
           "maintenance_temp=$maintenanceTemp" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           $policyFile = Join-Path $maintenanceTemp 'trusted-maintenance-policy.json'
           $verifierFile = Join-Path $maintenanceTemp 'trusted-verification-maintenance.mjs'
+          $projectDiscoveryFile = Join-Path $maintenanceTemp 'project-discovery.mjs'
           $pathsFile = Join-Path $maintenanceTemp 'maintenance-changed-paths.json'
           $planFile = Join-Path $maintenanceTemp 'maintenance-plan.json'
           $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
           [System.IO.File]::WriteAllText($policyFile, ((git show "$env:BASE_SHA`:testing/verification-maintenance-policy.json") -join "`n"), $utf8NoBom)
           [System.IO.File]::WriteAllText($verifierFile, ((git show "$env:BASE_SHA`:scripts/sounding-line/verification-maintenance.mjs") -join "`n"), $utf8NoBom)
+          $projectDiscovery = @(git show "$env:BASE_SHA`:scripts/sounding-line/project-discovery.mjs")
+          if ($LASTEXITCODE -ne 0) { throw 'MAINTENANCE_TRUSTED_PROJECT_DISCOVERY_UNAVAILABLE' }
+          [System.IO.File]::WriteAllText($projectDiscoveryFile, ($projectDiscovery -join "`n"), $utf8NoBom)
           $paths = @(git diff --name-only --no-renames --no-ext-diff "$env:BASE_SHA" "$env:CANDIDATE_SHA" | Sort-Object)
           $pathsJson = ConvertTo-Json -InputObject $paths -Compress
           [System.IO.File]::WriteAllText($pathsFile, $pathsJson, $utf8NoBom)
