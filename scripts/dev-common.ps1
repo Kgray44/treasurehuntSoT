@@ -249,6 +249,23 @@ function Sync-ForeverRuntime {
     & robocopy $script:ProjectRoot $resolvedRuntime /E /XD $excludedDirectories /XF .git *.db *.db-journal *.log .forever-dev.json .forever-lock.sha | Out-Null
     if ($LASTEXITCODE -gt 7) { throw "Unable to synchronize the local runtime mirror (robocopy exit $LASTEXITCODE)." }
     if ($Mode -eq "validation") {
+        # Runtime product modules may depend on a small, reviewed set of
+        # public engineering records. Keep the broad documentation exclusion,
+        # then restore only these exact runtime dependencies.
+        $runtimeDocumentDependencies = @(
+            "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Change_Code_Registry.json",
+            "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Projection_Policy.json"
+        )
+        foreach ($relativePath in $runtimeDocumentDependencies) {
+            $source = Join-Path $script:ProjectRoot $relativePath
+            if (-not (Test-Path -LiteralPath $source -PathType Leaf)) {
+                throw "Required validation runtime document dependency is missing: $relativePath"
+            }
+            $destination = Join-Path $resolvedRuntime $relativePath
+            $destinationDirectory = Split-Path -Parent $destination
+            New-Item -ItemType Directory -Path $destinationDirectory -Force | Out-Null
+            Copy-Item -LiteralPath $source -Destination $destination -Force -ErrorAction Stop
+        }
         [void](Assert-ForeverValidationRuntimeOwnership -RuntimeRoot $resolvedRuntime)
         Write-ForeverValidationRunEvent -RuntimeRoot $resolvedRuntime -Event "source-synchronized"
     }
