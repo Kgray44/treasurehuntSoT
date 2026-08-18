@@ -5,6 +5,15 @@
   "workflowDispatchOnly": true,
   "trustedMainOnly": true,
   "ownerAuthorization": "REPOSITORY_OWNER_WORKFLOW_DISPATCH",
+  "bindingPreflightPaths": [
+    "testing/authority-maintenance-policy.json",
+    "scripts/sounding-line/authority-maintenance.mjs",
+    "scripts/sounding-line/authority-maintenance-protected-binding.mjs",
+    "scripts/sounding-line/authority-maintenance-selection.mjs",
+    "scripts/sounding-line/project-discovery.mjs",
+    ".github/workflows/sounding-line-authority-maintenance.yml",
+    ".github/workflows/sounding-line-protected-merge-binding.yml"
+  ],
   "eligiblePathGlobs": [
     "testing/authority-maintenance-policy.json",
     "testing/policy-manifest.json",
