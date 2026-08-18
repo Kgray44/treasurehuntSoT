@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "project",
+    "phase",
+    "phase5Authorized",
+    "authorization",
+    "baseOriginMainSha",
+    "soundingLinePolicyDigest",
+    "scope",
+    "releaseAuthority",
+    "completionRecordPolicy",
+    "continuousGovernance",
+    "phase5ImpactDeclaration"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "project": { "const": "Project Deepwater" },
+    "phase5Authorized": { "const": true },
+    "baseOriginMainSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "soundingLinePolicyDigest": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "authorization": { "type": "object", "required": ["ownerPrompt"] },
+    "scope": { "type": "object", "required": ["schemaImpact", "productBehaviorImpact"] },
+    "releaseAuthority": {
+      "type": "object",
+      "properties": { "decisionEmitter": { "const": "Sounding Line" } },
+      "required": ["decisionEmitter"]
+    },
+    "completionRecordPolicy": {
+      "type": "object",
+      "required": ["activation", "governedRecordPaths"],
+      "properties": {
+        "activation": { "type": "string" },
+        "governedRecordPaths": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+      }
+    },
+    "continuousGovernance": {
+      "type": "object",
+      "required": ["openItems"],
+      "properties": {
+        "openItems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "findingId",
+              "kind",
+              "severity",
+              "owner",
+              "status",
+              "source",
+              "evidence",
+              "closureRequirement",
+              "retryTrigger"
+            ]
+          }
+        }
+      }
+    },
+    "localQualification": {
+      "type": "object",
+      "required": ["state", "mainlineState", "acceptanceLane", "holdReason"]
+    },
+    "backendSurfaceDispositions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "capabilityId", "featureCatalogId", "canonicalOwner", "rationale"]
+      }
+    },
+    "phase5ImpactDeclaration": { "$ref": "./deepwater-capability-impact.schema.json" }
+  }
+}

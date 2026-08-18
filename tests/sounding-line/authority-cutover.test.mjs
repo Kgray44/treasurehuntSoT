@@ -69,7 +69,7 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
   assert.equal(sentinelCases.length, 3);
   assert.ok(sentinelCases.every((entry) => entry.project === "sounding-line-access-sentinel"));
   assert.ok(sentinelCases.every((entry) => entry.parallelSafety === "ISOLATED_MUTABLE_PARALLEL"));
-  assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.auth").length, 8);
+  assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.auth").length, 12);
   assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.navigation").length, 2);
 });
 
@@ -566,8 +566,11 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
   assert.match(binding, /sounding-line-acceptance-envelope/u);
   assert.match(binding, /sounding-line-train-acceptance-envelope/u);
   assert.match(binding, /sounding-line-mainline-train\.yml/u);
-  assert.match(binding, /envelope\.candidateSha -eq \$env:CANDIDATE_SHA/u);
+  assert.match(binding, /trusted-active-authority-selection\.mjs/u);
+  assert.match(binding, /active-authority-candidates\.json/u);
   assert.match(binding, /qualified-base to[\s\S]*?current-base interval itself/u);
+  assert.match(binding, /MAINTENANCE_\(AUTHORITY_CHANGE\|SCOPE\)_REJECTED/u);
+  assert.match(binding, /separate trusted authority[\s\S]*?sole admission decision/u);
 });
 
 test("BrowserOnly Harborlight lanes do not repeat independent broad gates", async () => {
@@ -627,6 +630,7 @@ test("validation runtime restores only declared product document dependencies", 
   assert.match(common, /Project_Admiralty_Phase_2_Capability_Activation_Registry\.json/u);
   assert.match(common, /Project_Admiralty_Phase_2_Role_Capability_Registry\.json/u);
   assert.match(common, /Project_Homeport_Phase_4_District_Registry\.json/u);
+  assert.match(common, /Project_Lanternwake_Canonical_Event_Matrix_Mapping\.csv/u);
   assert.match(common, /Project_Tideglass_Phase_2_Change_Code_Registry\.json/u);
   assert.match(common, /Project_Tideglass_Phase_2_Projection_Policy\.json/u);
   assert.match(common, /Required validation runtime document dependency is missing: \$relativePath/u);

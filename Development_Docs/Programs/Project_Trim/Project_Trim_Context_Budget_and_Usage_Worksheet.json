@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "PROJECT_TRIM_CONTEXT_BUDGET_AND_USAGE_WORKSHEET",
+  "purpose": "A privacy-safe, machine-readable per-task efficiency worksheet. Null means unavailable, never observed zero.",
+  "task": {
+    "taskId": null,
+    "projectIncrement": null,
+    "taskClass": null,
+    "executionProfile": null,
+    "baselineComparableTask": null
+  },
+  "context": {
+    "initialPacketBytes": null,
+    "initialPacketTokens": null,
+    "promptBytes": null,
+    "promptTokens": null,
+    "expansionBytes": null,
+    "expansionTokens": null,
+    "subagentUsage": null,
+    "uniqueReads": null,
+    "repeatedReads": null,
+    "searches": null,
+    "fullGoverningDocumentsLoaded": null,
+    "phaseCapsulesReused": null,
+    "contextExpansions": null,
+    "contextCompactions": null
+  },
+  "execution": {
+    "validationCycles": null,
+    "authorityCycles": null,
+    "mainlineReconciliations": null,
+    "activeDurationMinutes": null,
+    "waitHeavyDurationMinutes": null
+  },
+  "usage": {
+    "accountingMethod": "UNAVAILABLE",
+    "exactTokens": null,
+    "estimatedPoint": null,
+    "estimatedLow": null,
+    "estimatedHigh": null,
+    "estimatorVersion": null,
+    "evidenceQuality": "UNAVAILABLE"
+  },
+  "outcome": {
+    "taskSuccessAcceptance": null,
+    "observedSavings": null,
+    "largestRemainingWasteClass": null,
+    "recommendedDefaultProfileChange": null
+  },
+  "safety": {
+    "prohibited": ["secrets", "credentials", "private content", "raw prompts", "raw transcripts"],
+    "releaseAuthority": "SOUNDING_LINE",
+    "advisoryBudgetsOnly": true
+  }
+}

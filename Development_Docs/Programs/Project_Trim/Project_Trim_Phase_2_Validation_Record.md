@@ -44,4 +44,4 @@ The recorded four-class startup benchmark uses exact bytes, pointer counts, auth
 
 ## Phase boundary
 
-Phase 3 is not started. No Accepted Phase Capsule, persistent read/search-ledger optimization, or subagent context-slice implementation is included.
+At Phase 2 closure, Phase 3 was not started. No Accepted Phase Capsule, persistent read/search-ledger optimization, or subagent context-slice implementation was included in this increment.

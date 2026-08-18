@@ -750,7 +750,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.animation-lifecycle",
-      "canonicalReplacementTestIds": ["sl-test-f6b91fd67812a41dd2ec"],
+      "canonicalReplacementTestIds": ["sl-test-6eccd2cab1047b3e615b"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -758,7 +758,7 @@
       "currentContractIds": ["journal-ready-state"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.animation-lifecycle contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-96a895d1e2d161891ceb"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-c3712896a107f4b68aca"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-c3712896a107f4b68aca", "sl-test-f6b91fd67812a41dd2ec"]
     },
     {
       "historicalCaseId": "p34-d779aa8dee00dcf98e9b",
@@ -771,7 +771,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.player-journal",
-      "canonicalReplacementTestIds": ["sl-test-803e8049d2aaf1f5c420"],
+      "canonicalReplacementTestIds": ["sl-test-e6c9330d6909de18a4d8"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -779,7 +779,7 @@
       "currentContractIds": ["journal-ready-state"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.player-journal contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-d14dcc5aef2398c28159"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-d779aa8dee00dcf98e9b"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-803e8049d2aaf1f5c420", "sl-test-d779aa8dee00dcf98e9b"]
     },
     {
       "historicalCaseId": "p34-4c17089a19c9f41f2952",
@@ -824,7 +824,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.captain",
-      "canonicalReplacementTestIds": ["sl-test-3a380e22d8ed8cc36861"],
+      "canonicalReplacementTestIds": ["sl-test-46ca7bf5534c9d961f91"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -832,7 +832,7 @@
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.captain contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-e45ba2f0b46aa609019a"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-8b862e6e5052ff58eee3"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-3a380e22d8ed8cc36861", "sl-test-8b862e6e5052ff58eee3"]
     },
     {
       "historicalCaseId": "p34-9c70992b05d04fcf157a",
@@ -845,7 +845,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.captain",
-      "canonicalReplacementTestIds": ["sl-test-67642d3f781b2bf15139"],
+      "canonicalReplacementTestIds": ["sl-test-8927d15ac1c6e15dc8bd"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -853,7 +853,7 @@
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.captain contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-15ffcce5ae556d67115d"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-9c70992b05d04fcf157a"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-67642d3f781b2bf15139", "sl-test-9c70992b05d04fcf157a"]
     },
     {
       "historicalCaseId": "p34-620a3e074370440ffb46",
@@ -866,7 +866,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.animation-lifecycle",
-      "canonicalReplacementTestIds": ["sl-test-2741a1377fafac61ff55"],
+      "canonicalReplacementTestIds": ["sl-test-1fb5d40fda0448239a2e"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -874,7 +874,7 @@
       "currentContractIds": ["journal-ready-state"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.animation-lifecycle contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-a3bf3bedb1c6749e0234"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-620a3e074370440ffb46"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-2741a1377fafac61ff55", "sl-test-620a3e074370440ffb46"]
     },
     {
       "historicalCaseId": "p34-97d60e061f1e4312fd80",
@@ -887,7 +887,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.animation-lifecycle",
-      "canonicalReplacementTestIds": ["sl-test-626019576a85f114a398"],
+      "canonicalReplacementTestIds": ["sl-test-f14865fbb9594075cdc3"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -895,7 +895,7 @@
       "currentContractIds": ["journal-ready-state"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.animation-lifecycle contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-6397cc3e16ba8176ec9c"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-97d60e061f1e4312fd80"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-626019576a85f114a398", "sl-test-97d60e061f1e4312fd80"]
     },
     {
       "historicalCaseId": "p34-5bac07eeb4fa5172e2ec",
@@ -908,7 +908,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.responsive",
-      "canonicalReplacementTestIds": ["sl-test-ce7d5fc2655d4780f4bb"],
+      "canonicalReplacementTestIds": ["sl-test-927d77dfda902cf6b3dc"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -916,7 +916,7 @@
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.responsive contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-346ebb117f2ff541df05"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-5bac07eeb4fa5172e2ec"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-5bac07eeb4fa5172e2ec", "sl-test-ce7d5fc2655d4780f4bb"]
     },
     {
       "historicalCaseId": "p34-7937315fc1625b13f19a",
@@ -929,7 +929,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.responsive",
-      "canonicalReplacementTestIds": ["sl-test-d8fe64aa34b67c3b860a"],
+      "canonicalReplacementTestIds": ["sl-test-b7d22f21ff671415a32a"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -937,7 +937,7 @@
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.responsive contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-567b10494e9ca90dbf3c"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-7937315fc1625b13f19a"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-7937315fc1625b13f19a", "sl-test-d8fe64aa34b67c3b860a"]
     },
     {
       "historicalCaseId": "p34-9d9469ed614fde985893",
@@ -950,7 +950,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.responsive",
-      "canonicalReplacementTestIds": ["sl-test-8b0763d35fa75e152405"],
+      "canonicalReplacementTestIds": ["sl-test-27c9a366a651c0f4bb7f"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -958,7 +958,7 @@
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.responsive contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-3ac6ea230697df7865aa"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-9d9469ed614fde985893"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-8b0763d35fa75e152405", "sl-test-9d9469ed614fde985893"]
     },
     {
       "historicalCaseId": "p34-bf78655c69b3e01c178f",
@@ -971,7 +971,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.responsive",
-      "canonicalReplacementTestIds": ["sl-test-a8ec87d4e57247fad7ed"],
+      "canonicalReplacementTestIds": ["sl-test-c04737c291bed55ca5f9"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -979,7 +979,7 @@
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.responsive contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-32e3b3bcdaf7f9910d36"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-bf78655c69b3e01c178f"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-a8ec87d4e57247fad7ed", "sl-test-bf78655c69b3e01c178f"]
     },
     {
       "historicalCaseId": "p34-e41d21c7c24bdc397b15",
@@ -992,7 +992,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.responsive",
-      "canonicalReplacementTestIds": ["sl-test-8433b37d7c9082259a9b"],
+      "canonicalReplacementTestIds": ["sl-test-c48b5f3c5e6646b382f0"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -1000,7 +1000,7 @@
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.responsive contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-b67cd9801aa6cc562367"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-e41d21c7c24bdc397b15"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-8433b37d7c9082259a9b", "sl-test-e41d21c7c24bdc397b15"]
     },
     {
       "historicalCaseId": "p34-8b7953be6a7ed41db19c",
@@ -1013,7 +1013,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.responsive",
-      "canonicalReplacementTestIds": ["sl-test-db16dbab9723a7dcbdbf"],
+      "canonicalReplacementTestIds": ["sl-test-9e385686074dbab0cf38"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -1021,7 +1021,7 @@
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.responsive contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-5db3e2906420adc5afd7"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-8b7953be6a7ed41db19c"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-8b7953be6a7ed41db19c", "sl-test-db16dbab9723a7dcbdbf"]
     },
     {
       "historicalCaseId": "p34-5c45c18c5914af813f7d",
@@ -4441,7 +4441,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.animation-lifecycle",
-      "canonicalReplacementTestIds": ["sl-test-ad26bbac468ce83c752c"],
+      "canonicalReplacementTestIds": ["sl-test-e3d31a81c01bc3e88f2e"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -4449,7 +4449,7 @@
       "currentContractIds": ["journal-ready-state"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.animation-lifecycle contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-b082961ee61ef1b95676"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-5859702c02202f480b83"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-5859702c02202f480b83", "sl-test-ad26bbac468ce83c752c"]
     },
     {
       "historicalCaseId": "p34-75d73c1490c3bb954cf9",
@@ -4462,7 +4462,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.player-journal",
-      "canonicalReplacementTestIds": ["sl-test-d0bef85fbae7230cb914"],
+      "canonicalReplacementTestIds": ["sl-test-043086f1288f222d9f82"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -4470,7 +4470,7 @@
       "currentContractIds": ["journal-ready-state"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.player-journal contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-6dc5baef5e9db7965e05"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-75d73c1490c3bb954cf9"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-75d73c1490c3bb954cf9", "sl-test-d0bef85fbae7230cb914"]
     },
     {
       "historicalCaseId": "p34-3e461369db44d1092caf",
@@ -4515,7 +4515,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.captain",
-      "canonicalReplacementTestIds": ["sl-test-08f61ff76482674cc9f1"],
+      "canonicalReplacementTestIds": ["sl-test-9376555e3f34be3f7642"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -4523,7 +4523,7 @@
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.captain contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-80bda1599bdb5c7f70aa"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-515bdf4602bf6f86e251"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-08f61ff76482674cc9f1", "sl-test-515bdf4602bf6f86e251"]
     },
     {
       "historicalCaseId": "p34-ff16124f259ea7b0cb4d",
@@ -4536,7 +4536,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.captain",
-      "canonicalReplacementTestIds": ["sl-test-23697a7a31a7dccee10e"],
+      "canonicalReplacementTestIds": ["sl-test-90e7b038566a5e4e2a01"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -4544,7 +4544,7 @@
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.captain contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-35d5bc1fa5c1b0b2a951"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-ff16124f259ea7b0cb4d"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-23697a7a31a7dccee10e", "sl-test-ff16124f259ea7b0cb4d"]
     },
     {
       "historicalCaseId": "p34-e8689d13de3dd22043cf",
@@ -4557,7 +4557,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.animation-lifecycle",
-      "canonicalReplacementTestIds": ["sl-test-509b3ae4c02304260c1f"],
+      "canonicalReplacementTestIds": ["sl-test-9c5bc7647f95a0de9d71"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -4565,7 +4565,7 @@
       "currentContractIds": ["journal-ready-state"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.animation-lifecycle contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-ef26c7b762b188d32de3"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-e8689d13de3dd22043cf"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-509b3ae4c02304260c1f", "sl-test-e8689d13de3dd22043cf"]
     },
     {
       "historicalCaseId": "p34-061f1480ae79e24adf4f",
@@ -4578,7 +4578,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.animation-lifecycle",
-      "canonicalReplacementTestIds": ["sl-test-716a786b2303b79dbd63"],
+      "canonicalReplacementTestIds": ["sl-test-8bd129545f1f9ad3a533"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -4586,7 +4586,7 @@
       "currentContractIds": ["journal-ready-state"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.animation-lifecycle contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-af0de79851a26906d5a2"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-061f1480ae79e24adf4f"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-061f1480ae79e24adf4f", "sl-test-716a786b2303b79dbd63"]
     },
     {
       "historicalCaseId": "p34-b421c7a986f70f49f448",
@@ -4599,7 +4599,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.responsive",
-      "canonicalReplacementTestIds": ["sl-test-b6d712fce00b86485e42"],
+      "canonicalReplacementTestIds": ["sl-test-031ec6971a1170d9fd80"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -4607,7 +4607,7 @@
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.responsive contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-a551eeab5abe86fe0262"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-b421c7a986f70f49f448"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-b421c7a986f70f49f448", "sl-test-b6d712fce00b86485e42"]
     },
     {
       "historicalCaseId": "p34-9dfb2546900d5ef313bb",
@@ -4620,7 +4620,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.responsive",
-      "canonicalReplacementTestIds": ["sl-test-ee003240b884300e5d91"],
+      "canonicalReplacementTestIds": ["sl-test-b4472340e6b46458b4f7"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -4628,7 +4628,7 @@
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.responsive contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-5b59ceb5201dd237ac0c"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-9dfb2546900d5ef313bb"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-9dfb2546900d5ef313bb", "sl-test-ee003240b884300e5d91"]
     },
     {
       "historicalCaseId": "p34-8a2be5e17f8eeb841ac1",
@@ -4641,7 +4641,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.responsive",
-      "canonicalReplacementTestIds": ["sl-test-931e7050fa97c0ffb0c7"],
+      "canonicalReplacementTestIds": ["sl-test-6ea01bd12029881bf7c3"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -4649,7 +4649,7 @@
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.responsive contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-3a481b66125616442bd4"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-8a2be5e17f8eeb841ac1"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-8a2be5e17f8eeb841ac1", "sl-test-931e7050fa97c0ffb0c7"]
     },
     {
       "historicalCaseId": "p34-9715872f83d5e83d0e99",
@@ -4662,7 +4662,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.responsive",
-      "canonicalReplacementTestIds": ["sl-test-f575583d0f3dde94ef1b"],
+      "canonicalReplacementTestIds": ["sl-test-6e205a4afab30ea0e846"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -4670,7 +4670,7 @@
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.responsive contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-3dc75685959ab41ad483"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-9715872f83d5e83d0e99"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-9715872f83d5e83d0e99", "sl-test-f575583d0f3dde94ef1b"]
     },
     {
       "historicalCaseId": "p34-f468ddf1f08527e542fb",
@@ -4683,7 +4683,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.responsive",
-      "canonicalReplacementTestIds": ["sl-test-bcbb41c64292d447ad6d"],
+      "canonicalReplacementTestIds": ["sl-test-17a307f55876a3e27dde"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -4691,7 +4691,7 @@
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.responsive contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-ba6072858e96266906b0"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-f468ddf1f08527e542fb"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-bcbb41c64292d447ad6d", "sl-test-f468ddf1f08527e542fb"]
     },
     {
       "historicalCaseId": "p34-643c6bd7ac779f4393b2",
@@ -4704,7 +4704,7 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.responsive",
-      "canonicalReplacementTestIds": ["sl-test-a25260d313e904d8a239"],
+      "canonicalReplacementTestIds": ["sl-test-1899d2e0c5384c5b50f4"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
@@ -4712,7 +4712,7 @@
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.responsive contract ownership; no P34 container is selected.",
       "canonicalReplacementSemanticIds": ["sl-semantic-3d01740bfeb56972913a"],
-      "canonicalReplacementHistoricalTestIds": ["sl-test-643c6bd7ac779f4393b2"]
+      "canonicalReplacementHistoricalTestIds": ["sl-test-643c6bd7ac779f4393b2", "sl-test-a25260d313e904d8a239"]
     },
     {
       "historicalCaseId": "p34-986dff1deb2e2e742966",

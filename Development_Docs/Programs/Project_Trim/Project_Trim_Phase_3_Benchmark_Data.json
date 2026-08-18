@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0",
+  "program": "PROJECT_TRIM_PHASE_3",
+  "benchmark": "CARRY_THE_LOGBOOK_STARTUP_AND_REUSE",
+  "method": {
+    "runner": "scripts/agent-context/benchmark-phase3.mjs",
+    "comparison": "Phase 2 packet startup with an ordinary prior-status pointer versus Phase 3 packet startup with its retained accepted capsule, plus deterministic read-reuse decisions.",
+    "evidence": {
+      "packetBytes": "EXACT_UTF8_BYTES",
+      "sourcePointers": "EXACT_PACKET_FIELDS",
+      "warmGenerationMedianMs": "EXACT_PROCESS_TIMER",
+      "readReuse": "DETERMINISTIC_UNIT_OPERATION",
+      "totalTaskTokenSavings": "UNAVAILABLE_WITHOUT_COMPARABLE_END_TO_END_TASK_REPLAY"
+    }
+  },
+  "phase2Baseline": {
+    "semanticDigest": "be483429da84d1e9ce937a076eccbc004ec038fca1b0e71122740e06dc00bf03",
+    "priorPlateauStatus": "POINTER_BOUND",
+    "packetBytes": 32409,
+    "sourcePointers": 11,
+    "warmGenerationMedianMs": 123.53
+  },
+  "phase3": {
+    "semanticDigest": "94b55857edf44c8dfcc676f603db8a9b054f691eaeda075271cf893314382d69",
+    "priorPlateauStatus": "ACCEPTED_CAPSULE_BOUND",
+    "acceptedMainSha": "d3c06e076fda99f7c18baa28e66847f4e79697fa",
+    "packetBytes": 32797,
+    "sourcePointers": 11,
+    "warmGenerationMedianMs": 129.16,
+    "reuse": {
+      "unchanged": "UNCHANGED_SUMMARY_SUFFICIENT",
+      "changedIdentity": "SOURCE_IDENTITY_CHANGED"
+    }
+  },
+  "limitations": [
+    "This is a startup and deterministic-reuse benchmark, not an end-to-end task-token benchmark.",
+    "Warm timings exclude initial source snapshot time and agent reading or reasoning time.",
+    "No whole-project search avoidance or total task-token savings is claimed without comparable live task replays."
+  ]
+}

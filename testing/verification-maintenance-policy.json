@@ -20,6 +20,11 @@
   ],
   "authorityChangePathGlobs": [
     "testing/verification-maintenance-policy.json",
+    "testing/authority-maintenance-policy.json",
+    "testing/trusted-project-discovery.json",
+    "scripts/sounding-line/authority-maintenance.mjs",
+    "scripts/sounding-line/authority-maintenance-protected-binding.mjs",
+    "scripts/sounding-line/authority-maintenance-selection.mjs",
     "testing/sounding-line-authority.json",
     "scripts/sounding-line/verification-maintenance.mjs",
     "scripts/sounding-line/maintenance-protected-binding.mjs",
@@ -36,13 +41,11 @@
     ".github/workflows/sounding-line-train-wave.yml",
     ".github/workflows/sounding-line-protected-merge-binding.yml",
     ".github/workflows/sounding-line-verification-maintenance.yml",
+    ".github/workflows/sounding-line-authority-maintenance.yml",
     "scripts/sounding-line/v14/**",
     "scripts/sounding-line/v14-fast-channel.mjs",
     "testing/mainline-train-policy.json",
-    "testing/impact-map.json",
-    "testing/contracts.json",
     "testing/ownership.json",
-    "testing/suites.json",
     "testing/resources.json"
   ],
   "ordinaryCandidateEligiblePathGlobs": [
@@ -79,8 +82,48 @@
     "Development_Docs/Project_Confluence_*.md",
     "Development_Docs/Governing/Project_Confluence_*.pdf",
     "scripts/confluence/**",
-    "tests/confluence/**"
+    "tests/confluence/**",
+    ".agents/deepwater-capability-impact.md",
+    "Development_Docs/Programs/Deepwater/**",
+    "scripts/deepwater/**"
   ],
+  "ordinaryCandidateProductVerificationRegistration": {
+    "classification": "PRODUCT_WITH_VERIFICATION_REGISTRATION",
+    "pathGlobs": [
+      "testing/contracts.json",
+      "testing/impact-map.json",
+      "testing/suites.json",
+      "testing/file-dispositions.json",
+      "testing/generated/active-test-registry.json",
+      "playwright*.config.*",
+      "scripts/sounding-line/test-registry.mjs"
+    ],
+    "semanticPathGlobs": [
+      "testing/contracts.json",
+      "testing/impact-map.json",
+      "testing/suites.json",
+      "testing/file-dispositions.json",
+      "playwright*.config.*",
+      "scripts/sounding-line/test-registry.mjs"
+    ],
+    "ancillaryPathGlobs": [
+      "Development_Docs/Project_*",
+      "Development_Docs/Projects/**",
+      "Development_Docs/Features/FEATURE_CATALOG.md",
+      "Development_Docs/Features/catalog/**",
+      "Development_Docs/document-index.json",
+      "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv",
+      "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv",
+      "scripts/generate-document-index.mjs",
+      "scripts/features/**",
+      "testing/generated/p34-retirement-ledger.json"
+    ],
+    "playwrightConfigPathGlobs": ["playwright*.config.*"],
+    "testRegistrySourcePathGlobs": ["scripts/sounding-line/test-registry.mjs"],
+    "sharedVerificationSuiteIds": ["static.core", "validation.documentation", "unit.feature-catalog"],
+    "semanticOwnership": "TRUSTED_OWNERSHIP_OR_TRUSTED_DISCOVERY_DESCRIPTOR",
+    "monotonicity": "NO_FOREIGN_MUTATION_OR_REMOVAL"
+  },
   "requiredEvidence": [
     "FOCUSED_REGRESSION",
     "AFFECTED_SOUNDING_LINE_TESTS",
