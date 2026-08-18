@@ -112,8 +112,11 @@
       "Development_Docs/Features/FEATURE_CATALOG.md",
       "Development_Docs/Features/catalog/**",
       "Development_Docs/document-index.json",
+      "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv",
+      "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv",
       "scripts/generate-document-index.mjs",
-      "scripts/features/**"
+      "scripts/features/**",
+      "testing/generated/p34-retirement-ledger.json"
     ],
     "playwrightConfigPathGlobs": ["playwright*.config.*"],
     "testRegistrySourcePathGlobs": ["scripts/sounding-line/test-registry.mjs"],
