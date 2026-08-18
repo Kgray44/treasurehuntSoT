@@ -1,9 +1,9 @@
 ---
 title: Project Wakebook Phase 2 Test Plan
 audience: product-engineering
-status: ready-for-v14-mainline-acceptance
+status: candidate-qualification-in-progress
 canonical_for: project-wakebook-phase-2-test-plan
-last_reviewed: 2026-08-13
+last_reviewed: 2026-08-18
 ---
 
 # Project Wakebook Phase 2 test plan
@@ -17,32 +17,29 @@ cross-project proof, protected-media authorization, consent revocation, mobile,
 keyboard, zoom, reduced-motion, and visual evidence. A final authoritative
 Sounding Line decision is prohibited until that frozen candidate is qualified.
 
-On 2026-08-13 the focused Vitest evidence passed 30 tests across eight files,
-and TypeScript completed with no errors. The local Prisma diagnosis used Node
-`v24.19.0`, Prisma `6.19.3`, and `prisma/schema.sqlite.prisma`: client
-generation and schema validation were sound, and the Windows schema engine
-launched. The original failure was fresh SQLite-file creation at a task URL of
-the form `file:C:/wt/wb2-prisma/browser/<task-owned>.db`. Creating that
-task-owned file with Prisma's shipped schema engine before migration restored
-the supported local path without using a canonical development database.
+On 2026-08-18 focused Vitest evidence passed 30 tests across eight files, and
+TypeScript completed with no errors. The local diagnosis used Node `v24.19.0`,
+Prisma `6.19.3`, and `prisma/schema.sqlite.prisma`: client generation, schema
+validation with a task-owned URL, and the Windows schema-engine launch passed.
+Fresh `migrate deploy` then failed identically on short C: and Y: task paths
+with a blank schema-engine error; it was not repaired by changing paths or
+redirecting temporary output, and canonical data was never used.
 
-The registered `wakebook-phase2` browser project then passed two focused
-Chromium journeys on isolated task-owned SQLite data: the visible owner
-walkthrough and the private-media/consent/snapshot-safety journey. Their
-combined coverage includes desktop, narrow mobile widths, keyboard focus,
-effective 200% zoom, reduced motion, no horizontal overflow, and zero serious
-or critical axe violations. The synthetic evidence also verifies unavailable
-choice truthfulness and unscanned, withdrawn, archived, and revoked media
-non-delivery. No real Chronicle, account, or private media was used.
+The registered project is `wakebook-phase2`, owned by suite
+`browser.wakebook`. The visible Chromium journey passed 1/1 after applying all
+59 migrations to a fresh Y: task-owned fixture. The private-media,
+consent-revocation, and historical-snapshot safety journey is not claimed
+locally: its first run reached cleanup but failed writing a trace to full C:,
+and the redirected retry timed out under C: pressure. The current focused
+hosted workflow cannot run a branch under v1.4 protected-main policy, so the
+frozen protected authority/train run is the remaining browser qualification.
 
 The synthetic corpus will cover a complete solo Voyage, multi-crew/consent
 state, partial legacy history, protected media, historical stability, and a
 foreign account. No real Chronicle or private media is used.
 
-After Sounding Line v1.4 became effective, the candidate was reconciled with
-protected main `268932d630ee0ea1721d0072da4041f7209b7464`. The prior focused
-candidate evidence remains bounded legacy evidence, and the affected local
-Vitest, TypeScript, Prisma, policy/registry, and dedicated browser evidence
-was rebound against the reconciled candidate. The phase now waits only for the
-independent v1.4 post-cutover hosted browser-fixture closure before a frozen
-candidate may enter Mainline Decision.
+After the latest reconciliation with protected main
+`fc39942a1d8fe57fc13f35cae01445e704b94c45`, policy/registry generation passes
+with 2,386 cases, 57 families, 63 suites, and zero policy errors. The preserved
+legacy evidence remains bounded; it is not a substitute for the remaining
+source-bound hosted browser safety proof.
