@@ -1,0 +1,100 @@
+{
+  "acceptedMainSha": "347e00fdb04939a3ff6ba143275232dcdd45170a",
+  "acceptedTreeSha": "97edfa04cd4fb4c4e92cebd0d74ca3712753aab7",
+  "closureDate": "2026-08-18",
+  "contractsChanged": ["project-trim.minimum-sufficient-context"],
+  "dataState": {
+    "backfills": [],
+    "compatibility": [
+      "No product data migration or runtime data contract was introduced by the accepted Phase 3 context-governance work."
+    ],
+    "migrations": []
+  },
+  "futureDependencies": {
+    "mayConsume": [
+      "A later Project Trim continuation may use this accepted capsule as its prior plateau plus a current mainline delta."
+    ],
+    "mustNotAssume": [
+      "The capsule is historical accepted truth, not a replacement for current governing authority, source inspection, or Sounding Line acceptance."
+    ]
+  },
+  "generatorVersion": "project-trim-logbook-1.0.0",
+  "governingRequirements": [
+    "Project Trim v1.0-R1 Sections 17-19 and 24-30; Carry the Logbook continuation plateau",
+    "Sounding Line remains the sole RELEASE_GO and protected-merge authority"
+  ],
+  "increment": "Phase 3 - Carry the Logbook",
+  "integrity": {
+    "acceptedIdentity": {
+      "mainSha": "347e00fdb04939a3ff6ba143275232dcdd45170a",
+      "treeSha": "97edfa04cd4fb4c4e92cebd0d74ca3712753aab7"
+    },
+    "semanticDigest": "97021c04fed8e6f0a933cd9a25f1db6dad5fa80a9be8ee2a85026082ffaff3dc",
+    "sourceRecords": [
+      {
+        "blobSha": "10894386e9d8859baf2aaae266042ef13ce1d5f5",
+        "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_3_Architecture_and_Implementation_Record.md"
+      },
+      {
+        "blobSha": "e7f51264d61594c7963ca195320a6be59bc7d0d7",
+        "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_3_Validation_Record.md"
+      },
+      {
+        "blobSha": "4c366eebe270e64dfdb37ffc4bcbd7095914586b",
+        "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_3_Benchmark_Data.json"
+      },
+      { "blobSha": "ca26acc76f3f0d9a23435b5713b847e2b09361c7", "path": "scripts/agent-context/logbook.mjs" },
+      { "blobSha": "d18b35ba91a5d17926ddd17a5297c316c83872af", "path": "scripts/agent-context/phase-capsule.mjs" },
+      { "blobSha": "60969e469f19737c7201dabf3e34890e8536d941", "path": "scripts/agent-context/packet-v2.mjs" },
+      {
+        "blobSha": "839d1065a430ebac2c1566c25b4f38b7186982c8",
+        "path": "tests/agent-context/project-trim-phase3.test.mjs"
+      }
+    ]
+  },
+  "knownLimitations": [
+    "Task-local ledgers are derived continuation context and cannot authorize RELEASE_GO or protected merges.",
+    "Persistent learning, advisory budget enforcement, fleet telemetry, and model routing remain outside Phase 3."
+  ],
+  "nextPhaseHints": {
+    "authority": ["Project Trim v1.0-R1 Phase 4 governing sections", "current Sounding Line authority"],
+    "contracts": ["project-trim.minimum-sufficient-context"],
+    "files": [
+      "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_3_Accepted_Capsule.json",
+      "scripts/agent-context/packet-v2.mjs"
+    ],
+    "tests": ["tests/agent-context/project-trim-phase3.test.mjs"]
+  },
+  "project": "Project Trim",
+  "runtimeState": {
+    "activeBehavior": [
+      "Phase 3 continuation startup consumes the accepted Phase 2 capsule and records privacy-safe read, search, and expansion decisions.",
+      "Future Project Trim continuations can consume an accepted capsule as a bounded prior plateau."
+    ],
+    "adapters": ["logbook.mjs", "phase-capsule.mjs", "logbook-cli.mjs", "packet-v2.mjs"],
+    "fallbacks": [
+      "Changed, partial, low-confidence, exact-text, security, and relevant-mainline conditions require rereading or targeted expansion."
+    ],
+    "featureFlags": []
+  },
+  "schemaVersion": "1.0",
+  "sourceOwnership": {
+    "consumers": ["repository agents and governed validation workflows"],
+    "producers": [
+      "scripts/agent-context/logbook.mjs",
+      "scripts/agent-context/phase-capsule.mjs",
+      "scripts/agent-context/packet-v2.mjs"
+    ],
+    "seams": [
+      "Project Trim context packets, task-local continuation ledgers, governed test registry, and Sounding Line authority"
+    ]
+  },
+  "state": "ACCEPTED",
+  "verification": {
+    "evidenceIds": ["PR #201", "V14 run 32154485200", "binding run 32155192419"],
+    "limitations": [
+      "Continuation benchmarks measure source bytes, pointers, and process timing; they do not claim end-to-end task-token savings without comparable live task replays."
+    ],
+    "suites": ["unit.agent-context", "semantic registration", "Sounding Line governed qualification"]
+  }
+}
