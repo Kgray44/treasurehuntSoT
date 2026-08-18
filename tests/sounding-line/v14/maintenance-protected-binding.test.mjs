@@ -1,5 +1,10 @@
 import assert from "node:assert/strict";
+import { execFile } from "node:child_process";
+import { copyFile, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
 import test from "node:test";
+import { promisify } from "node:util";
 import {
   createMaintenancePlan,
   finalizeMaintenance,
@@ -16,6 +21,7 @@ import { qualifyAuthorityMaintenanceProtectedMerge } from "../../../scripts/soun
 import { selectSealedAuthorityMaintenance } from "../../../scripts/sounding-line/authority-maintenance-selection.mjs";
 
 const sha = (character) => character.repeat(40);
+const execFileAsync = promisify(execFile);
 const policy = {
   authority: "SOUNDING_LINE_VERIFICATION_MAINTENANCE",
   trustedMainOnly: true,
@@ -215,4 +221,69 @@ test("authority maintenance is a distinct owner-authorized, exact-identity lane"
     }).decision,
     "BINDING_PASS",
   );
+});
+
+test("a renamed trusted authority classifier still emits the sealed plan and finalization", async () => {
+  const directory = await mkdtemp(path.join(tmpdir(), "sounding-line-authority-maintenance-"));
+  try {
+    const classifier = path.join(directory, "trusted-classifier.mjs");
+    const policyPath = path.join(directory, "policy.json");
+    const pathsPath = path.join(directory, "paths.json");
+    const planPath = path.join(directory, "plan.json");
+    const evidencePath = path.join(directory, "evidence.json");
+    const finalizationPath = path.join(directory, "finalization.json");
+    const authorityPolicy = {
+      authority: "SOUNDING_LINE_AUTHORITY_MAINTENANCE",
+      disposition: "AUTHORITY_MAINTENANCE_GO",
+      workflowDispatchOnly: true,
+      trustedMainOnly: true,
+      eligiblePathGlobs: ["tests/sounding-line/**"],
+      requiredEvidence: ["FOCUSED_REGRESSION"],
+    };
+    await copyFile(path.resolve("scripts/sounding-line/authority-maintenance.mjs"), classifier);
+    await writeFile(policyPath, JSON.stringify(authorityPolicy));
+    await writeFile(pathsPath, JSON.stringify(["tests/sounding-line/v14/example.test.mjs"]));
+    await execFileAsync(process.execPath, [
+      classifier,
+      "plan",
+      "--policy",
+      policyPath,
+      "--paths",
+      pathsPath,
+      "--trusted-main-sha",
+      sha("a"),
+      "--candidate-sha",
+      sha("b"),
+      "--candidate-tree",
+      sha("c"),
+      "--base-sha",
+      sha("a"),
+      "--owner-authorized",
+      "true",
+      "--out",
+      planPath,
+    ]);
+    await writeFile(
+      evidencePath,
+      JSON.stringify([{ id: "FOCUSED_REGRESSION", result: "PASSED", candidateSha: sha("b") }]),
+    );
+    await execFileAsync(process.execPath, [
+      classifier,
+      "finalize",
+      "--plan",
+      planPath,
+      "--evidence",
+      evidencePath,
+      "--candidate-sha",
+      sha("b"),
+      "--trusted-main-sha",
+      sha("a"),
+      "--out",
+      finalizationPath,
+    ]);
+    assert.equal(JSON.parse(await readFile(planPath, "utf8")).disposition, "AUTHORITY_MAINTENANCE_GO");
+    assert.equal(JSON.parse(await readFile(finalizationPath, "utf8")).decision, "AUTHORITY_MAINTENANCE_GO");
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
 });
