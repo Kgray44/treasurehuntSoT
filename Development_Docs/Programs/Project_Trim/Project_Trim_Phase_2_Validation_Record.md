@@ -22,7 +22,7 @@ It passed 21 tests with zero failures. The Phase 2 cases prove packet classifica
 
 - Sounding Line policy validation: PASS; 476 contracts, 7 gates, 17 owners, 19 resources, 63 suites, 2 validation-debt entries, zero errors; policy digest `6274780fdf177d5de1811105a0976b6eb0dc26211a804841e63536204c08486d`.
 - Documentation validation: PASS after canonical document-index regeneration; 1,069 indexed engineering records and 1,570 inventoried original documentation paths.
-- Feature Catalog generation and validation: PASS; 48 entries. No owning fragment changed; generated source provenance advanced to protected main `c1d368285062ea6264a7146fd6c35a97fd3de291`.
+- Feature Catalog generation and validation: PASS; 48 entries. No owning fragment changed; generated source provenance reconciled to protected main `5dac8dd3e91b76c660ac9529772e93cdc7c80310`.
 - Focused formatting: PASS for every Phase 2 source, test, schema, and record.
 - Full ESLint: PASS with zero errors; 108 pre-existing warnings outside Phase 2 remain visible.
 - Full TypeScript check: PASS using an exact package-lock and schema-matched dependency tree. No dependency or generated Prisma source was changed.
