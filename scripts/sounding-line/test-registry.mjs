@@ -67,8 +67,7 @@ const carryForwardP34HistoricalAliases = (cases) => {
     const aliases = new Set(entry.historicalAliases ?? []);
     for (const alias of historicalAliases) {
       const owner = owners.get(alias);
-      if (owner && owner !== entry.semanticId)
-        throw new Error(`P34_HISTORICAL_ALIAS_OWNER_AMBIGUOUS:${alias}`);
+      if (owner && owner !== entry.semanticId) throw new Error(`P34_HISTORICAL_ALIAS_OWNER_AMBIGUOUS:${alias}`);
       if (alias !== entry.id) aliases.add(alias);
     }
     entry.historicalAliases = [...aliases].sort();
