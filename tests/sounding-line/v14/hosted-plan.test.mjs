@@ -207,4 +207,36 @@ test("v1.4 current authority is restricted to protected main while v1.3 cutover 
       }),
     /V14_AUTHORITY_MAINLINE_ONLY/u,
   );
+
+  assert.equal(
+    resolvePlanAuthority({
+      authorityIndex: v14Authority,
+      gateId: "mainline",
+      authorityMode: "V14_OWNER_BOOTSTRAP",
+      githubRef: "refs/heads/codex/one-shot-bootstrap",
+      qualifiedBaseSha: sha("b"),
+    }),
+    "V14_CANDIDATE",
+  );
+  assert.equal(
+    resolvePlanAuthority({
+      authorityIndex: v14Authority,
+      gateId: "mainline",
+      authorityMode: "V14_OWNER_AUTHORIZED",
+      githubRef: "refs/heads/main",
+      qualifiedBaseSha: sha("c"),
+    }),
+    "V14_CANDIDATE",
+  );
+  assert.throws(
+    () =>
+      resolvePlanAuthority({
+        authorityIndex: v14Authority,
+        gateId: "mainline",
+        authorityMode: "V14_OWNER_AUTHORIZED",
+        githubRef: "refs/heads/codex/untrusted",
+        qualifiedBaseSha: sha("d"),
+      }),
+    /V14_OWNER_AUTHORIZED_TRUSTED_MAIN_WORKFLOW_REQUIRED/u,
+  );
 });

@@ -35,7 +35,13 @@ function browserPartitionsFor(node, cases) {
 }
 
 export function resolvePlanAuthority({ authorityIndex, gateId, authorityMode, githubRef, qualifiedBaseSha }) {
-  if (authorityMode !== "CURRENT" && authorityMode !== "V13_CUTOVER" && authorityMode !== "V14_CANDIDATE")
+  if (
+    authorityMode !== "CURRENT" &&
+    authorityMode !== "V13_CUTOVER" &&
+    authorityMode !== "V14_CANDIDATE" &&
+    authorityMode !== "V14_OWNER_BOOTSTRAP" &&
+    authorityMode !== "V14_OWNER_AUTHORIZED"
+  )
     throw new Error(`UNKNOWN_AUTHORITY_MODE:${authorityMode}`);
   if (authorityMode === "V13_CUTOVER") {
     if (authorityIndex.currentAuthorityVersion === "1.4") {
@@ -55,6 +61,16 @@ export function resolvePlanAuthority({ authorityIndex, gateId, authorityMode, gi
   }
   if (authorityIndex.currentAuthorityVersion === "1.4") {
     if (gateId !== "mainline") throw new Error("V14_AUTHORITY_MAINLINE_ONLY");
+    if (authorityMode === "V14_OWNER_BOOTSTRAP") {
+      if (githubRef === "refs/heads/main") throw new Error("V14_OWNER_BOOTSTRAP_NON_MAIN_REF_REQUIRED");
+      if (!/^[0-9a-f]{40}$/u.test(qualifiedBaseSha ?? "")) throw new Error("V14_CANDIDATE_QUALIFIED_BASE_REQUIRED");
+      return "V14_CANDIDATE";
+    }
+    if (authorityMode === "V14_OWNER_AUTHORIZED") {
+      if (githubRef !== "refs/heads/main") throw new Error("V14_OWNER_AUTHORIZED_TRUSTED_MAIN_WORKFLOW_REQUIRED");
+      if (!/^[0-9a-f]{40}$/u.test(qualifiedBaseSha ?? "")) throw new Error("V14_CANDIDATE_QUALIFIED_BASE_REQUIRED");
+      return "V14_CANDIDATE";
+    }
     if (authorityMode === "V14_CANDIDATE") {
       // Candidate qualification is dispatched from trusted protected main, but
       // plans and evidence bind an unmerged frozen PR head. It is deliberately

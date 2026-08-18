@@ -29,11 +29,15 @@ on:
         required: false
         type: string
       authority_mode:
-        description: Current protected-main authority, ordinary frozen candidate qualification, or the historical v1.3 cutover
+        description: Current protected-main authority, ordinary frozen candidate qualification, the historical v1.3 cutover, or the one-shot owner-authorized correction route
         required: true
         type: choice
         default: current
-        options: [current, candidate, v13-cutover]
+        options: [current, candidate, v13-cutover, owner-bootstrap, owner-authorized]
+      owner_authorization_comment_id:
+        description: Exact owner-authored GitHub issue-comment receipt ID for a one-shot owner-authorized correction
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -85,20 +89,24 @@ jobs:
           SOUNDING_LINE_PR_NUMBER: ${{ inputs.pr_number }}
           SOUNDING_LINE_BASE_SHA: ${{ inputs.base_sha }}
           SOUNDING_LINE_AUTHORITY_MODE: ${{ inputs.authority_mode }}
+          SOUNDING_LINE_OWNER_AUTHORIZATION_COMMENT_ID: ${{ inputs.owner_authorization_comment_id }}
         run: |
           $gate = $env:SOUNDING_LINE_GATE
           if ($gate -notin @('mainline', 'release-candidate')) { throw "SOUNDING_LINE_GATE_INVALID" }
           $authorityMode = $env:SOUNDING_LINE_AUTHORITY_MODE
-          if ($authorityMode -notin @('current', 'candidate', 'v13-cutover')) { throw "SOUNDING_LINE_AUTHORITY_MODE_INVALID" }
+          if ($authorityMode -notin @('current', 'candidate', 'v13-cutover', 'owner-bootstrap', 'owner-authorized')) { throw "SOUNDING_LINE_AUTHORITY_MODE_INVALID" }
           if ($authorityMode -eq 'v13-cutover' -and $gate -ne 'mainline') { throw "SOUNDING_LINE_V13_CUTOVER_MAINLINE_ONLY" }
+          if ($authorityMode -in @('owner-bootstrap', 'owner-authorized') -and $gate -ne 'mainline') { throw "SOUNDING_LINE_OWNER_AUTHORIZED_MAINLINE_ONLY" }
           $candidateSha = $env:SOUNDING_LINE_CANDIDATE_SHA
           $dispatchedSha = $env:SOUNDING_LINE_DISPATCHED_SHA
           if ($candidateSha -notmatch '^[0-9a-f]{40}$') { throw "SOUNDING_LINE_FROZEN_CANDIDATE_SHA_INVALID" }
-          if ($authorityMode -ne 'candidate' -and $candidateSha -ne $dispatchedSha) { throw "SOUNDING_LINE_FROZEN_CANDIDATE_SHA_MISMATCH" }
+          if ($authorityMode -notin @('candidate', 'owner-authorized') -and $candidateSha -ne $dispatchedSha) { throw "SOUNDING_LINE_FROZEN_CANDIDATE_SHA_MISMATCH" }
           if ($authorityMode -eq 'candidate' -and $env:GITHUB_REF -ne 'refs/heads/main') { throw "SOUNDING_LINE_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED" }
           if ($authorityMode -eq 'candidate' -and $gate -ne 'mainline') { throw "SOUNDING_LINE_CANDIDATE_MAINLINE_ONLY" }
+          if ($authorityMode -eq 'owner-authorized' -and $env:GITHUB_REF -ne 'refs/heads/main') { throw "SOUNDING_LINE_OWNER_AUTHORIZED_TRUSTED_MAIN_WORKFLOW_REQUIRED" }
+          if ($authorityMode -eq 'owner-bootstrap' -and $env:GITHUB_REF -eq 'refs/heads/main') { throw "SOUNDING_LINE_OWNER_BOOTSTRAP_NON_MAIN_REF_REQUIRED" }
           $candidateRef = $env:SOUNDING_LINE_CANDIDATE_REF
-          if ($authorityMode -eq 'candidate' -and $candidateRef -notmatch '^refs/heads/[A-Za-z0-9._/-]+$') { throw "SOUNDING_LINE_CANDIDATE_REF_INVALID" }
+          if ($authorityMode -in @('candidate', 'owner-bootstrap', 'owner-authorized') -and $candidateRef -notmatch '^refs/heads/[A-Za-z0-9._/-]+$') { throw "SOUNDING_LINE_CANDIDATE_REF_INVALID" }
           $prNumber = $env:SOUNDING_LINE_PR_NUMBER
           $baseSha = $env:SOUNDING_LINE_BASE_SHA
           # CURRENT protected-main verification deliberately has no PR envelope, but
@@ -106,11 +114,16 @@ jobs:
           # its base; v13 cutover continues to require both values below.
           if ($prNumber -and -not $baseSha) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_BASE_REQUIRED" }
           if ($authorityMode -eq 'v13-cutover' -and (-not $prNumber -or -not $baseSha)) { throw "SOUNDING_LINE_V13_CUTOVER_ACCEPTANCE_ENVELOPE_REQUIRED" }
-          if ($authorityMode -eq 'candidate' -and (-not $prNumber -or -not $baseSha)) { throw "SOUNDING_LINE_CANDIDATE_ACCEPTANCE_ENVELOPE_REQUIRED" }
+          if ($authorityMode -in @('candidate', 'owner-bootstrap', 'owner-authorized') -and (-not $prNumber -or -not $baseSha)) { throw "SOUNDING_LINE_CANDIDATE_ACCEPTANCE_ENVELOPE_REQUIRED" }
           if ($prNumber -and ($prNumber -notmatch '^[1-9][0-9]*$')) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_PR_INVALID" }
           if ($baseSha -and ($baseSha -notmatch '^[0-9a-f]{40}$')) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_BASE_SHA_INVALID" }
+          if ($authorityMode -in @('owner-bootstrap', 'owner-authorized')) {
+            if ($env:SOUNDING_LINE_OWNER_AUTHORIZATION_COMMENT_ID -notmatch '^[1-9][0-9]*$') { throw "SOUNDING_LINE_OWNER_AUTHORIZATION_RECEIPT_REQUIRED" }
+            if ($authorityMode -eq 'owner-bootstrap' -and $prNumber -ne 'PENDING_OWNER_BOOTSTRAP_PR_NUMBER') { throw "SOUNDING_LINE_OWNER_BOOTSTRAP_PR_REJECTED" }
+            if ($authorityMode -eq 'owner-authorized' -and $prNumber -notin @('212', '213')) { throw "SOUNDING_LINE_OWNER_AUTHORIZATION_TARGET_REJECTED" }
+          }
           "value=$gate" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-          "authorityMode=$(if ($authorityMode -eq 'v13-cutover') { 'V13_CUTOVER' } elseif ($authorityMode -eq 'candidate') { 'V14_CANDIDATE' } else { 'CURRENT' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "authorityMode=$(if ($authorityMode -eq 'v13-cutover') { 'V13_CUTOVER' } elseif ($authorityMode -eq 'candidate') { 'V14_CANDIDATE' } elseif ($authorityMode -eq 'owner-bootstrap') { 'V14_OWNER_BOOTSTRAP' } elseif ($authorityMode -eq 'owner-authorized') { 'V14_OWNER_AUTHORIZED' } else { 'CURRENT' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         # Plan proves an arbitrary frozen candidate/base ancestry and exact
         # changed interval. Retain complete history here; generic shallow
@@ -149,12 +162,40 @@ jobs:
           $pr = Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:GITHUB_REPOSITORY/pulls/$env:SOUNDING_LINE_PR_NUMBER"
           if ($pr.head.sha -ne $env:SOUNDING_LINE_CANDIDATE_SHA) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_PR_HEAD_MISMATCH" }
           if ($pr.base.sha -ne $env:SOUNDING_LINE_BASE_SHA) { throw "SOUNDING_LINE_ACCEPTANCE_ENVELOPE_PR_BASE_MISMATCH" }
-          if ($env:SOUNDING_LINE_AUTHORITY_MODE -eq 'candidate') {
+          if ($env:SOUNDING_LINE_AUTHORITY_MODE -in @('candidate', 'owner-bootstrap', 'owner-authorized')) {
             $expectedRef = "refs/heads/$($pr.head.ref)"
             if ($env:SOUNDING_LINE_CANDIDATE_REF -ne $expectedRef) { throw "SOUNDING_LINE_CANDIDATE_REF_PR_MISMATCH" }
             $resolved = @(git ls-remote origin $env:SOUNDING_LINE_CANDIDATE_REF)
             if ($resolved.Count -ne 1 -or -not $resolved[0].StartsWith("$env:SOUNDING_LINE_CANDIDATE_SHA`t")) { throw "SOUNDING_LINE_CANDIDATE_REF_HEAD_MISMATCH" }
           }
+      - name: Verify one-shot owner authorization receipt
+        if: ${{ inputs.authority_mode == 'owner-bootstrap' || inputs.authority_mode == 'owner-authorized' }}
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          SOUNDING_LINE_OWNER_AUTHORIZATION_COMMENT_ID: ${{ inputs.owner_authorization_comment_id }}
+          SOUNDING_LINE_AUTHORITY_MODE: ${{ inputs.authority_mode }}
+          SOUNDING_LINE_PR_NUMBER: ${{ inputs.pr_number }}
+          SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+          SOUNDING_LINE_BASE_SHA: ${{ steps.base.outputs.value }}
+          SOUNDING_LINE_CANDIDATE_REF: ${{ inputs.candidate_ref }}
+        run: |
+          $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json'; 'X-GitHub-Api-Version' = '2022-11-28' }
+          $comment = Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:GITHUB_REPOSITORY/issues/comments/$env:SOUNDING_LINE_OWNER_AUTHORIZATION_COMMENT_ID"
+          if ($comment.author_association -ne 'OWNER') { throw 'SOUNDING_LINE_OWNER_AUTHORIZATION_RECEIPT_NOT_OWNER_AUTHORED' }
+          try { $receipt = $comment.body | ConvertFrom-Json -ErrorAction Stop } catch { throw 'SOUNDING_LINE_OWNER_AUTHORIZATION_RECEIPT_INVALID_JSON' }
+          if ($receipt.procedure -ne 'SOUNDING_LINE_OWNER_AUTHORIZED_PR212_PR213_20260818') { throw 'SOUNDING_LINE_OWNER_AUTHORIZATION_PROCEDURE_REJECTED' }
+          if ($receipt.mode -ne $env:SOUNDING_LINE_AUTHORITY_MODE) { throw 'SOUNDING_LINE_OWNER_AUTHORIZATION_MODE_REJECTED' }
+          if ([string]$receipt.prNumber -ne $env:SOUNDING_LINE_PR_NUMBER) { throw 'SOUNDING_LINE_OWNER_AUTHORIZATION_PR_REJECTED' }
+          if ($receipt.candidateSha -ne $env:SOUNDING_LINE_CANDIDATE_SHA) { throw 'SOUNDING_LINE_OWNER_AUTHORIZATION_CANDIDATE_REJECTED' }
+          if ($receipt.baseSha -ne $env:SOUNDING_LINE_BASE_SHA) { throw 'SOUNDING_LINE_OWNER_AUTHORIZATION_BASE_REJECTED' }
+          if ($receipt.candidateRef -ne $env:SOUNDING_LINE_CANDIDATE_REF) { throw 'SOUNDING_LINE_OWNER_AUTHORIZATION_REF_REJECTED' }
+          $candidateTreeSha = (git rev-parse "$env:SOUNDING_LINE_CANDIDATE_SHA`^{tree}").Trim()
+          if ($receipt.candidateTreeSha -ne $candidateTreeSha) { throw 'SOUNDING_LINE_OWNER_AUTHORIZATION_TREE_REJECTED' }
+          if ($receipt.intent -notin @('install bounded owner-authorized route', 'admit structurally proven project supplements', 'reclaim owned validation runtime caches')) { throw 'SOUNDING_LINE_OWNER_AUTHORIZATION_INTENT_REJECTED' }
+          $expiresAt = [DateTimeOffset]::Parse($receipt.expiresAt)
+          if ($expiresAt -le [DateTimeOffset]::UtcNow -or $expiresAt -gt [DateTimeOffset]::Parse('2026-08-31T23:59:59Z')) { throw 'SOUNDING_LINE_OWNER_AUTHORIZATION_EXPIRY_REJECTED' }
       - name: Enforce trusted ordinary-candidate boundary
         if: ${{ inputs.authority_mode == 'candidate' }}
         shell: pwsh
