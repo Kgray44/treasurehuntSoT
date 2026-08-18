@@ -8,15 +8,15 @@
     "ownerPrompt": "Project Deepwater Phase 5: Keep the Soundings explicit owner authorization, 2026-08-13",
     "scope": "Continuous governance, Feature Catalog integration, regression prevention, drift detection, and program closure."
   },
-  "baseOriginMainSha": "b6b613674a60fcf134426a5e964d11c454ee0698",
-  "soundingLinePolicyDigest": "d9b4ecead6d105003b03c5c466f366e5962bada8509726953062b0bfbba163d7",
+  "baseOriginMainSha": "c568e5aa15df4d8b682e328d97fa1a78b7b5760a",
+  "soundingLinePolicyDigest": "336a05178e9e3ea765762b8bb8e47a1156790d0f800a7b47c6b6a0a5e292aa90",
   "v14Reconciliation": {
     "pausedCheckpoint": "95497c3d32e76d81723500235821829bd3af58a2",
     "preCutoverBaseOriginMainSha": "60b89841986e66fbc2c0828489d38002a1617506",
     "preCutoverPolicyDigest": "b2f365b10769b09c92e93226ec6633c673cc4be1e6eb0821e49c4c45c9ca7d99",
     "reboundPolicyDigest": "ffe5734091a96b34ca6ecbc077cc46ff99f74ace22ec50a671ed453abd0c509e",
-    "currentProtectedMainSha": "b6b613674a60fcf134426a5e964d11c454ee0698",
-    "currentPolicyDigest": "d9b4ecead6d105003b03c5c466f366e5962bada8509726953062b0bfbba163d7",
+    "currentProtectedMainSha": "c568e5aa15df4d8b682e328d97fa1a78b7b5760a",
+    "currentPolicyDigest": "336a05178e9e3ea765762b8bb8e47a1156790d0f800a7b47c6b6a0a5e292aa90",
     "legacyFocusedEvidence": {
       "controlPlaneTests": 76,
       "status": "PRESERVED_SEMANTIC_REBOUND_REQUIRED",
@@ -38,6 +38,14 @@
         "closureCommit": "c9d3b6661d94cfbf21f95f7433a3276e69279014",
         "evidence": "Accepted PR #207 adds canonical Deepwater ordinary-candidate paths and protected impact-map registration. After semantic reconciliation, the local v1.4 classifier returns ORDINARY_CANDIDATE with no errors and no candidate-modified authority path.",
         "rationale": "The policy repair is Sounding Line-owned and protected-main accepted. Phase 5 retains that accepted mapping and removes its historical independent impact-map delta."
+      },
+      {
+        "findingId": "DW-P5-EXTERNAL-SOUNDING-LINE-TRUSTED-STAGING-001",
+        "status": "CLOSED_BY_ACCEPTED_CURRENT_MAIN",
+        "closureSourceSha": "c568e5aa15df4d8b682e328d97fa1a78b7b5760a",
+        "closureCommit": "b415f6cba805fdcf4dd8f17e33fb57d1b10ed6aa",
+        "evidence": "Accepted PR #209 materializes project-discovery.mjs beside the trusted verifier in the authoritative, protected-binding, and verification-maintenance staging paths.",
+        "rationale": "Run 32153348194 is preserved as historical infrastructure failure only. The protected-main owner repair restores trusted classifier execution without adding a Deepwater authority delta."
       }
     ]
   },
@@ -45,7 +53,7 @@
     "state": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
     "mainlineState": "PENDING_FROZEN_CANDIDATE_MAINLINE_DECISION",
     "acceptanceLane": "SOUNDING_LINE_V14_CANDIDATE_MAINLINE_DECISION",
-    "holdReason": "The v1.4 fleet pause is cleared and accepted PR #207 supplies canonical Deepwater ordinary-candidate admission plus protected impact-map registration. The reconciled branch must complete focused requalification, freeze one candidate, and request one Mainline Decision."
+    "holdReason": "Accepted PRs #207 and #209 supply canonical Deepwater admission/impact registration and trusted classifier dependency staging. The reconciled branch must freeze one candidate and request one Mainline Decision."
   },
   "phase4Authority": {
     "qualifiedCandidate": "10f505d2188f0c51e356ad935503e5236df62256",

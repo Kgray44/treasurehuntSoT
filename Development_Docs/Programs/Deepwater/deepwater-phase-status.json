@@ -1,10 +1,10 @@
 {
   "acceptanceLane": "SOUNDING_LINE_V14_CANDIDATE_MAINLINE_DECISION",
-  "baseSourceSha": "b6b613674a60fcf134426a5e964d11c454ee0698",
+  "baseSourceSha": "c568e5aa15df4d8b682e328d97fa1a78b7b5760a",
   "featureCatalogImpact": "NO_CHANGE_REQUIRED",
   "limitations": [
     "Phase 5 does not self-issue release authority or owner product acceptance.",
-    "The v1.4 fleet pause is cleared and accepted PR #207 supplies canonical Deepwater ordinary-candidate admission plus protected impact-map registration. The reconciled branch must complete focused requalification, freeze one candidate, and request one Mainline Decision."
+    "Accepted PRs #207 and #209 supply canonical Deepwater admission/impact registration and trusted classifier dependency staging. The reconciled branch must freeze one candidate and request one Mainline Decision."
   ],
   "mainlineState": "PENDING_FROZEN_CANDIDATE_MAINLINE_DECISION",
   "ownerDecision": "NOT_APPLICABLE",
@@ -13,7 +13,7 @@
   "project": "Project Deepwater",
   "schemaImpact": "NONE",
   "schemaVersion": "1.0.0",
-  "soundingLinePolicyDigest": "d9b4ecead6d105003b03c5c466f366e5962bada8509726953062b0bfbba163d7",
+  "soundingLinePolicyDigest": "336a05178e9e3ea765762b8bb8e47a1156790d0f800a7b47c6b6a0a5e292aa90",
   "state": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
   "validation": "LOCAL_CONTROL_PLANE_QUALIFIED"
 }
