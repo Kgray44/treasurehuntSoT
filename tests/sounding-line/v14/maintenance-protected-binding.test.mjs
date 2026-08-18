@@ -13,7 +13,10 @@ import {
   finalizeAuthorityMaintenance,
 } from "../../../scripts/sounding-line/authority-maintenance.mjs";
 import { qualifyAuthorityMaintenanceProtectedMerge } from "../../../scripts/sounding-line/authority-maintenance-protected-binding.mjs";
-import { selectSealedAuthorityMaintenance } from "../../../scripts/sounding-line/authority-maintenance-selection.mjs";
+import {
+  selectSealedActiveAuthority,
+  selectSealedAuthorityMaintenance,
+} from "../../../scripts/sounding-line/authority-maintenance-selection.mjs";
 
 const sha = (character) => character.repeat(40);
 const policy = {
@@ -214,5 +217,138 @@ test("authority maintenance is a distinct owner-authorized, exact-identity lane"
       mergeParents: [sha("a"), sha("b")],
     }).decision,
     "BINDING_PASS",
+  );
+});
+
+const activeEnvelope = (overrides = {}) => ({
+  version: 1,
+  authority: "SOUNDING_LINE_ACCEPTANCE_ENVELOPE",
+  authoritativeRunId: 101,
+  prNumber: 198,
+  candidateSha: sha("b"),
+  qualifiedBaseSha: sha("a"),
+  qualifiedBaseTreeSha: sha("c"),
+  gate: "mainline",
+  planDigest: sha("d"),
+  policyDigest: sha("e"),
+  inventoryDigest: sha("f"),
+  authorityDigest: sha("1"),
+  evidenceDigest: sha("2"),
+  mandatoryReceiptCount: 2,
+  finalizerAuthority: "SOUNDING_LINE_FINALIZER",
+  finalizerDecision: "RELEASE_GO",
+  ...overrides,
+});
+
+const activeRun = (id = 101, overrides = {}) => ({
+  id,
+  name: "Sounding Line authoritative",
+  path: ".github/workflows/sounding-line-authoritative.yml",
+  event: "workflow_dispatch",
+  status: "completed",
+  conclusion: "success",
+  ...overrides,
+});
+
+const directCandidate = (id = 101, overrides = {}) => ({
+  run: activeRun(id, overrides.run),
+  artifact: "sounding-line-acceptance-envelope",
+  envelope: activeEnvelope({ authoritativeRunId: id, ...overrides.envelope }),
+  ...overrides,
+});
+
+const selectActive = (candidates, overrides = {}) =>
+  selectSealedActiveAuthority({
+    candidates,
+    prNumber: 198,
+    candidateSha: sha("b"),
+    candidateTree: sha("9"),
+    currentBaseSha: sha("a"),
+    ...overrides,
+  });
+
+test("active authority lineage selection keeps historical envelopes while selecting one current direct lineage", () => {
+  const selected = selectActive([directCandidate()]);
+  assert.equal(selected.decision, "ACTIVE_AUTHORITY_SELECTED");
+  assert.equal(selected.selectedRunId, 101);
+  assert.equal(selected.selectedMode, "EXACT_CANDIDATE_BASE");
+});
+
+test("a repeated qualification supersedes the old base lineage without using run recency", () => {
+  const old = directCandidate(100, { envelope: { qualifiedBaseSha: sha("3") } });
+  const current = directCandidate(99);
+  const selected = selectActive([old, current]);
+  assert.equal(selected.decision, "ACTIVE_AUTHORITY_SELECTED");
+  assert.equal(selected.selectedRunId, 99, "exact base, not highest run id, selects the active lineage");
+  assert.equal(selected.historicalCount, 1, "superseded evidence remains preserved as historical input");
+});
+
+test("a changed candidate head excludes old authority from the active lineage", () => {
+  const selected = selectActive([directCandidate(101, { envelope: { candidateSha: sha("3") } }), directCandidate(102)]);
+  assert.equal(selected.decision, "ACTIVE_AUTHORITY_SELECTED");
+  assert.equal(selected.selectedRunId, 102);
+});
+
+test("an exact train predicted tree supersedes a semantic carry-forward direct lineage", () => {
+  const train = {
+    run: activeRun(103, {
+      name: "Sounding Line mainline train",
+      path: ".github/workflows/sounding-line-mainline-train.yml",
+    }),
+    artifact: "sounding-line-train-acceptance-envelope-pr-198",
+    envelope: activeEnvelope({ authoritativeRunId: 103, qualifiedBaseSha: sha("3") }),
+    plan: {
+      sourceSha: sha("b"),
+      authorityVersion: "1.4",
+      authorityBoundary: "V14_CANDIDATE_QUALIFICATION",
+      predictedIntegrationTreeSha: sha("9"),
+    },
+  };
+  const selected = selectActive([directCandidate(101, { envelope: { qualifiedBaseSha: sha("3") } }), train]);
+  assert.equal(selected.decision, "ACTIVE_AUTHORITY_SELECTED");
+  assert.equal(selected.selectedMode, "TRAIN_REBIND");
+  assert.equal(selected.originalCandidateSha, sha("b"));
+});
+
+test("PR #198-shaped train suffix lifecycle collapses duplicate evidence but rejects competing current lineages", () => {
+  const train = {
+    run: activeRun(104, {
+      name: "Sounding Line mainline train",
+      path: ".github/workflows/sounding-line-mainline-train.yml",
+    }),
+    artifact: "sounding-line-train-acceptance-envelope-pr-198",
+    envelope: activeEnvelope({ authoritativeRunId: 104, qualifiedBaseSha: sha("3") }),
+    plan: {
+      sourceSha: sha("b"),
+      authorityVersion: "1.4",
+      authorityBoundary: "V14_CANDIDATE_QUALIFICATION",
+      predictedIntegrationTreeSha: sha("9"),
+    },
+  };
+  const duplicate = structuredClone(train);
+  duplicate.run.id = 105;
+  duplicate.envelope.authoritativeRunId = 105;
+  const sameLineage = selectActive([train, duplicate]);
+  assert.equal(sameLineage.decision, "ACTIVE_AUTHORITY_SELECTED");
+  const competing = structuredClone(train);
+  competing.run.id = 106;
+  competing.envelope.authoritativeRunId = 106;
+  competing.envelope.planDigest = sha("7");
+  assert.equal(selectActive([train, competing]).decision, "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE");
+});
+
+test("active authority selection fails closed when no valid current authority remains", () => {
+  assert.equal(selectActive([]).decision, "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE");
+  assert.equal(
+    selectActive([directCandidate(101, { expired: true })]).decision,
+    "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE",
+  );
+  assert.equal(
+    selectActive([directCandidate(101, { envelope: { revoked: true } })]).decision,
+    "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE",
+  );
+  assert.equal(
+    selectActive([directCandidate(101, { run: { event: "push" } })]).decision,
+    "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE",
   );
 });

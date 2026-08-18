@@ -566,7 +566,8 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
   assert.match(binding, /sounding-line-acceptance-envelope/u);
   assert.match(binding, /sounding-line-train-acceptance-envelope/u);
   assert.match(binding, /sounding-line-mainline-train\.yml/u);
-  assert.match(binding, /envelope\.candidateSha -eq \$env:CANDIDATE_SHA/u);
+  assert.match(binding, /trusted-active-authority-selection\.mjs/u);
+  assert.match(binding, /active-authority-candidates\.json/u);
   assert.match(binding, /qualified-base to[\s\S]*?current-base interval itself/u);
 });
 
