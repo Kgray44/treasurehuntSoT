@@ -11,6 +11,7 @@ const databasePath = databaseUrl.startsWith("file:") ? path.resolve(databaseUrl.
 const password = required("TIDEGLASS_PHASE3_SYNTHETIC_PASSWORD");
 const allowedRoot = path.resolve(required("LOCALAPPDATA"), "ProjectTideglass");
 const canonicalDatabase = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
+const validationNonceHash = process.env.FOREVER_VALIDATION_NONCE_HASH ?? null;
 const createdAt = new Date("2026-08-12T12:00:00.000Z");
 const fixtureVersion = "tideglass-phase4-v2";
 
@@ -18,6 +19,11 @@ if (!taskRoot.startsWith(`${allowedRoot}${path.sep}`)) throw new Error(`TIDEGLAS
 if (!databasePath.startsWith(`${taskRoot}${path.sep}`) || databasePath === canonicalDatabase)
   throw new Error(`TIDEGLASS_FIXTURE_DATABASE_REFUSED:${databasePath}`);
 if (password.length < 24) throw new Error("TIDEGLASS_SYNTHETIC_PASSWORD_TOO_SHORT");
+if (
+  validationNonceHash !== null &&
+  (process.env.FOREVER_VALIDATION_ISOLATION !== "1" || !/^[a-f0-9]{64}$/u.test(validationNonceHash))
+)
+  throw new Error("TIDEGLASS_VALIDATION_NONCE_REFUSED");
 
 const passwordHash = await bcrypt.hash(password, 10);
 const accounts = {
@@ -265,6 +271,19 @@ await createRecord(accounts.PLAYER_AB, "tg3-record-ab-a", versions[0], "syntheti
 await createRecord(accounts.PLAYER_AB, "tg3-record-ab-b", versions[1], "synthetic-ab-b", "COMPLETED", "SUCCESS");
 await createRecord(accounts.PLAYER_C, "tg3-record-c", versions[2], "synthetic-c", "COMPLETED", "SUCCESS");
 await createRecord(accounts.FOREIGN, "tg3-record-foreign", versions[0], "synthetic-foreign", "COMPLETED", "SUCCESS");
+if (validationNonceHash) {
+  await db.platformAuditEvent.create({
+    data: {
+      actorType: "VALIDATION_HARNESS",
+      action: "VALIDATION_DATABASE_IDENTITY",
+      resourceType: "VALIDATION_DATABASE",
+      resourceId: validationNonceHash,
+      outcome: "SUCCEEDED",
+      correlationId: validationNonceHash,
+      metadata: JSON.stringify({ marker: "tideglass-phase3-task-fixture", nonceHash: validationNonceHash }),
+    },
+  });
+}
 
 const aliases = Object.fromEntries(
   Object.entries(accounts).map(([key, account]) => [

@@ -305,6 +305,29 @@ export async function executeAdapter(adapter, { cwd, env = {}, maxLogBytes = 64 
     const child = spawn(file, args, { cwd, env: { ...process.env, ...env }, shell: false, windowsHide: true });
     let output = "";
     let timedOut = false;
+    let settled = false;
+    let timeoutSettlementTimer;
+    const finish = ({ exitCode, signal = null, timedOut: didTimeOut = timedOut }) => {
+      if (settled) return;
+      settled = true;
+      if (timer) clearTimeout(timer);
+      if (timeoutSettlementTimer) clearTimeout(timeoutSettlementTimer);
+      resolve({
+        exitCode: didTimeOut ? 124 : (exitCode ?? -1),
+        signal,
+        log: output,
+        pid: child.pid,
+        timedOut: didTimeOut,
+      });
+    };
+    const finishTimedOut = () => {
+      // Do not let inherited stdio handles from a stubborn descendant retain
+      // the governed worker after its hard-budget receipt has been determined.
+      child.stdout.destroy();
+      child.stderr.destroy();
+      child.unref();
+      finish({ exitCode: 124, timedOut: true });
+    };
     const timer = timeoutMs
       ? setTimeout(() => {
           timedOut = true;
@@ -316,10 +339,13 @@ export async function executeAdapter(adapter, { cwd, env = {}, maxLogBytes = 64 
             const terminator = spawn("taskkill", ["/pid", String(child.pid), "/T", "/F"], {
               shell: false,
               windowsHide: true,
+              stdio: "ignore",
             });
-            terminator.on("error", () => {});
-            terminator.unref();
+            terminator.once("close", finishTimedOut);
+            terminator.once("error", () => child.kill());
           } else child.kill();
+          // Task termination is best effort; the receipt deadline is not.
+          timeoutSettlementTimer = setTimeout(finishTimedOut, 15_000);
         }, timeoutMs)
       : undefined;
     const append = (chunk) => {
@@ -328,18 +354,14 @@ export async function executeAdapter(adapter, { cwd, env = {}, maxLogBytes = 64 
     child.stdout.on("data", append);
     child.stderr.on("data", append);
     child.once("error", (error) => {
-      if (timer) clearTimeout(timer);
-      reject(error);
+      if (timedOut) finish({ exitCode: 124, timedOut: true });
+      else {
+        if (timer) clearTimeout(timer);
+        reject(error);
+      }
     });
     child.once("close", (exitCode, signal) => {
-      if (timer) clearTimeout(timer);
-      resolve({
-        exitCode: timedOut ? 124 : (exitCode ?? -1),
-        signal: signal ?? null,
-        log: output,
-        pid: child.pid,
-        timedOut,
-      });
+      finish({ exitCode, signal: signal ?? null });
     });
   });
 }

@@ -150,8 +150,12 @@ jobs:
           $preflight = Get-Content -Raw maintenance-preflight.json | ConvertFrom-Json
           $errors = @($preflight.errors)
           $ordinaryScopeOnly = $preflight.classification.classification -eq 'MAINTENANCE_SCOPE_REJECTED' -and $errors.Count -gt 0 -and @($errors | Where-Object { $_ -notmatch '^MAINTENANCE_SCOPE_REJECTED:' }).Count -eq 0
-          $authorityScopeOnly = $preflight.classification.classification -eq 'MAINTENANCE_AUTHORITY_CHANGE_REJECTED' -and $errors.Count -gt 0 -and @($errors | Where-Object { $_ -notmatch '^MAINTENANCE_AUTHORITY_CHANGE_REJECTED:' }).Count -eq 0
-          if ($ordinaryScopeOnly -or $authorityScopeOnly) {
+          # An authority-maintenance candidate is expected to be outside the
+          # verification-maintenance lane. Its authority rejection may be
+          # accompanied only by maintenance-scope rejections for the same
+          # authority paths; any other rejection remains fail-closed.
+          $authorityAndScopeOnly = $errors.Count -gt 0 -and @($errors | Where-Object { $_ -notmatch '^(MAINTENANCE_AUTHORITY_CHANGE_REJECTED|MAINTENANCE_SCOPE_REJECTED):' }).Count -eq 0 -and @($errors | Where-Object { $_ -match '^MAINTENANCE_AUTHORITY_CHANGE_REJECTED:' }).Count -gt 0
+          if ($ordinaryScopeOnly -or $authorityAndScopeOnly) {
             'maintenance=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
             exit 0
           }
@@ -176,17 +180,37 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $paths = @(git diff --name-only --no-renames --no-ext-diff "$env:BASE_SHA" "$env:CANDIDATE_SHA" | Sort-Object)
-          $isAuthorityCandidate = $paths | Where-Object { $_ -in @('testing/authority-maintenance-policy.json','scripts/sounding-line/authority-maintenance.mjs','scripts/sounding-line/authority-maintenance-protected-binding.mjs','scripts/sounding-line/authority-maintenance-selection.mjs','.github/workflows/sounding-line-authority-maintenance.yml') }
-          if (-not $isAuthorityCandidate) { 'authorityMaintenance=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8; exit 0 }
+          # The trusted policy, not a hand-maintained list of authority files,
+          # determines whether this exact candidate is authority maintenance.
+          # This keeps protected-main discovery and registration maintenance
+          # bindable without treating candidate-supplied ownership as trust.
           git show "$env:BASE_SHA`:testing/authority-maintenance-policy.json" > trusted-authority-maintenance-policy.json
           if ($LASTEXITCODE -ne 0) { throw 'AUTHORITY_MAINTENANCE_TRUSTED_POLICY_UNAVAILABLE' }
+          $trustedPolicy = Get-Content -Raw trusted-authority-maintenance-policy.json | ConvertFrom-Json
+          # The trusted policy owns the authority-routing boundary. Retain the
+          # legacy list only while bootstrapping the first policy that provides
+          # it, so a policy update cannot self-suppress its own preflight.
+          $legacyAuthorityBindingPaths = @('testing/authority-maintenance-policy.json','scripts/sounding-line/authority-maintenance.mjs','scripts/sounding-line/authority-maintenance-protected-binding.mjs','scripts/sounding-line/authority-maintenance-selection.mjs','.github/workflows/sounding-line-authority-maintenance.yml')
+          $authorityBindingPaths = @($trustedPolicy.bindingPreflightPaths) + $legacyAuthorityBindingPaths
+          $isAuthorityCandidate = $paths | Where-Object { $_ -in $authorityBindingPaths }
+          if (-not $isAuthorityCandidate) { 'authorityMaintenance=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8; exit 0 }
           git show "$env:BASE_SHA`:scripts/sounding-line/authority-maintenance.mjs" > trusted-authority-maintenance.mjs
           if ($LASTEXITCODE -ne 0) { throw 'AUTHORITY_MAINTENANCE_TRUSTED_CLASSIFIER_UNAVAILABLE' }
           ConvertTo-Json -InputObject $paths -Compress | Set-Content -NoNewline authority-maintenance-changed-paths.json
           $tree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
           node trusted-authority-maintenance.mjs plan --policy trusted-authority-maintenance-policy.json --paths authority-maintenance-changed-paths.json --trusted-main-sha $env:BASE_SHA --candidate-sha $env:CANDIDATE_SHA --candidate-tree $tree --base-sha $env:BASE_SHA --owner-authorized true --out authority-maintenance-preflight.json
-          if ($LASTEXITCODE -ne 0) { throw 'AUTHORITY_MAINTENANCE_PREFLIGHT_REJECTED' }
-          'authorityMaintenance=true' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          if ($LASTEXITCODE -eq 0) {
+            'authorityMaintenance=true' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            exit 0
+          }
+          $preflight = Get-Content -Raw authority-maintenance-preflight.json | ConvertFrom-Json
+          $errors = @($preflight.errors)
+          $scopeOnly = $preflight.classification.classification -eq 'AUTHORITY_MAINTENANCE_REJECTED' -and $errors.Count -gt 0 -and @($errors | Where-Object { $_ -notmatch '^AUTHORITY_MAINTENANCE_SCOPE_REJECTED:' }).Count -eq 0
+          if ($scopeOnly) {
+            'authorityMaintenance=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            exit 0
+          }
+          throw "AUTHORITY_MAINTENANCE_PREFLIGHT_REJECTED:$($errors -join ',')"
 
   bind:
     # The name is intentionally the unchanged protected branch context.
@@ -229,8 +253,9 @@ jobs:
                 ($_.name -eq 'Sounding Line mainline train' -and $_.path -eq '.github/workflows/sounding-line-mainline-train.yml')
               )
             }
-          $matches = @()
-          $trainRebindMatches = @()
+          git show "$env:BASE_SHA`:scripts/sounding-line/authority-maintenance-selection.mjs" > trusted-active-authority-selection.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_TRUSTED_ACTIVE_AUTHORITY_SELECTOR_UNAVAILABLE' }
+          $candidates = @()
           foreach ($run in $runs) {
             try {
               $artifacts = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs/$($run.id)/artifacts?per_page=100").artifacts |
@@ -251,31 +276,27 @@ jobs:
                 # current-base interval itself. Do not discard a candidate here
                 # merely because an unrelated protected-main advance requires a
                 # governed semantic carry-forward decision.
-                if ($envelope.prNumber -eq [int]$env:PR_NUMBER -and $envelope.candidateSha -eq $env:CANDIDATE_SHA) {
-                  $matches += @{ run = $run; artifact = $artifact.name }
+                $candidate = @{ run = @{ id = $run.id; name = $run.name; path = $run.path; event = $run.event; status = $run.status; conclusion = $run.conclusion }; artifact = $artifact.name; expired = $artifact.expired; envelope = $envelope }
+                if ($artifact.name -like 'sounding-line-train-acceptance-envelope-*') {
+                  $candidate.plan = Get-Content -Raw (Join-Path $directory 'sounding-line-plan.json') | ConvertFrom-Json
                 }
-                if ($envelope.prNumber -eq [int]$env:PR_NUMBER -and $artifact.name -like 'sounding-line-train-acceptance-envelope-*') {
-                  $trainRebindMatches += @{ run = $run; artifact = $artifact.name; originalCandidate = $envelope.candidateSha }
-                }
+                $candidates += $candidate
               }
             } catch { }
           }
-          if (@($matches).Count -gt 1) { throw "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE" }
-          $trainRebind = $false
-          if (@($matches).Count -eq 1) {
-            $match = @($matches)[0]
-          } elseif (@($trainRebindMatches).Count -eq 1) {
-            $match = @($trainRebindMatches)[0]
-            $trainRebind = $true
-            "original-candidate=$($match.originalCandidate)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-          } else { throw "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE" }
-          "run-id=$($match.run.id)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-          $finalizationArtifact = if ($match.artifact -eq 'sounding-line-acceptance-envelope') { 'sounding-line-finalization' } else { $match.artifact }
-          $planArtifact = if ($match.artifact -eq 'sounding-line-acceptance-envelope') { 'sounding-line-plan' } else { $match.artifact }
+          $candidateTree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
+          @{ candidates = $candidates; prNumber = [int]$env:PR_NUMBER; candidateSha = $env:CANDIDATE_SHA; candidateTree = $candidateTree; currentBaseSha = $env:BASE_SHA } | ConvertTo-Json -Depth 20 | Set-Content active-authority-candidates.json
+          node trusted-active-authority-selection.mjs select-active active-authority-candidates.json > active-authority-selection.json
+          if ($LASTEXITCODE -ne 0) { throw 'SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE' }
+          $selection = Get-Content -Raw active-authority-selection.json | ConvertFrom-Json
+          if ($selection.selectedMode -eq 'TRAIN_REBIND') { "original-candidate=$($selection.originalCandidateSha)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8 }
+          "run-id=$($selection.selectedRunId)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          $finalizationArtifact = if ($selection.selectedArtifact -eq 'sounding-line-acceptance-envelope') { 'sounding-line-finalization' } else { $selection.selectedArtifact }
+          $planArtifact = if ($selection.selectedArtifact -eq 'sounding-line-acceptance-envelope') { 'sounding-line-plan' } else { $selection.selectedArtifact }
           "finalization-artifact=$finalizationArtifact" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           "plan-artifact=$planArtifact" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-          "envelope-artifact=$($match.artifact)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-          "train-rebind=$trainRebind" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "envelope-artifact=$($selection.selectedArtifact)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "train-rebind=$(if ($selection.selectedMode -eq 'TRAIN_REBIND') { 'true' } else { 'false' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           "legacy=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - name: Download sealed finalization
         if: ${{ needs.record-only-preflight.outputs.recordOnly != 'true' }}
@@ -432,7 +453,10 @@ jobs:
           git show "$env:BASE_SHA`:scripts/sounding-line/authority-maintenance-selection.mjs" > trusted-authority-maintenance-selection.mjs
           $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' }
           $candidateTree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
-          $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&head_sha=$env:BASE_SHA&per_page=100").workflow_runs
+          # Candidate-ref dispatches are valid only when their sealed artifact
+          # proves this exact candidate, tree, and protected base. Do not
+          # discard them by workflow-run head before that trusted selection.
+          $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&per_page=100").workflow_runs
           $sealed = @()
           foreach ($run in $runs) {
             if ($run.name -ne 'Sounding Line authority maintenance' -or $run.path -ne '.github/workflows/sounding-line-authority-maintenance.yml' -or $run.status -ne 'completed' -or $run.conclusion -ne 'success') { continue }

@@ -1,0 +1,18 @@
+{
+  "disposition": "EVIDENCE_ONLY",
+  "affectedCapabilityIds": [],
+  "affectedFeatureCatalogIds": [],
+  "potentialLayerImpact": ["EVIDENCE_ONLY"],
+  "affectedSurfaces": {
+    "routes": [],
+    "screens": [],
+    "journeys": [],
+    "apis": []
+  },
+  "expectedTerminalRungEffect": "NONE",
+  "evidenceRequiringRefresh": [
+    "Sounding Line focused browser-fixture qualification",
+    "Sounding Line trusted semantic impact-plan qualification"
+  ],
+  "rationale": "This correction repairs test-fixture isolation and trusted impact selection for candidate qualification. It does not add, change, or retire a product capability, Feature Catalog realization, route, screen, user journey, or API."
+}

@@ -103,7 +103,7 @@ export function finalizeAuthorityMaintenance({
   };
 }
 
-if (process.argv[1]?.endsWith("authority-maintenance.mjs") && process.argv[2] === "plan") {
+if (process.argv[2] === "plan") {
   const args = process.argv.slice(3);
   const value = (name) => (args.includes(name) ? args[args.indexOf(name) + 1] : null);
   const policy = JSON.parse(await readFile(value("--policy"), "utf8"));
@@ -122,7 +122,7 @@ if (process.argv[1]?.endsWith("authority-maintenance.mjs") && process.argv[2] ==
   process.exitCode = result.errors.length ? 1 : 0;
 }
 
-if (process.argv[1]?.endsWith("authority-maintenance.mjs") && process.argv[2] === "finalize") {
+if (process.argv[2] === "finalize") {
   const args = process.argv.slice(3);
   const value = (name) => (args.includes(name) ? args[args.indexOf(name) + 1] : null);
   const result = finalizeAuthorityMaintenance({
