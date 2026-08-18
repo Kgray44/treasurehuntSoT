@@ -8,20 +8,14 @@ const root = path.resolve();
 const readAuthorityPolicy = async () =>
   JSON.parse(await readFile(path.join(root, "testing", "authority-maintenance-policy.json"), "utf8"));
 
-test("fast-channel bootstrap admits only its exact authority-maintenance modules", async () => {
+test("the deterministic documentation index is authority-maintenance eligible without admitting migration matrices", async () => {
   const policy = await readAuthorityPolicy();
   const allowed = [
-    "scripts/sounding-line/v14-fast-channel.mjs",
-    "scripts/sounding-line/v14/fast-channel.mjs",
-    "tests/sounding-line/v14/authority-maintenance-fast-channel-policy.test.mjs",
+    "Development_Docs/document-index.json",
+    "tests/sounding-line/v14/authority-maintenance-document-index-policy.test.mjs",
   ];
 
-  assert.equal(policy.version, "1.0.5");
-  assert.deepEqual(
-    policy.bindingPreflightPaths.filter((entry) => entry.includes("v14") || entry.includes("fast-channel")),
-    ["scripts/sounding-line/v14-fast-channel.mjs", "scripts/sounding-line/v14/fast-channel.mjs"],
-  );
-  assert.equal(policy.bindingPreflightPaths.includes("scripts/foreign-product/bootstrap.mjs"), false);
+  assert.equal(policy.eligiblePathGlobs.includes("Development_Docs/document-index.json"), true);
   assert.deepEqual(
     classifyAuthorityMaintenance({ trustedPolicy: policy, changedPaths: allowed, ownerAuthorized: true }),
     {
@@ -33,9 +27,11 @@ test("fast-channel bootstrap admits only its exact authority-maintenance modules
 
   const rejected = classifyAuthorityMaintenance({
     trustedPolicy: policy,
-    changedPaths: ["scripts/foreign-product/bootstrap.mjs"],
+    changedPaths: ["Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv"],
     ownerAuthorized: true,
   });
   assert.equal(rejected.classification, "AUTHORITY_MAINTENANCE_REJECTED");
-  assert.deepEqual(rejected.errors, ["AUTHORITY_MAINTENANCE_SCOPE_REJECTED:scripts/foreign-product/bootstrap.mjs"]);
+  assert.deepEqual(rejected.errors, [
+    "AUTHORITY_MAINTENANCE_SCOPE_REJECTED:Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+  ]);
 });

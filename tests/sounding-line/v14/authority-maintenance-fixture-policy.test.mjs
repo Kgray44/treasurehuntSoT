@@ -12,17 +12,21 @@ test("fixture bootstrap admits only the exact validation-runtime maintenance cla
   const policy = await readAuthorityPolicy();
   const allowed = [
     "scripts/sounding-line/isolated-validation-runtime.ps1",
+    "scripts/dev-common.ps1",
+    "scripts/test-validation-runtime-safety.ps1",
     "scripts/tideglass/seed-phase3-fixture.mjs",
     "tests/sounding-line/v14/authority-maintenance-fixture-policy.test.mjs",
   ];
 
-  assert.equal(policy.version, "1.0.3");
+  assert.equal(policy.version, "1.0.5");
   assert.deepEqual(
     policy.bindingPreflightPaths.filter(
       (entry) => entry.includes("isolated-validation") || entry.includes("tideglass"),
     ),
     ["scripts/sounding-line/isolated-validation-runtime.ps1", "scripts/tideglass/seed-phase3-fixture.mjs"],
   );
+  assert.equal(policy.bindingPreflightPaths.includes("scripts/dev-common.ps1"), true);
+  assert.equal(policy.bindingPreflightPaths.includes("scripts/test-validation-runtime-safety.ps1"), true);
   assert.equal(policy.bindingPreflightPaths.includes("scripts/tideglass/unrelated-bootstrap.mjs"), false);
   assert.deepEqual(
     classifyAuthorityMaintenance({ trustedPolicy: policy, changedPaths: allowed, ownerAuthorized: true }),
