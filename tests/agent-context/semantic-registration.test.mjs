@@ -9,7 +9,18 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..")
 const json = async (file) => JSON.parse(await readFile(path.join(root, "testing", file), "utf8"));
 
 test("Project Trim semantic registration keeps known agent-context work bounded and unknown seams fail closed", async () => {
-  const [suiteInventory, impact] = await Promise.all([json("suites.json"), json("impact-map.json")]);
+  const [suiteInventory, impact, registry] = await Promise.all([
+    json("suites.json"),
+    json("impact-map.json"),
+    json("generated/active-test-registry.json"),
+  ]);
+  const phase2Cases = registry.cases.filter(
+    (entry) => entry.file === "tests/agent-context/project-trim-phase2.test.mjs",
+  );
+  assert.equal(phase2Cases.length, 10);
+  assert.ok(phase2Cases.every((entry) => entry.suiteId === "unit.agent-context"));
+  assert.ok(phase2Cases.every((entry) => entry.owner === "project-trim"));
+  assert.ok(phase2Cases.every((entry) => entry.contracts.includes("project-trim.minimum-sufficient-context")));
   const select = (changedPaths) =>
     selectV14Mainline({
       changedPaths,
