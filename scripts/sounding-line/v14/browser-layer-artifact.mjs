@@ -25,6 +25,12 @@ const browserEngines = (engines) => {
   return [...new Set(engines)];
 };
 const layerTypeFor = (engines) => `browser-${browserEngines(engines)[0]}`;
+export const browserLayerInstallTargets = (engines) => {
+  const [engine] = browserEngines(engines);
+  return engine === "webkit" ? ["webkit", "ffmpeg"] : ["chromium"];
+};
+const requiredResourcePatternsFor = (engines) =>
+  browserEngines(engines)[0] === "webkit" ? { ffmpeg: /^ffmpeg-\d+\/ffmpeg(?:-[^/]+)?(?:\.exe)?$/u } : {};
 
 export async function browserLayerInputs(root, engines) {
   const normalizedEngines = browserEngines(engines);
@@ -38,6 +44,7 @@ export async function browserLayerInputs(root, engines) {
     lockfileDigest,
     playwrightVersion: JSON.parse(playwrightPackage).version,
     browserEngine: normalizedEngines[0],
+    installTargets: browserLayerInstallTargets(normalizedEngines),
     browserRevision: browserRevisionsDigest,
     os: process.platform,
     architecture: process.arch,
@@ -77,6 +84,10 @@ export async function verifyBrowserLayer({ root, sourceDirectory, engines, manif
   if (process.env.SOUNDING_LINE_BROWSER_CACHE_KEY && process.env.SOUNDING_LINE_BROWSER_CACHE_KEY !== identity.key)
     throw new Error("BROWSER_LAYER_CACHE_KEY_MISMATCH");
   const contentManifest = await contentManifestFromDirectory(sourceDirectory);
+  for (const [resource, pattern] of Object.entries(requiredResourcePatternsFor(engines))) {
+    if (!contentManifest.some((entry) => pattern.test(entry.path)))
+      throw new Error(`BROWSER_LAYER_REQUIRED_RESOURCE_MISSING:${resource}`);
+  }
   const integrity = verifyPreparedLayerManifest(manifest, contentManifest);
   if (!integrity.valid) throw new Error(`BROWSER_LAYER_REJECTED:${integrity.reason}`);
   const trust = validateLayerConsumption(manifest, {

@@ -4,7 +4,10 @@ import type { SoundingLineProjection } from "./sounding-line.js";
 import type { Heartbeat } from "./telemetry.js";
 
 export const eventKinds = [
+  "PROJECT_DISCOVERED",
   "PROJECT_STATE_CHANGED",
+  "VERSION_DISCOVERED",
+  "VERSION_STATE_CHANGED",
   "PHASE_STATE_CHANGED",
   "MILESTONE_STATE_CHANGED",
   "PULL_REQUEST_OPENED",
@@ -22,6 +25,7 @@ export const eventKinds = [
   "EXTERNAL_GATE_CHANGED",
   "SOURCE_STATE_CHANGED",
   "BRANCH_HEALTH_CHANGED",
+  "GOVERNING_DOCUMENT_CHANGED",
 ] as const;
 
 export type BridgewatchEventKind = (typeof eventKinds)[number];
@@ -58,11 +62,21 @@ export interface GithubPullRequestHistory {
   title: string;
   url: string;
   state: "OPEN" | "MERGED" | "CLOSED" | "UNKNOWN";
+  draft?: boolean | null;
+  author?: string | null;
   updatedAt: string | null;
   createdAt: string | null;
+  closedAt?: string | null;
   mergedAt: string | null;
   headRef: string | null;
   headSha: string | null;
+  baseRef?: string | null;
+  baseSha?: string | null;
+  mergeSha?: string | null;
+  commitCount?: number | null;
+  changedFiles?: number | null;
+  additions?: number | null;
+  deletions?: number | null;
   checkState: string | null;
   mergeableState: string | null;
 }
@@ -209,7 +223,26 @@ export function deriveEvents(
   const oldProjects = projectsById(previous);
   for (const project of current.projects) {
     const oldProject = oldProjects.get(project.id);
-    if (!oldProject) continue;
+    if (!oldProject) {
+      events.push(
+        transition(
+          "PROJECT_DISCOVERED",
+          "project-truth",
+          "project",
+          project.id,
+          observedAt,
+          undefined,
+          safeState({ state: project.state }),
+          `${project.name} was discovered from repository evidence.`,
+          {
+            projectId: project.id,
+            evidenceRefs:
+              project.discoveryEvidence?.map((evidence) => evidence.reference) ?? project.governingReferences,
+          },
+        ),
+      );
+      continue;
+    }
     if (oldProject.state !== project.state)
       events.push(
         transition(
@@ -224,6 +257,39 @@ export function deriveEvents(
           { projectId: project.id, evidenceRefs: project.governingReferences },
         ),
       );
+    const oldVersions = new Map((oldProject.versions ?? []).map((version) => [version.identity, version]));
+    for (const version of project.versions ?? []) {
+      const previousVersion = oldVersions.get(version.identity);
+      const evidenceRefs = version.evidence.map((evidence) => evidence.reference);
+      if (!previousVersion)
+        events.push(
+          transition(
+            "VERSION_DISCOVERED",
+            "project-truth",
+            "project-version",
+            `${project.id}:${version.identity}`,
+            observedAt,
+            undefined,
+            safeState({ state: version.lifecycle }),
+            `${project.name} / ${version.identity} was discovered.`,
+            { projectId: project.id, evidenceRefs },
+          ),
+        );
+      else if (previousVersion.lifecycle !== version.lifecycle)
+        events.push(
+          transition(
+            "VERSION_STATE_CHANGED",
+            "project-truth",
+            "project-version",
+            `${project.id}:${version.identity}`,
+            observedAt,
+            safeState({ state: previousVersion.lifecycle }),
+            safeState({ state: version.lifecycle }),
+            `${project.name} / ${version.identity}: ${previousVersion.lifecycle} -> ${version.lifecycle}.`,
+            { projectId: project.id, evidenceRefs },
+          ),
+        );
+    }
     const oldPhases = phasesById(oldProject);
     const oldMilestones = milestonesById(oldProject);
     for (const phase of project.phases) {

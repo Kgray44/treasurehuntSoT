@@ -22,6 +22,11 @@ on:
         required: false
         type: string
         default: ""
+      browser_test_ids_by_suite_json:
+        description: Exact sealed browser case selection map for this physical worker
+        required: false
+        type: string
+        default: ""
       empty_wave:
         description: Explicit empty-wave marker; never represents governed test evidence
         required: false
@@ -34,6 +39,11 @@ on:
       candidate_sha:
         description: Exact sealed source identity represented by the plan
         required: true
+        type: string
+      candidate_ref:
+        description: Exact sealed local candidate branch ref for v1.4 candidate qualification
+        required: false
+        default: ""
         type: string
       plan_artifact:
         description: Sealed plan artifact for this qualified candidate
@@ -163,6 +173,33 @@ jobs:
           if ($env:SOUNDING_LINE_CANDIDATE_SHA -notmatch '^[0-9a-f]{40}$') { throw 'GOVERNED_WORKER_CANDIDATE_SHA_INVALID' }
           $execution = if ($env:SOUNDING_LINE_EXECUTION_SHA) { $env:SOUNDING_LINE_EXECUTION_SHA } else { $env:SOUNDING_LINE_CANDIDATE_SHA }
           if ((git rev-parse HEAD).Trim() -ne $execution) { throw 'GOVERNED_WORKER_CANDIDATE_CHECKOUT_MISMATCH' }
+      - name: Validate sealed candidate ref and materialize local discovery ref
+        if: ${{ !inputs.empty_wave }}
+        shell: pwsh
+        env:
+          SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-transport/${{ inputs.plan_path }}
+          SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+          SOUNDING_LINE_CANDIDATE_REF: ${{ inputs.candidate_ref }}
+          SOUNDING_LINE_EXECUTION_SHA: ${{ inputs.execution_sha }}
+        run: |
+          if ($env:SOUNDING_LINE_CANDIDATE_SHA -notmatch '^[0-9a-f]{40}$') { throw 'GOVERNED_WORKER_CANDIDATE_SHA_INVALID' }
+          if (-not (Test-Path -LiteralPath $env:SOUNDING_LINE_PLAN -PathType Leaf)) { throw 'GOVERNED_WORKER_PLAN_MISSING' }
+          try { $plan = Get-Content -Raw $env:SOUNDING_LINE_PLAN | ConvertFrom-Json } catch { throw 'GOVERNED_WORKER_PLAN_UNREADABLE' }
+          $candidateRef = $env:SOUNDING_LINE_CANDIDATE_REF
+          if ($plan.authorityMode -eq 'V14_CANDIDATE') {
+            if ($candidateRef -notmatch '^refs/heads/[A-Za-z0-9._/-]+$') { throw 'GOVERNED_WORKER_CANDIDATE_REF_INVALID' }
+            if ($plan.candidateRef -ne $candidateRef) { throw 'GOVERNED_WORKER_CANDIDATE_REF_PLAN_MISMATCH' }
+            if ($plan.sourceSha -ne $env:SOUNDING_LINE_CANDIDATE_SHA) { throw 'GOVERNED_WORKER_PLAN_SOURCE_SHA_MISMATCH' }
+            $execution = if ($env:SOUNDING_LINE_EXECUTION_SHA) { $env:SOUNDING_LINE_EXECUTION_SHA } else { $env:SOUNDING_LINE_CANDIDATE_SHA }
+            if ((git rev-parse HEAD).Trim() -ne $execution) { throw 'GOVERNED_WORKER_CANDIDATE_SOURCE_HEAD_MISMATCH' }
+            if ((git rev-parse "$env:SOUNDING_LINE_CANDIDATE_SHA^{commit}").Trim() -ne $env:SOUNDING_LINE_CANDIDATE_SHA) { throw 'GOVERNED_WORKER_CANDIDATE_SOURCE_OBJECT_MISMATCH' }
+            git update-ref --no-deref $candidateRef $env:SOUNDING_LINE_CANDIDATE_SHA
+            if ($LASTEXITCODE -ne 0 -or (git rev-parse "$candidateRef^{commit}").Trim() -ne $env:SOUNDING_LINE_CANDIDATE_SHA) {
+              throw 'GOVERNED_WORKER_CANDIDATE_REF_MATERIALIZATION_MISMATCH'
+            }
+          } elseif ($candidateRef -or $null -ne $plan.candidateRef) {
+            throw 'GOVERNED_WORKER_CANDIDATE_REF_UNEXPECTED'
+          }
       - if: ${{ !inputs.empty_wave }}
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc }
@@ -233,6 +270,30 @@ jobs:
           $enginesJson = '["{0}"]' -f $env:SOUNDING_LINE_BROWSER_ENGINE
           node scripts/sounding-line/v14/browser-layer-artifact.mjs verify --engines-json $enginesJson --source $source --manifest $manifest
           if ($LASTEXITCODE -ne 0) { throw 'GOVERNED_BROWSER_LAYER_RESTORE_FAILED' }
+      - id: chromium-setup-browser-identity
+        if: ${{ !inputs.empty_wave && inputs.requires_browser && inputs.browser_engine == 'webkit' }}
+        shell: pwsh
+        run: |
+          $identity = node scripts/sounding-line/v14/browser-layer-artifact.mjs cache-key --engines-json '["chromium"]' | ConvertFrom-Json
+          "key=$($identity.key)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - id: chromium-setup-browser-cache-restore
+        if: ${{ !inputs.empty_wave && inputs.requires_browser && inputs.browser_engine == 'webkit' }}
+        uses: actions/cache/restore@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            sounding-line-browser-cache/chromium
+            sounding-line-browser-cache/chromium-manifest.json
+          key: ${{ steps.chromium-setup-browser-identity.outputs.key }}
+      - name: Restore verified immutable Chromium setup layer
+        if: ${{ !inputs.empty_wave && inputs.requires_browser && inputs.browser_engine == 'webkit' }}
+        shell: pwsh
+        env:
+          SOUNDING_LINE_CHROMIUM_SETUP_CACHE_KEY: ${{ steps.chromium-setup-browser-identity.outputs.key }}
+          CACHE_HIT: ${{ steps.chromium-setup-browser-cache-restore.outputs.cache-hit }}
+        run: |
+          if ($env:CACHE_HIT -ne 'true') { throw 'GOVERNED_CHROMIUM_SETUP_LAYER_CACHE_MISS' }
+          node scripts/sounding-line/v14/browser-layer-artifact.mjs verify --engines-json '["chromium"]' --source sounding-line-browser-cache/chromium --manifest sounding-line-browser-cache/chromium-manifest.json
+          if ($LASTEXITCODE -ne 0) { throw 'GOVERNED_CHROMIUM_SETUP_LAYER_RESTORE_FAILED' }
       - id: sqlite-baseline-identity
         if: ${{ !inputs.empty_wave && inputs.requires_browser }}
         shell: pwsh
@@ -263,6 +324,8 @@ jobs:
         env:
           SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-transport/${{ inputs.plan_path }}
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
+          SOUNDING_LINE_BROWSER_ENGINE: ${{ inputs.browser_engine }}
+          SOUNDING_LINE_CHROMIUM_SETUP_BROWSERS_PATH: ${{ inputs.browser_engine == 'webkit' && 'sounding-line-browser-cache/chromium' || '' }}
           PLAYWRIGHT_BROWSERS_PATH: sounding-line-browser-cache/${{ inputs.browser_engine }}
         run: |
           $setupStartedAt = [DateTimeOffset]::UtcNow
@@ -270,7 +333,8 @@ jobs:
           $previousThroughput = if (Test-Path -LiteralPath 'sounding-line-worker-throughput.json' -PathType Leaf) {
             Get-Content -Raw 'sounding-line-worker-throughput.json' | ConvertFrom-Json
           } else { $null }
-          & node scripts/sounding-line/worker-preparation.mjs --plan "$env:SOUNDING_LINE_PLAN" --suite "$env:SOUNDING_LINE_SUITE" --out $preparationPath
+          $browserEngineArguments = if ($env:SOUNDING_LINE_BROWSER_ENGINE) { @('--browser-engine', $env:SOUNDING_LINE_BROWSER_ENGINE) } else { @() }
+          & node scripts/sounding-line/worker-preparation.mjs --plan "$env:SOUNDING_LINE_PLAN" --suite "$env:SOUNDING_LINE_SUITE" --out $preparationPath @browserEngineArguments
           if ($LASTEXITCODE -ne 0) { throw "GOVERNED_WORKER_PREPARATION_FAILED" }
           $preparation = Get-Content -Raw $preparationPath | ConvertFrom-Json
           $timings = [ordered]@{ clientGenerateMs = 0; databaseMigrationMs = 0; databaseSeedMs = 0; browserRestoreMs = 0 }
@@ -323,6 +387,9 @@ jobs:
           SOUNDING_LINE_GATE: ${{ inputs.gate }}
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
           SOUNDING_LINE_SUITES_JSON: ${{ inputs.suites_json }}
+          SOUNDING_LINE_BROWSER_TEST_IDS_BY_SUITE_JSON: ${{ inputs.browser_test_ids_by_suite_json }}
+          SOUNDING_LINE_BROWSER_ENGINE: ${{ inputs.browser_engine }}
+          SOUNDING_LINE_CHROMIUM_SETUP_BROWSERS_PATH: ${{ inputs.browser_engine == 'webkit' && 'sounding-line-browser-cache/chromium' || '' }}
           SOUNDING_LINE_SEALED_SOURCE_SHA: ${{ inputs.candidate_sha }}
           SOUNDING_LINE_CERTIFIED_BASELINE: ${{ inputs.requires_browser && '1' || '0' }}
           # Only browser workers restore a certified baseline. Non-browser
@@ -337,7 +404,12 @@ jobs:
           # plan is instead source-bound to the exact frozen candidate identity.
           $env:GITHUB_SHA = $env:SOUNDING_LINE_SEALED_SOURCE_SHA
           $suiteArguments = if ($env:SOUNDING_LINE_SUITES_JSON) { @('--suites-json', $env:SOUNDING_LINE_SUITES_JSON) } else { @('--suite', $env:SOUNDING_LINE_SUITE) }
-          node scripts/sounding-line/authority.mjs "$env:SOUNDING_LINE_GATE" --execute-only --plan-in "$env:SOUNDING_LINE_PLAN" @suiteArguments --receipt-out sounding-line-worker-evidence.json
+          $browserPartitionArguments = @()
+          if ($env:SOUNDING_LINE_BROWSER_TEST_IDS_BY_SUITE_JSON) {
+            $browserPartitionArguments += @('--browser-test-ids-by-suite-json', $env:SOUNDING_LINE_BROWSER_TEST_IDS_BY_SUITE_JSON)
+          }
+          if ($env:SOUNDING_LINE_BROWSER_ENGINE) { $browserPartitionArguments += @('--browser-engine', $env:SOUNDING_LINE_BROWSER_ENGINE) }
+          node scripts/sounding-line/authority.mjs "$env:SOUNDING_LINE_GATE" --execute-only --plan-in "$env:SOUNDING_LINE_PLAN" @suiteArguments @browserPartitionArguments --receipt-out sounding-line-worker-evidence.json
       - name: Bind setup and execution timing to worker evidence
         if: ${{ !inputs.empty_wave && always() }}
         shell: pwsh
@@ -356,7 +428,7 @@ jobs:
       - if: ${{ !inputs.empty_wave && always() }}
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
-          name: "${{ inputs.receipt_artifact || format('sounding-line-worker-evidence-{0}', inputs.suite) }}"
+          name: "${{ inputs.receipt_artifact || format('sounding-line-worker-evidence-{0}-{1}', inputs.suite, inputs.browser_engine) }}"
           path: |
             sounding-line-worker-evidence.json
             sounding-line-worker-throughput.json

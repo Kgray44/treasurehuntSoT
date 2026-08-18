@@ -8,7 +8,13 @@
       "contractIds": ["bridgewatch.mission-control"]
     },
     {
+      "path": "bridgewatch/public/**",
+      "suiteIds": ["unit.bridgewatch", "browser.admiralty", "static.core"],
+      "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
+    },
+    {
       "path": "src/admiralty/bridgewatch-gateway*",
+      "exclusive": true,
       "suiteIds": ["unit.admiralty", "browser.admiralty", "static.core"],
       "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
     },
@@ -39,8 +45,8 @@
     },
     {
       "path": "Development_Docs/Project_Bridgewatch_Homeport_Gateway_*.md",
-      "suiteIds": ["unit.bridgewatch", "unit.admiralty", "static.core"],
-      "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
+      "suiteIds": ["static.core", "validation.documentation"],
+      "contractIds": []
     },
     {
       "path": "scripts/sounding-line/status-projection.mjs",
@@ -48,9 +54,19 @@
       "contractIds": ["bridgewatch.mission-control"]
     },
     {
-      "path": "Development_Docs/Project_Bridgewatch_Phase_2_*.md",
-      "suiteIds": ["unit.bridgewatch", "static.core"],
-      "contractIds": ["bridgewatch.mission-control"]
+      "path": "CHANGELOG.md",
+      "suiteIds": ["static.core", "validation.documentation"],
+      "contractIds": []
+    },
+    {
+      "path": "Development_Docs/INDEX.md",
+      "suiteIds": ["static.core", "validation.documentation"],
+      "contractIds": []
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_*.md",
+      "suiteIds": ["static.core", "validation.documentation"],
+      "contractIds": []
     },
     {
       "path": "Development_Docs/Projects/Project_Helm/**",
@@ -198,7 +214,7 @@
     },
     {
       "path": "Development_Docs/README.md",
-      "suiteIds": ["static.core"],
+      "suiteIds": ["static.core", "validation.documentation"],
       "contractIds": []
     },
     {
@@ -303,7 +319,7 @@
     },
     {
       "path": "Development_Docs/document-index.json",
-      "suiteIds": ["static.core"],
+      "suiteIds": ["static.core", "validation.documentation"],
       "contractIds": []
     },
     {
@@ -4656,6 +4672,57 @@
         "wakebook.archive.partial-history",
         "wakebook.archive.summary-redaction"
       ]
+    },
+    {
+      "path": ".gitignore",
+      "suiteIds": ["static.core"],
+      "contractIds": []
+    },
+    {
+      "path": ".agents/context-workflow.md",
+      "suiteIds": ["unit.agent-context", "static.core"],
+      "contractIds": ["project-trim.minimum-sufficient-context"]
+    },
+    {
+      "path": "AGENTS.md",
+      "suiteIds": ["unit.agent-context", "static.core"],
+      "contractIds": ["project-trim.minimum-sufficient-context"]
+    },
+    {
+      "path": "agent-context-profiles.json",
+      "suiteIds": ["unit.agent-context", "static.core"],
+      "contractIds": ["project-trim.minimum-sufficient-context"]
+    },
+    {
+      "path": "scripts/agent-context/**",
+      "suiteIds": ["unit.agent-context", "static.core"],
+      "contractIds": ["project-trim.minimum-sufficient-context"]
+    },
+    {
+      "path": "tests/agent-context/**",
+      "suiteIds": ["unit.agent-context", "static.core"],
+      "contractIds": ["project-trim.minimum-sufficient-context"]
+    },
+    {
+      "path": "tests/fixtures/agent-context/**",
+      "suiteIds": ["unit.agent-context", "static.core"],
+      "contractIds": ["project-trim.minimum-sufficient-context"]
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/**",
+      "suiteIds": ["static.core", "validation.documentation"],
+      "contractIds": []
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Trim_*.pdf",
+      "suiteIds": ["unit.agent-context", "static.core", "validation.documentation"],
+      "contractIds": ["project-trim.minimum-sufficient-context"]
+    },
+    {
+      "path": "testing/generated/active-test-registry.json",
+      "exclusive": true,
+      "suiteIds": ["unit.sounding-line", "static.core"],
+      "contractIds": []
     }
   ],
   "contractMappings": [
@@ -6485,6 +6552,10 @@
     {
       "contractId": "deepwater.capability-realization-integrity",
       "suiteIds": ["unit.deepwater"]
+    },
+    {
+      "contractId": "project-trim.minimum-sufficient-context",
+      "suiteIds": ["unit.agent-context"]
     },
     {
       "contractId": "public-privacy-projection",

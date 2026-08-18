@@ -52,6 +52,7 @@ yarn-error.log*
 /.forever-dev.json
 /.forever-lock.sha
 /.runtime/
+/.agent-context/
 
 # browser and visual test artifacts
 /test-results/

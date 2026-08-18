@@ -7,6 +7,7 @@
     "node": ">=22.0.0"
   },
   "scripts": {
+    "lifecycle:windows": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/bridgewatch-lifecycle.ps1",
     "dev": "tsx watch lib/server.ts",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/lib/server.js",

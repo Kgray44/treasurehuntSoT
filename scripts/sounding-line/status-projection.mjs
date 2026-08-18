@@ -22,6 +22,58 @@ const readJson = async (file, fallback = null) => {
   }
 };
 const nodeState = (node) => node?.state ?? node?.status ?? "UNKNOWN";
+const text = (value) => (typeof value === "string" && value ? value : null);
+const countMap = (value) =>
+  value && typeof value === "object"
+    ? Object.fromEntries(Object.entries(value).filter(([, count]) => Number.isInteger(count) && count >= 0))
+    : {};
+const trainCars = (plan) => {
+  const cars = Array.isArray(plan?.train?.cars) ? plan.train.cars : Array.isArray(plan?.cars) ? plan.cars : [];
+  return cars
+    .filter((car) => car && typeof car === "object")
+    .map((car, index) => ({
+      id: String(car.carId ?? car.candidateId ?? index),
+      state: text(car.state),
+      candidateSha: text(car.candidateHeadCommitSha ?? car.candidateSha),
+      candidateTreeSha: text(car.candidateHeadTreeSha ?? car.candidateTreeSha),
+      predictedIntegrationTreeSha: text(car.predictedIntegrationTreeSha),
+    }));
+};
+const safeStrings = (value) => (Array.isArray(value) ? value.filter((candidate) => typeof candidate === "string") : []);
+const projectSemanticFallback = (fallback) => {
+  if (!fallback || typeof fallback !== "object" || Array.isArray(fallback)) return null;
+  const reasons = Array.isArray(fallback.reasons)
+    ? fallback.reasons
+        .filter((reason) => reason && typeof reason === "object" && !Array.isArray(reason))
+        .map((reason) => ({
+          ...(typeof reason.code === "string" ? { code: reason.code } : {}),
+          ...(safeStrings(reason.paths).length ? { paths: safeStrings(reason.paths) } : {}),
+          ...(safeStrings(reason.contractIds).length ? { contractIds: safeStrings(reason.contractIds) } : {}),
+          ...(Array.isArray(reason.debts)
+            ? {
+                debts: reason.debts
+                  .filter((entry) => entry && typeof entry === "object" && !Array.isArray(entry))
+                  .map((entry) => ({
+                    ...(typeof entry.contractId === "string" ? { contractId: entry.contractId } : {}),
+                    ...(typeof entry.owner === "string" ? { owner: entry.owner } : {}),
+                    ...(typeof entry.classification === "string" ? { classification: entry.classification } : {}),
+                    ...(typeof entry.risk === "string" ? { risk: entry.risk } : {}),
+                    ...(typeof entry.reason === "string" ? { reason: entry.reason } : {}),
+                  })),
+              }
+            : {}),
+        }))
+    : [];
+  return {
+    ...(typeof fallback.disposition === "string" ? { disposition: fallback.disposition } : {}),
+    ...(typeof fallback.failure === "string" ? { failure: fallback.failure } : {}),
+    reasons,
+  };
+};
+const legacySemanticFallback = (fallback, details) => {
+  if (typeof fallback === "string") return fallback;
+  return typeof details?.failure === "string" ? details.failure : null;
+};
 
 export async function projectStatus(base = runtimeRoot) {
   const leases = await readJson(path.join(base, "broker-leases.json"), { version: 1, leases: [] });
@@ -43,6 +95,7 @@ export async function projectStatus(base = runtimeRoot) {
       readJson(path.join(root, "sounding-line-finalization.json"), null),
     ]);
     if (!marker) continue;
+    const semanticFallbackDetails = projectSemanticFallback(plan?.semanticFallback);
     const nodes = (plan?.nodes ?? []).map((node) => ({
       id: String(node.id ?? node.suiteId ?? "unknown"),
       suiteId: String(node.suiteId ?? node.id ?? "unknown"),
@@ -52,6 +105,9 @@ export async function projectStatus(base = runtimeRoot) {
       completedAt: node.completedAt ?? null,
       attempt: Number.isInteger(node.attempt) ? node.attempt : 1,
       rootFailureId: node.rootFailureId ?? null,
+      wave: Number.isInteger(node?.execution?.wave) ? node.execution.wave : null,
+      evidenceDisposition: text(node.evidenceDisposition),
+      resources: Array.isArray(node.resources) ? node.resources.filter((resource) => typeof resource === "string") : [],
     }));
     plans.push({
       id: marker.runId,
@@ -59,8 +115,23 @@ export async function projectStatus(base = runtimeRoot) {
       gate: plan?.gate ?? plan?.scope ?? "UNKNOWN",
       state: marker.state ?? "UNKNOWN",
       createdAt: marker.createdAt ?? null,
+      authorityVersion: text(plan?.authorityVersion),
+      authorityBoundary: text(plan?.authorityBoundary),
+      authorityMode: text(plan?.authorityMode),
+      qualifiedBaseSha: text(plan?.qualifiedBaseSha),
+      candidateTreeSha: text(plan?.candidateTreeSha),
+      predictedIntegrationTreeSha: text(plan?.predictedIntegrationTreeSha),
+      planDigest: text(plan?.planDigest),
+      trainId: text(plan?.trainId ?? plan?.train?.trainId),
+      trainCars: trainCars(plan),
+      evidenceDispositionCounts: countMap(plan?.evidenceDispositionCounts),
+      finalizerAuthority: text(finalization?.authority),
+      evidenceDigest: text(finalization?.evidenceDigest),
       cleanupState: receipts.some((receipt) => receipt.name.includes("cleanup")) ? "CLEAN" : "UNKNOWN",
       finalDecision: finalization?.decision ?? null,
+      // Keep the v1 scalar contract while exposing additive, structured diagnostics.
+      semanticFallback: legacySemanticFallback(plan?.semanticFallback, semanticFallbackDetails),
+      semanticFallbackDetails,
       nodes,
     });
   }

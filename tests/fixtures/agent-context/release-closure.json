@@ -1,0 +1,9 @@
+{
+  "id": "dogfood-release-closure",
+  "objective": "Prepare a bounded Project Trim release closure candidate.",
+  "taskClass": "release-closure",
+  "executionProfile": "UNATTENDED_CONTINUATION",
+  "paths": ["scripts/agent-context/build-context.mjs"],
+  "priorAcceptedStatusPath": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_1_Design_and_Implementation_Record.md",
+  "completionContract": ["Freeze one candidate and use the current Sounding Line acceptance path."]
+}
