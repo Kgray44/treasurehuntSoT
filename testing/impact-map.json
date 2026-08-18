@@ -4628,6 +4628,35 @@
       ]
     },
     {
+      "path": "Development_Docs/Features/catalog/wakebook.json",
+      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook", "unit.feature-catalog", "static.core"],
+      "contractIds": [
+        "wakebook.detail.historical-provenance",
+        "wakebook.remembrance.owner-integrity",
+        "wakebook.memory-media.private-delivery",
+        "wakebook.keepsake.consent-revocation",
+        "wakebook.detail.accessibility-mobile",
+        "wakebook.detail.cross-project-projection"
+      ]
+    },
+    {
+      "path": "playwright.config.ts",
+      "suiteIds": ["browser.wakebook"],
+      "contractIds": [
+        "wakebook.detail.historical-provenance",
+        "wakebook.remembrance.owner-integrity",
+        "wakebook.memory-media.private-delivery",
+        "wakebook.keepsake.consent-revocation",
+        "wakebook.detail.accessibility-mobile",
+        "wakebook.detail.cross-project-projection"
+      ]
+    },
+    {
+      "path": "scripts/features/feature-catalog.test.ts",
+      "suiteIds": ["unit.feature-catalog"],
+      "contractIds": []
+    },
+    {
       "path": "src/wakebook/**",
       "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"],
       "contractIds": [

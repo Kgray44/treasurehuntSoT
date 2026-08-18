@@ -18,7 +18,7 @@ keyboard, zoom, reduced-motion, and visual evidence. A final authoritative
 Sounding Line decision is prohibited until that frozen candidate is qualified.
 
 On 2026-08-18 reconciliation source
-`c9f899b4cbc40ca9cbcd104991c0477731bf61fa` passed 27 focused Vitest tests
+`5461eb67a4bf10f6cbe7d7bac242884383ebfd17` passed 27 focused Vitest tests
 across eight files, scoped Wakebook TypeScript, targeted ESLint and Prettier,
 policy, documentation, Feature Catalog, and private-content scanning. A broad
 repository TypeScript invocation is independently blocked by missing Bridgewatch
@@ -43,8 +43,8 @@ state, partial legacy history, protected media, historical stability, and a
 foreign account. No real Chronicle or private media is used.
 
 After reconciliation with protected main
-`c568e5aa15df4d8b682e328d97fa1a78b7b5760a`, deterministic registry generation
-passes with 2,412 cases, 57 families, 63 suites, and zero policy errors. The
+`a6c1f441d3628bd828bd7a1c3cd77d419a0701c6`, deterministic registry generation
+passes with 2,419 cases, 57 families, 63 suites, and zero policy errors. The
 preserved legacy evidence remains bounded; it is not a substitute for the
 remaining source-bound hosted browser safety proof.
 
@@ -53,6 +53,8 @@ classification of preserved PR #197 now returns
 `PRODUCT_WITH_VERIFICATION_REGISTRATION`, owner `project-wakebook`, and zero
 errors. Focused hosted dispatch `32153529083` for exact suite
 `browser.wakebook` / project `wakebook-phase2` ended as `startup_failure`
-before a job, worker, browser, or finalizer existed. The next valid hosted path
-is one frozen-source Mainline Decision after candidate records are finalized;
-it must provide the safety-browser receipt and `RELEASE_GO` before merge.
+before a job, worker, browser, or finalizer existed. Authority run `32154971683`
+against the superseded prior candidate/base broadened under `UNKNOWN_IMPACT` and
+is not adopted as browser proof. The next valid hosted path is one
+frozen-source Mainline Decision after candidate records are finalized; it must
+provide the safety-browser receipt and `RELEASE_GO` before merge.

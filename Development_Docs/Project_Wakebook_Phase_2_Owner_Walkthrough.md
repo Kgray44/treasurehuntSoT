@@ -11,8 +11,8 @@ last_reviewed: 2026-08-18
 This walkthrough is prepared for owner review after the frozen Phase 2
 candidate receives its source-bound v1.4 protected authority decision and
 protected integration. The current implementation source
-`c9f899b4cbc40ca9cbcd104991c0477731bf61fa` includes protected main
-`c568e5aa15df4d8b682e328d97fa1a78b7b5760a`, but it is neither product
+`5461eb67a4bf10f6cbe7d7bac242884383ebfd17` includes protected main
+`a6c1f441d3628bd828bd7a1c3cd77d419a0701c6`, but it is neither product
 accepted nor merged.
 
 1. Sign in with the owner account and open **Chronicle Passport**.
@@ -38,6 +38,8 @@ accepted nor merged.
 PR #205 resolved the earlier generic policy-admission defect. The exact focused
 hosted suite is `browser.wakebook` / `wakebook-phase2`; its latest dispatch
 `32153529083` failed at GitHub startup with no job or browser receipt. The
-final frozen candidate therefore still requires one source-bound v1.4 Mainline
-Decision for browser proof and `RELEASE_GO`. This document does not authorize a
-protected merge, owner acceptance, or Phase 3.
+pre-reconciliation authority run `32154971683` expanded under `UNKNOWN_IMPACT`
+and cannot be adopted as a Wakebook browser receipt. The final frozen candidate
+therefore still requires one source-bound v1.4 Mainline Decision for browser
+proof and `RELEASE_GO`. This document does not authorize a protected merge,
+owner acceptance, or Phase 3.

@@ -11,22 +11,20 @@ last_reviewed: 2026-08-18
 | Item                    | Current state                                                                       |
 | ----------------------- | ----------------------------------------------------------------------------------- |
 | Branch                  | `codex/project-wakebook-phase2-bind-the-voyages`                                    |
-| Reconciled main         | `c568e5aa15df4d8b682e328d97fa1a78b7b5760a`                                          |
+| Reconciled main         | `a6c1f441d3628bd828bd7a1c3cd77d419a0701c6`                                          |
 | Worktree                | task-owned local Companion worktree                                                 |
-| Mainline reconciliation | v1.4 authority, Bridgewatch, navigation, and generated control-plane work retained  |
-| Reconciliation source   | `c9f899b4cbc40ca9cbcd104991c0477731bf61fa`                                          |
+| Mainline reconciliation | Project Trim context tooling and generated control-plane work retained              |
+| Reconciliation source   | `5461eb67a4bf10f6cbe7d7bac242884383ebfd17`                                          |
 | Legacy evidence         | Preserved only where exact semantic inputs remain unchanged; direct scope rebounded |
 | Phase state             | `CANDIDATE_QUALIFICATION_IN_PROGRESS`                                               |
 | Protected merge         | Prohibited until frozen-source hosted authority returns `RELEASE_GO`                |
 
-The current-main interval included the accepted generic Sounding Line
-`PRODUCT_WITH_VERIFICATION_REGISTRATION` admission repair (PR #205), automatic
-project-discovery support, browser-fixture support, and generated governance
-updates. It did not modify Wakebook/Wayfarer product source, Phase 2 routes, or
-Prisma schema and migrations. Accepted main won outside Wakebook seams; the
-generated catalog, registry, impact map, and documentation index were rebuilt,
-and Wakebook's Phase 2 contracts and `wakebook-phase2` Chromium mapping were
-retained. No Phase 3 work is included.
+The current-main interval added accepted Project Trim context tooling and its
+generated catalog, registry, and documentation-index updates. It did not modify
+Wakebook/Wayfarer product source, Phase 2 routes, Prisma schema and migrations,
+or the `wakebook-phase2` Chromium mapping. Accepted main won outside Wakebook
+seams; generated control-plane artifacts were regenerated. No Phase 3 work is
+included in this branch.
 
 The exact focused hosted suite is `browser.wakebook`, with the
 `wakebook-phase2` Playwright project. PR #205 resolved the earlier
@@ -38,3 +36,11 @@ ended as GitHub `startup_failure` before it created a job, worker, or browser
 receipt. It is infrastructure evidence only. The remaining source-bound
 browser proof and `RELEASE_GO` must come from one final v1.4 candidate
 Mainline Decision after all pre-authority qualification is frozen.
+
+Authority run `32154971683` was dispatched against the now-superseded
+pre-reconciliation candidate `230ab82b46d663558c9831fcbc48e2af8f50de2b` and
+base `c568e5aa15df4d8b682e328d97fa1a78b7b5760a`. Its plan fell back
+conservatively because `Development_Docs/Features/catalog/wakebook.json`,
+`playwright.config.ts`, and `scripts/features/feature-catalog.test.ts` were
+unmapped, expanding into unrelated suites. It is not a Wakebook browser receipt
+and cannot authorize this reconciled candidate.
