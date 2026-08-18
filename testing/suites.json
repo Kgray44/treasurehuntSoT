@@ -279,6 +279,31 @@
       "adapter": "vitest-family"
     },
     {
+      "id": "unit.agent-context",
+      "name": "Project Trim agent-context bootstrap units",
+      "tier": 1,
+      "owner": "project-trim",
+      "command": "registry-selected Node test files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 30000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": [],
+      "contracts": ["project-trim.minimum-sufficient-context"],
+      "affectedPaths": [
+        ".agents/context-workflow.md",
+        "AGENTS.md",
+        "agent-context-profiles.json",
+        "scripts/agent-context/**",
+        "tests/agent-context/**",
+        "tests/fixtures/agent-context/**"
+      ],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "phase-1-minimum-sufficient-context-bootstrap",
+      "adapter": "vitest-family"
+    },
+    {
       "id": "unit.sounding-line",
       "name": "Sounding Line control-plane units",
       "tier": 1,
@@ -781,6 +806,24 @@
       "releaseGates": ["cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
+    },
+    {
+      "id": "validation.documentation",
+      "name": "Governed documentation validation",
+      "tier": 3,
+      "owner": "platform-foundation",
+      "command": "governed adapter: docs",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 30000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot"],
+      "dependencies": [],
+      "contracts": [],
+      "affectedPaths": ["CHANGELOG.md", "Development_Docs/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "governed-documentation-adapter",
+      "adapter": "docs"
     },
     {
       "id": "validation.powershell",
@@ -2547,20 +2590,16 @@
       "owner": "bridgewatch",
       "command": "registry-selected Vitest files",
       "estimatedDuration": "measured-budget",
-      "expectedDurationMs": 30000,
-      "hardBudgetMs": 180000,
+      "expectedDurationMs": 240000,
+      "hardBudgetMs": 480000,
       "parallelSafe": true,
       "resources": ["node-slot", "vitest-worker-pool"],
       "dependencies": ["unit.sounding-line"],
       "contracts": ["bridgewatch.mission-control"],
-      "affectedPaths": [
-        "bridgewatch/**",
-        "scripts/sounding-line/status-projection.mjs",
-        "Development_Docs/Project_Bridgewatch_Phase_2_*.md"
-      ],
+      "affectedPaths": ["bridgewatch/**", "scripts/sounding-line/status-projection.mjs"],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-2-branch-complete",
-      "adapter": "vitest-family"
+      "adapter": "vitest-family-serial"
     },
     {
       "id": "unit.wakebook",

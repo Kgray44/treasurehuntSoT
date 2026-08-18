@@ -3,6 +3,7 @@
  * It deliberately has no execution, planning, worker, or release-decision API.
  */
 import { createHash } from "node:crypto";
+import { finalizationEvidenceDigest } from "./finalization-evidence.mjs";
 import { isApprovedRecordPath, RECORD_ONLY_EVIDENCE_IDS, RECORD_ONLY_SUITE_ID } from "./record-only-closure.mjs";
 
 export const PROTECTED_MAINLINE_CONTEXT = "Sounding Line / Mainline Decision";
@@ -40,7 +41,11 @@ export function validateFinalizedEvidence({ plan, finalization, qualified }) {
   if (plan?.policyDigest !== qualified.policyDigest) errors.push("QUALIFIED_POLICY_DIGEST_MISMATCH");
   if (plan?.inventoryDigest !== qualified.inventoryDigest) errors.push("QUALIFIED_INVENTORY_DIGEST_MISMATCH");
   if (plan?.authorityDigest !== qualified.authorityDigest) errors.push("QUALIFIED_AUTHORITY_DIGEST_MISMATCH");
-  if (finalization?.evidenceDigest !== digest(finalization?.receipts ?? []))
+  const expectedEvidenceDigest = finalizationEvidenceDigest({
+    authorityVersion: plan?.authorityVersion,
+    finalization,
+  });
+  if (!expectedEvidenceDigest || finalization?.evidenceDigest !== expectedEvidenceDigest)
     errors.push("FINALIZATION_EVIDENCE_DIGEST_MISMATCH");
   if (finalization?.evidenceDigest !== qualified.evidenceDigest) errors.push("QUALIFIED_EVIDENCE_DIGEST_MISMATCH");
   const required = new Set((plan?.nodes ?? []).map((node) => node.id));

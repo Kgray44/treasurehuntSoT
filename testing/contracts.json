@@ -3368,6 +3368,13 @@
       "authority": "project-wakebook",
       "owners": ["project-wakebook", "wayfarer", "tideglass", "sealed-hold"],
       "critical": true
+    },
+    {
+      "id": "project-trim.minimum-sufficient-context",
+      "name": "Project Trim minimum sufficient context and autonomous expansion",
+      "authority": "project-trim",
+      "owners": ["project-trim"],
+      "critical": true
     }
   ]
 }

@@ -3,5 +3,6 @@ dist/
 var/*.sqlite
 var/*.sqlite-shm
 var/*.sqlite-wal
+var/bridgewatch-runtime.json
 coverage/
 .env

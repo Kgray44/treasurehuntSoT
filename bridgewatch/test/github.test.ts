@@ -45,16 +45,33 @@ describe("GitHub normalized collection", () => {
               : path.endsWith("/actions/runs")
                 ? { workflow_runs: [] }
                 : { default_branch: "main", owner: { email: "private-email@example.test" } };
-      return new Response(JSON.stringify(body), { status: 200, headers: { etag: "fixture" } });
+      return new Response(JSON.stringify(body), {
+        status: 200,
+        headers: { etag: "fixture", "x-ratelimit-remaining": "42" },
+      });
     });
     try {
       const snapshot = await new GithubCollector(config, store).refresh();
       expect(snapshot?.pullRequests[0]).toMatchObject({ number: 71, state: "OPEN", checkState: "SUCCESS" });
       expect(snapshot?.branches[0]).toMatchObject({ ahead: 2, behind: 1, compareState: "AVAILABLE" });
+      expect(store.observedPullRequests()).toContainEqual(
+        expect.objectContaining({ number: 71, headRef: "codex/safe" }),
+      );
+      expect(store.observedBranches()).toContainEqual(expect.objectContaining({ name: "codex/safe", ahead: 2 }));
       const cached = JSON.stringify(store.get<unknown>("github:pulls")?.value);
       expect(cached).not.toContain("prompt-shaped");
       expect(cached).not.toContain("private-email");
       expect(cached).not.toContain("private log");
+      expect(store.sourceObservations()).toContainEqual(
+        expect.objectContaining({
+          name: "github",
+          state: "HEALTHY",
+          configured: false,
+          reachable: true,
+          authenticationState: "ANONYMOUS",
+          rateLimitRemaining: 42,
+        }),
+      );
     } finally {
       store.close();
     }

@@ -8,6 +8,7 @@ import { promisify } from "node:util";
 import {
   batchPhysicalWorkers,
   canBatchPhysicalWorker,
+  validatePhysicalWorkerMatrix,
 } from "../../../scripts/sounding-line/v14/physical-worker-batching.mjs";
 
 const exec = promisify(execFile);
@@ -16,6 +17,20 @@ const node = (id, adapter = "vitest-family", resources = ["node-slot"]) => ({
   id,
   adapter,
   resources,
+  execution: { mode: "parallel", wave: 0 },
+});
+
+const browserNode = (id, browserPartitions) => ({
+  id,
+  adapter: "playwright-family",
+  resources: [
+    "application-port",
+    "sqlite-clone",
+    "trace-root",
+    ...browserPartitions.map(({ browserEngine }) => `browser-${browserEngine}`),
+  ],
+  testIds: browserPartitions.flatMap(({ testIds }) => testIds),
+  browserPartitions,
   execution: { mode: "parallel", wave: 0 },
 });
 
@@ -29,9 +44,74 @@ test("pure Node obligations share one physical worker but preserve logical recei
 test("database, browser, and exclusive work never batch", () => {
   const browser = node("browser.access", "playwright-family", ["application-port", "sqlite-clone", "browser-chromium"]);
   const exclusive = { ...node("external"), execution: { mode: "exclusive" } };
+  const serialVitest = node("unit.bridgewatch", "vitest-family-serial", ["node-slot", "vitest-worker-pool"]);
   assert.equal(canBatchPhysicalWorker(browser), false);
   assert.equal(canBatchPhysicalWorker(exclusive), false);
+  assert.equal(canBatchPhysicalWorker(serialVitest), false);
   assert.equal(batchPhysicalWorkers([node("unit.a"), browser, exclusive]).length, 3);
+});
+
+test("Chromium-only and WebKit-only browser obligations retain one compatible physical batch", () => {
+  const chromium = browserNode("browser.chromium", [{ browserEngine: "chromium", testIds: ["case-c"] }]);
+  const webkit = browserNode("browser.webkit", [{ browserEngine: "webkit", testIds: ["case-w"] }]);
+  const chromiumBatch = batchPhysicalWorkers([chromium], { wave: 0, mode: "parallel" });
+  const webkitBatch = batchPhysicalWorkers([webkit], { wave: 0, mode: "parallel" });
+  assert.equal(chromiumBatch.length, 1);
+  assert.equal(chromiumBatch[0].browserEngine, "chromium");
+  assert.equal(webkitBatch.length, 1);
+  assert.equal(webkitBatch[0].browserEngine, "webkit");
+});
+
+test("mixed Chromium and WebKit logical work partitions exact selected browser cases without changing logical suite identities", () => {
+  const mixed = browserNode("browser.mixed", [
+    { browserEngine: "chromium", testIds: ["case-c1", "case-c2"] },
+    { browserEngine: "webkit", testIds: ["case-w1"] },
+  ]);
+  const batches = batchPhysicalWorkers([mixed], { wave: 0, mode: "parallel" });
+  assert.equal(batches.length, 2);
+  assert.deepEqual(
+    batches.map((batch) => batch.browserEngine),
+    ["chromium", "webkit"],
+  );
+  assert.deepEqual(
+    batches.map((batch) => batch.suiteIds),
+    [["browser.mixed"], ["browser.mixed"]],
+  );
+  assert.deepEqual(
+    batches.map((batch) => JSON.parse(batch.browserTestIdsBySuiteJson)),
+    [{ "browser.mixed": ["case-c1", "case-c2"] }, { "browser.mixed": ["case-w1"] }],
+  );
+  assert.ok(batches.every((batch) => batch && batch.emptyWave === false));
+});
+
+test("physical batching fails closed for unknown, incomplete, duplicate, or mixed browser partition declarations", () => {
+  const unknown = browserNode("browser.unknown", [{ browserEngine: "firefox", testIds: ["case-f"] }]);
+  const incomplete = {
+    ...browserNode("browser.incomplete", [{ browserEngine: "chromium", testIds: ["case-c"] }]),
+    testIds: ["case-c", "case-w"],
+  };
+  const duplicate = browserNode("browser.duplicate", [
+    { browserEngine: "chromium", testIds: ["case-c"] },
+    { browserEngine: "webkit", testIds: ["case-c"] },
+  ]);
+  const mixed = {
+    ...browserNode("browser.mixed-declaration", [{ browserEngine: "chromium", testIds: ["case-c"] }]),
+    resources: ["application-port", "sqlite-clone", "trace-root", "browser-chromium", "browser-webkit"],
+  };
+  for (const invalid of [unknown, incomplete, duplicate, mixed])
+    assert.throws(() => batchPhysicalWorkers([invalid]), /PHYSICAL_BATCH_BROWSER_PARTITION_INVALID/u);
+});
+
+test("matrix validation accepts valid partitioned work, rejects null, and leaves an actually empty lane for the explicit marker contract", () => {
+  const valid = {
+    include: batchPhysicalWorkers(
+      [browserNode("browser.partitioned", [{ browserEngine: "chromium", testIds: ["case-c"] }])],
+      { wave: 0, mode: "parallel" },
+    ),
+  };
+  assert.deepEqual(validatePhysicalWorkerMatrix(valid).include, valid.include);
+  assert.throws(() => validatePhysicalWorkerMatrix({ include: [null] }), /PHYSICAL_BATCH_MATRIX_INVALID/u);
+  assert.deepEqual(validatePhysicalWorkerMatrix({ include: [] }).include, []);
 });
 
 test("CLI creates a deterministic sealed-plan matrix without admitting undeclared work", async () => {
@@ -64,4 +144,16 @@ test("ordinary and train workers receive the preserved JSON-array contract inste
   assert.match(worker, /SOUNDING_LINE_SUITES_JSON: \$\{\{ inputs\.suites_json \}\}/u);
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_BATCH_BOUNDARY_INVALID/u);
   assert.doesNotMatch(worker, /\$receipts\.Count -ne 1/u);
+});
+
+test("normal-authority matrix construction and Wave 0 barrier fail closed on malformed physical entries while preserving empty-wave markers", async () => {
+  const workflow = await readFile(".github/workflows/sounding-line-authoritative.yml", "utf8");
+  assert.match(workflow, /PHYSICAL_BATCH_MATRIX_INVALID/u);
+  assert.match(workflow, /SOUNDING_LINE_WAVE_MATRIX_INVALID/u);
+  assert.match(workflow, /\$LASTEXITCODE -ne 0/u);
+  assert.match(workflow, /throw \("PHYSICAL_BATCH_MATRIX_INVALID:\{0\}:\{1\}" -f \$mode, \$wave\)/u);
+  assert.doesNotMatch(workflow, /PHYSICAL_BATCH_MATRIX_INVALID:\$mode:/u);
+  assert.match(workflow, /browser_test_ids_by_suite_json: \$\{\{ matrix\.browserTestIdsBySuiteJson \}\}/u);
+  assert.match(workflow, /suiteId = '__SOUNDING_LINE_EMPTY_WAVE__'/u);
+  assert.doesNotMatch(workflow, /\{"include":\[null\]\}/u);
 });
