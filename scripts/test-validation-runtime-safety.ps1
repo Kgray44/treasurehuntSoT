@@ -50,6 +50,26 @@ try {
     $sibling = Join-Path $testParent "sibling-sentinel"
     New-Item -ItemType Directory -Path $sibling | Out-Null
     Set-Content -LiteralPath (Join-Path $sibling "must-survive.txt") -Value "safe" -Encoding ASCII
+    $artifacts = Join-Path $runtime "artifacts"
+    New-Item -ItemType Directory -Path $artifacts | Out-Null
+    Set-Content -LiteralPath (Join-Path $artifacts "must-survive.txt") -Value "evidence" -Encoding ASCII
+    foreach ($transientName in @("node_modules", ".next", ".next-admiralty-phase2")) {
+        $transient = Join-Path $runtime $transientName
+        New-Item -ItemType Directory -Path $transient | Out-Null
+        Set-Content -LiteralPath (Join-Path $transient "regenerable.txt") -Value "safe-to-regenerate" -Encoding ASCII
+    }
+    Clear-ForeverValidationRuntimeTransientState -RuntimeRoot $runtime
+    foreach ($transientName in @("node_modules", ".next", ".next-admiralty-phase2")) {
+        if (Test-Path -LiteralPath (Join-Path $runtime $transientName)) {
+            throw "Owned transient runtime state survived cleanup: $transientName"
+        }
+    }
+    if (-not (Test-Path -LiteralPath (Join-Path $runtime ".forever-validation-run.json"))) {
+        throw "Transient cleanup removed the ownership marker."
+    }
+    if (-not (Test-Path -LiteralPath (Join-Path $artifacts "must-survive.txt"))) {
+        throw "Transient cleanup removed durable validation evidence."
+    }
     Clear-ForeverValidationRuntime -RuntimeRoot $runtime
     if (Test-Path -LiteralPath $runtime) { throw "Owned runtime survived cleanup." }
     if (-not (Test-Path -LiteralPath (Join-Path $sibling "must-survive.txt"))) {

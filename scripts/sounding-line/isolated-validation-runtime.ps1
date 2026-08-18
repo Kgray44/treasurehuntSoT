@@ -1073,6 +1073,13 @@ try {
             }
         }
     }
+    if ($runtimeRoot -and $finalizationFailures.Count -eq 0) {
+        try {
+            Clear-ForeverValidationRuntimeTransientState -RuntimeRoot $runtimeRoot
+        } catch {
+            $finalizationFailures += "Validation transient cleanup failed: $($_.Exception.Message)"
+        }
+    }
 }
 
 if ($validationFailure -and $finalizationFailures.Count -gt 0) {
