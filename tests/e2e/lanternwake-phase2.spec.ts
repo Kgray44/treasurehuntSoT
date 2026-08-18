@@ -229,13 +229,17 @@ async function horizontalOverflow(page: Page) {
   return page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
 }
 
-async function signInQuartermaster(page: Page) {
-  expect(process.env.GM_USERNAME, "GM_USERNAME is required for the isolated Quartermaster fixture.").toBeTruthy();
-  expect(process.env.GM_PASSWORD, "GM_PASSWORD is required for the isolated Quartermaster fixture.").toBeTruthy();
+async function enterCaptainWorkspace(page: Page) {
+  expect(process.env.GM_USERNAME, "GM_USERNAME is required for the isolated Captain fixture.").toBeTruthy();
+  expect(process.env.GM_PASSWORD, "GM_PASSWORD is required for the isolated Captain fixture.").toBeTruthy();
   await page.goto("/captain/sign-in");
-  await page.getByLabel("Username").fill(process.env.GM_USERNAME!);
-  await page.getByLabel("Password").fill(process.env.GM_PASSWORD!);
-  await page.getByRole("button", { name: "Enter Captain's Console" }).click();
+  await expect(page.getByRole("heading", { name: "Open the Captain's Console" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Continue to account sign-in" })).toBeVisible();
+  const login = await page.request.post("/api/gm/login", {
+    data: { username: process.env.GM_USERNAME, password: process.env.GM_PASSWORD },
+  });
+  expect(login.status(), await login.text()).toBe(200);
+  await page.goto("/captain/library");
   await expect(page).toHaveURL(/\/captain\/library(?:\?.*)?$/u);
   await expect(page.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible({ timeout: 20_000 });
 }
@@ -487,7 +491,7 @@ test.describe("Project Lanternwake Phase 2 StPageFlip boundary", () => {
 
     if (browserName === "chromium") {
       await requireValidationIsolation(page);
-      await signInQuartermaster(page);
+      await enterCaptainWorkspace(page);
       await page.addInitScript(() => localStorage.setItem("forever-motion", "full"));
       await openDefaultPlayerJournal(page, { skipOpening: false });
       const book = page.locator(".main-journal-book");
@@ -647,42 +651,25 @@ test.describe("Project Lanternwake Phase 2 showcase tombstones", () => {
 });
 
 test.describe("Project Lanternwake Phase 2 Captain's Console boundaries", () => {
-  test("login is aria-busy, single-flight, and returns focus after a failed key", async ({ page, browserName }) => {
+  test("Captain account entry retains a single canonical sign-in path without a second staff credential form", async ({
+    page,
+    browserName,
+  }) => {
     test.skip(
       browserName !== "chromium",
       "The authentication request runs once in Chromium after isolated-database identity proof.",
     );
     await requireValidationIsolation(page);
-    let releaseLogin!: () => void;
-    const loginGate = new Promise<void>((resolve) => {
-      releaseLogin = resolve;
-    });
-    let loginRequests = 0;
-    await page.route("**/api/gm/login", async (route) => {
-      loginRequests += 1;
-      await loginGate;
-      await route.continue();
-    });
-
     await page.goto("/captain/sign-in");
-    const form = page.locator("form");
-    await page.getByLabel("Username").fill(`invalid-${crypto.randomUUID().slice(0, 8)}`);
-    await page.getByLabel("Password").fill(`invalid-${crypto.randomUUID()}`);
-    const started = page.waitForRequest(
-      (request) => new URL(request.url()).pathname === "/api/gm/login" && request.method() === "POST",
-    );
-    await page.getByRole("button", { name: "Enter Captain's Console" }).click();
-    await started;
-    await expect(form).toHaveAttribute("aria-busy", "true");
-    await expect(page.getByRole("button", { name: /Checking the ledger/ })).toBeDisabled();
-    await form.dispatchEvent("submit");
-    await expect.poll(() => loginRequests).toBe(1);
-    releaseLogin();
-
-    await expect(page.getByRole("alert")).toBeVisible();
-    await expect(form).toHaveAttribute("aria-busy", "false");
-    await expect(page.getByLabel("Username")).toBeFocused();
-    expect(loginRequests).toBe(1);
+    const accountEntry = page.getByRole("link", { name: "Continue to account sign-in" });
+    await expect(page.getByRole("heading", { name: "Open the Captain's Console" })).toBeVisible();
+    await expect(accountEntry).toHaveAttribute("href", "/sign-in?returnTo=%2Fcaptain%2Flibrary");
+    await expect(page.getByLabel("Username")).toHaveCount(0);
+    await expect(page.getByLabel("Password")).toHaveCount(0);
+    await accountEntry.focus();
+    await expect(accountEntry).toBeFocused();
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("link", { name: "Create Account" })).toBeFocused();
   });
 
   test("Voyage creation is modal, keeps focus inside its canonical flow, and restores its exact trigger", async ({
@@ -698,7 +685,7 @@ test.describe("Project Lanternwake Phase 2 Captain's Console boundaries", () => 
       "The isolated Captain credentials are required for portal coverage.",
     );
     await requireValidationIsolation(page);
-    await signInQuartermaster(page);
+    await enterCaptainWorkspace(page);
     const trigger = page.getByRole("button", { name: "Create a Voyage" }).first();
     await trigger.click();
     const dialog = page.getByRole("dialog");
@@ -721,7 +708,7 @@ test.describe("Project Lanternwake Phase 2 Captain's Console boundaries", () => 
   test("a committed Voyage creation restores focus to its exact Captain's Console trigger", async ({ page }) => {
     test.setTimeout(90_000);
     await requireValidationIsolation(page);
-    await signInQuartermaster(page);
+    await enterCaptainWorkspace(page);
     const trigger = page.getByRole("button", { name: "Create a Voyage" }).first();
     await trigger.click();
     const dialog = page.getByRole("dialog");
@@ -810,16 +797,17 @@ test.describe("Project Lanternwake Phase 2 required viewports", () => {
       await expect(page.getByRole("button", { name: "Play selected scene" })).toBeFocused();
 
       await page.goto("/captain/sign-in");
-      await expect(page.getByRole("heading", { name: "Enter Captain's Console" })).toBeVisible();
-      await expect(page.getByLabel("Username")).toBeVisible();
-      await expect(page.getByLabel("Password")).toBeVisible();
-      await expect(page.getByRole("button", { name: "Enter Captain's Console" })).toBeVisible();
-      expect(await horizontalOverflow(page), `${viewport.label} Quartermaster overflow`).toBeLessThanOrEqual(1);
-      await page.getByLabel("Username").focus();
-      await page.keyboard.press("Tab");
-      await expect(page.getByLabel("Password")).toBeFocused();
-      await page.keyboard.press("Tab");
-      await expect(page.getByRole("button", { name: "Enter Captain's Console" })).toBeFocused();
+      const accountEntry = page.getByRole("link", { name: "Continue to account sign-in" });
+      await expect(page.getByRole("heading", { name: "Open the Captain's Console" })).toBeVisible();
+      await expect(accountEntry).toBeVisible();
+      await expect(page.getByLabel("Username")).toHaveCount(0);
+      expect(await horizontalOverflow(page), `${viewport.label} Captain account entry overflow`).toBeLessThanOrEqual(1);
+      await accountEntry.focus();
+      await expect(accountEntry).toBeFocused();
+      const createAccount = page.getByRole("link", { name: "Create Account" });
+      await expect(createAccount).toHaveAttribute("href", "/register");
+      await createAccount.focus();
+      await expect(createAccount).toBeFocused();
     });
   }
 });
