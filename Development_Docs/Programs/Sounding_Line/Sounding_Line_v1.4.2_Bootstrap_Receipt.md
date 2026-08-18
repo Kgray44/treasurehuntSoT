@@ -45,3 +45,14 @@ The source-bound trusted-main registry resolves one `project-shipwright` descrip
 - Disposition: the single task-authorized owner bootstrap exception was consumed for that exact frozen candidate only. It did not issue `RELEASE_GO`, modify PR #194, or authorize product behavior.
 
 Future authority-maintenance changes must use the now-protected workflow-dispatch lane and sealed protected binding. This receipt update is the bounded post-merge synthetic lane candidate; its workflow-dispatch and protected binding outcomes are recorded in its PR before any merge.
+
+## Self-hosting recovery and normal-path proof
+
+- Authorized recovery PR: #223, merged at 2026-08-18T18:30:28Z.
+- Recovery base: `ef919af44b143d07a3584723a2dc52318a4fd09e`.
+- Recovery candidate: `81a916da5ada9090f6ff147a7abf1a8300786654`, tree `2f2e7544d396caf7c1d7b17bffd6695473e79936`.
+- Recovery landed main: `55ca32203481be51c23ff7b477263ff58b32bb47`, tree `2f2e7544d396caf7c1d7b17bffd6695473e79936`; the qualified and landed trees are equal.
+- Rationale: the trusted workflow copies its classifier under a temporary filename. The recovery makes CLI execution filename-independent and adds a renamed-copy regression, while registry discovery deterministically prepares Prisma after a fresh install.
+- Exception disposition: the separately owner-authorized #223 recovery exception was consumed for that exact base and candidate only. It did not issue `RELEASE_GO`, change product behavior, or authorize any future override.
+
+This receipt-only change is the required tiny synthetic authority-maintenance candidate. It must obtain a real sealed plan, evidence set, finalization artifact, and protected `Sounding Line / Mainline Decision`, then merge through the normal protected path with no override.
