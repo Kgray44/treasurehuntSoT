@@ -250,10 +250,12 @@ test("ordinary V14_CANDIDATE planning uses the impact-selected v1.4 mainline pat
     qualifiedBaseSha,
     authorityMode: "V14_CANDIDATE",
     githubRef: "refs/heads/main",
+    candidateRef: "refs/heads/codex/sounding-line-v14-bridgewatch-candidate-observation",
   });
   assert.equal(plan.version, 14);
   assert.equal(plan.authorityMode, "V14_CANDIDATE");
   assert.equal(plan.authorityBoundary, "V14_CANDIDATE_QUALIFICATION");
+  assert.equal(plan.candidateRef, "refs/heads/codex/sounding-line-v14-bridgewatch-candidate-observation");
   assert.equal(plan.sourceSha, sourceSha);
   assert.equal(plan.qualifiedBaseSha, qualifiedBaseSha);
   assert.match(plan.candidateTreeSha, /^[0-9a-f]{40}$/u);
@@ -541,6 +543,12 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
   );
   assert.match(authoritative, /qualifiedBaseSha:process\.env\.SOUNDING_LINE_BASE_SHA/u);
   assert.match(authoritative, /authorityMode:process\.env\.SOUNDING_LINE_AUTHORITY_MODE/u);
+  assert.match(authoritative, /candidateRef:process\.env\.SOUNDING_LINE_CANDIDATE_REF/u);
+  assert.equal(
+    (authoritative.match(/candidate_ref: \$\{\{ inputs\.candidate_ref \}\}/gu) ?? []).length,
+    12,
+    "every parallel and exclusive reusable worker receives the direct sealed candidate ref",
+  );
   const planner = await readFile(path.join(root, "scripts", "sounding-line", "planner.mjs"), "utf8");
   assert.match(planner, /V14_CURRENT_AUTHORITY_REQUIRES_PROTECTED_MAIN/u);
   assert.match(planner, /V14_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED/u);
@@ -588,6 +596,7 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
   assert.match(authority, /FOREVER_DEPENDENCY_SEED_ROOT: root/u);
   assert.match(authority, /SOUNDING_LINE_SUITE_HARD_BUDGET_MS: String\(suite\.hardBudgetMs\)/u);
   const common = await readFile(path.join(root, "scripts", "dev-common.ps1"), "utf8");
+  assert.match(common, /\.forever-validation-events\.jsonl/u);
   assert.match(common, /function Copy-ForeverDependencySeed/u);
   assert.match(common, /robocopy \$seedModules \$runtimeModules \/E \/XJ \/COPY:DAT/u);
   assert.match(common, /dir \/a:l \/s \/b/u);
@@ -608,6 +617,20 @@ test("concurrent Harborlight lanes may share only their validation-run parent", 
   const common = await readFile(path.join(root, "scripts", "dev-common.ps1"), "utf8");
   assert.match(common, /New-Item -ItemType Directory -Path \$resolvedParent -Force -ErrorAction Stop/u);
   assert.match(common, /Validation runtime destination already exists and is not owned by this new run/u);
+});
+
+test("validation runtime restores only declared product document dependencies", async () => {
+  const common = await readFile(path.join(root, "scripts", "dev-common.ps1"), "utf8");
+  assert.match(common, /Development_Docs"\),\s*\(Join-Path \$script:ProjectRoot "Codex_Chats"\)/u);
+  assert.match(common, /\$runtimeDocumentDependencies = @\(/u);
+  assert.match(common, /Project_Admiralty_Phase_1_Capability_Registry\.json/u);
+  assert.match(common, /Project_Admiralty_Phase_2_Capability_Activation_Registry\.json/u);
+  assert.match(common, /Project_Admiralty_Phase_2_Role_Capability_Registry\.json/u);
+  assert.match(common, /Project_Homeport_Phase_4_District_Registry\.json/u);
+  assert.match(common, /Project_Tideglass_Phase_2_Change_Code_Registry\.json/u);
+  assert.match(common, /Project_Tideglass_Phase_2_Projection_Policy\.json/u);
+  assert.match(common, /Required validation runtime document dependency is missing: \$relativePath/u);
+  assert.match(common, /Copy-Item -LiteralPath \$source -Destination \$destination -Force -ErrorAction Stop/u);
 });
 
 test("governed workers consume the sealed plan and fail closed on missing receipts", async () => {
@@ -637,6 +660,15 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   assert.match(worker, /execution_sha:[\s\S]*?sealed predicted integration commit/u);
   assert.match(worker, /GOVERNED_INTEGRATION_BUNDLE_FETCH_FAILED/u);
   assert.match(worker, /GOVERNED_WORKER_EXECUTION_CHECKOUT_MISMATCH/u);
+  assert.match(worker, /candidate_ref:[\s\S]*?Exact sealed local candidate branch ref/u);
+  assert.match(worker, /SOUNDING_LINE_CANDIDATE_REF: \$\{\{ inputs\.candidate_ref \}\}/u);
+  assert.match(worker, /GOVERNED_WORKER_CANDIDATE_REF_INVALID/u);
+  assert.match(worker, /GOVERNED_WORKER_CANDIDATE_REF_UNEXPECTED/u);
+  assert.match(worker, /GOVERNED_WORKER_CANDIDATE_REF_PLAN_MISMATCH/u);
+  assert.match(worker, /GOVERNED_WORKER_PLAN_SOURCE_SHA_MISMATCH/u);
+  assert.match(worker, /git update-ref --no-deref \$candidateRef \$env:SOUNDING_LINE_CANDIDATE_SHA/u);
+  assert.match(worker, /GOVERNED_WORKER_CANDIDATE_REF_MATERIALIZATION_MISMATCH/u);
+  assert.doesNotMatch(worker, /git fetch[^\r\n]*\$candidateRef/u);
   assert.match(worker, /SOUNDING_LINE_SEALED_SOURCE_SHA: \$\{\{ inputs\.candidate_sha \}\}/u);
   assert.match(worker, /\$env:GITHUB_SHA = \$env:SOUNDING_LINE_SEALED_SOURCE_SHA/u);
   const trainWorkflow = await readFile(

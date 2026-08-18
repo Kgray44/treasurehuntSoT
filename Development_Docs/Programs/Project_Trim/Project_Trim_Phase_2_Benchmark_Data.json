@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "1.0",
+  "program": "PROJECT_TRIM_PHASE_2",
+  "benchmark": "PACK_THE_CHART_STARTUP",
+  "runDate": "2026-08-18",
+  "baseSha": "d0c41961e106fcc05eafdc5988de2a59c285fe15",
+  "currentMainSha": "c1d368285062ea6264a7146fd6c35a97fd3de291",
+  "method": {
+    "runner": "scripts/agent-context/benchmark-phase2.mjs",
+    "comparison": "accepted Phase 1 legacy builder versus Phase 2 builder using identical task contracts",
+    "evidence": {
+      "bytes": "EXACT",
+      "filePointers": "EXACT",
+      "authoritySections": "EXACT",
+      "warmGenerationTime": "EXACT_PROCESS_TIMER",
+      "markdownTokens": "COARSE_ESTIMATE_BYTES_DIVIDED_BY_FOUR",
+      "structuralDiscoveryReduction": "DIRECT_PROXY_FROM_MISSING_OR_PRESENT_PACKET_CONTRACTS",
+      "wholeProjectSearchesAvoided": "UNAVAILABLE_WITHOUT_COMPARABLE_LIVE_TASK_REPLAY",
+      "totalTaskTokenSavings": "UNAVAILABLE_WITHOUT_COMPARABLE_END_TO_END_TASKS"
+    }
+  },
+  "results": [
+    {
+      "id": "phase2-benchmark-focused-repair",
+      "taskClass": "bug-repair",
+      "legacy": {
+        "jsonBytes": 5318,
+        "markdownBytes": 955,
+        "markdownTokenEstimate": 239,
+        "initialSourcePointers": 2,
+        "authoritySections": 0,
+        "discoveryGaps": 5,
+        "warmGenerationMedianMs": 6.37
+      },
+      "phase2": {
+        "jsonBytes": 52068,
+        "markdownBytes": 3110,
+        "markdownTokenEstimate": 778,
+        "initialSourcePointers": 2,
+        "authoritySections": 20,
+        "targetedExpansions": 1,
+        "warmGenerationMedianMs": 3667.17,
+        "confidence": "BOUNDED"
+      },
+      "structuralDiscoveryReduction": 4,
+      "structuralDiscoveryReductionQuality": "DIRECT_PROXY"
+    },
+    {
+      "id": "phase2-benchmark-product",
+      "taskClass": "product-phase",
+      "legacy": {
+        "jsonBytes": 7391,
+        "markdownBytes": 858,
+        "markdownTokenEstimate": 215,
+        "initialSourcePointers": 2,
+        "authoritySections": 0,
+        "discoveryGaps": 5,
+        "warmGenerationMedianMs": 6.6
+      },
+      "phase2": {
+        "jsonBytes": 68012,
+        "markdownBytes": 2952,
+        "markdownTokenEstimate": 738,
+        "initialSourcePointers": 2,
+        "authoritySections": 20,
+        "targetedExpansions": 1,
+        "warmGenerationMedianMs": 3470.43,
+        "confidence": "BOUNDED"
+      },
+      "structuralDiscoveryReduction": 4,
+      "structuralDiscoveryReductionQuality": "DIRECT_PROXY"
+    },
+    {
+      "id": "phase2-benchmark-infrastructure",
+      "taskClass": "infrastructure",
+      "legacy": {
+        "jsonBytes": 5117,
+        "markdownBytes": 1071,
+        "markdownTokenEstimate": 268,
+        "initialSourcePointers": 2,
+        "authoritySections": 0,
+        "discoveryGaps": 5,
+        "warmGenerationMedianMs": 6.04
+      },
+      "phase2": {
+        "jsonBytes": 61888,
+        "markdownBytes": 3789,
+        "markdownTokenEstimate": 948,
+        "initialSourcePointers": 2,
+        "authoritySections": 20,
+        "targetedExpansions": 2,
+        "warmGenerationMedianMs": 3207.21,
+        "confidence": "UNKNOWN"
+      },
+      "structuralDiscoveryReduction": 3,
+      "structuralDiscoveryReductionQuality": "DIRECT_PROXY"
+    },
+    {
+      "id": "phase2-benchmark-closure",
+      "taskClass": "release-closure",
+      "legacy": {
+        "jsonBytes": 4679,
+        "markdownBytes": 913,
+        "markdownTokenEstimate": 229,
+        "initialSourcePointers": 1,
+        "authoritySections": 0,
+        "discoveryGaps": 5,
+        "warmGenerationMedianMs": 4.56
+      },
+      "phase2": {
+        "jsonBytes": 52207,
+        "markdownBytes": 3323,
+        "markdownTokenEstimate": 831,
+        "initialSourcePointers": 1,
+        "authoritySections": 20,
+        "targetedExpansions": 1,
+        "warmGenerationMedianMs": 2956.23,
+        "confidence": "BOUNDED"
+      },
+      "structuralDiscoveryReduction": 4,
+      "structuralDiscoveryReductionQuality": "DIRECT_PROXY"
+    }
+  ],
+  "summary": {
+    "phase2MarkdownBytesRange": [2952, 3789],
+    "phase2MarkdownTokenEstimateRange": [738, 948],
+    "structuralDiscoveryReductionRange": [3, 4],
+    "legacyDiscoveryGapCount": 5,
+    "initialReadPointerDelta": 0,
+    "wholeProjectSearchesAvoided": "UNAVAILABLE",
+    "totalTaskTokenSavings": "UNAVAILABLE"
+  },
+  "limitations": [
+    "This is a startup-structure benchmark, not an end-to-end task-token benchmark.",
+    "Markdown token counts are coarse byte-based estimates, not official OpenAI token accounting.",
+    "Structural discovery reduction counts explicit missing packet closures; it does not claim every gap would require a whole-repository search.",
+    "Warm generator time excludes the first Git/source snapshot and agent reading/reasoning time."
+  ]
+}

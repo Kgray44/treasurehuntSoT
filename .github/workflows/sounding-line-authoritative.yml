@@ -163,16 +163,21 @@ jobs:
           SOUNDING_LINE_BASE_SHA: ${{ steps.base.outputs.value }}
         run: |
           git show "$env:SOUNDING_LINE_BASE_SHA`:testing/verification-maintenance-policy.json" > trusted-maintenance-policy.json
-          $policy = Get-Content -Raw trusted-maintenance-policy.json | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_ORDINARY_CANDIDATE_TRUSTED_POLICY_UNAVAILABLE' }
+          git show "$env:SOUNDING_LINE_BASE_SHA`:scripts/sounding-line/verification-maintenance.mjs" > trusted-verification-maintenance.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_ORDINARY_CANDIDATE_TRUSTED_CLASSIFIER_UNAVAILABLE' }
           $changed = @(git diff --name-only --no-renames --no-ext-diff $env:SOUNDING_LINE_BASE_SHA $env:SOUNDING_LINE_CANDIDATE_SHA | Sort-Object)
-          function Test-TrustedGlob([string]$file, [string]$glob) {
-            $pattern = '^' + [regex]::Escape($glob).Replace('\*\*', '.*').Replace('\*', '[^/]*') + '$'
-            return $file -match $pattern
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_ORDINARY_CANDIDATE_CHANGED_PATHS_UNAVAILABLE' }
+          ConvertTo-Json -InputObject $changed -Compress | Set-Content -NoNewline ordinary-candidate-changed-paths.json
+          node trusted-verification-maintenance.mjs ordinary --policy trusted-maintenance-policy.json --paths ordinary-candidate-changed-paths.json --out ordinary-candidate-classification.json
+          if ($LASTEXITCODE -ne 0) {
+            $classification = Get-Content -Raw ordinary-candidate-classification.json | ConvertFrom-Json
+            $authority = @($classification.errors | Where-Object { $_ -match '^ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED:' })
+            if ($authority.Count -gt 0) { throw "SOUNDING_LINE_ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED:$($authority -join ',')" }
+            $unknown = @($classification.errors | Where-Object { $_ -match '^ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:' })
+            if ($unknown.Count -gt 0) { throw "SOUNDING_LINE_ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:$($unknown -join ',')" }
+            throw "SOUNDING_LINE_ORDINARY_CANDIDATE_REJECTED:$($classification.errors -join ',')"
           }
-          $authority = @($changed | Where-Object { $file = $_; @($policy.authorityChangePathGlobs | Where-Object { Test-TrustedGlob $file $_ }).Count -gt 0 })
-          $unknown = @($changed | Where-Object { $file = $_; @($policy.ordinaryCandidateEligiblePathGlobs | Where-Object { Test-TrustedGlob $file $_ }).Count -eq 0 })
-          if ($authority.Count -gt 0) { throw "SOUNDING_LINE_ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED:$($authority -join ',')" }
-          if ($unknown.Count -gt 0) { throw "SOUNDING_LINE_ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:$($unknown -join ',')" }
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc }
       - id: dependency-identity
@@ -226,7 +231,8 @@ jobs:
           SOUNDING_LINE_BASE_SHA: ${{ steps.base.outputs.value }}
           SOUNDING_LINE_AUTHORITY_MODE: ${{ steps.gate.outputs.authorityMode }}
           SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
-        run: node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:process.env.SOUNDING_LINE_GATE,serial:false,sourceSha:process.env.SOUNDING_LINE_CANDIDATE_SHA,qualifiedBaseSha:process.env.SOUNDING_LINE_BASE_SHA,authorityMode:process.env.SOUNDING_LINE_AUTHORITY_MODE}),null,2)))" > sounding-line-plan.json
+          SOUNDING_LINE_CANDIDATE_REF: ${{ inputs.candidate_ref }}
+        run: node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:process.env.SOUNDING_LINE_GATE,serial:false,sourceSha:process.env.SOUNDING_LINE_CANDIDATE_SHA,qualifiedBaseSha:process.env.SOUNDING_LINE_BASE_SHA,authorityMode:process.env.SOUNDING_LINE_AUTHORITY_MODE,candidateRef:process.env.SOUNDING_LINE_CANDIDATE_REF}),null,2)))" > sounding-line-plan.json
       - id: browser-requirements
         shell: pwsh
         run: |
@@ -301,7 +307,7 @@ jobs:
         run: |
           $manifest = 'sounding-line-browser-cache/webkit-manifest.json'
           if ($env:CACHE_HIT -ne 'true') {
-            npx playwright install webkit
+            npx playwright install webkit ffmpeg
             if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_BROWSER_LAYER_BUILD_FAILED:webkit' }
             $expiry = ([DateTimeOffset]::UtcNow).AddDays(14).ToString('o')
             node scripts/sounding-line/v14/browser-layer-artifact.mjs publish --engines-json '["webkit"]' --source sounding-line-browser-cache/webkit --manifest $manifest --producer $env:SOUNDING_LINE_BROWSER_PRODUCER --expires-at $expiry
@@ -368,7 +374,15 @@ jobs:
           "activeMaximumWave=$planMaximumWave" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           foreach ($wave in 0..$maximumWave) {
             foreach ($mode in @('parallel', 'exclusive')) {
-              $nodes = @((node scripts/sounding-line/v14/physical-worker-batching.mjs --plan sounding-line-plan.json --wave $wave --mode $mode | ConvertFrom-Json).include)
+              $rawMatrix = & node scripts/sounding-line/v14/physical-worker-batching.mjs --plan sounding-line-plan.json --wave $wave --mode $mode
+              if ($LASTEXITCODE -ne 0) { throw ("PHYSICAL_BATCH_MATRIX_INVALID:{0}:{1}" -f $mode, $wave) }
+              try { $physicalMatrix = $rawMatrix | ConvertFrom-Json } catch { throw ("PHYSICAL_BATCH_MATRIX_INVALID:{0}:{1}" -f $mode, $wave) }
+              if ($null -eq $physicalMatrix -or $null -eq $physicalMatrix.include) { throw ("PHYSICAL_BATCH_MATRIX_INVALID:{0}:{1}" -f $mode, $wave) }
+              $validatedRawMatrix = $physicalMatrix | ConvertTo-Json -Compress -Depth 16 | & node scripts/sounding-line/v14/physical-worker-batching.mjs --validate-matrix-stdin
+              if ($LASTEXITCODE -ne 0) { throw ("PHYSICAL_BATCH_MATRIX_INVALID:{0}:{1}" -f $mode, $wave) }
+              try { $validatedMatrix = $validatedRawMatrix | ConvertFrom-Json } catch { throw ("PHYSICAL_BATCH_MATRIX_INVALID:{0}:{1}" -f $mode, $wave) }
+              $nodes = @($validatedMatrix.include)
+              if (@($nodes | Where-Object { $null -eq $_ }).Count -ne 0) { throw ("PHYSICAL_BATCH_MATRIX_INVALID:{0}:{1}" -f $mode, $wave) }
               # GitHub marks a caller that expands an empty reusable-workflow matrix as
               # skipped, which makes the enclosing authority run fail even when every
               # governed receipt and finalizer decision is clean. Represent an empty
@@ -410,9 +424,11 @@ jobs:
       suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
+      browser_test_ids_by_suite_json: ${{ matrix.browserTestIdsBySuiteJson }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   governed-exclusive-wave-0:
     name: Sounding Line / Exclusive wave 0
@@ -427,9 +443,11 @@ jobs:
       suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
+      browser_test_ids_by_suite_json: ${{ matrix.browserTestIdsBySuiteJson }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   wave-0-complete:
     name: Sounding Line / Wave 0 barrier
@@ -449,6 +467,7 @@ jobs:
           $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
           $parallelNodes = @($parallelMatrix.include)
           $exclusiveNodes = @($exclusiveMatrix.include)
+          if ($null -eq $parallelMatrix -or $null -eq $exclusiveMatrix -or $null -eq $parallelMatrix.include -or $null -eq $exclusiveMatrix.include -or @($parallelNodes | Where-Object { $null -eq $_ }).Count -ne 0 -or @($exclusiveNodes | Where-Object { $null -eq $_ }).Count -ne 0) { throw 'SOUNDING_LINE_WAVE_MATRIX_INVALID' }
           $parallelMarkers = @($parallelNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
           $exclusiveMarkers = @($exclusiveNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
           if (($parallelMarkers.Count -gt 0 -and ($parallelMarkers.Count -ne 1 -or $parallelMarkers.Count -ne $parallelNodes.Count)) -or ($exclusiveMarkers.Count -gt 0 -and ($exclusiveMarkers.Count -ne 1 -or $exclusiveMarkers.Count -ne $exclusiveNodes.Count))) {
@@ -478,9 +497,11 @@ jobs:
       suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
+      browser_test_ids_by_suite_json: ${{ matrix.browserTestIdsBySuiteJson }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   governed-exclusive-wave-1:
     name: Sounding Line / Exclusive wave 1
@@ -496,9 +517,11 @@ jobs:
       suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
+      browser_test_ids_by_suite_json: ${{ matrix.browserTestIdsBySuiteJson }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   wave-1-complete:
     name: Sounding Line / Wave 1 barrier
@@ -518,6 +541,7 @@ jobs:
           $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
           $parallelNodes = @($parallelMatrix.include)
           $exclusiveNodes = @($exclusiveMatrix.include)
+          if ($null -eq $parallelMatrix -or $null -eq $exclusiveMatrix -or $null -eq $parallelMatrix.include -or $null -eq $exclusiveMatrix.include -or @($parallelNodes | Where-Object { $null -eq $_ }).Count -ne 0 -or @($exclusiveNodes | Where-Object { $null -eq $_ }).Count -ne 0) { throw 'SOUNDING_LINE_WAVE_MATRIX_INVALID' }
           $parallelMarkers = @($parallelNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
           $exclusiveMarkers = @($exclusiveNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
           if (($parallelMarkers.Count -gt 0 -and ($parallelMarkers.Count -ne 1 -or $parallelMarkers.Count -ne $parallelNodes.Count)) -or ($exclusiveMarkers.Count -gt 0 -and ($exclusiveMarkers.Count -ne 1 -or $exclusiveMarkers.Count -ne $exclusiveNodes.Count))) {
@@ -547,9 +571,11 @@ jobs:
       suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
+      browser_test_ids_by_suite_json: ${{ matrix.browserTestIdsBySuiteJson }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   governed-exclusive-wave-2:
     name: Sounding Line / Exclusive wave 2
@@ -565,9 +591,11 @@ jobs:
       suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
+      browser_test_ids_by_suite_json: ${{ matrix.browserTestIdsBySuiteJson }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   wave-2-complete:
     name: Sounding Line / Wave 2 barrier
@@ -587,6 +615,7 @@ jobs:
           $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
           $parallelNodes = @($parallelMatrix.include)
           $exclusiveNodes = @($exclusiveMatrix.include)
+          if ($null -eq $parallelMatrix -or $null -eq $exclusiveMatrix -or $null -eq $parallelMatrix.include -or $null -eq $exclusiveMatrix.include -or @($parallelNodes | Where-Object { $null -eq $_ }).Count -ne 0 -or @($exclusiveNodes | Where-Object { $null -eq $_ }).Count -ne 0) { throw 'SOUNDING_LINE_WAVE_MATRIX_INVALID' }
           $parallelMarkers = @($parallelNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
           $exclusiveMarkers = @($exclusiveNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
           if (($parallelMarkers.Count -gt 0 -and ($parallelMarkers.Count -ne 1 -or $parallelMarkers.Count -ne $parallelNodes.Count)) -or ($exclusiveMarkers.Count -gt 0 -and ($exclusiveMarkers.Count -ne 1 -or $exclusiveMarkers.Count -ne $exclusiveNodes.Count))) {
@@ -616,9 +645,11 @@ jobs:
       suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
+      browser_test_ids_by_suite_json: ${{ matrix.browserTestIdsBySuiteJson }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   governed-exclusive-wave-3:
     name: Sounding Line / Exclusive wave 3
@@ -634,9 +665,11 @@ jobs:
       suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
+      browser_test_ids_by_suite_json: ${{ matrix.browserTestIdsBySuiteJson }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   wave-3-complete:
     name: Sounding Line / Wave 3 barrier
@@ -656,6 +689,7 @@ jobs:
           $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
           $parallelNodes = @($parallelMatrix.include)
           $exclusiveNodes = @($exclusiveMatrix.include)
+          if ($null -eq $parallelMatrix -or $null -eq $exclusiveMatrix -or $null -eq $parallelMatrix.include -or $null -eq $exclusiveMatrix.include -or @($parallelNodes | Where-Object { $null -eq $_ }).Count -ne 0 -or @($exclusiveNodes | Where-Object { $null -eq $_ }).Count -ne 0) { throw 'SOUNDING_LINE_WAVE_MATRIX_INVALID' }
           $parallelMarkers = @($parallelNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
           $exclusiveMarkers = @($exclusiveNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
           if (($parallelMarkers.Count -gt 0 -and ($parallelMarkers.Count -ne 1 -or $parallelMarkers.Count -ne $parallelNodes.Count)) -or ($exclusiveMarkers.Count -gt 0 -and ($exclusiveMarkers.Count -ne 1 -or $exclusiveMarkers.Count -ne $exclusiveNodes.Count))) {
@@ -685,9 +719,11 @@ jobs:
       suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
+      browser_test_ids_by_suite_json: ${{ matrix.browserTestIdsBySuiteJson }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   governed-exclusive-wave-4:
     name: Sounding Line / Exclusive wave 4
@@ -703,9 +739,11 @@ jobs:
       suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
+      browser_test_ids_by_suite_json: ${{ matrix.browserTestIdsBySuiteJson }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   wave-4-complete:
     name: Sounding Line / Wave 4 barrier
@@ -725,6 +763,7 @@ jobs:
           $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
           $parallelNodes = @($parallelMatrix.include)
           $exclusiveNodes = @($exclusiveMatrix.include)
+          if ($null -eq $parallelMatrix -or $null -eq $exclusiveMatrix -or $null -eq $parallelMatrix.include -or $null -eq $exclusiveMatrix.include -or @($parallelNodes | Where-Object { $null -eq $_ }).Count -ne 0 -or @($exclusiveNodes | Where-Object { $null -eq $_ }).Count -ne 0) { throw 'SOUNDING_LINE_WAVE_MATRIX_INVALID' }
           $parallelMarkers = @($parallelNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
           $exclusiveMarkers = @($exclusiveNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
           if (($parallelMarkers.Count -gt 0 -and ($parallelMarkers.Count -ne 1 -or $parallelMarkers.Count -ne $parallelNodes.Count)) -or ($exclusiveMarkers.Count -gt 0 -and ($exclusiveMarkers.Count -ne 1 -or $exclusiveMarkers.Count -ne $exclusiveNodes.Count))) {
@@ -754,9 +793,11 @@ jobs:
       suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
+      browser_test_ids_by_suite_json: ${{ matrix.browserTestIdsBySuiteJson }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   governed-exclusive-wave-5:
     name: Sounding Line / Exclusive wave 5
@@ -772,9 +813,11 @@ jobs:
       suites_json: ${{ matrix.suiteIdsJson }}
       requires_browser: ${{ matrix.requiresBrowser }}
       browser_engine: ${{ matrix.browserEngine }}
+      browser_test_ids_by_suite_json: ${{ matrix.browserTestIdsBySuiteJson }}
       empty_wave: ${{ matrix.emptyWave }}
       gate: ${{ needs.plan.outputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
 
   wave-5-complete:
     name: Sounding Line / Wave 5 barrier
@@ -794,6 +837,7 @@ jobs:
           $exclusiveMatrix = $env:EXCLUSIVE_MATRIX | ConvertFrom-Json
           $parallelNodes = @($parallelMatrix.include)
           $exclusiveNodes = @($exclusiveMatrix.include)
+          if ($null -eq $parallelMatrix -or $null -eq $exclusiveMatrix -or $null -eq $parallelMatrix.include -or $null -eq $exclusiveMatrix.include -or @($parallelNodes | Where-Object { $null -eq $_ }).Count -ne 0 -or @($exclusiveNodes | Where-Object { $null -eq $_ }).Count -ne 0) { throw 'SOUNDING_LINE_WAVE_MATRIX_INVALID' }
           $parallelMarkers = @($parallelNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
           $exclusiveMarkers = @($exclusiveNodes | Where-Object { $_.suiteId -eq '__SOUNDING_LINE_EMPTY_WAVE__' -and $_.emptyWave -eq $true })
           if (($parallelMarkers.Count -gt 0 -and ($parallelMarkers.Count -ne 1 -or $parallelMarkers.Count -ne $parallelNodes.Count)) -or ($exclusiveMarkers.Count -gt 0 -and ($exclusiveMarkers.Count -ne 1 -or $exclusiveMarkers.Count -ne $exclusiveNodes.Count))) {

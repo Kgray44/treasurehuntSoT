@@ -1,0 +1,8 @@
+{
+  "id": "dogfood-documentation",
+  "objective": "Update a governed Project Trim program record and its generated index.",
+  "taskClass": "documentation-only",
+  "executionProfile": "STANDARD_AUTONOMOUS",
+  "paths": ["Development_Docs/Programs/Project_Trim/Project_Trim_Phase_1_Design_and_Implementation_Record.md"],
+  "completionContract": ["Regenerate and validate documentation index."]
+}

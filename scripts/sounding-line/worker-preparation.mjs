@@ -47,7 +47,8 @@ export const CONFORMANCE_CODES = Object.freeze({
 });
 
 export function adapterRequirements(node) {
-  if (node.adapter === "vitest-family") return ["node-slot", "vitest-worker-pool"];
+  if (["vitest-family", "vitest-family-serial"].includes(node.adapter))
+    return ["node-slot", "vitest-worker-pool"];
   if (node.adapter === "node-test-browser-family") return ["node-slot", "application-port", "browser-chromium"];
   if (node.adapter === "playwright-family")
     return [
@@ -59,7 +60,7 @@ export function adapterRequirements(node) {
   return requiredByAdapter[node.adapter] ?? [];
 }
 
-export function deriveWorkerPreparation(node) {
+export function deriveWorkerPreparation(node, { browserEngine = undefined } = {}) {
   if (!node?.id || !Array.isArray(node.resources)) throw new Error("SEALED_PLAN_NODE_RESOURCES_REQUIRED");
   const declared = resourceSet(node.resources);
   const required = adapterRequirements(node);
@@ -72,6 +73,8 @@ export function deriveWorkerPreparation(node) {
         message: "adapter requirement is not declared",
       });
   const engines = ["browser-chromium", "browser-webkit"].filter((resource) => declared.has(resource));
+  if (browserEngine !== undefined && !engines.includes(`browser-${browserEngine}`))
+    throw new Error(`PHYSICAL_BROWSER_ENGINE_SCOPE_INVALID:${node.id}:${browserEngine}`);
   if (!browserAdapters.has(node.adapter) && engines.length)
     violations.push({
       code: CONFORMANCE_CODES.overprovisioning,
@@ -94,7 +97,7 @@ export function deriveWorkerPreparation(node) {
       prismaGenerate: prisma,
       databaseMigration: database,
       databaseSeed: declared.has("sqlite-clone"),
-      browserEngines: engines.map((resource) => resource.replace("browser-", "")),
+      browserEngines: browserEngine ? [browserEngine] : engines.map((resource) => resource.replace("browser-", "")),
       applicationRuntime: declared.has("application-port"),
       productionBuild: declared.has("production-build-directory"),
     },
@@ -110,7 +113,14 @@ export function deriveWorkerPreparation(node) {
  * Version-gated v1.4 preparation.  Current v1.3 callers continue to use the
  * synchronous function above; a v1.4 plan cannot be silently consumed there.
  */
-export function deriveV14WorkerPreparation({ plan, node, restoreResults = [], runId, mutableResources = [] }) {
+export function deriveV14WorkerPreparation({
+  plan,
+  node,
+  restoreResults = [],
+  runId,
+  mutableResources = [],
+  browserEngine = undefined,
+}) {
   if (
     plan?.authorityVersion !== "1.4" ||
     !["SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE", "CURRENT_AUTHORITATIVE_V14", "V14_CANDIDATE_QUALIFICATION"].includes(
@@ -119,7 +129,7 @@ export function deriveV14WorkerPreparation({ plan, node, restoreResults = [], ru
   )
     throw new Error("V14_WORKER_AUTHORITY_BOUNDARY_REQUIRED");
   if (!plan?.nodes?.some((entry) => entry.id === node?.id)) throw new Error("V14_WORKER_PLAN_NODE_INVALID");
-  const resourceConformance = deriveWorkerPreparation(node);
+  const resourceConformance = deriveWorkerPreparation(node, { browserEngine });
   const prepared = prepareV14Worker({
     planNode: node,
     layers: node.preparedLayers ?? [],
@@ -144,6 +154,7 @@ async function main() {
   };
   const planPath = valueFor("--plan");
   const suiteId = valueFor("--suite");
+  const browserEngine = valueFor("--browser-engine");
   const outputPath = valueFor("--out");
   if (!planPath || !suiteId || !outputPath) throw new Error("WORKER_PREPARATION_PLAN_SUITE_AND_OUTPUT_REQUIRED");
   const plan = JSON.parse(await readFile(path.resolve(planPath), "utf8"));
@@ -151,8 +162,13 @@ async function main() {
   if (matches.length !== 1) throw new Error("WORKER_PREPARATION_PLAN_NODE_INVALID");
   const preparation =
     plan.authorityVersion === "1.4"
-      ? deriveV14WorkerPreparation({ plan, node: matches[0], runId: process.env.GITHUB_RUN_ID ?? "local" })
-      : deriveWorkerPreparation(matches[0]);
+      ? deriveV14WorkerPreparation({
+          plan,
+          node: matches[0],
+          runId: process.env.GITHUB_RUN_ID ?? "local",
+          browserEngine,
+        })
+      : deriveWorkerPreparation(matches[0], { browserEngine });
   if (preparation.runtimeConformance.result !== "PASSED") {
     const codes = preparation.runtimeConformance.violations.map((entry) => entry.code).join(",");
     throw new Error(`RUNTIME_CONFORMANCE_FAILED:${codes}`);

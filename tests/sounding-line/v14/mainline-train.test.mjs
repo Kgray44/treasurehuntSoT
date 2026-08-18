@@ -49,6 +49,11 @@ const candidate = (id, letter, overrides = {}) => ({
   admittedAt: at,
   admissionOrdinal: id.charCodeAt(0),
   ageCycles: 0,
+  prIdentity: {
+    number: id.charCodeAt(0),
+    ref: `refs/heads/candidate-${id.toLowerCase()}`,
+    baseSha: sha("m"),
+  },
   ...overrides,
 });
 const integrator = ({ parentTreeSha, candidateTreeSha, position }) => ({
@@ -402,12 +407,10 @@ test("per-car preparation seals plans and bundles the exact unreachable predicte
       candidates: [candidate("A", "a", { headCommitSha: a, headTreeSha: aTree, admissionOrdinal: 1 })],
       createdAt: at,
     });
-    const matrix = await prepareMainlineTrain({
-      state: admitted,
-      out,
-      repoPath: root,
-      temporaryRoot: path.join(root, "temporary-worktrees"),
-      buildPlanFn: async ({ sourceSha, qualifiedBaseSha, predictedIdentity }) => ({
+    let planCandidateRef = null;
+    const preparedPlan = async ({ sourceSha, qualifiedBaseSha, predictedIdentity, candidateRef }) => {
+      planCandidateRef = candidateRef;
+      return {
         authorityBoundary: "V14_CANDIDATE_QUALIFICATION",
         authorityMode: "V14_CANDIDATE",
         gate: "mainline",
@@ -415,10 +418,18 @@ test("per-car preparation seals plans and bundles the exact unreachable predicte
         qualifiedBaseSha,
         qualifiedBaseTreeSha: predictedIdentity.predictedParentTreeSha,
         predictedIntegrationTreeSha: predictedIdentity.predictedIntegrationTreeSha,
+        candidateRef,
         planDigest: "prepared-plan-a",
         nodes: [{ id: "unit", execution: { wave: 0, mode: "parallel" } }],
         selectionLedger: [{ suiteId: "unit", selected: true, evidenceDisposition: "FRESH" }],
-      }),
+      };
+    };
+    const matrix = await prepareMainlineTrain({
+      state: admitted,
+      out,
+      repoPath: root,
+      temporaryRoot: path.join(root, "temporary-worktrees"),
+      buildPlanFn: preparedPlan,
       dependencyLayerInputsFn: async () => ({ packageLockDigest: "fixture" }),
       prepareLayerFn: async ({ destination }) => {
         await mkdir(path.join(destination, "node_modules"), { recursive: true });
@@ -427,7 +438,34 @@ test("per-car preparation seals plans and bundles the exact unreachable predicte
     });
     assert.equal(matrix.include.length, 1);
     assert.equal(matrix.include[0].integrationBaseSha, base);
+    assert.equal(matrix.include[0].candidateRef, "refs/heads/candidate-a");
+    assert.equal(matrix.cars[0].candidateRef, "refs/heads/candidate-a");
     assert.equal(matrix.cars[0].activeMaximumWave, 0);
+    assert.equal(planCandidateRef, "refs/heads/candidate-a");
+    const missingRef = structuredClone(admitted);
+    missingRef.train.cars[0].candidatePrIdentity = null;
+    await assert.rejects(
+      prepareMainlineTrain({
+        state: missingRef,
+        out: path.join(root, "missing-ref"),
+        repoPath: root,
+        temporaryRoot: path.join(root, "missing-ref-worktrees"),
+        buildPlanFn: async () => {
+          throw new Error("TRAIN_PREPARE_BUILD_PLAN_UNEXPECTED");
+        },
+      }),
+      /TRAIN_PREPARE_CANDIDATE_REF_REQUIRED/u,
+    );
+    await assert.rejects(
+      prepareMainlineTrain({
+        state: admitted,
+        out: path.join(root, "mismatched-ref"),
+        repoPath: root,
+        temporaryRoot: path.join(root, "mismatched-ref-worktrees"),
+        buildPlanFn: async (args) => ({ ...(await preparedPlan(args)), candidateRef: "refs/heads/unadmitted" }),
+      }),
+      /TRAIN_PREPARE_CANDIDATE_REF_PLAN_MISMATCH/u,
+    );
     // A local-path clone may hard-link the complete object database and would
     // hide a hosted shallow-checkout failure. Start an empty repository and
     // fetch only the sealed candidate through file transport, exactly as the
@@ -481,7 +519,7 @@ test("train preparation reads the planner selection ledger and fails closed befo
     });
     const plan =
       ({ selectionLedger }) =>
-      async ({ sourceSha, qualifiedBaseSha, predictedIdentity }) => ({
+      async ({ sourceSha, qualifiedBaseSha, predictedIdentity, candidateRef }) => ({
         authorityBoundary: "V14_CANDIDATE_QUALIFICATION",
         authorityMode: "V14_CANDIDATE",
         gate: "mainline",
@@ -489,6 +527,7 @@ test("train preparation reads the planner selection ledger and fails closed befo
         qualifiedBaseSha,
         qualifiedBaseTreeSha: predictedIdentity.predictedParentTreeSha,
         predictedIntegrationTreeSha: predictedIdentity.predictedIntegrationTreeSha,
+        candidateRef,
         planDigest: "prepared-plan-ledger",
         nodes: [{ id: "preserved", execution: { wave: 0, mode: "parallel" } }],
         selectionLedger,
@@ -553,6 +592,8 @@ test("hosted train finalization is partitioned by each car's active dependency d
   assert.match(finalizer, /sounding-line-mainline-train-head-live/u);
   assert.match(finalizer, /TRAIN_PER_CAR_FINALIZATION_FAILED/u);
   assert.match(wave, /integration_base_sha: \$\{\{ matrix\.integrationBaseSha \}\}/u);
+  assert.match(wave, /candidate_ref: \$\{\{ matrix\.candidateRef \}\}/u);
+  assert.doesNotMatch(wave, /candidate_ref: refs\/heads\/sounding-line-train/u);
 });
 
 test("landed equality accepts different commits with equal trees and hard-brakes all mismatch forms", () => {

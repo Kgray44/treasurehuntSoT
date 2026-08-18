@@ -1,7 +1,77 @@
-const text = (value) => value ?? "UNMEASURED";
+const text = (value) => (value === null || value === undefined || value === "" ? "UNMEASURED" : String(value));
 const short = (value) => (value ? String(value).slice(0, 12) : "UNMEASURED");
-const lastSeenKey = "bridgewatch:last-seen:v1";
-const twelveHours = 12 * 60 * 60 * 1000;
+let routeHost;
+const dateText = (value) =>
+  value
+    ? new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "medium" }).format(new Date(value))
+    : "UNMEASURED";
+const apiUrl = (path) => {
+  const base = window.location.pathname.startsWith("/bridgewatch") ? "/bridgewatch/" : "/";
+  return new URL(`${base}${String(path).replace(/^\/+/, "")}`, window.location.origin);
+};
+const request = async (path) => {
+  const response = await fetch(apiUrl(path));
+  if (!response.ok) throw new Error(`Observation request failed (${response.status})`);
+  return response.json();
+};
+const element = (tag, className, content) => {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (content !== undefined) node.textContent = content;
+  return node;
+};
+const section = (title, description) => {
+  const node = element("section", "section");
+  const heading = element("div", "section-heading");
+  heading.append(element("h2", "", title), element("p", "quiet", description));
+  node.append(heading);
+  return node;
+};
+const empty = (message) => element("p", "empty", message);
+const detail = (entries, className = "detail") => {
+  const card = element("article", className);
+  const list = document.createElement("dl");
+  entries
+    .filter(([, value]) => value !== undefined)
+    .forEach(([label, value]) => {
+      list.append(element("dt", "", label), element("dd", "", text(value)));
+    });
+  card.append(list);
+  return card;
+};
+const stateClass = (value) =>
+  /FAIL|BLOCK|UNAVAILABLE|DEGRADED|STALE|ERROR/u.test(text(value))
+    ? "bad"
+    : /ACCEPT|HEALTHY|COMPLETE|PASS|MAINLINE/u.test(text(value))
+      ? "good"
+      : "warn";
+const tag = (value) => element("span", `tag ${stateClass(value)}`, text(value));
+const linkButton = (label, hash) => {
+  const button = element("button", "link-button", label);
+  button.type = "button";
+  button.addEventListener("click", () => {
+    window.location.hash = hash;
+  });
+  return button;
+};
+const externalLink = (label, href) => {
+  if (!href || !/^https:\/\//iu.test(href)) return element("span", "quiet", "UNMEASURED");
+  const link = document.createElement("a");
+  link.href = href;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = label;
+  return link;
+};
+const listRow = (title, state, body) => {
+  const row = element("article", `list-item ${stateClass(state)}`);
+  const top = element("div", "row-top");
+  top.append(element("strong", "", title), tag(state));
+  row.append(top);
+  if (body) row.append(body);
+  return row;
+};
+let snapshot = null;
 const recentChangePriority = {
   PROJECT_STATE_CHANGED: 0,
   PHASE_STATE_CHANGED: 0,
@@ -22,304 +92,6 @@ const recentChangePriority = {
   BRANCH_HEALTH_CHANGED: 7,
 };
 const recentChangeMaximum = 8;
-let board = null;
-let selectedTab = "ACTIVE";
-const bridgewatchUrl = (path) => {
-  const base = window.location.pathname.startsWith("/bridgewatch") ? "/bridgewatch/" : "/";
-  return new URL(`${base}${String(path).replace(/^\/+/, "")}`, window.location.origin);
-};
-
-const element = (tag, className, content) => {
-  const node = document.createElement(tag);
-  if (className) node.className = className;
-  if (content !== undefined) node.textContent = content;
-  return node;
-};
-const appendRow = (parent, label, value) => {
-  const row = element("p", "row");
-  row.append(element("span", "label", label), element("span", "value", value));
-  parent.append(row);
-};
-const dateText = (value) => {
-  if (!value || Number.isNaN(Date.parse(value))) return "Not recorded";
-  return new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
-};
-const time = (value) => {
-  const node = element("time", "mono", dateText(value));
-  if (value) node.dateTime = value;
-  return node;
-};
-const durationText = (start, end) => {
-  const startMs = Date.parse(start ?? "");
-  const endMs = Date.parse(end ?? "");
-  if (!Number.isFinite(startMs) || !Number.isFinite(endMs) || endMs < startMs) return "Not recorded";
-  const hours = Math.round((endMs - startMs) / 3_600_000);
-  return hours < 48 ? `${hours}h recorded interval` : `${Math.round(hours / 24)}d recorded interval`;
-};
-const ageText = (ageMs) => {
-  if (!Number.isFinite(ageMs) || ageMs < 0) return "Not recorded";
-  const hours = Math.floor(ageMs / 3_600_000);
-  return hours < 48 ? `${hours}h since activity` : `${Math.floor(hours / 24)}d since activity`;
-};
-const lifecycle = (project) =>
-  selectedTab === "ALL" ||
-  (selectedTab === "COMPLETED"
-    ? ["COMPLETE", "MERGED"].includes(project.state)
-    : selectedTab === "PLANNED"
-      ? project.state === "PLANNED"
-      : !["COMPLETE", "MERGED", "PLANNED"].includes(project.state));
-
-function currentLastSeen() {
-  try {
-    const value = localStorage.getItem(lastSeenKey);
-    const parsed = value ? Date.parse(value) : Number.NaN;
-    if (!Number.isFinite(parsed) || parsed > Date.now() + 60_000 || Date.now() - parsed > 30 * 24 * 60 * 60 * 1000)
-      return null;
-    return value;
-  } catch {
-    return null;
-  }
-}
-function rememberVisit() {
-  try {
-    localStorage.setItem(lastSeenKey, new Date().toISOString());
-  } catch {
-    /* Browser-local enhancement only. */
-  }
-}
-function renderProgram(program) {
-  const host = document.querySelector("#program");
-  host.replaceChildren();
-  [
-    ["Projects", `${program.projects.total} total / ${program.projects.complete} complete`],
-    ["Active", String(program.projects.active)],
-    ["Phases", `${program.phases.completeOrMerged}/${program.phases.total} complete or merged`],
-    ["Open PRs", String(program.operational.openPullRequests)],
-    ["Workers", String(program.operational.activeWorkers)],
-    ["Root failures", String(program.operational.rootFailures)],
-  ].forEach(([label, value]) => {
-    const card = element("article", "metric");
-    card.append(element("span", "label", label), element("strong", "metric-value", value));
-    host.append(card);
-  });
-}
-function renderAttention(items) {
-  const host = document.querySelector("#attention");
-  host.replaceChildren();
-  if (!items.length) return host.append(element("p", "quiet", "No current attention condition is observed."));
-  items.forEach((item) => {
-    const row = element("article", `attention-item level-${item.level}`);
-    row.append(element("strong", "state", `${item.level} / ${item.code}`), element("p", "", item.message));
-    host.append(row);
-  });
-}
-async function showProject(project) {
-  const host = document.querySelector("#project-detail");
-  host.replaceChildren();
-  host.append(element("h3", "", `${project.name} / biography`));
-  appendRow(host, "Current lifecycle", project.state);
-  appendRow(host, "Progress", project.milestonePercent === null ? "UNMEASURED" : `${project.milestonePercent}%`);
-  appendRow(host, "Evidence", project.governingReferences.join(" / "));
-  let trend = null;
-  let history = [];
-  try {
-    trend = await fetch(bridgewatchUrl(`api/projects/${encodeURIComponent(project.id)}/trends`)).then((response) =>
-      response.ok ? response.json() : null,
-    );
-    history = await fetch(bridgewatchUrl(`api/projects/${encodeURIComponent(project.id)}/history?limit=20`)).then(
-      (response) => (response.ok ? response.json() : []),
-    );
-  } catch {
-    trend = null;
-    history = [];
-  }
-  const timeline = element("ol", "timeline");
-  (trend?.phases ?? project.phases)
-    .sort((a, b) => a.ordinal - b.ordinal)
-    .forEach((phase) => {
-      const item = element("li", "timeline-item");
-      item.append(
-        element("strong", "", `Phase ${phase.ordinal}: ${phase.name}`),
-        element("p", "", `${phase.state} / ${phase.scope ?? "Recorded governed scope"}`),
-      );
-      [
-        ["Defined / planned", phase.plannedAt],
-        ["Started", phase.startedAt],
-        ["Accepted", phase.acceptedAt],
-        ["Merged", phase.mergedAt],
-        ["Completed", phase.completedAt],
-      ].forEach(([label, value]) => appendRow(item, label, dateText(value)));
-      appendRow(item, "Branch", text(phase.branch));
-      appendRow(item, "PR", phase.pullRequest ? `#${phase.pullRequest}` : "Not recorded");
-      appendRow(item, "Accepted head", short(phase.acceptedHeadSha));
-      appendRow(item, "Integrated main", short(phase.integratedMainSha));
-      appendRow(item, "Final decision", text(phase.finalDecision));
-      appendRow(item, "Implementation interval", durationText(phase.startedAt, phase.completedAt ?? phase.mergedAt));
-      appendRow(item, "Acceptance wait", durationText(phase.completedAt, phase.acceptedAt));
-      const milestones = phase.milestones ?? [];
-      appendRow(
-        item,
-        "Milestones",
-        milestones.length
-          ? milestones.map((milestone) => `${milestone.title}: ${milestone.state}`).join("; ")
-          : "UNMEASURED",
-      );
-      timeline.append(item);
-    });
-  host.append(timeline);
-  const milestones = (trend?.phases ?? project.phases)
-    .flatMap((phase) => (phase.milestones ?? []).map((milestone) => ({ ...milestone, phase: phase.name })))
-    .filter((milestone) => milestone.acceptedAt)
-    .sort((left, right) => left.acceptedAt.localeCompare(right.acceptedAt));
-  const milestoneHistory = element("section", "project-history");
-  milestoneHistory.append(element("h4", "", "Accepted milestone timeline"));
-  if (milestones.length)
-    milestones.forEach((milestone) => {
-      const row = element("article", "history-event");
-      row.append(element("strong", "", `${milestone.phase}: ${milestone.title}`), time(milestone.acceptedAt));
-      milestoneHistory.append(row);
-    });
-  else milestoneHistory.append(element("p", "quiet", "No accepted milestone timestamp is recorded."));
-  host.append(milestoneHistory);
-  const historicalEvents = element("section", "project-history");
-  historicalEvents.append(element("h4", "", "Recent meaningful project history"));
-  if (history.length) history.forEach((event) => historicalEvents.append(eventRow(event)));
-  else historicalEvents.append(element("p", "quiet", "No additional retained event is recorded for this project."));
-  host.append(historicalEvents);
-}
-function renderProjects() {
-  const host = document.querySelector("#projects");
-  host.replaceChildren();
-  const projects = board.projects.filter(lifecycle);
-  if (!projects.length)
-    return host.append(element("p", "quiet", "No project is currently evidenced for this lifecycle view."));
-  projects.forEach((project) => {
-    const card = element("article", "card");
-    card.append(
-      element("strong", "project-name", project.name),
-      element("p", "state", `${project.state} / ${project.phases.length} recorded phases`),
-      element(
-        "p",
-        "",
-        `Progress: ${project.milestonePercent === null ? "UNMEASURED" : `${project.milestonePercent}%`}`,
-      ),
-      element("p", "mono", `Main: ${short(project.finalMainSha)}`),
-    );
-    if (project.state === "COMPLETE")
-      card.append(element("p", "quiet", `Final decision: ${text(project.finalDecision)}`));
-    const button = element("button", "detail-button", "View project biography");
-    button.type = "button";
-    button.addEventListener("click", () => {
-      void showProject(project);
-    });
-    card.append(button);
-    host.append(card);
-  });
-}
-function renderWorkers(workers) {
-  const host = document.querySelector("#workers");
-  host.replaceChildren();
-  if (!workers.length) return host.append(element("p", "quiet", "No reporter activity is currently retained."));
-  workers.forEach((worker) => {
-    const row = element("article", "list-item");
-    row.append(element("strong", "", `${worker.effectiveState} / ${worker.workerId}`));
-    appendRow(row, "Project", `${worker.project} / Phase ${worker.phase}`);
-    appendRow(row, "Task", worker.task);
-    appendRow(row, "Branch", worker.branch);
-    appendRow(row, "Heartbeat", dateText(worker.heartbeatAt));
-    host.append(row);
-  });
-}
-function renderTests(tests) {
-  const host = document.querySelector("#tests");
-  host.replaceChildren();
-  const totals = tests.totals;
-  [
-    ["Queued", totals.queued],
-    ["Running", totals.running],
-    ["Passed", totals.passed],
-    ["Passed after retry", totals.retries],
-    ["Root failures", totals.rootFailures],
-    ["Blocked dependents", totals.blockedDependents],
-  ].forEach(([label, value]) => appendRow(host, label, String(value)));
-  const plans = tests.projection?.plans ?? [];
-  if (!plans.length) host.append(element("p", "quiet", "No active Sounding Line plan is observed."));
-  plans.forEach((plan) => {
-    const row = element("article", "list-item");
-    row.append(element("strong", "", `${plan.gate} / ${plan.id}`));
-    appendRow(row, "Source", short(plan.sourceSha));
-    appendRow(row, "Cleanup", plan.cleanupState);
-    appendRow(row, "Finalizer", text(plan.finalDecision));
-    host.append(row);
-  });
-}
-function renderPulls(snapshot) {
-  const host = document.querySelector("#pulls");
-  host.replaceChildren();
-  const pulls = snapshot?.openPullRequests ?? [];
-  if (!pulls.length)
-    return host.append(element("p", "quiet", "No open pull requests are in the current GitHub snapshot."));
-  pulls.forEach((pull) => {
-    const row = element("a", "list-item", `#${pull.number} / ${pull.title} / checks ${text(pull.checkState)}`);
-    row.href = pull.url;
-    row.rel = "noreferrer";
-    row.target = "_blank";
-    host.append(row);
-  });
-}
-function renderBranches(branches) {
-  const host = document.querySelector("#branches");
-  host.replaceChildren();
-  if (!branches.length)
-    return host.append(element("p", "quiet", "No relevant remote branch comparison is currently available."));
-  branches.forEach((branch) => {
-    const row = element("article", `list-item${branch.attention ? " branch-attention" : ""}`);
-    row.append(element("strong", "", branch.name));
-    appendRow(
-      row,
-      "Divergence",
-      branch.compareState === "AVAILABLE" ? `ahead ${branch.ahead} / behind ${branch.behind}` : "UNMEASURED",
-    );
-    appendRow(row, "Last activity", dateText(branch.lastActivityAt));
-    appendRow(row, "Branch age", ageText(branch.ageMs));
-    appendRow(
-      row,
-      "PR",
-      branch.pullRequestNumber ? `#${branch.pullRequestNumber} / ${branch.pullRequestState}` : "Not recorded",
-    );
-    appendRow(
-      row,
-      "Lifecycle",
-      branch.merged ? "MERGED / historical branch" : branch.stale ? "STALE active context" : "Current context",
-    );
-    if (branch.message) row.append(element("p", "quiet", branch.message));
-    host.append(row);
-  });
-}
-function evidenceUrl(reference) {
-  const pull = /^github:([^:]+):pull:(\d+)$/u.exec(reference);
-  if (pull) return `https://github.com/${pull[1]}/pull/${pull[2]}`;
-  const branch = /^github:([^:]+):branch:([^:]+)$/u.exec(reference);
-  if (branch) return `https://github.com/${branch[1]}/tree/${encodeURIComponent(branch[2])}`;
-  const run = /^sounding-line:(.+)$/u.exec(reference);
-  if (run && board?.github?.repository) return `https://github.com/${board.github.repository}/actions/runs/${run[1]}`;
-  return null;
-}
-function eventRow(event) {
-  const row = element("article", "history-event");
-  row.append(element("strong", "", event.summary), time(event.occurredAt));
-  const context = [event.projectId, event.phaseId, event.kind].filter(Boolean).join(" / ");
-  if (context) row.append(element("p", "quiet", context));
-  const link = (event.evidenceRefs ?? []).map(evidenceUrl).find(Boolean);
-  if (link) {
-    const evidence = element("a", "evidence-link", "Evidence");
-    evidence.href = link;
-    evidence.target = "_blank";
-    evidence.rel = "noreferrer";
-    row.append(evidence);
-  }
-  return row;
-}
 function eventChronology(left, right) {
   return (
     Date.parse(right.occurredAt) - Date.parse(left.occurredAt) ||
@@ -345,134 +117,908 @@ function conciseRecentChanges(events) {
     });
   return selected.sort(eventChronology);
 }
-function renderHistory(events, hostSelector, { concise = false } = {}) {
-  const host = document.querySelector(hostSelector);
-  host.replaceChildren();
-  const visible = concise ? conciseRecentChanges(events) : events;
-  if (!visible.length) {
-    const message = events.length
-      ? "No accepted lifecycle, blocker, mainline, PR, milestone, or validation change was observed in this interval. Branch and source context remain available below."
-      : "No meaningful governed changes were observed in this bounded interval.";
-    return host.append(element("p", "quiet", message));
-  }
-  visible.forEach((event) => host.append(eventRow(event)));
-  const omitted = events.length - visible.length;
-  if (concise && omitted > 0)
+async function refreshSources() {
+  return request("api/sources");
+}
+routeHost = document.querySelector("#route");
+const renderMetric = (label, value, note) => {
+  const card = element("article", "card metric");
+  card.append(element("p", "quiet", label), element("strong", "", text(value)));
+  if (note) card.append(element("p", "quiet", note));
+  return card;
+};
+const eventList = (events) => {
+  const host = element("div", "list");
+  if (!events?.length) return empty("No retained observations match this scope.");
+  events.forEach((entry) => {
+    const body = element(
+      "p",
+      "quiet",
+      `${entry.summary ?? entry.kind} / ${dateText(entry.occurredAt ?? entry.observedAt)}`,
+    );
+    host.append(listRow(entry.entityType ?? "Observation", entry.kind ?? "OBSERVED", body));
+  });
+  return host;
+};
+const table = (headers, rows) => {
+  const wrap = element("div", "table-wrap");
+  const node = document.createElement("table");
+  const head = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  headers.forEach((header) => headerRow.append(element("th", "", header)));
+  head.append(headerRow);
+  const body = document.createElement("tbody");
+  rows.forEach((cells) => {
+    const row = document.createElement("tr");
+    cells.forEach((cell) => {
+      const item = document.createElement("td");
+      item.append(cell instanceof Node ? cell : document.createTextNode(text(cell)));
+      row.append(item);
+    });
+    body.append(row);
+  });
+  node.append(head, body);
+  wrap.append(node);
+  return wrap;
+};
+const searchText = (value) =>
+  Array.isArray(value) ? value.map(searchText).join(" ") : value === null || value === undefined ? "" : String(value);
+const nodeCount = (nodes, states) => (nodes ?? []).filter((node) => states.includes(node.state)).length;
+const nodeSummary = (nodes) => ({
+  suites: [...new Set((nodes ?? []).map((node) => node.suiteId))].join(", ") || "UNMEASURED",
+  total: nodes?.length ?? 0,
+  passed: nodeCount(nodes, ["PASSED", "PASSED_AFTER_RETRY"]),
+  failed: nodeCount(nodes, ["FAILED"]),
+  skipped: nodeCount(nodes, ["SKIPPED", "NOT_RUN"]),
+  blocked: nodeCount(nodes, ["BLOCKED"]),
+  retries: (nodes ?? []).filter((node) => node.state === "PASSED_AFTER_RETRY" || node.attempt > 1).length,
+  roots: new Set((nodes ?? []).filter((node) => node.rootFailureId).map((node) => node.rootFailureId)).size,
+  resources: [...new Set((nodes ?? []).flatMap((node) => node.resources ?? []))].join(", ") || "UNMEASURED",
+});
+function filteredTable({ records, headers, row, matches, placeholder, emptyMessage }) {
+  const host = element("div", "filterable-table");
+  const controls = element("div", "filter-controls");
+  const input = document.createElement("input");
+  input.type = "search";
+  input.placeholder = placeholder;
+  input.setAttribute("aria-label", placeholder);
+  const result = element("div", "filter-results");
+  const render = () => {
+    const query = input.value.trim().toLocaleLowerCase();
+    const retained = records.filter((record) => !query || matches(record).toLocaleLowerCase().includes(query));
+    result.replaceChildren(
+      retained.length ? table(headers, retained.map(row)) : empty(query ? "No retained observation matches this filter." : emptyMessage),
+    );
+  };
+  input.addEventListener("input", render);
+  controls.append(input);
+  host.append(controls, result);
+  render();
+  return host;
+}
+function renderOverview() {
+  const node = document.createDocumentFragment();
+  const summary = snapshot ?? {};
+  const program = summary.program ?? {};
+  const overview = section("Observation overview", "Live status is bounded to retained evidence and source freshness.");
+  const metrics = element("div", "grid");
+  [
+    ["Projects", program.projects?.total],
+    ["Accepted phases", program.phases?.completeOrMerged],
+    ["Workers", summary.workers?.length],
+    ["Attention items", summary.attention?.length],
+  ].forEach(([label, value]) => metrics.append(renderMetric(label, value)));
+  overview.append(metrics);
+  node.append(overview);
+  const changes = section("Since last check", "Governed transitions are prioritized; polling noise is suppressed.");
+  changes.append(eventList(conciseRecentChanges(summary.history?.recent ?? [])));
+  node.append(changes);
+  const attention = section("Current attention", "Root conditions are deduplicated before display.");
+  attention.append(renderAttentionList(summary.attention));
+  node.append(attention);
+  return node;
+}
+function renderAttentionList(items) {
+  const host = element("div", "list");
+  if (!items?.length) return empty("No current attention item is retained.");
+  items.forEach((item) =>
     host.append(
+      listRow(
+        item.code ?? item.title ?? item.kind ?? "Attention",
+        item.level ?? item.severity ?? item.state ?? "OBSERVED",
+        element("p", "quiet", text(item.message ?? item.detail ?? item.summary)),
+      ),
+    ),
+  );
+  return host;
+}
+async function renderProgram() {
+  const data = await request("api/program");
+  const node = document.createDocumentFragment();
+  const summary = section(
+    "Program intelligence",
+    "Counts and accepted-history trends; no fabricated global completion percentage.",
+  );
+  const metrics = element("div", "grid");
+  Object.entries(data.summary ?? {}).forEach(([scope, values]) =>
+    Object.entries(values ?? {})
+      .filter(([, value]) => typeof value === "number")
+      .forEach(([label, value]) =>
+        metrics.append(renderMetric(`${scope} ${label}`.replaceAll(/([A-Z])/g, " $1"), value)),
+      ),
+  );
+  summary.append(metrics);
+  summary.append(detail([["Current observed main", data.currentMain ?? "NOT_RECORDED"]]));
+  node.append(summary);
+  const discovered = section(
+    "Discovered project truth",
+    "Repository documents, local refs, and GitHub observations are reconciled without rewriting accepted history.",
+  );
+  const rows = (data.discoveredProjects ?? []).map((project) => [
+    linkButton(project.name, `#/projects/${encodeURIComponent(project.id)}`),
+    project.state ?? "OBSERVED",
+    project.confidence,
+    project.phaseCount ?? "UNMEASURED",
+  ]);
+  discovered.append(
+    rows.length
+      ? table(["Project", "State", "Confidence", "Declared phases"], rows)
+      : empty("No durable discovery record is retained yet."),
+  );
+  node.append(discovered);
+  const timeline = section(
+    "Accepted timeline",
+    "Chronological accepted results remain distinct from active discovery.",
+  );
+  timeline.append(eventList(data.acceptedHistory ?? []));
+  node.append(timeline);
+  const historyWindow = section(
+    "Program history window",
+    "Choose a bounded From/To interval to inspect retained program events without changing observation state.",
+  );
+  const controls = element("div", "actions");
+  const from = document.createElement("input");
+  from.type = "datetime-local";
+  from.value = new Date(Date.now() - 86_400_000).toISOString().slice(0, 16);
+  from.setAttribute("aria-label", "Program history from");
+  const to = document.createElement("input");
+  to.type = "datetime-local";
+  to.value = new Date().toISOString().slice(0, 16);
+  to.setAttribute("aria-label", "Program history to");
+  const load = element("button", "", "Load window");
+  const result = element("div", "filter-results");
+  const loadWindow = async () => {
+    if (!from.value || !to.value) {
+      result.replaceChildren(empty("Both From and To are required for a bounded history window."));
+      return;
+    }
+    try {
+      const parameters = new URLSearchParams({
+        since: new Date(from.value).toISOString(),
+        until: new Date(to.value).toISOString(),
+        limit: "250",
+      });
+      const history = await request(`api/history?${parameters}`);
+      result.replaceChildren(
+        filteredTable({
+          records: history.events ?? [],
+          headers: ["When", "Type", "Entity", "Summary"],
+          row: (event) => [
+            dateText(event.occurredAt ?? event.observedAt),
+            event.kind ?? "OBSERVED",
+            `${event.entityType ?? "Observation"}: ${event.entityId ?? "UNMEASURED"}`,
+            event.summary ?? "UNMEASURED",
+          ],
+          matches: (event) => searchText([event.kind, event.entityType, event.entityId, event.projectId, event.phaseId, event.summary]),
+          placeholder: "Search retained history",
+          emptyMessage: "No retained observation matches this program window.",
+        }),
+      );
+    } catch (error) {
+      result.replaceChildren(empty(error instanceof Error ? error.message : "Program history is unavailable."));
+    }
+  };
+  load.addEventListener("click", () => void loadWindow());
+  controls.append(from, to, load);
+  historyWindow.append(controls, result);
+  node.append(historyWindow);
+  return node;
+}
+async function renderProjects() {
+  const projects = await request("api/projects");
+  const node = document.createDocumentFragment();
+  const sectionNode = section(
+    "Project portfolio",
+    "Open a project for state, governing evidence, phase history, and first-class versions.",
+  );
+  sectionNode.append(
+    filteredTable({
+      records: projects,
+      headers: ["Project", "State", "Phase progress", "Versions", "Main", "Confidence"],
+      row: (project) => [
+        linkButton(project.name, `#/projects/${encodeURIComponent(project.id)}`),
+        project.state,
+        project.phaseProgress?.state === "MEASURED"
+          ? `${project.phaseProgress.completed}/${project.phaseProgress.total}`
+          : "NOT_RECORDED",
+        (project.versions ?? []).map((version) => version.identity).join(", ") || "NOT_RECORDED",
+        short(project.mainSha ?? project.finalMainSha) === "UNMEASURED" ? "NOT_RECORDED" : short(project.mainSha ?? project.finalMainSha),
+        project.discoveryConfidence ?? "RETAINED",
+      ],
+      matches: (project) =>
+        searchText([project.name, project.id, project.state, project.discoveryConfidence, project.versions, project.mainSha]),
+      placeholder: "Search projects",
+      emptyMessage: "No project registry is available.",
+    }),
+  );
+  node.append(sectionNode);
+  return node;
+}
+async function renderProjectProfile(id) {
+  const project = await request(`api/projects/${encodeURIComponent(id)}`);
+  const versions = await request(`api/projects/${encodeURIComponent(id)}/versions`);
+  const node = document.createDocumentFragment();
+  const profile = section(
+    `${project.name} project profile`,
+    "Truth is attributed to retained governing references and observed evidence.",
+  );
+  profile.append(
+    detail([
+      ["State", project.state],
+      ["Discovery confidence", project.discoveryConfidence],
+      ["Final main", project.finalMainSha],
+      ["Final decision", project.finalDecision],
+      ["Governing references", (project.governingReferences ?? []).join("; ")],
+    ]),
+  );
+  node.append(profile);
+  const phases = section("Phases", "Accepted history is preserved; select a phase for evidence and validation detail.");
+  phases.append(
+    filteredTable({
+      records: project.phases ?? [],
+      headers: ["Phase", "State", "Accepted source", "Receipt"],
+      row: (phase) => [
+        linkButton(`Phase ${phase.ordinal}`, `#/projects/${encodeURIComponent(id)}/phases/${phase.ordinal}`),
+        phase.state,
+        short(phase.integratedMainSha ?? phase.acceptedHeadSha),
+        phase.completionReceipt ?? "UNMEASURED",
+      ],
+      matches: (phase) =>
+        searchText([phase.ordinal, phase.name, phase.state, phase.acceptedHeadSha, phase.integratedMainSha, phase.completionReceipt]),
+      placeholder: "Search phases",
+      emptyMessage: "No phase record is retained.",
+    }),
+  );
+  node.append(phases);
+  const versionsSection = section(
+    "Versions",
+    "Version lifecycle is a first-class observation, separate from phase history.",
+  );
+  versionsSection.append(
+    filteredTable({
+      records: versions,
+      headers: ["Version", "Lifecycle", "Confidence", "Summary"],
+      row: (version) => [
+        linkButton(
+          version.identity,
+          `#/projects/${encodeURIComponent(id)}/versions/${encodeURIComponent(version.identity)}`,
+        ),
+        version.lifecycle,
+        version.confidence,
+        version.summary ?? "UNMEASURED",
+      ],
+      matches: (version) =>
+        searchText([version.identity, version.lifecycle, version.confidence, version.summary, version.evidence]),
+      placeholder: "Search versions",
+      emptyMessage: "No discovered version is retained.",
+    }),
+  );
+  node.append(versionsSection);
+  const related = section(
+    "Related activity",
+    "Only observed GitHub, worker, validation, and retained-history records associated with this project.",
+  );
+  related.append(
+    detail([
+      ["Observed branches", project.branches?.length ?? 0],
+      ["Observed pull requests", project.pullRequests?.length ?? 0],
+      ["Retained worker records", project.workers?.length ?? 0],
+      ["Validation runs", project.tests?.length ?? 0],
+      ["Retained history events", project.history?.length ?? 0],
+      ["Evidence", (project.evidence ?? []).join("; ")],
+    ]),
+  );
+  const activity = [
+    ...(project.history ?? []),
+    ...(project.workers ?? []).map((worker) => ({
+      entityType: "worker",
+      kind: worker.effectiveState ?? worker.state,
+      summary: `${worker.workerId}: ${worker.task}`,
+      occurredAt: worker.heartbeatAt,
+    })),
+  ];
+  related.append(eventList(activity));
+  node.append(related);
+  return node;
+}
+async function renderVersionProfile(id, version) {
+  const data = await request(`api/projects/${encodeURIComponent(id)}/versions/${encodeURIComponent(version)}`);
+  const node = document.createDocumentFragment();
+  const profile = section(
+    `${data.project.name} ${data.version.identity}`,
+    "Version profile with its own evidence, lifecycle, and associated read-only records.",
+  );
+  profile.append(
+    detail([
+      ["Lifecycle", data.version.lifecycle],
+      ["Confidence", data.version.confidence],
+      ["Summary", data.version.summary],
+      ["Integrated main", data.version.integratedMainSha],
+      ["Evidence", (data.evidence ?? []).map((entry) => entry.reference ?? entry).join("; ")],
+    ]),
+  );
+  node.append(profile);
+  const evidence = section(
+    "Associated evidence",
+    "Evidence is listed with its retained source; absence is reported as unmeasured.",
+  );
+  evidence.append(eventList(data.history));
+  node.append(evidence);
+  const related = section("Associated work", "Observed phases, branches, and pull requests with explicit version evidence.");
+  related.append(
+    detail([
+      ["Associated phases", data.phases?.map((phase) => `Phase ${phase.ordinal}`).join(", ")],
+      ["Observed branches", data.branches?.map((branch) => branch.name).join(", ")],
+      ["Observed pull requests", data.pullRequests?.map((pull) => `#${pull.number}`).join(", ")],
+    ]),
+  );
+  node.append(related);
+  return node;
+}
+async function renderPhaseProfile(id, ordinal) {
+  const data = await request(`api/projects/${encodeURIComponent(id)}/phases/${encodeURIComponent(ordinal)}`);
+  const node = document.createDocumentFragment();
+  const profile = section(
+    `${data.project.name} / Phase ${data.phase.ordinal}`,
+    "Phase-level truth, workers, validation, and history.",
+  );
+  profile.append(
+    detail([
+      ["State", data.phase.state],
+      ["Accepted head", data.phase.acceptedHeadSha],
+      ["Integrated main", data.phase.integratedMainSha],
+      ["Decision", data.phase.finalDecision],
+      ["Receipt", data.phase.completionReceipt],
+      ["Evidence", (data.evidence ?? []).join("; ")],
+    ]),
+  );
+  node.append(profile);
+  const tasks = section(
+    "Phase tasks and workers",
+    "Current and historical telemetry is retained as observed work evidence; zero active workers does not erase it.",
+  );
+  tasks.append(
+    (data.tasks ?? []).length
+      ? table(
+          ["Task", "Worker", "State", "Branch", "Started", "Heartbeat", "Result"],
+          data.tasks.map((task) => [
+            task.title,
+            task.workerId ?? "UNMEASURED",
+            task.result ?? "UNMEASURED",
+            task.branch ?? "UNMEASURED",
+            dateText(task.startedAt),
+            dateText(task.heartbeatAt),
+            task.result ?? "UNMEASURED",
+          ]),
+        )
+      : empty("No task or worker evidence is retained for this phase."),
+  );
+  node.append(tasks);
+  const validation = section(
+    "Phase validation and Sounding Line runs",
+    "Only runs whose retained source SHA matches this phase are shown; missing test-level fields remain unmeasured.",
+  );
+  validation.append(
+    (data.tests ?? []).length
+      ? table(
+          ["Run", "Suites", "Tests", "Passed", "Failed", "Blocked", "Retries", "Roots", "Resources", "Observed"],
+          data.tests.map((run) => {
+            const summary = nodeSummary(run.value?.nodes);
+            return [
+              linkButton(run.id, `#/operations/runs/${encodeURIComponent(run.id)}`),
+              summary.suites,
+              summary.total,
+              summary.passed,
+              summary.failed,
+              summary.blocked,
+              summary.retries,
+              summary.roots,
+              summary.resources,
+              dateText(run.observedAt),
+            ];
+          }),
+        )
+      : empty("No retained Sounding Line run is associated with this phase source SHA."),
+  );
+  node.append(validation);
+  const activity = section(
+    "Related operations",
+    "Read-only telemetry and retained validation evidence associated with this phase.",
+  );
+  activity.append(
+    eventList([
+      ...(data.history ?? []),
+      ...(data.tests ?? []).map((run) => ({
+        entityType: "validation",
+        kind: run.value?.decision ?? "OBSERVED",
+        summary: run.value?.name,
+        occurredAt: run.value?.observedAt,
+      })),
+    ]),
+  );
+  node.append(activity);
+  return node;
+}
+async function renderOperations() {
+  const [workers, runs, totals] = await Promise.all([
+    request("api/workers"),
+    request("api/sounding-line/runs"),
+    request("api/tests"),
+  ]);
+  const node = document.createDocumentFragment();
+  const workerSection = section("Workers", "Telemetry is activity evidence only; it never controls a worker.");
+  workerSection.append(
+    workers.length
+      ? table(
+          ["Worker", "Project", "State", "Heartbeat"],
+          workers.map((worker) => [
+            worker.workerId,
+            worker.project,
+            worker.effectiveState ?? worker.state,
+            dateText(worker.heartbeatAt),
+          ]),
+        )
+      : empty("No active worker telemetry is retained."),
+  );
+  node.append(workerSection);
+  const validation = section(
+    "Validation",
+    "Sounding Line evidence is shown without rerun, cancellation, or cleanup controls.",
+  );
+  const metrics = element("div", "grid");
+  Object.entries(totals ?? {}).forEach(([label, value]) => metrics.append(renderMetric(label, value)));
+  validation.append(metrics);
+  node.append(validation);
+  const testSection = section("Sounding Line runs", "Retained validation runs are independent deep-link resources.");
+  testSection.append(
+    runs.length
+      ? table(
+          ["Run", "Decision", "Observed"],
+          runs.map((run) => [
+            linkButton(run.id, `#/operations/runs/${encodeURIComponent(run.id)}`),
+            run.value?.finalDecision ?? "UNMEASURED",
+            dateText(run.observedAt),
+          ]),
+        )
+      : empty("No retained validation run is available."),
+  );
+  node.append(testSection);
+  return node;
+}
+async function renderSoundingLineProfile(id) {
+  const data = await request(`api/sounding-line/runs/${encodeURIComponent(id)}`);
+  const node = document.createDocumentFragment();
+  const profile = section(
+    `Sounding Line run ${data.run.id}`,
+    "Retained validation evidence; Bridgewatch provides no rerun, cancel, or cleanup control.",
+  );
+  profile.append(
+    detail([
+      ["Gate", data.run.value.gate],
+      ["State", data.run.value.state],
+      ["Decision", data.run.value.finalDecision],
+      ["Cleanup", data.run.value.cleanupState],
+      ["Source SHA", data.run.value.sourceSha],
+      ["Authority version", data.run.value.authorityVersion],
+      ["Authority boundary", data.run.value.authorityBoundary],
+      ["Candidate type", data.run.value.authorityMode],
+      ["Qualified base", data.run.value.qualifiedBaseSha],
+      ["Candidate tree", data.run.value.candidateTreeSha],
+      ["Predicted integration tree", data.run.value.predictedIntegrationTreeSha],
+      ["Plan digest", data.run.value.planDigest],
+      ["Train", data.run.value.trainId],
+      ["Evidence dispositions", JSON.stringify(data.run.value.evidenceDispositionCounts ?? {})],
+      ["Conservative fallback", data.run.value.semanticFallback],
+      ["Finalizer", data.run.value.finalizerAuthority],
+      ["Evidence digest", data.run.value.evidenceDigest],
+      ["Observed", dateText(data.run.observedAt)],
+      ["Evidence", (data.evidence ?? []).join("; ")],
+    ]),
+  );
+  node.append(profile);
+  const execution = section(
+    "Selected suites and execution",
+    "Per-node detail is retained only where the runtime projection exposes it; unavailable fields remain unmeasured.",
+  );
+  execution.append(
+    (data.run.value.nodes ?? []).length
+      ? table(
+          ["Suite", "State", "Wave", "Attempt", "Disposition", "Resources", "Root failure"],
+          data.run.value.nodes.map((test) => [
+            test.suiteId,
+            test.state,
+            test.wave ?? "UNMEASURED",
+            test.attempt,
+            test.evidenceDisposition ?? "UNMEASURED",
+            (test.resources ?? []).join(", ") || "UNMEASURED",
+            test.rootFailureId ?? "UNMEASURED",
+          ]),
+        )
+      : empty("No selected-suite detail is retained for this run."),
+  );
+  node.append(execution);
+  const train = section(
+    "Mainline train",
+    "Train cars and predicted integration trees are displayed only when the retained v1.4 plan carries them.",
+  );
+  train.append(
+    (data.run.value.trainCars ?? []).length
+      ? table(
+          ["Car", "State", "Candidate", "Candidate tree", "Predicted integration tree"],
+          data.run.value.trainCars.map((car) => [
+            car.id,
+            car.state ?? "UNMEASURED",
+            car.candidateSha ?? "UNMEASURED",
+            car.candidateTreeSha ?? "UNMEASURED",
+            car.predictedIntegrationTreeSha ?? "UNMEASURED",
+          ]),
+        )
+      : empty("No train-car detail is retained for this run."),
+  );
+  node.append(train);
+  const history = section("Run history", "Only retained observations associated with this run.");
+  history.append(eventList(data.history));
+  node.append(history);
+  return node;
+}
+async function renderGithub() {
+  const [branches, pulls, actions] = await Promise.all([
+    request("api/branches"),
+    request("api/pull-requests"),
+    request("api/actions"),
+  ]);
+  const node = document.createDocumentFragment();
+  const branchSection = section(
+    "Branches",
+    "Observed branch health and project association; no branch action is offered.",
+  );
+  branchSection.append(
+    filteredTable({
+      records: branches,
+      headers: ["Branch", "Association", "Health", "SHA"],
+      row: (branch) => [
+        linkButton(branch.name, `#/github/branches?name=${encodeURIComponent(branch.name)}`),
+        branch.project?.name ?? branch.projectId ?? "UNCLASSIFIED",
+        branch.health ?? branch.state ?? "UNMEASURED",
+        short(branch.headSha ?? branch.sha),
+      ],
+      matches: (branch) =>
+        searchText([branch.name, branch.project?.name, branch.projectId, branch.health, branch.state, branch.headSha, branch.sha]),
+      placeholder: "Search branches",
+      emptyMessage: "No branch observation is available.",
+    }),
+  );
+  node.append(branchSection);
+  const pullSection = section(
+    "Pull requests",
+    "Open and retained GitHub observations, displayed without merge controls.",
+  );
+  const pullControls = element("div", "filter-controls");
+  const pullSearch = document.createElement("input");
+  pullSearch.type = "search";
+  pullSearch.placeholder = "Search PRs";
+  pullSearch.setAttribute("aria-label", "Search PRs");
+  const pullState = document.createElement("select");
+  pullState.setAttribute("aria-label", "Pull request state");
+  ["Open", "Historical", "All"].forEach((label) => {
+    const option = document.createElement("option");
+    option.value = label.toUpperCase();
+    option.textContent = label;
+    pullState.append(option);
+  });
+  pullState.value = "ALL";
+  const pullResult = element("div", "filter-results");
+  const renderPulls = () => {
+    const query = pullSearch.value.trim().toLocaleLowerCase();
+    const retained = pulls.filter((pull) => {
+      const historical = pull.state !== "OPEN";
+      const stateMatch = pullState.value === "ALL" || (pullState.value === "OPEN" ? !historical : historical);
+      return stateMatch && (!query || searchText([pull.number, pull.title, pull.state, pull.headRef]).toLocaleLowerCase().includes(query));
+    });
+    pullResult.replaceChildren(
+      retained.length
+        ? table(
+            ["PR", "Title", "State", "Updated"],
+            retained.map((pull) => [
+              linkButton(`#${pull.number}`, `#/github/pull-requests/${pull.number}`),
+              pull.title,
+              pull.state ?? "OPEN",
+              dateText(pull.updatedAt),
+            ]),
+          )
+        : empty("No pull-request observation matches this view."),
+    );
+  };
+  pullSearch.addEventListener("input", renderPulls);
+  pullState.addEventListener("change", renderPulls);
+  pullControls.append(pullSearch, pullState);
+  pullSection.append(pullControls, pullResult);
+  renderPulls();
+  node.append(pullSection);
+  const actionsSection = section("Actions", "GitHub workflow observations only.");
+  actionsSection.append(
+    actions.length
+      ? table(
+          ["Workflow", "State", "Updated"],
+          actions.map((run) => [run.name ?? run.workflowName, run.conclusion ?? run.status, dateText(run.updatedAt)]),
+        )
+      : empty("No workflow observation is available."),
+  );
+  node.append(actionsSection);
+  return node;
+}
+async function renderPullRequestProfile(number) {
+  const data = await request(`api/pull-requests/${encodeURIComponent(number)}`);
+  const node = document.createDocumentFragment();
+  const profile = section(
+    `Pull request #${data.pullRequest.number}`,
+    "Read-only GitHub profile with explicit project, version, and phase association.",
+  );
+  profile.append(
+    detail([
+      ["Title", data.pullRequest.title],
+      ["State", data.pullRequest.state],
+      ["Draft", data.pullRequest.draft],
+      ["Author", data.pullRequest.author],
+      ["Created", dateText(data.pullRequest.createdAt)],
+      ["Updated", dateText(data.pullRequest.updatedAt)],
+      ["Closed", dateText(data.pullRequest.closedAt)],
+      ["Merged", dateText(data.pullRequest.mergedAt)],
+      ["Checks", data.pullRequest.checkState],
+      ["Mergeability", data.pullRequest.mergeableState],
+      ["Base branch", data.pullRequest.baseRef],
+      ["Base SHA", data.pullRequest.baseSha],
+      ["Head branch", data.pullRequest.headRef],
+      ["Head SHA", data.pullRequest.headSha],
+      ["Merge SHA", data.pullRequest.mergeSha],
+      ["Commit count", data.pullRequest.commitCount],
+      ["Changed files", data.pullRequest.changedFiles],
+      ["Additions", data.pullRequest.additions],
+      ["Deletions", data.pullRequest.deletions],
+      ["Projects", (data.associations?.projectIds ?? []).join(", ") || "UNCLASSIFIED"],
+      ["Versions", (data.associations?.versionIds ?? []).join(", ") || "UNMEASURED"],
+      ["Evidence", (data.evidence ?? []).join("; ")],
+    ]),
+  );
+  profile.append(externalLink("Open on GitHub", data.pullRequest.url));
+  node.append(profile);
+  const history = section("Pull-request history", "Retained state and check observations only.");
+  history.append(eventList(data.history));
+  node.append(history);
+  return node;
+}
+async function renderBranchProfile(query) {
+  const name = new URLSearchParams(query).get("name");
+  if (!name) return empty("A branch name is required for this profile.");
+  const data = await request(`api/branches/profile?name=${encodeURIComponent(name)}`);
+  const node = document.createDocumentFragment();
+  const profile = section(
+    data.branch.name,
+    "Read-only branch profile with staleness, divergence, and association evidence.",
+  );
+  profile.append(
+    detail([
+      ["Head SHA", data.branch.headSha],
+      ["Default SHA", data.branch.defaultSha],
+      ["Ahead", data.branch.ahead],
+      ["Behind", data.branch.behind],
+      ["Last activity", dateText(data.branch.lastActivityAt)],
+      ["Attention", data.branch.message],
+      ["Pull request", data.pullRequest ? `#${data.pullRequest.number}` : "UNMEASURED"],
+      ["Projects", (data.associations?.projectIds ?? []).join(", ") || "UNCLASSIFIED"],
+      ["Evidence", (data.evidence ?? []).join("; ")],
+    ]),
+  );
+  node.append(profile);
+  const history = section("Branch history", "Only retained divergence and lifecycle observations.");
+  history.append(eventList(data.history));
+  node.append(history);
+  return node;
+}
+async function renderAttention() {
+  const data = snapshot ?? (await request("api/summary"));
+  const node = document.createDocumentFragment();
+  const attention = section(
+    "Attention required",
+    "Root conditions are deduplicated, attributed, and never silently cleared.",
+  );
+  attention.append(renderAttentionList(data.attention));
+  node.append(attention);
+  return node;
+}
+async function renderHistory() {
+  const data = await request("api/history?limit=250");
+  const node = document.createDocumentFragment();
+  const history = section("Program history", "Detailed retained events can be compared across a bounded interval.");
+  const actions = element("div", "actions");
+  const from = document.createElement("input");
+  from.type = "datetime-local";
+  from.value = new Date(Date.now() - 86_400_000).toISOString().slice(0, 16);
+  const to = document.createElement("input");
+  to.type = "datetime-local";
+  to.value = new Date().toISOString().slice(0, 16);
+  const compare = element("button", "", "Compare interval");
+  compare.addEventListener("click", () => {
+    window.location.hash = `#/compare?from=${encodeURIComponent(new Date(from.value).toISOString())}&to=${encodeURIComponent(new Date(to.value).toISOString())}`;
+  });
+  actions.append(from, to, compare);
+  history.append(actions, filteredTable({
+    records: data.events ?? [],
+    headers: ["When", "Type", "Entity", "Summary"],
+    row: (event) => [
+      dateText(event.occurredAt ?? event.observedAt),
+      event.kind ?? "OBSERVED",
+      `${event.entityType ?? "Observation"}: ${event.entityId ?? "UNMEASURED"}`,
+      event.summary ?? "UNMEASURED",
+    ],
+    matches: (event) => searchText([event.kind, event.entityType, event.entityId, event.projectId, event.phaseId, event.summary]),
+    placeholder: "Search retained history",
+    emptyMessage: "No retained observations match this scope.",
+  }));
+  node.append(history);
+  return node;
+}
+async function renderComparison(parameters) {
+  const query = new URLSearchParams(parameters);
+  const data = await request(`api/compare?${query}`);
+  const node = document.createDocumentFragment();
+  const changed = data.changed ?? {};
+  const coarse = data.coarse ?? {};
+  const comparison = section(
+    "Historical comparison",
+    "Exact detail is distinguished from coarse retained history; no precision is invented.",
+  );
+  comparison.append(
+    detail([
+      ["Fidelity", data.fidelity],
+      ["From", data.from],
+      ["To", data.to],
+      [
+        "Changed projects",
+        coarse.changedProjectIds?.length ??
+          (changed.projectsDiscovered?.length ?? 0) + (changed.projectsCompleted?.length ?? 0),
+      ],
+      [
+        "Changed phases",
+        coarse.acceptedPhaseChanges ??
+          (changed.phasesStarted?.length ?? 0) +
+            (changed.phasesAccepted?.length ?? 0) +
+            (changed.phasesMerged?.length ?? 0),
+      ],
+      [
+        "Changed versions",
+        (changed.versionsDiscovered?.length ?? 0) +
+          (changed.versionsStarted?.length ?? 0) +
+          (changed.versionsAccepted?.length ?? 0),
+      ],
+    ]),
+  );
+  comparison.append(eventList(data.events));
+  node.append(comparison);
+  return node;
+}
+async function renderSources() {
+  const sources = await refreshSources();
+  const node = document.createDocumentFragment();
+  const sourceSection = section(
+    "Source health",
+    "Freshness, authorization state, cache age, retry timing, and degradation are explicit.",
+  );
+  const rows = sources.map((source) => [
+    linkButton(source.name, `#/sources/${encodeURIComponent(source.name)}`),
+    source.state,
+    source.configured ? "CONFIGURED" : "NOT CONFIGURED",
+    source.reachable === null ? "UNMEASURED" : String(source.reachable),
+    dateText(source.lastSuccessAt),
+    source.detail ?? "",
+  ]);
+  sourceSection.append(table(["Source", "State", "Setup", "Reachable", "Last success", "Detail"], rows));
+  node.append(sourceSection);
+  return node;
+}
+async function renderSourceProfile(name) {
+  const data = await request(`api/sources/${encodeURIComponent(name)}`);
+  const node = document.createDocumentFragment();
+  const profile = section(
+    `${data.source.name} source profile`,
+    "Source configuration, freshness, reachable state, cached evidence, and retry timing are explicit.",
+  );
+  profile.append(
+    detail([
+      ["State", data.source.state],
+      ["Configured", data.source.configured],
+      ["Authentication", data.source.authenticationState],
+      ["Reachable", data.source.reachable],
+      ["Last attempt", dateText(data.source.lastAttemptAt)],
+      ["Last success", dateText(data.source.lastSuccessAt)],
+      ["Next retry", dateText(data.source.nextRetryAt)],
+      ["Cache age (ms)", data.source.cacheAgeMs],
+      ["Rate-limit remaining", data.source.rateLimitRemaining],
+      ["Detail", data.source.detail],
+    ]),
+  );
+  node.append(profile);
+  const history = section("Source events", "Only retained availability observations are shown.");
+  history.append(eventList(data.recentEvents));
+  node.append(history);
+  return node;
+}
+const parseRoute = () => {
+  const raw = window.location.hash.replace(/^#/, "") || "/";
+  const [path, query = ""] = raw.split("?");
+  return { parts: path.split("/").filter(Boolean).map(decodeURIComponent), query };
+};
+async function renderRoute() {
+  routeHost.replaceChildren(element("p", "quiet", "Loading bounded observation..."));
+  const { parts, query } = parseRoute();
+  const station = parts[0] ?? "overview";
+  document
+    .querySelectorAll("[data-station]")
+    .forEach((link) => link.toggleAttribute("aria-current", link.dataset.station === station));
+  try {
+    let content;
+    if (station === "overview") content = renderOverview();
+    else if (station === "program") content = await renderProgram();
+    else if (station === "projects" && parts[2] === "versions")
+      content = await renderVersionProfile(parts[1], parts[3]);
+    else if (station === "projects" && parts[2] === "phases") content = await renderPhaseProfile(parts[1], parts[3]);
+    else if (station === "projects" && parts[1]) content = await renderProjectProfile(parts[1]);
+    else if (station === "projects") content = await renderProjects();
+    else if (station === "operations" && parts[1] === "runs" && parts[2])
+      content = await renderSoundingLineProfile(parts[2]);
+    else if (station === "operations") content = await renderOperations();
+    else if (station === "github" && parts[1] === "pull-requests" && parts[2])
+      content = await renderPullRequestProfile(parts[2]);
+    else if (station === "github" && parts[1] === "branches") content = await renderBranchProfile(query);
+    else if (station === "github") content = await renderGithub();
+    else if (station === "attention") content = await renderAttention();
+    else if (station === "history") content = await renderHistory();
+    else if (station === "compare") content = await renderComparison(query);
+    else if (station === "sources" && parts[1]) content = await renderSourceProfile(parts[1]);
+    else if (station === "sources") content = await renderSources();
+    else content = empty("Unknown station. Choose a Mission Control station above.");
+    routeHost.replaceChildren(content);
+  } catch (error) {
+    routeHost.replaceChildren(
       element(
         "p",
-        "quiet",
-        `${omitted} lower-priority or related event${omitted === 1 ? " is" : "s are"} available in Program history.`,
+        "empty error",
+        `${error instanceof Error ? error.message : "Observation unavailable"}. No state change was attempted.`,
       ),
     );
-}
-async function loadRecent(windowName = "visit") {
-  const since = windowName === "visit" ? currentLastSeen() : null;
-  const effectiveSince = since ?? new Date(Date.now() - twelveHours).toISOString();
-  document.querySelector("#last-check-meta").textContent = since
-    ? `Since browser-local visit: ${dateText(since)}`
-    : "Last 12 hours (no usable local visit cursor).";
-  try {
-    const result = await fetch(bridgewatchUrl(`api/history?since=${encodeURIComponent(effectiveSince)}`)).then(
-      (response) => (response.ok ? response.json() : { events: [] }),
-    );
-    renderHistory(result.events ?? [], "#last-check", { concise: true });
-  } catch {
-    renderHistory([], "#last-check", { concise: true });
   }
 }
-async function renderArchive(order = "chronological") {
-  const host = document.querySelector("#archive");
-  host.replaceChildren();
+const refreshBoard = async () => {
   try {
-    const projects = await fetch(bridgewatchUrl(`api/archive?order=${order}`)).then((response) =>
-      response.ok ? response.json() : [],
-    );
-    if (!projects.length)
-      return host.append(element("p", "quiet", "No completed project record is currently available."));
-    projects.forEach((project) => {
-      const row = element("article", "archive-item");
-      row.append(element("strong", "", `${project.name} / COMPLETE`), time(project.completionDate));
-      appendRow(row, "Final main", short(project.finalMainSha));
-      appendRow(row, "Final decision", text(project.finalDecision));
-      appendRow(row, "Phases", String(project.phases.length));
-      host.append(row);
-    });
+    snapshot = await request("api/summary");
+    document.querySelector("#meta").textContent =
+      `${snapshot.mode ?? "PRIVATE"} / GitHub ${snapshot.source?.state ?? "UNMEASURED"} / ${dateText(snapshot.source?.observedAt)}`;
   } catch {
-    host.append(element("p", "quiet", "Completed archive is currently unavailable."));
+    document.querySelector("#meta").textContent = "Dashboard unavailable; no observation claim is made.";
   }
-}
-async function renderTrends() {
-  const host = document.querySelector("#trends");
-  host.replaceChildren();
-  try {
-    const trends = await fetch(bridgewatchUrl("api/trends")).then((response) => (response.ok ? response.json() : null));
-    const accepted = trends?.acceptedTimeline ?? [];
-    if (!accepted.length)
-      return host.append(element("p", "quiet", "No accepted timestamp is currently recorded for a program trend."));
-    accepted.slice(-24).forEach((entry) => {
-      const row = element("article", "history-event");
-      row.append(element("strong", "", entry.summary), time(entry.at));
-      const counts = `Cumulative projects ${entry.projectsComplete}; phases ${entry.phasesAccepted}`;
-      row.append(element("p", "quiet", counts));
-      host.append(row);
-    });
-  } catch {
-    host.append(element("p", "quiet", "Program trend projection is currently unavailable."));
-  }
-}
-async function refreshSources() {
-  const response = await fetch(bridgewatchUrl("api/sources"));
-  const sources = await response.json();
-  const host = document.querySelector("#sources");
-  host.replaceChildren();
-  sources.forEach((source) => {
-    const row = element("article", "list-item");
-    row.append(element("strong", "", `${source.name}: ${source.state}`), time(source.observedAt));
-    host.append(row);
-  });
-}
-async function render(data) {
-  board = data;
-  document.querySelector("#meta").textContent =
-    `${data.mode} / GitHub ${data.source.state} / ${text(data.source.observedAt)}`;
-  renderProgram(data.program);
-  renderAttention(data.attention);
-  renderProjects();
-  renderWorkers(data.workers);
-  renderTests(data.tests);
-  renderPulls(data.github);
-  renderBranches(data.branches ?? []);
-  renderHistory(data.history?.recent ?? [], "#history");
-  await Promise.all([refreshSources(), loadRecent(), renderArchive(), renderTrends()]);
-  rememberVisit();
-}
-document.querySelectorAll("[data-tab]").forEach((button) =>
-  button.addEventListener("click", () => {
-    selectedTab = button.dataset.tab;
-    document
-      .querySelectorAll("[data-tab]")
-      .forEach((entry) => entry.setAttribute("aria-selected", String(entry === button)));
-    document.querySelector("#projects").setAttribute("aria-labelledby", button.id);
-    renderProjects();
-  }),
-);
-document.querySelectorAll("[data-history-window]").forEach((button) =>
-  button.addEventListener("click", () => {
-    void loadRecent(button.dataset.historyWindow);
-  }),
-);
-document.querySelectorAll("[data-archive-order]").forEach((button) =>
-  button.addEventListener("click", () => {
-    void renderArchive(button.dataset.archiveOrder);
-  }),
-);
-const refreshBoard = () =>
-  fetch(bridgewatchUrl("api/summary"))
-    .then((response) => response.json())
-    .then(render)
-    .catch(() => {
-      document.querySelector("#meta").textContent = "Dashboard unavailable; no observation claim is made.";
-    });
-void refreshBoard();
-setInterval(refreshBoard, 2_000);
+};
+window.addEventListener("hashchange", renderRoute);
+void refreshBoard().then(renderRoute);
+setInterval(() => {
+  void refreshBoard();
+}, 15_000);

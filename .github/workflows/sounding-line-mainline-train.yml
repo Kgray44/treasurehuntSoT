@@ -232,7 +232,7 @@ jobs:
         run: |
           $manifest = 'sounding-line-browser-cache/webkit-manifest.json'
           if ($env:CACHE_HIT -ne 'true') {
-            npx playwright install webkit
+            npx playwright install webkit ffmpeg
             if ($LASTEXITCODE -ne 0) { throw 'TRAIN_BROWSER_LAYER_BUILD_FAILED:webkit' }
             $expiry = ([DateTimeOffset]::UtcNow).AddDays(14).ToString('o')
             node scripts/sounding-line/v14/browser-layer-artifact.mjs publish --engines-json '["webkit"]' --source sounding-line-browser-cache/webkit --manifest $manifest --producer $env:SOUNDING_LINE_BROWSER_PRODUCER --expires-at $expiry

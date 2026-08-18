@@ -12,6 +12,15 @@ import { batchPhysicalWorkers } from "./physical-worker-batching.mjs";
 import { verifyTrain } from "./mainline-train.mjs";
 
 const execute = promisify(execFile);
+const candidateRefPattern = /^refs\/heads\/[A-Za-z0-9._/-]+$/u;
+const admittedCandidateRef = (car) => {
+  const candidateRef = car?.candidatePrIdentity?.ref;
+  if (candidateRef === null || candidateRef === undefined || candidateRef === "")
+    throw new Error("TRAIN_PREPARE_CANDIDATE_REF_REQUIRED");
+  if (typeof candidateRef !== "string" || !candidateRefPattern.test(candidateRef))
+    throw new Error("TRAIN_PREPARE_CANDIDATE_REF_INVALID");
+  return candidateRef;
+};
 const value = (args, flag) => {
   const index = args.indexOf(flag);
   const result = index < 0 ? undefined : args[index + 1];
@@ -74,6 +83,7 @@ export async function prepareMainlineTrain({
   buildPlanFn = buildPlan,
   preparationConcurrency = 3,
 }) {
+  for (const car of state?.train?.cars ?? []) admittedCandidateRef(car);
   if (!verifyTrain(state.train).valid || state.predicted?.status !== "READY")
     throw new Error("TRAIN_PREPARE_STATE_INVALID");
   if (state.train.cars.length !== state.predicted.cars.length) throw new Error("TRAIN_PREPARE_CAR_COUNT_MISMATCH");
@@ -92,6 +102,7 @@ export async function prepareMainlineTrain({
         car.predictedIntegrationTreeSha !== predicted.predictedIntegrationTreeSha
       )
         throw new Error("TRAIN_PREPARE_IDENTITY_MISMATCH");
+      const candidateRef = admittedCandidateRef(car);
       const directory = path.join(out, car.candidateId);
       const worktree = path.join(root, car.candidateId);
       await mkdir(directory, { recursive: true });
@@ -112,6 +123,7 @@ export async function prepareMainlineTrain({
           qualifiedBaseSha: car.predictedParentCommitSha,
           authorityMode: "V14_CANDIDATE",
           githubRef: "refs/heads/main",
+          candidateRef,
           predictedIdentity: {
             predictedParentCommitSha: car.predictedParentCommitSha,
             predictedParentTreeSha: car.predictedParentTreeSha,
@@ -120,9 +132,11 @@ export async function prepareMainlineTrain({
         });
         if (
           plan.authorityBoundary !== "V14_CANDIDATE_QUALIFICATION" ||
+          plan.sourceSha !== car.candidateHeadCommitSha ||
           plan.predictedIntegrationTreeSha !== car.predictedIntegrationTreeSha
         )
           throw new Error("TRAIN_PREPARE_PLAN_IDENTITY_MISMATCH");
+        if (plan.candidateRef !== candidateRef) throw new Error("TRAIN_PREPARE_CANDIDATE_REF_PLAN_MISMATCH");
         // The planner's sealed selection ledger is the authoritative worker
         // boundary. Preflight it before constructing the dependency layer so
         // a malformed plan cannot spend hosted preparation time before it is
@@ -133,6 +147,7 @@ export async function prepareMainlineTrain({
           candidateId: car.candidateId,
           position,
           candidateSha: car.candidateHeadCommitSha,
+          candidateRef,
           prNumber: car.candidatePrIdentity?.number,
           qualifiedBaseSha: car.predictedParentCommitSha,
           planPath: `${car.candidateId}/sounding-line-plan.json`,
@@ -173,6 +188,7 @@ export async function prepareMainlineTrain({
           for (const batch of batchPhysicalWorkers(grouped, {
             carId: car.candidateId,
             candidateSha: car.candidateHeadCommitSha,
+            candidateRef,
             executionSha: predicted.resultingIntegrationSha,
             // The compact integration bundle excludes every object reachable
             // from the candidate. Its only trusted remote prerequisite is the
