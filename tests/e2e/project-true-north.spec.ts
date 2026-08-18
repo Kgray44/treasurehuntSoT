@@ -13,7 +13,7 @@ test("public shell keeps a stable menu, profile access, and keyboard dismissal",
   const menu = page.locator(".product-menu-button");
   await expect(menu).toBeVisible();
   await menu.click();
-  const workspaceNavigation = page.getByRole("navigation", { name: "Voyagewright navigation" });
+  const workspaceNavigation = page.getByRole("navigation", { name: "Global navigation" });
   await expect(workspaceNavigation).toBeVisible();
   await expect(workspaceNavigation.getByRole("link", { name: "Explore Chronicles" })).toBeFocused();
   await page.keyboard.press("Escape");
