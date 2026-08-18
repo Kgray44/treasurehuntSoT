@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs";
 import { expect, test, type Browser, type BrowserContext, type Page } from "@playwright/test";
 
 import { db } from "../../src/lib/db";
+import { readVoyageLogSharingMetadata } from "../../src/community/voyage-log-public";
+import { generateMetadata as generateVoyageLogMetadata } from "../../src/app/community/voyage-logs/[slug]/page";
 
 type SignedInActor = Readonly<{
   accountId: string;
@@ -40,14 +42,16 @@ test.describe.serial("Harborlight Phase 3 persisted browser acceptance", () => {
   test("public discovery, Guides, metadata, keyboard operation, mobile layout, and reduced motion remain safe", async () => {
     const page = fixture.owner.page;
     await page.goto(`/community?q=${encodeURIComponent(fixture.listing.title)}`);
-    await expect(page.getByRole("heading", { name: "Find a public chart" })).toBeVisible();
-    await expect(page.getByRole("link", { name: fixture.listing.title })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Find your next bearing" })).toBeVisible();
+    await expect(
+      page.getByLabel("Public Community Harbor results").getByRole("link", { name: fixture.listing.title }),
+    ).toBeVisible();
     await expect(page.getByText("Hidden unlisted listing")).toHaveCount(0);
 
     await page.getByRole("searchbox", { name: "Search public Community Harbor" }).focus();
     await expect(page.getByRole("searchbox", { name: "Search public Community Harbor" })).toBeFocused();
     await page.getByRole("button", { name: "Clear search and filters" }).press("Enter");
-    await expect(page).toHaveURL(/\/community\?sort=FEATURED$/u);
+    await expect(page).toHaveURL(/\/community$/u);
     await page.goBack();
     await expect(page).toHaveURL(/q=/u);
 
@@ -111,6 +115,10 @@ test.describe.serial("Harborlight Phase 3 persisted browser acceptance", () => {
 
       const unlisted = await anonymous.request.get(`/community/voyage-logs/${voyageLogs.unlisted}`);
       expect(unlisted.ok(), await unlisted.text()).toBeTruthy();
+      expect(await readVoyageLogSharingMetadata(voyageLogs.unlisted)).toMatchObject({ visibility: "UNLISTED" });
+      expect(await generateVoyageLogMetadata({ params: Promise.resolve({ slug: voyageLogs.unlisted }) })).toMatchObject(
+        { robots: { index: false, follow: false, noarchive: true } },
+      );
       expect(await unlisted.text()).toMatch(/name="robots" content="noindex, nofollow, noarchive"/i);
       const discovery = await anonymous.request.get("/api/community/voyage-logs");
       expect(await discovery.text()).not.toContain(voyageLogs.unlisted);
@@ -255,7 +263,15 @@ async function createActor(browser: Browser, handle: string): Promise<SignedInAc
   });
   const account = await db.userAccount.create({ data: { status: "ACTIVE", legacyGameMasterId: gm.id } });
   await db.playerProfile.create({
-    data: { accountId: account.id, displayName: handle, status: "ACTIVE", claimedAt: new Date() },
+    data: {
+      accountId: account.id,
+      displayName: handle,
+      handle,
+      normalizedHandle: handle,
+      defaultVisibility: "PUBLIC",
+      status: "ACTIVE",
+      claimedAt: new Date(),
+    },
   });
   const profile = await db.communityProfile.create({
     data: { accountId: account.id, handle, normalizedHandle: handle, displayName: handle, visibility: "COMMUNITY" },
