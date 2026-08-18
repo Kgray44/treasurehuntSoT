@@ -15,6 +15,8 @@ const valueFor = (args, flag) => {
 };
 const git = async (root, ...args) => (await exec("git", ["-C", root, ...args])).stdout.trim();
 const json = async (root, name) => JSON.parse(await readFile(path.join(root, "testing", name), "utf8"));
+const trustedJson = async (root, trustedBaseSha, name) =>
+  JSON.parse(await git(root, "show", `${trustedBaseSha}:testing/${name}`));
 const featureCatalog = async (root, trustedBaseSha) => {
   const catalogRoot = "Development_Docs/Features/catalog";
   const files = (await git(root, "ls-tree", "-r", "--name-only", trustedBaseSha, "--", catalogRoot))
@@ -44,6 +46,9 @@ export async function generateV14FastChannelPlan({
     trainPolicy,
     authority,
     catalog,
+    trustedSuites,
+    trustedContracts,
+    trustedOwnership,
   ] = await Promise.all([
     json(root, "release-gates.json"),
     json(root, "suites.json"),
@@ -58,6 +63,9 @@ export async function generateV14FastChannelPlan({
     // Catalog records are optional corroboration, never candidate evidence.
     // Load them from the qualified base tree rather than this checkout.
     featureCatalog(root, baseSha),
+    trustedJson(root, baseSha, "suites.json"),
+    trustedJson(root, baseSha, "contracts.json"),
+    trustedJson(root, baseSha, "ownership.json"),
   ]);
   const gate = gates.gates.find((entry) => entry.id === gateId);
   if (!gate) throw new Error(`UNKNOWN_GATE:${gateId}`);
@@ -83,10 +91,13 @@ export async function generateV14FastChannelPlan({
     trustedPaths,
     trustedMainSha: baseSha,
     candidateSha,
-    suites: suites.suites,
-    contracts: contracts.contracts,
-    owners: ownership.owners,
-    featureCatalog: catalog,
+    // Only trusted-base descriptors may narrow selection. Candidate inventory
+    // remains available to ordinary registration checks, but cannot make a
+    // project look known merely by naming its own suite or owner.
+    suites: trustedSuites.suites.map((entry) => ({ ...entry, trusted: true })),
+    contracts: trustedContracts.contracts.map((entry) => ({ ...entry, trusted: true })),
+    owners: trustedOwnership.owners.map((entry) => ({ ...entry, trusted: true })),
+    featureCatalog: catalog.map((entry) => ({ ...entry, trusted: true })),
   });
   return selectV14Mainline({
     changedPaths,

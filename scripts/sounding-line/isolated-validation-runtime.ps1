@@ -567,7 +567,8 @@ function Start-OwnedValidationServer {
                 if ($identity.validationDatabase -eq $true -and $identity.nonceMatch -eq $true) { break }
                 $identity = $null
             } catch {
-                $statusCode = if ($_.Exception.Response) { [int]$_.Exception.Response.StatusCode } else { "unavailable" }
+                $response = $_.Exception.PSObject.Properties["Response"]
+                $statusCode = if ($response -and $response.Value) { [int]$response.Value.StatusCode } else { "unavailable" }
                 $lastIdentityProbe = "status=$statusCode"
                 $identity = $null
             }
@@ -777,6 +778,7 @@ $validationFailure = $null
 $finalizationFailures = @()
 $ownedValidationServer = $null
 $ownedProductionServer = $null
+$tideglassTaskRoot = $null
 $playwrightInvoked = $false
 $defaultBrowserSucceeded = $false
 $productionPerformanceSucceeded = $false
@@ -892,6 +894,110 @@ try {
     }
 
     if (-not $SkipBrowser) {
+        $selectedBrowserFiles = @(
+            $BrowserSelections |
+                ForEach-Object { @($_.files) } |
+                ForEach-Object { ([string]$_).Replace('\', '/') } |
+                Where-Object { $_ -match '^tests/e2e/.+\.spec\.ts$' }
+            $BrowserArgs |
+                ForEach-Object { ([string]$_).Replace('\', '/') } |
+                Where-Object { $_ -match '^tests/e2e/.+\.spec\.ts$' } |
+                Sort-Object -Unique
+        )
+        $tideglassBrowserFile = "tests/e2e/tideglass-phase3.spec.ts"
+        if ($selectedBrowserFiles -contains $tideglassBrowserFile) {
+            $unexpectedFiles = @($selectedBrowserFiles | Where-Object { $_ -notin @($tideglassBrowserFile, "tests/e2e/phase3-readonly-setup.setup.ts") })
+            if ($unexpectedFiles.Count -gt 0) {
+                throw "GOVERNED_TIDEGLASS_BROWSER_SELECTION_MIXED:$($unexpectedFiles -join ',')"
+            }
+            $tideglassParent = [System.IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA "ProjectTideglass\SoundingLine"))
+            $tideglassTaskRoot = [System.IO.Path]::GetFullPath(
+                (Join-Path $tideglassParent ("validation-" + $isolation.nonceHash.Substring(0, 16)))
+            )
+            $tideglassPrefix = $tideglassParent.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+            if (-not $tideglassTaskRoot.StartsWith($tideglassPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+                throw "GOVERNED_TIDEGLASS_TASK_ROOT_ESCAPED:$tideglassTaskRoot"
+            }
+            if (Test-Path -LiteralPath $tideglassTaskRoot) {
+                throw "GOVERNED_TIDEGLASS_TASK_ROOT_ALREADY_EXISTS:$tideglassTaskRoot"
+            }
+            $env:TIDEGLASS_PHASE3_TASK_ROOT = $tideglassTaskRoot
+            $env:TIDEGLASS_PHASE3_SOURCE_SHA = (& git -C $projectRoot rev-parse HEAD).Trim()
+            if ($env:TIDEGLASS_PHASE3_SOURCE_SHA -notmatch '^[0-9a-f]{40}$') {
+                throw "GOVERNED_TIDEGLASS_SOURCE_SHA_INVALID"
+            }
+            Write-Host "`n==> Preparing task-owned Tideglass browser fixture" -ForegroundColor Cyan
+            Invoke-ValidationStep -Name "Preparing task-owned Tideglass browser fixture" -Arguments @(
+                "scripts/tideglass/prepare-phase3-fixture.mjs"
+            )
+            $tideglassFixtureReceipt = Get-Content -Raw -LiteralPath (Join-Path $tideglassTaskRoot "reports\fixture-receipt.json") | ConvertFrom-Json
+            if ($tideglassFixtureReceipt.status -ne "TIDEGLASS_PHASE3_FIXTURE_READY" -or
+                [string]::IsNullOrWhiteSpace([string]$tideglassFixtureReceipt.fixtureChecksum) -or
+                [string]::IsNullOrWhiteSpace([string]$tideglassFixtureReceipt.databasePath)) {
+                throw "GOVERNED_TIDEGLASS_FIXTURE_RECEIPT_INVALID"
+            }
+            $tideglassDatabase = [System.IO.Path]::GetFullPath([string]$tideglassFixtureReceipt.databasePath)
+            $tideglassDatabasePrefix = $tideglassTaskRoot.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+            if (-not $tideglassDatabase.StartsWith($tideglassDatabasePrefix, [System.StringComparison]::OrdinalIgnoreCase) -or
+                -not (Test-Path -LiteralPath $tideglassDatabase -PathType Leaf)) {
+                throw "GOVERNED_TIDEGLASS_FIXTURE_DATABASE_REFUSED:$tideglassDatabase"
+            }
+            # Playwright's shared Phase 3 fixtures deliberately accept only the
+            # nonce-bound database copy created by this harness. Tideglass gets
+            # its synthetic data in a disposable project root, then materializes
+            # that data into the already-authorized isolated copy. The exact
+            # browser selection above prevents one project's fixture from being
+            # used by any unrelated browser case.
+            Copy-Item -LiteralPath $tideglassDatabase -Destination $isolatedDatabase -Force
+            foreach ($suffix in @("-wal", "-shm")) {
+                $destinationSidecar = "$isolatedDatabase$suffix"
+                Remove-Item -LiteralPath $destinationSidecar -Force -ErrorAction SilentlyContinue
+                $sourceSidecar = "$tideglassDatabase$suffix"
+                if (Test-Path -LiteralPath $sourceSidecar -PathType Leaf) {
+                    Copy-Item -LiteralPath $sourceSidecar -Destination $destinationSidecar -Force
+                }
+            }
+            if (-not (Test-Path -LiteralPath $isolatedDatabase -PathType Leaf)) {
+                throw "GOVERNED_TIDEGLASS_FIXTURE_MATERIALIZATION_FAILED:$isolatedDatabase"
+            }
+            $env:TIDEGLASS_PHASE3_FIXTURE_CHECKSUM = [string]$tideglassFixtureReceipt.fixtureChecksum
+            $env:DATABASE_URL = $expectedDatabaseUrl
+            # The Phase 3 read-only setup is shared infrastructure and signs in
+            # as the harness Captain. Add that standard development identity to
+            # the Tideglass-only synthetic database without replacing its data.
+            Invoke-ValidationStep -Name "Seeding shared Captain contract for Tideglass browser fixture" -Arguments @(
+                "node_modules/tsx/dist/cli.mjs",
+                "prisma/seed.ts",
+                "--ensure"
+            )
+            # /api/gm/status is part of that shared setup and resolves the
+            # legacy projection only from the task-owned copy. Keep this
+            # preparatory bridge narrow and re-verify its migration evidence.
+            Invoke-ValidationStep -Name "Migrating shared Captain contract for Tideglass browser fixture" -Arguments @(
+                "node_modules/tsx/dist/cli.mjs",
+                "scripts/migrate-legacy-companion.ts"
+            )
+            Invoke-ValidationStep -Name "Verifying shared Captain contract for Tideglass browser fixture" -Arguments @(
+                "node_modules/tsx/dist/cli.mjs",
+                "scripts/migrate-legacy-companion.ts",
+                "--verify"
+            )
+            Invoke-ValidationStep -Name "Preparing shared Captain playthrough contract for Tideglass browser fixture" -Arguments @(
+                "node_modules/tsx/dist/cli.mjs",
+                "scripts/verify-platform-backfill.ts",
+                "--prepare"
+            )
+            Invoke-ValidationStep -Name "Seeding shared Captain playthrough contract for Tideglass browser fixture" -Arguments @(
+                "node_modules/tsx/dist/cli.mjs",
+                "prisma/seed.ts",
+                "--ensure"
+            )
+            Invoke-ValidationStep -Name "Verifying shared Captain playthrough contract for Tideglass browser fixture" -Arguments @(
+                "node_modules/tsx/dist/cli.mjs",
+                "scripts/verify-platform-backfill.ts",
+                "--verify"
+            )
+        }
         Write-Host "`n==> Starting owned isolated validation server" -ForegroundColor Cyan
         $ownedValidationServer = Start-OwnedValidationServer
         $playwrightInvoked = $true
@@ -934,6 +1040,7 @@ try {
         Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer
         $ownedValidationServer = $null
         Assert-TcpPortAvailable -Port $validationServerPort
+        if ($tideglassTaskRoot) { $env:DATABASE_URL = $expectedDatabaseUrl }
         $defaultBrowserSucceeded = $true
     } else {
         Write-Host "`n==> Browser acceptance tests skipped by explicit non-browser validation mode" -ForegroundColor Yellow
@@ -1029,6 +1136,28 @@ try {
     if ($ownedProductionServer) {
         try { Stop-OwnedValidationServer -ServerOwnership $ownedProductionServer }
         catch { $finalizationFailures += "Owned production server cleanup failed: $($_.Exception.Message)" }
+    }
+    if ($tideglassTaskRoot) {
+        try {
+            $tideglassParent = [System.IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA "ProjectTideglass\SoundingLine"))
+            $tideglassPrefix = $tideglassParent.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+            $resolvedTideglassTaskRoot = [System.IO.Path]::GetFullPath($tideglassTaskRoot)
+            if (-not $resolvedTideglassTaskRoot.StartsWith($tideglassPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+                throw "GOVERNED_TIDEGLASS_TASK_ROOT_CLEANUP_REFUSED:$resolvedTideglassTaskRoot"
+            }
+            if (-not (Test-Path -LiteralPath $resolvedTideglassTaskRoot -PathType Container)) {
+                throw "GOVERNED_TIDEGLASS_TASK_ROOT_CLEANUP_MISSING:$resolvedTideglassTaskRoot"
+            }
+            Remove-Item -LiteralPath $resolvedTideglassTaskRoot -Recurse -Force
+            if (Test-Path -LiteralPath $resolvedTideglassTaskRoot) {
+                throw "GOVERNED_TIDEGLASS_TASK_ROOT_CLEANUP_INCOMPLETE:$resolvedTideglassTaskRoot"
+            }
+            @{ status = "CLEAN"; resource = "tideglass-phase3-task-root"; taskRoot = $resolvedTideglassTaskRoot } |
+                ConvertTo-Json -Compress |
+                Set-Content -LiteralPath (Join-Path $validationArtifacts "tideglass-task-root-cleanup.json") -Encoding utf8
+        } catch {
+            $finalizationFailures += "Tideglass task-root cleanup failed: $($_.Exception.Message)"
+        }
     }
     $portsReleased = $true
     foreach ($port in @($validationServerPort, 3200) | Select-Object -Unique) {
