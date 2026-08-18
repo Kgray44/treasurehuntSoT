@@ -8,6 +8,14 @@ last_reviewed: 2026-08-12
 
 # Project Deepwater
 
+## Phase 5 current governance baseline
+
+Phase 5, **Keep the Soundings**, is explicitly owner-authorized from accepted
+`origin/main` `60b89841986e66fbc2c0828489d38002a1617506`. Its current design,
+baseline, deterministic delta, validation record, and final-acceptance matrix
+institutionalize realization-drift detection without rewriting the
+source-bound evidence below. Sounding Line remains the sole release authority.
+
 ## Phase 4 accepted integration
 
 Phase 4 is accepted on protected `origin/main` as
@@ -18,7 +26,7 @@ returned `RELEASE_GO` with 38/38 mandatory receipts `PASSED` and `CLEAN`; the
 protected binding passed, and exact-main local proof passed seven sealed suites
 with clean runtime conformance. The integration record contains the exact
 source-bound evidence. The r9 paragraph below is a historical qualification
-snapshot. Phase 5 remains unauthorized.
+snapshot. At the time of that Phase 4 record, Phase 5 remained unauthorized.
 
 Project Deepwater is Voyagewright's capability-realization and systems-audit program. Phase 1 establishes the audit-only machine-readable inventory and control plane. Phase 2 traces the accepted priority queue, identifies exact loss points and root causes, and creates owner-assigned remediation packets without changing product behavior, schema, or data. Phase 3 reviews utilization across every governed capability, coordinates owner closure, and processes only independently mainline-safe remediation slices. Phase 4, Break the Surface, turns the accepted inventory into a source-current whole-product proof population while preserving explicit owner, provider, deployment, and protected-main boundaries.
 
@@ -38,7 +46,7 @@ Project Deepwater is Voyagewright's capability-realization and systems-audit pro
 - `reports/Project_Deepwater_Phase_4_Proof_Queue.json`
 - `reports/Project_Deepwater_Phase_5_Governance_Queue.json`
 
-Phase 4 is reconciled to protected `origin/main` at `cbf634d4d5db9cf47edebb89e005e8cc910068bd` after Wakebook Phase 1 protected-merged PR #41. Wakebook’s accepted Chronicle history consumers and Sounding Line registry updates add no Phase 4 capability or Feature Catalog denominator entry, but supersede r8. Renewed focused and affected-subsystem proof now passes on rebased source `054bd19b7da4f57cd8be0b39758a3cc03e43c3aa`: 26 direct Player/Captain/stream tests, governed `browser.helm` 3/3 with clean conformance, Deepwater 66/66, Drydock 196/196 plus migration rehearsal, Admiralty 34 direct tests/15-route validator/migrations, and Bridgewatch typecheck/24 tests/build. One r9 Phase 4 candidate is frozen from this reconciled base and awaits serialized Mainline Decision ownership. Two earlier hosted Mainline Decisions failed closed as `EVIDENCE_INVALID`, both solely on `browser.helm`; their finalizers cleaned up and those candidates are historical only. The underlying product repair retains Helm route recovery, canceled Player event-stream detachment, and visibility-safe waiting-room recovery. It accounts for accepted FT-036 Drydock Creator Studio Sea Trials and the accepted Admiralty surface without reopening either owner implementation or closure record. FT-036's catalog fragment remains `BRANCH_COMPLETE_NOT_MERGED` pending its separate owner-controlled record promotion. Homeport evidence remains explicitly carried from `b810e2d0c33cbafb8e4d02c19b9af0db94315783`. Homeport owner re-review remains `PENDING_OWNER_DECISION`; local proof neither records owner or product acceptance nor substitutes for a canonical hosted Mainline Decision. Phase 5 remains unauthorized.
+Phase 4 is reconciled to protected `origin/main` at `cbf634d4d5db9cf47edebb89e005e8cc910068bd` after Wakebook Phase 1 protected-merged PR #41. Wakebook’s accepted Chronicle history consumers and Sounding Line registry updates add no Phase 4 capability or Feature Catalog denominator entry, but supersede r8. Renewed focused and affected-subsystem proof now passes on rebased source `054bd19b7da4f57cd8be0b39758a3cc03e43c3aa`: 26 direct Player/Captain/stream tests, governed `browser.helm` 3/3 with clean conformance, Deepwater 66/66, Drydock 196/196 plus migration rehearsal, Admiralty 34 direct tests/15-route validator/migrations, and Bridgewatch typecheck/24 tests/build. One r9 Phase 4 candidate is frozen from this reconciled base and awaits serialized Mainline Decision ownership. Two earlier hosted Mainline Decisions failed closed as `EVIDENCE_INVALID`, both solely on `browser.helm`; their finalizers cleaned up and those candidates are historical only. The underlying product repair retains Helm route recovery, canceled Player event-stream detachment, and visibility-safe waiting-room recovery. It accounts for accepted FT-036 Drydock Creator Studio Sea Trials and the accepted Admiralty surface without reopening either owner implementation or closure record. FT-036's catalog fragment remains `BRANCH_COMPLETE_NOT_MERGED` pending its separate owner-controlled record promotion. Homeport evidence remains explicitly carried from `b810e2d0c33cbafb8e4d02c19b9af0db94315783`. Homeport owner re-review remains `PENDING_OWNER_DECISION`; local proof neither records owner or product acceptance nor substitutes for a canonical hosted Mainline Decision. This is historical Phase 4 context; Phase 5 is separately owner-authorized above.
 
 ## Current Phase 3 records
 
