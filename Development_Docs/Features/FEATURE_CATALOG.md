@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `f67dc4c28fa091cf86de57bfdb6a4ec1438076f4`
+Audited source commit: `b79fbfef8a7d33f83c80ca95fa7ccc9477772919`
 
 ## Status vocabulary
 
@@ -1602,4 +1602,4 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `f67dc4c28fa091cf86de57bfdb6a4ec1438076f4`
+Generation source commit: `b79fbfef8a7d33f83c80ca95fa7ccc9477772919`
