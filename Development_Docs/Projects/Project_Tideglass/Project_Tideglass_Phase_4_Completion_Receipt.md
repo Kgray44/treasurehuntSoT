@@ -27,3 +27,9 @@ the exact trusted-base classifier was reproduced. It still rejects the current
 candidate before worker execution for `README.md` and
 `scripts/tideglass/seed-phase3-fixture.mjs`; consequently this receipt remains
 unissued and no second authority run has been made.
+
+The later structural-supplement admission correction admits the fixture script,
+but its exact trusted-base classifier still rejects the required root
+`README.md` when the valid adjacent Admiralty and Community consumer paths are
+present. This receipt therefore remains unissued; no fresh authority run has
+been made against that known pre-worker rejection.

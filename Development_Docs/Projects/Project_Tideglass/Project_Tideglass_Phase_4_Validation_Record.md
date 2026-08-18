@@ -151,3 +151,21 @@ and produces the same two errors before workers or finalizers run. No fresh
 Mainline Decision was dispatched, because it would knowingly repeat that
 pre-worker rejection. A further trusted-main admission change or an approved
 alternate classifier is required before Phase 4 can refreeze a candidate.
+
+## Structural-supplement admission reconciliation
+
+The preserved branch subsequently incorporated accepted protected main through
+`e4a1f4e394a17b98e250799c61ba16035495c539`, including the
+structurally-proven project-supplement admission correction. The exact
+trusted-base classifier now admits the required synthetic fixture path
+`scripts/tideglass/seed-phase3-fixture.mjs`; it no longer reports that path or
+the Ledgerlight matrix as unknown scope.
+
+It still rejects only the root `README.md`. Phase 4 is structurally proven by
+its Project Tideglass documentation, `src/tideglass/**`, and
+`tests/tideglass/**`, but also legitimately changes adjacent Admiralty and
+Community consumers. The present root-supplement rule treats those additional
+candidate descriptors as a reason not to admit the README. That is a remaining
+trusted-main admission-policy defect, not a Tideglass product failure. The
+candidate must not remove required product documentation or cross-project seams
+to manufacture a narrower diff, and no fresh Mainline Decision was dispatched.
