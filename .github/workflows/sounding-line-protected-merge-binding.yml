@@ -150,7 +150,11 @@ jobs:
           $preflight = Get-Content -Raw maintenance-preflight.json | ConvertFrom-Json
           $errors = @($preflight.errors)
           $ordinaryScopeOnly = $preflight.classification.classification -eq 'MAINTENANCE_SCOPE_REJECTED' -and $errors.Count -gt 0 -and @($errors | Where-Object { $_ -notmatch '^MAINTENANCE_SCOPE_REJECTED:' }).Count -eq 0
-          $authorityScopeOnly = $preflight.classification.classification -eq 'MAINTENANCE_AUTHORITY_CHANGE_REJECTED' -and $errors.Count -gt 0 -and @($errors | Where-Object { $_ -notmatch '^MAINTENANCE_AUTHORITY_CHANGE_REJECTED:' }).Count -eq 0
+          # An authority-maintenance candidate is deliberately outside the
+          # verification-maintenance lane.  Both authority-change and ordinary
+          # scope rejections are expected here; the separate trusted authority
+          # preflight remains the sole admission decision for that lane.
+          $authorityScopeOnly = $preflight.classification.classification -eq 'MAINTENANCE_AUTHORITY_CHANGE_REJECTED' -and $errors.Count -gt 0 -and @($errors | Where-Object { $_ -notmatch '^MAINTENANCE_(AUTHORITY_CHANGE|SCOPE)_REJECTED:' }).Count -eq 0
           if ($ordinaryScopeOnly -or $authorityScopeOnly) {
             'maintenance=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
             exit 0
