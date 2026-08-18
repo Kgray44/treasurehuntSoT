@@ -13,6 +13,8 @@ export interface Config {
   BRIDGEWATCH_GITHUB_APP_INSTALLATION_ID?: string;
   BRIDGEWATCH_GITHUB_APP_PRIVATE_KEY_PATH?: string;
   BRIDGEWATCH_GITHUB_STATE_DIR?: string;
+  BRIDGEWATCH_GITHUB_CONSERVATION_RATIO: number;
+  BRIDGEWATCH_GITHUB_CRITICAL_RATIO: number;
   BRIDGEWATCH_REQUEST_TIMEOUT_MS: number;
   BRIDGEWATCH_SNAPSHOT_INTERVAL_MS: number;
   BRIDGEWATCH_SOUNDING_LINE_POLL_INTERVAL_MS: number;
@@ -44,6 +46,13 @@ const boundedInteger = (value: string | undefined, fallback: number, minimum: nu
   return parsed;
 };
 
+const ratio = (value: string | undefined, fallback: number) => {
+  const parsed = Number(value ?? fallback);
+  if (!Number.isFinite(parsed) || parsed <= 0 || parsed >= 1)
+    throw new Error("Bridgewatch GitHub ratio must be between zero and one");
+  return parsed;
+};
+
 export function loadConfig(input: Record<string, string | undefined> = process.env): Config {
   const repository = input.BRIDGEWATCH_REPOSITORY;
   if (!repository || !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repository))
@@ -67,6 +76,9 @@ export function loadConfig(input: Record<string, string | undefined> = process.e
     throw new Error("Non-loopback Bridgewatch hosting requires BRIDGEWATCH_ALLOW_EXTERNAL=true");
   if (!isLoopback && (!dashboardUsername || !dashboardPassword))
     throw new Error("Non-loopback Bridgewatch hosting requires dashboard authentication");
+  const conservationRatio = ratio(input.BRIDGEWATCH_GITHUB_CONSERVATION_RATIO, 0.3);
+  const criticalRatio = ratio(input.BRIDGEWATCH_GITHUB_CRITICAL_RATIO, 0.1);
+  if (criticalRatio > conservationRatio) throw new Error("Bridgewatch critical ratio cannot exceed conservation ratio");
   return {
     BRIDGEWATCH_HOST: host,
     BRIDGEWATCH_PORT: integer(input.BRIDGEWATCH_PORT, 4318),
@@ -80,6 +92,8 @@ export function loadConfig(input: Record<string, string | undefined> = process.e
     BRIDGEWATCH_GITHUB_APP_INSTALLATION_ID: input.BRIDGEWATCH_GITHUB_APP_INSTALLATION_ID,
     BRIDGEWATCH_GITHUB_APP_PRIVATE_KEY_PATH: input.BRIDGEWATCH_GITHUB_APP_PRIVATE_KEY_PATH,
     BRIDGEWATCH_GITHUB_STATE_DIR: input.BRIDGEWATCH_GITHUB_STATE_DIR,
+    BRIDGEWATCH_GITHUB_CONSERVATION_RATIO: conservationRatio,
+    BRIDGEWATCH_GITHUB_CRITICAL_RATIO: criticalRatio,
     BRIDGEWATCH_REQUEST_TIMEOUT_MS: integer(input.BRIDGEWATCH_REQUEST_TIMEOUT_MS, 8000),
     BRIDGEWATCH_SNAPSHOT_INTERVAL_MS: boundedInteger(input.BRIDGEWATCH_SNAPSHOT_INTERVAL_MS, 60_000, 10_000, 3_600_000),
     BRIDGEWATCH_SOUNDING_LINE_POLL_INTERVAL_MS: boundedInteger(

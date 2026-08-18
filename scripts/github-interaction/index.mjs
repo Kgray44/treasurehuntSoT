@@ -55,6 +55,11 @@ export function nextPollInterval({
   return Math.max(minimumMs * multiplier, serverPollIntervalMs, retryAfterMs, resetDelay);
 }
 
+export function jitteredPollInterval(intervalMs, jitterRatio = 0.1, random = Math.random) {
+  const boundedRatio = Math.max(0, Math.min(0.25, Number(jitterRatio) || 0));
+  return Math.max(1_000, Math.round(intervalMs * (1 + (random() * 2 - 1) * boundedRatio)));
+}
+
 function defaultStateDir(repository) {
   const safe = fingerprint(repository).slice(0, 16);
   if (process.env.VOYAGEWRIGHT_GITHUB_STATE_DIR) return resolve(process.env.VOYAGEWRIGHT_GITHUB_STATE_DIR, safe);
@@ -110,6 +115,7 @@ export class SharedRuntimeState {
     resource = "core",
     headers = {},
     source = "response",
+    thresholds = DEFAULT_THRESHOLDS,
     now = new Date().toISOString(),
   }) {
     const lower = Object.fromEntries(Object.entries(headers).map(([key, value]) => [key.toLowerCase(), value]));
@@ -126,7 +132,7 @@ export class SharedRuntimeState {
         principalFingerprint: pool.principalFingerprint,
         resources: {},
       });
-      poolState.resources[`${transport}:${resource}`] = {
+      const observed = {
         limit,
         remaining,
         used: Number.isFinite(used) ? used : null,
@@ -135,9 +141,26 @@ export class SharedRuntimeState {
         observedAt: now,
         source,
       };
+      poolState.resources[`${transport}:${resource}`] = { ...observed, mode: rateMode(observed, thresholds) };
       state.observedAt = now;
       await atomicJson(this.file, state);
       return poolState.resources[`${transport}:${resource}`];
+    });
+  }
+  async annotate({ pool, resourceKey, patch }) {
+    return withFileLock(join(this.directory, "locks"), "rate-state", async () => {
+      const state = await this.load();
+      const poolState = (state.pools[pool.id] ??= {
+        kind: pool.kind,
+        repository: pool.repository,
+        principalFingerprint: pool.principalFingerprint,
+        resources: {},
+      });
+      const existing = poolState.resources[resourceKey] ?? { limit: null, remaining: null, used: null, resetAt: null };
+      poolState.resources[resourceKey] = { ...existing, ...patch, observedAt: new Date().toISOString() };
+      state.observedAt = new Date().toISOString();
+      await atomicJson(this.file, state);
+      return poolState.resources[resourceKey];
     });
   }
   async recordTelemetry(name, increment = 1) {
@@ -303,6 +326,7 @@ export class GitHubInteractionClient {
     runtime = new SharedRuntimeState(repository),
     fetchImpl = fetch,
     requestTimeoutMs = 15_000,
+    thresholds = DEFAULT_THRESHOLDS,
   }) {
     this.repository = repository;
     this.apiBase = validateApiBase(apiBase);
@@ -312,6 +336,7 @@ export class GitHubInteractionClient {
     this.cache = new SharedCache(runtime);
     this.fetch = fetchImpl;
     this.requestTimeoutMs = Number.isInteger(requestTimeoutMs) && requestTimeoutMs > 0 ? requestTimeoutMs : 15_000;
+    this.thresholds = { ...DEFAULT_THRESHOLDS, ...thresholds };
   }
   async request({
     method = "GET",
@@ -330,7 +355,7 @@ export class GitHubInteractionClient {
     const resourceKey = method === "POST" && path === "/graphql" ? "graphql:graphql" : "rest:core";
     const state = await this.runtime.load();
     const record = state.pools?.[this.pool.id]?.resources?.[resourceKey] ?? null;
-    const mode = rateMode(record);
+    const mode = rateMode(record, this.thresholds);
     if (!mutation && mode === "EXHAUSTED") {
       const cached = await this.cache.get(scope, freshness);
       if (cached?.fresh) {
@@ -338,15 +363,19 @@ export class GitHubInteractionClient {
         return { body: cached.body, cached: true, deferred: true, headers: cached.headers ?? {} };
       }
       await this.runtime.recordTelemetry("rate_deferred_operations");
-      throw new Error("GITHUB_PRIMARY_RATE_EXHAUSTED");
+      const error = new Error("GITHUB_PRIMARY_RATE_EXHAUSTED");
+      error.classification = "PRIMARY_EXHAUSTED";
+      throw error;
     }
     const cacheable = !mutation && (method === "GET" || path === "/graphql");
     return withFileLock(join(this.runtime.directory, "locks"), `${method}:${this.cache.key(scope)}`, async () => {
       const cached = cacheable ? await this.cache.get(scope, freshness) : null;
       if (cached?.fresh) {
         await this.runtime.recordTelemetry("cache_hits");
+        await this.runtime.recordTelemetry("live_requests_avoided");
         return { body: cached.body, cached: true, headers: cached.headers ?? {} };
       }
+      if (cacheable) await this.runtime.recordTelemetry("cache_misses");
       const token = this.tokenProvider ? await this.tokenProvider() : null;
       const headers = {
         accept,
@@ -355,6 +384,9 @@ export class GitHubInteractionClient {
         ...(token ? { authorization: `Bearer ${token}` } : {}),
         ...(body ? { "content-type": "application/json" } : {}),
         ...(cached?.etag ? { "if-none-match": cached.etag } : {}),
+        ...(!cached?.etag && cached?.headers?.["last-modified"]
+          ? { "if-modified-since": cached.headers["last-modified"] }
+          : {}),
       };
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(new Error("GITHUB_REQUEST_TIMEOUT")), this.requestTimeoutMs);
@@ -376,6 +408,7 @@ export class GitHubInteractionClient {
         transport: path === "/graphql" ? "graphql" : "rest",
         resource,
         headers: headersObserved,
+        thresholds: this.thresholds,
       });
       if (response.status === 304 && cached) {
         await this.runtime.recordTelemetry("conditional_304s");
@@ -383,12 +416,46 @@ export class GitHubInteractionClient {
       }
       const text = await response.text();
       if (!response.ok) {
-        await this.runtime.recordTelemetry(isSecondary(response, text) ? "secondary_limit_events" : "request_failures");
+        const secondary = isSecondary(response, text);
+        const retryMs = retryAfterMs(headersObserved);
+        await this.runtime.recordTelemetry(secondary ? "secondary_limit_events" : "request_failures");
+        if (secondary || retryMs)
+          await this.runtime.annotate({
+            pool: this.pool,
+            resourceKey: `${path === "/graphql" ? "graphql" : "rest"}:${resource}`,
+            patch: {
+              retryAfterUntil: retryMs ? new Date(Date.now() + retryMs).toISOString() : null,
+              errorClassification: secondary ? "SECONDARY_LIMITED" : "RETRY_AFTER_ACTIVE",
+            },
+          });
         const error = new Error(`GITHUB_REQUEST_FAILED:${response.status}:${redact(text).slice(0, 300)}`);
-        error.retryAfterMs = retryAfterMs(headersObserved);
+        error.retryAfterMs = retryMs;
+        error.classification = secondary
+          ? "SECONDARY_LIMITED"
+          : response.status === 403
+            ? "AUTHORIZATION_FAILED"
+            : "REST_ENDPOINT_FAILED";
         throw error;
       }
       const parsed = text ? JSON.parse(text) : null;
+      const graphRate = path === "/graphql" && parsed?.data?.rateLimit;
+      if (graphRate && Number.isFinite(Number(graphRate.limit)) && Number.isFinite(Number(graphRate.remaining))) {
+        await this.runtime.observe({
+          pool: this.pool,
+          transport: "graphql",
+          resource: "graphql",
+          source: "graphql-rateLimit",
+          thresholds: this.thresholds,
+          headers: {
+            "x-ratelimit-limit": String(graphRate.limit),
+            "x-ratelimit-remaining": String(graphRate.remaining),
+            "x-ratelimit-used": String(graphRate.used ?? ""),
+            "x-ratelimit-reset": String(Math.floor(Date.parse(graphRate.resetAt) / 1000)),
+          },
+        });
+        if (Number.isFinite(Number(graphRate.cost)))
+          await this.runtime.recordTelemetry("graphql_cost", Number(graphRate.cost));
+      }
       if (cacheable)
         await this.cache.put(scope, {
           poolId: this.pool.id,

@@ -257,6 +257,8 @@ export class GithubCollector {
   private rateMode: "NORMAL" | "CONSERVATION" | "CRITICAL" | "EXHAUSTED" | "UNKNOWN" = "UNKNOWN";
   private readonly interaction: GitHubInteractionClient;
   private readonly appAuth: GitHubAppAuth;
+  private readonly sharedRuntime: SharedRuntimeState;
+  private readonly poolId: string;
 
   constructor(
     private readonly config: Config,
@@ -290,17 +292,23 @@ export class GithubCollector {
         installationId: config.BRIDGEWATCH_GITHUB_APP_INSTALLATION_ID,
       }),
     };
+    this.poolId = pool.id;
+    this.sharedRuntime = new SharedRuntimeState(config.BRIDGEWATCH_REPOSITORY, config.BRIDGEWATCH_GITHUB_STATE_DIR);
     this.interaction = new GitHubInteractionClient({
       repository: config.BRIDGEWATCH_REPOSITORY,
       apiBase: config.BRIDGEWATCH_GITHUB_API,
       pool,
-      runtime: new SharedRuntimeState(config.BRIDGEWATCH_REPOSITORY, config.BRIDGEWATCH_GITHUB_STATE_DIR),
+      runtime: this.sharedRuntime,
       tokenProvider: this.appAuth.configured()
         ? async () => (await this.appAuth.token()).token
         : config.BRIDGEWATCH_GITHUB_TOKEN
           ? async () => config.BRIDGEWATCH_GITHUB_TOKEN ?? null
           : null,
       requestTimeoutMs: config.BRIDGEWATCH_REQUEST_TIMEOUT_MS,
+      thresholds: {
+        conservation: config.BRIDGEWATCH_GITHUB_CONSERVATION_RATIO,
+        critical: config.BRIDGEWATCH_GITHUB_CRITICAL_RATIO,
+      },
     });
   }
 
@@ -375,9 +383,10 @@ export class GithubCollector {
       };
       this.store.put("github:snapshot", snapshot, null, snapshot.observedAt);
       this.store.replaceGithubObservations(snapshot, snapshot.observedAt);
+      const interactionHealth = await this.interactionHealth();
       this.store.upsertSourceObservation({
         name: "github",
-        state: "HEALTHY",
+        state: this.githubSourceState(),
         configured: Boolean(this.config.BRIDGEWATCH_GITHUB_TOKEN) || this.appAuth.configured(),
         reachable: true,
         lastAttemptAt: attemptedAt,
@@ -399,6 +408,9 @@ export class GithubCollector {
             ? "ACTIVE"
             : "CONFIGURED"
           : "NOT_CONFIGURED",
+        restRatePercent: interactionHealth.restRatePercent,
+        graphqlRatePercent: interactionHealth.graphqlRatePercent,
+        githubTelemetry: interactionHealth.metrics,
         authenticationState: this.appAuth.configured()
           ? "TOKEN_CONFIGURED"
           : this.config.BRIDGEWATCH_GITHUB_TOKEN
@@ -411,6 +423,7 @@ export class GithubCollector {
       const detail =
         error instanceof Error ? error.message.replace(/[\r\n]+/gu, " ").slice(0, 500) : "GitHub refresh failed";
       const cacheAgeMs = cached ? Math.max(0, Date.now() - Date.parse(cached.observedAt)) : null;
+      const interactionHealth = await this.interactionHealth();
       this.store.upsertSourceObservation({
         name: "github",
         state: cached ? "DEGRADED" : "UNAVAILABLE",
@@ -435,6 +448,9 @@ export class GithubCollector {
             ? "ACTIVE"
             : "CONFIGURED"
           : "NOT_CONFIGURED",
+        restRatePercent: interactionHealth.restRatePercent,
+        graphqlRatePercent: interactionHealth.graphqlRatePercent,
+        githubTelemetry: interactionHealth.metrics,
         authenticationState: this.appAuth.configured()
           ? "TOKEN_CONFIGURED"
           : this.config.BRIDGEWATCH_GITHUB_TOKEN
@@ -443,6 +459,36 @@ export class GithubCollector {
       });
       return cached;
     }
+  }
+
+  private async interactionHealth(): Promise<{
+    restRatePercent: number | null;
+    graphqlRatePercent: number | null;
+    metrics: Record<string, number>;
+  }> {
+    const status = (await this.sharedRuntime.status()) as {
+      state?: { pools?: Record<string, { resources?: Record<string, { limit?: unknown; remaining?: unknown }> }> };
+      telemetry?: { metrics?: Record<string, number> };
+    };
+    const resources = status.state?.pools?.[this.poolId]?.resources ?? {};
+    const percent = (record: { limit?: unknown; remaining?: unknown } | undefined) => {
+      const limit = Number(record?.limit);
+      const remaining = Number(record?.remaining);
+      return Number.isFinite(limit) && limit > 0 && Number.isFinite(remaining)
+        ? Math.round((remaining / limit) * 10_000) / 100
+        : null;
+    };
+    return {
+      restRatePercent: percent(resources["rest:core"]),
+      graphqlRatePercent: percent(resources["graphql:graphql"]),
+      metrics: status.telemetry?.metrics ?? {},
+    };
+  }
+
+  private githubSourceState(): "HEALTHY" | "CONSERVATION" | "DEGRADED" {
+    const mode = this.rateMode;
+    if (mode === "CONSERVATION") return "CONSERVATION";
+    return mode === "CRITICAL" || mode === "EXHAUSTED" ? "DEGRADED" : "HEALTHY";
   }
 
   private async collectBranches(
@@ -527,11 +573,17 @@ export class GithubCollector {
     if (Number.isInteger(limit) && limit > 0) this.rateLimitLimit = limit;
     const reset = Number(response.headers["x-ratelimit-reset"]);
     if (Number.isFinite(reset) && reset > 0) this.rateLimitResetAt = new Date(reset * 1000).toISOString();
-    this.rateMode = rateMode({
-      limit: this.rateLimitLimit,
-      remaining: this.rateLimitRemaining,
-      resetAt: this.rateLimitResetAt,
-    });
+    this.rateMode = rateMode(
+      {
+        limit: this.rateLimitLimit,
+        remaining: this.rateLimitRemaining,
+        resetAt: this.rateLimitResetAt,
+      },
+      {
+        conservation: this.config.BRIDGEWATCH_GITHUB_CONSERVATION_RATIO,
+        critical: this.config.BRIDGEWATCH_GITHUB_CRITICAL_RATIO,
+      },
+    );
     const value = safeCacheValue(key, response.body) as T;
     this.store.put(`github:${key}`, value, response.headers.etag ?? prior?.etag ?? null);
     return value;
@@ -549,7 +601,7 @@ export class GithubCollector {
       const response = await this.interaction.graphql<{
         data?: { repository?: { pullRequests?: { nodes?: Array<Record<string, unknown>> } } };
       }>(
-        "query BridgewatchPullChecks($owner:String!,$name:String!){repository(owner:$owner,name:$name){pullRequests(first:100,states:OPEN,orderBy:{field:UPDATED_AT,direction:DESC}){nodes{number commits(last:1){nodes{commit{checkSuites(first:100){nodes{status conclusion}}}}}}}}}",
+        "query BridgewatchPullChecks($owner:String!,$name:String!){rateLimit{limit remaining used resetAt cost} repository(owner:$owner,name:$name){pullRequests(first:100,states:OPEN,orderBy:{field:UPDATED_AT,direction:DESC}){nodes{number commits(last:1){nodes{commit{checkSuites(first:100){nodes{status conclusion}}}}}}}}}",
         { owner, name },
         {
           freshness: "SHORT",
