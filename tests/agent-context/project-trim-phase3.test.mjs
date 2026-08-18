@@ -72,6 +72,25 @@ test("phase 3 startup discovers the retained Phase 2 accepted capsule and seeds 
   ]);
 });
 
+test("read-only Phase 4 startup discovers the landed Phase 3 capsule without historical reconstruction", () => {
+  const packet = buildPacket(root, {
+    id: "project-trim-phase4-startup-proof",
+    project: "Project Trim",
+    increment: "Phase 4 - Read-only startup proof",
+    taskClass: "product-phase",
+    paths: ["scripts/agent-context/logbook.mjs"],
+    objective: "Prove the accepted Phase 3 plateau can seed a future startup.",
+  });
+  assert.equal(packet.priorPlateau.status, "ACCEPTED_CAPSULE_BOUND");
+  assert.equal(
+    packet.priorPlateau.pointer.path,
+    "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_3_Accepted_Capsule.json",
+  );
+  assert.equal(packet.priorPlateau.acceptedMainSha, "347e00fdb04939a3ff6ba143275232dcdd45170a");
+  assert.equal(packet.priorPlateau.acceptedTreeSha, "97edfa04cd4fb4c4e92cebd0d74ca3712753aab7");
+  assert.equal(packet.priorAcceptedStatus.path, packet.priorPlateau.pointer.path);
+});
+
 test("read and search ledgers reuse only unchanged complete, non-sensitive knowledge", () => {
   const logbook = createLogbook("phase3-ledger", "packet-digest");
   recordRead(logbook, {

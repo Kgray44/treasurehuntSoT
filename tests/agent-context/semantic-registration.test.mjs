@@ -24,7 +24,7 @@ test("Project Trim semantic registration keeps known agent-context work bounded 
   const phase3Cases = registry.cases.filter(
     (entry) => entry.file === "tests/agent-context/project-trim-phase3.test.mjs",
   );
-  assert.equal(phase3Cases.length, 6);
+  assert.equal(phase3Cases.length, 7);
   assert.ok(phase3Cases.every((entry) => entry.suiteId === "unit.agent-context"));
   assert.ok(phase3Cases.every((entry) => entry.owner === "project-trim"));
   assert.ok(phase3Cases.every((entry) => entry.contracts.includes("project-trim.minimum-sufficient-context")));

@@ -667,8 +667,12 @@ function ownershipSlice(closure) {
 function priorPlateau(root, input) {
   const discoveredPath =
     input.acceptedCapsulePath ??
-    (input.project === "Project Trim" && /^Phase 3(?:\b|\s)/u.test(input.increment ?? "")
-      ? "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Accepted_Capsule.json"
+    (input.project === "Project Trim"
+      ? /^Phase 4(?:\b|\s)/u.test(input.increment ?? "")
+        ? "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_3_Accepted_Capsule.json"
+        : /^Phase 3(?:\b|\s)/u.test(input.increment ?? "")
+          ? "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Accepted_Capsule.json"
+          : null
       : null);
   if (discoveredPath && existsSync(path.join(root, discoveredPath))) {
     const capsule = readJson(root, discoveredPath, null);
