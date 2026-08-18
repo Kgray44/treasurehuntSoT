@@ -365,3 +365,23 @@ export {
   sanitize,
   validatePacket,
 };
+
+export {
+  CAPSULE_SCHEMA_VERSION,
+  EXPANSION_CLASSES as LOGBOOK_EXPANSION_CLASSES,
+  LOGBOOK_GENERATOR_VERSION,
+  LOGBOOK_SCHEMA_VERSION,
+  attachLogbook,
+  buildAcceptedCapsule,
+  buildProvisionalCapsule,
+  buildWorkstreamSlice,
+  createLogbook,
+  delegationDecision,
+  readReuseDecision,
+  recordExpansion,
+  recordRead,
+  recordSearch,
+  searchReuseDecision,
+  validateCapsule,
+  validateDistilledReturn,
+} from "./logbook.mjs";
