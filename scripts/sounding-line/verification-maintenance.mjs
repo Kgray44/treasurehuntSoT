@@ -17,6 +17,14 @@ const glob = (pattern) =>
     "u",
   );
 const matchesAny = (file, patterns) => patterns.some((pattern) => glob(pattern).test(file));
+const structurallyCollidesWithTrustedScope = (file, trustedPolicy) => {
+  const candidate = String(file).toLowerCase();
+  return (trustedPolicy?.ordinaryCandidateEligiblePathGlobs ?? []).some((pattern) => {
+    if (!pattern.endsWith("/**") || pattern.slice(0, -3).includes("*")) return false;
+    const prefix = pattern.slice(0, -3).toLowerCase();
+    return candidate.startsWith(prefix) && candidate[prefix.length] && candidate[prefix.length] !== "/";
+  });
+};
 const execute = promisify(execFile);
 const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
 const by = (items, key) => new Map((items ?? []).map((item) => [item?.[key], item]));
@@ -265,7 +273,8 @@ export function classifyOrdinaryCandidate({
           ? [...registrationPaths(trustedPolicy), ...(registrationInputs(trustedPolicy)?.ancillaryPathGlobs ?? [])]
           : []),
       ]) &&
-      !structurallyAdmitsProjectPath(file, projectDiscovery)
+      (!structurallyAdmitsProjectPath(file, projectDiscovery) ||
+        structurallyCollidesWithTrustedScope(file, trustedPolicy))
     )
       errors.push(`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${file}`);
   }

@@ -157,6 +157,26 @@ test("structural admission permits correlated new project scripts but not a scri
   assert.equal(rejected.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
 });
 
+test("structural admission rejects a prospective project that collides with a trusted project root", () => {
+  const collisionPolicy = {
+    ...policy,
+    ordinaryCandidateEligiblePathGlobs: [
+      ...policy.ordinaryCandidateEligiblePathGlobs,
+      "Development_Docs/Programs/Deepwater/**",
+      "scripts/deepwater/**",
+    ],
+  };
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: collisionPolicy,
+    changedPaths: ["Development_Docs/Programs/DeepwaterEvil/Design.md", "scripts/deepwater-evil/check.mjs"],
+  });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
+  assert.deepEqual(result.errors, [
+    "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:Development_Docs/Programs/DeepwaterEvil/Design.md",
+    "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:scripts/deepwater-evil/check.mjs",
+  ]);
+});
+
 test("ambiguity, missing tests, migration, security, and multiple projects remain conservative", () => {
   const ambiguous = discoverProjects({
     candidatePaths: asterismPaths,
