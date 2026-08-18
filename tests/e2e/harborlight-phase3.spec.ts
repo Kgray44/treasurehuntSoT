@@ -41,7 +41,7 @@ test.describe.serial("Harborlight Phase 3 persisted browser acceptance", () => {
     const page = fixture.owner.page;
     await page.goto(`/community?q=${encodeURIComponent(fixture.listing.title)}`);
     await expect(page.getByRole("heading", { name: "Find your next bearing" })).toBeVisible();
-    await expect(page.getByRole("link", { name: fixture.listing.title })).toBeVisible();
+    await expect(page.getByRole("link", { name: fixture.listing.title }).first()).toBeVisible();
     await expect(page.getByText("Hidden unlisted listing")).toHaveCount(0);
 
     await page.getByRole("searchbox", { name: "Search public Community Harbor" }).focus();
