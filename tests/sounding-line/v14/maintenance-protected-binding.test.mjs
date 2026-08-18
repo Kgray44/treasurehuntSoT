@@ -385,7 +385,7 @@ test("the protected binding treats only authority-plus-scope maintenance rejecti
   assert.match(workflow, /\$authorityAndScopeOnly = \$errors\.Count -gt 0/);
   assert.match(workflow, /\^\(MAINTENANCE_AUTHORITY_CHANGE_REJECTED\|MAINTENANCE_SCOPE_REJECTED\):/);
   assert.match(workflow, /\^MAINTENANCE_AUTHORITY_CHANGE_REJECTED:/);
-  assert.match(workflow, /\.github\/workflows\/sounding-line-protected-merge-binding\.yml/);
+  assert.match(workflow, /bindingPreflightPaths/);
   const authorityBinding = workflow.slice(workflow.indexOf("bind-authority-maintenance:"));
   assert.match(authorityBinding, /actions\/runs\?event=workflow_dispatch&per_page=100/);
   assert.doesNotMatch(authorityBinding, /head_sha=\$env:BASE_SHA/);
