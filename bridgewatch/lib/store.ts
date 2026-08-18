@@ -215,6 +215,14 @@ const migrations = [
       ALTER TABLE source_observations ADD COLUMN app_installation_health TEXT;
       `,
   },
+  {
+    version: 6,
+    sql: `
+      ALTER TABLE source_observations ADD COLUMN rest_rate_percent REAL;
+      ALTER TABLE source_observations ADD COLUMN graphql_rate_percent REAL;
+      ALTER TABLE source_observations ADD COLUMN github_telemetry_json TEXT;
+      `,
+  },
 ] as const;
 
 const prunableTables = new Set(["events", "snapshots", "daily_rollups", "workers", "test_nodes"]);
@@ -324,7 +332,14 @@ export interface RetentionResult extends RetentionInspection {
   compacted: boolean;
 }
 
-export type SourceHealthState = "HEALTHY" | "STALE" | "DEGRADED" | "UNAVAILABLE" | "NOT_CONFIGURED" | "NOT_APPLICABLE";
+export type SourceHealthState =
+  | "HEALTHY"
+  | "CONSERVATION"
+  | "STALE"
+  | "DEGRADED"
+  | "UNAVAILABLE"
+  | "NOT_CONFIGURED"
+  | "NOT_APPLICABLE";
 
 export interface SourceObservation {
   name: string;
@@ -342,6 +357,9 @@ export interface SourceObservation {
   rateMode?: "NORMAL" | "CONSERVATION" | "CRITICAL" | "EXHAUSTED" | "UNKNOWN" | null;
   credentialSource?: "GITHUB_APP_INSTALLATION" | "USER_TOKEN" | "ANONYMOUS" | "NOT_APPLICABLE" | null;
   appInstallationHealth?: "ACTIVE" | "CONFIGURED" | "NOT_CONFIGURED" | "UNKNOWN" | null;
+  restRatePercent?: number | null;
+  graphqlRatePercent?: number | null;
+  githubTelemetry?: Record<string, number> | null;
   authenticationState: "TOKEN_CONFIGURED" | "ANONYMOUS" | "NOT_APPLICABLE" | "UNKNOWN";
 }
 
@@ -586,7 +604,7 @@ export class BridgewatchStore {
       throw new Error("Bridgewatch source detail exceeds limit");
     this.db
       .prepare(
-        "INSERT INTO source_observations (source_name, state, configured, reachable, last_attempt_at, last_success_at, next_retry_at, detail, cache_age_ms, rate_limit_remaining, rate_limit_limit, rate_limit_reset_at, rate_mode, credential_source, app_installation_health, authentication_state, observed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(source_name) DO UPDATE SET state=excluded.state, configured=excluded.configured, reachable=excluded.reachable, last_attempt_at=excluded.last_attempt_at, last_success_at=excluded.last_success_at, next_retry_at=excluded.next_retry_at, detail=excluded.detail, cache_age_ms=excluded.cache_age_ms, rate_limit_remaining=excluded.rate_limit_remaining, rate_limit_limit=excluded.rate_limit_limit, rate_limit_reset_at=excluded.rate_limit_reset_at, rate_mode=excluded.rate_mode, credential_source=excluded.credential_source, app_installation_health=excluded.app_installation_health, authentication_state=excluded.authentication_state, observed_at=excluded.observed_at",
+        "INSERT INTO source_observations (source_name, state, configured, reachable, last_attempt_at, last_success_at, next_retry_at, detail, cache_age_ms, rate_limit_remaining, rate_limit_limit, rate_limit_reset_at, rate_mode, credential_source, app_installation_health, rest_rate_percent, graphql_rate_percent, github_telemetry_json, authentication_state, observed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(source_name) DO UPDATE SET state=excluded.state, configured=excluded.configured, reachable=excluded.reachable, last_attempt_at=excluded.last_attempt_at, last_success_at=excluded.last_success_at, next_retry_at=excluded.next_retry_at, detail=excluded.detail, cache_age_ms=excluded.cache_age_ms, rate_limit_remaining=excluded.rate_limit_remaining, rate_limit_limit=excluded.rate_limit_limit, rate_limit_reset_at=excluded.rate_limit_reset_at, rate_mode=excluded.rate_mode, credential_source=excluded.credential_source, app_installation_health=excluded.app_installation_health, rest_rate_percent=excluded.rest_rate_percent, graphql_rate_percent=excluded.graphql_rate_percent, github_telemetry_json=excluded.github_telemetry_json, authentication_state=excluded.authentication_state, observed_at=excluded.observed_at",
       )
       .run(
         observation.name,
@@ -604,6 +622,9 @@ export class BridgewatchStore {
         observation.rateMode ?? null,
         observation.credentialSource ?? null,
         observation.appInstallationHealth ?? null,
+        observation.restRatePercent ?? null,
+        observation.graphqlRatePercent ?? null,
+        observation.githubTelemetry ? JSON.stringify(observation.githubTelemetry) : null,
         observation.authenticationState,
         new Date().toISOString(),
       );
@@ -612,7 +633,7 @@ export class BridgewatchStore {
   sourceObservations(): SourceObservation[] {
     return this.db
       .prepare(
-        "SELECT source_name, state, configured, reachable, last_attempt_at, last_success_at, next_retry_at, detail, cache_age_ms, rate_limit_remaining, rate_limit_limit, rate_limit_reset_at, rate_mode, credential_source, app_installation_health, authentication_state FROM source_observations ORDER BY source_name",
+        "SELECT source_name, state, configured, reachable, last_attempt_at, last_success_at, next_retry_at, detail, cache_age_ms, rate_limit_remaining, rate_limit_limit, rate_limit_reset_at, rate_mode, credential_source, app_installation_health, rest_rate_percent, graphql_rate_percent, github_telemetry_json, authentication_state FROM source_observations ORDER BY source_name",
       )
       .all()
       .map((row) => {
@@ -632,6 +653,9 @@ export class BridgewatchStore {
           rate_mode: SourceObservation["rateMode"];
           credential_source: SourceObservation["credentialSource"];
           app_installation_health: SourceObservation["appInstallationHealth"];
+          rest_rate_percent: number | null;
+          graphql_rate_percent: number | null;
+          github_telemetry_json: string | null;
           authentication_state: SourceObservation["authenticationState"];
         };
         return {
@@ -650,6 +674,11 @@ export class BridgewatchStore {
           rateMode: source.rate_mode,
           credentialSource: source.credential_source,
           appInstallationHealth: source.app_installation_health,
+          restRatePercent: source.rest_rate_percent,
+          graphqlRatePercent: source.graphql_rate_percent,
+          githubTelemetry: source.github_telemetry_json
+            ? (JSON.parse(source.github_telemetry_json) as Record<string, number>)
+            : null,
           authenticationState: source.authentication_state,
         };
       });

@@ -72,7 +72,7 @@ describe("GitHub normalized collection", () => {
       expect(store.sourceObservations()).toContainEqual(
         expect.objectContaining({
           name: "github",
-          state: "HEALTHY",
+          state: "DEGRADED",
           configured: false,
           reachable: true,
           authenticationState: "ANONYMOUS",

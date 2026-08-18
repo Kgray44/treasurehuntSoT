@@ -37,6 +37,12 @@ metrics count requests by transport, cache hits, 304s, coalescing, failures,
 secondary limits, and rate deferrals without recording request bodies or
 credentials.
 
+Rate observations persist their computed mode and, when applicable,
+`retryAfterUntil` plus a classified secondary-limit or retry-after condition.
+GraphQL responses that include `rateLimit` supply the authoritative point
+limit, remaining, used, reset, and cost even when an HTTP header is absent.
+Conditional REST falls back to `If-Modified-Since` when an ETag is unavailable.
+
 `GitHubAppAuth` creates short-lived RS256 JWTs only in memory, exchanges them
 for installation tokens, and refreshes them two minutes before expiry. It
 validates HTTPS API bases, does not persist an installation token, and exposes
@@ -49,6 +55,9 @@ sanitized SQLite observation cache and stale fallback, but delegates transport,
 shared cache, locking, rate observation, and App credentials to Fairlead. It
 uses one GraphQL query for open-PR check summaries and falls back to its prior
 bounded conditional REST check collection if GraphQL cannot supply the result.
+Its source profile reports REST and GraphQL remaining percentages, pool-safe
+telemetry counters, credential source, App health, reset time, and rate mode;
+conservation and rate-degraded states are visible instead of live-green data.
 
 Sounding Line uses Git for refs, ancestry, trees, and changed paths. Its
 record-only adapter uses the shared client for API-only prior-authority reads.

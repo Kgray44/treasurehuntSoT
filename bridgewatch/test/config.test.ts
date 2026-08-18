@@ -68,4 +68,21 @@ describe("loadConfig", () => {
     expect(configured.BRIDGEWATCH_GITHUB_APP_INSTALLATION_ID).toBe("67890");
     expect(configured.BRIDGEWATCH_GITHUB_APP_PRIVATE_KEY_PATH).toContain("fixture-app.pem");
   });
+
+  it("keeps percentage thresholds ordered per GitHub credential resource", () => {
+    expect(
+      loadConfig({
+        BRIDGEWATCH_REPOSITORY: "owner/repository",
+        BRIDGEWATCH_GITHUB_CONSERVATION_RATIO: "0.4",
+        BRIDGEWATCH_GITHUB_CRITICAL_RATIO: "0.2",
+      }).BRIDGEWATCH_GITHUB_CONSERVATION_RATIO,
+    ).toBe(0.4);
+    expect(() =>
+      loadConfig({
+        BRIDGEWATCH_REPOSITORY: "owner/repository",
+        BRIDGEWATCH_GITHUB_CONSERVATION_RATIO: "0.1",
+        BRIDGEWATCH_GITHUB_CRITICAL_RATIO: "0.2",
+      }),
+    ).toThrow("critical ratio");
+  });
 });

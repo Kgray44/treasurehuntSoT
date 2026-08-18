@@ -14,6 +14,7 @@ export function credentialPoolId(value: {
 }): string;
 export function rateMode(
   record: { limit?: number | null; remaining?: number | null; resetAt?: string | null } | null,
+  thresholds?: { conservation?: number; critical?: number },
 ): "NORMAL" | "CONSERVATION" | "CRITICAL" | "EXHAUSTED" | "UNKNOWN";
 export function nextPollInterval(options: {
   mode?: "NORMAL" | "CONSERVATION" | "CRITICAL" | "EXHAUSTED" | "UNKNOWN";
@@ -22,6 +23,7 @@ export function nextPollInterval(options: {
   retryAfterMs?: number;
   resetAt?: string | null;
 }): number;
+export function jitteredPollInterval(intervalMs: number, jitterRatio?: number, random?: () => number): number;
 
 export class SharedRuntimeState {
   constructor(repository: string, directory?: string);
@@ -29,6 +31,21 @@ export class SharedRuntimeState {
   load(): Promise<unknown>;
   status(): Promise<unknown>;
 }
+
+export class SharedCache {
+  constructor(runtime: SharedRuntimeState);
+  key(scope: unknown): string;
+  file(scope: unknown): string;
+  get(scope: unknown, freshness?: "IMMUTABLE" | "LONG" | "MEDIUM" | "SHORT" | "LIVE"): Promise<unknown>;
+  put(scope: unknown, entry: unknown): Promise<unknown>;
+}
+
+export function withFileLock<T>(
+  directory: string,
+  name: string,
+  work: () => Promise<T>,
+  options?: { waitMs?: number; staleMs?: number },
+): Promise<T>;
 
 export class GitHubInteractionClient {
   constructor(options: {
@@ -39,6 +56,7 @@ export class GitHubInteractionClient {
     tokenProvider?: (() => Promise<string | null>) | null;
     fetchImpl?: typeof fetch;
     requestTimeoutMs?: number;
+    thresholds?: { conservation?: number; critical?: number };
   });
   request<T = unknown>(options: {
     method?: string;

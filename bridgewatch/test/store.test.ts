@@ -38,9 +38,23 @@ describe("BridgewatchStore", () => {
         detail: "GitHub GET failed: 503",
         cacheAgeMs: 60_000,
         authenticationState: "TOKEN_CONFIGURED",
+        restRatePercent: 8.4,
+        graphqlRatePercent: 42,
+        rateMode: "CRITICAL",
+        credentialSource: "GITHUB_APP_INSTALLATION",
+        appInstallationHealth: "ACTIVE",
+        githubTelemetry: { cache_hits: 3, live_requests_avoided: 3 },
       });
       expect(store.sourceObservations()).toEqual([
-        expect.objectContaining({ name: "github", state: "DEGRADED", authenticationState: "TOKEN_CONFIGURED" }),
+        expect.objectContaining({
+          name: "github",
+          state: "DEGRADED",
+          authenticationState: "TOKEN_CONFIGURED",
+          restRatePercent: 8.4,
+          graphqlRatePercent: 42,
+          rateMode: "CRITICAL",
+          githubTelemetry: { cache_hits: 3, live_requests_avoided: 3 },
+        }),
       ]);
     } finally {
       store.close();
@@ -83,7 +97,7 @@ describe("Phase 2 durable history migration", () => {
     try {
       upgraded.replaceProjectRegistry([project]);
       upgraded.replaceProjectRegistry([project]);
-      expect(upgraded.migrationVersions()).toEqual([1, 2, 3, 4, 5]);
+      expect(upgraded.migrationVersions()).toEqual([1, 2, 3, 4, 5, 6]);
       expect(upgraded.get<{ headSha: string }>("github:snapshot")?.value).toEqual({ headSha: "phase-1" });
       expect(upgraded.projects()).toEqual([project]);
     } finally {
@@ -135,12 +149,12 @@ describe("Phase 2 durable history migration", () => {
 
     const upgraded = new BridgewatchStore(file);
     try {
-      expect(upgraded.migrationVersions()).toEqual([1, 2, 3, 4, 5]);
+      expect(upgraded.migrationVersions()).toEqual([1, 2, 3, 4, 5, 6]);
       expect(upgraded.projects()).toEqual([project]);
       expect(upgraded.workers()).toHaveLength(1);
       expect(upgraded.recentTestRuns()).toHaveLength(1);
       expect(upgraded.history({ since: "2026-01-01T00:00:00.000Z", limit: 1 }).events).toEqual([]);
-      expect(upgraded.migrationVersions()).toEqual([1, 2, 3, 4, 5]);
+      expect(upgraded.migrationVersions()).toEqual([1, 2, 3, 4, 5, 6]);
     } finally {
       upgraded.close();
     }

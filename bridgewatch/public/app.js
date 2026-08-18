@@ -996,6 +996,9 @@ async function renderSourceProfile(name) {
       ["Rate-limit limit", data.source.rateLimitLimit],
       ["Rate-limit reset", dateText(data.source.rateLimitResetAt)],
       ["Rate mode", data.source.rateMode],
+      ["REST remaining (%)", data.source.restRatePercent],
+      ["GraphQL remaining (%)", data.source.graphqlRatePercent],
+      ["Interaction telemetry", JSON.stringify(data.source.githubTelemetry ?? {})],
       ["Detail", data.source.detail],
     ]),
   );

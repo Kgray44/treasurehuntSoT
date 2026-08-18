@@ -7,6 +7,8 @@ import {
   appFromEnvironment,
   credentialPoolId,
   fingerprint,
+  jitteredPollInterval,
+  nextPollInterval,
   rateMode,
   recommendTransport,
   repositoryIdentity,
@@ -97,7 +99,7 @@ if (command === "status" || command === "quota") {
 } else if (command === "watch-run" || command === "watch-pr") {
   const id = argument("--id") ?? process.argv[3];
   if (!/^\d+$/u.test(id ?? "")) throw new Error("GITHUB_CLI_NUMERIC_ID_REQUIRED");
-  const waitMs = Math.max(30_000, Number(argument("--interval-ms") ?? 60_000));
+  const minimumMs = Math.max(30_000, Number(argument("--interval-ms") ?? 60_000));
   const client = new GitHubInteractionClient({
     repository,
     pool,
@@ -105,16 +107,43 @@ if (command === "status" || command === "quota") {
     tokenProvider: token ? async () => token : null,
   });
   let previous = null;
-  for (;;) {
+  let cancelled = false;
+  process.once("SIGINT", () => {
+    cancelled = true;
+    print({ id: Number(id), state: "CANCELLED", reason: "OPERATOR_INTERRUPT" });
+  });
+  while (!cancelled) {
     const path =
       command === "watch-pr"
         ? `/repos/${repository.replace(/^.*github\.com[:/]/u, "")}/pulls/${id}`
         : `/repos/${repository.replace(/^.*github\.com[:/]/u, "")}/actions/runs/${id}`;
-    const result = await client.request({ path, freshness: "LIVE" });
-    const state = result.body?.status ?? result.body?.state ?? "UNKNOWN";
-    if (state !== previous) print({ id: Number(id), state, cached: result.cached });
-    previous = state;
-    if (["completed", "closed", "merged"].includes(String(state).toLowerCase())) break;
-    await new Promise((resolveDelay) => setTimeout(resolveDelay, waitMs));
+    try {
+      const result = await client.request({ path, freshness: "LIVE" });
+      const state = result.body?.status ?? result.body?.state ?? "UNKNOWN";
+      if (state !== previous)
+        print({ id: Number(id), state, cached: result.cached, deferred: Boolean(result.deferred) });
+      previous = state;
+      if (["completed", "closed", "merged"].includes(String(state).toLowerCase())) break;
+      const record = (await runtime.load()).pools?.[pool.id]?.resources?.["rest:core"] ?? null;
+      const serverPollIntervalMs = Math.max(0, Number(result.headers?.["x-poll-interval"]) * 1_000 || 0);
+      const delay = jitteredPollInterval(
+        nextPollInterval({ mode: rateMode(record), minimumMs, serverPollIntervalMs, resetAt: record?.resetAt }),
+      );
+      await new Promise((resolveDelay) => setTimeout(resolveDelay, delay));
+    } catch (error) {
+      const retryAfterMs = Number(error?.retryAfterMs) || 0;
+      const record = (await runtime.load()).pools?.[pool.id]?.resources?.["rest:core"] ?? null;
+      const delay = jitteredPollInterval(
+        nextPollInterval({ mode: rateMode(record), minimumMs, retryAfterMs, resetAt: record?.resetAt }),
+      );
+      print({
+        id: Number(id),
+        state: "DEFERRED",
+        classification: error?.classification ?? "GITHUB_UNAVAILABLE",
+        retryAfterMs,
+        delayMs: delay,
+      });
+      await new Promise((resolveDelay) => setTimeout(resolveDelay, delay));
+    }
   }
 } else throw new Error(`GITHUB_CLI_UNKNOWN_COMMAND:${command}`);

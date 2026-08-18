@@ -1,18 +1,21 @@
 import assert from "node:assert/strict";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
-import { generateKeyPairSync } from "node:crypto";
+import { mkdir, mkdtemp, rm, utimes, writeFile } from "node:fs/promises";
+import { createHash, generateKeyPairSync } from "node:crypto";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 import {
   GitHubInteractionClient,
   GitHubAppAuth,
+  SharedCache,
   SharedRuntimeState,
   credentialPoolId,
+  jitteredPollInterval,
   nextPollInterval,
   rateMode,
   recommendTransport,
   verifyWebhook,
+  withFileLock,
 } from "../../scripts/github-interaction/index.mjs";
 
 const pool = (kind = "USER") => ({
@@ -137,6 +140,10 @@ test("router keeps Git facts local and forbids read fallbacks for mutations", as
   assert.equal(recommendTransport({ operation: "workflow-run", restMode: "EXHAUSTED" }), "DEFER_EXACT_OPERATION");
   assert.equal(recommendTransport({ operation: "workflow-dispatch", mutation: true }), "MUTATION_CONTROLLER");
   assert.equal(nextPollInterval({ mode: "CRITICAL", minimumMs: 30_000 }), 120_000);
+  assert.equal(
+    jitteredPollInterval(30_000, 0.1, () => 0.5),
+    30_000,
+  );
 });
 
 test("webhook verification fails closed for bad signatures", async () => {
@@ -180,6 +187,85 @@ test("GitHub App tokens are generated and retained only in memory until proactiv
     assert.equal(first.token, second.token);
     assert.equal(calls, 1);
     assert.equal(app.health().active, true);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("GraphQL rate metadata and secondary limits are persisted without secrets", async () => {
+  const { directory, runtime } = await temporaryRuntime();
+  try {
+    const graph = new GitHubInteractionClient({
+      repository: "owner/repository",
+      apiBase: "https://api.example.test",
+      pool: pool(),
+      runtime,
+      fetchImpl: async () =>
+        new Response(
+          JSON.stringify({
+            data: {
+              rateLimit: {
+                limit: 5_000,
+                remaining: 4_900,
+                used: 100,
+                cost: 7,
+                resetAt: new Date(Date.now() + 60_000).toISOString(),
+              },
+            },
+          }),
+          { status: 200, headers: headers(4_999, 5_000, "graphql") },
+        ),
+    });
+    await graph.graphql("query { rateLimit { remaining } }");
+    const limited = new GitHubInteractionClient({
+      repository: "owner/repository",
+      apiBase: "https://api.example.test",
+      pool: pool("GITHUB_APP_INSTALLATION"),
+      runtime,
+      fetchImpl: async () => new Response("secondary rate limit", { status: 403, headers: { "retry-after": "1" } }),
+    });
+    await assert.rejects(
+      limited.request({ path: "/repos/owner/repository" }),
+      (error) => error.classification === "SECONDARY_LIMITED",
+    );
+    const state = await runtime.load();
+    assert.equal(state.pools[pool().id].resources["graphql:graphql"].remaining, 4_900);
+    assert.equal(
+      state.pools[pool("GITHUB_APP_INSTALLATION").id].resources["rest:core"].errorClassification,
+      "SECONDARY_LIMITED",
+    );
+    assert.equal(state.pools[pool("GITHUB_APP_INSTALLATION").id].resources["rest:core"].retryAfterUntil !== null, true);
+    assert.doesNotMatch(JSON.stringify(state), /authorization|fixture-token/i);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("stale locks recover and corrupt cache records fail closed", async () => {
+  const { directory, runtime } = await temporaryRuntime();
+  try {
+    const lockDirectory = join(directory, "locks");
+    await mkdir(lockDirectory, { recursive: true });
+    const staleLock = join(lockDirectory, `${createHash("sha256").update("stale-fixture").digest("hex")}.lock`);
+    await writeFile(staleLock, "{not-a-live-lock}");
+    const staleAt = new Date(Date.now() - 120_000);
+    await utimes(staleLock, staleAt, staleAt);
+    let ran = false;
+    await withFileLock(
+      lockDirectory,
+      "stale-fixture",
+      async () => {
+        ran = true;
+      },
+      { staleMs: 1, waitMs: 1_000 },
+    );
+    assert.equal(ran, true);
+
+    const cache = new SharedCache(runtime);
+    const scope = { repository: "owner/repository", path: "/repos/owner/repository" };
+    await cache.put(scope, { body: { expected: true }, headers: {} });
+    await writeFile(cache.file(scope), "{invalid-json");
+    assert.equal(await cache.get(scope), null);
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
