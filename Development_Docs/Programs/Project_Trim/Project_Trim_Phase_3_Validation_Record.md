@@ -27,6 +27,10 @@ Phase 3 cases prove accepted versus provisional capsule identity, retained Phase
 - Feature Catalog synchronization: completed with provenance refresh only; no Phase 3 product feature fragment changed.
 - Feature Catalog validation: PASS; 48 entries. The historical FT-036 branch reference was fetched read-only for the local validation clone and was not modified.
 
+## Authority attempt and scoped repair
+
+The first authoritative candidate dispatch, run `32146397819` for superseded candidate `ed76f3b6590b05b20a2009b34db82bbbf0fdee06`, failed before any governed suite executed with `ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED`. The exact rejected paths were the capsule under `.agents/handoffs/` and unrelated Ledgerlight migration-matrix regeneration drift. The repair retained the capsule unchanged at the permitted Project Trim governed-document path and excluded the unrelated CSV drift; local trusted classification for the replacement candidate is `ORDINARY_CANDIDATE` with zero errors. No authority retry is made until the replacement candidate is requalified and frozen.
+
 ## Acceptance boundary
 
 These results are local candidate qualification evidence only. Sounding Line remains the sole source of `RELEASE_GO`, the Mainline Decision, and protected merge authority. This record does not claim authoritative acceptance or a protected-main landing.
