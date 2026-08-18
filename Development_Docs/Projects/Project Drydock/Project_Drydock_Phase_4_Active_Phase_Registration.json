@@ -5,21 +5,21 @@
   "phase": 4,
   "phaseName": "Clear for Launch",
   "phaseId": "project-drydock-phase-4-clear-for-launch",
-  "state": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
+  "state": "BLOCKED_BY_SHARED_SOUNDING_LINE_ADMISSION_REPAIR",
   "branch": "codex/project-drydock-phase4-clear-for-launch",
   "worktree": {
     "ownership": "TASK_OWNED",
     "path": "C:\\Users\\kgray\\AppData\\Local\\ForeverTreasureCompanion\\treasurehuntSoT-drydock-phase4"
   },
   "baseSha": "60b89841986e66fbc2c0828489d38002a1617506",
-  "currentQualifiedBaseSha": "c70428e8dfc60a37a98a0c1fdf1dd474c7dbaeae",
-  "currentCandidateSha": "e5e1a3df962cafbb49b6db609b7046e55edba6b7",
+  "currentQualifiedBaseSha": "e4a1f4e394a17b98e250799c61ba16035495c539",
+  "currentCandidateSha": "a80fc9d53c6204b7bfe38f2f6818fa3726f8580f",
   "acceptanceAdmission": {
     "state": "BLOCKED_BY_V14_ORDINARY_CANDIDATE_ADMISSION",
     "localQualification": "COMPLETE",
     "authoritativeRun": "32171129171",
     "invariant": "PRODUCT_VERIFICATION_REGISTRATION_REJECTED",
-    "detail": "Protected trusted discovery resolves the cross-owned Phase 4 product diff to project-shipwright rather than the candidate's sole new drydock contract authority. No RELEASE_GO or acceptance envelope exists."
+    "detail": "At protected main e4a1f4e394a17b98e250799c61ba16035495c539, trusted discovery resolves the cross-owned Phase 4 product diff to project-shipwright before considering the sole new drydock contract authority. Drydock is a trusted supporting owner and owns the Drydock/Chronicle paths, but current selection does not use that fact. No RELEASE_GO or acceptance envelope exists."
   },
   "governingDocument": "Development_Docs/Projects/Project Drydock/Project_Drydock_Governing_Document.pdf",
   "hardDependencies": [
