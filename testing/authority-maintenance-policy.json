@@ -1,5 +1,5 @@
 {
-  "version": "1.0.3",
+  "version": "1.0.4",
   "authority": "SOUNDING_LINE_AUTHORITY_MAINTENANCE",
   "disposition": "AUTHORITY_MAINTENANCE_GO",
   "workflowDispatchOnly": true,
@@ -16,6 +16,8 @@
     "scripts/sounding-line/v14-fast-channel.mjs",
     "scripts/sounding-line/v14/fast-channel.mjs",
     "scripts/sounding-line/isolated-validation-runtime.ps1",
+    "scripts/dev-common.ps1",
+    "scripts/test-validation-runtime-safety.ps1",
     "scripts/tideglass/seed-phase3-fixture.mjs",
     ".github/workflows/sounding-line-authority-maintenance.yml",
     ".github/workflows/sounding-line-protected-merge-binding.yml"
@@ -38,6 +40,8 @@
     "scripts/sounding-line/v14-fast-channel.mjs",
     "scripts/sounding-line/v14/fast-channel.mjs",
     "scripts/sounding-line/isolated-validation-runtime.ps1",
+    "scripts/dev-common.ps1",
+    "scripts/test-validation-runtime-safety.ps1",
     "scripts/tideglass/seed-phase3-fixture.mjs",
     ".github/workflows/sounding-line-authority-maintenance.yml",
     ".github/workflows/sounding-line-protected-merge-binding.yml",
