@@ -4628,6 +4628,18 @@
       ]
     },
     {
+      "path": "Development_Docs/Project_Wakebook_Phase_2_*.json",
+      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook", "static.core"],
+      "contractIds": [
+        "wakebook.detail.historical-provenance",
+        "wakebook.remembrance.owner-integrity",
+        "wakebook.memory-media.private-delivery",
+        "wakebook.keepsake.consent-revocation",
+        "wakebook.detail.accessibility-mobile",
+        "wakebook.detail.cross-project-projection"
+      ]
+    },
+    {
       "path": "Development_Docs/Features/catalog/wakebook.json",
       "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook", "unit.feature-catalog", "static.core"],
       "contractIds": [

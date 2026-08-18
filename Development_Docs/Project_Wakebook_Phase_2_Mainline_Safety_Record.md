@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Mainline Safety Record
 audience: product-engineering
-status: candidate-qualified-pending-authority
+status: qualification-blocked-external-catalog
 canonical_for: project-wakebook-phase-2-mainline-safety-record
 last_reviewed: 2026-08-18
 ---
@@ -58,3 +58,19 @@ locally complete, blocked only on the shared v1.4 browser-matrix closure and a
 fresh authority decision for current candidate
 `5a7f3e5752c49bbb9816f6de42e4f28c31743b67`. No protected merge or owner
 acceptance is claimed.
+
+## Current reconciliation supersession
+
+Protected main is now `bef72d4ca3806330e10a36cdd39316921e26e733`, merged by
+pre-record source `00034e64f4878971e78b718e9fa7e128abf2da76`. The new mainline
+interval changes Fairlead documentation and Sounding Line registry/planner
+maintenance only; it does not change Wakebook, Wayfarer, Helm, Tideglass,
+Sealed Hold, artifact, achievement, navigation, Prisma, or Playwright product
+seams. Current direct contracts (36/36), scoped static, documentation, privacy,
+policy, registry, and the fresh 2/2 `wakebook-phase2` browser journey pass.
+
+Candidate freeze and protected authority remain prohibited because
+`features:validate` fails on inherited Drydock record FT-036, whose referenced
+branch `codex/project-drydock-phase3-run-sea-trials` is unavailable. Altering
+that foreign capability claim would violate canonical ownership. No protected
+merge or owner acceptance is claimed.

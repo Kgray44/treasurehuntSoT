@@ -1,11 +1,7 @@
 {
   "disposition": "CHANGES_EXISTING_CAPABILITY",
-  "affectedCapabilityIds": [
-    "DW-CAP-WAKEBOOK-PRIVATE-LIVING-JOURNEY-ARCHIVE"
-  ],
-  "affectedFeatureCatalogIds": [
-    "FT-B012"
-  ],
+  "affectedCapabilityIds": ["DW-CAP-WAKEBOOK-PRIVATE-LIVING-JOURNEY-ARCHIVE"],
+  "affectedFeatureCatalogIds": ["FT-B012"],
   "potentialLayerImpact": [
     "SERVICE",
     "API",
@@ -18,19 +14,10 @@
     "OWNER_ACCEPTANCE"
   ],
   "affectedSurfaces": {
-    "routes": [
-      "/passport/history/[recordId]"
-    ],
-    "screens": [
-      "Wakebook Voyage Detail"
-    ],
-    "journeys": [
-      "Owner-private historical Voyage remembrance"
-    ],
-    "apis": [
-      "/api/passport/voyages/[recordId]",
-      "/api/passport/voyages/[recordId]/memories/[memoryId]/media/[mediaId]"
-    ]
+    "routes": ["/passport/history/[recordId]"],
+    "screens": ["Wakebook Voyage Detail"],
+    "journeys": ["Owner-private historical Voyage remembrance"],
+    "apis": ["/api/passport/voyages/[recordId]", "/api/passport/voyages/[recordId]/memories/[memoryId]/media/[mediaId]"]
   },
   "expectedTerminalRungEffect": "BRANCH_COMPLETE_NOT_MERGED",
   "evidenceRequiringRefresh": [

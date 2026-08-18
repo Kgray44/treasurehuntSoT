@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Validation Record
 audience: product-engineering
-status: candidate-qualified-pending-authority
+status: qualification-blocked-external-catalog
 canonical_for: project-wakebook-phase-2-validation-record
 last_reviewed: 2026-08-18
 ---
@@ -16,7 +16,7 @@ protected merge, owner acceptance, or Phase 3 work is claimed.
 
 | Evidence                | Result                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Source and runtime      | Frozen candidate `5a7f3e5752c49bbb9816f6de42e4f28c31743b67`; reconciliation source `5461eb67a4bf10f6cbe7d7bac242884383ebfd17`; local browser source `ecc3f9841980e9cb389a95d8ab83ab6fa8d5b940`; all local work used synthetic task-owned SQLite fixtures only. The canonical development database was never used.                                                                                                                                                                                                                                                                                                                          |
+| Source and runtime      | Frozen candidate `5a7f3e5752c49bbb9816f6de42e4f28c31743b67`; reconciliation source `5461eb67a4bf10f6cbe7d7bac242884383ebfd17`; local browser source `ecc3f9841980e9cb389a95d8ab83ab6fa8d5b940`; all local work used synthetic task-owned SQLite fixtures only. The canonical development database was never used.                                                                                                                                                                                                                                                                                         |
 | Prisma diagnosis        | Node `v24.19.0`, Prisma CLI/client `6.19.3`, schema `prisma/schema.sqlite.prisma`, and Windows x64 schema engine `c2990dca591cba766e3b7ef5d9e8a84796e47ab7`. Engine launch and `prisma generate` passed; `prisma validate` passed with sanitized task-owned URLs. Fresh `migrate deploy` still fails identically for short C: and Y: paths with blank `Schema engine error`, while schema-engine CLI SQLite create/connect and Prisma `db execute` both succeed. The task-owned browser fixture used `db execute` to apply all 59 checked-in migration SQL files; no canonical database was touched.      |
 | Focused contracts       | PASS: eight focused Vitest files, 27 tests. Coverage includes rich detail projection, unavailable-choice truthfulness, media state non-delivery, remembrance validation, component path, protected-media binding, and protected-media delivery. Scoped Wakebook TypeScript, targeted lint, and targeted formatting passed; broad repository TypeScript is separately blocked by missing Bridgewatch dependencies.                                                                                                                                                                                         |
 | Visible browser journey | PASS: registered Playwright project `wakebook-phase2`, Chromium desktop 1440x1000, fresh Y: fixture `wakebook-phase2-v14-final-visible.db`, all 59 migrations, 1/1 journey. It begins from visible Chronicle Passport, History, and Voyage controls.                                                                                                                                                                                                                                                                                                                                                      |
@@ -69,3 +69,30 @@ touch a Wakebook source, route, Prisma, Playwright, or test-registration seam;
 its focused evidence remains applicable. The phase is locally complete and
 `READY_FOR_V14_MAINLINE_ACCEPTANCE`, pending resolution of the shared v1.4
 browser-matrix hold and a later, fresh authoritative decision.
+
+## Current v1.4.2 reconciliation
+
+This section supersedes the earlier shared-browser-matrix hold. Protected main
+is `bef72d4ca3806330e10a36cdd39316921e26e733`; pre-record source
+`00034e64f4878971e78b718e9fa7e128abf2da76` contains that mainline plus the
+narrow mapping for the required Phase 2 capability-impact JSON. The current
+non-authoritative plan is exact (digest
+`4835792a85e04856efe24e3662b21e10469e0e6074b7e14bcb9ac9900273e579`) and
+selects `browser.wakebook` / `wakebook-phase2` without global broadening.
+
+Current evidence passes: 36 focused tests in nine Vitest files; scoped format,
+ESLint, TypeScript, user-language, and One Voyage checks; documentation;
+private-content scan; policy validation with zero errors; and registry
+generation of 2,459 cases across 57 families. A fresh task-owned C: SQLite
+fixture received all 59 migrations with Prisma `db execute`, then the dedicated
+Chromium browser project passed 2/2. It covers visible navigation,
+desktop/mobile/200% zoom/keyboard/reduced-motion/axe, historical detail,
+owner/foreign denial, Reflection/Memory behavior, protected media, consent
+denial/grant/revocation, Keepsake redaction, and Voyage invariance. Its server
+was stopped and port 3111 released.
+
+`features:sync` passes, but `features:validate` fails on inherited FT-036: its
+Drydock branch `codex/project-drydock-phase3-run-sea-trials` no longer resolves.
+Wakebook cannot alter that foreign capability claim. This external catalog
+defect prevents candidate freeze and a Mainline Decision; it is not a Wakebook
+product, privacy, migration, or browser failure.

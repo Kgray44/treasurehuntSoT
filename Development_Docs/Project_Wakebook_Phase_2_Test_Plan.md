@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Test Plan
 audience: product-engineering
-status: candidate-qualified-pending-authority
+status: qualification-blocked-external-catalog
 canonical_for: project-wakebook-phase-2-test-plan
 last_reviewed: 2026-08-18
 ---
@@ -69,3 +69,28 @@ project `wakebook-phase2`, and gate `mainline`. Both ended as GitHub
 Those hosted failures remain infrastructure history. They no longer block local
 browser qualification; the next valid path is one frozen-source Mainline
 Decision after this documentation candidate is finalized.
+
+## Current reconciliation qualification
+
+At source `00034e64f4878971e78b718e9fa7e128abf2da76` over protected main
+`bef72d4ca3806330e10a36cdd39316921e26e733`, a narrow impact-map entry for the
+required Phase 2 capability-impact JSON removes the false unknown-path fallback.
+The exact plan digest is
+`4835792a85e04856efe24e3662b21e10469e0e6074b7e14bcb9ac9900273e579` and
+includes `browser.wakebook` / `wakebook-phase2`.
+
+The current focused set passed 36 tests in nine Vitest files; scoped format,
+ESLint, TypeScript, user-language, and One Voyage checks passed. Policy
+validation (482 contracts, 63 suites, zero errors), registry generation (2,459
+cases across 57 families), documentation validation, and private-content scan
+passed. A fresh task-owned C: SQLite fixture received all 59 migration SQL
+files through `db execute`; the dedicated Chromium browser journey then passed
+2/2 with a task-owned synthetic-email outbox. It covers visible navigation,
+desktop/mobile/200% zoom/keyboard/reduced-motion/axe, safe historical detail,
+owner/foreign denial, private media, consent, revocation, Keepsake redaction,
+and historical invariance.
+
+`features:sync` passes, but `features:validate` currently fails on unrelated
+FT-036 because its Drydock branch reference no longer resolves. That external
+catalog defect must be repaired on accepted mainline before Phase 2 can freeze
+a candidate or request a Mainline Decision.

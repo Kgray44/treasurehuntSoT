@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Integration Manifest
 audience: product-engineering
-status: candidate-qualified-pending-authority
+status: qualification-blocked-external-catalog
 canonical_for: project-wakebook-phase-2-integration-manifest
 last_reviewed: 2026-08-18
 ---
@@ -17,7 +17,7 @@ last_reviewed: 2026-08-18
 | Reconciliation source   | `5461eb67a4bf10f6cbe7d7bac242884383ebfd17`                                          |
 | Legacy evidence         | Preserved only where exact semantic inputs remain unchanged; direct scope rebounded |
 | Frozen candidate        | `5a7f3e5752c49bbb9816f6de42e4f28c31743b67`                                          |
-| Phase state             | `READY_FOR_V14_MAINLINE_ACCEPTANCE`                                                  |
+| Phase state             | `READY_FOR_V14_MAINLINE_ACCEPTANCE`                                                 |
 | Protected merge         | Prohibited: authority run `32160955382` issued no `RELEASE_GO`                      |
 
 The current-main interval added accepted Project Trim context tooling and its
@@ -66,3 +66,20 @@ Deepwater Phase 5 merge did not touch a Wakebook source, route, Prisma,
 Playwright, or test-registration seam, so focused Wakebook evidence remains
 applicable to current candidate `5a7f3e5752c49bbb9816f6de42e4f28c31743b67`; a
 new authority decision is required only after that shared closure is green.
+
+## Current reconciliation supersession
+
+Protected main `bef72d4ca3806330e10a36cdd39316921e26e733` is merged by
+pre-record source `00034e64f4878971e78b718e9fa7e128abf2da76`. Its Fairlead
+documentation and Sounding Line registry/planner updates do not change a
+Wakebook product seam. The generated documentation index was rebuilt, and the
+required Phase 2 capability-impact JSON now has the same narrow Wakebook
+impact mapping as its companion records. The resulting exact plan selects
+`browser.wakebook`, whose fresh local C: fixture passed 2/2 after 59 raw
+migrations; direct contracts pass 36/36.
+
+The historical v1.4 browser-matrix hold is superseded. The active condition is
+external Feature Catalog failure FT-036: its Drydock branch
+`codex/project-drydock-phase3-run-sea-trials` no longer resolves. Freeze,
+authority, protected merge, and owner walkthrough remain prohibited until
+accepted mainline repairs that foreign record.
