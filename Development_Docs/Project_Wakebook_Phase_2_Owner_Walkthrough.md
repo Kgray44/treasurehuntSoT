@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Owner Walkthrough
 audience: product-owner
-status: candidate-qualified-pending-authority
+status: authority-rejected-policy-scope
 canonical_for: project-wakebook-phase-2-owner-walkthrough
 last_reviewed: 2026-08-18
 ---
@@ -71,3 +71,11 @@ the Phase 2 candidate can now be frozen and sent through one source-bound
 Mainline Decision. This walkthrough remains prepared, but owner review begins
 only after protected integration; it does not authorize a merge, acceptance, or
 Phase 3.
+
+## Authority hold
+
+Run `32193375787` rejected the current candidate before any Wakebook browser
+work because the trusted policy does not yet recognize the corrected historical
+FT-036 promotion path. No `RELEASE_GO` exists. Owner review remains unavailable
+until that authority-owned policy condition is resolved and a new qualified
+candidate receives a successful Mainline Decision.

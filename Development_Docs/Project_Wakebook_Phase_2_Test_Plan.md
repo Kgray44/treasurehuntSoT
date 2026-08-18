@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Test Plan
 audience: product-engineering
-status: candidate-qualified-pending-authority
+status: authority-rejected-policy-scope
 canonical_for: project-wakebook-phase-2-test-plan
 last_reviewed: 2026-08-18
 ---
@@ -102,3 +102,12 @@ protected main, so FT-036 is now a `MAINLINE` fragment with obsolete branch
 metadata removed. `features:validate` passes all 49 entries, and its focused
 unit suite passes 9/9. The candidate is ready for freeze and one source-bound
 Mainline Decision.
+
+## Authority result
+
+The one source-bound candidate Mainline Decision, run `32193375787`, failed in
+trusted Plan on `ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED` for the corrected
+FT-036 branch-complete fragment. No Wakebook suite ran, so the local focused
+evidence remains valid but cannot become a release decision. Do not repeat the
+authority run until its current accepted policy recognizes this governed
+promotion path.

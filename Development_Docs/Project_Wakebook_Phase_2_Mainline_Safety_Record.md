@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Mainline Safety Record
 audience: product-engineering
-status: candidate-qualified-pending-authority
+status: authority-rejected-policy-scope
 canonical_for: project-wakebook-phase-2-mainline-safety-record
 last_reviewed: 2026-08-18
 ---
@@ -88,3 +88,14 @@ With the current 36/36 Wakebook focused contracts, 2/2 task-owned browser
 journey, static, documentation, privacy, policy, registry, and catalog proof,
 the phase is ready to freeze one candidate and request a single Mainline
 Decision. No protected merge or owner acceptance is yet claimed.
+
+## Authoritative failure hold
+
+The one authorized Mainline Decision, run `32193375787`, bound candidate
+`7abe3da1266fb96d9ffb3008c2c6caf98dcabc06` to base
+`df0360044cf0e0612af8e77751cfd7241c57ae1c` and PR #197. It stopped in Plan
+with `ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED` for the factually corrected
+FT-036 branch-complete fragment. No Wakebook test ran, and no `RELEASE_GO` or
+finalization artifact exists. The trusted classifier policy is not Wakebook
+owned; authority must not be retried until that policy recognizes the governed
+feature-promotion path or accepted mainline has integrated it separately.

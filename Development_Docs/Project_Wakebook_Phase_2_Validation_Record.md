@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Validation Record
 audience: product-engineering
-status: candidate-qualified-pending-authority
+status: authority-rejected-policy-scope
 canonical_for: project-wakebook-phase-2-validation-record
 last_reviewed: 2026-08-18
 ---
@@ -109,3 +109,17 @@ and remains fail-closed for an unknown or non-ancestor commit.
 
 All current pre-freeze qualification is green. The next commit is the sole
 candidate freeze, followed by one explicit source-bound Mainline Decision.
+
+## Authoritative result: 32193375787
+
+Candidate `7abe3da1266fb96d9ffb3008c2c6caf98dcabc06` was dispatched once with
+PR #197 and protected base `df0360044cf0e0612af8e77751cfd7241c57ae1c`. Plan
+failed before selecting or executing a Wakebook suite with
+`SOUNDING_LINE_ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED` for
+`Development_Docs/Features/branch-complete/project-drydock-phase3.json`.
+Wave 0 and finalization then correctly failed; no finalization artifact or
+`RELEASE_GO` was issued. The corrected FT-036 fact is outside Wakebook's
+canonical domain, while the trusted ordinary-candidate classifier is
+authority-owned. Do not retry authority until accepted mainline recognizes
+that established feature-promotion path or the record is integrated through
+its governed owner.

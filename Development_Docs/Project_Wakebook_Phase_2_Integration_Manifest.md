@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Integration Manifest
 audience: product-engineering
-status: candidate-qualified-pending-authority
+status: authority-rejected-policy-scope
 canonical_for: project-wakebook-phase-2-integration-manifest
 last_reviewed: 2026-08-18
 ---
@@ -92,3 +92,14 @@ metadata removed, and Feature Catalog validation now passes all 49 entries.
 The active Phase 2 state is `CANDIDATE_QUALIFIED_PENDING_FREEZE`; the next
 commit freezes the candidate, after which exactly one source-bound Mainline
 Decision may be dispatched.
+
+## Authoritative failure hold
+
+Run `32193375787` is the sole authority attempt for candidate
+`7abe3da1266fb96d9ffb3008c2c6caf98dcabc06`, base
+`df0360044cf0e0612af8e77751cfd7241c57ae1c`, and PR #197. Its trusted Plan
+rejected `Development_Docs/Features/branch-complete/project-drydock-phase3.json`
+as `ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED` before Wakebook execution.
+No `RELEASE_GO`, finalization artifact, protected merge, or owner walkthrough
+authority exists. The next action belongs to the accepted Sounding Line policy
+or Drydock catalog owner, not a repeated Wakebook authority dispatch.
