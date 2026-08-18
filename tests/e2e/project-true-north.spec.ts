@@ -13,15 +13,16 @@ test("public shell keeps a stable menu, profile access, and keyboard dismissal",
   const menu = page.locator(".product-menu-button");
   await expect(menu).toBeVisible();
   await menu.click();
-  const workspaceNavigation = page.getByRole("navigation", { name: "Voyagewright navigation" });
-  await expect(workspaceNavigation).toBeVisible();
-  await expect(workspaceNavigation.getByRole("link", { name: "Explore Chronicles" })).toBeFocused();
+  const navigationDialog = page.getByRole("dialog", { name: "Product navigation" });
+  await expect(navigationDialog).toBeVisible();
+  const globalNavigation = navigationDialog.getByRole("navigation", { name: "Global navigation" });
+  await expect(globalNavigation.getByRole("link", { name: "Home" })).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(menu).toBeFocused();
 
   const account = page.getByRole("button", { name: "Account" });
   await account.click();
-  await expect(page.getByRole("link", { name: "Sign in" })).toBeFocused();
+  await expect(page.getByRole("link", { name: "Create Account" })).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(account).toBeFocused();
 
