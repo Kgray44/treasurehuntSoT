@@ -288,7 +288,7 @@ test.describe.serial("Project One Voyage Phase 2 compatibility acceptance", () =
     const gameMasterSessions = await db.gameMasterSession.count();
 
     await page.goto("/quartermaster");
-    await expect(page).toHaveURL(/\/captain\/sign-in$/);
+    await expect(page).toHaveURL(/\/sign-in\?returnTo=%2Fcaptain%2Flibrary$/);
     const login = await page.request.post("/api/gm/login", {
       data: {
         username: process.env.GM_USERNAME ?? "kato",
