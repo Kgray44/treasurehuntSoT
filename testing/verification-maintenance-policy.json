@@ -112,6 +112,17 @@
     "semanticOwnership": "TRUSTED_OWNERSHIP_OR_TRUSTED_DISCOVERY_DESCRIPTOR",
     "monotonicity": "NO_FOREIGN_MUTATION_OR_REMOVAL"
   },
+  "ordinaryCandidateProvenanceRules": [
+    {
+      "id": "declared-project-supplementary-surface",
+      "anchorPathGlobs": ["src/tideglass/**", "tests/tideglass/**", "Development_Docs/Projects/Project_Tideglass/**"],
+      "supplementalPathGlobs": [
+        "scripts/tideglass/**",
+        "README.md",
+        "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv"
+      ]
+    }
+  ],
   "requiredEvidence": [
     "FOCUSED_REGRESSION",
     "AFFECTED_SOUNDING_LINE_TESTS",

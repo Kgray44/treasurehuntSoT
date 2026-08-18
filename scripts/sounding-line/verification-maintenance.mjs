@@ -214,6 +214,11 @@ export function classifyProductVerificationRegistration({
     metadataPaths: metadata,
   };
 }
+const hasEveryAnchor = (paths, anchors) => anchors.every((anchor) => paths.some((path) => matchesAny(path, [anchor])));
+const matchesOrdinaryCandidateProvenance = (file, paths, rules) =>
+  (rules ?? []).some(
+    (rule) => matchesAny(file, rule?.supplementalPathGlobs ?? []) && hasEveryAnchor(paths, rule?.anchorPathGlobs ?? []),
+  );
 
 export function classifyVerificationMaintenance({ trustedPolicy, changedPaths }) {
   const errors = [];
@@ -260,7 +265,8 @@ export function classifyOrdinaryCandidate({
         ...(hasRegistration
           ? [...registrationPaths(trustedPolicy), ...(registrationInputs(trustedPolicy)?.ancillaryPathGlobs ?? [])]
           : []),
-      ])
+      ]) &&
+      !matchesOrdinaryCandidateProvenance(file, paths, trustedPolicy?.ordinaryCandidateProvenanceRules)
     )
       errors.push(`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${file}`);
   }

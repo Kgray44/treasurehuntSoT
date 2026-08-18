@@ -273,6 +273,50 @@ test("ordinary candidates fail closed for unknown paths", async () => {
   assert.deepEqual(result.errors, ["ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:unowned/bridgewatch-lookalike.ts"]);
 });
 
+const tideglassOrdinaryCandidatePaths = [
+  "src/tideglass/core.ts",
+  "tests/tideglass/canonicalization.test.ts",
+  "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_4_Validation_Record.md",
+  "scripts/tideglass/seed-phase3-fixture.mjs",
+  "README.md",
+  "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+];
+
+test("declared project provenance admits Tideglass supplementary records only with its structural anchors", async () => {
+  const policy = await readOrdinaryCandidatePolicy();
+  const result = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: tideglassOrdinaryCandidatePaths });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(result.errors, []);
+});
+
+test("ordinary supplementary provenance remains narrow and cannot reduce trusted evidence", async () => {
+  const policy = await readOrdinaryCandidatePolicy();
+  for (const changedPath of [
+    "README.md",
+    "scripts/unrelated/seed-phase3-fixture.mjs",
+    "Development_Docs/Project_Unrelated_Validation_Record.md",
+  ]) {
+    const result = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: [changedPath] });
+    assert.equal(result.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED", changedPath);
+  }
+  const authority = classifyOrdinaryCandidate({
+    trustedPolicy: policy,
+    changedPaths: [...tideglassOrdinaryCandidatePaths, "scripts/sounding-line/planner.mjs"],
+  });
+  assert.equal(authority.classification, "ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED");
+  assert.deepEqual(policy.requiredEvidence, [
+    "FOCUSED_REGRESSION",
+    "AFFECTED_SOUNDING_LINE_TESTS",
+    "POLICY",
+    "GENERATED_ARTIFACTS",
+    "STATIC",
+    "PRIVACY",
+    "DOCUMENTATION",
+    "IDEMPOTENT_REGENERATION",
+    "CLEANUP",
+  ]);
+});
+
 const projectTrimPhaseOnePaths = [
   ".agents/context-workflow.md",
   ".gitignore",
