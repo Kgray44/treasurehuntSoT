@@ -25,9 +25,10 @@ an owner-controlled GitHub action: `EXTERNAL_OWNER_CONFIGURATION`.
    governed need.
 4. Install the App only on `Kgray44/treasurehuntSoT` (or the owner-selected
    repository), then record the App ID and installation ID from GitHub.
-5. Generate a private key and store the PEM outside this repository with
-   owner-only filesystem permissions. Never paste the key into an issue, chat,
-   `.env.example`, log, state directory, or GitHub Actions variable.
+5. Generate a private key and store the PEM at an absolute path outside this
+   repository with owner-only filesystem permissions. Relative paths are
+   rejected. Never paste the key into an issue, chat, `.env.example`, log,
+   state directory, or GitHub Actions variable.
 6. Configure only the server environment running Bridgewatch:
 
    ```text
@@ -40,9 +41,10 @@ an owner-controlled GitHub action: `EXTERNAL_OWNER_CONFIGURATION`.
    variables. The configured App is preferred for read-only Bridgewatch
    observation; it does not acquire write authority.
 
-7. Run `npm run github:app:check` and start Bridgewatch. Confirm health shows
-   only configuration/expiry state, never a token. A valid first observation
-   proves the installation has the required read permissions.
+7. Run `npm run github:app:check` and start Bridgewatch. The command validates
+   the installation repository membership and reports any missing required read
+   permission without printing a token. A valid first observation proves the
+   App read path is active.
 
 Rotate by generating a replacement private key, atomically updating the
 external path, restarting the owning process, checking health, then revoking

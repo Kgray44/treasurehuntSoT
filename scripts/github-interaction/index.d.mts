@@ -5,6 +5,7 @@ export interface CredentialPool {
   principalFingerprint: string;
 }
 
+export function redact(value: unknown): string;
 export function fingerprint(value: unknown): string;
 export function credentialPoolId(value: {
   kind: string;
@@ -24,6 +25,18 @@ export function nextPollInterval(options: {
   resetAt?: string | null;
 }): number;
 export function jitteredPollInterval(intervalMs: number, jitterRatio?: number, random?: () => number): number;
+export function retryAfterRemainingMs(record: { retryAfterUntil?: string | null } | null, now?: number): number;
+export function isRateObservationStale(
+  record: { observedAt?: string | null; resetAt?: string | null } | null,
+  now?: number,
+  maximumAgeMs?: number,
+): boolean;
+export function secondaryBackoffMs(options?: {
+  previous?: { secondaryFailureCount?: number | null } | null;
+  retryAfterMs?: number;
+}): number;
+export function isTerminalWatchState(state: unknown): boolean;
+export function shouldReportWatchState(previous: unknown, current: unknown): boolean;
 
 export class SharedRuntimeState {
   constructor(repository: string, directory?: string);
@@ -73,6 +86,15 @@ export class GitHubInteractionClient {
   ): Promise<{ body: T; cached: boolean; headers: Record<string, string> }>;
 }
 
+export class GitTransport {
+  constructor(root?: string, runtime?: SharedRuntimeState | null);
+  ref(ref?: string): Promise<string>;
+  remoteRef(remote?: string, ref?: string): Promise<string>;
+  ancestry(ancestor: string, descendant: string): Promise<boolean>;
+  tree(ref: string): Promise<string>;
+  changed(base: string, head: string): Promise<string[]>;
+}
+
 export class GitHubAppAuth {
   constructor(options: {
     appId?: string;
@@ -83,5 +105,21 @@ export class GitHubAppAuth {
   });
   configured(): boolean;
   token(fetchImpl?: typeof fetch): Promise<{ token: string; expiresAt: string; permissions: Record<string, string> }>;
+  validateInstallation(fetchImpl?: typeof fetch): Promise<{
+    configured: boolean;
+    active: boolean;
+    repositoryInstalled: boolean;
+    permissions: Record<string, string>;
+    missingPermissions: string[];
+    error: string | null;
+  }>;
   health(): { configured: boolean; active: boolean; installationId: string | null; tokenExpiresAt: string | null };
 }
+
+export function requestReadWithFallback<T = unknown>(options: {
+  primary: GitHubInteractionClient;
+  alternatives?: GitHubInteractionClient[];
+  request: Parameters<GitHubInteractionClient["request"]>[0];
+}): Promise<{ body: T; cached: boolean; headers: Record<string, string>; fallbackPoolId: string | null }>;
+
+export function appCredentialPool(app: GitHubAppAuth, repository: string): CredentialPool;

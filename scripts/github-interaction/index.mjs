@@ -2,7 +2,7 @@ import { execFile } from "node:child_process";
 import { createHash, createPrivateKey, createSign, randomUUID, timingSafeEqual } from "node:crypto";
 import { mkdir, open, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
-import { basename, dirname, join, resolve } from "node:path";
+import { basename, dirname, isAbsolute, join, resolve } from "node:path";
 import { promisify } from "node:util";
 
 const execute = promisify(execFile);
@@ -10,7 +10,8 @@ const STATE_VERSION = 1;
 const API_VERSION = "2022-11-28";
 const DEFAULT_THRESHOLDS = Object.freeze({ conservation: 0.3, critical: 0.1 });
 const FRESHNESS_MS = Object.freeze({ IMMUTABLE: Infinity, LONG: 3_600_000, MEDIUM: 300_000, SHORT: 60_000, LIVE: 0 });
-const redactPattern = /(authorization|token|secret|private.?key|cookie|password)=?[^\s,;]*/giu;
+const redactPattern =
+  /\b(authorization|token|secret|private[ _-]?key|cookie|password)\b\s*(?:=|:\s*(?:Bearer\s+)?|\s+Bearer\s+)[^\s,;]*/giu;
 
 export const redact = (value) => String(value ?? "").replace(redactPattern, "$1=[REDACTED]");
 export const fingerprint = (value) =>
@@ -58,6 +59,34 @@ export function nextPollInterval({
 export function jitteredPollInterval(intervalMs, jitterRatio = 0.1, random = Math.random) {
   const boundedRatio = Math.max(0, Math.min(0.25, Number(jitterRatio) || 0));
   return Math.max(1_000, Math.round(intervalMs * (1 + (random() * 2 - 1) * boundedRatio)));
+}
+
+export function retryAfterRemainingMs(record, now = Date.now()) {
+  const until = Date.parse(record?.retryAfterUntil ?? "");
+  return Number.isFinite(until) ? Math.max(0, until - now) : 0;
+}
+
+export function isRateObservationStale(record, now = Date.now(), maximumAgeMs = 5 * 60_000) {
+  if (!record?.observedAt) return true;
+  const observedAt = Date.parse(record.observedAt);
+  if (!Number.isFinite(observedAt)) return true;
+  const resetAt = Date.parse(record.resetAt ?? "");
+  if (Number.isFinite(resetAt) && resetAt > now) return false;
+  return now - observedAt > maximumAgeMs;
+}
+
+export function isTerminalWatchState(state) {
+  return ["completed", "closed", "merged"].includes(String(state ?? "").toLowerCase());
+}
+
+export function shouldReportWatchState(previous, current) {
+  return previous !== current;
+}
+
+export function secondaryBackoffMs({ previous = null, retryAfterMs = 0 } = {}) {
+  const failures = Math.max(0, Number(previous?.secondaryFailureCount) || 0);
+  const boundedExponential = Math.min(15 * 60_000, 30_000 * 2 ** Math.min(failures, 5));
+  return Math.max(Math.max(0, Number(retryAfterMs) || 0), boundedExponential);
 }
 
 function defaultStateDir(repository) {
@@ -174,7 +203,16 @@ export class SharedRuntimeState {
   async status() {
     const state = await this.load();
     const telemetry = await readJson(this.telemetryFile, { schemaVersion: STATE_VERSION, metrics: {} });
-    return { directory: this.directory, state, telemetry };
+    const pollCount = Number(telemetry.metrics?.poll_count) || 0;
+    const pollIntervals = Number(telemetry.metrics?.poll_interval_ms_total) || 0;
+    return {
+      directory: this.directory,
+      state,
+      telemetry: {
+        ...telemetry,
+        summary: { averagePollIntervalMs: pollCount ? Math.round(pollIntervals / pollCount) : null },
+      },
+    };
   }
 }
 
@@ -232,6 +270,7 @@ export async function withFileLock(directory, name, work, { waitMs = 10_000, sta
 
 export class GitHubAppAuth {
   constructor({ appId, installationId, privateKeyPath, apiBase = "https://api.github.com", repository }) {
+    if (privateKeyPath && !isAbsolute(privateKeyPath)) throw new Error("GITHUB_APP_PRIVATE_KEY_PATH_MUST_BE_ABSOLUTE");
     this.appId = appId;
     this.installationId = installationId;
     this.privateKeyPath = privateKeyPath;
@@ -244,7 +283,13 @@ export class GitHubAppAuth {
   }
   async jwt(now = Date.now()) {
     if (!this.configured()) throw new Error("GITHUB_APP_CONFIGURATION_REQUIRED");
-    const key = await readFile(this.privateKeyPath, "utf8");
+    let key;
+    try {
+      key = await readFile(this.privateKeyPath, "utf8");
+      createPrivateKey(key);
+    } catch {
+      throw new Error("GITHUB_APP_PRIVATE_KEY_UNAVAILABLE");
+    }
     const encode = (value) => Buffer.from(JSON.stringify(value)).toString("base64url");
     const payload = encode({
       iat: Math.floor(now / 1000) - 30,
@@ -272,10 +317,79 @@ export class GitHubAppAuth {
     );
     if (!response.ok) throw new Error(`GITHUB_APP_TOKEN_FAILED:${response.status}`);
     const body = await response.json();
-    if (typeof body.token !== "string" || !body.token || typeof body.expires_at !== "string")
+    if (
+      typeof body.token !== "string" ||
+      !body.token ||
+      typeof body.expires_at !== "string" ||
+      !Number.isFinite(Date.parse(body.expires_at)) ||
+      Date.parse(body.expires_at) <= Date.now()
+    )
       throw new Error("GITHUB_APP_TOKEN_RESPONSE_INVALID");
     this.cached = { token: body.token, expiresAt: body.expires_at, permissions: body.permissions ?? {} };
     return this.cached;
+  }
+  async validateInstallation(fetchImpl = fetch) {
+    if (!this.configured())
+      return {
+        configured: false,
+        active: false,
+        repositoryInstalled: false,
+        permissions: {},
+        missingPermissions: [],
+        error: "NOT_CONFIGURED",
+      };
+    try {
+      const token = await this.token(fetchImpl);
+      const response = await fetchImpl(`${this.apiBase}/installation/repositories?per_page=100`, {
+        headers: {
+          authorization: `Bearer ${token.token}`,
+          accept: "application/vnd.github+json",
+          "x-github-api-version": API_VERSION,
+        },
+      });
+      if (!response.ok)
+        return {
+          configured: true,
+          active: true,
+          repositoryInstalled: false,
+          permissions: token.permissions,
+          missingPermissions: [],
+          error: `INSTALLATION_REPOSITORIES_FAILED:${response.status}`,
+        };
+      const body = await response.json();
+      const repository = this.repository
+        .replace(/^.*github\.com[:/]/u, "")
+        .replace(/\.git$/u, "")
+        .toLowerCase();
+      const repositoryInstalled = Array.isArray(body.repositories)
+        ? body.repositories.some((candidate) => String(candidate?.full_name ?? "").toLowerCase() === repository)
+        : false;
+      const requiredPermissions = ["metadata", "contents", "pull_requests", "checks", "actions"];
+      const missingPermissions = requiredPermissions.filter(
+        (permission) => !["read", "write"].includes(String(token.permissions?.[permission] ?? "").toLowerCase()),
+      );
+      return {
+        configured: true,
+        active: true,
+        repositoryInstalled,
+        permissions: token.permissions,
+        missingPermissions,
+        error: !repositoryInstalled
+          ? "REPOSITORY_NOT_INSTALLED"
+          : missingPermissions.length
+            ? `REQUIRED_READ_PERMISSION_MISSING:${missingPermissions.join(",")}`
+            : null,
+      };
+    } catch (error) {
+      return {
+        configured: true,
+        active: false,
+        repositoryInstalled: false,
+        permissions: {},
+        missingPermissions: [],
+        error: redact(error instanceof Error ? error.message : "APP_VALIDATION_FAILED"),
+      };
+    }
   }
   health() {
     return {
@@ -288,7 +402,9 @@ export class GitHubAppAuth {
 }
 
 export function verifyWebhook({ payload, signature, secret }) {
-  if (!secret || !signature?.startsWith("sha256=")) return false;
+  const maximumBytes = 1_048_576;
+  if (!secret || !signature?.startsWith("sha256=") || Buffer.byteLength(String(payload ?? ""), "utf8") > maximumBytes)
+    return false;
   // The guarded dynamic import keeps the uncommon receiver-only dependency out
   // of ordinary polling paths while preserving constant-time comparison.
   return import("node:crypto").then(({ createHmac }) => {
@@ -355,7 +471,23 @@ export class GitHubInteractionClient {
     const resourceKey = method === "POST" && path === "/graphql" ? "graphql:graphql" : "rest:core";
     const state = await this.runtime.load();
     const record = state.pools?.[this.pool.id]?.resources?.[resourceKey] ?? null;
-    const mode = rateMode(record, this.thresholds);
+    const mode = isRateObservationStale(record) ? "UNKNOWN" : rateMode(record, this.thresholds);
+    const activeBackoffMs = retryAfterRemainingMs(record);
+    if (activeBackoffMs > 0) {
+      const cached = !mutation ? await this.cache.get(scope, freshness) : null;
+      if (cached?.fresh) {
+        await this.runtime.recordTelemetry("cache_hits");
+        await this.runtime.recordTelemetry("live_requests_avoided");
+        await this.runtime.recordTelemetry("rate_deferred_operations");
+        return { body: cached.body, cached: true, deferred: true, headers: cached.headers ?? {} };
+      }
+      await this.runtime.recordTelemetry("rate_deferred_operations");
+      await this.runtime.recordTelemetry("secondary_rate_deferred_operations");
+      const error = new Error("GITHUB_RATE_BACKOFF_ACTIVE");
+      error.classification = record?.errorClassification ?? "SECONDARY_LIMITED";
+      error.retryAfterMs = activeBackoffMs;
+      throw error;
+    }
     if (!mutation && mode === "EXHAUSTED") {
       const cached = await this.cache.get(scope, freshness);
       if (cached?.fresh) {
@@ -363,16 +495,25 @@ export class GitHubInteractionClient {
         return { body: cached.body, cached: true, deferred: true, headers: cached.headers ?? {} };
       }
       await this.runtime.recordTelemetry("rate_deferred_operations");
+      await this.runtime.recordTelemetry("primary_exhaustion_events");
       const error = new Error("GITHUB_PRIMARY_RATE_EXHAUSTED");
       error.classification = "PRIMARY_EXHAUSTED";
       throw error;
     }
     const cacheable = !mutation && (method === "GET" || path === "/graphql");
-    return withFileLock(join(this.runtime.directory, "locks"), `${method}:${this.cache.key(scope)}`, async () => {
+    const cacheBeforeLock = cacheable ? await this.cache.get(scope, freshness) : null;
+    if (cacheBeforeLock?.fresh) {
+      await this.runtime.recordTelemetry("cache_hits");
+      await this.runtime.recordTelemetry("live_requests_avoided");
+      return { body: cacheBeforeLock.body, cached: true, headers: cacheBeforeLock.headers ?? {} };
+    }
+    const lockName = mutation ? "mutations" : `${method}:${this.cache.key(scope)}`;
+    return withFileLock(join(this.runtime.directory, "locks"), lockName, async () => {
       const cached = cacheable ? await this.cache.get(scope, freshness) : null;
       if (cached?.fresh) {
         await this.runtime.recordTelemetry("cache_hits");
         await this.runtime.recordTelemetry("live_requests_avoided");
+        if (!cacheBeforeLock?.fresh) await this.runtime.recordTelemetry("coalesced_calls");
         return { body: cached.body, cached: true, headers: cached.headers ?? {} };
       }
       if (cacheable) await this.runtime.recordTelemetry("cache_misses");
@@ -417,19 +558,26 @@ export class GitHubInteractionClient {
       const text = await response.text();
       if (!response.ok) {
         const secondary = isSecondary(response, text);
-        const retryMs = retryAfterMs(headersObserved);
+        const responseRetryAfterMs = retryAfterMs(headersObserved);
+        const deferredForMs = secondary
+          ? secondaryBackoffMs({ previous: record, retryAfterMs: responseRetryAfterMs })
+          : responseRetryAfterMs;
         await this.runtime.recordTelemetry(secondary ? "secondary_limit_events" : "request_failures");
-        if (secondary || retryMs)
+        if (secondary || deferredForMs)
           await this.runtime.annotate({
             pool: this.pool,
             resourceKey: `${path === "/graphql" ? "graphql" : "rest"}:${resource}`,
             patch: {
-              retryAfterUntil: retryMs ? new Date(Date.now() + retryMs).toISOString() : null,
+              retryAfterUntil: deferredForMs ? new Date(Date.now() + deferredForMs).toISOString() : null,
               errorClassification: secondary ? "SECONDARY_LIMITED" : "RETRY_AFTER_ACTIVE",
+              secondaryFailureCount: secondary
+                ? Math.min(32, (Number(record?.secondaryFailureCount) || 0) + 1)
+                : Number(record?.secondaryFailureCount) || 0,
             },
           });
+        if (deferredForMs) await this.runtime.recordTelemetry("retry_after_ms_total", deferredForMs);
         const error = new Error(`GITHUB_REQUEST_FAILED:${response.status}:${redact(text).slice(0, 300)}`);
-        error.retryAfterMs = retryMs;
+        error.retryAfterMs = deferredForMs;
         error.classification = secondary
           ? "SECONDARY_LIMITED"
           : response.status === 403
@@ -464,7 +612,10 @@ export class GitHubInteractionClient {
           body: parsed,
           freshness,
         });
-      await this.runtime.recordTelemetry(path === "/graphql" ? "graphql_requests" : "rest_requests");
+      const transport = path === "/graphql" ? "graphql" : "rest";
+      await this.runtime.recordTelemetry(`${transport}_requests`);
+      await this.runtime.recordTelemetry(`${transport}_${resource}_requests`);
+      await this.runtime.recordTelemetry(`credential_pool_${fingerprint(this.pool.id)}_requests`);
       return { body: parsed, cached: false, headers: headersObserved };
     });
   }
@@ -479,11 +630,40 @@ export class GitHubInteractionClient {
   }
 }
 
+function isReadFallbackError(error, client) {
+  return (
+    ["PRIMARY_EXHAUSTED", "SECONDARY_LIMITED", "RETRY_AFTER_ACTIVE"].includes(error?.classification) ||
+    client?.pool?.kind === "GITHUB_APP_INSTALLATION" ||
+    /^GITHUB_APP_(?:CONFIGURATION_REQUIRED|TOKEN_FAILED|TOKEN_RESPONSE_INVALID|PRIVATE_KEY_UNAVAILABLE)/u.test(
+      String(error?.message ?? ""),
+    )
+  );
+}
+
+export async function requestReadWithFallback({ primary, alternatives = [], request }) {
+  if (request?.mutation) throw new Error("GITHUB_READ_FALLBACK_MUTATION_FORBIDDEN");
+  const clients = [primary, ...alternatives].filter(Boolean);
+  let deferred = null;
+  for (const client of clients) {
+    try {
+      const result = await client.request({ ...request, mutation: false });
+      if (client !== primary) await client.runtime.recordTelemetry("fallback_credential_pool_reads");
+      return { ...result, fallbackPoolId: client === primary ? null : client.pool.id };
+    } catch (error) {
+      if (!isReadFallbackError(error, client)) throw error;
+      deferred ??= error;
+    }
+  }
+  throw deferred ?? new Error("GITHUB_READ_FALLBACK_UNAVAILABLE");
+}
+
 export class GitTransport {
-  constructor(root = process.cwd()) {
+  constructor(root = process.cwd(), runtime = null) {
     this.root = root;
+    this.runtime = runtime;
   }
   async run(...args) {
+    if (this.runtime) await this.runtime.recordTelemetry("git_operations");
     const { stdout } = await execute("git", args, { cwd: this.root, maxBuffer: 4 * 1024 * 1024 });
     return stdout.trim();
   }
@@ -542,4 +722,19 @@ export function appFromEnvironment(repository, environment = process.env) {
     privateKeyPath: environment.VOYAGEWRIGHT_GITHUB_APP_PRIVATE_KEY_PATH,
     apiBase: environment.VOYAGEWRIGHT_GITHUB_API ?? "https://api.github.com",
   });
+}
+
+export function appCredentialPool(app, repository) {
+  const principalFingerprint = fingerprint(`app-installation:${app.installationId ?? "unconfigured"}`);
+  return {
+    id: credentialPoolId({
+      kind: "GITHUB_APP_INSTALLATION",
+      repository,
+      installationId: app.installationId ?? null,
+      principalFingerprint,
+    }),
+    kind: "GITHUB_APP_INSTALLATION",
+    repository,
+    principalFingerprint,
+  };
 }

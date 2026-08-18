@@ -16,13 +16,17 @@ repository-namespaced shared rate state, independent credential pools,
 percentage-based `NORMAL`/`CONSERVATION`/`CRITICAL`/`EXHAUSTED` modes,
 conditional cache records, ETags, safe `304` reuse, file-lock coalescing,
 GraphQL and REST clients, adaptive polling calculations, serialized mutation
-requests, App JWT/installation-token support, redaction, webhook signature
+requests, App JWT/installation-token support with repository/permission
+validation, shared secondary-limit backoff, authorization-scoped read fallback,
+bounded privacy-safe telemetry, redaction, body-bounded webhook signature
 verification, safe CLI diagnostics, and static policy validation.
 
 Bridgewatch delegates its GitHub transport to this client, preserves its
 sanitized local cache and fallback behavior, accepts optional App
 configuration, and batches open-PR check state through GraphQL before falling
-back to bounded conditional REST. Sounding Line record-only authority lookup
+back to bounded conditional REST. If its App key is unavailable it makes one
+equivalent read through its already-configured user pool and reports that
+source. Sounding Line record-only authority lookup
 now delegates API-only reads to the client while retaining all existing
 fail-closed binding rules. Hosted Sounding Line workflows retain their separate
 `${{ github.token }}` pool and explicit policy exceptions.

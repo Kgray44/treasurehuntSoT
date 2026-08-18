@@ -168,4 +168,53 @@ describe("GitHub normalized collection", () => {
       store.close();
     }
   });
+
+  it("falls back once to the configured user read pool when the preferred App key is unavailable", async () => {
+    const scratch = mkdtempSync(join(tmpdir(), "bridgewatch-github-"));
+    const store = new BridgewatchStore(join(scratch, "cache.sqlite"));
+    const config = loadConfig({
+      BRIDGEWATCH_REPOSITORY: "owner/repository",
+      BRIDGEWATCH_GITHUB_API: "https://api.example.test",
+      BRIDGEWATCH_GITHUB_STATE_DIR: scratch,
+      BRIDGEWATCH_GITHUB_TOKEN: "fixture-user-token",
+      BRIDGEWATCH_GITHUB_APP_ID: "123",
+      BRIDGEWATCH_GITHUB_APP_INSTALLATION_ID: "456",
+      BRIDGEWATCH_GITHUB_APP_PRIVATE_KEY_PATH: join(scratch, "missing-app-key.pem"),
+    });
+    let userRequests = 0;
+    vi.stubGlobal("fetch", async (target: string) => {
+      userRequests += 1;
+      const path = new URL(target).pathname;
+      const body =
+        path === "/graphql"
+          ? { data: { repository: { pullRequests: { nodes: [] } } } }
+          : path.endsWith("/pulls")
+            ? []
+            : path.endsWith("/git/ref/heads/main")
+              ? { object: { sha: "mainsha" } }
+              : path.endsWith("/actions/runs")
+                ? { workflow_runs: [] }
+                : { default_branch: "main" };
+      return new Response(JSON.stringify(body), {
+        status: 200,
+        headers: { "x-ratelimit-limit": "5000", "x-ratelimit-remaining": "4900" },
+      });
+    });
+    try {
+      const snapshot = await new GithubCollector(config, store).refresh();
+      expect(snapshot?.headSha).toBe("mainsha");
+      expect(userRequests).toBeGreaterThan(0);
+      expect(store.sourceObservations()).toContainEqual(
+        expect.objectContaining({
+          name: "github",
+          configured: true,
+          reachable: true,
+          credentialSource: "USER_TOKEN",
+          appInstallationHealth: "CONFIGURED",
+        }),
+      );
+    } finally {
+      store.close();
+    }
+  });
 });

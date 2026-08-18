@@ -10,6 +10,7 @@ import {
   fingerprint,
   nextPollInterval,
   rateMode,
+  requestReadWithFallback,
 } from "../../scripts/github-interaction/index.mjs";
 
 export interface WorkflowRun {
@@ -256,9 +257,11 @@ export class GithubCollector {
   private rateLimitResetAt: string | null = null;
   private rateMode: "NORMAL" | "CONSERVATION" | "CRITICAL" | "EXHAUSTED" | "UNKNOWN" = "UNKNOWN";
   private readonly interaction: GitHubInteractionClient;
+  private readonly fallbackInteraction: GitHubInteractionClient | null;
   private readonly appAuth: GitHubAppAuth;
   private readonly sharedRuntime: SharedRuntimeState;
   private readonly poolId: string;
+  private activeCredentialSource: "GITHUB_APP_INSTALLATION" | "USER_TOKEN" | "ANONYMOUS";
 
   constructor(
     private readonly config: Config,
@@ -293,6 +296,7 @@ export class GithubCollector {
       }),
     };
     this.poolId = pool.id;
+    this.activeCredentialSource = this.preferredCredentialSource();
     this.sharedRuntime = new SharedRuntimeState(config.BRIDGEWATCH_REPOSITORY, config.BRIDGEWATCH_GITHUB_STATE_DIR);
     this.interaction = new GitHubInteractionClient({
       repository: config.BRIDGEWATCH_REPOSITORY,
@@ -310,6 +314,30 @@ export class GithubCollector {
         critical: config.BRIDGEWATCH_GITHUB_CRITICAL_RATIO,
       },
     });
+    this.fallbackInteraction =
+      this.appAuth.configured() && config.BRIDGEWATCH_GITHUB_TOKEN
+        ? new GitHubInteractionClient({
+            repository: config.BRIDGEWATCH_REPOSITORY,
+            apiBase: config.BRIDGEWATCH_GITHUB_API,
+            pool: {
+              kind: "USER",
+              repository: config.BRIDGEWATCH_REPOSITORY,
+              principalFingerprint: fingerprint(config.BRIDGEWATCH_GITHUB_TOKEN),
+              id: credentialPoolId({
+                kind: "USER",
+                repository: config.BRIDGEWATCH_REPOSITORY,
+                principalFingerprint: fingerprint(config.BRIDGEWATCH_GITHUB_TOKEN),
+              }),
+            },
+            runtime: this.sharedRuntime,
+            tokenProvider: async () => config.BRIDGEWATCH_GITHUB_TOKEN ?? null,
+            requestTimeoutMs: config.BRIDGEWATCH_REQUEST_TIMEOUT_MS,
+            thresholds: {
+              conservation: config.BRIDGEWATCH_GITHUB_CONSERVATION_RATIO,
+              critical: config.BRIDGEWATCH_GITHUB_CRITICAL_RATIO,
+            },
+          })
+        : null;
   }
 
   cached(): Snapshot | null {
@@ -333,6 +361,7 @@ export class GithubCollector {
     this.rateLimitLimit = null;
     this.rateLimitResetAt = null;
     this.rateMode = "UNKNOWN";
+    this.activeCredentialSource = this.preferredCredentialSource();
     try {
       const [repo, pulls, runs] = await Promise.all([
         this.get<GitHubRecord>("repo", base),
@@ -398,11 +427,7 @@ export class GithubCollector {
         rateLimitLimit: this.rateLimitLimit,
         rateLimitResetAt: this.rateLimitResetAt,
         rateMode: this.rateMode,
-        credentialSource: this.appAuth.configured()
-          ? "GITHUB_APP_INSTALLATION"
-          : this.config.BRIDGEWATCH_GITHUB_TOKEN
-            ? "USER_TOKEN"
-            : "ANONYMOUS",
+        credentialSource: this.activeCredentialSource,
         appInstallationHealth: this.appAuth.configured()
           ? this.appAuth.health().active
             ? "ACTIVE"
@@ -438,11 +463,7 @@ export class GithubCollector {
         rateLimitLimit: this.rateLimitLimit,
         rateLimitResetAt: this.rateLimitResetAt,
         rateMode: this.rateMode,
-        credentialSource: this.appAuth.configured()
-          ? "GITHUB_APP_INSTALLATION"
-          : this.config.BRIDGEWATCH_GITHUB_TOKEN
-            ? "USER_TOKEN"
-            : "ANONYMOUS",
+        credentialSource: this.activeCredentialSource,
         appInstallationHealth: this.appAuth.configured()
           ? this.appAuth.health().active
             ? "ACTIVE"
@@ -489,6 +510,14 @@ export class GithubCollector {
     const mode = this.rateMode;
     if (mode === "CONSERVATION") return "CONSERVATION";
     return mode === "CRITICAL" || mode === "EXHAUSTED" ? "DEGRADED" : "HEALTHY";
+  }
+
+  private preferredCredentialSource(): "GITHUB_APP_INSTALLATION" | "USER_TOKEN" | "ANONYMOUS" {
+    return this.appAuth.configured()
+      ? "GITHUB_APP_INSTALLATION"
+      : this.config.BRIDGEWATCH_GITHUB_TOKEN
+        ? "USER_TOKEN"
+        : "ANONYMOUS";
   }
 
   private async collectBranches(
@@ -562,11 +591,16 @@ export class GithubCollector {
     const prior = cached ? { ...cached, value: safeCacheValue(key, cached.value) as T } : null;
     if (prior) this.store.put(`github:${key}`, prior.value, prior.etag, prior.observedAt);
     const url = new URL(target);
-    const response = await this.interaction.request<T>({
-      path: `${url.pathname}${url.search}`,
-      freshness: "LIVE",
-      cacheKey: { consumer: "bridgewatch", key, repository: this.config.BRIDGEWATCH_REPOSITORY },
+    const response = await requestReadWithFallback({
+      primary: this.interaction,
+      alternatives: this.fallbackInteraction ? [this.fallbackInteraction] : [],
+      request: {
+        path: `${url.pathname}${url.search}`,
+        freshness: "LIVE",
+        cacheKey: { consumer: "bridgewatch", key, repository: this.config.BRIDGEWATCH_REPOSITORY },
+      },
     });
+    if (response.fallbackPoolId) this.activeCredentialSource = "USER_TOKEN";
     const remaining = Number(response.headers["x-ratelimit-remaining"]);
     if (Number.isInteger(remaining) && remaining >= 0) this.rateLimitRemaining = remaining;
     const limit = Number(response.headers["x-ratelimit-limit"]);
@@ -598,12 +632,19 @@ export class GithubCollector {
     )
       return new Map();
     try {
-      const response = await this.interaction.graphql<{
+      const response = await requestReadWithFallback<{
         data?: { repository?: { pullRequests?: { nodes?: Array<Record<string, unknown>> } } };
-      }>(
-        "query BridgewatchPullChecks($owner:String!,$name:String!){rateLimit{limit remaining used resetAt cost} repository(owner:$owner,name:$name){pullRequests(first:100,states:OPEN,orderBy:{field:UPDATED_AT,direction:DESC}){nodes{number commits(last:1){nodes{commit{checkSuites(first:100){nodes{status conclusion}}}}}}}}}",
-        { owner, name },
-        {
+      }>({
+        primary: this.interaction,
+        alternatives: this.fallbackInteraction ? [this.fallbackInteraction] : [],
+        request: {
+          method: "POST",
+          path: "/graphql",
+          body: {
+            query:
+              "query BridgewatchPullChecks($owner:String!,$name:String!){rateLimit{limit remaining used resetAt cost} repository(owner:$owner,name:$name){pullRequests(first:100,states:OPEN,orderBy:{field:UPDATED_AT,direction:DESC}){nodes{number commits(last:1){nodes{commit{checkSuites(first:100){nodes{status conclusion}}}}}}}}}",
+            variables: { owner, name },
+          },
           freshness: "SHORT",
           cacheKey: {
             consumer: "bridgewatch",
@@ -611,7 +652,8 @@ export class GithubCollector {
             repository: this.config.BRIDGEWATCH_REPOSITORY,
           },
         },
-      );
+      });
+      if (response.fallbackPoolId) this.activeCredentialSource = "USER_TOKEN";
       const nodes = response.body?.data?.repository?.pullRequests?.nodes;
       if (!Array.isArray(nodes)) return null;
       const checks = new Map<number, GitHubRecord>();

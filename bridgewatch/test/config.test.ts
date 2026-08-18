@@ -67,6 +67,20 @@ describe("loadConfig", () => {
     expect(configured.BRIDGEWATCH_GITHUB_APP_ID).toBe("12345");
     expect(configured.BRIDGEWATCH_GITHUB_APP_INSTALLATION_ID).toBe("67890");
     expect(configured.BRIDGEWATCH_GITHUB_APP_PRIVATE_KEY_PATH).toContain("fixture-app.pem");
+    expect(() =>
+      loadConfig({
+        BRIDGEWATCH_REPOSITORY: "owner/repository",
+        BRIDGEWATCH_GITHUB_APP_ID: "12345",
+      }),
+    ).toThrow("requires App ID");
+    expect(() =>
+      loadConfig({
+        BRIDGEWATCH_REPOSITORY: "owner/repository",
+        BRIDGEWATCH_GITHUB_APP_ID: "12345",
+        BRIDGEWATCH_GITHUB_APP_INSTALLATION_ID: "67890",
+        BRIDGEWATCH_GITHUB_APP_PRIVATE_KEY_PATH: "relative-key.pem",
+      }),
+    ).toThrow("must be absolute");
   });
 
   it("keeps percentage thresholds ordered per GitHub credential resource", () => {

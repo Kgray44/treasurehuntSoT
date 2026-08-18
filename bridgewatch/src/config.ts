@@ -1,4 +1,4 @@
-import { resolve } from "node:path";
+import { isAbsolute, resolve } from "node:path";
 
 export interface Config {
   BRIDGEWATCH_HOST: string;
@@ -79,6 +79,15 @@ export function loadConfig(input: Record<string, string | undefined> = process.e
   const conservationRatio = ratio(input.BRIDGEWATCH_GITHUB_CONSERVATION_RATIO, 0.3);
   const criticalRatio = ratio(input.BRIDGEWATCH_GITHUB_CRITICAL_RATIO, 0.1);
   if (criticalRatio > conservationRatio) throw new Error("Bridgewatch critical ratio cannot exceed conservation ratio");
+  const appConfiguration = [
+    input.BRIDGEWATCH_GITHUB_APP_ID,
+    input.BRIDGEWATCH_GITHUB_APP_INSTALLATION_ID,
+    input.BRIDGEWATCH_GITHUB_APP_PRIVATE_KEY_PATH,
+  ];
+  if (appConfiguration.some(Boolean) && !appConfiguration.every(Boolean))
+    throw new Error("Bridgewatch GitHub App configuration requires App ID, installation ID, and private-key path");
+  if (input.BRIDGEWATCH_GITHUB_APP_PRIVATE_KEY_PATH && !isAbsolute(input.BRIDGEWATCH_GITHUB_APP_PRIVATE_KEY_PATH))
+    throw new Error("Bridgewatch GitHub App private-key path must be absolute");
   return {
     BRIDGEWATCH_HOST: host,
     BRIDGEWATCH_PORT: integer(input.BRIDGEWATCH_PORT, 4318),

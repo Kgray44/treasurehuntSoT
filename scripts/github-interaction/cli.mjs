@@ -4,14 +4,18 @@ import {
   GitHubInteractionClient,
   GitTransport,
   SharedRuntimeState,
+  appCredentialPool,
   appFromEnvironment,
   credentialPoolId,
   fingerprint,
+  isTerminalWatchState,
   jitteredPollInterval,
   nextPollInterval,
   rateMode,
   recommendTransport,
   repositoryIdentity,
+  requestReadWithFallback,
+  shouldReportWatchState,
 } from "./index.mjs";
 
 const command = process.argv[2] ?? "status";
@@ -29,7 +33,27 @@ const pool = {
   principalFingerprint: fingerprint(token ?? "anonymous"),
 };
 const runtime = new SharedRuntimeState(repository);
+const app = appFromEnvironment(repository);
+const appPool = appCredentialPool(app, repository);
 const print = (value) => process.stdout.write(`${JSON.stringify(value, null, 2)}\n`);
+const readClients = () => {
+  const user = new GitHubInteractionClient({
+    repository,
+    pool,
+    runtime,
+    tokenProvider: token ? async () => token : null,
+  });
+  if (!app.configured()) return { primary: user, alternatives: [] };
+  return {
+    primary: new GitHubInteractionClient({
+      repository,
+      pool: appPool,
+      runtime,
+      tokenProvider: () => app.token().then((value) => value.token),
+    }),
+    alternatives: [user],
+  };
+};
 
 if (command === "status" || command === "quota") {
   const status = await runtime.status();
@@ -49,10 +73,9 @@ if (command === "status" || command === "quota") {
     recommendation: recommendTransport({ operation: "ref", gitAvailable: true }),
   });
 } else if (command === "doctor") {
-  const app = appFromEnvironment(repository);
   print({
     repository,
-    git: await new GitTransport().ref().then(
+    git: await new GitTransport(process.cwd(), runtime).ref().then(
       () => "AVAILABLE",
       () => "UNAVAILABLE",
     ),
@@ -62,28 +85,22 @@ if (command === "status" || command === "quota") {
     policy: "Run npm run github:policy:validate",
   });
 } else if (command === "app-check") {
-  const app = appFromEnvironment(repository);
-  print(app.health());
+  print(app.configured() ? await app.validateInstallation() : app.health());
 } else if (command === "ref") {
   print({
     ref: argument("--ref") ?? "origin/main",
-    sha: await new GitTransport().ref(argument("--ref") ?? "origin/main"),
+    sha: await new GitTransport(process.cwd(), runtime).ref(argument("--ref") ?? "origin/main"),
     transport: "GIT",
   });
 } else if (command === "pr" || command === "run") {
   const id = argument("--id") ?? process.argv[3];
   if (!/^\d+$/u.test(id ?? "")) throw new Error("GITHUB_CLI_NUMERIC_ID_REQUIRED");
-  const client = new GitHubInteractionClient({
-    repository,
-    pool,
-    runtime,
-    tokenProvider: token ? async () => token : null,
-  });
+  const clients = readClients();
   const path =
     command === "pr"
       ? `/repos/${repository.replace(/^.*github\.com[:/]/u, "")}/pulls/${id}`
       : `/repos/${repository.replace(/^.*github\.com[:/]/u, "")}/actions/runs/${id}`;
-  print(await client.request({ path, freshness: "SHORT" }));
+  print(await requestReadWithFallback({ ...clients, request: { path, freshness: "SHORT" } }));
 } else if (command === "dispatch") {
   const workflow = argument("--workflow");
   const ref = argument("--ref") ?? "main";
@@ -100,12 +117,7 @@ if (command === "status" || command === "quota") {
   const id = argument("--id") ?? process.argv[3];
   if (!/^\d+$/u.test(id ?? "")) throw new Error("GITHUB_CLI_NUMERIC_ID_REQUIRED");
   const minimumMs = Math.max(30_000, Number(argument("--interval-ms") ?? 60_000));
-  const client = new GitHubInteractionClient({
-    repository,
-    pool,
-    runtime,
-    tokenProvider: token ? async () => token : null,
-  });
+  const clients = readClients();
   let previous = null;
   let cancelled = false;
   process.once("SIGINT", () => {
@@ -118,17 +130,19 @@ if (command === "status" || command === "quota") {
         ? `/repos/${repository.replace(/^.*github\.com[:/]/u, "")}/pulls/${id}`
         : `/repos/${repository.replace(/^.*github\.com[:/]/u, "")}/actions/runs/${id}`;
     try {
-      const result = await client.request({ path, freshness: "LIVE" });
+      const result = await requestReadWithFallback({ ...clients, request: { path, freshness: "LIVE" } });
       const state = result.body?.status ?? result.body?.state ?? "UNKNOWN";
-      if (state !== previous)
+      if (shouldReportWatchState(previous, state))
         print({ id: Number(id), state, cached: result.cached, deferred: Boolean(result.deferred) });
       previous = state;
-      if (["completed", "closed", "merged"].includes(String(state).toLowerCase())) break;
+      if (isTerminalWatchState(state)) break;
       const record = (await runtime.load()).pools?.[pool.id]?.resources?.["rest:core"] ?? null;
       const serverPollIntervalMs = Math.max(0, Number(result.headers?.["x-poll-interval"]) * 1_000 || 0);
       const delay = jitteredPollInterval(
         nextPollInterval({ mode: rateMode(record), minimumMs, serverPollIntervalMs, resetAt: record?.resetAt }),
       );
+      await runtime.recordTelemetry("poll_count");
+      await runtime.recordTelemetry("poll_interval_ms_total", delay);
       await new Promise((resolveDelay) => setTimeout(resolveDelay, delay));
     } catch (error) {
       const retryAfterMs = Number(error?.retryAfterMs) || 0;
