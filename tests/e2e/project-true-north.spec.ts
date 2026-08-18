@@ -15,13 +15,13 @@ test("public shell keeps a stable menu, profile access, and keyboard dismissal",
   await menu.click();
   const workspaceNavigation = page.getByRole("navigation", { name: "Global navigation" });
   await expect(workspaceNavigation).toBeVisible();
-  await expect(workspaceNavigation.getByRole("link", { name: "Explore Chronicles" })).toBeFocused();
+  await expect(workspaceNavigation.getByRole("link", { name: "Home" })).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(menu).toBeFocused();
 
   const account = page.getByRole("button", { name: "Account" });
   await account.click();
-  await expect(page.getByRole("link", { name: "Sign in" })).toBeFocused();
+  await expect(page.getByRole("link", { name: "Create Account" })).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(account).toBeFocused();
 
