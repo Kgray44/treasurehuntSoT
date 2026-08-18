@@ -169,7 +169,7 @@ jobs:
           $changed = @(git diff --name-only --no-renames --no-ext-diff $env:SOUNDING_LINE_BASE_SHA $env:SOUNDING_LINE_CANDIDATE_SHA | Sort-Object)
           if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_ORDINARY_CANDIDATE_CHANGED_PATHS_UNAVAILABLE' }
           ConvertTo-Json -InputObject $changed -Compress | Set-Content -NoNewline ordinary-candidate-changed-paths.json
-          node trusted-verification-maintenance.mjs ordinary --policy trusted-maintenance-policy.json --paths ordinary-candidate-changed-paths.json --out ordinary-candidate-classification.json
+          node trusted-verification-maintenance.mjs ordinary --policy trusted-maintenance-policy.json --paths ordinary-candidate-changed-paths.json --trusted-base-sha $env:SOUNDING_LINE_BASE_SHA --candidate-sha $env:SOUNDING_LINE_CANDIDATE_SHA --out ordinary-candidate-classification.json
           if ($LASTEXITCODE -ne 0) {
             $classification = Get-Content -Raw ordinary-candidate-classification.json | ConvertFrom-Json
             $authority = @($classification.errors | Where-Object { $_ -match '^ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED:' })
@@ -223,6 +223,12 @@ jobs:
       # client, but does not create, migrate, or seed a database.
       - run: npm run db:generate
       - run: node scripts/sounding-line/test-registry.mjs
+      - name: Verify candidate registry regeneration is deterministic
+        if: ${{ inputs.authority_mode == 'candidate' }}
+        shell: pwsh
+        run: |
+          git diff --exit-code -- testing/generated/active-test-registry.json
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_ORDINARY_CANDIDATE_GENERATED_REGISTRY_DRIFT' }
       # P34 must be fully mapped and archived before any hosted browser worker
       # may receive a mainline plan.
       - run: node scripts/sounding-line/p34-retirement.mjs

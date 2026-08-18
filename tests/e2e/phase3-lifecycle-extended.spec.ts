@@ -688,32 +688,28 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
     });
   }
 
-  test("authored invitation seal runtime remounts cleanly for twenty route cycles", async ({ page }) => {
+  test("legacy Quartermaster bookmarks resolve only through canonical Captain account entry across twenty route cycles", async ({
+    page,
+  }) => {
     test.setTimeout(extendedTimeout);
     await installExtendedLifecycleProbe(page);
-    const expectInvitationRuntime = async () => {
-      const runtime = page.locator('.quartermaster-login [data-animation-owner="rive"]');
-      await expect(runtime).toHaveCount(1);
-      await expect(runtime).toHaveAttribute("aria-label", "Captain's Console door lock");
-      await expect(runtime.locator("canvas")).toHaveCount(1, { timeout: 20_000 });
-      await expect(
-        page.getByRole("img", {
-          name: /Captain's Console door lock fallback after WebGL or asset failure/u,
-        }),
-      ).toHaveCount(0);
+    const expectCanonicalCaptainEntry = async () => {
+      await expect(page).toHaveURL(/\/sign-in\?returnTo=%2Fcaptain%2Flibrary$/u);
+      await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
+      await expect(page.locator('.quartermaster-login [data-animation-owner="rive"]')).toHaveCount(0);
     };
-    // `/quartermaster` deliberately preserves old bookmarks by redirecting to
-    // the Captain overview. The live command surface is its canonical
-    // workspace route, which is the surface this lifecycle test exercises.
+    // Historical Quartermaster bookmarks must preserve their destination but
+    // cannot revive the retired Game Master authentication surface. Captain
+    // authorization is evaluated only through the current account entry.
     await page.goto("/quartermaster/chapters");
-    await expectInvitationRuntime();
+    await expectCanonicalCaptainEntry();
     await runTwentyCycles(
       page,
       async () => {
         await page.goto("/");
         await expect(page.getByRole("heading", { name: "Choose your role in Voyagewright" })).toBeVisible();
         await page.goto("/quartermaster/chapters");
-        await expectInvitationRuntime();
+        await expectCanonicalCaptainEntry();
       },
       stableRiveRemountSnapshot,
     );
