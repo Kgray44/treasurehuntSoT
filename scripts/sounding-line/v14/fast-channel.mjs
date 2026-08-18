@@ -377,13 +377,47 @@ export function selectV14Mainline({
         )
       )
         selectedByFloor.set(suite.id, rule.id);
-  const unknown =
-    changedPaths.some((changed) => !impact.pathMappings?.some((mapping) => matches(changed, [mapping.path]))) ||
-    changedContracts.some((id) => !impact.contractMappings?.some((mapping) => mapping.contractId === id)) ||
-    mappingDebt.some((debt) => changedContracts.includes(debt.contractId));
+  const mappingsForChangedPath = (changed) => {
+    const matching = (impact.pathMappings ?? []).filter((mapping) => matches(changed, [mapping.path]));
+    // An authority-reviewed exact mapping may deliberately model a bounded
+    // seam inside a broader owner glob. In that case, the exact mapping is
+    // the complete direct impact declaration; dependency closure still adds
+    // every suite required by the selected direct evidence.
+    const exclusive = matching.filter((mapping) => mapping.exclusive === true);
+    return exclusive.length ? exclusive : matching;
+  };
+  const unmappedChangedPaths = sorted(
+    changedPaths.filter((changed) => mappingsForChangedPath(changed).length === 0),
+  );
+  const unmappedChangedContracts = sorted(
+    changedContracts.filter((id) => !impact.contractMappings?.some((mapping) => mapping.contractId === id)),
+  );
+  const activeMappingDebt = mappingDebt
+    .filter((debt) => changedContracts.includes(debt.contractId))
+    .map((debt) => canonicalize(debt))
+    .sort((left, right) => canonicalJson(left).localeCompare(canonicalJson(right)));
+  const fallbackReasons = [
+    ...(unmappedChangedPaths.length ? [{ code: "UNMAPPED_CHANGED_PATH", paths: unmappedChangedPaths }] : []),
+    ...(unmappedChangedContracts.length
+      ? [{ code: "UNMAPPED_CHANGED_CONTRACT", contractIds: unmappedChangedContracts }]
+      : []),
+    ...(activeMappingDebt.length ? [{ code: "MAPPING_DEBT", debts: activeMappingDebt }] : []),
+  ];
+  const unknown = fallbackReasons.length > 0;
+  const fallback = unknown
+    ? {
+        disposition: "CONSERVATIVE_FALLBACK",
+        // Consumers of the previous envelope understand UNKNOWN_IMPACT and
+        // MAPPING_DEBT only. Keep that compatibility field while the detailed
+        // reasons below identify the exact input that forced expansion.
+        failure: fallbackReasons[0].code === "MAPPING_DEBT" ? "MAPPING_DEBT" : "UNKNOWN_IMPACT",
+        reasons: fallbackReasons,
+      }
+    : null;
+  const activeLedgerDebt = activeMappingDebt.map((debt) => ({ id: debt.contractId, owner: debt.owner }));
   const directlyAffected = new Set();
-  for (const mapping of impact.pathMappings ?? [])
-    if (changedPaths.some((changed) => matches(changed, [mapping.path])))
+  for (const changed of changedPaths)
+    for (const mapping of mappingsForChangedPath(changed))
       for (const id of mapping.suiteIds ?? []) directlyAffected.add(id);
   for (const mapping of impact.contractMappings ?? [])
     if (changedContracts.includes(mapping.contractId))
@@ -434,11 +468,8 @@ export function selectV14Mainline({
         // later receipt derivation must still validate its fingerprints.
         evidenceDisposition: selected ? (unknown ? "CONSERVATIVE_FALLBACK" : "FRESH") : "PRESERVED",
         preservationBasis: selected ? "CURRENT_EXECUTION" : "EXACT_SEMANTIC_INTERVAL",
-        debt: unknown
-          ? mappingDebt
-              .filter((debt) => changedContracts.includes(debt.contractId))
-              .map((debt) => ({ id: debt.contractId, owner: debt.owner }))
-          : [],
+        debt: unknown ? activeLedgerDebt : [],
+        ...(unknown ? { fallbackReasons } : {}),
       };
     });
   const nodes = suites
@@ -483,9 +514,7 @@ export function selectV14Mainline({
       (counts, entry) => ({ ...counts, [entry.evidenceDisposition]: (counts[entry.evidenceDisposition] ?? 0) + 1 }),
       {},
     ),
-    fallback: unknown
-      ? { disposition: "CONSERVATIVE_FALLBACK", failure: mappingDebt.length ? "MAPPING_DEBT" : "UNKNOWN_IMPACT" }
-      : null,
+    fallback,
   });
 }
 

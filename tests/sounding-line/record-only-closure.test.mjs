@@ -139,6 +139,35 @@ function priorAuthorityFixture(valid = true) {
   return { authority, plan, finalization };
 }
 
+function v14PriorAuthorityFixture() {
+  const fixture = priorAuthorityFixture();
+  const { planDigest, ...unsignedPlan } = fixture.plan;
+  fixture.plan = {
+    ...unsignedPlan,
+    authorityVersion: "1.4",
+    authorityMode: "V14_CANDIDATE",
+    authorityBoundary: "V14_CANDIDATE_QUALIFICATION",
+  };
+  fixture.plan.planDigest = digest(fixture.plan);
+  for (const receipt of fixture.finalization.receipts) receipt.planDigest = fixture.plan.planDigest;
+  fixture.finalization.planDigest = fixture.plan.planDigest;
+  fixture.finalization.physicalReceipts = structuredClone(fixture.finalization.receipts);
+  fixture.finalization.runtimeConformance = fixture.finalization.receipts.map((receipt) => ({
+    suiteId: receipt.suiteId,
+    planDigest: fixture.plan.planDigest,
+    authorityDigest: fixture.plan.authorityDigest,
+    result: "PASSED",
+  }));
+  fixture.finalization.physicalRuntimeConformance = structuredClone(fixture.finalization.runtimeConformance);
+  fixture.finalization.evidenceDigest = digest({
+    receipts: fixture.finalization.receipts,
+    physicalReceipts: fixture.finalization.physicalReceipts,
+    runtimeConformance: fixture.finalization.runtimeConformance,
+    physicalRuntimeConformance: fixture.finalization.physicalRuntimeConformance,
+  });
+  return fixture;
+}
+
 function recordOnlyBindingFixture() {
   const changedPaths = [
     "CHANGELOG.md",
@@ -325,6 +354,27 @@ test("record-only evidence refuses a missing or invalid prior implementation aut
       finalization: invalid.finalization,
     }).join("\n"),
     /PRIOR_IMPLEMENTATION_PROTECTED_CONTEXT_INVALID/u,
+  );
+});
+
+test("record-only provenance verifies a v1.4 aggregate finalization and fails closed for missing physical evidence", () => {
+  const valid = v14PriorAuthorityFixture();
+  assert.deepEqual(
+    validatePriorImplementationAuthority({
+      authority: valid.authority,
+      plan: valid.plan,
+      finalization: valid.finalization,
+    }),
+    [],
+  );
+  delete valid.finalization.physicalRuntimeConformance;
+  assert.match(
+    validatePriorImplementationAuthority({
+      authority: valid.authority,
+      plan: valid.plan,
+      finalization: valid.finalization,
+    }).join("\n"),
+    /PRIOR_IMPLEMENTATION_EVIDENCE_DIGEST_INVALID/u,
   );
 });
 

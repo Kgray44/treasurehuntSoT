@@ -32,10 +32,25 @@ const readJson = async (file) => {
   return JSON.parse(text.replace(/^\uFEFF/u, ""));
 };
 
-function suiteAdapter(suite, registry) {
+function suiteAdapter(suite, registry, browserTestIds = undefined) {
   const certifiedBaseline = process.env.SOUNDING_LINE_CERTIFIED_BASELINE === "1";
-  const definitions = registry.cases.filter((entry) => entry.suiteId === suite.id);
-  if (["vitest-family", "node-test-browser-family"].includes(suite.adapter)) {
+  const availableDefinitions = registry.cases.filter((entry) => entry.suiteId === suite.id);
+  if (
+    browserTestIds !== undefined &&
+    (!Array.isArray(browserTestIds) ||
+      !browserTestIds.length ||
+      new Set(browserTestIds).size !== browserTestIds.length ||
+      suite.adapter !== "playwright-family")
+  )
+    throw new Error(`BROWSER_PARTITION_ADAPTER_INVALID:${suite.id}`);
+  const selectedTestIds = new Set(browserTestIds ?? []);
+  const definitions =
+    browserTestIds === undefined
+      ? availableDefinitions
+      : availableDefinitions.filter((entry) => selectedTestIds.has(entry.id));
+  if (browserTestIds !== undefined && definitions.length !== browserTestIds.length)
+    throw new Error(`BROWSER_PARTITION_CASE_SELECTION_INVALID:${suite.id}`);
+  if (["vitest-family", "vitest-family-serial", "node-test-browser-family"].includes(suite.adapter)) {
     const files = [
       ...new Set(
         definitions.map((entry) => entry.file).filter((file) => /\.(?:test|spec)\.(?:ts|tsx|mjs|js)$/u.test(file)),
@@ -52,7 +67,7 @@ function suiteAdapter(suite, registry) {
             : ["node-slot"],
         mode: "CERTIFIED",
       };
-    return resolveVitestAdapter(files);
+    return resolveVitestAdapter(files, { serialWithinFamily: suite.adapter === "vitest-family-serial" });
   }
   if (suite.adapter === "playwright-family") {
     const selections = new Map();
@@ -122,7 +137,10 @@ async function loadSealedPlan(gateId, { serial, planPath } = {}) {
   return plan;
 }
 
-async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, suiteIds, planPath } = {}) {
+async function run(
+  gateId,
+  { serial, executeOnly = false, receiptPath, suiteId, suiteIds, planPath, browserTestIdsBySuite, browserEngine } = {},
+) {
   const plan = await loadSealedPlan(gateId, { serial, planPath });
   const selectedSuiteIds = suiteIds ?? (suiteId ? [suiteId] : null);
   if (
@@ -134,6 +152,28 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
     throw new Error("SUITE_BATCH_INVALID");
   if (selectedSuiteIds && selectedSuiteIds.some((id) => !plan.nodes.some((node) => node.id === id)))
     throw new Error("SUITE_BATCH_NOT_SELECTED_BY_PLAN");
+  if (browserTestIdsBySuite === undefined && browserEngine && ["chromium", "webkit"].includes(browserEngine)) {
+    const automaticPartitions = Object.fromEntries(
+      plan.nodes
+        .filter((node) => selectedSuiteIds?.includes(node.id))
+        .flatMap((node) => {
+          const partition = node.browserPartitions?.find((entry) => entry.browserEngine === browserEngine);
+          return partition ? [[node.id, partition.testIds]] : [];
+        }),
+    );
+    if (Object.keys(automaticPartitions).length) browserTestIdsBySuite = automaticPartitions;
+  }
+  if (
+    browserTestIdsBySuite !== undefined &&
+    (!selectedSuiteIds ||
+      !browserEngine ||
+      !["chromium", "webkit"].includes(browserEngine) ||
+      !browserTestIdsBySuite ||
+      typeof browserTestIdsBySuite !== "object" ||
+      Array.isArray(browserTestIdsBySuite) ||
+      JSON.stringify(Object.keys(browserTestIdsBySuite).sort()) !== JSON.stringify([...selectedSuiteIds].sort()))
+  )
+    throw new Error("BROWSER_PARTITION_BATCH_INVALID");
   if (selectedSuiteIds?.length > 1) {
     const batchNodes = plan.nodes.filter((node) => selectedSuiteIds.includes(node.id));
     if (!batchNodes.every(canBatchPhysicalWorker) || new Set(batchNodes.map((node) => node.execution.wave)).size !== 1)
@@ -149,14 +189,25 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
   const runtimeRoot = path.join(root, "artifacts", "sounding-line", "runs", process.env.GITHUB_RUN_ID ?? "local");
   for (const node of plan.nodes.filter((node) => !selectedSuiteIds || selectedSuiteIds.includes(node.id))) {
     const suite = suiteMap.get(node.id);
+    const browserTestIds = browserTestIdsBySuite?.[node.id];
+    if (browserTestIds !== undefined) {
+      const expected =
+        node.browserPartitions?.find((partition) => partition.browserEngine === browserEngine)?.testIds ?? [];
+      if (
+        !Array.isArray(browserTestIds) ||
+        JSON.stringify([...browserTestIds].sort()) !== JSON.stringify([...expected].sort())
+      )
+        throw new Error(`BROWSER_PARTITION_PLAN_MISMATCH:${node.id}`);
+    }
     const preparation =
       plan.authorityVersion === "1.4"
         ? deriveV14WorkerPreparation({
             plan,
             node,
             runId: process.env.GITHUB_RUN_ID ?? "local",
+            browserEngine: browserTestIds === undefined ? undefined : browserEngine,
           })
-        : deriveWorkerPreparation(node);
+        : deriveWorkerPreparation(node, { browserEngine: browserTestIds === undefined ? undefined : browserEngine });
     if (preparation.runtimeConformance.result !== "PASSED")
       throw new Error(
         `RUNTIME_CONFORMANCE_FAILED:${preparation.runtimeConformance.violations.map((entry) => entry.code).join(",")}`,
@@ -166,8 +217,11 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
       planDigest: plan.planDigest,
       authorityDigest: plan.authorityDigest,
       ...preparation.runtimeConformance,
+      ...(browserTestIds === undefined
+        ? {}
+        : { browserPartition: { browserEngine, testIds: [...browserTestIds].sort() } }),
     });
-    const adapter = suiteAdapter(suite, registry);
+    const adapter = suiteAdapter(suite, registry, browserTestIds);
     const startedAt = new Date().toISOString();
     const adapterEnv = {};
     if (
@@ -206,7 +260,7 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
     const browserCounts =
       suite.adapter === "playwright-family"
         ? {
-            registeredCaseCount: node.testIds.length,
+            registeredCaseCount: browserTestIds?.length ?? node.testIds.length,
             discoveredCaseCount: adapter.caseCount,
             executedCaseCount: result.exitCode === 0 && !result.timedOut ? adapter.caseCount : null,
             passedCaseCount: result.exitCode === 0 && !result.timedOut ? adapter.caseCount : 0,
@@ -227,6 +281,9 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
       gate: plan.gate,
       cleanupState: "CLEAN",
       result: result.exitCode === 0 && !result.timedOut ? "PASSED" : "FAILED",
+      ...(browserTestIds === undefined
+        ? {}
+        : { browserPartition: { browserEngine, testIds: [...browserTestIds].sort() } }),
       ...browserCounts,
       ...result,
     });
@@ -254,6 +311,11 @@ const suiteId = suiteIndex >= 0 ? process.argv[suiteIndex + 1] : undefined;
 if (suiteIndex >= 0 && !suiteId) throw new Error("SUITE_ID_REQUIRED");
 const suitesIndex = process.argv.indexOf("--suites-json");
 const suiteIds = suitesIndex >= 0 ? JSON.parse(process.argv[suitesIndex + 1] ?? "") : undefined;
+const browserTestIdsIndex = process.argv.indexOf("--browser-test-ids-by-suite-json");
+let browserTestIdsBySuite =
+  browserTestIdsIndex >= 0 ? JSON.parse(process.argv[browserTestIdsIndex + 1] ?? "") : undefined;
+const browserEngineIndex = process.argv.indexOf("--browser-engine");
+const browserEngine = browserEngineIndex >= 0 ? process.argv[browserEngineIndex + 1] : undefined;
 if (suiteId && suiteIds) throw new Error("SUITE_AND_BATCH_ARE_MUTUALLY_EXCLUSIVE");
 const planInputIndex = process.argv.indexOf("--plan-in");
 const planPath = planInputIndex >= 0 ? process.argv[planInputIndex + 1] : undefined;
@@ -267,4 +329,6 @@ await run(command, {
   suiteId,
   suiteIds,
   planPath,
+  browserTestIdsBySuite,
+  browserEngine,
 });

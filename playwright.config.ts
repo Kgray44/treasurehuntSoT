@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import { phase3ReadOnlySetupUseForEngine } from "./scripts/sounding-line/v14/browser-setup-engine.mjs";
 
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3100";
 const playwrightPort = new URL(baseURL).port || "3100";
@@ -6,7 +7,11 @@ const useOwnedExternalServer = process.env.FOREVER_PLAYWRIGHT_EXTERNAL_SERVER ==
 const soundingLineLane = process.env.FOREVER_SOUNDING_LINE_LANE ?? "";
 const usesSoundingLineLane = /^(?:harborlight-a|harborlight-b)$/u.test(soundingLineLane);
 const useWayfarerProductionServer = process.env.WAYFARER_PLAYWRIGHT_PRODUCTION === "1";
-const phase3ReadOnlySetup = /phase3-readonly-setup\.setup\.ts/u;
+const phase3ReadOnlySetup = phase3ReadOnlySetupUseForEngine(
+  process.env.SOUNDING_LINE_BROWSER_ENGINE,
+  process.env.SOUNDING_LINE_CHROMIUM_SETUP_BROWSERS_PATH,
+);
+const phase3ReadOnlySetupSpec = /phase3-readonly-setup\.setup\.ts/u;
 const phase3PerformanceSpec = /phase3-performance\.spec\.ts/u;
 const harborlightPhase2Spec = /harborlight-phase2\.spec\.ts/u;
 const wayfarerPhase2Spec = /wayfarer-phase2\.spec\.ts/u;
@@ -67,14 +72,19 @@ export default defineConfig({
   projects: [
     {
       name: "phase3-readonly-setup",
-      testMatch: phase3ReadOnlySetup,
-      use: { ...devices["Desktop Chrome"] },
+      testMatch: phase3ReadOnlySetupSpec,
+      use: {
+        ...devices[phase3ReadOnlySetup.deviceName],
+        ...(phase3ReadOnlySetup.executablePath
+          ? { launchOptions: { executablePath: phase3ReadOnlySetup.executablePath } }
+          : {}),
+      },
     },
     {
       name: "chromium",
       dependencies: ["phase3-readonly-setup"],
       testIgnore: [
-        phase3ReadOnlySetup,
+        phase3ReadOnlySetupSpec,
         phase3PerformanceSpec,
         wayfarerPhase2Spec,
         harborlightPhase2Spec,
@@ -181,7 +191,7 @@ export default defineConfig({
       name: "webkit-mobile",
       dependencies: ["phase3-readonly-setup"],
       testIgnore: [
-        phase3ReadOnlySetup,
+        phase3ReadOnlySetupSpec,
         phase3MutationSpecs,
         wayfarerPhase2Spec,
         harborlightPhase2Spec,

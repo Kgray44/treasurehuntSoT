@@ -193,6 +193,20 @@ test("governed adapters use fixed argument arrays and retain bounded receipts", 
     assert.equal(bridgewatch.workingDirectory, "bridgewatch");
     assert.deepEqual(bridgewatch.command.slice(1, 3), ["../node_modules/vitest/vitest.mjs", "run"]);
     assert.deepEqual(bridgewatch.command.slice(-1), ["test/sounding-line.test.ts"]);
+    assert.equal(bridgewatch.mode, "CERTIFIED");
+    assert.ok(!bridgewatch.command.includes("--no-file-parallelism"));
+    const serialBridgewatch = resolveVitestAdapter(["bridgewatch/test/performance.test.ts"], {
+      serialWithinFamily: true,
+    });
+    assert.equal(serialBridgewatch.workingDirectory, "bridgewatch");
+    assert.equal(serialBridgewatch.mode, "SERIAL_WITHIN_FAMILY");
+    assert.deepEqual(serialBridgewatch.command.slice(1), [
+      "../node_modules/vitest/vitest.mjs",
+      "run",
+      "--maxWorkers=1",
+      "--no-file-parallelism",
+      "test/performance.test.ts",
+    ]);
     const result = await executeProductAdapter(run, resolveAdapter("policy"), { cwd: process.cwd() });
     assert.equal(result.status, "PASS");
     assert.match(await readFile(path.join(run.root, "logs", "adapter-policy.log"), "utf8"), /policyDigest/);

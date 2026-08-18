@@ -1,0 +1,8 @@
+{
+  "id": "dogfood-bounded-product",
+  "objective": "Implement a bounded Bridgewatch gateway increment.",
+  "taskClass": "product-phase",
+  "executionProfile": "UNATTENDED_CONTINUATION",
+  "paths": ["src/app/bridgewatch/route.ts", "src/admiralty/bridgewatch-gateway.ts"],
+  "completionContract": ["Use mapped contracts and governed verification."]
+}
