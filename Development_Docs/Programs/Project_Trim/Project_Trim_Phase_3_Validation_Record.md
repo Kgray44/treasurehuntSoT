@@ -25,7 +25,7 @@ Phase 3 cases prove accepted versus provisional capsule identity, retained Phase
 - Focused Prettier formatting: PASS for every Phase 3 source, test, capsule, and Project Trim record.
 - Generated Sounding Line test registry: PASS; 2,379 governed cases across 57 owned families.
 - Feature Catalog synchronization: completed with provenance refresh only; no Phase 3 product feature fragment changed.
-- Feature Catalog validation: BLOCKED by existing unrelated reference `codex/project-drydock-phase3-run-sea-trials`, which does not resolve. It is not modified by this increment.
+- Feature Catalog validation: PASS; 48 entries. The historical FT-036 branch reference was fetched read-only for the local validation clone and was not modified.
 
 ## Acceptance boundary
 
