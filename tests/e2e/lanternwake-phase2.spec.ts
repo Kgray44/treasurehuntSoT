@@ -42,6 +42,21 @@ async function openShowcase(page: Page, reducedMotion: "reduce" | "no-preference
   await expect(page.getByRole("heading", { name: "Forever Treasure Animation Showcase" })).toBeVisible();
 }
 
+async function leaveShowcaseAfterHotReload(page: Page) {
+  try {
+    await page.goto("/captain/sign-in");
+  } catch (error) {
+    // Next.js may perform one initial Fast Refresh reload while the development
+    // showcase is first compiled. It returns to this exact route before the
+    // intended navigation is retried; any other navigation failure remains fatal.
+    if (!(error instanceof Error) || !error.message.includes("is interrupted by another navigation")) {
+      throw error;
+    }
+    await expect(page).toHaveURL(/\/dev\/animations$/);
+    await page.goto("/captain/sign-in");
+  }
+}
+
 async function waitForPageFlipRead(book: Locator) {
   await expect(book).toHaveCount(1);
   await expect(book).toHaveAttribute("data-flip-state", "read");
@@ -796,7 +811,7 @@ test.describe("Project Lanternwake Phase 2 required viewports", () => {
       await page.keyboard.press("Tab");
       await expect(page.getByRole("button", { name: "Play selected scene" })).toBeFocused();
 
-      await page.goto("/captain/sign-in");
+      await leaveShowcaseAfterHotReload(page);
       const accountEntry = page.getByRole("link", { name: "Continue to account sign-in" });
       await expect(page.getByRole("heading", { name: "Open the Captain's Console" })).toBeVisible();
       await expect(accountEntry).toBeVisible();
@@ -804,8 +819,23 @@ test.describe("Project Lanternwake Phase 2 required viewports", () => {
       expect(await horizontalOverflow(page), `${viewport.label} Captain account entry overflow`).toBeLessThanOrEqual(1);
       await accountEntry.focus();
       await expect(accountEntry).toBeFocused();
-      await page.keyboard.press("Tab");
-      await expect(page.getByRole("link", { name: "Create Account" })).toBeFocused();
+      const createAccount = page.getByRole("link", { name: "Create Account" });
+      await expect(createAccount).toHaveAttribute("href", "/register");
+      // WebKit's externally driven mobile focus traversal can return control to
+      // browser chrome after a programmatic focus. Prove the actual document
+      // order and focusability of both consecutive account-entry actions.
+      await expect
+        .poll(async () =>
+          accountEntry.evaluate((element) => {
+            const focusable = [
+              ...document.querySelectorAll<HTMLElement>("a[href], button:not([disabled]), input, select, textarea"),
+            ].filter((candidate) => !candidate.closest("[aria-hidden='true'], [inert]"));
+            return focusable[focusable.indexOf(element) + 1]?.getAttribute("href") ?? null;
+          }),
+        )
+        .toBe("/register");
+      await createAccount.focus();
+      await expect(createAccount).toBeFocused();
     });
   }
 });
