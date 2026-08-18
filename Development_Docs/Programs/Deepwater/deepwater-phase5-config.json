@@ -8,14 +8,14 @@
     "ownerPrompt": "Project Deepwater Phase 5: Keep the Soundings explicit owner authorization, 2026-08-13",
     "scope": "Continuous governance, Feature Catalog integration, regression prevention, drift detection, and program closure."
   },
-  "baseOriginMainSha": "347e00fdb04939a3ff6ba143275232dcdd45170a",
+  "baseOriginMainSha": "78610ae4dd63aac9ff45c9c7646c78b38c6ab19a",
   "soundingLinePolicyDigest": "d3dd73a39e1ec5a174813d7e075d724362011bd0db1dba73a6db762db65180d2",
   "v14Reconciliation": {
     "pausedCheckpoint": "95497c3d32e76d81723500235821829bd3af58a2",
     "preCutoverBaseOriginMainSha": "60b89841986e66fbc2c0828489d38002a1617506",
     "preCutoverPolicyDigest": "b2f365b10769b09c92e93226ec6633c673cc4be1e6eb0821e49c4c45c9ca7d99",
     "reboundPolicyDigest": "ffe5734091a96b34ca6ecbc077cc46ff99f74ace22ec50a671ed453abd0c509e",
-    "currentProtectedMainSha": "347e00fdb04939a3ff6ba143275232dcdd45170a",
+    "currentProtectedMainSha": "78610ae4dd63aac9ff45c9c7646c78b38c6ab19a",
     "currentPolicyDigest": "d3dd73a39e1ec5a174813d7e075d724362011bd0db1dba73a6db762db65180d2",
     "legacyFocusedEvidence": {
       "controlPlaneTests": 76,
@@ -50,10 +50,10 @@
     ]
   },
   "localQualification": {
-    "state": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
-    "mainlineState": "PENDING_FROZEN_CANDIDATE_MAINLINE_DECISION",
+    "state": "RECORD_ONLY_CLOSURE_READY",
+    "mainlineState": "PROTECTED_IMPLEMENTATION_ACCEPTED_RECORD_ONLY_CLOSURE_PENDING",
     "acceptanceLane": "SOUNDING_LINE_V14_CANDIDATE_MAINLINE_DECISION",
-    "holdReason": "Accepted PRs #207 and #209 supply canonical Deepwater admission/impact registration and trusted classifier dependency staging. The reconciled branch must freeze one candidate and request one Mainline Decision."
+    "holdReason": "PR #159 accepted the exact candidate 93efa9f4f7d8b4e64ce05ecc89f00e6a73ba02af as protected merge 78610ae4dd63aac9ff45c9c7646c78b38c6ab19a after Sounding Line Mainline Decision run 32158890855 returned RELEASE_GO and protected binding run 32161116494 passed. The remaining closure is record-only and must bind this accepted implementation without adding product scope."
   },
   "phase4Authority": {
     "qualifiedCandidate": "10f505d2188f0c51e356ad935503e5236df62256",

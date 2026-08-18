@@ -1,12 +1,12 @@
 {
   "acceptanceLane": "SOUNDING_LINE_V14_CANDIDATE_MAINLINE_DECISION",
-  "baseSourceSha": "347e00fdb04939a3ff6ba143275232dcdd45170a",
+  "baseSourceSha": "78610ae4dd63aac9ff45c9c7646c78b38c6ab19a",
   "featureCatalogImpact": "NO_CHANGE_REQUIRED",
   "limitations": [
     "Phase 5 does not self-issue release authority or owner product acceptance.",
-    "Accepted PRs #207 and #209 supply canonical Deepwater admission/impact registration and trusted classifier dependency staging. The reconciled branch must freeze one candidate and request one Mainline Decision."
+    "PR #159 accepted the exact candidate 93efa9f4f7d8b4e64ce05ecc89f00e6a73ba02af as protected merge 78610ae4dd63aac9ff45c9c7646c78b38c6ab19a after Sounding Line Mainline Decision run 32158890855 returned RELEASE_GO and protected binding run 32161116494 passed. The remaining closure is record-only and must bind this accepted implementation without adding product scope."
   ],
-  "mainlineState": "PENDING_FROZEN_CANDIDATE_MAINLINE_DECISION",
+  "mainlineState": "PROTECTED_IMPLEMENTATION_ACCEPTED_RECORD_ONLY_CLOSURE_PENDING",
   "ownerDecision": "NOT_APPLICABLE",
   "phase": "Phase 5 - Keep the Soundings",
   "productSourceImpact": "NONE",
@@ -14,6 +14,6 @@
   "schemaImpact": "NONE",
   "schemaVersion": "1.0.0",
   "soundingLinePolicyDigest": "d3dd73a39e1ec5a174813d7e075d724362011bd0db1dba73a6db762db65180d2",
-  "state": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
+  "state": "RECORD_ONLY_CLOSURE_READY",
   "validation": "LOCAL_CONTROL_PLANE_QUALIFIED"
 }

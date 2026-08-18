@@ -2,14 +2,14 @@
   "schemaVersion": "1.0.0",
   "project": "Project Deepwater",
   "phase": "Phase 5 - Keep the Soundings",
-  "sourceSha": "347e00fdb04939a3ff6ba143275232dcdd45170a",
-  "state": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
+  "sourceSha": "78610ae4dd63aac9ff45c9c7646c78b38c6ab19a",
+  "state": "RECORD_ONLY_CLOSURE_READY",
   "checks": [
     { "id": "P5-AUTHORIZATION", "state": "PASSED", "evidence": "Explicit owner prompt, 2026-08-13" },
     {
       "id": "P5-CURRENT-BASELINE",
       "state": "PASSED",
-      "evidence": "Project_Deepwater_Phase_5_Drift_Baseline.json, rebound to origin/main 347e00fdb04939a3ff6ba143275232dcdd45170a"
+      "evidence": "Project_Deepwater_Phase_5_Drift_Baseline.json, rebound to accepted protected main 78610ae4dd63aac9ff45c9c7646c78b38c6ab19a"
     },
     {
       "id": "P5-DETERMINISTIC-DELTA",
@@ -24,12 +24,12 @@
     {
       "id": "P5-FEATURE-CATALOG-GUARD",
       "state": "PASSED",
-      "evidence": "Source-owned catalog build and validator passed with 48 entries against origin/main 347e00fdb04939a3ff6ba143275232dcdd45170a"
+      "evidence": "Source-owned catalog build and validator passed with 48 entries against qualified base a6c1f441d3628bd828bd7a1c3cd77d419a0701c6; no catalog capability change is introduced by Phase 5"
     },
     {
       "id": "P5-SOUNDING-LINE-POLICY",
       "state": "PASSED",
-      "evidence": "scripts/sounding-line/cli.mjs validate-policy passed with current policy digest 3452a7844214280d48e03bb0b7c79686c1ef0e4d35e1e270ce5999a6fd4a6800"
+      "evidence": "scripts/sounding-line/cli.mjs validate-policy passed with current policy digest d3dd73a39e1ec5a174813d7e075d724362011bd0db1dba73a6db762db65180d2"
     },
     {
       "id": "P5-HOMEPORT-INVENTORY",
@@ -53,18 +53,23 @@
     },
     {
       "id": "P5-SOUNDING-LINE-DECISION",
-      "state": "PENDING_FROZEN_CANDIDATE",
-      "evidence": "Historical runs 31969567104 and 32153348194 are failed-admission and failed-infrastructure evidence only. After accepted PRs #207 and #209 and semantic reconciliation, the local v1.4 classifier must return ORDINARY_CANDIDATE with no errors; one newly frozen candidate decision is required."
+      "state": "PASSED_RELEASE_GO",
+      "evidence": "Run 32158890855 returned RELEASE_GO for exact candidate 93efa9f4f7d8b4e64ce05ecc89f00e6a73ba02af over qualified base a6c1f441d3628bd828bd7a1c3cd77d419a0701c6, with 13 clean mandatory receipts. Historical runs 31969567104, 32153348194, and 32156231449 remain non-authoritative failed evidence only."
     },
     {
       "id": "P5-PROTECTED-MERGE",
-      "state": "BLOCKED_PENDING_QUALIFICATION",
-      "evidence": "Blocked until an admitted candidate receives RELEASE_GO and protected binding."
+      "state": "PASSED",
+      "evidence": "PR #159 merged normally after protected binding run 32161116494 passed its Sounding Line / Mainline Decision; protected merge is 78610ae4dd63aac9ff45c9c7646c78b38c6ab19a."
     },
     {
       "id": "P5-EXACT-MAIN-PROOF",
-      "state": "BLOCKED_PENDING_QUALIFICATION",
-      "evidence": "Blocked until the admitted candidate is protected-merged."
+      "state": "PASSED",
+      "evidence": "Merge 78610ae4dd63aac9ff45c9c7646c78b38c6ab19a parents are a6c1f441d3628bd828bd7a1c3cd77d419a0701c6 and 93efa9f4f7d8b4e64ce05ecc89f00e6a73ba02af; protected-main and candidate trees both equal 259709872b32d346e888b6b4edc0f37c1c9a1682."
+    },
+    {
+      "id": "P5-RECORD-ONLY-CLOSURE",
+      "state": "READY_FOR_PROTECTED_RECORD_ONLY_BINDING",
+      "evidence": "This documentation-only candidate is limited to source-bound closure records and generated indexes. It references the one accepted implementation authority, run 32158890855, and requires the current protected record-only binding before program completion is reported."
     }
   ]
 }
