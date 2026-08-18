@@ -354,7 +354,7 @@ export function classifyOrdinaryCandidate({
           ? [...registrationPaths(trustedPolicy), ...(registrationInputs(trustedPolicy)?.ancillaryPathGlobs ?? [])]
           : []),
       ]) &&
-      (!structurallyAdmitsProjectPath(file, projectDiscovery) ||
+      (!structurallyAdmitsProjectPath(file, projectDiscovery, paths) ||
         structurallyCollidesWithTrustedScope(file, trustedPolicy))
     )
       errors.push(`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${file}`);

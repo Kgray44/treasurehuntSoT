@@ -17,7 +17,9 @@ const suites = JSON.parse(await readFile(path.join(root, "testing", "suites.json
 test("hosted capacity provides deliberate headroom over the maximum legal governed dependency depth", () => {
   const legal = calculateMaximumLegalWave(suites.suites);
   assert.equal(legal.maximumWave, 3);
-  assert.deepEqual(legal.deepestSuiteIds, ["browser.wakebook"]);
+  // Wakebook must remain at the deepest legal level, but projects may add
+  // another independently governed suite at that same level.
+  assert.ok(legal.deepestSuiteIds.includes("browser.wakebook"), legal.deepestSuiteIds.join(", "));
   const capacity = validateHostedWaveCapacity({ capacity: authority.hostedExecutionCapacity, suites: suites.suites });
   assert.equal(capacity.valid, true, capacity.errors.join("\n"));
   assert.equal(authority.hostedExecutionCapacity.maximumWave, 5);
@@ -83,7 +85,10 @@ test("empty hosted matrices use an explicit success marker rather than a skipped
   assert.equal(markerGuards.length, authority.hostedExecutionCapacity.maximumWave + 1);
   const completionGuards = workflow.match(/SOUNDING_LINE_EMPTY_MARKER_COMPLETION_INVALID/g) ?? [];
   assert.equal(completionGuards.length, authority.hostedExecutionCapacity.maximumWave + 1);
-  assert.doesNotMatch(workflow, /PARALLEL_RESULT -in @\('failure', 'skipped'\)|EXCLUSIVE_RESULT -in @\('failure', 'skipped'\)/u);
+  assert.doesNotMatch(
+    workflow,
+    /PARALLEL_RESULT -in @\('failure', 'skipped'\)|EXCLUSIVE_RESULT -in @\('failure', 'skipped'\)/u,
+  );
 });
 
 test("dormant hosted waves are skipped only after the sealed active depth, while active wave barriers remain required", async () => {
