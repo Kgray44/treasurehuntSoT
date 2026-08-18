@@ -119370,10 +119370,10 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-54ff2bdeb1a762b135fc",
+      "id": "sl-test-e848c3f90c860cd40c24",
       "semanticId": "sl-semantic-6f2b2360b806b6f96277",
       "title": "preview is nonmutating, stale commands conflict, and idempotency replays safely",
-      "line": 78,
+      "line": 81,
       "file": "tests/e2e/command-center.spec.ts",
       "project": "chromium",
       "suiteId": "browser.captain",
@@ -119408,14 +119408,14 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-54ff2bdeb1a762b135fc"],
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-674bead9e5733203edea",
+      "id": "sl-test-9e5999f24f21948b9a0c",
       "semanticId": "sl-semantic-f8b5c61ca748c1213104",
       "title": "Captain command preparation is browser-authenticated, durable, and idempotent",
-      "line": 147,
+      "line": 150,
       "file": "tests/e2e/command-center.spec.ts",
       "project": "chromium",
       "suiteId": "browser.captain",
@@ -119450,14 +119450,14 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-674bead9e5733203edea"],
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-6c7b1594ab6607772f01",
+      "id": "sl-test-af87f027c65de5fceaf6",
       "semanticId": "sl-semantic-3bb7d718ac68fcba9e2b",
       "title": "workspace routes preserve the newest Quartermaster surface and remain accessible",
-      "line": 229,
+      "line": 232,
       "file": "tests/e2e/command-center.spec.ts",
       "project": "chromium",
       "suiteId": "browser.captain",
@@ -119492,7 +119492,7 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-6c7b1594ab6607772f01"],
       "currentStatus": "ACTIVE"
     },
     {
@@ -164018,10 +164018,10 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-4774d93e1425319743b6",
+      "id": "sl-test-ab054d9ddb31d72bd9fb",
       "semanticId": "sl-semantic-e5ff95872d9dc6e93045",
       "title": "preview is nonmutating, stale commands conflict, and idempotency replays safely",
-      "line": 78,
+      "line": 81,
       "file": "tests/e2e/command-center.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.captain",
@@ -164056,14 +164056,14 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-4774d93e1425319743b6"],
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-d5e28dc328f1e683af9c",
+      "id": "sl-test-8b92ad3f1f5b0698966c",
       "semanticId": "sl-semantic-937b17a937d9d0534e4f",
       "title": "Captain command preparation is browser-authenticated, durable, and idempotent",
-      "line": 147,
+      "line": 150,
       "file": "tests/e2e/command-center.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.captain",
@@ -164098,14 +164098,14 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-d5e28dc328f1e683af9c"],
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-b123f90e14a3de9075f9",
+      "id": "sl-test-c2b6b6cad12b0b26ce0e",
       "semanticId": "sl-semantic-60ca6006ec6a4d5649d7",
       "title": "workspace routes preserve the newest Quartermaster surface and remain accessible",
-      "line": 229,
+      "line": 232,
       "file": "tests/e2e/command-center.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.captain",
@@ -164140,7 +164140,7 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-b123f90e14a3de9075f9"],
       "currentStatus": "ACTIVE"
     },
     {
