@@ -11,6 +11,8 @@
     "scripts/sounding-line/authority-maintenance-protected-binding.mjs",
     "scripts/sounding-line/authority-maintenance-selection.mjs",
     "scripts/sounding-line/project-discovery.mjs",
+    "scripts/sounding-line/v14-fast-channel.mjs",
+    "scripts/sounding-line/v14/fast-channel.mjs",
     ".github/workflows/sounding-line-authority-maintenance.yml",
     ".github/workflows/sounding-line-protected-merge-binding.yml"
   ],

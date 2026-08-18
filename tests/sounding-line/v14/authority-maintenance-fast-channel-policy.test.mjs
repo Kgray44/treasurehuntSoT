@@ -18,6 +18,11 @@ test("fast-channel bootstrap admits only its exact authority-maintenance modules
 
   assert.equal(policy.version, "1.0.3");
   assert.deepEqual(
+    policy.bindingPreflightPaths.filter((entry) => entry.includes("v14") || entry.includes("fast-channel")),
+    ["scripts/sounding-line/v14-fast-channel.mjs", "scripts/sounding-line/v14/fast-channel.mjs"],
+  );
+  assert.equal(policy.bindingPreflightPaths.includes("scripts/foreign-product/bootstrap.mjs"), false);
+  assert.deepEqual(
     classifyAuthorityMaintenance({ trustedPolicy: policy, changedPaths: allowed, ownerAuthorized: true }),
     {
       classification: "SOUNDING_LINE_AUTHORITY_MAINTENANCE",
