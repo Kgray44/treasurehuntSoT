@@ -352,16 +352,60 @@ export function discoverProjects({
   );
 }
 
-export function structurallyAdmitsProjectPath(file, descriptors = []) {
+function stronglyProvenProjectIds(candidatePaths = []) {
+  const roots = { documentation: new Set(), source: new Set(), test: new Set() };
+  for (const candidate of candidatePaths) {
+    const source = String(candidate).replaceAll("\\", "/");
+    const matchers = [
+      [/^Development_Docs\/Projects\/Project_([^/]+)\//u, "documentation"],
+      [/^src\/([^/]+)\//u, "source"],
+      [/^tests\/([^/]+)\//u, "test"],
+    ];
+    for (const [expression, kind] of matchers) {
+      const match = source.match(expression);
+      if (match) roots[kind].add(normalized(match[1]));
+    }
+  }
+  return [...roots.documentation]
+    .filter((projectId) => roots.source.has(projectId) && roots.test.has(projectId))
+    .sort((left, right) => left.localeCompare(right));
+}
+
+export function structurallyAdmitsProjectPath(file, descriptors = [], candidatePaths = []) {
   const identity = structuralProjectPath(file);
-  if (!identity) return false;
+  const provenProjectIds = stronglyProvenProjectIds(candidatePaths);
+  if (!identity) {
+    const isProjectSupplement =
+      file === "README.md" ||
+      /^Development_Docs\/Project_[^/]+_Documentation_Migration_Matrix\.csv$/u.test(String(file));
+    if (isProjectSupplement) {
+      if (descriptors.length === 1) {
+        const [descriptor] = descriptors;
+        // Root-level project supplements have no reliable path-derived project id.
+        // Admit them only when the same candidate proves one non-ambiguous project
+        // across source, tests, and project documentation. This can broaden
+        // admission, but never changes authority or narrows required evidence.
+        if (
+          descriptor.state !== "AMBIGUOUS" &&
+          descriptor.observedSourceRoots.length &&
+          descriptor.observedTestRoots.length &&
+          descriptor.observedDocumentationRoots.length
+        )
+          return true;
+      }
+      return descriptors.length === 0 && provenProjectIds.length === 1;
+    }
+    const script = String(file).match(/^scripts\/([^/]+)\//u);
+    return Boolean(script && provenProjectIds.includes(normalized(script[1])));
+  }
   if (identity.rootType !== "script") return true;
   const descriptor = descriptors.find((entry) => entry.projectId === identity.projectId);
   return Boolean(
-    descriptor &&
+    (descriptor &&
       (descriptor.observedSourceRoots.length ||
         descriptor.observedTestRoots.length ||
-        descriptor.observedDocumentationRoots.length),
+        descriptor.observedDocumentationRoots.length)) ||
+      provenProjectIds.includes(identity.projectId),
   );
 }
 
