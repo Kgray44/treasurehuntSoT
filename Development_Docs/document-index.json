@@ -1707,6 +1707,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_3_Accepted_Capsule.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_3_Architecture_and_Implementation_Record.md",
       "record_type": "program-record",
       "status": "preserved",
