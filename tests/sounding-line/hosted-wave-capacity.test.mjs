@@ -17,7 +17,9 @@ const suites = JSON.parse(await readFile(path.join(root, "testing", "suites.json
 test("hosted capacity provides deliberate headroom over the maximum legal governed dependency depth", () => {
   const legal = calculateMaximumLegalWave(suites.suites);
   assert.equal(legal.maximumWave, 3);
-  assert.deepEqual(legal.deepestSuiteIds, ["browser.wakebook"]);
+  // Wakebook must remain at the deepest legal level, but projects may add
+  // another independently governed suite at that same level.
+  assert.ok(legal.deepestSuiteIds.includes("browser.wakebook"), legal.deepestSuiteIds.join(", "));
   const capacity = validateHostedWaveCapacity({ capacity: authority.hostedExecutionCapacity, suites: suites.suites });
   assert.equal(capacity.valid, true, capacity.errors.join("\n"));
   assert.equal(authority.hostedExecutionCapacity.maximumWave, 5);
