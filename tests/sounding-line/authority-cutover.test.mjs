@@ -627,6 +627,7 @@ test("validation runtime restores only declared product document dependencies", 
   assert.match(common, /Project_Admiralty_Phase_2_Capability_Activation_Registry\.json/u);
   assert.match(common, /Project_Admiralty_Phase_2_Role_Capability_Registry\.json/u);
   assert.match(common, /Project_Homeport_Phase_4_District_Registry\.json/u);
+  assert.match(common, /Project_Lanternwake_Canonical_Event_Matrix_Mapping\.csv/u);
   assert.match(common, /Project_Tideglass_Phase_2_Change_Code_Registry\.json/u);
   assert.match(common, /Project_Tideglass_Phase_2_Projection_Policy\.json/u);
   assert.match(common, /Required validation runtime document dependency is missing: \$relativePath/u);
