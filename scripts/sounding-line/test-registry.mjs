@@ -98,11 +98,40 @@ function isProjectTrimFile(file) {
   );
 }
 
+const drydockPhase4TestFiles = new Set([
+  "src/app/api/studio/tales/[taleId]/external-evidence/route.test.ts",
+  "src/app/api/studio/tales/[taleId]/readiness/route.test.ts",
+  "src/app/api/studio/tales/[taleId]/versions/[versionId]/compatibility/route.test.ts",
+  "src/app/api/studio/tales/[taleId]/versions/[versionId]/evidence/route.test.ts",
+  "src/chronicle/published-snapshot-security.test.ts",
+  "src/chronicle/publishing-phase4.test.ts",
+  "src/chronicle/snapshot.test.ts",
+  "src/community/drydock-publication-gate.test.ts",
+  "src/components/studio/DrydockCompatibilityPanel.test.tsx",
+  "src/components/studio/DrydockLaunchGate.test.tsx",
+  "src/drydock/adapters.test.ts",
+  "src/drydock/cli-phase4.test.ts",
+  "src/drydock/compatibility-phase4.test.ts",
+  "src/drydock/evidence-requirements.test.ts",
+  "src/drydock/historical-corpus-phase4.test.ts",
+  "src/drydock/metrics.test.ts",
+  "src/drydock/publishing-evidence.test.ts",
+  "src/drydock/readiness.test.ts",
+  "src/drydock/required-suite-policy.test.ts",
+  "src/drydock/simulation-store.test.ts",
+  "tests/e2e/drydock-phase4.spec.ts",
+]);
+
+function isDrydockPhase4File(file) {
+  return drydockPhase4TestFiles.has(file);
+}
+
 function ownerFor(file) {
   if (isProjectTrimFile(file)) return "project-trim";
   if (isBridgewatchFile(file)) return "bridgewatch";
   if (file.includes("wakebook") || file.includes("api/passport/voyages")) return "project-wakebook";
   if (isHelmFile(file)) return "project-helm";
+  if (isDrydockPhase4File(file)) return "drydock";
   if (file.includes("drydock")) return "drydock";
   if (file.includes("admiralty")) return "project-admiralty";
   if (file.includes("tideglass")) return "tideglass";
@@ -122,6 +151,7 @@ function unitFamily(file) {
   if (isBridgewatchFile(file)) return "unit.bridgewatch";
   if (file.startsWith("src/wakebook/") || file.includes("api/passport/voyages")) return "unit.wakebook";
   if (isHelmFile(file)) return "unit.helm";
+  if (isDrydockPhase4File(file)) return "unit.drydock";
   if (file.startsWith("src/drydock/") || file.startsWith("scripts/drydock/")) return "unit.drydock";
   if (file === "src/admiralty/read-models.test.ts") return "service.admiralty";
   if (file.startsWith("src/admiralty/") || file.startsWith("scripts/admiralty/")) return "unit.admiralty";
@@ -146,6 +176,7 @@ function unitFamily(file) {
 }
 
 function componentFamily(file) {
+  if (isDrydockPhase4File(file)) return "unit.drydock";
   if (file.includes("components/wakebook")) return "component.wakebook";
   if (isHelmFile(file)) return "component.helm";
   if (file.includes("admiralty") || file === "src/app/admin/page.test.tsx") return "component.admiralty";
@@ -167,6 +198,7 @@ function componentFamily(file) {
 
 function browserFamily(project, file, title) {
   const value = `${file} ${title}`.toLowerCase();
+  if (file.endsWith("drydock-phase4.spec.ts") || project === "drydock-phase4-chromium") return "browser.drydock";
   if (file.includes("project-helm") || project.includes("helm")) return "browser.helm";
   if (value.includes("admiralty") || project.includes("admiralty")) return "browser.admiralty";
   // Only the dedicated project is the fast, dependency-free access sentinel.
@@ -200,6 +232,8 @@ function browserFamily(project, file, title) {
 }
 
 function contractFor(file, family) {
+  if (isDrydockPhase4File(file) || family === "browser.drydock")
+    return ["drydock-phase4-launch-readiness"];
   if (isProjectTrimFile(file) || family === "unit.agent-context") return projectTrimContracts;
   if (isBridgewatchFile(file) || family === "unit.bridgewatch") return ["bridgewatch.mission-control"];
   if (file.includes("wakebook") || family.includes("wakebook")) return wakebookContracts;
@@ -247,6 +281,7 @@ function tideglassContractsFor(file) {
 
 const chromiumProjects = new Set([
   "admiralty-phase1",
+  "drydock-phase4-chromium",
   "chromium",
   "harborlight-phase2",
   "harborlight-phase3",

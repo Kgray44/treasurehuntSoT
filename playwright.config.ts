@@ -25,6 +25,7 @@ const homeportPhase7WalkthroughSpecs = /homeport-phase7.*\.spec\.ts/u;
 const wakebookPhase1Spec = /wakebook-phase1\.spec\.ts/u;
 const helmPhase1Spec = /project-helm-phase1\.spec\.ts/u;
 const admiraltyPhase1Spec = /admiralty-phase1\.spec\.ts/u;
+const drydockPhase4Spec = /drydock-phase4\.spec\.ts/u;
 const phase3MutationSpecs =
   /phase3-(?:player-event-matrix|player-motion|replay-resilience|lifecycle(?:-extended)?|performance)\.spec\.ts/u;
 const phase3MutationSpecGuard = [
@@ -97,7 +98,16 @@ export default defineConfig({
         wakebookPhase1Spec,
         helmPhase1Spec,
         admiraltyPhase1Spec,
+        drydockPhase4Spec,
       ],
+      use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      // Phase 4 owns an isolated mutable Chronicle journey. Its dedicated
+      // project keeps registration, fixture allocation, and evidence scoped
+      // to Drydock rather than the generic cross-project browser family.
+      name: "drydock-phase4-chromium",
+      testMatch: drydockPhase4Spec,
       use: { ...devices["Desktop Chrome"] },
     },
     {
@@ -203,6 +213,7 @@ export default defineConfig({
         wakebookPhase1Spec,
         helmPhase1Spec,
         admiraltyPhase1Spec,
+        drydockPhase4Spec,
       ],
       use: { ...devices["iPhone 14"] },
     },

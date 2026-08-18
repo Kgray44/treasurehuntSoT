@@ -283,6 +283,11 @@
       ]
     },
     {
+      "path": "tests/e2e/drydock-phase4.spec.ts",
+      "suiteIds": ["browser.drydock", "static.core"],
+      "contractIds": ["drydock-phase4-launch-readiness"]
+    },
+    {
       "path": "scripts/drydock/**",
       "suiteIds": ["unit.drydock", "static.core"],
       "contractIds": [
@@ -6545,6 +6550,10 @@
     {
       "contractId": "drydock-authoring-contracts",
       "suiteIds": ["unit.drydock"]
+    },
+    {
+      "contractId": "drydock-phase4-launch-readiness",
+      "suiteIds": ["unit.drydock", "browser.drydock"]
     },
     {
       "contractId": "artifact-grant-projection",
