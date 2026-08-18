@@ -102,7 +102,20 @@ function bindV14(boundary) {
   base.plan.planDigest = digest(base.plan);
   base.finalization.planDigest = base.plan.planDigest;
   for (const receipt of base.finalization.receipts) receipt.planDigest = base.plan.planDigest;
-  base.finalization.evidenceDigest = digest(base.finalization.receipts);
+  base.finalization.physicalReceipts = structuredClone(base.finalization.receipts);
+  base.finalization.runtimeConformance = base.finalization.receipts.map((receipt) => ({
+    suiteId: receipt.suiteId,
+    planDigest: base.plan.planDigest,
+    authorityDigest: base.plan.authorityDigest,
+    result: "PASSED",
+  }));
+  base.finalization.physicalRuntimeConformance = structuredClone(base.finalization.runtimeConformance);
+  base.finalization.evidenceDigest = digest({
+    receipts: base.finalization.receipts,
+    physicalReceipts: base.finalization.physicalReceipts,
+    runtimeConformance: base.finalization.runtimeConformance,
+    physicalRuntimeConformance: base.finalization.physicalRuntimeConformance,
+  });
   Object.assign(base.qualified, {
     planDigest: base.plan.planDigest,
     evidenceDigest: base.finalization.evidenceDigest,
@@ -140,6 +153,34 @@ test("v1.4 protected binding consumes only an exact candidate-qualification boun
   const rejected = bindV14("SHADOW_OPTIONAL_ADDITIVE_NONAUTHORITATIVE");
   assert.equal(rejected.decision, "BINDING_NO_GO");
   assert.ok(rejected.errors.includes("QUALIFIED_AUTHORITY_BOUNDARY_INVALID"));
+});
+
+test("v1.4 protected binding verifies the sealed aggregate evidence and fails closed for an absent aggregate", () => {
+  assert.equal(bindV14("V14_CANDIDATE_QUALIFICATION").decision, "BINDING_PASS");
+  const missingPhysicalConformance = fixture();
+  const { planDigest, ...unsignedPlan } = missingPhysicalConformance.plan;
+  missingPhysicalConformance.plan = {
+    ...unsignedPlan,
+    authorityVersion: "1.4",
+    authorityMode: "V14_CANDIDATE",
+    authorityBoundary: "V14_CANDIDATE_QUALIFICATION",
+  };
+  missingPhysicalConformance.plan.planDigest = digest(missingPhysicalConformance.plan);
+  for (const receipt of missingPhysicalConformance.finalization.receipts)
+    receipt.planDigest = missingPhysicalConformance.plan.planDigest;
+  Object.assign(missingPhysicalConformance.finalization, {
+    planDigest: missingPhysicalConformance.plan.planDigest,
+    physicalReceipts: structuredClone(missingPhysicalConformance.finalization.receipts),
+    runtimeConformance: [],
+    evidenceDigest: "0".repeat(64),
+  });
+  Object.assign(missingPhysicalConformance.qualified, {
+    planDigest: missingPhysicalConformance.plan.planDigest,
+    evidenceDigest: missingPhysicalConformance.finalization.evidenceDigest,
+  });
+  const rejected = bind(missingPhysicalConformance);
+  assert.equal(rejected.decision, "BINDING_NO_GO");
+  assert.ok(rejected.errors.includes("FINALIZATION_EVIDENCE_DIGEST_MISMATCH"));
 });
 
 test("semantic carry-forward preserves only declared unrelated base advances", () => {

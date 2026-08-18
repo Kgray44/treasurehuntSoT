@@ -2,6 +2,13 @@
 
 Before every task, read and obey [`.agents/testing-workflow.md`](.agents/testing-workflow.md). It defines the mandatory development verification, candidate qualification, and authoritative acceptance lifecycle.
 
+For applicable engineering work, bootstrap task context with
+[`.agents/context-workflow.md`](.agents/context-workflow.md). The default
+Project Trim profile is `STANDARD_AUTONOMOUS` unless a task selects
+`UNATTENDED_CONTINUATION`; targeted in-scope context expansion is autonomous.
+Generated packets are derived starting maps, never replacements for source or
+governing authority.
+
 Active automation guidance belongs in [`.agents/`](.agents/README.md), not in product or user documentation. Preserve repository safety rules, use an owned worktree, avoid real private content, and keep validation isolated from shared runtime state.
 
 Project Homeport work must also follow [`.agents/project-homeport.md`](.agents/project-homeport.md) and its canonical governance and evidence paths.

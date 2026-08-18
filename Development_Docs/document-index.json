@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-08-16",
+  "generated_at": "2026-08-18",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -600,6 +600,12 @@
       "path": "Development_Docs/Governing/Project_Sounding_Line_v1.4_Performance_and_Efficiency_Governing_Addendum.md",
       "record_type": "governing-record",
       "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Trim_Codex_Context_and_Inference_Efficiency_Governing_Document_v1.0-R1.pdf",
+      "record_type": "governing-record",
+      "status": "current",
       "canonical_for": null
     },
     {
@@ -1635,6 +1641,72 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Context_Profile_and_Schema.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_0_Baseline_Audit.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_0_Governing_Input.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_0_Measurement_Data.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_1_Benchmark_and_Dogfood_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_1_Design_and_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_1_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Architecture_and_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Benchmark_Data.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Token_Calibration_and_Estimator_v1.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sealed_Hold/Private_Chronicle_Package_Format.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -2499,6 +2571,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Bounded_Mixed_Browser_Batching_Repair_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Bridgewatch_Ordinary_Candidate_Classification_Repair_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_1_Design_Record.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -2698,6 +2782,24 @@
     },
     {
       "path": "Development_Docs/Project_Bridgewatch_Phase_3_Validation_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_v1.2_Data_Fidelity_and_Capability_Audit.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_v1.2_Validation_Record.md",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

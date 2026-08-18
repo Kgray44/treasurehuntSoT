@@ -1,0 +1,8 @@
+{
+  "id": "dogfood-focused-repair",
+  "objective": "Repair a bounded Sounding Line status projection regression.",
+  "taskClass": "bug-repair",
+  "executionProfile": "STANDARD_AUTONOMOUS",
+  "paths": ["scripts/sounding-line/status-projection.mjs"],
+  "completionContract": ["Run focused Project Trim proof and follow current Sounding Line policy."]
+}

@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "0.1",
+  "phase": "TRIM-0",
+  "repository": {
+    "name": "Kgray44/treasurehuntSoT",
+    "surveyBase": "268932d630ee0ea1721d0072da4041f7209b7464",
+    "worktreeKind": "fresh-owned-local-worktree",
+    "authority": "SOUNDING_LINE",
+    "authorityVersion": "1.4"
+  },
+  "method": {
+    "mode": "bounded_read_mostly_survey",
+    "sampleLimit": 6,
+    "sampleCount": 4,
+    "excluded": [
+      "full conversation reconstruction",
+      "application or browser execution",
+      "authoritative Sounding Line execution",
+      "production access",
+      "Phase 1 implementation"
+    ],
+    "evidenceQuality": {
+      "EXACT": "Git or file-system count/identity",
+      "DIRECT_PROXY": "stored configuration or record proving an available surface",
+      "ESTIMATE": "bounded inference, labelled in the audit",
+      "UNAVAILABLE": "not safely exposed by current evidence"
+    }
+  },
+  "sampledTasks": [
+    {
+      "id": "a3db613d2",
+      "class": "authority_infrastructure",
+      "summary": "Hosted Sounding Line wave capacity contract",
+      "changedFiles": 6,
+      "insertions": 2023,
+      "deletions": 23,
+      "evidenceQuality": "EXACT"
+    },
+    {
+      "id": "eaaf46dac",
+      "class": "focused_repair",
+      "summary": "Studio validation-field focus repair",
+      "changedFiles": 1,
+      "insertions": 21,
+      "deletions": 13,
+      "evidenceQuality": "EXACT"
+    },
+    {
+      "id": "8742f7357",
+      "class": "documentation_governance_repair",
+      "summary": "Corrective-attestation formatting repair",
+      "changedFiles": 1,
+      "insertions": 6,
+      "deletions": 3,
+      "evidenceQuality": "EXACT"
+    },
+    {
+      "id": "10f505d2188f0c51e356ad935503e5236df62256",
+      "class": "continuation_closure",
+      "summary": "Deepwater Phase 4 candidate freeze",
+      "changedFiles": 14,
+      "insertions": 100,
+      "deletions": 68,
+      "evidenceQuality": "EXACT"
+    }
+  ],
+  "wasteClasses": [
+    {
+      "id": "repository_archaeology",
+      "quality": "DIRECT_PROXY",
+      "finding": "1,049 indexed engineering records and heterogeneous program trees create a broad discovery surface.",
+      "replacement": "changed-path closure plus owner/contract/status packet"
+    },
+    {
+      "id": "prior_phase_reconstruction",
+      "quality": "DIRECT_PROXY",
+      "finding": "Closure evidence is distributed across status, proof, integration, catalog, and index artifacts.",
+      "replacement": "accepted phase capsule with immutable identities"
+    },
+    {
+      "id": "governing_rereads",
+      "quality": "DIRECT_PROXY",
+      "finding": "AGENTS.md requires every task to read the testing workflow; authority is separately indexed.",
+      "replacement": "authority slice with primary-source links"
+    },
+    {
+      "id": "repeated_reads",
+      "quality": "UNAVAILABLE",
+      "finding": "No task-level file-read or blob-reread telemetry is exposed.",
+      "replacement": "blob-aware read ledger"
+    },
+    {
+      "id": "subagent_multiplication",
+      "quality": "UNAVAILABLE",
+      "finding": "Configuration permits three threads but exposes no historical launch/context counts.",
+      "replacement": "subagent context slicing and shared packet identity"
+    },
+    {
+      "id": "prompt_duplication",
+      "quality": "UNAVAILABLE",
+      "finding": "No safe prompt corpus or prompt-size metadata was inspected.",
+      "replacement": "instruction pointers and context profiles"
+    }
+  ],
+  "reusableSources": [
+    { "path": "testing/ownership.json", "classification": "READY_TO_REUSE", "count": 16 },
+    { "path": "testing/contracts.json", "classification": "READY_TO_REUSE", "count": 475 },
+    { "path": "testing/impact-map.json", "classification": "PARTIAL", "pathMappings": 156, "contractMappings": 456 },
+    { "path": "testing/suites.json", "classification": "READY_TO_REUSE", "count": 61 },
+    { "path": "testing/resources.json", "classification": "READY_TO_REUSE", "count": 19 },
+    { "path": "testing/release-gates.json", "classification": "READY_TO_REUSE", "count": 7 },
+    { "path": "testing/sounding-line-authority.json", "classification": "READY_TO_REUSE" },
+    { "path": "testing/validation-debt.json", "classification": "READY_TO_REUSE", "count": 2 },
+    { "path": "Development_Docs/document-index.json", "classification": "COARSE", "count": 1049 },
+    { "path": "git commit/tree/blob identities", "classification": "READY_TO_REUSE" }
+  ],
+  "contextPacketExample": {
+    "sample": "eaaf46dac",
+    "taskClass": "focused_repair",
+    "initialPointers": [
+      "AGENTS.md",
+      ".agents/testing-workflow.md",
+      "testing/sounding-line-authority.json",
+      "src/components/studio/TaleEditor.tsx",
+      "src/components/studio/TaleEditor.test.tsx",
+      "inspector-field producer if focus mapping requires it"
+    ],
+    "mappingStatus": "NO_DIRECT_INSPECTED_PATH_MAPPING; EXPANSION_REQUIRED",
+    "avoidanceClaim": "UNAVAILABLE_FROM_CURRENT_EVIDENCE"
+  },
+  "baselineMetrics": {
+    "developmentDocs": { "files": 1474, "bytes": 368218411, "quality": "EXACT" },
+    "soundingLineProgram": { "files": 120, "bytes": 37644293, "quality": "EXACT" },
+    "testingJson": { "files": 18, "bytes": 565560, "quality": "EXACT" },
+    "permanentInstructionCore": { "files": 6, "bytes": 6655, "quality": "EXACT" },
+    "exactTokenTelemetry": "UNAVAILABLE_FROM_CURRENT_EVIDENCE",
+    "taskLevelReadSearchSubagentTelemetry": "UNAVAILABLE_FROM_CURRENT_EVIDENCE"
+  },
+  "measurementLimitations": [
+    "No exact input, cached-input, output-token, or elapsed-time counters were safely exposed.",
+    "No full archived conversation corpus was mined.",
+    "Counts are not presented as token estimates.",
+    "Remote main advanced after preflight; the survey remains bound to its recorded base."
+  ],
+  "phase1Priorities": [
+    { "rank": 1, "item": "Minimum Sufficient Context Packet generator", "impact": "HIGH", "effort": "MEDIUM" },
+    { "rank": 2, "item": "Accepted phase capsule and main-delta identity", "impact": "HIGH", "effort": "SMALL" },
+    { "rank": 3, "item": "Blob-aware read/context ledger", "impact": "MEDIUM", "effort": "MEDIUM" },
+    { "rank": 4, "item": "Autonomous context profiles", "impact": "MEDIUM", "effort": "SMALL" },
+    { "rank": 5, "item": "Subagent context slicing", "impact": "MEDIUM", "effort": "MEDIUM" }
+  ]
+}

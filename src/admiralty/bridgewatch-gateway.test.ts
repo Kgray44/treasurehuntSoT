@@ -56,10 +56,22 @@ describe("Bridgewatch same-host gateway", () => {
       ["app.js", ["app.js"]],
       ["style.css", ["style.css"]],
       ["api/summary", ["api", "summary"]],
+      ["api/program", ["api", "program"]],
       ["api/projects/bridgewatch", ["api", "projects", "bridgewatch"]],
+      ["api/projects/bridgewatch/versions", ["api", "projects", "bridgewatch", "versions"]],
+      ["api/projects/bridgewatch/versions/v1.2", ["api", "projects", "bridgewatch", "versions", "v1.2"]],
+      ["api/projects/bridgewatch/phases/3", ["api", "projects", "bridgewatch", "phases", "3"]],
       ["api/trends", ["api", "trends"]],
       ["api/history?since=2026-08-13T12:00:00Z", ["api", "history"]],
+      ["api/history?limit=250", ["api", "history"]],
+      ["api/compare?from=2026-08-13T12:00:00Z&to=2026-08-14T12:00:00Z", ["api", "compare"]],
       ["api/archive?order=name", ["api", "archive"]],
+      ["api/pull-requests?state=ALL", ["api", "pull-requests"]],
+      ["api/pull-requests/17", ["api", "pull-requests", "17"]],
+      ["api/branches/profile?name=codex%2Fproject-bridgewatch-v1.2", ["api", "branches", "profile"]],
+      ["api/sources/github", ["api", "sources", "github"]],
+      ["api/sounding-line/runs", ["api", "sounding-line", "runs"]],
+      ["api/sounding-line/runs/run-17", ["api", "sounding-line", "runs", "run-17"]],
       ["api/projects/bridgewatch/trends", ["api", "projects", "bridgewatch", "trends"]],
       ["api/projects/bridgewatch/history?limit=20", ["api", "projects", "bridgewatch", "history"]],
     ] as const)
@@ -92,6 +104,8 @@ describe("Bridgewatch same-host gateway", () => {
       ["http://voyagewright.test/bridgewatch/api/summary?upstream=http://evil.test", ["api", "summary"]],
       ["http://voyagewright.test/bridgewatch/api/history", ["api", "history"]],
       ["http://voyagewright.test/bridgewatch/api/history?kind=MAIN_ADVANCED", ["api", "history"]],
+      ["http://voyagewright.test/bridgewatch/api/compare?from=invalid&to=2026-08-14T12:00:00Z", ["api", "compare"]],
+      ["http://voyagewright.test/bridgewatch/api/branches/profile?name=../secret", ["api", "branches", "profile"]],
       ["http://voyagewright.test/bridgewatch/api/archive?order=unknown", ["api", "archive"]],
       [
         "http://voyagewright.test/bridgewatch/api/projects/bridgewatch/history?limit=200",
@@ -141,6 +155,9 @@ describe("Bridgewatch same-host gateway", () => {
     const nginx = readFileSync("deploy/nginx.conf", "utf8");
     expect(nginx).toContain("server 127.0.0.1:4318;");
     expect(nginx).toContain("map $request_uri $bridgewatch_browser_route");
+    expect(nginx).toContain("summary|program");
+    expect(nginx).toContain("api/sounding-line/runs");
+    expect(nginx).toContain("api/projects/[A-Za-z0-9][A-Za-z0-9._-]{0,127}/versions");
     expect(nginx).toContain("auth_request /_bridgewatch_authorize;");
     expect(nginx).toContain("/api/internal/bridgewatch/authorize");
     expect(nginx).toContain("if ($request_method !~ ^(GET|HEAD)$) { return 405; }");

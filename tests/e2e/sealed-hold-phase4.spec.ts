@@ -56,7 +56,24 @@ test("Phase 4 authenticated protected-media workflow is private, accessible, rev
   const gm = await db.gameMasterUser.create({
     data: { username, passwordHash: await bcrypt.hash(password, 10), role: "CAPTAIN_CREATOR" },
   });
-  const account = await db.userAccount.create({ data: { status: "ACTIVE", legacyGameMasterId: gm.id } });
+  const activatedAt = new Date();
+  const account = await db.userAccount.create({
+    data: {
+      status: "ACTIVE",
+      legacyGameMasterId: gm.id,
+      claimedAt: activatedAt,
+      ordinaryWorkspaceEntryAt: activatedAt,
+      emails: {
+        create: {
+          normalizedEmail: `${username}@example.test`,
+          displayEmail: `${username}@example.test`,
+          verificationState: "VERIFIED",
+          verifiedAt: activatedAt,
+          isPrimary: true,
+        },
+      },
+    },
+  });
   await db.playerProfile.create({
     data: { accountId: account.id, displayName: "Synthetic Phase 4 Creator", status: "ACTIVE", claimedAt: new Date() },
   });

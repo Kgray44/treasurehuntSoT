@@ -14,6 +14,39 @@ export type ProjectState =
 export type PhaseState = ProjectState;
 export type MilestoneState = "PLANNED" | "IN_PROGRESS" | "ACCEPTED" | "BLOCKED" | "UNKNOWN";
 export type EvidenceConfidence = "HIGH" | "MEDIUM" | "LOW";
+export type DiscoveryConfidence = "AUTHORITATIVE" | "CORROBORATED" | "PROVISIONAL" | "AMBIGUOUS" | "UNKNOWN";
+export type VersionLifecycle =
+  | "DISCOVERED"
+  | "PLANNED"
+  | "IN_DEVELOPMENT"
+  | "CANDIDATE"
+  | "ACCEPTED"
+  | "MAINLINE"
+  | "SUPERSEDED"
+  | "HISTORICAL"
+  | "ABANDONED"
+  | "UNKNOWN";
+
+export interface DiscoveryEvidenceRecord {
+  kind: "GOVERNING_DOCUMENT" | "BRANCH" | "PULL_REQUEST";
+  reference: string;
+  confidence: DiscoveryConfidence;
+}
+
+export interface ProjectVersionRecord {
+  id: string;
+  identity: string;
+  lifecycle: VersionLifecycle;
+  confidence: DiscoveryConfidence;
+  evidence: DiscoveryEvidenceRecord[];
+  formalTitle?: string;
+  purpose?: string;
+  governingDocument?: string;
+  firstObservedBranch?: string;
+  firstPullRequest?: number;
+  acceptedSha?: string;
+  integratedMainSha?: string;
+}
 
 export interface MilestoneRecord {
   id: string;
@@ -22,6 +55,26 @@ export interface MilestoneRecord {
   state: MilestoneState;
   evidence: string[];
   acceptedAt?: string;
+}
+
+/**
+ * A task is a retained unit of observed work, not a command or assignment.
+ * Telemetry may supply it through a worker heartbeat; absent telemetry remains
+ * explicitly unmeasured rather than inferred from a phase state.
+ */
+export interface TaskRecord {
+  id: string;
+  title: string;
+  projectId: string;
+  phaseId: string;
+  workerId?: string;
+  branch?: string;
+  startedAt?: string;
+  heartbeatAt?: string;
+  finishedAt?: string;
+  result?: string;
+  sourceSha?: string;
+  evidence: string[];
 }
 
 export interface PhaseRecord {
@@ -57,6 +110,12 @@ export interface ProjectRecord {
   sourcePaths: string[];
   confidence: EvidenceConfidence;
   phases: PhaseRecord[];
+  /** Governing phase denominator when one is explicitly observed; otherwise null. */
+  declaredPhaseCount?: number | null;
+  /** First-class project versions are observational and never aliases for phases. */
+  versions?: ProjectVersionRecord[];
+  discoveryConfidence?: DiscoveryConfidence;
+  discoveryEvidence?: DiscoveryEvidenceRecord[];
   missingEvidence?: string[];
   limitations?: string[];
   completionReceipt?: string;

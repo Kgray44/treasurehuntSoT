@@ -1,6 +1,18 @@
-# Bridgewatch - Phase 3: Keep the Watch
+---
+title: Bridgewatch v1.2 Mission Control operator guide
+audience: engineering
+status: current
+canonical_for: bridgewatch-v1.2-operator-guide
+last_reviewed: 2026-08-16
+---
 
-Bridgewatch is a private, read-only internal board for Project Bridgewatch.
+# Bridgewatch v1.2 — Mission Control
+
+Bridgewatch v1.2 is a private, read-only internal Mission Control for project,
+version, phase, GitHub, Sounding Line, source-health, and retained-history
+observation. It is a post-completion product-version amendment: the accepted
+Phase 1–3 program history remains historical evidence and v1.2 does not create
+or imply a Phase 4.
 It is a standalone Fastify service with a local SQLite cache and a static
 dashboard. It does not belong to the public Next.js application.
 
@@ -28,7 +40,7 @@ human dashboard and observation routes then use HTTP Basic authentication.
 
 ```text
 cd bridgewatch
-npm install
+npm ci
 npm run build
 node dist/lib/server.js
 ```
@@ -39,7 +51,29 @@ worker, and observed-test history to Phase 3's typed events, normalized
 snapshots, and daily rollups. Current source collection can rebuild the current
 projection, but accepted records, completion receipts, final decisions, and
 mainline identities are never retention targets. Keep deployment storage
-private and follow the Phase 3 deployment runbook for backup and restore.
+private and follow the Phase 3 deployment runbook for backup and restore. The
+v1.2 discovery projection adds safe normalized observed project/version/phase,
+GitHub PR/branch, source-health, and evidence rows while retaining all earlier
+cache and accepted-history compatibility records.
+
+### Windows lifecycle helper
+
+On Windows, build first and set the normal private Bridgewatch environment
+(especially `BRIDGEWATCH_REPOSITORY`). The lifecycle helper records only the
+PID it starts in the untracked `var/bridgewatch-runtime.json`, verifies its
+loopback health endpoint, and refuses to take over a port or process it does
+not own.
+
+```powershell
+cd bridgewatch
+npm run build
+npm run lifecycle:windows -- start
+npm run lifecycle:windows -- status
+npm run lifecycle:windows -- stop
+```
+
+Use `-- restart` only for a helper-owned process. The helper does not start a
+public listener, retain credentials, or provide a browser control surface.
 
 ## Same-host Voyagewright gateway
 
@@ -70,6 +104,14 @@ endpoints. `/api/history` is bounded, filters normalized meaningful events,
 and defaults to the last 12 hours; `/api/activity` remains worker activity.
 Startup refreshes GitHub and the source-owned Sounding Line projection; a
 source failure retains a cached state and never blanks the board.
+
+v1.2 adds `GET /api/program`, version and phase profiles below
+`/api/projects/:id`, retained PR/branch/Sounding Line profiles,
+`GET /api/compare?from=...&to=...`, and `/api/sources/:name`. The hash-routed
+dashboard offers Overview, Program, Projects, Operations, GitHub, Attention,
+History, and Sources stations. It is a read-only convenience over the same
+bounded APIs; deep links, browser Back/Forward, and a comparison fidelity label
+do not change source authority.
 
 The browser-local `bridgewatch:last-seen:v1` key affects only the displayed
 history range. Invalid, unavailable, or future local values fall back to the

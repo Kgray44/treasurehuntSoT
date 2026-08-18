@@ -3,7 +3,7 @@ title: Project Bridgewatch Phase 3 Deployment Runbook
 audience: engineering
 status: current
 canonical_for: project-bridgewatch-phase-3-deployment
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-16
 ---
 
 # Project Bridgewatch Phase 3 — Private Deployment Runbook
@@ -73,6 +73,27 @@ enforce the private identity gate there, and forward no unauthenticated public
 route. Probe `/healthz` for process liveness and `/readyz` for a cached GitHub
 projection. Human routes and JSON observation routes are GET/HEAD only; the
 two machine telemetry routes require their separate bearer token.
+
+### v1.2 mounted observation routes
+
+The `deploy/nginx.conf` map must remain synchronized with the private Fastify
+route allowlist. v1.2 adds bounded `program`, comparison, version/phase,
+pull-request, branch profile, source profile, and Sounding Line run GET routes.
+It does not widen the mount into a generic proxy: reject all mutation methods,
+telemetry paths, health paths, arbitrary query strings, and arbitrary upstream
+selection. After a source update, verify the exact mounted root and the
+allowlisted profile paths against a task-owned listener before an operator
+reloads NGINX.
+
+### Windows task-owned runtime
+
+For a local Windows qualification instance, build Bridgewatch and invoke
+`npm run lifecycle:windows -- start` from `bridgewatch/`. The helper records
+only the PID it starts, checks the loopback `/healthz` endpoint, and refuses to
+replace an existing listener or stop a process whose command line is not the
+expected Bridgewatch server path. Use `status`, `restart`, and `stop` through
+the same helper. This is local lifecycle support; it does not replace the
+Linux systemd topology or authorize an external listener.
 
 ## Retention and compaction
 

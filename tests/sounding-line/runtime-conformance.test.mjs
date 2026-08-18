@@ -177,6 +177,16 @@ test("resource-aware preparation eliminates universal database and browser setup
   assert.equal(pure.actions.databaseSeed, false);
   assert.deepEqual(pure.actions.browserEngines, []);
 
+  const serialBridgewatch = deriveWorkerPreparation({
+    id: "unit.bridgewatch",
+    adapter: "vitest-family-serial",
+    resources: ["node-slot", "vitest-worker-pool"],
+  });
+  assert.equal(serialBridgewatch.runtimeConformance.result, "PASSED");
+  assert.deepEqual(serialBridgewatch.adapterRequirements, ["node-slot", "vitest-worker-pool"]);
+  assert.equal(serialBridgewatch.actions.databaseMigration, false);
+  assert.deepEqual(serialBridgewatch.actions.browserEngines, []);
+
   const database = deriveWorkerPreparation({
     id: "database.sqlite",
     adapter: "sqlite-validate",

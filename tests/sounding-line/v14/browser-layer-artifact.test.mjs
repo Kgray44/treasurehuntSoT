@@ -5,9 +5,11 @@ import path from "node:path";
 import test from "node:test";
 import {
   browserLayerCacheIdentity,
+  browserLayerInputs,
   createBrowserLayerManifest,
   verifyBrowserLayer,
 } from "../../../scripts/sounding-line/v14/browser-layer-artifact.mjs";
+import { digest } from "../../../scripts/sounding-line/v14/foundation.mjs";
 
 async function fixture() {
   const root = await mkdtemp(path.join(os.tmpdir(), "sounding-line-browser-layer-"));
@@ -41,6 +43,52 @@ test("browser layer binds its browser revision and fails closed on a mixed-engin
     );
     assert.notEqual(chromium.key, (await browserLayerCacheIdentity(root, ["chromium"])).key);
   } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("WebKit browser layers declare the FFmpeg helper and invalidate prior cache identities", async () => {
+  const root = await fixture();
+  try {
+    assert.deepEqual((await browserLayerInputs(root, ["chromium"])).installTargets, ["chromium"]);
+    const webkitInputs = await browserLayerInputs(root, ["webkit"]);
+    assert.deepEqual(webkitInputs.installTargets, ["webkit", "ffmpeg"]);
+    const { installTargets: _legacyAbsentTarget, ...legacyInputs } = webkitInputs;
+    const legacyKey = `sounding-line-browser-v1-${digest({
+      version: 1,
+      layerType: "browser-webkit",
+      inputs: legacyInputs,
+    })}`;
+    assert.notEqual((await browserLayerCacheIdentity(root, ["webkit"])).key, legacyKey);
+    assert.notEqual(
+      (await browserLayerCacheIdentity(root, ["webkit"])).key,
+      (await browserLayerCacheIdentity(root, ["chromium"])).key,
+    );
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("WebKit browser layers fail closed without the required FFmpeg executable", async () => {
+  const root = await fixture();
+  const priorKey = process.env.SOUNDING_LINE_BROWSER_CACHE_KEY;
+  try {
+    const identity = await browserLayerCacheIdentity(root, ["webkit"]);
+    const manifest = await createBrowserLayerManifest({
+      root,
+      sourceDirectory: path.join(root, "browser-layer"),
+      engines: ["webkit"],
+      producer: identity.producer,
+      expiresAt: "2099-01-01T00:00:00.000Z",
+    });
+    process.env.SOUNDING_LINE_BROWSER_CACHE_KEY = identity.key;
+    await assert.rejects(
+      verifyBrowserLayer({ root, sourceDirectory: path.join(root, "browser-layer"), engines: ["webkit"], manifest }),
+      /BROWSER_LAYER_REQUIRED_RESOURCE_MISSING:ffmpeg/u,
+    );
+  } finally {
+    if (priorKey === undefined) delete process.env.SOUNDING_LINE_BROWSER_CACHE_KEY;
+    else process.env.SOUNDING_LINE_BROWSER_CACHE_KEY = priorKey;
     await rm(root, { recursive: true, force: true });
   }
 });

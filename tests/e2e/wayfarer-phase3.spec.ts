@@ -12,16 +12,39 @@ const completedAt = new Date("2026-07-25T10:15:00.000Z");
 
 async function register(browser: import("@playwright/test").Browser, label: string): Promise<Account> {
   const context = await browser.newContext();
+  const email = `${unique}-${label.toLowerCase()}@example.test`;
+  const password = "Cobalt-tide-lantern-2026!";
   const response = await context.request.post("/api/auth/register", {
     data: {
       displayName: `Synthetic ${label}`,
-      email: `${unique}-${label.toLowerCase()}@example.test`,
-      password: "A synthetic test password 42!",
+      email,
+      password,
+      confirmPassword: password,
     },
   });
   expect(response.status(), await response.text()).toBe(201);
   const body = (await response.json()) as { csrfToken: string; player: { id: string } };
-  return { context, profileId: body.player.id, csrfToken: body.csrfToken };
+  const profile = await db.playerProfile.findUniqueOrThrow({
+    where: { id: body.player.id },
+    select: { accountId: true },
+  });
+  expect(profile.accountId, "Registration must create an account-rooted Player profile.").toBeTruthy();
+  const accountId = profile.accountId!;
+  const verifiedAt = new Date();
+  await Promise.all([
+    db.userAccount.update({
+      where: { id: accountId },
+      data: { status: "ACTIVE", claimedAt: verifiedAt, ordinaryWorkspaceEntryAt: verifiedAt },
+    }),
+    db.accountEmail.updateMany({
+      where: { accountId, isPrimary: true },
+      data: { verificationState: "VERIFIED", verifiedAt },
+    }),
+  ]);
+  const signIn = await context.request.post("/api/auth/sign-in", { data: { login: email, password } });
+  expect(signIn.status(), await signIn.text()).toBe(200);
+  const signedIn = (await signIn.json()) as { csrfToken: string };
+  return { context, profileId: body.player.id, csrfToken: signedIn.csrfToken };
 }
 
 async function seedVoyage(ownerId: string, crewId: string) {
@@ -218,13 +241,18 @@ test("Wayfarer Phase 3 authenticated Passport history is private, pinned, consen
     events: await db.taleSessionEvent.count({ where: { sessionId: fixture.session.id } }),
     memberships: await db.playthroughMembership.count({ where: { playthroughId: fixture.session.id } }),
   };
+  const materialized = await owner.context.request.post("/api/passport/history", {
+    headers: { "x-csrf-token": owner.csrfToken },
+  });
+  expect(materialized.ok(), await materialized.text()).toBeTruthy();
   const ownerPage = await owner.context.newPage();
   await ownerPage.goto("/passport");
-  await expect(ownerPage.getByRole("heading", { name: "Chronicle Passport" })).toBeVisible();
-  await expect(ownerPage.getByRole("heading", { name: "Synthetic Harbor Chronicle" })).toBeVisible();
-  await expect(ownerPage.getByText("Wall-clock: 600 (EXACT)")).toBeVisible();
-  await expect(ownerPage.getByRole("button", { name: "Generate private Keepsake" })).toBeVisible();
+  await expect(ownerPage.locator("h1", { hasText: "Chronicle Passport" })).toBeVisible();
+  await expect(ownerPage.getByRole("heading", { name: "Chronicle History", exact: true })).toBeVisible();
+  await expect(ownerPage.locator(".passport-card").filter({ hasText: "Chronicle History" })).toContainText("1");
   await expect(ownerPage.getByRole("button", { name: "Reconcile history" })).toHaveCount(0);
+  await ownerPage.goto("/passport/history");
+  await expect(ownerPage.getByRole("heading", { name: "Synthetic Harbor Chronicle" })).toBeVisible();
   expect(
     (await new AxeBuilder({ page: ownerPage }).analyze()).violations.filter((item) =>
       ["serious", "critical"].includes(item.impact ?? ""),

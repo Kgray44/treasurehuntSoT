@@ -26,6 +26,13 @@ export const adapters = Object.freeze({
   // Family adapters are resolved from the sealed active registry by authority.mjs.
   // They intentionally cannot be run without an exact, non-empty file selection.
   "vitest-family": { command: null, resources: ["node-slot", "vitest-worker-pool"], mode: "CERTIFIED" },
+  // A declared bounded Vitest family may keep its exact file obligations while
+  // running them in one worker when those files perform synchronous SQLite load.
+  "vitest-family-serial": {
+    command: null,
+    resources: ["node-slot", "vitest-worker-pool"],
+    mode: "SERIAL_WITHIN_FAMILY",
+  },
   // The Sounding Line control-plane runs Node's test runner, but its owned
   // runtime proof launches a Chromium context and a loopback fixture service.
   // Keep that capability distinct from ordinary Node/Vitest unit families.
@@ -156,9 +163,10 @@ export function resolveAdapter(id, argumentsList = []) {
   return { id, command: [...adapter.command], resources: [...adapter.resources], mode: adapter.mode };
 }
 
-export function resolveVitestAdapter(files) {
+export function resolveVitestAdapter(files, { serialWithinFamily = false } = {}) {
   if (!Array.isArray(files) || !files.length || files.some((file) => !safeSuite(file)))
     throw new Error("Vitest adapter accepts only repository-relative test files");
+  if (typeof serialWithinFamily !== "boolean") throw new Error("Vitest serial family mode must be boolean");
   const normalizedFiles = files.map((file) => file.replace(/\\/gu, "/"));
   const bridgewatchFiles = normalizedFiles.filter((file) => file.startsWith("bridgewatch/"));
   if (bridgewatchFiles.length && bridgewatchFiles.length !== normalizedFiles.length)
@@ -176,10 +184,11 @@ export function resolveVitestAdapter(files) {
       node,
       vitestEntry,
       vitest[1],
+      ...(serialWithinFamily ? ["--maxWorkers=1", "--no-file-parallelism"] : []),
       ...normalizedFiles.map((file) => (isBridgewatchFamily ? file.slice("bridgewatch/".length) : file)),
     ],
     resources: ["node-slot", "vitest-worker-pool"],
-    mode: "CERTIFIED",
+    mode: serialWithinFamily ? "SERIAL_WITHIN_FAMILY" : "CERTIFIED",
   };
 }
 

@@ -10,6 +10,29 @@ const digest = (value) =>
     .digest("hex");
 const json = async (root, file) => JSON.parse(await readFile(path.join(root, "testing", file), "utf8"));
 const hostedSharedResources = new Set(["restart-host", "external-provider"]);
+const supportedBrowserEngines = new Set(["chromium", "webkit"]);
+const candidateRefPattern = /^refs\/heads\/[A-Za-z0-9._/-]+$/u;
+
+function browserPartitionsFor(node, cases) {
+  if (node.adapter !== "playwright-family") return [];
+  const partitions = new Map();
+  for (const entry of cases) {
+    const engines = [
+      ...new Set(
+        (entry.resources ?? [])
+          .filter((resource) => resource.startsWith("browser-"))
+          .map((resource) => resource.slice(8)),
+      ),
+    ];
+    if (engines.length !== 1 || !supportedBrowserEngines.has(engines[0]))
+      throw new Error(`HOSTED_BROWSER_PARTITION_INVALID:${node.id}:${entry.id}`);
+    partitions.set(engines[0], [...(partitions.get(engines[0]) ?? []), entry.id]);
+  }
+  if (!partitions.size) throw new Error(`HOSTED_BROWSER_PARTITION_MISSING:${node.id}`);
+  return [...partitions.entries()]
+    .map(([browserEngine, testIds]) => ({ browserEngine, testIds: [...testIds].sort() }))
+    .sort((left, right) => left.browserEngine.localeCompare(right.browserEngine));
+}
 
 export function resolvePlanAuthority({ authorityIndex, gateId, authorityMode, githubRef, qualifiedBaseSha }) {
   if (authorityMode !== "CURRENT" && authorityMode !== "V13_CUTOVER" && authorityMode !== "V14_CANDIDATE")
@@ -58,9 +81,16 @@ export async function buildV14HostedPlan({
   registry,
   authorityIndex,
   authorityMode,
+  candidateRef = null,
   predictedIdentity,
 }) {
   if (!qualifiedBaseSha || !/^[0-9a-f]{40}$/u.test(qualifiedBaseSha)) throw new Error("V14_QUALIFIED_BASE_REQUIRED");
+  if (authorityMode === "V14_CANDIDATE") {
+    if (!candidateRef) throw new Error("V14_CANDIDATE_REF_REQUIRED");
+    if (!candidateRefPattern.test(candidateRef)) throw new Error("V14_CANDIDATE_REF_INVALID");
+  } else if (candidateRef !== null && candidateRef !== undefined && candidateRef !== "") {
+    throw new Error("V14_NON_CANDIDATE_REF_FORBIDDEN");
+  }
   const semanticPlan = await generateV14FastChannelPlan({
     root,
     baseSha: qualifiedBaseSha,
@@ -74,6 +104,7 @@ export async function buildV14HostedPlan({
     authorityVersion: "1.4",
     authorityBoundary: authorityMode === "V14_CANDIDATE" ? "V14_CANDIDATE_QUALIFICATION" : "CURRENT_AUTHORITATIVE_V14",
     authorityMode,
+    candidateRef: authorityMode === "V14_CANDIDATE" ? candidateRef : null,
     sourceSha,
     qualifiedBaseSha,
     candidateTreeSha: semanticPlan.candidateTreeSha,
@@ -97,14 +128,21 @@ export async function buildV14HostedPlan({
     runtimeConformanceSuiteId: authorityIndex.runtimeConformance?.suiteId ?? null,
     nodes: semanticPlan.nodes.map((node) => {
       const cases = registry.cases.filter((entry) => entry.suiteId === node.id);
+      const browserPartitions = browserPartitionsFor(node, cases);
       return {
         ...node,
-        // Browser engines are execution resources, not merely suite metadata.
-        // The sealed node must therefore retain every engine declared by its
-        // exact registry-selected cases, or hosted preparation could omit a
-        // browser that the isolated adapter will execute.
-        resources: [...new Set([...node.resources, ...cases.flatMap((entry) => entry.resources ?? [])])].sort(),
-        testIds: cases.map((entry) => entry.id),
+        // Registry-selected browser-family cases execute in physically
+        // partitioned workers. Retain every exact engine in the sealed logical
+        // node so finalization can prove the lossless case cover. Other
+        // adapter families retain their declared execution resources.
+        resources: [
+          ...new Set([
+            ...node.resources,
+            ...(browserPartitions.length ? cases.flatMap((entry) => entry.resources ?? []) : []),
+          ]),
+        ].sort(),
+        testIds: cases.map((entry) => entry.id).sort(),
+        ...(browserPartitions.length ? { browserPartitions } : {}),
       };
     }),
   };
@@ -119,6 +157,7 @@ export async function buildPlan({
   qualifiedBaseSha = process.env.SOUNDING_LINE_BASE_SHA,
   authorityMode = process.env.SOUNDING_LINE_AUTHORITY_MODE ?? "CURRENT",
   githubRef = process.env.GITHUB_REF,
+  candidateRef = process.env.SOUNDING_LINE_CANDIDATE_REF,
   predictedIdentity = undefined,
 }) {
   const [manifest, suitesFile, gatesFile, registry, authorityIndex] = await Promise.all([
@@ -154,6 +193,7 @@ export async function buildPlan({
       registry,
       authorityIndex,
       authorityMode: resolvedAuthority,
+      candidateRef,
       predictedIdentity,
     });
   }

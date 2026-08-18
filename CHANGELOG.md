@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-16
 ---
 
 # Changelog
@@ -11,6 +11,14 @@ last_reviewed: 2026-08-12
 ## Unreleased
 
 ### Changed
+
+- Expanded Project Bridgewatch on its dedicated v1.2 implementation branch
+  into a version-aware, hash-routed private Mission Control with bounded
+  repository discovery, retained source-health, first-class version/PR/branch/
+  Sounding Line profiles, exact-or-rollup comparison, and a Windows-owned
+  lifecycle helper. It remains read-only, is not a Bridgewatch Phase 4, and
+  does not yet claim protected-main integration, deployment, provider proof,
+  or owner acceptance.
 
 - Integrated owner-accepted Project Wakebook Phase 1, **Open the Wake**, on
   canonical main through protected PR #41. Chronicle Passport History now opens

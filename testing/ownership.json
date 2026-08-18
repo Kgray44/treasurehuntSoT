@@ -410,8 +410,7 @@
         "deploy/forever-treasure-bridgewatch.service",
         "scripts/bridgewatch/**",
         "scripts/sounding-line/status-projection.mjs",
-        "Development_Docs/Project_Bridgewatch_Phase_2_*.md",
-        "Development_Docs/Project_Bridgewatch_Homeport_Gateway_*.md"
+        "Development_Docs/Project_Bridgewatch_*.md"
       ],
       "testPaths": [
         "bridgewatch/test/**/*.test.*",
@@ -452,6 +451,20 @@
         "wakebook.archive.partial-history",
         "wakebook.archive.summary-redaction"
       ]
+    },
+    {
+      "id": "project-trim",
+      "project": "project-trim",
+      "sourcePaths": [
+        ".agents/context-workflow.md",
+        "AGENTS.md",
+        "agent-context-profiles.json",
+        "scripts/agent-context/**",
+        "Development_Docs/Programs/Project_Trim/**",
+        "Development_Docs/Governing/Project_Trim_*.pdf"
+      ],
+      "testPaths": ["tests/agent-context/**/*.test.*", "tests/fixtures/agent-context/**"],
+      "contractIds": ["project-trim.minimum-sufficient-context"]
     }
   ]
 }

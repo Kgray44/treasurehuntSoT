@@ -40,6 +40,30 @@ describe("Sounding Line read-only status projection", () => {
       JSON.stringify({
         sourceSha: "abc",
         gate: "mainline",
+        authorityVersion: "1.4",
+        authorityBoundary: "V14_CANDIDATE_QUALIFICATION",
+        candidateTreeSha: "candidate-tree",
+        predictedIntegrationTreeSha: "predicted-tree",
+        evidenceDispositionCounts: { FRESH: 1 },
+        semanticFallback: {
+          disposition: "CONSERVATIVE_FALLBACK",
+          failure: "UNKNOWN_IMPACT",
+          reasons: [
+            { code: "UNMAPPED_CHANGED_PATH", paths: ["bridgewatch/unmapped.ts"] },
+            {
+              code: "MAPPING_DEBT",
+              debts: [
+                {
+                  contractId: "bridgewatch.mounted-route",
+                  owner: "bridgewatch",
+                  classification: "NO_CURRENT_TEST_PROTECTOR",
+                  risk: "critical",
+                  reason: "No governed suite declares this contract.",
+                },
+              ],
+            },
+          ],
+        },
         nodes: [
           {
             id: "unit.bridgewatch",
@@ -47,6 +71,8 @@ describe("Sounding Line read-only status projection", () => {
             queuedAt: "2026-08-12T00:00:00.000Z",
             startedAt: "2026-08-12T00:00:10.000Z",
             attempt: 1,
+            execution: { wave: 2 },
+            evidenceDisposition: "FRESH",
           },
         ],
       }),
@@ -61,8 +87,31 @@ describe("Sounding Line read-only status projection", () => {
       id: "sl-fixture-01",
       sourceSha: "abc",
       gate: "mainline",
+      authorityVersion: "1.4",
+      candidateTreeSha: "candidate-tree",
+      predictedIntegrationTreeSha: "predicted-tree",
       cleanupState: "CLEAN",
       finalDecision: "RELEASE_GO_WITH_EXTERNAL_PENDING",
+      semanticFallback: "UNKNOWN_IMPACT",
+      semanticFallbackDetails: {
+        disposition: "CONSERVATIVE_FALLBACK",
+        failure: "UNKNOWN_IMPACT",
+        reasons: [
+          { code: "UNMAPPED_CHANGED_PATH", paths: ["bridgewatch/unmapped.ts"] },
+          {
+            code: "MAPPING_DEBT",
+            debts: [
+              {
+                contractId: "bridgewatch.mounted-route",
+                owner: "bridgewatch",
+                classification: "NO_CURRENT_TEST_PROTECTOR",
+                risk: "critical",
+                reason: "No governed suite declares this contract.",
+              },
+            ],
+          },
+        ],
+      },
     });
     expect(result.workers[0]).toMatchObject({ lane: "browser-chromium", state: "RUNNING" });
   });
