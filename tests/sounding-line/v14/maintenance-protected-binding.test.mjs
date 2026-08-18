@@ -7,6 +7,13 @@ import {
 import { qualifyMaintenanceProtectedMerge } from "../../../scripts/sounding-line/maintenance-protected-binding.mjs";
 import { selectSealedMaintenanceAuthority } from "../../../scripts/sounding-line/maintenance-authority-selection.mjs";
 import { finalize } from "../../../scripts/sounding-line/finalizer.mjs";
+import {
+  classifyAuthorityMaintenance,
+  createAuthorityMaintenancePlan,
+  finalizeAuthorityMaintenance,
+} from "../../../scripts/sounding-line/authority-maintenance.mjs";
+import { qualifyAuthorityMaintenanceProtectedMerge } from "../../../scripts/sounding-line/authority-maintenance-protected-binding.mjs";
+import { selectSealedAuthorityMaintenance } from "../../../scripts/sounding-line/authority-maintenance-selection.mjs";
 
 const sha = (character) => character.repeat(40);
 const policy = {
@@ -133,4 +140,79 @@ test("maintenance authority selection fails closed for invalid identity, disposi
     "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
   );
   assert.equal(select([trustedRun(), trustedRun({ id: 43 })]).decision, "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE");
+});
+
+test("authority maintenance is a distinct owner-authorized, exact-identity lane", () => {
+  const authorityPolicy = {
+    authority: "SOUNDING_LINE_AUTHORITY_MAINTENANCE",
+    disposition: "AUTHORITY_MAINTENANCE_GO",
+    workflowDispatchOnly: true,
+    trustedMainOnly: true,
+    eligiblePathGlobs: ["scripts/sounding-line/authority-maintenance.mjs", "tests/sounding-line/**"],
+    requiredEvidence: ["FOCUSED_REGRESSION", "ANTI_SELF_AUTHORIZATION"],
+  };
+  const changedPaths = ["scripts/sounding-line/authority-maintenance.mjs", "tests/sounding-line/v14/example.test.mjs"];
+  assert.equal(
+    classifyAuthorityMaintenance({ trustedPolicy: authorityPolicy, changedPaths, ownerAuthorized: false })
+      .classification,
+    "AUTHORITY_MAINTENANCE_REJECTED",
+  );
+  assert.equal(
+    classifyAuthorityMaintenance({
+      trustedPolicy: authorityPolicy,
+      changedPaths: ["src/app/page.tsx"],
+      ownerAuthorized: true,
+    }).errors[0],
+    "AUTHORITY_MAINTENANCE_SCOPE_REJECTED:src/app/page.tsx",
+  );
+  const authorityPlan = createAuthorityMaintenancePlan({
+    trustedPolicy: authorityPolicy,
+    trustedMainSha: sha("a"),
+    candidateSha: sha("b"),
+    candidateTree: sha("c"),
+    qualifiedBaseSha: sha("a"),
+    changedPaths,
+    ownerAuthorized: true,
+  });
+  assert.equal(authorityPlan.disposition, "AUTHORITY_MAINTENANCE_GO");
+  assert.notEqual(authorityPlan.disposition, "RELEASE_GO");
+  const authorityFinalization = finalizeAuthorityMaintenance({
+    plan: authorityPlan,
+    evidence: authorityPolicy.requiredEvidence.map((id) => ({ id, result: "PASSED", candidateSha: sha("b") })),
+    observedCandidateSha: sha("b"),
+    observedTrustedMainSha: sha("a"),
+  });
+  assert.equal(authorityFinalization.decision, "AUTHORITY_MAINTENANCE_GO");
+  const run = {
+    id: 43,
+    name: "Sounding Line authority maintenance",
+    path: ".github/workflows/sounding-line-authority-maintenance.yml",
+    event: "workflow_dispatch",
+    status: "completed",
+    conclusion: "success",
+    headSha: sha("a"),
+    plan: authorityPlan,
+    finalization: authorityFinalization,
+  };
+  assert.equal(
+    selectSealedAuthorityMaintenance({
+      runs: [run],
+      candidateSha: sha("b"),
+      candidateTree: sha("c"),
+      qualifiedBaseSha: sha("a"),
+    }).decision,
+    "AUTHORITY_MAINTENANCE_AUTHORITY_SELECTED",
+  );
+  assert.equal(
+    qualifyAuthorityMaintenanceProtectedMerge({
+      plan: authorityPlan,
+      finalization: authorityFinalization,
+      candidateSha: sha("b"),
+      currentBaseSha: sha("a"),
+      mergeSha: sha("d"),
+      mergeTree: sha("c"),
+      mergeParents: [sha("a"), sha("b")],
+    }).decision,
+    "BINDING_PASS",
+  );
 });
