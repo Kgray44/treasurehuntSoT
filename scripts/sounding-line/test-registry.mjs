@@ -200,6 +200,10 @@ function browserFamily(project, file, title) {
   // inherit a fixture-free ownership contract they do not satisfy.
   if (file.endsWith("access-gates.spec.ts") && project === "sounding-line-access-sentinel")
     return "browser.access-sentinel";
+  // Tideglass owns a distinct synthetic browser fixture. It must never share
+  // a worker with the generic browser families, whose copied database has a
+  // different isolation contract.
+  if (file.endsWith("tideglass-phase3.spec.ts")) return "browser.tideglass";
   if (value.includes("wakebook")) return "browser.wakebook";
   if (value.includes("homeport") || project.includes("homeport")) return "browser.homeport";
   if (file.endsWith("chronicle-platform.spec.ts") || file.endsWith("acceptance.spec.ts"))
