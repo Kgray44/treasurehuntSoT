@@ -34,6 +34,25 @@ const helmBaseContracts = helmContracts.filter((contractId) => contractId !== "h
 const hash = (text) => createHash("sha256").update(text).digest("hex").slice(0, 20);
 const execFileAsync = promisify(execFile);
 const normal = (value) => value.replaceAll("\\", "/");
+
+// Playwright discovery imports the application test graph. A fresh `npm ci`
+// intentionally leaves Prisma's generated client as a placeholder, so make
+// that dependency deterministic at the registry boundary rather than relying
+// on a caller-specific install hook.
+async function ensurePrismaClient() {
+  const client = await fs
+    .readFile(path.join(root, "node_modules", ".prisma", "client", "default.js"), "utf8")
+    .catch((error) => (error.code === "ENOENT" ? "" : Promise.reject(error)));
+  if (!client.includes("did not initialize yet")) return;
+  await execFileAsync(
+    process.execPath,
+    ["node_modules/prisma/build/index.js", "generate", "--schema", "prisma/schema.sqlite.prisma"],
+    {
+      cwd: root,
+      maxBuffer: 8 * 1024 * 1024,
+    },
+  );
+}
 const admiraltyContracts = [
   "admiralty.phase1.identity",
   "admiralty.phase1.authorization",
@@ -473,6 +492,7 @@ for (const absolute of sources.flat()) {
       ...metadata(file, suiteId),
     });
 }
+await ensurePrismaClient();
 cases.push(...(await discoverPlaywright()));
 carryForwardHistoricalAliases(cases, previousRegistry.cases ?? []);
 validateRegistryIdentity(cases);
