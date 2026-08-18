@@ -12,6 +12,12 @@ import process from "node:process";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 import { finalizationEvidenceDigest } from "./finalization-evidence.mjs";
+import {
+  GitHubInteractionClient,
+  SharedRuntimeState,
+  credentialPoolId,
+  fingerprint,
+} from "../github-interaction/index.mjs";
 
 export const RECORD_ONLY_SUITE_ID = "record-only.closure";
 export const RECORD_ONLY_PROTECTED_CONTEXT = "Sounding Line / Mainline Decision";
@@ -122,17 +128,27 @@ async function referencesInChanges(root, candidateSha, changes) {
   return { pullRequests: stable(pullRequests), runs: stable(runs) };
 }
 
-async function githubJson(url, token) {
+async function githubJson(url, token, repository) {
   if (!token) throw new Error("RECORD_ONLY_GITHUB_TOKEN_REQUIRED");
-  const response = await fetch(url, {
-    headers: {
-      authorization: "Bearer " + token,
-      accept: "application/vnd.github+json",
-      "x-github-api-version": "2022-11-28",
-    },
+  const parsed = new URL(url);
+  const pool = {
+    kind: "USER",
+    repository,
+    principalFingerprint: fingerprint(token),
+    id: credentialPoolId({ kind: "USER", repository, principalFingerprint: fingerprint(token) }),
+  };
+  const client = new GitHubInteractionClient({
+    repository,
+    apiBase: parsed.origin,
+    pool,
+    runtime: new SharedRuntimeState(repository),
+    tokenProvider: async () => token,
   });
-  if (!response.ok) throw new Error("RECORD_ONLY_GITHUB_API_FAILED:" + response.status + ":" + url);
-  return response.json();
+  try {
+    return (await client.request({ path: parsed.pathname + parsed.search, freshness: "LIVE" })).body;
+  } catch (error) {
+    throw new Error("RECORD_ONLY_GITHUB_API_FAILED:" + (error instanceof Error ? error.message : "UNKNOWN"));
+  }
 }
 
 export function hasSuccessfulProtectedContext(checkRuns) {
@@ -168,8 +184,12 @@ export function validateReferencedAuthorityRun({ pull, run }) {
 
 async function inspectReferencedAuthority({ root, repository, candidateSha, prNumber, runId, token }) {
   const errors = [];
-  const pull = await githubJson("https://api.github.com/repos/" + repository + "/pulls/" + prNumber, token);
-  const run = await githubJson("https://api.github.com/repos/" + repository + "/actions/runs/" + runId, token);
+  const pull = await githubJson("https://api.github.com/repos/" + repository + "/pulls/" + prNumber, token, repository);
+  const run = await githubJson(
+    "https://api.github.com/repos/" + repository + "/actions/runs/" + runId,
+    token,
+    repository,
+  );
   const implementationCandidateSha = pull?.head?.sha;
   const implementationMergeSha = pull?.merge_commit_sha;
   errors.push(...validateReferencedAuthorityRun({ pull, run }));
@@ -188,6 +208,7 @@ async function inspectReferencedAuthority({ root, repository, candidateSha, prNu
         implementationCandidateSha +
         "/check-runs?per_page=100",
       token,
+      repository,
     );
     if (!hasSuccessfulProtectedContext(checks)) errors.push("PRIOR_IMPLEMENTATION_PROTECTED_CONTEXT_INVALID");
   }

@@ -3,7 +3,7 @@ title: Bridgewatch v1.2 Mission Control operator guide
 audience: engineering
 status: current
 canonical_for: bridgewatch-v1.2-operator-guide
-last_reviewed: 2026-08-16
+last_reviewed: 2026-08-18
 ---
 
 # Bridgewatch v1.2 — Mission Control
@@ -19,8 +19,14 @@ dashboard. It does not belong to the public Next.js application.
 ## Safety boundary
 
 - GitHub calls use `GET` only; Bridgewatch has no GitHub write path.
-- The optional GitHub token is server-side only and is never included in the
-  dashboard, API payloads, logs, or SQLite cache.
+- GitHub reads delegate to the repository's shared Git-first control plane.
+  Bridgewatch uses conditional cache reuse, shared per-credential rate state,
+  GraphQL batching for open-PR checks, and adaptive refresh timing. It never
+  uses that shared state to create a GitHub write path.
+- An optional user token or dedicated read-only GitHub App installation is
+  server-side only and is never included in the dashboard, API payloads, logs,
+  SQLite cache, or persisted shared state. The App private key remains outside
+  this repository; short-lived installation tokens remain memory-only.
 - Human dashboard and API endpoints are GET/HEAD observation endpoints. There
   are no control buttons, GitHub writes, Sounding Line controls, worker queues,
   or browser credentials.
@@ -55,6 +61,16 @@ private and follow the Phase 3 deployment runbook for backup and restore. The
 v1.2 discovery projection adds safe normalized observed project/version/phase,
 GitHub PR/branch, source-health, and evidence rows while retaining all earlier
 cache and accepted-history compatibility records.
+
+### GitHub read credential
+
+`BRIDGEWATCH_GITHUB_TOKEN` remains optional for low-volume observation. For a
+shared high-volume read pool, configure only
+`BRIDGEWATCH_GITHUB_APP_ID`, `BRIDGEWATCH_GITHUB_APP_INSTALLATION_ID`, and an
+external `BRIDGEWATCH_GITHUB_APP_PRIVATE_KEY_PATH`; see
+`Development_Docs/Project_Fairlead_GitHub_App_Setup.md`. Source profiles expose
+only credential source, App health, remaining/limit/reset values, and rate
+mode. Webhooks are not deployed: polling remains the reconciliation mechanism.
 
 ### Windows lifecycle helper
 

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "approvedRoots": ["scripts/github-interaction/"],
+  "exceptions": {
+    "bridgewatch/lib/github.ts": "Bridgewatch read-only adapter delegates transport, cache, rate state, and credential pools to the canonical interaction library.",
+    "bridgewatch/src/config.ts": "Configuration declares the HTTPS GitHub API base but never performs a GitHub request.",
+    "scripts/sounding-line/record-only-closure.mjs": "Sounding Line record-only adapter delegates protected repository reads to the canonical interaction library.",
+    "src/wayfarer/oauth.ts": "Product OAuth identity exchange, not repository automation; provider token scope and lifecycle are separately governed.",
+    ".github/workflows/sounding-line-authoritative.yml": "Hosted workflow-local PR identity inspection uses github.token and preserves sealed candidate binding.",
+    ".github/workflows/sounding-line-protected-merge-binding.yml": "Hosted protected-binding artifact verification uses workflow-local github.token; PowerShell cannot consume local shared state.",
+    ".github/workflows/sounding-line-mainline-train.yml": "Hosted train coordination uses workflow-local github.token with existing bounded candidate semantics.",
+    ".github/workflows/sounding-line-mainline-train-advance.yml": "Hosted train advance uses workflow-local github.token for protected Actions and merge operations.",
+    ".github/workflows/sounding-line-train-finalize-cars.yml": "Hosted check-run publication is a governed mutation using workflow-local github.token."
+  }
+}

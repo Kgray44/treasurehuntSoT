@@ -9,6 +9,7 @@
     "subfeatures": [
       "Loopback-first Fastify service with a static dashboard",
       "Server-side read-only GitHub collection with conditional cache retention",
+      "Shared credential-pool quota coordination, GraphQL PR-check batching, and optional read-only GitHub App authentication",
       "SQLite-backed local operational cache without token persistence",
       "Explicit measured versus unmeasured milestone progress",
       "Read-only API routes, security headers, and no dashboard controls"

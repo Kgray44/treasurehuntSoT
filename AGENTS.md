@@ -13,6 +13,12 @@ Active automation guidance belongs in [`.agents/`](.agents/README.md), not in pr
 
 Project Homeport work must also follow [`.agents/project-homeport.md`](.agents/project-homeport.md) and its canonical governance and evidence paths.
 
+## GitHub interaction
+
+For any repository GitHub observation, polling, dispatch, or quota decision, follow
+[`.agents/github-interaction.md`](.agents/github-interaction.md). It is the
+canonical Git-first and shared-quota guidance; do not add ad-hoc `gh api` loops.
+
 ## Documentation contract
 
 Before completing a change, classify every new or materially changed document; give current human documents valid frontmatter; place engineering evidence under `Development_Docs`; place active automation material under `.agents`; update indexes and navigation; and run `npm run docs:validate`. User-visible behavior changes require review of product features, current status, feature status, affected guides, and the changelog.

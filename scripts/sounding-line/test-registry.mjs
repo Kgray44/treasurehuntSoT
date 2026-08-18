@@ -116,6 +116,10 @@ function isBridgewatchFile(file) {
   return file.startsWith("bridgewatch/") || file === "scripts/sounding-line/status-projection.mjs";
 }
 
+function isGithubInteractionFile(file) {
+  return file.startsWith("scripts/github-interaction/") || file.startsWith("tests/github-interaction/");
+}
+
 function isProjectTrimFile(file) {
   return (
     file.startsWith("scripts/agent-context/") ||
@@ -145,6 +149,7 @@ function ownerFor(file) {
 
 function unitFamily(file) {
   if (isProjectTrimFile(file)) return "unit.agent-context";
+  if (isGithubInteractionFile(file)) return "unit.sounding-line";
   if (isBridgewatchFile(file)) return "unit.bridgewatch";
   if (file.startsWith("src/wakebook/") || file.includes("api/passport/voyages")) return "unit.wakebook";
   if (isHelmFile(file)) return "unit.helm";

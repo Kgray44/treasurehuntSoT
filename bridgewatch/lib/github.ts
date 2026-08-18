@@ -2,6 +2,15 @@ import type { Config } from "../src/config.js";
 import type { BranchHealth, GithubHistorySnapshot, GithubPullRequestHistory } from "../src/history.js";
 import { projectRegistry } from "../src/registry.js";
 import type { BridgewatchStore } from "./store.js";
+import {
+  GitHubInteractionClient,
+  GitHubAppAuth,
+  SharedRuntimeState,
+  credentialPoolId,
+  fingerprint,
+  nextPollInterval,
+  rateMode,
+} from "../../scripts/github-interaction/index.mjs";
 
 export interface WorkflowRun {
   id: number | null;
@@ -243,11 +252,57 @@ function snapshotFromCache(value: unknown, observedAt: string): Snapshot | null 
 
 export class GithubCollector {
   private rateLimitRemaining: number | null = null;
+  private rateLimitLimit: number | null = null;
+  private rateLimitResetAt: string | null = null;
+  private rateMode: "NORMAL" | "CONSERVATION" | "CRITICAL" | "EXHAUSTED" | "UNKNOWN" = "UNKNOWN";
+  private readonly interaction: GitHubInteractionClient;
+  private readonly appAuth: GitHubAppAuth;
 
   constructor(
     private readonly config: Config,
     private readonly store: BridgewatchStore,
-  ) {}
+  ) {
+    this.appAuth = new GitHubAppAuth({
+      repository: config.BRIDGEWATCH_REPOSITORY,
+      apiBase: config.BRIDGEWATCH_GITHUB_API,
+      appId: config.BRIDGEWATCH_GITHUB_APP_ID,
+      installationId: config.BRIDGEWATCH_GITHUB_APP_INSTALLATION_ID,
+      privateKeyPath: config.BRIDGEWATCH_GITHUB_APP_PRIVATE_KEY_PATH,
+    });
+    const authenticationKind = this.appAuth.configured()
+      ? "GITHUB_APP_INSTALLATION"
+      : config.BRIDGEWATCH_GITHUB_TOKEN
+        ? "USER"
+        : "ANONYMOUS";
+    const principalFingerprint = fingerprint(
+      this.appAuth.configured()
+        ? `${config.BRIDGEWATCH_GITHUB_APP_ID}:${config.BRIDGEWATCH_GITHUB_APP_INSTALLATION_ID}`
+        : (config.BRIDGEWATCH_GITHUB_TOKEN ?? "anonymous"),
+    );
+    const pool = {
+      kind: authenticationKind,
+      repository: config.BRIDGEWATCH_REPOSITORY,
+      principalFingerprint,
+      id: credentialPoolId({
+        kind: authenticationKind,
+        repository: config.BRIDGEWATCH_REPOSITORY,
+        principalFingerprint,
+        installationId: config.BRIDGEWATCH_GITHUB_APP_INSTALLATION_ID,
+      }),
+    };
+    this.interaction = new GitHubInteractionClient({
+      repository: config.BRIDGEWATCH_REPOSITORY,
+      apiBase: config.BRIDGEWATCH_GITHUB_API,
+      pool,
+      runtime: new SharedRuntimeState(config.BRIDGEWATCH_REPOSITORY, config.BRIDGEWATCH_GITHUB_STATE_DIR),
+      tokenProvider: this.appAuth.configured()
+        ? async () => (await this.appAuth.token()).token
+        : config.BRIDGEWATCH_GITHUB_TOKEN
+          ? async () => config.BRIDGEWATCH_GITHUB_TOKEN ?? null
+          : null,
+      requestTimeoutMs: config.BRIDGEWATCH_REQUEST_TIMEOUT_MS,
+    });
+  }
 
   cached(): Snapshot | null {
     const cached = this.store.get<unknown>("github:snapshot");
@@ -255,10 +310,21 @@ export class GithubCollector {
     return snapshotFromCache(cached.value, cached.observedAt);
   }
 
+  recommendedRefreshInterval(): number {
+    return nextPollInterval({
+      mode: this.rateMode,
+      minimumMs: Math.max(30_000, this.config.BRIDGEWATCH_SNAPSHOT_INTERVAL_MS),
+      resetAt: this.rateLimitResetAt,
+    });
+  }
+
   async refresh(): Promise<Snapshot | null> {
     const base = `${this.config.BRIDGEWATCH_GITHUB_API}/repos/${this.config.BRIDGEWATCH_REPOSITORY}`;
     const attemptedAt = new Date().toISOString();
     this.rateLimitRemaining = null;
+    this.rateLimitLimit = null;
+    this.rateLimitResetAt = null;
+    this.rateMode = "UNKNOWN";
     try {
       const [repo, pulls, runs] = await Promise.all([
         this.get<GitHubRecord>("repo", base),
@@ -269,16 +335,19 @@ export class GithubCollector {
       const ref = await this.get<GitHubRecord>("head", `${base}/git/ref/heads/${encodeURIComponent(branch)}`);
       const headObject = ref.object && typeof ref.object === "object" ? (ref.object as GitHubRecord) : {};
       const headSha = text(headObject.sha);
+      const batchedChecks = await this.collectCheckRuns(pulls);
       const normalizedPulls = await Promise.all(
         pulls.slice(0, 100).map(async (pull, index) => {
           const raw = pull && typeof pull === "object" ? (pull as GitHubRecord) : {};
           const number = count(raw.number);
           const checks =
             number && text(raw.state)?.toUpperCase() === "OPEN" && index < this.config.BRIDGEWATCH_GITHUB_MAX_BRANCHES
-              ? await this.get<GitHubRecord>(
-                  `checks:${number}`,
-                  `${base}/commits/${encodeURIComponent(text((raw.head as GitHubRecord | undefined)?.sha) ?? "")}/check-runs?per_page=100`,
-                )
+              ? batchedChecks?.has(number)
+                ? batchedChecks.get(number)
+                : await this.get<GitHubRecord>(
+                    `checks:${number}`,
+                    `${base}/commits/${encodeURIComponent(text((raw.head as GitHubRecord | undefined)?.sha) ?? "")}/check-runs?per_page=100`,
+                  )
               : undefined;
           return pullFrom(raw, checks);
         }),
@@ -309,7 +378,7 @@ export class GithubCollector {
       this.store.upsertSourceObservation({
         name: "github",
         state: "HEALTHY",
-        configured: Boolean(this.config.BRIDGEWATCH_GITHUB_TOKEN),
+        configured: Boolean(this.config.BRIDGEWATCH_GITHUB_TOKEN) || this.appAuth.configured(),
         reachable: true,
         lastAttemptAt: attemptedAt,
         lastSuccessAt: snapshot.observedAt,
@@ -317,7 +386,24 @@ export class GithubCollector {
         detail: null,
         cacheAgeMs: 0,
         rateLimitRemaining: this.rateLimitRemaining,
-        authenticationState: this.config.BRIDGEWATCH_GITHUB_TOKEN ? "TOKEN_CONFIGURED" : "ANONYMOUS",
+        rateLimitLimit: this.rateLimitLimit,
+        rateLimitResetAt: this.rateLimitResetAt,
+        rateMode: this.rateMode,
+        credentialSource: this.appAuth.configured()
+          ? "GITHUB_APP_INSTALLATION"
+          : this.config.BRIDGEWATCH_GITHUB_TOKEN
+            ? "USER_TOKEN"
+            : "ANONYMOUS",
+        appInstallationHealth: this.appAuth.configured()
+          ? this.appAuth.health().active
+            ? "ACTIVE"
+            : "CONFIGURED"
+          : "NOT_CONFIGURED",
+        authenticationState: this.appAuth.configured()
+          ? "TOKEN_CONFIGURED"
+          : this.config.BRIDGEWATCH_GITHUB_TOKEN
+            ? "TOKEN_CONFIGURED"
+            : "ANONYMOUS",
       });
       return snapshot;
     } catch (error) {
@@ -328,15 +414,32 @@ export class GithubCollector {
       this.store.upsertSourceObservation({
         name: "github",
         state: cached ? "DEGRADED" : "UNAVAILABLE",
-        configured: Boolean(this.config.BRIDGEWATCH_GITHUB_TOKEN),
+        configured: Boolean(this.config.BRIDGEWATCH_GITHUB_TOKEN) || this.appAuth.configured(),
         reachable: false,
         lastAttemptAt: attemptedAt,
         lastSuccessAt: cached?.observedAt ?? null,
-        nextRetryAt: new Date(Date.now() + this.config.BRIDGEWATCH_SNAPSHOT_INTERVAL_MS).toISOString(),
+        nextRetryAt: new Date(Date.now() + this.recommendedRefreshInterval()).toISOString(),
         detail,
         cacheAgeMs,
         rateLimitRemaining: this.rateLimitRemaining,
-        authenticationState: this.config.BRIDGEWATCH_GITHUB_TOKEN ? "TOKEN_CONFIGURED" : "ANONYMOUS",
+        rateLimitLimit: this.rateLimitLimit,
+        rateLimitResetAt: this.rateLimitResetAt,
+        rateMode: this.rateMode,
+        credentialSource: this.appAuth.configured()
+          ? "GITHUB_APP_INSTALLATION"
+          : this.config.BRIDGEWATCH_GITHUB_TOKEN
+            ? "USER_TOKEN"
+            : "ANONYMOUS",
+        appInstallationHealth: this.appAuth.configured()
+          ? this.appAuth.health().active
+            ? "ACTIVE"
+            : "CONFIGURED"
+          : "NOT_CONFIGURED",
+        authenticationState: this.appAuth.configured()
+          ? "TOKEN_CONFIGURED"
+          : this.config.BRIDGEWATCH_GITHUB_TOKEN
+            ? "TOKEN_CONFIGURED"
+            : "ANONYMOUS",
       });
       return cached;
     }
@@ -412,26 +515,79 @@ export class GithubCollector {
     const cached = this.store.get<unknown>(`github:${key}`);
     const prior = cached ? { ...cached, value: safeCacheValue(key, cached.value) as T } : null;
     if (prior) this.store.put(`github:${key}`, prior.value, prior.etag, prior.observedAt);
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), this.config.BRIDGEWATCH_REQUEST_TIMEOUT_MS);
+    const url = new URL(target);
+    const response = await this.interaction.request<T>({
+      path: `${url.pathname}${url.search}`,
+      freshness: "LIVE",
+      cacheKey: { consumer: "bridgewatch", key, repository: this.config.BRIDGEWATCH_REPOSITORY },
+    });
+    const remaining = Number(response.headers["x-ratelimit-remaining"]);
+    if (Number.isInteger(remaining) && remaining >= 0) this.rateLimitRemaining = remaining;
+    const limit = Number(response.headers["x-ratelimit-limit"]);
+    if (Number.isInteger(limit) && limit > 0) this.rateLimitLimit = limit;
+    const reset = Number(response.headers["x-ratelimit-reset"]);
+    if (Number.isFinite(reset) && reset > 0) this.rateLimitResetAt = new Date(reset * 1000).toISOString();
+    this.rateMode = rateMode({
+      limit: this.rateLimitLimit,
+      remaining: this.rateLimitRemaining,
+      resetAt: this.rateLimitResetAt,
+    });
+    const value = safeCacheValue(key, response.body) as T;
+    this.store.put(`github:${key}`, value, response.headers.etag ?? prior?.etag ?? null);
+    return value;
+  }
+
+  private async collectCheckRuns(pulls: unknown[]): Promise<Map<number, GitHubRecord> | null> {
+    const [owner, name] = this.config.BRIDGEWATCH_REPOSITORY.split("/");
+    if (
+      !owner ||
+      !name ||
+      !pulls.some((pull) => text((pull as GitHubRecord | undefined)?.state)?.toUpperCase() === "OPEN")
+    )
+      return new Map();
     try {
-      const headers: Record<string, string> = {
-        Accept: "application/vnd.github+json",
-        "User-Agent": "bridgewatch-phase3/0.1",
-      };
-      if (prior?.etag) headers["If-None-Match"] = prior.etag;
-      if (this.config.BRIDGEWATCH_GITHUB_TOKEN)
-        headers.Authorization = `Bearer ${this.config.BRIDGEWATCH_GITHUB_TOKEN}`;
-      const response = await fetch(target, { method: "GET", headers, signal: controller.signal });
-      const remaining = Number(response.headers.get("x-ratelimit-remaining"));
-      if (Number.isInteger(remaining) && remaining >= 0) this.rateLimitRemaining = remaining;
-      if (response.status === 304 && prior) return prior.value;
-      if (!response.ok) throw new Error(`GitHub GET failed: ${response.status}`);
-      const value = safeCacheValue(key, await response.json()) as T;
-      this.store.put(`github:${key}`, value, response.headers.get("etag"));
-      return value;
-    } finally {
-      clearTimeout(timer);
+      const response = await this.interaction.graphql<{
+        data?: { repository?: { pullRequests?: { nodes?: Array<Record<string, unknown>> } } };
+      }>(
+        "query BridgewatchPullChecks($owner:String!,$name:String!){repository(owner:$owner,name:$name){pullRequests(first:100,states:OPEN,orderBy:{field:UPDATED_AT,direction:DESC}){nodes{number commits(last:1){nodes{commit{checkSuites(first:100){nodes{status conclusion}}}}}}}}}",
+        { owner, name },
+        {
+          freshness: "SHORT",
+          cacheKey: {
+            consumer: "bridgewatch",
+            operation: "pull-checks",
+            repository: this.config.BRIDGEWATCH_REPOSITORY,
+          },
+        },
+      );
+      const nodes = response.body?.data?.repository?.pullRequests?.nodes;
+      if (!Array.isArray(nodes)) return null;
+      const checks = new Map<number, GitHubRecord>();
+      for (const node of nodes) {
+        const number = count(node.number);
+        const commits = node.commits && typeof node.commits === "object" ? (node.commits as GitHubRecord) : {};
+        const commitNodes = Array.isArray(commits.nodes) ? commits.nodes : [];
+        const commit =
+          commitNodes[0] && typeof commitNodes[0] === "object" ? (commitNodes[0] as GitHubRecord).commit : null;
+        const suites = commit && typeof commit === "object" ? (commit as GitHubRecord).checkSuites : null;
+        const suiteNodes =
+          suites && typeof suites === "object" && Array.isArray((suites as GitHubRecord).nodes)
+            ? ((suites as GitHubRecord).nodes as unknown[])
+            : [];
+        if (number)
+          checks.set(number, {
+            check_runs: suiteNodes.map((entry) => {
+              const suite = entry && typeof entry === "object" ? (entry as GitHubRecord) : {};
+              return {
+                status: text(suite.status)?.toLowerCase() ?? null,
+                conclusion: text(suite.conclusion)?.toLowerCase() ?? null,
+              };
+            }),
+          });
+      }
+      return checks;
+    } catch {
+      return null;
     }
   }
 }

@@ -187,7 +187,9 @@ function filteredTable({ records, headers, row, matches, placeholder, emptyMessa
     const query = input.value.trim().toLocaleLowerCase();
     const retained = records.filter((record) => !query || matches(record).toLocaleLowerCase().includes(query));
     result.replaceChildren(
-      retained.length ? table(headers, retained.map(row)) : empty(query ? "No retained observation matches this filter." : emptyMessage),
+      retained.length
+        ? table(headers, retained.map(row))
+        : empty(query ? "No retained observation matches this filter." : emptyMessage),
     );
   };
   input.addEventListener("input", render);
@@ -309,7 +311,8 @@ async function renderProgram() {
             `${event.entityType ?? "Observation"}: ${event.entityId ?? "UNMEASURED"}`,
             event.summary ?? "UNMEASURED",
           ],
-          matches: (event) => searchText([event.kind, event.entityType, event.entityId, event.projectId, event.phaseId, event.summary]),
+          matches: (event) =>
+            searchText([event.kind, event.entityType, event.entityId, event.projectId, event.phaseId, event.summary]),
           placeholder: "Search retained history",
           emptyMessage: "No retained observation matches this program window.",
         }),
@@ -342,11 +345,20 @@ async function renderProjects() {
           ? `${project.phaseProgress.completed}/${project.phaseProgress.total}`
           : "NOT_RECORDED",
         (project.versions ?? []).map((version) => version.identity).join(", ") || "NOT_RECORDED",
-        short(project.mainSha ?? project.finalMainSha) === "UNMEASURED" ? "NOT_RECORDED" : short(project.mainSha ?? project.finalMainSha),
+        short(project.mainSha ?? project.finalMainSha) === "UNMEASURED"
+          ? "NOT_RECORDED"
+          : short(project.mainSha ?? project.finalMainSha),
         project.discoveryConfidence ?? "RETAINED",
       ],
       matches: (project) =>
-        searchText([project.name, project.id, project.state, project.discoveryConfidence, project.versions, project.mainSha]),
+        searchText([
+          project.name,
+          project.id,
+          project.state,
+          project.discoveryConfidence,
+          project.versions,
+          project.mainSha,
+        ]),
       placeholder: "Search projects",
       emptyMessage: "No project registry is available.",
     }),
@@ -384,7 +396,14 @@ async function renderProjectProfile(id) {
         phase.completionReceipt ?? "UNMEASURED",
       ],
       matches: (phase) =>
-        searchText([phase.ordinal, phase.name, phase.state, phase.acceptedHeadSha, phase.integratedMainSha, phase.completionReceipt]),
+        searchText([
+          phase.ordinal,
+          phase.name,
+          phase.state,
+          phase.acceptedHeadSha,
+          phase.integratedMainSha,
+          phase.completionReceipt,
+        ]),
       placeholder: "Search phases",
       emptyMessage: "No phase record is retained.",
     }),
@@ -464,7 +483,10 @@ async function renderVersionProfile(id, version) {
   );
   evidence.append(eventList(data.history));
   node.append(evidence);
-  const related = section("Associated work", "Observed phases, branches, and pull requests with explicit version evidence.");
+  const related = section(
+    "Associated work",
+    "Observed phases, branches, and pull requests with explicit version evidence.",
+  );
   related.append(
     detail([
       ["Associated phases", data.phases?.map((phase) => `Phase ${phase.ordinal}`).join(", ")],
@@ -703,7 +725,15 @@ async function renderGithub() {
         short(branch.headSha ?? branch.sha),
       ],
       matches: (branch) =>
-        searchText([branch.name, branch.project?.name, branch.projectId, branch.health, branch.state, branch.headSha, branch.sha]),
+        searchText([
+          branch.name,
+          branch.project?.name,
+          branch.projectId,
+          branch.health,
+          branch.state,
+          branch.headSha,
+          branch.sha,
+        ]),
       placeholder: "Search branches",
       emptyMessage: "No branch observation is available.",
     }),
@@ -733,7 +763,10 @@ async function renderGithub() {
     const retained = pulls.filter((pull) => {
       const historical = pull.state !== "OPEN";
       const stateMatch = pullState.value === "ALL" || (pullState.value === "OPEN" ? !historical : historical);
-      return stateMatch && (!query || searchText([pull.number, pull.title, pull.state, pull.headRef]).toLocaleLowerCase().includes(query));
+      return (
+        stateMatch &&
+        (!query || searchText([pull.number, pull.title, pull.state, pull.headRef]).toLocaleLowerCase().includes(query))
+      );
     });
     pullResult.replaceChildren(
       retained.length
@@ -862,19 +895,23 @@ async function renderHistory() {
     window.location.hash = `#/compare?from=${encodeURIComponent(new Date(from.value).toISOString())}&to=${encodeURIComponent(new Date(to.value).toISOString())}`;
   });
   actions.append(from, to, compare);
-  history.append(actions, filteredTable({
-    records: data.events ?? [],
-    headers: ["When", "Type", "Entity", "Summary"],
-    row: (event) => [
-      dateText(event.occurredAt ?? event.observedAt),
-      event.kind ?? "OBSERVED",
-      `${event.entityType ?? "Observation"}: ${event.entityId ?? "UNMEASURED"}`,
-      event.summary ?? "UNMEASURED",
-    ],
-    matches: (event) => searchText([event.kind, event.entityType, event.entityId, event.projectId, event.phaseId, event.summary]),
-    placeholder: "Search retained history",
-    emptyMessage: "No retained observations match this scope.",
-  }));
+  history.append(
+    actions,
+    filteredTable({
+      records: data.events ?? [],
+      headers: ["When", "Type", "Entity", "Summary"],
+      row: (event) => [
+        dateText(event.occurredAt ?? event.observedAt),
+        event.kind ?? "OBSERVED",
+        `${event.entityType ?? "Observation"}: ${event.entityId ?? "UNMEASURED"}`,
+        event.summary ?? "UNMEASURED",
+      ],
+      matches: (event) =>
+        searchText([event.kind, event.entityType, event.entityId, event.projectId, event.phaseId, event.summary]),
+      placeholder: "Search retained history",
+      emptyMessage: "No retained observations match this scope.",
+    }),
+  );
   node.append(history);
   return node;
 }
@@ -953,7 +990,12 @@ async function renderSourceProfile(name) {
       ["Last success", dateText(data.source.lastSuccessAt)],
       ["Next retry", dateText(data.source.nextRetryAt)],
       ["Cache age (ms)", data.source.cacheAgeMs],
+      ["Credential source", data.source.credentialSource],
+      ["App installation", data.source.appInstallationHealth],
       ["Rate-limit remaining", data.source.rateLimitRemaining],
+      ["Rate-limit limit", data.source.rateLimitLimit],
+      ["Rate-limit reset", dateText(data.source.rateLimitResetAt)],
+      ["Rate mode", data.source.rateMode],
       ["Detail", data.source.detail],
     ]),
   );

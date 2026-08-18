@@ -208,7 +208,22 @@
       "contractIds": []
     },
     {
+      "path": ".env.example",
+      "suiteIds": ["static.core"],
+      "contractIds": []
+    },
+    {
+      "path": "README.md",
+      "suiteIds": ["static.core", "validation.documentation"],
+      "contractIds": []
+    },
+    {
       "path": ".agents/README.md",
+      "suiteIds": ["static.core"],
+      "contractIds": []
+    },
+    {
+      "path": ".agents/github-interaction.md",
       "suiteIds": ["static.core"],
       "contractIds": []
     },
@@ -223,7 +238,17 @@
       "contractIds": []
     },
     {
+      "path": "Development_Docs/Project_Fairlead_*.md",
+      "suiteIds": ["static.core", "validation.documentation"],
+      "contractIds": []
+    },
+    {
       "path": "Development_Docs/Features/FEATURE_CATALOG.md",
+      "suiteIds": ["unit.feature-catalog", "static.core"],
+      "contractIds": []
+    },
+    {
+      "path": "Development_Docs/Features/catalog/**",
       "suiteIds": ["unit.feature-catalog", "static.core"],
       "contractIds": []
     },
@@ -805,6 +830,16 @@
     },
     {
       "path": "scripts/sounding-line/**",
+      "suiteIds": ["unit.sounding-line", "static.core"],
+      "contractIds": ["authentication-authorization"]
+    },
+    {
+      "path": "scripts/github-interaction/**",
+      "suiteIds": ["unit.sounding-line", "static.core"],
+      "contractIds": ["authentication-authorization"]
+    },
+    {
+      "path": "tests/github-interaction/**",
       "suiteIds": ["unit.sounding-line", "static.core"],
       "contractIds": ["authentication-authorization"]
     },
