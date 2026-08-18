@@ -9,10 +9,24 @@ does not authorize changing adjacent scope.
 ## Bootstrap and truth
 
 Use `scripts/agent-context/build-context.mjs` with a task input to produce the
-derived JSON/Markdown packet and task-local ledger template. Select a profile
-from `agent-context-profiles.json`, read the packet's authority pointers, and
-use its confidence and fallback fields. Profiles and packets are startup
-heuristics, not permissions barriers: there is no context prison.
+canonical derived JSON packet, compact task-facing Markdown, and task-local
+ledger template. Select a profile from `agent-context-profiles.json`, read the
+packet's source-bound authority slices, and use its confidence, staleness, and
+fallback fields. Profiles and packets are startup heuristics, not permissions
+barriers: there is no context prison.
+
+Packet schema v2 binds authority, ownership, source, schema/data, verification,
+dependency, profile, prior-plateau, and main-delta slices to exact source
+identities. `FRESH`, `PARTIALLY_STALE`, `STALE`, `CONFLICTED`, and `UNKNOWN`
+are explicit states. A changed bounded source invalidates only its bound slice
+where possible. Regenerate stale slices with `--previous-packet` and the
+comma-separated `--slices` option; do not rebuild or distrust unrelated fresh
+slices merely because one source changed.
+
+Authority summaries are source-bound navigation aids. Load exact authority text
+for ambiguous normative wording, conflicts, security/privacy boundaries,
+destructive or irreversible decisions, and migration/rollback gates. A stale or
+conflicting authority slice is never silently trusted.
 
 Current source and active governing documents prevail over packets, summaries,
 or records. When current sources conflict or a source identity is stale, resolve
@@ -27,9 +41,10 @@ When a question is unresolved, classify the smallest needed expansion as
 `AUTHORITY`, `SOURCE`, `SCHEMA`, `TEST`, `HISTORY`, `ADJACENT_PROJECT`,
 `OPERATIONS`, or `SECURITY`; inspect the smallest useful source set; record the
 reason, path/source identity, result, and repeated-read status in the ledger;
-then continue. A coarse, partial, unmapped, or unknown mapping lowers packet
-confidence and requires conservative search/expansion. It never removes a
-needed source or proof obligation.
+then continue. A coarse, partial, unmapped, stale, or unknown mapping lowers
+packet confidence and requires conservative search/expansion or targeted slice
+regeneration. The packet records the exact unresolved path and next targeted
+action. Uncertainty never removes a needed source or proof obligation.
 
 Record only safe identifiers, paths, digests, counts, and concise resolutions.
 Do not place secrets, credentials, private content, full prompts, or raw logs

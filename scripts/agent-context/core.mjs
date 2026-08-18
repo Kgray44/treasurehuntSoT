@@ -2,6 +2,14 @@ import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
+import {
+  buildPacket as buildPacketV2,
+  canonicalJson,
+  inspectPacketStaleness,
+  packetMarkdown as packetMarkdownV2,
+  refreshPacketSlices,
+  validatePacket,
+} from "./packet-v2.mjs";
 
 export const GENERATOR_VERSION = "project-trim-mscp-1.0";
 export const ESTIMATOR_VERSION = "project-trim-r1-bands-1.0";
@@ -130,7 +138,7 @@ function confidence(slice, input) {
   if (slice.unmapped.length || (!slice.owners.length && slice.paths.length)) return "PARTIAL_REQUIRES_EXPANSION";
   return "BOUNDED";
 }
-function packetMarkdown(packet) {
+function packetMarkdownLegacy(packet) {
   const list = (items) =>
     items.length
       ? items.map((item) => `- ${typeof item === "string" ? item : (item.path ?? item.id)}`).join("\n")
@@ -138,7 +146,7 @@ function packetMarkdown(packet) {
   return `# Minimum Sufficient Context Packet\n\n## Task identity\n- ID: ${packet.task.id}\n- Class: ${packet.task.taskClass}\n- Execution profile: ${packet.task.executionProfile}\n\n## Scope contract\n${packet.scope.objective}\n\n## Authority pointers\n${list(packet.authority)}\n\n## Ownership\n${list(packet.ownership.owners)}\n\n## Likely source slice\n${list(packet.sourceSlice)}\n\n## Verification / Sounding Line slice\n${list(packet.verificationSlice)}\n\n## Risks and mapping gaps\n${list(packet.knownRisks)}\n\n## Autonomous expansion policy\n${packet.autonomousExpansionPolicy}\n\n## Packet confidence\n${packet.confidence}\n`;
 }
 
-export function buildPacket(root, rawInput = {}) {
+export function buildPacketLegacy(root, rawInput = {}) {
   const input = sanitize(rawInput);
   const profiles = readJson(root, "agent-context-profiles.json").profiles;
   const taskClass = classify(input);
@@ -347,4 +355,13 @@ export function usageRecord(input = {}) {
     accountingMethod: "CALIBRATED_ACTIVITY_BAND",
   };
 }
-export { packetMarkdown, sanitize };
+export {
+  buildPacketV2 as buildPacket,
+  canonicalJson,
+  inspectPacketStaleness,
+  packetMarkdownLegacy,
+  packetMarkdownV2 as packetMarkdown,
+  refreshPacketSlices,
+  sanitize,
+  validatePacket,
+};

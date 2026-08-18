@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-08-17",
+  "generated_at": "2026-08-18",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -1606,6 +1606,24 @@
     },
     {
       "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_1_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Architecture_and_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Benchmark_Data.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_2_Validation_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
