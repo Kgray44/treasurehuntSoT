@@ -388,8 +388,21 @@ export function selectV14Mainline({
         ...(descriptor.observedScriptRoots ?? []),
         ...(descriptor.observedDocumentationRoots ?? []),
         ...(descriptor.observedMigrationRoots ?? []),
+        ...(descriptor.observedCatalogRoots ?? []),
       ].map((root) => ({ root, suiteIds: descriptor.probableSuiteIds ?? [] })),
     );
+  const generatedValidationMappings = (changed) => {
+    if (changed === "playwright.config.ts")
+      return projectDiscovery
+        .filter((descriptor) => descriptor.state === "TRUSTED_DISCOVERED" && descriptor.mayNarrowEvidence)
+        .flatMap((descriptor) => descriptor.probableSuiteIds ?? [])
+        .filter((suiteId) => suiteId.startsWith("browser."))
+        .map((suiteId) => ({ path: changed, suiteIds: [suiteId] }));
+    if (!changed.startsWith("scripts/features/") && !changed.startsWith("Development_Docs/Features/")) return [];
+    return suites
+      .filter((suite) => (suite.affectedPaths ?? []).some((pattern) => matches(changed, [pattern])))
+      .map((suite) => ({ path: changed, suiteIds: [suite.id] }));
+  };
   const mappingsForChangedPath = (changed) => {
     const matching = (impact.pathMappings ?? []).filter((mapping) => matches(changed, [mapping.path]));
     const discovered = trustedDiscoveryMappings
@@ -400,7 +413,7 @@ export function selectV14Mainline({
     // the complete direct impact declaration; dependency closure still adds
     // every suite required by the selected direct evidence.
     const exclusive = matching.filter((mapping) => mapping.exclusive === true);
-    return exclusive.length ? exclusive : [...matching, ...discovered];
+    return exclusive.length ? exclusive : [...matching, ...discovered, ...generatedValidationMappings(changed)];
   };
   const unmappedChangedPaths = sorted(changedPaths.filter((changed) => mappingsForChangedPath(changed).length === 0));
   const unmappedChangedContracts = sorted(
