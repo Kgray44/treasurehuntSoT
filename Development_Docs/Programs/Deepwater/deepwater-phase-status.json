@@ -1,19 +1,19 @@
 {
   "acceptanceLane": "SOUNDING_LINE_V14_CANDIDATE_MAINLINE_DECISION",
-  "baseSourceSha": "fc39942a1d8fe57fc13f35cae01445e704b94c45",
+  "baseSourceSha": "b6b613674a60fcf134426a5e964d11c454ee0698",
   "featureCatalogImpact": "NO_CHANGE_REQUIRED",
   "limitations": [
     "Phase 5 does not self-issue release authority or owner product acceptance.",
-    "The v1.4 fleet pause is cleared. Local Phase 5 qualification is complete, but protected-main ordinary-candidate admission must first accept the existing Deepwater governance paths and impact-map registration through an owner-authorized Sounding Line maintenance change."
+    "The v1.4 fleet pause is cleared and accepted PR #207 supplies canonical Deepwater ordinary-candidate admission plus protected impact-map registration. The reconciled branch must complete focused requalification, freeze one candidate, and request one Mainline Decision."
   ],
-  "mainlineState": "BLOCKED_PENDING_OWNER_AUTHORIZED_ORDINARY_ADMISSION",
+  "mainlineState": "PENDING_FROZEN_CANDIDATE_MAINLINE_DECISION",
   "ownerDecision": "NOT_APPLICABLE",
   "phase": "Phase 5 - Keep the Soundings",
   "productSourceImpact": "NONE",
   "project": "Project Deepwater",
   "schemaImpact": "NONE",
   "schemaVersion": "1.0.0",
-  "soundingLinePolicyDigest": "fd15bc27c20b586f1439591080629995fe5d79b27aae1523f5b0e7d9bfb15ceb",
+  "soundingLinePolicyDigest": "d9b4ecead6d105003b03c5c466f366e5962bada8509726953062b0bfbba163d7",
   "state": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
   "validation": "LOCAL_CONTROL_PLANE_QUALIFIED"
 }

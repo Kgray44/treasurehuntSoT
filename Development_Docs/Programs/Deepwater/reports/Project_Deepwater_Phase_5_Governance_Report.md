@@ -8,7 +8,7 @@ last_reviewed: 2026-08-18
 
 # Project Deepwater Phase 5 governance report
 
-Phase 5 is explicitly owner-authorized from accepted current main `fc39942a1d8fe57fc13f35cae01445e704b94c45`. Phase 1-4 remain immutable, source-bound historical evidence.
+Phase 5 is explicitly owner-authorized from accepted current main `b6b613674a60fcf134426a5e964d11c454ee0698`. Phase 1-4 remain immutable, source-bound historical evidence.
 
 - Capabilities: 58
 - Feature Catalog entries: 43
@@ -17,6 +17,6 @@ Phase 5 is explicitly owner-authorized from accepted current main `fc39942a1d8fe
 - Release authority: Sounding Line only
 - Local candidate state: READY_FOR_V14_MAINLINE_ACCEPTANCE
 
-The pre-cutover focused evidence is retained as non-authoritative semantic history and has been rebound through the current policy identity `fd15bc27c20b586f1439591080629995fe5d79b27aae1523f5b0e7d9bfb15ceb`. The v1.4 fleet pause is cleared. Local Phase 5 qualification is complete, but protected-main ordinary-candidate admission must first accept the existing Deepwater governance paths and impact-map registration through an owner-authorized Sounding Line maintenance change.
+The pre-cutover focused evidence is retained as non-authoritative semantic history and has been rebound through the current policy identity `d9b4ecead6d105003b03c5c466f366e5962bada8509726953062b0bfbba163d7`. The v1.4 fleet pause is cleared and accepted PR #207 supplies canonical Deepwater ordinary-candidate admission plus protected impact-map registration. The reconciled branch must complete focused requalification, freeze one candidate, and request one Mainline Decision.
 
 The guard validates catalog mappings, capability maturity, route/screen/journey references, evidence freshness, finding closures, restricted audiences, impact declarations, and truthful completion language without owning product behavior.

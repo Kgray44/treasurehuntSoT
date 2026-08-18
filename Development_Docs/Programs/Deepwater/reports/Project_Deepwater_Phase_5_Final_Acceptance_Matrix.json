@@ -2,19 +2,19 @@
   "schemaVersion": "1.0.0",
   "project": "Project Deepwater",
   "phase": "Phase 5 - Keep the Soundings",
-  "sourceSha": "fc39942a1d8fe57fc13f35cae01445e704b94c45",
+  "sourceSha": "b6b613674a60fcf134426a5e964d11c454ee0698",
   "state": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
   "checks": [
     { "id": "P5-AUTHORIZATION", "state": "PASSED", "evidence": "Explicit owner prompt, 2026-08-13" },
     {
       "id": "P5-CURRENT-BASELINE",
       "state": "PASSED",
-      "evidence": "Project_Deepwater_Phase_5_Drift_Baseline.json, rebound to origin/main fc39942a1d8fe57fc13f35cae01445e704b94c45"
+      "evidence": "Project_Deepwater_Phase_5_Drift_Baseline.json, rebound to origin/main b6b613674a60fcf134426a5e964d11c454ee0698"
     },
     {
       "id": "P5-DETERMINISTIC-DELTA",
       "state": "PASSED",
-      "evidence": "deepwater audit and validate passed with Phase 5 semantic digest d57cd0fbf861ae7e8444cc12fd23227dbe398b63e2a3ea540d64724738922305"
+      "evidence": "deepwater audit and validate passed with Phase 5 semantic digest b4f99cdb11b17688a05246acf251c86b6271ca47784bc7751a6588de7cff8a68"
     },
     {
       "id": "P5-REGRESSION-MUTATIONS",
@@ -24,12 +24,12 @@
     {
       "id": "P5-FEATURE-CATALOG-GUARD",
       "state": "PASSED",
-      "evidence": "Source-owned catalog build and validator passed with 48 entries against origin/main fc39942a1d8fe57fc13f35cae01445e704b94c45"
+      "evidence": "Source-owned catalog build and validator passed with 48 entries against origin/main b6b613674a60fcf134426a5e964d11c454ee0698"
     },
     {
       "id": "P5-SOUNDING-LINE-POLICY",
       "state": "PASSED",
-      "evidence": "scripts/sounding-line/cli.mjs validate-policy passed with candidate policy digest fd15bc27c20b586f1439591080629995fe5d79b27aae1523f5b0e7d9bfb15ceb"
+      "evidence": "scripts/sounding-line/cli.mjs validate-policy passed with candidate policy digest d9b4ecead6d105003b03c5c466f366e5962bada8509726953062b0bfbba163d7"
     },
     {
       "id": "P5-HOMEPORT-INVENTORY",
@@ -49,12 +49,12 @@
     {
       "id": "P5-V14-POSTCUTOVER-CLOSURE",
       "state": "PASSED_PAUSE_CLEARED",
-      "evidence": "Owner-directed resumption confirms the v1.4 fleet pause is over; current protected main was fetched and reconciled."
+      "evidence": "Owner-directed resumption confirms the v1.4 fleet pause is over. Accepted PR #207 supplies canonical Deepwater admission and protected semantic impact registration; the reconciled local classifier passed."
     },
     {
       "id": "P5-SOUNDING-LINE-DECISION",
-      "state": "BLOCKED_OWNER_AUTHORIZED_ADMISSION_REQUIRED",
-      "evidence": "Prior frozen-candidate authoritative run 31969567104 failed before test execution with SOUNDING_LINE_ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED:testing/impact-map.json. Current protected policy also lacks ordinary-candidate coverage for Phase 5 scripts, records, and impact declaration."
+      "state": "PENDING_FROZEN_CANDIDATE",
+      "evidence": "Historical run 31969567104 remains failed-admission evidence only. After accepted PR #207 and semantic reconciliation, the local v1.4 classifier returned ORDINARY_CANDIDATE with no errors; one newly frozen candidate decision is required."
     },
     {
       "id": "P5-PROTECTED-MERGE",
