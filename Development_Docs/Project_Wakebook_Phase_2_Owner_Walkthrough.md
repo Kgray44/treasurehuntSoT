@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Owner Walkthrough
 audience: product-owner
-status: qualification-blocked-external
+status: candidate-qualified-pending-authority
 canonical_for: project-wakebook-phase-2-owner-walkthrough
 last_reviewed: 2026-08-18
 ---
@@ -10,8 +10,8 @@ last_reviewed: 2026-08-18
 
 This walkthrough is prepared for owner review after the frozen Phase 2
 candidate receives its source-bound v1.4 protected authority decision and
-protected integration. The current implementation source
-`5461eb67a4bf10f6cbe7d7bac242884383ebfd17` includes protected main
+protected integration. The current browser-qualified implementation source
+`ecc3f9841980e9cb389a95d8ab83ab6fa8d5b940` includes protected main
 `a6c1f441d3628bd828bd7a1c3cd77d419a0701c6`, but it is neither product
 accepted nor merged.
 
@@ -37,12 +37,11 @@ accepted nor merged.
 
 PR #205 resolved the earlier generic policy-admission defect. The exact focused
 hosted suite is `browser.wakebook` / `wakebook-phase2`; its latest dispatch
-`32153529083` failed at GitHub startup with no job or browser receipt. The
-pre-reconciliation authority run `32154971683` expanded under `UNKNOWN_IMPACT`
-and cannot be adopted as a Wakebook browser receipt. The final frozen candidate
-therefore still requires one source-bound v1.4 Mainline Decision for browser
-proof and `RELEASE_GO`. Current candidate `9ca51c05216aac8f2f989b5bb6f8d42fb93fe63e`
-has two exact focused hosted attempts (`32159196719`, `32159273263`), both
-GitHub `startup_failure` with zero jobs. Owner walkthrough is not scheduled
-until that external fixture failure is repaired and source-bound proof exists.
-This document does not authorize a protected merge, owner acceptance, or Phase 3.
+`32153529083` failed at GitHub startup with no job or browser receipt, and the
+pre-reconciliation authority run `32154971683` expanded under `UNKNOWN_IMPACT`.
+Neither is adopted as a Wakebook browser receipt. The local 2/2 Chromium
+qualification on source `ecc3f9841980e9cb389a95d8ab83ab6fa8d5b940` now covers
+the walkthrough safety scope, including consent revocation and owner-safe media.
+The final frozen candidate still requires one source-bound v1.4 Mainline
+Decision and `RELEASE_GO`. This document does not authorize a protected merge,
+owner acceptance, or Phase 3.

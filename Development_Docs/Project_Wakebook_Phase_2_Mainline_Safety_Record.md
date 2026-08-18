@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Mainline Safety Record
 audience: product-engineering
-status: qualification-blocked-external
+status: candidate-qualified-pending-authority
 canonical_for: project-wakebook-phase-2-mainline-safety-record
 last_reviewed: 2026-08-18
 ---
@@ -31,11 +31,13 @@ errors.
 
 Pre-cutover focused evidence remains bounded legacy evidence; current direct
 Wakebook contracts, scoped TypeScript, lint, formatting, policy, documentation,
-Feature Catalog, and privacy scan have been rerun. Local Prisma migration still
-fails before assertions on fresh task-owned C: and Y: SQLite fixtures, despite
-successful client generation, schema validation, and schema-engine launch.
-Focused hosted run `32153529083` ended before a job or worker was created. No
-browser safety pass is claimed from either event.
+Feature Catalog, and privacy scan have been rerun. Direct Prisma `migrate
+deploy` still fails before assertions on fresh task-owned C: and Y: SQLite
+fixtures, despite successful client generation, schema validation, and
+schema-engine launch. Prisma's supported `db execute` path did apply all 59
+checked-in SQLite migration files to a fresh task-owned C: database, however;
+the unmodified `wakebook-phase2` project then passed both registered Chromium
+journeys. No canonical data or another task's database was used.
 
 PR #205 resolved the original admission issue. The preserved PR #197 candidate
 classifies read-only as `PRODUCT_WITH_VERIFICATION_REGISTRATION`, owned by
@@ -43,7 +45,8 @@ classifies read-only as `PRODUCT_WITH_VERIFICATION_REGISTRATION`, owned by
 the prior candidate/base and broadened under `UNKNOWN_IMPACT`; it is not adopted
 as a Phase 2 safety receipt. It completed with 69 jobs (33 success, 21 failure,
 15 skipped) and no `browser.wakebook` worker. The exact focused hosted workflow
-then failed before any job on current candidate `9ca51c05216aac8f2f989b5bb6f8d42fb93fe63e`
-in runs `32159196719` and `32159273263`. One final frozen-source v1.4 Mainline
-Decision remains required after that hosted fixture defect is repaired; no
-protected merge or owner acceptance is claimed before it succeeds.
+also failed before jobs on the earlier candidate. Local source
+`ecc3f9841980e9cb389a95d8ab83ab6fa8d5b940` now supplies the required 2/2
+browser safety proof. One final frozen-source v1.4 Mainline Decision remains
+required for `RELEASE_GO`; no protected merge or owner acceptance is claimed
+before it succeeds.

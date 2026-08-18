@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Integration Manifest
 audience: product-engineering
-status: qualification-blocked-external
+status: candidate-qualified-pending-authority
 canonical_for: project-wakebook-phase-2-integration-manifest
 last_reviewed: 2026-08-18
 ---
@@ -16,7 +16,7 @@ last_reviewed: 2026-08-18
 | Mainline reconciliation | Project Trim context tooling and generated control-plane work retained              |
 | Reconciliation source   | `5461eb67a4bf10f6cbe7d7bac242884383ebfd17`                                          |
 | Legacy evidence         | Preserved only where exact semantic inputs remain unchanged; direct scope rebounded |
-| Phase state             | `QUALIFICATION_BLOCKED_EXTERNAL`                                                    |
+| Phase state             | `CANDIDATE_QUALIFIED_PENDING_MAINLINE_DECISION`                                     |
 | Protected merge         | Prohibited until frozen-source hosted authority returns `RELEASE_GO`                |
 
 The current-main interval added accepted Project Trim context tooling and its
@@ -45,10 +45,13 @@ conservatively because `Development_Docs/Features/catalog/wakebook.json`,
 unmapped, expanding into unrelated suites. It is not a Wakebook browser receipt
 and cannot authorize this reconciled candidate.
 
-The resulting reconciled product candidate
-`9ca51c05216aac8f2f989b5bb6f8d42fb93fe63e` was pushed with branch parity. Its
-two exact focused hosted attempts, `32159196719` and `32159273263`, each ended
-as GitHub `startup_failure` in two seconds with zero jobs. They used
-`browser.wakebook`, project `wakebook-phase2`, and gate `mainline`; neither
-started a worker, browser, or finalizer. The candidate remains unmerged while
-that governed browser fixture infrastructure is repaired.
+The resulting test-fixture repair source
+`ecc3f9841980e9cb389a95d8ab83ab6fa8d5b940` passed the unmodified
+`wakebook-phase2` Playwright project locally: 2/2 Chromium journeys on a fresh
+task-owned C: SQLite database. Prisma `migrate deploy` still emits a blank
+schema-engine error, but Prisma's supported `db execute` applied each of the
+59 checked-in migration SQL files to that database; the scenario then created
+only its own synthetic accounts and Voyage data. The prior hosted startup
+failures remain infrastructure history, not a substitute for this local proof.
+The frozen candidate still requires one source-bound v1.4 Mainline Decision and
+`RELEASE_GO` before protected merge.

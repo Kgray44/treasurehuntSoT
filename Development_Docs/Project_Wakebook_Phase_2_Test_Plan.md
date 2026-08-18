@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Test Plan
 audience: product-engineering
-status: qualification-blocked-external
+status: candidate-qualified-pending-authority
 canonical_for: project-wakebook-phase-2-test-plan
 last_reviewed: 2026-08-18
 ---
@@ -30,13 +30,15 @@ Fresh `migrate deploy` failed identically on short C: and Y: task-owned paths
 with a blank `Schema engine error`; canonical data was never used.
 
 The registered project is `wakebook-phase2`, owned by suite
-`browser.wakebook`. The visible Chromium journey passed 1/1 after applying all
-59 migrations to a fresh Y: task-owned fixture. The private-media,
-consent-revocation, and historical-snapshot safety journey is not claimed
-locally: its first run reached cleanup but failed writing a trace to full C:,
-and the redirected retry timed out under C: pressure. The current focused
-hosted workflow cannot run a branch under v1.4 protected-main policy, so the
-frozen protected authority/train run is the remaining browser qualification.
+`browser.wakebook`. Source `ecc3f9841980e9cb389a95d8ab83ab6fa8d5b940` passed
+2/2 Chromium journeys on a fresh task-owned C: SQLite fixture. `db execute`
+applied all 59 checked-in migration SQL files after local `migrate deploy`
+continued to fail with its blank schema-engine error. The first journey covers
+visible product navigation, rich detail, keyboard, responsive viewports,
+effective 200% zoom, reduced motion, and axe serious/critical violations; the
+second covers owner/foreign isolation, Reflection and Memory privacy,
+protected-media non-delivery, consent denial/grant/revocation, Keepsake
+redaction, and historical invariance.
 
 The synthetic corpus will cover a complete solo Voyage, multi-crew/consent
 state, partial legacy history, protected media, historical stability, and a
@@ -64,6 +66,6 @@ After the final current-main reconciliation, exact focused attempts
 `9ca51c05216aac8f2f989b5bb6f8d42fb93fe63e` with suite `browser.wakebook`,
 project `wakebook-phase2`, and gate `mainline`. Both ended as GitHub
 `startup_failure` before creating a job, worker, browser, trace, or finalizer.
-This repeated hosted fixture failure, together with the documented local Prisma
-failure, blocks only the required source-bound browser proof; it does not make
-the direct focused coverage a browser pass.
+Those hosted failures remain infrastructure history. They no longer block local
+browser qualification; the next valid path is one frozen-source Mainline
+Decision after this documentation candidate is finalized.
