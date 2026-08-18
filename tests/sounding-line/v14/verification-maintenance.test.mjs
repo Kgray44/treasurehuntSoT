@@ -338,7 +338,7 @@ test("the complete Project Trim Phase 1 candidate is ordinary-admissible", async
   assert.deepEqual(result.errors, []);
 });
 
-test("Project Trim implementation and deterministic support surfaces are recognized narrowly", async () => {
+test("Project Trim support and safe future project-document structure are ordinary-admissible", async () => {
   const policy = await readOrdinaryCandidatePolicy();
   const recognized = [
     ".agents/context-workflow.md",
@@ -349,6 +349,7 @@ test("Project Trim implementation and deterministic support surfaces are recogni
     "Development_Docs/Governing/Project_Trim_Phase_2_Governing_Baseline.pdf",
     "Development_Docs/Features/FEATURE_CATALOG.md",
     "scripts/generate-document-index.mjs",
+    "Development_Docs/Programs/Unrelated/record.md",
   ];
   for (const changedPath of recognized) {
     const result = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: [changedPath] });
@@ -359,7 +360,6 @@ test("Project Trim implementation and deterministic support surfaces are recogni
     ".agents/unrelated-guidance.md",
     "scripts/agent-contextual/not-project-trim.mjs",
     "testing/generated/unowned-registry.json",
-    "Development_Docs/Programs/Unrelated/record.md",
     "Development_Docs/Governing/Unrelated_Governing_Baseline.pdf",
   ]) {
     const result = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: [changedPath] });
@@ -424,7 +424,7 @@ test("the complete Project Confluence C2-C7 candidate is ordinary-admissible", a
   assert.deepEqual(result.errors, []);
 });
 
-test("Project Confluence admission recognizes only its owned and deterministic path families", async () => {
+test("Project Confluence admission preserves bounded paths while future project records use structural discovery", async () => {
   const policy = await readOrdinaryCandidatePolicy();
   const recognized = [
     ".agents/confluence-workers.md",
@@ -435,6 +435,7 @@ test("Project Confluence admission recognizes only its owned and deterministic p
     "Development_Docs/Governing/Project_Confluence_Future_Governing_Baseline.pdf",
     "scripts/confluence/future-maintenance.mjs",
     "tests/confluence/future-maintenance.test.mjs",
+    "Development_Docs/Governing/Project_ConfluenceX_Governing_Baseline.pdf",
   ];
   for (const changedPath of recognized) {
     const result = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: [changedPath] });
@@ -445,7 +446,6 @@ test("Project Confluence admission recognizes only its owned and deterministic p
     ".agents/confluence-workers-lookalike.md",
     "Developer_Journals_Archive/2026/2026-W34/metadata.json",
     "Development_Docs/Project_ConfluenceX_Validation_Record.md",
-    "Development_Docs/Governing/Project_ConfluenceX_Governing_Baseline.pdf",
     "scripts/confluential/future-maintenance.mjs",
     "test/confluence/future-maintenance.test.mjs",
   ]) {
