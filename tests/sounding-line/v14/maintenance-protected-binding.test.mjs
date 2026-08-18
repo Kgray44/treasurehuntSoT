@@ -214,6 +214,15 @@ test("authority maintenance is a distinct owner-authorized, exact-identity lane"
     "AUTHORITY_MAINTENANCE_AUTHORITY_SELECTED",
   );
   assert.equal(
+    selectSealedAuthorityMaintenance({
+      runs: [{ ...run, headSha: sha("b") }],
+      candidateSha: sha("b"),
+      candidateTree: sha("c"),
+      qualifiedBaseSha: sha("a"),
+    }).decision,
+    "AUTHORITY_MAINTENANCE_AUTHORITY_SELECTED",
+  );
+  assert.equal(
     qualifyAuthorityMaintenanceProtectedMerge({
       plan: authorityPlan,
       finalization: authorityFinalization,

@@ -148,7 +148,10 @@ export function selectSealedAuthorityMaintenance({ runs, candidateSha, candidate
       run?.event === "workflow_dispatch" &&
       run?.status === "completed" &&
       run?.conclusion === "success" &&
-      run?.headSha === qualifiedBaseSha &&
+      // A trusted-main dispatch reports the protected base as its head, while
+      // a candidate-ref dispatch reports the frozen candidate.  The sealed
+      // plan still binds both identities and the exact candidate tree.
+      [qualifiedBaseSha, candidateSha].includes(run?.headSha) &&
       plan?.authority === "SOUNDING_LINE_AUTHORITY_MAINTENANCE" &&
       plan?.disposition === "AUTHORITY_MAINTENANCE_GO" &&
       plan?.candidateSha === candidateSha &&
