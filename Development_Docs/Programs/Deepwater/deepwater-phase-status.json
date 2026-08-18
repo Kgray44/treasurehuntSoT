@@ -1,26 +1,19 @@
 {
-  "acceptanceLane": "RECORD_ONLY_CLOSURE_PENDING",
-  "activation": "EXPLICIT_PHASE_4_WHOLE_PRODUCT_PROOF_AUTHORIZATION",
-  "auditedSourceSha": "054bd19b7da4f57cd8be0b39758a3cc03e43c3aa",
-  "baseSourceSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
-  "branch": "codex/project-deepwater-phase4-break-the-surface",
+  "acceptanceLane": "SOUNDING_LINE_V14_CANDIDATE_MAINLINE_DECISION",
+  "baseSourceSha": "78610ae4dd63aac9ff45c9c7646c78b38c6ab19a",
   "featureCatalogImpact": "NO_CHANGE_REQUIRED",
   "limitations": [
-    "Homeport owner acceptance remains PENDING_OWNER_DECISION and cannot be self-recorded.",
-    "Bridgewatch is a private, read-only observation surface and has no release authority.",
-    "No Phase 5 work is authorized by this record."
+    "Phase 5 does not self-issue release authority or owner product acceptance.",
+    "PR #159 accepted the exact candidate 93efa9f4f7d8b4e64ce05ecc89f00e6a73ba02af as protected merge 78610ae4dd63aac9ff45c9c7646c78b38c6ab19a after Sounding Line Mainline Decision run 32158890855 returned RELEASE_GO and protected binding run 32161116494 passed. The remaining closure is record-only and must bind this accepted implementation without adding product scope."
   ],
-  "mainlineState": "MAINLINE_ACCEPTED",
-  "ownerDecision": "NOT_REQUESTED",
-  "ownerWalkthrough": "PACKET_READY",
-  "phase": "Phase 4 - Break the Surface",
-  "phase3AcceptedMainSha": "ca135585a62f445cd4331df1a7dd21203bd50219",
-  "productSourceImpact": "NARROW_HELM_LAUNCH_HANDOFF_RESILIENCY_REPAIR_WITH_ACCEPTED_DRYDOCK_AND_ADMIRALTY_RECONCILIATION",
+  "mainlineState": "PROTECTED_IMPLEMENTATION_ACCEPTED_RECORD_ONLY_CLOSURE_PENDING",
+  "ownerDecision": "NOT_APPLICABLE",
+  "phase": "Phase 5 - Keep the Soundings",
+  "productSourceImpact": "NONE",
   "project": "Project Deepwater",
-  "reconciledSourceSha": "cbf634d4d5db9cf47edebb89e005e8cc910068bd",
-  "schemaImpact": "DEEPWATER_PHASE4_PROOF_CONTROL_PLANE_ONLY",
+  "schemaImpact": "NONE",
   "schemaVersion": "1.0.0",
-  "state": "LOCAL_PROVEN",
-  "validation": "RELEASE_GO_PROTECTED_MERGE_AND_EXACT_MAIN_PASSED",
-  "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase4"
+  "soundingLinePolicyDigest": "d3dd73a39e1ec5a174813d7e075d724362011bd0db1dba73a6db762db65180d2",
+  "state": "RECORD_ONLY_CLOSURE_READY",
+  "validation": "LOCAL_CONTROL_PLANE_QUALIFIED"
 }

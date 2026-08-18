@@ -3683,7 +3683,6 @@ async function formatArtifact(root, relative, content) {
 export async function artifactFiles(root, artifacts) {
   const rawFiles = new Map([
     [`${DEEPWATER_ROOT}/deepwater-findings.json`, stableStringify(artifacts.findingsDocument)],
-    [`${DEEPWATER_ROOT}/deepwater-phase-status.json`, stableStringify(artifacts.status)],
     [
       `${DEEPWATER_ROOT}/evidence/Project_Deepwater_Phase_3_Evidence_Index.json`,
       stableStringify(artifacts.evidenceIndex),
@@ -3704,10 +3703,6 @@ export async function artifactFiles(root, artifacts) {
     [
       `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_4_State_Recovery_Matrix.json`,
       stableStringify(artifacts.phase4StateRecoveryMatrix),
-    ],
-    [
-      `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_5_Governance_Queue.json`,
-      stableStringify(artifacts.phase5GovernanceQueue),
     ],
     [
       `${DEEPWATER_ROOT}/reports/Project_Deepwater_Phase_3_Realization_Queue.json`,
