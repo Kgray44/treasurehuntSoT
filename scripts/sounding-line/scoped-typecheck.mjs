@@ -25,12 +25,18 @@ if (parsed.errors.length)
   throw new Error(parsed.errors.map((error) => ts.flattenDiagnosticMessageText(error.messageText, "\n")).join("\n"));
 
 const roots = [...new Set(paths)].sort().map((entry) => path.resolve(entry));
+// Candidate roots may import product code that depends on repository ambient
+// declarations. Keep those declarations in the ephemeral program without
+// broadening it to every project source file.
+const ambientRoots = parsed.fileNames.filter((entry) => entry.endsWith(".d.ts"));
+const nextTypes = path.resolve("node_modules", "next", "index.d.ts");
+if (ts.sys.fileExists(nextTypes)) ambientRoots.push(nextTypes);
 // A scoped program is ephemeral: inheriting the repository's incremental
 // project mode without its build-info output is invalid in TypeScript. Keep
 // the full strict diagnostic options while disabling only persistent build
 // state for this focused maintenance proof.
 const program = ts.createProgram({
-  rootNames: roots,
+  rootNames: [...new Set([...roots, ...ambientRoots])],
   options: { ...parsed.options, composite: false, incremental: false, tsBuildInfoFile: undefined },
 });
 const diagnostics = ts.getPreEmitDiagnostics(program);

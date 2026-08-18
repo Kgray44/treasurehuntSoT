@@ -1,4 +1,7 @@
 import { expect, test, type APIResponse, type BrowserContext, type Page } from "@playwright/test";
+import { workspaceCapabilityOverview } from "../../src/homeport/workspace-capabilities";
+import { db } from "../../src/lib/db";
+import { claimGuestAccount } from "../../src/wayfarer/accounts";
 import {
   PAGE_FLIP_DEVELOPMENT_FAILPOINT_GLOBAL,
   PAGE_TURN_LIFECYCLE_BROWSER_EVENT,
@@ -60,6 +63,34 @@ async function openInvitationWhenReady(page: Page, invitationLink: string) {
     await page.getByRole("button", { name: "Try again" }).click();
   }
   await expect(page.locator("main.invitation-page")).toHaveAttribute("data-invitation-state", "valid");
+}
+
+async function activateAcceptedPlayerWorkspace(playthroughId: string) {
+  const membership = await db.playthroughMembership.findFirst({
+    where: { playthroughId },
+    select: { player: { select: { accountId: true } } },
+  });
+  const accountId = membership?.player.accountId;
+  expect(accountId, "Invitation acceptance must issue an account-rooted Player identity.").toBeTruthy();
+  const suffix = crypto.randomUUID().slice(0, 12);
+  await claimGuestAccount({
+    accountId: accountId!,
+    email: `lanternwake-journal-${suffix}@example.test`,
+    password: "Lanternwake-journal-2026!",
+  });
+  const activatedAt = new Date();
+  await Promise.all([
+    db.userAccount.update({
+      where: { id: accountId! },
+      data: { status: "ACTIVE", claimedAt: activatedAt, ordinaryWorkspaceEntryAt: activatedAt },
+    }),
+    db.accountEmail.updateMany({
+      where: { accountId: accountId!, isPrimary: true },
+      data: { verificationState: "VERIFIED", verifiedAt: activatedAt },
+    }),
+  ]);
+  const workspace = await workspaceCapabilityOverview(accountId!);
+  expect(workspace.workspaces.find((item) => item.id === "PLAYER")?.state).toBe("ACTIVE");
 }
 
 async function installJournalProbe(page: Page) {
@@ -557,8 +588,13 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
       // a development-server refresh from interrupting that user transition.
       const destinationWarmup = await playerPage.request.get(`/player/playthroughs/${created.playthroughId}`);
       expect([200, 302, 303, 307, 308]).toContain(destinationWarmup.status());
+      const accept = playerPage.waitForResponse(
+        (response) => response.url().endsWith("/api/invitations/accept") && response.request().method() === "POST",
+      );
       await playerPage.getByRole("button", { name: "Accept and join voyage" }).click();
+      expect((await accept).ok()).toBe(true);
       await expect(playerPage).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}$`));
+      await activateAcceptedPlayerWorkspace(created.playthroughId);
       await expectOk(
         await captain.post(`/api/captain/playthroughs/${created.playthroughId}/launch`, {
           headers: { "x-csrf-token": csrfToken },

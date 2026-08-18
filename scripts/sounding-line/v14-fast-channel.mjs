@@ -6,6 +6,7 @@ import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 import { digest } from "./v14/foundation.mjs";
 import { selectV14Mainline } from "./v14/fast-channel.mjs";
+import { discoverProjects, projectDiscoverySummary } from "./project-discovery.mjs";
 
 const exec = promisify(execFile);
 const valueFor = (args, flag) => {
@@ -14,6 +15,15 @@ const valueFor = (args, flag) => {
 };
 const git = async (root, ...args) => (await exec("git", ["-C", root, ...args])).stdout.trim();
 const json = async (root, name) => JSON.parse(await readFile(path.join(root, "testing", name), "utf8"));
+const featureCatalog = async (root, trustedBaseSha) => {
+  const catalogRoot = "Development_Docs/Features/catalog";
+  const files = (await git(root, "ls-tree", "-r", "--name-only", trustedBaseSha, "--", catalogRoot))
+    .split(/\r?\n/u)
+    .filter((name) => name.endsWith(".json"));
+  return (
+    await Promise.all(files.map(async (name) => JSON.parse(await git(root, "show", `${trustedBaseSha}:${name}`))))
+  ).flat();
+};
 
 export async function generateV14FastChannelPlan({
   root,
@@ -33,6 +43,7 @@ export async function generateV14FastChannelPlan({
     preparedArtifacts,
     trainPolicy,
     authority,
+    catalog,
   ] = await Promise.all([
     json(root, "release-gates.json"),
     json(root, "suites.json"),
@@ -44,6 +55,9 @@ export async function generateV14FastChannelPlan({
     json(root, "prepared-artifacts.json"),
     json(root, "mainline-train-policy.json"),
     json(root, "sounding-line-authority.json"),
+    // Catalog records are optional corroboration, never candidate evidence.
+    // Load them from the qualified base tree rather than this checkout.
+    featureCatalog(root, baseSha),
   ]);
   const gate = gates.gates.find((entry) => entry.id === gateId);
   if (!gate) throw new Error(`UNKNOWN_GATE:${gateId}`);
@@ -56,10 +70,24 @@ export async function generateV14FastChannelPlan({
     throw new Error("V14_MSES_EXHAUSTIVE_POLICY_INVALID");
   const exhaustive = selection.exhaustiveGateIds.includes(gateId);
   const changedPaths = (await git(root, "diff", "--name-only", baseSha, candidateSha)).split(/\r?\n/u).filter(Boolean);
+  // A tree-name scan is bounded, deterministic metadata. It never reads
+  // candidate content as trusted evidence: candidate paths only create a
+  // provisional descriptor, while base-tree paths may promote a later one.
+  const trustedPaths = (await git(root, "ls-tree", "-r", "--name-only", baseSha)).split(/\r?\n/u).filter(Boolean);
   const [candidateTreeSha, qualifiedBaseTreeSha] = await Promise.all([
     git(root, "rev-parse", `${candidateSha}^{tree}`),
     git(root, "rev-parse", `${baseSha}^{tree}`),
   ]);
+  const projectDiscovery = discoverProjects({
+    candidatePaths: changedPaths,
+    trustedPaths,
+    trustedMainSha: baseSha,
+    candidateSha,
+    suites: suites.suites,
+    contracts: contracts.contracts,
+    owners: ownership.owners,
+    featureCatalog: catalog,
+  });
   return selectV14Mainline({
     changedPaths,
     suites: suites.suites,
@@ -77,6 +105,7 @@ export async function generateV14FastChannelPlan({
     ledgerSuiteIds: suites.suites.map((suite) => suite.id),
     impact,
     mappingDebt: debt.entries,
+    projectDiscovery,
     identity: {
       gate: gateId,
       candidateSha,
@@ -100,6 +129,7 @@ export async function generateV14FastChannelPlan({
       performanceObjectiveMs: selection.performanceObjectiveMs,
       performanceCeilingMs: selection.performanceCeilingMs,
     },
+    projectDiscoverySummary: projectDiscoverySummary(projectDiscovery),
   });
 }
 

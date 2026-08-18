@@ -2,7 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 const campaignSlug = "development-forever-treasure";
 
-type TransitionKind = "player-access" | "quartermaster-login";
+type TransitionKind = "player-access";
 
 type TransitionProbe = {
   kind: TransitionKind;
@@ -61,9 +61,9 @@ async function installTransitionProbe(page: Page, kind: TransitionKind) {
     };
     probeWindow.__lanternwakeTransitionProbe = state;
 
-    const sourceSelector = probeKind === "player-access" ? ".access-scene" : ".platform-auth.intent-captain";
-    const targetSelector = probeKind === "player-access" ? "[data-scene-part='seal']" : ".relic-captain-lock";
-    const destinationSelector = probeKind === "player-access" ? ".voyage-shell" : ".captain-library";
+    const sourceSelector = ".access-scene";
+    const targetSelector = "[data-scene-part='seal']";
+    const destinationSelector = ".voyage-shell";
 
     const isVisible = (element: Element | null) => {
       if (!(element instanceof HTMLElement) || !element.isConnected) return false;
@@ -87,20 +87,13 @@ async function installTransitionProbe(page: Page, kind: TransitionKind) {
 
       if (target instanceof HTMLElement) {
         let poseValue = 1;
-        if (probeKind === "player-access") {
-          poseValue = Number.parseFloat(window.getComputedStyle(target).opacity);
-        } else {
-          const transform = window.getComputedStyle(target).transform;
-          poseValue = transform === "none" ? 1 : Math.abs(new DOMMatrixReadOnly(transform).m11);
-        }
+        poseValue = Number.parseFloat(window.getComputedStyle(target).opacity);
 
         if (Number.isFinite(poseValue)) {
           state.sampleCount += 1;
           state.lastPoseValue = poseValue;
-          const initialPose =
-            probeKind === "player-access" ? poseValue >= 0.9 : target.getAttribute("data-relic-state") === "idle";
-          const finalPose =
-            probeKind === "player-access" ? poseValue <= 0.08 : target.getAttribute("data-relic-state") === "arrived";
+          const initialPose = poseValue >= 0.9;
+          const finalPose = poseValue <= 0.08;
           if (initialPose && !state.finalPoseSeenAfterCommit) state.initialPoseSeen = true;
           if (finalPose && state.operationCommitted) state.finalPoseSeenAfterCommit = true;
           if (state.finalPoseSeenAfterCommit && initialPose) state.snappedBack = true;
@@ -194,33 +187,22 @@ test.describe("Lanternwake Phase 1 access transition final-state holds", () => {
     expect(snapshot.status()).toBe(200);
   });
 
-  test("Quartermaster login holds its committed open-door pose until the command surface is visible", async ({
+  test("Captain entry delegates to canonical account sign-in without reviving a separate staff credential surface", async ({
     page,
   }) => {
     await proveIsolatedValidationDatabase(page);
-    await useFullMotion(page);
-    expect(process.env.GM_USERNAME, "GM_USERNAME is required for the isolated validation fixture.").toBeTruthy();
-    expect(process.env.GM_PASSWORD, "GM_PASSWORD is required for the isolated validation fixture.").toBeTruthy();
-
     await page.goto("/captain/sign-in");
-    await expect(page.getByRole("button", { name: "Enter Captain's Console" })).toBeVisible();
-    await installTransitionProbe(page, "quartermaster-login");
-
-    await page.getByLabel("Username").fill(process.env.GM_USERNAME!);
-    await page.getByLabel("Password").fill(process.env.GM_PASSWORD!);
-    const loginResponsePromise = page.waitForResponse(
-      (response) => new URL(response.url()).pathname === "/api/gm/login" && response.request().method() === "POST",
+    await expect(page.getByRole("heading", { name: "Open the Captain's Console" })).toBeVisible();
+    await expect(
+      page.getByText(
+        "Captain permission is checked from your current Voyagewright account. No second staff password is required.",
+      ),
+    ).toBeVisible();
+    await expect(page.getByRole("link", { name: "Continue to account sign-in" })).toHaveAttribute(
+      "href",
+      "/sign-in?returnTo=%2Fcaptain%2Flibrary",
     );
-    await page.getByRole("button", { name: "Enter Captain's Console" }).click();
-    const loginResponse = await loginResponsePromise;
-    expect(loginResponse.status()).toBe(200);
-    await markOperationCommitted(page);
-
-    await expectCommittedPoseWithoutSnapback(page, "quartermaster-login");
-    await expect(page.locator(".captain-library")).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible();
+    await expect(page.getByLabel("Username")).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Enter Captain's Console" })).toHaveCount(0);
-    const status = await page.request.get("/api/gm/status");
-    expect(status.status()).toBe(200);
   });
 });

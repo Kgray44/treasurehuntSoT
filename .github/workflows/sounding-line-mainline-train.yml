@@ -125,11 +125,8 @@ jobs:
           } | Where-Object { $_.base.ref -eq 'main' } | Sort-Object number)
           if (@($prs).Count -eq 0) { throw 'TRAIN_NO_ADMISSIBLE_CANDIDATES' }
           $base = (git rev-parse HEAD).Trim()
-          $policy = Get-Content -Raw testing/verification-maintenance-policy.json | ConvertFrom-Json
-          function Test-TrustedGlob([string]$file, [string]$glob) {
-            $pattern = '^' + [regex]::Escape($glob).Replace('\*\*', '.*').Replace('\*', '[^/]*') + '$'
-            return $file -match $pattern
-          }
+          $admissionTemp = Join-Path $env:RUNNER_TEMP "sounding-line-train-admission-$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT"
+          New-Item -ItemType Directory -Path $admissionTemp -Force | Out-Null
           $candidates = @()
           $ordinal = 0
           foreach ($pr in $prs) {
@@ -144,15 +141,24 @@ jobs:
             if ($LASTEXITCODE -ne 0) { throw "TRAIN_CANDIDATE_BASE_ANCESTRY_INVALID:$($pr.number)" }
             $tree = (git rev-parse "$resolved`^{tree}").Trim()
             $changed = @(git diff --name-only --no-renames --no-ext-diff $base $resolved | Sort-Object)
-            $authority = @($changed | Where-Object { $file = $_; @($policy.authorityChangePathGlobs | Where-Object { Test-TrustedGlob $file $_ }).Count -gt 0 })
-            $unknown = @($changed | Where-Object { $file = $_; @($policy.ordinaryCandidateEligiblePathGlobs | Where-Object { Test-TrustedGlob $file $_ }).Count -eq 0 })
-            if ($authority.Count -gt 0) { throw "TRAIN_CANDIDATE_AUTHORITY_CHANGE_REJECTED:$($pr.number):$($authority -join ',')" }
-            if ($unknown.Count -gt 0) { throw "TRAIN_CANDIDATE_UNKNOWN_SCOPE_REJECTED:$($pr.number):$($unknown -join ',')" }
+            $pathsFile = Join-Path $admissionTemp "candidate-$($pr.number)-paths.json"
+            $classificationFile = Join-Path $admissionTemp "candidate-$($pr.number)-classification.json"
+            [System.IO.File]::WriteAllText($pathsFile, ($changed | ConvertTo-Json -Compress), [System.Text.UTF8Encoding]::new($false))
+            node scripts/sounding-line/verification-maintenance.mjs ordinary --policy testing/verification-maintenance-policy.json --paths $pathsFile --trusted-base-sha $base --candidate-sha $resolved --out $classificationFile
+            if ($LASTEXITCODE -ne 0) {
+              $classification = Get-Content -Raw $classificationFile | ConvertFrom-Json
+              $authority = @($classification.errors | Where-Object { $_ -match '^ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED:' })
+              if ($authority.Count -gt 0) { throw "TRAIN_CANDIDATE_AUTHORITY_CHANGE_REJECTED:$($pr.number):$($authority -join ',')" }
+              $unknown = @($classification.errors | Where-Object { $_ -match '^ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:' })
+              if ($unknown.Count -gt 0) { throw "TRAIN_CANDIDATE_UNKNOWN_SCOPE_REJECTED:$($pr.number):$($unknown -join ',')" }
+              throw "TRAIN_CANDIDATE_VERIFICATION_REGISTRATION_REJECTED:$($pr.number):$($classification.errors -join ',')"
+            }
             $migrations = @($changed | Where-Object { $_ -like 'prisma/migrations/*' })
             $candidates += @{ candidateId = "pr-$($pr.number)"; headCommitSha = $resolved; headTreeSha = $tree; admissionPolicyIdentity = 'testing/mainline-train-policy.json'; admittedAt = [DateTimeOffset]::UtcNow.ToString('o'); admissionOrdinal = $ordinal; ageCycles = 0; prIdentity = @{ number = $pr.number; ref = $ref; baseSha = $pr.base.sha }; migrations = $migrations }
             $ordinal += 1
           }
           @{ repoPath = $PWD.Path; trainId = $env:TRAIN_ID; authorityIdentity = 'SOUNDING_LINE_V14'; policyIdentity = 'testing/mainline-train-policy.json'; admissionPolicyIdentity = 'testing/mainline-train-policy.json'; mergeStrategyIdentity = 'github-protected-merge-commit'; actualMainCommitSha = $base; candidates = $candidates; createdAt = [DateTimeOffset]::UtcNow.ToString('o') } | ConvertTo-Json -Depth 16 | Set-Content train-input.json
+          Remove-Item -LiteralPath $admissionTemp -Recurse -Force
       - name: Construct deterministic predicted integration train
         run: node scripts/sounding-line/v14/mainline-train-cli.mjs admit --input train-input.json --out mainline-train.json
       - name: Prepare sealed per-car qualification inputs
