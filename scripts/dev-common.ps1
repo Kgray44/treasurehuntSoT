@@ -260,6 +260,7 @@ function Sync-ForeverRuntime {
             "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Capability_Activation_Registry.json",
             "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Role_Capability_Registry.json",
             "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
+            "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Canonical_Event_Matrix_Mapping.csv",
             "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Change_Code_Registry.json",
             "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Projection_Policy.json"
         )
