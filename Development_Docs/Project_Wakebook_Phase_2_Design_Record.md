@@ -20,6 +20,11 @@ Phase 1 is accepted protected-main history (PR #41, merge `cbf634d4`) and is
 an input, not a branch to resume. This phase does not start Phase 3 or merge
 without the required owner walkthrough and protected-main process.
 
+The machine-readable Deepwater capability-realization impact declaration is
+[`Project_Wakebook_Phase_2_Capability_Impact.json`](Project_Wakebook_Phase_2_Capability_Impact.json).
+It records a candidate-only expansion of the existing private archive and does
+not assert protected-main integration, realization, or owner acceptance.
+
 ## Mainline-safety contract
 
 After this phase, an owner can privately revisit one exact historical Voyage,

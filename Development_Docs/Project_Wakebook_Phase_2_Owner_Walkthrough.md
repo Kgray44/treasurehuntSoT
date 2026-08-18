@@ -10,10 +10,11 @@ last_reviewed: 2026-08-18
 
 This walkthrough is prepared for owner review after the frozen Phase 2
 candidate receives a successful source-bound v1.4 protected authority decision
-and protected integration. The current browser-qualified implementation source
-`ecc3f9841980e9cb389a95d8ab83ab6fa8d5b940` includes protected main
-`a6c1f441d3628bd828bd7a1c3cd77d419a0701c6`, but it is neither product
-accepted nor merged.
+and protected integration. Current candidate
+`5a7f3e5752c49bbb9816f6de42e4f28c31743b67` includes protected main
+`70afa7ce9f6a2c77394b96020340c069222d60f9` and preserves the
+browser-qualified implementation source `ecc3f9841980e9cb389a95d8ab83ab6fa8d5b940`;
+it is neither product accepted nor merged.
 
 1. Sign in with the owner account and open **Chronicle Passport**.
 2. Use the visible **History** control, open **Your Voyages**, and choose a
@@ -42,10 +43,11 @@ pre-reconciliation authority run `32154971683` expanded under `UNKNOWN_IMPACT`.
 Neither is adopted as a Wakebook browser receipt. The local 2/2 Chromium
 qualification on source `ecc3f9841980e9cb389a95d8ab83ab6fa8d5b940` now covers
 the walkthrough safety scope, including consent revocation and owner-safe media.
-Authoritative run `32160955382` was dispatched once for frozen candidate
+Authoritative run `32160955382` was dispatched once for prior candidate
 `3c4926adf4ade4fb2628d98601a3426171394ac6`, but its conservative cross-project
 browser plan did not select `browser.wakebook` and failed on non-Wakebook
 Lanternwake/Tideglass browser prerequisites. It issued no `RELEASE_GO`. The
 walkthrough remains prepared but cannot begin until the shared v1.4
-browser-matrix closure permits a fresh successful authority decision. This
+browser-matrix closure permits a fresh successful authority decision for
+current candidate `5a7f3e5752c49bbb9816f6de42e4f28c31743b67`. This
 document does not authorize a protected merge, owner acceptance, or Phase 3.

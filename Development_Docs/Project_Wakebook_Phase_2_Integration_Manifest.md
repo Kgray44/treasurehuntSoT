@@ -11,12 +11,12 @@ last_reviewed: 2026-08-18
 | Item                    | Current state                                                                       |
 | ----------------------- | ----------------------------------------------------------------------------------- |
 | Branch                  | `codex/project-wakebook-phase2-bind-the-voyages`                                    |
-| Reconciled main         | `a6c1f441d3628bd828bd7a1c3cd77d419a0701c6`                                          |
+| Reconciled main         | `70afa7ce9f6a2c77394b96020340c069222d60f9`                                          |
 | Worktree                | task-owned local Companion worktree                                                 |
 | Mainline reconciliation | Project Trim context tooling and generated control-plane work retained              |
 | Reconciliation source   | `5461eb67a4bf10f6cbe7d7bac242884383ebfd17`                                          |
 | Legacy evidence         | Preserved only where exact semantic inputs remain unchanged; direct scope rebounded |
-| Frozen candidate        | `3c4926adf4ade4fb2628d98601a3426171394ac6`                                          |
+| Frozen candidate        | `5a7f3e5752c49bbb9816f6de42e4f28c31743b67`                                          |
 | Phase state             | `READY_FOR_V14_MAINLINE_ACCEPTANCE`                                                  |
 | Protected merge         | Prohibited: authority run `32160955382` issued no `RELEASE_GO`                      |
 
@@ -54,12 +54,15 @@ schema-engine error, but Prisma's supported `db execute` applied each of the
 59 checked-in migration SQL files to that database; the scenario then created
 only its own synthetic accounts and Voyage data. The prior hosted startup
 failures remain infrastructure history, not a substitute for this local proof.
-Authoritative run `32160955382` was dispatched once for frozen candidate
-`3c4926adf4ade4fb2628d98601a3426171394ac6`, current base, and PR #197. Its
+Authoritative run `32160955382` was dispatched once for prior candidate
+`3c4926adf4ade4fb2628d98601a3426171394ac6`, its then-current base, and PR #197. Its
 sealed plan expanded under `PROJECT_DISCOVERY_CONSERVATIVE`, did not select
 `browser.wakebook`, and Wave 0 failed in non-Wakebook browser suites
 (Lanternwake mobile zoom and the missing `TIDEGLASS_PHASE3_TASK_ROOT`). The
 finalizer returned `SOUNDING_LINE_FINALIZER_WAVE_0_PREREQUISITES_INVALID`, with
 no finalization artifact and no `RELEASE_GO`. This external v1.4 browser-matrix
-hold is the sole remaining integration condition; a new authority decision is
-required only after that shared closure is green.
+hold is the sole remaining integration condition. The intervening accepted
+Deepwater Phase 5 merge did not touch a Wakebook source, route, Prisma,
+Playwright, or test-registration seam, so focused Wakebook evidence remains
+applicable to current candidate `5a7f3e5752c49bbb9816f6de42e4f28c31743b67`; a
+new authority decision is required only after that shared closure is green.

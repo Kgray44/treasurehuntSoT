@@ -1,0 +1,42 @@
+{
+  "disposition": "CHANGES_EXISTING_CAPABILITY",
+  "affectedCapabilityIds": [
+    "DW-CAP-WAKEBOOK-PRIVATE-LIVING-JOURNEY-ARCHIVE"
+  ],
+  "affectedFeatureCatalogIds": [
+    "FT-B012"
+  ],
+  "potentialLayerImpact": [
+    "SERVICE",
+    "API",
+    "PROJECTION",
+    "UI",
+    "DISCOVERABILITY",
+    "STATE",
+    "ACCESSIBILITY",
+    "JOURNEY",
+    "OWNER_ACCEPTANCE"
+  ],
+  "affectedSurfaces": {
+    "routes": [
+      "/passport/history/[recordId]"
+    ],
+    "screens": [
+      "Wakebook Voyage Detail"
+    ],
+    "journeys": [
+      "Owner-private historical Voyage remembrance"
+    ],
+    "apis": [
+      "/api/passport/voyages/[recordId]",
+      "/api/passport/voyages/[recordId]/memories/[memoryId]/media/[mediaId]"
+    ]
+  },
+  "expectedTerminalRungEffect": "BRANCH_COMPLETE_NOT_MERGED",
+  "evidenceRequiringRefresh": [
+    "browser.wakebook / wakebook-phase2",
+    "Wakebook and protected-media focused contracts",
+    "v1.4 source-bound Mainline Decision after shared browser-matrix closure"
+  ],
+  "rationale": "Phase 2 enriches the existing private Living Journey Archive with owner-safe historical remembrance, protected Memory media, and consent-revocable Keepsake representation. The capability is locally qualified but not accepted, merged, or owner-approved."
+}
