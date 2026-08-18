@@ -35,6 +35,13 @@ The source-bound trusted-main registry resolves one `project-shipwright` descrip
 - Private-content scan: passed.
 - Test-registry regeneration: two consecutive runs produced the same active-registry SHA-256, `43accc66ad8eaff3f076eba194684c7103700adca87f50baa4ca6ee271229805`.
 
-## Integration control
+## Exception consumption and protected integration
 
-This receipt is local qualification evidence, not protected-main acceptance. Before the one-time bootstrap exception can be consumed, freeze and record the candidate SHA/tree, create a bounded PR, inspect its exact diff, and attempt the normal protected path. If the absent lane is the sole reason branch protection cannot produce its required check, the repository owner may use the single authorized override. After merge, update this receipt with the protected main SHA/tree, PR, exception disposition, branch-protection proof, and synthetic landed-lane self-check.
+- PR: #218, merged at 2026-08-18T17:58:57Z.
+- Frozen candidate: `3fc40f12a4b11a3714f7e7cd45ae7199ada7fd74`, tree `8f35cc59bdadd4f752fcb230634537f9a2aff7fd`.
+- Integrated protected main: `02dcb963cdbd7b018aa68313d35a2f569a0f5764`, tree `8f35cc59bdadd4f752fcb230634537f9a2aff7fd`.
+- Normal protection attempt: workflow run `32168184938`. Record-only classification passed; verification maintenance rejected authority-changing files; authority-maintenance preflight failed with `AUTHORITY_MAINTENANCE_TRUSTED_POLICY_UNAVAILABLE`, because the trusted base did not yet contain its policy.
+- Branch protection required `Sounding Line / Mainline Decision`, so the first lane installation could not produce its own required context through normal protection.
+- Disposition: the single task-authorized owner bootstrap exception was consumed for that exact frozen candidate only. It did not issue `RELEASE_GO`, modify PR #194, or authorize product behavior.
+
+Future authority-maintenance changes must use the now-protected workflow-dispatch lane and sealed protected binding. This receipt update is the bounded post-merge synthetic lane candidate; its workflow-dispatch and protected binding outcomes are recorded in its PR before any merge.
