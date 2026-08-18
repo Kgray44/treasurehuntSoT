@@ -253,6 +253,10 @@ function Sync-ForeverRuntime {
         # public engineering records. Keep the broad documentation exclusion,
         # then restore only these exact runtime dependencies.
         $runtimeDocumentDependencies = @(
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Capability_Activation_Registry.json",
+            "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Role_Capability_Registry.json",
+            "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
             "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Change_Code_Registry.json",
             "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_2_Projection_Policy.json"
         )
