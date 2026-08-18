@@ -101,6 +101,13 @@ html[data-voyage-theme="light"] :where(.community-button--quiet, .community-filt
   background: var(--surface-raised);
 }
 
+.community-scene-boundary {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
 .community-hero {
   position: relative;
   display: grid;
@@ -180,6 +187,7 @@ html[data-voyage-theme="light"] :where(.community-button--quiet, .community-filt
   font-weight: 500;
   letter-spacing: -0.045em;
   line-height: 0.96;
+  overflow-wrap: anywhere;
   text-wrap: balance;
 }
 
