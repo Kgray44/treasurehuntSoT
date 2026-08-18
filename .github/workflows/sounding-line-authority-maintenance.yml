@@ -59,7 +59,6 @@ jobs:
           $tree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
           node (Join-Path $temp 'trusted-classifier.mjs') plan --policy (Join-Path $temp 'trusted-policy.json') --paths (Join-Path $temp 'changed-paths.json') --trusted-main-sha $env:BASE_SHA --candidate-sha $env:CANDIDATE_SHA --candidate-tree $tree --base-sha $env:BASE_SHA --owner-authorized true --out (Join-Path $temp 'authority-maintenance-plan.json')
       - run: npm ci
-      - run: npm run db:generate
       - run: npm run test:policy
       - run: node --test tests/sounding-line/v14/project-discovery.test.mjs tests/sounding-line/v14/verification-maintenance.test.mjs tests/sounding-line/v14/maintenance-protected-binding.test.mjs tests/sounding-line/v14/mainline-train.test.mjs
       - run: node scripts/sounding-line/test-registry.mjs
@@ -90,11 +89,11 @@ jobs:
       - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
           name: sounding-line-authority-maintenance-qualification
-          # Keep the plan and finalization beside their evidence.  A
-          # multi-path upload on the Windows runner silently omitted those two
-          # sealed receipts, leaving the protected binding unable to select
-          # otherwise valid authority.
-          path: ${{ steps.trusted-authority-maintenance.outputs.temp }}
+          path: |
+            ${{ steps.trusted-authority-maintenance.outputs.temp }}/authority-maintenance-plan.json
+            ${{ steps.trusted-authority-maintenance.outputs.temp }}/authority-maintenance-evidence.json
+            ${{ steps.trusted-authority-maintenance.outputs.temp }}/authority-maintenance-finalization.json
+            ${{ steps.trusted-authority-maintenance.outputs.temp }}/old-vs-new-authority.json
           retention-days: 14
       - name: Clean authority-maintenance temporary artifacts
         if: always()
