@@ -150,17 +150,49 @@ jobs:
           $preflight = Get-Content -Raw maintenance-preflight.json | ConvertFrom-Json
           $errors = @($preflight.errors)
           $ordinaryScopeOnly = $preflight.classification.classification -eq 'MAINTENANCE_SCOPE_REJECTED' -and $errors.Count -gt 0 -and @($errors | Where-Object { $_ -notmatch '^MAINTENANCE_SCOPE_REJECTED:' }).Count -eq 0
-          if ($ordinaryScopeOnly) {
+          $authorityScopeOnly = $preflight.classification.classification -eq 'MAINTENANCE_AUTHORITY_CHANGE_REJECTED' -and $errors.Count -gt 0 -and @($errors | Where-Object { $_ -notmatch '^MAINTENANCE_AUTHORITY_CHANGE_REJECTED:' }).Count -eq 0
+          if ($ordinaryScopeOnly -or $authorityScopeOnly) {
             'maintenance=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
             exit 0
           }
           throw "SOUNDING_LINE_MAINTENANCE_PREFLIGHT_REJECTED:$($errors -join ',')"
 
+  authority-maintenance-preflight:
+    name: Sounding Line / Authority-maintenance classification
+    runs-on: windows-latest
+    timeout-minutes: 10
+    outputs:
+      authorityMaintenance: ${{ steps.classification.outputs.authorityMaintenance }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: "${{ github.sha }}", fetch-depth: 0 }
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with: { node-version-file: .nvmrc }
+      - id: classification
+        shell: pwsh
+        env:
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $paths = @(git diff --name-only --no-renames --no-ext-diff "$env:BASE_SHA" "$env:CANDIDATE_SHA" | Sort-Object)
+          $isAuthorityCandidate = $paths | Where-Object { $_ -in @('testing/authority-maintenance-policy.json','scripts/sounding-line/authority-maintenance.mjs','scripts/sounding-line/authority-maintenance-protected-binding.mjs','scripts/sounding-line/authority-maintenance-selection.mjs','.github/workflows/sounding-line-authority-maintenance.yml') }
+          if (-not $isAuthorityCandidate) { 'authorityMaintenance=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8; exit 0 }
+          git show "$env:BASE_SHA`:testing/authority-maintenance-policy.json" > trusted-authority-maintenance-policy.json
+          if ($LASTEXITCODE -ne 0) { throw 'AUTHORITY_MAINTENANCE_TRUSTED_POLICY_UNAVAILABLE' }
+          git show "$env:BASE_SHA`:scripts/sounding-line/authority-maintenance.mjs" > trusted-authority-maintenance.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'AUTHORITY_MAINTENANCE_TRUSTED_CLASSIFIER_UNAVAILABLE' }
+          ConvertTo-Json -InputObject $paths -Compress | Set-Content -NoNewline authority-maintenance-changed-paths.json
+          $tree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
+          node trusted-authority-maintenance.mjs plan --policy trusted-authority-maintenance-policy.json --paths authority-maintenance-changed-paths.json --trusted-main-sha $env:BASE_SHA --candidate-sha $env:CANDIDATE_SHA --candidate-tree $tree --base-sha $env:BASE_SHA --owner-authorized true --out authority-maintenance-preflight.json
+          if ($LASTEXITCODE -ne 0) { throw 'AUTHORITY_MAINTENANCE_PREFLIGHT_REJECTED' }
+          'authorityMaintenance=true' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
   bind:
     # The name is intentionally the unchanged protected branch context.
     name: Sounding Line / Mainline Decision
-    needs: [record-only-preflight, record-only-evidence, maintenance-preflight]
-    if: ${{ always() && needs.record-only-preflight.result == 'success' && needs.maintenance-preflight.result == 'success' && needs.maintenance-preflight.outputs.maintenance != 'true' }}
+    needs: [record-only-preflight, record-only-evidence, maintenance-preflight, authority-maintenance-preflight]
+    if: ${{ always() && needs.record-only-preflight.result == 'success' && needs.maintenance-preflight.result == 'success' && needs.authority-maintenance-preflight.result == 'success' && needs.maintenance-preflight.outputs.maintenance != 'true' && needs.authority-maintenance-preflight.outputs.authorityMaintenance != 'true' }}
     runs-on: windows-latest
     timeout-minutes: 10
     steps:
@@ -312,8 +344,8 @@ jobs:
 
   bind-maintenance:
     name: Sounding Line / Mainline Decision
-    needs: [record-only-preflight, maintenance-preflight]
-    if: ${{ always() && needs.record-only-preflight.result == 'success' && needs.record-only-preflight.outputs.recordOnly != 'true' && needs.maintenance-preflight.outputs.maintenance == 'true' }}
+    needs: [record-only-preflight, maintenance-preflight, authority-maintenance-preflight]
+    if: ${{ always() && needs.record-only-preflight.result == 'success' && needs.record-only-preflight.outputs.recordOnly != 'true' && needs.maintenance-preflight.outputs.maintenance == 'true' && needs.authority-maintenance-preflight.outputs.authorityMaintenance != 'true' }}
     runs-on: windows-latest
     timeout-minutes: 10
     steps:
@@ -378,3 +410,71 @@ jobs:
           $env:MERGE_TREE = $tree
           $env:MERGE_PARENTS = $parents
           node maintenance-bind.mjs
+
+  bind-authority-maintenance:
+    name: Sounding Line / Mainline Decision
+    needs: [record-only-preflight, maintenance-preflight, authority-maintenance-preflight]
+    if: ${{ always() && needs.record-only-preflight.result == 'success' && needs.record-only-preflight.outputs.recordOnly != 'true' && needs.maintenance-preflight.result == 'success' && needs.authority-maintenance-preflight.outputs.authorityMaintenance == 'true' }}
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: "${{ github.sha }}", fetch-depth: 0 }
+      - id: authority
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          git show "$env:BASE_SHA`:scripts/sounding-line/authority-maintenance-selection.mjs" > trusted-authority-maintenance-selection.mjs
+          $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' }
+          $candidateTree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
+          $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&head_sha=$env:BASE_SHA&per_page=100").workflow_runs
+          $sealed = @()
+          foreach ($run in $runs) {
+            if ($run.name -ne 'Sounding Line authority maintenance' -or $run.path -ne '.github/workflows/sounding-line-authority-maintenance.yml' -or $run.status -ne 'completed' -or $run.conclusion -ne 'success') { continue }
+            try {
+              $artifact = @((Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs/$($run.id)/artifacts?per_page=100").artifacts | Where-Object { $_.name -eq 'sounding-line-authority-maintenance-qualification' -and -not $_.expired })
+              if ($artifact.Count -ne 1) { continue }
+              $directory = Join-Path $env:RUNNER_TEMP "sounding-line-authority-maintenance-$($run.id)"
+              Invoke-WebRequest -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/artifacts/$($artifact[0].id)/zip" -OutFile "$directory.zip"
+              Expand-Archive -LiteralPath "$directory.zip" -DestinationPath $directory -Force
+              $sealed += @{ id = $run.id; name = $run.name; path = $run.path; event = $run.event; status = $run.status; conclusion = $run.conclusion; headSha = $run.head_sha; plan = (Get-Content -Raw (Join-Path $directory 'authority-maintenance-plan.json') | ConvertFrom-Json); finalization = (Get-Content -Raw (Join-Path $directory 'authority-maintenance-finalization.json') | ConvertFrom-Json) }
+            } catch { }
+          }
+          @{ runs = $sealed; candidateSha = $env:CANDIDATE_SHA; candidateTree = $candidateTree; qualifiedBaseSha = $env:BASE_SHA } | ConvertTo-Json -Depth 16 | Set-Content authority-maintenance-authorities.json
+          node trusted-authority-maintenance-selection.mjs authority-maintenance-authorities.json > authority-maintenance-selection.json
+          if ($LASTEXITCODE -ne 0) { throw 'SEALED_AUTHORITY_MAINTENANCE_AUTHORITY_NOT_UNIQUE' }
+          $selection = Get-Content -Raw authority-maintenance-selection.json | ConvertFrom-Json
+          "run-id=$($selection.selectedRunId)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sounding-line-authority-maintenance-qualification
+          path: accepted-authority-maintenance
+          run-id: ${{ steps.authority.outputs.run-id }}
+          github-token: ${{ github.token }}
+      - name: Bind sealed authority-maintenance evidence to merge identity
+        shell: pwsh
+        env:
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          MERGE_SHA: ${{ github.sha }}
+        run: |
+          git show "$env:BASE_SHA`:scripts/sounding-line/authority-maintenance-protected-binding.mjs" > trusted-authority-maintenance-binding.mjs
+          $parents = @((git show -s --format=%P $env:MERGE_SHA).Split(' ', [System.StringSplitOptions]::RemoveEmptyEntries)) | ConvertTo-Json -Compress
+          $tree = (git show -s --format=%T $env:MERGE_SHA).Trim()
+          $script = @"
+          import { readFile } from 'node:fs/promises';
+          import { qualifyAuthorityMaintenanceProtectedMerge } from './trusted-authority-maintenance-binding.mjs';
+          const plan = JSON.parse(await readFile('accepted-authority-maintenance/authority-maintenance-plan.json', 'utf8'));
+          const finalization = JSON.parse(await readFile('accepted-authority-maintenance/authority-maintenance-finalization.json', 'utf8'));
+          const result = qualifyAuthorityMaintenanceProtectedMerge({ plan, finalization, candidateSha: process.env.CANDIDATE_SHA, currentBaseSha: process.env.BASE_SHA, mergeSha: process.env.MERGE_SHA, mergeTree: process.env.MERGE_TREE, mergeParents: JSON.parse(process.env.MERGE_PARENTS) });
+          console.log(JSON.stringify(result, null, 2)); process.exitCode = result.decision === 'BINDING_PASS' ? 0 : 1;
+          "@
+          $script | Set-Content authority-maintenance-bind.mjs
+          $env:MERGE_TREE = $tree
+          $env:MERGE_PARENTS = $parents
+          node authority-maintenance-bind.mjs

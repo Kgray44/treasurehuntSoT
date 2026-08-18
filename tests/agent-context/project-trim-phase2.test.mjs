@@ -65,6 +65,7 @@ before(() => {
     "agent-context-profiles.json",
     "scripts/agent-context/build-context.mjs",
     "scripts/agent-context/core.mjs",
+    "scripts/agent-context/logbook.mjs",
     "scripts/agent-context/packet-v2.mjs",
     "scripts/agent-context/packet-v2.schema.json",
     "testing/ownership.json",

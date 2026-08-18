@@ -484,71 +484,80 @@ test.describe("Project Lanternwake Phase 2 StPageFlip boundary", () => {
 
   test("content revision and orientation changes revoke the old generation and expose zero retained references", async ({
     page,
+    browser,
     browserName,
+    baseURL,
   }) => {
     test.setTimeout(90_000);
     await page.setViewportSize({ width: 1_440, height: 900 });
 
     if (browserName === "chromium") {
       await requireValidationIsolation(page);
-      await enterCaptainWorkspace(page);
-      await page.addInitScript(() => localStorage.setItem("forever-motion", "full"));
-      await openDefaultPlayerJournal(page, { skipOpening: false });
-      const book = page.locator(".main-journal-book");
-      await expectStPageFlipOwnsTurn(book);
-      const beforeRevision = await pageFlipBoundaryEvidence(book);
-      expect(beforeRevision.contentRevision).toMatch(/\S/u);
-      expect(beforeRevision.cloneGeneration).toMatch(/^\d+$/u);
-      expect(beforeRevision.sourceGeneration).toMatch(/^\d+$/u);
+      expect(baseURL, "Playwright must provide its isolated base URL.").toBeTruthy();
+      const captainContext = await browser.newContext({ baseURL });
+      try {
+        const captainPage = await captainContext.newPage();
+        await enterCaptainWorkspace(captainPage);
+        await page.addInitScript(() => localStorage.setItem("forever-motion", "full"));
+        await openDefaultPlayerJournal(page, { skipOpening: false });
+        const book = page.locator(".main-journal-book");
+        await expectStPageFlipOwnsTurn(book);
+        const beforeRevision = await pageFlipBoundaryEvidence(book);
+        expect(beforeRevision.contentRevision).toMatch(/\S/u);
+        expect(beforeRevision.cloneGeneration).toMatch(/^\d+$/u);
+        expect(beforeRevision.sourceGeneration).toMatch(/^\d+$/u);
 
-      await publishDefaultProgression(page);
-      await expect
-        .poll(() => pageFlipBoundaryEvidence(book), {
-          message: "A committed snapshot sequence must replace the PageFlip content generation.",
-          timeout: 20_000,
-        })
-        .toMatchObject({
-          instanceId: beforeRevision.instanceId,
-          runtimeGeneration: beforeRevision.runtimeGeneration,
-          orientation: beforeRevision.orientation,
+        await publishDefaultProgression(captainPage);
+        await expect
+          .poll(() => pageFlipBoundaryEvidence(book), {
+            message: "A committed snapshot sequence must replace the PageFlip content generation.",
+            timeout: 20_000,
+          })
+          .toMatchObject({
+            instanceId: beforeRevision.instanceId,
+            runtimeGeneration: beforeRevision.runtimeGeneration,
+            orientation: beforeRevision.orientation,
+          });
+        await expect
+          .poll(async () => (await pageFlipBoundaryEvidence(book)).contentRevision)
+          .not.toBe(beforeRevision.contentRevision);
+        await expect
+          .poll(async () => (await pageFlipBoundaryEvidence(book)).cloneGeneration)
+          .not.toBe(beforeRevision.cloneGeneration);
+        await expect
+          .poll(async () => (await pageFlipBoundaryEvidence(book)).sourceGeneration)
+          .not.toBe(beforeRevision.sourceGeneration);
+        await expectOldPageFlipGenerationReleased(book, beforeRevision);
+
+        const reveal = page.getByRole("button", { name: "Reveal readable result" });
+        if (await reveal.isVisible().catch(() => false)) await reveal.click();
+        await expect(page.locator('[data-progression-overlay][data-progression-state="active"]')).toHaveCount(0);
+
+        const beforeOrientation = await pageFlipBoundaryEvidence(book);
+        await page.setViewportSize({ width: 390, height: 844 });
+        await expect
+          .poll(async () => (await pageFlipBoundaryEvidence(book)).orientation, {
+            message: "The narrow journal must rebind its trusted primary pages as portrait pages.",
+          })
+          .toBe("portrait");
+        await expect
+          .poll(async () => (await pageFlipBoundaryEvidence(book)).cloneGeneration)
+          .not.toBe(beforeOrientation.cloneGeneration);
+        const afterOrientation = await pageFlipBoundaryEvidence(book);
+        expect(afterOrientation).toMatchObject({
+          instanceId: beforeOrientation.instanceId,
+          runtimeGeneration: beforeOrientation.runtimeGeneration,
+          sourceGeneration: beforeOrientation.sourceGeneration,
+          contentRevision: beforeOrientation.contentRevision,
         });
-      await expect
-        .poll(async () => (await pageFlipBoundaryEvidence(book)).contentRevision)
-        .not.toBe(beforeRevision.contentRevision);
-      await expect
-        .poll(async () => (await pageFlipBoundaryEvidence(book)).cloneGeneration)
-        .not.toBe(beforeRevision.cloneGeneration);
-      await expect
-        .poll(async () => (await pageFlipBoundaryEvidence(book)).sourceGeneration)
-        .not.toBe(beforeRevision.sourceGeneration);
-      await expectOldPageFlipGenerationReleased(book, beforeRevision);
-
-      const reveal = page.getByRole("button", { name: "Reveal readable result" });
-      if (await reveal.isVisible().catch(() => false)) await reveal.click();
-      await expect(page.locator('[data-progression-overlay][data-progression-state="active"]')).toHaveCount(0);
-
-      const beforeOrientation = await pageFlipBoundaryEvidence(book);
-      await page.setViewportSize({ width: 390, height: 844 });
-      await expect
-        .poll(async () => (await pageFlipBoundaryEvidence(book)).orientation, {
-          message: "The narrow journal must rebind its trusted primary pages as portrait pages.",
-        })
-        .toBe("portrait");
-      await expect
-        .poll(async () => (await pageFlipBoundaryEvidence(book)).cloneGeneration)
-        .not.toBe(beforeOrientation.cloneGeneration);
-      const afterOrientation = await pageFlipBoundaryEvidence(book);
-      expect(afterOrientation).toMatchObject({
-        instanceId: beforeOrientation.instanceId,
-        runtimeGeneration: beforeOrientation.runtimeGeneration,
-        sourceGeneration: beforeOrientation.sourceGeneration,
-        contentRevision: beforeOrientation.contentRevision,
-      });
-      expect(afterOrientation.retainedBoundaries).toBe(beforeOrientation.retainedBoundaries);
-      await expectOldPageFlipGenerationReleased(book, {
-        cloneGeneration: beforeOrientation.cloneGeneration,
-        sourceGeneration: null,
-      });
+        expect(afterOrientation.retainedBoundaries).toBe(beforeOrientation.retainedBoundaries);
+        await expectOldPageFlipGenerationReleased(book, {
+          cloneGeneration: beforeOrientation.cloneGeneration,
+          sourceGeneration: null,
+        });
+      } finally {
+        await captainContext.close();
+      }
       return;
     }
 

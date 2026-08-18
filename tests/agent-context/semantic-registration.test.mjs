@@ -21,6 +21,20 @@ test("Project Trim semantic registration keeps known agent-context work bounded 
   assert.ok(phase2Cases.every((entry) => entry.suiteId === "unit.agent-context"));
   assert.ok(phase2Cases.every((entry) => entry.owner === "project-trim"));
   assert.ok(phase2Cases.every((entry) => entry.contracts.includes("project-trim.minimum-sufficient-context")));
+  const phase3Cases = registry.cases.filter(
+    (entry) => entry.file === "tests/agent-context/project-trim-phase3.test.mjs",
+  );
+  assert.equal(phase3Cases.length, 7);
+  assert.ok(phase3Cases.every((entry) => entry.suiteId === "unit.agent-context"));
+  assert.ok(phase3Cases.every((entry) => entry.owner === "project-trim"));
+  assert.ok(phase3Cases.every((entry) => entry.contracts.includes("project-trim.minimum-sufficient-context")));
+  const phase4Cases = registry.cases.filter(
+    (entry) => entry.file === "tests/agent-context/project-trim-phase4.test.mjs",
+  );
+  assert.equal(phase4Cases.length, 7);
+  assert.ok(phase4Cases.every((entry) => entry.suiteId === "unit.agent-context"));
+  assert.ok(phase4Cases.every((entry) => entry.owner === "project-trim"));
+  assert.ok(phase4Cases.every((entry) => entry.contracts.includes("project-trim.minimum-sufficient-context")));
   const select = (changedPaths) =>
     selectV14Mainline({
       changedPaths,
