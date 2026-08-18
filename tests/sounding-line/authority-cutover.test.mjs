@@ -69,7 +69,7 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
   assert.equal(sentinelCases.length, 3);
   assert.ok(sentinelCases.every((entry) => entry.project === "sounding-line-access-sentinel"));
   assert.ok(sentinelCases.every((entry) => entry.parallelSafety === "ISOLATED_MUTABLE_PARALLEL"));
-  assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.auth").length, 8);
+  assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.auth").length, 12);
   assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.navigation").length, 2);
 });
 
