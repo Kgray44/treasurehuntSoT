@@ -9,14 +9,14 @@
     "scope": "Continuous governance, Feature Catalog integration, regression prevention, drift detection, and program closure."
   },
   "baseOriginMainSha": "347e00fdb04939a3ff6ba143275232dcdd45170a",
-  "soundingLinePolicyDigest": "7f3b525596400ba3aaa6f502581a185edc216ebb5721cc729e83a4cbe46a0510",
+  "soundingLinePolicyDigest": "d3dd73a39e1ec5a174813d7e075d724362011bd0db1dba73a6db762db65180d2",
   "v14Reconciliation": {
     "pausedCheckpoint": "95497c3d32e76d81723500235821829bd3af58a2",
     "preCutoverBaseOriginMainSha": "60b89841986e66fbc2c0828489d38002a1617506",
     "preCutoverPolicyDigest": "b2f365b10769b09c92e93226ec6633c673cc4be1e6eb0821e49c4c45c9ca7d99",
     "reboundPolicyDigest": "ffe5734091a96b34ca6ecbc077cc46ff99f74ace22ec50a671ed453abd0c509e",
     "currentProtectedMainSha": "347e00fdb04939a3ff6ba143275232dcdd45170a",
-    "currentPolicyDigest": "7f3b525596400ba3aaa6f502581a185edc216ebb5721cc729e83a4cbe46a0510",
+    "currentPolicyDigest": "d3dd73a39e1ec5a174813d7e075d724362011bd0db1dba73a6db762db65180d2",
     "legacyFocusedEvidence": {
       "controlPlaneTests": 76,
       "status": "PRESERVED_SEMANTIC_REBOUND_REQUIRED",

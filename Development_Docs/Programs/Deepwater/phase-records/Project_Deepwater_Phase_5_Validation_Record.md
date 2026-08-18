@@ -15,7 +15,7 @@ last_reviewed: 2026-08-18
 - Deepwater control plane: 76 pre-cutover focused tests were preserved as semantic evidence. On the reconciled current-main candidate, 80 Deepwater control-plane tests passed and structural validation passed with semantic digest `07e59e464106d5e1b1ea0da0ff3fcaca06ee50ad35e9d30cbc0163561caee320`.
 - Deterministic drift: current-source re-evaluation reports zero unreviewed deltas after the explicit Bridgewatch backend-surface adoption.
 - Current baseline: 58 Deepwater capabilities and 43 Phase 3 accepted Feature Catalog mappings reconciled. The source-owned full catalog generator and validator cover 48 catalog entries.
-- Sounding Line policy validation passed under current active v1.4 identity `7f3b525596400ba3aaa6f502581a185edc216ebb5721cc729e83a4cbe46a0510`.
+- Sounding Line policy validation passed under current active v1.4 identity `d3dd73a39e1ec5a174813d7e075d724362011bd0db1dba73a6db762db65180d2`.
 
 ## v1.4 reconciliation
 
