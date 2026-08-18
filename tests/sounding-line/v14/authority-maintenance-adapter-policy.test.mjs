@@ -33,5 +33,7 @@ test("adapter receipt maintenance is admitted only through the governed policy b
     ownerAuthorized: true,
   });
   assert.equal(rejected.classification, "AUTHORITY_MAINTENANCE_REJECTED");
-  assert.deepEqual(rejected.errors, ["AUTHORITY_MAINTENANCE_SCOPE_REJECTED:scripts/sounding-line/unapproved-adapter.mjs"]);
+  assert.deepEqual(rejected.errors, [
+    "AUTHORITY_MAINTENANCE_SCOPE_REJECTED:scripts/sounding-line/unapproved-adapter.mjs",
+  ]);
 });
