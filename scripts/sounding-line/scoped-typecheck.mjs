@@ -25,7 +25,14 @@ if (parsed.errors.length)
   throw new Error(parsed.errors.map((error) => ts.flattenDiagnosticMessageText(error.messageText, "\n")).join("\n"));
 
 const roots = [...new Set(paths)].sort().map((entry) => path.resolve(entry));
-const program = ts.createProgram({ rootNames: roots, options: parsed.options });
+// A scoped program is ephemeral: inheriting the repository's incremental
+// project mode without its build-info output is invalid in TypeScript. Keep
+// the full strict diagnostic options while disabling only persistent build
+// state for this focused maintenance proof.
+const program = ts.createProgram({
+  rootNames: roots,
+  options: { ...parsed.options, composite: false, incremental: false, tsBuildInfoFile: undefined },
+});
 const diagnostics = ts.getPreEmitDiagnostics(program);
 if (diagnostics.length) {
   const report = ts.formatDiagnosticsWithColorAndContext(diagnostics, {
