@@ -16,7 +16,7 @@ The repository owner authorized exactly two authority-changing corrections on
 fail-closed: neither correction may self-issue ordinary or maintenance
 authority.
 
-The initial bootstrap is restricted to this procedure's support PR number.
+The initial bootstrap is restricted to support PR #217.
 Once it has reached protected main, the trusted-main workflow may run the
 owner-authorized mode only for PR #212 or PR #213. No other pull request,
 authority mode, or target intent is admitted by this procedure.
