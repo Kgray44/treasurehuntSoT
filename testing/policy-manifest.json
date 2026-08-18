@@ -18,7 +18,9 @@
     "evidence-fingerprint-policy.json",
     "prepared-artifacts.json",
     "mainline-train-policy.json",
-    "verification-maintenance-policy.json"
+    "verification-maintenance-policy.json",
+    "authority-maintenance-policy.json",
+    "trusted-project-discovery.json"
   ],
   "authority": "sounding-line-authoritative",
   "plannerAuthority": "governed-local-execution-with-allowlisted-adapters",

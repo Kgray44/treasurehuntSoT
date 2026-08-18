@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0",
+  "recordKind": "PROJECT_TRIM_EFFICIENCY_TELEMETRY",
+  "taskId": "project-trim-phase4-trim-the-sails",
+  "project": "Project Trim",
+  "increment": "Phase 4 - Trim the Sails",
+  "taskClass": "product-phase",
+  "executionProfile": "UNATTENDED_CONTINUATION",
+  "initialPacket": {
+    "bytes": 54208,
+    "tokens": 13552,
+    "tokenMethod": "COARSE_ESTIMATE_BYTES_DIVIDED_BY_FOUR"
+  },
+  "prompt": {
+    "bytes": 44151,
+    "tokens": 11038,
+    "tokenMethod": "COARSE_ESTIMATE_BYTES_DIVIDED_BY_FOUR"
+  },
+  "contextExpansion": {
+    "bytes": null,
+    "tokens": null
+  },
+  "activity": {
+    "subagentUsage": 0,
+    "uniqueFilesRead": null,
+    "rereadAttempts": null,
+    "rereadsAvoided": null,
+    "searches": null,
+    "searchesReused": null,
+    "searchesInvalidated": null,
+    "governingSectionsLoaded": 1,
+    "acceptedCapsulesReused": 1,
+    "fullDocumentsLoadedDespiteSlices": 1,
+    "contextCompactions": null,
+    "validationCycles": null,
+    "authorityCycles": null,
+    "mainlineReconciliationCycles": 0,
+    "activeDurationMinutes": null,
+    "waitDurationMinutes": null
+  },
+  "expansionReasonClasses": ["AUTHORITY", "HISTORY", "SOURCE", "TEST"],
+  "acceptanceStatus": "LOCAL_CANDIDATE_QUALIFIED_PENDING_HOSTED_AUTHORITY",
+  "usage": {
+    "accountingMethod": "UNAVAILABLE",
+    "exactTokens": null,
+    "pointEstimate": null,
+    "lowEstimate": null,
+    "highEstimate": null,
+    "confidence": "UNAVAILABLE",
+    "provenance": "The active goal has no official completion aggregate and no retained duration ledger suitable for a defensible estimate at this candidate checkpoint; unknown is not zero."
+  },
+  "evidenceQuality": "MIXED_EXACT_BYTES_AND_UNAVAILABLE_USAGE",
+  "comparableBaseline": null,
+  "observedReductionPercent": null,
+  "dominantRemainingWasteClass": "FULL_GOVERNING_DOCUMENT_REQUIRED_FOR_EXACT_PHASE4_AND_CALIBRATION_AUTHORITY",
+  "releaseAuthority": "SOUNDING_LINE",
+  "telemetryAuthority": "NONAUTHORITATIVE_ENGINEERING_METADATA"
+}

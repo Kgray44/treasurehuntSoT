@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voyagewright.local/schemas/project-trim/phase4.schema.json",
+  "title": "Project Trim Phase 4 contracts",
+  "type": "object",
+  "oneOf": [{ "$ref": "#/$defs/taskContract" }, { "$ref": "#/$defs/budget" }, { "$ref": "#/$defs/telemetry" }],
+  "$defs": {
+    "taskContract": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "kind",
+        "project",
+        "increment",
+        "title",
+        "executionProfile",
+        "packetRequired",
+        "uniqueScope",
+        "uniqueNonGoals",
+        "deliverables",
+        "completionAuthority"
+      ],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "kind": { "const": "PROJECT_TRIM_SHORT_TASK_CONTRACT" },
+        "executionProfile": { "enum": ["STANDARD_AUTONOMOUS", "UNATTENDED_CONTINUATION"] },
+        "packetRequired": { "const": true },
+        "uniqueScope": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "uniqueNonGoals": { "type": "array", "items": { "type": "string" } },
+        "deliverables": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "completionAuthority": { "const": "CURRENT_REPOSITORY_GUIDANCE_PROJECT_TRIM_AND_SOUNDING_LINE" }
+      }
+    },
+    "budget": {
+      "type": "object",
+      "required": ["schemaVersion", "taskClass", "budgetBand", "budgetState", "advisoryOnly", "blocksProgress"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "budgetState": { "enum": ["WITHIN_TARGET", "ABOVE_TARGET", "WARNING", "EFFICIENCY_REVIEW", "UNAVAILABLE"] },
+        "advisoryOnly": { "const": true },
+        "blocksProgress": { "const": false }
+      }
+    },
+    "telemetry": {
+      "type": "object",
+      "required": ["schemaVersion", "recordKind", "usage", "evidenceQuality", "releaseAuthority", "telemetryAuthority"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "recordKind": { "const": "PROJECT_TRIM_EFFICIENCY_TELEMETRY" },
+        "releaseAuthority": { "const": "SOUNDING_LINE" },
+        "telemetryAuthority": { "const": "NONAUTHORITATIVE_ENGINEERING_METADATA" }
+      }
+    }
+  }
+}
