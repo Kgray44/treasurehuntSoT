@@ -11,8 +11,8 @@ last_reviewed: 2026-08-18
 This walkthrough is prepared for owner review after the frozen Phase 2
 candidate receives its source-bound v1.4 protected authority decision and
 protected integration. The current implementation source
-`e7acab5dc8e415b30e571ebf696d85ef63fdb587` includes protected main
-`b6b613674a60fcf134426a5e964d11c454ee0698`, but it is neither product
+`c9f899b4cbc40ca9cbcd104991c0477731bf61fa` includes protected main
+`c568e5aa15df4d8b682e328d97fa1a78b7b5760a`, but it is neither product
 accepted nor merged.
 
 1. Sign in with the owner account and open **Chronicle Passport**.

@@ -9,15 +9,15 @@ last_reviewed: 2026-08-18
 # Project Wakebook Phase 2 validation record
 
 Phase 2 implementation is reconciled with current protected main. The current
-reconciliation source is `e7acab5dc8e415b30e571ebf696d85ef63fdb587`, whose
+reconciliation source is `c9f899b4cbc40ca9cbcd104991c0477731bf61fa`, whose
 first parent contains the preserved Phase 2 work and whose second parent is
-protected main `b6b613674a60fcf134426a5e964d11c454ee0698`. A final candidate
+protected main `c568e5aa15df4d8b682e328d97fa1a78b7b5760a`. A final candidate
 remains to be frozen; no release, protected merge, owner acceptance, or Phase 3
 work is claimed.
 
 | Evidence                | Result                                                                                                                                                                                                                                                                                                                                                                                                                |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Source and runtime      | Reconciliation source `e7acab5dc8e415b30e571ebf696d85ef63fdb587`; all local work used synthetic task-owned SQLite fixtures only. The canonical development database was never used.                                                                                                                                                                                                                                   |
+| Source and runtime      | Reconciliation source `c9f899b4cbc40ca9cbcd104991c0477731bf61fa`; all local work used synthetic task-owned SQLite fixtures only. The canonical development database was never used.                                                                                                                                                                                                                                   |
 | Prisma diagnosis        | Node `v24.19.0`, Prisma CLI/client `6.19.3`, schema `prisma/schema.sqlite.prisma`, and Windows x64 schema engine `c2990dca591cba766e3b7ef5d9e8a84796e47ab7`. Engine launch and `prisma generate` passed; `prisma validate` passed with sanitized task-owned URLs. Fresh `migrate deploy` failed identically for short C: and Y: paths with blank `Schema engine error`; no canonical database was touched.            |
 | Focused contracts       | PASS: eight focused Vitest files, 27 tests. Coverage includes rich detail projection, unavailable-choice truthfulness, media state non-delivery, remembrance validation, component path, protected-media binding, and protected-media delivery. Scoped Wakebook TypeScript, targeted lint, and targeted formatting passed; broad repository TypeScript is separately blocked by missing Bridgewatch dependencies.     |
 | Visible browser journey | PASS: registered Playwright project `wakebook-phase2`, Chromium desktop 1440x1000, fresh Y: fixture `wakebook-phase2-v14-final-visible.db`, all 59 migrations, 1/1 journey. It begins from visible Chronicle Passport, History, and Voyage controls.                                                                                                                                                                  |

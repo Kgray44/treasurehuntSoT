@@ -11,10 +11,10 @@ last_reviewed: 2026-08-18
 | Item                    | Current state                                                                       |
 | ----------------------- | ----------------------------------------------------------------------------------- |
 | Branch                  | `codex/project-wakebook-phase2-bind-the-voyages`                                    |
-| Reconciled main         | `b6b613674a60fcf134426a5e964d11c454ee0698`                                          |
+| Reconciled main         | `c568e5aa15df4d8b682e328d97fa1a78b7b5760a`                                          |
 | Worktree                | task-owned local Companion worktree                                                 |
 | Mainline reconciliation | v1.4 authority, Bridgewatch, navigation, and generated control-plane work retained  |
-| Reconciliation source   | `e7acab5dc8e415b30e571ebf696d85ef63fdb587`                                          |
+| Reconciliation source   | `c9f899b4cbc40ca9cbcd104991c0477731bf61fa`                                          |
 | Legacy evidence         | Preserved only where exact semantic inputs remain unchanged; direct scope rebounded |
 | Phase state             | `CANDIDATE_QUALIFICATION_IN_PROGRESS`                                               |
 | Protected merge         | Prohibited until frozen-source hosted authority returns `RELEASE_GO`                |

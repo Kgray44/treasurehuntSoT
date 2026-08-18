@@ -18,7 +18,7 @@ keyboard, zoom, reduced-motion, and visual evidence. A final authoritative
 Sounding Line decision is prohibited until that frozen candidate is qualified.
 
 On 2026-08-18 reconciliation source
-`e7acab5dc8e415b30e571ebf696d85ef63fdb587` passed 27 focused Vitest tests
+`c9f899b4cbc40ca9cbcd104991c0477731bf61fa` passed 27 focused Vitest tests
 across eight files, scoped Wakebook TypeScript, targeted ESLint and Prettier,
 policy, documentation, Feature Catalog, and private-content scanning. A broad
 repository TypeScript invocation is independently blocked by missing Bridgewatch
@@ -43,7 +43,7 @@ state, partial legacy history, protected media, historical stability, and a
 foreign account. No real Chronicle or private media is used.
 
 After reconciliation with protected main
-`b6b613674a60fcf134426a5e964d11c454ee0698`, deterministic registry generation
+`c568e5aa15df4d8b682e328d97fa1a78b7b5760a`, deterministic registry generation
 passes with 2,412 cases, 57 families, 63 suites, and zero policy errors. The
 preserved legacy evidence remains bounded; it is not a substitute for the
 remaining source-bound hosted browser safety proof.
