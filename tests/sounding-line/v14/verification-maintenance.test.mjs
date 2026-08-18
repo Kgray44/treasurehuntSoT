@@ -274,6 +274,24 @@ test("ordinary candidates fail closed for unknown paths", async () => {
   assert.deepEqual(result.errors, ["ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:unowned/bridgewatch-lookalike.ts"]);
 });
 
+test("Ledgerlight generated migration matrix is an exact ordinary candidate artifact", async () => {
+  const policy = await readOrdinaryCandidatePolicy();
+  const accepted = classifyOrdinaryCandidate({
+    trustedPolicy: policy,
+    changedPaths: ["Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv"],
+  });
+  assert.equal(accepted.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(accepted.errors, []);
+  const lookalike = classifyOrdinaryCandidate({
+    trustedPolicy: policy,
+    changedPaths: ["Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix-lookalike.csv"],
+  });
+  assert.equal(lookalike.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
+  assert.deepEqual(lookalike.errors, [
+    "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix-lookalike.csv",
+  ]);
+});
+
 test("structurally proven project supplements admit the Tideglass surface without a named policy rule", async () => {
   const result = classifyOrdinaryCandidate({
     trustedPolicy: await readOrdinaryCandidatePolicy(),
