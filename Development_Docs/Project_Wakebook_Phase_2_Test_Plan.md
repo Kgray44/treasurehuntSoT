@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Test Plan
 audience: product-engineering
-status: blocked-v14-policy-admission
+status: candidate-qualification-in-progress
 canonical_for: project-wakebook-phase-2-test-plan
 last_reviewed: 2026-08-18
 ---
@@ -17,13 +17,17 @@ cross-project proof, protected-media authorization, consent revocation, mobile,
 keyboard, zoom, reduced-motion, and visual evidence. A final authoritative
 Sounding Line decision is prohibited until that frozen candidate is qualified.
 
-On 2026-08-18 focused Vitest evidence passed 30 tests across eight files, and
-TypeScript completed with no errors. The local diagnosis used Node `v24.19.0`,
-Prisma `6.19.3`, and `prisma/schema.sqlite.prisma`: client generation, schema
-validation with a task-owned URL, and the Windows schema-engine launch passed.
-Fresh `migrate deploy` then failed identically on short C: and Y: task paths
-with a blank schema-engine error; it was not repaired by changing paths or
-redirecting temporary output, and canonical data was never used.
+On 2026-08-18 reconciliation source
+`e7acab5dc8e415b30e571ebf696d85ef63fdb587` passed 27 focused Vitest tests
+across eight files, scoped Wakebook TypeScript, targeted ESLint and Prettier,
+policy, documentation, Feature Catalog, and private-content scanning. A broad
+repository TypeScript invocation is independently blocked by missing Bridgewatch
+`fastify` and `@fastify/static` dependencies; the scoped governed Wakebook
+program has no diagnostics. The local diagnosis used Node `v24.19.0`, Prisma
+`6.19.3`, and `prisma/schema.sqlite.prisma`: client generation, schema
+validation with a task-owned URL, and Windows x64 schema-engine launch passed.
+Fresh `migrate deploy` failed identically on short C: and Y: task-owned paths
+with a blank `Schema engine error`; canonical data was never used.
 
 The registered project is `wakebook-phase2`, owned by suite
 `browser.wakebook`. The visible Chromium journey passed 1/1 after applying all
@@ -38,16 +42,17 @@ The synthetic corpus will cover a complete solo Voyage, multi-crew/consent
 state, partial legacy history, protected media, historical stability, and a
 foreign account. No real Chronicle or private media is used.
 
-After the latest reconciliation with protected main
-`fc39942a1d8fe57fc13f35cae01445e704b94c45`, policy/registry generation passes
-with 2,386 cases, 57 families, 63 suites, and zero policy errors. The preserved
-legacy evidence remains bounded; it is not a substitute for the remaining
-source-bound hosted browser safety proof.
+After reconciliation with protected main
+`b6b613674a60fcf134426a5e964d11c454ee0698`, deterministic registry generation
+passes with 2,412 cases, 57 families, 63 suites, and zero policy errors. The
+preserved legacy evidence remains bounded; it is not a substitute for the
+remaining source-bound hosted browser safety proof.
 
-The frozen candidate was submitted to v1.4 authority run `32139704608`, which
-failed before any worker because trusted-main policy rejects this product
-branch's required contract, impact-map, and suite registrations as
-authority-changing and does not list its records/catalog/test registration as
-ordinary candidate scope. The v1.4 mainline train reads the same policy, so
-there is no separate hosted path that can execute the remaining browser safety
-journey until a protected-main policy admission is accepted.
+PR #205 resolved the original v1.4 admission rejection. Read-only
+classification of preserved PR #197 now returns
+`PRODUCT_WITH_VERIFICATION_REGISTRATION`, owner `project-wakebook`, and zero
+errors. Focused hosted dispatch `32153529083` for exact suite
+`browser.wakebook` / project `wakebook-phase2` ended as `startup_failure`
+before a job, worker, browser, or finalizer existed. The next valid hosted path
+is one frozen-source Mainline Decision after candidate records are finalized;
+it must provide the safety-browser receipt and `RELEASE_GO` before merge.

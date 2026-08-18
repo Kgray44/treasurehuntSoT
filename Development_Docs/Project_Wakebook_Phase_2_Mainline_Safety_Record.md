@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Mainline Safety Record
 audience: product-engineering
-status: blocked-v14-policy-admission
+status: candidate-qualification-in-progress
 canonical_for: project-wakebook-phase-2-mainline-safety-record
 last_reviewed: 2026-08-18
 ---
@@ -20,27 +20,25 @@ Rollback removes Wakebook-owned UI, DTO, routes, and tests without modifying
 historical records, annotations, consent, artifacts, achievements, or protected
 media source objects.
 
-Sounding Line v1.4 reconciliation is completed at protected main
-`fc39942a1d8fe57fc13f35cae01445e704b94c45`, via merge
-`faeec00ff755d4ab63c9427bdaf3a394fd93145a`. Incoming accepted work updated
-Sounding Line authority/browser fixture infrastructure, Project Trim, and
-Bridgewatch; it did not alter Wakebook/Wayfarer product source, Tideglass,
-Helm, Sealed Hold, artifacts, achievements, Personal Harbor, or Phase 2 Prisma
-seams. Generated Feature Catalog, active registry, and impact map were rebuilt
-and policy validation passed with zero errors.
+Sounding Line reconciliation is completed at protected main
+`b6b613674a60fcf134426a5e964d11c454ee0698`, via merge
+`e7acab5dc8e415b30e571ebf696d85ef63fdb587`. Incoming accepted work updated
+generic candidate admission, discovery, browser-fixture support, and generated
+governance; it did not alter Wakebook/Wayfarer product source, Tideglass, Helm,
+Sealed Hold, artifacts, achievements, Personal Harbor, or Phase 2 Prisma seams.
+Generated Feature Catalog, active registry, impact map, and documentation index
+were rebuilt and current policy validation passed with zero errors.
 
-Pre-cutover focused evidence is preserved as bounded legacy evidence; current
-direct Wakebook contracts and TypeScript have been rerun. A local resource
-failure prevents fresh Prisma migration and a clean completion of the safety
-browser journey, while the visible browser journey passed against a fresh
-task-owned fixture. The v1.4 focused-hosted workflow rejects branch execution
-before workers by design. A frozen candidate must therefore use the protected
-authority/train path for source-bound browser evidence; no protected merge is
-allowed without its exact `RELEASE_GO`.
+Pre-cutover focused evidence remains bounded legacy evidence; current direct
+Wakebook contracts, scoped TypeScript, lint, formatting, policy, documentation,
+Feature Catalog, and privacy scan have been rerun. Local Prisma migration still
+fails before assertions on fresh task-owned C: and Y: SQLite fixtures, despite
+successful client generation, schema validation, and schema-engine launch.
+Focused hosted run `32153529083` ended before a job or worker was created. No
+browser safety pass is claimed from either event.
 
-The source-bound v1.4 authority attempt for the frozen PR #197 candidate
-failed before workers because trusted-main policy classifies Phase 2's required
-contracts, impact mapping, and suite registration as authority-changing and
-its records/catalog/test registration as unlisted. This is a safe fail-closed
-result: this branch cannot alter the policy that rejects it. No `RELEASE_GO`,
-protected merge, or owner acceptance is claimed.
+PR #205 resolved the original admission issue. The preserved PR #197 candidate
+classifies read-only as `PRODUCT_WITH_VERIFICATION_REGISTRATION`, owned by
+`project-wakebook`, with zero errors. One final frozen-source v1.4 Mainline
+Decision remains required for hosted browser evidence and `RELEASE_GO`; no
+protected merge or owner acceptance is claimed before it succeeds.

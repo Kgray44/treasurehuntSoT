@@ -1,7 +1,7 @@
 ---
 title: Project Wakebook Phase 2 Owner Walkthrough
 audience: product-owner
-status: blocked-v14-policy-admission
+status: candidate-qualification-in-progress
 canonical_for: project-wakebook-phase-2-owner-walkthrough
 last_reviewed: 2026-08-18
 ---
@@ -11,8 +11,9 @@ last_reviewed: 2026-08-18
 This walkthrough is prepared for owner review after the frozen Phase 2
 candidate receives its source-bound v1.4 protected authority decision and
 protected integration. The current implementation source
-`faeec00ff755d4ab63c9427bdaf3a394fd93145a` is reconciled with current main,
-but it is neither product accepted nor merged.
+`e7acab5dc8e415b30e571ebf696d85ef63fdb587` includes protected main
+`b6b613674a60fcf134426a5e964d11c454ee0698`, but it is neither product
+accepted nor merged.
 
 1. Sign in with the owner account and open **Chronicle Passport**.
 2. Use the visible **History** control, open **Your Voyages**, and choose a
@@ -34,8 +35,9 @@ but it is neither product accepted nor merged.
 8. Repeat the page at a narrow viewport, with keyboard navigation, reduced
    motion, and effective 200% zoom. Content must remain readable and usable.
 
-The frozen-candidate protected authority run has been attempted and was
-fail-closed by current trusted-main policy before browser workers ran. The next
-step is an accepted Sounding Line policy admission outside this Phase 2 branch.
-This document does not authorize a protected merge, owner acceptance, or Phase
-3.
+PR #205 resolved the earlier generic policy-admission defect. The exact focused
+hosted suite is `browser.wakebook` / `wakebook-phase2`; its latest dispatch
+`32153529083` failed at GitHub startup with no job or browser receipt. The
+final frozen candidate therefore still requires one source-bound v1.4 Mainline
+Decision for browser proof and `RELEASE_GO`. This document does not authorize a
+protected merge, owner acceptance, or Phase 3.
