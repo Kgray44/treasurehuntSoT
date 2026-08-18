@@ -107,3 +107,27 @@ evidence only and is held for the next exact-candidate v1.4 decision. The owner
 recorded `OWNER_ACCEPTED` on 2026-08-16 and Sounding Line v1.4 is active on
 protected main; final current-main qualification and one exact decision remain
 required before protected integration.
+
+## Sounding Line v1.4 candidate attempt
+
+The owner-authorized, frozen candidate
+`0c08063b9ed09df13da7e2ab256a17ee6aba32a2` was submitted against qualified
+protected base `fc39942a1d8fe57fc13f35cae01445e704b94c45` through PR #195 and
+authoritative run [32138525050](https://github.com/Kgray44/treasurehuntSoT/actions/runs/32138525050)
+on 2026-08-18. The run failed before any worker, test receipt, finalizer, or
+`RELEASE_GO` because the trusted current-main ordinary-candidate classifier
+rejected three legitimate Phase 4 paths as unknown scope:
+
+- `Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv`
+- `README.md`
+- `scripts/tideglass/seed-phase3-fixture.mjs`
+
+The first two are generated/current status records; the third is the synthetic
+Phase 4 browser-fixture seam required for Captain preflight coverage. The
+current trusted ordinary-candidate allowlist does not admit those paths, and a
+Tideglass candidate may not change that authority policy itself. This failed
+attempt is recorded evidence, not a test failure: no authoritative rerun is
+permitted until a separate Sounding Line owner correction lands on protected
+main to classify these paths. The candidate's focused, static, and browser
+qualification evidence remains preserved for semantic rebound after that
+external correction.
