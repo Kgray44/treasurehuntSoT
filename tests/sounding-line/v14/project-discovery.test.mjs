@@ -230,6 +230,29 @@ test("protected Shipwright discovery materializes one bounded static owner witho
   assert.equal(first.owners.some((entry) => entry.id === "project-definitely-normal"), false);
 });
 
+test("trusted project-owner materialization fails closed on a conflicting static identity", () => {
+  const result = materializeTrustedProjectOwners({
+    sourceRegistry: {
+      projects: [{
+        id: "project-example",
+        sourcePaths: ["src/example/**"],
+        testPaths: ["tests/example/**"],
+        contractIds: [],
+      }],
+    },
+    owners: [{
+      id: "project-example",
+      project: "project-example",
+      sourcePaths: ["src/other/**"],
+      testPaths: [],
+      contractIds: [],
+    }],
+  });
+
+  assert.deepEqual(result.materialized, []);
+  assert.deepEqual(result.errors, ["PROJECT_DISCOVERY_OWNER_COLLISION:project-example"]);
+});
+
 test("Project DefinitelyNormal cannot escape the authority firewall", () => {
   const result = classifyOrdinaryCandidate({
     trustedPolicy: policy,

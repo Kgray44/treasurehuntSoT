@@ -363,17 +363,26 @@ export function materializeTrustedProjectOwners({ sourceRegistry = {}, owners = 
   const materialized = [];
   const errors = [];
   const byId = new Map((owners ?? []).map((owner) => [owner?.id, owner]));
+  const knownOwnerIds = new Set([
+    ...(owners ?? []).map((owner) => owner?.id),
+    ...(sourceRegistry?.projects ?? []).map((record) => record?.id),
+  ].filter(Boolean));
   for (const record of sourceRegistry?.projects ?? []) {
     const id = String(record?.id ?? "");
     const sourcePaths = sorted(record?.sourcePaths ?? []);
     const testPaths = sorted(record?.testPaths ?? []);
     const contractIds = sorted(record?.contractIds ?? []);
+    const supportingOwnerIds = sorted(record?.supportingOwnerIds ?? []);
     if (!/^project-[a-z0-9-]+$/u.test(id)) {
       errors.push(`PROJECT_DISCOVERY_OWNER_ID_INVALID:${id || "UNKNOWN"}`);
       continue;
     }
     if (!sourcePaths.length || sourcePaths.some((entry) => broadOwnershipRoots.has(entry))) {
       errors.push(`PROJECT_DISCOVERY_OWNER_SOURCE_SCOPE_INVALID:${id}`);
+      continue;
+    }
+    if (supportingOwnerIds.some((supportingOwnerId) => !knownOwnerIds.has(supportingOwnerId))) {
+      errors.push(`PROJECT_DISCOVERY_OWNER_SUPPORTING_OWNER_UNRESOLVED:${id}`);
       continue;
     }
     const owner = { id, project: id, sourcePaths, testPaths, contractIds };
