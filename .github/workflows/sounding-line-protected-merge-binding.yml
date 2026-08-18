@@ -180,10 +180,16 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $paths = @(git diff --name-only --no-renames --no-ext-diff "$env:BASE_SHA" "$env:CANDIDATE_SHA" | Sort-Object)
-          $isAuthorityCandidate = $paths | Where-Object { $_ -in @('testing/authority-maintenance-policy.json','scripts/sounding-line/authority-maintenance.mjs','scripts/sounding-line/authority-maintenance-protected-binding.mjs','scripts/sounding-line/authority-maintenance-selection.mjs','.github/workflows/sounding-line-authority-maintenance.yml') }
-          if (-not $isAuthorityCandidate) { 'authorityMaintenance=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8; exit 0 }
           git show "$env:BASE_SHA`:testing/authority-maintenance-policy.json" > trusted-authority-maintenance-policy.json
           if ($LASTEXITCODE -ne 0) { throw 'AUTHORITY_MAINTENANCE_TRUSTED_POLICY_UNAVAILABLE' }
+          $trustedPolicy = Get-Content -Raw trusted-authority-maintenance-policy.json | ConvertFrom-Json
+          # The trusted policy owns the authority-routing boundary.  Retain the
+          # legacy list only while bootstrapping the first policy that provides
+          # it, so a policy update cannot self-suppress its own preflight.
+          $legacyAuthorityBindingPaths = @('testing/authority-maintenance-policy.json','scripts/sounding-line/authority-maintenance.mjs','scripts/sounding-line/authority-maintenance-protected-binding.mjs','scripts/sounding-line/authority-maintenance-selection.mjs','.github/workflows/sounding-line-authority-maintenance.yml')
+          $authorityBindingPaths = @($trustedPolicy.bindingPreflightPaths) + $legacyAuthorityBindingPaths
+          $isAuthorityCandidate = $paths | Where-Object { $_ -in $authorityBindingPaths }
+          if (-not $isAuthorityCandidate) { 'authorityMaintenance=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8; exit 0 }
           git show "$env:BASE_SHA`:scripts/sounding-line/authority-maintenance.mjs" > trusted-authority-maintenance.mjs
           if ($LASTEXITCODE -ne 0) { throw 'AUTHORITY_MAINTENANCE_TRUSTED_CLASSIFIER_UNAVAILABLE' }
           ConvertTo-Json -InputObject $paths -Compress | Set-Content -NoNewline authority-maintenance-changed-paths.json
