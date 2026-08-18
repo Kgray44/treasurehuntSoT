@@ -31,7 +31,7 @@
         "tests/e2e/project-shipwright-phase2.spec.ts"
       ],
       "contractIds": [],
-      "supportingOwnerIds": ["drydock", "one-voyage", "platform-foundation"]
+      "supportingOwnerIds": ["drydock", "one-voyage", "platform-foundation", "tideglass"]
     }
   ]
 }

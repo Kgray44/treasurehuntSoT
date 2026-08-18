@@ -7,6 +7,7 @@ import {
   createProjectDiscoveryRegistry,
   createTrustedMainProjectDiscoveryRegistry,
   discoverProjects,
+  materializeTrustedProjectOwners,
   projectDiscoverySummary,
   structurallyAdmitsProjectPath,
   validateProjectDiscoveryRegistry,
@@ -185,11 +186,78 @@ test("trusted-main project records promote an accepted project deterministically
     }).valid,
     true,
   );
+  const materialized = materializeTrustedProjectOwners({ sourceRegistry, owners: input.owners });
+  assert.deepEqual(materialized.errors, []);
+  assert.deepEqual(materialized.materialized, [
+    {
+      id: "project-shipwright",
+      project: "project-shipwright",
+      sourcePaths: ["src/components/studio/**", "src/studio/authoring/**"],
+      testPaths: ["tests/e2e/project-shipwright-phase2.spec.ts"],
+      contractIds: [],
+    },
+  ]);
   const forged = createTrustedMainProjectDiscoveryRegistry({
     ...input,
     sourceRegistry: { projects: [{ ...sourceRegistry.projects[0], sourcePaths: ["scripts/**"] }] },
   });
   assert.match(forged.errors.join("\n"), /PROJECT_DISCOVERY_SOURCE_SCOPE_INVALID/);
+});
+
+test("protected Shipwright discovery materializes one bounded static owner without broadening ownership", async () => {
+  const [sourceRegistry, ownership] = await Promise.all(
+    ["trusted-project-discovery.json", "ownership.json"].map(async (name) =>
+      JSON.parse(await readFile(path.join(root, "testing", name), "utf8")),
+    ),
+  );
+  const record = sourceRegistry.projects.find((entry) => entry.id === "project-shipwright");
+  assert.ok(record);
+  assert.ok(record.supportingOwnerIds.includes("tideglass"));
+  const first = materializeTrustedProjectOwners({ sourceRegistry, owners: ownership.owners });
+  const second = materializeTrustedProjectOwners({ sourceRegistry, owners: ownership.owners });
+  assert.deepEqual(first, second);
+  assert.deepEqual(first.errors, []);
+  assert.deepEqual(first.materialized, [
+    {
+      id: record.id,
+      project: record.id,
+      sourcePaths: [...record.sourcePaths].sort(),
+      testPaths: [...record.testPaths].sort(),
+      contractIds: [...record.contractIds].sort(),
+    },
+  ]);
+  assert.equal(first.owners.filter((entry) => entry.id === record.id).length, 1);
+  assert.equal(
+    first.owners.some((entry) => entry.id === "project-definitely-normal"),
+    false,
+  );
+});
+
+test("trusted project-owner materialization fails closed on a conflicting static identity", () => {
+  const result = materializeTrustedProjectOwners({
+    sourceRegistry: {
+      projects: [
+        {
+          id: "project-example",
+          sourcePaths: ["src/example/**"],
+          testPaths: ["tests/example/**"],
+          contractIds: [],
+        },
+      ],
+    },
+    owners: [
+      {
+        id: "project-example",
+        project: "project-example",
+        sourcePaths: ["src/other/**"],
+        testPaths: [],
+        contractIds: [],
+      },
+    ],
+  });
+
+  assert.deepEqual(result.materialized, []);
+  assert.deepEqual(result.errors, ["PROJECT_DISCOVERY_OWNER_COLLISION:project-example"]);
 });
 
 test("Project DefinitelyNormal cannot escape the authority firewall", () => {
