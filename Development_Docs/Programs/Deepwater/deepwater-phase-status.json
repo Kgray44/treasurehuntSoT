@@ -13,7 +13,7 @@
   "project": "Project Deepwater",
   "schemaImpact": "NONE",
   "schemaVersion": "1.0.0",
-  "soundingLinePolicyDigest": "ecc5a19595e9d5b21818284301587d0460f1248e7f64579d7ebdeafa552d624c",
+  "soundingLinePolicyDigest": "5afb6716a19fd0923d1a9575ad2959c502c21e747c0a7f84ebc32cb9ca59f126",
   "state": "RECORD_ONLY_CLOSURE_READY",
   "validation": "LOCAL_CONTROL_PLANE_QUALIFIED"
 }
