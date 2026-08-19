@@ -626,6 +626,7 @@ async function main() {
       status: "PUBLISHED",
       visibility: "PUBLIC",
       creatorId: user.id,
+      creatorAccountId: canonicalStaff.id,
       playerCountMin: 1,
       playerCountMax: 4,
       estimatedDuration: 25,
@@ -636,6 +637,7 @@ async function main() {
     data: {
       taleId: studioTale.id,
       createdBy: user.id,
+      createdByAccountId: canonicalStaff.id,
       validationState: "VALID",
       validationSummary: JSON.stringify({ valid: true, errors: [], warnings: [], migratedFrom: campaign.slug }),
     },
@@ -991,6 +993,7 @@ async function main() {
       versionNumber: 1,
       versionLabel: "1.0",
       publishedBy: user.id,
+      publishedByAccountId: canonicalStaff.id,
       releaseNotes: "Automated migration of the generic development voyage.",
       contentSnapshot,
       checksum: hash(contentSnapshot),
