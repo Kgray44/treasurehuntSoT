@@ -922,18 +922,18 @@ test("product registration admits a generic trusted source-bound branch-complete
 
 test("the exact Drydock branch-complete reconciliation can accompany a valid product registration", async () => {
   const path = "Development_Docs/Features/branch-complete/project-drydock-phase3.json";
-  const trusted = JSON.parse(
+  const candidate = JSON.parse(
     await readFile(
       new URL("../../../Development_Docs/Features/branch-complete/project-drydock-phase3.json", import.meta.url),
       "utf8",
     ),
   );
-  const candidate = clone(trusted);
-  candidate.status = "MAINLINE";
-  candidate.limitations[0] =
-    "Protected-main source integration was accepted through PR #52; deployment and owner acceptance remain separate from source integration.";
-  delete candidate.branch;
-  delete candidate.commit;
+  const trusted = {
+    ...clone(candidate),
+    status: "BRANCH_COMPLETE_NOT_MERGED",
+    branch: "codex/project-drydock-phase3-run-sea-trials",
+    commit: "99460bf5bec750586667b13f78149bbb20683cf5",
+  };
   const fixture = crossOwnedRegistrationFixture();
   const result = classifyOrdinaryCandidate({
     trustedPolicy: productRegistrationPolicy,
