@@ -89,19 +89,19 @@ The governing response is not to serialize development. It is to separate **para
 
 ## 4. Non-Negotiable Design Principles
 
-- **Parallel development remains the default.** Product projects should not stop merely because another candidate owns protected integration.
-- **Integration is serialized and just-in-time.** Finished candidates queue instead of repeatedly chasing `main`.
-- **One active candidate per objective.** Successor PRs are bounded and lineage-accounted.
-- **Shared defects have shared owners.** A product project may report a shared infrastructure defect. It may not adopt it unless it owns that subsystem.
-- **Product scope does not metastasize into maintenance scope.** Validation discoveries become Bosun findings where appropriate.
-- **Sounding Line remains final authority.** Nightwatch and Bosun cannot fabricate, weaken, or replace evidence.
-- **Fairlead owns GitHub mechanics.** Nightwatch describes intent; Fairlead chooses the least expensive correct GitHub mechanism.
-- **Project Trim owns context efficiency.** Automation may request Codex, but should give it minimum sufficient context with autonomous targeted expansion.
-- **Deterministic work stays deterministic.** Do not invoke Codex to perform a simple generated-registry refresh if a governed script can do it safely.
-- **AI is invoked on demand, not kept thinking continuously.** Idle maintenance should cost almost no inference.
-- **Budgets are external to the working agent.** The agent cannot silently extend its own time, PR, mutation, candidate, or cost limits.
-- **Restart safety is mandatory.** Reboot, context compaction, or new chat does not erase counters or lineage.
-- **Bridgewatch must show truth, not merely activity.** Missing sources, maintenance blockers, stale candidates, and owner-required work must be explicit.
+- Parallel development remains the default.
+- Integration is serialized and just-in-time.
+- One active candidate exists per objective.
+- Shared defects have shared owners.
+- Product scope does not metastasize into maintenance scope.
+- Sounding Line remains final authority.
+- Fairlead owns GitHub mechanics.
+- Project Trim owns context efficiency.
+- Deterministic work stays deterministic.
+- AI is invoked on demand, not continuously.
+- Budgets are external to the working agent.
+- Restart safety is mandatory.
+- Bridgewatch must show truth, not merely activity.
 
 ---
 
@@ -161,24 +161,22 @@ The preferred runtime is one deterministic controller, conceptually `nightwatchd
 
 Logical components:
 
-1. **Session/Plan Validator**: validates interactive day plans and unattended Night Plans.
-2. **Work Dispatcher**: schedules product, integration, maintenance, fallback, and report objectives.
-3. **Integration Queue Manager**: owns queue state, fairness, dependencies, and queue-front transitions.
-4. **Objective Controller**: owns bounded attempts, states, counters, and material-progress timing.
-5. **Migration Reservation Manager**: atomically assigns canonical migration identities/ranges.
-6. **Lease Broker**: owns source-write, migration, registry, browser-runtime, and GitHub-operation leases.
-7. **Loop Guard**: failure fingerprints, successor caps, alternating-loop detection, scope-growth breakers.
-8. **Bosun Engine**: detectors, classifier, maintenance queue, deterministic jobs, Codex worker adapter, repair handoff.
-9. **Persistent Ledger**: restart-safe state, receipts, lineage, budgets, queue positions, maintenance history.
-10. **Bridgewatch Projection**: read-only operational state.
+1. Session/Plan Validator
+2. Work Dispatcher
+3. Integration Queue Manager
+4. Objective Controller
+5. Migration Reservation Manager
+6. Lease Broker
+7. Loop Guard
+8. Bosun Engine
+9. Persistent Ledger
+10. Bridgewatch Projection
 
 Bosun is a Nightwatch department, not a second orchestration authority.
 
 ---
 
 ## 8. Product Fleet Lifecycle
-
-Canonical product candidate states:
 
 ```text
 IMPLEMENTING
@@ -193,86 +191,39 @@ IMPLEMENTING
  -> POST_MERGE_VERIFIED
 ```
 
-Exceptional states:
+Exceptional states: `BLOCKED_BY_BOSUN`, `PARKED_OWNER_REQUIRED`, `PARKED_LOOP_GUARD`, `SUPERSEDED`, `WITHDRAWN`.
 
-```text
-BLOCKED_BY_BOSUN
-PARKED_OWNER_REQUIRED
-PARKED_LOOP_GUARD
-SUPERSEDED
-WITHDRAWN
-```
-
-When a phase becomes locally complete, normal feature development freezes. It must not repeatedly reconcile because `main` moved while it waits. The candidate records its source identity, local base, focused evidence, shared file classes, migration reservations, dependencies, known blockers, and ready timestamp, then enters the Integration Queue.
+When a phase becomes locally complete, ordinary feature work freezes and the candidate enters the Integration Queue. `main` movement alone does not justify repeated rebase/requalification.
 
 ---
 
 ## 9. Integration Queue
 
-### 9.1 Queue Entry Contract
+A queue entry records project/increment, branch, product head, local base, ready time, priority, migration reservations, shared-file classes, owners, blockers, and focused evidence.
 
-A queue record contains at least:
-
-```yaml
-candidateId: wakebook-p2
-project: Project Wakebook
-increment: Phase 2
-branch: codex/project-wakebook-phase2-bind-the-voyages
-productHead: <sha>
-localBase: <sha>
-readySince: <timestamp>
-priority: NORMAL
-state: QUEUED
-migrationReservations: []
-sharedFileClasses: []
-requiredOwners: []
-knownBlockers: []
-focusedEvidence: []
-```
-
-### 9.2 Queue-Front Rule
-
-Only `QUEUE_FRONT` may perform the expensive sequence:
+Only queue front performs:
 
 ```text
 fresh origin/main
  -> semantic/conflict delta inspection
- -> migration reservation confirmation or bounded renumbering
+ -> migration confirmation
  -> deterministic generated-state refresh
  -> focused requalification
  -> freeze exact candidate
- -> Sounding Line Mainline Decision
+ -> Sounding Line
  -> protected merge
  -> exact-main proof
 ```
 
-Candidates behind the front remain frozen. `main` movement alone does not trigger rebase or requalification.
+Ordering considers priority, fairness/age, dependencies, migration ordering, downstream unblock value, risk, and maintenance prerequisites. Large candidates cannot starve smaller eligible work indefinitely.
 
-### 9.3 Ordering
-
-Ordering may consider explicit priority, age/fairness, dependency order, migration dependencies, number of downstream candidates unblocked, risk, maintenance prerequisites, and Sounding Line train policy. Large candidates must not permanently starve small eligible ones. Emergency work may preempt only under explicit policy.
-
-### 9.4 Queue-Front Blocker
-
-If the front candidate becomes blocked by shared infrastructure:
-
-1. classify the blocker;
-2. create/attach a Bosun finding;
-3. freeze the product candidate;
-4. optionally advance another independent candidate when policy allows;
-5. resume the blocked candidate only after the shared repair lands and the blocker is proven removed.
+If queue front is blocked by shared infrastructure, Nightwatch attaches/creates a Bosun finding, freezes the product candidate, may advance another independent candidate when policy allows, and resumes only after repair postconditions are proven.
 
 ---
 
 ## 10. Migration Reservation Ledger
 
-Parallel branches must not infer the next migration number from stale branch history.
-
-> **Every migration-producing objective reserves canonical identities before committing migration files.**
-
-Reservation fields include reservation ID, project, increment, objective, database family, exact IDs or ranges, count, state, timestamps, and expiry.
-
-Example:
+Every migration-producing objective reserves canonical IDs/ranges before committing migration files.
 
 ```text
 Admiralty P3  -> MySQL 0068-0069
@@ -280,365 +231,111 @@ Shipwright P3 -> MySQL 0070-0071
 Drydock P4    -> MySQL 0072-0075
 ```
 
-Desired tooling may resemble:
-
-```text
-npm run migrations:reserve -- --project shipwright --count 2
-```
-
-The exact CLI is implementation-specific. Atomic non-overlap, auditability, expiration, and Bridgewatch visibility are normative. Queue-front renumbering is a fallback, not normal workflow.
+A desired CLI may resemble `npm run migrations:reserve -- --project shipwright --count 2`. Exact syntax is implementation-specific. Atomic non-overlap, auditability, expiry, and Bridgewatch visibility are normative. Queue-front renumbering is a fallback, not normal workflow.
 
 ---
 
-## 11. Shared Baseline Health
+## 11. Shared Baseline Health and Sounding Line Isolation
 
-Product candidates must not be the primary monitoring mechanism for shared runtime health.
+Product candidates are not the primary shared-runtime monitor. Shared baseline families may include `browser.shared-shell`, `browser.auth-sentinel`, `browser.navigation-sentinel`, `browser.shared-fixtures`, `browser.accessibility-foundation`, `browser.runtime-environment`, `validation-mirror-contract`, and `registry-determinism`.
 
-Nightwatch schedules continuous or change-triggered shared-baseline verification through Sounding Line/Bosun for families such as:
-
-- `browser.shared-shell`
-- `browser.auth-sentinel`
-- `browser.navigation-sentinel`
-- `browser.shared-fixtures`
-- `browser.accessibility-foundation`
-- `browser.runtime-environment`
-- `validation-mirror-contract`
-- `registry-determinism`
-
-A degraded shared baseline becomes a Bosun finding before another unrelated product candidate discovers it during final acceptance.
-
-The normal principle is:
-
-> A product candidate should primarily discover its own regressions, not learn that the airport's landing lights have been dead since breakfast.
+Nightwatch depends on Sounding Line to provide owner/impact-isolated ordinary acceptance, exhaustive release candidates where required, declarative ordinary project test registration, qualification-time deterministic generated artifacts where safe, and protected maintenance classification. Unknown ownership/impact expands proof and never justifies omission.
 
 ---
 
-## 12. Sounding Line Maintenance Isolation Requirements
+## 12. Objectives, Budgets, Progress, and Loop Guard
 
-Nightwatch depends on, but does not itself implement, the following Sounding Line capabilities:
+Objective classes: `PRIMARY`, `SECONDARY`, `FALLBACK`, `HOUSEKEEPING`, `MAINTENANCE`, `INTEGRATION`, `REPORT_ONLY`.
 
-1. ordinary candidates run project-owned, semantically affected, and required global sentinel proof;
-2. release candidates remain exhaustive where policy requires;
-3. project-owned ordinary test registration uses a declarative fail-closed contract when ownership and risk are provable;
-4. authority semantics, finalizers, release policy, and trusted boundary changes remain protected maintenance;
-5. deterministic generated artifacts should be produced at qualification when safe, and sealed by generator/input/output identity;
-6. shared maintenance candidates are independently classified and cannot self-authorize.
+Recommended product defaults: 90-minute wall-clock, one active candidate, two refreezes, two prerequisite PRs, two repeated semantic failures, two protected-main restarts, two full validations without progress, 45-minute no-progress limit, and 2.0 scope-growth ratio.
 
-Unknown ownership or impact expands proof. It never justifies omission.
+Bosun reasoning work uses tighter defaults, typically 30-minute warning and 45-minute park.
 
----
+Material progress is real objective advancement. Recreating equivalent candidates, rerunning unchanged proof, rereading unchanged logs, renaming branches, or absorbing every new defect is not progress.
 
-## 13. Objective Classes and Budgets
-
-Nightwatch objectives may be `PRIMARY`, `SECONDARY`, `FALLBACK`, `HOUSEKEEPING`, `MAINTENANCE`, `INTEGRATION`, or `REPORT_ONLY`.
-
-Recommended product defaults:
-
-```json
-{
-  "wallClockLimitMinutes": 90,
-  "maxNewPullRequests": 5,
-  "maxActiveCandidates": 1,
-  "maxCandidateRefreezes": 2,
-  "maxPrerequisitePullRequests": 2,
-  "maxRepeatedFailureSignatures": 2,
-  "maxProtectedMainRestarts": 2,
-  "maxFullValidationRuns": 2,
-  "noMaterialProgressMinutes": 45,
-  "maxScopeGrowthRatio": 2.0
-}
-```
-
-Bosun reasoning objectives normally receive tighter limits, for example 30-minute warning and 45-minute park, one active repair candidate, and no more than two semantic failure repetitions.
-
-The most restrictive applicable boundary wins. Missing exact credit telemetry never means unlimited usage.
+Failure fingerprints normalize objective family, authority mode, workflow/job/step, stable semantic error class, path/contract class, lineage, base relationship, and repair category. Counters survive new branches, PRs, chats, wording, and close/reopen cycles. Same semantic failure twice parks by default. Alternating `A-B-A-B` is also a loop.
 
 ---
 
-## 14. Material Progress, Failure Fingerprints, and Loop Guard
-
-Material progress includes requested deliverable completion, a necessary prerequisite merge, a newly removed blocker, authoritative qualification advancement, reduction in open/superseded PRs, or root-cause evidence that materially changes the next action.
-
-Non-progress includes recreating equivalent candidates, repeating unchanged tests, rereading unchanged logs, renaming branches, creating a new PR number for the same semantic state, or growing scope merely because another defect was discovered.
-
-Failure fingerprints normalize objective family, authority mode, failed workflow/job/step, stable semantic error class, affected contract/path class, candidate lineage, protected-base relationship, and repair category.
-
-Counters cannot be reset by a new branch, PR, chat, objective ID, wording change, or close/reopen cycle.
-
-Default response:
-
-- first occurrence: diagnose and permit one bounded repair;
-- second equivalent occurrence: park;
-- same failure after a repair claimed to fix it: park immediately unless new evidence proves a distinct cause.
-
-Alternating patterns such as `A -> B -> A -> B` are loops too.
-
----
-
-## 15. Shared-Defect Ownership Rule
+## 13. Shared-Defect Ownership Rule
 
 > **A product project may report a shared infrastructure defect. It may not adopt it unless it owns that subsystem.**
 
-Example:
-
 ```text
-Tideglass candidate
- -> discovers Shipwright governed runtime Git-worktree assumption
- -> BLOCKED_BY_BOSUN: MW-00418
-
-Bosun
- -> repairs Shipwright validation runtime in isolated maintenance worktree
- -> focused proof
- -> Sounding Line
- -> protected merge
-
-Tideglass
- -> resumes qualification against repaired main
+Tideglass discovers Shipwright validation-runtime Git assumption
+ -> BLOCKED_BY_BOSUN MW-00418
+Bosun repairs Shipwright validation runtime in isolated worktree
+ -> focused proof -> Sounding Line -> merge
+Tideglass resumes against repaired main
 ```
 
-This rule prevents a narrow product candidate from absorbing Shipwright, Sounding Line, Deepwater, registry, and unrelated infrastructure changes into one sprawling envelope.
+This prevents narrow product work from absorbing unrelated Shipwright, Sounding Line, Deepwater, registry, and other infrastructure changes.
 
 ---
 
-## 16. Candidate and PR Lineage
+## 14. Candidate Lineage and Supersession
 
-Each deliverable has at most one active product candidate. A successor must record predecessor, terminal reason, effective diff relationship, new base/head, and remaining budget. The default permits at most two product successors.
-
-When a successor is valid, Fairlead/Bosun should close the predecessor, link the lineage, preserve the terminal reason, and schedule branch cleanup. Superseded objects remain historical evidence, not active operational state.
+Each deliverable has one active product candidate. Successors are bounded and must record predecessor, terminal reason, diff relationship, new identity, and remaining budget. When a successor is valid, Bosun/Fairlead may close the predecessor with preserved lineage/terminal evidence. Historical PRs remain evidence, not active state.
 
 ---
 
-## 17. Project Bosun Relationship
+## 15. Project Bosun Relationship
 
-Project Bosun is formally:
+Project Bosun, **The Autonomous Repository Maintenance and Repair Service**, is a subordinate Nightwatch subsystem. It owns finding normalization/deduplication, risk classification, maintenance priority/queue, isolated repair worktrees, deterministic `AUTO_0`, bounded Codex `AUTO_1` and protected `AUTO_2` work, focused verification coordination, post-merge verification, dependent wakeup, receipts, and Bridgewatch telemetry.
 
-> **The Autonomous Repository Maintenance and Repair Service**
+Bosun does not own release semantics, product behavior, user-support private diagnosis, GitHub quota mechanics, or deployment operations.
 
-It is a subordinate Nightwatch subsystem. Bosun owns:
-
-- maintenance finding normalization and deduplication;
-- maintenance risk classification;
-- repair queue and priority;
-- isolated maintenance worktrees;
-- deterministic `AUTO_0` operations;
-- bounded Codex `AUTO_1` and `AUTO_2` repair workers;
-- focused verification coordination;
-- post-merge verification and dependent-candidate wakeup;
-- maintenance receipts and Bridgewatch telemetry.
-
-Bosun does **not** own:
-
-- `RELEASE_GO`;
-- Sounding Line authority semantics;
-- product business logic outside an owning repair scope;
-- user-support diagnosis, which belongs to Admiralty's support architecture;
-- GitHub quota mechanics, which belong to Fairlead;
-- deployment operations, which belong to Breakwater.
-
-One preferred runtime controller, `nightwatchd` or equivalent, hosts both Nightwatch orchestration and Bosun maintenance. Avoid a fleet of competing always-on daemons.
+One preferred controller, `nightwatchd` or equivalent, hosts Nightwatch and Bosun rather than a swarm of always-on competing daemons.
 
 ---
 
-## 18. Bosun Automation Classes
+## 16. Bosun Automation Classes
 
-Nightwatch recognizes these maintenance classes:
+- `AUTO_0`: deterministic housekeeping, no Codex.
+- `AUTO_1`: bounded low-risk engineering repair in isolated worktree.
+- `AUTO_2`: protected maintenance candidate requiring independent maintenance authority.
+- `OWNER`: semantic/security/destructive/governance decision, no autonomous mutation.
+- `BLOCKED`: external precondition unavailable, preserve and continue elsewhere.
 
-| Class | Meaning | Typical action |
-|---|---|---|
-| `AUTO_0` | deterministic mechanical housekeeping | governed script, no Codex |
-| `AUTO_1` | bounded low-risk engineering repair | isolated Codex repair + focused proof |
-| `AUTO_2` | trusted/protected maintenance | Codex may implement; separate maintenance authority required |
-| `OWNER` | semantic, security, destructive, or major-governance decision | park and request owner decision |
-| `BLOCKED` | unavailable external dependency or unsafe precondition | preserve and wait |
-
-`AUTO_0` examples include deterministic registry/index regeneration, expired task-root cleanup, stale lease release, safe superseded-PR closure, and idempotent generated-state reconciliation.
-
-`AUTO_1` examples include stale fixtures, governed runners incorrectly assuming `.git`, bounded browser assertions, cleanup defects, and ordinary owned adapter repairs.
-
-`AUTO_2` examples include trusted registration boundaries, narrow worker/resource policy, or protected validation-runtime changes.
-
-`OWNER` includes release-semantic changes, weakened evidence, security authorization, destructive migrations, privileged access widening, or broad governance changes.
+Initial capacity: up to two non-overlapping `AUTO_0`; one Codex reasoning repair; one protected maintenance authority at a time. No findings means no inference burn.
 
 ---
 
-## 19. Maintenance Capacity
+## 17. Leases, Persistent State, and Restart Recovery
 
-Initial recommended capacity:
+Lease classes include source write, migration range, Sounding Line policy, browser runtime, generated registry, GitHub PR lineage, and Integration Acceptance. Expired/out-of-scope mutations fail closed.
 
-- up to two deterministic `AUTO_0` operations concurrently when scopes do not overlap;
-- one Codex `AUTO_1/AUTO_2` reasoning repair at a time;
-- one protected maintenance-authority operation at a time;
-- product development remains higher priority for scarce browser/database/build resources unless a P0 maintenance issue blocks the fleet.
-
-If no maintenance exists, the reasoning slot consumes no inference merely to remain awake.
+Persistent state records sessions, candidates, queue, migrations, objectives, leases, Codex/verification runs, fingerprints, budgets, findings/history, and events. A local untracked SQLite store such as `.nightwatch/nightwatch.sqlite` is acceptable. Restart reloads ledger, reconciles repository/GitHub/process/worktree truth, expires dead ownership, and resumes without resetting history.
 
 ---
 
-## 20. Leases and Mutation Governance
+## 18. Trim, Fairlead, and Bridgewatch
 
-Nightwatch/Bosun leases may include:
+Project Trim supplies narrow context packets and autonomous in-scope expansion for Bosun Codex workers. The deterministic controller decides when reasoning is required.
 
-- `SOURCE_WRITE`
-- `MIGRATION_RANGE`
-- `SOUNDING_LINE_POLICY`
-- `BROWSER_RUNTIME`
-- `GENERATED_REGISTRY`
-- `GITHUB_PR_LINEAGE`
-- `INTEGRATION_ACCEPTANCE`
+Fairlead owns GitHub routing, caching, quota coordination, request coalescing, and degraded interaction. Bosun declares intent, not a separate polling system.
 
-A lease contains objective, scope, owner, expiration, mutation budget, allowed authority class, and state. Expired or out-of-scope operations fail closed.
-
-No product project and Bosun repair may mutate the same owned surface simultaneously without a governed coordination rule.
+Bridgewatch exposes Product Fleet status, Integration Queue, queue-front, divergence, migration reservations/collisions, reconciliation attempts, acceptance state, and a first-class **Bosun/Bosun's Deck** station showing active objective, class/risk, blocked projects, budget, Codex state, fingerprint, lease, focused proof, successor count, automatic resolution rate, mean repair time, projects unblocked, blocking hours avoided, usage telemetry, recurring failures, owner escalation, and shared baseline health. Missing telemetry is itself source-health information.
 
 ---
 
-## 21. Persistent Ledger and Restart Recovery
+## 19. Security and Prompt Safety
 
-The persistent Nightwatch state should record sessions, candidates, Integration Queue state, migration reservations, objectives, leases, Codex runs, verification runs, failure fingerprints, budgets, maintenance findings/history, and events. A local SQLite store such as `.nightwatch/nightwatch.sqlite` is an acceptable implementation shape when kept untracked and privacy-safe.
+Nightwatch/Bosun never store credentials or private user/chat content in repository records. Codex cannot classify its own authority. Unknown risk escalates. Repairs may not weaken Sounding Line or branch protection to ease their own merge. User-support private data remains under Admiralty support governance.
 
-After restart:
-
-1. reload ledger;
-2. fetch current repository/GitHub truth;
-3. reconcile active processes, worktrees, PRs, and leases;
-4. expire dead ownership without resetting history;
-5. resume the next safe state.
-
-Restart is recovery, not amnesia.
+"Run all night" or "do not stop" means continue useful authorized work across the plan, not continue one pathological objective indefinitely. Global/objective limits and integrity always outrank completion wording.
 
 ---
 
-## 22. Project Trim and Codex Efficiency
-
-Nightwatch/Bosun consume Project Trim context packets, accepted phase capsules, read/search ledgers, and autonomous targeted context expansion. A Bosun Codex worker receives a narrow task contract, not the entire repository history.
-
-Example:
-
-```text
-MAINTENANCE OBJECTIVE MW-00418
-Class: AUTO_1
-Owner: Shipwright validation runtime
-Problem: governed runner invokes Git in isolated validation mirror
-Allowed paths: scripts/shipwright/** and directly affected tests
-Forbidden: product behavior, release semantics, unrelated projects
-Success: reproduce, repair root cause, focused green proof, coherent candidate
-Do not perform authoritative acceptance yourself.
-```
-
-The deterministic controller decides when reasoning is required. Codex is not kept continuously active waiting for defects.
-
----
-
-## 23. Fairlead and GitHub Logistics
-
-Nightwatch/Bosun declare GitHub intent. Fairlead should execute GitHub reads/mutations through the least expensive correct mechanism, coordinate rate limits across worktrees, coalesce requests, use cache/conditional retrieval, and degrade safely when a quota pool is exhausted.
-
-Bosun must not build a second direct polling farm behind Fairlead's back.
-
----
-
-## 24. Bridgewatch Mission Control
-
-Bridgewatch should expose first-class Nightwatch and Bosun data:
-
-### Nightwatch / Integration
-
-- active product projects;
-- locally complete candidates;
-- Integration Queue order and age;
-- queue-front candidate;
-- candidate divergence;
-- migration reservations/collisions;
-- reconciliation attempts;
-- Sounding Line acceptance state;
-- completed, parked, superseded, and owner-required work.
-
-### Bosun Station
-
-Recommended station name: **Bosun** or **Bosun's Deck**.
-
-Show:
-
-- active maintenance objective;
-- class and risk;
-- source subsystem;
-- blocked candidates/projects;
-- age and budget;
-- Codex state;
-- unique failure fingerprint;
-- active lease;
-- focused verification;
-- candidate successors;
-- automatic-resolution rate;
-- mean repair time;
-- projects unblocked;
-- blocking hours avoided;
-- Codex credits/tokens when telemetry exists;
-- recurring failure classes;
-- owner escalations;
-- shared-baseline health.
-
-Missing telemetry is itself an explicit source-health condition.
-
----
-
-## 25. Security and Safety
-
-- Nightwatch/Bosun never store credentials or private chat/user content in repository records.
-- Public repositories receive sanitized operational evidence only.
-- Maintenance workers use least privilege and task-owned worktrees/resources.
-- Codex does not classify its own authority; classification comes from protected policy.
-- Unknown ownership, impact, or risk broadens verification or escalates. It never grants more autonomy.
-- No repair may weaken Sounding Line or branch protection to make itself easier to merge.
-- No maintenance repair may cross into user-support private data. Admiralty governs support grants and user-authorized diagnosis.
-- Destructive actions require explicit policy and owner authorization where specified.
-
----
-
-## 26. Prompt and Mandate Safety
-
-Phrases such as "run all night", "do not stop", "retry until successful", or "continue through every blocker" are valid only when Nightwatch has external budgets and circuit breakers.
-
-The safe meaning of unattended continuation is:
-
-> Continue useful authorized work across the complete work plan. Do not continue one pathological objective indefinitely.
-
-If conservation and unlimited persistence conflict, the most restrictive safe boundary wins.
-
----
-
-## 27. Implementation Roadmap
-
-Nightwatch v1.0 adopts three short implementation increments while the product fleet continues working.
+## 20. Implementation Roadmap
 
 ### Increment A: Integration Queue and Migration Reservations
-
-Implement:
-
-- machine-readable Integration Queue;
-- candidate lifecycle and queue-front rule;
-- one-active-candidate-per-objective enforcement;
-- JIT reconciliation;
-- migration reservation ledger and allocator;
-- basic Bridgewatch queue/migration projection.
-
-**End state:** finished work waits cheaply rather than continuously rebasing.
+Machine-readable queue, candidate lifecycle, queue-front rule, one-active-candidate enforcement, JIT reconciliation, migration allocator, Bridgewatch projection.
 
 ### Increment B: Sounding Line Maintenance Isolation
-
-Through Sounding Line's own authority, implement:
-
-- canonical shared browser/runtime baseline watch;
-- owner/impact-isolated ordinary acceptance;
-- declarative ordinary project test registration;
-- qualification-time deterministic generated artifacts where safe;
-- maintenance-work classification and protected maintenance boundaries.
-
-**End state:** shared validation problems are detected and repaired independently rather than being discovered by random product candidates.
+Shared baseline watch, project-owned ordinary acceptance, declarative registration, qualification-time generated artifacts, maintenance classification and protected boundaries, all implemented through Sounding Line's authority.
 
 ### Increment C: Project Bosun
-
-Implement:
 
 ```text
 detect -> normalize -> dedupe -> classify -> queue -> lease
@@ -651,124 +348,77 @@ detect -> normalize -> dedupe -> classify -> queue -> lease
  -> wake dependents
 ```
 
-Include restart recovery, budgets, Bridgewatch Bosun station, and bounded owner escalation.
-
-**End state:** the third lane is real and small shared defects can be resolved without KG manually starting emergency repair chats.
+The Product Fleet does not need to pause while these increments are implemented, except where an exact shared authority change requires a bounded integration slot.
 
 ---
 
-## 28. Final Acceptance Criteria
+## 21. Final Acceptance Criteria
 
-Nightwatch v1.0 is accepted only when:
-
-1. product development continues in parallel while canonical integration remains governed;
-2. locally complete candidates enter a persistent Integration Queue;
-3. non-front candidates do not continually reconcile because `main` moved;
-4. only queue-front work performs JIT reconciliation and final qualification;
-5. migration identities/ranges cannot collide across parallel branches under the governed allocator;
-6. one active product candidate exists per objective;
-7. shared infrastructure defects are transferred to canonical maintenance ownership rather than absorbed by unrelated product scope;
-8. Bosun deterministic maintenance can run without Codex;
-9. Bosun reasoning repairs are bounded, isolated, and budgeted;
-10. semantic/high-risk changes escalate instead of self-authorizing;
-11. Sounding Line remains the only release/maintenance acceptance authority;
-12. Fairlead owns GitHub mechanics and quota coordination;
-13. Project Trim supplies minimum sufficient Codex context;
-14. Bridgewatch shows authoritative queue, maintenance, budgets, blockers, and source health;
-15. restart does not reset counters, leases, queue positions, or lineage;
-16. the founding `#302-#334` incident replay parks the pathological product lane before excessive churn and continues independent useful work;
-17. a shared failure equivalent to the PR `#334` Shipwright validation-mirror defect is transferred to Bosun, repaired once, verified, merged, and used to resume the blocked product candidate without product-scope metastasis.
-
-The success condition is:
+Nightwatch v1.0 is accepted only when product development remains parallel; locally complete candidates persist in an Integration Queue; non-front candidates stop chasing `main`; queue front alone performs JIT reconciliation; migration allocations cannot collide; one active candidate exists per objective; shared defects transfer to canonical maintenance ownership; Bosun deterministic work can run without AI; Bosun reasoning repairs are bounded/isolated; high-risk changes escalate; Sounding Line remains sole acceptance authority; Fairlead owns GitHub mechanics; Trim supplies context; Bridgewatch shows real queue/maintenance/budget/source health; restart preserves state; founding incident replay parks the runaway lane early; and a PR `#334`-equivalent Shipwright validation defect is repaired under Bosun once and used to resume the product candidate without product-scope metastasis.
 
 > **One break no longer stops the factory, and one finished product no longer needs to chase the factory while waiting for inspection.**
 
 ---
 
-## 29. Default Thresholds
+## 22. Default Thresholds and Example Handoff
 
 | Metric | Warning | Default action limit |
 |---|---:|---:|
-| Product objective wall time | 60 min | park at 90 min |
-| Bosun AUTO_1 objective wall time | 30 min | park at 45 min |
-| No material progress | 20 min | park at 45 min |
-| Same semantic failure | first repeat | park at second equivalent occurrence |
-| Product successors | 1 | owner required before third |
-| Bosun repair successors | 1 | park before third |
-| Prerequisite PRs | 1 | park before third |
-| New PRs in one lineage | 3 | park at 5 |
+| Product objective wall time | 60 min | park 90 min |
+| Bosun AUTO_1 | 30 min | park 45 min |
+| No material progress | 20 min | park 45 min |
+| Same semantic failure | first repeat | park second equivalent |
+| Product/Bosun successors | 1 | owner/park before third |
+| New PRs in lineage | 3 | park 5 |
 | Active product candidates/objective | N/A | reject above 1 |
-| Protected-main reconciliation restarts | 1 | park after 2 |
+| Reconciliation restarts | 1 | park after 2 |
 | Full authority attempts without progress | 1 | park after 2 |
-| Scope growth | 125% | park at 200% or +10 files |
-| Bosun reasoning concurrency | 1 | increase only from measured evidence |
-| Deterministic maintenance concurrency | 2 | increase only with non-overlap proof |
-| Protected maintenance authority concurrency | 1 | do not exceed by default |
-
----
-
-## 30. Example Shift Handoff
+| Scope growth | 125% | park 200% or +10 files |
+| Bosun reasoning concurrency | 1 | evidence required to increase |
+| AUTO_0 concurrency | 2 | non-overlap proof required |
+| Protected maintenance authority | 1 | do not exceed by default |
 
 ```text
 PROJECT NIGHTWATCH - SHIFT HANDOFF
-
 Starting main: <sha>
-Ending main:   <sha>
+Ending main: <sha>
 
 PRODUCT FLEET
 - Admiralty P3: implementing
 - Drydock P4: QUEUE_READY
 - Wakebook P2: QUEUED position 2
 
-INTEGRATED
-- Bridgewatch v2 P1: merged PR #...
-
 BOSUN COMPLETE
-- MW-00418: Shipwright governed-runtime Git assumption repaired
+- MW-00418: Shipwright non-Git validation runtime repaired
 - MW-00421: deterministic registry drift reconciled
 - 4 superseded PRs closed
 
 OWNER REQUIRED
-- MW-00423: proposed release-authority semantic change
-  Class: OWNER
-  No mutation performed
+- MW-00423: release-authority semantic change, no mutation
 
 INTEGRATION QUEUE
 1. Drydock P4 - qualifying
 2. Wakebook P2 - frozen, no repeated reconciliation
-
-No security bypass, protection change, or unapproved paid overage occurred.
 ```
 
 ---
 
-## 31. Governance and Change Control
+## 23. Governance and Glossary
 
-Nightwatch cannot modify its own budget, lease, or authority rules and use the modified behavior to qualify that same change. Sounding Line, Fairlead, Trim, Bridgewatch, Breakwater, and product ownership changes must follow their canonical governance.
-
-Project Bosun has a subordinate governing specification. Where Nightwatch and Bosun differ, Nightwatch controls orchestration and budget semantics; Sounding Line controls verification and acceptance; product subsystem governance controls business semantics.
-
-Thresholds may be tuned only from measured evidence with explicit exposure analysis and owner-approved governance where required.
-
----
-
-## 32. Glossary
+Nightwatch cannot modify its own budget, lease, classifier, or authority semantics and use the changed behavior to qualify itself. Sounding Line, Fairlead, Trim, Bridgewatch, Breakwater, Bosun, and product-owner governance retain their boundaries.
 
 | Term | Definition |
 |---|---|
-| Product Fleet | Parallel feature/project development lane |
-| Integration Queue | Persistent serialized queue of locally complete candidates |
-| Queue Front | Candidate currently authorized for JIT reconciliation and acceptance |
-| JIT reconciliation | Reconcile only when a candidate reaches canonical acceptance |
-| Migration Reservation | Central allocation preventing parallel migration-ID collisions |
-| Bosun | Autonomous Repository Maintenance and Repair Service subordinate to Nightwatch |
-| Maintenance Finding | Normalized evidence that shared repository maintenance may be needed |
-| Material Progress | Objective advancement, not mere activity |
-| Failure Fingerprint | Semantic identity of a failure across changing surface details |
-| Park | Preserve and suspend bounded work without losing state |
-| Execution Lease | Time/scope-bounded mutation authorization |
-| Watch Ledger | Restart-safe operational state for Nightwatch/Bosun |
-| Shared Baseline | Canonical common runtime/browser/infrastructure health watched independently from product candidates |
+| Product Fleet | parallel feature/project development lane |
+| Integration Queue | persistent serialized queue of locally complete candidates |
+| Queue Front | candidate authorized for JIT reconciliation/acceptance |
+| Migration Reservation | canonical allocation preventing branch collisions |
+| Bosun | Nightwatch-subordinate Autonomous Repository Maintenance and Repair Service |
+| Finding | normalized maintenance signal with provenance |
+| Failure Fingerprint | semantic identity across surface wording/PR/SHA changes |
+| Execution Lease | bounded scope/time mutation authorization |
+| Shared Baseline | common infrastructure health watched independently from product candidates |
+| Watch Ledger | restart-safe Nightwatch/Bosun operational state |
 
 ---
 
