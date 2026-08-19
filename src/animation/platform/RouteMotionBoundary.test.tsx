@@ -278,4 +278,24 @@ describe("RouteMotionBoundary", () => {
     act(() => vi.advanceTimersByTime(400));
     expect(view.getByRole("heading", { name: "Public Profile" })).toHaveFocus();
   });
+
+  it("does not steal focus from an active modal during a delayed route handoff", () => {
+    vi.useFakeTimers();
+    const dialog = document.createElement("div");
+    dialog.setAttribute("role", "dialog");
+    dialog.setAttribute("aria-modal", "true");
+    const modalControl = document.createElement("button");
+    modalControl.textContent = "Modal control";
+    dialog.append(modalControl);
+    document.body.append(dialog);
+
+    const view = render(<RouteMotionBoundary pathname="/account">{ready("Overview")}</RouteMotionBoundary>);
+    view.rerender(<RouteMotionBoundary pathname="/account/profile">{ready("Public Profile")}</RouteMotionBoundary>);
+    modalControl.focus();
+    act(() => vi.advanceTimersByTime(400));
+
+    expect(modalControl).toHaveFocus();
+    expect(view.getByRole("heading", { name: "Public Profile" })).not.toHaveFocus();
+    dialog.remove();
+  });
 });

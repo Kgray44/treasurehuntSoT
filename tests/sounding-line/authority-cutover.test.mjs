@@ -636,6 +636,13 @@ test("mixed Tideglass browser selections retain separately owned fixture phases"
   assert.doesNotMatch(runtime, /GOVERNED_TIDEGLASS_BROWSER_SELECTION_MIXED/u);
 });
 
+test("ordinary mobile discovery defers dedicated browser fixtures to their owned projects", async () => {
+  const config = await readFile(path.join(root, "playwright.config.ts"), "utf8");
+  const webkitMobile = config.slice(config.indexOf('name: "webkit-mobile"'), config.indexOf("  ],\n  webServer:"));
+  assert.match(webkitMobile, /harborlightPhase4Spec/u);
+  assert.match(webkitMobile, /shipwrightPhase2Spec/u);
+});
+
 test("mixed Shipwright selections retain the synthetic Creator journey boundary", async () => {
   const runtime = await readFile(
     path.join(root, "scripts", "sounding-line", "isolated-validation-runtime.ps1"),

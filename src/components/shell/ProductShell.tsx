@@ -36,15 +36,19 @@ function NavigationLinks({
   activeId,
   motionKey,
   onNavigate,
+  initialFocusRef,
 }: {
   items: readonly ProjectedNavigationItem[];
   activeId?: string;
   motionKey: string;
   onNavigate: () => void;
+  initialFocusRef?: (node: HTMLAnchorElement | null) => void;
 }) {
   const { mode } = useMotionMode();
   const micro = resolvePlatformMotionToken("micro", mode);
-  return items.map((item) => {
+  const activeIndex = items.findIndex((item) => item.id === activeId && item.href);
+  const initialFocusIndex = activeIndex >= 0 ? activeIndex : items.findIndex((item) => item.href);
+  return items.map((item, index) => {
     if (!item.href) return null;
     const current = activeId === item.id;
     return (
@@ -52,6 +56,7 @@ function NavigationLinks({
         key={item.id}
         className={current ? "current" : undefined}
         href={item.href}
+        ref={index === initialFocusIndex ? initialFocusRef : undefined}
         aria-current={current ? "page" : undefined}
         data-navigation-id={item.id}
         onClick={onNavigate}
@@ -109,6 +114,8 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
   const navigationDrawerRef = useRef<HTMLDivElement>(null);
   const accountDisclosureRef = useRef<HTMLDivElement>(null);
   const mainContentRef = useRef<HTMLDivElement>(null);
+  const shellRouteEffectMountedRef = useRef(false);
+  const previousPathnameRef = useRef(pathname);
   const accountHeadingPrefix = useId();
   const compact = route.shellMode === "COMPACT" || route.shellMode === "IMMERSIVE";
   const ordinaryNavigation = ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD"].includes(route.shellMode);
@@ -141,10 +148,24 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
     setAccountOpen(false);
     if (restoreFocus) queueMicrotask(() => accountButtonRef.current?.focus());
   }, []);
+  const focusNavigationEntry = useCallback(
+    (node: HTMLAnchorElement | null) => {
+      if (navigationOpen && node) node.focus();
+    },
+    [navigationOpen],
+  );
 
   useEffect(() => {
     // A browser history or non-link route change must close any modal shell navigation before focus handoff.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    // The initial passive effect can see the hydrated pathname after a menu
+    // has opened, so it must never race the initial focus handoff.
+    if (!shellRouteEffectMountedRef.current) {
+      shellRouteEffectMountedRef.current = true;
+      previousPathnameRef.current = pathname;
+      return;
+    }
+    if (previousPathnameRef.current === pathname) return;
+    previousPathnameRef.current = pathname;
     closeAll();
   }, [closeAll, pathname]);
 
@@ -212,15 +233,17 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
     return () => document.removeEventListener("pointerdown", closeOnOutsidePointer);
   }, [accountOpen, closeAccount, closeNavigation, navigationOpen]);
 
-  useEffect(() => {
-    if (navigationOpen)
-      queueMicrotask(() => navigationDrawerRef.current?.querySelector<HTMLAnchorElement>("a")?.focus());
+  useLayoutEffect(() => {
+    if (!navigationOpen) return;
+    // The callback ref below focuses the active entry while it is committed.
+    // Keep a synchronous fallback for a navigation projection that changes
+    // independently while its drawer remains open.
+    const drawer = navigationDrawerRef.current;
+    // `querySelector("a[aria-current=page], a")` follows document order, so
+    // it would select Home before a later current entry. Resolve the preferred
+    // target independently before falling back to the first destination.
+    (drawer?.querySelector<HTMLAnchorElement>('a[aria-current="page"]') ?? drawer?.querySelector<HTMLAnchorElement>("a"))?.focus();
   }, [navigationOpen]);
-
-  useEffect(() => {
-    if (accountOpen)
-      queueMicrotask(() => accountDisclosureRef.current?.querySelector<HTMLElement>("a, button")?.focus());
-  }, [accountOpen]);
 
   useLayoutEffect(() => {
     if (!accountOpen) return;
@@ -250,6 +273,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
     group,
     items: projection.accountItems.filter((item) => item.accountGroup === group),
   }));
+  const firstAccountGroup = accountGroups.find(({ items }) => items.length);
 
   async function resendVerification() {
     if (currentUser.status !== "authenticated") return;
@@ -316,6 +340,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                 activeId={projection.activeGlobalItem?.id}
                 motionKey="global"
                 onNavigate={closeAll}
+                initialFocusRef={focusNavigationEntry}
               />
             </nav>
             {projection.workspaceItems.length ? (
@@ -353,7 +378,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
               aria-expanded={accountOpen}
               aria-controls="shell-account-disclosure"
               onClick={() => {
-                setAccountOpen((open) => !open);
+                setAccountOpen(!accountOpen);
                 setNavigationOpen(false);
               }}
             >
@@ -466,7 +491,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                           >
                             <h2 id={headingId}>{accountGroupLabels[group]}</h2>
                             <nav aria-label={accountGroupLabels[group]}>
-                              {items.map((item) => {
+                              {items.map((item, index) => {
                                 if (item.action === "sign-out")
                                   return (
                                     <div key={item.id} className="account-sign-out" data-navigation-id={item.id}>
@@ -481,6 +506,11 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                                 return (
                                   <Link
                                     key={item.id}
+                                    ref={
+                                      firstAccountGroup?.group === group && index === 0
+                                        ? (node) => node?.focus()
+                                        : undefined
+                                    }
                                     href={item.href}
                                     data-navigation-id={item.id}
                                     aria-current={current ? "page" : undefined}

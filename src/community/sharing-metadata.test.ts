@@ -30,6 +30,6 @@ describe("Harborlight sharing metadata", () => {
         canonicalPath: "/unlisted",
         title: "Unlisted",
       }),
-    ).toMatchObject({ robots: "noindex, nofollow, noarchive" });
+    ).toMatchObject({ robots: { index: false, follow: false, noarchive: true } });
   });
 });
