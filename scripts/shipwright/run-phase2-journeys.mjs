@@ -14,7 +14,10 @@ const credentials = JSON.parse(
 );
 const port = await availablePort();
 const databasePath = path.join(taskRoot, "database", "shipwright-phase2.db");
-const sourceSha = output("git", ["rev-parse", "HEAD"]);
+// Sounding Line intentionally synchronizes source into a task-owned runtime
+// without a Git directory. Its candidate SHA is already sealed by the worker;
+// use that provenance there and retain Git only for local standalone journeys.
+const sourceSha = governedCandidateSha() ?? output("git", ["rev-parse", "HEAD"]);
 const env = {
   ...process.env,
   SHIPWRIGHT_PHASE2_TASK_ROOT: taskRoot,
@@ -46,6 +49,13 @@ function output(command, args) {
   if (result.error) throw result.error;
   if (result.status !== 0) throw new Error(`${command} failed: ${result.stderr}`);
   return result.stdout.trim();
+}
+
+function governedCandidateSha() {
+  const value = process.env.SOUNDING_LINE_CANDIDATE_SHA?.trim();
+  if (!value) return null;
+  if (!/^[0-9a-f]{40}$/u.test(value)) throw new Error("SHIPWRIGHT_GOVERNED_CANDIDATE_SHA_INVALID");
+  return value;
 }
 
 function availablePort() {

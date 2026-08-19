@@ -74,7 +74,7 @@ describe("ProductShell", () => {
     const trigger = screen.getByRole("button", { name: "Account" });
     fireEvent.click(trigger);
     const disclosure = screen.getByLabelText("Account navigation");
-    await waitFor(() => expect(within(disclosure).getByRole("link", { name: "Create Account" })).toHaveFocus());
+    await waitFor(() => expect(within(disclosure).getByRole("link", { name: "Sign In" })).toHaveFocus());
     expect(within(disclosure).getByRole("link", { name: "Sign In" })).toHaveAttribute("href", "/sign-in?returnTo=%2F");
     expect(within(disclosure).queryByText("Security & Sessions")).not.toBeInTheDocument();
     fireEvent.keyDown(window, { key: "Escape" });
@@ -244,7 +244,7 @@ describe("ProductShell", () => {
     const trigger = screen.getByRole("button", { name: "Open navigation" });
     fireEvent.click(trigger);
     const global = screen.getByRole("navigation", { name: "Global navigation" });
-    await waitFor(() => expect(within(global).getByRole("link", { name: "Home" })).toHaveFocus());
+    await waitFor(() => expect(within(global).getByRole("link", { name: "Explore Chronicles" })).toHaveFocus());
     expect(document.body.style.overflow).toBe("hidden");
     expect(document.body).toHaveAttribute("data-shell-overlay", "open");
     fireEvent.keyDown(window, { key: "Escape" });

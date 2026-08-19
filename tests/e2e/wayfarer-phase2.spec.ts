@@ -18,9 +18,7 @@ test("Wayfarer Passport persists a private profile, preferences, media, and a si
   await page.getByLabel("Password", { exact: true }).fill("A secure test password 42!");
   await page.getByLabel("Confirm password", { exact: true }).fill("A secure test password 42!");
   await page.getByRole("button", { name: "Continue" }).click();
-  await expect(page.getByText("Your account request was completed.")).toBeVisible();
-
-  await page.goto("/passport");
+  await expect(page).toHaveURL(/\/passport(?:[?#]|$)/u);
   await expect(page.getByRole("heading", { name: "Chronicle Passport" })).toBeVisible();
   await page.getByLabel("Display name").fill("Isolated Captain");
   await page.getByLabel("Public handle").fill(handle);
