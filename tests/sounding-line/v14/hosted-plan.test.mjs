@@ -5,7 +5,11 @@ import { promisify } from "node:util";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import { buildV14HostedPlan, resolvePlanAuthority } from "../../../scripts/sounding-line/planner.mjs";
+import {
+  buildV14HostedPlan,
+  resolvePlanAuthority,
+  selectCasesForNode,
+} from "../../../scripts/sounding-line/planner.mjs";
 import {
   batchPhysicalWorkers,
   validatePhysicalWorkerMatrix,
@@ -14,6 +18,47 @@ import {
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 const execute = promisify(execFile);
 const json = async (file) => JSON.parse(await readFile(path.join(root, "testing", file), "utf8"));
+
+test("direct candidate browser-test edits seal only their registered source cases", () => {
+  const node = { id: "browser.accessibility", adapter: "playwright-family" };
+  const lanternwake = {
+    id: "lanternwake-case",
+    file: "tests/e2e/lanternwake-phase2.spec.ts",
+    sourcePaths: ["tests/e2e/lanternwake-phase2.spec.ts"],
+  };
+  const tideglass = {
+    id: "tideglass-case",
+    file: "tests/e2e/tideglass-phase3.spec.ts",
+    sourcePaths: ["tests/e2e/tideglass-phase3.spec.ts"],
+  };
+  const other = {
+    id: "other-case",
+    file: "tests/e2e/project-shipwright-phase2.spec.ts",
+    sourcePaths: ["tests/e2e/project-shipwright-phase2.spec.ts"],
+  };
+  const cases = [lanternwake, tideglass, other];
+  assert.deepEqual(
+    selectCasesForNode(node, cases, {
+      authorityMode: "V14_CANDIDATE",
+      changedPaths: ["tests/e2e/tideglass-phase3.spec.ts"],
+    }),
+    [tideglass],
+  );
+  assert.deepEqual(
+    selectCasesForNode(node, cases, {
+      authorityMode: "V14_CANDIDATE",
+      changedPaths: ["tests/e2e/tideglass-phase3.spec.ts", "scripts/tideglass/seed-phase3-fixture.mjs"],
+    }),
+    cases,
+  );
+  assert.deepEqual(
+    selectCasesForNode(node, cases, {
+      authorityMode: "V14_CURRENT",
+      changedPaths: ["tests/e2e/tideglass-phase3.spec.ts"],
+    }),
+    cases,
+  );
+});
 
 test("v1.4 hosted plan carries the semantic plan and worker-compatible dependency waves", async () => {
   const sourceSha = (await execute("git", ["-C", root, "rev-parse", "HEAD"])).stdout.trim();
