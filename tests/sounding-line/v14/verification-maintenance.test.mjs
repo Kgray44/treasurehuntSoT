@@ -920,14 +920,21 @@ test("product registration admits a generic trusted source-bound branch-complete
   assert.deepEqual(result.errors, []);
 });
 
-test("the exact Drydock branch-complete reconciliation can accompany a valid product registration", async () => {
+test("a branch-complete Drydock reconciliation can accompany a valid product registration", async () => {
   const path = "Development_Docs/Features/branch-complete/project-drydock-phase3.json";
-  const trusted = JSON.parse(
+  const landed = JSON.parse(
     await readFile(
       new URL("../../../Development_Docs/Features/branch-complete/project-drydock-phase3.json", import.meta.url),
       "utf8",
     ),
   );
+  const trusted = {
+    ...landed,
+    status: "BRANCH_COMPLETE_NOT_MERGED",
+    branch: "codex/project-drydock-phase3",
+    commit: "191a964488d0df71f8dcb91c5b8372fc73b6b32e",
+    limitations: ["Branch completion is distinct from protected-main availability.", ...landed.limitations.slice(1)],
+  };
   const candidate = clone(trusted);
   candidate.status = "MAINLINE";
   candidate.limitations[0] =
