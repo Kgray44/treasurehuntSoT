@@ -16,7 +16,7 @@ test("adapter receipt maintenance is admitted only through the governed policy b
     "tests/sounding-line/v14/authority-maintenance-adapter-policy.test.mjs",
   ];
 
-  assert.equal(policy.version, "1.0.5");
+  assert.equal(policy.version, "1.0.6");
   assert.equal(policy.eligiblePathGlobs.includes("scripts/sounding-line/adapters.mjs"), true);
   assert.equal(policy.bindingPreflightPaths.includes("scripts/sounding-line/adapters.mjs"), true);
   assert.equal(policy.bindingPreflightPaths.includes("scripts/sounding-line/verification-maintenance.mjs"), true);
