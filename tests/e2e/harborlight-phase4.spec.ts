@@ -48,6 +48,11 @@ test.describe.serial("Harborlight Phase 4 moderator browser acceptance", () => {
         },
       }),
     ]);
+    // Compile the protected detail route before the browser journey begins. In
+    // development, compiling it during WebKit's first full navigation emits an
+    // HMR reload that can replace that navigation with the queue route.
+    const warmedDetail = await moderator.context.request.get(`/community/moderation/${caseId}`);
+    expect(warmedDetail.status()).toBe(200);
   });
 
   test.afterAll(async () => {
