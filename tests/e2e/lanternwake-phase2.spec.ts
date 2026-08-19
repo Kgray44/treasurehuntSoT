@@ -298,8 +298,11 @@ async function openDefaultPlayerJournal(page: Page, { skipOpening = true }: { sk
   await page.getByLabel("Invitation phrase").fill(process.env.PLAYER_ACCESS_CODE!);
   await page.getByRole("button", { name: "Confirm invitation" }).click();
   const open = page.getByRole("button", { name: "Open the journal" });
-  await expect(open).toBeVisible({ timeout: 15_000 });
-  await open.click();
+  const nextPlayerStep = await Promise.race([
+    open.waitFor({ state: "visible", timeout: 15_000 }).then(() => "open-journal" as const),
+    page.waitForURL((url) => url.pathname.startsWith("/play/")).then(() => "player-route" as const),
+  ]);
+  if (nextPlayerStep === "open-journal") await open.click();
   if (skipOpening) {
     const skip = page.getByRole("button", { name: "Skip ceremony" });
     if (await skip.isVisible({ timeout: 4_000 }).catch(() => false)) await skip.click();
