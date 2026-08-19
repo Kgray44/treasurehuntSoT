@@ -32,7 +32,7 @@ const implementationCandidate = "d".repeat(40);
 const implementationBase = "f".repeat(40);
 const implementationMerge = "e".repeat(40);
 
-test("record-only prior authority accepts one normal protected decision and a protected-main dispatch", () => {
+test("record-only prior authority accepts a normal protected decision dispatched from the implementation candidate", () => {
   const pull = {
     merged: true,
     head: { sha: implementationCandidate },
@@ -44,7 +44,7 @@ test("record-only prior authority accepts one normal protected decision and a pr
     event: "workflow_dispatch",
     status: "completed",
     conclusion: "success",
-    head_sha: implementationBase,
+    head_sha: implementationCandidate,
   };
   assert.deepEqual(validateReferencedAuthorityRun({ pull, run }), []);
   assert.equal(
@@ -58,7 +58,7 @@ test("record-only prior authority accepts one normal protected decision and a pr
   );
 });
 
-test("record-only prior authority rejects a run not dispatched from the implementation base", () => {
+test("record-only prior authority rejects a run not dispatched from the implementation candidate", () => {
   const pull = {
     merged: true,
     head: { sha: implementationCandidate },
@@ -70,7 +70,7 @@ test("record-only prior authority rejects a run not dispatched from the implemen
     event: "workflow_dispatch",
     status: "completed",
     conclusion: "success",
-    head_sha: implementationCandidate,
+    head_sha: implementationBase,
   };
   assert.match(validateReferencedAuthorityRun({ pull, run }).join("\n"), /PRIOR_IMPLEMENTATION_AUTHORITY_RUN_INVALID/u);
   assert.equal(
