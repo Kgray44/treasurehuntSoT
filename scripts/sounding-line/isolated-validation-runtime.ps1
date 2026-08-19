@@ -973,7 +973,10 @@ try {
                     [pscustomobject]@{ Name = "Shipwright"; Files = $shipwrightFiles },
                     [pscustomobject]@{ Name = "ordinary"; Files = $ordinaryFiles }
                 )) {
-                    if ($partition.Files.Count -eq 0) { continue }
+                    # Normalize an empty, singleton, or array-valued property before
+                    # counting it.  Under StrictMode a PSCustomObject can otherwise
+                    # expose a scalar Files value without a Count member.
+                    if (@($partition.Files).Count -eq 0) { continue }
                     $partitionSelection = [pscustomobject]@{
                         project = [string]$selection.project
                         files = @($partition.Files)
