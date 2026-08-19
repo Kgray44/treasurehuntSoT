@@ -7,6 +7,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 import {
   buildV14HostedPlan,
+  refineV14BrowserEvidence,
   resolvePlanAuthority,
   selectCasesForNode,
 } from "../../../scripts/sounding-line/planner.mjs";
@@ -45,6 +46,23 @@ test("direct candidate browser-test edits seal only their registered source case
     [tideglass],
   );
   assert.deepEqual(
+    selectCasesForNode(node, [lanternwake, other], {
+      authorityMode: "V14_CANDIDATE",
+      changedPaths: ["tests/e2e/tideglass-phase3.spec.ts"],
+    }),
+    [],
+    "an exact Tideglass browser edit must not expand an unrelated selected browser family",
+  );
+  assert.deepEqual(
+    selectCasesForNode(node, [lanternwake, other], {
+      authorityMode: "V14_CANDIDATE",
+      changedPaths: ["tests/e2e/tideglass-phase3.spec.ts"],
+      preserveFullSuite: true,
+    }),
+    [lanternwake, other],
+    "required safety sentinel evidence remains complete",
+  );
+  assert.deepEqual(
     selectCasesForNode(node, cases, {
       authorityMode: "V14_CANDIDATE",
       changedPaths: ["tests/e2e/tideglass-phase3.spec.ts", "scripts/tideglass/seed-phase3-fixture.mjs"],
@@ -58,6 +76,42 @@ test("direct candidate browser-test edits seal only their registered source case
     }),
     cases,
   );
+});
+
+test("exact direct browser omission is represented as preserved evidence rather than a missing fresh worker", () => {
+  const node = (id) => ({ id, adapter: "playwright-family" });
+  const ledgerEntry = (suiteId, selectionReason) => ({
+    suiteId,
+    selected: true,
+    selectionReason,
+    closureConfidence: "EXACT",
+    evidenceDisposition: "FRESH",
+    preservationBasis: "CURRENT_EXECUTION",
+  });
+  const result = refineV14BrowserEvidence({
+    nodes: [node("browser.accessibility"), node("browser.responsive"), node("browser.access-sentinel")],
+    ledger: [
+      ledgerEntry("browser.accessibility", "DIRECT_IMPACT"),
+      ledgerEntry("browser.responsive", "DIRECT_IMPACT"),
+      ledgerEntry("browser.access-sentinel", "REQUIRED_SENTINEL"),
+    ],
+    registryCases: [
+      { id: "tideglass", suiteId: "browser.accessibility", file: "tests/e2e/tideglass-phase3.spec.ts" },
+      { id: "shipwright", suiteId: "browser.responsive", file: "tests/e2e/project-shipwright-phase2.spec.ts" },
+      { id: "sentinel", suiteId: "browser.access-sentinel", file: "tests/e2e/access-gates.spec.ts" },
+    ],
+    changedPaths: ["tests/e2e/tideglass-phase3.spec.ts"],
+    authorityMode: "V14_CANDIDATE",
+  });
+  assert.deepEqual(
+    result.selectedCasesByNode.filter((entry) => entry.cases.length).map((entry) => entry.node.id),
+    ["browser.accessibility", "browser.access-sentinel"],
+  );
+  const responsive = result.selectionLedger.find((entry) => entry.suiteId === "browser.responsive");
+  assert.equal(responsive.selected, false);
+  assert.equal(responsive.selectionReason, "NO_REGISTERED_DIRECT_CASE");
+  assert.equal(responsive.evidenceDisposition, "PRESERVED");
+  assert.equal(responsive.preservationBasis, "EXACT_SEMANTIC_INTERVAL");
 });
 
 test("v1.4 hosted plan carries the semantic plan and worker-compatible dependency waves", async () => {

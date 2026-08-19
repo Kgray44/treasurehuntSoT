@@ -34,8 +34,13 @@ function browserPartitionsFor(node, cases) {
     .sort((left, right) => left.browserEngine.localeCompare(right.browserEngine));
 }
 
-export function selectCasesForNode(node, cases, { changedPaths = [], authorityMode } = {}) {
+export function selectCasesForNode(node, cases, { changedPaths = [], authorityMode, preserveFullSuite = false } = {}) {
   if (node.adapter !== "playwright-family" || authorityMode !== "V14_CANDIDATE") return cases;
+  // The required safety sentinel is selected by its governance contract, not
+  // by a candidate-owned browser source file. It must retain its complete
+  // registered evidence cover even when an otherwise exact candidate edit is
+  // limited to another browser family.
+  if (preserveFullSuite) return cases;
   const directBrowserTestPaths = new Set(
     changedPaths.filter((entry) => entry.startsWith("tests/e2e/") && /\.spec\.ts$/u.test(entry)),
   );
@@ -46,7 +51,49 @@ export function selectCasesForNode(node, cases, { changedPaths = [], authorityMo
   const directCases = cases.filter((entry) =>
     [entry.file, ...(entry.sourcePaths ?? [])].some((entryPath) => directBrowserTestPaths.has(entryPath)),
   );
-  return directCases.length ? directCases : cases;
+  // An exact browser-source candidate must never turn an unrelated selected
+  // family into a suite-wide run merely because that family has no case from
+  // the edited file. Callers omit such empty browser nodes; mixed or unknown
+  // candidates retain the conservative suite-wide contract above.
+  return directCases;
+}
+
+export function refineV14BrowserEvidence({ nodes, ledger, registryCases, changedPaths, authorityMode }) {
+  const selectionReasons = new Map(ledger.map((entry) => [entry.suiteId, entry.selectionReason]));
+  const selectedCasesByNode = nodes.map((node) => {
+    const cases = selectCasesForNode(
+      node,
+      registryCases.filter((entry) => entry.suiteId === node.id),
+      {
+        changedPaths,
+        authorityMode,
+        preserveFullSuite: selectionReasons.get(node.id) === "REQUIRED_SENTINEL",
+      },
+    );
+    return { node, cases };
+  });
+  const omittedDirectBrowserSuiteIds = new Set(
+    selectedCasesByNode
+      .filter(({ node, cases }) => node.adapter === "playwright-family" && !cases.length)
+      .map(({ node }) => node.id),
+  );
+  // The semantic selection ledger is the authoritative broad contract. An
+  // exact direct-browser candidate refines only those selected browser
+  // families for which the protected registry proves no matching case. Record
+  // the omission as an exact preservation so finalization cannot mistake an
+  // absent worker for fresh evidence.
+  const selectionLedger = ledger.map((entry) =>
+    omittedDirectBrowserSuiteIds.has(entry.suiteId)
+      ? {
+          ...entry,
+          selected: false,
+          selectionReason: "NO_REGISTERED_DIRECT_CASE",
+          evidenceDisposition: "PRESERVED",
+          preservationBasis: "EXACT_SEMANTIC_INTERVAL",
+        }
+      : entry,
+  );
+  return { selectedCasesByNode, selectionLedger };
 }
 
 export function resolvePlanAuthority({ authorityIndex, gateId, authorityMode, githubRef, qualifiedBaseSha }) {
@@ -113,6 +160,13 @@ export async function buildV14HostedPlan({
     gateId,
     predictedIdentity,
   });
+  const { selectedCasesByNode, selectionLedger } = refineV14BrowserEvidence({
+    nodes: semanticPlan.nodes,
+    ledger: semanticPlan.ledger,
+    registryCases: registry.cases,
+    changedPaths: semanticPlan.changedInterval.changedPaths,
+    authorityMode,
+  });
   const plan = {
     version: 14,
     authority: "SOUNDING_LINE",
@@ -136,34 +190,34 @@ export async function buildV14HostedPlan({
     semanticPlanDigest: semanticPlan.digest,
     selectionContract: semanticPlan.selectionContract,
     changedInterval: semanticPlan.changedInterval,
-    selectionLedger: semanticPlan.ledger,
-    evidenceDispositionCounts: semanticPlan.evidenceDispositionCounts,
+    selectionLedger,
+    evidenceDispositionCounts: selectionLedger.reduce(
+      (counts, entry) => ({ ...counts, [entry.evidenceDisposition]: (counts[entry.evidenceDisposition] ?? 0) + 1 }),
+      {},
+    ),
     semanticFallback: semanticPlan.fallback,
     runtimeConformanceRequired: authorityIndex.runtimeConformance?.required === true,
     runtimeConformanceSuiteId: authorityIndex.runtimeConformance?.suiteId ?? null,
-    nodes: semanticPlan.nodes.map((node) => {
-      const cases = selectCasesForNode(
-        node,
-        registry.cases.filter((entry) => entry.suiteId === node.id),
-        { changedPaths: semanticPlan.changedInterval.changedPaths, authorityMode },
-      );
-      const browserPartitions = browserPartitionsFor(node, cases);
-      return {
-        ...node,
-        // Registry-selected browser-family cases execute in physically
-        // partitioned workers. Retain every exact engine in the sealed logical
-        // node so finalization can prove the lossless case cover. Other
-        // adapter families retain their declared execution resources.
-        resources: [
-          ...new Set([
-            ...node.resources,
-            ...(browserPartitions.length ? cases.flatMap((entry) => entry.resources ?? []) : []),
-          ]),
-        ].sort(),
-        testIds: cases.map((entry) => entry.id).sort(),
-        ...(browserPartitions.length ? { browserPartitions } : {}),
-      };
-    }),
+    nodes: selectedCasesByNode
+      .filter(({ node, cases }) => node.adapter !== "playwright-family" || cases.length)
+      .map(({ node, cases }) => {
+        const browserPartitions = browserPartitionsFor(node, cases);
+        return {
+          ...node,
+          // Registry-selected browser-family cases execute in physically
+          // partitioned workers. Retain every exact engine in the sealed logical
+          // node so finalization can prove the lossless case cover. Other
+          // adapter families retain their declared execution resources.
+          resources: [
+            ...new Set([
+              ...node.resources,
+              ...(browserPartitions.length ? cases.flatMap((entry) => entry.resources ?? []) : []),
+            ]),
+          ].sort(),
+          testIds: cases.map((entry) => entry.id).sort(),
+          ...(browserPartitions.length ? { browserPartitions } : {}),
+        };
+      }),
   };
   return { ...plan, planDigest: digest(plan) };
 }
