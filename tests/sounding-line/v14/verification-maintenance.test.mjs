@@ -254,6 +254,21 @@ test("ordinary candidates reject arbitrary deploy and Sounding Line scripts", as
   }
 });
 
+test("the governed Shipwright journey runner is ordinary-admissible without broadening its directory", async () => {
+  const policy = await readOrdinaryCandidatePolicy();
+  const admitted = classifyOrdinaryCandidate({
+    trustedPolicy: policy,
+    changedPaths: ["scripts/shipwright/run-phase2-journeys.mjs"],
+  });
+  assert.equal(admitted.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(admitted.errors, []);
+  for (const changedPath of ["scripts/shipwright/unrelated-runner.mjs", "scripts/shipwright/future/runner.mjs"]) {
+    const rejected = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: [changedPath] });
+    assert.equal(rejected.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED", changedPath);
+    assert.deepEqual(rejected.errors, [`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${changedPath}`], changedPath);
+  }
+});
+
 test("mixed Bridgewatch and authority-changing diffs remain rejected", async () => {
   const result = classifyOrdinaryCandidate({
     trustedPolicy: await readOrdinaryCandidatePolicy(),
