@@ -39,7 +39,7 @@ phase3Test.describe("Lanternwake canonical journal motion policy", () => {
           .toBe(motion.browserReduced);
 
         const journal = page.locator(".chronicle-journal-shell");
-        await expect(journal).toHaveAttribute("data-motion-mode", motion.productMode);
+        await expect(journal).toHaveAttribute("data-motion-mode", motion.resolvedMode);
         await expect(journal).toHaveAttribute("data-motion-level", motion.resolvedMode);
         const heading = journal.getByRole("heading", { level: 2 });
         await heading.focus();

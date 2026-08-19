@@ -375,20 +375,13 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
     };
   }, [mode, pathname, routeToken.durationMs]);
 
-  if (mode === "reduced") {
-    return (
-      <div
-        className="product-route-layer"
-        data-route-layer={pathname}
-        data-route-generation={generation.current}
-        data-route-state="settled"
-      >
-        {children}
-      </div>
-    );
-  }
-
-  const active = navigation.current;
+  // Keep the live route subtree mounted when the resolved policy switches to
+  // reduced motion. Account preference controls apply their preview
+  // immediately, so replacing the ordinary route layer with a separate
+  // reduced-motion tree would discard the unsaved form that made the change.
+  // The reduced token is instantaneous and has no distance, which retains the
+  // accessibility behavior without remounting the destination.
+  const active = mode === "reduced" ? null : navigation.current;
   const incomingGeneration = active?.generation ?? generation.current;
   const incomingPending = Boolean(active && active.phase !== "ready");
   return (

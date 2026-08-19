@@ -81,6 +81,8 @@ describe("Project Homeport Chronicle-specific participant identity", () => {
     vi.clearAllMocks();
     mocks.chronicleFind.mockResolvedValue({
       id: "tale-1",
+      creatorId: "captain-legacy-1",
+      creatorAccountId: "captain-account-1",
       versions: [{ id: "version-1", contentSnapshot: JSON.stringify(snapshot) }],
     });
     mocks.profileFind.mockResolvedValue({ id: "profile-1", displayName: "Canonical Navigator" });
@@ -115,6 +117,9 @@ describe("Project Homeport Chronicle-specific participant identity", () => {
         participationAlias: "Canonical Navigator",
         participationAliasEditedAt: null,
       }),
+    });
+    expect(mocks.sessionCreate).toHaveBeenCalledWith({
+      data: expect.objectContaining({ captainId: "captain-legacy-1", captainAccountId: "captain-account-1" }),
     });
   });
 

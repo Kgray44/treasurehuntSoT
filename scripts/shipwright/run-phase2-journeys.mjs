@@ -52,7 +52,12 @@ function output(command, args) {
 }
 
 function governedCandidateSha() {
-  const value = process.env.SOUNDING_LINE_CANDIDATE_SHA?.trim();
+  const candidateSha = process.env.SOUNDING_LINE_CANDIDATE_SHA?.trim();
+  const sealedSourceSha = process.env.SOUNDING_LINE_SEALED_SOURCE_SHA?.trim();
+  if (candidateSha && sealedSourceSha && candidateSha !== sealedSourceSha) {
+    throw new Error("SHIPWRIGHT_GOVERNED_SOURCE_SHA_MISMATCH");
+  }
+  const value = candidateSha ?? sealedSourceSha;
   if (!value) return null;
   if (!/^[0-9a-f]{40}$/u.test(value)) throw new Error("SHIPWRIGHT_GOVERNED_CANDIDATE_SHA_INVALID");
   return value;

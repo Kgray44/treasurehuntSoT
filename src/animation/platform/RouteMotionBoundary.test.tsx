@@ -1,4 +1,5 @@
-import { act, cleanup, render } from "@testing-library/react";
+import { act, cleanup, fireEvent, render } from "@testing-library/react";
+import { useState } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { RouteMotionBoundary } from "./RouteMotionBoundary";
 
@@ -21,6 +22,16 @@ function ready(label: string) {
     <main>
       <h1>{label}</h1>
     </main>
+  );
+}
+
+function DraftControl() {
+  const [value, setValue] = useState("");
+  return (
+    <label>
+      Motion preference
+      <input value={value} onChange={(event) => setValue(event.target.value)} />
+    </label>
   );
 }
 
@@ -269,6 +280,25 @@ describe("RouteMotionBoundary", () => {
     expect(view.container.querySelector('[data-route-layer="/account/roles"]')).toBeNull();
     expect(view.container.querySelector('[data-route-layer="/account/security"]')).toHaveTextContent("Security");
     expect(view.container.querySelector(".route-preparation-fallback")).toBeNull();
+  });
+
+  it("preserves an unsaved route form when its preview switches to reduced motion", () => {
+    const view = render(
+      <RouteMotionBoundary pathname="/account/preferences">
+        <DraftControl />
+      </RouteMotionBoundary>,
+    );
+    fireEvent.change(view.getByLabelText("Motion preference"), { target: { value: "REDUCED" } });
+
+    motionState.mode = "reduced";
+    view.rerender(
+      <RouteMotionBoundary pathname="/account/preferences">
+        <DraftControl />
+      </RouteMotionBoundary>,
+    );
+
+    expect(view.getByLabelText("Motion preference")).toHaveValue("REDUCED");
+    expect(view.container.querySelectorAll(".product-route-layer")).toHaveLength(1);
   });
 
   it("moves focus only after the ordinary destination has settled", () => {

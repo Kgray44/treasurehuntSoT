@@ -49,7 +49,7 @@ test.describe.serial("Harborlight Phase 3 persisted browser acceptance", () => {
     await page.getByRole("searchbox", { name: "Search public Community Harbor" }).focus();
     await expect(page.getByRole("searchbox", { name: "Search public Community Harbor" })).toBeFocused();
     await page.getByRole("button", { name: "Clear search and filters" }).press("Enter");
-    await expect(page).toHaveURL(/\/community\?sort=FEATURED$/u);
+    await expect(page).toHaveURL(/\/community$/u);
     await page.goBack();
     await expect(page).toHaveURL(/q=/u);
 
@@ -257,7 +257,17 @@ async function createActor(browser: Browser, handle: string): Promise<SignedInAc
   });
   const account = await db.userAccount.create({ data: { status: "ACTIVE", legacyGameMasterId: gm.id } });
   await db.playerProfile.create({
-    data: { accountId: account.id, displayName: handle, status: "ACTIVE", claimedAt: new Date() },
+    // Community mutations derive their compatibility projection from the
+    // canonical public Player Profile, not the legacy Community row below.
+    data: {
+      accountId: account.id,
+      displayName: handle,
+      handle,
+      normalizedHandle: handle,
+      defaultVisibility: "PUBLIC",
+      status: "ACTIVE",
+      claimedAt: new Date(),
+    },
   });
   const profile = await db.communityProfile.create({
     data: { accountId: account.id, handle, normalizedHandle: handle, displayName: handle, visibility: "COMMUNITY" },

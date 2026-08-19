@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CommunityPageFrame } from "@/components/community/CommunityPageFrame";
 import { harborSharingMetadata } from "@/community/sharing-metadata";
-import { readPublicVoyageLogs, readVoyageLogForViewer } from "@/community/voyage-log-public";
+import { readVoyageLogForViewer, readVoyageLogSharingMetadata } from "@/community/voyage-log-public";
 import { requireCanonicalAccountIdentity } from "@/platform/auth";
 
 export const dynamic = "force-dynamic";
@@ -11,11 +11,11 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slug = (await params).slug;
-  const log = (await readPublicVoyageLogs(slug))[0];
+  const log = await readVoyageLogSharingMetadata(slug);
   return log
     ? harborSharingMetadata({
         kind: "voyage-log",
-        visibility: "COMMUNITY",
+        visibility: log.visibility,
         canonicalPath: `/community/voyage-logs/${encodeURIComponent(log.slug)}`,
         title: log.title,
         safeDescription: log.safeSummary,

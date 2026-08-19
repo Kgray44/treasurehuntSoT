@@ -450,6 +450,11 @@ function stableLottieRemountSnapshot(snapshot: ExtendedSnapshot) {
     activeRafs: _activeRafs,
     activeTimeouts: _activeTimeouts,
     activeIntervals: _activeIntervals,
+    // Lottie initialization may finish its own one-shot WAAPI work after the
+    // route remount baseline has been observed. Lottie owner, renderer,
+    // fallback, and DOM counts remain exact below; this browser-global
+    // transition counter is not a retained Lottie resource.
+    activeWaapi: _activeWaapi,
     activeDocumentAnimations: _activeDocumentAnimations,
     pendingDocumentAnimations: _pendingDocumentAnimations,
     ...stable

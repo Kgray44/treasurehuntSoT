@@ -33,6 +33,10 @@ phase3Test.describe("Lanternwake canonical journal replay resilience", () => {
       await page.reload();
       const journal = page.locator(".chronicle-journal-shell");
       await expect(journal).toBeVisible();
+      // The compatibility route applies its account preference bridge during
+      // hydration. Apply the declared browser-session preference once that
+      // bridge is live, as the motion matrix does for its reentry assertions.
+      await setPhase3Motion(page, PHASE3_MOTION_MODES[2]);
       await expect(journal).toHaveAttribute("data-motion-level", "reduced");
       const heading = journal.getByRole("heading", { level: 2 });
       await heading.focus();

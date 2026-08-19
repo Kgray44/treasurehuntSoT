@@ -1,5 +1,6 @@
 import { expect, test, type APIRequestContext, type Page } from "@playwright/test";
 import sharp from "sharp";
+import { db } from "../../src/lib/db";
 
 test.skip(({ browserName }) => browserName !== "chromium", "The version-pinned mutation workflow runs once.");
 
@@ -16,19 +17,9 @@ async function current(request: APIRequestContext, sessionId: string) {
   }>;
 }
 
-async function dragLibraryBlock(page: Page, name: string) {
-  const source = page.locator(".block-library article").filter({ has: page.getByText(name, { exact: true }) });
-  const target = page.locator(".timeline-drop").last();
-  await target.scrollIntoViewIfNeeded();
-  await source.scrollIntoViewIfNeeded();
-  const [sourceBox, targetBox] = await Promise.all([source.boundingBox(), target.boundingBox()]);
-  expect(sourceBox).toBeTruthy();
-  expect(targetBox).toBeTruthy();
+async function addLibraryBlock(page: Page, name: string) {
   const before = await page.locator(".timeline-block").count();
-  await page.mouse.move(sourceBox!.x + sourceBox!.width / 2, sourceBox!.y + sourceBox!.height / 2);
-  await page.mouse.down();
-  await page.mouse.move(targetBox!.x + targetBox!.width / 2, targetBox!.y + targetBox!.height / 2, { steps: 12 });
-  await page.mouse.up();
+  await page.getByRole("button", { name: `Add ${name} to first chapter` }).click();
   await expect(page.locator(".timeline-block")).toHaveCount(before + 1);
 }
 
@@ -222,7 +213,7 @@ test("Studio editor exposes searchable authoring tools and responsive isolated p
   expect(await restored.json()).toMatchObject({ basedOnPublishedVersionId: version.id, revisionNumber: 2 });
 });
 
-test("creator authors, aligns, publishes, plays, and reviews a media-rich tale", async ({ page }) => {
+test("creator authors, aligns, publishes, plays, and reviews a media-rich tale", async ({ page, browser }) => {
   const login = await page.request.post("/api/gm/login", {
     data: { username: process.env.GM_USERNAME, password: process.env.GM_PASSWORD },
   });
@@ -292,7 +283,7 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
     "Confirmation",
     "Voyage Complete",
   ])
-    await dragLibraryBlock(page, name);
+    await addLibraryBlock(page, name);
   await expect(page.locator(".save-state")).toContainText("Saved at", { timeout: 15_000 });
 
   const detailResponse = await page.request.get(`/api/studio/tales/${taleId}`);
@@ -304,7 +295,23 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
       chapters: Array<{
         id: string;
         title: string;
-        blocks: Array<{ id: string; blockType: string; title: string; configuration: Record<string, unknown> }>;
+        blocks: Array<{
+          id: string;
+          blockType: string;
+          title: string;
+          configuration: Record<string, unknown>;
+          presentation: Record<string, unknown>;
+          completion: Record<string, unknown>;
+          schemaVersion: number;
+          nextBlockId: string | null;
+          connections: Array<{
+            targetBlockId: string;
+            connectionType: string;
+            label: string | null;
+            conditionExpression: string | null;
+            orderIndex: number;
+          }>;
+        }>;
       }>;
     };
   };
@@ -313,10 +320,7 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
       prompt: "Confirm arrival at the moon mark.",
       pendingText: "Watching the horizon...",
       captainNotification: "The crew reached the moon mark.",
-      verificationProvider: "playerConfirmation",
       allowCaptainOverride: true,
-      completionMode: "playerConfirmation",
-      futureProviderOptions: {},
     },
     imageTransformation: {
       beforeAssetId,
@@ -327,7 +331,7 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
       holdAfter: 0,
       caption: "Moon ink reveals the route.",
       alignment: { x: 0, y: 0, scale: 1, rotation: 0, opacity: 50, focalX: 50, focalY: 50 },
-      completionMode: "playerConfirmation",
+      nonMotionMeaning: "The chart changes from dark blue to gold, revealing the crew's route.",
     },
     artifactReveal: {
       artifactId,
@@ -336,17 +340,27 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
       loreTitle: "Moon Compass",
       loreDescription: "The needle remembers the route home.",
       addToCollection: true,
+      recipientPolicy: "CREW_COLLECTION_ONLY",
+      selectedRecipientProfileIds: [],
+      requiredCrewRole: null,
+      discoveringMembershipId: null,
+      personalGrantState: "COLLECTED",
+      custodyKind: "PERSONAL",
+      assemblyDefinitionId: null,
+      componentRole: null,
+      receiptState: "ACTIVE",
+      correctionOfGrantId: null,
+      correctionReason: null,
       revealAnimation: "lantern",
-      completionMode: "playerConfirmation",
     },
     image: {
       assetId: afterAssetId,
       caption: "The completed moon chart.",
       altText: "A moonlit route drawn in blue ink",
       displayMode: "journalFrame",
+      objectFit: "cover",
       focalX: 50,
       focalY: 50,
-      completionMode: "playerConfirmation",
     },
     confirmation: {
       prompt: "Secure the chart in the journal?",
@@ -354,7 +368,6 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
       secondaryLabel: "",
       confirmationStyle: "standard",
       captainOverride: true,
-      completionMode: "playerConfirmation",
     },
     taleComplete: {
       finaleHeading: "Moon chart complete",
@@ -362,7 +375,6 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
       completionMessage: "The media-rich voyage is complete.",
       credits: "Playwright authoring proof",
       replayAvailable: true,
-      completionMode: "playerConfirmation",
     },
   };
   const saveResponse = await page.request.patch(`/api/studio/tales/${taleId}/draft`, {
@@ -373,11 +385,21 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
       chapters: detail.draft.chapters.map((chapter) => ({
         ...chapter,
         estimatedDuration: 12,
-        blocks: chapter.blocks.map((block) => ({
-          ...block,
-          title: block.blockType === "imageTransformation" ? "Moon Ink Transformation" : block.title,
-          configuration: configurations[block.blockType],
-        })),
+        blocks: chapter.blocks.map((block, index, blocks) => {
+          const nextBlockId = blocks[index + 1]?.id ?? null;
+          return {
+            ...block,
+            title: block.blockType === "imageTransformation" ? "Moon Ink Transformation" : block.title,
+            configuration: configurations[block.blockType],
+            presentation: {},
+            completion: { mode: "playerConfirmation" },
+            schemaVersion: 2,
+            nextBlockId,
+            connections: nextBlockId
+              ? [{ targetBlockId: nextBlockId, connectionType: "DEFAULT", label: null, conditionExpression: null, orderIndex: 0 }]
+              : [],
+          };
+        }),
       })),
     },
   });
@@ -385,6 +407,7 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
 
   await page.reload();
   await page.locator(".timeline-block").filter({ hasText: "Moon Ink Transformation" }).click();
+  await page.getByRole("button", { name: /Presentation/u }).click();
   const opacity = page.locator('.alignment-editor input[type="range"]').first();
   await opacity.fill("68");
   await expect(page.locator(".save-state")).toContainText("Saved at", { timeout: 15_000 });
@@ -393,30 +416,55 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
   await page.getByRole("button", { name: "Replay Passage" }).click();
   await page.getByRole("button", { name: "Close Passage preview" }).click();
 
-  let publishDialogs = 0;
-  const publishDialogHandler = (dialog: import("@playwright/test").Dialog) => {
-    publishDialogs += 1;
-    if (dialog.type() === "prompt") return dialog.accept("Media-rich Playwright authoring proof");
-    expect(dialog.type()).toBe("confirm");
-    return dialog.accept();
-  };
-  page.on("dialog", publishDialogHandler);
-  try {
-    const publishResponse = page.waitForResponse(
-      (response) =>
-        response.request().method() === "POST" && response.url().endsWith(`/api/studio/tales/${taleId}/publish`),
-    );
-    await page.getByRole("button", { name: "Publish Chronicle" }).click();
-    const response = await publishResponse;
-    expect(response.status(), await response.text()).toBe(200);
-    await expect(page.locator(".save-state")).toContainText(/Published as Version/, { timeout: 30_000 });
-    expect(publishDialogs).toBe(2);
-  } finally {
-    page.off("dialog", publishDialogHandler);
-  }
+  const publishResponse = page.waitForResponse(
+    (response) => response.request().method() === "POST" && response.url().endsWith(`/api/studio/tales/${taleId}/publish`),
+  );
+  await page.getByRole("button", { name: "Publish Chronicle" }).click();
+  const publication = page.getByRole("dialog", { name: "Publish a new immutable Version?" });
+  await publication.getByLabel("Release notes").fill("Media-rich Playwright authoring proof");
+  await publication.getByRole("button", { name: "Publish Version" }).click();
+  const response = await publishResponse;
+  expect(response.status(), await response.text()).toBe(200);
+  await expect(page.locator(".save-state")).toContainText(/Published as Version/, { timeout: 30_000 });
 
-  const start = await page.request.post(`/api/tales/${taleSlug}/start`, {
-    data: { ownerLabel: "Moon Chart Crew" },
+  const playerContext = await browser.newContext();
+  const playerEmail = `${unique("moon-chart-player")}@example.test`;
+  const playerPassword = "Cobalt-Tide-7729!";
+  const register = await playerContext.request.post("/api/auth/register", {
+    data: {
+      displayName: "Moon Chart Player",
+      email: playerEmail,
+      password: playerPassword,
+      confirmPassword: playerPassword,
+    },
+  });
+  expect(register.status(), await register.text()).toBe(201);
+  const registration = (await register.json()) as { player: { id: string } };
+  const playerProfile = await db.playerProfile.findUniqueOrThrow({
+    where: { id: registration.player.id },
+    select: { accountId: true },
+  });
+  expect(playerProfile.accountId).toBeTruthy();
+  const verifiedAt = new Date();
+  await Promise.all([
+    db.userAccount.update({
+      where: { id: playerProfile.accountId! },
+      data: { status: "ACTIVE", claimedAt: verifiedAt, ordinaryWorkspaceEntryAt: verifiedAt },
+    }),
+    db.accountEmail.updateMany({
+      where: { accountId: playerProfile.accountId!, isPrimary: true },
+      data: { verificationState: "VERIFIED", verifiedAt },
+    }),
+  ]);
+  const signIn = await playerContext.request.post("/api/auth/sign-in", {
+    data: { login: playerEmail, password: playerPassword },
+  });
+  expect(signIn.status(), await signIn.text()).toBe(200);
+  const { csrfToken: playerCsrfToken } = (await signIn.json()) as { csrfToken: string };
+
+  const start = await playerContext.request.post(`/api/tales/${taleSlug}/start`, {
+    headers: { "x-csrf-token": playerCsrfToken },
+    data: { ownerLabel: "Moon Chart Crew", aliasEdited: true },
   });
   expect(start.status(), await start.text()).toBe(201);
   const { sessionId } = (await start.json()) as { sessionId: string };
@@ -428,17 +476,20 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
     "confirmation",
     "taleComplete",
   ]) {
-    const state = await current(page.request, sessionId);
+    const state = await current(playerContext.request, sessionId);
     expect(state.block?.blockType).toBe(expectedType);
     if (expectedType === "image") expect(state.inventory).toContain(artifactId);
-    const advance = await page.request.post(`/api/play/sessions/${sessionId}`, {
+    const advance = await playerContext.request.post(`/api/play/sessions/${sessionId}`, {
+      headers: { "x-csrf-token": playerCsrfToken },
       data: { action: "confirm", idempotencyKey: unique(`media-${expectedType}`) },
     });
     expect(advance.ok()).toBeTruthy();
   }
-  expect((await current(page.request, sessionId)).session.status).toBe("COMPLETED");
-  await page.goto(`/play/${taleSlug}/history`);
-  await expect(page.getByRole("heading", { name: "Playwright Moon Chart" })).toBeVisible();
-  await expect(page.getByText(/^Completed /)).toBeVisible();
-  await expect(page.getByRole("listitem").filter({ hasText: "artifact Granted" })).toBeVisible();
+  expect((await current(playerContext.request, sessionId)).session.status).toBe("COMPLETED");
+  const playerPage = await playerContext.newPage();
+  await playerPage.goto(`/play/${taleSlug}/history`);
+  await expect(playerPage.getByRole("heading", { name: "Playwright Moon Chart" })).toBeVisible();
+  await expect(playerPage.getByText(/^Completed /)).toBeVisible();
+  await expect(playerPage.getByRole("listitem").filter({ hasText: "artifact Granted" })).toBeVisible();
+  await playerContext.close();
 });

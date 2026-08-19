@@ -840,7 +840,11 @@ async function openPlayerJournalEntry(page: Page, open: Locator) {
         if ((await shell.getAttribute("data-journal-phase")) === "JOURNAL_READY") return "ready";
         return (await open.isVisible().catch(() => false)) ? "open" : "pending";
       },
-      { timeout: 15_000 },
+      // The governed isolated runtime can still be hydrating the Player
+      // snapshot after invitation confirmation. Wait for the visible product
+      // entry state instead of treating a healthy, bounded first load as a
+      // stale PageFlip-generation failure.
+      { timeout: 30_000 },
     )
     .not.toBe("pending");
   if ((await shell.getAttribute("data-journal-phase")) !== "JOURNAL_READY") await open.click();

@@ -961,13 +961,24 @@ export function PreferenceEditor({ mode }: { mode: "preferences" | "accessibilit
         </div>
       </section>
     );
-  const update = (next: Preferences) => {
-    setDraft({ ...draft, preferences: next });
+  const exp = (patch: Partial<Preferences["experience"]>) => {
+    // Browser input events can arrive before React has committed the previous
+    // draft. Build from the latest state so a quick sequence of preference
+    // edits cannot silently discard earlier selections on save.
+    setDraft((current) =>
+      current
+        ? {
+            ...current,
+            preferences: {
+              ...current.preferences,
+              experience: { ...current.preferences.experience, ...patch },
+            },
+          }
+        : current,
+    );
     setDirty(true);
     setMutation({ kind: "idle" });
   };
-  const exp = (patch: Partial<Preferences["experience"]>) =>
-    update({ ...draft.preferences, experience: { ...draft.preferences.experience, ...patch } });
   const save = async (event: FormEvent) => {
     event.preventDefault();
     setMutation({ kind: "saving" });

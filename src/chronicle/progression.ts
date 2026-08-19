@@ -471,6 +471,11 @@ export async function startTaleSession(
         publishedVersionId: version.id,
         ownerLabel: alias,
         voyageName: `${alias}'s voyage`,
+        // A public Chronicle still has a responsible Captain. Preserve the
+        // Creator's canonical and legacy identities when a Player starts a
+        // session so Captain approval and helper pairing stay authorized.
+        captainId: tale.creatorId,
+        captainAccountId: tale.creatorAccountId,
         accessTokenHash: digest(token),
         launchedAt: new Date(),
         currentChapterId: chapterByBlock(snapshot, first.id)?.id,

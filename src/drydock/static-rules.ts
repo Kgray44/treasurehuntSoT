@@ -111,9 +111,13 @@ export function analyzeDrydockStaticRules(input: {
         );
     }
     for (const rule of contract.accessibilityRules) {
+      const isProviderFallbackRule = rule.code === "DRYDOCK_ACCESS_PROVIDER_FALLBACK";
+      const fallbackRequired =
+        isProviderFallbackRule &&
+        ["visionLocation", "visionObject", "externalWebhook"].includes(String(block.completion.mode ?? ""));
       const explicitlyDecorative =
         rule.code === "DRYDOCK_ACCESS_IMAGE_TEXT_ALTERNATIVE" && block.configuration.decorative === true;
-      if (rule.required && !explicitlyDecorative && !at(source, rule.fieldPath ?? ""))
+      if (rule.required && !explicitlyDecorative && (!isProviderFallbackRule || fallbackRequired) && !at(source, rule.fieldPath ?? ""))
         issues.push(
           createDrydockIssue({
             code: rule.code,

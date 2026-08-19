@@ -65,4 +65,32 @@ describe("Drydock asset, privacy, and accessibility static rules", () => {
     expect(issues.map((issue) => issue.code)).not.toContain("DRYDOCK_ACCESS_IMAGE_TEXT_ALTERNATIVE");
     expect(issues.map((issue) => issue.code)).toContain("DRYDOCK_ACCESS_MOTION_MEANING");
   });
+  it("requires an accessible fallback only when an arrival check uses an unavailable external provider", () => {
+    const blocks: CanonicalDrydockBlock[] = [
+      {
+        id: "player-confirmation",
+        blockType: "arrivalCheck",
+        schemaVersion: 2,
+        configuration: { prompt: "Confirm arrival.", allowCaptainOverride: true },
+        presentation: {},
+        completion: { mode: "playerConfirmation" },
+        connections: [],
+        nextBlockId: null,
+      },
+      {
+        id: "external-provider",
+        blockType: "arrivalCheck",
+        schemaVersion: 2,
+        configuration: { prompt: "Verify position.", allowCaptainOverride: true },
+        presentation: {},
+        completion: { mode: "visionLocation" },
+        connections: [],
+        nextBlockId: null,
+      },
+    ];
+    const issues = analyzeDrydockStaticRules({ blocks, assets: [] });
+    expect(issues.filter((issue) => issue.code === "DRYDOCK_ACCESS_PROVIDER_FALLBACK")).toEqual([
+      expect.objectContaining({ location: expect.objectContaining({ blockId: "external-provider" }) }),
+    ]);
+  });
 });

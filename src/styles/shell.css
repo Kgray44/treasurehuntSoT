@@ -708,12 +708,22 @@
   }
 
   .product-shell-header {
-    grid-template-columns: auto auto 1fr auto;
+    /* At 200% zoom, three auto-sized header controls can exceed a narrow
+       viewport. Let the brand yield first while the return/menu and account
+       controls retain their reachable targets. */
+    grid-template-columns: minmax(0, 1fr) auto auto;
     gap: 0.45rem;
     padding: 0.5rem 0.65rem;
   }
 
+  .product-mark,
+  .product-mark > span:last-child {
+    min-width: 0;
+    overflow: hidden;
+  }
+
   .product-mark > span:first-child {
+    flex: 0 0 auto;
     width: 1.9rem;
     height: 1.9rem;
   }
@@ -726,7 +736,10 @@
   }
 
   .product-mark strong {
+    overflow: hidden;
     font-size: 0.92rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .product-menu-button {
@@ -740,6 +753,11 @@
     grid-template-columns: auto;
     justify-content: center;
     padding: 0.35rem;
+  }
+
+  .shell-purpose,
+  .shell-profile-region {
+    grid-column: auto;
   }
 
   .shell-account-disclosure {
