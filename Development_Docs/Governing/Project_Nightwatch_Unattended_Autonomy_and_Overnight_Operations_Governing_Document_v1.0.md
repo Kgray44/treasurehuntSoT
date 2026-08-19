@@ -48,16 +48,16 @@ Nightwatch remains an orchestrator, not a release authority. Sounding Line alone
 
 ### 2.1 Identity
 
-| Field | Value |
-|---|---|
-| Incident | `INC-T1-2026-08-19-RUNAWAY-ITERATION-001` |
-| Class | Runaway unattended iterative loop |
-| Reviewed lineage | PR `#302` through PR `#334` |
-| Final reviewed main | `d7e3f2f873139e3f7353bf288124f50543ce2aac` |
-| New PRs in lineage | 33 |
-| Merged supporting repairs | 6 |
-| Closed without merge | 23 |
-| Primary product objective merged | No |
+| Field                            | Value                                      |
+| -------------------------------- | ------------------------------------------ |
+| Incident                         | `INC-T1-2026-08-19-RUNAWAY-ITERATION-001`  |
+| Class                            | Runaway unattended iterative loop          |
+| Reviewed lineage                 | PR `#302` through PR `#334`                |
+| Final reviewed main              | `d7e3f2f873139e3f7353bf288124f50543ce2aac` |
+| New PRs in lineage               | 33                                         |
+| Merged supporting repairs        | 6                                          |
+| Closed without merge             | 23                                         |
+| Primary product objective merged | No                                         |
 
 Supporting maintenance that did land included browser-fixture partitioning, Shipwright browser isolation, Shipwright engine registration, browser-selection normalization, governed Shipwright runner admission, and generated P34 ledger admission.
 
@@ -107,17 +107,17 @@ The governing response is not to serialize development. It is to separate **para
 
 ## 5. Canonical Ownership Boundaries
 
-| System | Canonical ownership |
-|---|---|
+| System             | Canonical ownership                                                                                                            |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
 | Project Nightwatch | Engineering orchestration, objective scheduling, Integration Queue, budgets, leases, migration reservations, Bosun supervision |
-| Project Bosun | Bounded repository maintenance execution under Nightwatch |
-| Sounding Line | Test design policy, evidence validity, execution planning, maintenance qualification, Mainline Decision, `RELEASE_GO` |
-| Project Fairlead | GitHub interaction, rate-state coordination, caching, request routing, quota-aware mechanics |
-| Project Trim | Codex context packets, accepted capsules, inference and token efficiency |
-| Bridgewatch | Read-only Mission Control, integration/maintenance visibility, alerts, historical telemetry |
-| Deepwater | Capability realization audit and ownership findings |
-| Product projects | Product semantics, business logic, migrations and tests belonging to their owned feature scope |
-| Breakwater | Deployment, infrastructure, release consumption, service operations |
+| Project Bosun      | Bounded repository maintenance execution under Nightwatch                                                                      |
+| Sounding Line      | Test design policy, evidence validity, execution planning, maintenance qualification, Mainline Decision, `RELEASE_GO`          |
+| Project Fairlead   | GitHub interaction, rate-state coordination, caching, request routing, quota-aware mechanics                                   |
+| Project Trim       | Codex context packets, accepted capsules, inference and token efficiency                                                       |
+| Bridgewatch        | Read-only Mission Control, integration/maintenance visibility, alerts, historical telemetry                                    |
+| Deepwater          | Capability realization audit and ownership findings                                                                            |
+| Product projects   | Product semantics, business logic, migrations and tests belonging to their owned feature scope                                 |
+| Breakwater         | Deployment, infrastructure, release consumption, service operations                                                            |
 
 Nightwatch coordinates these systems. It does not fork their authority.
 
@@ -330,9 +330,11 @@ Nightwatch/Bosun never store credentials or private user/chat content in reposit
 ## 20. Implementation Roadmap
 
 ### Increment A: Integration Queue and Migration Reservations
+
 Machine-readable queue, candidate lifecycle, queue-front rule, one-active-candidate enforcement, JIT reconciliation, migration allocator, Bridgewatch projection.
 
 ### Increment B: Sounding Line Maintenance Isolation
+
 Shared baseline watch, project-owned ordinary acceptance, declarative registration, qualification-time generated artifacts, maintenance classification and protected boundaries, all implemented through Sounding Line's authority.
 
 ### Increment C: Project Bosun
@@ -362,21 +364,21 @@ Nightwatch v1.0 is accepted only when product development remains parallel; loca
 
 ## 22. Default Thresholds and Example Handoff
 
-| Metric | Warning | Default action limit |
-|---|---:|---:|
-| Product objective wall time | 60 min | park 90 min |
-| Bosun AUTO_1 | 30 min | park 45 min |
-| No material progress | 20 min | park 45 min |
-| Same semantic failure | first repeat | park second equivalent |
-| Product/Bosun successors | 1 | owner/park before third |
-| New PRs in lineage | 3 | park 5 |
-| Active product candidates/objective | N/A | reject above 1 |
-| Reconciliation restarts | 1 | park after 2 |
-| Full authority attempts without progress | 1 | park after 2 |
-| Scope growth | 125% | park 200% or +10 files |
-| Bosun reasoning concurrency | 1 | evidence required to increase |
-| AUTO_0 concurrency | 2 | non-overlap proof required |
-| Protected maintenance authority | 1 | do not exceed by default |
+| Metric                                   |      Warning |          Default action limit |
+| ---------------------------------------- | -----------: | ----------------------------: |
+| Product objective wall time              |       60 min |                   park 90 min |
+| Bosun AUTO_1                             |       30 min |                   park 45 min |
+| No material progress                     |       20 min |                   park 45 min |
+| Same semantic failure                    | first repeat |        park second equivalent |
+| Product/Bosun successors                 |            1 |       owner/park before third |
+| New PRs in lineage                       |            3 |                        park 5 |
+| Active product candidates/objective      |          N/A |                reject above 1 |
+| Reconciliation restarts                  |            1 |                  park after 2 |
+| Full authority attempts without progress |            1 |                  park after 2 |
+| Scope growth                             |         125% |        park 200% or +10 files |
+| Bosun reasoning concurrency              |            1 | evidence required to increase |
+| AUTO_0 concurrency                       |            2 |    non-overlap proof required |
+| Protected maintenance authority          |            1 |      do not exceed by default |
 
 ```text
 PROJECT NIGHTWATCH - SHIFT HANDOFF
@@ -407,18 +409,18 @@ INTEGRATION QUEUE
 
 Nightwatch cannot modify its own budget, lease, classifier, or authority semantics and use the changed behavior to qualify itself. Sounding Line, Fairlead, Trim, Bridgewatch, Breakwater, Bosun, and product-owner governance retain their boundaries.
 
-| Term | Definition |
-|---|---|
-| Product Fleet | parallel feature/project development lane |
-| Integration Queue | persistent serialized queue of locally complete candidates |
-| Queue Front | candidate authorized for JIT reconciliation/acceptance |
-| Migration Reservation | canonical allocation preventing branch collisions |
-| Bosun | Nightwatch-subordinate Autonomous Repository Maintenance and Repair Service |
-| Finding | normalized maintenance signal with provenance |
-| Failure Fingerprint | semantic identity across surface wording/PR/SHA changes |
-| Execution Lease | bounded scope/time mutation authorization |
-| Shared Baseline | common infrastructure health watched independently from product candidates |
-| Watch Ledger | restart-safe Nightwatch/Bosun operational state |
+| Term                  | Definition                                                                  |
+| --------------------- | --------------------------------------------------------------------------- |
+| Product Fleet         | parallel feature/project development lane                                   |
+| Integration Queue     | persistent serialized queue of locally complete candidates                  |
+| Queue Front           | candidate authorized for JIT reconciliation/acceptance                      |
+| Migration Reservation | canonical allocation preventing branch collisions                           |
+| Bosun                 | Nightwatch-subordinate Autonomous Repository Maintenance and Repair Service |
+| Finding               | normalized maintenance signal with provenance                               |
+| Failure Fingerprint   | semantic identity across surface wording/PR/SHA changes                     |
+| Execution Lease       | bounded scope/time mutation authorization                                   |
+| Shared Baseline       | common infrastructure health watched independently from product candidates  |
+| Watch Ledger          | restart-safe Nightwatch/Bosun operational state                             |
 
 ---
 

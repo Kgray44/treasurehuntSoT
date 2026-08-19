@@ -141,18 +141,18 @@ Parallel project chats often wait on CI, protected acceptance, or another owner.
 
 ## 5. Canonical Ownership Matrix
 
-| Area | Owner | Bosun role |
-|---|---|---|
-| Maintenance scheduling | Nightwatch | Execute subordinate maintenance queue |
-| Test/release authority | Sounding Line | Produce candidates/evidence only |
-| GitHub requests and mutations | Fairlead | Request bounded operations |
-| Codex context | Project Trim | Consume minimum sufficient context packets |
-| Mission Control | Bridgewatch | Publish maintenance status/telemetry |
-| Deployment/process operations | Breakwater | Request operational action through owner |
-| User support/private diagnosis | Admiralty | No direct ownership |
-| Product business semantics | Product project | Repair only inside owner-approved contract |
-| Migration allocations | Nightwatch | Detect/use reservations; report collisions |
-| Deep audit/findings | Deepwater | May consume/produce maintenance findings |
+| Area                           | Owner           | Bosun role                                 |
+| ------------------------------ | --------------- | ------------------------------------------ |
+| Maintenance scheduling         | Nightwatch      | Execute subordinate maintenance queue      |
+| Test/release authority         | Sounding Line   | Produce candidates/evidence only           |
+| GitHub requests and mutations  | Fairlead        | Request bounded operations                 |
+| Codex context                  | Project Trim    | Consume minimum sufficient context packets |
+| Mission Control                | Bridgewatch     | Publish maintenance status/telemetry       |
+| Deployment/process operations  | Breakwater      | Request operational action through owner   |
+| User support/private diagnosis | Admiralty       | No direct ownership                        |
+| Product business semantics     | Product project | Repair only inside owner-approved contract |
+| Migration allocations          | Nightwatch      | Detect/use reservations; report collisions |
+| Deep audit/findings            | Deepwater       | May consume/produce maintenance findings   |
 
 ---
 
@@ -253,13 +253,7 @@ A normalized finding should resemble:
 type MaintenanceFinding = {
   findingId: string;
   fingerprint: string;
-  source:
-    | "SOUNDING_LINE"
-    | "FAIRLEAD"
-    | "REPOSITORY"
-    | "BRIDGEWATCH"
-    | "INTEGRATION_QUEUE"
-    | "DEEPWATER";
+  source: "SOUNDING_LINE" | "FAIRLEAD" | "REPOSITORY" | "BRIDGEWATCH" | "INTEGRATION_QUEUE" | "DEEPWATER";
   category: string;
   severity: "INFO" | "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
   affectedProjects: string[];
@@ -402,13 +396,13 @@ Bosun is not simple FIFO.
 
 Recommended classes:
 
-| Priority | Meaning |
-|---|---|
-| P0 | blocks protected integration or shared safety |
-| P1 | shared infrastructure affecting multiple active projects |
-| P2 | Sounding Line, Fairlead, migration, generated-state health |
-| P3 | project-local maintenance not currently blocking fleet |
-| P4 | deterministic hygiene and cleanup |
+| Priority | Meaning                                                    |
+| -------- | ---------------------------------------------------------- |
+| P0       | blocks protected integration or shared safety              |
+| P1       | shared infrastructure affecting multiple active projects   |
+| P2       | Sounding Line, Fairlead, migration, generated-state health |
+| P3       | project-local maintenance not currently blocking fleet     |
+| P4       | deterministic hygiene and cleanup                          |
 
 Priority score may include:
 
@@ -963,19 +957,19 @@ Owner absence is not permission to execute `OWNER` class work. Bosun parks and c
 
 ## 34. Failure and Fallback Behavior
 
-| Failure | Required behavior |
-|---|---|
-| GitHub quota low | Fairlead degraded path, local work continues where safe |
-| Codex unavailable | AUTO_0 continues; reasoning jobs remain queued |
-| Sounding Line busy | repair candidate waits; other maintenance continues |
-| Shared browser resource busy | use lease/queue; do not steal product resource |
-| Finding source unavailable | mark source unhealthy; do not fabricate state |
-| Worktree disappears | reconcile ledger, mark interrupted, recreate only from safe base |
-| Same repair failure repeats | park objective |
-| Scope grows unexpectedly | reclassify/park |
-| Controller restarts | recover from durable ledger |
-| Main advances | maintenance objective re-evaluates exact semantic impact within budget |
-| Owner decision required | no mutation, continue other queue items |
+| Failure                      | Required behavior                                                      |
+| ---------------------------- | ---------------------------------------------------------------------- |
+| GitHub quota low             | Fairlead degraded path, local work continues where safe                |
+| Codex unavailable            | AUTO_0 continues; reasoning jobs remain queued                         |
+| Sounding Line busy           | repair candidate waits; other maintenance continues                    |
+| Shared browser resource busy | use lease/queue; do not steal product resource                         |
+| Finding source unavailable   | mark source unhealthy; do not fabricate state                          |
+| Worktree disappears          | reconcile ledger, mark interrupted, recreate only from safe base       |
+| Same repair failure repeats  | park objective                                                         |
+| Scope grows unexpectedly     | reclassify/park                                                        |
+| Controller restarts          | recover from durable ledger                                            |
+| Main advances                | maintenance objective re-evaluates exact semantic impact within budget |
+| Owner decision required      | no mutation, continue other queue items                                |
 
 ---
 
@@ -1143,21 +1137,21 @@ Maintenance history is append-only in meaning. Incidents and failed objectives m
 
 ## 41. Glossary
 
-| Term | Meaning |
-|---|---|
-| Bosun | Autonomous Repository Maintenance and Repair Service |
-| Finding | Normalized maintenance signal with provenance |
-| Fingerprint | Semantic identity used to dedupe/repeat-detect findings |
-| AUTO_0 | Deterministic maintenance, no Codex reasoning |
-| AUTO_1 | Bounded low-risk reasoning repair |
-| AUTO_2 | Protected maintenance candidate requiring independent authority |
-| OWNER | Explicit owner decision required, no autonomous mutation |
-| Lease | Bounded scope/time authorization for repair mutation |
-| Repair Candidate | One bounded branch/PR implementing a maintenance objective |
-| Postcondition | Explicit fact that must be true after repair |
-| Shared Baseline | Common runtime/browser/infrastructure contract maintained independently from product candidates |
-| Bosun Station | Bridgewatch Mission Control view of maintenance work |
-| `nightwatchd` | Preferred deterministic controller hosting Nightwatch and Bosun engines |
+| Term             | Meaning                                                                                         |
+| ---------------- | ----------------------------------------------------------------------------------------------- |
+| Bosun            | Autonomous Repository Maintenance and Repair Service                                            |
+| Finding          | Normalized maintenance signal with provenance                                                   |
+| Fingerprint      | Semantic identity used to dedupe/repeat-detect findings                                         |
+| AUTO_0           | Deterministic maintenance, no Codex reasoning                                                   |
+| AUTO_1           | Bounded low-risk reasoning repair                                                               |
+| AUTO_2           | Protected maintenance candidate requiring independent authority                                 |
+| OWNER            | Explicit owner decision required, no autonomous mutation                                        |
+| Lease            | Bounded scope/time authorization for repair mutation                                            |
+| Repair Candidate | One bounded branch/PR implementing a maintenance objective                                      |
+| Postcondition    | Explicit fact that must be true after repair                                                    |
+| Shared Baseline  | Common runtime/browser/infrastructure contract maintained independently from product candidates |
+| Bosun Station    | Bridgewatch Mission Control view of maintenance work                                            |
+| `nightwatchd`    | Preferred deterministic controller hosting Nightwatch and Bosun engines                         |
 
 ---
 
