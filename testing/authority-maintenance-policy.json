@@ -1,5 +1,5 @@
 {
-  "version": "1.0.7",
+  "version": "1.0.8",
   "authority": "SOUNDING_LINE_AUTHORITY_MAINTENANCE",
   "disposition": "AUTHORITY_MAINTENANCE_GO",
   "workflowDispatchOnly": true,
@@ -14,6 +14,7 @@
     "scripts/sounding-line/adapters.mjs",
     "scripts/sounding-line/cli.mjs",
     "scripts/sounding-line/verification-maintenance.mjs",
+    "scripts/sounding-line/record-only-closure.mjs",
     "scripts/sounding-line/project-discovery.mjs",
     "scripts/sounding-line/planner.mjs",
     "scripts/sounding-line/v14-fast-channel.mjs",
