@@ -234,6 +234,11 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
       );
   }, [activeGlobalNavigationId, navigationOpen]);
 
+  useEffect(() => {
+    if (accountOpen)
+      queueMicrotask(() => accountDisclosureRef.current?.querySelector<HTMLElement>("a, button")?.focus());
+  }, [accountOpen]);
+
   useLayoutEffect(() => {
     if (!accountOpen) return;
     const panel = accountDisclosureRef.current;
