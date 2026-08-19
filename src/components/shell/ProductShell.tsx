@@ -131,6 +131,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
     workspace: route.workspace,
     presentation: "mobile",
   });
+  const activeGlobalNavigationId = projection.activeGlobalItem?.id;
   const closeAll = useCallback(() => {
     setNavigationOpen(false);
     setAccountOpen(false);
@@ -224,8 +225,14 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (navigationOpen)
-      queueMicrotask(() => navigationDrawerRef.current?.querySelector<HTMLAnchorElement>("a")?.focus());
-  }, [navigationOpen]);
+      queueMicrotask(() =>
+        navigationDrawerRef.current
+          ?.querySelector<HTMLAnchorElement>(
+            activeGlobalNavigationId ? `[data-navigation-id="${activeGlobalNavigationId}"]` : "a",
+          )
+          ?.focus(),
+      );
+  }, [activeGlobalNavigationId, navigationOpen]);
 
   useLayoutEffect(() => {
     if (!accountOpen) return;
