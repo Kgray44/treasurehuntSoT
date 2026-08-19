@@ -7,6 +7,7 @@ import {
   createMaintenancePlan,
   finalizeMaintenance,
 } from "../../../scripts/sounding-line/verification-maintenance.mjs";
+import { classifyRecordOnlyDiff } from "../../../scripts/sounding-line/record-only-closure.mjs";
 import { buildStaticCommandPlan } from "../../../scripts/sounding-line/static.mjs";
 
 const sha = (character) => character.repeat(40);
@@ -234,6 +235,48 @@ test("only bounded Bridgewatch integration, projection, and records are eligible
   });
   assert.equal(result.classification, "ORDINARY_CANDIDATE");
   assert.deepEqual(result.errors, []);
+});
+
+test("ordinary candidates admit non-Sounding-Line project governing documentation without prior implementation authority", async () => {
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: await readOrdinaryCandidatePolicy(),
+    changedPaths: [
+      "Development_Docs/Governing/Project_Bosun_Autonomous_Repository_Maintenance_and_Repair_Service_Governing_Document_v1.0.md",
+      "Development_Docs/Governing/Project_Nightwatch_Unattended_Autonomy_and_Overnight_Operations_Governing_Document_v1.0.md",
+      "Development_Docs/INDEX.md",
+      "Development_Docs/document-index.json",
+    ],
+  });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(result.errors, []);
+});
+
+test("ordinary governance documentation admission excludes Sounding Line authority and unknown executable scope", async () => {
+  const policy = await readOrdinaryCandidatePolicy();
+  for (const changedPaths of [
+    ["Development_Docs/Governing/Project_Sounding_Line_v1.4_Performance_and_Efficiency_Governing_Addendum.md"],
+    ["Development_Docs/Governing/Sounding_Line_Effective_Authority.md"],
+    [
+      "Development_Docs/Governing/Project_Nightwatch_Unattended_Autonomy_and_Overnight_Operations_Governing_Document_v1.0.md",
+      "scripts/unclassified-governance-executable.mjs",
+    ],
+  ]) {
+    const result = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths });
+    assert.equal(result.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED", changedPaths.join(", "));
+    assert.equal(result.errors.length, 1, changedPaths.join(", "));
+  }
+});
+
+test("ordinary and record-only classifications retain their existing bounded routes", async () => {
+  const ordinary = classifyOrdinaryCandidate({
+    trustedPolicy: await readOrdinaryCandidatePolicy(),
+    changedPaths: ["src/app/page.tsx"],
+  });
+  assert.equal(ordinary.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(ordinary.errors, []);
+  const recordOnly = classifyRecordOnlyDiff([{ status: "M", path: "Development_Docs/INDEX.md" }]);
+  assert.equal(recordOnly.eligible, true);
+  assert.deepEqual(recordOnly.errors, []);
 });
 
 test("ordinary candidates still reject actual Sounding Line authority files", async () => {
