@@ -690,7 +690,7 @@ The success condition is:
 | Metric | Warning | Default action limit |
 |---|---:|---:|
 | Product objective wall time | 60 min | park at 90 min |
-| Bosun AUTO_1 wall time | 30 min | park at 45 min |
+| Bosun AUTO_1 objective wall time | 30 min | park at 45 min |
 | No material progress | 20 min | park at 45 min |
 | Same semantic failure | first repeat | park at second equivalent occurrence |
 | Product successors | 1 | owner required before third |
@@ -716,7 +716,7 @@ Starting main: <sha>
 Ending main:   <sha>
 
 PRODUCT FLEET
-- Admiralty P3: IMPLEMENTING
+- Admiralty P3: implementing
 - Drydock P4: QUEUE_READY
 - Wakebook P2: QUEUED position 2
 
@@ -724,7 +724,7 @@ INTEGRATED
 - Bridgewatch v2 P1: merged PR #...
 
 BOSUN COMPLETE
-- MW-00418: Shipwright isolated-runtime Git assumption repaired
+- MW-00418: Shipwright governed-runtime Git assumption repaired
 - MW-00421: deterministic registry drift reconciled
 - 4 superseded PRs closed
 
