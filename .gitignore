@@ -95,7 +95,6 @@ __pycache__/
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
 /.sealed-build*/
 # Deprecated repository guidance files. Do not reintroduce or track them.
 AGENTS.md
