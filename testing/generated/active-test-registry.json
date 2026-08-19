@@ -103662,7 +103662,7 @@
       "id": "sl-test-0a9760ecf5184335eda8",
       "semanticId": "sl-semantic-2f5e099be40bc8578d70",
       "title": "completion governance rejects premature authority and unsupported external claims",
-      "line": 463,
+      "line": 464,
       "file": "tests/sounding-line/phase3.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
