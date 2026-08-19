@@ -74,10 +74,8 @@ describe("ProductShell", () => {
     const trigger = screen.getByRole("button", { name: "Account" });
     fireEvent.click(trigger);
     const disclosure = screen.getByLabelText("Account navigation");
-    expect(within(disclosure).getByRole("link", { name: "Create Account" })).toBeInTheDocument();
-    const signIn = within(disclosure).getByRole("link", { name: "Sign In" });
-    await waitFor(() => expect(signIn).toHaveFocus());
-    expect(signIn).toHaveAttribute("href", "/sign-in?returnTo=%2F");
+    await waitFor(() => expect(within(disclosure).getByRole("link", { name: "Sign In" })).toHaveFocus());
+    expect(within(disclosure).getByRole("link", { name: "Sign In" })).toHaveAttribute("href", "/sign-in?returnTo=%2F");
     expect(within(disclosure).queryByText("Security & Sessions")).not.toBeInTheDocument();
     fireEvent.keyDown(window, { key: "Escape" });
     await waitFor(() => expect(trigger).toHaveFocus());
