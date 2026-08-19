@@ -3,7 +3,7 @@ title: Engineering record index
 audience: engineering
 status: current
 canonical_for: engineering-record-index
-last_reviewed: 2026-08-18
+last_reviewed: 2026-08-19
 ---
 
 # Engineering-record index
@@ -31,6 +31,11 @@ last_reviewed: 2026-08-18
 - `Archive/`: superseded, prompt, and legacy material.
 
 Use [document-index.json](document-index.json) for complete path-level classification.
+
+## Project Admiralty
+
+- [Project Admiralty governing baseline v1.2](Projects/Project%20Admiralty/Project_Admiralty_Platform_Administration_and_Operations_Governing_Document_v1.2.pdf) remains the parent administrative authority.
+- [Project Admiralty Governing Amendment v1.3 - The Support Pilot](Projects/Project%20Admiralty/Project_Admiralty_Governing_Amendment_v1.3_The_Support_Pilot.md) governs autonomous support diagnosis, delegated execution grants, bounded registered repairs, postcondition verification, support receipts, and systemic defect handoff. It supplements v1.2 and defines the S1 `Open the Case`, S2 `Turn the Wrench`, and S3 `Close the Case` sequence after accepted Admiralty Phase 3.
 
 ## Project Trim
 
