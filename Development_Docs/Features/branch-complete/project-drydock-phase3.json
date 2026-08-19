@@ -2,7 +2,7 @@
   "id": "FT-036",
   "title": "Drydock Deterministic Sea Trials",
   "summary": "Creators can persist revisioned synthetic Sea Trial scenarios and suites, deterministically execute the canonical One Voyage transition adapter with virtual time, seeded randomness, bounded faults, safe traces, coverage, and semantic comparison, and inspect the resulting private Studio evidence without mutating a live Voyage.",
-  "status": "BRANCH_COMPLETE_NOT_MERGED",
+  "status": "MAINLINE",
   "program": "Project Drydock Phase 3",
   "surfaces": [
     "/studio/tales/[taleId]/trials",
@@ -26,10 +26,8 @@
     { "kind": "test", "value": "src/drydock" },
     { "kind": "test", "value": "src/app/api/studio/tales/[taleId]/scenarios" }
   ],
-  "branch": "codex/project-drydock-phase3-run-sea-trials",
-  "commit": "99460bf5bec750586667b13f78149bbb20683cf5",
   "limitations": [
-    "Branch-complete local qualification is not protected-main availability, deployment, or owner acceptance.",
+    "Protected-main integration completed in PR #52 at 191a964488d0df71f8dcb91c5b8372fc73b6b32e; deployment and owner acceptance remain separate from source integration.",
     "Sea Trials use synthetic bounded inputs and never mutate a live Tale Session, provider, asset, or Player state.",
     "Live provider, production MySQL, physical-device, and external assistive-technology proof remain outside this phase.",
     "Immutable publishing evidence and Phase 4 integration remain out of scope."
