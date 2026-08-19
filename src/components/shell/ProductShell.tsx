@@ -155,7 +155,6 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
     }
     if (previousPathnameRef.current === pathname) return;
     previousPathnameRef.current = pathname;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     closeAll();
   }, [closeAll, pathname]);
 
