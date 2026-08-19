@@ -208,7 +208,10 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
     `/api/studio/tales/${fork.id}/versions/compare?left=${versionOne.id}&right=${versionTwo.id}`,
   );
   await expectOk(compare);
-  expect(await compare.json()).toMatchObject({ left: { id: versionOne.id }, right: { id: versionTwo.id } });
+  expect(await compare.json()).toMatchObject({
+    selection: { kind: "PAIR", sourceEditionId: versionOne.id, targetEditionId: versionTwo.id },
+    projection: { pair: { sourceEditionId: versionOne.id, targetEditionId: versionTwo.id } },
+  });
 
   activeState = (await (
     await expectOk(await playerContext.request.get(playerUrl(`/api/play/sessions/${created.playthroughId}`)))
@@ -299,7 +302,7 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
   await completedJournalLink.click();
   await expect(playerPage).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}/journal$`));
   await expect(playerPage.locator(".chronicle-journal-shell.mode-historical")).toBeVisible();
-  await expect(playerPage.getByText(/Read-only · edition checksum/)).toBeVisible();
+  await expect(playerPage.getByText("Read-only pages from the exact edition this crew experienced.")).toBeVisible();
 
   const pin = await playerContext.request.post(
     playerUrl(`/api/player/playthroughs/${created.playthroughId}/preference`),
