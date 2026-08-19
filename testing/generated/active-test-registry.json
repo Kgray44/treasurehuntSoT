@@ -167280,10 +167280,10 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-702acd9f88f5f3c8f93a",
+      "id": "sl-test-520103b7f1c90a67dd8d",
       "semanticId": "sl-semantic-2c26c5db8bca26fabe02",
       "title": "Harborlight Phase 4 moderator browser acceptance › protects the queue and case detail while preserving keyboard, mobile, zoom, reduced-motion, and Axe behavior",
-      "line": 58,
+      "line": 63,
       "file": "tests/e2e/harborlight-phase4.spec.ts",
       "project": "harborlight-phase4",
       "suiteId": "browser.community",
@@ -167318,14 +167318,14 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-702acd9f88f5f3c8f93a"],
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-2d74543cea66aeaacad4",
+      "id": "sl-test-6ddd49c981b9b4706a56",
       "semanticId": "sl-semantic-9509a3dda21b3c56c155",
       "title": "Harborlight Phase 4 moderator browser acceptance › enforces CSRF, expected revisions, and conflicts through the authenticated public route",
-      "line": 96,
+      "line": 101,
       "file": "tests/e2e/harborlight-phase4.spec.ts",
       "project": "harborlight-phase4",
       "suiteId": "browser.community",
@@ -167360,7 +167360,7 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-2d74543cea66aeaacad4"],
       "currentStatus": "ACTIVE"
     },
     {
@@ -168188,10 +168188,10 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-97cdbc78587778307aa5",
+      "id": "sl-test-154873669c223c73a042",
       "semanticId": "sl-semantic-98303ffe752cbaaf8b4a",
       "title": "Harborlight Phase 4 moderator browser acceptance › protects the queue and case detail while preserving keyboard, mobile, zoom, reduced-motion, and Axe behavior",
-      "line": 58,
+      "line": 63,
       "file": "tests/e2e/harborlight-phase4.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.community",
@@ -168226,14 +168226,14 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-97cdbc78587778307aa5"],
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-f0a36414e64e756c37c7",
+      "id": "sl-test-f3410e015484a34fa30f",
       "semanticId": "sl-semantic-7d52bbca2025626e9089",
       "title": "Harborlight Phase 4 moderator browser acceptance › enforces CSRF, expected revisions, and conflicts through the authenticated public route",
-      "line": 96,
+      "line": 101,
       "file": "tests/e2e/harborlight-phase4.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.community",
@@ -168268,7 +168268,7 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-f0a36414e64e756c37c7"],
       "currentStatus": "ACTIVE"
     },
     {
