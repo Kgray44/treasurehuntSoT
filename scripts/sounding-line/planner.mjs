@@ -34,6 +34,21 @@ function browserPartitionsFor(node, cases) {
     .sort((left, right) => left.browserEngine.localeCompare(right.browserEngine));
 }
 
+export function selectCasesForNode(node, cases, { changedPaths = [], authorityMode } = {}) {
+  if (node.adapter !== "playwright-family" || authorityMode !== "V14_CANDIDATE") return cases;
+  const directBrowserTestPaths = new Set(
+    changedPaths.filter((entry) => entry.startsWith("tests/e2e/") && /\.spec\.ts$/u.test(entry)),
+  );
+  // A candidate containing only direct browser-test edits may execute the
+  // exact registered cases from those files. Product, runtime, setup, or
+  // mixed path changes retain the suite-wide evidence contract below.
+  if (!directBrowserTestPaths.size || directBrowserTestPaths.size !== changedPaths.length) return cases;
+  const directCases = cases.filter((entry) =>
+    [entry.file, ...(entry.sourcePaths ?? [])].some((entryPath) => directBrowserTestPaths.has(entryPath)),
+  );
+  return directCases.length ? directCases : cases;
+}
+
 export function resolvePlanAuthority({ authorityIndex, gateId, authorityMode, githubRef, qualifiedBaseSha }) {
   if (authorityMode !== "CURRENT" && authorityMode !== "V13_CUTOVER" && authorityMode !== "V14_CANDIDATE")
     throw new Error(`UNKNOWN_AUTHORITY_MODE:${authorityMode}`);
@@ -127,7 +142,11 @@ export async function buildV14HostedPlan({
     runtimeConformanceRequired: authorityIndex.runtimeConformance?.required === true,
     runtimeConformanceSuiteId: authorityIndex.runtimeConformance?.suiteId ?? null,
     nodes: semanticPlan.nodes.map((node) => {
-      const cases = registry.cases.filter((entry) => entry.suiteId === node.id);
+      const cases = selectCasesForNode(
+        node,
+        registry.cases.filter((entry) => entry.suiteId === node.id),
+        { changedPaths: semanticPlan.changedInterval.changedPaths, authorityMode },
+      );
       const browserPartitions = browserPartitionsFor(node, cases);
       return {
         ...node,
