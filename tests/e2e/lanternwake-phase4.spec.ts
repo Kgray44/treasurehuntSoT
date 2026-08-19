@@ -19,19 +19,19 @@ test("Phase 4 gateway and authentication remain readable, responsive, and truthf
   await expectNoSeriousAccessibilityViolations(page);
 
   await page.goto("/player/sign-in");
-  const signInWarmup = await page.request.post("/api/player/sign-in", {
-    data: { playerName: "not-a-player", password: "not-a-password" },
-    maxRetries: 2,
-  });
-  expect([400, 401]).toContain(signInWarmup.status());
-  await page.getByLabel("Player name", { exact: true }).fill("not-a-player");
-  await page.getByLabel("Password", { exact: true }).fill("not-a-password");
-  await page.getByRole("button", { name: "Open my library" }).click();
-  await expect(page.getByText("Those Player credentials were not accepted.")).toHaveAttribute("role", "alert");
-  await page.getByRole("tab", { name: "Invitation code" }).click();
-  await expect(page.getByText("Those Player credentials were not accepted.")).toHaveCount(0);
-  await expect(page.locator("main")).toHaveAttribute("data-async-state", "idle");
-  await expect(page.getByLabel("Short code")).toBeFocused();
+  const expectedReturnTo = "/sign-in?returnTo=%2Fplayer%2Flibrary";
+  const canonicalSignIn = page.getByRole("link", { name: "Continue to account sign-in" });
+  const playerName = page.getByLabel("Player name", { exact: true });
+  const password = page.getByLabel("Password", { exact: true });
+  const invitationCodeTab = page.getByRole("tab", { name: "Invitation code" });
+  const main = page.locator("main");
+  const shortCode = page.getByLabel("Short code");
+  await expect(canonicalSignIn).toHaveAttribute("href", expectedReturnTo);
+  await expect(playerName).toHaveCount(0);
+  await expect(password).toHaveCount(0);
+  await invitationCodeTab.click();
+  await expect(main).toHaveAttribute("data-async-state", "idle");
+  await expect(shortCode).toBeFocused();
   await expectNoSeriousAccessibilityViolations(page);
 });
 
