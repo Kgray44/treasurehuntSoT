@@ -36,7 +36,8 @@
     ".next-admiralty-phase2/types/**/*.ts",
     ".next-admiralty-phase2/dev/types/**/*.ts",
     ".next-admiralty-phase2-walkthrough/types/**/*.ts",
-    ".next-admiralty-phase2-walkthrough/dev/types/**/*.ts"
+    ".next-admiralty-phase2-walkthrough/dev/types/**/*.ts",
+    ".next/dev/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules", ".sealed-build*/**"]
 }
