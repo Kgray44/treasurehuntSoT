@@ -14,7 +14,7 @@ test("record-only authority closure repair is admitted only through the governed
     "testing/generated/active-test-registry.json",
   ];
 
-  assert.equal(policy.version, "1.0.8");
+  assert.equal(policy.version, "1.0.9");
   assert.equal(policy.eligiblePathGlobs.includes("scripts/sounding-line/record-only-closure.mjs"), true);
   assert.equal(policy.bindingPreflightPaths.includes("scripts/sounding-line/record-only-closure.mjs"), true);
   assert.deepEqual(

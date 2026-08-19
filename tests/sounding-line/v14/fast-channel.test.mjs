@@ -269,6 +269,27 @@ test("Bridgewatch documentation remains documentation evidence while UI changes 
   assert.equal(ui.ledger.find((entry) => entry.suiteId === "browser.captain").evidenceDisposition, "PRESERVED");
 });
 
+test("ordinary project governing Markdown selects documentation evidence without broad product fallback", async () => {
+  const [suiteInventory, impact] = await Promise.all([testingJson("suites.json"), testingJson("impact-map.json")]);
+  const plan = selectV14Mainline({
+    changedPaths: [
+      "Development_Docs/Governing/Project_Nightwatch_Unattended_Autonomy_and_Overnight_Operations_Governing_Document_v1.0.md",
+      "Development_Docs/Governing/Project_Bosun_Autonomous_Repository_Maintenance_and_Repair_Service_Governing_Document_v1.0.md",
+      "Development_Docs/INDEX.md",
+      "Development_Docs/document-index.json",
+    ],
+    suites: suiteInventory.suites,
+    requiredSuiteIds: ["browser.access-sentinel"],
+    ledgerSuiteIds: suiteInventory.suites.map((suite) => suite.id),
+    impact,
+  });
+
+  assert.equal(plan.fallback, null);
+  assert.deepEqual(plan.selectedSuiteIds, ["browser.access-sentinel", "static.core", "validation.documentation"]);
+  assert.equal(plan.ledger.find((entry) => entry.suiteId === "unit.sounding-line").evidenceDisposition, "PRESERVED");
+  assert.equal(plan.ledger.find((entry) => entry.suiteId === "browser.auth").evidenceDisposition, "PRESERVED");
+});
+
 test("Project Trim Phase 1 selects its governed minimum sufficient evidence without broad browser fallback", async () => {
   const [suiteInventory, impact] = await Promise.all([testingJson("suites.json"), testingJson("impact-map.json")]);
   const projectTrimPhaseOnePaths = [
