@@ -269,6 +269,21 @@ test("the governed Shipwright journey runner is ordinary-admissible without broa
   }
 });
 
+test("generated P34 retirement ledgers can accompany governed browser test changes", async () => {
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: await readOrdinaryCandidatePolicy(),
+    changedPaths: [
+      "tests/e2e/phase3-lifecycle-extended.spec.ts",
+      "testing/generated/active-test-registry.json",
+      "testing/generated/p34-retirement-ledger.json",
+      "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv",
+      "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv",
+    ],
+  });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(result.errors, []);
+});
+
 test("mixed Bridgewatch and authority-changing diffs remain rejected", async () => {
   const result = classifyOrdinaryCandidate({
     trustedPolicy: await readOrdinaryCandidatePolicy(),

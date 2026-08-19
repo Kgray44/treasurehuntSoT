@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1",
+  "version": "1.0.2",
   "authority": "SOUNDING_LINE_VERIFICATION_MAINTENANCE",
   "trustedMainOnly": true,
   "protectedContext": "Sounding Line / Mainline Decision",
@@ -75,6 +75,9 @@
     "scripts/agent-context/**",
     "scripts/generate-document-index.mjs",
     "testing/generated/active-test-registry.json",
+    "testing/generated/p34-retirement-ledger.json",
+    "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv",
+    "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv",
     "tests/agent-context/**",
     "Development_Docs/Programs/Project_Trim/**",
     "Development_Docs/Governing/Project_Trim_*.pdf",
