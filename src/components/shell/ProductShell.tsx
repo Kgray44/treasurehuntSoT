@@ -36,15 +36,19 @@ function NavigationLinks({
   activeId,
   motionKey,
   onNavigate,
+  initialFocusRef,
 }: {
   items: readonly ProjectedNavigationItem[];
   activeId?: string;
   motionKey: string;
   onNavigate: () => void;
+  initialFocusRef?: (node: HTMLAnchorElement | null) => void;
 }) {
   const { mode } = useMotionMode();
   const micro = resolvePlatformMotionToken("micro", mode);
-  return items.map((item) => {
+  const activeIndex = items.findIndex((item) => item.id === activeId && item.href);
+  const initialFocusIndex = activeIndex >= 0 ? activeIndex : items.findIndex((item) => item.href);
+  return items.map((item, index) => {
     if (!item.href) return null;
     const current = activeId === item.id;
     return (
@@ -52,6 +56,7 @@ function NavigationLinks({
         key={item.id}
         className={current ? "current" : undefined}
         href={item.href}
+        ref={index === initialFocusIndex ? initialFocusRef : undefined}
         aria-current={current ? "page" : undefined}
         data-navigation-id={item.id}
         onClick={onNavigate}
@@ -143,6 +148,12 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
     setAccountOpen(false);
     if (restoreFocus) queueMicrotask(() => accountButtonRef.current?.focus());
   }, []);
+  const focusNavigationEntry = useCallback(
+    (node: HTMLAnchorElement | null) => {
+      if (navigationOpen && node) node.focus();
+    },
+    [navigationOpen],
+  );
 
   useEffect(() => {
     // A browser history or non-link route change must close any modal shell navigation before focus handoff.
@@ -225,10 +236,14 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
 
   useLayoutEffect(() => {
     if (!navigationOpen) return;
-    // The drawer is committed synchronously with this state change. Focus it
-    // before paint so a WebKit navigation cannot leave the opened dialog with
-    // the trigger (or a disappearing route target) still active.
-    navigationDrawerRef.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+    // The callback ref below focuses the active entry while it is committed.
+    // Keep a synchronous fallback for a navigation projection that changes
+    // independently while its drawer remains open.
+    const drawer = navigationDrawerRef.current;
+    // `querySelector("a[aria-current=page], a")` follows document order, so
+    // it would select Home before a later current entry. Resolve the preferred
+    // target independently before falling back to the first destination.
+    (drawer?.querySelector<HTMLAnchorElement>('a[aria-current="page"]') ?? drawer?.querySelector<HTMLAnchorElement>("a"))?.focus();
   }, [navigationOpen]);
 
   useLayoutEffect(() => {
@@ -326,6 +341,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                 activeId={projection.activeGlobalItem?.id}
                 motionKey="global"
                 onNavigate={closeAll}
+                initialFocusRef={focusNavigationEntry}
               />
             </nav>
             {projection.workspaceItems.length ? (
