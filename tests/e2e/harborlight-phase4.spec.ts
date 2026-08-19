@@ -77,10 +77,10 @@ test.describe.serial("Harborlight Phase 4 moderator browser acceptance", () => {
     const caseLink = moderator.page.getByRole("link", { name: caseKey });
     await caseLink.focus();
     await expect(caseLink).toBeFocused();
-    // Client-side navigation is owned by the shared shell. Verify keyboard
-    // focus here, then use a full protected route request so this acceptance
-    // suite tests the moderator page rather than the shell router.
-    await moderator.page.goto(`/community/moderation/${caseId}`);
+    // Activate the focused, protected destination as a moderator would. This
+    // keeps the browser journey inside the shared shell while still proving
+    // that the case-detail route applies its own server-side access checks.
+    await caseLink.click();
     await expect(moderator.page.getByRole("heading", { name: `Case ${caseKey}` })).toBeVisible();
     await expect(moderator.page.getByText("Reporter identities are intentionally not shown.")).toBeVisible();
     expect(await moderator.page.content()).not.toContain("private-storage-key");
