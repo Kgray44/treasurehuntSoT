@@ -809,6 +809,7 @@ $finalizationFailures = @()
 $ownedValidationServer = $null
 $ownedProductionServer = $null
 $tideglassTaskRoot = $null
+$shipwrightTaskRoot = $null
 $playwrightInvoked = $false
 $defaultBrowserSucceeded = $false
 $productionPerformanceSucceeded = $false
@@ -936,13 +937,17 @@ try {
         )
         $tideglassBrowserFile = "tests/e2e/tideglass-phase3.spec.ts"
         $tideglassSetupFile = "tests/e2e/phase3-readonly-setup.setup.ts"
+        $shipwrightBrowserFile = "tests/e2e/project-shipwright-phase2.spec.ts"
         $tideglassBrowserSelections = @()
+        $shipwrightBrowserSelections = @()
         $ordinaryBrowserSelections = @()
         $ordinaryBrowserSnapshot = $null
         if ($BrowserSelections.Count -gt 0) {
             foreach ($selection in $BrowserSelections) {
                 $selectionFiles = @($selection.files | ForEach-Object { ([string]$_).Replace('\', '/') })
-                if ($selectionFiles -notcontains $tideglassBrowserFile) {
+                $hasTideglass = $selectionFiles -contains $tideglassBrowserFile
+                $hasShipwright = $selectionFiles -contains $shipwrightBrowserFile
+                if (-not $hasTideglass -and -not $hasShipwright) {
                     $ordinaryBrowserSelections += $selection
                     continue
                 }
@@ -950,32 +955,49 @@ try {
                 # an ordinary browser target. Keep it with the Tideglass batch so a
                 # selection containing only that dependency is not split into an empty
                 # ordinary test command.
-                $tideglassFiles = @($selectionFiles | Where-Object { $_ -in @($tideglassBrowserFile, $tideglassSetupFile) })
-                $ordinaryFiles = @($selectionFiles | Where-Object { $_ -notin @($tideglassBrowserFile, $tideglassSetupFile) })
-                if ($ordinaryFiles.Count -eq 0) {
-                    $tideglassBrowserSelections += $selection
-                    continue
+                $tideglassFiles = if ($hasTideglass) {
+                    @($selectionFiles | Where-Object { $_ -in @($tideglassBrowserFile, $tideglassSetupFile) })
+                } else {
+                    @()
                 }
-                $tideglassSelection = [pscustomobject]@{
-                    project = [string]$selection.project
-                    files = $tideglassFiles
-                    grep = [string]$selection.grep
-                    caseCount = 0
+                $shipwrightFiles = if ($hasShipwright) {
+                    @($selectionFiles | Where-Object { $_ -eq $shipwrightBrowserFile })
+                } else {
+                    @()
                 }
-                $ordinarySelection = [pscustomobject]@{
-                    project = [string]$selection.project
-                    files = $ordinaryFiles
-                    grep = [string]$selection.grep
-                    caseCount = 0
+                $ordinaryExcludedFiles = @($tideglassFiles + $shipwrightFiles)
+                $ordinaryFiles = @($selectionFiles | Where-Object { $_ -notin $ordinaryExcludedFiles })
+                $partitions = @()
+                foreach ($partition in @(
+                    [pscustomobject]@{ Name = "Tideglass"; Files = $tideglassFiles },
+                    [pscustomobject]@{ Name = "Shipwright"; Files = $shipwrightFiles },
+                    [pscustomobject]@{ Name = "ordinary"; Files = $ordinaryFiles }
+                )) {
+                    if ($partition.Files.Count -eq 0) { continue }
+                    $partitionSelection = [pscustomobject]@{
+                        project = [string]$selection.project
+                        files = @($partition.Files)
+                        grep = [string]$selection.grep
+                        caseCount = 0
+                    }
+                    $partitionSelection.caseCount = Get-BrowserSelectionDiscoveryCount -Selection $partitionSelection
+                    if ($partitionSelection.caseCount -lt 1) {
+                        throw "GOVERNED_BROWSER_SELECTION_PARTITION_EMPTY:$($partition.Name):$($selection.project)"
+                    }
+                    $partitions += [pscustomobject]@{ Name = $partition.Name; Selection = $partitionSelection }
                 }
-                $tideglassSelection.caseCount = Get-BrowserSelectionDiscoveryCount -Selection $tideglassSelection
-                $ordinarySelection.caseCount = Get-BrowserSelectionDiscoveryCount -Selection $ordinarySelection
-                if ($tideglassSelection.caseCount -lt 1 -or $ordinarySelection.caseCount -lt 1 -or
-                    ($tideglassSelection.caseCount + $ordinarySelection.caseCount) -ne [int]$selection.caseCount) {
-                    throw "GOVERNED_TIDEGLASS_BROWSER_SELECTION_PARTITION_MISMATCH:$($selection.project):expected=$($selection.caseCount):tideglass=$($tideglassSelection.caseCount):ordinary=$($ordinarySelection.caseCount)"
+                $partitionCaseCount = @($partitions | ForEach-Object { [int]$_.Selection.caseCount } | Measure-Object -Sum).Sum
+                if ($partitionCaseCount -ne [int]$selection.caseCount) {
+                    throw "GOVERNED_BROWSER_SELECTION_PARTITION_MISMATCH:$($selection.project):expected=$($selection.caseCount):actual=$partitionCaseCount"
                 }
-                $tideglassBrowserSelections += $tideglassSelection
-                $ordinaryBrowserSelections += $ordinarySelection
+                foreach ($partition in $partitions) {
+                    switch ($partition.Name) {
+                        "Tideglass" { $tideglassBrowserSelections += $partition.Selection; break }
+                        "Shipwright" { $shipwrightBrowserSelections += $partition.Selection; break }
+                        "ordinary" { $ordinaryBrowserSelections += $partition.Selection; break }
+                        default { throw "GOVERNED_BROWSER_SELECTION_PARTITION_UNKNOWN:$($partition.Name)" }
+                    }
+                }
             }
         }
         if ($BrowserSelections.Count -eq 0 -and $selectedBrowserFiles -contains $tideglassBrowserFile) {
@@ -983,6 +1005,23 @@ try {
             if ($unexpectedFiles.Count -gt 0) {
                 throw "GOVERNED_TIDEGLASS_BROWSER_ARGS_MIXED:$($unexpectedFiles -join ',')"
             }
+        }
+        if ($shipwrightBrowserSelections.Count -gt 0) {
+            # Shipwright's mutable Creator journey owns a purpose-built synthetic
+            # account and a dynamic loopback server. It cannot borrow the generic
+            # development account or the ordinary browser database.
+            $shipwrightParent = [System.IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA "ProjectShipwright\SoundingLine"))
+            $shipwrightTaskRoot = [System.IO.Path]::GetFullPath(
+                (Join-Path $shipwrightParent ("validation-" + $isolation.nonceHash.Substring(0, 16)))
+            )
+            $shipwrightPrefix = $shipwrightParent.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+            if (-not $shipwrightTaskRoot.StartsWith($shipwrightPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+                throw "GOVERNED_SHIPWRIGHT_TASK_ROOT_ESCAPED:$shipwrightTaskRoot"
+            }
+            if (Test-Path -LiteralPath $shipwrightTaskRoot) {
+                throw "GOVERNED_SHIPWRIGHT_TASK_ROOT_ALREADY_EXISTS:$shipwrightTaskRoot"
+            }
+            $env:SHIPWRIGHT_PHASE2_TASK_ROOT = $shipwrightTaskRoot
         }
         if ($tideglassBrowserSelections.Count -gt 0 -or ($BrowserSelections.Count -eq 0 -and $selectedBrowserFiles -contains $tideglassBrowserFile)) {
             $tideglassParent = [System.IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA "ProjectTideglass\SoundingLine"))
@@ -1077,6 +1116,13 @@ try {
                     RestoreOrdinaryFixture = $false
                 }
             }
+            if ($shipwrightBrowserSelections.Count -gt 0) {
+                $browserSelectionBatches += [pscustomobject]@{
+                    Name = "Shipwright"
+                    Selections = @($shipwrightBrowserSelections)
+                    RestoreOrdinaryFixture = $false
+                }
+            }
             if ($ordinaryBrowserSelections.Count -gt 0) {
                 $browserSelectionBatches += [pscustomobject]@{
                     Name = "ordinary"
@@ -1088,6 +1134,23 @@ try {
                 throw "GOVERNED_BROWSER_SELECTION_BATCHES_EMPTY"
             }
             foreach ($batch in $browserSelectionBatches) {
+                if ($batch.Name -eq "Shipwright") {
+                    foreach ($selection in $batch.Selections) {
+                        Assert-BrowserSelectionDiscovery -Selection $selection
+                        if (@($selection.files).Count -ne 1 -or
+                            [string]$selection.files[0] -ne $shipwrightBrowserFile -or
+                            [int]$selection.caseCount -ne 1) {
+                            throw "GOVERNED_SHIPWRIGHT_BROWSER_SELECTION_INVALID:$($selection.project):cases=$($selection.caseCount)"
+                        }
+                        # This runner materializes only Shipwright's synthetic Creator
+                        # fixture, hands its private credential directly to Playwright,
+                        # and owns a separate dynamic loopback port.
+                        Invoke-ValidationStep -Name "Running exact governed Shipwright Phase 2 browser acceptance" -Arguments @(
+                            "scripts/shipwright/run-phase2-journeys.mjs"
+                        )
+                    }
+                    continue
+                }
                 if ($batch.RestoreOrdinaryFixture) {
                     Write-Host "`n==> Restoring ordinary browser fixture after Tideglass partition" -ForegroundColor Cyan
                     Copy-TaskOwnedDatabaseWithSidecars -SourceDatabase $ordinaryBrowserSnapshot -DestinationDatabase $isolatedDatabase -FailureCode "GOVERNED_TIDEGLASS_ORDINARY_FIXTURE_RESTORE_FAILED"
@@ -1256,6 +1319,25 @@ try {
                 Set-Content -LiteralPath (Join-Path $validationArtifacts "tideglass-task-root-cleanup.json") -Encoding utf8
         } catch {
             $finalizationFailures += "Tideglass task-root cleanup failed: $($_.Exception.Message)"
+        }
+    }
+    if ($shipwrightTaskRoot -and (Test-Path -LiteralPath $shipwrightTaskRoot -PathType Container)) {
+        try {
+            $shipwrightParent = [System.IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA "ProjectShipwright\SoundingLine"))
+            $shipwrightPrefix = $shipwrightParent.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+            $resolvedShipwrightTaskRoot = [System.IO.Path]::GetFullPath($shipwrightTaskRoot)
+            if (-not $resolvedShipwrightTaskRoot.StartsWith($shipwrightPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+                throw "GOVERNED_SHIPWRIGHT_TASK_ROOT_CLEANUP_REFUSED:$resolvedShipwrightTaskRoot"
+            }
+            Remove-Item -LiteralPath $resolvedShipwrightTaskRoot -Recurse -Force
+            if (Test-Path -LiteralPath $resolvedShipwrightTaskRoot) {
+                throw "GOVERNED_SHIPWRIGHT_TASK_ROOT_CLEANUP_INCOMPLETE:$resolvedShipwrightTaskRoot"
+            }
+            @{ status = "CLEAN"; resource = "shipwright-phase2-task-root"; taskRoot = $resolvedShipwrightTaskRoot } |
+                ConvertTo-Json -Compress |
+                Set-Content -LiteralPath (Join-Path $validationArtifacts "shipwright-task-root-cleanup.json") -Encoding utf8
+        } catch {
+            $finalizationFailures += "Shipwright task-root cleanup failed: $($_.Exception.Message)"
         }
     }
     $portsReleased = $true
