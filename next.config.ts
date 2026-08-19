@@ -6,17 +6,12 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: homeportAllowedDevOrigins(),
   webpack: (config, { dev }) => {
     if (dev) {
-      const ignored = Array.isArray(config.watchOptions?.ignored)
-        ? config.watchOptions.ignored
-        : config.watchOptions?.ignored
-          ? [config.watchOptions.ignored]
-          : [];
       config.watchOptions = {
         ...config.watchOptions,
         // SQLite mutations are runtime data, not source changes. Watching an
         // isolated test database triggers HMR mid-journey, particularly in
         // WebKit, and can replace a protected navigation with its prior page.
-        ignored: [...ignored, "**/prisma/*.db*"],
+        ignored: /node_modules|[\\/]prisma[\\/][^\\/]+\.db(?:[-.][^\\/]*)?$/u,
       };
     }
     return config;
