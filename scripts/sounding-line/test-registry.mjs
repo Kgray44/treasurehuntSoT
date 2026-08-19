@@ -282,6 +282,7 @@ const chromiumProjects = new Set([
   "homeport-phase2",
   "homeport-phase4",
   "phase3-readonly-setup",
+  "platform-navigation-baseline",
   "shipwright-phase2",
   "sounding-line-access-sentinel",
   "wakebook-phase1",
