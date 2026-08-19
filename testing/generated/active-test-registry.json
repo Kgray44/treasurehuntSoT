@@ -105258,9 +105258,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-dda1797b55be97d5bd26",
-      "semanticId": "sl-semantic-ac0561c632b18248e72c",
-      "title": "record-only prior authority accepts one normal protected decision and a protected-main dispatch",
+      "id": "sl-test-8dd3a2336d50868d39af",
+      "semanticId": "sl-semantic-0661807aea22dec5b0ce",
+      "title": "record-only prior authority accepts a normal protected decision dispatched from the implementation candidate",
       "line": 35,
       "file": "tests/sounding-line/record-only-closure.test.mjs",
       "suiteId": "unit.sounding-line",
@@ -105299,9 +105299,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-61bb97df68c332c4eccb",
-      "semanticId": "sl-semantic-71a572a448cea61c332c",
-      "title": "record-only prior authority rejects a run not dispatched from the implementation base",
+      "id": "sl-test-0d6a2b0c7d69079a95fa",
+      "semanticId": "sl-semantic-4d89342fef3209d5cca5",
+      "title": "record-only prior authority rejects a run not dispatched from the implementation candidate",
       "line": 61,
       "file": "tests/sounding-line/record-only-closure.test.mjs",
       "suiteId": "unit.sounding-line",
