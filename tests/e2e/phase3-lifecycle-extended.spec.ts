@@ -980,7 +980,7 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
   });
 });
 
-test.describe.serial("Project Lanternwake Phase 3 historical routes and audio lifecycle", () => {
+test.describe.serial("Project Lanternwake Phase 3 Quartermaster and audio lifecycle", () => {
   test("historical Quartermaster bookmarks redirect a signed-in Captain to the canonical library", async ({
     page,
     phase3Captain,
