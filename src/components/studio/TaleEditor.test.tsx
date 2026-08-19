@@ -233,7 +233,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
 
     const first = screen.getByText("Opening Scene").closest<HTMLElement>("article")!;
     const second = screen.getByText("Second Scene").closest<HTMLElement>("article")!;
-    expect(first).toHaveAttribute("role", "button");
+    expect(first).toHaveAttribute("role", "group");
     expect(first).toHaveAttribute("aria-roledescription", "sortable");
     fireEvent.click(first);
     fireEvent.click(second, { ctrlKey: true });

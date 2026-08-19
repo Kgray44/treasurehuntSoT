@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { gotoStable } from "./navigation";
 
 test("Player sign-in remains public, accessible, and does not grant a Chronicle session", async ({ page }) => {
   const response = await page.goto("/player/sign-in#invitation-code");
@@ -34,7 +35,7 @@ test("published Chronicle catalog is public while Studio remains protected", asy
   await expect(page.getByRole("article").first().getByRole("link", { name: "Preview Chronicle" })).toBeVisible({
     timeout: 30_000,
   });
-  await page.goto("/studio");
+  await gotoStable(page, "/studio");
   await expect(page).toHaveURL(/\/sign-in\?returnTo=%2Fstudio%2Flibrary$/);
   await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
   expect((await page.request.get("/api/studio/tales")).status()).toBe(401);

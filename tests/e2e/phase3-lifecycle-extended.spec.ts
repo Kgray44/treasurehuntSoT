@@ -11,6 +11,7 @@ import {
   phase3Test as test,
   setPhase3Motion,
 } from "./fixtures/lanternwake-phase3";
+import { gotoStable } from "./navigation";
 
 const lifecycleCycles = 20;
 const extendedTimeout = 900_000;
@@ -443,22 +444,6 @@ function stableRiveRemountSnapshot(snapshot: ExtendedSnapshot) {
   return stable;
 }
 
-function stableQuartermasterSnapshot(snapshot: ExtendedSnapshot) {
-  // Captain command completion can leave framework-managed global listener
-  // registrations behind while it reconciles its status notices. The concrete
-  // command host, focus-trap, timer, claim, and runtime counts remain exact;
-  // focused Quartermaster tests separately exercise its owned listener cleanup.
-  const {
-    activeListeners: _activeListeners,
-    // The command shell schedules one framework RAF while status notices
-    // settle. It is not owned by the confirmation overlay; focused command
-    // tests still require the overlay, focus, timers, and host state to clear.
-    activeRafs: _activeRafs,
-    ...stable
-  } = stableSnapshot(snapshot);
-  return stable;
-}
-
 function stableLottieRemountSnapshot(snapshot: ExtendedSnapshot) {
   const {
     activeListeners: _activeListeners,
@@ -582,13 +567,7 @@ async function assetStatus(page: Page, name: "Rive" | "Lottie") {
 }
 
 async function openDevelopmentShowcase(page: Page) {
-  if (!page.url().endsWith("/")) await page.goto("/");
-  const skip = page.getByRole("button", { name: "Skip arrival" });
-  if (await skip.isVisible().catch(() => false)) await skip.click();
-  await Promise.all([
-    page.waitForURL(/\/dev\/animations(?:[?#]|$)/u),
-    page.getByRole("link", { name: /TEST ANIMATIONS/u }).click(),
-  ]);
+  await gotoStable(page, "/dev/animations");
   await expect(page.getByRole("heading", { name: "Forever Treasure Animation Showcase" })).toBeVisible();
 }
 
@@ -1001,110 +980,17 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
   });
 });
 
-test.describe.serial("Project Lanternwake Phase 3 Quartermaster and audio lifecycle", () => {
-  test("mocked Quartermaster confirmations restore focus and release overlays for twenty cycles", async ({
+test.describe.serial("Project Lanternwake Phase 3 historical routes and audio lifecycle", () => {
+  test("historical Quartermaster bookmarks redirect a signed-in Captain to the canonical library", async ({
     page,
     phase3Captain,
   }) => {
-    test.setTimeout(extendedTimeout);
-    await installExtendedLifecycleProbe(page);
     const storage = await phase3Captain.context.storageState();
     await page.context().addCookies(storage.cookies);
-    let commandRequests = 0;
-    let sequence = 40;
-    const interceptedUnsafeRequests: Array<Readonly<{ method: string; pathname: string }>> = [];
-    const status = () => ({
-      csrfToken: "extended-lifecycle-read-only-csrf",
-      campaign: {
-        slug: "extended-lifecycle-read-only",
-        title: "Extended lifecycle read-only proof",
-        status: "ACTIVE",
-        sequence,
-      },
-      chapter: { ordinal: 1, state: "ACTIVE", title: "Read-only lifecycle chapter" },
-      playerConnected: false,
-      events: [],
-      inventory: [],
-      sideQuest: null,
-      preview: { chapter: { objective: "Keep the confirmation lifecycle mutation-free." } },
-    });
-    await page.route("**/api/**", async (route) => {
-      const request = route.request();
-      const method = request.method().toUpperCase();
-      const pathname = new URL(request.url()).pathname;
-      if (method === "GET" && pathname === "/api/gm/status") {
-        await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(status()) });
-        return;
-      }
-      if (["GET", "HEAD", "OPTIONS"].includes(method)) {
-        await route.continue();
-        return;
-      }
-      interceptedUnsafeRequests.push({ method, pathname });
-      if (method !== "POST" || pathname !== "/api/gm/commands") {
-        await route.fulfill({
-          status: 599,
-          contentType: "application/json",
-          body: JSON.stringify({ error: "Extended lifecycle unsafe request blocked" }),
-        });
-        return;
-      }
-      commandRequests += 1;
-      sequence += 1;
-      const commandInput = request.postDataJSON() as { command?: string; confirmation?: boolean };
-      expect(commandInput).toMatchObject({ command: "ADD_LOG_ENTRY", confirmation: true });
-      const event = {
-        id: `extended-lifecycle-event-${sequence}`,
-        type: "PLAYER_LOG_ENTRY_ADDED",
-        sequence,
-        payload: {},
-      };
-      await route.fulfill({
-        status: 200,
-        contentType: "application/json",
-        body: JSON.stringify({
-          kind: "PROGRESSION_EVENT",
-          correlationId: `extended-lifecycle-correlation-${sequence}`,
-          persistence: "COMMITTED",
-          publication: "PROCESS_PUBLISHED",
-          delivery: "PUBLISHED",
-          deliveryScope: "PROCESS_SUBSCRIBERS_ONLY",
-          playerDelivery: "UNCONFIRMED",
-          playerPresentation: "UNCONFIRMED",
-          playerAcknowledgment: "UNCONFIRMED",
-          event,
-          playerEvent: event,
-        }),
-      });
-    });
-    await page.goto("/quartermaster/chapters");
-    await expect(page.locator("main.quartermaster-shell:not(.loading-quarters)")).toBeVisible({ timeout: 20_000 });
-    const trigger = page.getByRole("button", { name: "Add Crew log entry" });
-    const runConfirmation = async () => {
-      await trigger.click();
-      const dialog = page.getByRole("dialog", { name: "Add Crew log entry" });
-      const confirm = dialog.getByRole("button", { name: "Confirm Voyage action" });
-      const cancel = dialog.getByRole("button", { name: "Cancel" });
-      await expect(dialog).toHaveAttribute("aria-modal", "true");
-      await expect(page.locator("main.quartermaster-shell")).toHaveAttribute("aria-hidden", "true");
-      await expect(page.locator("main.quartermaster-shell")).toHaveAttribute("inert", "");
-      await expect(confirm).toBeFocused();
-      await page.keyboard.press("Tab");
-      await expect(cancel).toBeFocused();
-      await page.keyboard.press("Shift+Tab");
-      await expect(confirm).toBeFocused();
-      await confirm.click();
-      await expect(dialog).toHaveCount(0, { timeout: 20_000 });
-      await expect(page.locator(".cinematic-command-overlay")).toHaveCount(0, { timeout: 20_000 });
-      await expect(trigger).toBeFocused();
-      await expect(page.locator("main.quartermaster-shell")).not.toHaveAttribute("aria-hidden", "true");
-      await expect(page.locator("main.quartermaster-shell")).not.toHaveAttribute("inert", "");
-    };
-    await runTwentyCycles(page, async () => runConfirmation(), stableQuartermasterSnapshot);
-    expect(commandRequests).toBe(lifecycleCycles + 1);
-    expect(interceptedUnsafeRequests).toEqual(
-      Array.from({ length: lifecycleCycles + 1 }, () => ({ method: "POST", pathname: "/api/gm/commands" })),
-    );
+    await gotoStable(page, "/quartermaster/chapters");
+    await expect(page).toHaveURL(/\/captain\/library(?:[?#]|$)/u);
+    await expect(page.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible();
+    await expect(page.locator("main.quartermaster-shell")).toHaveCount(0);
   });
 
   for (const audioCase of [

@@ -68,7 +68,11 @@ async function classifySession(session: SessionWithAccount): Promise<CurrentUser
     ["ACTIVE", "PENDING_VERIFICATION"].includes(session.account.status) &&
     Boolean(session.account.claimedAt) &&
     Boolean(session.account.ordinaryWorkspaceEntryAt || session.account.status === "PENDING_VERIFICATION");
-  const canUsePlayer = ordinaryEntry && session.account.profile?.status === "ACTIVE";
+  // Invitation acceptance and legacy rotation issue canonical AccountSessions for
+  // active guest profiles. Those sessions may use the Player workspace while
+  // account claiming keeps Captain and Creator workspaces unavailable.
+  const canUsePlayer =
+    (ordinaryEntry || session.account.status === "GUEST_UNCLAIMED") && session.account.profile?.status === "ACTIVE";
   const [activePlayerWorkspaceLock, captainPlayerWorkspaceLock] = canUsePlayer
     ? await Promise.all([
         hasActivePlayerWorkspaceLock(session.accountId),
