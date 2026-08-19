@@ -636,6 +636,14 @@ test("mixed Tideglass browser selections retain separately owned fixture phases"
   assert.doesNotMatch(runtime, /GOVERNED_TIDEGLASS_BROWSER_SELECTION_MIXED/u);
 });
 
+test("browser selection partitions normalize file cardinality before strict-mode guards", async () => {
+  const runtime = await readFile(
+    path.join(root, "scripts", "sounding-line", "isolated-validation-runtime.ps1"),
+    "utf8",
+  );
+  assert.match(runtime, /if \(@\(\$partition\.Files\)\.Count -eq 0\) \{ continue \}/u);
+});
+
 test("mixed Shipwright selections retain the synthetic Creator journey boundary", async () => {
   const runtime = await readFile(
     path.join(root, "scripts", "sounding-line", "isolated-validation-runtime.ps1"),
