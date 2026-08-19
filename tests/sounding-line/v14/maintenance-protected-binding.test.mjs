@@ -213,6 +213,31 @@ test("authority maintenance is a distinct owner-authorized, exact-identity candi
     }).decision,
     "AUTHORITY_MAINTENANCE_AUTHORITY_SELECTED",
   );
+  const retriedAuthority = selectSealedAuthorityMaintenance({
+    runs: [run, { ...run, id: 44 }],
+    candidateSha: sha("b"),
+    candidateTree: sha("c"),
+    qualifiedBaseSha: sha("a"),
+  });
+  assert.equal(retriedAuthority.decision, "AUTHORITY_MAINTENANCE_AUTHORITY_SELECTED");
+  assert.equal(retriedAuthority.selectedRunId, 43);
+  assert.equal(
+    selectSealedAuthorityMaintenance({
+      runs: [
+        run,
+        {
+          ...run,
+          id: 45,
+          plan: { ...authorityPlan, planDigest: sha("e") },
+          finalization: { ...authorityFinalization, planDigest: sha("e") },
+        },
+      ],
+      candidateSha: sha("b"),
+      candidateTree: sha("c"),
+      qualifiedBaseSha: sha("a"),
+    }).decision,
+    "SEALED_AUTHORITY_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
+  );
   assert.equal(
     selectSealedAuthorityMaintenance({
       runs: [{ ...run, headSha: sha("a") }],
