@@ -7,6 +7,7 @@ import {
   type Phase3CaseFixture,
   type Phase3PlayerSection,
 } from "./fixtures/lanternwake-phase3";
+import { gotoStable } from "./navigation";
 
 const requiredViewports = [
   { width: 2560, height: 1440, label: "2560x1440" },
@@ -239,7 +240,7 @@ async function enterCaptainWorkspace(page: Page) {
     data: { username: process.env.GM_USERNAME, password: process.env.GM_PASSWORD },
   });
   expect(login.status(), await login.text()).toBe(200);
-  await page.goto("/captain/library");
+  await gotoStable(page, "/captain/library");
   await expect(page).toHaveURL(/\/captain\/library(?:\?.*)?$/u);
   await expect(page.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible({ timeout: 20_000 });
 }

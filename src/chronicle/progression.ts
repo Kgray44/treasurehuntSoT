@@ -33,6 +33,17 @@ const futureProviders = new Set(["visionLocation", "visionObject", "externalWebh
 const MAX_CANONICAL_PLAYER_PRESENTATION_HISTORY = 100;
 
 async function resolveCaptainActor(actorId: string): Promise<CanonicalCaptainActor> {
+  // HTTP workspace routes already authenticate a canonical account, while
+  // legacy progression callers still provide the historical GM identifier.
+  // Resolve the canonical form first so both boundaries produce the same
+  // authority clauses without attempting to reinterpret an account id as a
+  // legacy actor id.
+  const canonical = await db.userAccount.findUnique({
+    where: { id: actorId },
+    select: { id: true, legacyGameMasterId: true },
+  });
+  if (canonical) return { accountId: canonical.id, legacyGameMasterId: canonical.legacyGameMasterId };
+
   const accountId = await canonicalAccountForLegacyActor(actorId);
   if (!accountId) throw new Error("Captain account authority is unavailable.");
   const account = await db.userAccount.findUnique({ where: { id: accountId }, select: { legacyGameMasterId: true } });

@@ -205,6 +205,13 @@ export async function setPhase3Motion(page: Page, motion: Phase3MotionCase) {
   await page.addInitScript(({ productMode }) => {
     localStorage.setItem("forever-motion", productMode);
   }, motion);
+  if (page.url() === "about:blank") return;
+  await page.evaluate(({ productMode }) => {
+    localStorage.setItem("forever-motion", productMode);
+    window.dispatchEvent(
+      new CustomEvent("voyagewright-preferences-changed", { detail: { productMotion: productMode } }),
+    );
+  }, motion);
 }
 
 export async function installPhase3EvidenceProbe(page: Page) {

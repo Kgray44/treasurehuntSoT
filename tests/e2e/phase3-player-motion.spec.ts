@@ -28,9 +28,18 @@ phase3Test.describe("Lanternwake canonical journal motion policy", () => {
         await phase3.proveIsolation();
         const fixture = await phase3.createCase(`canonical-motion-${motion.id}`, "CHAPTER_RELEASED");
         await openPhase3Player(page, fixture, "journal");
+        // The anonymous compatibility route resets its account preference bridge
+        // to the safe default during hydration. Apply the declared product
+        // preference only after that bridge is live, through its public runtime
+        // notification, and retain the browser setting as the higher-priority
+        // accessibility input.
+        await setPhase3Motion(page, motion);
+        await expect
+          .poll(() => page.evaluate(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches))
+          .toBe(motion.browserReduced);
 
         const journal = page.locator(".chronicle-journal-shell");
-        await expect(journal).toHaveAttribute("data-motion-mode", motion.resolvedMode);
+        await expect(journal).toHaveAttribute("data-motion-mode", motion.productMode);
         await expect(journal).toHaveAttribute("data-motion-level", motion.resolvedMode);
         const heading = journal.getByRole("heading", { level: 2 });
         await heading.focus();

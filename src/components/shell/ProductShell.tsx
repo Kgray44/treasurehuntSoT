@@ -109,6 +109,9 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
   const navigationDrawerRef = useRef<HTMLDivElement>(null);
   const accountDisclosureRef = useRef<HTMLDivElement>(null);
   const mainContentRef = useRef<HTMLDivElement>(null);
+  const focusFirstAccountLink = useCallback((node: HTMLAnchorElement | null) => node?.focus(), []);
+  const shellRouteEffectMountedRef = useRef(false);
+  const previousPathnameRef = useRef(pathname);
   const accountHeadingPrefix = useId();
   const compact = route.shellMode === "COMPACT" || route.shellMode === "IMMERSIVE";
   const ordinaryNavigation = ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD"].includes(route.shellMode);
@@ -144,7 +147,15 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // A browser history or non-link route change must close any modal shell navigation before focus handoff.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    // The initial passive effect can follow an early hydrated interaction, so
+    // it must not dismiss the disclosure that is receiving focus.
+    if (!shellRouteEffectMountedRef.current) {
+      shellRouteEffectMountedRef.current = true;
+      previousPathnameRef.current = pathname;
+      return;
+    }
+    if (previousPathnameRef.current === pathname) return;
+    previousPathnameRef.current = pathname;
     closeAll();
   }, [closeAll, pathname]);
 
@@ -213,14 +224,14 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
   }, [accountOpen, closeAccount, closeNavigation, navigationOpen]);
 
   useEffect(() => {
-    if (navigationOpen)
-      queueMicrotask(() => navigationDrawerRef.current?.querySelector<HTMLAnchorElement>("a")?.focus());
+    if (!navigationOpen) return;
+    queueMicrotask(() => {
+      const drawer = navigationDrawerRef.current;
+      if (!drawer) return;
+      const activeLink = drawer.querySelector<HTMLAnchorElement>('a[aria-current="page"]');
+      (activeLink ?? drawer.querySelector<HTMLAnchorElement>("a"))?.focus();
+    });
   }, [navigationOpen]);
-
-  useEffect(() => {
-    if (accountOpen)
-      queueMicrotask(() => accountDisclosureRef.current?.querySelector<HTMLElement>("a, button")?.focus());
-  }, [accountOpen]);
 
   useLayoutEffect(() => {
     if (!accountOpen) return;
@@ -250,6 +261,9 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
     group,
     items: projection.accountItems.filter((item) => item.accountGroup === group),
   }));
+  const accountFocusTargetId =
+    projection.accountItems.find((item) => item.id === "account-sign-in")?.id ??
+    accountGroups.flatMap(({ items }) => items).find((item) => item.href)?.id;
 
   async function resendVerification() {
     if (currentUser.status !== "authenticated") return;
@@ -481,6 +495,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                                 return (
                                   <Link
                                     key={item.id}
+                                    ref={item.id === accountFocusTargetId ? focusFirstAccountLink : undefined}
                                     href={item.href}
                                     data-navigation-id={item.id}
                                     aria-current={current ? "page" : undefined}
