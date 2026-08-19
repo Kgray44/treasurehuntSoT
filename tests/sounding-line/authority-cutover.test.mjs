@@ -622,6 +622,20 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
   assert.match(common, /A physical copy retains Next's runtime-local \.next/u);
 });
 
+test("mixed Tideglass browser selections retain separately owned fixture phases", async () => {
+  const runtime = await readFile(
+    path.join(root, "scripts", "sounding-line", "isolated-validation-runtime.ps1"),
+    "utf8",
+  );
+  assert.match(runtime, /Get-BrowserSelectionDiscoveryCount/u);
+  assert.match(runtime, /GOVERNED_TIDEGLASS_BROWSER_SELECTION_PARTITION_MISMATCH/u);
+  assert.match(runtime, /GOVERNED_TIDEGLASS_ORDINARY_FIXTURE_SNAPSHOT_FAILED/u);
+  assert.match(runtime, /Restoring ordinary browser fixture after Tideglass partition/u);
+  assert.match(runtime, /GOVERNED_TIDEGLASS_ORDINARY_FIXTURE_RESTORE_FAILED/u);
+  assert.match(runtime, /\$tideglassSetupFile/u);
+  assert.doesNotMatch(runtime, /GOVERNED_TIDEGLASS_BROWSER_SELECTION_MIXED/u);
+});
+
 test("concurrent Harborlight lanes may share only their validation-run parent", async () => {
   const common = await readFile(path.join(root, "scripts", "dev-common.ps1"), "utf8");
   assert.match(common, /New-Item -ItemType Directory -Path \$resolvedParent -Force -ErrorAction Stop/u);
