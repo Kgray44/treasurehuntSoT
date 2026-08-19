@@ -633,6 +633,7 @@ test("mixed Tideglass browser selections retain separately owned fixture phases"
   assert.match(runtime, /Restoring ordinary browser fixture after Tideglass partition/u);
   assert.match(runtime, /GOVERNED_TIDEGLASS_ORDINARY_FIXTURE_RESTORE_FAILED/u);
   assert.match(runtime, /\$tideglassSetupFile/u);
+  assert.match(runtime, /@\(\$partition\.Files\)\.Count -eq 0/u);
   assert.doesNotMatch(runtime, /GOVERNED_TIDEGLASS_BROWSER_SELECTION_MIXED/u);
 });
 

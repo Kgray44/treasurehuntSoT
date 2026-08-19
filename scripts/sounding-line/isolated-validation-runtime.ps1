@@ -973,7 +973,7 @@ try {
                     [pscustomobject]@{ Name = "Shipwright"; Files = $shipwrightFiles },
                     [pscustomobject]@{ Name = "ordinary"; Files = $ordinaryFiles }
                 )) {
-                    if ($partition.Files.Count -eq 0) { continue }
+                    if (@($partition.Files).Count -eq 0) { continue }
                     $partitionSelection = [pscustomobject]@{
                         project = [string]$selection.project
                         files = @($partition.Files)
