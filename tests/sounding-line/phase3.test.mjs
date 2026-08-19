@@ -444,7 +444,8 @@ test("detached controller executes an allowlisted governed adapter through the P
         sourceDigest: "c".repeat(64),
       },
     });
-    for (let attempt = 0; attempt < 30; attempt += 1) {
+    const terminalDeadline = Date.now() + 15_000;
+    while (Date.now() < terminalDeadline) {
       const current = await phase3.readRun(started.run.id, root);
       if (current.state !== "RUNNING") {
         assert.equal(current.state, "COMPLETED");

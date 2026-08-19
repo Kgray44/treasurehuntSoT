@@ -18,7 +18,7 @@ test("fixture bootstrap admits only the exact validation-runtime maintenance cla
     "tests/sounding-line/v14/authority-maintenance-fixture-policy.test.mjs",
   ];
 
-  assert.equal(policy.version, "1.0.4");
+  assert.equal(policy.version, "1.0.6");
   assert.deepEqual(
     policy.bindingPreflightPaths.filter(
       (entry) => entry.includes("isolated-validation") || entry.includes("tideglass"),

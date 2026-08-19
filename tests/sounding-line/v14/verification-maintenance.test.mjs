@@ -627,6 +627,7 @@ const productRegistrationPolicy = {
       "scripts/sounding-line/test-registry.mjs",
     ],
     ancillaryPathGlobs: ["Development_Docs/Project_*.md", "Development_Docs/Features/catalog/**"],
+    sourceBoundFeatureCatalogReconciliationPathGlobs: ["Development_Docs/Features/branch-complete/*.json"],
     playwrightConfigPathGlobs: ["playwright*.config.*"],
     testRegistrySourcePathGlobs: ["scripts/sounding-line/test-registry.mjs"],
     semanticOwnership: "TRUSTED_OWNERSHIP_OR_TRUSTED_DISCOVERY_DESCRIPTOR",
@@ -720,11 +721,110 @@ const productPaths = [
   "Development_Docs/Project_Aurora_Phase_2.md",
   "Development_Docs/Features/catalog/aurora.json",
 ];
+const featureCatalogReconciliation = ({
+  id = "FT-AURORA",
+  title = "Aurora verification registration",
+  program = "Project Aurora Phase 2",
+  evidence = [{ kind: "path", value: "src/aurora/detail.ts" }],
+  branch = "codex/project-aurora-phase2",
+} = {}) => {
+  const trusted = {
+    id,
+    title,
+    program,
+    status: "BRANCH_COMPLETE_NOT_MERGED",
+    evidence,
+    branch,
+    commit: "a".repeat(40),
+    limitations: ["Branch completion is distinct from protected-main availability."],
+    catalogVersion: 1,
+  };
+  const candidate = clone(trusted);
+  candidate.status = "MAINLINE";
+  candidate.limitations = ["Protected-main source integration is distinct from deployment acceptance."];
+  delete candidate.branch;
+  delete candidate.commit;
+  return { trusted, candidate };
+};
 const classifyProductRegistration = (overrides = {}) => {
   const fixture = registrationFixture();
   return classifyOrdinaryCandidate({
     trustedPolicy: productRegistrationPolicy,
     changedPaths: productPaths,
+    ...fixture,
+    ...overrides,
+  });
+};
+const crossOwnedRegistrationFixture = ({
+  primaryId = "drydock",
+  primaryPath = "src/drydock/new-contract.ts",
+  primaryContractId = "drydock.authoring",
+  supportingDescriptor = {
+    id: "project-shipwright",
+    sourcePaths: ["src/app/studio/**"],
+    testPaths: [],
+    contractIds: [],
+    supportingOwnerIds: ["drydock"],
+  },
+} = {}) => {
+  const trustedRegistries = {
+    ownership: {
+      owners: [
+        {
+          id: primaryId,
+          sourcePaths: [primaryPath.replace(/\/[^/]+$/u, "/**")],
+          testPaths: [],
+          contractIds: [primaryContractId],
+        },
+      ],
+    },
+    contracts: { contracts: [{ id: primaryContractId, authority: primaryId, owners: [primaryId], critical: true }] },
+    suites: {
+      suites: [
+        { id: `unit.${primaryId}`, owner: primaryId, contracts: [primaryContractId], tier: 1 },
+        ...(supportingDescriptor
+          ? [{ id: "unit.shipwright", owner: supportingDescriptor.id, contracts: [], tier: 1 }]
+          : []),
+      ],
+    },
+    impactMap: { pathMappings: [], contractMappings: [] },
+    fileDispositions: { rules: [] },
+    activeTestRegistry: { generated: true, cases: [] },
+    playwrightConfig: "",
+    testRegistrySource: "trusted generator source",
+  };
+  const candidateRegistries = clone(trustedRegistries);
+  candidateRegistries.contracts.contracts.push({
+    id: `${primaryContractId}.new`,
+    authority: primaryId,
+    owners: [primaryId],
+    critical: true,
+  });
+  if (supportingDescriptor)
+    candidateRegistries.activeTestRegistry.cases.push({
+      semanticId: "shipwright-supported-case",
+      id: "shipwright-supported-case-id",
+      owner: supportingDescriptor.id,
+      suiteId: "unit.shipwright",
+      contracts: [],
+      browserRequirements: ["NOT_APPLICABLE"],
+    });
+  return {
+    trustedRegistries,
+    candidateRegistries,
+    trustedProjectDescriptors: supportingDescriptor ? [supportingDescriptor] : [],
+  };
+};
+const classifyCrossOwnedRegistration = (overrides = {}) => {
+  const fixture = crossOwnedRegistrationFixture();
+  return classifyOrdinaryCandidate({
+    trustedPolicy: productRegistrationPolicy,
+    changedPaths: [
+      "src/drydock/new-contract.ts",
+      "src/app/studio/drydock-panel.ts",
+      "testing/contracts.json",
+      "testing/generated/active-test-registry.json",
+    ],
     ...fixture,
     ...overrides,
   });
@@ -735,6 +835,180 @@ test("generic product verification registration admits a bounded owned product s
   assert.equal(result.classification, "PRODUCT_WITH_VERIFICATION_REGISTRATION");
   assert.equal(result.registration.ownerId, "project-aurora");
   assert.deepEqual(result.errors, []);
+});
+
+test("product registration admits a generic trusted source-bound branch-complete reconciliation", () => {
+  const path = "Development_Docs/Features/branch-complete/project-aurora-phase2.json";
+  const result = classifyProductRegistration({
+    changedPaths: [...productPaths, path],
+    featureCatalogReconciliations: { [path]: featureCatalogReconciliation() },
+  });
+  assert.equal(result.classification, "PRODUCT_WITH_VERIFICATION_REGISTRATION");
+  assert.deepEqual(result.errors, []);
+});
+
+test("the exact Drydock branch-complete reconciliation can accompany a valid product registration", async () => {
+  const path = "Development_Docs/Features/branch-complete/project-drydock-phase3.json";
+  const trusted = JSON.parse(
+    await readFile(
+      new URL("../../../Development_Docs/Features/branch-complete/project-drydock-phase3.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  const candidate = clone(trusted);
+  candidate.status = "MAINLINE";
+  candidate.limitations[0] =
+    "Protected-main source integration was accepted through PR #52; deployment and owner acceptance remain separate from source integration.";
+  delete candidate.branch;
+  delete candidate.commit;
+  const fixture = crossOwnedRegistrationFixture();
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: productRegistrationPolicy,
+    changedPaths: [
+      "src/drydock/new-contract.ts",
+      "src/app/studio/drydock-panel.ts",
+      "testing/contracts.json",
+      "testing/generated/active-test-registry.json",
+      path,
+    ],
+    ...fixture,
+    featureCatalogReconciliations: { [path]: { trusted, candidate } },
+  });
+  assert.equal(result.classification, "PRODUCT_WITH_VERIFICATION_REGISTRATION");
+  assert.deepEqual(result.errors, []);
+});
+
+test("source-bound branch-complete admission rejects arbitrary JSON and untrusted lookalikes", () => {
+  const arbitraryPath = "Development_Docs/Features/unrelated.json";
+  const arbitrary = classifyProductRegistration({ changedPaths: [...productPaths, arbitraryPath] });
+  assert.equal(arbitrary.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
+  assert.ok(arbitrary.errors.includes(`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${arbitraryPath}`));
+
+  const untrustedPath = "Development_Docs/Features/branch-complete/project-rogue-phase2.json";
+  const untrusted = classifyProductRegistration({
+    changedPaths: [...productPaths, untrustedPath],
+    featureCatalogReconciliations: {
+      [untrustedPath]: featureCatalogReconciliation({
+        id: "FT-ROGUE",
+        title: "Rogue bypass",
+        program: "Project Rogue Phase 2",
+        evidence: [{ kind: "path", value: "src/rogue/bypass.ts" }],
+        branch: "codex/project-rogue-phase2",
+      }),
+    },
+  });
+  assert.equal(untrusted.classification, "PRODUCT_VERIFICATION_REGISTRATION_REJECTED");
+  assert.ok(
+    untrusted.errors.includes(
+      `PRODUCT_VERIFICATION_REGISTRATION_FEATURE_CATALOG_RECONCILIATION_UNTRUSTED:${untrustedPath}`,
+    ),
+  );
+});
+
+test("source-bound reconciliation cannot accompany an ownership mutation", () => {
+  const path = "Development_Docs/Features/branch-complete/project-aurora-phase2.json";
+  const fixture = registrationFixture();
+  fixture.candidateRegistries.ownership.owners.push({
+    id: "project-rogue",
+    sourcePaths: ["src/rogue/**"],
+    testPaths: [],
+    contractIds: [],
+  });
+  const result = classifyProductRegistration({
+    ...fixture,
+    changedPaths: [...productPaths, path],
+    featureCatalogReconciliations: { [path]: featureCatalogReconciliation() },
+  });
+  assert.equal(result.classification, "PRODUCT_VERIFICATION_REGISTRATION_REJECTED");
+  assert.ok(result.errors.includes("PRODUCT_VERIFICATION_REGISTRATION_OWNERSHIP_MUTATION"));
+});
+
+test("a sole trusted Drydock contract authority outranks compatible Shipwright Studio support", () => {
+  const result = classifyCrossOwnedRegistration();
+  assert.equal(result.classification, "PRODUCT_WITH_VERIFICATION_REGISTRATION");
+  assert.equal(result.registration.ownerId, "drydock");
+  assert.deepEqual(result.errors, []);
+});
+
+test("a sole trusted Shipwright contract remains primary without a supporting descriptor", () => {
+  const fixture = crossOwnedRegistrationFixture({
+    primaryId: "project-shipwright",
+    primaryPath: "src/app/studio/new-contract.ts",
+    primaryContractId: "shipwright.authoring",
+    supportingDescriptor: null,
+  });
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: productRegistrationPolicy,
+    changedPaths: ["src/app/studio/new-contract.ts", "testing/contracts.json"],
+    ...fixture,
+  });
+  assert.equal(result.classification, "PRODUCT_WITH_VERIFICATION_REGISTRATION");
+  assert.equal(result.registration.ownerId, "project-shipwright");
+});
+
+test("a unique new authority remains fail-closed when it is untrusted, unsupported, unmapped, or self-authorized", () => {
+  const untrusted = crossOwnedRegistrationFixture();
+  untrusted.candidateRegistries.contracts.contracts.at(-1).authority = "project-rogue";
+  untrusted.candidateRegistries.contracts.contracts.at(-1).owners = ["project-rogue"];
+  assert.ok(
+    classifyCrossOwnedRegistration(untrusted).errors.includes(
+      "PRODUCT_VERIFICATION_REGISTRATION_NEW_CONTRACT_AUTHORITY_UNTRUSTED",
+    ),
+  );
+
+  const unsupported = crossOwnedRegistrationFixture({
+    supportingDescriptor: {
+      id: "project-shipwright",
+      sourcePaths: ["src/app/studio/**"],
+      testPaths: [],
+      contractIds: [],
+      supportingOwnerIds: [],
+    },
+  });
+  assert.ok(
+    classifyCrossOwnedRegistration(unsupported).errors.includes(
+      "PRODUCT_VERIFICATION_REGISTRATION_SUPPORTING_OWNER_REQUIRED:project-shipwright",
+    ),
+  );
+
+  const unmapped = classifyCrossOwnedRegistration({
+    changedPaths: ["src/drydock/new-contract.ts", "src/unmapped/new-contract.ts", "testing/contracts.json"],
+  });
+  assert.ok(
+    unmapped.errors.includes("PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_PATH_UNMAPPED:src/unmapped/new-contract.ts"),
+  );
+
+  const selfAuthorized = crossOwnedRegistrationFixture({
+    supportingDescriptor: {
+      id: "project-shipwright",
+      sourcePaths: ["src/app/studio/**"],
+      testPaths: [],
+      contractIds: [],
+      supportingOwnerIds: [],
+    },
+  });
+  selfAuthorized.trustedRegistries.trustedProjectDiscovery = { projects: [] };
+  selfAuthorized.candidateRegistries.trustedProjectDiscovery = {
+    projects: [{ id: "project-shipwright", supportingOwnerIds: ["drydock"] }],
+  };
+  assert.ok(
+    classifyCrossOwnedRegistration(selfAuthorized).errors.includes(
+      "PRODUCT_VERIFICATION_REGISTRATION_TRUSTED_DISCOVERY_MUTATION",
+    ),
+  );
+});
+
+test("competing new contract authorities remain ambiguous", () => {
+  const fixture = crossOwnedRegistrationFixture();
+  fixture.candidateRegistries.contracts.contracts.push({
+    id: "shipwright.competing",
+    authority: "project-shipwright",
+    owners: ["project-shipwright"],
+    critical: true,
+  });
+  const result = classifyCrossOwnedRegistration(fixture);
+  assert.equal(result.classification, "PRODUCT_VERIFICATION_REGISTRATION_REJECTED");
+  assert.ok(result.errors.includes("PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_OWNER_AMBIGUOUS"));
 });
 
 test("registration-only evidence against an existing trusted contract admits with a unique trusted owner", () => {
