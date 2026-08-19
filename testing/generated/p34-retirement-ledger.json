@@ -1054,14 +1054,15 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.studio",
-      "canonicalReplacementTestIds": ["sl-test-f24d5b94dc494d9b84a3"],
+      "canonicalReplacementTestIds": ["sl-test-209ff8af21f748074b27"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
       "currentSourceFiles": ["tests/e2e/lanternwake-phase4.spec.ts"],
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.studio contract ownership; no P34 container is selected.",
-      "canonicalReplacementSemanticIds": ["sl-semantic-4660db51ad02a6a65899"]
+      "canonicalReplacementSemanticIds": ["sl-semantic-4660db51ad02a6a65899"],
+      "canonicalReplacementHistoricalTestIds": ["sl-test-f24d5b94dc494d9b84a3"]
     },
     {
       "historicalCaseId": "p34-12178f3cfd92f3588fc5",
@@ -4745,14 +4746,15 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.studio",
-      "canonicalReplacementTestIds": ["sl-test-c8727dbe8f8d7d0506fc"],
+      "canonicalReplacementTestIds": ["sl-test-0c7747531108eac9a75c"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
       "currentSourceFiles": ["tests/e2e/lanternwake-phase4.spec.ts"],
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.studio contract ownership; no P34 container is selected.",
-      "canonicalReplacementSemanticIds": ["sl-semantic-14d7bbe0dfc5cd5930ae"]
+      "canonicalReplacementSemanticIds": ["sl-semantic-14d7bbe0dfc5cd5930ae"],
+      "canonicalReplacementHistoricalTestIds": ["sl-test-c8727dbe8f8d7d0506fc"]
     },
     {
       "historicalCaseId": "p34-8082154e82f8b79ffd3b",
