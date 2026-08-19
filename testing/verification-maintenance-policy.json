@@ -92,6 +92,15 @@
     "Development_Docs/Programs/Deepwater/**",
     "scripts/deepwater/**"
   ],
+  "ordinaryCandidateGovernanceDocumentation": {
+    "classification": "GOVERNANCE_DOCUMENTATION_ONLY",
+    "pathGlobs": ["Development_Docs/Governing/Project_*.md"],
+    "excludedPathGlobs": [
+      "Development_Docs/Governing/Project_Sounding_Line_*.md",
+      "Development_Docs/Governing/*Sounding_Line*.md",
+      "Development_Docs/Governing/*Authority*.md"
+    ]
+  },
   "ordinaryCandidateProductVerificationRegistration": {
     "classification": "PRODUCT_WITH_VERIFICATION_REGISTRATION",
     "pathGlobs": [

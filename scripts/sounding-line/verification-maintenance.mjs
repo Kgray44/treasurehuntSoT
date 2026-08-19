@@ -51,6 +51,14 @@ const gitTree = async (sha) => (await execute("git", ["rev-parse", `${sha}^{tree
 const registrationInputs = (trustedPolicy) => trustedPolicy?.ordinaryCandidateProductVerificationRegistration ?? null;
 const registrationPaths = (trustedPolicy) => registrationInputs(trustedPolicy)?.pathGlobs ?? [];
 const registrationTriggers = (trustedPolicy) => registrationInputs(trustedPolicy)?.semanticPathGlobs ?? [];
+const governanceDocumentationInputs = (trustedPolicy) =>
+  trustedPolicy?.ordinaryCandidateGovernanceDocumentation ?? null;
+const governanceDocumentationPaths = (trustedPolicy) => governanceDocumentationInputs(trustedPolicy)?.pathGlobs ?? [];
+const governanceDocumentationExclusions = (trustedPolicy) =>
+  governanceDocumentationInputs(trustedPolicy)?.excludedPathGlobs ?? [];
+const isOrdinaryGovernanceDocumentation = (file, trustedPolicy) =>
+  matchesAny(file, governanceDocumentationPaths(trustedPolicy)) &&
+  !matchesAny(file, governanceDocumentationExclusions(trustedPolicy));
 const sourceBoundFeatureCatalogReconciliationPaths = (trustedPolicy) =>
   registrationInputs(trustedPolicy)?.sourceBoundFeatureCatalogReconciliationPathGlobs ?? [];
 const productSourcePaths = (paths) =>
@@ -479,6 +487,7 @@ export function classifyOrdinaryCandidate({
             ]
           : []),
       ]) &&
+      !isOrdinaryGovernanceDocumentation(file, trustedPolicy) &&
       (!structurallyAdmitsProjectPath(file, projectDiscovery, paths) ||
         structurallyCollidesWithTrustedScope(file, trustedPolicy))
     )

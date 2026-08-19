@@ -299,6 +299,19 @@ function validatePolicy(policy) {
     )
   )
     errors.push("verification-maintenance-policy: ordinary candidate boundary mismatch");
+  const governanceDocumentation = maintenancePolicy?.ordinaryCandidateGovernanceDocumentation;
+  if (
+    governanceDocumentation?.classification !== "GOVERNANCE_DOCUMENTATION_ONLY" ||
+    !Array.isArray(governanceDocumentation?.pathGlobs) ||
+    !governanceDocumentation.pathGlobs.length ||
+    !Array.isArray(governanceDocumentation?.excludedPathGlobs) ||
+    !governanceDocumentation.excludedPathGlobs.length ||
+    governanceDocumentation.pathGlobs.some((entry) => maintenancePolicy.authorityChangePathGlobs.includes(entry)) ||
+    governanceDocumentation.excludedPathGlobs.some((entry) =>
+      maintenancePolicy.authorityChangePathGlobs.includes(entry),
+    )
+  )
+    errors.push("verification-maintenance-policy: governance documentation boundary mismatch");
   const registration = maintenancePolicy?.ordinaryCandidateProductVerificationRegistration;
   if (
     registration?.classification !== "PRODUCT_WITH_VERIFICATION_REGISTRATION" ||
