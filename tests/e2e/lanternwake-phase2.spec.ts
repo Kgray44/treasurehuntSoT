@@ -832,9 +832,15 @@ test.describe("Project Lanternwake Phase 2 required viewports", () => {
 });
 
 async function openPlayerJournalEntry(page: Page, open: Locator) {
-  const nextPlayerStep = await Promise.race([
-    open.waitFor({ state: "visible", timeout: 15_000 }).then(() => "open-journal" as const),
-    page.waitForURL((url) => url.pathname.startsWith("/play/")).then(() => "player-route" as const),
-  ]);
-  if (nextPlayerStep === "open-journal") await open.click();
+  const shell = page.locator(".voyage-shell");
+  await expect
+    .poll(
+      async () => {
+        if ((await shell.getAttribute("data-journal-phase")) === "JOURNAL_READY") return "ready";
+        return (await open.isVisible().catch(() => false)) ? "open" : "pending";
+      },
+      { timeout: 15_000 },
+    )
+    .not.toBe("pending");
+  if ((await shell.getAttribute("data-journal-phase")) !== "JOURNAL_READY") await open.click();
 }
