@@ -627,6 +627,7 @@ const productRegistrationPolicy = {
       "scripts/sounding-line/test-registry.mjs",
     ],
     ancillaryPathGlobs: ["Development_Docs/Project_*.md", "Development_Docs/Features/catalog/**"],
+    sourceBoundFeatureCatalogReconciliationPathGlobs: ["Development_Docs/Features/branch-complete/*.json"],
     playwrightConfigPathGlobs: ["playwright*.config.*"],
     testRegistrySourcePathGlobs: ["scripts/sounding-line/test-registry.mjs"],
     semanticOwnership: "TRUSTED_OWNERSHIP_OR_TRUSTED_DISCOVERY_DESCRIPTOR",
@@ -720,6 +721,31 @@ const productPaths = [
   "Development_Docs/Project_Aurora_Phase_2.md",
   "Development_Docs/Features/catalog/aurora.json",
 ];
+const featureCatalogReconciliation = ({
+  id = "FT-AURORA",
+  title = "Aurora verification registration",
+  program = "Project Aurora Phase 2",
+  evidence = [{ kind: "path", value: "src/aurora/detail.ts" }],
+  branch = "codex/project-aurora-phase2",
+} = {}) => {
+  const trusted = {
+    id,
+    title,
+    program,
+    status: "BRANCH_COMPLETE_NOT_MERGED",
+    evidence,
+    branch,
+    commit: "a".repeat(40),
+    limitations: ["Branch completion is distinct from protected-main availability."],
+    catalogVersion: 1,
+  };
+  const candidate = clone(trusted);
+  candidate.status = "MAINLINE";
+  candidate.limitations = ["Protected-main source integration is distinct from deployment acceptance."];
+  delete candidate.branch;
+  delete candidate.commit;
+  return { trusted, candidate };
+};
 const classifyProductRegistration = (overrides = {}) => {
   const fixture = registrationFixture();
   return classifyOrdinaryCandidate({
@@ -809,6 +835,92 @@ test("generic product verification registration admits a bounded owned product s
   assert.equal(result.classification, "PRODUCT_WITH_VERIFICATION_REGISTRATION");
   assert.equal(result.registration.ownerId, "project-aurora");
   assert.deepEqual(result.errors, []);
+});
+
+test("product registration admits a generic trusted source-bound branch-complete reconciliation", () => {
+  const path = "Development_Docs/Features/branch-complete/project-aurora-phase2.json";
+  const result = classifyProductRegistration({
+    changedPaths: [...productPaths, path],
+    featureCatalogReconciliations: { [path]: featureCatalogReconciliation() },
+  });
+  assert.equal(result.classification, "PRODUCT_WITH_VERIFICATION_REGISTRATION");
+  assert.deepEqual(result.errors, []);
+});
+
+test("the exact Drydock branch-complete reconciliation can accompany a valid product registration", async () => {
+  const path = "Development_Docs/Features/branch-complete/project-drydock-phase3.json";
+  const trusted = JSON.parse(
+    await readFile(
+      new URL("../../../Development_Docs/Features/branch-complete/project-drydock-phase3.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  const candidate = clone(trusted);
+  candidate.status = "MAINLINE";
+  candidate.limitations[0] =
+    "Protected-main source integration was accepted through PR #52; deployment and owner acceptance remain separate from source integration.";
+  delete candidate.branch;
+  delete candidate.commit;
+  const fixture = crossOwnedRegistrationFixture();
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: productRegistrationPolicy,
+    changedPaths: [
+      "src/drydock/new-contract.ts",
+      "src/app/studio/drydock-panel.ts",
+      "testing/contracts.json",
+      "testing/generated/active-test-registry.json",
+      path,
+    ],
+    ...fixture,
+    featureCatalogReconciliations: { [path]: { trusted, candidate } },
+  });
+  assert.equal(result.classification, "PRODUCT_WITH_VERIFICATION_REGISTRATION");
+  assert.deepEqual(result.errors, []);
+});
+
+test("source-bound branch-complete admission rejects arbitrary JSON and untrusted lookalikes", () => {
+  const arbitraryPath = "Development_Docs/Features/unrelated.json";
+  const arbitrary = classifyProductRegistration({ changedPaths: [...productPaths, arbitraryPath] });
+  assert.equal(arbitrary.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
+  assert.ok(arbitrary.errors.includes(`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${arbitraryPath}`));
+
+  const untrustedPath = "Development_Docs/Features/branch-complete/project-rogue-phase2.json";
+  const untrusted = classifyProductRegistration({
+    changedPaths: [...productPaths, untrustedPath],
+    featureCatalogReconciliations: {
+      [untrustedPath]: featureCatalogReconciliation({
+        id: "FT-ROGUE",
+        title: "Rogue bypass",
+        program: "Project Rogue Phase 2",
+        evidence: [{ kind: "path", value: "src/rogue/bypass.ts" }],
+        branch: "codex/project-rogue-phase2",
+      }),
+    },
+  });
+  assert.equal(untrusted.classification, "PRODUCT_VERIFICATION_REGISTRATION_REJECTED");
+  assert.ok(
+    untrusted.errors.includes(
+      `PRODUCT_VERIFICATION_REGISTRATION_FEATURE_CATALOG_RECONCILIATION_UNTRUSTED:${untrustedPath}`,
+    ),
+  );
+});
+
+test("source-bound reconciliation cannot accompany an ownership mutation", () => {
+  const path = "Development_Docs/Features/branch-complete/project-aurora-phase2.json";
+  const fixture = registrationFixture();
+  fixture.candidateRegistries.ownership.owners.push({
+    id: "project-rogue",
+    sourcePaths: ["src/rogue/**"],
+    testPaths: [],
+    contractIds: [],
+  });
+  const result = classifyProductRegistration({
+    ...fixture,
+    changedPaths: [...productPaths, path],
+    featureCatalogReconciliations: { [path]: featureCatalogReconciliation() },
+  });
+  assert.equal(result.classification, "PRODUCT_VERIFICATION_REGISTRATION_REJECTED");
+  assert.ok(result.errors.includes("PRODUCT_VERIFICATION_REGISTRATION_OWNERSHIP_MUTATION"));
 });
 
 test("a sole trusted Drydock contract authority outranks compatible Shipwright Studio support", () => {

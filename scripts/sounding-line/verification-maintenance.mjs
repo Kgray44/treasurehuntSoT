@@ -51,6 +51,8 @@ const gitTree = async (sha) => (await execute("git", ["rev-parse", `${sha}^{tree
 const registrationInputs = (trustedPolicy) => trustedPolicy?.ordinaryCandidateProductVerificationRegistration ?? null;
 const registrationPaths = (trustedPolicy) => registrationInputs(trustedPolicy)?.pathGlobs ?? [];
 const registrationTriggers = (trustedPolicy) => registrationInputs(trustedPolicy)?.semanticPathGlobs ?? [];
+const sourceBoundFeatureCatalogReconciliationPaths = (trustedPolicy) =>
+  registrationInputs(trustedPolicy)?.sourceBoundFeatureCatalogReconciliationPathGlobs ?? [];
 const productSourcePaths = (paths) =>
   (paths ?? []).filter((file) => /^(?:src|prisma|public|scripts)\//u.test(file) && !/\.test\.[^/]+$/u.test(file));
 const uniqueOwners = (owners) => [
@@ -74,6 +76,72 @@ const mergedTrustedOwners = ({ registryOwners, descriptors }) => {
   }
   return [...owners.values()];
 };
+const record = (value) => value && typeof value === "object" && !Array.isArray(value);
+const normalizedOwnerToken = (value) =>
+  String(value ?? "")
+    .replace(/^project[-_ ]*/iu, "")
+    .replace(/[^a-z0-9]+/giu, "-")
+    .replace(/^-+|-+$/gu, "")
+    .toLowerCase();
+const sourceEvidenceMatchesOwner = (value, sourcePaths) =>
+  (sourcePaths ?? []).some((pattern) => {
+    const root = String(pattern).replace(/\/\*\*$/u, "");
+    return String(value ?? "") === root || String(value ?? "").startsWith(`${root}/`);
+  });
+const trustedOwnerForFeatureCatalogRecord = (featureRecord, owners) => {
+  const recordText = [featureRecord?.program, featureRecord?.title, featureRecord?.branch].join(" ").toLowerCase();
+  const evidence = featureRecord?.evidence ?? [];
+  return (owners ?? []).find((owner) => {
+    const tokens = [owner?.id, owner?.project].map(normalizedOwnerToken).filter((token) => token.length >= 3);
+    return (
+      tokens.some((token) => recordText.includes(token)) &&
+      evidence.some(
+        (entry) =>
+          (entry?.kind === "path" || entry?.kind === "test") &&
+          sourceEvidenceMatchesOwner(entry?.value, owner?.sourcePaths),
+      )
+    );
+  });
+};
+
+function verifySourceBoundFeatureCatalogReconciliations({
+  trustedPolicy,
+  changedPaths,
+  trustedRegistries,
+  featureCatalogReconciliations,
+  errors,
+}) {
+  const reconciliationPaths = (changedPaths ?? []).filter((file) =>
+    matchesAny(file, sourceBoundFeatureCatalogReconciliationPaths(trustedPolicy)),
+  );
+  for (const file of reconciliationPaths) {
+    const reconciliation = featureCatalogReconciliations?.[file];
+    const trusted = reconciliation?.trusted;
+    const candidate = reconciliation?.candidate;
+    if (!record(trusted) || !record(candidate)) {
+      errors.push(`PRODUCT_VERIFICATION_REGISTRATION_FEATURE_CATALOG_RECONCILIATION_SNAPSHOT_REQUIRED:${file}`);
+      continue;
+    }
+    const { status: trustedStatus, branch, commit, limitations: trustedLimitations, ...trustedStable } = trusted;
+    const { status: candidateStatus, limitations: candidateLimitations, ...candidateStable } = candidate;
+    if (
+      trustedStatus !== "BRANCH_COMPLETE_NOT_MERGED" ||
+      candidateStatus !== "MAINLINE" ||
+      typeof branch !== "string" ||
+      !sha(commit) ||
+      Object.hasOwn(candidate, "branch") ||
+      Object.hasOwn(candidate, "commit") ||
+      !Array.isArray(trustedLimitations) ||
+      !Array.isArray(candidateLimitations) ||
+      !same(trustedStable, candidateStable)
+    ) {
+      errors.push(`PRODUCT_VERIFICATION_REGISTRATION_FEATURE_CATALOG_RECONCILIATION_INVALID:${file}`);
+      continue;
+    }
+    if (!trustedOwnerForFeatureCatalogRecord(trusted, trustedRegistries?.ownership?.owners))
+      errors.push(`PRODUCT_VERIFICATION_REGISTRATION_FEATURE_CATALOG_RECONCILIATION_UNTRUSTED:${file}`);
+  }
+}
 
 function resolveTrustedPrimaryOwner({
   trustedRegistries,
@@ -275,19 +343,26 @@ export function classifyProductVerificationRegistration({
   candidateRegistries,
   trustedProjectDescriptor,
   trustedProjectDescriptors = [],
+  featureCatalogReconciliations = {},
 }) {
   const errors = [];
   const configuration = registrationInputs(trustedPolicy);
   if (
     !configuration ||
     configuration.classification !== "PRODUCT_WITH_VERIFICATION_REGISTRATION" ||
-    !Array.isArray(configuration.pathGlobs)
+    !Array.isArray(configuration.pathGlobs) ||
+    !Array.isArray(configuration.sourceBoundFeatureCatalogReconciliationPathGlobs)
   )
     errors.push("PRODUCT_VERIFICATION_REGISTRATION_POLICY_INVALID");
   if (!trustedRegistries || !candidateRegistries) errors.push("PRODUCT_VERIFICATION_REGISTRATION_SNAPSHOTS_REQUIRED");
   const metadata = (changedPaths ?? []).filter((file) => matchesAny(file, registrationPaths(trustedPolicy)));
   const productPaths = (changedPaths ?? []).filter(
-    (file) => !metadata.includes(file) && !matchesAny(file, configuration?.ancillaryPathGlobs ?? []),
+    (file) =>
+      !metadata.includes(file) &&
+      !matchesAny(file, [
+        ...(configuration?.ancillaryPathGlobs ?? []),
+        ...(configuration?.sourceBoundFeatureCatalogReconciliationPathGlobs ?? []),
+      ]),
   );
   const trustedContracts = by(trustedRegistries?.contracts?.contracts, "id");
   const newAuthorities = new Set(
@@ -331,6 +406,13 @@ export function classifyProductVerificationRegistration({
     )
       errors.push("PRODUCT_VERIFICATION_REGISTRATION_TEST_REGISTRY_SOURCE_UNCHANGED");
   }
+  verifySourceBoundFeatureCatalogReconciliations({
+    trustedPolicy,
+    changedPaths,
+    trustedRegistries,
+    featureCatalogReconciliations,
+    errors,
+  });
   return {
     classification: errors.length
       ? "PRODUCT_VERIFICATION_REGISTRATION_REJECTED"
@@ -372,6 +454,7 @@ export function classifyOrdinaryCandidate({
   candidateRegistries = null,
   trustedProjectDescriptor = null,
   trustedProjectDescriptors = [],
+  featureCatalogReconciliations = {},
 }) {
   const errors = [];
   if (trustedPolicy?.authority !== "SOUNDING_LINE_VERIFICATION_MAINTENANCE" || trustedPolicy?.trustedMainOnly !== true)
@@ -389,7 +472,11 @@ export function classifyOrdinaryCandidate({
       !matchesAny(file, [
         ...(trustedPolicy?.ordinaryCandidateEligiblePathGlobs ?? []),
         ...(hasRegistration
-          ? [...registrationPaths(trustedPolicy), ...(registrationInputs(trustedPolicy)?.ancillaryPathGlobs ?? [])]
+          ? [
+              ...registrationPaths(trustedPolicy),
+              ...(registrationInputs(trustedPolicy)?.ancillaryPathGlobs ?? []),
+              ...sourceBoundFeatureCatalogReconciliationPaths(trustedPolicy),
+            ]
           : []),
       ]) &&
       (!structurallyAdmitsProjectPath(file, projectDiscovery, paths) ||
@@ -405,6 +492,7 @@ export function classifyOrdinaryCandidate({
         candidateRegistries,
         trustedProjectDescriptor,
         trustedProjectDescriptors,
+        featureCatalogReconciliations,
       })
     : null;
   errors.push(...(registration?.errors ?? []));
@@ -436,7 +524,13 @@ const registrationFiles = [
   ["testRegistrySource", "scripts/sounding-line/test-registry.mjs", "text"],
 ];
 
-async function registrationSnapshot({ baseSha, candidateSha, candidateRoot, changedPaths = [] }) {
+async function registrationSnapshot({
+  baseSha,
+  candidateSha,
+  candidateRoot,
+  changedPaths = [],
+  sourceBoundFeatureCatalogReconciliationPathGlobs = [],
+}) {
   const readCandidate = async (file) => {
     if (candidateSha) return gitShow(candidateSha, file);
     return readFile(new URL(`../${file}`, `file://${candidateRoot.replace(/\\/gu, "/")}/`), "utf8");
@@ -465,7 +559,27 @@ async function registrationSnapshot({ baseSha, candidateSha, candidateRoot, chan
     result.playwrightConfig = configSources.filter(Boolean).join("\n");
     return result;
   };
-  return { trustedRegistries: await snapshot(baseSha, false), candidateRegistries: await snapshot(candidateSha, true) };
+  const trustedRegistries = await snapshot(baseSha, false);
+  const candidateRegistries = await snapshot(candidateSha, true);
+  const featureCatalogReconciliations = Object.fromEntries(
+    await Promise.all(
+      (changedPaths ?? [])
+        .filter((file) => matchesAny(file, sourceBoundFeatureCatalogReconciliationPathGlobs))
+        .sort()
+        .map(async (file) => [
+          file,
+          {
+            trusted: JSON.parse(await gitShow(baseSha, file)),
+            candidate: JSON.parse(await readCandidate(file)),
+          },
+        ]),
+    ),
+  );
+  return {
+    trustedRegistries,
+    candidateRegistries,
+    featureCatalogReconciliations,
+  };
 }
 
 export function createMaintenancePlan({
@@ -572,6 +686,7 @@ if (process.argv[1]?.endsWith("verification-maintenance.mjs") && process.argv[2]
           candidateSha: options["candidate-sha"],
           candidateRoot: options["candidate-root"] ?? process.cwd(),
           changedPaths: Array.isArray(parsedPaths) ? parsedPaths : [parsedPaths],
+          sourceBoundFeatureCatalogReconciliationPathGlobs: sourceBoundFeatureCatalogReconciliationPaths(policy),
         });
         const [trustedMainTreeSha, trustedTreePaths] = await Promise.all([
           gitTree(options["trusted-base-sha"]),

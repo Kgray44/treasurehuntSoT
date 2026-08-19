@@ -148,7 +148,10 @@ export function selectSealedAuthorityMaintenance({ runs, candidateSha, candidate
       run?.event === "workflow_dispatch" &&
       run?.status === "completed" &&
       run?.conclusion === "success" &&
-      run?.headSha === candidateSha &&
+      // The trusted policy and classifier always come from qualified main.
+      // A sealed maintenance run may execute that unchanged workflow at the
+      // protected base or the frozen candidate ref, so both heads are bound.
+      [qualifiedBaseSha, candidateSha].includes(run?.headSha) &&
       plan?.authority === "SOUNDING_LINE_AUTHORITY_MAINTENANCE" &&
       plan?.disposition === "AUTHORITY_MAINTENANCE_GO" &&
       plan?.candidateSha === candidateSha &&
@@ -163,15 +166,35 @@ export function selectSealedAuthorityMaintenance({ runs, candidateSha, candidate
       finalization?.planDigest === plan?.planDigest
     );
   });
+  // A retried trusted-main dispatch can seal the same immutable authority
+  // proof more than once. Collapse only exact plan lineages; distinct plans
+  // for the same candidate remain ambiguous and fail closed.
+  const lineages = [
+    ...eligible
+      .reduce((byIdentity, run) => {
+        const identity = [
+          run.plan.candidateSha,
+          run.plan.candidateTree,
+          run.plan.qualifiedBaseSha,
+          run.plan.trustedMainSha,
+          run.plan.planDigest,
+          run.finalization.planDigest,
+        ].join(":");
+        const existing = byIdentity.get(identity);
+        if (!existing || Number(run.id) < Number(existing.id)) byIdentity.set(identity, run);
+        return byIdentity;
+      }, new Map())
+      .values(),
+  ];
   const identityValid = [candidateSha, candidateTree, qualifiedBaseSha].every(sha);
   return {
     authority: "SOUNDING_LINE_AUTHORITY_MAINTENANCE_SELECTION",
     decision:
-      identityValid && eligible.length === 1
+      identityValid && lineages.length === 1
         ? "AUTHORITY_MAINTENANCE_AUTHORITY_SELECTED"
         : "SEALED_AUTHORITY_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
-    selectedRunId: eligible.length === 1 ? eligible[0].id : null,
-    eligibleRunIds: eligible.map((run) => run.id).sort((left, right) => Number(left) - Number(right)),
+    selectedRunId: lineages.length === 1 ? lineages[0].id : null,
+    eligibleRunIds: lineages.map((run) => run.id).sort((left, right) => Number(left) - Number(right)),
   };
 }
 
