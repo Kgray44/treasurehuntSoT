@@ -342,7 +342,12 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
     let frame = 0;
     let attempts = 0;
     const focusWhenSettled = () => {
-      if (cancelled || ownedGeneration !== generation.current || isTypingTarget(document.activeElement)) return;
+      // A modal explicitly owns focus. A delayed route handoff must never
+      // steal it after the user opens a shell dialog during initial hydration
+      // or a route transition.
+      const modalOwnsFocus = () => Boolean(document.querySelector('[role="dialog"][aria-modal="true"]'));
+      if (cancelled || ownedGeneration !== generation.current || isTypingTarget(document.activeElement) || modalOwnsFocus())
+        return;
       const active = navigation.current;
       const layer = routeLayer(pathname);
       const content = layer?.querySelector<HTMLElement>("[data-route-content]") ?? layer;
@@ -361,7 +366,8 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
       }
       if (unsettled || !content) return;
       frame = requestAnimationFrame(() => {
-        if (cancelled || ownedGeneration !== generation.current || isTypingTarget(document.activeElement)) return;
+        if (cancelled || ownedGeneration !== generation.current || isTypingTarget(document.activeElement) || modalOwnsFocus())
+          return;
         const destination = content.querySelector<HTMLElement>("[data-route-focus], h1") ?? content;
         if (!destination.hasAttribute("tabindex")) destination.setAttribute("tabindex", "-1");
         destination.focus({ preventScroll: true });
