@@ -196,6 +196,27 @@ describe("Project Homeport current-user authority", () => {
     );
   });
 
+  it("homeport.player.guest-session keeps an invitation-created Player profile in its own workspace", async () => {
+    mocks.findSession.mockResolvedValue(
+      session({
+        account: {
+          ...session().account,
+          status: "GUEST_UNCLAIMED",
+          claimedAt: null,
+          ordinaryWorkspaceEntryAt: null,
+          emails: [],
+        },
+      }),
+    );
+    const context = await resolveCurrentUser();
+    expect(context).toMatchObject({
+      status: "authenticated",
+      capabilities: { canUsePlayer: true, canUseCaptain: false, canUseCreator: false },
+      workspaces: expect.arrayContaining(["player"]),
+    });
+    expect(context.status === "authenticated" && decideCapability(context, "player").status).toBe("allowed");
+  });
+
   it("homeport.owner-correction.round3.workspace-entry derives both ordinary workspaces without redundant roles", async () => {
     mocks.findSession.mockResolvedValue(session({ account: { ...session().account, roles: [{ role: "CAPTAIN" }] } }));
     const context = await resolveCurrentUser();
