@@ -223,9 +223,12 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
     return () => document.removeEventListener("pointerdown", closeOnOutsidePointer);
   }, [accountOpen, closeAccount, closeNavigation, navigationOpen]);
 
-  useEffect(() => {
-    if (navigationOpen)
-      queueMicrotask(() => navigationDrawerRef.current?.querySelector<HTMLAnchorElement>("a")?.focus());
+  useLayoutEffect(() => {
+    if (!navigationOpen) return;
+    // The drawer is committed synchronously with this state change. Focus it
+    // before paint so a WebKit navigation cannot leave the opened dialog with
+    // the trigger (or a disappearing route target) still active.
+    navigationDrawerRef.current?.querySelector<HTMLAnchorElement>("a")?.focus();
   }, [navigationOpen]);
 
   useLayoutEffect(() => {
