@@ -583,8 +583,17 @@ async function assetStatus(page: Page, name: "Rive" | "Lottie") {
 
 async function openDevelopmentShowcase(page: Page) {
   if (!page.url().endsWith("/")) await page.goto("/");
-  const skip = page.getByRole("button", { name: "Skip arrival" });
-  if (await skip.isVisible().catch(() => false)) await skip.click();
+  const skip = page.getByRole("button", { name: "Skip opening presentation" });
+  if (await skip.isVisible().catch(() => false)) {
+    try {
+      await skip.click({ timeout: 5_000 });
+    } catch (error) {
+      // The landing route may finish and unmount its opening controls while
+      // this optional shortcut is being clicked. Continue only when it has
+      // genuinely disappeared; a still-visible control remains a failure.
+      if (await skip.isVisible().catch(() => false)) throw error;
+    }
+  }
   await Promise.all([
     page.waitForURL(/\/dev\/animations(?:[?#]|$)/u),
     page.getByRole("link", { name: /TEST ANIMATIONS/u }).click(),
@@ -980,16 +989,41 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
     const playTrailer = page.getByRole("button", { name: "PLAY TRAILER" });
     const runTrailer = async () => {
       await playTrailer.click();
-      await expect(page.getByRole("button", { name: "STOP TRAILER" })).toBeVisible();
+      const stopTrailer = page.getByRole("button", { name: "STOP TRAILER" });
+      await expect(stopTrailer).toBeVisible();
       await expect(playTrailer).toBeVisible({ timeout: 60_000 });
       await expect(page.getByText("No runtime errors.")).toBeVisible();
     };
     await page.goto("/");
+    await expect(page.locator("html")).toHaveAttribute("data-homeport-hydration", "complete");
+    await expect(page.locator("html")).toHaveAttribute("data-homeport-current-user-state", "anonymous");
+    const motionControl = page.getByRole("button", { name: /^Motion: (full|gentle|reduced)\. Change motion setting$/u });
+    for (let attempts = 0; attempts < 2; attempts += 1) {
+      const label = await motionControl.getAttribute("aria-label");
+      if (label === "Motion: reduced. Change motion setting") break;
+      await motionControl.click();
+      await expect(motionControl).toHaveAttribute(
+        "aria-label",
+        label === "Motion: full. Change motion setting"
+          ? "Motion: gentle. Change motion setting"
+          : "Motion: reduced. Change motion setting",
+      );
+    }
+    await expect(motionControl).toHaveAttribute("aria-label", "Motion: reduced. Change motion setting");
     await runTwentyCycles(
       page,
-      async () => {
+      async (cycle) => {
         await openDevelopmentShowcase(page);
-        await runTrailer();
+        await expect(page.locator("main.animation-showcase")).toHaveAttribute("data-motion-mode", "reduced");
+        // One completed trailer proves the serial presentation itself. Later
+        // cycles leave it active while navigation tears down the route, proving
+        // that lifecycle disposal cancels in-flight work without waiting for
+        // the trailer's full sequence in every iteration.
+        if (cycle === 0) await runTrailer();
+        else {
+          await playTrailer.click();
+          await expect(page.getByRole("button", { name: "STOP TRAILER" })).toBeVisible();
+        }
         await returnToHarbor(page);
       },
       // Route transitions and Lottie own ambient browser scheduling. The
