@@ -110,7 +110,7 @@ html.cinematic-hidden * {
 .animation-test-button {
   position: fixed;
   z-index: 64;
-  top: max(0.8rem, env(safe-area-inset-top));
+  top: calc(var(--shell-header-height) + 0.8rem);
   left: max(0.8rem, env(safe-area-inset-left));
   border: 1px solid rgba(126, 214, 203, 0.58);
   border-radius: 999px;
@@ -443,7 +443,7 @@ html.cinematic-hidden * {
 
 @media (max-width: 720px) {
   .animation-test-button {
-    top: calc(0.5rem + env(safe-area-inset-top));
+    top: calc(var(--shell-header-height) + 0.5rem);
     right: auto;
     bottom: auto;
     left: calc(0.5rem + env(safe-area-inset-left));
