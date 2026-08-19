@@ -148,7 +148,10 @@ export function selectSealedAuthorityMaintenance({ runs, candidateSha, candidate
       run?.event === "workflow_dispatch" &&
       run?.status === "completed" &&
       run?.conclusion === "success" &&
-      run?.headSha === candidateSha &&
+      // The trusted policy and classifier always come from qualified main.
+      // A sealed maintenance run may execute that unchanged workflow at the
+      // protected base or the frozen candidate ref, so both heads are bound.
+      [qualifiedBaseSha, candidateSha].includes(run?.headSha) &&
       plan?.authority === "SOUNDING_LINE_AUTHORITY_MAINTENANCE" &&
       plan?.disposition === "AUTHORITY_MAINTENANCE_GO" &&
       plan?.candidateSha === candidateSha &&
