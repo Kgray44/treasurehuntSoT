@@ -244,7 +244,7 @@ describe("ProductShell", () => {
     const trigger = screen.getByRole("button", { name: "Open navigation" });
     fireEvent.click(trigger);
     const global = screen.getByRole("navigation", { name: "Global navigation" });
-    await waitFor(() => expect(within(global).getByRole("link", { name: "Home" })).toHaveFocus());
+    await waitFor(() => expect(within(global).getByRole("link", { name: "Explore Chronicles" })).toHaveFocus());
     expect(document.body.style.overflow).toBe("hidden");
     expect(document.body).toHaveAttribute("data-shell-overlay", "open");
     fireEvent.keyDown(window, { key: "Escape" });
