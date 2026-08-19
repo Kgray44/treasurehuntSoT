@@ -12,6 +12,7 @@
     "scripts/sounding-line/authority-maintenance-protected-binding.mjs",
     "scripts/sounding-line/authority-maintenance-selection.mjs",
     "scripts/sounding-line/adapters.mjs",
+    "scripts/sounding-line/cli.mjs",
     "scripts/sounding-line/verification-maintenance.mjs",
     "scripts/sounding-line/project-discovery.mjs",
     "scripts/sounding-line/planner.mjs",
