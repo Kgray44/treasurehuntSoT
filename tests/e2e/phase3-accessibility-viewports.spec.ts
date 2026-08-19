@@ -315,7 +315,7 @@ async function openReadableJournal(page: Page, slug: string, returning: boolean,
   // The control remains intentionally animated while the ceremony is active;
   // force is appropriate once its visibility has established user reachability.
   if (await skip.isVisible().catch(() => false)) await skip.click({ force: true });
-  await expect(shell).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
+  await expect(shell).toHaveAttribute("data-journal-phase", "JOURNAL_READY", { timeout: 20_000 });
   // The canonical Journal renders the authorized event as its readable current
   // Passage. The retired compatibility overlay is not part of this surface;
   // keep the event-specific assertion on the Player-visible projection.

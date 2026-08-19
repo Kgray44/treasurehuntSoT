@@ -2,6 +2,7 @@ import { createHash, randomUUID } from "node:crypto";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { db } from "../../src/lib/db";
+import { gotoStable } from "./navigation";
 
 type Account = { context: import("@playwright/test").BrowserContext; profileId: string; csrfToken: string };
 
@@ -251,7 +252,7 @@ test("Wayfarer Phase 3 authenticated Passport history is private, pinned, consen
   await expect(ownerPage.getByRole("heading", { name: "Chronicle History", exact: true })).toBeVisible();
   await expect(ownerPage.locator(".passport-card").filter({ hasText: "Chronicle History" })).toContainText("1");
   await expect(ownerPage.getByRole("button", { name: "Reconcile history" })).toHaveCount(0);
-  await ownerPage.goto("/passport/history");
+  await gotoStable(ownerPage, "/passport/history");
   await expect(ownerPage.getByRole("heading", { name: "Synthetic Harbor Chronicle" })).toBeVisible();
   expect(
     (await new AxeBuilder({ page: ownerPage }).analyze()).violations.filter((item) =>

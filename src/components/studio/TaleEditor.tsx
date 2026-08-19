@@ -2019,6 +2019,11 @@ export function TaleEditor({
                                   <article
                                     {...attributes}
                                     {...listeners}
+                                    // The sortable container groups independent
+                                    // controls; presenting it as a button would
+                                    // nest those controls inside an interactive
+                                    // element and hide their semantics from AT.
+                                    role="group"
                                     className={`timeline-block ${selectedIds.includes(block.id) ? "selected" : ""}`}
                                     data-block-id={block.id}
                                     data-selection-count={selectedIds.length}
