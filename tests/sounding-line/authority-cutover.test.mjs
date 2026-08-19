@@ -628,12 +628,31 @@ test("mixed Tideglass browser selections retain separately owned fixture phases"
     "utf8",
   );
   assert.match(runtime, /Get-BrowserSelectionDiscoveryCount/u);
-  assert.match(runtime, /GOVERNED_TIDEGLASS_BROWSER_SELECTION_PARTITION_MISMATCH/u);
+  assert.match(runtime, /GOVERNED_BROWSER_SELECTION_PARTITION_MISMATCH/u);
   assert.match(runtime, /GOVERNED_TIDEGLASS_ORDINARY_FIXTURE_SNAPSHOT_FAILED/u);
   assert.match(runtime, /Restoring ordinary browser fixture after Tideglass partition/u);
   assert.match(runtime, /GOVERNED_TIDEGLASS_ORDINARY_FIXTURE_RESTORE_FAILED/u);
   assert.match(runtime, /\$tideglassSetupFile/u);
   assert.doesNotMatch(runtime, /GOVERNED_TIDEGLASS_BROWSER_SELECTION_MIXED/u);
+});
+
+test("ordinary mobile discovery defers dedicated browser fixtures to their owned projects", async () => {
+  const config = await readFile(path.join(root, "playwright.config.ts"), "utf8");
+  const webkitMobile = config.slice(config.indexOf('name: "webkit-mobile"'), config.indexOf("  ],\n  webServer:"));
+  assert.match(webkitMobile, /harborlightPhase4Spec/u);
+  assert.match(webkitMobile, /shipwrightPhase2Spec/u);
+});
+
+test("mixed Shipwright selections retain the synthetic Creator journey boundary", async () => {
+  const runtime = await readFile(
+    path.join(root, "scripts", "sounding-line", "isolated-validation-runtime.ps1"),
+    "utf8",
+  );
+  assert.match(runtime, /\$shipwrightBrowserFile/u);
+  assert.match(runtime, /GOVERNED_SHIPWRIGHT_TASK_ROOT_ESCAPED/u);
+  assert.match(runtime, /GOVERNED_SHIPWRIGHT_BROWSER_SELECTION_INVALID/u);
+  assert.match(runtime, /scripts\/shipwright\/run-phase2-journeys\.mjs/u);
+  assert.match(runtime, /GOVERNED_SHIPWRIGHT_TASK_ROOT_CLEANUP_REFUSED/u);
 });
 
 test("concurrent Harborlight lanes may share only their validation-run parent", async () => {

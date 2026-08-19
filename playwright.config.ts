@@ -17,6 +17,7 @@ const harborlightPhase2Spec = /harborlight-phase2\.spec\.ts/u;
 const wayfarerPhase2Spec = /wayfarer-phase2\.spec\.ts/u;
 const harborlightPhase3Spec = /harborlight-phase3\.spec\.ts/u;
 const harborlightPhase4Spec = /harborlight-phase4\.spec\.ts/u;
+const shipwrightPhase2Spec = /project-shipwright-phase2\.spec\.ts/u;
 const soundingLineAccessSentinelSpec = /access-gates\.spec\.ts/u;
 const homeportPhase1Spec = /homeport-phase1\.spec\.ts/u;
 const homeportPhase2Spec = /homeport-phase2\.spec\.ts/u;
@@ -196,6 +197,8 @@ export default defineConfig({
         wayfarerPhase2Spec,
         harborlightPhase2Spec,
         harborlightPhase3Spec,
+        harborlightPhase4Spec,
+        shipwrightPhase2Spec,
         homeportPhase1Spec,
         homeportPhase2Spec,
         homeportPhase4Spec,
