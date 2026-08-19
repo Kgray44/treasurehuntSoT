@@ -11,11 +11,7 @@ const cli = "scripts/sounding-line/cli.mjs";
 const run = async (...args) => JSON.parse((await execFileAsync(node, [cli, ...args], { cwd: process.cwd() })).stdout);
 
 test("restored Sounding Line runtime layers do not perturb local plan source identity", async () => {
-  const runtimeProbe = path.join(
-    process.cwd(),
-    "sounding-line-sqlite-baseline",
-    ".plan-digest-transient-probe",
-  );
+  const runtimeProbe = path.join(process.cwd(), "sounding-line-sqlite-baseline", ".plan-digest-transient-probe");
   const first = await run("plan", "unknown-area/new-file.ts");
   let second;
   try {
