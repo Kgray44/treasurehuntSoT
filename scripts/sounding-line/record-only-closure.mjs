@@ -160,7 +160,7 @@ export function validateReferencedAuthorityRun({ pull, run }) {
     run?.event !== "workflow_dispatch" ||
     run?.status !== "completed" ||
     run?.conclusion !== "success" ||
-    run?.head_sha !== implementationBaseSha
+    run?.head_sha !== implementationCandidateSha
   )
     errors.push("PRIOR_IMPLEMENTATION_AUTHORITY_RUN_INVALID");
   return stable(errors);
