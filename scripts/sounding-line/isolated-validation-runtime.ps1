@@ -779,6 +779,7 @@ $finalizationFailures = @()
 $ownedValidationServer = $null
 $ownedProductionServer = $null
 $tideglassTaskRoot = $null
+$shipwrightTaskRoot = $null
 $playwrightInvoked = $false
 $defaultBrowserSucceeded = $false
 $productionPerformanceSucceeded = $false
@@ -905,6 +906,7 @@ try {
                 Sort-Object -Unique
         )
         $tideglassBrowserFile = "tests/e2e/tideglass-phase3.spec.ts"
+        $shipwrightBrowserFile = "tests/e2e/project-shipwright-phase2.spec.ts"
         if ($selectedBrowserFiles -contains $tideglassBrowserFile) {
             $unexpectedFiles = @($selectedBrowserFiles | Where-Object { $_ -notin @($tideglassBrowserFile, "tests/e2e/phase3-readonly-setup.setup.ts") })
             if ($unexpectedFiles.Count -gt 0) {
@@ -998,6 +1000,61 @@ try {
                 "--verify"
             )
         }
+        if ($selectedBrowserFiles -contains $shipwrightBrowserFile) {
+            $unexpectedFiles = @($selectedBrowserFiles | Where-Object { $_ -ne $shipwrightBrowserFile })
+            if ($unexpectedFiles.Count -gt 0) {
+                throw "GOVERNED_SHIPWRIGHT_BROWSER_SELECTION_MIXED:$($unexpectedFiles -join ',')"
+            }
+            $shipwrightParent = [System.IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA "ProjectShipwright\SoundingLine"))
+            $shipwrightTaskRoot = [System.IO.Path]::GetFullPath(
+                (Join-Path $shipwrightParent ("validation-" + $isolation.nonceHash.Substring(0, 16)))
+            )
+            $shipwrightPrefix = $shipwrightParent.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+            if (-not $shipwrightTaskRoot.StartsWith($shipwrightPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+                throw "GOVERNED_SHIPWRIGHT_TASK_ROOT_ESCAPED:$shipwrightTaskRoot"
+            }
+            if (Test-Path -LiteralPath $shipwrightTaskRoot) {
+                throw "GOVERNED_SHIPWRIGHT_TASK_ROOT_ALREADY_EXISTS:$shipwrightTaskRoot"
+            }
+            $env:SHIPWRIGHT_PHASE2_TASK_ROOT = $shipwrightTaskRoot
+            Write-Host "`n==> Preparing task-owned Shipwright browser fixture" -ForegroundColor Cyan
+            Invoke-ValidationStep -Name "Preparing task-owned Shipwright browser fixture" -Arguments @(
+                "scripts/shipwright/prepare-phase2-fixture.mjs"
+            )
+            $shipwrightFixtureReceipt = Get-Content -Raw -LiteralPath (Join-Path $shipwrightTaskRoot "reports\fixture-receipt.json") | ConvertFrom-Json
+            if ($shipwrightFixtureReceipt.status -ne "SHIPWRIGHT_PHASE2_FIXTURE_READY" -or
+                [string]::IsNullOrWhiteSpace([string]$shipwrightFixtureReceipt.fixtureChecksum) -or
+                [string]::IsNullOrWhiteSpace([string]$shipwrightFixtureReceipt.databasePath)) {
+                throw "GOVERNED_SHIPWRIGHT_FIXTURE_RECEIPT_INVALID"
+            }
+            $shipwrightDatabase = [System.IO.Path]::GetFullPath([string]$shipwrightFixtureReceipt.databasePath)
+            $shipwrightDatabasePrefix = $shipwrightTaskRoot.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+            if (-not $shipwrightDatabase.StartsWith($shipwrightDatabasePrefix, [System.StringComparison]::OrdinalIgnoreCase) -or
+                -not (Test-Path -LiteralPath $shipwrightDatabase -PathType Leaf)) {
+                throw "GOVERNED_SHIPWRIGHT_FIXTURE_DATABASE_REFUSED:$shipwrightDatabase"
+            }
+            Copy-Item -LiteralPath $shipwrightDatabase -Destination $isolatedDatabase -Force
+            foreach ($suffix in @("-wal", "-shm")) {
+                $destinationSidecar = "$isolatedDatabase$suffix"
+                Remove-Item -LiteralPath $destinationSidecar -Force -ErrorAction SilentlyContinue
+                $sourceSidecar = "$shipwrightDatabase$suffix"
+                if (Test-Path -LiteralPath $sourceSidecar -PathType Leaf) {
+                    Copy-Item -LiteralPath $sourceSidecar -Destination $destinationSidecar -Force
+                }
+            }
+            if (-not (Test-Path -LiteralPath $isolatedDatabase -PathType Leaf)) {
+                throw "GOVERNED_SHIPWRIGHT_FIXTURE_MATERIALIZATION_FAILED:$isolatedDatabase"
+            }
+            $shipwrightCredentials = Get-Content -Raw -LiteralPath (Join-Path $shipwrightTaskRoot "credentials\shipwright-phase2-browser.private.json") | ConvertFrom-Json
+            if ($shipwrightCredentials.classification -ne "LOCAL_SYNTHETIC_CREDENTIAL_HANDOFF" -or
+                [string]::IsNullOrWhiteSpace([string]$shipwrightCredentials.creator.email) -or
+                [string]::IsNullOrWhiteSpace([string]$shipwrightCredentials.password)) {
+                throw "GOVERNED_SHIPWRIGHT_CREDENTIAL_HANDOFF_INVALID"
+            }
+            $env:SHIPWRIGHT_TEST_CREATOR_EMAIL = [string]$shipwrightCredentials.creator.email
+            $env:SHIPWRIGHT_TEST_CREATOR_PASSWORD = [string]$shipwrightCredentials.password
+            $env:DATABASE_URL = $expectedDatabaseUrl
+        }
         Write-Host "`n==> Starting owned isolated validation server" -ForegroundColor Cyan
         $ownedValidationServer = Start-OwnedValidationServer
         $playwrightInvoked = $true
@@ -1040,7 +1097,7 @@ try {
         Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer
         $ownedValidationServer = $null
         Assert-TcpPortAvailable -Port $validationServerPort
-        if ($tideglassTaskRoot) { $env:DATABASE_URL = $expectedDatabaseUrl }
+        if ($tideglassTaskRoot -or $shipwrightTaskRoot) { $env:DATABASE_URL = $expectedDatabaseUrl }
         $defaultBrowserSucceeded = $true
     } else {
         Write-Host "`n==> Browser acceptance tests skipped by explicit non-browser validation mode" -ForegroundColor Yellow
@@ -1157,6 +1214,28 @@ try {
                 Set-Content -LiteralPath (Join-Path $validationArtifacts "tideglass-task-root-cleanup.json") -Encoding utf8
         } catch {
             $finalizationFailures += "Tideglass task-root cleanup failed: $($_.Exception.Message)"
+        }
+    }
+    if ($shipwrightTaskRoot) {
+        try {
+            $shipwrightParent = [System.IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA "ProjectShipwright\SoundingLine"))
+            $shipwrightPrefix = $shipwrightParent.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+            $resolvedShipwrightTaskRoot = [System.IO.Path]::GetFullPath($shipwrightTaskRoot)
+            if (-not $resolvedShipwrightTaskRoot.StartsWith($shipwrightPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+                throw "GOVERNED_SHIPWRIGHT_TASK_ROOT_CLEANUP_REFUSED:$resolvedShipwrightTaskRoot"
+            }
+            if (-not (Test-Path -LiteralPath $resolvedShipwrightTaskRoot -PathType Container)) {
+                throw "GOVERNED_SHIPWRIGHT_TASK_ROOT_CLEANUP_MISSING:$resolvedShipwrightTaskRoot"
+            }
+            Remove-Item -LiteralPath $resolvedShipwrightTaskRoot -Recurse -Force
+            if (Test-Path -LiteralPath $resolvedShipwrightTaskRoot) {
+                throw "GOVERNED_SHIPWRIGHT_TASK_ROOT_CLEANUP_INCOMPLETE:$resolvedShipwrightTaskRoot"
+            }
+            @{ status = "CLEAN"; resource = "shipwright-phase2-task-root"; taskRoot = $resolvedShipwrightTaskRoot } |
+                ConvertTo-Json -Compress |
+                Set-Content -LiteralPath (Join-Path $validationArtifacts "shipwright-task-root-cleanup.json") -Encoding utf8
+        } catch {
+            $finalizationFailures += "Shipwright task-root cleanup failed: $($_.Exception.Message)"
         }
     }
     $portsReleased = $true

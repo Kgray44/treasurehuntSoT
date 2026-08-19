@@ -777,6 +777,24 @@
       "adapter": "playwright-family"
     },
     {
+      "id": "browser.shipwright",
+      "name": "Shipwright browser journeys",
+      "tier": 4,
+      "owner": "project-shipwright",
+      "command": "registry-selected Playwright cases",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 300000,
+      "hardBudgetMs": 600000,
+      "parallelSafe": false,
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+      "dependencies": [],
+      "contracts": ["drydock-authoring-contracts"],
+      "affectedPaths": ["tests/e2e/project-shipwright-phase2.spec.ts", "scripts/shipwright/**"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-browser-family",
+      "adapter": "playwright-family"
+    },
+    {
       "id": "browser.responsive",
       "name": "Responsive browser journeys",
       "tier": 4,

@@ -23,7 +23,10 @@ test("Shipwright Phase 2 keeps contract-aware authoring usable across modes and 
   await page.getByLabel("Email or legacy Player name").fill(creatorEmail);
   await page.getByLabel("Password").fill(creatorPassword);
   await page.getByRole("button", { name: "Continue" }).click();
-  await expect(page).toHaveURL(/\/studio\/library/u);
+  // The destination compiles on first visit in a fresh isolated runtime.
+  // Keep the sign-in journey's navigation assertion, but allow that bounded
+  // cold-start work rather than treating a healthy transition as a failure.
+  await expect(page).toHaveURL(/\/studio\/library/u, { timeout: 20_000 });
   await expect(page.getByRole("heading", { name: "Voyagewright Studio" })).toBeVisible();
 
   await page.getByLabel("Studio destinations").getByRole("link", { name: "Create Chronicle" }).click();

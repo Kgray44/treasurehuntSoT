@@ -569,8 +569,10 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
   assert.match(binding, /trusted-active-authority-selection\.mjs/u);
   assert.match(binding, /active-authority-candidates\.json/u);
   assert.match(binding, /qualified-base to[\s\S]*?current-base interval itself/u);
-  assert.match(binding, /MAINTENANCE_\(AUTHORITY_CHANGE\|SCOPE\)_REJECTED/u);
-  assert.match(binding, /separate trusted authority[\s\S]*?sole admission decision/u);
+  assert.match(binding, /MAINTENANCE_AUTHORITY_CHANGE_REJECTED/u);
+  assert.match(binding, /MAINTENANCE_SCOPE_REJECTED/u);
+  assert.match(binding, /bind-authority-maintenance/u);
+  assert.match(binding, /trusted-authority-maintenance-selection\.mjs/u);
 });
 
 test("BrowserOnly Harborlight lanes do not repeat independent broad gates", async () => {
@@ -592,6 +594,8 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
   assert.match(runtime, /BrowserSelectionsBase64/u);
   assert.match(runtime, /\(\?:spec\|setup\)\\\.ts/u);
   assert.match(runtime, /Last identity probe: \$lastIdentityProbe/u);
+  assert.match(runtime, /GOVERNED_SHIPWRIGHT_BROWSER_SELECTION_MIXED/u);
+  assert.match(runtime, /Preparing task-owned Shipwright browser fixture/u);
   assert.match(runtime, /Server stderr tail: \$serverErrorTail/u);
   const authority = await readFile(path.join(root, "scripts", "sounding-line", "authority.mjs"), "utf8");
   assert.match(authority, /definition\.title\.split\("\\u203a"\)\.at\(-1\)\.trim\(\)/u);

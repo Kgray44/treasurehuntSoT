@@ -215,6 +215,9 @@ function browserFamily(project, file, title) {
   if (value.includes("passport") || value.includes("wayfarer")) return "browser.passport";
   if (value.includes("sealed-hold") || value.includes("private-content")) return "browser.private-operations";
   if (value.includes("harborlight") || value.includes("community")) return "browser.community";
+  // Shipwright owns a synthetic Creator fixture and cannot authenticate against
+  // the generic browser copy used by responsive journeys.
+  if (file.endsWith("project-shipwright-phase2.spec.ts")) return "browser.shipwright";
   if (value.includes("studio")) return "browser.studio";
   if (value.includes("command-center") || value.includes("captain")) return "browser.captain";
   if (value.includes("true-north") || value.includes("navigation")) return "browser.navigation";
@@ -236,6 +239,7 @@ function contractFor(file, family) {
   if (isHelmFile(file) || family === "unit.helm" || family === "component.helm" || family === "browser.helm")
     return isHelmPresenceFile(file) ? helmPresenceContracts : helmBaseContracts;
   if (file.includes("drydock") || family === "unit.drydock") return drydockContracts;
+  if (file.includes("shipwright") || family.includes("shipwright")) return ["drydock-authoring-contracts"];
   if (file.includes("admiralty") || family.includes("admiralty")) return admiraltyContracts;
   if (file.includes("tideglass") || family === "unit.tideglass") return tideglassContractsFor(file);
   if (file.includes("deepwater") || family === "unit.deepwater") return ["deepwater.capability-realization-integrity"];
@@ -368,6 +372,10 @@ async function discoverPlaywright() {
     if (!match) continue;
     const [, project, filename, line, title] = match;
     const file = `tests/e2e/${filename}`;
+    // Shipwright's synthetic mutable fixture is Chromium-only by contract.
+    // Do not record Playwright's deliberately skipped non-Chromium copy as
+    // governed browser evidence or route it through an unrelated fixture.
+    if (file.endsWith("project-shipwright-phase2.spec.ts") && project !== "chromium") continue;
     const browser = { project, file, line: Number(line), title };
     const suiteId = browserFamily(project, file, title);
     cases.push({

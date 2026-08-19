@@ -10,6 +10,7 @@ const allowedRoot = path.resolve(required("LOCALAPPDATA"), "ProjectShipwright");
 const databaseUrl = required("DATABASE_URL");
 const databasePath = databaseUrl.startsWith("file:") ? path.resolve(databaseUrl.slice(5)) : "";
 const password = required("SHIPWRIGHT_PHASE2_SYNTHETIC_PASSWORD");
+const validationNonceHash = process.env.FOREVER_VALIDATION_NONCE_HASH ?? null;
 const creator = {
   id: "shipwright-p2-account-creator",
   profileId: "shipwright-p2-profile-creator",
@@ -78,6 +79,19 @@ await db.accountRoleAssignment.create({
     grantedAt: createdAt,
   },
 });
+if (validationNonceHash) {
+  await db.platformAuditEvent.create({
+    data: {
+      actorType: "VALIDATION_HARNESS",
+      action: "VALIDATION_DATABASE_IDENTITY",
+      resourceType: "VALIDATION_DATABASE",
+      resourceId: validationNonceHash,
+      outcome: "SUCCEEDED",
+      correlationId: validationNonceHash,
+      metadata: JSON.stringify({ marker: "shipwright-phase2-task-fixture", nonceHash: validationNonceHash }),
+    },
+  });
+}
 
 const credentialPath = path.join(taskRoot, "credentials", "shipwright-phase2-browser.private.json");
 await mkdir(path.dirname(credentialPath), { recursive: true });
