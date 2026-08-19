@@ -298,8 +298,8 @@ async function openDefaultPlayerJournal(page: Page, { skipOpening = true }: { sk
   await page.getByLabel("Invitation phrase").fill(process.env.PLAYER_ACCESS_CODE!);
   await page.getByRole("button", { name: "Confirm invitation" }).click();
   const open = page.getByRole("button", { name: "Open the journal" });
-  await expect(open).toBeVisible({ timeout: 15_000 });
-  await open.click();
+  await openPlayerJournalEntry(page, open);
+
   if (skipOpening) {
     const skip = page.getByRole("button", { name: "Skip ceremony" });
     if (await skip.isVisible({ timeout: 4_000 }).catch(() => false)) await skip.click();
@@ -793,6 +793,7 @@ test.describe("Project Lanternwake Phase 2 required viewports", () => {
   for (const viewport of requiredViewports) {
     test(`${viewport.label} keeps showcase, PageFlip fallback, and access controls readable without horizontal overflow`, async ({
       page,
+      context,
     }) => {
       await page.setViewportSize(viewport);
       await openShowcase(page, "reduce");
@@ -805,18 +806,35 @@ test.describe("Project Lanternwake Phase 2 required viewports", () => {
       await page.keyboard.press("Tab");
       await expect(page.getByRole("button", { name: "Play selected scene" })).toBeFocused();
 
-      await page.goto("/captain/sign-in");
-      const accountEntry = page.getByRole("link", { name: "Continue to account sign-in" });
-      await expect(page.getByRole("heading", { name: "Open the Captain's Console" })).toBeVisible();
-      await expect(accountEntry).toBeVisible();
-      await expect(page.getByLabel("Username")).toHaveCount(0);
-      expect(await horizontalOverflow(page), `${viewport.label} Captain account entry overflow`).toBeLessThanOrEqual(1);
-      await accountEntry.focus();
-      await expect(accountEntry).toBeFocused();
-      const createAccount = page.getByRole("link", { name: "Create Account" });
-      await expect(createAccount).toHaveAttribute("href", "/register");
-      await createAccount.focus();
-      await expect(createAccount).toBeFocused();
+      const accountPage = await context.newPage();
+      try {
+        await accountPage.setViewportSize(viewport);
+        await accountPage.goto("/captain/sign-in");
+        const accountEntry = accountPage.getByRole("link", { name: "Continue to account sign-in" });
+        await expect(accountPage.getByRole("heading", { name: "Open the Captain's Console" })).toBeVisible();
+        await expect(accountEntry).toBeVisible();
+        await expect(accountPage.getByLabel("Username")).toHaveCount(0);
+        expect(
+          await horizontalOverflow(accountPage),
+          `${viewport.label} Captain account entry overflow`,
+        ).toBeLessThanOrEqual(1);
+        await accountEntry.focus();
+        await expect(accountEntry).toBeFocused();
+        const createAccount = accountPage.getByRole("link", { name: "Create Account" });
+        await expect(createAccount).toHaveAttribute("href", "/register");
+        await createAccount.focus();
+        await expect(createAccount).toBeFocused();
+      } finally {
+        await accountPage.close();
+      }
     });
   }
 });
+
+async function openPlayerJournalEntry(page: Page, open: Locator) {
+  const nextPlayerStep = await Promise.race([
+    open.waitFor({ state: "visible", timeout: 15_000 }).then(() => "open-journal" as const),
+    page.waitForURL((url) => url.pathname.startsWith("/play/")).then(() => "player-route" as const),
+  ]);
+  if (nextPlayerStep === "open-journal") await open.click();
+}
