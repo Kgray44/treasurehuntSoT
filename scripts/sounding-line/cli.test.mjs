@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
+import { mkdir, rm, writeFile } from "node:fs/promises";
+import path from "node:path";
 import { promisify } from "node:util";
 import test from "node:test";
 
@@ -26,8 +28,20 @@ test("inventory is read-only and recognizes current test families", async () => 
 });
 
 test("plans are deterministic and unknown impact broadens", async () => {
+  const runtimeProbe = path.join(
+    process.cwd(),
+    "sounding-line-sqlite-baseline",
+    ".plan-digest-transient-probe",
+  );
   const first = await run("plan", "unknown-area/new-file.ts");
-  const second = await run("plan", "unknown-area/new-file.ts");
+  let second;
+  try {
+    await mkdir(path.dirname(runtimeProbe), { recursive: true });
+    await writeFile(runtimeProbe, "transient runtime layer output\n", "utf8");
+    second = await run("plan", "unknown-area/new-file.ts");
+  } finally {
+    await rm(runtimeProbe, { force: true });
+  }
   assert.equal(first.digest, second.digest);
   assert.equal(first.nonAuthoritative, true);
   assert.equal(first.execution, "governed-local");
