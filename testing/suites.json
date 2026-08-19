@@ -754,6 +754,29 @@
       "adapter": "playwright-family"
     },
     {
+      "id": "browser.tideglass",
+      "name": "Tideglass immutable-edition browser journeys",
+      "tier": 4,
+      "owner": "tideglass",
+      "command": "registry-selected Playwright cases",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 900000,
+      "hardBudgetMs": 1800000,
+      "parallelSafe": false,
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+      "dependencies": [],
+      "contracts": [
+        "tideglass-exact-edition-pair",
+        "tideglass-semantic-determinism",
+        "tideglass-safe-projection",
+        "tideglass-read-only-invariance"
+      ],
+      "affectedPaths": ["tests/e2e/tideglass-phase3.spec.ts", "scripts/tideglass/**", "src/tideglass/**"],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "exclusive-phase-3-browser-fixture",
+      "adapter": "playwright-family"
+    },
+    {
       "id": "browser.responsive",
       "name": "Responsive browser journeys",
       "tier": 4,

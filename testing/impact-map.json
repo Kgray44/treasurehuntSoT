@@ -339,7 +339,7 @@
     },
     {
       "path": "src/tideglass/**",
-      "suiteIds": ["unit.tideglass", "static.core"],
+      "suiteIds": ["unit.tideglass", "browser.tideglass", "static.core"],
       "contractIds": [
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",
@@ -356,7 +356,7 @@
     },
     {
       "path": "scripts/tideglass/**",
-      "suiteIds": ["unit.tideglass", "static.core"],
+      "suiteIds": ["unit.tideglass", "browser.tideglass", "static.core"],
       "contractIds": [
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",
@@ -386,6 +386,16 @@
         "tideglass-rebuildable-cache",
         "tideglass-api-security",
         "tideglass-migration-parity"
+      ]
+    },
+    {
+      "path": "tests/e2e/tideglass-phase3.spec.ts",
+      "suiteIds": ["browser.tideglass"],
+      "contractIds": [
+        "tideglass-exact-edition-pair",
+        "tideglass-semantic-determinism",
+        "tideglass-safe-projection",
+        "tideglass-read-only-invariance"
       ]
     },
     {

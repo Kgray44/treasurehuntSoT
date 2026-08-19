@@ -79,7 +79,7 @@
         "prisma/mysql-migrations/0053_tideglass_phase2_creator_annotations/**",
         "Development_Docs/Projects/Project_Tideglass/**"
       ],
-      "testPaths": ["tests/tideglass/**/*.test.*"],
+      "testPaths": ["tests/tideglass/**/*.test.*", "tests/e2e/tideglass-*.spec.ts"],
       "contractIds": [
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",

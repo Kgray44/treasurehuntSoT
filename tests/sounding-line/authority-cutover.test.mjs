@@ -57,6 +57,7 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
     "browser.private-operations",
     "browser.navigation",
     "browser.accessibility",
+    "browser.tideglass",
     "browser.responsive",
     "browser.animation-lifecycle",
     "browser.cross-project",
@@ -71,6 +72,16 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
   assert.ok(sentinelCases.every((entry) => entry.parallelSafety === "ISOLATED_MUTABLE_PARALLEL"));
   assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.auth").length, 12);
   assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.navigation").length, 2);
+  const tideglassCases = registry.cases.filter((entry) => entry.suiteId === "browser.tideglass");
+  assert.ok(tideglassCases.length > 0);
+  assert.ok(tideglassCases.every((entry) => entry.file === "tests/e2e/tideglass-phase3.spec.ts"));
+  const tideglassNode = mainline.nodes.find((node) => node.id === "browser.tideglass");
+  assert.deepEqual(
+    [...(tideglassNode?.testIds ?? [])].sort(),
+    tideglassCases.map((entry) => entry.id).sort(),
+    "the exclusive Tideglass fixture is selected only through its own browser family",
+  );
+  assert.ok(!mainline.nodes.some((node) => node.id === "browser.accessibility"));
 });
 
 test("access sentinel parallelism requires an explicit parallel-safe suite contract", async () => {
@@ -164,7 +175,7 @@ test("a corrective v1.4 candidate remains on the broad v1.3 plan only when expli
     githubRef: "refs/heads/codex/sounding-line-v14-corrective-activation",
   });
   assert.equal(plan.version, 2);
-  assert.equal(plan.nodes.length, 38);
+  assert.equal(plan.nodes.length, 39);
 });
 
 test("corrective activation preserves v1.3 candidate authority and enables v1.4 only on protected main", async () => {

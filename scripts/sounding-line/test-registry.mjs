@@ -214,6 +214,10 @@ function browserFamily(project, file, title) {
   if (value.includes("studio")) return "browser.studio";
   if (value.includes("command-center") || value.includes("captain")) return "browser.captain";
   if (value.includes("true-north") || value.includes("navigation")) return "browser.navigation";
+  // Tideglass provisions its own immutable Chronicle fixture. It must never
+  // share the generic accessibility browser worker, whose ordinary fixture is
+  // intentionally incompatible with that seeded data shape.
+  if (value.includes("tideglass")) return "browser.tideglass";
   if (value.includes("accessibility") || value.includes("keyboard") || value.includes("aria-"))
     return "browser.accessibility";
   if (value.includes("viewport") || value.includes("responsive") || value.includes("mobile"))
