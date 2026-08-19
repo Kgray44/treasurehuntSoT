@@ -1,7 +1,7 @@
 ---
 title: Project Bosun - Autonomous Repository Maintenance and Repair Service
 audience: engineering
-status: governing-subsystem-candidate
+status: governing
 canonical_for: project-bosun-v1
 parent_program: Project Nightwatch
 version: "1.0"
@@ -17,7 +17,7 @@ repository_baseline: d7e3f2f873139e3f7353bf288124f50543ce2aac
 
 **Version:** 1.0  
 **Date:** August 19, 2026  
-**Status:** Governing subsystem candidate  
+**Status:** Governing subsystem baseline
 **Parent program:** Project Nightwatch  
 **Repository baseline reviewed:** `Kgray44/treasurehuntSoT` at `d7e3f2f873139e3f7353bf288124f50543ce2aac`
 

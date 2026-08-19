@@ -1,7 +1,7 @@
 ---
 title: Project Nightwatch - Engineering Operations, Integration, and Unattended Autonomy Orchestrator
 audience: engineering
-status: governing-baseline-candidate
+status: governing
 canonical_for: project-nightwatch-v1
 version: "1.0"
 last_reviewed: 2026-08-19
@@ -16,7 +16,7 @@ repository_baseline: d7e3f2f873139e3f7353bf288124f50543ce2aac
 
 **Version:** 1.0  
 **Date:** August 19, 2026  
-**Status:** Governing baseline candidate, revised three-lane edition  
+**Status:** Governing baseline, revised three-lane edition
 **Repository baseline reviewed:** `Kgray44/treasurehuntSoT` at `d7e3f2f873139e3f7353bf288124f50543ce2aac`
 
 > **Governing Principle**  
