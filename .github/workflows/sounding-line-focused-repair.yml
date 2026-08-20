@@ -48,9 +48,10 @@ jobs:
           SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
           SOUNDING_LINE_CANDIDATE_REF: ${{ inputs.candidate_ref }}
           SOUNDING_LINE_BASE_SHA: ${{ inputs.base_sha }}
+          SOUNDING_LINE_WORKFLOW_REF: ${{ github.ref }}
         shell: pwsh
         run: |
-          if ($env:GITHUB_REF -ne 'refs/heads/main') { throw 'FOCUSED_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED' }
+          if ($env:SOUNDING_LINE_WORKFLOW_REF -ne 'refs/heads/main') { throw 'FOCUSED_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED' }
           if ($env:SOUNDING_LINE_CANDIDATE_SHA -notmatch '^[0-9a-f]{40}$') { throw 'FOCUSED_CANDIDATE_SHA_INVALID' }
           if ($env:SOUNDING_LINE_CANDIDATE_REF -notmatch '^refs/heads/[A-Za-z0-9._/-]+$') { throw 'FOCUSED_CANDIDATE_REF_INVALID' }
           if ($env:SOUNDING_LINE_BASE_SHA -notmatch '^[0-9a-f]{40}$') { throw 'FOCUSED_BASE_SHA_INVALID' }
