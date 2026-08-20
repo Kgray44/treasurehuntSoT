@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-08-18",
+  "generated_at": "2026-08-19",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -3556,6 +3556,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Completion_Receipt.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null

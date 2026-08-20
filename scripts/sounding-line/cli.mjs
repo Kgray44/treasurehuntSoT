@@ -18,7 +18,19 @@ import { materializeTrustedProjectOwners } from "./project-discovery.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const policyRoot = path.join(repoRoot, "testing");
-const ignoredDirectories = new Set([".git", "node_modules", ".next", "artifacts", "coverage"]);
+// Runner-restored dependency layers are not repository source. Including them
+// in the local source watermark lets concurrent worker setup perturb otherwise
+// identical plans.
+const ignoredDirectories = new Set([
+  ".git",
+  "node_modules",
+  ".next",
+  "artifacts",
+  "coverage",
+  "sounding-line-browser-cache",
+  "sounding-line-sqlite-baseline",
+]);
+const ignoredFiles = new Set(["sounding-line-sqlite-baseline-manifest.json"]);
 const secretPattern = /(?:api[_-]?key|access[_-]?token|auth[_-]?token|password|secret|private[_-]?key|credential)/iu;
 const registryFiles = [
   "ownership.json",
@@ -299,6 +311,19 @@ function validatePolicy(policy) {
     )
   )
     errors.push("verification-maintenance-policy: ordinary candidate boundary mismatch");
+  const governanceDocumentation = maintenancePolicy?.ordinaryCandidateGovernanceDocumentation;
+  if (
+    governanceDocumentation?.classification !== "GOVERNANCE_DOCUMENTATION_ONLY" ||
+    !Array.isArray(governanceDocumentation?.pathGlobs) ||
+    !governanceDocumentation.pathGlobs.length ||
+    !Array.isArray(governanceDocumentation?.excludedPathGlobs) ||
+    !governanceDocumentation.excludedPathGlobs.length ||
+    governanceDocumentation.pathGlobs.some((entry) => maintenancePolicy.authorityChangePathGlobs.includes(entry)) ||
+    governanceDocumentation.excludedPathGlobs.some((entry) =>
+      maintenancePolicy.authorityChangePathGlobs.includes(entry),
+    )
+  )
+    errors.push("verification-maintenance-policy: governance documentation boundary mismatch");
   const registration = maintenancePolicy?.ordinaryCandidateProductVerificationRegistration;
   if (
     registration?.classification !== "PRODUCT_WITH_VERIFICATION_REGISTRATION" ||
@@ -649,7 +674,7 @@ async function walk(relative = "") {
     const child = path.join(relative, entry.name).replace(/\\/gu, "/");
     if (entry.isDirectory()) {
       if (!ignoredDirectories.has(entry.name)) results.push(...(await walk(child)));
-    } else if (entry.isFile()) results.push(child);
+    } else if (entry.isFile() && !ignoredFiles.has(entry.name)) results.push(child);
   }
   return results;
 }

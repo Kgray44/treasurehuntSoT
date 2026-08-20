@@ -381,7 +381,7 @@ function Invoke-ValidationStep {
     Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments $Arguments
 }
 
-function Assert-BrowserSelectionDiscovery {
+function Get-BrowserSelectionDiscoveryCount {
     param([Parameter(Mandatory)]$Selection)
     $arguments = @("node_modules/@playwright/test/cli.js", "test", "--list", "--project=$($Selection.project)", "--grep", [string]$Selection.grep) + @($Selection.files | ForEach-Object { ([string]$_).Replace('\\', '/') })
     Write-Host "`n==> Discovering exact governed browser selection for $($Selection.project)" -ForegroundColor Cyan
@@ -396,9 +396,39 @@ function Assert-BrowserSelectionDiscovery {
     # Match only the project envelope. The report's visual separator is
     # runner/console encoded and is not a stable machine boundary.
     $projectPattern = '^\s*\[' + [regex]::Escape([string]$Selection.project) + '\]\s+'
-    $discoveredCases = @($listing | Where-Object { $_ -match $projectPattern }).Count
+    return @($listing | Where-Object { $_ -match $projectPattern }).Count
+}
+
+function Assert-BrowserSelectionDiscovery {
+    param([Parameter(Mandatory)]$Selection)
+    $discoveredCases = Get-BrowserSelectionDiscoveryCount -Selection $Selection
     if ($discoveredCases -ne [int]$Selection.caseCount) {
         throw "GOVERNED_BROWSER_DISCOVERY_MISMATCH:$($Selection.project):expected=$($Selection.caseCount):actual=$discoveredCases"
+    }
+}
+
+function Copy-TaskOwnedDatabaseWithSidecars {
+    param(
+        [Parameter(Mandatory)][string]$SourceDatabase,
+        [Parameter(Mandatory)][string]$DestinationDatabase,
+        [Parameter(Mandatory)][string]$FailureCode
+    )
+    if (-not (Test-Path -LiteralPath $SourceDatabase -PathType Leaf)) {
+        throw "$FailureCode:SOURCE_MISSING:$SourceDatabase"
+    }
+    $destinationDirectory = Split-Path -Parent $DestinationDatabase
+    New-Item -ItemType Directory -Path $destinationDirectory -Force | Out-Null
+    Copy-Item -LiteralPath $SourceDatabase -Destination $DestinationDatabase -Force
+    foreach ($suffix in @("-wal", "-shm")) {
+        $destinationSidecar = "$DestinationDatabase$suffix"
+        Remove-Item -LiteralPath $destinationSidecar -Force -ErrorAction SilentlyContinue
+        $sourceSidecar = "$SourceDatabase$suffix"
+        if (Test-Path -LiteralPath $sourceSidecar -PathType Leaf) {
+            Copy-Item -LiteralPath $sourceSidecar -Destination $destinationSidecar -Force
+        }
+    }
+    if (-not (Test-Path -LiteralPath $DestinationDatabase -PathType Leaf)) {
+        throw "$FailureCode:DESTINATION_MISSING:$DestinationDatabase"
     }
 }
 
@@ -779,6 +809,7 @@ $finalizationFailures = @()
 $ownedValidationServer = $null
 $ownedProductionServer = $null
 $tideglassTaskRoot = $null
+$shipwrightTaskRoot = $null
 $playwrightInvoked = $false
 $defaultBrowserSucceeded = $false
 $productionPerformanceSucceeded = $false
@@ -905,11 +936,97 @@ try {
                 Sort-Object -Unique
         )
         $tideglassBrowserFile = "tests/e2e/tideglass-phase3.spec.ts"
-        if ($selectedBrowserFiles -contains $tideglassBrowserFile) {
+        $tideglassSetupFile = "tests/e2e/phase3-readonly-setup.setup.ts"
+        $shipwrightBrowserFile = "tests/e2e/project-shipwright-phase2.spec.ts"
+        $tideglassBrowserSelections = @()
+        $shipwrightBrowserSelections = @()
+        $ordinaryBrowserSelections = @()
+        $ordinaryBrowserSnapshot = $null
+        if ($BrowserSelections.Count -gt 0) {
+            foreach ($selection in $BrowserSelections) {
+                $selectionFiles = @($selection.files | ForEach-Object { ([string]$_).Replace('\', '/') })
+                $hasTideglass = $selectionFiles -contains $tideglassBrowserFile
+                $hasShipwright = $selectionFiles -contains $shipwrightBrowserFile
+                if (-not $hasTideglass -and -not $hasShipwright) {
+                    $ordinaryBrowserSelections += $selection
+                    continue
+                }
+                # Playwright's Tideglass setup file is a dependency of this fixture, not
+                # an ordinary browser target. Keep it with the Tideglass batch so a
+                # selection containing only that dependency is not split into an empty
+                # ordinary test command.
+                $tideglassFiles = if ($hasTideglass) {
+                    @($selectionFiles | Where-Object { $_ -in @($tideglassBrowserFile, $tideglassSetupFile) })
+                } else {
+                    @()
+                }
+                $shipwrightFiles = if ($hasShipwright) {
+                    @($selectionFiles | Where-Object { $_ -eq $shipwrightBrowserFile })
+                } else {
+                    @()
+                }
+                $ordinaryExcludedFiles = @($tideglassFiles + $shipwrightFiles)
+                $ordinaryFiles = @($selectionFiles | Where-Object { $_ -notin $ordinaryExcludedFiles })
+                $partitions = @()
+                foreach ($partition in @(
+                    [pscustomobject]@{ Name = "Tideglass"; Files = $tideglassFiles },
+                    [pscustomobject]@{ Name = "Shipwright"; Files = $shipwrightFiles },
+                    [pscustomobject]@{ Name = "ordinary"; Files = $ordinaryFiles }
+                )) {
+                    # Normalize an empty, singleton, or array-valued property before
+                    # counting it.  Under StrictMode a PSCustomObject can otherwise
+                    # expose a scalar Files value without a Count member.
+                    if (@($partition.Files).Count -eq 0) { continue }
+                    $partitionSelection = [pscustomobject]@{
+                        project = [string]$selection.project
+                        files = @($partition.Files)
+                        grep = [string]$selection.grep
+                        caseCount = 0
+                    }
+                    $partitionSelection.caseCount = Get-BrowserSelectionDiscoveryCount -Selection $partitionSelection
+                    if ($partitionSelection.caseCount -lt 1) {
+                        throw "GOVERNED_BROWSER_SELECTION_PARTITION_EMPTY:$($partition.Name):$($selection.project)"
+                    }
+                    $partitions += [pscustomobject]@{ Name = $partition.Name; Selection = $partitionSelection }
+                }
+                $partitionCaseCount = @($partitions | ForEach-Object { [int]$_.Selection.caseCount } | Measure-Object -Sum).Sum
+                if ($partitionCaseCount -ne [int]$selection.caseCount) {
+                    throw "GOVERNED_BROWSER_SELECTION_PARTITION_MISMATCH:$($selection.project):expected=$($selection.caseCount):actual=$partitionCaseCount"
+                }
+                foreach ($partition in $partitions) {
+                    switch ($partition.Name) {
+                        "Tideglass" { $tideglassBrowserSelections += $partition.Selection; break }
+                        "Shipwright" { $shipwrightBrowserSelections += $partition.Selection; break }
+                        "ordinary" { $ordinaryBrowserSelections += $partition.Selection; break }
+                        default { throw "GOVERNED_BROWSER_SELECTION_PARTITION_UNKNOWN:$($partition.Name)" }
+                    }
+                }
+            }
+        }
+        if ($BrowserSelections.Count -eq 0 -and $selectedBrowserFiles -contains $tideglassBrowserFile) {
             $unexpectedFiles = @($selectedBrowserFiles | Where-Object { $_ -notin @($tideglassBrowserFile, "tests/e2e/phase3-readonly-setup.setup.ts") })
             if ($unexpectedFiles.Count -gt 0) {
-                throw "GOVERNED_TIDEGLASS_BROWSER_SELECTION_MIXED:$($unexpectedFiles -join ',')"
+                throw "GOVERNED_TIDEGLASS_BROWSER_ARGS_MIXED:$($unexpectedFiles -join ',')"
             }
+        }
+        if ($shipwrightBrowserSelections.Count -gt 0) {
+            # Shipwright's mutable Creator journey owns a purpose-built synthetic
+            # account and a dynamic loopback server. It cannot borrow the generic
+            # development account or the ordinary browser database.
+            $shipwrightParent = [System.IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA "ProjectShipwright\SoundingLine"))
+            $shipwrightTaskRoot = [System.IO.Path]::GetFullPath(
+                (Join-Path $shipwrightParent ("validation-" + $isolation.nonceHash.Substring(0, 16)))
+            )
+            $shipwrightPrefix = $shipwrightParent.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+            if (-not $shipwrightTaskRoot.StartsWith($shipwrightPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+                throw "GOVERNED_SHIPWRIGHT_TASK_ROOT_ESCAPED:$shipwrightTaskRoot"
+            }
+            if (Test-Path -LiteralPath $shipwrightTaskRoot) {
+                throw "GOVERNED_SHIPWRIGHT_TASK_ROOT_ALREADY_EXISTS:$shipwrightTaskRoot"
+            }
+            $env:SHIPWRIGHT_PHASE2_TASK_ROOT = $shipwrightTaskRoot
+        }
+        if ($tideglassBrowserSelections.Count -gt 0 -or ($BrowserSelections.Count -eq 0 -and $selectedBrowserFiles -contains $tideglassBrowserFile)) {
             $tideglassParent = [System.IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA "ProjectTideglass\SoundingLine"))
             $tideglassTaskRoot = [System.IO.Path]::GetFullPath(
                 (Join-Path $tideglassParent ("validation-" + $isolation.nonceHash.Substring(0, 16)))
@@ -920,6 +1037,10 @@ try {
             }
             if (Test-Path -LiteralPath $tideglassTaskRoot) {
                 throw "GOVERNED_TIDEGLASS_TASK_ROOT_ALREADY_EXISTS:$tideglassTaskRoot"
+            }
+            if ($tideglassBrowserSelections.Count -gt 0 -and $ordinaryBrowserSelections.Count -gt 0) {
+                $ordinaryBrowserSnapshot = Join-Path $tideglassTaskRoot "ordinary-browser-fixture\validation.db"
+                Copy-TaskOwnedDatabaseWithSidecars -SourceDatabase $isolatedDatabase -DestinationDatabase $ordinaryBrowserSnapshot -FailureCode "GOVERNED_TIDEGLASS_ORDINARY_FIXTURE_SNAPSHOT_FAILED"
             }
             $env:TIDEGLASS_PHASE3_TASK_ROOT = $tideglassTaskRoot
             $env:TIDEGLASS_PHASE3_SOURCE_SHA = (& git -C $projectRoot rev-parse HEAD).Trim()
@@ -945,21 +1066,11 @@ try {
             # Playwright's shared Phase 3 fixtures deliberately accept only the
             # nonce-bound database copy created by this harness. Tideglass gets
             # its synthetic data in a disposable project root, then materializes
-            # that data into the already-authorized isolated copy. The exact
-            # browser selection above prevents one project's fixture from being
-            # used by any unrelated browser case.
-            Copy-Item -LiteralPath $tideglassDatabase -Destination $isolatedDatabase -Force
-            foreach ($suffix in @("-wal", "-shm")) {
-                $destinationSidecar = "$isolatedDatabase$suffix"
-                Remove-Item -LiteralPath $destinationSidecar -Force -ErrorAction SilentlyContinue
-                $sourceSidecar = "$tideglassDatabase$suffix"
-                if (Test-Path -LiteralPath $sourceSidecar -PathType Leaf) {
-                    Copy-Item -LiteralPath $sourceSidecar -Destination $destinationSidecar -Force
-                }
-            }
-            if (-not (Test-Path -LiteralPath $isolatedDatabase -PathType Leaf)) {
-                throw "GOVERNED_TIDEGLASS_FIXTURE_MATERIALIZATION_FAILED:$isolatedDatabase"
-            }
+            # that data into the already-authorized isolated copy. When the
+            # sealed selection also contains ordinary cases, their prepared
+            # fixture was snapshotted above and is restored only after the
+            # Tideglass-owned server has fully stopped.
+            Copy-TaskOwnedDatabaseWithSidecars -SourceDatabase $tideglassDatabase -DestinationDatabase $isolatedDatabase -FailureCode "GOVERNED_TIDEGLASS_FIXTURE_MATERIALIZATION_FAILED"
             $env:TIDEGLASS_PHASE3_FIXTURE_CHECKSUM = [string]$tideglassFixtureReceipt.fixtureChecksum
             $env:DATABASE_URL = $expectedDatabaseUrl
             # The Phase 3 read-only setup is shared infrastructure and signs in
@@ -998,22 +1109,76 @@ try {
                 "--verify"
             )
         }
-        Write-Host "`n==> Starting owned isolated validation server" -ForegroundColor Cyan
-        $ownedValidationServer = Start-OwnedValidationServer
         $playwrightInvoked = $true
         if ($BrowserSelections.Count -gt 0) {
-            foreach ($selection in $BrowserSelections) {
-                Assert-BrowserSelectionDiscovery -Selection $selection
-                $browserCommand = @("node_modules/@playwright/test/cli.js", "test", "--project=$($selection.project)", "--grep", [string]$selection.grep) + @($selection.files | ForEach-Object { ([string]$_).Replace('\', '/') })
-                if ($BrowserWorkers -gt 1) { $browserCommand += @("--workers=$BrowserWorkers", "--fully-parallel") }
-                if ($isSoundingLineLane) { $browserCommand += "--global-timeout=$browserGlobalTimeoutMs" }
-                try {
-                    Invoke-ValidationStep -Name "Running exact governed browser acceptance tests for $($selection.project)" -Arguments $browserCommand
-                } catch {
-                    throw "GOVERNED_BROWSER_SERVER_OR_TEST_FAILURE:$($_.Exception.Message)`n$(Get-OwnedValidationServerDiagnostics -ServerOwnership $ownedValidationServer)"
+            $browserSelectionBatches = @()
+            if ($tideglassBrowserSelections.Count -gt 0) {
+                $browserSelectionBatches += [pscustomobject]@{
+                    Name = "Tideglass"
+                    Selections = @($tideglassBrowserSelections)
+                    RestoreOrdinaryFixture = $false
                 }
             }
+            if ($shipwrightBrowserSelections.Count -gt 0) {
+                $browserSelectionBatches += [pscustomobject]@{
+                    Name = "Shipwright"
+                    Selections = @($shipwrightBrowserSelections)
+                    RestoreOrdinaryFixture = $false
+                }
+            }
+            if ($ordinaryBrowserSelections.Count -gt 0) {
+                $browserSelectionBatches += [pscustomobject]@{
+                    Name = "ordinary"
+                    Selections = @($ordinaryBrowserSelections)
+                    RestoreOrdinaryFixture = $null -ne $ordinaryBrowserSnapshot
+                }
+            }
+            if ($browserSelectionBatches.Count -eq 0) {
+                throw "GOVERNED_BROWSER_SELECTION_BATCHES_EMPTY"
+            }
+            foreach ($batch in $browserSelectionBatches) {
+                if ($batch.Name -eq "Shipwright") {
+                    foreach ($selection in $batch.Selections) {
+                        Assert-BrowserSelectionDiscovery -Selection $selection
+                        if (@($selection.files).Count -ne 1 -or
+                            [string]$selection.files[0] -ne $shipwrightBrowserFile -or
+                            [int]$selection.caseCount -ne 1) {
+                            throw "GOVERNED_SHIPWRIGHT_BROWSER_SELECTION_INVALID:$($selection.project):cases=$($selection.caseCount)"
+                        }
+                        # This runner materializes only Shipwright's synthetic Creator
+                        # fixture, hands its private credential directly to Playwright,
+                        # and owns a separate dynamic loopback port.
+                        Invoke-ValidationStep -Name "Running exact governed Shipwright Phase 2 browser acceptance" -Arguments @(
+                            "scripts/shipwright/run-phase2-journeys.mjs"
+                        )
+                    }
+                    continue
+                }
+                if ($batch.RestoreOrdinaryFixture) {
+                    Write-Host "`n==> Restoring ordinary browser fixture after Tideglass partition" -ForegroundColor Cyan
+                    Copy-TaskOwnedDatabaseWithSidecars -SourceDatabase $ordinaryBrowserSnapshot -DestinationDatabase $isolatedDatabase -FailureCode "GOVERNED_TIDEGLASS_ORDINARY_FIXTURE_RESTORE_FAILED"
+                    $env:DATABASE_URL = $expectedDatabaseUrl
+                }
+                Write-Host "`n==> Starting owned isolated validation server for $($batch.Name) browser selection" -ForegroundColor Cyan
+                $ownedValidationServer = Start-OwnedValidationServer
+                foreach ($selection in $batch.Selections) {
+                    Assert-BrowserSelectionDiscovery -Selection $selection
+                    $browserCommand = @("node_modules/@playwright/test/cli.js", "test", "--project=$($selection.project)", "--grep", [string]$selection.grep) + @($selection.files | ForEach-Object { ([string]$_).Replace('\', '/') })
+                    if ($BrowserWorkers -gt 1) { $browserCommand += @("--workers=$BrowserWorkers", "--fully-parallel") }
+                    if ($isSoundingLineLane) { $browserCommand += "--global-timeout=$browserGlobalTimeoutMs" }
+                    try {
+                        Invoke-ValidationStep -Name "Running exact governed $($batch.Name) browser acceptance tests for $($selection.project)" -Arguments $browserCommand
+                    } catch {
+                        throw "GOVERNED_BROWSER_SERVER_OR_TEST_FAILURE:$($_.Exception.Message)`n$(Get-OwnedValidationServerDiagnostics -ServerOwnership $ownedValidationServer)"
+                    }
+                }
+                Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer
+                $ownedValidationServer = $null
+                Assert-TcpPortAvailable -Port $validationServerPort
+            }
         } else {
+            Write-Host "`n==> Starting owned isolated validation server" -ForegroundColor Cyan
+            $ownedValidationServer = Start-OwnedValidationServer
             $browserCommand = @("node_modules/@playwright/test/cli.js", "test") + $BrowserArgs
             if ($BrowserGrep) { $browserCommand += @("--grep", $BrowserGrep) }
             if ($BrowserTestPath) {
@@ -1036,10 +1201,10 @@ try {
                 $browserCommand += "--global-timeout=$browserGlobalTimeoutMs"
             }
             Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments $browserCommand
+            Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer
+            $ownedValidationServer = $null
+            Assert-TcpPortAvailable -Port $validationServerPort
         }
-        Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer
-        $ownedValidationServer = $null
-        Assert-TcpPortAvailable -Port $validationServerPort
         if ($tideglassTaskRoot) { $env:DATABASE_URL = $expectedDatabaseUrl }
         $defaultBrowserSucceeded = $true
     } else {
@@ -1157,6 +1322,25 @@ try {
                 Set-Content -LiteralPath (Join-Path $validationArtifacts "tideglass-task-root-cleanup.json") -Encoding utf8
         } catch {
             $finalizationFailures += "Tideglass task-root cleanup failed: $($_.Exception.Message)"
+        }
+    }
+    if ($shipwrightTaskRoot -and (Test-Path -LiteralPath $shipwrightTaskRoot -PathType Container)) {
+        try {
+            $shipwrightParent = [System.IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA "ProjectShipwright\SoundingLine"))
+            $shipwrightPrefix = $shipwrightParent.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+            $resolvedShipwrightTaskRoot = [System.IO.Path]::GetFullPath($shipwrightTaskRoot)
+            if (-not $resolvedShipwrightTaskRoot.StartsWith($shipwrightPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+                throw "GOVERNED_SHIPWRIGHT_TASK_ROOT_CLEANUP_REFUSED:$resolvedShipwrightTaskRoot"
+            }
+            Remove-Item -LiteralPath $resolvedShipwrightTaskRoot -Recurse -Force
+            if (Test-Path -LiteralPath $resolvedShipwrightTaskRoot) {
+                throw "GOVERNED_SHIPWRIGHT_TASK_ROOT_CLEANUP_INCOMPLETE:$resolvedShipwrightTaskRoot"
+            }
+            @{ status = "CLEAN"; resource = "shipwright-phase2-task-root"; taskRoot = $resolvedShipwrightTaskRoot } |
+                ConvertTo-Json -Compress |
+                Set-Content -LiteralPath (Join-Path $validationArtifacts "shipwright-task-root-cleanup.json") -Encoding utf8
+        } catch {
+            $finalizationFailures += "Shipwright task-root cleanup failed: $($_.Exception.Message)"
         }
     }
     $portsReleased = $true

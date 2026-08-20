@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `df0360044cf0e0612af8e77751cfd7241c57ae1c`
+Audited source commit: `261c6d4947ebc2b96f12c5b0eb734b7aba3cf637`
 
 ## Status vocabulary
 
@@ -1026,7 +1026,7 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 
 ### Meaningful limitations
 
-- Protected-main source integration was accepted through PR #52; deployment and owner acceptance remain separate from source integration.
+- Protected-main integration completed in PR #52 at 191a964488d0df71f8dcb91c5b8372fc73b6b32e; deployment and owner acceptance remain separate from source integration.
 - Sea Trials use synthetic bounded inputs and never mutate a live Tale Session, provider, asset, or Player state.
 - Live provider, production MySQL, physical-device, and external assistive-technology proof remain outside this phase.
 - Immutable publishing evidence and Phase 4 integration remain out of scope.
@@ -1639,4 +1639,4 @@ Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `df0360044cf0e0612af8e77751cfd7241c57ae1c`
+Generation source commit: `261c6d4947ebc2b96f12c5b0eb734b7aba3cf637`
