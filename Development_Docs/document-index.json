@@ -873,6 +873,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Deepwater/Project_Homeport_True_North_Navigation_Focus_Impact_Declaration.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Deepwater/README.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -5272,12 +5278,6 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7/README.md",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/true-north-navigation-focus-repair/Deepwater_Capability_Impact_Declaration.json",
       "record_type": "validation-evidence",
       "status": "current",
       "canonical_for": null

@@ -15,5 +15,5 @@
     "tests/e2e/project-true-north.spec.ts",
     "Sounding Line focused browser qualification"
   ],
-  "rationale": "Restores the existing mobile navigation focus-transfer contract: the active global destination receives focus when the drawer opens, with the first link retained as a fallback. This repairs an accessibility regression without adding, retiring, or expanding a product capability."
+  "rationale": "Restores the existing mobile navigation focus-transfer contract: the active global destination receives focus when the drawer opens, with the first link retained as a fallback. This repairs an accessibility regression without adding, retiring, or expanding a product capability. The cross-capability declaration is recorded in Deepwater governance so its structural validation is selected without treating a generic evidence declaration as a full historical Homeport phase rerun."
 }
