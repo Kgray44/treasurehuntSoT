@@ -255,6 +255,7 @@ jobs:
           REPOSITORY: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           $legacy = Get-Content -Raw testing/sounding-line-authority.json | ConvertFrom-Json | Select-Object -ExpandProperty protectedMergeBinding | Select-Object -ExpandProperty legacyQualifiedCandidates | Where-Object { $_.prNumber -eq [int]$env:PR_NUMBER -and $_.candidateSha -eq $env:CANDIDATE_SHA }
           if (@($legacy).Count -gt 1) { throw "AMBIGUOUS_LEGACY_QUALIFIED_AUTHORITY" }
