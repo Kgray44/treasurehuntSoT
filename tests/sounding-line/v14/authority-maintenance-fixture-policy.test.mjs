@@ -55,7 +55,11 @@ test("focused browser Studio fixture normalization is bounded to the disposable 
   assert.match(runtime, /FOCUSED_BROWSER_STUDIO_FIXTURE_CURRENT/u);
   assert.match(runtime, /--experimental-sqlite/u);
   assert.match(runtime, /\.sounding-line-focused-browser-studio-fixture\.mjs/u);
-  assert.match(runtime, /Set-Content -LiteralPath \$normalizerPath/u);
+  assert.match(
+    runtime,
+    /\[System\.IO\.File\]::WriteAllText\(\$normalizerPath, \$normalizer, \[System\.Text\.UTF8Encoding\]::new\(\$false\)\)/u,
+  );
+  assert.doesNotMatch(runtime, /Set-Content[^\r\n]*utf8NoBOM/u);
   assert.match(runtime, /Remove-Item -LiteralPath \$normalizerPath/u);
   assert.doesNotMatch(runtime, /"--eval"/u);
   assert.match(
