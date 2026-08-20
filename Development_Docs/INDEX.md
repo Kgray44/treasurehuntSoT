@@ -3,7 +3,7 @@ title: Engineering record index
 audience: engineering
 status: current
 canonical_for: engineering-record-index
-last_reviewed: 2026-08-19
+last_reviewed: 2026-08-20
 ---
 
 # Engineering-record index
@@ -43,8 +43,11 @@ Use [document-index.json](document-index.json) for complete path-level classific
 ## Project Nightwatch and Project Bosun
 
 - [Project Nightwatch governing baseline v1.0](Governing/Project_Nightwatch_Unattended_Autonomy_and_Overnight_Operations_Governing_Document_v1.0.md) defines the engineering operations orchestrator: parallel Product Fleet development, the persistent Integration Queue, just-in-time reconciliation, migration reservations, objective budgets and leases, loop containment, unattended continuity, and supervision of Project Bosun.
+- [Project Nightwatch v1.1 atomic integration and maintenance-cascade amendment](Governing/Project_Nightwatch_Atomic_Integration_and_Maintenance_Cascade_Control_Amendment_v1.1.md) adds the atomic Integration Acceptance Transaction, neutral `AWAITING_AUTHORITY` semantics, authority-before-binding dispatch, Integration Acceptance leases, semantic evidence preservation, maintenance-cascade accounting, maintenance-amplification metrics, event deduplication, queue-front preflight, and the mandatory Increment A.1 Atomic Acceptance Sequencer.
 - [Project Bosun governing subsystem v1.0](Governing/Project_Bosun_Autonomous_Repository_Maintenance_and_Repair_Service_Governing_Document_v1.0.md) defines the Nightwatch-subordinate autonomous repository maintenance and repair service, including deterministic `AUTO_0`, bounded Codex `AUTO_1`, protected `AUTO_2`, `OWNER` escalation, shared-baseline maintenance, repair worktrees, post-merge proof, and Bridgewatch Bosun telemetry.
+- [Project Bosun v1.1 maintenance cascade suppression and repair convergence amendment](Governing/Project_Bosun_Maintenance_Cascade_Suppression_and_Repair_Convergence_Amendment_v1.1.md) requires one root finding/one active repair lineage, compound closure planning, deterministic consequence bundling, cumulative cascade budgets, repair-of-repair circuit breakers, current-main PR reuse, protected maintenance integration slots, coalesced dependent wakeup, and cascade-level Bridgewatch telemetry.
 - Nightwatch is the scheduling/orchestration authority for the three-lane engineering model. Bosun is a subordinate maintenance executor. Sounding Line remains the verification and protected-acceptance authority; Fairlead remains the GitHub interaction authority; Project Trim remains the Codex context-efficiency authority.
+- The v1.1 amendments are additive governing authority over their v1.0 baselines. They strengthen sequencing and convergence requirements without granting Nightwatch or Bosun release authority or weakening Sounding Line.
 
 ## Project Sounding Line amendments
 
