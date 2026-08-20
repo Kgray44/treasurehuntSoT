@@ -9,15 +9,15 @@ last_reviewed: 2026-08-19
 # Project Confluence integration manifest
 
 - Public repository: `Kgray44/treasurehuntSoT`.
-- Reconciled public base SHA: `a943a10819303624ca9ce1440645a581c5f87bc8`.
+- Reconciled public base SHA: `0bafe5f82b6eec987936e43f12b40b575096fc79`.
 - Private archive: `Kgray44/voyagewright-journal-archive`.
-- Archive visibility at reconciliation validation: `PRIVATE`, verified by anonymous GitHub API refusal plus authenticated Git access at `2026-08-20T00:08:46.719Z`.
+- Archive visibility at reconciliation validation: `PRIVATE`, verified by anonymous GitHub API refusal plus authenticated Git access at `2026-08-20T00:47:13.944Z`.
 - Final integrated SHA: pending governed protected-main integration.
 - Scheduled worker state: exact definitions staged in `.agents/confluence-workers.md`; not active because the available automation project is not Git-backed and cannot yet guarantee a trusted protected-main checkout.
 
 ## Protected admission status
 
-PR #211 remains open for `codex/project-confluence-finalization`. Its supplied head `39b2415f0680e0f17e612b436a7c1ba6fb399480` remains preserved before current-main reconciliation. The existing Confluence candidate was then reconciled onto protected `origin/main` `a943a10819303624ca9ce1440645a581c5f87bc8`. Current Sounding Line unit evidence includes explicit Confluence ordinary-candidate admission coverage; this candidate does not modify Sounding Line policy or authority.
+PR #211 remains open for `codex/project-confluence-finalization`. Its supplied head `39b2415f0680e0f17e612b436a7c1ba6fb399480` remains preserved before current-main reconciliation. The existing Confluence candidate was then reconciled onto protected `origin/main` `0bafe5f82b6eec987936e43f12b40b575096fc79`. Current Sounding Line unit evidence includes explicit Confluence ordinary-candidate admission coverage; this candidate does not modify Sounding Line policy or authority.
 
 The former shared generated-record blockers are now protected-main repairs, not Confluence scope:
 
