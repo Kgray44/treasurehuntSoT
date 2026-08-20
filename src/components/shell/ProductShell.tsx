@@ -228,7 +228,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
         const signIn = disclosure?.querySelector<HTMLElement>('[data-navigation-id="account-sign-in"]');
         (signIn ?? disclosure?.querySelector<HTMLElement>("a, button"))?.focus();
       });
-  }, [accountOpen]);
+  }, [accountOpen, currentUser.status]);
 
   useLayoutEffect(() => {
     if (!accountOpen) return;
