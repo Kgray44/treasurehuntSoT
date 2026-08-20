@@ -1,9 +1,9 @@
 ---
 title: Project Wakebook Phase 2 Validation Record
 audience: product-engineering
-status: authority-rejected-policy-scope
+status: blocked-external-governing-document-integrity
 canonical_for: project-wakebook-phase-2-validation-record
-last_reviewed: 2026-08-18
+last_reviewed: 2026-08-20
 ---
 
 # Project Wakebook Phase 2 validation record
@@ -123,3 +123,32 @@ canonical domain, while the trusted ordinary-candidate classifier is
 authority-owned. Do not retry authority until accepted mainline recognizes
 that established feature-promotion path or the record is integrated through
 its governed owner.
+
+## 2026-08-20 protected-main reconciliation and integrity hold
+
+The preserved Phase 2 branch merged protected main exactly once as
+`8a4e940dd2242648a9e090283d705870d37e4d0a`, whose protected-main parent is
+`a943a10819303624ca9ce1440645a581c5f87bc8` (PR #349). The only merge
+conflicts were generator-owned Feature Catalog records; the current protected
+FT-036 fragment was retained and the catalog, registry, and documentation
+index were regenerated. No Wakebook product source conflict occurred.
+
+Independent qualification is green at reconciliation artifact head
+`98de6f170b0c1236e0af5f6811d8bc1528234d2b`: 36 focused tests in nine
+Wakebook/Wayfarer files; scoped formatting, ESLint, TypeScript, product-language,
+and One Voyage checks; policy validation (482 contracts, 63 suites, zero
+errors); Feature Catalog and documentation validation; private-content scan;
+and both `wakebook-phase2` Chromium journeys. The browser fixture was a fresh
+task-owned SQLite database at `C:\CodexTaskOwned\WakebookPhase2\phase2-reconcile-8a4e940d`, populated by all 59 checked-in migrations through Prisma `db execute`.
+No canonical database or shared browser state was used.
+
+Protected-main PR #349 also replaced the governing PDF blob with
+`4b6a058ea9d941dc34498afc323cc2bbcbcda6e0` (15,816 bytes, replacing the
+previous 122,034-byte readable source). The blob lacks a PDF EOF marker and
+fails parser inspection with `PdfStreamError: Stream has ended unexpectedly`.
+Documentation validation does not parse PDF payload integrity, so its passing
+result is not evidence that this governing source is readable. Because the
+current Phase 2 authority text cannot be verified for unchanged normative scope,
+no fresh candidate is frozen and no Mainline Decision is dispatched. This is a
+shared protected-main documentation-integrity blocker, not a Wakebook product,
+privacy, migration, or browser failure.

@@ -1,9 +1,9 @@
 ---
 title: Project Wakebook Phase 2 Test Plan
 audience: product-engineering
-status: authority-rejected-policy-scope
+status: blocked-external-governing-document-integrity
 canonical_for: project-wakebook-phase-2-test-plan
-last_reviewed: 2026-08-18
+last_reviewed: 2026-08-20
 ---
 
 # Project Wakebook Phase 2 test plan
@@ -111,3 +111,15 @@ FT-036 branch-complete fragment. No Wakebook suite ran, so the local focused
 evidence remains valid but cannot become a release decision. Do not repeat the
 authority run until its current accepted policy recognizes this governed
 promotion path.
+
+## Current reconciliation hold
+
+The required post-main-movement proof is complete: nine focused Wakebook and
+Wayfarer Vitest files (36 tests), scoped static checks, policy, catalog,
+documentation, private-content scan, and the two-case `wakebook-phase2`
+Chromium journey on a fresh task-owned SQLite fixture all passed. A current
+protected-main replacement of the Wakebook governing PDF is malformed and
+cannot be parsed. Until the accepted governing source is restored or otherwise
+made readable, a candidate is not qualified for freeze or authoritative
+Mainline Decision dispatch. No authority workflow will be used to diagnose this
+external source-integrity defect.

@@ -1,9 +1,9 @@
 ---
 title: Project Wakebook Phase 2 Mainline Safety Record
 audience: product-engineering
-status: authority-rejected-policy-scope
+status: blocked-external-governing-document-integrity
 canonical_for: project-wakebook-phase-2-mainline-safety-record
-last_reviewed: 2026-08-18
+last_reviewed: 2026-08-20
 ---
 
 # Project Wakebook Phase 2 mainline safety record
@@ -99,3 +99,16 @@ FT-036 branch-complete fragment. No Wakebook test ran, and no `RELEASE_GO` or
 finalization artifact exists. The trusted classifier policy is not Wakebook
 owned; authority must not be retried until that policy recognizes the governed
 feature-promotion path or accepted mainline has integrated it separately.
+
+## 2026-08-20 source-integrity hold
+
+Reconciliation merge `8a4e940dd2242648a9e090283d705870d37e4d0a` has current
+protected main `a943a10819303624ca9ce1440645a581c5f87bc8` as its second parent.
+The protected-main PR #349 PDF blob for the Project Wakebook governing source
+is 15,816 bytes, lacks its EOF marker, and is not parseable; the prior readable
+source was 122,034 bytes. This makes current Phase 2 normative-scope comparison
+unavailable. Product proof is independently current and green (36 focused
+tests, scoped static, policy, documentation, privacy, catalog, and 2/2
+task-owned Chromium journeys), but it cannot substitute for readable governing
+authority. Candidate freeze, Mainline Decision dispatch, protected binding, and
+merge remain prohibited. No Wakebook Phase 3 work is authorized or begun.
