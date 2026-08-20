@@ -233,11 +233,6 @@
       "contractIds": ["deepwater.capability-realization-integrity"]
     },
     {
-      "path": "src/components/shell/**",
-      "suiteIds": ["unit.true-north", "component.navigation", "browser.navigation"],
-      "contractIds": ["authentication-authorization"]
-    },
-    {
       "path": "scripts/deepwater/**",
       "suiteIds": ["unit.deepwater", "static.core"],
       "contractIds": ["deepwater.capability-realization-integrity"]

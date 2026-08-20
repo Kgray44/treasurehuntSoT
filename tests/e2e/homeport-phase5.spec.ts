@@ -16,8 +16,8 @@ const evidenceRoot = path.resolve(
 const fixtureVersion = "homeport-phase5-route-reachability-v2";
 let fixtureChecksum = "UNAVAILABLE_OUTSIDE_PHASE5_RUNTIME";
 let secrets: Record<string, string> = {};
-let sourceSha = "";
-let branch = "";
+const sourceSha = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
+const branch = execFileSync("git", ["branch", "--show-current"], { encoding: "utf8" }).trim();
 const records: EvidenceRecord[] = [];
 const receipts: RouteReceipt[] = [];
 const password = "Homeport-Phase4-Synthetic!";
@@ -193,8 +193,6 @@ const ordinaryEvidence = new Map<string, [string, string]>([
 
 test.describe.serial("Project Homeport Phase 5 route reachability acceptance", () => {
   test.beforeAll(async ({ browser }) => {
-    sourceSha = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
-    branch = execFileSync("git", ["branch", "--show-current"], { encoding: "utf8" }).trim();
     expect(branch).toBe("codex/project-homeport-product-reality-recovery");
     secrets = JSON.parse(readFileSync(path.join(taskRoot, "browser-state", "phase5-secrets.json"), "utf8"));
     const fixtureReceipt = JSON.parse(

@@ -13,10 +13,7 @@ const fixtureVersion = "homeport-phase3-personal-harbor-v1";
 const fixtureChecksum = createHash("sha256")
   .update(`${fixtureVersion}:reserved-synthetic-no-private-content`)
   .digest("hex");
-const sourceSha =
-  process.env.SOUNDING_LINE_SEALED_SOURCE_SHA ??
-  process.env.GITHUB_SHA ??
-  execFileSync("git", ["rev-parse", "HEAD"], { cwd: process.cwd(), encoding: "utf8" }).trim();
+const sourceSha = execFileSync("git", ["rev-parse", "HEAD"], { cwd: process.cwd(), encoding: "utf8" }).trim();
 const evidenceRoot = path.resolve(
   process.env.HOMEPORT_PHASE3_EVIDENCE_ROOT ??
     path.join(process.cwd(), "artifacts", "validation", "homeport-phase3", "evidence"),

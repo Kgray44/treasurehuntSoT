@@ -15,7 +15,9 @@ test("public shell keeps a stable menu, profile access, and keyboard dismissal",
   await menu.click();
   const workspaceNavigation = page.getByRole("navigation", { name: "Global navigation" });
   await expect(workspaceNavigation).toBeVisible();
-  await expect(workspaceNavigation.getByRole("link", { name: "Explore Chronicles" })).toBeFocused();
+  const exploreChronicles = workspaceNavigation.getByRole("link", { name: "Explore Chronicles" });
+  await expect(exploreChronicles).toHaveAttribute("aria-current", "page");
+  await expect(exploreChronicles).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(menu).toBeFocused();
 

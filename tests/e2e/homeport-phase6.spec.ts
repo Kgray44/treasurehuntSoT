@@ -15,8 +15,10 @@ const evidenceRoot = path.resolve(
 );
 const fixtureVersion = "homeport-phase6-v1";
 const expectedSourceSha = "e02ee0dae0469a2ba573beaf409c0b34e8668d09";
-let sourceSha = "";
-let branch = "";
+const sourceSha = execFileSync("git", ["rev-parse", "e02ee0dae0469a2ba573beaf409c0b34e8668d09"], {
+  encoding: "utf8",
+}).trim();
+const branch = execFileSync("git", ["branch", "--show-current"], { encoding: "utf8" }).trim();
 const password = "Homeport-Phase4-Synthetic!";
 const records: EvidenceRecord[] = [];
 let secrets: Record<string, string> = {};
@@ -204,8 +206,6 @@ const zoomScreenIds = new Set(
 
 test.describe.serial("Project Homeport Phase 6 complete surface evidence", () => {
   test.beforeAll(async ({ browser }) => {
-    sourceSha = execFileSync("git", ["rev-parse", expectedSourceSha], { encoding: "utf8" }).trim();
-    branch = execFileSync("git", ["branch", "--show-current"], { encoding: "utf8" }).trim();
     expect(sourceSha).toBe(expectedSourceSha);
     expect(branch).toBe("codex/project-homeport-product-reality-recovery");
     secrets = JSON.parse(readFileSync(path.join(taskRoot, "browser-state", "phase5-secrets.json"), "utf8"));
