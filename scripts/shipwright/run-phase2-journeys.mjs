@@ -14,7 +14,7 @@ const credentials = JSON.parse(
 );
 const port = await availablePort();
 const databasePath = path.join(taskRoot, "database", "shipwright-phase2.db");
-const sourceSha = output("git", ["rev-parse", "HEAD"]);
+const sourceSha = sealedSourceSha() ?? output("git", ["rev-parse", "HEAD"]);
 const env = {
   ...process.env,
   SHIPWRIGHT_PHASE2_TASK_ROOT: taskRoot,
@@ -46,6 +46,13 @@ function output(command, args) {
   if (result.error) throw result.error;
   if (result.status !== 0) throw new Error(`${command} failed: ${result.stderr}`);
   return result.stdout.trim();
+}
+
+function sealedSourceSha() {
+  const value = process.env.SOUNDING_LINE_SEALED_SOURCE_SHA?.trim();
+  if (!value) return null;
+  if (!/^[0-9a-f]{40}$/u.test(value)) throw new Error(`SHIPWRIGHT_SEALED_SOURCE_SHA_INVALID:${value}`);
+  return value;
 }
 
 function availablePort() {

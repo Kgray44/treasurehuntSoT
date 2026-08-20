@@ -649,11 +649,14 @@ test("mixed Shipwright selections retain the synthetic Creator journey boundary"
     path.join(root, "scripts", "sounding-line", "isolated-validation-runtime.ps1"),
     "utf8",
   );
+  const runner = await readFile(path.join(root, "scripts", "shipwright", "run-phase2-journeys.mjs"), "utf8");
   assert.match(runtime, /\$shipwrightBrowserFile/u);
   assert.match(runtime, /GOVERNED_SHIPWRIGHT_TASK_ROOT_ESCAPED/u);
   assert.match(runtime, /GOVERNED_SHIPWRIGHT_BROWSER_SELECTION_INVALID/u);
   assert.match(runtime, /scripts\/shipwright\/run-phase2-journeys\.mjs/u);
   assert.match(runtime, /GOVERNED_SHIPWRIGHT_TASK_ROOT_CLEANUP_REFUSED/u);
+  assert.match(runner, /SOUNDING_LINE_SEALED_SOURCE_SHA/u);
+  assert.match(runner, /SHIPWRIGHT_SEALED_SOURCE_SHA_INVALID/u);
 });
 
 test("concurrent Harborlight lanes may share only their validation-run parent", async () => {
