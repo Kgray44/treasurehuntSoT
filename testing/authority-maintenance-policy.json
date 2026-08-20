@@ -30,6 +30,7 @@
   "eligiblePathGlobs": [
     "testing/authority-maintenance-policy.json",
     "testing/policy-manifest.json",
+    "testing/ownership.json",
     "testing/sounding-line-authority.json",
     "testing/trusted-project-discovery.json",
     "testing/verification-maintenance-policy.json",
