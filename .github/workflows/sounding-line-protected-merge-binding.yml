@@ -54,6 +54,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_RECORD_ONLY_TRUSTED_POLICY_UNAVAILABLE' }
           git show "$env:BASE_SHA`:scripts/sounding-line/verification-maintenance.mjs" > trusted-verification-maintenance.mjs
           if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_RECORD_ONLY_TRUSTED_CLASSIFIER_UNAVAILABLE' }
+          git show "$env:BASE_SHA`:scripts/sounding-line/project-discovery.mjs" > project-discovery.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_RECORD_ONLY_TRUSTED_PROJECT_DISCOVERY_UNAVAILABLE' }
           $paths = @(git diff --name-only --no-renames --no-ext-diff "$env:BASE_SHA" "$env:CANDIDATE_SHA" | Sort-Object)
           if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_RECORD_ONLY_CHANGED_PATHS_UNAVAILABLE' }
           ConvertTo-Json -InputObject $paths -Compress | Set-Content -NoNewline ordinary-candidate-changed-paths.json

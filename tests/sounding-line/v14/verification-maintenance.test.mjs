@@ -606,6 +606,15 @@ test("candidate authority invokes the trusted ordinary classifier rather than in
     protectedBinding,
     /\$recordOnly = if \(\$preflight\.eligible -and -not \$ordinaryCandidate\) \{ 'true' \} else \{ 'false' \}/u,
   );
+  const recordOnlyPreflight = protectedBinding.slice(
+    protectedBinding.indexOf("record-only-preflight:"),
+    protectedBinding.indexOf("record-only-evidence:"),
+  );
+  assert.match(
+    recordOnlyPreflight,
+    /git show "\$env:BASE_SHA`:scripts\/sounding-line\/project-discovery\.mjs" > project-discovery\.mjs/u,
+  );
+  assert.match(recordOnlyPreflight, /SOUNDING_LINE_RECORD_ONLY_TRUSTED_PROJECT_DISCOVERY_UNAVAILABLE/u);
   assert.doesNotMatch(workflow, /function Test-TrustedGlob/u);
 });
 
