@@ -479,7 +479,10 @@ try {
     # runtime instead, execute it by path, and remove it before finalization.
     $normalizerPath = Join-Path $runtimeRoot ".sounding-line-focused-browser-studio-fixture.mjs"
     try {
-        Set-Content -LiteralPath $normalizerPath -Value $normalizer -Encoding utf8NoBOM -NoNewline
+        # The hosted worker invokes Windows PowerShell, whose Set-Content
+        # encoding enum does not support utf8NoBOM. The .NET writer keeps the
+        # module source UTF-8 without a BOM on both supported hosts.
+        [System.IO.File]::WriteAllText($normalizerPath, $normalizer, [System.Text.UTF8Encoding]::new($false))
         Invoke-ValidationStep -Name "Normalizing focused Studio browser fixture contract" -Arguments @(
             "--experimental-sqlite",
             $normalizerPath
