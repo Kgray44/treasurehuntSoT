@@ -678,7 +678,6 @@ async function main() {
               acceptedAnswers: ["lantern"],
               caseSensitive: false,
               normalizeWhitespace: true,
-              hints: [],
               wrongAnswerFeedback: "Look again toward the lowest practice light.",
               completionMode: "textAnswer",
             }),
@@ -705,8 +704,6 @@ async function main() {
             configuration: JSON.stringify({
               completionMessage: "The Lantern Test is complete.",
               summary: chapters[0][4],
-              nextChapterBehavior: "continue",
-              returnToMap: false,
               animation: "seal",
               completionMode: "playerConfirmation",
             }),
@@ -736,7 +733,6 @@ async function main() {
             configuration: JSON.stringify({
               heading: "Set a practice course",
               directionText: chapters[1][2],
-              destinationVisibility: "named",
               region: "The Painted Reach",
               completionMode: "playerConfirmation",
             }),
@@ -750,7 +746,6 @@ async function main() {
             configuration: JSON.stringify({
               prompt: "Has the crew reached the blue practice mark?",
               primaryLabel: "We have arrived",
-              confirmationStyle: "standard",
               captainOverride: true,
               completionMode: "playerConfirmation",
             }),
@@ -848,7 +843,6 @@ async function main() {
               acceptedAnswers: ["lantern"],
               caseSensitive: false,
               normalizeWhitespace: true,
-              hints: [],
               wrongAnswerFeedback: "Look again toward the lowest practice light.",
               completionMode: "textAnswer",
             },
@@ -891,8 +885,6 @@ async function main() {
             configuration: {
               completionMessage: "The Lantern Test is complete.",
               summary: chapters[0][4],
-              nextChapterBehavior: "continue",
-              returnToMap: false,
               animation: "seal",
               completionMode: "playerConfirmation",
             },
@@ -929,7 +921,6 @@ async function main() {
             configuration: {
               heading: "Set a practice course",
               directionText: chapters[1][2],
-              destinationVisibility: "named",
               region: "The Painted Reach",
               completionMode: "playerConfirmation",
             },
@@ -951,7 +942,6 @@ async function main() {
             configuration: {
               prompt: "Has the crew reached the blue practice mark?",
               primaryLabel: "We have arrived",
-              confirmationStyle: "standard",
               captainOverride: true,
               completionMode: "playerConfirmation",
             },
