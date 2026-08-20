@@ -94,5 +94,5 @@ jobs:
       gate: ${{ inputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
       candidate_ref: ${{ inputs.candidate_ref }}
-      requires_browser: ${{ needs.focused-plan.outputs.requires_browser }}
+      requires_browser: ${{ fromJSON(needs.focused-plan.outputs.requires_browser) }}
       browser_engine: ${{ needs.focused-plan.outputs.browser_engine }}
