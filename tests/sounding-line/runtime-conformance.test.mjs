@@ -155,7 +155,7 @@ test("focused hosted execution delegates resource preparation and has no release
   assert.match(focused, /authorityMode:'V14_CANDIDATE'/u);
   assert.match(focused, /candidate_sha: \$\{\{ inputs\.candidate_sha \}\}/u);
   assert.match(focused, /candidate_ref: \$\{\{ inputs\.candidate_ref \}\}/u);
-  assert.match(focused, /requires_browser: \$\{\{ needs\.focused-plan\.outputs\.requires_browser \}\}/u);
+  assert.match(focused, /requires_browser: \$\{\{ fromJSON\(needs\.focused-plan\.outputs\.requires_browser\) \}\}/u);
   assert.match(focused, /browser_engine: \$\{\{ needs\.focused-plan\.outputs\.browser_engine \}\}/u);
   assert.doesNotMatch(focused, /type: choice[\s\S]*?browser\.access-sentinel/u);
 });
