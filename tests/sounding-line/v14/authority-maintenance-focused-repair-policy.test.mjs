@@ -26,4 +26,6 @@ test("focused repair splits a sealed multi-engine browser selection without wide
   assert.match(workflow, /browser_engine: webkit/u);
   assert.match(workflow, /has_chromium/u);
   assert.match(workflow, /has_webkit/u);
+  assert.match(workflow, /SOUNDING_LINE_WORKFLOW_REF: \$\{\{ github\.ref \}\}/u);
+  assert.match(workflow, /\$env:SOUNDING_LINE_WORKFLOW_REF/u);
 });
