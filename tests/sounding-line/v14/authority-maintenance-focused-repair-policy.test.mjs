@@ -16,10 +16,7 @@ test("focused repair workflow is eligible and binding-preflighted authority main
 });
 
 test("focused repair splits a sealed multi-engine browser selection without widening it", async () => {
-  const workflow = await readFile(
-    path.join(root, ".github", "workflows", "sounding-line-focused-repair.yml"),
-    "utf8",
-  );
+  const workflow = await readFile(path.join(root, ".github", "workflows", "sounding-line-focused-repair.yml"), "utf8");
   assert.match(workflow, /FOCUSED_BROWSER_ENGINE_INVALID/u);
   assert.doesNotMatch(workflow, /FOCUSED_BROWSER_MULTI_ENGINE_UNSUPPORTED/u);
   assert.match(workflow, /focused-suite-without-browser/u);
