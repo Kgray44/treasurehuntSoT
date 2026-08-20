@@ -223,7 +223,11 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (accountOpen)
-      queueMicrotask(() => accountDisclosureRef.current?.querySelector<HTMLElement>("a, button")?.focus());
+      queueMicrotask(() => {
+        const disclosure = accountDisclosureRef.current;
+        const signIn = disclosure?.querySelector<HTMLElement>('[data-navigation-id="account-sign-in"]');
+        (signIn ?? disclosure?.querySelector<HTMLElement>("a, button"))?.focus();
+      });
   }, [accountOpen]);
 
   useLayoutEffect(() => {
