@@ -13,7 +13,7 @@ export function selectSealedMaintenanceAuthority({ runs, candidateSha, candidate
       run?.event === "workflow_dispatch" &&
       run?.status === "completed" &&
       run?.conclusion === "success" &&
-      run?.headSha === qualifiedBaseSha &&
+      run?.headSha === candidateSha &&
       plan?.authority === "SOUNDING_LINE_VERIFICATION_MAINTENANCE" &&
       plan?.disposition === "MAINTENANCE_GO" &&
       plan?.candidateSha === candidateSha &&

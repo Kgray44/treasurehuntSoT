@@ -408,7 +408,7 @@ jobs:
           git show "$env:BASE_SHA`:scripts/sounding-line/maintenance-authority-selection.mjs" > trusted-maintenance-authority-selection.mjs
           $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' }
           $candidateTree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
-          $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&head_sha=$env:BASE_SHA&per_page=100").workflow_runs
+          $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&head_sha=$env:CANDIDATE_SHA&per_page=100").workflow_runs
           $sealed = @()
           foreach ($run in $runs) {
             if ($run.name -ne 'Sounding Line verification maintenance' -or $run.path -ne '.github/workflows/sounding-line-verification-maintenance.yml' -or $run.status -ne 'completed' -or $run.conclusion -ne 'success') { continue }
