@@ -381,6 +381,107 @@ function Invoke-ValidationStep {
     Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments $Arguments
 }
 
+function Repair-FocusedBrowserStudioFixture {
+    # The focused BrowserOnly copy starts from the current development seed but
+    # must also satisfy the current Studio block contract before legacy and
+    # Player journeys consume it. Keep this normalization inside the
+    # nonce-bound disposable database; production and the canonical baseline
+    # are never opened or modified here.
+    $normalizer = @'
+import { DatabaseSync } from "node:sqlite";
+
+const databaseUrl = process.env.DATABASE_URL;
+if (!databaseUrl?.startsWith("file:")) throw new Error("FOCUSED_BROWSER_FIXTURE_DATABASE_URL_INVALID");
+const database = new DatabaseSync(decodeURIComponent(databaseUrl.slice("file:".length)));
+const fixtureSlug = "development-studio-voyage";
+const defaultsByBlockType = new Map([
+  ["riddle", { hints: [] }],
+  ["chapterComplete", { nextChapterBehavior: "continue", returnToMap: false }],
+  ["travelDirection", { destinationVisibility: "named" }],
+  ["confirmation", { confirmationStyle: "standard" }],
+]);
+const applyDefaults = (blockType, configuration) => {
+  const defaults = defaultsByBlockType.get(blockType);
+  if (!defaults) return false;
+  let changed = false;
+  for (const [key, value] of Object.entries(defaults)) {
+    if (!Object.hasOwn(configuration, key)) {
+      configuration[key] = value;
+      changed = true;
+    }
+  }
+  return changed;
+};
+
+try {
+  const tale = database.prepare('SELECT "id" FROM "Chronicle" WHERE "slug" = ?').get(fixtureSlug);
+  if (!tale?.id) throw new Error("FOCUSED_BROWSER_STUDIO_FIXTURE_TALE_MISSING");
+  const blocks = database
+    .prepare(
+      'SELECT "id", "blockType", "configuration" FROM "StoryBlock" WHERE "chapterId" IN (SELECT "id" FROM "TaleChapter" WHERE "draftRevisionId" IN (SELECT "id" FROM "TaleDraft" WHERE "taleId" = ?))',
+    )
+    .all(tale.id);
+  const expectedTypes = [...defaultsByBlockType.keys()];
+  if (expectedTypes.some((blockType) => blocks.filter((block) => block.blockType === blockType).length !== 1))
+    throw new Error("FOCUSED_BROWSER_STUDIO_FIXTURE_BLOCK_SHAPE_INVALID");
+  const updateBlock = database.prepare('UPDATE "StoryBlock" SET "configuration" = ? WHERE "id" = ?');
+  let draftBlocksNormalized = 0;
+  for (const block of blocks) {
+    let configuration;
+    try {
+      configuration = JSON.parse(block.configuration);
+    } catch {
+      throw new Error("FOCUSED_BROWSER_STUDIO_FIXTURE_CONFIGURATION_INVALID");
+    }
+    if (applyDefaults(block.blockType, configuration)) {
+      updateBlock.run(JSON.stringify(configuration), block.id);
+      draftBlocksNormalized += 1;
+    }
+  }
+
+  const versions = database
+    .prepare('SELECT "id", "contentSnapshot" FROM "PublishedTaleVersion" WHERE "taleId" = ? AND "isCurrent" = 1')
+    .all(tale.id);
+  if (versions.length !== 1) throw new Error("FOCUSED_BROWSER_STUDIO_FIXTURE_VERSION_SHAPE_INVALID");
+  let snapshot;
+  try {
+    snapshot = JSON.parse(versions[0].contentSnapshot);
+  } catch {
+    throw new Error("FOCUSED_BROWSER_STUDIO_FIXTURE_SNAPSHOT_INVALID");
+  }
+  const snapshotBlocks = snapshot?.chapters?.flatMap((chapter) => chapter?.blocks ?? []);
+  if (!Array.isArray(snapshotBlocks) || expectedTypes.some((blockType) => snapshotBlocks.filter((block) => block?.blockType === blockType).length !== 1))
+    throw new Error("FOCUSED_BROWSER_STUDIO_FIXTURE_SNAPSHOT_SHAPE_INVALID");
+  let snapshotBlocksNormalized = 0;
+  for (const block of snapshotBlocks) {
+    if (!block?.configuration || typeof block.configuration !== "object" || Array.isArray(block.configuration))
+      throw new Error("FOCUSED_BROWSER_STUDIO_FIXTURE_SNAPSHOT_CONFIGURATION_INVALID");
+    if (applyDefaults(block.blockType, block.configuration)) snapshotBlocksNormalized += 1;
+  }
+  if (snapshotBlocksNormalized) {
+    database
+      .prepare('UPDATE "PublishedTaleVersion" SET "contentSnapshot" = ? WHERE "id" = ?')
+      .run(JSON.stringify(snapshot), versions[0].id);
+  }
+  console.log(
+    JSON.stringify({
+      status: "FOCUSED_BROWSER_STUDIO_FIXTURE_CURRENT",
+      draftBlocksNormalized,
+      snapshotBlocksNormalized,
+    }),
+  );
+} finally {
+  database.close();
+}
+'@
+    Invoke-ValidationStep -Name "Normalizing focused Studio browser fixture contract" -Arguments @(
+        "--experimental-sqlite",
+        "--input-type=module",
+        "--eval",
+        $normalizer
+    )
+}
+
 function Get-BrowserSelectionDiscoveryCount {
     param([Parameter(Mandatory)]$Selection)
     $arguments = @("node_modules/@playwright/test/cli.js", "test", "--list", "--project=$($Selection.project)", "--grep", [string]$Selection.grep) + @($Selection.files | ForEach-Object { ([string]$_).Replace('\\', '/') })
@@ -920,6 +1021,7 @@ try {
         # selected browser family the same seeded One Voyage contract as the
         # full governed runtime.
         Invoke-ValidationStep -Name "Seeding focused browser development fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts")
+        Repair-FocusedBrowserStudioFixture
         if ($SkipLegacyProjectionFixture -ne "true") {
             # Focused browser families normally require canonical migration provenance
             # and the migrated Voyage fixture. The read-only access sentinel has its
