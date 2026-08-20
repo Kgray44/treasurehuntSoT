@@ -269,6 +269,47 @@ test("Bridgewatch documentation remains documentation evidence while UI changes 
   assert.equal(ui.ledger.find((entry) => entry.suiteId === "browser.captain").evidenceDisposition, "PRESERVED");
 });
 
+test("trusted governance-document policy maps ordinary project governing Markdown without mapping Sounding Line or mixed scope", async () => {
+  const [suiteInventory, impact] = await Promise.all([testingJson("suites.json"), testingJson("impact-map.json")]);
+  const governanceDocumentation = {
+    pathGlobs: ["Development_Docs/Governing/Project_*.md"],
+    excludedPathGlobs: [
+      "Development_Docs/Governing/Project_Sounding_Line_*.md",
+      "Development_Docs/Governing/*Sounding_Line*.md",
+      "Development_Docs/Governing/*Authority*.md",
+    ],
+  };
+  const select = (changedPaths) =>
+    selectV14Mainline({
+      changedPaths,
+      suites: suiteInventory.suites,
+      requiredSuiteIds: ["browser.access-sentinel"],
+      ledgerSuiteIds: suiteInventory.suites.map((suite) => suite.id),
+      impact,
+      governanceDocumentation,
+    });
+
+  const ordinary = select([
+    "Development_Docs/Governing/Project_Nightwatch_Unattended_Autonomy_and_Overnight_Operations_Governing_Document_v1.0.md",
+    "Development_Docs/Governing/Project_Bosun_Autonomous_Repository_Maintenance_and_Repair_Service_Governing_Document_v1.0.md",
+    "Development_Docs/INDEX.md",
+    "Development_Docs/document-index.json",
+  ]);
+  assert.equal(ordinary.fallback, null);
+  assert.deepEqual(ordinary.selectedSuiteIds, ["browser.access-sentinel", "static.core", "validation.documentation"]);
+  assert.equal(
+    select(["Development_Docs/Governing/Project_Sounding_Line_v1.4_Governing_Addendum.md"]).fallback?.disposition,
+    "CONSERVATIVE_FALLBACK",
+  );
+  assert.equal(
+    select([
+      "Development_Docs/Governing/Project_Nightwatch_Unattended_Autonomy_and_Overnight_Operations_Governing_Document_v1.0.md",
+      "scripts/unclassified-governance-executable.mjs",
+    ]).fallback?.disposition,
+    "CONSERVATIVE_FALLBACK",
+  );
+});
+
 test("Project Trim Phase 1 selects its governed minimum sufficient evidence without broad browser fallback", async () => {
   const [suiteInventory, impact] = await Promise.all([testingJson("suites.json"), testingJson("impact-map.json")]);
   const projectTrimPhaseOnePaths = [
