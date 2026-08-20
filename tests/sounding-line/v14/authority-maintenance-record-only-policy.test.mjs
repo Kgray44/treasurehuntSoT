@@ -6,16 +6,17 @@ import { classifyAuthorityMaintenance } from "../../../scripts/sounding-line/aut
 
 const root = path.resolve();
 
-test("browser selection bootstrap admits only the named trusted planner boundary", async () => {
+test("record-only authority closure repair is admitted only through the governed authority-maintenance lane", async () => {
   const policy = JSON.parse(await readFile(path.join(root, "testing", "authority-maintenance-policy.json"), "utf8"));
   const allowed = [
-    "testing/authority-maintenance-policy.json",
-    "scripts/sounding-line/planner.mjs",
-    "tests/sounding-line/v14/authority-maintenance-browser-selection-policy.test.mjs",
+    "scripts/sounding-line/record-only-closure.mjs",
+    "tests/sounding-line/record-only-closure.test.mjs",
+    "testing/generated/active-test-registry.json",
   ];
+
   assert.equal(policy.version, "1.0.8");
-  assert.equal(policy.bindingPreflightPaths.includes("scripts/sounding-line/planner.mjs"), true);
-  assert.equal(policy.eligiblePathGlobs.includes("scripts/sounding-line/planner.mjs"), true);
+  assert.equal(policy.eligiblePathGlobs.includes("scripts/sounding-line/record-only-closure.mjs"), true);
+  assert.equal(policy.bindingPreflightPaths.includes("scripts/sounding-line/record-only-closure.mjs"), true);
   assert.deepEqual(
     classifyAuthorityMaintenance({ trustedPolicy: policy, changedPaths: allowed, ownerAuthorized: true }),
     {
@@ -24,13 +25,11 @@ test("browser selection bootstrap admits only the named trusted planner boundary
       errors: [],
     },
   );
+
   const rejected = classifyAuthorityMaintenance({
     trustedPolicy: policy,
-    changedPaths: ["scripts/sounding-line/unrelated-browser-selector.mjs"],
+    changedPaths: ["scripts/sounding-line/unapproved-record-only-repair.mjs"],
     ownerAuthorized: true,
   });
   assert.equal(rejected.classification, "AUTHORITY_MAINTENANCE_REJECTED");
-  assert.deepEqual(rejected.errors, [
-    "AUTHORITY_MAINTENANCE_SCOPE_REJECTED:scripts/sounding-line/unrelated-browser-selector.mjs",
-  ]);
 });

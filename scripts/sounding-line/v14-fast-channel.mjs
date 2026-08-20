@@ -49,6 +49,7 @@ export async function generateV14FastChannelPlan({
     trustedSuites,
     trustedContracts,
     trustedOwnership,
+    trustedMaintenancePolicy,
   ] = await Promise.all([
     json(root, "release-gates.json"),
     json(root, "suites.json"),
@@ -66,6 +67,7 @@ export async function generateV14FastChannelPlan({
     trustedJson(root, baseSha, "suites.json"),
     trustedJson(root, baseSha, "contracts.json"),
     trustedJson(root, baseSha, "ownership.json"),
+    trustedJson(root, baseSha, "verification-maintenance-policy.json"),
   ]);
   const gate = gates.gates.find((entry) => entry.id === gateId);
   if (!gate) throw new Error(`UNKNOWN_GATE:${gateId}`);
@@ -117,6 +119,7 @@ export async function generateV14FastChannelPlan({
     impact,
     mappingDebt: debt.entries,
     projectDiscovery,
+    governanceDocumentation: trustedMaintenancePolicy.ordinaryCandidateGovernanceDocumentation,
     identity: {
       gate: gateId,
       candidateSha,

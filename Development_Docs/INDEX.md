@@ -3,7 +3,7 @@ title: Engineering record index
 audience: engineering
 status: current
 canonical_for: engineering-record-index
-last_reviewed: 2026-08-18
+last_reviewed: 2026-08-19
 ---
 
 # Engineering-record index
@@ -39,6 +39,12 @@ Use [document-index.json](document-index.json) for complete path-level classific
 ## Project Fairlead
 
 - [Project Fairlead governing baseline v1.0](Governing/Project_Fairlead_GitHub_Interaction_and_Quota_Control_Plane_Governing_Document_v1.0.md) defines the repository-wide GitHub interaction and quota control plane: Git-first routing, REST/GraphQL selection, shared rate-state coordination, conditional caching, request coalescing, adaptive polling, GitHub App authentication, Bridgewatch and Sounding Line integration, degraded-operation behavior, and permanent automation governance.
+
+## Project Nightwatch and Project Bosun
+
+- [Project Nightwatch governing baseline v1.0](Governing/Project_Nightwatch_Unattended_Autonomy_and_Overnight_Operations_Governing_Document_v1.0.md) defines the engineering operations orchestrator: parallel Product Fleet development, the persistent Integration Queue, just-in-time reconciliation, migration reservations, objective budgets and leases, loop containment, unattended continuity, and supervision of Project Bosun.
+- [Project Bosun governing subsystem v1.0](Governing/Project_Bosun_Autonomous_Repository_Maintenance_and_Repair_Service_Governing_Document_v1.0.md) defines the Nightwatch-subordinate autonomous repository maintenance and repair service, including deterministic `AUTO_0`, bounded Codex `AUTO_1`, protected `AUTO_2`, `OWNER` escalation, shared-baseline maintenance, repair worktrees, post-merge proof, and Bridgewatch Bosun telemetry.
+- Nightwatch is the scheduling/orchestration authority for the three-lane engineering model. Bosun is a subordinate maintenance executor. Sounding Line remains the verification and protected-acceptance authority; Fairlead remains the GitHub interaction authority; Project Trim remains the Codex context-efficiency authority.
 
 ## Project Sounding Line amendments
 

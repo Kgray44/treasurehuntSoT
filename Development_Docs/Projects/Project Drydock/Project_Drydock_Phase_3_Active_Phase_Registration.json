@@ -5,11 +5,14 @@
   "phase": 3,
   "phaseName": "Run Sea Trials",
   "phaseId": "project-drydock-phase-3-run-sea-trials",
-  "state": "CANDIDATE_FROZEN_PENDING_CANONICAL_ACCEPTANCE",
-  "branch": "codex/project-drydock-phase3-run-sea-trials",
-  "worktree": {
-    "ownership": "TASK_OWNED",
-    "path": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-drydock-phase3"
+  "state": "ACCEPTED_MAINLINE",
+  "acceptedAt": "2026-08-12",
+  "historicalExecution": {
+    "branch": "codex/project-drydock-phase3-run-sea-trials",
+    "worktree": {
+      "ownership": "TASK_OWNED",
+      "path": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-drydock-phase3"
+    }
   },
   "baseSha": "236c27241bb8d1630274f5d5412ec9addbdb8893",
   "governingDocument": "Development_Docs/Projects/Project Drydock/Project_Drydock_Governing_Document.pdf",
@@ -72,7 +75,18 @@
   },
   "expectedAcceptanceGate": "Sounding Line / Mainline Decision",
   "registeredAt": "2026-08-12",
+  "deepwaterCapabilityImpact": {
+    "disposition": "EVIDENCE_ONLY",
+    "affectedCapabilityIds": ["DW-CAP-DRYDOCK-DETERMINISTIC-SEA-TRIALS"],
+    "affectedFeatureCatalogIds": ["FT-036"],
+    "potentialLayerImpact": ["DISCOVERABILITY"],
+    "affectedSurfaces": { "routes": [], "screens": [], "journeys": [], "apis": [] },
+    "expectedTerminalRungEffect": "NONE",
+    "evidenceRequiringRefresh": ["Development_Docs/Features/branch-complete/project-drydock-phase3.json", "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Completion_Receipt.md"],
+    "rationale": "This corrects FT-036 and Phase 3 owner records from stale branch-complete metadata to the already accepted PR #52 mainline integration. It changes no Drydock source, route, UI, API, journey, or capability realization."
+  },
   "acceptance": {
+    "acceptedMainline": { "pullRequest": 52, "candidateSha": "fcd9010a37224759bb5b71c640e121c9e4f1e1e2", "mergeSha": "191a964488d0df71f8dcb91c5b8372fc73b6b32e", "mainlineDecision": "RELEASE_GO", "mainlineAuthorityRunId": 31618253086, "completionReceipt": "Project_Drydock_Phase_3_Completion_Receipt.md" },
     "priorCandidate": {
       "candidateSha": "1c888c92d7aa54abf9d16d86e916751bab4b7fc1",
       "candidateTag": "project-drydock-phase3-candidate-20260812",

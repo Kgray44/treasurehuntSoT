@@ -7,6 +7,7 @@ import {
   createMaintenancePlan,
   finalizeMaintenance,
 } from "../../../scripts/sounding-line/verification-maintenance.mjs";
+import { classifyRecordOnlyDiff } from "../../../scripts/sounding-line/record-only-closure.mjs";
 import { buildStaticCommandPlan } from "../../../scripts/sounding-line/static.mjs";
 
 const sha = (character) => character.repeat(40);
@@ -236,6 +237,48 @@ test("only bounded Bridgewatch integration, projection, and records are eligible
   assert.deepEqual(result.errors, []);
 });
 
+test("ordinary candidates admit non-Sounding-Line project governing documentation without prior implementation authority", async () => {
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: await readOrdinaryCandidatePolicy(),
+    changedPaths: [
+      "Development_Docs/Governing/Project_Bosun_Autonomous_Repository_Maintenance_and_Repair_Service_Governing_Document_v1.0.md",
+      "Development_Docs/Governing/Project_Nightwatch_Unattended_Autonomy_and_Overnight_Operations_Governing_Document_v1.0.md",
+      "Development_Docs/INDEX.md",
+      "Development_Docs/document-index.json",
+    ],
+  });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(result.errors, []);
+});
+
+test("ordinary governance documentation admission excludes Sounding Line authority and unknown executable scope", async () => {
+  const policy = await readOrdinaryCandidatePolicy();
+  for (const changedPaths of [
+    ["Development_Docs/Governing/Project_Sounding_Line_v1.4_Performance_and_Efficiency_Governing_Addendum.md"],
+    ["Development_Docs/Governing/Sounding_Line_Effective_Authority.md"],
+    [
+      "Development_Docs/Governing/Project_Nightwatch_Unattended_Autonomy_and_Overnight_Operations_Governing_Document_v1.0.md",
+      "scripts/unclassified-governance-executable.mjs",
+    ],
+  ]) {
+    const result = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths });
+    assert.equal(result.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED", changedPaths.join(", "));
+    assert.equal(result.errors.length, 1, changedPaths.join(", "));
+  }
+});
+
+test("ordinary and record-only classifications retain their existing bounded routes", async () => {
+  const ordinary = classifyOrdinaryCandidate({
+    trustedPolicy: await readOrdinaryCandidatePolicy(),
+    changedPaths: ["src/app/page.tsx"],
+  });
+  assert.equal(ordinary.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(ordinary.errors, []);
+  const recordOnly = classifyRecordOnlyDiff([{ status: "M", path: "Development_Docs/INDEX.md" }]);
+  assert.equal(recordOnly.eligible, true);
+  assert.deepEqual(recordOnly.errors, []);
+});
+
 test("ordinary candidates still reject actual Sounding Line authority files", async () => {
   const result = classifyOrdinaryCandidate({
     trustedPolicy: await readOrdinaryCandidatePolicy(),
@@ -252,6 +295,36 @@ test("ordinary candidates reject arbitrary deploy and Sounding Line scripts", as
     assert.equal(result.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
     assert.deepEqual(result.errors, [`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${changedPath}`]);
   }
+});
+
+test("the governed Shipwright journey runner is ordinary-admissible without broadening its directory", async () => {
+  const policy = await readOrdinaryCandidatePolicy();
+  const admitted = classifyOrdinaryCandidate({
+    trustedPolicy: policy,
+    changedPaths: ["scripts/shipwright/run-phase2-journeys.mjs"],
+  });
+  assert.equal(admitted.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(admitted.errors, []);
+  for (const changedPath of ["scripts/shipwright/unrelated-runner.mjs", "scripts/shipwright/future/runner.mjs"]) {
+    const rejected = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: [changedPath] });
+    assert.equal(rejected.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED", changedPath);
+    assert.deepEqual(rejected.errors, [`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${changedPath}`], changedPath);
+  }
+});
+
+test("generated P34 retirement ledgers can accompany governed browser test changes", async () => {
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: await readOrdinaryCandidatePolicy(),
+    changedPaths: [
+      "tests/e2e/phase3-lifecycle-extended.spec.ts",
+      "testing/generated/active-test-registry.json",
+      "testing/generated/p34-retirement-ledger.json",
+      "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv",
+      "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv",
+    ],
+  });
+  assert.equal(result.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(result.errors, []);
 });
 
 test("mixed Bridgewatch and authority-changing diffs remain rejected", async () => {
@@ -521,6 +594,28 @@ test("candidate authority invokes the trusted ordinary classifier rather than in
     protectedBinding,
     /git show "\$env:BASE_SHA`:scripts\/sounding-line\/project-discovery\.mjs" > project-discovery\.mjs/u,
   );
+  assert.match(
+    protectedBinding,
+    /git show "\$env:BASE_SHA`:scripts\/sounding-line\/verification-maintenance\.mjs" > trusted-verification-maintenance\.mjs/u,
+  );
+  assert.match(
+    protectedBinding,
+    /node trusted-verification-maintenance\.mjs ordinary --policy trusted-maintenance-policy\.json --paths ordinary-candidate-changed-paths\.json --trusted-base-sha \$env:BASE_SHA --candidate-sha \$env:CANDIDATE_SHA --out ordinary-candidate-classification\.json/u,
+  );
+  assert.match(protectedBinding, /if \(\$ordinaryExitCode -ne 0\) \{ \$global:LASTEXITCODE = 0 \}/u);
+  assert.match(
+    protectedBinding,
+    /\$recordOnly = if \(\$preflight\.eligible -and -not \$ordinaryCandidate\) \{ 'true' \} else \{ 'false' \}/u,
+  );
+  const recordOnlyPreflight = protectedBinding.slice(
+    protectedBinding.indexOf("record-only-preflight:"),
+    protectedBinding.indexOf("record-only-evidence:"),
+  );
+  assert.match(
+    recordOnlyPreflight,
+    /git show "\$env:BASE_SHA`:scripts\/sounding-line\/project-discovery\.mjs" > project-discovery\.mjs/u,
+  );
+  assert.match(recordOnlyPreflight, /SOUNDING_LINE_RECORD_ONLY_TRUSTED_PROJECT_DISCOVERY_UNAVAILABLE/u);
   assert.doesNotMatch(workflow, /function Test-TrustedGlob/u);
 });
 
@@ -847,14 +942,21 @@ test("product registration admits a generic trusted source-bound branch-complete
   assert.deepEqual(result.errors, []);
 });
 
-test("the exact Drydock branch-complete reconciliation can accompany a valid product registration", async () => {
+test("a branch-complete Drydock reconciliation can accompany a valid product registration", async () => {
   const path = "Development_Docs/Features/branch-complete/project-drydock-phase3.json";
-  const trusted = JSON.parse(
+  const landed = JSON.parse(
     await readFile(
       new URL("../../../Development_Docs/Features/branch-complete/project-drydock-phase3.json", import.meta.url),
       "utf8",
     ),
   );
+  const trusted = {
+    ...landed,
+    status: "BRANCH_COMPLETE_NOT_MERGED",
+    branch: "codex/project-drydock-phase3",
+    commit: "191a964488d0df71f8dcb91c5b8372fc73b6b32e",
+    limitations: ["Branch completion is distinct from protected-main availability.", ...landed.limitations.slice(1)],
+  };
   const candidate = clone(trusted);
   candidate.status = "MAINLINE";
   candidate.limitations[0] =
