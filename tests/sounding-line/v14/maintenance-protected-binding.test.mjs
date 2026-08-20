@@ -44,7 +44,9 @@ const plan = createMaintenancePlan({
 });
 const finalization = finalizeMaintenance({
   plan,
-  evidence: [{ id: "FOCUSED_REGRESSION", result: "PASSED", candidateSha: sha("b") }],
+  evidence: [
+    { id: "FOCUSED_REGRESSION", result: "PASSED", candidateSha: sha("b") },
+  ],
   observedCandidateSha: sha("b"),
   observedTrustedMainSha: sha("a"),
 });
@@ -110,7 +112,9 @@ test("maintenance binding accepts only the exact trusted base, candidate, and la
 test("ordinary release finalization cannot consume maintenance evidence", () => {
   const result = finalize({ plan, receipts: [] });
   assert.equal(result.decision, "EVIDENCE_INVALID");
-  assert.deepEqual(result.invalidEvidence, ["ORDINARY_RELEASE_CANNOT_CONSUME_MAINTENANCE_EVIDENCE"]);
+  assert.deepEqual(result.invalidEvidence, [
+    "ORDINARY_RELEASE_CANNOT_CONSUME_MAINTENANCE_EVIDENCE",
+  ]);
 });
 
 test("trusted-main dispatch selects one matching sealed MAINTENANCE_GO even though Actions head is the base", () => {
@@ -120,37 +124,56 @@ test("trusted-main dispatch selects one matching sealed MAINTENANCE_GO even thou
 });
 
 test("maintenance authority selection fails closed for invalid identity, disposition, trust, or uniqueness", () => {
-  assert.equal(select([trustedRun({ headSha: sha("b") })]).decision, "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE");
   assert.equal(
-    select([trustedRun({ plan: { ...plan, candidateSha: sha("d") } })]).decision,
+    select([trustedRun({ headSha: sha("b") })]).decision,
     "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
   );
   assert.equal(
-    select([trustedRun({ plan: { ...plan, qualifiedBaseSha: sha("d") } })]).decision,
+    select([trustedRun({ plan: { ...plan, candidateSha: sha("d") } })])
+      .decision,
     "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
   );
   assert.equal(
-    select([trustedRun({ plan: { ...plan, candidateTree: sha("d") } })]).decision,
-    "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
-  );
-  assert.equal(select([trustedRun({ conclusion: "failure" })]).decision, "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE");
-  assert.equal(
-    select([trustedRun({ plan: { ...plan, disposition: "RELEASE_GO" } })]).decision,
+    select([trustedRun({ plan: { ...plan, qualifiedBaseSha: sha("d") } })])
+      .decision,
     "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
   );
   assert.equal(
-    select([trustedRun({ finalization: { ...finalization, decision: "MAINTENANCE_NO_GO" } })]).decision,
+    select([trustedRun({ plan: { ...plan, candidateTree: sha("d") } })])
+      .decision,
     "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
   );
   assert.equal(
-    select([trustedRun({ finalization: { ...finalization, decision: "RELEASE_GO" } })]).decision,
+    select([trustedRun({ conclusion: "failure" })]).decision,
+    "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
+  );
+  assert.equal(
+    select([trustedRun({ plan: { ...plan, disposition: "RELEASE_GO" } })])
+      .decision,
+    "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
+  );
+  assert.equal(
+    select([
+      trustedRun({
+        finalization: { ...finalization, decision: "MAINTENANCE_NO_GO" },
+      }),
+    ]).decision,
+    "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
+  );
+  assert.equal(
+    select([
+      trustedRun({ finalization: { ...finalization, decision: "RELEASE_GO" } }),
+    ]).decision,
     "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
   );
   assert.equal(
     select([trustedRun({ path: ".github/workflows/untrusted.yml" })]).decision,
     "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
   );
-  assert.equal(select([trustedRun(), trustedRun({ id: 43 })]).decision, "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE");
+  assert.equal(
+    select([trustedRun(), trustedRun({ id: 43 })]).decision,
+    "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
+  );
 });
 
 test("authority maintenance is a distinct owner-authorized, exact-identity candidate-ref lane", () => {
@@ -159,13 +182,22 @@ test("authority maintenance is a distinct owner-authorized, exact-identity candi
     disposition: "AUTHORITY_MAINTENANCE_GO",
     workflowDispatchOnly: true,
     trustedMainOnly: true,
-    eligiblePathGlobs: ["scripts/sounding-line/authority-maintenance.mjs", "tests/sounding-line/**"],
+    eligiblePathGlobs: [
+      "scripts/sounding-line/authority-maintenance.mjs",
+      "tests/sounding-line/**",
+    ],
     requiredEvidence: ["FOCUSED_REGRESSION", "ANTI_SELF_AUTHORIZATION"],
   };
-  const changedPaths = ["scripts/sounding-line/authority-maintenance.mjs", "tests/sounding-line/v14/example.test.mjs"];
+  const changedPaths = [
+    "scripts/sounding-line/authority-maintenance.mjs",
+    "tests/sounding-line/v14/example.test.mjs",
+  ];
   assert.equal(
-    classifyAuthorityMaintenance({ trustedPolicy: authorityPolicy, changedPaths, ownerAuthorized: false })
-      .classification,
+    classifyAuthorityMaintenance({
+      trustedPolicy: authorityPolicy,
+      changedPaths,
+      ownerAuthorized: false,
+    }).classification,
     "AUTHORITY_MAINTENANCE_REJECTED",
   );
   assert.equal(
@@ -189,7 +221,11 @@ test("authority maintenance is a distinct owner-authorized, exact-identity candi
   assert.notEqual(authorityPlan.disposition, "RELEASE_GO");
   const authorityFinalization = finalizeAuthorityMaintenance({
     plan: authorityPlan,
-    evidence: authorityPolicy.requiredEvidence.map((id) => ({ id, result: "PASSED", candidateSha: sha("b") })),
+    evidence: authorityPolicy.requiredEvidence.map((id) => ({
+      id,
+      result: "PASSED",
+      candidateSha: sha("b"),
+    })),
     observedCandidateSha: sha("b"),
     observedTrustedMainSha: sha("a"),
   });
@@ -220,7 +256,10 @@ test("authority maintenance is a distinct owner-authorized, exact-identity candi
     candidateTree: sha("c"),
     qualifiedBaseSha: sha("a"),
   });
-  assert.equal(retriedAuthority.decision, "AUTHORITY_MAINTENANCE_AUTHORITY_SELECTED");
+  assert.equal(
+    retriedAuthority.decision,
+    "AUTHORITY_MAINTENANCE_AUTHORITY_SELECTED",
+  );
   assert.equal(retriedAuthority.selectedRunId, 43);
   assert.equal(
     selectSealedAuthorityMaintenance({
@@ -264,12 +303,21 @@ test("authority maintenance is a distinct owner-authorized, exact-identity candi
 
 test("protected binding derives authority-maintenance eligibility from the trusted policy", async () => {
   const workflow = await readFile(
-    new URL("../../../.github/workflows/sounding-line-protected-merge-binding.yml", import.meta.url),
+    new URL(
+      "../../../.github/workflows/sounding-line-protected-merge-binding.yml",
+      import.meta.url,
+    ),
     "utf8",
   );
-  assert.match(workflow, /The trusted policy, not a hand-maintained list of authority files/u);
+  assert.match(
+    workflow,
+    /The trusted policy, not a hand-maintained list of authority files/u,
+  );
   assert.match(workflow, /AUTHORITY_MAINTENANCE_SCOPE_REJECTED/u);
-  assert.match(workflow, /\$isAuthorityCandidate = \$paths \| Where-Object \{ \$_ -in \$authorityBindingPaths \}/u);
+  assert.match(
+    workflow,
+    /\$isAuthorityCandidate = \$paths \| Where-Object \{ \$_ -in \$authorityBindingPaths \}/u,
+  );
 });
 
 const activeEnvelope = (overrides = {}) => ({
@@ -327,16 +375,29 @@ test("active authority lineage selection keeps historical envelopes while select
 });
 
 test("a repeated qualification supersedes the old base lineage without using run recency", () => {
-  const old = directCandidate(100, { envelope: { qualifiedBaseSha: sha("3") } });
+  const old = directCandidate(100, {
+    envelope: { qualifiedBaseSha: sha("3") },
+  });
   const current = directCandidate(99);
   const selected = selectActive([old, current]);
   assert.equal(selected.decision, "ACTIVE_AUTHORITY_SELECTED");
-  assert.equal(selected.selectedRunId, 99, "exact base, not highest run id, selects the active lineage");
-  assert.equal(selected.historicalCount, 1, "superseded evidence remains preserved as historical input");
+  assert.equal(
+    selected.selectedRunId,
+    99,
+    "exact base, not highest run id, selects the active lineage",
+  );
+  assert.equal(
+    selected.historicalCount,
+    1,
+    "superseded evidence remains preserved as historical input",
+  );
 });
 
 test("a changed candidate head excludes old authority from the active lineage", () => {
-  const selected = selectActive([directCandidate(101, { envelope: { candidateSha: sha("3") } }), directCandidate(102)]);
+  const selected = selectActive([
+    directCandidate(101, { envelope: { candidateSha: sha("3") } }),
+    directCandidate(102),
+  ]);
   assert.equal(selected.decision, "ACTIVE_AUTHORITY_SELECTED");
   assert.equal(selected.selectedRunId, 102);
 });
@@ -348,7 +409,10 @@ test("an exact train predicted tree supersedes a semantic carry-forward direct l
       path: ".github/workflows/sounding-line-mainline-train.yml",
     }),
     artifact: "sounding-line-train-acceptance-envelope-pr-198",
-    envelope: activeEnvelope({ authoritativeRunId: 103, qualifiedBaseSha: sha("3") }),
+    envelope: activeEnvelope({
+      authoritativeRunId: 103,
+      qualifiedBaseSha: sha("3"),
+    }),
     plan: {
       sourceSha: sha("b"),
       authorityVersion: "1.4",
@@ -356,7 +420,10 @@ test("an exact train predicted tree supersedes a semantic carry-forward direct l
       predictedIntegrationTreeSha: sha("9"),
     },
   };
-  const selected = selectActive([directCandidate(101, { envelope: { qualifiedBaseSha: sha("3") } }), train]);
+  const selected = selectActive([
+    directCandidate(101, { envelope: { qualifiedBaseSha: sha("3") } }),
+    train,
+  ]);
   assert.equal(selected.decision, "ACTIVE_AUTHORITY_SELECTED");
   assert.equal(selected.selectedMode, "TRAIN_REBIND");
   assert.equal(selected.originalCandidateSha, sha("b"));
@@ -369,7 +436,10 @@ test("PR #198-shaped train suffix lifecycle collapses duplicate evidence but rej
       path: ".github/workflows/sounding-line-mainline-train.yml",
     }),
     artifact: "sounding-line-train-acceptance-envelope-pr-198",
-    envelope: activeEnvelope({ authoritativeRunId: 104, qualifiedBaseSha: sha("3") }),
+    envelope: activeEnvelope({
+      authoritativeRunId: 104,
+      qualifiedBaseSha: sha("3"),
+    }),
     plan: {
       sourceSha: sha("b"),
       authorityVersion: "1.4",
@@ -386,17 +456,24 @@ test("PR #198-shaped train suffix lifecycle collapses duplicate evidence but rej
   competing.run.id = 106;
   competing.envelope.authoritativeRunId = 106;
   competing.envelope.planDigest = digest("7");
-  assert.equal(selectActive([train, competing]).decision, "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE");
+  assert.equal(
+    selectActive([train, competing]).decision,
+    "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE",
+  );
 });
 
 test("active authority selection fails closed when no valid current authority remains", () => {
-  assert.equal(selectActive([]).decision, "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE");
+  assert.equal(
+    selectActive([]).decision,
+    "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE",
+  );
   assert.equal(
     selectActive([directCandidate(101, { expired: true })]).decision,
     "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE",
   );
   assert.equal(
-    selectActive([directCandidate(101, { envelope: { revoked: true } })]).decision,
+    selectActive([directCandidate(101, { envelope: { revoked: true } })])
+      .decision,
     "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE",
   );
   assert.equal(
@@ -404,46 +481,90 @@ test("active authority selection fails closed when no valid current authority re
     "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE",
   );
   assert.equal(
-    selectActive([directCandidate(101, { envelope: { planDigest: sha("d") } })]).decision,
+    selectActive([directCandidate(101, { envelope: { planDigest: sha("d") } })])
+      .decision,
     "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE",
   );
 });
 
 test("authority-maintenance preflight routing is trusted-policy driven and bootstraps policy updates", async () => {
   const workflow = await readFile(
-    path.join(root, ".github", "workflows", "sounding-line-protected-merge-binding.yml"),
+    path.join(
+      root,
+      ".github",
+      "workflows",
+      "sounding-line-protected-merge-binding.yml",
+    ),
     "utf8",
   );
   const authorityPolicy = JSON.parse(
-    await readFile(path.join(root, "testing", "authority-maintenance-policy.json"), "utf8"),
+    await readFile(
+      path.join(root, "testing", "authority-maintenance-policy.json"),
+      "utf8",
+    ),
   );
-  assert.ok(authorityPolicy.bindingPreflightPaths.includes("testing/verification-maintenance-policy.json"));
-  assert.ok(authorityPolicy.bindingPreflightPaths.includes("scripts/sounding-line/cli.mjs"));
-  assert.ok(authorityPolicy.bindingPreflightPaths.includes("scripts/sounding-line/project-discovery.mjs"));
   assert.ok(
-    authorityPolicy.bindingPreflightPaths.includes(".github/workflows/sounding-line-protected-merge-binding.yml"),
+    authorityPolicy.bindingPreflightPaths.includes(
+      "testing/verification-maintenance-policy.json",
+    ),
   );
-  assert.match(workflow, /\$authorityBindingPaths = @\(\$trustedPolicy\.bindingPreflightPaths\)/);
+  assert.ok(
+    authorityPolicy.bindingPreflightPaths.includes(
+      "scripts/sounding-line/cli.mjs",
+    ),
+  );
+  assert.ok(
+    authorityPolicy.bindingPreflightPaths.includes(
+      "scripts/sounding-line/project-discovery.mjs",
+    ),
+  );
+  assert.ok(
+    authorityPolicy.bindingPreflightPaths.includes(
+      ".github/workflows/sounding-line-protected-merge-binding.yml",
+    ),
+  );
+  assert.match(
+    workflow,
+    /\$authorityBindingPaths = @\(\$trustedPolicy\.bindingPreflightPaths\)/,
+  );
   assert.match(workflow, /\$legacyAuthorityBindingPaths = @\(/);
-  assert.doesNotMatch(workflow, /\$isAuthorityCandidate = \$paths \| Where-Object \{ \$_ -in @\('/);
+  assert.doesNotMatch(
+    workflow,
+    /\$isAuthorityCandidate = \$paths \| Where-Object \{ \$_ -in @\('/,
+  );
 });
 
 test("the protected binding treats only authority-plus-scope maintenance rejection as expected", async () => {
   const workflow = await readFile(
-    path.join(root, ".github", "workflows", "sounding-line-protected-merge-binding.yml"),
+    path.join(
+      root,
+      ".github",
+      "workflows",
+      "sounding-line-protected-merge-binding.yml",
+    ),
     "utf8",
   );
   assert.match(workflow, /\$authorityAndScopeOnly = \$errors\.Count -gt 0/);
-  assert.match(workflow, /\^\(MAINTENANCE_AUTHORITY_CHANGE_REJECTED\|MAINTENANCE_SCOPE_REJECTED\):/);
+  assert.match(
+    workflow,
+    /\^\(MAINTENANCE_AUTHORITY_CHANGE_REJECTED\|MAINTENANCE_SCOPE_REJECTED\):/,
+  );
   assert.match(workflow, /\^MAINTENANCE_AUTHORITY_CHANGE_REJECTED:/);
   assert.match(workflow, /bindingPreflightPaths/);
-  const authorityBinding = workflow.slice(workflow.indexOf("bind-authority-maintenance:"));
-  assert.match(authorityBinding, /actions\/runs\?event=workflow_dispatch&per_page=100/);
+  const authorityBinding = workflow.slice(
+    workflow.indexOf("bind-authority-maintenance:"),
+  );
+  assert.match(
+    authorityBinding,
+    /actions\/runs\?event=workflow_dispatch&per_page=100/,
+  );
   assert.doesNotMatch(authorityBinding, /head_sha=\$env:BASE_SHA/);
 });
 
 test("a renamed trusted authority classifier still emits the sealed plan and finalization", async () => {
-  const directory = await mkdtemp(path.join(tmpdir(), "sounding-line-authority-maintenance-"));
+  const directory = await mkdtemp(
+    path.join(tmpdir(), "sounding-line-authority-maintenance-"),
+  );
   try {
     const classifier = path.join(directory, "trusted-classifier.mjs");
     const policyPath = path.join(directory, "policy.json");
@@ -459,9 +580,15 @@ test("a renamed trusted authority classifier still emits the sealed plan and fin
       eligiblePathGlobs: ["tests/sounding-line/**"],
       requiredEvidence: ["FOCUSED_REGRESSION"],
     };
-    await copyFile(path.resolve("scripts/sounding-line/authority-maintenance.mjs"), classifier);
+    await copyFile(
+      path.resolve("scripts/sounding-line/authority-maintenance.mjs"),
+      classifier,
+    );
     await writeFile(policyPath, JSON.stringify(authorityPolicy));
-    await writeFile(pathsPath, JSON.stringify(["tests/sounding-line/v14/example.test.mjs"]));
+    await writeFile(
+      pathsPath,
+      JSON.stringify(["tests/sounding-line/v14/example.test.mjs"]),
+    );
     await execFileAsync(process.execPath, [
       classifier,
       "plan",
@@ -484,7 +611,9 @@ test("a renamed trusted authority classifier still emits the sealed plan and fin
     ]);
     await writeFile(
       evidencePath,
-      JSON.stringify([{ id: "FOCUSED_REGRESSION", result: "PASSED", candidateSha: sha("b") }]),
+      JSON.stringify([
+        { id: "FOCUSED_REGRESSION", result: "PASSED", candidateSha: sha("b") },
+      ]),
     );
     await execFileAsync(process.execPath, [
       classifier,
@@ -500,8 +629,14 @@ test("a renamed trusted authority classifier still emits the sealed plan and fin
       "--out",
       finalizationPath,
     ]);
-    assert.equal(JSON.parse(await readFile(planPath, "utf8")).disposition, "AUTHORITY_MAINTENANCE_GO");
-    assert.equal(JSON.parse(await readFile(finalizationPath, "utf8")).decision, "AUTHORITY_MAINTENANCE_GO");
+    assert.equal(
+      JSON.parse(await readFile(planPath, "utf8")).disposition,
+      "AUTHORITY_MAINTENANCE_GO",
+    );
+    assert.equal(
+      JSON.parse(await readFile(finalizationPath, "utf8")).decision,
+      "AUTHORITY_MAINTENANCE_GO",
+    );
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
