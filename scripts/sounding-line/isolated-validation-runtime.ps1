@@ -474,12 +474,30 @@ try {
   database.close();
 }
 '@
-    Invoke-ValidationStep -Name "Normalizing focused Studio browser fixture contract" -Arguments @(
-        "--experimental-sqlite",
-        "--input-type=module",
-        "--eval",
-        $normalizer
-    )
+    # Windows PowerShell's legacy native-command transport can strip the
+    # JavaScript string literals from a multiline --eval payload. Pass the
+    # normalizer as a data module through the child environment instead, so
+    # Node receives its source byte-for-byte.
+    $normalizerBytes = [System.Text.Encoding]::UTF8.GetBytes($normalizer)
+    $normalizerModuleUrl = "data:text/javascript;base64,$([System.Convert]::ToBase64String($normalizerBytes))"
+    $normalizerEnvironmentPath = "Env:SOUNDING_LINE_FOCUSED_STUDIO_NORMALIZER_URL"
+    $hadExistingNormalizer = Test-Path -LiteralPath $normalizerEnvironmentPath
+    $previousNormalizer = [Environment]::GetEnvironmentVariable("SOUNDING_LINE_FOCUSED_STUDIO_NORMALIZER_URL", "Process")
+    try {
+        Set-Item -LiteralPath $normalizerEnvironmentPath -Value $normalizerModuleUrl
+        Invoke-ValidationStep -Name "Normalizing focused Studio browser fixture contract" -Arguments @(
+            "--experimental-sqlite",
+            "--input-type=module",
+            "--eval",
+            "await import(process.env.SOUNDING_LINE_FOCUSED_STUDIO_NORMALIZER_URL)"
+        )
+    } finally {
+        if ($hadExistingNormalizer) {
+            Set-Item -LiteralPath $normalizerEnvironmentPath -Value $previousNormalizer
+        } else {
+            Remove-Item -LiteralPath $normalizerEnvironmentPath -ErrorAction SilentlyContinue
+        }
+    }
 }
 
 function Get-BrowserSelectionDiscoveryCount {
