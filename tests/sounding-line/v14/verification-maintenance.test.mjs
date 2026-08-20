@@ -594,6 +594,28 @@ test("candidate authority invokes the trusted ordinary classifier rather than in
     protectedBinding,
     /git show "\$env:BASE_SHA`:scripts\/sounding-line\/project-discovery\.mjs" > project-discovery\.mjs/u,
   );
+  assert.match(
+    protectedBinding,
+    /git show "\$env:BASE_SHA`:scripts\/sounding-line\/verification-maintenance\.mjs" > trusted-verification-maintenance\.mjs/u,
+  );
+  assert.match(
+    protectedBinding,
+    /node trusted-verification-maintenance\.mjs ordinary --policy trusted-maintenance-policy\.json --paths ordinary-candidate-changed-paths\.json --trusted-base-sha \$env:BASE_SHA --candidate-sha \$env:CANDIDATE_SHA --out ordinary-candidate-classification\.json/u,
+  );
+  assert.match(protectedBinding, /if \(\$ordinaryExitCode -ne 0\) \{ \$global:LASTEXITCODE = 0 \}/u);
+  assert.match(
+    protectedBinding,
+    /\$recordOnly = if \(\$preflight\.eligible -and -not \$ordinaryCandidate\) \{ 'true' \} else \{ 'false' \}/u,
+  );
+  const recordOnlyPreflight = protectedBinding.slice(
+    protectedBinding.indexOf("record-only-preflight:"),
+    protectedBinding.indexOf("record-only-evidence:"),
+  );
+  assert.match(
+    recordOnlyPreflight,
+    /git show "\$env:BASE_SHA`:scripts\/sounding-line\/project-discovery\.mjs" > project-discovery\.mjs/u,
+  );
+  assert.match(recordOnlyPreflight, /SOUNDING_LINE_RECORD_ONLY_TRUSTED_PROJECT_DISCOVERY_UNAVAILABLE/u);
   assert.doesNotMatch(workflow, /function Test-TrustedGlob/u);
 });
 
