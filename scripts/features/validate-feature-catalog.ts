@@ -39,8 +39,7 @@ export function branchEvidenceResolves(branch: string, commit?: string): boolean
   // intentionally absent. Avoid probing two known-absent refs before the
   // required contained-commit proof; that keeps the trusted path bounded on
   // slow filesystems without accepting evidence from another branch.
-  if (trustedDetachedPullRequest)
-    return Boolean(commit) && gitRefIsAncestor(commit, "HEAD");
+  if (trustedDetachedPullRequest) return commit ? gitRefIsAncestor(commit, "HEAD") : false;
 
   if (gitRefExists(`refs/heads/${branch}`) || gitRefExists(`refs/remotes/origin/${branch}`)) return true;
   return false;
