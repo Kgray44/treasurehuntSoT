@@ -474,12 +474,19 @@ try {
   database.close();
 }
 '@
-    Invoke-ValidationStep -Name "Normalizing focused Studio browser fixture contract" -Arguments @(
-        "--experimental-sqlite",
-        "--input-type=module",
-        "--eval",
-        $normalizer
-    )
+    # A native Windows command transport can reinterpret quotes embedded in an
+    # --eval payload. Materialize this generated module only in the disposable
+    # runtime instead, execute it by path, and remove it before finalization.
+    $normalizerPath = Join-Path $runtimeRoot ".sounding-line-focused-browser-studio-fixture.mjs"
+    try {
+        Set-Content -LiteralPath $normalizerPath -Value $normalizer -Encoding utf8NoBOM -NoNewline
+        Invoke-ValidationStep -Name "Normalizing focused Studio browser fixture contract" -Arguments @(
+            "--experimental-sqlite",
+            $normalizerPath
+        )
+    } finally {
+        Remove-Item -LiteralPath $normalizerPath -Force -ErrorAction SilentlyContinue
+    }
 }
 
 function Get-BrowserSelectionDiscoveryCount {
