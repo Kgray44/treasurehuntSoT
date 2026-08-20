@@ -45,3 +45,19 @@ test("fixture bootstrap admits only the exact validation-runtime maintenance cla
   assert.equal(rejected.classification, "AUTHORITY_MAINTENANCE_REJECTED");
   assert.deepEqual(rejected.errors, ["AUTHORITY_MAINTENANCE_SCOPE_REJECTED:scripts/tideglass/unrelated-bootstrap.mjs"]);
 });
+
+test("focused browser Studio fixture normalization is bounded to the disposable runtime copy", async () => {
+  const runtime = await readFile(
+    path.join(root, "scripts", "sounding-line", "isolated-validation-runtime.ps1"),
+    "utf8",
+  );
+  assert.match(runtime, /function Repair-FocusedBrowserStudioFixture/u);
+  assert.match(runtime, /FOCUSED_BROWSER_STUDIO_FIXTURE_CURRENT/u);
+  assert.match(runtime, /--experimental-sqlite/u);
+  assert.match(
+    runtime,
+    /Seeding focused browser development fixture[\s\S]*Repair-FocusedBrowserStudioFixture[\s\S]*Migrating focused browser legacy compatibility projection/u,
+  );
+  assert.match(runtime, /development-studio-voyage/u);
+  assert.match(runtime, /FOCUSED_BROWSER_STUDIO_FIXTURE_TALE_MISSING/u);
+});
