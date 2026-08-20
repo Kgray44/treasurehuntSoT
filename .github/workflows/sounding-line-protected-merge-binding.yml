@@ -61,6 +61,11 @@ jobs:
           ConvertTo-Json -InputObject $paths -Compress | Set-Content -NoNewline ordinary-candidate-changed-paths.json
           node trusted-verification-maintenance.mjs ordinary --policy trusted-maintenance-policy.json --paths ordinary-candidate-changed-paths.json --trusted-base-sha $env:BASE_SHA --candidate-sha $env:CANDIDATE_SHA --out ordinary-candidate-classification.json
           $ordinaryExitCode = $LASTEXITCODE
+          # A trusted ordinary rejection is the expected result for record-only
+          # and authority-maintenance candidates; retain it as data below,
+          # rather than leaking the classifier's nonzero status as this job's
+          # process result.
+          if ($ordinaryExitCode -ne 0) { $global:LASTEXITCODE = 0 }
           $ordinary = Get-Content -Raw ordinary-candidate-classification.json | ConvertFrom-Json
           $ordinaryCandidate = $ordinaryExitCode -eq 0 -and $ordinary.classification -eq 'ORDINARY_CANDIDATE' -and @($ordinary.errors).Count -eq 0
           $recordOnly = if ($preflight.eligible -and -not $ordinaryCandidate) { 'true' } else { 'false' }
