@@ -5,7 +5,14 @@
     {
       "id": "platform-foundation",
       "project": "platform",
-      "sourcePaths": ["src/platform/**", "src/server/**", "src/app/api/**", "prisma/**", "scripts/**"],
+      "sourcePaths": [
+        "src/platform/**",
+        "src/components/shell/**",
+        "src/server/**",
+        "src/app/api/**",
+        "prisma/**",
+        "scripts/**"
+      ],
       "testPaths": ["src/platform/**/*.test.*", "src/server/**/*.test.*", "src/app/api/**/*.test.*"],
       "contractIds": ["authentication-authorization", "migration-parity"]
     },
