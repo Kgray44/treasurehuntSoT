@@ -56,7 +56,7 @@ const trustedRun = (overrides = {}) => ({
   event: "workflow_dispatch",
   status: "completed",
   conclusion: "success",
-  headSha: sha("a"),
+  headSha: sha("b"),
   plan,
   finalization,
   ...overrides,
@@ -113,14 +113,24 @@ test("ordinary release finalization cannot consume maintenance evidence", () => 
   assert.deepEqual(result.invalidEvidence, ["ORDINARY_RELEASE_CANNOT_CONSUME_MAINTENANCE_EVIDENCE"]);
 });
 
-test("trusted-main dispatch selects one matching sealed MAINTENANCE_GO even though Actions head is the base", () => {
+test("candidate dispatch selects one matching sealed MAINTENANCE_GO", () => {
   const result = select([trustedRun()]);
   assert.equal(result.decision, "MAINTENANCE_AUTHORITY_SELECTED");
   assert.equal(result.selectedRunId, 42);
 });
 
-test("maintenance authority selection fails closed for invalid identity, disposition, trust, or uniqueness", () => {
-  assert.equal(select([trustedRun({ headSha: sha("b") })]).decision, "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE");
+test("protected maintenance binding searches workflow dispatches by the exact candidate SHA", async () => {
+  const workflow = await readFile(
+    path.join(root, ".github", "workflows", "sounding-line-protected-merge-binding.yml"),
+    "utf8",
+  );
+  const maintenanceBinding = workflow.slice(workflow.indexOf("bind-maintenance:"));
+  assert.match(maintenanceBinding, /actions\/runs\?event=workflow_dispatch&head_sha=\$env:CANDIDATE_SHA&per_page=100/u);
+  assert.doesNotMatch(maintenanceBinding, /head_sha=\$env:BASE_SHA/u);
+});
+
+test("maintenance authority selection rejects stale base-headed, invalid, and ambiguous evidence", () => {
+  assert.equal(select([trustedRun({ headSha: sha("a") })]).decision, "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE");
   assert.equal(
     select([trustedRun({ plan: { ...plan, candidateSha: sha("d") } })]).decision,
     "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
