@@ -519,7 +519,15 @@ function Get-OwnedProcessTreeSnapshot {
     return @(
         foreach ($processId in $depthById.Keys) {
             $identity = Get-ProcessIdentity -ProcessId ([int]$processId)
-            if (-not $identity) { throw "Owned process $processId exited while its identity was being recorded." }
+            if (-not $identity) {
+                # A short-lived descendant may naturally exit between the CIM
+                # snapshot and identity read. The launcher remains fail-closed
+                # and already-recorded identities remain eligible for cleanup.
+                if ([int]$processId -eq [int]$LauncherIdentity.ProcessId) {
+                    throw "Owned launcher exited while its identity was being recorded."
+                }
+                continue
+            }
             $snapshotProcess = $processesById[[int]$processId]
             if (-not $snapshotProcess -or [int]$identity.ParentProcessId -ne [int]$snapshotProcess.ParentProcessId) {
                 throw "Owned process $processId changed identity or ancestry while its tree was being recorded."
