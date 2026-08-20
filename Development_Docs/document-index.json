@@ -5277,6 +5277,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/true-north-navigation-focus-repair/Deepwater_Capability_Impact_Declaration.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Homeport_Authentication_and_Session_Inventory.json",
       "record_type": "program-record",
       "status": "current",

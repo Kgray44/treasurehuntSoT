@@ -214,7 +214,11 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (navigationOpen)
-      queueMicrotask(() => navigationDrawerRef.current?.querySelector<HTMLAnchorElement>("a")?.focus());
+      queueMicrotask(() => {
+        const drawer = navigationDrawerRef.current;
+        const activeLink = drawer?.querySelector<HTMLAnchorElement>('a[aria-current="page"]');
+        (activeLink ?? drawer?.querySelector<HTMLAnchorElement>("a"))?.focus();
+      });
   }, [navigationOpen]);
 
   useEffect(() => {

@@ -235,6 +235,7 @@ describe("ProductShell", () => {
   });
 
   it("homeport.shell.mobile-parity moves focus into the shared navigation drawer and restores it", async () => {
+    navigation.pathname = "/";
     render(
       <ProductShell>
         <main>Catalog content</main>
@@ -251,6 +252,19 @@ describe("ProductShell", () => {
     await waitFor(() => expect(trigger).toHaveFocus());
     expect(trigger).toHaveAttribute("aria-expanded", "false");
     expect(document.body.style.overflow).toBe("");
+  });
+
+  it("homeport.shell.mobile-parity focuses the active global destination", async () => {
+    navigation.pathname = "/tales";
+    render(
+      <ProductShell>
+        <main>Catalog content</main>
+      </ProductShell>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Open navigation" }));
+    const global = screen.getByRole("navigation", { name: "Global navigation" });
+    await waitFor(() => expect(within(global).getByRole("link", { name: "Explore Chronicles" })).toHaveFocus());
   });
 
   it("homeport.shell.compact-exit identifies Captain context and provides a stable exit with account access", () => {
