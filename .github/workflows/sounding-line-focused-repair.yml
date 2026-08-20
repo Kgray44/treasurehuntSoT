@@ -11,8 +11,20 @@ on:
         description: Gate whose sealed plan must govern the selected suite
         required: true
         type: choice
-        default: release-candidate
-        options: [mainline, release-candidate]
+        default: mainline
+        options: [mainline]
+      candidate_sha:
+        description: Exact frozen candidate commit to diagnose
+        required: true
+        type: string
+      candidate_ref:
+        description: Exact frozen candidate branch ref
+        required: true
+        type: string
+      base_sha:
+        description: Exact protected-main base qualified by the candidate
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -22,19 +34,49 @@ jobs:
     name: Sounding Line / Validate focused selection
     runs-on: windows-latest
     timeout-minutes: 10
+    outputs:
+      requires_browser: ${{ steps.selection.outputs.requires_browser }}
+      browser_engine: ${{ steps.selection.outputs.browser_engine }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with: { ref: "${{ github.sha }}" }
+        with: { ref: "${{ inputs.candidate_sha }}", fetch-depth: 0 }
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc }
       - env:
           SOUNDING_LINE_GATE: ${{ inputs.gate }}
-        run: node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:process.env.SOUNDING_LINE_GATE,serial:false,sourceSha:process.env.GITHUB_SHA}),null,2)))" > sounding-line-plan.json
+          SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+          SOUNDING_LINE_CANDIDATE_REF: ${{ inputs.candidate_ref }}
+          SOUNDING_LINE_BASE_SHA: ${{ inputs.base_sha }}
+        shell: pwsh
+        run: |
+          if ($env:GITHUB_REF -ne 'refs/heads/main') { throw 'FOCUSED_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED' }
+          if ($env:SOUNDING_LINE_CANDIDATE_SHA -notmatch '^[0-9a-f]{40}$') { throw 'FOCUSED_CANDIDATE_SHA_INVALID' }
+          if ($env:SOUNDING_LINE_CANDIDATE_REF -notmatch '^refs/heads/[A-Za-z0-9._/-]+$') { throw 'FOCUSED_CANDIDATE_REF_INVALID' }
+          if ($env:SOUNDING_LINE_BASE_SHA -notmatch '^[0-9a-f]{40}$') { throw 'FOCUSED_BASE_SHA_INVALID' }
+          git cat-file -e "$env:SOUNDING_LINE_CANDIDATE_SHA^{commit}"
+          git fetch --no-tags --depth=1 origin $env:SOUNDING_LINE_BASE_SHA
+          if ($LASTEXITCODE -ne 0) { throw 'FOCUSED_BASE_FETCH_FAILED' }
+          git merge-base --is-ancestor $env:SOUNDING_LINE_BASE_SHA $env:SOUNDING_LINE_CANDIDATE_SHA
+          if ($LASTEXITCODE -ne 0) { throw 'FOCUSED_CANDIDATE_BASE_NOT_ANCESTOR' }
+          $resolved = @(git ls-remote origin $env:SOUNDING_LINE_CANDIDATE_REF)
+          if ($resolved.Count -ne 1 -or -not $resolved[0].StartsWith("$env:SOUNDING_LINE_CANDIDATE_SHA`t")) {
+            throw 'FOCUSED_CANDIDATE_REF_HEAD_MISMATCH'
+          }
+          node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:process.env.SOUNDING_LINE_GATE,serial:false,sourceSha:process.env.SOUNDING_LINE_CANDIDATE_SHA,qualifiedBaseSha:process.env.SOUNDING_LINE_BASE_SHA,authorityMode:'V14_CANDIDATE',candidateRef:process.env.SOUNDING_LINE_CANDIDATE_REF}),null,2)))" > sounding-line-plan.json
       - name: Validate exact registered suite and resource scope
+        id: selection
         shell: pwsh
         env:
           SOUNDING_LINE_SUITE: ${{ inputs.suite }}
-        run: node scripts/sounding-line/focused-selection.mjs --plan sounding-line-plan.json --suite "$env:SOUNDING_LINE_SUITE" --out sounding-line-focused-selection.json
+        run: |
+          node scripts/sounding-line/focused-selection.mjs --plan sounding-line-plan.json --suite "$env:SOUNDING_LINE_SUITE" --out sounding-line-focused-selection.json
+          if ($LASTEXITCODE -ne 0) { throw 'FOCUSED_SELECTION_INVALID' }
+          $selection = Get-Content -Raw sounding-line-focused-selection.json | ConvertFrom-Json
+          $engines = @($selection.preparation.actions.browserEngines)
+          if ($engines.Count -gt 1) { throw 'FOCUSED_BROWSER_MULTI_ENGINE_UNSUPPORTED' }
+          $requiresBrowser = if ($engines.Count -eq 1) { 'true' } else { 'false' }
+          "requires_browser=$requiresBrowser" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "browser_engine=$(if ($engines.Count) { $engines[0] } else { '' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
           name: sounding-line-plan
@@ -50,3 +92,7 @@ jobs:
     with:
       suite: ${{ inputs.suite }}
       gate: ${{ inputs.gate }}
+      candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
+      requires_browser: ${{ needs.focused-plan.outputs.requires_browser }}
+      browser_engine: ${{ needs.focused-plan.outputs.browser_engine }}
