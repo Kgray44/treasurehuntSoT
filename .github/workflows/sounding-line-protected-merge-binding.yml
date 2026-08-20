@@ -25,6 +25,7 @@ jobs:
     timeout-minutes: 10
     outputs:
       recordOnly: ${{ steps.classification.outputs.recordOnly }}
+      ordinaryCandidate: ${{ steps.classification.outputs.ordinaryCandidate }}
       proofAvailable: ${{ steps.classification.outputs.proofAvailable }}
       priorAuthorityRunId: ${{ steps.classification.outputs.priorAuthorityRunId }}
     steps:
@@ -42,12 +43,28 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           MERGE_SHA: ${{ github.sha }}
         run: |
+          $ErrorActionPreference = 'Stop'
           node scripts/sounding-line/record-only-closure.mjs preflight --repository "$env:GITHUB_REPOSITORY" --candidate-sha "$env:CANDIDATE_SHA" --base-sha "$env:BASE_SHA" --merge-sha "$env:MERGE_SHA" --out record-only-preflight.json
           if ($LASTEXITCODE -ne 0) { throw "RECORD_ONLY_PREFLIGHT_FAILED" }
           $preflight = Get-Content -Raw record-only-preflight.json | ConvertFrom-Json
-          $recordOnly = if ($preflight.eligible) { 'true' } else { 'false' }
+          # Record-only classification is structurally permissive for closure
+          # records. An ordinary candidate admitted by the base revision's
+          # trusted policy remains on the ordinary protected-main route.
+          git show "$env:BASE_SHA`:testing/verification-maintenance-policy.json" > trusted-maintenance-policy.json
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_RECORD_ONLY_TRUSTED_POLICY_UNAVAILABLE' }
+          git show "$env:BASE_SHA`:scripts/sounding-line/verification-maintenance.mjs" > trusted-verification-maintenance.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_RECORD_ONLY_TRUSTED_CLASSIFIER_UNAVAILABLE' }
+          $paths = @(git diff --name-only --no-renames --no-ext-diff "$env:BASE_SHA" "$env:CANDIDATE_SHA" | Sort-Object)
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_RECORD_ONLY_CHANGED_PATHS_UNAVAILABLE' }
+          ConvertTo-Json -InputObject $paths -Compress | Set-Content -NoNewline ordinary-candidate-changed-paths.json
+          node trusted-verification-maintenance.mjs ordinary --policy trusted-maintenance-policy.json --paths ordinary-candidate-changed-paths.json --trusted-base-sha $env:BASE_SHA --candidate-sha $env:CANDIDATE_SHA --out ordinary-candidate-classification.json
+          $ordinaryExitCode = $LASTEXITCODE
+          $ordinary = Get-Content -Raw ordinary-candidate-classification.json | ConvertFrom-Json
+          $ordinaryCandidate = $ordinaryExitCode -eq 0 -and $ordinary.classification -eq 'ORDINARY_CANDIDATE' -and @($ordinary.errors).Count -eq 0
+          $recordOnly = if ($preflight.eligible -and -not $ordinaryCandidate) { 'true' } else { 'false' }
           $proofAvailable = if ($preflight.priorAuthority -and @($preflight.errors).Count -eq 0) { 'true' } else { 'false' }
           "recordOnly=$recordOnly" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "ordinaryCandidate=$ordinaryCandidate" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           "proofAvailable=$proofAvailable" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           if ($proofAvailable -eq 'true') {
             "priorAuthorityRunId=$($preflight.priorAuthority.authorityRunId)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8

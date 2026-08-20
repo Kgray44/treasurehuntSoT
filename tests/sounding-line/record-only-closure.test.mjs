@@ -14,6 +14,7 @@ import {
   RECORD_ONLY_EVIDENCE_IDS,
   RECORD_ONLY_PROTECTED_CONTEXT,
   RECORD_ONLY_SUITE_ID,
+  selectRecordOnlyBindingRoute,
   validateReferencedAuthorityRun,
   validatePriorImplementationAuthority,
 } from "../../scripts/sounding-line/record-only-closure.mjs";
@@ -79,6 +80,12 @@ test("record-only prior authority rejects a run not dispatched from the implemen
     }),
     false,
   );
+});
+
+test("ordinary candidate admission takes precedence over structural record-only eligibility", () => {
+  assert.equal(selectRecordOnlyBindingRoute({ recordOnlyEligible: true, ordinaryCandidate: true }), false);
+  assert.equal(selectRecordOnlyBindingRoute({ recordOnlyEligible: true, ordinaryCandidate: false }), true);
+  assert.equal(selectRecordOnlyBindingRoute({ recordOnlyEligible: false, ordinaryCandidate: true }), false);
 });
 
 test("record-only references accept the canonical documented authoritative run form", () => {
