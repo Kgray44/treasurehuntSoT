@@ -1,7 +1,7 @@
 ---
 title: Project Confluence Test and Validation Record
 audience: engineering
-status: blocked
+status: candidate-qualification
 canonical_for: project-confluence-validation
 last_reviewed: 2026-08-19
 ---
@@ -12,16 +12,16 @@ Focused Confluence tests exercise private visibility refusal, archive path conta
 
 ## Reconciliation evidence
 
-- The supplied PR #211 head `39b2415f0680e0f17e612b436a7c1ba6fb399480` was preserved locally, then the existing eight Confluence commits were rebased onto protected `origin/main` `0ba025d5d4738f07170f24f17a1843704435e925`. The only reconciliation repair was regeneration of this project's document-index entries.
+- The supplied PR #211 head `39b2415f0680e0f17e612b436a7c1ba6fb399480` remains preserved locally. The existing Confluence candidate was reconciled onto protected `origin/main` `61b917d97ad050f41dd6dfcfc1f4dc3af57c4606`, preserving Confluence source and resolving only its generated document-index entries.
 - `node --test tests/confluence/core.test.mjs`: 8 passed, 0 failed. The suite validates America/New_York boundaries, archive/path and public-metadata guards, human-evidence recognition without rewriting, token completeness, deterministic evidence-index locators, DOCX A4/margin/heading structure, PDF A4 structure, and byte-exact approved delivery.
 - `confluence verify-archive`: `PRIVATE` through anonymous GitHub refusal plus authenticated Git access. `confluence validate-archive`: `ARCHIVE_VALID` with 11 required schemas and the required immutable design-token digest.
-- `confluence status --week 2026-W33`: `READY_FOR_SYNTHESIS`; private human and engineering evidence are ready while no master, safety decision, or public derivative exists. `confluence collect --week 2026-W34 --dry-run`: deterministic dry-run digest `0552aeeec4a50155946c565fc240e2fbb22db8bac1472135a0a23b1c88f64ad1`; the private archive remained clean before and after validation.
+- `confluence status --week 2026-W33`: `READY_FOR_SYNTHESIS`; private human and engineering evidence are ready while no master, safety decision, or public derivative exists. `confluence collect --week 2026-W34 --dry-run`: deterministic dry-run digest `50a321ba74eaf3e3cfa6af379b8b3f5f177cc034534ad9ac26d31e99b819cc5b`; the private archive remained clean before and after validation.
 - A master-artifact/design-metadata validation was intentionally not invoked: no ChatGPT-authored master exists. Codex must not manufacture journal metadata, theme analysis, narrative design, or prose to satisfy that precondition.
-- `node scripts/validate-documentation.mjs`, `node scripts/sounding-line/cli.mjs validate-policy`, and the private-content repository scan passed. `node --test tests/sounding-line/v14/verification-maintenance.test.mjs` passed 61/61, including the complete Confluence C2-C7 ordinary-admission cases.
+- `node scripts/validate-documentation.mjs`, `node scripts/sounding-line/cli.mjs validate-policy`, and the private-content repository scan passed. `node --test tests/sounding-line/v14/verification-maintenance.test.mjs` passed 61/61, including the complete Confluence C2-C7 ordinary-admission cases. Deterministic registry regeneration reports 2476 governed definitions; Feature Catalog validation passes 48 entries after generator-owned source-stamp refresh; P34 retirement validates 316 historical cases.
 
-## External qualification blockers
+## Current qualification boundary
 
-- Feature catalog validation is blocked by the unrelated Drydock reference `FT-036: branch does not resolve: codex/project-drydock-phase3-run-sea-trials`.
-- Current protected-main's generated test registry is stale against unrelated Sounding Line test-source changes: local regeneration changes 181 non-Confluence entries. This must be repaired by its shared-infrastructure owner; Confluence deliberately restores the generated artifact instead of absorbing that repair.
+- Protected main now contains the former FT-036, deterministic-registry, and Drydock reconciliation-fixture maintenance repairs. No shared defect is currently being carried in the Confluence candidate.
+- The candidate still requires its exact current Sounding Line plan, scoped static qualification, freeze, and one normal Mainline Decision. No ChatGPT-owned master, metadata, theme analysis, narrative design, or prose has been created; `READY_FOR_SYNTHESIS` remains the C7 truth boundary.
 
-These blockers prevent freezing and dispatching a valid current authoritative candidate. They do not justify a Confluence-owned Sounding Line, Fairlead, Ledgerlight, browser/runtime, or generated-infrastructure change.
+The remaining qualification steps do not authorize a Confluence-owned Sounding Line, Fairlead, Ledgerlight, browser/runtime, or generated-infrastructure change.
