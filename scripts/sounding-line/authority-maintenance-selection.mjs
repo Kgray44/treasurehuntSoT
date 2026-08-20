@@ -1,10 +1,8 @@
 /* Select one sealed authority-maintenance decision from a trusted-main dispatch. */
 import { readFile } from "node:fs/promises";
 
-const sha = (value) =>
-  typeof value === "string" && /^[0-9a-f]{40}$/u.test(value);
-const digest = (value) =>
-  typeof value === "string" && /^[0-9a-f]{64}$/u.test(value);
+const sha = (value) => typeof value === "string" && /^[0-9a-f]{40}$/u.test(value);
+const digest = (value) => typeof value === "string" && /^[0-9a-f]{64}$/u.test(value);
 
 const envelopeIdentity = (envelope) =>
   [
@@ -29,11 +27,7 @@ const validEnvelope = (envelope, run) =>
   envelope?.gate === "mainline" &&
   envelope?.finalizerAuthority === "SOUNDING_LINE_FINALIZER" &&
   envelope?.finalizerDecision === "RELEASE_GO" &&
-  [
-    envelope?.candidateSha,
-    envelope?.qualifiedBaseSha,
-    envelope?.qualifiedBaseTreeSha,
-  ].every(sha) &&
+  [envelope?.candidateSha, envelope?.qualifiedBaseSha, envelope?.qualifiedBaseTreeSha].every(sha) &&
   [
     envelope?.planDigest,
     envelope?.policyDigest,
@@ -65,8 +59,7 @@ const distinctLineages = (candidates, key) => [
     .reduce((lineages, candidate) => {
       const identity = key(candidate);
       const existing = lineages.get(identity);
-      if (!existing || Number(candidate.run.id) < Number(existing.run.id))
-        lineages.set(identity, candidate);
+      if (!existing || Number(candidate.run.id) < Number(existing.run.id)) lineages.set(identity, candidate);
       return lineages;
     }, new Map())
     .values(),
@@ -77,26 +70,15 @@ const distinctLineages = (candidates, key) => [
  * envelopes remain visible in the input; only identities tied to the current
  * PR head/base or its exact governed train rebind are eligible.
  */
-export function selectSealedActiveAuthority({
-  candidates,
-  prNumber,
-  candidateSha,
-  candidateTree,
-  currentBaseSha,
-}) {
-  const identityValid =
-    [candidateSha, candidateTree, currentBaseSha].every(sha) &&
-    Number.isSafeInteger(prNumber);
+export function selectSealedActiveAuthority({ candidates, prNumber, candidateSha, candidateTree, currentBaseSha }) {
+  const identityValid = [candidateSha, candidateTree, currentBaseSha].every(sha) && Number.isSafeInteger(prNumber);
   const historical = [];
   const direct = [];
   const train = [];
 
   for (const candidate of candidates ?? []) {
     const envelope = candidate?.envelope;
-    if (
-      !validEnvelope(envelope, candidate?.run) ||
-      candidate?.expired === true
-    ) {
+    if (!validEnvelope(envelope, candidate?.run) || candidate?.expired === true) {
       historical.push({ candidate, reason: "INVALID_OR_REVOKED" });
       continue;
     }
@@ -105,8 +87,7 @@ export function selectSealedActiveAuthority({
       continue;
     }
     if (directAuthority(candidate)) {
-      if (envelope.candidateSha !== candidateSha)
-        historical.push({ candidate, reason: "SUPERSEDED_CANDIDATE_HEAD" });
+      if (envelope.candidateSha !== candidateSha) historical.push({ candidate, reason: "SUPERSEDED_CANDIDATE_HEAD" });
       else direct.push(candidate);
       continue;
     }
@@ -130,57 +111,39 @@ export function selectSealedActiveAuthority({
     return {
       authority: "SOUNDING_LINE_ACTIVE_AUTHORITY_SELECTION",
       decision:
-        identityValid && lineages.length === 1
-          ? "ACTIVE_AUTHORITY_SELECTED"
-          : "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE",
+        identityValid && lineages.length === 1 ? "ACTIVE_AUTHORITY_SELECTED" : "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE",
       selectedRunId: lineages.length === 1 ? Number(selected.run.id) : null,
       selectedArtifact: lineages.length === 1 ? selected.artifact : null,
       selectedMode: lineages.length === 1 ? mode : null,
-      originalCandidateSha:
-        lineages.length === 1 && mode === "TRAIN_REBIND"
-          ? selected.envelope.candidateSha
-          : null,
-      eligibleRunIds: lineages
-        .map((candidate) => Number(candidate.run.id))
-        .sort((left, right) => left - right),
+      originalCandidateSha: lineages.length === 1 && mode === "TRAIN_REBIND" ? selected.envelope.candidateSha : null,
+      eligibleRunIds: lineages.map((candidate) => Number(candidate.run.id)).sort((left, right) => left - right),
       historicalCount: historical.length,
     };
   };
 
   const exactDirect = distinctLineages(
-    direct.filter(
-      (candidate) => candidate.envelope.qualifiedBaseSha === currentBaseSha,
-    ),
+    direct.filter((candidate) => candidate.envelope.qualifiedBaseSha === currentBaseSha),
     (candidate) => envelopeIdentity(candidate.envelope),
   );
   if (exactDirect.length) return select("EXACT_CANDIDATE_BASE", exactDirect);
 
   const activeTrain = distinctLineages(
     train,
-    (candidate) =>
-      `${envelopeIdentity(candidate.envelope)}:${candidate.plan.predictedIntegrationTreeSha}`,
+    (candidate) => `${envelopeIdentity(candidate.envelope)}:${candidate.plan.predictedIntegrationTreeSha}`,
   );
   if (activeTrain.length) return select("TRAIN_REBIND", activeTrain);
 
-  const carryForward = distinctLineages(direct, (candidate) =>
-    envelopeIdentity(candidate.envelope),
-  );
+  const carryForward = distinctLineages(direct, (candidate) => envelopeIdentity(candidate.envelope));
   return select("SEMANTIC_CARRY_FORWARD", carryForward);
 }
 
-export function selectSealedAuthorityMaintenance({
-  runs,
-  candidateSha,
-  candidateTree,
-  qualifiedBaseSha,
-}) {
+export function selectSealedAuthorityMaintenance({ runs, candidateSha, candidateTree, qualifiedBaseSha }) {
   const eligible = (runs ?? []).filter((run) => {
     const plan = run?.plan;
     const finalization = run?.finalization;
     return (
       run?.name === "Sounding Line authority maintenance" &&
-      run?.path ===
-        ".github/workflows/sounding-line-authority-maintenance.yml" &&
+      run?.path === ".github/workflows/sounding-line-authority-maintenance.yml" &&
       run?.event === "workflow_dispatch" &&
       run?.status === "completed" &&
       run?.conclusion === "success" &&
@@ -195,11 +158,9 @@ export function selectSealedAuthorityMaintenance({
       plan?.qualifiedBaseSha === qualifiedBaseSha &&
       plan?.trustedMainSha === qualifiedBaseSha &&
       plan?.ownerAuthorized === true &&
-      plan?.classification?.classification ===
-        "SOUNDING_LINE_AUTHORITY_MAINTENANCE" &&
+      plan?.classification?.classification === "SOUNDING_LINE_AUTHORITY_MAINTENANCE" &&
       !plan?.classification?.errors?.length &&
-      finalization?.authority ===
-        "SOUNDING_LINE_AUTHORITY_MAINTENANCE_FINALIZER" &&
+      finalization?.authority === "SOUNDING_LINE_AUTHORITY_MAINTENANCE_FINALIZER" &&
       finalization?.decision === "AUTHORITY_MAINTENANCE_GO" &&
       finalization?.planDigest === plan?.planDigest
     );
@@ -219,15 +180,12 @@ export function selectSealedAuthorityMaintenance({
           run.finalization.planDigest,
         ].join(":");
         const existing = byIdentity.get(identity);
-        if (!existing || Number(run.id) < Number(existing.id))
-          byIdentity.set(identity, run);
+        if (!existing || Number(run.id) < Number(existing.id)) byIdentity.set(identity, run);
         return byIdentity;
       }, new Map())
       .values(),
   ];
-  const identityValid = [candidateSha, candidateTree, qualifiedBaseSha].every(
-    sha,
-  );
+  const identityValid = [candidateSha, candidateTree, qualifiedBaseSha].every(sha);
   return {
     authority: "SOUNDING_LINE_AUTHORITY_MAINTENANCE_SELECTION",
     decision:
@@ -235,25 +193,17 @@ export function selectSealedAuthorityMaintenance({
         ? "AUTHORITY_MAINTENANCE_AUTHORITY_SELECTED"
         : "SEALED_AUTHORITY_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
     selectedRunId: lineages.length === 1 ? lineages[0].id : null,
-    eligibleRunIds: lineages
-      .map((run) => run.id)
-      .sort((left, right) => Number(left) - Number(right)),
+    eligibleRunIds: lineages.map((run) => run.id).sort((left, right) => Number(left) - Number(right)),
   };
 }
 
-if (
-  process.argv[1] &&
-  new URL(`file://${process.argv[1]}`).href === import.meta.url
-) {
+if (process.argv[1] && new URL(`file://${process.argv[1]}`).href === import.meta.url) {
   const active = process.argv[2] === "select-active";
-  const result = (
-    active ? selectSealedActiveAuthority : selectSealedAuthorityMaintenance
-  )(JSON.parse(await readFile(process.argv[active ? 3 : 2], "utf8")));
+  const result = (active ? selectSealedActiveAuthority : selectSealedAuthorityMaintenance)(
+    JSON.parse(await readFile(process.argv[active ? 3 : 2], "utf8")),
+  );
   console.log(JSON.stringify(result, null, 2));
-  process.exitCode = [
-    "AUTHORITY_MAINTENANCE_AUTHORITY_SELECTED",
-    "ACTIVE_AUTHORITY_SELECTED",
-  ].includes(result.decision)
+  process.exitCode = ["AUTHORITY_MAINTENANCE_AUTHORITY_SELECTED", "ACTIVE_AUTHORITY_SELECTED"].includes(result.decision)
     ? 0
     : 1;
 }
