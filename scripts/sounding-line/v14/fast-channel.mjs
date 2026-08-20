@@ -366,6 +366,7 @@ export function selectV14Mainline({
   selectionContract = null,
   projectDiscovery = [],
   projectDiscoverySummary = [],
+  governanceDocumentation = null,
 }) {
   const selectedByFloor = new Map();
   const rules = recordOnly
@@ -392,6 +393,15 @@ export function selectV14Mainline({
       ].map((root) => ({ root, suiteIds: descriptor.probableSuiteIds ?? [] })),
     );
   const generatedValidationMappings = (changed) => {
+    const governancePaths = governanceDocumentation?.pathGlobs ?? [];
+    const governanceExclusions = governanceDocumentation?.excludedPathGlobs ?? [];
+    if (
+      Array.isArray(governancePaths) &&
+      governancePaths.length &&
+      matches(changed, governancePaths) &&
+      !matches(changed, governanceExclusions)
+    )
+      return [{ path: changed, suiteIds: ["static.core", "validation.documentation"] }];
     if (changed === "playwright.config.ts")
       return projectDiscovery
         .filter((descriptor) => descriptor.state === "TRUSTED_DISCOVERED" && descriptor.mayNarrowEvidence)
