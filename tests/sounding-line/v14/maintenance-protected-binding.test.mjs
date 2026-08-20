@@ -24,6 +24,7 @@ import {
 } from "../../../scripts/sounding-line/authority-maintenance-selection.mjs";
 
 const sha = (character) => character.repeat(40);
+const digest = (character) => character.repeat(64);
 const execFileAsync = promisify(execFile);
 const root = path.resolve();
 const policy = {
@@ -280,11 +281,11 @@ const activeEnvelope = (overrides = {}) => ({
   qualifiedBaseSha: sha("a"),
   qualifiedBaseTreeSha: sha("c"),
   gate: "mainline",
-  planDigest: sha("d"),
-  policyDigest: sha("e"),
-  inventoryDigest: sha("f"),
-  authorityDigest: sha("1"),
-  evidenceDigest: sha("2"),
+  planDigest: digest("d"),
+  policyDigest: digest("e"),
+  inventoryDigest: digest("f"),
+  authorityDigest: digest("1"),
+  evidenceDigest: digest("2"),
   mandatoryReceiptCount: 2,
   finalizerAuthority: "SOUNDING_LINE_FINALIZER",
   finalizerDecision: "RELEASE_GO",
@@ -384,7 +385,7 @@ test("PR #198-shaped train suffix lifecycle collapses duplicate evidence but rej
   const competing = structuredClone(train);
   competing.run.id = 106;
   competing.envelope.authoritativeRunId = 106;
-  competing.envelope.planDigest = sha("7");
+  competing.envelope.planDigest = digest("7");
   assert.equal(selectActive([train, competing]).decision, "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE");
 });
 
@@ -400,6 +401,10 @@ test("active authority selection fails closed when no valid current authority re
   );
   assert.equal(
     selectActive([directCandidate(101, { run: { event: "push" } })]).decision,
+    "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE",
+  );
+  assert.equal(
+    selectActive([directCandidate(101, { envelope: { planDigest: sha("d") } })]).decision,
     "SEALED_EXPLICIT_AUTHORITY_NOT_UNIQUE",
   );
 });

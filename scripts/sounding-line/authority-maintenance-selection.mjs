@@ -2,6 +2,7 @@
 import { readFile } from "node:fs/promises";
 
 const sha = (value) => typeof value === "string" && /^[0-9a-f]{40}$/u.test(value);
+const digest = (value) => typeof value === "string" && /^[0-9a-f]{64}$/u.test(value);
 
 const envelopeIdentity = (envelope) =>
   [
@@ -26,16 +27,10 @@ const validEnvelope = (envelope, run) =>
   envelope?.gate === "mainline" &&
   envelope?.finalizerAuthority === "SOUNDING_LINE_FINALIZER" &&
   envelope?.finalizerDecision === "RELEASE_GO" &&
-  [
-    envelope?.candidateSha,
-    envelope?.qualifiedBaseSha,
-    envelope?.qualifiedBaseTreeSha,
-    envelope?.planDigest,
-    envelope?.policyDigest,
-    envelope?.inventoryDigest,
-    envelope?.authorityDigest,
-    envelope?.evidenceDigest,
-  ].every(sha) &&
+  [envelope?.candidateSha, envelope?.qualifiedBaseSha, envelope?.qualifiedBaseTreeSha].every(sha) &&
+  [envelope?.planDigest, envelope?.policyDigest, envelope?.inventoryDigest, envelope?.authorityDigest, envelope?.evidenceDigest].every(
+    digest,
+  ) &&
   Number.isSafeInteger(envelope?.mandatoryReceiptCount) &&
   envelope.mandatoryReceiptCount > 0 &&
   run?.event === "workflow_dispatch" &&
