@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-08-19",
+  "generated_at": "2026-08-20",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -6294,6 +6294,12 @@
       "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/Visual_Comparison_Notes.md",
       "record_type": "program-record",
       "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
       "canonical_for": null
     },
     {
