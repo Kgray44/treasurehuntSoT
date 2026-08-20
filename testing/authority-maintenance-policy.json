@@ -7,6 +7,7 @@
   "ownerAuthorization": "REPOSITORY_OWNER_WORKFLOW_DISPATCH",
   "bindingPreflightPaths": [
     "testing/authority-maintenance-policy.json",
+    "testing/ownership.json",
     "testing/verification-maintenance-policy.json",
     "scripts/sounding-line/authority-maintenance.mjs",
     "scripts/sounding-line/authority-maintenance-protected-binding.mjs",
@@ -30,6 +31,7 @@
   ],
   "eligiblePathGlobs": [
     "testing/authority-maintenance-policy.json",
+    "testing/ownership.json",
     "testing/policy-manifest.json",
     "testing/ownership.json",
     "testing/sounding-line-authority.json",
