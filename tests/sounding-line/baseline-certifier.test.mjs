@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { certifyBaseline } from "../../scripts/nightwatch/baseline-certifier.mjs";
+import { certifyBaseline, normalizeFeatureCatalogProjection } from "../../scripts/nightwatch/baseline-certifier.mjs";
 
 const sha = (character) => character.repeat(40);
 
@@ -28,4 +28,12 @@ test("Baseline Certification is exact-main/tree bound and becomes certified only
   assert.equal(first.status, "CERTIFIED");
   assert.notEqual(first.certificationId, second.certificationId);
   assert.equal(first.protectedMain.treeSha, sha("d"));
+});
+
+test("Feature Catalog comparison ignores only merge-created provenance while retaining its projection", () => {
+  const first = "Audited source commit: `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`\nfeature body\nGeneration source commit: `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`\n";
+  const second = "Audited source commit: `bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb`\nfeature body\nGeneration source commit: `bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb`\n";
+  const changedBody = second.replace("feature body", "different body");
+  assert.equal(normalizeFeatureCatalogProjection(first), normalizeFeatureCatalogProjection(second));
+  assert.notEqual(normalizeFeatureCatalogProjection(first), normalizeFeatureCatalogProjection(changedBody));
 });
