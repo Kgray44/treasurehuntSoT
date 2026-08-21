@@ -17,7 +17,7 @@ const databasePath = path.join(taskRoot, "database", "shipwright-phase2.db");
 // Sounding Line executes this runner from an isolated validation copy, which
 // intentionally is not a Git worktree. Its sealed source identity is already
 // exported by the governed worker and must be used instead of probing Git.
-const sourceSha = required("GITHUB_SHA");
+const sourceSha = required("SOUNDING_LINE_CANDIDATE_SHA");
 const env = {
   ...process.env,
   SHIPWRIGHT_PHASE2_TASK_ROOT: taskRoot,
