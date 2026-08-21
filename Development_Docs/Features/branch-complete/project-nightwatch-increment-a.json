@@ -39,9 +39,18 @@
       { "kind": "test", "value": "src/nightwatch/runtime.test.ts" },
       { "kind": "test", "value": "bridgewatch/test/nightwatch-projection.test.ts" },
       { "kind": "path", "value": "bridgewatch/public/app.js" },
-      { "kind": "completion-record", "value": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A2_Live_Control_Plane_Implementation_Record.md" },
-      { "kind": "completion-record", "value": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A1_Atomic_Acceptance_Sequencer_Implementation_Record.md" },
-      { "kind": "completion-record", "value": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md" }
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A2_Live_Control_Plane_Implementation_Record.md"
+      },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A1_Atomic_Acceptance_Sequencer_Implementation_Record.md"
+      },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md"
+      }
     ],
     "branch": "codex/nightwatch-increment-a",
     "commit": "2c895110ec7b8464bd51fc5a7c8397bf1746a88f",
