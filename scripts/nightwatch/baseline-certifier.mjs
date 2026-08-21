@@ -23,6 +23,9 @@ const stable = (value) => JSON.parse(canonicalize(value));
 const output = (value) => process.stdout.write(`${JSON.stringify(stable(value), null, 2)}\n`);
 const normalizedError = (error) => String(error instanceof Error ? error.message : error).replace(/\s+/gu, " ").trim();
 const fingerprint = (check, detail) => `BASELINE_${check.id.toUpperCase().replace(/[^A-Z0-9]+/gu, "_")}_${sha256(detail).slice(0, 16)}`;
+export const normalizeFeatureCatalogProjection = (text) => text
+  .replace(/^Audited source commit: `[0-9a-f]{40}`$/mu, "Audited source commit: `<catalog-source>`")
+  .replace(/^Generation source commit: `[0-9a-f]{40}`$/mu, "Generation source commit: `<catalog-source>`");
 
 export const baselineCheckInventory = Object.freeze([
   { id: "sounding-line-inventory", repairability: "AUTO_0", dependencies: ["inventory/disposition mapping", "governed test registration"] },
@@ -91,6 +94,34 @@ const generatorCheck = (id, repairability, dependencies, command, args, expected
   },
 });
 
+/* The catalog is rendered on a candidate against its protected base. A later
+ * protected merge necessarily has a different SHA, so validate the complete
+ * deterministic projection with its two provenance fields normalized, then
+ * require their shared recorded SHA to be a real ancestor of the checked main. */
+const featureCatalogCheck = (node) => ({
+  id: "feature-catalog",
+  repairability: "AUTO_0",
+  dependencies: ["Feature Catalog projection"],
+  async inspect(context) {
+    const catalogPath = "Development_Docs/Features/FEATURE_CATALOG.md";
+    const original = await context.readText(catalogPath);
+    const provenance = [...original.matchAll(/^(?:Audited source commit|Generation source commit): `([0-9a-f]{40})`$/gmu)].map((match) => match[1]);
+    if (provenance.length !== 2 || provenance[0] !== provenance[1]) throw new Error("FEATURE_CATALOG_PROVENANCE_INVALID");
+    try {
+      await context.execute(node, ["node_modules/tsx/dist/cli.mjs", "scripts/features/build-feature-catalog.ts"], context.root);
+      const first = await context.readText(catalogPath);
+      await context.execute(node, ["node_modules/tsx/dist/cli.mjs", "scripts/features/build-feature-catalog.ts"], context.root);
+      const second = await context.readText(catalogPath);
+      if (normalizeFeatureCatalogProjection(first) !== normalizeFeatureCatalogProjection(second)) throw new Error("GENERATOR_NONDETERMINISTIC");
+      if (normalizeFeatureCatalogProjection(original) !== normalizeFeatureCatalogProjection(first)) throw new Error("GENERATED_DRIFT:Development_Docs/Features/FEATURE_CATALOG.md");
+      await context.execute("git", ["merge-base", "--is-ancestor", provenance[0], context.mainSha], context.root);
+      return { deterministic: true, expectedPaths: [catalogPath], catalogSourceSha: provenance[0] };
+    } finally {
+      await context.writeText(catalogPath, original);
+    }
+  },
+});
+
 const defaultChecks = (node) => [
   commandCheck("sounding-line-inventory", "AUTO_0", ["inventory/disposition mapping", "governed test registration"], node, ["scripts/sounding-line/cli.mjs", "inventory", "--completeness"], ({ stdout }) => {
     const inventory = parseJson(stdout, "SOUNDING_LINE_INVENTORY");
@@ -106,7 +137,7 @@ const defaultChecks = (node) => [
   generatorCheck("p34-retirement-ledger", "AUTO_0", ["P34 canonical identities", "retirement ledger"], node, ["scripts/sounding-line/reconcile-p34-ledger.mjs"], ["testing/generated/p34-retirement-ledger.json", "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv", "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv"]),
   generatorCheck("active-test-registry", "AUTO_0", ["generated active registry"], node, ["scripts/sounding-line/test-registry.mjs"], ["testing/generated/active-test-registry.json"]),
   generatorCheck("document-index", "AUTO_0", ["Ledgerlight documentation migration records", "documentation index"], node, ["scripts/generate-document-index.mjs"], ["Development_Docs/document-index.json", "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv"]),
-  generatorCheck("feature-catalog", "AUTO_0", ["Feature Catalog projection"], node, ["node_modules/tsx/dist/cli.mjs", "scripts/features/build-feature-catalog.ts"], ["Development_Docs/Features/FEATURE_CATALOG.md"]),
+  featureCatalogCheck(node),
   generatorCheck("deepwater-policy", "AUTO_0", ["Deepwater/source-policy identity"], node, ["scripts/deepwater/cli.mjs", "audit"], ["Development_Docs/Programs/Deepwater/deepwater-phase-status.json", "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Governance_Report.md"]),
   {
     id: "migration-inventory", repairability: "OWNER", dependencies: ["migration inventory"],
@@ -148,7 +179,8 @@ export async function certifyBaseline(options = {}) {
   const mainTreeSha = options.mainTreeSha ?? (await execute("git", ["rev-parse", "HEAD^{tree}"], root)).stdout.trim();
   if (!/^[0-9a-f]{40}$/u.test(mainSha) || !/^[0-9a-f]{40}$/u.test(mainTreeSha)) throw new Error("BASELINE_PROTECTED_MAIN_IDENTITY_INVALID");
   const checks = options.checks ?? defaultChecks(options.nodeExecutable ?? process.execPath);
-  const context = { root, execute, readText, nodeVersion: options.nodeVersion ?? process.version };
+  const writeText = options.writeText ?? ((relative, value) => writeFile(resolve(root, relative), value));
+  const context = { root, execute, readText, writeText, mainSha, nodeVersion: options.nodeVersion ?? process.version };
   const performed = [];
   const failures = [];
   for (const check of checks) {
