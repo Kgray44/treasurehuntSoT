@@ -3504,14 +3504,15 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.passport",
-      "canonicalReplacementTestIds": ["sl-test-452b15efba9b109a1fce"],
+      "canonicalReplacementTestIds": ["sl-test-c62a6165bede261f0f9f"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
       "currentSourceFiles": ["tests/e2e/wayfarer-phase2.spec.ts"],
       "currentContractIds": ["wayfarer-history-projection"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.passport contract ownership; no P34 container is selected.",
-      "canonicalReplacementSemanticIds": ["sl-semantic-de1464ca731fae6a92ad"]
+      "canonicalReplacementSemanticIds": ["sl-semantic-de1464ca731fae6a92ad"],
+      "canonicalReplacementHistoricalTestIds": ["sl-test-452b15efba9b109a1fce"]
     },
     {
       "historicalCaseId": "p34-c881e5096365671ba00d",
@@ -3524,14 +3525,15 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.passport",
-      "canonicalReplacementTestIds": ["sl-test-c881e5096365671ba00d"],
+      "canonicalReplacementTestIds": ["sl-test-50ddfa263deea72e9806"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
       "currentSourceFiles": ["tests/e2e/wayfarer-phase2.spec.ts"],
       "currentContractIds": ["wayfarer-history-projection"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.passport contract ownership; no P34 container is selected.",
-      "canonicalReplacementSemanticIds": ["sl-semantic-61cd9d8622fed7d792c7"]
+      "canonicalReplacementSemanticIds": ["sl-semantic-61cd9d8622fed7d792c7"],
+      "canonicalReplacementHistoricalTestIds": ["sl-test-c881e5096365671ba00d"]
     },
     {
       "historicalCaseId": "p34-0e422eae479283570b55",
