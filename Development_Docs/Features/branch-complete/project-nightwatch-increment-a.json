@@ -3,8 +3,8 @@
     "id": "FT-B012",
     "title": "Nightwatch Governed Integration Queue, Acceptance Sequencer, and Live Controller",
     "summary": "Project Nightwatch Increments A through A.2 provide a durable local control plane that serializes canonical integration through queue-front lifecycle, exact candidate/base acceptance transactions, authority-before-binding sequencing, bounded leases, restart recovery, cumulative cost budgets, exact GitHub dispatches, and a read-only Bridgewatch projection.",
-    "status": "MAINLINE",
-    "program": "Project Nightwatch Phase 1 Increments A through A.2",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "program": "Project Nightwatch Phase 1 Increments A and A.1",
     "surfaces": [
       "npm run nightwatch:migrations:reserve",
       "npm run nightwatch:migrations:inspect",
@@ -33,8 +33,8 @@
       "The current repository MySQL migration family has duplicate numeric prefixes, so allocation correctly fails closed for that family."
     ],
     "evidence": [
-      { "kind": "commit", "value": "759be4360d3b1e5ba6e0215c493fadf15ba9d615" },
-      { "kind": "commit", "value": "0d8199649be24370616c1f56e625e6fdba8569f0" },
+      { "kind": "branch", "value": "codex/nightwatch-increment-a" },
+      { "kind": "commit", "value": "2c895110ec7b8464bd51fc5a7c8397bf1746a88f" },
       { "kind": "path", "value": "src/nightwatch/runtime.ts" },
       { "kind": "test", "value": "src/nightwatch/runtime.test.ts" },
       { "kind": "test", "value": "bridgewatch/test/nightwatch-projection.test.ts" },
@@ -43,6 +43,8 @@
       { "kind": "completion-record", "value": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A1_Atomic_Acceptance_Sequencer_Implementation_Record.md" },
       { "kind": "completion-record", "value": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md" }
     ],
+    "branch": "codex/nightwatch-increment-a",
+    "commit": "2c895110ec7b8464bd51fc5a7c8397bf1746a88f",
     "catalogVersion": 1
   }
 ]

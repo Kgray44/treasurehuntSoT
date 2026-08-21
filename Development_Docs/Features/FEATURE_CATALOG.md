@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `759be4360d3b1e5ba6e0215c493fadf15ba9d615`
+Audited source commit: `d0c707a3fe104b11413b5ec12fa76132390560c7`
 
 ## Status vocabulary
 
@@ -1587,10 +1587,12 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 ---
 
+# Completed Branch Features Not Yet Available on Main
+
 ## FT-B012 - Nightwatch Governed Integration Queue, Acceptance Sequencer, and Live Controller
 
-**Status:** MAINLINE
-**Program or subsystem:** Project Nightwatch Phase 1 Increments A through A.2
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Nightwatch Phase 1 Increments A and A.1
 
 Project Nightwatch Increments A through A.2 provide a durable local control plane that serializes canonical integration through queue-front lifecycle, exact candidate/base acceptance transactions, authority-before-binding sequencing, bounded leases, restart recovery, cumulative cost budgets, exact GitHub dispatches, and a read-only Bridgewatch projection.
 
@@ -1620,8 +1622,8 @@ Project Nightwatch Increments A through A.2 provide a durable local control plan
 
 ### Evidence
 
-- commit: `759be4360d3b1e5ba6e0215c493fadf15ba9d615`
-- commit: `0d8199649be24370616c1f56e625e6fdba8569f0`
+- branch: `codex/nightwatch-increment-a`
+- commit: `2c895110ec7b8464bd51fc5a7c8397bf1746a88f`
 - path: `src/nightwatch/runtime.ts`
 - test: `src/nightwatch/runtime.test.ts`
 - test: `bridgewatch/test/nightwatch-projection.test.ts`
@@ -1631,8 +1633,6 @@ Project Nightwatch Increments A through A.2 provide a durable local control plan
 - completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md`
 
 ---
-
-# Completed Branch Features Not Yet Available on Main
 
 # Deliberately Excluded Until Complete
 
@@ -1647,4 +1647,4 @@ Project Nightwatch Increments A through A.2 provide a durable local control plan
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `759be4360d3b1e5ba6e0215c493fadf15ba9d615`
+Generation source commit: `d0c707a3fe104b11413b5ec12fa76132390560c7`
