@@ -11,7 +11,7 @@ $ErrorActionPreference = "Stop"
 $repositoryRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\.."))
 $daemonPath = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "nightwatchd.ts"))
 $healthProbePath = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "controller-health.mjs"))
-$tsxPath = [System.IO.Path]::GetFullPath((Join-Path $repositoryRoot "node_modules\.bin\tsx.cmd"))
+$tsxCliPath = [System.IO.Path]::GetFullPath((Join-Path $repositoryRoot "node_modules\tsx\dist\cli.mjs"))
 $runtimeDirectory = Join-Path $repositoryRoot ".nightwatch"
 $statePath = Join-Path $runtimeDirectory "nightwatch-runtime.json"
 
@@ -67,7 +67,9 @@ function Stop-OwnedNightwatch {
 }
 
 function Start-OwnedNightwatch {
-  if (!(Test-Path -LiteralPath $tsxPath)) { throw "Nightwatch runtime dependency is missing. Run npm ci first." }
+  if (!(Test-Path -LiteralPath $tsxCliPath)) { throw "Nightwatch runtime dependency is missing. Run npm ci first." }
+  $node = Get-Command node -ErrorAction SilentlyContinue
+  if ($null -eq $node) { throw "Node.js is required before starting Nightwatch." }
   if (!$env:NIGHTWATCH_REPOSITORY) { throw "NIGHTWATCH_REPOSITORY must be configured before starting Nightwatch." }
   $state = Read-NightwatchState
   $owned = Get-OwnedProcess $state
@@ -75,7 +77,7 @@ function Start-OwnedNightwatch {
   if ($state) { Remove-Item -LiteralPath $statePath -Force }
   $env:NIGHTWATCH_DB_PATH = if ($DatabasePath) { [System.IO.Path]::GetFullPath($DatabasePath) } else { Join-Path $runtimeDirectory "nightwatch.sqlite" }
   $env:NIGHTWATCH_INTERVAL_MS = "$IntervalMs"
-  $started = Start-Process -FilePath $tsxPath -ArgumentList @($daemonPath) -WorkingDirectory $repositoryRoot -WindowStyle Hidden -PassThru
+  $started = Start-Process -FilePath $node.Source -ArgumentList @($tsxCliPath, $daemonPath) -WorkingDirectory $repositoryRoot -WindowStyle Hidden -PassThru
   Write-NightwatchState $started
   $deadline = (Get-Date).AddSeconds(15)
   while ((Get-Date) -lt $deadline) {
