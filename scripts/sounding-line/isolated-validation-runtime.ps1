@@ -331,6 +331,11 @@ $env:PHASE3_BASE_URL = "http://127.0.0.1:$validationServerPort"
 $env:FOREVER_PLAYWRIGHT_EXTERNAL_SERVER = "1"
 $env:FOREVER_SOUNDING_LINE_LANE = if ($isSoundingLineLane) { $SoundingLineLane } else { "" }
 $env:FOREVER_PHASE3_PERFORMANCE_BASE_URL = "http://127.0.0.1:3200"
+$wayfarerEmailTaskRoot = Assert-ValidationChildPath -Path (Join-Path $runtimeRoot "wayfarer-email") -Label "Wayfarer synthetic email task root"
+$env:HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER = "SYNTHETIC_OUTBOX"
+$env:HOMEPORT_SYNTHETIC_EMAIL_ADAPTER = "TASK_OWNED_TEST"
+$env:HOMEPORT_PHASE7_TASK_ROOT = $wayfarerEmailTaskRoot
+$env:HOMEPORT_SYNTHETIC_OUTBOX_PATH = Join-Path $wayfarerEmailTaskRoot "outbox\deliveries.jsonl"
 $productionPort = 3200
 if (-not $env:GM_USERNAME) { $env:GM_USERNAME = "kato" }
 if (-not $env:GM_PASSWORD) { $env:GM_PASSWORD = "development-captain-only" }
@@ -1335,6 +1340,10 @@ try {
     Remove-Item Env:COMMUNITY_BINARY_SCANNER_PROVIDER -ErrorAction SilentlyContinue
     Remove-Item Env:FOREVER_VALIDATION_NODE_ENV -ErrorAction SilentlyContinue
     Remove-Item Env:WAYFARER_PROVIDER_TOKEN_KEY -ErrorAction SilentlyContinue
+    Remove-Item Env:HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER -ErrorAction SilentlyContinue
+    Remove-Item Env:HOMEPORT_SYNTHETIC_EMAIL_ADAPTER -ErrorAction SilentlyContinue
+    Remove-Item Env:HOMEPORT_PHASE7_TASK_ROOT -ErrorAction SilentlyContinue
+    Remove-Item Env:HOMEPORT_SYNTHETIC_OUTBOX_PATH -ErrorAction SilentlyContinue
     Remove-Item Env:PHASE2_LEGACY_ACCESS_CODE -ErrorAction SilentlyContinue
     Remove-Item Env:PRIVATE_CONTENT_ENVIRONMENT_ID -ErrorAction SilentlyContinue
     Remove-Item Env:PRIVATE_CONTENT_ENABLED -ErrorAction SilentlyContinue
