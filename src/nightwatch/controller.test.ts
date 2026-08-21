@@ -68,6 +68,7 @@ describe("Nightwatch controller", () => {
       expect(controller.tick()).toMatchObject({ state: "POST_MERGE_VERIFIED" });
       expect(ledger.acceptanceRuns()).toHaveLength(2);
       expect(ledger.controllerHealth(now)).toMatchObject({ state: "LIVE", instanceId: "nightwatchd-test" });
+      expect(controller.bosunProjection(now)).toMatchObject({ station: "BOSUN", state: "LIVE", controllerId: "nightwatchd-test" });
     } finally {
       ledger.close();
     }

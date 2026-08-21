@@ -1,4 +1,5 @@
 import { defaultNightwatchDatabase, NightwatchLedger } from "../../src/nightwatch/runtime";
+import { BosunLedger } from "../../src/nightwatch/bosun";
 
 const args = process.argv.slice(2);
 const option = (name: string) => {
@@ -21,6 +22,7 @@ const number = (value: string | undefined, label: string) => {
 const argument = (flag: string, index: number) => option(flag) ?? values[index];
 const databasePath = option("--db") ?? databaseArgument ?? defaultNightwatchDatabase(process.cwd());
 const ledger = new NightwatchLedger(databasePath, { repositoryRoot: process.cwd() });
+const bosun = new BosunLedger(databasePath, ledger);
 
 try {
   if (command === "reserve") {
@@ -54,11 +56,14 @@ try {
     console.log(JSON.stringify(ledger.reconcileMigrationReservations(), null, 2));
   } else if (command === "projection") {
     console.log(JSON.stringify(ledger.projection(), null, 2));
+  } else if (command === "bosun-projection") {
+    console.log(JSON.stringify(bosun.projection(), null, 2));
   } else {
     throw new Error(
-      "USAGE: nightwatch <reserve|reservations|release|reconcile|projection>; reserve accepts <family> <project> <objective> <count> [database.sqlite] or direct-execution flags.",
+      "USAGE: nightwatch <reserve|reservations|release|reconcile|projection|bosun-projection>; reserve accepts <family> <project> <objective> <count> [database.sqlite] or direct-execution flags.",
     );
   }
 } finally {
+  bosun.close();
   ledger.close();
 }
