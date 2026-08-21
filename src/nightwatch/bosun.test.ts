@@ -2,7 +2,7 @@ import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { BosunAutoZeroExecutor, BosunLedger, normalizeBosunFingerprint } from "./bosun";
+import { BosunAutoZeroExecutor, BosunLedger, createRepositoryAutoZeroActions, normalizeBosunFingerprint } from "./bosun";
 import { NightwatchLedger } from "./runtime";
 
 const databasePath = () => join(mkdtempSync(join(tmpdir(), "bosun-b0-b1-")), "nightwatch.sqlite");
@@ -67,5 +67,10 @@ describe("Project Bosun B1 AUTO_0", () => {
   it("fails closed when a deterministic action escapes its allowed generated path", async () => {
     const executor = new BosunAutoZeroExecutor();
     await expect(executor.execute({ id: "document-index", allowedPaths: ["Development_Docs/INDEX.md"], run: async () => ({ changedPaths: ["Development_Docs/INDEX.md", "src/unsafe.ts"], outputIdentity: "same" }) }, ["Development_Docs/INDEX.md", "src/unsafe.ts"])).rejects.toThrow("BOSUN_AUTO_0_SCOPE_ESCAPE");
+  });
+
+  it("keeps the Feature Catalog action unavailable until its governed runner is explicitly configured", async () => {
+    const actions = createRepositoryAutoZeroActions(process.cwd());
+    await expect(actions.featureCatalog.run()).rejects.toThrow("BOSUN_AUTO_0_ACTION_UNCONFIGURED");
   });
 });

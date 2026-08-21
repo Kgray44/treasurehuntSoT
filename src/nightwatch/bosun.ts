@@ -1,4 +1,7 @@
 import { createHash, randomUUID } from "node:crypto";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+import { resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { NightwatchInvariantError, NightwatchLedger, type IntegrationBudgetStatus } from "./runtime";
 
@@ -68,6 +71,7 @@ const json = (value: unknown) => JSON.stringify(value);
 const parse = <T>(value: string) => JSON.parse(value) as T;
 const unique = (values: string[]) => [...new Set(values.filter(Boolean))].sort();
 const digest = (value: unknown) => createHash("sha256").update(json(value)).digest("hex");
+const execFileAsync = promisify(execFile);
 
 /**
  * Durable Bosun state intentionally shares Nightwatch's SQLite database, while
@@ -251,6 +255,50 @@ export interface AutoZeroAction {
   allowedPaths: string[];
   run: () => Promise<{ changedPaths: string[]; outputIdentity: unknown }>;
 }
+
+export type AutoZeroActionId = AutoZeroAction["id"];
+
+/**
+ * Canonical, pre-governed generator actions. These actions only prepare a
+ * deterministic candidate diff; they deliberately do not commit, open a PR,
+ * dispatch authority, bind, or merge.
+ */
+export const createRepositoryAutoZeroActions = (
+  repositoryRoot: string,
+  options: { nodeExecutable?: string; featureCatalogCommand?: readonly string[] } = {},
+): Record<"activeTestRegistry" | "documentIndex" | "featureCatalog", AutoZeroAction> => {
+  const root = resolve(repositoryRoot);
+  const node = options.nodeExecutable ?? process.execPath;
+  const run = async (command: readonly string[]) => {
+    await execFileAsync(command[0]!, command.slice(1), { cwd: root, windowsHide: true });
+    const { stdout } = await execFileAsync("git", ["diff", "--binary", "--"], { cwd: root, windowsHide: true });
+    const changedPaths = (
+      await execFileAsync("git", ["diff", "--name-only", "--"], { cwd: root, windowsHide: true })
+    ).stdout.split(/\r?\n/u).filter(Boolean).sort();
+    return { changedPaths, outputIdentity: { command, diffSha256: digest(stdout) } };
+  };
+  return {
+    activeTestRegistry: {
+      id: "active-test-registry",
+      allowedPaths: ["testing/generated/active-test-registry.json"],
+      run: () => run([node, "scripts/sounding-line/test-registry.mjs"]),
+    },
+    documentIndex: {
+      id: "document-index",
+      allowedPaths: ["Development_Docs/INDEX.md"],
+      run: () => run([node, "scripts/generate-document-index.mjs"]),
+    },
+    featureCatalog: {
+      id: "feature-catalog",
+      allowedPaths: ["Development_Docs/Features/FEATURE_CATALOG.md"],
+      run: () => {
+        if (!options.featureCatalogCommand?.length)
+          return Promise.reject(new NightwatchInvariantError("BOSUN_AUTO_0_ACTION_UNCONFIGURED", "feature-catalog"));
+        return run(options.featureCatalogCommand);
+      },
+    },
+  };
+};
 
 /** Runs every mechanical action twice and rejects non-determinism or scope escape before any authority handoff. */
 export class BosunAutoZeroExecutor {
