@@ -66,6 +66,18 @@ const productSourcePaths = (paths) =>
 const uniqueOwners = (owners) => [
   ...new Map((owners ?? []).filter((owner) => owner?.id).map((owner) => [owner.id, owner])).values(),
 ];
+const monotonicOwnershipRegistrationOwner = ({ trustedOwners, candidateOwners, expectedPrimaryId }) => {
+  if (!expectedPrimaryId) return null;
+  const trusted = by(uniqueOwners(trustedOwners), "id");
+  const candidate = by(uniqueOwners(candidateOwners), "id");
+  if (trusted.has(expectedPrimaryId) || candidate.size !== trusted.size + 1) return null;
+  const owner = candidate.get(expectedPrimaryId);
+  if (!owner) return null;
+  for (const [id, trustedOwner] of trusted) {
+    if (!candidate.has(id) || !same(trustedOwner, candidate.get(id))) return null;
+  }
+  return owner;
+};
 const mergedTrustedOwners = ({ registryOwners, descriptors }) => {
   const owners = new Map();
   for (const owner of registryOwners) owners.set(owner.id, { ...owner });
@@ -111,12 +123,15 @@ const trustedOwnerForFeatureCatalogRecord = (featureRecord, owners) => {
     );
   });
 };
+const featureCatalogRecord = (value) => (Array.isArray(value) && value.length === 1 ? value[0] : record(value) ? value : null);
 
 function verifySourceBoundFeatureCatalogReconciliations({
   trustedPolicy,
   changedPaths,
   trustedRegistries,
   featureCatalogReconciliations,
+  owner = null,
+  allowMonotonicOwnershipRegistration = false,
   errors,
 }) {
   const reconciliationPaths = (changedPaths ?? []).filter((file) =>
@@ -124,10 +139,23 @@ function verifySourceBoundFeatureCatalogReconciliations({
   );
   for (const file of reconciliationPaths) {
     const reconciliation = featureCatalogReconciliations?.[file];
-    const trusted = reconciliation?.trusted;
-    const candidate = reconciliation?.candidate;
-    if (!record(trusted) || !record(candidate)) {
+    const trusted = featureCatalogRecord(reconciliation?.trusted);
+    const candidate = featureCatalogRecord(reconciliation?.candidate);
+    if (!record(candidate)) {
       errors.push(`PRODUCT_VERIFICATION_REGISTRATION_FEATURE_CATALOG_RECONCILIATION_SNAPSHOT_REQUIRED:${file}`);
+      continue;
+    }
+    if (!record(trusted)) {
+      const firstRegistration =
+        allowMonotonicOwnershipRegistration &&
+        owner &&
+        candidate.status === "BRANCH_COMPLETE_NOT_MERGED" &&
+        typeof candidate.branch === "string" &&
+        sha(candidate.commit) &&
+        Array.isArray(candidate.evidence) &&
+        trustedOwnerForFeatureCatalogRecord(candidate, [owner]);
+      if (!firstRegistration)
+        errors.push(`PRODUCT_VERIFICATION_REGISTRATION_FEATURE_CATALOG_FIRST_RECORD_INVALID:${file}`);
       continue;
     }
     const { status: trustedStatus, branch, commit, limitations: trustedLimitations, ...trustedStable } = trusted;
@@ -157,6 +185,8 @@ function resolveTrustedPrimaryOwner({
   trustedProjectDescriptor,
   productPaths,
   expectedPrimaryId = null,
+  candidateRegistries = null,
+  allowMonotonicOwnershipRegistration = false,
 }) {
   const errors = [];
   const registryOwners = uniqueOwners(trustedRegistries?.ownership?.owners);
@@ -180,26 +210,39 @@ function resolveTrustedPrimaryOwner({
     return { owner: null, supportingOwners: [], errors, realProductPaths };
   }
   if (expectedPrimaryId) {
-    const owner = trustedOwners.find((candidate) => candidate.id === expectedPrimaryId);
+    const admittedOwner = allowMonotonicOwnershipRegistration
+      ? monotonicOwnershipRegistrationOwner({
+          trustedOwners: registryOwners,
+          candidateOwners: candidateRegistries?.ownership?.owners,
+          expectedPrimaryId,
+        })
+      : null;
+    const owner = trustedOwners.find((candidate) => candidate.id === expectedPrimaryId) ?? admittedOwner;
     const hasTrustedContractAuthority = (trustedRegistries?.contracts?.contracts ?? []).some(
       (contract) => contract?.authority === expectedPrimaryId && contract?.owners?.includes(expectedPrimaryId),
     );
-    if (!owner || !hasTrustedContractAuthority) {
+    if (!owner || (!admittedOwner && !hasTrustedContractAuthority)) {
       errors.push("PRODUCT_VERIFICATION_REGISTRATION_NEW_CONTRACT_AUTHORITY_UNTRUSTED");
       return { owner: null, supportingOwners: [], errors, realProductPaths };
     }
+    const mappedOwners = admittedOwner ? [...trustedOwners, admittedOwner] : trustedOwners;
     for (const file of realProductPaths) {
-      if (!trustedOwners.some((candidate) => matchesAny(file, candidate?.sourcePaths ?? [])))
+      if (!mappedOwners.some((candidate) => matchesAny(file, candidate?.sourcePaths ?? [])))
         errors.push(`PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_PATH_UNMAPPED:${file}`);
     }
     for (const descriptor of descriptorMatches) {
       if (descriptor.id !== owner.id && !(descriptor.supportingOwnerIds ?? []).includes(owner.id))
         errors.push(`PRODUCT_VERIFICATION_REGISTRATION_SUPPORTING_OWNER_REQUIRED:${descriptor.id}`);
     }
+    const supportingOwnerIds = new Set(owner.supportingOwnerIds ?? []);
     const supportingOwners = trustedOwners.filter(
       (candidate) =>
-        candidate.id !== owner.id && realProductPaths.some((file) => matchesAny(file, candidate?.sourcePaths ?? [])),
+        candidate.id !== owner.id &&
+        (supportingOwnerIds.has(candidate.id) ||
+          realProductPaths.some((file) => matchesAny(file, candidate?.sourcePaths ?? []))),
     );
+    if ([...supportingOwnerIds].some((id) => !supportingOwners.some((candidate) => candidate.id === id)))
+      errors.push("PRODUCT_VERIFICATION_REGISTRATION_SUPPORTING_OWNER_UNRESOLVED");
     return { owner, supportingOwners, errors, realProductPaths };
   }
   if (descriptorMatches.length > 1) errors.push("PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_OWNER_CONFLICT");
@@ -232,9 +275,17 @@ function verifyRegistrationSnapshots({
   owner,
   supportingOwners,
   sharedVerificationSuiteIds,
+  allowMonotonicOwnershipRegistration = false,
   errors,
 }) {
-  if (!same(trustedRegistries?.ownership, candidateRegistries?.ownership))
+  const ownershipAddition = allowMonotonicOwnershipRegistration
+    ? monotonicOwnershipRegistrationOwner({
+        trustedOwners: trustedRegistries?.ownership?.owners,
+        candidateOwners: candidateRegistries?.ownership?.owners,
+        expectedPrimaryId: owner?.id,
+      })
+    : null;
+  if (!same(trustedRegistries?.ownership, candidateRegistries?.ownership) && !ownershipAddition)
     errors.push("PRODUCT_VERIFICATION_REGISTRATION_OWNERSHIP_MUTATION");
   if (!same(trustedRegistries?.trustedProjectDiscovery, candidateRegistries?.trustedProjectDiscovery))
     errors.push("PRODUCT_VERIFICATION_REGISTRATION_TRUSTED_DISCOVERY_MUTATION");
@@ -257,6 +308,11 @@ function verifyRegistrationSnapshots({
   const trustedSuites = by(trustedRegistries?.suites?.suites, "id");
   const candidateSuites = by(candidateRegistries?.suites?.suites, "id");
   const ownedSuites = new Set();
+  const supportingSuiteIds = new Set(
+    [...trustedSuites.values()]
+      .filter((suite) => supportingOwners.some((supportingOwner) => supportingOwner.id === suite?.owner))
+      .map((suite) => suite.id),
+  );
   for (const [id, suite] of trustedSuites) {
     const next = candidateSuites.get(id);
     if (!next) errors.push(`PRODUCT_VERIFICATION_REGISTRATION_SUITE_REMOVED:${id}`);
@@ -291,7 +347,12 @@ function verifyRegistrationSnapshots({
       if (
         (!trusted.has(id) || !same(trusted.get(id), entry)) &&
         (contracts.some((contractId) => !permittedContractIds().has(contractId)) ||
-          suites.some((suiteId) => !ownedSuites.has(suiteId) && !sharedVerificationSuiteIds.includes(suiteId)))
+          suites.some(
+            (suiteId) =>
+              !ownedSuites.has(suiteId) &&
+              !supportingSuiteIds.has(suiteId) &&
+              !sharedVerificationSuiteIds.includes(suiteId),
+          ))
       )
         errors.push(`PRODUCT_VERIFICATION_REGISTRATION_IMPACT_OWNER_INVALID:${field}:${id}`);
     }
@@ -385,6 +446,8 @@ export function classifyProductVerificationRegistration({
     trustedProjectDescriptor,
     productPaths,
     expectedPrimaryId: newAuthorities.size === 1 ? [...newAuthorities][0] : null,
+    candidateRegistries,
+    allowMonotonicOwnershipRegistration: configuration?.allowMonotonicOwnershipRegistration === true,
   });
   errors.push(...ownerResolution.errors);
   if (newAuthorities.size > 1) errors.push("PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_OWNER_AMBIGUOUS");
@@ -400,6 +463,7 @@ export function classifyProductVerificationRegistration({
       owner,
       supportingOwners: ownerResolution.supportingOwners,
       sharedVerificationSuiteIds: configuration.sharedVerificationSuiteIds ?? [],
+      allowMonotonicOwnershipRegistration: configuration.allowMonotonicOwnershipRegistration === true,
       errors,
     });
     if (metadata.some((file) => matchesAny(file, configuration?.playwrightConfigPathGlobs ?? []))) {
@@ -419,6 +483,8 @@ export function classifyProductVerificationRegistration({
     changedPaths,
     trustedRegistries,
     featureCatalogReconciliations,
+    owner,
+    allowMonotonicOwnershipRegistration: configuration?.allowMonotonicOwnershipRegistration === true,
     errors,
   });
   return {
@@ -473,16 +539,22 @@ export function classifyOrdinaryCandidate({
   const projectDiscovery = discoverProjects({ candidatePaths: paths });
   if (!paths.length) errors.push("ORDINARY_CANDIDATE_EMPTY_DIFF_REJECTED");
   const hasRegistration = paths.some((file) => matchesAny(file, registrationTriggers(trustedPolicy)));
+  const registrationConfiguration = registrationInputs(trustedPolicy);
   for (const file of paths) {
-    if (matchesAny(file, trustedPolicy?.authorityChangePathGlobs ?? []))
+    const admittedOwnershipRegistration =
+      hasRegistration &&
+      registrationConfiguration?.allowMonotonicOwnershipRegistration === true &&
+      matchesAny(file, registrationConfiguration?.monotonicOwnershipPathGlobs ?? []);
+    if (matchesAny(file, trustedPolicy?.authorityChangePathGlobs ?? []) && !admittedOwnershipRegistration)
       errors.push(`ORDINARY_CANDIDATE_AUTHORITY_CHANGE_REJECTED:${file}`);
     else if (
+      !admittedOwnershipRegistration &&
       !matchesAny(file, [
         ...(trustedPolicy?.ordinaryCandidateEligiblePathGlobs ?? []),
         ...(hasRegistration
           ? [
               ...registrationPaths(trustedPolicy),
-              ...(registrationInputs(trustedPolicy)?.ancillaryPathGlobs ?? []),
+              ...(registrationConfiguration?.ancillaryPathGlobs ?? []),
               ...sourceBoundFeatureCatalogReconciliationPaths(trustedPolicy),
             ]
           : []),
@@ -570,6 +642,7 @@ async function registrationSnapshot({
   };
   const trustedRegistries = await snapshot(baseSha, false);
   const candidateRegistries = await snapshot(candidateSha, true);
+  const baseTreePaths = new Set(await gitTreePaths(baseSha));
   const featureCatalogReconciliations = Object.fromEntries(
     await Promise.all(
       (changedPaths ?? [])
@@ -578,7 +651,7 @@ async function registrationSnapshot({
         .map(async (file) => [
           file,
           {
-            trusted: JSON.parse(await gitShow(baseSha, file)),
+              trusted: baseTreePaths.has(file) ? JSON.parse(await gitShow(baseSha, file)) : null,
             candidate: JSON.parse(await readCandidate(file)),
           },
         ]),
