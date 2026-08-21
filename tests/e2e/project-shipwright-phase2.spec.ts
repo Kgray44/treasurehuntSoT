@@ -32,7 +32,7 @@ test("Shipwright Phase 2 keeps contract-aware authoring usable across modes and 
   await page.getByLabel("Short description", { exact: true }).fill("A disposable Creator Studio authoring proof.");
   await page.getByRole("button", { name: "Create and open Chronicle" }).click();
   await expect(page).toHaveURL(/\/studio\/tales\//u);
-  const addNarrative = page.getByRole("button", { name: "Add Narrative to first chapter" });
+  const addNarrative = page.getByRole("button", { name: "Add Passage" });
   await expect(addNarrative).toBeVisible({ timeout: 30_000 });
   await addNarrative.click();
   await expect(page.locator(".timeline-block")).toHaveCount(1);
