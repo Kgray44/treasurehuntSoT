@@ -383,7 +383,9 @@ async function discoverPlaywright() {
 }
 
 async function walk(directory) {
-  const entries = await fs.readdir(directory, { withFileTypes: true });
+  const entries = (await fs.readdir(directory, { withFileTypes: true })).sort((left, right) =>
+    left.name === right.name ? 0 : left.name < right.name ? -1 : 1,
+  );
   const files = [];
   for (const entry of entries) {
     if (ignored.has(entry.name)) continue;
