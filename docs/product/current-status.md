@@ -49,12 +49,12 @@ publishing without adding a Prisma schema or second authoring/validation
 authority. This is protected-main source integration, not deployment or
 live-provider execution.
 
-**Project Drydock Phase 3 active branch:** Creator-only Sea Trials provide
+**Project Drydock Phase 3 accepted mainline:** Creator-only Sea Trials provide
 revisioned source-bound deterministic Scenarios, synthetic faults, virtual
 time, Suites, safe trace/coverage receipts, and an adapter-level One Voyage
 transition differential. They cannot change a live Voyage, provider, or
-published Chronicle. The branch has focused local evidence only; it is not
-candidate-qualified, on main, deployed, or owner accepted.
+published Chronicle. Protected PR #52 integrated the accepted implementation;
+deployment and owner acceptance remain separate.
 
 Project Tideglass Phase 2 is accepted on main and adds local/server Chronicle edition intelligence:
 stable change codes, explainable significance, compatibility deltas,

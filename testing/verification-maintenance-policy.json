@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.2",
   "authority": "SOUNDING_LINE_VERIFICATION_MAINTENANCE",
   "trustedMainOnly": true,
   "protectedContext": "Sounding Line / Mainline Decision",
@@ -61,7 +61,9 @@
     "bridgewatch/**",
     "deploy/nginx.conf",
     "scripts/sounding-line/status-projection.mjs",
+    "scripts/shipwright/run-phase2-journeys.mjs",
     "Development_Docs/Project_Bridgewatch_*.md",
+    "Development_Docs/Project_Bridgewatch_v2_Source_Health_Matrix.json",
     "Development_Docs/INDEX.md",
     "Development_Docs/README.md",
     "Development_Docs/document-index.json",
@@ -73,6 +75,9 @@
     "scripts/agent-context/**",
     "scripts/generate-document-index.mjs",
     "testing/generated/active-test-registry.json",
+    "testing/generated/p34-retirement-ledger.json",
+    "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv",
+    "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv",
     "tests/agent-context/**",
     "Development_Docs/Programs/Project_Trim/**",
     "Development_Docs/Governing/Project_Trim_*.pdf",
@@ -87,6 +92,15 @@
     "Development_Docs/Programs/Deepwater/**",
     "scripts/deepwater/**"
   ],
+  "ordinaryCandidateGovernanceDocumentation": {
+    "classification": "GOVERNANCE_DOCUMENTATION_ONLY",
+    "pathGlobs": ["Development_Docs/Governing/Project_*.md"],
+    "excludedPathGlobs": [
+      "Development_Docs/Governing/Project_Sounding_Line_*.md",
+      "Development_Docs/Governing/*Sounding_Line*.md",
+      "Development_Docs/Governing/*Authority*.md"
+    ]
+  },
   "ordinaryCandidateProductVerificationRegistration": {
     "classification": "PRODUCT_WITH_VERIFICATION_REGISTRATION",
     "pathGlobs": [
@@ -118,6 +132,7 @@
       "scripts/features/**",
       "testing/generated/p34-retirement-ledger.json"
     ],
+    "sourceBoundFeatureCatalogReconciliationPathGlobs": ["Development_Docs/Features/branch-complete/*.json"],
     "playwrightConfigPathGlobs": ["playwright*.config.*"],
     "testRegistrySourcePathGlobs": ["scripts/sounding-line/test-registry.mjs"],
     "sharedVerificationSuiteIds": ["static.core", "validation.documentation", "unit.feature-catalog"],

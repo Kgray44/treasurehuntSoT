@@ -306,6 +306,11 @@ test("workflow topology retains explicit heavyweight authority and the exact pro
   assert.match(bridge, /record-only-closure\.mjs/u);
   assert.match(bridge, /Finalize record-only decision/u);
   assert.match(bridge, /sounding-line-mainline-train\.yml/u);
+  assert.match(
+    bridge,
+    /name: Locate sealed explicit authority[\s\S]*?CANDIDATE_SHA: \$\{\{ github\.event\.pull_request\.head\.sha \}\}\s*\n\s*BASE_SHA: \$\{\{ github\.event\.pull_request\.base\.sha \}\}/u,
+    "the trusted active-authority selector must receive the exact protected PR base",
+  );
   assert.match(bridge, /MAINTENANCE_SCOPE_REJECTED/u);
   assert.match(bridge, /ConvertTo-Json -InputObject \$paths -Compress/u);
   assert.doesNotMatch(bridge, /\$paths \| ConvertTo-Json -Compress/u);

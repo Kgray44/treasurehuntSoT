@@ -8,18 +8,14 @@ const root = path.resolve();
 const readAuthorityPolicy = async () =>
   JSON.parse(await readFile(path.join(root, "testing", "authority-maintenance-policy.json"), "utf8"));
 
-test("adapter receipt maintenance is admitted only through the governed policy bootstrap", async () => {
+test("the deterministic documentation index is authority-maintenance eligible without admitting migration matrices", async () => {
   const policy = await readAuthorityPolicy();
   const allowed = [
-    "testing/authority-maintenance-policy.json",
-    "scripts/sounding-line/verification-maintenance.mjs",
-    "tests/sounding-line/v14/authority-maintenance-adapter-policy.test.mjs",
+    "Development_Docs/document-index.json",
+    "tests/sounding-line/v14/authority-maintenance-document-index-policy.test.mjs",
   ];
 
-  assert.equal(policy.version, "1.0.8");
-  assert.equal(policy.eligiblePathGlobs.includes("scripts/sounding-line/adapters.mjs"), true);
-  assert.equal(policy.bindingPreflightPaths.includes("scripts/sounding-line/adapters.mjs"), true);
-  assert.equal(policy.bindingPreflightPaths.includes("scripts/sounding-line/verification-maintenance.mjs"), true);
+  assert.equal(policy.eligiblePathGlobs.includes("Development_Docs/document-index.json"), true);
   assert.deepEqual(
     classifyAuthorityMaintenance({ trustedPolicy: policy, changedPaths: allowed, ownerAuthorized: true }),
     {
@@ -31,11 +27,11 @@ test("adapter receipt maintenance is admitted only through the governed policy b
 
   const rejected = classifyAuthorityMaintenance({
     trustedPolicy: policy,
-    changedPaths: ["scripts/sounding-line/unapproved-adapter.mjs"],
+    changedPaths: ["Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv"],
     ownerAuthorized: true,
   });
   assert.equal(rejected.classification, "AUTHORITY_MAINTENANCE_REJECTED");
   assert.deepEqual(rejected.errors, [
-    "AUTHORITY_MAINTENANCE_SCOPE_REJECTED:scripts/sounding-line/unapproved-adapter.mjs",
+    "AUTHORITY_MAINTENANCE_SCOPE_REJECTED:Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
   ]);
 });

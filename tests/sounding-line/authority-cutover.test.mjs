@@ -569,8 +569,14 @@ test("authoritative acceptance is explicit frozen-candidate finalization while f
   assert.match(binding, /trusted-active-authority-selection\.mjs/u);
   assert.match(binding, /active-authority-candidates\.json/u);
   assert.match(binding, /qualified-base to[\s\S]*?current-base interval itself/u);
-  assert.match(binding, /MAINTENANCE_\(AUTHORITY_CHANGE\|SCOPE\)_REJECTED/u);
-  assert.match(binding, /separate trusted authority[\s\S]*?sole admission decision/u);
+  assert.match(binding, /MAINTENANCE_AUTHORITY_CHANGE_REJECTED/u);
+  assert.match(binding, /MAINTENANCE_SCOPE_REJECTED/u);
+  assert.match(binding, /AUTHORITY_MAINTENANCE_SCOPE_REJECTED/u);
+  assert.match(
+    binding,
+    /\$authorityBindingPaths = @\(\$trustedPolicy\.bindingPreflightPaths\) \+ \$legacyAuthorityBindingPaths/u,
+  );
+  assert.match(binding, /needs\.authority-maintenance-preflight\.outputs\.authorityMaintenance == 'true'/u);
 });
 
 test("BrowserOnly Harborlight lanes do not repeat independent broad gates", async () => {
@@ -614,6 +620,40 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
   assert.match(common, /@prisma\\engines\\package\.json/u);
   assert.match(common, /Sounding Line dependency seed copy is incomplete: \$marker/u);
   assert.match(common, /A physical copy retains Next's runtime-local \.next/u);
+});
+
+test("mixed Tideglass browser selections retain separately owned fixture phases", async () => {
+  const runtime = await readFile(
+    path.join(root, "scripts", "sounding-line", "isolated-validation-runtime.ps1"),
+    "utf8",
+  );
+  assert.match(runtime, /Get-BrowserSelectionDiscoveryCount/u);
+  assert.match(runtime, /GOVERNED_BROWSER_SELECTION_PARTITION_MISMATCH/u);
+  assert.match(runtime, /GOVERNED_TIDEGLASS_ORDINARY_FIXTURE_SNAPSHOT_FAILED/u);
+  assert.match(runtime, /Restoring ordinary browser fixture after Tideglass partition/u);
+  assert.match(runtime, /GOVERNED_TIDEGLASS_ORDINARY_FIXTURE_RESTORE_FAILED/u);
+  assert.match(runtime, /\$tideglassSetupFile/u);
+  assert.doesNotMatch(runtime, /GOVERNED_TIDEGLASS_BROWSER_SELECTION_MIXED/u);
+});
+
+test("browser selection partitions normalize file cardinality before strict-mode guards", async () => {
+  const runtime = await readFile(
+    path.join(root, "scripts", "sounding-line", "isolated-validation-runtime.ps1"),
+    "utf8",
+  );
+  assert.match(runtime, /if \(@\(\$partition\.Files\)\.Count -eq 0\) \{ continue \}/u);
+});
+
+test("mixed Shipwright selections retain the synthetic Creator journey boundary", async () => {
+  const runtime = await readFile(
+    path.join(root, "scripts", "sounding-line", "isolated-validation-runtime.ps1"),
+    "utf8",
+  );
+  assert.match(runtime, /\$shipwrightBrowserFile/u);
+  assert.match(runtime, /GOVERNED_SHIPWRIGHT_TASK_ROOT_ESCAPED/u);
+  assert.match(runtime, /GOVERNED_SHIPWRIGHT_BROWSER_SELECTION_INVALID/u);
+  assert.match(runtime, /scripts\/shipwright\/run-phase2-journeys\.mjs/u);
+  assert.match(runtime, /GOVERNED_SHIPWRIGHT_TASK_ROOT_CLEANUP_REFUSED/u);
 });
 
 test("concurrent Harborlight lanes may share only their validation-run parent", async () => {

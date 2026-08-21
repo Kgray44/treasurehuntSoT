@@ -25,6 +25,7 @@ jobs:
     timeout-minutes: 10
     outputs:
       recordOnly: ${{ steps.classification.outputs.recordOnly }}
+      ordinaryCandidate: ${{ steps.classification.outputs.ordinaryCandidate }}
       proofAvailable: ${{ steps.classification.outputs.proofAvailable }}
       priorAuthorityRunId: ${{ steps.classification.outputs.priorAuthorityRunId }}
     steps:
@@ -42,12 +43,35 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           MERGE_SHA: ${{ github.sha }}
         run: |
+          $ErrorActionPreference = 'Stop'
           node scripts/sounding-line/record-only-closure.mjs preflight --repository "$env:GITHUB_REPOSITORY" --candidate-sha "$env:CANDIDATE_SHA" --base-sha "$env:BASE_SHA" --merge-sha "$env:MERGE_SHA" --out record-only-preflight.json
           if ($LASTEXITCODE -ne 0) { throw "RECORD_ONLY_PREFLIGHT_FAILED" }
           $preflight = Get-Content -Raw record-only-preflight.json | ConvertFrom-Json
-          $recordOnly = if ($preflight.eligible) { 'true' } else { 'false' }
+          # Record-only classification is structurally permissive for closure
+          # records. An ordinary candidate admitted by the base revision's
+          # trusted policy remains on the ordinary protected-main route.
+          git show "$env:BASE_SHA`:testing/verification-maintenance-policy.json" > trusted-maintenance-policy.json
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_RECORD_ONLY_TRUSTED_POLICY_UNAVAILABLE' }
+          git show "$env:BASE_SHA`:scripts/sounding-line/verification-maintenance.mjs" > trusted-verification-maintenance.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_RECORD_ONLY_TRUSTED_CLASSIFIER_UNAVAILABLE' }
+          git show "$env:BASE_SHA`:scripts/sounding-line/project-discovery.mjs" > project-discovery.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_RECORD_ONLY_TRUSTED_PROJECT_DISCOVERY_UNAVAILABLE' }
+          $paths = @(git diff --name-only --no-renames --no-ext-diff "$env:BASE_SHA" "$env:CANDIDATE_SHA" | Sort-Object)
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_RECORD_ONLY_CHANGED_PATHS_UNAVAILABLE' }
+          ConvertTo-Json -InputObject $paths -Compress | Set-Content -NoNewline ordinary-candidate-changed-paths.json
+          node trusted-verification-maintenance.mjs ordinary --policy trusted-maintenance-policy.json --paths ordinary-candidate-changed-paths.json --trusted-base-sha $env:BASE_SHA --candidate-sha $env:CANDIDATE_SHA --out ordinary-candidate-classification.json
+          $ordinaryExitCode = $LASTEXITCODE
+          # A trusted ordinary rejection is the expected result for record-only
+          # and authority-maintenance candidates; retain it as data below,
+          # rather than leaking the classifier's nonzero status as this job's
+          # process result.
+          if ($ordinaryExitCode -ne 0) { $global:LASTEXITCODE = 0 }
+          $ordinary = Get-Content -Raw ordinary-candidate-classification.json | ConvertFrom-Json
+          $ordinaryCandidate = $ordinaryExitCode -eq 0 -and $ordinary.classification -eq 'ORDINARY_CANDIDATE' -and @($ordinary.errors).Count -eq 0
+          $recordOnly = if ($preflight.eligible -and -not $ordinaryCandidate) { 'true' } else { 'false' }
           $proofAvailable = if ($preflight.priorAuthority -and @($preflight.errors).Count -eq 0) { 'true' } else { 'false' }
           "recordOnly=$recordOnly" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "ordinaryCandidate=$ordinaryCandidate" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           "proofAvailable=$proofAvailable" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           if ($proofAvailable -eq 'true') {
             "priorAuthorityRunId=$($preflight.priorAuthority.authorityRunId)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
@@ -231,6 +255,7 @@ jobs:
           REPOSITORY: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           $legacy = Get-Content -Raw testing/sounding-line-authority.json | ConvertFrom-Json | Select-Object -ExpandProperty protectedMergeBinding | Select-Object -ExpandProperty legacyQualifiedCandidates | Where-Object { $_.prNumber -eq [int]$env:PR_NUMBER -and $_.candidateSha -eq $env:CANDIDATE_SHA }
           if (@($legacy).Count -gt 1) { throw "AMBIGUOUS_LEGACY_QUALIFIED_AUTHORITY" }
@@ -383,7 +408,11 @@ jobs:
           git show "$env:BASE_SHA`:scripts/sounding-line/maintenance-authority-selection.mjs" > trusted-maintenance-authority-selection.mjs
           $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' }
           $candidateTree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
-          $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&head_sha=$env:BASE_SHA&per_page=100").workflow_runs
+          # Verification-maintenance dispatches run from trusted main, so their
+          # workflow-run head is the qualified base rather than the candidate.
+          # Inspect the governed dispatch set and let the trusted selector bind
+          # the exact candidate/base/tree identity from sealed artifacts.
+          $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&per_page=100").workflow_runs
           $sealed = @()
           foreach ($run in $runs) {
             if ($run.name -ne 'Sounding Line verification maintenance' -or $run.path -ne '.github/workflows/sounding-line-verification-maintenance.yml' -or $run.status -ne 'completed' -or $run.conclusion -ne 'success') { continue }

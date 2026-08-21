@@ -5,7 +5,12 @@ import { promisify } from "node:util";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import { buildV14HostedPlan, resolvePlanAuthority } from "../../../scripts/sounding-line/planner.mjs";
+import {
+  buildV14HostedPlan,
+  refineV14BrowserEvidence,
+  resolvePlanAuthority,
+  selectCasesForNode,
+} from "../../../scripts/sounding-line/planner.mjs";
 import {
   batchPhysicalWorkers,
   validatePhysicalWorkerMatrix,
@@ -14,6 +19,100 @@ import {
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 const execute = promisify(execFile);
 const json = async (file) => JSON.parse(await readFile(path.join(root, "testing", file), "utf8"));
+
+test("direct candidate browser-test edits seal only their registered source cases", () => {
+  const node = { id: "browser.accessibility", adapter: "playwright-family" };
+  const lanternwake = {
+    id: "lanternwake-case",
+    file: "tests/e2e/lanternwake-phase2.spec.ts",
+    sourcePaths: ["tests/e2e/lanternwake-phase2.spec.ts"],
+  };
+  const tideglass = {
+    id: "tideglass-case",
+    file: "tests/e2e/tideglass-phase3.spec.ts",
+    sourcePaths: ["tests/e2e/tideglass-phase3.spec.ts"],
+  };
+  const other = {
+    id: "other-case",
+    file: "tests/e2e/project-shipwright-phase2.spec.ts",
+    sourcePaths: ["tests/e2e/project-shipwright-phase2.spec.ts"],
+  };
+  const cases = [lanternwake, tideglass, other];
+  assert.deepEqual(
+    selectCasesForNode(node, cases, {
+      authorityMode: "V14_CANDIDATE",
+      changedPaths: ["tests/e2e/tideglass-phase3.spec.ts"],
+    }),
+    [tideglass],
+  );
+  assert.deepEqual(
+    selectCasesForNode(node, [lanternwake, other], {
+      authorityMode: "V14_CANDIDATE",
+      changedPaths: ["tests/e2e/tideglass-phase3.spec.ts"],
+    }),
+    [],
+    "an exact Tideglass browser edit must not expand an unrelated selected browser family",
+  );
+  assert.deepEqual(
+    selectCasesForNode(node, [lanternwake, other], {
+      authorityMode: "V14_CANDIDATE",
+      changedPaths: ["tests/e2e/tideglass-phase3.spec.ts"],
+      preserveFullSuite: true,
+    }),
+    [lanternwake, other],
+    "required safety sentinel evidence remains complete",
+  );
+  assert.deepEqual(
+    selectCasesForNode(node, cases, {
+      authorityMode: "V14_CANDIDATE",
+      changedPaths: ["tests/e2e/tideglass-phase3.spec.ts", "scripts/tideglass/seed-phase3-fixture.mjs"],
+    }),
+    cases,
+  );
+  assert.deepEqual(
+    selectCasesForNode(node, cases, {
+      authorityMode: "V14_CURRENT",
+      changedPaths: ["tests/e2e/tideglass-phase3.spec.ts"],
+    }),
+    cases,
+  );
+});
+
+test("exact direct browser omission is represented as preserved evidence rather than a missing fresh worker", () => {
+  const node = (id) => ({ id, adapter: "playwright-family" });
+  const ledgerEntry = (suiteId, selectionReason) => ({
+    suiteId,
+    selected: true,
+    selectionReason,
+    closureConfidence: "EXACT",
+    evidenceDisposition: "FRESH",
+    preservationBasis: "CURRENT_EXECUTION",
+  });
+  const result = refineV14BrowserEvidence({
+    nodes: [node("browser.accessibility"), node("browser.responsive"), node("browser.access-sentinel")],
+    ledger: [
+      ledgerEntry("browser.accessibility", "DIRECT_IMPACT"),
+      ledgerEntry("browser.responsive", "DIRECT_IMPACT"),
+      ledgerEntry("browser.access-sentinel", "REQUIRED_SENTINEL"),
+    ],
+    registryCases: [
+      { id: "tideglass", suiteId: "browser.accessibility", file: "tests/e2e/tideglass-phase3.spec.ts" },
+      { id: "shipwright", suiteId: "browser.responsive", file: "tests/e2e/project-shipwright-phase2.spec.ts" },
+      { id: "sentinel", suiteId: "browser.access-sentinel", file: "tests/e2e/access-gates.spec.ts" },
+    ],
+    changedPaths: ["tests/e2e/tideglass-phase3.spec.ts"],
+    authorityMode: "V14_CANDIDATE",
+  });
+  assert.deepEqual(
+    result.selectedCasesByNode.filter((entry) => entry.cases.length).map((entry) => entry.node.id),
+    ["browser.accessibility", "browser.access-sentinel"],
+  );
+  const responsive = result.selectionLedger.find((entry) => entry.suiteId === "browser.responsive");
+  assert.equal(responsive.selected, false);
+  assert.equal(responsive.selectionReason, "NO_REGISTERED_DIRECT_CASE");
+  assert.equal(responsive.evidenceDisposition, "PRESERVED");
+  assert.equal(responsive.preservationBasis, "EXACT_SEMANTIC_INTERVAL");
+});
 
 test("v1.4 hosted plan carries the semantic plan and worker-compatible dependency waves", async () => {
   const sourceSha = (await execute("git", ["-C", root, "rev-parse", "HEAD"])).stdout.trim();

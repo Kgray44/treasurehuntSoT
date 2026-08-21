@@ -14,6 +14,7 @@ import {
   RECORD_ONLY_EVIDENCE_IDS,
   RECORD_ONLY_PROTECTED_CONTEXT,
   RECORD_ONLY_SUITE_ID,
+  selectRecordOnlyBindingRoute,
   validateReferencedAuthorityRun,
   validatePriorImplementationAuthority,
 } from "../../scripts/sounding-line/record-only-closure.mjs";
@@ -32,33 +33,7 @@ const implementationCandidate = "d".repeat(40);
 const implementationBase = "f".repeat(40);
 const implementationMerge = "e".repeat(40);
 
-test("record-only prior authority accepts one normal protected decision and a protected-main dispatch", () => {
-  const pull = {
-    merged: true,
-    head: { sha: implementationCandidate },
-    base: { sha: implementationBase },
-    merge_commit_sha: implementationMerge,
-  };
-  const run = {
-    name: "Sounding Line authoritative",
-    event: "workflow_dispatch",
-    status: "completed",
-    conclusion: "success",
-    head_sha: implementationBase,
-  };
-  assert.deepEqual(validateReferencedAuthorityRun({ pull, run }), []);
-  assert.equal(
-    hasSuccessfulProtectedContext({
-      check_runs: [
-        { name: RECORD_ONLY_PROTECTED_CONTEXT, status: "completed", conclusion: "skipped" },
-        { name: RECORD_ONLY_PROTECTED_CONTEXT, status: "completed", conclusion: "success" },
-      ],
-    }),
-    true,
-  );
-});
-
-test("record-only prior authority rejects a run not dispatched from the implementation base", () => {
+test("record-only prior authority accepts a normal protected decision dispatched from the implementation candidate", () => {
   const pull = {
     merged: true,
     head: { sha: implementationCandidate },
@@ -72,6 +47,32 @@ test("record-only prior authority rejects a run not dispatched from the implemen
     conclusion: "success",
     head_sha: implementationCandidate,
   };
+  assert.deepEqual(validateReferencedAuthorityRun({ pull, run }), []);
+  assert.equal(
+    hasSuccessfulProtectedContext({
+      check_runs: [
+        { name: RECORD_ONLY_PROTECTED_CONTEXT, status: "completed", conclusion: "skipped" },
+        { name: RECORD_ONLY_PROTECTED_CONTEXT, status: "completed", conclusion: "success" },
+      ],
+    }),
+    true,
+  );
+});
+
+test("record-only prior authority rejects a run not dispatched from the implementation candidate", () => {
+  const pull = {
+    merged: true,
+    head: { sha: implementationCandidate },
+    base: { sha: implementationBase },
+    merge_commit_sha: implementationMerge,
+  };
+  const run = {
+    name: "Sounding Line authoritative",
+    event: "workflow_dispatch",
+    status: "completed",
+    conclusion: "success",
+    head_sha: implementationBase,
+  };
   assert.match(validateReferencedAuthorityRun({ pull, run }).join("\n"), /PRIOR_IMPLEMENTATION_AUTHORITY_RUN_INVALID/u);
   assert.equal(
     hasSuccessfulProtectedContext({
@@ -79,6 +80,12 @@ test("record-only prior authority rejects a run not dispatched from the implemen
     }),
     false,
   );
+});
+
+test("ordinary candidate admission takes precedence over structural record-only eligibility", () => {
+  assert.equal(selectRecordOnlyBindingRoute({ recordOnlyEligible: true, ordinaryCandidate: true }), false);
+  assert.equal(selectRecordOnlyBindingRoute({ recordOnlyEligible: true, ordinaryCandidate: false }), true);
+  assert.equal(selectRecordOnlyBindingRoute({ recordOnlyEligible: false, ordinaryCandidate: true }), false);
 });
 
 test("record-only references accept the canonical documented authoritative run form", () => {

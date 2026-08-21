@@ -91,6 +91,14 @@ export function classifyRecordOnlyDiff(changes) {
   };
 }
 
+// Record-only is a closure route, not a higher-precedence alternative to an
+// independently trusted ordinary-candidate admission. The binding workflow
+// supplies `ordinaryCandidate` only after classifying the candidate with the
+// base revision's policy and classifier.
+export function selectRecordOnlyBindingRoute({ recordOnlyEligible, ordinaryCandidate }) {
+  return Boolean(recordOnlyEligible) && ordinaryCandidate !== true;
+}
+
 function parseNameStatus(output) {
   if (!output) return [];
   return output.split(/\r?\n/u).map((line) => {
@@ -160,7 +168,7 @@ export function validateReferencedAuthorityRun({ pull, run }) {
     run?.event !== "workflow_dispatch" ||
     run?.status !== "completed" ||
     run?.conclusion !== "success" ||
-    run?.head_sha !== implementationBaseSha
+    run?.head_sha !== implementationCandidateSha
   )
     errors.push("PRIOR_IMPLEMENTATION_AUTHORITY_RUN_INVALID");
   return stable(errors);
