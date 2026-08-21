@@ -11,7 +11,7 @@ $ErrorActionPreference = "Stop"
 $repositoryRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\.."))
 $daemonPath = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "nightwatchd.ts"))
 $healthProbePath = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "controller-health.mjs"))
-$tsxPath = [System.IO.Path]::GetFullPath((Join-Path $repositoryRoot "node_modules\.bin\tsx.cmd"))
+$tsxCliPath = [System.IO.Path]::GetFullPath((Join-Path $repositoryRoot "node_modules\tsx\dist\cli.mjs"))
 $runtimeDirectory = Join-Path $repositoryRoot ".nightwatch"
 $statePath = Join-Path $runtimeDirectory "nightwatch-runtime.json"
 
@@ -58,7 +58,9 @@ function Stop-OwnedNightwatch {
     if ($state) { Remove-Item -LiteralPath $statePath -Force }
     return [pscustomobject]@{ State = "NOT_RUNNING"; Pid = $null }
   }
-  Stop-Process -Id ([int]$owned.ProcessId) -ErrorAction Stop
+  $taskkill = Join-Path $env:SystemRoot "System32\taskkill.exe"
+  & $taskkill /PID ([int]$owned.ProcessId) /T /F | Out-Null
+  if ($LASTEXITCODE -ne 0) { throw "Nightwatch controller process tree could not be stopped (exit $LASTEXITCODE)." }
   $deadline = (Get-Date).AddSeconds(10)
   while ((Get-Date) -lt $deadline -and (Get-Process -Id ([int]$owned.ProcessId) -ErrorAction SilentlyContinue)) { Start-Sleep -Milliseconds 200 }
   if (Get-Process -Id ([int]$owned.ProcessId) -ErrorAction SilentlyContinue) { throw "Nightwatch controller did not stop within 10 seconds." }
@@ -67,7 +69,9 @@ function Stop-OwnedNightwatch {
 }
 
 function Start-OwnedNightwatch {
-  if (!(Test-Path -LiteralPath $tsxPath)) { throw "Nightwatch runtime dependency is missing. Run npm ci first." }
+  if (!(Test-Path -LiteralPath $tsxCliPath)) { throw "Nightwatch runtime dependency is missing. Run npm ci first." }
+  $node = Get-Command node -ErrorAction SilentlyContinue
+  if ($null -eq $node) { throw "Node.js is required before starting Nightwatch." }
   if (!$env:NIGHTWATCH_REPOSITORY) { throw "NIGHTWATCH_REPOSITORY must be configured before starting Nightwatch." }
   $state = Read-NightwatchState
   $owned = Get-OwnedProcess $state
@@ -75,7 +79,7 @@ function Start-OwnedNightwatch {
   if ($state) { Remove-Item -LiteralPath $statePath -Force }
   $env:NIGHTWATCH_DB_PATH = if ($DatabasePath) { [System.IO.Path]::GetFullPath($DatabasePath) } else { Join-Path $runtimeDirectory "nightwatch.sqlite" }
   $env:NIGHTWATCH_INTERVAL_MS = "$IntervalMs"
-  $started = Start-Process -FilePath $tsxPath -ArgumentList @($daemonPath) -WorkingDirectory $repositoryRoot -WindowStyle Hidden -PassThru
+  $started = Start-Process -FilePath $node.Source -ArgumentList @($tsxCliPath, $daemonPath) -WorkingDirectory $repositoryRoot -WindowStyle Hidden -PassThru
   Write-NightwatchState $started
   $deadline = (Get-Date).AddSeconds(15)
   while ((Get-Date) -lt $deadline) {
@@ -84,7 +88,10 @@ function Start-OwnedNightwatch {
     if ($health.State -eq "LIVE") { return [pscustomobject]@{ State = "HEALTHY"; Pid = $started.Id; DatabasePath = $env:NIGHTWATCH_DB_PATH } }
     Start-Sleep -Milliseconds 300
   }
-  if (!$started.HasExited) { Stop-Process -Id $started.Id -ErrorAction SilentlyContinue }
+  if (!$started.HasExited) {
+    $taskkill = Join-Path $env:SystemRoot "System32\taskkill.exe"
+    & $taskkill /PID $started.Id /T /F | Out-Null
+  }
   Remove-Item -LiteralPath $statePath -Force -ErrorAction SilentlyContinue
   throw "Nightwatch did not become healthy. The owned process was stopped; inspect local configuration before retrying."
 }

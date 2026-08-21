@@ -28,7 +28,7 @@ export class GitHubCliControlPlane implements NightwatchControlPlane {
   }
 
   private api<T>(endpoint: string, fields: Record<string, string> = {}): T {
-    const args = ["api", endpoint, "--repo", this.repository];
+    const args = ["api", endpoint];
     if (Object.keys(fields).length)
       args.push("-X", "POST", ...Object.entries(fields).flatMap(([key, value]) => ["-f", `${key}=${value}`]));
     const output = this.gh(args);
