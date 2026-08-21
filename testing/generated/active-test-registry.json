@@ -167105,10 +167105,10 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-c5a44d4a320695810a26",
-      "semanticId": "sl-semantic-67230dbab55a3d91feee",
-      "title": "Wayfarer Personal Harbor loads preferences and persists a profile, privacy rules, and media",
-      "line": 21,
+      "id": "sl-test-452b15efba9b109a1fce",
+      "semanticId": "sl-semantic-de1464ca731fae6a92ad",
+      "title": "Wayfarer Passport persists a private profile, preferences, media, and a simulator identity",
+      "line": 11,
       "file": "tests/e2e/wayfarer-phase2.spec.ts",
       "project": "wayfarer-phase2",
       "suiteId": "browser.passport",
@@ -167147,10 +167147,10 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-fb7a9bbf2308cc16126a",
+      "id": "sl-test-c881e5096365671ba00d",
       "semanticId": "sl-semantic-61cd9d8622fed7d792c7",
       "title": "Wayfarer Passport remains operable at required responsive viewports",
-      "line": 139,
+      "line": 88,
       "file": "tests/e2e/wayfarer-phase2.spec.ts",
       "project": "wayfarer-phase2",
       "suiteId": "browser.passport",
@@ -167185,7 +167185,7 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": ["sl-test-c881e5096365671ba00d"],
+      "historicalAliases": ["sl-test-fb7a9bbf2308cc16126a"],
       "currentStatus": "ACTIVE"
     },
     {
