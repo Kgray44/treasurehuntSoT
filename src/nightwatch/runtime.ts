@@ -2040,6 +2040,16 @@ export class NightwatchLedger {
   claimController(instanceId: string, ttlMs: number, at = iso()) {
     const owner = requireText(instanceId, "controllerInstanceId");
     return this.inTransaction(() => {
+      const existing = this.leases("ACTIVE").find((entry) => entry.type === "CONTROLLER" && entry.scope === "nightwatchd");
+      if (existing?.owner === owner) {
+        if (!Number.isFinite(ttlMs) || ttlMs <= 0) throw new NightwatchInvariantError("INVALID_LEASE_TTL");
+        this.db.prepare("UPDATE leases SET expires_at = ? WHERE lease_id = ?").run(iso(Date.parse(at) + ttlMs), existing.id);
+        this.db
+          .prepare("UPDATE controller_health SET instance_id = ?, state = 'LIVE', heartbeat_at = ?, detail = NULL WHERE singleton = 1")
+          .run(owner, at);
+        this.event("controller", owner, "CONTROLLER_RECLAIMED", { leaseId: existing.id }, at);
+        return this.lease(this.db.prepare("SELECT * FROM leases WHERE lease_id = ?").get(existing.id) as LeaseRow);
+      }
       const lease = this.acquireLease({ type: "CONTROLLER", scope: "nightwatchd", owner, ttlMs, now: Date.parse(at) });
       this.db
         .prepare(

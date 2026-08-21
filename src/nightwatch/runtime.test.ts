@@ -225,6 +225,22 @@ describe("Nightwatch migration reservation and leases", () => {
       restarted.close();
     }
   });
+
+  it("reclaims an interrupted controller lease only for its persisted controller identity", () => {
+    const file = databasePath();
+    const ledger = new NightwatchLedger(file);
+    try {
+      const first = ledger.claimController("nightwatchd-persisted", 120_000, "2026-08-21T00:00:00.000Z");
+      const reclaimed = ledger.claimController("nightwatchd-persisted", 120_000, "2026-08-21T00:00:01.000Z");
+      expect(reclaimed.id).toBe(first.id);
+      expect(reclaimed.expiresAt).toBe("2026-08-21T00:02:01.000Z");
+      expect(() => ledger.claimController("nightwatchd-other", 120_000, "2026-08-21T00:00:02.000Z")).toThrow(
+        "LEASE_COLLISION",
+      );
+    } finally {
+      ledger.close();
+    }
+  });
 });
 
 describe("Nightwatch projection and persistence safety", () => {
