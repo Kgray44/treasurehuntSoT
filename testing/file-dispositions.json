@@ -166,6 +166,15 @@
       "adapter": "powershell"
     },
     {
+      "match": "scripts/nightwatch/nightwatch-lifecycle.ps1",
+      "suiteId": "validation.powershell",
+      "role": "REGISTERED_ADAPTER",
+      "owner": "breakwater",
+      "tier": 3,
+      "parallelSafety": "SERIAL_EXCEPTION",
+      "adapter": "powershell"
+    },
+    {
       "match": "scripts/*.ps1",
       "suiteId": "validation.powershell",
       "role": "REGISTERED_ADAPTER",
