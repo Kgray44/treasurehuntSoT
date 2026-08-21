@@ -27,15 +27,35 @@ export function selectSealedMaintenanceAuthority({ runs, candidateSha, candidate
       finalization?.planDigest === plan?.planDigest
     );
   });
+  // A retried trusted-main dispatch can seal the same immutable maintenance
+  // proof more than once. Collapse only exact plan lineages; distinct plans
+  // for the same candidate remain ambiguous and fail closed.
+  const lineages = [
+    ...selected
+      .reduce((byIdentity, run) => {
+        const identity = [
+          run.plan.candidateSha,
+          run.plan.candidateTree,
+          run.plan.qualifiedBaseSha,
+          run.plan.trustedMainSha,
+          run.plan.planDigest,
+          run.finalization.planDigest,
+        ].join(":");
+        const existing = byIdentity.get(identity);
+        if (!existing || Number(run.id) < Number(existing.id)) byIdentity.set(identity, run);
+        return byIdentity;
+      }, new Map())
+      .values(),
+  ];
   const identityValid = [candidateSha, candidateTree, qualifiedBaseSha].every(sha);
   return {
     authority: "SOUNDING_LINE_MAINTENANCE_AUTHORITY_SELECTION",
     decision:
-      identityValid && selected.length === 1
+      identityValid && lineages.length === 1
         ? "MAINTENANCE_AUTHORITY_SELECTED"
         : "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
-    selectedRunId: selected.length === 1 ? selected[0].id : null,
-    eligibleRunIds: selected.map((run) => run.id).sort((left, right) => Number(left) - Number(right)),
+    selectedRunId: lineages.length === 1 ? lineages[0].id : null,
+    eligibleRunIds: lineages.map((run) => run.id).sort((left, right) => Number(left) - Number(right)),
   };
 }
 

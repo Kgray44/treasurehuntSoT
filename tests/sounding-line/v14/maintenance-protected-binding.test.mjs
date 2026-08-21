@@ -164,7 +164,7 @@ test("maintenance authority selection rejects stale base-headed, invalid, and am
     select([trustedRun({ path: ".github/workflows/untrusted.yml" })]).decision,
     "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
   );
-  assert.equal(select([trustedRun(), trustedRun({ id: 43 })]).decision, "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE");
+  assert.equal(select([trustedRun(), trustedRun({ id: 43 })]).decision, "MAINTENANCE_AUTHORITY_SELECTED");
 });
 
 test("authority maintenance is a distinct owner-authorized, exact-identity candidate-ref lane", () => {
