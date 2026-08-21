@@ -102842,7 +102842,7 @@
       "id": "sl-test-41e176d38988253670ff",
       "semanticId": "sl-semantic-e50dac4ba65bb4e5be62",
       "title": "public repository commands route through Sounding Line",
-      "line": 761,
+      "line": 763,
       "file": "tests/sounding-line/authority-cutover.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
