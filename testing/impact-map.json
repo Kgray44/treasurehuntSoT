@@ -4631,6 +4631,59 @@
       ]
     },
     {
+      "path": "Development_Docs/Project_Wakebook_Phase_2_*.md",
+      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook", "static.core"],
+      "contractIds": [
+        "wakebook.detail.historical-provenance",
+        "wakebook.remembrance.owner-integrity",
+        "wakebook.memory-media.private-delivery",
+        "wakebook.keepsake.consent-revocation",
+        "wakebook.detail.accessibility-mobile",
+        "wakebook.detail.cross-project-projection"
+      ]
+    },
+    {
+      "path": "Development_Docs/Project_Wakebook_Phase_2_*.json",
+      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook", "static.core"],
+      "contractIds": [
+        "wakebook.detail.historical-provenance",
+        "wakebook.remembrance.owner-integrity",
+        "wakebook.memory-media.private-delivery",
+        "wakebook.keepsake.consent-revocation",
+        "wakebook.detail.accessibility-mobile",
+        "wakebook.detail.cross-project-projection"
+      ]
+    },
+    {
+      "path": "Development_Docs/Features/catalog/wakebook.json",
+      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook", "unit.feature-catalog", "static.core"],
+      "contractIds": [
+        "wakebook.detail.historical-provenance",
+        "wakebook.remembrance.owner-integrity",
+        "wakebook.memory-media.private-delivery",
+        "wakebook.keepsake.consent-revocation",
+        "wakebook.detail.accessibility-mobile",
+        "wakebook.detail.cross-project-projection"
+      ]
+    },
+    {
+      "path": "playwright.config.ts",
+      "suiteIds": ["browser.wakebook"],
+      "contractIds": [
+        "wakebook.detail.historical-provenance",
+        "wakebook.remembrance.owner-integrity",
+        "wakebook.memory-media.private-delivery",
+        "wakebook.keepsake.consent-revocation",
+        "wakebook.detail.accessibility-mobile",
+        "wakebook.detail.cross-project-projection"
+      ]
+    },
+    {
+      "path": "scripts/features/feature-catalog.test.ts",
+      "suiteIds": ["unit.feature-catalog"],
+      "contractIds": []
+    },
+    {
       "path": "src/wakebook/**",
       "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"],
       "contractIds": [
@@ -4644,7 +4697,12 @@
         "wakebook.archive.filters",
         "wakebook.archive.invitation-separation",
         "wakebook.archive.partial-history",
-        "wakebook.archive.summary-redaction"
+        "wakebook.archive.summary-redaction",
+        "wakebook.detail.historical-provenance",
+        "wakebook.remembrance.owner-integrity",
+        "wakebook.memory-media.private-delivery",
+        "wakebook.keepsake.consent-revocation",
+        "wakebook.detail.cross-project-projection"
       ]
     },
     {
@@ -4656,7 +4714,12 @@
         "wakebook.navigation.reachability",
         "wakebook.archive.invitation-separation",
         "wakebook.archive.partial-history",
-        "wakebook.archive.summary-redaction"
+        "wakebook.archive.summary-redaction",
+        "wakebook.detail.historical-provenance",
+        "wakebook.remembrance.owner-integrity",
+        "wakebook.memory-media.private-delivery",
+        "wakebook.keepsake.consent-revocation",
+        "wakebook.detail.accessibility-mobile"
       ]
     },
     {
@@ -4668,7 +4731,9 @@
         "wakebook.archive.pagination",
         "wakebook.archive.filters",
         "wakebook.archive.partial-history",
-        "wakebook.archive.summary-redaction"
+        "wakebook.archive.summary-redaction",
+        "wakebook.remembrance.owner-integrity",
+        "wakebook.memory-media.private-delivery"
       ]
     },
     {
@@ -6541,6 +6606,30 @@
     },
     {
       "contractId": "wakebook.archive.summary-redaction",
+      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+    },
+    {
+      "contractId": "wakebook.detail.historical-provenance",
+      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+    },
+    {
+      "contractId": "wakebook.remembrance.owner-integrity",
+      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+    },
+    {
+      "contractId": "wakebook.memory-media.private-delivery",
+      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+    },
+    {
+      "contractId": "wakebook.keepsake.consent-revocation",
+      "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
+    },
+    {
+      "contractId": "wakebook.detail.accessibility-mobile",
+      "suiteIds": ["component.wakebook", "browser.wakebook"]
+    },
+    {
+      "contractId": "wakebook.detail.cross-project-projection",
       "suiteIds": ["unit.wakebook", "component.wakebook", "browser.wakebook"]
     },
     {

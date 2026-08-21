@@ -32,20 +32,17 @@ function gitRefIsAncestor(ancestor: string, descendant: string): boolean {
 }
 
 export function branchEvidenceResolves(branch: string, commit?: string): boolean {
-  if (gitRefExists(`refs/heads/${branch}`) || gitRefExists(`refs/remotes/origin/${branch}`)) return true;
-  if (!commit) return false;
+  const trustedDetachedPullRequest =
+    process.env.GITHUB_ACTIONS === "true" && process.env.GITHUB_HEAD_REF?.trim() === branch;
 
-  // actions/checkout intentionally leaves pull-request jobs on a detached
-  // merge ref and, with its default focused fetch, does not materialize the
-  // contributor branch as refs/heads/* or refs/remotes/origin/*. GitHub's
-  // trusted PR context plus an implementation commit contained by the checked
-  // out source is the equivalent branch-evidence proof in that environment.
-  return (
-    process.env.GITHUB_ACTIONS === "true" &&
-    process.env.GITHUB_HEAD_REF?.trim() === branch &&
-    gitRefExists(commit) &&
-    gitRefIsAncestor(commit, "HEAD")
-  );
+  // In GitHub's detached pull-request checkout the contributor branch is
+  // intentionally absent. Avoid probing two known-absent refs before the
+  // required contained-commit proof; that keeps the trusted path bounded on
+  // slow filesystems without accepting evidence from another branch.
+  if (trustedDetachedPullRequest) return commit ? gitRefIsAncestor(commit, "HEAD") : false;
+
+  if (gitRefExists(`refs/heads/${branch}`) || gitRefExists(`refs/remotes/origin/${branch}`)) return true;
+  return false;
 }
 
 function auditedCommitForCatalog(output: string): string {

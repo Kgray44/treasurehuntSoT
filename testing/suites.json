@@ -2646,7 +2646,12 @@
         "wakebook.archive.filters",
         "wakebook.archive.invitation-separation",
         "wakebook.archive.partial-history",
-        "wakebook.archive.summary-redaction"
+        "wakebook.archive.summary-redaction",
+        "wakebook.detail.historical-provenance",
+        "wakebook.remembrance.owner-integrity",
+        "wakebook.memory-media.private-delivery",
+        "wakebook.keepsake.consent-revocation",
+        "wakebook.detail.cross-project-projection"
       ],
       "affectedPaths": ["src/wakebook/**", "src/app/api/passport/voyages/**"],
       "releaseGates": ["local-change", "subsystem", "cross-project", "mainline", "release-candidate"],
@@ -2670,7 +2675,12 @@
         "wakebook.artifact-context",
         "wakebook.archive.invitation-separation",
         "wakebook.archive.partial-history",
-        "wakebook.archive.summary-redaction"
+        "wakebook.archive.summary-redaction",
+        "wakebook.detail.historical-provenance",
+        "wakebook.remembrance.owner-integrity",
+        "wakebook.memory-media.private-delivery",
+        "wakebook.keepsake.consent-revocation",
+        "wakebook.detail.accessibility-mobile"
       ],
       "affectedPaths": ["src/components/wakebook/**"],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
@@ -2701,9 +2711,15 @@
         "wakebook.archive.filters",
         "wakebook.archive.invitation-separation",
         "wakebook.archive.partial-history",
-        "wakebook.archive.summary-redaction"
+        "wakebook.archive.summary-redaction",
+        "wakebook.detail.historical-provenance",
+        "wakebook.remembrance.owner-integrity",
+        "wakebook.memory-media.private-delivery",
+        "wakebook.keepsake.consent-revocation",
+        "wakebook.detail.accessibility-mobile",
+        "wakebook.detail.cross-project-projection"
       ],
-      "affectedPaths": ["tests/e2e/wakebook-phase1.spec.ts"],
+      "affectedPaths": ["tests/e2e/wakebook-phase1.spec.ts", "tests/e2e/wakebook-phase2.spec.ts"],
       "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"

@@ -295,6 +295,7 @@ const chromiumProjects = new Set([
   "shipwright-phase2",
   "sounding-line-access-sentinel",
   "wakebook-phase1",
+  "wakebook-phase2",
   "wayfarer-phase2",
   "wayfarer-phase3",
   "wayfarer-phase4",
