@@ -167147,10 +167147,10 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-452b15efba9b109a1fce",
+      "id": "sl-test-c62a6165bede261f0f9f",
       "semanticId": "sl-semantic-de1464ca731fae6a92ad",
       "title": "Wayfarer Passport persists a private profile, preferences, media, and a simulator identity",
-      "line": 11,
+      "line": 12,
       "file": "tests/e2e/wayfarer-phase2.spec.ts",
       "project": "wayfarer-phase2",
       "suiteId": "browser.passport",
@@ -167185,14 +167185,14 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-452b15efba9b109a1fce"],
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-c881e5096365671ba00d",
+      "id": "sl-test-50ddfa263deea72e9806",
       "semanticId": "sl-semantic-61cd9d8622fed7d792c7",
       "title": "Wayfarer Passport remains operable at required responsive viewports",
-      "line": 88,
+      "line": 93,
       "file": "tests/e2e/wayfarer-phase2.spec.ts",
       "project": "wayfarer-phase2",
       "suiteId": "browser.passport",
@@ -167227,7 +167227,7 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-c881e5096365671ba00d"],
       "currentStatus": "ACTIVE"
     },
     {
