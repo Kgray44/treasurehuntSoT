@@ -2,6 +2,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { resolve } from "node:path";
+import { readFile } from "node:fs/promises";
 import { DatabaseSync } from "node:sqlite";
 import { NightwatchInvariantError, NightwatchLedger, type IntegrationBudgetStatus } from "./runtime";
 
@@ -115,6 +116,11 @@ export class BosunLedger {
         woken_at TEXT NOT NULL,
         PRIMARY KEY(cascade_id, candidate_id)
       );
+      CREATE TABLE IF NOT EXISTS bosun_post_merge_proofs (
+        cascade_id TEXT PRIMARY KEY REFERENCES bosun_cascades(cascade_id),
+        proof_json TEXT NOT NULL,
+        recorded_at TEXT NOT NULL
+      );
       CREATE TABLE IF NOT EXISTS bosun_controller_health (
         singleton INTEGER PRIMARY KEY CHECK(singleton = 1),
         controller_id TEXT,
@@ -212,13 +218,33 @@ export class BosunLedger {
     return this.cascade(this.row(cascadeId));
   }
 
+  recordPostMergeProof(cascadeId: string, proof: { landedMainSha: string; evidenceRef: string; rootBlockerRemoved: boolean }, at = iso()) {
+    if (!proof.landedMainSha || !proof.evidenceRef || !proof.rootBlockerRemoved)
+      throw new NightwatchInvariantError("BOSUN_POST_MERGE_PROOF_INVALID", cascadeId);
+    this.db.prepare("INSERT OR REPLACE INTO bosun_post_merge_proofs(cascade_id, proof_json, recorded_at) VALUES (?, ?, ?)")
+      .run(cascadeId, json(proof), at);
+  }
+
   converge(cascadeId: string, landedMainSha: string, at = iso()) {
     const cascade = this.cascade(this.row(cascadeId));
     if (!landedMainSha || cascade.closureSteps.length) throw new NightwatchInvariantError("BOSUN_CLOSURE_INCOMPLETE", cascadeId);
+    const proof = this.db.prepare("SELECT proof_json FROM bosun_post_merge_proofs WHERE cascade_id = ?").get(cascadeId) as
+      | { proof_json: string }
+      | undefined;
+    if (!proof || parse<{ landedMainSha: string; rootBlockerRemoved: boolean }>(proof.proof_json).landedMainSha !== landedMainSha)
+      throw new NightwatchInvariantError("BOSUN_POST_MERGE_PROOF_REQUIRED", cascadeId);
     this.db.prepare("UPDATE bosun_cascades SET status = 'CONVERGED', active_objective_id = NULL, active_repair_pr = NULL, updated_at = ? WHERE cascade_id = ?").run(at, cascadeId);
-    for (const candidateId of cascade.blockedCandidates)
+    for (const candidateId of cascade.blockedCandidates) {
       this.db.prepare("INSERT OR IGNORE INTO bosun_wakeups(cascade_id, candidate_id, landed_main_sha, woken_at) VALUES (?, ?, ?, ?)")
         .run(cascadeId, candidateId, landedMainSha, at);
+      try {
+        const candidate = this.nightwatch.getCandidate(candidateId);
+        if (candidate.state === "BLOCKED_BY_BOSUN") this.nightwatch.transitionCandidate(candidateId, "QUEUED", { at });
+      } catch (error) {
+        if (!(error instanceof NightwatchInvariantError) || error.code !== "CANDIDATE_NOT_FOUND") throw error;
+      }
+    }
+    this.nightwatch.selectQueueFront();
     this.db.prepare("UPDATE bosun_cascades SET dependent_wakeup_count = (SELECT count(*) FROM bosun_wakeups WHERE cascade_id = ?), updated_at = ? WHERE cascade_id = ?")
       .run(cascadeId, at, cascadeId);
     return this.cascade(this.row(cascadeId));
@@ -269,24 +295,32 @@ export const createRepositoryAutoZeroActions = (
 ): Record<"activeTestRegistry" | "documentIndex" | "featureCatalog", AutoZeroAction> => {
   const root = resolve(repositoryRoot);
   const node = options.nodeExecutable ?? process.execPath;
-  const run = async (command: readonly string[]) => {
+  const run = async (command: readonly string[], allowedPaths: string[]) => {
+    const before = new Set(
+      (await execFileAsync("git", ["diff", "--name-only", "--"], { cwd: root, windowsHide: true })).stdout
+        .split(/\r?\n/u)
+        .filter(Boolean),
+    );
     await execFileAsync(command[0]!, command.slice(1), { cwd: root, windowsHide: true });
-    const { stdout } = await execFileAsync("git", ["diff", "--binary", "--"], { cwd: root, windowsHide: true });
-    const changedPaths = (
+    const after = (
       await execFileAsync("git", ["diff", "--name-only", "--"], { cwd: root, windowsHide: true })
     ).stdout.split(/\r?\n/u).filter(Boolean).sort();
-    return { changedPaths, outputIdentity: { command, diffSha256: digest(stdout) } };
+    const changedPaths = unique([...after.filter((path) => allowedPaths.includes(path)), ...after.filter((path) => !before.has(path))]);
+    const outputIdentity = await Promise.all(
+      allowedPaths.map(async (path) => ({ path, sha256: digest((await readFile(resolve(root, path))).toString("base64")) })),
+    );
+    return { changedPaths, outputIdentity: { command, outputIdentity } };
   };
   return {
     activeTestRegistry: {
       id: "active-test-registry",
       allowedPaths: ["testing/generated/active-test-registry.json"],
-      run: () => run([node, "scripts/sounding-line/test-registry.mjs"]),
+      run: () => run([node, "scripts/sounding-line/test-registry.mjs"], ["testing/generated/active-test-registry.json"]),
     },
     documentIndex: {
       id: "document-index",
       allowedPaths: ["Development_Docs/INDEX.md"],
-      run: () => run([node, "scripts/generate-document-index.mjs"]),
+      run: () => run([node, "scripts/generate-document-index.mjs"], ["Development_Docs/INDEX.md"]),
     },
     featureCatalog: {
       id: "feature-catalog",
@@ -294,7 +328,7 @@ export const createRepositoryAutoZeroActions = (
       run: () => {
         if (!options.featureCatalogCommand?.length)
           return Promise.reject(new NightwatchInvariantError("BOSUN_AUTO_0_ACTION_UNCONFIGURED", "feature-catalog"));
-        return run(options.featureCatalogCommand);
+        return run(options.featureCatalogCommand, ["Development_Docs/Features/FEATURE_CATALOG.md"]);
       },
     },
   };

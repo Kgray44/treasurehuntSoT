@@ -55,6 +55,21 @@ describe("Project Bosun B0 durable convergence", () => {
       expect(bosun.projection(Date.parse(late)).cascades[0]).toMatchObject({ status: "PARKED_PARENT_BREAKER", activeObjectiveId: null });
     } finally { bosun.close(); ledger.close(); }
   });
+
+  it("requires post-merge proof and wakes a blocked Nightwatch candidate once", () => {
+    const path = databasePath();
+    const { ledger, transaction } = parent(path);
+    const bosun = new BosunLedger(path, ledger);
+    try {
+      const at = "2026-08-21T00:01:00.000Z";
+      ledger.transitionCandidate("candidate-a", "BLOCKED_BY_BOSUN", { at });
+      const report = bosun.reportFinding({ finding, parentTransactionId: transaction.id, blockedCandidateId: "candidate-a", closureSteps: [], at });
+      expect(() => bosun.converge(report.cascade.id, "f".repeat(40), at)).toThrow("BOSUN_POST_MERGE_PROOF_REQUIRED");
+      bosun.recordPostMergeProof(report.cascade.id, { landedMainSha: "f".repeat(40), evidenceRef: "baseline-receipt", rootBlockerRemoved: true }, at);
+      expect(bosun.converge(report.cascade.id, "f".repeat(40), at)).toMatchObject({ status: "CONVERGED", dependentWakeupCount: 1 });
+      expect(ledger.getCandidate("candidate-a").state).toBe("QUEUE_FRONT");
+    } finally { bosun.close(); ledger.close(); }
+  });
 });
 
 describe("Project Bosun B1 AUTO_0", () => {
