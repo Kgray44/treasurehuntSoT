@@ -5,11 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-<<<<<<< HEAD
-Audited source commit: `2f8df69fcf7956eb1af32930b3669e1f66253bcf`
-=======
-Audited source commit: `9201c4555fffbbb3946f8c946a7b374e0bb2d3c8`
->>>>>>> origin/main
+Audited source commit: `1d0eb7e9e141f797c7996f56049c4eb79232760a`
 
 ## Status vocabulary
 
@@ -1684,8 +1680,4 @@ Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-<<<<<<< HEAD
-Generation source commit: `2f8df69fcf7956eb1af32930b3669e1f66253bcf`
-=======
-Generation source commit: `9201c4555fffbbb3946f8c946a7b374e0bb2d3c8`
->>>>>>> origin/main
+Generation source commit: `1d0eb7e9e141f797c7996f56049c4eb79232760a`
