@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `a447bdbde9fbbe40adb6ee7fd9518f0386a0d72c`
+Audited source commit: `ee6da62badb4792586d33d44bbedbcf8cbe99fdf`
 
 ## Status vocabulary
 
@@ -1589,6 +1589,43 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-B012 - Nightwatch Governed Integration Queue and Migration Reservations
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Nightwatch Phase 1 Increment A
+
+Project Nightwatch Increment A provides a durable local control plane that serializes canonical integration while preserving parallel product development through explicit candidate lifecycle, queue-front-only reconciliation, atomic migration reservations, bounded leases, restart recovery, and a read-only Bridgewatch projection.
+
+### Important subfeatures
+
+- Validated Product Fleet candidate lifecycle with one active candidate per objective
+- Deterministic Integration Queue with fairness, dependencies, blockers, risk, and stable ordering
+- Queue-front-only reconciliation protected by an Integration Acceptance lease
+- SQLite-backed ledger with auditable events and stale lease or reservation recovery
+- Atomic multi-ID migration reservation allocation with collision and ambiguity rejection
+- Read-only Bridgewatch projection of queue, candidates, reservations, collisions, and acceptance ownership
+
+### Primary surfaces
+
+`npm run nightwatch:migrations:reserve`, `npm run nightwatch:migrations:inspect`, `npm run nightwatch:migrations:release`, `npm run nightwatch:migrations:reconcile`, `GET /api/nightwatch`
+
+### Meaningful limitations
+
+- Sounding Line remains the sole RELEASE_GO and protected-merge authority.
+- Project Bosun repair execution and Nightwatch Increment B are deliberately excluded.
+- The current repository MySQL migration family has duplicate numeric prefixes, so allocation correctly fails closed for that family.
+
+### Evidence
+
+- branch: `codex/nightwatch-increment-a`
+- commit: `2c895110ec7b8464bd51fc5a7c8397bf1746a88f`
+- path: `src/nightwatch/runtime.ts`
+- test: `src/nightwatch/runtime.test.ts`
+- test: `bridgewatch/test/nightwatch-projection.test.ts`
+- completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
@@ -1602,4 +1639,4 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `a447bdbde9fbbe40adb6ee7fd9518f0386a0d72c`
+Generation source commit: `ee6da62badb4792586d33d44bbedbcf8cbe99fdf`

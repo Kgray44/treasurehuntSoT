@@ -427,6 +427,14 @@
       "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
     },
     {
+      "id": "nightwatch",
+      "project": "project-nightwatch",
+      "sourcePaths": ["src/nightwatch/**", "scripts/nightwatch/**", "Development_Docs/Projects/Project_Nightwatch/**"],
+      "testPaths": ["src/nightwatch/**/*.test.*"],
+      "supportingOwnerIds": ["bridgewatch"],
+      "contractIds": ["nightwatch.increment-a.integration-queue"]
+    },
+    {
       "id": "project-wakebook",
       "project": "project-wakebook",
       "sourcePaths": [

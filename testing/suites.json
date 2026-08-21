@@ -2602,6 +2602,28 @@
       "adapter": "vitest-family-serial"
     },
     {
+      "id": "unit.nightwatch",
+      "name": "Nightwatch Increment A queue, ledger, lease, and reservation units",
+      "tier": 1,
+      "owner": "nightwatch",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 60000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": [],
+      "contracts": ["nightwatch.increment-a.integration-queue"],
+      "affectedPaths": [
+        "src/nightwatch/**",
+        "scripts/nightwatch/**",
+        "Development_Docs/Projects/Project_Nightwatch/**"
+      ],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "increment-a-runtime",
+      "adapter": "vitest-family"
+    },
+    {
       "id": "unit.wakebook",
       "name": "Wakebook archive read-model and API contracts",
       "tier": 1,
