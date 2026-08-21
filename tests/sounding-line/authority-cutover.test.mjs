@@ -715,6 +715,8 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   assert.doesNotMatch(worker, /git fetch[^\r\n]*\$candidateRef/u);
   assert.match(worker, /SOUNDING_LINE_SEALED_SOURCE_SHA: \$\{\{ inputs\.candidate_sha \}\}/u);
   assert.match(worker, /\$env:GITHUB_SHA = \$env:SOUNDING_LINE_SEALED_SOURCE_SHA/u);
+  assert.match(worker, /DATABASE_URL: mysql:\/\/root@127\.0\.0\.1:3306\/validation/u);
+  assert.match(worker, /Prisma's MySQL schema validator parses DATABASE_URL but does not/u);
   const trainWorkflow = await readFile(
     path.join(root, ".github", "workflows", "sounding-line-mainline-train.yml"),
     "utf8",
