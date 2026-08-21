@@ -32,6 +32,10 @@ export interface NightwatchControlPlane {
     input: ExactCandidateIdentity & { transactionId: string; bindingRunId: string },
   ): { mergeSha: string; treeSha: string } | null;
   protectedMain(): { sha: string; treeSha: string };
+  postMergeBosunProof?(input: ExactCandidateIdentity & { transactionId: string; repairCandidateId: string }): {
+    evidenceRef: string;
+    rootBlockerRemoved: boolean;
+  };
   cancelRun?(input: { runId: string }): void;
 }
 
@@ -197,6 +201,20 @@ export class NightwatchController {
       this.ledger.recordIntegrated(transaction.id, at);
       this.ledger.verifyPostMerge(transaction.id, { mergeSha: merged.mergeSha, treeSha: merged.treeSha }, at);
       this.ledger.setRemainingClosureSteps(transaction.id, []);
+      const repair = this.bosun.liveRepairForTransaction(transaction.id);
+      if (repair) {
+        const proof = this.controlPlane.postMergeBosunProof?.({
+          ...transaction,
+          transactionId: transaction.id,
+          repairCandidateId: repair.candidateId,
+        });
+        if (!proof) throw new NightwatchInvariantError("BOSUN_POST_MERGE_PROOF_UNAVAILABLE", transaction.id);
+        this.bosun.completeLiveRepair(
+          transaction.id,
+          { landedMainSha: merged.mergeSha, evidenceRef: proof.evidenceRef, rootBlockerRemoved: proof.rootBlockerRemoved },
+          at,
+        );
+      }
       return { state: "POST_MERGE_VERIFIED" as const, transactionId: transaction.id };
     }
     return { state: transaction.state, transactionId: transaction.id };
@@ -221,6 +239,8 @@ export class NightwatchController {
           }).runId,
           at,
         );
+    const repair = this.bosun.liveRepairForTransaction(transaction.id);
+    if (repair && !intent.externalRunId) this.bosun.recordAuthorityAttempt(repair.cascadeId, at);
     return { state: "AUTHORITY_RUNNING" as const, transactionId: transaction.id, runId: run.externalRunId };
   }
 

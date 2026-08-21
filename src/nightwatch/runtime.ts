@@ -1519,6 +1519,71 @@ export class NightwatchLedger {
     });
   }
 
+  /**
+   * Turns one already-focused Bosun repair into the next exact Nightwatch
+   * acceptance transaction without giving it a fresh cascade or budget.
+   * The blocked parent stays durable evidence while the maintenance candidate
+   * occupies the one governed integration slot.
+   */
+  beginBosunMaintenanceAcceptance(input: {
+    parentTransactionId: string;
+    findingFingerprint: string;
+    generation: number;
+    repairCandidate: CandidateInput;
+    identity: ExactCandidateIdentity;
+    focusedEvidence: string[];
+    at?: string;
+  }) {
+    assertSafe(input);
+    const at = input.at ?? iso();
+    return this.inTransaction(() => {
+      const parent = this.getAcceptanceTransaction(input.parentTransactionId);
+      const parentCandidate = this.getCandidate(parent.candidateId);
+      const cascade = this.integrationCascades().find((entry) => entry.id === parent.cascadeId);
+      if (!cascade) throw new NightwatchInvariantError("INTEGRATION_CASCADE_NOT_FOUND", parent.cascadeId);
+      const finding = this.recordMaintenanceFinding(parent.id, {
+        fingerprint: input.findingFingerprint,
+        generation: input.generation,
+        candidateId: input.repairCandidate.id,
+        at,
+      });
+      if (finding.duplicate)
+        throw new NightwatchInvariantError("BOSUN_MAINTENANCE_FINDING_ALREADY_ATTACHED", input.findingFingerprint);
+      this.createCandidate(input.repairCandidate);
+      this.transitionCandidate(input.repairCandidate.id, "LOCALLY_COMPLETE", { at });
+      this.transitionCandidate(input.repairCandidate.id, "QUEUE_READY", { at });
+      this.queueCandidate(input.repairCandidate.id, {
+        priority: 10_000,
+        downstreamUnblockValue: 10_000,
+        focusedEvidence: input.focusedEvidence,
+        sharedOwnershipClasses: ["BOSUN", "AUTO_0"],
+      });
+      if (this.currentQueueFront()?.id === parentCandidate.id)
+        this.blockQueueFront(parentCandidate.id, `BOSUN:${input.findingFingerprint}`);
+      if (this.currentQueueFront()?.id !== input.repairCandidate.id)
+        throw new NightwatchInvariantError("BOSUN_REPAIR_NOT_QUEUE_FRONT", input.repairCandidate.id);
+      this.setTransactionState(parent.id, "SHARED_BLOCKED", at);
+      const transaction = this.beginAtomicAcceptance({
+        candidateId: input.repairCandidate.id,
+        identity: input.identity,
+        rootFingerprint: cascade.rootFingerprint,
+        rootIdentity: cascade.rootIdentity,
+        at,
+      });
+      this.completeReconciliation(transaction.id, { preservedEvidenceCount: input.focusedEvidence.length, at });
+      this.freezeAcceptanceCandidate(transaction.id, "nightwatchd:bosun", 120_000, at);
+      this.awaitAuthority(transaction.id, at);
+      this.setRemainingClosureSteps(transaction.id, [
+        "Bosun protected authority",
+        "protected binding",
+        "protected merge",
+        "exact-main proof",
+        "Bosun post-merge convergence",
+      ]);
+      return { parent: this.getAcceptanceTransaction(parent.id), transaction: this.getAcceptanceTransaction(transaction.id), budget: finding.budget };
+    });
+  }
+
   /** Cheap queue-front checks only; this is intentionally not a Sounding Line substitute. */
   preflightAcceptance(
     transactionId: string,

@@ -195,4 +195,13 @@ export class GitHubCliControlPlane implements NightwatchControlPlane {
     const commit = this.api<{ tree: { sha: string } }>(`repos/${this.repository}/git/commits/${ref.object.sha}`);
     return { sha: ref.object.sha, treeSha: commit.tree.sha };
   }
+
+  postMergeBosunProof(input: ExactCandidateIdentity & { transactionId: string; repairCandidateId: string }) {
+    const main = this.protectedMain();
+    if (main.treeSha !== input.candidateTreeSha) throw new Error("BOSUN_POST_MERGE_TREE_MISMATCH");
+    return {
+      evidenceRef: `github:protected-main:${main.sha}:tree:${main.treeSha}:transaction:${input.transactionId}`,
+      rootBlockerRemoved: true,
+    };
+  }
 }

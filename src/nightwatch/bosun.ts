@@ -55,6 +55,20 @@ export interface BosunProjection {
   cascades: Array<BosunCascade & { parentBudget: IntegrationBudgetStatus }>;
 }
 
+export interface BosunLiveRepair {
+  cascadeId: string;
+  parentTransactionId: string;
+  transactionId: string;
+  candidateId: string;
+  repairPr: number;
+  actionId: AutoZeroActionId;
+  candidateSha: string;
+  baseSha: string;
+  focusedEvidenceRef: string;
+  outputDigest: string;
+  completedAt: string | null;
+}
+
 export const normalizeBosunFingerprint = (finding: BosunFinding) =>
   [
     `owner=${finding.owner}`,
@@ -120,6 +134,19 @@ export class BosunLedger {
         cascade_id TEXT PRIMARY KEY REFERENCES bosun_cascades(cascade_id),
         proof_json TEXT NOT NULL,
         recorded_at TEXT NOT NULL
+      );
+      CREATE TABLE IF NOT EXISTS bosun_live_repairs (
+        cascade_id TEXT PRIMARY KEY REFERENCES bosun_cascades(cascade_id),
+        parent_transaction_id TEXT NOT NULL,
+        transaction_id TEXT NOT NULL UNIQUE,
+        candidate_id TEXT NOT NULL UNIQUE,
+        repair_pr INTEGER NOT NULL,
+        action_id TEXT NOT NULL,
+        candidate_sha TEXT NOT NULL,
+        base_sha TEXT NOT NULL,
+        focused_evidence_ref TEXT NOT NULL,
+        output_digest TEXT NOT NULL,
+        completed_at TEXT
       );
       CREATE TABLE IF NOT EXISTS bosun_controller_health (
         singleton INTEGER PRIMARY KEY CHECK(singleton = 1),
@@ -225,6 +252,41 @@ export class BosunLedger {
       .run(cascadeId, json(proof), at);
   }
 
+  registerLiveRepair(input: Omit<BosunLiveRepair, "completedAt">) {
+    const cascade = this.cascade(this.row(input.cascadeId));
+    if (cascade.parentTransactionId !== input.parentTransactionId)
+      throw new NightwatchInvariantError("BOSUN_PARENT_TRANSACTION_MISMATCH", input.cascadeId);
+    const existing = this.db.prepare("SELECT * FROM bosun_live_repairs WHERE cascade_id = ?").get(input.cascadeId) as Record<string, unknown> | undefined;
+    if (existing) {
+      const repair = this.liveRepair(existing);
+      if (repair.candidateSha !== input.candidateSha || repair.baseSha !== input.baseSha || repair.repairPr !== input.repairPr)
+        throw new NightwatchInvariantError("BOSUN_LIVE_REPAIR_IDENTITY_MISMATCH", input.cascadeId);
+      return repair;
+    }
+    this.db.prepare(`INSERT INTO bosun_live_repairs(cascade_id, parent_transaction_id, transaction_id, candidate_id, repair_pr, action_id, candidate_sha, base_sha, focused_evidence_ref, output_digest)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(
+      input.cascadeId, input.parentTransactionId, input.transactionId, input.candidateId, input.repairPr,
+      input.actionId, input.candidateSha, input.baseSha, input.focusedEvidenceRef, input.outputDigest,
+    );
+    return { ...input, completedAt: null };
+  }
+
+  liveRepairForTransaction(transactionId: string): BosunLiveRepair | null {
+    const row = this.db.prepare("SELECT * FROM bosun_live_repairs WHERE transaction_id = ?").get(transactionId) as Record<string, unknown> | undefined;
+    return row ? this.liveRepair(row) : null;
+  }
+
+  completeLiveRepair(transactionId: string, proof: { landedMainSha: string; evidenceRef: string; rootBlockerRemoved: boolean }, at = iso()) {
+    const repair = this.liveRepairForTransaction(transactionId);
+    if (!repair) return null;
+    if (repair.completedAt) return repair;
+    this.recordPostMergeProof(repair.cascadeId, proof, at);
+    this.setClosureSteps(repair.cascadeId, [], at);
+    this.converge(repair.cascadeId, proof.landedMainSha, at);
+    this.db.prepare("UPDATE bosun_live_repairs SET completed_at = ? WHERE transaction_id = ?").run(at, transactionId);
+    return this.liveRepairForTransaction(transactionId);
+  }
+
   converge(cascadeId: string, landedMainSha: string, at = iso()) {
     const cascade = this.cascade(this.row(cascadeId));
     if (!landedMainSha || cascade.closureSteps.length) throw new NightwatchInvariantError("BOSUN_CLOSURE_INCOMPLETE", cascadeId);
@@ -239,7 +301,7 @@ export class BosunLedger {
         .run(cascadeId, candidateId, landedMainSha, at);
       try {
         const candidate = this.nightwatch.getCandidate(candidateId);
-        if (candidate.state === "BLOCKED_BY_BOSUN") this.nightwatch.transitionCandidate(candidateId, "QUEUED", { at });
+        if (candidate.state === "BLOCKED_BY_BOSUN") this.nightwatch.resumeCandidate(candidateId);
       } catch (error) {
         if (!(error instanceof NightwatchInvariantError) || error.code !== "CANDIDATE_NOT_FOUND") throw error;
       }
@@ -253,6 +315,15 @@ export class BosunLedger {
   setClosureSteps(cascadeId: string, closureSteps: string[], at = iso()) {
     this.db.prepare("UPDATE bosun_cascades SET closure_steps_json = ?, updated_at = ? WHERE cascade_id = ?").run(json(unique(closureSteps)), at, cascadeId);
     return this.cascade(this.row(cascadeId));
+  }
+
+  private liveRepair(row: Record<string, unknown>): BosunLiveRepair {
+    return {
+      cascadeId: String(row.cascade_id), parentTransactionId: String(row.parent_transaction_id), transactionId: String(row.transaction_id),
+      candidateId: String(row.candidate_id), repairPr: Number(row.repair_pr), actionId: String(row.action_id) as AutoZeroActionId,
+      candidateSha: String(row.candidate_sha), baseSha: String(row.base_sha), focusedEvidenceRef: String(row.focused_evidence_ref),
+      outputDigest: String(row.output_digest), completedAt: row.completed_at ? String(row.completed_at) : null,
+    };
   }
 
   heartbeat(controllerId: string, detail: string | null = null, at = iso()) {
