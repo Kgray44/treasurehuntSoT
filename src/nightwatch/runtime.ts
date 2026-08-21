@@ -30,7 +30,8 @@ export type LeaseType =
   | "GENERATED_REGISTRY"
   | "GITHUB_PR_LINEAGE"
   | "WORKTREE"
-  | "INTEGRATION_ACCEPTANCE";
+  | "INTEGRATION_ACCEPTANCE"
+  | "CONTROLLER";
 export type ReservationState = "ACTIVE" | "RELEASED" | "EXPIRED" | "CONSUMED";
 export type LeaseState = "ACTIVE" | "RELEASED" | "EXPIRED";
 
@@ -111,6 +112,49 @@ export interface IntegrationBudgetStatus {
   elapsedMs: number;
   maintenanceAmplificationRatio: number;
   status: IntegrationCascade["status"];
+  transactionId: string;
+  productValueMs: number;
+  controlPlaneActiveMs: number;
+  controlPlaneWaitMs: number;
+  externallyBlockedMs: number;
+  descendantMaintenanceMs: number;
+  authorityMs: number;
+  browserMatrixMs: number;
+  retryAndCooldownMs: number;
+  noProgressCycles: number;
+  remainingClosureSteps: string[];
+  warningAtMs: number;
+  hardReviewAtMs: number;
+  breakerAtMs: number;
+}
+
+export interface IntegrationCostLedger {
+  transactionId: string;
+  cascadeId: string;
+  startedAt: string;
+  productValueMs: number;
+  controlPlaneActiveMs: number;
+  controlPlaneWaitMs: number;
+  externallyBlockedMs: number;
+  descendantMaintenanceMs: number;
+  authorityMs: number;
+  browserMatrixMs: number;
+  retryAndCooldownMs: number;
+  noProgressCycles: number;
+  remainingClosureSteps: string[];
+  warningAtMs: number;
+  hardReviewAtMs: number;
+  breakerAtMs: number;
+}
+
+export type NightwatchControllerState = "LIVE" | "DEGRADED" | "DOWN";
+
+export interface NightwatchControllerHealth {
+  instanceId: string | null;
+  state: NightwatchControllerState;
+  heartbeatAt: string | null;
+  lastSuccessfulReconciliationAt: string | null;
+  detail: string | null;
 }
 
 const terminalStates = new Set<CandidateState>(["POST_MERGE_VERIFIED", "SUPERSEDED", "WITHDRAWN"]);
@@ -125,6 +169,7 @@ const leaseTypes = new Set<string>([
   "GITHUB_PR_LINEAGE",
   "WORKTREE",
   "INTEGRATION_ACCEPTANCE",
+  "CONTROLLER",
 ]);
 
 const transitions: Record<CandidateState, readonly CandidateState[]> = {
@@ -283,6 +328,7 @@ export interface NightwatchProjection {
   leases: Lease[];
   integrationLifecycleState: CandidateState | "IDLE";
   acceptanceOwnership: Lease | null;
+  controller: NightwatchControllerHealth;
 }
 
 type CandidateRow = {
@@ -558,9 +604,45 @@ export class NightwatchLedger {
         completed_at TEXT
       );
       CREATE INDEX IF NOT EXISTS acceptance_runs_transaction_idx ON acceptance_runs(transaction_id, stage);
+      CREATE TABLE IF NOT EXISTS controller_health (
+        singleton INTEGER PRIMARY KEY CHECK(singleton = 1),
+        instance_id TEXT,
+        state TEXT NOT NULL,
+        heartbeat_at TEXT,
+        last_successful_reconciliation_at TEXT,
+        detail TEXT
+      );
+      CREATE TABLE IF NOT EXISTS integration_cost_ledger (
+        cascade_id TEXT PRIMARY KEY REFERENCES integration_cascades(cascade_id),
+        transaction_id TEXT NOT NULL,
+        started_at TEXT NOT NULL,
+        product_value_ms INTEGER NOT NULL DEFAULT 0,
+        control_plane_active_ms INTEGER NOT NULL DEFAULT 0,
+        control_plane_wait_ms INTEGER NOT NULL DEFAULT 0,
+        externally_blocked_ms INTEGER NOT NULL DEFAULT 0,
+        descendant_maintenance_ms INTEGER NOT NULL DEFAULT 0,
+        authority_ms INTEGER NOT NULL DEFAULT 0,
+        browser_matrix_ms INTEGER NOT NULL DEFAULT 0,
+        retry_cooldown_ms INTEGER NOT NULL DEFAULT 0,
+        no_progress_cycles INTEGER NOT NULL DEFAULT 0,
+        remaining_closure_steps_json TEXT NOT NULL,
+        warning_at_ms INTEGER NOT NULL,
+        hard_review_at_ms INTEGER NOT NULL,
+        breaker_at_ms INTEGER NOT NULL
+      );
+      CREATE TABLE IF NOT EXISTS maintenance_findings (
+        cascade_id TEXT NOT NULL REFERENCES integration_cascades(cascade_id),
+        fingerprint TEXT NOT NULL,
+        generation INTEGER NOT NULL,
+        created_at TEXT NOT NULL,
+        PRIMARY KEY(cascade_id, fingerprint)
+      );
     `);
     this.db.prepare("INSERT OR IGNORE INTO nightwatch_migrations(version, applied_at) VALUES (1, ?)").run(iso());
     this.db.prepare("INSERT OR IGNORE INTO nightwatch_migrations(version, applied_at) VALUES (2, ?)").run(iso());
+    this.db.prepare("INSERT OR IGNORE INTO nightwatch_migrations(version, applied_at) VALUES (3, ?)").run(iso());
+    this.db.prepare("INSERT OR IGNORE INTO nightwatch_migrations(version, applied_at) VALUES (4, ?)").run(iso());
+    this.db.prepare("INSERT OR IGNORE INTO controller_health(singleton, state) VALUES (1, 'DOWN')").run();
   }
 
   private validatePersistedState() {
@@ -1255,6 +1337,38 @@ export class NightwatchLedger {
     };
   }
 
+  private cost(row: Record<string, unknown>): IntegrationCostLedger {
+    return {
+      cascadeId: String(row.cascade_id),
+      transactionId: String(row.transaction_id),
+      startedAt: String(row.started_at),
+      productValueMs: Number(row.product_value_ms),
+      controlPlaneActiveMs: Number(row.control_plane_active_ms),
+      controlPlaneWaitMs: Number(row.control_plane_wait_ms),
+      externallyBlockedMs: Number(row.externally_blocked_ms),
+      descendantMaintenanceMs: Number(row.descendant_maintenance_ms),
+      authorityMs: Number(row.authority_ms),
+      browserMatrixMs: Number(row.browser_matrix_ms),
+      retryAndCooldownMs: Number(row.retry_cooldown_ms),
+      noProgressCycles: Number(row.no_progress_cycles),
+      remainingClosureSteps: parse<string[]>(
+        String(row.remaining_closure_steps_json),
+        "integrationCost.remainingClosureSteps",
+      ),
+      warningAtMs: Number(row.warning_at_ms),
+      hardReviewAtMs: Number(row.hard_review_at_ms),
+      breakerAtMs: Number(row.breaker_at_ms),
+    };
+  }
+
+  private costRow(cascadeId: string) {
+    const row = this.db.prepare("SELECT * FROM integration_cost_ledger WHERE cascade_id = ?").get(cascadeId) as
+      | Record<string, unknown>
+      | undefined;
+    if (!row) throw new NightwatchInvariantError("INTEGRATION_COST_LEDGER_NOT_FOUND", cascadeId);
+    return row;
+  }
+
   private cascadeRow(id: string) {
     const row = this.db.prepare("SELECT * FROM integration_cascades WHERE cascade_id = ?").get(id) as
       | Record<string, unknown>
@@ -1275,7 +1389,9 @@ export class NightwatchLedger {
   }
 
   private setTransactionState(id: string, state: AcceptanceTransactionState, at = iso()) {
-    this.db.prepare("UPDATE acceptance_transactions SET state = ?, updated_at = ? WHERE transaction_id = ?").run(state, at, id);
+    this.db
+      .prepare("UPDATE acceptance_transactions SET state = ?, updated_at = ? WHERE transaction_id = ?")
+      .run(state, at, id);
     this.event("acceptance-transaction", id, "ACCEPTANCE_STATE_CHANGED", { state }, at);
     return this.getAcceptanceTransaction(id);
   }
@@ -1285,16 +1401,24 @@ export class NightwatchLedger {
   }
 
   acceptanceTransactions(candidateId?: string) {
-    const rows = (candidateId
-      ? this.db.prepare("SELECT * FROM acceptance_transactions WHERE candidate_id = ? ORDER BY created_at").all(candidateId)
-      : this.db.prepare("SELECT * FROM acceptance_transactions ORDER BY created_at").all()) as Record<string, unknown>[];
+    const rows = (
+      candidateId
+        ? this.db
+            .prepare("SELECT * FROM acceptance_transactions WHERE candidate_id = ? ORDER BY created_at")
+            .all(candidateId)
+        : this.db.prepare("SELECT * FROM acceptance_transactions ORDER BY created_at").all()
+    ) as Record<string, unknown>[];
     return rows.map((row) => this.acceptanceTransaction(row));
   }
 
   acceptanceRuns(transactionId?: string): AcceptanceRun[] {
-    const rows = (transactionId
-      ? this.db.prepare("SELECT * FROM acceptance_runs WHERE transaction_id = ? ORDER BY dispatched_at, run_id").all(transactionId)
-      : this.db.prepare("SELECT * FROM acceptance_runs ORDER BY dispatched_at, run_id").all()) as Record<string, unknown>[];
+    const rows = (
+      transactionId
+        ? this.db
+            .prepare("SELECT * FROM acceptance_runs WHERE transaction_id = ? ORDER BY dispatched_at, run_id")
+            .all(transactionId)
+        : this.db.prepare("SELECT * FROM acceptance_runs ORDER BY dispatched_at, run_id").all()
+    ) as Record<string, unknown>[];
     return rows.map((row) => ({
       id: String(row.run_id),
       transactionId: String(row.transaction_id),
@@ -1308,9 +1432,12 @@ export class NightwatchLedger {
   }
 
   integrationCascades() {
-    return (this.db.prepare("SELECT * FROM integration_cascades ORDER BY started_at, cascade_id").all() as Record<string, unknown>[]).map((row) =>
-      this.cascade(row),
-    );
+    return (
+      this.db.prepare("SELECT * FROM integration_cascades ORDER BY started_at, cascade_id").all() as Record<
+        string,
+        unknown
+      >[]
+    ).map((row) => this.cascade(row));
   }
 
   beginAtomicAcceptance(input: {
@@ -1332,9 +1459,9 @@ export class NightwatchLedger {
         .get(input.candidateId, identity.candidateSha, identity.baseSha) as Record<string, unknown> | undefined;
       if (duplicate) return this.acceptanceTransaction(duplicate);
       const rootFingerprint = requireText(input.rootFingerprint, "rootFingerprint");
-      let cascade = this.db.prepare("SELECT * FROM integration_cascades WHERE root_fingerprint = ?").get(rootFingerprint) as
-        | Record<string, unknown>
-        | undefined;
+      let cascade = this.db
+        .prepare("SELECT * FROM integration_cascades WHERE root_fingerprint = ?")
+        .get(rootFingerprint) as Record<string, unknown> | undefined;
       if (!cascade) {
         const cascadeId = randomUUID();
         this.db
@@ -1349,9 +1476,45 @@ export class NightwatchLedger {
         .prepare(
           "INSERT INTO acceptance_transactions(transaction_id, candidate_id, cascade_id, candidate_sha, candidate_tree_sha, base_sha, base_tree_sha, candidate_ref, state, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'RECONCILING', ?, ?)",
         )
-        .run(id, input.candidateId, String(cascade.cascade_id), identity.candidateSha, identity.candidateTreeSha, identity.baseSha, identity.baseTreeSha, identity.candidateRef, at, at);
+        .run(
+          id,
+          input.candidateId,
+          String(cascade.cascade_id),
+          identity.candidateSha,
+          identity.candidateTreeSha,
+          identity.baseSha,
+          identity.baseTreeSha,
+          identity.candidateRef,
+          at,
+          at,
+        );
+      this.db
+        .prepare(
+          "INSERT OR IGNORE INTO integration_cost_ledger(cascade_id, transaction_id, started_at, remaining_closure_steps_json, warning_at_ms, hard_review_at_ms, breaker_at_ms) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        )
+        .run(
+          String(cascade.cascade_id),
+          id,
+          at,
+          json([
+            "reconcile exact candidate",
+            "authority qualification",
+            "protected binding",
+            "protected merge",
+            "exact-main proof",
+          ]),
+          30 * 60_000,
+          60 * 60_000,
+          90 * 60_000,
+        );
       if (candidate.state === "QUEUE_FRONT") this.transitionCandidate(input.candidateId, "RECONCILING", { at });
-      this.event("acceptance-transaction", id, "ATOMIC_ACCEPTANCE_BEGUN", { candidateId: input.candidateId, ...identity }, at);
+      this.event(
+        "acceptance-transaction",
+        id,
+        "ATOMIC_ACCEPTANCE_BEGUN",
+        { candidateId: input.candidateId, ...identity },
+        at,
+      );
       return this.getAcceptanceTransaction(id);
     });
   }
@@ -1372,7 +1535,8 @@ export class NightwatchLedger {
     const at = input.at ?? iso();
     return this.inTransaction(() => {
       const transaction = this.getAcceptanceTransaction(transactionId);
-      if (transaction.state !== "RECONCILING") throw new NightwatchInvariantError("RECONCILIATION_REQUIRED", transactionId);
+      if (transaction.state !== "RECONCILING")
+        throw new NightwatchInvariantError("RECONCILIATION_REQUIRED", transactionId);
       const failed = !input.deterministicRegistryHealthy
         ? "DETERMINISTIC_REGISTRY_UNHEALTHY"
         : !input.ownershipResolved
@@ -1386,20 +1550,35 @@ export class NightwatchLedger {
                 : null;
       this.event("acceptance-transaction", transactionId, "QUEUE_FRONT_PREFLIGHT", { result: failed ?? "PASS" }, at);
       if (!failed) return { result: "PASS" as const, transaction };
-      this.db.prepare("UPDATE acceptance_transactions SET last_semantic_invalidation = ?, updated_at = ? WHERE transaction_id = ?").run(failed, at, transactionId);
+      this.db
+        .prepare(
+          "UPDATE acceptance_transactions SET last_semantic_invalidation = ?, updated_at = ? WHERE transaction_id = ?",
+        )
+        .run(failed, at, transactionId);
       this.setTransactionState(transactionId, "SHARED_BLOCKED", at);
       return { result: "BLOCKED" as const, reason: failed, transaction: this.getAcceptanceTransaction(transactionId) };
     });
   }
 
-  completeReconciliation(transactionId: string, options: { preservedEvidenceCount?: number; rerunEvidenceCount?: number; at?: string } = {}) {
+  completeReconciliation(
+    transactionId: string,
+    options: { preservedEvidenceCount?: number; rerunEvidenceCount?: number; at?: string } = {},
+  ) {
     const at = options.at ?? iso();
     return this.inTransaction(() => {
       const transaction = this.getAcceptanceTransaction(transactionId);
-      if (transaction.state !== "RECONCILING") throw new NightwatchInvariantError("RECONCILIATION_REQUIRED", transactionId);
+      if (transaction.state !== "RECONCILING")
+        throw new NightwatchInvariantError("RECONCILIATION_REQUIRED", transactionId);
       this.db
-        .prepare("UPDATE acceptance_transactions SET preserved_evidence_count = ?, rerun_evidence_count = ?, updated_at = ? WHERE transaction_id = ?")
-        .run(boundedNumber(options.preservedEvidenceCount, transaction.preservedEvidenceCount, "preservedEvidenceCount"), boundedNumber(options.rerunEvidenceCount, transaction.rerunEvidenceCount, "rerunEvidenceCount"), at, transactionId);
+        .prepare(
+          "UPDATE acceptance_transactions SET preserved_evidence_count = ?, rerun_evidence_count = ?, updated_at = ? WHERE transaction_id = ?",
+        )
+        .run(
+          boundedNumber(options.preservedEvidenceCount, transaction.preservedEvidenceCount, "preservedEvidenceCount"),
+          boundedNumber(options.rerunEvidenceCount, transaction.rerunEvidenceCount, "rerunEvidenceCount"),
+          at,
+          transactionId,
+        );
       const candidate = this.getCandidate(transaction.candidateId);
       if (candidate.state === "RECONCILING") this.transitionCandidate(transaction.candidateId, "QUALIFYING", { at });
       return this.setTransactionState(transactionId, "REQUALIFYING", at);
@@ -1409,11 +1588,22 @@ export class NightwatchLedger {
   freezeAcceptanceCandidate(transactionId: string, owner: string, ttlMs: number, at = iso()) {
     return this.inTransaction(() => {
       const transaction = this.getAcceptanceTransaction(transactionId);
-      if (transaction.state !== "REQUALIFYING") throw new NightwatchInvariantError("REQUALIFICATION_REQUIRED", transactionId);
-      const lease = this.acquireLease({ type: "INTEGRATION_ACCEPTANCE", scope: "integration-queue", owner, candidateId: transaction.candidateId, ttlMs, now: Date.parse(at) });
-      this.db.prepare("UPDATE acceptance_transactions SET lease_id = ?, updated_at = ? WHERE transaction_id = ?").run(lease.id, at, transactionId);
+      if (transaction.state !== "REQUALIFYING")
+        throw new NightwatchInvariantError("REQUALIFICATION_REQUIRED", transactionId);
+      const lease = this.acquireLease({
+        type: "INTEGRATION_ACCEPTANCE",
+        scope: "integration-queue",
+        owner,
+        candidateId: transaction.candidateId,
+        ttlMs,
+        now: Date.parse(at),
+      });
+      this.db
+        .prepare("UPDATE acceptance_transactions SET lease_id = ?, updated_at = ? WHERE transaction_id = ?")
+        .run(lease.id, at, transactionId);
       const candidate = this.getCandidate(transaction.candidateId);
-      if (candidate.state === "QUALIFYING") this.transitionCandidate(transaction.candidateId, "ACCEPTANCE_PENDING", { at });
+      if (candidate.state === "QUALIFYING")
+        this.transitionCandidate(transaction.candidateId, "ACCEPTANCE_PENDING", { at });
       return this.setTransactionState(transactionId, "CANDIDATE_FROZEN", at);
     });
   }
@@ -1421,7 +1611,8 @@ export class NightwatchLedger {
   awaitAuthority(transactionId: string, at = iso()) {
     return this.inTransaction(() => {
       const transaction = this.getAcceptanceTransaction(transactionId);
-      if (transaction.state !== "CANDIDATE_FROZEN") throw new NightwatchInvariantError("CANDIDATE_FROZEN_REQUIRED", transactionId);
+      if (transaction.state !== "CANDIDATE_FROZEN")
+        throw new NightwatchInvariantError("CANDIDATE_FROZEN_REQUIRED", transactionId);
       return this.setTransactionState(transactionId, "AWAITING_AUTHORITY", at);
     });
   }
@@ -1434,24 +1625,70 @@ export class NightwatchLedger {
     return this.dispatchAcceptanceRun(transactionId, "BINDING", eventKey, externalRunId, at);
   }
 
-  private dispatchAcceptanceRun(transactionId: string, stage: AcceptanceRunStage, eventKey: string, externalRunId: string | undefined, at: string) {
+  recordAcceptanceRunExternalId(
+    transactionId: string,
+    runId: string,
+    externalRunId: string,
+    at = iso(),
+  ): AcceptanceRun {
+    return this.inTransaction(() => {
+      const transaction = this.getAcceptanceTransaction(transactionId);
+      const run = this.acceptanceRuns(transactionId).find((entry) => entry.id === runId);
+      if (!run || run.transactionId !== transaction.id)
+        throw new NightwatchInvariantError("ACCEPTANCE_RUN_NOT_FOUND", runId);
+      const external = requireText(externalRunId, "externalRunId");
+      if (run.externalRunId && run.externalRunId !== external)
+        throw new NightwatchInvariantError("ACCEPTANCE_EXTERNAL_RUN_MISMATCH", runId);
+      if (!run.externalRunId) {
+        this.db.prepare("UPDATE acceptance_runs SET external_run_id = ? WHERE run_id = ?").run(external, runId);
+        this.event(
+          "acceptance-run",
+          runId,
+          "EXTERNAL_RUN_BOUND",
+          { transactionId, stage: run.stage, externalRunId: external },
+          at,
+        );
+      }
+      return this.acceptanceRuns(transactionId).find((entry) => entry.id === runId)!;
+    });
+  }
+
+  private dispatchAcceptanceRun(
+    transactionId: string,
+    stage: AcceptanceRunStage,
+    eventKey: string,
+    externalRunId: string | undefined,
+    at: string,
+  ) {
     return this.inTransaction(() => {
       const transaction = this.getAcceptanceTransaction(transactionId);
       const key = requireText(eventKey, "eventKey");
       const sameIdentity = this.db
         .prepare("SELECT * FROM acceptance_runs WHERE transaction_id = ? AND stage = ?")
         .get(transactionId, stage) as Record<string, unknown> | undefined;
-      if (sameIdentity) return this.acceptanceRuns(transactionId).find((run) => run.id === String(sameIdentity.run_id))!;
+      if (sameIdentity)
+        return this.acceptanceRuns(transactionId).find((run) => run.id === String(sameIdentity.run_id))!;
       const expected = stage === "AUTHORITY" ? "AWAITING_AUTHORITY" : "BINDING_PENDING";
-      if (transaction.state !== expected) throw new NightwatchInvariantError(`${stage}_DISPATCH_NOT_READY`, transactionId);
+      if (transaction.state !== expected)
+        throw new NightwatchInvariantError(`${stage}_DISPATCH_NOT_READY`, transactionId);
       const identityKey = `${transaction.candidateSha}:${transaction.baseSha}:${stage}`;
       const id = randomUUID();
       this.db
-        .prepare("INSERT INTO acceptance_runs(run_id, transaction_id, stage, dispatch_key, external_run_id, status, dispatched_at) VALUES (?, ?, ?, ?, ?, 'RUNNING', ?)")
+        .prepare(
+          "INSERT INTO acceptance_runs(run_id, transaction_id, stage, dispatch_key, external_run_id, status, dispatched_at) VALUES (?, ?, ?, ?, ?, 'RUNNING', ?)",
+        )
         .run(id, transactionId, stage, `${identityKey}:${key}`, externalRunId ?? null, at);
-      this.db.prepare("UPDATE acceptance_transactions SET " + (stage === "AUTHORITY" ? "authority_run_id" : "binding_run_id") + " = ?, updated_at = ? WHERE transaction_id = ?").run(id, at, transactionId);
+      this.db
+        .prepare(
+          "UPDATE acceptance_transactions SET " +
+            (stage === "AUTHORITY" ? "authority_run_id" : "binding_run_id") +
+            " = ?, updated_at = ? WHERE transaction_id = ?",
+        )
+        .run(id, at, transactionId);
       if (stage === "AUTHORITY") {
-        this.db.prepare("UPDATE integration_cascades SET authority_attempts = authority_attempts + 1 WHERE cascade_id = ?").run(transaction.cascadeId);
+        this.db
+          .prepare("UPDATE integration_cascades SET authority_attempts = authority_attempts + 1 WHERE cascade_id = ?")
+          .run(transaction.cascadeId);
         this.setTransactionState(transactionId, "AUTHORITY_RUNNING", at);
       } else this.setTransactionState(transactionId, "BINDING_RUNNING", at);
       this.event("acceptance-run", id, "RUN_DISPATCHED", { transactionId, stage, eventKey: key }, at);
@@ -1464,9 +1701,23 @@ export class NightwatchLedger {
       const transaction = this.getAcceptanceTransaction(transactionId);
       if (transaction.state !== "AUTHORITY_RUNNING" || transaction.authorityRunId !== runId)
         throw new NightwatchInvariantError("AUTHORITY_RUN_MISMATCH", transactionId);
-      this.db.prepare("UPDATE acceptance_runs SET status = ?, completed_at = ? WHERE run_id = ?").run(result, at, runId);
-      this.db.prepare("UPDATE acceptance_transactions SET authority_result = ?, updated_at = ? WHERE transaction_id = ?").run(result, at, transactionId);
-      this.setTransactionState(transactionId, result === "RELEASE_GO" ? "AUTHORITY_ACCEPTED" : "AUTHORITY_REJECTED", at);
+      this.db
+        .prepare("UPDATE acceptance_runs SET status = ?, completed_at = ? WHERE run_id = ?")
+        .run(result, at, runId);
+      const run = this.acceptanceRuns(transactionId).find((entry) => entry.id === runId)!;
+      this.recordCostDuration(
+        transaction.cascadeId,
+        "authority",
+        Math.max(0, Date.parse(at) - Date.parse(run.dispatchedAt)),
+      );
+      this.db
+        .prepare("UPDATE acceptance_transactions SET authority_result = ?, updated_at = ? WHERE transaction_id = ?")
+        .run(result, at, transactionId);
+      this.setTransactionState(
+        transactionId,
+        result === "RELEASE_GO" ? "AUTHORITY_ACCEPTED" : "AUTHORITY_REJECTED",
+        at,
+      );
       if (result === "RELEASE_GO") return this.setTransactionState(transactionId, "BINDING_PENDING", at);
       return this.getAcceptanceTransaction(transactionId);
     });
@@ -1477,10 +1728,22 @@ export class NightwatchLedger {
       const transaction = this.getAcceptanceTransaction(transactionId);
       if (transaction.state !== "BINDING_RUNNING" || transaction.bindingRunId !== runId)
         throw new NightwatchInvariantError("BINDING_RUN_MISMATCH", transactionId);
-      this.db.prepare("UPDATE acceptance_runs SET status = ?, completed_at = ? WHERE run_id = ?").run(result, at, runId);
-      this.db.prepare("UPDATE acceptance_transactions SET binding_result = ?, updated_at = ? WHERE transaction_id = ?").run(result, at, transactionId);
+      this.db
+        .prepare("UPDATE acceptance_runs SET status = ?, completed_at = ? WHERE run_id = ?")
+        .run(result, at, runId);
+      const run = this.acceptanceRuns(transactionId).find((entry) => entry.id === runId)!;
+      this.recordCostDuration(
+        transaction.cascadeId,
+        "controlPlaneWait",
+        Math.max(0, Date.parse(at) - Date.parse(run.dispatchedAt)),
+      );
+      this.db
+        .prepare("UPDATE acceptance_transactions SET binding_result = ?, updated_at = ? WHERE transaction_id = ?")
+        .run(result, at, transactionId);
       this.setTransactionState(transactionId, result, at);
-      return result === "BINDING_PASS" ? this.setTransactionState(transactionId, "MERGING", at) : this.getAcceptanceTransaction(transactionId);
+      return result === "BINDING_PASS"
+        ? this.setTransactionState(transactionId, "MERGING", at)
+        : this.getAcceptanceTransaction(transactionId);
     });
   }
 
@@ -1489,7 +1752,8 @@ export class NightwatchLedger {
       const transaction = this.getAcceptanceTransaction(transactionId);
       if (transaction.state !== "MERGING") throw new NightwatchInvariantError("MERGING_REQUIRED", transactionId);
       const candidate = this.getCandidate(transaction.candidateId);
-      if (candidate.state === "ACCEPTANCE_PENDING") this.transitionCandidate(transaction.candidateId, "INTEGRATED", { at });
+      if (candidate.state === "ACCEPTANCE_PENDING")
+        this.transitionCandidate(transaction.candidateId, "INTEGRATED", { at });
       return this.setTransactionState(transactionId, "INTEGRATED", at);
     });
   }
@@ -1501,9 +1765,14 @@ export class NightwatchLedger {
       if (transaction.state !== "INTEGRATED") throw new NightwatchInvariantError("INTEGRATED_REQUIRED", transactionId);
       requireText(landed.mergeSha, "mergeSha");
       requireText(landed.treeSha, "treeSha");
+      if (landed.treeSha !== transaction.candidateTreeSha)
+        throw new NightwatchInvariantError("POST_MERGE_TREE_MISMATCH", transactionId);
       const candidate = this.getCandidate(transaction.candidateId);
-      if (candidate.state === "INTEGRATED") this.transitionCandidate(transaction.candidateId, "POST_MERGE_VERIFIED", { at });
-      const lease = transaction.leaseId ? this.leases("ACTIVE").find((entry) => entry.id === transaction.leaseId) : undefined;
+      if (candidate.state === "INTEGRATED")
+        this.transitionCandidate(transaction.candidateId, "POST_MERGE_VERIFIED", { at });
+      const lease = transaction.leaseId
+        ? this.leases("ACTIVE").find((entry) => entry.id === transaction.leaseId)
+        : undefined;
       if (lease) this.releaseLease(lease.id, lease.owner, at);
       this.event("acceptance-transaction", transactionId, "POST_MERGE_IDENTITY_VERIFIED", landed, at);
       return this.setTransactionState(transactionId, "POST_MERGE_VERIFIED", at);
@@ -1513,45 +1782,210 @@ export class NightwatchLedger {
   recordTransactionMainAdvance(transactionId: string, semanticInvalidation: string, at = iso()) {
     return this.inTransaction(() => {
       const transaction = this.getAcceptanceTransaction(transactionId);
-      const race = ["AUTHORITY_ACCEPTED", "BINDING_PENDING", "BINDING_RUNNING", "BINDING_PASS", "MERGING"].includes(transaction.state);
-      this.db.prepare("UPDATE integration_cascades SET mainline_rebuilds = mainline_rebuilds + 1 WHERE cascade_id = ?").run(transaction.cascadeId);
-      this.db.prepare("UPDATE acceptance_transactions SET last_semantic_invalidation = ?, updated_at = ? WHERE transaction_id = ?").run(requireText(semanticInvalidation, "semanticInvalidation"), at, transactionId);
+      const race = ["AUTHORITY_ACCEPTED", "BINDING_PENDING", "BINDING_RUNNING", "BINDING_PASS", "MERGING"].includes(
+        transaction.state,
+      );
+      this.db
+        .prepare("UPDATE integration_cascades SET mainline_rebuilds = mainline_rebuilds + 1 WHERE cascade_id = ?")
+        .run(transaction.cascadeId);
+      this.db
+        .prepare(
+          "UPDATE acceptance_transactions SET last_semantic_invalidation = ?, updated_at = ? WHERE transaction_id = ?",
+        )
+        .run(requireText(semanticInvalidation, "semanticInvalidation"), at, transactionId);
       const candidate = this.getCandidate(transaction.candidateId);
       if (race) {
-        if (candidate.state === "ACCEPTANCE_PENDING") this.transitionCandidate(transaction.candidateId, "RECONCILING", { at });
+        if (candidate.state === "ACCEPTANCE_PENDING")
+          this.transitionCandidate(transaction.candidateId, "RECONCILING", { at });
         return this.setTransactionState(transactionId, "MERGE_RACE", at);
       }
-      if (candidate.state === "ACCEPTANCE_PENDING") this.transitionCandidate(transaction.candidateId, "RECONCILING", { at });
+      if (candidate.state === "ACCEPTANCE_PENDING")
+        this.transitionCandidate(transaction.candidateId, "RECONCILING", { at });
       return this.setTransactionState(transactionId, "RECONCILING", at);
     });
   }
 
   recordMaintenanceDescendant(transactionId: string, input: { candidateId?: string; generation: number; at?: string }) {
     assertSafe(input);
-    if (!Number.isSafeInteger(input.generation) || input.generation < 0) throw new NightwatchInvariantError("INVALID_CASCADE_GENERATION");
+    if (!Number.isSafeInteger(input.generation) || input.generation < 0)
+      throw new NightwatchInvariantError("INVALID_CASCADE_GENERATION");
     return this.inTransaction(() => {
       const transaction = this.getAcceptanceTransaction(transactionId);
+      const budget = this.transactionBudget(transactionId, input.at ? Date.parse(input.at) : Date.now());
+      if (budget.status === "PARKED_BREAKER")
+        throw new NightwatchInvariantError("INTEGRATION_CASCADE_BREAKER", transactionId);
+      if (budget.status === "CONTROL_PLANE_REVIEW")
+        throw new NightwatchInvariantError("INTEGRATION_HARD_REVIEW", transactionId);
+      if (input.generation > 2) throw new NightwatchInvariantError("CASCADE_GENERATION_OWNER_REVIEW", transactionId);
       const cascade = this.cascade(this.cascadeRow(transaction.cascadeId));
-      const blocked = [...new Set([...cascade.blockedCandidates, ...(input.candidateId ? [input.candidateId] : [])])].sort();
-      this.db.prepare("UPDATE integration_cascades SET maintenance_pr_count = maintenance_pr_count + 1, blocked_candidates_json = ? WHERE cascade_id = ?").run(json(blocked), cascade.id);
-      this.event("integration-cascade", cascade.id, "MAINTENANCE_DESCENDANT_RECORDED", { generation: input.generation, candidateId: input.candidateId ?? null }, input.at);
+      const blocked = [
+        ...new Set([...cascade.blockedCandidates, ...(input.candidateId ? [input.candidateId] : [])]),
+      ].sort();
+      this.db
+        .prepare(
+          "UPDATE integration_cascades SET maintenance_pr_count = maintenance_pr_count + 1, blocked_candidates_json = ? WHERE cascade_id = ?",
+        )
+        .run(json(blocked), cascade.id);
+      this.event(
+        "integration-cascade",
+        cascade.id,
+        "MAINTENANCE_DESCENDANT_RECORDED",
+        { generation: input.generation, candidateId: input.candidateId ?? null },
+        input.at,
+      );
       return this.integrationBudget(cascade.id, input.at ? Date.parse(input.at) : Date.now());
+    });
+  }
+
+  recordMaintenanceFinding(
+    transactionId: string,
+    input: { fingerprint: string; generation: number; candidateId?: string; durationMs?: number; at?: string },
+  ) {
+    assertSafe(input);
+    const fingerprint = requireText(input.fingerprint, "maintenanceFindingFingerprint");
+    return this.inTransaction(() => {
+      const transaction = this.getAcceptanceTransaction(transactionId);
+      const existing = this.db
+        .prepare("SELECT fingerprint FROM maintenance_findings WHERE cascade_id = ? AND fingerprint = ?")
+        .get(transaction.cascadeId, fingerprint);
+      if (existing)
+        return {
+          duplicate: true,
+          budget: this.transactionBudget(transactionId, input.at ? Date.parse(input.at) : Date.now()),
+        };
+      const budget = this.recordMaintenanceDescendant(transactionId, {
+        candidateId: input.candidateId,
+        generation: input.generation,
+        at: input.at,
+      });
+      this.db
+        .prepare(
+          "INSERT INTO maintenance_findings(cascade_id, fingerprint, generation, created_at) VALUES (?, ?, ?, ?)",
+        )
+        .run(transaction.cascadeId, fingerprint, input.generation, input.at ?? iso());
+      this.recordCostDuration(
+        transaction.cascadeId,
+        "descendantMaintenance",
+        boundedNumber(input.durationMs, 0, "maintenanceDurationMs"),
+      );
+      return { duplicate: false, budget };
+    });
+  }
+
+  recordCostDuration(
+    cascadeId: string,
+    category:
+      | "productValue"
+      | "controlPlaneActive"
+      | "controlPlaneWait"
+      | "externallyBlocked"
+      | "descendantMaintenance"
+      | "authority"
+      | "browserMatrix"
+      | "retryAndCooldown",
+    durationMs: number,
+  ) {
+    const field = {
+      productValue: "product_value_ms",
+      controlPlaneActive: "control_plane_active_ms",
+      controlPlaneWait: "control_plane_wait_ms",
+      externallyBlocked: "externally_blocked_ms",
+      descendantMaintenance: "descendant_maintenance_ms",
+      authority: "authority_ms",
+      browserMatrix: "browser_matrix_ms",
+      retryAndCooldown: "retry_cooldown_ms",
+    }[category];
+    const duration = boundedNumber(durationMs, 0, "integrationCostDurationMs");
+    this.db
+      .prepare(`UPDATE integration_cost_ledger SET ${field} = ${field} + ? WHERE cascade_id = ?`)
+      .run(duration, cascadeId);
+  }
+
+  setRemainingClosureSteps(transactionId: string, steps: string[]) {
+    return this.inTransaction(() => {
+      const transaction = this.getAcceptanceTransaction(transactionId);
+      const normalized = [...new Set(steps.map((step) => requireText(step, "remainingClosureStep")))];
+      this.db
+        .prepare("UPDATE integration_cost_ledger SET remaining_closure_steps_json = ? WHERE cascade_id = ?")
+        .run(json(normalized), transaction.cascadeId);
+      this.event("integration-cost", transaction.cascadeId, "REMAINING_CLOSURE_STEPS_UPDATED", {
+        transactionId,
+        remainingClosureSteps: normalized,
+      });
+      return normalized;
     });
   }
 
   integrationBudget(cascadeId: string, now = Date.now()): IntegrationBudgetStatus {
     return this.inTransaction(() => {
       const cascade = this.cascade(this.cascadeRow(cascadeId));
-      const elapsedMs = Math.max(0, now - Date.parse(cascade.startedAt));
-      const status: IntegrationCascade["status"] = elapsedMs >= 90 * 60_000 ? "PARKED_BREAKER" : elapsedMs >= 60 * 60_000 ? "CONTROL_PLANE_REVIEW" : elapsedMs >= 30 * 60_000 ? "WARNING" : "ACTIVE";
-      if (status !== cascade.status) this.db.prepare("UPDATE integration_cascades SET status = ? WHERE cascade_id = ?").run(status, cascadeId);
+      const cost = this.cost(this.costRow(cascadeId));
+      const elapsedMs = Math.max(0, now - Date.parse(cost.startedAt));
+      const status: IntegrationCascade["status"] =
+        elapsedMs >= cost.breakerAtMs
+          ? "PARKED_BREAKER"
+          : elapsedMs >= cost.hardReviewAtMs
+            ? "CONTROL_PLANE_REVIEW"
+            : elapsedMs >= cost.warningAtMs
+              ? "WARNING"
+              : "ACTIVE";
+      if (status !== cascade.status)
+        this.db.prepare("UPDATE integration_cascades SET status = ? WHERE cascade_id = ?").run(status, cascadeId);
       if (status === "PARKED_BREAKER") {
-        this.db.prepare("UPDATE acceptance_transactions SET state = 'PARKED_INTEGRATION_BREAKER', updated_at = ? WHERE cascade_id = ? AND state NOT IN ('INTEGRATED', 'POST_MERGE_VERIFIED')").run(iso(now), cascadeId);
-        this.event("integration-cascade", cascadeId, "INTEGRATION_CASCADE_BREAKER", { elapsedMs }, iso(now));
+        this.db
+          .prepare(
+            "UPDATE acceptance_transactions SET state = 'PARKED_INTEGRATION_BREAKER', updated_at = ? WHERE cascade_id = ? AND state NOT IN ('INTEGRATED', 'POST_MERGE_VERIFIED')",
+          )
+          .run(iso(now), cascadeId);
+        const transactions = this.acceptanceTransactions().filter(
+          (entry) => entry.cascadeId === cascadeId && !["INTEGRATED", "POST_MERGE_VERIFIED"].includes(entry.state),
+        );
+        for (const transaction of transactions) {
+          const candidate = this.getCandidate(transaction.candidateId);
+          if (candidate.state === "ACCEPTANCE_PENDING")
+            this.transitionCandidate(candidate.id, "PARKED_LOOP_GUARD", {
+              reason: "INTEGRATION_CASCADE_BREAKER",
+              at: iso(now),
+            });
+          const lease = transaction.leaseId
+            ? this.leases("ACTIVE").find((entry) => entry.id === transaction.leaseId)
+            : undefined;
+          if (lease) this.releaseLease(lease.id, lease.owner, iso(now));
+        }
+        this.event(
+          "integration-cascade",
+          cascadeId,
+          "INTEGRATION_CASCADE_BREAKER",
+          { elapsedMs, remainingClosureSteps: cost.remainingClosureSteps },
+          iso(now),
+        );
       }
       const refreshed = this.cascade(this.cascadeRow(cascadeId));
-      return { cascadeId, elapsedMs, maintenanceAmplificationRatio: refreshed.maintenancePrCount / Math.max(1, refreshed.authorityAttempts), status };
+      return {
+        cascadeId,
+        transactionId: cost.transactionId,
+        elapsedMs,
+        maintenanceAmplificationRatio: refreshed.maintenancePrCount / Math.max(1, refreshed.authorityAttempts),
+        status,
+        productValueMs: cost.productValueMs,
+        controlPlaneActiveMs: cost.controlPlaneActiveMs,
+        controlPlaneWaitMs: cost.controlPlaneWaitMs,
+        externallyBlockedMs: cost.externallyBlockedMs,
+        descendantMaintenanceMs: cost.descendantMaintenanceMs,
+        authorityMs: cost.authorityMs,
+        browserMatrixMs: cost.browserMatrixMs,
+        retryAndCooldownMs: cost.retryAndCooldownMs,
+        noProgressCycles: cost.noProgressCycles,
+        remainingClosureSteps: cost.remainingClosureSteps,
+        warningAtMs: cost.warningAtMs,
+        hardReviewAtMs: cost.hardReviewAtMs,
+        breakerAtMs: cost.breakerAtMs,
+      };
     });
+  }
+
+  transactionBudget(transactionId: string, now = Date.now()) {
+    return this.integrationBudget(this.getAcceptanceTransaction(transactionId).cascadeId, now);
   }
 
   recover(options: { now?: number; repositoryRoot?: string } = {}) {
@@ -1572,6 +2006,107 @@ export class NightwatchLedger {
         iso(now),
       );
       return { expiredLeases, expiredReservations, migrationCollisions };
+    });
+  }
+
+  controllerHealth(now = Date.now(), staleAfterMs = 90_000): NightwatchControllerHealth {
+    const row = this.db.prepare("SELECT * FROM controller_health WHERE singleton = 1").get() as
+      | Record<string, unknown>
+      | undefined;
+    if (!row)
+      return {
+        instanceId: null,
+        state: "DOWN",
+        heartbeatAt: null,
+        lastSuccessfulReconciliationAt: null,
+        detail: "Controller health is unavailable.",
+      };
+    const heartbeatAt = row.heartbeat_at ? String(row.heartbeat_at) : null;
+    const heartbeatAge = heartbeatAt ? Math.max(0, now - Date.parse(heartbeatAt)) : Number.POSITIVE_INFINITY;
+    const recorded = String(row.state) as NightwatchControllerState;
+    const state: NightwatchControllerState =
+      !heartbeatAt || recorded === "DOWN" ? "DOWN" : heartbeatAge > staleAfterMs ? "DEGRADED" : recorded;
+    return {
+      instanceId: row.instance_id ? String(row.instance_id) : null,
+      state,
+      heartbeatAt,
+      lastSuccessfulReconciliationAt: row.last_successful_reconciliation_at
+        ? String(row.last_successful_reconciliation_at)
+        : null,
+      detail: row.detail ? String(row.detail) : null,
+    };
+  }
+
+  claimController(instanceId: string, ttlMs: number, at = iso()) {
+    const owner = requireText(instanceId, "controllerInstanceId");
+    return this.inTransaction(() => {
+      const lease = this.acquireLease({ type: "CONTROLLER", scope: "nightwatchd", owner, ttlMs, now: Date.parse(at) });
+      this.db
+        .prepare(
+          "UPDATE controller_health SET instance_id = ?, state = 'LIVE', heartbeat_at = ?, detail = NULL WHERE singleton = 1",
+        )
+        .run(owner, at);
+      this.event("controller", owner, "CONTROLLER_CLAIMED", { leaseId: lease.id }, at);
+      return lease;
+    });
+  }
+
+  heartbeatController(input: {
+    instanceId: string;
+    ttlMs: number;
+    reconciled?: boolean;
+    detail?: string;
+    at?: string;
+  }) {
+    assertSafe(input);
+    const at = input.at ?? iso();
+    const instanceId = requireText(input.instanceId, "controllerInstanceId");
+    return this.inTransaction(() => {
+      const lease = this.leases("ACTIVE").find((entry) => entry.type === "CONTROLLER" && entry.scope === "nightwatchd");
+      if (!lease || lease.owner !== instanceId)
+        throw new NightwatchInvariantError("CONTROLLER_OWNERSHIP_REQUIRED", instanceId);
+      if (!Number.isFinite(input.ttlMs) || input.ttlMs <= 0) throw new NightwatchInvariantError("INVALID_LEASE_TTL");
+      this.db
+        .prepare("UPDATE leases SET expires_at = ? WHERE lease_id = ?")
+        .run(iso(Date.parse(at) + input.ttlMs), lease.id);
+      this.db
+        .prepare(
+          "UPDATE controller_health SET instance_id = ?, state = 'LIVE', heartbeat_at = ?, last_successful_reconciliation_at = CASE WHEN ? THEN ? ELSE last_successful_reconciliation_at END, detail = ? WHERE singleton = 1",
+        )
+        .run(instanceId, at, input.reconciled ? 1 : 0, at, input.detail ?? null);
+      this.event("controller", instanceId, "CONTROLLER_HEARTBEAT", { reconciled: Boolean(input.reconciled) }, at);
+      return this.controllerHealth(Date.parse(at));
+    });
+  }
+
+  degradeController(instanceId: string, detail: string, at = iso()) {
+    const owner = requireText(instanceId, "controllerInstanceId");
+    return this.inTransaction(() => {
+      const lease = this.leases("ACTIVE").find((entry) => entry.type === "CONTROLLER" && entry.scope === "nightwatchd");
+      if (!lease || lease.owner !== owner) throw new NightwatchInvariantError("CONTROLLER_OWNERSHIP_REQUIRED", owner);
+      this.db
+        .prepare(
+          "UPDATE controller_health SET instance_id = ?, state = 'DEGRADED', heartbeat_at = ?, detail = ? WHERE singleton = 1",
+        )
+        .run(owner, at, requireText(detail, "controllerDetail"));
+      this.event("controller", owner, "CONTROLLER_DEGRADED", { detail }, at);
+      return this.controllerHealth(Date.parse(at));
+    });
+  }
+
+  releaseController(instanceId: string, detail = "Clean controller shutdown.", at = iso()) {
+    const owner = requireText(instanceId, "controllerInstanceId");
+    return this.inTransaction(() => {
+      const lease = this.leases("ACTIVE").find((entry) => entry.type === "CONTROLLER" && entry.scope === "nightwatchd");
+      if (lease && lease.owner !== owner) throw new NightwatchInvariantError("CONTROLLER_OWNERSHIP_REQUIRED", owner);
+      if (lease) this.releaseLease(lease.id, owner, at);
+      this.db
+        .prepare(
+          "UPDATE controller_health SET instance_id = ?, state = 'DOWN', heartbeat_at = ?, detail = ? WHERE singleton = 1",
+        )
+        .run(owner, at, requireText(detail, "controllerDetail"));
+      this.event("controller", owner, "CONTROLLER_STOPPED", { detail }, at);
+      return this.controllerHealth(Date.parse(at));
     });
   }
 
@@ -1620,6 +2155,7 @@ export class NightwatchLedger {
       leases: this.leases(),
       integrationLifecycleState: queueFront?.state ?? "IDLE",
       acceptanceOwnership,
+      controller: this.controllerHealth(now),
     };
   }
 }

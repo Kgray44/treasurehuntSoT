@@ -1,8 +1,8 @@
 [
   {
     "id": "FT-B012",
-    "title": "Nightwatch Governed Integration Queue and Atomic Acceptance Sequencer",
-    "summary": "Project Nightwatch Increments A and A.1 provide a durable local control plane that serializes canonical integration through queue-front lifecycle, exact candidate/base acceptance transactions, authority-before-binding sequencing, bounded leases, restart recovery, cascade budgets, and a read-only Bridgewatch projection.",
+    "title": "Nightwatch Governed Integration Queue, Acceptance Sequencer, and Live Controller",
+    "summary": "Project Nightwatch Increments A through A.2 provide a durable local control plane that serializes canonical integration through queue-front lifecycle, exact candidate/base acceptance transactions, authority-before-binding sequencing, bounded leases, restart recovery, cumulative cost budgets, exact GitHub dispatches, and a read-only Bridgewatch projection.",
     "status": "BRANCH_COMPLETE_NOT_MERGED",
     "program": "Project Nightwatch Phase 1 Increments A and A.1",
     "surfaces": [
@@ -10,6 +10,8 @@
       "npm run nightwatch:migrations:inspect",
       "npm run nightwatch:migrations:release",
       "npm run nightwatch:migrations:reconcile",
+      "npm run nightwatch:controller:start",
+      "npm run nightwatch:controller:status",
       "GET /api/nightwatch"
     ],
     "subfeatures": [
@@ -20,7 +22,10 @@
       "Atomic multi-ID migration reservation allocation with collision and ambiguity rejection",
       "Read-only Bridgewatch projection of queue, candidates, reservations, collisions, and acceptance ownership",
       "Atomic exact candidate/base/tree acceptance transactions with neutral pending authority and protected binding ordering",
-      "Event and run deduplication, merge-race reconciliation, cumulative cascade accounting, and hard integration breaker"
+      "Event and run deduplication, merge-race reconciliation, cumulative cascade accounting, and hard integration breaker",
+      "Single-lease persistent nightwatchd controller with restart-safe exact GitHub workflow rediscovery",
+      "Explicit RELEASE_GO-gated protected-binding dispatch with receipt-artifact verification",
+      "Live Bridgewatch controller health and raw parent integration cost projection"
     ],
     "limitations": [
       "Sounding Line remains the sole RELEASE_GO and protected-merge authority.",
@@ -34,7 +39,14 @@
       { "kind": "test", "value": "src/nightwatch/runtime.test.ts" },
       { "kind": "test", "value": "bridgewatch/test/nightwatch-projection.test.ts" },
       { "kind": "path", "value": "bridgewatch/public/app.js" },
-      { "kind": "completion-record", "value": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A1_Atomic_Acceptance_Sequencer_Implementation_Record.md" },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A2_Live_Control_Plane_Implementation_Record.md"
+      },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A1_Atomic_Acceptance_Sequencer_Implementation_Record.md"
+      },
       {
         "kind": "completion-record",
         "value": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md"

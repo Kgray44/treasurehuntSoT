@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `9201c4555fffbbb3946f8c946a7b374e0bb2d3c8`
+Audited source commit: `d0c707a3fe104b11413b5ec12fa76132390560c7`
 
 ## Status vocabulary
 
@@ -1589,12 +1589,12 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 # Completed Branch Features Not Yet Available on Main
 
-## FT-B012 - Nightwatch Governed Integration Queue and Atomic Acceptance Sequencer
+## FT-B012 - Nightwatch Governed Integration Queue, Acceptance Sequencer, and Live Controller
 
 **Status:** BRANCH COMPLETE NOT MERGED
 **Program or subsystem:** Project Nightwatch Phase 1 Increments A and A.1
 
-Project Nightwatch Increments A and A.1 provide a durable local control plane that serializes canonical integration through queue-front lifecycle, exact candidate/base acceptance transactions, authority-before-binding sequencing, bounded leases, restart recovery, cascade budgets, and a read-only Bridgewatch projection.
+Project Nightwatch Increments A through A.2 provide a durable local control plane that serializes canonical integration through queue-front lifecycle, exact candidate/base acceptance transactions, authority-before-binding sequencing, bounded leases, restart recovery, cumulative cost budgets, exact GitHub dispatches, and a read-only Bridgewatch projection.
 
 ### Important subfeatures
 
@@ -1606,10 +1606,13 @@ Project Nightwatch Increments A and A.1 provide a durable local control plane th
 - Read-only Bridgewatch projection of queue, candidates, reservations, collisions, and acceptance ownership
 - Atomic exact candidate/base/tree acceptance transactions with neutral pending authority and protected binding ordering
 - Event and run deduplication, merge-race reconciliation, cumulative cascade accounting, and hard integration breaker
+- Single-lease persistent nightwatchd controller with restart-safe exact GitHub workflow rediscovery
+- Explicit RELEASE_GO-gated protected-binding dispatch with receipt-artifact verification
+- Live Bridgewatch controller health and raw parent integration cost projection
 
 ### Primary surfaces
 
-`npm run nightwatch:migrations:reserve`, `npm run nightwatch:migrations:inspect`, `npm run nightwatch:migrations:release`, `npm run nightwatch:migrations:reconcile`, `GET /api/nightwatch`
+`npm run nightwatch:migrations:reserve`, `npm run nightwatch:migrations:inspect`, `npm run nightwatch:migrations:release`, `npm run nightwatch:migrations:reconcile`, `npm run nightwatch:controller:start`, `npm run nightwatch:controller:status`, `GET /api/nightwatch`
 
 ### Meaningful limitations
 
@@ -1625,6 +1628,7 @@ Project Nightwatch Increments A and A.1 provide a durable local control plane th
 - test: `src/nightwatch/runtime.test.ts`
 - test: `bridgewatch/test/nightwatch-projection.test.ts`
 - path: `bridgewatch/public/app.js`
+- completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A2_Live_Control_Plane_Implementation_Record.md`
 - completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A1_Atomic_Acceptance_Sequencer_Implementation_Record.md`
 - completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md`
 
@@ -1643,4 +1647,4 @@ Project Nightwatch Increments A and A.1 provide a durable local control plane th
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `9201c4555fffbbb3946f8c946a7b374e0bb2d3c8`
+Generation source commit: `d0c707a3fe104b11413b5ec12fa76132390560c7`
