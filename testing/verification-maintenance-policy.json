@@ -137,6 +137,8 @@
     "testRegistrySourcePathGlobs": ["scripts/sounding-line/test-registry.mjs"],
     "sharedVerificationSuiteIds": ["static.core", "validation.documentation", "unit.feature-catalog"],
     "semanticOwnership": "TRUSTED_OWNERSHIP_OR_TRUSTED_DISCOVERY_DESCRIPTOR",
+    "allowMonotonicOwnershipRegistration": true,
+    "monotonicOwnershipPathGlobs": ["testing/ownership.json"],
     "monotonicity": "NO_FOREIGN_MUTATION_OR_REMOVAL"
   },
   "requiredEvidence": [

@@ -71,7 +71,7 @@ const fail = (message) => {
   process.exitCode = 1;
 };
 
-async function loadPolicy() {
+export async function loadPolicy() {
   const manifest = JSON.parse(await readFile(path.join(policyRoot, "policy-manifest.json"), "utf8"));
   const policy = { manifest };
   for (const file of registryFiles)
@@ -103,7 +103,7 @@ function scanSensitive(value, label, errors) {
     scanSensitive(child, `${label}.${key}`, errors);
   }
 }
-function validatePolicy(policy) {
+export function validatePolicy(policy) {
   const errors = [];
   const {
     ownership,
@@ -506,11 +506,22 @@ function validatePolicy(policy) {
   for (const alias of historicalAliases)
     if (activeIds.has(alias)) errors.push(`test definition: historical alias collides with active id ${alias}`);
   for (const owner of effectiveOwners) {
-    assertKeys(owner, ["id", "project", "sourcePaths", "testPaths", "contractIds"], `owner ${owner.id}`, errors);
+    assertKeys(
+      owner,
+      ["id", "project", "sourcePaths", "testPaths", "contractIds", "supportingOwnerIds"],
+      `owner ${owner.id}`,
+      errors,
+    );
     for (const value of [...owner.sourcePaths, ...owner.testPaths])
       if (!isSafePath(value)) errors.push(`owner ${owner.id}: unsafe path ${value}`);
     for (const id of owner.contractIds)
       if (!contractIds.has(id)) errors.push(`owner ${owner.id}: missing contract ${id}`);
+    if (
+      owner.supportingOwnerIds !== undefined &&
+      (!Array.isArray(owner.supportingOwnerIds) ||
+        owner.supportingOwnerIds.some((id) => typeof id !== "string" || !ownerIds.has(id) || id === owner.id))
+    )
+      errors.push(`owner ${owner.id}: invalid supporting owner`);
   }
   for (const contract of contracts.contracts) {
     assertKeys(contract, ["id", "name", "authority", "owners", "critical"], `contract ${contract.id}`, errors);
@@ -1194,4 +1205,5 @@ async function main() {
     "usage: node scripts/sounding-line/cli.mjs <validate-policy|inventory|plan|runtime|resource|compatibility|certification> ...",
   );
 }
-main().catch((error) => fail(error instanceof Error ? error.message : String(error)));
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url))
+  main().catch((error) => fail(error instanceof Error ? error.message : String(error)));
