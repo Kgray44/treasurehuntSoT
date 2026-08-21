@@ -40,12 +40,13 @@ function Read-NightwatchHealth {
   try { return (& $node.Source $healthProbePath 2>$null | ConvertFrom-Json) } catch { return [pscustomobject]@{ State = "DEGRADED"; Detail = "Nightwatch health record is unreadable." } }
 }
 
-function Write-NightwatchState([System.Diagnostics.Process]$process) {
+function Write-NightwatchState([System.Diagnostics.Process]$process, [string]$controllerId) {
   New-Item -ItemType Directory -Path $runtimeDirectory -Force | Out-Null
   [ordered]@{
     Pid = $process.Id
     RepositoryRoot = $repositoryRoot
     DaemonPath = $daemonPath
+    ControllerId = $controllerId
     DatabasePath = $env:NIGHTWATCH_DB_PATH
     StartedAt = (Get-Date).ToUniversalTime().ToString("o")
   } | ConvertTo-Json | Set-Content -LiteralPath $statePath -Encoding utf8
@@ -55,7 +56,6 @@ function Stop-OwnedNightwatch {
   $state = Read-NightwatchState
   $owned = Get-OwnedProcess $state
   if ($null -eq $owned) {
-    if ($state) { Remove-Item -LiteralPath $statePath -Force }
     return [pscustomobject]@{ State = "NOT_RUNNING"; Pid = $null }
   }
   $taskkill = Join-Path $env:SystemRoot "System32\taskkill.exe"
@@ -64,7 +64,6 @@ function Stop-OwnedNightwatch {
   $deadline = (Get-Date).AddSeconds(10)
   while ((Get-Date) -lt $deadline -and (Get-Process -Id ([int]$owned.ProcessId) -ErrorAction SilentlyContinue)) { Start-Sleep -Milliseconds 200 }
   if (Get-Process -Id ([int]$owned.ProcessId) -ErrorAction SilentlyContinue) { throw "Nightwatch controller did not stop within 10 seconds." }
-  Remove-Item -LiteralPath $statePath -Force
   return [pscustomobject]@{ State = "STOPPED"; Pid = [int]$owned.ProcessId }
 }
 
@@ -76,16 +75,18 @@ function Start-OwnedNightwatch {
   $state = Read-NightwatchState
   $owned = Get-OwnedProcess $state
   if ($owned) { return [pscustomobject]@{ State = "ALREADY_RUNNING"; Pid = [int]$owned.ProcessId; Health = (Read-NightwatchHealth) } }
-  if ($state) { Remove-Item -LiteralPath $statePath -Force }
+  $controllerId = if ($state -and $state.ControllerId) { [string]$state.ControllerId } else { "nightwatchd-$([guid]::NewGuid().ToString())" }
+  $priorHealth = Read-NightwatchHealth
   $env:NIGHTWATCH_DB_PATH = if ($DatabasePath) { [System.IO.Path]::GetFullPath($DatabasePath) } else { Join-Path $runtimeDirectory "nightwatch.sqlite" }
   $env:NIGHTWATCH_INTERVAL_MS = "$IntervalMs"
+  $env:NIGHTWATCH_INSTANCE_ID = $controllerId
   $started = Start-Process -FilePath $node.Source -ArgumentList @($tsxCliPath, $daemonPath) -WorkingDirectory $repositoryRoot -WindowStyle Hidden -PassThru
-  Write-NightwatchState $started
+  Write-NightwatchState $started $controllerId
   $deadline = (Get-Date).AddSeconds(15)
   while ((Get-Date) -lt $deadline) {
     if ($started.HasExited) { break }
     $health = Read-NightwatchHealth
-    if ($health.State -eq "LIVE") { return [pscustomobject]@{ State = "HEALTHY"; Pid = $started.Id; DatabasePath = $env:NIGHTWATCH_DB_PATH } }
+    if ($health.State -eq "LIVE" -and $health.InstanceId -eq $controllerId -and $health.HeartbeatAt -ne $priorHealth.HeartbeatAt) { return [pscustomobject]@{ State = "HEALTHY"; Pid = $started.Id; DatabasePath = $env:NIGHTWATCH_DB_PATH; ControllerId = $controllerId } }
     Start-Sleep -Milliseconds 300
   }
   if (!$started.HasExited) {

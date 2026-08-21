@@ -6,7 +6,7 @@ const database = new DatabaseSync(databasePath, { readonly: true });
 try {
   const row = database
     .prepare(
-      "SELECT state, heartbeat_at AS heartbeatAt, last_successful_reconciliation_at AS lastSuccessfulReconciliationAt, detail FROM controller_health WHERE singleton = 1",
+      "SELECT instance_id AS instanceId, state, heartbeat_at AS heartbeatAt, last_successful_reconciliation_at AS lastSuccessfulReconciliationAt, detail FROM controller_health WHERE singleton = 1",
     )
     .get();
   process.stdout.write(`${JSON.stringify(row ?? { state: "DOWN", detail: "Controller health is unavailable." })}\n`);

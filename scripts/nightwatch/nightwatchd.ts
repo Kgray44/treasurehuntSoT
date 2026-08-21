@@ -16,6 +16,7 @@ const ledger = new NightwatchLedger(databasePath, { repositoryRoot: process.cwd(
 const controller = new NightwatchController(
   ledger,
   new GitHubCliControlPlane(repository, process.env.NIGHTWATCH_DEFAULT_BRANCH ?? "main"),
+  { instanceId: process.env.NIGHTWATCH_INSTANCE_ID },
 );
 
 let stopping = false;
