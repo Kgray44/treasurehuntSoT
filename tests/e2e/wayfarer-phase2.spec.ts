@@ -17,6 +17,7 @@ test("Wayfarer Passport persists a private profile, preferences, media, and a si
   await page.getByLabel("Confirm password", { exact: true }).fill("A secure test password 42!");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByText("Your account request was completed.")).toBeVisible();
+
   await page.goto("/passport");
   await expect(page.getByRole("heading", { name: "Chronicle Passport" })).toBeVisible();
   await page.getByLabel("Display name").fill("Isolated Captain");
@@ -29,15 +30,18 @@ test("Wayfarer Passport persists a private profile, preferences, media, and a si
   await expect(page.getByText("Banner saved.")).toBeVisible();
   await page.getByRole("button", { name: "Save profile" }).click();
   await expect(page.getByText("Profile saved.")).toBeVisible();
+
   await page.goto(`/profile/${handle}`);
   await expect(page.getByRole("heading", { name: "Isolated Captain" })).toBeVisible();
   await expect(page.getByText("A private voyage biography.")).toBeVisible();
+
   await page.goto("/passport");
   await page.getByLabel("Public handle").fill(nextHandle);
   await page.getByRole("button", { name: "Save profile" }).click();
   await expect(page.getByText("Profile saved.")).toBeVisible();
   await page.goto(`/profile/${handle}`);
   await expect(page).toHaveURL(new RegExp(`/profile/${nextHandle}$`));
+
   await page.goto("/passport");
   await page.getByLabel("Motion").selectOption("REDUCED");
   await page.getByLabel("Text scale").fill("1.4");
@@ -48,6 +52,7 @@ test("Wayfarer Passport persists a private profile, preferences, media, and a si
   await page.reload();
   await expect(page.getByLabel("Motion")).toHaveValue("REDUCED");
   await expect(page.getByLabel("Text scale")).toHaveValue("1.4");
+
   await page.locator('select[name="BIOGRAPHY"]').selectOption("ONLY_ME");
   await page.getByRole("button", { name: "Save privacy controls" }).click();
   await expect(page.getByText("Privacy rules saved.")).toBeVisible();
