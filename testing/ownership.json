@@ -431,6 +431,7 @@
       "project": "project-nightwatch",
       "sourcePaths": ["src/nightwatch/**", "scripts/nightwatch/**", "Development_Docs/Projects/Project_Nightwatch/**"],
       "testPaths": ["src/nightwatch/**/*.test.*"],
+      "supportingOwnerIds": ["bridgewatch"],
       "contractIds": ["nightwatch.increment-a.integration-queue"]
     },
     {
