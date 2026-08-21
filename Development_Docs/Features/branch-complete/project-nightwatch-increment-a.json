@@ -1,10 +1,10 @@
 [
   {
     "id": "FT-B012",
-    "title": "Nightwatch Governed Integration Queue and Migration Reservations",
-    "summary": "Project Nightwatch Increment A provides a durable local control plane that serializes canonical integration while preserving parallel product development through explicit candidate lifecycle, queue-front-only reconciliation, atomic migration reservations, bounded leases, restart recovery, and a read-only Bridgewatch projection.",
+    "title": "Nightwatch Governed Integration Queue and Atomic Acceptance Sequencer",
+    "summary": "Project Nightwatch Increments A and A.1 provide a durable local control plane that serializes canonical integration through queue-front lifecycle, exact candidate/base acceptance transactions, authority-before-binding sequencing, bounded leases, restart recovery, cascade budgets, and a read-only Bridgewatch projection.",
     "status": "BRANCH_COMPLETE_NOT_MERGED",
-    "program": "Project Nightwatch Phase 1 Increment A",
+    "program": "Project Nightwatch Phase 1 Increments A and A.1",
     "surfaces": [
       "npm run nightwatch:migrations:reserve",
       "npm run nightwatch:migrations:inspect",
@@ -18,7 +18,9 @@
       "Queue-front-only reconciliation protected by an Integration Acceptance lease",
       "SQLite-backed ledger with auditable events and stale lease or reservation recovery",
       "Atomic multi-ID migration reservation allocation with collision and ambiguity rejection",
-      "Read-only Bridgewatch projection of queue, candidates, reservations, collisions, and acceptance ownership"
+      "Read-only Bridgewatch projection of queue, candidates, reservations, collisions, and acceptance ownership",
+      "Atomic exact candidate/base/tree acceptance transactions with neutral pending authority and protected binding ordering",
+      "Event and run deduplication, merge-race reconciliation, cumulative cascade accounting, and hard integration breaker"
     ],
     "limitations": [
       "Sounding Line remains the sole RELEASE_GO and protected-merge authority.",
@@ -31,6 +33,8 @@
       { "kind": "path", "value": "src/nightwatch/runtime.ts" },
       { "kind": "test", "value": "src/nightwatch/runtime.test.ts" },
       { "kind": "test", "value": "bridgewatch/test/nightwatch-projection.test.ts" },
+      { "kind": "path", "value": "bridgewatch/public/app.js" },
+      { "kind": "completion-record", "value": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A1_Atomic_Acceptance_Sequencer_Implementation_Record.md" },
       {
         "kind": "completion-record",
         "value": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md"

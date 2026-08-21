@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `ee6da62badb4792586d33d44bbedbcf8cbe99fdf`
+Audited source commit: `9201c4555fffbbb3946f8c946a7b374e0bb2d3c8`
 
 ## Status vocabulary
 
@@ -1589,12 +1589,12 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 # Completed Branch Features Not Yet Available on Main
 
-## FT-B012 - Nightwatch Governed Integration Queue and Migration Reservations
+## FT-B012 - Nightwatch Governed Integration Queue and Atomic Acceptance Sequencer
 
 **Status:** BRANCH COMPLETE NOT MERGED
-**Program or subsystem:** Project Nightwatch Phase 1 Increment A
+**Program or subsystem:** Project Nightwatch Phase 1 Increments A and A.1
 
-Project Nightwatch Increment A provides a durable local control plane that serializes canonical integration while preserving parallel product development through explicit candidate lifecycle, queue-front-only reconciliation, atomic migration reservations, bounded leases, restart recovery, and a read-only Bridgewatch projection.
+Project Nightwatch Increments A and A.1 provide a durable local control plane that serializes canonical integration through queue-front lifecycle, exact candidate/base acceptance transactions, authority-before-binding sequencing, bounded leases, restart recovery, cascade budgets, and a read-only Bridgewatch projection.
 
 ### Important subfeatures
 
@@ -1604,6 +1604,8 @@ Project Nightwatch Increment A provides a durable local control plane that seria
 - SQLite-backed ledger with auditable events and stale lease or reservation recovery
 - Atomic multi-ID migration reservation allocation with collision and ambiguity rejection
 - Read-only Bridgewatch projection of queue, candidates, reservations, collisions, and acceptance ownership
+- Atomic exact candidate/base/tree acceptance transactions with neutral pending authority and protected binding ordering
+- Event and run deduplication, merge-race reconciliation, cumulative cascade accounting, and hard integration breaker
 
 ### Primary surfaces
 
@@ -1622,6 +1624,8 @@ Project Nightwatch Increment A provides a durable local control plane that seria
 - path: `src/nightwatch/runtime.ts`
 - test: `src/nightwatch/runtime.test.ts`
 - test: `bridgewatch/test/nightwatch-projection.test.ts`
+- path: `bridgewatch/public/app.js`
+- completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A1_Atomic_Acceptance_Sequencer_Implementation_Record.md`
 - completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md`
 
 ---
@@ -1639,4 +1643,4 @@ Project Nightwatch Increment A provides a durable local control plane that seria
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `ee6da62badb4792586d33d44bbedbcf8cbe99fdf`
+Generation source commit: `9201c4555fffbbb3946f8c946a7b374e0bb2d3c8`
