@@ -123,7 +123,8 @@ const trustedOwnerForFeatureCatalogRecord = (featureRecord, owners) => {
     );
   });
 };
-const featureCatalogRecord = (value) => (Array.isArray(value) && value.length === 1 ? value[0] : record(value) ? value : null);
+const featureCatalogRecord = (value) =>
+  Array.isArray(value) && value.length === 1 ? value[0] : record(value) ? value : null;
 
 function verifySourceBoundFeatureCatalogReconciliations({
   trustedPolicy,
@@ -651,7 +652,7 @@ async function registrationSnapshot({
         .map(async (file) => [
           file,
           {
-              trusted: baseTreePaths.has(file) ? JSON.parse(await gitShow(baseSha, file)) : null,
+            trusted: baseTreePaths.has(file) ? JSON.parse(await gitShow(baseSha, file)) : null,
             candidate: JSON.parse(await readCandidate(file)),
           },
         ]),
