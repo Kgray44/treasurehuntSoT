@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `d0c707a3fe104b11413b5ec12fa76132390560c7`
+Audited source commit: `ba989b6b50eac222aed25192281b4d989d03dc4c`
 
 ## Status vocabulary
 
@@ -1594,7 +1594,7 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 **Status:** BRANCH COMPLETE NOT MERGED
 **Program or subsystem:** Project Nightwatch Phase 1 Increments A and A.1
 
-Project Nightwatch Increments A through A.2 provide a durable local control plane that serializes canonical integration through queue-front lifecycle, exact candidate/base acceptance transactions, authority-before-binding sequencing, bounded leases, restart recovery, cumulative cost budgets, exact GitHub dispatches, and a read-only Bridgewatch projection.
+Project Nightwatch and Bosun B1.2 provide a durable control plane that serializes canonical integration through queue-front lifecycle, exact candidate/base acceptance transactions, exact protected-main Baseline Certification, authority-before-binding sequencing, bounded leases, restart recovery, compound deterministic closure, exact GitHub dispatches, and a read-only Bridgewatch projection.
 
 ### Important subfeatures
 
@@ -1609,6 +1609,8 @@ Project Nightwatch Increments A through A.2 provide a durable local control plan
 - Single-lease persistent nightwatchd controller with restart-safe exact GitHub workflow rediscovery
 - Explicit RELEASE_GO-gated protected-binding dispatch with receipt-artifact verification
 - Live Bridgewatch controller health and raw parent integration cost projection
+- Exact SHA/tree Baseline Certification receipt required before ordinary candidate authority
+- One Bosun fixed-point compound AUTO_0 closure plan for deterministic shared baseline drift
 
 ### Primary surfaces
 
@@ -1617,7 +1619,7 @@ Project Nightwatch Increments A through A.2 provide a durable local control plan
 ### Meaningful limitations
 
 - Sounding Line remains the sole RELEASE_GO and protected-merge authority.
-- Project Bosun repair execution and Nightwatch Increment B are deliberately excluded.
+- Bosun AUTO_1 and Nightwatch Increment B remain deliberately excluded.
 - The current repository MySQL migration family has duplicate numeric prefixes, so allocation correctly fails closed for that family.
 
 ### Evidence
@@ -1628,6 +1630,9 @@ Project Nightwatch Increments A through A.2 provide a durable local control plan
 - test: `src/nightwatch/runtime.test.ts`
 - test: `bridgewatch/test/nightwatch-projection.test.ts`
 - path: `bridgewatch/public/app.js`
+- path: `scripts/nightwatch/baseline-certifier.mjs`
+- test: `tests/sounding-line/baseline-certifier.test.mjs`
+- completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_B1_2_Baseline_Certification_Design_Record.md`
 - completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A2_Live_Control_Plane_Implementation_Record.md`
 - completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A1_Atomic_Acceptance_Sequencer_Implementation_Record.md`
 - completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md`
@@ -1647,4 +1652,4 @@ Project Nightwatch Increments A through A.2 provide a durable local control plan
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `d0c707a3fe104b11413b5ec12fa76132390560c7`
+Generation source commit: `ba989b6b50eac222aed25192281b4d989d03dc4c`

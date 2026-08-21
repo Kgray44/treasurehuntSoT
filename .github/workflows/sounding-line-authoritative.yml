@@ -35,6 +35,10 @@ on:
         type: choice
         default: current
         options: [current, candidate, v13-cutover]
+      baseline_run_id:
+        description: Exact successful Nightwatch Baseline Certification run for the qualified protected base (required for candidate mode)
+        required: false
+        type: string
       nightwatch_dispatch_key:
         description: Durable Nightwatch dispatch key for restart-safe controller rediscovery
         required: false
@@ -185,6 +189,25 @@ jobs:
             if ($unknown.Count -gt 0) { throw "SOUNDING_LINE_ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:$($unknown -join ',')" }
             throw "SOUNDING_LINE_ORDINARY_CANDIDATE_REJECTED:$($classification.errors -join ',')"
           }
+      - name: Require exact protected-main Baseline Certification
+        if: ${{ inputs.authority_mode == 'candidate' }}
+        shell: pwsh
+        env:
+          SOUNDING_LINE_BASELINE_RUN_ID: ${{ inputs.baseline_run_id }}
+          SOUNDING_LINE_BASE_SHA: ${{ steps.base.outputs.value }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          if ($env:SOUNDING_LINE_BASELINE_RUN_ID -notmatch '^[1-9][0-9]*$') { throw 'SOUNDING_LINE_BASELINE_CERTIFICATION_REQUIRED' }
+          $receiptDirectory = Join-Path $PWD 'nightwatch-baseline-certification'
+          gh run download $env:SOUNDING_LINE_BASELINE_RUN_ID --repo $env:GITHUB_REPOSITORY --name nightwatch-baseline-certification --dir $receiptDirectory
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_BASELINE_CERTIFICATION_RECEIPT_UNAVAILABLE' }
+          $receipts = @(Get-ChildItem -LiteralPath $receiptDirectory -Recurse -Filter '*.json' -File)
+          if ($receipts.Count -ne 1) { throw 'SOUNDING_LINE_BASELINE_CERTIFICATION_RECEIPT_AMBIGUOUS' }
+          $receipt = Get-Content -Raw -LiteralPath $receipts[0].FullName | ConvertFrom-Json
+          $tree = (git rev-parse "$env:SOUNDING_LINE_BASE_SHA`:^{tree}").Trim()
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_BASELINE_CERTIFICATION_BASE_TREE_UNAVAILABLE' }
+          if ($receipt.kind -ne 'BASELINE_CERTIFICATION' -or $receipt.status -ne 'CERTIFIED' -or $receipt.protectedMain.sha -ne $env:SOUNDING_LINE_BASE_SHA -or $receipt.protectedMain.treeSha -ne $tree -or -not $receipt.certificationId) { throw 'SOUNDING_LINE_BASELINE_CERTIFICATION_IDENTITY_INVALID' }
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with: { node-version-file: .nvmrc }
       - id: dependency-identity

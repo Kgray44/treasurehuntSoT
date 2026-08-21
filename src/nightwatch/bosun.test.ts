@@ -2,7 +2,7 @@ import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { BosunAutoZeroExecutor, BosunLedger, createRepositoryAutoZeroActions, normalizeBosunFingerprint } from "./bosun";
+import { BosunAutoZeroExecutor, BosunLedger, createRepositoryAutoZeroActions, normalizeBosunFingerprint, planBaselineAutoZeroClosure } from "./bosun";
 import { BosunLiveRepairCoordinator } from "./bosun-live";
 import { NightwatchController, type NightwatchControlPlane } from "./controller";
 import { NightwatchLedger } from "./runtime";
@@ -75,6 +75,40 @@ describe("Project Bosun B0 durable convergence", () => {
 });
 
 describe("Project Bosun B1 AUTO_0", () => {
+  it("builds one fixed-point compound closure plan from the complete baseline AUTO_0 set", () => {
+    const plan = planBaselineAutoZeroClosure([
+      { checkId: "active-test-registry", fingerprint: "registry", repairability: "AUTO_0", dependencies: ["registry"] },
+      { checkId: "p34-retirement-ledger", fingerprint: "p34", repairability: "AUTO_0", dependencies: ["ledger"] },
+      { checkId: "deepwater-policy", fingerprint: "deepwater", repairability: "AUTO_0", dependencies: ["policy"] },
+    ]);
+    expect(plan).toMatchObject({ status: "READY", fixedPointRequired: true, actionIds: ["active-test-registry", "deepwater-policy", "p34-retirement-ledger"] });
+    expect(plan.expectedPaths).toContain("testing/generated/active-test-registry.json");
+    expect(plan.expectedPaths).toContain("Development_Docs/Programs/Deepwater/deepwater-phase-status.json");
+  });
+
+  it("refuses to convert an owner baseline blocker into AUTO_0 repair authority", () => {
+    expect(planBaselineAutoZeroClosure([{ checkId: "policy", fingerprint: "policy", repairability: "OWNER", dependencies: ["policy"] }]))
+      .toMatchObject({ status: "OWNER_REQUIRED", actionIds: [] });
+  });
+
+  it("runs a compound closure serially before repeating it for the fixed-point proof", async () => {
+    const executor = new BosunAutoZeroExecutor();
+    const order: string[] = [];
+    const action = (id: "active-test-registry" | "document-index") => ({
+      id,
+      allowedPaths: [`${id}.json`],
+      run: async () => {
+        order.push(id);
+        return { changedPaths: [`${id}.json`], outputIdentity: { id, output: "stable" } };
+      },
+    });
+    await expect(executor.executeCompound([action("active-test-registry"), action("document-index")], {
+      "active-test-registry": ["active-test-registry.json"],
+      "document-index": ["document-index.json"],
+    })).resolves.toMatchObject({ fixedPoint: true });
+    expect(order).toEqual(["active-test-registry", "active-test-registry", "document-index", "document-index", "active-test-registry", "active-test-registry", "document-index", "document-index"]);
+  });
+
   it("requires deterministic output and exact expected paths", async () => {
     const executor = new BosunAutoZeroExecutor();
     const result = await executor.execute({ id: "active-test-registry", allowedPaths: ["testing/generated/active-test-registry.json"], run: async () => ({ changedPaths: ["testing/generated/active-test-registry.json"], outputIdentity: { definitions: 1, digest: "trusted" } }) }, ["testing/generated/active-test-registry.json"]);

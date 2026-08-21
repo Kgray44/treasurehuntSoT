@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 2,
   "historicalSourceCommit": "073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9",
   "discoveredCount": 316,
   "rows": [
@@ -6481,11 +6481,5 @@
       "canonicalReplacementSemanticIds": ["sl-semantic-d167370b5104c8085150"]
     }
   ],
-  "semanticMigration": {
-    "version": 2,
-    "durableIdentity": "semanticId",
-    "generatedIdentity": "id",
-    "historicalResolution": "generated ID, semantic ID, or unambiguous historical alias",
-    "replacementCycles": "FORBIDDEN"
-  }
+  "semanticMigration": true
 }

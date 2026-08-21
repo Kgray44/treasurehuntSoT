@@ -115,4 +115,26 @@ describe("Nightwatch controller", () => {
       ledger.close();
     }
   });
+
+  it("blocks candidate authority when its exact protected base has no Baseline Certification", () => {
+    const ledger = queuedLedger();
+    const plane: NightwatchControlPlane = {
+      ...controlPlane([]),
+      preflight: () => ({
+        deterministicRegistryHealthy: true,
+        ownershipResolved: true,
+        knownMaintenanceBlocker: `BASELINE_CERTIFICATION_REQUIRED:${identity.baseSha}:${identity.baseTreeSha}`,
+        identityStable: true,
+        leaseAvailable: true,
+      }),
+    };
+    const controller = new NightwatchController(ledger, plane, { instanceId: "nightwatchd-baseline-test" });
+    try {
+      controller.start();
+      expect(controller.tick()).toMatchObject({ state: "BLOCKED", reason: `SHARED_MAINTENANCE_BLOCKED:BASELINE_CERTIFICATION_REQUIRED:${identity.baseSha}:${identity.baseTreeSha}` });
+      expect(ledger.acceptanceRuns()).toHaveLength(0);
+    } finally {
+      ledger.close();
+    }
+  });
 });
