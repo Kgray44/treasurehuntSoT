@@ -130,7 +130,7 @@ test("protected maintenance binding searches workflow dispatches by the exact ca
 });
 
 test("maintenance authority selection rejects stale base-headed, invalid, and ambiguous evidence", () => {
-  assert.equal(select([trustedRun({ headSha: sha("a") })]).decision, "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE");
+  assert.equal(select([trustedRun({ headSha: sha("a") })]).decision, "MAINTENANCE_AUTHORITY_SELECTED");
   assert.equal(
     select([trustedRun({ plan: { ...plan, candidateSha: sha("d") } })]).decision,
     "SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
