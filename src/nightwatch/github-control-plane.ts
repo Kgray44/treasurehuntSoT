@@ -13,6 +13,12 @@ type GitHubRun = {
   createdAt: string;
 };
 type PullRequest = { number: number; headRefOid: string };
+type BaselineCertificationReceipt = {
+  kind?: unknown;
+  certificationId?: unknown;
+  status?: unknown;
+  protectedMain?: { sha?: unknown; treeSha?: unknown };
+};
 
 const sha = (value: string) => /^[0-9a-f]{40}$/u.test(value);
 
@@ -82,8 +88,39 @@ export class GitHubCliControlPlane implements NightwatchControlPlane {
     };
   }
 
-  preflight() {
-    return { deterministicRegistryHealthy: true, ownershipResolved: true, identityStable: true, leaseAvailable: true };
+  private baselineCertification(identity: ExactCandidateIdentity) {
+    const title = `Nightwatch baseline certification ${identity.baseSha}`;
+    const runs = JSON.parse(
+      this.gh([
+        "run", "list", "--repo", this.repository, "--workflow", "nightwatch-baseline-certification.yml", "--limit", "100",
+        "--json", "databaseId,status,conclusion,displayTitle,createdAt",
+      ]),
+    ) as GitHubRun[];
+    const matches = runs.filter((run) => run.displayTitle === title && run.status === "completed" && run.conclusion === "success");
+    if (matches.length > 1) throw new Error("NIGHTWATCH_BASELINE_CERTIFICATION_AMBIGUOUS");
+    const run = matches[0];
+    if (!run) return null;
+    const receipt = this.artifactJson<BaselineCertificationReceipt>(String(run.databaseId), "nightwatch-baseline-certification");
+    if (
+      receipt.kind !== "BASELINE_CERTIFICATION" ||
+      receipt.status !== "CERTIFIED" ||
+      receipt.protectedMain?.sha !== identity.baseSha ||
+      receipt.protectedMain?.treeSha !== identity.baseTreeSha ||
+      typeof receipt.certificationId !== "string"
+    )
+      throw new Error("NIGHTWATCH_BASELINE_CERTIFICATION_IDENTITY_INVALID");
+    return { runId: String(run.databaseId), certificationId: receipt.certificationId };
+  }
+
+  preflight(identity: ExactCandidateIdentity) {
+    const baseline = this.baselineCertification(identity);
+    return {
+      deterministicRegistryHealthy: true,
+      ownershipResolved: true,
+      knownMaintenanceBlocker: baseline ? undefined : `BASELINE_CERTIFICATION_REQUIRED:${identity.baseSha}:${identity.baseTreeSha}`,
+      identityStable: true,
+      leaseAvailable: true,
+    };
   }
 
   private exactDispatchedRun(workflow: string, title: string) {
@@ -125,6 +162,8 @@ export class GitHubCliControlPlane implements NightwatchControlPlane {
 
   dispatchAuthority(input: ExactCandidateIdentity & { dispatchKey: string }) {
     const pull = this.candidatePullRequest(input.candidateRef, input.candidateSha);
+    const baseline = this.baselineCertification(input);
+    if (!baseline) throw new Error(`BASELINE_CERTIFICATION_REQUIRED:${input.baseSha}:${input.baseTreeSha}`);
     return this.dispatch("sounding-line-authoritative.yml", `Sounding Line authoritative ${input.dispatchKey}`, {
       gate: "mainline",
       candidate_sha: input.candidateSha,
@@ -132,6 +171,7 @@ export class GitHubCliControlPlane implements NightwatchControlPlane {
       pr_number: String(pull.number),
       base_sha: input.baseSha,
       authority_mode: "candidate",
+      baseline_run_id: baseline.runId,
       nightwatch_dispatch_key: input.dispatchKey,
     });
   }
@@ -152,13 +192,13 @@ export class GitHubCliControlPlane implements NightwatchControlPlane {
     );
   }
 
-  private artifactJson(runId: string, name: string) {
+  private artifactJson<T = { decision?: unknown }>(runId: string, name: string) {
     const directory = mkdtempSync(join(tmpdir(), "nightwatch-artifact-"));
     try {
       this.gh(["run", "download", runId, "--repo", this.repository, "--name", name, "--dir", directory]);
       const paths = readdirSync(directory, { recursive: true }).filter((entry) => String(entry).endsWith(".json"));
       if (paths.length !== 1) throw new Error("NIGHTWATCH_ARTIFACT_NOT_UNIQUE");
-      return JSON.parse(readFileSync(join(directory, String(paths[0])), "utf8")) as { decision?: unknown };
+      return JSON.parse(readFileSync(join(directory, String(paths[0])), "utf8")) as T;
     } finally {
       rmSync(directory, { recursive: true, force: true });
     }

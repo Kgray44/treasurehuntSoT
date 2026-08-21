@@ -92,6 +92,7 @@
     "nightwatch:migrations:release": "tsx scripts/nightwatch/cli.ts release",
     "nightwatch:migrations:reconcile": "tsx scripts/nightwatch/cli.ts reconcile",
     "nightwatch:projection": "tsx scripts/nightwatch/cli.ts projection",
+    "nightwatch:baseline:closure": "tsx scripts/nightwatch/baseline-closure.ts",
     "nightwatch:controller:start": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/nightwatch/nightwatch-lifecycle.ps1 start",
     "nightwatch:controller:stop": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/nightwatch/nightwatch-lifecycle.ps1 stop",
     "nightwatch:controller:status": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/nightwatch/nightwatch-lifecycle.ps1 status",

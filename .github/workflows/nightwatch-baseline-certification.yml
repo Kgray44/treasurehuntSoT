@@ -1,0 +1,47 @@
+name: Nightwatch baseline certification
+run-name: Nightwatch baseline certification ${{ inputs.main_sha || github.sha }}
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      main_sha:
+        description: Exact protected-main SHA to certify
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  certify:
+    name: Nightwatch / Baseline Certification
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: "${{ inputs.main_sha || github.sha }}", fetch-depth: 0 }
+      - name: Verify exact current protected main
+        shell: pwsh
+        env:
+          EXPECTED_SHA: ${{ inputs.main_sha || github.sha }}
+        run: |
+          if ($env:EXPECTED_SHA -notmatch '^[0-9a-f]{40}$') { throw 'NIGHTWATCH_BASELINE_MAIN_SHA_INVALID' }
+          $actual = (git rev-parse HEAD).Trim()
+          if ($actual -ne $env:EXPECTED_SHA) { throw 'NIGHTWATCH_BASELINE_CHECKOUT_IDENTITY_MISMATCH' }
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with: { node-version-file: .nvmrc, cache: npm }
+      - run: npm ci
+      - name: Certify every deterministic shared prerequisite
+        shell: pwsh
+        run: |
+          $sha = (git rev-parse HEAD).Trim()
+          $tree = (git rev-parse 'HEAD^{tree}').Trim()
+          node scripts/nightwatch/baseline-certifier.mjs --protected-main-sha $sha --protected-main-tree $tree --receipt-out nightwatch-baseline-certification.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: nightwatch-baseline-certification
+          path: nightwatch-baseline-certification.json
+          if-no-files-found: error

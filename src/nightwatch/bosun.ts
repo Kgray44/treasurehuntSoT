@@ -348,12 +348,68 @@ export class BosunLedger {
 }
 
 export interface AutoZeroAction {
-  id: "active-test-registry" | "document-index" | "feature-catalog" | "policy-source-digest" | "generated-state";
+  id: "active-test-registry" | "document-index" | "feature-catalog" | "p34-retirement-ledger" | "deepwater-policy" | "policy-source-digest" | "generated-state";
   allowedPaths: string[];
   run: () => Promise<{ changedPaths: string[]; outputIdentity: unknown }>;
 }
 
 export type AutoZeroActionId = AutoZeroAction["id"];
+
+export type BaselineCertificationFailure = {
+  checkId: string;
+  fingerprint: string;
+  repairability: "AUTO_0" | "OWNER" | "EXTERNAL";
+  dependencies: string[];
+};
+
+export type BaselineAutoZeroClosurePlan = {
+  status: "READY" | "OWNER_REQUIRED" | "EXTERNAL_BLOCKED";
+  actionIds: AutoZeroActionId[];
+  expectedPaths: string[];
+  failureFingerprints: string[];
+  nonAutoZeroBlockers: BaselineCertificationFailure[];
+  fixedPointRequired: true;
+};
+
+const baselineActions: Record<string, { actionId: AutoZeroActionId; expectedPaths: string[] }> = {
+  "p34-retirement-ledger": {
+    actionId: "p34-retirement-ledger",
+    expectedPaths: [
+      "testing/generated/p34-retirement-ledger.json",
+      "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv",
+      "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv",
+    ],
+  },
+  "active-test-registry": { actionId: "active-test-registry", expectedPaths: ["testing/generated/active-test-registry.json"] },
+  "document-index": { actionId: "document-index", expectedPaths: ["Development_Docs/document-index.json", "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv"] },
+  "feature-catalog": { actionId: "feature-catalog", expectedPaths: ["Development_Docs/Features/FEATURE_CATALOG.md"] },
+  "deepwater-policy": {
+    actionId: "deepwater-policy",
+    expectedPaths: [
+      "Development_Docs/Programs/Deepwater/deepwater-phase-status.json",
+      "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Governance_Report.md",
+    ],
+  },
+};
+
+/** Creates one finite AUTO_0 candidate plan from the complete certification failure set. */
+export const planBaselineAutoZeroClosure = (failures: BaselineCertificationFailure[]): BaselineAutoZeroClosurePlan => {
+  const nonAutoZeroBlockers = failures.filter((failure) => failure.repairability !== "AUTO_0");
+  if (nonAutoZeroBlockers.some((failure) => failure.repairability === "EXTERNAL"))
+    return { status: "EXTERNAL_BLOCKED", actionIds: [], expectedPaths: [], failureFingerprints: [], nonAutoZeroBlockers, fixedPointRequired: true };
+  if (nonAutoZeroBlockers.length)
+    return { status: "OWNER_REQUIRED", actionIds: [], expectedPaths: [], failureFingerprints: [], nonAutoZeroBlockers, fixedPointRequired: true };
+  const actions = failures.map((failure) => ({ failure, action: baselineActions[failure.checkId] })).sort((left, right) => left.failure.checkId.localeCompare(right.failure.checkId));
+  if (actions.some(({ action }) => !action)) throw new NightwatchInvariantError("BOSUN_BASELINE_AUTO_0_ACTION_UNMAPPED", actions.find(({ action }) => !action)!.failure.checkId);
+  return {
+    status: "READY",
+    actionIds: actions.map(({ action }) => action!.actionId),
+    expectedPaths: unique(actions.flatMap(({ action }) => action!.expectedPaths)),
+    failureFingerprints: actions.map(({ failure }) => failure.fingerprint),
+    nonAutoZeroBlockers,
+    fixedPointRequired: true,
+  };
+};
 
 /**
  * Canonical, pre-governed generator actions. These actions only prepare a
@@ -363,7 +419,7 @@ export type AutoZeroActionId = AutoZeroAction["id"];
 export const createRepositoryAutoZeroActions = (
   repositoryRoot: string,
   options: { nodeExecutable?: string; featureCatalogCommand?: readonly string[] } = {},
-): Record<"activeTestRegistry" | "documentIndex" | "featureCatalog", AutoZeroAction> => {
+): Record<"activeTestRegistry" | "documentIndex" | "featureCatalog" | "p34RetirementLedger" | "deepwaterPolicy", AutoZeroAction> => {
   const root = resolve(repositoryRoot);
   const node = options.nodeExecutable ?? process.execPath;
   const run = async (command: readonly string[], allowedPaths: string[]) => {
@@ -390,8 +446,8 @@ export const createRepositoryAutoZeroActions = (
     },
     documentIndex: {
       id: "document-index",
-      allowedPaths: ["Development_Docs/INDEX.md"],
-      run: () => run([node, "scripts/generate-document-index.mjs"], ["Development_Docs/INDEX.md"]),
+      allowedPaths: baselineActions["document-index"].expectedPaths,
+      run: () => run([node, "scripts/generate-document-index.mjs"], baselineActions["document-index"].expectedPaths),
     },
     featureCatalog: {
       id: "feature-catalog",
@@ -401,6 +457,16 @@ export const createRepositoryAutoZeroActions = (
           return Promise.reject(new NightwatchInvariantError("BOSUN_AUTO_0_ACTION_UNCONFIGURED", "feature-catalog"));
         return run(options.featureCatalogCommand, ["Development_Docs/Features/FEATURE_CATALOG.md"]);
       },
+    },
+    p34RetirementLedger: {
+      id: "p34-retirement-ledger",
+      allowedPaths: baselineActions["p34-retirement-ledger"].expectedPaths,
+      run: () => run([node, "scripts/sounding-line/reconcile-p34-ledger.mjs"], baselineActions["p34-retirement-ledger"].expectedPaths),
+    },
+    deepwaterPolicy: {
+      id: "deepwater-policy",
+      allowedPaths: baselineActions["deepwater-policy"].expectedPaths,
+      run: () => run([node, "scripts/deepwater/cli.mjs", "audit"], baselineActions["deepwater-policy"].expectedPaths),
     },
   };
 };
@@ -417,5 +483,18 @@ export class BosunAutoZeroExecutor {
     if (json(changed) !== json(expected) || changed.some((path) => !action.allowedPaths.includes(path)))
       throw new NightwatchInvariantError("BOSUN_AUTO_0_SCOPE_ESCAPE", action.id);
     return { actionId: action.id, changedPaths: changed, outputDigest: digest(first.outputIdentity), deterministic: true as const };
+  }
+
+  /** Applies one ordered compound plan and proves a fixed point by repeating the full plan. */
+  async executeCompound(actions: AutoZeroAction[], expectedByAction: Record<string, string[]>) {
+    const executeOnce = async () => {
+      const results = [];
+      for (const action of actions) results.push(await this.execute(action, expectedByAction[action.id] ?? []));
+      return results;
+    };
+    const first = await executeOnce();
+    const second = await executeOnce();
+    if (digest(first) !== digest(second)) throw new NightwatchInvariantError("BOSUN_BASELINE_FIXED_POINT_NOT_REACHED", "compound-auto-0");
+    return { actions: first, fixedPoint: true as const };
   }
 }
