@@ -357,6 +357,7 @@ export async function ownerProfileDto(accountId: string) {
     revision: profile.updatedAt.toISOString(),
     avatar: media(profile.avatarMedia),
     banner: media(profile.bannerMedia),
+    preferences: profile.preferences,
     privacyRules: profile.privacyRules.map((rule) => ({ section: rule.section, visibility: rule.visibility })),
   };
 }
