@@ -726,6 +726,7 @@ const productRegistrationPolicy = {
     playwrightConfigPathGlobs: ["playwright*.config.*"],
     testRegistrySourcePathGlobs: ["scripts/sounding-line/test-registry.mjs"],
     semanticOwnership: "TRUSTED_OWNERSHIP_OR_TRUSTED_DISCOVERY_DESCRIPTOR",
+    monotonicOwnershipPathGlobs: ["testing/ownership.json"],
     monotonicity: "NO_FOREIGN_MUTATION_OR_REMOVAL",
   },
 };
@@ -1023,6 +1024,121 @@ test("source-bound reconciliation cannot accompany an ownership mutation", () =>
   });
   assert.equal(result.classification, "PRODUCT_VERIFICATION_REGISTRATION_REJECTED");
   assert.ok(result.errors.includes("PRODUCT_VERIFICATION_REGISTRATION_OWNERSHIP_MUTATION"));
+});
+
+test("a sole additive owner can register its first structurally mapped product authority", () => {
+  const fixture = registrationFixture();
+  fixture.trustedRegistries.ownership.owners = [];
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: {
+      ...productRegistrationPolicy,
+      ordinaryCandidateProductVerificationRegistration: {
+        ...productRegistrationPolicy.ordinaryCandidateProductVerificationRegistration,
+        allowMonotonicOwnershipRegistration: true,
+      },
+    },
+    changedPaths: [...productPaths, "testing/ownership.json"],
+    ...fixture,
+  });
+  assert.equal(result.classification, "PRODUCT_WITH_VERIFICATION_REGISTRATION");
+  assert.equal(result.registration.ownerId, "project-aurora");
+  assert.deepEqual(result.errors, []);
+});
+
+test("a first owner can carry one source-bound branch-complete feature record", () => {
+  const fixture = registrationFixture();
+  fixture.trustedRegistries.ownership.owners = [];
+  const path = "Development_Docs/Features/branch-complete/project-aurora-phase2.json";
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: {
+      ...productRegistrationPolicy,
+      ordinaryCandidateProductVerificationRegistration: {
+        ...productRegistrationPolicy.ordinaryCandidateProductVerificationRegistration,
+        allowMonotonicOwnershipRegistration: true,
+      },
+    },
+    changedPaths: [...productPaths, "testing/ownership.json", path],
+    featureCatalogReconciliations: { [path]: { trusted: null, candidate: featureCatalogReconciliation().trusted } },
+    ...fixture,
+  });
+  assert.equal(result.classification, "PRODUCT_WITH_VERIFICATION_REGISTRATION");
+  assert.deepEqual(result.errors, []);
+});
+
+test("a first feature record remains fail-closed unless it is branch-complete and source-mapped", () => {
+  const fixture = registrationFixture();
+  fixture.trustedRegistries.ownership.owners = [];
+  const path = "Development_Docs/Features/branch-complete/project-aurora-phase2.json";
+  const candidate = featureCatalogReconciliation().trusted;
+  candidate.status = "MAINLINE";
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: {
+      ...productRegistrationPolicy,
+      ordinaryCandidateProductVerificationRegistration: {
+        ...productRegistrationPolicy.ordinaryCandidateProductVerificationRegistration,
+        allowMonotonicOwnershipRegistration: true,
+      },
+    },
+    changedPaths: [...productPaths, "testing/ownership.json", path],
+    featureCatalogReconciliations: { [path]: { trusted: null, candidate } },
+    ...fixture,
+  });
+  assert.equal(result.classification, "PRODUCT_VERIFICATION_REGISTRATION_REJECTED");
+  assert.ok(result.errors.includes(`PRODUCT_VERIFICATION_REGISTRATION_FEATURE_CATALOG_FIRST_RECORD_INVALID:${path}`));
+});
+
+test("a declared supporting owner can supply one trusted suite for the new primary contract", () => {
+  const fixture = registrationFixture();
+  const bridgewatch = {
+    id: "bridgewatch",
+    sourcePaths: ["bridgewatch/**"],
+    testPaths: ["bridgewatch/test/**"],
+    contractIds: ["bridgewatch.mission-control"],
+  };
+  fixture.trustedRegistries.ownership.owners.push(bridgewatch);
+  fixture.candidateRegistries.ownership.owners.push(clone(bridgewatch));
+  fixture.trustedRegistries.contracts.contracts.push({
+    id: "bridgewatch.mission-control",
+    authority: "bridgewatch",
+    owners: ["bridgewatch"],
+    critical: true,
+  });
+  fixture.candidateRegistries.contracts.contracts.push(clone(fixture.trustedRegistries.contracts.contracts.at(-1)));
+  fixture.trustedRegistries.suites.suites.push({
+    id: "unit.bridgewatch",
+    owner: "bridgewatch",
+    contracts: ["bridgewatch.mission-control"],
+    tier: 1,
+  });
+  fixture.candidateRegistries.suites.suites.push(clone(fixture.trustedRegistries.suites.suites.at(-1)));
+  fixture.trustedRegistries.ownership.owners[0].supportingOwnerIds = ["bridgewatch"];
+  fixture.candidateRegistries.ownership.owners[0].supportingOwnerIds = ["bridgewatch"];
+  fixture.candidateRegistries.impactMap.contractMappings.push({
+    contractId: "aurora.detail",
+    suiteIds: ["unit.bridgewatch"],
+  });
+  const result = classifyProductRegistration(fixture);
+  assert.equal(result.classification, "PRODUCT_WITH_VERIFICATION_REGISTRATION");
+  assert.deepEqual(result.errors, []);
+});
+
+test("additive owner registration remains fail-closed when its product source is unmapped", () => {
+  const fixture = registrationFixture();
+  fixture.trustedRegistries.ownership.owners = [];
+  fixture.candidateRegistries.ownership.owners[0].sourcePaths = ["src/rogue/**"];
+  const result = classifyOrdinaryCandidate({
+    trustedPolicy: {
+      ...productRegistrationPolicy,
+      ordinaryCandidateProductVerificationRegistration: {
+        ...productRegistrationPolicy.ordinaryCandidateProductVerificationRegistration,
+        allowMonotonicOwnershipRegistration: true,
+      },
+    },
+    changedPaths: [...productPaths, "testing/ownership.json"],
+    ...fixture,
+  });
+  assert.equal(result.classification, "PRODUCT_VERIFICATION_REGISTRATION_REJECTED");
+  assert.ok(result.errors.includes("PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_PATH_UNMAPPED:src/aurora/detail.ts"));
 });
 
 test("a sole trusted Drydock contract authority outranks compatible Shipwright Studio support", () => {

@@ -36,7 +36,8 @@ jobs:
     timeout-minutes: 10
     outputs:
       requires_browser: ${{ steps.selection.outputs.requires_browser }}
-      browser_engine: ${{ steps.selection.outputs.browser_engine }}
+      has_chromium: ${{ steps.selection.outputs.has_chromium }}
+      has_webkit: ${{ steps.selection.outputs.has_webkit }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with: { ref: "${{ inputs.candidate_sha }}", fetch-depth: 0 }
@@ -47,9 +48,10 @@ jobs:
           SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
           SOUNDING_LINE_CANDIDATE_REF: ${{ inputs.candidate_ref }}
           SOUNDING_LINE_BASE_SHA: ${{ inputs.base_sha }}
+          SOUNDING_LINE_WORKFLOW_REF: ${{ github.ref }}
         shell: pwsh
         run: |
-          if ($env:GITHUB_REF -ne 'refs/heads/main') { throw 'FOCUSED_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED' }
+          if ($env:SOUNDING_LINE_WORKFLOW_REF -ne 'refs/heads/main') { throw 'FOCUSED_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED' }
           if ($env:SOUNDING_LINE_CANDIDATE_SHA -notmatch '^[0-9a-f]{40}$') { throw 'FOCUSED_CANDIDATE_SHA_INVALID' }
           if ($env:SOUNDING_LINE_CANDIDATE_REF -notmatch '^refs/heads/[A-Za-z0-9._/-]+$') { throw 'FOCUSED_CANDIDATE_REF_INVALID' }
           if ($env:SOUNDING_LINE_BASE_SHA -notmatch '^[0-9a-f]{40}$') { throw 'FOCUSED_BASE_SHA_INVALID' }
@@ -72,11 +74,13 @@ jobs:
           node scripts/sounding-line/focused-selection.mjs --plan sounding-line-plan.json --suite "$env:SOUNDING_LINE_SUITE" --out sounding-line-focused-selection.json
           if ($LASTEXITCODE -ne 0) { throw 'FOCUSED_SELECTION_INVALID' }
           $selection = Get-Content -Raw sounding-line-focused-selection.json | ConvertFrom-Json
-          $engines = @($selection.preparation.actions.browserEngines)
-          if ($engines.Count -gt 1) { throw 'FOCUSED_BROWSER_MULTI_ENGINE_UNSUPPORTED' }
-          $requiresBrowser = if ($engines.Count -eq 1) { 'true' } else { 'false' }
+          $engines = @($selection.preparation.actions.browserEngines | Sort-Object -Unique)
+          $unsupported = @($engines | Where-Object { $_ -notin @('chromium', 'webkit') })
+          if ($unsupported.Count -gt 0) { throw "FOCUSED_BROWSER_ENGINE_INVALID:$($unsupported -join ',')" }
+          $requiresBrowser = if ($engines.Count -gt 0) { 'true' } else { 'false' }
           "requires_browser=$requiresBrowser" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-          "browser_engine=$(if ($engines.Count) { $engines[0] } else { '' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "has_chromium=$(if ($engines -contains 'chromium') { 'true' } else { 'false' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "has_webkit=$(if ($engines -contains 'webkit') { 'true' } else { 'false' })" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
           name: sounding-line-plan
@@ -85,14 +89,40 @@ jobs:
             sounding-line-focused-selection.json
           retention-days: 14
 
-  focused-suite:
-    name: Sounding Line / Focused diagnostic evidence
+  focused-suite-without-browser:
+    name: Sounding Line / Focused diagnostic evidence (no browser)
     needs: focused-plan
+    if: ${{ needs.focused-plan.outputs.requires_browser != 'true' }}
     uses: ./.github/workflows/sounding-line-governed-worker.yml
     with:
       suite: ${{ inputs.suite }}
       gate: ${{ inputs.gate }}
       candidate_sha: ${{ inputs.candidate_sha }}
       candidate_ref: ${{ inputs.candidate_ref }}
-      requires_browser: ${{ fromJSON(needs.focused-plan.outputs.requires_browser) }}
-      browser_engine: ${{ needs.focused-plan.outputs.browser_engine }}
+      requires_browser: false
+
+  focused-suite-chromium:
+    name: Sounding Line / Focused diagnostic evidence (chromium)
+    needs: focused-plan
+    if: ${{ needs.focused-plan.outputs.has_chromium == 'true' }}
+    uses: ./.github/workflows/sounding-line-governed-worker.yml
+    with:
+      suite: ${{ inputs.suite }}
+      gate: ${{ inputs.gate }}
+      candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
+      requires_browser: true
+      browser_engine: chromium
+
+  focused-suite-webkit:
+    name: Sounding Line / Focused diagnostic evidence (webkit)
+    needs: focused-plan
+    if: ${{ needs.focused-plan.outputs.has_webkit == 'true' }}
+    uses: ./.github/workflows/sounding-line-governed-worker.yml
+    with:
+      suite: ${{ inputs.suite }}
+      gate: ${{ inputs.gate }}
+      candidate_sha: ${{ inputs.candidate_sha }}
+      candidate_ref: ${{ inputs.candidate_ref }}
+      requires_browser: true
+      browser_engine: webkit
