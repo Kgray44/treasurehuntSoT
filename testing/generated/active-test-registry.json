@@ -80919,9 +80919,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-7b0cdf8534b33d86cac3",
-      "semanticId": "sl-semantic-086ddd5ee89af3b678f0",
-      "title": "requires deterministic output and exact expected paths",
+      "id": "sl-test-8d5bfa576337c02ed251",
+      "semanticId": "sl-semantic-2c25051fc24f0bc0b837",
+      "title": "accepts a deterministic subset of receipt-bound generator outputs",
       "line": 112,
       "file": "src/nightwatch/bosun.test.ts",
       "suiteId": "unit.nightwatch",
