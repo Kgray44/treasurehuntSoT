@@ -252,16 +252,17 @@ test("Wayfarer Phase 3 authenticated Passport history is private, pinned, consen
   await expect(ownerPage.locator(".passport-card").filter({ hasText: "Chronicle History" })).toContainText("1");
   await expect(ownerPage.getByRole("button", { name: "Reconcile history" })).toHaveCount(0);
   // WebKit can finish Passport hydration by replacing the current route just
-  // as this explicit history navigation begins. Retry that one interrupted
-  // navigation; the subsequent history and accessibility assertions remain
-  // the acceptance boundary.
-  for (let attempt = 0; ; attempt += 1) {
+  // as this explicit history navigation begins. Permit only the bounded
+  // hydration replacements, then retain the history and accessibility
+  // assertions as the acceptance boundary.
+  for (let attempt = 0; attempt < 3; attempt += 1) {
     try {
       await ownerPage.goto("/passport/history");
       break;
     } catch (error) {
-      if (attempt || !String(error).includes("is interrupted by another navigation")) throw error;
+      if (attempt === 2 || !String(error).includes("is interrupted by another navigation")) throw error;
       await ownerPage.waitForURL("**/passport");
+      await ownerPage.waitForTimeout(250);
     }
   }
   await expect(ownerPage.getByRole("heading", { name: "Synthetic Harbor Chronicle" })).toBeVisible();
