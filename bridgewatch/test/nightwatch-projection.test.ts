@@ -20,6 +20,8 @@ const setupLedger = () => {
     CREATE TABLE integration_queue (candidate_id TEXT, ready_at TEXT, priority INTEGER, dependencies_json TEXT, migration_reservations_json TEXT, ownership_classes_json TEXT, blockers_json TEXT, focused_evidence_json TEXT, downstream_unblock_value INTEGER, risk INTEGER, estimated_size INTEGER, queue_state TEXT, reconciliation_count INTEGER);
     CREATE TABLE migration_reservations (reservation_id TEXT, family TEXT, start_id INTEGER, end_id INTEGER, project TEXT, objective_id TEXT, candidate_id TEXT, allocated_at TEXT, expires_at TEXT, state TEXT);
     CREATE TABLE leases (lease_id TEXT, lease_type TEXT, scope TEXT, owner TEXT, candidate_id TEXT, issued_at TEXT, expires_at TEXT, state TEXT);
+    CREATE TABLE integration_cascades (cascade_id TEXT, root_fingerprint TEXT, root_identity TEXT, started_at TEXT, maintenance_pr_count INTEGER, authority_attempts INTEGER, mainline_rebuilds INTEGER, blocked_candidates_json TEXT, status TEXT);
+    CREATE TABLE acceptance_transactions (transaction_id TEXT, candidate_id TEXT, cascade_id TEXT, candidate_sha TEXT, candidate_tree_sha TEXT, base_sha TEXT, base_tree_sha TEXT, candidate_ref TEXT, state TEXT, authority_run_id TEXT, binding_run_id TEXT, authority_result TEXT, binding_result TEXT, lease_id TEXT, last_semantic_invalidation TEXT, preserved_evidence_count INTEGER, rerun_evidence_count INTEGER, created_at TEXT, updated_at TEXT);
   `);
   database
     .prepare("INSERT INTO candidates VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
@@ -113,6 +115,32 @@ const setupLedger = () => {
       "2026-08-20T02:00:00.000Z",
       "ACTIVE",
     );
+  database
+    .prepare("INSERT INTO integration_cascades VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
+    .run("cascade-alpha", "semantic-root-alpha", "root-alpha", "2026-08-20T00:00:00.000Z", 1, 1, 0, '["candidate-beta"]', "WARNING");
+  database
+    .prepare("INSERT INTO acceptance_transactions VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+    .run(
+      "transaction-alpha",
+      "candidate-alpha",
+      "cascade-alpha",
+      "candidate-head",
+      "candidate-tree",
+      "base-head",
+      "base-tree",
+      "refs/heads/codex/alpha",
+      "AWAITING_AUTHORITY",
+      null,
+      null,
+      null,
+      null,
+      "lease-alpha",
+      null,
+      2,
+      0,
+      "2026-08-20T00:00:00.000Z",
+      "2026-08-20T00:00:00.000Z",
+    );
   database.close();
   return { root, file, lease: { id: "lease-alpha" } };
 };
@@ -130,6 +158,10 @@ describe("Nightwatch Bridgewatch projection", () => {
     );
     expect(projection.migrationReservations).toContainEqual(expect.objectContaining({ startId: 10, endId: 11 }));
     expect(projection.acceptanceOwnership).toBe(fixture.lease.id);
+    expect(projection.transactions).toContainEqual(
+      expect.objectContaining({ id: "transaction-alpha", state: "AWAITING_AUTHORITY", candidateTreeSha: "candidate-tree" }),
+    );
+    expect(projection.cascades).toContainEqual(expect.objectContaining({ id: "cascade-alpha", status: "WARNING", maintenancePrCount: 1 }));
     expect(JSON.stringify(projection)).not.toMatch(/token|password|credential/i);
   });
 
