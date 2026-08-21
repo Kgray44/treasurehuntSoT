@@ -5,6 +5,7 @@ import {
   type AcceptanceTransaction,
   type ExactCandidateIdentity,
 } from "./runtime";
+import { BosunLedger } from "./bosun";
 
 export type ExternalRunResult = "PENDING" | "RELEASE_GO" | "REJECTED" | "BINDING_PASS" | "BINDING_REJECTED";
 
@@ -50,6 +51,7 @@ export class NightwatchController {
   readonly instanceId: string;
   private readonly leaseTtlMs: number;
   private readonly now: () => number;
+  private readonly bosun: BosunLedger;
 
   constructor(
     private readonly ledger: NightwatchLedger,
@@ -59,14 +61,25 @@ export class NightwatchController {
     this.instanceId = options.instanceId ?? `nightwatchd-${randomUUID()}`;
     this.leaseTtlMs = options.leaseTtlMs ?? 120_000;
     this.now = options.now ?? Date.now;
+    this.bosun = new BosunLedger(this.ledger.databasePath, this.ledger);
   }
 
   start() {
-    return this.ledger.claimController(this.instanceId, this.leaseTtlMs, iso(this.now()));
+    const at = iso(this.now());
+    const lease = this.ledger.claimController(this.instanceId, this.leaseTtlMs, at);
+    this.bosun.heartbeat(this.instanceId, "Nightwatch-owned Bosun controller started.", at);
+    return lease;
   }
 
   stop(detail?: string) {
-    return this.ledger.releaseController(this.instanceId, detail, iso(this.now()));
+    const at = iso(this.now());
+    this.bosun.stop(this.instanceId, detail, at);
+    this.bosun.close();
+    return this.ledger.releaseController(this.instanceId, detail, at);
+  }
+
+  bosunProjection(now = this.now()) {
+    return this.bosun.projection(now);
   }
 
   tick() {
@@ -88,6 +101,7 @@ export class NightwatchController {
         );
       const result = active ? this.advance(active, at) : this.beginFront(at);
       this.ledger.heartbeatController({ instanceId: this.instanceId, ttlMs: this.leaseTtlMs, reconciled: true, at });
+      this.bosun.heartbeat(this.instanceId, null, at);
       return result;
     } catch (error) {
       const detail = error instanceof Error ? error.message : "Unknown controller failure.";
