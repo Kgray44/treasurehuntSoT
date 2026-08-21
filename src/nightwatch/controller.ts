@@ -184,38 +184,7 @@ export class NightwatchController {
       return this.launchBinding(transaction, authority.externalRunId, at);
     }
     if (transaction.state === "MERGING") {
-      if (!transaction.bindingRunId) throw new NightwatchInvariantError("BINDING_RUN_MISSING", transaction.id);
-      const binding = this.ledger.acceptanceRuns(transaction.id).find((entry) => entry.id === transaction.bindingRunId);
-      if (!binding?.externalRunId) throw new NightwatchInvariantError("BINDING_EXTERNAL_RUN_MISSING", transaction.id);
-      const main = this.controlPlane.protectedMain();
-      if (main.sha !== transaction.baseSha) {
-        this.ledger.recordTransactionMainAdvance(transaction.id, "PROTECTED_MAIN_ADVANCED_BEFORE_MERGE", at);
-        return { state: "MERGE_RACE" as const, transactionId: transaction.id };
-      }
-      const merged = this.controlPlane.requestMerge({
-        ...transaction,
-        transactionId: transaction.id,
-        bindingRunId: binding.externalRunId,
-      });
-      if (!merged) return { state: "MERGING" as const, transactionId: transaction.id };
-      this.ledger.recordIntegrated(transaction.id, at);
-      this.ledger.verifyPostMerge(transaction.id, { mergeSha: merged.mergeSha, treeSha: merged.treeSha }, at);
-      this.ledger.setRemainingClosureSteps(transaction.id, []);
-      const repair = this.bosun.liveRepairForTransaction(transaction.id);
-      if (repair) {
-        const proof = this.controlPlane.postMergeBosunProof?.({
-          ...transaction,
-          transactionId: transaction.id,
-          repairCandidateId: repair.candidateId,
-        });
-        if (!proof) throw new NightwatchInvariantError("BOSUN_POST_MERGE_PROOF_UNAVAILABLE", transaction.id);
-        this.bosun.completeLiveRepair(
-          transaction.id,
-          { landedMainSha: merged.mergeSha, evidenceRef: proof.evidenceRef, rootBlockerRemoved: proof.rootBlockerRemoved },
-          at,
-        );
-      }
-      return { state: "POST_MERGE_VERIFIED" as const, transactionId: transaction.id };
+      return this.merge(transaction, at);
     }
     return { state: transaction.state, transactionId: transaction.id };
   }
@@ -272,14 +241,19 @@ export class NightwatchController {
     if (result !== "RELEASE_GO" && result !== "REJECTED")
       throw new NightwatchInvariantError("AUTHORITY_RESULT_INVALID", result);
     this.ledger.recordAuthorityResult(transaction.id, run.id, result, at);
-    if (result === "RELEASE_GO")
+    if (result === "RELEASE_GO") {
       this.ledger.setRemainingClosureSteps(transaction.id, [
         "protected binding",
         "protected merge",
         "exact-main proof",
       ]);
+      // Receipt validation has already placed the transaction in BINDING_PENDING.
+      // Dispatch inside the same durable controller step so no arbitrary poll
+      // interval separates exact RELEASE_GO from the single binding intent.
+      return this.launchBinding(transaction, run.externalRunId, at);
+    }
     return {
-      state: result === "RELEASE_GO" ? ("BINDING_PENDING" as const) : ("AUTHORITY_REJECTED" as const),
+      state: "AUTHORITY_REJECTED" as const,
       transactionId: transaction.id,
     };
   }
@@ -294,11 +268,55 @@ export class NightwatchController {
     if (result !== "BINDING_PASS" && result !== "BINDING_REJECTED")
       throw new NightwatchInvariantError("BINDING_RESULT_INVALID", result);
     this.ledger.recordBindingResult(transaction.id, run.id, result, at);
-    if (result === "BINDING_PASS")
+    if (result === "BINDING_PASS") {
       this.ledger.setRemainingClosureSteps(transaction.id, ["protected merge", "exact-main proof"]);
+      // BINDING_PASS has established the sealed acceptance precondition. Recheck
+      // the exact protected base and attempt the controlled merge immediately,
+      // rather than intentionally waiting for another daemon tick.
+      return this.merge(transaction, at);
+    }
     return {
-      state: result === "BINDING_PASS" ? ("MERGING" as const) : ("BINDING_REJECTED" as const),
+      state: "BINDING_REJECTED" as const,
       transactionId: transaction.id,
     };
+  }
+
+  private merge(transaction: AcceptanceTransaction, at: string) {
+    if (!transaction.bindingRunId) throw new NightwatchInvariantError("BINDING_RUN_MISSING", transaction.id);
+    const binding = this.ledger.acceptanceRuns(transaction.id).find((entry) => entry.id === transaction.bindingRunId);
+    if (!binding?.externalRunId) throw new NightwatchInvariantError("BINDING_EXTERNAL_RUN_MISSING", transaction.id);
+    const main = this.controlPlane.protectedMain();
+    if (main.sha !== transaction.baseSha) {
+      this.ledger.recordTransactionMainAdvance(transaction.id, "PROTECTED_MAIN_ADVANCED_BEFORE_MERGE", at);
+      return { state: "MERGE_RACE" as const, transactionId: transaction.id };
+    }
+    const merged = this.controlPlane.requestMerge({
+      ...transaction,
+      transactionId: transaction.id,
+      bindingRunId: binding.externalRunId,
+    });
+    if (!merged) return { state: "MERGING" as const, transactionId: transaction.id };
+    this.ledger.recordIntegrated(transaction.id, at);
+    this.ledger.verifyPostMerge(transaction.id, { mergeSha: merged.mergeSha, treeSha: merged.treeSha }, at);
+    this.ledger.setRemainingClosureSteps(transaction.id, []);
+    const repair = this.bosun.liveRepairForTransaction(transaction.id);
+    if (repair) {
+      const proof = this.controlPlane.postMergeBosunProof?.({
+        ...transaction,
+        transactionId: transaction.id,
+        repairCandidateId: repair.candidateId,
+      });
+      if (!proof) throw new NightwatchInvariantError("BOSUN_POST_MERGE_PROOF_UNAVAILABLE", transaction.id);
+      this.bosun.completeLiveRepair(
+        transaction.id,
+        {
+          landedMainSha: merged.mergeSha,
+          evidenceRef: proof.evidenceRef,
+          rootBlockerRemoved: proof.rootBlockerRemoved,
+        },
+        at,
+      );
+    }
+    return { state: "POST_MERGE_VERIFIED" as const, transactionId: transaction.id };
   }
 }

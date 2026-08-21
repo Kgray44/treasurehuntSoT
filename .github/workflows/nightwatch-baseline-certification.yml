@@ -31,8 +31,45 @@ jobs:
           $actual = (git rev-parse HEAD).Trim()
           if ($actual -ne $env:EXPECTED_SHA) { throw 'NIGHTWATCH_BASELINE_CHECKOUT_IDENTITY_MISMATCH' }
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with: { node-version-file: .nvmrc, cache: npm }
-      - run: npm ci
+        with: { node-version-file: .nvmrc }
+      - id: dependency-identity
+        shell: pwsh
+        run: |
+          $identity = node scripts/sounding-line/v14/prepared-layer-artifact.mjs cache-key | ConvertFrom-Json
+          "key=$($identity.key)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "producer=$($identity.producer)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - id: dependency-cache-restore
+        uses: actions/cache/restore@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            node_modules
+            sounding-line-dependency-cache/dependency-manifest.json
+          key: ${{ steps.dependency-identity.outputs.key }}
+      - if: ${{ steps.dependency-cache-restore.outputs.cache-hit != 'true' }}
+        run: npm ci
+      - name: Seal or verify digest-keyed immutable dependency cache
+        shell: pwsh
+        env:
+          SOUNDING_LINE_PREPARED_CACHE_KEY: ${{ steps.dependency-identity.outputs.key }}
+          SOUNDING_LINE_DEPENDENCY_PRODUCER: ${{ steps.dependency-identity.outputs.producer }}
+          CACHE_HIT: ${{ steps.dependency-cache-restore.outputs.cache-hit }}
+        run: |
+          $manifest = 'sounding-line-dependency-cache/dependency-manifest.json'
+          if ($env:CACHE_HIT -ne 'true') {
+            New-Item -ItemType Directory -Path 'sounding-line-dependency-cache' -Force | Out-Null
+            $expiry = ([DateTimeOffset]::UtcNow).AddDays(14).ToString('o')
+            & node scripts/sounding-line/v14/prepared-layer-artifact.mjs publish --source node_modules --manifest $manifest --producer $env:SOUNDING_LINE_DEPENDENCY_PRODUCER --expires-at $expiry
+            if ($LASTEXITCODE -ne 0) { throw 'NIGHTWATCH_BASELINE_DEPENDENCY_CACHE_SEAL_FAILED' }
+          }
+          & node scripts/sounding-line/v14/prepared-layer-artifact.mjs verify --source node_modules --manifest $manifest
+          if ($LASTEXITCODE -ne 0) { throw 'NIGHTWATCH_BASELINE_DEPENDENCY_CACHE_VERIFY_FAILED' }
+      - if: ${{ steps.dependency-cache-restore.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: |
+            node_modules
+            sounding-line-dependency-cache/dependency-manifest.json
+          key: ${{ steps.dependency-identity.outputs.key }}
       - name: Certify every deterministic shared prerequisite
         shell: pwsh
         run: |
