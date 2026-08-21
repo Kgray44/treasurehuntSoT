@@ -78,23 +78,34 @@ export function ChroniclePassport() {
   useEffect(() => {
     if (!activeSessionId) return;
     const controller = new AbortController();
-    Promise.all([
-      fetch("/api/passport/profile", { signal: controller.signal }).then(responseJson),
-      fetch("/api/passport/providers", { signal: controller.signal }).then(responseJson),
-      fetch("/api/auth/sessions", { signal: controller.signal }).then(responseJson),
-    ])
-      .then(([nextProfile, providers, sessions]) => {
+    let retryTimer: ReturnType<typeof window.setTimeout> | undefined;
+    let attempts = 0;
+    const load = () =>
+      Promise.all([
+        fetch("/api/passport/profile", { signal: controller.signal }).then(responseJson),
+        fetch("/api/passport/providers", { signal: controller.signal }).then(responseJson),
+        fetch("/api/auth/sessions", { signal: controller.signal }).then(responseJson),
+      ])
+        .then(([nextProfile, providers, sessions]) => {
         setProfile(nextProfile);
         setIdentities(providers.identities);
         setAdapters(providers.adapters);
         setCsrf(sessions.csrfToken ?? "");
         setLoadedSessionId(activeSessionId);
-      })
-      .catch((cause) => {
-        if (!controller.signal.aborted)
+        })
+        .catch((cause) => {
+          if (controller.signal.aborted) return;
+          if (attempts++ === 0) {
+            retryTimer = window.setTimeout(() => void load(), 200);
+            return;
+          }
           setError(cause instanceof Error ? cause.message : "Unable to open Chronicle Passport.");
-      });
-    return () => controller.abort();
+        });
+    void load();
+    return () => {
+      controller.abort();
+      if (retryTimer) window.clearTimeout(retryTimer);
+    };
   }, [activeSessionId]);
 
   const hasCurrentSessionData = activeSessionId !== null && loadedSessionId === activeSessionId;

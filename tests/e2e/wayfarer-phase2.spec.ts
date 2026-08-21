@@ -26,17 +26,21 @@ test("Wayfarer Passport persists a private profile, preferences, media, and a si
   await expect(page).toHaveURL(/\/passport$/u, { timeout: 15_000 });
 
   const passportBootstrap = await page.evaluate(async () => {
-    const [profile, providers, sessions] = await Promise.all([
+    const [profile, providers, sessions, context] = await Promise.all([
       fetch("/api/passport/profile"),
       fetch("/api/passport/providers"),
       fetch("/api/auth/sessions"),
+      fetch("/api/auth/context"),
     ]);
     const profileBody = (await profile.json()) as { preferences?: unknown };
+    const contextBody = (await context.json()) as { status?: unknown };
     return {
       profileStatus: profile.status,
       profileHasPreferences: typeof profileBody.preferences === "object" && profileBody.preferences !== null,
       providersStatus: providers.status,
       sessionsStatus: sessions.status,
+      contextStatus: context.status,
+      contextAccountState: contextBody.status,
     };
   });
   expect(passportBootstrap).toEqual({
@@ -44,6 +48,8 @@ test("Wayfarer Passport persists a private profile, preferences, media, and a si
     profileHasPreferences: true,
     providersStatus: 200,
     sessionsStatus: 200,
+    contextStatus: 200,
+    contextAccountState: "authenticated",
   });
 
   await expect(page.getByRole("heading", { name: "Chronicle Passport", level: 1 })).toBeVisible();
