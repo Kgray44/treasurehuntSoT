@@ -108,6 +108,7 @@ test("Wayfarer Personal Harbor loads preferences and persists a profile, privacy
   await waitForHarbor(page);
   await page.getByLabel("Handle").fill(nextHandle);
   await page.getByRole("button", { name: "Save Profile" }).click();
+  await expect(page.getByText("Profile saved and public preview refreshed.")).toBeVisible();
   await page.goto(`/profile/${handle}`);
   await expect(page).toHaveURL(new RegExp(`/profile/${nextHandle}$`));
   await page.goto("/account/preferences");
