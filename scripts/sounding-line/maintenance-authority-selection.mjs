@@ -13,7 +13,10 @@ export function selectSealedMaintenanceAuthority({ runs, candidateSha, candidate
       run?.event === "workflow_dispatch" &&
       run?.status === "completed" &&
       run?.conclusion === "success" &&
-      run?.headSha === candidateSha &&
+      // The trusted policy and verifier run from qualified main, so a sealed
+      // maintenance dispatch may be headed at the protected base or frozen
+      // candidate ref. Both heads remain bound by the plan identity below.
+      [qualifiedBaseSha, candidateSha].includes(run?.headSha) &&
       plan?.authority === "SOUNDING_LINE_VERIFICATION_MAINTENANCE" &&
       plan?.disposition === "MAINTENANCE_GO" &&
       plan?.candidateSha === candidateSha &&
