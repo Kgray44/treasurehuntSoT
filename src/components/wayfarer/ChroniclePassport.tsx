@@ -87,11 +87,11 @@ export function ChroniclePassport() {
         fetch("/api/auth/sessions", { signal: controller.signal }).then(responseJson),
       ])
         .then(([nextProfile, providers, sessions]) => {
-        setProfile(nextProfile);
-        setIdentities(providers.identities);
-        setAdapters(providers.adapters);
-        setCsrf(sessions.csrfToken ?? "");
-        setLoadedSessionId(activeSessionId);
+          setProfile(nextProfile);
+          setIdentities(providers.identities);
+          setAdapters(providers.adapters);
+          setCsrf(sessions.csrfToken ?? "");
+          setLoadedSessionId(activeSessionId);
         })
         .catch((cause) => {
           if (controller.signal.aborted) return;
