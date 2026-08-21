@@ -74,8 +74,9 @@ describe("ProductShell", () => {
     const trigger = screen.getByRole("button", { name: "Account" });
     fireEvent.click(trigger);
     const disclosure = screen.getByLabelText("Account navigation");
-    await waitFor(() => expect(within(disclosure).getByRole("link", { name: "Create Account" })).toHaveFocus());
-    expect(within(disclosure).getByRole("link", { name: "Sign In" })).toHaveAttribute("href", "/sign-in?returnTo=%2F");
+    const signIn = within(disclosure).getByRole("link", { name: "Sign In" });
+    await waitFor(() => expect(signIn).toHaveFocus());
+    expect(signIn).toHaveAttribute("href", "/sign-in?returnTo=%2F");
     expect(within(disclosure).queryByText("Security & Sessions")).not.toBeInTheDocument();
     fireEvent.keyDown(window, { key: "Escape" });
     await waitFor(() => expect(trigger).toHaveFocus());
@@ -235,6 +236,7 @@ describe("ProductShell", () => {
   });
 
   it("homeport.shell.mobile-parity moves focus into the shared navigation drawer and restores it", async () => {
+    navigation.pathname = "/";
     render(
       <ProductShell>
         <main>Catalog content</main>
@@ -251,6 +253,19 @@ describe("ProductShell", () => {
     await waitFor(() => expect(trigger).toHaveFocus());
     expect(trigger).toHaveAttribute("aria-expanded", "false");
     expect(document.body.style.overflow).toBe("");
+  });
+
+  it("homeport.shell.mobile-parity focuses the active global destination", async () => {
+    navigation.pathname = "/tales";
+    render(
+      <ProductShell>
+        <main>Catalog content</main>
+      </ProductShell>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Open navigation" }));
+    const global = screen.getByRole("navigation", { name: "Global navigation" });
+    await waitFor(() => expect(within(global).getByRole("link", { name: "Explore Chronicles" })).toHaveFocus());
   });
 
   it("homeport.shell.compact-exit identifies Captain context and provides a stable exit with account access", () => {
