@@ -15,6 +15,7 @@ const phase3ReadOnlySetupSpec = /phase3-readonly-setup\.setup\.ts/u;
 const phase3PerformanceSpec = /phase3-performance\.spec\.ts/u;
 const harborlightPhase2Spec = /harborlight-phase2\.spec\.ts/u;
 const wayfarerPhase2Spec = /wayfarer-phase2\.spec\.ts/u;
+const wayfarerPhase3Spec = /wayfarer-phase3\.spec\.ts/u;
 const harborlightPhase3Spec = /harborlight-phase3\.spec\.ts/u;
 const harborlightPhase4Spec = /harborlight-phase4\.spec\.ts/u;
 const soundingLineAccessSentinelSpec = /access-gates\.spec\.ts/u;
@@ -87,6 +88,7 @@ export default defineConfig({
         phase3ReadOnlySetupSpec,
         phase3PerformanceSpec,
         wayfarerPhase2Spec,
+        wayfarerPhase3Spec,
         harborlightPhase2Spec,
         harborlightPhase3Spec,
         harborlightPhase4Spec,
