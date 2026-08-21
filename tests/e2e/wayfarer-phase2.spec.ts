@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { existsSync, readFileSync } from "node:fs";
 import sharp from "sharp";
 
 let syntheticPng: Buffer;
@@ -20,9 +21,7 @@ test("Wayfarer Passport persists a private profile, preferences, media, and a si
   await page.getByLabel("Confirm password", { exact: true }).fill("A secure test password 42!");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page).toHaveURL(/\/verify-email/u);
-  await page.goto("/sign-in");
-  await page.getByLabel("Email or legacy Player name").fill(email);
-  await page.getByLabel("Password").fill("A secure test password 42!");
+  await page.getByLabel("Code").fill(await waitForVerificationCode(email));
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page).toHaveURL(/\/$/u, { timeout: 15_000 });
 
@@ -105,3 +104,30 @@ test("Wayfarer Passport remains operable at required responsive viewports", asyn
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
   }
 });
+
+async function waitForVerificationCode(email: string) {
+  const outboxPath = process.env.HOMEPORT_SYNTHETIC_OUTBOX_PATH;
+  if (!outboxPath) throw new Error("WAYFARER_PHASE2_SYNTHETIC_OUTBOX_MISSING");
+  const normalizedEmail = email.trim().toLocaleLowerCase("en-US");
+  let code: string | null = null;
+  await expect
+    .poll(
+      () => {
+        if (!existsSync(outboxPath)) return null;
+        const deliveries = readFileSync(outboxPath, "utf8")
+          .split(/\r?\n/u)
+          .filter(Boolean)
+          .map((line) => JSON.parse(line) as { purpose?: string; email?: string; token?: string });
+        code =
+          deliveries.findLast(
+            (delivery) =>
+              delivery.purpose === "VERIFY_EMAIL" &&
+              delivery.email?.trim().toLocaleLowerCase("en-US") === normalizedEmail,
+          )?.token ?? null;
+        return code;
+      },
+      { timeout: 15_000 },
+    )
+    .toMatch(/^\d{6}$/u);
+  return code!;
+}
