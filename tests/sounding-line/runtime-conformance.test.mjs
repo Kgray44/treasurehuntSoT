@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
@@ -181,6 +182,21 @@ test("heavyweight repository closure and finalization workflows require explicit
 
   assert.ok(heavyweightCount > 0, "HEAVYWEIGHT_WORKFLOW_POLICY_UNEXERCISED");
   assert.deepEqual(violations, [], "HEAVYWEIGHT_WORKFLOW_MUST_BE_EXPLICIT_DISPATCH_ONLY");
+});
+
+test("authoritative baseline certification resolves the exact base tree and rejects a receipt tree mismatch", async () => {
+  const baseSha = "d87f5f5cf34e9f784a3fd619d7f4ee6206ef2cbf";
+  const expectedTree = "ed934d46e29848dcf375d29eb812cc003eadd395";
+  const resolvedTree = execFileSync("git", ["rev-parse", `${baseSha}^{tree}`], { cwd: root, encoding: "utf8" }).trim();
+  assert.equal(resolvedTree, expectedTree);
+
+  const workflow = await readFile(path.join(root, ".github", "workflows", "sounding-line-authoritative.yml"), "utf8");
+  assert.ok(workflow.includes('git rev-parse "$env:SOUNDING_LINE_BASE_SHA`^{tree}"'));
+  assert.ok(!workflow.includes('git rev-parse "$env:SOUNDING_LINE_BASE_SHA`:^{tree}"'));
+  assert.match(
+    workflow,
+    /\$receipt\.protectedMain\.treeSha -ne \$tree[\s\S]*?SOUNDING_LINE_BASELINE_CERTIFICATION_IDENTITY_INVALID/u,
+  );
 });
 
 test("resource-aware preparation eliminates universal database and browser setup", async () => {
