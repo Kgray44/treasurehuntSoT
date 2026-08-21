@@ -58,7 +58,9 @@ function Stop-OwnedNightwatch {
     if ($state) { Remove-Item -LiteralPath $statePath -Force }
     return [pscustomobject]@{ State = "NOT_RUNNING"; Pid = $null }
   }
-  Stop-Process -Id ([int]$owned.ProcessId) -ErrorAction Stop
+  $taskkill = Join-Path $env:SystemRoot "System32\taskkill.exe"
+  & $taskkill /PID ([int]$owned.ProcessId) /T /F | Out-Null
+  if ($LASTEXITCODE -ne 0) { throw "Nightwatch controller process tree could not be stopped (exit $LASTEXITCODE)." }
   $deadline = (Get-Date).AddSeconds(10)
   while ((Get-Date) -lt $deadline -and (Get-Process -Id ([int]$owned.ProcessId) -ErrorAction SilentlyContinue)) { Start-Sleep -Milliseconds 200 }
   if (Get-Process -Id ([int]$owned.ProcessId) -ErrorAction SilentlyContinue) { throw "Nightwatch controller did not stop within 10 seconds." }
@@ -86,7 +88,10 @@ function Start-OwnedNightwatch {
     if ($health.State -eq "LIVE") { return [pscustomobject]@{ State = "HEALTHY"; Pid = $started.Id; DatabasePath = $env:NIGHTWATCH_DB_PATH } }
     Start-Sleep -Milliseconds 300
   }
-  if (!$started.HasExited) { Stop-Process -Id $started.Id -ErrorAction SilentlyContinue }
+  if (!$started.HasExited) {
+    $taskkill = Join-Path $env:SystemRoot "System32\taskkill.exe"
+    & $taskkill /PID $started.Id /T /F | Out-Null
+  }
   Remove-Item -LiteralPath $statePath -Force -ErrorAction SilentlyContinue
   throw "Nightwatch did not become healthy. The owned process was stopped; inspect local configuration before retrying."
 }
