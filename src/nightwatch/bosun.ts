@@ -480,7 +480,10 @@ export class BosunAutoZeroExecutor {
     const changed = unique(first.changedPaths);
     if (digest(first.outputIdentity) !== digest(second.outputIdentity) || json(changed) !== json(unique(second.changedPaths)))
       throw new NightwatchInvariantError("BOSUN_AUTO_0_NONDETERMINISTIC", action.id);
-    if (json(changed) !== json(expected) || changed.some((path) => !action.allowedPaths.includes(path)))
+    // A generator may own several declared outputs while a particular drift affects
+    // only one of them. Require every observed mutation to stay within the exact
+    // receipt-bound set; do not manufacture a drift in the unchanged sibling output.
+    if (changed.length === 0 || changed.some((path) => !expected.includes(path) || !action.allowedPaths.includes(path)))
       throw new NightwatchInvariantError("BOSUN_AUTO_0_SCOPE_ESCAPE", action.id);
     return { actionId: action.id, changedPaths: changed, outputDigest: digest(first.outputIdentity), deterministic: true as const };
   }

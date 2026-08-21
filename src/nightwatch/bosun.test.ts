@@ -109,10 +109,10 @@ describe("Project Bosun B1 AUTO_0", () => {
     expect(order).toEqual(["active-test-registry", "active-test-registry", "document-index", "document-index", "active-test-registry", "active-test-registry", "document-index", "document-index"]);
   });
 
-  it("requires deterministic output and exact expected paths", async () => {
+  it("accepts a deterministic subset of receipt-bound generator outputs", async () => {
     const executor = new BosunAutoZeroExecutor();
-    const result = await executor.execute({ id: "active-test-registry", allowedPaths: ["testing/generated/active-test-registry.json"], run: async () => ({ changedPaths: ["testing/generated/active-test-registry.json"], outputIdentity: { definitions: 1, digest: "trusted" } }) }, ["testing/generated/active-test-registry.json"]);
-    expect(result).toMatchObject({ deterministic: true, changedPaths: ["testing/generated/active-test-registry.json"] });
+    const result = await executor.execute({ id: "document-index", allowedPaths: ["Development_Docs/document-index.json", "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv"], run: async () => ({ changedPaths: ["Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv"], outputIdentity: { definitions: 1, digest: "trusted" } }) }, ["Development_Docs/document-index.json", "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv"]);
+    expect(result).toMatchObject({ deterministic: true, changedPaths: ["Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv"] });
   });
 
   it("fails closed when a deterministic action escapes its allowed generated path", async () => {
