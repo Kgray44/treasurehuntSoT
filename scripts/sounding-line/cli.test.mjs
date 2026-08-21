@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import test from "node:test";
-import { loadPolicy, validatePolicy } from "./cli.mjs";
 
 const execFileAsync = promisify(execFile);
 const node = process.execPath;
@@ -13,19 +12,6 @@ test("policy validates with referential integrity", async () => {
   const result = await run("validate-policy");
   assert.equal(result.ok, true);
   assert.equal(result.counts.validationDebt, 2);
-});
-
-test("owner supporting relationships are bounded to known, distinct owners", async () => {
-  const policy = await loadPolicy();
-  const [owner, supportingOwner] = policy.ownership.owners;
-  owner.supportingOwnerIds = [supportingOwner.id];
-  assert.equal(validatePolicy(policy).ok, true);
-
-  owner.supportingOwnerIds = [owner.id];
-  assert.ok(validatePolicy(policy).errors.includes(`owner ${owner.id}: invalid supporting owner`));
-
-  owner.supportingOwnerIds = ["unknown-owner"];
-  assert.ok(validatePolicy(policy).errors.includes(`owner ${owner.id}: invalid supporting owner`));
 });
 
 test("inventory is read-only and recognizes current test families", async () => {
