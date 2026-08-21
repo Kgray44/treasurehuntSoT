@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `ed6ba2b3800524ef5d558cb5569e0f323db5c9b0`
+Audited source commit: `8586ea351a5adf2c6e08c5d0b9314ade18becf28`
 
 ## Status vocabulary
 
@@ -1639,4 +1639,4 @@ Project Nightwatch Increment A provides a durable local control plane that seria
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `ed6ba2b3800524ef5d558cb5569e0f323db5c9b0`
+Generation source commit: `8586ea351a5adf2c6e08c5d0b9314ade18becf28`

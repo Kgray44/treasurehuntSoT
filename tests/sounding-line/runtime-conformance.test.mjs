@@ -146,6 +146,20 @@ test("focused hosted execution delegates resource preparation and has no release
   );
   assert.match(focused, /focused-selection\.mjs/u);
   assert.match(focused, /type: string/u);
+  assert.match(focused, /default: mainline[\s\S]*?options: \[mainline\]/u);
+  assert.match(focused, /candidate_sha:[\s\S]*?required: true[\s\S]*?type: string/u);
+  assert.match(focused, /candidate_ref:[\s\S]*?required: true[\s\S]*?type: string/u);
+  assert.match(focused, /base_sha:[\s\S]*?required: true[\s\S]*?type: string/u);
+  assert.match(focused, /FOCUSED_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED/u);
+  assert.match(focused, /qualifiedBaseSha:process\.env\.SOUNDING_LINE_BASE_SHA/u);
+  assert.match(focused, /authorityMode:'V14_CANDIDATE'/u);
+  assert.match(focused, /candidate_sha: \$\{\{ inputs\.candidate_sha \}\}/u);
+  assert.match(focused, /candidate_ref: \$\{\{ inputs\.candidate_ref \}\}/u);
+  assert.match(
+    focused,
+    /focused-suite-without-browser[\s\S]*?requires_browser: false[\s\S]*?focused-suite-chromium[\s\S]*?has_chromium == 'true'[\s\S]*?requires_browser: true[\s\S]*?browser_engine: chromium[\s\S]*?focused-suite-webkit[\s\S]*?has_webkit == 'true'[\s\S]*?requires_browser: true[\s\S]*?browser_engine: webkit/u,
+  );
+  assert.doesNotMatch(focused, /browser_engine: \$\{\{ needs\.focused-plan\.outputs\.browser_engine \}\}/u);
   assert.doesNotMatch(focused, /type: choice[\s\S]*?browser\.access-sentinel/u);
 });
 
