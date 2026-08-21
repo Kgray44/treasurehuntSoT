@@ -10,15 +10,21 @@ test.beforeAll(async () => {
 
 test("Wayfarer Passport persists a private profile, preferences, media, and a simulator identity", async ({ page }) => {
   const suffix = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const email = `${suffix}@example.test`;
   const handle = `wayfarer-${suffix}`;
   const nextHandle = `voyager-${suffix}`;
   await page.goto("/register");
   await page.getByLabel("Display name").fill("Isolated Wayfarer");
-  await page.getByLabel("Email").fill(`${suffix}@example.test`);
+  await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password", { exact: true }).fill("A secure test password 42!");
   await page.getByLabel("Confirm password", { exact: true }).fill("A secure test password 42!");
   await page.getByRole("button", { name: "Continue" }).click();
-  await expect(page).toHaveURL(/\/passport/u);
+  await expect(page).toHaveURL(/\/verify-email/u);
+  await page.goto("/sign-in");
+  await page.getByLabel("Email or legacy Player name").fill(email);
+  await page.getByLabel("Password").fill("A secure test password 42!");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page).toHaveURL(/\/$/u, { timeout: 15_000 });
 
   await page.goto("/passport");
   await expect(page.getByRole("heading", { name: "Chronicle Passport" })).toBeVisible();
