@@ -66,6 +66,36 @@ export interface BridgewatchNightwatchProjection {
   }>;
   integrationLifecycleState: string;
   acceptanceOwnership: string | null;
+  transactions: Array<{
+    id: string;
+    candidateId: string;
+    cascadeId: string;
+    candidateSha: string;
+    candidateTreeSha: string;
+    baseSha: string;
+    baseTreeSha: string;
+    candidateRef: string;
+    state: string;
+    authorityRunId: string | null;
+    bindingRunId: string | null;
+    authorityResult: string | null;
+    bindingResult: string | null;
+    leaseId: string | null;
+    lastSemanticInvalidation: string | null;
+    preservedEvidenceCount: number;
+    rerunEvidenceCount: number;
+    createdAt: string;
+    updatedAt: string;
+  }>;
+  cascades: Array<{
+    id: string;
+    rootFingerprint: string;
+    maintenancePrCount: number;
+    authorityAttempts: number;
+    mainlineRebuilds: number;
+    blockedCandidates: string[];
+    status: string;
+  }>;
 }
 
 const unavailable = (
@@ -84,6 +114,8 @@ const unavailable = (
   leases: [],
   integrationLifecycleState: "IDLE",
   acceptanceOwnership: null,
+  transactions: [],
+  cascades: [],
 });
 
 const array = (value: string, label: string) => {
@@ -177,6 +209,46 @@ export function readNightwatchProjection(
       expiresAt: String(row.expires_at),
       state: String(row.state),
     }));
+    const tableExists = (name: string) =>
+      Boolean(db!.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?").get(name));
+    const transactions = tableExists("acceptance_transactions")
+      ? (db.prepare("SELECT * FROM acceptance_transactions ORDER BY updated_at DESC, transaction_id").all() as Array<Record<string, unknown>>).map(
+          (row) => ({
+            id: String(row.transaction_id),
+            candidateId: String(row.candidate_id),
+            cascadeId: String(row.cascade_id),
+            candidateSha: String(row.candidate_sha),
+            candidateTreeSha: String(row.candidate_tree_sha),
+            baseSha: String(row.base_sha),
+            baseTreeSha: String(row.base_tree_sha),
+            candidateRef: String(row.candidate_ref),
+            state: String(row.state),
+            authorityRunId: row.authority_run_id ? String(row.authority_run_id) : null,
+            bindingRunId: row.binding_run_id ? String(row.binding_run_id) : null,
+            authorityResult: row.authority_result ? String(row.authority_result) : null,
+            bindingResult: row.binding_result ? String(row.binding_result) : null,
+            leaseId: row.lease_id ? String(row.lease_id) : null,
+            lastSemanticInvalidation: row.last_semantic_invalidation ? String(row.last_semantic_invalidation) : null,
+            preservedEvidenceCount: Number(row.preserved_evidence_count),
+            rerunEvidenceCount: Number(row.rerun_evidence_count),
+            createdAt: String(row.created_at),
+            updatedAt: String(row.updated_at),
+          }),
+        )
+      : [];
+    const cascades = tableExists("integration_cascades")
+      ? (db.prepare("SELECT * FROM integration_cascades ORDER BY started_at, cascade_id").all() as Array<Record<string, unknown>>).map(
+          (row) => ({
+            id: String(row.cascade_id),
+            rootFingerprint: String(row.root_fingerprint),
+            maintenancePrCount: Number(row.maintenance_pr_count),
+            authorityAttempts: Number(row.authority_attempts),
+            mainlineRebuilds: Number(row.mainline_rebuilds),
+            blockedCandidates: array(String(row.blocked_candidates_json), "cascade blocked candidates"),
+            status: String(row.status),
+          }),
+        )
+      : [];
     const reservations = (
       db.prepare("SELECT * FROM migration_reservations ORDER BY allocated_at, reservation_id").all() as Array<
         Record<string, unknown>
@@ -208,8 +280,10 @@ export function readNightwatchProjection(
       migrationReservations: reservations,
       migrationCollisions: repositoryCollisions(repositoryRoot),
       leases,
-      integrationLifecycleState: front?.state ?? "IDLE",
+      integrationLifecycleState: transactions.find((transaction) => !["INTEGRATED", "POST_MERGE_VERIFIED"].includes(transaction.state))?.state ?? front?.state ?? "IDLE",
       acceptanceOwnership: acceptance?.id ?? null,
+      transactions,
+      cascades,
     };
   } catch {
     return unavailable("DEGRADED", "Nightwatch ledger data is unavailable or malformed; no mutation was attempted.");

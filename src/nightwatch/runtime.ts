@@ -34,6 +34,85 @@ export type LeaseType =
 export type ReservationState = "ACTIVE" | "RELEASED" | "EXPIRED" | "CONSUMED";
 export type LeaseState = "ACTIVE" | "RELEASED" | "EXPIRED";
 
+/** The A.1 acceptance state is deliberately separate from the broad queue state. */
+export const acceptanceTransactionStates = [
+  "RECONCILING",
+  "REQUALIFYING",
+  "CANDIDATE_FROZEN",
+  "AWAITING_AUTHORITY",
+  "AUTHORITY_RUNNING",
+  "AUTHORITY_ACCEPTED",
+  "AUTHORITY_REJECTED",
+  "BINDING_PENDING",
+  "BINDING_RUNNING",
+  "BINDING_PASS",
+  "BINDING_REJECTED",
+  "MERGING",
+  "MERGE_RACE",
+  "INTEGRATED",
+  "POST_MERGE_VERIFIED",
+  "SHARED_BLOCKED",
+  "PARKED_INTEGRATION_BREAKER",
+] as const;
+export type AcceptanceTransactionState = (typeof acceptanceTransactionStates)[number];
+export type AcceptanceRunStage = "AUTHORITY" | "BINDING";
+export type AcceptanceRunStatus = "RUNNING" | "RELEASE_GO" | "REJECTED" | "BINDING_PASS" | "BINDING_REJECTED";
+
+export interface ExactCandidateIdentity {
+  candidateSha: string;
+  candidateTreeSha: string;
+  baseSha: string;
+  baseTreeSha: string;
+  candidateRef: string;
+}
+
+export interface AcceptanceTransaction extends ExactCandidateIdentity {
+  id: string;
+  candidateId: string;
+  cascadeId: string;
+  state: AcceptanceTransactionState;
+  authorityRunId: string | null;
+  bindingRunId: string | null;
+  authorityResult: string | null;
+  bindingResult: string | null;
+  leaseId: string | null;
+  lastSemanticInvalidation: string | null;
+  preservedEvidenceCount: number;
+  rerunEvidenceCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AcceptanceRun {
+  id: string;
+  transactionId: string;
+  stage: AcceptanceRunStage;
+  dispatchKey: string;
+  externalRunId: string | null;
+  status: AcceptanceRunStatus;
+  dispatchedAt: string;
+  completedAt: string | null;
+}
+
+export interface IntegrationCascade {
+  id: string;
+  rootFingerprint: string;
+  rootIdentity: string;
+  startedAt: string;
+  maintenancePrCount: number;
+  authorityAttempts: number;
+  mainlineRebuilds: number;
+  blockedCandidates: string[];
+  status: "ACTIVE" | "WARNING" | "CONTROL_PLANE_REVIEW" | "PARKED_BREAKER";
+}
+
+export interface IntegrationBudgetStatus {
+  cascadeId: string;
+  elapsedMs: number;
+  maintenanceAmplificationRatio: number;
+  status: IntegrationCascade["status"];
+}
+
 const terminalStates = new Set<CandidateState>(["POST_MERGE_VERIFIED", "SUPERSEDED", "WITHDRAWN"]);
 const activeStates = new Set<CandidateState>(candidateStates.filter((state) => !terminalStates.has(state)));
 const stateSet = new Set<string>(candidateStates);
@@ -92,6 +171,7 @@ const transitions: Record<CandidateState, readonly CandidateState[]> = {
     "WITHDRAWN",
   ],
   ACCEPTANCE_PENDING: [
+    "RECONCILING",
     "INTEGRATED",
     "BLOCKED_BY_BOSUN",
     "PARKED_OWNER_REQUIRED",
@@ -433,8 +513,54 @@ export class NightwatchLedger {
         payload_json TEXT NOT NULL
       );
       CREATE INDEX IF NOT EXISTS events_entity_idx ON events(entity_type, entity_id, occurred_at);
+      CREATE TABLE IF NOT EXISTS integration_cascades (
+        cascade_id TEXT PRIMARY KEY,
+        root_fingerprint TEXT NOT NULL UNIQUE,
+        root_identity TEXT NOT NULL,
+        started_at TEXT NOT NULL,
+        maintenance_pr_count INTEGER NOT NULL DEFAULT 0,
+        authority_attempts INTEGER NOT NULL DEFAULT 0,
+        mainline_rebuilds INTEGER NOT NULL DEFAULT 0,
+        blocked_candidates_json TEXT NOT NULL DEFAULT '[]',
+        status TEXT NOT NULL DEFAULT 'ACTIVE'
+      );
+      CREATE TABLE IF NOT EXISTS acceptance_transactions (
+        transaction_id TEXT PRIMARY KEY,
+        candidate_id TEXT NOT NULL REFERENCES candidates(candidate_id),
+        cascade_id TEXT NOT NULL REFERENCES integration_cascades(cascade_id),
+        candidate_sha TEXT NOT NULL,
+        candidate_tree_sha TEXT NOT NULL,
+        base_sha TEXT NOT NULL,
+        base_tree_sha TEXT NOT NULL,
+        candidate_ref TEXT NOT NULL,
+        state TEXT NOT NULL,
+        authority_run_id TEXT,
+        binding_run_id TEXT,
+        authority_result TEXT,
+        binding_result TEXT,
+        lease_id TEXT,
+        last_semantic_invalidation TEXT,
+        preserved_evidence_count INTEGER NOT NULL DEFAULT 0,
+        rerun_evidence_count INTEGER NOT NULL DEFAULT 0,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        UNIQUE(candidate_id, candidate_sha, base_sha)
+      );
+      CREATE INDEX IF NOT EXISTS acceptance_transactions_candidate_idx ON acceptance_transactions(candidate_id, updated_at);
+      CREATE TABLE IF NOT EXISTS acceptance_runs (
+        run_id TEXT PRIMARY KEY,
+        transaction_id TEXT NOT NULL REFERENCES acceptance_transactions(transaction_id),
+        stage TEXT NOT NULL,
+        dispatch_key TEXT NOT NULL UNIQUE,
+        external_run_id TEXT,
+        status TEXT NOT NULL,
+        dispatched_at TEXT NOT NULL,
+        completed_at TEXT
+      );
+      CREATE INDEX IF NOT EXISTS acceptance_runs_transaction_idx ON acceptance_runs(transaction_id, stage);
     `);
     this.db.prepare("INSERT OR IGNORE INTO nightwatch_migrations(version, applied_at) VALUES (1, ?)").run(iso());
+    this.db.prepare("INSERT OR IGNORE INTO nightwatch_migrations(version, applied_at) VALUES (2, ?)").run(iso());
   }
 
   private validatePersistedState() {
@@ -1080,6 +1206,351 @@ export class NightwatchLedger {
         }
       }
       return inspections;
+    });
+  }
+
+  private acceptanceTransaction(row: Record<string, unknown>): AcceptanceTransaction {
+    return {
+      id: String(row.transaction_id),
+      candidateId: String(row.candidate_id),
+      cascadeId: String(row.cascade_id),
+      candidateSha: String(row.candidate_sha),
+      candidateTreeSha: String(row.candidate_tree_sha),
+      baseSha: String(row.base_sha),
+      baseTreeSha: String(row.base_tree_sha),
+      candidateRef: String(row.candidate_ref),
+      state: String(row.state) as AcceptanceTransactionState,
+      authorityRunId: row.authority_run_id ? String(row.authority_run_id) : null,
+      bindingRunId: row.binding_run_id ? String(row.binding_run_id) : null,
+      authorityResult: row.authority_result ? String(row.authority_result) : null,
+      bindingResult: row.binding_result ? String(row.binding_result) : null,
+      leaseId: row.lease_id ? String(row.lease_id) : null,
+      lastSemanticInvalidation: row.last_semantic_invalidation ? String(row.last_semantic_invalidation) : null,
+      preservedEvidenceCount: Number(row.preserved_evidence_count),
+      rerunEvidenceCount: Number(row.rerun_evidence_count),
+      createdAt: String(row.created_at),
+      updatedAt: String(row.updated_at),
+    };
+  }
+
+  private transactionRow(id: string) {
+    const row = this.db.prepare("SELECT * FROM acceptance_transactions WHERE transaction_id = ?").get(id) as
+      | Record<string, unknown>
+      | undefined;
+    if (!row) throw new NightwatchInvariantError("ACCEPTANCE_TRANSACTION_NOT_FOUND", id);
+    return row;
+  }
+
+  private cascade(row: Record<string, unknown>): IntegrationCascade {
+    return {
+      id: String(row.cascade_id),
+      rootFingerprint: String(row.root_fingerprint),
+      rootIdentity: String(row.root_identity),
+      startedAt: String(row.started_at),
+      maintenancePrCount: Number(row.maintenance_pr_count),
+      authorityAttempts: Number(row.authority_attempts),
+      mainlineRebuilds: Number(row.mainline_rebuilds),
+      blockedCandidates: parse<string[]>(String(row.blocked_candidates_json), "cascade.blockedCandidates"),
+      status: String(row.status) as IntegrationCascade["status"],
+    };
+  }
+
+  private cascadeRow(id: string) {
+    const row = this.db.prepare("SELECT * FROM integration_cascades WHERE cascade_id = ?").get(id) as
+      | Record<string, unknown>
+      | undefined;
+    if (!row) throw new NightwatchInvariantError("INTEGRATION_CASCADE_NOT_FOUND", id);
+    return row;
+  }
+
+  private validateIdentity(identity: ExactCandidateIdentity) {
+    assertSafe(identity);
+    return {
+      candidateSha: requireText(identity.candidateSha, "candidateSha"),
+      candidateTreeSha: requireText(identity.candidateTreeSha, "candidateTreeSha"),
+      baseSha: requireText(identity.baseSha, "baseSha"),
+      baseTreeSha: requireText(identity.baseTreeSha, "baseTreeSha"),
+      candidateRef: requireText(identity.candidateRef, "candidateRef"),
+    };
+  }
+
+  private setTransactionState(id: string, state: AcceptanceTransactionState, at = iso()) {
+    this.db.prepare("UPDATE acceptance_transactions SET state = ?, updated_at = ? WHERE transaction_id = ?").run(state, at, id);
+    this.event("acceptance-transaction", id, "ACCEPTANCE_STATE_CHANGED", { state }, at);
+    return this.getAcceptanceTransaction(id);
+  }
+
+  getAcceptanceTransaction(id: string) {
+    return this.acceptanceTransaction(this.transactionRow(id));
+  }
+
+  acceptanceTransactions(candidateId?: string) {
+    const rows = (candidateId
+      ? this.db.prepare("SELECT * FROM acceptance_transactions WHERE candidate_id = ? ORDER BY created_at").all(candidateId)
+      : this.db.prepare("SELECT * FROM acceptance_transactions ORDER BY created_at").all()) as Record<string, unknown>[];
+    return rows.map((row) => this.acceptanceTransaction(row));
+  }
+
+  acceptanceRuns(transactionId?: string): AcceptanceRun[] {
+    const rows = (transactionId
+      ? this.db.prepare("SELECT * FROM acceptance_runs WHERE transaction_id = ? ORDER BY dispatched_at, run_id").all(transactionId)
+      : this.db.prepare("SELECT * FROM acceptance_runs ORDER BY dispatched_at, run_id").all()) as Record<string, unknown>[];
+    return rows.map((row) => ({
+      id: String(row.run_id),
+      transactionId: String(row.transaction_id),
+      stage: String(row.stage) as AcceptanceRunStage,
+      dispatchKey: String(row.dispatch_key),
+      externalRunId: row.external_run_id ? String(row.external_run_id) : null,
+      status: String(row.status) as AcceptanceRunStatus,
+      dispatchedAt: String(row.dispatched_at),
+      completedAt: row.completed_at ? String(row.completed_at) : null,
+    }));
+  }
+
+  integrationCascades() {
+    return (this.db.prepare("SELECT * FROM integration_cascades ORDER BY started_at, cascade_id").all() as Record<string, unknown>[]).map((row) =>
+      this.cascade(row),
+    );
+  }
+
+  beginAtomicAcceptance(input: {
+    candidateId: string;
+    identity: ExactCandidateIdentity;
+    rootFingerprint: string;
+    rootIdentity?: string;
+    at?: string;
+  }): AcceptanceTransaction {
+    assertSafe(input);
+    const identity = this.validateIdentity(input.identity);
+    const at = input.at ?? iso();
+    return this.inTransaction(() => {
+      const candidate = this.getCandidate(input.candidateId);
+      if (!candidate.active || !["QUEUE_FRONT", "RECONCILING"].includes(candidate.state))
+        throw new NightwatchInvariantError("QUEUE_FRONT_REQUIRED", input.candidateId);
+      const duplicate = this.db
+        .prepare("SELECT * FROM acceptance_transactions WHERE candidate_id = ? AND candidate_sha = ? AND base_sha = ?")
+        .get(input.candidateId, identity.candidateSha, identity.baseSha) as Record<string, unknown> | undefined;
+      if (duplicate) return this.acceptanceTransaction(duplicate);
+      const rootFingerprint = requireText(input.rootFingerprint, "rootFingerprint");
+      let cascade = this.db.prepare("SELECT * FROM integration_cascades WHERE root_fingerprint = ?").get(rootFingerprint) as
+        | Record<string, unknown>
+        | undefined;
+      if (!cascade) {
+        const cascadeId = randomUUID();
+        this.db
+          .prepare(
+            "INSERT INTO integration_cascades(cascade_id, root_fingerprint, root_identity, started_at, blocked_candidates_json, status) VALUES (?, ?, ?, ?, '[]', 'ACTIVE')",
+          )
+          .run(cascadeId, rootFingerprint, requireText(input.rootIdentity ?? rootFingerprint, "rootIdentity"), at);
+        cascade = this.cascadeRow(cascadeId);
+      }
+      const id = randomUUID();
+      this.db
+        .prepare(
+          "INSERT INTO acceptance_transactions(transaction_id, candidate_id, cascade_id, candidate_sha, candidate_tree_sha, base_sha, base_tree_sha, candidate_ref, state, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'RECONCILING', ?, ?)",
+        )
+        .run(id, input.candidateId, String(cascade.cascade_id), identity.candidateSha, identity.candidateTreeSha, identity.baseSha, identity.baseTreeSha, identity.candidateRef, at, at);
+      if (candidate.state === "QUEUE_FRONT") this.transitionCandidate(input.candidateId, "RECONCILING", { at });
+      this.event("acceptance-transaction", id, "ATOMIC_ACCEPTANCE_BEGUN", { candidateId: input.candidateId, ...identity }, at);
+      return this.getAcceptanceTransaction(id);
+    });
+  }
+
+  /** Cheap queue-front checks only; this is intentionally not a Sounding Line substitute. */
+  preflightAcceptance(
+    transactionId: string,
+    input: {
+      deterministicRegistryHealthy: boolean;
+      ownershipResolved: boolean;
+      knownMaintenanceBlocker?: string;
+      identityStable: boolean;
+      leaseAvailable: boolean;
+      at?: string;
+    },
+  ) {
+    assertSafe(input);
+    const at = input.at ?? iso();
+    return this.inTransaction(() => {
+      const transaction = this.getAcceptanceTransaction(transactionId);
+      if (transaction.state !== "RECONCILING") throw new NightwatchInvariantError("RECONCILIATION_REQUIRED", transactionId);
+      const failed = !input.deterministicRegistryHealthy
+        ? "DETERMINISTIC_REGISTRY_UNHEALTHY"
+        : !input.ownershipResolved
+          ? "OWNERSHIP_UNRESOLVED"
+          : input.knownMaintenanceBlocker
+            ? `SHARED_MAINTENANCE_BLOCKED:${input.knownMaintenanceBlocker}`
+            : !input.identityStable
+              ? "EXACT_IDENTITY_UNSTABLE"
+              : !input.leaseAvailable
+                ? "INTEGRATION_ACCEPTANCE_LEASE_UNAVAILABLE"
+                : null;
+      this.event("acceptance-transaction", transactionId, "QUEUE_FRONT_PREFLIGHT", { result: failed ?? "PASS" }, at);
+      if (!failed) return { result: "PASS" as const, transaction };
+      this.db.prepare("UPDATE acceptance_transactions SET last_semantic_invalidation = ?, updated_at = ? WHERE transaction_id = ?").run(failed, at, transactionId);
+      this.setTransactionState(transactionId, "SHARED_BLOCKED", at);
+      return { result: "BLOCKED" as const, reason: failed, transaction: this.getAcceptanceTransaction(transactionId) };
+    });
+  }
+
+  completeReconciliation(transactionId: string, options: { preservedEvidenceCount?: number; rerunEvidenceCount?: number; at?: string } = {}) {
+    const at = options.at ?? iso();
+    return this.inTransaction(() => {
+      const transaction = this.getAcceptanceTransaction(transactionId);
+      if (transaction.state !== "RECONCILING") throw new NightwatchInvariantError("RECONCILIATION_REQUIRED", transactionId);
+      this.db
+        .prepare("UPDATE acceptance_transactions SET preserved_evidence_count = ?, rerun_evidence_count = ?, updated_at = ? WHERE transaction_id = ?")
+        .run(boundedNumber(options.preservedEvidenceCount, transaction.preservedEvidenceCount, "preservedEvidenceCount"), boundedNumber(options.rerunEvidenceCount, transaction.rerunEvidenceCount, "rerunEvidenceCount"), at, transactionId);
+      const candidate = this.getCandidate(transaction.candidateId);
+      if (candidate.state === "RECONCILING") this.transitionCandidate(transaction.candidateId, "QUALIFYING", { at });
+      return this.setTransactionState(transactionId, "REQUALIFYING", at);
+    });
+  }
+
+  freezeAcceptanceCandidate(transactionId: string, owner: string, ttlMs: number, at = iso()) {
+    return this.inTransaction(() => {
+      const transaction = this.getAcceptanceTransaction(transactionId);
+      if (transaction.state !== "REQUALIFYING") throw new NightwatchInvariantError("REQUALIFICATION_REQUIRED", transactionId);
+      const lease = this.acquireLease({ type: "INTEGRATION_ACCEPTANCE", scope: "integration-queue", owner, candidateId: transaction.candidateId, ttlMs, now: Date.parse(at) });
+      this.db.prepare("UPDATE acceptance_transactions SET lease_id = ?, updated_at = ? WHERE transaction_id = ?").run(lease.id, at, transactionId);
+      const candidate = this.getCandidate(transaction.candidateId);
+      if (candidate.state === "QUALIFYING") this.transitionCandidate(transaction.candidateId, "ACCEPTANCE_PENDING", { at });
+      return this.setTransactionState(transactionId, "CANDIDATE_FROZEN", at);
+    });
+  }
+
+  awaitAuthority(transactionId: string, at = iso()) {
+    return this.inTransaction(() => {
+      const transaction = this.getAcceptanceTransaction(transactionId);
+      if (transaction.state !== "CANDIDATE_FROZEN") throw new NightwatchInvariantError("CANDIDATE_FROZEN_REQUIRED", transactionId);
+      return this.setTransactionState(transactionId, "AWAITING_AUTHORITY", at);
+    });
+  }
+
+  dispatchAuthority(transactionId: string, eventKey: string, externalRunId?: string, at = iso()): AcceptanceRun {
+    return this.dispatchAcceptanceRun(transactionId, "AUTHORITY", eventKey, externalRunId, at);
+  }
+
+  dispatchBinding(transactionId: string, eventKey: string, externalRunId?: string, at = iso()): AcceptanceRun {
+    return this.dispatchAcceptanceRun(transactionId, "BINDING", eventKey, externalRunId, at);
+  }
+
+  private dispatchAcceptanceRun(transactionId: string, stage: AcceptanceRunStage, eventKey: string, externalRunId: string | undefined, at: string) {
+    return this.inTransaction(() => {
+      const transaction = this.getAcceptanceTransaction(transactionId);
+      const key = requireText(eventKey, "eventKey");
+      const sameIdentity = this.db
+        .prepare("SELECT * FROM acceptance_runs WHERE transaction_id = ? AND stage = ?")
+        .get(transactionId, stage) as Record<string, unknown> | undefined;
+      if (sameIdentity) return this.acceptanceRuns(transactionId).find((run) => run.id === String(sameIdentity.run_id))!;
+      const expected = stage === "AUTHORITY" ? "AWAITING_AUTHORITY" : "BINDING_PENDING";
+      if (transaction.state !== expected) throw new NightwatchInvariantError(`${stage}_DISPATCH_NOT_READY`, transactionId);
+      const identityKey = `${transaction.candidateSha}:${transaction.baseSha}:${stage}`;
+      const id = randomUUID();
+      this.db
+        .prepare("INSERT INTO acceptance_runs(run_id, transaction_id, stage, dispatch_key, external_run_id, status, dispatched_at) VALUES (?, ?, ?, ?, ?, 'RUNNING', ?)")
+        .run(id, transactionId, stage, `${identityKey}:${key}`, externalRunId ?? null, at);
+      this.db.prepare("UPDATE acceptance_transactions SET " + (stage === "AUTHORITY" ? "authority_run_id" : "binding_run_id") + " = ?, updated_at = ? WHERE transaction_id = ?").run(id, at, transactionId);
+      if (stage === "AUTHORITY") {
+        this.db.prepare("UPDATE integration_cascades SET authority_attempts = authority_attempts + 1 WHERE cascade_id = ?").run(transaction.cascadeId);
+        this.setTransactionState(transactionId, "AUTHORITY_RUNNING", at);
+      } else this.setTransactionState(transactionId, "BINDING_RUNNING", at);
+      this.event("acceptance-run", id, "RUN_DISPATCHED", { transactionId, stage, eventKey: key }, at);
+      return this.acceptanceRuns(transactionId).find((run) => run.id === id)!;
+    });
+  }
+
+  recordAuthorityResult(transactionId: string, runId: string, result: "RELEASE_GO" | "REJECTED", at = iso()) {
+    return this.inTransaction(() => {
+      const transaction = this.getAcceptanceTransaction(transactionId);
+      if (transaction.state !== "AUTHORITY_RUNNING" || transaction.authorityRunId !== runId)
+        throw new NightwatchInvariantError("AUTHORITY_RUN_MISMATCH", transactionId);
+      this.db.prepare("UPDATE acceptance_runs SET status = ?, completed_at = ? WHERE run_id = ?").run(result, at, runId);
+      this.db.prepare("UPDATE acceptance_transactions SET authority_result = ?, updated_at = ? WHERE transaction_id = ?").run(result, at, transactionId);
+      this.setTransactionState(transactionId, result === "RELEASE_GO" ? "AUTHORITY_ACCEPTED" : "AUTHORITY_REJECTED", at);
+      if (result === "RELEASE_GO") return this.setTransactionState(transactionId, "BINDING_PENDING", at);
+      return this.getAcceptanceTransaction(transactionId);
+    });
+  }
+
+  recordBindingResult(transactionId: string, runId: string, result: "BINDING_PASS" | "BINDING_REJECTED", at = iso()) {
+    return this.inTransaction(() => {
+      const transaction = this.getAcceptanceTransaction(transactionId);
+      if (transaction.state !== "BINDING_RUNNING" || transaction.bindingRunId !== runId)
+        throw new NightwatchInvariantError("BINDING_RUN_MISMATCH", transactionId);
+      this.db.prepare("UPDATE acceptance_runs SET status = ?, completed_at = ? WHERE run_id = ?").run(result, at, runId);
+      this.db.prepare("UPDATE acceptance_transactions SET binding_result = ?, updated_at = ? WHERE transaction_id = ?").run(result, at, transactionId);
+      this.setTransactionState(transactionId, result, at);
+      return result === "BINDING_PASS" ? this.setTransactionState(transactionId, "MERGING", at) : this.getAcceptanceTransaction(transactionId);
+    });
+  }
+
+  recordIntegrated(transactionId: string, at = iso()) {
+    return this.inTransaction(() => {
+      const transaction = this.getAcceptanceTransaction(transactionId);
+      if (transaction.state !== "MERGING") throw new NightwatchInvariantError("MERGING_REQUIRED", transactionId);
+      const candidate = this.getCandidate(transaction.candidateId);
+      if (candidate.state === "ACCEPTANCE_PENDING") this.transitionCandidate(transaction.candidateId, "INTEGRATED", { at });
+      return this.setTransactionState(transactionId, "INTEGRATED", at);
+    });
+  }
+
+  verifyPostMerge(transactionId: string, landed: { mergeSha: string; treeSha: string }, at = iso()) {
+    return this.inTransaction(() => {
+      assertSafe(landed);
+      const transaction = this.getAcceptanceTransaction(transactionId);
+      if (transaction.state !== "INTEGRATED") throw new NightwatchInvariantError("INTEGRATED_REQUIRED", transactionId);
+      requireText(landed.mergeSha, "mergeSha");
+      requireText(landed.treeSha, "treeSha");
+      const candidate = this.getCandidate(transaction.candidateId);
+      if (candidate.state === "INTEGRATED") this.transitionCandidate(transaction.candidateId, "POST_MERGE_VERIFIED", { at });
+      const lease = transaction.leaseId ? this.leases("ACTIVE").find((entry) => entry.id === transaction.leaseId) : undefined;
+      if (lease) this.releaseLease(lease.id, lease.owner, at);
+      this.event("acceptance-transaction", transactionId, "POST_MERGE_IDENTITY_VERIFIED", landed, at);
+      return this.setTransactionState(transactionId, "POST_MERGE_VERIFIED", at);
+    });
+  }
+
+  recordTransactionMainAdvance(transactionId: string, semanticInvalidation: string, at = iso()) {
+    return this.inTransaction(() => {
+      const transaction = this.getAcceptanceTransaction(transactionId);
+      const race = ["AUTHORITY_ACCEPTED", "BINDING_PENDING", "BINDING_RUNNING", "BINDING_PASS", "MERGING"].includes(transaction.state);
+      this.db.prepare("UPDATE integration_cascades SET mainline_rebuilds = mainline_rebuilds + 1 WHERE cascade_id = ?").run(transaction.cascadeId);
+      this.db.prepare("UPDATE acceptance_transactions SET last_semantic_invalidation = ?, updated_at = ? WHERE transaction_id = ?").run(requireText(semanticInvalidation, "semanticInvalidation"), at, transactionId);
+      const candidate = this.getCandidate(transaction.candidateId);
+      if (race) {
+        if (candidate.state === "ACCEPTANCE_PENDING") this.transitionCandidate(transaction.candidateId, "RECONCILING", { at });
+        return this.setTransactionState(transactionId, "MERGE_RACE", at);
+      }
+      if (candidate.state === "ACCEPTANCE_PENDING") this.transitionCandidate(transaction.candidateId, "RECONCILING", { at });
+      return this.setTransactionState(transactionId, "RECONCILING", at);
+    });
+  }
+
+  recordMaintenanceDescendant(transactionId: string, input: { candidateId?: string; generation: number; at?: string }) {
+    assertSafe(input);
+    if (!Number.isSafeInteger(input.generation) || input.generation < 0) throw new NightwatchInvariantError("INVALID_CASCADE_GENERATION");
+    return this.inTransaction(() => {
+      const transaction = this.getAcceptanceTransaction(transactionId);
+      const cascade = this.cascade(this.cascadeRow(transaction.cascadeId));
+      const blocked = [...new Set([...cascade.blockedCandidates, ...(input.candidateId ? [input.candidateId] : [])])].sort();
+      this.db.prepare("UPDATE integration_cascades SET maintenance_pr_count = maintenance_pr_count + 1, blocked_candidates_json = ? WHERE cascade_id = ?").run(json(blocked), cascade.id);
+      this.event("integration-cascade", cascade.id, "MAINTENANCE_DESCENDANT_RECORDED", { generation: input.generation, candidateId: input.candidateId ?? null }, input.at);
+      return this.integrationBudget(cascade.id, input.at ? Date.parse(input.at) : Date.now());
+    });
+  }
+
+  integrationBudget(cascadeId: string, now = Date.now()): IntegrationBudgetStatus {
+    return this.inTransaction(() => {
+      const cascade = this.cascade(this.cascadeRow(cascadeId));
+      const elapsedMs = Math.max(0, now - Date.parse(cascade.startedAt));
+      const status: IntegrationCascade["status"] = elapsedMs >= 90 * 60_000 ? "PARKED_BREAKER" : elapsedMs >= 60 * 60_000 ? "CONTROL_PLANE_REVIEW" : elapsedMs >= 30 * 60_000 ? "WARNING" : "ACTIVE";
+      if (status !== cascade.status) this.db.prepare("UPDATE integration_cascades SET status = ? WHERE cascade_id = ?").run(status, cascadeId);
+      if (status === "PARKED_BREAKER") {
+        this.db.prepare("UPDATE acceptance_transactions SET state = 'PARKED_INTEGRATION_BREAKER', updated_at = ? WHERE cascade_id = ? AND state NOT IN ('INTEGRATED', 'POST_MERGE_VERIFIED')").run(iso(now), cascadeId);
+        this.event("integration-cascade", cascadeId, "INTEGRATION_CASCADE_BREAKER", { elapsedMs }, iso(now));
+      }
+      const refreshed = this.cascade(this.cascadeRow(cascadeId));
+      return { cascadeId, elapsedMs, maintenanceAmplificationRatio: refreshed.maintenancePrCount / Math.max(1, refreshed.authorityAttempts), status };
     });
   }
 

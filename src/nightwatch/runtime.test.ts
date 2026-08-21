@@ -276,3 +276,107 @@ describe("Nightwatch projection and persistence safety", () => {
     expect(() => new NightwatchLedger(file)).toThrow("MALFORMED_PERSISTED_STATE");
   });
 });
+
+describe("Nightwatch Increment A.1 atomic acceptance sequencer", () => {
+  const identity = (suffix = "one") => ({
+    candidateSha: `candidate-${suffix}`,
+    candidateTreeSha: `candidate-tree-${suffix}`,
+    baseSha: `base-${suffix}`,
+    baseTreeSha: `base-tree-${suffix}`,
+    candidateRef: `refs/heads/codex/candidate-${suffix}`,
+  });
+  const prepare = (ledger: NightwatchLedger, at = "2026-08-21T00:00:00.000Z") => {
+    queue(ledger, "atomic");
+    const transaction = ledger.beginAtomicAcceptance({
+      candidateId: "atomic",
+      identity: identity(),
+      rootFingerprint: "semantic-root-a",
+      at,
+    });
+    expect(
+      ledger.preflightAcceptance(transaction.id, {
+        deterministicRegistryHealthy: true,
+        ownershipResolved: true,
+        identityStable: true,
+        leaseAvailable: true,
+        at,
+      }),
+    ).toMatchObject({ result: "PASS" });
+    ledger.completeReconciliation(transaction.id, { preservedEvidenceCount: 2, at });
+    ledger.freezeAcceptanceCandidate(transaction.id, "integrator", 3_600_000, at);
+    ledger.awaitAuthority(transaction.id, at);
+    return transaction.id;
+  };
+
+  it("keeps missing authority pending, deduplicates authority, then immediately makes binding eligible after RELEASE_GO", () => {
+    const ledger = new NightwatchLedger(":memory:");
+    try {
+      const id = prepare(ledger);
+      expect(ledger.getAcceptanceTransaction(id).state).toBe("AWAITING_AUTHORITY");
+      expect(() => ledger.dispatchBinding(id, "binding-too-early")).toThrow("BINDING_DISPATCH_NOT_READY");
+      const first = ledger.dispatchAuthority(id, "pr-sync-1", "authority-1");
+      expect(ledger.dispatchAuthority(id, "pr-sync-duplicate", "authority-duplicate").id).toBe(first.id);
+      expect(ledger.acceptanceRuns(id)).toHaveLength(1);
+      expect(ledger.recordAuthorityResult(id, first.id, "RELEASE_GO").state).toBe("BINDING_PENDING");
+      const binding = ledger.dispatchBinding(id, "release-go-1", "binding-1");
+      expect(ledger.dispatchBinding(id, "release-go-duplicate").id).toBe(binding.id);
+      expect(ledger.acceptanceRuns(id)).toHaveLength(2);
+    } finally {
+      ledger.close();
+    }
+  });
+
+  it("advances BINDING_PASS to merge and persists exact post-merge identity", () => {
+    const ledger = new NightwatchLedger(":memory:");
+    try {
+      const id = prepare(ledger);
+      const authority = ledger.dispatchAuthority(id, "authority");
+      ledger.recordAuthorityResult(id, authority.id, "RELEASE_GO");
+      const binding = ledger.dispatchBinding(id, "binding");
+      expect(ledger.recordBindingResult(id, binding.id, "BINDING_PASS").state).toBe("MERGING");
+      ledger.recordIntegrated(id);
+      const verified = ledger.verifyPostMerge(id, { mergeSha: "merge-one", treeSha: "landed-tree-one" });
+      expect(verified).toMatchObject({ state: "POST_MERGE_VERIFIED", candidateSha: "candidate-one", baseSha: "base-one" });
+      expect(ledger.getCandidate("atomic").state).toBe("POST_MERGE_VERIFIED");
+    } finally {
+      ledger.close();
+    }
+  });
+
+  it("classifies main movement after authority as MERGE_RACE and reuses the candidate/cascade for reconciliation", () => {
+    const ledger = new NightwatchLedger(":memory:");
+    try {
+      const id = prepare(ledger);
+      const authority = ledger.dispatchAuthority(id, "authority");
+      ledger.recordAuthorityResult(id, authority.id, "RELEASE_GO");
+      expect(ledger.recordTransactionMainAdvance(id, "main advanced after authority").state).toBe("MERGE_RACE");
+      const next = ledger.beginAtomicAcceptance({ candidateId: "atomic", identity: identity("two"), rootFingerprint: "semantic-root-a" });
+      expect(next.cascadeId).toBe(ledger.getAcceptanceTransaction(id).cascadeId);
+      expect(ledger.getCandidate("atomic").predecessorId).toBeUndefined();
+      expect(ledger.integrationCascades()[0]).toMatchObject({ mainlineRebuilds: 1, authorityAttempts: 1 });
+    } finally {
+      ledger.close();
+    }
+  });
+
+  it("survives restart and trips the cumulative cascade breaker without charging product failure", () => {
+    const file = databasePath();
+    const start = "2026-08-21T00:00:00.000Z";
+    const first = new NightwatchLedger(file);
+    const id = prepare(first, start);
+    const cascadeId = first.getAcceptanceTransaction(id).cascadeId;
+    first.recordMaintenanceDescendant(id, { candidateId: "atomic", generation: 1, at: "2026-08-21T00:10:00.000Z" });
+    first.close();
+
+    const restarted = new NightwatchLedger(file);
+    try {
+      expect(restarted.getAcceptanceTransaction(id)).toMatchObject({ state: "AWAITING_AUTHORITY", candidateSha: "candidate-one" });
+      const budget = restarted.integrationBudget(cascadeId, Date.parse("2026-08-21T01:31:00.000Z"));
+      expect(budget).toMatchObject({ status: "PARKED_BREAKER", maintenanceAmplificationRatio: 1 });
+      expect(restarted.getAcceptanceTransaction(id).state).toBe("PARKED_INTEGRATION_BREAKER");
+      expect(restarted.getCandidate("atomic").state).toBe("ACCEPTANCE_PENDING");
+    } finally {
+      restarted.close();
+    }
+  });
+});

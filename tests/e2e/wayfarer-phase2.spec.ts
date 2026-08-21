@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { existsSync, readFileSync } from "node:fs";
 import sharp from "sharp";
 
 let syntheticPng: Buffer;
@@ -10,15 +11,19 @@ test.beforeAll(async () => {
 
 test("Wayfarer Passport persists a private profile, preferences, media, and a simulator identity", async ({ page }) => {
   const suffix = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const email = `${suffix}@example.test`;
   const handle = `wayfarer-${suffix}`;
   const nextHandle = `voyager-${suffix}`;
   await page.goto("/register");
   await page.getByLabel("Display name").fill("Isolated Wayfarer");
-  await page.getByLabel("Email").fill(`${suffix}@example.test`);
+  await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password", { exact: true }).fill("A secure test password 42!");
   await page.getByLabel("Confirm password", { exact: true }).fill("A secure test password 42!");
   await page.getByRole("button", { name: "Continue" }).click();
-  await expect(page.getByText("Your account request was completed.")).toBeVisible();
+  await expect(page).toHaveURL(/\/verify-email/u);
+  await page.getByLabel("Code").fill(await verificationCodeFor(email));
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page).toHaveURL(/\/passport/u);
 
   await page.goto("/passport");
   await expect(page.getByRole("heading", { name: "Chronicle Passport" })).toBeVisible();
@@ -99,3 +104,25 @@ test("Wayfarer Passport remains operable at required responsive viewports", asyn
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
   }
 });
+
+async function verificationCodeFor(email: string) {
+  const outboxPath = process.env.HOMEPORT_SYNTHETIC_OUTBOX_PATH;
+  let code: string | undefined;
+  await expect
+    .poll(
+      () => {
+        if (!outboxPath || !existsSync(outboxPath)) return null;
+        const delivery = readFileSync(outboxPath, "utf8")
+          .trim()
+          .split("\n")
+          .filter(Boolean)
+          .map((line) => JSON.parse(line) as { purpose?: string; email?: string; token?: string })
+          .find((entry) => entry.purpose === "VERIFY_EMAIL" && entry.email === email.toLocaleLowerCase("en-US"));
+        code = delivery?.token;
+        return code ?? null;
+      },
+      { timeout: 20_000, message: `verification delivery for ${email}` },
+    )
+    .not.toBeNull();
+  return code!;
+}

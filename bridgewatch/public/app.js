@@ -560,10 +560,11 @@ async function renderPhaseProfile(id, ordinal) {
   return node;
 }
 async function renderOperations() {
-  const [workers, runs, totals] = await Promise.all([
+  const [workers, runs, totals, nightwatch] = await Promise.all([
     request("api/workers"),
     request("api/sounding-line/runs"),
     request("api/tests"),
+    request("api/nightwatch"),
   ]);
   const node = document.createDocumentFragment();
   const workerSection = section("Workers", "Telemetry is activity evidence only; it never controls a worker.");
@@ -581,6 +582,29 @@ async function renderOperations() {
       : empty("No active worker telemetry is retained."),
   );
   node.append(workerSection);
+  const acceptance = section(
+    "Nightwatch acceptance transaction",
+    "Current exact queue-front acceptance truth. Pending authority is not a product failure.",
+  );
+  const transaction = (nightwatch.transactions ?? []).find((entry) => !["INTEGRATED", "POST_MERGE_VERIFIED"].includes(entry.state));
+  const cascade = (nightwatch.cascades ?? []).find((entry) => entry.id === transaction?.cascadeId);
+  acceptance.append(
+    transaction
+      ? detail([
+          ["State", transaction.state],
+          ["Candidate SHA / tree", `${short(transaction.candidateSha)} / ${short(transaction.candidateTreeSha)}`],
+          ["Qualified base / tree", `${short(transaction.baseSha)} / ${short(transaction.baseTreeSha)}`],
+          ["Authority run", transaction.authorityRunId],
+          ["Binding run", transaction.bindingRunId],
+          ["Integration lease", transaction.leaseId ?? nightwatch.acceptanceOwnership],
+          ["Last semantic invalidation", transaction.lastSemanticInvalidation],
+          ["Preserved / rerun evidence", `${transaction.preservedEvidenceCount} / ${transaction.rerunEvidenceCount}`],
+          ["Cascade status", cascade?.status],
+          ["Cascade PRs / authority attempts / rebuilds", cascade ? `${cascade.maintenancePrCount} / ${cascade.authorityAttempts} / ${cascade.mainlineRebuilds}` : undefined],
+        ])
+      : empty(nightwatch.state === "UNAVAILABLE" ? "Nightwatch has not created a local ledger yet." : "No active acceptance transaction is retained."),
+  );
+  node.append(acceptance);
   const validation = section(
     "Validation",
     "Sounding Line evidence is shown without rerun, cancellation, or cleanup controls.",
