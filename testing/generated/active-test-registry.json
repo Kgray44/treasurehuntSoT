@@ -168689,7 +168689,7 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": ["sl-test-6c0f71c936bfcaf3f069"],
+      "historicalAliases": [],
       "currentStatus": "ACTIVE"
     },
     {
@@ -168750,7 +168750,7 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": ["sl-test-c07bc716520f8f339e6b"],
+      "historicalAliases": [],
       "currentStatus": "ACTIVE"
     },
     {
