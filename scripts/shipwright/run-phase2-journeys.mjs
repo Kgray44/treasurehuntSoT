@@ -14,7 +14,10 @@ const credentials = JSON.parse(
 );
 const port = await availablePort();
 const databasePath = path.join(taskRoot, "database", "shipwright-phase2.db");
-const sourceSha = output("git", ["rev-parse", "HEAD"]);
+// Sounding Line executes this runner from an isolated validation copy, which
+// intentionally is not a Git worktree. Its sealed source identity is already
+// exported by the governed worker and must be used instead of probing Git.
+const sourceSha = required("GITHUB_SHA");
 const env = {
   ...process.env,
   SHIPWRIGHT_PHASE2_TASK_ROOT: taskRoot,
@@ -39,13 +42,6 @@ function run(script, args, env) {
   });
   if (result.error) throw result.error;
   if (result.status !== 0) process.exit(result.status ?? 1);
-}
-
-function output(command, args) {
-  const result = spawnSync(command, args, { cwd: repositoryRoot, encoding: "utf8", windowsHide: true });
-  if (result.error) throw result.error;
-  if (result.status !== 0) throw new Error(`${command} failed: ${result.stderr}`);
-  return result.stdout.trim();
 }
 
 function availablePort() {
