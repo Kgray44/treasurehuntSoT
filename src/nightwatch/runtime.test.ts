@@ -277,6 +277,37 @@ describe("Nightwatch projection and persistence safety", () => {
   });
 });
 
+describe("Nightwatch controller ownership and health", () => {
+  it("keeps one durable controller owner and reports stale heartbeats as degraded", () => {
+    const ledger = new NightwatchLedger(":memory:");
+    try {
+      ledger.claimController("nightwatchd-a", 120_000, "2026-08-21T00:00:00.000Z");
+      expect(() => ledger.claimController("nightwatchd-b", 120_000, "2026-08-21T00:00:01.000Z")).toThrow(
+        "LEASE_COLLISION",
+      );
+      ledger.heartbeatController({
+        instanceId: "nightwatchd-a",
+        ttlMs: 120_000,
+        reconciled: true,
+        at: "2026-08-21T00:00:02.000Z",
+      });
+      expect(ledger.leases("ACTIVE").find((lease) => lease.type === "CONTROLLER")?.expiresAt).toBe(
+        "2026-08-21T00:02:02.000Z",
+      );
+      expect(ledger.controllerHealth(Date.parse("2026-08-21T00:00:30.000Z"))).toMatchObject({
+        instanceId: "nightwatchd-a",
+        state: "LIVE",
+        lastSuccessfulReconciliationAt: "2026-08-21T00:00:02.000Z",
+      });
+      expect(ledger.controllerHealth(Date.parse("2026-08-21T00:02:00.001Z"))).toMatchObject({ state: "DEGRADED" });
+      ledger.releaseController("nightwatchd-a", "Controlled test shutdown.", "2026-08-21T00:02:01.000Z");
+      expect(ledger.controllerHealth(Date.parse("2026-08-21T00:02:01.000Z"))).toMatchObject({ state: "DOWN" });
+    } finally {
+      ledger.close();
+    }
+  });
+});
+
 describe("Nightwatch Increment A.1 atomic acceptance sequencer", () => {
   const identity = (suffix = "one") => ({
     candidateSha: `candidate-${suffix}`,
@@ -335,8 +366,12 @@ describe("Nightwatch Increment A.1 atomic acceptance sequencer", () => {
       const binding = ledger.dispatchBinding(id, "binding");
       expect(ledger.recordBindingResult(id, binding.id, "BINDING_PASS").state).toBe("MERGING");
       ledger.recordIntegrated(id);
-      const verified = ledger.verifyPostMerge(id, { mergeSha: "merge-one", treeSha: "landed-tree-one" });
-      expect(verified).toMatchObject({ state: "POST_MERGE_VERIFIED", candidateSha: "candidate-one", baseSha: "base-one" });
+      const verified = ledger.verifyPostMerge(id, { mergeSha: "merge-one", treeSha: "candidate-tree-one" });
+      expect(verified).toMatchObject({
+        state: "POST_MERGE_VERIFIED",
+        candidateSha: "candidate-one",
+        baseSha: "base-one",
+      });
       expect(ledger.getCandidate("atomic").state).toBe("POST_MERGE_VERIFIED");
     } finally {
       ledger.close();
@@ -350,7 +385,11 @@ describe("Nightwatch Increment A.1 atomic acceptance sequencer", () => {
       const authority = ledger.dispatchAuthority(id, "authority");
       ledger.recordAuthorityResult(id, authority.id, "RELEASE_GO");
       expect(ledger.recordTransactionMainAdvance(id, "main advanced after authority").state).toBe("MERGE_RACE");
-      const next = ledger.beginAtomicAcceptance({ candidateId: "atomic", identity: identity("two"), rootFingerprint: "semantic-root-a" });
+      const next = ledger.beginAtomicAcceptance({
+        candidateId: "atomic",
+        identity: identity("two"),
+        rootFingerprint: "semantic-root-a",
+      });
       expect(next.cascadeId).toBe(ledger.getAcceptanceTransaction(id).cascadeId);
       expect(ledger.getCandidate("atomic").predecessorId).toBeUndefined();
       expect(ledger.integrationCascades()[0]).toMatchObject({ mainlineRebuilds: 1, authorityAttempts: 1 });
@@ -370,13 +409,70 @@ describe("Nightwatch Increment A.1 atomic acceptance sequencer", () => {
 
     const restarted = new NightwatchLedger(file);
     try {
-      expect(restarted.getAcceptanceTransaction(id)).toMatchObject({ state: "AWAITING_AUTHORITY", candidateSha: "candidate-one" });
+      expect(restarted.getAcceptanceTransaction(id)).toMatchObject({
+        state: "AWAITING_AUTHORITY",
+        candidateSha: "candidate-one",
+      });
       const budget = restarted.integrationBudget(cascadeId, Date.parse("2026-08-21T01:31:00.000Z"));
-      expect(budget).toMatchObject({ status: "PARKED_BREAKER", maintenanceAmplificationRatio: 1 });
+      expect(budget).toMatchObject({
+        status: "PARKED_BREAKER",
+        maintenanceAmplificationRatio: 1,
+        remainingClosureSteps: [
+          "reconcile exact candidate",
+          "authority qualification",
+          "protected binding",
+          "protected merge",
+          "exact-main proof",
+        ],
+      });
       expect(restarted.getAcceptanceTransaction(id).state).toBe("PARKED_INTEGRATION_BREAKER");
-      expect(restarted.getCandidate("atomic").state).toBe("ACCEPTANCE_PENDING");
+      expect(restarted.getCandidate("atomic").state).toBe("PARKED_LOOP_GUARD");
+      expect(restarted.leases("ACTIVE").find((lease) => lease.type === "INTEGRATION_ACCEPTANCE")).toBeUndefined();
     } finally {
       restarted.close();
+    }
+  });
+
+  it("enforces 30/60/90 parent budget states and deduplicates a causal maintenance finding", () => {
+    const ledger = new NightwatchLedger(":memory:");
+    try {
+      const start = "2026-08-21T00:00:00.000Z";
+      const id = prepare(ledger, start);
+      const cascadeId = ledger.getAcceptanceTransaction(id).cascadeId;
+      expect(ledger.integrationBudget(cascadeId, Date.parse("2026-08-21T00:30:00.000Z")).status).toBe("WARNING");
+      expect(ledger.integrationBudget(cascadeId, Date.parse("2026-08-21T01:00:00.000Z")).status).toBe(
+        "CONTROL_PLANE_REVIEW",
+      );
+      expect(() =>
+        ledger.recordMaintenanceFinding(id, {
+          fingerprint: "shared-binding-selector",
+          generation: 1,
+          at: "2026-08-21T01:00:01.000Z",
+        }),
+      ).toThrow("INTEGRATION_HARD_REVIEW");
+      const fresh = new NightwatchLedger(":memory:");
+      try {
+        const freshId = prepare(fresh, start);
+        expect(
+          fresh.recordMaintenanceFinding(freshId, {
+            fingerprint: "shared-binding-selector",
+            generation: 1,
+            at: "2026-08-21T00:01:00.000Z",
+          }).duplicate,
+        ).toBe(false);
+        expect(
+          fresh.recordMaintenanceFinding(freshId, {
+            fingerprint: "shared-binding-selector",
+            generation: 1,
+            at: "2026-08-21T00:02:00.000Z",
+          }).duplicate,
+        ).toBe(true);
+        expect(fresh.integrationCascades()[0]?.maintenancePrCount).toBe(1);
+      } finally {
+        fresh.close();
+      }
+    } finally {
+      ledger.close();
     }
   });
 });

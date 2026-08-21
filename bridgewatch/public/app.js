@@ -187,7 +187,9 @@ function filteredTable({ records, headers, row, matches, placeholder, emptyMessa
     const query = input.value.trim().toLocaleLowerCase();
     const retained = records.filter((record) => !query || matches(record).toLocaleLowerCase().includes(query));
     result.replaceChildren(
-      retained.length ? table(headers, retained.map(row)) : empty(query ? "No retained observation matches this filter." : emptyMessage),
+      retained.length
+        ? table(headers, retained.map(row))
+        : empty(query ? "No retained observation matches this filter." : emptyMessage),
     );
   };
   input.addEventListener("input", render);
@@ -309,7 +311,8 @@ async function renderProgram() {
             `${event.entityType ?? "Observation"}: ${event.entityId ?? "UNMEASURED"}`,
             event.summary ?? "UNMEASURED",
           ],
-          matches: (event) => searchText([event.kind, event.entityType, event.entityId, event.projectId, event.phaseId, event.summary]),
+          matches: (event) =>
+            searchText([event.kind, event.entityType, event.entityId, event.projectId, event.phaseId, event.summary]),
           placeholder: "Search retained history",
           emptyMessage: "No retained observation matches this program window.",
         }),
@@ -342,11 +345,20 @@ async function renderProjects() {
           ? `${project.phaseProgress.completed}/${project.phaseProgress.total}`
           : "NOT_RECORDED",
         (project.versions ?? []).map((version) => version.identity).join(", ") || "NOT_RECORDED",
-        short(project.mainSha ?? project.finalMainSha) === "UNMEASURED" ? "NOT_RECORDED" : short(project.mainSha ?? project.finalMainSha),
+        short(project.mainSha ?? project.finalMainSha) === "UNMEASURED"
+          ? "NOT_RECORDED"
+          : short(project.mainSha ?? project.finalMainSha),
         project.discoveryConfidence ?? "RETAINED",
       ],
       matches: (project) =>
-        searchText([project.name, project.id, project.state, project.discoveryConfidence, project.versions, project.mainSha]),
+        searchText([
+          project.name,
+          project.id,
+          project.state,
+          project.discoveryConfidence,
+          project.versions,
+          project.mainSha,
+        ]),
       placeholder: "Search projects",
       emptyMessage: "No project registry is available.",
     }),
@@ -384,7 +396,14 @@ async function renderProjectProfile(id) {
         phase.completionReceipt ?? "UNMEASURED",
       ],
       matches: (phase) =>
-        searchText([phase.ordinal, phase.name, phase.state, phase.acceptedHeadSha, phase.integratedMainSha, phase.completionReceipt]),
+        searchText([
+          phase.ordinal,
+          phase.name,
+          phase.state,
+          phase.acceptedHeadSha,
+          phase.integratedMainSha,
+          phase.completionReceipt,
+        ]),
       placeholder: "Search phases",
       emptyMessage: "No phase record is retained.",
     }),
@@ -464,7 +483,10 @@ async function renderVersionProfile(id, version) {
   );
   evidence.append(eventList(data.history));
   node.append(evidence);
-  const related = section("Associated work", "Observed phases, branches, and pull requests with explicit version evidence.");
+  const related = section(
+    "Associated work",
+    "Observed phases, branches, and pull requests with explicit version evidence.",
+  );
   related.append(
     detail([
       ["Associated phases", data.phases?.map((phase) => `Phase ${phase.ordinal}`).join(", ")],
@@ -582,12 +604,37 @@ async function renderOperations() {
       : empty("No active worker telemetry is retained."),
   );
   node.append(workerSection);
+  const controller = nightwatch.controller ?? {
+    state: "DOWN",
+    instanceId: null,
+    heartbeatAt: null,
+    lastSuccessfulReconciliationAt: null,
+    detail: "Nightwatch controller health is unavailable.",
+  };
+  const controllerHealth = section(
+    "Nightwatch controller health",
+    "Read-only liveness and last successful reconciliation evidence for the persistent integration controller.",
+  );
+  controllerHealth.append(
+    detail([
+      ["Ledger availability", nightwatch.state],
+      ["Controller state", controller.state],
+      ["Controller instance", controller.instanceId],
+      ["Last heartbeat", dateText(controller.heartbeatAt)],
+      ["Last successful reconciliation", dateText(controller.lastSuccessfulReconciliationAt)],
+      ["Detail", controller.detail],
+    ]),
+  );
+  node.append(controllerHealth);
   const acceptance = section(
     "Nightwatch acceptance transaction",
     "Current exact queue-front acceptance truth. Pending authority is not a product failure.",
   );
-  const transaction = (nightwatch.transactions ?? []).find((entry) => !["INTEGRATED", "POST_MERGE_VERIFIED"].includes(entry.state));
+  const transaction = (nightwatch.transactions ?? []).find(
+    (entry) => !["INTEGRATED", "POST_MERGE_VERIFIED"].includes(entry.state),
+  );
   const cascade = (nightwatch.cascades ?? []).find((entry) => entry.id === transaction?.cascadeId);
+  const cost = (nightwatch.costs ?? []).find((entry) => entry.cascadeId === transaction?.cascadeId);
   acceptance.append(
     transaction
       ? detail([
@@ -600,9 +647,37 @@ async function renderOperations() {
           ["Last semantic invalidation", transaction.lastSemanticInvalidation],
           ["Preserved / rerun evidence", `${transaction.preservedEvidenceCount} / ${transaction.rerunEvidenceCount}`],
           ["Cascade status", cascade?.status],
-          ["Cascade PRs / authority attempts / rebuilds", cascade ? `${cascade.maintenancePrCount} / ${cascade.authorityAttempts} / ${cascade.mainlineRebuilds}` : undefined],
+          [
+            "Cascade PRs / authority attempts / rebuilds",
+            cascade
+              ? `${cascade.maintenancePrCount} / ${cascade.authorityAttempts} / ${cascade.mainlineRebuilds}`
+              : undefined,
+          ],
+          [
+            "Total elapsed / product value",
+            cost
+              ? `${Math.round((Date.now() - Date.parse(cost.startedAt)) / 60000)}m / ${Math.round(cost.productValueMs / 60000)}m`
+              : undefined,
+          ],
+          [
+            "Control-plane active / wait",
+            cost
+              ? `${Math.round(cost.controlPlaneActiveMs / 60000)}m / ${Math.round(cost.controlPlaneWaitMs / 60000)}m`
+              : undefined,
+          ],
+          [
+            "External / maintenance",
+            cost
+              ? `${Math.round(cost.externallyBlockedMs / 60000)}m / ${Math.round(cost.descendantMaintenanceMs / 60000)}m`
+              : undefined,
+          ],
+          ["Remaining closure steps", cost?.remainingClosureSteps?.join(" → ")],
         ])
-      : empty(nightwatch.state === "UNAVAILABLE" ? "Nightwatch has not created a local ledger yet." : "No active acceptance transaction is retained."),
+      : empty(
+          nightwatch.state === "UNAVAILABLE"
+            ? "Nightwatch has not created a local ledger yet."
+            : "No active acceptance transaction is retained.",
+        ),
   );
   node.append(acceptance);
   const validation = section(
@@ -727,7 +802,15 @@ async function renderGithub() {
         short(branch.headSha ?? branch.sha),
       ],
       matches: (branch) =>
-        searchText([branch.name, branch.project?.name, branch.projectId, branch.health, branch.state, branch.headSha, branch.sha]),
+        searchText([
+          branch.name,
+          branch.project?.name,
+          branch.projectId,
+          branch.health,
+          branch.state,
+          branch.headSha,
+          branch.sha,
+        ]),
       placeholder: "Search branches",
       emptyMessage: "No branch observation is available.",
     }),
@@ -757,7 +840,10 @@ async function renderGithub() {
     const retained = pulls.filter((pull) => {
       const historical = pull.state !== "OPEN";
       const stateMatch = pullState.value === "ALL" || (pullState.value === "OPEN" ? !historical : historical);
-      return stateMatch && (!query || searchText([pull.number, pull.title, pull.state, pull.headRef]).toLocaleLowerCase().includes(query));
+      return (
+        stateMatch &&
+        (!query || searchText([pull.number, pull.title, pull.state, pull.headRef]).toLocaleLowerCase().includes(query))
+      );
     });
     pullResult.replaceChildren(
       retained.length
@@ -886,19 +972,23 @@ async function renderHistory() {
     window.location.hash = `#/compare?from=${encodeURIComponent(new Date(from.value).toISOString())}&to=${encodeURIComponent(new Date(to.value).toISOString())}`;
   });
   actions.append(from, to, compare);
-  history.append(actions, filteredTable({
-    records: data.events ?? [],
-    headers: ["When", "Type", "Entity", "Summary"],
-    row: (event) => [
-      dateText(event.occurredAt ?? event.observedAt),
-      event.kind ?? "OBSERVED",
-      `${event.entityType ?? "Observation"}: ${event.entityId ?? "UNMEASURED"}`,
-      event.summary ?? "UNMEASURED",
-    ],
-    matches: (event) => searchText([event.kind, event.entityType, event.entityId, event.projectId, event.phaseId, event.summary]),
-    placeholder: "Search retained history",
-    emptyMessage: "No retained observations match this scope.",
-  }));
+  history.append(
+    actions,
+    filteredTable({
+      records: data.events ?? [],
+      headers: ["When", "Type", "Entity", "Summary"],
+      row: (event) => [
+        dateText(event.occurredAt ?? event.observedAt),
+        event.kind ?? "OBSERVED",
+        `${event.entityType ?? "Observation"}: ${event.entityId ?? "UNMEASURED"}`,
+        event.summary ?? "UNMEASURED",
+      ],
+      matches: (event) =>
+        searchText([event.kind, event.entityType, event.entityId, event.projectId, event.phaseId, event.summary]),
+      placeholder: "Search retained history",
+      emptyMessage: "No retained observations match this scope.",
+    }),
+  );
   node.append(history);
   return node;
 }

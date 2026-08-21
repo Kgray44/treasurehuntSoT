@@ -86,7 +86,9 @@ jobs:
   record-only-evidence:
     name: Sounding Line / Record-only evidence
     needs: record-only-preflight
-    if: ${{ needs.record-only-preflight.outputs.recordOnly == 'true' }}
+    # Ordinary PR events are classification-only. Record-only finalization must
+    # enter through an explicit governed route, never as an incidental sync.
+    if: ${{ github.event_name == 'workflow_dispatch' && needs.record-only-preflight.outputs.recordOnly == 'true' }}
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
@@ -240,7 +242,7 @@ jobs:
     # The name is intentionally the unchanged protected branch context.
     name: Sounding Line / Mainline Decision
     needs: [record-only-preflight, record-only-evidence, maintenance-preflight, authority-maintenance-preflight]
-    if: ${{ always() && needs.record-only-preflight.result == 'success' && needs.maintenance-preflight.result == 'success' && needs.authority-maintenance-preflight.result == 'success' && needs.maintenance-preflight.outputs.maintenance != 'true' && needs.authority-maintenance-preflight.outputs.authorityMaintenance != 'true' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && always() && needs.record-only-preflight.result == 'success' && needs.maintenance-preflight.result == 'success' && needs.authority-maintenance-preflight.result == 'success' && needs.maintenance-preflight.outputs.maintenance != 'true' && needs.authority-maintenance-preflight.outputs.authorityMaintenance != 'true' }}
     runs-on: windows-latest
     timeout-minutes: 10
     steps:
@@ -391,7 +393,7 @@ jobs:
   bind-maintenance:
     name: Sounding Line / Mainline Decision
     needs: [record-only-preflight, maintenance-preflight, authority-maintenance-preflight]
-    if: ${{ always() && needs.record-only-preflight.result == 'success' && needs.record-only-preflight.outputs.recordOnly != 'true' && needs.maintenance-preflight.outputs.maintenance == 'true' && needs.authority-maintenance-preflight.outputs.authorityMaintenance != 'true' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && always() && needs.record-only-preflight.result == 'success' && needs.record-only-preflight.outputs.recordOnly != 'true' && needs.maintenance-preflight.outputs.maintenance == 'true' && needs.authority-maintenance-preflight.outputs.authorityMaintenance != 'true' }}
     runs-on: windows-latest
     timeout-minutes: 10
     steps:
@@ -464,7 +466,7 @@ jobs:
   bind-authority-maintenance:
     name: Sounding Line / Mainline Decision
     needs: [record-only-preflight, maintenance-preflight, authority-maintenance-preflight]
-    if: ${{ always() && needs.record-only-preflight.result == 'success' && needs.record-only-preflight.outputs.recordOnly != 'true' && needs.maintenance-preflight.result == 'success' && needs.authority-maintenance-preflight.outputs.authorityMaintenance == 'true' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && always() && needs.record-only-preflight.result == 'success' && needs.record-only-preflight.outputs.recordOnly != 'true' && needs.maintenance-preflight.result == 'success' && needs.authority-maintenance-preflight.outputs.authorityMaintenance == 'true' }}
     runs-on: windows-latest
     timeout-minutes: 10
     steps:

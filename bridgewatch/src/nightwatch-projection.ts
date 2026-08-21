@@ -66,6 +66,31 @@ export interface BridgewatchNightwatchProjection {
   }>;
   integrationLifecycleState: string;
   acceptanceOwnership: string | null;
+  controller: {
+    instanceId: string | null;
+    state: "LIVE" | "DEGRADED" | "DOWN";
+    heartbeatAt: string | null;
+    lastSuccessfulReconciliationAt: string | null;
+    detail: string | null;
+  };
+  costs: Array<{
+    cascadeId: string;
+    transactionId: string;
+    startedAt: string;
+    productValueMs: number;
+    controlPlaneActiveMs: number;
+    controlPlaneWaitMs: number;
+    externallyBlockedMs: number;
+    descendantMaintenanceMs: number;
+    authorityMs: number;
+    browserMatrixMs: number;
+    retryAndCooldownMs: number;
+    noProgressCycles: number;
+    remainingClosureSteps: string[];
+    warningAtMs: number;
+    hardReviewAtMs: number;
+    breakerAtMs: number;
+  }>;
   transactions: Array<{
     id: string;
     candidateId: string;
@@ -114,6 +139,14 @@ const unavailable = (
   leases: [],
   integrationLifecycleState: "IDLE",
   acceptanceOwnership: null,
+  controller: {
+    instanceId: null,
+    state: "DOWN",
+    heartbeatAt: null,
+    lastSuccessfulReconciliationAt: null,
+    detail: "Nightwatch controller health is unavailable.",
+  },
+  costs: [],
   transactions: [],
   cascades: [],
 });
@@ -211,43 +244,85 @@ export function readNightwatchProjection(
     }));
     const tableExists = (name: string) =>
       Boolean(db!.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?").get(name));
+    const controllerRow = tableExists("controller_health")
+      ? (db.prepare("SELECT * FROM controller_health WHERE singleton = 1").get() as Record<string, unknown> | undefined)
+      : undefined;
+    const heartbeatAt = controllerRow?.heartbeat_at ? String(controllerRow.heartbeat_at) : null;
+    const heartbeatAge = heartbeatAt ? Math.max(0, now - Date.parse(heartbeatAt)) : Number.POSITIVE_INFINITY;
+    const recordedControllerState = controllerRow?.state ? String(controllerRow.state) : "DOWN";
+    const controllerState =
+      !heartbeatAt || recordedControllerState === "DOWN"
+        ? "DOWN"
+        : heartbeatAge > 90_000
+          ? "DEGRADED"
+          : recordedControllerState === "DEGRADED"
+            ? "DEGRADED"
+            : "LIVE";
     const transactions = tableExists("acceptance_transactions")
-      ? (db.prepare("SELECT * FROM acceptance_transactions ORDER BY updated_at DESC, transaction_id").all() as Array<Record<string, unknown>>).map(
-          (row) => ({
-            id: String(row.transaction_id),
-            candidateId: String(row.candidate_id),
-            cascadeId: String(row.cascade_id),
-            candidateSha: String(row.candidate_sha),
-            candidateTreeSha: String(row.candidate_tree_sha),
-            baseSha: String(row.base_sha),
-            baseTreeSha: String(row.base_tree_sha),
-            candidateRef: String(row.candidate_ref),
-            state: String(row.state),
-            authorityRunId: row.authority_run_id ? String(row.authority_run_id) : null,
-            bindingRunId: row.binding_run_id ? String(row.binding_run_id) : null,
-            authorityResult: row.authority_result ? String(row.authority_result) : null,
-            bindingResult: row.binding_result ? String(row.binding_result) : null,
-            leaseId: row.lease_id ? String(row.lease_id) : null,
-            lastSemanticInvalidation: row.last_semantic_invalidation ? String(row.last_semantic_invalidation) : null,
-            preservedEvidenceCount: Number(row.preserved_evidence_count),
-            rerunEvidenceCount: Number(row.rerun_evidence_count),
-            createdAt: String(row.created_at),
-            updatedAt: String(row.updated_at),
-          }),
-        )
+      ? (
+          db.prepare("SELECT * FROM acceptance_transactions ORDER BY updated_at DESC, transaction_id").all() as Array<
+            Record<string, unknown>
+          >
+        ).map((row) => ({
+          id: String(row.transaction_id),
+          candidateId: String(row.candidate_id),
+          cascadeId: String(row.cascade_id),
+          candidateSha: String(row.candidate_sha),
+          candidateTreeSha: String(row.candidate_tree_sha),
+          baseSha: String(row.base_sha),
+          baseTreeSha: String(row.base_tree_sha),
+          candidateRef: String(row.candidate_ref),
+          state: String(row.state),
+          authorityRunId: row.authority_run_id ? String(row.authority_run_id) : null,
+          bindingRunId: row.binding_run_id ? String(row.binding_run_id) : null,
+          authorityResult: row.authority_result ? String(row.authority_result) : null,
+          bindingResult: row.binding_result ? String(row.binding_result) : null,
+          leaseId: row.lease_id ? String(row.lease_id) : null,
+          lastSemanticInvalidation: row.last_semantic_invalidation ? String(row.last_semantic_invalidation) : null,
+          preservedEvidenceCount: Number(row.preserved_evidence_count),
+          rerunEvidenceCount: Number(row.rerun_evidence_count),
+          createdAt: String(row.created_at),
+          updatedAt: String(row.updated_at),
+        }))
+      : [];
+    const costs = tableExists("integration_cost_ledger")
+      ? (
+          db.prepare("SELECT * FROM integration_cost_ledger ORDER BY started_at, cascade_id").all() as Array<
+            Record<string, unknown>
+          >
+        ).map((row) => ({
+          cascadeId: String(row.cascade_id),
+          transactionId: String(row.transaction_id),
+          startedAt: String(row.started_at),
+          productValueMs: Number(row.product_value_ms),
+          controlPlaneActiveMs: Number(row.control_plane_active_ms),
+          controlPlaneWaitMs: Number(row.control_plane_wait_ms),
+          externallyBlockedMs: Number(row.externally_blocked_ms),
+          descendantMaintenanceMs: Number(row.descendant_maintenance_ms),
+          authorityMs: Number(row.authority_ms),
+          browserMatrixMs: Number(row.browser_matrix_ms),
+          retryAndCooldownMs: Number(row.retry_cooldown_ms),
+          noProgressCycles: Number(row.no_progress_cycles),
+          remainingClosureSteps: array(String(row.remaining_closure_steps_json), "integration remaining closure steps"),
+          warningAtMs: Number(row.warning_at_ms),
+          hardReviewAtMs: Number(row.hard_review_at_ms),
+          breakerAtMs: Number(row.breaker_at_ms),
+        }))
       : [];
     const cascades = tableExists("integration_cascades")
-      ? (db.prepare("SELECT * FROM integration_cascades ORDER BY started_at, cascade_id").all() as Array<Record<string, unknown>>).map(
-          (row) => ({
-            id: String(row.cascade_id),
-            rootFingerprint: String(row.root_fingerprint),
-            maintenancePrCount: Number(row.maintenance_pr_count),
-            authorityAttempts: Number(row.authority_attempts),
-            mainlineRebuilds: Number(row.mainline_rebuilds),
-            blockedCandidates: array(String(row.blocked_candidates_json), "cascade blocked candidates"),
-            status: String(row.status),
-          }),
-        )
+      ? (
+          db.prepare("SELECT * FROM integration_cascades ORDER BY started_at, cascade_id").all() as Array<
+            Record<string, unknown>
+          >
+        ).map((row) => ({
+          id: String(row.cascade_id),
+          rootFingerprint: String(row.root_fingerprint),
+          maintenancePrCount: Number(row.maintenance_pr_count),
+          authorityAttempts: Number(row.authority_attempts),
+          mainlineRebuilds: Number(row.mainline_rebuilds),
+          blockedCandidates: array(String(row.blocked_candidates_json), "cascade blocked candidates"),
+          status: String(row.status),
+        }))
       : [];
     const reservations = (
       db.prepare("SELECT * FROM migration_reservations ORDER BY allocated_at, reservation_id").all() as Array<
@@ -280,8 +355,25 @@ export function readNightwatchProjection(
       migrationReservations: reservations,
       migrationCollisions: repositoryCollisions(repositoryRoot),
       leases,
-      integrationLifecycleState: transactions.find((transaction) => !["INTEGRATED", "POST_MERGE_VERIFIED"].includes(transaction.state))?.state ?? front?.state ?? "IDLE",
+      integrationLifecycleState:
+        transactions.find((transaction) => !["INTEGRATED", "POST_MERGE_VERIFIED"].includes(transaction.state))?.state ??
+        front?.state ??
+        "IDLE",
       acceptanceOwnership: acceptance?.id ?? null,
+      controller: {
+        instanceId: controllerRow?.instance_id ? String(controllerRow.instance_id) : null,
+        state: controllerState as "LIVE" | "DEGRADED" | "DOWN",
+        heartbeatAt,
+        lastSuccessfulReconciliationAt: controllerRow?.last_successful_reconciliation_at
+          ? String(controllerRow.last_successful_reconciliation_at)
+          : null,
+        detail: controllerRow?.detail
+          ? String(controllerRow.detail)
+          : tableExists("controller_health")
+            ? null
+            : "Nightwatch controller health has not been commissioned.",
+      },
+      costs,
       transactions,
       cascades,
     };

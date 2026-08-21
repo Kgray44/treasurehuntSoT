@@ -117,7 +117,17 @@ const setupLedger = () => {
     );
   database
     .prepare("INSERT INTO integration_cascades VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
-    .run("cascade-alpha", "semantic-root-alpha", "root-alpha", "2026-08-20T00:00:00.000Z", 1, 1, 0, '["candidate-beta"]', "WARNING");
+    .run(
+      "cascade-alpha",
+      "semantic-root-alpha",
+      "root-alpha",
+      "2026-08-20T00:00:00.000Z",
+      1,
+      1,
+      0,
+      '["candidate-beta"]',
+      "WARNING",
+    );
   database
     .prepare("INSERT INTO acceptance_transactions VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
     .run(
@@ -158,10 +168,20 @@ describe("Nightwatch Bridgewatch projection", () => {
     );
     expect(projection.migrationReservations).toContainEqual(expect.objectContaining({ startId: 10, endId: 11 }));
     expect(projection.acceptanceOwnership).toBe(fixture.lease.id);
+    expect(projection.controller).toMatchObject({
+      state: "DOWN",
+      detail: "Nightwatch controller health has not been commissioned.",
+    });
     expect(projection.transactions).toContainEqual(
-      expect.objectContaining({ id: "transaction-alpha", state: "AWAITING_AUTHORITY", candidateTreeSha: "candidate-tree" }),
+      expect.objectContaining({
+        id: "transaction-alpha",
+        state: "AWAITING_AUTHORITY",
+        candidateTreeSha: "candidate-tree",
+      }),
     );
-    expect(projection.cascades).toContainEqual(expect.objectContaining({ id: "cascade-alpha", status: "WARNING", maintenancePrCount: 1 }));
+    expect(projection.cascades).toContainEqual(
+      expect.objectContaining({ id: "cascade-alpha", status: "WARNING", maintenancePrCount: 1 }),
+    );
     expect(JSON.stringify(projection)).not.toMatch(/token|password|credential/i);
   });
 

@@ -1,4 +1,5 @@
 name: Sounding Line authoritative
+run-name: Sounding Line authoritative ${{ inputs.nightwatch_dispatch_key || github.run_id }}
 
 on:
   # Heavyweight authority is an explicit finalization action for one qualified,
@@ -34,6 +35,10 @@ on:
         type: choice
         default: current
         options: [current, candidate, v13-cutover]
+      nightwatch_dispatch_key:
+        description: Durable Nightwatch dispatch key for restart-safe controller rediscovery
+        required: false
+        type: string
 
 permissions:
   contents: read
