@@ -27,7 +27,7 @@ test("Wayfarer Passport persists a private profile, preferences, media, and a si
   await expect(page).toHaveURL(/\/$/u, { timeout: 15_000 });
 
   await page.goto("/passport");
-  await expect(page.getByRole("heading", { name: "Chronicle Passport" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Chronicle Passport", level: 1 })).toBeVisible();
   await page.getByLabel("Display name").fill("Isolated Captain");
   await page.getByLabel("Public handle").fill(handle);
   await page.getByLabel("Biography", { exact: true }).fill("A private voyage biography.");
