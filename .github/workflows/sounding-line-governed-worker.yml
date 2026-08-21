@@ -392,6 +392,11 @@ jobs:
           SOUNDING_LINE_CHROMIUM_SETUP_BROWSERS_PATH: ${{ inputs.browser_engine == 'webkit' && 'sounding-line-browser-cache/chromium' || '' }}
           SOUNDING_LINE_SEALED_SOURCE_SHA: ${{ inputs.candidate_sha }}
           SOUNDING_LINE_CERTIFIED_BASELINE: ${{ inputs.requires_browser && '1' || '0' }}
+          # Prisma's MySQL schema validator parses DATABASE_URL but does not
+          # connect. SQLite and browser adapters receive their sealed file URL
+          # from the authority adapter, so this non-secret default is limited
+          # to adapters that do not provide one.
+          DATABASE_URL: mysql://root@127.0.0.1:3306/validation
           # Only browser workers restore a certified baseline. Non-browser
           # SQLite suites create their own sealed task database during worker
           # preparation, so handing them an absent browser baseline would make
