@@ -66,7 +66,7 @@ async function backendSurfaceInventory(root) {
   return surfaces.sort((left, right) => left.id.localeCompare(right.id));
 }
 
-async function soundingLinePolicyDigest(root) {
+export async function computeSoundingLinePolicyDigest(root) {
   const files = [
     "policy-manifest.json",
     "ownership.json",
@@ -464,7 +464,7 @@ export async function buildPhase5Governance(root, artifacts) {
     priorBaseline,
     delta: compareSnapshots(priorBaseline, currentBaseline, config.backendSurfaceDispositions),
     completionRecordAudits: await completionRecordAudits(root, config),
-    soundingLinePolicyDigest: await soundingLinePolicyDigest(root),
+    soundingLinePolicyDigest: await computeSoundingLinePolicyDigest(root),
   };
 }
 
