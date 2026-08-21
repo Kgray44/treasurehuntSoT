@@ -3,6 +3,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { BosunAutoZeroExecutor, BosunLedger, createRepositoryAutoZeroActions, normalizeBosunFingerprint } from "./bosun";
+import { BosunLiveRepairCoordinator } from "./bosun-live";
+import { NightwatchController, type NightwatchControlPlane } from "./controller";
 import { NightwatchLedger } from "./runtime";
 
 const databasePath = () => join(mkdtempSync(join(tmpdir(), "bosun-b0-b1-")), "nightwatch.sqlite");
@@ -87,5 +89,65 @@ describe("Project Bosun B1 AUTO_0", () => {
   it("keeps the Feature Catalog action unavailable until its governed runner is explicitly configured", async () => {
     const actions = createRepositoryAutoZeroActions(process.cwd());
     await expect(actions.featureCatalog.run()).rejects.toThrow("BOSUN_AUTO_0_ACTION_UNCONFIGURED");
+  });
+});
+
+describe("Project Bosun B1.1 live repair integration", () => {
+  it("keeps one repair identity through restart, accepts it once, and wakes every attached candidate once", () => {
+    const path = databasePath();
+    const { ledger, transaction } = parent(path);
+    const bosun = new BosunLedger(path, ledger);
+    let now = Date.parse("2026-08-21T00:00:00.000Z");
+    const results: Array<"RELEASE_GO" | "BINDING_PASS"> = ["RELEASE_GO", "BINDING_PASS"];
+    const control: NightwatchControlPlane = {
+      currentIdentity: () => identity,
+      preflight: () => ({ deterministicRegistryHealthy: true, ownershipResolved: true, identityStable: true, leaseAvailable: true }),
+      dispatchAuthority: () => ({ runId: "authority-live" }),
+      dispatchBinding: () => ({ runId: "binding-live" }),
+      observeRun: () => results.shift() ?? "PENDING",
+      protectedMain: () => ({ sha: identity.baseSha, treeSha: identity.baseTreeSha }),
+      requestMerge: () => ({ mergeSha: "e".repeat(40), treeSha: identity.candidateTreeSha }),
+      postMergeBosunProof: () => ({ evidenceRef: "fresh-protected-main-generator-proof", rootBlockerRemoved: true }),
+    };
+    try {
+      ledger.createCandidate({ id: "candidate-b", objectiveId: "product-b", project: "Project B", increment: "1", branch: "codex/b", productHeadSha: "b".repeat(40), localBaseSha: identity.baseSha });
+      ledger.transitionCandidate("candidate-b", "BLOCKED_BY_BOSUN");
+      const coordinator = new BosunLiveRepairCoordinator(ledger, bosun);
+      const attached = coordinator.attachAutoZeroRepair({
+        parentTransactionId: transaction.id,
+        blockedCandidateIds: ["candidate-a", "candidate-b"],
+        finding,
+        repairCandidate: { id: "bosun-auto-0", objectiveId: "bosun-auto-0-registry", project: "Bosun", increment: "B1.1", branch: "refs/heads/codex/bosun-auto-0", productHeadSha: identity.candidateSha, localBaseSha: identity.baseSha },
+        identity,
+        repairPr: 777,
+        actionId: "active-test-registry",
+        outputDigest: "deterministic-output",
+        focusedEvidenceRef: "registry-twice",
+        at: new Date(now).toISOString(),
+      });
+      expect(attached.maintenance).toMatchObject({ candidateId: "bosun-auto-0", state: "AWAITING_AUTHORITY", cascadeId: transaction.cascadeId });
+      expect(bosun.liveRepairForTransaction(attached.maintenance.id)).toMatchObject({ repairPr: 777, candidateSha: identity.candidateSha, baseSha: identity.baseSha });
+      bosun.close();
+      const controller = new NightwatchController(ledger, control, { instanceId: "nightwatchd-bosun-live", now: () => now });
+      controller.start();
+      now += 1_000;
+      expect(controller.tick()).toMatchObject({ state: "AUTHORITY_RUNNING", runId: "authority-live" });
+      now += 1_000;
+      expect(controller.tick()).toMatchObject({ state: "BINDING_PENDING" });
+      now += 1_000;
+      expect(controller.tick()).toMatchObject({ state: "BINDING_RUNNING", runId: "binding-live" });
+      now += 1_000;
+      expect(controller.tick()).toMatchObject({ state: "MERGING" });
+      now += 1_000;
+      expect(controller.tick()).toMatchObject({ state: "POST_MERGE_VERIFIED" });
+      const restarted = new BosunLedger(path, ledger);
+      try {
+        expect(restarted.projection(now).cascades[0]).toMatchObject({ status: "CONVERGED", repairPrCount: 1, authorityAttempts: 1, dependentWakeupCount: 2 });
+        expect(ledger.getCandidate("candidate-a").state).toBe("QUEUE_FRONT");
+        expect(ledger.getCandidate("candidate-b").state).toBe("QUEUED");
+        expect(restarted.liveRepairForTransaction(attached.maintenance.id)?.completedAt).toBeTruthy();
+      } finally { restarted.close(); }
+      controller.stop();
+    } finally { try { bosun.close(); } catch {} ledger.close(); }
   });
 });
