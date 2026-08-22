@@ -11,5 +11,5 @@
   },
   "expectedTerminalRungEffect": "NONE",
   "evidenceRequiringRefresh": ["Nightwatch Baseline Certification", "Root Maintenance qualification", "Root Maintenance protected binding"],
-  "rationale": "Root Maintenance changes governed repository control-plane admission, protected binding, and evidence only. It cannot add, change, retire, or expose a product capability, Feature Catalog realization, route, screen, journey, or API."
+  "rationale": "Root Maintenance changes governed repository control-plane admission, protected binding, and evidence only. This simplification consolidates the trusted qualification envelope and binding helper without adding, changing, retiring, or exposing a product capability, Feature Catalog realization, route, screen, journey, or API."
 }

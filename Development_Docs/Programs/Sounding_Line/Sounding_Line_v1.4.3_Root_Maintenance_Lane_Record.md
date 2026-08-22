@@ -3,7 +3,7 @@ title: Sounding Line Root Maintenance Lane Record
 audience: engineering
 status: current
 canonical_for: sounding-line-root-maintenance-lane
-last_reviewed: 2026-08-21
+last_reviewed: 2026-08-22
 ---
 
 # Sounding Line Root Maintenance lane
@@ -22,7 +22,11 @@ One sealed Root Maintenance dispatch can bind one protected merge. The protected
 
 ### Binding-dispatch contract
 
-The protected-binding dispatcher has an explicit `root_maintenance` evidence kind. It rechecks the live PR base/head relationship, reconstructs the synthetic merge identity, loads the Root Maintenance selector and binder from the qualified protected base, and accepts exactly one successful sealed `sounding-line-root-maintenance-qualification` artifact. It emits the unchanged `Sounding Line / Mainline Decision` context only for that root evidence kind; ordinary evidence continues through its existing binding path. The repair-route invariant verifies every lane's discovery, classification, admission, authorization, qualification, protected-binding, and merge-eligibility surfaces before Baseline Certification can pass.
+The protected-binding dispatcher has an explicit `root_maintenance` evidence kind. It rechecks the live PR base/head relationship, reconstructs the synthetic merge identity, downloads the exact qualification artifact, and invokes the one trusted `root-maintenance-bind.mjs` helper from the qualified protected base. The helper recursively admits exactly one canonical `root-maintenance-envelope.json`, validates its policy, qualification, PR/base/candidate/tree identity and opaque string run ID, enforces replay rejection, then emits normalized input for the existing protected merge binder. Workflow PowerShell only orchestrates that handoff; it does not select, parse, or reinterpret Root Maintenance authority. It emits the unchanged `Sounding Line / Mainline Decision` context only for that root evidence kind; ordinary evidence continues through its existing binding path. The repair-route invariant verifies every lane's discovery, classification, admission, authorization, qualification, protected-binding, and merge-eligibility surfaces before Baseline Certification can pass.
+
+### Owner-authorized Root Maintenance simplification cutover
+
+The 2026-08-22 owner-authorized break-glass repair is limited to replacing the duplicated qualification-artifact selection and binding logic with the canonical envelope and helper described above. It is neither `RELEASE_GO` nor `BINDING_PASS`, does not alter branch protection, and expires when that single repair lands. The existing Ledgerlight canary PR #413 must subsequently requalify and bind through this normal path; no bypass is authorized for that canary.
 
 ## Bootstrap and break-glass boundary
 
