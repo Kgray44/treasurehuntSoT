@@ -38,6 +38,40 @@ const sourceReferences = (text) =>
     ),
   ].map((match) => match[0]);
 
+const routeStageError = (prefix, lane, stage) => `${prefix}:${lane}:${stage}`;
+
+export async function validateExecutableRepairRoutes({ root = process.cwd(), inventoryPolicy, readText } = {}) {
+  const policy = inventoryPolicy ?? JSON.parse(await readFile(path.join(root, "testing/control-plane-repair-routes.json"), "utf8"));
+  const load = readText ?? ((relative) => readFile(path.join(root, relative), "utf8"));
+  const requiredStages = policy.requiredExecutableStages ?? [];
+  const routes = policy.executableRouteContracts ?? {};
+  const laneResults = {};
+  const errors = [];
+  for (const [lane, stages] of Object.entries(routes)) {
+    const incompleteStages = [];
+    for (const stage of requiredStages) {
+      const surfaces = stages?.[stage];
+      let complete = Array.isArray(surfaces) && surfaces.length > 0;
+      if (complete) {
+        for (const surface of surfaces) {
+          try {
+            const text = await load(surface.path);
+            if (!text.includes(surface.contains)) complete = false;
+          } catch {
+            complete = false;
+          }
+        }
+      }
+      if (!complete) {
+        incompleteStages.push(stage);
+        errors.push(routeStageError(policy.failurePrefix, lane, stage));
+      }
+    }
+    laneResults[lane] = { complete: incompleteStages.length === 0, incompleteStages };
+  }
+  return { requiredStages, lanes: laneResults, errors };
+}
+
 export function classifyRepairRoute({ file, rootPolicy, authorityPolicy, verificationPolicy }) {
   if (matches(file, rootPolicy?.generatedConsequenceGlobs)) return "GENERATED_CONSEQUENCE";
   if (matches(file, rootPolicy?.eligiblePathGlobs)) return "ROOT_MAINTENANCE";
@@ -75,13 +109,18 @@ export async function buildRepairRouteInventory(root = process.cwd(), additional
     classification: classifyRepairRoute({ file, rootPolicy, authorityPolicy, verificationPolicy }),
   }));
   const missing = entries.filter((entry) => !entry.classification).map((entry) => entry.file);
+  const executableRoutes = await validateExecutableRepairRoutes({ root, inventoryPolicy });
   return {
     authority: inventoryPolicy.authority,
     paths: entries,
     repairRouteCount: entries.length - missing.length,
     prerequisiteCount: entries.length,
+    executableRoutes,
     missing,
-    errors: missing.map((file) => `${inventoryPolicy.failurePrefix}:${file}`),
+    errors: [
+      ...missing.map((file) => `${inventoryPolicy.failurePrefix}:${file}`),
+      ...executableRoutes.errors,
+    ],
   };
 }
 

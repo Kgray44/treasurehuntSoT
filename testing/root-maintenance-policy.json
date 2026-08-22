@@ -16,6 +16,7 @@
     "scripts/sounding-line/root-maintenance-protected-binding.mjs",
     "scripts/sounding-line/control-plane-repair-routes.mjs",
     ".github/workflows/sounding-line-root-maintenance.yml",
+    ".github/workflows/sounding-line-protected-binding-dispatch.yml",
     ".github/workflows/sounding-line-protected-merge-binding.yml"
   ],
   "eligiblePathGlobs": [

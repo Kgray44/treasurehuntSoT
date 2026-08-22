@@ -262,7 +262,7 @@ jobs:
           git show "$env:BASE_SHA`:testing/root-maintenance-policy.json" > trusted-root-maintenance-policy.json
           if ($LASTEXITCODE -ne 0) { throw 'ROOT_MAINTENANCE_TRUSTED_POLICY_UNAVAILABLE' }
           $trustedPolicy = Get-Content -Raw trusted-root-maintenance-policy.json | ConvertFrom-Json
-          $legacyRootBindingPaths = @('testing/root-maintenance-policy.json','testing/control-plane-repair-routes.json','scripts/sounding-line/root-maintenance.mjs','scripts/sounding-line/root-maintenance-selection.mjs','scripts/sounding-line/root-maintenance-protected-binding.mjs','scripts/sounding-line/control-plane-repair-routes.mjs','.github/workflows/sounding-line-root-maintenance.yml','.github/workflows/sounding-line-protected-merge-binding.yml')
+          $legacyRootBindingPaths = @('testing/root-maintenance-policy.json','testing/control-plane-repair-routes.json','scripts/sounding-line/root-maintenance.mjs','scripts/sounding-line/root-maintenance-selection.mjs','scripts/sounding-line/root-maintenance-protected-binding.mjs','scripts/sounding-line/control-plane-repair-routes.mjs','.github/workflows/sounding-line-root-maintenance.yml','.github/workflows/sounding-line-protected-binding-dispatch.yml','.github/workflows/sounding-line-protected-merge-binding.yml')
           $rootBindingPaths = @($trustedPolicy.bindingPreflightPaths) + $legacyRootBindingPaths
           if (-not ($paths | Where-Object { $_ -in $rootBindingPaths })) { 'rootMaintenance=false' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8; exit 0 }
           git show "$env:BASE_SHA`:scripts/sounding-line/root-maintenance.mjs" > trusted-root-maintenance.mjs
@@ -605,7 +605,7 @@ jobs:
           $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&per_page=100").workflow_runs
           $sealed = @()
           foreach ($run in $runs) {
-            if ($run.name -ne 'Sounding Line root maintenance' -or $run.path -ne '.github/workflows/sounding-line-root-maintenance.yml' -or $run.status -ne 'completed' -or $run.conclusion -ne 'success') { continue }
+            if ($run.name -notmatch '^Sounding Line root maintenance(?:\s|$)' -or $run.path -ne '.github/workflows/sounding-line-root-maintenance.yml' -or $run.status -ne 'completed' -or $run.conclusion -ne 'success') { continue }
             try {
               $artifact = @((Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs/$($run.id)/artifacts?per_page=100").artifacts | Where-Object { $_.name -eq 'sounding-line-root-maintenance-qualification' -and -not $_.expired })
               if ($artifact.Count -ne 1) { continue }

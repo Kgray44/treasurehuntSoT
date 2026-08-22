@@ -2,13 +2,14 @@
 import { readFile } from "node:fs/promises";
 
 const sha = (value) => typeof value === "string" && /^[0-9a-f]{40}$/u.test(value);
+const rootMaintenanceRunName = (value) => typeof value === "string" && /^Sounding Line root maintenance(?:\s|$)/u.test(value);
 
 export function selectSealedRootMaintenance({ runs, candidateSha, candidateTree, qualifiedBaseSha, prNumber }) {
   const eligible = (runs ?? []).filter((run) => {
     const plan = run?.plan;
     const finalization = run?.finalization;
     return (
-      run?.name === "Sounding Line root maintenance" &&
+      rootMaintenanceRunName(run?.name) &&
       run?.path === ".github/workflows/sounding-line-root-maintenance.yml" &&
       run?.event === "workflow_dispatch" &&
       run?.status === "completed" &&
