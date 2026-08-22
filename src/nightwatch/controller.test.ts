@@ -59,16 +59,49 @@ describe("Nightwatch controller", () => {
       expect(controller.tick()).toMatchObject({ state: "AUTHORITY_RUNNING" });
       expect(ledger.acceptanceRuns()).toHaveLength(1);
       now += 1_000;
-      expect(controller.tick()).toMatchObject({ state: "BINDING_PENDING" });
-      now += 1_000;
       expect(controller.tick()).toMatchObject({ state: "BINDING_RUNNING", runId: "binding-remote" });
-      now += 1_000;
-      expect(controller.tick()).toMatchObject({ state: "MERGING" });
       now += 1_000;
       expect(controller.tick()).toMatchObject({ state: "POST_MERGE_VERIFIED" });
       expect(ledger.acceptanceRuns()).toHaveLength(2);
       expect(ledger.controllerHealth(now)).toMatchObject({ state: "LIVE", instanceId: "nightwatchd-test" });
-      expect(controller.bosunProjection(now)).toMatchObject({ station: "BOSUN", state: "LIVE", controllerId: "nightwatchd-test" });
+      expect(controller.bosunProjection(now)).toMatchObject({
+        station: "BOSUN",
+        state: "LIVE",
+        controllerId: "nightwatchd-test",
+      });
+    } finally {
+      ledger.close();
+    }
+  });
+
+  it("rechecks the exact protected base before the receipt-triggered merge", () => {
+    const ledger = queuedLedger();
+    let now = Date.parse("2026-08-21T00:00:00.000Z");
+    let mergeRequests = 0;
+    const controller = new NightwatchController(
+      ledger,
+      {
+        ...controlPlane(["PENDING", "RELEASE_GO", "BINDING_PASS"]),
+        protectedMain: () => ({ sha: "f".repeat(40), treeSha: "e".repeat(40) }),
+        requestMerge: () => {
+          mergeRequests += 1;
+          return null;
+        },
+      },
+      { instanceId: "nightwatchd-race-test", now: () => now },
+    );
+    try {
+      controller.start();
+      controller.tick();
+      now += 1_000;
+      controller.tick();
+      now += 1_000;
+      controller.tick();
+      now += 1_000;
+      controller.tick();
+      now += 1_000;
+      expect(controller.tick()).toMatchObject({ state: "MERGE_RACE" });
+      expect(mergeRequests).toBe(0);
     } finally {
       ledger.close();
     }
@@ -131,7 +164,10 @@ describe("Nightwatch controller", () => {
     const controller = new NightwatchController(ledger, plane, { instanceId: "nightwatchd-baseline-test" });
     try {
       controller.start();
-      expect(controller.tick()).toMatchObject({ state: "BLOCKED", reason: `SHARED_MAINTENANCE_BLOCKED:BASELINE_CERTIFICATION_REQUIRED:${identity.baseSha}:${identity.baseTreeSha}` });
+      expect(controller.tick()).toMatchObject({
+        state: "BLOCKED",
+        reason: `SHARED_MAINTENANCE_BLOCKED:BASELINE_CERTIFICATION_REQUIRED:${identity.baseSha}:${identity.baseTreeSha}`,
+      });
       expect(ledger.acceptanceRuns()).toHaveLength(0);
     } finally {
       ledger.close();
