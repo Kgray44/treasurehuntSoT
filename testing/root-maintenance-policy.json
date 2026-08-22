@@ -12,7 +12,7 @@
     "testing/root-maintenance-policy.json",
     "testing/control-plane-repair-routes.json",
     "scripts/sounding-line/root-maintenance.mjs",
-    "scripts/sounding-line/root-maintenance-selection.mjs",
+    "scripts/sounding-line/root-maintenance-bind.mjs",
     "scripts/sounding-line/root-maintenance-protected-binding.mjs",
     "scripts/sounding-line/control-plane-repair-routes.mjs",
     ".github/workflows/sounding-line-root-maintenance.yml",

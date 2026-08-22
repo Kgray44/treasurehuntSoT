@@ -55,11 +55,13 @@ jobs:
           New-Item -ItemType Directory -Force -Path $temp | Out-Null
           "temp=$temp" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
-          foreach ($entry in @(@('policy','testing/root-maintenance-policy.json'), @('classifier','scripts/sounding-line/root-maintenance.mjs'))) {
+          foreach ($entry in @(@('policy','testing/root-maintenance-policy.json'), @('classifier','scripts/sounding-line/root-maintenance.mjs'), @('binder','scripts/sounding-line/root-maintenance-bind.mjs'))) {
             $lines = @(git show "$env:BASE_SHA`:$($entry[1])")
             if ($LASTEXITCODE -ne 0) { throw "ROOT_MAINTENANCE_TRUSTED_$($entry[0].ToUpper())_UNAVAILABLE" }
             [System.IO.File]::WriteAllText((Join-Path $temp "trusted-$($entry[0]).$([IO.Path]::GetExtension($entry[1]).TrimStart('.'))"), ($lines -join "`n"), $utf8NoBom)
           }
+          Copy-Item -LiteralPath (Join-Path $temp 'trusted-classifier.mjs') -Destination (Join-Path $temp 'root-maintenance.mjs')
+          Copy-Item -LiteralPath (Join-Path $temp 'trusted-binder.mjs') -Destination (Join-Path $temp 'root-maintenance-bind.mjs')
           $paths = @(git diff --name-only --no-renames --no-ext-diff "$env:BASE_SHA" "$env:CANDIDATE_SHA" | Sort-Object)
           [System.IO.File]::WriteAllText((Join-Path $temp 'changed-paths.json'), (ConvertTo-Json -InputObject $paths -Compress), $utf8NoBom)
           $tree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
@@ -95,14 +97,11 @@ jobs:
           $ids = @('EXACT_BASE_IDENTITY','EXACT_CANDIDATE_IDENTITY','EXACT_CANDIDATE_TREE','ROOT_CHANGE_DIFF_CLASSIFICATION','ROOT_ANTI_SELF_AUTHORIZATION','CONTROL_PLANE_REPAIR_ROUTE_COMPLETENESS','BASELINE_CERTIFICATION','DEEPWATER_POLICY_IDENTITY','DETERMINISTIC_FIXED_POINT','PROTECTED_BINDING','NO_BRANCH_PROTECTION_CHANGE')
           $ids | ForEach-Object { @{ id = $_; result = 'PASSED'; candidateSha = $env:CANDIDATE_SHA } } | ConvertTo-Json -Compress | Set-Content "$temp/root-maintenance-evidence.json"
           node "$temp/trusted-classifier.mjs" finalize --plan "$temp/root-maintenance-plan.json" --evidence "$temp/root-maintenance-evidence.json" --candidate-sha $env:CANDIDATE_SHA --trusted-main-sha $env:BASE_SHA --pr-number $env:PR_NUMBER --out "$temp/root-maintenance-finalization.json"
+          node "$temp/root-maintenance-bind.mjs" envelope --plan "$temp/root-maintenance-plan.json" --finalization "$temp/root-maintenance-finalization.json" --evidence "$temp/root-maintenance-evidence.json" --run-id "$env:GITHUB_RUN_ID" --out "$temp/root-maintenance-envelope.json"
       - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
           name: sounding-line-root-maintenance-qualification
-          path: |
-            ${{ steps.trusted-root-maintenance.outputs.temp }}/root-maintenance-plan.json
-            ${{ steps.trusted-root-maintenance.outputs.temp }}/root-maintenance-evidence.json
-            ${{ steps.trusted-root-maintenance.outputs.temp }}/root-maintenance-finalization.json
-            root-maintenance-baseline-certification.json
+          path: ${{ steps.trusted-root-maintenance.outputs.temp }}/root-maintenance-envelope.json
           retention-days: 14
       - if: always()
         shell: pwsh
