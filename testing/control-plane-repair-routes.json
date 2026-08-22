@@ -11,6 +11,9 @@
     "PROTECTED_BINDING",
     "MERGE_ELIGIBILITY"
   ],
+  "additionalExecutableStages": {
+    "ROOT_MAINTENANCE": ["ARTIFACT_HANDSHAKE"]
+  },
   "executableRouteContracts": {
     "ORDINARY": {
       "DISCOVERY": [{ "path": "testing/verification-maintenance-policy.json", "contains": "ordinaryCandidateEligiblePathGlobs" }],
@@ -46,6 +49,7 @@
       "AUTHORIZATION": [{ "path": ".github/workflows/sounding-line-root-maintenance.yml", "contains": "ROOT_MAINTENANCE_OWNER_AUTHORIZATION_REQUIRED" }],
       "QUALIFICATION": [{ "path": ".github/workflows/sounding-line-root-maintenance.yml", "contains": "sounding-line-root-maintenance-qualification" }],
       "PROTECTED_BINDING": [{ "path": ".github/workflows/sounding-line-protected-binding-dispatch.yml", "contains": "root_maintenance" }, { "path": "scripts/sounding-line/root-maintenance-selection.mjs", "contains": "selectSealedRootMaintenance" }, { "path": "scripts/sounding-line/root-maintenance-protected-binding.mjs", "contains": "qualifyRootMaintenanceProtectedMerge" }],
+      "ARTIFACT_HANDSHAKE": [{ "path": ".github/workflows/sounding-line-root-maintenance.yml", "contains": "sounding-line-root-maintenance-qualification" }, { "path": ".github/workflows/sounding-line-protected-binding-dispatch.yml", "contains": "trusted-root-maintenance-artifact.mjs" }, { "path": "scripts/sounding-line/root-maintenance-artifact.mjs", "contains": "readSealedRootMaintenanceArtifact" }, { "path": "tests/sounding-line/v14/root-maintenance-artifact.test.mjs", "contains": "qualification artifact handshake" }],
       "MERGE_ELIGIBILITY": [{ "path": ".github/workflows/sounding-line-protected-binding-dispatch.yml", "contains": "Sounding Line / Mainline Decision" }, { "path": ".github/workflows/sounding-line-protected-merge-binding.yml", "contains": "bind-root-maintenance" }]
     }
   },
