@@ -69,7 +69,7 @@ jobs:
       - run: npm ci
       - run: npm run db:generate
       - run: npm run test:policy
-      - run: node --test tests/sounding-line/baseline-certifier.test.mjs tests/sounding-line/v14/root-maintenance.test.mjs tests/sounding-line/v14/root-maintenance-artifact.test.mjs tests/sounding-line/v14/verification-maintenance.test.mjs tests/sounding-line/v14/maintenance-protected-binding.test.mjs
+      - run: node --test tests/sounding-line/baseline-certifier.test.mjs tests/sounding-line/v14/ledgerlight-generated-state.test.mjs tests/sounding-line/v14/root-maintenance.test.mjs tests/sounding-line/v14/root-maintenance-artifact.test.mjs tests/sounding-line/v14/verification-maintenance.test.mjs tests/sounding-line/v14/maintenance-protected-binding.test.mjs
       - run: node scripts/sounding-line/control-plane-repair-routes.mjs
       - run: node scripts/sounding-line/test-registry.mjs
       - name: Require deterministic generated fixed point
