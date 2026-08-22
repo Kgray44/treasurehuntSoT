@@ -3,6 +3,7 @@ title: Sounding Line Root Maintenance Binding Repair Receipt
 audience: engineering
 status: current
 canonical_for: sounding-line-root-maintenance-binding-repair-receipt
+ledgerlight_inventory_role: generated-state-closure
 last_reviewed: 2026-08-21
 ---
 
@@ -21,6 +22,10 @@ The automatic Nightwatch Baseline Certification run `32542274765` completed `CER
 ## Canary boundary
 
 This receipt is the task-owned, non-product Root Maintenance canary record. Its deterministic Ledgerlight inventory entry is the only generated consequence carried by reconciled PR #413. #413 must receive a fresh owner qualification and one normal protected binding; no admin or bootstrap authority applies to that PR.
+
+## Ledgerlight inventory boundary
+
+This is generated-state closure metadata, not a documentation migration input. It remains in the canonical document index and is retained as Root Maintenance evidence; the explicit `ledgerlight_inventory_role` only excludes it from the generated Ledgerlight migration inventory so that a closure cannot recursively require another closure commit.
 
 ## Deepwater capability-realization impact declaration
 
