@@ -317,6 +317,13 @@ export function validatePolicy(policy) {
     rootMaintenancePolicy?.releaseAuthority !== "NONE" ||
     !Array.isArray(rootMaintenancePolicy?.eligiblePathGlobs) ||
     !rootMaintenancePolicy.eligiblePathGlobs.length ||
+    !Array.isArray(rootMaintenancePolicy?.runtimeRepairClasses) ||
+    rootMaintenancePolicy.runtimeRepairClasses.length !== 1 ||
+    rootMaintenancePolicy.runtimeRepairClasses[0]?.id !== "NIGHTWATCH_BOSUN_RUNTIME" ||
+    rootMaintenancePolicy.runtimeRepairClasses[0]?.disposition !== "ROOT_MAINTENANCE_ONLY" ||
+    rootMaintenancePolicy.runtimeRepairClasses[0]?.policyMutation !== "BREAK_GLASS_ONLY" ||
+    JSON.stringify(rootMaintenancePolicy.runtimeRepairClasses[0]?.pathGlobs) !==
+      JSON.stringify(["src/nightwatch/**", "scripts/nightwatch/**"]) ||
     !Array.isArray(rootMaintenancePolicy?.bindingPreflightPaths) ||
     !rootMaintenancePolicy.bindingPreflightPaths.length ||
     !Array.isArray(rootMaintenancePolicy?.requiredEvidence) ||
@@ -324,7 +331,9 @@ export function validatePolicy(policy) {
     repairRoutePolicy?.authority !== "SOUNDING_LINE_CONTROL_PLANE_REPAIR_ROUTE_INVARIANT" ||
     repairRoutePolicy?.failurePrefix !== "CONTROL_PLANE_REPAIR_ROUTE_INCOMPLETE" ||
     !Array.isArray(repairRoutePolicy?.baselineSourcePaths) ||
-    !repairRoutePolicy.baselineSourcePaths.length
+    !repairRoutePolicy.baselineSourcePaths.length ||
+    JSON.stringify(repairRoutePolicy?.runtimePrerequisiteRoots) !==
+      JSON.stringify(["src/nightwatch", "scripts/nightwatch"])
   )
     errors.push("root-maintenance-policy: fail-closed contract mismatch");
   if (

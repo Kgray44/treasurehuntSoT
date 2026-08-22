@@ -64,6 +64,10 @@
     "Development_Docs/Programs/Sounding_Line",
     "Development_Docs/Features"
   ],
+  "runtimePrerequisiteRoots": [
+    "src/nightwatch",
+    "scripts/nightwatch"
+  ],
   "baselineSourcePaths": [
     "scripts/nightwatch/baseline-certifier.mjs",
     ".github/workflows/nightwatch-baseline-certification.yml",
