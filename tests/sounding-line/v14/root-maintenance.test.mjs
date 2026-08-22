@@ -95,6 +95,7 @@ test("repair-route inventory points Root Maintenance at the one canonical helper
   assert.ok(missingHelper.errors.includes("CONTROL_PLANE_REPAIR_ROUTE_INCOMPLETE:ROOT_MAINTENANCE:ARTIFACT_HANDSHAKE"));
   const qualification = await readFile(".github/workflows/sounding-line-root-maintenance.yml", "utf8");
   assert.match(qualification, /root-maintenance-envelope\.json/u);
+  assert.match(qualification, /tests\/sounding-line\/runtime-conformance\.test\.mjs/u);
   assert.match(qualification, /tests\/sounding-line\/v14\/ledgerlight-generated-state\.test\.mjs/u);
   assert.match(qualification, /REPOSITORY_OWNER/);
   assert.match(qualification, /ROOT_MAINTENANCE_TRUSTED_MAIN_STALE/);
