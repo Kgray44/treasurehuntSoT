@@ -84,50 +84,6 @@ jobs:
           $merge = ("Nightwatch protected binding `n" | git commit-tree $tree -p $env:BASE_SHA -p $env:CANDIDATE_SHA).Trim()
           if ($LASTEXITCODE -ne 0 -or $merge -notmatch '^[0-9a-f]{40}$') { throw 'NIGHTWATCH_BINDING_SYNTHETIC_MERGE_UNAVAILABLE' }
           "merge-sha=$merge" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-      - name: Select exactly one sealed Root Maintenance qualification
-        id: root-authority
-        if: ${{ inputs.authority_kind == 'root_maintenance' }}
-        shell: pwsh
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          REPOSITORY: ${{ github.repository }}
-          PR_NUMBER: ${{ inputs.pr_number }}
-          CANDIDATE_SHA: ${{ inputs.candidate_sha }}
-          BASE_SHA: ${{ inputs.base_sha }}
-          AUTHORITY_RUN_ID: ${{ inputs.authority_run_id }}
-        run: |
-          $ErrorActionPreference = 'Stop'
-          if ($env:AUTHORITY_RUN_ID -notmatch '^[1-9][0-9]*$') { throw 'ROOT_MAINTENANCE_AUTHORITY_RUN_INVALID' }
-          git show "$env:BASE_SHA`:scripts/sounding-line/root-maintenance-selection.mjs" > trusted-root-maintenance-selection.mjs
-          if ($LASTEXITCODE -ne 0) { throw 'ROOT_MAINTENANCE_TRUSTED_SELECTOR_UNAVAILABLE' }
-          git show "$env:BASE_SHA`:scripts/sounding-line/root-maintenance-artifact.mjs" > trusted-root-maintenance-artifact.mjs
-          if ($LASTEXITCODE -ne 0) { throw 'ROOT_MAINTENANCE_TRUSTED_ARTIFACT_CONTRACT_UNAVAILABLE' }
-          $headers = @{ Authorization = "Bearer $env:GITHUB_TOKEN"; Accept = 'application/vnd.github+json'; 'X-GitHub-Api-Version' = '2022-11-28' }
-          $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&per_page=100").workflow_runs
-          $sealed = @()
-          foreach ($run in $runs) {
-            if ($run.name -notmatch '^Sounding Line root maintenance(?:\s|$)' -or $run.path -ne '.github/workflows/sounding-line-root-maintenance.yml' -or $run.status -ne 'completed' -or $run.conclusion -ne 'success') { continue }
-            try {
-              $artifact = @((Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs/$($run.id)/artifacts?per_page=100").artifacts | Where-Object { $_.name -eq 'sounding-line-root-maintenance-qualification' -and -not $_.expired })
-              if ($artifact.Count -ne 1) { continue }
-              $directory = Join-Path $env:RUNNER_TEMP "sounding-line-root-maintenance-$($run.id)"
-              Invoke-WebRequest -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/artifacts/$($artifact[0].id)/zip" -OutFile "$directory.zip"
-              Expand-Archive -LiteralPath "$directory.zip" -DestinationPath $directory -Force
-              node trusted-root-maintenance-artifact.mjs $directory > "$directory/root-maintenance-artifact.json"
-              if ($LASTEXITCODE -ne 0) { throw 'ROOT_MAINTENANCE_ARTIFACT_DISCOVERY_FAILED' }
-              $artifactPayload = Get-Content -Raw "$directory/root-maintenance-artifact.json" | ConvertFrom-Json
-              $sealed += @{ id = $run.id; name = $run.name; path = $run.path; event = $run.event; status = $run.status; conclusion = $run.conclusion; headSha = $run.head_sha; plan = $artifactPayload.plan; finalization = $artifactPayload.finalization }
-            } catch {
-              if ([int]$run.id -eq [int]$env:AUTHORITY_RUN_ID) { throw }
-            }
-          }
-          $candidateTree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
-          @{ runs = $sealed; candidateSha = $env:CANDIDATE_SHA; candidateTree = $candidateTree; qualifiedBaseSha = $env:BASE_SHA; prNumber = [int]$env:PR_NUMBER } | ConvertTo-Json -Depth 16 | Set-Content root-maintenance-authorities.json
-          node trusted-root-maintenance-selection.mjs root-maintenance-authorities.json > root-maintenance-selection.json
-          if ($LASTEXITCODE -ne 0) { throw 'SEALED_ROOT_MAINTENANCE_AUTHORITY_NOT_UNIQUE' }
-          $selection = Get-Content -Raw root-maintenance-selection.json | ConvertFrom-Json
-          if ($selection.selectedRunId -ne [int]$env:AUTHORITY_RUN_ID) { throw 'ROOT_MAINTENANCE_AUTHORITY_RUN_IDENTITY_MISMATCH' }
-          "run-id=$($selection.selectedRunId)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - if: ${{ inputs.authority_kind == 'ordinary' }}
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
@@ -161,9 +117,31 @@ jobs:
           {
             name: sounding-line-root-maintenance-qualification,
             path: accepted-root-maintenance,
-            run-id: "${{ steps.root-authority.outputs.run-id }}",
+            run-id: "${{ inputs.authority_run_id }}",
             github-token: "${{ github.token }}",
           }
+      - name: Prepare canonical Root Maintenance binding input
+        if: ${{ inputs.authority_kind == 'root_maintenance' }}
+        shell: pwsh
+        env:
+          PR_NUMBER: ${{ inputs.pr_number }}
+          CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+          BASE_SHA: ${{ inputs.base_sha }}
+          MERGE_SHA: ${{ steps.identity.outputs.merge-sha }}
+          AUTHORITY_RUN_ID: ${{ inputs.authority_run_id }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          git show "$env:BASE_SHA`:testing/root-maintenance-policy.json" > trusted-root-maintenance-policy.json
+          if ($LASTEXITCODE -ne 0) { throw 'ROOT_MAINTENANCE_TRUSTED_POLICY_UNAVAILABLE' }
+          git show "$env:BASE_SHA`:scripts/sounding-line/root-maintenance-bind.mjs" > trusted-root-maintenance-bind.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'ROOT_MAINTENANCE_TRUSTED_BIND_HELPER_UNAVAILABLE' }
+          git show "$env:BASE_SHA`:scripts/sounding-line/root-maintenance.mjs" > root-maintenance.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'ROOT_MAINTENANCE_TRUSTED_CLASSIFIER_UNAVAILABLE' }
+          $candidateTree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
+          $mergeTree = (git show -s --format=%T $env:MERGE_SHA).Trim()
+          @((git show -s --format=%P $env:MERGE_SHA).Split(' ', [System.StringSplitOptions]::RemoveEmptyEntries)) | ConvertTo-Json -Compress | Set-Content root-maintenance-merge-parents.json
+          $replayLedger = Join-Path $env:RUNNER_TEMP "root-maintenance-binding-$env:PR_NUMBER-$env:CANDIDATE_SHA-$env:AUTHORITY_RUN_ID.json"
+          node trusted-root-maintenance-bind.mjs bind --root accepted-root-maintenance --policy trusted-root-maintenance-policy.json --run-id "$env:AUTHORITY_RUN_ID" --pr-number "$env:PR_NUMBER" --base-sha "$env:BASE_SHA" --candidate-sha "$env:CANDIDATE_SHA" --candidate-tree "$candidateTree" --merge-sha "$env:MERGE_SHA" --merge-tree "$mergeTree" --merge-parents root-maintenance-merge-parents.json --replay-ledger "$replayLedger" --out root-maintenance-binding-input.json
       - name: Bind exact accepted ordinary authority before controlled merge
         if: ${{ inputs.authority_kind == 'ordinary' }}
         shell: pwsh
@@ -185,21 +163,16 @@ jobs:
           BASE_SHA: ${{ inputs.base_sha }}
           MERGE_SHA: ${{ steps.identity.outputs.merge-sha }}
         run: |
-          $ErrorActionPreference = 'Stop'
           git show "$env:BASE_SHA`:scripts/sounding-line/root-maintenance-protected-binding.mjs" > trusted-root-maintenance-binding.mjs
           if ($LASTEXITCODE -ne 0) { throw 'ROOT_MAINTENANCE_TRUSTED_BINDER_UNAVAILABLE' }
-          $parents = @((git show -s --format=%P $env:MERGE_SHA).Split(' ', [System.StringSplitOptions]::RemoveEmptyEntries)) | ConvertTo-Json -Compress
-          $tree = (git show -s --format=%T $env:MERGE_SHA).Trim()
           $script = @"
-          import { readSealedRootMaintenanceArtifact } from './trusted-root-maintenance-artifact.mjs';
+          import { readFile } from 'node:fs/promises';
           import { qualifyRootMaintenanceProtectedMerge } from './trusted-root-maintenance-binding.mjs';
-          const { plan, finalization } = await readSealedRootMaintenanceArtifact('accepted-root-maintenance');
-          const result = qualifyRootMaintenanceProtectedMerge({ plan, finalization, candidateSha: process.env.CANDIDATE_SHA, currentBaseSha: process.env.BASE_SHA, mergeSha: process.env.MERGE_SHA, mergeTree: process.env.MERGE_TREE, mergeParents: JSON.parse(process.env.MERGE_PARENTS), prNumber: Number(process.env.PR_NUMBER) });
+          const input = JSON.parse(await readFile('root-maintenance-binding-input.json', 'utf8'));
+          const result = qualifyRootMaintenanceProtectedMerge(input);
           console.log(JSON.stringify(result, null, 2)); process.exitCode = result.decision === 'BINDING_PASS' ? 0 : 1;
           "@
           $script | Set-Content root-maintenance-bind.mjs
-          $env:MERGE_TREE = $tree
-          $env:MERGE_PARENTS = $parents
           node root-maintenance-bind.mjs | Tee-Object -FilePath nightwatch-protected-binding-receipt.json
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - if: always()
