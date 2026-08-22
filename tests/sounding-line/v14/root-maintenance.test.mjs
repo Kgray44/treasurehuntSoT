@@ -8,7 +8,11 @@ import {
   validateExecutableRepairRoutes,
 } from "../../../scripts/sounding-line/control-plane-repair-routes.mjs";
 import { qualifyRootMaintenanceProtectedMerge } from "../../../scripts/sounding-line/root-maintenance-protected-binding.mjs";
-import { createRootMaintenancePlan, finalizeRootMaintenance } from "../../../scripts/sounding-line/root-maintenance.mjs";
+import {
+  createRootMaintenancePlan,
+  finalizeRootMaintenance,
+  rootMaintenanceEligiblePathGlobs,
+} from "../../../scripts/sounding-line/root-maintenance.mjs";
 
 const sha = (letter) => letter.repeat(40);
 const rootPolicy = {
@@ -19,6 +23,14 @@ const rootPolicy = {
   ownerAuthorization: "REPOSITORY_OWNER_WORKFLOW_DISPATCH",
   releaseAuthority: "NONE",
   eligiblePathGlobs: ["scripts/sounding-line/**", "testing/root-maintenance-policy.json", "tests/sounding-line/**"],
+  runtimeRepairClasses: [
+    {
+      id: "NIGHTWATCH_BOSUN_RUNTIME",
+      disposition: "ROOT_MAINTENANCE_ONLY",
+      policyMutation: "BREAK_GLASS_ONLY",
+      pathGlobs: ["src/nightwatch/**", "scripts/nightwatch/**"],
+    },
+  ],
   requiredEvidence: ["ROOT_ANTI_SELF_AUTHORIZATION"],
 };
 
@@ -39,6 +51,12 @@ test("Root Maintenance remains owner-only, non-product, and exact-merge bound", 
   assert.equal(plan.errors.length, 0);
   assert.match(plan.planDigest, /^[0-9a-f]{64}$/u);
   assert.ok(planFor(["src/app/page.tsx"]).errors.includes("ROOT_MAINTENANCE_SCOPE_REJECTED:src/app/page.tsx"));
+  assert.equal(planFor(["src/nightwatch/future-runtime.ts"]).errors.length, 0);
+  assert.equal(planFor(["scripts/nightwatch/future-runtime.ts"]).errors.length, 0);
+  assert.deepEqual(rootMaintenanceEligiblePathGlobs(rootPolicy).slice(-2), [
+    "src/nightwatch/**",
+    "scripts/nightwatch/**",
+  ]);
   assert.ok(
     createRootMaintenancePlan({
       trustedPolicy: rootPolicy,
@@ -80,7 +98,36 @@ test("repair-route inventory points Root Maintenance at the one canonical helper
   assert.equal(inventory.errors.length, 0);
   assert.equal(inventory.prerequisiteCount, inventory.repairRouteCount);
   assert.equal(inventory.executableRoutes.lanes.ROOT_MAINTENANCE.complete, true);
+  assert.equal(
+    inventory.paths.find((entry) => entry.file === "src/nightwatch/bosun.ts")?.classification,
+    "ROOT_MAINTENANCE",
+  );
+  assert.equal(
+    inventory.paths.find((entry) => entry.file === "scripts/nightwatch/cli.ts")?.classification,
+    "ROOT_MAINTENANCE",
+  );
+  assert.equal(
+    classifyRepairRoute({ file: "src/nightwatch/future-runtime.ts", rootPolicy, authorityPolicy: {}, verificationPolicy: {} }),
+    "ROOT_MAINTENANCE",
+  );
+  assert.equal(
+    classifyRepairRoute({ file: "scripts/nightwatch/future-runtime.ts", rootPolicy, authorityPolicy: {}, verificationPolicy: {} }),
+    "ROOT_MAINTENANCE",
+  );
   assert.equal(classifyRepairRoute({ file: "src/app/page.tsx", rootPolicy, authorityPolicy: {}, verificationPolicy: {} }), null);
+  const candidateExpandedPolicy = {
+    ...rootPolicy,
+    runtimeRepairClasses: [
+      ...rootPolicy.runtimeRepairClasses,
+      { id: "PRODUCT_ESCAPE", pathGlobs: ["src/app/**"] },
+    ],
+  };
+  assert.ok(rootMaintenanceEligiblePathGlobs(candidateExpandedPolicy).includes("src/app/**"));
+  assert.ok(
+    planFor(["testing/root-maintenance-policy.json", "src/app/page.tsx"]).errors.includes(
+      "ROOT_MAINTENANCE_SCOPE_REJECTED:src/app/page.tsx",
+    ),
+  );
   const uncovered = await buildRepairRouteInventory(process.cwd(), ["unmapped-control-plane/new-prerequisite.mjs"]);
   assert.deepEqual(uncovered.errors, ["CONTROL_PLANE_REPAIR_ROUTE_INCOMPLETE:unmapped-control-plane/new-prerequisite.mjs"]);
   const policy = JSON.parse(await readFile("testing/control-plane-repair-routes.json", "utf8"));

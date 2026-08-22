@@ -1,6 +1,7 @@
 import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { DatabaseSync } from "node:sqlite";
 import { describe, expect, it } from "vitest";
 import { BosunAutoZeroExecutor, BosunLedger, createRepositoryAutoZeroActions, normalizeBosunFingerprint, planBaselineAutoZeroClosure } from "./bosun";
 import { BosunLiveRepairCoordinator } from "./bosun-live";
@@ -33,16 +34,110 @@ describe("Project Bosun B0 durable convergence", () => {
       expect(normalizeBosunFingerprint(finding)).toBe(normalizeBosunFingerprint({ ...finding, category: "generated drift" }));
       expect(second.cascade.id).toBe(first.cascade.id);
       expect(second.cascade.blockedCandidates).toEqual(["candidate-a", "candidate-b"]);
-      expect(bosun.createOrReuseRepair(first.cascade.id, "MW-001", 401, reportAt).created).toBe(true);
-      expect(bosun.createOrReuseRepair(first.cascade.id, "MW-002", 402, reportAt).created).toBe(false);
+      expect(first.objective).toMatchObject({ state: "OBJECTIVE_READY", repairClass: "AUTO_0" });
+      expect(bosun.createOrReuseRepair(first.cascade.id, first.objective!.id, 401, reportAt).created).toBe(true);
+      expect(bosun.createOrReuseRepair(first.cascade.id, first.objective!.id, 402, reportAt).created).toBe(false);
       expect(bosun.projection(Date.parse("2026-08-21T00:00:02.000Z"))).toMatchObject({ station: "BOSUN", state: "LIVE", activeCascadeCount: 1 });
       bosun.close();
       const restarted = new BosunLedger(path, ledger);
       try {
         const cascade = restarted.projection(Date.parse("2026-08-21T00:00:03.000Z")).cascades[0]!;
-        expect(cascade).toMatchObject({ id: first.cascade.id, activeObjectiveId: "MW-001", activeRepairPr: 401, repairPrCount: 1, duplicateRepairsSuppressed: 1, blockedCandidates: ["candidate-a", "candidate-b"] });
+        expect(cascade).toMatchObject({ id: first.cascade.id, activeObjectiveId: first.objective!.id, activeRepairPr: 401, repairPrCount: 1, duplicateRepairsSuppressed: 1, blockedCandidates: ["candidate-a", "candidate-b"], objective: { state: "REPAIRING" } });
       } finally { restarted.close(); }
     } finally { try { bosun.close(); } catch {} ledger.close(); }
+  });
+
+  it("materializes exactly one durable owner objective for the pre-fix active cascade and preserves it across restart", () => {
+    const path = databasePath();
+    const { ledger, transaction } = parent(path);
+    const finding = {
+      owner: "deepwater",
+      category: "deepwater-policy-identity-stale",
+      resource: "development_docs/programs/deepwater/deepwater-phase5-config.json:12",
+      contract: "deepwater-source-policy-identity",
+      runtimeClass: "nightwatch-baseline-certification",
+      repairClass: "OWNER" as const,
+      requiredAuthorization: "OWNER-AUTHORIZED:DEEPWATER_POLICY_IDENTITY_REBASELINE",
+    };
+    const at = "2026-08-22T16:09:36.803Z";
+    const bootstrap = new BosunLedger(path, ledger);
+    bootstrap.close();
+    const db = new DatabaseSync(path);
+    const cascadeId = "legacy-deepwater-cascade";
+    const fingerprint = normalizeBosunFingerprint(finding);
+    db.prepare(`INSERT INTO bosun_cascades(cascade_id, root_fingerprint, parent_transaction_id, root_owner, blocked_candidates_json, closure_steps_json, status, started_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, 'ACTIVE', ?, ?)`).run(
+      cascadeId,
+      fingerprint,
+      transaction.id,
+      "Deepwater",
+      JSON.stringify(["candidate-a"]),
+      JSON.stringify(["owner reconcile Deepwater stored policy identity and deterministic projections"]),
+      at,
+      at,
+    );
+    db.close();
+    const control: NightwatchControlPlane = {
+      currentIdentity: () => identity,
+      preflight: () => ({ deterministicRegistryHealthy: true, ownershipResolved: true, identityStable: true, leaseAvailable: true }),
+      dispatchAuthority: () => ({ runId: "unused" }),
+      dispatchBinding: () => ({ runId: "unused" }),
+      observeRun: () => "PENDING",
+      protectedMain: () => ({ sha: identity.baseSha, treeSha: identity.baseTreeSha }),
+      requestMerge: () => null,
+    };
+    const first = new NightwatchController(ledger, control, { instanceId: "nightwatchd-owner-objective", now: () => Date.parse(at) });
+    first.start();
+    first.stop();
+    const observed = new BosunLedger(path, ledger);
+    try {
+      const cascade = observed.projection(Date.parse(at)).cascades.find((entry) => entry.id === cascadeId)!;
+      expect(cascade).toMatchObject({
+        status: "PARKED_OWNER",
+        activeRepairPr: null,
+        objective: {
+          findingFingerprint: fingerprint,
+          state: "OWNER_REQUIRED",
+          requiredAuthorization: `OWNER_APPROVAL_REQUIRED:${fingerprint}`,
+        },
+      });
+      expect(() => observed.authorizeOwnerObjective(cascadeId, "OWNER-AUTHORIZED:DEEPWATER_POLICY_IDENTITY_REBASELINE", at)).toThrow("BOSUN_OWNER_AUTHORIZATION_MISMATCH");
+      expect(observed.reportFinding({ finding, parentTransactionId: transaction.id, blockedCandidateId: "candidate-a", closureSteps: ["ignored duplicate"], at }).objective?.id)
+        .toBe(cascade.objective!.id);
+    } finally { observed.close(); }
+    const second = new NightwatchController(ledger, control, { instanceId: "nightwatchd-owner-objective-restart", now: () => Date.parse(at) + 1_000 });
+    second.start();
+    second.stop();
+    const restarted = new BosunLedger(path, ledger);
+    try {
+      const cascade = restarted.projection(Date.parse(at) + 1_000).cascades.find((entry) => entry.id === cascadeId)!;
+      expect(cascade.objective).toMatchObject({ id: cascade.activeObjectiveId, state: "OWNER_REQUIRED" });
+    } finally { restarted.close(); ledger.close(); }
+  });
+
+  it("makes AUTO_0 ready while making external and unsupported findings explicit terminal objectives", () => {
+    const path = databasePath();
+    const { ledger, transaction } = parent(path);
+    const bosun = new BosunLedger(path, ledger);
+    try {
+      const at = "2026-08-21T00:01:00.000Z";
+      const external = bosun.reportFinding({
+        finding: { ...finding, category: "provider-outage", repairClass: "EXTERNAL", externalDependency: "GitHub Actions outage reference" },
+        parentTransactionId: transaction.id,
+        blockedCandidateId: "candidate-a",
+        closureSteps: ["external dependency"],
+        at,
+      });
+      const unsupported = bosun.reportFinding({
+        finding: { ...finding, category: "semantic-owner-change", repairClass: "AUTO_1" },
+        parentTransactionId: transaction.id,
+        blockedCandidateId: "candidate-a",
+        closureSteps: ["owner escalation"],
+        at,
+      });
+      expect(external.cascade).toMatchObject({ status: "BLOCKED_EXTERNAL", objective: { state: "EXTERNAL_BLOCKED", externalDependency: "GitHub Actions outage reference" } });
+      expect(unsupported.cascade).toMatchObject({ status: "ESCALATION_REQUIRED", objective: { state: "ESCALATION_REQUIRED" } });
+    } finally { bosun.close(); ledger.close(); }
   });
 
   it("inherits the parent breaker and cannot create a repair descendant after parking", () => {
@@ -127,6 +222,51 @@ describe("Project Bosun B1 AUTO_0", () => {
 });
 
 describe("Project Bosun B1.1 live repair integration", () => {
+  it("requires the exact owner authorization before attaching one owner repair lineage", () => {
+    const path = databasePath();
+    const { ledger, transaction } = parent(path);
+    const bosun = new BosunLedger(path, ledger);
+    try {
+      const at = "2026-08-21T00:00:01.000Z";
+      const ownerFinding = {
+        owner: "deepwater",
+        category: "deepwater-policy-identity-stale",
+        resource: "development_docs/programs/deepwater/deepwater-phase5-config.json:12",
+        contract: "deepwater-source-policy-identity",
+        runtimeClass: "nightwatch-baseline-certification",
+        repairClass: "OWNER" as const,
+        requiredAuthorization: "OWNER-AUTHORIZED:DEEPWATER_POLICY_IDENTITY_REBASELINE",
+      };
+      const coordinator = new BosunLiveRepairCoordinator(ledger, bosun);
+      const reported = bosun.reportFinding({
+        finding: ownerFinding,
+        parentTransactionId: transaction.id,
+        blockedCandidateId: "candidate-a",
+        closureSteps: ["owner authorization"],
+        at,
+      });
+      expect(reported.objective).toMatchObject({ state: "OWNER_REQUIRED" });
+      expect(() => bosun.authorizeOwnerObjective(reported.cascade.id, "wrong-owner-authorization", at)).toThrow(
+        "BOSUN_OWNER_AUTHORIZATION_MISMATCH",
+      );
+      const attached = coordinator.attachOwnerRepair({
+        parentTransactionId: transaction.id,
+        blockedCandidateIds: ["candidate-a"],
+        finding: ownerFinding,
+        repairCandidate: { id: "deepwater-owner", objectiveId: "deepwater-policy-identity", project: "Deepwater", increment: "identity", branch: "refs/heads/codex/deepwater", productHeadSha: identity.candidateSha, localBaseSha: identity.baseSha },
+        identity,
+        repairPr: 778,
+        actionId: "owner-policy-identity-rebaseline",
+        outputDigest: "deepwater-fixed-point",
+        focusedEvidenceRef: "deepwater-focused-proof",
+        ownerAuthorization: "OWNER-AUTHORIZED:DEEPWATER_POLICY_IDENTITY_REBASELINE",
+        at,
+      });
+      expect(attached.maintenance).toMatchObject({ candidateId: "deepwater-owner", state: "AWAITING_AUTHORITY" });
+      expect(bosun.projection().cascades[0]).toMatchObject({ repairPrCount: 1, objective: { state: "REPAIRING" } });
+    } finally { bosun.close(); ledger.close(); }
+  });
+
   it("keeps one repair identity through restart, accepts it once, and wakes every attached candidate once", () => {
     const path = databasePath();
     const { ledger, transaction } = parent(path);

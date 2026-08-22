@@ -71,6 +71,7 @@ export class NightwatchController {
   start() {
     const at = iso(this.now());
     const lease = this.ledger.claimController(this.instanceId, this.leaseTtlMs, at);
+    this.bosun.reconcileActionableObjectives(at);
     this.bosun.heartbeat(this.instanceId, "Nightwatch-owned Bosun controller started.", at);
     return lease;
   }
@@ -90,6 +91,7 @@ export class NightwatchController {
     const at = iso(this.now());
     try {
       this.ledger.recover({ now: this.now() });
+      this.bosun.reconcileActionableObjectives(at);
       const active = this.ledger
         .acceptanceTransactions()
         .find(
@@ -228,6 +230,8 @@ export class NightwatchController {
           }).runId,
           at,
         );
+    const repair = this.bosun.liveRepairForTransaction(transaction.id);
+    if (repair && !intent.externalRunId) this.bosun.recordBindingAttempt(repair.cascadeId, at);
     return { state: "BINDING_RUNNING" as const, transactionId: transaction.id, runId: run.externalRunId };
   }
 
@@ -301,6 +305,7 @@ export class NightwatchController {
     this.ledger.setRemainingClosureSteps(transaction.id, []);
     const repair = this.bosun.liveRepairForTransaction(transaction.id);
     if (repair) {
+      this.bosun.recordMerged(repair.cascadeId, at);
       const proof = this.controlPlane.postMergeBosunProof?.({
         ...transaction,
         transactionId: transaction.id,

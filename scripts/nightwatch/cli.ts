@@ -58,9 +58,15 @@ try {
     console.log(JSON.stringify(ledger.projection(), null, 2));
   } else if (command === "bosun-projection") {
     console.log(JSON.stringify(bosun.projection(), null, 2));
+  } else if (command === "bosun-reconcile-objectives") {
+    console.log(JSON.stringify(bosun.reconcileActionableObjectives(), null, 2));
+  } else if (command === "bosun-authorize-owner") {
+    const cascadeId = required(argument("--cascade", 0), "--cascade or positional cascade id");
+    const authorization = required(argument("--authorization", 1), "--authorization or positional authorization");
+    console.log(JSON.stringify(bosun.authorizeOwnerObjective(cascadeId, authorization), null, 2));
   } else {
     throw new Error(
-      "USAGE: nightwatch <reserve|reservations|release|reconcile|projection|bosun-projection>; reserve accepts <family> <project> <objective> <count> [database.sqlite] or direct-execution flags.",
+      "USAGE: nightwatch <reserve|reservations|release|reconcile|projection|bosun-projection|bosun-reconcile-objectives|bosun-authorize-owner>; reserve accepts <family> <project> <objective> <count> [database.sqlite] or direct-execution flags.",
     );
   }
 } finally {

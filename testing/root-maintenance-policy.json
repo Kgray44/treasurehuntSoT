@@ -8,6 +8,17 @@
   "releaseAuthority": "NONE",
   "bootstrapAuthority": "ONE_FINAL_OWNER_AUTHORIZED_ROOT_CONTROL_PLANE_BOOTSTRAP_ONLY",
   "antiSelfAuthorization": "TRUSTED_BASE_POLICY_AND_CLASSIFIER_REQUIRED",
+  "runtimeRepairClasses": [
+    {
+      "id": "NIGHTWATCH_BOSUN_RUNTIME",
+      "disposition": "ROOT_MAINTENANCE_ONLY",
+      "policyMutation": "BREAK_GLASS_ONLY",
+      "pathGlobs": [
+        "src/nightwatch/**",
+        "scripts/nightwatch/**"
+      ]
+    }
+  ],
   "bindingPreflightPaths": [
     "testing/root-maintenance-policy.json",
     "testing/control-plane-repair-routes.json",

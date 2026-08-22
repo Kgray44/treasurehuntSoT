@@ -12,7 +12,24 @@ export type BosunCascadeState =
   | "PARKED_OWNER"
   | "PARKED_BUDGET"
   | "PARKED_PARENT_BREAKER"
-  | "BLOCKED_EXTERNAL";
+  | "BLOCKED_EXTERNAL"
+  | "ESCALATION_REQUIRED";
+
+export type BosunRepairClass = "AUTO_0" | "AUTO_1" | "AUTO_2" | "OWNER" | "EXTERNAL";
+
+export type BosunObjectiveState =
+  | "OBJECTIVE_READY"
+  | "OWNER_REQUIRED"
+  | "EXTERNAL_BLOCKED"
+  | "ESCALATION_REQUIRED"
+  | "REPAIRING"
+  | "QUALIFYING"
+  | "BINDING"
+  | "MERGED"
+  | "POST_MERGE_PROOF"
+  | "CONVERGED";
+
+export type BosunRepairActionId = AutoZeroActionId | "owner-policy-identity-rebaseline";
 
 export interface BosunFinding {
   owner: string;
@@ -20,7 +37,21 @@ export interface BosunFinding {
   resource: string;
   contract: string;
   runtimeClass: string;
-  repairClass: "AUTO_0" | "AUTO_1" | "AUTO_2" | "OWNER";
+  repairClass: BosunRepairClass;
+  requiredAuthorization?: string;
+  externalDependency?: string;
+}
+
+export interface BosunObjective {
+  id: string;
+  cascadeId: string;
+  findingFingerprint: string;
+  repairClass: BosunRepairClass;
+  state: BosunObjectiveState;
+  requiredAuthorization: string | null;
+  externalDependency: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface BosunCascade {
@@ -31,6 +62,7 @@ export interface BosunCascade {
   generation: number;
   activeObjectiveId: string | null;
   activeRepairPr: number | null;
+  objective: BosunObjective | null;
   blockedCandidates: string[];
   closureSteps: string[];
   repairPrCount: number;
@@ -61,7 +93,7 @@ export interface BosunLiveRepair {
   transactionId: string;
   candidateId: string;
   repairPr: number;
-  actionId: AutoZeroActionId;
+  actionId: BosunRepairActionId;
   candidateSha: string;
   baseSha: string;
   focusedEvidenceRef: string;
@@ -123,6 +155,17 @@ export class BosunLedger {
         started_at TEXT NOT NULL,
         updated_at TEXT NOT NULL
       );
+      CREATE TABLE IF NOT EXISTS bosun_objectives (
+        objective_id TEXT PRIMARY KEY,
+        cascade_id TEXT NOT NULL UNIQUE REFERENCES bosun_cascades(cascade_id),
+        finding_fingerprint TEXT NOT NULL,
+        repair_class TEXT NOT NULL,
+        state TEXT NOT NULL,
+        required_authorization TEXT,
+        external_dependency TEXT,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      );
       CREATE TABLE IF NOT EXISTS bosun_wakeups (
         cascade_id TEXT NOT NULL REFERENCES bosun_cascades(cascade_id),
         candidate_id TEXT NOT NULL,
@@ -170,10 +213,12 @@ export class BosunLedger {
   }
 
   private cascade(row: Record<string, unknown>): BosunCascade {
+    const objective = this.objectiveForCascadeId(String(row.cascade_id));
     return {
       id: String(row.cascade_id), rootFingerprint: String(row.root_fingerprint), parentTransactionId: String(row.parent_transaction_id),
       rootOwner: String(row.root_owner), generation: Number(row.generation), activeObjectiveId: row.active_objective_id ? String(row.active_objective_id) : null,
       activeRepairPr: row.active_repair_pr === null ? null : Number(row.active_repair_pr), blockedCandidates: parse<string[]>(String(row.blocked_candidates_json)),
+      objective,
       closureSteps: parse<string[]>(String(row.closure_steps_json)), repairPrCount: Number(row.repair_pr_count), authorityAttempts: Number(row.authority_attempts),
       mainlineRebuilds: Number(row.mainline_rebuilds), controlPlaneMs: Number(row.control_plane_ms), controlPlaneWaitMs: Number(row.control_plane_wait_ms),
       duplicateRepairsSuppressed: Number(row.duplicate_repairs_suppressed), dependentWakeupCount: Number(row.dependent_wakeup_count),
@@ -183,6 +228,98 @@ export class BosunLedger {
 
   private parentBudget(transactionId: string, now: number) {
     return this.nightwatch.transactionBudget(transactionId, now);
+  }
+
+  private objective(row: Record<string, unknown>): BosunObjective {
+    return {
+      id: String(row.objective_id),
+      cascadeId: String(row.cascade_id),
+      findingFingerprint: String(row.finding_fingerprint),
+      repairClass: String(row.repair_class) as BosunRepairClass,
+      state: String(row.state) as BosunObjectiveState,
+      requiredAuthorization: row.required_authorization ? String(row.required_authorization) : null,
+      externalDependency: row.external_dependency ? String(row.external_dependency) : null,
+      createdAt: String(row.created_at),
+      updatedAt: String(row.updated_at),
+    };
+  }
+
+  private objectiveForCascadeId(cascadeId: string): BosunObjective | null {
+    const row = this.db.prepare("SELECT * FROM bosun_objectives WHERE cascade_id = ?").get(cascadeId) as Record<string, unknown> | undefined;
+    return row ? this.objective(row) : null;
+  }
+
+  objectiveForCascade(cascadeId: string) {
+    return this.objectiveForCascadeId(cascadeId);
+  }
+
+  private repairClassFromFingerprint(fingerprint: string): BosunRepairClass {
+    const repair = fingerprint.split("|").find((entry) => entry.startsWith("repair="))?.slice("repair=".length).toUpperCase();
+    if (["AUTO_0", "AUTO_1", "AUTO_2", "OWNER", "EXTERNAL"].includes(repair ?? "")) return repair as BosunRepairClass;
+    return "AUTO_2";
+  }
+
+  private objectiveDisposition(repairClass: BosunRepairClass): { state: BosunObjectiveState; cascadeState: BosunCascadeState } {
+    if (repairClass === "AUTO_0") return { state: "OBJECTIVE_READY", cascadeState: "ACTIVE" };
+    if (repairClass === "OWNER") return { state: "OWNER_REQUIRED", cascadeState: "PARKED_OWNER" };
+    if (repairClass === "EXTERNAL") return { state: "EXTERNAL_BLOCKED", cascadeState: "BLOCKED_EXTERNAL" };
+    return { state: "ESCALATION_REQUIRED", cascadeState: "ESCALATION_REQUIRED" };
+  }
+
+  /**
+   * Durable objective materialization closes the former ACTIVE + NO_OBJECTIVE
+   * gap. It is idempotent across duplicate findings and controller restarts.
+   */
+  materializeObjective(cascadeId: string, finding?: BosunFinding, at = iso()) {
+    const cascade = this.cascade(this.row(cascadeId));
+    const existing = this.objectiveForCascadeId(cascadeId);
+    if (existing) return { objective: existing, created: false };
+    if (cascade.activeObjectiveId)
+      throw new NightwatchInvariantError("BOSUN_LEGACY_OBJECTIVE_UNMIGRATABLE", cascadeId);
+    const fingerprint = finding ? normalizeBosunFingerprint(finding) : cascade.rootFingerprint;
+    if (fingerprint !== cascade.rootFingerprint)
+      throw new NightwatchInvariantError("BOSUN_OBJECTIVE_FINGERPRINT_MISMATCH", cascadeId);
+    const repairClass = finding?.repairClass ?? this.repairClassFromFingerprint(fingerprint);
+    const disposition = this.objectiveDisposition(repairClass);
+    const objectiveId = randomUUID();
+    const requiredAuthorization = repairClass === "OWNER"
+      ? finding?.requiredAuthorization ?? `OWNER_APPROVAL_REQUIRED:${fingerprint}`
+      : null;
+    const externalDependency = repairClass === "EXTERNAL"
+      ? finding?.externalDependency ?? `EXTERNAL_DEPENDENCY_REQUIRED:${fingerprint}`
+      : null;
+    this.db.prepare(`INSERT INTO bosun_objectives(objective_id, cascade_id, finding_fingerprint, repair_class, state, required_authorization, external_dependency, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+      .run(objectiveId, cascadeId, fingerprint, repairClass, disposition.state, requiredAuthorization, externalDependency, at, at);
+    this.db.prepare("UPDATE bosun_cascades SET active_objective_id = ?, status = ?, updated_at = ? WHERE cascade_id = ?")
+      .run(objectiveId, disposition.cascadeState, at, cascadeId);
+    return { objective: this.objectiveForCascadeId(cascadeId)!, created: true };
+  }
+
+  /** Reconciles pre-objective persisted cascades on controller startup. */
+  reconcileActionableObjectives(at = iso()) {
+    const active = this.db.prepare("SELECT cascade_id FROM bosun_cascades WHERE status = 'ACTIVE' AND active_objective_id IS NULL ORDER BY started_at, cascade_id")
+      .all() as Array<{ cascade_id: string }>;
+    return active.map((entry) => this.materializeObjective(entry.cascade_id, undefined, at));
+  }
+
+  authorizeOwnerObjective(cascadeId: string, authorization: string, at = iso()) {
+    const objective = this.objectiveForCascadeId(cascadeId);
+    if (!objective) throw new NightwatchInvariantError("BOSUN_OBJECTIVE_NOT_FOUND", cascadeId);
+    if (objective.repairClass !== "OWNER" || objective.state !== "OWNER_REQUIRED")
+      throw new NightwatchInvariantError("BOSUN_OWNER_AUTHORIZATION_NOT_REQUIRED", cascadeId);
+    if (!objective.requiredAuthorization || authorization !== objective.requiredAuthorization)
+      throw new NightwatchInvariantError("BOSUN_OWNER_AUTHORIZATION_MISMATCH", cascadeId);
+    this.db.prepare("UPDATE bosun_objectives SET state = 'OBJECTIVE_READY', updated_at = ? WHERE cascade_id = ?").run(at, cascadeId);
+    this.db.prepare("UPDATE bosun_cascades SET status = 'ACTIVE', updated_at = ? WHERE cascade_id = ?").run(at, cascadeId);
+    return this.objectiveForCascadeId(cascadeId)!;
+  }
+
+  private setObjectiveState(cascadeId: string, state: BosunObjectiveState, at = iso()) {
+    const objective = this.objectiveForCascadeId(cascadeId);
+    if (!objective) throw new NightwatchInvariantError("BOSUN_OBJECTIVE_NOT_FOUND", cascadeId);
+    this.db.prepare("UPDATE bosun_objectives SET state = ?, updated_at = ? WHERE cascade_id = ?").run(state, at, cascadeId);
+    return this.objectiveForCascadeId(cascadeId)!;
   }
 
   reportFinding(input: { finding: BosunFinding; parentTransactionId: string; blockedCandidateId: string; closureSteps: string[]; at?: string }) {
@@ -207,7 +344,11 @@ export class BosunLedger {
         .run(json(blocked), at, existing.id);
       row = this.row(existing.id);
     }
-    return { cascade: this.cascade(row), duplicate: Boolean(row.active_objective_id), budget };
+    const reportedCascade = this.cascade(this.row(String(row.cascade_id)));
+    const materialized = reportedCascade.status === "ACTIVE"
+      ? this.materializeObjective(reportedCascade.id, input.finding, at)
+      : { objective: this.objectiveForCascadeId(reportedCascade.id), created: false };
+    return { cascade: this.cascade(this.row(reportedCascade.id)), objective: materialized.objective, duplicate: !materialized.created, budget };
   }
 
   createOrReuseRepair(cascadeId: string, objectiveId: string, repairPr: number | null, at = iso()) {
@@ -218,12 +359,17 @@ export class BosunLedger {
       throw new NightwatchInvariantError("PARKED_PARENT_BREAKER", cascadeId);
     }
     if (cascade.generation > 2) throw new NightwatchInvariantError("PARKED_OWNER", cascadeId);
-    if (cascade.activeObjectiveId) {
+    const objective = this.objectiveForCascadeId(cascadeId);
+    if (!objective) throw new NightwatchInvariantError("BOSUN_OBJECTIVE_NOT_FOUND", cascadeId);
+    if (objective.id !== objectiveId) throw new NightwatchInvariantError("BOSUN_OBJECTIVE_IDENTITY_MISMATCH", cascadeId);
+    if (cascade.activeRepairPr !== null) {
       this.db.prepare("UPDATE bosun_cascades SET duplicate_repairs_suppressed = duplicate_repairs_suppressed + 1, updated_at = ? WHERE cascade_id = ?").run(at, cascadeId);
       return { cascade: this.cascade(this.row(cascadeId)), created: false };
     }
-    this.db.prepare(`UPDATE bosun_cascades SET active_objective_id = ?, active_repair_pr = ?, repair_pr_count = repair_pr_count + CASE WHEN ? IS NULL THEN 0 ELSE 1 END, updated_at = ? WHERE cascade_id = ?`)
-      .run(objectiveId, repairPr, repairPr, at, cascadeId);
+    if (objective.state !== "OBJECTIVE_READY") throw new NightwatchInvariantError("BOSUN_OBJECTIVE_NOT_READY", `${cascadeId}:${objective.state}`);
+    this.db.prepare(`UPDATE bosun_cascades SET active_repair_pr = ?, repair_pr_count = repair_pr_count + CASE WHEN ? IS NULL THEN 0 ELSE 1 END, updated_at = ? WHERE cascade_id = ?`)
+      .run(repairPr, repairPr, at, cascadeId);
+    this.setObjectiveState(cascadeId, "REPAIRING", at);
     return { cascade: this.cascade(this.row(cascadeId)), created: true };
   }
 
@@ -237,6 +383,17 @@ export class BosunLedger {
     const budget = this.parentBudget(cascade.parentTransactionId, Date.parse(at));
     if (budget.status !== "ACTIVE" && budget.status !== "WARNING") throw new NightwatchInvariantError("BOSUN_PARENT_BUDGET_DISALLOWS_AUTHORITY", cascadeId);
     this.db.prepare("UPDATE bosun_cascades SET authority_attempts = authority_attempts + 1, updated_at = ? WHERE cascade_id = ?").run(at, cascadeId);
+    this.setObjectiveState(cascadeId, "QUALIFYING", at);
+    return this.cascade(this.row(cascadeId));
+  }
+
+  recordBindingAttempt(cascadeId: string, at = iso()) {
+    this.setObjectiveState(cascadeId, "BINDING", at);
+    return this.cascade(this.row(cascadeId));
+  }
+
+  recordMerged(cascadeId: string, at = iso()) {
+    this.setObjectiveState(cascadeId, "MERGED", at);
     return this.cascade(this.row(cascadeId));
   }
 
@@ -280,6 +437,7 @@ export class BosunLedger {
     const repair = this.liveRepairForTransaction(transactionId);
     if (!repair) return null;
     if (repair.completedAt) return repair;
+    this.setObjectiveState(repair.cascadeId, "POST_MERGE_PROOF", at);
     this.recordPostMergeProof(repair.cascadeId, proof, at);
     this.setClosureSteps(repair.cascadeId, [], at);
     this.converge(repair.cascadeId, proof.landedMainSha, at);
@@ -295,6 +453,8 @@ export class BosunLedger {
       | undefined;
     if (!proof || parse<{ landedMainSha: string; rootBlockerRemoved: boolean }>(proof.proof_json).landedMainSha !== landedMainSha)
       throw new NightwatchInvariantError("BOSUN_POST_MERGE_PROOF_REQUIRED", cascadeId);
+    const objective = this.objectiveForCascadeId(cascadeId);
+    if (objective) this.setObjectiveState(cascadeId, "CONVERGED", at);
     this.db.prepare("UPDATE bosun_cascades SET status = 'CONVERGED', active_objective_id = NULL, active_repair_pr = NULL, updated_at = ? WHERE cascade_id = ?").run(at, cascadeId);
     for (const candidateId of cascade.blockedCandidates) {
       this.db.prepare("INSERT OR IGNORE INTO bosun_wakeups(cascade_id, candidate_id, landed_main_sha, woken_at) VALUES (?, ?, ?, ?)")
@@ -320,7 +480,7 @@ export class BosunLedger {
   private liveRepair(row: Record<string, unknown>): BosunLiveRepair {
     return {
       cascadeId: String(row.cascade_id), parentTransactionId: String(row.parent_transaction_id), transactionId: String(row.transaction_id),
-      candidateId: String(row.candidate_id), repairPr: Number(row.repair_pr), actionId: String(row.action_id) as AutoZeroActionId,
+      candidateId: String(row.candidate_id), repairPr: Number(row.repair_pr), actionId: String(row.action_id) as BosunRepairActionId,
       candidateSha: String(row.candidate_sha), baseSha: String(row.base_sha), focusedEvidenceRef: String(row.focused_evidence_ref),
       outputDigest: String(row.output_digest), completedAt: row.completed_at ? String(row.completed_at) : null,
     };

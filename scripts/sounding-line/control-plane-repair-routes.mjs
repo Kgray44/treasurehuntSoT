@@ -2,6 +2,7 @@
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import { rootMaintenanceEligiblePathGlobs } from "./root-maintenance.mjs";
 
 const normalized = (value) => value.replaceAll("\\", "/");
 const glob = (pattern) =>
@@ -76,7 +77,7 @@ export async function validateExecutableRepairRoutes({ root = process.cwd(), inv
 
 export function classifyRepairRoute({ file, rootPolicy, authorityPolicy, verificationPolicy }) {
   if (matches(file, rootPolicy?.generatedConsequenceGlobs)) return "GENERATED_CONSEQUENCE";
-  if (matches(file, rootPolicy?.eligiblePathGlobs)) return "ROOT_MAINTENANCE";
+  if (matches(file, rootMaintenanceEligiblePathGlobs(rootPolicy))) return "ROOT_MAINTENANCE";
   if (matches(file, authorityPolicy?.eligiblePathGlobs)) return "AUTHORITY_MAINTENANCE";
   if (matches(file, verificationPolicy?.eligiblePathGlobs)) return "VERIFICATION_MAINTENANCE";
   if (matches(file, verificationPolicy?.ordinaryCandidateEligiblePathGlobs)) return "ORDINARY";
@@ -92,6 +93,12 @@ export async function buildRepairRouteInventory(root = process.cwd(), additional
     readJson("testing/verification-maintenance-policy.json"),
   ]);
   const prerequisitePaths = new Set(inventoryPolicy.baselineSourcePaths);
+  // Runtime roots are enumerated independently from the broad descriptive
+  // protected-prerequisite list. This makes future Nightwatch/Bosun files part
+  // of the executable-route proof without converting every test root into an
+  // implicit repair surface.
+  for (const runtimeRoot of inventoryPolicy.runtimePrerequisiteRoots ?? [])
+    for (const file of await walk(root, runtimeRoot)) prerequisitePaths.add(file);
   const workflowFiles = await walk(root, ".github/workflows");
   for (const workflow of workflowFiles) {
     prerequisitePaths.add(workflow);

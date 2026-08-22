@@ -15,6 +15,16 @@ const glob = (pattern) =>
   );
 const matchesAny = (file, patterns) => (patterns ?? []).some((pattern) => glob(pattern).test(file));
 
+/**
+ * Only trusted-main policy is supplied to this classifier. Runtime repair
+ * classes extend the governed implementation surface; they never include the
+ * policy file that defines the class.
+ */
+export const rootMaintenanceEligiblePathGlobs = (trustedPolicy) => [
+  ...(trustedPolicy?.eligiblePathGlobs ?? []),
+  ...((trustedPolicy?.runtimeRepairClasses ?? []).flatMap((repairClass) => repairClass?.pathGlobs ?? [])),
+];
+
 export function classifyRootMaintenance({ trustedPolicy, changedPaths, ownerAuthorized = false }) {
   const errors = [];
   if (
@@ -30,7 +40,7 @@ export function classifyRootMaintenance({ trustedPolicy, changedPaths, ownerAuth
   const paths = [...new Set(changedPaths ?? [])].sort();
   if (!paths.length) errors.push("ROOT_MAINTENANCE_EMPTY_DIFF_REJECTED");
   for (const file of paths)
-    if (!matchesAny(file, trustedPolicy?.eligiblePathGlobs ?? []))
+    if (!matchesAny(file, rootMaintenanceEligiblePathGlobs(trustedPolicy)))
       errors.push(`ROOT_MAINTENANCE_SCOPE_REJECTED:${file}`);
   return {
     classification: errors.length ? "ROOT_MAINTENANCE_REJECTED" : "SOUNDING_LINE_ROOT_MAINTENANCE",
