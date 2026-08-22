@@ -31,6 +31,9 @@ test("Nightwatch binding dispatch carries exact authority and candidate identiti
   assert.match(workflow, /NIGHTWATCH_BINDING_AUTHORITY_KIND_INVALID/u);
   assert.match(workflow, /inputs\.authority_kind == 'root_maintenance'/u);
   assert.match(workflow, /trusted-root-maintenance-selection\.mjs/u);
+  assert.match(workflow, /trusted-root-maintenance-artifact\.mjs/u);
+  assert.match(workflow, /readSealedRootMaintenanceArtifact/u);
+  assert.match(workflow, /ROOT_MAINTENANCE_ARTIFACT_DISCOVERY_FAILED/u);
   assert.match(workflow, /\^Sounding Line root maintenance\(\?:\\s\|\$\)/u);
   assert.match(workflow, /SEALED_ROOT_MAINTENANCE_AUTHORITY_NOT_UNIQUE/u);
   assert.match(workflow, /ROOT_MAINTENANCE_AUTHORITY_RUN_IDENTITY_MISMATCH/u);

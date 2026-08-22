@@ -154,6 +154,50 @@ test("Root Maintenance cannot self-authorize scope, replay an authority, or bind
   );
   assert.equal(
     selectSealedRootMaintenance({
+      runs: [
+        {
+          id: 12,
+          name: "Sounding Line root maintenance",
+          path: ".github/workflows/sounding-line-root-maintenance.yml",
+          event: "workflow_dispatch",
+          status: "completed",
+          conclusion: "success",
+          headSha: sha("b"),
+          plan: { ...plan, authority: "SOUNDING_LINE_ORDINARY" },
+          finalization: finalized,
+        },
+      ],
+      candidateSha: sha("b"),
+      candidateTree: sha("c"),
+      qualifiedBaseSha: sha("a"),
+      prNumber: 412,
+    }).decision,
+    "SEALED_ROOT_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
+  );
+  assert.equal(
+    selectSealedRootMaintenance({
+      runs: [
+        {
+          id: 13,
+          name: "Sounding Line root maintenance",
+          path: ".github/workflows/sounding-line-root-maintenance.yml",
+          event: "workflow_dispatch",
+          status: "completed",
+          conclusion: "success",
+          headSha: sha("b"),
+          plan,
+          finalization: finalized,
+        },
+      ],
+      candidateSha: sha("d"),
+      candidateTree: sha("c"),
+      qualifiedBaseSha: sha("a"),
+      prNumber: 412,
+    }).decision,
+    "SEALED_ROOT_MAINTENANCE_AUTHORITY_NOT_UNIQUE",
+  );
+  assert.equal(
+    selectSealedRootMaintenance({
       runs: [],
       candidateSha: sha("b"),
       candidateTree: sha("c"),
@@ -213,6 +257,16 @@ test("repair-route inventory is built from actual baseline/workflow sources and 
         : readFile(relative, "utf8"),
   });
   assert.ok(preFix.errors.includes("CONTROL_PLANE_REPAIR_ROUTE_INCOMPLETE:ROOT_MAINTENANCE:PROTECTED_BINDING"));
+  const preFixArtifactHandshake = await validateExecutableRepairRoutes({
+    inventoryPolicy: policy,
+    readText: async (relative) =>
+      relative === ".github/workflows/sounding-line-protected-binding-dispatch.yml"
+        ? dispatcher.replaceAll("trusted-root-maintenance-artifact.mjs", "missing-root-artifact-contract.mjs")
+        : readFile(relative, "utf8"),
+  });
+  assert.ok(
+    preFixArtifactHandshake.errors.includes("CONTROL_PLANE_REPAIR_ROUTE_INCOMPLETE:ROOT_MAINTENANCE:ARTIFACT_HANDSHAKE"),
+  );
   const workflow = await readFile(
     new URL("../../../.github/workflows/sounding-line-root-maintenance.yml", import.meta.url),
     "utf8",

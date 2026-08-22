@@ -44,12 +44,14 @@ export async function validateExecutableRepairRoutes({ root = process.cwd(), inv
   const policy = inventoryPolicy ?? JSON.parse(await readFile(path.join(root, "testing/control-plane-repair-routes.json"), "utf8"));
   const load = readText ?? ((relative) => readFile(path.join(root, relative), "utf8"));
   const requiredStages = policy.requiredExecutableStages ?? [];
+  const additionalStages = policy.additionalExecutableStages ?? {};
   const routes = policy.executableRouteContracts ?? {};
   const laneResults = {};
   const errors = [];
   for (const [lane, stages] of Object.entries(routes)) {
     const incompleteStages = [];
-    for (const stage of requiredStages) {
+    const laneStages = [...new Set([...requiredStages, ...(additionalStages[lane] ?? [])])];
+    for (const stage of laneStages) {
       const surfaces = stages?.[stage];
       let complete = Array.isArray(surfaces) && surfaces.length > 0;
       if (complete) {
@@ -69,7 +71,7 @@ export async function validateExecutableRepairRoutes({ root = process.cwd(), inv
     }
     laneResults[lane] = { complete: incompleteStages.length === 0, incompleteStages };
   }
-  return { requiredStages, lanes: laneResults, errors };
+  return { requiredStages, additionalStages, lanes: laneResults, errors };
 }
 
 export function classifyRepairRoute({ file, rootPolicy, authorityPolicy, verificationPolicy }) {
