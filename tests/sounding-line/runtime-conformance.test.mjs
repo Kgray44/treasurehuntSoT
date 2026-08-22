@@ -185,8 +185,11 @@ test("heavyweight repository closure and finalization workflows require explicit
 });
 
 test("authoritative baseline certification resolves the exact base tree and rejects a receipt tree mismatch", async () => {
-  const baseSha = "d87f5f5cf34e9f784a3fd619d7f4ee6206ef2cbf";
-  const expectedTree = "ed934d46e29848dcf375d29eb812cc003eadd395";
+  // Hosted qualification intentionally checks out only the sealed candidate
+  // history.  Bind this conformance fixture to that available exact identity
+  // rather than an unrelated historical main commit.
+  const baseSha = execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" }).trim();
+  const expectedTree = execFileSync("git", ["rev-parse", "HEAD^{tree}"], { cwd: root, encoding: "utf8" }).trim();
   const resolvedTree = execFileSync("git", ["rev-parse", `${baseSha}^{tree}`], { cwd: root, encoding: "utf8" }).trim();
   assert.equal(resolvedTree, expectedTree);
 
