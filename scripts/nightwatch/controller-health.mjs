@@ -1,7 +1,17 @@
 import { DatabaseSync } from "node:sqlite";
+import { homedir } from "node:os";
+import { join, resolve } from "node:path";
 
-const databasePath = process.env.NIGHTWATCH_DB_PATH;
-if (!databasePath) throw new Error("NIGHTWATCH_DB_PATH_REQUIRED");
+const databasePath = process.env.NIGHTWATCH_DB_PATH?.trim()
+  ? resolve(process.env.NIGHTWATCH_DB_PATH)
+  : join(
+      process.env.LOCALAPPDATA?.trim() || process.env.XDG_STATE_HOME?.trim() || join(homedir(), ".local", "state"),
+      "ForeverTreasureCompanion",
+      "Nightwatch",
+      "treasurehuntSoT",
+      "nightwatch.sqlite",
+    );
+if (!process.env.NIGHTWATCH_DB_PATH && !databasePath) throw new Error("NIGHTWATCH_DATABASE_PATH_UNRESOLVED");
 const database = new DatabaseSync(databasePath, { readonly: true });
 try {
   const row = database

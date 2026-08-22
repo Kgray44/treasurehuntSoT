@@ -88,17 +88,39 @@ export class GitHubCliControlPlane implements NightwatchControlPlane {
     };
   }
 
-  private baselineCertification(identity: ExactCandidateIdentity) {
-    const title = `Nightwatch baseline certification ${identity.baseSha}`;
+  private baselineRun(baseSha: string, requireSuccessfulConclusion = false) {
+    const title = `Nightwatch baseline certification ${baseSha}`;
     const runs = JSON.parse(
       this.gh([
         "run", "list", "--repo", this.repository, "--workflow", "nightwatch-baseline-certification.yml", "--limit", "100",
         "--json", "databaseId,status,conclusion,displayTitle,createdAt",
       ]),
     ) as GitHubRun[];
-    const matches = runs.filter((run) => run.displayTitle === title && run.status === "completed" && run.conclusion === "success");
+    const matches = runs.filter(
+      (run) => run.displayTitle === title && run.status === "completed" && (!requireSuccessfulConclusion || run.conclusion === "success"),
+    );
     if (matches.length > 1) throw new Error("NIGHTWATCH_BASELINE_CERTIFICATION_AMBIGUOUS");
-    const run = matches[0];
+    return matches[0] ?? null;
+  }
+
+  /** Returns the formal receipt even when its findings intentionally fail the workflow. */
+  baselineReceipt() {
+    const protectedMain = this.protectedMain();
+    const run = this.baselineRun(protectedMain.sha);
+    if (!run) return null;
+    const receipt = this.artifactJson<BaselineCertificationReceipt>(String(run.databaseId), "nightwatch-baseline-certification");
+    if (
+      receipt.kind !== "BASELINE_CERTIFICATION" ||
+      receipt.protectedMain?.sha !== protectedMain.sha ||
+      receipt.protectedMain?.treeSha !== protectedMain.treeSha ||
+      typeof receipt.certificationId !== "string"
+    )
+      throw new Error("NIGHTWATCH_BASELINE_CERTIFICATION_IDENTITY_INVALID");
+    return { protectedMain, receipt };
+  }
+
+  private baselineCertification(identity: ExactCandidateIdentity) {
+    const run = this.baselineRun(identity.baseSha, true);
     if (!run) return null;
     const receipt = this.artifactJson<BaselineCertificationReceipt>(String(run.databaseId), "nightwatch-baseline-certification");
     if (

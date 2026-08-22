@@ -1,4 +1,6 @@
-import { defaultNightwatchDatabase, NightwatchLedger } from "../../src/nightwatch/runtime";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { NightwatchLedger, resolveNightwatchDatabase } from "../../src/nightwatch/runtime";
 import { BosunLedger } from "../../src/nightwatch/bosun";
 
 const args = process.argv.slice(2);
@@ -20,7 +22,7 @@ const number = (value: string | undefined, label: string) => {
   return result;
 };
 const argument = (flag: string, index: number) => option(flag) ?? values[index];
-const databasePath = option("--db") ?? databaseArgument ?? defaultNightwatchDatabase(process.cwd());
+const databasePath = option("--db") ?? databaseArgument ?? resolveNightwatchDatabase(process.cwd());
 const ledger = new NightwatchLedger(databasePath, { repositoryRoot: process.cwd() });
 const bosun = new BosunLedger(databasePath, ledger);
 
@@ -64,9 +66,21 @@ try {
     const cascadeId = required(argument("--cascade", 0), "--cascade or positional cascade id");
     const authorization = required(argument("--authorization", 1), "--authorization or positional authorization");
     console.log(JSON.stringify(bosun.authorizeOwnerObjective(cascadeId, authorization), null, 2));
+  } else if (command === "bosun-ingest-baseline") {
+    const receiptPath = required(option("--receipt"), "--receipt");
+    const mainSha = required(option("--main-sha"), "--main-sha");
+    const mainTreeSha = required(option("--main-tree"), "--main-tree");
+    const receipt = JSON.parse(readFileSync(resolve(receiptPath), "utf8")) as unknown;
+    console.log(
+      JSON.stringify(
+        bosun.ingestBaselineReceipt({ receipt, protectedMain: { sha: mainSha, treeSha: mainTreeSha } }),
+        null,
+        2,
+      ),
+    );
   } else {
     throw new Error(
-      "USAGE: nightwatch <reserve|reservations|release|reconcile|projection|bosun-projection|bosun-reconcile-objectives|bosun-authorize-owner>; reserve accepts <family> <project> <objective> <count> [database.sqlite] or direct-execution flags.",
+      "USAGE: nightwatch <reserve|reservations|release|reconcile|projection|bosun-projection|bosun-reconcile-objectives|bosun-authorize-owner|bosun-ingest-baseline>; bosun-ingest-baseline requires --receipt, --main-sha, and --main-tree.",
     );
   }
 } finally {

@@ -32,6 +32,7 @@ export interface NightwatchControlPlane {
     input: ExactCandidateIdentity & { transactionId: string; bindingRunId: string },
   ): { mergeSha: string; treeSha: string } | null;
   protectedMain(): { sha: string; treeSha: string };
+  baselineReceipt?(): { protectedMain: { sha: string; treeSha: string }; receipt: unknown } | null;
   postMergeBosunProof?(input: ExactCandidateIdentity & { transactionId: string; repairCandidateId: string }): {
     evidenceRef: string;
     rootBlockerRemoved: boolean;
@@ -71,6 +72,7 @@ export class NightwatchController {
   start() {
     const at = iso(this.now());
     const lease = this.ledger.claimController(this.instanceId, this.leaseTtlMs, at);
+    this.ingestBaselineReceipt(at);
     this.bosun.reconcileActionableObjectives(at);
     this.bosun.heartbeat(this.instanceId, "Nightwatch-owned Bosun controller started.", at);
     return lease;
@@ -91,6 +93,7 @@ export class NightwatchController {
     const at = iso(this.now());
     try {
       this.ledger.recover({ now: this.now() });
+      this.ingestBaselineReceipt(at);
       this.bosun.reconcileActionableObjectives(at);
       const active = this.ledger
         .acceptanceTransactions()
@@ -114,6 +117,12 @@ export class NightwatchController {
       this.ledger.degradeController(this.instanceId, detail, at);
       throw error;
     }
+  }
+
+  private ingestBaselineReceipt(at: string) {
+    const delivery = this.controlPlane.baselineReceipt?.();
+    if (!delivery) return null;
+    return this.bosun.ingestBaselineReceipt({ ...delivery, at });
   }
 
   private beginFront(at: string) {

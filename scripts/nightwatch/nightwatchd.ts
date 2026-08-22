@@ -1,7 +1,7 @@
 import process from "node:process";
 import { NightwatchController } from "../../src/nightwatch/controller";
 import { GitHubCliControlPlane } from "../../src/nightwatch/github-control-plane";
-import { defaultNightwatchDatabase, NightwatchLedger } from "../../src/nightwatch/runtime";
+import { NightwatchLedger, resolveNightwatchDatabase } from "../../src/nightwatch/runtime";
 
 const args = new Set(process.argv.slice(2));
 const once = args.has("--once");
@@ -11,7 +11,7 @@ if (!repository || !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(repository))
 const intervalMs = Number(process.env.NIGHTWATCH_INTERVAL_MS ?? 15_000);
 if (!Number.isSafeInteger(intervalMs) || intervalMs < 5_000 || intervalMs > 300_000)
   throw new Error("NIGHTWATCH_INTERVAL_INVALID");
-const databasePath = process.env.NIGHTWATCH_DB_PATH ?? defaultNightwatchDatabase(process.cwd());
+const databasePath = resolveNightwatchDatabase(process.cwd());
 const ledger = new NightwatchLedger(databasePath, { repositoryRoot: process.cwd() });
 const controller = new NightwatchController(
   ledger,
