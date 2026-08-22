@@ -100,6 +100,8 @@ jobs:
           if ($env:AUTHORITY_RUN_ID -notmatch '^[1-9][0-9]*$') { throw 'ROOT_MAINTENANCE_AUTHORITY_RUN_INVALID' }
           git show "$env:BASE_SHA`:scripts/sounding-line/root-maintenance-selection.mjs" > trusted-root-maintenance-selection.mjs
           if ($LASTEXITCODE -ne 0) { throw 'ROOT_MAINTENANCE_TRUSTED_SELECTOR_UNAVAILABLE' }
+          git show "$env:BASE_SHA`:scripts/sounding-line/root-maintenance-artifact.mjs" > trusted-root-maintenance-artifact.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'ROOT_MAINTENANCE_TRUSTED_ARTIFACT_CONTRACT_UNAVAILABLE' }
           $headers = @{ Authorization = "Bearer $env:GITHUB_TOKEN"; Accept = 'application/vnd.github+json'; 'X-GitHub-Api-Version' = '2022-11-28' }
           $runs = (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/runs?event=workflow_dispatch&per_page=100").workflow_runs
           $sealed = @()
@@ -111,8 +113,13 @@ jobs:
               $directory = Join-Path $env:RUNNER_TEMP "sounding-line-root-maintenance-$($run.id)"
               Invoke-WebRequest -Headers $headers -Uri "https://api.github.com/repos/$env:REPOSITORY/actions/artifacts/$($artifact[0].id)/zip" -OutFile "$directory.zip"
               Expand-Archive -LiteralPath "$directory.zip" -DestinationPath $directory -Force
-              $sealed += @{ id = $run.id; name = $run.name; path = $run.path; event = $run.event; status = $run.status; conclusion = $run.conclusion; headSha = $run.head_sha; plan = (Get-Content -Raw (Join-Path $directory 'root-maintenance-plan.json') | ConvertFrom-Json); finalization = (Get-Content -Raw (Join-Path $directory 'root-maintenance-finalization.json') | ConvertFrom-Json) }
-            } catch { }
+              node trusted-root-maintenance-artifact.mjs $directory > "$directory/root-maintenance-artifact.json"
+              if ($LASTEXITCODE -ne 0) { throw 'ROOT_MAINTENANCE_ARTIFACT_DISCOVERY_FAILED' }
+              $artifactPayload = Get-Content -Raw "$directory/root-maintenance-artifact.json" | ConvertFrom-Json
+              $sealed += @{ id = $run.id; name = $run.name; path = $run.path; event = $run.event; status = $run.status; conclusion = $run.conclusion; headSha = $run.head_sha; plan = $artifactPayload.plan; finalization = $artifactPayload.finalization }
+            } catch {
+              if ([int]$run.id -eq [int]$env:AUTHORITY_RUN_ID) { throw }
+            }
           }
           $candidateTree = (git rev-parse "$env:CANDIDATE_SHA`^{tree}").Trim()
           @{ runs = $sealed; candidateSha = $env:CANDIDATE_SHA; candidateTree = $candidateTree; qualifiedBaseSha = $env:BASE_SHA; prNumber = [int]$env:PR_NUMBER } | ConvertTo-Json -Depth 16 | Set-Content root-maintenance-authorities.json
@@ -184,10 +191,9 @@ jobs:
           $parents = @((git show -s --format=%P $env:MERGE_SHA).Split(' ', [System.StringSplitOptions]::RemoveEmptyEntries)) | ConvertTo-Json -Compress
           $tree = (git show -s --format=%T $env:MERGE_SHA).Trim()
           $script = @"
-          import { readFile } from 'node:fs/promises';
+          import { readSealedRootMaintenanceArtifact } from './trusted-root-maintenance-artifact.mjs';
           import { qualifyRootMaintenanceProtectedMerge } from './trusted-root-maintenance-binding.mjs';
-          const plan = JSON.parse(await readFile('accepted-root-maintenance/root-maintenance-plan.json', 'utf8'));
-          const finalization = JSON.parse(await readFile('accepted-root-maintenance/root-maintenance-finalization.json', 'utf8'));
+          const { plan, finalization } = await readSealedRootMaintenanceArtifact('accepted-root-maintenance');
           const result = qualifyRootMaintenanceProtectedMerge({ plan, finalization, candidateSha: process.env.CANDIDATE_SHA, currentBaseSha: process.env.BASE_SHA, mergeSha: process.env.MERGE_SHA, mergeTree: process.env.MERGE_TREE, mergeParents: JSON.parse(process.env.MERGE_PARENTS), prNumber: Number(process.env.PR_NUMBER) });
           console.log(JSON.stringify(result, null, 2)); process.exitCode = result.decision === 'BINDING_PASS' ? 0 : 1;
           "@
