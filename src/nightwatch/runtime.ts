@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync } from "node:fs";
+import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 
@@ -418,8 +419,23 @@ const boundedNumber = (value: number | undefined, fallback: number, label: strin
   return result;
 };
 
-export function defaultNightwatchDatabase(root = process.cwd()) {
-  return join(root, ".nightwatch", "nightwatch.sqlite");
+/**
+ * The controller is intentionally machine-scoped rather than worktree-scoped.
+ * A controller restarted from a second checkout must recover the same durable
+ * queue and Bosun state, while explicit operator configuration remains an
+ * authoritative override.
+ */
+export function defaultNightwatchDatabase(_root = process.cwd(), environment: NodeJS.ProcessEnv = process.env) {
+  void _root;
+  const localState = environment.LOCALAPPDATA?.trim()
+    || environment.XDG_STATE_HOME?.trim()
+    || join(homedir(), ".local", "state");
+  return join(localState, "ForeverTreasureCompanion", "Nightwatch", "treasurehuntSoT", "nightwatch.sqlite");
+}
+
+export function resolveNightwatchDatabase(root = process.cwd(), environment: NodeJS.ProcessEnv = process.env) {
+  const override = environment.NIGHTWATCH_DB_PATH?.trim();
+  return override ? resolve(override) : defaultNightwatchDatabase(root, environment);
 }
 
 export function inspectMigrationFamilies(repositoryRoot: string): MigrationFamilyInspection[] {
@@ -459,7 +475,7 @@ export class NightwatchLedger {
   private transactionDepth = 0;
 
   constructor(
-    readonly databasePath = defaultNightwatchDatabase(),
+    readonly databasePath = resolveNightwatchDatabase(),
     options: { repositoryRoot?: string } = {},
   ) {
     if (databasePath !== ":memory:") mkdirSync(dirname(databasePath), { recursive: true });
@@ -629,6 +645,15 @@ export class NightwatchLedger {
         warning_at_ms INTEGER NOT NULL,
         hard_review_at_ms INTEGER NOT NULL,
         breaker_at_ms INTEGER NOT NULL
+      );
+      CREATE TABLE IF NOT EXISTS baseline_receipt_anchors (
+        protected_main_sha TEXT NOT NULL,
+        protected_main_tree_sha TEXT NOT NULL,
+        certification_id TEXT NOT NULL UNIQUE,
+        candidate_id TEXT NOT NULL UNIQUE REFERENCES candidates(candidate_id),
+        transaction_id TEXT NOT NULL UNIQUE REFERENCES acceptance_transactions(transaction_id),
+        created_at TEXT NOT NULL,
+        PRIMARY KEY(protected_main_sha, protected_main_tree_sha)
       );
       CREATE TABLE IF NOT EXISTS maintenance_findings (
         cascade_id TEXT NOT NULL REFERENCES integration_cascades(cascade_id),
@@ -1409,6 +1434,103 @@ export class NightwatchLedger {
         : this.db.prepare("SELECT * FROM acceptance_transactions ORDER BY created_at").all()
     ) as Record<string, unknown>[];
     return rows.map((row) => this.acceptanceTransaction(row));
+  }
+
+  /**
+   * Baseline receipts are protected-main observations, not executable product
+   * candidates. They still receive a durable parent transaction so Bosun can
+   * attach exactly one governed maintenance lineage without occupying the
+   * normal integration queue.
+   */
+  ensureBaselineReceiptAnchor(input: {
+    certificationId: string;
+    protectedMain: { sha: string; treeSha: string };
+    at?: string;
+  }) {
+    const certificationId = requireText(input.certificationId, "baseline certificationId");
+    const identity = this.validateIdentity({
+      candidateSha: input.protectedMain.sha,
+      candidateTreeSha: input.protectedMain.treeSha,
+      baseSha: input.protectedMain.sha,
+      baseTreeSha: input.protectedMain.treeSha,
+      candidateRef: "refs/heads/main",
+    });
+    const at = input.at ?? iso();
+    return this.inTransaction(() => {
+      const byMain = this.db
+        .prepare("SELECT * FROM baseline_receipt_anchors WHERE protected_main_sha = ? AND protected_main_tree_sha = ?")
+        .get(identity.baseSha, identity.baseTreeSha) as Record<string, unknown> | undefined;
+      if (byMain) {
+        if (String(byMain.certification_id) !== certificationId)
+          throw new NightwatchInvariantError("BASELINE_RECEIPT_CERTIFICATION_CONFLICT", certificationId);
+        return {
+          candidate: this.getCandidate(String(byMain.candidate_id)),
+          transaction: this.getAcceptanceTransaction(String(byMain.transaction_id)),
+          reused: true,
+        };
+      }
+      const byCertification = this.db
+        .prepare("SELECT * FROM baseline_receipt_anchors WHERE certification_id = ?")
+        .get(certificationId) as Record<string, unknown> | undefined;
+      if (byCertification)
+        throw new NightwatchInvariantError("BASELINE_RECEIPT_PROTECTED_MAIN_CONFLICT", certificationId);
+
+      const candidateId = `baseline-receipt:${identity.baseSha}`;
+      const objectiveId = `baseline-receipt:${identity.baseSha}`;
+      const cascadeId = randomUUID();
+      const transactionId = randomUUID();
+      const rootFingerprint = `baseline-receipt:${identity.baseSha}:${identity.baseTreeSha}`;
+      this.db.prepare("INSERT INTO objectives(objective_id, project, increment, created_at) VALUES (?, ?, ?, ?)")
+        .run(objectiveId, "Nightwatch", "Baseline Certification receipt intake", at);
+      this.db.prepare(`INSERT INTO candidates(candidate_id, objective_id, project, increment, branch, product_head_sha, local_base_sha, created_at, state, active, predecessor_id, terminal_reason)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'BLOCKED_BY_BOSUN', 1, NULL, NULL)`)
+        .run(
+          candidateId,
+          objectiveId,
+          "Nightwatch",
+          "Baseline Certification receipt intake",
+          "main",
+          identity.baseSha,
+          identity.baseSha,
+          at,
+        );
+      this.db.prepare(`INSERT INTO integration_cascades(cascade_id, root_fingerprint, root_identity, started_at, blocked_candidates_json, status)
+        VALUES (?, ?, ?, ?, '[]', 'ACTIVE')`)
+        .run(cascadeId, rootFingerprint, certificationId, at);
+      this.db.prepare(`INSERT INTO acceptance_transactions(transaction_id, candidate_id, cascade_id, candidate_sha, candidate_tree_sha, base_sha, base_tree_sha, candidate_ref, state, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'SHARED_BLOCKED', ?, ?)`)
+        .run(
+          transactionId,
+          candidateId,
+          cascadeId,
+          identity.candidateSha,
+          identity.candidateTreeSha,
+          identity.baseSha,
+          identity.baseTreeSha,
+          identity.candidateRef,
+          at,
+          at,
+        );
+      // Receipt intake is not a timed controller attempt. The anchor remains
+      // usable to reconcile duplicate delivery after ordinary maintenance windows.
+      const durableWindowMs = 10 * 365 * 24 * 60 * 60 * 1_000;
+      this.db.prepare(`INSERT INTO integration_cost_ledger(cascade_id, transaction_id, started_at, remaining_closure_steps_json, warning_at_ms, hard_review_at_ms, breaker_at_ms)
+        VALUES (?, ?, ?, ?, ?, ?, ?)`)
+        .run(cascadeId, transactionId, at, json(["reconcile certified Baseline receipt"]), durableWindowMs, durableWindowMs, durableWindowMs);
+      this.db.prepare(`INSERT INTO baseline_receipt_anchors(protected_main_sha, protected_main_tree_sha, certification_id, candidate_id, transaction_id, created_at)
+        VALUES (?, ?, ?, ?, ?, ?)`)
+        .run(identity.baseSha, identity.baseTreeSha, certificationId, candidateId, transactionId, at);
+      this.event("baseline-receipt", certificationId, "BASELINE_RECEIPT_ANCHORED", {
+        protectedMain: { sha: identity.baseSha, treeSha: identity.baseTreeSha },
+        candidateId,
+        transactionId,
+      }, at);
+      return {
+        candidate: this.getCandidate(candidateId),
+        transaction: this.getAcceptanceTransaction(transactionId),
+        reused: false,
+      };
+    });
   }
 
   acceptanceRuns(transactionId?: string): AcceptanceRun[] {

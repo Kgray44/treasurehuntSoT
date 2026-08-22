@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-  [ValidateSet("start", "stop", "status", "restart")]
+  [ValidateSet("start", "stop", "status", "restart", "resolve")]
   [string]$Action = "status",
   [string]$DatabasePath = "",
   [ValidateRange(5000, 300000)]
@@ -12,8 +12,25 @@ $repositoryRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\.."
 $daemonPath = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "nightwatchd.ts"))
 $healthProbePath = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "controller-health.mjs"))
 $tsxCliPath = [System.IO.Path]::GetFullPath((Join-Path $repositoryRoot "node_modules\tsx\dist\cli.mjs"))
-$runtimeDirectory = Join-Path $repositoryRoot ".nightwatch"
+$localStateRoot = if (![string]::IsNullOrWhiteSpace($env:LOCALAPPDATA)) {
+  $env:LOCALAPPDATA
+} elseif (![string]::IsNullOrWhiteSpace($env:XDG_STATE_HOME)) {
+  $env:XDG_STATE_HOME
+} else {
+  [Environment]::GetFolderPath([Environment+SpecialFolder]::LocalApplicationData)
+}
+$runtimeDirectory = Join-Path $localStateRoot "ForeverTreasureCompanion\Nightwatch\treasurehuntSoT"
 $statePath = Join-Path $runtimeDirectory "nightwatch-runtime.json"
+
+function Resolve-NightwatchDatabasePath {
+  if (![string]::IsNullOrWhiteSpace($DatabasePath)) { return [System.IO.Path]::GetFullPath($DatabasePath) }
+  if (![string]::IsNullOrWhiteSpace($env:NIGHTWATCH_DB_PATH)) { return [System.IO.Path]::GetFullPath($env:NIGHTWATCH_DB_PATH) }
+  return Join-Path $runtimeDirectory "nightwatch.sqlite"
+}
+
+# Resolve before any health/state access. This is one machine-scoped durable
+# ledger, so a second worktree cannot silently create a competing controller DB.
+$env:NIGHTWATCH_DB_PATH = Resolve-NightwatchDatabasePath
 
 function Read-NightwatchState {
   if (!(Test-Path -LiteralPath $statePath)) { return $null }
@@ -77,7 +94,6 @@ function Start-OwnedNightwatch {
   if ($owned) { return [pscustomobject]@{ State = "ALREADY_RUNNING"; Pid = [int]$owned.ProcessId; Health = (Read-NightwatchHealth) } }
   $controllerId = if ($state -and $state.ControllerId) { [string]$state.ControllerId } else { "nightwatchd-$([guid]::NewGuid().ToString())" }
   $priorHealth = Read-NightwatchHealth
-  $env:NIGHTWATCH_DB_PATH = if ($DatabasePath) { [System.IO.Path]::GetFullPath($DatabasePath) } else { Join-Path $runtimeDirectory "nightwatch.sqlite" }
   $env:NIGHTWATCH_INTERVAL_MS = "$IntervalMs"
   $env:NIGHTWATCH_INSTANCE_ID = $controllerId
   $started = Start-Process -FilePath $node.Source -ArgumentList @($tsxCliPath, $daemonPath) -WorkingDirectory $repositoryRoot -WindowStyle Hidden -PassThru
@@ -99,10 +115,12 @@ function Start-OwnedNightwatch {
 
 switch ($Action) {
   "status" {
-    if (!$env:NIGHTWATCH_DB_PATH) { $env:NIGHTWATCH_DB_PATH = if ($DatabasePath) { [System.IO.Path]::GetFullPath($DatabasePath) } else { Join-Path $runtimeDirectory "nightwatch.sqlite" } }
     $state = Read-NightwatchState
     $owned = Get-OwnedProcess $state
     [pscustomobject]@{ State = if ($owned) { "RUNNING" } else { "NOT_RUNNING" }; Pid = if ($owned) { [int]$owned.ProcessId } else { $null }; Health = (Read-NightwatchHealth); StatePath = $statePath }
+  }
+  "resolve" {
+    [pscustomobject]@{ DatabasePath = $env:NIGHTWATCH_DB_PATH; StatePath = $statePath } | ConvertTo-Json -Compress
   }
   "start" { Start-OwnedNightwatch }
   "stop" { Stop-OwnedNightwatch }

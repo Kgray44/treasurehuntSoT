@@ -42,6 +42,28 @@ export interface BosunFinding {
   externalDependency?: string;
 }
 
+export interface BaselineCertificationReceiptFailure {
+  checkId: string;
+  fingerprint: string;
+  repairability: string;
+  detail: string;
+  dependencies: string[];
+}
+
+/** The complete receipt is retained verbatim; only its semantic findings are projected into Bosun. */
+export interface BaselineCertificationReceipt {
+  kind: "BASELINE_CERTIFICATION";
+  certificationId: string;
+  status: string;
+  protectedMain: { sha: string; treeSha: string };
+  checks: unknown[];
+  failures: BaselineCertificationReceiptFailure[];
+  deterministicClosureDependencies: unknown;
+  autoZeroRepairable: string[];
+  nonAutoZeroBlockers: BaselineCertificationReceiptFailure[];
+  [key: string]: unknown;
+}
+
 export interface BosunObjective {
   id: string;
   cascadeId: string;
@@ -118,7 +140,43 @@ const json = (value: unknown) => JSON.stringify(value);
 const parse = <T>(value: string) => JSON.parse(value) as T;
 const unique = (values: string[]) => [...new Set(values.filter(Boolean))].sort();
 const digest = (value: unknown) => createHash("sha256").update(json(value)).digest("hex");
+const canonicalJson = (value: unknown): string => {
+  if (value === null || typeof value !== "object") return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map((entry) => canonicalJson(entry)).join(",")}]`;
+  return `{${Object.keys(value as Record<string, unknown>).sort().map((key) => `${JSON.stringify(key)}:${canonicalJson((value as Record<string, unknown>)[key])}`).join(",")}}`;
+};
 const execFileAsync = promisify(execFile);
+
+const baselineFinding = (failure: BaselineCertificationReceiptFailure): BosunFinding => {
+  const checkId = failure.checkId.trim();
+  const owner = checkId.startsWith("deepwater-") ? "deepwater" : "sounding-line";
+  const repairClass: BosunRepairClass = failure.repairability === "AUTO_0"
+    ? "AUTO_0"
+    : failure.repairability === "OWNER"
+      ? "OWNER"
+      : failure.repairability === "EXTERNAL"
+        ? "EXTERNAL"
+        : "AUTO_2";
+  const exactDeepwaterAuthorization = checkId === "deepwater-policy-identity"
+    ? "OWNER-AUTHORIZED:DEEPWATER_POLICY_IDENTITY_REBASELINE"
+    : undefined;
+  return {
+    owner,
+    category: checkId,
+    resource: checkId === "deepwater-policy-identity"
+      ? "Development_Docs/Programs/Deepwater/deepwater-phase5-config.json"
+      : `Baseline Certification:${checkId}`,
+    contract: `baseline-certification:${checkId}:${failure.fingerprint}`,
+    runtimeClass: "nightwatch-baseline-certification",
+    repairClass,
+    requiredAuthorization: repairClass === "OWNER"
+      ? exactDeepwaterAuthorization ?? `OWNER-REQUIRED:BASELINE_CERTIFICATION:${checkId}:${failure.fingerprint}`
+      : undefined,
+    externalDependency: repairClass === "EXTERNAL"
+      ? `EXTERNAL-DEPENDENCY:BASELINE_CERTIFICATION:${checkId}:${failure.fingerprint}`
+      : undefined,
+  };
+};
 
 /**
  * Durable Bosun state intentionally shares Nightwatch's SQLite database, while
@@ -190,6 +248,24 @@ export class BosunLedger {
         focused_evidence_ref TEXT NOT NULL,
         output_digest TEXT NOT NULL,
         completed_at TEXT
+      );
+      CREATE TABLE IF NOT EXISTS bosun_baseline_receipts (
+        certification_id TEXT PRIMARY KEY,
+        protected_main_sha TEXT NOT NULL,
+        protected_main_tree_sha TEXT NOT NULL,
+        receipt_digest TEXT NOT NULL,
+        receipt_json TEXT NOT NULL,
+        parent_transaction_id TEXT NOT NULL,
+        candidate_id TEXT NOT NULL,
+        ingested_at TEXT NOT NULL,
+        UNIQUE(protected_main_sha, protected_main_tree_sha)
+      );
+      CREATE TABLE IF NOT EXISTS bosun_baseline_findings (
+        certification_id TEXT NOT NULL REFERENCES bosun_baseline_receipts(certification_id),
+        finding_fingerprint TEXT NOT NULL,
+        cascade_id TEXT NOT NULL REFERENCES bosun_cascades(cascade_id),
+        objective_id TEXT NOT NULL REFERENCES bosun_objectives(objective_id),
+        PRIMARY KEY(certification_id, finding_fingerprint)
       );
       CREATE TABLE IF NOT EXISTS bosun_controller_health (
         singleton INTEGER PRIMARY KEY CHECK(singleton = 1),
@@ -320,6 +396,168 @@ export class BosunLedger {
     if (!objective) throw new NightwatchInvariantError("BOSUN_OBJECTIVE_NOT_FOUND", cascadeId);
     this.db.prepare("UPDATE bosun_objectives SET state = ?, updated_at = ? WHERE cascade_id = ?").run(state, at, cascadeId);
     return this.objectiveForCascadeId(cascadeId)!;
+  }
+
+  private parseBaselineReceipt(receipt: unknown): BaselineCertificationReceipt {
+    if (!receipt || typeof receipt !== "object") throw new NightwatchInvariantError("BOSUN_BASELINE_RECEIPT_INVALID");
+    const value = receipt as Record<string, unknown>;
+    const protectedMain = value.protectedMain as Record<string, unknown> | undefined;
+    if (
+      value.kind !== "BASELINE_CERTIFICATION" ||
+      typeof value.certificationId !== "string" || !value.certificationId.trim() ||
+      typeof value.status !== "string" || !value.status.trim() ||
+      !protectedMain || typeof protectedMain.sha !== "string" || typeof protectedMain.treeSha !== "string" ||
+      !Array.isArray(value.checks) || !Array.isArray(value.failures) ||
+      !("deterministicClosureDependencies" in value) ||
+      !Array.isArray(value.autoZeroRepairable) || !Array.isArray(value.nonAutoZeroBlockers)
+    )
+      throw new NightwatchInvariantError("BOSUN_BASELINE_RECEIPT_INCOMPLETE");
+    const failures = value.failures.map((entry) => {
+      if (!entry || typeof entry !== "object") throw new NightwatchInvariantError("BOSUN_BASELINE_FAILURE_INVALID");
+      const failure = entry as Record<string, unknown>;
+      if (
+        typeof failure.checkId !== "string" || !failure.checkId.trim() ||
+        typeof failure.fingerprint !== "string" || !failure.fingerprint.trim() ||
+        typeof failure.repairability !== "string" || !failure.repairability.trim() ||
+        typeof failure.detail !== "string" ||
+        !Array.isArray(failure.dependencies) || !failure.dependencies.every((dependency) => typeof dependency === "string")
+      )
+        throw new NightwatchInvariantError("BOSUN_BASELINE_FAILURE_INVALID");
+      return {
+        checkId: failure.checkId,
+        fingerprint: failure.fingerprint,
+        repairability: failure.repairability,
+        detail: failure.detail,
+        dependencies: [...failure.dependencies],
+      };
+    });
+    const fingerprintSet = new Set(failures.map((failure) => failure.fingerprint));
+    if (fingerprintSet.size !== failures.length)
+      throw new NightwatchInvariantError("BOSUN_BASELINE_FAILURE_FINGERPRINT_DUPLICATE");
+    const declaredNonAuto = value.nonAutoZeroBlockers as unknown[];
+    if (declaredNonAuto.length !== failures.filter((failure) => failure.repairability !== "AUTO_0").length)
+      throw new NightwatchInvariantError("BOSUN_BASELINE_RECEIPT_INCOMPLETE");
+    const checkIds = new Set(
+      (value.checks as unknown[])
+        .filter((check): check is Record<string, unknown> => Boolean(check) && typeof check === "object")
+        .map((check) => check.id)
+        .filter((id): id is string => typeof id === "string"),
+    );
+    if (failures.some((failure) => !checkIds.has(failure.checkId)))
+      throw new NightwatchInvariantError("BOSUN_BASELINE_RECEIPT_INCOMPLETE");
+    return {
+      ...value,
+      kind: "BASELINE_CERTIFICATION",
+      certificationId: value.certificationId,
+      status: value.status,
+      protectedMain: { sha: protectedMain.sha, treeSha: protectedMain.treeSha },
+      checks: value.checks,
+      failures,
+      deterministicClosureDependencies: value.deterministicClosureDependencies,
+      autoZeroRepairable: value.autoZeroRepairable as string[],
+      nonAutoZeroBlockers: declaredNonAuto as BaselineCertificationReceiptFailure[],
+    };
+  }
+
+  /**
+   * Ingests one exact protected-main certification receipt. A receipt is
+   * durable evidence, while its normalized findings are the only source of
+   * Bosun cascades and executable objectives.
+   */
+  ingestBaselineReceipt(input: {
+    receipt: unknown;
+    protectedMain: { sha: string; treeSha: string };
+    at?: string;
+  }) {
+    const receipt = this.parseBaselineReceipt(input.receipt);
+    if (
+      receipt.protectedMain.sha !== input.protectedMain.sha ||
+      receipt.protectedMain.treeSha !== input.protectedMain.treeSha
+    )
+      throw new NightwatchInvariantError("BOSUN_BASELINE_RECEIPT_PROTECTED_MAIN_MISMATCH");
+    const at = input.at ?? iso();
+    const receiptDigest = createHash("sha256").update(canonicalJson(receipt)).digest("hex");
+    const existingReceipt = this.db
+      .prepare("SELECT * FROM bosun_baseline_receipts WHERE certification_id = ?")
+      .get(receipt.certificationId) as Record<string, unknown> | undefined;
+    const receiptForMain = this.db
+      .prepare("SELECT * FROM bosun_baseline_receipts WHERE protected_main_sha = ? AND protected_main_tree_sha = ?")
+      .get(input.protectedMain.sha, input.protectedMain.treeSha) as Record<string, unknown> | undefined;
+    if (existingReceipt && (
+      String(existingReceipt.protected_main_sha) !== input.protectedMain.sha ||
+      String(existingReceipt.protected_main_tree_sha) !== input.protectedMain.treeSha ||
+      String(existingReceipt.receipt_digest) !== receiptDigest
+    ))
+      throw new NightwatchInvariantError("BOSUN_BASELINE_RECEIPT_IDENTITY_CONFLICT", receipt.certificationId);
+    if (receiptForMain && String(receiptForMain.certification_id) !== receipt.certificationId)
+      throw new NightwatchInvariantError("BOSUN_BASELINE_RECEIPT_MAIN_CONFLICT", receipt.certificationId);
+
+    const anchor = this.nightwatch.ensureBaselineReceiptAnchor({
+      certificationId: receipt.certificationId,
+      protectedMain: input.protectedMain,
+      at,
+    });
+    if (!existingReceipt)
+      this.db.prepare(`INSERT INTO bosun_baseline_receipts(certification_id, protected_main_sha, protected_main_tree_sha, receipt_digest, receipt_json, parent_transaction_id, candidate_id, ingested_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`)
+        .run(
+          receipt.certificationId,
+          input.protectedMain.sha,
+          input.protectedMain.treeSha,
+          receiptDigest,
+          canonicalJson(receipt),
+          anchor.transaction.id,
+          anchor.candidate.id,
+          at,
+        );
+
+    const findings = receipt.failures.map((failure) => {
+      const finding = baselineFinding(failure);
+      const findingFingerprint = normalizeBosunFingerprint(finding);
+      const existingCascade = this.db
+        .prepare("SELECT * FROM bosun_cascades WHERE root_fingerprint = ?")
+        .get(findingFingerprint) as Record<string, unknown> | undefined;
+      const parentTransactionId = existingCascade
+        ? String(existingCascade.parent_transaction_id)
+        : anchor.transaction.id;
+      const reported = this.reportFinding({
+        finding,
+        parentTransactionId,
+        blockedCandidateId: anchor.candidate.id,
+        closureSteps: ["reconcile exact protected-main Baseline Certification receipt"],
+        at,
+      });
+      const objective = reported.objective ?? this.materializeObjective(reported.cascade.id, finding, at).objective;
+      const existingFinding = this.db
+        .prepare("SELECT * FROM bosun_baseline_findings WHERE certification_id = ? AND finding_fingerprint = ?")
+        .get(receipt.certificationId, findingFingerprint) as Record<string, unknown> | undefined;
+      if (existingFinding && (
+        String(existingFinding.cascade_id) !== reported.cascade.id ||
+        String(existingFinding.objective_id) !== objective.id
+      ))
+        throw new NightwatchInvariantError("BOSUN_BASELINE_FINDING_IDENTITY_CONFLICT", findingFingerprint);
+      if (!existingFinding)
+        this.db.prepare(`INSERT INTO bosun_baseline_findings(certification_id, finding_fingerprint, cascade_id, objective_id)
+          VALUES (?, ?, ?, ?)`)
+          .run(receipt.certificationId, findingFingerprint, reported.cascade.id, objective.id);
+      return {
+        baselineFingerprint: failure.fingerprint,
+        findingFingerprint,
+        cascadeId: reported.cascade.id,
+        objectiveId: objective.id,
+        state: objective.state,
+        requiredAuthorization: objective.requiredAuthorization,
+      };
+    });
+    return {
+      certificationId: receipt.certificationId,
+      protectedMain: input.protectedMain,
+      receiptDigest,
+      parentTransactionId: anchor.transaction.id,
+      candidateId: anchor.candidate.id,
+      duplicate: Boolean(existingReceipt),
+      findings,
+    };
   }
 
   reportFinding(input: { finding: BosunFinding; parentTransactionId: string; blockedCandidateId: string; closureSteps: string[]; at?: string }) {
