@@ -5,6 +5,7 @@ import test from "node:test";
 import {
   buildRepairRouteInventory,
   classifyRepairRoute,
+  validateExecutableRepairRoutes,
 } from "../../../scripts/sounding-line/control-plane-repair-routes.mjs";
 import { qualifyRootMaintenanceProtectedMerge } from "../../../scripts/sounding-line/root-maintenance-protected-binding.mjs";
 import {
@@ -75,6 +76,28 @@ test("Root Maintenance cannot self-authorize scope, replay an authority, or bind
       observedPrNumber: 412,
     }).decision,
     "ROOT_MAINTENANCE_NO_GO",
+  );
+  assert.equal(
+    selectSealedRootMaintenance({
+      runs: [
+        {
+          id: 10,
+          name: `Sounding Line root maintenance ${sha("b")}`,
+          path: ".github/workflows/sounding-line-root-maintenance.yml",
+          event: "workflow_dispatch",
+          status: "completed",
+          conclusion: "success",
+          headSha: sha("b"),
+          plan,
+          finalization: finalized,
+        },
+      ],
+      candidateSha: sha("b"),
+      candidateTree: sha("c"),
+      qualifiedBaseSha: sha("a"),
+      prNumber: 412,
+    }).decision,
+    "ROOT_MAINTENANCE_AUTHORITY_SELECTED",
   );
   const selected = selectSealedRootMaintenance({
     runs: [
@@ -171,6 +194,7 @@ test("repair-route inventory is built from actual baseline/workflow sources and 
   const inventory = await buildRepairRouteInventory();
   assert.equal(inventory.errors.length, 0);
   assert.equal(inventory.prerequisiteCount, inventory.repairRouteCount);
+  assert.equal(inventory.executableRoutes.lanes.ROOT_MAINTENANCE.complete, true);
   assert.equal(
     classifyRepairRoute({ file: "src/app/page.tsx", rootPolicy, authorityPolicy: {}, verificationPolicy: {} }),
     null,
@@ -179,6 +203,16 @@ test("repair-route inventory is built from actual baseline/workflow sources and 
   assert.deepEqual(uncovered.errors, [
     "CONTROL_PLANE_REPAIR_ROUTE_INCOMPLETE:unmapped-control-plane/new-prerequisite.mjs",
   ]);
+  const policy = JSON.parse(await readFile("testing/control-plane-repair-routes.json", "utf8"));
+  const dispatcher = await readFile(".github/workflows/sounding-line-protected-binding-dispatch.yml", "utf8");
+  const preFix = await validateExecutableRepairRoutes({
+    inventoryPolicy: policy,
+    readText: async (relative) =>
+      relative === ".github/workflows/sounding-line-protected-binding-dispatch.yml"
+        ? dispatcher.replaceAll("root_maintenance", "ordinary_only")
+        : readFile(relative, "utf8"),
+  });
+  assert.ok(preFix.errors.includes("CONTROL_PLANE_REPAIR_ROUTE_INCOMPLETE:ROOT_MAINTENANCE:PROTECTED_BINDING"));
   const workflow = await readFile(
     new URL("../../../.github/workflows/sounding-line-root-maintenance.yml", import.meta.url),
     "utf8",

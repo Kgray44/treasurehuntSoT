@@ -19,6 +19,7 @@ test("Nightwatch binding dispatch carries exact authority and candidate identiti
     "candidate_ref",
     "base_sha",
     "authority_run_id",
+    "authority_kind",
     "nightwatch_dispatch_key",
   ])
     assert.match(workflow, new RegExp(`\\n      ${input}:`, "u"));
@@ -27,6 +28,16 @@ test("Nightwatch binding dispatch carries exact authority and candidate identiti
   assert.match(workflow, /NIGHTWATCH_BINDING_PR_IDENTITY_MISMATCH/u);
   assert.match(workflow, /nightwatch-protected-binding-receipt/u);
   assert.match(workflow, /run-name: Sounding Line protected binding/u);
+  assert.match(workflow, /NIGHTWATCH_BINDING_AUTHORITY_KIND_INVALID/u);
+  assert.match(workflow, /inputs\.authority_kind == 'root_maintenance'/u);
+  assert.match(workflow, /trusted-root-maintenance-selection\.mjs/u);
+  assert.match(workflow, /\^Sounding Line root maintenance\(\?:\\s\|\$\)/u);
+  assert.match(workflow, /SEALED_ROOT_MAINTENANCE_AUTHORITY_NOT_UNIQUE/u);
+  assert.match(workflow, /ROOT_MAINTENANCE_AUTHORITY_RUN_IDENTITY_MISMATCH/u);
+  assert.match(workflow, /qualifyRootMaintenanceProtectedMerge/u);
+  assert.match(workflow, /Sounding Line \/ Mainline Decision/u);
+  const protectedMerge = await readFile(".github/workflows/sounding-line-protected-merge-binding.yml", "utf8");
+  assert.match(protectedMerge, /\^Sounding Line root maintenance\(\?:\\s\|\$\)/u);
 });
 
 test("authoritative candidate qualification can be durably rediscovered without changing its acceptance semantics", async () => {

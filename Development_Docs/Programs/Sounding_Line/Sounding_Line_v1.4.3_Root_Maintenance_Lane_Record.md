@@ -20,6 +20,10 @@ The lane is workflow-dispatch-only and accepts only a repository-owner dispatch.
 
 One sealed Root Maintenance dispatch can bind one protected merge. The protected binding leaves the existing Mainline Decision context and global branch protection unchanged.
 
+### Binding-dispatch contract
+
+The protected-binding dispatcher has an explicit `root_maintenance` evidence kind. It rechecks the live PR base/head relationship, reconstructs the synthetic merge identity, loads the Root Maintenance selector and binder from the qualified protected base, and accepts exactly one successful sealed `sounding-line-root-maintenance-qualification` artifact. It emits the unchanged `Sounding Line / Mainline Decision` context only for that root evidence kind; ordinary evidence continues through its existing binding path. The repair-route invariant verifies every lane's discovery, classification, admission, authorization, qualification, protected-binding, and merge-eligibility surfaces before Baseline Certification can pass.
+
 ## Bootstrap and break-glass boundary
 
 The owner-authorized final root-control-plane bootstrap is the single exception needed to land this first lane: protected main necessarily lacks the policy and classifier that would otherwise authorize it. Its exact frozen base/head/tree, complete review, local certification, deterministic fixed point, and owner merge record are required before the exception may be consumed.

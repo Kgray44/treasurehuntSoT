@@ -10,6 +10,6 @@
     "apis": []
   },
   "expectedTerminalRungEffect": "NONE",
-  "evidenceRequiringRefresh": ["Nightwatch Baseline Certification", "Root Maintenance qualification"],
-  "rationale": "Root Maintenance changes governed repository control-plane admission and evidence only. It cannot add, change, retire, or expose a product capability, Feature Catalog realization, route, screen, journey, or API."
+  "evidenceRequiringRefresh": ["Nightwatch Baseline Certification", "Root Maintenance qualification", "Root Maintenance protected binding"],
+  "rationale": "Root Maintenance changes governed repository control-plane admission, protected binding, and evidence only. It cannot add, change, retire, or expose a product capability, Feature Catalog realization, route, screen, journey, or API."
 }

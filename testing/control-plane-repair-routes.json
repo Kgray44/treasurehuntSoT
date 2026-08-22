@@ -2,6 +2,53 @@
   "version": "1.0.0",
   "authority": "SOUNDING_LINE_CONTROL_PLANE_REPAIR_ROUTE_INVARIANT",
   "failurePrefix": "CONTROL_PLANE_REPAIR_ROUTE_INCOMPLETE",
+  "requiredExecutableStages": [
+    "DISCOVERY",
+    "CLASSIFICATION",
+    "ADMISSION",
+    "AUTHORIZATION",
+    "QUALIFICATION",
+    "PROTECTED_BINDING",
+    "MERGE_ELIGIBILITY"
+  ],
+  "executableRouteContracts": {
+    "ORDINARY": {
+      "DISCOVERY": [{ "path": "testing/verification-maintenance-policy.json", "contains": "ordinaryCandidateEligiblePathGlobs" }],
+      "CLASSIFICATION": [{ "path": "scripts/sounding-line/verification-maintenance.mjs", "contains": "ordinary" }],
+      "ADMISSION": [{ "path": ".github/workflows/sounding-line-authoritative.yml", "contains": "workflow_dispatch" }],
+      "AUTHORIZATION": [{ "path": ".github/workflows/sounding-line-authoritative.yml", "contains": "SOUNDING_LINE_CANDIDATE_TRUSTED_MAIN_WORKFLOW_REQUIRED" }],
+      "QUALIFICATION": [{ "path": ".github/workflows/sounding-line-authoritative.yml", "contains": "sounding-line-acceptance-envelope" }],
+      "PROTECTED_BINDING": [{ "path": ".github/workflows/sounding-line-protected-binding-dispatch.yml", "contains": "protected-merge-binding-ci.mjs" }],
+      "MERGE_ELIGIBILITY": [{ "path": ".github/workflows/sounding-line-protected-merge-binding.yml", "contains": "Sounding Line / Mainline Decision" }]
+    },
+    "VERIFICATION_MAINTENANCE": {
+      "DISCOVERY": [{ "path": "testing/verification-maintenance-policy.json", "contains": "authority" }],
+      "CLASSIFICATION": [{ "path": "scripts/sounding-line/verification-maintenance.mjs", "contains": "createMaintenancePlan" }],
+      "ADMISSION": [{ "path": ".github/workflows/sounding-line-verification-maintenance.yml", "contains": "workflow_dispatch" }],
+      "AUTHORIZATION": [{ "path": ".github/workflows/sounding-line-verification-maintenance.yml", "contains": "MAINTENANCE_TRUSTED_MAIN_STALE" }],
+      "QUALIFICATION": [{ "path": ".github/workflows/sounding-line-verification-maintenance.yml", "contains": "sounding-line-maintenance-qualification" }],
+      "PROTECTED_BINDING": [{ "path": "scripts/sounding-line/maintenance-authority-selection.mjs", "contains": "selectSealedMaintenance" }, { "path": "scripts/sounding-line/maintenance-protected-binding.mjs", "contains": "qualifyMaintenanceProtectedMerge" }],
+      "MERGE_ELIGIBILITY": [{ "path": ".github/workflows/sounding-line-protected-merge-binding.yml", "contains": "bind-maintenance" }]
+    },
+    "AUTHORITY_MAINTENANCE": {
+      "DISCOVERY": [{ "path": "testing/authority-maintenance-policy.json", "contains": "SOUNDING_LINE_AUTHORITY_MAINTENANCE" }],
+      "CLASSIFICATION": [{ "path": "scripts/sounding-line/authority-maintenance.mjs", "contains": "createAuthorityMaintenancePlan" }],
+      "ADMISSION": [{ "path": ".github/workflows/sounding-line-authority-maintenance.yml", "contains": "workflow_dispatch" }],
+      "AUTHORIZATION": [{ "path": ".github/workflows/sounding-line-authority-maintenance.yml", "contains": "AUTHORITY_MAINTENANCE_OWNER_AUTHORIZATION_REQUIRED" }],
+      "QUALIFICATION": [{ "path": ".github/workflows/sounding-line-authority-maintenance.yml", "contains": "sounding-line-authority-maintenance-qualification" }],
+      "PROTECTED_BINDING": [{ "path": "scripts/sounding-line/authority-maintenance-selection.mjs", "contains": "selectSealedAuthorityMaintenance" }, { "path": "scripts/sounding-line/authority-maintenance-protected-binding.mjs", "contains": "qualifyAuthorityMaintenanceProtectedMerge" }],
+      "MERGE_ELIGIBILITY": [{ "path": ".github/workflows/sounding-line-protected-merge-binding.yml", "contains": "bind-authority-maintenance" }]
+    },
+    "ROOT_MAINTENANCE": {
+      "DISCOVERY": [{ "path": "testing/root-maintenance-policy.json", "contains": "SOUNDING_LINE_ROOT_MAINTENANCE" }],
+      "CLASSIFICATION": [{ "path": "scripts/sounding-line/root-maintenance.mjs", "contains": "createRootMaintenancePlan" }],
+      "ADMISSION": [{ "path": ".github/workflows/sounding-line-root-maintenance.yml", "contains": "workflow_dispatch" }],
+      "AUTHORIZATION": [{ "path": ".github/workflows/sounding-line-root-maintenance.yml", "contains": "ROOT_MAINTENANCE_OWNER_AUTHORIZATION_REQUIRED" }],
+      "QUALIFICATION": [{ "path": ".github/workflows/sounding-line-root-maintenance.yml", "contains": "sounding-line-root-maintenance-qualification" }],
+      "PROTECTED_BINDING": [{ "path": ".github/workflows/sounding-line-protected-binding-dispatch.yml", "contains": "root_maintenance" }, { "path": "scripts/sounding-line/root-maintenance-selection.mjs", "contains": "selectSealedRootMaintenance" }, { "path": "scripts/sounding-line/root-maintenance-protected-binding.mjs", "contains": "qualifyRootMaintenanceProtectedMerge" }],
+      "MERGE_ELIGIBILITY": [{ "path": ".github/workflows/sounding-line-protected-binding-dispatch.yml", "contains": "Sounding Line / Mainline Decision" }, { "path": ".github/workflows/sounding-line-protected-merge-binding.yml", "contains": "bind-root-maintenance" }]
+    }
+  },
   "protectedPrerequisiteRoots": [
     ".github/workflows",
     "scripts/sounding-line",
