@@ -12,6 +12,7 @@ import process from "node:process";
 import { promisify } from "node:util";
 
 import { computeSoundingLinePolicyDigest } from "../deepwater/phase5.mjs";
+import { assertRepairRouteCompleteness } from "../sounding-line/control-plane-repair-routes.mjs";
 
 const execFileAsync = promisify(execFile);
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
@@ -315,6 +316,19 @@ const defaultChecks = (node) => [
       )
         throw new Error("PROTECTED_BINDING_OR_BASELINE_ROUTE_UNAVAILABLE");
       return { route: "exact-candidate-base-and-baseline-receipt" };
+    },
+  },
+  {
+    id: "control-plane-repair-routes",
+    repairability: "OWNER",
+    dependencies: ["governed repair route for every protected integration prerequisite"],
+    async inspect(context) {
+      const inventory = await assertRepairRouteCompleteness(context.root);
+      return {
+        prerequisiteCount: inventory.prerequisiteCount,
+        repairRouteCount: inventory.repairRouteCount,
+        classifications: [...new Set(inventory.paths.map((entry) => entry.classification))].sort(),
+      };
     },
   },
   {

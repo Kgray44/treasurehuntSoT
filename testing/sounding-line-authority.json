@@ -48,6 +48,18 @@
     "antiSelfAuthorization": "TRUSTED_BASE_CLASSIFIER_AND_POLICY_REQUIRED",
     "protectedBinding": "EXACT_CANDIDATE_BASE_AND_LANDED_TREE"
   },
+  "rootMaintenance": {
+    "version": "1.0.0",
+    "policy": "testing/root-maintenance-policy.json",
+    "disposition": "ROOT_MAINTENANCE_GO",
+    "releaseAuthority": "NONE",
+    "trigger": "WORKFLOW_DISPATCH_ONLY",
+    "trustedMainPolicy": "REQUIRED",
+    "ownerAuthorization": "REPOSITORY_OWNER_WORKFLOW_DISPATCH",
+    "antiSelfAuthorization": "TRUSTED_BASE_POLICY_AND_CLASSIFIER_REQUIRED",
+    "protectedBinding": "EXACT_CANDIDATE_BASE_AND_LANDED_TREE",
+    "rootRepairFallback": "OWNER_AUTHORIZED_BREAK_GLASS_ONLY_FOR_ROOT_MAINTENANCE_DEFECT"
+  },
   "ordinaryCandidateQualification": {
     "mode": "V14_CANDIDATE",
     "trustedWorkflowRef": "refs/heads/main",

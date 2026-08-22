@@ -86,6 +86,9 @@ export async function computeSoundingLinePolicyDigest(root) {
     "prepared-artifacts.json",
     "mainline-train-policy.json",
     "verification-maintenance-policy.json",
+    "authority-maintenance-policy.json",
+    "root-maintenance-policy.json",
+    "control-plane-repair-routes.json",
   ];
   const policy = { manifest: await readJson(root, "testing/policy-manifest.json") };
   for (const file of files.slice(1)) policy[file.replace(/\.json$/u, "")] = await readJson(root, `testing/${file}`);

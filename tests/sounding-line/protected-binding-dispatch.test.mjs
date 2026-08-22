@@ -5,7 +5,9 @@ import test from "node:test";
 test("ordinary pull request events retain cheap classification but cannot run a protected binding decision", async () => {
   const workflow = await readFile(".github/workflows/sounding-line-protected-merge-binding.yml", "utf8");
   assert.match(workflow, /github\.event_name == 'workflow_dispatch' && always\(\)/u);
-  assert.equal((workflow.match(/github\.event_name == 'workflow_dispatch' && always\(\)/gu) ?? []).length, 3);
+  assert.equal((workflow.match(/github\.event_name == 'workflow_dispatch' && always\(\)/gu) ?? []).length, 4);
+  assert.match(workflow, /root-maintenance-preflight:/u);
+  assert.match(workflow, /bind-root-maintenance:/u);
   assert.match(workflow, /record-only-evidence:[\s\S]*?github\.event_name == 'workflow_dispatch'/u);
 });
 

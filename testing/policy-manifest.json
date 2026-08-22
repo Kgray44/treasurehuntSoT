@@ -20,6 +20,8 @@
     "mainline-train-policy.json",
     "verification-maintenance-policy.json",
     "authority-maintenance-policy.json",
+    "root-maintenance-policy.json",
+    "control-plane-repair-routes.json",
     "trusted-project-discovery.json"
   ],
   "authority": "sounding-line-authoritative",

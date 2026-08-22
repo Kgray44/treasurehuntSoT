@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-08-21",
+  "generated_at": "2026-08-22",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -2697,6 +2697,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_Root_Maintenance_Impact_Declaration.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Acceptance_Unblock_Impact_Declaration.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -2746,6 +2752,12 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4.2_Trusted_Project_and_Registration_Admission_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4.3_Root_Maintenance_Lane_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
