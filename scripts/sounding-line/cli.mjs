@@ -51,6 +51,8 @@ const registryFiles = [
   "mainline-train-policy.json",
   "verification-maintenance-policy.json",
   "authority-maintenance-policy.json",
+  "root-maintenance-policy.json",
+  "control-plane-repair-routes.json",
   "trusted-project-discovery.json",
 ];
 
@@ -121,6 +123,8 @@ export function validatePolicy(policy) {
     "sounding-line-authority": authorityIndex,
     "verification-maintenance-policy": maintenancePolicy,
     "authority-maintenance-policy": authorityMaintenancePolicy,
+    "root-maintenance-policy": rootMaintenancePolicy,
+    "control-plane-repair-routes": repairRoutePolicy,
     "trusted-project-discovery": trustedProjectDiscovery,
   } = policy;
   assertKeys(
@@ -145,6 +149,7 @@ export function validatePolicy(policy) {
       "runtimeConformance",
       "verificationMaintenance",
       "authorityMaintenance",
+      "rootMaintenance",
       "ordinaryCandidateQualification",
       "governingPolicies",
       "developmentValidation",
@@ -240,6 +245,20 @@ export function validatePolicy(policy) {
     authorityMaintenance?.protectedBinding !== "EXACT_CANDIDATE_BASE_AND_LANDED_TREE"
   )
     errors.push("sounding-line-authority: authority maintenance policy mismatch");
+  const rootMaintenance = authorityIndex.rootMaintenance;
+  if (
+    rootMaintenance?.version !== "1.0.0" ||
+    rootMaintenance?.policy !== "testing/root-maintenance-policy.json" ||
+    rootMaintenance?.disposition !== "ROOT_MAINTENANCE_GO" ||
+    rootMaintenance?.releaseAuthority !== "NONE" ||
+    rootMaintenance?.trigger !== "WORKFLOW_DISPATCH_ONLY" ||
+    rootMaintenance?.trustedMainPolicy !== "REQUIRED" ||
+    rootMaintenance?.ownerAuthorization !== "REPOSITORY_OWNER_WORKFLOW_DISPATCH" ||
+    rootMaintenance?.antiSelfAuthorization !== "TRUSTED_BASE_POLICY_AND_CLASSIFIER_REQUIRED" ||
+    rootMaintenance?.protectedBinding !== "EXACT_CANDIDATE_BASE_AND_LANDED_TREE" ||
+    rootMaintenance?.rootRepairFallback !== "OWNER_AUTHORIZED_BREAK_GLASS_ONLY_FOR_ROOT_MAINTENANCE_DEFECT"
+  )
+    errors.push("sounding-line-authority: root maintenance policy mismatch");
   const ordinaryCandidate = authorityIndex.ordinaryCandidateQualification;
   if (
     ordinaryCandidate?.mode !== "V14_CANDIDATE" ||
@@ -289,6 +308,25 @@ export function validatePolicy(policy) {
     !authorityMaintenancePolicy.requiredEvidence.includes("ANTI_SELF_AUTHORIZATION")
   )
     errors.push("authority-maintenance-policy: fail-closed contract mismatch");
+  if (
+    rootMaintenancePolicy?.authority !== "SOUNDING_LINE_ROOT_MAINTENANCE" ||
+    rootMaintenancePolicy?.disposition !== "ROOT_MAINTENANCE_GO" ||
+    rootMaintenancePolicy?.workflowDispatchOnly !== true ||
+    rootMaintenancePolicy?.trustedMainOnly !== true ||
+    rootMaintenancePolicy?.ownerAuthorization !== "REPOSITORY_OWNER_WORKFLOW_DISPATCH" ||
+    rootMaintenancePolicy?.releaseAuthority !== "NONE" ||
+    !Array.isArray(rootMaintenancePolicy?.eligiblePathGlobs) ||
+    !rootMaintenancePolicy.eligiblePathGlobs.length ||
+    !Array.isArray(rootMaintenancePolicy?.bindingPreflightPaths) ||
+    !rootMaintenancePolicy.bindingPreflightPaths.length ||
+    !Array.isArray(rootMaintenancePolicy?.requiredEvidence) ||
+    !rootMaintenancePolicy.requiredEvidence.includes("ROOT_ANTI_SELF_AUTHORIZATION") ||
+    repairRoutePolicy?.authority !== "SOUNDING_LINE_CONTROL_PLANE_REPAIR_ROUTE_INVARIANT" ||
+    repairRoutePolicy?.failurePrefix !== "CONTROL_PLANE_REPAIR_ROUTE_INCOMPLETE" ||
+    !Array.isArray(repairRoutePolicy?.baselineSourcePaths) ||
+    !repairRoutePolicy.baselineSourcePaths.length
+  )
+    errors.push("root-maintenance-policy: fail-closed contract mismatch");
   if (
     trustedProjectDiscovery?.authority !== "SOUNDING_LINE_TRUSTED_MAIN_PROJECT_DISCOVERY" ||
     trustedProjectDiscovery?.sourceBound !== true ||

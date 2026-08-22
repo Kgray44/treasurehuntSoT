@@ -1,0 +1,15 @@
+{
+  "disposition": "NO_REALIZATION_IMPACT",
+  "affectedCapabilityIds": [],
+  "affectedFeatureCatalogIds": [],
+  "potentialLayerImpact": ["EVIDENCE_ONLY"],
+  "affectedSurfaces": {
+    "routes": [],
+    "screens": [],
+    "journeys": [],
+    "apis": []
+  },
+  "expectedTerminalRungEffect": "NONE",
+  "evidenceRequiringRefresh": ["Nightwatch Baseline Certification", "Root Maintenance qualification"],
+  "rationale": "Root Maintenance changes governed repository control-plane admission and evidence only. It cannot add, change, retire, or expose a product capability, Feature Catalog realization, route, screen, journey, or API."
+}

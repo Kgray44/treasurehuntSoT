@@ -1,0 +1,98 @@
+/* Build and enforce repair-route coverage from current protected prerequisites. */
+import { readFile, readdir } from "node:fs/promises";
+import path from "node:path";
+import process from "node:process";
+
+const normalized = (value) => value.replaceAll("\\", "/");
+const glob = (pattern) =>
+  new RegExp(
+    `^${pattern
+      .replace(/[|\\{}()[\]^$+?.]/gu, "\\$&")
+      .replace(/\*\*/gu, "::DS::")
+      .replace(/\*/gu, "[^/]*")
+      .replace(/::DS::/gu, ".*")}$`,
+    "u",
+  );
+const matches = (file, patterns) => (patterns ?? []).some((pattern) => glob(pattern).test(file));
+const exists = async (root, relative) =>
+  readFile(path.join(root, relative), "utf8")
+    .then(() => true)
+    .catch(() => false);
+
+async function walk(root, relative) {
+  const directory = path.join(root, relative);
+  const entries = await readdir(directory, { withFileTypes: true });
+  const output = [];
+  for (const entry of entries) {
+    const child = normalized(path.join(relative, entry.name));
+    if (entry.isDirectory()) output.push(...(await walk(root, child)));
+    else if (entry.isFile()) output.push(child);
+  }
+  return output;
+}
+
+const sourceReferences = (text) =>
+  [
+    ...text.matchAll(
+      /(?:(?:scripts|testing|Development_Docs|\.github)\/[A-Za-z0-9_./-]+\.(?:mjs|js|ts|json|ya?ml|md|csv))/gu,
+    ),
+  ].map((match) => match[0]);
+
+export function classifyRepairRoute({ file, rootPolicy, authorityPolicy, verificationPolicy }) {
+  if (matches(file, rootPolicy?.generatedConsequenceGlobs)) return "GENERATED_CONSEQUENCE";
+  if (matches(file, rootPolicy?.eligiblePathGlobs)) return "ROOT_MAINTENANCE";
+  if (matches(file, authorityPolicy?.eligiblePathGlobs)) return "AUTHORITY_MAINTENANCE";
+  if (matches(file, verificationPolicy?.eligiblePathGlobs)) return "VERIFICATION_MAINTENANCE";
+  if (matches(file, verificationPolicy?.ordinaryCandidateEligiblePathGlobs)) return "ORDINARY";
+  return null;
+}
+
+export async function buildRepairRouteInventory(root = process.cwd(), additionalPrerequisites = []) {
+  const readJson = async (relative) => JSON.parse(await readFile(path.join(root, relative), "utf8"));
+  const [inventoryPolicy, rootPolicy, authorityPolicy, verificationPolicy] = await Promise.all([
+    readJson("testing/control-plane-repair-routes.json"),
+    readJson("testing/root-maintenance-policy.json"),
+    readJson("testing/authority-maintenance-policy.json"),
+    readJson("testing/verification-maintenance-policy.json"),
+  ]);
+  const prerequisitePaths = new Set(inventoryPolicy.baselineSourcePaths);
+  const workflowFiles = await walk(root, ".github/workflows");
+  for (const workflow of workflowFiles) {
+    prerequisitePaths.add(workflow);
+    for (const reference of sourceReferences(await readFile(path.join(root, workflow), "utf8")))
+      if (await exists(root, reference)) prerequisitePaths.add(reference);
+  }
+  // The certifier is the actual protected-main prerequisite inventory.  Its
+  // literal source references automatically enter coverage as it evolves.
+  for (const reference of sourceReferences(
+    await readFile(path.join(root, "scripts/nightwatch/baseline-certifier.mjs"), "utf8"),
+  ))
+    if (await exists(root, reference)) prerequisitePaths.add(reference);
+  for (const file of additionalPrerequisites) prerequisitePaths.add(file);
+  const paths = [...prerequisitePaths].sort();
+  const entries = paths.map((file) => ({
+    file,
+    classification: classifyRepairRoute({ file, rootPolicy, authorityPolicy, verificationPolicy }),
+  }));
+  const missing = entries.filter((entry) => !entry.classification).map((entry) => entry.file);
+  return {
+    authority: inventoryPolicy.authority,
+    paths: entries,
+    repairRouteCount: entries.length - missing.length,
+    prerequisiteCount: entries.length,
+    missing,
+    errors: missing.map((file) => `${inventoryPolicy.failurePrefix}:${file}`),
+  };
+}
+
+export async function assertRepairRouteCompleteness(root = process.cwd()) {
+  const inventory = await buildRepairRouteInventory(root);
+  if (inventory.errors.length) throw new Error(inventory.errors.join("\n"));
+  return inventory;
+}
+
+if (process.argv[1]?.endsWith("control-plane-repair-routes.mjs")) {
+  const inventory = await buildRepairRouteInventory();
+  console.log(JSON.stringify(inventory, null, 2));
+  process.exitCode = inventory.errors.length ? 1 : 0;
+}

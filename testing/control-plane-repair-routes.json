@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "authority": "SOUNDING_LINE_CONTROL_PLANE_REPAIR_ROUTE_INVARIANT",
+  "failurePrefix": "CONTROL_PLANE_REPAIR_ROUTE_INCOMPLETE",
+  "protectedPrerequisiteRoots": [
+    ".github/workflows",
+    "scripts/sounding-line",
+    "scripts/nightwatch/baseline-certifier.mjs",
+    "scripts/deepwater",
+    "scripts/features",
+    "testing",
+    "Development_Docs/Programs/Deepwater",
+    "Development_Docs/Programs/Sounding_Line",
+    "Development_Docs/Features"
+  ],
+  "baselineSourcePaths": [
+    "scripts/nightwatch/baseline-certifier.mjs",
+    ".github/workflows/nightwatch-baseline-certification.yml",
+    ".github/workflows/sounding-line-authoritative.yml",
+    ".github/workflows/sounding-line-protected-merge-binding.yml",
+    ".github/workflows/sounding-line-protected-binding-dispatch.yml",
+    "scripts/deepwater/phase5.mjs",
+    "scripts/deepwater/cli.mjs",
+    "scripts/sounding-line/cli.mjs",
+    "scripts/sounding-line/test-registry.mjs",
+    "scripts/sounding-line/reconcile-p34-ledger.mjs",
+    "scripts/generate-document-index.mjs",
+    "scripts/features/build-feature-catalog.ts",
+    "testing/policy-manifest.json",
+    "testing/sounding-line-authority.json",
+    "testing/verification-maintenance-policy.json",
+    "testing/authority-maintenance-policy.json",
+    "testing/root-maintenance-policy.json"
+  ]
+}
