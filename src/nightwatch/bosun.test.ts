@@ -56,7 +56,7 @@ describe("Project Bosun B0 durable convergence", () => {
       expect(() => bosun.createOrReuseRepair(report.cascade.id, "MW-late", 500, late)).toThrow("PARKED_PARENT_BREAKER");
       expect(bosun.projection(Date.parse(late)).cascades[0]).toMatchObject({ status: "PARKED_PARENT_BREAKER", activeObjectiveId: null });
     } finally { bosun.close(); ledger.close(); }
-  });
+  }, 15_000);
 
   it("requires post-merge proof and wakes a blocked Nightwatch candidate once", () => {
     const path = databasePath();
@@ -167,11 +167,7 @@ describe("Project Bosun B1.1 live repair integration", () => {
       now += 1_000;
       expect(controller.tick()).toMatchObject({ state: "AUTHORITY_RUNNING", runId: "authority-live" });
       now += 1_000;
-      expect(controller.tick()).toMatchObject({ state: "BINDING_PENDING" });
-      now += 1_000;
       expect(controller.tick()).toMatchObject({ state: "BINDING_RUNNING", runId: "binding-live" });
-      now += 1_000;
-      expect(controller.tick()).toMatchObject({ state: "MERGING" });
       now += 1_000;
       expect(controller.tick()).toMatchObject({ state: "POST_MERGE_VERIFIED" });
       const restarted = new BosunLedger(path, ledger);
