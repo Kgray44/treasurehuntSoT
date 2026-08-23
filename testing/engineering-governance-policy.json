@@ -1,0 +1,81 @@
+{
+  "version": "1.0.0",
+  "decision": "ADR-EGS-001",
+  "authorities": {
+    "verification": "SOUNDING_LINE",
+    "flow": "NIGHTWATCH"
+  },
+  "ordinary": {
+    "integrationPath": "SOUNDING_LINE_MAINLINE_TRAIN",
+    "finalAuthority": "RELEASE_GO_ONLY",
+    "testRegistration": "DECLARATIVE_ORDINARY_CONFIGURATION",
+    "bosunRepair": "ORDINARY_WHEN_BOUNDED_AND_NON_AUTHORITY"
+  },
+  "releaseCandidate": "EXHAUSTIVE_UNCHANGED",
+  "controlPlaneChange": {
+    "ownerAuthorization": "EXPLICIT_REPOSITORY_OWNER_DISPATCH",
+    "trustedBasePolicy": "REQUIRED",
+    "antiSelfAuthorization": "TRUSTED_BASE_CLASSIFIER_AND_POLICY_REQUIRED",
+    "protectedBinding": "EXACT_CANDIDATE_BASE_AND_LANDED_TREE",
+    "requiredEvidence": [
+      "EXACT_BASE_IDENTITY",
+      "EXACT_CANDIDATE_IDENTITY",
+      "EXACT_CANDIDATE_TREE",
+      "OWNER_AUTHORIZATION",
+      "AFFECTED_CONTROL_PLANE_REGRESSION",
+      "ANTI_SELF_AUTHORIZATION",
+      "PROTECTED_BINDING"
+    ]
+  },
+  "breakGlass": {
+    "ownerAuthorization": "EXPLICIT_REPOSITORY_OWNER_DISPATCH",
+    "trustedControlPlaneUnavailable": "REQUIRED",
+    "nonProduct": "REQUIRED",
+    "exactScope": "REQUIRED",
+    "expiry": "REQUIRED",
+    "beforeAfterEvidence": "REQUIRED",
+    "normalPathSelfVerification": "REQUIRED"
+  },
+  "controlPlanePathGlobs": [
+    "testing/engineering-governance-policy.json",
+    "testing/sounding-line-authority.json",
+    "testing/mainline-train-policy.json",
+    "testing/verification-maintenance-policy.json",
+    "testing/authority-maintenance-policy.json",
+    "testing/root-maintenance-policy.json",
+    "testing/control-plane-repair-routes.json",
+    "testing/policy-manifest.json",
+    "testing/test-registration.schema.json",
+    "scripts/sounding-line/**",
+    "scripts/nightwatch/**",
+    "src/nightwatch/**",
+    "scripts/deepwater/**",
+    "scripts/features/**",
+    "scripts/generate-document-index.mjs",
+    "scripts/private-content/scan.ts",
+    "scripts/validate-documentation.mjs",
+    ".github/workflows/sounding-line-*.yml",
+    ".github/workflows/nightwatch-baseline-certification.yml",
+    "Development_Docs/Governing/ADR-EGS-001_Engineering_Governance_Simplification.md",
+    "Development_Docs/Programs/Deepwater/**",
+    "Development_Docs/Programs/Sounding_Line/**"
+  ],
+  "ordinaryBosunRepairPathGlobs": [
+    "src/nightwatch/bosun.ts",
+    "src/nightwatch/bosun-live.ts",
+    "src/nightwatch/bosun.test.ts",
+    "scripts/nightwatch/bosun-canary.ts"
+  ],
+  "legacyCompatibility": {
+    "verificationMaintenance": "COMPATIBILITY_ONLY_NO_NEW_NORMAL_CALLERS",
+    "authorityMaintenance": "COMPATIBILITY_ONLY_BOOTSTRAP_ONLY",
+    "rootMaintenance": "COMPATIBILITY_ONLY_OWNER_EMERGENCY_BOOTSTRAP_ONLY",
+    "retirementCondition": "SIMPLIFIED_PATH_SELF_VERIFIED_ON_PROTECTED_MAIN"
+  },
+  "auxiliaryGovernance": {
+    "featureCatalog": "MEANINGFUL_CAPABILITY_OR_LIMITATION_ONLY",
+    "deepwater": "PRODUCT_REALIZATION_OR_REACHABILITY_ONLY",
+    "documentationIndex": "DOCUMENT_STRUCTURE_CHANGE_ONLY",
+    "changelogAndUserDocs": "MATERIAL_USER_VISIBLE_CHANGE_ONLY"
+  }
+}

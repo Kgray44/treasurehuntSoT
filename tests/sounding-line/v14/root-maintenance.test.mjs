@@ -93,26 +93,27 @@ test("Root Maintenance remains owner-only, non-product, and exact-merge bound", 
   );
 });
 
-test("repair-route inventory points Root Maintenance at the one canonical helper", async () => {
+test("repair-route inventory maps normal Bosun work separately from compatibility control recovery", async () => {
   const inventory = await buildRepairRouteInventory();
   assert.equal(inventory.errors.length, 0);
   assert.equal(inventory.prerequisiteCount, inventory.repairRouteCount);
-  assert.equal(inventory.executableRoutes.lanes.ROOT_MAINTENANCE.complete, true);
+  assert.equal(inventory.executableRoutes.lanes.CONTROL_PLANE_CHANGE.complete, true);
+  assert.equal(inventory.executableRoutes.lanes.BREAK_GLASS.complete, true);
   assert.equal(
     inventory.paths.find((entry) => entry.file === "src/nightwatch/bosun.ts")?.classification,
-    "ROOT_MAINTENANCE",
+    "ORDINARY",
   );
   assert.equal(
     inventory.paths.find((entry) => entry.file === "scripts/nightwatch/cli.ts")?.classification,
-    "ROOT_MAINTENANCE",
+    "CONTROL_PLANE_CHANGE",
   );
   assert.equal(
     classifyRepairRoute({ file: "src/nightwatch/future-runtime.ts", rootPolicy, authorityPolicy: {}, verificationPolicy: {} }),
-    "ROOT_MAINTENANCE",
+    "CONTROL_PLANE_CHANGE",
   );
   assert.equal(
     classifyRepairRoute({ file: "scripts/nightwatch/future-runtime.ts", rootPolicy, authorityPolicy: {}, verificationPolicy: {} }),
-    "ROOT_MAINTENANCE",
+    "CONTROL_PLANE_CHANGE",
   );
   assert.equal(classifyRepairRoute({ file: "src/app/page.tsx", rootPolicy, authorityPolicy: {}, verificationPolicy: {} }), null);
   const candidateExpandedPolicy = {
@@ -139,7 +140,7 @@ test("repair-route inventory points Root Maintenance at the one canonical helper
         ? dispatcher.replaceAll("trusted-root-maintenance-bind.mjs", "missing-root-maintenance-bind.mjs")
         : readFile(relative, "utf8"),
   });
-  assert.ok(missingHelper.errors.includes("CONTROL_PLANE_REPAIR_ROUTE_INCOMPLETE:ROOT_MAINTENANCE:ARTIFACT_HANDSHAKE"));
+  assert.ok(missingHelper.errors.includes("CONTROL_PLANE_REPAIR_ROUTE_INCOMPLETE:CONTROL_PLANE_CHANGE:ARTIFACT_HANDSHAKE"));
   const qualification = await readFile(".github/workflows/sounding-line-root-maintenance.yml", "utf8");
   assert.match(qualification, /root-maintenance-envelope\.json/u);
   assert.match(qualification, /tests\/sounding-line\/runtime-conformance\.test\.mjs/u);

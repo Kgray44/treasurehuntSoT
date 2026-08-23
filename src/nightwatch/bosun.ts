@@ -16,6 +16,7 @@ export type BosunCascadeState =
   | "ESCALATION_REQUIRED";
 
 export type BosunRepairClass = "AUTO_0" | "AUTO_1" | "AUTO_2" | "OWNER" | "EXTERNAL";
+export type BosunPublicLifecycleState = "DETECTED" | "WORKING" | "FIXED" | "BLOCKED" | "OWNER_REQUIRED";
 
 export type BosunObjectiveState =
   | "OBJECTIVE_READY"
@@ -95,6 +96,7 @@ export interface BosunCascade {
   duplicateRepairsSuppressed: number;
   dependentWakeupCount: number;
   status: BosunCascadeState;
+  publicLifecycle: BosunPublicLifecycleState;
   startedAt: string;
   updatedAt: string;
 }
@@ -120,6 +122,7 @@ export interface BosunLiveRepair {
   baseSha: string;
   focusedEvidenceRef: string;
   outputDigest: string;
+  integrationPath: "SOUNDING_LINE_MAINLINE_TRAIN";
   completedAt: string | null;
 }
 
@@ -176,6 +179,20 @@ const baselineFinding = (failure: BaselineCertificationReceiptFailure): BosunFin
       ? `EXTERNAL-DEPENDENCY:BASELINE_CERTIFICATION:${checkId}:${failure.fingerprint}`
       : undefined,
   };
+};
+
+/** Public Bosun state is intentionally compact; detailed objectives stay in the durable ledger. */
+export const projectBosunLifecycle = (
+  status: BosunCascadeState,
+  objective: BosunObjective | null,
+): BosunPublicLifecycleState => {
+  if (status === "CONVERGED" || objective?.state === "CONVERGED") return "FIXED";
+  if (status === "PARKED_OWNER" || objective?.state === "OWNER_REQUIRED") return "OWNER_REQUIRED";
+  if (["PARKED_BUDGET", "PARKED_PARENT_BREAKER", "BLOCKED_EXTERNAL", "ESCALATION_REQUIRED"].includes(status))
+    return "BLOCKED";
+  if (["REPAIRING", "QUALIFYING", "BINDING", "MERGED", "POST_MERGE_PROOF"].includes(objective?.state ?? ""))
+    return "WORKING";
+  return "DETECTED";
 };
 
 /**
@@ -298,7 +315,9 @@ export class BosunLedger {
       closureSteps: parse<string[]>(String(row.closure_steps_json)), repairPrCount: Number(row.repair_pr_count), authorityAttempts: Number(row.authority_attempts),
       mainlineRebuilds: Number(row.mainline_rebuilds), controlPlaneMs: Number(row.control_plane_ms), controlPlaneWaitMs: Number(row.control_plane_wait_ms),
       duplicateRepairsSuppressed: Number(row.duplicate_repairs_suppressed), dependentWakeupCount: Number(row.dependent_wakeup_count),
-      status: String(row.status) as BosunCascadeState, startedAt: String(row.started_at), updatedAt: String(row.updated_at),
+      status: String(row.status) as BosunCascadeState,
+      publicLifecycle: projectBosunLifecycle(String(row.status) as BosunCascadeState, objective),
+      startedAt: String(row.started_at), updatedAt: String(row.updated_at),
     };
   }
 
@@ -625,6 +644,19 @@ export class BosunLedger {
     return this.cascade(this.row(cascadeId));
   }
 
+  /** A bounded repair is ordinary work once it has an ordinary candidate. */
+  recordMainlineTrainAdmission(cascadeId: string, at = iso()) {
+    const cascade = this.cascade(this.row(cascadeId));
+    const budget = this.parentBudget(cascade.parentTransactionId, Date.parse(at));
+    if (budget.status !== "ACTIVE" && budget.status !== "WARNING")
+      throw new NightwatchInvariantError("BOSUN_PARENT_BUDGET_DISALLOWS_TRAIN", cascadeId);
+    this.db
+      .prepare("UPDATE bosun_cascades SET mainline_rebuilds = mainline_rebuilds + 1, updated_at = ? WHERE cascade_id = ?")
+      .run(at, cascadeId);
+    this.setObjectiveState(cascadeId, "QUALIFYING", at);
+    return this.cascade(this.row(cascadeId));
+  }
+
   recordBindingAttempt(cascadeId: string, at = iso()) {
     this.setObjectiveState(cascadeId, "BINDING", at);
     return this.cascade(this.row(cascadeId));
@@ -647,7 +679,7 @@ export class BosunLedger {
       .run(cascadeId, json(proof), at);
   }
 
-  registerLiveRepair(input: Omit<BosunLiveRepair, "completedAt">) {
+  registerLiveRepair(input: Omit<BosunLiveRepair, "completedAt" | "integrationPath">) {
     const cascade = this.cascade(this.row(input.cascadeId));
     if (cascade.parentTransactionId !== input.parentTransactionId)
       throw new NightwatchInvariantError("BOSUN_PARENT_TRANSACTION_MISMATCH", input.cascadeId);
@@ -663,7 +695,7 @@ export class BosunLedger {
       input.cascadeId, input.parentTransactionId, input.transactionId, input.candidateId, input.repairPr,
       input.actionId, input.candidateSha, input.baseSha, input.focusedEvidenceRef, input.outputDigest,
     );
-    return { ...input, completedAt: null };
+    return { ...input, integrationPath: "SOUNDING_LINE_MAINLINE_TRAIN" as const, completedAt: null };
   }
 
   liveRepairForTransaction(transactionId: string): BosunLiveRepair | null {
@@ -720,7 +752,8 @@ export class BosunLedger {
       cascadeId: String(row.cascade_id), parentTransactionId: String(row.parent_transaction_id), transactionId: String(row.transaction_id),
       candidateId: String(row.candidate_id), repairPr: Number(row.repair_pr), actionId: String(row.action_id) as BosunRepairActionId,
       candidateSha: String(row.candidate_sha), baseSha: String(row.base_sha), focusedEvidenceRef: String(row.focused_evidence_ref),
-      outputDigest: String(row.output_digest), completedAt: row.completed_at ? String(row.completed_at) : null,
+      outputDigest: String(row.output_digest), integrationPath: "SOUNDING_LINE_MAINLINE_TRAIN",
+      completedAt: row.completed_at ? String(row.completed_at) : null,
     };
   }
 

@@ -1,6 +1,14 @@
 {
   "authority": "SOUNDING_LINE",
   "currentAuthorityVersion": "1.4",
+  "engineeringGovernance": {
+    "decision": "ADR-EGS-001",
+    "policy": "testing/engineering-governance-policy.json",
+    "verificationAuthority": "SOUNDING_LINE",
+    "flowAuthority": "NIGHTWATCH",
+    "ordinaryIntegrationPath": "SOUNDING_LINE_MAINLINE_TRAIN",
+    "legacyMaintenance": "COMPATIBILITY_ONLY"
+  },
   "effectiveV14": {
     "documentId": "CS-SL-XP-001 v1.4-R1",
     "documentSha256": "4D9DE559A24A7A2A8427171EAB679CCD423A1E9BE94FA104CF10B3D14AA31211",
@@ -86,6 +94,7 @@
     "semanticInvalidation": "EVIDENCE_PRESERVATION_REQUIRED",
     "recordOnlyClosure": {
       "mode": "FAIL_CLOSED_PROTECTED_MERGE_FINALIZATION",
+      "ordinaryPostMergeClosureRequired": false,
       "allowedRecordPathClasses": ["CHANGELOG.md", "Development_Docs/**/*.md|json|csv|txt", "docs/**/*.md"],
       "requiredEvidence": [
         "EXACT_CANDIDATE_DIFF",

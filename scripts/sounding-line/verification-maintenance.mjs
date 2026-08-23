@@ -665,6 +665,46 @@ async function registrationSnapshot({
   };
 }
 
+/** Shared snapshot loader for the simplified ordinary-candidate adapter. */
+export async function loadOrdinaryCandidateSnapshots({
+  trustedPolicy,
+  changedPaths,
+  trustedBaseSha,
+  candidateSha,
+  candidateRoot,
+}) {
+  const paths = Array.isArray(changedPaths) ? changedPaths : [changedPaths];
+  if (!paths.some((file) => matchesAny(file, registrationTriggers(trustedPolicy)))) return {};
+  if (!sha(trustedBaseSha) || (!sha(candidateSha) && !candidateRoot))
+    return { snapshotError: "PRODUCT_VERIFICATION_REGISTRATION_SNAPSHOTS_REQUIRED" };
+  try {
+    const snapshots = await registrationSnapshot({
+      baseSha: trustedBaseSha,
+      candidateSha,
+      candidateRoot: candidateRoot ?? process.cwd(),
+      changedPaths: paths,
+      sourceBoundFeatureCatalogReconciliationPathGlobs: sourceBoundFeatureCatalogReconciliationPaths(trustedPolicy),
+    });
+    const [trustedMainTreeSha, trustedTreePaths] = await Promise.all([gitTree(trustedBaseSha), gitTreePaths(trustedBaseSha)]);
+    const trustedDiscovery = createTrustedMainProjectDiscoveryRegistry({
+      trustedMainSha: trustedBaseSha,
+      trustedMainTreeSha,
+      trustedTreePaths,
+      sourceRegistry: snapshots.trustedRegistries.trustedProjectDiscovery,
+      owners: snapshots.trustedRegistries.ownership?.owners,
+    });
+    const discoveryValidity = validateTrustedMainProjectDiscoveryRegistry({
+      registry: trustedDiscovery,
+      trustedMainSha: trustedBaseSha,
+      trustedMainTreeSha,
+    });
+    if (!discoveryValidity.valid) return { snapshotError: discoveryValidity.code };
+    return { ...snapshots, trustedProjectDescriptors: trustedDiscovery.descriptors };
+  } catch {
+    return { snapshotError: "PRODUCT_VERIFICATION_REGISTRATION_SNAPSHOTS_UNAVAILABLE" };
+  }
+}
+
 export function createMaintenancePlan({
   trustedPolicy,
   trustedMainSha,
@@ -758,42 +798,13 @@ if (process.argv[1]?.endsWith("verification-maintenance.mjs") && process.argv[2]
   );
   const policy = JSON.parse(await readFile(options.policy, "utf8"));
   const parsedPaths = JSON.parse(await readFile(options.paths, "utf8"));
-  let snapshots = {};
-  if (Array.isArray(parsedPaths) && parsedPaths.some((file) => matchesAny(file, registrationTriggers(policy)))) {
-    if (!sha(options["trusted-base-sha"]) || (!sha(options["candidate-sha"]) && !options["candidate-root"])) {
-      snapshots = { snapshotError: "PRODUCT_VERIFICATION_REGISTRATION_SNAPSHOTS_REQUIRED" };
-    } else {
-      try {
-        snapshots = await registrationSnapshot({
-          baseSha: options["trusted-base-sha"],
-          candidateSha: options["candidate-sha"],
-          candidateRoot: options["candidate-root"] ?? process.cwd(),
-          changedPaths: Array.isArray(parsedPaths) ? parsedPaths : [parsedPaths],
-          sourceBoundFeatureCatalogReconciliationPathGlobs: sourceBoundFeatureCatalogReconciliationPaths(policy),
-        });
-        const [trustedMainTreeSha, trustedTreePaths] = await Promise.all([
-          gitTree(options["trusted-base-sha"]),
-          gitTreePaths(options["trusted-base-sha"]),
-        ]);
-        const trustedDiscovery = createTrustedMainProjectDiscoveryRegistry({
-          trustedMainSha: options["trusted-base-sha"],
-          trustedMainTreeSha,
-          trustedTreePaths,
-          sourceRegistry: snapshots.trustedRegistries.trustedProjectDiscovery,
-          owners: snapshots.trustedRegistries.ownership?.owners,
-        });
-        const discoveryValidity = validateTrustedMainProjectDiscoveryRegistry({
-          registry: trustedDiscovery,
-          trustedMainSha: options["trusted-base-sha"],
-          trustedMainTreeSha,
-        });
-        if (!discoveryValidity.valid) snapshots.snapshotError = discoveryValidity.code;
-        else snapshots.trustedProjectDescriptors = trustedDiscovery.descriptors;
-      } catch {
-        snapshots = { snapshotError: "PRODUCT_VERIFICATION_REGISTRATION_SNAPSHOTS_UNAVAILABLE" };
-      }
-    }
-  }
+  const snapshots = await loadOrdinaryCandidateSnapshots({
+    trustedPolicy: policy,
+    changedPaths: Array.isArray(parsedPaths) ? parsedPaths : [parsedPaths],
+    trustedBaseSha: options["trusted-base-sha"],
+    candidateSha: options["candidate-sha"],
+    candidateRoot: options["candidate-root"],
+  });
   const result = classifyOrdinaryCandidate({
     trustedPolicy: policy,
     changedPaths: Array.isArray(parsedPaths) ? parsedPaths : [parsedPaths],

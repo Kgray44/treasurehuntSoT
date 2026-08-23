@@ -43,6 +43,45 @@ const queuedLedger = () => {
 };
 
 describe("Nightwatch controller", () => {
+  it("uses the Mainline Train as the default ordinary path and does not dispatch legacy binding", () => {
+    const ledger = queuedLedger();
+    let now = Date.parse("2026-08-21T00:00:00.000Z");
+    const trainResults: Array<"PENDING" | "RELEASE_GO"> = ["PENDING", "RELEASE_GO"];
+    let trainDispatches = 0;
+    let bindingDispatches = 0;
+    const controller = new NightwatchController(
+      ledger,
+      {
+        ...controlPlane([]),
+        dispatchMainlineTrain: () => {
+          trainDispatches += 1;
+          return { runId: "mainline-train-remote" };
+        },
+        observeMainlineTrain: () => trainResults.shift() ?? "PENDING",
+        dispatchBinding: () => {
+          bindingDispatches += 1;
+          return { runId: "legacy-binding-should-not-run" };
+        },
+      },
+      { instanceId: "nightwatchd-train-test", now: () => now },
+    );
+    try {
+      controller.start();
+      expect(controller.tick()).toMatchObject({ state: "AWAITING_AUTHORITY" });
+      now += 1_000;
+      expect(controller.tick()).toMatchObject({ state: "TRAIN_QUALIFYING", runId: "mainline-train-remote" });
+      now += 1_000;
+      expect(controller.tick()).toMatchObject({ state: "TRAIN_QUALIFYING" });
+      now += 1_000;
+      expect(controller.tick()).toMatchObject({ state: "POST_MERGE_VERIFIED" });
+      expect(trainDispatches).toBe(1);
+      expect(bindingDispatches).toBe(0);
+      expect(ledger.acceptanceRuns()).toHaveLength(1);
+    } finally {
+      ledger.close();
+    }
+  });
+
   it("persists one authority and one binding dispatch across duplicate ticks", () => {
     const ledger = queuedLedger();
     let now = Date.parse("2026-08-21T00:00:00.000Z");

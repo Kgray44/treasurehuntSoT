@@ -1,5 +1,6 @@
 {
   "version": "1.0.0",
+  "compatibilityStatus": "COMPATIBILITY_ONLY_OWNER_EMERGENCY_BOOTSTRAP_ONLY",
   "authority": "SOUNDING_LINE_ROOT_MAINTENANCE",
   "disposition": "ROOT_MAINTENANCE_GO",
   "workflowDispatchOnly": true,

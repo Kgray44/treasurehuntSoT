@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { describe, expect, it } from "vitest";
-import { BosunAutoZeroExecutor, BosunLedger, createRepositoryAutoZeroActions, normalizeBosunFingerprint, planBaselineAutoZeroClosure } from "./bosun";
+import { BosunAutoZeroExecutor, BosunLedger, createRepositoryAutoZeroActions, normalizeBosunFingerprint, planBaselineAutoZeroClosure, projectBosunLifecycle } from "./bosun";
 import { BosunLiveRepairCoordinator } from "./bosun-live";
 import { NightwatchController, type NightwatchControlPlane } from "./controller";
 import { NightwatchLedger } from "./runtime";
@@ -22,6 +22,13 @@ const parent = (path: string, at = "2026-08-21T00:00:00.000Z") => {
 };
 
 describe("Project Bosun B0 durable convergence", () => {
+  it("projects the compact public lifecycle while preserving the detailed objective", () => {
+    expect(projectBosunLifecycle("ACTIVE", { state: "OBJECTIVE_READY" } as never)).toBe("DETECTED");
+    expect(projectBosunLifecycle("ACTIVE", { state: "QUALIFYING" } as never)).toBe("WORKING");
+    expect(projectBosunLifecycle("PARKED_OWNER", null)).toBe("OWNER_REQUIRED");
+    expect(projectBosunLifecycle("CONVERGED", null)).toBe("FIXED");
+  });
+
   it("deduplicates findings, preserves the canonical repair across restart, and projects Bridgewatch truth", () => {
     const path = databasePath();
     const { ledger, transaction } = parent(path);
@@ -42,7 +49,7 @@ describe("Project Bosun B0 durable convergence", () => {
       const restarted = new BosunLedger(path, ledger);
       try {
         const cascade = restarted.projection(Date.parse("2026-08-21T00:00:03.000Z")).cascades[0]!;
-        expect(cascade).toMatchObject({ id: first.cascade.id, activeObjectiveId: first.objective!.id, activeRepairPr: 401, repairPrCount: 1, duplicateRepairsSuppressed: 1, blockedCandidates: ["candidate-a", "candidate-b"], objective: { state: "REPAIRING" } });
+        expect(cascade).toMatchObject({ id: first.cascade.id, activeObjectiveId: first.objective!.id, activeRepairPr: 401, repairPrCount: 1, duplicateRepairsSuppressed: 1, blockedCandidates: ["candidate-a", "candidate-b"], publicLifecycle: "WORKING", objective: { state: "REPAIRING" } });
       } finally { restarted.close(); }
     } finally { try { bosun.close(); } catch {} ledger.close(); }
   });
@@ -300,7 +307,7 @@ describe("Project Bosun B1.1 live repair integration", () => {
         at: new Date(now).toISOString(),
       });
       expect(attached.maintenance).toMatchObject({ candidateId: "bosun-auto-0", state: "AWAITING_AUTHORITY", cascadeId: transaction.cascadeId });
-      expect(bosun.liveRepairForTransaction(attached.maintenance.id)).toMatchObject({ repairPr: 777, candidateSha: identity.candidateSha, baseSha: identity.baseSha });
+      expect(bosun.liveRepairForTransaction(attached.maintenance.id)).toMatchObject({ repairPr: 777, candidateSha: identity.candidateSha, baseSha: identity.baseSha, integrationPath: "SOUNDING_LINE_MAINLINE_TRAIN" });
       bosun.close();
       const controller = new NightwatchController(ledger, control, { instanceId: "nightwatchd-bosun-live", now: () => now });
       controller.start();

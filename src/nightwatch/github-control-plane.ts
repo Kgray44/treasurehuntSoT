@@ -19,6 +19,15 @@ type BaselineCertificationReceipt = {
   status?: unknown;
   protectedMain?: { sha?: unknown; treeSha?: unknown };
 };
+type MainlineTrainState = {
+  authorityBoundary?: unknown;
+  trainId?: unknown;
+  cars?: Array<{
+    candidateHeadCommitSha?: unknown;
+    candidateHeadTreeSha?: unknown;
+    state?: unknown;
+  }>;
+};
 
 const sha = (value: string) => /^[0-9a-f]{40}$/u.test(value);
 
@@ -198,6 +207,29 @@ export class GitHubCliControlPlane implements NightwatchControlPlane {
     });
   }
 
+  /**
+   * Ordinary candidates receive a private, exact label and are admitted through
+   * the Sounding Line Mainline Train. Nightwatch neither produces nor interprets
+   * qualification evidence beyond checking the immutable train record.
+   */
+  dispatchMainlineTrain(input: ExactCandidateIdentity & { transactionId: string; dispatchKey: string }) {
+    const pull = this.candidatePullRequest(input.candidateRef, input.candidateSha);
+    const trainId = this.mainlineTrainId(input.transactionId);
+    const label = this.mainlineTrainLabel(input.transactionId);
+    this.gh([
+      "api",
+      `repos/${this.repository}/issues/${pull.number}/labels`,
+      "-X",
+      "POST",
+      "-f",
+      `labels[]=${label}`,
+    ]);
+    return this.dispatch("sounding-line-mainline-train.yml", `Sounding Line mainline train ${trainId}`, {
+      train_id: trainId,
+      label,
+    });
+  }
+
   dispatchBinding(input: ExactCandidateIdentity & { authorityRunId: string; dispatchKey: string }) {
     const pull = this.candidatePullRequest(input.candidateRef, input.candidateSha);
     return this.dispatch(
@@ -226,6 +258,41 @@ export class GitHubCliControlPlane implements NightwatchControlPlane {
     }
   }
 
+  private artifactJsons<T>(runId: string, name: string): T[] {
+    const directory = mkdtempSync(join(tmpdir(), "nightwatch-artifact-"));
+    try {
+      this.gh(["run", "download", runId, "--repo", this.repository, "--name", name, "--dir", directory]);
+      const paths = readdirSync(directory, { recursive: true }).filter((entry) => String(entry).endsWith(".json"));
+      if (!paths.length) throw new Error("NIGHTWATCH_ARTIFACT_MISSING");
+      return paths.map((entry) => JSON.parse(readFileSync(join(directory, String(entry)), "utf8")) as T);
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  }
+
+  observeMainlineTrain(input: { runId: string; transactionId: string; candidateSha: string; candidateTreeSha: string }) {
+    const run = JSON.parse(
+      this.gh(["run", "view", input.runId, "--repo", this.repository, "--json", "status,conclusion"]),
+    ) as { status: string; conclusion: string | null };
+    if (run.status !== "completed") return "PENDING" as const;
+    if (run.conclusion !== "success") return "REJECTED" as const;
+    const records = this.artifactJsons<MainlineTrainState>(
+      input.runId,
+      `sounding-line-mainline-train-live-${this.mainlineTrainId(input.transactionId)}`,
+    );
+    const matched = records.some(
+      (record) =>
+        record.authorityBoundary === "V14_MAINLINE_TRAIN_LIVE" &&
+        record.cars?.some(
+          (car) =>
+            car.candidateHeadCommitSha === input.candidateSha &&
+            car.candidateHeadTreeSha === input.candidateTreeSha &&
+            car.state === "HEAD_READY",
+        ),
+    );
+    return matched ? ("RELEASE_GO" as const) : ("REJECTED" as const);
+  }
+
   observeRun(input: { runId: string; stage: "AUTHORITY" | "BINDING" }): ExternalRunResult {
     const run = JSON.parse(
       this.gh(["run", "view", input.runId, "--repo", this.repository, "--json", "status,conclusion"]),
@@ -246,6 +313,16 @@ export class GitHubCliControlPlane implements NightwatchControlPlane {
     const main = this.protectedMain();
     return main.treeSha === input.candidateTreeSha ? { mergeSha: main.sha, treeSha: main.treeSha } : null;
   }
+
+  private mainlineTrainId(transactionId: string) {
+    if (!/^[0-9a-f-]{36}$/u.test(transactionId)) throw new Error("NIGHTWATCH_TRANSACTION_ID_INVALID");
+    return `nw-${transactionId}`;
+  }
+
+  private mainlineTrainLabel(transactionId: string) {
+    return `nw-train-${transactionId}`;
+  }
+
 
   cancelRun(input: { runId: string }) {
     this.gh(["run", "cancel", input.runId, "--repo", this.repository]);
