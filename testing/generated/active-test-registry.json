@@ -171288,10 +171288,10 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-fb9b621bff2cbe98210f",
+      "id": "sl-test-5c90149bbe892df341df",
       "semanticId": "sl-semantic-e598b4e4a9a7c404df8d",
       "title": "Harborlight Phase 3 persisted browser acceptance › owner editor is private, revision-safe, and never reveals upstream source or storage identity",
-      "line": 70,
+      "line": 80,
       "file": "tests/e2e/harborlight-phase3.spec.ts",
       "project": "harborlight-phase3",
       "suiteId": "browser.community",
@@ -171326,14 +171326,14 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-fb9b621bff2cbe98210f"],
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-719b11157a10b3ca08dc",
+      "id": "sl-test-5f28ab5b3a72638a2528",
       "semanticId": "sl-semantic-20e62e67511da99a0635",
       "title": "Harborlight Phase 3 persisted browser acceptance › visibility is authorization-derived, exact-link unlisted is governed, and public projections remain privacy safe",
-      "line": 92,
+      "line": 102,
       "file": "tests/e2e/harborlight-phase3.spec.ts",
       "project": "harborlight-phase3",
       "suiteId": "browser.community",
@@ -171368,14 +171368,14 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-719b11157a10b3ca08dc"],
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-682f9c429ea770cc5078",
+      "id": "sl-test-52865e1fe169001ab8a7",
       "semanticId": "sl-semantic-38ad3ec4cff493d19b7d",
       "title": "Harborlight Phase 3 persisted browser acceptance › social and collection mutations are CSRF-bound, persisted, and deny a foreign owner",
-      "line": 122,
+      "line": 132,
       "file": "tests/e2e/harborlight-phase3.spec.ts",
       "project": "harborlight-phase3",
       "suiteId": "browser.community",
@@ -171410,7 +171410,7 @@
       "releaseRelevance": "authoritative subsystem, mainline, and release evidence",
       "gates": ["subsystem", "mainline", "release-candidate"],
       "supersessionPolicy": "ACTIVE",
-      "historicalAliases": [],
+      "historicalAliases": ["sl-test-682f9c429ea770cc5078"],
       "currentStatus": "ACTIVE"
     },
     {
