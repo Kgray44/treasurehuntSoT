@@ -374,9 +374,26 @@ function stronglyProvenProjectIds(candidatePaths = []) {
     .sort((left, right) => left.localeCompare(right));
 }
 
-export function structurallyAdmitsProjectPath(file, descriptors = [], candidatePaths = [], trustedOwners = []) {
+export function structurallyAdmitsProjectPath(
+  file,
+  descriptors = [],
+  candidatePaths = [],
+  trustedOwners = [],
+  trustedProjectDescriptors = [],
+) {
   const identity = structuralProjectPath(file);
   const provenProjectIds = stronglyProvenProjectIds(candidatePaths);
+  const trustedDescriptorMatches = (trustedProjectDescriptors ?? []).filter(
+    (descriptor) =>
+      identity?.rootType === "script" &&
+      descriptor?.projectId === identity.projectId &&
+      matchesAny(file, descriptor?.sourcePaths ?? []) &&
+      (candidatePaths ?? []).some((path) => matchesAny(path, descriptor?.testPaths ?? [])),
+  );
+  // A trusted project declaration can admit only its own declared helper when
+  // the candidate also changes its declared test surface. This bridges legacy
+  // ownership records without letting a candidate invent project scope.
+  if (trustedDescriptorMatches.length === 1) return true;
   const helperOwners = (trustedOwners ?? []).filter((owner) => {
     const ownedProject = normalized(owner?.project ?? owner?.id);
     return (

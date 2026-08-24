@@ -328,6 +328,37 @@ test("a structurally project-owned Shipwright journey runner is ordinary-admissi
   }
 });
 
+test("a trusted Shipwright descriptor admits only its declared runner with its declared test", async () => {
+  const policy = await readOrdinaryCandidatePolicy();
+  const trustedProjectDescriptors = [
+    {
+      id: "project-shipwright",
+      projectId: "shipwright",
+      sourcePaths: ["scripts/shipwright/run-phase2-journeys.mjs"],
+      testPaths: ["tests/e2e/project-shipwright-phase2.spec.ts"],
+    },
+  ];
+  const admitted = classifyOrdinaryCandidate({
+    trustedPolicy: policy,
+    trustedProjectDescriptors,
+    changedPaths: ["scripts/shipwright/run-phase2-journeys.mjs", "tests/e2e/project-shipwright-phase2.spec.ts"],
+  });
+  assert.equal(admitted.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(admitted.errors, []);
+  for (const path of [
+    "scripts/shipwright/unrelated-runner.mjs",
+    "scripts/shipwright-unrelated/run-phase2-journeys.mjs",
+  ]) {
+    const rejected = classifyOrdinaryCandidate({
+      trustedPolicy: policy,
+      trustedProjectDescriptors,
+      changedPaths: [path, "tests/e2e/project-shipwright-phase2.spec.ts"],
+    });
+    assert.equal(rejected.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED", path);
+    assert.deepEqual(rejected.errors, [`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${path}`], path);
+  }
+});
+
 test("a declaratively project-owned Harborlight migration rehearsal is ordinary-admissible without policy modification", async () => {
   const policy = await readOrdinaryCandidatePolicy();
   const ownership = JSON.parse(await readFile(new URL("../../../testing/ownership.json", import.meta.url), "utf8"));
