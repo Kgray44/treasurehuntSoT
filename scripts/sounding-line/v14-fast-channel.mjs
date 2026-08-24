@@ -33,6 +33,7 @@ export async function generateV14FastChannelPlan({
   candidateSha,
   gateId = "mainline",
   predictedIdentity = {},
+  conservativeFallbackReason = null,
 }) {
   const [
     gates,
@@ -144,6 +145,7 @@ export async function generateV14FastChannelPlan({
       performanceCeilingMs: selection.performanceCeilingMs,
     },
     projectDiscoverySummary: projectDiscoverySummary(projectDiscovery),
+    conservativeFallbackReason,
   });
 }
 

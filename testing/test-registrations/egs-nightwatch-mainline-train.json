@@ -3,7 +3,7 @@
   "id": "egs-nightwatch-mainline-train",
   "owner": "nightwatch",
   "contracts": ["nightwatch.increment-a.integration-queue"],
-  "test": { "file": "src/nightwatch/controller.test.ts", "title": "uses the Mainline Train as the default ordinary path and does not dispatch legacy binding", "suiteId": "unit.nightwatch" },
+  "test": { "file": "src/nightwatch/controller.test.ts", "title": "uses Direct Mainline for one ordinary candidate and obtains protected binding after Sounding Line GO", "suiteId": "unit.nightwatch" },
   "tier": 1,
   "risk": "MODERATE",
   "resources": ["node-slot", "vitest-worker-pool"],

@@ -145,6 +145,7 @@ export async function buildV14HostedPlan({
   authorityMode,
   candidateRef = null,
   predictedIdentity,
+  conservativeFallbackReason = null,
 }) {
   if (!qualifiedBaseSha || !/^[0-9a-f]{40}$/u.test(qualifiedBaseSha)) throw new Error("V14_QUALIFIED_BASE_REQUIRED");
   if (authorityMode === "V14_CANDIDATE") {
@@ -159,6 +160,7 @@ export async function buildV14HostedPlan({
     candidateSha: sourceSha,
     gateId,
     predictedIdentity,
+    conservativeFallbackReason,
   });
   const { selectedCasesByNode, selectionLedger } = refineV14BrowserEvidence({
     nodes: semanticPlan.nodes,
@@ -196,6 +198,7 @@ export async function buildV14HostedPlan({
       {},
     ),
     semanticFallback: semanticPlan.fallback,
+    integrationRoute: conservativeFallbackReason ? "SAFE_DIRECT_FALLBACK" : "DIRECT_MAINLINE",
     runtimeConformanceRequired: authorityIndex.runtimeConformance?.required === true,
     runtimeConformanceSuiteId: authorityIndex.runtimeConformance?.suiteId ?? null,
     nodes: selectedCasesByNode
@@ -232,6 +235,7 @@ export async function buildPlan({
   githubRef = process.env.GITHUB_REF,
   candidateRef = process.env.SOUNDING_LINE_CANDIDATE_REF,
   predictedIdentity = undefined,
+  conservativeFallbackReason = process.env.SOUNDING_LINE_CONSERVATIVE_FALLBACK_REASON || null,
 }) {
   const [manifest, suitesFile, gatesFile, registry, authorityIndex] = await Promise.all([
     json(root, "policy-manifest.json"),
@@ -268,6 +272,7 @@ export async function buildPlan({
       authorityMode: resolvedAuthority,
       candidateRef,
       predictedIdentity,
+      conservativeFallbackReason,
     });
   }
   const gate = gatesFile.gates.find((candidate) => candidate.id === gateId);

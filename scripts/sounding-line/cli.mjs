@@ -169,7 +169,9 @@ export function validatePolicy(policy) {
     authorityIndex.engineeringGovernance?.policy !== "testing/engineering-governance-policy.json" ||
     authorityIndex.engineeringGovernance?.verificationAuthority !== "SOUNDING_LINE" ||
     authorityIndex.engineeringGovernance?.flowAuthority !== "NIGHTWATCH" ||
-    authorityIndex.engineeringGovernance?.ordinaryIntegrationPath !== "SOUNDING_LINE_MAINLINE_TRAIN" ||
+    authorityIndex.engineeringGovernance?.ordinaryIntegrationPath !== "DIRECT_MAINLINE_SINGLE_CANDIDATE" ||
+    authorityIndex.engineeringGovernance?.mainlineTrain !== "OPTIONAL_MULTI_CANDIDATE_OPTIMIZATION" ||
+    authorityIndex.engineeringGovernance?.safeDirectFallback !== "FRESH_CONSERVATIVE_PROOF" ||
     authorityIndex.engineeringGovernance?.legacyMaintenance !== "COMPATIBILITY_ONLY"
   )
     errors.push("sounding-line-authority: ADR-EGS-001 authority model mismatch");
@@ -301,7 +303,12 @@ export function validatePolicy(policy) {
     engineeringGovernancePolicy?.decision !== "ADR-EGS-001" ||
     engineeringGovernancePolicy?.authorities?.verification !== "SOUNDING_LINE" ||
     engineeringGovernancePolicy?.authorities?.flow !== "NIGHTWATCH" ||
-    engineeringGovernancePolicy?.ordinary?.integrationPath !== "SOUNDING_LINE_MAINLINE_TRAIN" ||
+    engineeringGovernancePolicy?.ordinary?.integrationPath !== "DIRECT_MAINLINE_SINGLE_CANDIDATE" ||
+    engineeringGovernancePolicy?.ordinary?.mainlineTrain !== "OPTIONAL_MULTI_CANDIDATE_OPTIMIZATION" ||
+    engineeringGovernancePolicy?.ordinary?.trainFailureRoute !== "SAFE_DIRECT_FALLBACK" ||
+    engineeringGovernancePolicy?.ordinary?.ordinaryBaselineCertification !== "NOT_A_MERGE_PREREQUISITE" ||
+    engineeringGovernancePolicy?.ordinary?.ordinaryDeepwater !== "PRODUCT_REALIZATION_OR_REACHABILITY_ONLY" ||
+    engineeringGovernancePolicy?.ordinary?.provenanceOnlyGeneratedState !== "POST_MERGE_RECONCILIATION" ||
     engineeringGovernancePolicy?.controlPlaneChange?.trustedBasePolicy !== "REQUIRED" ||
     engineeringGovernancePolicy?.controlPlaneChange?.antiSelfAuthorization !==
       "TRUSTED_BASE_CLASSIFIER_AND_POLICY_REQUIRED" ||
@@ -599,12 +606,14 @@ export function validatePolicy(policy) {
   for (const owner of effectiveOwners) {
     assertKeys(
       owner,
-      ["id", "project", "sourcePaths", "testPaths", "contractIds", "supportingOwnerIds"],
+      ["id", "project", "sourcePaths", "testPaths", "helperPaths", "contractIds", "supportingOwnerIds"],
       `owner ${owner.id}`,
       errors,
     );
-    for (const value of [...owner.sourcePaths, ...owner.testPaths])
+    for (const value of [...owner.sourcePaths, ...owner.testPaths, ...(owner.helperPaths ?? [])])
       if (!isSafePath(value)) errors.push(`owner ${owner.id}: unsafe path ${value}`);
+    if (owner.helperPaths !== undefined && (!Array.isArray(owner.helperPaths) || !owner.helperPaths.length))
+      errors.push(`owner ${owner.id}: invalid helper paths`);
     for (const id of owner.contractIds)
       if (!contractIds.has(id)) errors.push(`owner ${owner.id}: missing contract ${id}`);
     if (

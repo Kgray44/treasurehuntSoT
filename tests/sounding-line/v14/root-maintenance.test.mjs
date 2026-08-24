@@ -147,5 +147,7 @@ test("repair-route inventory maps normal Bosun work separately from compatibilit
   assert.match(qualification, /tests\/sounding-line\/v14\/ledgerlight-generated-state\.test\.mjs/u);
   assert.match(qualification, /REPOSITORY_OWNER/);
   assert.match(qualification, /ROOT_MAINTENANCE_TRUSTED_MAIN_STALE/);
+  assert.match(qualification, /node scripts\/deepwater\/cli\.mjs audit\s+node scripts\/deepwater\/cli\.mjs validate/u);
+  assert.doesNotMatch(qualification, /scripts\/deepwater\/cli\.mjs generate/u);
   assert.doesNotMatch(dispatcher, /root-maintenance-selection\.mjs|root-maintenance-artifact\.mjs|\[int\]\$env:AUTHORITY_RUN_ID/u);
 });

@@ -79,8 +79,7 @@ jobs:
           node scripts/sounding-line/test-registry.mjs
           if ((Get-FileHash -Algorithm SHA256 testing/generated/active-test-registry.json).Hash -ne $before) { throw 'ROOT_MAINTENANCE_REGISTRY_NOT_FIXED_POINT' }
           node scripts/deepwater/cli.mjs audit
-          node scripts/deepwater/cli.mjs generate
-          node scripts/deepwater/cli.mjs audit
+          node scripts/deepwater/cli.mjs validate
       - name: Require full Baseline Certification
         shell: pwsh
         run: |

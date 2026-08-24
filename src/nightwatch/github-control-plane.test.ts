@@ -33,26 +33,28 @@ describe("GitHubCliControlPlane", () => {
       });
       return { runId: "mainline-train-run" };
     };
-    expect(plane.dispatchMainlineTrain({ ...identity, transactionId, dispatchKey: "nightwatch:train" })).toEqual({
+    expect(
+      plane.dispatchMainlineTrain({
+        ...identity,
+        transactionId,
+        dispatchKey: "nightwatch:train",
+        compatibleCandidates: [identity],
+      }),
+    ).toEqual({
       runId: "mainline-train-run",
     });
   });
 
-  it("binds authority dispatch to the exact certified protected-main baseline run", () => {
+  it("binds Direct Mainline authority dispatch to the exact frozen candidate and protected base", () => {
     const plane = new GitHubCliControlPlane("Kgray44/treasurehuntSoT");
     const internal = plane as unknown as {
       candidatePullRequest: (ref: string, sha: string) => { number: number };
-      baselineCertification: (value: typeof identity) => { runId: string; certificationId: string };
       dispatch: (workflow: string, title: string, inputs: Record<string, string>) => { runId: string };
     };
     internal.candidatePullRequest = (ref, sha) => {
       expect(ref).toBe(identity.candidateRef);
       expect(sha).toBe(identity.candidateSha);
       return { number: 410 };
-    };
-    internal.baselineCertification = (value) => {
-      expect(value).toMatchObject(identity);
-      return { runId: "32526739730", certificationId: "baseline:certified" };
     };
     let observed: Record<string, string> | undefined;
     internal.dispatch = (workflow, title, inputs) => {
@@ -69,8 +71,8 @@ describe("GitHubCliControlPlane", () => {
       candidate_sha: identity.candidateSha,
       candidate_ref: identity.candidateRef,
       base_sha: identity.baseSha,
-      baseline_run_id: "32526739730",
       authority_mode: "candidate",
+      verification_route: "direct-mainline",
     });
   });
 });

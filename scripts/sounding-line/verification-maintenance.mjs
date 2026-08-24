@@ -561,7 +561,7 @@ export function classifyOrdinaryCandidate({
           : []),
       ]) &&
       !isOrdinaryGovernanceDocumentation(file, trustedPolicy) &&
-      (!structurallyAdmitsProjectPath(file, projectDiscovery, paths) ||
+      (!structurallyAdmitsProjectPath(file, projectDiscovery, paths, trustedRegistries?.ownership?.owners ?? []) ||
         structurallyCollidesWithTrustedScope(file, trustedPolicy))
     )
       errors.push(`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${file}`);
@@ -674,7 +674,9 @@ export async function loadOrdinaryCandidateSnapshots({
   candidateRoot,
 }) {
   const paths = Array.isArray(changedPaths) ? changedPaths : [changedPaths];
-  if (!paths.some((file) => matchesAny(file, registrationTriggers(trustedPolicy)))) return {};
+  const requiresTrustedHelperOwnership = paths.some((file) => file.startsWith("scripts/"));
+  if (!paths.some((file) => matchesAny(file, registrationTriggers(trustedPolicy))) && !requiresTrustedHelperOwnership)
+    return {};
   if (!sha(trustedBaseSha) || (!sha(candidateSha) && !candidateRoot))
     return { snapshotError: "PRODUCT_VERIFICATION_REGISTRATION_SNAPSHOTS_REQUIRED" };
   try {
@@ -685,7 +687,10 @@ export async function loadOrdinaryCandidateSnapshots({
       changedPaths: paths,
       sourceBoundFeatureCatalogReconciliationPathGlobs: sourceBoundFeatureCatalogReconciliationPaths(trustedPolicy),
     });
-    const [trustedMainTreeSha, trustedTreePaths] = await Promise.all([gitTree(trustedBaseSha), gitTreePaths(trustedBaseSha)]);
+    const [trustedMainTreeSha, trustedTreePaths] = await Promise.all([
+      gitTree(trustedBaseSha),
+      gitTreePaths(trustedBaseSha),
+    ]);
     const trustedDiscovery = createTrustedMainProjectDiscoveryRegistry({
       trustedMainSha: trustedBaseSha,
       trustedMainTreeSha,

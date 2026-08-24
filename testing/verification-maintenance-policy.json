@@ -1,7 +1,26 @@
 {
-  "version": "1.0.2",
+  "version": "1.1.0",
   "compatibilityStatus": "COMPATIBILITY_ONLY_NO_NEW_NORMAL_CALLERS",
-  "ordinaryIntegrationPath": "SOUNDING_LINE_MAINLINE_TRAIN",
+  "ordinaryIntegrationPath": "DIRECT_MAINLINE",
+  "mainlineTrain": {
+    "role": "OPTIONAL_MULTI_CANDIDATE_OPTIMIZATION",
+    "failureRoute": "SAFE_DIRECT_FALLBACK"
+  },
+  "safeDirectFallback": {
+    "evidence": "FRESH_CONSERVATIVE_NO_REUSE",
+    "unknownImpact": "ALL_ORDINARY_REGISTERED_SUITES",
+    "binding": "EXACT_CANDIDATE_BASE_TREE"
+  },
+  "ordinaryRepairCeiling": {
+    "normalControlPlaneRepairCandidates": 0,
+    "maximumIndependentSharedRepairCandidates": 1,
+    "exhaustionRoute": "SAFE_DIRECT_FALLBACK"
+  },
+  "auxiliaryGovernance": {
+    "baselineCertification": "ASYNC_OR_CONTROL_PLANE_ONLY",
+    "deepwater": "CAPABILITY_REALIZATION_OR_REACHABILITY_ONLY",
+    "featureCatalogProvenance": "POST_MERGE_RECONCILIATION"
+  },
   "declarativeTestRegistration": {
     "pathGlobs": ["testing/test-registrations/**/*.json", "testing/test-registration.schema.json"],
     "validator": "scripts/sounding-line/test-registration.mjs",
@@ -68,8 +87,6 @@
     "bridgewatch/**",
     "deploy/nginx.conf",
     "scripts/sounding-line/status-projection.mjs",
-    "scripts/rehearse-harborlight-phase3-migrations.ts",
-    "scripts/shipwright/run-phase2-journeys.mjs",
     "Development_Docs/Project_Bridgewatch_*.md",
     "Development_Docs/Project_Bridgewatch_v2_Source_Health_Matrix.json",
     "Development_Docs/INDEX.md",

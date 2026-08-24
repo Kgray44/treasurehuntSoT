@@ -367,6 +367,7 @@ export function selectV14Mainline({
   projectDiscovery = [],
   projectDiscoverySummary = [],
   governanceDocumentation = null,
+  conservativeFallbackReason = null,
 }) {
   const selectedByFloor = new Map();
   const rules = recordOnly
@@ -435,6 +436,9 @@ export function selectV14Mainline({
     .sort((left, right) => canonicalJson(left).localeCompare(canonicalJson(right)));
   const provisionalDiscovery = projectDiscovery.filter((descriptor) => !descriptor.mayNarrowEvidence);
   const fallbackReasons = [
+    ...(conservativeFallbackReason
+      ? [{ code: "OPTIMIZATION_FALLBACK", reason: String(conservativeFallbackReason) }]
+      : []),
     ...(provisionalDiscovery.length
       ? [
           {

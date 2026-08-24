@@ -374,9 +374,24 @@ function stronglyProvenProjectIds(candidatePaths = []) {
     .sort((left, right) => left.localeCompare(right));
 }
 
-export function structurallyAdmitsProjectPath(file, descriptors = [], candidatePaths = []) {
+export function structurallyAdmitsProjectPath(file, descriptors = [], candidatePaths = [], trustedOwners = []) {
   const identity = structuralProjectPath(file);
   const provenProjectIds = stronglyProvenProjectIds(candidatePaths);
+  const helperOwners = (trustedOwners ?? []).filter((owner) => {
+    const ownedProject = normalized(owner?.project ?? owner?.id);
+    return (
+      matchesAny(file, owner?.helperPaths ?? []) ||
+      Boolean(identity?.rootType === "script" && ownedProject && ownedProject === identity.projectId)
+    );
+  });
+  const ownedHelperHasCorrelatedTest =
+    helperOwners.length === 1 &&
+    (candidatePaths ?? []).some((path) => matchesAny(path, helperOwners[0]?.testPaths ?? []));
+  // A project-owned helper can be supplied with its owning project's registered
+  // test in the same candidate.  The project declaration is trusted-main data;
+  // the candidate cannot broaden the declaration or use it without the
+  // correlated test surface.
+  if (ownedHelperHasCorrelatedTest) return true;
   if (!identity) {
     const isProjectSupplement =
       file === "README.md" ||

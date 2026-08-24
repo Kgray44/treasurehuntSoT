@@ -6,7 +6,13 @@
     "flow": "NIGHTWATCH"
   },
   "ordinary": {
-    "integrationPath": "SOUNDING_LINE_MAINLINE_TRAIN",
+    "integrationPath": "DIRECT_MAINLINE_SINGLE_CANDIDATE",
+    "mainlineTrain": "OPTIONAL_MULTI_CANDIDATE_OPTIMIZATION",
+    "trainFailureRoute": "SAFE_DIRECT_FALLBACK",
+    "ordinaryBaselineCertification": "NOT_A_MERGE_PREREQUISITE",
+    "ordinaryDeepwater": "PRODUCT_REALIZATION_OR_REACHABILITY_ONLY",
+    "provenanceOnlyGeneratedState": "POST_MERGE_RECONCILIATION",
+    "repairCeiling": "ONE_INDEPENDENT_SHARED_REPAIR_THEN_SAFE_DIRECT_FALLBACK",
     "finalAuthority": "RELEASE_GO_ONLY",
     "testRegistration": "DECLARATIVE_ORDINARY_CONFIGURATION",
     "bosunRepair": "ORDINARY_WHEN_BOUNDED_AND_NON_AUTHORITY"

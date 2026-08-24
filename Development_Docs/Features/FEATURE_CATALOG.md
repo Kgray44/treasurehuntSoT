@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `acec8485ccb981fa06bb74556cfa5fe3752920b9`
+Audited source commit: `bd84dca68360cc601ae0ad83a55cca2f711f4244`
 
 ## Status vocabulary
 
@@ -1589,6 +1589,41 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-038 - Ordinary Direct Mainline Integration
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Sounding Line and Nightwatch
+
+A bounded ordinary integration path routes one ready product candidate through exact impact proof and Sounding Line acceptance without making Mainline Train optimization, unrelated Baseline Certification, Deepwater drift, or generated provenance a universal merge toll gate.
+
+### Important subfeatures
+
+- Direct Mainline routing for one compatible ready candidate
+- Optional Mainline Train routing for multiple compatible candidates
+- One fresh Safe Direct Fallback after a rejected Train optimization
+- Conservative all-registered-suite widening for uncertain impact
+- Project-owned helper admission with a correlated registered test
+- Post-merge provenance reconciliation boundary
+
+### Primary surfaces
+
+`Nightwatch integration routing`, `Sounding Line authoritative workflow`
+
+### Meaningful limitations
+
+- Protected-main availability and Harborlight acceptance remain pending the independent Sounding Line decision and protected binding.
+- Release candidates retain exhaustive repository proof.
+
+### Evidence
+
+- path: `src/nightwatch/controller.ts`
+- path: `scripts/sounding-line/planner.mjs`
+- test: `src/nightwatch/controller.test.ts`
+- test: `tests/sounding-line/v14/ordinary-integration-fast-path.test.mjs`
+- completion-record: `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Ordinary_Integration_Fast_Path_Amendment.md`
+
+---
+
 ## FT-B012 - Nightwatch Governed Integration Queue, Acceptance Sequencer, and Live Controller
 
 **Status:** BRANCH COMPLETE NOT MERGED
@@ -1657,4 +1692,4 @@ Project Nightwatch and Bosun B1.2 provide a durable control plane that serialize
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `acec8485ccb981fa06bb74556cfa5fe3752920b9`
+Generation source commit: `bd84dca68360cc601ae0ad83a55cca2f711f4244`
