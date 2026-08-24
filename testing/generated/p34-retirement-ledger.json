@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "historicalSourceCommit": "073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9",
   "discoveredCount": 316,
   "rows": [
@@ -3667,14 +3667,15 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.community",
-      "canonicalReplacementTestIds": ["sl-test-fb9b621bff2cbe98210f"],
+      "canonicalReplacementTestIds": ["sl-test-5c90149bbe892df341df"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
       "currentSourceFiles": ["tests/e2e/harborlight-phase3.spec.ts"],
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.community contract ownership; no P34 container is selected.",
-      "canonicalReplacementSemanticIds": ["sl-semantic-e598b4e4a9a7c404df8d"]
+      "canonicalReplacementSemanticIds": ["sl-semantic-e598b4e4a9a7c404df8d"],
+      "canonicalReplacementHistoricalTestIds": ["sl-test-fb9b621bff2cbe98210f"]
     },
     {
       "historicalCaseId": "p34-719b11157a10b3ca08dc",
@@ -3687,14 +3688,15 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.community",
-      "canonicalReplacementTestIds": ["sl-test-719b11157a10b3ca08dc"],
+      "canonicalReplacementTestIds": ["sl-test-5f28ab5b3a72638a2528"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
       "currentSourceFiles": ["tests/e2e/harborlight-phase3.spec.ts"],
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.community contract ownership; no P34 container is selected.",
-      "canonicalReplacementSemanticIds": ["sl-semantic-20e62e67511da99a0635"]
+      "canonicalReplacementSemanticIds": ["sl-semantic-20e62e67511da99a0635"],
+      "canonicalReplacementHistoricalTestIds": ["sl-test-719b11157a10b3ca08dc"]
     },
     {
       "historicalCaseId": "p34-682f9c429ea770cc5078",
@@ -3707,14 +3709,15 @@
       "currentRelevance": "CURRENT_PRODUCT_CONTRACT",
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.community",
-      "canonicalReplacementTestIds": ["sl-test-682f9c429ea770cc5078"],
+      "canonicalReplacementTestIds": ["sl-test-52865e1fe169001ab8a7"],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
       "remainingLimitation": "Historical outcomes are archival evidence, not current release evidence.",
       "currentSourceFiles": ["tests/e2e/harborlight-phase3.spec.ts"],
       "currentContractIds": ["authentication-authorization"],
       "consolidationJustification": "Mapped by exact current identity or focused browser.community contract ownership; no P34 container is selected.",
-      "canonicalReplacementSemanticIds": ["sl-semantic-38ad3ec4cff493d19b7d"]
+      "canonicalReplacementSemanticIds": ["sl-semantic-38ad3ec4cff493d19b7d"],
+      "canonicalReplacementHistoricalTestIds": ["sl-test-682f9c429ea770cc5078"]
     },
     {
       "historicalCaseId": "p34-90973f0dc448e83dcece",
@@ -6481,5 +6484,11 @@
       "canonicalReplacementSemanticIds": ["sl-semantic-d167370b5104c8085150"]
     }
   ],
-  "semanticMigration": true
+  "semanticMigration": {
+    "version": 2,
+    "durableIdentity": "semanticId",
+    "generatedIdentity": "id",
+    "historicalResolution": "generated ID, semantic ID, or unambiguous historical alias",
+    "replacementCycles": "FORBIDDEN"
+  }
 }
