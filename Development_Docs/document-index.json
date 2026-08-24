@@ -411,6 +411,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Clean_Slate_Development_Pipeline_Cutover.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Features/branch-complete/project-drydock-phase3.json",
       "record_type": "archive-index",
       "status": "preserved",

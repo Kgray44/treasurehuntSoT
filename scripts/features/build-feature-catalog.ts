@@ -1,8 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
-import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { exclusionNotes, catalogRoot, loadFeatureCatalog, repositoryRoot, sortedEntries } from "./load-feature-catalog";
+import { exclusionNotes, catalogRoot, loadFeatureCatalog, sortedEntries } from "./load-feature-catalog";
 import type { FeatureCatalogEntry } from "./catalog-schema";
 
 function heading(entry: FeatureCatalogEntry): string {
@@ -28,7 +27,8 @@ function heading(entry: FeatureCatalogEntry): string {
   return lines.join("\n");
 }
 
-export function renderFeatureCatalog(entries: FeatureCatalogEntry[], auditedCommit: string): string {
+export function renderFeatureCatalog(entries: FeatureCatalogEntry[], ..._legacyArguments: string[]): string {
+  void _legacyArguments;
   const ordered = sortedEntries(entries);
   const mainline = ordered.filter((entry) => entry.status !== "BRANCH_COMPLETE_NOT_MERGED");
   const branchComplete = ordered.filter((entry) => entry.status === "BRANCH_COMPLETE_NOT_MERGED");
@@ -36,11 +36,6 @@ export function renderFeatureCatalog(entries: FeatureCatalogEntry[], auditedComm
     "# Forever Treasure Feature Catalog",
     "",
     "This generated catalog records completed, meaningful platform capabilities. It is not a changelog, task ledger, roadmap, or list of implementation trivia. Machine-readable fragments under `Development_Docs/Features/` are the source of truth.",
-    "",
-    "## Audited repository and commit",
-    "",
-    `Repository: \`Kgray44/treasurehuntSoT\``,
-    `Audited source commit: \`${auditedCommit}\``,
     "",
     "## Status vocabulary",
     "",
@@ -62,17 +57,11 @@ export function renderFeatureCatalog(entries: FeatureCatalogEntry[], auditedComm
     "",
     "Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.",
     "",
-    `Generation source commit: \`${auditedCommit}\``,
-    "",
   ].join("\n");
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const commit = execFileSync("git", ["merge-base", "HEAD", "origin/main"], {
-    cwd: repositoryRoot,
-    encoding: "utf8",
-  }).trim();
   const { entries } = loadFeatureCatalog();
-  fs.writeFileSync(path.join(catalogRoot, "FEATURE_CATALOG.md"), renderFeatureCatalog(entries, commit));
-  console.log(`Generated Feature Catalog from ${entries.length} entries at ${commit}.`);
+  fs.writeFileSync(path.join(catalogRoot, "FEATURE_CATALOG.md"), renderFeatureCatalog(entries));
+  console.log(`Generated Feature Catalog from ${entries.length} semantic entries.`);
 }

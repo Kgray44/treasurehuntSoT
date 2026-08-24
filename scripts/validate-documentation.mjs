@@ -45,7 +45,6 @@ const required = [
   "Development_Docs/README.md",
   "Development_Docs/INDEX.md",
   "Development_Docs/document-index.json",
-  ".agents/documentation-workflow.md",
 ];
 const frontmatterFields = ["title", "audience", "status", "canonical_for", "last_reviewed"];
 const rootAllowlist = new Set([
