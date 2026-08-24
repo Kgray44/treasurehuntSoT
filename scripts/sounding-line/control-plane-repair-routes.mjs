@@ -3,6 +3,7 @@ import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { rootMaintenanceEligiblePathGlobs } from "./root-maintenance.mjs";
+import { classifyEngineeringChange } from "./engineering-governance.mjs";
 
 const normalized = (value) => value.replaceAll("\\", "/");
 const glob = (pattern) =>
@@ -75,22 +76,28 @@ export async function validateExecutableRepairRoutes({ root = process.cwd(), inv
   return { requiredStages, additionalStages, lanes: laneResults, errors };
 }
 
-export function classifyRepairRoute({ file, rootPolicy, authorityPolicy, verificationPolicy }) {
+export function classifyRepairRoute({ file, rootPolicy, authorityPolicy, verificationPolicy, engineeringGovernancePolicy }) {
   if (matches(file, rootPolicy?.generatedConsequenceGlobs)) return "GENERATED_CONSEQUENCE";
-  if (matches(file, rootMaintenanceEligiblePathGlobs(rootPolicy))) return "ROOT_MAINTENANCE";
-  if (matches(file, authorityPolicy?.eligiblePathGlobs)) return "AUTHORITY_MAINTENANCE";
-  if (matches(file, verificationPolicy?.eligiblePathGlobs)) return "VERIFICATION_MAINTENANCE";
+  if (matches(file, engineeringGovernancePolicy?.ordinaryBosunRepairPathGlobs)) return "ORDINARY";
+  const engineering = classifyEngineeringChange({ trustedPolicy: engineeringGovernancePolicy, changedPaths: [file] });
+  if (engineering.classification.startsWith("CONTROL_PLANE_CHANGE")) return "CONTROL_PLANE_CHANGE";
+  // Legacy maintenance scopes are compatibility-only routes for an explicitly
+  // authorized control-plane recovery; they do not classify ordinary work.
+  if (matches(file, rootMaintenanceEligiblePathGlobs(rootPolicy))) return "CONTROL_PLANE_CHANGE";
+  if (matches(file, authorityPolicy?.eligiblePathGlobs)) return "CONTROL_PLANE_CHANGE";
+  if (matches(file, verificationPolicy?.eligiblePathGlobs)) return "CONTROL_PLANE_CHANGE";
   if (matches(file, verificationPolicy?.ordinaryCandidateEligiblePathGlobs)) return "ORDINARY";
   return null;
 }
 
 export async function buildRepairRouteInventory(root = process.cwd(), additionalPrerequisites = []) {
   const readJson = async (relative) => JSON.parse(await readFile(path.join(root, relative), "utf8"));
-  const [inventoryPolicy, rootPolicy, authorityPolicy, verificationPolicy] = await Promise.all([
+  const [inventoryPolicy, rootPolicy, authorityPolicy, verificationPolicy, engineeringGovernancePolicy] = await Promise.all([
     readJson("testing/control-plane-repair-routes.json"),
     readJson("testing/root-maintenance-policy.json"),
     readJson("testing/authority-maintenance-policy.json"),
     readJson("testing/verification-maintenance-policy.json"),
+    readJson("testing/engineering-governance-policy.json"),
   ]);
   const prerequisitePaths = new Set(inventoryPolicy.baselineSourcePaths);
   // Runtime roots are enumerated independently from the broad descriptive
@@ -115,7 +122,7 @@ export async function buildRepairRouteInventory(root = process.cwd(), additional
   const paths = [...prerequisitePaths].sort();
   const entries = paths.map((file) => ({
     file,
-    classification: classifyRepairRoute({ file, rootPolicy, authorityPolicy, verificationPolicy }),
+    classification: classifyRepairRoute({ file, rootPolicy, authorityPolicy, verificationPolicy, engineeringGovernancePolicy }),
   }));
   const missing = entries.filter((entry) => !entry.classification).map((entry) => entry.file);
   const executableRoutes = await validateExecutableRepairRoutes({ root, inventoryPolicy });

@@ -24,12 +24,24 @@ export interface NightwatchControlPlane {
     leaseAvailable: boolean;
   };
   dispatchAuthority(input: ExactCandidateIdentity & { transactionId: string; dispatchKey: string }): { runId: string };
+  /** Default ordinary path: Nightwatch admits work, Sounding Line owns the result. */
+  dispatchMainlineTrain?(input: ExactCandidateIdentity & { transactionId: string; dispatchKey: string }): { runId: string };
   dispatchBinding(
     input: ExactCandidateIdentity & { transactionId: string; authorityRunId: string; dispatchKey: string },
   ): { runId: string };
   observeRun(input: { runId: string; stage: "AUTHORITY" | "BINDING" }): ExternalRunResult;
+  observeMainlineTrain?(input: {
+    runId: string;
+    transactionId: string;
+    candidateId: string;
+    candidateSha: string;
+    candidateTreeSha: string;
+  }):
+    | "PENDING"
+    | "RELEASE_GO"
+    | "REJECTED";
   requestMerge(
-    input: ExactCandidateIdentity & { transactionId: string; bindingRunId: string },
+    input: ExactCandidateIdentity & { transactionId: string; acceptanceRunId: string; bindingRunId?: string },
   ): { mergeSha: string; treeSha: string } | null;
   protectedMain(): { sha: string; treeSha: string };
   baselineReceipt?(): { protectedMain: { sha: string; treeSha: string }; receipt: unknown } | null;
@@ -143,8 +155,7 @@ export class NightwatchController {
     this.ledger.completeReconciliation(transaction.id, { at });
     this.ledger.freezeAcceptanceCandidate(transaction.id, this.instanceId, this.leaseTtlMs, at);
     this.ledger.setRemainingClosureSteps(transaction.id, [
-      "authority qualification",
-      "protected binding",
+      "Mainline Train qualification",
       "protected merge",
       "exact-main proof",
     ]);
@@ -212,7 +223,9 @@ export class NightwatchController {
       : this.ledger.recordAcceptanceRunExternalId(
           transaction.id,
           intent.id,
-          this.controlPlane.dispatchAuthority({
+          (this.isMainlineTrainControl()
+            ? this.controlPlane.dispatchMainlineTrain!
+            : this.controlPlane.dispatchAuthority)({
             ...transaction,
             transactionId: transaction.id,
             dispatchKey: intent.dispatchKey,
@@ -220,8 +233,15 @@ export class NightwatchController {
           at,
         );
     const repair = this.bosun.liveRepairForTransaction(transaction.id);
-    if (repair && !intent.externalRunId) this.bosun.recordAuthorityAttempt(repair.cascadeId, at);
-    return { state: "AUTHORITY_RUNNING" as const, transactionId: transaction.id, runId: run.externalRunId };
+    if (repair && !intent.externalRunId)
+      this.isMainlineTrainControl()
+        ? this.bosun.recordMainlineTrainAdmission(repair.cascadeId, at)
+        : this.bosun.recordAuthorityAttempt(repair.cascadeId, at);
+    return {
+      state: this.isMainlineTrainControl() ? ("TRAIN_QUALIFYING" as const) : ("AUTHORITY_RUNNING" as const),
+      transactionId: transaction.id,
+      runId: run.externalRunId,
+    };
   }
 
   private launchBinding(transaction: AcceptanceTransaction, authorityRunId: string, at: string) {
@@ -248,11 +268,31 @@ export class NightwatchController {
     if (!transaction.authorityRunId) throw new NightwatchInvariantError("AUTHORITY_RUN_MISSING", transaction.id);
     const run = this.ledger.acceptanceRuns(transaction.id).find((entry) => entry.id === transaction.authorityRunId);
     if (!run?.externalRunId) throw new NightwatchInvariantError("AUTHORITY_EXTERNAL_RUN_MISSING", transaction.id);
-    const result = this.controlPlane.observeRun({ runId: run.externalRunId, stage: "AUTHORITY" });
+    const result = this.isMainlineTrainControl()
+      ? this.controlPlane.observeMainlineTrain!({
+          runId: run.externalRunId,
+          transactionId: transaction.id,
+          candidateId: transaction.candidateId,
+          candidateSha: transaction.candidateSha,
+          candidateTreeSha: transaction.candidateTreeSha,
+        })
+      : this.controlPlane.observeRun({ runId: run.externalRunId, stage: "AUTHORITY" });
     if (result === "PENDING")
-      return { state: "AUTHORITY_RUNNING" as const, transactionId: transaction.id, runId: run.externalRunId };
+      return {
+        state: this.isMainlineTrainControl() ? ("TRAIN_QUALIFYING" as const) : ("AUTHORITY_RUNNING" as const),
+        transactionId: transaction.id,
+        runId: run.externalRunId,
+      };
     if (result !== "RELEASE_GO" && result !== "REJECTED")
       throw new NightwatchInvariantError("AUTHORITY_RESULT_INVALID", result);
+    if (this.isMainlineTrainControl()) {
+      this.ledger.recordMainlineTrainResult(transaction.id, run.id, result, at);
+      if (result === "RELEASE_GO") {
+        this.ledger.setRemainingClosureSteps(transaction.id, ["protected merge", "exact-main proof"]);
+        return this.merge(this.ledger.getAcceptanceTransaction(transaction.id), at);
+      }
+      return { state: "AUTHORITY_REJECTED" as const, transactionId: transaction.id };
+    }
     this.ledger.recordAuthorityResult(transaction.id, run.id, result, at);
     if (result === "RELEASE_GO") {
       this.ledger.setRemainingClosureSteps(transaction.id, [
@@ -295,9 +335,10 @@ export class NightwatchController {
   }
 
   private merge(transaction: AcceptanceTransaction, at: string) {
-    if (!transaction.bindingRunId) throw new NightwatchInvariantError("BINDING_RUN_MISSING", transaction.id);
-    const binding = this.ledger.acceptanceRuns(transaction.id).find((entry) => entry.id === transaction.bindingRunId);
-    if (!binding?.externalRunId) throw new NightwatchInvariantError("BINDING_EXTERNAL_RUN_MISSING", transaction.id);
+    const acceptanceRunId = transaction.bindingRunId ?? transaction.authorityRunId;
+    if (!acceptanceRunId) throw new NightwatchInvariantError("ACCEPTANCE_RUN_MISSING", transaction.id);
+    const acceptanceRun = this.ledger.acceptanceRuns(transaction.id).find((entry) => entry.id === acceptanceRunId);
+    if (!acceptanceRun?.externalRunId) throw new NightwatchInvariantError("ACCEPTANCE_EXTERNAL_RUN_MISSING", transaction.id);
     const main = this.controlPlane.protectedMain();
     if (main.sha !== transaction.baseSha) {
       this.ledger.recordTransactionMainAdvance(transaction.id, "PROTECTED_MAIN_ADVANCED_BEFORE_MERGE", at);
@@ -306,7 +347,8 @@ export class NightwatchController {
     const merged = this.controlPlane.requestMerge({
       ...transaction,
       transactionId: transaction.id,
-      bindingRunId: binding.externalRunId,
+      acceptanceRunId: acceptanceRun.externalRunId,
+      bindingRunId: transaction.bindingRunId ? acceptanceRun.externalRunId : undefined,
     });
     if (!merged) return { state: "MERGING" as const, transactionId: transaction.id };
     this.ledger.recordIntegrated(transaction.id, at);
@@ -332,5 +374,9 @@ export class NightwatchController {
       );
     }
     return { state: "POST_MERGE_VERIFIED" as const, transactionId: transaction.id };
+  }
+
+  private isMainlineTrainControl() {
+    return typeof this.controlPlane.dispatchMainlineTrain === "function" && typeof this.controlPlane.observeMainlineTrain === "function";
   }
 }

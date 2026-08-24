@@ -549,6 +549,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/ADR-EGS-001_Engineering_Governance_Simplification.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Phase_1_Cross_Project_Convergence_Design_Record.md",
       "record_type": "governing-record",
       "status": "preserved",

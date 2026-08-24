@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Sounding Line declarative test registration",
+  "type": "object",
+  "required": ["schemaVersion", "id", "owner", "contracts", "test", "tier", "risk", "adapter", "resources", "parallelSafety", "releaseRelevant"],
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9.-]+$" },
+    "owner": { "type": "string" },
+    "contracts": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "test": { "type": "object", "required": ["file", "title", "suiteId"] },
+    "tier": { "enum": [1, 2, 3, 4] },
+    "risk": { "enum": ["LOW", "MODERATE", "HIGH", "CRITICAL"] },
+    "adapter": { "type": "string" },
+    "resources": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "parallelSafety": { "enum": ["READ_ONLY_PARALLEL", "ISOLATED_MUTABLE_PARALLEL", "EXCLUSIVE"] },
+    "releaseRelevant": { "type": "boolean" }
+  }
+}

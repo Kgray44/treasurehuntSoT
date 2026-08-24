@@ -1,5 +1,12 @@
 {
   "version": "1.0.2",
+  "compatibilityStatus": "COMPATIBILITY_ONLY_NO_NEW_NORMAL_CALLERS",
+  "ordinaryIntegrationPath": "SOUNDING_LINE_MAINLINE_TRAIN",
+  "declarativeTestRegistration": {
+    "pathGlobs": ["testing/test-registrations/**/*.json", "testing/test-registration.schema.json"],
+    "validator": "scripts/sounding-line/test-registration.mjs",
+    "classification": "ORDINARY"
+  },
   "authority": "SOUNDING_LINE_VERIFICATION_MAINTENANCE",
   "trustedMainOnly": true,
   "protectedContext": "Sounding Line / Mainline Decision",
@@ -108,6 +115,7 @@
       "testing/impact-map.json",
       "testing/suites.json",
       "testing/file-dispositions.json",
+      "testing/test-registrations/**",
       "testing/generated/active-test-registry.json",
       "playwright*.config.*",
       "scripts/sounding-line/test-registry.mjs"
@@ -117,6 +125,7 @@
       "testing/impact-map.json",
       "testing/suites.json",
       "testing/file-dispositions.json",
+      "testing/test-registrations/**",
       "playwright*.config.*",
       "scripts/sounding-line/test-registry.mjs"
     ],

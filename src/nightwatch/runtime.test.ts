@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { describe, expect, it } from "vitest";
-import { NightwatchInvariantError, NightwatchLedger } from "./runtime";
+import { NightwatchInvariantError, NightwatchLedger, projectCandidateLifecycle } from "./runtime";
 
 const databasePath = () => join(mkdtempSync(join(tmpdir(), "nightwatch-increment-a-")), "nightwatch.sqlite");
 const candidateInput = (id: string, objectiveId = `objective-${id}`) => ({
@@ -33,6 +33,15 @@ const completeFront = (ledger: NightwatchLedger, id: string, owner = "integrator
 };
 
 describe("Nightwatch candidate lifecycle", () => {
+  it("publishes the simplified lifecycle without discarding detailed ledger states", () => {
+    expect(projectCandidateLifecycle({ state: "QUEUE_READY" })).toBe("READY");
+    expect(projectCandidateLifecycle({ state: "RECONCILING" })).toBe("TRAIN_ADMITTED");
+    expect(projectCandidateLifecycle({ state: "ACCEPTANCE_PENDING" }, { state: "AUTHORITY_RUNNING" })).toBe(
+      "QUALIFYING",
+    );
+    expect(projectCandidateLifecycle({ state: "PARKED_OWNER_REQUIRED" })).toBe("OWNER_REQUIRED");
+  });
+
   it("enforces explicit legal transitions and fails closed on illegal ones", () => {
     const ledger = new NightwatchLedger(":memory:");
     try {

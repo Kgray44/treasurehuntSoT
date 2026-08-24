@@ -1463,7 +1463,7 @@ test("candidate and train admission share the same trusted classifier entrypoint
   );
   assert.match(
     workflow,
-    /verification-maintenance\.mjs ordinary --policy testing\/verification-maintenance-policy\.json/u,
+    /engineering-governance\.mjs ordinary --governance testing\/engineering-governance-policy\.json --ordinary-policy testing\/verification-maintenance-policy\.json/u,
   );
   assert.doesNotMatch(workflow, /function Test-TrustedGlob/u);
 });

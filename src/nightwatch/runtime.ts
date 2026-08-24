@@ -23,6 +23,21 @@ export const candidateStates = [
 ] as const;
 
 export type CandidateState = (typeof candidateStates)[number];
+/** Public, deliberately compact flow projection. Detailed ledger states remain auditable below it. */
+export const publicCandidateLifecycleStates = [
+  "IMPLEMENTING",
+  "READY",
+  "QUEUED",
+  "TRAIN_ADMITTED",
+  "QUALIFYING",
+  "MERGED",
+  "RETURN_TO_DEVELOPMENT",
+  "BLOCKED_BY_MAINTENANCE",
+  "OWNER_REQUIRED",
+  "PARKED_LOOP_GUARD",
+  "WITHDRAWN",
+] as const;
+export type PublicCandidateLifecycleState = (typeof publicCandidateLifecycleStates)[number];
 export type LeaseType =
   | "SOURCE_WRITE"
   | "MIGRATION_RANGE"
@@ -266,6 +281,29 @@ export interface Candidate extends CandidateInput {
   terminalReason: string | null;
 }
 
+/**
+ * Maps durable internal queue/acceptance detail to the small lifecycle exposed
+ * by Nightwatch. This is a projection only: it must never be used to decide
+ * Sounding Line evidence or protected acceptance.
+ */
+export function projectCandidateLifecycle(
+  candidate: Pick<Candidate, "state">,
+  transaction?: Pick<AcceptanceTransaction, "state"> | null,
+): PublicCandidateLifecycleState {
+  if (candidate.state === "POST_MERGE_VERIFIED" || candidate.state === "INTEGRATED") return "MERGED";
+  if (candidate.state === "IMPLEMENTING" || candidate.state === "LOCALLY_COMPLETE") return "IMPLEMENTING";
+  if (candidate.state === "QUEUE_READY") return "READY";
+  if (candidate.state === "QUEUED" || candidate.state === "QUEUE_FRONT") return "QUEUED";
+  if (candidate.state === "BLOCKED_BY_BOSUN") return "BLOCKED_BY_MAINTENANCE";
+  if (candidate.state === "PARKED_OWNER_REQUIRED") return "OWNER_REQUIRED";
+  if (candidate.state === "PARKED_LOOP_GUARD") return "PARKED_LOOP_GUARD";
+  if (candidate.state === "WITHDRAWN" || candidate.state === "SUPERSEDED") return "WITHDRAWN";
+  if (transaction && ["CANDIDATE_FROZEN", "AWAITING_AUTHORITY"].includes(transaction.state)) return "TRAIN_ADMITTED";
+  if (transaction && ["AUTHORITY_RUNNING", "AUTHORITY_ACCEPTED", "MERGING"].includes(transaction.state))
+    return "QUALIFYING";
+  return candidate.state === "RECONCILING" ? "TRAIN_ADMITTED" : "QUALIFYING";
+}
+
 export interface QueueInput {
   priority?: number;
   readyAt?: string;
@@ -321,13 +359,14 @@ export interface NightwatchProjection {
   schemaVersion: 1;
   observedAt: string;
   state: "AVAILABLE";
-  candidates: Array<Candidate & { ageMs: number; blockers: string[] }>;
+  candidates: Array<Candidate & { ageMs: number; blockers: string[]; publicLifecycle: PublicCandidateLifecycleState }>;
   queue: QueueEntry[];
   queueFront: (Candidate & { ageMs: number; blockers: string[] }) | null;
   migrationReservations: MigrationReservation[];
   migrationCollisions: MigrationFamilyInspection[];
   leases: Lease[];
   integrationLifecycleState: CandidateState | "IDLE";
+  publicIntegrationLifecycleState: PublicCandidateLifecycleState | "IDLE";
   acceptanceOwnership: Lease | null;
   controller: NightwatchControllerHealth;
 }
@@ -1910,6 +1949,31 @@ export class NightwatchLedger {
     });
   }
 
+  /**
+   * The default Mainline Train is itself Sounding Line qualification. It
+   * replaces the historical per-candidate authority-plus-binding sequence,
+   * while retaining the AUTHORITY run slot as compatibility-only audit data.
+   */
+  recordMainlineTrainResult(transactionId: string, runId: string, result: "RELEASE_GO" | "REJECTED", at = iso()) {
+    return this.inTransaction(() => {
+      const transaction = this.getAcceptanceTransaction(transactionId);
+      if (transaction.state !== "AUTHORITY_RUNNING" || transaction.authorityRunId !== runId)
+        throw new NightwatchInvariantError("MAINLINE_TRAIN_RUN_MISMATCH", transactionId);
+      this.db
+        .prepare("UPDATE acceptance_runs SET status = ?, completed_at = ? WHERE run_id = ?")
+        .run(result, at, runId);
+      const run = this.acceptanceRuns(transactionId).find((entry) => entry.id === runId)!;
+      this.recordCostDuration(transaction.cascadeId, "authority", Math.max(0, Date.parse(at) - Date.parse(run.dispatchedAt)));
+      this.db
+        .prepare("UPDATE acceptance_transactions SET authority_result = ?, updated_at = ? WHERE transaction_id = ?")
+        .run(result, at, transactionId);
+      this.event("acceptance-run", runId, "MAINLINE_TRAIN_RESULT", { transactionId, result }, at);
+      if (result === "REJECTED") return this.setTransactionState(transactionId, "AUTHORITY_REJECTED", at);
+      this.setTransactionState(transactionId, "AUTHORITY_ACCEPTED", at);
+      return this.setTransactionState(transactionId, "MERGING", at);
+    });
+  }
+
   recordBindingResult(transactionId: string, runId: string, result: "BINDING_PASS" | "BINDING_REJECTED", at = iso()) {
     return this.inTransaction(() => {
       const transaction = this.getAcceptanceTransaction(transactionId);
@@ -2332,10 +2396,17 @@ export class NightwatchLedger {
 
   projection(now = Date.now()): NightwatchProjection {
     const queues = this.queueEntries();
+    const transactions = this.acceptanceTransactions();
     const candidates = this.candidates().map((candidate) => {
       const queue = queues.find((entry) => entry.candidateId === candidate.id);
       const ageFrom = queue?.readyAt ?? candidate.createdAt;
-      return { ...candidate, ageMs: Math.max(0, now - Date.parse(ageFrom)), blockers: queue?.blockers ?? [] };
+      const transaction = transactions.filter((entry) => entry.candidateId === candidate.id).at(-1) ?? null;
+      return {
+        ...candidate,
+        ageMs: Math.max(0, now - Date.parse(ageFrom)),
+        blockers: queue?.blockers ?? [],
+        publicLifecycle: projectCandidateLifecycle(candidate, transaction),
+      };
     });
     const queueFront = candidates.find((candidate) => candidate.id === this.currentQueueFront()?.id) ?? null;
     const acceptanceOwnership = this.leases("ACTIVE").find((lease) => lease.type === "INTEGRATION_ACCEPTANCE") ?? null;
@@ -2351,6 +2422,7 @@ export class NightwatchLedger {
       migrationCollisions,
       leases: this.leases(),
       integrationLifecycleState: queueFront?.state ?? "IDLE",
+      publicIntegrationLifecycleState: queueFront?.publicLifecycle ?? "IDLE",
       acceptanceOwnership,
       controller: this.controllerHealth(now),
     };

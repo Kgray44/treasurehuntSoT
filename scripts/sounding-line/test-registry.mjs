@@ -7,6 +7,7 @@ import { format, resolveConfig } from "prettier";
 import ts from "typescript";
 import { promisify } from "node:util";
 import { carryForwardHistoricalAliases, semanticTestId, validateRegistryIdentity } from "./test-identity.mjs";
+import { applyDeclarativeRegistrations, loadDeclarativeRegistrations } from "./test-registration.mjs";
 
 const root = process.cwd();
 const registryPath = path.join(root, "testing", "generated", "active-test-registry.json");
@@ -479,6 +480,19 @@ for (const absolute of sources.flat()) {
 }
 await ensurePrismaClient();
 cases.push(...(await discoverPlaywright()));
+const declarativeRegistrations = await loadDeclarativeRegistrations(root);
+const declarativeOwnership = JSON.parse(await fs.readFile(path.join(root, "testing", "ownership.json"), "utf8"));
+const declarativeContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"));
+const declarativeSuites = JSON.parse(await fs.readFile(path.join(root, "testing", "suites.json"), "utf8"));
+const effectiveCases = applyDeclarativeRegistrations({
+  registrations: declarativeRegistrations,
+  ownership: declarativeOwnership,
+  contracts: declarativeContracts,
+  suites: declarativeSuites,
+  cases,
+});
+cases.length = 0;
+cases.push(...effectiveCases);
 carryForwardHistoricalAliases(cases, previousRegistry.cases ?? []);
 validateRegistryIdentity(cases);
 await fs.mkdir(path.join(root, "testing", "generated"), { recursive: true });

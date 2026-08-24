@@ -8,6 +8,10 @@ last_reviewed: 2026-08-21
 
 # Engineering-record index
 
+## Engineering governance simplification
+
+- [ADR-EGS-001 Engineering Governance Simplification](Governing/ADR-EGS-001_Engineering_Governance_Simplification.md) is the current two-authority decision: Sounding Line owns verification and protected acceptance; Nightwatch owns engineering flow and scheduling. It supersedes the operational use of the layered maintenance hierarchy while preserving its historical records and temporary compatibility adapters.
+
 - `Governing/`: accepted policies and foundational specifications.
 - `Governance/`: current repository-wide governance standards and their source records.
 - `Projects/`: current project governing documents and project-specific records.

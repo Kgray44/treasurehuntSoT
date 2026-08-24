@@ -52,6 +52,7 @@ const registryFiles = [
   "verification-maintenance-policy.json",
   "authority-maintenance-policy.json",
   "root-maintenance-policy.json",
+  "engineering-governance-policy.json",
   "control-plane-repair-routes.json",
   "trusted-project-discovery.json",
 ];
@@ -124,6 +125,7 @@ export function validatePolicy(policy) {
     "verification-maintenance-policy": maintenancePolicy,
     "authority-maintenance-policy": authorityMaintenancePolicy,
     "root-maintenance-policy": rootMaintenancePolicy,
+    "engineering-governance-policy": engineeringGovernancePolicy,
     "control-plane-repair-routes": repairRoutePolicy,
     "trusted-project-discovery": trustedProjectDiscovery,
   } = policy;
@@ -141,6 +143,7 @@ export function validatePolicy(policy) {
     [
       "authority",
       "currentAuthorityVersion",
+      "engineeringGovernance",
       "pendingV14",
       "effectiveV14",
       "correctiveActivation",
@@ -161,6 +164,15 @@ export function validatePolicy(policy) {
     errors,
   );
   if (authorityIndex.authority !== "SOUNDING_LINE") errors.push("sounding-line-authority: authority mismatch");
+  if (
+    authorityIndex.engineeringGovernance?.decision !== "ADR-EGS-001" ||
+    authorityIndex.engineeringGovernance?.policy !== "testing/engineering-governance-policy.json" ||
+    authorityIndex.engineeringGovernance?.verificationAuthority !== "SOUNDING_LINE" ||
+    authorityIndex.engineeringGovernance?.flowAuthority !== "NIGHTWATCH" ||
+    authorityIndex.engineeringGovernance?.ordinaryIntegrationPath !== "SOUNDING_LINE_MAINLINE_TRAIN" ||
+    authorityIndex.engineeringGovernance?.legacyMaintenance !== "COMPATIBILITY_ONLY"
+  )
+    errors.push("sounding-line-authority: ADR-EGS-001 authority model mismatch");
   if (authorityIndex.currentAuthorityVersion !== "1.3" && authorityIndex.currentAuthorityVersion !== "1.4")
     errors.push("sounding-line-authority: current authority version mismatch");
   const v14DocumentMatches = (record) =>
@@ -285,6 +297,20 @@ export function validatePolicy(policy) {
   )
     errors.push("sounding-line-authority: minimum sufficient evidence performance contract mismatch");
   if (
+    engineeringGovernancePolicy?.version !== "1.0.0" ||
+    engineeringGovernancePolicy?.decision !== "ADR-EGS-001" ||
+    engineeringGovernancePolicy?.authorities?.verification !== "SOUNDING_LINE" ||
+    engineeringGovernancePolicy?.authorities?.flow !== "NIGHTWATCH" ||
+    engineeringGovernancePolicy?.ordinary?.integrationPath !== "SOUNDING_LINE_MAINLINE_TRAIN" ||
+    engineeringGovernancePolicy?.controlPlaneChange?.trustedBasePolicy !== "REQUIRED" ||
+    engineeringGovernancePolicy?.controlPlaneChange?.antiSelfAuthorization !==
+      "TRUSTED_BASE_CLASSIFIER_AND_POLICY_REQUIRED" ||
+    engineeringGovernancePolicy?.breakGlass?.normalPathSelfVerification !== "REQUIRED" ||
+    !Array.isArray(engineeringGovernancePolicy?.controlPlanePathGlobs) ||
+    !engineeringGovernancePolicy.controlPlanePathGlobs.length
+  )
+    errors.push("engineering-governance-policy: ADR-EGS-001 fail-closed contract mismatch");
+  if (
     maintenancePolicy?.authority !== "SOUNDING_LINE_VERIFICATION_MAINTENANCE" ||
     maintenancePolicy?.trustedMainOnly !== true ||
     maintenancePolicy?.protectedContext !== authorityIndex.requiredProtectedAuthorityCheck ||
@@ -400,6 +426,7 @@ export function validatePolicy(policy) {
   const recordOnlyClosure = authorityIndex.governingPolicies?.recordOnlyClosure;
   if (
     recordOnlyClosure?.mode !== "FAIL_CLOSED_PROTECTED_MERGE_FINALIZATION" ||
+    recordOnlyClosure?.ordinaryPostMergeClosureRequired !== false ||
     !Array.isArray(recordOnlyClosure.allowedRecordPathClasses) ||
     !Array.isArray(recordOnlyClosure.requiredEvidence) ||
     !recordOnlyClosure.requiredEvidence.includes("PRIOR_PROTECTED_RELEASE_GO") ||
