@@ -41,13 +41,17 @@ test.describe.serial("Harborlight Phase 3 persisted browser acceptance", () => {
     const page = fixture.owner.page;
     await page.goto(`/community?q=${encodeURIComponent(fixture.listing.title)}`);
     await expect(page.getByRole("heading", { name: "Find your next bearing" })).toBeVisible();
-    await expect(page.getByRole("link", { name: fixture.listing.title })).toBeVisible();
+    // The content-first landing shelves can also surface a matching public chart.
+    // Scope this assertion to the explicit query-results projection rather than
+    // coupling the journey to how many editorial shelves also contain it.
+    const publicResults = page.locator('[aria-label="Public Community Harbor results"]');
+    await expect(publicResults.getByRole("link", { name: fixture.listing.title })).toBeVisible();
     await expect(page.getByText("Hidden unlisted listing")).toHaveCount(0);
 
     await page.getByRole("searchbox", { name: "Search public Community Harbor" }).focus();
     await expect(page.getByRole("searchbox", { name: "Search public Community Harbor" })).toBeFocused();
     await page.getByRole("button", { name: "Clear search and filters" }).press("Enter");
-    await expect(page).toHaveURL(/\/community\?sort=FEATURED$/u);
+    await expect(page).toHaveURL(/\/community$/u);
     await page.goBack();
     await expect(page).toHaveURL(/q=/u);
 
@@ -64,7 +68,13 @@ test.describe.serial("Harborlight Phase 3 persisted browser acceptance", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/community/guides");
     await expect(page.getByRole("heading", { name: "Shipwright's Workshop" })).toBeVisible();
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
+    // Let the responsive headline settle after its web font resolves before
+    // taking the layout measurement; the stable rendered document must never
+    // create a horizontal viewport overflow.
+    await page.evaluate(() => document.fonts.ready);
+    await expect
+      .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth))
+      .toBeTruthy();
   });
 
   test("owner editor is private, revision-safe, and never reveals upstream source or storage identity", async () => {
@@ -255,7 +265,15 @@ async function createActor(browser: Browser, handle: string): Promise<SignedInAc
   });
   const account = await db.userAccount.create({ data: { status: "ACTIVE", legacyGameMasterId: gm.id } });
   await db.playerProfile.create({
-    data: { accountId: account.id, displayName: handle, status: "ACTIVE", claimedAt: new Date() },
+    data: {
+      accountId: account.id,
+      displayName: handle,
+      handle,
+      normalizedHandle: handle,
+      defaultVisibility: "PUBLIC",
+      status: "ACTIVE",
+      claimedAt: new Date(),
+    },
   });
   const profile = await db.communityProfile.create({
     data: { accountId: account.id, handle, normalizedHandle: handle, displayName: handle, visibility: "COMMUNITY" },

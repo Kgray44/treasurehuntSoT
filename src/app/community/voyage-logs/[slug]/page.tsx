@@ -11,14 +11,26 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slug = (await params).slug;
-  const log = (await readPublicVoyageLogs(slug))[0];
-  return log
+  const [communityLog] = await readPublicVoyageLogs(slug);
+  if (communityLog)
+    return harborSharingMetadata({
+      kind: "voyage-log",
+      visibility: "COMMUNITY",
+      canonicalPath: `/community/voyage-logs/${encodeURIComponent(communityLog.slug)}`,
+      title: communityLog.title,
+      safeDescription: communityLog.safeSummary,
+    });
+
+  // Metadata has no viewer identity. The anonymous safe projection can only
+  // resolve an exact-link UNLISTED log, never private or crew-only content.
+  const unlistedLog = await readVoyageLogForViewer(slug);
+  return unlistedLog
     ? harborSharingMetadata({
         kind: "voyage-log",
-        visibility: "COMMUNITY",
-        canonicalPath: `/community/voyage-logs/${encodeURIComponent(log.slug)}`,
-        title: log.title,
-        safeDescription: log.safeSummary,
+        visibility: "UNLISTED",
+        canonicalPath: `/community/voyage-logs/${encodeURIComponent(unlistedLog.slug)}`,
+        title: unlistedLog.title,
+        safeDescription: unlistedLog.safeSummary,
       })
     : { robots: { index: false, follow: false, nocache: true } };
 }
