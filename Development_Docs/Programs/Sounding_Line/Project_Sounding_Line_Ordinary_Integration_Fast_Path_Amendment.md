@@ -43,10 +43,11 @@ meaning is still candidate-time work; generated commit and landed-SHA
 provenance is reconciled after protected landing.
 
 Derived records declare their generator, semantic inputs, and outputs in
-trusted policy. Candidate-caused generated drift remains a candidate blocker.
-A deterministically regenerated record that the candidate did not affect is
-recorded as asynchronous nonblocking drift; its full path remains bound while
-only declared record-only outputs are excluded from semantic impact selection.
+trusted policy. Candidate-caused semantic generated-state drift remains a
+candidate blocker. A deterministically regenerated record-only output is
+recorded as asynchronous nonblocking reconciliation even when a candidate
+touches its inputs; its full path remains bound while only declared record-only
+outputs are excluded from semantic impact selection.
 
 Trusted project ownership can declare bounded helper paths. A helper is
 ordinary-admissible only with its correlated owned test in the same candidate;

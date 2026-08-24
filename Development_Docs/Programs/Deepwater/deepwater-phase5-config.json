@@ -9,7 +9,7 @@
     "scope": "Continuous governance, Feature Catalog integration, regression prevention, drift detection, and program closure."
   },
   "baseOriginMainSha": "78610ae4dd63aac9ff45c9c7646c78b38c6ab19a",
-  "soundingLinePolicyDigest": "b41b5b32503a590fb85d38f4210005697c27c13e37f878dbd6cf0343154c33e9",
+  "soundingLinePolicyDigest": "65b0401f1102d549642dbf06c77f29c6d5220a632695e5d4db197cd921d1e547",
   "v14Reconciliation": {
     "pausedCheckpoint": "95497c3d32e76d81723500235821829bd3af58a2",
     "preCutoverBaseOriginMainSha": "60b89841986e66fbc2c0828489d38002a1617506",

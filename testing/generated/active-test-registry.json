@@ -113275,7 +113275,7 @@
       "id": "sl-test-cf27091a95a6dd606a55",
       "semanticId": "sl-semantic-3fcc0f137d7cac7a4fb3",
       "title": "an undeclared executable path still widens conservatively",
-      "line": 95,
+      "line": 111,
       "file": "tests/sounding-line/v14/ordinary-integration-fast-path.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
