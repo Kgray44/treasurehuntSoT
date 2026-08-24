@@ -223,8 +223,8 @@ export function verificationCommands(plan) {
   if (plan.buildRequired) commands.push(["npm", ["run", "build"]]);
   if (plan.selected.browserTests.length) {
     commands.push([
-      "npx",
-      ["--no-install", "prisma", "db", "push", "--skip-generate", "--schema", "prisma/schema.sqlite.prisma"],
+      process.execPath,
+      ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", plan.databaseUrl],
     ]);
     commands.push([
       "npx",
