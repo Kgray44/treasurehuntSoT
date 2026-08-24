@@ -57,15 +57,30 @@ asking merely to inspect another relevant source. It retains normal approval
 boundaries.
 
 `UNATTENDED_CONTINUATION` has the same authority and must continue through all
-locally attainable work. It does not stop for a needed document/source/history
-or test, normal dependency setup, task-local configuration, a focused failure,
-a task-owned alternate port, compilation repair, regeneration, low confidence
-that targeted expansion can resolve, or an independently blocked lane.
+locally attainable work. When the active objective has a standing delegation
+envelope, it must route routine owner-classified findings through that envelope
+instead of stopping merely because they are governance-adjacent. A safe,
+reversible, in-scope delegated repair, deterministic regeneration, candidate
+or policy identity reconciliation, bounded Bosun maintenance handoff, or
+materially different strategy continues after its normal focused proof.
+
+It does not stop for a needed document/source/history or test, normal
+dependency setup, task-local configuration, a focused failure, a task-owned
+alternate port, compilation repair, regeneration, low confidence that targeted
+expansion can resolve, or an independently blocked lane. An unchanged blind
+retry is not continuation: change the strategy or a semantic precondition, or
+record the bounded escalation.
 
 Both profiles stop or seek direction for a destructive or irreversible action
 outside authorization, a required external/costly action, unavailable required
 credentials, a materially scope-expanding request, unrelated-work risk, or an
 irreconcilable authority conflict with no safe local path.
+
+For an envelope-covered objective, a genuine stop must contain the exact
+protected-main and candidate identities, root cause, delegation gap, hard-stop
+class, attempted strategies, the minimum decision with consequences, and the
+preserved work location. Park the exact candidate; do not create a same-root
+successor lineage.
 
 ## Usage accounting
 

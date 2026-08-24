@@ -11,6 +11,12 @@
     "testRegistration": "DECLARATIVE_ORDINARY_CONFIGURATION",
     "bosunRepair": "ORDINARY_WHEN_BOUNDED_AND_NON_AUTHORITY"
   },
+  "unattendedAutonomy": {
+    "policy": "testing/unattended-autonomy-policy.json",
+    "standingDelegation": "OBJECTIVE_SCOPED_REQUIRED",
+    "routing": ["AUTO_DELEGATED", "DELEGATED_WITH_BUDGET", "TRUE_OWNER_REQUIRED"],
+    "verificationAuthority": "SOUNDING_LINE_UNCHANGED"
+  },
   "releaseCandidate": "EXHAUSTIVE_UNCHANGED",
   "controlPlaneChange": {
     "ownerAuthorization": "EXPLICIT_REPOSITORY_OWNER_DISPATCH",
@@ -43,6 +49,7 @@
     "testing/verification-maintenance-policy.json",
     "testing/authority-maintenance-policy.json",
     "testing/root-maintenance-policy.json",
+    "testing/unattended-autonomy-policy.json",
     "testing/control-plane-repair-routes.json",
     "testing/policy-manifest.json",
     "testing/test-registration.schema.json",
@@ -54,9 +61,11 @@
     "scripts/generate-document-index.mjs",
     "scripts/private-content/scan.ts",
     "scripts/validate-documentation.mjs",
+    ".agents/unattended-autonomy-policy.md",
     ".github/workflows/sounding-line-*.yml",
     ".github/workflows/nightwatch-baseline-certification.yml",
     "Development_Docs/Governing/ADR-EGS-001_Engineering_Governance_Simplification.md",
+    "Development_Docs/Projects/Project_Nightwatch/**",
     "Development_Docs/Programs/Deepwater/**",
     "Development_Docs/Programs/Sounding_Line/**"
   ],

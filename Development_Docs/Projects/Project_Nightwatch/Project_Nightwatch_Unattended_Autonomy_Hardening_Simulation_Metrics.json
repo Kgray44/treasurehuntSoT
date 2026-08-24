@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "NIGHTWATCH_UNATTENDED_AUTONOMY_SIMULATION_METRICS",
+  "status": "LOCAL_SIMULATION_PROOF",
+  "source": {
+    "protectedMain": "9f49621852ad6ebbe14544905f1e026c79ad915c",
+    "test": "src/nightwatch/unattended-autonomy.test.ts",
+    "command": "npx vitest run src/nightwatch --reporter=dot"
+  },
+  "measuredAt": "2026-08-23",
+  "objectives": [
+    {
+      "id": "generated-drift-and-policy-identity",
+      "kind": "SIMULATION",
+      "delegatedObstaclesResolved": 2,
+      "ownerInterruptionsForDelegatedSafeWork": 0,
+      "strategyTransitions": 0,
+      "maintenancePrCount": 0,
+      "duplicateRetryCount": 0,
+      "elapsedActiveMs": 7,
+      "parkedWaitingForOwnerMs": 0,
+      "finalDisposition": "CONTINUED"
+    },
+    {
+      "id": "shared-bosun-repair-handoff",
+      "kind": "SIMULATION",
+      "delegatedObstaclesResolved": 1,
+      "ownerInterruptionsForDelegatedSafeWork": 0,
+      "strategyTransitions": 0,
+      "maintenancePrCount": 0,
+      "duplicateRetryCount": 0,
+      "elapsedActiveMs": 388,
+      "parkedWaitingForOwnerMs": 0,
+      "finalDisposition": "OBJECTIVE_READY_FOR_NORMAL_SOUNDING_LINE_ACCEPTANCE"
+    },
+    {
+      "id": "strategy-continuation-and-hard-stop",
+      "kind": "SIMULATION",
+      "delegatedObstaclesResolved": 0,
+      "ownerInterruptionsForDelegatedSafeWork": 0,
+      "strategyTransitions": 1,
+      "maintenancePrCount": 0,
+      "duplicateRetryCount": 0,
+      "elapsedActiveMs": 7,
+      "parkedWaitingForOwnerMs": 0,
+      "trueHardStopsCorrectlyEscalated": 1,
+      "finalDisposition": "PARKED_WITH_ONE_PRECISE_ESCALATION"
+    }
+  ],
+  "totals": {
+    "acceptanceObjectives": 3,
+    "delegatedObstaclesResolved": 3,
+    "ownerInterruptionsForDelegatedSafeWork": 0,
+    "trueHardStopsCorrectlyEscalated": 1,
+    "blindRetryLoopsObserved": 0,
+    "successorMaintenanceChainsObserved": 0
+  },
+  "boundary": "This is local simulation evidence. It is not a Sounding Line RELEASE_GO, protected merge, or post-merge proof."
+}

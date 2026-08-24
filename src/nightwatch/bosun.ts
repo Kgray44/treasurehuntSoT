@@ -4,7 +4,12 @@ import { promisify } from "node:util";
 import { resolve } from "node:path";
 import { readFile } from "node:fs/promises";
 import { DatabaseSync } from "node:sqlite";
-import { NightwatchInvariantError, NightwatchLedger, type IntegrationBudgetStatus } from "./runtime";
+import {
+  NightwatchInvariantError,
+  NightwatchLedger,
+  type IntegrationBudgetStatus,
+} from "./runtime";
+import type { AutonomyActionClass, OwnerRequiredRouting } from "./unattended-autonomy";
 
 export type BosunCascadeState =
   | "ACTIVE"
@@ -30,7 +35,7 @@ export type BosunObjectiveState =
   | "POST_MERGE_PROOF"
   | "CONVERGED";
 
-export type BosunRepairActionId = AutoZeroActionId | "owner-policy-identity-rebaseline";
+export type BosunRepairActionId = AutoZeroActionId | "owner-policy-identity-rebaseline" | "delegated-shared-maintenance";
 
 export interface BosunFinding {
   owner: string;
@@ -41,6 +46,11 @@ export interface BosunFinding {
   repairClass: BosunRepairClass;
   requiredAuthorization?: string;
   externalDependency?: string;
+  /** Explicitly supplied only when an otherwise owner-classified finding is safe to inherit. */
+  autonomyActionClass?: AutonomyActionClass;
+  autonomyInScope?: boolean;
+  autonomyReversible?: boolean;
+  autonomyMaintenanceDepth?: number;
 }
 
 export interface BaselineCertificationReceiptFailure {
@@ -70,6 +80,7 @@ export interface BosunObjective {
   cascadeId: string;
   findingFingerprint: string;
   repairClass: BosunRepairClass;
+  ownerRequiredRouting: OwnerRequiredRouting;
   state: BosunObjectiveState;
   requiredAuthorization: string | null;
   externalDependency: string | null;
@@ -134,6 +145,7 @@ export const normalizeBosunFingerprint = (finding: BosunFinding) =>
     `contract=${finding.contract}`,
     `runtime=${finding.runtimeClass}`,
     `repair=${finding.repairClass}`,
+    `autonomy=${finding.autonomyActionClass ?? "none"}`,
   ]
     .map((entry) => entry.trim().toLowerCase().replace(/\s+/gu, "-"))
     .join("|");
@@ -235,6 +247,7 @@ export class BosunLedger {
         cascade_id TEXT NOT NULL UNIQUE REFERENCES bosun_cascades(cascade_id),
         finding_fingerprint TEXT NOT NULL,
         repair_class TEXT NOT NULL,
+        owner_required_routing TEXT NOT NULL DEFAULT 'TRUE_OWNER_REQUIRED',
         state TEXT NOT NULL,
         required_authorization TEXT,
         external_dependency TEXT,
@@ -293,6 +306,10 @@ export class BosunLedger {
       );
       INSERT OR IGNORE INTO bosun_controller_health(singleton, state) VALUES (1, 'DOWN');
     `);
+    const objectiveColumns = (this.db.prepare("PRAGMA table_info(bosun_objectives)").all() as Array<{ name: string }>)
+      .map((column) => column.name);
+    if (!objectiveColumns.includes("owner_required_routing"))
+      this.db.exec("ALTER TABLE bosun_objectives ADD COLUMN owner_required_routing TEXT NOT NULL DEFAULT 'TRUE_OWNER_REQUIRED'");
   }
 
   close() {
@@ -331,6 +348,7 @@ export class BosunLedger {
       cascadeId: String(row.cascade_id),
       findingFingerprint: String(row.finding_fingerprint),
       repairClass: String(row.repair_class) as BosunRepairClass,
+      ownerRequiredRouting: (row.owner_required_routing ? String(row.owner_required_routing) : "TRUE_OWNER_REQUIRED") as OwnerRequiredRouting,
       state: String(row.state) as BosunObjectiveState,
       requiredAuthorization: row.required_authorization ? String(row.required_authorization) : null,
       externalDependency: row.external_dependency ? String(row.external_dependency) : null,
@@ -354,11 +372,35 @@ export class BosunLedger {
     return "AUTO_2";
   }
 
-  private objectiveDisposition(repairClass: BosunRepairClass): { state: BosunObjectiveState; cascadeState: BosunCascadeState } {
+  private objectiveDisposition(
+    repairClass: BosunRepairClass,
+    routing: OwnerRequiredRouting,
+  ): { state: BosunObjectiveState; cascadeState: BosunCascadeState } {
     if (repairClass === "AUTO_0") return { state: "OBJECTIVE_READY", cascadeState: "ACTIVE" };
-    if (repairClass === "OWNER") return { state: "OWNER_REQUIRED", cascadeState: "PARKED_OWNER" };
     if (repairClass === "EXTERNAL") return { state: "EXTERNAL_BLOCKED", cascadeState: "BLOCKED_EXTERNAL" };
+    if (routing !== "TRUE_OWNER_REQUIRED") return { state: "OBJECTIVE_READY", cascadeState: "ACTIVE" };
+    if (repairClass === "OWNER") return { state: "OWNER_REQUIRED", cascadeState: "PARKED_OWNER" };
     return { state: "ESCALATION_REQUIRED", cascadeState: "ESCALATION_REQUIRED" };
+  }
+
+  private ownerRequiredRouting(cascade: BosunCascade, finding: BosunFinding | undefined, at: string): OwnerRequiredRouting {
+    if (!finding || finding.repairClass === "AUTO_0" || !finding.autonomyActionClass)
+      return "TRUE_OWNER_REQUIRED";
+    const parent = this.nightwatch.getAcceptanceTransaction(cascade.parentTransactionId);
+    const candidate = this.nightwatch.getCandidate(parent.candidateId);
+    const action = this.nightwatch.recordAutonomyAction({
+      objectiveId: candidate.objectiveId,
+      candidateId: candidate.id,
+      rootCause: cascade.rootFingerprint,
+      actionClass: finding.autonomyActionClass,
+      project: candidate.project,
+      inScope: finding.autonomyInScope === true,
+      reversible: finding.autonomyReversible === true,
+      sharedMaintenance: true,
+      maintenanceDepth: finding.autonomyMaintenanceDepth ?? cascade.generation,
+      at,
+    });
+    return action.status === "CONTINUE" ? action.route.routing : "TRUE_OWNER_REQUIRED";
   }
 
   /**
@@ -375,7 +417,8 @@ export class BosunLedger {
     if (fingerprint !== cascade.rootFingerprint)
       throw new NightwatchInvariantError("BOSUN_OBJECTIVE_FINGERPRINT_MISMATCH", cascadeId);
     const repairClass = finding?.repairClass ?? this.repairClassFromFingerprint(fingerprint);
-    const disposition = this.objectiveDisposition(repairClass);
+    const routing = this.ownerRequiredRouting(cascade, finding, at);
+    const disposition = this.objectiveDisposition(repairClass, routing);
     const objectiveId = randomUUID();
     const requiredAuthorization = repairClass === "OWNER"
       ? finding?.requiredAuthorization ?? `OWNER_APPROVAL_REQUIRED:${fingerprint}`
@@ -383,9 +426,9 @@ export class BosunLedger {
     const externalDependency = repairClass === "EXTERNAL"
       ? finding?.externalDependency ?? `EXTERNAL_DEPENDENCY_REQUIRED:${fingerprint}`
       : null;
-    this.db.prepare(`INSERT INTO bosun_objectives(objective_id, cascade_id, finding_fingerprint, repair_class, state, required_authorization, external_dependency, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-      .run(objectiveId, cascadeId, fingerprint, repairClass, disposition.state, requiredAuthorization, externalDependency, at, at);
+    this.db.prepare(`INSERT INTO bosun_objectives(objective_id, cascade_id, finding_fingerprint, repair_class, owner_required_routing, state, required_authorization, external_dependency, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+      .run(objectiveId, cascadeId, fingerprint, repairClass, routing, disposition.state, requiredAuthorization, externalDependency, at, at);
     this.db.prepare("UPDATE bosun_cascades SET active_objective_id = ?, status = ?, updated_at = ? WHERE cascade_id = ?")
       .run(objectiveId, disposition.cascadeState, at, cascadeId);
     return { objective: this.objectiveForCascadeId(cascadeId)!, created: true };
