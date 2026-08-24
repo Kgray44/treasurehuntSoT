@@ -161,10 +161,14 @@ export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary"
     ),
     selected: selection,
     sentinels: ["format", "lint", "typecheck", "private-content"],
-    migrationRequired: mode === "release" || changedPaths.some((file) => file.startsWith("prisma/")),
+    migrationRequired: requiresMigrationValidation({ changedPaths, mode }),
     buildRequired:
       mode === "release" || changedPaths.some((file) => /^(?:app|components|public|styles|next\.config)/u.test(file)),
   };
+}
+
+export function requiresMigrationValidation({ changedPaths, mode = "ordinary" }) {
+  return mode === "release" || changedPaths.some((file) => file.startsWith("prisma/") || /migration/i.test(file));
 }
 
 export function verificationCommands(plan) {
@@ -183,7 +187,16 @@ export function verificationCommands(plan) {
     commands.push(["npx", ["--no-install", "prisma", "validate", "--schema", "prisma/schema.sqlite.prisma"]]);
   if (plan.buildRequired) commands.push(["npm", ["run", "build"]]);
   if (plan.selected.browserTests.length)
-    commands.push(["npx", ["--no-install", "playwright", "test", ...plan.selected.browserTests]]);
+    commands.push([
+      "npx",
+      [
+        "--no-install",
+        "playwright",
+        "test",
+        ...(plan.mode === "ordinary" ? ["--project", "chromium"] : []),
+        ...plan.selected.browserTests,
+      ],
+    ]);
   return commands;
 }
 

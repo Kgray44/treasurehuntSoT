@@ -1,7 +1,13 @@
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import test from "node:test";
-import { assertBinding, classifyChanges, selectAffectedTests } from "../../scripts/sounding-line/ordinary.mjs";
+import {
+  assertBinding,
+  classifyChanges,
+  requiresMigrationValidation,
+  selectAffectedTests,
+  verificationCommands,
+} from "../../scripts/sounding-line/ordinary.mjs";
 
 test("ordinary classification ignores retired generated state and rejects active control-plane edits", () => {
   const result = classifyChanges([
@@ -63,6 +69,28 @@ test("candidate binding requires distinct exact commit and tree identities", () 
       baseTree: "c".repeat(40),
       candidateTree: "d".repeat(40),
     }),
+  );
+});
+
+test("ordinary browser proof uses the installed Chromium project", () => {
+  const browserCommand = verificationCommands({
+    mode: "ordinary",
+    safetyPaths: [],
+    lintPaths: [],
+    selected: { unitTests: [], browserTests: ["tests/e2e/harborlight-phase3.spec.ts"] },
+    migrationRequired: false,
+    buildRequired: false,
+  }).at(-1);
+  assert.deepEqual(browserCommand, [
+    "npx",
+    ["--no-install", "playwright", "test", "--project", "chromium", "tests/e2e/harborlight-phase3.spec.ts"],
+  ]);
+});
+
+test("migration rehearsal changes receive schema validation", () => {
+  assert.equal(
+    requiresMigrationValidation({ changedPaths: ["scripts/rehearse-harborlight-phase3-migrations.ts"] }),
+    true,
   );
 });
 

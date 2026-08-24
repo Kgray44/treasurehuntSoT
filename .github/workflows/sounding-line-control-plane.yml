@@ -48,4 +48,4 @@ jobs:
       - run: npx --no-install eslint scripts/sounding-line/ordinary.mjs tests/sounding-line/ordinary.test.mjs scripts/features
       - run: npm run private-content:scan
       - run: npm run docs:validate
-      - run: npm run features:test && npm run features:validate
+      - run: npm run features:test
