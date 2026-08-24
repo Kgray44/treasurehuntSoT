@@ -45,6 +45,9 @@
     "testing/impact-map.json",
     "testing/file-dispositions.json",
     "testing/mainline-train-policy.json",
+    "testing/engineering-governance-policy.json",
+    "testing/test-registration.schema.json",
+    "testing/test-registrations/**",
     "testing/generated/**",
     "scripts/sounding-line/**",
     "scripts/nightwatch/baseline-certifier.mjs",
@@ -61,6 +64,8 @@
     "Development_Docs/Programs/Deepwater/**",
     "Development_Docs/Features/FEATURE_CATALOG.md",
     "Development_Docs/Features/catalog/**",
+    "Development_Docs/Governing/ADR-EGS-001_Engineering_Governance_Simplification.md",
+    "Development_Docs/INDEX.md",
     "Development_Docs/document-index.json",
     "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv"
   ],
