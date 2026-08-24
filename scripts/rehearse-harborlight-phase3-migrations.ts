@@ -1,10 +1,14 @@
 import { randomUUID } from "node:crypto";
 import { existsSync } from "node:fs";
 import { mkdir, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { basename, join, resolve } from "node:path";
 import { PrismaClient } from "@prisma/client";
 
-const rehearsalRoot = resolve("C:/Users/kgray/AppData/Local/ForeverTreasureCompanion/rehearsals");
+const rehearsalRoot = resolve(
+  process.env.HARBORLIGHT_PHASE3_REHEARSAL_ROOT ??
+    join(process.env.LOCALAPPDATA ?? process.env.TEMP ?? tmpdir(), "ForeverTreasureCompanion", "rehearsals"),
+);
 const databasePath = join(rehearsalRoot, `harborlight-phase3-148-${randomUUID()}.sqlite`);
 
 function splitStatements(sql: string) {

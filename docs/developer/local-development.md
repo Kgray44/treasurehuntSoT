@@ -10,11 +10,13 @@ last_reviewed: 2026-08-07
 
 Install the supported Node.js version, install dependencies, copy `.env.example` to a local uncommitted environment file, and use a task-owned SQLite database or approved development database. Generate the SQLite Prisma client before database-backed browser work, apply migrations, seed only synthetic data, and start the development server.
 
-Use `npm run lint`, `npm run typecheck`, `npm test`, `npm run docs:index`,
-`npm run docs:validate`, `npm run features:sync`, and `npm run
-features:validate` during development. Command details are in [reference
-commands](../reference/commands.md). Never use a shared or production database
-for local tests.
+Use focused tests, `npm run lint`, `npm run typecheck`, and `npm test` during
+development. Before a pull request, run the checks relevant to the changed
+area; the Sounding Line final check selects and widens the candidate proof.
+Run `npm run features:sync` and `npm run features:validate` only when a product
+capability meaningfully changes, never for provenance-only reconciliation.
+Command details are in [reference commands](../reference/commands.md). Never
+use a shared or production database for local tests.
 
 For LAN or protected-tunnel development, use exact hostnames.
 `scripts/start-dev.ps1 -Lan` adds the machine's current LAN IPv4 address to the

@@ -1,0 +1,110 @@
+{
+  "version": "1.0.0",
+  "compatibilityStatus": "COMPATIBILITY_ONLY_OWNER_EMERGENCY_BOOTSTRAP_ONLY",
+  "authority": "SOUNDING_LINE_ROOT_MAINTENANCE",
+  "disposition": "ROOT_MAINTENANCE_GO",
+  "workflowDispatchOnly": true,
+  "trustedMainOnly": true,
+  "ownerAuthorization": "REPOSITORY_OWNER_WORKFLOW_DISPATCH",
+  "releaseAuthority": "NONE",
+  "bootstrapAuthority": "ONE_FINAL_OWNER_AUTHORIZED_ROOT_CONTROL_PLANE_BOOTSTRAP_ONLY",
+  "antiSelfAuthorization": "TRUSTED_BASE_POLICY_AND_CLASSIFIER_REQUIRED",
+  "runtimeRepairClasses": [
+    {
+      "id": "NIGHTWATCH_BOSUN_RUNTIME",
+      "disposition": "ROOT_MAINTENANCE_ONLY",
+      "policyMutation": "BREAK_GLASS_ONLY",
+      "pathGlobs": [
+        "src/nightwatch/**",
+        "scripts/nightwatch/**"
+      ]
+    },
+    {
+      "id": "NIGHTWATCH_UNATTENDED_AUTONOMY",
+      "disposition": "ROOT_MAINTENANCE_ONLY",
+      "policyMutation": "OWNER_AUTHORIZED_ROOT_MAINTENANCE_ONLY",
+      "pathGlobs": [
+        "testing/unattended-autonomy-policy.json",
+        ".agents/README.md",
+        ".agents/context-workflow.md",
+        ".agents/unattended-autonomy-policy.md",
+        "Development_Docs/Features/branch-complete/project-nightwatch-increment-a.json",
+        "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Unattended_Autonomy_Hardening_Implementation_Record.md",
+        "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Unattended_Autonomy_Hardening_Simulation_Metrics.json"
+      ]
+    }
+  ],
+  "bindingPreflightPaths": [
+    "testing/root-maintenance-policy.json",
+    "testing/control-plane-repair-routes.json",
+    "scripts/sounding-line/root-maintenance.mjs",
+    "scripts/sounding-line/root-maintenance-bind.mjs",
+    "scripts/sounding-line/root-maintenance-protected-binding.mjs",
+    "scripts/sounding-line/control-plane-repair-routes.mjs",
+    ".github/workflows/sounding-line-root-maintenance.yml",
+    ".github/workflows/sounding-line-protected-binding-dispatch.yml",
+    ".github/workflows/sounding-line-protected-merge-binding.yml"
+  ],
+  "eligiblePathGlobs": [
+    "testing/root-maintenance-policy.json",
+    "testing/control-plane-repair-routes.json",
+    "testing/policy-manifest.json",
+    "testing/sounding-line-authority.json",
+    "testing/verification-maintenance-policy.json",
+    "testing/authority-maintenance-policy.json",
+    "testing/trusted-project-discovery.json",
+    "testing/ownership.json",
+    "testing/contracts.json",
+    "testing/resources.json",
+    "testing/suites.json",
+    "testing/impact-map.json",
+    "testing/file-dispositions.json",
+    "testing/mainline-train-policy.json",
+    "testing/engineering-governance-policy.json",
+    "testing/test-registration.schema.json",
+    "testing/test-registrations/**",
+    "testing/generated/**",
+    "scripts/sounding-line/**",
+    "scripts/nightwatch/baseline-certifier.mjs",
+    "scripts/deepwater/**",
+    "scripts/features/**",
+    "scripts/generate-document-index.mjs",
+    "scripts/validate-documentation.mjs",
+    "scripts/private-content/scan.ts",
+    ".github/workflows/sounding-line-*.yml",
+    ".github/workflows/nightwatch-baseline-certification.yml",
+    "tests/sounding-line/**",
+    "tests/deepwater/**",
+    "Development_Docs/Programs/Sounding_Line/**",
+    "Development_Docs/Programs/Deepwater/**",
+    "Development_Docs/Features/FEATURE_CATALOG.md",
+    "Development_Docs/Features/catalog/**",
+    "Development_Docs/Governing/ADR-EGS-001_Engineering_Governance_Simplification.md",
+    "Development_Docs/INDEX.md",
+    "Development_Docs/document-index.json",
+    "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv"
+  ],
+  "generatedConsequenceGlobs": [
+    "testing/generated/**",
+    "Development_Docs/Programs/Deepwater/deepwater-phase-status.json",
+    "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_*.json",
+    "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Governance_Report.md",
+    "Development_Docs/Features/FEATURE_CATALOG.md",
+    "Development_Docs/document-index.json",
+    "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+    "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_*.csv"
+  ],
+  "requiredEvidence": [
+    "EXACT_BASE_IDENTITY",
+    "EXACT_CANDIDATE_IDENTITY",
+    "EXACT_CANDIDATE_TREE",
+    "ROOT_CHANGE_DIFF_CLASSIFICATION",
+    "ROOT_ANTI_SELF_AUTHORIZATION",
+    "CONTROL_PLANE_REPAIR_ROUTE_COMPLETENESS",
+    "BASELINE_CERTIFICATION",
+    "DEEPWATER_POLICY_IDENTITY",
+    "DETERMINISTIC_FIXED_POINT",
+    "PROTECTED_BINDING",
+    "NO_BRANCH_PROTECTION_CHANGE"
+  ]
+}

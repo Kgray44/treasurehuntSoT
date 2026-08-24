@@ -56,8 +56,7 @@
       { "kind": "path", "value": "src/wakebook/archive-query.ts" },
       { "kind": "path", "value": "src/wayfarer/chronicle-history.ts" },
       { "kind": "path", "value": "src/components/wakebook/WakebookVoyageDetail.tsx" },
-      { "kind": "test", "value": "tests/e2e/wakebook-phase2.spec.ts" },
-      { "kind": "completion-record", "value": "Development_Docs/Project_Wakebook_Phase_2_Validation_Record.md" }
+      { "kind": "test", "value": "tests/e2e/wakebook-phase2.spec.ts" }
     ],
     "branch": "codex/project-wakebook-phase2-bind-the-voyages",
     "commit": "e3843d7c6df1bb7a0f561b640ee0a8c1e9199f99",

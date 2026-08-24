@@ -2,11 +2,6 @@
 
 This generated catalog records completed, meaningful platform capabilities. It is not a changelog, task ledger, roadmap, or list of implementation trivia. Machine-readable fragments under `Development_Docs/Features/` are the source of truth.
 
-## Audited repository and commit
-
-Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `5d2ea357329fd2658ed15b8024b3ae5875003613`
-
 ## Status vocabulary
 
 - **MAINLINE**: available on the audited mainline source.
@@ -890,36 +885,34 @@ Audience-separated current documentation, indexed engineering records, and a fra
 
 ---
 
-## FT-033 - Sounding Line Governed Verification Control Plane
+## FT-033 - Sounding Line Direct Candidate Verification
 
 **Status:** MAINLINE
-**Program or subsystem:** Sounding Line Phases 1-4
+**Program or subsystem:** Sounding Line
 
-A nonauthoritative, provider-neutral local verification control plane provides sealed plans, reviewed adapters, marker-verified resource leases, durable history, fail-closed worker and evidence controls, isolated SQLite/browser state, narrowly certified Harborlight moderator browser lanes, and a strictly record-only protected-mainline closure route without weakening release authority.
+A focused protected-main check binds the exact pull-request base, candidate, and trees; it runs repository safety sentinels and structurally affected proof, widening safely when impact is uncertain. A separate manual mode remains exhaustive for releases and explicit full certification.
 
 ### Important subfeatures
 
-- Deterministic signed-identity plan records
-- Fixed command adapter catalogue with bounded receipts
-- Marker and process-identity ownership proof
-- Deterministic impact analysis, history, and root/cascade classification
-- Fail-closed local worker enrollment, sealed assignments, evidence, and attestations
-- Immutable SQLite baseline clone boundary
-- Two isolated Harborlight Phase 4 browser lanes
-- Explicit emergency-serial legacy release authority
-- Fail-closed record-only protected-mainline closure evidence
+- Exact base, candidate, and tree identity binding
+- Focused filesystem-based test selection
+- Conservative widening when impact is unknown
+- Separate exhaustive release certification
 
 ### Primary surfaces
 
-`npm run test:policy`, `scripts/sounding-line`, `scripts/test-all.ps1`
+`.github/workflows/sounding-line-ordinary.yml`, `.github/workflows/sounding-line-exhaustive-release.yml`, `scripts/sounding-line/ordinary.mjs`
+
+### Meaningful limitations
+
+- Control-plane changes use the explicit owner-authorized manual check rather than ordinary product admission.
 
 ### Evidence
 
-- path: `scripts/sounding-line/runtime.mjs`
-- path: `scripts/sounding-line/adapters.mjs`
-- path: `scripts/sounding-line/phase3.mjs`
-- path: `scripts/sounding-line/phase4.mjs`
-- completion-record: `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Final_Program_Closeout_Receipt.md`
+- path: `scripts/sounding-line/ordinary.mjs`
+- test: `tests/sounding-line/ordinary.test.mjs`
+- path: `.github/workflows/sounding-line-ordinary.yml`
+- completion-record: `Development_Docs/Engineering/Clean_Slate_Development_Pipeline_Cutover.md`
 
 ---
 
@@ -1589,12 +1582,12 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 # Completed Branch Features Not Yet Available on Main
 
-## FT-B012 - Nightwatch Governed Integration Queue and Atomic Acceptance Sequencer
+## FT-B012 - Nightwatch Governed Integration Queue, Acceptance Sequencer, and Live Controller
 
 **Status:** BRANCH COMPLETE NOT MERGED
 **Program or subsystem:** Project Nightwatch Phase 1 Increments A and A.1
 
-Project Nightwatch Increments A and A.1 provide a durable local control plane that serializes canonical integration through queue-front lifecycle, exact candidate/base acceptance transactions, authority-before-binding sequencing, bounded leases, restart recovery, cascade budgets, and a read-only Bridgewatch projection.
+Project Nightwatch and Bosun B1.2 provide a durable control plane that serializes canonical integration through queue-front lifecycle, exact candidate/base acceptance transactions, exact protected-main Baseline Certification, authority-before-binding sequencing, bounded leases, restart recovery, compound deterministic closure, exact GitHub dispatches, bounded unattended delegation, and a read-only Bridgewatch projection.
 
 ### Important subfeatures
 
@@ -1606,15 +1599,22 @@ Project Nightwatch Increments A and A.1 provide a durable local control plane th
 - Read-only Bridgewatch projection of queue, candidates, reservations, collisions, and acceptance ownership
 - Atomic exact candidate/base/tree acceptance transactions with neutral pending authority and protected binding ordering
 - Event and run deduplication, merge-race reconciliation, cumulative cascade accounting, and hard integration breaker
+- Single-lease persistent nightwatchd controller with restart-safe exact GitHub workflow rediscovery
+- Explicit RELEASE_GO-gated protected-binding dispatch with receipt-artifact verification
+- Live Bridgewatch controller health and raw parent integration cost projection
+- Exact SHA/tree Baseline Certification receipt required before ordinary candidate authority
+- One Bosun fixed-point compound AUTO_0 closure plan for deterministic shared baseline drift
+- Objective-scoped standing delegation with explicit hard-stop classes and durable audit routing
+- Bounded strategy continuation, one-repair cascade suppression, and high-quality parked owner escalations
 
 ### Primary surfaces
 
-`npm run nightwatch:migrations:reserve`, `npm run nightwatch:migrations:inspect`, `npm run nightwatch:migrations:release`, `npm run nightwatch:migrations:reconcile`, `GET /api/nightwatch`
+`npm run nightwatch:migrations:reserve`, `npm run nightwatch:migrations:inspect`, `npm run nightwatch:migrations:release`, `npm run nightwatch:migrations:reconcile`, `npm run nightwatch:controller:start`, `npm run nightwatch:controller:status`, `GET /api/nightwatch`
 
 ### Meaningful limitations
 
 - Sounding Line remains the sole RELEASE_GO and protected-merge authority.
-- Project Bosun repair execution and Nightwatch Increment B are deliberately excluded.
+- Only explicitly marked safe, reversible, in-scope Bosun findings may inherit a parent objective delegation; all other OWNER, external, scope, security, and irreversible findings remain parked.
 - The current repository MySQL migration family has duplicate numeric prefixes, so allocation correctly fails closed for that family.
 
 ### Evidence
@@ -1623,10 +1623,17 @@ Project Nightwatch Increments A and A.1 provide a durable local control plane th
 - commit: `2c895110ec7b8464bd51fc5a7c8397bf1746a88f`
 - path: `src/nightwatch/runtime.ts`
 - test: `src/nightwatch/runtime.test.ts`
+- test: `src/nightwatch/unattended-autonomy.test.ts`
+- path: `src/nightwatch/unattended-autonomy.ts`
 - test: `bridgewatch/test/nightwatch-projection.test.ts`
 - path: `bridgewatch/public/app.js`
+- path: `scripts/nightwatch/baseline-certifier.mjs`
+- test: `tests/sounding-line/baseline-certifier.test.mjs`
+- completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_B1_2_Baseline_Certification_Design_Record.md`
+- completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A2_Live_Control_Plane_Implementation_Record.md`
 - completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A1_Atomic_Acceptance_Sequencer_Implementation_Record.md`
 - completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md`
+- completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Unattended_Autonomy_Hardening_Implementation_Record.md`
 
 ---
 
@@ -1663,7 +1670,6 @@ Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe
 - path: `src/wayfarer/chronicle-history.ts`
 - path: `src/components/wakebook/WakebookVoyageDetail.tsx`
 - test: `tests/e2e/wakebook-phase2.spec.ts`
-- completion-record: `Development_Docs/Project_Wakebook_Phase_2_Validation_Record.md`
 
 ---
 
@@ -1679,5 +1685,3 @@ Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe
 # Catalog maintenance policy
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
-
-Generation source commit: `5d2ea357329fd2658ed15b8024b3ae5875003613`
