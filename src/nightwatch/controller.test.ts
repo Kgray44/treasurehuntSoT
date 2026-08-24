@@ -43,24 +43,24 @@ const queuedLedger = () => {
 };
 
 describe("Nightwatch controller", () => {
-  it("uses the Mainline Train as the default ordinary path and does not dispatch legacy binding", () => {
+  it("uses Direct Mainline for one ordinary candidate and obtains protected binding after Sounding Line GO", () => {
     const ledger = queuedLedger();
     let now = Date.parse("2026-08-21T00:00:00.000Z");
-    const trainResults: Array<"PENDING" | "RELEASE_GO"> = ["PENDING", "RELEASE_GO"];
+    const results: Array<"PENDING" | "RELEASE_GO" | "BINDING_PASS"> = ["PENDING", "RELEASE_GO", "BINDING_PASS"];
     let trainDispatches = 0;
     let bindingDispatches = 0;
     const controller = new NightwatchController(
       ledger,
       {
-        ...controlPlane([]),
+        ...controlPlane(results),
         dispatchMainlineTrain: () => {
           trainDispatches += 1;
           return { runId: "mainline-train-remote" };
         },
-        observeMainlineTrain: () => trainResults.shift() ?? "PENDING",
+        observeMainlineTrain: () => "PENDING",
         dispatchBinding: () => {
           bindingDispatches += 1;
-          return { runId: "legacy-binding-should-not-run" };
+          return { runId: "binding-remote" };
         },
       },
       { instanceId: "nightwatchd-train-test", now: () => now },
@@ -69,21 +69,35 @@ describe("Nightwatch controller", () => {
       controller.start();
       expect(controller.tick()).toMatchObject({ state: "AWAITING_AUTHORITY" });
       now += 1_000;
-      expect(controller.tick()).toMatchObject({ state: "TRAIN_QUALIFYING", runId: "mainline-train-remote" });
+      expect(controller.tick()).toMatchObject({ state: "AUTHORITY_RUNNING", runId: "authority-remote" });
       now += 1_000;
-      expect(controller.tick()).toMatchObject({ state: "TRAIN_QUALIFYING" });
+      expect(controller.tick()).toMatchObject({ state: "AUTHORITY_RUNNING" });
+      now += 1_000;
+      expect(controller.tick()).toMatchObject({ state: "BINDING_RUNNING", runId: "binding-remote" });
       now += 1_000;
       expect(controller.tick()).toMatchObject({ state: "POST_MERGE_VERIFIED" });
-      expect(trainDispatches).toBe(1);
-      expect(bindingDispatches).toBe(0);
-      expect(ledger.acceptanceRuns()).toHaveLength(1);
+      expect(trainDispatches).toBe(0);
+      expect(bindingDispatches).toBe(1);
+      expect(ledger.acceptanceRuns()).toHaveLength(2);
     } finally {
       ledger.close();
     }
   });
 
-  it("preserves the control-plane receiver when dispatching the Mainline Train", () => {
+  it("uses the Mainline Train only when multiple compatible candidates are READY", () => {
     const ledger = queuedLedger();
+    ledger.createCandidate({
+      id: "companion",
+      objectiveId: "nightwatch-companion",
+      project: "Nightwatch",
+      increment: "A.2",
+      branch: "codex/companion",
+      productHeadSha: identity.candidateSha,
+      localBaseSha: identity.baseSha,
+    });
+    ledger.transitionCandidate("companion", "LOCALLY_COMPLETE");
+    ledger.transitionCandidate("companion", "QUEUE_READY");
+    ledger.queueCandidate("companion");
     let now = Date.parse("2026-08-21T00:00:00.000Z");
     let dispatchReceiver: unknown = null;
     const plane: NightwatchControlPlane = {
@@ -104,6 +118,54 @@ describe("Nightwatch controller", () => {
       now += 1_000;
       expect(controller.tick()).toMatchObject({ state: "TRAIN_QUALIFYING", runId: "mainline-train-receiver" });
       expect(dispatchReceiver).toBe(plane);
+    } finally {
+      ledger.close();
+    }
+  });
+
+  it("routes a failed Train optimization to one fresh Safe Direct Fallback authority run", () => {
+    const ledger = queuedLedger();
+    ledger.createCandidate({
+      id: "companion",
+      objectiveId: "nightwatch-companion-fallback",
+      project: "Nightwatch",
+      increment: "A.2",
+      branch: "codex/companion-fallback",
+      productHeadSha: identity.candidateSha,
+      localBaseSha: identity.baseSha,
+    });
+    ledger.transitionCandidate("companion", "LOCALLY_COMPLETE");
+    ledger.transitionCandidate("companion", "QUEUE_READY");
+    ledger.queueCandidate("companion");
+    let now = Date.parse("2026-08-21T00:00:00.000Z");
+    const directRoutes: Array<string | undefined> = [];
+    const controller = new NightwatchController(
+      ledger,
+      {
+        ...controlPlane(["RELEASE_GO", "BINDING_PASS"]),
+        dispatchAuthority: (input) => {
+          directRoutes.push(input.integrationRoute);
+          return { runId: "safe-direct-authority" };
+        },
+        dispatchMainlineTrain: () => ({ runId: "failed-train" }),
+        observeMainlineTrain: () => "REJECTED",
+        dispatchBinding: () => ({ runId: "safe-direct-binding" }),
+      },
+      { instanceId: "nightwatchd-safe-direct-test", now: () => now },
+    );
+    try {
+      controller.start();
+      controller.tick();
+      now += 1_000;
+      expect(controller.tick()).toMatchObject({ state: "TRAIN_QUALIFYING", runId: "failed-train" });
+      now += 1_000;
+      expect(controller.tick()).toMatchObject({ state: "AUTHORITY_RUNNING", runId: "safe-direct-authority" });
+      expect(directRoutes).toEqual(["SAFE_DIRECT_FALLBACK"]);
+      expect(ledger.acceptanceRuns()).toHaveLength(2);
+      now += 1_000;
+      expect(controller.tick()).toMatchObject({ state: "BINDING_RUNNING", runId: "safe-direct-binding" });
+      now += 1_000;
+      expect(controller.tick()).toMatchObject({ state: "POST_MERGE_VERIFIED" });
     } finally {
       ledger.close();
     }
@@ -215,14 +277,13 @@ describe("Nightwatch controller", () => {
     }
   });
 
-  it("blocks candidate authority when its exact protected base has no Baseline Certification", () => {
+  it("does not block an ordinary candidate on unrelated Baseline Certification state", () => {
     const ledger = queuedLedger();
     const plane: NightwatchControlPlane = {
       ...controlPlane([]),
       preflight: () => ({
         deterministicRegistryHealthy: true,
         ownershipResolved: true,
-        knownMaintenanceBlocker: `BASELINE_CERTIFICATION_REQUIRED:${identity.baseSha}:${identity.baseTreeSha}`,
         identityStable: true,
         leaseAvailable: true,
       }),
@@ -230,10 +291,7 @@ describe("Nightwatch controller", () => {
     const controller = new NightwatchController(ledger, plane, { instanceId: "nightwatchd-baseline-test" });
     try {
       controller.start();
-      expect(controller.tick()).toMatchObject({
-        state: "BLOCKED",
-        reason: `SHARED_MAINTENANCE_BLOCKED:BASELINE_CERTIFICATION_REQUIRED:${identity.baseSha}:${identity.baseTreeSha}`,
-      });
+      expect(controller.tick()).toMatchObject({ state: "AWAITING_AUTHORITY" });
       expect(ledger.acceptanceRuns()).toHaveLength(0);
     } finally {
       ledger.close();

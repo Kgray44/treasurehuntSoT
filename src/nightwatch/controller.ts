@@ -4,6 +4,7 @@ import {
   NightwatchLedger,
   type AcceptanceTransaction,
   type ExactCandidateIdentity,
+  type IntegrationRoute,
 } from "./runtime";
 import { BosunLedger } from "./bosun";
 
@@ -23,9 +24,17 @@ export interface NightwatchControlPlane {
     identityStable: boolean;
     leaseAvailable: boolean;
   };
-  dispatchAuthority(input: ExactCandidateIdentity & { transactionId: string; dispatchKey: string }): { runId: string };
-  /** Default ordinary path: Nightwatch admits work, Sounding Line owns the result. */
-  dispatchMainlineTrain?(input: ExactCandidateIdentity & { transactionId: string; dispatchKey: string }): { runId: string };
+  dispatchAuthority(
+    input: ExactCandidateIdentity & { transactionId: string; dispatchKey: string; integrationRoute?: IntegrationRoute },
+  ): { runId: string };
+  /** Optional throughput path for multiple exact, compatible READY candidates. */
+  dispatchMainlineTrain?(
+    input: ExactCandidateIdentity & {
+      transactionId: string;
+      dispatchKey: string;
+      compatibleCandidates: ExactCandidateIdentity[];
+    },
+  ): { runId: string };
   dispatchBinding(
     input: ExactCandidateIdentity & { transactionId: string; authorityRunId: string; dispatchKey: string },
   ): { runId: string };
@@ -36,10 +45,7 @@ export interface NightwatchControlPlane {
     candidateId: string;
     candidateSha: string;
     candidateTreeSha: string;
-  }):
-    | "PENDING"
-    | "RELEASE_GO"
-    | "REJECTED";
+  }): "PENDING" | "RELEASE_GO" | "REJECTED";
   requestMerge(
     input: ExactCandidateIdentity & { transactionId: string; acceptanceRunId: string; bindingRunId?: string },
   ): { mergeSha: string; treeSha: string } | null;
@@ -142,11 +148,19 @@ export class NightwatchController {
     if (!candidate) return { state: "IDLE" as const };
     if (candidate.state !== "QUEUE_FRONT") return { state: "WAITING" as const, candidateId: candidate.id };
     const identity = this.controlPlane.currentIdentity(candidate);
+    const compatibleCandidates = this.compatibleReadyCandidates(candidate.id, identity);
+    const integrationRoute: IntegrationRoute =
+      compatibleCandidates.length > 1 &&
+      this.controlPlane.dispatchMainlineTrain &&
+      this.controlPlane.observeMainlineTrain
+        ? "MAINLINE_TRAIN"
+        : "DIRECT_MAINLINE";
     const transaction = this.ledger.beginAtomicAcceptance({
       candidateId: candidate.id,
       identity,
       rootFingerprint: `${candidate.objectiveId}:${identity.candidateSha}:${identity.baseSha}`,
       rootIdentity: candidate.objectiveId,
+      integrationRoute,
       at,
     });
     const preflight = this.ledger.preflightAcceptance(transaction.id, { ...this.controlPlane.preflight(identity), at });
@@ -154,11 +168,12 @@ export class NightwatchController {
       return { state: "BLOCKED" as const, transactionId: transaction.id, reason: preflight.reason };
     this.ledger.completeReconciliation(transaction.id, { at });
     this.ledger.freezeAcceptanceCandidate(transaction.id, this.instanceId, this.leaseTtlMs, at);
-    this.ledger.setRemainingClosureSteps(transaction.id, [
-      "Mainline Train qualification",
-      "protected merge",
-      "exact-main proof",
-    ]);
+    this.ledger.setRemainingClosureSteps(
+      transaction.id,
+      integrationRoute === "MAINLINE_TRAIN"
+        ? ["Mainline Train qualification", "protected merge", "exact-main proof"]
+        : ["Direct Mainline proof", "protected binding", "protected merge", "exact-main proof"],
+    );
     this.ledger.awaitAuthority(transaction.id, at);
     return { state: "AWAITING_AUTHORITY" as const, transactionId: transaction.id };
   }
@@ -212,9 +227,10 @@ export class NightwatchController {
   }
 
   private launchAuthority(transaction: AcceptanceTransaction, at: string) {
+    const trainRoute = this.isTrainRoute(transaction);
     const intent = this.ledger.dispatchAuthority(
       transaction.id,
-      `nightwatch:${transaction.id}:authority`,
+      `nightwatch:${transaction.id}:${transaction.integrationRoute === "SAFE_DIRECT_FALLBACK" ? "safe-direct-fallback" : "authority"}`,
       undefined,
       at,
     );
@@ -223,11 +239,12 @@ export class NightwatchController {
       : this.ledger.recordAcceptanceRunExternalId(
           transaction.id,
           intent.id,
-          (this.isMainlineTrainControl()
+          (trainRoute
             ? this.controlPlane.dispatchMainlineTrain!({
                 ...transaction,
                 transactionId: transaction.id,
                 dispatchKey: intent.dispatchKey,
+                compatibleCandidates: this.compatibleReadyCandidates(transaction.candidateId, transaction),
               })
             : this.controlPlane.dispatchAuthority({
                 ...transaction,
@@ -239,11 +256,11 @@ export class NightwatchController {
         );
     const repair = this.bosun.liveRepairForTransaction(transaction.id);
     if (repair && !intent.externalRunId)
-      this.isMainlineTrainControl()
+      trainRoute
         ? this.bosun.recordMainlineTrainAdmission(repair.cascadeId, at)
         : this.bosun.recordAuthorityAttempt(repair.cascadeId, at);
     return {
-      state: this.isMainlineTrainControl() ? ("TRAIN_QUALIFYING" as const) : ("AUTHORITY_RUNNING" as const),
+      state: trainRoute ? ("TRAIN_QUALIFYING" as const) : ("AUTHORITY_RUNNING" as const),
       transactionId: transaction.id,
       runId: run.externalRunId,
     };
@@ -273,7 +290,8 @@ export class NightwatchController {
     if (!transaction.authorityRunId) throw new NightwatchInvariantError("AUTHORITY_RUN_MISSING", transaction.id);
     const run = this.ledger.acceptanceRuns(transaction.id).find((entry) => entry.id === transaction.authorityRunId);
     if (!run?.externalRunId) throw new NightwatchInvariantError("AUTHORITY_EXTERNAL_RUN_MISSING", transaction.id);
-    const result = this.isMainlineTrainControl()
+    const trainRoute = this.isTrainRoute(transaction);
+    const result = trainRoute
       ? this.controlPlane.observeMainlineTrain!({
           runId: run.externalRunId,
           transactionId: transaction.id,
@@ -284,13 +302,22 @@ export class NightwatchController {
       : this.controlPlane.observeRun({ runId: run.externalRunId, stage: "AUTHORITY" });
     if (result === "PENDING")
       return {
-        state: this.isMainlineTrainControl() ? ("TRAIN_QUALIFYING" as const) : ("AUTHORITY_RUNNING" as const),
+        state: trainRoute ? ("TRAIN_QUALIFYING" as const) : ("AUTHORITY_RUNNING" as const),
         transactionId: transaction.id,
         runId: run.externalRunId,
       };
     if (result !== "RELEASE_GO" && result !== "REJECTED")
       throw new NightwatchInvariantError("AUTHORITY_RESULT_INVALID", result);
-    if (this.isMainlineTrainControl()) {
+    if (trainRoute) {
+      if (result === "REJECTED") {
+        const routed = this.ledger.routeTrainFailureToSafeDirectFallback(
+          transaction.id,
+          run.id,
+          "MAINLINE_TRAIN_OPTIMIZATION_FAILURE",
+          at,
+        );
+        return this.launchAuthority(routed, at);
+      }
       this.ledger.recordMainlineTrainResult(transaction.id, run.id, result, at);
       if (result === "RELEASE_GO") {
         this.ledger.setRemainingClosureSteps(transaction.id, ["protected merge", "exact-main proof"]);
@@ -343,7 +370,8 @@ export class NightwatchController {
     const acceptanceRunId = transaction.bindingRunId ?? transaction.authorityRunId;
     if (!acceptanceRunId) throw new NightwatchInvariantError("ACCEPTANCE_RUN_MISSING", transaction.id);
     const acceptanceRun = this.ledger.acceptanceRuns(transaction.id).find((entry) => entry.id === acceptanceRunId);
-    if (!acceptanceRun?.externalRunId) throw new NightwatchInvariantError("ACCEPTANCE_EXTERNAL_RUN_MISSING", transaction.id);
+    if (!acceptanceRun?.externalRunId)
+      throw new NightwatchInvariantError("ACCEPTANCE_EXTERNAL_RUN_MISSING", transaction.id);
     const main = this.controlPlane.protectedMain();
     if (main.sha !== transaction.baseSha) {
       this.ledger.recordTransactionMainAdvance(transaction.id, "PROTECTED_MAIN_ADVANCED_BEFORE_MERGE", at);
@@ -381,7 +409,20 @@ export class NightwatchController {
     return { state: "POST_MERGE_VERIFIED" as const, transactionId: transaction.id };
   }
 
-  private isMainlineTrainControl() {
-    return typeof this.controlPlane.dispatchMainlineTrain === "function" && typeof this.controlPlane.observeMainlineTrain === "function";
+  private compatibleReadyCandidates(candidateId: string, identity: ExactCandidateIdentity) {
+    const candidates = [identity];
+    for (const queued of this.ledger.rankEligibleQueue()) {
+      if (queued.candidateId === candidateId) continue;
+      const candidate = this.ledger.getCandidate(queued.candidateId);
+      if (candidate.localBaseSha !== identity.baseSha) continue;
+      const candidateIdentity = this.controlPlane.currentIdentity(candidate);
+      if (candidateIdentity.baseSha === identity.baseSha && candidateIdentity.baseTreeSha === identity.baseTreeSha)
+        candidates.push(candidateIdentity);
+    }
+    return candidates;
+  }
+
+  private isTrainRoute(transaction: AcceptanceTransaction) {
+    return transaction.integrationRoute === "MAINLINE_TRAIN";
   }
 }

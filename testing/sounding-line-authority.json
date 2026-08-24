@@ -6,7 +6,9 @@
     "policy": "testing/engineering-governance-policy.json",
     "verificationAuthority": "SOUNDING_LINE",
     "flowAuthority": "NIGHTWATCH",
-    "ordinaryIntegrationPath": "SOUNDING_LINE_MAINLINE_TRAIN",
+    "ordinaryIntegrationPath": "DIRECT_MAINLINE_SINGLE_CANDIDATE",
+    "mainlineTrain": "OPTIONAL_MULTI_CANDIDATE_OPTIMIZATION",
+    "safeDirectFallback": "FRESH_CONSERVATIVE_PROOF",
     "legacyMaintenance": "COMPATIBILITY_ONLY"
   },
   "effectiveV14": {

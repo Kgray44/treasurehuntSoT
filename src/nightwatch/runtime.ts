@@ -81,6 +81,8 @@ export const acceptanceTransactionStates = [
 export type AcceptanceTransactionState = (typeof acceptanceTransactionStates)[number];
 export type AcceptanceRunStage = "AUTHORITY" | "BINDING";
 export type AcceptanceRunStatus = "RUNNING" | "RELEASE_GO" | "REJECTED" | "BINDING_PASS" | "BINDING_REJECTED";
+export const integrationRoutes = ["DIRECT_MAINLINE", "MAINLINE_TRAIN", "SAFE_DIRECT_FALLBACK"] as const;
+export type IntegrationRoute = (typeof integrationRoutes)[number];
 
 export interface ExactCandidateIdentity {
   candidateSha: string;
@@ -94,6 +96,7 @@ export interface AcceptanceTransaction extends ExactCandidateIdentity {
   id: string;
   candidateId: string;
   cascadeId: string;
+  integrationRoute: IntegrationRoute;
   state: AcceptanceTransactionState;
   authorityRunId: string | null;
   bindingRunId: string | null;
@@ -520,9 +523,8 @@ const boundedNumber = (value: number | undefined, fallback: number, label: strin
  */
 export function defaultNightwatchDatabase(_root = process.cwd(), environment: NodeJS.ProcessEnv = process.env) {
   void _root;
-  const localState = environment.LOCALAPPDATA?.trim()
-    || environment.XDG_STATE_HOME?.trim()
-    || join(homedir(), ".local", "state");
+  const localState =
+    environment.LOCALAPPDATA?.trim() || environment.XDG_STATE_HOME?.trim() || join(homedir(), ".local", "state");
   return join(localState, "ForeverTreasureCompanion", "Nightwatch", "treasurehuntSoT", "nightwatch.sqlite");
 }
 
@@ -688,6 +690,7 @@ export class NightwatchLedger {
         base_sha TEXT NOT NULL,
         base_tree_sha TEXT NOT NULL,
         candidate_ref TEXT NOT NULL,
+        integration_route TEXT NOT NULL DEFAULT 'DIRECT_MAINLINE',
         state TEXT NOT NULL,
         authority_run_id TEXT,
         binding_run_id TEXT,
@@ -792,11 +795,19 @@ export class NightwatchLedger {
         created_at TEXT NOT NULL
       );
     `);
+    const transactionColumns = this.db.prepare("PRAGMA table_info(acceptance_transactions)").all() as Array<{
+      name: string;
+    }>;
+    if (!transactionColumns.some((column) => column.name === "integration_route"))
+      this.db.exec(
+        "ALTER TABLE acceptance_transactions ADD COLUMN integration_route TEXT NOT NULL DEFAULT 'DIRECT_MAINLINE'",
+      );
     this.db.prepare("INSERT OR IGNORE INTO nightwatch_migrations(version, applied_at) VALUES (1, ?)").run(iso());
     this.db.prepare("INSERT OR IGNORE INTO nightwatch_migrations(version, applied_at) VALUES (2, ?)").run(iso());
     this.db.prepare("INSERT OR IGNORE INTO nightwatch_migrations(version, applied_at) VALUES (3, ?)").run(iso());
     this.db.prepare("INSERT OR IGNORE INTO nightwatch_migrations(version, applied_at) VALUES (4, ?)").run(iso());
     this.db.prepare("INSERT OR IGNORE INTO nightwatch_migrations(version, applied_at) VALUES (5, ?)").run(iso());
+    this.db.prepare("INSERT OR IGNORE INTO nightwatch_migrations(version, applied_at) VALUES (6, ?)").run(iso());
     this.db.prepare("INSERT OR IGNORE INTO controller_health(singleton, state) VALUES (1, 'DOWN')").run();
   }
 
@@ -812,6 +823,15 @@ export class NightwatchLedger {
       if (Boolean(candidate.active) !== activeStates.has(candidate.state as CandidateState))
         throw new NightwatchInvariantError("MALFORMED_PERSISTED_STATE", candidate.candidate_id);
     }
+    const transactions = this.db
+      .prepare("SELECT transaction_id, integration_route FROM acceptance_transactions")
+      .all() as Array<{
+      transaction_id: string;
+      integration_route: string;
+    }>;
+    for (const transaction of transactions)
+      if (!integrationRoutes.includes(transaction.integration_route as IntegrationRoute))
+        throw new NightwatchInvariantError("MALFORMED_PERSISTED_STATE", transaction.transaction_id);
     const queues = this.db
       .prepare(
         "SELECT candidate_id, dependencies_json, blockers_json, migration_reservations_json, ownership_classes_json, focused_evidence_json FROM integration_queue",
@@ -1082,25 +1102,36 @@ export class NightwatchLedger {
       }
       const maintenanceDepth = boundedNumber(input.maintenanceDepth, 0, "maintenanceDepth");
       const rootCount = Number(
-        (this.db
-          .prepare("SELECT count(*) AS count FROM autonomy_actions WHERE objective_id = ? AND root_cause = ?")
-          .get(input.objectiveId, rootCause) as { count: number }).count,
+        (
+          this.db
+            .prepare("SELECT count(*) AS count FROM autonomy_actions WHERE objective_id = ? AND root_cause = ?")
+            .get(input.objectiveId, rootCause) as { count: number }
+        ).count,
       );
       const reconciliationCount = Number(
-        (this.db
-          .prepare("SELECT count(*) AS count FROM autonomy_actions WHERE objective_id = ? AND root_cause = ? AND action_class = 'candidate-base-reconciliation'")
-          .get(input.objectiveId, rootCause) as { count: number }).count,
+        (
+          this.db
+            .prepare(
+              "SELECT count(*) AS count FROM autonomy_actions WHERE objective_id = ? AND root_cause = ? AND action_class = 'candidate-base-reconciliation'",
+            )
+            .get(input.objectiveId, rootCause) as { count: number }
+        ).count,
       );
       const repairCount = Number(
-        (this.db
-          .prepare("SELECT count(DISTINCT repair_candidate_id) AS count FROM autonomy_actions WHERE objective_id = ? AND repair_candidate_id IS NOT NULL")
-          .get(input.objectiveId) as { count: number }).count,
+        (
+          this.db
+            .prepare(
+              "SELECT count(DISTINCT repair_candidate_id) AS count FROM autonomy_actions WHERE objective_id = ? AND repair_candidate_id IS NOT NULL",
+            )
+            .get(input.objectiveId) as { count: number }
+        ).count,
       );
       const exceeds =
         rootCount >= envelope.budgets.maxRepeatedIdenticalFindings ||
         maintenanceDepth > envelope.budgets.maxMaintenanceDepth ||
         (input.repairCandidateId && repairCount >= envelope.budgets.maxControlPlaneRepairCandidates) ||
-        (input.actionClass === "candidate-base-reconciliation" && reconciliationCount >= envelope.budgets.maxReconciliations);
+        (input.actionClass === "candidate-base-reconciliation" &&
+          reconciliationCount >= envelope.budgets.maxReconciliations);
       if (exceeds) {
         this.event(
           "objective",
@@ -1188,14 +1219,22 @@ export class NightwatchLedger {
         };
       }
       const attempts = this.db
-        .prepare("SELECT strategy, semantic_precondition FROM autonomy_strategy_attempts WHERE objective_id = ? AND root_cause = ?")
+        .prepare(
+          "SELECT strategy, semantic_precondition FROM autonomy_strategy_attempts WHERE objective_id = ? AND root_cause = ?",
+        )
         .all(input.objectiveId, rootCause) as Array<{ strategy: string; semantic_precondition: string }>;
       const unchangedAttemptCount = attempts.filter(
         (attempt) => attempt.strategy === strategy && attempt.semantic_precondition === semanticPrecondition,
       ).length;
       const distinctStrategies = new Set(attempts.map((attempt) => attempt.strategy));
       if (unchangedAttemptCount >= envelope.budgets.maxAttemptsPerUnchangedStrategy) {
-        this.event("objective", input.objectiveId, "AUTONOMY_BLIND_RETRY_REJECTED", { rootCause, strategy, semanticPrecondition }, at);
+        this.event(
+          "objective",
+          input.objectiveId,
+          "AUTONOMY_BLIND_RETRY_REJECTED",
+          { rootCause, strategy, semanticPrecondition },
+          at,
+        );
         return {
           state: "BLIND_RETRY_REJECTED" as const,
           rootCause,
@@ -1204,7 +1243,10 @@ export class NightwatchLedger {
           distinctStrategyCount: distinctStrategies.size,
         };
       }
-      if (!distinctStrategies.has(strategy) && distinctStrategies.size >= envelope.budgets.maxDistinctStrategiesPerRootCause) {
+      if (
+        !distinctStrategies.has(strategy) &&
+        distinctStrategies.size >= envelope.budgets.maxDistinctStrategiesPerRootCause
+      ) {
         this.event("objective", input.objectiveId, "AUTONOMY_STRATEGY_BUDGET_EXHAUSTED", { rootCause, strategy }, at);
         return {
           state: "EXHAUSTED" as const,
@@ -1267,13 +1309,18 @@ export class NightwatchLedger {
       strategiesAttempted: [...new Set(input.strategiesAttempted ?? [])],
       exhaustionReason: input.exhaustionReason,
       requestedDecision: input.requestedDecision,
-      options: input.options.map((option) => ({ option: requireText(option.option, "escalationOption"), consequence: requireText(option.consequence, "escalationConsequence") })),
+      options: input.options.map((option) => ({
+        option: requireText(option.option, "escalationOption"),
+        consequence: requireText(option.consequence, "escalationConsequence"),
+      })),
       preservedWorkLocation: input.preservedWorkLocation,
       createdAt: at,
     };
     return this.inTransaction(() => {
       this.db
-        .prepare("INSERT INTO autonomy_escalations(escalation_id, objective_id, escalation_json, created_at) VALUES (?, ?, ?, ?)")
+        .prepare(
+          "INSERT INTO autonomy_escalations(escalation_id, objective_id, escalation_json, created_at) VALUES (?, ?, ?, ?)",
+        )
         .run(escalation.id, escalation.objectiveId, json(escalation), at);
       const candidate = this.getCandidate(escalation.candidateIdentity.candidateId);
       if (candidate.objectiveId !== escalation.objectiveId)
@@ -1289,10 +1336,13 @@ export class NightwatchLedger {
   }
 
   ownerEscalations(objectiveId: string): OwnerEscalation[] {
-    return (this.db
-      .prepare("SELECT escalation_json FROM autonomy_escalations WHERE objective_id = ? ORDER BY created_at, escalation_id")
-      .all(objectiveId) as Array<{ escalation_json: string }>)
-      .map((row) => parse<OwnerEscalation>(row.escalation_json, `ownerEscalation.${objectiveId}`));
+    return (
+      this.db
+        .prepare(
+          "SELECT escalation_json FROM autonomy_escalations WHERE objective_id = ? ORDER BY created_at, escalation_id",
+        )
+        .all(objectiveId) as Array<{ escalation_json: string }>
+    ).map((row) => parse<OwnerEscalation>(row.escalation_json, `ownerEscalation.${objectiveId}`));
   }
 
   getCandidate(id: string): Candidate {
@@ -1795,6 +1845,7 @@ export class NightwatchLedger {
       baseSha: String(row.base_sha),
       baseTreeSha: String(row.base_tree_sha),
       candidateRef: String(row.candidate_ref),
+      integrationRoute: (row.integration_route ? String(row.integration_route) : "DIRECT_MAINLINE") as IntegrationRoute,
       state: String(row.state) as AcceptanceTransactionState,
       authorityRunId: row.authority_run_id ? String(row.authority_run_id) : null,
       bindingRunId: row.binding_run_id ? String(row.binding_run_id) : null,
@@ -1949,10 +2000,14 @@ export class NightwatchLedger {
       const cascadeId = randomUUID();
       const transactionId = randomUUID();
       const rootFingerprint = `baseline-receipt:${identity.baseSha}:${identity.baseTreeSha}`;
-      this.db.prepare("INSERT INTO objectives(objective_id, project, increment, created_at) VALUES (?, ?, ?, ?)")
+      this.db
+        .prepare("INSERT INTO objectives(objective_id, project, increment, created_at) VALUES (?, ?, ?, ?)")
         .run(objectiveId, "Nightwatch", "Baseline Certification receipt intake", at);
-      this.db.prepare(`INSERT INTO candidates(candidate_id, objective_id, project, increment, branch, product_head_sha, local_base_sha, created_at, state, active, predecessor_id, terminal_reason)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'BLOCKED_BY_BOSUN', 1, NULL, NULL)`)
+      this.db
+        .prepare(
+          `INSERT INTO candidates(candidate_id, objective_id, project, increment, branch, product_head_sha, local_base_sha, created_at, state, active, predecessor_id, terminal_reason)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'BLOCKED_BY_BOSUN', 1, NULL, NULL)`,
+        )
         .run(
           candidateId,
           objectiveId,
@@ -1963,11 +2018,17 @@ export class NightwatchLedger {
           identity.baseSha,
           at,
         );
-      this.db.prepare(`INSERT INTO integration_cascades(cascade_id, root_fingerprint, root_identity, started_at, blocked_candidates_json, status)
-        VALUES (?, ?, ?, ?, '[]', 'ACTIVE')`)
+      this.db
+        .prepare(
+          `INSERT INTO integration_cascades(cascade_id, root_fingerprint, root_identity, started_at, blocked_candidates_json, status)
+        VALUES (?, ?, ?, ?, '[]', 'ACTIVE')`,
+        )
         .run(cascadeId, rootFingerprint, certificationId, at);
-      this.db.prepare(`INSERT INTO acceptance_transactions(transaction_id, candidate_id, cascade_id, candidate_sha, candidate_tree_sha, base_sha, base_tree_sha, candidate_ref, state, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'SHARED_BLOCKED', ?, ?)`)
+      this.db
+        .prepare(
+          `INSERT INTO acceptance_transactions(transaction_id, candidate_id, cascade_id, candidate_sha, candidate_tree_sha, base_sha, base_tree_sha, candidate_ref, state, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'SHARED_BLOCKED', ?, ?)`,
+        )
         .run(
           transactionId,
           candidateId,
@@ -1983,17 +2044,37 @@ export class NightwatchLedger {
       // Receipt intake is not a timed controller attempt. The anchor remains
       // usable to reconcile duplicate delivery after ordinary maintenance windows.
       const durableWindowMs = 10 * 365 * 24 * 60 * 60 * 1_000;
-      this.db.prepare(`INSERT INTO integration_cost_ledger(cascade_id, transaction_id, started_at, remaining_closure_steps_json, warning_at_ms, hard_review_at_ms, breaker_at_ms)
-        VALUES (?, ?, ?, ?, ?, ?, ?)`)
-        .run(cascadeId, transactionId, at, json(["reconcile certified Baseline receipt"]), durableWindowMs, durableWindowMs, durableWindowMs);
-      this.db.prepare(`INSERT INTO baseline_receipt_anchors(protected_main_sha, protected_main_tree_sha, certification_id, candidate_id, transaction_id, created_at)
-        VALUES (?, ?, ?, ?, ?, ?)`)
+      this.db
+        .prepare(
+          `INSERT INTO integration_cost_ledger(cascade_id, transaction_id, started_at, remaining_closure_steps_json, warning_at_ms, hard_review_at_ms, breaker_at_ms)
+        VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        )
+        .run(
+          cascadeId,
+          transactionId,
+          at,
+          json(["reconcile certified Baseline receipt"]),
+          durableWindowMs,
+          durableWindowMs,
+          durableWindowMs,
+        );
+      this.db
+        .prepare(
+          `INSERT INTO baseline_receipt_anchors(protected_main_sha, protected_main_tree_sha, certification_id, candidate_id, transaction_id, created_at)
+        VALUES (?, ?, ?, ?, ?, ?)`,
+        )
         .run(identity.baseSha, identity.baseTreeSha, certificationId, candidateId, transactionId, at);
-      this.event("baseline-receipt", certificationId, "BASELINE_RECEIPT_ANCHORED", {
-        protectedMain: { sha: identity.baseSha, treeSha: identity.baseTreeSha },
-        candidateId,
-        transactionId,
-      }, at);
+      this.event(
+        "baseline-receipt",
+        certificationId,
+        "BASELINE_RECEIPT_ANCHORED",
+        {
+          protectedMain: { sha: identity.baseSha, treeSha: identity.baseTreeSha },
+          candidateId,
+          transactionId,
+        },
+        at,
+      );
       return {
         candidate: this.getCandidate(candidateId),
         transaction: this.getAcceptanceTransaction(transactionId),
@@ -2036,6 +2117,7 @@ export class NightwatchLedger {
     identity: ExactCandidateIdentity;
     rootFingerprint: string;
     rootIdentity?: string;
+    integrationRoute?: IntegrationRoute;
     at?: string;
   }): AcceptanceTransaction {
     assertSafe(input);
@@ -2065,7 +2147,7 @@ export class NightwatchLedger {
       const id = randomUUID();
       this.db
         .prepare(
-          "INSERT INTO acceptance_transactions(transaction_id, candidate_id, cascade_id, candidate_sha, candidate_tree_sha, base_sha, base_tree_sha, candidate_ref, state, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'RECONCILING', ?, ?)",
+          "INSERT INTO acceptance_transactions(transaction_id, candidate_id, cascade_id, candidate_sha, candidate_tree_sha, base_sha, base_tree_sha, candidate_ref, integration_route, state, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'RECONCILING', ?, ?)",
         )
         .run(
           id,
@@ -2076,6 +2158,7 @@ export class NightwatchLedger {
           identity.baseSha,
           identity.baseTreeSha,
           identity.candidateRef,
+          input.integrationRoute ?? "DIRECT_MAINLINE",
           at,
           at,
         );
@@ -2103,7 +2186,7 @@ export class NightwatchLedger {
         "acceptance-transaction",
         id,
         "ATOMIC_ACCEPTANCE_BEGUN",
-        { candidateId: input.candidateId, ...identity },
+        { candidateId: input.candidateId, integrationRoute: input.integrationRoute ?? "DIRECT_MAINLINE", ...identity },
         at,
       );
       return this.getAcceptanceTransaction(id);
@@ -2171,7 +2254,11 @@ export class NightwatchLedger {
         "exact-main proof",
         "Bosun post-merge convergence",
       ]);
-      return { parent: this.getAcceptanceTransaction(parent.id), transaction: this.getAcceptanceTransaction(transaction.id), budget: finding.budget };
+      return {
+        parent: this.getAcceptanceTransaction(parent.id),
+        transaction: this.getAcceptanceTransaction(transaction.id),
+        budget: finding.budget,
+      };
     });
   }
 
@@ -2319,11 +2406,17 @@ export class NightwatchLedger {
     return this.inTransaction(() => {
       const transaction = this.getAcceptanceTransaction(transactionId);
       const key = requireText(eventKey, "eventKey");
-      const sameIdentity = this.db
-        .prepare("SELECT * FROM acceptance_runs WHERE transaction_id = ? AND stage = ?")
-        .get(transactionId, stage) as Record<string, unknown> | undefined;
-      if (sameIdentity)
-        return this.acceptanceRuns(transactionId).find((run) => run.id === String(sameIdentity.run_id))!;
+      const existing = this.acceptanceRuns(transactionId).filter((run) => run.stage === stage);
+      const running = existing.find((run) => run.status === "RUNNING");
+      if (running) return running;
+      if (existing.length) {
+        const safeDirectFallback =
+          stage === "AUTHORITY" &&
+          transaction.integrationRoute === "SAFE_DIRECT_FALLBACK" &&
+          existing.length === 1 &&
+          existing[0]?.status === "REJECTED";
+        if (!safeDirectFallback) return existing[0]!;
+      }
       const expected = stage === "AUTHORITY" ? "AWAITING_AUTHORITY" : "BINDING_PENDING";
       if (transaction.state !== expected)
         throw new NightwatchInvariantError(`${stage}_DISPATCH_NOT_READY`, transactionId);
@@ -2393,7 +2486,11 @@ export class NightwatchLedger {
         .prepare("UPDATE acceptance_runs SET status = ?, completed_at = ? WHERE run_id = ?")
         .run(result, at, runId);
       const run = this.acceptanceRuns(transactionId).find((entry) => entry.id === runId)!;
-      this.recordCostDuration(transaction.cascadeId, "authority", Math.max(0, Date.parse(at) - Date.parse(run.dispatchedAt)));
+      this.recordCostDuration(
+        transaction.cascadeId,
+        "authority",
+        Math.max(0, Date.parse(at) - Date.parse(run.dispatchedAt)),
+      );
       this.db
         .prepare("UPDATE acceptance_transactions SET authority_result = ?, updated_at = ? WHERE transaction_id = ?")
         .run(result, at, transactionId);
@@ -2401,6 +2498,46 @@ export class NightwatchLedger {
       if (result === "REJECTED") return this.setTransactionState(transactionId, "AUTHORITY_REJECTED", at);
       this.setTransactionState(transactionId, "AUTHORITY_ACCEPTED", at);
       return this.setTransactionState(transactionId, "MERGING", at);
+    });
+  }
+
+  /**
+   * A failed Train is an optimization result, not a reason to strand a frozen
+   * ordinary candidate. Preserve the failed run as audit evidence, then allow
+   * exactly one new conservative Direct Mainline authority dispatch.
+   */
+  routeTrainFailureToSafeDirectFallback(transactionId: string, runId: string, detail: string, at = iso()) {
+    return this.inTransaction(() => {
+      const transaction = this.getAcceptanceTransaction(transactionId);
+      if (
+        transaction.integrationRoute !== "MAINLINE_TRAIN" ||
+        transaction.state !== "AUTHORITY_RUNNING" ||
+        transaction.authorityRunId !== runId
+      )
+        throw new NightwatchInvariantError("MAINLINE_TRAIN_FALLBACK_ROUTE_INVALID", transactionId);
+      const run = this.acceptanceRuns(transactionId).find((entry) => entry.id === runId);
+      if (!run) throw new NightwatchInvariantError("MAINLINE_TRAIN_RUN_MISMATCH", transactionId);
+      this.db
+        .prepare("UPDATE acceptance_runs SET status = 'REJECTED', completed_at = ? WHERE run_id = ?")
+        .run(at, runId);
+      this.recordCostDuration(
+        transaction.cascadeId,
+        "authority",
+        Math.max(0, Date.parse(at) - Date.parse(run.dispatchedAt)),
+      );
+      this.db
+        .prepare(
+          "UPDATE acceptance_transactions SET integration_route = 'SAFE_DIRECT_FALLBACK', authority_run_id = NULL, authority_result = 'TRAIN_OPTIMIZATION_FAILURE', updated_at = ? WHERE transaction_id = ?",
+        )
+        .run(at, transactionId);
+      this.event(
+        "acceptance-transaction",
+        transactionId,
+        "SAFE_DIRECT_FALLBACK_ROUTED",
+        { failedTrainRunId: runId, detail: requireText(detail, "trainOptimizationFailure") },
+        at,
+      );
+      return this.setTransactionState(transactionId, "AWAITING_AUTHORITY", at);
     });
   }
 
@@ -2723,12 +2860,18 @@ export class NightwatchLedger {
   claimController(instanceId: string, ttlMs: number, at = iso()) {
     const owner = requireText(instanceId, "controllerInstanceId");
     return this.inTransaction(() => {
-      const existing = this.leases("ACTIVE").find((entry) => entry.type === "CONTROLLER" && entry.scope === "nightwatchd");
+      const existing = this.leases("ACTIVE").find(
+        (entry) => entry.type === "CONTROLLER" && entry.scope === "nightwatchd",
+      );
       if (existing?.owner === owner) {
         if (!Number.isFinite(ttlMs) || ttlMs <= 0) throw new NightwatchInvariantError("INVALID_LEASE_TTL");
-        this.db.prepare("UPDATE leases SET expires_at = ? WHERE lease_id = ?").run(iso(Date.parse(at) + ttlMs), existing.id);
         this.db
-          .prepare("UPDATE controller_health SET instance_id = ?, state = 'LIVE', heartbeat_at = ?, detail = NULL WHERE singleton = 1")
+          .prepare("UPDATE leases SET expires_at = ? WHERE lease_id = ?")
+          .run(iso(Date.parse(at) + ttlMs), existing.id);
+        this.db
+          .prepare(
+            "UPDATE controller_health SET instance_id = ?, state = 'LIVE', heartbeat_at = ?, detail = NULL WHERE singleton = 1",
+          )
           .run(owner, at);
         this.event("controller", owner, "CONTROLLER_RECLAIMED", { leaseId: existing.id }, at);
         return this.lease(this.db.prepare("SELECT * FROM leases WHERE lease_id = ?").get(existing.id) as LeaseRow);

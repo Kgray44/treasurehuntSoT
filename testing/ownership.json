@@ -57,6 +57,7 @@
         "tests/e2e/harborlight-phase3.spec.ts",
         "tests/e2e/harborlight-phase4.spec.ts"
       ],
+      "helperPaths": ["scripts/rehearse-harborlight-*.ts"],
       "contractIds": [
         "community-public-projection",
         "artifact-grant-projection",

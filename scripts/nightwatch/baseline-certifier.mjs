@@ -311,11 +311,12 @@ const defaultChecks = (node) => [
       const baseline = await context.readText(".github/workflows/nightwatch-baseline-certification.yml");
       if (
         !workflow.includes("workflow_dispatch") ||
-        !authority.includes("baseline_run_id") ||
+        !authority.includes("verification_route") ||
+        authority.includes("SOUNDING_LINE_BASELINE_CERTIFICATION_REQUIRED") ||
         !baseline.includes("nightwatch-baseline-certification")
       )
-        throw new Error("PROTECTED_BINDING_OR_BASELINE_ROUTE_UNAVAILABLE");
-      return { route: "exact-candidate-base-and-baseline-receipt" };
+        throw new Error("PROTECTED_BINDING_OR_DIRECT_MAINLINE_ROUTE_UNAVAILABLE");
+      return { route: "exact-candidate-base-tree-direct-mainline" };
     },
   },
   {

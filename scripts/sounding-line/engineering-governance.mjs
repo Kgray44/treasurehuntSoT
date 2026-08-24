@@ -22,7 +22,12 @@ const policyValid = (policy) =>
   policy?.decision === "ADR-EGS-001" &&
   policy?.authorities?.verification === "SOUNDING_LINE" &&
   policy?.authorities?.flow === "NIGHTWATCH" &&
-  policy?.ordinary?.integrationPath === "SOUNDING_LINE_MAINLINE_TRAIN" &&
+  policy?.ordinary?.integrationPath === "DIRECT_MAINLINE_SINGLE_CANDIDATE" &&
+  policy?.ordinary?.mainlineTrain === "OPTIONAL_MULTI_CANDIDATE_OPTIMIZATION" &&
+  policy?.ordinary?.trainFailureRoute === "SAFE_DIRECT_FALLBACK" &&
+  policy?.ordinary?.ordinaryBaselineCertification === "NOT_A_MERGE_PREREQUISITE" &&
+  policy?.ordinary?.ordinaryDeepwater === "PRODUCT_REALIZATION_OR_REACHABILITY_ONLY" &&
+  policy?.ordinary?.provenanceOnlyGeneratedState === "POST_MERGE_RECONCILIATION" &&
   policy?.releaseCandidate === "EXHAUSTIVE_UNCHANGED" &&
   policy?.controlPlaneChange?.trustedBasePolicy === "REQUIRED" &&
   policy?.controlPlaneChange?.antiSelfAuthorization === "TRUSTED_BASE_CLASSIFIER_AND_POLICY_REQUIRED" &&
@@ -48,18 +53,21 @@ export function classifyEngineeringChange({
   else if (requestedClass && !["BREAK_GLASS", "CONTROL_PLANE_CHANGE"].includes(requestedClass))
     errors.push("ENGINEERING_GOVERNANCE_REQUESTED_CLASS_UNKNOWN");
   const controlPaths = paths.filter((file) => matchesAny(file, trustedPolicy?.controlPlanePathGlobs));
-  const bosunOnly = paths.length > 0 && paths.every((file) => matchesAny(file, trustedPolicy?.ordinaryBosunRepairPathGlobs));
+  const bosunOnly =
+    paths.length > 0 && paths.every((file) => matchesAny(file, trustedPolicy?.ordinaryBosunRepairPathGlobs));
   if (isBreakGlass) {
     if (trustedControlPlaneAvailable) errors.push("BREAK_GLASS_TRUSTED_CONTROL_PLANE_AVAILABLE");
     if (ownerAuthorized !== true) errors.push("BREAK_GLASS_OWNER_AUTHORIZATION_REQUIRED");
     if (!breakGlassScope || !Array.isArray(breakGlassScope.paths) || !breakGlassScope.paths.length)
       errors.push("BREAK_GLASS_EXACT_SCOPE_REQUIRED");
-    else if (uniquePaths(breakGlassScope.paths).join("\n") !== paths.join("\n")) errors.push("BREAK_GLASS_SCOPE_MISMATCH");
+    else if (uniquePaths(breakGlassScope.paths).join("\n") !== paths.join("\n"))
+      errors.push("BREAK_GLASS_SCOPE_MISMATCH");
     if (!expiresAt || Number.isNaN(Date.parse(expiresAt)) || Date.parse(expiresAt) <= Date.now())
       errors.push("BREAK_GLASS_EXPIRY_REQUIRED");
     if (!Array.isArray(beforeAfterEvidence) || beforeAfterEvidence.length < 2)
       errors.push("BREAK_GLASS_BEFORE_AFTER_EVIDENCE_REQUIRED");
-    if (paths.some((file) => /^src\/(?!nightwatch\/bosun)/u.test(file))) errors.push("BREAK_GLASS_PRODUCT_SCOPE_REJECTED");
+    if (paths.some((file) => /^src\/(?!nightwatch\/bosun)/u.test(file)))
+      errors.push("BREAK_GLASS_PRODUCT_SCOPE_REJECTED");
     return { classification: errors.length ? "BREAK_GLASS_REJECTED" : "BREAK_GLASS", changedPaths: paths, errors };
   }
   if ((controlPaths.length && !bosunOnly) || requestedClass === "CONTROL_PLANE_CHANGE") {
@@ -133,7 +141,8 @@ export function createEngineeringControlPlan({
     beforeAfterEvidence,
   });
   const errors = [...classification.errors];
-  if (![trustedMainSha, candidateSha, candidateTree, qualifiedBaseSha].every(sha)) errors.push("ENGINEERING_CONTROL_IDENTITY_INVALID");
+  if (![trustedMainSha, candidateSha, candidateTree, qualifiedBaseSha].every(sha))
+    errors.push("ENGINEERING_CONTROL_IDENTITY_INVALID");
   if (trustedMainSha !== qualifiedBaseSha) errors.push("ENGINEERING_CONTROL_TRUSTED_BASE_MISMATCH");
   const plan = {
     version: 1,
@@ -149,7 +158,7 @@ export function createEngineeringControlPlan({
     breakGlass: requestedClass === "BREAK_GLASS" ? { scope: breakGlassScope, expiresAt, beforeAfterEvidence } : null,
     requiredEvidence:
       classification.classification === "CONTROL_PLANE_CHANGE"
-        ? trustedPolicy?.controlPlaneChange?.requiredEvidence ?? []
+        ? (trustedPolicy?.controlPlaneChange?.requiredEvidence ?? [])
         : classification.classification === "BREAK_GLASS"
           ? ["OWNER_AUTHORIZATION", "BEFORE_AFTER_EVIDENCE", "NORMAL_PATH_SELF_VERIFICATION"]
           : [],
@@ -157,15 +166,23 @@ export function createEngineeringControlPlan({
   return { ...plan, planDigest: digest(plan), errors: [...new Set(errors)].sort() };
 }
 
-export function finalizeEngineeringControlPlan({ plan, evidence, observedCandidateSha, observedTrustedMainSha, observedLandedTree }) {
+export function finalizeEngineeringControlPlan({
+  plan,
+  evidence,
+  observedCandidateSha,
+  observedTrustedMainSha,
+  observedLandedTree,
+}) {
   const { planDigest, errors: ignoredErrors, ...unsigned } = plan ?? {};
   void ignoredErrors;
   const errors = [];
   if (!plan || planDigest !== digest(unsigned)) errors.push("ENGINEERING_CONTROL_PLAN_DIGEST_MISMATCH");
   if (plan?.errors?.length) errors.push(...plan.errors);
-  if (observedCandidateSha !== plan?.candidateSha) errors.push("ENGINEERING_CONTROL_CANDIDATE_CHANGED_AFTER_QUALIFICATION");
+  if (observedCandidateSha !== plan?.candidateSha)
+    errors.push("ENGINEERING_CONTROL_CANDIDATE_CHANGED_AFTER_QUALIFICATION");
   if (observedTrustedMainSha !== plan?.trustedMainSha) errors.push("ENGINEERING_CONTROL_TRUSTED_MAIN_STALE");
-  if (observedLandedTree && observedLandedTree !== plan?.candidateTree) errors.push("ENGINEERING_CONTROL_LANDED_TREE_MISMATCH");
+  if (observedLandedTree && observedLandedTree !== plan?.candidateTree)
+    errors.push("ENGINEERING_CONTROL_LANDED_TREE_MISMATCH");
   const byId = new Map((evidence ?? []).map((entry) => [entry.id, entry]));
   for (const id of plan?.requiredEvidence ?? [])
     if (byId.get(id)?.result !== "PASSED" || byId.get(id)?.candidateSha !== plan?.candidateSha)
@@ -185,7 +202,11 @@ export function classifyAuxiliaryGovernanceImpact({ effects = {} } = {}) {
   const value = (name) => effects[name] === true;
   return {
     featureCatalog: value("capability") || value("availability") || value("limitation"),
-    deepwater: value("capabilityRealization") || value("frontendExposure") || value("routeReachability") || value("backendToProduct"),
+    deepwater:
+      value("capabilityRealization") ||
+      value("frontendExposure") ||
+      value("routeReachability") ||
+      value("backendToProduct"),
     documentationIndex: value("documentStructure"),
     changelogAndUserDocs: value("userVisibleBehavior"),
     governingDocuments: value("governingArchitecture"),

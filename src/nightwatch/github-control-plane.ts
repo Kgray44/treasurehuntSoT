@@ -101,12 +101,23 @@ export class GitHubCliControlPlane implements NightwatchControlPlane {
     const title = `Nightwatch baseline certification ${baseSha}`;
     const runs = JSON.parse(
       this.gh([
-        "run", "list", "--repo", this.repository, "--workflow", "nightwatch-baseline-certification.yml", "--limit", "100",
-        "--json", "databaseId,status,conclusion,displayTitle,createdAt",
+        "run",
+        "list",
+        "--repo",
+        this.repository,
+        "--workflow",
+        "nightwatch-baseline-certification.yml",
+        "--limit",
+        "100",
+        "--json",
+        "databaseId,status,conclusion,displayTitle,createdAt",
       ]),
     ) as GitHubRun[];
     const matches = runs.filter(
-      (run) => run.displayTitle === title && run.status === "completed" && (!requireSuccessfulConclusion || run.conclusion === "success"),
+      (run) =>
+        run.displayTitle === title &&
+        run.status === "completed" &&
+        (!requireSuccessfulConclusion || run.conclusion === "success"),
     );
     if (matches.length > 1) throw new Error("NIGHTWATCH_BASELINE_CERTIFICATION_AMBIGUOUS");
     return matches[0] ?? null;
@@ -117,7 +128,10 @@ export class GitHubCliControlPlane implements NightwatchControlPlane {
     const protectedMain = this.protectedMain();
     const run = this.baselineRun(protectedMain.sha);
     if (!run) return null;
-    const receipt = this.artifactJson<BaselineCertificationReceipt>(String(run.databaseId), "nightwatch-baseline-certification");
+    const receipt = this.artifactJson<BaselineCertificationReceipt>(
+      String(run.databaseId),
+      "nightwatch-baseline-certification",
+    );
     if (
       receipt.kind !== "BASELINE_CERTIFICATION" ||
       receipt.protectedMain?.sha !== protectedMain.sha ||
@@ -128,27 +142,10 @@ export class GitHubCliControlPlane implements NightwatchControlPlane {
     return { protectedMain, receipt };
   }
 
-  private baselineCertification(identity: ExactCandidateIdentity) {
-    const run = this.baselineRun(identity.baseSha, true);
-    if (!run) return null;
-    const receipt = this.artifactJson<BaselineCertificationReceipt>(String(run.databaseId), "nightwatch-baseline-certification");
-    if (
-      receipt.kind !== "BASELINE_CERTIFICATION" ||
-      receipt.status !== "CERTIFIED" ||
-      receipt.protectedMain?.sha !== identity.baseSha ||
-      receipt.protectedMain?.treeSha !== identity.baseTreeSha ||
-      typeof receipt.certificationId !== "string"
-    )
-      throw new Error("NIGHTWATCH_BASELINE_CERTIFICATION_IDENTITY_INVALID");
-    return { runId: String(run.databaseId), certificationId: receipt.certificationId };
-  }
-
-  preflight(identity: ExactCandidateIdentity) {
-    const baseline = this.baselineCertification(identity);
+  preflight(_identity: ExactCandidateIdentity) {
     return {
       deterministicRegistryHealthy: true,
       ownershipResolved: true,
-      knownMaintenanceBlocker: baseline ? undefined : `BASELINE_CERTIFICATION_REQUIRED:${identity.baseSha}:${identity.baseTreeSha}`,
       identityStable: true,
       leaseAvailable: true,
     };
@@ -191,10 +188,13 @@ export class GitHubCliControlPlane implements NightwatchControlPlane {
     throw new Error("NIGHTWATCH_DISPATCH_RUN_UNAVAILABLE");
   }
 
-  dispatchAuthority(input: ExactCandidateIdentity & { dispatchKey: string }) {
+  dispatchAuthority(
+    input: ExactCandidateIdentity & {
+      dispatchKey: string;
+      integrationRoute?: "DIRECT_MAINLINE" | "SAFE_DIRECT_FALLBACK" | "MAINLINE_TRAIN";
+    },
+  ) {
     const pull = this.candidatePullRequest(input.candidateRef, input.candidateSha);
-    const baseline = this.baselineCertification(input);
-    if (!baseline) throw new Error(`BASELINE_CERTIFICATION_REQUIRED:${input.baseSha}:${input.baseTreeSha}`);
     return this.dispatch("sounding-line-authoritative.yml", `Sounding Line authoritative ${input.dispatchKey}`, {
       gate: "mainline",
       candidate_sha: input.candidateSha,
@@ -202,28 +202,38 @@ export class GitHubCliControlPlane implements NightwatchControlPlane {
       pr_number: String(pull.number),
       base_sha: input.baseSha,
       authority_mode: "candidate",
-      baseline_run_id: baseline.runId,
+      verification_route:
+        input.integrationRoute === "SAFE_DIRECT_FALLBACK" ? "safe-direct-fallback" : "direct-mainline",
       nightwatch_dispatch_key: input.dispatchKey,
     });
   }
 
   /**
-   * Ordinary candidates receive a private, exact label and are admitted through
-   * the Sounding Line Mainline Train. Nightwatch neither produces nor interprets
-   * qualification evidence beyond checking the immutable train record.
+   * The Train is an optional throughput path. Every admitted car still has an
+   * exact candidate/base/tree identity and can be routed back to Direct
+   * Mainline without rewriting the product candidate.
    */
-  dispatchMainlineTrain(input: ExactCandidateIdentity & { transactionId: string; dispatchKey: string }) {
-    const pull = this.candidatePullRequest(input.candidateRef, input.candidateSha);
+  dispatchMainlineTrain(
+    input: ExactCandidateIdentity & {
+      transactionId: string;
+      dispatchKey: string;
+      compatibleCandidates: ExactCandidateIdentity[];
+    },
+  ) {
     const trainId = this.mainlineTrainId(input.transactionId);
     const label = this.mainlineTrainLabel(input.transactionId);
-    this.gh([
-      "api",
-      `repos/${this.repository}/issues/${pull.number}/labels`,
-      "-X",
-      "POST",
-      "-f",
-      `labels[]=${label}`,
-    ]);
+    const candidates = input.compatibleCandidates.length ? input.compatibleCandidates : [input];
+    for (const candidate of candidates) {
+      const pull = this.candidatePullRequest(candidate.candidateRef, candidate.candidateSha);
+      this.gh([
+        "api",
+        `repos/${this.repository}/issues/${pull.number}/labels`,
+        "-X",
+        "POST",
+        "-f",
+        `labels[]=${label}`,
+      ]);
+    }
     return this.dispatch("sounding-line-mainline-train.yml", `Sounding Line mainline train ${trainId}`, {
       train_id: trainId,
       label,
@@ -270,7 +280,12 @@ export class GitHubCliControlPlane implements NightwatchControlPlane {
     }
   }
 
-  observeMainlineTrain(input: { runId: string; transactionId: string; candidateSha: string; candidateTreeSha: string }) {
+  observeMainlineTrain(input: {
+    runId: string;
+    transactionId: string;
+    candidateSha: string;
+    candidateTreeSha: string;
+  }) {
     const run = JSON.parse(
       this.gh(["run", "view", input.runId, "--repo", this.repository, "--json", "status,conclusion"]),
     ) as { status: string; conclusion: string | null };
@@ -322,7 +337,6 @@ export class GitHubCliControlPlane implements NightwatchControlPlane {
   private mainlineTrainLabel(transactionId: string) {
     return `nw-train-${transactionId}`;
   }
-
 
   cancelRun(input: { runId: string }) {
     this.gh(["run", "cancel", input.runId, "--repo", this.repository]);

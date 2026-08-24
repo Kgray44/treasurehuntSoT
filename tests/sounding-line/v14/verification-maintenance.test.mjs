@@ -297,31 +297,51 @@ test("ordinary candidates reject arbitrary deploy and Sounding Line scripts", as
   }
 });
 
-test("the governed Shipwright journey runner is ordinary-admissible without broadening its directory", async () => {
+test("a structurally project-owned Shipwright journey runner is ordinary-admissible without a path exception", async () => {
   const policy = await readOrdinaryCandidatePolicy();
+  const trustedRegistries = {
+    ownership: {
+      owners: [
+        {
+          id: "project-shipwright",
+          project: "shipwright",
+          testPaths: ["tests/e2e/project-shipwright-phase2.spec.ts"],
+        },
+      ],
+    },
+  };
   const admitted = classifyOrdinaryCandidate({
     trustedPolicy: policy,
-    changedPaths: ["scripts/shipwright/run-phase2-journeys.mjs"],
+    trustedRegistries,
+    changedPaths: ["scripts/shipwright/run-phase2-journeys.mjs", "tests/e2e/project-shipwright-phase2.spec.ts"],
   });
   assert.equal(admitted.classification, "ORDINARY_CANDIDATE");
   assert.deepEqual(admitted.errors, []);
   for (const changedPath of ["scripts/shipwright/unrelated-runner.mjs", "scripts/shipwright/future/runner.mjs"]) {
-    const rejected = classifyOrdinaryCandidate({ trustedPolicy: policy, changedPaths: [changedPath] });
+    const rejected = classifyOrdinaryCandidate({
+      trustedPolicy: policy,
+      trustedRegistries,
+      changedPaths: [changedPath],
+    });
     assert.equal(rejected.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED", changedPath);
     assert.deepEqual(rejected.errors, [`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${changedPath}`], changedPath);
   }
 });
 
-test("the governed Harborlight migration rehearsal is ordinary-admissible without broadening scripts", async () => {
+test("a declaratively project-owned Harborlight migration rehearsal is ordinary-admissible without policy modification", async () => {
   const policy = await readOrdinaryCandidatePolicy();
+  const ownership = JSON.parse(await readFile(new URL("../../../testing/ownership.json", import.meta.url), "utf8"));
+  const trustedRegistries = { ownership };
   const admitted = classifyOrdinaryCandidate({
     trustedPolicy: policy,
-    changedPaths: ["scripts/rehearse-harborlight-phase3-migrations.ts"],
+    trustedRegistries,
+    changedPaths: ["scripts/rehearse-harborlight-phase3-migrations.ts", "tests/e2e/harborlight-phase3.spec.ts"],
   });
   assert.equal(admitted.classification, "ORDINARY_CANDIDATE");
   assert.deepEqual(admitted.errors, []);
   const rejected = classifyOrdinaryCandidate({
     trustedPolicy: policy,
+    trustedRegistries,
     changedPaths: ["scripts/rehearse-unrelated-migrations.ts"],
   });
   assert.equal(rejected.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
