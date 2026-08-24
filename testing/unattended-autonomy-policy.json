@@ -1,0 +1,71 @@
+{
+  "version": "1.0.0",
+  "executionProfile": "UNATTENDED_CONTINUATION",
+  "owner": "NIGHTWATCH",
+  "verificationAuthority": "SOUNDING_LINE",
+  "standingDelegation": {
+    "requiredFields": [
+      "objectiveId",
+      "executionProfile",
+      "authorizedRepositories",
+      "authorizedProjects",
+      "allowedActionClasses",
+      "hardStopActionClasses",
+      "budgets",
+      "expiryOrCompletion",
+      "auditIdentity"
+    ],
+    "defaultBudgets": {
+      "maxAttemptsPerUnchangedStrategy": 1,
+      "maxDistinctStrategiesPerRootCause": 3,
+      "maxControlPlaneRepairCandidates": 1,
+      "maxReconciliations": 1,
+      "maxWallClockMs": 21600000,
+      "maxRepeatedIdenticalFindings": 2,
+      "maxMaintenanceDepth": 1
+    }
+  },
+  "routing": {
+    "preserveOriginalFinding": true,
+    "outcomes": ["AUTO_DELEGATED", "DELEGATED_WITH_BUDGET", "TRUE_OWNER_REQUIRED"],
+    "automaticActionClasses": [
+      "generated-state-regeneration",
+      "document-index-regeneration",
+      "policy-identity-reconciliation",
+      "candidate-base-reconciliation",
+      "candidate-metadata-repair",
+      "post-merge-verification"
+    ],
+    "budgetedActionClasses": [
+      "focused-code-repair",
+      "task-owned-test-repair",
+      "task-owned-fixture-repair",
+      "task-owned-configuration-repair",
+      "approved-dependency-refresh",
+      "safe-rebase-reconciliation",
+      "strategy-continuation",
+      "shared-maintenance-repair"
+    ]
+  },
+  "hardStops": [
+    "destructive-production-mutation",
+    "user-data-deletion",
+    "history-rewrite",
+    "branch-protection-weakening",
+    "verification-authority-weakening",
+    "secret-custody",
+    "external-monetary-spend",
+    "irreversible-infrastructure-destruction",
+    "administrative-privilege-grant",
+    "material-product-scope-expansion",
+    "governing-requirement-conflict",
+    "material-product-policy-decision",
+    "security-or-privacy-judgment"
+  ],
+  "invariants": [
+    "Nightwatch may route and schedule but never emits RELEASE_GO.",
+    "Bosun executes one bounded shared repair only after delegated routing.",
+    "Sounding Line retains exact candidate, trusted base, protected binding, and landed-tree verification.",
+    "A hard stop records one complete escalation and parks the exact candidate."
+  ]
+}

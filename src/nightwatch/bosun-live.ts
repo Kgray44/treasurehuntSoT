@@ -20,6 +20,10 @@ export type BosunOwnerRepairInput = Omit<BosunAutoZeroRepairInput, "actionId"> &
   ownerAuthorization: string;
 };
 
+export type BosunDelegatedRepairInput = Omit<BosunAutoZeroRepairInput, "actionId"> & {
+  actionId: "delegated-shared-maintenance";
+};
+
 /**
  * The only bridge from a deterministic AUTO_0 result to Nightwatch's live
  * acceptance machine. It deliberately accepts a pre-created PR/identity: Git
@@ -45,10 +49,21 @@ export class BosunLiveRepairCoordinator {
     return this.attachRepair(input, "OWNER", input.ownerAuthorization);
   }
 
+  /** A delegated repair still uses normal Sounding Line acceptance; only the routine owner pause is removed. */
+  attachDelegatedRepair(input: BosunDelegatedRepairInput) {
+    const repairClass = input.finding.repairClass;
+    if (repairClass === "EXTERNAL")
+      throw new NightwatchInvariantError("BOSUN_DELEGATED_REPAIR_CLASS_INVALID", repairClass);
+    if (repairClass === "AUTO_0")
+      throw new NightwatchInvariantError("BOSUN_DELEGATED_REPAIR_CLASS_INVALID", repairClass);
+    return this.attachRepair(input, repairClass, undefined, true);
+  }
+
   private attachRepair(
     input: Omit<BosunAutoZeroRepairInput, "actionId"> & { actionId: BosunRepairActionId },
-    requiredRepairClass: "AUTO_0" | "OWNER",
+    requiredRepairClass: "AUTO_0" | "AUTO_1" | "AUTO_2" | "OWNER",
     ownerAuthorization?: string,
+    delegated = false,
   ) {
     if (!input.blockedCandidateIds.length)
       throw new NightwatchInvariantError("BOSUN_BLOCKED_CANDIDATE_REQUIRED", input.parentTransactionId);
@@ -78,10 +93,31 @@ export class BosunLiveRepairCoordinator {
     const cascade = cascadeId!;
     const objective = this.bosun.objectiveForCascade(cascade);
     if (!objective || objective.id !== objectiveId) throw new NightwatchInvariantError("BOSUN_OBJECTIVE_IDENTITY_MISMATCH", cascade);
-    if (requiredRepairClass === "OWNER") {
+    if (requiredRepairClass === "OWNER" && !delegated) {
       if (!ownerAuthorization) throw new NightwatchInvariantError("BOSUN_OWNER_AUTHORIZATION_REQUIRED", cascade);
       if (objective.state === "OWNER_REQUIRED") this.bosun.authorizeOwnerObjective(cascade, ownerAuthorization, input.at);
       else if (objective.state !== "OBJECTIVE_READY") throw new NightwatchInvariantError("BOSUN_OBJECTIVE_NOT_READY", cascade);
+    } else if (objective.state !== "OBJECTIVE_READY") {
+      throw new NightwatchInvariantError("BOSUN_OBJECTIVE_NOT_READY", cascade);
+    }
+    if (delegated) {
+      const parent = this.nightwatch.getAcceptanceTransaction(input.parentTransactionId);
+      const candidate = this.nightwatch.getCandidate(parent.candidateId);
+      const autonomy = this.nightwatch.recordAutonomyAction({
+        objectiveId: candidate.objectiveId,
+        candidateId: candidate.id,
+        rootCause: objective.findingFingerprint,
+        actionClass: input.finding.autonomyActionClass ?? "shared-maintenance-repair",
+        project: candidate.project,
+        inScope: input.finding.autonomyInScope === true,
+        reversible: input.finding.autonomyReversible === true,
+        sharedMaintenance: true,
+        repairCandidateId: input.repairCandidate.id,
+        maintenanceDepth: input.generation ?? 0,
+        at: input.at,
+      });
+      if (autonomy.status !== "CONTINUE")
+        throw new NightwatchInvariantError("BOSUN_DELEGATED_REPAIR_BUDGET_EXHAUSTED", cascade);
     }
     const repair = this.bosun.createOrReuseRepair(cascade, objectiveId!, input.repairPr, input.at);
     if (!repair.created) throw new NightwatchInvariantError("BOSUN_LIVE_REPAIR_ALREADY_ACTIVE", cascade);

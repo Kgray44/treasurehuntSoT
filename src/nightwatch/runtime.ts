@@ -3,6 +3,13 @@ import { existsSync, mkdirSync, readdirSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
+import {
+  routeUnattendedAction,
+  validateStandingDelegation,
+  type AutonomyActionClass,
+  type AutonomyRoute,
+  type StandingDelegationEnvelope,
+} from "./unattended-autonomy";
 
 export const candidateStates = [
   "IMPLEMENTING",
@@ -272,6 +279,7 @@ export interface CandidateInput {
   localBaseSha: string;
   createdAt?: string;
   predecessorId?: string;
+  standingDelegation?: StandingDelegationEnvelope;
 }
 
 export interface Candidate extends CandidateInput {
@@ -369,6 +377,52 @@ export interface NightwatchProjection {
   publicIntegrationLifecycleState: PublicCandidateLifecycleState | "IDLE";
   acceptanceOwnership: Lease | null;
   controller: NightwatchControllerHealth;
+}
+
+export interface AutonomyActionRecord {
+  id: string;
+  objectiveId: string;
+  candidateId: string | null;
+  rootCause: string;
+  actionClass: AutonomyActionClass;
+  routing: AutonomyRoute["routing"];
+  strategy: string | null;
+  repairCandidateId: string | null;
+  maintenanceDepth: number;
+  createdAt: string;
+}
+
+export interface StrategyContinuation {
+  objectiveId: string;
+  rootCause: string;
+  strategy: string;
+  semanticPrecondition: string;
+  outcome: "FAILED" | "SUCCEEDED";
+  at?: string;
+}
+
+export interface StrategyContinuationResult {
+  state: "CONTINUE" | "BLIND_RETRY_REJECTED" | "EXHAUSTED" | "TRUE_OWNER_REQUIRED";
+  rootCause: string;
+  strategy: string;
+  reason: string;
+  distinctStrategyCount: number;
+}
+
+export interface OwnerEscalation {
+  id: string;
+  objectiveId: string;
+  protectedMainIdentity: { sha: string; treeSha: string };
+  candidateIdentity: { candidateId: string; sha: string; treeSha: string; baseSha: string };
+  rootCause: string;
+  delegationGap: string;
+  hardStopClass: string;
+  strategiesAttempted: string[];
+  exhaustionReason: string;
+  requestedDecision: string;
+  options: Array<{ option: string; consequence: string }>;
+  preservedWorkLocation: string;
+  createdAt: string;
 }
 
 type CandidateRow = {
@@ -701,11 +755,48 @@ export class NightwatchLedger {
         created_at TEXT NOT NULL,
         PRIMARY KEY(cascade_id, fingerprint)
       );
+      CREATE TABLE IF NOT EXISTS objective_delegations (
+        objective_id TEXT PRIMARY KEY REFERENCES objectives(objective_id),
+        envelope_json TEXT NOT NULL,
+        activated_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      );
+      CREATE TABLE IF NOT EXISTS autonomy_actions (
+        action_id TEXT PRIMARY KEY,
+        objective_id TEXT NOT NULL REFERENCES objectives(objective_id),
+        candidate_id TEXT REFERENCES candidates(candidate_id),
+        root_cause TEXT NOT NULL,
+        action_class TEXT NOT NULL,
+        routing TEXT NOT NULL,
+        strategy TEXT,
+        repair_candidate_id TEXT,
+        maintenance_depth INTEGER NOT NULL,
+        created_at TEXT NOT NULL
+      );
+      CREATE INDEX IF NOT EXISTS autonomy_actions_objective_root_idx
+        ON autonomy_actions(objective_id, root_cause, created_at);
+      CREATE TABLE IF NOT EXISTS autonomy_strategy_attempts (
+        attempt_id TEXT PRIMARY KEY,
+        objective_id TEXT NOT NULL REFERENCES objectives(objective_id),
+        root_cause TEXT NOT NULL,
+        strategy TEXT NOT NULL,
+        semantic_precondition TEXT NOT NULL,
+        outcome TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        UNIQUE(objective_id, root_cause, strategy, semantic_precondition)
+      );
+      CREATE TABLE IF NOT EXISTS autonomy_escalations (
+        escalation_id TEXT PRIMARY KEY,
+        objective_id TEXT NOT NULL REFERENCES objectives(objective_id),
+        escalation_json TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      );
     `);
     this.db.prepare("INSERT OR IGNORE INTO nightwatch_migrations(version, applied_at) VALUES (1, ?)").run(iso());
     this.db.prepare("INSERT OR IGNORE INTO nightwatch_migrations(version, applied_at) VALUES (2, ?)").run(iso());
     this.db.prepare("INSERT OR IGNORE INTO nightwatch_migrations(version, applied_at) VALUES (3, ?)").run(iso());
     this.db.prepare("INSERT OR IGNORE INTO nightwatch_migrations(version, applied_at) VALUES (4, ?)").run(iso());
+    this.db.prepare("INSERT OR IGNORE INTO nightwatch_migrations(version, applied_at) VALUES (5, ?)").run(iso());
     this.db.prepare("INSERT OR IGNORE INTO controller_health(singleton, state) VALUES (1, 'DOWN')").run();
   }
 
@@ -830,6 +921,7 @@ export class NightwatchLedger {
       this.db
         .prepare("INSERT OR IGNORE INTO objectives(objective_id, project, increment, created_at) VALUES (?, ?, ?, ?)")
         .run(candidate.objectiveId, candidate.project, candidate.increment, candidate.createdAt);
+      if (candidate.standingDelegation) this.grantStandingDelegation(candidate.standingDelegation, candidate.createdAt);
       try {
         this.db
           .prepare(
@@ -863,6 +955,344 @@ export class NightwatchLedger {
       );
       return this.getCandidate(candidate.id);
     });
+  }
+
+  grantStandingDelegation(envelope: StandingDelegationEnvelope, at = iso()) {
+    assertSafe(envelope);
+    let validated: StandingDelegationEnvelope;
+    try {
+      validated = validateStandingDelegation(envelope);
+    } catch (error) {
+      throw new NightwatchInvariantError(
+        "STANDING_DELEGATION_INVALID",
+        error instanceof Error ? error.message : undefined,
+      );
+    }
+    return this.inTransaction(() => {
+      const objective = this.db
+        .prepare("SELECT objective_id FROM objectives WHERE objective_id = ?")
+        .get(validated.objectiveId) as { objective_id: string } | undefined;
+      if (!objective) throw new NightwatchInvariantError("OBJECTIVE_NOT_FOUND", validated.objectiveId);
+      this.db
+        .prepare(
+          `INSERT INTO objective_delegations(objective_id, envelope_json, activated_at, updated_at) VALUES (?, ?, ?, ?)
+           ON CONFLICT(objective_id) DO UPDATE SET envelope_json = excluded.envelope_json, updated_at = excluded.updated_at`,
+        )
+        .run(validated.objectiveId, json(validated), at, at);
+      this.event(
+        "objective",
+        validated.objectiveId,
+        "STANDING_DELEGATION_GRANTED",
+        {
+          executionProfile: validated.executionProfile,
+          auditIdentity: validated.auditIdentity,
+          allowedActionClasses: validated.allowedActionClasses,
+          hardStopActionClasses: validated.hardStopActionClasses,
+        },
+        at,
+      );
+      return validated;
+    });
+  }
+
+  standingDelegation(objectiveId: string): StandingDelegationEnvelope | null {
+    const row = this.db
+      .prepare("SELECT envelope_json FROM objective_delegations WHERE objective_id = ?")
+      .get(objectiveId) as { envelope_json: string } | undefined;
+    if (!row) return null;
+    const envelope = parse<StandingDelegationEnvelope>(row.envelope_json, `standingDelegation.${objectiveId}`);
+    try {
+      return validateStandingDelegation(envelope);
+    } catch (error) {
+      throw new NightwatchInvariantError(
+        "MALFORMED_STANDING_DELEGATION",
+        error instanceof Error ? error.message : undefined,
+      );
+    }
+  }
+
+  routeOwnerRequired(input: {
+    objectiveId: string;
+    actionClass: AutonomyActionClass;
+    project: string;
+    inScope: boolean;
+    reversible: boolean;
+    sharedMaintenance?: boolean;
+    externalCost?: boolean;
+    productionMutation?: boolean;
+    at?: string;
+  }): AutonomyRoute {
+    assertSafe(input);
+    const at = input.at ?? iso();
+    const route = routeUnattendedAction(this.standingDelegation(input.objectiveId), {
+      actionClass: input.actionClass,
+      project: input.project,
+      inScope: input.inScope,
+      reversible: input.reversible,
+      sharedMaintenance: input.sharedMaintenance,
+      externalCost: input.externalCost,
+      productionMutation: input.productionMutation,
+      now: at,
+    });
+    this.event(
+      "objective",
+      input.objectiveId,
+      "OWNER_REQUIRED_ROUTED",
+      { actionClass: input.actionClass, routing: route.routing, reason: route.reason },
+      at,
+    );
+    return route;
+  }
+
+  recordAutonomyAction(input: {
+    objectiveId: string;
+    candidateId?: string;
+    rootCause: string;
+    actionClass: AutonomyActionClass;
+    project: string;
+    inScope: boolean;
+    reversible: boolean;
+    sharedMaintenance?: boolean;
+    repairCandidateId?: string;
+    maintenanceDepth?: number;
+    strategy?: string;
+    at?: string;
+  }) {
+    assertSafe(input);
+    const at = input.at ?? iso();
+    const rootCause = requireText(input.rootCause, "autonomyRootCause");
+    const route = this.routeOwnerRequired({ ...input, at });
+    if (route.routing === "TRUE_OWNER_REQUIRED") return { route, status: "TRUE_OWNER_REQUIRED" as const, record: null };
+    return this.inTransaction(() => {
+      const envelope = this.standingDelegation(input.objectiveId);
+      if (!envelope) throw new NightwatchInvariantError("STANDING_DELEGATION_MISSING", input.objectiveId);
+      const delegationRow = this.db
+        .prepare("SELECT activated_at FROM objective_delegations WHERE objective_id = ?")
+        .get(input.objectiveId) as { activated_at: string } | undefined;
+      const elapsedMs = delegationRow ? Math.max(0, Date.parse(at) - Date.parse(delegationRow.activated_at)) : 0;
+      if (elapsedMs >= envelope.budgets.maxWallClockMs) {
+        this.event(
+          "objective",
+          input.objectiveId,
+          "AUTONOMY_WALL_CLOCK_CHECKPOINT_EXHAUSTED",
+          { rootCause, elapsedMs, maxWallClockMs: envelope.budgets.maxWallClockMs },
+          at,
+        );
+        return { route, status: "EXHAUSTED" as const, record: null };
+      }
+      const maintenanceDepth = boundedNumber(input.maintenanceDepth, 0, "maintenanceDepth");
+      const rootCount = Number(
+        (this.db
+          .prepare("SELECT count(*) AS count FROM autonomy_actions WHERE objective_id = ? AND root_cause = ?")
+          .get(input.objectiveId, rootCause) as { count: number }).count,
+      );
+      const reconciliationCount = Number(
+        (this.db
+          .prepare("SELECT count(*) AS count FROM autonomy_actions WHERE objective_id = ? AND action_class = 'candidate-base-reconciliation'")
+          .get(input.objectiveId) as { count: number }).count,
+      );
+      const repairCount = Number(
+        (this.db
+          .prepare("SELECT count(DISTINCT repair_candidate_id) AS count FROM autonomy_actions WHERE objective_id = ? AND repair_candidate_id IS NOT NULL")
+          .get(input.objectiveId) as { count: number }).count,
+      );
+      const exceeds =
+        rootCount >= envelope.budgets.maxRepeatedIdenticalFindings ||
+        maintenanceDepth > envelope.budgets.maxMaintenanceDepth ||
+        (input.repairCandidateId && repairCount >= envelope.budgets.maxControlPlaneRepairCandidates) ||
+        (input.actionClass === "candidate-base-reconciliation" && reconciliationCount >= envelope.budgets.maxReconciliations);
+      if (exceeds) {
+        this.event(
+          "objective",
+          input.objectiveId,
+          "AUTONOMY_BUDGET_EXHAUSTED",
+          { rootCause, actionClass: input.actionClass, maintenanceDepth, rootCount, reconciliationCount, repairCount },
+          at,
+        );
+        return { route, status: "EXHAUSTED" as const, record: null };
+      }
+      const record: AutonomyActionRecord = {
+        id: randomUUID(),
+        objectiveId: input.objectiveId,
+        candidateId: input.candidateId ?? null,
+        rootCause,
+        actionClass: input.actionClass,
+        routing: route.routing,
+        strategy: input.strategy ? requireText(input.strategy, "autonomyStrategy") : null,
+        repairCandidateId: input.repairCandidateId ?? null,
+        maintenanceDepth,
+        createdAt: at,
+      };
+      this.db
+        .prepare(
+          "INSERT INTO autonomy_actions(action_id, objective_id, candidate_id, root_cause, action_class, routing, strategy, repair_candidate_id, maintenance_depth, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        )
+        .run(
+          record.id,
+          record.objectiveId,
+          record.candidateId,
+          record.rootCause,
+          record.actionClass,
+          record.routing,
+          record.strategy,
+          record.repairCandidateId,
+          record.maintenanceDepth,
+          record.createdAt,
+        );
+      this.event("objective", input.objectiveId, "AUTONOMOUS_ACTION_RECORDED", record, at);
+      return { route, status: "CONTINUE" as const, record };
+    });
+  }
+
+  recordStrategyContinuation(input: StrategyContinuation): StrategyContinuationResult {
+    assertSafe(input);
+    const at = input.at ?? iso();
+    const rootCause = requireText(input.rootCause, "strategyRootCause");
+    const strategy = requireText(input.strategy, "strategy");
+    const semanticPrecondition = requireText(input.semanticPrecondition, "semanticPrecondition");
+    const objective = this.db
+      .prepare("SELECT project FROM objectives WHERE objective_id = ?")
+      .get(input.objectiveId) as { project: string } | undefined;
+    if (!objective) throw new NightwatchInvariantError("OBJECTIVE_NOT_FOUND", input.objectiveId);
+    const route = this.routeOwnerRequired({
+      objectiveId: input.objectiveId,
+      actionClass: "strategy-continuation",
+      project: objective.project,
+      inScope: true,
+      reversible: true,
+      at,
+    });
+    if (route.routing === "TRUE_OWNER_REQUIRED")
+      return { state: "TRUE_OWNER_REQUIRED", rootCause, strategy, reason: route.reason, distinctStrategyCount: 0 };
+    return this.inTransaction(() => {
+      const envelope = this.standingDelegation(input.objectiveId);
+      if (!envelope) throw new NightwatchInvariantError("STANDING_DELEGATION_MISSING", input.objectiveId);
+      const delegationRow = this.db
+        .prepare("SELECT activated_at FROM objective_delegations WHERE objective_id = ?")
+        .get(input.objectiveId) as { activated_at: string } | undefined;
+      const elapsedMs = delegationRow ? Math.max(0, Date.parse(at) - Date.parse(delegationRow.activated_at)) : 0;
+      if (elapsedMs >= envelope.budgets.maxWallClockMs) {
+        this.event(
+          "objective",
+          input.objectiveId,
+          "AUTONOMY_WALL_CLOCK_CHECKPOINT_EXHAUSTED",
+          { rootCause, elapsedMs, maxWallClockMs: envelope.budgets.maxWallClockMs },
+          at,
+        );
+        return {
+          state: "EXHAUSTED" as const,
+          rootCause,
+          strategy,
+          reason: "MAX_WALL_CLOCK_REACHED",
+          distinctStrategyCount: 0,
+        };
+      }
+      const attempts = this.db
+        .prepare("SELECT strategy, semantic_precondition FROM autonomy_strategy_attempts WHERE objective_id = ? AND root_cause = ?")
+        .all(input.objectiveId, rootCause) as Array<{ strategy: string; semantic_precondition: string }>;
+      const unchangedAttemptCount = attempts.filter(
+        (attempt) => attempt.strategy === strategy && attempt.semantic_precondition === semanticPrecondition,
+      ).length;
+      const distinctStrategies = new Set(attempts.map((attempt) => attempt.strategy));
+      if (unchangedAttemptCount >= envelope.budgets.maxAttemptsPerUnchangedStrategy) {
+        this.event("objective", input.objectiveId, "AUTONOMY_BLIND_RETRY_REJECTED", { rootCause, strategy, semanticPrecondition }, at);
+        return {
+          state: "BLIND_RETRY_REJECTED" as const,
+          rootCause,
+          strategy,
+          reason: "UNCHANGED_SEMANTIC_PRECONDITION",
+          distinctStrategyCount: distinctStrategies.size,
+        };
+      }
+      if (!distinctStrategies.has(strategy) && distinctStrategies.size >= envelope.budgets.maxDistinctStrategiesPerRootCause) {
+        this.event("objective", input.objectiveId, "AUTONOMY_STRATEGY_BUDGET_EXHAUSTED", { rootCause, strategy }, at);
+        return {
+          state: "EXHAUSTED" as const,
+          rootCause,
+          strategy,
+          reason: "MAX_DISTINCT_STRATEGIES_REACHED",
+          distinctStrategyCount: distinctStrategies.size,
+        };
+      }
+      this.db
+        .prepare(
+          "INSERT INTO autonomy_strategy_attempts(attempt_id, objective_id, root_cause, strategy, semantic_precondition, outcome, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        )
+        .run(randomUUID(), input.objectiveId, rootCause, strategy, semanticPrecondition, input.outcome, at);
+      this.event(
+        "objective",
+        input.objectiveId,
+        "AUTONOMY_STRATEGY_RECORDED",
+        { rootCause, strategy, semanticPrecondition, outcome: input.outcome },
+        at,
+      );
+      return {
+        state: "CONTINUE" as const,
+        rootCause,
+        strategy,
+        reason: "MATERIALLY_CHANGED_STRATEGY_OR_PRECONDITION",
+        distinctStrategyCount: new Set([...distinctStrategies, strategy]).size,
+      };
+    });
+  }
+
+  recordOwnerEscalation(input: Omit<OwnerEscalation, "id" | "createdAt"> & { at?: string }): OwnerEscalation {
+    assertSafe(input);
+    const at = input.at ?? iso();
+    const required = [
+      input.objectiveId,
+      input.protectedMainIdentity?.sha,
+      input.protectedMainIdentity?.treeSha,
+      input.candidateIdentity?.candidateId,
+      input.candidateIdentity?.sha,
+      input.candidateIdentity?.treeSha,
+      input.candidateIdentity?.baseSha,
+      input.rootCause,
+      input.delegationGap,
+      input.hardStopClass,
+      input.exhaustionReason,
+      input.requestedDecision,
+      input.preservedWorkLocation,
+    ];
+    if (required.some((value) => typeof value !== "string" || !value.trim()) || !input.options?.length)
+      throw new NightwatchInvariantError("OWNER_ESCALATION_INCOMPLETE");
+    const escalation: OwnerEscalation = {
+      id: randomUUID(),
+      objectiveId: input.objectiveId,
+      protectedMainIdentity: input.protectedMainIdentity,
+      candidateIdentity: input.candidateIdentity,
+      rootCause: input.rootCause,
+      delegationGap: input.delegationGap,
+      hardStopClass: input.hardStopClass,
+      strategiesAttempted: [...new Set(input.strategiesAttempted ?? [])],
+      exhaustionReason: input.exhaustionReason,
+      requestedDecision: input.requestedDecision,
+      options: input.options.map((option) => ({ option: requireText(option.option, "escalationOption"), consequence: requireText(option.consequence, "escalationConsequence") })),
+      preservedWorkLocation: input.preservedWorkLocation,
+      createdAt: at,
+    };
+    return this.inTransaction(() => {
+      this.db
+        .prepare("INSERT INTO autonomy_escalations(escalation_id, objective_id, escalation_json, created_at) VALUES (?, ?, ?, ?)")
+        .run(escalation.id, escalation.objectiveId, json(escalation), at);
+      const candidate = this.getCandidate(escalation.candidateIdentity.candidateId);
+      if (candidate.objectiveId !== escalation.objectiveId)
+        throw new NightwatchInvariantError("OWNER_ESCALATION_OBJECTIVE_MISMATCH", candidate.id);
+      if (candidate.active && candidate.state !== "PARKED_OWNER_REQUIRED")
+        this.transitionCandidate(candidate.id, "PARKED_OWNER_REQUIRED", {
+          reason: `TRUE_OWNER_REQUIRED:${escalation.hardStopClass}`,
+          at,
+        });
+      this.event("objective", escalation.objectiveId, "TRUE_OWNER_ESCALATION_RECORDED", escalation, at);
+      return escalation;
+    });
+  }
+
+  ownerEscalations(objectiveId: string): OwnerEscalation[] {
+    return (this.db
+      .prepare("SELECT escalation_json FROM autonomy_escalations WHERE objective_id = ? ORDER BY created_at, escalation_id")
+      .all(objectiveId) as Array<{ escalation_json: string }>)
+      .map((row) => parse<OwnerEscalation>(row.escalation_json, `ownerEscalation.${objectiveId}`));
   }
 
   getCandidate(id: string): Candidate {
@@ -2069,6 +2499,8 @@ export class NightwatchLedger {
         throw new NightwatchInvariantError("INTEGRATION_HARD_REVIEW", transactionId);
       if (input.generation > 2) throw new NightwatchInvariantError("CASCADE_GENERATION_OWNER_REVIEW", transactionId);
       const cascade = this.cascade(this.cascadeRow(transaction.cascadeId));
+      if (cascade.maintenancePrCount >= 1)
+        throw new NightwatchInvariantError("MAINTENANCE_PR_BUDGET_EXHAUSTED", transactionId);
       const blocked = [
         ...new Set([...cascade.blockedCandidates, ...(input.candidateId ? [input.candidateId] : [])]),
       ].sort();

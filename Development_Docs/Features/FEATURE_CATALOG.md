@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `9f49621852ad6ebbe14544905f1e026c79ad915c`
+Audited source commit: `2a9b4cbe2294d1f794a249878007e07ee593d91b`
 
 ## Status vocabulary
 
@@ -1594,7 +1594,7 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 **Status:** BRANCH COMPLETE NOT MERGED
 **Program or subsystem:** Project Nightwatch Phase 1 Increments A and A.1
 
-Project Nightwatch and Bosun B1.2 provide a durable control plane that serializes canonical integration through queue-front lifecycle, exact candidate/base acceptance transactions, exact protected-main Baseline Certification, authority-before-binding sequencing, bounded leases, restart recovery, compound deterministic closure, exact GitHub dispatches, and a read-only Bridgewatch projection.
+Project Nightwatch and Bosun B1.2 provide a durable control plane that serializes canonical integration through queue-front lifecycle, exact candidate/base acceptance transactions, exact protected-main Baseline Certification, authority-before-binding sequencing, bounded leases, restart recovery, compound deterministic closure, exact GitHub dispatches, bounded unattended delegation, and a read-only Bridgewatch projection.
 
 ### Important subfeatures
 
@@ -1611,6 +1611,8 @@ Project Nightwatch and Bosun B1.2 provide a durable control plane that serialize
 - Live Bridgewatch controller health and raw parent integration cost projection
 - Exact SHA/tree Baseline Certification receipt required before ordinary candidate authority
 - One Bosun fixed-point compound AUTO_0 closure plan for deterministic shared baseline drift
+- Objective-scoped standing delegation with explicit hard-stop classes and durable audit routing
+- Bounded strategy continuation, one-repair cascade suppression, and high-quality parked owner escalations
 
 ### Primary surfaces
 
@@ -1619,7 +1621,7 @@ Project Nightwatch and Bosun B1.2 provide a durable control plane that serialize
 ### Meaningful limitations
 
 - Sounding Line remains the sole RELEASE_GO and protected-merge authority.
-- Bosun AUTO_1 and Nightwatch Increment B remain deliberately excluded.
+- Only explicitly marked safe, reversible, in-scope Bosun findings may inherit a parent objective delegation; all other OWNER, external, scope, security, and irreversible findings remain parked.
 - The current repository MySQL migration family has duplicate numeric prefixes, so allocation correctly fails closed for that family.
 
 ### Evidence
@@ -1628,6 +1630,8 @@ Project Nightwatch and Bosun B1.2 provide a durable control plane that serialize
 - commit: `2c895110ec7b8464bd51fc5a7c8397bf1746a88f`
 - path: `src/nightwatch/runtime.ts`
 - test: `src/nightwatch/runtime.test.ts`
+- test: `src/nightwatch/unattended-autonomy.test.ts`
+- path: `src/nightwatch/unattended-autonomy.ts`
 - test: `bridgewatch/test/nightwatch-projection.test.ts`
 - path: `bridgewatch/public/app.js`
 - path: `scripts/nightwatch/baseline-certifier.mjs`
@@ -1636,6 +1640,7 @@ Project Nightwatch and Bosun B1.2 provide a durable control plane that serialize
 - completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A2_Live_Control_Plane_Implementation_Record.md`
 - completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A1_Atomic_Acceptance_Sequencer_Implementation_Record.md`
 - completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md`
+- completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Unattended_Autonomy_Hardening_Implementation_Record.md`
 
 ---
 
@@ -1652,4 +1657,4 @@ Project Nightwatch and Bosun B1.2 provide a durable control plane that serialize
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `9f49621852ad6ebbe14544905f1e026c79ad915c`
+Generation source commit: `2a9b4cbe2294d1f794a249878007e07ee593d91b`

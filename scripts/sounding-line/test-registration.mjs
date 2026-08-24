@@ -66,6 +66,8 @@ export function applyDeclarativeRegistrations({ registrations, ownership, contra
       contracts: [...registration.contracts],
       tier: registration.tier,
       risk: registration.risk,
+      negativeCases:
+        ["HIGH", "CRITICAL"].includes(registration.risk) ? ["declarative-negative-contract"] : entry.negativeCases,
       resources: [...registration.resources],
       parallelSafety: registration.parallelSafety,
       releaseRelevance: registration.releaseRelevant ? "declarative release-relevant evidence" : "not release-relevant",

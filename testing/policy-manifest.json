@@ -22,6 +22,7 @@
     "authority-maintenance-policy.json",
     "root-maintenance-policy.json",
     "engineering-governance-policy.json",
+    "unattended-autonomy-policy.json",
     "control-plane-repair-routes.json",
     "trusted-project-discovery.json"
   ],

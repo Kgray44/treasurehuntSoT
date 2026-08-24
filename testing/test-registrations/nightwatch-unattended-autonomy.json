@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "id": "nightwatch-unattended-autonomy",
+  "owner": "nightwatch",
+  "contracts": ["nightwatch.increment-a.integration-queue"],
+  "test": {
+    "file": "src/nightwatch/unattended-autonomy.test.ts",
+    "title": "simulation 1: regenerates deterministic drift and reconciles a candidate-induced policy digest without an owner pause",
+    "suiteId": "unit.nightwatch"
+  },
+  "tier": 1,
+  "risk": "CRITICAL",
+  "resources": ["node-slot", "vitest-worker-pool"],
+  "parallelSafety": "ISOLATED_MUTABLE_PARALLEL",
+  "adapter": "vitest",
+  "releaseRelevant": true
+}

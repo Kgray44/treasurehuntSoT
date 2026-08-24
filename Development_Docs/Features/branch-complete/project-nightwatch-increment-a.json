@@ -2,7 +2,7 @@
   {
     "id": "FT-B012",
     "title": "Nightwatch Governed Integration Queue, Acceptance Sequencer, and Live Controller",
-    "summary": "Project Nightwatch and Bosun B1.2 provide a durable control plane that serializes canonical integration through queue-front lifecycle, exact candidate/base acceptance transactions, exact protected-main Baseline Certification, authority-before-binding sequencing, bounded leases, restart recovery, compound deterministic closure, exact GitHub dispatches, and a read-only Bridgewatch projection.",
+    "summary": "Project Nightwatch and Bosun B1.2 provide a durable control plane that serializes canonical integration through queue-front lifecycle, exact candidate/base acceptance transactions, exact protected-main Baseline Certification, authority-before-binding sequencing, bounded leases, restart recovery, compound deterministic closure, exact GitHub dispatches, bounded unattended delegation, and a read-only Bridgewatch projection.",
     "status": "BRANCH_COMPLETE_NOT_MERGED",
     "program": "Project Nightwatch Phase 1 Increments A and A.1",
     "surfaces": [
@@ -27,11 +27,13 @@
       "Explicit RELEASE_GO-gated protected-binding dispatch with receipt-artifact verification",
       "Live Bridgewatch controller health and raw parent integration cost projection",
       "Exact SHA/tree Baseline Certification receipt required before ordinary candidate authority",
-      "One Bosun fixed-point compound AUTO_0 closure plan for deterministic shared baseline drift"
+      "One Bosun fixed-point compound AUTO_0 closure plan for deterministic shared baseline drift",
+      "Objective-scoped standing delegation with explicit hard-stop classes and durable audit routing",
+      "Bounded strategy continuation, one-repair cascade suppression, and high-quality parked owner escalations"
     ],
     "limitations": [
       "Sounding Line remains the sole RELEASE_GO and protected-merge authority.",
-      "Bosun AUTO_1 and Nightwatch Increment B remain deliberately excluded.",
+      "Only explicitly marked safe, reversible, in-scope Bosun findings may inherit a parent objective delegation; all other OWNER, external, scope, security, and irreversible findings remain parked.",
       "The current repository MySQL migration family has duplicate numeric prefixes, so allocation correctly fails closed for that family."
     ],
     "evidence": [
@@ -39,6 +41,8 @@
       { "kind": "commit", "value": "2c895110ec7b8464bd51fc5a7c8397bf1746a88f" },
       { "kind": "path", "value": "src/nightwatch/runtime.ts" },
       { "kind": "test", "value": "src/nightwatch/runtime.test.ts" },
+      { "kind": "test", "value": "src/nightwatch/unattended-autonomy.test.ts" },
+      { "kind": "path", "value": "src/nightwatch/unattended-autonomy.ts" },
       { "kind": "test", "value": "bridgewatch/test/nightwatch-projection.test.ts" },
       { "kind": "path", "value": "bridgewatch/public/app.js" },
       { "kind": "path", "value": "scripts/nightwatch/baseline-certifier.mjs" },
@@ -58,6 +62,10 @@
       {
         "kind": "completion-record",
         "value": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md"
+      },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Unattended_Autonomy_Hardening_Implementation_Record.md"
       }
     ],
     "branch": "codex/nightwatch-increment-a",
