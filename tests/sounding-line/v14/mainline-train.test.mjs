@@ -571,6 +571,16 @@ test("train preparation reads the planner selection ledger and fails closed befo
       ).map((node) => node.id),
       ["fresh"],
     );
+    assert.deepEqual(
+      freshTrainWorkerNodes(
+        {
+          nodes: [{ id: "fallback", execution: { wave: 0, mode: "parallel" } }],
+          selectionLedger: [{ suiteId: "fallback", selected: true, evidenceDisposition: "CONSERVATIVE_FALLBACK" }],
+        },
+        "L",
+      ).map((node) => node.id),
+      ["fallback"],
+    );
   } finally {
     await rm(root, { recursive: true, force: true });
   }
