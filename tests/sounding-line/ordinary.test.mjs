@@ -7,6 +7,7 @@ import {
   requiresMigrationValidation,
   requiresBuild,
   selectAffectedTests,
+  soundingLineDatabaseUrl,
   verificationEnvironment,
   verificationCommands,
 } from "../../scripts/sounding-line/ordinary.mjs";
@@ -88,14 +89,21 @@ test("candidate binding requires distinct exact commit and tree identities", () 
 });
 
 test("ordinary browser proof uses the installed Chromium project", () => {
-  const browserCommand = verificationCommands({
+  const browserCommands = verificationCommands({
     mode: "ordinary",
     safetyPaths: [],
     lintPaths: [],
     selected: { unitTests: [], browserTests: ["tests/e2e/harborlight-phase3.spec.ts"] },
+    databaseUrl: "file:./.sounding-line-candidate.sqlite",
     migrationRequired: false,
+    migrationScripts: [],
     buildRequired: false,
-  }).at(-1);
+  });
+  assert.deepEqual(browserCommands.at(-2), [
+    "npx",
+    ["--no-install", "prisma", "db", "push", "--skip-generate", "--schema", "prisma/schema.sqlite.prisma"],
+  ]);
+  const browserCommand = browserCommands.at(-1);
   assert.deepEqual(browserCommand, [
     "npx",
     ["--no-install", "playwright", "test", "tests/e2e/harborlight-phase3.spec.ts", "--project", "chromium"],
@@ -109,10 +117,30 @@ test("migration rehearsal changes receive schema validation", () => {
   );
 });
 
-test("schema validation receives the local SQLite URL when the environment has none", () => {
-  assert.deepEqual(verificationEnvironment("npx", ["--no-install", "prisma", "validate"], {}), {
-    DATABASE_URL: "file:./dev.db",
+test("database verification is candidate-isolated when the environment has no URL", () => {
+  const databaseUrl = soundingLineDatabaseUrl("a".repeat(40));
+  assert.equal(databaseUrl, "file:./.sounding-line-aaaaaaaaaaaa.sqlite");
+  assert.deepEqual(verificationEnvironment({ databaseUrl }, "npx", ["--no-install", "prisma", "validate"], {}), {
+    DATABASE_URL: databaseUrl,
   });
+});
+
+test("changed migration rehearsals run as focused migration proof", () => {
+  const commands = verificationCommands({
+    mode: "ordinary",
+    safetyPaths: [],
+    lintPaths: [],
+    selected: { unitTests: [], browserTests: [] },
+    migrationRequired: true,
+    migrationScripts: ["scripts/rehearse-harborlight-phase3-migrations.ts"],
+    buildRequired: false,
+  });
+  assert.ok(
+    commands.some(
+      ([command, argumentsList]) =>
+        command === "npx" && argumentsList.at(-1) === "scripts/rehearse-harborlight-phase3-migrations.ts",
+    ),
+  );
 });
 
 test("application source changes receive a production build", () => {
