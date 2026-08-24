@@ -1,7 +1,7 @@
 ---
 title: Project Sounding Line Ordinary Integration Fast Path Amendment
 audience: engineering
-status: branch-complete-pending-main
+status: active-mainline
 canonical_for: ordinary-integration-fast-path
 last_reviewed: 2026-08-24
 ---
@@ -42,6 +42,12 @@ realization or reachability materially changes. Generated feature-catalog
 meaning is still candidate-time work; generated commit and landed-SHA
 provenance is reconciled after protected landing.
 
+Derived records declare their generator, semantic inputs, and outputs in
+trusted policy. Candidate-caused generated drift remains a candidate blocker.
+A deterministically regenerated record that the candidate did not affect is
+recorded as asynchronous nonblocking drift; its full path remains bound while
+only declared record-only outputs are excluded from semantic impact selection.
+
 Trusted project ownership can declare bounded helper paths. A helper is
 ordinary-admissible only with its correlated owned test in the same candidate;
 unowned and sensitive executable surfaces remain fail-closed.
@@ -63,10 +69,10 @@ does not create auto-merge.
 - `tests/sounding-line/v14/ordinary-integration-fast-path.test.mjs` and
   `src/nightwatch/controller.test.ts` cover conservative fallback, the repair
   ceiling route, and ordinary direct routing.
+- `scripts/sounding-line/generated-state-attribution.mjs` distinguishes
+  candidate-caused generated drift from pre-existing unrelated generated state.
 
 ## Limitation
 
-This branch record is not protected-main acceptance or a Harborlight merge
-receipt. Those claims require the independent Sounding Line decision,
-protected binding, and exact landed-tree verification after this amendment
-lands.
+Harborlight acceptance remains separately subject to the independent Sounding
+Line decision, protected binding, and exact landed-tree verification.

@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { digest } from "./v14/foundation.mjs";
 import { selectV14Mainline } from "./v14/fast-channel.mjs";
 import { discoverProjects, projectDiscoverySummary } from "./project-discovery.mjs";
+import { attributeGeneratedState } from "./generated-state-attribution.mjs";
 
 const exec = promisify(execFile);
 const valueFor = (args, flag) => {
@@ -102,8 +103,17 @@ export async function generateV14FastChannelPlan({
     owners: trustedOwnership.owners.map((entry) => ({ ...entry, trusted: true })),
     featureCatalog: catalog.map((entry) => ({ ...entry, trusted: true })),
   });
+  const generatedState = attributeGeneratedState({
+    policy: trustedMaintenancePolicy,
+    changedPaths,
+    // Candidate authority validates generator drift before this planner runs.
+    // Here only trusted declarations determine whether an exact changed path is
+    // semantic selection input; the full path interval remains sealed below.
+    generatedDriftPaths: [],
+  });
   return selectV14Mainline({
     changedPaths,
+    nonSemanticChangedPaths: generatedState.nonSemanticChangedPaths,
     suites: suites.suites,
     // Mainline candidates use exact semantic impact plus the authority-owned
     // safety sentinel set. The historical required-suite matrix remains the

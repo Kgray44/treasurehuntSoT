@@ -33,7 +33,7 @@
     "id": "FT-038",
     "title": "Ordinary Direct Mainline Integration",
     "summary": "A bounded ordinary integration path routes one ready product candidate through exact impact proof and Sounding Line acceptance without making Mainline Train optimization, unrelated Baseline Certification, Deepwater drift, or generated provenance a universal merge toll gate.",
-    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "status": "MAINLINE",
     "program": "Sounding Line and Nightwatch",
     "surfaces": ["Nightwatch integration routing", "Sounding Line authoritative workflow"],
     "subfeatures": [
@@ -44,10 +44,7 @@
       "Project-owned helper admission with a correlated registered test",
       "Post-merge provenance reconciliation boundary"
     ],
-    "limitations": [
-      "Protected-main availability and Harborlight acceptance remain pending the independent Sounding Line decision and protected binding.",
-      "Release candidates retain exhaustive repository proof."
-    ],
+    "limitations": ["Release candidates retain exhaustive repository proof."],
     "evidence": [
       { "kind": "path", "value": "src/nightwatch/controller.ts" },
       { "kind": "path", "value": "scripts/sounding-line/planner.mjs" },
@@ -58,8 +55,6 @@
         "value": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Ordinary_Integration_Fast_Path_Amendment.md"
       }
     ],
-    "branch": "codex/ordinary-integration-fast-path",
-    "commit": "0ba16f4d25621be25464a00a13255c7d3104e5ea",
     "catalogVersion": 1
   }
 ]

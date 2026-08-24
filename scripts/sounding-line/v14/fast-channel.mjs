@@ -352,6 +352,7 @@ export class FileEvidenceStore {
 
 export function selectV14Mainline({
   changedPaths,
+  nonSemanticChangedPaths = [],
   suites,
   changedContracts = [],
   mappingDebt = [],
@@ -369,10 +370,14 @@ export function selectV14Mainline({
   governanceDocumentation = null,
   conservativeFallbackReason = null,
 }) {
+  const nonSemantic = new Set(nonSemanticChangedPaths);
+  if ([...nonSemantic].some((changed) => !changedPaths.includes(changed)))
+    throw new Error("V14_NON_SEMANTIC_PATH_OUTSIDE_CHANGED_INTERVAL");
+  const semanticChangedPaths = changedPaths.filter((changed) => !nonSemantic.has(changed));
   const selectedByFloor = new Map();
   const rules = recordOnly
     ? []
-    : V14_RISK_FLOORS.filter((rule) => changedPaths.some((changed) => matches(changed, rule.paths)));
+    : V14_RISK_FLOORS.filter((rule) => semanticChangedPaths.some((changed) => matches(changed, rule.paths)));
   for (const rule of rules)
     for (const suite of suites)
       if (
@@ -426,7 +431,9 @@ export function selectV14Mainline({
     const exclusive = matching.filter((mapping) => mapping.exclusive === true);
     return exclusive.length ? exclusive : [...matching, ...discovered, ...generatedValidationMappings(changed)];
   };
-  const unmappedChangedPaths = sorted(changedPaths.filter((changed) => mappingsForChangedPath(changed).length === 0));
+  const unmappedChangedPaths = sorted(
+    semanticChangedPaths.filter((changed) => mappingsForChangedPath(changed).length === 0),
+  );
   const unmappedChangedContracts = sorted(
     changedContracts.filter((id) => !impact.contractMappings?.some((mapping) => mapping.contractId === id)),
   );
@@ -466,7 +473,7 @@ export function selectV14Mainline({
     : null;
   const activeLedgerDebt = activeMappingDebt.map((debt) => ({ id: debt.contractId, owner: debt.owner }));
   const directlyAffected = new Set();
-  for (const changed of changedPaths)
+  for (const changed of semanticChangedPaths)
     for (const mapping of mappingsForChangedPath(changed))
       for (const id of mapping.suiteIds ?? []) directlyAffected.add(id);
   for (const mapping of impact.contractMappings ?? [])
@@ -563,6 +570,8 @@ export function selectV14Mainline({
         })),
     changedInterval: {
       changedPaths: sorted(changedPaths),
+      semanticChangedPaths: sorted(semanticChangedPaths),
+      nonSemanticGeneratedPaths: sorted(nonSemanticChangedPaths),
       changedContracts: sorted(changedContracts),
       mappingDigest: digest(impact),
       riskRegistryDigest: digest(V14_RISK_FLOORS),

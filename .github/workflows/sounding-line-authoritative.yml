@@ -239,12 +239,17 @@ jobs:
       # client, but does not create, migrate, or seed a database.
       - run: npm run db:generate
       - run: node scripts/sounding-line/test-registry.mjs
-      - name: Verify candidate registry regeneration is deterministic
+      - name: Reconcile and attribute candidate generated state
         if: ${{ inputs.authority_mode == 'candidate' }}
         shell: pwsh
+        env:
+          SOUNDING_LINE_BASE_SHA: ${{ steps.base.outputs.value }}
+          SOUNDING_LINE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
         run: |
-          git diff --exit-code -- testing/generated/active-test-registry.json
-          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_ORDINARY_CANDIDATE_GENERATED_REGISTRY_DRIFT' }
+          node scripts/sounding-line/reconcile-p34-ledger.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_ORDINARY_CANDIDATE_P34_RECONCILIATION_FAILED' }
+          node scripts/sounding-line/generated-state-attribution.mjs --policy trusted-maintenance-policy.json --base $env:SOUNDING_LINE_BASE_SHA --candidate $env:SOUNDING_LINE_CANDIDATE_SHA --out sounding-line-generated-state-attribution.json
+          if ($LASTEXITCODE -ne 0) { throw 'SOUNDING_LINE_ORDINARY_CANDIDATE_GENERATED_STATE_DRIFT' }
       # P34 must be fully mapped and archived before any hosted browser worker
       # may receive a mainline plan.
       - run: node scripts/sounding-line/p34-retirement.mjs
