@@ -312,6 +312,24 @@ test("the governed Shipwright journey runner is ordinary-admissible without broa
   }
 });
 
+test("the governed Harborlight migration rehearsal is ordinary-admissible without broadening scripts", async () => {
+  const policy = await readOrdinaryCandidatePolicy();
+  const admitted = classifyOrdinaryCandidate({
+    trustedPolicy: policy,
+    changedPaths: ["scripts/rehearse-harborlight-phase3-migrations.ts"],
+  });
+  assert.equal(admitted.classification, "ORDINARY_CANDIDATE");
+  assert.deepEqual(admitted.errors, []);
+  const rejected = classifyOrdinaryCandidate({
+    trustedPolicy: policy,
+    changedPaths: ["scripts/rehearse-unrelated-migrations.ts"],
+  });
+  assert.equal(rejected.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
+  assert.deepEqual(rejected.errors, [
+    "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:scripts/rehearse-unrelated-migrations.ts",
+  ]);
+});
+
 test("generated P34 retirement ledgers can accompany governed browser test changes", async () => {
   const result = classifyOrdinaryCandidate({
     trustedPolicy: await readOrdinaryCandidatePolicy(),
