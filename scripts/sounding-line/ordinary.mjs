@@ -183,7 +183,16 @@ export function verificationCommands(plan) {
     commands.push(["npx", ["--no-install", "prisma", "validate", "--schema", "prisma/schema.sqlite.prisma"]]);
   if (plan.buildRequired) commands.push(["npm", ["run", "build"]]);
   if (plan.selected.browserTests.length)
-    commands.push(["npx", ["--no-install", "playwright", "test", ...plan.selected.browserTests]]);
+    commands.push([
+      "npx",
+      [
+        "--no-install",
+        "playwright",
+        "test",
+        ...(plan.mode === "ordinary" ? ["--project", "chromium"] : []),
+        ...plan.selected.browserTests,
+      ],
+    ]);
   return commands;
 }
 
