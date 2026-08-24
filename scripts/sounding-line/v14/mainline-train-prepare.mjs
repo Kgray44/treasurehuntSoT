@@ -47,7 +47,11 @@ export function freshTrainWorkerNodes(plan, candidateId) {
   return plan.nodes.map((node) => {
     const disposition = ledgerBySuite.get(node.id);
     if (!disposition) throw new Error(`TRAIN_PLAN_NODE_UNDECLARED:${candidateId}:${node.id}`);
-    if (!disposition.selected || disposition.evidenceDisposition !== "FRESH")
+    // A conservative fallback deliberately schedules every affected obligation
+    // for a new execution. It is therefore executable evidence, not preserved
+    // evidence. Keep the preflight aligned with the finalizer's sealed
+    // selection contract, which accepts FRESH and CONSERVATIVE_FALLBACK only.
+    if (!disposition.selected || !["FRESH", "CONSERVATIVE_FALLBACK"].includes(disposition.evidenceDisposition))
       throw new Error(`TRAIN_PLAN_NODE_NOT_FRESH:${candidateId}:${node.id}`);
     return node;
   });
