@@ -386,7 +386,7 @@ export function structurallyAdmitsProjectPath(
   const trustedDescriptorMatches = (trustedProjectDescriptors ?? []).filter(
     (descriptor) =>
       identity?.rootType === "script" &&
-      descriptor?.projectId === identity.projectId &&
+      normalized(descriptor?.projectId) === identity.projectId &&
       matchesAny(file, descriptor?.sourcePaths ?? []) &&
       (candidatePaths ?? []).some((path) => matchesAny(path, descriptor?.testPaths ?? [])),
   );

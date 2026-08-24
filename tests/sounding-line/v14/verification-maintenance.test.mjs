@@ -333,7 +333,7 @@ test("a trusted Shipwright descriptor admits only its declared runner with its d
   const trustedProjectDescriptors = [
     {
       id: "project-shipwright",
-      projectId: "shipwright",
+      projectId: "project-shipwright",
       sourcePaths: ["scripts/shipwright/run-phase2-journeys.mjs"],
       testPaths: ["tests/e2e/project-shipwright-phase2.spec.ts"],
     },
