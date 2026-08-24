@@ -27,7 +27,10 @@ export async function main(environment = process.env) {
   const taskRoot = path.resolve(environment.SHIPWRIGHT_PHASE2_TASK_ROOT ?? path.join(allowedRoot, "phase2-browser"));
   if (!taskRoot.startsWith(`${allowedRoot}${path.sep}`)) throw new Error(`SHIPWRIGHT_TASK_ROOT_REFUSED:${taskRoot}`);
 
-  run("scripts/shipwright/prepare-phase2-fixture.mjs", [], { ...environment, SHIPWRIGHT_PHASE2_TASK_ROOT: taskRoot });
+  run(repositoryRoot, "scripts/shipwright/prepare-phase2-fixture.mjs", [], {
+    ...environment,
+    SHIPWRIGHT_PHASE2_TASK_ROOT: taskRoot,
+  });
   const credentials = JSON.parse(
     await readFile(path.join(taskRoot, "credentials", "shipwright-phase2-browser.private.json"), "utf8"),
   );
@@ -44,14 +47,14 @@ export async function main(environment = process.env) {
     NEXT_DIST_DIR: ".next-shipwright-phase2-browser",
     VOYAGEWRIGHT_BUILD_SHA: sourceSha,
   };
-  run("node_modules/@playwright/test/cli.js", ["test", "-c", "playwright.shipwright-phase2.config.ts"], env);
+  run(repositoryRoot, "node_modules/@playwright/test/cli.js", ["test", "-c", "playwright.shipwright-phase2.config.ts"], env);
   process.stdout.write(
     `${JSON.stringify({ status: "SHIPWRIGHT_PHASE2_BROWSER_JOURNEY_PASSED", sourceSha, fixtureVersion: "shipwright-phase2-v1", taskRoot, port })}\n`,
   );
 }
 
-function run(script, args, env) {
-  const result = spawnSync(process.execPath, [script, ...args], {
+export function run(repositoryRoot, script, args, env, spawn = spawnSync) {
+  const result = spawn(process.execPath, [script, ...args], {
     cwd: repositoryRoot,
     env,
     stdio: "inherit",

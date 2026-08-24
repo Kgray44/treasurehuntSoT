@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { resolveSourceSha } from "../../scripts/shipwright/run-phase2-journeys.mjs";
+import { resolveSourceSha, run } from "../../scripts/shipwright/run-phase2-journeys.mjs";
 
 const sealed = "a".repeat(40);
 
@@ -32,4 +32,15 @@ test("Shipwright journeys retain Git-derived identity outside governed execution
     resolveSourceSha({}, () => sealed),
     sealed,
   );
+});
+
+test("Shipwright journeys retain their explicit repository root when spawning isolated work", () => {
+  let invocation;
+  run("D:/governed/shipwright", "scripts/shipwright/prepare-phase2-fixture.mjs", [], {}, (command, args, options) => {
+    invocation = { command, args, options };
+    return { status: 0 };
+  });
+  assert.equal(invocation.command, process.execPath);
+  assert.deepEqual(invocation.args, ["scripts/shipwright/prepare-phase2-fixture.mjs"]);
+  assert.equal(invocation.options.cwd, "D:/governed/shipwright");
 });
