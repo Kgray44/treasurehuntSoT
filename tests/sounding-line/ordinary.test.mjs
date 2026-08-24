@@ -4,6 +4,7 @@ import test from "node:test";
 import {
   assertBinding,
   classifyChanges,
+  requiresMigrationValidation,
   selectAffectedTests,
   verificationCommands,
 } from "../../scripts/sounding-line/ordinary.mjs";
@@ -84,6 +85,13 @@ test("ordinary browser proof uses the installed Chromium project", () => {
     "npx",
     ["--no-install", "playwright", "test", "--project", "chromium", "tests/e2e/harborlight-phase3.spec.ts"],
   ]);
+});
+
+test("migration rehearsal changes receive schema validation", () => {
+  assert.equal(
+    requiresMigrationValidation({ changedPaths: ["scripts/rehearse-harborlight-phase3-migrations.ts"] }),
+    true,
+  );
 });
 
 test("ordinary admission has no orchestration or generated-state prerequisites", () => {
