@@ -5,6 +5,7 @@ import {
   assertBinding,
   classifyChanges,
   requiresMigrationValidation,
+  requiresBuild,
   selectAffectedTests,
   verificationEnvironment,
   verificationCommands,
@@ -112,6 +113,10 @@ test("schema validation receives the local SQLite URL when the environment has n
   assert.deepEqual(verificationEnvironment("npx", ["--no-install", "prisma", "validate"], {}), {
     DATABASE_URL: "file:./dev.db",
   });
+});
+
+test("application source changes receive a production build", () => {
+  assert.equal(requiresBuild({ changedPaths: ["src/app/community/voyage-logs/[slug]/page.tsx"] }), true);
 });
 
 test("ordinary admission has no orchestration or generated-state prerequisites", () => {
