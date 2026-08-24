@@ -344,12 +344,29 @@ export function validatePolicy(policy) {
     !Array.isArray(rootMaintenancePolicy?.eligiblePathGlobs) ||
     !rootMaintenancePolicy.eligiblePathGlobs.length ||
     !Array.isArray(rootMaintenancePolicy?.runtimeRepairClasses) ||
-    rootMaintenancePolicy.runtimeRepairClasses.length !== 1 ||
-    rootMaintenancePolicy.runtimeRepairClasses[0]?.id !== "NIGHTWATCH_BOSUN_RUNTIME" ||
-    rootMaintenancePolicy.runtimeRepairClasses[0]?.disposition !== "ROOT_MAINTENANCE_ONLY" ||
-    rootMaintenancePolicy.runtimeRepairClasses[0]?.policyMutation !== "BREAK_GLASS_ONLY" ||
-    JSON.stringify(rootMaintenancePolicy.runtimeRepairClasses[0]?.pathGlobs) !==
-      JSON.stringify(["src/nightwatch/**", "scripts/nightwatch/**"]) ||
+    JSON.stringify(rootMaintenancePolicy.runtimeRepairClasses) !==
+      JSON.stringify([
+        {
+          id: "NIGHTWATCH_BOSUN_RUNTIME",
+          disposition: "ROOT_MAINTENANCE_ONLY",
+          policyMutation: "BREAK_GLASS_ONLY",
+          pathGlobs: ["src/nightwatch/**", "scripts/nightwatch/**"],
+        },
+        {
+          id: "NIGHTWATCH_UNATTENDED_AUTONOMY",
+          disposition: "ROOT_MAINTENANCE_ONLY",
+          policyMutation: "OWNER_AUTHORIZED_ROOT_MAINTENANCE_ONLY",
+          pathGlobs: [
+            "testing/unattended-autonomy-policy.json",
+            ".agents/README.md",
+            ".agents/context-workflow.md",
+            ".agents/unattended-autonomy-policy.md",
+            "Development_Docs/Features/branch-complete/project-nightwatch-increment-a.json",
+            "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Unattended_Autonomy_Hardening_Implementation_Record.md",
+            "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Unattended_Autonomy_Hardening_Simulation_Metrics.json",
+          ],
+        },
+      ]) ||
     !Array.isArray(rootMaintenancePolicy?.bindingPreflightPaths) ||
     !rootMaintenancePolicy.bindingPreflightPaths.length ||
     !Array.isArray(rootMaintenancePolicy?.requiredEvidence) ||
