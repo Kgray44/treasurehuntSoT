@@ -90,6 +90,22 @@ test("candidate-caused generated drift blocks while pre-existing unrelated drift
     preexisting.records.find((entry) => entry.id === "active-test-registry")?.handling,
     "ASYNC_QUARANTINE_NONBLOCKING",
   );
+
+  const derivedOutput = "testing/generated/p34-retirement-ledger.json";
+  const candidateDerivedRecord = attributeGeneratedState({
+    policy,
+    changedPaths: ["tests/e2e/harborlight-phase3.spec.ts", output, derivedOutput],
+    generatedDriftPaths: [derivedOutput],
+  });
+  assert.deepEqual(candidateDerivedRecord.errors, []);
+  assert.equal(
+    candidateDerivedRecord.records.find((entry) => entry.id === "p34-retirement-ledger")?.disposition,
+    "DERIVED_RECORD_RECONCILIATION",
+  );
+  assert.equal(
+    candidateDerivedRecord.records.find((entry) => entry.id === "p34-retirement-ledger")?.handling,
+    "ASYNC_QUARANTINE_NONBLOCKING",
+  );
 });
 
 test("an undeclared executable path still widens conservatively", () => {

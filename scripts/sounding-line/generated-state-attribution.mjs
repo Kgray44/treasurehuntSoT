@@ -80,9 +80,14 @@ export function attributeGeneratedState({ policy, changedPaths = [], generatedDr
     const candidateOutputPaths = changed.filter((file) => declaration.outputPaths.includes(file));
     const observedGeneratedDriftPaths = drift.filter((file) => declaration.outputPaths.includes(file));
     const candidateAffected = candidateInputPaths.length > 0 || candidateOutputPaths.length > 0;
+    const derivedRecordOnly = declaration.impactDisposition === "DERIVED_RECORD_ONLY";
     let disposition = "UNCHANGED";
     if (observedGeneratedDriftPaths.length)
-      disposition = candidateAffected ? "CANDIDATE_RECONCILIATION_REQUIRED" : "PREEXISTING_UNRELATED";
+      disposition = derivedRecordOnly
+        ? "DERIVED_RECORD_RECONCILIATION"
+        : candidateAffected
+          ? "CANDIDATE_RECONCILIATION_REQUIRED"
+          : "PREEXISTING_UNRELATED";
     else if (candidateAffected) disposition = "CANDIDATE_RECONCILED";
     if (disposition === "CANDIDATE_RECONCILIATION_REQUIRED")
       errors.push(`GENERATED_STATE_CANDIDATE_DRIFT:${declaration.id}:${observedGeneratedDriftPaths.join(",")}`);
@@ -96,7 +101,7 @@ export function attributeGeneratedState({ policy, changedPaths = [], generatedDr
       generatedDriftPaths: observedGeneratedDriftPaths,
       disposition,
       handling:
-        disposition === "PREEXISTING_UNRELATED"
+        disposition === "PREEXISTING_UNRELATED" || disposition === "DERIVED_RECORD_RECONCILIATION"
           ? "ASYNC_QUARANTINE_NONBLOCKING"
           : disposition === "CANDIDATE_RECONCILIATION_REQUIRED"
             ? "BLOCK_CANDIDATE"
