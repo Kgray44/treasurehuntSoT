@@ -6,9 +6,7 @@ import { fileURLToPath } from "node:url";
 const governedExtensions = new Set([".md", ".pdf", ".csv", ".txt", ".json"]);
 const toPosix = (value) => value.split(path.sep).join("/");
 const inventoryPath = (file) =>
-  /^(README\.md|SECURITY\.md|CHANGELOG\.md|CONTRIBUTING\.md|AGENTS\.md|PLANS\.md|docs\/|Development_Docs\/|\.agents\/)/.test(
-    file,
-  );
+  /^(README\.md|SECURITY\.md|CHANGELOG\.md|CONTRIBUTING\.md|AGENTS\.md|PLANS\.md|docs\/|Development_Docs\/)/.test(file);
 
 async function walk(directory) {
   const entries = await fs.readdir(directory, { withFileTypes: true });
@@ -23,6 +21,7 @@ async function walk(directory) {
 
 function classify(relativePath) {
   if (relativePath.includes("/Projects/Project_Homeport/evidence/")) return "validation-evidence";
+  if (relativePath.includes("/Engineering/")) return "engineering-record";
   if (relativePath.includes("/Projects/")) return "program-record";
   if (relativePath.includes("/Programs/")) return "program-record";
   if (relativePath.includes("/Validation/")) return "validation-evidence";
@@ -73,7 +72,8 @@ export async function generateDocumentIndex({ root = process.cwd(), baseRef = "o
     record_type: classify(file),
     status: file.includes("/Archive/")
       ? "archived"
-      : file.includes("/Projects/Project_Homeport/") ||
+      : file.includes("/Engineering/") ||
+          file.includes("/Projects/Project_Homeport/") ||
           file.includes("/Projects/Project Drydock/") ||
           isCurrentGovernance(file)
         ? "current"
@@ -131,11 +131,7 @@ export async function generateDocumentIndex({ root = process.cwd(), baseRef = "o
       .sort((a, b) => (a.oldPath < b.oldPath ? -1 : a.oldPath > b.oldPath ? 1 : 0))
       .map(({ oldPath, newPath }) => {
         const action = newPath === oldPath ? "rewrite-current" : "move";
-        const recordType = newPath.startsWith("Development_Docs/")
-          ? "engineering-record"
-          : newPath.startsWith(".agents/")
-            ? "agent-instruction"
-            : "current-document";
+        const recordType = newPath.startsWith("Development_Docs/") ? "engineering-record" : "current-document";
         return [
           oldPath,
           path.basename(oldPath, path.extname(oldPath)),

@@ -465,12 +465,8 @@ async function recordServer(args: ReturnType<typeof parseArguments>) {
   if (!Number.isSafeInteger(launcherProcessId) || launcherProcessId <= 0) {
     throw new Error("Server launcher PID is invalid.");
   }
-  const soundingLineLane = process.env.FOREVER_SOUNDING_LINE_LANE;
-  const isCertifiedSoundingLineLane = /^(harborlight-a|harborlight-b|browser-family)$/u.test(soundingLineLane ?? "");
-  if (port !== 3100 && !(isCertifiedSoundingLineLane && port >= 3101 && port <= 3199)) {
-    throw new Error(
-      "The validation server must own port 3100, or a certified Sounding Line lane port from 3101 through 3199.",
-    );
+  if (port !== 3100) {
+    throw new Error("The validation server must own the task-local loopback port 3100.");
   }
   if (
     path.basename(copyDatabase) !== report.isolatedDatabase.fileName ||

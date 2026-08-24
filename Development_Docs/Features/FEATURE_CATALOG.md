@@ -2,11 +2,6 @@
 
 This generated catalog records completed, meaningful platform capabilities. It is not a changelog, task ledger, roadmap, or list of implementation trivia. Machine-readable fragments under `Development_Docs/Features/` are the source of truth.
 
-## Audited repository and commit
-
-Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `579fd97d8b41e385051ebd41d8805a3b50ea9874`
-
 ## Status vocabulary
 
 - **MAINLINE**: available on the audited mainline source.
@@ -890,36 +885,34 @@ Audience-separated current documentation, indexed engineering records, and a fra
 
 ---
 
-## FT-033 - Sounding Line Governed Verification Control Plane
+## FT-033 - Sounding Line Direct Candidate Verification
 
 **Status:** MAINLINE
-**Program or subsystem:** Sounding Line Phases 1-4
+**Program or subsystem:** Sounding Line
 
-A nonauthoritative, provider-neutral local verification control plane provides sealed plans, reviewed adapters, marker-verified resource leases, durable history, fail-closed worker and evidence controls, isolated SQLite/browser state, narrowly certified Harborlight moderator browser lanes, and a strictly record-only protected-mainline closure route without weakening release authority.
+A focused protected-main check binds the exact pull-request base, candidate, and trees; it runs repository safety sentinels and structurally affected proof, widening safely when impact is uncertain. A separate manual mode remains exhaustive for releases and explicit full certification.
 
 ### Important subfeatures
 
-- Deterministic signed-identity plan records
-- Fixed command adapter catalogue with bounded receipts
-- Marker and process-identity ownership proof
-- Deterministic impact analysis, history, and root/cascade classification
-- Fail-closed local worker enrollment, sealed assignments, evidence, and attestations
-- Immutable SQLite baseline clone boundary
-- Two isolated Harborlight Phase 4 browser lanes
-- Explicit emergency-serial legacy release authority
-- Fail-closed record-only protected-mainline closure evidence
+- Exact base, candidate, and tree identity binding
+- Focused filesystem-based test selection
+- Conservative widening when impact is unknown
+- Separate exhaustive release certification
 
 ### Primary surfaces
 
-`npm run test:policy`, `scripts/sounding-line`, `scripts/test-all.ps1`
+`.github/workflows/sounding-line-ordinary.yml`, `.github/workflows/sounding-line-exhaustive-release.yml`, `scripts/sounding-line/ordinary.mjs`
+
+### Meaningful limitations
+
+- Control-plane changes use the explicit owner-authorized manual check rather than ordinary product admission.
 
 ### Evidence
 
-- path: `scripts/sounding-line/runtime.mjs`
-- path: `scripts/sounding-line/adapters.mjs`
-- path: `scripts/sounding-line/phase3.mjs`
-- path: `scripts/sounding-line/phase4.mjs`
-- completion-record: `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Final_Program_Closeout_Receipt.md`
+- path: `scripts/sounding-line/ordinary.mjs`
+- test: `tests/sounding-line/ordinary.test.mjs`
+- path: `.github/workflows/sounding-line-ordinary.yml`
+- completion-record: `Development_Docs/Engineering/Clean_Slate_Development_Pipeline_Cutover.md`
 
 ---
 
@@ -1079,40 +1072,6 @@ Creators author every accepted Story Block through a contract-aware Studio Inspe
 - test: `src/components/studio/TaleEditor.test.tsx`
 - path: `scripts/shipwright/phase2-walkthrough-runtime.mjs`
 - completion-record: `Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_2_Completion_Receipt.md`
-
----
-
-## FT-038 - Ordinary Direct Mainline Integration
-
-**Status:** MAINLINE
-**Program or subsystem:** Sounding Line and Nightwatch
-
-A bounded ordinary integration path routes one ready product candidate through exact impact proof and Sounding Line acceptance without making Mainline Train optimization, unrelated Baseline Certification, Deepwater drift, or generated provenance a universal merge toll gate.
-
-### Important subfeatures
-
-- Direct Mainline routing for one compatible ready candidate
-- Optional Mainline Train routing for multiple compatible candidates
-- One fresh Safe Direct Fallback after a rejected Train optimization
-- Conservative all-registered-suite widening for uncertain impact
-- Project-owned helper admission with a correlated registered test
-- Post-merge provenance reconciliation boundary
-
-### Primary surfaces
-
-`Nightwatch integration routing`, `Sounding Line authoritative workflow`
-
-### Meaningful limitations
-
-- Release candidates retain exhaustive repository proof.
-
-### Evidence
-
-- path: `src/nightwatch/controller.ts`
-- path: `scripts/sounding-line/planner.mjs`
-- test: `src/nightwatch/controller.test.ts`
-- test: `tests/sounding-line/v14/ordinary-integration-fast-path.test.mjs`
-- completion-record: `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Ordinary_Integration_Fast_Path_Amendment.md`
 
 ---
 
@@ -1690,5 +1649,3 @@ Project Nightwatch and Bosun B1.2 provide a durable control plane that serialize
 # Catalog maintenance policy
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
-
-Generation source commit: `579fd97d8b41e385051ebd41d8805a3b50ea9874`

@@ -8,9 +8,9 @@ last_reviewed: 2026-08-21
 
 # Engineering-record index
 
-## Engineering governance simplification
+## Current development pipeline
 
-- [ADR-EGS-001 Engineering Governance Simplification](Governing/ADR-EGS-001_Engineering_Governance_Simplification.md) is the current two-authority decision: Sounding Line owns verification and protected acceptance; Nightwatch owns engineering flow and scheduling. It supersedes the operational use of the layered maintenance hierarchy while preserving its historical records and temporary compatibility adapters.
+- [Clean-Slate Development Pipeline Cutover](Engineering/Clean_Slate_Development_Pipeline_Cutover.md) is the current ordinary development and release path. It replaces the former orchestration stack; the records below are preserved history unless explicitly named by the cutover record.
 
 - `Governing/`: accepted policies and foundational specifications.
 - `Governance/`: current repository-wide governance standards and their source records.
@@ -36,15 +36,15 @@ last_reviewed: 2026-08-21
 
 Use [document-index.json](document-index.json) for complete path-level classification.
 
-## Project Trim
+## Historical Project Trim
 
 - [Project Trim governing baseline v1.0-R1](Governing/Project_Trim_Codex_Context_and_Inference_Efficiency_Governing_Document_v1.0-R1.pdf) is the current Project Trim governing baseline. Phase 0 records under `Programs/Project_Trim/` are preserved program evidence, not governing authority.
 
-## Project Fairlead
+## Historical Project Fairlead
 
 - [Project Fairlead governing baseline v1.0](Governing/Project_Fairlead_GitHub_Interaction_and_Quota_Control_Plane_Governing_Document_v1.0.md) defines the repository-wide GitHub interaction and quota control plane: Git-first routing, REST/GraphQL selection, shared rate-state coordination, conditional caching, request coalescing, adaptive polling, GitHub App authentication, Bridgewatch and Sounding Line integration, degraded-operation behavior, and permanent automation governance.
 
-## Project Nightwatch and Project Bosun
+## Historical Project Nightwatch and Project Bosun
 
 - [Project Nightwatch governing baseline v1.0](Governing/Project_Nightwatch_Unattended_Autonomy_and_Overnight_Operations_Governing_Document_v1.0.md) defines the engineering operations orchestrator: parallel Product Fleet development, the persistent Integration Queue, just-in-time reconciliation, migration reservations, objective budgets and leases, loop containment, unattended continuity, and supervision of Project Bosun.
 - [Project Nightwatch v1.1 atomic integration, total-cost, and maintenance-cascade amendment](Governing/Project_Nightwatch_Atomic_Integration_and_Maintenance_Cascade_Control_Amendment_v1.1.md) adds the atomic Integration Acceptance Transaction, neutral `AWAITING_AUTHORITY` semantics, authority-before-binding dispatch, Integration Acceptance leases, semantic evidence preservation, cumulative Total Integration Cost Budgets, 30/60/90-minute standard thresholds, the global `INTEGRATION_CASCADE_BREAKER`, durable/cancellable recovery, product-value versus control-plane telemetry, maintenance-cascade accounting, event deduplication, queue-front preflight, and the mandatory Increment A.1 Atomic Acceptance Sequencer.
@@ -54,7 +54,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - The v1.1 amendments are additive governing authority over their v1.0 baselines. They strengthen sequencing, global cost containment, durable recovery, and convergence requirements without granting Nightwatch or Bosun release authority or weakening Sounding Line.
 - [Nightwatch Increment A implementation record](Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md) records the local durable Integration Queue, migration reservation broker, leases, recovery contract, and read-only Bridgewatch projection. It does not claim Sounding Line acceptance or protected-main integration.
 
-## Project Sounding Line amendments
+## Historical Project Sounding Line amendments
 
 The Version 1.3 Amendment Edition is the newest Sounding Line amendment. It
 supplements the preserved Version 1.0 base documents and Version 1.1 and Version

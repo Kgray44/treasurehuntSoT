@@ -1,4 +1,0 @@
-CREATE TABLE IF NOT EXISTS historical_runs (id TEXT PRIMARY KEY, source_watermark TEXT NOT NULL, policy_digest TEXT NOT NULL, plan_digest TEXT NOT NULL, evidence_class TEXT NOT NULL, cleanup_status TEXT NOT NULL, payload_digest TEXT NOT NULL, payload_json TEXT NOT NULL, created_at TEXT NOT NULL);
-CREATE TABLE IF NOT EXISTS suite_executions (id TEXT PRIMARY KEY, run_id TEXT NOT NULL REFERENCES historical_runs(id), suite_id TEXT NOT NULL, outcome TEXT NOT NULL, duration_ms INTEGER, environment_digest TEXT NOT NULL, fixture_version TEXT NOT NULL, payload_json TEXT NOT NULL);
-CREATE TABLE IF NOT EXISTS decisions (id TEXT PRIMARY KEY, kind TEXT NOT NULL, run_id TEXT REFERENCES historical_runs(id), decision_digest TEXT NOT NULL UNIQUE, payload_json TEXT NOT NULL, created_at TEXT NOT NULL);
-CREATE TABLE IF NOT EXISTS audit_events (id TEXT PRIMARY KEY, event_type TEXT NOT NULL, payload_json TEXT NOT NULL, created_at TEXT NOT NULL);
