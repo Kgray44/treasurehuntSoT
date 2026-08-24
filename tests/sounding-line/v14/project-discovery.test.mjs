@@ -248,6 +248,66 @@ test("structural admission rejects a prospective project that collides with a tr
   ]);
 });
 
+test("an exact trusted owner attributes a root-level project script without inventing a filename project", () => {
+  const rehearsal = "scripts/rehearse-harborlight-phase3-migrations.ts";
+  const adjacentUnknown = "scripts/rehearse-adjacent-migrations.ts";
+  const rehearsalSuites = [
+    { id: "browser.access-sentinel", domains: ["authorization"], trusted: true },
+    { id: "unit.harborlight", owner: "harborlight", trusted: true },
+  ];
+  const rehearsalContracts = [{ id: "harborlight.migration", trusted: true }];
+  const rehearsalOwners = [
+    {
+      id: "harborlight",
+      project: "harborlight",
+      sourcePaths: [rehearsal],
+      contractIds: ["harborlight.migration"],
+      trusted: true,
+    },
+  ];
+  const discovered = discoverProjects({
+    candidatePaths: [rehearsal],
+    trustedPaths: [rehearsal],
+    suites: rehearsalSuites,
+    contracts: rehearsalContracts,
+    owners: rehearsalOwners,
+  });
+  assert.deepEqual(
+    discovered.map((entry) => entry.projectId),
+    ["harborlight"],
+  );
+  assert.equal(discovered[0].state, "TRUSTED_DISCOVERED");
+  assert.equal(discovered[0].mayNarrowEvidence, true);
+  const selected = selectV14Mainline({
+    changedPaths: [rehearsal],
+    suites: rehearsalSuites,
+    requiredSuiteIds: ["browser.access-sentinel"],
+    ledgerSuiteIds: rehearsalSuites.map((suite) => suite.id),
+    impact: { pathMappings: [], contractMappings: [] },
+    projectDiscovery: discovered,
+  });
+  assert.equal(selected.fallback, null);
+  assert.deepEqual(selected.selectedSuiteIds, ["browser.access-sentinel", "unit.harborlight"]);
+
+  const unknown = discoverProjects({
+    candidatePaths: [adjacentUnknown],
+    trustedPaths: [rehearsal],
+    suites: rehearsalSuites,
+    contracts: rehearsalContracts,
+    owners: rehearsalOwners,
+  });
+  assert.deepEqual(unknown, []);
+  const rejected = classifyOrdinaryCandidate({
+    trustedPolicy: {
+      ...policy,
+      ordinaryCandidateEligiblePathGlobs: [...policy.ordinaryCandidateEligiblePathGlobs, rehearsal],
+    },
+    changedPaths: [adjacentUnknown],
+  });
+  assert.equal(rejected.classification, "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED");
+  assert.deepEqual(rejected.errors, [`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${adjacentUnknown}`]);
+});
+
 test("ambiguity, missing tests, migration, security, and multiple projects remain conservative", () => {
   const ambiguous = discoverProjects({
     candidatePaths: asterismPaths,
