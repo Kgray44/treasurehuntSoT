@@ -98,7 +98,7 @@ test("ordinary browser proof uses the installed Chromium project", () => {
   }).at(-1);
   assert.deepEqual(browserCommand, [
     "npx",
-    ["--no-install", "playwright", "test", "--project", "chromium", "tests/e2e/harborlight-phase3.spec.ts"],
+    ["--no-install", "playwright", "test", "tests/e2e/harborlight-phase3.spec.ts", "--project", "chromium"],
   ]);
 });
 

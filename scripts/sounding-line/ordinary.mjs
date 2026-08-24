@@ -218,8 +218,8 @@ export function verificationCommands(plan) {
         "--no-install",
         "playwright",
         "test",
-        ...(plan.mode === "ordinary" ? ["--project", "chromium"] : []),
         ...plan.selected.browserTests,
+        ...(plan.mode === "ordinary" ? ["--project", "chromium"] : []),
       ],
     ]);
   return commands;
