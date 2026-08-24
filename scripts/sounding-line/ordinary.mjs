@@ -32,6 +32,7 @@ const testFile = /(?:\.test|\.spec)\.(?:[cm]?[jt]sx?)$/u;
 const e2eFile = /^tests\/e2e\/.*\.spec\.[jt]sx?$/u;
 const textFile = /\.(?:[cm]?[jt]sx?|json|ya?ml|md|css)$/u;
 const lintableFile = /\.(?:[cm]?[jt]sx?)$/u;
+const broadDomainTokens = new Set(["community", "exchange", "harborlight"]);
 
 const toPosix = (value) => value.split(path.sep).join("/");
 const hash = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
@@ -67,13 +68,19 @@ export function selectAffectedTests({ changedPaths, unitTests, browserTests, mod
   if (mode === "release")
     return { unitTests: [...unitTests].sort(), browserTests: [...browserTests].sort(), widened: true };
   const direct = new Set(changedPaths.filter((file) => testFile.test(file)));
-  const tokens = tokensFor(changedPaths);
-  const matches = (file) => [...tokens].some((token) => file.toLowerCase().includes(token));
+  const tokens = tokensFor(changedPaths.filter((file) => !testFile.test(file)));
+  const unitTokens = [...tokens].filter((token) => !broadDomainTokens.has(token));
+  const matches = (file, selectedTokens) => [...selectedTokens].some((token) => file.toLowerCase().includes(token));
   const selectedUnit = [
-    ...new Set([...direct].filter((file) => !e2eFile.test(file)).concat(unitTests.filter(matches))),
+    ...new Set(
+      [...direct]
+        .filter((file) => !e2eFile.test(file))
+        .concat(unitTests.filter((file) => matches(file, unitTokens.length ? unitTokens : tokens))),
+    ),
   ].sort();
+  const directBrowser = [...direct].filter((file) => e2eFile.test(file));
   const selectedBrowser = [
-    ...new Set([...direct].filter((file) => e2eFile.test(file)).concat(browserTests.filter(matches))),
+    ...new Set(directBrowser.length ? directBrowser : browserTests.filter((file) => matches(file, tokens))),
   ].sort();
   const productChange = changedPaths.some((file) => productRoots.has(file.split("/")[0]));
   return {
@@ -111,9 +118,21 @@ function git(root, argumentsList) {
   return execFileSync("git", argumentsList, { cwd: root, encoding: "utf8" }).trim();
 }
 
-function run(root, command, argumentsList) {
+function run(root, command, argumentsList, { env = {}, ...options } = {}) {
   process.stdout.write(`\n> ${command} ${argumentsList.join(" ")}\n`);
-  execFileSync(command, argumentsList, { cwd: root, stdio: "inherit", shell: process.platform === "win32" });
+  execFileSync(command, argumentsList, {
+    cwd: root,
+    stdio: "inherit",
+    shell: process.platform === "win32",
+    env: { ...process.env, ...env },
+    ...options,
+  });
+}
+
+export function verificationEnvironment(command, argumentsList, environment = process.env) {
+  if (command === "npx" && argumentsList.includes("prisma") && argumentsList.includes("validate"))
+    return { DATABASE_URL: environment.DATABASE_URL ?? "file:./dev.db" };
+  return {};
 }
 
 export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary" }) {
@@ -215,7 +234,8 @@ async function main() {
   const plan = await buildPlan({ root, baseSha, candidateSha, mode });
   const result = { ...plan, planDigest: hash(plan), startedAt: new Date().toISOString(), decision: "FAIL" };
   try {
-    for (const [command, argumentsList] of verificationCommands(plan)) run(root, command, argumentsList);
+    for (const [command, argumentsList] of verificationCommands(plan))
+      run(root, command, argumentsList, { env: verificationEnvironment(command, argumentsList) });
     result.decision = "PASS";
   } catch (error) {
     result.error = error instanceof Error ? error.message : String(error);

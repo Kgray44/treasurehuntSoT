@@ -6,6 +6,7 @@ import {
   classifyChanges,
   requiresMigrationValidation,
   selectAffectedTests,
+  verificationEnvironment,
   verificationCommands,
 } from "../../scripts/sounding-line/ordinary.mjs";
 
@@ -26,12 +27,25 @@ test("ordinary classification ignores retired generated state and rejects active
 test("ordinary selection finds Harborlight browser proof structurally", () => {
   const selection = selectAffectedTests({
     changedPaths: ["src/app/community/voyage-logs/[slug]/page.tsx"],
-    unitTests: ["src/community/feed.test.ts", "src/auth/session.test.ts"],
+    unitTests: ["src/community/voyage-log-lifecycle.test.ts", "src/community/feed.test.ts", "src/auth/session.test.ts"],
     browserTests: ["tests/e2e/harborlight-phase3.spec.ts", "tests/e2e/access-gates.spec.ts"],
   });
-  assert.deepEqual(selection.unitTests, ["src/community/feed.test.ts"]);
+  assert.deepEqual(selection.unitTests, ["src/community/voyage-log-lifecycle.test.ts"]);
   assert.deepEqual(selection.browserTests, ["tests/e2e/harborlight-phase3.spec.ts"]);
   assert.equal(selection.widened, false);
+});
+
+test("direct browser proof prevents unrelated browser suites from widening the candidate", () => {
+  const selection = selectAffectedTests({
+    changedPaths: ["src/app/community/voyage-logs/[slug]/page.tsx", "tests/e2e/harborlight-phase3.spec.ts"],
+    unitTests: [],
+    browserTests: [
+      "tests/e2e/harborlight-phase2.spec.ts",
+      "tests/e2e/harborlight-phase3.spec.ts",
+      "tests/e2e/harborlight-phase4.spec.ts",
+    ],
+  });
+  assert.deepEqual(selection.browserTests, ["tests/e2e/harborlight-phase3.spec.ts"]);
 });
 
 test("unknown impact widens and release mode is exhaustive", () => {
@@ -92,6 +106,12 @@ test("migration rehearsal changes receive schema validation", () => {
     requiresMigrationValidation({ changedPaths: ["scripts/rehearse-harborlight-phase3-migrations.ts"] }),
     true,
   );
+});
+
+test("schema validation receives the local SQLite URL when the environment has none", () => {
+  assert.deepEqual(verificationEnvironment("npx", ["--no-install", "prisma", "validate"], {}), {
+    DATABASE_URL: "file:./dev.db",
+  });
 });
 
 test("ordinary admission has no orchestration or generated-state prerequisites", () => {
