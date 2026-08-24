@@ -443,6 +443,48 @@ export function validatePolicy(policy) {
     registration.pathGlobs.some((entry) => maintenancePolicy.authorityChangePathGlobs.includes(entry))
   )
     errors.push("verification-maintenance-policy: product verification registration boundary mismatch");
+  const generatedState = maintenancePolicy?.generatedStateAttribution;
+  const generatedStateIds = new Set();
+  const generatedStateOutputs = new Set();
+  const generatedStateInvalid =
+    generatedState?.mode !== "TRUSTED_DECLARATION_WITH_CANDIDATE_ATTRIBUTION" ||
+    generatedState?.preexistingUnrelatedDisposition !== "ASYNC_QUARANTINE_NONBLOCKING" ||
+    generatedState?.candidateAffectedDisposition !== "CANDIDATE_RECONCILIATION_REQUIRED" ||
+    !Array.isArray(generatedState?.records) ||
+    !generatedState.records.length ||
+    generatedState.records.some((record) => {
+      const invalid =
+        !record ||
+        typeof record.id !== "string" ||
+        !record.id ||
+        generatedStateIds.has(record.id) ||
+        typeof record.generator !== "string" ||
+        !record.generator ||
+        !Array.isArray(record.outputPaths) ||
+        !record.outputPaths.length ||
+        record.outputPaths.some(
+          (output) =>
+            typeof output !== "string" ||
+            !output ||
+            output.includes("*") ||
+            generatedStateOutputs.has(output) ||
+            !maintenancePolicy.ordinaryCandidateEligiblePathGlobs.includes(output),
+        ) ||
+        !Array.isArray(record.semanticInputPathGlobs) ||
+        !record.semanticInputPathGlobs.length ||
+        (record.impactDisposition === "DERIVED_RECORD_ONLY" &&
+          (typeof record.validator !== "string" || !record.validator)) ||
+        !["SEMANTIC_GENERATED_STATE", "DERIVED_RECORD_ONLY"].includes(record.impactDisposition) ||
+        !Array.isArray(record.nonSemanticOutputPaths ?? []) ||
+        (record.nonSemanticOutputPaths ?? []).some((output) => !record.outputPaths.includes(output)) ||
+        (record.impactDisposition === "DERIVED_RECORD_ONLY" && !(record.nonSemanticOutputPaths ?? []).length) ||
+        (record.impactDisposition === "SEMANTIC_GENERATED_STATE" && (record.nonSemanticOutputPaths ?? []).length);
+      generatedStateIds.add(record?.id);
+      for (const output of record?.outputPaths ?? []) generatedStateOutputs.add(output);
+      return invalid;
+    });
+  if (generatedStateInvalid)
+    errors.push("verification-maintenance-policy: generated state attribution boundary mismatch");
   if (authorityIndex.governingPolicies?.proofMinimization !== "MINIMUM_SUFFICIENT_EVIDENCE")
     errors.push("sounding-line-authority: proof minimization mismatch");
   if (authorityIndex.governingPolicies?.semanticInvalidation !== "EVIDENCE_PRESERVATION_REQUIRED")

@@ -1082,6 +1082,40 @@ Creators author every accepted Story Block through a contract-aware Studio Inspe
 
 ---
 
+## FT-038 - Ordinary Direct Mainline Integration
+
+**Status:** MAINLINE
+**Program or subsystem:** Sounding Line and Nightwatch
+
+A bounded ordinary integration path routes one ready product candidate through exact impact proof and Sounding Line acceptance without making Mainline Train optimization, unrelated Baseline Certification, Deepwater drift, or generated provenance a universal merge toll gate.
+
+### Important subfeatures
+
+- Direct Mainline routing for one compatible ready candidate
+- Optional Mainline Train routing for multiple compatible candidates
+- One fresh Safe Direct Fallback after a rejected Train optimization
+- Conservative all-registered-suite widening for uncertain impact
+- Project-owned helper admission with a correlated registered test
+- Post-merge provenance reconciliation boundary
+
+### Primary surfaces
+
+`Nightwatch integration routing`, `Sounding Line authoritative workflow`
+
+### Meaningful limitations
+
+- Release candidates retain exhaustive repository proof.
+
+### Evidence
+
+- path: `src/nightwatch/controller.ts`
+- path: `scripts/sounding-line/planner.mjs`
+- test: `src/nightwatch/controller.test.ts`
+- test: `tests/sounding-line/v14/ordinary-integration-fast-path.test.mjs`
+- completion-record: `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Ordinary_Integration_Fast_Path_Amendment.md`
+
+---
+
 ## FT-B001 - Unified Identity and Session Authority
 
 **Status:** MAINLINE
@@ -1588,41 +1622,6 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 ---
 
 # Completed Branch Features Not Yet Available on Main
-
-## FT-038 - Ordinary Direct Mainline Integration
-
-**Status:** BRANCH COMPLETE NOT MERGED
-**Program or subsystem:** Sounding Line and Nightwatch
-
-A bounded ordinary integration path routes one ready product candidate through exact impact proof and Sounding Line acceptance without making Mainline Train optimization, unrelated Baseline Certification, Deepwater drift, or generated provenance a universal merge toll gate.
-
-### Important subfeatures
-
-- Direct Mainline routing for one compatible ready candidate
-- Optional Mainline Train routing for multiple compatible candidates
-- One fresh Safe Direct Fallback after a rejected Train optimization
-- Conservative all-registered-suite widening for uncertain impact
-- Project-owned helper admission with a correlated registered test
-- Post-merge provenance reconciliation boundary
-
-### Primary surfaces
-
-`Nightwatch integration routing`, `Sounding Line authoritative workflow`
-
-### Meaningful limitations
-
-- Protected-main availability and Harborlight acceptance remain pending the independent Sounding Line decision and protected binding.
-- Release candidates retain exhaustive repository proof.
-
-### Evidence
-
-- path: `src/nightwatch/controller.ts`
-- path: `scripts/sounding-line/planner.mjs`
-- test: `src/nightwatch/controller.test.ts`
-- test: `tests/sounding-line/v14/ordinary-integration-fast-path.test.mjs`
-- completion-record: `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Ordinary_Integration_Fast_Path_Amendment.md`
-
----
 
 ## FT-B012 - Nightwatch Governed Integration Queue, Acceptance Sequencer, and Live Controller
 

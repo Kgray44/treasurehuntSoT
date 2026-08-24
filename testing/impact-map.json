@@ -4748,6 +4748,11 @@
       "exclusive": true,
       "suiteIds": ["unit.sounding-line", "static.core"],
       "contractIds": []
+    },
+    {
+      "path": "src/styles/community.css",
+      "suiteIds": ["unit.community", "component.community", "browser.community"],
+      "contractIds": ["community-public-projection", "community-moderation-integrity"]
     }
   ],
   "contractMappings": [

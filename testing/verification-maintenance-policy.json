@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "compatibilityStatus": "COMPATIBILITY_ONLY_NO_NEW_NORMAL_CALLERS",
   "ordinaryIntegrationPath": "DIRECT_MAINLINE",
   "mainlineTrain": {
@@ -21,6 +21,52 @@
     "deepwater": "CAPABILITY_REALIZATION_OR_REACHABILITY_ONLY",
     "featureCatalogProvenance": "POST_MERGE_RECONCILIATION"
   },
+  "generatedStateAttribution": {
+    "mode": "TRUSTED_DECLARATION_WITH_CANDIDATE_ATTRIBUTION",
+    "preexistingUnrelatedDisposition": "ASYNC_QUARANTINE_NONBLOCKING",
+    "candidateAffectedDisposition": "CANDIDATE_RECONCILIATION_REQUIRED",
+    "records": [
+      {
+        "id": "active-test-registry",
+        "generator": "scripts/sounding-line/test-registry.mjs",
+        "outputPaths": ["testing/generated/active-test-registry.json"],
+        "semanticInputPathGlobs": [
+          "tests/**/*.test.*",
+          "tests/**/*.spec.*",
+          "testing/contracts.json",
+          "testing/suites.json",
+          "testing/test-registrations/**",
+          "testing/test-definition-schema.json",
+          "scripts/sounding-line/test-identity.mjs",
+          "scripts/sounding-line/test-registry.mjs"
+        ],
+        "impactDisposition": "SEMANTIC_GENERATED_STATE"
+      },
+      {
+        "id": "p34-retirement-ledger",
+        "generator": "scripts/sounding-line/reconcile-p34-ledger.mjs",
+        "validator": "scripts/sounding-line/p34-retirement.mjs",
+        "outputPaths": [
+          "testing/generated/p34-retirement-ledger.json",
+          "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv",
+          "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv"
+        ],
+        "semanticInputPathGlobs": [
+          "testing/generated/active-test-registry.json",
+          "testing/retired-suites.json",
+          "testing/suites.json",
+          "scripts/sounding-line/test-identity.mjs",
+          "scripts/sounding-line/reconcile-p34-ledger.mjs"
+        ],
+        "nonSemanticOutputPaths": [
+          "testing/generated/p34-retirement-ledger.json",
+          "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv",
+          "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv"
+        ],
+        "impactDisposition": "DERIVED_RECORD_ONLY"
+      }
+    ]
+  },
   "declarativeTestRegistration": {
     "pathGlobs": ["testing/test-registrations/**/*.json", "testing/test-registration.schema.json"],
     "validator": "scripts/sounding-line/test-registration.mjs",
@@ -38,6 +84,7 @@
     "Development_Docs/Programs/Sounding_Line/**",
     "scripts/sounding-line/test-identity.mjs",
     "scripts/sounding-line/test-registry.mjs",
+    "scripts/sounding-line/generated-state-attribution.mjs",
     "scripts/sounding-line/p34-retirement.mjs",
     "scripts/sounding-line/reconcile-p34-stable-identities.mjs",
     "scripts/sounding-line/worker-preparation.mjs",
