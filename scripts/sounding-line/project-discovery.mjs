@@ -88,7 +88,10 @@ function pathIdentity(file) {
     [/^Development_Docs\/Governing\/Project[_ -]?([^/]+?)\.pdf$/u, "project-document", "documentation"],
     [/^src\/([^/]+)/u, "source-root", "source"],
     [/^tests\/([^/]+)/u, "test-root", "test"],
-    [/^scripts\/([^/]+)/u, "script-root", "script"],
+    // A root-level script filename is not a project root. Only a bounded
+    // script directory can supply a path-derived project identity; an exact
+    // trusted owner may still attribute a root-level script separately.
+    [/^scripts\/([^/]+)\//u, "script-root", "script"],
     [/^prisma\/(?:migrations\/)?([^/]+)/u, "migration", "migration"],
   ];
   for (const [expression, kind, rootType] of matchers) {

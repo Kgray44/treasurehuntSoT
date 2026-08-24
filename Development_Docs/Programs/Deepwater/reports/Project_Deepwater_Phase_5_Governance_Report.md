@@ -17,6 +17,6 @@ Phase 5 is explicitly owner-authorized from accepted current main `78610ae4dd63a
 - Release authority: Sounding Line only
 - Local candidate state: RECORD_ONLY_CLOSURE_READY
 
-The pre-cutover focused evidence is retained as non-authoritative semantic history and has been rebound through the current policy identity `6048ae878fade30a2b7cbadcb8bd7d4400eeaa57db1c775b902ce9b2eecb0800`. PR #159 accepted the exact candidate 93efa9f4f7d8b4e64ce05ecc89f00e6a73ba02af as protected merge 78610ae4dd63aac9ff45c9c7646c78b38c6ab19a after Sounding Line Mainline Decision run 32158890855 returned RELEASE_GO and protected binding run 32161116494 passed. The remaining closure is record-only and must bind this accepted implementation without adding product scope.
+The pre-cutover focused evidence is retained as non-authoritative semantic history and has been rebound through the current policy identity `f3faee71f6525a97ab80a0da5c105e98e219e304abf9b009f8da11ea20b7ba7e`. PR #159 accepted the exact candidate 93efa9f4f7d8b4e64ce05ecc89f00e6a73ba02af as protected merge 78610ae4dd63aac9ff45c9c7646c78b38c6ab19a after Sounding Line Mainline Decision run 32158890855 returned RELEASE_GO and protected binding run 32161116494 passed. The remaining closure is record-only and must bind this accepted implementation without adding product scope.
 
 The guard validates catalog mappings, capability maturity, route/screen/journey references, evidence freshness, finding closures, restricted audiences, impact declarations, and truthful completion language without owning product behavior.
