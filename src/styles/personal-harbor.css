@@ -2343,6 +2343,7 @@ html[data-motion-preference="reduced"] .personal-harbor *::after {
 
 .wakebook-detail-hero__body {
   display: grid;
+  min-width: 0;
   align-content: center;
   gap: 1rem;
   padding: clamp(1.35rem, 4vw, 3rem);
@@ -2438,6 +2439,7 @@ html[data-motion-preference="reduced"] .personal-harbor *::after {
 }
 
 .wakebook-detail-section {
+  min-width: 0;
   scroll-margin-top: calc(var(--shell-header-height, 4.75rem) + 5rem);
   border: 1px solid var(--border-default);
   border-radius: 1.15rem;
@@ -2647,9 +2649,14 @@ html[data-motion-preference="reduced"] .personal-harbor *::after {
 
 .wakebook-remembrance form label {
   display: grid;
+  min-width: 0;
   gap: 0.35rem;
   color: var(--text-secondary);
   font-weight: 750;
+}
+
+.wakebook-remembrance select {
+  max-width: 100%;
 }
 
 .wakebook-memory-list,
@@ -2667,11 +2674,17 @@ html[data-motion-preference="reduced"] .personal-harbor *::after {
 
 .wakebook-memory-list li {
   display: flex;
+  flex-wrap: wrap;
   align-items: start;
   justify-content: space-between;
   gap: 0.8rem;
   border-top: 1px solid var(--border-subtle);
   padding-top: 0.7rem;
+}
+
+.wakebook-memory-list li > div {
+  min-width: 0;
+  flex: 1 1 16rem;
 }
 
 .wakebook-memory-list li p {
