@@ -68,6 +68,7 @@
     "bridgewatch/**",
     "deploy/nginx.conf",
     "scripts/sounding-line/status-projection.mjs",
+    "scripts/rehearse-harborlight-phase3-migrations.ts",
     "scripts/shipwright/run-phase2-journeys.mjs",
     "Development_Docs/Project_Bridgewatch_*.md",
     "Development_Docs/Project_Bridgewatch_v2_Source_Health_Matrix.json",
