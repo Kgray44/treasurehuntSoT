@@ -1,10 +1,8 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
-import { mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { buildPlan } from "../../scripts/sounding-line/planner.mjs";
 import { finalize } from "../../scripts/sounding-line/finalizer.mjs";
 import { selectFocusedSuite } from "../../scripts/sounding-line/focused-selection.mjs";
@@ -185,38 +183,13 @@ test("heavyweight repository closure and finalization workflows require explicit
   assert.deepEqual(violations, [], "HEAVYWEIGHT_WORKFLOW_MUST_BE_EXPLICIT_DISPATCH_ONLY");
 });
 
-test("authoritative baseline certification resolves a fixture base tree without unrelated repository history", async () => {
-  const fixtureRoot = await mkdtemp(path.join(tmpdir(), "runtime-conformance-shallow-"));
-  const origin = path.join(fixtureRoot, "origin");
-  const shallow = path.join(fixtureRoot, "shallow");
-  try {
-    execFileSync("git", ["init", "--initial-branch=main", origin], { encoding: "utf8" });
-    execFileSync("git", ["config", "user.email", "runtime-conformance@example.invalid"], { cwd: origin, encoding: "utf8" });
-    execFileSync("git", ["config", "user.name", "Runtime Conformance Fixture"], { cwd: origin, encoding: "utf8" });
-    await writeFile(path.join(origin, "fixture.txt"), "sealed base\n", "utf8");
-    execFileSync("git", ["add", "fixture.txt"], { cwd: origin, encoding: "utf8" });
-    execFileSync("git", ["commit", "-m", "fixture base"], { cwd: origin, encoding: "utf8" });
-    const baseSha = execFileSync("git", ["rev-parse", "HEAD"], { cwd: origin, encoding: "utf8" }).trim();
-    const expectedTree = execFileSync("git", ["rev-parse", "HEAD^{tree}"], { cwd: origin, encoding: "utf8" }).trim();
-    execFileSync("git", ["clone", "--depth", "1", pathToFileURL(origin).href, shallow], { encoding: "utf8" });
-    const resolvedTree = execFileSync("git", ["rev-parse", `${baseSha}^{tree}`], { cwd: shallow, encoding: "utf8" }).trim();
-    assert.equal(resolvedTree, expectedTree);
-    assert.throws(
-      () => execFileSync("git", ["rev-parse", `${"f".repeat(40)}^{tree}`], { cwd: shallow, encoding: "utf8", stdio: "pipe" }),
-      /unknown revision|ambiguous argument/u,
-      "irrelevant history must remain unavailable in the fixture",
-    );
-  } finally {
-    await rm(fixtureRoot, { recursive: true, force: true });
-  }
-
+test("ordinary authoritative proof accepts Direct Mainline without baseline certification", async () => {
   const workflow = await readFile(path.join(root, ".github", "workflows", "sounding-line-authoritative.yml"), "utf8");
-  assert.ok(workflow.includes('git rev-parse "$env:SOUNDING_LINE_BASE_SHA`^{tree}"'));
-  assert.ok(!workflow.includes('git rev-parse "$env:SOUNDING_LINE_BASE_SHA`:^{tree}"'));
-  assert.match(
-    workflow,
-    /\$receipt\.protectedMain\.treeSha -ne \$tree[\s\S]*?SOUNDING_LINE_BASELINE_CERTIFICATION_IDENTITY_INVALID/u,
-  );
+  assert.match(workflow, /SOUNDING_LINE_CANDIDATE_ACCEPTANCE_ENVELOPE_REQUIRED/u);
+  assert.match(workflow, /SOUNDING_LINE_VERIFICATION_ROUTE/u);
+  assert.match(workflow, /safe-direct-fallback/u);
+  assert.doesNotMatch(workflow, /baseline_run_id/u);
+  assert.doesNotMatch(workflow, /SOUNDING_LINE_BASELINE_CERTIFICATION_REQUIRED/u);
 });
 
 test("resource-aware preparation eliminates universal database and browser setup", async () => {

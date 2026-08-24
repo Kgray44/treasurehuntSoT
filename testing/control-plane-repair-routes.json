@@ -17,12 +17,12 @@
   },
   "executableRouteContracts": {
     "ORDINARY": {
-      "DISCOVERY": [{ "path": "testing/engineering-governance-policy.json", "contains": "SOUNDING_LINE_MAINLINE_TRAIN" }],
+      "DISCOVERY": [{ "path": "testing/engineering-governance-policy.json", "contains": "DIRECT_MAINLINE_SINGLE_CANDIDATE" }],
       "CLASSIFICATION": [{ "path": "scripts/sounding-line/engineering-governance.mjs", "contains": "classifySimplifiedCandidate" }],
-      "ADMISSION": [{ "path": ".github/workflows/sounding-line-mainline-train.yml", "contains": "Discover and freeze ordinary candidates" }],
-      "AUTHORIZATION": [{ "path": ".github/workflows/sounding-line-mainline-train.yml", "contains": "V14_MAINLINE_TRAIN_LIVE" }],
-      "QUALIFICATION": [{ "path": ".github/workflows/sounding-line-mainline-train.yml", "contains": "Finalize exact predicted-tree candidate evidence" }],
-      "PROTECTED_BINDING": [{ "path": ".github/workflows/sounding-line-mainline-train.yml", "contains": "Sounding Line / Mainline Decision" }],
+      "ADMISSION": [{ "path": ".github/workflows/sounding-line-authoritative.yml", "contains": "SOUNDING_LINE_CANDIDATE_ACCEPTANCE_ENVELOPE_REQUIRED" }],
+      "AUTHORIZATION": [{ "path": ".github/workflows/sounding-line-authoritative.yml", "contains": "SOUNDING_LINE_VERIFICATION_ROUTE" }],
+      "QUALIFICATION": [{ "path": ".github/workflows/sounding-line-authoritative.yml", "contains": "node scripts/sounding-line/finalize-ci.mjs" }],
+      "PROTECTED_BINDING": [{ "path": ".github/workflows/sounding-line-protected-binding-dispatch.yml", "contains": "Bind exact accepted ordinary authority before controlled merge" }],
       "MERGE_ELIGIBILITY": [{ "path": ".github/workflows/sounding-line-protected-merge-binding.yml", "contains": "Sounding Line / Mainline Decision" }]
     },
     "CONTROL_PLANE_CHANGE": {
