@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -75,7 +76,9 @@ describe("Feature Catalog", () => {
   it("accepts detached GitHub PR branch evidence only when the recorded commit is in HEAD", () => {
     const originalActions = process.env.GITHUB_ACTIONS;
     const originalHeadRef = process.env.GITHUB_HEAD_REF;
-    const head = process.env.GITHUB_SHA ?? "HEAD";
+    // GitHub's dispatch SHA belongs to the caller workflow. The governed
+    // worker deliberately checks out the sealed integration tree instead.
+    const head = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
     try {
       process.env.GITHUB_ACTIONS = "true";
       process.env.GITHUB_HEAD_REF = "codex/detached-ci-proof";
