@@ -129,9 +129,13 @@ function run(root, command, argumentsList, { env = {}, ...options } = {}) {
   });
 }
 
-export function verificationEnvironment(command, argumentsList, environment = process.env) {
-  if (command === "npx" && argumentsList.includes("prisma") && argumentsList.includes("validate"))
-    return { DATABASE_URL: environment.DATABASE_URL ?? "file:./dev.db" };
+export function soundingLineDatabaseUrl(candidateSha) {
+  return `file:./.sounding-line-${candidateSha.slice(0, 12)}.sqlite`;
+}
+
+export function verificationEnvironment(plan, command, argumentsList, environment = process.env) {
+  if (command === "npx" && (argumentsList.includes("prisma") || argumentsList.includes("playwright")))
+    return { DATABASE_URL: environment.DATABASE_URL ?? plan.databaseUrl };
   return {};
 }
 
@@ -169,6 +173,9 @@ export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary"
   );
   const browserTests = tests.filter((file) => e2eFile.test(file));
   const selection = selectAffectedTests({ changedPaths: classification.admissionPaths, unitTests, browserTests, mode });
+  const migrationScripts = classification.admissionPaths.filter((file) =>
+    /^scripts\/.*(?:migration|migrate|rehearse).*\.tsx?$/iu.test(file),
+  );
   return {
     version: 1,
     authority: "SOUNDING_LINE",
@@ -186,6 +193,8 @@ export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary"
       (file) => lintableFile.test(file) && existsSync(path.join(root, file)),
     ),
     selected: selection,
+    databaseUrl: soundingLineDatabaseUrl(candidateSha),
+    migrationScripts,
     sentinels: ["format", "lint", "typecheck", "private-content"],
     migrationRequired: requiresMigrationValidation({ changedPaths, mode }),
     buildRequired: requiresBuild({ changedPaths, mode }),
@@ -210,8 +219,13 @@ export function verificationCommands(plan) {
   if (plan.mode === "release") commands.push([process.execPath, ["--test", "tests/sounding-line/ordinary.test.mjs"]]);
   if (plan.migrationRequired)
     commands.push(["npx", ["--no-install", "prisma", "validate", "--schema", "prisma/schema.sqlite.prisma"]]);
+  for (const script of plan.migrationScripts ?? []) commands.push(["npx", ["--no-install", "tsx", script]]);
   if (plan.buildRequired) commands.push(["npm", ["run", "build"]]);
-  if (plan.selected.browserTests.length)
+  if (plan.selected.browserTests.length) {
+    commands.push([
+      "npx",
+      ["--no-install", "prisma", "db", "push", "--skip-generate", "--schema", "prisma/schema.sqlite.prisma"],
+    ]);
     commands.push([
       "npx",
       [
@@ -222,6 +236,7 @@ export function verificationCommands(plan) {
         ...(plan.mode === "ordinary" ? ["--project", "chromium"] : []),
       ],
     ]);
+  }
   return commands;
 }
 
@@ -241,7 +256,7 @@ async function main() {
   const result = { ...plan, planDigest: hash(plan), startedAt: new Date().toISOString(), decision: "FAIL" };
   try {
     for (const [command, argumentsList] of verificationCommands(plan))
-      run(root, command, argumentsList, { env: verificationEnvironment(command, argumentsList) });
+      run(root, command, argumentsList, { env: verificationEnvironment(plan, command, argumentsList) });
     result.decision = "PASS";
   } catch (error) {
     result.error = error instanceof Error ? error.message : String(error);
