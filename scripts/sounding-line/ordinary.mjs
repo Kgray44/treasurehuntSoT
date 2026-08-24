@@ -135,6 +135,13 @@ export function verificationEnvironment(command, argumentsList, environment = pr
   return {};
 }
 
+export function requiresBuild({ changedPaths, mode = "ordinary" }) {
+  return (
+    mode === "release" ||
+    changedPaths.some((file) => /^(?:src\/|app\/|components\/|public\/|styles\/|next\.config)/u.test(file))
+  );
+}
+
 export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary" }) {
   const baseTree = git(root, ["rev-parse", `${baseSha}^{tree}`]);
   const candidateTree = git(root, ["rev-parse", `${candidateSha}^{tree}`]);
@@ -181,8 +188,7 @@ export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary"
     selected: selection,
     sentinels: ["format", "lint", "typecheck", "private-content"],
     migrationRequired: requiresMigrationValidation({ changedPaths, mode }),
-    buildRequired:
-      mode === "release" || changedPaths.some((file) => /^(?:app|components|public|styles|next\.config)/u.test(file)),
+    buildRequired: requiresBuild({ changedPaths, mode }),
   };
 }
 
