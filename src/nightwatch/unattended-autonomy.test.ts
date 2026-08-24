@@ -190,6 +190,35 @@ describe("UNATTENDED_CONTINUATION standing delegation", () => {
     }
   });
 
+  it("permits one candidate-base reconciliation for each distinct root while rejecting a repeated root", () => {
+    const ledger = new NightwatchLedger(":memory:");
+    try {
+      candidate(ledger);
+      const reconcile = (rootCause: string) =>
+        ledger.recordAutonomyAction({
+          objectiveId: "objective-a",
+          candidateId: "candidate-a",
+          rootCause,
+          actionClass: "candidate-base-reconciliation",
+          project: "Nightwatch",
+          inScope: true,
+          reversible: true,
+        });
+
+      expect(reconcile("certified-root-repair-a")).toMatchObject({
+        status: "CONTINUE",
+        route: { routing: "AUTO_DELEGATED" },
+      });
+      expect(reconcile("certified-root-repair-b")).toMatchObject({
+        status: "CONTINUE",
+        route: { routing: "AUTO_DELEGATED" },
+      });
+      expect(reconcile("certified-root-repair-a")).toMatchObject({ status: "EXHAUSTED" });
+    } finally {
+      ledger.close();
+    }
+  });
+
   it("keeps true hard stops and unrelated scope outside the envelope", () => {
     const ledger = new NightwatchLedger(":memory:");
     try {

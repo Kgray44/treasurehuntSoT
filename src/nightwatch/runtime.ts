@@ -1088,8 +1088,8 @@ export class NightwatchLedger {
       );
       const reconciliationCount = Number(
         (this.db
-          .prepare("SELECT count(*) AS count FROM autonomy_actions WHERE objective_id = ? AND action_class = 'candidate-base-reconciliation'")
-          .get(input.objectiveId) as { count: number }).count,
+          .prepare("SELECT count(*) AS count FROM autonomy_actions WHERE objective_id = ? AND root_cause = ? AND action_class = 'candidate-base-reconciliation'")
+          .get(input.objectiveId, rootCause) as { count: number }).count,
       );
       const repairCount = Number(
         (this.db
