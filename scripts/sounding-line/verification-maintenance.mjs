@@ -561,7 +561,13 @@ export function classifyOrdinaryCandidate({
           : []),
       ]) &&
       !isOrdinaryGovernanceDocumentation(file, trustedPolicy) &&
-      (!structurallyAdmitsProjectPath(file, projectDiscovery, paths, trustedRegistries?.ownership?.owners ?? []) ||
+      (!structurallyAdmitsProjectPath(
+        file,
+        projectDiscovery,
+        paths,
+        trustedRegistries?.ownership?.owners ?? [],
+        trustedProjectDescriptors,
+      ) ||
         structurallyCollidesWithTrustedScope(file, trustedPolicy))
     )
       errors.push(`ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:${file}`);
