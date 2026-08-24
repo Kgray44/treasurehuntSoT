@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import test from "node:test";
+import { splitMigrationStatements } from "../../scripts/sounding-line/sqlite-bootstrap.mjs";
 import {
   assertBinding,
   classifyChanges,
@@ -100,14 +101,21 @@ test("ordinary browser proof uses the installed Chromium project", () => {
     buildRequired: false,
   });
   assert.deepEqual(browserCommands.at(-2), [
-    "npx",
-    ["--no-install", "prisma", "db", "push", "--skip-generate", "--schema", "prisma/schema.sqlite.prisma"],
+    process.execPath,
+    ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
   ]);
   const browserCommand = browserCommands.at(-1);
   assert.deepEqual(browserCommand, [
     "npx",
     ["--no-install", "playwright", "test", "tests/e2e/harborlight-phase3.spec.ts", "--project", "chromium"],
   ]);
+});
+
+test("SQLite bootstrap preserves quoted semicolons while ignoring migration comments", () => {
+  assert.deepEqual(
+    splitMigrationStatements("-- comment\nCREATE TABLE item (value TEXT);\nINSERT INTO item VALUES ('a;b');"),
+    ["CREATE TABLE item (value TEXT)", "INSERT INTO item VALUES ('a;b')"],
+  );
 });
 
 test("migration rehearsal changes receive schema validation", () => {
