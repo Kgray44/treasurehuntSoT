@@ -82,6 +82,33 @@ describe("Nightwatch controller", () => {
     }
   });
 
+  it("preserves the control-plane receiver when dispatching the Mainline Train", () => {
+    const ledger = queuedLedger();
+    let now = Date.parse("2026-08-21T00:00:00.000Z");
+    let dispatchReceiver: unknown = null;
+    const plane: NightwatchControlPlane = {
+      ...controlPlane([]),
+      dispatchMainlineTrain() {
+        dispatchReceiver = this;
+        return { runId: "mainline-train-receiver" };
+      },
+      observeMainlineTrain: () => "PENDING",
+    };
+    const controller = new NightwatchController(ledger, plane, {
+      instanceId: "nightwatchd-train-receiver-test",
+      now: () => now,
+    });
+    try {
+      controller.start();
+      controller.tick();
+      now += 1_000;
+      expect(controller.tick()).toMatchObject({ state: "TRAIN_QUALIFYING", runId: "mainline-train-receiver" });
+      expect(dispatchReceiver).toBe(plane);
+    } finally {
+      ledger.close();
+    }
+  });
+
   it("persists one authority and one binding dispatch across duplicate ticks", () => {
     const ledger = queuedLedger();
     let now = Date.parse("2026-08-21T00:00:00.000Z");

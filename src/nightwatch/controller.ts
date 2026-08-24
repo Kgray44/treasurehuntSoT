@@ -224,12 +224,17 @@ export class NightwatchController {
           transaction.id,
           intent.id,
           (this.isMainlineTrainControl()
-            ? this.controlPlane.dispatchMainlineTrain!
-            : this.controlPlane.dispatchAuthority)({
-            ...transaction,
-            transactionId: transaction.id,
-            dispatchKey: intent.dispatchKey,
-          }).runId,
+            ? this.controlPlane.dispatchMainlineTrain!({
+                ...transaction,
+                transactionId: transaction.id,
+                dispatchKey: intent.dispatchKey,
+              })
+            : this.controlPlane.dispatchAuthority({
+                ...transaction,
+                transactionId: transaction.id,
+                dispatchKey: intent.dispatchKey,
+              })
+          ).runId,
           at,
         );
     const repair = this.bosun.liveRepairForTransaction(transaction.id);
