@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "id": "egs-bosun-public-lifecycle",
+  "owner": "nightwatch",
+  "contracts": ["nightwatch.increment-a.integration-queue"],
+  "test": { "file": "src/nightwatch/bosun.test.ts", "title": "projects the compact public lifecycle while preserving the detailed objective", "suiteId": "unit.nightwatch" },
+  "tier": 1,
+  "risk": "MODERATE",
+  "resources": ["node-slot", "vitest-worker-pool"],
+  "parallelSafety": "READ_ONLY_PARALLEL",
+  "adapter": "vitest",
+  "releaseRelevant": true
+}

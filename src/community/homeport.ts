@@ -11,6 +11,7 @@ import {
 import { communityItemTypes, type CommunityItemType } from "./domain";
 import { readPublicVoyageLogs } from "./voyage-log-public";
 import { authoritativeListingEngagement } from "./engagement-aggregates";
+import { resolveHarborlightTideglassComparison } from "@/tideglass/harborlight";
 
 export const homeportCardVariants = [
   "CHRONICLE",
@@ -105,6 +106,11 @@ export type HomeportListingDetail = Readonly<{
     license: string;
     minimumPlatformVersion?: string;
     publishedAt: string;
+  };
+  tideglassComparison?: {
+    href: string;
+    sourceReleaseVersion: string;
+    targetReleaseVersion: string;
   };
   useAction:
     | { kind: "LINK"; label: string; href: string; detail: string }
@@ -474,18 +480,40 @@ export async function getHomeportListingDetail(slug: string, viewerAccountId?: s
       owner: { select: { id: true, accountId: true, handle: true, normalizedHandle: true, displayName: true } },
       currentRelease: {
         select: {
+          id: true,
           semanticVersion: true,
           minimumPlatformVersion: true,
           licenseSnapshot: true,
           moderationStatus: true,
           deprecatedAt: true,
           publishedAt: true,
-          sourcePublishedTaleVersion: { select: { tale: { select: { slug: true, status: true, visibility: true } } } },
+          sourcePublishedTaleVersion: {
+            select: { id: true, tale: { select: { id: true, slug: true, status: true, visibility: true } } },
+          },
         },
       },
     },
   });
   if (!listing || (await isBlocked(viewerAccountId, listing.owner.accountId))) return null;
+  const earlierReleases =
+    listing.itemType === "CHRONICLE" && listing.currentRelease?.sourcePublishedTaleVersion
+      ? await db.communityRelease.findMany({
+          where: {
+            listingId: listing.id,
+            id: { not: listing.currentRelease.id },
+            sourcePublishedTaleVersionId: { not: null },
+            moderationStatus: "ACTIVE",
+          },
+          select: {
+            semanticVersion: true,
+            sourcePublishedTaleVersion: {
+              select: { id: true, tale: { select: { id: true, slug: true, status: true, visibility: true } } },
+            },
+          },
+          orderBy: [{ publishedAt: "desc" }, { id: "desc" }],
+          take: 12,
+        })
+      : [];
   const [metadata, aggregate] = await Promise.all([
     db.communityListingDiscoveryMetadata.findUnique({ where: { listingId: listing.id } }),
     authoritativeListingEngagement([listing.id]).then((rows) => rows.get(listing.id) ?? null),
@@ -577,6 +605,17 @@ export async function getHomeportListingDetail(slug: string, viewerAccountId?: s
           detail:
             "This public detail is available to review, but no accepted install or remix handoff is available here yet.",
         };
+  const tideglassComparison = resolveHarborlightTideglassComparison({
+    listingItemType: listing.itemType,
+    currentRelease: listing.currentRelease
+      ? {
+          semanticVersion: listing.currentRelease.semanticVersion,
+          sourcePublishedTaleVersion: listing.currentRelease.sourcePublishedTaleVersion,
+        }
+      : null,
+    earlierReleases,
+    returnTo: `/community/${encodeURIComponent(listing.slug)}`,
+  });
   return {
     card: {
       ...card,
@@ -605,6 +644,7 @@ export async function getHomeportListingDetail(slug: string, viewerAccountId?: s
         }
       : {}),
     ...(release ? { release } : {}),
+    ...(tideglassComparison ? { tideglassComparison } : {}),
     useAction,
   } satisfies HomeportListingDetail;
 }

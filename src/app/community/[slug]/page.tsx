@@ -72,6 +72,19 @@ export default async function CommunityListingPage({ params }: Props) {
             Created by <Link href={detail.card.creator.destination}>{detail.card.creator.displayName}</Link>
           </p>
           <DetailFacts detail={detail} />
+          {detail.tideglassComparison ? (
+            <section className="community-detail__action" aria-labelledby="community-tideglass-title">
+              <p className="community-eyebrow">Tideglass</p>
+              <h3 id="community-tideglass-title">What changed in this Chronicle?</h3>
+              <p>
+                Compare the exact Chronicle editions used by Community Harbor releases{" "}
+                {detail.tideglassComparison.sourceReleaseVersion} and {detail.tideglassComparison.targetReleaseVersion}.
+              </p>
+              <Link className="community-button community-button--primary" href={detail.tideglassComparison.href}>
+                See semantic changes
+              </Link>
+            </section>
+          ) : null}
           {detail.requirements ? <PracticalRequirements requirements={detail.requirements} /> : null}
           {detail.tags.length ? (
             <ul className="community-detail__tags" aria-label="Themes and tags">

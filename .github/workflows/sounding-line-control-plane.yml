@@ -1,0 +1,51 @@
+name: Sounding Line control-plane
+run-name: Sounding Line control-plane ${{ inputs.pr_number }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_ref:
+        description: Exact owner-authorized control-plane candidate ref
+        required: true
+        type: string
+      candidate_sha:
+        description: Exact candidate SHA
+        required: true
+        type: string
+      base_sha:
+        description: Exact protected-main base SHA
+        required: true
+        type: string
+      pr_number:
+        description: Pull request number
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  control-plane-check:
+    name: Sounding Line / Mainline Decision
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.candidate_sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: git merge-base --is-ancestor ${{ inputs.base_sha }} ${{ inputs.candidate_sha }}
+      - run: test "$(git rev-parse HEAD)" = "${{ inputs.candidate_sha }}"
+      - run: npm ci --ignore-scripts
+      - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+      - run: npm run test:sounding-line
+      - run: npm run typecheck
+      - run: npx --no-install eslint scripts/sounding-line/ordinary.mjs tests/sounding-line/ordinary.test.mjs scripts/features
+      - run: npm run private-content:scan
+      - run: npm run docs:validate
+      - run: npm run features:test

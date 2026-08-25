@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { spawnSync } from "node:child_process";
+import path from "node:path";
 import { canonicalJson } from "../../src/tideglass/core";
 import { compareSemanticSnapshots } from "../../src/tideglass/comparison";
 import { canonicalizePublishedSnapshot } from "../../src/tideglass/semantic";
@@ -12,6 +14,25 @@ function semantic(snapshot: unknown, id: string, checksum: string) {
 }
 
 describe("Tideglass determinism, graph symmetry, and Phase 1 performance bounds", () => {
+  it("produces the same canonical change set in independent Node processes", () => {
+    const source = baseSnapshot();
+    const target = clone(source);
+    target.tale.title = "Independent process deterministic title";
+    const input = Buffer.from(JSON.stringify({ source, target })).toString("base64url");
+    const root = process.cwd();
+    const worker = path.join(root, "tests", "tideglass", "cross-process-worker.ts");
+    const tsx = path.join(root, "node_modules", "tsx", "dist", "cli.mjs");
+    const run = () => {
+      const result = spawnSync(process.execPath, [tsx, worker, input], { cwd: root, encoding: "utf8" });
+      if (result.status !== 0) throw new Error(result.stderr || "TIDEGLASS_CROSS_PROCESS_WORKER_FAILED");
+      return JSON.parse(result.stdout) as { deterministicDigest: string; changes: Array<{ id: string }> };
+    };
+    const first = run();
+    const second = run();
+    expect(second.deterministicDigest).toBe(first.deterministicDigest);
+    expect(second.changes.map((change) => change.id)).toEqual(first.changes.map((change) => change.id));
+  });
+
   it("produces identical record IDs, ordering, and digest across 100 repeated comparisons", () => {
     const source = baseSnapshot();
     const target = clone(source);

@@ -157,16 +157,16 @@ Drydock defaults and local issues, and retain existing autosave, history,
 preview, and publication behavior. Drydock remains the sole contract and
 validation authority; deployment and live-provider execution are separate.
 
-Project Tideglass Phase 1 provides the accepted exact immutable edition
-comparison foundation. The accepted Phase 2 extension adds server-side
-intelligence with stable change codes, explainable significance and
-compatibility, spoiler-safe audience projections, deterministic summaries,
-append-only Creator annotations, and bounded safe APIs. Phase 2 is on main.
-The Phase 3 ordinary comparison page, navigation entry, owned played-history
-handoff, and Studio semantic comparison are currently an unmerged worktree
-under local qualification, not an available-on-main feature. Repository
-validation is local and synthetic, and no deployment or production MySQL
-execution is claimed.
+Project Tideglass Phases 1-4 provide exact immutable-edition intelligence with
+stable semantic change codes, explainable compatibility, spoiler-safe
+projections, deterministic summaries, and append-only Creator annotations.
+Chronicle and Passport **What changed?** journeys retain the exact
+owner-recorded context; Creator Studio uses the same canonical semantic truth.
+Phase 4 adds bounded Drydock historical reading, a Captain-safe edition
+preflight, and same-Chronicle Harborlight release handoff. Unsupported or unsafe
+historical semantics are named unavailable rather than silently upcast.
+Repository proof is focused and synthetic; deployment and production MySQL
+execution are not claimed.
 
 Project Drydock Phase 3 is active implementation on its dedicated branch. It
 adds Creator-only, source-bound deterministic Sea Trials with revisioned

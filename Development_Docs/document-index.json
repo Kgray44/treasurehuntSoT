@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-08-18",
+  "generated_at": "2026-08-25",
   "records": [
     {
       "path": "Development_Docs/Community_Harbor_Appeal_and_Restoration_Policy.md",
@@ -106,6 +106,12 @@
     },
     {
       "path": "Development_Docs/Features/branch-complete/project-shipwright-phase2.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/branch-complete/project-shipwright-phase3.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
@@ -225,6 +231,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/ADR-EGS-001_Engineering_Governance_Simplification.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Phase_1_Cross_Project_Convergence_Design_Record.md",
       "record_type": "governing-record",
       "status": "preserved",
@@ -237,7 +249,31 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Project_Bosun_Autonomous_Repository_Maintenance_and_Repair_Service_Governing_Document_v1.0.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Bosun_Maintenance_Cascade_Suppression_and_Repair_Convergence_Amendment_v1.1.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Project_Fairlead_GitHub_Interaction_and_Quota_Control_Plane_Governing_Document_v1.0.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Nightwatch_Atomic_Integration_and_Maintenance_Cascade_Control_Amendment_v1.1.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Nightwatch_Unattended_Autonomy_and_Overnight_Operations_Governing_Document_v1.0.md",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null

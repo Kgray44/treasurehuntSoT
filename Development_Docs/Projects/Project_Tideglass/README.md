@@ -52,3 +52,17 @@ start Phase 4.
 - [Owner Decision Record](Project_Tideglass_Phase_3_Owner_Decision_Record.md)
 - [Visual Evidence Manifest](Project_Tideglass_Phase_3_Visual_Evidence_Manifest.json)
 - [Completion Receipt](Project_Tideglass_Phase_3_Completion_Receipt.md)
+
+## Phase 4 records
+
+- [Design Record](Project_Tideglass_Phase_4_Design_Record.md)
+- [Cross-Project Integration Matrix](Project_Tideglass_Phase_4_Cross_Project_Integration_Matrix.md)
+- [Historical Compatibility Record](Project_Tideglass_Phase_4_Historical_Compatibility_Record.md)
+- [Performance and Observability Record](Project_Tideglass_Phase_4_Performance_and_Observability_Record.md)
+- [Localization and Accessibility Record](Project_Tideglass_Phase_4_Localization_and_Accessibility_Record.md)
+- [Test Plan](Project_Tideglass_Phase_4_Test_Plan.md)
+- [Validation Record](Project_Tideglass_Phase_4_Validation_Record.md)
+- [Integration Manifest](Project_Tideglass_Phase_4_Integration_Manifest.md)
+- [Product Walkthrough](Project_Tideglass_Phase_4_Product_Walkthrough.md)
+- [Owner Decision Record](Project_Tideglass_Phase_4_Owner_Decision_Record.md)
+- [Completion Receipt](Project_Tideglass_Phase_4_Completion_Receipt.md)

@@ -11,6 +11,7 @@ type Credentials = {
   password: string;
   accounts: Record<string, Alias>;
   chronicle: { id: string; slug: string; versions: Array<{ id: string; label: string }> };
+  community: { slug: string };
 };
 type Evidence = {
   id: string;
@@ -39,7 +40,7 @@ test.beforeAll(() => {
   credentialPath = path.join(taskRoot, "credentials", "tideglass-phase3-walkthrough.private.json");
   evidenceRoot = path.join(taskRoot, "browser", "evidence");
   credentials = JSON.parse(readFileSync(credentialPath, "utf8")) as Credentials;
-  expect(credentials.fixtureVersion).toBe("tideglass-phase3-v2");
+  expect(credentials.fixtureVersion).toBe("tideglass-phase4-v2");
 });
 
 test.afterAll(async () => {
@@ -52,7 +53,7 @@ test.afterAll(async () => {
   );
 });
 
-test("Journeys A-J: visible entry, accepted Journey Detail history, creator detail, security, and responsive accessibility", async ({
+test("Journeys A-L: visible entry, Captain preflight, accepted Journey Detail history, creator detail, security, and responsive accessibility", async ({
   browser,
 }) => {
   const anonymous = await anonymousPage(browser);
@@ -61,7 +62,11 @@ test("Journeys A-J: visible entry, accepted Journey Detail history, creator deta
   await expect(globalNavigation.getByRole("link", { name: "Explore Chronicles", exact: true })).toBeVisible();
   await globalNavigation.getByRole("link", { name: "Explore Chronicles", exact: true }).click();
   await expect(anonymous.page.getByRole("heading", { name: "Choose a Chronicle", exact: true })).toBeVisible();
-  await anonymous.page.getByRole("link", { name: "Preview Chronicle", exact: true }).click();
+  const tideglassPreview = anonymous.page.locator(`a[href="/chronicles/${credentials.chronicle.slug}"]`, {
+    hasText: "Preview Chronicle",
+  });
+  await expect(tideglassPreview).toHaveCount(1);
+  await tideglassPreview.click();
   await expect(
     anonymous.page.getByRole("heading", { name: "The Tideglass Passage Fixture", exact: true }),
   ).toBeVisible();
@@ -228,6 +233,71 @@ test("Journeys A-J: visible entry, accepted Journey Detail history, creator deta
     "Creator Studio proves a branch rewire, alternate ending, Captain requirement, caption/accessibility, compatibility, and Creator annotation through semantic records only",
   );
   await creator.context.close();
+
+  const captain = await signedInPage(browser, "CAPTAIN", "/captain/library");
+  await expect(captain.page.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible();
+  await captain.page.getByRole("button", { name: "Create a Voyage", exact: true }).first().click();
+  const captainWizard = captain.page.getByRole("dialog", { name: "Select Chronicle", exact: true });
+  await captainWizard.getByRole("button", { name: /The Tideglass Passage Fixture/u }).click();
+  const preflightResponse = captain.page.waitForResponse(
+    (response) =>
+      response.url().includes("/api/captain/tideglass/preflight") &&
+      response.url().includes("selectedEditionId=tg3-edition-a"),
+  );
+  await captainWizard.getByRole("combobox", { name: "Published version", exact: true }).selectOption("tg3-edition-a");
+  const preflight = await preflightResponse;
+  expect(preflight.status()).toBe(200);
+  expect((await preflight.json()).state).toBe("COMPARISON");
+  await expect(captainWizard.getByTestId("edition-preflight")).toContainText(
+    "Version 1.0 is selected; Version 2.0 is currently recommended for new Voyages.",
+  );
+  await expect(captainWizard.getByTestId("edition-preflight")).toContainText(/player-safe semantic difference/u);
+  await expect(captainWizard.getByTestId("edition-preflight")).not.toContainText("Synthetic alternate ending");
+  await capture(
+    captain.page,
+    "TG4-EV-I-HELM-CAPTAIN-PREFLIGHT",
+    "SELECTED_NONRECOMMENDED_EDITION",
+    "Captain selects an exact historical playable edition, sees only player-safe semantic difference context against the owner-recommended edition, then remains in Voyage creation.",
+  );
+  await captainWizard.getByRole("button", { name: "Continue to Configure Voyage", exact: true }).click();
+  await expect(captain.page.getByRole("heading", { name: "Configure Voyage", exact: true })).toBeVisible();
+  await captain.context.close();
+
+  const harborlight = await anonymousPage(browser);
+  await harborlight.page.goto(`/community/${credentials.community.slug}`);
+  await expect(
+    harborlight.page.getByRole("heading", { name: "What changed in this Chronicle?", exact: true }),
+  ).toBeVisible();
+  await harborlight.page.getByRole("link", { name: "See semantic changes", exact: true }).click();
+  await expect(harborlight.page.getByRole("heading", { name: "What changed?", exact: true })).toBeVisible();
+  await expect(harborlight.page.getByRole("region", { name: "Selected edition context" })).toBeVisible();
+  await capture(
+    harborlight.page,
+    "TG4-EV-K-HARBORLIGHT-RELEASE-HANDOFF",
+    "SAME_CHRONICLE_RELEASE_PAIR",
+    "Community Harbor supplies its exact same-Chronicle release source editions to the public Tideglass passage without package comparison",
+  );
+  await harborlight.context.close();
+
+  const support = await signedInPage(browser, "SUPPORT", `/admin/people/${credentials.accounts.CREATOR.accountId}`);
+  await expect(support.page.getByRole("heading", { name: "Support access", exact: true })).toBeVisible();
+  await support.page.getByLabel("Confirm current password").fill(credentials.password);
+  await support.page.getByRole("button", { name: "Verify for privileged work", exact: true }).click();
+  await expect(support.page.getByText("Privileged assurance is active for this session.")).toBeVisible();
+  await support.page.getByLabel("Scoped category").selectOption("TIDEGLASS_DIAGNOSTICS");
+  await support.page.getByLabel("Chronicle ID").fill(credentials.chronicle.id);
+  await support.page.getByLabel("Source edition ID").fill(credentials.chronicle.versions[0].id);
+  await support.page.getByLabel("Target edition ID").fill(credentials.chronicle.versions[2].id);
+  await support.page.getByRole("button", { name: "Read approved category", exact: true }).click();
+  await expect(support.page.getByText("Tideglass diagnostic read and audited.")).toBeVisible();
+  await expect(support.page.getByRole("heading", { name: "Approved support projection", exact: true })).toBeVisible();
+  await capture(
+    support.page,
+    "TG4-EV-J-ADMIRALTY-DIAGNOSTIC",
+    "AUDITED_TIDEGLASS_DIAGNOSTIC",
+    "Scoped support grant, target-account edition authorization, and bounded diagnostic projection are visible without snapshots or private history",
+  );
+  await support.context.close();
 
   const responsive = await anonymousPage(browser);
   await responsive.page.goto(`/chronicles/${credentials.chronicle.slug}/compare`);

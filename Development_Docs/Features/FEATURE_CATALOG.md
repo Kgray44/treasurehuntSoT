@@ -2,11 +2,6 @@
 
 This generated catalog records completed, meaningful platform capabilities. It is not a changelog, task ledger, roadmap, or list of implementation trivia. Machine-readable fragments under `Development_Docs/Features/` are the source of truth.
 
-## Audited repository and commit
-
-Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `bef72d4ca3806330e10a36cdd39316921e26e733`
-
 ## Status vocabulary
 
 - **MAINLINE**: available on the audited mainline source.
@@ -890,36 +885,34 @@ Audience-separated current documentation, indexed engineering records, and a fra
 
 ---
 
-## FT-033 - Sounding Line Governed Verification Control Plane
+## FT-033 - Sounding Line Direct Candidate Verification
 
 **Status:** MAINLINE
-**Program or subsystem:** Sounding Line Phases 1-4
+**Program or subsystem:** Sounding Line
 
-A nonauthoritative, provider-neutral local verification control plane provides sealed plans, reviewed adapters, marker-verified resource leases, durable history, fail-closed worker and evidence controls, isolated SQLite/browser state, narrowly certified Harborlight moderator browser lanes, and a strictly record-only protected-mainline closure route without weakening release authority.
+A focused protected-main check binds the exact pull-request base, candidate, and trees; it runs repository safety sentinels and structurally affected proof, widening safely when impact is uncertain. A separate manual mode remains exhaustive for releases and explicit full certification.
 
 ### Important subfeatures
 
-- Deterministic signed-identity plan records
-- Fixed command adapter catalogue with bounded receipts
-- Marker and process-identity ownership proof
-- Deterministic impact analysis, history, and root/cascade classification
-- Fail-closed local worker enrollment, sealed assignments, evidence, and attestations
-- Immutable SQLite baseline clone boundary
-- Two isolated Harborlight Phase 4 browser lanes
-- Explicit emergency-serial legacy release authority
-- Fail-closed record-only protected-mainline closure evidence
+- Exact base, candidate, and tree identity binding
+- Focused filesystem-based test selection
+- Conservative widening when impact is unknown
+- Separate exhaustive release certification
 
 ### Primary surfaces
 
-`npm run test:policy`, `scripts/sounding-line`, `scripts/test-all.ps1`
+`.github/workflows/sounding-line-ordinary.yml`, `.github/workflows/sounding-line-exhaustive-release.yml`, `scripts/sounding-line/ordinary.mjs`
+
+### Meaningful limitations
+
+- Control-plane changes use the explicit owner-authorized manual check rather than ordinary product admission.
 
 ### Evidence
 
-- path: `scripts/sounding-line/runtime.mjs`
-- path: `scripts/sounding-line/adapters.mjs`
-- path: `scripts/sounding-line/phase3.mjs`
-- path: `scripts/sounding-line/phase4.mjs`
-- completion-record: `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Final_Program_Closeout_Receipt.md`
+- path: `scripts/sounding-line/ordinary.mjs`
+- test: `tests/sounding-line/ordinary.test.mjs`
+- path: `.github/workflows/sounding-line-ordinary.yml`
+- completion-record: `Development_Docs/Engineering/Clean_Slate_Development_Pipeline_Cutover.md`
 
 ---
 
@@ -1003,6 +996,44 @@ A private Bridgewatch extension that projects explicit Project Registry, Soundin
 
 ---
 
+## FT-036 - Drydock Deterministic Sea Trials
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Drydock Phase 3
+
+Creators can persist revisioned synthetic Sea Trial scenarios and suites, deterministically execute the canonical One Voyage transition adapter with virtual time, seeded randomness, bounded faults, safe traces, coverage, and semantic comparison, and inspect the resulting private Studio evidence without mutating a live Voyage.
+
+### Important subfeatures
+
+- Strict versioned Scenario and Scenario Suite contracts
+- Revisioned owned Scenario persistence and frozen run source
+- Deterministic virtual clock, seeded randomness, bounded faults, and assertions
+- Canonical One Voyage transition adapter differential proof
+- Safe trace, state-diff, replay, coverage, and suggestion projections
+- Private Creator Studio Scenario Lab and CSRF-protected owned APIs
+- Additive SQLite and static MySQL migration parity
+
+### Primary surfaces
+
+`/studio/tales/[taleId]/trials`, `/api/studio/tales/[taleId]/scenarios`, `/api/studio/tales/[taleId]/simulation-runs`, `npm run drydock:cli`
+
+### Meaningful limitations
+
+- Protected-main integration completed in PR #52 at 191a964488d0df71f8dcb91c5b8372fc73b6b32e; deployment and owner acceptance remain separate from source integration.
+- Sea Trials use synthetic bounded inputs and never mutate a live Tale Session, provider, asset, or Player state.
+- Live provider, production MySQL, physical-device, and external assistive-technology proof remain outside this phase.
+- Immutable publishing evidence and Phase 4 integration remain out of scope.
+
+### Evidence
+
+- path: `src/drydock/simulation/engine.ts`
+- path: `src/drydock/simulation-store.ts`
+- path: `src/components/studio/DrydockScenarioLab.tsx`
+- test: `src/drydock`
+- test: `src/app/api/studio/tales/[taleId]/scenarios`
+
+---
+
 ## FT-037 - Shipwright Contract-Aware Creator Studio Authoring
 
 **Status:** MAINLINE
@@ -1041,6 +1072,42 @@ Creators author every accepted Story Block through a contract-aware Studio Inspe
 - test: `src/components/studio/TaleEditor.test.tsx`
 - path: `scripts/shipwright/phase2-walkthrough-runtime.mjs`
 - completion-record: `Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_2_Completion_Receipt.md`
+
+---
+
+## FT-038 - Shipwright Reusable Creator Composition
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Shipwright Phase 3
+
+Creators capture private immutable Presets, Fragments, and Chapter templates, then preview and apply deterministic Chronicle composition results with source-version provenance through the ordinary Studio edit path.
+
+### Important subfeatures
+
+- Owner-scoped immutable Preset, Fragment, and Chapter-template Library records
+- Checksum-verified reusable envelopes and bounded parameter resolution
+- Deterministic collision-safe composition preparation and Drydock validation
+- Source item and immutable version provenance for every confirmed insertion
+- One ordinary Studio autosave and undo/redo mutation for each insertion
+- Fail-closed capture and owner-isolation boundaries for private Creator material
+
+### Primary surfaces
+
+`/studio/tales/[taleId]`, `/api/studio/tales/[taleId]/reusable-content`, `src/components/studio/TaleEditor.tsx`
+
+### Meaningful limitations
+
+- Reusable content remains private to its owner; Community package metadata is read-only until an accepted reusable authoring envelope exists.
+- Drydock remains the sole authority for Chronicle contracts, defaults, and validation.
+- Deployment, live-provider execution, and Shipwright Phase 4 remain outside this capability.
+
+### Evidence
+
+- path: `src/studio/reusable-content.ts`
+- path: `src/studio/reusable-library-service.ts`
+- test: `src/studio/reusable-content.test.ts`
+- test: `src/app/api/studio/tales/[taleId]/reusable-content/route.test.ts`
+- test: `tests/e2e/project-shipwright-phase3.spec.ts`
 
 ---
 
@@ -1407,7 +1474,7 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 ## FT-B009 - Tideglass Chronicle Edition Intelligence
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Tideglass Phases 1-3
+**Program or subsystem:** Project Tideglass Phases 1-4
 
 Tideglass compares exact immutable Chronicle editions, explains semantic change in an ordinary spoiler-safe What Changed experience, anchors comparison to a player's retained Voyage history, and gives Creator Studio the same canonical semantic truth without changing published or live Voyage state.
 
@@ -1431,6 +1498,9 @@ Tideglass compares exact immutable Chronicle editions, explains semantic change 
 - Wakebook Journey Detail See what's changed handoff
 - Spoiler disclosure, concise/detailed modes, category filters, compatibility, and accessibility presentation
 - Creator Studio published-version comparison through canonical semantic projection
+- Drydock historical migration reader with bounded unavailable sections
+- Captain-safe selected-to-recommended edition preflight
+- Same-Chronicle Harborlight release handoff
 
 ### Primary surfaces
 
@@ -1438,14 +1508,16 @@ Tideglass compares exact immutable Chronicle editions, explains semantic change 
 
 ### Meaningful limitations
 
-- Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.
-- Final Harborlight update integration and any accepted Captain/Helm visual comparison consumer remain deferred to later work.
+- Unsupported or unsafe historical semantics remain explicitly unavailable rather than being silently upcast.
 
 ### Evidence
 
 - path: `src/tideglass/service.ts`
 - path: `src/tideglass/intelligence.ts`
 - path: `src/tideglass/annotations.ts`
+- path: `src/tideglass/drydock-adapter.ts`
+- path: `src/tideglass/helm-preflight.ts`
+- path: `src/tideglass/harborlight.ts`
 - path: `src/components/tideglass/TideglassPassage.tsx`
 - path: `src/components/tideglass/TideglassStudioComparison.tsx`
 - test: `tests/tideglass`
@@ -1551,41 +1623,39 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 # Completed Branch Features Not Yet Available on Main
 
-## FT-036 - Drydock Deterministic Sea Trials
+## FT-B013 - Owner-Safe Historical Voyage Remembrance
 
 **Status:** BRANCH COMPLETE NOT MERGED
-**Program or subsystem:** Project Drydock Phase 3
+**Program or subsystem:** Project Wakebook Phase 2
 
-Creators can persist revisioned synthetic Sea Trial scenarios and suites, deterministically execute the canonical One Voyage transition adapter with virtual time, seeded randomness, bounded faults, safe traces, coverage, and semantic comparison, and inspect the resulting private Studio evidence without mutating a live Voyage.
+Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe path and objective context, historical attribution and crew, artifact and achievement chronology, owner-authored remembrance, participant-consented Keepsake degradation, and Sealed Hold-backed private Memory media without rewriting canonical Voyage truth.
 
 ### Important subfeatures
 
-- Strict versioned Scenario and Scenario Suite contracts
-- Revisioned owned Scenario persistence and frozen run source
-- Deterministic virtual clock, seeded randomness, bounded faults, and assertions
-- Canonical One Voyage transition adapter differential proof
-- Safe trace, state-diff, replay, coverage, and suggestion projections
-- Private Creator Studio Scenario Lab and CSRF-protected owned APIs
-- Additive SQLite and static MySQL migration parity
+- Version-pinned rich Voyage Detail with bounded historical path, objectives, choices, Creator, Captain, crew, artifact, assembly, and achievement context
+- Owner-only Reflection and Memory curation with owned historical-reference validation and cross-owner rejection
+- Opaque Sealed Hold Memory-media associations with owner-only protected delivery and truthful unavailable, unscanned, withdrawn, archived, and revoked states
+- Participant-owned consent denial, grant, and revocation for private Keepsake representation without changing the underlying Voyage record
+- Owner-only technical provenance, Tideglass handoff, visible Personal Harbor navigation, responsive layouts, keyboard support, reduced motion, and effective 200 percent zoom evidence
 
 ### Primary surfaces
 
-`/studio/tales/[taleId]/trials`, `/api/studio/tales/[taleId]/scenarios`, `/api/studio/tales/[taleId]/simulation-runs`, `npm run drydock:cli`
+`/passport/history/[recordId]`, `/api/passport/voyages/[recordId]`, `/api/passport/voyages/[recordId]/memories/[memoryId]/media/[mediaId]`
 
 ### Meaningful limitations
 
-- Branch-complete local qualification is not protected-main availability, deployment, or owner acceptance.
-- Sea Trials use synthetic bounded inputs and never mutate a live Tale Session, provider, asset, or Player state.
-- Live provider, production MySQL, physical-device, and external assistive-technology proof remain outside this phase.
-- Immutable publishing evidence and Phase 4 integration remain out of scope.
+- Candidate-qualified for owner walkthrough only; owner acceptance and protected-main integration have not occurred
+- Historical detail retains only explicitly preserved safe facts and never reconstructs unavailable raw choices, clues, or source payloads
+- Private media delivery remains owner-only and depends on Sealed Hold clean, available, non-withdrawn, finalized source state
 
 ### Evidence
 
-- path: `src/drydock/simulation/engine.ts`
-- path: `src/drydock/simulation-store.ts`
-- path: `src/components/studio/DrydockScenarioLab.tsx`
-- test: `src/drydock`
-- test: `src/app/api/studio/tales/[taleId]/scenarios`
+- branch: `codex/project-wakebook-phase2-bind-the-voyages`
+- commit: `e3843d7c6df1bb7a0f561b640ee0a8c1e9199f99`
+- path: `src/wakebook/archive-query.ts`
+- path: `src/wayfarer/chronicle-history.ts`
+- path: `src/components/wakebook/WakebookVoyageDetail.tsx`
+- test: `tests/e2e/wakebook-phase2.spec.ts`
 
 ---
 
@@ -1601,5 +1671,3 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 # Catalog maintenance policy
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
-
-Generation source commit: `bef72d4ca3806330e10a36cdd39316921e26e733`

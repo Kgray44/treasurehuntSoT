@@ -69,7 +69,13 @@ export type EditionPair = {
 
 export type SemanticUnsupportedSection = {
   section: string;
-  code: "SCHEMA_UNSUPPORTED" | "UNKNOWN_SEMANTICS" | "AMBIGUOUS_IDENTITY" | "INVALID_SECTION";
+  code:
+    | "SCHEMA_UNSUPPORTED"
+    | "UNKNOWN_SEMANTICS"
+    | "AMBIGUOUS_IDENTITY"
+    | "INVALID_SECTION"
+    | "COMPARISON_SECTION_UNAVAILABLE"
+    | "LOSSY_UPCAST";
   sourceSchemaVersion?: number | string;
   detail: string;
 };
@@ -193,7 +199,7 @@ export type TideglassComparisonReceipt = {
 
 export type TideglassOperationalEnvelope = {
   correlationId: string;
-  cacheStatus: "HIT" | "MISS" | "BYPASS";
+  cacheStatus: "HIT" | "MISS" | "BYPASS" | "CORRUPT_REBUILT";
   normalizationDurationMs: number;
   comparisonDurationMs: number;
   totalDurationMs: number;

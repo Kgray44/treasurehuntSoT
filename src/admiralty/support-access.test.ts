@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { supportRequestSchema } from "./schemas";
+import { supportRequestSchema, supportTideglassDiagnosticSchema } from "./schemas";
 import { authorizeSupportGrantRecord } from "./support-access";
 
 const now = new Date("2026-08-09T12:00:00.000Z");
@@ -77,5 +77,27 @@ describe("Support Access grant authorization", () => {
           requestedScopes: [scope],
         }).success,
       ).toBe(false);
+  });
+
+  it("requires exact identities for a governed Tideglass diagnostic request", () => {
+    expect(
+      supportTideglassDiagnosticSchema.safeParse({
+        grantId: "grant-a",
+        targetAccountId: "target-a",
+        chronicleId: "chronicle-a",
+        sourceEditionId: "edition-a",
+        targetEditionId: "edition-b",
+      }).success,
+    ).toBe(true);
+    expect(
+      supportTideglassDiagnosticSchema.safeParse({
+        grantId: "grant-a",
+        targetAccountId: "target-a",
+        chronicleId: "chronicle-a",
+        sourceEditionId: "edition-a",
+        targetEditionId: "edition-b",
+        rawSnapshot: "forbidden",
+      }).success,
+    ).toBe(false);
   });
 });

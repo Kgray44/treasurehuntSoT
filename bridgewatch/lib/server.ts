@@ -13,6 +13,7 @@ import { compareProgramHistory, summarizeRollups } from "../src/comparison.js";
 import { type BridgewatchEventKind, type BridgewatchProgramSnapshot } from "../src/history.js";
 import { SoundingLineCollector, testTotals } from "../src/sounding-line.js";
 import { authorizeTelemetry, parseHeartbeat, workerState } from "../src/telemetry.js";
+import { readNightwatchProjection } from "../src/nightwatch-projection.js";
 import { GithubCollector } from "./github.js";
 import { BridgewatchStore, type HistoryQuery } from "./store.js";
 
@@ -157,6 +158,10 @@ export function buildServer() {
   });
 
   const summary = () => {
+    const nightwatch = readNightwatchProjection(
+      config.BRIDGEWATCH_NIGHTWATCH_DB_PATH,
+      config.BRIDGEWATCH_NIGHTWATCH_REPOSITORY_ROOT,
+    );
     const snapshot = collector.cached();
     const soundingLineProjection = soundingLine.cached();
     const projects = store.projects();
@@ -305,6 +310,7 @@ export function buildServer() {
       history: { warning: historyWarning, recent: store.history({ since: sinceHours(12), limit: 12 }).events },
       workers,
       tests: { projection: soundingLineProjection, totals, history: store.recentTestRuns() },
+      nightwatch,
       attention,
       sources,
     };
@@ -576,6 +582,7 @@ export function buildServer() {
   app.get("/api/actions", async () => collector.cached()?.workflows ?? []);
   app.get("/api/workers", async () => summary().workers);
   app.get("/api/tests", async () => summary().tests);
+  app.get("/api/nightwatch", async () => summary().nightwatch);
   app.get("/api/attention", async () => summary().attention);
   app.get<{ Querystring: { since?: string } }>("/api/activity", async (request, reply) => {
     const since = request.query.since;

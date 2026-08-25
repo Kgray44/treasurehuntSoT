@@ -3,7 +3,7 @@ title: Creator guide
 audience: creator
 status: current
 canonical_for: creator-guide
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-24
 ---
 
 # Creator guide
@@ -27,6 +27,18 @@ result remains Drydock's canonical expression. When a local issue appears,
 select it to reveal and focus the affected control. Required accessibility
 details, such as alternate text or transcripts, appear next to the relevant
 media control.
+
+## Reuse a Passage, fragment, or Chapter
+
+Select a Passage or Chapter, then open the **Reuse** tab to save a private
+Preset, Fragment, or Chapter template. These Library items are private to your
+Creator account and preserve the exact version you captured. Before inserting
+one into a draft, Studio shows a deterministic preview; confirming it creates
+one normal edit, so Undo removes the full insertion and Redo restores it.
+
+Reusable content cannot capture Creator-private or protected material. A saved
+insertion keeps source-version provenance even if the Library item is later
+archived.
 
 Related: [Captain guide](captain-guide.md), [private content](../administrator/private-content.md), and [accessibility](accessibility.md).
 
@@ -63,16 +75,16 @@ Studio Library, private draft state, Community Harbor, Profile, Passport, and
 final sign-out while retaining public/private boundaries. The final package is
 ready for owner walkthrough; the source is on main but not deployed or owner accepted.
 
-## Project Drydock Phase 3 branch status
+## Project Drydock Phase 3 Sea Trials
 
-The current Project Drydock Phase 3 branch adds a **Sea Trials** editor section
+Project Drydock Phase 3 adds a **Sea Trials** editor section
 at `/studio/tales/[taleId]/trials` for authorized Creators. It creates
 source-bound, revisioned deterministic Scenarios; accepts fixed outcome tokens,
 virtual time, catalogued synthetic faults, assertions, and bounded Suites; and
 shows safe run receipts, state digests, and coverage counts. Saving or running
 never advances a live Voyage, changes a provider/device, publishes a Chronicle,
-or rewrites a historical Scenario revision. The work is not available on main,
-deployed, or owner accepted; candidate qualification remains separate.
+or rewrites a historical Scenario revision. The accepted implementation is on
+main through protected PR #52; deployment and owner acceptance remain separate.
 
 ## Phase 7 correction Round 1 status
 

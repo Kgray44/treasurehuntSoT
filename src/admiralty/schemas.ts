@@ -6,6 +6,7 @@ export const supportScopeSchema = z.enum([
   "ACCOUNT_STATE",
   "AUTH_EVENTS",
   "CHRONICLE_HISTORY_METADATA",
+  "TIDEGLASS_DIAGNOSTICS",
   "COMMUNITY_ACTIVITY",
   "SESSION_DIAGNOSTICS",
   "PROFILE_DIAGNOSTICS",
@@ -117,6 +118,41 @@ export const supportReadSchema = z
       .max(128)
       .regex(/^[A-Za-z0-9_-]+$/u),
     scope: supportScopeSchema,
+  })
+  .strict();
+
+export const supportTideglassDiagnosticSchema = z
+  .object({
+    grantId: z
+      .string()
+      .trim()
+      .min(1)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+    targetAccountId: z
+      .string()
+      .trim()
+      .min(1)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+    chronicleId: z
+      .string()
+      .trim()
+      .min(1)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+    sourceEditionId: z
+      .string()
+      .trim()
+      .min(1)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+    targetEditionId: z
+      .string()
+      .trim()
+      .min(1)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
   })
   .strict();
 
