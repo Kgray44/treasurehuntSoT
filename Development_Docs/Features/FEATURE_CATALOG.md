@@ -1031,6 +1031,7 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 - path: `src/components/studio/DrydockScenarioLab.tsx`
 - test: `src/drydock`
 - test: `src/app/api/studio/tales/[taleId]/scenarios`
+- commit: `191a964488d0df71f8dcb91c5b8372fc73b6b32e`
 
 ---
 

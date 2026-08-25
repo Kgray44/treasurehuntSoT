@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "classification": "SYNTHETIC_NO_PRIVATE_CONTENT",
+  "status": "DEVELOPMENT_CORPUS_CURRENT",
+  "cases": [
+    { "id": "linear", "source": "src/drydock/simulation/performance.test.ts", "status": "VERIFIED" },
+    {
+      "id": "branching-multiple-endings",
+      "source": "tests/fixtures/drydock/phase2-synthetic-chronicle.json;src/drydock/mutation-corpus.test.ts",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "timer",
+      "source": "tests/fixtures/drydock/current-authoring-v1.json;src/drydock/simulation/engine.test.ts",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "captain-approval",
+      "source": "tests/fixtures/drydock/current-authoring-v1.json;src/drydock/simulation/engine.test.ts",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "variable-condition",
+      "source": "tests/fixtures/drydock/current-authoring-v1.json;src/drydock/incremental.test.ts",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "artifact",
+      "source": "tests/fixtures/drydock/current-authoring-v1.json;src/drydock/mutation-corpus.test.ts",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "protected-asset",
+      "source": "src/drydock/evidence-requirements.test.ts",
+      "status": "CONTRACT_ONLY_EXTERNAL_EVIDENCE"
+    },
+    {
+      "id": "provider",
+      "source": "src/drydock/evidence-requirements.test.ts;src/drydock/required-suite-policy.test.ts",
+      "status": "SYNTHETIC_PROVIDER_SEAM"
+    },
+    {
+      "id": "community-installed",
+      "source": "src/community/exchange.test.ts;src/community/drydock-publication-gate.test.ts",
+      "status": "CONTRACT_ONLY_HANDOFF"
+    },
+    { "id": "historical-v1", "source": "src/drydock/historical-corpus-phase4.test.ts", "status": "VERIFIED" },
+    { "id": "intentionally-invalid-static", "source": "src/drydock/mutation-corpus.test.ts", "status": "VERIFIED" },
+    {
+      "id": "intentionally-failing-sea-trial",
+      "source": "src/drydock/simulation/engine.test.ts",
+      "status": "VERIFIED"
+    },
+    { "id": "incompatible-schema", "source": "src/drydock/compatibility-phase4.test.ts", "status": "VERIFIED" },
+    {
+      "id": "stale-evidence",
+      "source": "src/drydock/readiness.test.ts;src/drydock/simulation-store.test.ts",
+      "status": "VERIFIED"
+    },
+    { "id": "waiver-eligible-warning", "source": "src/drydock/waivers.test.ts", "status": "VERIFIED" },
+    {
+      "id": "nonwaivable-blocker",
+      "source": "src/drydock/waivers.test.ts;src/drydock/mutation-corpus.test.ts",
+      "status": "VERIFIED"
+    }
+  ],
+  "unresolvedBlockers": 0,
+  "externalEvidenceLimitations": [
+    "No connected Landfall, Watchglass, Sealed Hold, Lanternwake, Artifact, or Harborlight runtime provider was represented as a passing local integration."
+  ]
+}
