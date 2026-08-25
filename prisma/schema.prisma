@@ -132,6 +132,7 @@ model UserAccount {
   supportGrantsOperated    SupportAccessGrant[]         @relation("SupportGrantOperator")
   supportGrantsTargeted    SupportAccessGrant[]         @relation("SupportGrantTarget")
   supportGrantsRevoked     SupportAccessGrant[]         @relation("SupportGrantRevoker")
+  reusableAuthoringItems   ReusableAuthoringItem[]      @relation("ReusableAuthoringItemOwner")
 
   @@index([status, lastSeenAt])
 }
@@ -740,6 +741,7 @@ model TaleDraft {
   drydockSimulationRuns     DrydockSimulationRun[]
   createdByAccount          UserAccount?           @relation("TaleDraftAuthorAccount", fields: [createdByAccountId], references: [id], onDelete: SetNull)
   drydockRuleWaivers        DrydockRuleWaiver[]
+  reusableAuthoringUsages   ReusableAuthoringUsage[]
 
   @@unique([taleId, revisionNumber])
   @@index([taleId, updatedAt])
@@ -952,6 +954,59 @@ model BlockConnection {
 
   @@unique([sourceBlockId, targetBlockId, connectionType])
   @@index([targetBlockId])
+}
+
+model ReusableAuthoringItem {
+  id                   String                         @id @default(cuid())
+  ownerAccountId       String
+  kind                 String
+  name                 String
+  description          String                         @default("") @db.Text
+  tags                 String                         @default("[]") @db.LongText
+  status               String                         @default("ACTIVE")
+  currentVersionNumber Int                            @default(1)
+  archivedAt           DateTime?
+  createdAt            DateTime                       @default(now())
+  updatedAt            DateTime                       @updatedAt
+  owner                UserAccount                    @relation("ReusableAuthoringItemOwner", fields: [ownerAccountId], references: [id], onDelete: Restrict)
+  versions             ReusableAuthoringItemVersion[]
+  usages               ReusableAuthoringUsage[]
+
+  @@index([ownerAccountId, status, updatedAt])
+  @@index([ownerAccountId, kind, updatedAt])
+}
+
+model ReusableAuthoringItemVersion {
+  id            String                @id @default(cuid())
+  itemId        String
+  versionNumber Int
+  envelope      String                @db.LongText
+  checksum      String                @db.VarChar(64)
+  createdAt     DateTime              @default(now())
+  item          ReusableAuthoringItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  usages        ReusableAuthoringUsage[]
+
+  @@unique([itemId, versionNumber])
+  @@index([checksum])
+}
+
+model ReusableAuthoringUsage {
+  id                String                         @id @default(cuid())
+  draftId           String
+  itemId            String
+  versionId         String
+  sourceKind        String
+  insertedBlockIds  String                         @default("[]") @db.LongText
+  insertedChapterIds String                        @default("[]") @db.LongText
+  provenance        String                         @default("{}") @db.LongText
+  createdAt         DateTime                       @default(now())
+  draft             TaleDraft                      @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  item              ReusableAuthoringItem          @relation(fields: [itemId], references: [id], onDelete: Restrict)
+  version           ReusableAuthoringItemVersion   @relation(fields: [versionId], references: [id], onDelete: Restrict)
+
+  @@index([draftId, createdAt])
+  @@index([itemId, createdAt])
+  @@index([versionId])
 }
 
 model PublishedTaleVersion {

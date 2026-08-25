@@ -250,8 +250,8 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
         )}
         <div className="form-actions">
           <Link href="/studio/library">Cancel</Link>
-          <button className="brass-button" disabled={busy}>
-            {busy ? "Opening Chronicle..." : "Create and open Chronicle"}
+          <button className="brass-button" disabled={busy || !csrf}>
+            {busy ? "Opening Chronicle..." : csrf ? "Create and open Chronicle" : "Preparing secure Chronicle form..."}
           </button>
         </div>
       </motion.form>

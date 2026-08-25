@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-08-16
+last_reviewed: 2026-08-24
 ---
 
 # Changelog
@@ -37,6 +37,13 @@ last_reviewed: 2026-08-16
   Drydock issues. It preserves the existing Chronicle draft, autosave,
   undo/redo, preview, and immutable-publication boundaries, and introduces no
   Prisma schema or competing Drydock authority.
+
+- Integrated Project Shipwright Phase 3, **Shape the Chronicle**, on canonical
+  main. Creator Studio now saves owner-scoped immutable Presets, Fragments, and
+  Chapter templates; previews deterministic insertion plans; records
+  source-version provenance; and applies reuse through the ordinary autosave
+  and undo/redo path. Protected source material and cross-owner Library access
+  remain rejected.
 
 - Expanded Project Admiralty on its Phase 2 review branch into a read-only
   15-route Chartroom with authorized account-menu entry, role-filtered

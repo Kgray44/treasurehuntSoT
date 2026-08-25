@@ -80,6 +80,21 @@ export const studioDraftSchema = z.object({
       }),
     )
     .max(200),
+  reusableUsage: z
+    .object({
+      itemId: z.string().min(8).max(128),
+      versionId: z.string().min(8).max(128),
+      sourceKind: z.string().min(1).max(80),
+      insertedBlockIds: z.array(z.string().min(8).max(128)).max(1000),
+      insertedChapterIds: z.array(z.string().min(8).max(128)).max(200),
+      provenance: z.object({
+        sourceOwnerId: z.string().min(1).max(128),
+        sourceItemId: z.string().min(8).max(128).optional(),
+        sourceVersionId: z.string().min(8).max(128).optional(),
+        modified: z.boolean(),
+      }),
+    })
+    .optional(),
 });
 
 export class DraftConflictError extends Error {
@@ -428,6 +443,30 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
       }
     }
     const allBlockIds = new Set(flattened.map((block) => block.id));
+    if (input.reusableUsage) {
+      const usage = input.reusableUsage;
+      if (
+        usage.insertedBlockIds.some((id) => !allBlockIds.has(id)) ||
+        usage.insertedChapterIds.some((id) => !input.chapters.some((chapter) => chapter.id === id))
+      )
+        throw new Error("Reusable content provenance must refer only to Passages and Chapters in this saved draft.");
+      const version = await tx.reusableAuthoringItemVersion.findFirst({
+        where: { id: usage.versionId, itemId: usage.itemId, item: { ownerAccountId: userId, archivedAt: null } },
+        select: { id: true },
+      });
+      if (!version) throw new Error("The reusable source version is not available to this Creator.");
+      await tx.reusableAuthoringUsage.create({
+        data: {
+          draftId: draft.id,
+          itemId: usage.itemId,
+          versionId: usage.versionId,
+          sourceKind: usage.sourceKind,
+          insertedBlockIds: json(usage.insertedBlockIds),
+          insertedChapterIds: json(usage.insertedChapterIds),
+          provenance: json(usage.provenance),
+        },
+      });
+    }
     for (let index = 0; index < flattened.length; index += 1) {
       const block = flattened[index];
       const fallback = flattened[index + 1]?.id ?? null;

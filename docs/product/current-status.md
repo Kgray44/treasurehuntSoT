@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-24
 ---
 
 # Current status
@@ -48,6 +48,14 @@ preserves current drafts, autosave, undo/redo, preview, comparison, and
 publishing without adding a Prisma schema or second authoring/validation
 authority. This is protected-main source integration, not deployment or
 live-provider execution.
+
+**Project Shipwright Phase 3 is available on main:** Creators can capture
+owner-scoped immutable Passage presets, reusable fragments, and Chapter
+templates, preview deterministic insertions, and apply them through the normal
+Studio autosave and undo/redo flow. Every insertion records its source item and
+immutable version; Library reads and use remain Creator-owned, and capture
+rejects protected source material. This is protected-main source integration,
+not deployment or live-provider execution.
 
 **Project Drydock Phase 3 accepted mainline:** Creator-only Sea Trials provide
 revisioned source-bound deterministic Scenarios, synthetic faults, virtual
