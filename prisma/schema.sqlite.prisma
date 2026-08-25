@@ -724,27 +724,30 @@ model Chronicle {
 }
 
 model TaleDraft {
-  id                        String                 @id @default(cuid())
-  taleId                    String
-  revisionNumber            Int                    @default(1)
-  basedOnPublishedVersionId String?
-  createdBy                 String
-  createdByAccountId        String?
-  autosaveVersion           Int                    @default(1)
-  validationState           String                 @default("NOT_VALIDATED")
-  validationSummary         String                 @default("{}")
-  lastValidatedAt           DateTime?
-  createdAt                 DateTime               @default(now())
-  updatedAt                 DateTime               @updatedAt
-  tale                      Chronicle              @relation(fields: [taleId], references: [id], onDelete: Cascade)
-  chapters                  TaleChapter[]
-  drydockValidationRuns     DrydockValidationRun[]
-  drydockScenarios          DrydockScenario[]
-  drydockScenarioSuites     DrydockScenarioSuite[]
-  drydockSimulationRuns     DrydockSimulationRun[]
-  createdByAccount          UserAccount?           @relation("TaleDraftAuthorAccount", fields: [createdByAccountId], references: [id], onDelete: SetNull)
-  drydockRuleWaivers        DrydockRuleWaiver[]
-  reusableAuthoringUsages   ReusableAuthoringUsage[]
+  id                           String                             @id @default(cuid())
+  taleId                       String
+  revisionNumber               Int                                @default(1)
+  basedOnPublishedVersionId    String?
+  createdBy                    String
+  createdByAccountId           String?
+  autosaveVersion              Int                                @default(1)
+  validationState              String                             @default("NOT_VALIDATED")
+  validationSummary            String                             @default("{}")
+  lastValidatedAt              DateTime?
+  createdAt                    DateTime                           @default(now())
+  updatedAt                    DateTime                           @updatedAt
+  tale                         Chronicle                          @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  chapters                     TaleChapter[]
+  drydockValidationRuns        DrydockValidationRun[]
+  drydockScenarios             DrydockScenario[]
+  drydockScenarioSuites        DrydockScenarioSuite[]
+  drydockScenarioSuiteEvidence DrydockScenarioSuiteEvidence[]
+  drydockSimulationRuns        DrydockSimulationRun[]
+  drydockCompatibilityRuns     DrydockCompatibilityRun[]
+  drydockExternalEvidence      DrydockExternalEvidenceReference[]
+  createdByAccount             UserAccount?                       @relation("TaleDraftAuthorAccount", fields: [createdByAccountId], references: [id], onDelete: SetNull)
+  drydockRuleWaivers           DrydockRuleWaiver[]
+  reusableAuthoringUsages      ReusableAuthoringUsage[]
 
   @@unique([taleId, revisionNumber])
   @@index([taleId, updatedAt])
@@ -799,15 +802,15 @@ model DrydockRuleWaiver {
 }
 
 model DrydockScenario {
-  id              String                       @id @default(cuid())
+  id              String                    @id @default(cuid())
   draftId         String
   scenarioId      String
   title           String
-  currentRevision Int                          @default(1)
+  currentRevision Int                       @default(1)
   archivedAt      DateTime?
-  createdAt       DateTime                     @default(now())
-  updatedAt       DateTime                     @updatedAt
-  draft           TaleDraft                    @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  createdAt       DateTime                  @default(now())
+  updatedAt       DateTime                  @updatedAt
+  draft           TaleDraft                 @relation(fields: [draftId], references: [id], onDelete: Cascade)
   revisions       DrydockScenarioRevision[]
 
   @@unique([draftId, scenarioId])
@@ -832,16 +835,18 @@ model DrydockScenarioRevision {
 }
 
 model DrydockScenarioSuite {
-  id             String                       @id @default(cuid())
+  id             String                         @id @default(cuid())
   draftId        String
   suiteId        String
   title          String
   sourceChecksum String
+  revision       Int                            @default(1)
   archivedAt     DateTime?
-  createdAt      DateTime                     @default(now())
-  updatedAt      DateTime                     @updatedAt
-  draft          TaleDraft                    @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  createdAt      DateTime                       @default(now())
+  updatedAt      DateTime                       @updatedAt
+  draft          TaleDraft                      @relation(fields: [draftId], references: [id], onDelete: Cascade)
   members        DrydockScenarioSuiteMember[]
+  launchEvidence DrydockScenarioSuiteEvidence[]
 
   @@unique([draftId, suiteId])
   @@index([draftId, archivedAt, updatedAt])
@@ -859,6 +864,32 @@ model DrydockScenarioSuiteMember {
   @@unique([suiteRecordId, scenarioRevisionId])
   @@unique([suiteRecordId, orderIndex])
   @@index([scenarioRevisionId])
+}
+
+/**
+ * Immutable Phase 4 binding of an exact Suite revision to existing Scenario receipts.
+ */
+model DrydockScenarioSuiteEvidence {
+  id                         String               @id @default(cuid())
+  draftId                    String
+  suiteRecordId              String
+  suiteRevision              Int
+  sourceChecksum             String
+  schemaRegistryVersion      Int
+  ruleCatalogVersion         Int
+  runtimeAdapterVersion      String
+  requiredSuitePolicyVersion String
+  compatibilityPolicyVersion String
+  runIds                     String
+  coverageDigest             String
+  proofStatus                String
+  createdAt                  DateTime             @default(now())
+  draft                      TaleDraft            @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  suiteRecord                DrydockScenarioSuite @relation(fields: [suiteRecordId], references: [id], onDelete: Cascade)
+
+  @@index([draftId, sourceChecksum, createdAt])
+  @@index([suiteRecordId, suiteRevision, createdAt])
+  @@index([sourceChecksum, proofStatus])
 }
 
 model DrydockSimulationRun {
@@ -895,6 +926,42 @@ model DrydockSimulationRun {
   @@index([sourceChecksum, status])
   @@index([scenarioRevisionId, createdAt])
   @@index([leaseExpiresAt])
+}
+
+model DrydockCompatibilityRun {
+  id             String    @id @default(cuid())
+  draftId        String
+  runId          String    @unique
+  sourceChecksum String
+  policyVersion  String
+  status         String
+  digest         String
+  result         String
+  createdAt      DateTime  @default(now())
+  draft          TaleDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
+
+  @@index([draftId, createdAt])
+  @@index([sourceChecksum, status])
+}
+
+model DrydockExternalEvidenceReference {
+  id              String    @id @default(cuid())
+  draftId         String
+  providerId      String
+  providerVersion String
+  evidenceKind    String
+  sourceChecksum  String
+  status          String
+  safeSummary     String
+  sourceReference String?
+  checkedAt       DateTime
+  expiresAt       DateTime?
+  createdAt       DateTime  @default(now())
+  draft           TaleDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
+
+  @@unique([draftId, providerId, providerVersion, evidenceKind, sourceChecksum])
+  @@index([draftId, sourceChecksum])
+  @@index([status, expiresAt])
 }
 
 model TaleChapter {
@@ -1034,10 +1101,33 @@ model PublishedTaleVersion {
   assemblyInstances          PlayerArtifactAssembly[]
   tideglassSourceAnnotations TideglassCreatorAnnotation[] @relation("TideglassSourceEdition")
   tideglassTargetAnnotations TideglassCreatorAnnotation[] @relation("TideglassTargetEdition")
+  drydockPublishingEvidence  DrydockPublishingEvidence?
 
   @@unique([taleId, versionNumber])
+  @@unique([taleId, checksum])
   @@index([taleId, isCurrent])
   @@index([publishedByAccountId])
+}
+
+model DrydockPublishingEvidence {
+  id                         String               @id @default(cuid())
+  publishedVersionId         String               @unique
+  sourceChecksum             String
+  schemaVersion              Int
+  schemaRegistryVersion      Int
+  ruleCatalogVersion         Int
+  validationRunId            String
+  requiredSuitePolicyVersion String
+  compatibilityPolicyVersion String
+  compatibilityDigest        String
+  externalEvidenceDigest     String
+  evidence                   String
+  digest                     String               @unique
+  createdAt                  DateTime             @default(now())
+  publishedVersion           PublishedTaleVersion @relation(fields: [publishedVersionId], references: [id], onDelete: Restrict)
+
+  @@index([sourceChecksum])
+  @@index([createdAt])
 }
 
 model TideglassCreatorAnnotation {
@@ -1287,40 +1377,40 @@ model TaleSideQuestObjective {
 }
 
 model TaleSession {
-  id                     String                    @id @default(cuid())
+  id                     String                     @id @default(cuid())
   taleId                 String
   publishedVersionId     String?
   ownerLabel             String?
   voyageName             String?
   captainId              String?
   captainAccountId       String?
-  accessTokenHash        String                    @unique
-  status                 String                    @default("ACTIVE")
-  captainMode            String                    @default("CAPTAIN_CONTROLLED")
-  configuration          String                    @default("{}")
+  accessTokenHash        String                     @unique
+  status                 String                     @default("ACTIVE")
+  captainMode            String                     @default("CAPTAIN_CONTROLLED")
+  configuration          String                     @default("{}")
   scheduleTimezone       String?
   plannedStartAt         DateTime?
   launchedAt             DateTime?
   cancelledAt            DateTime?
   abandonedAt            DateTime?
-  concurrencyVersion     Int                       @default(0)
-  historicalHidden       Boolean                   @default(false)
-  archiveMetadata        String                    @default("{}")
+  concurrencyVersion     Int                        @default(0)
+  historicalHidden       Boolean                    @default(false)
+  archiveMetadata        String                     @default("{}")
   currentChapterId       String?
   currentBlockId         String?
-  currentSequence        Int                       @default(0)
-  previewMode            Boolean                   @default(false)
+  currentSequence        Int                        @default(0)
+  previewMode            Boolean                    @default(false)
   draftRevisionId        String?
   previewSnapshot        String?
-  variables              String                    @default("{}")
-  inventory              String                    @default("[]")
-  startedAt              DateTime                  @default(now())
-  updatedAt              DateTime                  @updatedAt
+  variables              String                     @default("{}")
+  inventory              String                     @default("[]")
+  startedAt              DateTime                   @default(now())
+  updatedAt              DateTime                   @updatedAt
   completedAt            DateTime?
   expiresAt              DateTime?
   lastHeartbeatAt        DateTime?
-  tale                   Chronicle                 @relation(fields: [taleId], references: [id], onDelete: Cascade)
-  version                PublishedTaleVersion?     @relation(fields: [publishedVersionId], references: [id])
+  tale                   Chronicle                  @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  version                PublishedTaleVersion?      @relation(fields: [publishedVersionId], references: [id])
   events                 TaleSessionEvent[]
   privateAssetReferences PrivateAssetReference[]
   verificationRequests   TaleVerificationRequest[]
@@ -1330,7 +1420,7 @@ model TaleSession {
   invitations            Invitation[]
   revealStates           RevealState[]
   artifactGrantReceipts  ArtifactGrantReceipt[]
-  captainAccount         UserAccount?              @relation("TaleSessionCaptainAccount", fields: [captainAccountId], references: [id], onDelete: SetNull)
+  captainAccount         UserAccount?               @relation("TaleSessionCaptainAccount", fields: [captainAccountId], references: [id], onDelete: SetNull)
 
   @@index([taleId, status, previewMode])
   @@index([publishedVersionId, status])
@@ -1557,11 +1647,11 @@ model PlatformRoleAssignment {
 }
 
 model PlaythroughMembership {
-  id                         String        @id @default(cuid())
+  id                         String                     @id @default(cuid())
   playthroughId              String
   playerProfileId            String
-  role                       String        @default("PLAYER")
-  status                     String        @default("INVITED")
+  role                       String                     @default("PLAYER")
+  status                     String                     @default("INVITED")
   crewRole                   String?
   participationAlias         String?
   participationAliasEditedAt DateTime?
@@ -1570,10 +1660,10 @@ model PlaythroughMembership {
   completedAt                DateTime?
   pinnedAt                   DateTime?
   hiddenAt                   DateTime?
-  createdAt                  DateTime      @default(now())
-  updatedAt                  DateTime      @updatedAt
-  playthrough                TaleSession   @relation(fields: [playthroughId], references: [id], onDelete: Cascade)
-  player                     PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+  createdAt                  DateTime                   @default(now())
+  updatedAt                  DateTime                   @updatedAt
+  playthrough                TaleSession                @relation(fields: [playthroughId], references: [id], onDelete: Cascade)
+  player                     PlayerProfile              @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
   presenceDevices            MembershipPresenceDevice[]
 
   @@unique([playthroughId, playerProfileId])

@@ -4,6 +4,7 @@ import { CommunityError, stableJson } from "./domain";
 import { beginInstallOperation, commitInstallOperation, createInstallPlan, type InstallMode } from "./exchange";
 import { assertPublicationScanStatus, verifyCommunityPackage, type CommunityPackageFile } from "./package";
 import { assertTrustedCommunityScanReceipts, scanCommunityPackageFiles } from "./scanner";
+import { assertCommunityDrydockPublicationGate } from "./drydock-publication-gate";
 
 // Prisma is generated at deploy/test time from the Phase 2 schemas. Keeping
 // this narrow adapter avoids a second Chronicle or identity aggregate.
@@ -40,6 +41,16 @@ export async function preflightCommunityPublication(
   if (!release) throw new CommunityError("COMMUNITY_ACCESS_DENIED", "You cannot publish this release.");
   if (!release.sourcePublishedTaleVersionId)
     throw new CommunityError("COMMUNITY_SOURCE_NOT_IMMUTABLE", "A published Chronicle version is required.");
+  const drydock = assertCommunityDrydockPublicationGate(
+    await db.publishedTaleVersion.findFirst({
+      where: { id: release.sourcePublishedTaleVersionId },
+      select: {
+        id: true,
+        checksum: true,
+        drydockPublishingEvidence: { select: { digest: true, sourceChecksum: true } },
+      },
+    }),
+  );
   const verified = verifyCommunityPackage(manifest, files);
   const scan = await scanCommunityPackageFiles(files);
   assertTrustedCommunityScanReceipts(scan.receipts);
@@ -51,6 +62,7 @@ export async function preflightCommunityPublication(
     files: verified.manifest.items.length,
     scanStatus: scan.result,
     scanReceipts: scan.receipts,
+    drydock,
     ready: true,
   };
 }

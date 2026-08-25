@@ -86,7 +86,7 @@
       "parallelSafe": true,
       "resources": ["node-slot", "vitest-worker-pool", "prisma-sqlite-client"],
       "dependencies": [],
-      "contracts": ["drydock-authoring-contracts", "drydock-progression"],
+      "contracts": ["drydock-authoring-contracts", "drydock-progression", "drydock-phase4-launch-readiness"],
       "affectedPaths": [
         "src/drydock/**",
         "scripts/drydock/**",
@@ -96,6 +96,28 @@
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "vitest-family"
+    },
+    {
+      "id": "browser.drydock",
+      "name": "Drydock Phase 4 isolated launch-readiness browser journey",
+      "tier": 4,
+      "owner": "drydock",
+      "command": "registry-selected Playwright cases",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 180000,
+      "hardBudgetMs": 900000,
+      "parallelSafe": false,
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+      "dependencies": ["unit.drydock"],
+      "contracts": ["drydock-phase4-launch-readiness"],
+      "affectedPaths": [
+        "tests/e2e/drydock-phase4.spec.ts",
+        "playwright.config.ts",
+        "playwright.drydock-phase4.config.ts"
+      ],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "phase-4-source-bound",
+      "adapter": "playwright-family"
     },
     {
       "id": "unit.tideglass",
