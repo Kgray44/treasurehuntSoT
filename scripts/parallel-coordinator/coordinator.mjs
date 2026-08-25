@@ -60,6 +60,12 @@ function normalizePr(value, name) {
   return value;
 }
 
+function normalizePriorityLevel(value) {
+  if (value === undefined) return 5;
+  if (!Number.isSafeInteger(value) || value < 1 || value > 10) fail("HANDOFF_PRIORITY_LEVEL_INVALID");
+  return value;
+}
+
 export function validateHandoff(value, source = "handoff") {
   if (!isRecord(value)) fail("HANDOFF_INVALID");
   if (value.version !== HANDOFF_VERSION) fail("HANDOFF_VERSION_INVALID");
@@ -70,6 +76,7 @@ export function validateHandoff(value, source = "handoff") {
     candidateSha: shaField(value.candidateSha, "CANDIDATE_SHA"),
     baseSha: shaField(value.baseSha, "BASE_SHA"),
     status: stringField(value.status, "STATUS").toUpperCase(),
+    priorityLevel: normalizePriorityLevel(value.priorityLevel),
     touches: stringList(value.touches, "TOUCHES", normalizeToken),
     paths: stringList(value.paths, "PATHS", normalizePath),
     migrationFamilies: stringList(value.migrationFamilies, "MIGRATION_FAMILIES", normalizeToken),
@@ -151,11 +158,16 @@ function hasCoordinationMetadata(handoff) {
   return Boolean(handoff.paths.length || handoff.touches.length || handoff.migrationFamilies.length);
 }
 
-function readyRank(left, right) {
+function serializationRank(left, right) {
   const leftDate = left.readyAt ? Date.parse(left.readyAt) : Number.POSITIVE_INFINITY;
   const rightDate = right.readyAt ? Date.parse(right.readyAt) : Number.POSITIVE_INFINITY;
   if (leftDate !== rightDate) return leftDate - rightDate;
   return left.pr - right.pr;
+}
+
+function queueRank(left, right) {
+  if (left.priorityLevel !== right.priorityLevel) return left.priorityLevel - right.priorityLevel;
+  return serializationRank(left, right);
 }
 
 function setState(candidate, state, reason) {
@@ -163,11 +175,12 @@ function setState(candidate, state, reason) {
   if (reason && !candidate.reasons.includes(reason)) candidate.reasons.push(reason);
 }
 
-function applyPrStates(candidates, prStates) {
+function applyPrStates(candidates, prStates, actionableStalePrs) {
   for (const candidate of candidates) {
     const prState = prStates?.[candidate.handoff.pr];
     if (prState?.state === "MERGED") setState(candidate, "MERGED", "PR_MERGED");
     if (prState?.state === "CLOSED") setState(candidate, "BLOCKED", "PR_CLOSED");
+    if (actionableStalePrs.has(candidate.handoff.pr)) setState(candidate, "BLOCKED", "HANDOFF_STALE_PR_HEAD");
   }
 }
 
@@ -196,7 +209,7 @@ function applyDependencies(candidates, byPr) {
 function applyOverlapSerialization(candidates) {
   const ready = candidates
     .filter((candidate) => candidate.state === "READY")
-    .sort((left, right) => readyRank(left.handoff, right.handoff));
+    .sort((left, right) => serializationRank(left.handoff, right.handoff));
   for (let index = 0; index < ready.length; index += 1) {
     const earlier = ready[index];
     for (const later of ready.slice(index + 1)) {
@@ -222,24 +235,90 @@ function snapshot(candidate) {
     pr: candidate.handoff.pr,
     candidateSha: candidate.handoff.candidateSha,
     baseSha: candidate.handoff.baseSha,
+    priorityLevel: candidate.handoff.priorityLevel,
+    ...(candidate.seat ? { seat: candidate.seat, action: candidate.action } : {}),
     state: candidate.state,
     reasons: [...candidate.reasons].sort(),
   };
 }
 
-export function coordinate({ handoffs, mainSha = null, prStates = {} }) {
+function classifyCandidates({ handoffs, prStates, actionableStalePrs }) {
   const candidates = handoffs.map((handoff) => ({ handoff, state: handoff.status, reasons: [] }));
   const byPr = new Map(candidates.map((candidate) => [candidate.handoff.pr, candidate]));
-  applyPrStates(candidates, prStates);
+  applyPrStates(candidates, prStates, actionableStalePrs);
   for (const candidate of candidates)
     if (candidate.state === "READY" && !hasCoordinationMetadata(candidate.handoff))
       setState(candidate, "CONFLICT", "INSUFFICIENT_COORDINATION_METADATA");
   applyDependencies(candidates, byPr);
   applyOverlapSerialization(candidates);
   applyDependencies(candidates, byPr);
+  return candidates;
+}
+
+function hasStaleLiveHead(candidate, prStates) {
+  const liveHead = prStates?.[candidate.handoff.pr]?.headRefOid;
+  return typeof liveHead === "string" && liveHead.toLowerCase() !== candidate.handoff.candidateSha;
+}
+
+function currentnessReasons(candidate, changedPathsByPr, currentnessReasonsByPr) {
+  const changedPaths = changedPathsByPr?.[candidate.handoff.pr] ?? [];
+  return [
+    ...new Set([
+      ...materiallyAffected({ candidate: candidate.handoff, mergedPaths: changedPaths }),
+      ...(currentnessReasonsByPr?.[candidate.handoff.pr] ?? []),
+    ]),
+  ].sort();
+}
+
+function readyQueue(candidates, finalizingPr) {
+  const ready = candidates
+    .filter((candidate) => candidate.state === "READY")
+    .sort((left, right) => queueRank(left.handoff, right.handoff));
+  if (finalizingPr !== null) {
+    const finalizingIndex = ready.findIndex((candidate) => candidate.handoff.pr === finalizingPr);
+    if (finalizingIndex > 0) ready.unshift(ready.splice(finalizingIndex, 1)[0]);
+  }
+  return ready;
+}
+
+function assignQueueActions(candidates, changedPathsByPr, currentnessReasonsByPr, finalizingPr) {
+  const ready = readyQueue(candidates, finalizingPr);
+  for (const [index, candidate] of ready.entries()) {
+    candidate.seat = index + 1;
+    const reasons = currentnessReasons(candidate, changedPathsByPr, currentnessReasonsByPr);
+    if (candidate.seat === 1)
+      candidate.action = candidate.handoff.pr === finalizingPr || !reasons.length ? "FINALIZE_NEXT" : "RECONCILIATION_REQUIRED";
+    else if (candidate.seat === 2) candidate.action = reasons.length ? "WARM_RECONCILE" : "WARM_STANDBY";
+    else candidate.action = "HOLD";
+    if (candidate.seat <= 2 && reasons.length)
+      candidate.reasons = [...new Set([...candidate.reasons, "RECONCILIATION_REQUIRED", ...reasons])];
+  }
+  return ready;
+}
+
+export function coordinate({
+  handoffs,
+  mainSha = null,
+  prStates = {},
+  changedPathsByPr = {},
+  currentnessReasonsByPr = {},
+  finalizingPr = null,
+}) {
+  if (finalizingPr !== null) finalizingPr = normalizePr(finalizingPr, "FINALIZING_PR");
+  const actionableStalePrs = new Set();
+  let candidates;
+  let ready;
+  for (;;) {
+    candidates = classifyCandidates({ handoffs, prStates, actionableStalePrs });
+    ready = readyQueue(candidates, finalizingPr);
+    const newlyStale = ready.slice(0, 2).filter((candidate) => hasStaleLiveHead(candidate, prStates));
+    if (!newlyStale.length) break;
+    newlyStale.forEach((candidate) => actionableStalePrs.add(candidate.handoff.pr));
+  }
+  ready = assignQueueActions(candidates, changedPathsByPr, currentnessReasonsByPr, finalizingPr);
   const order = candidates
     .filter((candidate) => candidate.state === "READY")
-    .sort((left, right) => readyRank(left.handoff, right.handoff))
+    .sort((left, right) => ready.indexOf(left) - ready.indexOf(right))
     .map(snapshot);
   return {
     version: HANDOFF_VERSION,
@@ -278,29 +357,34 @@ export function evaluateAfterMerge({
   const effectivePrStates = { ...prStates };
   if (mergedPr !== null)
     effectivePrStates[normalizePr(mergedPr, "MERGED_PR")] = { state: "MERGED", mergeCommit: mergeSha };
-  const result = coordinate({ handoffs, mainSha, prStates: effectivePrStates });
   const byPr = new Map(handoffs.map((handoff) => [handoff.pr, handoff]));
   const merged =
     (mergedPr !== null ? byPr.get(mergedPr) : null) ??
     handoffs.find((handoff) => handoff.candidateSha === mergeSha.toLowerCase()) ??
     handoffs.find((handoff) => prStates?.[handoff.pr]?.mergeCommit?.toLowerCase() === mergeSha.toLowerCase()) ??
     null;
-  const affected = [];
-  const unaffected = [];
-  for (const candidate of result.candidates) {
-    if (candidate.pr === merged?.pr || candidate.state !== "READY") continue;
-    const reasons = materiallyAffected({ merged, candidate: byPr.get(candidate.pr), mergedPaths });
-    if (reasons.length) {
-      candidate.state = "WAITING";
-      candidate.reasons = [...new Set([...candidate.reasons, "RECONCILIATION_REQUIRED", ...reasons])].sort();
-      affected.push({ pr: candidate.pr, project: candidate.project, reasons });
-    } else {
-      unaffected.push({ pr: candidate.pr, project: candidate.project, reason: "NO_RECONCILIATION_REQUIRED" });
-    }
-  }
-  result.readyOrder = result.candidates
-    .filter((candidate) => candidate.state === "READY")
-    .sort((left, right) => readyRank(byPr.get(left.pr), byPr.get(right.pr)));
+  const result = coordinate({
+    handoffs,
+    mainSha,
+    prStates: effectivePrStates,
+    changedPathsByPr: Object.fromEntries(handoffs.map((handoff) => [handoff.pr, mergedPaths])),
+    currentnessReasonsByPr: Object.fromEntries(
+      handoffs.map((handoff) => [
+        handoff.pr,
+        materiallyAffected({ merged, candidate: handoff, mergedPaths }),
+      ]),
+    ),
+  });
+  const affected = result.candidates
+    .filter((candidate) => candidate.action === "RECONCILIATION_REQUIRED" || candidate.action === "WARM_RECONCILE")
+    .map((candidate) => ({
+      pr: candidate.pr,
+      project: candidate.project,
+      reasons: candidate.reasons.filter((reason) => reason !== "RECONCILIATION_REQUIRED"),
+    }));
+  const unaffected = result.candidates
+    .filter((candidate) => candidate.state === "READY" && !affected.some((entry) => entry.pr === candidate.pr))
+    .map((candidate) => ({ pr: candidate.pr, project: candidate.project, reason: "NO_RECONCILIATION_REQUIRED" }));
   return { ...result, mergeSha: mergeSha.toLowerCase(), mergedPr: merged?.pr ?? null, affected, unaffected };
 }
 
@@ -314,6 +398,13 @@ export function readCurrentMain(root) {
 
 export function readMergePaths(root, mergeSha) {
   return runGit(root, ["diff", "--name-only", `${mergeSha}^1`, mergeSha])
+    .split(/\r?\n/gu)
+    .filter(Boolean)
+    .map(normalizePath);
+}
+
+export function readChangedPathsSinceBase(root, baseSha, mainSha) {
+  return runGit(root, ["diff", "--name-only", baseSha, mainSha])
     .split(/\r?\n/gu)
     .filter(Boolean)
     .map(normalizePath);
@@ -350,6 +441,7 @@ export function handoffTemplate() {
     candidateSha: "0123456789abcdef0123456789abcdef01234567",
     baseSha: "89abcdef0123456789abcdef0123456789abcdef",
     status: "READY",
+    priorityLevel: 5,
     touches: ["drydock", "studio"],
     paths: ["src/drydock/", "src/components/studio/"],
     migrationFamilies: [],
@@ -380,12 +472,12 @@ function parseCli(argumentsList) {
 }
 
 function reportHuman(result, prAvailable) {
-  const lines = ["SIMPLE PARALLEL COORDINATOR", `protected main: ${result.protectedMain ?? "unavailable"}`];
+  const lines = ["PARALLEL QUEUE", `protected main: ${result.protectedMain ?? "unavailable"}`];
   if (!prAvailable) lines.push("PR state: unavailable; use the ordinary Sounding Line path directly if needed.");
-  lines.push("READY ORDER");
+  lines.push("READY");
   if (result.readyOrder.length)
-    result.readyOrder.forEach((candidate, index) =>
-      lines.push(`${index + 1}. ${candidate.project} — PR #${candidate.pr}`),
+    result.readyOrder.forEach((candidate) =>
+      lines.push(`${candidate.seat}. [P${candidate.priorityLevel}] ${candidate.project} — PR #${candidate.pr} — ${candidate.action.replace(/_/gu, " ")}`),
     );
   else lines.push("none");
   for (const state of STATES.filter((value) => value !== "READY")) {
@@ -422,7 +514,14 @@ async function main() {
   const pr = readPrStates(root, handoffs);
   let result;
   if (command === "status" || command === "plan") {
-    result = coordinate({ handoffs, mainSha, prStates: pr.states });
+    const finalizingPr = options["finalizing-pr"] ? Number(options["finalizing-pr"]) : null;
+    const preliminary = coordinate({ handoffs, mainSha, prStates: pr.states, finalizingPr });
+    const changedPathsByPr = Object.fromEntries(
+      preliminary.readyOrder
+        .filter((candidate) => candidate.seat <= 2)
+        .map((candidate) => [candidate.pr, readChangedPathsSinceBase(root, candidate.baseSha, mainSha)]),
+    );
+    result = coordinate({ handoffs, mainSha, prStates: pr.states, changedPathsByPr, finalizingPr });
   } else if (command === "evaluate-after-merge") {
     const [mergeSha] = argumentsList;
     if (!mergeSha) fail("MERGE_SHA_MISSING");
