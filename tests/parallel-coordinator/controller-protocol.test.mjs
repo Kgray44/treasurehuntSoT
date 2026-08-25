@@ -50,7 +50,10 @@ test("worker routing is task-local registry state, distinct from the product han
 test("dispatch validation requires a bounded action, target, candidate, main, and reply contract", () => {
   assert.equal(validateDispatchEnvelope(dispatch()).action, "FINALIZE_NEXT");
   assert.throws(() => validateDispatchEnvelope(dispatch({ action: "MERGE_EVERYTHING" })), /DISPATCH_ACTION_INVALID/u);
-  assert.throws(() => validateDispatchEnvelope(dispatch({ returnContract: "prose" })), /DISPATCH_RETURN_CONTRACT_INVALID/u);
+  assert.throws(
+    () => validateDispatchEnvelope(dispatch({ returnContract: "prose" })),
+    /DISPATCH_RETURN_CONTRACT_INVALID/u,
+  );
   assert.throws(() => validateDispatchEnvelope(dispatch({ dispatchId: "short" })), /DISPATCH_ID_INVALID/u);
 });
 

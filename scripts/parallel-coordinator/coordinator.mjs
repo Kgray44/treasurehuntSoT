@@ -315,11 +315,13 @@ export function coordinate({
 function autonomousInstructions(action) {
   if (action === "FINALIZE_NEXT")
     return {
-      scope: "Verify the current protected main and expected candidate, preserve the candidate if current, run ordinary Sounding Line, merge only after PASS, run landed smoke, and return the structured reply.",
+      scope:
+        "Verify the current protected main and expected candidate, preserve the candidate if current, run ordinary Sounding Line, merge only after PASS, run landed smoke, and return the structured reply.",
       maxCandidateRepairCycles: 2,
     };
   return {
-    scope: "Reconcile exactly once against the supplied protected main, run only invalidated focused proof, update the candidate handoff, and return the structured reply without finalizing the PR.",
+    scope:
+      "Reconcile exactly once against the supplied protected main, run only invalidated focused proof, update the candidate handoff, and return the structured reply without finalizing the PR.",
     maxReconciliations: 1,
   };
 }
@@ -366,11 +368,7 @@ export function planAutonomousDispatch({
       continue;
     }
     const handoff = handoffsByPr.get(candidate.pr);
-    const reconciliationReasons = currentnessReasons(
-      { handoff },
-      changedPathsByPr,
-      currentnessReasonsByPr,
-    );
+    const reconciliationReasons = currentnessReasons({ handoff }, changedPathsByPr, currentnessReasonsByPr);
     const action =
       occupiedSeats === 1
         ? !reconciliationReasons.length
@@ -411,7 +409,14 @@ export function planAutonomousDispatch({
  * Validates a worker result against the dispatch and observations fetched by the
  * parent chat. The caller, not this scheduler, owns native transport and GitHub I/O.
  */
-export function validateWorkerReplyAgainstLiveState({ reply, dispatch, workerRegistry, workerRef, livePrState, liveMainSha }) {
+export function validateWorkerReplyAgainstLiveState({
+  reply,
+  dispatch,
+  workerRegistry,
+  workerRef,
+  livePrState,
+  liveMainSha,
+}) {
   const envelope = validateDispatchEnvelope(dispatch);
   const normalizedReply = validateWorkerReply(reply);
   const registry = validateWorkerRegistry(workerRegistry);
@@ -426,14 +431,24 @@ export function validateWorkerReplyAgainstLiveState({ reply, dispatch, workerReg
   const liveHead = livePrState.headRefOid ? shaField(livePrState.headRefOid, "REPLY_LIVE_HEAD") : null;
   if (normalizedReply.result === "READY") {
     const handoff = validateHandoff(normalizedReply.handoff);
-    if (handoff.pr !== envelope.pr || handoff.project !== envelope.project || handoff.candidateSha !== normalizedReply.candidateSha)
+    if (
+      handoff.pr !== envelope.pr ||
+      handoff.project !== envelope.project ||
+      handoff.candidateSha !== normalizedReply.candidateSha
+    )
       fail("REPLY_HANDOFF_MISMATCH");
     if (liveHead !== normalizedReply.candidateSha) fail("REPLY_LIVE_HEAD_STALE");
   }
-  if (normalizedReply.result === "NO_CHANGE" && (normalizedReply.candidateSha !== envelope.expectedCandidateSha || liveHead !== normalizedReply.candidateSha))
+  if (
+    normalizedReply.result === "NO_CHANGE" &&
+    (normalizedReply.candidateSha !== envelope.expectedCandidateSha || liveHead !== normalizedReply.candidateSha)
+  )
     fail("REPLY_LIVE_HEAD_STALE");
   if (normalizedReply.result === "MERGED") {
-    if (String(livePrState.state ?? "").toUpperCase() !== "MERGED" || livePrState.mergeCommit?.toLowerCase() !== normalizedReply.mergeSha)
+    if (
+      String(livePrState.state ?? "").toUpperCase() !== "MERGED" ||
+      livePrState.mergeCommit?.toLowerCase() !== normalizedReply.mergeSha
+    )
       fail("REPLY_MERGE_UNVERIFIED");
   }
   if (normalizedReply.result === "BLOCKED" && normalizedReply.candidateSha !== envelope.expectedCandidateSha)

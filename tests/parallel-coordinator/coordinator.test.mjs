@@ -633,7 +633,11 @@ test("the coordinator remains optional: unavailable PR inspection does not affec
 
 test("autonomous mode emits one bounded Seat 1 finalization dispatch", () => {
   const drydock = handoff({ project: "Drydock", pr: 198, candidateSha: sha("c"), paths: ["src/drydock/"] });
-  const result = planAutonomousDispatch({ handoffs: [drydock], workerRegistry: workerRegistry(drydock), mainSha: sha("a") });
+  const result = planAutonomousDispatch({
+    handoffs: [drydock],
+    workerRegistry: workerRegistry(drydock),
+    mainSha: sha("a"),
+  });
   assert.equal(result.dispatches.length, 1);
   assert.equal(result.dispatches[0].pr, 198);
   assert.equal(result.dispatches[0].action, "FINALIZE_NEXT");
@@ -665,8 +669,15 @@ test("warm standby and HOLD never wake a worker", () => {
     handoff({ project: "Two", pr: 2, candidateSha: sha("d"), paths: ["src/two/"] }),
     handoff({ project: "Three", pr: 3, candidateSha: sha("e"), paths: ["src/three/"] }),
   ];
-  const result = planAutonomousDispatch({ handoffs: candidates, workerRegistry: workerRegistry(...candidates), mainSha: sha("a") });
-  assert.deepEqual(result.dispatches.map((entry) => entry.pr), [1]);
+  const result = planAutonomousDispatch({
+    handoffs: candidates,
+    workerRegistry: workerRegistry(...candidates),
+    mainSha: sha("a"),
+  });
+  assert.deepEqual(
+    result.dispatches.map((entry) => entry.pr),
+    [1],
+  );
   assert.deepEqual(result.suppressed, [
     { pr: 2, reason: "WARM_STANDBY" },
     { pr: 3, reason: "HOLD" },
@@ -674,16 +685,30 @@ test("warm standby and HOLD never wake a worker", () => {
 });
 
 test("a blocked Seat 1 leaves the next READY candidate actionable", () => {
-  const blocked = handoff({ project: "Admiralty", pr: 88, candidateSha: sha("c"), status: "BLOCKED", paths: ["src/admiralty/"] });
+  const blocked = handoff({
+    project: "Admiralty",
+    pr: 88,
+    candidateSha: sha("c"),
+    status: "BLOCKED",
+    paths: ["src/admiralty/"],
+  });
   const ready = handoff({ project: "Drydock", pr: 198, candidateSha: sha("d"), paths: ["src/drydock/"] });
-  const result = planAutonomousDispatch({ handoffs: [blocked, ready], workerRegistry: workerRegistry(blocked, ready), mainSha: sha("a") });
-  assert.deepEqual(result.dispatches.map((entry) => [entry.pr, entry.action]), [[198, "FINALIZE_NEXT"]]);
+  const result = planAutonomousDispatch({
+    handoffs: [blocked, ready],
+    workerRegistry: workerRegistry(blocked, ready),
+    mainSha: sha("a"),
+  });
+  assert.deepEqual(
+    result.dispatches.map((entry) => [entry.pr, entry.action]),
+    [[198, "FINALIZE_NEXT"]],
+  );
 });
 
 test("a READY reply must bind its refreshed handoff to the live PR head and dispatched main", () => {
   const drydock = handoff({ project: "Drydock", pr: 198, candidateSha: sha("c"), paths: ["src/drydock/"] });
   const registry = workerRegistry(drydock);
-  const dispatch = planAutonomousDispatch({ handoffs: [drydock], workerRegistry: registry, mainSha: sha("a") }).dispatches[0];
+  const dispatch = planAutonomousDispatch({ handoffs: [drydock], workerRegistry: registry, mainSha: sha("a") })
+    .dispatches[0];
   const refreshed = handoff({ ...drydock, candidateSha: sha("d"), baseSha: sha("a") });
   const reply = {
     protocolVersion: 1,
@@ -726,7 +751,8 @@ test("a verified MERGED reply is suitable input for the existing post-merge repl
   const first = handoff({ project: "First", pr: 1, candidateSha: sha("c"), paths: ["src/first/"] });
   const second = handoff({ project: "Second", pr: 2, candidateSha: sha("d"), paths: ["src/second/"] });
   const registry = workerRegistry(first, second);
-  const dispatch = planAutonomousDispatch({ handoffs: [first, second], workerRegistry: registry, mainSha: sha("a") }).dispatches[0];
+  const dispatch = planAutonomousDispatch({ handoffs: [first, second], workerRegistry: registry, mainSha: sha("a") })
+    .dispatches[0];
   const reply = {
     protocolVersion: 1,
     dispatchId: dispatch.dispatchId,
@@ -750,8 +776,16 @@ test("a verified MERGED reply is suitable input for the existing post-merge repl
     }).result,
     "MERGED",
   );
-  const replanned = evaluateAfterMerge({ handoffs: [first, second], mergeSha: sha("e"), mergedPr: 1, mergedPaths: reply.landedPaths });
-  assert.deepEqual(replanned.readyOrder.map((candidate) => [candidate.pr, candidate.action]), [[2, "FINALIZE_NEXT"]]);
+  const replanned = evaluateAfterMerge({
+    handoffs: [first, second],
+    mergeSha: sha("e"),
+    mergedPr: 1,
+    mergedPaths: reply.landedPaths,
+  });
+  assert.deepEqual(
+    replanned.readyOrder.map((candidate) => [candidate.pr, candidate.action]),
+    [[2, "FINALIZE_NEXT"]],
+  );
 });
 
 test("duplicate dispatches and unreachable workers cannot duplicate or stall other work", () => {
@@ -767,13 +801,29 @@ test("duplicate dispatches and unreachable workers cannot duplicate or stall oth
   ]);
   const unreachable = workerRegistry(first, second);
   unreachable.workers[0].status = "UNREACHABLE";
-  const advanced = planAutonomousDispatch({ handoffs: [first, second], workerRegistry: unreachable, mainSha: sha("a") });
-  assert.deepEqual(advanced.dispatches.map((entry) => [entry.pr, entry.action]), [[2, "FINALIZE_NEXT"]]);
-  const promoted = handoff({ project: "Third", pr: 3, candidateSha: sha("e"), priorityLevel: 1, paths: ["src/third/"] });
+  const advanced = planAutonomousDispatch({
+    handoffs: [first, second],
+    workerRegistry: unreachable,
+    mainSha: sha("a"),
+  });
+  assert.deepEqual(
+    advanced.dispatches.map((entry) => [entry.pr, entry.action]),
+    [[2, "FINALIZE_NEXT"]],
+  );
+  const promoted = handoff({
+    project: "Third",
+    pr: 3,
+    candidateSha: sha("e"),
+    priorityLevel: 1,
+    paths: ["src/third/"],
+  });
   const rescheduled = planAutonomousDispatch({
     handoffs: [first, second, promoted],
     workerRegistry: workerRegistry(first, second, promoted),
     mainSha: sha("a"),
   });
-  assert.deepEqual(rescheduled.dispatches.map((entry) => [entry.pr, entry.action]), [[3, "FINALIZE_NEXT"]]);
+  assert.deepEqual(
+    rescheduled.dispatches.map((entry) => [entry.pr, entry.action]),
+    [[3, "FINALIZE_NEXT"]],
+  );
 });

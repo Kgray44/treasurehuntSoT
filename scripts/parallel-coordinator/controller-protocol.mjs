@@ -47,7 +47,8 @@ function plainObject(value, name) {
 
 function stringPaths(value, name) {
   if (value === undefined) return [];
-  if (!Array.isArray(value) || value.some((entry) => typeof entry !== "string" || !entry.trim())) fail(`${name}_INVALID`);
+  if (!Array.isArray(value) || value.some((entry) => typeof entry !== "string" || !entry.trim()))
+    fail(`${name}_INVALID`);
   return [...new Set(value.map((entry) => entry.trim()))].sort();
 }
 
@@ -64,10 +65,14 @@ export function validateWorkerRegistry(value) {
       pr: pr(worker.pr, "WORKER_PR"),
       workerRef: string(worker.workerRef, "WORKER_REF"),
       status: string(worker.status ?? "IDLE", "WORKER_STATUS").toUpperCase(),
-      lastDispatchId: worker.lastDispatchId === null || worker.lastDispatchId === undefined ? null : dispatchId(worker.lastDispatchId),
+      lastDispatchId:
+        worker.lastDispatchId === null || worker.lastDispatchId === undefined
+          ? null
+          : dispatchId(worker.lastDispatchId),
     };
     if (!transportStateSet.has(normalized.status)) fail("WORKER_STATUS_INVALID");
-    if (projects.has(normalized.project) || prs.has(normalized.pr) || refs.has(normalized.workerRef)) fail("WORKER_REGISTRY_DUPLICATE");
+    if (projects.has(normalized.project) || prs.has(normalized.pr) || refs.has(normalized.workerRef))
+      fail("WORKER_REGISTRY_DUPLICATE");
     projects.add(normalized.project);
     prs.add(normalized.pr);
     refs.add(normalized.workerRef);
@@ -128,7 +133,12 @@ export function matchesDispatch(reply, envelope) {
 export function registerWorker(registry, worker) {
   const normalized = validateWorkerRegistry(registry);
   const candidate = validateWorkerRegistry({ version: WORKER_REGISTRY_VERSION, workers: [worker] }).workers[0];
-  if (normalized.workers.some((entry) => entry.project === candidate.project || entry.pr === candidate.pr || entry.workerRef === candidate.workerRef))
+  if (
+    normalized.workers.some(
+      (entry) =>
+        entry.project === candidate.project || entry.pr === candidate.pr || entry.workerRef === candidate.workerRef,
+    )
+  )
     fail("WORKER_REGISTRY_DUPLICATE");
   return { ...normalized, workers: [...normalized.workers, candidate].sort((left, right) => left.pr - right.pr) };
 }
