@@ -111,6 +111,53 @@ test("ordinary browser proof uses the installed Chromium project", () => {
   ]);
 });
 
+test("Tideglass browser proof uses its dedicated isolated harness", () => {
+  const candidateSha = "a".repeat(40);
+  const browserCommands = verificationCommands({
+    mode: "ordinary",
+    candidateSha,
+    safetyPaths: [],
+    lintPaths: [],
+    selected: {
+      unitTests: [],
+      browserTests: ["tests/e2e/tideglass-phase3.spec.ts", "tests/e2e/harborlight-phase3.spec.ts"],
+    },
+    databaseUrl: "file:./.sounding-line-candidate.sqlite",
+    migrationRequired: false,
+    migrationScripts: [],
+    buildRequired: true,
+  });
+  const browserHarnessCommands = browserCommands.filter(
+    ([command, argumentsList]) =>
+      (command === process.execPath &&
+        ["scripts/tideglass/run-phase3-journeys.mjs", "scripts/sounding-line/sqlite-bootstrap.mjs"].includes(
+          argumentsList[0],
+        )) ||
+      (command === "npx" && argumentsList.includes("playwright")),
+  );
+  assert.deepEqual(browserHarnessCommands, [
+    [process.execPath, ["scripts/tideglass/run-phase3-journeys.mjs"]],
+    [
+      process.execPath,
+      ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
+    ],
+    ["npx", ["--no-install", "playwright", "test", "tests/e2e/harborlight-phase3.spec.ts", "--project", "chromium"]],
+  ]);
+  assert.deepEqual(
+    verificationEnvironment(
+      { candidateSha, buildRequired: true },
+      process.execPath,
+      ["scripts/tideglass/run-phase3-journeys.mjs"],
+      {},
+    ),
+    {
+      LOCALAPPDATA: ".",
+      TIDEGLASS_PHASE3_TASK_ROOT: "ProjectTideglass/.sounding-line-tideglass-phase3-aaaaaaaaaaaa",
+      TIDEGLASS_PHASE3_REUSE_BUILD: "1",
+    },
+  );
+});
+
 test("SQLite bootstrap preserves quoted semicolons while ignoring migration comments", () => {
   assert.deepEqual(
     splitMigrationStatements("-- comment\nCREATE TABLE item (value TEXT);\nINSERT INTO item VALUES ('a;b');"),
