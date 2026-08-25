@@ -2132,6 +2132,21 @@ model PlatformAuditEvent {
   @@index([correlationId])
 }
 
+model WayfarerAdminCommandReceipt {
+  id             String   @id @default(cuid())
+  commandType    String
+  idempotencyKey String   @unique
+  actorAccountId String
+  targetType     String
+  targetId       String
+  correlationId  String   @unique
+  result         String   @default("{}") @db.LongText
+  completedAt    DateTime @default(now())
+
+  @@index([commandType, actorAccountId, completedAt])
+  @@index([targetType, targetId, completedAt])
+}
+
 model TaleSessionEvent {
   id                    String      @id @default(cuid())
   sessionId             String

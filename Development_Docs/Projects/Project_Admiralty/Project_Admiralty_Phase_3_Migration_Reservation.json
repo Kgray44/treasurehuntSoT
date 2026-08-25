@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "Project Admiralty",
+  "phase": "3",
+  "reservedAt": "2026-08-13",
+  "changeClass": "ADDITIVE",
+  "sqlite": "20260813130000_admiralty_phase3_wayfarer_command_receipts",
+  "mysql": "0058_admiralty_phase3_wayfarer_command_receipts",
+  "models": ["WayfarerAdminCommandReceipt"],
+  "purpose": "Wayfarer-owned durable idempotency receipt for governed account and session commands.",
+  "integrationConstraint": "Recheck current mainline schema reservations before any protected integration."
+}
