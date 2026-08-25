@@ -16,7 +16,10 @@ import { compareSemanticSnapshots, comparisonReceipt, type ExplicitReplacementMa
 import { canonicalizePublishedSnapshot, type TideglassHistoricalReader } from "./semantic";
 import { canonicalCacheKey, tideglassComparisonCache, type TideglassComparisonCache } from "./cache";
 
-export type TideglassPrincipal = { kind: "ACCOUNT"; accountId: string } | { kind: "PASSAGE"; subjectId: string };
+export type TideglassPrincipal =
+  | { kind: "ACCOUNT"; accountId: string }
+  | { kind: "CAPTAIN"; accountId: string }
+  | { kind: "PASSAGE"; subjectId: string };
 
 export type TideglassPublishedEdition = {
   id: string;
@@ -99,7 +102,8 @@ export async function compareExactEditions(
     const pair = { chronicleId: source.chronicleId, source: anchor(source), target: anchor(target) };
     const cache = options.cache === undefined ? tideglassComparisonCache : options.cache;
     const key = canonicalCacheKey(pair);
-    const cached = cache?.getCanonicalChangeSet(key);
+    const cacheRead = cache?.readCanonicalChangeSet?.(key);
+    const cached = cacheRead?.entry ?? cache?.getCanonicalChangeSet(key);
     if (cached) {
       const completedAt = performance.now();
       return {
@@ -158,7 +162,7 @@ export async function compareExactEditions(
         receipt,
         operation: {
           correlationId,
-          cacheStatus: cache ? "MISS" : "BYPASS",
+          cacheStatus: cache ? (cacheRead?.status === "CORRUPT" ? "CORRUPT_REBUILT" : "MISS") : "BYPASS",
           normalizationDurationMs: afterNormalization - beforeNormalization,
           comparisonDurationMs: comparedAt - afterNormalization,
           totalDurationMs: comparedAt - startedAt,
@@ -197,6 +201,18 @@ export const prismaTideglassEditionRepository: TideglassEditionRepository = {
   },
 
   async authorizeEdition(principal, edition) {
+    if (principal.kind === "CAPTAIN") {
+      const chronicle = await db.chronicle.findFirst({
+        where: {
+          id: edition.chronicleId,
+          archivedAt: null,
+          latestPublishedVersionId: { not: null },
+          OR: [{ creatorAccountId: principal.accountId }, { visibility: "PUBLIC" }],
+        },
+        select: { id: true },
+      });
+      return Boolean(chronicle);
+    }
     if (principal.kind !== "ACCOUNT") return false;
     let overview;
     try {

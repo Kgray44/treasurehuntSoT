@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-24
 ---
 
 # Current status
@@ -22,7 +22,7 @@ separate decision.
 **Available on main:** Project Homeport Phases 1-7 and Correction Round 3 Patch
 A, Phase 3-4 convergence, Wayfarer Phases 3 and 4,
 Sealed Hold Phases 3 and 4, Harborlight Phase 3, True North, Ledgerlight, the
-Feature Catalog, Project Tideglass Phases 1-2, and the completed Lanternwake system join identity, role-aware
+Feature Catalog, Project Tideglass Phases 1-4, and the completed Lanternwake system join identity, role-aware
 Player/Captain/Creator flows, Studio editing and publishing, invitations,
 libraries, journals, profile and Passport surfaces, protected content, and
 animation presentation. Homeport reached main through protected PR #9; this is
@@ -49,6 +49,14 @@ publishing without adding a Prisma schema or second authoring/validation
 authority. This is protected-main source integration, not deployment or
 live-provider execution.
 
+**Project Shipwright Phase 3 is available on main:** Creators can capture
+owner-scoped immutable Passage presets, reusable fragments, and Chapter
+templates, preview deterministic insertions, and apply them through the normal
+Studio autosave and undo/redo flow. Every insertion records its source item and
+immutable version; Library reads and use remain Creator-owned, and capture
+rejects protected source material. This is protected-main source integration,
+not deployment or live-provider execution.
+
 **Project Drydock Phase 3 accepted mainline:** Creator-only Sea Trials provide
 revisioned source-bound deterministic Scenarios, synthetic faults, virtual
 time, Suites, safe trace/coverage receipts, and an adapter-level One Voyage
@@ -56,23 +64,16 @@ transition differential. They cannot change a live Voyage, provider, or
 published Chronicle. Protected PR #52 integrated the accepted implementation;
 deployment and owner acceptance remain separate.
 
-Project Tideglass Phase 2 is accepted on main and adds local/server Chronicle edition intelligence:
-stable change codes, explainable significance, compatibility deltas,
-spoiler-safe public/Player/Creator projections, deterministic summaries,
-append-only Creator annotation revisions, digest-validated rebuildable cache,
-and bounded authorized APIs. It deliberately adds no ordinary comparison route
-or played-history integration. SQLite upgrade rehearsal and provider-schema
-parity pass locally; production MySQL execution and deployment are not claimed.
-Exact candidate, protected hosted, and integrated-main Sounding Line decisions
-passed with clean release evidence.
-
-**Project Tideglass Phase 3 implementation worktree, not available on main:**
-the ordinary Chronicle and Passport **What changed?** journey, exact
-publishing-owned recommended target, spoiler-safe semantic presentation, and
-Creator Studio semantic comparison are under local qualification. The isolated
-synthetic fixture and browser journey are evidence of the local product path
-only. Current-main reconciliation, one frozen candidate, canonical owner
-walkthrough acceptance, protected merge, and deployment remain separate gates.
+**Project Tideglass Phases 1-4 are available on main:** exact immutable
+edition intelligence now has ordinary Chronicle and Passport **What changed?**
+journeys, owner-bound retained-Voyage context, Creator Studio comparison,
+bounded historical Drydock reading, Captain-safe selected-to-recommended
+preflight, and same-Chronicle Harborlight release handoff. Public, Player,
+Captain, and Creator views remain server-projected and spoiler-safe; unsupported
+or unsafe historical semantics stay explicitly unavailable. Focused migration,
+contract, TypeScript, and isolated synthetic browser evidence passed. Deployment,
+live-Voyage behavior, production MySQL execution, and external-provider proof
+remain separate.
 
 **Available on main and accepted on protected staging, not production deployed:**
 Google and GitHub application OAuth adds

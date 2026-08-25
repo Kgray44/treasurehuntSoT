@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "id": "egs-github-mainline-dispatch",
+  "owner": "nightwatch",
+  "contracts": ["nightwatch.increment-a.integration-queue"],
+  "test": { "file": "src/nightwatch/github-control-plane.test.ts", "title": "labels and dispatches an exact ordinary candidate through a unique Mainline Train", "suiteId": "unit.nightwatch" },
+  "tier": 1,
+  "risk": "MODERATE",
+  "resources": ["node-slot", "vitest-worker-pool"],
+  "parallelSafety": "READ_ONLY_PARALLEL",
+  "adapter": "vitest",
+  "releaseRelevant": true
+}

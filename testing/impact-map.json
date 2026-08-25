@@ -8,6 +8,16 @@
       "contractIds": ["bridgewatch.mission-control"]
     },
     {
+      "path": "src/nightwatch/**",
+      "suiteIds": ["unit.nightwatch", "static.core"],
+      "contractIds": ["nightwatch.increment-a.integration-queue"]
+    },
+    {
+      "path": "scripts/nightwatch/**",
+      "suiteIds": ["unit.nightwatch", "static.core"],
+      "contractIds": ["nightwatch.increment-a.integration-queue"]
+    },
+    {
       "path": "bridgewatch/public/**",
       "suiteIds": ["unit.bridgewatch", "browser.admiralty", "static.core"],
       "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
@@ -231,6 +241,11 @@
       "path": "Development_Docs/Programs/Deepwater/**",
       "suiteIds": ["unit.deepwater", "static.core"],
       "contractIds": ["deepwater.capability-realization-integrity"]
+    },
+    {
+      "path": "src/components/shell/**",
+      "suiteIds": ["unit.true-north", "component.navigation", "browser.navigation"],
+      "contractIds": ["authentication-authorization"]
     },
     {
       "path": "scripts/deepwater/**",
@@ -4719,6 +4734,11 @@
       "contractIds": []
     },
     {
+      "path": "Development_Docs/Projects/Project_Nightwatch/**",
+      "suiteIds": ["unit.nightwatch", "static.core", "validation.documentation"],
+      "contractIds": ["nightwatch.increment-a.integration-queue"]
+    },
+    {
       "path": "Development_Docs/Governing/Project_Trim_*.pdf",
       "suiteIds": ["unit.agent-context", "static.core", "validation.documentation"],
       "contractIds": ["project-trim.minimum-sufficient-context"]
@@ -4728,6 +4748,11 @@
       "exclusive": true,
       "suiteIds": ["unit.sounding-line", "static.core"],
       "contractIds": []
+    },
+    {
+      "path": "src/styles/community.css",
+      "suiteIds": ["unit.community", "component.community", "browser.community"],
+      "contractIds": ["community-public-projection", "community-moderation-integrity"]
     }
   ],
   "contractMappings": [
@@ -6561,6 +6586,10 @@
     {
       "contractId": "project-trim.minimum-sufficient-context",
       "suiteIds": ["unit.agent-context"]
+    },
+    {
+      "contractId": "nightwatch.increment-a.integration-queue",
+      "suiteIds": ["unit.nightwatch", "unit.bridgewatch"]
     },
     {
       "contractId": "public-privacy-projection",

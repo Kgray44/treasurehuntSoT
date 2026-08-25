@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-08-16
+last_reviewed: 2026-08-24
 ---
 
 # Changelog
@@ -38,6 +38,13 @@ last_reviewed: 2026-08-16
   undo/redo, preview, and immutable-publication boundaries, and introduces no
   Prisma schema or competing Drydock authority.
 
+- Integrated Project Shipwright Phase 3, **Shape the Chronicle**, on canonical
+  main. Creator Studio now saves owner-scoped immutable Presets, Fragments, and
+  Chapter templates; previews deterministic insertion plans; records
+  source-version provenance; and applies reuse through the ordinary autosave
+  and undo/redo path. Protected source material and cross-owner Library access
+  remain rejected.
+
 - Expanded Project Admiralty on its Phase 2 review branch into a read-only
   15-route Chartroom with authorized account-menu entry, role-filtered
   navigation, bounded People/Chronicle/Voyage/Community search and detail,
@@ -64,15 +71,15 @@ last_reviewed: 2026-08-16
   perspective boundaries. This is automated protected-mainline source evidence,
   not deployment, live-Voyage proof, or owner acceptance.
 
-- Project Tideglass Phase 3 is a frozen, owner-accepted candidate on its
-  dedicated branch: a discoverable Chronicle `What changed?` route, exact
-  owner-bound Passport history entry, publishing-owned recommended target,
-  spoiler-safe concise/detailed semantic views, category filtering, edition
-  context, and semantic Creator Studio comparison. The storage-oriented Studio
-  product diff is retired. A v2 task-owned fixture exercises history, partial,
-  branch/ending/setup/accessibility/compatibility, and Creator-annotation
-  outcomes. Protected merge, deployment, and live-provider claims remain
-  pending.
+- Integrated Project Tideglass Phases 3-4 on canonical main. The ordinary
+  **What changed?** journey preserves exact edition and owner-bound history
+  context across Chronicle, Passport, Studio, Captain, and same-Chronicle
+  Community surfaces. Phase 4 adds a bounded Drydock historical reader,
+  Captain-safe selected-to-recommended preflight, and safe Harborlight release
+  handoff; unsupported historical semantics remain explicitly unavailable.
+  The product path passed focused local checks and an isolated synthetic browser
+  journey. Deployment, live-Voyage, and production-provider proof remain
+  separate.
 
 - Added Project Helm Phase 1 participating-Captain operation. Voyage creation
   now defaults to Captain-only and offers an explicit Captain + Player mode

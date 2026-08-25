@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "id": "egs-declaration-fail-closed",
+  "owner": "platform-foundation",
+  "contracts": ["authentication-authorization"],
+  "test": { "file": "tests/sounding-line/test-registration.test.mjs", "title": "unknown owner, contract, or missing discovered test fails closed with an actionable error", "suiteId": "unit.sounding-line" },
+  "tier": 1,
+  "risk": "MODERATE",
+  "resources": ["node-slot", "vitest-worker-pool"],
+  "parallelSafety": "READ_ONLY_PARALLEL",
+  "adapter": "node:test",
+  "releaseRelevant": true
+}

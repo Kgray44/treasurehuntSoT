@@ -7,6 +7,7 @@ const labels: Record<SupportAccessScope, string> = {
   ACCOUNT_STATE: "Account state",
   AUTH_EVENTS: "Authentication events",
   CHRONICLE_HISTORY_METADATA: "Chronicle history metadata",
+  TIDEGLASS_DIAGNOSTICS: "Tideglass comparison diagnostics",
   COMMUNITY_ACTIVITY: "Community activity",
   SESSION_DIAGNOSTICS: "Session diagnostics",
   PROFILE_DIAGNOSTICS: "Profile diagnostics",
@@ -77,6 +78,9 @@ export function DossierSupportPanel({
   const [assuranceActive, setAssuranceActive] = useState(false);
   const [notice, setNotice] = useState("");
   const [projection, setProjection] = useState<unknown>(null);
+  const [chronicleId, setChronicleId] = useState("");
+  const [sourceEditionId, setSourceEditionId] = useState("");
+  const [targetEditionId, setTargetEditionId] = useState("");
   const [busy, setBusy] = useState(false);
 
   async function post(path: string, body: Record<string, unknown>) {
@@ -89,6 +93,7 @@ export function DossierSupportPanel({
       error?: string;
       request?: { id: string };
       projection?: unknown;
+      diagnostic?: unknown;
     } | null;
     if (!response.ok) throw new Error(result?.error ?? "The support action could not be completed.");
     return result;
@@ -204,9 +209,17 @@ export function DossierSupportPanel({
           onSubmit={(event) => {
             event.preventDefault();
             void run(async () => {
-              const result = await post("/api/admin/support/read", { grantId, targetAccountId, scope });
-              setProjection(result?.projection ?? null);
-              setNotice("Scoped support projection read and audited.");
+              const tideglass = scope === "TIDEGLASS_DIAGNOSTICS";
+              const result = await post(
+                tideglass ? "/api/admin/support/tideglass" : "/api/admin/support/read",
+                tideglass
+                  ? { grantId, targetAccountId, chronicleId, sourceEditionId, targetEditionId }
+                  : { grantId, targetAccountId, scope },
+              );
+              setProjection(tideglass ? (result?.diagnostic ?? null) : (result?.projection ?? null));
+              setNotice(
+                tideglass ? "Tideglass diagnostic read and audited." : "Scoped support projection read and audited.",
+              );
             });
           }}
         >
@@ -226,6 +239,24 @@ export function DossierSupportPanel({
               ))}
             </select>
           </label>
+          {scope === "TIDEGLASS_DIAGNOSTICS" ? (
+            <fieldset>
+              <legend>Exact immutable comparison pair</legend>
+              <p>The target account must independently be authorized for both editions.</p>
+              <label>
+                Chronicle ID
+                <input required value={chronicleId} onChange={(event) => setChronicleId(event.target.value)} />
+              </label>
+              <label>
+                Source edition ID
+                <input required value={sourceEditionId} onChange={(event) => setSourceEditionId(event.target.value)} />
+              </label>
+              <label>
+                Target edition ID
+                <input required value={targetEditionId} onChange={(event) => setTargetEditionId(event.target.value)} />
+              </label>
+            </fieldset>
+          ) : null}
           <button type="submit" disabled={busy}>
             Read approved category
           </button>

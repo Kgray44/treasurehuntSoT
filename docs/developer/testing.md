@@ -30,10 +30,13 @@ qualification evidence only. Do not invoke Sounding Line to discover defects;
 the single Mainline Decision is reserved for the reconciled, frozen,
 owner-accepted candidate.
 
-Run focused unit or route tests while changing a domain. Before review, run
-formatting, lint, type checking, unit tests, private-content scanning,
-documentation validation, and Feature Catalog checks as the environment
-permits. `npm run validate` is the repository's complete gate.
+Run focused unit or route tests while changing a domain. Before review, run the
+formatting, lint, type checks, and tests relevant to the changed area.
+`Sounding Line / Mainline Decision` is the one final protected-main check; it
+binds the exact PR base and candidate, runs affected tests, and widens when
+impact is uncertain. `npm run test:release` is the separate exhaustive release
+or explicit full-certification path. Feature Catalog work is semantic and
+asynchronous: do not update it for provenance-only changes.
 
 Browser tests require isolated database and runtime configuration. A skipped
 external provider check is not a passing production proof. The
