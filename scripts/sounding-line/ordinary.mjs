@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 /* Focused candidate verification. The workflow supplies a trusted copy of this file. */
+/* Protected-main routing treats changes to this implementation as control-plane candidates. */
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
