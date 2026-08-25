@@ -309,7 +309,10 @@ test("an explicit dependency keeps a P5 prerequisite ahead of an overlapping P1 
     dependencies: [5],
   });
   const plan = coordinate({ handoffs: [p5, p1] });
-  assert.deepEqual(plan.readyOrder.map((candidate) => candidate.pr), [5]);
+  assert.deepEqual(
+    plan.readyOrder.map((candidate) => candidate.pr),
+    [5],
+  );
   assert.deepEqual(plan.candidates.find((candidate) => candidate.pr === 1).reasons, ["DEPENDENCY_PENDING:PR#5"]);
 });
 
@@ -348,7 +351,10 @@ test("the Admiralty, Drydock, and Confluence field case keeps overlaps in the tw
       [211, 3, "HOLD"],
     ],
   );
-  assert.equal(initial.candidates.some((candidate) => candidate.state === "WAITING"), false);
+  assert.equal(
+    initial.candidates.some((candidate) => candidate.state === "WAITING"),
+    false,
+  );
 
   const afterAdmiraltyMerge = evaluateAfterMerge({
     handoffs: [admiralty, drydock, confluence],
