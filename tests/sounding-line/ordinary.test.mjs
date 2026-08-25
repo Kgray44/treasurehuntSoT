@@ -492,3 +492,19 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
     /pull_request_target|nightwatch|bosun|baseline|deepwater|feature catalog|P34|maintenance|train/iu,
   );
 });
+
+test("trusted PR routing produces one strict decision for ordinary and control-plane candidates", () => {
+  const ordinaryWorkflow = readFileSync(".github/workflows/sounding-line-ordinary.yml", "utf8");
+  assert.match(ordinaryWorkflow, /pull_request_target/u);
+  assert.match(ordinaryWorkflow, /path: authority/u);
+  assert.match(ordinaryWorkflow, /Route through trusted protected-main classification/u);
+  assert.match(ordinaryWorkflow, /root: "\.\.\/candidate"/u);
+  assert.match(ordinaryWorkflow, /mode: "ordinary"/u);
+  assert.match(ordinaryWorkflow, /kind=ordinary/u);
+  assert.match(ordinaryWorkflow, /kind=control-plane/u);
+  assert.match(ordinaryWorkflow, /steps\.route\.outputs\.kind == 'ordinary'/u);
+  assert.match(ordinaryWorkflow, /steps\.route\.outputs\.kind == 'control-plane'/u);
+  assert.match(ordinaryWorkflow, /SOUNDING_LINE_CONTROL_PLANE_CHANGE_REQUIRES_RELEASE_MODE/u);
+  assert.match(ordinaryWorkflow, /git merge-base --is-ancestor/u);
+  assert.equal((ordinaryWorkflow.match(/name: Sounding Line \/ Mainline Decision/gu) ?? []).length, 1);
+});
