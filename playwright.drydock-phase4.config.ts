@@ -11,7 +11,12 @@ export default defineConfig({
   workers: 1,
   outputDir: taskRoot ? `${taskRoot}/browser/test-results` : "test-results/drydock-phase4",
   reporter: taskRoot ? [["list"], ["html", { outputFolder: `${taskRoot}/browser/report`, open: "never" }]] : [["list"]],
-  use: { baseURL: `http://127.0.0.1:${port}`, trace: "retain-on-failure", screenshot: "only-on-failure", video: "retain-on-failure" },
+  use: {
+    baseURL: `http://127.0.0.1:${port}`,
+    trace: "retain-on-failure",
+    screenshot: "only-on-failure",
+    video: "retain-on-failure",
+  },
   projects: [{ name: "drydock-phase4-chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
     command: `"${process.execPath}" node_modules/next/dist/bin/next dev --webpack -H 127.0.0.1 -p ${port}`,

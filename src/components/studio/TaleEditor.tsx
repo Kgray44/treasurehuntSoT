@@ -3203,7 +3203,13 @@ export function TaleEditor({
             </section>
           </div>
         )}
-        {initialSection === "trials" && <><DrydockLaunchGate taleId={taleId} csrfToken={data.csrfToken} onReadinessChange={setLaunchGateStatus} /><DrydockCompatibilityPanel taleId={taleId} csrfToken={data.csrfToken} /><DrydockScenarioLab taleId={taleId} csrfToken={data.csrfToken} /></>}
+        {initialSection === "trials" && (
+          <>
+            <DrydockLaunchGate taleId={taleId} csrfToken={data.csrfToken} onReadinessChange={setLaunchGateStatus} />
+            <DrydockCompatibilityPanel taleId={taleId} csrfToken={data.csrfToken} />
+            <DrydockScenarioLab taleId={taleId} csrfToken={data.csrfToken} />
+          </>
+        )}
         {initialSection === "settings" && (
           <section className="editor-single-panel settings-panel">
             <header>
@@ -3550,7 +3556,14 @@ export function TaleEditor({
           <LibraryPanel
             title="Version history"
             eyebrow="Immutable releases"
-            action={<button onClick={() => void publish()} disabled={launchGateStatus !== null && launchGateStatus !== "VERIFIED"}>Publish current Chronicle draft</button>}
+            action={
+              <button
+                onClick={() => void publish()}
+                disabled={launchGateStatus !== null && launchGateStatus !== "VERIFIED"}
+              >
+                Publish current Chronicle draft
+              </button>
+            }
           >
             <div className="version-list">
               {!data.versions.length && <p>No published Version exists yet.</p>}

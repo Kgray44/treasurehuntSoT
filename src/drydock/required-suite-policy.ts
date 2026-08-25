@@ -14,7 +14,11 @@ export type DrydockRequiredScenarioClass = Readonly<{
   reason: string;
 }>;
 
-const policy = (id: DrydockRequiredScenarioClass["id"], capability: string, reason: string) => ({ id, capability, reason });
+const policy = (id: DrydockRequiredScenarioClass["id"], capability: string, reason: string) => ({
+  id,
+  capability,
+  reason,
+});
 
 /** Derives explainable Scenario classes from canonical authored source, never Creator assertions. */
 export function requiredScenarioClasses(snapshot: PublishedTaleSnapshot): readonly DrydockRequiredScenarioClass[] {
@@ -31,11 +35,24 @@ export function requiredScenarioClasses(snapshot: PublishedTaleSnapshot): readon
     required.push(policy("TIMER_TIMEOUT", "WAIT_OR_TIMER", "Virtual-time timeout behavior is present."));
   if (blocks.some((block) => block.blockType === "captainApproval") || modes.has("captainManual"))
     required.push(policy("CAPTAIN_APPROVE_REJECT", "CAPTAIN_APPROVAL", "Captain approval has two governed outcomes."));
-  if (blocks.some((block) => block.blockType === "riddle" || block.blockType === "textAnswer") || modes.has("textAnswer"))
-    required.push(policy("ANSWER_MATCH_AND_NO_MATCH", "TEXT_ANSWER", "Text-answer outcomes must both be deterministic."));
+  if (
+    blocks.some((block) => block.blockType === "riddle" || block.blockType === "textAnswer") ||
+    modes.has("textAnswer")
+  )
+    required.push(
+      policy("ANSWER_MATCH_AND_NO_MATCH", "TEXT_ANSWER", "Text-answer outcomes must both be deterministic."),
+    );
   if (["visionLocation", "visionObject", "externalWebhook"].some((mode) => modes.has(mode)))
-    required.push(policy("PROVIDER_OUTCOMES", "PROVIDER", "Used provider outcomes need deterministic fallback evidence."));
+    required.push(
+      policy("PROVIDER_OUTCOMES", "PROVIDER", "Used provider outcomes need deterministic fallback evidence."),
+    );
   if (blocks.some((block) => ["imageTransformation", "cinematic", "audio"].includes(block.blockType)))
-    required.push(policy("REDUCED_MOTION_AND_SOUND_BLOCKED", "MEANINGFUL_PRESENTATION", "Presentation must remain understandable without motion or sound."));
+    required.push(
+      policy(
+        "REDUCED_MOTION_AND_SOUND_BLOCKED",
+        "MEANINGFUL_PRESENTATION",
+        "Presentation must remain understandable without motion or sound.",
+      ),
+    );
   return required;
 }

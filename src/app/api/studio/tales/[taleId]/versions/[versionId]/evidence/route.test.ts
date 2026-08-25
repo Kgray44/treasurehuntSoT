@@ -13,7 +13,12 @@ describe("Drydock publishing evidence route", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.authorization.mockResolvedValue({ session: { accountId: "creator-1" } });
-    mocks.evidence.mockResolvedValue({ evidenceId: "evidence-1", versionId: "version-1", publishedAt: "2026-08-13T00:00:00.000Z", evidence: { sourceChecksum: "a".repeat(64) } });
+    mocks.evidence.mockResolvedValue({
+      evidenceId: "evidence-1",
+      versionId: "version-1",
+      publishedAt: "2026-08-13T00:00:00.000Z",
+      evidence: { sourceChecksum: "a".repeat(64) },
+    });
   });
 
   it("does not reveal whether foreign Chronicle evidence exists", async () => {

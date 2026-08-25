@@ -30,7 +30,12 @@ export async function drydockSupportMetrics(now = new Date()) {
       metricsDb.drydockScenarioSuiteEvidence.count(),
       metricsDb.drydockCompatibilityRun.groupBy({ by: ["status"], _count: { _all: true } }),
       metricsDb.drydockExternalEvidenceReference.count({
-        where: { OR: [{ status: { in: ["EXPIRED", "MISSING", "UNAVAILABLE", "EXTERNAL_VALIDATION_REQUIRED"] } }, { expiresAt: { lt: now } }] },
+        where: {
+          OR: [
+            { status: { in: ["EXPIRED", "MISSING", "UNAVAILABLE", "EXTERNAL_VALIDATION_REQUIRED"] } },
+            { expiresAt: { lt: now } },
+          ],
+        },
       }),
       metricsDb.drydockRuleWaiver.groupBy({ by: ["ruleCode"], _count: { _all: true } }),
     ]);

@@ -16,7 +16,11 @@ describe("Drydock readiness route", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.authorization.mockResolvedValue({ session: { accountId: "creator-1" } });
-    mocks.readiness.mockResolvedValue({ status: "TRIALS_INCOMPLETE", sourceChecksum: "a".repeat(64), requiredSuites: [] });
+    mocks.readiness.mockResolvedValue({
+      status: "TRIALS_INCOMPLETE",
+      sourceChecksum: "a".repeat(64),
+      requiredSuites: [],
+    });
     mocks.requirements.mockResolvedValue({ policyVersion: "drydock-required-suite-v1", requirements: [] });
   });
 

@@ -110,7 +110,11 @@
       "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": ["unit.drydock"],
       "contracts": ["drydock-phase4-launch-readiness"],
-      "affectedPaths": ["tests/e2e/drydock-phase4.spec.ts", "playwright.config.ts", "playwright.drydock-phase4.config.ts"],
+      "affectedPaths": [
+        "tests/e2e/drydock-phase4.spec.ts",
+        "playwright.config.ts",
+        "playwright.drydock-phase4.config.ts"
+      ],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-4-source-bound",
       "adapter": "playwright-family"

@@ -12,7 +12,10 @@ describe("historical Drydock compatibility route", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.authorization.mockResolvedValue({ session: { accountId: "creator-1" } });
-    mocks.inspect.mockResolvedValue({ compatibility: { status: "COMPATIBLE", sourceChecksum: "a".repeat(64) }, migrationPreview: { mutatesPublishedSnapshot: false } });
+    mocks.inspect.mockResolvedValue({
+      compatibility: { status: "COMPATIBLE", sourceChecksum: "a".repeat(64) },
+      migrationPreview: { mutatesPublishedSnapshot: false },
+    });
   });
 
   it("does not reveal a foreign Chronicle version", async () => {

@@ -6,7 +6,27 @@ afterEach(() => vi.unstubAllGlobals());
 
 describe("Drydock Compatibility panel", () => {
   it("shows the current source-bound assessment and safe repair action", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ compatibility: { status: "UNSUPPORTED", sourceChecksum: "c".repeat(64), policyVersion: "drydock-compatibility-v1", supportedBlockCount: 1, findings: [{ code: "DRYDOCK_BLOCK_UNSUPPORTED", blockId: "passage-1", message: "This Passage cannot be interpreted." }] } }) }));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          compatibility: {
+            status: "UNSUPPORTED",
+            sourceChecksum: "c".repeat(64),
+            policyVersion: "drydock-compatibility-v1",
+            supportedBlockCount: 1,
+            findings: [
+              {
+                code: "DRYDOCK_BLOCK_UNSUPPORTED",
+                blockId: "passage-1",
+                message: "This Passage cannot be interpreted.",
+              },
+            ],
+          },
+        }),
+      }),
+    );
     render(<DrydockCompatibilityPanel taleId="tale-1" csrfToken="csrf" />);
     expect(screen.getByText("Checking current reader compatibility…")).toBeInTheDocument();
     await waitFor(() => expect(screen.getByText("UNSUPPORTED")).toBeInTheDocument());

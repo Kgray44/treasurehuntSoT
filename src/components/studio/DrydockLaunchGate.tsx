@@ -21,11 +21,14 @@ type Readiness = {
 const nextAction = (readiness: Readiness) => {
   if (readiness.status === "NEEDS_REPAIR") return "Fix blocking issues or provide the missing current-source evidence.";
   if (readiness.status === "TRIALS_INCOMPLETE") return "Run the required Sea Trial Suite against this exact source.";
-  if (readiness.status === "READY_WITH_WARNINGS") return "Review the remaining warnings and governed waivers before publishing.";
+  if (readiness.status === "READY_WITH_WARNINGS")
+    return "Review the remaining warnings and governed waivers before publishing.";
   if (readiness.status === "VERIFIED") return "The server may now evaluate an immutable publication transaction.";
-  if (readiness.status === "PUBLICATION_PENDING") return "Publication is in progress; do not treat this as a published version.";
+  if (readiness.status === "PUBLICATION_PENDING")
+    return "Publication is in progress; do not treat this as a published version.";
   if (readiness.status === "PUBLISHED") return "Immutable publication evidence is bound to the returned version.";
-  if (readiness.status === "PUBLICATION_FAILED") return "Publication did not commit. Preserve current verification only while its source remains current.";
+  if (readiness.status === "PUBLICATION_FAILED")
+    return "Publication did not commit. Preserve current verification only while its source remains current.";
   return "The server is still collecting the current launch facts.";
 };
 
@@ -55,8 +58,9 @@ export function DrydockLaunchGate({
         setReadiness(body.readiness);
         onReadinessChange?.(body.readiness.status);
       })
-      .catch((cause: unknown) =>
-        active && setError(cause instanceof Error ? cause.message : "The Launch Gate could not load."),
+      .catch(
+        (cause: unknown) =>
+          active && setError(cause instanceof Error ? cause.message : "The Launch Gate could not load."),
       );
     return () => {
       active = false;
@@ -123,15 +127,19 @@ export function DrydockLaunchGate({
           {readiness.waivers?.length ? <p>{readiness.waivers.length} governed waiver(s) remain active.</p> : null}
           {readiness.evidenceDraft ? (
             <p>
-              Verification receipt: {readiness.evidenceDraft.validationRunId}; {readiness.evidenceDraft.requiredScenarioSuiteIds.length} required Suite(s).
+              Verification receipt: {readiness.evidenceDraft.validationRunId};{" "}
+              {readiness.evidenceDraft.requiredScenarioSuiteIds.length} required Suite(s).
             </p>
           ) : null}
           {readiness.status === "PUBLISHED" ? (
             <p>
-              Published version: <code>{readiness.publishedVersionId}</code>; immutable evidence: <code>{readiness.evidenceId}</code>.
+              Published version: <code>{readiness.publishedVersionId}</code>; immutable evidence:{" "}
+              <code>{readiness.evidenceId}</code>.
             </p>
           ) : null}
-          {readiness.status === "PUBLICATION_FAILED" ? <p role="alert">Safe failure code: {readiness.safeFailureCode}</p> : null}
+          {readiness.status === "PUBLICATION_FAILED" ? (
+            <p role="alert">Safe failure code: {readiness.safeFailureCode}</p>
+          ) : null}
           <p>The publish action remains server-authoritative and is enabled only after a VERIFIED decision.</p>
         </>
       )}

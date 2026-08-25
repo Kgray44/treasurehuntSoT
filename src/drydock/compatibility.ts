@@ -25,7 +25,8 @@ export type DrydockCompatibilityAssessment = DrydockCompatibilityResult &
 function resultStatus(findings: readonly DrydockCompatibilityFinding[]): DrydockCompatibilityStatus {
   if (findings.some((finding) => finding.status === "CORRUPT_OR_INVALID")) return "CORRUPT_OR_INVALID";
   if (findings.some((finding) => finding.status === "UNSUPPORTED")) return "UNSUPPORTED";
-  if (findings.some((finding) => finding.status === "EXTERNAL_REQUIREMENT_PENDING")) return "EXTERNAL_REQUIREMENT_PENDING";
+  if (findings.some((finding) => finding.status === "EXTERNAL_REQUIREMENT_PENDING"))
+    return "EXTERNAL_REQUIREMENT_PENDING";
   if (findings.some((finding) => finding.status === "MIGRATION_AVAILABLE")) return "MIGRATION_AVAILABLE";
   if (findings.some((finding) => finding.status === "COMPATIBLE_WITH_UPCAST")) return "COMPATIBLE_WITH_UPCAST";
   if (findings.length) return "COMPATIBLE_WITH_WARNINGS";
@@ -101,7 +102,11 @@ export function migrationPreviewForHistoricalSnapshot(snapshot: PublishedTaleSna
   return {
     sourceChecksum: assessment.sourceChecksum,
     status: assessment.status,
-    safeSummary: assessment.findings.map((finding) => ({ code: finding.code, blockId: finding.blockId ?? null, message: finding.message })),
+    safeSummary: assessment.findings.map((finding) => ({
+      code: finding.code,
+      blockId: finding.blockId ?? null,
+      message: finding.message,
+    })),
     createsNewDraftOnly: true,
     mutatesPublishedSnapshot: false,
   };

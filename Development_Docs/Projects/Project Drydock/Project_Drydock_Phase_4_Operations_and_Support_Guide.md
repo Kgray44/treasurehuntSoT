@@ -10,15 +10,15 @@ last_reviewed: 2026-08-13
 
 Use owner-safe API projections and immutable receipt digests only. Do not retrieve accepted answers, authored prose, Creator notes, raw provider payloads, storage keys, private locations, or session data to diagnose a Drydock decision.
 
-| Signal | Safe interpretation | First response |
-| --- | --- | --- |
-| `CHECKING` | server decision is not yet available | wait/reload; never enable publication from a cached client state |
-| `NEEDS_REPAIR` | static, compatibility, or mandatory evidence is missing/current-source-invalid | use safe issue codes and requirement IDs; repair or refresh evidence |
-| `TRIALS_INCOMPLETE` | a required Suite has no passed current-policy receipt | create/run the required source-bound Suite; do not reuse stale runs |
-| `READY_WITH_WARNINGS` | only governed warnings/waivers remain | review waiver expiry, revocation, and source checksum before approval |
-| `VERIFIED` | exact source is eligible for the One Voyage transaction | request publication once; this is not a published-version claim |
-| `PUBLICATION_PENDING` / `PUBLICATION_FAILED` | transaction not proven committed | preserve current evidence only while fresh; inspect the safe error code; do not play success |
-| `PUBLISHED` | version and immutable evidence are bound | retrieve evidence through the owner-safe version evidence route |
+| Signal                                       | Safe interpretation                                                            | First response                                                                               |
+| -------------------------------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| `CHECKING`                                   | server decision is not yet available                                           | wait/reload; never enable publication from a cached client state                             |
+| `NEEDS_REPAIR`                               | static, compatibility, or mandatory evidence is missing/current-source-invalid | use safe issue codes and requirement IDs; repair or refresh evidence                         |
+| `TRIALS_INCOMPLETE`                          | a required Suite has no passed current-policy receipt                          | create/run the required source-bound Suite; do not reuse stale runs                          |
+| `READY_WITH_WARNINGS`                        | only governed warnings/waivers remain                                          | review waiver expiry, revocation, and source checksum before approval                        |
+| `VERIFIED`                                   | exact source is eligible for the One Voyage transaction                        | request publication once; this is not a published-version claim                              |
+| `PUBLICATION_PENDING` / `PUBLICATION_FAILED` | transaction not proven committed                                               | preserve current evidence only while fresh; inspect the safe error code; do not play success |
+| `PUBLISHED`                                  | version and immutable evidence are bound                                       | retrieve evidence through the owner-safe version evidence route                              |
 
 ## Evidence, compatibility, and historical failures
 

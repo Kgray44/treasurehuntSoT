@@ -8,19 +8,35 @@ const allowedRoot = path.resolve(required("LOCALAPPDATA"), "ForeverTreasureCompa
 const taskRoot = path.resolve(process.env.DRYDOCK_PHASE4_TASK_ROOT ?? path.join(allowedRoot, "drydock-phase4-browser"));
 const databasePath = path.join(taskRoot, "database", "drydock-phase4.sqlite");
 if (!taskRoot.startsWith(`${allowedRoot}${path.sep}`)) throw new Error(`DRYDOCK_PHASE4_TASK_ROOT_REFUSED:${taskRoot}`);
-if (!databasePath.startsWith(`${taskRoot}${path.sep}`)) throw new Error(`DRYDOCK_PHASE4_DATABASE_REFUSED:${databasePath}`);
+if (!databasePath.startsWith(`${taskRoot}${path.sep}`))
+  throw new Error(`DRYDOCK_PHASE4_DATABASE_REFUSED:${databasePath}`);
 
 await mkdir(path.dirname(databasePath), { recursive: true });
 for (const target of [databasePath, `${databasePath}-wal`, `${databasePath}-shm`]) await rm(target, { force: true });
 const port = await availablePort();
 const sourceSha = output("git", ["rev-parse", "HEAD"]);
-const env = { ...process.env, DRYDOCK_PHASE4_TASK_ROOT: taskRoot, DRYDOCK_PHASE4_PORT: String(port), DRYDOCK_PHASE4_REHEARSAL_DB: databasePath, DATABASE_URL: sqliteUrl(databasePath), NEXT_DIST_DIR: ".next-drydock-phase4-browser", VOYAGEWRIGHT_BUILD_SHA: sourceSha };
+const env = {
+  ...process.env,
+  DRYDOCK_PHASE4_TASK_ROOT: taskRoot,
+  DRYDOCK_PHASE4_PORT: String(port),
+  DRYDOCK_PHASE4_REHEARSAL_DB: databasePath,
+  DATABASE_URL: sqliteUrl(databasePath),
+  NEXT_DIST_DIR: ".next-drydock-phase4-browser",
+  VOYAGEWRIGHT_BUILD_SHA: sourceSha,
+};
 run("src/drydock/rehearse-phase4-migrations.mjs", [], env);
 run("node_modules/@playwright/test/cli.js", ["test", "-c", "playwright.drydock-phase4.config.ts"], env);
-process.stdout.write(`${JSON.stringify({ status: "DRYDOCK_PHASE4_LOCAL_BROWSER_AXE_PASSED", sourceSha, taskRoot, port, database: "TASK_OWNED_REHEARSED_SQLITE" })}\n`);
+process.stdout.write(
+  `${JSON.stringify({ status: "DRYDOCK_PHASE4_LOCAL_BROWSER_AXE_PASSED", sourceSha, taskRoot, port, database: "TASK_OWNED_REHEARSED_SQLITE" })}\n`,
+);
 
 function run(script, args, env) {
-  const result = spawnSync(process.execPath, [script, ...args], { cwd: repositoryRoot, env, stdio: "inherit", windowsHide: true });
+  const result = spawnSync(process.execPath, [script, ...args], {
+    cwd: repositoryRoot,
+    env,
+    stdio: "inherit",
+    windowsHide: true,
+  });
   if (result.error) throw result.error;
   if (result.status !== 0) process.exit(result.status ?? 1);
 }
@@ -40,5 +56,11 @@ function availablePort() {
     });
   });
 }
-function sqliteUrl(value) { return `file:${value.replaceAll("\\", "/")}`; }
-function required(name) { const value = process.env[name]; if (!value) throw new Error(`${name} is required.`); return value; }
+function sqliteUrl(value) {
+  return `file:${value.replaceAll("\\", "/")}`;
+}
+function required(name) {
+  const value = process.env[name];
+  if (!value) throw new Error(`${name} is required.`);
+  return value;
+}

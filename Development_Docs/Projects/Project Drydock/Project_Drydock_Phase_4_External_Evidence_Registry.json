@@ -2,11 +2,44 @@
   "schemaVersion": 1,
   "registryVersion": "drydock-external-evidence-v1",
   "adapters": [
-    { "id": "harborlight", "owner": "Project Harborlight", "version": "contract-v1", "state": "CONTRACT_ONLY", "contribution": "Community package, dependency, license, attribution, and install compatibility facts; no Drydock install/remix runtime handoff is claimed", "realWorldRequired": true },
-    { "id": "sealed-hold", "owner": "Project Sealed Hold", "version": "contract-v1", "state": "CONTRACT_ONLY", "contribution": "Protected asset identity, scan, quarantine, and safe preview facts; no protected-content provider is connected", "realWorldRequired": true },
-    { "id": "lanternwake", "owner": "Project Lanternwake", "version": "contract-v1", "state": "CONTRACT_ONLY", "contribution": "Scene and fallback contract facts while Lanternwake retains presentation runtime authority", "realWorldRequired": false },
-    { "id": "landfall", "owner": "Project Landfall", "version": "adapter-unavailable", "contribution": "Location provider and field-evidence summary when registered", "realWorldRequired": true },
-    { "id": "artifact", "owner": "Artifact domain", "version": "adapter-unavailable", "contribution": "Representation, fallback, performance, and accessibility summary when registered", "realWorldRequired": false }
+    {
+      "id": "harborlight",
+      "owner": "Project Harborlight",
+      "version": "contract-v1",
+      "state": "CONTRACT_ONLY",
+      "contribution": "Community package, dependency, license, attribution, and install compatibility facts; no Drydock install/remix runtime handoff is claimed",
+      "realWorldRequired": true
+    },
+    {
+      "id": "sealed-hold",
+      "owner": "Project Sealed Hold",
+      "version": "contract-v1",
+      "state": "CONTRACT_ONLY",
+      "contribution": "Protected asset identity, scan, quarantine, and safe preview facts; no protected-content provider is connected",
+      "realWorldRequired": true
+    },
+    {
+      "id": "lanternwake",
+      "owner": "Project Lanternwake",
+      "version": "contract-v1",
+      "state": "CONTRACT_ONLY",
+      "contribution": "Scene and fallback contract facts while Lanternwake retains presentation runtime authority",
+      "realWorldRequired": false
+    },
+    {
+      "id": "landfall",
+      "owner": "Project Landfall",
+      "version": "adapter-unavailable",
+      "contribution": "Location provider and field-evidence summary when registered",
+      "realWorldRequired": true
+    },
+    {
+      "id": "artifact",
+      "owner": "Artifact domain",
+      "version": "adapter-unavailable",
+      "contribution": "Representation, fallback, performance, and accessibility summary when registered",
+      "realWorldRequired": false
+    }
   ],
   "statuses": ["NOT_REQUIRED", "PRESENT", "EXPIRED", "MISSING", "UNAVAILABLE", "EXTERNAL_VALIDATION_REQUIRED"]
 }

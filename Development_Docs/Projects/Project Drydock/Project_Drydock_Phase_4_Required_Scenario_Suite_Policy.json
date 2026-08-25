@@ -3,15 +3,65 @@
   "policyVersion": "drydock-required-suite-v1",
   "authority": "Project Drydock Phase 4",
   "rules": [
-    { "id": "DD-RS-001", "capability": "BASELINE", "requiredClass": "BASELINE_SUCCESS", "reason": "Every Chronicle needs a successful governed path." },
-    { "id": "DD-RS-002", "capability": "MULTIPLE_ENDINGS", "requiredClass": "REQUIRED_ENDING", "reason": "Every required ending needs deterministic evidence." },
-    { "id": "DD-RS-003", "capability": "BRANCHING", "requiredClass": "MAJOR_BRANCH", "reason": "Major authored alternatives need evidence." },
-    { "id": "DD-RS-004", "capability": "WAIT_OR_TIMER", "requiredClass": "TIMER_TIMEOUT", "reason": "Virtual-time timeout behavior is present." },
-    { "id": "DD-RS-005", "capability": "CAPTAIN_APPROVAL", "requiredClass": "CAPTAIN_APPROVE_REJECT", "reason": "Captain approval has two governed outcomes." },
-    { "id": "DD-RS-006", "capability": "TEXT_ANSWER", "requiredClass": "ANSWER_MATCH_AND_NO_MATCH", "reason": "Text-answer outcomes must both be deterministic." },
-    { "id": "DD-RS-007", "capability": "PROVIDER", "requiredClass": "PROVIDER_OUTCOMES", "reason": "Used provider match, no-match, and unavailable behavior require evidence." },
-    { "id": "DD-RS-008", "capability": "NETWORK_OR_PROVIDER_DEPENDENCY", "requiredClass": "RECONNECT_OR_UNAVAILABLE", "reason": "Dependency recovery or fallback is required." },
-    { "id": "DD-RS-009", "capability": "MEANINGFUL_PRESENTATION", "requiredClass": "REDUCED_MOTION_AND_SOUND_BLOCKED", "reason": "Presentation must remain understandable without motion or sound." },
-    { "id": "DD-RS-010", "capability": "ACCESSIBILITY_MODE", "requiredClass": "KEYBOARD_ACCESSIBILITY", "reason": "An applicable accessibility mode requires explicit evidence." }
+    {
+      "id": "DD-RS-001",
+      "capability": "BASELINE",
+      "requiredClass": "BASELINE_SUCCESS",
+      "reason": "Every Chronicle needs a successful governed path."
+    },
+    {
+      "id": "DD-RS-002",
+      "capability": "MULTIPLE_ENDINGS",
+      "requiredClass": "REQUIRED_ENDING",
+      "reason": "Every required ending needs deterministic evidence."
+    },
+    {
+      "id": "DD-RS-003",
+      "capability": "BRANCHING",
+      "requiredClass": "MAJOR_BRANCH",
+      "reason": "Major authored alternatives need evidence."
+    },
+    {
+      "id": "DD-RS-004",
+      "capability": "WAIT_OR_TIMER",
+      "requiredClass": "TIMER_TIMEOUT",
+      "reason": "Virtual-time timeout behavior is present."
+    },
+    {
+      "id": "DD-RS-005",
+      "capability": "CAPTAIN_APPROVAL",
+      "requiredClass": "CAPTAIN_APPROVE_REJECT",
+      "reason": "Captain approval has two governed outcomes."
+    },
+    {
+      "id": "DD-RS-006",
+      "capability": "TEXT_ANSWER",
+      "requiredClass": "ANSWER_MATCH_AND_NO_MATCH",
+      "reason": "Text-answer outcomes must both be deterministic."
+    },
+    {
+      "id": "DD-RS-007",
+      "capability": "PROVIDER",
+      "requiredClass": "PROVIDER_OUTCOMES",
+      "reason": "Used provider match, no-match, and unavailable behavior require evidence."
+    },
+    {
+      "id": "DD-RS-008",
+      "capability": "NETWORK_OR_PROVIDER_DEPENDENCY",
+      "requiredClass": "RECONNECT_OR_UNAVAILABLE",
+      "reason": "Dependency recovery or fallback is required."
+    },
+    {
+      "id": "DD-RS-009",
+      "capability": "MEANINGFUL_PRESENTATION",
+      "requiredClass": "REDUCED_MOTION_AND_SOUND_BLOCKED",
+      "reason": "Presentation must remain understandable without motion or sound."
+    },
+    {
+      "id": "DD-RS-010",
+      "capability": "ACCESSIBILITY_MODE",
+      "requiredClass": "KEYBOARD_ACCESSIBILITY",
+      "reason": "An applicable accessibility mode requires explicit evidence."
+    }
   ]
 }

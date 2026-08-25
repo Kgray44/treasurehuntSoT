@@ -17,11 +17,11 @@ export function apiError(cause: unknown) {
             ? "VALIDATION_FAILED"
             : cause instanceof DrydockReadinessError
               ? "DRYDOCK_READINESS_NOT_VERIFIED"
-            : cause instanceof VerificationRejectedError
-              ? cause.reason
-              : cause instanceof InvitationUnavailableError
-                ? cause.code
-                : "REQUEST_FAILED",
+              : cause instanceof VerificationRejectedError
+                ? cause.reason
+                : cause instanceof InvitationUnavailableError
+                  ? cause.code
+                  : "REQUEST_FAILED",
     },
     "Voyagewright request rejected",
   );

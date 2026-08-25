@@ -4,8 +4,26 @@ import { publishedSourceChecksum } from "@/chronicle/snapshot";
 
 const source = (): PublishedTaleSnapshot => ({
   schemaVersion: 1,
-  tale: { id: "tale-1", slug: "source", title: "Source", subtitle: null, shortDescription: null, longDescription: null, coverAssetId: null, theme: "CARTOGRAPHERS_TABLE", visibility: "PRIVATE", playerCountMin: 1, playerCountMax: 4, estimatedDuration: null, contentWarnings: null },
-  chapters: [], assets: [], locations: [], artifacts: [], publishedAt: "2026-08-13T00:00:00.000Z",
+  tale: {
+    id: "tale-1",
+    slug: "source",
+    title: "Source",
+    subtitle: null,
+    shortDescription: null,
+    longDescription: null,
+    coverAssetId: null,
+    theme: "CARTOGRAPHERS_TABLE",
+    visibility: "PRIVATE",
+    playerCountMin: 1,
+    playerCountMax: 4,
+    estimatedDuration: null,
+    contentWarnings: null,
+  },
+  chapters: [],
+  assets: [],
+  locations: [],
+  artifacts: [],
+  publishedAt: "2026-08-13T00:00:00.000Z",
 });
 
 describe("published authored-source identity", () => {

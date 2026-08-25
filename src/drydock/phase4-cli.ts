@@ -26,7 +26,8 @@ if (!phase4Commands.has(command)) {
   if (!sourcePath) throw new Error("Usage: npm run drydock:cli -- compatibility <published-source.json>");
   const assessment = assessDrydockCompatibility(sourceSnapshot(sourcePath));
   print(assessment);
-  if (!["COMPATIBLE", "COMPATIBLE_WITH_UPCAST", "COMPATIBLE_WITH_WARNINGS"].includes(assessment.status)) process.exitCode = 1;
+  if (!["COMPATIBLE", "COMPATIBLE_WITH_UPCAST", "COMPATIBLE_WITH_WARNINGS"].includes(assessment.status))
+    process.exitCode = 1;
 } else if (command === "readiness" || command === "publish-check") {
   const inputPath = process.argv[3];
   if (!inputPath) throw new Error(`Usage: npm run drydock:cli -- ${command} <readiness-input.json>`);
@@ -61,7 +62,8 @@ function sourceSnapshot(path: string) {
 
 function readinessInput(path: string): EvaluateDrydockReadinessInput {
   const candidate = jsonDocument(path, "DRYDOCK_READINESS_INPUT_INVALID");
-  if (!candidate || typeof candidate !== "object" || Array.isArray(candidate)) throw new Error("DRYDOCK_READINESS_INPUT_INVALID");
+  if (!candidate || typeof candidate !== "object" || Array.isArray(candidate))
+    throw new Error("DRYDOCK_READINESS_INPUT_INVALID");
   const input = candidate as Partial<EvaluateDrydockReadinessInput>;
   if (
     typeof input.sourceChecksum !== "string" ||
@@ -77,6 +79,7 @@ function readinessInput(path: string): EvaluateDrydockReadinessInput {
 
 function evidenceInput(path: string): DrydockPublishingEvidencePayload {
   const candidate = jsonDocument(path, "DRYDOCK_EVIDENCE_INVALID");
-  if (!candidate || typeof candidate !== "object" || Array.isArray(candidate)) throw new Error("DRYDOCK_EVIDENCE_INVALID");
+  if (!candidate || typeof candidate !== "object" || Array.isArray(candidate))
+    throw new Error("DRYDOCK_EVIDENCE_INVALID");
   return candidate as DrydockPublishingEvidencePayload;
 }

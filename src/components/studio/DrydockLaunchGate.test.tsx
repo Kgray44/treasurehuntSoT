@@ -6,7 +6,15 @@ afterEach(() => vi.unstubAllGlobals());
 
 describe("Drydock Launch Gate", () => {
   it("shows the exact server decision and authored-source checksum", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ readiness: { status: "TRIALS_INCOMPLETE", sourceChecksum: "a".repeat(64), requiredSuites: [] } }) }));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          readiness: { status: "TRIALS_INCOMPLETE", sourceChecksum: "a".repeat(64), requiredSuites: [] },
+        }),
+      }),
+    );
     render(<DrydockLaunchGate taleId="tale-1" csrfToken="csrf" />);
     expect(screen.getByText("Checking current launch readiness…")).toBeInTheDocument();
     await waitFor(() => expect(screen.getByText("TRIALS INCOMPLETE")).toBeInTheDocument());
@@ -29,7 +37,9 @@ describe("Drydock Launch Gate", () => {
             status: "NEEDS_REPAIR",
             sourceChecksum: "b".repeat(64),
             blockingIssues: [],
-            missingEvidence: [{ id: "DD-R-LANDFALL-FIELD", resolver: "Project Landfall", capability: "LOCATION_PROVIDER" }],
+            missingEvidence: [
+              { id: "DD-R-LANDFALL-FIELD", resolver: "Project Landfall", capability: "LOCATION_PROVIDER" },
+            ],
           },
         }),
       }),

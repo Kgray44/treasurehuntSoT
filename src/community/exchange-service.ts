@@ -44,7 +44,11 @@ export async function preflightCommunityPublication(
   const drydock = assertCommunityDrydockPublicationGate(
     await db.publishedTaleVersion.findFirst({
       where: { id: release.sourcePublishedTaleVersionId },
-      select: { id: true, checksum: true, drydockPublishingEvidence: { select: { digest: true, sourceChecksum: true } } },
+      select: {
+        id: true,
+        checksum: true,
+        drydockPublishingEvidence: { select: { digest: true, sourceChecksum: true } },
+      },
     }),
   );
   const verified = verifyCommunityPackage(manifest, files);

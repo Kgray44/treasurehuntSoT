@@ -9,7 +9,12 @@ import {
 export async function getDrydockPublishingEvidence(taleId: string, versionId: string) {
   const version = await db.publishedTaleVersion.findFirst({
     where: { id: versionId, taleId },
-    select: { id: true, checksum: true, publishedAt: true, drydockPublishingEvidence: { select: { id: true, evidence: true, digest: true } } },
+    select: {
+      id: true,
+      checksum: true,
+      publishedAt: true,
+      drydockPublishingEvidence: { select: { id: true, evidence: true, digest: true } },
+    },
   });
   if (!version?.drydockPublishingEvidence) return null;
   let payload: DrydockPublishingEvidencePayload;

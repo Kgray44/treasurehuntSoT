@@ -20,10 +20,11 @@ export class PublishValidationError extends Error {
 
 export class DrydockReadinessError extends Error {
   constructor(public readonly decisionStatus: string) {
-    super("This Chronicle has not reached the Drydock launch gate. Review the current readiness decision before publishing.");
+    super(
+      "This Chronicle has not reached the Drydock launch gate. Review the current readiness decision before publishing.",
+    );
   }
 }
-
 
 export async function publishTale(
   taleId: string,
@@ -120,17 +121,26 @@ export async function publishTale(
     return { version: created, evidenceId: evidencePayload.digest, created: true };
   };
   let outcome: Awaited<ReturnType<typeof transaction>>;
-  try { outcome = await db.$transaction(transaction); }
-  catch (cause) {
-    if (!(typeof cause === "object" && cause && "code" in cause && (cause as { code?: string }).code === "P2002")) throw cause;
-    const existing = await db.publishedTaleVersion.findFirst({ where: { taleId, checksum }, include: { drydockPublishingEvidence: { select: { digest: true } } } });
+  try {
+    outcome = await db.$transaction(transaction);
+  } catch (cause) {
+    if (!(typeof cause === "object" && cause && "code" in cause && (cause as { code?: string }).code === "P2002"))
+      throw cause;
+    const existing = await db.publishedTaleVersion.findFirst({
+      where: { taleId, checksum },
+      include: { drydockPublishingEvidence: { select: { digest: true } } },
+    });
     if (!existing?.drydockPublishingEvidence) throw cause;
     outcome = { version: existing, evidenceId: existing.drydockPublishingEvidence.digest, created: false };
   }
   const { version } = outcome;
-  if (outcome.created) eventBus.emit("chronicle:catalog", {
-    type: "catalog.updated", taleId, versionId: version.id, at: version.publishedAt.toISOString(),
-  });
+  if (outcome.created)
+    eventBus.emit("chronicle:catalog", {
+      type: "catalog.updated",
+      taleId,
+      versionId: version.id,
+      at: version.publishedAt.toISOString(),
+    });
   logger.info(
     { area: "chronicle-publish", taleId, versionId: version.id, versionLabel: version.versionLabel },
     "Immutable Chronicle version published",
@@ -149,12 +159,16 @@ export function parsePublishedSnapshot(raw: string): PublishedTaleSnapshot {
   if (Buffer.byteLength(raw, "utf8") > 5 * 1024 * 1024)
     throw new Error("This Chronicle version is too large for the governed historical reader.");
   let snapshot: PublishedTaleSnapshot;
-  try { snapshot = JSON.parse(raw) as PublishedTaleSnapshot; }
-  catch { throw new Error("This Chronicle version contains invalid stored content."); }
+  try {
+    snapshot = JSON.parse(raw) as PublishedTaleSnapshot;
+  } catch {
+    throw new Error("This Chronicle version contains invalid stored content.");
+  }
   const inspect = (value: unknown, depth = 0): void => {
     if (depth > 32) throw new Error("This Chronicle version exceeds the governed historical reader depth limit.");
     if (Array.isArray(value)) {
-      if (value.length > 10_000) throw new Error("This Chronicle version exceeds the governed historical reader array limit.");
+      if (value.length > 10_000)
+        throw new Error("This Chronicle version exceeds the governed historical reader array limit.");
       value.forEach((item) => inspect(item, depth + 1));
       return;
     }

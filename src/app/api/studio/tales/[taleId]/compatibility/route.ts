@@ -9,9 +9,15 @@ const privateHeaders = { "Cache-Control": "private, no-store" };
 export async function GET(request: Request, context: { params: Promise<{ taleId: string }> }) {
   const { taleId } = await context.params;
   if (!(await requireOwnedStudioTale(taleId, request)))
-    return NextResponse.json({ error: "This Chronicle is not available to this Creator account." }, { status: 404, headers: privateHeaders });
+    return NextResponse.json(
+      { error: "This Chronicle is not available to this Creator account." },
+      { status: 404, headers: privateHeaders },
+    );
   try {
-    return NextResponse.json({ compatibility: await getDrydockCurrentCompatibility(taleId) }, { headers: privateHeaders });
+    return NextResponse.json(
+      { compatibility: await getDrydockCurrentCompatibility(taleId) },
+      { headers: privateHeaders },
+    );
   } catch (cause) {
     return apiError(cause);
   }

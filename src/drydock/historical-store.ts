@@ -3,8 +3,14 @@ import { assessDrydockCompatibility, migrationPreviewForHistoricalSnapshot } fro
 import { db } from "@/lib/db";
 
 export async function inspectHistoricalDrydockCompatibility(taleId: string, versionId: string) {
-  const version = await db.publishedTaleVersion.findFirst({ where: { id: versionId, taleId }, select: { contentSnapshot: true } });
+  const version = await db.publishedTaleVersion.findFirst({
+    where: { id: versionId, taleId },
+    select: { contentSnapshot: true },
+  });
   if (!version) return null;
   const snapshot = parsePublishedSnapshot(version.contentSnapshot);
-  return { compatibility: assessDrydockCompatibility(snapshot), migrationPreview: migrationPreviewForHistoricalSnapshot(snapshot) };
+  return {
+    compatibility: assessDrydockCompatibility(snapshot),
+    migrationPreview: migrationPreviewForHistoricalSnapshot(snapshot),
+  };
 }

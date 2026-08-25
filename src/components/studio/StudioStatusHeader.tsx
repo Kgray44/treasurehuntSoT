@@ -147,7 +147,9 @@ export function StudioStatusHeader({
           data-authority-state={publishState}
           disabled={publishState === "publishing" || !publishPermitted}
           aria-busy={publishState === "publishing"}
-          title={publishPermitted ? undefined : "Drydock has not verified the current Chronicle source for publication."}
+          title={
+            publishPermitted ? undefined : "Drydock has not verified the current Chronicle source for publication."
+          }
           onClick={onPublish}
         >
           {publishState === "publishing" ? "Publishing..." : studioCopy.publishChronicle.value}

@@ -32,7 +32,13 @@ const input = (overrides: Partial<EvaluateDrydockReadinessInput> = {}): Evaluate
   report: report(),
   requirements: [],
   requiredSuites: [{ suiteId: "baseline", revision: 1, sourceChecksum: checksum, status: "PASSED", reason: "Current" }],
-  compatibility: { sourceChecksum: checksum, policyVersion: "drydock-compatibility-v1", status: "COMPATIBLE", digest: "compat", warnings: [] },
+  compatibility: {
+    sourceChecksum: checksum,
+    policyVersion: "drydock-compatibility-v1",
+    status: "COMPATIBLE",
+    digest: "compat",
+    warnings: [],
+  },
   externalEvidence: [],
   activeWaiverIssueIds: [],
   activeWaiverIds: [],
@@ -51,7 +57,15 @@ describe("Drydock readiness", () => {
   it("fails closed when static evidence or compatibility is stale", () => {
     for (const changed of [
       input({ report: report({ sourceChecksum: "b".repeat(64) }) }),
-      input({ compatibility: { sourceChecksum: "b".repeat(64), policyVersion: "v1", status: "COMPATIBLE", digest: "x", warnings: [] } }),
+      input({
+        compatibility: {
+          sourceChecksum: "b".repeat(64),
+          policyVersion: "v1",
+          status: "COMPATIBLE",
+          digest: "x",
+          warnings: [],
+        },
+      }),
     ]) {
       expect(evaluateDrydockReadiness(changed).status).toBe("NEEDS_REPAIR");
     }
@@ -59,31 +73,131 @@ describe("Drydock readiness", () => {
 
   it("keeps current-source missing or stale Scenario evidence in a distinct trial state", () => {
     expect(
-      evaluateDrydockReadiness(input({ requiredSuites: [{ suiteId: "timer", revision: 1, sourceChecksum: checksum, status: "STALE", reason: "Source changed" }] })).status,
+      evaluateDrydockReadiness(
+        input({
+          requiredSuites: [
+            { suiteId: "timer", revision: 1, sourceChecksum: checksum, status: "STALE", reason: "Source changed" },
+          ],
+        }),
+      ).status,
     ).toBe("TRIALS_INCOMPLETE");
   });
 
   it("requires matching provider evidence instead of allowing an unrelated present reference", () => {
-    const requirement = { id: "landfall", version: "1", capability: "LOCATION_PROVIDER", requirementType: "EXTERNAL" as const, mandatory: true, resolver: "Landfall", providerId: "landfall", providerVersion: "adapter-v1", evidenceKind: "field-evidence" };
-    expect(evaluateDrydockReadiness(input({ requirements: [requirement], externalEvidence: [{ providerId: "other", providerVersion: "adapter-v1", evidenceKind: "field-evidence", status: "PRESENT", safeSummary: "Other provider" }] })).status).toBe("NEEDS_REPAIR");
-    expect(evaluateDrydockReadiness(input({ requirements: [requirement], externalEvidence: [{ providerId: "landfall", providerVersion: "adapter-v1", evidenceKind: "field-evidence", status: "PRESENT", safeSummary: "Current reference" }] })).status).toBe("VERIFIED");
+    const requirement = {
+      id: "landfall",
+      version: "1",
+      capability: "LOCATION_PROVIDER",
+      requirementType: "EXTERNAL" as const,
+      mandatory: true,
+      resolver: "Landfall",
+      providerId: "landfall",
+      providerVersion: "adapter-v1",
+      evidenceKind: "field-evidence",
+    };
+    expect(
+      evaluateDrydockReadiness(
+        input({
+          requirements: [requirement],
+          externalEvidence: [
+            {
+              providerId: "other",
+              providerVersion: "adapter-v1",
+              evidenceKind: "field-evidence",
+              status: "PRESENT",
+              safeSummary: "Other provider",
+            },
+          ],
+        }),
+      ).status,
+    ).toBe("NEEDS_REPAIR");
+    expect(
+      evaluateDrydockReadiness(
+        input({
+          requirements: [requirement],
+          externalEvidence: [
+            {
+              providerId: "landfall",
+              providerVersion: "adapter-v1",
+              evidenceKind: "field-evidence",
+              status: "PRESENT",
+              safeSummary: "Current reference",
+            },
+          ],
+        }),
+      ).status,
+    ).toBe("VERIFIED");
   });
 
   it("fails closed for source-derived accessibility evidence until the matching receipt is present", () => {
-    const requirement = { id: "artifact-accessibility", version: "1", capability: "ARTIFACT_3D", requirementType: "ACCESSIBILITY" as const, mandatory: true, resolver: "Artifact provider", providerId: "artifact", providerVersion: "adapter-unavailable", evidenceKind: "accessibility-evidence" };
+    const requirement = {
+      id: "artifact-accessibility",
+      version: "1",
+      capability: "ARTIFACT_3D",
+      requirementType: "ACCESSIBILITY" as const,
+      mandatory: true,
+      resolver: "Artifact provider",
+      providerId: "artifact",
+      providerVersion: "adapter-unavailable",
+      evidenceKind: "accessibility-evidence",
+    };
     expect(evaluateDrydockReadiness(input({ requirements: [requirement] })).status).toBe("NEEDS_REPAIR");
-    expect(evaluateDrydockReadiness(input({ requirements: [requirement], externalEvidence: [{ providerId: "artifact", providerVersion: "adapter-unavailable", evidenceKind: "accessibility-evidence", status: "PRESENT", safeSummary: "Synthetic task-owned receipt" }] })).status).toBe("VERIFIED");
+    expect(
+      evaluateDrydockReadiness(
+        input({
+          requirements: [requirement],
+          externalEvidence: [
+            {
+              providerId: "artifact",
+              providerVersion: "adapter-unavailable",
+              evidenceKind: "accessibility-evidence",
+              status: "PRESENT",
+              safeSummary: "Synthetic task-owned receipt",
+            },
+          ],
+        }),
+      ).status,
+    ).toBe("VERIFIED");
   });
 
   it("keeps valid source-bound warnings visible without treating them as a repair failure", () => {
-    const warning = { id: "warning-1", code: "DD-WARN", severity: "WARNING" as const, ruleVersion: 1, category: "GRAPH" as const, location: {}, message: "Review", remediation: "Review" };
-    expect(evaluateDrydockReadiness(input({ report: report({ issues: [warning], summary: { total: 1, errors: 0, warnings: 1, infos: 0 } }) })).status).toBe("READY_WITH_WARNINGS");
-    expect(evaluateDrydockReadiness(input({ report: report({ issues: [warning], summary: { total: 1, errors: 0, warnings: 1, infos: 0 } }), activeWaiverIssueIds: [warning.id], activeWaiverIds: ["waiver-1"] })).status).toBe("READY_WITH_WARNINGS");
+    const warning = {
+      id: "warning-1",
+      code: "DD-WARN",
+      severity: "WARNING" as const,
+      ruleVersion: 1,
+      category: "GRAPH" as const,
+      location: {},
+      message: "Review",
+      remediation: "Review",
+    };
+    expect(
+      evaluateDrydockReadiness(
+        input({ report: report({ issues: [warning], summary: { total: 1, errors: 0, warnings: 1, infos: 0 } }) }),
+      ).status,
+    ).toBe("READY_WITH_WARNINGS");
+    expect(
+      evaluateDrydockReadiness(
+        input({
+          report: report({ issues: [warning], summary: { total: 1, errors: 0, warnings: 1, infos: 0 } }),
+          activeWaiverIssueIds: [warning.id],
+          activeWaiverIds: ["waiver-1"],
+        }),
+      ).status,
+    ).toBe("READY_WITH_WARNINGS");
   });
 
   it("never represents a publication request as success before the authoritative transaction returns", () => {
     expect(evaluateDrydockReadiness(input({ publication: { status: "PENDING" } })).status).toBe("PUBLICATION_PENDING");
-    expect(evaluateDrydockReadiness(input({ publication: { status: "FAILED", safeFailureCode: "PUBLISH_TRANSACTION_FAILED" } })).status).toBe("PUBLICATION_FAILED");
-    expect(evaluateDrydockReadiness(input({ publication: { status: "PUBLISHED", publishedVersionId: "version-1", evidenceId: "evidence-1" } })).status).toBe("PUBLISHED");
+    expect(
+      evaluateDrydockReadiness(
+        input({ publication: { status: "FAILED", safeFailureCode: "PUBLISH_TRANSACTION_FAILED" } }),
+      ).status,
+    ).toBe("PUBLICATION_FAILED");
+    expect(
+      evaluateDrydockReadiness(
+        input({ publication: { status: "PUBLISHED", publishedVersionId: "version-1", evidenceId: "evidence-1" } }),
+      ).status,
+    ).toBe("PUBLISHED");
   });
 });

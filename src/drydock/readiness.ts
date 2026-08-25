@@ -132,15 +132,22 @@ function requirementMissing(requirement: DrydockEvidenceRequirement, input: Eval
   if (requirement.requirementType === "STATIC")
     return !input.report || input.report.sourceChecksum !== input.sourceChecksum || input.report.status !== "VALID";
   if (requirement.requirementType === "SCENARIO_SUITE")
-    return !input.requiredSuites.some((suite) => suite.status === "PASSED" && suite.sourceChecksum === input.sourceChecksum);
+    return !input.requiredSuites.some(
+      (suite) => suite.status === "PASSED" && suite.sourceChecksum === input.sourceChecksum,
+    );
   if (requirement.requirementType === "COMPATIBILITY")
-    return !input.compatibility || input.compatibility.sourceChecksum !== input.sourceChecksum || !compatibilityAllowsLaunch(input.compatibility.status);
+    return (
+      !input.compatibility ||
+      input.compatibility.sourceChecksum !== input.sourceChecksum ||
+      !compatibilityAllowsLaunch(input.compatibility.status)
+    );
   if (["EXTERNAL", "SECURITY", "ACCESSIBILITY"].includes(requirement.requirementType))
-    return !input.externalEvidence.some((evidence) =>
-      evidence.status === "PRESENT" &&
-      (!requirement.providerId || evidence.providerId === requirement.providerId) &&
-      (!requirement.providerVersion || evidence.providerVersion === requirement.providerVersion) &&
-      (!requirement.evidenceKind || evidence.evidenceKind === requirement.evidenceKind),
+    return !input.externalEvidence.some(
+      (evidence) =>
+        evidence.status === "PRESENT" &&
+        (!requirement.providerId || evidence.providerId === requirement.providerId) &&
+        (!requirement.providerVersion || evidence.providerVersion === requirement.providerVersion) &&
+        (!requirement.evidenceKind || evidence.evidenceKind === requirement.evidenceKind),
     );
   return false;
 }
@@ -156,7 +163,8 @@ export function compatibilityAllowsLaunch(status: DrydockCompatibilityStatus): b
  */
 export function evaluateDrydockReadiness(input: EvaluateDrydockReadinessInput): DrydockReadinessDecision {
   if (input.checking) return { status: "CHECKING", sourceChecksum: input.sourceChecksum };
-  if (input.publication?.status === "PENDING") return { status: "PUBLICATION_PENDING", sourceChecksum: input.sourceChecksum };
+  if (input.publication?.status === "PENDING")
+    return { status: "PUBLICATION_PENDING", sourceChecksum: input.sourceChecksum };
   if (input.publication?.status === "PUBLISHED")
     return {
       status: "PUBLISHED",
@@ -165,7 +173,11 @@ export function evaluateDrydockReadiness(input: EvaluateDrydockReadinessInput): 
       evidenceId: input.publication.evidenceId,
     };
   if (input.publication?.status === "FAILED")
-    return { status: "PUBLICATION_FAILED", sourceChecksum: input.sourceChecksum, safeFailureCode: input.publication.safeFailureCode };
+    return {
+      status: "PUBLICATION_FAILED",
+      sourceChecksum: input.sourceChecksum,
+      safeFailureCode: input.publication.safeFailureCode,
+    };
 
   const report = input.report;
   const waiverIssueIds = new Set(input.activeWaiverIssueIds);
@@ -177,11 +189,20 @@ export function evaluateDrydockReadiness(input: EvaluateDrydockReadinessInput): 
     input.requirements.filter((requirement) => requirementMissing(requirement, input)),
     (requirement) => requirement.id,
   );
-  const compatibilityBlocked = !input.compatibility ||
+  const compatibilityBlocked =
+    !input.compatibility ||
     input.compatibility.sourceChecksum !== input.sourceChecksum ||
     !compatibilityAllowsLaunch(input.compatibility.status);
 
-  if (!report || report.sourceChecksum !== input.sourceChecksum || report.status !== "VALID" || report.proof.completeness !== "COMPLETE" || blockingIssues.length || missingEvidence.length || compatibilityBlocked)
+  if (
+    !report ||
+    report.sourceChecksum !== input.sourceChecksum ||
+    report.status !== "VALID" ||
+    report.proof.completeness !== "COMPLETE" ||
+    blockingIssues.length ||
+    missingEvidence.length ||
+    compatibilityBlocked
+  )
     return { status: "NEEDS_REPAIR", sourceChecksum: input.sourceChecksum, blockingIssues, missingEvidence };
 
   const requiredSuites = stable(input.requiredSuites, (suite) => `${suite.suiteId}:${suite.revision}`);
@@ -192,7 +213,10 @@ export function evaluateDrydockReadiness(input: EvaluateDrydockReadinessInput): 
     report.issues.filter((issue) => issue.severity === "WARNING" && !waiverIssueIds.has(issue.id)),
     (issue) => issue.id,
   ).map(issueRef);
-  const externalEvidence = stable(input.externalEvidence, (evidence) => `${evidence.providerId}:${evidence.evidenceKind}`);
+  const externalEvidence = stable(
+    input.externalEvidence,
+    (evidence) => `${evidence.providerId}:${evidence.evidenceKind}`,
+  );
   if ((warnings.length || input.activeWaiverIds.length) && input.allowWarnings !== false)
     return {
       status: "READY_WITH_WARNINGS",
@@ -210,12 +234,20 @@ export function evaluateDrydockReadiness(input: EvaluateDrydockReadinessInput): 
     validationRunId: report.runId,
     requiredSuitePolicyVersion: DRYDOCK_REQUIRED_SUITE_POLICY_VERSION,
     requiredScenarioSuiteIds: requiredSuites.map((suite) => suite.suiteId),
-    scenarioRunIds: requiredSuites.flatMap((suite) => suite.runIds ?? []).sort((left, right) => left.localeCompare(right, "en")),
-    coverageDigest: canonicalChecksum(requiredSuites.map((suite) => ({ suiteId: suite.suiteId, coverageDigest: suite.coverageDigest ?? null }))),
+    scenarioRunIds: requiredSuites
+      .flatMap((suite) => suite.runIds ?? [])
+      .sort((left, right) => left.localeCompare(right, "en")),
+    coverageDigest: canonicalChecksum(
+      requiredSuites.map((suite) => ({ suiteId: suite.suiteId, coverageDigest: suite.coverageDigest ?? null })),
+    ),
     compatibilityPolicyVersion: input.compatibility.policyVersion,
     compatibilityDigest: input.compatibility.digest,
     externalEvidenceDigest: canonicalChecksum(externalEvidence),
     waiverIds: [...input.activeWaiverIds].sort((left, right) => left.localeCompare(right, "en")),
   } as const;
-  return { status: "VERIFIED", sourceChecksum: input.sourceChecksum, evidenceDraft: { ...evidenceDraft, draftDigest: canonicalChecksum(evidenceDraft) } };
+  return {
+    status: "VERIFIED",
+    sourceChecksum: input.sourceChecksum,
+    evidenceDraft: { ...evidenceDraft, draftDigest: canonicalChecksum(evidenceDraft) },
+  };
 }

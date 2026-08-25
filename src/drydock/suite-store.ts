@@ -9,10 +9,7 @@ import { canonicalChecksum } from "@/drydock/canonical";
 import type { DrydockSimulationResult } from "@/drydock/simulation/engine";
 import { parseDrydockScenarioSuite } from "@/drydock/simulation/suite";
 import { drydockSimulationSourceChecksum } from "@/drydock/simulation/source";
-import {
-  DRYDOCK_COMPATIBILITY_POLICY_VERSION,
-  DRYDOCK_REQUIRED_SUITE_POLICY_VERSION,
-} from "@/drydock/readiness";
+import { DRYDOCK_COMPATIBILITY_POLICY_VERSION, DRYDOCK_REQUIRED_SUITE_POLICY_VERSION } from "@/drydock/readiness";
 import { ONE_VOYAGE_TRANSITION_ADAPTER_VERSION } from "@/drydock/simulation/engine";
 import { db } from "@/lib/db";
 
@@ -179,7 +176,14 @@ export async function runDrydockScenarioSuite(taleId: string, suiteId: string, s
       coverageDigest: canonicalChecksum(coverage),
       proofStatus,
     },
-    select: { id: true, sourceChecksum: true, suiteRevision: true, coverageDigest: true, proofStatus: true, createdAt: true },
+    select: {
+      id: true,
+      sourceChecksum: true,
+      suiteRevision: true,
+      coverageDigest: true,
+      proofStatus: true,
+      createdAt: true,
+    },
   });
   return {
     suite: suiteProjection(record),
