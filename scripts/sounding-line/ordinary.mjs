@@ -30,6 +30,7 @@ const controlPlanePaths = [
 ];
 const testFile = /(?:\.test|\.spec)\.(?:[cm]?[jt]sx?)$/u;
 const e2eFile = /^tests\/e2e\/.*\.spec\.[jt]sx?$/u;
+const tideglassPhase3BrowserTest = "tests/e2e/tideglass-phase3.spec.ts";
 const textFile = /\.(?:[cm]?[jt]sx?|json|ya?ml|md|css)$/u;
 const lintableFile = /\.(?:[cm]?[jt]sx?)$/u;
 const broadDomainTokens = new Set(["community", "exchange", "harborlight"]);
@@ -133,7 +134,18 @@ export function soundingLineDatabaseUrl(candidateSha) {
   return `file:./.sounding-line-${candidateSha.slice(0, 12)}.sqlite`;
 }
 
+function tideglassTaskRoot(candidateSha) {
+  return path.posix.join("ProjectTideglass", `.sounding-line-tideglass-phase3-${candidateSha.slice(0, 12)}`);
+}
+
 export function verificationEnvironment(plan, command, argumentsList, environment = process.env) {
+  if (command === process.execPath && argumentsList[0] === "scripts/tideglass/run-phase3-journeys.mjs") {
+    return {
+      LOCALAPPDATA: ".",
+      TIDEGLASS_PHASE3_TASK_ROOT: tideglassTaskRoot(plan.candidateSha),
+      ...(plan.buildRequired ? { TIDEGLASS_PHASE3_REUSE_BUILD: "1" } : {}),
+    };
+  }
   if (command === "npx" && (argumentsList.includes("prisma") || argumentsList.includes("playwright")))
     return { DATABASE_URL: environment.DATABASE_URL ?? plan.databaseUrl };
   return {};
@@ -222,6 +234,10 @@ export function verificationCommands(plan) {
   for (const script of plan.migrationScripts ?? []) commands.push(["npx", ["--no-install", "tsx", script]]);
   if (plan.buildRequired) commands.push(["npm", ["run", "build"]]);
   if (plan.selected.browserTests.length) {
+    const genericBrowserTests = plan.selected.browserTests.filter((file) => file !== tideglassPhase3BrowserTest);
+    if (plan.selected.browserTests.includes(tideglassPhase3BrowserTest))
+      commands.push([process.execPath, ["scripts/tideglass/run-phase3-journeys.mjs"]]);
+    if (!genericBrowserTests.length) return commands;
     commands.push([
       process.execPath,
       ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", plan.databaseUrl],
@@ -232,7 +248,7 @@ export function verificationCommands(plan) {
         "--no-install",
         "playwright",
         "test",
-        ...plan.selected.browserTests,
+        ...genericBrowserTests,
         ...(plan.mode === "ordinary" ? ["--project", "chromium"] : []),
       ],
     ]);
