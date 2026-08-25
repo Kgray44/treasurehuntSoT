@@ -287,7 +287,8 @@ function assignQueueActions(candidates, changedPathsByPr, currentnessReasonsByPr
     candidate.seat = index + 1;
     const reasons = currentnessReasons(candidate, changedPathsByPr, currentnessReasonsByPr);
     if (candidate.seat === 1)
-      candidate.action = candidate.handoff.pr === finalizingPr || !reasons.length ? "FINALIZE_NEXT" : "RECONCILIATION_REQUIRED";
+      candidate.action =
+        candidate.handoff.pr === finalizingPr || !reasons.length ? "FINALIZE_NEXT" : "RECONCILIATION_REQUIRED";
     else if (candidate.seat === 2) candidate.action = reasons.length ? "WARM_RECONCILE" : "WARM_STANDBY";
     else candidate.action = "HOLD";
     if (candidate.seat <= 2 && reasons.length)
@@ -369,10 +370,7 @@ export function evaluateAfterMerge({
     prStates: effectivePrStates,
     changedPathsByPr: Object.fromEntries(handoffs.map((handoff) => [handoff.pr, mergedPaths])),
     currentnessReasonsByPr: Object.fromEntries(
-      handoffs.map((handoff) => [
-        handoff.pr,
-        materiallyAffected({ merged, candidate: handoff, mergedPaths }),
-      ]),
+      handoffs.map((handoff) => [handoff.pr, materiallyAffected({ merged, candidate: handoff, mergedPaths })]),
     ),
   });
   const affected = result.candidates
@@ -404,10 +402,7 @@ export function readMergePaths(root, mergeSha) {
 }
 
 export function readChangedPathsSinceBase(root, baseSha, mainSha) {
-  return runGit(root, ["diff", "--name-only", baseSha, mainSha])
-    .split(/\r?\n/gu)
-    .filter(Boolean)
-    .map(normalizePath);
+  return runGit(root, ["diff", "--name-only", baseSha, mainSha]).split(/\r?\n/gu).filter(Boolean).map(normalizePath);
 }
 
 export function readPrStates(root, handoffs) {
@@ -477,7 +472,9 @@ function reportHuman(result, prAvailable) {
   lines.push("READY");
   if (result.readyOrder.length)
     result.readyOrder.forEach((candidate) =>
-      lines.push(`${candidate.seat}. [P${candidate.priorityLevel}] ${candidate.project} — PR #${candidate.pr} — ${candidate.action.replace(/_/gu, " ")}`),
+      lines.push(
+        `${candidate.seat}. [P${candidate.priorityLevel}] ${candidate.project} — PR #${candidate.pr} — ${candidate.action.replace(/_/gu, " ")}`,
+      ),
     );
   else lines.push("none");
   for (const state of STATES.filter((value) => value !== "READY")) {
