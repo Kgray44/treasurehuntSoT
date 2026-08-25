@@ -12,6 +12,7 @@ import {
   packageAuthorityChanges,
   requiresMigrationValidation,
   requiresBuild,
+  runVerificationCommands,
   selectAffectedTests,
   soundingLineDatabaseUrl,
   verificationEnvironment,
@@ -420,6 +421,94 @@ test("Tideglass browser proof uses its dedicated isolated harness", () => {
       TIDEGLASS_PHASE3_REUSE_BUILD: "1",
     },
   );
+});
+
+test("Admiralty Phase 2 browser proof uses its dedicated isolated harness", () => {
+  const candidateSha = "b".repeat(40);
+  const browserCommands = verificationCommands({
+    mode: "ordinary",
+    candidateSha,
+    safetyPaths: [],
+    lintPaths: [],
+    selected: { unitTests: [], browserTests: ["tests/e2e/admiralty-phase2.spec.ts"] },
+    databaseUrl: "file:./.sounding-line-candidate.sqlite",
+    migrationRequired: false,
+    migrationScripts: [],
+    buildRequired: true,
+  });
+  assert.deepEqual(browserCommands.filter(([, argumentsList]) => argumentsList.includes("playwright")), []);
+  assert.deepEqual(browserCommands.at(-1), [process.execPath, ["scripts/admiralty/run-phase2-journeys.mjs"]]);
+  assert.deepEqual(
+    verificationEnvironment(
+      { candidateSha, buildRequired: true },
+      process.execPath,
+      ["scripts/admiralty/run-phase2-journeys.mjs"],
+      { ADMIRALTY_PHASE2_PRIVATE_CREDENTIALS: "not-used" },
+    ),
+    {
+      LOCALAPPDATA: ".",
+      ADMIRALTY_PHASE2_TASK_ROOT: "ProjectAdmiralty/.sounding-line-admiralty-phase2-bbbbbbbbbbbb",
+      NEXT_DIST_DIR: ".next",
+      ADMIRALTY_PHASE2_REUSE_BUILD: "1",
+    },
+  );
+});
+
+test("Admiralty Phase 2 leaves mixed generic browser proof selected exactly once", () => {
+  const browserCommands = verificationCommands({
+    mode: "ordinary",
+    candidateSha: "c".repeat(40),
+    safetyPaths: [],
+    lintPaths: [],
+    selected: {
+      unitTests: [],
+      browserTests: ["tests/e2e/admiralty-phase2.spec.ts", "tests/e2e/admiralty-phase3.spec.ts"],
+    },
+    databaseUrl: "file:./.sounding-line-candidate.sqlite",
+    migrationRequired: false,
+    migrationScripts: [],
+    buildRequired: true,
+  });
+  const browserHarnessCommands = browserCommands.filter(
+    ([command, argumentsList]) =>
+      (command === process.execPath &&
+        ["scripts/admiralty/run-phase2-journeys.mjs", "scripts/sounding-line/sqlite-bootstrap.mjs"].includes(
+          argumentsList[0],
+        )) ||
+      (command === "npx" && argumentsList.includes("playwright")),
+  );
+  assert.deepEqual(browserHarnessCommands, [
+    [process.execPath, ["scripts/admiralty/run-phase2-journeys.mjs"]],
+    [
+      process.execPath,
+      ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
+    ],
+    ["npx", ["--no-install", "playwright", "test", "tests/e2e/admiralty-phase3.spec.ts", "--project", "chromium"]],
+  ]);
+});
+
+test("Admiralty Phase 2 dedicated harness failures fail verification normally", () => {
+  const plan = {
+    mode: "ordinary",
+    candidateSha: "d".repeat(40),
+    safetyPaths: [],
+    lintPaths: [],
+    selected: { unitTests: [], browserTests: ["tests/e2e/admiralty-phase2.spec.ts"] },
+    databaseUrl: "file:./.sounding-line-candidate.sqlite",
+    migrationRequired: false,
+    migrationScripts: [],
+    buildRequired: false,
+  };
+  const calls = [];
+  assert.throws(
+    () =>
+      runVerificationCommands(".", plan, (_root, command, argumentsList) => {
+        calls.push([command, argumentsList]);
+        if (argumentsList[0] === "scripts/admiralty/run-phase2-journeys.mjs") throw new Error("ADMIRALTY_HARNESS_FAILED");
+      }),
+    /ADMIRALTY_HARNESS_FAILED/u,
+  );
+  assert.deepEqual(calls.at(-1), [process.execPath, ["scripts/admiralty/run-phase2-journeys.mjs"]]);
 });
 
 test("SQLite bootstrap preserves quoted semicolons while ignoring migration comments", () => {

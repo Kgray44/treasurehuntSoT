@@ -31,6 +31,7 @@ const controlPlanePaths = [
 ];
 const testFile = /(?:\.test|\.spec)\.(?:[cm]?[jt]sx?)$/u;
 const e2eFile = /^tests\/e2e\/.*\.spec\.[jt]sx?$/u;
+const admiraltyPhase2BrowserTest = "tests/e2e/admiralty-phase2.spec.ts";
 const tideglassPhase3BrowserTest = "tests/e2e/tideglass-phase3.spec.ts";
 const textFile = /\.(?:[cm]?[jt]sx?|json|ya?ml|md|css)$/u;
 const lintableFile = /\.(?:[cm]?[jt]sx?)$/u;
@@ -179,7 +180,19 @@ function tideglassTaskRoot(candidateSha) {
   return path.posix.join("ProjectTideglass", `.sounding-line-tideglass-phase3-${candidateSha.slice(0, 12)}`);
 }
 
+function admiraltyPhase2TaskRoot(candidateSha) {
+  return path.posix.join("ProjectAdmiralty", `.sounding-line-admiralty-phase2-${candidateSha.slice(0, 12)}`);
+}
+
 export function verificationEnvironment(plan, command, argumentsList, environment = process.env) {
+  if (command === process.execPath && argumentsList[0] === "scripts/admiralty/run-phase2-journeys.mjs") {
+    return {
+      LOCALAPPDATA: ".",
+      ADMIRALTY_PHASE2_TASK_ROOT: admiraltyPhase2TaskRoot(plan.candidateSha),
+      NEXT_DIST_DIR: ".next",
+      ...(plan.buildRequired ? { ADMIRALTY_PHASE2_REUSE_BUILD: "1" } : {}),
+    };
+  }
   if (command === process.execPath && argumentsList[0] === "scripts/tideglass/run-phase3-journeys.mjs") {
     return {
       LOCALAPPDATA: ".",
@@ -288,7 +301,11 @@ export function verificationCommands(plan) {
   for (const script of plan.migrationScripts ?? []) commands.push(["npx", ["--no-install", "tsx", script]]);
   if (plan.buildRequired) commands.push(["npm", ["run", "build"]]);
   if (plan.selected.browserTests.length) {
-    const genericBrowserTests = plan.selected.browserTests.filter((file) => file !== tideglassPhase3BrowserTest);
+    const genericBrowserTests = plan.selected.browserTests.filter(
+      (file) => file !== admiraltyPhase2BrowserTest && file !== tideglassPhase3BrowserTest,
+    );
+    if (plan.selected.browserTests.includes(admiraltyPhase2BrowserTest))
+      commands.push([process.execPath, ["scripts/admiralty/run-phase2-journeys.mjs"]]);
     if (plan.selected.browserTests.includes(tideglassPhase3BrowserTest))
       commands.push([process.execPath, ["scripts/tideglass/run-phase3-journeys.mjs"]]);
     if (!genericBrowserTests.length) return commands;
@@ -310,6 +327,11 @@ export function verificationCommands(plan) {
   return commands;
 }
 
+export function runVerificationCommands(root, plan, runCommand = run) {
+  for (const [command, argumentsList] of verificationCommands(plan))
+    runCommand(root, command, argumentsList, { env: verificationEnvironment(plan, command, argumentsList) });
+}
+
 async function main() {
   const options = Object.fromEntries(
     process.argv.slice(2).reduce((pairs, value, index, values) => {
@@ -325,8 +347,7 @@ async function main() {
   const plan = await buildPlan({ root, baseSha, candidateSha, mode });
   const result = { ...plan, planDigest: hash(plan), startedAt: new Date().toISOString(), decision: "FAIL" };
   try {
-    for (const [command, argumentsList] of verificationCommands(plan))
-      run(root, command, argumentsList, { env: verificationEnvironment(plan, command, argumentsList) });
+    runVerificationCommands(root, plan);
     result.decision = "PASS";
   } catch (error) {
     result.error = error instanceof Error ? error.message : String(error);
