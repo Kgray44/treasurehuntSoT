@@ -23,8 +23,14 @@ export type TideglassCanonicalCacheEntry = {
   targetAdapters: string[];
 };
 
+export type TideglassCanonicalCacheRead = {
+  entry: TideglassCanonicalCacheEntry | undefined;
+  status: "HIT" | "MISS" | "CORRUPT";
+};
+
 export interface TideglassComparisonCache {
   getCanonicalChangeSet(key: TideglassCanonicalCacheKey): TideglassCanonicalCacheEntry | undefined;
+  readCanonicalChangeSet?(key: TideglassCanonicalCacheKey): TideglassCanonicalCacheRead;
   setCanonicalChangeSet(key: TideglassCanonicalCacheKey, value: TideglassCanonicalCacheEntry): void;
   invalidatePolicyVersion(version: string): number;
   clearCorruptEntry(key: TideglassCanonicalCacheKey): void;
@@ -65,16 +71,20 @@ export class BoundedTideglassComparisonCache implements TideglassComparisonCache
   }
 
   getCanonicalChangeSet(key: TideglassCanonicalCacheKey) {
+    return this.readCanonicalChangeSet(key).entry;
+  }
+
+  readCanonicalChangeSet(key: TideglassCanonicalCacheKey): TideglassCanonicalCacheRead {
     const identity = cacheIdentity(key);
     const entry = this.entries.get(identity);
-    if (!entry) return undefined;
+    if (!entry) return { entry: undefined, status: "MISS" };
     if (!hasValidChangeSetDigest(entry.changeSet)) {
       this.entries.delete(identity);
-      return undefined;
+      return { entry: undefined, status: "CORRUPT" };
     }
     this.entries.delete(identity);
     this.entries.set(identity, entry);
-    return clone(entry);
+    return { entry: clone(entry), status: "HIT" };
   }
 
   setCanonicalChangeSet(key: TideglassCanonicalCacheKey, value: TideglassCanonicalCacheEntry) {

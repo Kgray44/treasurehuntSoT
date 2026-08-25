@@ -23,7 +23,7 @@ import {
   type TideglassComparisonResult,
 } from "./core";
 
-export const tideglassAudiences = ["PUBLIC_PREVIEW", "PLAYER_SAFE", "CREATOR_FULL"] as const;
+export const tideglassAudiences = ["PUBLIC_PREVIEW", "PLAYER_SAFE", "CAPTAIN_SAFE", "CREATOR_FULL"] as const;
 export type TideglassAudience = (typeof tideglassAudiences)[number];
 export const tideglassSummaryModes = ["CONCISE", "DETAILED"] as const;
 export type TideglassSummaryMode = (typeof tideglassSummaryModes)[number];
@@ -204,6 +204,7 @@ export function selectTideglassAudience(
 ): TideglassAudience {
   const rank = new Map<TideglassAudience, number>([
     ["PUBLIC_PREVIEW", 0],
+    ["CAPTAIN_SAFE", 0],
     ["PLAYER_SAFE", 1],
     ["CREATOR_FULL", 2],
   ]);

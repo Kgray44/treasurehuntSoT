@@ -1474,7 +1474,7 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 ## FT-B009 - Tideglass Chronicle Edition Intelligence
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Tideglass Phases 1-3
+**Program or subsystem:** Project Tideglass Phases 1-4
 
 Tideglass compares exact immutable Chronicle editions, explains semantic change in an ordinary spoiler-safe What Changed experience, anchors comparison to a player's retained Voyage history, and gives Creator Studio the same canonical semantic truth without changing published or live Voyage state.
 
@@ -1498,6 +1498,9 @@ Tideglass compares exact immutable Chronicle editions, explains semantic change 
 - Wakebook Journey Detail See what's changed handoff
 - Spoiler disclosure, concise/detailed modes, category filters, compatibility, and accessibility presentation
 - Creator Studio published-version comparison through canonical semantic projection
+- Drydock historical migration reader with bounded unavailable sections
+- Captain-safe selected-to-recommended edition preflight
+- Same-Chronicle Harborlight release handoff
 
 ### Primary surfaces
 
@@ -1505,14 +1508,16 @@ Tideglass compares exact immutable Chronicle editions, explains semantic change 
 
 ### Meaningful limitations
 
-- Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.
-- Final Harborlight update integration and any accepted Captain/Helm visual comparison consumer remain deferred to later work.
+- Unsupported or unsafe historical semantics remain explicitly unavailable rather than being silently upcast.
 
 ### Evidence
 
 - path: `src/tideglass/service.ts`
 - path: `src/tideglass/intelligence.ts`
 - path: `src/tideglass/annotations.ts`
+- path: `src/tideglass/drydock-adapter.ts`
+- path: `src/tideglass/helm-preflight.ts`
+- path: `src/tideglass/harborlight.ts`
 - path: `src/components/tideglass/TideglassPassage.tsx`
 - path: `src/components/tideglass/TideglassStudioComparison.tsx`
 - test: `tests/tideglass`

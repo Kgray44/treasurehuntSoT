@@ -71,15 +71,15 @@ last_reviewed: 2026-08-24
   perspective boundaries. This is automated protected-mainline source evidence,
   not deployment, live-Voyage proof, or owner acceptance.
 
-- Project Tideglass Phase 3 is a frozen, owner-accepted candidate on its
-  dedicated branch: a discoverable Chronicle `What changed?` route, exact
-  owner-bound Passport history entry, publishing-owned recommended target,
-  spoiler-safe concise/detailed semantic views, category filtering, edition
-  context, and semantic Creator Studio comparison. The storage-oriented Studio
-  product diff is retired. A v2 task-owned fixture exercises history, partial,
-  branch/ending/setup/accessibility/compatibility, and Creator-annotation
-  outcomes. Protected merge, deployment, and live-provider claims remain
-  pending.
+- Integrated Project Tideglass Phases 3-4 on canonical main. The ordinary
+  **What changed?** journey preserves exact edition and owner-bound history
+  context across Chronicle, Passport, Studio, Captain, and same-Chronicle
+  Community surfaces. Phase 4 adds a bounded Drydock historical reader,
+  Captain-safe selected-to-recommended preflight, and safe Harborlight release
+  handoff; unsupported historical semantics remain explicitly unavailable.
+  The product path passed focused local checks and an isolated synthetic browser
+  journey. Deployment, live-Voyage, and production-provider proof remain
+  separate.
 
 - Added Project Helm Phase 1 participating-Captain operation. Voyage creation
   now defaults to Captain-only and offers an explicit Captain + Player mode

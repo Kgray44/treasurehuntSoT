@@ -86,7 +86,7 @@ export type TideglassSummaryLine = {
   spoilerLevel: ComparisonSpoilerLevel;
   changeIds: string[];
   changeCodes: string[];
-  audienceEligibility: Array<"PUBLIC_PREVIEW" | "PLAYER_SAFE" | "CREATOR_FULL">;
+  audienceEligibility: Array<"PUBLIC_PREVIEW" | "PLAYER_SAFE" | "CAPTAIN_SAFE" | "CREATOR_FULL">;
   parameters: Record<string, JsonValue>;
 };
 
@@ -298,7 +298,7 @@ export function assessTideglassSignificance(
 }
 
 function eligibility(spoilerLevel: ComparisonSpoilerLevel): TideglassSummaryLine["audienceEligibility"] {
-  const audiences = ["PUBLIC_PREVIEW", "PLAYER_SAFE", "CREATOR_FULL"] as const;
+  const audiences = ["PUBLIC_PREVIEW", "PLAYER_SAFE", "CAPTAIN_SAFE", "CREATOR_FULL"] as const;
   return audiences.filter((audience) => projectionPolicy.audiences[audience][spoilerLevel] !== "WITHHELD");
 }
 
