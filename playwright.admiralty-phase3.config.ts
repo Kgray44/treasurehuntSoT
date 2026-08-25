@@ -9,9 +9,9 @@ const distDir = process.env.NEXT_DIST_DIR ?? ".next";
 const serverCommand =
   process.env.ADMIRALTY_PHASE3_SERVER_COMMAND ??
   `"${process.execPath}" node_modules/next/dist/bin/next start -H 127.0.0.1 -p ${port}`;
+process.env.DATABASE_URL = `file:${databasePath.replaceAll("\\", "/")}`;
 const env = {
   ...process.env,
-  DATABASE_URL: `file:${databasePath.replaceAll("\\", "/")}`,
   NEXT_DIST_DIR: distDir,
   VOYAGEWRIGHT_BUILD_SHA: required("ADMIRALTY_PHASE3_SOURCE_SHA"),
 };
@@ -19,6 +19,7 @@ const env = {
 export default defineConfig({
   testDir: "./tests/e2e",
   testMatch: /admiralty-phase3\.spec\.ts/u,
+  globalSetup: "./tests/admiralty/phase3/global-setup.mjs",
   timeout: 300_000,
   expect: { timeout: 20_000 },
   fullyParallel: false,
