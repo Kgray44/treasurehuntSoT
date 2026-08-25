@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { AdmiraltyError } from "./errors";
 import {
   commandRequiresRecentAssurance,
   executeAdmiraltyCommand,
