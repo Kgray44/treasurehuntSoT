@@ -3,12 +3,15 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 import {
   HANDOFF_VERSION,
+  OPERATING_MODES,
   STATES,
   coordinate,
   evaluateAfterMerge,
   handoffTemplate,
   materiallyAffected,
   overlapBetween,
+  planAutonomousDispatch,
+  validateWorkerReplyAgainstLiveState,
   validateHandoff,
 } from "../../scripts/parallel-coordinator/coordinator.mjs";
 
@@ -33,6 +36,19 @@ function handoff(overrides = {}) {
   return validateHandoff(value);
 }
 
+function workerRegistry(...handoffs) {
+  return {
+    version: 1,
+    workers: handoffs.map((entry) => ({
+      project: entry.project,
+      pr: entry.pr,
+      workerRef: `agent:${entry.pr}`,
+      status: "IDLE",
+      lastDispatchId: null,
+    })),
+  };
+}
+
 test("the handoff contract is deliberately small and uses only coordinator states", () => {
   const template = handoffTemplate();
   assert.deepEqual(Object.keys(template), [
@@ -49,6 +65,7 @@ test("the handoff contract is deliberately small and uses only coordinator state
     "dependencies",
   ]);
   assert.deepEqual(STATES, ["ACTIVE", "READY", "WAITING", "CONFLICT", "BLOCKED", "MERGED"]);
+  assert.deepEqual(OPERATING_MODES, ["ADVISORY", "AUTONOMOUS_DISPATCH"]);
   assert.equal(validateHandoff(template).status, "READY");
   assert.equal(validateHandoff(template).priorityLevel, 5);
 });
@@ -607,7 +624,156 @@ test("the coordinator remains optional: unavailable PR inspection does not affec
   assert.equal(plan.candidates[0].state, "READY");
   const ordinaryWorkflow = readFileSync(".github/workflows/sounding-line-ordinary.yml", "utf8");
   const coordinator = readFileSync("scripts/parallel-coordinator/coordinator.mjs", "utf8");
+  const protocol = readFileSync("scripts/parallel-coordinator/controller-protocol.mjs", "utf8");
   assert.doesNotMatch(ordinaryWorkflow, /parallel-coordinator/u);
   assert.doesNotMatch(coordinator, /writeFile|mkdir/u);
+  assert.doesNotMatch(protocol, /writeFile|mkdir|execFile|fetch\(/u);
   assert.doesNotMatch(coordinator, /"pr", "merge"/u);
+});
+
+test("autonomous mode emits one bounded Seat 1 finalization dispatch", () => {
+  const drydock = handoff({ project: "Drydock", pr: 198, candidateSha: sha("c"), paths: ["src/drydock/"] });
+  const result = planAutonomousDispatch({ handoffs: [drydock], workerRegistry: workerRegistry(drydock), mainSha: sha("a") });
+  assert.equal(result.dispatches.length, 1);
+  assert.equal(result.dispatches[0].pr, 198);
+  assert.equal(result.dispatches[0].action, "FINALIZE_NEXT");
+  assert.equal(result.dispatches[0].expectedCandidateSha, sha("c"));
+  assert.equal(result.dispatches[0].protectedMainSha, sha("a"));
+});
+
+test("only a materially stale Seat 2 receives a warm reconciliation dispatch", () => {
+  const first = handoff({ project: "First", pr: 1, candidateSha: sha("c"), paths: ["src/first/"] });
+  const second = handoff({ project: "Second", pr: 2, candidateSha: sha("d"), paths: ["src/second/"] });
+  const result = planAutonomousDispatch({
+    handoffs: [first, second],
+    workerRegistry: workerRegistry(first, second),
+    mainSha: sha("a"),
+    changedPathsByPr: { 2: ["src/second/current.ts"] },
+  });
+  assert.deepEqual(
+    result.dispatches.map((entry) => [entry.pr, entry.action]),
+    [
+      [1, "FINALIZE_NEXT"],
+      [2, "WARM_RECONCILE"],
+    ],
+  );
+});
+
+test("warm standby and HOLD never wake a worker", () => {
+  const candidates = [
+    handoff({ project: "One", pr: 1, candidateSha: sha("c"), paths: ["src/one/"] }),
+    handoff({ project: "Two", pr: 2, candidateSha: sha("d"), paths: ["src/two/"] }),
+    handoff({ project: "Three", pr: 3, candidateSha: sha("e"), paths: ["src/three/"] }),
+  ];
+  const result = planAutonomousDispatch({ handoffs: candidates, workerRegistry: workerRegistry(...candidates), mainSha: sha("a") });
+  assert.deepEqual(result.dispatches.map((entry) => entry.pr), [1]);
+  assert.deepEqual(result.suppressed, [
+    { pr: 2, reason: "WARM_STANDBY" },
+    { pr: 3, reason: "HOLD" },
+  ]);
+});
+
+test("a blocked Seat 1 leaves the next READY candidate actionable", () => {
+  const blocked = handoff({ project: "Admiralty", pr: 88, candidateSha: sha("c"), status: "BLOCKED", paths: ["src/admiralty/"] });
+  const ready = handoff({ project: "Drydock", pr: 198, candidateSha: sha("d"), paths: ["src/drydock/"] });
+  const result = planAutonomousDispatch({ handoffs: [blocked, ready], workerRegistry: workerRegistry(blocked, ready), mainSha: sha("a") });
+  assert.deepEqual(result.dispatches.map((entry) => [entry.pr, entry.action]), [[198, "FINALIZE_NEXT"]]);
+});
+
+test("a READY reply must bind its refreshed handoff to the live PR head and dispatched main", () => {
+  const drydock = handoff({ project: "Drydock", pr: 198, candidateSha: sha("c"), paths: ["src/drydock/"] });
+  const registry = workerRegistry(drydock);
+  const dispatch = planAutonomousDispatch({ handoffs: [drydock], workerRegistry: registry, mainSha: sha("a") }).dispatches[0];
+  const refreshed = handoff({ ...drydock, candidateSha: sha("d"), baseSha: sha("a") });
+  const reply = {
+    protocolVersion: 1,
+    dispatchId: dispatch.dispatchId,
+    project: "Drydock",
+    pr: 198,
+    result: "READY",
+    candidateSha: sha("d"),
+    handoff: refreshed,
+    mergeSha: null,
+    landedPaths: [],
+    blocker: null,
+  };
+  assert.equal(
+    validateWorkerReplyAgainstLiveState({
+      reply,
+      dispatch,
+      workerRegistry: registry,
+      workerRef: "agent:198",
+      livePrState: { state: "OPEN", headRefOid: sha("d") },
+      liveMainSha: sha("a"),
+    }).candidateSha,
+    sha("d"),
+  );
+  assert.throws(
+    () =>
+      validateWorkerReplyAgainstLiveState({
+        reply,
+        dispatch,
+        workerRegistry: registry,
+        workerRef: "agent:198",
+        livePrState: { state: "OPEN", headRefOid: sha("e") },
+        liveMainSha: sha("a"),
+      }),
+    /PARALLEL_COORDINATOR_REPLY_LIVE_HEAD_STALE/u,
+  );
+});
+
+test("a verified MERGED reply is suitable input for the existing post-merge replan", () => {
+  const first = handoff({ project: "First", pr: 1, candidateSha: sha("c"), paths: ["src/first/"] });
+  const second = handoff({ project: "Second", pr: 2, candidateSha: sha("d"), paths: ["src/second/"] });
+  const registry = workerRegistry(first, second);
+  const dispatch = planAutonomousDispatch({ handoffs: [first, second], workerRegistry: registry, mainSha: sha("a") }).dispatches[0];
+  const reply = {
+    protocolVersion: 1,
+    dispatchId: dispatch.dispatchId,
+    project: "First",
+    pr: 1,
+    result: "MERGED",
+    candidateSha: sha("c"),
+    handoff: null,
+    mergeSha: sha("e"),
+    landedPaths: ["src/first/change.ts"],
+    blocker: null,
+  };
+  assert.equal(
+    validateWorkerReplyAgainstLiveState({
+      reply,
+      dispatch,
+      workerRegistry: registry,
+      workerRef: "agent:1",
+      livePrState: { state: "MERGED", mergeCommit: sha("e"), headRefOid: sha("c") },
+      liveMainSha: sha("a"),
+    }).result,
+    "MERGED",
+  );
+  const replanned = evaluateAfterMerge({ handoffs: [first, second], mergeSha: sha("e"), mergedPr: 1, mergedPaths: reply.landedPaths });
+  assert.deepEqual(replanned.readyOrder.map((candidate) => [candidate.pr, candidate.action]), [[2, "FINALIZE_NEXT"]]);
+});
+
+test("duplicate dispatches and unreachable workers cannot duplicate or stall other work", () => {
+  const first = handoff({ project: "First", pr: 1, candidateSha: sha("c"), paths: ["src/first/"] });
+  const second = handoff({ project: "Second", pr: 2, candidateSha: sha("d"), paths: ["src/second/"] });
+  const registry = workerRegistry(first, second);
+  registry.workers[0].lastDispatchId = `pc-v1-pr1-${sha("c").slice(0, 12)}-finalize_next-${sha("a").slice(0, 12)}`;
+  const result = planAutonomousDispatch({ handoffs: [first, second], workerRegistry: registry, mainSha: sha("a") });
+  assert.equal(result.dispatches.length, 0);
+  assert.deepEqual(result.suppressed, [
+    { pr: 1, reason: "DUPLICATE_DISPATCH" },
+    { pr: 2, reason: "WARM_STANDBY" },
+  ]);
+  const unreachable = workerRegistry(first, second);
+  unreachable.workers[0].status = "UNREACHABLE";
+  const advanced = planAutonomousDispatch({ handoffs: [first, second], workerRegistry: unreachable, mainSha: sha("a") });
+  assert.deepEqual(advanced.dispatches.map((entry) => [entry.pr, entry.action]), [[2, "FINALIZE_NEXT"]]);
+  const promoted = handoff({ project: "Third", pr: 3, candidateSha: sha("e"), priorityLevel: 1, paths: ["src/third/"] });
+  const rescheduled = planAutonomousDispatch({
+    handoffs: [first, second, promoted],
+    workerRegistry: workerRegistry(first, second, promoted),
+    mainSha: sha("a"),
+  });
+  assert.deepEqual(rescheduled.dispatches.map((entry) => [entry.pr, entry.action]), [[3, "FINALIZE_NEXT"]]);
 });
