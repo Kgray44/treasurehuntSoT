@@ -2,9 +2,17 @@ import { execFileSync } from "node:child_process";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  CONTROLLER_PROTOCOL_VERSION,
+  matchesDispatch,
+  validateDispatchEnvelope,
+  validateWorkerRegistry,
+  validateWorkerReply,
+} from "./controller-protocol.mjs";
 
 export const HANDOFF_VERSION = 1;
 export const STATES = ["ACTIVE", "READY", "WAITING", "CONFLICT", "BLOCKED", "MERGED"];
+export const OPERATING_MODES = ["ADVISORY", "AUTONOMOUS_DISPATCH"];
 
 const stateSet = new Set(STATES);
 const shaPattern = /^[0-9a-f]{7,64}$/iu;
@@ -302,6 +310,150 @@ export function coordinate({
     readyOrder: order,
     candidates: candidates.map(snapshot).sort((left, right) => left.pr - right.pr),
   };
+}
+
+function autonomousInstructions(action) {
+  if (action === "FINALIZE_NEXT")
+    return {
+      scope:
+        "Verify the current protected main and expected candidate, preserve the candidate if current, run ordinary Sounding Line, merge only after PASS, run landed smoke, and return the structured reply.",
+      maxCandidateRepairCycles: 2,
+    };
+  return {
+    scope:
+      "Reconcile exactly once against the supplied protected main, run only invalidated focused proof, update the candidate handoff, and return the structured reply without finalizing the PR.",
+    maxReconciliations: 1,
+  };
+}
+
+function defaultDispatchId({ candidate, mainSha }) {
+  return `pc-v1-pr${candidate.pr}-${candidate.candidateSha.slice(0, 12)}-${candidate.action.toLowerCase()}-${mainSha.slice(0, 12)}`;
+}
+
+/**
+ * Returns transport-neutral work for the parent Codex chat to deliver. This module
+ * never discovers, messages, or creates worker chats itself.
+ */
+export function planAutonomousDispatch({
+  handoffs,
+  workerRegistry,
+  mainSha,
+  prStates = {},
+  changedPathsByPr = {},
+  currentnessReasonsByPr = {},
+  finalizingPr = null,
+  dispatchIdFactory = defaultDispatchId,
+}) {
+  const registry = validateWorkerRegistry(workerRegistry);
+  const plan = coordinate({ handoffs, mainSha, prStates, changedPathsByPr, currentnessReasonsByPr, finalizingPr });
+  if (!mainSha || !shaPattern.test(mainSha)) fail("PROTECTED_MAIN_SHA_INVALID");
+  const workersByPr = new Map(registry.workers.map((worker) => [worker.pr, worker]));
+  const handoffsByPr = new Map(handoffs.map((handoff) => [handoff.pr, handoff]));
+  const dispatches = [];
+  const suppressed = [];
+  let occupiedSeats = 0;
+  for (const candidate of plan.readyOrder) {
+    const worker = workersByPr.get(candidate.pr);
+    if (!worker || worker.project !== candidate.project) {
+      suppressed.push({ pr: candidate.pr, reason: "WORKER_UNREGISTERED" });
+      continue;
+    }
+    if (worker.status === "UNREACHABLE") {
+      suppressed.push({ pr: candidate.pr, reason: "WORKER_UNREACHABLE" });
+      continue;
+    }
+    occupiedSeats += 1;
+    if (worker.status === "DISPATCHED" || worker.status === "RUNNING") {
+      suppressed.push({ pr: candidate.pr, reason: "WORKER_DISPATCH_ACTIVE" });
+      continue;
+    }
+    const handoff = handoffsByPr.get(candidate.pr);
+    const reconciliationReasons = currentnessReasons({ handoff }, changedPathsByPr, currentnessReasonsByPr);
+    const action =
+      occupiedSeats === 1
+        ? !reconciliationReasons.length
+          ? "FINALIZE_NEXT"
+          : "RECONCILIATION_REQUIRED"
+        : occupiedSeats === 2
+          ? reconciliationReasons.length
+            ? "WARM_RECONCILE"
+            : "WARM_STANDBY"
+          : "HOLD";
+    if (action === "WARM_STANDBY" || action === "HOLD") {
+      suppressed.push({ pr: candidate.pr, reason: action });
+      continue;
+    }
+    const dispatchId = dispatchIdFactory({ candidate: { ...candidate, action }, mainSha, worker });
+    if (worker.lastDispatchId === dispatchId) {
+      suppressed.push({ pr: candidate.pr, reason: "DUPLICATE_DISPATCH" });
+      continue;
+    }
+    dispatches.push(
+      validateDispatchEnvelope({
+        protocolVersion: CONTROLLER_PROTOCOL_VERSION,
+        dispatchId,
+        project: candidate.project,
+        pr: candidate.pr,
+        action,
+        expectedCandidateSha: candidate.candidateSha,
+        protectedMainSha: mainSha,
+        instructions: autonomousInstructions(action),
+        returnContract: "PARALLEL_WORKER_REPLY_V1",
+      }),
+    );
+  }
+  return { plan, dispatches, suppressed };
+}
+
+/**
+ * Validates a worker result against the dispatch and observations fetched by the
+ * parent chat. The caller, not this scheduler, owns native transport and GitHub I/O.
+ */
+export function validateWorkerReplyAgainstLiveState({
+  reply,
+  dispatch,
+  workerRegistry,
+  workerRef,
+  livePrState,
+  liveMainSha,
+}) {
+  const envelope = validateDispatchEnvelope(dispatch);
+  const normalizedReply = validateWorkerReply(reply);
+  const registry = validateWorkerRegistry(workerRegistry);
+  const worker = registry.workers.find(
+    (entry) => entry.pr === envelope.pr && entry.project === envelope.project && entry.workerRef === workerRef,
+  );
+  if (!worker) fail("REPLY_WORKER_MISMATCH");
+  if (!matchesDispatch(normalizedReply, envelope)) fail("REPLY_DISPATCH_MISMATCH");
+  if (!shaPattern.test(stringField(liveMainSha, "LIVE_PROTECTED_MAIN_SHA"))) fail("LIVE_PROTECTED_MAIN_SHA_INVALID");
+  if (liveMainSha.toLowerCase() !== envelope.protectedMainSha) fail("REPLY_PROTECTED_MAIN_STALE");
+  if (!isRecord(livePrState)) fail("REPLY_LIVE_PR_STATE_INVALID");
+  const liveHead = livePrState.headRefOid ? shaField(livePrState.headRefOid, "REPLY_LIVE_HEAD") : null;
+  if (normalizedReply.result === "READY") {
+    const handoff = validateHandoff(normalizedReply.handoff);
+    if (
+      handoff.pr !== envelope.pr ||
+      handoff.project !== envelope.project ||
+      handoff.candidateSha !== normalizedReply.candidateSha
+    )
+      fail("REPLY_HANDOFF_MISMATCH");
+    if (liveHead !== normalizedReply.candidateSha) fail("REPLY_LIVE_HEAD_STALE");
+  }
+  if (
+    normalizedReply.result === "NO_CHANGE" &&
+    (normalizedReply.candidateSha !== envelope.expectedCandidateSha || liveHead !== normalizedReply.candidateSha)
+  )
+    fail("REPLY_LIVE_HEAD_STALE");
+  if (normalizedReply.result === "MERGED") {
+    if (
+      String(livePrState.state ?? "").toUpperCase() !== "MERGED" ||
+      livePrState.mergeCommit?.toLowerCase() !== normalizedReply.mergeSha
+    )
+      fail("REPLY_MERGE_UNVERIFIED");
+  }
+  if (normalizedReply.result === "BLOCKED" && normalizedReply.candidateSha !== envelope.expectedCandidateSha)
+    fail("REPLY_CANDIDATE_MISMATCH");
+  return normalizedReply;
 }
 
 export function materiallyAffected({ merged, candidate, mergedPaths = [] }) {
