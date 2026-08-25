@@ -91,6 +91,7 @@ __pycache__/
 /Codex_Chats/**/*.bak
 /Codex_Chats/imports/**/temp*/
 /Codex_Chats/imports/**/extracted*/
+/.coordinator/
 
 # vercel
 .vercel

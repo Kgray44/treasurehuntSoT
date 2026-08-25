@@ -68,6 +68,31 @@ jobs:
           node-version-file: authority/.nvmrc
           cache: npm
           cache-dependency-path: candidate/package-lock.json
+      - name: Route through trusted protected-main classification
+        id: route
+        working-directory: authority
+        env:
+          BASE_SHA: ${{ steps.source.outputs.base }}
+          CANDIDATE_SHA: ${{ steps.source.outputs.candidate }}
+        run: |
+          node --input-type=module <<'EOF'
+          import { appendFileSync } from "node:fs";
+          import { buildPlan } from "./scripts/sounding-line/ordinary.mjs";
+
+          try {
+            await buildPlan({
+              root: "../candidate",
+              baseSha: process.env.BASE_SHA,
+              candidateSha: process.env.CANDIDATE_SHA,
+              mode: "ordinary",
+            });
+            appendFileSync(process.env.GITHUB_OUTPUT, "kind=ordinary\n");
+          } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            if (!message.startsWith("SOUNDING_LINE_CONTROL_PLANE_CHANGE_REQUIRES_RELEASE_MODE:")) throw error;
+            appendFileSync(process.env.GITHUB_OUTPUT, "kind=control-plane\n");
+          }
+          EOF
       - run: npm ci --ignore-scripts
         working-directory: candidate
       - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
@@ -75,9 +100,40 @@ jobs:
       - run: npx --no-install playwright install --with-deps chromium
         working-directory: candidate
       - name: Run the trusted focused verifier against the exact candidate tree
+        if: steps.route.outputs.kind == 'ordinary'
         run: node authority/scripts/sounding-line/ordinary.mjs --mode ordinary --workspace candidate --base ${{ steps.source.outputs.base }} --candidate ${{ steps.source.outputs.candidate }}
+      - name: Bind control-plane validation to the exact candidate tree
+        if: steps.route.outputs.kind == 'control-plane'
+        working-directory: candidate
+        run: |
+          git merge-base --is-ancestor ${{ steps.source.outputs.base }} ${{ steps.source.outputs.candidate }}
+          test "$(git rev-parse HEAD)" = "${{ steps.source.outputs.candidate }}"
+      - name: Run focused Sounding Line regression for the control-plane candidate
+        if: steps.route.outputs.kind == 'control-plane'
+        working-directory: candidate
+        run: npm run test:sounding-line
+      - name: Typecheck the control-plane candidate
+        if: steps.route.outputs.kind == 'control-plane'
+        working-directory: candidate
+        run: npm run typecheck
+      - name: Lint the control-plane candidate
+        if: steps.route.outputs.kind == 'control-plane'
+        working-directory: candidate
+        run: npx --no-install eslint scripts/sounding-line/ordinary.mjs tests/sounding-line/ordinary.test.mjs scripts/features
+      - name: Scan the control-plane candidate for private content
+        if: steps.route.outputs.kind == 'control-plane'
+        working-directory: candidate
+        run: npm run private-content:scan
+      - name: Validate the control-plane candidate documentation
+        if: steps.route.outputs.kind == 'control-plane'
+        working-directory: candidate
+        run: npm run docs:validate
+      - name: Test the control-plane candidate feature records
+        if: steps.route.outputs.kind == 'control-plane'
+        working-directory: candidate
+        run: npm run features:test
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: always() && steps.route.outputs.kind == 'ordinary'
         with:
           name: sounding-line-ordinary-${{ steps.source.outputs.candidate }}
           path: candidate/artifacts/sounding-line/ordinary-decision.json
