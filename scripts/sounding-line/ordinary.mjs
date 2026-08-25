@@ -79,11 +79,13 @@ export function selectAffectedTests({ changedPaths, unitTests, browserTests, mod
         .concat(unitTests.filter((file) => matches(file, unitTokens.length ? unitTokens : tokens))),
     ),
   ].sort();
+  const productChange = changedPaths.some((file) => productRoots.has(file.split("/")[0]));
   const directBrowser = [...direct].filter((file) => e2eFile.test(file));
   const selectedBrowser = [
-    ...new Set(directBrowser.length ? directBrowser : browserTests.filter((file) => matches(file, tokens))),
+    ...new Set(
+      directBrowser.length ? directBrowser : productChange ? browserTests.filter((file) => matches(file, tokens)) : [],
+    ),
   ].sort();
-  const productChange = changedPaths.some((file) => productRoots.has(file.split("/")[0]));
   return {
     unitTests: selectedUnit.length ? selectedUnit : [...unitTests].sort(),
     browserTests: selectedBrowser.length || !productChange ? selectedBrowser : [...browserTests].sort(),
