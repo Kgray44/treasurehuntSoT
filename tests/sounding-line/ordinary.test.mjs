@@ -1,10 +1,15 @@
 import assert from "node:assert/strict";
-import { readFileSync, readdirSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import path from "node:path";
 import test from "node:test";
 import { splitMigrationStatements } from "../../scripts/sounding-line/sqlite-bootstrap.mjs";
 import {
   assertBinding,
+  buildPlan,
   classifyChanges,
+  packageAuthorityChanges,
   requiresMigrationValidation,
   requiresBuild,
   selectAffectedTests,
@@ -12,6 +17,55 @@ import {
   verificationEnvironment,
   verificationCommands,
 } from "../../scripts/sounding-line/ordinary.mjs";
+
+const basePackage = {
+  scripts: {
+    "test:changed": "node scripts/sounding-line/ordinary.mjs --mode ordinary",
+    "test:release": "node scripts/sounding-line/ordinary.mjs --mode release",
+    "test:sounding-line": "node --test tests/sounding-line/ordinary.test.mjs",
+  },
+};
+
+function git(root, argumentsList) {
+  return execFileSync("git", argumentsList, { cwd: root, encoding: "utf8" }).trim();
+}
+
+function candidateFixture(changes) {
+  const root = mkdtempSync(path.join(tmpdir(), "sounding-line-ordinary-"));
+  for (const [file, contents] of Object.entries({
+    "package.json": `${JSON.stringify(basePackage, null, 2)}\n`,
+    "testing/contracts.json": "{}\n",
+    "testing/impact-map.json": "{}\n",
+    "testing/suites.json": "{}\n",
+    "src/product.ts": "export const product = true;\n",
+  })) {
+    mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    writeFileSync(path.join(root, file), contents);
+  }
+  git(root, ["init", "--initial-branch=main", "--quiet"]);
+  git(root, ["config", "core.autocrlf", "false"]);
+  git(root, ["config", "user.email", "ordinary@example.invalid"]);
+  git(root, ["config", "user.name", "Ordinary Fixture"]);
+  git(root, ["add", "."]);
+  git(root, ["commit", "--quiet", "-m", "base"]);
+  const baseSha = git(root, ["rev-parse", "HEAD"]);
+  for (const [file, contents] of Object.entries(changes)) {
+    mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    writeFileSync(path.join(root, file), contents);
+  }
+  git(root, ["add", "."]);
+  git(root, ["commit", "--quiet", "-m", "candidate"]);
+  return { root, baseSha, candidateSha: git(root, ["rev-parse", "HEAD"]) };
+}
+
+async function withCandidate(changes, assertion) {
+  const fixture = candidateFixture(changes);
+  try {
+    await assertion(fixture);
+  } finally {
+    rmSync(fixture.root, { force: true, recursive: true });
+  }
+}
 
 test("ordinary classification ignores retired generated state and rejects active control-plane edits", () => {
   const result = classifyChanges([
@@ -25,6 +79,177 @@ test("ordinary classification ignores retired generated state and rejects active
     "testing/generated/active-test-registry.json",
   ]);
   assert.deepEqual(result.controlPlanePaths, ["scripts/sounding-line/ordinary.mjs"]);
+});
+
+test("Admiralty-style package scripts remain ordinary-admissible", () => {
+  const base = { scripts: { "test:changed": "node scripts/sounding-line/ordinary.mjs --mode ordinary" } };
+  const candidate = {
+    scripts: {
+      ...base.scripts,
+      "admiralty:phase3:validate": "node scripts/admiralty/validate-phase3.mjs",
+    },
+  };
+  assert.deepEqual(classifyChanges(["package.json", "src/admiralty/phase3.ts"]).controlPlanePaths, []);
+  assert.deepEqual(packageAuthorityChanges(base, candidate), []);
+});
+
+test("Drydock-style declarative registrations remain ordinary-admissible and self-validate", () => {
+  const changedPaths = [
+    "package.json",
+    "testing/contracts.json",
+    "testing/impact-map.json",
+    "testing/suites.json",
+    "src/drydock/phase3.ts",
+  ];
+  assert.deepEqual(classifyChanges(changedPaths).controlPlanePaths, []);
+  const commands = verificationCommands({
+    mode: "ordinary",
+    safetyPaths: [],
+    lintPaths: [],
+    selected: { unitTests: [], browserTests: [] },
+    migrationRequired: false,
+    migrationScripts: [],
+    buildRequired: true,
+    registrationValidationRequired: true,
+  });
+  assert.ok(
+    commands.some(
+      ([command, argumentsList]) =>
+        command === process.execPath && argumentsList.join(" ") === "--test tests/sounding-line/ordinary.test.mjs",
+    ),
+  );
+});
+
+test("Confluence-style project guidance remains ordinary-admissible", () => {
+  const result = classifyChanges([
+    ".agents/confluence-workers.md",
+    "package.json",
+    "scripts/confluence/core.mjs",
+    "tests/confluence/core.test.mjs",
+  ]);
+  assert.deepEqual(result.controlPlanePaths, []);
+});
+
+test("global authority paths remain release-only", () => {
+  const paths = [
+    "scripts/sounding-line/ordinary.mjs",
+    ".github/workflows/sounding-line-ordinary.yml",
+    "AGENTS.md",
+    ".agents/testing-workflow.md",
+    ".agents/context-workflow.md",
+    ".agents/repository-rules.md",
+    ".agents/validation-isolation.md",
+  ];
+  assert.deepEqual(classifyChanges(paths).controlPlanePaths, paths.sort());
+});
+
+test("Sounding Line package authority mutations remain release-only", () => {
+  const base = {
+    scripts: {
+      "test:changed": "node scripts/sounding-line/ordinary.mjs --mode ordinary",
+      "test:release": "node scripts/sounding-line/ordinary.mjs --mode release",
+      "test:sounding-line": "node --test tests/sounding-line/ordinary.test.mjs",
+      validate: "node scripts/sounding-line/ordinary.mjs --mode release",
+    },
+  };
+  const candidate = {
+    scripts: {
+      ...base.scripts,
+      "test:changed": "node scripts/not-sounding-line/ordinary.mjs",
+      "test:release": "node scripts/not-sounding-line/release.mjs",
+      validate: "node scripts/not-sounding-line/ordinary.mjs",
+    },
+  };
+  assert.deepEqual(packageAuthorityChanges(base, candidate), ["test:changed", "test:release", "validate"]);
+});
+
+test("ordinary admission distinguishes the field candidates from release authority mutations", async () => {
+  await withCandidate(
+    {
+      "package.json": `${JSON.stringify({
+        ...basePackage,
+        scripts: { ...basePackage.scripts, "admiralty:phase3:validate": "node scripts/admiralty/validate-phase3.mjs" },
+      })}\n`,
+      "src/admiralty/phase3.ts": "export const admiralty = true;\n",
+    },
+    async (fixture) => {
+      await assert.doesNotReject(() => buildPlan({ ...fixture, mode: "ordinary" }));
+    },
+  );
+  await withCandidate(
+    {
+      "package.json": `${JSON.stringify({
+        ...basePackage,
+        scripts: { ...basePackage.scripts, "drydock:phase3:validate": "node scripts/drydock/validate-phase3.mjs" },
+      })}\n`,
+      "testing/contracts.json": '{"contracts":["drydock"]}\n',
+      "testing/impact-map.json": '{"impactMap":{"drydock":[]}}\n',
+      "testing/suites.json": '{"suites":["drydock"]}\n',
+      "src/drydock/phase3.ts": "export const drydock = true;\n",
+    },
+    async (fixture) => {
+      const plan = await buildPlan({ ...fixture, mode: "ordinary" });
+      assert.equal(plan.registrationValidationRequired, true);
+      assert.ok(
+        verificationCommands(plan).some(
+          ([command, argumentsList]) => command === process.execPath && argumentsList[0] === "--test",
+        ),
+      );
+    },
+  );
+  await withCandidate(
+    {
+      ".agents/confluence-workers.md": "# Confluence worker guidance\n",
+      "package.json": `${JSON.stringify({
+        ...basePackage,
+        scripts: { ...basePackage.scripts, "confluence:validate": "node scripts/confluence/validate.mjs" },
+      })}\n`,
+      "scripts/confluence/validate.mjs": "export const confluence = true;\n",
+      "tests/confluence/validate.test.mjs": "export {};\n",
+    },
+    async (fixture) => {
+      await assert.doesNotReject(() => buildPlan({ ...fixture, mode: "ordinary" }));
+    },
+  );
+
+  for (const [name, changes, expected] of [
+    [
+      "Sounding Line script",
+      { "scripts/sounding-line/ordinary.mjs": "export {};\n" },
+      "scripts/sounding-line/ordinary.mjs",
+    ],
+    ["workflow", { ".github/workflows/ordinary.yml": "name: ordinary\n" }, ".github/workflows/ordinary.yml"],
+    ["root authority", { "AGENTS.md": "# Authority\n" }, "AGENTS.md"],
+    ["testing authority", { ".agents/testing-workflow.md": "# Testing\n" }, ".agents/testing-workflow.md"],
+    [
+      "protected package authority",
+      {
+        "package.json": `${JSON.stringify({
+          ...basePackage,
+          scripts: { ...basePackage.scripts, "test:changed": "node scripts/alternate.mjs" },
+        })}\n`,
+      },
+      "package.json",
+    ],
+    ["unknown test registration", { "testing/unknown-registration.json": "{}\n" }, "testing/unknown-registration.json"],
+  ]) {
+    await withCandidate(changes, async (fixture) => {
+      await assert.rejects(
+        () => buildPlan({ ...fixture, mode: "ordinary" }),
+        new RegExp(
+          `SOUNDING_LINE_CONTROL_PLANE_CHANGE_REQUIRES_RELEASE_MODE:${expected.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")}`,
+        ),
+        name,
+      );
+    });
+  }
+
+  await withCandidate({ "testing/contracts.json": "{ invalid json\n" }, async (fixture) => {
+    await assert.rejects(
+      () => buildPlan({ ...fixture, mode: "ordinary" }),
+      /SOUNDING_LINE_INVALID_DECLARATIVE_REGISTRATION:testing\/contracts\.json/u,
+    );
+  });
 });
 
 test("ordinary selection finds Harborlight browser proof structurally", () => {
@@ -239,6 +464,7 @@ test("changed migration rehearsals run as focused migration proof", () => {
 
 test("application source changes receive a production build", () => {
   assert.equal(requiresBuild({ changedPaths: ["src/app/community/voyage-logs/[slug]/page.tsx"] }), true);
+  assert.equal(requiresBuild({ changedPaths: ["package-lock.json"] }), true);
 });
 
 test("ordinary admission has no orchestration or generated-state prerequisites", () => {
