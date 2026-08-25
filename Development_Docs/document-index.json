@@ -261,6 +261,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Project_Confluence_Governing_Document_v1.0.pdf",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Confluence_Journal_Design_Specification_v1.0.pdf",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Project_Fairlead_GitHub_Interaction_and_Quota_Control_Plane_Governing_Document_v1.0.md",
       "record_type": "governing-record",
       "status": "preserved",
@@ -496,6 +508,36 @@
     },
     {
       "path": "Development_Docs/Project_Bridgewatch_v1.2_Validation_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Confluence_C2_C7_Design_and_Implementation_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Confluence_Integration_Manifest.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Confluence_Operations_Runbook.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Confluence_Replay_Guide.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Confluence_Test_and_Validation_Record.md",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
