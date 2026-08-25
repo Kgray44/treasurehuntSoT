@@ -206,29 +206,6 @@ function applyDependencies(candidates, byPr) {
   }
 }
 
-function applyOverlapSerialization(candidates) {
-  const ready = candidates
-    .filter((candidate) => candidate.state === "READY")
-    .sort((left, right) => serializationRank(left.handoff, right.handoff));
-  for (let index = 0; index < ready.length; index += 1) {
-    const earlier = ready[index];
-    for (const later of ready.slice(index + 1)) {
-      if (later.state !== "READY") continue;
-      const overlap = overlapBetween(earlier.handoff, later.handoff);
-      if (overlap.migrationFamilies.length) {
-        setState(
-          later,
-          "WAITING",
-          `MIGRATION_FAMILY_SERIALIZED:${overlap.migrationFamilies.join(",")}:PR#${earlier.handoff.pr}`,
-        );
-      } else if (overlap.paths.length || overlap.touches.length) {
-        const category = overlap.paths.length ? "PATH_OVERLAP" : "DOMAIN_OVERLAP";
-        setState(later, "WAITING", `${category}:PR#${earlier.handoff.pr}`);
-      }
-    }
-  }
-}
-
 function snapshot(candidate) {
   return {
     project: candidate.handoff.project,
@@ -249,8 +226,6 @@ function classifyCandidates({ handoffs, prStates, actionableStalePrs }) {
   for (const candidate of candidates)
     if (candidate.state === "READY" && !hasCoordinationMetadata(candidate.handoff))
       setState(candidate, "CONFLICT", "INSUFFICIENT_COORDINATION_METADATA");
-  applyDependencies(candidates, byPr);
-  applyOverlapSerialization(candidates);
   applyDependencies(candidates, byPr);
   return candidates;
 }

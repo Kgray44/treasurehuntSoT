@@ -103,16 +103,23 @@ test("an explicit dependency waits until its prerequisite merges and then reques
   assert.deepEqual(candidate.reasons, ["EXPLICIT_DEPENDENCY:PR#198", "RECONCILIATION_REQUIRED"]);
 });
 
-test("overlapping paths serialize the later candidate and parent directories count as overlap", () => {
+test("overlapping paths remain READY in the normal queue and parent directories count as overlap", () => {
   const first = handoff({ project: "First", pr: 10, candidateSha: sha("c"), paths: ["src/drydock/"] });
   const later = handoff({ project: "Later", pr: 20, candidateSha: sha("d"), paths: ["src/drydock/engine/"] });
   const plan = coordinate({ handoffs: [later, first] });
   assert.equal(plan.candidates.find((candidate) => candidate.pr === 10).state, "READY");
-  assert.deepEqual(plan.candidates.find((candidate) => candidate.pr === 20).reasons, ["PATH_OVERLAP:PR#10"]);
+  assert.equal(plan.candidates.find((candidate) => candidate.pr === 20).state, "READY");
+  assert.deepEqual(
+    plan.readyOrder.map((candidate) => [candidate.pr, candidate.seat, candidate.action]),
+    [
+      [10, 1, "FINALIZE_NEXT"],
+      [20, 2, "WARM_STANDBY"],
+    ],
+  );
   assert.deepEqual(overlapBetween(first, later).paths, ["src/drydock~src/drydock/engine"]);
 });
 
-test("same migration families serialize candidates even where paths are independent", () => {
+test("same migration families remain READY while only finalization is serialized by the queue", () => {
   const first = handoff({
     project: "First",
     pr: 10,
@@ -129,15 +136,17 @@ test("same migration families serialize candidates even where paths are independ
   });
   const plan = coordinate({ handoffs: [first, later] });
   assert.deepEqual(
-    plan.readyOrder.map((candidate) => candidate.pr),
-    [10],
+    plan.readyOrder.map((candidate) => [candidate.pr, candidate.seat, candidate.action]),
+    [
+      [10, 1, "FINALIZE_NEXT"],
+      [20, 2, "WARM_STANDBY"],
+    ],
   );
-  assert.deepEqual(plan.candidates.find((candidate) => candidate.pr === 20).reasons, [
-    "MIGRATION_FAMILY_SERIALIZED:postgres-core:PR#10",
-  ]);
+  assert.equal(plan.candidates.find((candidate) => candidate.pr === 20).state, "READY");
+  assert.deepEqual(overlapBetween(first, later).migrationFamilies, ["postgres-core"]);
 });
 
-test("a strongly overlapping owned domain serializes the later candidate", () => {
+test("a strongly overlapping owned domain remains READY in the two-seat window", () => {
   const first = handoff({ project: "First", pr: 10, candidateSha: sha("c"), touches: ["studio"] });
   const later = handoff({
     project: "Later",
@@ -147,7 +156,9 @@ test("a strongly overlapping owned domain serializes the later candidate", () =>
     paths: ["src/admiralty/"],
   });
   const plan = coordinate({ handoffs: [first, later] });
-  assert.deepEqual(plan.candidates.find((candidate) => candidate.pr === 20).reasons, ["DOMAIN_OVERLAP:PR#10"]);
+  assert.equal(plan.candidates.find((candidate) => candidate.pr === 20).state, "READY");
+  assert.equal(plan.candidates.find((candidate) => candidate.pr === 20).action, "WARM_STANDBY");
+  assert.deepEqual(overlapBetween(first, later).touches, ["studio"]);
 });
 
 test("unrelated main movement preserves readiness while relevant movement requests reconciliation", () => {
@@ -217,7 +228,7 @@ test("priority orders otherwise legal READY candidates while readyAt and PR pres
   );
 });
 
-test("priority cannot bypass explicit dependencies or pre-existing migration serialization", () => {
+test("priority wins over ordinary migration overlap while explicit dependencies still win", () => {
   const migrationFirst = handoff({
     project: "Migration first",
     pr: 10,
@@ -250,10 +261,117 @@ test("priority cannot bypass explicit dependencies or pre-existing migration ser
   const plan = coordinate({ handoffs: [migrationUrgent, dependentUrgent, prerequisite, migrationFirst] });
   assert.deepEqual(
     plan.readyOrder.map((candidate) => candidate.pr),
-    [10, 30],
+    [20, 10, 30],
   );
-  assert.equal(plan.candidates.find((candidate) => candidate.pr === 20).state, "WAITING");
+  assert.equal(plan.candidates.find((candidate) => candidate.pr === 20).state, "READY");
   assert.equal(plan.candidates.find((candidate) => candidate.pr === 40).state, "WAITING");
+});
+
+test("ordinary overlap cannot keep a P1 candidate behind a P5 candidate", () => {
+  const p5 = handoff({
+    project: "P5",
+    pr: 5,
+    candidateSha: sha("c"),
+    priorityLevel: 5,
+    paths: ["src/shared/"],
+  });
+  const p1 = handoff({
+    project: "P1",
+    pr: 1,
+    candidateSha: sha("d"),
+    priorityLevel: 1,
+    paths: ["src/shared/component.ts"],
+  });
+  const plan = coordinate({ handoffs: [p5, p1] });
+  assert.deepEqual(
+    plan.readyOrder.map((candidate) => [candidate.pr, candidate.seat]),
+    [
+      [1, 1],
+      [5, 2],
+    ],
+  );
+});
+
+test("an explicit dependency keeps a P5 prerequisite ahead of an overlapping P1 candidate", () => {
+  const p5 = handoff({
+    project: "P5 prerequisite",
+    pr: 5,
+    candidateSha: sha("c"),
+    priorityLevel: 5,
+    paths: ["src/shared/"],
+  });
+  const p1 = handoff({
+    project: "P1 dependent",
+    pr: 1,
+    candidateSha: sha("d"),
+    priorityLevel: 1,
+    paths: ["src/shared/component.ts"],
+    dependencies: [5],
+  });
+  const plan = coordinate({ handoffs: [p5, p1] });
+  assert.deepEqual(
+    plan.readyOrder.map((candidate) => candidate.pr),
+    [5],
+  );
+  assert.deepEqual(plan.candidates.find((candidate) => candidate.pr === 1).reasons, ["DEPENDENCY_PENDING:PR#5"]);
+});
+
+test("the Admiralty, Drydock, and Confluence field case keeps overlaps in the two-seat queue", () => {
+  const baseSha = sha("b");
+  const admiralty = handoff({
+    project: "Admiralty",
+    pr: 88,
+    candidateSha: sha("c"),
+    baseSha,
+    priorityLevel: 5,
+    paths: ["prisma/", "src/community/", "Development_Docs/", "package.json"],
+  });
+  const drydock = handoff({
+    project: "Drydock",
+    pr: 198,
+    candidateSha: sha("d"),
+    baseSha,
+    priorityLevel: 5,
+    paths: ["prisma/", "src/community/", "Development_Docs/", "package.json"],
+  });
+  const confluence = handoff({
+    project: "Confluence",
+    pr: 211,
+    candidateSha: sha("e"),
+    baseSha,
+    priorityLevel: 5,
+    paths: ["Development_Docs/", "package.json"],
+  });
+  const initial = coordinate({ handoffs: [confluence, drydock, admiralty], mainSha: baseSha });
+  assert.deepEqual(
+    initial.readyOrder.map((candidate) => [candidate.pr, candidate.seat, candidate.action]),
+    [
+      [88, 1, "FINALIZE_NEXT"],
+      [198, 2, "WARM_STANDBY"],
+      [211, 3, "HOLD"],
+    ],
+  );
+  assert.equal(
+    initial.candidates.some((candidate) => candidate.state === "WAITING"),
+    false,
+  );
+
+  const afterAdmiraltyMerge = evaluateAfterMerge({
+    handoffs: [admiralty, drydock, confluence],
+    mergeSha: sha("f"),
+    mergedPr: 88,
+    mainSha: sha("f"),
+    mergedPaths: ["prisma/schema.prisma", "src/community/feed.ts"],
+  });
+  assert.deepEqual(
+    afterAdmiraltyMerge.readyOrder.map((candidate) => [candidate.pr, candidate.seat, candidate.action]),
+    [
+      [198, 1, "RECONCILIATION_REQUIRED"],
+      [211, 2, "WARM_STANDBY"],
+    ],
+  );
+  assert.equal(afterAdmiraltyMerge.candidates.find((candidate) => candidate.pr === 198).state, "READY");
+  assert.equal(afterAdmiraltyMerge.candidates.find((candidate) => candidate.pr === 211).state, "READY");
 });
 
 test("an ACTIVE urgent project has no READY queue seat", () => {
