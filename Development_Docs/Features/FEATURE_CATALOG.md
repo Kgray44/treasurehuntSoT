@@ -1075,6 +1075,42 @@ Creators author every accepted Story Block through a contract-aware Studio Inspe
 
 ---
 
+## FT-038 - Shipwright Reusable Creator Composition
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Shipwright Phase 3
+
+Creators capture private immutable Presets, Fragments, and Chapter templates, then preview and apply deterministic Chronicle composition results with source-version provenance through the ordinary Studio edit path.
+
+### Important subfeatures
+
+- Owner-scoped immutable Preset, Fragment, and Chapter-template Library records
+- Checksum-verified reusable envelopes and bounded parameter resolution
+- Deterministic collision-safe composition preparation and Drydock validation
+- Source item and immutable version provenance for every confirmed insertion
+- One ordinary Studio autosave and undo/redo mutation for each insertion
+- Fail-closed capture and owner-isolation boundaries for private Creator material
+
+### Primary surfaces
+
+`/studio/tales/[taleId]`, `/api/studio/tales/[taleId]/reusable-content`, `src/components/studio/TaleEditor.tsx`
+
+### Meaningful limitations
+
+- Reusable content remains private to its owner; Community package metadata is read-only until an accepted reusable authoring envelope exists.
+- Drydock remains the sole authority for Chronicle contracts, defaults, and validation.
+- Deployment, live-provider execution, and Shipwright Phase 4 remain outside this capability.
+
+### Evidence
+
+- path: `src/studio/reusable-content.ts`
+- path: `src/studio/reusable-library-service.ts`
+- test: `src/studio/reusable-content.test.ts`
+- test: `src/app/api/studio/tales/[taleId]/reusable-content/route.test.ts`
+- test: `tests/e2e/project-shipwright-phase3.spec.ts`
+
+---
+
 ## FT-B001 - Unified Identity and Session Authority
 
 **Status:** MAINLINE
