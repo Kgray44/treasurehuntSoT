@@ -12,7 +12,18 @@ const prohibitedVisibleLanguage = [
 
 test("public routes present Voyagewright language without inherited product terms", async ({ page }) => {
   for (const route of publicRoutes) {
-    const response = await page.goto(route);
+    let response;
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      try {
+        response = await page.goto(route);
+        break;
+      } catch (error) {
+        if (attempt === 0 && error instanceof Error && /interrupted by another navigation/u.test(error.message)) {
+          continue;
+        }
+        throw error;
+      }
+    }
     expect(response?.ok(), `${route} should load`).toBe(true);
     const visibleText = await page.locator("body").innerText();
     for (const prohibited of prohibitedVisibleLanguage) {

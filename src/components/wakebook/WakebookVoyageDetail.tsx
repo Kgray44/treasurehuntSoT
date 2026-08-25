@@ -16,6 +16,8 @@ import {
   wakebookResponse,
 } from "@/components/wakebook/WakebookShared";
 
+type MemoryMediaOption = { id: string; kind: string; description: string | null };
+
 export function WakebookTideglassComparisonEntry({ comparison }: { comparison?: VoyageDetail["comparison"] }) {
   if (!comparison) return null;
   return (
@@ -29,17 +31,54 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
   const resource = useWakebookResource<VoyageDetail>(`/api/passport/voyages/${encodeURIComponent(recordId)}`);
   const { csrfToken, setDirty } = usePersonalHarbor();
   const { requestAction, dialog } = useActionDialog();
-  const [note, setNote] = useState("");
-  const [memory, setMemory] = useState({ title: "", body: "" });
+  const [reflection, setReflection] = useState({
+    privateNote: "",
+    favoriteChapterId: "",
+    favoriteArtifactReference: "",
+    favoriteClueReference: "",
+    favoriteMomentReference: "",
+  });
+  const [memory, setMemory] = useState({ title: "", body: "", referenceType: "", referenceId: "" });
+  const [editingMemoryId, setEditingMemoryId] = useState<string | null>(null);
+  const [memoryMediaOptions, setMemoryMediaOptions] = useState<MemoryMediaOption[]>([]);
+  const [attachmentMemoryId, setAttachmentMemoryId] = useState<string | null>(null);
+  const [selectedMediaId, setSelectedMediaId] = useState("");
   const [message, setMessage] = useState("");
   const [mutationState, setMutationState] = useState<"pending" | "success" | "failure" | null>(null);
 
   useEffect(() => {
-    // Editable reflection intentionally hydrates from the authoritative async record.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (resource.state.status === "ready") setNote(resource.state.value.reflection?.privateNote ?? "");
+    if (resource.state.status !== "ready") return;
+    const voyage = resource.state.value;
+    // Hydrate the editable draft after the authoritative resource has settled.
+    // Deferring the draft update avoids a synchronous cascading render while
+    // preserving the server record as the only initialization source.
+    const timer = window.setTimeout(() => {
+      setReflection({
+        privateNote: voyage.reflection?.privateNote ?? "",
+        favoriteChapterId: voyage.reflection?.favoriteChapterId ?? "",
+        favoriteArtifactReference: voyage.reflection?.favoriteArtifactReference ?? "",
+        favoriteClueReference: voyage.reflection?.favoriteClueReference ?? "",
+        favoriteMomentReference: voyage.reflection?.favoriteMomentReference ?? "",
+      });
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [resource.state]);
   useEffect(() => () => setDirty(false), [setDirty]);
+  useEffect(() => {
+    if (resource.state.status !== "ready") return;
+    let cancelled = false;
+    void fetch(`/api/passport/voyages/${encodeURIComponent(recordId)}/memory-media`, { cache: "no-store" })
+      .then(async (response) => (response.ok ? ((await response.json()) as MemoryMediaOption[]) : []))
+      .then((options) => {
+        if (!cancelled) setMemoryMediaOptions(options);
+      })
+      .catch(() => {
+        if (!cancelled) setMemoryMediaOptions([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [recordId, resource.state]);
 
   if (resource.state.status === "loading")
     return <WakebookLoading detail="Opening the exact Chronicle edition and your private Voyage record." />;
@@ -130,6 +169,10 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
               <dd>{voyage.chapters.length || "Unavailable"}</dd>
             </div>
             <div>
+              <dt>Historical Captain</dt>
+              <dd>{voyage.attribution.captain.historicalLabel || "Unavailable"}</dd>
+            </div>
+            <div>
               <dt>Private Memories</dt>
               <dd>{voyage.memories.length}</dd>
             </div>
@@ -156,8 +199,11 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
         <a href="#wakebook-path">Path</a>
         <a href="#wakebook-crew">Crew</a>
         <a href="#wakebook-artifacts">Artifacts</a>
+        <a href="#wakebook-achievements">Achievements</a>
         <a href="#wakebook-edition">Edition</a>
         <a href="#wakebook-remembrance">Remembrance</a>
+        <a href="#wakebook-keepsake">Keepsake</a>
+        <a href="#wakebook-provenance">Provenance</a>
       </nav>
 
       <div className="wakebook-detail-grid">
@@ -170,6 +216,8 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
             <Definition term="Joined" value={formatArchiveDate(voyage.chronology.joinedAt)} />
             <Definition term="Completed" value={formatArchiveDate(voyage.chronology.completedAt)} />
             <Definition term="Participation" value={voyage.participation.crewRole || voyage.participation.humanRole} />
+            <Definition term="Historical Creator" value={voyage.attribution.creator.historicalLabel || "Unavailable"} />
+            <Definition term="Historical Captain" value={voyage.attribution.captain.historicalLabel || "Unavailable"} />
             <Definition
               term="Duration"
               value={voyage.timing.wallClock.humanLabel}
@@ -206,14 +254,49 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
             <UnavailableHistory text="Exact completed-chapter history was not preserved for this edition." />
           )}
           <div className="wakebook-unavailable-grid">
-            <UnavailableHistory
-              title="Optional objectives"
-              text={voyage.optionalObjectives.explanation || "Not available for this edition."}
-            />
-            <UnavailableHistory
-              title="Detailed choices"
-              text={voyage.choices.explanation || "Not available for this edition."}
-            />
+            {voyage.optionalObjectives.available ? (
+              <div className="wakebook-unavailable">
+                <div>
+                  <strong>Optional objectives</strong>
+                  <p>
+                    Completed {voyage.optionalObjectives.completedCount} of {voyage.optionalObjectives.totalCount}{" "}
+                    optional objectives.
+                  </p>
+                  <ul>
+                    {voyage.optionalObjectives.objectives.map((objective) => (
+                      <li key={objective.label}>
+                        {objective.completed ? "Completed" : "Not completed"}: {objective.label}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ) : (
+              <UnavailableHistory
+                title="Optional objectives"
+                text={voyage.optionalObjectives.explanation || "Not available for this edition."}
+              />
+            )}
+            {voyage.choices.available ? (
+              <div className="wakebook-unavailable">
+                <div>
+                  <strong>Safe journey context</strong>
+                  <ul>
+                    {voyage.choices.items.map((choice) => (
+                      <li key={`${choice.kind}-${choice.label}`}>
+                        <strong>{choice.label}</strong>
+                        {choice.detail ? ` — ${choice.detail}` : ""}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ) : (
+              <UnavailableHistory
+                title="Detailed choices"
+                text={voyage.choices.explanation || "Not available for this edition."}
+              />
+            )}
           </div>
         </section>
 
@@ -228,7 +311,11 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
                   </span>
                   <div>
                     <strong>{crew.historicalDisplayName}</strong>
-                    <span>{crew.crewRole || crew.humanRole}</span>
+                    <span>
+                      {crew.isHistoricalCaptain
+                        ? `Captain · ${crew.crewRole || crew.humanRole}`
+                        : crew.crewRole || crew.humanRole}
+                    </span>
                   </div>
                   <small>
                     {crew.removedAt
@@ -282,9 +369,59 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
           <p className="wakebook-boundary-note">
             A shared Voyage artifact is never presented as personally owned without Wayfarer provenance.
           </p>
+          {voyage.artifacts.assemblies.length ? (
+            <div className="wakebook-artifact-boundary">
+              <div>
+                <h3>Assembly context</h3>
+                <ul>
+                  {voyage.artifacts.assemblies.map((assembly) => (
+                    <li key={assembly.id}>
+                      {assembly.name}
+                      <span>
+                        {assembly.completedAt
+                          ? `Completed ${formatArchiveDate(assembly.completedAt)}`
+                          : assembly.status}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ) : null}
           <Link className="button" href="/passport/artifacts">
             Browse your Artifact Cabinet
           </Link>
+        </section>
+
+        <section
+          className="wakebook-detail-section"
+          id="wakebook-achievements"
+          aria-labelledby="wakebook-achievements-title"
+        >
+          <SectionHeading
+            eyebrow="Deterministic historical evidence"
+            title="Achievements"
+            id="wakebook-achievements-title"
+          />
+          {voyage.achievements.length ? (
+            <ul className="wakebook-memory-list">
+              {voyage.achievements.map((achievement) => (
+                <li key={achievement.id}>
+                  <div>
+                    <strong>{achievement.title}</strong>
+                    <p>{achievement.description}</p>
+                    <time dateTime={achievement.earnedAt || undefined}>
+                      {achievement.earnedAt
+                        ? `Recognized ${formatArchiveDate(achievement.earnedAt)}`
+                        : "Historical recognition date unavailable"}
+                    </time>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <UnavailableHistory text="No deterministic achievement evidence is associated with this Voyage." />
+          )}
         </section>
 
         <section className="wakebook-detail-section" id="wakebook-edition" aria-labelledby="wakebook-edition-title">
@@ -329,7 +466,11 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
               onSubmit={(event) => {
                 event.preventDefault();
                 void mutate(`/api/passport/history/${encodeURIComponent(recordId)}`, "PATCH", {
-                  privateNote: note || null,
+                  privateNote: reflection.privateNote || null,
+                  favoriteChapterId: reflection.favoriteChapterId || null,
+                  favoriteArtifactReference: reflection.favoriteArtifactReference || null,
+                  favoriteClueReference: reflection.favoriteClueReference || null,
+                  favoriteMomentReference: reflection.favoriteMomentReference || null,
                 });
               }}
             >
@@ -339,12 +480,46 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
                 <textarea
                   rows={7}
                   maxLength={4000}
-                  value={note}
+                  value={reflection.privateNote}
                   onChange={(event) => {
-                    setNote(event.target.value);
+                    setReflection({ ...reflection, privateNote: event.target.value });
                     setDirty(true);
                   }}
                 />
+              </label>
+              <label>
+                <span>Favorite chapter</span>
+                <select
+                  value={reflection.favoriteChapterId}
+                  onChange={(event) => {
+                    setReflection({ ...reflection, favoriteChapterId: event.target.value });
+                    setDirty(true);
+                  }}
+                >
+                  <option value="">No favorite selected</option>
+                  {voyage.chapters.map((chapter) => (
+                    <option key={chapter.id} value={chapter.id}>
+                      {chapter.title}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                <span>Favorite artifact</span>
+                <select
+                  value={reflection.favoriteArtifactReference}
+                  onChange={(event) => {
+                    setReflection({ ...reflection, favoriteArtifactReference: event.target.value });
+                    setDirty(true);
+                  }}
+                >
+                  <option value="">No favorite selected</option>
+                  {voyage.artifacts.personalRecords.map((artifact) => (
+                    <option key={artifact.id} value={artifact.id}>
+                      {artifact.name}
+                    </option>
+                  ))}
+                </select>
               </label>
               <button className="button button--primary">Save Reflection</button>
             </form>
@@ -352,14 +527,24 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
               onSubmit={async (event) => {
                 event.preventDefault();
                 const saved = await mutate(
-                  `/api/passport/history/${encodeURIComponent(recordId)}/memories`,
-                  "POST",
-                  memory,
+                  editingMemoryId
+                    ? `/api/passport/history/${encodeURIComponent(recordId)}/memories/${encodeURIComponent(editingMemoryId)}`
+                    : `/api/passport/history/${encodeURIComponent(recordId)}/memories`,
+                  editingMemoryId ? "PUT" : "POST",
+                  {
+                    title: memory.title,
+                    body: memory.body || undefined,
+                    referenceType: memory.referenceType || undefined,
+                    referenceId: memory.referenceId || undefined,
+                  },
                 );
-                if (saved) setMemory({ title: "", body: "" });
+                if (saved) {
+                  setMemory({ title: "", body: "", referenceType: "", referenceId: "" });
+                  setEditingMemoryId(null);
+                }
               }}
             >
-              <h3>Add a Chronicle Memory</h3>
+              <h3>{editingMemoryId ? "Edit Chronicle Memory" : "Add a Chronicle Memory"}</h3>
               <label>
                 <span>Memory title</span>
                 <input
@@ -384,7 +569,58 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
                   }}
                 />
               </label>
-              <button className="button button--primary">Save Memory</button>
+              <label>
+                <span>Connect this Memory to</span>
+                <select
+                  value={memory.referenceType}
+                  onChange={(event) => {
+                    setMemory({ ...memory, referenceType: event.target.value, referenceId: "" });
+                    setDirty(true);
+                  }}
+                >
+                  <option value="">This whole Voyage</option>
+                  <option value="CHAPTER">A completed chapter</option>
+                  <option value="ARTIFACT">An Artifact Cabinet record</option>
+                </select>
+              </label>
+              {memory.referenceType ? (
+                <label>
+                  <span>{memory.referenceType === "CHAPTER" ? "Completed chapter" : "Artifact Cabinet record"}</span>
+                  <select
+                    required
+                    value={memory.referenceId}
+                    onChange={(event) => {
+                      setMemory({ ...memory, referenceId: event.target.value });
+                      setDirty(true);
+                    }}
+                  >
+                    <option value="">Choose a historical reference</option>
+                    {(memory.referenceType === "CHAPTER" ? voyage.chapters : voyage.artifacts.personalRecords).map(
+                      (entry) => (
+                        <option key={entry.id} value={entry.id}>
+                          {"name" in entry ? entry.name : entry.title}
+                        </option>
+                      ),
+                    )}
+                  </select>
+                </label>
+              ) : null}
+              <div className="personal-harbor__actions">
+                <button className="button button--primary">{editingMemoryId ? "Save Memory" : "Add Memory"}</button>
+                {editingMemoryId ? (
+                  <button
+                    className="button button--quiet"
+                    type="button"
+                    onClick={() => {
+                      setEditingMemoryId(null);
+                      setMemory({ title: "", body: "", referenceType: "", referenceId: "" });
+                      setDirty(false);
+                    }}
+                  >
+                    Cancel edit
+                  </button>
+                ) : null}
+              </div>
             </form>
           </div>
           <div className="wakebook-memory-list">
@@ -400,6 +636,23 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
                       <strong>{item.title}</strong>
                       {item.body ? <p>{item.body}</p> : null}
                       <time dateTime={item.createdAt}>{formatArchiveDate(item.createdAt)}</time>
+                      {item.media.length ? (
+                        <ul aria-label={`Private media attached to ${item.title}`}>
+                          {item.media.map((media) => (
+                            <li key={media.id}>
+                              {media.deliveryHref ? (
+                                <a href={media.deliveryHref} target="_blank" rel="noreferrer">
+                                  Open private {media.kind.toLocaleLowerCase()}
+                                </a>
+                              ) : (
+                                <span>Private {media.kind.toLocaleLowerCase()} unavailable</span>
+                              )}
+                              {media.description ? ` — ${media.description}` : ""}
+                              {media.state !== "AVAILABLE" ? ` (${media.state.toLocaleLowerCase()})` : ""}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
                     </div>
                     <button
                       className="button button--danger"
@@ -408,6 +661,67 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
                     >
                       Remove
                     </button>
+                    <button
+                      className="button button--quiet"
+                      type="button"
+                      onClick={() => {
+                        setEditingMemoryId(item.id);
+                        setMemory({
+                          title: item.title,
+                          body: item.body || "",
+                          referenceType: item.referenceType || "",
+                          referenceId: item.referenceId || "",
+                        });
+                        setDirty(true);
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="button button--quiet"
+                      type="button"
+                      onClick={() => {
+                        setAttachmentMemoryId(item.id);
+                        setSelectedMediaId("");
+                      }}
+                    >
+                      Attach private media
+                    </button>
+                    {attachmentMemoryId === item.id ? (
+                      <div className="personal-harbor__actions">
+                        <label>
+                          <span className="sr-only">Available private media</span>
+                          <select value={selectedMediaId} onChange={(event) => setSelectedMediaId(event.target.value)}>
+                            <option value="">Choose available private media</option>
+                            {memoryMediaOptions.map((option) => (
+                              <option key={option.id} value={option.id}>
+                                {option.kind.toLocaleLowerCase()}
+                                {option.description ? ` — ${option.description}` : ""}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <button
+                          className="button button--primary"
+                          type="button"
+                          disabled={!selectedMediaId}
+                          onClick={() =>
+                            void mutate(
+                              `/api/passport/voyages/${encodeURIComponent(recordId)}/memories/${encodeURIComponent(item.id)}/media`,
+                              "POST",
+                              { mediaId: selectedMediaId },
+                            ).then((saved) => {
+                              if (saved) {
+                                setAttachmentMemoryId(null);
+                                setSelectedMediaId("");
+                              }
+                            })
+                          }
+                        >
+                          Attach
+                        </button>
+                      </div>
+                    ) : null}
                   </li>
                 ))}
               </ul>
@@ -415,19 +729,39 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
               <p className="wakebook-soft-empty">No private Memories have been added to this Voyage.</p>
             )}
           </div>
-          <div className="wakebook-keepsake">
+          <div className="wakebook-keepsake" id="wakebook-keepsake">
             <div>
               <p className="personal-harbor__eyebrow">Private Keepsake</p>
               <h3>{voyage.keepsake ? voyage.keepsake.humanStatus : "Prepare a private Keepsake"}</h3>
               <p>
                 {voyage.keepsake
-                  ? `Generated ${formatArchiveDate(voyage.keepsake.generatedAt)}. Participant representation remains consent-scoped.`
+                  ? voyage.keepsake.explanation ||
+                    `Generated ${formatArchiveDate(voyage.keepsake.generatedAt)}. Participant representation remains consent-scoped.`
                   : "A Keepsake assembles accepted Voyage facts and your remembrance without publishing them."}
               </p>
+              {voyage.keepsake?.consent.length ? (
+                <ul aria-label="Keepsake consent decisions">
+                  {voyage.keepsake.consent.map((consent) => (
+                    <li key={`${consent.scope}-${consent.historicalLabel || "participant"}`}>
+                      {consent.historicalLabel || "Historical participant"}:{" "}
+                      {consent.scope.replaceAll("_", " ").toLocaleLowerCase()} — {consent.state.toLocaleLowerCase()}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </div>
             <div className="personal-harbor__actions">
               {voyage.keepsake ? (
                 <>
+                  <button
+                    className="button button--primary"
+                    type="button"
+                    onClick={() =>
+                      void mutate(`/api/passport/history/${encodeURIComponent(recordId)}/keepsake`, "POST")
+                    }
+                  >
+                    Refresh private Keepsake
+                  </button>
                   <button
                     className="button"
                     type="button"
@@ -438,7 +772,7 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
                       })
                     }
                   >
-                    Allow my display name
+                    Allow my display name in this Keepsake
                   </button>
                   <button
                     className="button button--quiet"
@@ -464,6 +798,34 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
               )}
             </div>
           </div>
+        </section>
+
+        <section
+          className="wakebook-detail-section"
+          id="wakebook-provenance"
+          aria-labelledby="wakebook-provenance-title"
+        >
+          <SectionHeading
+            eyebrow="Owner-only, advanced details"
+            title="Technical Provenance"
+            id="wakebook-provenance-title"
+          />
+          <details className="wakebook-edition-panel">
+            <summary>Show historical source and quality details</summary>
+            <dl>
+              <Definition term="History record" value={voyage.provenance.historyRecordId} code />
+              <Definition term="Source Voyage" value={voyage.provenance.sourcePlaythroughId} code />
+              <Definition term="Source membership" value={voyage.provenance.sourceMembershipId || "Unavailable"} code />
+              <Definition term="Last reconciled" value={formatArchiveDate(voyage.provenance.lastDerivedAt)} />
+              {voyage.provenance.fields.map((field) => (
+                <Definition
+                  key={field.label}
+                  term={field.label}
+                  value={`${field.quality.toLocaleLowerCase()} historical evidence`}
+                />
+              ))}
+            </dl>
+          </details>
         </section>
       </div>
 

@@ -11,7 +11,7 @@
     "compatibilityWindow": "Existing drafts and published versions remain readable without Phase 4 rows."
   },
   "mysql": {
-    "migration": ["0058_drydock_phase4_readiness_evidence", "0059_drydock_phase4_suite_evidence", "0060_drydock_phase4_publish_idempotency"],
+    "migration": ["0059_drydock_phase4_readiness_evidence", "0060_drydock_phase4_suite_evidence", "0061_drydock_phase4_publish_idempotency"],
     "reservedModels": ["DrydockCompatibilityRun", "DrydockExternalEvidenceReference", "DrydockPublishingEvidence", "DrydockScenarioSuiteEvidence"],
     "backfill": "NONE",
     "compatibilityWindow": "Existing drafts and published versions remain readable without Phase 4 rows."

@@ -10,14 +10,15 @@ const migrations = (await fs.readdir(migrationRoot, { withFileTypes: true }))
   .filter((entry) => entry.isDirectory())
   .map((entry) => entry.name)
   .sort();
-if (migrations.at(-1) !== phase2Migration) throw new Error("TIDEGLASS_SQLITE_MIGRATION_ORDER_INVALID");
+const phase2MigrationIndex = migrations.indexOf(phase2Migration);
+if (phase2MigrationIndex < 0) throw new Error("TIDEGLASS_SQLITE_MIGRATION_MISSING");
 
 const runRoot = await fs.mkdtemp(path.join(os.tmpdir(), "tideglass-phase2-sqlite-"));
 const databasePath = path.join(runRoot, "upgrade.sqlite");
 const database = new DatabaseSync(databasePath);
 try {
   database.exec("PRAGMA foreign_keys = ON;");
-  for (const migration of migrations.slice(0, -1))
+  for (const migration of migrations.slice(0, phase2MigrationIndex))
     database.exec(await fs.readFile(path.join(migrationRoot, migration, "migration.sql"), "utf8"));
 
   database.exec(`

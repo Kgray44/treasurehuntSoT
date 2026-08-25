@@ -460,6 +460,7 @@ async function supportProjection(targetAccountId: string, scope: SupportAccessSc
       : [];
     return { scope, recordCount: records.length, records };
   }
+  if (scope === "TIDEGLASS_DIAGNOSTICS") return { scope, available: true };
 
   const profile = await db.communityProfile.findUnique({
     where: { accountId: targetAccountId },

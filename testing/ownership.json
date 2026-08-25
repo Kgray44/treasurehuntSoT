@@ -5,7 +5,14 @@
     {
       "id": "platform-foundation",
       "project": "platform",
-      "sourcePaths": ["src/platform/**", "src/server/**", "src/app/api/**", "prisma/**", "scripts/**"],
+      "sourcePaths": [
+        "src/platform/**",
+        "src/components/shell/**",
+        "src/server/**",
+        "src/app/api/**",
+        "prisma/**",
+        "scripts/**"
+      ],
       "testPaths": ["src/platform/**/*.test.*", "src/server/**/*.test.*", "src/app/api/**/*.test.*"],
       "contractIds": ["authentication-authorization", "migration-parity"]
     },
@@ -50,6 +57,7 @@
         "tests/e2e/harborlight-phase3.spec.ts",
         "tests/e2e/harborlight-phase4.spec.ts"
       ],
+      "helperPaths": ["scripts/rehearse-harborlight-*.ts"],
       "contractIds": [
         "community-public-projection",
         "artifact-grant-projection",
@@ -418,6 +426,14 @@
         "tests/e2e/admiralty-phase2.spec.ts"
       ],
       "contractIds": ["bridgewatch.mission-control", "admiralty.phase2.authorization-partition"]
+    },
+    {
+      "id": "nightwatch",
+      "project": "project-nightwatch",
+      "sourcePaths": ["src/nightwatch/**", "scripts/nightwatch/**", "Development_Docs/Projects/Project_Nightwatch/**"],
+      "testPaths": ["src/nightwatch/**/*.test.*"],
+      "supportingOwnerIds": ["bridgewatch"],
+      "contractIds": ["nightwatch.increment-a.integration-queue"]
     },
     {
       "id": "project-wakebook",

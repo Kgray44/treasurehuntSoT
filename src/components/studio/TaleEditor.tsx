@@ -63,7 +63,14 @@ import type {
   Version,
 } from "@/components/studio/studio-types";
 import { studioCopy } from "@/language/studio-copy";
-import type { DraftValidationResult, InspectorField, JsonObject, ValidationIssue } from "@/chronicle/types";
+import type {
+  DraftValidationResult,
+  InspectorField,
+  JsonObject,
+  StudioDraftInput,
+  ValidationIssue,
+} from "@/chronicle/types";
+import type { InsertionPlan, ReusableContentEnvelope, ReusableParameter } from "@/studio/reusable-content";
 import { getDrydockRuleDefinition } from "@/drydock/rules";
 import type { DrydockVariableDeclaration } from "@/drydock/variables";
 import { renameStudioDraftVariable } from "@/studio/authoring/variables";
@@ -99,6 +106,38 @@ type DrydockMigrationPreview = {
   dataLoss: string[];
   canonicalOutputChanges: string[];
   after: { schemaVersion: number; configuration: JsonObject; presentation: JsonObject; completion: JsonObject };
+};
+type ReusableLibraryItem = {
+  id: string;
+  kind: string;
+  name: string;
+  description: string;
+  tags: string[];
+  status: string;
+  currentVersionNumber: number;
+  currentVersionId: string | null;
+  checksum: string | null;
+  usageCount: number;
+  updatedAt: string;
+};
+type ReusableParameterPrompt = {
+  mode: "PRESET" | "INSERT";
+  item: ReusableLibraryItem;
+  parameters: ReusableParameter[];
+  values: Record<string, string | number | boolean>;
+};
+type InstalledCommunityReusableItem = {
+  id: string;
+  itemType: string;
+  title: string;
+  releaseId: string;
+  releaseVersion: string;
+  listingTitle: string;
+  license: Record<string, unknown>;
+  attribution: string[];
+  compatibility: Record<string, unknown>;
+  updateState: "CURRENT" | "LOCAL_MODIFICATION";
+  insertionState: "UNAVAILABLE_NO_AUTHORING_ENVELOPE";
 };
 
 const clone = <T,>(value: T): T => structuredClone(value);
@@ -182,7 +221,25 @@ export function TaleEditor({
   const [assetContext, setAssetContext] = useState("ALL");
   const [assetUsage, setAssetUsage] = useState("ALL");
   const [assetLimit, setAssetLimit] = useState(24);
-  const [libraryTab, setLibraryTab] = useState<"blocks" | "chapters" | "outline">("blocks");
+  const [libraryTab, setLibraryTab] = useState<"blocks" | "chapters" | "outline" | "reuse">("blocks");
+  const [reusableItems, setReusableItems] = useState<ReusableLibraryItem[]>([]);
+  const [installedCommunityItems, setInstalledCommunityItems] = useState<InstalledCommunityReusableItem[]>([]);
+  const [reusableLoading, setReusableLoading] = useState(false);
+  const [reusableError, setReusableError] = useState("");
+  const [reusableSearch, setReusableSearch] = useState("");
+  const [reusableKindFilter, setReusableKindFilter] = useState<"ALL" | "PRESET" | "FRAGMENT" | "CHAPTER_TEMPLATE">(
+    "ALL",
+  );
+  const [reusableParameterPrompt, setReusableParameterPrompt] = useState<ReusableParameterPrompt | null>(null);
+  const [reusableParameters, setReusableParameters] = useState<ReusableParameter[]>([]);
+  const [reusableParameterDraft, setReusableParameterDraft] = useState({
+    key: "",
+    label: "",
+    type: "TEXT" as ReusableParameter["type"],
+    required: true,
+    helpText: "",
+    destinationPath: "",
+  });
   const [blockSearch, setBlockSearch] = useState("");
   const [collapsedChapters, setCollapsedChapters] = useState<string[]>([]);
   const [previewBlock, setPreviewBlock] = useState(false);
@@ -276,6 +333,290 @@ export function TaleEditor({
     queueMicrotask(() => void load());
   }, [authenticated, load]);
 
+  const loadReusableItems = useCallback(async () => {
+    if (!data) return;
+    setReusableLoading(true);
+    setReusableError("");
+    try {
+      const response = await fetch(`/api/studio/tales/${taleId}/reusable-content`, { cache: "no-store" });
+      const body = (await response.json()) as {
+        items?: ReusableLibraryItem[];
+        installedCommunityItems?: InstalledCommunityReusableItem[];
+        error?: string;
+      };
+      if (!response.ok) setReusableError(body.error ?? "Reusable content could not be opened.");
+      else {
+        setReusableItems(body.items ?? []);
+        setInstalledCommunityItems(body.installedCommunityItems ?? []);
+      }
+    } catch {
+      setReusableError("Reusable content could not be opened. Check your connection and try again.");
+    } finally {
+      setReusableLoading(false);
+    }
+  }, [data, taleId]);
+
+  async function archiveReusableItem(item: ReusableLibraryItem) {
+    if (!data) return;
+    const usageDetail = item.usageCount
+      ? `This item has ${item.usageCount} recorded ${item.usageCount === 1 ? "use" : "uses"}. Existing Chronicle copies remain unchanged.`
+      : "This item has no recorded uses. Existing Chronicle copies remain unchanged.";
+    if (
+      !(await requestAction({
+        title: `Archive “${item.name}”?`,
+        detail: usageDetail,
+        confirmLabel: "Archive reusable item",
+        destructive: true,
+      }))
+    )
+      return;
+    setReusableError("");
+    const response = await fetch(`/api/studio/tales/${taleId}/reusable-content`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
+      body: JSON.stringify({ action: "archive", itemId: item.id }),
+    });
+    const body = (await response.json()) as { error?: string };
+    if (!response.ok) return setReusableError(body.error ?? "The reusable item could not be archived.");
+    setReusableItems((items) => items.filter((candidate) => candidate.id !== item.id));
+  }
+
+  function addReusableParameter() {
+    if (!reusableParameterDraft.key || !reusableParameterDraft.label || !reusableParameterDraft.destinationPath) {
+      setReusableError("Give the reusable parameter a key, label, and canonical destination field.");
+      return;
+    }
+    if (reusableParameters.some((parameter) => parameter.key === reusableParameterDraft.key)) {
+      setReusableError("Reusable parameter keys must be unique within this item.");
+      return;
+    }
+    setReusableError("");
+    setReusableParameters((items) => [...items, { ...reusableParameterDraft }]);
+    setReusableParameterDraft({ key: "", label: "", type: "TEXT", required: true, helpText: "", destinationPath: "" });
+  }
+
+  async function saveSelectedAsPreset() {
+    if (!data || !draft || !selected) return;
+    if (dirty && !(await save(draft, false))) return;
+    setReusableError("");
+    const name = `${selected.block.title} preset`;
+    const response = await fetch(`/api/studio/tales/${taleId}/reusable-content`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
+      body: JSON.stringify({
+        action: "create-preset",
+        name,
+        blockId: selected.block.id,
+        parameters: reusableParameters,
+      }),
+    });
+    const body = (await response.json()) as { error?: string };
+    if (!response.ok) return setReusableError(body.error ?? "The Passage preset could not be saved.");
+    setLibraryTab("reuse");
+    await loadReusableItems();
+  }
+
+  async function saveSelectionAsFragment() {
+    if (!data || !draft || selectedIds.length < 2) return;
+    if (dirty && !(await save(draft, false))) return;
+    setReusableError("");
+    const response = await fetch(`/api/studio/tales/${taleId}/reusable-content`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
+      body: JSON.stringify({
+        action: "create-fragment",
+        name: `${selectedIds.length} Passage fragment`,
+        blockIds: selectedIds,
+        parameters: reusableParameters,
+      }),
+    });
+    const body = (await response.json()) as { error?: string };
+    if (!response.ok) return setReusableError(body.error ?? "The reusable fragment could not be saved.");
+    setLibraryTab("reuse");
+    await loadReusableItems();
+  }
+
+  async function saveSelectedChapterAsTemplate() {
+    if (!data || !draft || !selected) return;
+    if (dirty && !(await save(draft, false))) return;
+    setReusableError("");
+    const response = await fetch(`/api/studio/tales/${taleId}/reusable-content`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
+      body: JSON.stringify({
+        action: "create-chapter-template",
+        name: `${selected.chapter.title} template`,
+        chapterId: selected.chapter.id,
+        parameters: reusableParameters,
+      }),
+    });
+    const body = (await response.json()) as { error?: string };
+    if (!response.ok) return setReusableError(body.error ?? "The Chapter template could not be saved.");
+    setLibraryTab("reuse");
+    await loadReusableItems();
+  }
+
+  async function applyReusablePreset(
+    item: ReusableLibraryItem,
+    parameterValues: Record<string, string | number | boolean> = {},
+    parametersChecked = false,
+  ) {
+    if (!data || !draft || !selected) return setReusableError("Select a Passage before applying a reusable preset.");
+    setReusableError("");
+    const response = await fetch(`/api/studio/tales/${taleId}/reusable-content?itemId=${encodeURIComponent(item.id)}`, {
+      cache: "no-store",
+    });
+    const definition = (await response.json()) as { envelope?: ReusableContentEnvelope; error?: string };
+    if (!response.ok || !definition.envelope)
+      return setReusableError(definition.error ?? "The reusable preset could not be opened.");
+    if (definition.envelope.kind !== "PRESET" || definition.envelope.blocks.length !== 1)
+      return setReusableError("Only a single-Passage preset can be applied in this context.");
+    if (definition.envelope.blocks[0].blockType !== selected.block.blockType)
+      return setReusableError(
+        `This ${definition.envelope.blocks[0].blockType} preset cannot be applied to a ${selected.block.blockType} Passage.`,
+      );
+    if (!parametersChecked && (definition.envelope.parameters?.length ?? 0)) {
+      setReusableParameterPrompt({
+        mode: "PRESET",
+        item,
+        parameters: definition.envelope.parameters,
+        values: Object.fromEntries(
+          definition.envelope.parameters
+            .filter((parameter) => parameter.defaultValue !== undefined)
+            .map((parameter) => [parameter.key, parameter.defaultValue!]),
+        ),
+      });
+      return;
+    }
+    const resolvedResponse = await fetch(`/api/studio/tales/${taleId}/reusable-content`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
+      body: JSON.stringify({ action: "resolve-preset", itemId: item.id, parameterValues }),
+    });
+    const resolved = (await resolvedResponse.json()) as { envelope?: ReusableContentEnvelope; error?: string };
+    const source = resolved.envelope?.blocks[0];
+    if (!resolvedResponse.ok || !resolved.envelope || !source)
+      return setReusableError(resolved.error ?? "The reusable preset could not be resolved.");
+    const next = change((candidate) => {
+      const target = candidate.chapters
+        .flatMap((chapter) => chapter.blocks)
+        .find((block) => block.id === selected.block.id);
+      if (!target) return;
+      target.configuration = structuredClone(source.configuration);
+      target.presentation = structuredClone(source.presentation);
+      target.completion = structuredClone(source.completion);
+      target.schemaVersion = source.schemaVersion;
+    }, "Reusable preset pending save");
+    if (!next) return;
+    const saved = await save(next, false, undefined, {
+      itemId: resolved.envelope.itemId,
+      versionId: resolved.envelope.versionId,
+      sourceKind: "PRESET_APPLIED",
+      insertedBlockIds: [selected.block.id],
+      insertedChapterIds: [],
+      provenance: {
+        ...resolved.envelope.attribution,
+        sourceItemId: resolved.envelope.itemId,
+        sourceVersionId: resolved.envelope.versionId,
+        modified: true,
+      },
+    });
+    if (!saved) return;
+    setReusableItems((items) =>
+      items.map((candidate) =>
+        candidate.id === item.id ? { ...candidate, usageCount: candidate.usageCount + 1 } : candidate,
+      ),
+    );
+  }
+
+  async function insertReusableFragment(
+    item: ReusableLibraryItem,
+    parameterValues: Record<string, string | number | boolean> = {},
+    parametersChecked = false,
+  ) {
+    if (!data || !draft) return;
+    if (item.kind === "FRAGMENT" && !selected)
+      return setReusableError("Select a destination Passage before inserting a reusable fragment.");
+    setReusableError("");
+    if (!parametersChecked) {
+      const definitionResponse = await fetch(
+        `/api/studio/tales/${taleId}/reusable-content?itemId=${encodeURIComponent(item.id)}`,
+        { cache: "no-store" },
+      );
+      const definition = (await definitionResponse.json()) as { envelope?: ReusableContentEnvelope; error?: string };
+      if (!definitionResponse.ok || !definition.envelope)
+        return setReusableError(definition.error ?? "The reusable item could not be opened.");
+      if (definition.envelope.parameters.length) {
+        setReusableParameterPrompt({
+          mode: "INSERT",
+          item,
+          parameters: definition.envelope.parameters,
+          values: Object.fromEntries(
+            definition.envelope.parameters
+              .filter((parameter) => parameter.defaultValue !== undefined)
+              .map((parameter) => [parameter.key, parameter.defaultValue!]),
+          ),
+        });
+        return;
+      }
+    }
+    const response = await fetch(`/api/studio/tales/${taleId}/reusable-content`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
+      body: JSON.stringify({
+        action: "plan-insert",
+        itemId: item.id,
+        operationId: crypto.randomUUID(),
+        targetChapterId: selected?.chapter.id,
+        targetBlockId: item.kind === "FRAGMENT" ? selected?.block.id : undefined,
+        draft,
+        parameterValues,
+      }),
+    });
+    const plan = (await response.json()) as InsertionPlan & { error?: string };
+    if (!response.ok) return setReusableError(plan.error ?? "The reusable fragment could not be planned.");
+    const preview = [
+      `${Object.keys(plan.remap.blocks).length} Passage${Object.keys(plan.remap.blocks).length === 1 ? "" : "es"} will be copied${item.kind === "FRAGMENT" ? " and connected from the selected Passage" : ""}.`,
+      `${Object.keys(plan.remap.chapters).length} Chapter${Object.keys(plan.remap.chapters).length === 1 ? "" : "s"} will be added.`,
+      plan.warnings.length ? plan.warnings.join(" ") : "No unresolved external ports were reported.",
+    ].join(" ");
+    if (
+      !(await requestAction({
+        title: `Insert “${item.name}”?`,
+        detail: preview,
+        confirmLabel: "Insert reusable content",
+      }))
+    )
+      return;
+    const next = change((candidate) => {
+      const replacement = new Map(plan.chapters.map((chapter) => [chapter.id, chapter]));
+      candidate.chapters = candidate.chapters.map((chapter) => replacement.get(chapter.id) ?? chapter);
+      for (const chapter of plan.chapters)
+        if (!candidate.chapters.some((existing) => existing.id === chapter.id)) candidate.chapters.push(chapter);
+    }, "Reusable fragment pending save");
+    if (!next) return;
+    const saved = await save(next, false, undefined, {
+      itemId: plan.sourceItemId,
+      versionId: plan.sourceVersionId,
+      sourceKind: "FRAGMENT_INSERTED",
+      insertedBlockIds: Object.values(plan.remap.blocks),
+      insertedChapterIds: Object.values(plan.remap.chapters),
+      provenance: {
+        ...plan.attribution,
+        sourceItemId: plan.sourceItemId,
+        sourceVersionId: plan.sourceVersionId,
+        modified: true,
+      },
+    });
+    if (!saved) return;
+    if (plan.warnings.length) setReusableError(plan.warnings.join(" "));
+    setReusableItems((items) =>
+      items.map((candidate) =>
+        candidate.id === item.id ? { ...candidate, usageCount: candidate.usageCount + 1 } : candidate,
+      ),
+    );
+  }
+
   useEffect(() => {
     if (!selectedId || !inspectorFocusRequested.current) return;
     inspectorFocusRequested.current = false;
@@ -322,7 +663,12 @@ export function TaleEditor({
   }, [insertedId]);
 
   const save = useCallback(
-    async (state: DraftState, quiet = true, revision = draftRevision.current) => {
+    async (
+      state: DraftState,
+      quiet = true,
+      revision = draftRevision.current,
+      reusableUsage?: StudioDraftInput["reusableUsage"],
+    ) => {
       if (!data) return false;
       if (saving.current) return saving.current;
       const savePromise = (async () => {
@@ -336,6 +682,7 @@ export function TaleEditor({
               autosaveVersion: autosaveVersionRef.current ?? data.draft.autosaveVersion,
               tale: state.tale,
               chapters: state.chapters,
+              reusableUsage,
             }),
           });
           const body = (await response.json()) as {
@@ -398,7 +745,7 @@ export function TaleEditor({
   }, [autosaveKick, draft, dirty, save]);
 
   function change(mutator: (next: DraftState) => void, pendingSaveState = "Unsaved changes") {
-    if (!draft) return;
+    if (!draft) return undefined;
     publicationStatusHold.current = false;
     const next = clone(draft);
     mutator(next);
@@ -408,6 +755,7 @@ export function TaleEditor({
     setDraft(next);
     setDirty(true);
     setSaveState(pendingSaveState);
+    return next;
     setValidation(null);
     setValidationPanelOpen(false);
   }
@@ -450,6 +798,35 @@ export function TaleEditor({
     [draft, selectedId],
   );
   const selectedDefinition = data?.registry.find((item) => item.type === selected?.block.blockType);
+  const reusableParameterDestinations = useMemo(() => {
+    if (!selected) return [];
+    const source = selected.block;
+    return (["configuration", "presentation", "completion"] as const).flatMap((section) =>
+      Object.keys(source[section]).map((field) => ({
+        label: `${section} · ${field}`,
+        value: `blocks.${source.id}.${section}.${field}`,
+      })),
+    );
+  }, [selected]);
+  const rankedReusableItems = useMemo(() => {
+    const search = reusableSearch.trim().toLocaleLowerCase();
+    const score = (item: ReusableLibraryItem) => {
+      if (item.kind === "PRESET") return selected ? 3 : 0;
+      if (item.kind === "FRAGMENT") return selected ? 2 : 0;
+      return 1;
+    };
+    return reusableItems
+      .filter((item) => reusableKindFilter === "ALL" || item.kind === reusableKindFilter)
+      .filter(
+        (item) =>
+          !search ||
+          `${item.name} ${item.description} ${item.tags.join(" ")} ${item.kind}`.toLocaleLowerCase().includes(search),
+      )
+      .sort(
+        (left, right) =>
+          score(right) - score(left) || left.name.localeCompare(right.name) || left.id.localeCompare(right.id),
+      );
+  }, [reusableItems, reusableKindFilter, reusableSearch, selected]);
   const studioCommands = useMemo<StudioCommand[]>(
     () => [
       {
@@ -1830,15 +2207,24 @@ export function TaleEditor({
                   <p>Build, navigate, and inspect the complete Chronicle flow.</p>
                 </div>
                 <div className="library-tabs" role="tablist" aria-label="Chronicle tools">
-                  {(["blocks", "chapters", "outline"] as const).map((tab) => (
+                  {(["blocks", "chapters", "outline", "reuse"] as const).map((tab) => (
                     <button
                       key={tab}
                       role="tab"
                       aria-selected={libraryTab === tab}
                       className={libraryTab === tab ? "active" : ""}
-                      onClick={() => setLibraryTab(tab)}
+                      onClick={() => {
+                        setLibraryTab(tab);
+                        if (tab === "reuse") void loadReusableItems();
+                      }}
                     >
-                      {tab === "blocks" ? "Passages" : tab === "chapters" ? "Chapters" : "Outline"}
+                      {tab === "blocks"
+                        ? "Passages"
+                        : tab === "chapters"
+                          ? "Chapters"
+                          : tab === "outline"
+                            ? "Outline"
+                            : "Reuse"}
                     </button>
                   ))}
                 </div>
@@ -1894,6 +2280,317 @@ export function TaleEditor({
                       )),
                     )}
                   </ol>
+                )}
+                {libraryTab === "reuse" && (
+                  <section className="reusable-library" aria-label="Reusable content">
+                    <div className="library-section-heading">
+                      <div>
+                        <h3>Templates, fragments, and presets</h3>
+                        <p>Private reusable content keeps its source version and attribution when it is inserted.</p>
+                      </div>
+                      <button type="button" onClick={() => void loadReusableItems()} disabled={reusableLoading}>
+                        {reusableLoading ? "Refreshing…" : "Refresh"}
+                      </button>
+                    </div>
+                    {selected && (
+                      <section className="reusable-parameter-authoring" aria-label="Reusable parameter slots">
+                        <h4>Reusable parameter slots</h4>
+                        <p>Optional slots apply only to the next preset, fragment, or Chapter template you save.</p>
+                        <div>
+                          <label>
+                            <span>Key</span>
+                            <input
+                              aria-label="Reusable parameter key"
+                              value={reusableParameterDraft.key}
+                              onChange={(event) =>
+                                setReusableParameterDraft((current) => ({ ...current, key: event.target.value }))
+                              }
+                              placeholder="opening_text"
+                            />
+                          </label>
+                          <label>
+                            <span>Label</span>
+                            <input
+                              aria-label="Reusable parameter label"
+                              value={reusableParameterDraft.label}
+                              onChange={(event) =>
+                                setReusableParameterDraft((current) => ({ ...current, label: event.target.value }))
+                              }
+                              placeholder="Opening text"
+                            />
+                          </label>
+                          <label>
+                            <span>Type</span>
+                            <select
+                              aria-label="Reusable parameter type"
+                              value={reusableParameterDraft.type}
+                              onChange={(event) =>
+                                setReusableParameterDraft((current) => ({
+                                  ...current,
+                                  type: event.target.value as ReusableParameter["type"],
+                                }))
+                              }
+                            >
+                              {(
+                                [
+                                  "TEXT",
+                                  "TITLE",
+                                  "ASSET",
+                                  "ARTIFACT",
+                                  "LOCATION",
+                                  "VARIABLE",
+                                  "DURATION",
+                                  "TARGET",
+                                  "CHOICE_LABEL",
+                                  "VISIBILITY",
+                                ] as const
+                              ).map((type) => (
+                                <option key={type} value={type}>
+                                  {type.replaceAll("_", " ")}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+                          <label>
+                            <span>Destination</span>
+                            <select
+                              aria-label="Reusable parameter destination"
+                              value={reusableParameterDraft.destinationPath}
+                              onChange={(event) =>
+                                setReusableParameterDraft((current) => ({
+                                  ...current,
+                                  destinationPath: event.target.value,
+                                }))
+                              }
+                            >
+                              <option value="">Choose a field</option>
+                              {reusableParameterDestinations.map((destination) => (
+                                <option key={destination.value} value={destination.value}>
+                                  {destination.label}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+                          <label>
+                            <span>Help text</span>
+                            <input
+                              aria-label="Reusable parameter help text"
+                              value={reusableParameterDraft.helpText}
+                              onChange={(event) =>
+                                setReusableParameterDraft((current) => ({ ...current, helpText: event.target.value }))
+                              }
+                              placeholder="Explain what the Creator should choose."
+                            />
+                          </label>
+                          <label>
+                            <input
+                              aria-label="Reusable parameter required"
+                              type="checkbox"
+                              checked={reusableParameterDraft.required}
+                              onChange={(event) =>
+                                setReusableParameterDraft((current) => ({ ...current, required: event.target.checked }))
+                              }
+                            />
+                            Required
+                          </label>
+                          <button type="button" onClick={addReusableParameter}>
+                            Add parameter slot
+                          </button>
+                        </div>
+                        {reusableParameters.length > 0 && (
+                          <ul>
+                            {reusableParameters.map((parameter) => (
+                              <li key={parameter.key}>
+                                {parameter.label} ({parameter.type}) → {parameter.destinationPath}
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setReusableParameters((items) => items.filter((item) => item.key !== parameter.key))
+                                  }
+                                >
+                                  Remove
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </section>
+                    )}
+                    {selected && (
+                      <button type="button" onClick={() => void saveSelectedAsPreset()}>
+                        Save selected Passage as preset
+                      </button>
+                    )}
+                    {selectedIds.length >= 2 && (
+                      <button type="button" onClick={() => void saveSelectionAsFragment()}>
+                        Save {selectedIds.length} selected Passages as fragment
+                      </button>
+                    )}
+                    {selected && (
+                      <button type="button" onClick={() => void saveSelectedChapterAsTemplate()}>
+                        Save selected Chapter as template
+                      </button>
+                    )}
+                    <div className="reusable-library-controls">
+                      <input
+                        type="search"
+                        value={reusableSearch}
+                        onChange={(event) => setReusableSearch(event.target.value)}
+                        placeholder="Search reusable content"
+                        aria-label="Search reusable content"
+                      />
+                      <select
+                        value={reusableKindFilter}
+                        onChange={(event) =>
+                          setReusableKindFilter(
+                            event.target.value as "ALL" | "PRESET" | "FRAGMENT" | "CHAPTER_TEMPLATE",
+                          )
+                        }
+                        aria-label="Filter reusable content"
+                      >
+                        <option value="ALL">All reusable content</option>
+                        <option value="PRESET">Presets</option>
+                        <option value="FRAGMENT">Fragments</option>
+                        <option value="CHAPTER_TEMPLATE">Chapter templates</option>
+                      </select>
+                    </div>
+                    {reusableParameterPrompt && (
+                      <form
+                        className="reusable-parameter-prompt"
+                        onSubmit={(event) => {
+                          event.preventDefault();
+                          const prompt = reusableParameterPrompt;
+                          setReusableParameterPrompt(null);
+                          if (prompt.mode === "PRESET") void applyReusablePreset(prompt.item, prompt.values, true);
+                          else void insertReusableFragment(prompt.item, prompt.values, true);
+                        }}
+                      >
+                        <h4>Configure {reusableParameterPrompt.item.name}</h4>
+                        {reusableParameterPrompt.parameters.map((parameter) => (
+                          <label key={parameter.key}>
+                            <span>
+                              {parameter.label}
+                              {parameter.required ? " (required)" : ""}
+                            </span>
+                            <input
+                              type={parameter.type === "DURATION" ? "number" : "text"}
+                              required={parameter.required}
+                              value={String(reusableParameterPrompt.values[parameter.key] ?? "")}
+                              onChange={(event) =>
+                                setReusableParameterPrompt((current) =>
+                                  current
+                                    ? {
+                                        ...current,
+                                        values: {
+                                          ...current.values,
+                                          [parameter.key]:
+                                            parameter.type === "DURATION"
+                                              ? Number(event.target.value)
+                                              : event.target.value,
+                                        },
+                                      }
+                                    : current,
+                                )
+                              }
+                            />
+                            <small>{parameter.helpText}</small>
+                          </label>
+                        ))}
+                        <button type="button" onClick={() => setReusableParameterPrompt(null)}>
+                          Cancel
+                        </button>
+                        <button type="submit">Preview insertion</button>
+                      </form>
+                    )}
+                    {reusableError && <p role="alert">{reusableError}</p>}
+                    {!reusableLoading && !reusableError && !rankedReusableItems.length && (
+                      <p>No reusable content yet. Save a governed Passage, selection, or Chapter to reuse it safely.</p>
+                    )}
+                    <ul className="reusable-library-list">
+                      {rankedReusableItems.map((item) => (
+                        <li key={item.id}>
+                          <p className="eyebrow">
+                            {item.kind.replaceAll("_", " ")} · Version {item.currentVersionNumber}
+                          </p>
+                          <strong>{item.name}</strong>
+                          <p>{item.description || "No description provided."}</p>
+                          <small>
+                            {item.kind === "PRESET"
+                              ? selected
+                                ? "Available when its canonical Passage type matches the selected Passage."
+                                : "Select a compatible Passage to apply this preset."
+                              : item.kind === "FRAGMENT"
+                                ? selected
+                                  ? "Will copy internal connections into the selected Chapter; reconnect exposed ports explicitly."
+                                  : "Select a destination Passage to choose a Chapter for this fragment."
+                                : "Will create a new Chapter and preserve only its internal connections."}
+                          </small>
+                          {item.tags.length > 0 && <small>{item.tags.join(" · ")}</small>}
+                          <p>
+                            <small>
+                              {item.usageCount} recorded {item.usageCount === 1 ? "use" : "uses"}
+                            </small>
+                          </p>
+                          <button type="button" onClick={() => void archiveReusableItem(item)}>
+                            Archive
+                          </button>
+                          {item.kind === "PRESET" && (
+                            <button type="button" onClick={() => void applyReusablePreset(item)} disabled={!selected}>
+                              Apply to selected Passage
+                            </button>
+                          )}
+                          {item.kind === "FRAGMENT" && (
+                            <button
+                              type="button"
+                              onClick={() => void insertReusableFragment(item)}
+                              disabled={!selected}
+                            >
+                              Insert into selected Chapter
+                            </button>
+                          )}
+                          {item.kind === "CHAPTER_TEMPLATE" && (
+                            <button type="button" onClick={() => void insertReusableFragment(item)}>
+                              Insert as new Chapter
+                            </button>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                    <section className="installed-community-content" aria-label="Installed Community content">
+                      <h4>Installed Community content</h4>
+                      {!installedCommunityItems.length && (
+                        <p>No clean, active installed Community templates or presets are available to this Creator.</p>
+                      )}
+                      <ul className="reusable-library-list">
+                        {installedCommunityItems.map((item) => (
+                          <li key={item.id}>
+                            <p className="eyebrow">
+                              {item.itemType.replaceAll("_", " ")} · Release {item.releaseVersion}
+                            </p>
+                            <strong>{item.title}</strong>
+                            <p>
+                              From {item.listingTitle}.{" "}
+                              {item.updateState === "CURRENT"
+                                ? "Installed release is current."
+                                : "Installed copy has local changes."}
+                            </p>
+                            <small>
+                              License:{" "}
+                              {typeof item.license.key === "string" ? item.license.key : "recorded by Harborlight"}.
+                              Attribution:{" "}
+                              {item.attribution.length ? item.attribution.join(", ") : "recorded by Harborlight"}.
+                            </small>
+                            <p>
+                              <small>
+                                Insertion is unavailable: this accepted package stores no Shipwright authoring envelope.
+                                Harborlight release and lineage remain read-only.
+                              </small>
+                            </p>
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  </section>
                 )}
               </aside>
               <section

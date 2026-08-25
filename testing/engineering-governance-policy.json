@@ -1,0 +1,96 @@
+{
+  "version": "1.0.0",
+  "decision": "ADR-EGS-001",
+  "authorities": {
+    "verification": "SOUNDING_LINE",
+    "flow": "NIGHTWATCH"
+  },
+  "ordinary": {
+    "integrationPath": "DIRECT_MAINLINE_SINGLE_CANDIDATE",
+    "mainlineTrain": "OPTIONAL_MULTI_CANDIDATE_OPTIMIZATION",
+    "trainFailureRoute": "SAFE_DIRECT_FALLBACK",
+    "ordinaryBaselineCertification": "NOT_A_MERGE_PREREQUISITE",
+    "ordinaryDeepwater": "PRODUCT_REALIZATION_OR_REACHABILITY_ONLY",
+    "provenanceOnlyGeneratedState": "POST_MERGE_RECONCILIATION",
+    "repairCeiling": "ONE_INDEPENDENT_SHARED_REPAIR_THEN_SAFE_DIRECT_FALLBACK",
+    "finalAuthority": "RELEASE_GO_ONLY",
+    "testRegistration": "DECLARATIVE_ORDINARY_CONFIGURATION",
+    "bosunRepair": "ORDINARY_WHEN_BOUNDED_AND_NON_AUTHORITY"
+  },
+  "unattendedAutonomy": {
+    "policy": "testing/unattended-autonomy-policy.json",
+    "standingDelegation": "OBJECTIVE_SCOPED_REQUIRED",
+    "routing": ["AUTO_DELEGATED", "DELEGATED_WITH_BUDGET", "TRUE_OWNER_REQUIRED"],
+    "verificationAuthority": "SOUNDING_LINE_UNCHANGED"
+  },
+  "releaseCandidate": "EXHAUSTIVE_UNCHANGED",
+  "controlPlaneChange": {
+    "ownerAuthorization": "EXPLICIT_REPOSITORY_OWNER_DISPATCH",
+    "trustedBasePolicy": "REQUIRED",
+    "antiSelfAuthorization": "TRUSTED_BASE_CLASSIFIER_AND_POLICY_REQUIRED",
+    "protectedBinding": "EXACT_CANDIDATE_BASE_AND_LANDED_TREE",
+    "requiredEvidence": [
+      "EXACT_BASE_IDENTITY",
+      "EXACT_CANDIDATE_IDENTITY",
+      "EXACT_CANDIDATE_TREE",
+      "OWNER_AUTHORIZATION",
+      "AFFECTED_CONTROL_PLANE_REGRESSION",
+      "ANTI_SELF_AUTHORIZATION",
+      "PROTECTED_BINDING"
+    ]
+  },
+  "breakGlass": {
+    "ownerAuthorization": "EXPLICIT_REPOSITORY_OWNER_DISPATCH",
+    "trustedControlPlaneUnavailable": "REQUIRED",
+    "nonProduct": "REQUIRED",
+    "exactScope": "REQUIRED",
+    "expiry": "REQUIRED",
+    "beforeAfterEvidence": "REQUIRED",
+    "normalPathSelfVerification": "REQUIRED"
+  },
+  "controlPlanePathGlobs": [
+    "testing/engineering-governance-policy.json",
+    "testing/sounding-line-authority.json",
+    "testing/mainline-train-policy.json",
+    "testing/verification-maintenance-policy.json",
+    "testing/authority-maintenance-policy.json",
+    "testing/root-maintenance-policy.json",
+    "testing/unattended-autonomy-policy.json",
+    "testing/control-plane-repair-routes.json",
+    "testing/policy-manifest.json",
+    "testing/test-registration.schema.json",
+    "scripts/sounding-line/**",
+    "scripts/nightwatch/**",
+    "src/nightwatch/**",
+    "scripts/deepwater/**",
+    "scripts/features/**",
+    "scripts/generate-document-index.mjs",
+    "scripts/private-content/scan.ts",
+    "scripts/validate-documentation.mjs",
+    ".agents/unattended-autonomy-policy.md",
+    ".github/workflows/sounding-line-*.yml",
+    ".github/workflows/nightwatch-baseline-certification.yml",
+    "Development_Docs/Governing/ADR-EGS-001_Engineering_Governance_Simplification.md",
+    "Development_Docs/Projects/Project_Nightwatch/**",
+    "Development_Docs/Programs/Deepwater/**",
+    "Development_Docs/Programs/Sounding_Line/**"
+  ],
+  "ordinaryBosunRepairPathGlobs": [
+    "src/nightwatch/bosun.ts",
+    "src/nightwatch/bosun-live.ts",
+    "src/nightwatch/bosun.test.ts",
+    "scripts/nightwatch/bosun-canary.ts"
+  ],
+  "legacyCompatibility": {
+    "verificationMaintenance": "COMPATIBILITY_ONLY_NO_NEW_NORMAL_CALLERS",
+    "authorityMaintenance": "COMPATIBILITY_ONLY_BOOTSTRAP_ONLY",
+    "rootMaintenance": "COMPATIBILITY_ONLY_OWNER_EMERGENCY_BOOTSTRAP_ONLY",
+    "retirementCondition": "SIMPLIFIED_PATH_SELF_VERIFIED_ON_PROTECTED_MAIN"
+  },
+  "auxiliaryGovernance": {
+    "featureCatalog": "MEANINGFUL_CAPABILITY_OR_LIMITATION_ONLY",
+    "deepwater": "PRODUCT_REALIZATION_OR_REACHABILITY_ONLY",
+    "documentationIndex": "DOCUMENT_STRUCTURE_CHANGE_ONLY",
+    "changelogAndUserDocs": "MATERIAL_USER_VISIBLE_CHANGE_ONLY"
+  }
+}

@@ -56,7 +56,6 @@ describe("Tideglass Phase 2 cache and migration contracts", () => {
     if (!stored) throw new Error("missing test entry");
     stored.changeSet.status = "PARTIAL";
     expect(hasValidChangeSetDigest(stored.changeSet)).toBe(false);
-    expect(cache.getCanonicalChangeSet(key)).toBeUndefined();
     const rebuilt = await compareExactEditions(
       new FixtureRepository([
         edition("edition-a", baseSnapshot()),
@@ -66,7 +65,8 @@ describe("Tideglass Phase 2 cache and migration contracts", () => {
       { chronicleId: "chronicle-tideglass", sourceEditionId: "edition-a", targetEditionId: "edition-b" },
       { cache },
     );
-    expect(rebuilt.ok && rebuilt.value.operation.cacheStatus).toBe("MISS");
+    expect(rebuilt.ok && rebuilt.value.operation.cacheStatus).toBe("CORRUPT_REBUILT");
+    expect(cache.readCanonicalChangeSet(key).status).toBe("HIT");
   });
 
   it("misses for the reverse pair and invalidates the exact comparison policy", async () => {

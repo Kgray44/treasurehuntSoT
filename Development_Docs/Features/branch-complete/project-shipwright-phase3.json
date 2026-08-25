@@ -1,0 +1,33 @@
+{
+  "id": "FT-038",
+  "title": "Shipwright Reusable Creator Composition",
+  "summary": "Creators capture private immutable Presets, Fragments, and Chapter templates, then preview and apply deterministic Chronicle composition results with source-version provenance through the ordinary Studio edit path.",
+  "status": "MAINLINE",
+  "program": "Project Shipwright Phase 3",
+  "surfaces": [
+    "/studio/tales/[taleId]",
+    "/api/studio/tales/[taleId]/reusable-content",
+    "src/components/studio/TaleEditor.tsx"
+  ],
+  "subfeatures": [
+    "Owner-scoped immutable Preset, Fragment, and Chapter-template Library records",
+    "Checksum-verified reusable envelopes and bounded parameter resolution",
+    "Deterministic collision-safe composition preparation and Drydock validation",
+    "Source item and immutable version provenance for every confirmed insertion",
+    "One ordinary Studio autosave and undo/redo mutation for each insertion",
+    "Fail-closed capture and owner-isolation boundaries for private Creator material"
+  ],
+  "evidence": [
+    { "kind": "path", "value": "src/studio/reusable-content.ts" },
+    { "kind": "path", "value": "src/studio/reusable-library-service.ts" },
+    { "kind": "test", "value": "src/studio/reusable-content.test.ts" },
+    { "kind": "test", "value": "src/app/api/studio/tales/[taleId]/reusable-content/route.test.ts" },
+    { "kind": "test", "value": "tests/e2e/project-shipwright-phase3.spec.ts" }
+  ],
+  "limitations": [
+    "Reusable content remains private to its owner; Community package metadata is read-only until an accepted reusable authoring envelope exists.",
+    "Drydock remains the sole authority for Chronicle contracts, defaults, and validation.",
+    "Deployment, live-provider execution, and Shipwright Phase 4 remain outside this capability."
+  ],
+  "catalogVersion": 1
+}

@@ -3340,6 +3340,13 @@
       "authority": "project-trim",
       "owners": ["project-trim"],
       "critical": true
+    },
+    {
+      "id": "nightwatch.increment-a.integration-queue",
+      "name": "Nightwatch Increment A durable integration queue and migration reservation safety",
+      "authority": "nightwatch",
+      "owners": ["nightwatch", "bridgewatch"],
+      "critical": true
     }
   ]
 }

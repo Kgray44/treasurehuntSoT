@@ -8,3 +8,4 @@ export * from "./annotations";
 export * from "./projection";
 export * from "./passage";
 export * from "./passage-service";
+export * from "./diagnostics";

@@ -241,6 +241,7 @@ describe("Tideglass Phase 2 governed intelligence", () => {
   it("allows a requested audience only to narrow the server-derived maximum", () => {
     expect(selectTideglassAudience("PLAYER_SAFE", "CREATOR_FULL")).toBe("PLAYER_SAFE");
     expect(selectTideglassAudience("CREATOR_FULL", "PUBLIC_PREVIEW")).toBe("PUBLIC_PREVIEW");
+    expect(selectTideglassAudience("CAPTAIN_SAFE", "PLAYER_SAFE")).toBe("CAPTAIN_SAFE");
   });
 
   it("produces traceable, byte-stable summary groups and policy evidence", async () => {

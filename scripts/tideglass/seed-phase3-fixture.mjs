@@ -13,7 +13,7 @@ const allowedRoot = path.resolve(required("LOCALAPPDATA"), "ProjectTideglass");
 const canonicalDatabase = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
 const validationNonceHash = process.env.FOREVER_VALIDATION_NONCE_HASH ?? null;
 const createdAt = new Date("2026-08-12T12:00:00.000Z");
-const fixtureVersion = "tideglass-phase3-v2";
+const fixtureVersion = "tideglass-phase4-v2";
 
 if (!taskRoot.startsWith(`${allowedRoot}${path.sep}`)) throw new Error(`TIDEGLASS_TASK_ROOT_REFUSED:${taskRoot}`);
 if (!databasePath.startsWith(`${taskRoot}${path.sep}`) || databasePath === canonicalDatabase)
@@ -31,9 +31,41 @@ const accounts = {
   PLAYER_AB: identity("player-ab", "player.ab@tideglass.example.test", "Player AB", ["PLAYER"]),
   PLAYER_C: identity("player-c", "player.c@tideglass.example.test", "Player C", ["PLAYER"]),
   CREATOR: identity("creator", "creator@tideglass.example.test", "Tideglass Fixture Creator", ["PLAYER", "CREATOR"]),
+  CAPTAIN: identity("captain", "captain@tideglass.example.test", "Tideglass Fixture Captain", ["CAPTAIN"]),
   FOREIGN: identity("foreign", "foreign@tideglass.example.test", "Foreign Player", ["PLAYER"]),
+  SUPPORT: identity("support", "support@tideglass.example.test", "Tideglass Fixture Support", ["SUPPORT_OPERATOR"]),
 };
 for (const [key, account] of Object.entries(accounts)) await createIdentity(key, account);
+
+await db.supportAccessRequest.create({
+  data: {
+    id: "tg3-support-request",
+    requestingAdminAccountId: accounts.SUPPORT.id,
+    targetAccountId: accounts.CREATOR.id,
+    purpose: "Synthetic Tideglass comparison diagnostic walkthrough.",
+    requestedScopes: JSON.stringify(["TIDEGLASS_DIAGNOSTICS"]),
+    status: "APPROVED",
+    requestedAt: createdAt,
+    expiresAt: new Date("2027-08-12T12:00:00.000Z"),
+    decisionAt: createdAt,
+    decisionByTargetAccountId: accounts.CREATOR.id,
+    correlationId: "tg3-support-correlation",
+    createdAt,
+  },
+});
+await db.supportAccessGrant.create({
+  data: {
+    id: "tg3-support-grant",
+    requestId: "tg3-support-request",
+    operatorAccountId: accounts.SUPPORT.id,
+    targetAccountId: accounts.CREATOR.id,
+    grantedScopes: JSON.stringify(["TIDEGLASS_DIAGNOSTICS"]),
+    status: "ACTIVE",
+    issuedAt: createdAt,
+    expiresAt: new Date("2027-08-12T12:00:00.000Z"),
+    correlationId: "tg3-support-correlation",
+  },
+});
 
 const chronicleId = "tg3-chronicle-passage";
 const versions = [
@@ -134,6 +166,106 @@ await db.tideglassCreatorAnnotation.create({
   },
 });
 
+const communityListing = { id: "tg4-community-listing", slug: "tideglass-passage-update" };
+const communityProfileId = "tg4-community-profile-creator";
+const communityChronicleId = "tg4-community-chronicle";
+const communityChronicleSlug = "tideglass-harbor-update-fixture";
+const communityVersions = [
+  { id: "tg4-community-edition-a", label: "1.1", snapshot: communitySnapshot(2), current: false },
+  { id: "tg4-community-edition-b", label: "2.0", snapshot: communitySnapshot(3), current: true },
+];
+await db.chronicle.create({
+  data: {
+    id: communityChronicleId,
+    slug: communityChronicleSlug,
+    title: "The Tideglass Harbor Update Fixture",
+    shortDescription: "A synthetic Chronicle dedicated to Community Harbor release-handoff qualification.",
+    longDescription: "No real Chronicle, Community Harbor listing, release, or account data is represented.",
+    creatorId: accounts.CREATOR.id,
+    creatorAccountId: accounts.CREATOR.id,
+    status: "PUBLISHED",
+    visibility: "PUBLIC",
+    latestPublishedVersionId: communityVersions[1].id,
+    playerCountMin: 2,
+    playerCountMax: 4,
+    estimatedDuration: 60,
+    createdAt,
+  },
+});
+for (const [index, version] of communityVersions.entries()) {
+  const contentSnapshot = JSON.stringify(version.snapshot);
+  await db.publishedTaleVersion.create({
+    data: {
+      id: version.id,
+      taleId: communityChronicleId,
+      versionNumber: index + 1,
+      versionLabel: version.label,
+      publishedAt: new Date(createdAt.getTime() + (index + 1) * 86_400_000),
+      publishedBy: "Tideglass Fixture Creator",
+      publishedByAccountId: accounts.CREATOR.id,
+      releaseNotes: "Synthetic Community Harbor release source.",
+      contentSnapshot,
+      schemaVersion: 1,
+      checksum: sha256(contentSnapshot),
+      isCurrent: version.current,
+    },
+  });
+}
+await db.communityProfile.create({
+  data: {
+    id: communityProfileId,
+    accountId: accounts.CREATOR.id,
+    normalizedHandle: "tideglass-fixture-creator",
+    handle: "Tideglass Fixture Creator",
+    displayName: "Tideglass Fixture Creator",
+    visibility: "COMMUNITY",
+    creatorStatus: "ACTIVE",
+    moderationStatus: "ACTIVE",
+    supportedLanguages: JSON.stringify(["en"]),
+    createdAt,
+  },
+});
+await db.communityListing.create({
+  data: {
+    id: communityListing.id,
+    slug: communityListing.slug,
+    itemType: "CHRONICLE",
+    ownerProfileId: communityProfileId,
+    title: "The Tideglass Harbor Update Fixture",
+    shortDescription: "A synthetic Community Harbor Chronicle update for Tideglass qualification.",
+    longDescription: "No real Community Harbor listing, release, or account data is represented.",
+    visibility: "COMMUNITY",
+    publicationStatus: "PUBLISHED",
+    moderationStatus: "ACTIVE",
+    locationClass: "FICTIONAL",
+    primaryCategory: "MYSTERY",
+    tags: JSON.stringify(["SYNTHETIC"]),
+    publishedAt: createdAt,
+    createdAt,
+  },
+});
+for (const [index, version] of communityVersions.entries()) {
+  await db.communityRelease.create({
+    data: {
+      id: `tg4-community-release-${version.label.replaceAll(".", "-")}`,
+      listingId: communityListing.id,
+      semanticVersion: version.label,
+      sourcePublishedTaleVersionId: version.id,
+      manifest: JSON.stringify({ kind: "SYNTHETIC_TIDEGLASS_FIXTURE", editionId: version.id }),
+      manifestChecksum: sha256(`tg4-community-release-${version.id}`),
+      licenseSnapshot: "SYNTHETIC_FIXTURE_ONLY",
+      moderationStatus: "ACTIVE",
+      publishedByProfileId: communityProfileId,
+      publishedAt: new Date(createdAt.getTime() + (index + 1) * 86_400_000),
+      createdAt,
+    },
+  });
+}
+await db.communityListing.update({
+  where: { id: communityListing.id },
+  data: { currentReleaseId: "tg4-community-release-2-0" },
+});
+
 await createRecord(accounts.PLAYER_A, "tg3-record-a", versions[0], "synthetic-a", "COMPLETED", "SUCCESS");
 await createRecord(accounts.PLAYER_AB, "tg3-record-ab-a", versions[0], "synthetic-ab-a", "COMPLETED", "SUCCESS");
 await createRecord(accounts.PLAYER_AB, "tg3-record-ab-b", versions[1], "synthetic-ab-b", "COMPLETED", "SUCCESS");
@@ -163,7 +295,7 @@ const privateCredentials = path.join(taskRoot, "credentials", "tideglass-phase3-
 await mkdir(path.dirname(privateCredentials), { recursive: true });
 await writeFile(
   privateCredentials,
-  `${JSON.stringify({ classification: "LOCAL_SYNTHETIC_CREDENTIAL_HANDOFF", fixtureVersion, password, accounts: aliases, chronicle: { id: chronicleId, slug: "tideglass-passage-fixture", versions: versions.map(({ id, label }) => ({ id, label })) } }, null, 2)}\n`,
+  `${JSON.stringify({ classification: "LOCAL_SYNTHETIC_CREDENTIAL_HANDOFF", fixtureVersion, password, accounts: aliases, chronicle: { id: chronicleId, slug: "tideglass-passage-fixture", versions: versions.map(({ id, label }) => ({ id, label })) }, community: { slug: communityListing.slug } }, null, 2)}\n`,
   { encoding: "utf8", mode: 0o600 },
 );
 const fixtureChecksum = sha256(
@@ -171,6 +303,8 @@ const fixtureChecksum = sha256(
     fixtureVersion,
     aliases,
     chronicleId,
+    communityListing,
+    communityChronicleId,
     versions: versions.map((version) => ({
       id: version.id,
       snapshotChecksum: sha256(JSON.stringify(version.snapshot)),
@@ -440,6 +574,19 @@ function snapshot(version) {
         ]
       : [],
     publishedAt: new Date(createdAt.getTime() + (version - 1) * 86_400_000).toISOString(),
+  };
+}
+
+function communitySnapshot(version) {
+  const source = snapshot(version);
+  return {
+    ...source,
+    tale: {
+      ...source.tale,
+      id: communityChronicleId,
+      slug: communityChronicleSlug,
+      title: "The Tideglass Harbor Update Fixture",
+    },
   };
 }
 

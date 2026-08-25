@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { getBlockDefinition, providerForBlock } from "@/chronicle/block-registry";
+import { normalizeDrydockBlockForTideglass } from "./drydock-adapter";
 import {
   TIDEGLASS_LIMITS,
   TIDEGLASS_SEMANTIC_SCHEMA_VERSION,
@@ -274,7 +275,16 @@ function canonicalConfigValue(key: string, value: unknown): JsonValue {
   return jsonValue(value);
 }
 
-function blockFacts(block: z.infer<typeof blockSchema>, unsupported: SemanticUnsupportedSection[]): SemanticFact[] {
+/**
+ * Snapshot v1 is Tideglass's already accepted immutable-envelope reader. It
+ * does not upcast a Story Block; newer Drydock block versions use the adapter
+ * below. Keeping this reader preserves historical v1 semantics while Drydock
+ * remains the only owner of schema-evolution migrations.
+ */
+function legacyV1BlockFacts(
+  block: z.infer<typeof blockSchema>,
+  unsupported: SemanticUnsupportedSection[],
+): SemanticFact[] {
   const definition = getBlockDefinition(block.blockType);
   if (!definition) {
     unsupported.push({
@@ -298,19 +308,55 @@ function blockFacts(block: z.infer<typeof blockSchema>, unsupported: SemanticUns
       code: "UNKNOWN_SEMANTICS",
       detail: `Unregistered configuration fields: ${unknown.sort().join(", ")}`,
     });
-
   const facts: SemanticFact[] = [
     fact("title", block.title, "STORY_CONTENT"),
     fact("enabled", block.isEnabled, "STRUCTURE", "MAJOR"),
-    fact("provider", providerForBlock(block.blockType, block.configuration), "COMPLETION", "MAJOR", "CAPTAIN_ONLY"),
+    fact(
+      "provider",
+      providerForBlock(block.blockType, block.configuration, block.completion),
+      "COMPLETION",
+      "MAJOR",
+      "CAPTAIN_ONLY",
+    ),
   ];
   if (block.internalLabel)
     facts.push(fact("internalLabel", block.internalLabel, "PRESENTATION_METADATA", "MINOR", "CREATOR_ONLY"));
-  for (const key of [...allowed].sort()) {
+  for (const key of [...allowed].sort(compareCanonicalStrings)) {
     const value = Object.prototype.hasOwnProperty.call(block.configuration, key)
       ? block.configuration[key]
       : definition.defaultConfiguration[key];
     if (value === undefined) continue;
+    const detail = classification(block.blockType, key, value);
+    facts.push(
+      fact(
+        `configuration.${key}`,
+        canonicalConfigValue(key, value),
+        detail.category,
+        detail.significance,
+        detail.spoiler,
+      ),
+    );
+  }
+  for (const [key, value] of Object.entries(block.presentation).sort(([a], [b]) => compareCanonicalStrings(a, b))) {
+    const detail = classification(block.blockType, key, value);
+    facts.push(fact(`presentation.${key}`, value, detail.category, detail.significance, detail.spoiler));
+  }
+  for (const [key, value] of Object.entries(block.completion).sort(([a], [b]) => compareCanonicalStrings(a, b))) {
+    const detail = classification(block.blockType, key, value);
+    facts.push(fact(`completion.${key}`, value, "COMPLETION", detail.significance, "CAPTAIN_ONLY"));
+  }
+  return definedFacts(facts);
+}
+
+function canonicalDrydockBlockFacts(block: z.infer<typeof blockSchema>): SemanticFact[] {
+  const facts: SemanticFact[] = [
+    fact("title", block.title, "STORY_CONTENT"),
+    fact("enabled", block.isEnabled, "STRUCTURE", "MAJOR"),
+    fact("provider", block.completion.mode ?? null, "COMPLETION", "MAJOR", "CAPTAIN_ONLY"),
+  ];
+  if (block.internalLabel)
+    facts.push(fact("internalLabel", block.internalLabel, "PRESENTATION_METADATA", "MINOR", "CREATOR_ONLY"));
+  for (const [key, value] of Object.entries(block.configuration).sort(([a], [b]) => compareCanonicalStrings(a, b))) {
     const detail = classification(block.blockType, key, value);
     facts.push(
       fact(
@@ -442,15 +488,89 @@ function canonicalizeV1(
       ]),
     });
     chapter.blocks.forEach((block, blockPosition) => {
+      const normalized = normalizeDrydockBlockForTideglass({
+        id: block.id,
+        blockType: block.blockType,
+        schemaVersion: block.schemaVersion,
+        configuration: block.configuration,
+        presentation: block.presentation,
+        completion: block.completion,
+        connections: block.connections,
+        nextBlockId: block.nextBlockId,
+      });
+      // A v1 envelope remains supported by the accepted Tideglass reader when
+      // no Drydock migration certifies it. This is a reader fallback, never a
+      // locally invented upcast; later block schemas must use Drydock.
+      if (block.schemaVersion === 1 && !normalized.ok) {
+        blocks.push({
+          id: block.id,
+          entityType: "BLOCK",
+          parentId: chapter.id,
+          order: block.orderIndex ?? blockPosition,
+          semanticType: block.blockType,
+          facts: legacyV1BlockFacts(block, unsupportedSections),
+        });
+        block.connections.forEach((connection, connectionPosition) => {
+          const order = connection.orderIndex ?? connectionPosition;
+          const label = connection.label ?? null;
+          const condition = connection.conditionExpression ?? null;
+          edges.push({
+            id: `${block.id}:${connection.connectionType}:${label ?? ""}:${condition ?? ""}:${order}`,
+            sourceBlockId: block.id,
+            targetBlockId: connection.targetBlockId,
+            connectionType: connection.connectionType,
+            label,
+            condition,
+            order,
+          });
+        });
+        return;
+      }
+      if (!normalized.ok) {
+        unsupportedSections.push({
+          section: `block:${block.id}`,
+          code: normalized.failure.code,
+          sourceSchemaVersion: block.schemaVersion,
+          detail: "The accepted Drydock historical reader could not safely interpret this Passage.",
+        });
+        blocks.push({
+          id: block.id,
+          entityType: "BLOCK",
+          parentId: chapter.id,
+          order: block.orderIndex ?? blockPosition,
+          semanticType: block.blockType,
+          facts: definedFacts([
+            fact("title", block.title, "STORY_CONTENT"),
+            fact("enabled", block.isEnabled, "STRUCTURE", "MAJOR"),
+          ]),
+        });
+        return;
+      }
+      if (normalized.value.partial)
+        unsupportedSections.push({
+          section: `block:${block.id}`,
+          code: "LOSSY_UPCAST",
+          sourceSchemaVersion: block.schemaVersion,
+          detail: "The accepted Drydock upcast marked part of this Passage as historically unavailable.",
+        });
+      const canonicalBlock = {
+        ...block,
+        schemaVersion: normalized.value.schemaVersion,
+        configuration: normalized.value.configuration,
+        presentation: normalized.value.presentation,
+        completion: normalized.value.completion,
+        connections: normalized.value.connections,
+        nextBlockId: normalized.value.nextBlockId,
+      };
       blocks.push({
         id: block.id,
         entityType: "BLOCK",
         parentId: chapter.id,
         order: block.orderIndex ?? blockPosition,
         semanticType: block.blockType,
-        facts: blockFacts(block, unsupportedSections),
+        facts: canonicalDrydockBlockFacts(canonicalBlock),
       });
-      block.connections.forEach((connection, connectionPosition) => {
+      normalized.value.connections.forEach((connection, connectionPosition) => {
         const order = connection.orderIndex ?? connectionPosition;
         const label = connection.label ?? null;
         const condition = connection.conditionExpression ?? null;

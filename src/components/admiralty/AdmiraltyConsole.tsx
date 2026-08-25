@@ -11,6 +11,7 @@ const scopeLabels: Record<SupportAccessScope, string> = {
   ACCOUNT_STATE: "Account state",
   AUTH_EVENTS: "Authentication events",
   CHRONICLE_HISTORY_METADATA: "Chronicle history metadata",
+  TIDEGLASS_DIAGNOSTICS: "Tideglass comparison diagnostics",
   COMMUNITY_ACTIVITY: "Community activity",
   SESSION_DIAGNOSTICS: "Session diagnostics",
   PROFILE_DIAGNOSTICS: "Profile diagnostics",

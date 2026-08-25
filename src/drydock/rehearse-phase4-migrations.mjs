@@ -42,7 +42,7 @@ try {
   const versionIndexes = database.prepare('PRAGMA index_list("PublishedTaleVersion");').all().map((index) => index.name);
   if (!versionIndexes.includes("PublishedTaleVersion_taleId_checksum_key")) throw new Error("DRYDOCK_PHASE4_PUBLISH_IDEMPOTENCY_INDEX_MISSING");
   if (database.prepare("PRAGMA foreign_key_check;").all().length) throw new Error("DRYDOCK_PHASE4_MIGRATION_FOREIGN_KEY_VIOLATION");
-  for (const [name, fragments] of [["0058_drydock_phase4_readiness_evidence", ["CREATE TABLE `DrydockPublishingEvidence`", "DrydockPublishingEvidence_publishedVersionId_fkey"]], ["0059_drydock_phase4_suite_evidence", ["ALTER TABLE `DrydockScenarioSuite`", "CREATE TABLE `DrydockScenarioSuiteEvidence`", "DrydockScenarioSuiteEvidence_suiteRecordId_fkey"]], ["0060_drydock_phase4_publish_idempotency", ["PublishedTaleVersion_taleId_checksum_key"]]]) {
+  for (const [name, fragments] of [["0059_drydock_phase4_readiness_evidence", ["CREATE TABLE `DrydockPublishingEvidence`", "DrydockPublishingEvidence_publishedVersionId_fkey"]], ["0060_drydock_phase4_suite_evidence", ["ALTER TABLE `DrydockScenarioSuite`", "CREATE TABLE `DrydockScenarioSuiteEvidence`", "DrydockScenarioSuiteEvidence_suiteRecordId_fkey"]], ["0061_drydock_phase4_publish_idempotency", ["PublishedTaleVersion_taleId_checksum_key"]]]) {
     const sql = await readFile(join(root, "prisma", "mysql-migrations", name, "migration.sql"), "utf8");
     for (const fragment of fragments) if (!sql.includes(fragment)) throw new Error(`DRYDOCK_PHASE4_MYSQL_PARITY_MISSING:${name}:${fragment}`);
   }

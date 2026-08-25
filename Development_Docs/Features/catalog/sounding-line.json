@@ -1,30 +1,31 @@
 [
   {
     "id": "FT-033",
-    "title": "Sounding Line Governed Verification Control Plane",
-    "summary": "A nonauthoritative, provider-neutral local verification control plane provides sealed plans, reviewed adapters, marker-verified resource leases, durable history, fail-closed worker and evidence controls, isolated SQLite/browser state, narrowly certified Harborlight moderator browser lanes, and a strictly record-only protected-mainline closure route without weakening release authority.",
+    "title": "Sounding Line Direct Candidate Verification",
+    "summary": "A focused protected-main check binds the exact pull-request base, candidate, and trees; it runs repository safety sentinels and structurally affected proof, widening safely when impact is uncertain. A separate manual mode remains exhaustive for releases and explicit full certification.",
     "status": "MAINLINE",
-    "program": "Sounding Line Phases 1-4",
-    "surfaces": ["npm run test:policy", "scripts/sounding-line", "scripts/test-all.ps1"],
+    "program": "Sounding Line",
+    "surfaces": [
+      ".github/workflows/sounding-line-ordinary.yml",
+      ".github/workflows/sounding-line-exhaustive-release.yml",
+      "scripts/sounding-line/ordinary.mjs"
+    ],
     "subfeatures": [
-      "Deterministic signed-identity plan records",
-      "Fixed command adapter catalogue with bounded receipts",
-      "Marker and process-identity ownership proof",
-      "Deterministic impact analysis, history, and root/cascade classification",
-      "Fail-closed local worker enrollment, sealed assignments, evidence, and attestations",
-      "Immutable SQLite baseline clone boundary",
-      "Two isolated Harborlight Phase 4 browser lanes",
-      "Explicit emergency-serial legacy release authority",
-      "Fail-closed record-only protected-mainline closure evidence"
+      "Exact base, candidate, and tree identity binding",
+      "Focused filesystem-based test selection",
+      "Conservative widening when impact is unknown",
+      "Separate exhaustive release certification"
+    ],
+    "limitations": [
+      "Control-plane changes use the explicit owner-authorized manual check rather than ordinary product admission."
     ],
     "evidence": [
-      { "kind": "path", "value": "scripts/sounding-line/runtime.mjs" },
-      { "kind": "path", "value": "scripts/sounding-line/adapters.mjs" },
-      { "kind": "path", "value": "scripts/sounding-line/phase3.mjs" },
-      { "kind": "path", "value": "scripts/sounding-line/phase4.mjs" },
+      { "kind": "path", "value": "scripts/sounding-line/ordinary.mjs" },
+      { "kind": "test", "value": "tests/sounding-line/ordinary.test.mjs" },
+      { "kind": "path", "value": ".github/workflows/sounding-line-ordinary.yml" },
       {
         "kind": "completion-record",
-        "value": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Final_Program_Closeout_Receipt.md"
+        "value": "Development_Docs/Engineering/Clean_Slate_Development_Pipeline_Cutover.md"
       }
     ],
     "catalogVersion": 1

@@ -214,13 +214,21 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (navigationOpen)
-      queueMicrotask(() => navigationDrawerRef.current?.querySelector<HTMLAnchorElement>("a")?.focus());
+      queueMicrotask(() => {
+        const drawer = navigationDrawerRef.current;
+        const activeLink = drawer?.querySelector<HTMLAnchorElement>('a[aria-current="page"]');
+        (activeLink ?? drawer?.querySelector<HTMLAnchorElement>("a"))?.focus();
+      });
   }, [navigationOpen]);
 
   useEffect(() => {
     if (accountOpen)
-      queueMicrotask(() => accountDisclosureRef.current?.querySelector<HTMLElement>("a, button")?.focus());
-  }, [accountOpen]);
+      queueMicrotask(() => {
+        const disclosure = accountDisclosureRef.current;
+        const signIn = disclosure?.querySelector<HTMLElement>('[data-navigation-id="account-sign-in"]');
+        (signIn ?? disclosure?.querySelector<HTMLElement>("a, button"))?.focus();
+      });
+  }, [accountOpen, currentUser.status]);
 
   useLayoutEffect(() => {
     if (!accountOpen) return;
