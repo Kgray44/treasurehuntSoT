@@ -51,7 +51,36 @@ test("direct browser proof prevents unrelated browser suites from widening the c
   assert.deepEqual(selection.browserTests, ["tests/e2e/harborlight-phase3.spec.ts"]);
 });
 
-test("unknown impact widens and release mode is exhaustive", () => {
+test("docs and catalog candidates keep directly changed static tests without selecting product browser suites", () => {
+  const selection = selectAffectedTests({
+    changedPaths: [
+      "Development_Docs/Features/branch-complete/project-nightwatch-increment-a.json",
+      "Development_Docs/Features/FEATURE_CATALOG.md",
+      "Development_Docs/document-index.json",
+      "scripts/features/feature-catalog.test.ts",
+    ],
+    unitTests: ["scripts/features/feature-catalog.test.ts", "src/community/feed.test.ts"],
+    browserTests: [
+      "tests/e2e/project-helm-phase1.spec.ts",
+      "tests/e2e/project-one-voyage-phase2.spec.ts",
+      "tests/e2e/project-shipwright-phase2.spec.ts",
+    ],
+  });
+  assert.deepEqual(selection.unitTests, ["scripts/features/feature-catalog.test.ts"]);
+  assert.deepEqual(selection.browserTests, []);
+  assert.equal(selection.widened, false);
+});
+
+test("directly changed browser specs run even without a product path change", () => {
+  const selection = selectAffectedTests({
+    changedPaths: ["Development_Docs/Features/FEATURE_CATALOG.md", "tests/e2e/project-helm-phase1.spec.ts"],
+    unitTests: [],
+    browserTests: ["tests/e2e/project-helm-phase1.spec.ts", "tests/e2e/project-shipwright-phase2.spec.ts"],
+  });
+  assert.deepEqual(selection.browserTests, ["tests/e2e/project-helm-phase1.spec.ts"]);
+});
+
+test("non-product unknown impact skips browser proof while unknown product impact widens", () => {
   const ordinary = selectAffectedTests({
     changedPaths: ["misc/unknown-file.txt"],
     unitTests: ["src/a.test.ts", "src/b.test.ts"],
@@ -60,6 +89,16 @@ test("unknown impact widens and release mode is exhaustive", () => {
   assert.deepEqual(ordinary.unitTests, ["src/a.test.ts", "src/b.test.ts"]);
   assert.deepEqual(ordinary.browserTests, []);
   assert.equal(ordinary.widened, true);
+  const productOrdinary = selectAffectedTests({
+    changedPaths: ["src/unknown/candidate.ts"],
+    unitTests: ["src/a.test.ts", "src/b.test.ts"],
+    browserTests: ["tests/e2e/a.spec.ts", "tests/e2e/b.spec.ts"],
+  });
+  assert.deepEqual(productOrdinary.browserTests, ["tests/e2e/a.spec.ts", "tests/e2e/b.spec.ts"]);
+  assert.equal(productOrdinary.widened, true);
+});
+
+test("release mode remains exhaustive", () => {
   const release = selectAffectedTests({
     changedPaths: [],
     unitTests: ["src/b.test.ts", "src/a.test.ts"],
