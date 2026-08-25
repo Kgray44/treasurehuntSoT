@@ -29,7 +29,7 @@ describe("Feature Catalog", () => {
         a.localeCompare(b, undefined, { numeric: true }),
       ),
     );
-    expect(entries.find((item) => item.id === "FT-B009")?.program).toBe("Project Tideglass Phases 1-3");
+    expect(entries.find((item) => item.id === "FT-B009")?.program).toBe("Project Tideglass Phases 1-4");
     expect(entries.find((item) => item.id === "FT-036")?.program).toBe("Project Drydock Phase 3");
   });
 
