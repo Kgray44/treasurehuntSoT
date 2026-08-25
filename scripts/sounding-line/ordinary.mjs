@@ -19,14 +19,15 @@ const ignoredAdmissionPaths = [
   /^Development_Docs\/Programs\/Sounding_Line\/.*(?:P34|Retirement)/iu,
   /^Development_Docs\/Features\/FEATURE_CATALOG\.md$/u,
 ];
+const registrationPaths = new Set(["testing/contracts.json", "testing/impact-map.json", "testing/suites.json"]);
+const protectedPackageScriptNames = new Set(["test:changed", "test:release", "test:sounding-line"]);
 const controlPlanePaths = [
   /^\.github\/workflows\//u,
   /^scripts\/sounding-line\//u,
   /^AGENTS\.md$/u,
-  /^\.agents\//u,
-  /^package(?:-lock)?\.json$/u,
+  /^\.agents\/(?:testing-workflow|context-workflow|repository-rules|validation-isolation)\.md$/u,
   /^(?:playwright|vitest)\.config\./u,
-  /^testing\/(?!generated\/)/u,
+  /^testing\/(?!generated\/|contracts\.json$|impact-map\.json$|suites\.json$)/u,
 ];
 const testFile = /(?:\.test|\.spec)\.(?:[cm]?[jt]sx?)$/u;
 const e2eFile = /^tests\/e2e\/.*\.spec\.[jt]sx?$/u;
@@ -47,6 +48,31 @@ export function classifyChanges(paths) {
     ignoredPaths: changed.filter((file) => !admissionPaths.includes(file)),
     controlPlanePaths: admissionPaths.filter((file) => controlPlanePaths.some((pattern) => pattern.test(file))),
   };
+}
+
+function packageScripts(packageJson) {
+  if (!packageJson || Array.isArray(packageJson) || typeof packageJson !== "object")
+    throw new Error("SOUNDING_LINE_PACKAGE_JSON_INVALID");
+  if (packageJson.scripts === undefined) return {};
+  if (!packageJson.scripts || Array.isArray(packageJson.scripts) || typeof packageJson.scripts !== "object")
+    throw new Error("SOUNDING_LINE_PACKAGE_SCRIPTS_INVALID");
+  if (Object.values(packageJson.scripts).some((command) => typeof command !== "string"))
+    throw new Error("SOUNDING_LINE_PACKAGE_SCRIPTS_INVALID");
+  return packageJson.scripts;
+}
+
+export function packageAuthorityChanges(basePackage, candidatePackage) {
+  const baseScripts = packageScripts(basePackage);
+  const candidateScripts = packageScripts(candidatePackage);
+  return [...new Set([...Object.keys(baseScripts), ...Object.keys(candidateScripts)])]
+    .filter((name) => baseScripts[name] !== candidateScripts[name])
+    .filter(
+      (name) =>
+        protectedPackageScriptNames.has(name) ||
+        /scripts\/sounding-line\//u.test(baseScripts[name] ?? "") ||
+        /scripts\/sounding-line\//u.test(candidateScripts[name] ?? ""),
+    )
+    .sort();
 }
 
 function tokensFor(paths) {
@@ -121,6 +147,19 @@ function git(root, argumentsList) {
   return execFileSync("git", argumentsList, { cwd: root, encoding: "utf8" }).trim();
 }
 
+function jsonAtRevision(root, revision, file, invalidCode = `SOUNDING_LINE_INVALID_DECLARATIVE_REGISTRATION:${file}`) {
+  try {
+    return JSON.parse(git(root, ["show", `${revision}:${file}`]));
+  } catch {
+    throw new Error(invalidCode);
+  }
+}
+
+function registrationChangesAreValid(root, candidateSha, paths) {
+  for (const file of paths.filter((pathName) => registrationPaths.has(pathName)))
+    jsonAtRevision(root, candidateSha, file);
+}
+
 function run(root, command, argumentsList, { env = {}, ...options } = {}) {
   process.stdout.write(`\n> ${command} ${argumentsList.join(" ")}\n`);
   execFileSync(command, argumentsList, {
@@ -156,7 +195,9 @@ export function verificationEnvironment(plan, command, argumentsList, environmen
 export function requiresBuild({ changedPaths, mode = "ordinary" }) {
   return (
     mode === "release" ||
-    changedPaths.some((file) => /^(?:src\/|app\/|components\/|public\/|styles\/|next\.config)/u.test(file))
+    changedPaths.some((file) =>
+      /^(?:src\/|app\/|components\/|public\/|styles\/|next\.config|package(?:-lock)?\.json$)/u.test(file),
+    )
   );
 }
 
@@ -169,11 +210,19 @@ export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary"
     .split(/\r?\n/u)
     .filter(Boolean);
   const classification = classifyChanges(changedPaths);
-  if (mode === "ordinary" && classification.controlPlanePaths.length)
-    throw new Error(
-      `SOUNDING_LINE_CONTROL_PLANE_CHANGE_REQUIRES_RELEASE_MODE:${classification.controlPlanePaths.join(",")}`,
-    );
+  const packageAuthority = changedPaths.includes("package.json")
+    ? packageAuthorityChanges(
+        jsonAtRevision(root, baseSha, "package.json", "SOUNDING_LINE_PACKAGE_JSON_INVALID"),
+        jsonAtRevision(root, candidateSha, "package.json", "SOUNDING_LINE_PACKAGE_JSON_INVALID"),
+      )
+    : [];
+  const controlPlanePaths = [
+    ...new Set([...classification.controlPlanePaths, ...(packageAuthority.length ? ["package.json"] : [])]),
+  ].sort();
+  if (mode === "ordinary" && controlPlanePaths.length)
+    throw new Error(`SOUNDING_LINE_CONTROL_PLANE_CHANGE_REQUIRES_RELEASE_MODE:${controlPlanePaths.join(",")}`);
   if (!changedPaths.length) throw new Error("SOUNDING_LINE_CANDIDATE_HAS_NO_CHANGED_PATHS");
+  registrationChangesAreValid(root, candidateSha, changedPaths);
   const allTests = await listFiles(root, "src");
   const tests = await listFiles(root, "tests");
   const featureTests = await listFiles(root, path.join("scripts", "features"));
@@ -212,6 +261,7 @@ export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary"
     sentinels: ["format", "lint", "typecheck", "private-content"],
     migrationRequired: requiresMigrationValidation({ changedPaths, mode }),
     buildRequired: requiresBuild({ changedPaths, mode }),
+    registrationValidationRequired: changedPaths.some((file) => registrationPaths.has(file)),
   };
 }
 
@@ -230,6 +280,8 @@ export function verificationCommands(plan) {
   if (lintPaths.length) commands.splice(1, 0, ["npx", ["--no-install", "eslint", ...lintPaths]]);
   if (plan.selected.unitTests.length)
     commands.push(["npx", ["--no-install", "vitest", "run", ...plan.selected.unitTests]]);
+  if (plan.mode === "ordinary" && plan.registrationValidationRequired)
+    commands.push([process.execPath, ["--test", "tests/sounding-line/ordinary.test.mjs"]]);
   if (plan.mode === "release") commands.push([process.execPath, ["--test", "tests/sounding-line/ordinary.test.mjs"]]);
   if (plan.migrationRequired)
     commands.push(["npx", ["--no-install", "prisma", "validate", "--schema", "prisma/schema.sqlite.prisma"]]);
