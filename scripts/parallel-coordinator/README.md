@@ -1,6 +1,6 @@
 # Parallel Coordinator
 
-`scripts/parallel-coordinator/coordinator.mjs` is deterministic scheduling logic. It has no native-chat, GitHub mutation, Sounding Line, or product-write authority.
+`coordinator.mjs` is deterministic scheduling logic. It has no native-chat, GitHub mutation, Sounding Line, or product-write authority.
 
 ## Autonomous dispatch
 
