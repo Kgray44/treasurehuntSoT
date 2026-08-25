@@ -16,11 +16,12 @@ await mkdir(path.dirname(databasePath), { recursive: true });
 await mkdir(path.join(taskRoot, "reports"), { recursive: true });
 for (const target of [databasePath, `${databasePath}-wal`, `${databasePath}-shm`]) await rm(target, { force: true });
 await writeFile(databasePath, "", "utf8");
-const password = `Adm2-${randomBytes(24).toString("base64url")}!`;
+const password = process.env.ADMIRALTY_PHASE2_SYNTHETIC_PASSWORD ?? `Adm2-${randomBytes(24).toString("base64url")}!`;
 const env = {
   ...process.env,
   ADMIRALTY_PHASE2_TASK_ROOT: taskRoot,
   ADMIRALTY_PHASE2_SYNTHETIC_PASSWORD: password,
+  ADMIRALTY_PHASE2_WRITE_CREDENTIAL_HANDOFF: process.env.ADMIRALTY_PHASE2_WRITE_CREDENTIAL_HANDOFF ?? "1",
   DATABASE_URL: sqliteUrl(databasePath),
 };
 run("node_modules/prisma/build/index.js", ["migrate", "deploy", "--schema", "prisma/schema.sqlite.prisma"], env);

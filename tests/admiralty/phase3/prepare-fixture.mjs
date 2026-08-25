@@ -1,5 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
+import { randomBytes } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -10,27 +11,23 @@ const taskRoot = path.resolve(
 );
 const allowedRoot = path.resolve(required("LOCALAPPDATA"), "ProjectAdmiralty");
 const databasePath = path.join(taskRoot, "database", "admiralty-phase2.db");
-const credentialPath = path.join(taskRoot, "credentials", "admiralty-phase2-walkthrough.private.json");
+const password = process.env.ADMIRALTY_PHASE3_SYNTHETIC_PASSWORD ?? `Adm3-${randomBytes(24).toString("base64url")}!`;
 
 if (!taskRoot.startsWith(`${allowedRoot}${path.sep}`))
   throw new Error(`ADMIRALTY_PHASE3_TASK_ROOT_REFUSED:${taskRoot}`);
 run("scripts/admiralty/prepare-phase2-fixture.mjs", {
   ...process.env,
   ADMIRALTY_PHASE2_TASK_ROOT: taskRoot,
+  ADMIRALTY_PHASE2_SYNTHETIC_PASSWORD: password,
+  ADMIRALTY_PHASE2_WRITE_CREDENTIAL_HANDOFF: "0",
 });
-if (!existsSync(databasePath) || !existsSync(credentialPath)) throw new Error("ADMIRALTY_PHASE3_BASE_FIXTURE_MISSING");
-
-const privateHandoff = JSON.parse(await readFile(credentialPath, "utf8"));
-try {
-  run("tests/admiralty/phase3/seed-fixture.mjs", {
-    ...process.env,
-    ADMIRALTY_PHASE2_TASK_ROOT: taskRoot,
-    ADMIRALTY_PHASE2_SYNTHETIC_PASSWORD: privateHandoff.password,
-    DATABASE_URL: sqliteUrl(databasePath),
-  });
-} finally {
-  delete privateHandoff.password;
-}
+if (!existsSync(databasePath)) throw new Error("ADMIRALTY_PHASE3_BASE_FIXTURE_MISSING");
+run("tests/admiralty/phase3/seed-fixture.mjs", {
+  ...process.env,
+  ADMIRALTY_PHASE2_TASK_ROOT: taskRoot,
+  ADMIRALTY_PHASE3_SYNTHETIC_PASSWORD: password,
+  DATABASE_URL: sqliteUrl(databasePath),
+});
 
 const phase3Receipt = JSON.parse(await readFile(path.join(taskRoot, "reports", "phase3-fixture-receipt.json"), "utf8"));
 const receipt = {

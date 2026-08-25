@@ -1,6 +1,8 @@
 import { spawnSync } from "node:child_process";
+import { randomBytes } from "node:crypto";
 
 export default function globalSetup() {
+  process.env.ADMIRALTY_PHASE3_SYNTHETIC_PASSWORD ??= `Adm3-${randomBytes(24).toString("base64url")}!`;
   run("node_modules/prisma/build/index.js", ["generate", "--schema", "prisma/schema.sqlite.prisma"]);
   run("tests/admiralty/phase3/prepare-fixture.mjs");
 }

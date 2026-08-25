@@ -1,4 +1,5 @@
 import { spawnSync } from "node:child_process";
+import { randomBytes } from "node:crypto";
 import { existsSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -11,7 +12,12 @@ const taskRoot = path.resolve(
 const databasePath = path.join(taskRoot, "database", "admiralty-phase2.db");
 const distDir = process.env.NEXT_DIST_DIR ?? ".next-admiralty-phase3";
 const sourceSha = output("git", ["rev-parse", "HEAD"]);
-const baseEnv = { ...process.env, ADMIRALTY_PHASE3_TASK_ROOT: taskRoot };
+const baseEnv = {
+  ...process.env,
+  ADMIRALTY_PHASE3_TASK_ROOT: taskRoot,
+  ADMIRALTY_PHASE3_SYNTHETIC_PASSWORD:
+    process.env.ADMIRALTY_PHASE3_SYNTHETIC_PASSWORD ?? `Adm3-${randomBytes(24).toString("base64url")}!`,
+};
 const tsconfigPath = path.join(root, "tsconfig.json");
 const originalTsconfig = await readFile(tsconfigPath, "utf8");
 

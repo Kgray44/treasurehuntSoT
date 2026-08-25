@@ -1,5 +1,4 @@
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import AxeBuilder from "@axe-core/playwright";
@@ -22,14 +21,39 @@ const taskRoot = process.env.ADMIRALTY_PHASE3_TASK_ROOT
   ? path.resolve(process.env.ADMIRALTY_PHASE3_TASK_ROOT)
   : process.cwd();
 const sourceSha = process.env.ADMIRALTY_PHASE3_SOURCE_SHA ?? "0000000000000000000000000000000000000000";
-const credentialPath = path.join(taskRoot, "credentials", "admiralty-phase2-walkthrough.private.json");
 const evidenceRoot = path.join(taskRoot, "browser", "evidence");
 const evidence: Evidence[] = [];
-let credentials: Credentials;
-
-test.beforeAll(() => {
-  credentials = JSON.parse(readFileSync(credentialPath, "utf8")) as Credentials;
-});
+const credentials: Credentials = {
+  fixtureVersion: "admiralty-phase3-v1",
+  password: required("ADMIRALTY_PHASE3_SYNTHETIC_PASSWORD"),
+  accounts: {
+    ADMINISTRATOR: {
+      accountId: "adm2-account-administrator",
+      email: "administrator@admiralty.example.test",
+      displayName: "Admiral Northstar",
+    },
+    MODERATION_OPERATOR: {
+      accountId: "adm3-account-moderator",
+      email: "moderation_operator@admiralty.example.test",
+      displayName: "MODERATION OPERATOR",
+    },
+    ORDINARY_USER: {
+      accountId: "adm2-account-ordinary",
+      email: "ordinary@admiralty.example.test",
+      displayName: "Ordinary Mariner",
+    },
+    SECOND_REVIEWER: {
+      accountId: "adm3-account-reviewer",
+      email: "second_reviewer@admiralty.example.test",
+      displayName: "SECOND REVIEWER",
+    },
+    SUPPORT_TARGET: {
+      accountId: "adm2-account-support-target",
+      email: "support-target@admiralty.example.test",
+      displayName: "Consent Harbor",
+    },
+  },
+};
 
 test.afterAll(async () => {
   await mkdir(evidenceRoot, { recursive: true });
@@ -60,10 +84,13 @@ test("governed account commands require preview, assurance, confirmation, and du
 
   const sessionPanel = panel(admin.page, "Session security action");
   await expect(sessionPanel.getByText("Revocation is immediate", { exact: false })).toBeVisible();
+  const sessionPreview = sessionPanel.getByRole("button", { name: "Preview revocation", exact: true });
+  await expect(sessionPreview).toBeDisabled();
   await sessionPanel
     .getByLabel("Reason", { exact: true })
     .fill("Revoke the isolated synthetic target session for Phase 3 qualification.");
-  await sessionPanel.getByRole("button", { name: "Preview revocation", exact: true }).click();
+  await expect(sessionPreview).toBeEnabled();
+  await sessionPreview.click();
   await expect(sessionPanel.getByRole("heading", { name: "Before you revoke", exact: true })).toBeVisible();
   await expect(sessionPanel.getByRole("button", { name: "Confirm and revoke session", exact: true })).toBeDisabled();
   await sessionPanel
@@ -87,10 +114,13 @@ test("governed account commands require preview, assurance, confirmation, and du
   await capture(admin.page, "ADM3-EV-A-SESSION-REVOCATION");
 
   const lifecyclePanel = panel(admin.page, "Suspend account");
+  const lifecyclePreview = lifecyclePanel.getByRole("button", { name: "Preview suspension", exact: true });
+  await expect(lifecyclePreview).toBeDisabled();
   await lifecyclePanel
     .getByLabel("Reason", { exact: true })
     .fill("Suspend the isolated synthetic target account for Phase 3 qualification.");
-  await lifecyclePanel.getByRole("button", { name: "Preview suspension", exact: true }).click();
+  await expect(lifecyclePreview).toBeEnabled();
+  await lifecyclePreview.click();
   await expect(lifecyclePanel.getByRole("heading", { name: "Before you suspend", exact: true })).toBeVisible();
   await expect(lifecyclePanel.getByRole("button", { name: "Confirm and suspend account", exact: true })).toBeDisabled();
   await lifecyclePanel
@@ -211,4 +241,10 @@ async function capture(page: Page, id: string) {
     sourceSha,
     fixtureVersion: credentials.fixtureVersion,
   });
+}
+
+function required(name: string) {
+  const value = process.env[name];
+  if (!value) throw new Error(`${name} is required.`);
+  return value;
 }

@@ -8,7 +8,7 @@ const db = new PrismaClient();
 const taskRoot = path.resolve(required("ADMIRALTY_PHASE2_TASK_ROOT"));
 const databasePath = path.resolve(required("DATABASE_URL").replace(/^file:/u, ""));
 const allowedRoot = path.resolve(required("LOCALAPPDATA"), "ProjectAdmiralty");
-const password = required("ADMIRALTY_PHASE2_SYNTHETIC_PASSWORD");
+const password = required("ADMIRALTY_PHASE3_SYNTHETIC_PASSWORD");
 const createdAt = new Date("2026-08-13T16:00:00.000Z");
 
 if (!taskRoot.startsWith(`${allowedRoot}${path.sep}`) || !databasePath.startsWith(`${taskRoot}${path.sep}`))
@@ -85,23 +85,30 @@ for (const definition of fixtureAccounts) {
   }
 }
 
-const credentialPath = path.join(taskRoot, "credentials", "admiralty-phase2-walkthrough.private.json");
-const credentialHandoff = JSON.parse(await fs.readFile(credentialPath, "utf8"));
-credentialHandoff.fixtureVersion = "admiralty-phase3-v1";
-credentialHandoff.accounts = {
-  ...credentialHandoff.accounts,
-  ...Object.fromEntries(
-    fixtureAccounts.map((definition) => [
-      definition.key,
-      {
-        accountId: definition.accountId,
-        email: `${definition.key.toLowerCase()}@admiralty.example.test`,
-        displayName: definition.key.replaceAll("_", " "),
-      },
-    ]),
-  ),
-};
-await fs.writeFile(credentialPath, `${JSON.stringify(credentialHandoff, null, 2)}\n`);
+await db.accountSession.upsert({
+  where: { id: "adm3-session-support-target" },
+  update: {
+    accountId: "adm2-account-support-target",
+    tokenHash: "adm3-synthetic-support-target-token-hash",
+    csrfToken: "adm3-synthetic-csrf",
+    deviceLabel: "Phase 3 synthetic support device",
+    sessionType: "ORDINARY",
+    expiresAt: new Date("2030-08-13T16:00:00.000Z"),
+    lastSeenAt: createdAt,
+    revokedAt: null,
+  },
+  create: {
+    id: "adm3-session-support-target",
+    accountId: "adm2-account-support-target",
+    tokenHash: "adm3-synthetic-support-target-token-hash",
+    csrfToken: "adm3-synthetic-csrf",
+    deviceLabel: "Phase 3 synthetic support device",
+    sessionType: "ORDINARY",
+    expiresAt: new Date("2030-08-13T16:00:00.000Z"),
+    lastSeenAt: createdAt,
+    createdAt,
+  },
+});
 
 const subjectId = "adm2-community-listing-chart-kit";
 const moderationCase = await db.communityModerationCase.upsert({
@@ -132,7 +139,7 @@ await db.communityModerationCaseSubject.upsert({
 const receipt = {
   status: "ADMIRALTY_PHASE3_FIXTURE_SEEDED",
   fixtureVersion: "admiralty-phase3-v1",
-  aliases: ["MODERATION_OPERATOR", "SECOND_REVIEWER"],
+  aliases: ["ADMINISTRATOR", "MODERATION_OPERATOR", "ORDINARY_USER", "SECOND_REVIEWER", "SUPPORT_TARGET"],
   caseId: moderationCase.id,
   subjectId,
   correlationId: "adm3-correlation-moderation",

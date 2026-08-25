@@ -274,13 +274,15 @@ const aliases = Object.fromEntries(
     { accountId: value.id, email: value.email, displayName: value.displayName },
   ]),
 );
-const credentialPath = path.join(taskRoot, "credentials", "admiralty-phase2-walkthrough.private.json");
-await mkdir(path.dirname(credentialPath), { recursive: true });
-await writeFile(
-  credentialPath,
-  `${JSON.stringify({ classification: "LOCAL_SYNTHETIC_CREDENTIAL_HANDOFF", fixtureVersion: "admiralty-phase2-v1", password, accounts: aliases }, null, 2)}\n`,
-  { encoding: "utf8", mode: 0o600 },
-);
+if (process.env.ADMIRALTY_PHASE2_WRITE_CREDENTIAL_HANDOFF !== "0") {
+  const credentialPath = path.join(taskRoot, "credentials", "admiralty-phase2-walkthrough.private.json");
+  await mkdir(path.dirname(credentialPath), { recursive: true });
+  await writeFile(
+    credentialPath,
+    `${JSON.stringify({ classification: "LOCAL_SYNTHETIC_CREDENTIAL_HANDOFF", fixtureVersion: "admiralty-phase2-v1", password, accounts: aliases }, null, 2)}\n`,
+    { encoding: "utf8", mode: 0o600 },
+  );
+}
 const fixtureChecksum = createHash("sha256").update(JSON.stringify(aliases)).digest("hex");
 process.stdout.write(
   `${JSON.stringify({ status: "ADMIRALTY_PHASE2_FIXTURE_SEEDED", fixtureVersion: "admiralty-phase2-v1", fixtureChecksum, aliases: Object.keys(aliases), correlationId, credentialPath: "EXTERNAL_PRIVATE_HANDOFF" })}\n`,
