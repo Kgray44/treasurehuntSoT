@@ -1,6 +1,5 @@
 import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
-import { randomBytes } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -11,7 +10,7 @@ const taskRoot = path.resolve(
 );
 const allowedRoot = path.resolve(required("LOCALAPPDATA"), "ProjectAdmiralty");
 const databasePath = path.join(taskRoot, "database", "admiralty-phase2.db");
-const password = process.env.ADMIRALTY_PHASE3_SYNTHETIC_PASSWORD ?? `Adm3-${randomBytes(24).toString("base64url")}!`;
+const password = process.env.ADMIRALTY_PHASE3_SYNTHETIC_PASSWORD ?? "Adm3-synthetic-fixture-password-20260825!";
 
 if (!taskRoot.startsWith(`${allowedRoot}${path.sep}`))
   throw new Error(`ADMIRALTY_PHASE3_TASK_ROOT_REFUSED:${taskRoot}`);

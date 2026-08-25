@@ -1,10 +1,10 @@
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Browser, type BrowserContext, type Page } from "@playwright/test";
 import { PrismaClient } from "@prisma/client";
+import { ensureSoundingLineFixture, phase2Credentials } from "../admiralty/phase3/ensure-sounding-line-fixture";
 
 type Alias = { accountId: string; email: string; displayName: string };
 type Credentials = { fixtureVersion: string; password: string; accounts: Record<string, Alias> };
@@ -25,10 +25,12 @@ const sourceSha = process.env.ADMIRALTY_PHASE2_SOURCE_SHA ?? "000000000000000000
 const credentialPath = path.join(taskRoot, "credentials", "admiralty-phase2-walkthrough.private.json");
 const evidenceRoot = path.join(taskRoot, "browser", "evidence");
 const evidence: Evidence[] = [];
-let credentials: Credentials;
+let credentials: Credentials = phase2Credentials;
 
-test.beforeAll(() => {
-  credentials = JSON.parse(readFileSync(credentialPath, "utf8")) as Credentials;
+test.beforeAll(async () => {
+  await ensureSoundingLineFixture();
+  if (process.env.ADMIRALTY_PHASE2_TASK_ROOT)
+    credentials = JSON.parse(await readFile(credentialPath, "utf8")) as Credentials;
 });
 
 test.afterAll(async () => {

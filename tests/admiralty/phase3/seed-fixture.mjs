@@ -11,7 +11,14 @@ const allowedRoot = path.resolve(required("LOCALAPPDATA"), "ProjectAdmiralty");
 const password = required("ADMIRALTY_PHASE3_SYNTHETIC_PASSWORD");
 const createdAt = new Date("2026-08-13T16:00:00.000Z");
 
-if (!taskRoot.startsWith(`${allowedRoot}${path.sep}`) || !databasePath.startsWith(`${taskRoot}${path.sep}`))
+const isSoundingLineDatabase =
+  process.env.ADMIRALTY_PHASE3_ALLOW_SOUNDING_LINE_DATABASE === "1" &&
+  /^\.sounding-line-[a-f0-9]{12}\.sqlite$/u.test(path.basename(databasePath)) &&
+  databasePath.startsWith(`${path.resolve(process.cwd())}${path.sep}`);
+if (
+  !taskRoot.startsWith(`${allowedRoot}${path.sep}`) ||
+  (!databasePath.startsWith(`${taskRoot}${path.sep}`) && !isSoundingLineDatabase)
+)
   throw new Error("ADMIRALTY_PHASE3_FIXTURE_SCOPE_REFUSED");
 
 const passwordHash = await bcrypt.hash(password, 10);

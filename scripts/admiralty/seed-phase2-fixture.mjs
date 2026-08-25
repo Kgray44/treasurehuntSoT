@@ -4,6 +4,7 @@ import path from "node:path";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
+const root = path.resolve(process.cwd());
 const db = new PrismaClient();
 const taskRoot = path.resolve(required("ADMIRALTY_PHASE2_TASK_ROOT"));
 const databaseUrl = required("DATABASE_URL");
@@ -15,7 +16,14 @@ const createdAt = new Date("2026-08-09T14:00:00.000Z");
 const correlationId = "adm2-correlation-northstar";
 
 if (!taskRoot.startsWith(`${allowedRoot}${path.sep}`)) throw new Error(`ADMIRALTY_TASK_ROOT_REFUSED:${taskRoot}`);
-if (!databasePath.startsWith(`${taskRoot}${path.sep}`) || databasePath === canonicalDatabase)
+const isSoundingLineDatabase =
+  process.env.ADMIRALTY_PHASE2_ALLOW_SOUNDING_LINE_DATABASE === "1" &&
+  /^\.sounding-line-[a-f0-9]{12}\.sqlite$/u.test(path.basename(databasePath)) &&
+  databasePath.startsWith(`${root}${path.sep}`);
+if (
+  (!databasePath.startsWith(`${taskRoot}${path.sep}`) && !isSoundingLineDatabase) ||
+  databasePath === canonicalDatabase
+)
   throw new Error(`ADMIRALTY_FIXTURE_DATABASE_REFUSED:${databasePath}`);
 if (password.length < 24) throw new Error("ADMIRALTY_SYNTHETIC_PASSWORD_TOO_SHORT");
 

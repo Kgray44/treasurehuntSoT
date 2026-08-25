@@ -4,6 +4,7 @@ import path from "node:path";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Browser, type BrowserContext, type Locator, type Page } from "@playwright/test";
 import { PrismaClient } from "@prisma/client";
+import { ensureSoundingLineFixture, syntheticPassword } from "../admiralty/phase3/ensure-sounding-line-fixture";
 
 type Alias = { accountId: string; email: string; displayName: string };
 type Credentials = { fixtureVersion: string; password: string; accounts: Record<string, Alias> };
@@ -25,7 +26,7 @@ const evidenceRoot = path.join(taskRoot, "browser", "evidence");
 const evidence: Evidence[] = [];
 const credentials: Credentials = {
   fixtureVersion: "admiralty-phase3-v1",
-  password: required("ADMIRALTY_PHASE3_SYNTHETIC_PASSWORD"),
+  password: process.env.ADMIRALTY_PHASE3_SYNTHETIC_PASSWORD ?? syntheticPassword,
   accounts: {
     ADMINISTRATOR: {
       accountId: "adm2-account-administrator",
@@ -65,6 +66,10 @@ test.afterAll(async () => {
   await db.$disconnect();
 });
 
+test.beforeAll(async () => {
+  await ensureSoundingLineFixture();
+});
+
 test("governed account commands require preview, assurance, confirmation, and durable receipts", async ({
   browser,
 }) => {
@@ -80,12 +85,16 @@ test("governed account commands require preview, assurance, confirmation, and du
   await search(admin.page, "Consent Harbor");
   await admin.page.getByRole("link", { name: "Consent Harbor", exact: true }).click();
   await expect(admin.page.getByRole("heading", { name: "Consent Harbor", exact: true })).toBeVisible();
+  await expect(admin.page.locator("html")).toHaveAttribute("data-homeport-hydration", "complete");
   await expect(admin.page.locator("body")).not.toContainText("must-never-appear");
 
   const sessionPanel = panel(admin.page, "Session security action");
   await expect(sessionPanel.getByText("Revocation is immediate", { exact: false })).toBeVisible();
   const sessionPreview = sessionPanel.getByRole("button", { name: "Preview revocation", exact: true });
   await expect(sessionPreview).toBeDisabled();
+  await sessionPanel
+    .getByRole("combobox", { name: "Active device", exact: true })
+    .selectOption("adm3-session-support-target");
   await sessionPanel
     .getByLabel("Reason", { exact: true })
     .fill("Revoke the isolated synthetic target session for Phase 3 qualification.");
@@ -163,6 +172,7 @@ test("governed Community moderation requires a case-attached target, independent
   await search(moderator.page, "Chartroom Navigator Kit");
   await moderator.page.getByRole("link", { name: "Chartroom Navigator Kit", exact: true }).click();
   await expect(moderator.page.getByRole("heading", { name: "Chartroom Navigator Kit", exact: true })).toBeVisible();
+  await expect(moderator.page.locator("html")).toHaveAttribute("data-homeport-hydration", "complete");
   await expect(moderator.page.getByText("adm3-case-listing", { exact: true })).toBeVisible();
   const moderationPanel = moderator.page.getByRole("region", {
     name: "Apply Community moderation action",
@@ -241,10 +251,4 @@ async function capture(page: Page, id: string) {
     sourceSha,
     fixtureVersion: credentials.fixtureVersion,
   });
-}
-
-function required(name: string) {
-  const value = process.env[name];
-  if (!value) throw new Error(`${name} is required.`);
-  return value;
 }
