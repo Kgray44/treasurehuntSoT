@@ -209,6 +209,39 @@ function Clear-ForeverValidationRuntime {
     Add-Content -LiteralPath $receipt -Value ("cleanupCompletedUtc={0}" -f [DateTime]::UtcNow.ToString("o", [System.Globalization.CultureInfo]::InvariantCulture)) -Encoding UTF8
 }
 
+function Clear-ForeverValidationRuntimeTransientState {
+    param([Parameter(Mandatory)][string]$RuntimeRoot)
+    [void](Assert-ForeverValidationRuntimeOwnership -RuntimeRoot $RuntimeRoot)
+    $resolvedRoot = [System.IO.Path]::GetFullPath($RuntimeRoot)
+    $targets = @(
+        Get-ChildItem -LiteralPath $resolvedRoot -Directory -Force | Where-Object {
+            $_.Name -eq "node_modules" -or $_.Name -like ".next*"
+        }
+    )
+    foreach ($target in $targets) {
+        if (($target.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) {
+            throw "Validation transient cleanup refuses reparse-point target: $($target.FullName)"
+        }
+    }
+    $receiptPath = Join-Path $resolvedRoot ".forever-validation-transient-cleanup.json"
+    $receipt = [ordered]@{
+        runtimeRoot = $resolvedRoot
+        cleanupStartedUtc = [DateTime]::UtcNow.ToString("o", [System.Globalization.CultureInfo]::InvariantCulture)
+        targets = @($targets | ForEach-Object { $_.Name })
+    }
+    Set-Content -LiteralPath $receiptPath -Value ($receipt | ConvertTo-Json) -Encoding UTF8
+    Write-ForeverValidationRunEvent -RuntimeRoot $resolvedRoot -Event "transient-cleanup-requested"
+    foreach ($target in $targets) {
+        Remove-Item -LiteralPath $target.FullName -Recurse -Force -ErrorAction Stop
+        if (Test-Path -LiteralPath $target.FullName) {
+            throw "Validation transient cleanup did not remove $($target.FullName)"
+        }
+    }
+    $receipt.cleanupCompletedUtc = [DateTime]::UtcNow.ToString("o", [System.Globalization.CultureInfo]::InvariantCulture)
+    Set-Content -LiteralPath $receiptPath -Value ($receipt | ConvertTo-Json) -Encoding UTF8
+    Write-ForeverValidationRunEvent -RuntimeRoot $resolvedRoot -Event "transient-cleanup-complete"
+}
+
 function Sync-ForeverRuntime {
     param([ValidateSet("development", "validation")][string]$Mode = "development")
     $isNetworkPath = $script:ProjectRoot.StartsWith("\\")

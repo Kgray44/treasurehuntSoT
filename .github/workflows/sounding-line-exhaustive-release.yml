@@ -1,0 +1,46 @@
+name: Sounding Line exhaustive release
+run-name: Sounding Line exhaustive release ${{ inputs.candidate_ref || github.run_id }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_ref:
+        description: Release candidate ref
+        required: true
+        type: string
+      candidate_sha:
+        description: Exact release candidate SHA
+        required: true
+        type: string
+      base_sha:
+        description: Exact base SHA
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  exhaustive-release-check:
+    name: Sounding Line / Exhaustive Release Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.candidate_sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+      - run: npx --no-install playwright install --with-deps chromium webkit
+      - run: node scripts/sounding-line/ordinary.mjs --mode release --base ${{ inputs.base_sha }} --candidate ${{ inputs.candidate_sha }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sounding-line-exhaustive-release-${{ inputs.candidate_sha }}
+          path: artifacts/sounding-line/release-decision.json
+          if-no-files-found: error

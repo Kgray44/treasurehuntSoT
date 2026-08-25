@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-08-18",
+  "generated_at": "2026-08-25",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -411,13 +411,31 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Clean_Slate_Development_Pipeline_Cutover.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Features/branch-complete/project-drydock-phase3.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Features/branch-complete/project-nightwatch-increment-a.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Features/branch-complete/project-shipwright-phase2.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/branch-complete/project-shipwright-phase3.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
@@ -543,6 +561,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/ADR-EGS-001_Engineering_Governance_Simplification.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Phase_1_Cross_Project_Convergence_Design_Record.md",
       "record_type": "governing-record",
       "status": "preserved",
@@ -550,6 +574,36 @@
     },
     {
       "path": "Development_Docs/Governing/phase_b_implementation_roadmap_v1_0.pdf",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Bosun_Autonomous_Repository_Maintenance_and_Repair_Service_Governing_Document_v1.0.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Bosun_Maintenance_Cascade_Suppression_and_Repair_Convergence_Amendment_v1.1.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Fairlead_GitHub_Interaction_and_Quota_Control_Plane_Governing_Document_v1.0.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Nightwatch_Atomic_Integration_and_Maintenance_Cascade_Control_Amendment_v1.1.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Nightwatch_Unattended_Autonomy_and_Overnight_Operations_Governing_Document_v1.0.md",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
@@ -850,6 +904,12 @@
     },
     {
       "path": "Development_Docs/Programs/Deepwater/Project_Deepwater_Program_Completion_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/Project_Homeport_True_North_Navigation_Focus_Impact_Declaration.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -1989,6 +2049,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Ordinary_Integration_Fast_Path_Amendment.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv",
       "record_type": "program-record",
       "status": "preserved",
@@ -2655,6 +2721,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_Root_Maintenance_Impact_Declaration.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Acceptance_Unblock_Impact_Declaration.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -2704,6 +2776,18 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4.2_Trusted_Project_and_Registration_Admission_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4.3_Root_Maintenance_Binding_Repair_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4.3_Root_Maintenance_Lane_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -3490,6 +3574,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Browser_Qualification_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Completion_Receipt.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
@@ -6270,6 +6360,48 @@
       "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/Visual_Comparison_Notes.md",
       "record_type": "program-record",
       "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Nightwatch/Project_Bosun_B1_1_Live_Repair_Integration_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_B1_2_Baseline_Certification_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A1_Atomic_Acceptance_Sequencer_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A2_Live_Control_Plane_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Unattended_Autonomy_Hardening_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Unattended_Autonomy_Hardening_Simulation_Metrics.json",
+      "record_type": "program-record",
+      "status": "preserved",
       "canonical_for": null
     },
     {

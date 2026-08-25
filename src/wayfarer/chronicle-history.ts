@@ -21,6 +21,41 @@ const chapterSummarySchema = z.array(
     .strict(),
 );
 const unavailableSummarySchema = z.array(z.object({ schemaVersion: z.literal(1), reason: z.string() }).strict());
+// Wakebook Phase 2 may retain safe, structured context instead of the Phase 1
+// unavailable sentinel. Keepsake generation must preserve both truthful record
+// forms; it must not require a downgrade of richer historical evidence.
+const objectiveHistorySchema = z.array(
+  z.discriminatedUnion("state", [
+    z
+      .object({
+        schemaVersion: z.literal(1),
+        state: z.literal("AVAILABLE"),
+        label: z.string().min(1).max(240),
+        completed: z.boolean(),
+      })
+      .strict(),
+    z
+      .object({ schemaVersion: z.literal(1), state: z.literal("UNAVAILABLE"), reason: z.string().min(1).max(480) })
+      .strict(),
+  ]),
+);
+const safeChoiceHistorySchema = z.array(
+  z.discriminatedUnion("state", [
+    z
+      .object({
+        schemaVersion: z.literal(1),
+        state: z.literal("AVAILABLE"),
+        label: z.string().min(1).max(240),
+        chapterTitle: z.string().min(1).max(240).nullable().optional(),
+        kind: z.enum(["CHOICE", "HINT", "REJOIN", "CHECKPOINT", "ATTEMPT"]),
+        detail: z.string().min(1).max(480).nullable().optional(),
+      })
+      .strict(),
+    z
+      .object({ schemaVersion: z.literal(1), state: z.literal("UNAVAILABLE"), reason: z.string().min(1).max(480) })
+      .strict(),
+  ]),
+);
 const artifactSummarySchema = z.array(
   z
     .object({
@@ -57,6 +92,10 @@ const memorySchema = z
     referenceType: z.enum(["CHAPTER", "CLUE", "MOMENT", "ARTIFACT"]).optional(),
     referenceId: z.string().trim().min(1).max(191).optional(),
   })
+  .refine(
+    (value) => Boolean(value.referenceType) === Boolean(value.referenceId),
+    "A Memory reference needs both a type and a historical target.",
+  )
   .strict();
 const reflectionSchema = z
   .object({
@@ -618,8 +657,8 @@ function ownerRecordProjection(record: OwnerRecord) {
       captainWait: { seconds: record.captainWaitSeconds, accuracy: record.captainWaitAccuracy },
     },
     completedChapters: parseStored(chapterSummarySchema, record.completedChapters, "chapter summary"),
-    optionalObjectives: parseStored(unavailableSummarySchema, record.optionalObjectives, "objective summary"),
-    choiceSummary: parseStored(unavailableSummarySchema, record.choiceSummary, "choice summary"),
+    optionalObjectives: parseStored(objectiveHistorySchema, record.optionalObjectives, "objective summary"),
+    choiceSummary: parseStored(safeChoiceHistorySchema, record.choiceSummary, "choice summary"),
     artifactSummary: parseStored(artifactSummarySchema, record.artifactSummary, "artifact summary"),
     reflection: record.reflection
       ? {
@@ -674,15 +713,60 @@ function ownerRecordProjection(record: OwnerRecord) {
 async function ownedRecord(playerProfileId: string, recordId: string) {
   const record = await db.playerChronicleRecord.findFirst({
     where: { id: recordId, playerProfileId },
-    select: { id: true, sourcePlaythroughId: true },
+    select: { id: true, sourcePlaythroughId: true, completedChapters: true },
   });
   if (!record) throw new Error("Chronicle history record not found.");
   return record;
 }
 
+async function validateOwnedHistoricalReferences(
+  playerProfileId: string,
+  record: { sourcePlaythroughId: string; completedChapters: string },
+  input: {
+    favoriteChapterId?: string | null;
+    favoriteClueReference?: string | null;
+    favoriteMomentReference?: string | null;
+    favoriteArtifactReference?: string | null;
+    referenceType?: "CHAPTER" | "CLUE" | "MOMENT" | "ARTIFACT";
+    referenceId?: string;
+  },
+) {
+  if (
+    input.favoriteClueReference ||
+    input.favoriteMomentReference ||
+    input.referenceType === "CLUE" ||
+    input.referenceType === "MOMENT"
+  )
+    throw new Error("This Voyage did not preserve a safe historical clue or moment reference.");
+  const chapters = parseStored(chapterSummarySchema, record.completedChapters, "completed chapters");
+  const chapterReferences = [
+    input.favoriteChapterId,
+    input.referenceType === "CHAPTER" ? input.referenceId : undefined,
+  ].filter((value): value is string => Boolean(value));
+  if (chapterReferences.some((reference) => !chapters.some((chapter) => chapter.blockId === reference)))
+    throw new Error("The selected chapter does not belong to this historical Voyage.");
+  const artifactReferences = [
+    input.favoriteArtifactReference,
+    input.referenceType === "ARTIFACT" ? input.referenceId : undefined,
+  ].filter((value): value is string => Boolean(value));
+  if (artifactReferences.length) {
+    const count = await db.playerArtifactRecord.count({
+      where: {
+        id: { in: artifactReferences },
+        playerProfileId,
+        sourcePlaythroughId: record.sourcePlaythroughId,
+        recordStatus: "ACTIVE",
+      },
+    });
+    if (count !== new Set(artifactReferences).size)
+      throw new Error("The selected artifact does not belong to this historical Voyage.");
+  }
+}
+
 export async function saveReflection(playerProfileId: string, recordId: string, input: unknown) {
-  await ownedRecord(playerProfileId, recordId);
+  const record = await ownedRecord(playerProfileId, recordId);
   const data = reflectionSchema.parse(input);
+  await validateOwnedHistoricalReferences(playerProfileId, record, data);
   return db.chronicleReflection.upsert({
     where: { playerChronicleRecordId: recordId },
     update: data,
@@ -690,10 +774,24 @@ export async function saveReflection(playerProfileId: string, recordId: string, 
   });
 }
 export async function addMemory(playerProfileId: string, recordId: string, input: unknown) {
-  await ownedRecord(playerProfileId, recordId);
+  const record = await ownedRecord(playerProfileId, recordId);
   const data = memorySchema.parse(input);
+  await validateOwnedHistoricalReferences(playerProfileId, record, data);
   return db.chronicleMemory.create({
     data: { playerChronicleRecordId: recordId, playerProfileId, ...data, visibility: "ONLY_ME" },
+  });
+}
+export async function updateMemory(playerProfileId: string, recordId: string, memoryId: string, input: unknown) {
+  const record = await ownedRecord(playerProfileId, recordId);
+  const data = memorySchema.parse(input);
+  await validateOwnedHistoricalReferences(playerProfileId, record, data);
+  const result = await db.chronicleMemory.updateMany({
+    where: { id: memoryId, playerChronicleRecordId: recordId, playerProfileId, deletedAt: null },
+    data,
+  });
+  if (!result.count) throw new Error("Chronicle Memory not found.");
+  return db.chronicleMemory.findFirst({
+    where: { id: memoryId, playerChronicleRecordId: recordId, playerProfileId, deletedAt: null },
   });
 }
 export async function removeMemory(playerProfileId: string, recordId: string, memoryId: string) {

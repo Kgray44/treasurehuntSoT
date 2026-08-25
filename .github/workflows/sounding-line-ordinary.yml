@@ -1,0 +1,84 @@
+name: Sounding Line ordinary
+run-name: Sounding Line ordinary ${{ github.event.pull_request.number || inputs.pr_number || github.run_id }}
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, reopened, synchronize, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      candidate_ref:
+        description: Candidate branch ref for an owner-requested final check
+        required: true
+        type: string
+      candidate_sha:
+        description: Exact candidate SHA
+        required: true
+        type: string
+      base_sha:
+        description: Exact protected-main base SHA
+        required: true
+        type: string
+      pr_number:
+        description: Pull request number
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: sounding-line-ordinary-${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
+  cancel-in-progress: false
+
+jobs:
+  final-check:
+    name: Sounding Line / Mainline Decision
+    if: ${{ github.event_name != 'pull_request_target' || github.event.pull_request.draft == false }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Bind the event to exact source identities
+        id: source
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request_target" ]; then
+            echo "base=${{ github.event.pull_request.base.sha }}" >> "$GITHUB_OUTPUT"
+            echo "candidate=${{ github.event.pull_request.head.sha }}" >> "$GITHUB_OUTPUT"
+            echo "repository=${{ github.event.pull_request.head.repo.full_name }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "base=${{ inputs.base_sha }}" >> "$GITHUB_OUTPUT"
+            echo "candidate=${{ inputs.candidate_sha }}" >> "$GITHUB_OUTPUT"
+            echo "repository=${{ github.repository }}" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.source.outputs.base }}
+          path: authority
+          fetch-depth: 1
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.source.outputs.repository }}
+          ref: ${{ steps.source.outputs.candidate }}
+          path: candidate
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: authority/.nvmrc
+          cache: npm
+          cache-dependency-path: candidate/package-lock.json
+      - run: npm ci --ignore-scripts
+        working-directory: candidate
+      - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+        working-directory: candidate
+      - run: npx --no-install playwright install --with-deps chromium
+        working-directory: candidate
+      - name: Run the trusted focused verifier against the exact candidate tree
+        run: node authority/scripts/sounding-line/ordinary.mjs --mode ordinary --workspace candidate --base ${{ steps.source.outputs.base }} --candidate ${{ steps.source.outputs.candidate }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sounding-line-ordinary-${{ steps.source.outputs.candidate }}
+          path: candidate/artifacts/sounding-line/ordinary-decision.json
+          if-no-files-found: error

@@ -64,6 +64,14 @@ export type StudioDraftInput = {
     contentWarnings?: string | null;
   };
   chapters: StudioChapterInput[];
+  reusableUsage?: {
+    itemId: string;
+    versionId: string;
+    sourceKind: string;
+    insertedBlockIds: string[];
+    insertedChapterIds: string[];
+    provenance: { sourceOwnerId: string; sourceItemId?: string; sourceVersionId?: string; modified: boolean };
+  };
 };
 
 export type ValidationIssue = {

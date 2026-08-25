@@ -66,7 +66,7 @@ async function backendSurfaceInventory(root) {
   return surfaces.sort((left, right) => left.id.localeCompare(right.id));
 }
 
-async function soundingLinePolicyDigest(root) {
+export async function computeSoundingLinePolicyDigest(root) {
   const files = [
     "policy-manifest.json",
     "ownership.json",
@@ -86,6 +86,9 @@ async function soundingLinePolicyDigest(root) {
     "prepared-artifacts.json",
     "mainline-train-policy.json",
     "verification-maintenance-policy.json",
+    "authority-maintenance-policy.json",
+    "root-maintenance-policy.json",
+    "control-plane-repair-routes.json",
   ];
   const policy = { manifest: await readJson(root, "testing/policy-manifest.json") };
   for (const file of files.slice(1)) policy[file.replace(/\.json$/u, "")] = await readJson(root, `testing/${file}`);
@@ -464,7 +467,7 @@ export async function buildPhase5Governance(root, artifacts) {
     priorBaseline,
     delta: compareSnapshots(priorBaseline, currentBaseline, config.backendSurfaceDispositions),
     completionRecordAudits: await completionRecordAudits(root, config),
-    soundingLinePolicyDigest: await soundingLinePolicyDigest(root),
+    soundingLinePolicyDigest: await computeSoundingLinePolicyDigest(root),
   };
 }
 

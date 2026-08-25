@@ -1,6 +1,7 @@
 {
   "version": "1.4",
-  "status": "candidate-pending-protected-mainline-acceptance",
+  "status": "active-ordinary-default",
+  "ordinaryIntegrationDefault": true,
   "mergeStrategyIdentity": "github-protected-merge-commit",
   "admission": {
     "frozenHeadRequired": true,

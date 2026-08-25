@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -22,7 +23,7 @@ const entry = (overrides: Partial<FeatureCatalogEntry> = {}): FeatureCatalogEntr
 describe("Feature Catalog", () => {
   it("loads the audited catalog with stable ordering", () => {
     const { entries } = loadFeatureCatalog();
-    expect(entries).toHaveLength(48);
+    expect(entries).toHaveLength(51);
     expect(sortedEntries(entries).map((item) => item.id)).toEqual(
       [...sortedEntries(entries).map((item) => item.id)].sort((a, b) =>
         a.localeCompare(b, undefined, { numeric: true }),
@@ -75,10 +76,14 @@ describe("Feature Catalog", () => {
   it("accepts detached GitHub PR branch evidence only when the recorded commit is in HEAD", () => {
     const originalActions = process.env.GITHUB_ACTIONS;
     const originalHeadRef = process.env.GITHUB_HEAD_REF;
-    const head = process.env.GITHUB_SHA ?? "HEAD";
+    const originalSha = process.env.GITHUB_SHA;
+    // The trusted workflow dispatch SHA can differ from a governed worker's
+    // sealed execution checkout. Branch evidence must bind to that checkout.
+    const head = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
     try {
       process.env.GITHUB_ACTIONS = "true";
       process.env.GITHUB_HEAD_REF = "codex/detached-ci-proof";
+      process.env.GITHUB_SHA = "0".repeat(40);
       expect(branchEvidenceResolves("codex/detached-ci-proof", head)).toBe(true);
       expect(branchEvidenceResolves("codex/different-branch", head)).toBe(false);
     } finally {
@@ -86,6 +91,8 @@ describe("Feature Catalog", () => {
       else process.env.GITHUB_ACTIONS = originalActions;
       if (originalHeadRef === undefined) delete process.env.GITHUB_HEAD_REF;
       else process.env.GITHUB_HEAD_REF = originalHeadRef;
+      if (originalSha === undefined) delete process.env.GITHUB_SHA;
+      else process.env.GITHUB_SHA = originalSha;
     }
   });
 

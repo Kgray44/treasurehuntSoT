@@ -62,9 +62,11 @@ test("Journeys A-L: visible entry, Captain preflight, accepted Journey Detail hi
   await expect(globalNavigation.getByRole("link", { name: "Explore Chronicles", exact: true })).toBeVisible();
   await globalNavigation.getByRole("link", { name: "Explore Chronicles", exact: true }).click();
   await expect(anonymous.page.getByRole("heading", { name: "Choose a Chronicle", exact: true })).toBeVisible();
-  const ordinaryChroniclePreview = anonymous.page.locator(`a[href="/chronicles/${credentials.chronicle.slug}"]`);
-  await expect(ordinaryChroniclePreview).toHaveText("Preview Chronicle");
-  await ordinaryChroniclePreview.click();
+  const tideglassPreview = anonymous.page.locator(`a[href="/chronicles/${credentials.chronicle.slug}"]`, {
+    hasText: "Preview Chronicle",
+  });
+  await expect(tideglassPreview).toHaveCount(1);
+  await tideglassPreview.click();
   await expect(
     anonymous.page.getByRole("heading", { name: "The Tideglass Passage Fixture", exact: true }),
   ).toBeVisible();

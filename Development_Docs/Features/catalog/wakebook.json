@@ -31,5 +31,40 @@
       "Timeline, People, Statistics, geographic recap, public sharing, competitive metrics, and Tideglass semantics are outside Phase 1"
     ],
     "catalogVersion": 1
+  },
+  {
+    "id": "FT-B013",
+    "title": "Owner-Safe Historical Voyage Remembrance",
+    "summary": "Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe path and objective context, historical attribution and crew, artifact and achievement chronology, owner-authored remembrance, participant-consented Keepsake degradation, and Sealed Hold-backed private Memory media without rewriting canonical Voyage truth.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "program": "Project Wakebook Phase 2",
+    "surfaces": [
+      "/passport/history/[recordId]",
+      "/api/passport/voyages/[recordId]",
+      "/api/passport/voyages/[recordId]/memories/[memoryId]/media/[mediaId]"
+    ],
+    "subfeatures": [
+      "Version-pinned rich Voyage Detail with bounded historical path, objectives, choices, Creator, Captain, crew, artifact, assembly, and achievement context",
+      "Owner-only Reflection and Memory curation with owned historical-reference validation and cross-owner rejection",
+      "Opaque Sealed Hold Memory-media associations with owner-only protected delivery and truthful unavailable, unscanned, withdrawn, archived, and revoked states",
+      "Participant-owned consent denial, grant, and revocation for private Keepsake representation without changing the underlying Voyage record",
+      "Owner-only technical provenance, Tideglass handoff, visible Personal Harbor navigation, responsive layouts, keyboard support, reduced motion, and effective 200 percent zoom evidence"
+    ],
+    "evidence": [
+      { "kind": "branch", "value": "codex/project-wakebook-phase2-bind-the-voyages" },
+      { "kind": "commit", "value": "e3843d7c6df1bb7a0f561b640ee0a8c1e9199f99" },
+      { "kind": "path", "value": "src/wakebook/archive-query.ts" },
+      { "kind": "path", "value": "src/wayfarer/chronicle-history.ts" },
+      { "kind": "path", "value": "src/components/wakebook/WakebookVoyageDetail.tsx" },
+      { "kind": "test", "value": "tests/e2e/wakebook-phase2.spec.ts" }
+    ],
+    "branch": "codex/project-wakebook-phase2-bind-the-voyages",
+    "commit": "e3843d7c6df1bb7a0f561b640ee0a8c1e9199f99",
+    "limitations": [
+      "Candidate-qualified for owner walkthrough only; owner acceptance and protected-main integration have not occurred",
+      "Historical detail retains only explicitly preserved safe facts and never reconstructs unavailable raw choices, clues, or source payloads",
+      "Private media delivery remains owner-only and depends on Sealed Hold clean, available, non-withdrawn, finalized source state"
+    ],
+    "catalogVersion": 1
   }
 ]
