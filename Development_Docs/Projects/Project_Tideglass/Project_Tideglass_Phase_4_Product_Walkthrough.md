@@ -65,5 +65,5 @@ surfaces are `TG4-EV-I-HELM-CAPTAIN-PREFLIGHT`,
 
 The owner recorded `OWNER_ACCEPTED` on 2026-08-16 in
 `Project_Tideglass_Phase_4_Owner_Decision_Record.md`. The accepted scope now
-requires one qualified exact-SHA Sounding Line Mainline Decision and protected
-binding; owner acceptance itself does not authorize a merge.
+requires one qualified exact-SHA Sounding Line / Mainline Decision and protected
+merge; owner acceptance itself does not authorize a merge.

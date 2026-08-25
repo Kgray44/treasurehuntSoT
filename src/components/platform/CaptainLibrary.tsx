@@ -312,36 +312,34 @@ export function CaptainLibrary() {
   }
 
   useEffect(() => {
-    if (!wizard || !taleId || !versionId) {
-      setEditionPreflight(null);
-      setEditionPreflightLoading(false);
-      setEditionPreflightError("");
-      return;
-    }
+    if (!wizard || !taleId || !versionId) return;
     const controller = new AbortController();
-    setEditionPreflight(null);
-    setEditionPreflightLoading(true);
-    setEditionPreflightError("");
-    void fetch(
-      `/api/captain/tideglass/preflight?taleId=${encodeURIComponent(taleId)}&selectedEditionId=${encodeURIComponent(versionId)}`,
-      { cache: "no-store", signal: controller.signal },
-    )
-      .then(async (response) => {
-        const body = (await response.json()) as EditionPreflight & { error?: string };
-        if (!response.ok) throw new Error(body.error ?? "Edition readiness is temporarily unavailable.");
-        setEditionPreflight(body);
-      })
-      .catch((reason: unknown) => {
-        if (controller.signal.aborted) return;
-        setEditionPreflightError(
-          reason instanceof Error
-            ? reason.message
-            : "Edition readiness is temporarily unavailable. No Voyage settings changed.",
-        );
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setEditionPreflightLoading(false);
-      });
+    queueMicrotask(() => {
+      if (controller.signal.aborted) return;
+      setEditionPreflight(null);
+      setEditionPreflightLoading(true);
+      setEditionPreflightError("");
+      void fetch(
+        `/api/captain/tideglass/preflight?taleId=${encodeURIComponent(taleId)}&selectedEditionId=${encodeURIComponent(versionId)}`,
+        { cache: "no-store", signal: controller.signal },
+      )
+        .then(async (response) => {
+          const body = (await response.json()) as EditionPreflight & { error?: string };
+          if (!response.ok) throw new Error(body.error ?? "Edition readiness is temporarily unavailable.");
+          setEditionPreflight(body);
+        })
+        .catch((reason: unknown) => {
+          if (controller.signal.aborted) return;
+          setEditionPreflightError(
+            reason instanceof Error
+              ? reason.message
+              : "Edition readiness is temporarily unavailable. No Voyage settings changed.",
+          );
+        })
+        .finally(() => {
+          if (!controller.signal.aborted) setEditionPreflightLoading(false);
+        });
+    });
     return () => controller.abort();
   }, [wizard, taleId, versionId]);
 
@@ -1145,6 +1143,8 @@ type WizardProps = Record<string, unknown> & {
 function VoyageWizard(props: WizardProps) {
   const dialogRef = useRef<HTMLElement>(null);
   const closeRef = useRef(props.close);
+  const visibleEditionPreflight =
+    props.editionPreflight?.selectedEdition?.id === props.versionId ? props.editionPreflight : null;
   const token = resolvePlatformMotionToken("layout", props.mode);
   const direction = props.direction;
   const [documentZoom, setDocumentZoom] = useState(1);
@@ -1334,30 +1334,30 @@ function VoyageWizard(props: WizardProps) {
                         <p className="eyebrow">Edition preflight</p>
                         {props.editionPreflightLoading && <p>Reviewing player-safe edition differences…</p>}
                         {props.editionPreflightError && <p role="alert">{props.editionPreflightError}</p>}
-                        {props.editionPreflight?.state === "UP_TO_DATE" && (
+                        {visibleEditionPreflight?.state === "UP_TO_DATE" && (
                           <p>
-                            Version {props.editionPreflight.selectedEdition.label} is the current recommended edition
+                            Version {visibleEditionPreflight.selectedEdition.label} is the current recommended edition
                             for new Voyages.
                           </p>
                         )}
-                        {props.editionPreflight?.state === "COMPARISON" && (
+                        {visibleEditionPreflight?.state === "COMPARISON" && (
                           <>
                             <p>
-                              Version {props.editionPreflight.selectedEdition.label} is selected; Version{" "}
-                              {props.editionPreflight.recommendedEdition.label} is currently recommended for new
+                              Version {visibleEditionPreflight.selectedEdition.label} is selected; Version{" "}
+                              {visibleEditionPreflight.recommendedEdition.label} is currently recommended for new
                               Voyages.
                             </p>
                             <p>
-                              {props.editionPreflight.visibleChangeCount
-                                ? `${props.editionPreflight.visibleChangeCount} player-safe semantic difference${
-                                    props.editionPreflight.visibleChangeCount === 1 ? "" : "s"
+                              {visibleEditionPreflight.visibleChangeCount
+                                ? `${visibleEditionPreflight.visibleChangeCount} player-safe semantic difference${
+                                    visibleEditionPreflight.visibleChangeCount === 1 ? "" : "s"
                                   } available for this preflight.`
                                 : "A different edition is selected. Player-safe semantic details are not available before launch."}
                             </p>
-                            {props.editionPreflight.summary?.categories.length ? (
+                            {visibleEditionPreflight.summary?.categories.length ? (
                               <p>
                                 Player-safe categories:{" "}
-                                {props.editionPreflight.summary.categories
+                                {visibleEditionPreflight.summary.categories
                                   .map((category) => category.category.toLocaleLowerCase().replaceAll("_", " "))
                                   .join(", ")}
                                 .

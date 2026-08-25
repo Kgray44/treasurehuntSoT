@@ -151,7 +151,7 @@
     "title": "Tideglass Chronicle Edition Intelligence",
     "summary": "Tideglass compares exact immutable Chronicle editions, explains semantic change in an ordinary spoiler-safe What Changed experience, anchors comparison to a player's retained Voyage history, and gives Creator Studio the same canonical semantic truth without changing published or live Voyage state.",
     "status": "MAINLINE",
-    "program": "Project Tideglass Phases 1-3",
+    "program": "Project Tideglass Phases 1-4",
     "surfaces": [
       "npm run tideglass:compare",
       "src/tideglass",
@@ -177,12 +177,18 @@
       "Compare to What I Played using owner-bound retained Voyage history",
       "Wakebook Journey Detail See what's changed handoff",
       "Spoiler disclosure, concise/detailed modes, category filters, compatibility, and accessibility presentation",
-      "Creator Studio published-version comparison through canonical semantic projection"
+      "Creator Studio published-version comparison through canonical semantic projection",
+      "Drydock historical migration reader with bounded unavailable sections",
+      "Captain-safe selected-to-recommended edition preflight",
+      "Same-Chronicle Harborlight release handoff"
     ],
     "evidence": [
       { "kind": "path", "value": "src/tideglass/service.ts" },
       { "kind": "path", "value": "src/tideglass/intelligence.ts" },
       { "kind": "path", "value": "src/tideglass/annotations.ts" },
+      { "kind": "path", "value": "src/tideglass/drydock-adapter.ts" },
+      { "kind": "path", "value": "src/tideglass/helm-preflight.ts" },
+      { "kind": "path", "value": "src/tideglass/harborlight.ts" },
       { "kind": "path", "value": "src/components/tideglass/TideglassPassage.tsx" },
       { "kind": "path", "value": "src/components/tideglass/TideglassStudioComparison.tsx" },
       { "kind": "test", "value": "tests/tideglass" },
@@ -197,8 +203,7 @@
       }
     ],
     "limitations": [
-      "Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.",
-      "Final Harborlight update integration and any accepted Captain/Helm visual comparison consumer remain deferred to later work."
+      "Unsupported or unsafe historical semantics remain explicitly unavailable rather than being silently upcast."
     ],
     "catalogVersion": 1
   }

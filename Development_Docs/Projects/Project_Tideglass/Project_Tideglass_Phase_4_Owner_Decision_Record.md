@@ -37,7 +37,6 @@ explicit owner decision, not an inference from automated evidence.
 - `OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS` — the owner returns reproducible
   findings, affected walkthrough step(s), and expected correction.
 
-This decision permits exactly one qualified, exact-SHA Sounding Line v1.4
-Mainline Decision. It does not itself issue `RELEASE_GO`, authorize a protected
-merge, publish the Feature Catalog from accepted main, or issue the Project
-Tideglass completion receipt.
+This decision permits exactly one qualified, exact-SHA Sounding Line / Mainline
+Decision. It does not itself authorize a protected merge, publish the Feature
+Catalog from accepted main, or issue the Project Tideglass completion receipt.
