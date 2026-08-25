@@ -31,10 +31,22 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [phase, setPhase] = useState<"idle" | "creating" | "uploading" | "assigning" | "routing" | "failed">("idle");
   useEffect(() => {
-    if (authenticated)
-      void fetch("/api/studio/tales")
-        .then((response) => response.json())
-        .then((body: { csrfToken?: string }) => setCsrf(body.csrfToken ?? ""));
+    if (!authenticated) return;
+    let active = true;
+    void fetch("/api/studio/tales")
+      .then(async (response) => {
+        const body = (await response.json()) as { csrfToken?: string; error?: string };
+        if (!response.ok || !body.csrfToken)
+          throw new Error(body.error ?? "The secure Chronicle form could not be prepared.");
+        if (active) setCsrf(body.csrfToken);
+      })
+      .catch((cause: unknown) => {
+        if (active)
+          setError(cause instanceof Error ? cause.message : "The secure Chronicle form could not be prepared.");
+      });
+    return () => {
+      active = false;
+    };
   }, [authenticated]);
   if (!authenticated)
     return (

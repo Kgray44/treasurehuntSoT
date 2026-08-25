@@ -129,6 +129,13 @@
       "critical": true
     },
     {
+      "id": "drydock-phase4-launch-readiness",
+      "name": "Drydock Phase 4 launch readiness, compatibility, and blocked publication evidence",
+      "authority": "drydock",
+      "owners": ["drydock", "one-voyage"],
+      "critical": true
+    },
+    {
       "id": "wayfarer-history-projection",
       "name": "Wayfarer history projection",
       "authority": "wayfarer",

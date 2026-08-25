@@ -5,8 +5,12 @@ import {
   type DrydockSimulationRunSummary,
 } from "@/drydock/simulation-store";
 import { createDrydockCoverageReport } from "@/drydock/simulation/coverage";
+import { canonicalChecksum } from "@/drydock/canonical";
 import type { DrydockSimulationResult } from "@/drydock/simulation/engine";
 import { parseDrydockScenarioSuite } from "@/drydock/simulation/suite";
+import { drydockSimulationSourceChecksum } from "@/drydock/simulation/source";
+import { DRYDOCK_COMPATIBILITY_POLICY_VERSION, DRYDOCK_REQUIRED_SUITE_POLICY_VERSION } from "@/drydock/readiness";
+import { ONE_VOYAGE_TRANSITION_ADAPTER_VERSION } from "@/drydock/simulation/engine";
 import { db } from "@/lib/db";
 
 export class DrydockScenarioSuiteUnavailableError extends Error {
@@ -19,6 +23,7 @@ function suiteProjection(record: {
   suiteId: string;
   title: string;
   sourceChecksum: string;
+  revision: number;
   updatedAt: Date;
   members: Array<{
     orderIndex: number;
@@ -29,6 +34,7 @@ function suiteProjection(record: {
     suiteId: record.suiteId,
     title: record.title,
     sourceChecksum: record.sourceChecksum,
+    revision: record.revision,
     updatedAt: record.updatedAt.toISOString(),
     members: record.members
       .sort((left, right) => left.orderIndex - right.orderIndex)
@@ -75,6 +81,7 @@ export async function saveDrydockScenarioSuite(taleId: string, unchecked: unknow
           data: {
             title: suite.title,
             sourceChecksum: suite.sourceChecksum,
+            revision: { increment: 1 },
             archivedAt: null,
             members: { deleteMany: {}, create: memberData },
           },
@@ -124,6 +131,11 @@ export async function runDrydockScenarioSuite(taleId: string, suiteId: string, s
     },
   });
   if (!record) throw new DrydockScenarioSuiteUnavailableError();
+  const sourceChecksum = drydockSimulationSourceChecksum(snapshot);
+  if (record.sourceChecksum !== sourceChecksum)
+    throw new DrydockScenarioSuiteUnavailableError(
+      "This Scenario Suite no longer matches the current Chronicle source. Save a current-source Suite before running it.",
+    );
   const runs: Array<{
     scenarioId: string;
     revision: number;
@@ -145,13 +157,39 @@ export async function runDrydockScenarioSuite(taleId: string, suiteId: string, s
   const summaries = runs.map(({ run }) => run.summary as DrydockSimulationRunSummary);
   const results = runs.map(({ run }) => run.result as DrydockSimulationResult);
   const coverage = createDrydockCoverageReport(snapshot, results);
+  const proofStatus =
+    summaries.every((run) => run.status === "COMPLETED") && coverage.proofStatus === "COMPLETE"
+      ? "COMPLETE"
+      : "INCOMPLETE_PROOF";
+  const evidence = await db.drydockScenarioSuiteEvidence.create({
+    data: {
+      draftId: record.draftId,
+      suiteRecordId: record.id,
+      suiteRevision: record.revision,
+      sourceChecksum,
+      schemaRegistryVersion: 2,
+      ruleCatalogVersion: 1,
+      runtimeAdapterVersion: ONE_VOYAGE_TRANSITION_ADAPTER_VERSION,
+      requiredSuitePolicyVersion: DRYDOCK_REQUIRED_SUITE_POLICY_VERSION,
+      compatibilityPolicyVersion: DRYDOCK_COMPATIBILITY_POLICY_VERSION,
+      runIds: JSON.stringify(runs.map(({ run }) => run.summary.runId).sort()),
+      coverageDigest: canonicalChecksum(coverage),
+      proofStatus,
+    },
+    select: {
+      id: true,
+      sourceChecksum: true,
+      suiteRevision: true,
+      coverageDigest: true,
+      proofStatus: true,
+      createdAt: true,
+    },
+  });
   return {
     suite: suiteProjection(record),
     runs,
     coverage,
-    proofStatus:
-      summaries.every((run) => run.status === "COMPLETED") && coverage.proofStatus === "COMPLETE"
-        ? "COMPLETE"
-        : "INCOMPLETE_PROOF",
+    proofStatus,
+    evidence: { ...evidence, createdAt: evidence.createdAt.toISOString() },
   };
 }

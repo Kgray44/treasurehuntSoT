@@ -24,7 +24,8 @@
     { "kind": "path", "value": "src/drydock/simulation-store.ts" },
     { "kind": "path", "value": "src/components/studio/DrydockScenarioLab.tsx" },
     { "kind": "test", "value": "src/drydock" },
-    { "kind": "test", "value": "src/app/api/studio/tales/[taleId]/scenarios" }
+    { "kind": "test", "value": "src/app/api/studio/tales/[taleId]/scenarios" },
+    { "kind": "commit", "value": "191a964488d0df71f8dcb91c5b8372fc73b6b32e" }
   ],
   "limitations": [
     "Protected-main integration completed in PR #52 at 191a964488d0df71f8dcb91c5b8372fc73b6b32e; deployment and owner acceptance remain separate from source integration.",

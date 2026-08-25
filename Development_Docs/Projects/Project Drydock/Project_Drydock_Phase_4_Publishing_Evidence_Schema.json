@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "title": "Drydock Publishing Evidence",
+  "immutable": true,
+  "identity": ["publishedVersionId", "sourceChecksum", "digest"],
+  "required": [
+    "sourceChecksum",
+    "schemaRegistryVersion",
+    "ruleCatalogVersion",
+    "validationRunId",
+    "requiredSuitePolicyVersion",
+    "compatibilityPolicyVersion",
+    "compatibilityDigest",
+    "externalEvidenceDigest",
+    "createdAt"
+  ],
+  "forbidden": [
+    "acceptedAnswers",
+    "privateScenarioInputs",
+    "captainNotes",
+    "creatorNotes",
+    "rawProviderEvidence",
+    "storageKeys",
+    "privateLocations"
+  ],
+  "transactionBoundary": "The evidence row is created only in the One Voyage immutable publication transaction and is linked one-to-one with PublishedTaleVersion."
+}

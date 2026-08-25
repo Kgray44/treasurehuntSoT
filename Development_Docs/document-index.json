@@ -99,12 +99,6 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Features/branch-complete/project-drydock-phase3.json",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Features/branch-complete/project-shipwright-phase2.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -166,6 +160,12 @@
     },
     {
       "path": "Development_Docs/Features/catalog/player.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/catalog/project-drydock-phase3.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
