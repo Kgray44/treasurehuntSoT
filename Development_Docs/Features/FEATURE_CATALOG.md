@@ -1623,61 +1623,6 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 # Completed Branch Features Not Yet Available on Main
 
-## FT-B012 - Nightwatch Governed Integration Queue, Acceptance Sequencer, and Live Controller
-
-**Status:** BRANCH COMPLETE NOT MERGED
-**Program or subsystem:** Project Nightwatch Phase 1 Increments A and A.1
-
-Project Nightwatch and Bosun B1.2 provide a durable control plane that serializes canonical integration through queue-front lifecycle, exact candidate/base acceptance transactions, exact protected-main Baseline Certification, authority-before-binding sequencing, bounded leases, restart recovery, compound deterministic closure, exact GitHub dispatches, bounded unattended delegation, and a read-only Bridgewatch projection.
-
-### Important subfeatures
-
-- Validated Product Fleet candidate lifecycle with one active candidate per objective
-- Deterministic Integration Queue with fairness, dependencies, blockers, risk, and stable ordering
-- Queue-front-only reconciliation protected by an Integration Acceptance lease
-- SQLite-backed ledger with auditable events and stale lease or reservation recovery
-- Atomic multi-ID migration reservation allocation with collision and ambiguity rejection
-- Read-only Bridgewatch projection of queue, candidates, reservations, collisions, and acceptance ownership
-- Atomic exact candidate/base/tree acceptance transactions with neutral pending authority and protected binding ordering
-- Event and run deduplication, merge-race reconciliation, cumulative cascade accounting, and hard integration breaker
-- Single-lease persistent nightwatchd controller with restart-safe exact GitHub workflow rediscovery
-- Explicit RELEASE_GO-gated protected-binding dispatch with receipt-artifact verification
-- Live Bridgewatch controller health and raw parent integration cost projection
-- Exact SHA/tree Baseline Certification receipt required before ordinary candidate authority
-- One Bosun fixed-point compound AUTO_0 closure plan for deterministic shared baseline drift
-- Objective-scoped standing delegation with explicit hard-stop classes and durable audit routing
-- Bounded strategy continuation, one-repair cascade suppression, and high-quality parked owner escalations
-
-### Primary surfaces
-
-`npm run nightwatch:migrations:reserve`, `npm run nightwatch:migrations:inspect`, `npm run nightwatch:migrations:release`, `npm run nightwatch:migrations:reconcile`, `npm run nightwatch:controller:start`, `npm run nightwatch:controller:status`, `GET /api/nightwatch`
-
-### Meaningful limitations
-
-- Sounding Line remains the sole RELEASE_GO and protected-merge authority.
-- Only explicitly marked safe, reversible, in-scope Bosun findings may inherit a parent objective delegation; all other OWNER, external, scope, security, and irreversible findings remain parked.
-- The current repository MySQL migration family has duplicate numeric prefixes, so allocation correctly fails closed for that family.
-
-### Evidence
-
-- branch: `codex/nightwatch-increment-a`
-- commit: `2c895110ec7b8464bd51fc5a7c8397bf1746a88f`
-- path: `src/nightwatch/runtime.ts`
-- test: `src/nightwatch/runtime.test.ts`
-- test: `src/nightwatch/unattended-autonomy.test.ts`
-- path: `src/nightwatch/unattended-autonomy.ts`
-- test: `bridgewatch/test/nightwatch-projection.test.ts`
-- path: `bridgewatch/public/app.js`
-- path: `scripts/nightwatch/baseline-certifier.mjs`
-- test: `tests/sounding-line/baseline-certifier.test.mjs`
-- completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_B1_2_Baseline_Certification_Design_Record.md`
-- completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A2_Live_Control_Plane_Implementation_Record.md`
-- completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A1_Atomic_Acceptance_Sequencer_Implementation_Record.md`
-- completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md`
-- completion-record: `Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Unattended_Autonomy_Hardening_Implementation_Record.md`
-
----
-
 ## FT-B013 - Owner-Safe Historical Voyage Remembrance
 
 **Status:** BRANCH COMPLETE NOT MERGED
