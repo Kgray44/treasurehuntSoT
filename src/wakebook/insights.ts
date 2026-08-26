@@ -1,10 +1,5 @@
 import { db } from "@/lib/db";
-import {
-  archiveChronology,
-  presentLifecycle,
-  presentRole,
-  presentTiming,
-} from "@/wakebook/presentation";
+import { archiveChronology, presentLifecycle, presentRole, presentTiming } from "@/wakebook/presentation";
 
 export type WakebookInsights = {
   freshness: "CURRENT" | "PARTIAL";
@@ -35,107 +30,76 @@ export type WakebookInsights = {
 };
 
 /** Owner-scoped, read-only Phase 3 projection. No runtime or profile data is joined. */
-export async function queryWakebookInsights(
-  playerProfileId: string,
-): Promise<WakebookInsights> {
+export async function queryWakebookInsights(playerProfileId: string): Promise<WakebookInsights> {
   const where = { playerProfileId };
-  const [
-    count,
-    completedCount,
-    exactDuration,
-    durationRecords,
-    dateRange,
-    versions,
-    timelineRows,
-    peopleRows,
-  ] = await Promise.all([
-    db.playerChronicleRecord.count({ where }),
-    db.playerChronicleRecord.count({
-      where: { ...where, lifecycleStatus: "COMPLETED" },
-    }),
-    db.playerChronicleRecord.aggregate({
-      where: {
-        ...where,
-        wallClockAccuracy: "EXACT",
-        wallClockSeconds: { not: null },
-      },
-      _sum: { wallClockSeconds: true },
-    }),
-    db.playerChronicleRecord.count({
-      where: {
-        ...where,
-        wallClockAccuracy: "EXACT",
-        wallClockSeconds: { not: null },
-      },
-    }),
-    db.playerChronicleRecord.aggregate({
-      where,
-      _min: { completedAt: true, startedAt: true, joinedAt: true },
-      _max: { completedAt: true, startedAt: true, joinedAt: true },
-    }),
-    db.playerChronicleRecord.groupBy({
-      by: ["metricDefinitionVersion"],
-      where,
-      orderBy: { metricDefinitionVersion: "asc" },
-    }),
-    db.playerChronicleRecord.findMany({
-      where,
-      orderBy: [
-        { completedAt: "desc" },
-        { startedAt: "desc" },
-        { joinedAt: "desc" },
-        { id: "desc" },
-      ],
-      take: 36,
-      select: {
-        id: true,
-        chronicleTitleSnapshot: true,
-        lifecycleStatus: true,
-        completedAt: true,
-        startedAt: true,
-        joinedAt: true,
-        wallClockSeconds: true,
-        wallClockAccuracy: true,
-      },
-    }),
-    db.playerChronicleParticipantSnapshot.groupBy({
-      by: [
-        "displayNameSnapshot",
-        "tombstoneState",
-        "participationRole",
-        "crewRoleSnapshot",
-      ],
-      where: { record: { playerProfileId }, projectionEligibility: "ONLY_ME" },
-      _count: { historyRecordId: true },
-      orderBy: { _count: { historyRecordId: "desc" } },
-      take: 40,
-    }),
-  ]);
+  const [count, completedCount, exactDuration, durationRecords, dateRange, versions, timelineRows, peopleRows] =
+    await Promise.all([
+      db.playerChronicleRecord.count({ where }),
+      db.playerChronicleRecord.count({
+        where: { ...where, lifecycleStatus: "COMPLETED" },
+      }),
+      db.playerChronicleRecord.aggregate({
+        where: {
+          ...where,
+          wallClockAccuracy: "EXACT",
+          wallClockSeconds: { not: null },
+        },
+        _sum: { wallClockSeconds: true },
+      }),
+      db.playerChronicleRecord.count({
+        where: {
+          ...where,
+          wallClockAccuracy: "EXACT",
+          wallClockSeconds: { not: null },
+        },
+      }),
+      db.playerChronicleRecord.aggregate({
+        where,
+        _min: { completedAt: true, startedAt: true, joinedAt: true },
+        _max: { completedAt: true, startedAt: true, joinedAt: true },
+      }),
+      db.playerChronicleRecord.groupBy({
+        by: ["metricDefinitionVersion"],
+        where,
+        orderBy: { metricDefinitionVersion: "asc" },
+      }),
+      db.playerChronicleRecord.findMany({
+        where,
+        orderBy: [{ completedAt: "desc" }, { startedAt: "desc" }, { joinedAt: "desc" }, { id: "desc" }],
+        take: 36,
+        select: {
+          id: true,
+          chronicleTitleSnapshot: true,
+          lifecycleStatus: true,
+          completedAt: true,
+          startedAt: true,
+          joinedAt: true,
+          wallClockSeconds: true,
+          wallClockAccuracy: true,
+        },
+      }),
+      db.playerChronicleParticipantSnapshot.groupBy({
+        by: ["displayNameSnapshot", "tombstoneState", "participationRole", "crewRoleSnapshot"],
+        where: { record: { playerProfileId }, projectionEligibility: "ONLY_ME" },
+        _count: { historyRecordId: true },
+        orderBy: { _count: { historyRecordId: "desc" } },
+        take: 40,
+      }),
+    ]);
 
   const dates = timelineRows
-    .map(
-      (row) =>
-        archiveChronology(row.completedAt, row.startedAt, row.joinedAt)
-          .archiveDate,
-    )
+    .map((row) => archiveChronology(row.completedAt, row.startedAt, row.joinedAt).archiveDate)
     .filter((value): value is string => Boolean(value));
   const exactDurationSeconds = exactDuration._sum.wallClockSeconds ?? null;
   return {
     freshness: "CURRENT",
     notice: null,
     metrics: {
-      definitionVersions: versions.map(
-        (version) => version.metricDefinitionVersion,
-      ),
+      definitionVersions: versions.map((version) => version.metricDefinitionVersion),
       voyageCount: count,
       completedCount,
-      exactDurationSeconds:
-        durationRecords === count && count > 0 ? exactDurationSeconds : null,
-      durationCoverage: !count
-        ? "UNAVAILABLE"
-        : durationRecords === count
-          ? "EXACT"
-          : "MIXED",
+      exactDurationSeconds: durationRecords === count && count > 0 ? exactDurationSeconds : null,
+      durationCoverage: !count ? "UNAVAILABLE" : durationRecords === count ? "EXACT" : "MIXED",
       firstJourneyAt:
         dates.at(-1) ??
         dateRange._min.completedAt?.toISOString() ??
@@ -150,30 +114,21 @@ export async function queryWakebookInsights(
         null,
     },
     timeline: timelineRows.map((row) => {
-      const chronology = archiveChronology(
-        row.completedAt,
-        row.startedAt,
-        row.joinedAt,
-      );
+      const chronology = archiveChronology(row.completedAt, row.startedAt, row.joinedAt);
       return {
         id: row.id,
         title: row.chronicleTitleSnapshot,
         date: chronology.archiveDate,
         dateQuality: chronology.dateQuality,
         lifecycle: presentLifecycle(row.lifecycleStatus).humanLabel,
-        duration: presentTiming(row.wallClockSeconds, row.wallClockAccuracy)
-          .humanLabel,
+        duration: presentTiming(row.wallClockSeconds, row.wallClockAccuracy).humanLabel,
       };
     }),
     people: peopleRows.map((person) => ({
-      label:
-        person.tombstoneState === "ACTIVE"
-          ? person.displayNameSnapshot
-          : "Former crew member",
+      label: person.tombstoneState === "ACTIVE" ? person.displayNameSnapshot : "Former crew member",
       role: person.crewRoleSnapshot || presentRole(person.participationRole),
       voyageCount: person._count.historyRecordId,
-      availability:
-        person.tombstoneState === "ACTIVE" ? "HISTORICAL" : "LIMITED",
+      availability: person.tombstoneState === "ACTIVE" ? "HISTORICAL" : "LIMITED",
     })),
   };
 }

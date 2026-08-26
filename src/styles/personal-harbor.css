@@ -28,13 +28,7 @@ html[data-voyage-theme="light"] .personal-harbor__hero {
     linear-gradient(125deg, #fff9eb 0%, #ebddc0 58%, #f5ead5 100%);
 }
 
-html[data-voyage-theme="light"]
-  :where(
-    .personal-harbor__rail,
-    .harbor-panel,
-    .harbor-preview,
-    .harbor-empty
-  ) {
+html[data-voyage-theme="light"] :where(.personal-harbor__rail, .harbor-panel, .harbor-preview, .harbor-empty) {
   border-color: var(--border-default);
   color: var(--text-primary);
   background: color-mix(in srgb, var(--surface-default) 96%, transparent);
@@ -42,22 +36,15 @@ html[data-voyage-theme="light"]
 }
 
 html[data-voyage-theme="light"]
-  :where(
-    .personal-harbor__nav-group a,
-    .harbor-field-hint,
-    .harbor-readonly-field,
-    .harbor-panel p
-  ) {
+  :where(.personal-harbor__nav-group a, .harbor-field-hint, .harbor-readonly-field, .harbor-panel p) {
   color: var(--text-secondary);
 }
 
-html[data-voyage-theme="light"]
-  :where(.personal-harbor__nav-group a[aria-current="page"], .harbor-panel h2) {
+html[data-voyage-theme="light"] :where(.personal-harbor__nav-group a[aria-current="page"], .harbor-panel h2) {
   color: var(--text-heading);
 }
 
-html[data-voyage-theme="light"]
-  :where(.harbor-form input, .harbor-form select, .harbor-form textarea) {
+html[data-voyage-theme="light"] :where(.harbor-form input, .harbor-form select, .harbor-form textarea) {
   border-color: var(--border-default);
   color: var(--text-primary);
   background: var(--surface-overlay);
@@ -66,11 +53,7 @@ html[data-voyage-theme="light"]
 html[data-voyage-theme="light"] .harbor-identity-card {
   border-color: var(--border-default);
   color: var(--text-primary);
-  background: linear-gradient(
-    130deg,
-    var(--surface-overlay),
-    var(--surface-elevated)
-  );
+  background: linear-gradient(130deg, var(--surface-overlay), var(--surface-elevated));
 }
 
 html[data-voyage-theme="light"] .harbor-identity-card p,
@@ -209,8 +192,7 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
 
 .personal-harbor__nav-group + .personal-harbor__nav-group {
   padding-top: 0.75rem;
-  border-top: 1px solid
-    color-mix(in srgb, var(--border-subtle) 70%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--border-subtle) 70%, transparent);
 }
 .personal-harbor__nav-group ul {
   display: grid;
@@ -559,11 +541,7 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
   border: 1px solid var(--border-emphasis);
   border-radius: 0.85rem;
   color: var(--text-muted);
-  background: linear-gradient(
-    145deg,
-    var(--surface-raised),
-    var(--surface-default)
-  );
+  background: linear-gradient(145deg, var(--surface-raised), var(--surface-default));
 }
 
 .harbor-media-inline-preview--avatar {
@@ -682,12 +660,7 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
 }
 
 .profile-crop-frame--banner .profile-crop-mask {
-  background: linear-gradient(
-    90deg,
-    rgb(0 0 0 / 22%),
-    transparent 18% 82%,
-    rgb(0 0 0 / 22%)
-  );
+  background: linear-gradient(90deg, rgb(0 0 0 / 22%), transparent 18% 82%, rgb(0 0 0 / 22%));
   box-shadow: inset 0 0 0 999px rgb(0 0 0 / 8%);
 }
 
@@ -752,11 +725,7 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
   position: relative;
   min-height: clamp(9rem, 23vw, 16rem);
   background:
-    radial-gradient(
-      circle at 72% 28%,
-      color-mix(in srgb, var(--accent-primary) 26%, transparent),
-      transparent 34%
-    ),
+    radial-gradient(circle at 72% 28%, color-mix(in srgb, var(--accent-primary) 26%, transparent), transparent 34%),
     linear-gradient(135deg, #07161f, #0d2830 52%, #071016);
 }
 
@@ -785,11 +754,7 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
   place-items: center;
   border: 4px solid var(--surface-raised);
   border-radius: 50%;
-  background: linear-gradient(
-    145deg,
-    var(--accent-primary),
-    var(--surface-default)
-  );
+  background: linear-gradient(145deg, var(--accent-primary), var(--surface-default));
   box-shadow: 0 0.8rem 2rem rgb(0 0 0 / 48%);
 }
 
@@ -832,11 +797,7 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
 }
 
 .harbor-identity-hero__workspaces li[data-state="ACTIVE"] {
-  border-color: color-mix(
-    in srgb,
-    var(--accent-primary) 62%,
-    var(--border-default)
-  );
+  border-color: color-mix(in srgb, var(--accent-primary) 62%, var(--border-default));
   color: var(--text-primary);
 }
 
@@ -1057,11 +1018,7 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
   overflow: hidden;
   background:
     radial-gradient(circle at 78% 18%, rgb(93 171 154 / 35%), transparent 32%),
-    radial-gradient(
-      circle at 20% 100%,
-      rgb(209 175 105 / 16%),
-      transparent 36%
-    ),
+    radial-gradient(circle at 20% 100%, rgb(209 175 105 / 16%), transparent 36%),
     linear-gradient(135deg, #133f3e, #071d22 70%);
 }
 .public-profile__banner::after {
@@ -1742,16 +1699,8 @@ html[data-motion-preference="reduced"] .personal-harbor *::after {
   padding: clamp(1.4rem, 4vw, 4.5rem) max(1.25rem, calc((100vw - 104rem) / 2));
   color: #fff8e8;
   background:
-    radial-gradient(
-      circle at 80% 0%,
-      rgb(218 179 102 / 32%),
-      transparent 28rem
-    ),
-    radial-gradient(
-      circle at 12% 12%,
-      rgb(55 137 128 / 34%),
-      transparent 26rem
-    ),
+    radial-gradient(circle at 80% 0%, rgb(218 179 102 / 32%), transparent 28rem),
+    radial-gradient(circle at 12% 12%, rgb(55 137 128 / 34%), transparent 26rem),
     linear-gradient(118deg, #082729 0%, #103f3d 56%, #1c5050 100%);
   box-shadow: inset 0 -1px rgb(255 237 193 / 24%);
 }
@@ -1781,12 +1730,7 @@ html[data-motion-preference="reduced"] .personal-harbor *::after {
   height: 1px;
   left: max(1.25rem, calc((100vw - 104rem) / 2));
   bottom: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--harbor-brass),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, var(--harbor-brass), transparent);
 }
 
 .passport-shell__masthead {
@@ -1926,9 +1870,7 @@ html[data-voyage-theme="light"] .passport-shell {
   color: var(--text-primary);
 }
 
-html[data-voyage-theme="light"]
-  .passport-shell__content
-  :where(.harbor-panel, .harbor-empty, .harbor-preview) {
+html[data-voyage-theme="light"] .passport-shell__content :where(.harbor-panel, .harbor-empty, .harbor-preview) {
   border-color: var(--border-default);
   color: var(--text-primary);
   background: color-mix(in srgb, var(--surface-default) 96%, transparent);
@@ -2003,8 +1945,7 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
 .wakebook-insights__intro,
 .wakebook-statistics,
 .wakebook-people {
-  border: 1px solid
-    color-mix(in srgb, var(--harbor-border, #755b3d) 56%, transparent);
+  border: 1px solid color-mix(in srgb, var(--harbor-border, #755b3d) 56%, transparent);
   border-radius: 1.15rem;
   background: color-mix(in srgb, var(--harbor-panel, #18212b) 92%, #0b1017);
   box-shadow: 0 1.1rem 2.5rem rgb(0 0 0 / 14%);
@@ -2090,8 +2031,7 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
 }
 .wakebook-timeline article {
   padding: 1rem 1.15rem;
-  border: 1px solid
-    color-mix(in srgb, var(--harbor-border, #755b3d) 48%, transparent);
+  border: 1px solid color-mix(in srgb, var(--harbor-border, #755b3d) 48%, transparent);
   border-radius: 0.85rem;
   background: color-mix(in srgb, var(--harbor-panel, #18212b) 86%, transparent);
 }
@@ -2133,8 +2073,7 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
   gap: 0.75rem;
   align-items: center;
   padding: 0.85rem;
-  border: 1px solid
-    color-mix(in srgb, var(--harbor-border, #755b3d) 42%, transparent);
+  border: 1px solid color-mix(in srgb, var(--harbor-border, #755b3d) 42%, transparent);
   border-radius: 0.8rem;
 }
 .wakebook-people h3,
@@ -2236,11 +2175,7 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
   padding: clamp(1.35rem, 4vw, 2.7rem);
   background:
     radial-gradient(circle at 92% 12%, rgb(209 175 105 / 17%), transparent 31%),
-    repeating-linear-gradient(
-      100deg,
-      transparent 0 4rem,
-      rgb(255 255 255 / 1.5%) 4rem 4.08rem
-    ),
+    repeating-linear-gradient(100deg, transparent 0 4rem, rgb(255 255 255 / 1.5%) 4rem 4.08rem),
     linear-gradient(135deg, #0d3839 0%, #0a292d 58%, #071c22 100%);
   box-shadow: var(--shadow-card);
 }
@@ -2565,11 +2500,7 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
   color: #f2e4c3;
   background:
     radial-gradient(circle at 50% 42%, rgb(209 175 105 / 20%), transparent 31%),
-    repeating-radial-gradient(
-      circle at 50% 45%,
-      transparent 0 1.9rem,
-      rgb(209 175 105 / 8%) 1.95rem 2rem
-    ),
+    repeating-radial-gradient(circle at 50% 45%, transparent 0 1.9rem, rgb(209 175 105 / 8%) 1.95rem 2rem),
     linear-gradient(160deg, #175253, #09282d 65%, #061a20);
   text-align: center;
 }
@@ -2838,12 +2769,7 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
   min-height: 13rem;
   border: 1px solid var(--border-subtle);
   border-radius: 1rem;
-  background: linear-gradient(
-    105deg,
-    rgb(16 55 55 / 62%),
-    rgb(27 73 70 / 52%),
-    rgb(16 55 55 / 62%)
-  );
+  background: linear-gradient(105deg, rgb(16 55 55 / 62%), rgb(27 73 70 / 52%), rgb(16 55 55 / 62%));
   background-size: 200% 100%;
   animation: wakebook-sheen 1.8s ease-in-out infinite;
 }
@@ -3256,8 +3182,7 @@ html[data-voyage-theme="light"]
   border-color: var(--border-default);
   color: var(--text-primary);
   background:
-    radial-gradient(circle at 94% 5%, rgb(118 85 28 / 10%), transparent 28%),
-    linear-gradient(145deg, #fffaf0, #ecdfc7);
+    radial-gradient(circle at 94% 5%, rgb(118 85 28 / 10%), transparent 28%), linear-gradient(145deg, #fffaf0, #ecdfc7);
 }
 
 html[data-voyage-theme="light"]

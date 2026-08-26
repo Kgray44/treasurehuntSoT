@@ -29,11 +29,7 @@ export const personalHarborNavigation = [
     items: [
       ["personal-harbor-overview", "Overview", "/account"],
       ["public-profile-editor", "Public Profile", "/account/profile"],
-      [
-        "personal-information",
-        "Personal Information",
-        "/account/personal-information",
-      ],
+      ["personal-information", "Personal Information", "/account/personal-information"],
     ],
   },
   {
