@@ -120,6 +120,12 @@ export function selectAffectedTests({ changedPaths, unitTests, browserTests, mod
   };
 }
 
+export function browserProvisioningRequired(selection) {
+  if (!selection || !Array.isArray(selection.browserTests))
+    throw new Error("SOUNDING_LINE_BROWSER_PROVISIONING_INDETERMINATE");
+  return selection.browserTests.length > 0;
+}
+
 export function assertBinding({ baseSha, candidateSha, baseTree, candidateTree }) {
   for (const [name, value] of Object.entries({ baseSha, candidateSha, baseTree, candidateTree }))
     if (!sha.test(value ?? ""))
@@ -269,6 +275,7 @@ export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary"
       (file) => lintableFile.test(file) && existsSync(path.join(root, file)),
     ),
     selected: selection,
+    browserRequired: browserProvisioningRequired(selection),
     databaseUrl: soundingLineDatabaseUrl(candidateSha),
     migrationScripts,
     sentinels: ["format", "lint", "typecheck", "private-content"],

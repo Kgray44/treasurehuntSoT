@@ -7,6 +7,7 @@ import test from "node:test";
 import { splitMigrationStatements } from "../../scripts/sounding-line/sqlite-bootstrap.mjs";
 import {
   assertBinding,
+  browserProvisioningRequired,
   buildPlan,
   classifyChanges,
   packageAuthorityChanges,
@@ -264,6 +265,65 @@ test("ordinary selection finds Harborlight browser proof structurally", () => {
   assert.equal(selection.widened, false);
 });
 
+test("trusted browser provisioning follows the unchanged ordinary selection and fails closed", async () => {
+  const zeroBrowserSelection = selectAffectedTests({
+    changedPaths: ["Development_Docs/Features/guide.md"],
+    unitTests: ["scripts/features/feature-catalog.test.ts"],
+    browserTests: ["tests/e2e/harborlight-phase3.spec.ts"],
+  });
+  const selectionBeforeDecision = structuredClone(zeroBrowserSelection);
+  assert.equal(browserProvisioningRequired(zeroBrowserSelection), false);
+  assert.deepEqual(zeroBrowserSelection, selectionBeforeDecision);
+
+  const selectionFor = (changedPaths, browserTests) =>
+    selectAffectedTests({ changedPaths, unitTests: [], browserTests });
+  const widenedBrowserSelection = selectionFor(
+    ["src/unknown/candidate.ts"],
+    ["tests/e2e/harborlight-phase3.spec.ts", "tests/e2e/access-gates.spec.ts"],
+  );
+  assert.equal(widenedBrowserSelection.widened, true);
+  for (const [name, selection] of [
+    [
+      "direct browser proof",
+      selectionFor(["tests/e2e/harborlight-phase3.spec.ts"], ["tests/e2e/harborlight-phase3.spec.ts"]),
+    ],
+    ["conservatively widened browser proof", widenedBrowserSelection],
+    [
+      "Tideglass dedicated harness",
+      selectionFor(["tests/e2e/tideglass-phase3.spec.ts"], ["tests/e2e/tideglass-phase3.spec.ts"]),
+    ],
+    [
+      "Admiralty Phase 2 dedicated harness",
+      selectionFor(["tests/e2e/admiralty-phase2.spec.ts"], ["tests/e2e/admiralty-phase2.spec.ts"]),
+    ],
+    [
+      "mixed browser proof",
+      selectionFor(
+        ["tests/e2e/admiralty-phase2.spec.ts", "tests/e2e/harborlight-phase3.spec.ts"],
+        ["tests/e2e/admiralty-phase2.spec.ts", "tests/e2e/harborlight-phase3.spec.ts"],
+      ),
+    ],
+  ]) {
+    assert.equal(browserProvisioningRequired(selection), true, name);
+  }
+  assert.throws(() => browserProvisioningRequired({}), /SOUNDING_LINE_BROWSER_PROVISIONING_INDETERMINATE/u);
+  assert.throws(() => browserProvisioningRequired(null), /SOUNDING_LINE_BROWSER_PROVISIONING_INDETERMINATE/u);
+
+  await withCandidate({ "Development_Docs/Features/guide.md": "# Guide\n" }, async (fixture) => {
+    const plan = await buildPlan({ ...fixture, mode: "ordinary" });
+    assert.deepEqual(plan.selected.browserTests, []);
+    assert.equal(plan.browserRequired, false);
+  });
+  await withCandidate(
+    { "tests/e2e/harborlight-phase3.spec.ts": "test('browser proof', () => {});\n" },
+    async (fixture) => {
+      const plan = await buildPlan({ ...fixture, mode: "ordinary" });
+      assert.deepEqual(plan.selected.browserTests, ["tests/e2e/harborlight-phase3.spec.ts"]);
+      assert.equal(plan.browserRequired, true);
+    },
+  );
+});
+
 test("direct browser proof prevents unrelated browser suites from widening the candidate", () => {
   const selection = selectAffectedTests({
     changedPaths: ["src/app/community/voyage-logs/[slug]/page.tsx", "tests/e2e/harborlight-phase3.spec.ts"],
@@ -436,7 +496,10 @@ test("Admiralty Phase 2 browser proof uses its dedicated isolated harness", () =
     migrationScripts: [],
     buildRequired: true,
   });
-  assert.deepEqual(browserCommands.filter(([, argumentsList]) => argumentsList.includes("playwright")), []);
+  assert.deepEqual(
+    browserCommands.filter(([, argumentsList]) => argumentsList.includes("playwright")),
+    [],
+  );
   assert.deepEqual(browserCommands.at(-1), [process.execPath, ["scripts/admiralty/run-phase2-journeys.mjs"]]);
   assert.deepEqual(
     verificationEnvironment(
@@ -504,7 +567,8 @@ test("Admiralty Phase 2 dedicated harness failures fail verification normally", 
     () =>
       runVerificationCommands(".", plan, (_root, command, argumentsList) => {
         calls.push([command, argumentsList]);
-        if (argumentsList[0] === "scripts/admiralty/run-phase2-journeys.mjs") throw new Error("ADMIRALTY_HARNESS_FAILED");
+        if (argumentsList[0] === "scripts/admiralty/run-phase2-journeys.mjs")
+          throw new Error("ADMIRALTY_HARNESS_FAILED");
       }),
     /ADMIRALTY_HARNESS_FAILED/u,
   );
@@ -590,7 +654,12 @@ test("trusted PR routing produces one strict decision for ordinary and control-p
   assert.match(ordinaryWorkflow, /root: "\.\.\/candidate"/u);
   assert.match(ordinaryWorkflow, /mode: "ordinary"/u);
   assert.match(ordinaryWorkflow, /kind=ordinary/u);
+  assert.match(ordinaryWorkflow, /browser_required=\$\{plan\.browserRequired\}/u);
   assert.match(ordinaryWorkflow, /kind=control-plane/u);
+  assert.match(
+    ordinaryWorkflow,
+    /steps\.route\.outputs\.kind == 'ordinary' && steps\.route\.outputs\.browser_required == 'true'/u,
+  );
   assert.match(ordinaryWorkflow, /steps\.route\.outputs\.kind == 'ordinary'/u);
   assert.match(ordinaryWorkflow, /steps\.route\.outputs\.kind == 'control-plane'/u);
   assert.match(ordinaryWorkflow, /SOUNDING_LINE_CONTROL_PLANE_CHANGE_REQUIRES_RELEASE_MODE/u);
