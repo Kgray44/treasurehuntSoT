@@ -103,8 +103,8 @@ export const routeShellDefinitions: readonly RouteShellDefinition[] = [
     workspace: "account",
     shellMode: "WORKSPACE_STANDARD",
     owner: "wayfarer",
-    reason: "Ordinary Personal Harbor surface.",
-    activeFamily: "account-passport",
+    reason: "Independent Chronicle Passport destination with Personal Harbor gateway continuity.",
+    activeFamily: "global-chronicle-passport",
   },
   {
     id: "passport-family",
@@ -112,9 +112,9 @@ export const routeShellDefinitions: readonly RouteShellDefinition[] = [
     workspace: "account",
     shellMode: "WORKSPACE_STANDARD",
     owner: "wayfarer",
-    reason: "Chronicle Passport record family within Personal Harbor.",
+    reason: "Independent Chronicle Passport record family with Personal Harbor gateway continuity.",
     exitTarget: "/passport",
-    activeFamily: "account-passport",
+    activeFamily: "global-chronicle-passport",
   },
   {
     id: "profile",

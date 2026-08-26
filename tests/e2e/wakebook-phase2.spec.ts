@@ -2,6 +2,8 @@ import { createHash, randomUUID } from "node:crypto";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type BrowserContext } from "@playwright/test";
 import { db } from "../../src/lib/db";
+import { authenticateAccount, registerAccount } from "../../src/wayfarer/accounts";
+import { WAYFARER_COOKIE } from "../../src/wayfarer/http";
 
 type Actor = { context: BrowserContext; profileId: string; accountId: string; csrfToken: string };
 
@@ -11,18 +13,14 @@ const password = "Compass-Quartz-Lantern-9";
 async function register(browser: import("@playwright/test").Browser, label: string): Promise<Actor> {
   const context = await browser.newContext();
   const email = `wakebook-phase2-${label.toLowerCase().replaceAll(/[^a-z0-9]+/gu, "-")}-${suffix}@example.test`;
-  const response = await context.request.post("/api/auth/register", {
-    data: {
-      displayName: `Wakebook ${label} ${suffix.slice(0, 6)}`,
-      email,
-      password,
-      confirmPassword: password,
-    },
+  const registration = await registerAccount({
+    displayName: `Wakebook ${label} ${suffix.slice(0, 6)}`,
+    email,
+    password,
+    confirmPassword: password,
   });
-  expect(response.status(), await response.text()).toBe(201);
-  const body = (await response.json()) as { player: { id: string } };
   const profile = await db.playerProfile.findUniqueOrThrow({
-    where: { id: body.player.id },
+    where: { id: registration.account.profile.id },
     select: { accountId: true },
   });
   if (!profile.accountId) throw new Error("The synthetic Wakebook actor was not linked to an account.");
@@ -39,10 +37,23 @@ async function register(browser: import("@playwright/test").Browser, label: stri
       data: { verificationState: "VERIFIED", verifiedAt },
     }),
   ]);
-  const signIn = await context.request.post("/api/auth/sign-in", { data: { login: email, password } });
-  expect(signIn.status(), await signIn.text()).toBe(200);
-  const session = (await signIn.json()) as { csrfToken: string };
-  return { context, profileId: body.player.id, accountId: profile.accountId, csrfToken: session.csrfToken };
+  const session = await authenticateAccount(email, password, `Wakebook ${label} browser`);
+  if (!session) throw new Error("The synthetic Wakebook actor could not start an ordinary account session.");
+  await context.addCookies([
+    {
+      name: WAYFARER_COOKIE,
+      value: session.session.token,
+      url: process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3100",
+      httpOnly: true,
+      sameSite: "Lax",
+    },
+  ]);
+  return {
+    context,
+    profileId: registration.account.profile.id,
+    accountId: profile.accountId,
+    csrfToken: session.session.csrfToken,
+  };
 }
 
 async function seedDetail(ownerId: string, crewId: string) {
@@ -327,8 +338,9 @@ test("Wakebook Phase 2 keeps rich Voyage Detail private, truthful, editable, and
   const { recordId } = await seedDetail(owner.profileId, crew.profileId);
   try {
     const foreignResponse = await foreign.context.request.get(`/api/passport/voyages/${recordId}`);
-    expect(foreignResponse.status()).toBe(404);
-    expect(await foreignResponse.text()).not.toContain("The Remembered Beacon");
+    const foreignBody = await foreignResponse.text();
+    expect(foreignResponse.status(), foreignBody).toBe(404);
+    expect(foreignBody).not.toContain("The Remembered Beacon");
     const ownerDetail = await owner.context.request.get(`/api/passport/voyages/${recordId}`);
     expect(ownerDetail.ok(), await ownerDetail.text()).toBeTruthy();
     const ownerDetailText = await ownerDetail.text();
@@ -338,7 +350,47 @@ test("Wakebook Phase 2 keeps rich Voyage Detail private, truthful, editable, and
     const page = await owner.context.newPage();
     await page.goto("/passport");
     await expect(page.locator("h1", { hasText: "Chronicle Passport" })).toBeVisible();
-    await page.getByRole("link", { name: "History", exact: true }).click();
+    await page.getByRole("button", { name: "Open navigation" }).click();
+    await expect(page.getByRole("link", { name: "Chronicle Passport", exact: true }).first()).toBeVisible();
+    await page.getByRole("link", { name: "Chronicle Passport", exact: true }).first().click();
+    await expect(page.locator("h1", { hasText: "Chronicle Passport" })).toBeVisible();
+    const passportNavigation = page.getByRole("navigation", { name: "Chronicle Passport sections" });
+    await expect(passportNavigation).toBeVisible();
+    await expect(passportNavigation.getByRole("link", { name: "Passport", exact: true })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+    await expect(passportNavigation.getByRole("link", { name: "Your Voyages", exact: true })).toHaveAttribute(
+      "href",
+      "/passport/history",
+    );
+    await expect(page.getByRole("link", { name: "Personal Harbor", exact: true })).toHaveAttribute("href", "/account");
+    expect(
+      (await new AxeBuilder({ page }).analyze()).violations.filter((violation) =>
+        ["serious", "critical"].includes(violation.impact ?? ""),
+      ),
+    ).toEqual([]);
+    await page.setViewportSize({ width: 430, height: 932 });
+    await expect(passportNavigation).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    const reducedMotionDuration = await passportNavigation
+      .locator("a")
+      .first()
+      .evaluate((link) => getComputedStyle(link).transitionDuration);
+    expect(reducedMotionDuration).toMatch(/(?:0\.01ms|1e-05s)/u);
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.getByRole("link", { name: "Personal Harbor", exact: true }).click();
+    await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
+    await page.getByRole("button", { name: /Wakebook Owner/u }).click();
+    const accountNavigation = page.getByRole("dialog", { name: "Account navigation" });
+    await expect(accountNavigation.getByRole("link", { name: "Chronicle Passport", exact: true })).toHaveAttribute(
+      "href",
+      "/passport",
+    );
+    await accountNavigation.getByRole("link", { name: "Chronicle Passport", exact: true }).click();
+    await expect(page.locator("h1", { hasText: "Chronicle Passport" })).toBeVisible();
+    await passportNavigation.getByRole("link", { name: "Your Voyages", exact: true }).click();
     await expect(page.locator("h1", { hasText: "Your Voyages" })).toBeVisible();
     await page.getByRole("link", { name: "Open The Remembered Beacon Voyage", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Voyage Detail", exact: true })).toBeVisible();

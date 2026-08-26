@@ -1,10 +1,10 @@
-import { AuthenticatedHarborPage } from "@/components/homeport/AuthenticatedHarborPage";
+import { AuthenticatedPassportPage } from "@/components/wakebook/AuthenticatedPassportPage";
 import { WakebookVoyageDetail } from "@/components/wakebook/WakebookVoyageDetail";
 export const dynamic = "force-dynamic";
 export default async function PassportHistoryDetailPage({ params }: { params: Promise<{ recordId: string }> }) {
   const { recordId } = await params;
   return (
-    <AuthenticatedHarborPage
+    <AuthenticatedPassportPage
       returnTo={`/passport/history/${recordId}`}
       activeSection="passport-history"
       eyebrow="Chronicle Passport · Journey Archive"
@@ -13,6 +13,6 @@ export default async function PassportHistoryDetailPage({ params }: { params: Pr
       capability="player"
     >
       <WakebookVoyageDetail recordId={recordId} />
-    </AuthenticatedHarborPage>
+    </AuthenticatedPassportPage>
   );
 }

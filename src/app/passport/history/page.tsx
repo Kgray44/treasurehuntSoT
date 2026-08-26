@@ -1,9 +1,9 @@
-import { AuthenticatedHarborPage } from "@/components/homeport/AuthenticatedHarborPage";
 import { WakebookArchive } from "@/components/wakebook/WakebookArchive";
+import { AuthenticatedPassportPage } from "@/components/wakebook/AuthenticatedPassportPage";
 export const dynamic = "force-dynamic";
 export default function PassportHistoryPage() {
   return (
-    <AuthenticatedHarborPage
+    <AuthenticatedPassportPage
       returnTo="/passport/history"
       activeSection="passport-history"
       eyebrow="Chronicle Passport"
@@ -12,6 +12,6 @@ export default function PassportHistoryPage() {
       capability="player"
     >
       <WakebookArchive />
-    </AuthenticatedHarborPage>
+    </AuthenticatedPassportPage>
   );
 }
