@@ -310,6 +310,20 @@ export function CaptainLibrary() {
     if (!voyageName && tale) setVoyageName(`${resolvedPlayers[0]?.displayName || "New Crew"} · ${tale.title}`);
   }
 
+  function openNewVoyageWizard(restoreTarget: HTMLElement | null, initialStep: number, taleIdToChoose?: string) {
+    setWizardRestoreTarget(restoreTarget);
+    setCaptainParticipationMode("CAPTAIN_ONLY");
+    setPlayers([]);
+    setExpiresInHours(168);
+    setAccountRequired(false);
+    setCreated([]);
+    setCreatedVoyageId(null);
+    if (taleIdToChoose) chooseTale(taleIdToChoose);
+    setWizard(true);
+    setWizardDirection(1);
+    setStep(initialStep);
+  }
+
   useEffect(() => {
     if (!wizard || !taleId || !versionId) return;
     const controller = new AbortController();
@@ -599,18 +613,7 @@ export function CaptainLibrary() {
           </div>
           <div>
             {library.publishedTales.length ? (
-              <button
-                className="brass-button"
-                onClick={(event) => {
-                  setWizardRestoreTarget(event.currentTarget);
-                  setCaptainParticipationMode("CAPTAIN_ONLY");
-                  setCreated([]);
-                  setCreatedVoyageId(null);
-                  setWizard(true);
-                  setWizardDirection(1);
-                  setStep(0);
-                }}
-              >
+              <button className="brass-button" onClick={(event) => openNewVoyageWizard(event.currentTarget, 0)}>
                 Create a Voyage
               </button>
             ) : (
@@ -680,15 +683,7 @@ export function CaptainLibrary() {
                       library.publishedTales.length
                         ? {
                             label: "Create a Voyage",
-                            onClick: () => {
-                              setWizardRestoreTarget(null);
-                              setCaptainParticipationMode("CAPTAIN_ONLY");
-                              setCreated([]);
-                              setCreatedVoyageId(null);
-                              setWizard(true);
-                              setWizardDirection(1);
-                              setStep(0);
-                            },
+                            onClick: () => openNewVoyageWizard(null, 0),
                           }
                         : { label: "Open Creator Studio", href: "/studio/library" }
                     }
@@ -740,15 +735,7 @@ export function CaptainLibrary() {
                       library.publishedTales.length
                         ? {
                             label: "Create a Voyage",
-                            onClick: () => {
-                              setWizardRestoreTarget(null);
-                              setCaptainParticipationMode("CAPTAIN_ONLY");
-                              setCreated([]);
-                              setCreatedVoyageId(null);
-                              setWizard(true);
-                              setWizardDirection(1);
-                              setStep(0);
-                            },
+                            onClick: () => openNewVoyageWizard(null, 0),
                           }
                         : { label: "Open Creator Studio", href: "/studio/library" }
                     }
@@ -839,18 +826,7 @@ export function CaptainLibrary() {
                           </li>
                         ))}
                       </ul>
-                      <button
-                        onClick={(event) => {
-                          setWizardRestoreTarget(event.currentTarget);
-                          setCaptainParticipationMode("CAPTAIN_ONLY");
-                          setCreated([]);
-                          setCreatedVoyageId(null);
-                          chooseTale(tale.id);
-                          setWizard(true);
-                          setWizardDirection(1);
-                          setStep(1);
-                        }}
-                      >
+                      <button onClick={(event) => openNewVoyageWizard(event.currentTarget, 1, tale.id)}>
                         Invite Crew
                       </button>
                       <Link href={`/captain/tales/${tale.id}`}>Open Chronicle</Link>

@@ -105,6 +105,35 @@ describe("Project Helm Phase 1 Captain participation UI", () => {
     expect(await within(dialog).findByRole("radio", { name: /Captain only/ })).toBeChecked();
   });
 
+  it("clears drafted Crew before opening another new Voyage", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, library())));
+    render(<CaptainLibrary />);
+    await screen.findByRole("heading", { name: "Captain's Console" });
+
+    fireEvent.click(screen.getByRole("button", { name: "Create a Voyage" }));
+    let dialog = screen.getByRole("dialog");
+    fireEvent.click(within(dialog).getByRole("button", { name: /The Moonlit Key/ }));
+    fireEvent.click(within(dialog).getByRole("button", { name: "Continue to Configure Voyage" }));
+    await within(dialog).findByRole("heading", { name: "Configure Voyage" });
+    fireEvent.change(within(dialog).getByLabelText("Voyage name"), { target: { value: "First draft" } });
+    fireEvent.click(within(dialog).getByRole("button", { name: "Continue to Add Crew" }));
+    fireEvent.click(await within(dialog).findByRole("button", { name: "Add another Crew member" }));
+    fireEvent.change(within(dialog).getByLabelText("Crew member name"), { target: { value: "Stale Crew" } });
+    fireEvent.click(within(dialog).getByRole("button", { name: "Close Voyage wizard" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+
+    fireEvent.click(screen.getByRole("button", { name: "Create a Voyage" }));
+    dialog = screen.getByRole("dialog");
+    fireEvent.click(await within(dialog).findByRole("button", { name: /The Moonlit Key/ }));
+    fireEvent.click(within(dialog).getByRole("button", { name: "Continue to Configure Voyage" }));
+    await within(dialog).findByRole("heading", { name: "Configure Voyage" });
+    fireEvent.change(within(dialog).getByLabelText("Voyage name"), { target: { value: "Fresh draft" } });
+    fireEvent.click(within(dialog).getByRole("button", { name: "Continue to Add Crew" }));
+
+    expect(within(dialog).queryByLabelText("Crew member name")).not.toBeInTheDocument();
+    expect(within(dialog).getByRole("button", { name: "Continue to Invitation access" })).toBeEnabled();
+  });
+
   it("shows an ordinary Player View link only when the Captain has Player membership", async () => {
     const captainOnlyVoyage = { ...readyVoyage, participation: captainOnlyParticipation };
     vi.stubGlobal(

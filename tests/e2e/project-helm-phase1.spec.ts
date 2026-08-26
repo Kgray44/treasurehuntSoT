@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type APIRequestContext, type Browser, type BrowserContext, type Page } from "@playwright/test";
 import { hash } from "bcryptjs";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { resolveArtifactGrantReceipt, type EventMembership } from "../../src/chronicle/artifact-grant";
 import { revokeCaptainAuthority } from "../../src/helm/captain-participation";
 import { db } from "../../src/lib/db";
@@ -57,6 +57,90 @@ async function prewarmHelmRoutes(request: APIRequestContext) {
   }
 }
 
+async function seedPlayableChronicle() {
+  const taleId = `helm-browser-tale-${suffix}`;
+  const chapterId = `${taleId}-chapter`;
+  const blockId = `${chapterId}-block`;
+  const publishedAt = new Date("2026-08-26T00:00:00.000Z");
+  const snapshot = {
+    schemaVersion: 1,
+    tale: {
+      id: taleId,
+      slug: taleId,
+      title: "Helm browser Chronicle",
+      subtitle: null,
+      shortDescription: null,
+      longDescription: null,
+      coverAssetId: null,
+      theme: "CARTOGRAPHERS_TABLE",
+      visibility: "PUBLIC",
+      playerCountMin: 1,
+      playerCountMax: 4,
+      estimatedDuration: null,
+      contentWarnings: null,
+    },
+    chapters: [
+      {
+        id: chapterId,
+        title: "Ready to sail",
+        subtitle: null,
+        description: null,
+        coverAssetId: null,
+        estimatedDuration: null,
+        isOptional: false,
+        metadata: {},
+        orderIndex: 0,
+        entryBlockId: blockId,
+        completionBlockId: blockId,
+        blocks: [
+          {
+            id: blockId,
+            chapterId,
+            blockType: "NARRATIVE",
+            title: "Cast off",
+            configuration: {},
+            presentation: {},
+            completion: {},
+            orderIndex: 0,
+            isEnabled: true,
+            nextBlockId: null,
+            connections: [],
+          },
+        ],
+      },
+    ],
+    assets: [],
+    locations: [],
+    artifacts: [],
+    publishedAt: publishedAt.toISOString(),
+  };
+  const contentSnapshot = JSON.stringify(snapshot);
+  const chronicle = await db.chronicle.create({
+    data: {
+      slug: taleId,
+      title: snapshot.tale.title,
+      status: "PUBLISHED",
+      visibility: "PUBLIC",
+      creatorId: playerProfileId,
+      creatorAccountId: accountId,
+    },
+  });
+  const version = await db.publishedTaleVersion.create({
+    data: {
+      taleId: chronicle.id,
+      versionNumber: 1,
+      versionLabel: "Helm browser v1",
+      publishedBy: accountId,
+      publishedByAccountId: accountId,
+      checksum: createHash("sha256").update(contentSnapshot).digest("hex"),
+      contentSnapshot,
+      publishedAt,
+      isCurrent: true,
+    },
+  });
+  await db.chronicle.update({ where: { id: chronicle.id }, data: { latestPublishedVersionId: version.id } });
+}
+
 test.beforeAll(async ({ request }) => {
   await prewarmHelmRoutes(request);
   const now = new Date();
@@ -88,6 +172,7 @@ test.beforeAll(async ({ request }) => {
   });
   accountId = account.id;
   playerProfileId = account.profile!.id;
+  await seedPlayableChronicle();
   expect(await db.publishedTaleVersion.count()).toBeGreaterThan(0);
 });
 
@@ -165,7 +250,8 @@ async function createVoyage(
   await wizard.getByRole("button", { name: "Continue to Add Crew" }).click();
   const crewNames = Array.isArray(input.crewName) ? input.crewName : [input.crewName];
   for (const [index, crewName] of crewNames.entries()) {
-    if (index > 0) await wizard.getByRole("button", { name: "Add another Crew member" }).click();
+    if ((await wizard.getByLabel("Crew member name").count()) <= index)
+      await wizard.getByRole("button", { name: "Add another Crew member" }).click();
     await wizard.getByLabel("Crew member name").nth(index).fill(crewName);
   }
   await wizard.getByRole("button", { name: "Continue to Invitation access" }).click();
