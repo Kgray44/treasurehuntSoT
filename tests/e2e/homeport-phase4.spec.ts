@@ -138,8 +138,10 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
     );
 
     const search = page.getByRole("searchbox", { name: "Search public Community Harbor" });
+    const submitSearch = () =>
+      page.getByRole("search").getByRole("button", { name: "Search Community Harbor", exact: true });
     await search.fill("Lantern Coast");
-    await page.getByRole("button", { name: "Search", exact: true }).click();
+    await submitSearch().click();
     await expect(page).toHaveURL(/\/community\?q=Lantern\+Coast$/u);
     const results = page.getByLabel("Public Community Harbor results");
     await expect(results.getByRole("link", { name: "The Lantern Coast" })).toBeVisible();
@@ -160,7 +162,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
     await results.getByRole("link", { name: "The Lantern Coast" }).click();
     await expect(page).toHaveURL(/\/community\/lantern-coast-chronicle$/u);
     await expect(page.getByRole("heading", { name: "The Lantern Coast", level: 1 })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Preview Chronicle" })).toHaveAttribute(
+    await expect(page.getByRole("link", { name: "Start Chronicle" })).toHaveAttribute(
       "href",
       "/play/hp4-lantern-coast",
     );
@@ -181,7 +183,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
 
     await search.fill("unfindable synthetic horizon");
     await expect(search).toHaveValue("unfindable synthetic horizon");
-    await page.getByRole("button", { name: "Search", exact: true }).click();
+    await submitSearch().click();
     await expect(page).toHaveURL(/q=unfindable\+synthetic\+horizon/u);
     await expect(page.getByRole("heading", { name: "No public charts match these criteria" })).toBeVisible();
     await capture(page, "HP-P4-EV-W-no-results", {
@@ -219,7 +221,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       });
     });
     await page.getByRole("searchbox", { name: "Search public Community Harbor" }).fill("dependency test");
-    await page.getByRole("button", { name: "Search", exact: true }).click();
+    await submitSearch().click();
     await expect(page.getByRole("alert").filter({ hasText: "Synthetic discovery dependency" })).toBeVisible();
     await capture(page, "HP-P4-EV-AD-dependency-unavailable", {
       screen: "Dependency unavailable",
