@@ -46,12 +46,18 @@ async function identity({ key, username, displayName, accountStatus = "ACTIVE", 
   });
   const account = await db.userAccount.upsert({
     where: { id: `hp4-account-${key}` },
-    update: { status: accountStatus, legacyGameMasterId: gm.id, claimedAt: createdAt },
+    update: {
+      status: accountStatus,
+      legacyGameMasterId: gm.id,
+      claimedAt: createdAt,
+      ordinaryWorkspaceEntryAt: createdAt,
+    },
     create: {
       id: `hp4-account-${key}`,
       status: accountStatus,
       legacyGameMasterId: gm.id,
       claimedAt: createdAt,
+      ordinaryWorkspaceEntryAt: createdAt,
       createdAt,
     },
   });
