@@ -425,10 +425,11 @@ test("ordinary browser proof uses the installed Chromium project", () => {
     migrationScripts: [],
     buildRequired: false,
   });
-  assert.deepEqual(browserCommands.at(-2), [
+  assert.deepEqual(browserCommands.at(-3), [
     process.execPath,
     ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
   ]);
+  assert.deepEqual(browserCommands.at(-2), ["npx", ["--no-install", "tsx", "prisma/seed.ts"]]);
   const browserCommand = browserCommands.at(-1);
   assert.deepEqual(browserCommand, [
     "npx",
@@ -458,7 +459,7 @@ test("Tideglass browser proof uses its dedicated isolated harness", () => {
         ["scripts/tideglass/run-phase3-journeys.mjs", "scripts/sounding-line/sqlite-bootstrap.mjs"].includes(
           argumentsList[0],
         )) ||
-      (command === "npx" && argumentsList.includes("playwright")),
+      (command === "npx" && (argumentsList.includes("playwright") || argumentsList.includes("prisma/seed.ts"))),
   );
   assert.deepEqual(browserHarnessCommands, [
     [process.execPath, ["scripts/tideglass/run-phase3-journeys.mjs"]],
@@ -466,6 +467,7 @@ test("Tideglass browser proof uses its dedicated isolated harness", () => {
       process.execPath,
       ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
     ],
+    ["npx", ["--no-install", "tsx", "prisma/seed.ts"]],
     ["npx", ["--no-install", "playwright", "test", "tests/e2e/harborlight-phase3.spec.ts", "--project", "chromium"]],
   ]);
   assert.deepEqual(
@@ -538,7 +540,7 @@ test("Admiralty Phase 2 leaves mixed generic browser proof selected exactly once
         ["scripts/admiralty/run-phase2-journeys.mjs", "scripts/sounding-line/sqlite-bootstrap.mjs"].includes(
           argumentsList[0],
         )) ||
-      (command === "npx" && argumentsList.includes("playwright")),
+      (command === "npx" && (argumentsList.includes("playwright") || argumentsList.includes("prisma/seed.ts"))),
   );
   assert.deepEqual(browserHarnessCommands, [
     [process.execPath, ["scripts/admiralty/run-phase2-journeys.mjs"]],
@@ -546,6 +548,7 @@ test("Admiralty Phase 2 leaves mixed generic browser proof selected exactly once
       process.execPath,
       ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
     ],
+    ["npx", ["--no-install", "tsx", "prisma/seed.ts"]],
     ["npx", ["--no-install", "playwright", "test", "tests/e2e/admiralty-phase3.spec.ts", "--project", "chromium"]],
   ]);
 });
@@ -684,6 +687,9 @@ test("database verification is candidate-isolated when the environment has no UR
   const databaseUrl = soundingLineDatabaseUrl("a".repeat(40));
   assert.equal(databaseUrl, "file:./.sounding-line-aaaaaaaaaaaa.sqlite");
   assert.deepEqual(verificationEnvironment({ databaseUrl }, "npx", ["--no-install", "prisma", "validate"], {}), {
+    DATABASE_URL: databaseUrl,
+  });
+  assert.deepEqual(verificationEnvironment({ databaseUrl }, "npx", ["--no-install", "tsx", "prisma/seed.ts"], {}), {
     DATABASE_URL: databaseUrl,
   });
 });

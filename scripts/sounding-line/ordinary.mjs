@@ -267,7 +267,12 @@ export function verificationEnvironment(plan, command, argumentsList, environmen
   }
   if (command === process.execPath && argumentsList[0]?.startsWith("scripts/homeport/"))
     return homeportEnvironment(plan);
-  if (command === "npx" && (argumentsList.includes("prisma") || argumentsList.includes("playwright")))
+  if (
+    command === "npx" &&
+    (argumentsList.includes("prisma") ||
+      argumentsList.includes("playwright") ||
+      (argumentsList.includes("tsx") && argumentsList.includes("prisma/seed.ts")))
+  )
     return { DATABASE_URL: environment.DATABASE_URL ?? plan.databaseUrl };
   return {};
 }
@@ -397,7 +402,8 @@ export function verificationCommands(plan) {
       const [prepare, journeys] = homeportPhase7BrowserTests.get(browserTest);
       commands.push([process.execPath, [prepare]], [process.execPath, [journeys]]);
     }
-    if (genericBrowserTests.length)
+    if (genericBrowserTests.length) {
+      commands.push(["npx", ["--no-install", "tsx", "prisma/seed.ts"]]);
       commands.push([
         "npx",
         [
@@ -408,6 +414,7 @@ export function verificationCommands(plan) {
           ...(plan.mode === "ordinary" ? ["--project", "chromium"] : []),
         ],
       ]);
+    }
   }
   return commands;
 }

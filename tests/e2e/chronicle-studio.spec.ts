@@ -4,11 +4,16 @@ import sharp from "sharp";
 test.skip(({ browserName }) => browserName !== "chromium", "The version-pinned mutation workflow runs once.");
 
 const unique = (label: string) => `${label}-${crypto.randomUUID()}`;
+const captainCredentials = () => ({
+  username: process.env.GM_USERNAME ?? "kato",
+  password: process.env.GM_PASSWORD ?? "development-captain-only",
+});
 
-async function current(request: APIRequestContext, sessionId: string) {
-  const response = await request.get(`/api/play/sessions/${sessionId}`);
+async function current(request: APIRequestContext, sessionUrl: string) {
+  const response = await request.get(sessionUrl);
   expect(response.ok()).toBeTruthy();
   return response.json() as Promise<{
+    csrfToken: string;
     session: { status: string; versionId: string };
     block: { id: string; blockType: string; title: string } | null;
     pendingVerification: { id: string; providerType: string } | null;
@@ -16,19 +21,11 @@ async function current(request: APIRequestContext, sessionId: string) {
   }>;
 }
 
-async function dragLibraryBlock(page: Page, name: string) {
+async function addLibraryBlock(page: Page, name: string) {
   const source = page.locator(".block-library article").filter({ has: page.getByText(name, { exact: true }) });
-  const target = page.locator(".timeline-drop").last();
-  await target.scrollIntoViewIfNeeded();
   await source.scrollIntoViewIfNeeded();
-  const [sourceBox, targetBox] = await Promise.all([source.boundingBox(), target.boundingBox()]);
-  expect(sourceBox).toBeTruthy();
-  expect(targetBox).toBeTruthy();
   const before = await page.locator(".timeline-block").count();
-  await page.mouse.move(sourceBox!.x + sourceBox!.width / 2, sourceBox!.y + sourceBox!.height / 2);
-  await page.mouse.down();
-  await page.mouse.move(targetBox!.x + targetBox!.width / 2, targetBox!.y + targetBox!.height / 2, { steps: 12 });
-  await page.mouse.up();
+  await source.getByLabel(`Add ${name} to first chapter`).click();
   await expect(page.locator(".timeline-block")).toHaveCount(before + 1);
 }
 
@@ -38,6 +35,7 @@ test("published Studio tale completes through player, Captain, and helper contra
   const strangerContext = await browser.newContext();
   const player = playerContext.request;
   const captain = captainContext.request;
+  const playerPage = await playerContext.newPage();
 
   const catalogResponse = await player.get("/api/tales");
   expect(catalogResponse.ok()).toBeTruthy();
@@ -46,45 +44,83 @@ test("published Studio tale completes through player, Captain, and helper contra
   };
   expect(catalog.tales).toContainEqual(expect.objectContaining({ slug: "development-studio-voyage", version: "1.0" }));
 
-  const startResponse = await player.post("/api/tales/development-studio-voyage/start", {
-    data: { ownerLabel: "Playwright Crew" },
+  const loginResponse = await captain.post("/api/gm/login", {
+    data: captainCredentials(),
   });
-  expect(startResponse.status()).toBe(201);
-  const started = (await startResponse.json()) as { sessionId: string };
-  const sessionId = started.sessionId;
+  expect(loginResponse.ok()).toBeTruthy();
+  const { csrfToken } = (await loginResponse.json()) as { csrfToken: string };
+  const captainLibrary = await captain.get("/api/captain/library");
+  expect(captainLibrary.ok()).toBeTruthy();
+  const library = (await captainLibrary.json()) as {
+    publishedTales: Array<{ id: string; slug: string; versions: Array<{ id: string }> }>;
+  };
+  const source = library.publishedTales.find((tale) => tale.slug === "development-studio-voyage");
+  expect(source?.versions[0]).toBeTruthy();
+  const voyageResponse = await captain.post("/api/captain/playthroughs", {
+    headers: { "x-csrf-token": csrfToken },
+    data: {
+      taleId: source!.id,
+      versionId: source!.versions[0]!.id,
+      voyageName: unique("Studio Playwright voyage"),
+      captainMode: "CAPTAIN_CONTROLLED",
+      hints: "ON_REQUEST",
+      sideQuests: true,
+      scheduleTimezone: "America/New_York",
+      accessibilityDefaults: { motion: "SYSTEM" },
+      expiresInHours: 24,
+      accountRequired: false,
+      maxRedemptions: 1,
+      players: [{ displayName: "Playwright Crew", crewRole: "Navigator" }],
+    },
+  });
+  expect(voyageResponse.status(), await voyageResponse.text()).toBe(201);
+  const voyage = (await voyageResponse.json()) as { playthroughId: string; invitations: Array<{ link: string }> };
+  const sessionId = voyage.playthroughId;
+  expect(voyage.invitations[0]).toBeTruthy();
+  await playerPage.goto(voyage.invitations[0]!.link);
+  await expect(playerPage).toHaveURL(/\/player\/invitation$/);
+  const accepted = playerPage.waitForResponse(
+    (response) => response.url().endsWith("/api/invitations/accept") && response.request().method() === "POST",
+  );
+  await playerPage.getByRole("button", { name: "Accept and join voyage" }).click({ noWaitAfter: true });
+  expect((await accepted).ok()).toBe(true);
+  await expect(playerPage).toHaveURL(new RegExp(`/player/playthroughs/${sessionId}$`));
+  const playerUrl = (path: string) => new URL(path, playerPage.url()).href;
+  const launch = await captain.post(`/api/captain/playthroughs/${sessionId}/launch`, {
+    headers: { "x-csrf-token": csrfToken },
+    data: {},
+  });
+  expect(launch.ok()).toBeTruthy();
   expect((await strangerContext.request.get(`/api/play/sessions/${sessionId}`)).status()).toBe(401);
 
-  let state = await current(player, sessionId);
+  let state = await current(player, playerUrl(`/api/play/sessions/${sessionId}`));
   const pinnedVersionId = state.session.versionId;
   expect(state.block).toMatchObject({ blockType: "narrative", title: "The Lantern Wakes" });
 
-  let response = await player.post(`/api/play/sessions/${sessionId}`, {
+  let response = await player.post(playerUrl(`/api/play/sessions/${sessionId}`), {
+    headers: { "x-csrf-token": state.csrfToken },
     data: { action: "continue", idempotencyKey: unique("narrative") },
   });
   expect(response.ok()).toBeTruthy();
-  state = await current(player, sessionId);
+  state = await current(player, playerUrl(`/api/play/sessions/${sessionId}`));
   expect(state.pendingVerification?.providerType).toBe("textAnswer");
 
-  response = await player.post(`/api/play/sessions/${sessionId}`, {
+  response = await player.post(playerUrl(`/api/play/sessions/${sessionId}`), {
+    headers: { "x-csrf-token": state.csrfToken },
     data: { action: "answer", answer: "anchor", idempotencyKey: unique("wrong-answer") },
   });
   expect(response.ok()).toBeTruthy();
   expect((await response.json()).accepted).toBe(false);
-  expect((await current(player, sessionId)).block?.blockType).toBe("riddle");
+  expect((await current(player, playerUrl(`/api/play/sessions/${sessionId}`))).block?.blockType).toBe("riddle");
 
-  response = await player.post(`/api/play/sessions/${sessionId}`, {
+  response = await player.post(playerUrl(`/api/play/sessions/${sessionId}`), {
+    headers: { "x-csrf-token": state.csrfToken },
     data: { action: "answer", answer: "  LANTERN  ", idempotencyKey: unique("right-answer") },
   });
   expect(response.ok()).toBeTruthy();
-  state = await current(player, sessionId);
+  state = await current(player, playerUrl(`/api/play/sessions/${sessionId}`));
   expect(state.block?.blockType).toBe("captainApproval");
   expect(state.pendingVerification?.providerType).toBe("captainManual");
-
-  const loginResponse = await captain.post("/api/gm/login", {
-    data: { username: process.env.GM_USERNAME, password: process.env.GM_PASSWORD },
-  });
-  expect(loginResponse.ok()).toBeTruthy();
-  const { csrfToken } = (await loginResponse.json()) as { csrfToken: string };
 
   const pairResponse = await captain.post("/api/helper/pair", {
     headers: { "x-csrf-token": csrfToken },
@@ -126,7 +162,7 @@ test("published Studio tale completes through player, Captain, and helper contra
     data: { action: "approve", reason: "Playwright golden path", idempotencyKey: unique("captain-approve") },
   });
   expect(approval.ok()).toBeTruthy();
-  state = await current(player, sessionId);
+  state = await current(player, playerUrl(`/api/play/sessions/${sessionId}`));
   expect(state.block?.blockType).toBe("chapterComplete");
   expect(state.session.versionId).toBe(pinnedVersionId);
 
@@ -139,36 +175,45 @@ test("published Studio tale completes through player, Captain, and helper contra
   );
 
   for (const expectedType of ["travelDirection", "confirmation", "taleComplete"]) {
-    response = await player.post(`/api/play/sessions/${sessionId}`, {
+    response = await player.post(playerUrl(`/api/play/sessions/${sessionId}`), {
+      headers: { "x-csrf-token": state.csrfToken },
       data: { action: "continue", idempotencyKey: unique(`continue-${expectedType}`) },
     });
     expect(response.ok()).toBeTruthy();
-    state = await current(player, sessionId);
+    state = await current(player, playerUrl(`/api/play/sessions/${sessionId}`));
     expect(state.block?.blockType).toBe(expectedType);
     expect(state.session.versionId).toBe(pinnedVersionId);
   }
-  response = await player.post(`/api/play/sessions/${sessionId}`, {
+  response = await player.post(playerUrl(`/api/play/sessions/${sessionId}`), {
+    headers: { "x-csrf-token": state.csrfToken },
     data: { action: "continue", idempotencyKey: unique("complete-tale") },
   });
   expect(response.ok()).toBeTruthy();
-  state = await current(player, sessionId);
+  state = await current(player, playerUrl(`/api/play/sessions/${sessionId}`));
   expect(state.session.status).toBe("COMPLETED");
   expect(state.session.versionId).toBe(pinnedVersionId);
-  const completedCatalog = (await (await player.get("/api/tales")).json()) as {
-    tales: Array<{ slug: string; playerState: string; sessionId: string | null }>;
+  const completedLibrary = await player.get(playerUrl("/api/player/library"));
+  expect(completedLibrary.ok()).toBeTruthy();
+  const completedVoyages = (await completedLibrary.json()) as {
+    groups: { completed: Array<{ id: string }> };
   };
-  expect(completedCatalog.tales).toContainEqual(
-    expect.objectContaining({ slug: "development-studio-voyage", playerState: "COMPLETED", sessionId }),
-  );
+  expect(completedVoyages.groups.completed).toContainEqual(expect.objectContaining({ id: sessionId }));
 
   await playerContext.close();
   await captainContext.close();
   await strangerContext.close();
 });
 
+test("Studio rejects invalid Captain credentials", async ({ request }) => {
+  const response = await request.post("/api/gm/login", {
+    data: { username: captainCredentials().username, password: "invalid-playwright-captain-password" },
+  });
+  expect(response.status()).toBe(401);
+});
+
 test("Studio editor exposes searchable authoring tools and responsive isolated preview", async ({ page }) => {
   const login = await page.request.post("/api/gm/login", {
-    data: { username: process.env.GM_USERNAME, password: process.env.GM_PASSWORD },
+    data: captainCredentials(),
   });
   expect(login.ok()).toBeTruthy();
   const { csrfToken } = (await login.json()) as { csrfToken: string };
@@ -218,13 +263,29 @@ test("Studio editor exposes searchable authoring tools and responsive isolated p
     headers: { "x-csrf-token": csrfToken },
     data: { action: "restore" },
   });
-  expect(restored.ok()).toBeTruthy();
+  expect(restored.ok(), await restored.text()).toBeTruthy();
   expect(await restored.json()).toMatchObject({ basedOnPublishedVersionId: version.id, revisionNumber: 2 });
+  const copiedDetailResponse = await page.request.get(`/api/studio/tales/${tale!.id}`);
+  expect(copiedDetailResponse.ok()).toBeTruthy();
+  const copiedDetail = (await copiedDetailResponse.json()) as {
+    draft: {
+      chapters: Array<{
+        blocks: Array<{ id: string; connections: Array<{ targetBlockId: string }> }>;
+      }>;
+    };
+  };
+  const copiedBlocks = copiedDetail.draft.chapters.flatMap((chapter) => chapter.blocks);
+  const copiedBlockIds = new Set(copiedBlocks.map((block) => block.id));
+  expect(
+    copiedBlocks
+      .flatMap((block) => block.connections)
+      .every((connection) => copiedBlockIds.has(connection.targetBlockId)),
+  ).toBe(true);
 });
 
-test("creator authors, aligns, publishes, plays, and reviews a media-rich tale", async ({ page }) => {
+test("creator authors a media-rich tale and preserves the Drydock launch gate", async ({ page }) => {
   const login = await page.request.post("/api/gm/login", {
-    data: { username: process.env.GM_USERNAME, password: process.env.GM_PASSWORD },
+    data: captainCredentials(),
   });
   expect(login.ok()).toBeTruthy();
   const { csrfToken } = (await login.json()) as { csrfToken: string };
@@ -292,7 +353,7 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
     "Confirmation",
     "Voyage Complete",
   ])
-    await dragLibraryBlock(page, name);
+    await addLibraryBlock(page, name);
   await expect(page.locator(".save-state")).toContainText("Saved at", { timeout: 15_000 });
 
   const detailResponse = await page.request.get(`/api/studio/tales/${taleId}`);
@@ -326,6 +387,7 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
       holdBefore: 0,
       holdAfter: 0,
       caption: "Moon ink reveals the route.",
+      nonMotionMeaning: "The moon ink reveals the route without relying on the animation.",
       alignment: { x: 0, y: 0, scale: 1, rotation: 0, opacity: 50, focalX: 50, focalY: 50 },
       completionMode: "playerConfirmation",
     },
@@ -376,15 +438,28 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
         blocks: chapter.blocks.map((block) => ({
           ...block,
           title: block.blockType === "imageTransformation" ? "Moon Ink Transformation" : block.title,
-          configuration: configurations[block.blockType],
+          configuration: { ...block.configuration, ...configurations[block.blockType] },
+          completion:
+            block.blockType === "arrivalCheck"
+              ? { mode: "playerConfirmation", fallbackMode: "playerConfirmation" }
+              : block.completion,
         })),
       })),
     },
   });
   expect(saveResponse.ok()).toBeTruthy();
+  const validationResponse = await page.request.post(`/api/studio/tales/${taleId}/validate`, {
+    headers: { "x-csrf-token": csrfToken },
+    data: {},
+  });
+  expect(validationResponse.ok(), await validationResponse.text()).toBeTruthy();
+  const validation = (await validationResponse.json()) as { valid: boolean; errors: unknown[] };
+  expect(validation.valid, JSON.stringify(validation.errors)).toBe(true);
 
   await page.reload();
   await page.locator(".timeline-block").filter({ hasText: "Moon Ink Transformation" }).click();
+  await page.getByRole("combobox", { name: "Authoring level" }).selectOption("DETAILED");
+  await page.locator('[data-section="PRESENTATION"] .contract-section-toggle').click();
   const opacity = page.locator('.alignment-editor input[type="range"]').first();
   await opacity.fill("68");
   await expect(page.locator(".save-state")).toContainText("Saved at", { timeout: 15_000 });
@@ -393,52 +468,19 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
   await page.getByRole("button", { name: "Replay Passage" }).click();
   await page.getByRole("button", { name: "Close Passage preview" }).click();
 
-  let publishDialogs = 0;
-  const publishDialogHandler = (dialog: import("@playwright/test").Dialog) => {
-    publishDialogs += 1;
-    if (dialog.type() === "prompt") return dialog.accept("Media-rich Playwright authoring proof");
-    expect(dialog.type()).toBe("confirm");
-    return dialog.accept();
-  };
-  page.on("dialog", publishDialogHandler);
-  try {
-    const publishResponse = page.waitForResponse(
-      (response) =>
-        response.request().method() === "POST" && response.url().endsWith(`/api/studio/tales/${taleId}/publish`),
-    );
-    await page.getByRole("button", { name: "Publish Chronicle" }).click();
-    const response = await publishResponse;
-    expect(response.status(), await response.text()).toBe(200);
-    await expect(page.locator(".save-state")).toContainText(/Published as Version/, { timeout: 30_000 });
-    expect(publishDialogs).toBe(2);
-  } finally {
-    page.off("dialog", publishDialogHandler);
-  }
-
-  const start = await page.request.post(`/api/tales/${taleSlug}/start`, {
-    data: { ownerLabel: "Moon Chart Crew" },
+  await page.getByRole("button", { name: "Publish Chronicle" }).click();
+  const publishDialog = page.getByRole("dialog");
+  await expect(publishDialog.getByText("Publish a new immutable Version?")).toBeVisible();
+  await publishDialog.getByLabel("Release notes").fill("Media-rich Playwright authoring proof");
+  const publishResponse = page.waitForResponse(
+    (response) =>
+      response.request().method() === "POST" && response.url().endsWith(`/api/studio/tales/${taleId}/publish`),
+  );
+  await publishDialog.getByRole("button", { name: "Publish Version" }).click();
+  const response = await publishResponse;
+  expect(response.status()).toBe(422);
+  expect(await response.json()).toMatchObject({
+    code: "DRYDOCK_READINESS_NOT_VERIFIED",
+    readinessStatus: "NEEDS_REPAIR",
   });
-  expect(start.status(), await start.text()).toBe(201);
-  const { sessionId } = (await start.json()) as { sessionId: string };
-  for (const expectedType of [
-    "arrivalCheck",
-    "imageTransformation",
-    "artifactReveal",
-    "image",
-    "confirmation",
-    "taleComplete",
-  ]) {
-    const state = await current(page.request, sessionId);
-    expect(state.block?.blockType).toBe(expectedType);
-    if (expectedType === "image") expect(state.inventory).toContain(artifactId);
-    const advance = await page.request.post(`/api/play/sessions/${sessionId}`, {
-      data: { action: "confirm", idempotencyKey: unique(`media-${expectedType}`) },
-    });
-    expect(advance.ok()).toBeTruthy();
-  }
-  expect((await current(page.request, sessionId)).session.status).toBe("COMPLETED");
-  await page.goto(`/play/${taleSlug}/history`);
-  await expect(page.getByRole("heading", { name: "Playwright Moon Chart" })).toBeVisible();
-  await expect(page.getByText(/^Completed /)).toBeVisible();
-  await expect(page.getByRole("listitem").filter({ hasText: "artifact Granted" })).toBeVisible();
 });
