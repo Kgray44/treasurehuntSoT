@@ -26,9 +26,7 @@ describe("source-indexed Project Registry", () => {
     expect(registryForRepository(repository)).toEqual(
       expect.arrayContaining([expect.objectContaining({ id: "bridgewatch", repository })]),
     );
-    expect(projectRegistry.find((project) => project.id === "bridgewatch")?.repository).toBe(
-      "Kgray44/treasurehuntSoT",
-    );
+    expect(projectRegistry.find((project) => project.id === "bridgewatch")?.repository).toBe("Kgray44/treasurehuntSoT");
   });
 
   it("retains the accepted three-phase Bridgewatch completion record", () => {

@@ -201,9 +201,7 @@ export class SoundingLineCollector {
       this.collectionStatus = {
         lastAttemptAt: attemptedAt,
         lastSuccessAt: this.cached()?.observedAt ?? null,
-        failure: /ZodError|schema|invalid/iu.test(diagnostic)
-          ? "SOURCE_SCHEMA_INCOMPATIBLE"
-          : "SOURCE_UNREACHABLE",
+        failure: /ZodError|schema|invalid/iu.test(diagnostic) ? "SOURCE_SCHEMA_INCOMPATIBLE" : "SOURCE_UNREACHABLE",
         diagnostic,
       };
       return this.cached();

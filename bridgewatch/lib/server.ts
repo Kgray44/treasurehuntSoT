@@ -54,7 +54,12 @@ type SourceProfile = {
   schemaVersion: string;
   sourceOccurrenceAt: string | null;
   bridgewatchObservedAt: string;
-  records: { received: number | null; retained: number; exposed: number; displayed: number };
+  records: {
+    received: number | null;
+    retained: number;
+    exposed: number;
+    displayed: number;
+  };
   capabilityClasses: { supported: string[]; missing: string[] };
   coverage: { state: string; summary: string; limitation: string | null };
   failure: { classification: string; diagnostic: string } | null;
@@ -105,7 +110,11 @@ export function buildServer() {
     documentCount: number | null;
     branchCount: number | null;
     lastSuccessfulCollectionAt: string | null;
-  } = { documentCount: null, branchCount: null, lastSuccessfulCollectionAt: null };
+  } = {
+    documentCount: null,
+    branchCount: null,
+    lastSuccessfulCollectionAt: null,
+  };
   store.replaceProjectRegistry(projectRegistry);
 
   const observation = (): BridgewatchProgramSnapshot => ({
@@ -113,9 +122,10 @@ export function buildServer() {
     capturedAt: new Date().toISOString(),
     projects: store.projects(),
     github: collector.cached(),
-    workers: store
-      .workers()
-      .map((worker) => ({ ...worker, effectiveState: workerState(worker, config.BRIDGEWATCH_TELEMETRY_STALE_MS) })),
+    workers: store.workers().map((worker) => ({
+      ...worker,
+      effectiveState: workerState(worker, config.BRIDGEWATCH_TELEMETRY_STALE_MS),
+    })),
     soundingLine: soundingLine.cached(),
   });
   const persistHistory = (storeSnapshot = true) => {
@@ -145,7 +155,8 @@ export function buildServer() {
         lastSuccessfulCollectionAt: attemptedAt,
       };
     }
-    const retainedSuccessAt = projectTruthCollection.lastSuccessfulCollectionAt ?? priorProjectTruth?.lastSuccessAt ?? null;
+    const retainedSuccessAt =
+      projectTruthCollection.lastSuccessfulCollectionAt ?? priorProjectTruth?.lastSuccessAt ?? null;
     store.upsertSourceObservation({
       name: "project-truth",
       state: projectTruthAvailable ? "HEALTHY" : "DEGRADED",
@@ -166,11 +177,17 @@ export function buildServer() {
       const discoveredAt = new Date().toISOString();
       const discovery = discoverObservations({
         observedAt: discoveredAt,
-        knownProjects: projectRegistry.map((project) => ({ id: project.id, name: project.name })),
+        knownProjects: projectRegistry.map((project) => ({
+          id: project.id,
+          name: project.name,
+        })),
         documents: repository.documents,
         branches: [
           ...repository.branches,
-          ...(snapshot?.branches ?? []).map((branch) => ({ name: branch.name, headSha: branch.headSha })),
+          ...(snapshot?.branches ?? []).map((branch) => ({
+            name: branch.name,
+            headSha: branch.headSha,
+          })),
         ],
         pullRequests: (snapshot?.pullRequests ?? []).map((pull) => ({
           number: pull.number,
@@ -225,9 +242,10 @@ export function buildServer() {
     const snapshot = collector.cached();
     const soundingLineProjection = soundingLine.cached();
     const projects = store.projects();
-    const workers = store
-      .workers()
-      .map((worker) => ({ ...worker, effectiveState: workerState(worker, config.BRIDGEWATCH_TELEMETRY_STALE_MS) }));
+    const workers = store.workers().map((worker) => ({
+      ...worker,
+      effectiveState: workerState(worker, config.BRIDGEWATCH_TELEMETRY_STALE_MS),
+    }));
     const totals = testTotals(soundingLineProjection);
     const counts = store.observationCounts();
     const inspectedAt = new Date().toISOString();
@@ -323,9 +341,12 @@ export function buildServer() {
         sourceOccurrenceAt: snapshot?.observedAt ?? null,
         bridgewatchObservedAt: inspectedAt,
         records: {
-          received: snapshot ? snapshot.pullRequests.length + snapshot.branches.length + snapshot.workflows.length : null,
+          received: snapshot
+            ? snapshot.pullRequests.length + snapshot.branches.length + snapshot.workflows.length
+            : null,
           retained: counts.pullRequests + counts.branches,
-          exposed: (snapshot?.pullRequests.length ?? 0) + (snapshot?.branches.length ?? 0) + (snapshot?.workflows.length ?? 0),
+          exposed:
+            (snapshot?.pullRequests.length ?? 0) + (snapshot?.branches.length ?? 0) + (snapshot?.workflows.length ?? 0),
           displayed: (snapshot?.pullRequests.length ?? 0) + (snapshot?.branches.length ?? 0),
         },
         capabilityClasses: {
@@ -334,10 +355,17 @@ export function buildServer() {
         },
         coverage: {
           state: snapshot ? "BOUNDED_CURRENT" : "NO_CURRENT_OBSERVATION",
-          summary: snapshot ? "Bounded current repository data is observed." : "No current GitHub observation is available.",
+          summary: snapshot
+            ? "Bounded current repository data is observed."
+            : "No current GitHub observation is available.",
           limitation: "GitHub collection is bounded by configured branch and pull-request limits.",
         },
-        failure: githubHealth.detail ? { classification: "SOURCE_UNREACHABLE", diagnostic: githubHealth.detail } : null,
+        failure: githubHealth.detail
+          ? {
+              classification: "SOURCE_UNREACHABLE",
+              diagnostic: githubHealth.detail,
+            }
+          : null,
         repairability: githubHealth.detail ? "AUTOMATIC_RETRY" : "NOT_APPLICABLE",
         servingRetainedStaleData: githubHealth.state === "DEGRADED" && Boolean(snapshot),
       },
@@ -371,7 +399,10 @@ export function buildServer() {
           limitation: "Only bounded indexed documents and fixed read-only refs are consumed.",
         },
         failure: projectTruthHealth.detail
-          ? { classification: "SOURCE_UNREACHABLE", diagnostic: projectTruthHealth.detail }
+          ? {
+              classification: "SOURCE_UNREACHABLE",
+              diagnostic: projectTruthHealth.detail,
+            }
           : null,
         repairability: projectTruthHealth.detail ? "AUTOMATIC_RETRY" : "NOT_APPLICABLE",
         servingRetainedStaleData: projectTruthHealth.state === "DEGRADED" && counts.projects > 0,
@@ -385,10 +416,17 @@ export function buildServer() {
         schemaVersion: "sounding-line-runtime-v1",
         sourceOccurrenceAt: soundingLineProjection?.observedAt ?? null,
         bridgewatchObservedAt: inspectedAt,
-        records: { received: soundingLineProjection?.plans.length ?? null, retained: counts.runs, exposed: counts.runs, displayed: counts.runs },
+        records: {
+          received: soundingLineProjection?.plans.length ?? null,
+          retained: counts.runs,
+          exposed: counts.runs,
+          displayed: counts.runs,
+        },
         capabilityClasses: {
           supported: ["runtime-plans", "nodes", "leases", "final-decisions-when-projected"],
-          missing: soundingUnknownOnly ? ["current-plan-identity", "current-node-evidence"] : ["historical-unrecorded-provider-logs"],
+          missing: soundingUnknownOnly
+            ? ["current-plan-identity", "current-node-evidence"]
+            : ["historical-unrecorded-provider-logs"],
         },
         coverage: {
           state: soundingUnknownOnly
@@ -404,7 +442,10 @@ export function buildServer() {
           limitation: "Bridgewatch cannot reconstruct plan or node evidence that the projection never retained.",
         },
         failure: soundingStatus.failure
-          ? { classification: soundingStatus.failure, diagnostic: soundingStatus.diagnostic ?? "Projection unavailable" }
+          ? {
+              classification: soundingStatus.failure,
+              diagnostic: soundingStatus.diagnostic ?? "Projection unavailable",
+            }
           : null,
         repairability: soundingStatus.failure ? "AUTOMATIC_RETRY" : "NOT_APPLICABLE",
         servingRetainedStaleData: soundingHealth.state === "DEGRADED" && Boolean(soundingLineProjection),
@@ -418,7 +459,12 @@ export function buildServer() {
         schemaVersion: "telemetry-heartbeat-v1",
         sourceOccurrenceAt: reporterObservedAt,
         bridgewatchObservedAt: inspectedAt,
-        records: { received: workers.length, retained: counts.workers, exposed: workers.length, displayed: workers.length },
+        records: {
+          received: workers.length,
+          retained: counts.workers,
+          exposed: workers.length,
+          displayed: workers.length,
+        },
         capabilityClasses: {
           supported: config.BRIDGEWATCH_TELEMETRY_TOKEN ? ["worker-heartbeats", "retained-activity"] : [],
           missing: config.BRIDGEWATCH_TELEMETRY_TOKEN ? ["project-lifecycle-authority"] : ["worker-heartbeats"],
@@ -449,8 +495,22 @@ export function buildServer() {
     const attention = [
       ...(snapshot
         ? []
-        : [{ level: "ACTION", code: "GITHUB_UNAVAILABLE", message: "No GitHub cache is available yet." }]),
-      ...(historyWarning ? [{ level: "NOTICE", code: "HISTORY_UNAVAILABLE", message: historyWarning }] : []),
+        : [
+            {
+              level: "ACTION",
+              code: "GITHUB_UNAVAILABLE",
+              message: "No GitHub cache is available yet.",
+            },
+          ]),
+      ...(historyWarning
+        ? [
+            {
+              level: "NOTICE",
+              code: "HISTORY_UNAVAILABLE",
+              message: historyWarning,
+            },
+          ]
+        : []),
       ...workers
         .filter((worker) => worker.effectiveState === "BLOCKED")
         .map((worker) => ({
@@ -509,9 +569,16 @@ export function buildServer() {
       })),
       github: snapshot,
       branches,
-      history: { warning: historyWarning, recent: store.history({ since: sinceHours(12), limit: 12 }).events },
+      history: {
+        warning: historyWarning,
+        recent: store.history({ since: sinceHours(12), limit: 12 }).events,
+      },
       workers,
-      tests: { projection: soundingLineProjection, totals, history: store.recentTestRuns() },
+      tests: {
+        projection: soundingLineProjection,
+        totals,
+        history: store.recentTestRuns(),
+      },
       nightwatch,
       attention,
       sources,
@@ -555,9 +622,15 @@ export function buildServer() {
     try {
       const parsed = historyFor(query);
       const page = store.history(parsed);
-      return { since: parsed.since, until: parsed.until ?? new Date().toISOString(), ...page };
+      return {
+        since: parsed.since,
+        until: parsed.until ?? new Date().toISOString(),
+        ...page,
+      };
     } catch (error) {
-      return reply.code(400).send({ error: error instanceof Error ? error.message : "Invalid history query" });
+      return reply.code(400).send({
+        error: error instanceof Error ? error.message : "Invalid history query",
+      });
     }
   };
   const sendComparison = (
@@ -592,7 +665,9 @@ export function buildServer() {
         ? { ...comparison, rollups, coarse: summarizeRollups(rollups) }
         : comparison;
     } catch (error) {
-      return reply.code(400).send({ error: error instanceof Error ? error.message : "Invalid comparison query" });
+      return reply.code(400).send({
+        error: error instanceof Error ? error.message : "Invalid comparison query",
+      });
     }
   };
 
@@ -740,7 +815,9 @@ export function buildServer() {
   app.get<{ Querystring: PullRequestParameters }>("/api/pull-requests", async (request, reply) => {
     const state = (request.query.state ?? "ALL").toUpperCase();
     if (!["ALL", "OPEN", "HISTORICAL", "MERGED", "CLOSED"].includes(state))
-      return reply.code(400).send({ error: "Pull-request state must be ALL, OPEN, HISTORICAL, MERGED, or CLOSED" });
+      return reply.code(400).send({
+        error: "Pull-request state must be ALL, OPEN, HISTORICAL, MERGED, or CLOSED",
+      });
     const pulls = collector.cached()?.pullRequests ?? [];
     return pulls.filter(
       (pull) => state === "ALL" || (state === "HISTORICAL" ? pull.state !== "OPEN" : pull.state === state),
@@ -817,7 +894,11 @@ export function buildServer() {
   });
 
   const acceptsTelemetry = (
-    request: { headers: { authorization?: string }; query: Record<string, unknown>; ip: string },
+    request: {
+      headers: { authorization?: string };
+      query: Record<string, unknown>;
+      ip: string;
+    },
     reply: { code: (code: number) => { send: (body: unknown) => unknown } },
   ) => {
     if (Object.keys(request.query).some((key) => /token|authorization/iu.test(key)))
@@ -841,9 +922,15 @@ export function buildServer() {
         const worker = parseHeartbeat(request.body);
         store.upsertWorker(worker);
         persistHistory(false);
-        return reply.code(202).send({ accepted: true, workerId: worker.workerId, activityOnly: true });
+        return reply.code(202).send({
+          accepted: true,
+          workerId: worker.workerId,
+          activityOnly: true,
+        });
       } catch (error) {
-        return reply.code(400).send({ error: error instanceof Error ? error.message : "Invalid telemetry" });
+        return reply.code(400).send({
+          error: error instanceof Error ? error.message : "Invalid telemetry",
+        });
       }
     },
   );
@@ -851,17 +938,37 @@ export function buildServer() {
     const denied = acceptsTelemetry(request, reply);
     if (denied) return denied;
     try {
-      const worker = parseHeartbeat({ ...(request.body as object), state: "FINISHED" });
+      const worker = parseHeartbeat({
+        ...(request.body as object),
+        state: "FINISHED",
+      });
       store.upsertWorker(worker, true);
       persistHistory(false);
-      return reply.code(202).send({ accepted: true, workerId: worker.workerId, activityOnly: true });
+      return reply.code(202).send({
+        accepted: true,
+        workerId: worker.workerId,
+        activityOnly: true,
+      });
     } catch (error) {
-      return reply.code(400).send({ error: error instanceof Error ? error.message : "Invalid telemetry" });
+      return reply.code(400).send({
+        error: error instanceof Error ? error.message : "Invalid telemetry",
+      });
     }
   });
-  app.register(fastifyStatic, { root: join(process.cwd(), "public"), prefix: "/" });
+  app.register(fastifyStatic, {
+    root: join(process.cwd(), "public"),
+    prefix: "/",
+  });
   app.addHook("onClose", async () => store.close());
-  return { app, config, store, collector, soundingLine, refreshSources, refreshSoundingLine };
+  return {
+    app,
+    config,
+    store,
+    collector,
+    soundingLine,
+    refreshSources,
+    refreshSoundingLine,
+  };
 }
 
 function sourceState(observedAt: string | null, staleAfterMs: number) {
@@ -993,7 +1100,16 @@ function projectTrend(project: ProjectRecord) {
           ["COMPLETED", phase.completedAt],
         ].map(([state, at]) => (typeof at === "string" ? { at, state, phaseId: phase.id, phase: phase.name } : null)),
       )
-      .filter((entry): entry is { at: string; state: string; phaseId: string; phase: string } => Boolean(entry))
+      .filter(
+        (
+          entry,
+        ): entry is {
+          at: string;
+          state: string;
+          phaseId: string;
+          phase: string;
+        } => Boolean(entry),
+      )
       .sort((left, right) => left.at.localeCompare(right.at)),
     phases: project.phases.map((phase) => ({
       id: phase.id,
@@ -1036,7 +1152,10 @@ function programTrends(projects: ProjectRecord[]) {
     .filter((entry): entry is { projectId: string; phaseId: string; at: string } => Boolean(entry.at))
     .sort((left, right) => left.at.localeCompare(right.at));
   const acceptedTimeline = [
-    ...completions.map((entry) => ({ ...entry, type: "PROJECT_COMPLETE" as const })),
+    ...completions.map((entry) => ({
+      ...entry,
+      type: "PROJECT_COMPLETE" as const,
+    })),
     ...phases.map((entry) => ({ ...entry, type: "PHASE_ACCEPTED" as const })),
   ]
     .sort((left, right) => left.at.localeCompare(right.at) || left.type.localeCompare(right.type))
@@ -1055,8 +1174,14 @@ function programTrends(projects: ProjectRecord[]) {
       };
     });
   return {
-    projectsCompleted: completions.map((entry, index) => ({ ...entry, cumulative: index + 1 })),
-    phasesAccepted: phases.map((entry, index) => ({ ...entry, cumulative: index + 1 })),
+    projectsCompleted: completions.map((entry, index) => ({
+      ...entry,
+      cumulative: index + 1,
+    })),
+    phasesAccepted: phases.map((entry, index) => ({
+      ...entry,
+      cumulative: index + 1,
+    })),
     acceptedProjectTimeline: completions,
     acceptedTimeline,
   };
@@ -1114,5 +1239,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     clearInterval(sourceTimer);
     clearInterval(soundingLineTimer);
   });
-  await app.listen({ host: config.BRIDGEWATCH_HOST, port: config.BRIDGEWATCH_PORT });
+  await app.listen({
+    host: config.BRIDGEWATCH_HOST,
+    port: config.BRIDGEWATCH_PORT,
+  });
 }
