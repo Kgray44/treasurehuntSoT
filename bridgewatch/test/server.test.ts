@@ -27,6 +27,16 @@ describe("Bridgewatch read-only API", () => {
           .json()
           .find((entry: { name: string }) => entry.name === "reporter").state,
       ).toBe("HEALTHY");
+      const sourceProfiles = (await app.inject({ method: "GET", url: "/api/sources" })).json();
+      expect(sourceProfiles.find((entry: { name: string }) => entry.name === "github")).toMatchObject({
+        sourceId: "github-repository-api",
+        configured: true,
+        coverage: { state: "NO_CURRENT_OBSERVATION" },
+      });
+      expect(sourceProfiles.find((entry: { name: string }) => entry.name === "reporter")).toMatchObject({
+        coverage: { state: "SOURCE_RETURNED_NO_DATA" },
+        repairability: "NOT_APPLICABLE",
+      });
       expect(summary.headers["content-security-policy"]).toContain("default-src 'self'");
       const dashboard = await app.inject({ method: "GET", url: "/" });
       expect(dashboard.statusCode).toBe(200);
@@ -39,7 +49,10 @@ describe("Bridgewatch read-only API", () => {
       expect(appScript).toContain('request("api/summary")');
       expect(appScript).toContain('window.addEventListener("hashchange", renderRoute)');
       expect(appScript).toContain("function renderProjectProfile");
-      const mutation = await app.inject({ method: "POST", url: "/api/summary" });
+      const mutation = await app.inject({
+        method: "POST",
+        url: "/api/summary",
+      });
       expect(mutation.statusCode).toBe(404);
       const heartbeat = {
         workerId: "codex-bridgewatch-02",
@@ -54,7 +67,13 @@ describe("Bridgewatch read-only API", () => {
         heartbeatAt: new Date().toISOString(),
       };
       expect(
-        (await app.inject({ method: "POST", url: "/api/telemetry/heartbeat", payload: heartbeat })).statusCode,
+        (
+          await app.inject({
+            method: "POST",
+            url: "/api/telemetry/heartbeat",
+            payload: heartbeat,
+          })
+        ).statusCode,
       ).toBe(401);
       expect(
         (
@@ -104,6 +123,54 @@ describe("Bridgewatch read-only API", () => {
     }
   });
 
+  it("reports degraded GitHub acquisition while preserving retained observation coverage", async () => {
+    process.env.BRIDGEWATCH_REPOSITORY = "owner/repository";
+    process.env.BRIDGEWATCH_DB_PATH = join(mkdtempSync(join(tmpdir(), "bridgewatch-test-")), "cache.sqlite");
+    const { buildServer } = await import("../lib/server.js");
+    const { app, store } = buildServer();
+    try {
+      const observedAt = new Date().toISOString();
+      store.put(
+        "github:snapshot",
+        {
+          repository: "owner/repository",
+          defaultBranch: "main",
+          headSha: "cached-main",
+          observedAt,
+          pullRequests: [],
+          branches: [],
+          workflows: [],
+        },
+        null,
+        observedAt,
+      );
+      store.upsertSourceObservation({
+        name: "github",
+        state: "DEGRADED",
+        configured: true,
+        reachable: false,
+        lastAttemptAt: observedAt,
+        lastSuccessAt: observedAt,
+        nextRetryAt: new Date(Date.now() + 60_000).toISOString(),
+        detail: "GitHub GET failed: 503",
+        cacheAgeMs: 0,
+        authenticationState: "ANONYMOUS",
+      });
+      const github = (await app.inject({ method: "GET", url: "/api/sources" }))
+        .json()
+        .find((entry: { name: string }) => entry.name === "github");
+      expect(github).toMatchObject({
+        state: "DEGRADED",
+        servingRetainedStaleData: true,
+        coverage: { state: "BOUNDED_CURRENT" },
+        failure: { classification: "SOURCE_UNREACHABLE" },
+      });
+      expect((await app.inject({ method: "GET", url: "/api/summary" })).json().github.headSha).toBe("cached-main");
+    } finally {
+      await app.close();
+    }
+  });
+
   it("protects dashboard and human observation routes when private dashboard authentication is configured", async () => {
     process.env.BRIDGEWATCH_REPOSITORY = "owner/repository";
     process.env.BRIDGEWATCH_DB_PATH = join(mkdtempSync(join(tmpdir(), "bridgewatch-test-")), "cache.sqlite");
@@ -118,7 +185,9 @@ describe("Bridgewatch read-only API", () => {
           await app.inject({
             method: "GET",
             url: "/api/summary",
-            headers: { authorization: `Basic ${Buffer.from("operator:test-password").toString("base64")}` },
+            headers: {
+              authorization: `Basic ${Buffer.from("operator:test-password").toString("base64")}`,
+            },
           })
         ).statusCode,
       ).toBe(200);
@@ -160,9 +229,21 @@ describe("Bridgewatch read-only API", () => {
       expect(history.json().events.some((event: { kind: string }) => event.kind === "PROJECT_STATE_CHANGED")).toBe(
         true,
       );
-      expect((await app.inject({ method: "GET", url: "/api/history?since=not-a-date" })).statusCode).toBe(400);
       expect(
-        (await app.inject({ method: "GET", url: "/api/history?since=2099-01-01T00%3A00%3A00.000Z" })).statusCode,
+        (
+          await app.inject({
+            method: "GET",
+            url: "/api/history?since=not-a-date",
+          })
+        ).statusCode,
+      ).toBe(400);
+      expect(
+        (
+          await app.inject({
+            method: "GET",
+            url: "/api/history?since=2099-01-01T00%3A00%3A00.000Z",
+          })
+        ).statusCode,
       ).toBe(400);
       expect((await app.inject({ method: "POST", url: "/api/history" })).statusCode).toBe(404);
       expect((await app.inject({ method: "GET", url: "/api/activity" })).statusCode).toBe(200);
@@ -220,10 +301,16 @@ describe("Bridgewatch read-only API", () => {
     const { app, refreshSources } = buildServer();
     try {
       await refreshSources();
-      const response = await app.inject({ method: "GET", url: "/api/projects/bridgewatch" });
+      const response = await app.inject({
+        method: "GET",
+        url: "/api/projects/bridgewatch",
+      });
       expect(response.statusCode).toBe(200);
       expect(response.json().versions).toContainEqual(
-        expect.objectContaining({ identity: "v1.2", lifecycle: "IN_DEVELOPMENT" }),
+        expect.objectContaining({
+          identity: "v1.2",
+          lifecycle: "IN_DEVELOPMENT",
+        }),
       );
     } finally {
       await app.close();
@@ -285,7 +372,11 @@ describe("Bridgewatch read-only API", () => {
       after.projects.find((project) => project.id === "bridgewatch")!.state = "COMPLETE";
       store.recordHistory(before);
       store.recordHistory(after);
-      store.pruneHistory({ eventRetentionDays: 1, rollupRetentionDays: 90, dryRun: false });
+      store.pruneHistory({
+        eventRetentionDays: 1,
+        rollupRetentionDays: 90,
+        dryRun: false,
+      });
       const response = await app.inject({
         method: "GET",
         url: `/api/compare?from=${encodeURIComponent(before.capturedAt)}&to=${encodeURIComponent(after.capturedAt)}`,
@@ -306,21 +397,48 @@ describe("Bridgewatch read-only API", () => {
     const { app, refreshSources } = buildServer();
     try {
       await refreshSources();
-      const versions = await app.inject({ method: "GET", url: "/api/projects/bridgewatch/versions" });
+      const versions = await app.inject({
+        method: "GET",
+        url: "/api/projects/bridgewatch/versions",
+      });
       expect(versions.statusCode).toBe(200);
       expect(versions.json()).toContainEqual(expect.objectContaining({ identity: "v1.2" }));
-      const version = await app.inject({ method: "GET", url: "/api/projects/bridgewatch/versions/v1.2" });
+      const version = await app.inject({
+        method: "GET",
+        url: "/api/projects/bridgewatch/versions/v1.2",
+      });
       expect(version.statusCode).toBe(200);
-      expect(version.json()).toMatchObject({ projectId: "bridgewatch", version: { identity: "v1.2" } });
-      const phase = await app.inject({ method: "GET", url: "/api/projects/bridgewatch/phases/3" });
+      expect(version.json()).toMatchObject({
+        projectId: "bridgewatch",
+        version: { identity: "v1.2" },
+      });
+      const phase = await app.inject({
+        method: "GET",
+        url: "/api/projects/bridgewatch/phases/3",
+      });
       expect(phase.statusCode).toBe(200);
-      expect(phase.json()).toMatchObject({ projectId: "bridgewatch", phase: { ordinal: 3, name: "Keep the Watch" } });
+      expect(phase.json()).toMatchObject({
+        projectId: "bridgewatch",
+        phase: { ordinal: 3, name: "Keep the Watch" },
+      });
       expect(phase.json().tasks).toEqual(expect.any(Array));
-      const project = await app.inject({ method: "GET", url: "/api/projects/bridgewatch" });
-      expect(project.json()).toMatchObject({ id: "bridgewatch", history: expect.any(Array), evidence: expect.any(Array) });
-      expect((await app.inject({ method: "POST", url: "/api/projects/bridgewatch/versions/v1.2" })).statusCode).toBe(
-        404,
-      );
+      const project = await app.inject({
+        method: "GET",
+        url: "/api/projects/bridgewatch",
+      });
+      expect(project.json()).toMatchObject({
+        id: "bridgewatch",
+        history: expect.any(Array),
+        evidence: expect.any(Array),
+      });
+      expect(
+        (
+          await app.inject({
+            method: "POST",
+            url: "/api/projects/bridgewatch/versions/v1.2",
+          })
+        ).statusCode,
+      ).toBe(404);
     } finally {
       await app.close();
     }
@@ -405,22 +523,51 @@ describe("Bridgewatch read-only API", () => {
           },
         ],
       });
-      expect((await app.inject({ method: "GET", url: "/api/pull-requests?state=ALL" })).json()).toHaveLength(2);
-      expect((await app.inject({ method: "GET", url: "/api/pull-requests?state=HISTORICAL" })).json()).toHaveLength(1);
-      const pull = await app.inject({ method: "GET", url: "/api/pull-requests/17" });
+      expect(
+        (
+          await app.inject({
+            method: "GET",
+            url: "/api/pull-requests?state=ALL",
+          })
+        ).json(),
+      ).toHaveLength(2);
+      expect(
+        (
+          await app.inject({
+            method: "GET",
+            url: "/api/pull-requests?state=HISTORICAL",
+          })
+        ).json(),
+      ).toHaveLength(1);
+      const pull = await app.inject({
+        method: "GET",
+        url: "/api/pull-requests/17",
+      });
       expect(pull.statusCode).toBe(200);
-      expect(pull.json()).toMatchObject({ pullRequest: { number: 17 }, associations: { projectIds: ["bridgewatch"] } });
+      expect(pull.json()).toMatchObject({
+        pullRequest: { number: 17 },
+        associations: { projectIds: ["bridgewatch"] },
+      });
       const branch = await app.inject({
         method: "GET",
         url: "/api/branches/profile?name=codex%2Fproject-bridgewatch-v1.2-mission-control",
       });
       expect(branch.statusCode).toBe(200);
-      expect(branch.json()).toMatchObject({ branch: { name: "codex/project-bridgewatch-v1.2-mission-control" } });
+      expect(branch.json()).toMatchObject({
+        branch: { name: "codex/project-bridgewatch-v1.2-mission-control" },
+      });
       expect((await app.inject({ method: "GET", url: "/api/sources/github" })).statusCode).toBe(200);
       expect((await app.inject({ method: "GET", url: "/api/sounding-line/runs" })).json()).toContainEqual(
         expect.objectContaining({ id: "run-17" }),
       );
-      expect((await app.inject({ method: "GET", url: "/api/sounding-line/runs/run-17" })).statusCode).toBe(200);
+      expect(
+        (
+          await app.inject({
+            method: "GET",
+            url: "/api/sounding-line/runs/run-17",
+          })
+        ).statusCode,
+      ).toBe(200);
       expect((await app.inject({ method: "POST", url: "/api/pull-requests/17" })).statusCode).toBe(404);
     } finally {
       await app.close();

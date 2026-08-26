@@ -127,6 +127,13 @@ const projectionSchema = z
 
 export type SoundingLineProjection = z.infer<typeof projectionSchema>;
 
+export interface SoundingLineCollectionStatus {
+  lastAttemptAt: string | null;
+  lastSuccessAt: string | null;
+  failure: "SOURCE_UNREACHABLE" | "SOURCE_SCHEMA_INCOMPATIBLE" | null;
+  diagnostic: string | null;
+}
+
 export function normalizeSoundingLineProjection(value: unknown): SoundingLineProjection {
   return projectionSchema.parse(value);
 }
@@ -147,6 +154,13 @@ export function testTotals(projection: SoundingLineProjection | null) {
 }
 
 export class SoundingLineCollector {
+  private collectionStatus: SoundingLineCollectionStatus = {
+    lastAttemptAt: null,
+    lastSuccessAt: null,
+    failure: null,
+    diagnostic: null,
+  };
+
   constructor(
     private readonly config: Config,
     private readonly store: BridgewatchStore,
@@ -154,11 +168,15 @@ export class SoundingLineCollector {
   cached(): SoundingLineProjection | null {
     return this.store.get<SoundingLineProjection>("sounding-line:projection")?.value ?? null;
   }
+  status(): SoundingLineCollectionStatus {
+    return { ...this.collectionStatus };
+  }
   async refresh(): Promise<SoundingLineProjection | null> {
     // Bridgewatch is intentionally launched from its package directory (the static
     // dashboard uses that same contract). Its repository-owned observer therefore
     // always resolves relative to the repository root, in source and built forms.
     const script = resolve(process.cwd(), "..", "scripts", "sounding-line", "status-projection.mjs");
+    const attemptedAt = new Date().toISOString();
     try {
       const args = this.config.BRIDGEWATCH_SOUNDING_LINE_PROJECTION_PATH
         ? [script, this.config.BRIDGEWATCH_SOUNDING_LINE_PROJECTION_PATH]
@@ -170,8 +188,22 @@ export class SoundingLineCollector {
       const projection = normalizeSoundingLineProjection(JSON.parse(stdout));
       this.store.put("sounding-line:projection", projection, null, projection.observedAt);
       this.store.replaceTestProjection(projection);
+      this.collectionStatus = {
+        lastAttemptAt: attemptedAt,
+        lastSuccessAt: projection.observedAt,
+        failure: null,
+        diagnostic: null,
+      };
       return projection;
-    } catch {
+    } catch (error) {
+      const diagnostic =
+        error instanceof Error ? error.message.replace(/[\r\n]+/gu, " ").slice(0, 300) : "Projection unavailable";
+      this.collectionStatus = {
+        lastAttemptAt: attemptedAt,
+        lastSuccessAt: this.cached()?.observedAt ?? null,
+        failure: /ZodError|schema|invalid/iu.test(diagnostic) ? "SOURCE_SCHEMA_INCOMPATIBLE" : "SOURCE_UNREACHABLE",
+        diagnostic,
+      };
       return this.cached();
     }
   }
