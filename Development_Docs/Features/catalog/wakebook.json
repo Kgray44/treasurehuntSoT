@@ -106,12 +106,7 @@
     "summary": "Project Wakebook Phase 3 adds owner-private, source-bound Timeline, People, and Statistics views that make historical Voyage records easier to understand without inventing social judgment or behavioral analytics.",
     "status": "BRANCH_COMPLETE_NOT_MERGED",
     "program": "Project Wakebook Phase 3 - Read the Wake",
-    "surfaces": [
-      "/passport/timeline",
-      "/passport/people",
-      "/passport/statistics",
-      "/api/passport/insights"
-    ],
+    "surfaces": ["/passport/timeline", "/passport/people", "/passport/statistics", "/api/passport/insights"],
     "subfeatures": [
       "Owner-scoped Timeline of canonical historical Voyages with explicit date-quality and lifecycle presentation",
       "Private People view derived only from retained historical crew snapshots and labeled when historical context is limited",
