@@ -1685,6 +1685,8 @@ html[data-motion-preference="reduced"] .personal-harbor *::after {
   --harbor-teal: #1c5654;
   --harbor-brass: #d1af69;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   min-height: min(78rem, 100vh);
   color: var(--harbor-ink);
   font-size: calc(1rem * var(--personal-text-scale, 1));
@@ -1826,6 +1828,22 @@ html[data-motion-preference="reduced"] .personal-harbor *::after {
   width: min(100% - 2.5rem, 104rem);
   margin: 0 auto;
   padding: clamp(1.5rem, 4vw, 4rem) 0 clamp(3rem, 7vw, 6rem);
+}
+
+/* Passport keeps this legacy profile distinction legible on the full-width shell. */
+.passport-shell__content .harbor-callout {
+  border-left-color: #8d6727;
+  color: #28271f;
+  background: #f7e5b5;
+}
+
+.passport-shell__content .harbor-callout p {
+  color: #3d3525;
+}
+
+.passport-shell__content .harbor-callout a {
+  color: #513510;
+  font-weight: 700;
 }
 
 .passport-shell__notice {
