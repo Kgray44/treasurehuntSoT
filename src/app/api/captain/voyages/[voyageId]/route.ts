@@ -12,5 +12,5 @@ export async function GET(_: Request, context: { params: Promise<{ voyageId: str
     );
   const projection = await getCaptainVoyageProjection(voyageId, authorization.actor);
   if (!projection) return NextResponse.json({ error: "This Voyage is unavailable." }, { status: 403 });
-  return NextResponse.json(projection);
+  return NextResponse.json({ ...projection, csrfToken: authorization.session.csrfToken });
 }

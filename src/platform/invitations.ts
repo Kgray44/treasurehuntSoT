@@ -47,7 +47,7 @@ export const createPlaythroughSchema = z.object({
         pin: z.string().min(4).max(80).optional(),
       }),
     )
-    .min(1)
+    .min(0)
     .max(20),
 });
 
@@ -259,7 +259,7 @@ export async function createPlaythroughAndInvitations(
         captainId,
         captainAccountId,
         accessTokenHash: hashToken(makeToken()),
-        status: input.plannedStartAt ? "SCHEDULED" : "INVITING",
+        status: input.plannedStartAt ? "SCHEDULED" : input.players.length ? "INVITING" : "READY",
         captainMode: input.progressionMode ?? input.captainMode,
         configuration: JSON.stringify({
           hints: input.hints,
@@ -548,6 +548,122 @@ export async function declineInvitation(credential: string, signedInPlayerId?: s
     }),
   ]);
   return { ok: true };
+}
+
+/** Player Library uses this narrow identity-bound path so an ordinary invitation card can offer
+ * an immediate decision without exposing or reconstructing its one-time credential. */
+export async function decideInvitationFromPlayerLibrary(input: {
+  invitationId: string;
+  playerProfileId: string;
+  decision: "accept" | "decline";
+}) {
+  const invitation = await db.invitation.findFirst({
+    where: { id: input.invitationId, intendedPlayerId: input.playerProfileId },
+    include: { playthrough: { select: { id: true, status: true, plannedStartAt: true } } },
+  });
+  if (!invitation) throw new InvitationUnavailableError("This invitation is unavailable to this Player.", "INVALID");
+  if (input.decision === "accept" && ["ACCEPTED", "READY", "JOINED", "CONSUMED"].includes(invitation.status))
+    return { playthroughId: invitation.playthroughId, decision: "accepted" as const, idempotent: true };
+  if (input.decision === "decline" && invitation.status === "DECLINED")
+    return { playthroughId: invitation.playthroughId, decision: "declined" as const, idempotent: true };
+  if (!invitationUsable(invitation.status, invitation.expiresAt, invitation.redemptionCount, invitation.maxRedemptions))
+    throw new InvitationUnavailableError(
+      `This invitation can no longer be ${input.decision === "accept" ? "accepted" : "declined"}.`,
+      "INVALID",
+    );
+  const correlationId = randomUUID();
+  const now = new Date();
+  return db.$transaction(async (tx) => {
+    if (input.decision === "decline") {
+      const updated = await tx.invitation.updateMany({
+        where: { id: invitation.id, status: { in: activeInvitationStates }, expiresAt: { gt: now } },
+        data: { status: "DECLINED", declinedAt: now, lastValidatedAt: now },
+      });
+      if (!updated.count)
+        throw new InvitationUnavailableError("Invitation state changed. Refresh and try again.", "CONFLICT");
+      await tx.playthroughMembership.updateMany({
+        where: { playthroughId: invitation.playthroughId, playerProfileId: input.playerProfileId, status: "INVITED" },
+        data: { status: "DECLINED" },
+      });
+      await tx.invitationEvent.create({
+        data: {
+          invitationId: invitation.id,
+          eventType: "DECLINED",
+          actorType: "PLAYER",
+          actorId: input.playerProfileId,
+          metadata: "{}",
+        },
+      });
+      await tx.platformAuditEvent.create({
+        data: {
+          actorType: "PLAYER",
+          actorId: input.playerProfileId,
+          action: "INVITATION_DECLINED",
+          resourceType: "INVITATION",
+          resourceId: invitation.id,
+          correlationId,
+          metadata: JSON.stringify({ playthroughId: invitation.playthroughId, entry: "PLAYER_LIBRARY" }),
+        },
+      });
+      return { playthroughId: invitation.playthroughId, decision: "declined" as const };
+    }
+    const updated = await tx.invitation.updateMany({
+      where: {
+        id: invitation.id,
+        status: { in: activeInvitationStates },
+        redemptionCount: invitation.redemptionCount,
+        expiresAt: { gt: now },
+      },
+      data: { status: "READY", acceptedAt: now, redemptionCount: { increment: 1 }, lastValidatedAt: now },
+    });
+    if (!updated.count)
+      throw new InvitationUnavailableError("Invitation state changed. Refresh and try again.", "CONFLICT");
+    await tx.playthroughMembership.update({
+      where: {
+        playthroughId_playerProfileId: {
+          playthroughId: invitation.playthroughId,
+          playerProfileId: input.playerProfileId,
+        },
+      },
+      data: {
+        status: membershipStatusAfterInvitationAcceptance(invitation.playthrough.status),
+        joinedAt: now,
+        removedAt: null,
+      },
+    });
+    const remaining = await tx.invitation.count({
+      where: { playthroughId: invitation.playthroughId, status: { in: activeInvitationStates } },
+    });
+    if (!remaining)
+      await tx.taleSession.updateMany({
+        where: { id: invitation.playthroughId, status: { in: ["INVITING", "SCHEDULED"] } },
+        data: {
+          status: invitation.playthrough.plannedStartAt ? "SCHEDULED" : "READY",
+          concurrencyVersion: { increment: 1 },
+        },
+      });
+    await tx.invitationEvent.create({
+      data: {
+        invitationId: invitation.id,
+        eventType: "ACCEPTED",
+        actorType: "PLAYER",
+        actorId: input.playerProfileId,
+        metadata: "{}",
+      },
+    });
+    await tx.platformAuditEvent.create({
+      data: {
+        actorType: "PLAYER",
+        actorId: input.playerProfileId,
+        action: "INVITATION_ACCEPTED",
+        resourceType: "INVITATION",
+        resourceId: invitation.id,
+        correlationId,
+        metadata: JSON.stringify({ playthroughId: invitation.playthroughId, entry: "PLAYER_LIBRARY" }),
+      },
+    });
+    return { playthroughId: invitation.playthroughId, decision: "accepted" as const };
+  });
 }
 
 export async function manageInvitation(

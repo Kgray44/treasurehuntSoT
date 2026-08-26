@@ -2,7 +2,7 @@
   {
     "id": "FT-007",
     "title": "Captain Voyage Operations",
-    "summary": "Captains create, launch, operate, recover, and reconcile live Voyages through authoritative commands, with an explicit option to join the same Voyage as an ordinary Player.",
+    "summary": "Captains create, launch, operate, and conclude live Voyages through authoritative commands, with independent Player participation and a complete ordinary Crew lifecycle.",
     "status": "MAINLINE",
     "program": "Captain",
     "surfaces": [
@@ -23,7 +23,10 @@
       "Player-safe perspective switching",
       "Membership-bounded personal history and artifact eligibility",
       "Captain operational projections and prioritized voyage library",
-      "Membership-scoped crew presence, sync health, warnings, and safe event stream"
+      "Membership-scoped crew presence, sync health, warnings, and safe event stream",
+      "Zero-invite Captain plus Player Voyage creation",
+      "Direct Player invitation acceptance and decline from Chronicle Library",
+      "Captain Crew removal, Player voluntary leave, and explicit Voyage cancellation with preserved history"
     ],
     "evidence": [
       { "kind": "commit", "value": "ca40227cbef3575315c089d224a0cd26ec77bc78" },
@@ -31,10 +34,13 @@
       { "kind": "path", "value": "src/domain/admin.ts" },
       { "kind": "path", "value": "src/helm/captain-participation.ts" },
       { "kind": "path", "value": "src/helm/operations.ts" },
+      { "kind": "path", "value": "src/helm/lifecycle.ts" },
       { "kind": "path", "value": "src/platform/membership-presence.ts" },
       { "kind": "path", "value": "src/components/captain/CaptainOperationalPanel.tsx" },
       { "kind": "path", "value": "src/components/platform/CaptainLibrary.tsx" },
-      { "kind": "path", "value": "src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts" }
+      { "kind": "path", "value": "src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts" },
+      { "kind": "path", "value": "src/app/api/captain/playthroughs/[playthroughId]/cancel/route.ts" },
+      { "kind": "path", "value": "src/app/api/player/playthroughs/[playthroughId]/leave/route.ts" }
     ],
     "catalogVersion": 1
   }

@@ -243,4 +243,39 @@ describe("CaptainLibrary motion and authority", () => {
 
     expect(await within(dialog).findByDisplayValue("Remember This Voyage")).toBeInTheDocument();
   });
+
+  it("completes a zero-invite Captain plus Player Voyage without trapping the creation wizard", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((url: string) => {
+        if (url === "/api/captain/playthroughs")
+          return Promise.resolve(
+            response(201, {
+              playthroughId: "voyage-zero",
+              invitations: [],
+              participation: { participationMode: "CAPTAIN_AND_PLAYER", hasPlayerMembership: true },
+            }),
+          );
+        return Promise.resolve(response(200, library()));
+      }),
+    );
+    render(<CaptainLibrary />);
+    await screen.findByRole("heading", { name: "Captain's Console" });
+    fireEvent.click(screen.getByRole("button", { name: "Create a Voyage" }));
+    const dialog = screen.getByRole("dialog");
+    fireEvent.click(within(dialog).getByRole("button", { name: /The Moonlit Key/ }));
+    fireEvent.click(within(dialog).getByRole("button", { name: "Continue to Configure Voyage" }));
+    fireEvent.click(await within(dialog).findByRole("radio", { name: /Captain \+ Player/ }));
+    fireEvent.change(within(dialog).getByLabelText("Voyage name"), { target: { value: "No blank Crew" } });
+    fireEvent.click(within(dialog).getByRole("button", { name: "Continue to Add Crew" }));
+    expect(await within(dialog).findByText(/Crew is optional/)).toBeInTheDocument();
+    fireEvent.click(await within(dialog).findByRole("button", { name: "Continue to Invitation access" }));
+    fireEvent.click(await within(dialog).findByRole("button", { name: "Continue to Delivery" }));
+    fireEvent.click(await within(dialog).findByRole("button", { name: "Continue to Review" }));
+    fireEvent.click(await within(dialog).findByRole("button", { name: "Create Voyage and invitations" }));
+
+    expect(await within(dialog).findByRole("heading", { name: "Voyage created" })).toBeInTheDocument();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Done" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+  });
 });

@@ -19,7 +19,7 @@ import { aggregateMembershipPresence } from "@/platform/membership-presence";
 
 const pendingInvitationStates = ["CREATED", "SENT", "COPIED", "VIEWED"];
 const validMembershipStates = ["INVITED", "ACCEPTED", "READY", "ACTIVE_MEMBER", "COMPLETED_MEMBER"];
-const libraryMembershipStates = [...validMembershipStates, "DECLINED", "REMOVED", "SUSPENDED"];
+const libraryMembershipStates = [...validMembershipStates, "DECLINED", "REMOVED", "LEFT", "CANCELLED", "SUSPENDED"];
 
 function safeObject(value: JsonObject) {
   return sanitizePlayerObject(value);
@@ -79,6 +79,8 @@ function libraryState(membership: PlayerMembership) {
     return "AWAITING_CAPTAIN";
   if (["ACTIVE", "PAUSED"].includes(membership.playthrough.status)) return "IN_PROGRESS";
   if (membership.playthrough.status === "COMPLETED") return "COMPLETED";
+  if (membership.playthrough.status === "CANCELLED" || ["LEFT", "REMOVED", "CANCELLED"].includes(membership.status))
+    return "EXPIRED_REVOKED";
   return "EXPIRED_REVOKED";
 }
 
@@ -96,6 +98,7 @@ function cardOf(membership: PlayerMembership, captainName?: string) {
   const state = libraryState(membership);
   return {
     id: playthrough.id,
+    invitationId: invitation?.id ?? null,
     taleId: playthrough.taleId,
     taleSlug: snapshot.tale.slug,
     title: snapshot.tale.title,
@@ -111,6 +114,7 @@ function cardOf(membership: PlayerMembership, captainName?: string) {
     state,
     status: invitation && state === "INVITATIONS" ? invitation.status : playthrough.status,
     membershipStatus: membership.status,
+    concurrencyVersion: playthrough.concurrencyVersion,
     pinned: Boolean(membership.pinnedAt),
     versionLabel: playthrough.version.versionLabel,
     publishedAt: playthrough.version.publishedAt.toISOString(),
