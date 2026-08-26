@@ -166,7 +166,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       "href",
       "/play/hp4-lantern-coast",
     );
-    await expect(page.locator("main")).not.toContainText("hp4-account-creator");
+    await expect(activeRouteMain(page)).not.toContainText("hp4-account-creator");
     await capture(page, "HP-P4-EV-U-listing-detail", {
       screen: "Listing detail",
       district: "CHRONICLES",
@@ -278,7 +278,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       /\/community\/voyage-logs\/fictional-lantern-voyage$/u,
     );
     await expect(page.getByText("Participant consent checked")).toBeVisible();
-    await expect(page.locator("main")).not.toContainText("fictional harbor district");
+    await expect(activeRouteMain(page)).not.toContainText("fictional harbor district");
 
     await page
       .getByRole("navigation", { name: "Community Harbor districts" })
@@ -324,7 +324,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
     await expect(page).toHaveURL(/\/community\/creators$/u);
     await followLink(page, page.getByRole("link", { name: "Maker Lumen" }), /\/community\/creators\/maker-lumen$/u);
     await expect(page.getByRole("heading", { name: "No public work yet" })).toBeVisible();
-    await expect(page.locator("main")).not.toContainText("draft");
+    await expect(activeRouteMain(page)).not.toContainText("draft");
     await capture(page, "HP-P4-EV-N-creator-empty", {
       screen: "Creator Profile without work",
       district: "CREATORS",
@@ -512,7 +512,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       await enterHarbor(page);
       await expect(page.getByRole("heading", { name: "No public Community work has arrived yet" })).toBeVisible();
       await expect(page.getByText(/No public charts match/u)).toHaveCount(0);
-      await expect(page.locator("main").getByRole("link", { name: "Explore Chronicles" })).toBeVisible();
+      await expect(activeRouteMain(page).getByRole("link", { name: "Explore Chronicles" })).toBeVisible();
       await capture(page, "HP-P4-EV-D-harbor-empty", {
         screen: "Community-wide empty state",
         district: "HARBOR_HOME",
@@ -759,6 +759,11 @@ async function settleCurrentRoute(page: Page) {
   await expect(routeLayer).toHaveCount(1);
   await expect(routeLayer).toHaveCSS("opacity", "1");
   await expect(routeLayer).toHaveCSS("transform", "none");
+}
+
+function activeRouteMain(page: Page) {
+  const pathname = new URL(page.url()).pathname;
+  return page.locator(`.product-route-layer[data-route-layer="${pathname}"]`).getByRole("main");
 }
 
 async function tabToTarget(page: Page, target: { href?: string; selector?: string }) {
