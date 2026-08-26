@@ -697,13 +697,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       accountMenu.getByRole("link", { name: "Chronicle Passport", exact: true }),
       /\/passport$/u,
     );
-    await followLink(
-      fullLoop,
-      fullLoop
-        .getByRole("navigation", { name: "Personal Harbor sections" })
-        .getByRole("link", { name: "Saved", exact: true }),
-      /\/passport\/saved$/u,
-    );
+    await followPersonalHarborLink(fullLoop, "Saved", /\/passport\/saved$/u);
     await followLink(fullLoop, fullLoop.getByRole("link", { name: "Open in Community" }).first(), /\/community\/.+$/u);
     await followLink(fullLoop, fullLoop.locator("a.community-return"), /\/community$/u);
     await followLink(fullLoop, fullLoop.getByRole("link", { name: "Home", exact: true }).first(), /\/$/u);
@@ -751,6 +745,21 @@ async function followLink(page: Page, link: Locator, expectedUrl: RegExp, option
   }
   await expect(page).toHaveURL(expectedUrl);
   await settleCurrentRoute(page);
+}
+
+async function followPersonalHarborLink(page: Page, name: string, expectedUrl: RegExp) {
+  const mobileSections = page.locator("details.personal-harbor__mobile-sections");
+  const mobileSummary = mobileSections.locator("summary");
+  if (await mobileSummary.isVisible()) {
+    if ((await mobileSections.getAttribute("open")) === null) await mobileSummary.click();
+    await followLink(page, mobileSections.getByRole("link", { name, exact: true }), expectedUrl);
+    return;
+  }
+  await followLink(
+    page,
+    page.locator("aside.personal-harbor__rail").getByRole("link", { name, exact: true }),
+    expectedUrl,
+  );
 }
 
 async function settleCurrentRoute(page: Page) {
