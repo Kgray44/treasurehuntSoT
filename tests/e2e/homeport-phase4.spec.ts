@@ -197,7 +197,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
     await expect(page).toHaveURL(/\/community$/u);
     await expect(page.getByRole("heading", { name: "Featured at the Harbor" })).toBeVisible();
 
-    await page.getByText("Advanced filters", { exact: false }).first().click();
+    await openAdvancedFilters(page);
     await page.getByLabel("Moderate").check();
     await page.getByRole("button", { name: "Apply advanced filters" }).click();
     await expect(page).toHaveURL(/difficulty=MODERATE/u);
@@ -562,7 +562,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       accountState: "ANONYMOUS",
       contentState: "DEFAULT_CONTENT",
     });
-    await page.getByText("Advanced filters", { exact: false }).first().click();
+    await openAdvancedFilters(page);
     await assertNoOverflow(page);
     await capture(page, "HP-P4-EV-AE-mobile-filter-drawer", {
       screen: "Mobile advanced filters",
@@ -615,7 +615,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       contentState: "DEFAULT_CONTENT",
       effectiveZoom: 200,
     });
-    await page.getByText("Advanced filters", { exact: false }).first().click();
+    await openAdvancedFilters(page);
     await capture(page, "HP-P4-EV-AH-zoom-filters", {
       screen: "Effective 200 percent filters",
       district: "HARBOR_HOME",
@@ -764,6 +764,15 @@ async function settleCurrentRoute(page: Page) {
 function activeRouteMain(page: Page) {
   const pathname = new URL(page.url()).pathname;
   return page.locator(`.product-route-layer[data-route-layer="${pathname}"]`).getByRole("main");
+}
+
+async function openAdvancedFilters(page: Page) {
+  await settleCurrentRoute(page);
+  const main = activeRouteMain(page);
+  const fullSearch = main.getByRole("button", { name: "Full Search", exact: true });
+  if ((await fullSearch.isVisible()) && (await fullSearch.getAttribute("aria-expanded")) !== "true")
+    await fullSearch.click();
+  await main.locator("summary").filter({ hasText: "Advanced filters" }).click();
 }
 
 async function tabToTarget(page: Page, target: { href?: string; selector?: string }) {
