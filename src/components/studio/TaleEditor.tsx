@@ -243,7 +243,7 @@ export function TaleEditor({
   const [blockSearch, setBlockSearch] = useState("");
   const [collapsedChapters, setCollapsedChapters] = useState<string[]>([]);
   const [previewBlock, setPreviewBlock] = useState(false);
-  const [previewViewport, setPreviewViewport] = useState<"desktop" | "mobile">("desktop");
+  const [previewViewport, setPreviewViewport] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [previewReducedMotion, setPreviewReducedMotion] = useState(false);
   const [previewReplay, setPreviewReplay] = useState(0);
   const [librarySearch, setLibrarySearch] = useState("");
@@ -2725,6 +2725,7 @@ export function TaleEditor({
                                     {...attributes}
                                     {...listeners}
                                     className={`timeline-block ${selectedIds.includes(block.id) ? "selected" : ""}`}
+                                    id={`block-${block.id}`}
                                     data-block-id={block.id}
                                     data-selection-count={selectedIds.length}
                                     data-validation-error={
@@ -3156,6 +3157,12 @@ export function TaleEditor({
                     Desktop
                   </button>
                   <button
+                    className={previewViewport === "tablet" ? "active" : ""}
+                    onClick={() => setPreviewViewport("tablet")}
+                  >
+                    Tablet
+                  </button>
+                  <button
                     className={previewViewport === "mobile" ? "active" : ""}
                     onClick={() => setPreviewViewport("mobile")}
                   >
@@ -3585,6 +3592,11 @@ export function TaleEditor({
                   <small>
                     {version.activeSessions} active Voyage{version.activeSessions === 1 ? "" : "s"}
                   </small>
+                  {version.activeSessions > 0 ? (
+                    <p className="version-active-voyage-note">
+                      Active Voyages remain pinned to this immutable Version until their own journey concludes.
+                    </p>
+                  ) : null}
                   <div className="version-actions">
                     <button onClick={() => void versionAction(version, "preview")}>Preview release</button>
                     <button onClick={() => void versionAction(version, "restore")}>Copy into new draft</button>
