@@ -5,6 +5,10 @@ const dateText = (value) =>
   value
     ? new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "medium" }).format(new Date(value))
     : "UNMEASURED";
+const sourceDateText = (value) =>
+  value
+    ? new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "medium" }).format(new Date(value))
+    : "NOT_RECORDED";
 const apiUrl = (path) => {
   const base = window.location.pathname.startsWith("/bridgewatch") ? "/bridgewatch/" : "/";
   return new URL(`${base}${String(path).replace(/^\/+/, "")}`, window.location.origin);
@@ -1035,18 +1039,26 @@ async function renderSources() {
   const sources = await refreshSources();
   const node = document.createDocumentFragment();
   const sourceSection = section(
-    "Source health",
-    "Freshness, authorization state, cache age, retry timing, and degradation are explicit.",
+    "Sources & Data Quality",
+    "Acquisition health and observation coverage are separate: a reachable source can still have bounded or unavailable evidence.",
   );
   const rows = sources.map((source) => [
     linkButton(source.name, `#/sources/${encodeURIComponent(source.name)}`),
-    source.state,
+    tag(source.state),
+    tag(source.coverage?.state ?? "NOT_RECORDED"),
     source.configured ? "CONFIGURED" : "NOT CONFIGURED",
-    source.reachable === null ? "UNMEASURED" : String(source.reachable),
-    dateText(source.lastSuccessAt),
-    source.detail ?? "",
+    source.reachable === null ? "NOT_RECORDED" : String(source.reachable),
+    sourceDateText(source.lastSuccessAt),
+    source.records?.retained ?? "NOT_RECORDED",
+    source.records?.displayed ?? "NOT_RECORDED",
+    source.failure?.classification ?? source.detail ?? source.coverage?.limitation ?? "NONE",
   ]);
-  sourceSection.append(table(["Source", "State", "Setup", "Reachable", "Last success", "Detail"], rows));
+  sourceSection.append(
+    table(
+      ["Source", "Health", "Coverage", "Setup", "Reachable", "Last success", "Retained", "Displayed", "Diagnostic"],
+      rows,
+    ),
+  );
   node.append(sourceSection);
   return node;
 }
@@ -1054,21 +1066,40 @@ async function renderSourceProfile(name) {
   const data = await request(`api/sources/${encodeURIComponent(name)}`);
   const node = document.createDocumentFragment();
   const profile = section(
-    `${data.source.name} source profile`,
-    "Source configuration, freshness, reachable state, cached evidence, and retry timing are explicit.",
+    `${data.source.name} data-quality profile`,
+    "This source record distinguishes source absence, connector loss, retained stale data, and unsupported history.",
   );
   profile.append(
     detail([
+      ["Source ID", data.source.sourceId],
+      ["Expected", data.source.expected],
       ["State", data.source.state],
+      ["Coverage", data.source.coverage?.state],
+      ["Coverage summary", data.source.coverage?.summary],
+      ["Coverage limitation", data.source.coverage?.limitation],
       ["Configured", data.source.configured],
+      ["Configuration source", data.source.configurationSource],
+      ["Authority level", data.source.authorityLevel],
       ["Authentication", data.source.authenticationState],
       ["Reachable", data.source.reachable],
-      ["Last attempt", dateText(data.source.lastAttemptAt)],
-      ["Last success", dateText(data.source.lastSuccessAt)],
-      ["Next retry", dateText(data.source.nextRetryAt)],
+      ["Last attempt", sourceDateText(data.source.lastAttemptAt)],
+      ["Last success", sourceDateText(data.source.lastSuccessAt)],
+      ["Last source occurrence", sourceDateText(data.source.sourceOccurrenceAt)],
+      ["Bridgewatch observed", sourceDateText(data.source.bridgewatchObservedAt)],
+      ["Next retry", sourceDateText(data.source.nextRetryAt)],
       ["Cache age (ms)", data.source.cacheAgeMs],
+      ["Serving retained stale data", data.source.servingRetainedStaleData],
       ["Rate-limit remaining", data.source.rateLimitRemaining],
-      ["Detail", data.source.detail],
+      ["Schema / contract", data.source.schemaVersion],
+      ["Records received", data.source.records?.received],
+      ["Records retained", data.source.records?.retained],
+      ["Records exposed", data.source.records?.exposed],
+      ["Records displayed", data.source.records?.displayed],
+      ["Supported capabilities", data.source.capabilityClasses?.supported?.join(", ") || "NONE"],
+      ["Missing capabilities", data.source.capabilityClasses?.missing?.join(", ") || "NONE"],
+      ["Failure classification", data.source.failure?.classification ?? "NONE"],
+      ["Sanitized diagnostic", data.source.failure?.diagnostic ?? data.source.detail ?? "NONE"],
+      ["Repairability", data.source.repairability],
     ]),
   );
   node.append(profile);

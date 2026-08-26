@@ -78,6 +78,8 @@ export class RepositoryEvidenceCollector {
     branches: DiscoveryBranch[];
     documentsAvailable: boolean;
     branchesAvailable: boolean;
+    documentCount: number;
+    branchCount: number;
   }> {
     const documents = await this.documents();
     const branches = await this.branches();
@@ -86,6 +88,8 @@ export class RepositoryEvidenceCollector {
       branches: branches.values,
       documentsAvailable: documents.available,
       branchesAvailable: branches.available,
+      documentCount: documents.values.length,
+      branchCount: branches.values.length,
     };
   }
 

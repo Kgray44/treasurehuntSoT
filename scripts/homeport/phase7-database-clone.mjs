@@ -6,8 +6,11 @@ const command = process.argv[2] ?? "journeys";
 const taskRoot = path.resolve(required("HOMEPORT_PHASE7_TASK_ROOT"));
 const seed = path.join(taskRoot, "immutable-fixture-seed", "homeport-phase7-integrated-v1.db");
 const canonical = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
-if (!taskRoot.startsWith(path.resolve("C:/Users/kkids/AppData/Local/ProjectHomeport") + path.sep))
-  throw new Error(`HOMEPORT_PHASE7_TASK_ROOT_REFUSED:${taskRoot}`);
+const approvedTaskRoot =
+  process.env.HOMEPORT_SOUNDING_LINE_TASK_ROOT === "1"
+    ? path.join(path.resolve(process.cwd()), "artifacts", "sounding-line")
+    : path.resolve("C:/Users/kkids/AppData/Local/ProjectHomeport");
+if (!taskRoot.startsWith(approvedTaskRoot + path.sep)) throw new Error(`HOMEPORT_PHASE7_TASK_ROOT_REFUSED:${taskRoot}`);
 if (path.resolve(seed) === canonical || (await stat(seed)).size < 1) throw new Error("HOMEPORT_PHASE7_SEED_INVALID");
 
 if (command === "journeys") {

@@ -1,6 +1,6 @@
 import type { PhaseRecord, ProjectRecord, ProjectState } from "./domain.js";
 
-const repository = "forever-treasure/forever-treasure-companion";
+const currentRepository = "Kgray44/treasurehuntSoT";
 const phase = (
   projectId: string,
   ordinal: number,
@@ -30,7 +30,7 @@ const record = (
 ): ProjectRecord => ({
   id,
   name,
-  repository,
+  repository: currentRepository,
   state,
   governingReferences: [source],
   sourcePaths: [source],
@@ -483,6 +483,15 @@ export const projectRegistry: readonly ProjectRecord[] = [
     { missingEvidence: ["The retained receipt explicitly records active-branch reconciliation pending."] },
   ),
 ];
+
+/**
+ * The retained registry is repository-specific evidence, while collection is
+ * configured at runtime. Rebind presentation records to the exact repository
+ * being observed so a correct collector cannot be paired with stale provenance.
+ */
+export function registryForRepository(repository: string): readonly ProjectRecord[] {
+  return projectRegistry.map((project) => ({ ...project, repository }));
+}
 
 export function findProject(id: string): ProjectRecord | undefined {
   return projectRegistry.find((project) => project.id === id);

@@ -9,12 +9,20 @@ export default async function prepareHomeportPhase4Database() {
   const target = path.resolve(required("HOMEPORT_PHASE4_DATABASE_PATH"));
   const evidenceRoot = path.resolve(required("HOMEPORT_PHASE4_EVIDENCE_ROOT"));
   const canonicalDatabase = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
+  const soundingLineOwned = process.env.HOMEPORT_SOUNDING_LINE_TASK_ROOT === "1";
+  const approvedSoundingLineSource =
+    soundingLineOwned &&
+    source.startsWith(repositoryRoot + path.sep) &&
+    /^\.sounding-line-[a-f0-9]{12}\.sqlite$/u.test(path.basename(source));
   const sourceInfo = await stat(source);
   if (!sourceInfo.isFile() || sourceInfo.size < 1)
     throw new Error(`Homeport Phase 4 source database is unavailable: ${source}`);
   if (source === canonicalDatabase || target === canonicalDatabase || source === target)
     throw new Error("Homeport Phase 4 refuses canonical or same-file database mutation.");
-  if (!source.startsWith(taskRoot + path.sep) || !target.startsWith(taskRoot + path.sep))
+  if (
+    (!source.startsWith(taskRoot + path.sep) && !approvedSoundingLineSource) ||
+    !target.startsWith(taskRoot + path.sep)
+  )
     throw new Error("Homeport Phase 4 database paths must remain inside the task root.");
   const approvedEvidenceRoot = path.join(
     repositoryRoot,
@@ -24,7 +32,7 @@ export default async function prepareHomeportPhase4Database() {
     "evidence",
     "phase4",
   );
-  if (evidenceRoot !== approvedEvidenceRoot)
+  if (soundingLineOwned ? !evidenceRoot.startsWith(taskRoot + path.sep) : evidenceRoot !== approvedEvidenceRoot)
     throw new Error(`Homeport Phase 4 refuses an ungoverned evidence root: ${evidenceRoot}`);
 
   await mkdir(path.dirname(target), { recursive: true });

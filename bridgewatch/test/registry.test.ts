@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { projectProgress } from "../src/domain.js";
-import { projectRegistry } from "../src/registry.js";
+import { projectRegistry, registryForRepository } from "../src/registry.js";
 
 describe("source-indexed Project Registry", () => {
   it("keeps every discovered project durable and does not turn evidence records into progress", () => {
@@ -19,6 +19,14 @@ describe("source-indexed Project Registry", () => {
     for (const project of projectRegistry)
       for (const source of project.sourcePaths)
         expect(existsSync(resolve(process.cwd(), "..", source)), `${project.id}: ${source}`).toBe(true);
+  });
+
+  it("binds displayed project evidence to the configured read-only repository", () => {
+    const repository = "Kgray44/treasurehuntSoT";
+    expect(registryForRepository(repository)).toEqual(
+      expect.arrayContaining([expect.objectContaining({ id: "bridgewatch", repository })]),
+    );
+    expect(projectRegistry.find((project) => project.id === "bridgewatch")?.repository).toBe("Kgray44/treasurehuntSoT");
   });
 
   it("retains the accepted three-phase Bridgewatch completion record", () => {

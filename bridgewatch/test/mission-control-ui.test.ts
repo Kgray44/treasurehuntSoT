@@ -26,6 +26,7 @@ describe("v1.2 mission-control navigation", () => {
     expect(app).toContain("function renderComparison");
     expect(app).toContain("function renderPullRequestProfile");
     expect(app).toContain("function renderSourceProfile");
+    expect(app).toContain("Sources & Data Quality");
   });
 
   it("keeps dense technical detail readable, focusable, and phone-safe", () => {
@@ -33,6 +34,9 @@ describe("v1.2 mission-control navigation", () => {
     expect(css).toContain("overflow-wrap: anywhere");
     expect(css).toContain("prefers-reduced-motion");
     expect(css).toContain("focus-visible");
+    expect(app).toContain("Failure classification");
+    expect(app).toContain("Serving retained stale data");
+    expect(app).toContain("sourceDateText");
   });
 
   it("offers bounded client-side search or filtering for every requested observation collection", () => {

@@ -7,6 +7,7 @@ import test from "node:test";
 import { splitMigrationStatements } from "../../scripts/sounding-line/sqlite-bootstrap.mjs";
 import {
   assertBinding,
+  browserProvisioningRequired,
   buildPlan,
   classifyChanges,
   packageAuthorityChanges,
@@ -264,6 +265,65 @@ test("ordinary selection finds Harborlight browser proof structurally", () => {
   assert.equal(selection.widened, false);
 });
 
+test("trusted browser provisioning follows the unchanged ordinary selection and fails closed", async () => {
+  const zeroBrowserSelection = selectAffectedTests({
+    changedPaths: ["Development_Docs/Features/guide.md"],
+    unitTests: ["scripts/features/feature-catalog.test.ts"],
+    browserTests: ["tests/e2e/harborlight-phase3.spec.ts"],
+  });
+  const selectionBeforeDecision = structuredClone(zeroBrowserSelection);
+  assert.equal(browserProvisioningRequired(zeroBrowserSelection), false);
+  assert.deepEqual(zeroBrowserSelection, selectionBeforeDecision);
+
+  const selectionFor = (changedPaths, browserTests) =>
+    selectAffectedTests({ changedPaths, unitTests: [], browserTests });
+  const widenedBrowserSelection = selectionFor(
+    ["src/unknown/candidate.ts"],
+    ["tests/e2e/harborlight-phase3.spec.ts", "tests/e2e/access-gates.spec.ts"],
+  );
+  assert.equal(widenedBrowserSelection.widened, true);
+  for (const [name, selection] of [
+    [
+      "direct browser proof",
+      selectionFor(["tests/e2e/harborlight-phase3.spec.ts"], ["tests/e2e/harborlight-phase3.spec.ts"]),
+    ],
+    ["conservatively widened browser proof", widenedBrowserSelection],
+    [
+      "Tideglass dedicated harness",
+      selectionFor(["tests/e2e/tideglass-phase3.spec.ts"], ["tests/e2e/tideglass-phase3.spec.ts"]),
+    ],
+    [
+      "Admiralty Phase 2 dedicated harness",
+      selectionFor(["tests/e2e/admiralty-phase2.spec.ts"], ["tests/e2e/admiralty-phase2.spec.ts"]),
+    ],
+    [
+      "mixed browser proof",
+      selectionFor(
+        ["tests/e2e/admiralty-phase2.spec.ts", "tests/e2e/harborlight-phase3.spec.ts"],
+        ["tests/e2e/admiralty-phase2.spec.ts", "tests/e2e/harborlight-phase3.spec.ts"],
+      ),
+    ],
+  ]) {
+    assert.equal(browserProvisioningRequired(selection), true, name);
+  }
+  assert.throws(() => browserProvisioningRequired({}), /SOUNDING_LINE_BROWSER_PROVISIONING_INDETERMINATE/u);
+  assert.throws(() => browserProvisioningRequired(null), /SOUNDING_LINE_BROWSER_PROVISIONING_INDETERMINATE/u);
+
+  await withCandidate({ "Development_Docs/Features/guide.md": "# Guide\n" }, async (fixture) => {
+    const plan = await buildPlan({ ...fixture, mode: "ordinary" });
+    assert.deepEqual(plan.selected.browserTests, []);
+    assert.equal(plan.browserRequired, false);
+  });
+  await withCandidate(
+    { "tests/e2e/harborlight-phase3.spec.ts": "test('browser proof', () => {});\n" },
+    async (fixture) => {
+      const plan = await buildPlan({ ...fixture, mode: "ordinary" });
+      assert.deepEqual(plan.selected.browserTests, ["tests/e2e/harborlight-phase3.spec.ts"]);
+      assert.equal(plan.browserRequired, true);
+    },
+  );
+});
+
 test("direct browser proof prevents unrelated browser suites from widening the candidate", () => {
   const selection = selectAffectedTests({
     changedPaths: ["src/app/community/voyage-logs/[slug]/page.tsx", "tests/e2e/harborlight-phase3.spec.ts"],
@@ -365,10 +425,11 @@ test("ordinary browser proof uses the installed Chromium project", () => {
     migrationScripts: [],
     buildRequired: false,
   });
-  assert.deepEqual(browserCommands.at(-2), [
+  assert.deepEqual(browserCommands.at(-3), [
     process.execPath,
     ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
   ]);
+  assert.deepEqual(browserCommands.at(-2), ["npx", ["--no-install", "tsx", "prisma/seed.ts"]]);
   const browserCommand = browserCommands.at(-1);
   assert.deepEqual(browserCommand, [
     "npx",
@@ -398,7 +459,7 @@ test("Tideglass browser proof uses its dedicated isolated harness", () => {
         ["scripts/tideglass/run-phase3-journeys.mjs", "scripts/sounding-line/sqlite-bootstrap.mjs"].includes(
           argumentsList[0],
         )) ||
-      (command === "npx" && argumentsList.includes("playwright")),
+      (command === "npx" && (argumentsList.includes("playwright") || argumentsList.includes("prisma/seed.ts"))),
   );
   assert.deepEqual(browserHarnessCommands, [
     [process.execPath, ["scripts/tideglass/run-phase3-journeys.mjs"]],
@@ -406,6 +467,7 @@ test("Tideglass browser proof uses its dedicated isolated harness", () => {
       process.execPath,
       ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
     ],
+    ["npx", ["--no-install", "tsx", "prisma/seed.ts"]],
     ["npx", ["--no-install", "playwright", "test", "tests/e2e/harborlight-phase3.spec.ts", "--project", "chromium"]],
   ]);
   assert.deepEqual(
@@ -436,7 +498,10 @@ test("Admiralty Phase 2 browser proof uses its dedicated isolated harness", () =
     migrationScripts: [],
     buildRequired: true,
   });
-  assert.deepEqual(browserCommands.filter(([, argumentsList]) => argumentsList.includes("playwright")), []);
+  assert.deepEqual(
+    browserCommands.filter(([, argumentsList]) => argumentsList.includes("playwright")),
+    [],
+  );
   assert.deepEqual(browserCommands.at(-1), [process.execPath, ["scripts/admiralty/run-phase2-journeys.mjs"]]);
   assert.deepEqual(
     verificationEnvironment(
@@ -475,7 +540,7 @@ test("Admiralty Phase 2 leaves mixed generic browser proof selected exactly once
         ["scripts/admiralty/run-phase2-journeys.mjs", "scripts/sounding-line/sqlite-bootstrap.mjs"].includes(
           argumentsList[0],
         )) ||
-      (command === "npx" && argumentsList.includes("playwright")),
+      (command === "npx" && (argumentsList.includes("playwright") || argumentsList.includes("prisma/seed.ts"))),
   );
   assert.deepEqual(browserHarnessCommands, [
     [process.execPath, ["scripts/admiralty/run-phase2-journeys.mjs"]],
@@ -483,8 +548,100 @@ test("Admiralty Phase 2 leaves mixed generic browser proof selected exactly once
       process.execPath,
       ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
     ],
+    ["npx", ["--no-install", "tsx", "prisma/seed.ts"]],
     ["npx", ["--no-install", "playwright", "test", "tests/e2e/admiralty-phase3.spec.ts", "--project", "chromium"]],
   ]);
+});
+
+test("Homeport Phase 4 and Phase 7 browser proof use portable dedicated fixtures", () => {
+  const candidateSha = "e".repeat(40);
+  const browserCommands = verificationCommands({
+    mode: "ordinary",
+    candidateSha,
+    safetyPaths: [],
+    lintPaths: [],
+    selected: {
+      unitTests: [],
+      browserTests: [
+        "tests/e2e/homeport-phase4.spec.ts",
+        "tests/e2e/homeport-phase7.spec.ts",
+        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts",
+        "tests/e2e/harborlight-phase3.spec.ts",
+      ],
+    },
+    databaseUrl: "file:./.sounding-line-eeeeeeeeeeee.sqlite",
+    migrationRequired: false,
+    migrationScripts: [],
+    buildRequired: true,
+  });
+  assert.deepEqual(
+    browserCommands.filter(
+      ([command, argumentsList]) => command === process.execPath || argumentsList.includes("playwright"),
+    ),
+    [
+      [
+        process.execPath,
+        ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-eeeeeeeeeeee.sqlite"],
+      ],
+      [process.execPath, ["scripts/homeport/run-phase4-e2e.mjs"]],
+      [process.execPath, ["scripts/homeport/prepare-phase7-fixture.mjs"]],
+      [process.execPath, ["scripts/homeport/run-phase7-journeys.mjs"]],
+      [process.execPath, ["scripts/homeport/prepare-phase7-owner-correction-round3-fixture.mjs"]],
+      [process.execPath, ["scripts/homeport/run-phase7-owner-correction-round3-journeys.mjs"]],
+      ["npx", ["--no-install", "playwright", "test", "tests/e2e/harborlight-phase3.spec.ts", "--project", "chromium"]],
+    ],
+  );
+  assert.deepEqual(
+    verificationEnvironment(
+      { candidateSha, databaseUrl: "file:./.sounding-line-eeeeeeeeeeee.sqlite", buildRequired: true },
+      process.execPath,
+      ["scripts/homeport/run-phase7-journeys.mjs"],
+      {},
+    ),
+    {
+      HOMEPORT_SOUNDING_LINE_TASK_ROOT: "1",
+      HOMEPORT_PHASE4_TASK_ROOT: "artifacts/sounding-line/homeport-phase4-eeeeeeeeeeee",
+      HOMEPORT_PHASE4_SOURCE_DATABASE: "prisma/.sounding-line-eeeeeeeeeeee.sqlite",
+      HOMEPORT_PHASE4_EVIDENCE_ROOT: "artifacts/sounding-line/homeport-phase4-eeeeeeeeeeee/evidence",
+      HOMEPORT_PHASE4_REUSE_BUILD: "1",
+      HOMEPORT_PHASE7_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-eeeeeeeeeeee",
+      HOMEPORT_PHASE7_SOURCE_DATABASE: "prisma/.sounding-line-eeeeeeeeeeee.sqlite",
+      HOMEPORT_PHASE7_ORIGINAL_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-eeeeeeeeeeee",
+      HOMEPORT_PHASE7_ROUND1_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-round1-eeeeeeeeeeee",
+      HOMEPORT_PHASE7_ROUND2_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-round2-eeeeeeeeeeee",
+      HOMEPORT_PHASE7_ROUND3_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-round3-eeeeeeeeeeee",
+      HOMEPORT_PHASE7_PATCH_A_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-patch-a-eeeeeeeeeeee",
+    },
+  );
+});
+
+test("Homeport Sounding Line roots reject invalid source evidence before execution", () => {
+  const environment = {
+    ...process.env,
+    HOMEPORT_SOUNDING_LINE_TASK_ROOT: "1",
+    HOMEPORT_PHASE4_TASK_ROOT: "artifacts/sounding-line/homeport-negative-phase4",
+    HOMEPORT_PHASE4_SOURCE_DATABASE: "./developer-local.sqlite",
+    HOMEPORT_PHASE7_TASK_ROOT: "artifacts/sounding-line/homeport-negative-phase7",
+    HOMEPORT_PHASE7_SOURCE_DATABASE: "./developer-local.sqlite",
+  };
+  assert.throws(
+    () =>
+      execFileSync(process.execPath, ["scripts/homeport/run-phase4-e2e.mjs"], {
+        env: environment,
+        encoding: "utf8",
+        stdio: "pipe",
+      }),
+    /Homeport Phase 4 refuses this build database/u,
+  );
+  assert.throws(
+    () =>
+      execFileSync(process.execPath, ["scripts/homeport/prepare-phase7-fixture.mjs"], {
+        env: environment,
+        encoding: "utf8",
+        stdio: "pipe",
+      }),
+    /HOMEPORT_PHASE7_SOURCE_DATABASE_REFUSED/u,
+  );
 });
 
 test("Admiralty Phase 2 dedicated harness failures fail verification normally", () => {
@@ -504,7 +661,8 @@ test("Admiralty Phase 2 dedicated harness failures fail verification normally", 
     () =>
       runVerificationCommands(".", plan, (_root, command, argumentsList) => {
         calls.push([command, argumentsList]);
-        if (argumentsList[0] === "scripts/admiralty/run-phase2-journeys.mjs") throw new Error("ADMIRALTY_HARNESS_FAILED");
+        if (argumentsList[0] === "scripts/admiralty/run-phase2-journeys.mjs")
+          throw new Error("ADMIRALTY_HARNESS_FAILED");
       }),
     /ADMIRALTY_HARNESS_FAILED/u,
   );
@@ -529,6 +687,9 @@ test("database verification is candidate-isolated when the environment has no UR
   const databaseUrl = soundingLineDatabaseUrl("a".repeat(40));
   assert.equal(databaseUrl, "file:./.sounding-line-aaaaaaaaaaaa.sqlite");
   assert.deepEqual(verificationEnvironment({ databaseUrl }, "npx", ["--no-install", "prisma", "validate"], {}), {
+    DATABASE_URL: databaseUrl,
+  });
+  assert.deepEqual(verificationEnvironment({ databaseUrl }, "npx", ["--no-install", "tsx", "prisma/seed.ts"], {}), {
     DATABASE_URL: databaseUrl,
   });
 });
@@ -590,7 +751,12 @@ test("trusted PR routing produces one strict decision for ordinary and control-p
   assert.match(ordinaryWorkflow, /root: "\.\.\/candidate"/u);
   assert.match(ordinaryWorkflow, /mode: "ordinary"/u);
   assert.match(ordinaryWorkflow, /kind=ordinary/u);
+  assert.match(ordinaryWorkflow, /browser_required=\$\{plan\.browserRequired\}/u);
   assert.match(ordinaryWorkflow, /kind=control-plane/u);
+  assert.match(
+    ordinaryWorkflow,
+    /steps\.route\.outputs\.kind == 'ordinary' && steps\.route\.outputs\.browser_required == 'true'/u,
+  );
   assert.match(ordinaryWorkflow, /steps\.route\.outputs\.kind == 'ordinary'/u);
   assert.match(ordinaryWorkflow, /steps\.route\.outputs\.kind == 'control-plane'/u);
   assert.match(ordinaryWorkflow, /SOUNDING_LINE_CONTROL_PLANE_CHANGE_REQUIRES_RELEASE_MODE/u);
