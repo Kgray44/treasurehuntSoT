@@ -230,7 +230,8 @@ function homeportTaskRoot(candidateSha, lane) {
 }
 
 function homeportEnvironment(plan) {
-  const sourceDatabase = plan.databaseUrl?.startsWith("file:") ? plan.databaseUrl.slice("file:".length) : "";
+  const databaseUrl = plan.databaseUrl?.startsWith("file:") ? plan.databaseUrl.slice("file:".length) : "";
+  const sourceDatabase = databaseUrl.startsWith("./") ? path.posix.join("prisma", databaseUrl.slice(2)) : databaseUrl;
   if (!sourceDatabase) throw new Error("SOUNDING_LINE_HOMEPORT_SOURCE_DATABASE_INDETERMINATE");
   return {
     HOMEPORT_SOUNDING_LINE_TASK_ROOT: "1",

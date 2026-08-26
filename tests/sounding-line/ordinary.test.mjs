@@ -598,11 +598,11 @@ test("Homeport Phase 4 and Phase 7 browser proof use portable dedicated fixtures
     {
       HOMEPORT_SOUNDING_LINE_TASK_ROOT: "1",
       HOMEPORT_PHASE4_TASK_ROOT: "artifacts/sounding-line/homeport-phase4-eeeeeeeeeeee",
-      HOMEPORT_PHASE4_SOURCE_DATABASE: "./.sounding-line-eeeeeeeeeeee.sqlite",
+      HOMEPORT_PHASE4_SOURCE_DATABASE: "prisma/.sounding-line-eeeeeeeeeeee.sqlite",
       HOMEPORT_PHASE4_EVIDENCE_ROOT: "artifacts/sounding-line/homeport-phase4-eeeeeeeeeeee/evidence",
       HOMEPORT_PHASE4_REUSE_BUILD: "1",
       HOMEPORT_PHASE7_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-eeeeeeeeeeee",
-      HOMEPORT_PHASE7_SOURCE_DATABASE: "./.sounding-line-eeeeeeeeeeee.sqlite",
+      HOMEPORT_PHASE7_SOURCE_DATABASE: "prisma/.sounding-line-eeeeeeeeeeee.sqlite",
       HOMEPORT_PHASE7_ORIGINAL_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-eeeeeeeeeeee",
       HOMEPORT_PHASE7_ROUND1_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-round1-eeeeeeeeeeee",
       HOMEPORT_PHASE7_ROUND2_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-round2-eeeeeeeeeeee",
