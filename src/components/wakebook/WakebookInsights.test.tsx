@@ -25,7 +25,14 @@ const response: Insights = {
       duration: "1 hr 2 min",
     },
   ],
-  people: [{ label: "Synthetic Crew", role: "Lookout", voyageCount: 1, availability: "HISTORICAL" }],
+  people: [
+    {
+      label: "Synthetic Crew",
+      role: "Lookout",
+      voyageCount: 1,
+      availability: "HISTORICAL",
+    },
+  ],
 };
 
 describe("WakebookInsights", () => {
@@ -37,9 +44,16 @@ describe("WakebookInsights", () => {
   it("keeps the timeline private, navigable, and linked back to the canonical Voyage record", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(Response.json(response)));
     render(<WakebookInsights view="timeline" />);
-    expect(await screen.findByRole("heading", { name: "Timeline" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Open Voyage" })).toHaveAttribute("href", "/passport/history/record-one");
-    expect(screen.getByRole("navigation", { name: "Archive views" })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "Timeline" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Open Voyage" })).toHaveAttribute(
+      "href",
+      "/passport/history/record-one",
+    );
+    expect(
+      screen.getByRole("navigation", { name: "Archive views" }),
+    ).toBeInTheDocument();
   });
 
   it("labels limited history honestly in people and statistics instead of inventing a score", async () => {

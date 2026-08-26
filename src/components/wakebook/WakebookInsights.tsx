@@ -11,55 +11,77 @@ import {
 
 type View = "timeline" | "people" | "statistics";
 
-const copy: Record<View, { eyebrow: string; heading: string; detail: string }> = {
-  timeline: {
-    eyebrow: "The shape of your journey",
-    heading: "Timeline",
-    detail: "Read the private sequence of your recorded Voyages without turning history into a score.",
-  },
-  people: {
-    eyebrow: "Those who traveled beside you",
-    heading: "People",
-    detail: "Historical crew context stays private and remains distinct from current profiles.",
-  },
-  statistics: {
-    eyebrow: "A private reading of the wake",
-    heading: "Statistics",
-    detail: "Source-bound totals make their quality visible instead of guessing at missing history.",
-  },
-};
+const copy: Record<View, { eyebrow: string; heading: string; detail: string }> =
+  {
+    timeline: {
+      eyebrow: "The shape of your journey",
+      heading: "Timeline",
+      detail:
+        "Read the private sequence of your recorded Voyages without turning history into a score.",
+    },
+    people: {
+      eyebrow: "Those who traveled beside you",
+      heading: "People",
+      detail:
+        "Historical crew context stays private and remains distinct from current profiles.",
+    },
+    statistics: {
+      eyebrow: "A private reading of the wake",
+      heading: "Statistics",
+      detail:
+        "Source-bound totals make their quality visible instead of guessing at missing history.",
+    },
+  };
 
 function duration(seconds: number | null) {
   if (seconds === null) return "Unavailable";
   const minutes = Math.round(seconds / 60);
   const hours = Math.floor(minutes / 60);
-  return hours ? `${hours} hr${minutes % 60 ? ` ${minutes % 60} min` : ""}` : `${minutes} min`;
+  return hours
+    ? `${hours} hr${minutes % 60 ? ` ${minutes % 60} min` : ""}`
+    : `${minutes} min`;
 }
 
 export function WakebookInsights({ view }: { view: View }) {
   const resource = useWakebookResource<Insights>("/api/passport/insights");
   if (resource.state.status === "loading")
-    return <WakebookLoading detail="Reading your private, source-bound journey history." />;
+    return (
+      <WakebookLoading detail="Reading your private, source-bound journey history." />
+    );
   if (resource.state.status === "error")
-    return <WakebookError message={resource.state.message} retry={resource.reload} />;
+    return (
+      <WakebookError message={resource.state.message} retry={resource.reload} />
+    );
   const insights = resource.state.value;
   const text = copy[view];
   return (
     <div className="wakebook-insights">
-      <section className="wakebook-insights__intro" aria-labelledby="wakebook-insights-title">
+      <section
+        className="wakebook-insights__intro"
+        aria-labelledby="wakebook-insights-title"
+      >
         <div>
           <p className="personal-harbor__eyebrow">{text.eyebrow}</p>
           <h2 id="wakebook-insights-title">{text.heading}</h2>
           <p>{text.detail}</p>
         </div>
         <nav aria-label="Archive views" className="wakebook-insights__tabs">
-          <Link href="/passport/timeline" aria-current={view === "timeline" ? "page" : undefined}>
+          <Link
+            href="/passport/timeline"
+            aria-current={view === "timeline" ? "page" : undefined}
+          >
             Timeline
           </Link>
-          <Link href="/passport/people" aria-current={view === "people" ? "page" : undefined}>
+          <Link
+            href="/passport/people"
+            aria-current={view === "people" ? "page" : undefined}
+          >
             People
           </Link>
-          <Link href="/passport/statistics" aria-current={view === "statistics" ? "page" : undefined}>
+          <Link
+            href="/passport/statistics"
+            aria-current={view === "statistics" ? "page" : undefined}
+          >
             Statistics
           </Link>
         </nav>
@@ -91,12 +113,19 @@ function Timeline({ insights }: { insights: Insights }) {
         <li key={item.id}>
           <div className="wakebook-timeline__marker" aria-hidden="true" />
           <article>
-            <p>{item.dateQuality === "EXACT" ? formatArchiveDate(item.date) : "Date unavailable"}</p>
+            <p>
+              {item.dateQuality === "EXACT"
+                ? formatArchiveDate(item.date)
+                : "Date unavailable"}
+            </p>
             <h3>{item.title}</h3>
             <span>
               {item.lifecycle} · {item.duration}
             </span>
-            <Link className="button button--quiet" href={`/passport/history/${encodeURIComponent(item.id)}`}>
+            <Link
+              className="button button--quiet"
+              href={`/passport/history/${encodeURIComponent(item.id)}`}
+            >
               Open Voyage
             </Link>
           </article>
@@ -117,7 +146,8 @@ function People({ insights }: { insights: Insights }) {
   return (
     <section aria-label="Historical people" className="wakebook-people">
       <p className="wakebook-insights__lead">
-        Historical companions are grouped by the records you own. This is not a public social graph.
+        Historical companions are grouped by the records you own. This is not a
+        public social graph.
       </p>
       <ul>
         {insights.people.map((person, index) => (
@@ -128,11 +158,14 @@ function People({ insights }: { insights: Insights }) {
             <div>
               <h3>{person.label}</h3>
               <p>
-                {person.role} · {person.voyageCount} {person.voyageCount === 1 ? "Voyage" : "Voyages"}
+                {person.role} · {person.voyageCount}{" "}
+                {person.voyageCount === 1 ? "Voyage" : "Voyages"}
               </p>
             </div>
             <span className="wakebook-people__quality">
-              {person.availability === "HISTORICAL" ? "Historical snapshot" : "Limited historical record"}
+              {person.availability === "HISTORICAL"
+                ? "Historical snapshot"
+                : "Limited historical record"}
             </span>
           </li>
         ))}
@@ -151,10 +184,13 @@ function Statistics({ insights }: { insights: Insights }) {
       />
     );
   return (
-    <section className="wakebook-statistics" aria-label="Private journey statistics">
+    <section
+      className="wakebook-statistics"
+      aria-label="Private journey statistics"
+    >
       <p className="wakebook-insights__lead">
-        These are private, rebuildable summaries of accepted history. They do not rank you, create streaks, or compare
-        you with anyone else.
+        These are private, rebuildable summaries of accepted history. They do
+        not rank you, create streaks, or compare you with anyone else.
       </p>
       <dl>
         <div>
@@ -169,7 +205,11 @@ function Statistics({ insights }: { insights: Insights }) {
         </div>
         <div>
           <dt>Recorded time</dt>
-          <dd>{metrics.exactDurationSeconds === null ? "Mixed quality" : duration(metrics.exactDurationSeconds)}</dd>
+          <dd>
+            {metrics.exactDurationSeconds === null
+              ? "Mixed quality"
+              : duration(metrics.exactDurationSeconds)}
+          </dd>
           <p>
             {metrics.durationCoverage === "EXACT"
               ? "Every record has exact timing"
@@ -179,14 +219,17 @@ function Statistics({ insights }: { insights: Insights }) {
         <div>
           <dt>Archive span</dt>
           <dd>
-            {formatArchiveDate(metrics.firstJourneyAt)} - {formatArchiveDate(metrics.latestJourneyAt)}
+            {formatArchiveDate(metrics.firstJourneyAt)} -{" "}
+            {formatArchiveDate(metrics.latestJourneyAt)}
           </dd>
           <p>From available historical dates</p>
         </div>
       </dl>
       <p className="wakebook-statistics__method">
-        Metric definition: {metrics.definitionVersions.join(", ") || "unavailable"}. The definition travels with your
-        records so later product changes do not rewrite what happened.
+        Metric definition:{" "}
+        {metrics.definitionVersions.join(", ") || "unavailable"}. The definition
+        travels with your records so later product changes do not rewrite what
+        happened.
       </p>
     </section>
   );
@@ -194,7 +237,10 @@ function Statistics({ insights }: { insights: Insights }) {
 
 function Empty({ title, detail }: { title: string; detail: string }) {
   return (
-    <section className="wakebook-empty" aria-labelledby="wakebook-insights-empty">
+    <section
+      className="wakebook-empty"
+      aria-labelledby="wakebook-insights-empty"
+    >
       <div className="wakebook-empty__compass" aria-hidden="true">
         <span>✦</span>
       </div>
