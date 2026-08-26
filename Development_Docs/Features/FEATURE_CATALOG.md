@@ -1622,11 +1622,9 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 ---
 
-# Completed Branch Features Not Yet Available on Main
-
 ## FT-B013 - Owner-Safe Historical Voyage Remembrance
 
-**Status:** BRANCH COMPLETE NOT MERGED
+**Status:** MAINLINE
 **Program or subsystem:** Project Wakebook Phase 2
 
 Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe path and objective context, historical attribution and crew, artifact and achievement chronology, owner-authored remembrance, participant-consented Keepsake degradation, and Sealed Hold-backed private Memory media without rewriting canonical Voyage truth.
@@ -1645,18 +1643,54 @@ Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe
 
 ### Meaningful limitations
 
-- Candidate-qualified for owner walkthrough only; owner acceptance and protected-main integration have not occurred
+- Protected mainline integration completed as 31a4b9d7b67ce06d2cec39857d09c21e0188ebd8
 - Historical detail retains only explicitly preserved safe facts and never reconstructs unavailable raw choices, clues, or source payloads
 - Private media delivery remains owner-only and depends on Sealed Hold clean, available, non-withdrawn, finalized source state
 
 ### Evidence
 
-- branch: `codex/project-wakebook-phase2-bind-the-voyages`
-- commit: `e3843d7c6df1bb7a0f561b640ee0a8c1e9199f99`
+- commit: `31a4b9d7b67ce06d2cec39857d09c21e0188ebd8`
 - path: `src/wakebook/archive-query.ts`
 - path: `src/wayfarer/chronicle-history.ts`
 - path: `src/components/wakebook/WakebookVoyageDetail.tsx`
 - test: `tests/e2e/wakebook-phase2.spec.ts`
+
+---
+
+# Completed Branch Features Not Yet Available on Main
+
+## FT-B012 - Chronicle Passport Independence
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Wakebook A1 - Open the Passport
+
+Project Wakebook A1 makes Chronicle Passport a first-class, owner-private Voyagewright destination while preserving its Personal Harbor gateway and established record routes.
+
+### Important subfeatures
+
+- Dedicated full-width Chronicle Passport shell with responsive section navigation and a visible Personal Harbor return gateway
+- Top-level authenticated Player navigation discoverability without exposing the private destination to anonymous visitors
+- Preserved Passport record, Memory, Artifact, Saved, historical-hash, and Tideglass comparison handoffs
+- Shared draft protection, keyboard-operable unsaved-change dialog, and reduced-motion behavior across the independent Passport shell
+- Unchanged owner-private Wakebook archive and sticky Voyage Detail section-navigation behavior
+
+### Primary surfaces
+
+`/passport`, `/passport/history`, `/passport/history/[recordId]`, `/passport/memories`, `/passport/artifacts`, `/passport/saved`, `/account`
+
+### Meaningful limitations
+
+- Chronicle Passport remains owner-private and intentionally retains existing One Voyage, Wayfarer, Tideglass, Homeport, and Wakebook ownership boundaries
+- Timeline, People, Statistics, geographic recap, public sharing, competitive metrics, and new Tideglass semantics remain outside Wakebook A1
+
+### Evidence
+
+- branch: `codex/project-wakebook-a1-open-the-passport`
+- commit: `27ceb7bf62ef5cfc44ba118a8dbf1c384f359f5a`
+- path: `src/components/wakebook/PassportLayout.tsx`
+- path: `src/components/wakebook/AuthenticatedPassportPage.tsx`
+- test: `src/components/wakebook/PassportLayout.test.tsx`
+- test: `src/navigation/navigation.test.ts`
 
 ---
 
