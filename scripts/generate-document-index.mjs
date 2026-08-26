@@ -66,7 +66,7 @@ export async function generateDocumentIndex({ root = process.cwd(), baseRef = "o
       "Development_Docs/Governing/Voyagewright_Continuous_Development_and_Mainline_Integration_Standard_v1.0.pdf" ||
     file ===
       "Development_Docs/Governing/Project_Trim_Codex_Context_and_Inference_Efficiency_Governing_Document_v1.0-R1.pdf" ||
-    (/\/Projects\/Project [^/]+\//.test(file) && /Governing_Document[^/]*\.pdf$/i.test(file));
+    (/\/Projects\/Project [^/]+\//.test(file) && /Governing_(?:Document|Amendment)[^/]*\.pdf$/i.test(file));
   const records = files.map((file) => ({
     path: file,
     record_type: classify(file),
