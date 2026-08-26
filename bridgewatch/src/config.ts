@@ -74,7 +74,9 @@ export function loadConfig(input: Record<string, string | undefined> = process.e
     dbPath: resolve(path),
     BRIDGEWATCH_GITHUB_API: api,
     BRIDGEWATCH_GITHUB_TOKEN: input.BRIDGEWATCH_GITHUB_TOKEN,
-    BRIDGEWATCH_REQUEST_TIMEOUT_MS: integer(input.BRIDGEWATCH_REQUEST_TIMEOUT_MS, 8000),
+    // Repository metadata can be on an available network share. Thirty seconds
+    // remains bounded and avoids reporting a healthy read-only source as down.
+    BRIDGEWATCH_REQUEST_TIMEOUT_MS: integer(input.BRIDGEWATCH_REQUEST_TIMEOUT_MS, 30_000),
     BRIDGEWATCH_SNAPSHOT_INTERVAL_MS: boundedInteger(input.BRIDGEWATCH_SNAPSHOT_INTERVAL_MS, 60_000, 10_000, 3_600_000),
     BRIDGEWATCH_SOUNDING_LINE_POLL_INTERVAL_MS: boundedInteger(
       input.BRIDGEWATCH_SOUNDING_LINE_POLL_INTERVAL_MS,

@@ -27,6 +27,16 @@ describe("Bridgewatch read-only API", () => {
           .json()
           .find((entry: { name: string }) => entry.name === "reporter").state,
       ).toBe("HEALTHY");
+      const sourceProfiles = (await app.inject({ method: "GET", url: "/api/sources" })).json();
+      expect(sourceProfiles.find((entry: { name: string }) => entry.name === "github")).toMatchObject({
+        sourceId: "github-repository-api",
+        configured: true,
+        coverage: { state: "NO_CURRENT_OBSERVATION" },
+      });
+      expect(sourceProfiles.find((entry: { name: string }) => entry.name === "reporter")).toMatchObject({
+        coverage: { state: "SOURCE_RETURNED_NO_DATA" },
+        repairability: "NOT_APPLICABLE",
+      });
       expect(summary.headers["content-security-policy"]).toContain("default-src 'self'");
       const dashboard = await app.inject({ method: "GET", url: "/" });
       expect(dashboard.statusCode).toBe(200);
@@ -99,6 +109,54 @@ describe("Bridgewatch read-only API", () => {
           })
         ).statusCode,
       ).toBe(429);
+    } finally {
+      await app.close();
+    }
+  });
+
+  it("reports degraded GitHub acquisition while preserving retained observation coverage", async () => {
+    process.env.BRIDGEWATCH_REPOSITORY = "owner/repository";
+    process.env.BRIDGEWATCH_DB_PATH = join(mkdtempSync(join(tmpdir(), "bridgewatch-test-")), "cache.sqlite");
+    const { buildServer } = await import("../lib/server.js");
+    const { app, store } = buildServer();
+    try {
+      const observedAt = new Date().toISOString();
+      store.put(
+        "github:snapshot",
+        {
+          repository: "owner/repository",
+          defaultBranch: "main",
+          headSha: "cached-main",
+          observedAt,
+          pullRequests: [],
+          branches: [],
+          workflows: [],
+        },
+        null,
+        observedAt,
+      );
+      store.upsertSourceObservation({
+        name: "github",
+        state: "DEGRADED",
+        configured: true,
+        reachable: false,
+        lastAttemptAt: observedAt,
+        lastSuccessAt: observedAt,
+        nextRetryAt: new Date(Date.now() + 60_000).toISOString(),
+        detail: "GitHub GET failed: 503",
+        cacheAgeMs: 0,
+        authenticationState: "ANONYMOUS",
+      });
+      const github = (await app.inject({ method: "GET", url: "/api/sources" })).json().find(
+        (entry: { name: string }) => entry.name === "github",
+      );
+      expect(github).toMatchObject({
+        state: "DEGRADED",
+        servingRetainedStaleData: true,
+        coverage: { state: "BOUNDED_CURRENT" },
+        failure: { classification: "SOURCE_UNREACHABLE" },
+      });
+      expect((await app.inject({ method: "GET", url: "/api/summary" })).json().github.headSha).toBe("cached-main");
     } finally {
       await app.close();
     }
