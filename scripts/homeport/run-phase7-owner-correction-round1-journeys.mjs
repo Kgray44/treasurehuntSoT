@@ -11,8 +11,12 @@ const requested = (process.env.HOMEPORT_PHASE7_CORRECTION_JOURNEYS ?? "ABCDEFGHI
 );
 const port = process.env.HOMEPORT_PHASE7_CORRECTION_PORT ?? "3731";
 const canonical = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
+const approvedTaskRoot =
+  process.env.HOMEPORT_SOUNDING_LINE_TASK_ROOT === "1"
+    ? path.join(repositoryRoot, "artifacts", "sounding-line")
+    : path.resolve("C:/Users/kkids/AppData/Local/ProjectHomeport");
 
-if (!taskRoot.startsWith(`${path.resolve("C:/Users/kkids/AppData/Local/ProjectHomeport")}${path.sep}`))
+if (!taskRoot.startsWith(`${approvedTaskRoot}${path.sep}`))
   throw new Error(`HOMEPORT_PHASE7_CORRECTION_TASK_ROOT_REFUSED:${taskRoot}`);
 if (!existsSync(seed) || seed === canonical)
   throw new Error(`HOMEPORT_PHASE7_CORRECTION_IMMUTABLE_SEED_MISSING:${seed}`);

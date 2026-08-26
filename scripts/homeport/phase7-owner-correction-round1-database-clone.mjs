@@ -14,7 +14,11 @@ const seed = path.join(
   `${fixtureVersion}.db`,
 );
 const canonical = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
-if (!taskRoot.startsWith(`${path.resolve("C:/Users/kkids/AppData/Local/ProjectHomeport")}${path.sep}`))
+const approvedTaskRoot =
+  process.env.HOMEPORT_SOUNDING_LINE_TASK_ROOT === "1"
+    ? path.join(path.resolve(process.cwd()), "artifacts", "sounding-line")
+    : path.resolve("C:/Users/kkids/AppData/Local/ProjectHomeport");
+if (!taskRoot.startsWith(`${approvedTaskRoot}${path.sep}`))
   throw new Error(`HOMEPORT_PHASE7_CORRECTION_TASK_ROOT_REFUSED:${taskRoot}`);
 if (path.resolve(seed) === canonical || (await stat(seed)).size < 1)
   throw new Error("HOMEPORT_PHASE7_CORRECTION_SEED_INVALID");

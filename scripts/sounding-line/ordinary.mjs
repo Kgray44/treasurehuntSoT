@@ -33,6 +33,41 @@ const testFile = /(?:\.test|\.spec)\.(?:[cm]?[jt]sx?)$/u;
 const e2eFile = /^tests\/e2e\/.*\.spec\.[jt]sx?$/u;
 const admiraltyPhase2BrowserTest = "tests/e2e/admiralty-phase2.spec.ts";
 const tideglassPhase3BrowserTest = "tests/e2e/tideglass-phase3.spec.ts";
+const homeportPhase4BrowserTest = "tests/e2e/homeport-phase4.spec.ts";
+const homeportPhase7BrowserTests = new Map([
+  [
+    "tests/e2e/homeport-phase7.spec.ts",
+    ["scripts/homeport/prepare-phase7-fixture.mjs", "scripts/homeport/run-phase7-journeys.mjs"],
+  ],
+  [
+    "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts",
+    [
+      "scripts/homeport/prepare-phase7-owner-correction-round1-fixture.mjs",
+      "scripts/homeport/run-phase7-owner-correction-round1-journeys.mjs",
+    ],
+  ],
+  [
+    "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts",
+    [
+      "scripts/homeport/prepare-phase7-owner-correction-round2-fixture.mjs",
+      "scripts/homeport/run-phase7-owner-correction-round2-journeys.mjs",
+    ],
+  ],
+  [
+    "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts",
+    [
+      "scripts/homeport/prepare-phase7-owner-correction-round3-fixture.mjs",
+      "scripts/homeport/run-phase7-owner-correction-round3-journeys.mjs",
+    ],
+  ],
+  [
+    "tests/e2e/homeport-phase7-owner-correction-round3-patch-a.spec.ts",
+    [
+      "scripts/homeport/prepare-phase7-owner-correction-round3-patch-a-fixture.mjs",
+      "scripts/homeport/run-phase7-owner-correction-round3-patch-a-journeys.mjs",
+    ],
+  ],
+]);
 const textFile = /\.(?:[cm]?[jt]sx?|json|ya?ml|md|css)$/u;
 const lintableFile = /\.(?:[cm]?[jt]sx?)$/u;
 const broadDomainTokens = new Set(["community", "exchange", "harborlight"]);
@@ -190,6 +225,29 @@ function admiraltyPhase2TaskRoot(candidateSha) {
   return path.posix.join("ProjectAdmiralty", `.sounding-line-admiralty-phase2-${candidateSha.slice(0, 12)}`);
 }
 
+function homeportTaskRoot(candidateSha, lane) {
+  return path.posix.join("artifacts", "sounding-line", `homeport-${lane}-${candidateSha.slice(0, 12)}`);
+}
+
+function homeportEnvironment(plan) {
+  const sourceDatabase = plan.databaseUrl?.startsWith("file:") ? plan.databaseUrl.slice("file:".length) : "";
+  if (!sourceDatabase) throw new Error("SOUNDING_LINE_HOMEPORT_SOURCE_DATABASE_INDETERMINATE");
+  return {
+    HOMEPORT_SOUNDING_LINE_TASK_ROOT: "1",
+    HOMEPORT_PHASE4_TASK_ROOT: homeportTaskRoot(plan.candidateSha, "phase4"),
+    HOMEPORT_PHASE4_SOURCE_DATABASE: sourceDatabase,
+    HOMEPORT_PHASE4_EVIDENCE_ROOT: path.posix.join(homeportTaskRoot(plan.candidateSha, "phase4"), "evidence"),
+    HOMEPORT_PHASE4_REUSE_BUILD: plan.buildRequired ? "1" : "0",
+    HOMEPORT_PHASE7_TASK_ROOT: homeportTaskRoot(plan.candidateSha, "phase7"),
+    HOMEPORT_PHASE7_SOURCE_DATABASE: sourceDatabase,
+    HOMEPORT_PHASE7_ORIGINAL_TASK_ROOT: homeportTaskRoot(plan.candidateSha, "phase7"),
+    HOMEPORT_PHASE7_ROUND1_TASK_ROOT: homeportTaskRoot(plan.candidateSha, "phase7-round1"),
+    HOMEPORT_PHASE7_ROUND2_TASK_ROOT: homeportTaskRoot(plan.candidateSha, "phase7-round2"),
+    HOMEPORT_PHASE7_ROUND3_TASK_ROOT: homeportTaskRoot(plan.candidateSha, "phase7-round3"),
+    HOMEPORT_PHASE7_PATCH_A_TASK_ROOT: homeportTaskRoot(plan.candidateSha, "phase7-patch-a"),
+  };
+}
+
 export function verificationEnvironment(plan, command, argumentsList, environment = process.env) {
   if (command === process.execPath && argumentsList[0] === "scripts/admiralty/run-phase2-journeys.mjs") {
     return {
@@ -206,6 +264,8 @@ export function verificationEnvironment(plan, command, argumentsList, environmen
       ...(plan.buildRequired ? { TIDEGLASS_PHASE3_REUSE_BUILD: "1" } : {}),
     };
   }
+  if (command === process.execPath && argumentsList[0]?.startsWith("scripts/homeport/"))
+    return homeportEnvironment(plan);
   if (command === "npx" && (argumentsList.includes("prisma") || argumentsList.includes("playwright")))
     return { DATABASE_URL: environment.DATABASE_URL ?? plan.databaseUrl };
   return {};
@@ -308,28 +368,45 @@ export function verificationCommands(plan) {
   for (const script of plan.migrationScripts ?? []) commands.push(["npx", ["--no-install", "tsx", script]]);
   if (plan.buildRequired) commands.push(["npm", ["run", "build"]]);
   if (plan.selected.browserTests.length) {
+    const selectedHomeportPhase7 = plan.selected.browserTests.filter((file) => homeportPhase7BrowserTests.has(file));
     const genericBrowserTests = plan.selected.browserTests.filter(
-      (file) => file !== admiraltyPhase2BrowserTest && file !== tideglassPhase3BrowserTest,
+      (file) =>
+        file !== admiraltyPhase2BrowserTest &&
+        file !== tideglassPhase3BrowserTest &&
+        file !== homeportPhase4BrowserTest &&
+        !homeportPhase7BrowserTests.has(file),
     );
     if (plan.selected.browserTests.includes(admiraltyPhase2BrowserTest))
       commands.push([process.execPath, ["scripts/admiralty/run-phase2-journeys.mjs"]]);
     if (plan.selected.browserTests.includes(tideglassPhase3BrowserTest))
       commands.push([process.execPath, ["scripts/tideglass/run-phase3-journeys.mjs"]]);
-    if (!genericBrowserTests.length) return commands;
-    commands.push([
-      process.execPath,
-      ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", plan.databaseUrl],
-    ]);
-    commands.push([
-      "npx",
-      [
-        "--no-install",
-        "playwright",
-        "test",
-        ...genericBrowserTests,
-        ...(plan.mode === "ordinary" ? ["--project", "chromium"] : []),
-      ],
-    ]);
+    if (
+      genericBrowserTests.length ||
+      plan.selected.browserTests.includes(homeportPhase4BrowserTest) ||
+      selectedHomeportPhase7.length
+    ) {
+      commands.push([
+        process.execPath,
+        ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", plan.databaseUrl],
+      ]);
+    }
+    if (plan.selected.browserTests.includes(homeportPhase4BrowserTest))
+      commands.push([process.execPath, ["scripts/homeport/run-phase4-e2e.mjs"]]);
+    for (const browserTest of selectedHomeportPhase7) {
+      const [prepare, journeys] = homeportPhase7BrowserTests.get(browserTest);
+      commands.push([process.execPath, [prepare]], [process.execPath, [journeys]]);
+    }
+    if (genericBrowserTests.length)
+      commands.push([
+        "npx",
+        [
+          "--no-install",
+          "playwright",
+          "test",
+          ...genericBrowserTests,
+          ...(plan.mode === "ordinary" ? ["--project", "chromium"] : []),
+        ],
+      ]);
   }
   return commands;
 }

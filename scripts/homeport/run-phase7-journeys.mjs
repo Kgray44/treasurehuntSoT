@@ -8,9 +8,12 @@ const seed = path.join(taskRoot, "immutable-fixture-seed", "homeport-phase7-inte
 const requested = (process.env.HOMEPORT_PHASE7_JOURNEYS ?? "ABCDEFGHIJKLMNO").replaceAll(/[^A-O]/gu, "");
 const port = process.env.HOMEPORT_PHASE7_PORT ?? "3718";
 const canonical = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
+const approvedTaskRoot =
+  process.env.HOMEPORT_SOUNDING_LINE_TASK_ROOT === "1"
+    ? path.join(repositoryRoot, "artifacts", "sounding-line")
+    : path.resolve("C:/Users/kkids/AppData/Local/ProjectHomeport");
 
-if (!taskRoot.startsWith(path.resolve("C:/Users/kkids/AppData/Local/ProjectHomeport") + path.sep))
-  throw new Error(`HOMEPORT_PHASE7_TASK_ROOT_REFUSED:${taskRoot}`);
+if (!taskRoot.startsWith(approvedTaskRoot + path.sep)) throw new Error(`HOMEPORT_PHASE7_TASK_ROOT_REFUSED:${taskRoot}`);
 if (!existsSync(seed) || seed === canonical) throw new Error(`HOMEPORT_PHASE7_IMMUTABLE_SEED_MISSING:${seed}`);
 if (!existsSync(path.join(repositoryRoot, ".next", "BUILD_ID")))
   run(path.join("node_modules", "next", "dist", "bin", "next"), ["build"], process.env);
