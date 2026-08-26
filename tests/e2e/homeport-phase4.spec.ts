@@ -138,8 +138,10 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
     );
 
     const search = page.getByRole("searchbox", { name: "Search public Community Harbor" });
+    const submitSearch = () =>
+      page.getByRole("search").getByRole("button", { name: "Search Community Harbor", exact: true });
     await search.fill("Lantern Coast");
-    await page.getByRole("button", { name: "Search", exact: true }).click();
+    await submitSearch().click();
     await expect(page).toHaveURL(/\/community\?q=Lantern\+Coast$/u);
     const results = page.getByLabel("Public Community Harbor results");
     await expect(results.getByRole("link", { name: "The Lantern Coast" })).toBeVisible();
@@ -160,11 +162,11 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
     await results.getByRole("link", { name: "The Lantern Coast" }).click();
     await expect(page).toHaveURL(/\/community\/lantern-coast-chronicle$/u);
     await expect(page.getByRole("heading", { name: "The Lantern Coast", level: 1 })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Preview Chronicle" })).toHaveAttribute(
+    await expect(page.getByRole("link", { name: "Start Chronicle" })).toHaveAttribute(
       "href",
       "/play/hp4-lantern-coast",
     );
-    await expect(page.locator("main")).not.toContainText("hp4-account-creator");
+    await expect(activeRouteMain(page)).not.toContainText("hp4-account-creator");
     await capture(page, "HP-P4-EV-U-listing-detail", {
       screen: "Listing detail",
       district: "CHRONICLES",
@@ -181,7 +183,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
 
     await search.fill("unfindable synthetic horizon");
     await expect(search).toHaveValue("unfindable synthetic horizon");
-    await page.getByRole("button", { name: "Search", exact: true }).click();
+    await submitSearch().click();
     await expect(page).toHaveURL(/q=unfindable\+synthetic\+horizon/u);
     await expect(page.getByRole("heading", { name: "No public charts match these criteria" })).toBeVisible();
     await capture(page, "HP-P4-EV-W-no-results", {
@@ -195,7 +197,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
     await expect(page).toHaveURL(/\/community$/u);
     await expect(page.getByRole("heading", { name: "Featured at the Harbor" })).toBeVisible();
 
-    await page.getByText("Advanced filters", { exact: false }).first().click();
+    await openAdvancedFilters(page);
     await page.getByLabel("Moderate").check();
     await page.getByRole("button", { name: "Apply advanced filters" }).click();
     await expect(page).toHaveURL(/difficulty=MODERATE/u);
@@ -219,7 +221,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       });
     });
     await page.getByRole("searchbox", { name: "Search public Community Harbor" }).fill("dependency test");
-    await page.getByRole("button", { name: "Search", exact: true }).click();
+    await submitSearch().click();
     await expect(page.getByRole("alert").filter({ hasText: "Synthetic discovery dependency" })).toBeVisible();
     await capture(page, "HP-P4-EV-AD-dependency-unavailable", {
       screen: "Dependency unavailable",
@@ -276,7 +278,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       /\/community\/voyage-logs\/fictional-lantern-voyage$/u,
     );
     await expect(page.getByText("Participant consent checked")).toBeVisible();
-    await expect(page.locator("main")).not.toContainText("fictional harbor district");
+    await expect(activeRouteMain(page)).not.toContainText("fictional harbor district");
 
     await page
       .getByRole("navigation", { name: "Community Harbor districts" })
@@ -322,7 +324,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
     await expect(page).toHaveURL(/\/community\/creators$/u);
     await followLink(page, page.getByRole("link", { name: "Maker Lumen" }), /\/community\/creators\/maker-lumen$/u);
     await expect(page.getByRole("heading", { name: "No public work yet" })).toBeVisible();
-    await expect(page.locator("main")).not.toContainText("draft");
+    await expect(activeRouteMain(page)).not.toContainText("draft");
     await capture(page, "HP-P4-EV-N-creator-empty", {
       screen: "Creator Profile without work",
       district: "CREATORS",
@@ -510,7 +512,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       await enterHarbor(page);
       await expect(page.getByRole("heading", { name: "No public Community work has arrived yet" })).toBeVisible();
       await expect(page.getByText(/No public charts match/u)).toHaveCount(0);
-      await expect(page.locator("main").getByRole("link", { name: "Explore Chronicles" })).toBeVisible();
+      await expect(activeRouteMain(page).getByRole("link", { name: "Explore Chronicles" })).toBeVisible();
       await capture(page, "HP-P4-EV-D-harbor-empty", {
         screen: "Community-wide empty state",
         district: "HARBOR_HOME",
@@ -560,7 +562,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       accountState: "ANONYMOUS",
       contentState: "DEFAULT_CONTENT",
     });
-    await page.getByText("Advanced filters", { exact: false }).first().click();
+    await openAdvancedFilters(page);
     await assertNoOverflow(page);
     await capture(page, "HP-P4-EV-AE-mobile-filter-drawer", {
       screen: "Mobile advanced filters",
@@ -613,7 +615,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       contentState: "DEFAULT_CONTENT",
       effectiveZoom: 200,
     });
-    await page.getByText("Advanced filters", { exact: false }).first().click();
+    await openAdvancedFilters(page);
     await capture(page, "HP-P4-EV-AH-zoom-filters", {
       screen: "Effective 200 percent filters",
       district: "HARBOR_HOME",
@@ -695,13 +697,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       accountMenu.getByRole("link", { name: "Chronicle Passport", exact: true }),
       /\/passport$/u,
     );
-    await followLink(
-      fullLoop,
-      fullLoop
-        .getByRole("navigation", { name: "Personal Harbor sections" })
-        .getByRole("link", { name: "Saved", exact: true }),
-      /\/passport\/saved$/u,
-    );
+    await followPassportLink(fullLoop, "Saved", /\/passport\/saved$/u);
     await followLink(fullLoop, fullLoop.getByRole("link", { name: "Open in Community" }).first(), /\/community\/.+$/u);
     await followLink(fullLoop, fullLoop.locator("a.community-return"), /\/community$/u);
     await followLink(fullLoop, fullLoop.getByRole("link", { name: "Home", exact: true }).first(), /\/$/u);
@@ -751,12 +747,34 @@ async function followLink(page: Page, link: Locator, expectedUrl: RegExp, option
   await settleCurrentRoute(page);
 }
 
+async function followPassportLink(page: Page, name: string, expectedUrl: RegExp) {
+  await followLink(
+    page,
+    page.getByRole("navigation", { name: "Chronicle Passport sections" }).getByRole("link", { name, exact: true }),
+    expectedUrl,
+  );
+}
+
 async function settleCurrentRoute(page: Page) {
   const pathname = new URL(page.url()).pathname;
   const routeLayer = page.locator(`.product-route-layer[data-route-layer="${pathname}"]`);
   await expect(routeLayer).toHaveCount(1);
   await expect(routeLayer).toHaveCSS("opacity", "1");
   await expect(routeLayer).toHaveCSS("transform", "none");
+}
+
+function activeRouteMain(page: Page) {
+  const pathname = new URL(page.url()).pathname;
+  return page.locator(`.product-route-layer[data-route-layer="${pathname}"]`).getByRole("main");
+}
+
+async function openAdvancedFilters(page: Page) {
+  await settleCurrentRoute(page);
+  const main = activeRouteMain(page);
+  const fullSearch = main.getByRole("button", { name: "Full Search", exact: true });
+  if ((await fullSearch.isVisible()) && (await fullSearch.getAttribute("aria-expanded")) !== "true")
+    await fullSearch.click();
+  await main.locator("summary").filter({ hasText: "Advanced filters" }).click();
 }
 
 async function tabToTarget(page: Page, target: { href?: string; selector?: string }) {
