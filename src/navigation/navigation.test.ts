@@ -248,6 +248,20 @@ describe("Homeport Phase 2 navigation authority", () => {
     ]);
   });
 
+  it("wakebook.a1.passport-top-level-discoverability projects Passport in ordinary navigation only for an authorized Player", () => {
+    const signedIn = projection(
+      "/passport/history",
+      "WORKSPACE_STANDARD",
+      "account",
+      authenticated({ canUsePlayer: true }),
+    );
+    expect(signedIn.globalItems.map((item) => item.id)).toContain("global-chronicle-passport");
+    expect(signedIn.activeGlobalItem?.id).toBe("global-chronicle-passport");
+
+    const anonymousResult = projection("/", "GATEWAY_STANDARD", "public", anonymous);
+    expect(anonymousResult.globalItems.map((item) => item.id)).not.toContain("global-chronicle-passport");
+  });
+
   it("homeport.navigation.desktop-mobile-set-equality preserves functional IDs for equivalent state", () => {
     const state = authenticated({
       canUsePlayer: true,

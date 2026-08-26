@@ -1,18 +1,18 @@
-import { AuthenticatedHarborPage } from "@/components/homeport/AuthenticatedHarborPage";
 import { PassportHome } from "@/components/homeport/PassportSurfaces";
+import { AuthenticatedPassportPage } from "@/components/wakebook/AuthenticatedPassportPage";
 
 export const dynamic = "force-dynamic";
 export default function PassportPage() {
   return (
-    <AuthenticatedHarborPage
+    <AuthenticatedPassportPage
       returnTo="/passport"
       activeSection="passport-home"
-      eyebrow="Personal Harbor · Chronicle Passport"
+      eyebrow="The Living Journey Archive"
       title="Chronicle Passport"
       description="Your private, record-led home for Voyage history, Memories, artifacts, and saved Community items."
       capability="player"
     >
       <PassportHome />
-    </AuthenticatedHarborPage>
+    </AuthenticatedPassportPage>
   );
 }

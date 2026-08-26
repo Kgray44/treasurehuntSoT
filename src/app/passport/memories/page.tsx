@@ -1,9 +1,9 @@
-import { AuthenticatedHarborPage } from "@/components/homeport/AuthenticatedHarborPage";
 import { MemoriesExplorer } from "@/components/homeport/PassportSurfaces";
+import { AuthenticatedPassportPage } from "@/components/wakebook/AuthenticatedPassportPage";
 export const dynamic = "force-dynamic";
 export default function PassportMemoriesPage() {
   return (
-    <AuthenticatedHarborPage
+    <AuthenticatedPassportPage
       returnTo="/passport/memories"
       activeSection="passport-memories"
       eyebrow="Chronicle Passport"
@@ -12,6 +12,6 @@ export default function PassportMemoriesPage() {
       capability="player"
     >
       <MemoriesExplorer />
-    </AuthenticatedHarborPage>
+    </AuthenticatedPassportPage>
   );
 }
