@@ -125,6 +125,10 @@ function formatJson(value: unknown) {
   return JSON.stringify(value, null, 2);
 }
 
+function passageHref(taleId: string, blockId: string) {
+  return `/studio/tales/${encodeURIComponent(taleId)}#block-${encodeURIComponent(blockId)}`;
+}
+
 export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrfToken: string }) {
   const [sourceChecksum, setSourceChecksum] = useState("");
   const [scenarios, setScenarios] = useState<ScenarioSummary[]>([]);
@@ -201,6 +205,7 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
       ),
     [filter, scenarios],
   );
+  const coveredPassages = useMemo(() => [...new Set(run?.result.coverage?.blockIds?.filter(Boolean) ?? [])], [run]);
 
   function addJsonEntry(kind: "inputs" | "faults" | "assertions", value: unknown) {
     const setters = { inputs: setInputsText, faults: setFaultsText, assertions: setAssertionsText };
@@ -1160,7 +1165,20 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
                 {coverage.coveredProviderOutcomes.length}; environment modes {coverage.coveredEnvironmentModes.length}.
               </p>
               <ul>
-                <li>Uncovered Passages: {coverage.uncoveredBlockIds.join(", ") || "none"}</li>
+                <li>
+                  Uncovered Passages:{" "}
+                  {coverage.uncoveredBlockIds.length ? (
+                    <span className="drydock-passage-links">
+                      {coverage.uncoveredBlockIds.map((blockId) => (
+                        <a key={blockId} href={passageHref(taleId, blockId)}>
+                          {blockId}
+                        </a>
+                      ))}
+                    </span>
+                  ) : (
+                    "none"
+                  )}
+                </li>
                 <li>Uncovered edges: {coverage.uncoveredEdgeIds.join(", ") || "none"}</li>
                 <li>Uncovered endings: {coverage.uncoveredEndingBlockIds.join(", ") || "none"}</li>
               </ul>
@@ -1246,6 +1264,25 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
               <dd>{run.result.coverage?.faultIds?.length ?? 0}</dd>
             </div>
           </dl>
+          <section className="drydock-run-coverage-map" aria-label="Run Passage coverage">
+            <h3>Run Passage coverage</h3>
+            <p>
+              These links return to the exact authored Passage. A covered Passage is evidence for this frozen Sea Trial,
+              not a statement about a live Voyage.
+            </p>
+            {coveredPassages.length ? (
+              <ul>
+                {coveredPassages.map((blockId) => (
+                  <li key={blockId} data-coverage-state="covered">
+                    <span aria-hidden="true">●</span>
+                    <a href={passageHref(taleId, blockId)}>Open covered Passage {blockId}</a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No Passage coverage was recorded for this run.</p>
+            )}
+          </section>
           <ul aria-label="Scenario assertions">
             {assertionStatus.map((assertion, index) => (
               <li key={`${assertion.kind}-${index}`} data-passed={assertion.passed}>
@@ -1267,6 +1304,11 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
                     {[...entry.intentTypes, ...entry.faultIds].join(", ") || "No emitted event"}; state{" "}
                     {entry.stateDigest?.slice(0, 12) ?? "unchanged"}
                   </small>
+                  {entry.blockId ? (
+                    <a className="drydock-trace-passage-link" href={passageHref(taleId, entry.blockId)}>
+                      Open Passage
+                    </a>
+                  ) : null}
                   {index > 0 && (
                     <button onClick={() => void showStateDiff(run.trace[index - 1]!.ordinal, entry.ordinal)}>
                       View State Diff from prior step

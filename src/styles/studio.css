@@ -1678,6 +1678,50 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   border-top: 1px solid rgba(201, 169, 95, 0.24);
   padding-top: 1rem;
 }
+.drydock-passage-links,
+.drydock-run-coverage-map ul {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+.drydock-passage-links a,
+.drydock-run-coverage-map a,
+.drydock-trace-passage-link {
+  color: var(--brass-100);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+.drydock-run-coverage-map {
+  margin-top: 1rem;
+  border: 1px solid rgba(130, 210, 157, 0.32);
+  border-radius: 8px;
+  padding: 0.75rem;
+  background: rgba(32, 100, 66, 0.12);
+}
+.drydock-run-coverage-map h3,
+.drydock-run-coverage-map p {
+  margin: 0;
+}
+.drydock-run-coverage-map p {
+  margin-top: 0.4rem;
+  color: var(--mist-300);
+}
+.drydock-run-coverage-map ul {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.drydock-run-coverage-map li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.drydock-run-coverage-map li[data-coverage-state="covered"] > span {
+  color: #9ee3af;
+}
+.drydock-trace-passage-link {
+  margin-left: auto;
+}
 .drydock-coverage-view ul {
   display: grid;
   gap: 0.4rem;
@@ -2032,6 +2076,12 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   color: #1a1306;
   background: var(--brass-100);
 }
+.version-active-voyage-note {
+  grid-column: 2 / -1;
+  margin: -0.35rem 0 0;
+  color: var(--mist-300);
+  font-size: 0.85rem;
+}
 .immutable-version-lock {
   display: inline-flex;
   align-items: center;
@@ -2220,6 +2270,10 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
 .block-preview-viewport.desktop {
   width: min(920px, 100%);
   min-height: 480px;
+}
+.block-preview-viewport.tablet {
+  width: min(768px, 100%);
+  min-height: 560px;
 }
 .block-preview-viewport.mobile {
   width: min(390px, 100%);

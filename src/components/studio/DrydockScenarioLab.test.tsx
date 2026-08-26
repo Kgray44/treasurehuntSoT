@@ -43,6 +43,7 @@ describe("Drydock Scenario Lab", () => {
               trace: [
                 {
                   ordinal: 1,
+                  blockId: "passage-1",
                   inputKind: "CONTINUE",
                   status: "COMPLETED",
                   intentTypes: ["blockCompleted"],
@@ -69,6 +70,14 @@ describe("Drydock Scenario Lab", () => {
     expect(fetchMock.mock.calls[4]?.[0]).toContain("/scenarios/scenario-1/runs");
     expect(await screen.findByLabelText("Sea Trial receipt")).toHaveTextContent("COMPLETED");
     expect(screen.getByLabelText("Run coverage summary")).toHaveTextContent("Passages1");
+    expect(screen.getByRole("link", { name: "Open covered Passage block" })).toHaveAttribute(
+      "href",
+      "/studio/tales/tale-1#block-block",
+    );
+    expect(screen.getByRole("link", { name: "Open Passage" })).toHaveAttribute(
+      "href",
+      "/studio/tales/tale-1#block-passage-1",
+    );
   });
 
   it("lets a Creator request cancellation only for an active Sea Trial", async () => {
