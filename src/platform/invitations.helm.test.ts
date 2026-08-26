@@ -47,6 +47,12 @@ describe("Project Helm Phase 1 Voyage creation contract", () => {
     expect(createPlaythroughSchema.parse(input).captainParticipationMode).toBe("CAPTAIN_ONLY");
   });
 
+  it("permits a zero-invite Captain + Player Voyage without inventing a blank Crew membership", () => {
+    expect(
+      createPlaythroughSchema.parse({ ...input, captainParticipationMode: "CAPTAIN_AND_PLAYER", players: [] }).players,
+    ).toEqual([]);
+  });
+
   it("activates an invitation accepted after launch and preserves setup readiness before launch", () => {
     expect(membershipStatusAfterInvitationAcceptance("INVITING")).toBe("READY");
     expect(membershipStatusAfterInvitationAcceptance("SCHEDULED")).toBe("READY");

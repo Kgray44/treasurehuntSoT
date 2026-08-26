@@ -479,6 +479,7 @@ export async function getCaptainVoyageProjection(voyageId: string, actor: Canoni
       voyageName: session.voyageName ?? session.ownerLabel ?? "Voyage",
       edition: session.version?.versionLabel ?? "Unpublished",
       lifecycle: session.status,
+      concurrencyVersion: session.concurrencyVersion,
       operationalStatus,
       // This aggregate is derived from membership evidence, never from the
       // legacy TaleSession heartbeat, and therefore cannot imply an individual.

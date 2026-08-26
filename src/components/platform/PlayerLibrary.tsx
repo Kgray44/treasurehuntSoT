@@ -15,6 +15,7 @@ import { playerCopy } from "@/language/player-copy";
 
 export type PlayerLibraryCard = {
   id: string;
+  invitationId?: string | null;
   title: string;
   subtitle: string | null;
   shortDescription: string | null;
@@ -23,6 +24,8 @@ export type PlayerLibraryCard = {
   voyageName: string;
   state: string;
   status: string;
+  membershipStatus?: string;
+  concurrencyVersion?: number;
   pinned: boolean;
   versionLabel: string;
   completionDate: string | null;
@@ -287,6 +290,71 @@ export function PlayerLibrary() {
     }
   }
 
+  async function leaveVoyage(card: PlayerLibraryCard) {
+    if (!library) return;
+    if (
+      !(await requestAction({
+        eyebrow: "Voyage membership",
+        title: `Leave “${card.voyageName}”?`,
+        detail:
+          "This ends your current Player membership and access to this Voyage. Your existing Voyage history remains preserved.",
+        confirmLabel: "Leave Voyage",
+        destructive: true,
+      }))
+    )
+      return;
+    setBusyCard(card.id);
+    setError("");
+    setNotice("");
+    try {
+      const response = await fetch(`/api/player/playthroughs/${card.id}/leave`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": library.csrfToken },
+        body: JSON.stringify(card.concurrencyVersion === undefined ? {} : { expectedVersion: card.concurrencyVersion }),
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "Your Voyage membership could not be ended.");
+      setNotice(`You left “${card.voyageName}”. Your Voyage history remains available.`);
+      await load();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Your Voyage membership could not be ended.");
+    } finally {
+      setBusyCard("");
+    }
+  }
+
+  async function decideInvitation(card: PlayerLibraryCard, decision: "accept" | "decline") {
+    if (!library || !card.invitationId) return;
+    if (
+      decision === "decline" &&
+      !(await requestAction({
+        eyebrow: "Voyage invitation",
+        title: `Decline “${card.voyageName}”?`,
+        detail: "The Captain will see your decision. This invitation will close, while its history remains preserved.",
+        confirmLabel: "Decline invitation",
+        destructive: true,
+      }))
+    )
+      return;
+    setBusyCard(card.id);
+    setError("");
+    try {
+      const response = await fetch(`/api/player/invitations/${card.invitationId}/decision`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": library.csrfToken },
+        body: JSON.stringify({ decision }),
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "The invitation could not be updated.");
+      setNotice(decision === "accept" ? "Invitation accepted. Your Voyage is ready to open." : "Invitation declined.");
+      await load();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The invitation could not be updated.");
+    } finally {
+      setBusyCard("");
+    }
+  }
+
   function toggleGroup(key: GroupKey, button: HTMLButtonElement) {
     const anchor = button.closest<HTMLElement>(".library-group");
     const top = anchor?.getBoundingClientRect().top;
@@ -504,6 +572,8 @@ export function PlayerLibrary() {
                               mode={mode}
                               newInvitation={newInvitationIds.has(card.id)}
                               onPreference={setPreference}
+                              onLeave={leaveVoyage}
+                              onInvitationDecision={decideInvitation}
                             />
                           ))}
                         </AnimatePresence>
@@ -530,6 +600,8 @@ function PlayerTaleCard({
   mode,
   newInvitation,
   onPreference,
+  onLeave,
+  onInvitationDecision,
 }: {
   card: PlayerLibraryCard;
   busy: boolean;
@@ -539,6 +611,8 @@ function PlayerTaleCard({
   mode: ReturnType<typeof useMotionMode>["mode"];
   newInvitation: boolean;
   onPreference: (card: PlayerLibraryCard, action: "pin" | "unpin" | "hide") => void;
+  onLeave: (card: PlayerLibraryCard) => void;
+  onInvitationDecision: (card: PlayerLibraryCard, decision: "accept" | "decline") => void;
 }) {
   const token = resolvePlatformMotionToken("layout", mode);
   const stateClass = card.state.toLocaleLowerCase().replaceAll("_", "-");
@@ -623,6 +697,16 @@ function PlayerTaleCard({
           <Link className="brass-button" href={card.primaryHref}>
             {card.primaryLabel}
           </Link>
+          {card.state === "INVITATIONS" && card.invitationId && (
+            <>
+              <button disabled={busy} onClick={() => onInvitationDecision(card, "accept")}>
+                Accept invitation
+              </button>
+              <button className="button-danger" disabled={busy} onClick={() => onInvitationDecision(card, "decline")}>
+                Decline invitation
+              </button>
+            </>
+          )}
           <button disabled={busy} aria-busy={busy} onClick={() => onPreference(card, card.pinned ? "unpin" : "pin")}>
             {busy ? "Saving…" : card.pinned ? "Unpin" : "Pin to top"}
           </button>
@@ -631,6 +715,12 @@ function PlayerTaleCard({
               Hide from library
             </button>
           )}
+          {["AWAITING_CAPTAIN", "IN_PROGRESS"].includes(card.state) &&
+            !["LEFT", "REMOVED", "CANCELLED"].includes(card.membershipStatus ?? "") && (
+              <button className="button-danger" disabled={busy} onClick={() => onLeave(card)}>
+                Leave Voyage
+              </button>
+            )}
         </div>
       </div>
     </motion.article>

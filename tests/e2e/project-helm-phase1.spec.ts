@@ -185,7 +185,8 @@ async function createVoyage(
   const created = (await response.json()) as CreatedVoyage;
   expect(created.participation.participationMode).toBe(input.participation);
   expect(created.participation.hasPlayerMembership).toBe(input.participation === "CAPTAIN_AND_PLAYER");
-  await expect(wizard.getByRole("heading", { name: crewNames[0]! })).toBeVisible();
+  if (crewNames.length) await expect(wizard.getByRole("heading", { name: crewNames[0]! })).toBeVisible();
+  else await expect(wizard.getByText(/No Crew invitations were created/u)).toBeVisible();
   await wizard.getByRole("button", { name: "Done" }).click();
   await expect(voyageCard(page, input.voyageName, "Ready to Launch")).toBeVisible();
   return created;
@@ -508,6 +509,26 @@ test("Captain authority and ordinary Player membership remain independent throug
   expect(audits.some((event) => event.action === "PLAYER_MEMBERSHIP_ADDED")).toBe(true);
   expect(audits.some((event) => event.action === "PLAYER_MEMBERSHIP_REMOVED")).toBe(true);
   expect(audits.some((event) => event.action === "CAPTAIN_AUTHORITY_REVOKED")).toBe(true);
+});
+
+test("Captain plus Player can create and begin a zero-invite Voyage without a blank Crew record", async ({ page }) => {
+  test.setTimeout(600_000);
+  await signInThroughProduct(page);
+  const voyageName = `Helm zero-invite ${suffix}`;
+  const created = await createVoyage(page, {
+    voyageName,
+    crewName: [],
+    participation: "CAPTAIN_AND_PLAYER",
+  });
+
+  expect(created.invitations).toEqual([]);
+  expect(created.participation).toMatchObject({ participationMode: "CAPTAIN_AND_PLAYER", hasPlayerMembership: true });
+  expect(
+    await db.playthroughMembership.count({ where: { playthroughId: created.playthroughId, playerProfileId } }),
+  ).toBe(1);
+  await expect(
+    voyageCard(page, voyageName, "Ready to Launch").getByText("Captain + Player", { exact: true }),
+  ).toBeVisible();
 });
 
 test("authenticated membership heartbeats are independently visible in the Captain operational projection", async ({

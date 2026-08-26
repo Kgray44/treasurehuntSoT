@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { ErrorState, LoadingState } from "@/components/ui/AsyncState";
+import { ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
+import { useActionDialog } from "@/components/ui/ActionDialog";
 
 type Projection = {
   voyage: {
@@ -9,6 +10,7 @@ type Projection = {
     voyageName: string;
     edition: string;
     lifecycle: string;
+    concurrencyVersion: number;
     operationalStatus: string;
     aggregatePresence: string;
     crewPresenceSummary: {
@@ -23,6 +25,7 @@ type Projection = {
     sourceUpdatedAt: string;
     computedAt: string;
   };
+  csrfToken: string;
   attention: Array<{ key: string; severity: string; title: string; explanation: string; stale: boolean }>;
   crew: Array<{
     id: string;
@@ -60,8 +63,12 @@ function words(value: string) {
 }
 
 export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId: string; authenticated: boolean }) {
+  const { requestAction, dialog } = useActionDialog();
   const [projection, setProjection] = useState<Projection | null>(null);
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+  const [busyMemberId, setBusyMemberId] = useState("");
+  const [cancelling, setCancelling] = useState(false);
   const load = useCallback(async () => {
     const response = await fetch(`/api/captain/voyages/${voyageId}`, { cache: "no-store" });
     const body = (await response.json()) as Projection & { error?: string };
@@ -71,6 +78,75 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
       setError("");
     }
   }, [voyageId]);
+
+  async function removeMember(member: Projection["crew"][number]) {
+    if (
+      !projection ||
+      member.isCaptainsOwnPlayerMembership ||
+      ["REMOVED", "LEFT", "CANCELLED"].includes(member.membership.status)
+    )
+      return;
+    if (
+      !(await requestAction({
+        eyebrow: "Crew membership",
+        title: `Remove ${member.displayName} from this Voyage?`,
+        detail:
+          "Their active Voyage access ends immediately. Their existing participation history remains preserved, and rejoining requires a new invitation.",
+        confirmLabel: "Remove from Crew",
+        destructive: true,
+      }))
+    )
+      return;
+    setBusyMemberId(member.id);
+    setError("");
+    try {
+      const response = await fetch(`/api/captain/playthroughs/${voyageId}/crew/${member.id}/remove`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": projection.csrfToken },
+        body: JSON.stringify({ expectedVersion: projection.voyage.concurrencyVersion }),
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "Crew access could not be changed.");
+      setNotice(`${member.displayName} was removed from this Voyage. Their history remains preserved.`);
+      await load();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Crew access could not be changed.");
+    } finally {
+      setBusyMemberId("");
+    }
+  }
+
+  async function cancelForEveryone() {
+    if (!projection || projection.voyage.lifecycle === "CANCELLED") return;
+    if (
+      !(await requestAction({
+        eyebrow: "Terminal Voyage action",
+        title: `Cancel “${projection.voyage.voyageName}” for everyone?`,
+        detail:
+          "This ends shared play and current participant access for every Crew member. The Voyage remains available as an archived historical record and cannot be resumed as this same Voyage.",
+        confirmLabel: "Cancel Voyage for Everyone",
+        destructive: true,
+      }))
+    )
+      return;
+    setCancelling(true);
+    setError("");
+    try {
+      const response = await fetch(`/api/captain/playthroughs/${voyageId}/cancel`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": projection.csrfToken },
+        body: JSON.stringify({ expectedVersion: projection.voyage.concurrencyVersion }),
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "The Voyage could not be cancelled.");
+      setNotice("The Voyage was cancelled for everyone and is now historical.");
+      await load();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The Voyage could not be cancelled.");
+    } finally {
+      setCancelling(false);
+    }
+  }
   useEffect(() => {
     if (!authenticated) return;
     const initial = window.setTimeout(() => void load(), 0);
@@ -114,6 +190,8 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
           {words(projection.voyage.aggregatePresence)}
         </p>
       </header>
+      {notice && <StatusBanner tone="success">{notice}</StatusBanner>}
+      {error && <StatusBanner tone="danger">{error}</StatusBanner>}
       <section aria-labelledby="needs-attention-heading">
         <h3 id="needs-attention-heading">Needs Attention</h3>
         {projection.attention.length ? (
@@ -151,6 +229,17 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
                   ? ` Â· last seen ${new Date(member.presence.lastSeenAt).toLocaleTimeString()}`
                   : ""}
               </span>
+              {!member.isCaptainsOwnPlayerMembership &&
+                !["REMOVED", "LEFT", "CANCELLED"].includes(member.membership.status) && (
+                  <button
+                    className="button-danger"
+                    disabled={Boolean(busyMemberId) || cancelling}
+                    aria-busy={busyMemberId === member.id}
+                    onClick={() => void removeMember(member)}
+                  >
+                    {busyMemberId === member.id ? "Removing…" : "Remove from Crew"}
+                  </button>
+                )}
             </li>
           ))}
         </ul>
@@ -159,6 +248,21 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
           changes Voyage progression.
         </p>
       </section>
+      {!["CANCELLED", "COMPLETED", "ABANDONED"].includes(projection.voyage.lifecycle) && (
+        <section aria-labelledby="cancel-voyage-heading">
+          <h3 id="cancel-voyage-heading">End shared Voyage</h3>
+          <p>
+            Cancellation ends this shared Voyage for everyone. It is distinct from the later Captain succession flow.
+          </p>
+          <button
+            className="button-danger"
+            disabled={Boolean(busyMemberId) || cancelling}
+            onClick={() => void cancelForEveryone()}
+          >
+            {cancelling ? "Cancelling Voyage…" : "Cancel Voyage for Everyone"}
+          </button>
+        </section>
+      )}
       <section aria-labelledby="progress-operational-heading">
         <h3 id="progress-operational-heading">Progress</h3>
         <dl>
@@ -207,6 +311,7 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
         {new Date(projection.voyage.sourceUpdatedAt).toLocaleTimeString()}. Polling is the active reconciliation
         fallback.
       </p>
+      {dialog}
     </section>
   );
 }

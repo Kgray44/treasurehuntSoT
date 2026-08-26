@@ -170,4 +170,29 @@ describe("PlayerLibrary motion and authority", () => {
 
     expect(await screen.findByRole("heading", { name: "Finished Voyage" })).toBeInTheDocument();
   });
+
+  it("accepts an ordinary library invitation without routing through an invitation credential", async () => {
+    const invitation = card("voyage-1", "Mustered Voyage", "INVITATIONS", {
+      invitationId: "invitation-1",
+      concurrencyVersion: 3,
+    });
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, library({ invitations: [invitation] })))
+      .mockResolvedValueOnce(response(200, { ok: true }))
+      .mockResolvedValueOnce(response(200, library({ awaitingCaptain: [invitation] })));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<PlayerLibrary />);
+
+    const cardNode = (await screen.findByRole("heading", { name: "Mustered Voyage" })).closest("article")!;
+    fireEvent.click(within(cardNode).getByRole("button", { name: "Accept invitation" }));
+
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith(
+        "/api/player/invitations/invitation-1/decision",
+        expect.objectContaining({ method: "POST", body: JSON.stringify({ decision: "accept" }) }),
+      ),
+    );
+    expect(await screen.findByRole("heading", { name: "Mustered Voyage" })).toBeInTheDocument();
+  });
 });

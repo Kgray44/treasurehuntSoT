@@ -187,12 +187,11 @@ export function CaptainLibrary() {
   const [sideQuests, setSideQuests] = useState(true);
   const [plannedStartAt, setPlannedStartAt] = useState("");
   const [scheduleTimezone, setScheduleTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone);
-  const [players, setPlayers] = useState<CrewDraft[]>([
-    { key: "crew-1", playerId: "", displayName: "", crewRole: "Crew member", pin: "" },
-  ]);
+  const [players, setPlayers] = useState<CrewDraft[]>([]);
   const [expiresInHours, setExpiresInHours] = useState(168);
   const [accountRequired, setAccountRequired] = useState(false);
   const [created, setCreated] = useState<CreatedInvitation[]>([]);
+  const [createdVoyageId, setCreatedVoyageId] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
   const [changedIds, setChangedIds] = useState<ReadonlySet<string>>(new Set());
@@ -376,6 +375,7 @@ export function CaptainLibrary() {
         }),
       });
       const body = (await response.json()) as {
+        playthroughId?: string;
         invitations?: CreatedInvitation[];
         participation?: CaptainParticipation;
         error?: string;
@@ -386,10 +386,11 @@ export function CaptainLibrary() {
             "The Voyage could not be created. Check the Voyage list before trying again to avoid duplicate invitations.",
         );
       setCreated(body.invitations ?? []);
+      setCreatedVoyageId(body.playthroughId ?? null);
       setNotice(
         body.participation?.participationMode === "CAPTAIN_AND_PLAYER"
-          ? "The Voyage, your Player participation, and the Crew invitations were created together."
-          : "The Captain-only Voyage and its individual Crew invitations were created together.",
+          ? "The Voyage and your Player participation were created together."
+          : "The Captain-only Voyage was created.",
       );
       setWizardDirection(1);
       setStep(6);
@@ -603,6 +604,8 @@ export function CaptainLibrary() {
                 onClick={(event) => {
                   setWizardRestoreTarget(event.currentTarget);
                   setCaptainParticipationMode("CAPTAIN_ONLY");
+                  setCreated([]);
+                  setCreatedVoyageId(null);
                   setWizard(true);
                   setWizardDirection(1);
                   setStep(0);
@@ -680,6 +683,8 @@ export function CaptainLibrary() {
                             onClick: () => {
                               setWizardRestoreTarget(null);
                               setCaptainParticipationMode("CAPTAIN_ONLY");
+                              setCreated([]);
+                              setCreatedVoyageId(null);
                               setWizard(true);
                               setWizardDirection(1);
                               setStep(0);
@@ -738,6 +743,8 @@ export function CaptainLibrary() {
                             onClick: () => {
                               setWizardRestoreTarget(null);
                               setCaptainParticipationMode("CAPTAIN_ONLY");
+                              setCreated([]);
+                              setCreatedVoyageId(null);
                               setWizard(true);
                               setWizardDirection(1);
                               setStep(0);
@@ -836,6 +843,8 @@ export function CaptainLibrary() {
                         onClick={(event) => {
                           setWizardRestoreTarget(event.currentTarget);
                           setCaptainParticipationMode("CAPTAIN_ONLY");
+                          setCreated([]);
+                          setCreatedVoyageId(null);
                           chooseTale(tale.id);
                           setWizard(true);
                           setWizardDirection(1);
@@ -899,6 +908,7 @@ export function CaptainLibrary() {
               accountRequired={accountRequired}
               setAccountRequired={setAccountRequired}
               created={created}
+              createdVoyageId={createdVoyageId}
               busy={busy}
               mode={mode}
               createVoyage={() => void createVoyage()}
@@ -1135,6 +1145,7 @@ type WizardProps = Record<string, unknown> & {
   accountRequired: boolean;
   setAccountRequired: (value: boolean) => void;
   created: CreatedInvitation[];
+  createdVoyageId: string | null;
   busy: boolean;
   mode: ReturnType<typeof useMotionMode>["mode"];
   createVoyage: () => void;
@@ -1178,7 +1189,7 @@ function VoyageWizard(props: WizardProps) {
     const profile = props.library.playerProfiles.find((item) => item.id === crew.playerId);
     return !props.accountRequired || Boolean(profile?.username);
   });
-  const crewValid = props.players.length > 0 && crewNames.every(Boolean);
+  const crewValid = crewNames.every(Boolean);
   const captainParticipationValid =
     props.captainParticipationMode === "CAPTAIN_ONLY" || props.library.captainProfile?.status === "ACTIVE";
   const canNext = [
@@ -1524,7 +1535,8 @@ function VoyageWizard(props: WizardProps) {
                     Add another Crew member
                   </button>
                   <p className="panel-note">
-                    Each Crew member receives an individual invitation and identity boundary.
+                    Crew is optional. Create a zero-invite Voyage to begin as Captain + Player, or add people now; each
+                    added Crew member receives an individual invitation and identity boundary.
                   </p>
                 </div>
               )}
@@ -1565,7 +1577,11 @@ function VoyageWizard(props: WizardProps) {
                       Every invitation that requires an account must select a registered Crew account.
                     </p>
                   )}
-                  <p>No raw token, short code, or PIN will be stored. Replacements generate new secrets.</p>
+                  <p>
+                    {props.players.length
+                      ? "No raw token, short code, or PIN will be stored. Replacements generate new secrets."
+                      : "No Crew invitations will be created. You can add Crew through a later governed invitation flow."}
+                  </p>
                 </div>
               )}
               {props.step === 4 && (
@@ -1636,14 +1652,23 @@ function VoyageWizard(props: WizardProps) {
                         </dd>
                       </div>
                     )}
-                    <div>
-                      <dt>Invitation expires</dt>
-                      <dd>{props.expiresInHours} hours after creation</dd>
-                    </div>
-                    <div>
-                      <dt>Account requirement</dt>
-                      <dd>{props.accountRequired ? "Registered Crew accounts required" : "Guest Crew allowed"}</dd>
-                    </div>
+                    {props.players.length ? (
+                      <>
+                        <div>
+                          <dt>Invitation expires</dt>
+                          <dd>{props.expiresInHours} hours after creation</dd>
+                        </div>
+                        <div>
+                          <dt>Account requirement</dt>
+                          <dd>{props.accountRequired ? "Registered Crew accounts required" : "Guest Crew allowed"}</dd>
+                        </div>
+                      </>
+                    ) : (
+                      <div>
+                        <dt>Crew plan</dt>
+                        <dd>Solo start with no invitations</dd>
+                      </div>
+                    )}
                   </dl>
                   <p className="panel-note">
                     Creation is atomic. The Voyage remains bound to this published version, even after newer versions
@@ -1652,12 +1677,25 @@ function VoyageWizard(props: WizardProps) {
                 </div>
               )}
               {props.step === 6 &&
-                (props.created.length ? (
-                  <InvitationSecrets invitations={props.created} csrf={props.library.csrfToken} mode={props.mode} />
+                (props.createdVoyageId ? (
+                  props.created.length ? (
+                    <InvitationSecrets invitations={props.created} csrf={props.library.csrfToken} mode={props.mode} />
+                  ) : (
+                    <div className="platform-empty">
+                      <h3>Voyage created</h3>
+                      <p>
+                        Your Captain and Player participation are ready. No Crew invitations were created, and you can
+                        add Crew through a later governed invitation flow.
+                      </p>
+                    </div>
+                  )
                 ) : (
                   <div className="platform-empty">
                     <h3>Ready to create</h3>
-                    <p>The Voyage and invitations will be created together. If creation fails, no Voyage is created.</p>
+                    <p>
+                      The Voyage and any selected invitations will be created together. If creation fails, no Voyage is
+                      created.
+                    </p>
                   </div>
                 ))}
             </motion.div>
@@ -1677,7 +1715,7 @@ function VoyageWizard(props: WizardProps) {
               {props.busy ? "Creating..." : "Create Voyage and invitations"}
             </button>
           )}
-          {props.step === 6 && props.created.length > 0 && (
+          {props.step === 6 && props.createdVoyageId && (
             <button className="brass-button" onClick={props.close}>
               Done
             </button>

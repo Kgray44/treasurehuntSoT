@@ -171,7 +171,7 @@ Players can discover, resume, archive, and reconcile exact-edition Voyage experi
 **Status:** MAINLINE
 **Program or subsystem:** Captain
 
-Captains create, launch, operate, recover, and reconcile live Voyages through authoritative commands, with an explicit option to join the same Voyage as an ordinary Player.
+Captains create, launch, operate, and conclude live Voyages through authoritative commands, with independent Player participation and a complete ordinary Crew lifecycle.
 
 ### Important subfeatures
 
@@ -186,6 +186,9 @@ Captains create, launch, operate, recover, and reconcile live Voyages through au
 - Membership-bounded personal history and artifact eligibility
 - Captain operational projections and prioritized voyage library
 - Membership-scoped crew presence, sync health, warnings, and safe event stream
+- Zero-invite Captain plus Player Voyage creation
+- Direct Player invitation acceptance and decline from Chronicle Library
+- Captain Crew removal, Player voluntary leave, and explicit Voyage cancellation with preserved history
 
 ### Primary surfaces
 
@@ -198,10 +201,13 @@ Captains create, launch, operate, recover, and reconcile live Voyages through au
 - path: `src/domain/admin.ts`
 - path: `src/helm/captain-participation.ts`
 - path: `src/helm/operations.ts`
+- path: `src/helm/lifecycle.ts`
 - path: `src/platform/membership-presence.ts`
 - path: `src/components/captain/CaptainOperationalPanel.tsx`
 - path: `src/components/platform/CaptainLibrary.tsx`
 - path: `src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts`
+- path: `src/app/api/captain/playthroughs/[playthroughId]/cancel/route.ts`
+- path: `src/app/api/player/playthroughs/[playthroughId]/leave/route.ts`
 
 ---
 
