@@ -3,7 +3,7 @@ title: Project Helm Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-helm-repository-index
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-25
 ---
 
 # Project Helm
@@ -19,14 +19,23 @@ Phase 2, **Read the Deck**, is accepted on canonical main. It adds read-only
 Captain operational projections, membership-scoped presence and synchronization
 truth, privacy-safe attention/status/event summaries, and a prioritized Voyage
 Library while preserving Phase 1 authority and ordinary Player membership.
-The accepted result stops before Phase 3 command redesign and Phase 4
-preflight/recovery work.
+The accepted result stops before the interposed amendments and the original
+Phase 3 command redesign and Phase 4 preflight/recovery work.
+
+Governing Amendment v1.1 supplements (and does not replace) the v1.0 governing
+document. It inserts three amendments after accepted Phase 2 and before the
+unchanged original Phase 3: A1 **Muster the Crew**, A2 **Pass the Helm**, and
+A3 **Ready the Room**. This governance-only import implements none of A1, A2,
+or A3.
 
 ## Authority
 
 - [Project Helm governing document](../Project%20Helm/Project_Helm_Captain_Operations_and_Participating_Captain_System_Governing_Document_v1.0.pdf),
   version 1.0, SHA-256
   `93ae665c95cf117e6d1c1d4c1d4d14245b0c41da6f9ea343977549683982972d`.
+- [Project Helm Governing Amendment v1.1](../Project%20Helm/Project_Helm_Governing_Amendment_v1.1_Crew_Lifecycle_Captain_Succession_and_Muster_Experience.pdf),
+  SHA-256
+  `a97dc9de4a5a7c94d0c74af7be5776fef8f0d710614ababbd8d19b67ee95b536`.
 - [Voyagewright Continuous Development and Mainline Integration Standard](../../Governing/Voyagewright_Continuous_Development_and_Mainline_Integration_Standard_v1.0.pdf),
   version 1.0, SHA-256
   `10ba64e3599179814a95d5ee873e3be070a0618fff058506b451dc9666d874a7`.
@@ -35,7 +44,19 @@ preflight/recovery work.
 - [Sounding Line release validation policy](../../Testing/Release_Validation_Policy.md).
 
 The tracked PDFs are byte-identical to the supplied authorities reviewed for
-this phase. They remain governing sources, not implementation evidence.
+their governing revisions. They remain active governing sources, not
+implementation evidence.
+
+## Effective governed sequence
+
+1. P1 **Take the Helm**
+2. P2 **Read the Deck**
+3. A1 **Muster the Crew**
+4. A2 **Pass the Helm**
+5. A3 **Ready the Room**
+6. P3 **Give the Orders**
+7. P4 **Weather the Passage**
+8. P5 **Clear for Voyage**
 
 ## Phase 1 records
 
