@@ -66,6 +66,21 @@ const globalItems = [
     order: 30,
     currentStatus: "active",
   },
+  {
+    id: "global-chronicle-passport",
+    layer: "GLOBAL",
+    label: "Chronicle Passport",
+    href: "/passport",
+    owner: "wayfarer",
+    requiredCapabilities: ["player"],
+    requiresAuthentication: true,
+    shellModes: ordinaryModes,
+    desktop: "primary",
+    mobile: "drawer",
+    activeMatch: { type: "SECTION" },
+    order: 40,
+    currentStatus: "active",
+  },
 ] as const satisfies readonly NavigationItem[];
 
 const workspaceItems = [

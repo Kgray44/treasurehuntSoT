@@ -23,6 +23,13 @@ type DraftState = {
 
 const PersonalHarborContext = createContext<DraftState | null>(null);
 
+export function PersonalHarborDraftProvider({ csrfToken, children }: { csrfToken: string; children: ReactNode }) {
+  const [dirty, setDirty] = useState(false);
+  return (
+    <PersonalHarborContext.Provider value={{ dirty, setDirty, csrfToken }}>{children}</PersonalHarborContext.Provider>
+  );
+}
+
 export function usePersonalHarbor() {
   const value = useContext(PersonalHarborContext);
   if (!value) throw new Error("usePersonalHarbor must be used inside PersonalHarborLayout.");
@@ -77,24 +84,24 @@ function HarborNavigation({
   );
 }
 
-export function PersonalHarborLayout({
-  activeSection,
-  eyebrow,
-  title,
-  description,
-  csrfToken,
-  children,
-}: {
+type PersonalHarborLayoutProps = {
   activeSection: PersonalHarborSectionId;
   eyebrow: string;
   title: string;
   description: string;
-  csrfToken: string;
   children: ReactNode;
-}) {
+};
+
+function PersonalHarborLayoutContent({
+  activeSection,
+  eyebrow,
+  title,
+  description,
+  children,
+}: PersonalHarborLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const [dirty, setDirty] = useState(false);
+  const { dirty, setDirty } = usePersonalHarbor();
   const [pendingHref, setPendingHref] = useState<string | null>(null);
   const [compatibilityTarget, setCompatibilityTarget] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -165,7 +172,7 @@ export function PersonalHarborLayout({
   };
 
   return (
-    <PersonalHarborContext.Provider value={{ dirty, setDirty, csrfToken }}>
+    <>
       <main className="personal-harbor" data-homeport-section={activeSection}>
         <header className="personal-harbor__hero">
           <div>
@@ -232,6 +239,14 @@ export function PersonalHarborLayout({
           </div>
         </div>
       )}
-    </PersonalHarborContext.Provider>
+    </>
+  );
+}
+
+export function PersonalHarborLayout({ csrfToken, ...props }: PersonalHarborLayoutProps & { csrfToken: string }) {
+  return (
+    <PersonalHarborDraftProvider csrfToken={csrfToken}>
+      <PersonalHarborLayoutContent {...props} />
+    </PersonalHarborDraftProvider>
   );
 }
