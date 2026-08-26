@@ -550,6 +550,97 @@ test("Admiralty Phase 2 leaves mixed generic browser proof selected exactly once
   ]);
 });
 
+test("Homeport Phase 4 and Phase 7 browser proof use portable dedicated fixtures", () => {
+  const candidateSha = "e".repeat(40);
+  const browserCommands = verificationCommands({
+    mode: "ordinary",
+    candidateSha,
+    safetyPaths: [],
+    lintPaths: [],
+    selected: {
+      unitTests: [],
+      browserTests: [
+        "tests/e2e/homeport-phase4.spec.ts",
+        "tests/e2e/homeport-phase7.spec.ts",
+        "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts",
+        "tests/e2e/harborlight-phase3.spec.ts",
+      ],
+    },
+    databaseUrl: "file:./.sounding-line-eeeeeeeeeeee.sqlite",
+    migrationRequired: false,
+    migrationScripts: [],
+    buildRequired: true,
+  });
+  assert.deepEqual(
+    browserCommands.filter(
+      ([command, argumentsList]) => command === process.execPath || argumentsList.includes("playwright"),
+    ),
+    [
+      [
+        process.execPath,
+        ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-eeeeeeeeeeee.sqlite"],
+      ],
+      [process.execPath, ["scripts/homeport/run-phase4-e2e.mjs"]],
+      [process.execPath, ["scripts/homeport/prepare-phase7-fixture.mjs"]],
+      [process.execPath, ["scripts/homeport/run-phase7-journeys.mjs"]],
+      [process.execPath, ["scripts/homeport/prepare-phase7-owner-correction-round3-fixture.mjs"]],
+      [process.execPath, ["scripts/homeport/run-phase7-owner-correction-round3-journeys.mjs"]],
+      ["npx", ["--no-install", "playwright", "test", "tests/e2e/harborlight-phase3.spec.ts", "--project", "chromium"]],
+    ],
+  );
+  assert.deepEqual(
+    verificationEnvironment(
+      { candidateSha, databaseUrl: "file:./.sounding-line-eeeeeeeeeeee.sqlite", buildRequired: true },
+      process.execPath,
+      ["scripts/homeport/run-phase7-journeys.mjs"],
+      {},
+    ),
+    {
+      HOMEPORT_SOUNDING_LINE_TASK_ROOT: "1",
+      HOMEPORT_PHASE4_TASK_ROOT: "artifacts/sounding-line/homeport-phase4-eeeeeeeeeeee",
+      HOMEPORT_PHASE4_SOURCE_DATABASE: "./.sounding-line-eeeeeeeeeeee.sqlite",
+      HOMEPORT_PHASE4_EVIDENCE_ROOT: "artifacts/sounding-line/homeport-phase4-eeeeeeeeeeee/evidence",
+      HOMEPORT_PHASE4_REUSE_BUILD: "1",
+      HOMEPORT_PHASE7_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-eeeeeeeeeeee",
+      HOMEPORT_PHASE7_SOURCE_DATABASE: "./.sounding-line-eeeeeeeeeeee.sqlite",
+      HOMEPORT_PHASE7_ORIGINAL_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-eeeeeeeeeeee",
+      HOMEPORT_PHASE7_ROUND1_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-round1-eeeeeeeeeeee",
+      HOMEPORT_PHASE7_ROUND2_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-round2-eeeeeeeeeeee",
+      HOMEPORT_PHASE7_ROUND3_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-round3-eeeeeeeeeeee",
+      HOMEPORT_PHASE7_PATCH_A_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-patch-a-eeeeeeeeeeee",
+    },
+  );
+});
+
+test("Homeport Sounding Line roots reject invalid source evidence before execution", () => {
+  const environment = {
+    ...process.env,
+    HOMEPORT_SOUNDING_LINE_TASK_ROOT: "1",
+    HOMEPORT_PHASE4_TASK_ROOT: "artifacts/sounding-line/homeport-negative-phase4",
+    HOMEPORT_PHASE4_SOURCE_DATABASE: "./developer-local.sqlite",
+    HOMEPORT_PHASE7_TASK_ROOT: "artifacts/sounding-line/homeport-negative-phase7",
+    HOMEPORT_PHASE7_SOURCE_DATABASE: "./developer-local.sqlite",
+  };
+  assert.throws(
+    () =>
+      execFileSync(process.execPath, ["scripts/homeport/run-phase4-e2e.mjs"], {
+        env: environment,
+        encoding: "utf8",
+        stdio: "pipe",
+      }),
+    /Homeport Phase 4 refuses this build database/u,
+  );
+  assert.throws(
+    () =>
+      execFileSync(process.execPath, ["scripts/homeport/prepare-phase7-fixture.mjs"], {
+        env: environment,
+        encoding: "utf8",
+        stdio: "pipe",
+      }),
+    /HOMEPORT_PHASE7_SOURCE_DATABASE_REFUSED/u,
+  );
+});
+
 test("Admiralty Phase 2 dedicated harness failures fail verification normally", () => {
   const plan = {
     mode: "ordinary",

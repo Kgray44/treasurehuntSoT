@@ -11,8 +11,12 @@ const distDir = process.env.NEXT_DIST_DIR ?? ".sealed-build-phase7-owner-correct
 const isolateFromWalkthrough = process.env.HOMEPORT_PHASE7_PATCH_A_SKIP_WALKTHROUGH_CLONE === "1";
 const fixtureVersion = "homeport-phase7-owner-correction-round3-patch-a-v1";
 const canonical = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
+const approvedTaskRoot =
+  process.env.HOMEPORT_SOUNDING_LINE_TASK_ROOT === "1"
+    ? path.join(repositoryRoot, "artifacts", "sounding-line")
+    : path.resolve("C:/Users/kkids/AppData/Local/ProjectHomeport");
 
-if (!taskRoot.startsWith(`${path.resolve("C:/Users/kkids/AppData/Local/ProjectHomeport")}${path.sep}`))
+if (!taskRoot.startsWith(`${approvedTaskRoot}${path.sep}`))
   throw new Error(`HOMEPORT_PHASE7_PATCH_A_TASK_ROOT_REFUSED:${taskRoot}`);
 if (!requested) throw new Error("HOMEPORT_PHASE7_PATCH_A_JOURNEYS selected no journeys.");
 

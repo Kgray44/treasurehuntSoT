@@ -7,14 +7,25 @@ const repositoryRoot = path.resolve(process.cwd());
 const taskRoot = path.resolve(required("HOMEPORT_PHASE7_TASK_ROOT"));
 const canonicalDatabase = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
 const requestedSource = path.resolve(process.env.HOMEPORT_PHASE7_SOURCE_DATABASE ?? canonicalDatabase);
+const soundingLineOwned = process.env.HOMEPORT_SOUNDING_LINE_TASK_ROOT === "1";
+const approvedTaskRoot = soundingLineOwned
+  ? path.join(repositoryRoot, "artifacts", "sounding-line")
+  : path.resolve("C:/Users/kkids/AppData/Local/ProjectHomeport");
+const approvedSoundingLineSource =
+  soundingLineOwned &&
+  requestedSource.startsWith(repositoryRoot + path.sep) &&
+  /^\.sounding-line-[a-f0-9]{12}\.sqlite$/u.test(path.basename(requestedSource));
 const sourceCopy = path.join(taskRoot, "immutable-fixture-seed", "canonical-source-copy.db");
 const seedDatabase = path.join(taskRoot, "immutable-fixture-seed", "homeport-phase7-integrated-v1.db");
 const credentialPath = path.join(taskRoot, "credentials", "walkthrough-credentials.private.json");
 const receiptPath = path.join(taskRoot, "reports", "phase7-fixture-prepare-receipt.json");
 
-if (!taskRoot.startsWith(path.resolve("C:/Users/kkids/AppData/Local/ProjectHomeport") + path.sep))
-  throw new Error(`HOMEPORT_PHASE7_TASK_ROOT_REFUSED:${taskRoot}`);
-if (requestedSource !== canonicalDatabase && !requestedSource.startsWith(taskRoot + path.sep))
+if (!taskRoot.startsWith(approvedTaskRoot + path.sep)) throw new Error(`HOMEPORT_PHASE7_TASK_ROOT_REFUSED:${taskRoot}`);
+if (
+  requestedSource !== canonicalDatabase &&
+  !requestedSource.startsWith(taskRoot + path.sep) &&
+  !approvedSoundingLineSource
+)
   throw new Error(`HOMEPORT_PHASE7_SOURCE_DATABASE_REFUSED:${requestedSource}`);
 if ((await stat(requestedSource)).size < 1) throw new Error("HOMEPORT_PHASE7_SOURCE_DATABASE_EMPTY");
 
