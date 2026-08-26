@@ -365,7 +365,13 @@ test("creator authors a media-rich tale and preserves the Drydock launch gate", 
       chapters: Array<{
         id: string;
         title: string;
-        blocks: Array<{ id: string; blockType: string; title: string; configuration: Record<string, unknown> }>;
+        blocks: Array<{
+          id: string;
+          blockType: string;
+          title: string;
+          configuration: Record<string, unknown>;
+          completion: Record<string, unknown>;
+        }>;
       }>;
     };
   };
