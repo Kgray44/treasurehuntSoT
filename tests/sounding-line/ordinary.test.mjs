@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { EventEmitter } from "node:events";
 import { mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { createServer as createTcpServer } from "node:net";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -10,6 +11,8 @@ import {
   assertBrowserAuthorityTopology,
   browserRuntimeReceipt,
   runBrowserAuthority,
+  stripTaskOwnedCookieSecurity,
+  taskOwnedCookieAdapterRequired,
 } from "../../scripts/sounding-line/browser-authority.mjs";
 import {
   assertBinding,
@@ -20,6 +23,7 @@ import {
   requiresMigrationValidation,
   requiresBuild,
   runReconciledVerification,
+  resolveHomeportFixturePreparers,
   runVerificationCommands,
   sanitizedFailureCode,
   selectAffectedTests,
@@ -27,6 +31,7 @@ import {
   verificationEnvironment,
   verificationCommands,
 } from "../../scripts/sounding-line/ordinary.mjs";
+import { resolveBrowserSuiteDispatches } from "../../scripts/sounding-line/browser-suite-profiles.mjs";
 
 const basePackage = {
   scripts: {
@@ -422,7 +427,7 @@ test("direct browser proof prevents unrelated browser suites from widening the c
     unitTests: [],
     browserTests: [
       "tests/e2e/harborlight-phase2.spec.ts",
-      "tests/e2e/harborlight-phase3.spec.ts",
+      "tests/e2e/project-helm-phase1.spec.ts",
       "tests/e2e/harborlight-phase4.spec.ts",
     ],
   });
@@ -511,7 +516,7 @@ test("ordinary browser proof uses the installed Chromium project", () => {
     mode: "ordinary",
     safetyPaths: [],
     lintPaths: [],
-    selected: { unitTests: [], browserTests: ["tests/e2e/harborlight-phase3.spec.ts"] },
+    selected: { unitTests: [], browserTests: ["tests/e2e/project-helm-phase1.spec.ts"] },
     databaseUrl: "file:./.sounding-line-candidate.sqlite",
     migrationRequired: false,
     migrationScripts: [],
@@ -528,7 +533,7 @@ test("ordinary browser proof uses the installed Chromium project", () => {
     [
       "scripts/sounding-line/browser-authority.mjs",
       "--",
-      "tests/e2e/harborlight-phase3.spec.ts",
+      "tests/e2e/project-helm-phase1.spec.ts",
       "--project",
       "chromium",
     ],
@@ -537,7 +542,7 @@ test("ordinary browser proof uses the installed Chromium project", () => {
     verificationEnvironment(
       { databaseUrl: "file:./.sounding-line-candidate.sqlite" },
       process.execPath,
-      ["scripts/sounding-line/browser-authority.mjs", "--", "tests/e2e/harborlight-phase3.spec.ts"],
+      ["scripts/sounding-line/browser-authority.mjs", "--", "tests/e2e/project-helm-phase1.spec.ts"],
       {},
     ),
     { DATABASE_URL: "file:./.sounding-line-candidate.sqlite" },
@@ -563,27 +568,25 @@ test("Tideglass browser proof uses its dedicated isolated harness", () => {
   const browserHarnessCommands = browserCommands.filter(
     ([command, argumentsList]) =>
       (command === process.execPath &&
-        ["scripts/tideglass/run-phase3-journeys.mjs", "scripts/sounding-line/sqlite-bootstrap.mjs"].includes(
+        ["scripts/tideglass/run-phase3-journeys.mjs", "scripts/sounding-line/run-browser-suite.mjs"].includes(
           argumentsList[0],
         )) ||
-      (command === process.execPath && argumentsList[0] === "scripts/sounding-line/browser-authority.mjs") ||
-      (command === "npx" && argumentsList.includes("prisma/seed.ts")),
+      false,
   );
   assert.deepEqual(browserHarnessCommands, [
     [process.execPath, ["scripts/tideglass/run-phase3-journeys.mjs"]],
     [
       process.execPath,
-      ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
-    ],
-    ["npx", ["--no-install", "tsx", "prisma/seed.ts"]],
-    [
-      process.execPath,
       [
-        "scripts/sounding-line/browser-authority.mjs",
+        "scripts/sounding-line/run-browser-suite.mjs",
+        "--profile",
+        "harborlight-phase3",
+        "--candidate",
+        candidateSha,
+        "--database-url",
+        "file:./artifacts/sounding-line/harborlight-phase3-aaaaaaaaaaaa/validation-isolated-19700101-000000000-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.db",
         "--",
         "tests/e2e/harborlight-phase3.spec.ts",
-        "--project",
-        "chromium",
       ],
     ],
   ]);
@@ -625,13 +628,14 @@ test("Admiralty Phase 2 browser proof uses its dedicated isolated harness", () =
       { candidateSha, buildRequired: true },
       process.execPath,
       ["scripts/admiralty/run-phase2-journeys.mjs"],
-      { ADMIRALTY_PHASE2_PRIVATE_CREDENTIALS: "not-used" },
+      { ADMIRALTY_PHASE2_PRIVATE_CREDENTIALS: "not-used", LOCALAPPDATA: "C:/validation-runtime" },
     ),
     {
       LOCALAPPDATA: ".",
       ADMIRALTY_PHASE2_TASK_ROOT: "ProjectAdmiralty/.sounding-line-admiralty-phase2-bbbbbbbbbbbb",
       NEXT_DIST_DIR: ".next",
       ADMIRALTY_PHASE2_REUSE_BUILD: "1",
+      PLAYWRIGHT_BROWSERS_PATH: path.join("C:/validation-runtime", "ms-playwright"),
     },
   );
 });
@@ -654,27 +658,25 @@ test("Admiralty Phase 2 leaves mixed generic browser proof selected exactly once
   const browserHarnessCommands = browserCommands.filter(
     ([command, argumentsList]) =>
       (command === process.execPath &&
-        ["scripts/admiralty/run-phase2-journeys.mjs", "scripts/sounding-line/sqlite-bootstrap.mjs"].includes(
+        ["scripts/admiralty/run-phase2-journeys.mjs", "scripts/sounding-line/run-browser-suite.mjs"].includes(
           argumentsList[0],
         )) ||
-      (command === process.execPath && argumentsList[0] === "scripts/sounding-line/browser-authority.mjs") ||
-      (command === "npx" && argumentsList.includes("prisma/seed.ts")),
+      false,
   );
   assert.deepEqual(browserHarnessCommands, [
     [process.execPath, ["scripts/admiralty/run-phase2-journeys.mjs"]],
     [
       process.execPath,
-      ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
-    ],
-    ["npx", ["--no-install", "tsx", "prisma/seed.ts"]],
-    [
-      process.execPath,
       [
-        "scripts/sounding-line/browser-authority.mjs",
+        "scripts/sounding-line/run-browser-suite.mjs",
+        "--profile",
+        "admiralty-phase3",
+        "--candidate",
+        "c".repeat(40),
+        "--database-url",
+        "file:./.sounding-line-cccccccccccc-admiralty-phase3.sqlite",
         "--",
         "tests/e2e/admiralty-phase3.spec.ts",
-        "--project",
-        "chromium",
       ],
     ],
   ]);
@@ -710,17 +712,23 @@ test("Homeport Phase 4 and Phase 7 browser proof use portable dedicated fixtures
       ],
       [process.execPath, ["scripts/homeport/run-phase4-e2e.mjs"]],
       [process.execPath, ["scripts/homeport/prepare-phase7-fixture.mjs"]],
-      [process.execPath, ["scripts/homeport/run-phase7-journeys.mjs"]],
+      [process.execPath, ["scripts/homeport/prepare-phase7-owner-correction-round1-fixture.mjs"]],
+      [process.execPath, ["scripts/homeport/prepare-phase7-owner-correction-round2-fixture.mjs"]],
       [process.execPath, ["scripts/homeport/prepare-phase7-owner-correction-round3-fixture.mjs"]],
+      [process.execPath, ["scripts/homeport/run-phase7-journeys.mjs"]],
       [process.execPath, ["scripts/homeport/run-phase7-owner-correction-round3-journeys.mjs"]],
       [
         process.execPath,
         [
-          "scripts/sounding-line/browser-authority.mjs",
+          "scripts/sounding-line/run-browser-suite.mjs",
+          "--profile",
+          "harborlight-phase3",
+          "--candidate",
+          candidateSha,
+          "--database-url",
+          "file:./artifacts/sounding-line/harborlight-phase3-eeeeeeeeeeee/validation-isolated-19700101-000000000-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.db",
           "--",
           "tests/e2e/harborlight-phase3.spec.ts",
-          "--project",
-          "chromium",
         ],
       ],
     ],
@@ -747,6 +755,116 @@ test("Homeport Phase 4 and Phase 7 browser proof use portable dedicated fixtures
       HOMEPORT_PHASE7_PATCH_A_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-patch-a-eeeeeeeeeeee",
     },
   );
+});
+
+test("Homeport fixture preflight provisions only declared journey dependencies", () => {
+  const round2 = "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts";
+  assert.deepEqual(resolveHomeportFixturePreparers([round2], { HOMEPORT_PHASE7_CORRECTION_JOURNEYS: "A" }), [
+    "scripts/homeport/prepare-phase7-owner-correction-round2-fixture.mjs",
+  ]);
+  assert.deepEqual(resolveHomeportFixturePreparers([round2], { HOMEPORT_PHASE7_CORRECTION_JOURNEYS: "W" }), [
+    "scripts/homeport/prepare-phase7-fixture.mjs",
+    "scripts/homeport/prepare-phase7-owner-correction-round1-fixture.mjs",
+    "scripts/homeport/prepare-phase7-owner-correction-round2-fixture.mjs",
+  ]);
+});
+
+test("fixture-aware suite dispatch groups established fixture contracts without credential bleed", () => {
+  const dispatches = resolveBrowserSuiteDispatches([
+    "tests/e2e/admiralty-phase1.spec.ts",
+    "tests/e2e/harborlight-phase2.spec.ts",
+    "tests/e2e/harborlight-phase3.spec.ts",
+    "tests/e2e/phase3-accessibility-viewports.spec.ts",
+    "tests/e2e/phase3-lifecycle-extended.spec.ts",
+    "tests/e2e/phase3-lifecycle.spec.ts",
+    "tests/e2e/project-helm-phase1.spec.ts",
+  ]);
+  assert.deepEqual(
+    dispatches.map(({ id, browserTests }) => [id, browserTests]),
+    [
+      ["admiralty-phase1", ["tests/e2e/admiralty-phase1.spec.ts"]],
+      ["harborlight-phase2", ["tests/e2e/harborlight-phase2.spec.ts"]],
+      ["harborlight-phase3", ["tests/e2e/harborlight-phase3.spec.ts"]],
+      [
+        "lanternwake-phase3",
+        [
+          "tests/e2e/phase3-accessibility-viewports.spec.ts",
+          "tests/e2e/phase3-lifecycle-extended.spec.ts",
+          "tests/e2e/phase3-lifecycle.spec.ts",
+        ],
+      ],
+      ["generic", ["tests/e2e/project-helm-phase1.spec.ts"]],
+    ],
+  );
+  assert.deepEqual(dispatches.find(({ id }) => id === "lanternwake-phase3").fixtureArguments, [
+    "tests/e2e/phase3-readonly-setup.setup.ts",
+  ]);
+  assert.equal(dispatches.find(({ id }) => id === "lanternwake-phase3").fixtureProject, "phase3-readonly-setup");
+  assert.equal(dispatches.find(({ id }) => id === "lanternwake-phase3").cookieAdapter, "isolated-loopback");
+  const phase3Preparers = dispatches.find(({ id }) => id === "lanternwake-phase3").preparers;
+  assert.equal(phase3Preparers.filter(({ script }) => script === "scripts/migrate-legacy-companion.ts").length, 2);
+  assert.equal(
+    new Set(phase3Preparers.map((preparer) => JSON.stringify(preparer))).size,
+    phase3Preparers.length,
+    "each declared preparer command executes once per profile dispatch",
+  );
+  assert.deepEqual(phase3Preparers.at(-1), {
+    runtime: "node",
+    script: "scripts/sounding-line/prepare-validation-isolation.mjs",
+  });
+  const harborlight = dispatches.find(({ id }) => id === "harborlight-phase2");
+  assert.equal(harborlight.validationIsolation, true);
+  assert.equal(harborlight.cookieAdapter, "isolated-loopback");
+  assert.deepEqual(harborlight.environment, {
+    COMMUNITY_BINARY_SCANNER_PROVIDER: "synthetic-test",
+    FOREVER_VALIDATION_NODE_ENV: "test",
+  });
+  assert.deepEqual(harborlight.preparers, [
+    { runtime: "node", script: "scripts/sounding-line/prepare-validation-isolation.mjs" },
+    { runtime: "tsx", script: "scripts/sounding-line/prepare-harborlight-fixture.ts" },
+  ]);
+  const admiralty = dispatches.find(({ id }) => id === "admiralty-phase1");
+  assert.deepEqual(admiralty.preparers, ["scripts/admiralty/prepare-phase1-fixture.mjs"]);
+  assert.equal(admiralty.environment, undefined);
+  assert.equal(new Set(harborlight.preparers.map(({ script }) => script)).size, harborlight.preparers.length);
+  assert.equal(dispatches.find(({ id }) => id === "generic").environment, undefined);
+});
+
+test("task-owned cookie adaptation is nonce-gated to the isolated Phase 3 runtime", () => {
+  const guardedEnvironment = {
+    SOUNDING_LINE_TASK_OWNED_HTTP: "1",
+    FOREVER_VALIDATION_ISOLATION: "1",
+    FOREVER_VALIDATION_PRODUCTION_IDENTITY: "1",
+    FOREVER_VALIDATION_NONCE_HASH: "a".repeat(64),
+  };
+  assert.equal(taskOwnedCookieAdapterRequired({}), false);
+  assert.equal(taskOwnedCookieAdapterRequired({ ...guardedEnvironment, FOREVER_VALIDATION_ISOLATION: "0" }), false);
+  assert.equal(taskOwnedCookieAdapterRequired({ ...guardedEnvironment, FOREVER_VALIDATION_NONCE_HASH: "unsafe" }), false);
+  assert.equal(taskOwnedCookieAdapterRequired(guardedEnvironment), true);
+  assert.equal(
+    stripTaskOwnedCookieSecurity("session=value; Path=/; Secure; HttpOnly; SameSite=Lax"),
+    "session=value; Path=/; HttpOnly; SameSite=Lax",
+  );
+});
+
+test("an unresolved fixture profile fails closed before browser authority is launched", () => {
+  const result = spawnSync(
+    process.execPath,
+    [
+      "scripts/sounding-line/run-browser-suite.mjs",
+      "--profile",
+      "not-a-governed-profile",
+      "--candidate",
+      "a".repeat(40),
+      "--database-url",
+      "file:./.sounding-line-fixture-contract-negative.sqlite",
+      "--",
+      "tests/e2e/project-helm-phase1.spec.ts",
+    ],
+    { cwd: process.cwd(), encoding: "utf8", windowsHide: true },
+  );
+  assert.notEqual(result.status, 0);
+  assert.match(`${result.stdout}\n${result.stderr}`, /SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:INVALID_PROFILE_INVOCATION/u);
 });
 
 test("Homeport Sounding Line roots reject invalid source evidence before execution", () => {
@@ -898,6 +1016,27 @@ function fakeChild() {
   return child;
 }
 
+async function unusedPort() {
+  const server = createTcpServer();
+  await new Promise((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", resolve);
+  });
+  const address = server.address();
+  assert.ok(address && typeof address !== "string");
+  await new Promise((resolve) => server.close(resolve));
+  return address.port;
+}
+
+async function portCanBeReclaimed(port) {
+  const server = createTcpServer();
+  await new Promise((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(port, "127.0.0.1", resolve);
+  });
+  await new Promise((resolve) => server.close(resolve));
+}
+
 test("dead governed browser server interrupts the browser immediately with infrastructure attribution", async () => {
   const server = fakeChild();
   const browser = fakeChild();
@@ -923,6 +1062,77 @@ test("dead governed browser server interrupts the browser immediately with infra
   assert.equal(browser.exitCode, 0);
   assert.equal(receipt.topology, "BUILT_SERVER_TASK_OWNED_RUNTIME");
   assert.ok(receipt.timings.infrastructureFailureWaitMs < 600_000);
+});
+
+test("fixture product failure stops product browser execution with truthful attribution", async () => {
+  const server = fakeChild();
+  const fixture = fakeChild();
+  let launches = 0;
+  let fixtureCommand;
+  const receipt = await runBrowserAuthority({
+    root: process.cwd(),
+    fixtureArguments: ["tests/e2e/phase3-readonly-setup.setup.ts"],
+    fixtureProject: "phase3-readonly-setup",
+    browserArguments: ["tests/e2e/phase3-lifecycle.spec.ts", "--project", "chromium"],
+    port: 31993,
+    ready: async () => true,
+    launch: (_command, argumentsList) => {
+      launches += 1;
+      if (launches === 1) return server;
+      fixtureCommand = argumentsList;
+      queueMicrotask(() => {
+        fixture.exitCode = 1;
+        fixture.emit("exit", 1, null);
+      });
+      return fixture;
+    },
+  });
+  assert.equal(launches, 2);
+  assert.equal(receipt.failureCategory, "PRODUCT_FAILURE");
+  assert.equal(receipt.failureCode, "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_FIXTURE_EXITED");
+  assert.deepEqual(fixtureCommand, [
+    "node_modules/@playwright/test/cli.js",
+    "test",
+    "tests/e2e/phase3-readonly-setup.setup.ts",
+    "--project",
+    "phase3-readonly-setup",
+  ]);
+  assert.equal(server.exitCode, 0);
+});
+
+test("isolated cookie adapter is removed after successful and failed browser execution", async () => {
+  for (const fixtureExitCode of [0, 1]) {
+    const port = await unusedPort();
+    const server = fakeChild();
+    const fixture = fakeChild();
+    let launches = 0;
+    const receipt = await runBrowserAuthority({
+      root: process.cwd(),
+      fixtureArguments: ["tests/e2e/phase3-readonly-setup.setup.ts"],
+      fixtureProject: "phase3-readonly-setup",
+      browserArguments: ["tests/e2e/phase3-lifecycle.spec.ts", "--project", "chromium"],
+      environment: {
+        SOUNDING_LINE_TASK_OWNED_HTTP: "1",
+        FOREVER_VALIDATION_ISOLATION: "1",
+        FOREVER_VALIDATION_PRODUCTION_IDENTITY: "1",
+        FOREVER_VALIDATION_NONCE_HASH: "a".repeat(64),
+      },
+      port,
+      ready: async () => true,
+      launch: () => {
+        launches += 1;
+        if (launches === 1) return server;
+        queueMicrotask(() => {
+          fixture.exitCode = fixtureExitCode;
+          fixture.emit("exit", fixtureExitCode, null);
+        });
+        return fixture;
+      },
+    });
+    assert.equal(receipt.failureCategory, fixtureExitCode ? "PRODUCT_FAILURE" : null);
+    assert.equal(server.exitCode, 0);
+    await portCanBeReclaimed(port);
+  }
 });
 
 test("invalid production and development output topology fails before browser launch", async () => {

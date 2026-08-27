@@ -15,6 +15,7 @@ import {
   digestFileEntries,
   finalizeEvidence,
 } from "./evidence.mjs";
+import { browserSuiteProfiles, resolveBrowserSuiteDispatches, suiteBrowserProfileId } from "./browser-suite-profiles.mjs";
 
 const sha = /^[a-f0-9]{40}$/u;
 const productRoots = new Set(["app", "components", "src", "lib", "prisma", "public", "styles"]);
@@ -77,6 +78,53 @@ const homeportPhase7BrowserTests = new Map([
     ],
   ],
 ]);
+const homeportPhase7FixturePreparers = new Map([
+  ["tests/e2e/homeport-phase7.spec.ts", ["scripts/homeport/prepare-phase7-fixture.mjs"]],
+  [
+    "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts",
+    ["scripts/homeport/prepare-phase7-owner-correction-round1-fixture.mjs"],
+  ],
+  [
+    "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts",
+    [
+      "scripts/homeport/prepare-phase7-fixture.mjs",
+      "scripts/homeport/prepare-phase7-owner-correction-round1-fixture.mjs",
+      "scripts/homeport/prepare-phase7-owner-correction-round2-fixture.mjs",
+    ],
+  ],
+  [
+    "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts",
+    [
+      "scripts/homeport/prepare-phase7-fixture.mjs",
+      "scripts/homeport/prepare-phase7-owner-correction-round1-fixture.mjs",
+      "scripts/homeport/prepare-phase7-owner-correction-round2-fixture.mjs",
+      "scripts/homeport/prepare-phase7-owner-correction-round3-fixture.mjs",
+    ],
+  ],
+  [
+    "tests/e2e/homeport-phase7-owner-correction-round3-patch-a.spec.ts",
+    ["scripts/homeport/prepare-phase7-owner-correction-round3-patch-a-fixture.mjs"],
+  ],
+]);
+const homeportFixtureJourneyContracts = new Map([
+  ["tests/e2e/homeport-phase7.spec.ts", { variable: "HOMEPORT_PHASE7_JOURNEYS", allowed: "ABCDEFGHIJKLMNO" }],
+  [
+    "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts",
+    { variable: "HOMEPORT_PHASE7_CORRECTION_JOURNEYS", allowed: "ABCDEFGHIJKLMNOPQRSTU" },
+  ],
+  [
+    "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts",
+    { variable: "HOMEPORT_PHASE7_CORRECTION_JOURNEYS", allowed: "ABCDEFGHIJKLMNOPQRSTUVW" },
+  ],
+  [
+    "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts",
+    { variable: "HOMEPORT_PHASE7_CORRECTION_JOURNEYS", allowed: "ABCDEFGHIJKLMNOPQRSTUV" },
+  ],
+  [
+    "tests/e2e/homeport-phase7-owner-correction-round3-patch-a.spec.ts",
+    { variable: "HOMEPORT_PHASE7_PATCH_A_JOURNEYS", allowed: "ABCDEFGHIJKLMN" },
+  ],
+]);
 const textFile = /\.(?:[cm]?[jt]sx?|json|ya?ml|md|css)$/u;
 const lintableFile = /\.(?:[cm]?[jt]sx?)$/u;
 const broadDomainTokens = new Set(["community", "exchange", "harborlight"]);
@@ -86,7 +134,8 @@ function isGenericBrowserTest(file) {
     file !== admiraltyPhase2BrowserTest &&
     file !== tideglassPhase3BrowserTest &&
     file !== homeportPhase4BrowserTest &&
-    !homeportPhase7BrowserTests.has(file)
+    !homeportPhase7BrowserTests.has(file) &&
+    suiteBrowserProfileId(file) === "generic"
   );
 }
 
@@ -655,8 +704,48 @@ function run(root, command, argumentsList, { env = {}, ...options } = {}) {
   });
 }
 
-export function soundingLineDatabaseUrl(candidateSha) {
-  return `file:./.sounding-line-${candidateSha.slice(0, 12)}.sqlite`;
+export function soundingLineDatabaseUrl(candidateSha, profile = null) {
+  const suffix = profile && profile !== "generic" ? `-${profile}` : "";
+  return `file:./.sounding-line-${candidateSha.slice(0, 12)}${suffix}.sqlite`;
+}
+
+function suiteDatabaseUrl(candidateSha, profile) {
+  if (!browserSuiteProfiles[profile]?.validationIsolation) return soundingLineDatabaseUrl(candidateSha, profile);
+  return `file:./artifacts/sounding-line/${profile}-${candidateSha.slice(0, 12)}/validation-isolated-19700101-000000000-${candidateSha.slice(0, 32)}.db`;
+}
+
+function selectedHomeportJourneys(browserTest, environment) {
+  const contract = homeportFixtureJourneyContracts.get(browserTest);
+  if (!contract) return "";
+  const requested = environment[contract.variable] ?? contract.allowed;
+  return [...requested].filter((journey) => contract.allowed.includes(journey)).join("");
+}
+
+export function resolveHomeportFixturePreparers(browserTests, environment = process.env) {
+  const preparers = new Set();
+  for (const browserTest of browserTests) {
+    const journeys = selectedHomeportJourneys(browserTest, environment);
+    if (browserTest === "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts" && journeys.includes("W")) {
+      preparers.add("scripts/homeport/prepare-phase7-fixture.mjs");
+      preparers.add("scripts/homeport/prepare-phase7-owner-correction-round1-fixture.mjs");
+    }
+    if (browserTest === "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts" && journeys.includes("V")) {
+      preparers.add("scripts/homeport/prepare-phase7-fixture.mjs");
+      preparers.add("scripts/homeport/prepare-phase7-owner-correction-round1-fixture.mjs");
+      preparers.add("scripts/homeport/prepare-phase7-owner-correction-round2-fixture.mjs");
+    }
+    for (const prepare of homeportPhase7FixturePreparers.get(browserTest) ?? []) {
+      if (
+        (browserTest === "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts" &&
+          prepare !== "scripts/homeport/prepare-phase7-owner-correction-round2-fixture.mjs") ||
+        (browserTest === "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts" &&
+          prepare !== "scripts/homeport/prepare-phase7-owner-correction-round3-fixture.mjs")
+      )
+        continue;
+      preparers.add(prepare);
+    }
+  }
+  return [...preparers];
 }
 
 function tideglassTaskRoot(candidateSha) {
@@ -693,11 +782,15 @@ function homeportEnvironment(plan) {
 
 export function verificationEnvironment(plan, command, argumentsList, environment = process.env) {
   if (command === process.execPath && argumentsList[0] === "scripts/admiralty/run-phase2-journeys.mjs") {
+    const playwrightBrowsersPath =
+      environment.PLAYWRIGHT_BROWSERS_PATH ??
+      (environment.LOCALAPPDATA ? path.join(environment.LOCALAPPDATA, "ms-playwright") : undefined);
     return {
       LOCALAPPDATA: ".",
       ADMIRALTY_PHASE2_TASK_ROOT: admiraltyPhase2TaskRoot(plan.candidateSha),
       NEXT_DIST_DIR: ".next",
       ...(plan.buildRequired ? { ADMIRALTY_PHASE2_REUSE_BUILD: "1" } : {}),
+      ...(playwrightBrowsersPath ? { PLAYWRIGHT_BROWSERS_PATH: playwrightBrowsersPath } : {}),
     };
   }
   if (command === process.execPath && argumentsList[0] === "scripts/tideglass/run-phase3-journeys.mjs") {
@@ -803,11 +896,9 @@ export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary"
     migrationScripts,
     sentinels: ["format", "lint", "typecheck", "private-content"],
     migrationRequired: requiresMigrationValidation({ changedPaths, mode }),
-    // Generic browser proof uses the shared Playwright configuration, which
-    // starts the production server. Even a browser-spec-only candidate must
-    // therefore produce the exact .next output before Playwright starts.
-    buildRequired:
-      requiresBuild({ changedPaths, mode }) || selection.browserTests.some((file) => isGenericBrowserTest(file)),
+    // Every browser profile starts an exact built server. A browser-spec-only
+    // candidate must therefore produce the exact .next output before dispatch.
+    buildRequired: requiresBuild({ changedPaths, mode }) || selection.browserTests.length > 0,
     registrationValidationRequired: changedPaths.some((file) => registrationPaths.has(file)),
   };
 }
@@ -837,8 +928,7 @@ export function verificationCommands(plan) {
   if (plan.selected.browserTests.length) {
     const selectedHomeportPhase7 = plan.selected.browserTests.filter((file) => homeportPhase7BrowserTests.has(file));
     const genericBrowserTests = plan.selected.browserTests.filter((file) => isGenericBrowserTest(file));
-    if (plan.selected.browserTests.includes(admiraltyPhase2BrowserTest))
-      commands.push([process.execPath, ["scripts/admiralty/run-phase2-journeys.mjs"]]);
+    const profileBrowserTests = plan.selected.browserTests.filter((file) => suiteBrowserProfileId(file) !== "generic");
     if (plan.selected.browserTests.includes(tideglassPhase3BrowserTest))
       commands.push([process.execPath, ["scripts/tideglass/run-phase3-journeys.mjs"]]);
     if (
@@ -853,9 +943,32 @@ export function verificationCommands(plan) {
     }
     if (plan.selected.browserTests.includes(homeportPhase4BrowserTest))
       commands.push([process.execPath, ["scripts/homeport/run-phase4-e2e.mjs"]]);
+    for (const prepare of resolveHomeportFixturePreparers(selectedHomeportPhase7))
+      commands.push([process.execPath, [prepare]]);
     for (const browserTest of selectedHomeportPhase7) {
-      const [prepare, journeys] = homeportPhase7BrowserTests.get(browserTest);
-      commands.push([process.execPath, [prepare]], [process.execPath, [journeys]]);
+      const [, journeys] = homeportPhase7BrowserTests.get(browserTest);
+      commands.push([process.execPath, [journeys]]);
+    }
+    for (const dispatch of resolveBrowserSuiteDispatches(profileBrowserTests)) {
+      if (dispatch.dedicatedRunner) {
+        commands.push([process.execPath, [dispatch.dedicatedRunner]]);
+        continue;
+      }
+      const databaseUrl = suiteDatabaseUrl(plan.candidateSha, dispatch.id);
+      commands.push([
+        process.execPath,
+        [
+          "scripts/sounding-line/run-browser-suite.mjs",
+          "--profile",
+          dispatch.id,
+          "--candidate",
+          plan.candidateSha,
+          "--database-url",
+          databaseUrl,
+          "--",
+          ...dispatch.browserTests,
+        ],
+      ]);
     }
     if (genericBrowserTests.length) {
       commands.push(["npx", ["--no-install", "tsx", "prisma/seed.ts"]]);
@@ -876,6 +989,8 @@ export function verificationCommands(plan) {
 function verificationPhase(command, argumentsList) {
   if (command === "npm" && argumentsList.join(" ") === "run build") return "build";
   if (argumentsList[0] === "scripts/sounding-line/browser-authority.mjs") return "browser-authority";
+  if (argumentsList[0] === "scripts/sounding-line/run-browser-suite.mjs") return "suite-fixture-preflight";
+  if (argumentsList[0]?.startsWith("scripts/homeport/prepare-phase7")) return "fixture-preflight";
   if (argumentsList[0] === "scripts/sounding-line/sqlite-bootstrap.mjs" || argumentsList.includes("prisma/seed.ts"))
     return "browser-server-preparation";
   return "preflight";
@@ -892,6 +1007,8 @@ export function runVerificationCommands(root, plan, runCommand = run) {
     } catch (error) {
       timings.push({ phase, durationMs: Date.now() - startedAt, status: "FAIL" });
       if (error && typeof error === "object") error.soundingLineTimings = timings;
+      if (phase === "fixture-preflight")
+        throw new Error(`SOUNDING_LINE_HOMEPORT_FIXTURE_PREFLIGHT_FAILED:${argumentsList[0]}`);
       throw error;
     }
   }
@@ -903,6 +1020,9 @@ export function failureCategoryFor(error) {
   if (message.startsWith("SOUNDING_LINE_INVALID_SERVER_TOPOLOGY:")) return "INVALID_SERVER_TOPOLOGY";
   if (message.startsWith("SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:")) return "INFRASTRUCTURE_STARTUP_FAILURE";
   if (message.startsWith("SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:")) return "INFRASTRUCTURE_RUNTIME_FAILURE";
+  if (message.startsWith("SOUNDING_LINE_HOMEPORT_FIXTURE_PREFLIGHT_FAILED:")) return "FIXTURE_ORCHESTRATION_FAILURE";
+  if (message.startsWith("SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:"))
+    return "SUITE_FIXTURE_CONTRACT_UNSATISFIED";
   if (
     message.startsWith("SOUNDING_LINE_PRODUCT_AND_CONTROL_PLANE_MIXED:") ||
     message.startsWith("SOUNDING_LINE_CONTROL_PLANE_CHANGE_REQUIRES_RELEASE_MODE:")
@@ -920,6 +1040,16 @@ export function sanitizedFailureCode(error) {
 async function readBrowserRuntimeReceipt(root) {
   try {
     return JSON.parse(await readFile(path.join(root, "artifacts", "sounding-line", "browser-runtime.json"), "utf8"));
+  } catch {
+    return null;
+  }
+}
+
+async function readBrowserSuiteProfileReceipt(root) {
+  try {
+    return JSON.parse(
+      await readFile(path.join(root, "artifacts", "sounding-line", "browser-suite-profile.json"), "utf8"),
+    );
   } catch {
     return null;
   }
@@ -964,8 +1094,11 @@ async function main() {
       avoidedDurationMs: verification.avoidedDurationMs,
     };
     result.browserQualification = await readBrowserRuntimeReceipt(root);
+    result.browserSuiteProfile = await readBrowserSuiteProfileReceipt(root);
     if (result.browserQualification?.failureCategory)
       result.failureCategory = result.browserQualification.failureCategory;
+    if (result.browserSuiteProfile?.failureCategory)
+      result.failureCategory = result.browserSuiteProfile.failureCategory;
     result.decision = "PASS";
   } catch (error) {
     result ??= {
@@ -982,8 +1115,11 @@ async function main() {
     result.failureCategory = failureCategoryFor(error);
     result.timing.commands = error?.soundingLineTimings ?? result.timing.commands;
     result.browserQualification = await readBrowserRuntimeReceipt(root);
+    result.browserSuiteProfile = await readBrowserSuiteProfileReceipt(root);
     if (result.browserQualification?.failureCategory)
       result.failureCategory = result.browserQualification.failureCategory;
+    if (result.browserSuiteProfile?.failureCategory)
+      result.failureCategory = result.browserSuiteProfile.failureCategory;
   }
   result.completedAt = new Date().toISOString();
   await mkdir(path.join(root, "artifacts", "sounding-line"), { recursive: true });
