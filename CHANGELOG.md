@@ -22,6 +22,15 @@ last_reviewed: 2026-08-27
   separate actions. This is protected-source behavior with local/synthetic
   evidence, not deployment, live-Voyage proof, or owner acceptance.
 
+- Added Project Admiralty Support Pilot S1, **Open the Case**, as a bounded
+  autonomous support diagnosis candidate. Authorized operators can open an
+  owner-visible, exact-scope case; fresh-assurance execution derives a
+  short-lived read-only capability, emits sanitized source-bound evidence,
+  deterministic findings and diagnosis, and an information-only repair
+  proposal. It cannot perform repair, user-state correction, session revocation,
+  job retry, projection rebuild, configuration mutation, or systemic analysis.
+  Protected-main authority and landing remain required; this is not deployment.
+
 - Expanded Project Bridgewatch on its dedicated v1.2 P2 implementation branch
   with a bounded typed data fabric: per-source provenance/precedence and
   last-known-good truth, explicit expected fact-class coverage, truthful

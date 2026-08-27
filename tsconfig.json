@@ -40,7 +40,9 @@
     ".next-shipwright-phase5-browser/types/**/*.ts",
     ".next-shipwright-phase5-browser/dev/types/**/*.ts",
     ".next-helm-a2-browser/types/**/*.ts",
-    ".next-helm-a2-browser/dev/types/**/*.ts"
+    ".next-helm-a2-browser/dev/types/**/*.ts",
+    ".next-admiralty-support-pilot-s1/types/**/*.ts",
+    ".next-admiralty-support-pilot-s1/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules", ".sealed-build*/**"]
 }

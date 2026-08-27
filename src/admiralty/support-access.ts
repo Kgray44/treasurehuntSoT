@@ -135,7 +135,10 @@ export async function decideSupportAccessRequest(
 ) {
   const correlationId = randomUUID();
   return db.$transaction(async (tx) => {
-    const request = await tx.supportAccessRequest.findUnique({ where: { id: requestId }, include: { grant: true } });
+    const request = await tx.supportAccessRequest.findUnique({
+      where: { id: requestId },
+      include: { grant: true, supportCase: true },
+    });
     if (!request || request.targetAccountId !== target.accountId)
       throw new AdmiraltyError("ADMIN_TARGET_NOT_FOUND", "The support request was not found.", 404);
     if (request.status !== "REQUESTED" || request.grant)
@@ -148,6 +151,8 @@ export async function decideSupportAccessRequest(
         where: { id: request.id },
         data: { status: "DENIED", decisionAt: now, decisionByTargetAccountId: target.accountId },
       });
+      if (request.supportCase)
+        await tx.supportCase.update({ where: { id: request.supportCase.id }, data: { status: "CONSENT_DENIED" } });
       await writeAdministrativeAudit(
         {
           actorAccountId: target.accountId,
@@ -185,6 +190,8 @@ export async function decideSupportAccessRequest(
         correlationId,
       },
     });
+    if (request.supportCase)
+      await tx.supportCase.update({ where: { id: request.supportCase.id }, data: { status: "READY_FOR_DIAGNOSIS" } });
     await writeAdministrativeAudit(
       {
         actorAccountId: target.accountId,
@@ -225,6 +232,11 @@ export async function cancelSupportAccessRequest(
       where: { id: request.id },
       data: { status: "CANCELLED", cancelledAt: now },
     });
+    const supportCase = await tx.supportCase.findUnique({
+      where: { supportAccessRequestId: request.id },
+      select: { id: true },
+    });
+    if (supportCase) await tx.supportCase.update({ where: { id: supportCase.id }, data: { status: "CANCELLED" } });
     await writeAdministrativeAudit(
       {
         actorAccountId: operator.accountId,
@@ -459,6 +471,71 @@ async function supportProjection(targetAccountId: string, scope: SupportAccessSc
         })
       : [];
     return { scope, recordCount: records.length, records };
+  }
+  if (scope === "VOYAGE_MEMBERSHIP") {
+    const profile = await db.playerProfile.findUnique({ where: { accountId: targetAccountId }, select: { id: true } });
+    const memberships = profile
+      ? await db.playthroughMembership.findMany({
+          where: { playerProfileId: profile.id },
+          select: {
+            role: true,
+            status: true,
+            crewRole: true,
+            joinedAt: true,
+            removedAt: true,
+            completedAt: true,
+            updatedAt: true,
+            playthrough: {
+              select: {
+                id: true,
+                voyageName: true,
+                status: true,
+                launchedAt: true,
+                completedAt: true,
+                updatedAt: true,
+              },
+            },
+          },
+          orderBy: { updatedAt: "desc" },
+          take: 20,
+        })
+      : [];
+    return {
+      scope,
+      membershipCount: memberships.length,
+      memberships: memberships.map((membership) => ({
+        role: membership.role,
+        status: membership.status,
+        crewRole: membership.crewRole,
+        joinedAt: membership.joinedAt,
+        removedAt: membership.removedAt,
+        completedAt: membership.completedAt,
+        updatedAt: membership.updatedAt,
+        voyage: membership.playthrough,
+      })),
+    };
+  }
+  if (scope === "RUNTIME_STATUS") {
+    return {
+      scope,
+      runtime: {
+        environment: process.env.NODE_ENV ?? "unknown",
+        databaseConfigured: Boolean(process.env.DATABASE_URL),
+        buildIdentityPresent: Boolean(
+          process.env.VOYAGEWRIGHT_BUILD_SHA ?? process.env.VERCEL_GIT_COMMIT_SHA ?? process.env.SOURCE_VERSION,
+        ),
+        mutationAvailable: false,
+      },
+    };
+  }
+  if (scope === "AUDIT_CORRELATION") {
+    const events = await db.platformAuditEvent.findMany({
+      where: { OR: [{ actorAccountId: targetAccountId }, { resourceId: targetAccountId }] },
+      select: { action: true, resourceType: true, outcome: true, correlationId: true, createdAt: true },
+      orderBy: { createdAt: "desc" },
+      take: 25,
+    });
+    return { scope, eventCount: events.length, events };
   }
   if (scope === "TIDEGLASS_DIAGNOSTICS") return { scope, available: true };
 

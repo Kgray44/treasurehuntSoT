@@ -15,6 +15,9 @@ const scopeLabels: Record<SupportAccessScope, string> = {
   COMMUNITY_ACTIVITY: "Community activity",
   SESSION_DIAGNOSTICS: "Session diagnostics",
   PROFILE_DIAGNOSTICS: "Profile diagnostics",
+  VOYAGE_MEMBERSHIP: "Voyage membership",
+  RUNTIME_STATUS: "Safe runtime status",
+  AUDIT_CORRELATION: "Audit correlation history",
 };
 const scopes = Object.keys(scopeLabels) as SupportAccessScope[];
 

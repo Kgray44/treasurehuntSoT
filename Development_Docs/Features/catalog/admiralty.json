@@ -2,7 +2,7 @@
   {
     "id": "FT-B010",
     "title": "Governed Platform Administration and Consented Support Access",
-    "summary": "Owner-accepted Phases 1 and 2 establish canonical roles, recent privileged assurance, scoped user consent, sanitized audit evidence, and a read-only cross-domain Chartroom on main without creating a second source of truth.",
+    "summary": "Accepted Admiralty phases establish canonical roles, recent privileged assurance, scoped user consent, sanitized audit evidence, governed owner-domain commands, and a read-only cross-domain Chartroom on main without creating a second source of truth. Support Pilot S1 adds autonomous case-bound diagnosis with no repair authority.",
     "status": "MAINLINE",
     "program": "Project Admiralty",
     "surfaces": [
@@ -17,6 +17,7 @@
       "/admin/releases",
       "/admin/audit",
       "/admin/investigate",
+      "/admin/support/cases",
       "/account/support-access"
     ],
     "subfeatures": [
@@ -32,7 +33,10 @@
       "Phase 2 role-filtered Chartroom navigation and 15-route information architecture",
       "Phase 2 bounded People, Chronicle, Voyage, and Community search and detail",
       "Phase 2 operations, provider, configuration, release, audit, and correlation-led investigation projections",
-      "Phase 2 dossier-anchored consented Support Access"
+      "Phase 2 dossier-anchored consented Support Access",
+      "Accepted Phase 3 governed owner-domain account, security, Community, job, and configuration commands",
+      "Support Pilot S1 case-bound, short-lived read-only delegated diagnostic capability",
+      "Source-bound sanitized findings, deterministic diagnosis receipts, and information-only repair proposals"
     ],
     "evidence": [
       { "kind": "commit", "value": "49c2f59d6d75791edbdba84f22f5ec1595d2d129" },
@@ -44,6 +48,8 @@
       },
       { "kind": "test", "value": "tests/e2e/admiralty-phase1.spec.ts" },
       { "kind": "path", "value": "src/admiralty/read-models.ts" },
+      { "kind": "path", "value": "src/admiralty/support-pilot.ts" },
+      { "kind": "test", "value": "src/admiralty/support-pilot.test.ts" },
       { "kind": "test", "value": "tests/e2e/admiralty-phase2.spec.ts" },
       {
         "kind": "completion-record",
@@ -73,6 +79,7 @@
       "The owner accepted the qualified Phase 2 walkthrough on 2026-08-12; exact-source authority and protected canonical-main integration completed in PR #28",
       "Transactional-email delivery health and live verification-provider health are blocked by missing canonical owner contracts",
       "Broad administrative mutation remains dormant for later governed phases",
+      "Support Pilot S1 has no repair executor, user-state correction, session revocation, projection rebuild, job retry, or configuration mutation",
       "Owner acceptance does not imply deployment or acceptance of later Admiralty phases"
     ],
     "catalogVersion": 1

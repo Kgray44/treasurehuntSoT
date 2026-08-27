@@ -139,6 +139,15 @@ multi-role synthetic browser evidence passes. The owner accepted the qualified
 walkthrough; exact-source Sounding Line authority and protected mainline
 integration completed in PR #28.
 
+**Support Pilot S1 candidate:** Project Admiralty adds a case-bound,
+owner-consented autonomous diagnostic path at `/admin/support/cases`. A short-
+lived delegated capability reads only the exact approved diagnostic scopes and
+persists sanitized observations, source references, findings, a deterministic
+receipt, and an information-only repair proposal. It has no repair executor or
+user/platform state-mutation path. Candidate integration, ordinary Sounding
+Line authority, and landed smoke remain required before mainline availability
+is claimed.
+
 **Development-only or compatibility-only:** development showcases, legacy routes, and package-exchange integrations are not a promise of a generally hosted service.
 
 **Focused and integration validated:** repository evidence covers the merged
@@ -153,7 +162,8 @@ for the Phase 3-4 browser matrix. It is not a full matrix pass and does not
 change the external-validation boundary.
 
 **Planned or not validated:** Project Homeport owner acceptance, Harborlight
-Phase 4, Project Admiralty Phase 3 and later phases, Project Drydock, Project
+Phase 4, Project Admiralty support repair (S2), systemic support intelligence
+(S3), Project Drydock, Project
 Landfall, and Project Watchglass remain pending. Project Sounding
 Line is the repository validation authority used for Homeport decisions; that
 use does not claim a new user-facing Sounding Line product. Historic records
