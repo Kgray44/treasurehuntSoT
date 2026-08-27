@@ -517,7 +517,10 @@ export async function launchTalePlaythrough(sessionId: string, actorId: string, 
   if (!hasCaptainAuthority(session, actor)) throw new Error("This voyage is assigned to another Captain.");
   if (!["READY", "SCHEDULED"].includes(session.status))
     throw new Error(`This voyage is ${session.status.toLocaleLowerCase()} and is not ready to launch.`);
-  if (!session.memberships.some((membership) => membership.status === "READY"))
+  // A Captain-only Voyage deliberately has no Player membership to wait for.
+  // Once a Crew seat exists, launch still retains the ordinary readiness gate
+  // so an unjoined/unfinished invitation never becomes an implicit launch.
+  if (session.memberships.length > 0 && !session.memberships.some((membership) => membership.status === "READY"))
     throw new Error("At least one accepted Player must be ready before launch.");
   const snapshot = snapshotOf(session);
   const configured = parseJsonObject(session.configuration).startingBlockId;

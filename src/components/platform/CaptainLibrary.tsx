@@ -1042,6 +1042,9 @@ function VoyageCard({
         </div>
       )}
       <div className="card-actions">
+        <Link className="button-secondary" href={`/captain/voyages/${voyage.id}/muster`}>
+          Open Muster Room
+        </Link>
         <Link className="brass-button" href={`/captain/sessions/${voyage.id}`}>
           Open Captain’s Console
         </Link>

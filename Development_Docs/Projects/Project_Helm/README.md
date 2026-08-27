@@ -25,11 +25,11 @@ Phase 3 command redesign and Phase 4 preflight/recovery work.
 Governing Amendment v1.1 supplements (and does not replace) the v1.0 governing
 document. It inserts three amendments after accepted Phase 2 and before the
 unchanged original Phase 3: A1 **Muster the Crew**, A2 **Pass the Helm**, and
-A3 **Ready the Room**. A1 is accepted on canonical main and provides ordinary
-invitation, removal, voluntary-leave, and cancellation lifecycle actions. A2
-is branch-complete pending protected integration; it adds scoped Captain
-transfer, Succession Hold, takeover, and ordinary Player solo continuation
-while keeping A3 and original Phase 3 out of scope.
+A3 **Ready the Room**. A1 and A2 are accepted on canonical main: A1 provides
+ordinary invitation, removal, voluntary-leave, and cancellation lifecycle
+actions; A2 adds scoped Captain transfer, Succession Hold, takeover, and
+ordinary Player solo continuation. A3 makes those existing states and actions
+legible in a Captain/Player muster without starting original Phase 3.
 
 ## Authority
 
@@ -84,6 +84,13 @@ implementation evidence.
 - [Test Plan](Project_Helm_Amendment_A2_Test_Plan.md)
 - [Validation Record](Project_Helm_Amendment_A2_Validation_Record.md)
 - [Integration Manifest](Project_Helm_Amendment_A2_Integration_Manifest.md)
+
+## Amendment A3 records
+
+- [Design Record](Project_Helm_Amendment_A3_Design_Record.md)
+- [Test Plan](Project_Helm_Amendment_A3_Test_Plan.md)
+- [Validation Record](Project_Helm_Amendment_A3_Validation_Record.md)
+- [Integration Manifest](Project_Helm_Amendment_A3_Integration_Manifest.md)
 
 Phase 2 was initially integrated through protected pull request 35. Its final
 current-main repair is anchored by protected pull request 53, candidate

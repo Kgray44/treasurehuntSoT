@@ -12,6 +12,16 @@ last_reviewed: 2026-08-27
 
 ### Changed
 
+- Added Project Helm Amendment A3, **Ready the Room**: Captain-only and
+  Captain + Player Voyages now have clear, responsive pre-launch muster views
+  with safe Crew invitation/readiness/presence state, live reconciliation, and
+  existing lifecycle/authority actions. A Captain-only Voyage can launch
+  directly without inventing a Player seat; a participating Captain can launch
+  from the ordinary Player room once the existing ready-Crew gate permits it.
+  Leaving the room, leaving a Voyage, Captaincy, and cancellation remain
+  separate actions. This is protected-source behavior with local/synthetic
+  evidence, not deployment, live-Voyage proof, or owner acceptance.
+
 - Expanded Project Bridgewatch on its dedicated v1.2 P2 implementation branch
   with a bounded typed data fabric: per-source provenance/precedence and
   last-known-good truth, explicit expected fact-class coverage, truthful

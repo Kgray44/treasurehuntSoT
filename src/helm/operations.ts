@@ -65,6 +65,7 @@ export type CaptainCrewMemberProjection = Readonly<{
     lastAcknowledgedAt: string | null;
   };
   readiness: { state: "READY" | "NOT_READY" | "UNKNOWN"; blockerCategories: string[] };
+  invitation: { id: string; status: string; expiresAt: string; canManage: boolean } | null;
   isCaptainsOwnPlayerMembership: boolean;
   canReceiveCaptaincy: boolean;
 }>;
@@ -404,6 +405,16 @@ export async function getCaptainVoyageProjection(voyageId: string, actor: Canoni
         },
         orderBy: { createdAt: "asc" },
       },
+      invitations: {
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          intendedPlayerId: true,
+          status: true,
+          expiresAt: true,
+          replacement: { select: { id: true } },
+        },
+      },
       verificationRequests: { where: { status: "PENDING" }, orderBy: { requestedAt: "asc" }, take: 1 },
       events: { orderBy: [{ sequence: "desc" }, { id: "desc" }], take: 25 },
     },
@@ -434,6 +445,10 @@ export async function getCaptainVoyageProjection(voyageId: string, actor: Canoni
   const crew: CaptainCrewMemberProjection[] = session.memberships.map((membership, index) => {
     const presence = crewPresence[index]!.presence;
     const removed = membership.status === "REMOVED";
+    const invitation =
+      session.invitations.find(
+        (candidate) => candidate.intendedPlayerId === membership.player.id && !candidate.replacement,
+      ) ?? null;
     return {
       id: membership.id,
       displayName: membership.participationAlias ?? membership.player.displayName,
@@ -467,6 +482,14 @@ export async function getCaptainVoyageProjection(voyageId: string, actor: Canoni
             : "UNKNOWN",
         blockerCategories: ["INVITED", "ACCEPTED"].includes(membership.status) ? ["MEMBERSHIP"] : [],
       },
+      invitation: invitation
+        ? {
+            id: invitation.id,
+            status: invitation.status,
+            expiresAt: invitation.expiresAt.toISOString(),
+            canManage: ["CREATED", "SENT", "COPIED", "VIEWED"].includes(invitation.status),
+          }
+        : null,
       isCaptainsOwnPlayerMembership: membership.player.accountId === actor.accountId,
       canReceiveCaptaincy:
         membership.player.accountId !== actor.accountId &&
