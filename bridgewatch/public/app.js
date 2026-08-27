@@ -1045,16 +1045,7 @@ async function renderDataFabric() {
   if (data.warning) coverage.append(element("p", "empty error", data.warning));
   coverage.append(
     table(
-      [
-        "System",
-        "Expected",
-        "Authoritative",
-        "Provisional",
-        "Stale",
-        "Unavailable",
-        "Not recorded",
-        "Unknown",
-      ],
+      ["System", "Expected", "Authoritative", "Provisional", "Stale", "Unavailable", "Not recorded", "Unknown"],
       (data.coverage ?? []).map((entry) => [
         entry.system,
         entry.expected,
@@ -1149,7 +1140,10 @@ async function renderFactProfile(key) {
     ]),
   );
   node.append(profile);
-  const history = section("Retained fact history", "Changes are retained as durable observation history; unsupported older facts are never invented.");
+  const history = section(
+    "Retained fact history",
+    "Changes are retained as durable observation history; unsupported older facts are never invented.",
+  );
   history.append(
     data.history?.length
       ? table(

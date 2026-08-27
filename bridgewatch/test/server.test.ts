@@ -200,8 +200,12 @@ describe("Bridgewatch read-only API", () => {
       );
       expect(body.coverage).toContainEqual(expect.objectContaining({ system: "Voyagewright", expected: 2 }));
       expect(facts.body).not.toContain("server-secret");
-      const runtime = body.facts.find((item: { factClass: string }) => item.factClass === "voyagewright.runtime-identity");
-      expect((await app.inject({ method: "GET", url: `/api/facts/${encodeURIComponent(runtime.key)}` })).statusCode).toBe(200);
+      const runtime = body.facts.find(
+        (item: { factClass: string }) => item.factClass === "voyagewright.runtime-identity",
+      );
+      expect(
+        (await app.inject({ method: "GET", url: `/api/facts/${encodeURIComponent(runtime.key)}` })).statusCode,
+      ).toBe(200);
       expect((await app.inject({ method: "GET", url: "/api/coverage" })).statusCode).toBe(200);
       expect((await app.inject({ method: "POST", url: "/api/facts" })).statusCode).toBe(404);
       expect((await app.inject({ method: "POST", url: "/api/coverage" })).statusCode).toBe(404);

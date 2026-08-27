@@ -259,7 +259,12 @@ function fact(
   };
 }
 
-function unavailableFacts(source: FabricSource, observedAt: string, state: FactState, limitation: string): ObservationFact[] {
+function unavailableFacts(
+  source: FabricSource,
+  observedAt: string,
+  state: FactState,
+  limitation: string,
+): ObservationFact[] {
   return source.expectedFactClasses.map((factClass) =>
     fact(source, factClass, state, {}, source.id, null, observedAt, limitation),
   );
@@ -339,7 +344,8 @@ function asProviderStatus(value: unknown): ProviderStatus {
       ? String((entry as Record<string, unknown>).state).toUpperCase()
       : "UNKNOWN",
   );
-  const observedAt = typeof item.observedAt === "string" && Number.isFinite(Date.parse(item.observedAt)) ? item.observedAt : null;
+  const observedAt =
+    typeof item.observedAt === "string" && Number.isFinite(Date.parse(item.observedAt)) ? item.observedAt : null;
   return {
     providerCount: providers.length,
     healthyCount: states.filter((state) => ["HEALTHY", "READY", "OK"].includes(state)).length,
@@ -350,7 +356,8 @@ function asProviderStatus(value: unknown): ProviderStatus {
 
 async function readBoundedJson(path: string): Promise<unknown> {
   const metadata = await stat(path);
-  if (!metadata.isFile() || metadata.size > maxReadBytes) throw new Error("Configured observation file is unavailable or outside the safe size limit");
+  if (!metadata.isFile() || metadata.size > maxReadBytes)
+    throw new Error("Configured observation file is unavailable or outside the safe size limit");
   // Host-owned Windows state files can be UTF-8-with-BOM. Treat that encoding
   // marker as transport only; the strict allowlists below still control every
   // retained field.
@@ -359,14 +366,16 @@ async function readBoundedJson(path: string): Promise<unknown> {
 
 async function readBoundedText(path: string): Promise<string> {
   const metadata = await stat(path);
-  if (!metadata.isFile() || metadata.size > maxReadBytes) throw new Error("Observation file is unavailable or outside the safe size limit");
+  if (!metadata.isFile() || metadata.size > maxReadBytes)
+    throw new Error("Observation file is unavailable or outside the safe size limit");
   return readFile(path, "utf8");
 }
 
 function fromRepository(root: string, path: string): string {
   const absolute = resolve(root, path);
   const local = relative(root, absolute);
-  if (!local || local.startsWith("..") || /^[a-z]:/iu.test(local)) throw new Error("Bridgewatch rejected an out-of-root observation path");
+  if (!local || local.startsWith("..") || /^[a-z]:/iu.test(local))
+    throw new Error("Bridgewatch rejected an out-of-root observation path");
   return absolute;
 }
 
@@ -409,7 +418,8 @@ export class DataFabricCollector {
     try {
       const value = await collect();
       const result = { ...base, ...value };
-      if (result.configured && result.reachable) this.store.put(cacheKey, result, null, result.lastSuccessAt ?? result.lastAttemptAt);
+      if (result.configured && result.reachable)
+        this.store.put(cacheKey, result, null, result.lastSuccessAt ?? result.lastAttemptAt);
       return result;
     } catch (error) {
       const diagnostic = sanitizeDiagnostic(error);
@@ -472,7 +482,14 @@ export class DataFabricCollector {
   }
 
   private collectGitMain(observedAt: string): Promise<FabricSource> {
-    const base = sourceTemplate("git-main", "Local Git current-main observation", "AUTHORITATIVE", 100, true, observedAt);
+    const base = sourceTemplate(
+      "git-main",
+      "Local Git current-main observation",
+      "AUTHORITATIVE",
+      100,
+      true,
+      observedAt,
+    );
     return this.collected(base, async () => {
       const { stdout } = await execFileAsync(
         "git",
@@ -503,15 +520,28 @@ export class DataFabricCollector {
   }
 
   private collectGoverningRecords(observedAt: string): Promise<FabricSource> {
-    const base = sourceTemplate("governing-records", "Indexed governing records", "AUTHORITATIVE", 100, true, observedAt);
+    const base = sourceTemplate(
+      "governing-records",
+      "Indexed governing records",
+      "AUTHORITATIVE",
+      100,
+      true,
+      observedAt,
+    );
     return this.collected(base, async () => {
-      const index = (await readBoundedJson(fromRepository(this.repositoryRoot, "Development_Docs/document-index.json"))) as {
+      const index = (await readBoundedJson(
+        fromRepository(this.repositoryRoot, "Development_Docs/document-index.json"),
+      )) as {
         records?: unknown;
       };
       const records = Array.isArray(index.records) ? index.records : [];
       const current = records.filter((entry) => {
         const record = entry && typeof entry === "object" ? (entry as Record<string, unknown>) : {};
-        return typeof record.path === "string" && typeof record.status === "string" && !record.status.toLowerCase().includes("archiv");
+        return (
+          typeof record.path === "string" &&
+          typeof record.status === "string" &&
+          !record.status.toLowerCase().includes("archiv")
+        );
       });
       const source = { ...base, lastSuccessAt: observedAt, cacheAgeMs: 0 };
       return {
@@ -533,11 +563,18 @@ export class DataFabricCollector {
   }
 
   private collectProjectRegistry(projects: readonly ProjectRecord[], observedAt: string): Promise<FabricSource> {
-    const base = sourceTemplate("project-registry", "Bridgewatch project registry", "AUTHORITATIVE", 95, true, observedAt);
+    const base = sourceTemplate(
+      "project-registry",
+      "Bridgewatch project registry",
+      "AUTHORITATIVE",
+      95,
+      true,
+      observedAt,
+    );
     return this.collected(base, async () => {
-      const acceptedPhaseCount = projects.flatMap((project) => project.phases).filter((phase) =>
-        ["COMPLETE", "MERGED"].includes(phase.state),
-      ).length;
+      const acceptedPhaseCount = projects
+        .flatMap((project) => project.phases)
+        .filter((phase) => ["COMPLETE", "MERGED"].includes(phase.state)).length;
       const missingEvidenceCount = projects.filter((project) => (project.missingEvidence?.length ?? 0) > 0).length;
       const source = { ...base, lastSuccessAt: observedAt, cacheAgeMs: 0 };
       return {
@@ -563,7 +600,9 @@ export class DataFabricCollector {
   private collectFeatureCatalog(observedAt: string): Promise<FabricSource> {
     const base = sourceTemplate("feature-catalog", "Feature Catalog fragments", "AUTHORITATIVE", 100, true, observedAt);
     return this.collected(base, async () => {
-      const catalog = await readBoundedJson(fromRepository(this.repositoryRoot, "Development_Docs/Features/catalog/bridgewatch.json"));
+      const catalog = await readBoundedJson(
+        fromRepository(this.repositoryRoot, "Development_Docs/Features/catalog/bridgewatch.json"),
+      );
       if (!Array.isArray(catalog)) throw new Error("Feature Catalog Bridgewatch fragment is not an array");
       const source = { ...base, lastSuccessAt: observedAt, cacheAgeMs: 0 };
       return {
@@ -584,9 +623,19 @@ export class DataFabricCollector {
   }
 
   private collectDeepwaterEvidence(observedAt: string): Promise<FabricSource> {
-    const base = sourceTemplate("deepwater-evidence", "Deepwater capability evidence", "AUTHORITATIVE", 90, true, observedAt);
+    const base = sourceTemplate(
+      "deepwater-evidence",
+      "Deepwater capability evidence",
+      "AUTHORITATIVE",
+      90,
+      true,
+      observedAt,
+    );
     return this.collected(base, async () => {
-      const path = fromRepository(this.repositoryRoot, "Development_Docs/Programs/Deepwater/deepwater-phase-status.json");
+      const path = fromRepository(
+        this.repositoryRoot,
+        "Development_Docs/Programs/Deepwater/deepwater-phase-status.json",
+      );
       const status = (await readBoundedJson(path)) as Record<string, unknown>;
       const phases = Array.isArray(status.phases) ? status.phases : [];
       const source = { ...base, lastSuccessAt: observedAt, cacheAgeMs: 0 };
@@ -602,7 +651,9 @@ export class DataFabricCollector {
             "Development_Docs/Programs/Deepwater/deepwater-phase-status.json",
             observedAt,
             observedAt,
-            phases.length ? null : "The available Deepwater status record does not contain reconstructable phase evidence.",
+            phases.length
+              ? null
+              : "The available Deepwater status record does not contain reconstructable phase evidence.",
           ),
         ],
       };
@@ -610,7 +661,14 @@ export class DataFabricCollector {
   }
 
   private collectSoundingLine(snapshot: SoundingLineProjection | null, observedAt: string): Promise<FabricSource> {
-    const base = sourceTemplate("sounding-line-evidence", "Sounding Line evidence projection", "AUTHORITATIVE", 100, true, observedAt);
+    const base = sourceTemplate(
+      "sounding-line-evidence",
+      "Sounding Line evidence projection",
+      "AUTHORITATIVE",
+      100,
+      true,
+      observedAt,
+    );
     return this.collected(base, async () => {
       if (!snapshot) throw new Error("No Sounding Line evidence projection is available");
       const plansWithDecisions = snapshot.plans.filter((plan) => Boolean(plan.finalDecision)).length;
@@ -652,7 +710,11 @@ export class DataFabricCollector {
           ),
         };
       }
-      const lastSuccessAt = workers.map((worker) => worker.heartbeatAt).sort().at(-1) ?? observedAt;
+      const lastSuccessAt =
+        workers
+          .map((worker) => worker.heartbeatAt)
+          .sort()
+          .at(-1) ?? observedAt;
       const source = { ...base, lastSuccessAt, cacheAgeMs: cacheAge(lastSuccessAt) };
       return {
         ...source,
@@ -676,7 +738,14 @@ export class DataFabricCollector {
 
   private collectRuntimeIdentity(observedAt: string): Promise<FabricSource> {
     const configured = Boolean(this.config.BRIDGEWATCH_VOYAGEWRIGHT_RUNTIME_STATE_PATH);
-    const base = sourceTemplate("voyagewright-runtime", "Voyagewright runtime identity", "OBSERVATIONAL", 50, configured, observedAt);
+    const base = sourceTemplate(
+      "voyagewright-runtime",
+      "Voyagewright runtime identity",
+      "OBSERVATIONAL",
+      50,
+      configured,
+      observedAt,
+    );
     return this.collected(base, async () => {
       if (!this.config.BRIDGEWATCH_VOYAGEWRIGHT_RUNTIME_STATE_PATH) {
         const source = { ...base, facts: [] };
@@ -690,7 +759,9 @@ export class DataFabricCollector {
           ),
         };
       }
-      const identity = asRuntimeIdentity(await readBoundedJson(this.config.BRIDGEWATCH_VOYAGEWRIGHT_RUNTIME_STATE_PATH));
+      const identity = asRuntimeIdentity(
+        await readBoundedJson(this.config.BRIDGEWATCH_VOYAGEWRIGHT_RUNTIME_STATE_PATH),
+      );
       const sourceObservedAt = identity.startedAt ?? observedAt;
       const source = { ...base, lastSuccessAt: sourceObservedAt, cacheAgeMs: cacheAge(sourceObservedAt) };
       return {
@@ -717,10 +788,19 @@ export class DataFabricCollector {
   }
 
   private collectSchemaMigrations(observedAt: string): Promise<FabricSource> {
-    const base = sourceTemplate("schema-migrations", "Voyagewright schema and migrations", "AUTHORITATIVE", 95, true, observedAt);
+    const base = sourceTemplate(
+      "schema-migrations",
+      "Voyagewright schema and migrations",
+      "AUTHORITATIVE",
+      95,
+      true,
+      observedAt,
+    );
     return this.collected(base, async () => {
       const schema = await readBoundedText(fromRepository(this.repositoryRoot, "prisma/schema.sqlite.prisma"));
-      const migrations = await readdir(fromRepository(this.repositoryRoot, "prisma/migrations"), { withFileTypes: true });
+      const migrations = await readdir(fromRepository(this.repositoryRoot, "prisma/migrations"), {
+        withFileTypes: true,
+      });
       const source = { ...base, lastSuccessAt: observedAt, cacheAgeMs: 0 };
       return {
         ...source,
@@ -745,7 +825,14 @@ export class DataFabricCollector {
 
   private collectProviderJobs(observedAt: string): Promise<FabricSource> {
     const configured = Boolean(this.config.BRIDGEWATCH_PROVIDER_STATUS_PATH);
-    const base = sourceTemplate("provider-jobs", "Provider and background-job status", "OBSERVATIONAL", 40, configured, observedAt);
+    const base = sourceTemplate(
+      "provider-jobs",
+      "Provider and background-job status",
+      "OBSERVATIONAL",
+      40,
+      configured,
+      observedAt,
+    );
     return this.collected(base, async () => {
       if (!this.config.BRIDGEWATCH_PROVIDER_STATUS_PATH) {
         const source = { ...base, facts: [] };
@@ -798,16 +885,19 @@ function resolveFact(expected: ExpectedFactClass, facts: readonly ObservationFac
   const candidates = facts.filter((item) => item.factClass === expected.id);
   const selected = [...candidates].sort(
     (left, right) =>
-      stateRank[right.state] - stateRank[left.state] || right.provenance.precedence - left.provenance.precedence ||
+      stateRank[right.state] - stateRank[left.state] ||
+      right.provenance.precedence - left.provenance.precedence ||
       right.provenance.bridgewatchObservedAt.localeCompare(left.provenance.bridgewatchObservedAt),
   )[0];
-  return selected ?? {
-    state: expected.historical ? ("NOT_HISTORICALLY_RECORDED" as const) : ("UNKNOWN" as const),
-    provenance: { sourceId: null },
-    limitation: expected.historical
-      ? "No approved source has recorded reconstructable historical evidence for this expected fact class."
-      : "No approved source is currently configured to observe this expected fact class.",
-  };
+  return (
+    selected ?? {
+      state: expected.historical ? ("NOT_HISTORICALLY_RECORDED" as const) : ("UNKNOWN" as const),
+      provenance: { sourceId: null },
+      limitation: expected.historical
+        ? "No approved source has recorded reconstructable historical evidence for this expected fact class."
+        : "No approved source is currently configured to observe this expected fact class.",
+    }
+  );
 }
 
 /** Coverage is a counted contract, not a percentage or a claim that an absent fact is false. */

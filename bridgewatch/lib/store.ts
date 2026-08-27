@@ -758,7 +758,8 @@ export class BridgewatchStore {
   }
 
   fabricFacts(limit = 500): ObservationFact[] {
-    if (!Number.isInteger(limit) || limit < 1 || limit > 1_000) throw new Error("Invalid Bridgewatch fabric fact limit");
+    if (!Number.isInteger(limit) || limit < 1 || limit > 1_000)
+      throw new Error("Invalid Bridgewatch fabric fact limit");
     return this.db
       .prepare(
         "SELECT fact_key, fact_class, label, state, value_json, provenance_json, limitation FROM fabric_facts ORDER BY fact_class, fact_key LIMIT ?",
@@ -788,7 +789,8 @@ export class BridgewatchStore {
 
   fabricFactHistory(factKey: string, limit = 100): ObservationFact[] {
     if (!/^[a-z0-9_.:-]{3,180}$/iu.test(factKey)) throw new Error("Invalid Bridgewatch fabric fact identity");
-    if (!Number.isInteger(limit) || limit < 1 || limit > 250) throw new Error("Invalid Bridgewatch fabric history limit");
+    if (!Number.isInteger(limit) || limit < 1 || limit > 250)
+      throw new Error("Invalid Bridgewatch fabric history limit");
     return this.db
       .prepare(
         "SELECT fact_key, fact_class, label, state, value_json, provenance_json, limitation FROM fabric_fact_history WHERE fact_key = ? ORDER BY history_id DESC LIMIT ?",

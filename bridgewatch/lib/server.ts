@@ -513,49 +513,57 @@ export function buildServer() {
         repairability: !config.BRIDGEWATCH_TELEMETRY_TOKEN ? "CONFIGURATION_REQUIRED" : "NOT_APPLICABLE",
         servingRetainedStaleData: reporterHealth.state === "STALE" && counts.workers > 0,
       },
-      ...fabric.sources.map((source): SourceProfile => ({
-        name: source.id,
-        state: source.state,
-        configured: source.configured,
-        reachable: source.reachable,
-        lastAttemptAt: source.lastAttemptAt,
-        lastSuccessAt: source.lastSuccessAt,
-        nextRetryAt: null,
-        detail: source.failure,
-        cacheAgeMs: source.cacheAgeMs,
-        authenticationState: "NOT_APPLICABLE",
-        sourceId: `p2:${source.id}`,
-        expected: true,
-        configurationSource: "fixed Bridgewatch P2 adapter",
-        authorityLevel: source.authority,
-        schemaVersion: "bridgewatch-p2-fabric-1",
-        sourceOccurrenceAt: source.lastSuccessAt,
-        bridgewatchObservedAt: fabric.observedAt,
-        records: {
-          received: source.facts.length,
-          retained: source.facts.length,
-          exposed: source.facts.length,
-          displayed: source.facts.length,
-        },
-        capabilityClasses: {
-          supported: source.expectedFactClasses,
-          missing: source.facts.filter((item) => !["AUTHORITATIVE", "PROVISIONAL"].includes(item.state)).map((item) => item.factClass),
-        },
-        coverage: {
-          state: source.facts.some((item) => item.state === "SOURCE_UNAVAILABLE")
-            ? "OBSERVATION_FAILED"
-            : source.facts.some((item) => item.state === "STALE")
-              ? "RETAINED_STALE"
-              : source.facts.some((item) => item.state === "UNKNOWN")
-                ? "SOURCE_NOT_CONFIGURED"
-                : "BOUNDED_CURRENT",
-          summary: `${source.facts.length} explicit P2 fact class${source.facts.length === 1 ? "" : "es"} observed.`,
-          limitation: source.facts.map((item) => item.limitation).find(Boolean) ?? null,
-        },
-        failure: source.failure ? { classification: "SOURCE_UNREACHABLE", diagnostic: source.failure } : null,
-        repairability: source.failure ? "AUTOMATIC_RETRY" : source.configured ? "NOT_APPLICABLE" : "CONFIGURATION_REQUIRED",
-        servingRetainedStaleData: source.servingRetainedStaleData,
-      })),
+      ...fabric.sources.map(
+        (source): SourceProfile => ({
+          name: source.id,
+          state: source.state,
+          configured: source.configured,
+          reachable: source.reachable,
+          lastAttemptAt: source.lastAttemptAt,
+          lastSuccessAt: source.lastSuccessAt,
+          nextRetryAt: null,
+          detail: source.failure,
+          cacheAgeMs: source.cacheAgeMs,
+          authenticationState: "NOT_APPLICABLE",
+          sourceId: `p2:${source.id}`,
+          expected: true,
+          configurationSource: "fixed Bridgewatch P2 adapter",
+          authorityLevel: source.authority,
+          schemaVersion: "bridgewatch-p2-fabric-1",
+          sourceOccurrenceAt: source.lastSuccessAt,
+          bridgewatchObservedAt: fabric.observedAt,
+          records: {
+            received: source.facts.length,
+            retained: source.facts.length,
+            exposed: source.facts.length,
+            displayed: source.facts.length,
+          },
+          capabilityClasses: {
+            supported: source.expectedFactClasses,
+            missing: source.facts
+              .filter((item) => !["AUTHORITATIVE", "PROVISIONAL"].includes(item.state))
+              .map((item) => item.factClass),
+          },
+          coverage: {
+            state: source.facts.some((item) => item.state === "SOURCE_UNAVAILABLE")
+              ? "OBSERVATION_FAILED"
+              : source.facts.some((item) => item.state === "STALE")
+                ? "RETAINED_STALE"
+                : source.facts.some((item) => item.state === "UNKNOWN")
+                  ? "SOURCE_NOT_CONFIGURED"
+                  : "BOUNDED_CURRENT",
+            summary: `${source.facts.length} explicit P2 fact class${source.facts.length === 1 ? "" : "es"} observed.`,
+            limitation: source.facts.map((item) => item.limitation).find(Boolean) ?? null,
+          },
+          failure: source.failure ? { classification: "SOURCE_UNREACHABLE", diagnostic: source.failure } : null,
+          repairability: source.failure
+            ? "AUTOMATIC_RETRY"
+            : source.configured
+              ? "NOT_APPLICABLE"
+              : "CONFIGURATION_REQUIRED",
+          servingRetainedStaleData: source.servingRetainedStaleData,
+        }),
+      ),
     ];
     const branches = annotateBranches(snapshot?.branches ?? [], projects, config);
     const attention = [

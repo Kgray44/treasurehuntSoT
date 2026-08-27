@@ -18,7 +18,10 @@ function writeFixture(root: string) {
     join(root, "Development_Docs", "document-index.json"),
     JSON.stringify({ records: [{ path: "Development_Docs/Project_Test.md", status: "current" }] }),
   );
-  writeFileSync(join(root, "Development_Docs", "Features", "catalog", "bridgewatch.json"), JSON.stringify([{ id: "FT-X" }]));
+  writeFileSync(
+    join(root, "Development_Docs", "Features", "catalog", "bridgewatch.json"),
+    JSON.stringify([{ id: "FT-X" }]),
+  );
   writeFileSync(
     join(root, "Development_Docs", "Programs", "Deepwater", "deepwater-phase-status.json"),
     JSON.stringify({ phases: [{ id: "deepwater-p1" }] }),
@@ -60,7 +63,11 @@ describe("Bridgewatch P2 data fabric", () => {
     );
     writeFileSync(
       providerState,
-      JSON.stringify({ observedAt: "2026-08-27T00:00:00.000Z", authorization: "ultra-secret", providers: [{ name: "mail", state: "HEALTHY" }] }),
+      JSON.stringify({
+        observedAt: "2026-08-27T00:00:00.000Z",
+        authorization: "ultra-secret",
+        providers: [{ name: "mail", state: "HEALTHY" }],
+      }),
     );
     const config = loadConfig({
       BRIDGEWATCH_REPOSITORY: "owner/repository",
@@ -88,7 +95,9 @@ describe("Bridgewatch P2 data fabric", () => {
       });
 
       expect(snapshot.sources).toHaveLength(11);
-      expect(snapshot.facts.map((fact) => fact.factClass)).toEqual(expect.arrayContaining(expectedFactClasses.map((item) => item.id)));
+      expect(snapshot.facts.map((fact) => fact.factClass)).toEqual(
+        expect.arrayContaining(expectedFactClasses.map((item) => item.id)),
+      );
       expect(store.migrationVersions()).toEqual([1, 2, 3, 4, 5]);
       expect(store.fabricFacts()).toHaveLength(snapshot.facts.length);
       const main = snapshot.coverage
