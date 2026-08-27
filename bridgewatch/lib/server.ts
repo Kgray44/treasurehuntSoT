@@ -14,6 +14,7 @@ import { type BridgewatchEventKind, type BridgewatchProgramSnapshot } from "../s
 import { SoundingLineCollector, testTotals } from "../src/sounding-line.js";
 import { authorizeTelemetry, parseHeartbeat, workerState } from "../src/telemetry.js";
 import { readNightwatchProjection } from "../src/nightwatch-projection.js";
+import { DataFabricCollector, deriveCoverage, type DataFabricSnapshot } from "../src/fabric.js";
 import { GithubCollector } from "./github.js";
 import { BridgewatchStore, type HistoryQuery } from "./store.js";
 
@@ -103,8 +104,11 @@ export function buildServer() {
     resolve(process.cwd(), ".."),
     config.BRIDGEWATCH_REQUEST_TIMEOUT_MS,
   );
+  const dataFabric = new DataFabricCollector(config, store, resolve(process.cwd(), ".."));
   const telemetryWindows = new Map<string, { startedAt: number; count: number }>();
   let historyWarning: string | null = null;
+  let fabricWarning: string | null = null;
+  let currentFabric: DataFabricSnapshot | null = null;
   let currentHistory: BridgewatchProgramSnapshot | null | undefined;
   let projectTruthCollection: {
     documentCount: number | null;
@@ -199,6 +203,19 @@ export function buildServer() {
       store.replaceDiscovery(discovery, discoveredAt);
       store.replaceProjectRegistry(reconcileProjectRecords(projectRegistry, discovery));
     }
+    try {
+      currentFabric = await dataFabric.refresh({
+        github: collector.cached(),
+        soundingLine: soundingLine.cached(),
+        projects: store.projects(),
+        workers: store.workers(),
+      });
+      fabricWarning = null;
+    } catch {
+      // The data fabric is an observer. A local source/cache failure must not
+      // blank existing P1 projections or block the private dashboard.
+      fabricWarning = "P2 data-fabric persistence is unavailable; no new fabric observation is claimed.";
+    }
     persistHistory();
   };
   const refreshSoundingLine = async () => {
@@ -248,6 +265,12 @@ export function buildServer() {
     }));
     const totals = testTotals(soundingLineProjection);
     const counts = store.observationCounts();
+    const fabric: DataFabricSnapshot = currentFabric ?? {
+      observedAt: new Date().toISOString(),
+      sources: [],
+      facts: store.fabricFacts(),
+      coverage: deriveCoverage(store.fabricFacts()),
+    };
     const inspectedAt = new Date().toISOString();
     const observedAt = snapshot?.observedAt ?? null;
     const githubHealth = store.sourceObservations().find((source) => source.name === "github") ?? {
@@ -490,6 +513,49 @@ export function buildServer() {
         repairability: !config.BRIDGEWATCH_TELEMETRY_TOKEN ? "CONFIGURATION_REQUIRED" : "NOT_APPLICABLE",
         servingRetainedStaleData: reporterHealth.state === "STALE" && counts.workers > 0,
       },
+      ...fabric.sources.map((source): SourceProfile => ({
+        name: source.id,
+        state: source.state,
+        configured: source.configured,
+        reachable: source.reachable,
+        lastAttemptAt: source.lastAttemptAt,
+        lastSuccessAt: source.lastSuccessAt,
+        nextRetryAt: null,
+        detail: source.failure,
+        cacheAgeMs: source.cacheAgeMs,
+        authenticationState: "NOT_APPLICABLE",
+        sourceId: `p2:${source.id}`,
+        expected: true,
+        configurationSource: "fixed Bridgewatch P2 adapter",
+        authorityLevel: source.authority,
+        schemaVersion: "bridgewatch-p2-fabric-1",
+        sourceOccurrenceAt: source.lastSuccessAt,
+        bridgewatchObservedAt: fabric.observedAt,
+        records: {
+          received: source.facts.length,
+          retained: source.facts.length,
+          exposed: source.facts.length,
+          displayed: source.facts.length,
+        },
+        capabilityClasses: {
+          supported: source.expectedFactClasses,
+          missing: source.facts.filter((item) => !["AUTHORITATIVE", "PROVISIONAL"].includes(item.state)).map((item) => item.factClass),
+        },
+        coverage: {
+          state: source.facts.some((item) => item.state === "SOURCE_UNAVAILABLE")
+            ? "OBSERVATION_FAILED"
+            : source.facts.some((item) => item.state === "STALE")
+              ? "RETAINED_STALE"
+              : source.facts.some((item) => item.state === "UNKNOWN")
+                ? "SOURCE_NOT_CONFIGURED"
+                : "BOUNDED_CURRENT",
+          summary: `${source.facts.length} explicit P2 fact class${source.facts.length === 1 ? "" : "es"} observed.`,
+          limitation: source.facts.map((item) => item.limitation).find(Boolean) ?? null,
+        },
+        failure: source.failure ? { classification: "SOURCE_UNREACHABLE", diagnostic: source.failure } : null,
+        repairability: source.failure ? "AUTOMATIC_RETRY" : source.configured ? "NOT_APPLICABLE" : "CONFIGURATION_REQUIRED",
+        servingRetainedStaleData: source.servingRetainedStaleData,
+      })),
     ];
     const branches = annotateBranches(snapshot?.branches ?? [], projects, config);
     const attention = [
@@ -572,6 +638,10 @@ export function buildServer() {
       history: {
         warning: historyWarning,
         recent: store.history({ since: sinceHours(12), limit: 12 }).events,
+      },
+      dataFabric: {
+        ...fabric,
+        warning: fabricWarning,
       },
       workers,
       tests: {
@@ -878,6 +948,25 @@ export function buildServer() {
         .history({ since: "1970-01-01T00:00:00.000Z", limit: 100 })
         .events.filter((event) => event.source === request.params.name || event.entityId === request.params.name),
     };
+  });
+  app.get("/api/facts", async () => {
+    const fabric = summary().dataFabric;
+    return {
+      observedAt: fabric.observedAt,
+      warning: fabric.warning,
+      sources: fabric.sources,
+      facts: fabric.facts,
+      coverage: fabric.coverage,
+    };
+  });
+  app.get("/api/coverage", async () => summary().dataFabric.coverage);
+  app.get<{ Params: { key: string } }>("/api/facts/:key", async (request, reply) => {
+    const fabric = summary().dataFabric;
+    const current =
+      fabric.facts.find((entry) => entry.key === request.params.key) ??
+      store.fabricFacts().find((entry) => entry.key === request.params.key);
+    if (!current) return reply.code(404).send({ error: "Unknown data-fabric fact" });
+    return { fact: current, history: store.fabricFactHistory(current.key) };
   });
   app.get("/api/sounding-line/runs", async () => store.recentTestRuns());
   app.get<{ Params: { id: string } }>("/api/sounding-line/runs/:id", async (request, reply) => {

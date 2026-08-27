@@ -1,4 +1,4 @@
-import { mkdtempSync } from "node:fs";
+import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -166,6 +166,45 @@ describe("Bridgewatch read-only API", () => {
         failure: { classification: "SOURCE_UNREACHABLE" },
       });
       expect((await app.inject({ method: "GET", url: "/api/summary" })).json().github.headSha).toBe("cached-main");
+    } finally {
+      await app.close();
+    }
+  });
+
+  it("serves P2 data-fabric provenance and coverage through GET-only, redacted observation routes", async () => {
+    process.env.BRIDGEWATCH_REPOSITORY = "owner/repository";
+    const fixtureRoot = mkdtempSync(join(tmpdir(), "bridgewatch-fabric-server-"));
+    process.env.BRIDGEWATCH_DB_PATH = join(fixtureRoot, "cache.sqlite");
+    process.env.BRIDGEWATCH_VOYAGEWRIGHT_RUNTIME_STATE_PATH = join(fixtureRoot, "runtime.json");
+    process.env.BRIDGEWATCH_PROVIDER_STATUS_PATH = join(fixtureRoot, "providers.json");
+    writeFileSync(
+      process.env.BRIDGEWATCH_VOYAGEWRIGHT_RUNTIME_STATE_PATH,
+      JSON.stringify({ sourceSha: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", port: 4318, cookie: "server-secret" }),
+    );
+    writeFileSync(
+      process.env.BRIDGEWATCH_PROVIDER_STATUS_PATH,
+      JSON.stringify({ providers: [{ name: "fixture", state: "HEALTHY", authorization: "server-secret" }] }),
+    );
+    const { buildServer } = await import("../lib/server.js");
+    const { app, refreshSources } = buildServer();
+    try {
+      await refreshSources();
+      const facts = await app.inject({ method: "GET", url: "/api/facts" });
+      expect(facts.statusCode).toBe(200);
+      const body = facts.json();
+      expect(body.facts).toContainEqual(
+        expect.objectContaining({
+          factClass: "voyagewright.runtime-identity",
+          provenance: expect.objectContaining({ sourceId: "voyagewright-runtime" }),
+        }),
+      );
+      expect(body.coverage).toContainEqual(expect.objectContaining({ system: "Voyagewright", expected: 2 }));
+      expect(facts.body).not.toContain("server-secret");
+      const runtime = body.facts.find((item: { factClass: string }) => item.factClass === "voyagewright.runtime-identity");
+      expect((await app.inject({ method: "GET", url: `/api/facts/${encodeURIComponent(runtime.key)}` })).statusCode).toBe(200);
+      expect((await app.inject({ method: "GET", url: "/api/coverage" })).statusCode).toBe(200);
+      expect((await app.inject({ method: "POST", url: "/api/facts" })).statusCode).toBe(404);
+      expect((await app.inject({ method: "POST", url: "/api/coverage" })).statusCode).toBe(404);
     } finally {
       await app.close();
     }

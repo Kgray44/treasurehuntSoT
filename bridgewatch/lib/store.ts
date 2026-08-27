@@ -1,5 +1,6 @@
 import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
+import { createHash } from "node:crypto";
 import { backup, DatabaseSync, type StatementSync } from "node:sqlite";
 import type { MilestoneRecord, PhaseRecord, ProjectRecord } from "../src/domain.js";
 import {
@@ -15,6 +16,7 @@ import {
 } from "../src/history.js";
 import type { SoundingLineProjection } from "../src/sounding-line.js";
 import type { Heartbeat } from "../src/telemetry.js";
+import type { ObservationFact } from "../src/fabric.js";
 import type {
   DiscoveredPhase,
   DiscoveredProject,
@@ -203,6 +205,48 @@ const migrations = [
         authentication_state TEXT NOT NULL DEFAULT 'UNKNOWN',
         observed_at TEXT NOT NULL
       );
+      `,
+  },
+  {
+    // P2 records the data-fabric current projection and its retained fact
+    // history separately from P1-P3's operational cache/history. It is purely
+    // additive: an upgrade never rewrites earlier project, event, or snapshot
+    // records.
+    version: 5,
+    sql: `
+      CREATE TABLE IF NOT EXISTS fabric_facts (
+        fact_key TEXT PRIMARY KEY,
+        source_id TEXT NOT NULL,
+        fact_class TEXT NOT NULL,
+        label TEXT NOT NULL,
+        state TEXT NOT NULL,
+        value_json TEXT NOT NULL,
+        provenance_json TEXT NOT NULL,
+        limitation TEXT,
+        source_observed_at TEXT,
+        bridgewatch_observed_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      );
+      CREATE INDEX IF NOT EXISTS fabric_facts_class_idx ON fabric_facts(fact_class, source_id);
+      CREATE INDEX IF NOT EXISTS fabric_facts_observed_idx ON fabric_facts(bridgewatch_observed_at DESC);
+      CREATE TABLE IF NOT EXISTS fabric_fact_history (
+        history_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        fact_key TEXT NOT NULL,
+        fingerprint TEXT NOT NULL,
+        source_id TEXT NOT NULL,
+        fact_class TEXT NOT NULL,
+        label TEXT NOT NULL,
+        state TEXT NOT NULL,
+        value_json TEXT NOT NULL,
+        provenance_json TEXT NOT NULL,
+        limitation TEXT,
+        source_observed_at TEXT,
+        bridgewatch_observed_at TEXT NOT NULL,
+        recorded_at TEXT NOT NULL,
+        UNIQUE(fact_key, fingerprint)
+      );
+      CREATE INDEX IF NOT EXISTS fabric_fact_history_key_idx ON fabric_fact_history(fact_key, history_id DESC);
+      CREATE INDEX IF NOT EXISTS fabric_fact_history_class_idx ON fabric_fact_history(fact_class, history_id DESC);
       `,
   },
 ] as const;
@@ -642,6 +686,134 @@ export class BridgewatchStore {
       runs: count("test_runs"),
       workers: count("workers"),
     };
+  }
+
+  recordFabricFacts(facts: readonly ObservationFact[]): void {
+    const current = this.db.prepare(
+      "INSERT INTO fabric_facts (fact_key, source_id, fact_class, label, state, value_json, provenance_json, limitation, source_observed_at, bridgewatch_observed_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(fact_key) DO UPDATE SET source_id=excluded.source_id, fact_class=excluded.fact_class, label=excluded.label, state=excluded.state, value_json=excluded.value_json, provenance_json=excluded.provenance_json, limitation=excluded.limitation, source_observed_at=excluded.source_observed_at, bridgewatch_observed_at=excluded.bridgewatch_observed_at, updated_at=excluded.updated_at",
+    );
+    const history = this.db.prepare(
+      "INSERT INTO fabric_fact_history (fact_key, fingerprint, source_id, fact_class, label, state, value_json, provenance_json, limitation, source_observed_at, bridgewatch_observed_at, recorded_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(fact_key, fingerprint) DO NOTHING",
+    );
+    const recordedAt = new Date().toISOString();
+    this.db.exec("BEGIN");
+    try {
+      for (const item of facts) {
+        if (!/^[a-z0-9_.:-]{3,180}$/iu.test(item.key) || !/^[a-z0-9_.-]{3,120}$/iu.test(item.factClass))
+          throw new Error("Invalid Bridgewatch fabric fact identity");
+        const valueJson = JSON.stringify(item.value);
+        const provenanceJson = JSON.stringify(item.provenance);
+        if (valueJson.length > 16_384 || provenanceJson.length > 16_384)
+          throw new Error("Bridgewatch fabric fact exceeds the bounded storage limit");
+        if (item.limitation && item.limitation.length > 1_000)
+          throw new Error("Bridgewatch fabric fact limitation exceeds the bounded storage limit");
+        const fingerprint = createHash("sha256")
+          .update(
+            JSON.stringify({
+              sourceId: item.provenance.sourceId,
+              factClass: item.factClass,
+              state: item.state,
+              value: item.value,
+              authority: item.provenance.authority,
+              precedence: item.provenance.precedence,
+              reference: item.provenance.reference,
+              retainedFromCache: item.provenance.retainedFromCache,
+              limitation: item.limitation,
+            }),
+          )
+          .digest("hex");
+        current.run(
+          item.key,
+          item.provenance.sourceId,
+          item.factClass,
+          item.label,
+          item.state,
+          valueJson,
+          provenanceJson,
+          item.limitation,
+          item.provenance.sourceObservedAt,
+          item.provenance.bridgewatchObservedAt,
+          recordedAt,
+        );
+        history.run(
+          item.key,
+          fingerprint,
+          item.provenance.sourceId,
+          item.factClass,
+          item.label,
+          item.state,
+          valueJson,
+          provenanceJson,
+          item.limitation,
+          item.provenance.sourceObservedAt,
+          item.provenance.bridgewatchObservedAt,
+          recordedAt,
+        );
+      }
+      this.db.exec("COMMIT");
+    } catch (error) {
+      this.db.exec("ROLLBACK");
+      throw error;
+    }
+  }
+
+  fabricFacts(limit = 500): ObservationFact[] {
+    if (!Number.isInteger(limit) || limit < 1 || limit > 1_000) throw new Error("Invalid Bridgewatch fabric fact limit");
+    return this.db
+      .prepare(
+        "SELECT fact_key, fact_class, label, state, value_json, provenance_json, limitation FROM fabric_facts ORDER BY fact_class, fact_key LIMIT ?",
+      )
+      .all(limit)
+      .map((row) => {
+        const item = row as {
+          fact_key: string;
+          fact_class: string;
+          label: string;
+          state: ObservationFact["state"];
+          value_json: string;
+          provenance_json: string;
+          limitation: string | null;
+        };
+        return {
+          key: item.fact_key,
+          factClass: item.fact_class,
+          label: item.label,
+          state: item.state,
+          value: JSON.parse(item.value_json) as ObservationFact["value"],
+          provenance: JSON.parse(item.provenance_json) as ObservationFact["provenance"],
+          limitation: item.limitation,
+        };
+      });
+  }
+
+  fabricFactHistory(factKey: string, limit = 100): ObservationFact[] {
+    if (!/^[a-z0-9_.:-]{3,180}$/iu.test(factKey)) throw new Error("Invalid Bridgewatch fabric fact identity");
+    if (!Number.isInteger(limit) || limit < 1 || limit > 250) throw new Error("Invalid Bridgewatch fabric history limit");
+    return this.db
+      .prepare(
+        "SELECT fact_key, fact_class, label, state, value_json, provenance_json, limitation FROM fabric_fact_history WHERE fact_key = ? ORDER BY history_id DESC LIMIT ?",
+      )
+      .all(factKey, limit)
+      .map((row) => {
+        const item = row as {
+          fact_key: string;
+          fact_class: string;
+          label: string;
+          state: ObservationFact["state"];
+          value_json: string;
+          provenance_json: string;
+          limitation: string | null;
+        };
+        return {
+          key: item.fact_key,
+          factClass: item.fact_class,
+          label: item.label,
+          state: item.state,
+          value: JSON.parse(item.value_json) as ObservationFact["value"],
+          provenance: JSON.parse(item.provenance_json) as ObservationFact["provenance"],
+          limitation: item.limitation,
+        };
+      });
   }
 
   replaceGithubObservations(

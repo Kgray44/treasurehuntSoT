@@ -1035,6 +1035,138 @@ async function renderComparison(parameters) {
   node.append(comparison);
   return node;
 }
+async function renderDataFabric() {
+  const data = await request("api/facts");
+  const node = document.createDocumentFragment();
+  const coverage = section(
+    "Data fabric & observation coverage",
+    "Expected fact classes are counted explicitly. An unavailable source is not treated as proof that a fact does not exist.",
+  );
+  if (data.warning) coverage.append(element("p", "empty error", data.warning));
+  coverage.append(
+    table(
+      [
+        "System",
+        "Expected",
+        "Authoritative",
+        "Provisional",
+        "Stale",
+        "Unavailable",
+        "Not recorded",
+        "Unknown",
+      ],
+      (data.coverage ?? []).map((entry) => [
+        entry.system,
+        entry.expected,
+        entry.authoritative,
+        entry.provisional,
+        entry.stale,
+        entry.sourceUnavailable,
+        entry.notHistoricallyRecorded,
+        entry.unknown,
+      ]),
+    ),
+  );
+  node.append(coverage);
+
+  const sources = section(
+    "P2 adapter health",
+    "Each fixed adapter retains its own last-known-good observation. No adapter can act on a repository, job, or runtime.",
+  );
+  sources.append(
+    table(
+      ["Adapter", "State", "Authority", "Configured", "Reachable", "Last success", "Retained stale data", "Diagnostic"],
+      (data.sources ?? []).map((source) => [
+        source.name,
+        tag(source.state),
+        source.authority,
+        source.configured ? "CONFIGURED" : "NOT CONFIGURED",
+        source.reachable === null ? "NOT RECORDED" : String(source.reachable),
+        sourceDateText(source.lastSuccessAt),
+        source.servingRetainedStaleData ? "YES" : "NO",
+        source.failure ?? "NONE",
+      ]),
+    ),
+  );
+  node.append(sources);
+
+  const facts = section(
+    "Observed facts",
+    "Provenance, source precedence, and freshness accompany every fact. Higher-precedence current authority wins; retained history never overrides it.",
+  );
+  facts.append(
+    filteredTable({
+      records: data.facts ?? [],
+      headers: ["Fact class", "State", "Source", "Authority", "Precedence", "Source observed", "Limitation"],
+      row: (item) => [
+        linkButton(item.label ?? item.factClass, `#/data/facts/${encodeURIComponent(item.key)}`),
+        tag(item.state),
+        item.provenance?.sourceId ?? "UNKNOWN",
+        item.provenance?.authority ?? "UNKNOWN",
+        item.provenance?.precedence ?? "UNKNOWN",
+        sourceDateText(item.provenance?.sourceObservedAt),
+        item.limitation ?? "NONE",
+      ],
+      matches: (item) =>
+        searchText([
+          item.label,
+          item.factClass,
+          item.state,
+          item.provenance?.sourceId,
+          item.provenance?.authority,
+          item.provenance?.reference,
+          item.limitation,
+        ]),
+      placeholder: "Search observed facts",
+      emptyMessage: "No data-fabric facts have been retained yet. Source availability remains explicit above.",
+    }),
+  );
+  node.append(facts);
+  return node;
+}
+async function renderFactProfile(key) {
+  const data = await request(`api/facts/${encodeURIComponent(key)}`);
+  const node = document.createDocumentFragment();
+  const fact = data.fact;
+  const profile = section(
+    fact.label ?? fact.factClass,
+    "A read-only fact profile. It separates current source authority from retained stale observation and never offers a repair or control action.",
+  );
+  profile.append(
+    detail([
+      ["Fact class", fact.factClass],
+      ["State", fact.state],
+      ["Source", fact.provenance?.sourceId],
+      ["Source identity", fact.provenance?.sourceIdentity],
+      ["Authority", fact.provenance?.authority],
+      ["Precedence", fact.provenance?.precedence],
+      ["Evidence reference", fact.provenance?.reference],
+      ["Source observed", sourceDateText(fact.provenance?.sourceObservedAt)],
+      ["Bridgewatch observed", sourceDateText(fact.provenance?.bridgewatchObservedAt)],
+      ["Retained from cache", fact.provenance?.retainedFromCache ? "YES" : "NO"],
+      ["Value", JSON.stringify(fact.value ?? {})],
+      ["Limitation", fact.limitation ?? "NONE"],
+    ]),
+  );
+  node.append(profile);
+  const history = section("Retained fact history", "Changes are retained as durable observation history; unsupported older facts are never invented.");
+  history.append(
+    data.history?.length
+      ? table(
+          ["State", "Source observed", "Bridgewatch observed", "Retained from cache", "Limitation"],
+          data.history.map((entry) => [
+            tag(entry.state),
+            sourceDateText(entry.provenance?.sourceObservedAt),
+            sourceDateText(entry.provenance?.bridgewatchObservedAt),
+            entry.provenance?.retainedFromCache ? "YES" : "NO",
+            entry.limitation ?? "NONE",
+          ]),
+        )
+      : empty("No historical change has been retained for this fact."),
+  );
+  node.append(history);
+  return node;
+}
 async function renderSources() {
   const sources = await refreshSources();
   const node = document.createDocumentFragment();
@@ -1141,6 +1273,8 @@ async function renderRoute() {
     else if (station === "compare") content = await renderComparison(query);
     else if (station === "sources" && parts[1]) content = await renderSourceProfile(parts[1]);
     else if (station === "sources") content = await renderSources();
+    else if (station === "data" && parts[1] === "facts" && parts[2]) content = await renderFactProfile(parts[2]);
+    else if (station === "data") content = await renderDataFabric();
     else content = empty("Unknown station. Choose a Mission Control station above.");
     routeHost.replaceChildren(content);
   } catch (error) {
