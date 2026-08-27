@@ -1735,11 +1735,9 @@ Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe
 
 ---
 
-# Completed Branch Features Not Yet Available on Main
-
 ## FT-B014 - Shipwright Creator Publication Review
 
-**Status:** BRANCH COMPLETE NOT MERGED
+**Status:** MAINLINE
 **Program or subsystem:** Project Shipwright Phase 5
 
 Creators stage a saved Chronicle source through Drydock readiness, exact readable differences, asset and protected-content evidence, compatibility, release notes, and explicit immutable confirmation before the canonical One Voyage publication authority creates a Version receipt.
@@ -1760,16 +1758,19 @@ Creators stage a saved Chronicle source through Drydock readiness, exact readabl
 ### Meaningful limitations
 
 - Drydock remains the sole authoring-contract validation and simulation authority, and One Voyage remains the sole immutable publication authority.
-- This branch-complete candidate has not received protected-main acceptance, deployment proof, live-provider execution, or owner acceptance.
+- Protected-main integration completed in PR #479 as ab44c398fb76c367036d720cea619825614233f5; deployment, live-provider execution, and owner acceptance remain separate.
 
 ### Evidence
 
+- commit: `ab44c398fb76c367036d720cea619825614233f5`
 - path: `src/chronicle/publishing-review.ts`
 - path: `src/components/studio/ShipwrightPublishingReview.tsx`
 - test: `tests/e2e/project-shipwright-phase5.spec.ts`
 - completion-record: `Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_5_Validation_Record.md`
 
 ---
+
+# Completed Branch Features Not Yet Available on Main
 
 # Deliberately Excluded Until Complete
 
