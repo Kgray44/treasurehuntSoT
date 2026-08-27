@@ -25,6 +25,7 @@ const displayName = `Helm Captain ${suffix}`;
 let accountId = "";
 let playerProfileId = "";
 let accountSessionId = "";
+let signInClientOrdinal = 0;
 
 test.describe.configure({ mode: "serial", timeout: 600_000 });
 
@@ -179,6 +180,11 @@ test.beforeAll(async ({ request }) => {
 test.afterAll(async () => db.$disconnect());
 
 async function signInThroughProduct(page: Page) {
+  // The suite exercises distinct browser contexts as distinct devices. Give each
+  // context a documentation-reserved test-network address so the interactive
+  // login guard observes the same client boundary it would behind a proxy.
+  signInClientOrdinal += 1;
+  await page.context().setExtraHTTPHeaders({ "x-forwarded-for": `198.18.0.${signInClientOrdinal}` });
   await page.goto("/sign-in");
   await expect(page.getByLabel("Email or legacy Player name")).toBeVisible({ timeout: 30_000 });
   await page.getByLabel("Email or legacy Player name").fill(email);
