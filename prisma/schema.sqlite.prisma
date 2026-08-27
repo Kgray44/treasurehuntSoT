@@ -1384,6 +1384,7 @@ model TaleSession {
   voyageName             String?
   captainId              String?
   captainAccountId       String?
+  captainAuthorityState  String                     @default("ASSIGNED")
   accessTokenHash        String                     @unique
   status                 String                     @default("ACTIVE")
   captainMode            String                     @default("CAPTAIN_CONTROLLED")
@@ -1425,6 +1426,44 @@ model TaleSession {
   @@index([taleId, status, previewMode])
   @@index([publishedVersionId, status])
   @@index([captainAccountId, status])
+  @@index([captainAuthorityState, status])
+}
+
+// Helm A2 keeps authority changes and personal continuations as durable,
+// source-bound lifecycle receipts. These are deliberately separate from
+// canonical progression events: they never become a second progression log.
+model VoyageCaptainAuthorityReceipt {
+  id                       String   @id @default(cuid())
+  voyageId                 String
+  action                   String
+  previousCaptainAccountId String?
+  nextCaptainAccountId     String?
+  authorityState           String
+  sourceConcurrencyVersion Int
+  sourceSequence           Int
+  idempotencyKey           String   @unique
+  correlationId            String   @unique
+  safeReason               String?
+  committedAt              DateTime @default(now())
+
+  @@index([voyageId, committedAt])
+  @@index([nextCaptainAccountId, committedAt])
+}
+
+model VoyageForkLineage {
+  id                       String   @id @default(cuid())
+  parentVoyageId           String
+  childVoyageId            String   @unique
+  sourceConcurrencyVersion Int
+  sourceSequence           Int
+  requesterPlayerProfileId String
+  requesterAccountId       String?
+  idempotencyKey           String   @unique
+  correlationId            String   @unique
+  createdAt                DateTime @default(now())
+
+  @@index([parentVoyageId, createdAt])
+  @@index([requesterPlayerProfileId, createdAt])
 }
 
 // One Voyage-owned immutable recipient resolution for a canonical artifactGranted

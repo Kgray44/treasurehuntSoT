@@ -75,6 +75,7 @@ function libraryState(membership: PlayerMembership) {
   if (membership.status === "INVITED" && invitation && pendingInvitationStates.includes(invitation.status))
     return "INVITATIONS";
   if (["EXPIRED", "REVOKED", "REPLACED", "DECLINED"].includes(invitation?.status ?? "")) return "EXPIRED_REVOKED";
+  if (membership.playthrough.captainAuthorityState === "VACANT") return "SUCCESSION_HOLD";
   if (["INVITING", "READY", "SCHEDULED", "DRAFT_SETUP"].includes(membership.playthrough.status))
     return "AWAITING_CAPTAIN";
   if (["ACTIVE", "PAUSED"].includes(membership.playthrough.status)) return "IN_PROGRESS";
@@ -96,6 +97,11 @@ function cardOf(membership: PlayerMembership, captainName?: string) {
   );
   const currentChapter = snapshot.chapters.find((chapter) => chapter.id === playthrough.currentChapterId);
   const state = libraryState(membership);
+  const activeCrew = playthrough.memberships.filter((item) => validMembershipStates.includes(item.status));
+  const isSoleCaptainAndPlayer =
+    Boolean(membership.player.accountId) &&
+    playthrough.captainAccountId === membership.player.accountId &&
+    activeCrew.length === 1;
   return {
     id: playthrough.id,
     invitationId: invitation?.id ?? null,
@@ -109,12 +115,19 @@ function cardOf(membership: PlayerMembership, captainName?: string) {
           playthrough.publishedVersionId ?? "",
         )}&session=${encodeURIComponent(playthrough.id)}`
       : null,
-    captainName: captainName ?? "Captain",
+    captainName: playthrough.captainAuthorityState === "VACANT" ? "Captaincy vacant" : (captainName ?? "Captain"),
     voyageName: playthrough.voyageName ?? playthrough.ownerLabel ?? "Voyage",
     state,
     status: invitation && state === "INVITATIONS" ? invitation.status : playthrough.status,
     membershipStatus: membership.status,
     concurrencyVersion: playthrough.concurrencyVersion,
+    captainAuthorityState: playthrough.captainAuthorityState,
+    canTakeCaptaincy:
+      playthrough.captainAuthorityState === "VACANT" && validMembershipStates.includes(membership.status),
+    canContinueSolo:
+      !isSoleCaptainAndPlayer &&
+      validMembershipStates.includes(membership.status) &&
+      ["INVITING", "READY", "SCHEDULED", "ACTIVE", "PAUSED"].includes(playthrough.status),
     pinned: Boolean(membership.pinnedAt),
     versionLabel: playthrough.version.versionLabel,
     publishedAt: playthrough.version.publishedAt.toISOString(),
@@ -136,15 +149,17 @@ function cardOf(membership: PlayerMembership, captainName?: string) {
     primaryLabel:
       state === "INVITATIONS"
         ? "View invitation"
-        : state === "AWAITING_CAPTAIN"
-          ? "Open waiting room"
-          : state === "IN_PROGRESS"
-            ? playthrough.status === "PAUSED"
-              ? "Resume Adventure"
-              : "Continue Adventure"
-            : state === "COMPLETED"
-              ? "Open Completed Journal"
-              : "View status",
+        : state === "SUCCESSION_HOLD"
+          ? "Resolve Captaincy"
+          : state === "AWAITING_CAPTAIN"
+            ? "Open waiting room"
+            : state === "IN_PROGRESS"
+              ? playthrough.status === "PAUSED"
+                ? "Resume Adventure"
+                : "Continue Adventure"
+              : state === "COMPLETED"
+                ? "Open Completed Journal"
+                : "View status",
   };
 }
 
@@ -177,7 +192,7 @@ export async function listPlayerLibrary(
   const groups = {
     invitations: cards.filter((card) => card.state === "INVITATIONS"),
     awaitingCaptain: cards.filter((card) => card.state === "AWAITING_CAPTAIN"),
-    inProgress: cards.filter((card) => card.state === "IN_PROGRESS"),
+    inProgress: cards.filter((card) => ["IN_PROGRESS", "SUCCESSION_HOLD"].includes(card.state)),
     completed: cards.filter((card) => card.state === "COMPLETED"),
     replayOrNewEdition: cards.filter((card) => card.state === "REPLAY_NEW_EDITION"),
     expiredOrRevoked: cards.filter((card) => card.state === "EXPIRED_REVOKED"),
@@ -230,6 +245,11 @@ export async function getPlayerPlaythrough(playerId: string, playthroughId: stri
   const card = cardOf(membership);
   if (!card) return null;
   const playthrough = membership.playthrough;
+  const activeCrew = playthrough.memberships.filter((item) => validMembershipStates.includes(item.status));
+  const isSoleCaptainAndPlayer =
+    Boolean(membership.player.accountId) &&
+    playthrough.captainAccountId === membership.player.accountId &&
+    activeCrew.length === 1;
   return {
     ...card,
     // This opaque membership identifier is returned only to its authenticated
@@ -239,10 +259,18 @@ export async function getPlayerPlaythrough(playerId: string, playthroughId: stri
       .filter((item) => validMembershipStates.includes(item.status))
       .map((item) => ({ displayName: item.player.displayName, crewRole: item.crewRole, status: item.status })),
     connection: { state: "POLLING", lastServerConfirmation: playthrough.updatedAt.toISOString() },
-    canEnter: ["ACTIVE", "PAUSED"].includes(playthrough.status),
-    runtimeHref: ["ACTIVE", "PAUSED"].includes(playthrough.status)
-      ? `/player/playthroughs/${playthrough.id}/journal`
-      : null,
+    captainAuthorityState: playthrough.captainAuthorityState,
+    canTakeCaptaincy:
+      playthrough.captainAuthorityState === "VACANT" && validMembershipStates.includes(membership.status),
+    canContinueSolo:
+      !isSoleCaptainAndPlayer &&
+      validMembershipStates.includes(membership.status) &&
+      ["INVITING", "READY", "SCHEDULED", "ACTIVE", "PAUSED"].includes(playthrough.status),
+    canEnter: ["ACTIVE", "PAUSED"].includes(playthrough.status) && playthrough.captainAuthorityState !== "VACANT",
+    runtimeHref:
+      ["ACTIVE", "PAUSED"].includes(playthrough.status) && playthrough.captainAuthorityState !== "VACANT"
+        ? `/player/playthroughs/${playthrough.id}/journal`
+        : null,
   };
 }
 

@@ -66,8 +66,10 @@ with read-only operational projections and member-scoped presence/synchronizatio
 evidence. Governing Amendment v1.1 supplements the v1.0 authority and inserts
 A1 **Muster the Crew**, A2 **Pass the Helm**, and A3 **Ready the Room** before
 the unchanged P3 **Give the Orders**, P4 **Weather the Passage**, and P5
-**Clear for Voyage** sequence. The amendment is governing-only; it implements
-none of A1, A2, or A3.
+**Clear for Voyage** sequence. A1 is accepted on main; A2 is branch-complete
+pending protected integration, with its scoped authority-handoff and
+personal-continuation evidence recorded with Helm. A3 and the original later
+phases remain separate.
 
 ## Project Admiralty
 

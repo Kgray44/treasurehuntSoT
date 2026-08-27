@@ -21,6 +21,15 @@ last_reviewed: 2026-08-27
   other control plane; this is not protected-main integration, deployment, or
   owner acceptance.
 
+- Added Project Helm Amendment A2, **Pass the Helm**: a Captain + Player can
+  transfer scoped Captain authority to another joined Player without changing
+  either membership; relinquishment enters Succession Hold rather than
+  cancelling; eligible Players can take the vacant Captaincy first-committed-
+  wins, leave, or create independent same-edition solo continuations with
+  durable lineage and no copied Player-private state. This is protected-source
+  behavior with local/synthetic evidence, not deployment, live-Voyage proof,
+  or owner acceptance.
+
 - Expanded Project Bridgewatch on its dedicated v1.2 implementation branch
   into a version-aware, hash-routed private Mission Control with bounded
   repository discovery, retained source-health, first-class version/PR/branch/

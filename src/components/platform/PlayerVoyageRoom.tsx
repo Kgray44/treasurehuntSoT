@@ -11,6 +11,7 @@ import { consumeOneShot, platformOneShotKey } from "@/animation/platform/one-sho
 import { reconcileVersionedRows } from "@/animation/platform/polling-delta";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { ErrorState, LoadingState } from "@/components/ui/AsyncState";
+import { useActionDialog } from "@/components/ui/ActionDialog";
 import { PlatformRelic } from "./PlatformRelic";
 import { membershipPresenceDeviceId } from "@/platform/presence-client";
 
@@ -31,6 +32,10 @@ type Playthrough = {
   canEnter: boolean;
   runtimeHref: string | null;
   membershipId: string;
+  concurrencyVersion?: number;
+  captainAuthorityState?: string;
+  canTakeCaptaincy?: boolean;
+  canContinueSolo?: boolean;
 };
 type ConnectionState = "connecting" | "live" | "polling" | "offline" | "reconnecting" | "reconciling" | "revoked";
 type RouteHandoff = (destination: string) => void | Promise<void>;
@@ -117,6 +122,7 @@ export function PlayerVoyageRoom({
   onRouteHandoff?: RouteHandoff;
 }) {
   const router = useRouter();
+  const { requestAction, dialog } = useActionDialog();
   const { mode } = useMotionMode();
   const layoutToken = resolvePlatformMotionToken("layout", mode);
   const ceremonyToken = resolvePlatformMotionToken("ceremony", mode);
@@ -137,6 +143,7 @@ export function PlayerVoyageRoom({
   const [clock, setClock] = useState<number | null>(null);
   const [launchReady, setLaunchReady] = useState(false);
   const [routeFailed, setRouteFailed] = useState(false);
+  const [authorityAction, setAuthorityAction] = useState<"takeover" | "solo" | "leave" | "">("");
   const launchCeremonyKey = voyage
     ? platformOneShotKey("waiting-launch", voyage.id, `${voyage.status}:${voyage.lastSynchronizedAt}`)
     : null;
@@ -206,6 +213,100 @@ export function PlayerVoyageRoom({
     },
     [playthroughId],
   );
+
+  async function takeCaptaincy() {
+    if (!voyage?.canTakeCaptaincy || authorityAction) return;
+    if (
+      !(await requestAction({
+        eyebrow: "Succession Hold",
+        title: `Take Captaincy for “${voyage.voyageName}”?`,
+        detail:
+          "You will become the shared Voyage's Captain while remaining an ordinary Player. If another Player acts at the same time, only the first committed request can win.",
+        confirmLabel: "Take Captaincy",
+      }))
+    )
+      return;
+    setAuthorityAction("takeover");
+    setError("");
+    try {
+      const response = await fetch(`/api/player/playthroughs/${voyage.id}/captain/takeover`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken.current ?? "" },
+        body: JSON.stringify({ expectedVersion: voyage.concurrencyVersion, idempotencyKey: crypto.randomUUID() }),
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "Captaincy could not be taken.");
+      router.push("/captain/library");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Captaincy could not be taken.");
+      await load("reconciling");
+    } finally {
+      setAuthorityAction("");
+    }
+  }
+
+  async function continueSolo() {
+    if (!voyage?.canContinueSolo || authorityAction) return;
+    if (
+      !(await requestAction({
+        eyebrow: "Personal continuation",
+        title: `Continue “${voyage.voyageName}” solo?`,
+        detail:
+          "This creates a new personal Voyage from the last committed shared state. This shared Voyage, its Captaincy, its Crew, and every other Player's private state remain unchanged.",
+        confirmLabel: "Create Solo Voyage",
+      }))
+    )
+      return;
+    setAuthorityAction("solo");
+    setError("");
+    try {
+      const response = await fetch(`/api/player/playthroughs/${voyage.id}/continue-solo`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken.current ?? "" },
+        body: JSON.stringify({ expectedVersion: voyage.concurrencyVersion, idempotencyKey: crypto.randomUUID() }),
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string; voyageId?: string };
+      if (!response.ok || !body.voyageId) throw new Error(body.error ?? "A solo continuation could not be created.");
+      router.push(`/player/playthroughs/${body.voyageId}`);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "A solo continuation could not be created.");
+      await load("reconciling");
+    } finally {
+      setAuthorityAction("");
+    }
+  }
+
+  async function leaveVoyage() {
+    if (!voyage || authorityAction) return;
+    if (
+      !(await requestAction({
+        eyebrow: "Voyage membership",
+        title: `Leave “${voyage.voyageName}”?`,
+        detail:
+          "Leaving ends only your access to this shared Voyage. Its current shared state and every other Player remain unchanged.",
+        confirmLabel: "Leave Voyage",
+        destructive: true,
+      }))
+    )
+      return;
+    setAuthorityAction("leave");
+    setError("");
+    try {
+      const response = await fetch(`/api/player/playthroughs/${voyage.id}/leave`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken.current ?? "" },
+        body: JSON.stringify({ expectedVersion: voyage.concurrencyVersion }),
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "This Voyage could not be left.");
+      router.push("/player/library");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "This Voyage could not be left.");
+      await load("reconciling");
+    } finally {
+      setAuthorityAction("");
+    }
+  }
 
   useEffect(() => {
     connectionRef.current = connection;
@@ -433,135 +534,185 @@ export function PlayerVoyageRoom({
                 ? "seeking"
                 : "locked";
   return (
-    <main
-      className="waiting-room"
-      data-connection-state={connection}
-      data-motion-mode={mode}
-      data-launch-state={launchReady ? "launch-ready" : "waiting"}
-    >
-      <WaitingLaunchBoundary launchReady={launchReady} mode={mode} />
-      <motion.div
-        className="closed-journal"
-        data-relic-state={relicState}
-        aria-hidden="true"
-        animate={{ y: mode === "reduced" || connection !== "live" ? 0 : -3 }}
-        transition={{
-          duration: 3.6,
-          repeat: connection === "live" && mode !== "reduced" ? Infinity : 0,
-          repeatType: "reverse",
-        }}
+    <>
+      <main
+        className="waiting-room"
+        data-connection-state={connection}
+        data-motion-mode={mode}
+        data-launch-state={launchReady ? "launch-ready" : "waiting"}
+        data-captain-authority={voyage.captainAuthorityState ?? "ASSIGNED"}
       >
-        <i />
-        <b>
-          <PlatformRelic kind="journal-clasp" state={relicState} mode={mode} />
-        </b>
-      </motion.div>
-      <section aria-labelledby="waiting-title">
-        <p className="eyebrow">{voyage.status.replaceAll("_", " ")}</p>
-        <h1 id="waiting-title" tabIndex={-1}>
-          {voyage.title}
-        </h1>
-        <h2>{voyage.voyageName}</h2>
-        <p>
-          {launchReady
-            ? "The Captain has launched the voyage. Releasing the journal clasp…"
-            : "Your place is secured. The journal will open only after the Captain launches the voyage."}
-        </p>
-        <dl>
-          <div>
-            <dt>Edition</dt>
-            <dd>{voyage.versionLabel}</dd>
-          </div>
-          <div>
-            <dt>Readiness</dt>
-            <dd>
-              {launchReady ? "Launch confirmed" : voyage.status === "SCHEDULED" ? "Scheduled" : "Awaiting Captain"}
-            </dd>
-          </div>
-          {voyage.plannedStartAt && (
-            <div data-planned-start-due={plannedCountdown === "0m 0s"}>
-              <dt>Planned start</dt>
+        <WaitingLaunchBoundary launchReady={launchReady} mode={mode} />
+        <motion.div
+          className="closed-journal"
+          data-relic-state={relicState}
+          aria-hidden="true"
+          animate={{ y: mode === "reduced" || connection !== "live" ? 0 : -3 }}
+          transition={{
+            duration: 3.6,
+            repeat: connection === "live" && mode !== "reduced" ? Infinity : 0,
+            repeatType: "reverse",
+          }}
+        >
+          <i />
+          <b>
+            <PlatformRelic kind="journal-clasp" state={relicState} mode={mode} />
+          </b>
+        </motion.div>
+        <section aria-labelledby="waiting-title">
+          <p className="eyebrow">{voyage.status.replaceAll("_", " ")}</p>
+          <h1 id="waiting-title" tabIndex={-1}>
+            {voyage.title}
+          </h1>
+          <h2>{voyage.voyageName}</h2>
+          <p>
+            {voyage.captainAuthorityState === "VACANT"
+              ? "Captaincy is vacant. This shared Voyage is in Succession Hold until a joined Player takes Captaincy, continues solo, or leaves."
+              : launchReady
+                ? "The Captain has launched the voyage. Releasing the journal clasp…"
+                : "Your place is secured. The journal will open only after the Captain launches the voyage."}
+          </p>
+          <dl>
+            <div>
+              <dt>Edition</dt>
+              <dd>{voyage.versionLabel}</dd>
+            </div>
+            <div>
+              <dt>Readiness</dt>
               <dd>
-                {new Date(voyage.plannedStartAt).toLocaleString()} · <span role="timer">{plannedCountdown}</span>
+                {voyage.captainAuthorityState === "VACANT"
+                  ? "Succession Hold"
+                  : launchReady
+                    ? "Launch confirmed"
+                    : voyage.status === "SCHEDULED"
+                      ? "Scheduled"
+                      : "Awaiting Captain"}
               </dd>
             </div>
+            {voyage.plannedStartAt && (
+              <div data-planned-start-due={plannedCountdown === "0m 0s"}>
+                <dt>Planned start</dt>
+                <dd>
+                  {new Date(voyage.plannedStartAt).toLocaleString()} · <span role="timer">{plannedCountdown}</span>
+                </dd>
+              </div>
+            )}
+            <div>
+              <dt>Connection</dt>
+              <dd className={`connection-${connection}`}>
+                <span role="status" aria-live="polite">
+                  {connectionCopy[connection]}
+                </span>
+              </dd>
+            </div>
+            <div>
+              <dt>Last server confirmation</dt>
+              <dd>{new Date(voyage.lastSynchronizedAt).toLocaleTimeString()}</dd>
+            </div>
+          </dl>
+          {reconciliation.length > 0 && (
+            <section className="reconciliation-summary" aria-labelledby="reconciliation-title">
+              <h3 id="reconciliation-title">Changes received while reconnecting</h3>
+              <ol>
+                {reconciliation.map((change, index) => (
+                  <li key={`${index}-${change}`}>{change}</li>
+                ))}
+              </ol>
+            </section>
           )}
-          <div>
-            <dt>Connection</dt>
-            <dd className={`connection-${connection}`}>
-              <span role="status" aria-live="polite">
-                {connectionCopy[connection]}
-              </span>
-            </dd>
-          </div>
-          <div>
-            <dt>Last server confirmation</dt>
-            <dd>{new Date(voyage.lastSynchronizedAt).toLocaleTimeString()}</dd>
-          </div>
-        </dl>
-        {reconciliation.length > 0 && (
-          <section className="reconciliation-summary" aria-labelledby="reconciliation-title">
-            <h3 id="reconciliation-title">Changes received while reconnecting</h3>
-            <ol>
-              {reconciliation.map((change, index) => (
-                <li key={`${index}-${change}`}>{change}</li>
-              ))}
-            </ol>
+          <section className="crew-readiness">
+            <h3>Crew readiness</h3>
+            <motion.ul layout>
+              <AnimatePresence initial={false}>
+                {voyage.crew.map((member) => {
+                  const identity = crewIdentity(member);
+                  return (
+                    <motion.li
+                      layout
+                      key={identity}
+                      initial={newCrew.has(identity) ? { opacity: 0, y: layoutToken.distancePx } : false}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: layoutToken.durationSeconds, ease: platformMotionEasing("layout") }}
+                    >
+                      <span>{member.displayName}</span>
+                      <small>
+                        {member.crewRole ?? "Player"} · {member.status.replaceAll("_", " ").toLocaleLowerCase()}
+                      </small>
+                    </motion.li>
+                  );
+                })}
+              </AnimatePresence>
+            </motion.ul>
           </section>
-        )}
-        <section className="crew-readiness">
-          <h3>Crew readiness</h3>
-          <motion.ul layout>
-            <AnimatePresence initial={false}>
-              {voyage.crew.map((member) => {
-                const identity = crewIdentity(member);
-                return (
-                  <motion.li
-                    layout
-                    key={identity}
-                    initial={newCrew.has(identity) ? { opacity: 0, y: layoutToken.distancePx } : false}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: layoutToken.durationSeconds, ease: platformMotionEasing("layout") }}
+          {error && (
+            <p className="platform-error" role="alert">
+              {error}
+            </p>
+          )}
+          {voyage.captainAuthorityState === "VACANT" && (
+            <section className="succession-hold" aria-labelledby="succession-hold-title">
+              <p className="eyebrow">Succession Hold</p>
+              <h3 id="succession-hold-title">This Voyage needs a Captain</h3>
+              <p>
+                The current Player-safe state remains readable, but shared progression is unavailable until Captaincy is
+                committed. There is no invented deadline.
+              </p>
+              <div className="waiting-actions">
+                {voyage.canTakeCaptaincy && (
+                  <button
+                    className="brass-button"
+                    disabled={Boolean(authorityAction)}
+                    onClick={() => void takeCaptaincy()}
                   >
-                    <span>{member.displayName}</span>
-                    <small>
-                      {member.crewRole ?? "Player"} · {member.status.replaceAll("_", " ").toLocaleLowerCase()}
-                    </small>
-                  </motion.li>
-                );
-              })}
-            </AnimatePresence>
-          </motion.ul>
+                    {authorityAction === "takeover" ? "Confirming Captaincy…" : "Take Captaincy"}
+                  </button>
+                )}
+                {voyage.canContinueSolo && (
+                  <button disabled={Boolean(authorityAction)} onClick={() => void continueSolo()}>
+                    {authorityAction === "solo" ? "Synchronizing…" : "Continue Solo"}
+                  </button>
+                )}
+                <button
+                  className="button-danger"
+                  disabled={Boolean(authorityAction)}
+                  onClick={() => void leaveVoyage()}
+                >
+                  {authorityAction === "leave" ? "Leaving Voyage…" : "Leave Voyage"}
+                </button>
+              </div>
+            </section>
+          )}
+          <div className="waiting-actions">
+            {launchReady && routeFailed && (
+              <button className="brass-button" onClick={() => setRouteFailed(false)}>
+                Open launched journal
+              </button>
+            )}
+            {connection !== "revoked" && (
+              <button
+                className="button-secondary"
+                disabled={connection === "reconciling"}
+                onClick={() => {
+                  setConnection("reconnecting");
+                  void load("live");
+                }}
+              >
+                Reconnect and Refresh
+              </button>
+            )}
+            {voyage.captainAuthorityState !== "VACANT" && voyage.canContinueSolo && (
+              <button disabled={Boolean(authorityAction)} onClick={() => void continueSolo()}>
+                {authorityAction === "solo" ? "Synchronizing…" : "Continue Solo"}
+              </button>
+            )}
+            <Link className="button-subtle" href="/player/library">
+              Leave Waiting Room
+            </Link>
+          </div>
         </section>
-        {error && (
-          <p className="platform-error" role="alert">
-            {error}
-          </p>
-        )}
-        <div className="waiting-actions">
-          {launchReady && routeFailed && (
-            <button className="brass-button" onClick={() => setRouteFailed(false)}>
-              Open launched journal
-            </button>
-          )}
-          {connection !== "revoked" && (
-            <button
-              className="button-secondary"
-              disabled={connection === "reconciling"}
-              onClick={() => {
-                setConnection("reconnecting");
-                void load("live");
-              }}
-            >
-              Reconnect and Refresh
-            </button>
-          )}
-          <Link className="button-subtle" href="/player/library">
-            Leave Waiting Room
-          </Link>
-        </div>
-      </section>
-    </main>
+      </main>
+      {dialog}
+    </>
   );
 }
