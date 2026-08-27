@@ -668,7 +668,7 @@ test("Admiralty Phase 1 browser proof uses its dedicated fixture and build harne
   );
 });
 
-test("Admiralty Phase 2 leaves mixed generic browser proof selected exactly once", () => {
+test("Admiralty Phase 2 and Phase 3 use their dedicated fixture and build harnesses", () => {
   const browserCommands = verificationCommands({
     mode: "ordinary",
     candidateSha: "c".repeat(40),
@@ -685,29 +685,31 @@ test("Admiralty Phase 2 leaves mixed generic browser proof selected exactly once
   });
   const browserHarnessCommands = browserCommands.filter(
     ([command, argumentsList]) =>
-      (command === process.execPath &&
-        ["scripts/admiralty/run-phase2-journeys.mjs", "scripts/sounding-line/run-browser-suite.mjs"].includes(
-          argumentsList[0],
-        )) ||
-      false,
+      command === process.execPath &&
+      ["scripts/admiralty/run-phase2-journeys.mjs", "tests/admiralty/phase3/run-journeys.mjs"].includes(
+        argumentsList[0],
+      ),
   );
   assert.deepEqual(browserHarnessCommands, [
     [process.execPath, ["scripts/admiralty/run-phase2-journeys.mjs"]],
-    [
-      process.execPath,
-      [
-        "scripts/sounding-line/run-browser-suite.mjs",
-        "--profile",
-        "admiralty-phase3",
-        "--candidate",
-        "c".repeat(40),
-        "--database-url",
-        "file:./.sounding-line-cccccccccccc-admiralty-phase3.sqlite",
-        "--",
-        "tests/e2e/admiralty-phase3.spec.ts",
-      ],
-    ],
+    [process.execPath, ["tests/admiralty/phase3/run-journeys.mjs"]],
   ]);
+  assert.deepEqual(
+    verificationEnvironment(
+      { candidateSha: "c".repeat(40), buildRequired: true },
+      process.execPath,
+      ["tests/admiralty/phase3/run-journeys.mjs"],
+      { LOCALAPPDATA: "C:/validation-runtime" },
+    ),
+    {
+      LOCALAPPDATA: "artifacts/sounding-line",
+      ADMIRALTY_PHASE3_TASK_ROOT:
+        "artifacts/sounding-line/ProjectAdmiralty/.sounding-line-admiralty-phase3-cccccccccccc",
+      NEXT_DIST_DIR: ".next",
+      ADMIRALTY_PHASE3_REUSE_BUILD: "1",
+      PLAYWRIGHT_BROWSERS_PATH: path.join("C:/validation-runtime", "ms-playwright"),
+    },
+  );
 });
 
 test("Homeport Phase 4 and Phase 7 browser proof use portable dedicated fixtures", () => {
@@ -867,7 +869,10 @@ test("task-owned cookie adaptation is nonce-gated to the isolated Phase 3 runtim
   };
   assert.equal(taskOwnedCookieAdapterRequired({}), false);
   assert.equal(taskOwnedCookieAdapterRequired({ ...guardedEnvironment, FOREVER_VALIDATION_ISOLATION: "0" }), false);
-  assert.equal(taskOwnedCookieAdapterRequired({ ...guardedEnvironment, FOREVER_VALIDATION_NONCE_HASH: "unsafe" }), false);
+  assert.equal(
+    taskOwnedCookieAdapterRequired({ ...guardedEnvironment, FOREVER_VALIDATION_NONCE_HASH: "unsafe" }),
+    false,
+  );
   assert.equal(taskOwnedCookieAdapterRequired(guardedEnvironment), true);
   assert.equal(
     stripTaskOwnedCookieSecurity("session=value; Path=/; Secure; HttpOnly; SameSite=Lax"),
@@ -892,7 +897,10 @@ test("an unresolved fixture profile fails closed before browser authority is lau
     { cwd: process.cwd(), encoding: "utf8", windowsHide: true },
   );
   assert.notEqual(result.status, 0);
-  assert.match(`${result.stdout}\n${result.stderr}`, /SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:INVALID_PROFILE_INVOCATION/u);
+  assert.match(
+    `${result.stdout}\n${result.stderr}`,
+    /SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:INVALID_PROFILE_INVOCATION/u,
+  );
 });
 
 test("Homeport Sounding Line roots reject invalid source evidence before execution", () => {

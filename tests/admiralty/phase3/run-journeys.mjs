@@ -14,6 +14,7 @@ const sourceSha = output("git", ["rev-parse", "HEAD"]);
 const baseEnv = {
   ...process.env,
   ADMIRALTY_PHASE3_TASK_ROOT: taskRoot,
+  ADMIRALTY_PHASE3_PRISMA_READY: "1",
   ADMIRALTY_PHASE3_SYNTHETIC_PASSWORD:
     process.env.ADMIRALTY_PHASE3_SYNTHETIC_PASSWORD ?? "Adm3-synthetic-fixture-password-20260825!",
 };

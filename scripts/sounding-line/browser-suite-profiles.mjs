@@ -104,11 +104,7 @@ export const browserSuiteProfiles = Object.freeze({
   }),
   "admiralty-phase3": Object.freeze({
     id: "admiralty-phase3",
-    bootstrap: false,
-    seed: false,
-    taskOwnedProductionHttp: true,
-    preparers: ["tests/admiralty/phase3/prepare-fixture.mjs"],
-    fixtureArguments: [],
+    dedicatedRunner: "tests/admiralty/phase3/run-journeys.mjs",
   }),
 });
 

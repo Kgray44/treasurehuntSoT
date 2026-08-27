@@ -15,7 +15,11 @@ import {
   digestFileEntries,
   finalizeEvidence,
 } from "./evidence.mjs";
-import { browserSuiteProfiles, resolveBrowserSuiteDispatches, suiteBrowserProfileId } from "./browser-suite-profiles.mjs";
+import {
+  browserSuiteProfiles,
+  resolveBrowserSuiteDispatches,
+  suiteBrowserProfileId,
+} from "./browser-suite-profiles.mjs";
 
 const sha = /^[a-f0-9]{40}$/u;
 const productRoots = new Set(["app", "components", "src", "lib", "prisma", "public", "styles"]);
@@ -756,6 +760,15 @@ function admiraltyPhase2TaskRoot(candidateSha) {
   return path.posix.join("ProjectAdmiralty", `.sounding-line-admiralty-phase2-${candidateSha.slice(0, 12)}`);
 }
 
+function admiraltyPhase3TaskRoot(candidateSha) {
+  return path.posix.join(
+    "artifacts",
+    "sounding-line",
+    "ProjectAdmiralty",
+    `.sounding-line-admiralty-phase3-${candidateSha.slice(0, 12)}`,
+  );
+}
+
 function admiraltyPhase1TaskRoot(candidateSha) {
   return path.posix.join(
     "artifacts",
@@ -810,6 +823,18 @@ export function verificationEnvironment(plan, command, argumentsList, environmen
       ADMIRALTY_PHASE2_TASK_ROOT: admiraltyPhase2TaskRoot(plan.candidateSha),
       NEXT_DIST_DIR: ".next",
       ...(plan.buildRequired ? { ADMIRALTY_PHASE2_REUSE_BUILD: "1" } : {}),
+      ...(playwrightBrowsersPath ? { PLAYWRIGHT_BROWSERS_PATH: playwrightBrowsersPath } : {}),
+    };
+  }
+  if (command === process.execPath && argumentsList[0] === "tests/admiralty/phase3/run-journeys.mjs") {
+    const playwrightBrowsersPath =
+      environment.PLAYWRIGHT_BROWSERS_PATH ??
+      (environment.LOCALAPPDATA ? path.join(environment.LOCALAPPDATA, "ms-playwright") : undefined);
+    return {
+      LOCALAPPDATA: path.posix.join("artifacts", "sounding-line"),
+      ADMIRALTY_PHASE3_TASK_ROOT: admiraltyPhase3TaskRoot(plan.candidateSha),
+      NEXT_DIST_DIR: ".next",
+      ...(plan.buildRequired ? { ADMIRALTY_PHASE3_REUSE_BUILD: "1" } : {}),
       ...(playwrightBrowsersPath ? { PLAYWRIGHT_BROWSERS_PATH: playwrightBrowsersPath } : {}),
     };
   }

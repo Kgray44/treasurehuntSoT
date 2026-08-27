@@ -2,7 +2,8 @@ import { spawnSync } from "node:child_process";
 
 export default function globalSetup() {
   process.env.ADMIRALTY_PHASE3_SYNTHETIC_PASSWORD ??= "Adm3-synthetic-fixture-password-20260825!";
-  run("node_modules/prisma/build/index.js", ["generate", "--schema", "prisma/schema.sqlite.prisma"]);
+  if (process.env.ADMIRALTY_PHASE3_PRISMA_READY !== "1")
+    run("node_modules/prisma/build/index.js", ["generate", "--schema", "prisma/schema.sqlite.prisma"]);
   run("tests/admiralty/phase3/prepare-fixture.mjs");
 }
 
