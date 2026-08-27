@@ -23,6 +23,9 @@ type ReviewResponse = {
     evidence: Array<{ providerId: string; evidenceKind: string; status: string; safeSummary: string }>;
   };
 };
+type ReviewLoad =
+  | { requestKey: string; result: ReviewResponse; error?: never }
+  | { requestKey: string; result?: never; error: string };
 
 const changeLabel = (change: PublishingReviewChange) => `${change.kind.toLowerCase()} ${change.subject.toLowerCase()}`;
 
@@ -48,23 +51,38 @@ export function ShipwrightPublishingReview({
   onPreviewPublished: () => void | Promise<void>;
 }) {
   const notesId = useId();
-  const [result, setResult] = useState<ReviewResponse | null>(null);
-  const [error, setError] = useState("");
+  const [reviewLoad, setReviewLoad] = useState<ReviewLoad | null>(null);
+  const [saveError, setSaveError] = useState("");
   const [releaseNotes, setReleaseNotes] = useState("");
   const [confirmed, setConfirmed] = useState(false);
   const [refresh, setRefresh] = useState(0);
+  const requestKey = `${taleId}:${csrfToken}:${refresh}`;
+  const currentReview = reviewLoad?.requestKey === requestKey ? reviewLoad : null;
+  const result = currentReview?.result ?? null;
+  const error = saveError || currentReview?.error || "";
+
+  const refreshReview = () => {
+    setSaveError("");
+    setRefresh((value) => value + 1);
+  };
+
   const saveAndRefresh = async () => {
-    const saved = await onSave();
-    if (!saved) {
-      setError("The draft could not be saved. Resolve the save issue, then retry this review.");
+    let saved = false;
+    try {
+      saved = await onSave();
+    } catch {
+      setSaveError("The draft could not be saved. Resolve the save issue, then retry this review.");
       return;
     }
-    setRefresh((value) => value + 1);
+    if (!saved) {
+      setSaveError("The draft could not be saved. Resolve the save issue, then retry this review.");
+      return;
+    }
+    refreshReview();
   };
 
   useEffect(() => {
     let active = true;
-    setError("");
     void fetch(`/api/studio/tales/${encodeURIComponent(taleId)}/publishing-review`, {
       cache: "no-store",
       headers: { "x-csrf-token": csrfToken },
@@ -73,15 +91,19 @@ export function ShipwrightPublishingReview({
         if (!response.ok) throw new Error("The publication review could not load its current server decision.");
         return response.json() as Promise<ReviewResponse>;
       })
-      .then((body) => active && setResult(body))
+      .then((body) => active && setReviewLoad({ requestKey, result: body }))
       .catch(
         (cause: unknown) =>
-          active && setError(cause instanceof Error ? cause.message : "Publication review unavailable."),
+          active &&
+          setReviewLoad({
+            requestKey,
+            error: cause instanceof Error ? cause.message : "Publication review unavailable.",
+          }),
       );
     return () => {
       active = false;
     };
-  }, [csrfToken, refresh, taleId]);
+  }, [csrfToken, requestKey, taleId]);
 
   const canPublish = result?.readiness.status === "VERIFIED" && publishState !== "publishing";
   const committed = receipt && receipt.id && receipt.checksum && receipt.evidenceId ? receipt : null;
@@ -98,7 +120,7 @@ export function ShipwrightPublishingReview({
       {error ? (
         <div role="alert" className="studio-publishing-review-error">
           <p>{error}</p>
-          <button type="button" onClick={() => setRefresh((value) => value + 1)}>
+          <button type="button" onClick={refreshReview}>
             Retry publication review
           </button>
         </div>

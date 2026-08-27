@@ -37,8 +37,7 @@ const label = (value: string | null | undefined, fallback: string, ordinal: numb
 const same = (left: unknown, right: unknown) => canonicalChecksum(left) === canonicalChecksum(right);
 
 function chapterComparable(chapter: PublishedChapter) {
-  const { blocks: _blocks, ...rest } = chapter;
-  return rest;
+  return Object.fromEntries(Object.entries(chapter).filter(([key]) => key !== "blocks"));
 }
 
 function chapterChanges(current: PublishedTaleSnapshot, baseline: PublishedTaleSnapshot | null) {

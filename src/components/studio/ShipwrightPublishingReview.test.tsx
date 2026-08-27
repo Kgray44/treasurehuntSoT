@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ShipwrightPublishingReview } from "./ShipwrightPublishingReview";
 
@@ -72,5 +72,33 @@ describe("Shipwright publishing review", () => {
       "/studio/exchange?sourceVersion=version-2",
     );
     expect(screen.getByText("c".repeat(64))).toBeInTheDocument();
+  });
+
+  it("returns from a failed review request to the current source-bound review when retried", async () => {
+    const fetchReview = vi
+      .fn()
+      .mockResolvedValueOnce({ ok: false })
+      .mockResolvedValueOnce({ ok: true, json: async () => body });
+    vi.stubGlobal("fetch", fetchReview);
+    const view = render(
+      <ShipwrightPublishingReview
+        taleId="tale-1"
+        csrfToken="csrf"
+        savedAt="2026-08-26T12:00:00.000Z"
+        onSave={vi.fn().mockResolvedValue(true)}
+        onPublish={vi.fn()}
+        publishState="idle"
+        publishError=""
+        receipt={null}
+        onPreviewPublished={vi.fn()}
+      />,
+    );
+
+    const review = within(view.container);
+    expect(await review.findByRole("alert")).toHaveTextContent("could not load its current server decision");
+    fireEvent.click(review.getByRole("button", { name: "Retry publication review" }));
+    expect(await review.findByText(/250 Passages/)).toBeInTheDocument();
+    expect(review.queryByRole("alert")).not.toBeInTheDocument();
+    expect(fetchReview).toHaveBeenCalledTimes(2);
   });
 });
