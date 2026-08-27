@@ -3,6 +3,7 @@ $statePath = Join-Path $env:LOCALAPPDATA "ForeverTreasureCompanion\dev-state.jso
 if (-not (Test-Path -LiteralPath $statePath)) { Write-Host "Forever Treasure Companion is not recorded as running."; exit 0 }
 $state = Get-Content -Raw -LiteralPath $statePath | ConvertFrom-Json
 $sidecars = @(
+    @{ Name = "Bridgewatch runtime-state refresher"; Pid = $state.runtimeStatePid; Marker = "write-runtime-state.mjs" },
     @{ Name = "community worker"; Pid = $state.communityWorkerPid; Marker = "scripts/community/worker.ts" },
     @{ Name = "Bridgewatch operational projection"; Pid = $state.operationalProjectionPid; Marker = "scripts/bridgewatch/operational-projection.ts" }
 )
