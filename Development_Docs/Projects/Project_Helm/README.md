@@ -91,6 +91,12 @@ implementation evidence.
 - [Test Plan](Project_Helm_Amendment_A3_Test_Plan.md)
 - [Validation Record](Project_Helm_Amendment_A3_Validation_Record.md)
 - [Integration Manifest](Project_Helm_Amendment_A3_Integration_Manifest.md)
+- [Completion Receipt](Project_Helm_Amendment_A3_Completion_Receipt.md)
+
+Amendment A3 is accepted on canonical main through protected pull request 489.
+Its [completion receipt](Project_Helm_Amendment_A3_Completion_Receipt.md)
+records the exact candidate, ordinary Sounding Line decision, merge/tree
+parity, and landed smoke. Original Phase 3 remains unstarted.
 
 Phase 2 was initially integrated through protected pull request 35. Its final
 current-main repair is anchored by protected pull request 53, candidate
