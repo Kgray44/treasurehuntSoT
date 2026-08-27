@@ -81,7 +81,7 @@
     "id": "FT-039",
     "title": "Bridgewatch Bounded Data Fabric",
     "summary": "Bridgewatch v1.2 P2 makes a fixed, read-only set of typed repository, governance, delivery-evidence, coordination, Voyagewright, and operations facts inspectable with provenance, precedence, exact observation coverage, source-specific stale retention, and durable local history, without granting the dashboard control authority.",
-    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "status": "MAINLINE",
     "program": "Project Bridgewatch v1.2 P2 - Flood the Board",
     "surfaces": [
       "bridgewatch",
@@ -100,19 +100,16 @@
       "Responsive, keyboard-visible Data & Coverage and fact-provenance profiles with deep links and bounded fact search"
     ],
     "evidence": [
-      { "kind": "branch", "value": "codex/bridgewatch-v2-p2-flood-the-board" },
-      { "kind": "commit", "value": "304c4b6354fc8b3026a106550cb0510ed335b312" },
+      { "kind": "commit", "value": "15b66153c931efbf77b338cb67560a93853dad1e" },
       { "kind": "path", "value": "bridgewatch/src/fabric.ts" },
       { "kind": "path", "value": "bridgewatch/lib/store.ts" },
       { "kind": "test", "value": "bridgewatch/test/fabric.test.ts" },
       { "kind": "test", "value": "bridgewatch/test/server.test.ts" }
     ],
-    "branch": "codex/bridgewatch-v2-p2-flood-the-board",
-    "commit": "304c4b6354fc8b3026a106550cb0510ed335b312",
     "limitations": [
       "P2 remains a private GET/HEAD observer: it cannot create, approve, merge, retry, cancel, release, or change project, worker, provider, or Voyagewright state.",
       "Runtime and provider facts exist only when an approved host-owned status projection is configured; unavailable and stale states remain visible rather than inferred.",
-      "This branch-complete catalog entry is not protected-main integration, deployment, provider proof, or owner acceptance, and it does not authorize Bridgewatch P3."
+      "Protected-main integration records the bounded P2 capability as available; it does not establish deployment, provider proof, owner acceptance, or Bridgewatch P3."
     ],
     "catalogVersion": 1
   }
