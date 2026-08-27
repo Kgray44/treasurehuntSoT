@@ -460,6 +460,112 @@ describe("PlayerVoyageRoom", () => {
     await waitFor(() => expect(navigation.push).toHaveBeenCalledWith("/player/library"));
   });
 
+  it("gives a participating Captain a rich room and a direct launch without Captain-waiting language", async () => {
+    const captaining = {
+      ...voyage,
+      concurrencyVersion: 4,
+      viewer: { isCaptain: true, participationMode: "CAPTAIN_AND_PLAYER" as const, canLaunch: true },
+      crew: [
+        {
+          id: "captain-membership",
+          displayName: "Kato",
+          crewRole: "Navigator",
+          status: "READY",
+          isCaptain: true,
+          isCurrentPlayer: true,
+          presence: {
+            state: "CONNECTED",
+            lastSeenAt: "2026-07-19T12:00:00.000Z",
+            activeDeviceCount: 1,
+            safeActivity: "WAITING_ROOM",
+          },
+          synchronization: { state: "SYNCHRONIZED", lag: 0 },
+          readiness: { state: "READY" },
+          invitation: null,
+        },
+        {
+          id: "invited-membership",
+          displayName: "Mira",
+          crewRole: "Lookout",
+          status: "INVITED",
+          isCaptain: false,
+          isCurrentPlayer: false,
+          presence: { state: "UNKNOWN", lastSeenAt: null, activeDeviceCount: 0, safeActivity: null },
+          synchronization: { state: "UNKNOWN", lag: null },
+          readiness: { state: "NOT_READY" },
+          invitation: { id: "invite-1", status: "SENT", expiresAt: "2099-07-20T12:00:00.000Z", canManage: true },
+        },
+      ],
+    };
+    const afterLaunch = {
+      ...captaining,
+      status: "ACTIVE",
+      state: "IN_PROGRESS",
+      viewer: { ...captaining.viewer, canLaunch: false },
+    };
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, body(captaining)))
+      .mockResolvedValueOnce(response(200, {}))
+      .mockResolvedValueOnce(response(200, body(afterLaunch)));
+    vi.stubGlobal("EventSource", FakeEventSource);
+    vi.stubGlobal("fetch", fetchMock);
+    renderRoom();
+
+    await screen.findByRole("heading", { name: "The Moonlit Key" });
+    expect(screen.getByText("Captain launch available")).toBeInTheDocument();
+    expect(screen.queryByText("Awaiting Captain")).not.toBeInTheDocument();
+    expect(screen.getByText("Invited — not joined")).toBeInTheDocument();
+    expect(screen.getByText("Online and in sync")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Leave Waiting Room" })).toHaveAttribute("href", "/player/library");
+    expect(screen.getByRole("button", { name: "Leave Voyage" })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Begin Voyage" }));
+    fireEvent.click(
+      within(screen.getByRole("dialog", { name: /Begin “Lanternwake”/ })).getByRole("button", {
+        name: "Begin Voyage",
+      }),
+    );
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith(
+        "/api/captain/playthroughs/voyage-1/launch",
+        expect.objectContaining({ method: "POST", body: JSON.stringify({ expectedVersion: 4 }) }),
+      ),
+    );
+  });
+
+  it("announces a Captain transfer once during live reconciliation", async () => {
+    const before = {
+      ...voyage,
+      crew: [
+        { id: "captain-membership", displayName: "Kato", crewRole: "Navigator", status: "READY", isCaptain: true },
+        { id: "mira-membership", displayName: "Mira", crewRole: "Lookout", status: "READY", isCaptain: false },
+      ],
+    };
+    const transferred = {
+      ...before,
+      crew: [
+        { ...before.crew[0], isCaptain: false },
+        { ...before.crew[1], isCaptain: true },
+      ],
+    };
+    vi.stubGlobal("EventSource", FakeEventSource);
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(response(200, body(before)))
+        .mockResolvedValueOnce(response(200, body(transferred))),
+    );
+    renderRoom();
+    await screen.findByText("Kato");
+
+    FakeEventSource.current?.emit("progression");
+
+    expect(await screen.findByText("Mira is now Captain.")).toBeInTheDocument();
+    expect(screen.getAllByText("Captain").length).toBeGreaterThanOrEqual(1);
+  });
+
   it("keeps revocation terminal when an in-flight load resolves after the access event", async () => {
     const pending = deferred<Response>();
     vi.stubGlobal("EventSource", FakeEventSource);
