@@ -1,0 +1,36 @@
+{
+  "id": "FT-B014",
+  "title": "Shipwright Creator Publication Review",
+  "summary": "Creators stage a saved Chronicle source through Drydock readiness, exact readable differences, asset and protected-content evidence, compatibility, release notes, and explicit immutable confirmation before the canonical One Voyage publication authority creates a Version receipt.",
+  "status": "BRANCH_COMPLETE_NOT_MERGED",
+  "program": "Project Shipwright Phase 5",
+  "branch": "codex/seat1-shipwright-p5-launch-from-yard",
+  "commit": "80cb20cec5ca2bc1cd92b4212d07870dab7ec63f",
+  "surfaces": [
+    "/studio/tales/[taleId]/versions",
+    "/api/studio/tales/[taleId]/publishing-review",
+    "src/components/studio/ShipwrightPublishingReview.tsx"
+  ],
+  "subfeatures": [
+    "Source-bound Drydock release decision with visible blockers warnings and waivers",
+    "Creator-readable Chronicle Chapter Passage Asset Location and Artifact differences",
+    "Safe asset protected-content and provider-compatibility review",
+    "Explicit immutable publication confirmation with recoverable failure state",
+    "Authoritative Version receipt before publication success and governed next actions",
+    "Task-owned Creator browser acceptance including responsive and large-Chronicle proof"
+  ],
+  "evidence": [
+    { "kind": "path", "value": "src/chronicle/publishing-review.ts" },
+    { "kind": "path", "value": "src/components/studio/ShipwrightPublishingReview.tsx" },
+    { "kind": "test", "value": "tests/e2e/project-shipwright-phase5.spec.ts" },
+    {
+      "kind": "completion-record",
+      "value": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_5_Validation_Record.md"
+    }
+  ],
+  "limitations": [
+    "Drydock remains the sole authoring-contract validation and simulation authority, and One Voyage remains the sole immutable publication authority.",
+    "This branch-complete candidate has not received protected-main acceptance, deployment proof, live-provider execution, or owner acceptance."
+  ],
+  "catalogVersion": 1
+}

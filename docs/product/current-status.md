@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-08-24
+last_reviewed: 2026-08-27
 ---
 
 # Current status
@@ -56,6 +56,20 @@ Studio autosave and undo/redo flow. Every insertion records its source item and
 immutable version; Library reads and use remain Creator-owned, and capture
 rejects protected source material. This is protected-main source integration,
 not deployment or live-provider execution.
+
+**Project Shipwright Phase 5 is branch-complete and awaiting protected-main
+acceptance:** Creator Studio now gives
+the Version history a staged **Review and publish** journey. A Creator saves the
+intended draft, sees the source-bound Drydock decision with blockers, warnings,
+and waivers, reviews exact human-readable changes, assets, access evidence, and
+reader compatibility, then supplies release notes and explicitly confirms the
+immutable Version. Studio calls only the canonical One Voyage publication
+transaction and reports success only after its Version label and checksum are
+returned. Failed publication preserves the draft for review and repair; the
+next Community action is a governed Harborlight handoff, not a duplicate
+exchange flow. The work adds no schema or competing authority. Task-owned
+synthetic browser evidence covers the Creator path; deployment, live provider,
+and owner acceptance remain separate.
 
 **Project Drydock Phase 3 accepted mainline:** Creator-only Sea Trials provide
 revisioned source-bound deterministic Scenarios, synthetic faults, virtual

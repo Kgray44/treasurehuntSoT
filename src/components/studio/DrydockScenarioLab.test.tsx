@@ -15,7 +15,15 @@ describe("Drydock Scenario Lab", () => {
     const checksum = "a".repeat(64);
     const fetchMock = vi
       .fn()
-      .mockResolvedValueOnce(response({ sourceChecksum: checksum, scenarios: [] }))
+      .mockResolvedValueOnce(
+        response({
+          sourceChecksum: checksum,
+          requiredScenarioClasses: [
+            { id: "BASELINE_SUCCESS", capability: "BASELINE", reason: "Every Chronicle needs a successful path." },
+          ],
+          scenarios: [],
+        }),
+      )
       .mockResolvedValueOnce(response({ suites: [] }))
       .mockResolvedValueOnce(response({ runs: [] }))
       .mockResolvedValueOnce(
@@ -89,7 +97,15 @@ describe("Drydock Scenario Lab", () => {
     };
     const fetchMock = vi
       .fn()
-      .mockResolvedValueOnce(response({ sourceChecksum: checksum, scenarios: [] }))
+      .mockResolvedValueOnce(
+        response({
+          sourceChecksum: checksum,
+          requiredScenarioClasses: [
+            { id: "BASELINE_SUCCESS", capability: "BASELINE", reason: "Every Chronicle needs a successful path." },
+          ],
+          scenarios: [],
+        }),
+      )
       .mockResolvedValueOnce(response({ suites: [] }))
       .mockResolvedValueOnce(response({ runs: [running.summary] }))
       .mockResolvedValueOnce(response({ run: running }))
@@ -114,7 +130,15 @@ describe("Drydock Scenario Lab", () => {
     const checksum = "c".repeat(64);
     const fetchMock = vi
       .fn()
-      .mockResolvedValueOnce(response({ sourceChecksum: checksum, scenarios: [] }))
+      .mockResolvedValueOnce(
+        response({
+          sourceChecksum: checksum,
+          requiredScenarioClasses: [
+            { id: "BASELINE_SUCCESS", capability: "BASELINE", reason: "Every Chronicle needs a successful path." },
+          ],
+          scenarios: [],
+        }),
+      )
       .mockResolvedValueOnce(response({ suites: [] }))
       .mockResolvedValueOnce(response({ runs: [] }))
       .mockResolvedValueOnce(
@@ -144,6 +168,7 @@ describe("Drydock Scenario Lab", () => {
     fireEvent.change(screen.getByLabelText("Scenario assertion kind"), { target: { value: "PROVIDER_REQUESTED" } });
     fireEvent.click(screen.getByRole("button", { name: "Add assertion" }));
     fireEvent.change(screen.getByLabelText("Simulation locale"), { target: { value: "fr-CA" } });
+    fireEvent.click(screen.getByRole("checkbox", { name: /Baseline successful path/i }));
     fireEvent.click(screen.getByRole("button", { name: "Save Scenario revision" }));
 
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(4));
@@ -154,5 +179,6 @@ describe("Drydock Scenario Lab", () => {
       expect.objectContaining({ family: "NETWORK", code: "OFFLINE", beforeInput: 0 }),
     );
     expect(saved.assertions).toContainEqual({ kind: "PROVIDER_REQUESTED" });
+    expect(saved.tags).toContain("required:BASELINE_SUCCESS");
   });
 });
