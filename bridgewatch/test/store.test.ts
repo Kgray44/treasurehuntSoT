@@ -83,7 +83,7 @@ describe("Phase 2 durable history migration", () => {
     try {
       upgraded.replaceProjectRegistry([project]);
       upgraded.replaceProjectRegistry([project]);
-      expect(upgraded.migrationVersions()).toEqual([1, 2, 3, 4]);
+      expect(upgraded.migrationVersions()).toEqual([1, 2, 3, 4, 5]);
       expect(upgraded.get<{ headSha: string }>("github:snapshot")?.value).toEqual({ headSha: "phase-1" });
       expect(upgraded.projects()).toEqual([project]);
     } finally {
@@ -135,12 +135,12 @@ describe("Phase 2 durable history migration", () => {
 
     const upgraded = new BridgewatchStore(file);
     try {
-      expect(upgraded.migrationVersions()).toEqual([1, 2, 3, 4]);
+      expect(upgraded.migrationVersions()).toEqual([1, 2, 3, 4, 5]);
       expect(upgraded.projects()).toEqual([project]);
       expect(upgraded.workers()).toHaveLength(1);
       expect(upgraded.recentTestRuns()).toHaveLength(1);
       expect(upgraded.history({ since: "2026-01-01T00:00:00.000Z", limit: 1 }).events).toEqual([]);
-      expect(upgraded.migrationVersions()).toEqual([1, 2, 3, 4]);
+      expect(upgraded.migrationVersions()).toEqual([1, 2, 3, 4, 5]);
     } finally {
       upgraded.close();
     }

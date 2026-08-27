@@ -19,6 +19,7 @@ describe("v1.2 mission-control navigation", () => {
       "Attention",
       "History",
       "Sources",
+      "Data & Coverage",
     ])
       expect(html).toContain(`>${station}<`);
     expect(app).toContain('window.addEventListener("hashchange", renderRoute)');
@@ -27,13 +28,19 @@ describe("v1.2 mission-control navigation", () => {
     expect(app).toContain("function renderPullRequestProfile");
     expect(app).toContain("function renderSourceProfile");
     expect(app).toContain("Sources & Data Quality");
+    expect(app).toContain("function renderDataFabric");
+    expect(app).toContain("function renderFactProfile");
+    expect(app).toContain("Data fabric & observation coverage");
   });
 
   it("keeps dense technical detail readable, focusable, and phone-safe", () => {
     expect(css).toContain(".station-nav");
+    expect(css).toContain("@media (max-width: 42rem)");
+    expect(css).toContain(".table-wrap");
     expect(css).toContain("overflow-wrap: anywhere");
     expect(css).toContain("prefers-reduced-motion");
     expect(css).toContain("focus-visible");
+    expect(html).toContain('id="route" class="station" aria-live="polite"');
     expect(app).toContain("Failure classification");
     expect(app).toContain("Serving retained stale data");
     expect(app).toContain("sourceDateText");
@@ -47,6 +54,7 @@ describe("v1.2 mission-control navigation", () => {
     expect(app).toContain("Search PRs");
     expect(app).toContain("Search branches");
     expect(app).toContain("Search retained history");
+    expect(app).toContain("Search observed facts");
     expect(app).toContain('"Open", "Historical", "All"');
   });
 });
