@@ -12,6 +12,7 @@ import { reconcileVersionedRows } from "@/animation/platform/polling-delta";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { ErrorState, LoadingState } from "@/components/ui/AsyncState";
 import { useActionDialog } from "@/components/ui/ActionDialog";
+import { postIdempotentAuthorityCommand } from "@/helm/authority-command.client";
 import { PlatformRelic } from "./PlatformRelic";
 import { membershipPresenceDeviceId } from "@/platform/presence-client";
 
@@ -230,10 +231,10 @@ export function PlayerVoyageRoom({
     setAuthorityAction("takeover");
     setError("");
     try {
-      const response = await fetch(`/api/player/playthroughs/${voyage.id}/captain/takeover`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken.current ?? "" },
-        body: JSON.stringify({ expectedVersion: voyage.concurrencyVersion, idempotencyKey: crypto.randomUUID() }),
+      const response = await postIdempotentAuthorityCommand({
+        url: `/api/player/playthroughs/${voyage.id}/captain/takeover`,
+        csrfToken: csrfToken.current ?? "",
+        body: { expectedVersion: voyage.concurrencyVersion, idempotencyKey: crypto.randomUUID() },
       });
       const body = (await response.json().catch(() => ({}))) as { error?: string };
       if (!response.ok) throw new Error(body.error ?? "Captaincy could not be taken.");
@@ -261,10 +262,10 @@ export function PlayerVoyageRoom({
     setAuthorityAction("solo");
     setError("");
     try {
-      const response = await fetch(`/api/player/playthroughs/${voyage.id}/continue-solo`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken.current ?? "" },
-        body: JSON.stringify({ expectedVersion: voyage.concurrencyVersion, idempotencyKey: crypto.randomUUID() }),
+      const response = await postIdempotentAuthorityCommand({
+        url: `/api/player/playthroughs/${voyage.id}/continue-solo`,
+        csrfToken: csrfToken.current ?? "",
+        body: { expectedVersion: voyage.concurrencyVersion, idempotencyKey: crypto.randomUUID() },
       });
       const body = (await response.json().catch(() => ({}))) as {
         error?: string;

@@ -21,7 +21,7 @@ export default defineConfig({
           // Sounding Line builds generic product candidates before browser
           // proof. Start that exact production output instead of opening a
           // webpack dev compiler against the same .next directory: a hot
-          // update can otherwise abort an in-flight product mutation.
+          // update can otherwise abort an in-flight authority mutation.
           command: `"${process.execPath}" node_modules/next/dist/bin/next start -H 127.0.0.1 -p ${port}`,
           url: baseURL,
           reuseExistingServer: false,

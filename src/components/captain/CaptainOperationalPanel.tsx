@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
 import { useActionDialog } from "@/components/ui/ActionDialog";
+import { postIdempotentAuthorityCommand } from "@/helm/authority-command.client";
 
 type Projection = {
   voyage: {
@@ -166,14 +167,14 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
     setAuthorityAction("transfer");
     setError("");
     try {
-      const response = await fetch(`/api/captain/playthroughs/${voyageId}/captain/transfer`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-csrf-token": projection.csrfToken },
-        body: JSON.stringify({
+      const response = await postIdempotentAuthorityCommand({
+        url: `/api/captain/playthroughs/${voyageId}/captain/transfer`,
+        csrfToken: projection.csrfToken,
+        body: {
           recipientMembershipId: member.id,
           expectedVersion: projection.voyage.concurrencyVersion,
           idempotencyKey: crypto.randomUUID(),
-        }),
+        },
       });
       const body = (await response.json().catch(() => ({}))) as { error?: string };
       if (!response.ok) throw new Error(body.error ?? "Captaincy could not be transferred.");
@@ -203,13 +204,13 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
     setAuthorityAction("relinquish");
     setError("");
     try {
-      const response = await fetch(`/api/captain/playthroughs/${voyageId}/captain/relinquish`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-csrf-token": projection.csrfToken },
-        body: JSON.stringify({
+      const response = await postIdempotentAuthorityCommand({
+        url: `/api/captain/playthroughs/${voyageId}/captain/relinquish`,
+        csrfToken: projection.csrfToken,
+        body: {
           expectedVersion: projection.voyage.concurrencyVersion,
           idempotencyKey: crypto.randomUUID(),
-        }),
+        },
       });
       const body = (await response.json().catch(() => ({}))) as { error?: string };
       if (!response.ok) throw new Error(body.error ?? "Captaincy could not be relinquished.");

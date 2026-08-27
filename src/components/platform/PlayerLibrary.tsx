@@ -10,6 +10,7 @@ import { reconcileVersionedRows } from "@/animation/platform/polling-delta";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { EmptyState, ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
 import { useActionDialog } from "@/components/ui/ActionDialog";
+import { postIdempotentAuthorityCommand } from "@/helm/authority-command.client";
 import { ResilientImage } from "@/components/ui/ResilientImage";
 import { platformCopy } from "@/language/platform-copy";
 import { playerCopy } from "@/language/player-copy";
@@ -347,13 +348,13 @@ export function PlayerLibrary() {
     setError("");
     setNotice("");
     try {
-      const response = await fetch(`/api/player/playthroughs/${card.id}/continue-solo`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-csrf-token": library.csrfToken },
-        body: JSON.stringify({
+      const response = await postIdempotentAuthorityCommand({
+        url: `/api/player/playthroughs/${card.id}/continue-solo`,
+        csrfToken: library.csrfToken,
+        body: {
           expectedVersion: card.concurrencyVersion,
           idempotencyKey: crypto.randomUUID(),
-        }),
+        },
       });
       const body = (await response.json().catch(() => ({}))) as { error?: string; voyageId?: string };
       if (!response.ok || !body.voyageId) throw new Error(body.error ?? "A solo continuation could not be created.");
@@ -382,13 +383,13 @@ export function PlayerLibrary() {
     setError("");
     setNotice("");
     try {
-      const response = await fetch(`/api/player/playthroughs/${card.id}/captain/takeover`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-csrf-token": library.csrfToken },
-        body: JSON.stringify({
+      const response = await postIdempotentAuthorityCommand({
+        url: `/api/player/playthroughs/${card.id}/captain/takeover`,
+        csrfToken: library.csrfToken,
+        body: {
           expectedVersion: card.concurrencyVersion,
           idempotencyKey: crypto.randomUUID(),
-        }),
+        },
       });
       const body = (await response.json().catch(() => ({}))) as { error?: string };
       if (!response.ok) throw new Error(body.error ?? "Captaincy could not be taken.");
