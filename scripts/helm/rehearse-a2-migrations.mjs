@@ -6,7 +6,13 @@ import path from "node:path";
 const root = process.cwd();
 const migrationRoot = path.join(root, "prisma", "migrations");
 const migrationName = "20260826110000_helm_a2_authority_lifecycle";
-const mysqlMigration = path.join(root, "prisma", "mysql-migrations", "0062_helm_a2_authority_lifecycle", "migration.sql");
+const mysqlMigration = path.join(
+  root,
+  "prisma",
+  "mysql-migrations",
+  "0062_helm_a2_authority_lifecycle",
+  "migration.sql",
+);
 const migrations = (await fs.readdir(migrationRoot, { withFileTypes: true }))
   .filter((entry) => entry.isDirectory())
   .map((entry) => entry.name)
@@ -68,7 +74,10 @@ function tableExists(database, table) {
 function assertFreshSchema(database) {
   for (const table of ["VoyageCaptainAuthorityReceipt", "VoyageForkLineage"])
     if (!tableExists(database, table)) throw new Error(`HELM_A2_FRESH_TABLE_MISSING:${table}`);
-  const columns = database.prepare('PRAGMA table_info("TaleSession")').all().map((row) => row.name);
+  const columns = database
+    .prepare('PRAGMA table_info("TaleSession")')
+    .all()
+    .map((row) => row.name);
   if (!columns.includes("captainAuthorityState")) throw new Error("HELM_A2_FRESH_AUTHORITY_COLUMN_MISSING");
 }
 
@@ -90,7 +99,8 @@ try {
     const receiptRows = upgrade.prepare('SELECT COUNT(*) AS count FROM "VoyageCaptainAuthorityReceipt"').get().count;
     const lineageRows = upgrade.prepare('SELECT COUNT(*) AS count FROM "VoyageForkLineage"').get().count;
     if (receiptRows !== 0 || lineageRows !== 0) throw new Error("HELM_A2_UPGRADE_UNEXPECTED_BACKFILL");
-    if (upgrade.prepare("PRAGMA foreign_key_check").all().length) throw new Error("HELM_A2_UPGRADE_FOREIGN_KEY_FAILURE");
+    if (upgrade.prepare("PRAGMA foreign_key_check").all().length)
+      throw new Error("HELM_A2_UPGRADE_FOREIGN_KEY_FAILURE");
   } finally {
     upgrade.close();
   }
@@ -130,6 +140,7 @@ try {
 } finally {
   const resolvedTaskRoot = path.resolve(taskRoot);
   const resolvedTempRoot = path.resolve(os.tmpdir());
-  if (!resolvedTaskRoot.startsWith(`${resolvedTempRoot}${path.sep}`)) throw new Error("Refusing to remove a non-temporary root.");
+  if (!resolvedTaskRoot.startsWith(`${resolvedTempRoot}${path.sep}`))
+    throw new Error("Refusing to remove a non-temporary root.");
   await fs.rm(resolvedTaskRoot, { recursive: true, force: true });
 }
