@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0.0",
+  "program": "Project Admiralty Support Pilot S1",
+  "riskCeiling": "READ_ONLY",
+  "executionGrantLifetimeMinutes": 10,
+  "parentGrantAuthority": "SupportAccessGrant",
+  "scopes": [
+    { "id": "ACCOUNT_STATE", "owner": "Wayfarer", "classification": "ACCOUNT_PRIVATE" },
+    { "id": "AUTH_EVENTS", "owner": "Wayfarer", "classification": "ACCOUNT_PRIVATE" },
+    { "id": "SESSION_DIAGNOSTICS", "owner": "Wayfarer", "classification": "ACCOUNT_PRIVATE" },
+    { "id": "PROFILE_DIAGNOSTICS", "owner": "Wayfarer", "classification": "ACCOUNT_PRIVATE" },
+    { "id": "CHRONICLE_HISTORY_METADATA", "owner": "Wayfarer and One Voyage", "classification": "ACCOUNT_PRIVATE" },
+    { "id": "VOYAGE_MEMBERSHIP", "owner": "One Voyage", "classification": "ACCOUNT_PRIVATE" },
+    { "id": "COMMUNITY_ACTIVITY", "owner": "Harborlight", "classification": "ACCOUNT_PRIVATE" },
+    { "id": "TIDEGLASS_DIAGNOSTICS", "owner": "Tideglass", "classification": "OPERATIONAL_SENSITIVE" },
+    { "id": "RUNTIME_STATUS", "owner": "Platform runtime", "classification": "OPERATIONAL_SENSITIVE" },
+    { "id": "AUDIT_CORRELATION", "owner": "Canonical audit store", "classification": "OPERATIONAL_SENSITIVE" }
+  ],
+  "prohibited": [
+    "PRIVATE_CHRONICLE_CONTENT",
+    "PRIVATE_MEDIA",
+    "PASSWORDS",
+    "RAW_PASSWORD_HASHES",
+    "RAW_SESSION_TOKENS",
+    "OAUTH_PROVIDER_TOKENS",
+    "CSRF_TOKENS",
+    "PROVIDER_SECRETS",
+    "ENCRYPTION_KEYS",
+    "RAW_LOGS",
+    "ARBITRARY_SQL",
+    "FILESYSTEM_ACCESS",
+    "SHELL_ACCESS"
+  ],
+  "mutationExclusions": [
+    "USER_STATE_CORRECTION",
+    "SESSION_REVOCATION",
+    "PROJECTION_REBUILD",
+    "JOB_RETRY",
+    "CONFIGURATION_MUTATION",
+    "REPAIR_EXECUTION"
+  ]
+}

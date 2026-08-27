@@ -114,6 +114,13 @@ configuration, release, audit, and correlation-led investigation projections.
 It adds no schema and no broad mutation. Deployment, live-provider validation,
 owner acceptance, canonical-main integration, and later phases remain separate.
 
+Support Pilot S1 adds a case console for a user-approved, short-lived,
+case-bound diagnostic session. It reads only the exact approved scopes, stores
+sanitized source references and deterministic evidence receipts, and presents a
+finding, diagnosis, and information-only proposal. It cannot carry out a repair
+or mutate account, Voyage, Community, session, job, projection, or configuration
+state.
+
 ## Integrated whole-product voyage and owner walkthrough
 
 **Audience:** Product owner, Players, Captains, Creators, and account owners.

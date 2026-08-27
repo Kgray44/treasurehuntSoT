@@ -61,6 +61,12 @@ returns a non-revealing not-found result before privileged projection when its
 server-side capability check fails. Phase 2 is owner accepted and integrated on
 main through PR #28; it is not deployed.
 
+Support Pilot S1 adds `/admin/support/cases` for `SUPPORT_REQUEST` operators
+and its CSRF-protected case-open and case-diagnose endpoints. The latter also
+requires `SUPPORT_USE` and recent privileged assurance. Every diagnostic remains
+case-, grant-, target-, scope-, time-, and revocation-bound; it has no repair or
+other user-state mutation endpoint.
+
 Mainline Google and GitHub OAuth adds public provider discovery and start routes
 plus the exact callbacks
 `/api/auth/providers/google/callback` and

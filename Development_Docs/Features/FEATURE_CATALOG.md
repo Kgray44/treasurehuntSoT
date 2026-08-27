@@ -1592,7 +1592,7 @@ Tideglass compares exact immutable Chronicle editions, explains semantic change 
 **Status:** MAINLINE
 **Program or subsystem:** Project Admiralty
 
-Owner-accepted Phases 1 and 2 establish canonical roles, recent privileged assurance, scoped user consent, sanitized audit evidence, and a read-only cross-domain Chartroom on main without creating a second source of truth.
+Accepted Admiralty phases establish canonical roles, recent privileged assurance, scoped user consent, sanitized audit evidence, governed owner-domain commands, and a read-only cross-domain Chartroom on main without creating a second source of truth. Support Pilot S1 adds autonomous case-bound diagnosis with no repair authority.
 
 ### Important subfeatures
 
@@ -1609,10 +1609,13 @@ Owner-accepted Phases 1 and 2 establish canonical roles, recent privileged assur
 - Phase 2 bounded People, Chronicle, Voyage, and Community search and detail
 - Phase 2 operations, provider, configuration, release, audit, and correlation-led investigation projections
 - Phase 2 dossier-anchored consented Support Access
+- Accepted Phase 3 governed owner-domain account, security, Community, job, and configuration commands
+- Support Pilot S1 case-bound, short-lived read-only delegated diagnostic capability
+- Source-bound sanitized findings, deterministic diagnosis receipts, and information-only repair proposals
 
 ### Primary surfaces
 
-`/admin`, `/admin/people`, `/admin/chronicles`, `/admin/voyages`, `/admin/community`, `/admin/operations`, `/admin/providers`, `/admin/configuration`, `/admin/releases`, `/admin/audit`, `/admin/investigate`, `/account/support-access`
+`/admin`, `/admin/people`, `/admin/chronicles`, `/admin/voyages`, `/admin/community`, `/admin/operations`, `/admin/providers`, `/admin/configuration`, `/admin/releases`, `/admin/audit`, `/admin/investigate`, `/admin/support/cases`, `/account/support-access`
 
 ### Meaningful limitations
 
@@ -1622,6 +1625,7 @@ Owner-accepted Phases 1 and 2 establish canonical roles, recent privileged assur
 - The owner accepted the qualified Phase 2 walkthrough on 2026-08-12; exact-source authority and protected canonical-main integration completed in PR #28
 - Transactional-email delivery health and live verification-provider health are blocked by missing canonical owner contracts
 - Broad administrative mutation remains dormant for later governed phases
+- Support Pilot S1 has no repair executor, user-state correction, session revocation, projection rebuild, job retry, or configuration mutation
 - Owner acceptance does not imply deployment or acceptance of later Admiralty phases
 
 ### Evidence
@@ -1632,6 +1636,8 @@ Owner-accepted Phases 1 and 2 establish canonical roles, recent privileged assur
 - path: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json`
 - test: `tests/e2e/admiralty-phase1.spec.ts`
 - path: `src/admiralty/read-models.ts`
+- path: `src/admiralty/support-pilot.ts`
+- test: `src/admiralty/support-pilot.test.ts`
 - test: `tests/e2e/admiralty-phase2.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Completion_Receipt.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Owner_Decision_Record.md`
