@@ -59,6 +59,35 @@ LOG_LEVEL="info"
     foreach ($name in $required) {
         if ($contents -notmatch "(?m)^$name=") { throw ".env exists but is missing $name. It was preserved; add the missing value and retry." }
     }
+    $bridgewatchRuntimePath = Join-Path $script:RuntimeBase "bridgewatch-runtime-state.json"
+    $bridgewatchProviderPath = Join-Path $script:RuntimeBase "bridgewatch-provider-status.json"
+    $harborlightRuntimeRoot = Join-Path $script:RuntimeBase "Harborlight"
+    $operationalDefaults = [ordered]@{
+        BRIDGEWATCH_REPOSITORY = "Kgray44/treasurehuntSoT"
+        BRIDGEWATCH_INTERNAL_URL = "http://127.0.0.1:4318"
+        BRIDGEWATCH_TELEMETRY_ENDPOINT = "http://127.0.0.1:4318/api/telemetry/heartbeat"
+        BRIDGEWATCH_VOYAGEWRIGHT_RUNTIME_STATE_PATH = $bridgewatchRuntimePath
+        BRIDGEWATCH_PROVIDER_STATUS_PATH = $bridgewatchProviderPath
+        COMMUNITY_ASSET_ROOT = (Join-Path $harborlightRuntimeRoot "assets")
+        COMMUNITY_WORKER_ENABLED = "true"
+        COMMUNITY_WORKER_STATE_PATH = (Join-Path $harborlightRuntimeRoot "worker-state.json")
+        COMMUNITY_RATE_LIMIT_PROVIDER = "database"
+        COMMUNITY_BACKUP_ROOT = (Join-Path $harborlightRuntimeRoot "backups")
+        COMMUNITY_RESTORE_ROOT = (Join-Path $harborlightRuntimeRoot "restore-drills")
+        COMMUNITY_BINARY_SCANNER_PROVIDER = "clamav"
+        COMMUNITY_CLAMAV_HOST = "127.0.0.1"
+    }
+    foreach ($entry in $operationalDefaults.GetEnumerator()) {
+        if ($contents -notmatch "(?m)^$($entry.Key)=") {
+            Add-Content -LiteralPath $environmentPath -Value ("$($entry.Key)=`"$($entry.Value)`"") -Encoding UTF8
+            $contents += "`n$($entry.Key)="
+        }
+    }
+    if ($contents -notmatch "(?m)^BRIDGEWATCH_TELEMETRY_TOKEN=") {
+        $bytes = New-Object byte[] 48
+        [Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($bytes)
+        Add-Content -LiteralPath $environmentPath -Value ("BRIDGEWATCH_TELEMETRY_TOKEN=`"$([Convert]::ToBase64String($bytes))`"") -Encoding UTF8
+    }
     return $environmentPath
 }
 
