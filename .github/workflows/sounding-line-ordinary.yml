@@ -97,6 +97,16 @@ jobs:
             appendFileSync(process.env.GITHUB_OUTPUT, "kind=control-plane\n");
           }
           EOF
+      - name: Restore reusable ordinary evidence
+        id: evidence-cache
+        if: steps.route.outputs.kind == 'ordinary'
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: candidate/artifacts/sounding-line/evidence-store
+          key: sounding-line-evidence-v14-${{ runner.os }}-${{ hashFiles('authority/scripts/sounding-line/ordinary.mjs', 'authority/scripts/sounding-line/evidence.mjs') }}-${{ steps.source.outputs.candidate }}
+          restore-keys: |
+            sounding-line-evidence-v14-${{ runner.os }}-${{ hashFiles('authority/scripts/sounding-line/ordinary.mjs', 'authority/scripts/sounding-line/evidence.mjs') }}-
       - run: npm ci --ignore-scripts
         working-directory: candidate
       - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
@@ -106,8 +116,16 @@ jobs:
         run: npx --no-install playwright install --with-deps chromium
         working-directory: candidate
       - name: Run the trusted focused verifier against the exact candidate tree
+        id: ordinary-verifier
         if: steps.route.outputs.kind == 'ordinary'
         run: node authority/scripts/sounding-line/ordinary.mjs --mode ordinary --workspace candidate --base ${{ steps.source.outputs.base }} --candidate ${{ steps.source.outputs.candidate }}
+      - name: Persist passing reusable ordinary evidence
+        if: ${{ always() && steps.route.outputs.kind == 'ordinary' && steps.ordinary-verifier.outcome == 'success' && steps.evidence-cache.outputs.cache-hit != 'true' }}
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: candidate/artifacts/sounding-line/evidence-store
+          key: sounding-line-evidence-v14-${{ runner.os }}-${{ hashFiles('authority/scripts/sounding-line/ordinary.mjs', 'authority/scripts/sounding-line/evidence.mjs') }}-${{ steps.source.outputs.candidate }}
       - name: Bind control-plane validation to the exact candidate tree
         if: steps.route.outputs.kind == 'control-plane'
         working-directory: candidate
@@ -125,7 +143,7 @@ jobs:
       - name: Lint the control-plane candidate
         if: steps.route.outputs.kind == 'control-plane'
         working-directory: candidate
-        run: npx --no-install eslint scripts/sounding-line/ordinary.mjs tests/sounding-line/ordinary.test.mjs scripts/features
+        run: npx --no-install eslint scripts/sounding-line/ordinary.mjs scripts/sounding-line/evidence.mjs tests/sounding-line/ordinary.test.mjs scripts/features
       - name: Scan the control-plane candidate for private content
         if: steps.route.outputs.kind == 'control-plane'
         working-directory: candidate
