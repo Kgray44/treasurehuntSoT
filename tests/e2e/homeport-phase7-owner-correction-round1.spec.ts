@@ -22,9 +22,6 @@ const outboxPath = path.join(taskRoot, "synthetic-outbox", `journey-${journeyId}
 const credentialHandoff = JSON.parse(
   readFileSync(path.join(taskRoot, "credentials", "owner-correction-walkthrough-credentials.private.json"), "utf8"),
 ) as { password: string; accounts: Record<string, Alias> };
-const correctionTokens = JSON.parse(
-  readFileSync(path.join(taskRoot, "tokens", "owner-correction-tokens.private.json"), "utf8"),
-) as { pendingVerification: string; pendingEmailChange: string; guestSession: string };
 const db = new PrismaClient();
 
 test.beforeEach(async ({ page }) => {
@@ -39,7 +36,11 @@ test("Journey A: Chronicle preview", async ({ page }) => {
   const sessionsBefore = await db.taleSession.count();
   await settledLink(page, page.getByRole("link", { name: "Preview Chronicle" }).first());
   await expect(page.getByText("Chronicle preview", { exact: true })).toBeVisible();
-  await expect(page.getByText(/has not created a session, Crew, invitation, or participant/u)).toBeVisible();
+  await expect(
+    page.getByText(
+      /(?:Preview shows public, preview-safe details only\. Start Chronicle begins the published experience; it is a separate action\.|Starting enters preparation\. This preview has not created a session, Crew, invitation, or participant\.)/u,
+    ),
+  ).toBeVisible();
   expect(await db.taleSession.count()).toBe(sessionsBefore);
   await capture(page, "HP-OWCR1-EV-A-CHRONICLE-PREVIEW");
 

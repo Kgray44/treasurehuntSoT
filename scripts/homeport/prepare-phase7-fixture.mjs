@@ -46,7 +46,7 @@ const childEnv = {
   HOMEPORT_PHASE7_TASK_ROOT: taskRoot,
   HOMEPORT_PHASE7_SYNTHETIC_PASSWORD: syntheticPassword,
 };
-run("node_modules/prisma/build/index.js", ["migrate", "deploy", "--schema", "prisma/schema.sqlite.prisma"], childEnv);
+const migrationSchema = runJson("scripts/homeport/verify-phase7-sqlite-schema.mjs", childEnv);
 const phase4 = runJson("scripts/homeport/seed-phase4-fixture.mjs", childEnv);
 const phase5 = runJson("scripts/homeport/seed-phase5-fixture.mjs", childEnv);
 const phase7 = runJson("scripts/homeport/seed-phase7-fixture.mjs", childEnv);
@@ -83,6 +83,7 @@ const receipt = {
   fixtureChecksum: phase7.fixtureChecksum,
   schemaHash: createHash("sha256").update(schemaBytes).digest("hex"),
   migrationCount: await countMigrationDirectories(migrationsRoot),
+  migrationSchema,
   requestedSource,
   sourceHash,
   sourceCopy,
@@ -102,12 +103,6 @@ function runJson(script, env) {
   const result = spawnSync(process.execPath, [script], { cwd: repositoryRoot, env, encoding: "utf8" });
   if (result.status !== 0) throw new Error(`${script} failed:\n${result.stderr || result.stdout}`);
   return JSON.parse(result.stdout.trim());
-}
-
-function run(script, args, env) {
-  const result = spawnSync(process.execPath, [script, ...args], { cwd: repositoryRoot, env, encoding: "utf8" });
-  if (result.error) throw result.error;
-  if (result.status !== 0) throw new Error(`${script} failed:\n${result.stderr || result.stdout}`);
 }
 
 function sqliteUrl(value) {
