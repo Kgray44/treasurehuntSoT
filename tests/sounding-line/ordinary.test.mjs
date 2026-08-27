@@ -136,6 +136,7 @@ test("global authority paths remain release-only", () => {
   const paths = [
     "scripts/sounding-line/ordinary.mjs",
     ".github/workflows/sounding-line-ordinary.yml",
+    "playwright.config.ts",
     "AGENTS.md",
     ".agents/testing-workflow.md",
     ".agents/context-workflow.md",
@@ -221,6 +222,7 @@ test("ordinary admission distinguishes the field candidates from release authori
       "scripts/sounding-line/ordinary.mjs",
     ],
     ["workflow", { ".github/workflows/ordinary.yml": "name: ordinary\n" }, ".github/workflows/ordinary.yml"],
+    ["generic browser runner", { "playwright.config.ts": "export default {};\n" }, "playwright.config.ts"],
     ["root authority", { "AGENTS.md": "# Authority\n" }, "AGENTS.md"],
     ["testing authority", { ".agents/testing-workflow.md": "# Testing\n" }, ".agents/testing-workflow.md"],
     [
@@ -715,6 +717,24 @@ test("changed migration rehearsals run as focused migration proof", () => {
 test("application source changes receive a production build", () => {
   assert.equal(requiresBuild({ changedPaths: ["src/app/community/voyage-logs/[slug]/page.tsx"] }), true);
   assert.equal(requiresBuild({ changedPaths: ["package-lock.json"] }), true);
+});
+
+test("generic browser proof builds before the production server starts", async () => {
+  await withCandidate(
+    { "tests/e2e/project-helm-phase1.spec.ts": "test('browser proof', () => {});\n" },
+    async (fixture) => {
+      const plan = await buildPlan({ ...fixture, mode: "ordinary" });
+      assert.deepEqual(plan.selected.browserTests, ["tests/e2e/project-helm-phase1.spec.ts"]);
+      assert.equal(plan.browserRequired, true);
+      assert.equal(plan.buildRequired, true);
+    },
+  );
+});
+
+test("generic browser configuration starts the built server without webpack dev", () => {
+  const configuration = readFileSync("playwright.config.ts", "utf8");
+  assert.match(configuration, /next start/u);
+  assert.doesNotMatch(configuration, /next dev/u);
 });
 
 test("ordinary admission has no orchestration or generated-state prerequisites", () => {
