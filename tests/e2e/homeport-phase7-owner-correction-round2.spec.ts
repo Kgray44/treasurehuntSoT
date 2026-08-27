@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync, rmSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { PrismaClient } from "@prisma/client";
 
@@ -477,6 +478,56 @@ test("Journey S: Text contrast", async ({ page }) => {
   }
   await page.goto("/community");
   await capture(page, "HP-OWCR2-EV-Y-COMMUNITY-CONTRAST");
+});
+
+test("Journey S: global navigation remains complete at effective 200 percent zoom", async ({ page }) => {
+  const account = await signIn(page, "SERA");
+  await setTheme(page, "LIGHT");
+  await accountDestination(page, account, "Personal Harbor");
+  const globalNavigation = page.getByRole("navigation", { name: "Global navigation" });
+  const globalLabels = ["Home", "Explore Chronicles", "Community Harbor", "Chronicle Passport"];
+  const seriousOrCriticalAxeFindings = async () =>
+    (await new AxeBuilder({ page }).analyze()).violations
+      .filter((item) => ["serious", "critical"].includes(item.impact ?? ""))
+      .map((item) => `${item.id}:${item.impact}`)
+      .sort();
+
+  for (const label of globalLabels)
+    await expect(globalNavigation.getByRole("link", { name: label, exact: true })).toBeVisible();
+  const axeBaseline = await seriousOrCriticalAxeFindings();
+  await page.evaluate(() => (document.body.style.zoom = "2"));
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth),
+  ).toBeLessThanOrEqual(1);
+
+  const accountButton = page.getByRole("button", { name: account.displayName, exact: true });
+  await globalNavigation.getByRole("link", { name: "Home", exact: true }).focus();
+  await expect(globalNavigation.getByRole("link", { name: "Home", exact: true })).toBeFocused();
+  for (const label of globalLabels.slice(1)) {
+    await page.keyboard.press("Tab");
+    await expect(globalNavigation.getByRole("link", { name: label, exact: true })).toBeFocused();
+  }
+  await expect(accountButton).toBeVisible();
+  await accountButton.click();
+  await expect(accountButton).toHaveAttribute("aria-expanded", "true");
+  await accountButton.click();
+  await expect(accountButton).toHaveAttribute("aria-expanded", "false");
+  expect(await seriousOrCriticalAxeFindings()).toEqual(axeBaseline);
+  expect(
+    (await new AxeBuilder({ page }).include('[aria-label="Global navigation"]').analyze()).violations.filter((item) =>
+      ["serious", "critical"].includes(item.impact ?? ""),
+    ),
+  ).toEqual([]);
+
+  await page.evaluate(() => (document.body.style.zoom = ""));
+  await page.setViewportSize({ width: 390, height: 844 });
+  const navigationButton = page.getByRole("button", { name: "Open navigation", exact: true });
+  await navigationButton.click();
+  for (const label of globalLabels)
+    await expect(globalNavigation.getByRole("link", { name: label, exact: true })).toBeVisible();
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth),
+  ).toBeLessThanOrEqual(1);
 });
 
 test("Journey R: Synthetic email walkthrough", async ({ page }) => {
