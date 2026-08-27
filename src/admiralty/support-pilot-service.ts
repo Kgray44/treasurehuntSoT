@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { writeAdministrativeAudit } from "./audit";
 import type { AdmiraltyCurrentOperator } from "./authorization";
 import { AdmiraltyError } from "./errors";
-import { readSupportAccessGrant } from "./support-access";
+import { parseSupportRepairIds, readSupportAccessGrant } from "./support-access";
 import type { SupportAccessScope } from "./schemas";
 import {
   createSupportExecutionCapability,
@@ -15,12 +15,14 @@ import {
   supportScopeDataClass,
   type SupportPilotObservation,
 } from "./support-pilot";
+import { getRegisteredSupportRepair } from "./support-repair-registry";
 
 type CaseInput = Readonly<{
   targetAccountId: string;
   title: string;
   summary: string;
   requestedScopes: readonly SupportAccessScope[];
+  requestedRepairIds?: readonly string[];
 }>;
 
 const requestLifetimeMs = 24 * 60 * 60 * 1000;
@@ -31,6 +33,19 @@ export async function createSupportCase(operator: AdmiraltyCurrentOperator, inpu
   const target = await db.userAccount.findUnique({ where: { id: input.targetAccountId }, select: { id: true } });
   if (!target) throw new AdmiraltyError("ADMIN_TARGET_NOT_FOUND", "The support target was not found.", 404);
   const requestedScopes = [...new Set(input.requestedScopes)].sort();
+  const requestedRepairIds = [...new Set(input.requestedRepairIds ?? [])]
+    .filter((id) => Boolean(getRegisteredSupportRepair(id)))
+    .sort();
+  if (
+    requestedRepairIds.some((id) =>
+      getRegisteredSupportRepair(id)?.requiredSupportScopes.some((scope) => !requestedScopes.includes(scope)),
+    )
+  )
+    throw new AdmiraltyError(
+      "ADMIN_VALIDATION_FAILED",
+      "Each requested repair must include every diagnostic scope required for its future verification.",
+      400,
+    );
   const title = sanitizeSupportNarrative(input.title, 160);
   const safeSummary = sanitizeSupportNarrative(input.summary, 480);
   if (!title || !safeSummary)
@@ -44,6 +59,7 @@ export async function createSupportCase(operator: AdmiraltyCurrentOperator, inpu
         targetAccountId: target.id,
         purpose: safeSummary,
         requestedScopes: JSON.stringify(requestedScopes),
+        requestedRepairIds: JSON.stringify(requestedRepairIds),
         requestedAt: now,
         expiresAt: new Date(now.getTime() + requestLifetimeMs),
         correlationId,
@@ -78,6 +94,7 @@ export async function createSupportCase(operator: AdmiraltyCurrentOperator, inpu
           caseNumber,
           targetAccountId: target.id,
           requestedScopes,
+          requestedRepairIds,
           readOnly: true,
           supportAccessRequestId: request.id,
         },
@@ -104,9 +121,19 @@ export async function listSupportCases(operator: AdmiraltyCurrentOperator, now =
         select: {
           id: true,
           requestedScopes: true,
+          requestedRepairIds: true,
           status: true,
           expiresAt: true,
-          grant: { select: { id: true, status: true, expiresAt: true, revokedAt: true } },
+          grant: {
+            select: {
+              id: true,
+              status: true,
+              expiresAt: true,
+              revokedAt: true,
+              grantedRepairIds: true,
+              maximumRiskClass: true,
+            },
+          },
         },
       },
       executionSessions: {
@@ -120,6 +147,16 @@ export async function listSupportCases(operator: AdmiraltyCurrentOperator, now =
           deniedAccessCount: true,
           redactionCount: true,
           receiptDigest: true,
+          supportExecutionGrant: {
+            select: {
+              maximumRiskClass: true,
+              remainingCommands: true,
+              remainingAffectedRecords: true,
+              maximumDomains: true,
+              usedDomains: true,
+              expiresAt: true,
+            },
+          },
           diagnosis: { select: { primaryCause: true, confidence: true, uncertainty: true, unresolvedQuestions: true } },
           findings: {
             select: { code: true, summary: true, confidence: true, uncertainty: true },
@@ -127,11 +164,19 @@ export async function listSupportCases(operator: AdmiraltyCurrentOperator, now =
           },
           repairProposals: {
             select: {
+              id: true,
               proposalType: true,
+              repairId: true,
+              targetType: true,
+              targetId: true,
+              targetRevision: true,
+              proposalRevision: true,
+              preview: true,
               summary: true,
               requiredUserConsent: true,
               requiresAdministrator: true,
               state: true,
+              requiresHumanApproval: true,
             },
           },
           evidenceReferences: {
@@ -159,6 +204,7 @@ export async function listSupportCases(operator: AdmiraltyCurrentOperator, now =
     return {
       ...supportCase,
       requestedScopes: parseSupportScopes(supportCase.supportAccessRequest?.requestedScopes ?? "[]"),
+      requestedRepairIds: parseSupportRepairIds(supportCase.supportAccessRequest?.requestedRepairIds ?? "[]"),
       consent: {
         requestId: supportCase.supportAccessRequest?.id ?? null,
         status: supportCase.supportAccessRequest?.status ?? "NOT_REQUESTED",
@@ -166,6 +212,8 @@ export async function listSupportCases(operator: AdmiraltyCurrentOperator, now =
         grantId: activeGrant ? (grant?.id ?? null) : null,
         grantStatus: activeGrant ? "ACTIVE" : grant?.revokedAt ? "REVOKED" : (grant?.status ?? "NOT_GRANTED"),
         grantExpiresAt: grant?.expiresAt ?? null,
+        grantedRepairIds: activeGrant ? parseSupportRepairIds(grant?.grantedRepairIds ?? "[]") : [],
+        maximumRiskClass: activeGrant ? (grant?.maximumRiskClass ?? "R0") : "R0",
       },
       latestExecution: supportCase.executionSessions[0] ?? null,
     };
@@ -207,6 +255,14 @@ export async function runSupportCaseDiagnostic(
       grantedScopes: JSON.stringify(capability.scopes),
       dataClasses: JSON.stringify(capability.dataClasses),
       riskCeiling: capability.riskCeiling,
+      permittedRepairIds: JSON.stringify(capability.permittedRepairIds),
+      maximumRiskClass: capability.maximumRiskClass,
+      maximumCommands: capability.maximumCommands,
+      remainingCommands: capability.maximumCommands,
+      maximumAffectedRecords: capability.maximumAffectedRecords,
+      remainingAffectedRecords: capability.maximumAffectedRecords,
+      maximumDomains: capability.maximumDomains,
+      usedDomains: "[]",
       issuedAt: now,
       expiresAt: capability.expiresAt,
       correlationId,
@@ -311,7 +367,10 @@ export async function runSupportCaseDiagnostic(
           completedAt: now,
         },
       });
-      await tx.supportCase.update({ where: { id: supportCase.id }, data: { status: "DIAGNOSED" } });
+      await tx.supportCase.update({
+        where: { id: supportCase.id },
+        data: { status: "DIAGNOSED", revision: { increment: 1 } },
+      });
       await writeAdministrativeAudit(
         {
           actorAccountId: operator.accountId,

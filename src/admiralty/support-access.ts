@@ -4,6 +4,12 @@ import { sanitizeAdministrativeMetadata, writeAdministrativeAudit } from "./audi
 import type { AdmiraltyCurrentOperator } from "./authorization";
 import { AdmiraltyError } from "./errors";
 import type { SupportAccessScope } from "./schemas";
+import {
+  getRegisteredSupportRepair,
+  isSupportRiskClass,
+  supportRiskRank,
+  type SupportRiskClass,
+} from "./support-repair-registry";
 
 export const supportRequestLifetimeMs = 24 * 60 * 60 * 1000;
 export const supportGrantLifetimeMs = 30 * 60 * 1000;
@@ -17,6 +23,31 @@ function parseScopes(value: string): SupportAccessScope[] {
   } catch {
     return [];
   }
+}
+
+export function parseSupportRepairIds(value: string): string[] {
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    return Array.isArray(parsed)
+      ? [
+          ...new Set(
+            parsed.filter(
+              (item): item is string => typeof item === "string" && Boolean(getRegisteredSupportRepair(item)),
+            ),
+          ),
+        ].sort()
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+export function maximumRiskForSupportRepairs(repairIds: readonly string[]): SupportRiskClass {
+  const risks = repairIds
+    .map(getRegisteredSupportRepair)
+    .filter((repair): repair is NonNullable<typeof repair> => Boolean(repair))
+    .map((repair) => repair.riskClass);
+  return risks.length ? risks.sort((left, right) => supportRiskRank(right) - supportRiskRank(left))[0]! : "R0";
 }
 
 function parseSafeMetadata(value: string) {
@@ -45,7 +76,12 @@ function effectiveRequestStatus(
 
 export async function createSupportAccessRequest(
   operator: AdmiraltyCurrentOperator,
-  input: { targetAccountId: string; purpose: string; requestedScopes: readonly SupportAccessScope[] },
+  input: {
+    targetAccountId: string;
+    purpose: string;
+    requestedScopes: readonly SupportAccessScope[];
+    requestedRepairIds?: readonly string[];
+  },
   now = new Date(),
 ) {
   if (operator.accountId === input.targetAccountId)
@@ -53,6 +89,19 @@ export async function createSupportAccessRequest(
   const target = await db.userAccount.findUnique({ where: { id: input.targetAccountId }, select: { id: true } });
   if (!target) throw new AdmiraltyError("ADMIN_TARGET_NOT_FOUND", "The support target was not found.", 404);
   const requestedScopes = [...new Set(input.requestedScopes)].sort();
+  const requestedRepairIds = [...new Set(input.requestedRepairIds ?? [])]
+    .filter((id) => Boolean(getRegisteredSupportRepair(id)))
+    .sort();
+  if (
+    requestedRepairIds.some((id) =>
+      getRegisteredSupportRepair(id)?.requiredSupportScopes.some((scope) => !requestedScopes.includes(scope)),
+    )
+  )
+    throw new AdmiraltyError(
+      "ADMIN_VALIDATION_FAILED",
+      "Each requested repair must include every diagnostic scope required for its future verification.",
+      400,
+    );
   const correlationId = randomUUID();
   return db.$transaction(async (tx) => {
     const created = await tx.supportAccessRequest.create({
@@ -61,6 +110,7 @@ export async function createSupportAccessRequest(
         targetAccountId: target.id,
         purpose: input.purpose.slice(0, 240),
         requestedScopes: JSON.stringify(requestedScopes),
+        requestedRepairIds: JSON.stringify(requestedRepairIds),
         requestedAt: now,
         expiresAt: new Date(now.getTime() + supportRequestLifetimeMs),
         correlationId,
@@ -81,6 +131,7 @@ export async function createSupportAccessRequest(
         afterSummary: {
           requestId: created.id,
           requestedScopes,
+          requestedRepairIds,
           status: "REQUESTED",
           decisionDeadline: created.expiresAt,
         },
@@ -112,6 +163,7 @@ export async function listSupportAccessForTarget(targetAccountId: string, now = 
     operatorRoles: request.requestingAdmin.roles.map((role) => role.role).sort(),
     purpose: request.purpose,
     requestedScopes: parseScopes(request.requestedScopes),
+    requestedRepairIds: parseSupportRepairIds(request.requestedRepairIds),
     requestedAt: request.requestedAt,
     decisionDeadline: request.expiresAt,
     status: effectiveRequestStatus(request, now),
@@ -119,6 +171,8 @@ export async function listSupportAccessForTarget(targetAccountId: string, now = 
       ? {
           id: request.grant.id,
           scopes: parseScopes(request.grant.grantedScopes),
+          repairIds: parseSupportRepairIds(request.grant.grantedRepairIds),
+          maximumRiskClass: isSupportRiskClass(request.grant.maximumRiskClass) ? request.grant.maximumRiskClass : "R0",
           issuedAt: request.grant.issuedAt,
           expiresAt: request.grant.expiresAt,
           status: effectiveRequestStatus(request, now),
@@ -152,7 +206,10 @@ export async function decideSupportAccessRequest(
         data: { status: "DENIED", decisionAt: now, decisionByTargetAccountId: target.accountId },
       });
       if (request.supportCase)
-        await tx.supportCase.update({ where: { id: request.supportCase.id }, data: { status: "CONSENT_DENIED" } });
+        await tx.supportCase.update({
+          where: { id: request.supportCase.id },
+          data: { status: "CONSENT_DENIED", revision: { increment: 1 } },
+        });
       await writeAdministrativeAudit(
         {
           actorAccountId: target.accountId,
@@ -185,13 +242,18 @@ export async function decideSupportAccessRequest(
         operatorAccountId: request.requestingAdminAccountId,
         targetAccountId: request.targetAccountId,
         grantedScopes: request.requestedScopes,
+        grantedRepairIds: request.requestedRepairIds,
+        maximumRiskClass: maximumRiskForSupportRepairs(parseSupportRepairIds(request.requestedRepairIds)),
         issuedAt: now,
         expiresAt,
         correlationId,
       },
     });
     if (request.supportCase)
-      await tx.supportCase.update({ where: { id: request.supportCase.id }, data: { status: "READY_FOR_DIAGNOSIS" } });
+      await tx.supportCase.update({
+        where: { id: request.supportCase.id },
+        data: { status: "READY_FOR_DIAGNOSIS", revision: { increment: 1 } },
+      });
     await writeAdministrativeAudit(
       {
         actorAccountId: target.accountId,
@@ -207,7 +269,13 @@ export async function decideSupportAccessRequest(
         supportGrantId: grant.id,
         correlationId,
         beforeSummary: { status: "REQUESTED" },
-        afterSummary: { status: "ACTIVE", grantedScopes: parseScopes(grant.grantedScopes), expiresAt },
+        afterSummary: {
+          status: "ACTIVE",
+          grantedScopes: parseScopes(grant.grantedScopes),
+          grantedRepairIds: parseSupportRepairIds(grant.grantedRepairIds),
+          maximumRiskClass: grant.maximumRiskClass,
+          expiresAt,
+        },
       },
       tx,
     );
@@ -236,7 +304,11 @@ export async function cancelSupportAccessRequest(
       where: { supportAccessRequestId: request.id },
       select: { id: true },
     });
-    if (supportCase) await tx.supportCase.update({ where: { id: supportCase.id }, data: { status: "CANCELLED" } });
+    if (supportCase)
+      await tx.supportCase.update({
+        where: { id: supportCase.id },
+        data: { status: "CANCELLED", revision: { increment: 1 } },
+      });
     await writeAdministrativeAudit(
       {
         actorAccountId: operator.accountId,
@@ -287,6 +359,15 @@ async function revokeGrant(
         revocationReason: reason.slice(0, 160),
       },
     });
+    const supportCase = await tx.supportCase.findUnique({
+      where: { supportAccessRequestId: grant.requestId },
+      select: { id: true },
+    });
+    if (supportCase)
+      await tx.supportCase.update({
+        where: { id: supportCase.id },
+        data: { status: "CONSENT_REVOKED", revision: { increment: 1 } },
+      });
     await writeAdministrativeAudit(
       {
         actorAccountId: actor.accountId,
@@ -367,6 +448,7 @@ export async function operatorSupportSummary(operatorAccountId: string, now = ne
       targetAccountId: request.targetAccountId,
       purpose: request.purpose,
       scopes: parseScopes(request.requestedScopes),
+      repairIds: parseSupportRepairIds(request.requestedRepairIds),
       status: effectiveRequestStatus(request, now),
       requestedAt: request.requestedAt,
       expiresAt: request.grant?.expiresAt ?? request.expiresAt,

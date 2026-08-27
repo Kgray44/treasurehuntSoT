@@ -24,7 +24,7 @@ diagnostics still require recent privileged assurance, an exact request, target
 consent, operator/target/scope/time matching, and canonical audit evidence.
 Revocation closes the grant immediately.
 
-## Support Pilot S1 cases
+## Support Pilot S2 cases and bounded repair
 
 An operator with `SUPPORT_REQUEST` can open `/admin/support/cases` for an exact
 target and a bounded purpose. The case creates the owner-visible Support Access
@@ -34,11 +34,21 @@ may, after fresh privileged assurance, begin a short-lived execution that is
 bound to the exact case, operator, target, active grant, approved scopes, and
 expiry.
 
-The S1 console shows case and consent status, expiry or revocation, execution
-status, sanitized evidence provenance, findings, diagnosis, and an
-`INFORMATION_ONLY` repair proposal. S1 can write its support-control and audit
-records, but it has no repair executor and cannot mutate user, Voyage,
-Community, session, job, projection, or configuration truth.
+The console retains S1's sanitized evidence and information-only proposals. S2
+also shows the exact registered command, owner, risk class, active ceiling,
+scope/consent, budget, current-state mutation preview, canonical result, and
+verification outcome. The coordinator calls only named owner commands and
+never writes an owner table directly. A revoked grant, expired assurance,
+stale proposal, exhausted budget, competing case lease, or failed precondition
+stops mutation. `VERIFIED_RESOLVED` requires the registered postcondition;
+command success alone is not resolution.
+
+The enabled registry is deliberately small: profile-preference reconciliation
+(R1), one stale-session revocation (R2), and one inconsistent removed-membership
+reconciliation (R3). R4 needs explicit per-action human approval and no R4
+repair is enabled. Raw SQL, arbitrary execution, audit rewriting, private
+content, secrets, source changes, jobs, projection rebuilds, and unregistered
+mutations remain prohibited or unavailable.
 
 Statuses name their source, environment, freshness, observation time, and safe
 failure meaning. `UNAVAILABLE`, `STALE`, and missing-contract states are not

@@ -33,6 +33,13 @@ produce source-bound findings and information-only repair proposals, and retain
 human-readable case evidence. It does not mutate user or platform state, and it
 does not begin Support Pilot S2 or S3.
 
+Support Pilot S2, **Turn the Wrench**, builds on that evidence path with only
+three registered, consented owner commands: profile-preference reconciliation,
+stale-session revocation, and reconciliation of an internally inconsistent
+removed Voyage membership. Every proposal is current-state-bound, budgeted,
+previewed, audited before mutation, and postcondition-verified. S2 does not
+begin Support Pilot S3 or Admiralty Phase 4.
+
 The Phase 2 shell is naturally reachable from the account workspace menu only
 for identities holding an active Admiralty role. Ordinary accounts receive no
 entry. That visibility choice is not an authorization control: every route,
@@ -91,6 +98,12 @@ on the server.
 - [Test plan](Project_Admiralty_Support_Pilot_S1_Test_Plan.md)
 - [Diagnostic scope registry](Project_Admiralty_Support_Pilot_S1_Diagnostic_Scope_Registry.json)
 
+## Support Pilot S2 records
+
+- [Architecture](Project_Admiralty_Support_Pilot_S2_Architecture.md)
+- [Safety boundary](Project_Admiralty_Support_Pilot_S2_Safety_Boundary.md)
+- [Test plan](Project_Admiralty_Support_Pilot_S2_Test_Plan.md)
+
 ## Machine-readable controls
 
 - `Project_Admiralty_Phase_1_Active_Phase_Registration.json`
@@ -113,6 +126,6 @@ on the server.
 - `Project_Admiralty_Support_Pilot_S1_Diagnostic_Scope_Registry.json`
 
 The Phase 1, Phase 2, and Phase 3 owner decisions are `ACCEPTED` and integrated
-on canonical main. Support Pilot S1 is a separate, read-only supplemental
-increment. No prior acceptance is deployment authority or permission to begin
-Support Pilot S2/S3 or Admiralty Phase 4.
+on canonical main. Support Pilot S1 remains the read-only diagnostic foundation;
+S2 is the bounded registered-repair increment. No prior acceptance is deployment
+authority or permission to begin Support Pilot S3 or Admiralty Phase 4.

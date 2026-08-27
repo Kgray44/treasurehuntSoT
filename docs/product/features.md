@@ -121,6 +121,14 @@ finding, diagnosis, and information-only proposal. It cannot carry out a repair
 or mutate account, Voyage, Community, session, job, projection, or configuration
 state.
 
+Support Pilot S2 adds a separately consented registered-repair layer. Only a
+current case, current grant, fresh assurance, approved scope, hard risk ceiling,
+budget, current-state preview, and owner command together can permit a repair.
+The initial registry is limited to profile-preference reconciliation, one stale
+session revocation, and one inconsistent removed-membership reconciliation.
+Unregistered commands, raw SQL, private-content access, jobs, projection
+rebuilds, and high-risk actions remain unavailable.
+
 ## Integrated whole-product voyage and owner walkthrough
 
 **Audience:** Product owner, Players, Captains, Creators, and account owners.

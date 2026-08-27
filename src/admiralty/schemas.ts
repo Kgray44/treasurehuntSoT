@@ -42,6 +42,7 @@ export const supportCaseCreateSchema = z
     title: z.string().trim().min(8).max(160),
     summary: z.string().trim().min(8).max(480),
     requestedScopes: z.array(supportScopeSchema).min(1).max(8),
+    requestedRepairIds: z.array(z.string().trim().min(3).max(128)).max(6).default([]),
   })
   .strict();
 export const supportCaseDiagnosisSchema = z
@@ -52,6 +53,48 @@ export const supportCaseDiagnosisSchema = z
       .min(1)
       .max(128)
       .regex(/^[A-Za-z0-9_-]+$/u),
+  })
+  .strict();
+
+export const supportRepairProposalSchema = z
+  .object({
+    grantId: z
+      .string()
+      .trim()
+      .min(1)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+    repairId: z.string().trim().min(3).max(128),
+    targetId: z
+      .string()
+      .trim()
+      .min(1)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+  })
+  .strict();
+
+export const supportRepairExecuteSchema = z
+  .object({
+    grantId: z
+      .string()
+      .trim()
+      .min(1)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+    proposalId: z
+      .string()
+      .trim()
+      .min(1)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+    idempotencyKey: z
+      .string()
+      .trim()
+      .min(16)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+    humanApproval: z.boolean().optional(),
   })
   .strict();
 export const sessionRevokeSchema = z

@@ -18,6 +18,8 @@ try {
     supportCase.supportAccessRequestId ? [supportCase.supportAccessRequestId] : [],
   );
   await client.$transaction([
+    client.supportRepairExecution.deleteMany(),
+    client.supportRepairLease.deleteMany(),
     client.supportFindingEvidence.deleteMany(),
     client.supportRepairProposal.deleteMany(),
     client.supportDiagnosis.deleteMany(),

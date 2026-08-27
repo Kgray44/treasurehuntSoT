@@ -5,7 +5,7 @@ import { SupportCaseConsole } from "./SupportCaseConsole";
 describe("SupportCaseConsole", () => {
   afterEach(cleanup);
 
-  it("makes the read-only diagnostic boundary, evidence, and information-only proposal understandable", () => {
+  it("keeps diagnosis read-only while distinguishing information-only and registered repair states", () => {
     render(
       <SupportCaseConsole
         csrfToken="csrf-synthetic"
@@ -21,6 +21,7 @@ describe("SupportCaseConsole", () => {
             openedAt: "2026-08-27T15:00:00.000Z",
             correlationId: "correlation-synthetic-a",
             requestedScopes: ["ACCOUNT_STATE", "SESSION_DIAGNOSTICS"],
+            requestedRepairIds: [],
             consent: {
               requestId: "request-synthetic-a",
               status: "APPROVED",
@@ -28,6 +29,8 @@ describe("SupportCaseConsole", () => {
               grantId: "grant-synthetic-a",
               grantStatus: "ACTIVE",
               grantExpiresAt: "2026-08-27T15:30:00.000Z",
+              grantedRepairIds: [],
+              maximumRiskClass: "R0",
             },
             latestExecution: {
               id: "session-synthetic-a",
@@ -37,6 +40,7 @@ describe("SupportCaseConsole", () => {
               deniedAccessCount: 0,
               redactionCount: 2,
               receiptDigest: "a".repeat(64),
+              supportExecutionGrant: null,
               diagnosis: {
                 primaryCause: "NO_ACTIVE_SESSION",
                 confidence: "MEDIUM",
@@ -53,11 +57,19 @@ describe("SupportCaseConsole", () => {
               ],
               repairProposals: [
                 {
+                  id: "proposal-synthetic-a",
                   proposalType: "REAUTHENTICATE_ACCOUNT",
+                  repairId: null,
+                  targetType: null,
+                  targetId: null,
+                  targetRevision: null,
+                  proposalRevision: null,
+                  preview: null,
                   summary: "Ask the account owner to sign in again.",
                   requiredUserConsent: true,
                   requiresAdministrator: true,
                   state: "INFORMATION_ONLY",
+                  requiresHumanApproval: false,
                 },
               ],
               evidenceReferences: [
@@ -74,13 +86,11 @@ describe("SupportCaseConsole", () => {
         ]}
       />,
     );
-    expect(screen.getByRole("heading", { name: "Open a read-only support case" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Open a governed support case" })).toBeVisible();
     expect(screen.getByRole("heading", { name: "Confirm privileged work" })).toBeVisible();
-    expect(
-      screen.getByText(/It never changes account, Voyage, Community, job, session, configuration, or platform state/u),
-    ).toBeVisible();
+    expect(screen.getByText(/Diagnosis remains read-only/u)).toBeVisible();
     expect(screen.getByRole("button", { name: "Run read-only diagnosis" })).toBeVisible();
     expect(screen.getByText(/Proposed next action \(INFORMATION_ONLY\)/u)).toBeVisible();
-    expect(screen.queryByRole("button", { name: /repair|apply|execute/u })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Execute registered repair" })).not.toBeInTheDocument();
   });
 });
