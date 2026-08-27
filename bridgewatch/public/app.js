@@ -128,7 +128,7 @@ routeHost = document.querySelector("#route");
 const renderMetric = (label, value, note) => {
   const card = element("article", "card metric");
   card.append(element("p", "quiet", label), element("strong", "", text(value)));
-  if (note) card.append(element("p", "quiet", note));
+  if (note) card.append(element("p", "quiet metric-note", note));
   return card;
 };
 const eventList = (events) => {
@@ -146,6 +146,9 @@ const eventList = (events) => {
 };
 const table = (headers, rows) => {
   const wrap = element("div", "table-wrap");
+  wrap.tabIndex = 0;
+  wrap.setAttribute("role", "region");
+  wrap.setAttribute("aria-label", `Scrollable table: ${headers.join(", ")}`);
   const node = document.createElement("table");
   const head = document.createElement("thead");
   const headerRow = document.createElement("tr");
@@ -206,14 +209,31 @@ function renderOverview() {
   const node = document.createDocumentFragment();
   const summary = snapshot ?? {};
   const program = summary.program ?? {};
-  const overview = section("Observation overview", "Live status is bounded to retained evidence and source freshness.");
-  const metrics = element("div", "grid");
+  const overview = section(
+    "Fleet overview",
+    "A dense command view of the current portfolio. Lifecycle, verification, and source availability remain separate facts.",
+  );
+  const metrics = element("div", "grid dense");
   [
-    ["Projects", program.projects?.total],
-    ["Accepted phases", program.phases?.completeOrMerged],
-    ["Workers", summary.workers?.length],
-    ["Attention items", summary.attention?.length],
-  ].forEach(([label, value]) => metrics.append(renderMetric(label, value)));
+    [
+      "Projects",
+      program.projects?.total,
+      `${program.projects?.active ?? 0} active / ${program.projects?.complete ?? 0} complete`,
+    ],
+    [
+      "Accepted phases",
+      program.phases?.completeOrMerged,
+      `${program.phases?.active ?? 0} active / ${program.phases?.blocked ?? 0} blocked`,
+    ],
+    [
+      "Current main",
+      short(summary.github?.headSha ?? summary.currentMain),
+      summary.github?.defaultBranch ?? "LOCAL_GIT_OBSERVATION",
+    ],
+    ["Active workers", program.operational?.activeWorkers, "Activity telemetry only; zero is not missing history."],
+    ["Open pull requests", program.operational?.openPullRequests, "Repository observation is bounded."],
+    ["Attention", summary.attention?.length, "Each condition links to retained source evidence."],
+  ].forEach(([label, value, note]) => metrics.append(renderMetric(label, value, note)));
   overview.append(metrics);
   node.append(overview);
   const changes = section("Since last check", "Governed transitions are prioritized; polling noise is suppressed.");
@@ -227,109 +247,29 @@ function renderOverview() {
 function renderAttentionList(items) {
   const host = element("div", "list");
   if (!items?.length) return empty("No current attention item is retained.");
-  items.forEach((item) =>
+  items.forEach((item) => {
+    const body = document.createDocumentFragment();
+    body.append(element("p", "quiet", text(item.message ?? item.detail ?? item.summary)));
+    if (item.source) {
+      body.append(
+        element(
+          "p",
+          "source-ref",
+          `Source: ${item.source.id} / ${item.source.reference} / ${sourceDateText(item.source.observedAt)}`,
+        ),
+      );
+    }
+    if (item.projectId)
+      body.append(linkButton(`Open ${item.projectId} project profile`, `#/projects/${item.projectId}`));
     host.append(
       listRow(
-        item.code ?? item.title ?? item.kind ?? "Attention",
+        item.title ?? item.code ?? item.kind ?? "Attention",
         item.level ?? item.severity ?? item.state ?? "OBSERVED",
-        element("p", "quiet", text(item.message ?? item.detail ?? item.summary)),
+        body,
       ),
-    ),
-  );
+    );
+  });
   return host;
-}
-async function renderProgram() {
-  const data = await request("api/program");
-  const node = document.createDocumentFragment();
-  const summary = section(
-    "Program intelligence",
-    "Counts and accepted-history trends; no fabricated global completion percentage.",
-  );
-  const metrics = element("div", "grid");
-  Object.entries(data.summary ?? {}).forEach(([scope, values]) =>
-    Object.entries(values ?? {})
-      .filter(([, value]) => typeof value === "number")
-      .forEach(([label, value]) =>
-        metrics.append(renderMetric(`${scope} ${label}`.replaceAll(/([A-Z])/g, " $1"), value)),
-      ),
-  );
-  summary.append(metrics);
-  summary.append(detail([["Current observed main", data.currentMain ?? "NOT_RECORDED"]]));
-  node.append(summary);
-  const discovered = section(
-    "Discovered project truth",
-    "Repository documents, local refs, and GitHub observations are reconciled without rewriting accepted history.",
-  );
-  const rows = (data.discoveredProjects ?? []).map((project) => [
-    linkButton(project.name, `#/projects/${encodeURIComponent(project.id)}`),
-    project.state ?? "OBSERVED",
-    project.confidence,
-    project.phaseCount ?? "UNMEASURED",
-  ]);
-  discovered.append(
-    rows.length
-      ? table(["Project", "State", "Confidence", "Declared phases"], rows)
-      : empty("No durable discovery record is retained yet."),
-  );
-  node.append(discovered);
-  const timeline = section(
-    "Accepted timeline",
-    "Chronological accepted results remain distinct from active discovery.",
-  );
-  timeline.append(eventList(data.acceptedHistory ?? []));
-  node.append(timeline);
-  const historyWindow = section(
-    "Program history window",
-    "Choose a bounded From/To interval to inspect retained program events without changing observation state.",
-  );
-  const controls = element("div", "actions");
-  const from = document.createElement("input");
-  from.type = "datetime-local";
-  from.value = new Date(Date.now() - 86_400_000).toISOString().slice(0, 16);
-  from.setAttribute("aria-label", "Program history from");
-  const to = document.createElement("input");
-  to.type = "datetime-local";
-  to.value = new Date().toISOString().slice(0, 16);
-  to.setAttribute("aria-label", "Program history to");
-  const load = element("button", "", "Load window");
-  const result = element("div", "filter-results");
-  const loadWindow = async () => {
-    if (!from.value || !to.value) {
-      result.replaceChildren(empty("Both From and To are required for a bounded history window."));
-      return;
-    }
-    try {
-      const parameters = new URLSearchParams({
-        since: new Date(from.value).toISOString(),
-        until: new Date(to.value).toISOString(),
-        limit: "250",
-      });
-      const history = await request(`api/history?${parameters}`);
-      result.replaceChildren(
-        filteredTable({
-          records: history.events ?? [],
-          headers: ["When", "Type", "Entity", "Summary"],
-          row: (event) => [
-            dateText(event.occurredAt ?? event.observedAt),
-            event.kind ?? "OBSERVED",
-            `${event.entityType ?? "Observation"}: ${event.entityId ?? "UNMEASURED"}`,
-            event.summary ?? "UNMEASURED",
-          ],
-          matches: (event) =>
-            searchText([event.kind, event.entityType, event.entityId, event.projectId, event.phaseId, event.summary]),
-          placeholder: "Search retained history",
-          emptyMessage: "No retained observation matches this program window.",
-        }),
-      );
-    } catch (error) {
-      result.replaceChildren(empty(error instanceof Error ? error.message : "Program history is unavailable."));
-    }
-  };
-  load.addEventListener("click", () => void loadWindow());
-  controls.append(from, to, load);
-  historyWindow.append(controls, result);
-  node.append(historyWindow);
-  return node;
 }
 async function renderProjects() {
   const projects = await request("api/projects");
@@ -371,33 +311,66 @@ async function renderProjects() {
   return node;
 }
 async function renderProjectProfile(id) {
-  const project = await request(`api/projects/${encodeURIComponent(id)}`);
-  const versions = await request(`api/projects/${encodeURIComponent(id)}/versions`);
+  const [project, versions, program, fabric] = await Promise.all([
+    request(`api/projects/${encodeURIComponent(id)}`),
+    request(`api/projects/${encodeURIComponent(id)}/versions`),
+    request("api/program"),
+    request("api/facts"),
+  ]);
   const node = document.createDocumentFragment();
   const profile = section(
     `${project.name} project profile`,
-    "Truth is attributed to retained governing references and observed evidence.",
+    "Mission-grade profile: lifecycle, candidate/main relationships, validation, operations, and source limits are independently attributed.",
   );
+  const completed = (project.phases ?? []).filter((phase) => ["COMPLETE", "MERGED"].includes(phase.state)).length;
+  const declared = project.declaredPhaseCount ?? null;
+  const currentMain = program.currentMain ?? null;
+  const catalog = (fabric.facts ?? []).find((fact) => fact.factClass === "features.catalog");
+  const capability = (fabric.facts ?? []).find((fact) => fact.factClass === "deepwater.capability-evidence");
   profile.append(
     detail([
       ["State", project.state],
       ["Discovery confidence", project.discoveryConfidence],
+      ["Governing confidence", project.confidence],
+      [
+        "Phase record",
+        declared === null ? `${completed} completed / total NOT_RECORDED` : `${completed}/${declared} completed`,
+      ],
+      ["Current repository main", currentMain],
       ["Final main", project.finalMainSha],
       ["Final decision", project.finalDecision],
-      ["Governing references", (project.governingReferences ?? []).join("; ")],
+      [
+        "Current-main relationship",
+        project.finalMainSha && currentMain
+          ? project.finalMainSha === currentMain
+            ? "FINAL_MAIN_MATCHES_CURRENT_OBSERVATION"
+            : "FINAL_MAIN_DIFFERS_FROM_CURRENT_OBSERVATION (ancestry and update need NOT_INFERRED)"
+          : "NOT_RECORDED",
+      ],
+      ["Governing references", `${project.governingReferences?.length ?? 0} retained; inspect provenance below`],
     ]),
   );
   node.append(profile);
-  const phases = section("Phases", "Accepted history is preserved; select a phase for evidence and validation detail.");
+  const phases = section(
+    "Mainline, candidates, and phases",
+    "Branch, pull-request, accepted-candidate, and integrated-main identities are shown together only where retained evidence binds them.",
+  );
   phases.append(
     filteredTable({
       records: project.phases ?? [],
-      headers: ["Phase", "State", "Accepted source", "Receipt"],
+      headers: ["Phase", "State", "Branch", "PR", "Candidate", "Integrated main", "Decision"],
       row: (phase) => [
         linkButton(`Phase ${phase.ordinal}`, `#/projects/${encodeURIComponent(id)}/phases/${phase.ordinal}`),
         phase.state,
-        short(phase.integratedMainSha ?? phase.acceptedHeadSha),
-        phase.completionReceipt ?? "UNMEASURED",
+        phase.branch
+          ? linkButton(phase.branch, `#/github/branches?name=${encodeURIComponent(phase.branch)}`)
+          : "NOT_RECORDED",
+        phase.pullRequest
+          ? linkButton(`#${phase.pullRequest}`, `#/github/pull-requests/${phase.pullRequest}`)
+          : "NOT_RECORDED",
+        short(phase.acceptedHeadSha) === "UNMEASURED" ? "NOT_RECORDED" : short(phase.acceptedHeadSha),
+        short(phase.integratedMainSha) === "UNMEASURED" ? "NOT_RECORDED" : short(phase.integratedMainSha),
+        phase.finalDecision ?? "NOT_RECORDED",
       ],
       matches: (phase) =>
         searchText([
@@ -437,31 +410,145 @@ async function renderProjectProfile(id) {
     }),
   );
   node.append(versionsSection);
-  const related = section(
-    "Related activity",
-    "Only observed GitHub, worker, validation, and retained-history records associated with this project.",
+  const repository = section(
+    "Repository activity and current-main delta",
+    "Only project-associated GitHub observations are included. Association uncertainty stays unclassified rather than being assigned by name similarity alone.",
   );
-  related.append(
+  repository.append(
+    (project.branches ?? []).length
+      ? table(
+          ["Branch", "Ahead", "Behind", "Health", "Last activity", "Current-main note"],
+          project.branches.map((branch) => [
+            linkButton(branch.name, `#/github/branches?name=${encodeURIComponent(branch.name)}`),
+            branch.ahead ?? "NOT_RECORDED",
+            branch.behind ?? "NOT_RECORDED",
+            branch.reason ?? branch.health ?? "OBSERVED",
+            dateText(branch.lastActivityAt),
+            branch.message ?? "No observed delta condition.",
+          ]),
+        )
+      : empty(
+          "No project-associated branch observation is retained. Unclassified repository branches remain visible in Repository.",
+        ),
+  );
+  repository.append(
+    (project.pullRequests ?? []).length
+      ? table(
+          ["PR", "State", "Checks", "Mergeability", "Updated", "Head / base"],
+          project.pullRequests.map((pull) => [
+            linkButton(`#${pull.number}`, `#/github/pull-requests/${pull.number}`),
+            pull.state ?? "NOT_RECORDED",
+            pull.checkState ?? "NOT_RECORDED",
+            pull.mergeableState ?? "NOT_RECORDED",
+            dateText(pull.updatedAt),
+            `${short(pull.headSha)} / ${short(pull.baseSha)}`,
+          ]),
+        )
+      : empty("No project-associated pull-request observation is retained."),
+  );
+  node.append(repository);
+  const verification = section(
+    "Verification and Sounding Line evidence",
+    "Runs are included only when their retained source SHA matches an accepted or integrated phase identity. Absence is not a pass.",
+  );
+  verification.append(
+    (project.tests ?? []).length
+      ? table(
+          ["Run", "Decision", "Suites", "Tests", "Passed", "Failed", "Blocked", "Observed"],
+          project.tests.map((run) => {
+            const summary = nodeSummary(run.value?.nodes);
+            return [
+              linkButton(run.id, `#/operations/runs/${encodeURIComponent(run.id)}`),
+              run.value?.finalDecision ?? run.value?.decision ?? "NOT_RECORDED",
+              summary.suites,
+              summary.total,
+              summary.passed,
+              summary.failed,
+              summary.blocked,
+              dateText(run.observedAt),
+            ];
+          }),
+        )
+      : empty("No retained Sounding Line run is bound to this project's accepted or integrated phase source SHA."),
+  );
+  node.append(verification);
+  const operations = section(
+    "Workers, current attention, and dependencies",
+    "Worker records are activity-only. No dependency relationship is inferred when the P2 sources do not publish one.",
+  );
+  operations.append(
     detail([
-      ["Observed branches", project.branches?.length ?? 0],
-      ["Observed pull requests", project.pullRequests?.length ?? 0],
-      ["Retained worker records", project.workers?.length ?? 0],
-      ["Validation runs", project.tests?.length ?? 0],
-      ["Retained history events", project.history?.length ?? 0],
-      ["Evidence", (project.evidence ?? []).join("; ")],
+      ["Current / retained worker records", project.workers?.length ?? 0],
+      ["Project attention conditions", (snapshot?.attention ?? []).filter((item) => item.projectId === id).length],
+      ["Dependency mapping", "NOT_RECORDED by the bounded observation sources"],
+      ["Capability realization mapping", "NOT_RECORDED unless a source-bound realization record is supplied"],
     ]),
   );
-  const activity = [
-    ...(project.history ?? []),
-    ...(project.workers ?? []).map((worker) => ({
-      entityType: "worker",
-      kind: worker.effectiveState ?? worker.state,
-      summary: `${worker.workerId}: ${worker.task}`,
-      occurredAt: worker.heartbeatAt,
-    })),
-  ];
-  related.append(eventList(activity));
-  node.append(related);
+  operations.append(
+    (project.workers ?? []).length
+      ? table(
+          ["Worker", "State", "Task", "Branch", "Source SHA", "Heartbeat"],
+          project.workers.map((worker) => [
+            worker.workerId,
+            worker.effectiveState ?? worker.state,
+            worker.task,
+            worker.branch ?? "NOT_RECORDED",
+            short(worker.sourceSha),
+            dateText(worker.heartbeatAt),
+          ]),
+        )
+      : empty("No active or retained worker telemetry is associated with this project."),
+  );
+  operations.append(renderAttentionList((snapshot?.attention ?? []).filter((item) => item.projectId === id)));
+  node.append(operations);
+  const provenance = section(
+    "Product intelligence, provenance, and coverage",
+    "The Bridgewatch Feature Catalog and Deepwater capability evidence are global bounded sources, not inferred project-level claims.",
+  );
+  provenance.append(
+    detail([
+      [
+        "Bridgewatch Feature Catalog",
+        catalog
+          ? `${catalog.state} / ${catalog.value.bridgewatchFeatureCount ?? "NOT_RECORDED"} recorded entries`
+          : "UNKNOWN",
+      ],
+      [
+        "Capability evidence",
+        capability
+          ? `${capability.state} / ${capability.limitation ?? "no further realization detail recorded"}`
+          : "UNKNOWN",
+      ],
+      ["Project evidence", `${project.evidence?.length ?? 0} retained references`],
+      ["Missing / historical gaps", `${project.missingEvidence?.length ?? 0} recorded`],
+      ["Source paths", `${project.sourcePaths?.length ?? 0} retained references`],
+      ["Project limitations", `${project.limitations?.length ?? 0} recorded`],
+    ]),
+  );
+  const provenanceRecords = [
+    ...new Set([...(project.governingReferences ?? []), ...(project.sourcePaths ?? []), ...(project.evidence ?? [])]),
+  ].map((reference) => ({
+    reference,
+    role: project.governingReferences?.includes(reference)
+      ? "GOVERNING_OR_DISCOVERY"
+      : project.sourcePaths?.includes(reference)
+        ? "SOURCE_PATH"
+        : "RETAINED_EVIDENCE",
+  }));
+  provenance.append(
+    filteredTable({
+      records: provenanceRecords,
+      headers: ["Reference", "Role"],
+      row: (entry) => [entry.reference, entry.role],
+      matches: (entry) => `${entry.reference} ${entry.role}`,
+      placeholder: "Search project provenance",
+      emptyMessage: "No project provenance reference is retained.",
+    }),
+  );
+  node.append(provenance);
+  const history = section("Project history", "Only durable source-bound historical events are shown.");
+  history.append(eventList(project.history ?? []));
+  node.append(history);
   return node;
 }
 async function renderVersionProfile(id, version) {
@@ -784,6 +871,210 @@ async function renderSoundingLineProfile(id) {
   node.append(history);
   return node;
 }
+async function renderMainline() {
+  const data = snapshot ?? (await request("api/summary"));
+  const node = document.createDocumentFragment();
+  const mainline = section(
+    "Mainline / Sounding Line",
+    "Candidate, decision, and predicted-integration observations remain source-owned. This station cannot merge, rerun, cancel, or advance a lane.",
+  );
+  mainline.append(
+    detail([
+      ["Current observed main", data.github?.headSha ?? data.currentMain ?? "NOT_RECORDED"],
+      ["Default branch", data.github?.defaultBranch ?? "NOT_RECORDED"],
+      ["Source freshness", data.source?.state ?? "NOT_RECORDED"],
+      ["Current Sounding Line plans", data.tests?.projection?.plans?.length ?? "NOT_RECORDED"],
+      ["Active test nodes", data.tests?.totals?.running ?? "NOT_RECORDED"],
+      ["Root failures", data.tests?.totals?.rootFailures ?? "NOT_RECORDED"],
+    ]),
+  );
+  node.append(mainline);
+  const plans = section(
+    "Candidate and decision ledger",
+    "Plan identity, source SHA, final decision, and cleanup are displayed together only when the runtime projection retains them.",
+  );
+  const planRows = data.tests?.projection?.plans ?? [];
+  plans.append(
+    planRows.length
+      ? table(
+          ["Run", "State", "Candidate SHA", "Decision", "Cleanup", "Created", "Nodes"],
+          planRows.map((plan) => [
+            linkButton(plan.id, `#/operations/runs/${encodeURIComponent(plan.id)}`),
+            plan.state ?? "NOT_RECORDED",
+            short(plan.sourceSha) === "UNMEASURED" ? "NOT_RECORDED" : short(plan.sourceSha),
+            plan.finalDecision ?? "PENDING_OR_NOT_RECORDED",
+            plan.cleanupState ?? "NOT_RECORDED",
+            dateText(plan.createdAt),
+            plan.nodes?.length ?? "NOT_RECORDED",
+          ]),
+        )
+      : empty("No current Sounding Line plan is retained by the configured projection."),
+  );
+  node.append(plans);
+  const intelligence = section(
+    "Mainline attention",
+    "Only attention with Sounding Line, GitHub, or runtime provenance is included here; source metadata explains the observation.",
+  );
+  intelligence.append(
+    renderAttentionList(
+      (data.attention ?? []).filter((item) =>
+        ["sounding-line-runtime-projection", "github-repository-api", "voyagewright-runtime"].includes(item.source?.id),
+      ),
+    ),
+  );
+  node.append(intelligence);
+  return node;
+}
+async function renderVerification() {
+  const [data, runs] = await Promise.all([snapshot ?? request("api/summary"), request("api/sounding-line/runs")]);
+  const node = document.createDocumentFragment();
+  const summary = section(
+    "Verification",
+    "Sounding Line is observed as the decision authority. Test totals, node outcomes, retries, and failure roots never authorize Bridgewatch to act.",
+  );
+  const metrics = element("div", "grid dense");
+  Object.entries(data.tests?.totals ?? {}).forEach(([label, value]) => metrics.append(renderMetric(label, value)));
+  summary.append(metrics);
+  node.append(summary);
+  const executions = section(
+    "Retained verification runs",
+    "Deep-link into a run for source SHA, authority boundary, selected suite, node, train, and evidence detail.",
+  );
+  executions.append(
+    runs.length
+      ? table(
+          ["Run", "Gate", "State", "Decision", "Cleanup", "Source SHA", "Observed"],
+          runs.map((run) => [
+            linkButton(run.id, `#/operations/runs/${encodeURIComponent(run.id)}`),
+            run.value?.gate ?? "NOT_RECORDED",
+            run.value?.state ?? "NOT_RECORDED",
+            run.value?.finalDecision ?? "NOT_RECORDED",
+            run.value?.cleanupState ?? "NOT_RECORDED",
+            short(run.value?.sourceSha) === "UNMEASURED" ? "NOT_RECORDED" : short(run.value?.sourceSha),
+            dateText(run.observedAt),
+          ]),
+        )
+      : empty("No retained verification run is available. This is not evidence of a passing or failing decision."),
+  );
+  node.append(executions);
+  const regressions = section(
+    "Verification regressions and evidence gaps",
+    "Only source-bound blocked, failed, or missing-evidence conditions are shown.",
+  );
+  regressions.append(
+    renderAttentionList(
+      (data.attention ?? []).filter((item) =>
+        /VERIFICATION|EXPECTED_FACT_GAP|CANDIDATE_STALLED/u.test(item.code ?? ""),
+      ),
+    ),
+  );
+  node.append(regressions);
+  return node;
+}
+async function renderProductIntelligence() {
+  const [program, fabric] = await Promise.all([request("api/program"), request("api/facts")]);
+  const node = document.createDocumentFragment();
+  const facts = fabric.facts ?? [];
+  const relevant = facts.filter((fact) =>
+    ["features.catalog", "deepwater.capability-evidence", "governance.records", "projects.registry"].includes(
+      fact.factClass,
+    ),
+  );
+  const intelligence = section(
+    "Product intelligence",
+    "Program realization is limited to source-bound catalog, governance, registry, and capability evidence. A backend capability is never presumed product-realized.",
+  );
+  intelligence.append(
+    detail([
+      ["Current observed main", program.currentMain ?? "NOT_RECORDED"],
+      ["Discovered projects", program.discoveredProjects?.length ?? "NOT_RECORDED"],
+      ["Accepted timeline records", program.acceptedHistory?.length ?? "NOT_RECORDED"],
+      [
+        "Realization rule",
+        "NOT_RECORDED unless an authoritative source explicitly links capability evidence to a product surface",
+      ],
+    ]),
+  );
+  node.append(intelligence);
+  const evidence = section(
+    "Catalog, governance, and capability evidence",
+    "Each record carries fact state, authority, observation time, and an explicit limitation rather than a derived product-completion claim.",
+  );
+  evidence.append(
+    relevant.length
+      ? table(
+          ["Evidence class", "State", "Authority", "Observed", "Value", "Limitation"],
+          relevant.map((fact) => [
+            linkButton(fact.label, `#/data/facts/${encodeURIComponent(fact.key)}`),
+            tag(fact.state),
+            fact.provenance?.authority ?? "NOT_RECORDED",
+            sourceDateText(fact.provenance?.sourceObservedAt),
+            Object.entries(fact.value ?? {})
+              .map(([key, value]) => `${key}=${text(value)}`)
+              .join(" / ") || "NOT_RECORDED",
+            fact.limitation ?? "NONE",
+          ]),
+        )
+      : empty("No product-intelligence fact has been retained. That is a coverage gap, not a product conclusion."),
+  );
+  node.append(evidence);
+  return node;
+}
+async function renderRuntime() {
+  const [fabric, sources] = await Promise.all([request("api/facts"), request("api/sources")]);
+  const node = document.createDocumentFragment();
+  const facts = (fabric.facts ?? []).filter((fact) =>
+    ["voyagewright.runtime-identity", "voyagewright.schema-migrations", "operations.provider-jobs"].includes(
+      fact.factClass,
+    ),
+  );
+  const runtime = section(
+    "Voyagewright Runtime",
+    "Host-owned allowlisted identity, schema inventory, and provider/job status. Bridgewatch does not inspect product data, command lines, credentials, prompts, logs, or controls.",
+  );
+  runtime.append(
+    facts.length
+      ? table(
+          ["Observation", "State", "Source", "Observed", "Allowlisted value", "Limitation"],
+          facts.map((fact) => [
+            linkButton(fact.label, `#/data/facts/${encodeURIComponent(fact.key)}`),
+            tag(fact.state),
+            fact.provenance?.sourceId ?? "NOT_RECORDED",
+            sourceDateText(fact.provenance?.sourceObservedAt),
+            Object.entries(fact.value ?? {})
+              .map(([key, value]) => `${key}=${text(value)}`)
+              .join(" / ") || "NOT_RECORDED",
+            fact.limitation ?? "NONE",
+          ]),
+        )
+      : empty("No runtime observation has been retained. Runtime state remains UNKNOWN rather than assumed healthy."),
+  );
+  node.append(runtime);
+  const sourceHealth = section(
+    "Runtime source health",
+    "Runtime and provider adapters are distinct from repository and deployment state, so unavailable configuration remains visible.",
+  );
+  const runtimeSources = sources.filter((source) =>
+    /voyagewright-runtime|schema-migrations|provider-jobs/u.test(source.name),
+  );
+  sourceHealth.append(
+    runtimeSources.length
+      ? table(
+          ["Source", "Health", "Configured", "Last success", "Coverage", "Diagnostic"],
+          runtimeSources.map((source) => [
+            linkButton(source.name, `#/sources/${encodeURIComponent(source.name)}`),
+            tag(source.state),
+            source.configured ? "CONFIGURED" : "NOT_CONFIGURED",
+            sourceDateText(source.lastSuccessAt),
+            source.coverage?.state ?? "NOT_RECORDED",
+            source.failure?.diagnostic ?? source.detail ?? "NONE",
+          ]),
+        )
+      : empty("No runtime source profile is retained."),
+  );
+  node.append(sourceHealth);
+  return node;
+}
 async function renderGithub() {
   const [branches, pulls, actions] = await Promise.all([
     request("api/branches"),
@@ -791,6 +1082,19 @@ async function renderGithub() {
     request("api/actions"),
   ]);
   const node = document.createDocumentFragment();
+  const repositoryOverview = section(
+    "Repository",
+    "Bounded read-only GitHub observations: branch health, pull-request state, workflow outcomes, and explicit association confidence. No repository action is offered.",
+  );
+  repositoryOverview.append(
+    detail([
+      ["Observed branches", branches.length],
+      ["Observed pull requests", pulls.length],
+      ["Observed workflows", actions.length],
+      ["Association policy", "Project binding is required; uncertain repository activity remains UNCLASSIFIED."],
+    ]),
+  );
+  node.append(repositoryOverview);
   const branchSection = section(
     "Branches",
     "Observed branch health and project association; no branch action is offered.",
@@ -961,16 +1265,19 @@ async function renderAttention() {
   return node;
 }
 async function renderHistory() {
-  const data = await request("api/history?limit=250");
+  const initialSince = new Date(Date.now() - 86_400_000).toISOString();
+  const data = await request(`api/history?${new URLSearchParams({ since: initialSince })}`);
   const node = document.createDocumentFragment();
   const history = section("Program history", "Detailed retained events can be compared across a bounded interval.");
   const actions = element("div", "actions");
   const from = document.createElement("input");
   from.type = "datetime-local";
-  from.value = new Date(Date.now() - 86_400_000).toISOString().slice(0, 16);
+  from.value = initialSince.slice(0, 16);
+  from.setAttribute("aria-label", "History comparison from");
   const to = document.createElement("input");
   to.type = "datetime-local";
   to.value = new Date().toISOString().slice(0, 16);
+  to.setAttribute("aria-label", "History comparison to");
   const compare = element("button", "", "Compare interval");
   compare.addEventListener("click", () => {
     window.location.hash = `#/compare?from=${encodeURIComponent(new Date(from.value).toISOString())}&to=${encodeURIComponent(new Date(to.value).toISOString())}`;
@@ -1162,8 +1469,28 @@ async function renderFactProfile(key) {
   return node;
 }
 async function renderSources() {
-  const sources = await refreshSources();
+  const [sources, fabric] = await Promise.all([refreshSources(), request("api/facts")]);
   const node = document.createDocumentFragment();
+  const coverage = section(
+    "Data & Coverage",
+    "Every fixed expected fact class is counted. Unavailable, stale, provisional, and historically unrecorded evidence stay visible instead of becoming a synthetic health score.",
+  );
+  coverage.append(
+    table(
+      ["System", "Expected", "Authoritative", "Provisional", "Stale", "Unavailable", "Not recorded", "Unknown"],
+      (fabric.coverage ?? []).map((entry) => [
+        entry.system,
+        entry.expected,
+        entry.authoritative,
+        entry.provisional,
+        entry.stale,
+        entry.sourceUnavailable,
+        entry.notHistoricallyRecorded,
+        entry.unknown,
+      ]),
+    ),
+  );
+  node.append(coverage);
   const sourceSection = section(
     "Sources & Data Quality",
     "Acquisition health and observation coverage are separate: a reachable source can still have bounded or unavailable evidence.",
@@ -1186,6 +1513,28 @@ async function renderSources() {
     ),
   );
   node.append(sourceSection);
+  const factGaps = section(
+    "Expected-fact gaps",
+    "A gap names the exact fact class and source limitation; it is not an assertion that the underlying project, runtime, or provider is absent.",
+  );
+  const gaps = (fabric.facts ?? []).filter((fact) =>
+    ["SOURCE_UNAVAILABLE", "STALE", "UNKNOWN", "NOT_HISTORICALLY_RECORDED"].includes(fact.state),
+  );
+  factGaps.append(
+    gaps.length
+      ? table(
+          ["Fact class", "State", "Source", "Observed", "Limitation"],
+          gaps.map((fact) => [
+            linkButton(fact.label, `#/data/facts/${encodeURIComponent(fact.key)}`),
+            tag(fact.state),
+            fact.provenance?.sourceId ?? "NOT_RECORDED",
+            sourceDateText(fact.provenance?.sourceObservedAt),
+            fact.limitation ?? "NONE",
+          ]),
+        )
+      : empty("No retained fact gap is currently reported by the bounded data fabric."),
+  );
+  node.append(factGaps);
   return node;
 }
 async function renderSourceProfile(name) {
@@ -1242,14 +1591,14 @@ const parseRoute = () => {
 async function renderRoute() {
   routeHost.replaceChildren(element("p", "quiet", "Loading bounded observation..."));
   const { parts, query } = parseRoute();
-  const station = parts[0] ?? "overview";
+  const station = parts[0] ?? "fleet";
   document
     .querySelectorAll("[data-station]")
     .forEach((link) => link.toggleAttribute("aria-current", link.dataset.station === station));
   try {
     let content;
-    if (station === "overview") content = renderOverview();
-    else if (station === "program") content = await renderProgram();
+    if (station === "fleet" || station === "overview") content = renderOverview();
+    else if (station === "intelligence" || station === "program") content = await renderProductIntelligence();
     else if (station === "projects" && parts[2] === "versions")
       content = await renderVersionProfile(parts[1], parts[3]);
     else if (station === "projects" && parts[2] === "phases") content = await renderPhaseProfile(parts[1], parts[3]);
@@ -1258,13 +1607,16 @@ async function renderRoute() {
     else if (station === "operations" && parts[1] === "runs" && parts[2])
       content = await renderSoundingLineProfile(parts[2]);
     else if (station === "operations") content = await renderOperations();
+    else if (station === "mainline") content = await renderMainline();
+    else if (station === "verification") content = await renderVerification();
     else if (station === "github" && parts[1] === "pull-requests" && parts[2])
       content = await renderPullRequestProfile(parts[2]);
     else if (station === "github" && parts[1] === "branches") content = await renderBranchProfile(query);
-    else if (station === "github") content = await renderGithub();
+    else if (station === "github" || station === "repository") content = await renderGithub();
     else if (station === "attention") content = await renderAttention();
     else if (station === "history") content = await renderHistory();
     else if (station === "compare") content = await renderComparison(query);
+    else if (station === "runtime") content = await renderRuntime();
     else if (station === "sources" && parts[1]) content = await renderSourceProfile(parts[1]);
     else if (station === "sources") content = await renderSources();
     else if (station === "data" && parts[1] === "facts" && parts[2]) content = await renderFactProfile(parts[2]);

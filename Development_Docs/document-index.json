@@ -417,6 +417,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Features/branch-complete/project-bridgewatch-v2-light-mission-control.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Features/branch-complete/project-shipwright-phase2.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -3022,6 +3028,24 @@
     },
     {
       "path": "Development_Docs/Project_Bridgewatch_v1.2_Validation_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_v2.0_Light_Mission_Control_Design_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_v2.0_Light_Mission_Control_Test_Plan.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_v2.0_Light_Mission_Control_Validation_Record.md",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

@@ -40,6 +40,15 @@ last_reviewed: 2026-08-27
   Leaving the room, leaving a Voyage, Captaincy, and cancellation remain
   separate actions. This is protected-source behavior with local/synthetic
   evidence, not deployment, live-Voyage proof, or owner acceptance.
+- Expanded Project Bridgewatch on its dedicated v2.0 Light Mission Control
+  candidate with an eleven-station, read-only operator experience: Fleet,
+  Operations, Mainline, Verification, Projects, Repository, Product
+  Intelligence, Runtime, Sources/Data Quality, History, and Attention. Dense
+  project profiles now group retained candidate/main, verification, repository,
+  provenance, and observation-coverage detail; source-bound intelligence keeps
+  degraded, unavailable, provisional, and unrecorded conditions visible. This
+  candidate does not claim protected-main integration, deployment, provider
+  acceptance, or a Bridgewatch Phase 4.
 
 - Added Project Admiralty Support Pilot S1, **Open the Case**, as a bounded
   autonomous support diagnosis candidate. Authorized operators can open an
