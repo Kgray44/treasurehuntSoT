@@ -20,14 +20,14 @@ accepted A1 or A2 work and without starting original Helm Phase 3.
 
 ## Protected-main identity
 
-| Item | Recorded value |
-| --- | --- |
-| Accepted product candidate | `ab5eb79b00d2d16710965a0d20039229cfd6aeda` |
-| Candidate base | `e1a8d7eb1a6280bd3a6384070be519a72e0d9674` |
-| Ordinary authority | [Sounding Line / Mainline Decision run 33090690178](https://github.com/Kgray44/treasurehuntSoT/actions/runs/33090690178), `PASS` |
-| Protected pull request | [#489 — Project Helm A3: Ready the Room](https://github.com/Kgray44/treasurehuntSoT/pull/489) |
-| Mainline merge commit | `488cee22e2a3c9e700409cd6d43872f11613b469` |
-| Candidate and merge tree | `c70454ff892bd3222f3c888b08fea6c5147c8dc7` (identical) |
+| Item                       | Recorded value                                                                                                                   |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Accepted product candidate | `ab5eb79b00d2d16710965a0d20039229cfd6aeda`                                                                                       |
+| Candidate base             | `e1a8d7eb1a6280bd3a6384070be519a72e0d9674`                                                                                       |
+| Ordinary authority         | [Sounding Line / Mainline Decision run 33090690178](https://github.com/Kgray44/treasurehuntSoT/actions/runs/33090690178), `PASS` |
+| Protected pull request     | [#489 — Project Helm A3: Ready the Room](https://github.com/Kgray44/treasurehuntSoT/pull/489)                                    |
+| Mainline merge commit      | `488cee22e2a3c9e700409cd6d43872f11613b469`                                                                                       |
+| Candidate and merge tree   | `c70454ff892bd3222f3c888b08fea6c5147c8dc7` (identical)                                                                           |
 
 An earlier candidate, `8f58b0ec70b998b6b3f2af668bcf882a23cc9252`,
 retains its failed authority receipt. Its full serial browser suite reached the
@@ -71,4 +71,3 @@ The recorded browser evidence uses only task-owned SQLite databases, synthetic
 accounts, synthetic email outboxes, and production `next start` servers. It
 does not claim deployment, production MySQL execution, live-provider delivery,
 physical-device validation, or owner acceptance.
-
