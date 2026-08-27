@@ -66,7 +66,9 @@ describe("GitHub normalized collection", () => {
         expect.objectContaining({
           name: "github",
           state: "HEALTHY",
-          configured: false,
+          // Repository selection configures a bounded anonymous observer; a
+          // token is optional and reported separately as ANONYMOUS.
+          configured: true,
           reachable: true,
           authenticationState: "ANONYMOUS",
           rateLimitRemaining: 42,

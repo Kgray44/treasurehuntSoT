@@ -23,7 +23,7 @@ const entry = (overrides: Partial<FeatureCatalogEntry> = {}): FeatureCatalogEntr
 describe("Feature Catalog", () => {
   it("loads the audited catalog with stable ordering", () => {
     const { entries } = loadFeatureCatalog();
-    expect(entries).toHaveLength(51);
+    expect(entries).toHaveLength(52);
     expect(sortedEntries(entries).map((item) => item.id)).toEqual(
       [...sortedEntries(entries).map((item) => item.id)].sort((a, b) =>
         a.localeCompare(b, undefined, { numeric: true }),
@@ -31,6 +31,7 @@ describe("Feature Catalog", () => {
     );
     expect(entries.find((item) => item.id === "FT-B009")?.program).toBe("Project Tideglass Phases 1-4");
     expect(entries.find((item) => item.id === "FT-036")?.program).toBe("Project Drydock Phase 3");
+    expect(entries.find((item) => item.id === "FT-039")?.program).toBe("Project Bridgewatch v1.2 P2 - Flood the Board");
   });
 
   it("rejects duplicate and empty subfeatures", () => {

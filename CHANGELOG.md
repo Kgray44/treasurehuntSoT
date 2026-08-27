@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-08-24
+last_reviewed: 2026-08-27
 ---
 
 # Changelog
@@ -11,6 +11,15 @@ last_reviewed: 2026-08-24
 ## Unreleased
 
 ### Changed
+
+- Expanded Project Bridgewatch on its dedicated v1.2 P2 implementation branch
+  with a bounded typed data fabric: per-source provenance/precedence and
+  last-known-good truth, explicit expected fact-class coverage, truthful
+  historical backfill states, safe Voyagewright runtime/schema observation,
+  durable SQLite fact history, and a responsive Data & Coverage station. It
+  remains a private GET/HEAD observer with no merge, retry, queue, release, or
+  other control plane; this is not protected-main integration, deployment, or
+  owner acceptance.
 
 - Expanded Project Bridgewatch on its dedicated v1.2 implementation branch
   into a version-aware, hash-routed private Mission Control with bounded

@@ -26,6 +26,8 @@ export interface Config {
   BRIDGEWATCH_SOUNDING_LINE_PROJECTION_PATH?: string;
   BRIDGEWATCH_NIGHTWATCH_DB_PATH: string;
   BRIDGEWATCH_NIGHTWATCH_REPOSITORY_ROOT: string;
+  BRIDGEWATCH_VOYAGEWRIGHT_RUNTIME_STATE_PATH?: string;
+  BRIDGEWATCH_PROVIDER_STATUS_PATH?: string;
   BRIDGEWATCH_DASHBOARD_USERNAME?: string;
   BRIDGEWATCH_DASHBOARD_PASSWORD?: string;
 }
@@ -103,6 +105,15 @@ export function loadConfig(input: Record<string, string | undefined> = process.e
     BRIDGEWATCH_SOUNDING_LINE_PROJECTION_PATH: input.BRIDGEWATCH_SOUNDING_LINE_PROJECTION_PATH,
     BRIDGEWATCH_NIGHTWATCH_DB_PATH: resolve(input.BRIDGEWATCH_NIGHTWATCH_DB_PATH ?? "../.nightwatch/nightwatch.sqlite"),
     BRIDGEWATCH_NIGHTWATCH_REPOSITORY_ROOT: resolve(input.BRIDGEWATCH_NIGHTWATCH_REPOSITORY_ROOT ?? ".."),
+    // These optional files are deliberately host-owned projections. The data
+    // fabric reads a strict identity/status allowlist and never accepts either
+    // path from an HTTP request.
+    BRIDGEWATCH_VOYAGEWRIGHT_RUNTIME_STATE_PATH: input.BRIDGEWATCH_VOYAGEWRIGHT_RUNTIME_STATE_PATH
+      ? resolve(input.BRIDGEWATCH_VOYAGEWRIGHT_RUNTIME_STATE_PATH)
+      : undefined,
+    BRIDGEWATCH_PROVIDER_STATUS_PATH: input.BRIDGEWATCH_PROVIDER_STATUS_PATH
+      ? resolve(input.BRIDGEWATCH_PROVIDER_STATUS_PATH)
+      : undefined,
     BRIDGEWATCH_DASHBOARD_USERNAME: dashboardUsername,
     BRIDGEWATCH_DASHBOARD_PASSWORD: dashboardPassword,
   };

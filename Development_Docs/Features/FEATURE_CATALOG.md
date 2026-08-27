@@ -1700,6 +1700,44 @@ Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-039 - Bridgewatch Bounded Data Fabric
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Bridgewatch v1.2 P2 - Flood the Board
+
+Bridgewatch v1.2 P2 makes a fixed, read-only set of typed repository, governance, delivery-evidence, coordination, Voyagewright, and operations facts inspectable with provenance, precedence, exact observation coverage, source-specific stale retention, and durable local history, without granting the dashboard control authority.
+
+### Important subfeatures
+
+- Eleven fixed typed adapters spanning GitHub, local current main, indexed records, registry, catalog, Deepwater, Sounding Line, telemetry, Voyagewright runtime/schema, and provider status
+- Per-fact source identity, authority, maturity, precedence, freshness, explicit limitation, and retained-cache provenance
+- Exact expected fact-class coverage by system with authoritative, provisional, stale, unavailable, unrecorded, and unknown states
+- Truthful historical backfill that preserves NOT_HISTORICALLY_RECORDED instead of inventing absent evidence
+- Source-specific last-known-good retention and additive SQLite current/history tables
+- Host-owned allowlisted Voyagewright runtime identity and provider/job status observation without database, process, credential, prompt, log, or user-content access
+- Responsive, keyboard-visible Data & Coverage and fact-provenance profiles with deep links and bounded fact search
+
+### Primary surfaces
+
+`bridgewatch`, `GET /api/facts`, `GET /api/coverage`, `GET /api/facts/:key`, `Data & Coverage station`
+
+### Meaningful limitations
+
+- P2 remains a private GET/HEAD observer: it cannot create, approve, merge, retry, cancel, release, or change project, worker, provider, or Voyagewright state.
+- Runtime and provider facts exist only when an approved host-owned status projection is configured; unavailable and stale states remain visible rather than inferred.
+- This branch-complete catalog entry is not protected-main integration, deployment, provider proof, or owner acceptance, and it does not authorize Bridgewatch P3.
+
+### Evidence
+
+- branch: `codex/bridgewatch-v2-p2-flood-the-board`
+- commit: `304c4b6354fc8b3026a106550cb0510ed335b312`
+- path: `bridgewatch/src/fabric.ts`
+- path: `bridgewatch/lib/store.ts`
+- test: `bridgewatch/test/fabric.test.ts`
+- test: `bridgewatch/test/server.test.ts`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
