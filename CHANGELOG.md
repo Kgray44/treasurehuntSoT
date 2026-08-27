@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-08-24
+last_reviewed: 2026-08-27
 ---
 
 # Changelog
@@ -11,6 +11,24 @@ last_reviewed: 2026-08-24
 ## Unreleased
 
 ### Changed
+
+- Expanded Project Bridgewatch on its dedicated v1.2 P2 implementation branch
+  with a bounded typed data fabric: per-source provenance/precedence and
+  last-known-good truth, explicit expected fact-class coverage, truthful
+  historical backfill states, safe Voyagewright runtime/schema observation,
+  durable SQLite fact history, and a responsive Data & Coverage station. It
+  remains a private GET/HEAD observer with no merge, retry, queue, release, or
+  other control plane; this is not protected-main integration, deployment, or
+  owner acceptance.
+
+- Added Project Helm Amendment A2, **Pass the Helm**: a Captain + Player can
+  transfer scoped Captain authority to another joined Player without changing
+  either membership; relinquishment enters Succession Hold rather than
+  cancelling; eligible Players can take the vacant Captaincy first-committed-
+  wins, leave, or create independent same-edition solo continuations with
+  durable lineage and no copied Player-private state. This is protected-source
+  behavior with local/synthetic evidence, not deployment, live-Voyage proof,
+  or owner acceptance.
 
 - Expanded Project Bridgewatch on its dedicated v1.2 implementation branch
   into a version-aware, hash-routed private Mission Control with bounded
@@ -44,6 +62,16 @@ last_reviewed: 2026-08-24
   source-version provenance; and applies reuse through the ordinary autosave
   and undo/redo path. Protected source material and cross-owner Library access
   remain rejected.
+
+- Prepared the branch-complete Project Shipwright Phase 5, **Launch from the
+  Yard**, candidate. Creator Studio Version history stages saved-draft review, current
+  Drydock readiness, exact release differences, asset/access and compatibility
+  review, Creator release notes, and explicit immutable confirmation before it
+  invokes the existing One Voyage publication authority. Success requires the
+  returned immutable Version receipt; failure preserves the draft for repair.
+  Preview, Voyage, comparison, and eligible Harborlight handoffs remain
+  governed next actions rather than parallel publishing systems. Protected-main
+  acceptance remains the required publication of this candidate.
 
 - Expanded Project Admiralty on its Phase 2 review branch into a read-only
   15-route Chartroom with authorized account-menu entry, role-filtered

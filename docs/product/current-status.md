@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-08-24
+last_reviewed: 2026-08-27
 ---
 
 # Current status
@@ -28,7 +28,7 @@ libraries, journals, profile and Passport surfaces, protected content, and
 animation presentation. Homeport reached main through protected PR #9; this is
 source integration, not deployment or owner acceptance.
 
-**Project Helm Phases 1 and 2 are available on main:** Captain participation is
+**Project Helm Phases 1 and 2 plus Amendment A1 are available on main; Amendment A2 is a branch-complete candidate pending protected integration:** Captain participation is
 explicit at Voyage creation. Captain-only remains the default; Captain + Player
 attaches exactly one ordinary Player membership to the same canonical account
 while keeping Voyage-scoped Captain authority independent. Captain operations
@@ -37,7 +37,11 @@ presence and synchronization health, current progress, and safe event
 summaries. Player access, history, artifacts, removal, and perspective remain
 membership-bounded and Player-safe. This is protected-mainline source
 integration with local/synthetic automated evidence, not deployment,
-live-Voyage behavior, or owner acceptance.
+live-Voyage behavior, or owner acceptance. The A2 candidate adds direct Captain
+transfer between joined Players, explicit Succession Hold after relinquishment,
+first-committed Player takeover, and same-edition personal continuations with
+durable lineage and private-state exclusion; its local evidence is not yet
+mainline integration.
 
 **Project Shipwright Phase 2 is available on main:** Creator Studio now turns
 the existing Drydock Story Block contracts into a contract-aware Inspector with
@@ -56,6 +60,20 @@ Studio autosave and undo/redo flow. Every insertion records its source item and
 immutable version; Library reads and use remain Creator-owned, and capture
 rejects protected source material. This is protected-main source integration,
 not deployment or live-provider execution.
+
+**Project Shipwright Phase 5 is branch-complete and awaiting protected-main
+acceptance:** Creator Studio now gives
+the Version history a staged **Review and publish** journey. A Creator saves the
+intended draft, sees the source-bound Drydock decision with blockers, warnings,
+and waivers, reviews exact human-readable changes, assets, access evidence, and
+reader compatibility, then supplies release notes and explicitly confirms the
+immutable Version. Studio calls only the canonical One Voyage publication
+transaction and reports success only after its Version label and checksum are
+returned. Failed publication preserves the draft for review and repair; the
+next Community action is a governed Harborlight handoff, not a duplicate
+exchange flow. The work adds no schema or competing authority. Task-owned
+synthetic browser evidence covers the Creator path; deployment, live provider,
+and owner acceptance remain separate.
 
 **Project Drydock Phase 3 accepted mainline:** Creator-only Sea Trials provide
 revisioned source-bound deterministic Scenarios, synthetic faults, virtual

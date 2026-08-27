@@ -3,7 +3,7 @@ title: Engineering records
 audience: engineering
 status: current
 canonical_for: engineering-records-index
-last_reviewed: 2026-08-16
+last_reviewed: 2026-08-27
 ---
 
 # Engineering records
@@ -46,6 +46,10 @@ and does not start, rename, or replace a Bridgewatch Phase 4. Its
 tracks the current implementation boundary, and its
 [local validation record](Project_Bridgewatch_v1.2_Validation_Record.md)
 records only task-owned branch evidence pending protected integration.
+The subsequent v1.2 P2 data-fabric branch makes source-by-source fact
+provenance, explicit expected-class coverage, truthful unavailable/historical
+states, bounded Voyagewright runtime identity, and durable observation history
+visible without creating Bridgewatch authority or a Phase 4.
 
 ## Project Deepwater
 
@@ -62,8 +66,10 @@ with read-only operational projections and member-scoped presence/synchronizatio
 evidence. Governing Amendment v1.1 supplements the v1.0 authority and inserts
 A1 **Muster the Crew**, A2 **Pass the Helm**, and A3 **Ready the Room** before
 the unchanged P3 **Give the Orders**, P4 **Weather the Passage**, and P5
-**Clear for Voyage** sequence. The amendment is governing-only; it implements
-none of A1, A2, or A3.
+**Clear for Voyage** sequence. A1 is accepted on main; A2 is branch-complete
+pending protected integration, with its scoped authority-handoff and
+personal-continuation evidence recorded with Helm. A3 and the original later
+phases remain separate.
 
 ## Project Admiralty
 
@@ -93,6 +99,17 @@ The following owner-authored governing documents are current repository authorit
 - [Project Shipwright](Projects/Project%20Shipwright/Project_Shipwright_Creator_Studio_Authoring_Experience_Governing_Document.pdf)
 - [Project Tideglass](Projects/Project%20Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf)
 - [Project Wakebook](Projects/Project%20Wakebook/Project_Wakebook_Governing_Document.pdf)
+
+## Project Shipwright
+
+Project Shipwright's Creator Studio program is governed by its owner-authored
+[governing document](Projects/Project%20Shipwright/Project_Shipwright_Creator_Studio_Authoring_Experience_Governing_Document.pdf).
+The Phase 5, **Launch from the Yard**, implementation and closure records keep
+the staged Creator publishing journey, authority boundaries, synthetic
+walkthrough, and program-completion criteria discoverable without replacing
+the governing document: [design record](Projects/Project%20Shipwright/Project_Shipwright_Phase_5_Design_Record.md),
+[validation record](Projects/Project%20Shipwright/Project_Shipwright_Phase_5_Validation_Record.md),
+and [program closure](Projects/Project%20Shipwright/Project_Shipwright_Program_Closure.md).
 
 ## Project Drydock
 

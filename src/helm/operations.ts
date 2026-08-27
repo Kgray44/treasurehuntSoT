@@ -66,6 +66,7 @@ export type CaptainCrewMemberProjection = Readonly<{
   };
   readiness: { state: "READY" | "NOT_READY" | "UNKNOWN"; blockerCategories: string[] };
   isCaptainsOwnPlayerMembership: boolean;
+  canReceiveCaptaincy: boolean;
 }>;
 
 export type CaptainOperationalEventProjection = Readonly<{
@@ -115,6 +116,7 @@ const statusRank: Record<CaptainOperationalStatus, number> = {
 };
 
 const membershipReady = new Set(["READY", "ACTIVE_MEMBER", "COMPLETED_MEMBER"]);
+const captainTransferEligible = new Set(["ACCEPTED", "READY", "ACTIVE_MEMBER"]);
 
 export function classifyAggregatePresence(lastHeartbeatAt: Date | null, now = new Date()): CaptainPresenceState {
   if (!lastHeartbeatAt) return "UNKNOWN";
@@ -466,6 +468,10 @@ export async function getCaptainVoyageProjection(voyageId: string, actor: Canoni
         blockerCategories: ["INVITED", "ACCEPTED"].includes(membership.status) ? ["MEMBERSHIP"] : [],
       },
       isCaptainsOwnPlayerMembership: membership.player.accountId === actor.accountId,
+      canReceiveCaptaincy:
+        membership.player.accountId !== actor.accountId &&
+        Boolean(membership.player.accountId) &&
+        captainTransferEligible.has(membership.status),
     };
   });
   const computedAt = new Date();
@@ -479,6 +485,7 @@ export async function getCaptainVoyageProjection(voyageId: string, actor: Canoni
       voyageName: session.voyageName ?? session.ownerLabel ?? "Voyage",
       edition: session.version?.versionLabel ?? "Unpublished",
       lifecycle: session.status,
+      captainAuthorityState: session.captainAuthorityState,
       concurrencyVersion: session.concurrencyVersion,
       operationalStatus,
       // This aggregate is derived from membership evidence, never from the

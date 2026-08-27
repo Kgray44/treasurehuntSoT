@@ -3,14 +3,16 @@ title: Bridgewatch v1.2 Mission Control operator guide
 audience: engineering
 status: current
 canonical_for: bridgewatch-v1.2-operator-guide
-last_reviewed: 2026-08-16
+last_reviewed: 2026-08-27
 ---
 
-# Bridgewatch v1.2 — Mission Control
+# Bridgewatch v1.2 — Mission Control and Data Fabric
 
 Bridgewatch v1.2 is a private, read-only internal Mission Control for project,
 version, phase, GitHub, Sounding Line, source-health, and retained-history
-observation. It is a post-completion product-version amendment: the accepted
+observation. Its Phase 2 data fabric adds bounded source adapters, fact
+provenance, coverage, and durable observation history. It is a post-completion
+product-version amendment: the accepted
 Phase 1–3 program history remains historical evidence and v1.2 does not create
 or imply a Phase 4.
 It is a standalone Fastify service with a local SQLite cache and a static
@@ -56,6 +58,35 @@ v1.2 discovery projection adds safe normalized observed project/version/phase,
 GitHub PR/branch, source-health, and evidence rows while retaining all earlier
 cache and accepted-history compatibility records.
 
+### P2 data fabric
+
+The **Data & Coverage** station makes the observer's source boundary explicit.
+It collects only typed, bounded facts from the repository, local `origin/main`,
+machine-indexed governing records, the Project Registry, Feature Catalog,
+Deepwater evidence, Sounding Line's source-owned read-only projection, opt-in
+activity telemetry, an optional Voyagewright runtime-identity file, schema and
+migration inventory, and an optional provider-status file. It does not read
+user records, browser credentials, headers, prompts, prose, media, terminal
+logs, or process command lines.
+
+Every fact and adapter reports identity, configuration and reachability,
+freshness, authority/maturity, precise limitation or failure, and whether it
+is retained from that source's last known good cache. Fact states are
+`AUTHORITATIVE`, `PROVISIONAL`, `STALE`, `SOURCE_UNAVAILABLE`,
+`NOT_HISTORICALLY_RECORDED`, or `UNKNOWN`. Coverage displays exact observed
+and expected fact-class counts by system; it never manufactures a percentage
+or reconstructs unrecorded history. Where two sources observe current main,
+the local `origin/main` observation has declared precedence over GitHub.
+
+P2 adds `GET /api/facts`, `GET /api/coverage`, and
+`GET /api/facts/:key`. SQLite migration 5 stores bounded fact snapshots and
+changed-value history separately from the P1-P3 cache/history tables. Optional
+host-owned status paths are configured only through
+`BRIDGEWATCH_VOYAGEWRIGHT_RUNTIME_STATE_PATH` and
+`BRIDGEWATCH_PROVIDER_STATUS_PATH`; their readers allowlist safe identity and
+count fields before persistence. Those files are observations, not a control
+channel.
+
 ### Windows lifecycle helper
 
 On Windows, build first and set the normal private Bridgewatch environment
@@ -99,7 +130,8 @@ GitHub snapshot is cached. `GET /api/summary`, `/api/projects`,
 `/api/projects/:id`, `/api/history`, `/api/projects/:id/history`,
 `/api/trends`, `/api/projects/:id/trends`, `/api/archive`, `/api/branches`,
 `/api/pull-requests`, `/api/workers`, `/api/tests`, `/api/attention`,
-`/api/activity?since=...`, and `/api/sources` are human read-only observation
+`/api/activity?since=...`, `/api/sources`, `/api/facts`, `/api/coverage`, and
+`/api/facts/:key` are human read-only observation
 endpoints. `/api/history` is bounded, filters normalized meaningful events,
 and defaults to the last 12 hours; `/api/activity` remains worker activity.
 Startup refreshes GitHub and the source-owned Sounding Line projection; a
@@ -109,7 +141,7 @@ v1.2 adds `GET /api/program`, version and phase profiles below
 `/api/projects/:id`, retained PR/branch/Sounding Line profiles,
 `GET /api/compare?from=...&to=...`, and `/api/sources/:name`. The hash-routed
 dashboard offers Overview, Program, Projects, Operations, GitHub, Attention,
-History, and Sources stations. It is a read-only convenience over the same
+History, Sources, and Data & Coverage stations. It is a read-only convenience over the same
 bounded APIs; deep links, browser Back/Forward, and a comparison fidelity label
 do not change source authority.
 

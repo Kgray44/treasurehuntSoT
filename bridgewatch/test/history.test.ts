@@ -408,7 +408,7 @@ describe("Phase 3 history persistence", () => {
     const directory = mkdtempSync(join(tmpdir(), "bridgewatch-backup-"));
     const source = new BridgewatchStore(join(directory, "source.sqlite"));
     try {
-      expect(source.migrationVersions()).toEqual([1, 2, 3, 4]);
+      expect(source.migrationVersions()).toEqual([1, 2, 3, 4, 5]);
       expect(() => assertHistoryPruneTarget("project_history")).toThrow("durable-history guard");
       expect(() => assertHistoryPruneTarget("events")).not.toThrow();
       const before = initial();
@@ -453,7 +453,7 @@ describe("Phase 3 history persistence", () => {
         expect(restored.history({ since: "2026-01-01T00:00:00.000Z", limit: 100 }).events).not.toHaveLength(0);
         expect(restored.snapshotCount()).toBe(source.snapshotCount());
         expect(restored.dailyRollups()).toEqual(source.dailyRollups());
-        expect(restored.migrationVersions()).toEqual([1, 2, 3, 4]);
+        expect(restored.migrationVersions()).toEqual([1, 2, 3, 4, 5]);
       } finally {
         restored.close();
       }

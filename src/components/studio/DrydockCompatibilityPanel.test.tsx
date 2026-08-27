@@ -1,16 +1,21 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { DrydockCompatibilityPanel } from "@/components/studio/DrydockCompatibilityPanel";
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  cleanup();
+  vi.unstubAllGlobals();
+});
+
+const response = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
 
 describe("Drydock Compatibility panel", () => {
   it("shows the current source-bound assessment and safe repair action", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue({
-        ok: true,
-        json: async () => ({
+      vi.fn().mockResolvedValue(
+        response({
           compatibility: {
             status: "UNSUPPORTED",
             sourceChecksum: "c".repeat(64),
@@ -25,7 +30,7 @@ describe("Drydock Compatibility panel", () => {
             ],
           },
         }),
-      }),
+      ),
     );
     render(<DrydockCompatibilityPanel taleId="tale-1" csrfToken="csrf" />);
     expect(screen.getByText("Checking current reader compatibility…")).toBeInTheDocument();
@@ -36,7 +41,7 @@ describe("Drydock Compatibility panel", () => {
   });
 
   it("does not imply compatibility when the server decision cannot load", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false }));
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response({ error: "Unavailable" }, 503)));
     render(<DrydockCompatibilityPanel taleId="tale-1" csrfToken="csrf" />);
     expect(await screen.findByRole("alert")).toHaveTextContent("could not load");
   });

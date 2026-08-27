@@ -3,7 +3,7 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-27
 ---
 
 # Features and subfeatures
@@ -144,6 +144,15 @@ without removing Captain authority. Mainline source integration is not
 deployment, live-Voyage proof, or owner acceptance.
 [Guide](../user/captain-guide.md).
 
+The branch-complete Amendment A2 candidate adds a separate, scoped Captain handoff lifecycle: an active
+Captain + Player can transfer authority to another joined Player; relinquishing
+authority puts the shared Voyage into Succession Hold without cancellation; an
+eligible Player can take Captaincy first-committed-wins, leave, or create an
+independent same-edition solo continuation. The continuation keeps durable
+parent/child lineage and excludes all other Player-private state. Its current
+synthetic evidence is not protected-main integration, deployment, live-Voyage
+proof, or owner acceptance.
+
 ## Creator Studio and publishing
 
 **Audience:** Creators. **Availability:** available on main. Studio supports Chronicle settings, story blocks, locations, assets, artifact authoring, version views, and immutable publishing. [Guide](../user/creator-guide.md).
@@ -156,6 +165,17 @@ targets and typed variables, build canonical visual conditions, see effective
 Drydock defaults and local issues, and retain existing autosave, history,
 preview, and publication behavior. Drydock remains the sole contract and
 validation authority; deployment and live-provider execution are separate.
+
+The branch-complete Project Shipwright Phase 5 candidate completes the Creator-side release journey. Version
+history now stages save/freeze, source-bound Drydock readiness, exact
+Creator-readable changes, asset/access and compatibility review, release notes,
+and explicit immutable confirmation. Studio invokes only canonical One Voyage
+publication and withholds success until the immutable Version receipt is
+returned; a rejected request leaves the draft available for repair. Next actions
+include preview, Voyage creation, version comparison, and an eligible governed
+Harborlight handoff. Controls remain responsive, keyboard-operable, and free of
+manual identifiers or raw JSON for normal release work. Local synthetic proof
+does not establish protected-main acceptance, deployment, owner acceptance, or live-provider behavior.
 
 Project Tideglass Phases 1-4 provide exact immutable-edition intelligence with
 stable semantic change codes, explainable compatibility, spoiler-safe

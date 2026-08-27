@@ -3,7 +3,7 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-08-09
+last_reviewed: 2026-08-27
 ---
 
 # Player guide
@@ -16,6 +16,17 @@ A Captain who explicitly joins the Crew uses this same ordinary Player
 experience. Captain authority does not add private Captain controls or fields to
 the Player route. Personal history and artifact eligibility begin and end with
 the Player membership, even when Captain authority continues.
+
+The following Amendment A2 behavior is branch-complete and pending protected
+integration. If a Captain relinquishes authority, the shared Voyage shows **Succession
+Hold** rather than a cancelled state. A currently joined Player can **Take
+Captaincy**, **Continue Solo**, or **Leave Voyage**. Taking Captaincy retains
+the same shared Voyage. Continuing solo creates a new personal Voyage from the
+last committed shared state and same published edition; it does not change the
+shared Voyage or copy another Player's private state. After that authoritative
+creation commits, the waiting room confirms the new personal Voyage and offers
+an **Open solo Voyage** link, so an interrupted page transition cannot make the
+completed continuation look uncertain.
 
 Related: [getting started](getting-started.md), [Passport](chronicle-passport.md), [accessibility](accessibility.md), and [troubleshooting](troubleshooting.md).
 

@@ -36,7 +36,11 @@
     ".next-admiralty-phase2/types/**/*.ts",
     ".next-admiralty-phase2/dev/types/**/*.ts",
     ".next-admiralty-phase2-walkthrough/types/**/*.ts",
-    ".next-admiralty-phase2-walkthrough/dev/types/**/*.ts"
+    ".next-admiralty-phase2-walkthrough/dev/types/**/*.ts",
+    ".next-shipwright-phase5-browser/types/**/*.ts",
+    ".next-shipwright-phase5-browser/dev/types/**/*.ts",
+    ".next-helm-a2-browser/types/**/*.ts",
+    ".next-helm-a2-browser/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules", ".sealed-build*/**"]
 }

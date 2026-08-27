@@ -171,7 +171,7 @@ Players can discover, resume, archive, and reconcile exact-edition Voyage experi
 **Status:** MAINLINE
 **Program or subsystem:** Captain
 
-Captains create, launch, operate, and conclude live Voyages through authoritative commands, with independent Player participation and a complete ordinary Crew lifecycle.
+Captains create, launch, operate, conclude, and safely hand off live Voyages through authoritative commands, with independent Player participation, a complete ordinary Crew lifecycle, and private-state-safe personal continuation.
 
 ### Important subfeatures
 
@@ -189,21 +189,33 @@ Captains create, launch, operate, and conclude live Voyages through authoritativ
 - Zero-invite Captain plus Player Voyage creation
 - Direct Player invitation acceptance and decline from Chronicle Library
 - Captain Crew removal, Player voluntary leave, and explicit Voyage cancellation with preserved history
+- Direct joined-Player Captain transfer with durable authority receipts
+- Succession Hold, first-committed Player takeover, and same-edition solo continuation lineage
 
 ### Primary surfaces
 
 `/captain`, `/captain/library`, `/captain/sessions/[sessionId]`, `/captain/voyages/[playthroughId]/player-preview`, `/player/playthroughs/[playthroughId]`
 
+### Meaningful limitations
+
+- The A2 authority-handoff extension is integrated on protected main; deployment, live-Voyage proof, and owner acceptance are separate.
+- A3 Ready the Room and original Helm Phase 3 command redesign remain outside this amendment.
+
 ### Evidence
 
-- commit: `ca40227cbef3575315c089d224a0cd26ec77bc78`
+- commit: `5ee19d77a4f593751cedd123369d1cb9528b7737`
 - path: `src/server/admin-command.ts`
 - path: `src/domain/admin.ts`
 - path: `src/helm/captain-participation.ts`
 - path: `src/helm/operations.ts`
 - path: `src/helm/lifecycle.ts`
+- path: `src/helm/authority-lifecycle.ts`
+- path: `src/helm/authority-command.client.ts`
+- path: `src/components/platform/PlayerVoyageRoom.tsx`
+- path: `src/components/platform/PlayerLibrary.tsx`
 - path: `src/platform/membership-presence.ts`
 - path: `src/components/captain/CaptainOperationalPanel.tsx`
+- path: `playwright.config.ts`
 - path: `src/components/platform/CaptainLibrary.tsx`
 - path: `src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts`
 - path: `src/app/api/captain/playthroughs/[playthroughId]/cancel/route.ts`
@@ -1118,6 +1130,43 @@ Creators capture private immutable Presets, Fragments, and Chapter templates, th
 
 ---
 
+## FT-039 - Bridgewatch Bounded Data Fabric
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Bridgewatch v1.2 P2 - Flood the Board
+
+Bridgewatch v1.2 P2 makes a fixed, read-only set of typed repository, governance, delivery-evidence, coordination, Voyagewright, and operations facts inspectable with provenance, precedence, exact observation coverage, source-specific stale retention, and durable local history, without granting the dashboard control authority.
+
+### Important subfeatures
+
+- Eleven fixed typed adapters spanning GitHub, local current main, indexed records, registry, catalog, Deepwater, Sounding Line, telemetry, Voyagewright runtime/schema, and provider status
+- Per-fact source identity, authority, maturity, precedence, freshness, explicit limitation, and retained-cache provenance
+- Exact expected fact-class coverage by system with authoritative, provisional, stale, unavailable, unrecorded, and unknown states
+- Truthful historical backfill that preserves NOT_HISTORICALLY_RECORDED instead of inventing absent evidence
+- Source-specific last-known-good retention and additive SQLite current/history tables
+- Host-owned allowlisted Voyagewright runtime identity and provider/job status observation without database, process, credential, prompt, log, or user-content access
+- Responsive, keyboard-visible Data & Coverage and fact-provenance profiles with deep links and bounded fact search
+
+### Primary surfaces
+
+`bridgewatch`, `GET /api/facts`, `GET /api/coverage`, `GET /api/facts/:key`, `Data & Coverage station`
+
+### Meaningful limitations
+
+- P2 remains a private GET/HEAD observer: it cannot create, approve, merge, retry, cancel, release, or change project, worker, provider, or Voyagewright state.
+- Runtime and provider facts exist only when an approved host-owned status projection is configured; unavailable and stale states remain visible rather than inferred.
+- Protected-main integration records the bounded P2 capability as available; it does not establish deployment, provider proof, owner acceptance, or Bridgewatch P3.
+
+### Evidence
+
+- commit: `15b66153c931efbf77b338cb67560a93853dad1e`
+- path: `bridgewatch/src/fabric.ts`
+- path: `bridgewatch/lib/store.ts`
+- test: `bridgewatch/test/fabric.test.ts`
+- test: `bridgewatch/test/server.test.ts`
+
+---
+
 ## FT-B001 - Unified Identity and Session Authority
 
 **Status:** MAINLINE
@@ -1628,6 +1677,41 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 
 ---
 
+## FT-B012 - Chronicle Passport Independence
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Wakebook A1 - Open the Passport
+
+Project Wakebook A1 makes Chronicle Passport a first-class, owner-private Voyagewright destination while preserving its Personal Harbor gateway and established record routes.
+
+### Important subfeatures
+
+- Dedicated full-width Chronicle Passport shell with responsive section navigation and a visible Personal Harbor return gateway
+- Top-level authenticated Player navigation discoverability without exposing the private destination to anonymous visitors
+- Preserved Passport record, Memory, Artifact, Saved, historical-hash, and Tideglass comparison handoffs
+- Shared draft protection, keyboard-operable unsaved-change dialog, and reduced-motion behavior across the independent Passport shell
+- Unchanged owner-private Wakebook archive and sticky Voyage Detail section-navigation behavior
+
+### Primary surfaces
+
+`/passport`, `/passport/history`, `/passport/history/[recordId]`, `/passport/memories`, `/passport/artifacts`, `/passport/saved`, `/account`
+
+### Meaningful limitations
+
+- Protected mainline integration completed in PR #459 as e0cdc2f3073badd1404076b3560dcd19c92e532c
+- Chronicle Passport remains owner-private and intentionally retains existing One Voyage, Wayfarer, Tideglass, Homeport, and Wakebook ownership boundaries
+- Timeline, People, Statistics, geographic recap, public sharing, competitive metrics, and new Tideglass semantics remain outside Wakebook A1
+
+### Evidence
+
+- commit: `e0cdc2f3073badd1404076b3560dcd19c92e532c`
+- path: `src/components/wakebook/PassportLayout.tsx`
+- path: `src/components/wakebook/AuthenticatedPassportPage.tsx`
+- test: `src/components/wakebook/PassportLayout.test.tsx`
+- test: `src/navigation/navigation.test.ts`
+
+---
+
 ## FT-B013 - Owner-Safe Historical Voyage Remembrance
 
 **Status:** MAINLINE
@@ -1663,42 +1747,42 @@ Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe
 
 ---
 
-# Completed Branch Features Not Yet Available on Main
+## FT-B014 - Shipwright Creator Publication Review
 
-## FT-B012 - Chronicle Passport Independence
+**Status:** MAINLINE
+**Program or subsystem:** Project Shipwright Phase 5
 
-**Status:** BRANCH COMPLETE NOT MERGED
-**Program or subsystem:** Project Wakebook A1 - Open the Passport
-
-Project Wakebook A1 makes Chronicle Passport a first-class, owner-private Voyagewright destination while preserving its Personal Harbor gateway and established record routes.
+Creators stage a saved Chronicle source through Drydock readiness, exact readable differences, asset and protected-content evidence, compatibility, release notes, and explicit immutable confirmation before the canonical One Voyage publication authority creates a Version receipt.
 
 ### Important subfeatures
 
-- Dedicated full-width Chronicle Passport shell with responsive section navigation and a visible Personal Harbor return gateway
-- Top-level authenticated Player navigation discoverability without exposing the private destination to anonymous visitors
-- Preserved Passport record, Memory, Artifact, Saved, historical-hash, and Tideglass comparison handoffs
-- Shared draft protection, keyboard-operable unsaved-change dialog, and reduced-motion behavior across the independent Passport shell
-- Unchanged owner-private Wakebook archive and sticky Voyage Detail section-navigation behavior
+- Source-bound Drydock release decision with visible blockers warnings and waivers
+- Creator-readable Chronicle Chapter Passage Asset Location and Artifact differences
+- Safe asset protected-content and provider-compatibility review
+- Explicit immutable publication confirmation with recoverable failure state
+- Authoritative Version receipt before publication success and governed next actions
+- Task-owned Creator browser acceptance including responsive and large-Chronicle proof
 
 ### Primary surfaces
 
-`/passport`, `/passport/history`, `/passport/history/[recordId]`, `/passport/memories`, `/passport/artifacts`, `/passport/saved`, `/account`
+`/studio/tales/[taleId]/versions`, `/api/studio/tales/[taleId]/publishing-review`, `src/components/studio/ShipwrightPublishingReview.tsx`
 
 ### Meaningful limitations
 
-- Chronicle Passport remains owner-private and intentionally retains existing One Voyage, Wayfarer, Tideglass, Homeport, and Wakebook ownership boundaries
-- Timeline, People, Statistics, geographic recap, public sharing, competitive metrics, and new Tideglass semantics remain outside Wakebook A1
+- Drydock remains the sole authoring-contract validation and simulation authority, and One Voyage remains the sole immutable publication authority.
+- Protected-main integration completed in PR #479 as ab44c398fb76c367036d720cea619825614233f5; deployment, live-provider execution, and owner acceptance remain separate.
 
 ### Evidence
 
-- branch: `codex/project-wakebook-a1-open-the-passport`
-- commit: `27ceb7bf62ef5cfc44ba118a8dbf1c384f359f5a`
-- path: `src/components/wakebook/PassportLayout.tsx`
-- path: `src/components/wakebook/AuthenticatedPassportPage.tsx`
-- test: `src/components/wakebook/PassportLayout.test.tsx`
-- test: `src/navigation/navigation.test.ts`
+- commit: `ab44c398fb76c367036d720cea619825614233f5`
+- path: `src/chronicle/publishing-review.ts`
+- path: `src/components/studio/ShipwrightPublishingReview.tsx`
+- test: `tests/e2e/project-shipwright-phase5.spec.ts`
+- completion-record: `Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_5_Validation_Record.md`
 
 ---
+
+# Completed Branch Features Not Yet Available on Main
 
 # Deliberately Excluded Until Complete
 

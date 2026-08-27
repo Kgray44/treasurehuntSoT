@@ -862,6 +862,8 @@ export async function interactWithTaleSession(
   if (!authorizedPlayer && (!token || digest(token) !== session.accessTokenHash))
     throw new Error("This voyage session is not available to this browser.");
   if (session.status !== "ACTIVE") throw new Error(`This session is ${session.status.toLowerCase()}.`);
+  if (session.captainAuthorityState === "VACANT")
+    throw new Error("This shared Voyage is in Succession Hold while Captaincy is vacant.");
   const snapshot = snapshotOf(session);
   const block = blockById(snapshot, session.currentBlockId);
   if (!block) throw new Error("The current Passage is unavailable.");
@@ -905,6 +907,8 @@ export async function interactWithTaleSession(
   } else if (request?.providerType === "captainManual") throw new Error("The Captain must resolve this verification.");
   const event = await db.$transaction(async (tx) => {
     const current = await tx.taleSession.findUniqueOrThrow({ where: { id: sessionId }, include: { version: true } });
+    if (current.status !== "ACTIVE" || current.captainAuthorityState === "VACANT")
+      throw new Error("This shared Voyage is in Succession Hold while Captaincy is vacant.");
     if (current.currentBlockId !== block.id) throw new Error("The story has already advanced.");
     if (request)
       await tx.taleVerificationRequest.update({
@@ -941,6 +945,7 @@ export async function submitVerification(
   if (!request) throw new VerificationRejectedError("unknownRequest");
   let reason: string | null = null;
   if (request.sessionId !== submission.sessionId) reason = "wrongSession";
+  else if (request.session.captainAuthorityState === "VACANT") reason = "successionHold";
   else if (identity(request.session) !== submission.publishedVersionId) reason = "wrongVersion";
   else if (request.blockId !== submission.blockId || request.session.currentBlockId !== submission.blockId)
     reason = "wrongBlock";
@@ -1002,6 +1007,7 @@ export async function submitVerification(
       where: { id: request.sessionId },
       include: { version: true },
     });
+    if (current.captainAuthorityState === "VACANT") throw new VerificationRejectedError("successionHold");
     if (submission.result !== "match")
       return appendEvent(tx, current, {
         eventType: submission.result === "uncertain" ? "verificationUncertain" : "verificationRejected",

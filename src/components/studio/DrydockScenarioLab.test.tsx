@@ -2,8 +2,11 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { DrydockScenarioLab } from "./DrydockScenarioLab";
 
-const response = (body: unknown, status = 200) =>
-  ({ ok: status >= 200 && status < 300, status, json: vi.fn().mockResolvedValue(body) }) as unknown as Response;
+const response = (body: unknown, status = 200, contentType = "application/json") =>
+  new Response(typeof body === "string" ? body : JSON.stringify(body), {
+    status,
+    headers: { "content-type": contentType },
+  });
 
 afterEach(() => {
   cleanup();
@@ -15,7 +18,15 @@ describe("Drydock Scenario Lab", () => {
     const checksum = "a".repeat(64);
     const fetchMock = vi
       .fn()
-      .mockResolvedValueOnce(response({ sourceChecksum: checksum, scenarios: [] }))
+      .mockResolvedValueOnce(
+        response({
+          sourceChecksum: checksum,
+          requiredScenarioClasses: [
+            { id: "BASELINE_SUCCESS", capability: "BASELINE", reason: "Every Chronicle needs a successful path." },
+          ],
+          scenarios: [],
+        }),
+      )
       .mockResolvedValueOnce(response({ suites: [] }))
       .mockResolvedValueOnce(response({ runs: [] }))
       .mockResolvedValueOnce(
@@ -89,7 +100,15 @@ describe("Drydock Scenario Lab", () => {
     };
     const fetchMock = vi
       .fn()
-      .mockResolvedValueOnce(response({ sourceChecksum: checksum, scenarios: [] }))
+      .mockResolvedValueOnce(
+        response({
+          sourceChecksum: checksum,
+          requiredScenarioClasses: [
+            { id: "BASELINE_SUCCESS", capability: "BASELINE", reason: "Every Chronicle needs a successful path." },
+          ],
+          scenarios: [],
+        }),
+      )
       .mockResolvedValueOnce(response({ suites: [] }))
       .mockResolvedValueOnce(response({ runs: [running.summary] }))
       .mockResolvedValueOnce(response({ run: running }))
@@ -114,7 +133,15 @@ describe("Drydock Scenario Lab", () => {
     const checksum = "c".repeat(64);
     const fetchMock = vi
       .fn()
-      .mockResolvedValueOnce(response({ sourceChecksum: checksum, scenarios: [] }))
+      .mockResolvedValueOnce(
+        response({
+          sourceChecksum: checksum,
+          requiredScenarioClasses: [
+            { id: "BASELINE_SUCCESS", capability: "BASELINE", reason: "Every Chronicle needs a successful path." },
+          ],
+          scenarios: [],
+        }),
+      )
       .mockResolvedValueOnce(response({ suites: [] }))
       .mockResolvedValueOnce(response({ runs: [] }))
       .mockResolvedValueOnce(
@@ -144,6 +171,7 @@ describe("Drydock Scenario Lab", () => {
     fireEvent.change(screen.getByLabelText("Scenario assertion kind"), { target: { value: "PROVIDER_REQUESTED" } });
     fireEvent.click(screen.getByRole("button", { name: "Add assertion" }));
     fireEvent.change(screen.getByLabelText("Simulation locale"), { target: { value: "fr-CA" } });
+    fireEvent.click(screen.getByRole("checkbox", { name: /Baseline successful path/i }));
     fireEvent.click(screen.getByRole("button", { name: "Save Scenario revision" }));
 
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(4));
@@ -154,5 +182,22 @@ describe("Drydock Scenario Lab", () => {
       expect.objectContaining({ family: "NETWORK", code: "OFFLINE", beforeInput: 0 }),
     );
     expect(saved.assertions).toContainEqual({ kind: "PROVIDER_REQUESTED" });
+    expect(saved.tags).toContain("required:BASELINE_SUCCESS");
+  });
+
+  it("renders a designed error when a Sea Trials endpoint returns HTML", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve(response("<!DOCTYPE html><html>Framework error</html>", 500, "text/html")),
+      );
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(<DrydockScenarioLab taleId="tale-1" csrfToken="csrf-1" />);
+
+    const alert = await screen.findByRole("alert");
+    expect(alert).toHaveTextContent("Sea Trials could not load because the server returned an unexpected response.");
+    expect(alert).not.toHaveTextContent("Unexpected token");
+    expect(alert).not.toHaveTextContent("<!DOCTYPE");
   });
 });

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
 import { useActionDialog } from "@/components/ui/ActionDialog";
+import { postIdempotentAuthorityCommand } from "@/helm/authority-command.client";
 
 type Projection = {
   voyage: {
@@ -10,6 +11,7 @@ type Projection = {
     voyageName: string;
     edition: string;
     lifecycle: string;
+    captainAuthorityState: string;
     concurrencyVersion: number;
     operationalStatus: string;
     aggregatePresence: string;
@@ -36,6 +38,7 @@ type Projection = {
     synchronization: { state: string; lag: number | null };
     readiness: { state: string };
     isCaptainsOwnPlayerMembership: boolean;
+    canReceiveCaptaincy: boolean;
   }>;
   progress: {
     currentChapter: string | null;
@@ -69,6 +72,7 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
   const [notice, setNotice] = useState("");
   const [busyMemberId, setBusyMemberId] = useState("");
   const [cancelling, setCancelling] = useState(false);
+  const [authorityAction, setAuthorityAction] = useState<"transfer" | "relinquish" | "">("");
   const load = useCallback(async () => {
     const response = await fetch(`/api/captain/voyages/${voyageId}`, { cache: "no-store" });
     const body = (await response.json()) as Projection & { error?: string };
@@ -147,6 +151,79 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
       setCancelling(false);
     }
   }
+
+  async function transferCaptaincy(member: Projection["crew"][number]) {
+    if (!projection || !member.canReceiveCaptaincy || authorityAction) return;
+    if (
+      !(await requestAction({
+        eyebrow: "Captain authority",
+        title: `Transfer Captaincy to ${member.displayName}?`,
+        detail:
+          "Captain authority moves atomically after this current joined Player is verified. You remain an ordinary Player if you already participate; the edition, progression, artifacts, and private Player state do not change.",
+        confirmLabel: "Transfer Captaincy",
+      }))
+    )
+      return;
+    setAuthorityAction("transfer");
+    setError("");
+    try {
+      const response = await postIdempotentAuthorityCommand({
+        url: `/api/captain/playthroughs/${voyageId}/captain/transfer`,
+        csrfToken: projection.csrfToken,
+        body: {
+          recipientMembershipId: member.id,
+          expectedVersion: projection.voyage.concurrencyVersion,
+          idempotencyKey: crypto.randomUUID(),
+        },
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "Captaincy could not be transferred.");
+      setNotice(`Captaincy transferred to ${member.displayName}. Returning to your Player perspective.`);
+      window.location.assign(`/player/playthroughs/${voyageId}`);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Captaincy could not be transferred.");
+      await load();
+    } finally {
+      setAuthorityAction("");
+    }
+  }
+
+  async function relinquishCaptaincy() {
+    if (!projection || authorityAction || projection.voyage.lifecycle === "CANCELLED") return;
+    if (
+      !(await requestAction({
+        eyebrow: "Captain authority",
+        title: `Relinquish Captaincy for “${projection.voyage.voyageName}”?`,
+        detail:
+          "This does not cancel the shared Voyage. It enters Succession Hold until an eligible joined Player takes Captaincy, continues solo, or leaves. Transfer Captaincy directly when a recipient is available.",
+        confirmLabel: "Relinquish Captaincy",
+        destructive: true,
+      }))
+    )
+      return;
+    setAuthorityAction("relinquish");
+    setError("");
+    try {
+      const response = await postIdempotentAuthorityCommand({
+        url: `/api/captain/playthroughs/${voyageId}/captain/relinquish`,
+        csrfToken: projection.csrfToken,
+        body: {
+          expectedVersion: projection.voyage.concurrencyVersion,
+          idempotencyKey: crypto.randomUUID(),
+        },
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "Captaincy could not be relinquished.");
+      setNotice("Captaincy was relinquished. The shared Voyage is now in Succession Hold, not cancelled.");
+      window.location.assign(`/player/playthroughs/${voyageId}`);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Captaincy could not be relinquished.");
+      await load();
+    } finally {
+      setAuthorityAction("");
+    }
+  }
+
   useEffect(() => {
     if (!authenticated) return;
     const initial = window.setTimeout(() => void load(), 0);
@@ -233,13 +310,22 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
                 !["REMOVED", "LEFT", "CANCELLED"].includes(member.membership.status) && (
                   <button
                     className="button-danger"
-                    disabled={Boolean(busyMemberId) || cancelling}
+                    disabled={Boolean(busyMemberId) || cancelling || Boolean(authorityAction)}
                     aria-busy={busyMemberId === member.id}
                     onClick={() => void removeMember(member)}
                   >
                     {busyMemberId === member.id ? "Removing…" : "Remove from Crew"}
                   </button>
                 )}
+              {member.canReceiveCaptaincy && (
+                <button
+                  className="button-secondary"
+                  disabled={Boolean(busyMemberId) || cancelling || Boolean(authorityAction)}
+                  onClick={() => void transferCaptaincy(member)}
+                >
+                  {authorityAction === "transfer" ? "Transferring Captaincy…" : "Transfer Captaincy"}
+                </button>
+              )}
             </li>
           ))}
         </ul>
@@ -248,6 +334,23 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
           changes Voyage progression.
         </p>
       </section>
+      {!["CANCELLED", "COMPLETED", "ABANDONED"].includes(projection.voyage.lifecycle) &&
+        projection.voyage.captainAuthorityState === "ASSIGNED" && (
+          <section aria-labelledby="relinquish-captaincy-heading">
+            <h3 id="relinquish-captaincy-heading">Relinquish Captaincy</h3>
+            <p>
+              Relinquishing is not cancellation. The shared Voyage enters Succession Hold until a joined Player takes
+              Captaincy, continues solo, or leaves. Transfer Captaincy directly when a successor is available.
+            </p>
+            <button
+              className="button-danger"
+              disabled={Boolean(busyMemberId) || cancelling || Boolean(authorityAction)}
+              onClick={() => void relinquishCaptaincy()}
+            >
+              {authorityAction === "relinquish" ? "Relinquishing Captaincy…" : "Relinquish Captaincy"}
+            </button>
+          </section>
+        )}
       {!["CANCELLED", "COMPLETED", "ABANDONED"].includes(projection.voyage.lifecycle) && (
         <section aria-labelledby="cancel-voyage-heading">
           <h3 id="cancel-voyage-heading">End shared Voyage</h3>
@@ -256,7 +359,7 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
           </p>
           <button
             className="button-danger"
-            disabled={Boolean(busyMemberId) || cancelling}
+            disabled={Boolean(busyMemberId) || cancelling || Boolean(authorityAction)}
             onClick={() => void cancelForEveryone()}
           >
             {cancelling ? "Cancelling Voyage…" : "Cancel Voyage for Everyone"}
