@@ -984,6 +984,7 @@ export function verificationCommands(plan) {
   for (const script of plan.migrationScripts ?? []) commands.push(["npx", ["--no-install", "tsx", script]]);
   if (plan.buildRequired) commands.push(["npm", ["run", "build"]]);
   if (plan.selected.browserTests.length) {
+    commands.push(["npx", ["--no-install", "prisma", "generate", "--schema", "prisma/schema.sqlite.prisma"]]);
     const selectedHomeportPhase7 = plan.selected.browserTests.filter((file) => homeportPhase7BrowserTests.has(file));
     const genericBrowserTests = plan.selected.browserTests.filter((file) => isGenericBrowserTest(file));
     const profileBrowserTests = plan.selected.browserTests.filter((file) => suiteBrowserProfileId(file) !== "generic");

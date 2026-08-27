@@ -547,6 +547,10 @@ test("ordinary browser proof uses the installed Chromium project", () => {
     migrationScripts: [],
     buildRequired: false,
   });
+  assert.deepEqual(browserCommands.at(-4), [
+    "npx",
+    ["--no-install", "prisma", "generate", "--schema", "prisma/schema.sqlite.prisma"],
+  ]);
   assert.deepEqual(browserCommands.at(-3), [
     process.execPath,
     ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
@@ -1470,11 +1474,11 @@ test("v1.4 evidence rebinds a browser obligation across an unrelated base advanc
       !rebound.calls.some(([, argumentsList]) => argumentsList[0] === "scripts/sounding-line/browser-authority.mjs"),
     );
     assert.equal(rebound.result.finalization.decision, "PASS");
-    assert.equal(rebound.result.finalization.requiredObligations, 6);
+    assert.equal(rebound.result.finalization.requiredObligations, 7);
     assert.equal(rebound.result.freshObligations, 1);
-    assert.equal(rebound.result.finalization.counts.REBOUND, 5);
+    assert.equal(rebound.result.finalization.counts.REBOUND, 6);
     assert.equal(rebound.result.finalization.counts.INVALIDATED, 1);
-    assert.equal(rebound.result.commandsAvoided.length, 8);
+    assert.equal(rebound.result.commandsAvoided.length, 9);
     assert.ok(rebound.result.avoidedDurationMs >= (freshBrowserReceipt?.durationMs ?? Infinity));
 
     const releasePlan = await buildPlan({ root, baseSha: newerBase, candidateSha: reboundCandidate, mode: "release" });
